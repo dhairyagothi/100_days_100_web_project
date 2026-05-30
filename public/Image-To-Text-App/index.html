@@ -8,127 +8,52 @@
     <link rel="icon" href="../favv.png" type="image/x-icon" />
     <!-- Include Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!--Tesseract.js-->
+    <script src="https://unpkg.com/tesseract.js@4.0.1/dist/tesseract.min.js"></script>
+    <!--PDF.js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head>
 
-<body class="min-h-screen bg-[#0b1120] relative flex items-center justify-center px-4">
-
-    <!-- Animated Background -->
-    <div class="absolute inset-0 overflow-hidden">
-
-        <div
-            class="absolute top-[-120px] left-[-120px] w-[320px] h-[320px] bg-cyan-500/30 rounded-full blur-3xl animate-pulse">
+<body class="bg-gradient-to-tr from-blue-700 to-emerald-500 min-h-screen flex justify-center items-center p-4">
+    <div class="w-full max-w-5xl bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-8 shadow-2xl">
+        <h1 class="text-4xl font-bold text-center text-white mb-8">Image to Text Conversion</h1>
+        <!-- Drag and Drop Area --> 
+        <div id="dropArea" class="border-2 border-dashed border-white rounded-xl p-8 text-center text-white cursor-pointer hover:bg-white/10 transition duration-300">
+             <p class="text-lg font-semibold"> Drag & Drop Image/PDF Here </p> 
+             <p class="mt-2 text-sm text-gray-200"> or click below to upload </p> 
+             <input type="file" id="fileInput" accept="image/*,.pdf" class="hidden"> 
+             <button id="browseBtn" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white px-6 py-2 rounded-lg"> Browse File </button> 
         </div>
-
-        <div
-            class="absolute bottom-[-120px] right-[-120px] w-[320px] h-[320px] bg-emerald-500/30 rounded-full blur-3xl animate-pulse">
+        <!-- Language Selection --> 
+        <div class="mt-6"> 
+            <label class="text-white font-semibold block mb-2"> Select OCR Language </label> 
+            <select id="languageSelect" class="w-full p-3 rounded-lg bg-white/70 outline-none"> 
+              <option value="eng">English</option> <option value="hin">Hindi</option> 
+              <option value="ben">Bengali</option> <option value="spa">Spanish</option> 
+              <option value="fra">French</option> <option value="deu">German</option> 
+            </select> 
         </div>
-
-        <div
-            class="absolute top-[40%] left-[60%] w-[220px] h-[220px] bg-purple-500/20 rounded-full blur-3xl animate-bounce">
+        <!-- Convert Button --> 
+        <button onclick="convertFile()" class="mt-6 w-full bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-3 rounded-lg transition duration-300"> Extract Text </button>
+        <!-- Loader --> <div id="loader" class="hidden text-center text-white mt-4 font-semibold"> Processing... </div>
+        <!-- Output Section --> 
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6"> 
+        <!-- Extracted Text --> 
+        <div> 
+            <h2 class="text-white text-xl font-bold mb-3"> Extracted Text </h2> 
+            <div id="output" class="bg-white/70 rounded-lg p-4 h-80 overflow-auto whitespace-pre-wrap"> Upload a file to begin OCR... </div>
+            <!-- Download Button --> 
+            <button id="downloadBtn" class="hidden mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white py-2 rounded-lg"> Download Text </button> 
         </div>
-
+        <!-- Preview --> 
+        <div>
+            <h2 class="text-white text-xl font-bold mb-3"> File Preview </h2> 
+            <img id="imagePreview" class="hidden rounded-lg shadow-lg max-h-80 w-full object-contain bg-white/20 p-2" src="#" alt="Preview"> 
+            <canvas id="pdfCanvas" class="hidden rounded-lg bg-white w-full"></canvas> 
+        </div>
+     </div> 
     </div>
-
-    <!-- Main Card -->
-    <div
-        class="relative z-10 w-full max-w-6xl rounded-3xl border border-white/10 bg-white/10 backdrop-blur-2xl shadow-2xl p-8 md:p-10">
-
-        <!-- Heading -->
-        <div class="text-center mb-10">
-
-            <h1
-                class="text-[2.25rem] md:text-[3rem] font-extrabold bg-gradient-to-r from-green-400 via-blue-400 to-emerald-400 bg-clip-text text-transparent">
-                Image to Text
-            </h1>
-
-            <p class="text-gray-300 mt-4 text-sm md:text-base">
-                Upload your image and instantly extract text with AI OCR.
-            </p>
-
-        </div>
-
-        <!-- Upload Section -->
-        <div class="flex flex-col md:flex-row gap-4 mb-8">
-
-            <label
-                class="flex-1 flex items-center justify-center gap-3 px-6 py-5 rounded-2xl border border-dashed border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 cursor-pointer">
-
-                <span class="text-3xl">📁</span>
-
-                <div>
-                    <p class="text-white font-medium">
-                        Choose an Image
-                    </p>
-
-                    <p class="text-xs text-gray-400">
-                        PNG, JPG, JPEG supported
-                    </p>
-                </div>
-
-                <input type="file" id="fileInput" accept="image/*" class="hidden">
-            </label>
-
-            <button onclick="convertImage()"
-                class="px-8 py-5 rounded-2xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-white font-semibold hover:scale-105 hover:shadow-xl hover:shadow-cyan-500/30 transition-all duration-300">
-                Convert Image
-            </button>
-
-        </div>
-
-        <!-- Content Area -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-            <!-- OCR Output -->
-            <div
-                class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 min-h-[350px]">
-
-                <div class="flex items-center justify-between mb-5">
-
-                    <h2 class="text-xl font-semibold text-white">
-                        Extracted Text
-                    </h2>
-
-                    <button
-                        class="text-sm px-4 py-2 rounded-xl bg-white/10 text-gray-300 hover:bg-white/20 transition">
-                        Copy
-                    </button>
-
-                </div>
-
-                <div id="output"
-                    class="text-gray-300 leading-relaxed text-center overflow-y-auto max-h-[260px]">
-                    Select an image and get started...
-                </div>
-
-            </div>
-
-            <!-- Image Preview -->
-            <div
-                class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 flex items-center justify-center min-h-[350px]">
-
-                <img id="imagePreview"
-                    class="hidden rounded-2xl shadow-2xl max-h-[300px] object-contain"
-                    src="#"
-                    alt="Selected Image Preview">
-
-                <div id="placeholder" class="text-center">
-
-                    <div class="text-6xl mb-4">
-                        🖼️
-                    </div>
-
-                    <p class="text-gray-400">
-                        Image preview will appear here
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
     </div>
-
-    <script src="https://unpkg.com/tesseract.js@4.0.1/dist/tesseract.min.js"></script>
     <script src="script.js"></script>
 </body>
 

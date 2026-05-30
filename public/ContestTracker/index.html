@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
     <header class="hero-section">
         <h1 class="hero-title">Contest Tracker</h1>
         <p class="hero-description">Track upcoming competitive programming matches across all platforms.</p>
@@ -16,8 +18,9 @@
         <div class="dashboard-controls">
             <label for="platform-filter">Filter by Platform: </label>
             <select id="platform-filter" class="filter-dropdown">
-                <option value="ALL">All Platforms</option>
-                </select>
+            <option value="ALL">All Platforms</option>
+            </select>
+            <button id="theme-toggle" class="theme-btn">☀️ Light Mode</button>
         </div>
 
         <div id="loading" class="loading">Aggregating global contests...</div>

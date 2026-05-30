@@ -1,205 +1,127 @@
-async function convertImage() {
-  const fileInput = document.getElementById("fileInput");
-  const outputDiv = document.getElementById("output");
-  const convertBtn = document.querySelector("button");
-  const placeholder = document.getElementById("placeholder");
+const fileInput = document.getElementById("fileInput");
+const outputDiv = document.getElementById("output");
+const imagePreview = document.getElementById("imagePreview");
+const pdfCanvas = document.getElementById("pdfCanvas");
+const loader = document.getElementById("loader");
+const languageSelect = document.getElementById("languageSelect");
+const downloadBtn = document.getElementById("downloadBtn");
+const dropArea = document.getElementById("dropArea");
+const browseBtn = document.getElementById("browseBtn");
 
-  if (!fileInput.files || fileInput.files.length === 0) {
-    outputDiv.innerHTML = `
-      <p class="text-red-400 font-medium">
-        Please select an image file.
-      </p>
-    `;
+let extractedText = "";
+/*Browse Button*/
+browseBtn.addEventListener("click", () => {
+  fileInput.click();
+});
+
+/*Drag and Drop*/
+dropArea.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  dropArea.classList.add("bg-white/20");
+});
+dropArea.addEventListener("dragleave", () => {
+  dropArea.classList.remove("bg-white/20");
+});
+
+dropArea.addEventListener("drop", (e) => {
+  e.preventDefault();
+  dropArea.classList.remove("bg-white/20");
+  if (e.dataTransfer.files.length) {
+    fileInput.files = e.dataTransfer.files;
+  }
+});
+/*Main OCR Function*/
+async function convertFile() {
+  const file = fileInput.files[0];
+  if (!file) {
+    outputDiv.innerText = "Please upload an image or PDF file.";
     return;
   }
-
-  const file = fileInput.files[0];
-
-  // Show Image Preview Immediately
-  showImagePreview(file);
-
-  // Loading State
-  outputDiv.innerHTML = `
-    <div class="flex flex-col items-center justify-center gap-4 py-10">
-      
-      <div class="w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin">
-      </div>
-
-      <p class="text-cyan-300 font-medium animate-pulse">
-        Extracting text from image...
-      </p>
-
-    </div>
-  `;
-
-  // Disable button while processing
-  convertBtn.disabled = true;
-  convertBtn.classList.add("opacity-50", "cursor-not-allowed");
-
+  const language = languageSelect.value;
+  loader.classList.remove("hidden");
+  outputDiv.innerText = "Processing...";
+  extractedText = "";
   try {
-    const {
-      data: { text },
-    } = await Tesseract.recognize(file, "eng", {
-      logger: (m) => {
-        console.log(m);
-
-        // Optional Progress Display
-        if (m.status === "recognizing text") {
-          outputDiv.innerHTML = `
-            <div class="flex flex-col items-center justify-center gap-4 py-10">
-              
-              <div class="w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin">
-              </div>
-
-              <p class="text-cyan-300 font-medium">
-                Recognizing Text...
-              </p>
-
-              <p class="text-sm text-gray-400">
-                ${Math.round(m.progress * 100)}%
-              </p>
-
-            </div>
-          `;
-        }
-      },
-    });
-
-    outputDiv.innerHTML = `
-      <div class="text-gray-200 whitespace-pre-wrap leading-relaxed">
-        ${text.trim() || "No text detected in the image."}
-      </div>
-    `;
+    if (file.type === "application/pdf") {
+      await processPDF(file, language);
+    } else {
+      await processImage(file, language);
+    }
+    downloadBtn.classList.remove("hidden");
   } catch (error) {
-    console.error("Error:", error);
-
-    outputDiv.innerHTML = `
-      <div class="text-center py-10">
-        
-        <div class="text-5xl mb-4">
-          ⚠️
-        </div>
-
-        <p class="text-red-400 font-medium">
-          Error processing image.
-        </p>
-
-        <p class="text-gray-400 text-sm mt-2">
-          Please try again with another image.
-        </p>
-
-      </div>
-    `;
+    console.error(error);
+    outputDiv.innerText = "Error processing file.";
   } finally {
-    // Re-enable button
-    convertBtn.disabled = false;
-    convertBtn.classList.remove("opacity-50", "cursor-not-allowed");
+    loader.classList.add("hidden");
   }
 }
 
+/*Process Image*/
+async function processImage(file, language) {
+  showImagePreview(file);
+  const {
+    data: { text },
+  } = await Tesseract.recognize(file, language, {
+    logger: (m) => {
+      if (m.status === "recognizing text") {
+        outputDiv.innerText =
+          "OCR Progress: " + Math.round(m.progress * 100) + "%";
+      }
+    },
+  });
+  extractedText = text;
+  outputDiv.innerText = text;
+}
+
+/*Process PDF*/
+async function processPDF(file, language) {
+  imagePreview.classList.add("hidden");
+  pdfCanvas.classList.remove("hidden");
+  const fileReader = new FileReader();
+  fileReader.onload = async function () {
+    const typedArray = new Uint8Array(this.result);
+    const pdf = await pdfjsLib.getDocument(typedArray).promise;
+    let finalText = "";
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      outputDiv.innerText = `Processing PDF Page ${pageNum}...`;
+      const page = await pdf.getPage(pageNum);
+      const viewport = page.getViewport({ scale: 2 });
+      const canvas = pdfCanvas;
+      const context = canvas.getContext("2d");
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+      await page.render({
+        canvasContext: context,
+        viewport: viewport,
+      }).promise;
+      const {
+        data: { text },
+      } = await Tesseract.recognize(canvas, language);
+      finalText += `\n\n--- Page ${pageNum} ---\n\n`;
+      finalText += text;
+    }
+    extractedText = finalText;
+    outputDiv.innerText = finalText;
+  };
+  fileReader.readAsArrayBuffer(file);
+}
+/*Image Preview*/
 function showImagePreview(file) {
-  const imagePreview = document.getElementById("imagePreview");
-  const placeholder = document.getElementById("placeholder");
-
+  pdfCanvas.classList.add("hidden");
   imagePreview.src = URL.createObjectURL(file);
-
   imagePreview.classList.remove("hidden");
-
-  if (placeholder) {
-    placeholder.classList.add("hidden");
-  }
 }
 
-// Copy Extracted Text Button
-const copyBtn = document.querySelector("#copyBtn");
-
-if (copyBtn) {
-  copyBtn.addEventListener("click", async () => {
-    const outputText = document.getElementById("output").innerText;
-
-    if (
-      !outputText ||
-      outputText.includes("Select an image") ||
-      outputText.includes("Extracting text")
-    ) {
-      return;
-    }
-
-    try {
-      await navigator.clipboard.writeText(outputText);
-
-      copyBtn.innerHTML = "✅ Copied";
-
-      copyBtn.classList.add(
-        "bg-emerald-500/20",
-        "text-emerald-300"
-      );
-
-      setTimeout(() => {
-        copyBtn.innerHTML = "Copy";
-
-        copyBtn.classList.remove(
-          "bg-emerald-500/20",
-          "text-emerald-300"
-        );
-      }, 2000);
-
-    } catch (error) {
-      console.error("Copy failed:", error);
-    }
+/*Download Text*/
+downloadBtn.addEventListener("click", () => {
+  if (!extractedText) return;
+  const blob = new Blob([extractedText], {
+    type: "text/plain",
   });
-}
-
-// Drag & Drop Upload Support
-const uploadBox = document.querySelector("label");
-
-if (uploadBox) {
-
-  ["dragenter", "dragover"].forEach((eventName) => {
-    uploadBox.addEventListener(eventName, (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      uploadBox.classList.add(
-        "border-cyan-400",
-        "bg-cyan-500/10",
-        "scale-[1.02]"
-      );
-    });
-  });
-
-  ["dragleave", "drop"].forEach((eventName) => {
-    uploadBox.addEventListener(eventName, (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      uploadBox.classList.remove(
-        "border-cyan-400",
-        "bg-cyan-500/10",
-        "scale-[1.02]"
-      );
-    });
-  });
-
-  uploadBox.addEventListener("drop", (e) => {
-    const files = e.dataTransfer.files;
-
-    if (files.length > 0) {
-      const fileInput = document.getElementById("fileInput");
-
-      fileInput.files = files;
-
-      showImagePreview(files[0]);
-    }
-  });
-}
-
-// Auto Preview on File Select
-document
-  .getElementById("fileInput")
-  .addEventListener("change", function () {
-
-    if (this.files && this.files[0]) {
-      showImagePreview(this.files[0]);
-    }
-  });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "extracted-text.txt";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+});

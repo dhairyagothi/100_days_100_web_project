@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Assign and Label PRs
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
 
         with:
           github-token: ${{ secrets.PR_CHECKER }}
@@ -66,6 +66,7 @@ jobs:
               pr.labels.map(
                 l => l.name
               )
+              
 
               const alreadyProcessed =
                 existing.includes("gssoc:approved") ||
@@ -98,7 +99,7 @@ jobs:
               if(changes < 75)
                 level = "level:beginner"
 
-              else if(changes <= 250)
+              else if(changes <= 850)
                 level = "level:intermediate"
 
               else
