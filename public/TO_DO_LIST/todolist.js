@@ -54,6 +54,11 @@ function addTask() {
     return;
   }
 
+  // Find category color from the dropdown configuration (fallback)
+  const selectedOption = taskTypeSelect.options[taskTypeSelect.selectedIndex];
+  const color = (selectedOption && selectedOption.getAttribute && selectedOption.getAttribute("data-color")) || "#ffb86b";
+ let idx = tasks.length;
+  // Create local task object
   const selectedOption =
     taskTypeSelect.options[taskTypeSelect.selectedIndex];
 
@@ -69,7 +74,8 @@ function addTask() {
     category: category || "Miscellaneous",
     eisenhower: eisenhower || "",
     color: color,
-    completed: false
+    completed: false,
+    task_no: tasks.length+ 1
   };
 
   tasks.push(newTask);
@@ -108,6 +114,9 @@ function deleteTask(id) {
 
     setTimeout(() => {
       tasks = tasks.filter(task => task.id !== id);
+      tasks.forEach((task, index) => {
+        task.task_no = index + 1;
+      });
 
       saveTasks();
       renderTasks();
@@ -125,6 +134,10 @@ function clearDone() {
   if (tasks.length === previousLength) {
     showToast("ℹ️ No completed tasks found.");
   } else {
+    // Re-number tasks sequentially after clearing
+    tasks.forEach((task, index) => {
+      task.task_no = index + 1;
+    });
     saveTasks();
     renderTasks();
 
@@ -210,6 +223,7 @@ function renderTasks() {
           >${task.text}</textarea>
 
           <div class="note-actions">
+            <span class="task-number">${task.task_no}</span>
 
             <div class="category-badge">
               ${task.category}

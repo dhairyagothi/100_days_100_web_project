@@ -129,6 +129,31 @@ h3 {
   transform: translateY(4px);
   box-shadow: 0 1px 0 #c94040;
 }
+
+#stop-btn {
+  width: 100%;
+  padding: 14px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  color: white;
+  background: #ff6b6b;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #c94040;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+ 
+#stop-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 0 #c94040;
+}
+ 
+#stop-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #c94040;
+}
  
 /* ===== Strict Mode Toggle Row ===== */
 .toggle-group {

@@ -861,3 +861,19 @@ body.focus-mode .stopwatch-section {
     min-height: auto;
   }
 }
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.focus-btn {
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.focus-btn:hover {
+  transform: translateY(-2px);
+}
