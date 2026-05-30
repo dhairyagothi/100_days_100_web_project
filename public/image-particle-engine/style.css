@@ -291,3 +291,9 @@ canvas {
     background: var(--border);
     border-radius: 10px;
 }
+#upload-photo {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}

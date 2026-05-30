@@ -109,27 +109,19 @@ nav ul li a:hover {
   align-items: center;
   position: relative;
 }
+
 .parallal img {
   position: absolute;
   /* object-fit: cover; */
   width: 100%;
-  top: 0; left: 0;
+  height: 100%;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  will-change: transform;
+}
 
-}
-.hero-content {
-  position: relative;
-  z-index: 15;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-  max-width: 800px;
-  padding: 0 20px;
-  animation: heroFadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-.hero-title {
+.text {
   font-family: 'Playfair Display', serif;
   font-size: clamp(3.5rem, 10vw, 8rem);
   font-weight: 900;
@@ -307,8 +299,8 @@ nav ul li a:hover {
 }
 
 .about-cta-card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(168, 224, 99, 0.16);
+  border: 1px solid rgba(168, 224, 99, 0.25);
   border-radius: 24px;
   padding: 40px 32px;
   backdrop-filter: blur(10px);
@@ -316,7 +308,7 @@ nav ul li a:hover {
   display: flex;
   flex-direction: column;
   gap: 28px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
   position: relative;
   overflow: hidden;
 }
@@ -325,7 +317,100 @@ nav ul li a:hover {
   content: '';
   position: absolute;
   top: 0; left: 0; width: 100%; height: 4px;
-  background: linear-gradient(90deg, var(--green-light), var(--lime));
+  background: linear-gradient(90deg, #d8f3b7, #b9e37d);
+}
+
+/* ══════════════════════════════════════
+   SERVICE SECTION
+══════════════════════════════════════ */
+.service-section {
+  background: var(--green-deep);
+  padding: 100px 8%;
+  position: relative;
+}
+
+.service-section::before {
+  content: '';
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(90, 184, 158, 0.16), transparent 60%);
+  top: -120px;
+  right: -120px;
+  pointer-events: none;
+}
+
+.service-intro {
+  max-width: 680px;
+  margin: 16px auto 48px;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 1.05rem;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.service-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.service-card {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 24px;
+  padding: 36px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 55px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.service-icon {
+  font-size: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 62px;
+  height: 62px;
+  border-radius: 22px;
+  background: rgba(168, 224, 99, 0.16);
+  color: var(--white);
+  margin-bottom: 24px;
+}
+
+.service-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 16px;
+}
+
+.service-card p {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.98rem;
+  line-height: 1.8;
+}
+
+@media (max-width: 992px) {
+  .service-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .service-section {
+    padding: 70px 6%;
+  }
+  .service-cards {
+    grid-template-columns: 1fr;
+  }
 }
 
 .quote-text {
@@ -359,22 +444,22 @@ nav ul li a:hover {
   align-items: center;
   gap: 12px;
   padding: 16px 32px;
-  background: linear-gradient(135deg, var(--green-accent), var(--green-mid));
-  color: var(--white);
+  background: linear-gradient(135deg, #c7f0a5, #94d488);
+  color: var(--green-deep);
   font-weight: 700;
   font-size: 0.95rem;
   border-radius: 30px;
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 8px 24px rgba(53, 147, 129, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 24px rgba(148, 212, 136, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   cursor: pointer;
 }
 
 .tracker-btn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 16px 36px rgba(53, 147, 129, 0.45);
-  background: linear-gradient(135deg, var(--green-light), var(--green-accent));
+  box-shadow: 0 16px 36px rgba(148, 212, 136, 0.45);
+  background: linear-gradient(135deg, #e0f7c8, #b0e09c);
 }
 
 .tracker-btn .btn-icon {
@@ -763,25 +848,52 @@ nav ul li {
     box-shadow: 0 8px 24px rgba(53, 147, 129, 0.2);
 }
 
-.contact-form button:hover {
-    background: var(--green-light);
-    transform: translateY(-2px);
-    box-shadow: 0 16px 36px rgba(53, 147, 129, 0.4);
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media (max-width: 900px) {
+  .content-grid { grid-template-columns: 1fr; gap: 24px; }
+}
+@media (max-width: 768px) {
+  header { padding: 16px 5%; }
+  nav { display:none; position:absolute; top:100%; left:0; right:0; background:rgba(1,55,45,0.97); padding:20px 5%; }
+  nav.open { display:block; }
+  nav ul { flex-direction:column; gap:4px; }
+  nav ul li a { display:block; padding:12px 16px; }
+  .hamburger { display:flex; }
+  .text { font-size: clamp(2.5rem, 12vw, 5rem); }
+  .stats-band { padding:40px 5%; }
+  .content { padding:70px 5%; }
+  .eco-section { padding:70px 5%; }
+  .did-you-know { padding:60px 5%; }
+  .tracker-cta { padding:80px 5%; }
+  .footer { flex-direction:column; text-align:center; }
+
+
+    .parallal {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  #plant,
+  #leaf {
+    top: auto;
+    bottom: 0;
+  }
+
+  #hill1,
+  #hill2,
+  #hill3,
+  #hill4,
+  #hill5,
+  #tree {
+    top: 0;
+  }
 }
 
-/* ================= MOBILE CONTACT ================= */
-
-@media (max-width: 768px) {
-  .contact-section {
-      padding: 60px 5%;
-  }
-
-  .contact-section h2 {
-      font-size: 2.2rem;
-  }
-
-  .contact-section p {
-      font-size: 1rem;
-      margin-bottom: 30px;
-  }
+ 
+@media (max-width: 480px) {
+  .text { font-size: 2.4rem; letter-spacing:1px; }
+  .section-heading { font-size:2rem; }
+  .eco-card { padding:28px 22px; }
 }

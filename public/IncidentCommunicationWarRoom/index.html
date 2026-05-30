@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Incident Communication War Room</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>🚨 Incident Communication War Room</h1>
+
+<div class="controls">
+  <input type="text" id="incidentTitle" placeholder="Incident Title">
+  <select id="severity">
+    <option value="Low">Low</option>
+    <option value="Medium">Medium</option>
+    <option value="High">High</option>
+    <option value="Critical">Critical</option>
+  </select>
+  <button onclick="createIncident()">Create Incident</button>
+</div>
+
+<div class="dashboard">
+
+  <div class="panel">
+    <h2>📢 Public Status Page</h2>
+    <div id="publicStatus"></div>
+  </div>
+
+  <div class="panel">
+    <h2>🧑‍💻 Internal War Room</h2>
+    <textarea id="updateText" placeholder="Write update..."></textarea>
+    <button onclick="postUpdate()">Post Update</button>
+    <div id="timeline"></div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
