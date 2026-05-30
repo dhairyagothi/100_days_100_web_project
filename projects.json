@@ -2337,18 +2337,16 @@
       "techStack": ["html", "css", "javascript", "webrtc", "api"],
       "difficulty": "advanced",
       "projectPath": "./public/webrtc-video-chat/index.html"
-    }
-  
-     {
+    },
+  {
     "projectNo": 189,
-     "projectName": "Endless train game",
-    "projectType": "game",
+    "projectName": "Endless Train Game",
+    "projectType": "Game",
     "projectDesc": "A game with train moving on rails and switching tails and earning coins.",
-    "techStack": [ "html", "css", "javascript"],
+    "techStack": ["html", "css", "javascript"],
     "difficulty": "advanced",
     "projectPath": "./public/endless_train_game/index.html"
   },
-  
   {
     "projectNo": 190,
     "projectName": "Saturn Particle Gesture",
@@ -2366,12 +2364,27 @@
     "projectPath": "./public/Planet_gesture_formation/index.html"
   },
   {
-  "projectNo": 190,
-  "projectName": "Interactive Story Player",
-  "projectType": "UI / Animation",
-  "projectDesc": "A dynamic, choice-driven storytelling application where users shape their own narrative paths.",
-  "techStack": ["ui", "html", "css", "javascript"],
-  "difficulty": "intermediate",
-  "projectPath": "./public/story/main.html"
-}
+    "projectNo": 190,
+    "projectName": "Interactive Story Player",
+    "projectType": "UI / Animation",
+    "projectDesc": "A dynamic, choice-driven storytelling application where users shape their own narrative paths.",
+    "techStack": ["ui", "html", "css", "javascript"],
+    "difficulty": "intermediate",
+    "projectPath": "./public/story/main.html"
+  },
+  {
+    "projectNo": 191,
+    "projectName": "Neon Orbit",
+    "projectType": "Game",
+    "projectDesc": "A high-performance neon-themed Pong game with multiple difficulty modes (Easy, Medium, Hard), glassmorphism UI, particle trail effects, and real-time score tracking.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "game",
+      "canvas"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/NEON_ORBIT/index.html"
+  }
 ]
