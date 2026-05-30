@@ -1,0 +1,54 @@
+body {
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+    background: radial-gradient(circle at -8.9% 51.2%, rgb(255, 124, 0) 0%, rgb(255, 124, 0) 15.9%, rgb(255, 163, 77) 15.9%, rgb(255, 163, 77) 24.4%, rgb(19, 30, 37) 24.5%, rgb(19, 30, 37) 66%);
+  }
+  
+  h1 {
+    color: whitesmoke;
+  }
+  
+  #game-board {
+    display: grid;
+    grid-template-columns: repeat(5, 80px); /* 5x5 grid */
+    gap: 5px;
+    justify-content: center;
+    margin: 20px auto;
+  }
+  
+  .cell {
+    width: 80px;
+    height: 80px;
+    background-color: #ffcc00; /* Light is on */
+    border: 2px solid #333;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .cell.off {
+    background-color: #333; /* Light is off */
+  }
+  .Game-rules {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 20px;
+    color: #fff;
+  }
+  
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-family: 'Courier New', Courier, monospace;
+  }
+  
+  button:hover {
+    background-color: #555;
+  }
+  
+
+  

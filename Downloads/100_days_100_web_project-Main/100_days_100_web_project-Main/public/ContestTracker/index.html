@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programming Contest Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="hero-section">
+        <h1 class="hero-title">Contest Tracker</h1>
+        <p class="hero-description">Track upcoming competitive programming matches across all platforms.</p>
+    </header>
+
+    <main class="container">
+        <div class="dashboard-controls">
+            <label for="platform-filter">Filter by Platform: </label>
+            <select id="platform-filter" class="filter-dropdown">
+                <option value="ALL">All Platforms</option>
+                </select>
+        </div>
+
+        <div id="loading" class="loading">Aggregating global contests...</div>
+        <div id="contest-grid" class="contest-grid">
+            </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

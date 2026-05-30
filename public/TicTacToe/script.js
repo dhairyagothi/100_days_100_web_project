@@ -145,58 +145,96 @@ if(
 
 }
 
-function cpuMove(){
+function cpuMove() {
 
+    if (gameOver) return;
 
-const available = [];
+    const available = [];
 
-gameBoard.forEach((cell,index)=>{
-    if(cell === "") {
-        available.push(index);
-    }
-});
+    gameBoard.forEach((cell, index) => {
+        if (cell === "") {
+            available.push(index);
+        }
+    });
 
-if(!available.length) return;
+    if (!available.length) return;
 
-const mode = modeSelect.value;
+    let move;
 
-let move;
+    const mode = modeSelect.value;
 
-if(mode === "cpu-easy"){
+if (mode === "cpu-easy") {
 
-    move =
-        available[
-            Math.floor(
-                Math.random()*available.length
-            )
-        ];
-}
+    move = available[
+        Math.floor(Math.random() * available.length)
+    ];
 
-else if(mode === "cpu-medium"){
+} else if (mode === "cpu-medium") {
 
-    if(Math.random() < 0.6){
+    if (Math.random() < 0.7) {
 
         move = getBestMove();
 
     } else {
 
-        move =
-            available[
-                Math.floor(
-                    Math.random()*available.length
-                )
-            ];
+        move = available[
+            Math.floor(Math.random() * available.length)
+        ];
+    }
+
+} else {
+
+    move = getBestMoveMinimax();
+
+    if (move === undefined) {
+        move = getBestMove();
     }
 }
 
-else {
+gameBoard[move] = "O";
 
-    move = getBestMove();
-}
+    moveHistory.push({
+        player: "O",
+        cell: move + 1
+    });
 
-handleMove(move);
+    updateHistory();
 
+    const winLine = getWinner();
 
+    if (winLine) {
+
+        highlightWin(winLine);
+
+        scores.O++;
+
+        updateScores();
+
+        gameOver = true;
+
+        showWinner("O");
+
+        return;
+    }
+
+    if (gameBoard.every(cell => cell !== "")) {
+
+        scores.D++;
+
+        updateScores();
+
+        gameOver = true;
+
+        showDraw();
+
+        return;
+    }
+
+    currentPlayer = "X";
+
+    updateStatus();
+
+    renderBoard();
 }
 
 function getBestMove(){
@@ -259,6 +297,111 @@ return free[
 ];
 
 
+}
+
+function getBestMoveMinimax() {
+
+    let bestScore = -Infinity;
+    let bestMove = 0;
+
+    for (let i = 0; i < 9; i++) {
+
+        if (gameBoard[i] === "") {
+
+            gameBoard[i] = "O";
+
+            let score = minimax(gameBoard, 0, false);
+
+            gameBoard[i] = "";
+
+            if (score > bestScore) {
+
+                bestScore = score;
+
+                bestMove = i;
+            }
+        }
+    }
+
+    return bestMove;
+}
+
+function minimax(boardState, depth, isMaximizing) {
+
+    const winner = evaluateBoard(boardState);
+
+    if (winner !== null) {
+
+        if (winner === "O") return 10 - depth;
+        if (winner === "X") return depth - 10;
+
+        return 0;
+    }
+
+    if (isMaximizing) {
+
+        let bestScore = -Infinity;
+
+        for (let i = 0; i < 9; i++) {
+
+            if (boardState[i] === "") {
+
+                boardState[i] = "O";
+
+                let score =
+                    minimax(boardState, depth + 1, false);
+
+                boardState[i] = "";
+
+                bestScore = Math.max(score, bestScore);
+            }
+        }
+
+        return bestScore;
+
+    } else {
+
+        let bestScore = Infinity;
+
+        for (let i = 0; i < 9; i++) {
+
+            if (boardState[i] === "") {
+
+                boardState[i] = "X";
+
+                let score =
+                    minimax(boardState, depth + 1, true);
+
+                boardState[i] = "";
+
+                bestScore = Math.min(score, bestScore);
+            }
+        }
+
+        return bestScore;
+    }
+}
+
+function evaluateBoard(boardState) {
+
+    for (const line of WIN_LINES) {
+
+        const [a, b, c] = line;
+
+        if (
+            boardState[a] &&
+            boardState[a] === boardState[b] &&
+            boardState[a] === boardState[c]
+        ) {
+            return boardState[a];
+        }
+    }
+
+    if (boardState.every(cell => cell !== "")) {
+        return "draw";
+    }
+
+    return null;
 }
 
 function getWinner(){
@@ -405,30 +548,42 @@ newRound();
 
 function undoMove(){
 
+    if(!moveHistory.length) return;
 
-if(!moveHistory.length) return;
+    const mode = modeSelect.value;
 
-const last = moveHistory.pop();
+    if(mode !== "pvp" && moveHistory.length >= 2){
 
-gameBoard[last.cell - 1] = "";
+        const cpuMove = moveHistory.pop();
+        gameBoard[cpuMove.cell - 1] = "";
 
-currentPlayer = last.player;
+        const playerMove = moveHistory.pop();
+        gameBoard[playerMove.cell - 1] = "";
 
-gameOver = false;
+        currentPlayer = "X";
 
-updateHistory();
+    } else {
 
-updateStatus();
+        const last = moveHistory.pop();
 
-renderBoard();
+        gameBoard[last.cell - 1] = "";
 
+        currentPlayer = last.player;
+    }
 
+    gameOver = false;
+
+    updateHistory();
+
+    updateStatus();
+
+    renderBoard();
 }
 
 function showHint(){
 
 
-const move = getBestMove();
+const move = getBestMoveMinimax();
 
 renderBoard();
 

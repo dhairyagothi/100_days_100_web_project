@@ -13,6 +13,7 @@ let lastCheckedMinute = "";
 let ringInterval = null;
 let audioCtx = null;
 let triggeredAlarms = new Set();
+let weatherCache = {};
 let currentTimeTheme = "";
 let is24HourFormat = localStorage.getItem("is24HourFormat") === "true"; 
 
@@ -262,6 +263,29 @@ function stopRinger() {
 }
 
 // ================= WORLD CLOCKS =================
+async function fetchWeather(city) {
+  try {
+    const response = await fetch(
+      `https://wttr.in/${city}?format=j1`
+    );
+
+    const data = await response.json();
+
+    return {
+      temperature: data.current_condition[0].temp_C,
+      icon: data.current_condition[0].weatherIconUrl[0].value,
+      condition: data.current_condition[0].weatherDesc[0].value
+    };
+  } catch (error) {
+    console.error("Weather fetch failed:", error);
+
+    return {
+      temperature: "--",
+      icon: "",
+      condition: "clear"
+    };
+  }
+}
 function toggleWorldClockModal() {
   if (worldModal.classList.contains("hidden")) {
     worldModal.classList.remove("hidden");
@@ -340,7 +364,24 @@ if (worldSearchInput) {
     renderCountryOptions(filtered);
   });
 }
+function getWeatherEmoji(condition, isDay) {
+  const weather = condition.toLowerCase();
 
+  if (weather.includes("clear")) {
+    return isDay ? "☀️" : "🌙";
+  }
+
+  if (weather.includes("cloud")) {
+    return isDay ? "⛅" : "☁️";
+  }
+
+  if (weather.includes("rain")) return "🌧️";
+  if (weather.includes("storm")) return "⛈️";
+  if (weather.includes("snow")) return "❄️";
+  if (weather.includes("mist")) return "🌫️";
+
+  return isDay ? "🌤️" : "🌌";
+}
 function addCountryClock(name, offset, flag) {
   const alreadyExists = worldClocks.some(item => item.name === name);
   if (alreadyExists) {
@@ -364,7 +405,12 @@ function renderWorldClocks() {
     return;
   }
 
-  worldClocks.forEach((clock, index) => {
+  worldClocks.forEach(async (clock, index) => {
+    if (!weatherCache[clock.name]) {
+      weatherCache[clock.name] = await fetchWeather(clock.name);
+    }
+
+    const weather = weatherCache[clock.name];
     const row = document.createElement("div");
     row.className = "world-clock-row";
     row.innerHTML = `
@@ -379,9 +425,29 @@ function renderWorldClocks() {
         </div>
       </div>
       <div class="world-clock-right">
-        <span class="world-time-display ticking-world-time" data-offset="${clock.offset}">00:00:00</span>
-        <button class="remove-btn" onclick="removeWorldClock(${index})" title="Remove">&times;</button>
-      </div>
+  <div class="world-time-weather">
+    <span class="world-time-display ticking-world-time" data-offset="${clock.offset}">
+      00:00:00
+    </span>
+
+    <div class="world-weather-inline">
+  <span class="weather-emoji">
+    ${getWeatherEmoji(
+      weather.condition || "clear",
+      new Date().getHours() >= 6 && new Date().getHours() < 18
+    )}
+  </span>
+
+  <span class="weather-temp">
+    ${weather.temperature}°C
+  </span>
+  </div>
+  </div>
+
+  <button class="remove-btn" onclick="removeWorldClock(${index})" title="Remove">
+    &times;
+  </button>
+</div>
     `;
     container.appendChild(row);
   });

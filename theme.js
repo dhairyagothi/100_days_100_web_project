@@ -1,6 +1,6 @@
 (function initSharedTheme() {
   const STORAGE_KEY = "theme";
-  const THEMES = new Set(["dark", "light"]);
+  const THEMES = new Set(["dark", "light", "sepia", "cyberpunk", "nord"]);
   const root = document.documentElement;
   let transitionTimer = null;
   let initialized = false;
@@ -32,14 +32,32 @@
   };
 
   const syncToggleIcons = (theme) => {
-    const iconClass = theme === "light" ? "fas fa-sun" : "fas fa-moon";
-    document.querySelectorAll("#themeToggle i, #themeToggleNav i").forEach((icon) => {
-      icon.className = iconClass;
+    // Update simple toggle buttons (if any remain)
+    const fallbackIconClass = theme === "light" ? "fas fa-sun" : "fas fa-moon";
+    document.querySelectorAll("#themeToggle i").forEach((icon) => {
+      icon.className = fallbackIconClass;
     });
 
-    document.querySelectorAll("#themeToggle, #themeToggleNav").forEach((button) => {
-      button.setAttribute("aria-pressed", String(theme === "light"));
-      button.setAttribute("title", theme === "light" ? "Switch to dark theme" : "Switch to light theme");
+    // Update active state in dropdown menus
+    document.querySelectorAll(".theme-dropdown-container .dropdown-item").forEach(item => {
+      if (item.dataset.themeValue === theme) {
+        item.classList.add("active");
+      } else {
+        item.classList.remove("active");
+      }
+    });
+
+    // Update the main dropdown toggle icon
+    const themeIcons = {
+      light: "fa-sun",
+      dark: "fa-moon",
+      sepia: "fa-coffee",
+      cyberpunk: "fa-bolt",
+      nord: "fa-snowflake"
+    };
+    const currentIcon = themeIcons[theme] || "fa-palette";
+    document.querySelectorAll("#themeToggleNav i").forEach((icon) => {
+      icon.className = `fas ${currentIcon}`;
     });
   };
 
@@ -75,6 +93,11 @@
     withTransitionGuard();
   };
 
+  const setTheme = (themeName) => {
+    applyTheme(themeName);
+    withTransitionGuard();
+  };
+
   const init = () => {
     if (!root.getAttribute("data-theme")) {
       applyTheme(getStoredTheme(), { persist: false });
@@ -86,10 +109,21 @@
     initialized = true;
 
     document.addEventListener("click", (event) => {
-      const toggle = event.target.closest("#themeToggle, #themeToggleNav");
-      if (!toggle) return;
-      event.preventDefault();
-      toggleTheme();
+      const toggle = event.target.closest("#themeToggle");
+      if (toggle) {
+        event.preventDefault();
+        toggleTheme();
+        return;
+      }
+      
+      const dropdownItem = event.target.closest(".theme-dropdown-container .dropdown-item");
+      if (dropdownItem) {
+        event.preventDefault();
+        const themeValue = dropdownItem.dataset.themeValue;
+        if (themeValue) {
+          setTheme(themeValue);
+        }
+      }
     });
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -102,6 +136,7 @@
     currentTheme: () => normalizeTheme(root.getAttribute("data-theme") || getStoredTheme()),
     init,
     toggleTheme,
+    setTheme,
   };
 
   applyTheme(getStoredTheme(), { persist: false });

@@ -1,0 +1,337 @@
+*{
+    margin:0;
+    padding:0;
+    scroll-behavior: smooth;
+}
+
+@font-face {
+    font-family: "Dongle-light";
+    src: url("Dongle-Light.ttf");
+}
+@font-face {
+    font-family: "Dongle-regular";
+    src: url("Dongle-Regular.ttf");
+}
+@font-face {
+    font-family: "Dongle-bold";
+    src: url("Dongle-Bold.ttf");
+}
+
+/*Nav-Bar*/
+
+header{
+    display:flex;
+    align-items:center;
+    padding:20px;
+    background-color:#fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.logo img{
+    max-width:15%;
+}
+
+.nav-menu ul{
+    display:flex;
+
+}
+.nav-menu li{
+    list-style:none;
+    margin-right:20px;
+}
+.nav-menu li:last-child{
+    margin-right:0px;
+}
+.nav-menu a{
+    text-decoration: none;
+    font-family:"Dongle-bold";
+    font-size:1.7rem;
+    color:#333;
+    transition-property:all ease 0.3s;
+}
+
+.nav-menu a:hover{
+    color:#ff7f50;
+}
+
+/*Hero-Section*/
+
+.hero{
+    position:relative;
+    height:600px;
+    overflow: hidden;
+}
+
+.hero-image img{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:-1;
+}
+
+.hero-content{
+    
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    text-align:center;
+    color:#ffffff;
+}
+
+.hero-content h1{
+    font-family:"Dongle-bold";
+    font-size:4.1rem;
+}
+.hero-content p{
+    font-family:"Dongle-regular";
+    font-size:1.8rem;
+    margin-top:-20px;
+    margin-bottom:10px;
+}
+
+.hero-button{
+    display:inline-block;
+    text-decoration: none;
+    color:#ffffff;
+    background-color:#ff7f50;
+    padding:12px 30px;
+    border-radius:50px;
+    font-family:"Dongle-light";
+    font-size:1.6rem;
+    transition:all ease 0.3s;    
+}
+.hero-button:hover{
+    background-color:#333333;
+}
+
+/*Destinations,Featured Hotels & Featured Activities*/
+.destination{
+    font-family:"Dongle-bold" ;
+    font-size: 2.4rem;
+    margin:40px 80px;
+    text-align:center;
+}
+
+.destination-flex{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-items:center;
+}
+
+.destination-item{
+    height:600px;
+    width:30%;
+    padding:20px 0px 15px;
+    margin:12px 20px;
+    text-align:left;
+}
+.destination-item img{
+    width:100%;
+    height:400px;
+    object-fit:cover;
+}
+.destination-item h3{
+    font-size:2.2rem;
+}
+.destination-item p{
+    font-size:1.4rem;
+    line-height:1;
+    font-family:"Dongle-regular";
+}
+.destination h2{
+    margin-bottom:40px;
+}
+
+/*About Us*/
+.about{
+    text-align:center;
+    padding:80px;
+}
+.about h3{
+    font-family:"Dongle-bold";
+    font-size:3rem;
+}
+
+.about pre{
+    font-family:"Dongle-regular";
+    font-size:1.4rem;
+    line-height:1;
+    margin-bottom:40px;
+}
+.team-members{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.team-member img{
+    width:300px;
+    height:300px;
+    margin:20px;
+    object-fit:cover;
+}
+.team-member h4{
+    font-family:"Dongle-bold";
+    font-size:2rem;
+}
+
+/*Contact Us*/
+.contact{
+    padding:80px;
+    text-align:center;
+    color:rgb(0,0,0);
+}
+.contact h3{
+    font-family:"Dongle-bold";
+    font-size:3rem;
+}
+.contact-info p{
+    font-family:"Dongle-regular";
+    font-size:1.4rem;
+    margin-bottom:20px;
+}
+.contact-info ul{
+    list-style:none;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-items:center;
+    margin-bottom:40px;
+}
+.contact-info li{
+    margin:0 20px;
+    font-family:"Dongle-regular";
+    font-size:1.1rem;
+    display:flex;
+    align-items:center;
+}
+.contact-info li a{
+    text-decoration: none;
+    font-family:"Dongle-regular";
+    color:black;
+}
+.contact-info i{
+    font-size:24px;
+    margin-right:10px;
+}
+.form{
+    width:100%;
+}
+input,textarea{
+    width:70%;
+    padding:10px;
+    margin:20px 0;
+    border:none;
+    box-shadow:0 0 5px rgba(0,0,0,0.1);
+    border-radius:5px;
+    font-size:1.4rem;
+    font-family:"Dongle-regular";
+}
+textarea{
+    height:200px;
+}
+.form button{
+    display:inline-block;
+    text-decoration: none;
+    color:#ffffff;
+    background-color:#ff7f50;
+    padding:12px 30px;
+    border-radius:50px;
+    border:none;
+    font-family:"Dongle-light";
+    font-size:1.6rem;
+    transition:all ease 0.3s;    
+}
+.form button:hover{
+    color:#ff7f50;
+    background-color:#ffffff;
+    border:1px solid rgba(0,0,0,0.2);
+}
+
+/*Footer*/
+footer{
+    background-color:#333333;
+    color:#ffffff;
+    display:flex;
+    justify-content:space-between;
+    padding:20px;
+    align-items:center;
+}
+
+.social-icons a{
+    color:#ffffff;
+    font-size:24px;
+    margin-right:20px;
+}
+footer p{
+    font-family:"Dongle-regular";
+    font-size:1.4rem;
+}
+
+@media(max-width:1177px){
+    .hero-content h1{
+        line-height:0.7;
+    }
+    .hero-content p{
+        margin-top:0;
+        line-height:0.8;
+    }
+    .destination img{
+        height:250px;
+    }
+    input,textarea{
+        width:100%;
+    }
+}
+
+@media(max-width:768px){
+    .hero-content h1{
+        margin-bottom:5px;
+    }
+    .team-member img{
+        height:200px;
+        width:200px;
+    }
+}
+@media(max-width:610px){
+    .hero-content h1{
+        font-size:2rem;
+    }
+    .hero-content p{
+        font-size:1.5rem;
+    }
+}
+
+@media(max-width:435px){
+    header{
+        display:none;
+    }
+    .her-content h1{
+        font-size:1.3rem;
+    }
+    .hero-content p{
+        font-size:1rem;
+    }
+    .hero-button{
+        padding:6px 22px;
+        font-size:16px;
+    }
+    .destination{
+        font-size:1.5rem;
+    }
+    .destination-item{
+        width:60%;
+    }
+    .about{
+        padding:0 30px;
+    }
+    .team-member img{
+        width:250px;
+        height:250px;
+    }
+}
