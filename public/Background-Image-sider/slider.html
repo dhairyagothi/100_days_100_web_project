@@ -16,9 +16,6 @@
 
 <body id="top">
 
-    <!-- Back to Home -->
-    <a href="/" class="project-back-button">← Back to Home</a>
-
     <!-- Header -->
     <header>
         <nav class="navbar">
@@ -95,34 +92,15 @@
             "Switzerland": "url('images/Jennifer.avif')",
             "Scotland": "url('images/Daniel.jpeg')",
             "Ireland": "url('images/kai.jpg')",
-            "Germany": "url('images/Hannes-Becker4.jpg')",
-            "India": "url('images/tajmehal.png')",
-            "Korea": "url('images/korea.png')",
-            "Japan": "url('images/japan.png')",
-            "China": "url('images/china.png')",
-            "Bali": "url('images/bali.png')",
-            "Italy": "url('images/italy.png')",
-            "France": "url('images/france.png')",
-            "Thailand": "url('images/thailand.png')",
-            "Dubai": "url('images/dubai.png')"
-         };
+            "Germany": "url('images/Hannes-Becker4.jpg')"
+        };
 
         const placeDescriptions = {
             "Iceland": "Explore the beauty of glaciers and the breathtaking landscapes of Iceland.",
             "Switzerland": "Experience the serene beauty of the Swiss Alps and picturesque villages.",
             "Scotland": "Discover the rich history and stunning highlands of Scotland.",
             "Ireland": "Immerse yourself in the lush green landscapes and vibrant culture of Ireland.",
-            "Germany": "Explore Germany's charming cities and stunning countryside.",
-            "India": "Experience the vibrant culture, majestic forts, colorful festivals, and timeless beauty of the Taj Mahal.",
-            "Korea": "Discover the perfect blend of modern cities, ancient palaces, K-pop culture, and breathtaking mountain landscapes.",
-            "Japan": "Immerse yourself in Japan's peaceful temples, neon-lit streets, cherry blossoms, and rich traditions.",
-            "China": "Explore China's ancient wonders, bustling megacities, beautiful landscapes, and legendary historical sites.",
-            "Bali": "Relax in Bali's tropical paradise filled with stunning beaches, lush rice terraces, spiritual temples, and vibrant sunsets.",
-            "Italy": "Explore Italy's rich history, stunning architecture, delicious cuisine, and romantic coastal towns.",
-            "France": "Discover the elegance of Paris, beautiful countryside, world-famous art, and iconic landmarks.",
-            "Thailand": "Enjoy Thailand's tropical beaches, vibrant nightlife, golden temples, and flavorful street food.",
-            "Dubai": "Experience futuristic skyscrapers, luxury shopping, desert adventures, and dazzling city lights."
-
+            "Germany": "Explore Germany's charming cities and stunning countryside."
         };
 
         const placeSelector = document.getElementById('placeSelector');
@@ -132,37 +110,19 @@
         const body = document.body;
 
         function updatePlace(place) {
-          body.style.backgroundImage = placeBackgrounds[place];
-          placeTitle.textContent = place;
-          placeDescription.textContent = placeDescriptions[place];
-          bookingButton.textContent = `Book a Trip to ${place}`;
-
-          bookingButton.classList.remove("booked");
-}
+            body.style.backgroundImage = placeBackgrounds[place];
+            placeTitle.textContent = place;
+            placeDescription.textContent = placeDescriptions[place];
+            bookingButton.textContent = `Book a Trip to ${place}`;
+        }
 
         placeSelector.addEventListener('change', function () {
             updatePlace(placeSelector.value);
         });
 
-
-    // Booking button functionality
-bookingButton.addEventListener('click', function () {
-    const selectedPlace = placeSelector.value;
-
-    alert(`Your trip to ${selectedPlace} has been booked successfully!`);
-
-    bookingButton.textContent = `Trip Booked to ${selectedPlace} ✓`;
-
-    bookingButton.classList.add("booked");
-});
-
-    
-    window.onload = function () {
-        const defaultPlace = "Iceland";
-        updatePlace(defaultPlace);
-        placeSelector.value = defaultPlace;
-    };
-</script>
+        bookingButton.addEventListener('click', function () {
+            alert(`🎉 Booking inquiry received! We are preparing your itinerary for ${placeSelector.value}.`);
+        });
 
         window.onload = function () {
             const defaultPlace = "Iceland";
@@ -170,7 +130,6 @@ bookingButton.addEventListener('click', function () {
             placeSelector.value = defaultPlace;
         };
     </script>
-
 </body>
 
 </html>

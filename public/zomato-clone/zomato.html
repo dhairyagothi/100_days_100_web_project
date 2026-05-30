@@ -63,8 +63,10 @@
         <div class="search_container">
           <div class="location">
             <i data-feather="map-pin"></i>
-            <input placeholder="Enter Location"
-              class="location-input" />
+          <input id="locationInput" 
+placeholder="Enter Location" 
+class="location-input"
+onkeypress="handleLocation(event)" />
             <i class="fa fa-chevron-down dropdown-toggle"></i>
             <div class="location-dropdown hidden">
               <!-- <div class="dropdown-item">Delhi NCR</div>
@@ -671,6 +673,20 @@
       alert("You searched for: " + value);
     }
   }
+</script>
+
+<script>
+function handleLocation(event) {
+  if (event.key === "Enter") {
+    let location = document.getElementById("locationInput").value;
+
+    if (location === "") {
+      alert("Please enter a location!");
+    } else {
+      alert("Location selected: " + location);
+    }
+  }
+}
 </script>
 </body>
 
