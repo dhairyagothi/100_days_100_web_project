@@ -64,15 +64,15 @@ const generateTextCaptcha = () => {
 
 const generateImageCaptcha = () => {
     const images = [
-        { emoji: '🐶', name: 'dog' },
-        { emoji: '🐱', name: 'cat' },
-        { emoji: '🐭', name: 'mouse' },
-        { emoji: '🐹', name: 'hamster' },
-        { emoji: '🐰', name: 'rabbit' },
-        { emoji: '🦊', name: 'fox' },
-        { emoji: '🐻', name: 'bear' },
-        { emoji: '🐼', name: 'panda' },
-        { emoji: '🐨', name: 'koala' }
+        { emoji: '<i class="fas fa-dog fa-2x" style="color: #8b5a2b;"></i>', name: 'dog' },
+        { emoji: '<i class="fas fa-cat fa-2x" style="color: #f59e0b;"></i>', name: 'cat' },
+        { emoji: '<i class="fas fa-dove fa-2x" style="color: #60a5fa;"></i>', name: 'bird' },
+        { emoji: '<i class="fas fa-spider fa-2x" style="color: #111827;"></i>', name: 'spider' },
+        { emoji: '<i class="fas fa-frog fa-2x" style="color: #10b981;"></i>', name: 'frog' },
+        { emoji: '<i class="fas fa-horse fa-2x" style="color: #b45309;"></i>', name: 'horse' },
+        { emoji: '<i class="fas fa-fish fa-2x" style="color: #06b6d4;"></i>', name: 'fish' },
+        { emoji: '<i class="fas fa-dragon fa-2x" style="color: #ef4444;"></i>', name: 'dragon' },
+        { emoji: '<i class="fas fa-locomotive fa-2x" style="color: #6b7280;"></i>', name: 'train' }
     ];
     const correctIndex = Math.floor(Math.random() * images.length);
     const shuffled = images.sort(() => 0.5 - Math.random()).slice(0, 6);
@@ -154,7 +154,7 @@ const generateCaptcha = () => {
                     captchaContainer.querySelectorAll(".image-option")
                         .forEach(img => img.classList.remove("selected"));
                     option.classList.add("selected");
-                    selectedImageAnswer = images.find(img => img.emoji === option.textContent).name;
+                    selectedImageAnswer = images.find(img => option.innerHTML.includes(img.emoji)).name;
                 });
             });
             break;
