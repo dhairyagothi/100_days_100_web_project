@@ -1,0 +1,115 @@
+body{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: flex-start; */
+    background-color: black;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+.taskbar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: purple;
+    height: 15vh;
+    width: 100%;
+    margin: 0;
+    border-radius: 0 0 10px 10px;
+    
+}
+.taskbar h1{
+    padding:15px ;
+}
+.links{
+    text-decoration: none;
+    color: white;
+    /* text-align: end; */
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    /* margin: 10px; */
+    justify-content: flex-end;
+}
+
+.mainbox{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 10px;
+    margin: 10px;
+    /* animation: fadeIn 0.8s ease forwards; */
+
+}
+.identity{
+    background-color: purple;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 20px;
+    
+    width: 35%;
+    animation: fadeIn 4s ease forwards;
+
+}
+.projects{
+    background-color: purple;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 20px;
+    height: 150vh;
+    width: 47%;
+    animation: fadeIn 9s ease forwards;
+}
+.image{
+    background-color: purple;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 20px;
+    height: 230px;
+    display: flex;
+    justify-content: center;
+    animation: fadeIn 7s ease forwards;
+}
+@keyframes fadeIn{
+    0%{
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.cred{
+    background-color: purple;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 20px;
+    color: white;
+    gap: 5px;
+}
+.icon-list {
+    display: flex; /* Use Flexbox for the container */
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    gap: 20px; /* Add space between items */
+    padding: 10px;
+    justify-content: flex-start; /* Align items to the left */
+}
+
+.icon-item {
+    display: flex; /* Make each icon and text in a row */
+    align-items: center; /* Vertically align icon and text */
+    gap: 10px; /* Space between icon and text */
+}
+
+.icon-item i {
+    font-size: 24px; /* Icon size */
+    color: #000; 
+    /* padding:  5px 20pxIcon color (adjust as needed) */
+}
+
+.icon-item p {
+    margin: 0; /* Remove default margin from paragraph */
+    font-size: 16px; /* Text size */
+    color: #000; /* Text color */
+}

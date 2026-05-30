@@ -1,992 +1,443 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Finance Tracker</title>
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-        :root {
-            --primary-color: #6c5ce7;
-            --secondary-color: #a29bfe;
-            --accent-color: #fd79a8;
-            --background-color: #f0f3f6;
-            --text-color: #2d3436;
-            --card-background: #ffffff;
-        }
+  <meta charset="UTF-8" />
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
-      body {
-        font-family: "Inter", sans-serif;
-        background: linear-gradient(135deg, #020617, #0f172a, #111827);
-        color: var(--text);
-        overflow-x: hidden;
-        min-height: 100vh;
-      }
+  <meta
+    name="description"
+    content="AI-driven personal finance tracker with intelligent spending analysis and financial insights."
+  />
 
-      canvas#bg {
-        position: fixed;
-        inset: 0;
-        z-index: -1;
-      }
+  <title>
+    AI Financial Insights Tracker
+  </title>
 
-      .container {
-        width: 95%;
-        max-width: 1500px;
-        margin: auto;
-        padding: 30px 0;
-      }
+  <link
+    rel="icon"
+    href="../favv.png"
+    type="image/x-icon"
+  />
 
-      header {
-        padding: 50px;
-        border-radius: 35px;
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid var(--border);
-        backdrop-filter: blur(20px);
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-        position: relative;
-        overflow: hidden;
-      }
+  <!-- GOOGLE FONT -->
 
-      header::before {
-        content: "";
-        position: absolute;
-        width: 500px;
-        height: 500px;
-        background: radial-gradient(circle, var(--primary), transparent 70%);
-        top: -250px;
-        right: -250px;
-        opacity: 0.4;
-      }
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  />
 
-      header h1 {
-        font-size: 4rem;
-        font-weight: 900;
-        background: linear-gradient(to right, #fff, #a78bfa, #67e8f9);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
 
-      header p {
-        color: #94a3b8;
-        margin-top: 10px;
-      }
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
 
-      .dashboard {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 20px;
-        margin-top: 30px;
-      }
+  <!-- MAIN CSS -->
 
-      .card {
-        background: var(--card);
-        border: 1px solid var(--border);
-        backdrop-filter: blur(20px);
-        border-radius: 25px;
-        padding: 30px;
-        transition: 0.4s;
-        position: relative;
-        overflow: hidden;
-      }
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  />
 
-      .card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-      }
+  <link
+    rel="stylesheet"
+    href="css/dashboard.css"
+  />
 
-      .card::before {
-        content: "";
-        position: absolute;
-        width: 150px;
-        height: 150px;
-        background: radial-gradient(circle, var(--primary), transparent 70%);
-        top: -60px;
-        right: -60px;
-        opacity: 0.25;
-      }
+  <link
+    rel="stylesheet"
+    href="css/analytics.css"
+  />
 
-      .card h2 {
-        color: #94a3b8;
-        font-size: 0.95rem;
-        margin-bottom: 15px;
-      }
+  <link
+    rel="stylesheet"
+    href="css/responsive.css"
+  />
 
-      .card p {
-        font-size: 2.5rem;
-        font-weight: 800;
-      }
+  <!-- CHART.JS -->
 
-      .balance p {
-        color: #a78bfa;
-      }
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-      .income p {
-        color: #34d399;
-      }
-
-      .expense p {
-        color: #fb7185;
-      }
-
-      .section {
-        margin-top: 30px;
-        background: var(--card);
-        border: 1px solid var(--border);
-        backdrop-filter: blur(20px);
-        border-radius: 30px;
-        padding: 30px;
-      }
-
-      .section-title {
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin-bottom: 20px;
-      }
-
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 15px;
-      }
-
-      input {
-        width: 100%;
-        padding: 16px;
-        border: none;
-        outline: none;
-        border-radius: 16px;
-        background: rgba(255, 255, 255, 0.06);
-        color: white;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        transition: 0.3s;
-      }
-
-      input::placeholder {
-        color: #94a3b8;
-      }
-
-      input:focus {
-        border: 1px solid var(--primary);
-        box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
-      }
-
-      select {
-        width: 100%;
-        padding: 16px;
-        border: none;
-        outline: none;
-        border-radius: 16px;
-        background: rgba(15, 23, 42, 0.95);
-        color: #ffffff;
-        appearance: none;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        cursor: pointer;
-      }
-
-      select option {
-        background: #0f172a;
-        color: white;
-      }
-
-      button {
-        border: none;
-        outline: none;
-        padding: 16px;
-        border-radius: 18px;
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        color: white;
-        font-weight: 700;
-        cursor: pointer;
-        transition: 0.3s;
-      }
-
-      button:hover {
-        transform: translateY(-3px) scale(1.02);
-      }
-
-      .main-btn {
-        width: 100%;
-        margin-top: 15px;
-      }
-
-      .search-box {
-        margin-top: 15px;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0 12px;
-      }
-
-      th {
-        color: #94a3b8;
-        text-align: left;
-        padding: 12px;
-      }
-
-      td {
-        padding: 18px;
-        background: rgba(255, 255, 255, 0.05);
-      }
-
-      tr td:first-child {
-        border-radius: 14px 0 0 14px;
-      }
-
-      tr td:last-child {
-        border-radius: 0 14px 14px 0;
-      }
-
-      .income-row td {
-        border-left: 4px solid var(--success);
-      }
-
-      .expense-row td {
-        border-left: 4px solid var(--danger);
-      }
-
-      .chart-box {
-        height: 450px;
-      }
-
-      .goal-card {
-        background: rgba(255, 255, 255, 0.04);
-        border-radius: 22px;
-        padding: 22px;
-        margin-top: 15px;
-      }
-
-      .progress {
-        width: 100%;
-        height: 12px;
-        background: #1e293b;
-        border-radius: 20px;
-        overflow: hidden;
-        margin-top: 12px;
-      }
-
-      .progress-fill {
-        height: 100%;
-        background: linear-gradient(90deg, #8b5cf6, #06b6d4);
-      }
-
-      .goal-info {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 10px;
-        color: #94a3b8;
-      }
-
-      .analytics {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
-      }
-
-      .analytics-card {
-        background: rgba(255, 255, 255, 0.05);
-        padding: 25px;
-        border-radius: 20px;
-        text-align: center;
-      }
-
-      .analytics-card h3 {
-        color: #94a3b8;
-        margin-bottom: 10px;
-      }
-
-      .analytics-card p {
-        font-size: 2rem;
-        font-weight: 800;
-      }
-
-      .toast {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #111827;
-        border-left: 4px solid var(--primary);
-        padding: 15px 22px;
-        border-radius: 16px;
-        animation: slide 0.4s ease;
-        z-index: 9999;
-      }
-
-      @keyframes slide {
-        from {
-          transform: translateX(120px);
-          opacity: 0;
-        }
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
-      }
-
-      @media (max-width: 768px) {
-        header h1 {
-          font-size: 2.5rem;
-        }
-
-        .dashboard {
-          grid-template-columns: 1fr;
-        }
-      }
-    </style>
 </head>
 
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
 
-    <button id="theme-toggle" aria-label="Toggle dark mode">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-        </svg>
-    </button>
+  <!-- THEME TOGGLE -->
+
+  <button
+    id="theme-toggle"
+    aria-label="Toggle Theme"
+  >
+    🌙
+  </button>
+
+  <!-- MAIN CONTAINER -->
+
+  <div class="container">
+
+    <!-- HERO HEADER -->
+
     <header>
-        <div class="container">
-            <h1>Personal Finance Tracker</h1>
-        </div>
+
+      <h1>
+        AI Financial Insights Tracker
+      </h1>
+
+      <p>
+        Intelligent spending analysis, smart budgeting,
+        AI-generated financial recommendations,
+        and advanced analytics dashboard.
+      </p>
+
     </header>
 
-      <div class="dashboard">
-        <div class="card balance">
-          <h2>Total Balance</h2>
-          <p id="balance">$0</p>
-        </div>
+    <!-- DASHBOARD -->
 
-        <div class="card income">
-          <h2>Total Income</h2>
-          <p id="income">$0</p>
-        </div>
+    <section class="dashboard">
 
-        <div class="card expense">
-          <h2>Total Expense</h2>
-          <p id="expense">$0</p>
-        </div>
+      <div class="card balance">
 
-        <div class="card">
-          <h2>Transactions</h2>
-          <p id="count">0</p>
-        </div>
+        <h2>
+          Total Balance
+        </h2>
+
+        <p id="balance">
+          $0
+        </p>
+
       </div>
 
-      <div class="section">
-        <h2 class="section-title">Add Transaction</h2>
+      <div class="card income">
 
-        <form id="transactionForm">
-          <div class="grid">
-            <input type="text" id="desc" placeholder="Description" required />
+        <h2>
+          Total Income
+        </h2>
 
-            <input type="number" id="amount" placeholder="Amount" required />
+        <p id="income">
+          $0
+        </p>
 
-            <select id="type">
-              <option value="income">Income</option>
-              <option value="expense">Expense</option>
-            </select>
-
-            <select id="category">
-              <option value="salary">Salary</option>
-              <option value="food">Food</option>
-              <option value="rent">Rent</option>
-              <option value="travel">Travel</option>
-              <option value="shopping">Shopping</option>
-              <option value="entertainment">Entertainment</option>
-              <option value="investment">Investment</option>
-            </select>
-            <input type="submit" value="Add Transaction">
-            <button onclick="exportCSV()">
-    Export CSV
-</button>
-        </form>
-
-        <!-- ===== SAVINGS PROGRESS TRACKER ===== -->
-        <div id="savings-section">
-            <h2>🎯 Savings Progress Tracker</h2>
-
-            <form id="goal-form">
-                <h3>Create a New Savings Goal</h3>
-                <input type="text" id="goal-title" placeholder="Goal Name (e.g. Buy Laptop)" required>
-                <input type="number" id="goal-target" placeholder="Target Amount ($)" step="0.01" required>
-                <input type="date" id="goal-date" required>
-                <input type="submit" value="➕ Create Goal">
-            </form>
-
-            <p id="no-goals-message">No savings goals yet. Create one above! 🚀</p>
-            <div id="goals-container"></div>
-
-            <!-- Savings Analytics -->
-            <div id="savings-analytics">
-                <h3>📈 Savings Analytics</h3>
-                <div class="analytics-grid">
-                    <div class="analytic-card">
-                        <div class="analytic-value" id="analytic-total-saved">$0</div>
-                        <div class="analytic-label">Total Saved</div>
-                    </div>
-                    <div class="analytic-card">
-                        <div class="analytic-value" id="analytic-savings-rate">0%</div>
-                        <div class="analytic-label">Savings Rate</div>
-                    </div>
-                    <div class="analytic-card">
-                        <div class="analytic-value" id="analytic-goals-count">0</div>
-                        <div class="analytic-label">Active Goals</div>
-                    </div>
-                    <div class="analytic-card">
-                        <div class="analytic-value" id="analytic-goals-completed">0</div>
-                        <div class="analytic-label">Goals Completed</div>
-                    </div>
-                </div>
-                <div id="savings-chart-container">
-                    <canvas id="savings-chart"></canvas>
-                </div>
-            </div>
-        </div>
-
-      <div class="section">
-        <h2 class="section-title">Analytics</h2>
-
-        <div class="analytics">
-          <div class="analytics-card">
-            <h3>Highest Expense</h3>
-            <p id="highestExpense">$0</p>
-          </div>
-
-          <div class="analytics-card">
-            <h3>Highest Income</h3>
-            <p id="highestIncome">$0</p>
-          </div>
-
-          <div class="analytics-card">
-            <h3>Savings Rate</h3>
-            <p id="savingRate">0%</p>
-          </div>
-        </div>
       </div>
 
-      <div class="section">
-        <h2 class="section-title">Recent Transactions</h2>
+      <div class="card expense">
 
-        <table>
-          <thead>
-            <tr>
-              <th>Description</th>
-              <th>Amount</th>
-              <th>Type</th>
-              <th>Category</th>
-              <th>Date</th>
-            </tr>
-          </thead>
+        <h2>
+          Total Expense
+        </h2>
 
-          <tbody id="tbody"></tbody>
-        </table>
+        <p id="expense">
+          $0
+        </p>
+
       </div>
 
-      <div class="section chart-box">
-        <h2 class="section-title">Expense Analytics</h2>
+      <div class="card">
 
-        <canvas id="chart"></canvas>
+        <h2>
+          Total Transactions
+        </h2>
+
+        <p id="count">
+          0
+        </p>
+
       </div>
 
-      <div class="section">
-        <h2 class="section-title">Savings Goals</h2>
+    </section>
+
+    <!-- TRANSACTION FORM -->
+
+    <section class="section">
+
+      <h2 class="section-title">
+        Add Financial Transaction
+      </h2>
+
+      <form id="transactionForm">
 
         <div class="grid">
-          <input type="text" id="goalName" placeholder="Goal Name" />
 
-          <input type="number" id="goalAmount" placeholder="Goal Amount" />
+          <input
+            type="text"
+            id="desc"
+            placeholder="Transaction Description"
+            required
+          />
+
+          <input
+            type="number"
+            id="amount"
+            placeholder="Transaction Amount"
+            required
+          />
+
+          <select id="type">
+
+            <option value="income">
+              Income
+            </option>
+
+            <option value="expense">
+              Expense
+            </option>
+
+          </select>
+
+          <select id="category">
+
+            <option value="salary">
+              Salary
+            </option>
+
+            <option value="food">
+              Food
+            </option>
+
+            <option value="rent">
+              Rent
+            </option>
+
+            <option value="travel">
+              Travel
+            </option>
+
+            <option value="shopping">
+              Shopping
+            </option>
+
+            <option value="entertainment">
+              Entertainment
+            </option>
+
+            <option value="investment">
+              Investment
+            </option>
+
+            <option value="health">
+              Health
+            </option>
+
+            <option value="education">
+              Education
+            </option>
+
+          </select>
+
         </div>
 
-        <button class="main-btn" onclick="addGoal()">Create Goal</button>
+        <button
+          type="submit"
+          class="main-btn"
+        >
+          Add Transaction
+        </button>
 
-        <div id="goals"></div>
+      </form>
+
+    </section>
+
+    <!-- ANALYTICS -->
+
+    <section class="section">
+
+      <h2 class="section-title">
+        Financial Analytics
+      </h2>
+
+      <div class="analytics">
+
+        <div class="analytics-card">
+
+          <h3>
+            Highest Expense
+          </h3>
+
+          <p id="highestExpense">
+            $0
+          </p>
+
+        </div>
+
+        <div class="analytics-card">
+
+          <h3>
+            Highest Income
+          </h3>
+
+          <p id="highestIncome">
+            $0
+          </p>
+
+        </div>
+
+        <div class="analytics-card">
+
+          <h3>
+            Savings Rate
+          </h3>
+
+          <p id="savingRate">
+            0%
+          </p>
+
+        </div>
+
       </div>
-    </div>
 
-    <script>
-      let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+    </section>
 
-      let goals = JSON.parse(localStorage.getItem("goals")) || [];
+    <!-- FINANCIAL HEALTH SCORE -->
 
-      const tbody = document.getElementById("tbody");
+    <section class="section">
 
-      function saveData() {
-        localStorage.setItem("transactions", JSON.stringify(transactions));
+      <h2 class="section-title">
+        Financial Health Score
+      </h2>
 
-        localStorage.setItem("goals", JSON.stringify(goals));
-      }
+      <div class="score-card">
 
-      function showToast(message) {
-        const toast = document.createElement("div");
+        <h1 id="financialScore">
+          0
+        </h1>
 
-        toast.className = "toast";
+        <p>
+          AI-calculated financial stability indicator
+        </p>
 
-        toast.innerText = message;
+      </div>
 
-        document.body.appendChild(toast);
+    </section>
 
-        setTimeout(() => {
-          toast.remove();
-        }, 3000);
-      }
+    <!-- AI INSIGHTS -->
 
-      function updateDashboard() {
-        const income = transactions
-          .filter((t) => t.type === "income")
-          .reduce((a, b) => a + b.amount, 0);
+    <section class="section">
 
-        const expense = transactions
-          .filter((t) => t.type === "expense")
-          .reduce((a, b) => a + b.amount, 0);
+      <h2 class="section-title">
+        AI Financial Insights
+      </h2>
 
-        const balance = income - expense;
+      <div id="aiInsights"></div>
 
-        document.getElementById("income").innerText = "$" + income.toFixed(2);
+    </section>
 
-        document.getElementById("expense").innerText = "$" + expense.toFixed(2);
+    <!-- EXPENSE CHART -->
 
-        document.getElementById("balance").innerText = "$" + balance.toFixed(2);
+    <section class="section chart-box">
 
-        document.getElementById("count").innerText = transactions.length;
+      <h2 class="section-title">
+        Expense Analytics Visualization
+      </h2>
 
-        const highestExpense = Math.max(
-          ...transactions
-            .filter((t) => t.type === "expense")
-            .map((t) => t.amount),
-          0,
-        );
+      <canvas id="chart"></canvas>
 
-        const highestIncome = Math.max(
-          ...transactions
-            .filter((t) => t.type === "income")
-            .map((t) => t.amount),
-          0,
-        );
+    </section>
 
-        document.getElementById("highestExpense").innerText =
-          "$" + highestExpense;
+    <!-- TRANSACTION HISTORY -->
 
-        document.getElementById("highestIncome").innerText =
-          "$" + highestIncome;
+    <section class="section">
 
-        const savingRate =
-          income > 0 ? (((income - expense) / income) * 100).toFixed(1) : 0;
+      <h2 class="section-title">
+        Recent Transactions
+      </h2>
 
-        document.getElementById("savingRate").innerText = savingRate + "%";
-      }
+      <input
+        type="text"
+        id="search"
+        placeholder="Search Transactions..."
+        class="search-box"
+      />
 
-      function renderTransactions() {
-        tbody.innerHTML = "";
+      <table>
 
-        transactions
-          .slice()
-          .reverse()
-          .forEach((t) => {
-            tbody.innerHTML += `
-        <tr class="${t.type}-row">
-            <td>${t.desc}</td>
-            <td>$${t.amount}</td>
-            <td>${t.type}</td>
-            <td>${t.category}</td>
-            <td>${t.date}</td>
-        </tr>
-        `;
-          });
-      }
+        <thead>
 
-      document
-        .getElementById("transactionForm")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
+          <tr>
 
-          const transaction = {
-            desc: document.getElementById("desc").value,
+            <th>
+              Description
+            </th>
 
-            amount: Number(document.getElementById("amount").value),
-
-            type: document.getElementById("type").value,
-
-            category: document.getElementById("category").value,
-
-            date: new Date().toLocaleDateString(),
-          };
-
-          transactions.push(transaction);
-
-          saveData();
-
-          renderTransactions();
+            <th>
+              Amount
+            </th>
 
-          updateDashboard();
-
-          updateChart();
-
-          financialAlerts();
-
-          showToast("Transaction Added");
+            <th>
+              Type
+            </th>
 
-          this.reset();
-        });
+            <th>
+              Category
+            </th>
 
-      function updateChart() {
-        if (window.myChart) {
-          window.myChart.destroy();
-        }
+            <th>
+              Date
+            </th>
 
-        const categories = {};
+          </tr>
 
-        transactions.forEach((t) => {
-          if (t.type === "expense") {
-            if (categories[t.category]) {
-              categories[t.category] += t.amount;
-            } else {
-              categories[t.category] = t.amount;
-            }
-          }
-        });
+        </thead>
 
-        const ctx = document.getElementById("chart").getContext("2d");
+        <tbody id="tbody"></tbody>
 
-        window.myChart = new Chart(ctx, {
-          type: "doughnut",
+      </table>
 
-          data: {
-            labels: Object.keys(categories),
-            datasets: [
-              {
-                data: Object.values(categories),
-                backgroundColor: [
-                  "#8b5cf6",
-                  "#06b6d4",
-                  "#10b981",
-                  "#f59e0b",
-                  "#ef4444",
-                  "#3b82f6",
-                ],
-                borderWidth: 0,
-              },
-            ],
-          },
+    </section>
 
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                labels: {
-                  color: "white",
-                },
-              },
-            },
-          },
-        });
-      }
+    <!-- SAVINGS GOALS -->
 
-      function financialAlerts() {
-        const income = transactions
-          .filter((t) => t.type === "income")
-          .reduce((a, b) => a + b.amount, 0);
+    <section class="section">
 
-        const expense = transactions
-          .filter((t) => t.type === "expense")
-          .reduce((a, b) => a + b.amount, 0);
+      <h2 class="section-title">
+        Savings Goals
+      </h2>
 
-        if (expense > income) {
-          showToast("⚠️ Expenses exceed income");
-        }
-      }
+      <div class="grid">
 
-      document.getElementById("search").addEventListener("input", function () {
-        const value = this.value.toLowerCase();
-
-        const rows = tbody.querySelectorAll("tr");
+        <input
+          type="text"
+          id="goalName"
+          placeholder="Savings Goal Name"
+        />
 
-        rows.forEach((row) => {
-          row.style.display = row.innerText.toLowerCase().includes(value)
-            ? ""
-            : "none";
-        });
-      });
-
-      function addGoal() {
-        const name = document.getElementById("goalName").value;
-
-        const amount = Number(document.getElementById("goalAmount").value);
-
-        if (!name || !amount) return;
-
-        goals.push({
-          name,
-          amount,
-          saved: 0,
-        });
-
-        saveData();
-
-        renderGoals();
-
-        showToast("Goal Created");
-      }
-
-      function renderGoals() {
-        const container = document.getElementById("goals");
-
-        container.innerHTML = "";
-
-        goals.forEach((goal) => {
-          const percent = (goal.saved / goal.amount) * 100;
-
-          container.innerHTML += `
-
-        <div class="goal-card">
-
-            <h3>${goal.name}</h3>
-
-            <div class="goal-info">
-                <span>$${goal.saved}</span>
-                <span>$${goal.amount}</span>
-            </div>
-
-            <div class="progress">
-                <div
-                class="progress-fill"
-                style="width:${percent}%">
-                </div>
-            </div>
-
-            <button
-            class="main-btn"
-            onclick="addSaving('${goal.name}')">
-            Add Saving
-            </button>
-
-        </div>
-
-        `;
-        });
-      }
-
-      function addSaving(name) {
-        const amount = Number(prompt("Enter Saving Amount"));
-
-        goals = goals.map((g) => {
-          if (g.name === name) {
-            g.saved += amount;
-          }
-
-          return g;
-        });
-
-        // ---- Delete a goal ----
-        function deleteGoal(id) {
-            if (!confirm('Delete this savings goal?')) return;
-            savingsGoals = savingsGoals.filter(g => g.id !== id);
-            localStorage.setItem('savingsGoals', JSON.stringify(savingsGoals));
-            renderGoals();
-        }
-
-        // ---- Open contribute modal ----
-        function openContributeModal(id) {
-            activeContributeGoalId = id;
-            const goal = savingsGoals.find(g => g.id === id);
-            modalGoalName.textContent = `Goal: ${goal.title} — $${goal.saved.toFixed(2)} / $${goal.target.toFixed(2)}`;
-            contributeAmountInput.value = '';
-            contributeModal.classList.add('active');
-        }
-
-        document.getElementById('btn-cancel-contribute').addEventListener('click', () => {
-            contributeModal.classList.remove('active');
-            activeContributeGoalId = null;
-        });
-
-        document.getElementById('btn-confirm-contribute').addEventListener('click', () => {
-            const amount = parseFloat(contributeAmountInput.value);
-            if (isNaN(amount) || amount <= 0) {
-                alert('Please enter a valid amount.');
-                return;
-            }
-            const goal = savingsGoals.find(g => g.id === activeContributeGoalId);
-            if (!goal) return;
-            goal.saved = parseFloat((goal.saved + amount).toFixed(2));
-            goal.contributions = goal.contributions || [];
-            goal.contributions.push({
-                amount,
-                date: new Date().toISOString().split('T')[0]
-            });
-            localStorage.setItem('savingsGoals', JSON.stringify(savingsGoals));
-            contributeModal.classList.remove('active');
-            activeContributeGoalId = null;
-            renderGoals();
-        });
-
-        // ---- Toggle contribution history ----
-        function toggleHistory(btn) {
-            const historyEl = btn.nextElementSibling;
-            historyEl.classList.toggle('open');
-            btn.textContent = historyEl.classList.contains('open') ? '🔼 Hide History' : '📋 View History';
-        }
-
-        // ---- Savings Analytics ----
-        function updateSavingsAnalytics() {
-            const totalSaved = savingsGoals.reduce((acc, g) => acc + g.saved, 0);
-            const completedGoals = savingsGoals.filter(g => getGoalStatus(g) === 'completed').length;
-            const activeGoals = savingsGoals.filter(g => getGoalStatus(g) !== 'completed').length;
-
-            // Savings rate: totalSaved / totalIncome * 100
-            const totalIncome = transactions
-                .filter(t => t.type === 'income')
-                .reduce((acc, t) => acc + t.amount, 0);
-            const savingsRate = totalIncome > 0 ? ((totalSaved / totalIncome) * 100).toFixed(1) : 0;
-
-            document.getElementById('analytic-total-saved').textContent = `$${totalSaved.toFixed(0)}`;
-            document.getElementById('analytic-savings-rate').textContent = `${savingsRate}%`;
-            document.getElementById('analytic-goals-count').textContent = activeGoals;
-            document.getElementById('analytic-goals-completed').textContent = completedGoals;
-
-            updateSavingsChart();
-        }
-
-        // ---- Savings Chart (bar: goal progress) ----
-        function updateSavingsChart() {
-            if (window.savingsChart) {
-                window.savingsChart.destroy();
-            }
-            if (savingsGoals.length === 0) return;
-
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            const labels = savingsGoals.map(g => g.title);
-            const savedData = savingsGoals.map(g => g.saved);
-            const remainingData = savingsGoals.map(g => Math.max(g.target - g.saved, 0));
-
-            const ctx = document.getElementById('savings-chart').getContext('2d');
-            window.savingsChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels,
-                    datasets: [
-                        {
-                            label: 'Saved',
-                            data: savedData,
-                            backgroundColor: 'rgba(46, 204, 113, 0.75)',
-                            borderColor: '#27ae60',
-                            borderWidth: 2,
-                            borderRadius: 6
-                        },
-                        {
-                            label: 'Remaining',
-                            data: remainingData,
-                            backgroundColor: 'rgba(108, 92, 231, 0.3)',
-                            borderColor: 'rgba(108, 92, 231, 0.7)',
-                            borderWidth: 2,
-                            borderRadius: 6
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Savings Goals Progress',
-                            font: { size: 16 },
-                            color: isDarkMode ? '#e0e0e0' : '#2d3436'
-                        },
-                        legend: {
-                            labels: { color: isDarkMode ? '#e0e0e0' : '#2d3436' }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            stacked: true,
-                            ticks: { color: isDarkMode ? '#e0e0e0' : '#2d3436' },
-                            grid: { color: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }
-                        },
-                        y: {
-                            stacked: true,
-                            ticks: { color: isDarkMode ? '#e0e0e0' : '#2d3436' },
-                            grid: { color: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }
-                        }
-                    },
-                    animation: { duration: 800 }
-                }
-            });
-        }
-
-        // ---- Close modal on overlay click ----
-        contributeModal.addEventListener('click', function(e) {
-            if (e.target === contributeModal) {
-                contributeModal.classList.remove('active');
-                activeContributeGoalId = null;
-            }
-        });
-
-        // ---- Init savings on page load ----
-        renderGoals();
-    </script>
-    function exportCSV() {
-
-    let csv =
-        "Title,Amount,Type,Date\n";
-
-    transactions.forEach(transaction => {
-
-        csv +=
-            `${transaction.title},
-${transaction.amount},
-${transaction.type},
-${transaction.date}\n`;
-
-    });
-
-    const blob =
-        new Blob([csv], {
-            type: "text/csv"
-        });
-
-    const link =
-        document.createElement("a");
-
-    link.href =
-        URL.createObjectURL(blob);
-
-    link.download =
-        "finance-report.csv";
-
-    link.click();
-}
-    function generateMonthlyReport() {
-
-    let income = 0;
-    let expense = 0;
-
-    transactions.forEach(transaction => {
-
-        if (transaction.type === "income") {
-            income += Number(transaction.amount);
-        } else {
-            expense += Number(transaction.amount);
-        }
-
-    });
-
-    document.getElementById("monthlyIncome").innerText = `₹${income}`;
-
-    document.getElementById("monthlyExpense").innerText = `₹${expense}`;
-
-    document.getElementById("monthlyBalance").innerText =
-        `₹${income - expense}`;
-}
+        <input
+          type="number"
+          id="goalAmount"
+          placeholder="Target Amount"
+        />
+
+      </div>
+
+      <button
+        class="main-btn"
+        onclick="addGoal()"
+      >
+        Create Savings Goal
+      </button>
+
+      <div id="goalsContainer"></div>
+
+    </section>
+
+  </div>
+
+  <!-- MAIN APP -->
+
+  <script
+    type="module"
+    src="js/app.js"
+  ></script>
+
 </body>
 
 </html>
