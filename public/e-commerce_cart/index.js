@@ -57,6 +57,29 @@ wishlistBtns.forEach((btn) => {
 });
 updateTotal();
 }
+function showToast(message){
+
+  const toast = document.createElement('div');
+
+  toast.classList.add('toast');
+
+  toast.innerText = message;
+
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.classList.add('show');
+  }, 100);
+
+  setTimeout(() => {
+    toast.classList.remove('show');
+
+    setTimeout(() => {
+      toast.remove();
+    }, 400);
+
+  }, 3000);
+}
 
 
 //Remove Item
@@ -66,6 +89,7 @@ function removeItem(){
     itemList=itemList.filter(el=>el.title!=title);
     localStorage.setItem("cartItems", JSON.stringify(itemList));
     this.parentElement.remove();
+    showToast("Product removed from cart");
     loadContent();
   }
 }
@@ -90,9 +114,11 @@ function toggleWishlist() {
   if (wishlist.includes(title)) {
     wishlist = wishlist.filter(item => item !== title);
     this.classList.remove('active');
+    showToast("Removed from wishlist");
   } else {
     wishlist.push(title);
     this.classList.add('active');
+    showToast("Added to wishlist");
   }
 
   updateWishlistCount();
@@ -229,10 +255,11 @@ function addCart() {
 
  //Check Product already Exist in Cart
   if(itemList.find((el)=>el.title==newProduct.title)){
-  alert("Product Already added in Cart");
+  showToast("Product already added to cart");
   return;
   }else{
   itemList.push(newProduct);
+  showToast("Product added to cart");
   localStorage.setItem("cartItems", JSON.stringify(itemList));
   if (itemList.some(el => el.title === title)) {
     alert('Already in cart');
@@ -425,13 +452,165 @@ submitOrder.addEventListener('click', () => {
   const payment = document.querySelector('#payment-method').value;
 
   if(fullName === '' || address === '' || phone === '' || payment === ''){
-    alert('Please fill all fields');
+    showToast('Please fill all fields');
     return;
   }
 
-  alert('Order placed successfully!');
+  showToast('Order placed successfully!');
 
   checkoutModal.style.display = 'none';
+});
+const searchInput = document.querySelector('#search-input');
+
+searchInput.addEventListener('keyup', () => {
+
+  const searchValue = searchInput.value.toLowerCase();
+
+  const products = document.querySelectorAll('.shoe-box');
+
+  let matchFound = false;
+
+  products.forEach((product) => {
+
+    const title = product
+      .querySelector('.shoe-title')
+      .textContent
+      .toLowerCase();
+
+    if(title.includes(searchValue)){
+
+      product.style.display = 'block';
+      matchFound = true;
+
+    } else {
+
+      product.style.display = 'none';
+
+    }
+
+  });
+
+  const noProductsMessage =
+    document.querySelector('#no-products-message');
+
+  if(matchFound){
+    noProductsMessage.style.display = 'none';
+  } else {
+    noProductsMessage.style.display = 'block';
+  }
+
+});
+const clearCartBtn = document.querySelector('.clear-cart-btn');
+clearCartBtn.addEventListener('click', () => {
+
+  const cartContent = document.querySelector('.cart-content');
+
+  cartContent.innerHTML = '';
+
+  itemList = [];
+
+  localStorage.removeItem("cartItems");
+
+  updateTotal();
+
+  showToast("Cart cleared");
+
+});
+// Dark Mode
+
+const darkModeBtn = document.querySelector('#dark-mode-btn');
+
+if(localStorage.getItem("theme") === "dark"){
+  document.body.classList.add('dark-mode');
+
+  if(darkModeBtn){
+    darkModeBtn.innerText = "☀";
+  }
+}
+
+if(darkModeBtn){
+
+  darkModeBtn.addEventListener('click', () => {
+
+    document.body.classList.toggle('dark-mode');
+
+    if(document.body.classList.contains('dark-mode')){
+
+      localStorage.setItem("theme", "dark");
+
+      darkModeBtn.innerText = "☀";
+
+    } else {
+
+      localStorage.setItem("theme", "light");
+
+      darkModeBtn.innerText = "🌙";
+
+    }
+
+  });
+
+}
+// Quick View Popup
+
+const quickViewModal =
+  document.querySelector('.quick-view-modal');
+
+const quickViewImg =
+  document.querySelector('#quick-view-img');
+
+const quickViewTitle =
+  document.querySelector('#quick-view-title');
+
+const quickViewPrice =
+  document.querySelector('#quick-view-price');
+
+const closeQuickView =
+  document.querySelector('.close-quick-view');
+
+const quickViewImages =
+  document.querySelectorAll('.shoe-img');
+
+quickViewImages.forEach((image) => {
+
+  image.addEventListener('click', () => {
+
+    const shoeBox = image.closest('.shoe-box');
+
+    const title =
+      shoeBox.querySelector('.shoe-title').innerText;
+
+    const price =
+      shoeBox.querySelector('.shoe-price').innerText;
+
+    const imgSrc = image.src;
+
+    quickViewImg.src = imgSrc;
+
+    quickViewTitle.innerText = title;
+
+    quickViewPrice.innerText = price;
+
+    quickViewModal.style.display = 'flex';
+
+  });
+
+});
+
+closeQuickView.addEventListener('click', () => {
+
+  quickViewModal.style.display = 'none';
+
+});
+
+window.addEventListener('click', (e) => {
+
+  if(e.target === quickViewModal){
+
+    quickViewModal.style.display = 'none';
+
+  }
+
 });
 document.getElementById('profile-close').addEventListener('click', () => {
   profileModal.style.display = 'none';
