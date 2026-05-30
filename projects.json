@@ -2364,5 +2364,14 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/Planet_gesture_formation/index.html"
-  }
+  },
+  {
+  "projectNo": 190,
+  "projectName": "Interactive Story Player",
+  "projectType": "UI / Animation",
+  "projectDesc": "A dynamic, choice-driven storytelling application where users shape their own narrative paths.",
+  "techStack": ["ui", "html", "css", "javascript"],
+  "difficulty": "intermediate",
+  "projectPath": "./public/story/main.html"
+}
 ]

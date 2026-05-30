@@ -272,8 +272,6 @@ function removeTechFilter(tech) {
   renderGrid();
 }
 
-window.removeTechFilter = removeTechFilter;
-
 function clearAllTechFilters() {
   techStackFilters = [];
   techSearchQuery = '';
@@ -282,8 +280,6 @@ function clearAllTechFilters() {
   updateTechFilterDisplay();
   renderGrid();
 }
-
-window.clearAllTechFilters = clearAllTechFilters;
 
 function updateTechFilterDisplay() {
   const container = document.getElementById('activeTechFilters');
@@ -448,28 +444,22 @@ let sortOption = 'default';
 let techStackFilter = 'all';
 let difficultyFilter = 'all';
 
-function syncStateToURL() {
+function updateURL(search = searchQuery, category = activeFilter) {
   const url = new URL(window.location);
-  
-  if (searchQuery) {
-    url.searchParams.set('search', searchQuery);
-  } else {
-    url.searchParams.delete('search');
-  }
+  if (search.trim()) url.searchParams.set('search', search.trim());
+  else url.searchParams.delete('search');
 
-  if (activeFilter && activeFilter !== 'all') {
-    url.searchParams.set('category', activeFilter);
-  } else {
-    url.searchParams.delete('category');
-  }
+  if (category && category !== 'all') url.searchParams.set('category', category);
+  else url.searchParams.delete('category');
 
-  if (currentPage > 1) {
-    url.searchParams.set('page', currentPage);
-  } else {
-    url.searchParams.delete('page');
-  }
+  if (currentPage > 1) url.searchParams.set('page', currentPage);
+  else url.searchParams.delete('page');
 
   window.history.replaceState({}, '', url);
+}
+
+function syncStateToURL() {
+  updateURL(searchQuery, activeFilter);
 }
 
 function readStateFromURL() {
@@ -493,6 +483,10 @@ function readStateFromURL() {
       currentPage = page;
     }
   }
+}
+
+function hasProjectGrid() {
+  return document.getElementById('projectGrid') !== null;
 }
 
 function renderGrid() {
@@ -817,9 +811,7 @@ function resetAllFilters() {
   if (sortSelect) sortSelect.value = 'default';
   sortOption = 'default';
 
-  if (typeof updateURL === 'function') {
-    updateURL('', 'all');
-  }
+  updateURL('', 'all');
 
   currentPage = 1;
   renderGrid();
@@ -977,12 +969,15 @@ function syncProjectCounts() {
   }
   const total = filtered.length.toLocaleString();
   [document.getElementById('projectCount'), document.getElementById('allCount')].forEach(n => { if (n) n.textContent = total; });
-  if (typeof searchInput !== 'undefined' && searchInput) searchInput.placeholder = `Search ${PROJECTS.length.toLocaleString()} projects…`;
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) searchInput.placeholder = `Search ${PROJECTS.length.toLocaleString()} projects…`;
   updateCategoryCounts();
 }
 
-if (typeof searchInput !== 'undefined' && searchInput && document.getElementById('clearSearch')) {
-  document.getElementById('clearSearch').addEventListener("click", () => { searchInput.value = ""; searchInput.dispatchEvent(new Event("input")); searchInput.focus(); });
+const clearSearchBtn = document.getElementById('clearSearch');
+const searchInputEl = document.getElementById('searchInput');
+if (searchInputEl && clearSearchBtn) {
+  clearSearchBtn.addEventListener("click", () => { searchInputEl.value = ""; searchInputEl.dispatchEvent(new Event("input")); searchInputEl.focus(); });
 }
 
 function updateNavbar() {
@@ -1036,57 +1031,7 @@ function updateNavbar() {
 }
 
 /* ============================================================
-   SCROLL TO TOP
-   ============================================================ */
-function initScrollBtn() {
-  const btn = document.getElementById('scrollBtn');
-  const ring = document.getElementById('ringFill');
-  if (!btn) return;
-
-  const circumference = 2 * Math.PI * 22;
-  const updateScrollProgress = () => {
-    const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = docHeight > 0 ? scrollTop / docHeight : 0;
-
-    btn.classList.toggle('show', scrollTop > 400);
-
-    if (ring) {
-      ring.style.strokeDashoffset = circumference * (1 - progress);
-    }
-
-    // Footer collision avoidance
-    const footer = document.querySelector('.footer');
-    if (footer) {
-      const footerRect = footer.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      
-      if (footerRect.top < windowHeight) {
-        const overlap = windowHeight - footerRect.top;
-        const maxOverlap = Math.min(overlap, 120);
-        btn.style.bottom = `calc(2rem + ${maxOverlap}px)`;
-      } else {
-        btn.style.bottom = '2rem';
-      }
-    }
-  };
-
-  updateScrollProgress();
-  window.addEventListener('scroll', updateScrollProgress, { passive: true });
-
-  btn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-}
-
-function initCurrentYear() {
-  document.querySelectorAll('[data-current-year], #Current-Year').forEach((node) => {
-    node.textContent = new Date().getFullYear();
-  });
-}
-
-/* ============================================================
-   THEME CORE ENGINE (Fixes Issue #4359)
+   THEME TOGGLE & CORE ENGINE
    ============================================================ */
 function initTheme() {
   const root = document.documentElement;
@@ -1123,6 +1068,55 @@ function initTheme() {
 }
 
 /* ============================================================
+   SCROLL TO TOP
+   ============================================================ */
+function initScrollBtn() {
+  const btn = document.getElementById('scrollBtn');
+  const ring = document.getElementById('ringFill');
+  if (!btn) return;
+
+  const circumference = 2 * Math.PI * 22;
+  const updateScrollProgress = () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? scrollTop / docHeight : 0;
+
+    btn.classList.toggle('show', scrollTop > 400);
+
+    if (ring) {
+      ring.style.strokeDashoffset = circumference * (1 - progress);
+    }
+
+    const footer = document.querySelector('.footer');
+    if (footer) {
+      const footerRect = footer.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      if (footerRect.top < windowHeight) {
+        const overlap = windowHeight - footerRect.top;
+        const maxOverlap = Math.min(overlap, 120);
+        btn.style.bottom = `calc(2rem + ${maxOverlap}px)`;
+      } else {
+        btn.style.bottom = '2rem';
+      }
+    }
+  };
+
+  updateScrollProgress();
+  window.addEventListener('scroll', updateScrollProgress, { passive: true });
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+function initCurrentYear() {
+  document.querySelectorAll('[data-current-year], #Current-Year').forEach((node) => {
+    node.textContent = new Date().getFullYear();
+  });
+}
+
+/* ============================================================
    GLOBAL INITIALIZER SETUP & DOM LIFECYCLE
    ============================================================ */
 document.addEventListener('DOMContentLoaded', async () => {
@@ -1142,11 +1136,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadProjects();
     syncProjectCounts();
 
-    if (typeof hasProjectGrid === 'function' && hasProjectGrid()) {
-      renderGrid();
-      renderBookmarks();
-      renderRecentProjects();
-    } else if (document.getElementById('projectGrid')) {
+    if (hasProjectGrid()) {
       renderGrid();
       renderBookmarks();
       renderRecentProjects();
@@ -1166,6 +1156,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const navButtons = document.getElementById('navButtons');
 
     if (!menuToggle || !navButtons) return;
+    if (menuToggle.dataset.mobileNavBound === 'true') return;
+    menuToggle.dataset.mobileNavBound = 'true';
 
     const closeMenu = () => {
       menuToggle.classList.remove('active');
@@ -1173,11 +1165,21 @@ document.addEventListener('DOMContentLoaded', async () => {
       menuToggle.setAttribute('aria-expanded', 'false');
     };
 
+    const openMenu = () => {
+      menuToggle.classList.add('active');
+      navButtons.classList.add('active');
+      menuToggle.setAttribute('aria-expanded', 'true');
+      const firstLink = navButtons.querySelector('a, button');
+      firstLink?.focus({ preventScroll: true });
+    };
+
     menuToggle.addEventListener('click', (e) => {
       e.stopPropagation();
-      const isOpen = navButtons.classList.toggle('active');
-      menuToggle.classList.toggle('active', isOpen);
-      menuToggle.setAttribute('aria-expanded', String(isOpen));
+      if (navButtons.classList.contains('active')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
     });
 
     document.addEventListener('click', (e) => {
@@ -1206,41 +1208,86 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 })();
 
-window.addEventListener('resize', debounce(() => { 
-  if (document.getElementById('projectGrid')) renderGrid(); 
-}, 180));
+window.addEventListener(
+  'resize',
+  debounce(() => {
+    if (hasProjectGrid()) {
+      renderGrid();
+    }
+  }, 180)
+);
+
+window.removeTechFilter = removeTechFilter;
+window.clearAllTechFilters = clearAllTechFilters;
 
 // Custom UI cursor engine block
 (function () {
-  const outer = document.querySelector('.cursor-ring--outer'), inner = document.querySelector('.cursor-ring--inner');
-  if (!outer || !inner) return;
-  let target = { x: 0, y: 0 }, current = { x: 0, y: 0 }, speed = 0.18;
+  const outerCursor = document.querySelector('.cursor-ring--outer');
+  const innerCursor = document.querySelector('.cursor-ring--inner');
+  if (!outerCursor || !innerCursor) return;
+
+  const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (coarsePointer || prefersReducedMotion) {
+    outerCursor.style.display = 'none';
+    innerCursor.style.display = 'none';
+    return;
+  }
+
+  const target = { x: 0, y: 0 };
+  const current = { x: 0, y: 0 };
+  const speed = 0.18;
 
   const update = () => {
     current.x += (target.x - current.x) * speed; current.y += (target.y - current.y) * speed;
-    outer.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%)`;
-    inner.style.transform = `translate3d(${target.x}px, ${target.y}px, 0) translate(-50%, -50%)`;
+    outerCursor.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%)`;
+    innerCursor.style.transform = `translate3d(${target.x}px, ${target.y}px, 0) translate(-50%, -50%)`;
     requestAnimationFrame(update);
   };
-  window.addEventListener('mousemove', (e) => { target.x = e.clientX; target.y = e.clientY; outer.classList.add('is-visible'); inner.classList.add('is-visible'); }, { passive: true });
-  window.addEventListener('mouseleave', () => { outer.classList.remove('is-visible'); inner.classList.remove('is-visible'); });
+  window.addEventListener('mousemove', (e) => { target.x = e.clientX; target.y = e.clientY; outerCursor.classList.add('is-visible'); innerCursor.classList.add('is-visible'); }, { passive: true });
+  window.addEventListener('mouseleave', () => { outerCursor.classList.remove('is-visible'); innerCursor.classList.remove('is-visible'); });
   requestAnimationFrame(update);
 })();
 
 // Background Canvas Module
 (function () {
-  const canvas = document.getElementById('particleCanvas'); if (!canvas) return;
-  const ctx = canvas.getContext('2d'); if (!ctx) return;
-  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)'), coarsePointerQuery = window.matchMedia('(pointer: coarse)'), palette = [220, 250, 280];
-  let W, H, dpr, particles = [], particleCount = 0, linkDistance = 0, maxDistanceSq = 0, frameInterval = 1000 / 36, animationFrame = 0, lastFrameTime = 0;
+  const canvas = document.getElementById('particleCanvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const coarsePointerQuery = window.matchMedia('(pointer: coarse)');
+  const palette = [220, 250, 280];
+  const DEFAULT_PARTICLE_FPS = 24;
+  let W = 0;
+  let H = 0;
+  let dpr = 1;
+  let particles = [];
+  let particleCount = 0;
+  let linkDistance = 0;
+  let maxDistanceSq = 0;
+  let frameInterval = 1000 / DEFAULT_PARTICLE_FPS;
+  let animationFrame = 0;
+  let lastFrameTime = 0;
 
   const getProfile = () => {
-    const small = window.innerWidth <= 768 || coarsePointerQuery.matches, motion = reducedMotionQuery.matches;
+    const smallScreen = window.innerWidth <= 768 || coarsePointerQuery.matches;
+    const reducedMotion = reducedMotionQuery.matches;
+    const disableAnimation = smallScreen || reducedMotion;
+    const largeScreen = window.innerWidth > 1280;
+
     return {
-      minParticles: motion ? 8 : small ? 12 : 24, maxParticles: motion ? 18 : small ? 28 : 72,
-      areaPerParticle: motion ? 110000 : small ? 70000 : 26000, linkDistance: motion ? 68 : small ? 84 : 120,
-      velocity: motion ? 0.12 : small ? 0.18 : 0.3, radius: motion ? 1.8 : small ? 2.2 : 4,
-      fps: motion ? 14 : small ? 20 : 36, showLinks: !motion && !small, disableAnimation: small || motion,
+      minParticles: reducedMotion ? 8 : smallScreen ? 12 : 18,
+      maxParticles: reducedMotion ? 18 : smallScreen ? 28 : 48,
+      areaPerParticle: reducedMotion ? 110000 : smallScreen ? 70000 : 32000,
+      linkDistance: reducedMotion ? 68 : smallScreen ? 84 : 100,
+      velocity: reducedMotion ? 0.12 : smallScreen ? 0.18 : 0.24,
+      radius: reducedMotion ? 1.8 : smallScreen ? 2.2 : 3.2,
+      fps: reducedMotion ? 14 : smallScreen ? 20 : 24,
+      showLinks: !reducedMotion && !smallScreen && largeScreen,
+      disableAnimation,
     };
   };
 
