@@ -1944,9 +1944,9 @@ body.light-mode .brand-mark {
 /* ==========================================================================
    Accessibility Fix: Low Color Contrast Ratio (#4358)
    ========================================================================== */
-footer, 
+.footer, 
 .footer, 
 footer p, 
 footer a {
-    color: #575757 !important;
+    color:#575757 !important;
 }
