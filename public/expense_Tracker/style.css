@@ -29,6 +29,7 @@ html {
   scroll-behavior: smooth;
 }
 
+/* --- Global Background Architecture --- */
 body {
   font-family: Inter, sans-serif;
   color: var(--text);

@@ -4,70 +4,51 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>3D Dog Gallery</title>
+
     <link rel="stylesheet" href="style.css" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
     <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
   </head>
 
   <body>
-
     <div class="ambient-light"></div>
 
-    
     <div class="hero-content">
       <h1>3D Dog Gallery</h1>
       <p>Interactive cinematic 3D rotating cards experience</p>
     </div>
 
-
     <div class="scene">
-      <div class="box" id="slider">
-        <span style="--i: 1">
-          <img src="Images/img1.jpg" alt="Buddy" />
-          <h2>Buddy</h2>
-        </span>
-        <span style="--i: 2">
-          <img src="Images/img2.jpg" alt="Charlie" />
-          <h2>Charlie</h2>
-        </span>
-        <span style="--i: 3">
-          <img src="Images/img3.jpg" alt="Rocky" />
-          <h2>Rocky</h2>
-        </span>
-        <span style="--i: 4">
-          <img src="Images/img4.jpg" alt="Max" />
-          <h2>Max</h2>
-        </span>
-        <span style="--i: 5">
-          <img src="Images/img5.jpg" alt="Leo" />
-          <h2>Leo</h2>
-        </span>
-        <span style="--i: 6">
-          <img src="Images/img6.jpg" alt="Luna" />
-          <h2>Luna</h2>
-        </span>
-        <span style="--i: 7">
-          <img src="Images/img7.jpg" alt="Daisy" />
-          <h2>Daisy</h2>
-        </span>
-        <span style="--i: 8">
-          <img src="Images/img8.jpg" alt="Cooper" />
-          <h2>Cooper</h2>
-        </span>
-      </div>
+      <div class="box" id="slider"></div>
     </div>
 
     <div class="controls glass-panel">
-      <button class="ctrl-btn" id="directionBtn">
-        <span class="btn-label">Reverse Rotation</span>
+      <button class="ctrl-btn" id="prevBtn">
+        <span class="btn-label">← Prev</span>
       </button>
+
       <button class="ctrl-btn" id="pauseBtn">
         <span class="btn-label">Pause Rotation</span>
       </button>
+
+      <button class="ctrl-btn" id="directionBtn">
+        <span class="btn-label">Reverse Rotation</span>
+      </button>
+
       <button class="ctrl-btn" id="themeBtn">
         <span class="btn-label">Light Mode</span>
+      </button>
+
+      <button class="ctrl-btn" id="nextBtn">
+        <span class="btn-label">Next →</span>
       </button>
     </div>
 

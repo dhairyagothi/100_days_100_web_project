@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>404 — Page Not Found | 100 Days 100 Web Projects</title>
+    <link rel="icon" href="./public/favv.png" type="image/x-icon"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0d0d1a;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .error-code {
+            font-size: 8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #7c3aed, #a855f7, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 1rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .emoji {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #a0a0b0;
+            margin-bottom: 0.8rem;
+            line-height: 1.6;
+        }
+
+        .fun-message {
+            background: rgba(124, 58, 237, 0.15);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            margin: 1.5rem 0;
+            font-size: 1rem;
+            color: #c084fc;
+            font-style: italic;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.8rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #a0a0b0;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.05);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .footer-note {
+            margin-top: 3rem;
+            font-size: 0.85rem;
+            color: #555570;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px; height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Starry background -->
+    <div class="stars" id="stars"></div>
+
+    <div class="container">
+        <div class="error-code">404</div>
+        <span class="emoji">🚀</span>
+        <h1>Page Not Found</h1>
+        <p>Looks like this page took a day off from the 100-day challenge!</p>
+
+        <div class="fun-message">
+            💡 "Looks like this project doesn't exist yet...<br>
+            but maybe <strong>you</strong> could build it!" 
+        </div>
+
+        <p>The page you're looking for may have been moved,<br>
+        deleted, or never existed in the first place.</p>
+
+        <div class="buttons">
+            <a href="/" class="btn btn-primary">
+                <i class="fas fa-home"></i> Back to Homepage
+            </a>
+            <a href="/contributors/contributor.html" class="btn btn-secondary">
+                <i class="fas fa-users"></i> Contributors
+            </a>
+        </div>
+
+        <p class="footer-note">
+            &copy; <span id="year"></span> 100 Days, 100 Projects — Dhairya &amp; Contributors
+        </p>
+    </div>
+
+    <script>
+        // Dynamic year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Generate twinkling stars background
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 80; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            star.style.animationDuration = (2 + Math.random() * 3) + 's';
+            starsContainer.appendChild(star);
+        }
+    </script>
+</body>
+</html>

@@ -1,249 +1,673 @@
-// ─── DOM References ────────────────────────────────────────────────────────────
-const notesContainer = document.getElementById("notes-container");
-const documentsList  = document.querySelector(".documents-list");
-const pdfMessage     = document.getElementById("pdfMessage");
-const taskInput      = document.getElementById("task-input");
-const taskTypeSelect = document.getElementById("task-type");
+// ============================================
+// TO-DO LIST APPLICATION
+// ============================================
 
-// ─── Theme State ───────────────────────────────────────────────────────────────
-// Maps theme id → gradient for body + card fallback colour for default cards
-const THEMES = {
-  theme1: {
-    body: "linear-gradient(135deg, rgba(232,221,227,1) 0%, rgba(219,185,200,1) 55%, rgba(227,230,235,1) 100%)",
-    card: "rgba(232, 221, 227, 1)",
-  },
-  theme2: {
-    body: "linear-gradient(135deg, #e4afcb 0%, #e2c58b 50%, #7edbdc 100%)",
-    card: "#e4afcb",
-  },
-  theme3: {
-    body: "linear-gradient(135deg, #39db8c 0%, #a0c559 30%, #d1ab51 55%, #e6936b 80%, #df868d 100%)",
-    card: "#df868d",
-  },
-  theme4: {
-    body: "linear-gradient(135deg, rgb(120,25,105) 0%, rgb(197,211,201) 100%)",
-    card: "rgb(197, 211, 201)",
-  },
-  theme5: {
-    body: "linear-gradient(135deg, #b92b27 0%, #1565c0 100%)",
-    card: "#c0cfe8",
-  },
-};
+// 1. DOM ELEMENT REFERENCES
+const taskInput = document.getElementById("task");
+const taskTypeSelect = document.getElementById("task-category");
+const eisenhowerSelect = document.getElementById("eisenhower-select");
 
-let currentTheme = "theme1"; // default
+const taskList = document.getElementById("notes-container");
+const emptyState = document.getElementById("emptyState");
 
-// ─── Task Type colour map ──────────────────────────────────────────────────────
-// Keeps track of user-chosen type colours so they survive theme switches
-const TYPE_COLORS = {
-  "":              null,           // → use theme colour
-  "Work":          "#FFDE59",
-  "Personal":      "#FFC0CB",
-  "Professional":  "#B0BEC5",
-  "Fitness":       "#B1EE99",
-  "Miscellaneous": "#CAB9F5",
-};
+const documentsList = document.querySelector(".documents-list");
 
-// ─── Add Task ──────────────────────────────────────────────────────────────────
-function Add() {
+const progressFill = document.getElementById("progressFill");
+const progressText = document.getElementById("progressText");
+
+const toast = document.getElementById("toast");
+
+// ============================================
+// DATA STATE
+// ============================================
+
+let tasks = [];
+let currentFilter = "all";
+
+// ============================================
+// LOCAL STORAGE
+// ============================================
+
+function saveTasks() {
+  localStorage.setItem("todo-tasks", JSON.stringify(tasks));
+}
+
+function loadTasks() {
+  const savedTasks = localStorage.getItem("todo-tasks");
+
+  if (savedTasks) {
+    tasks = JSON.parse(savedTasks);
+  }
+}
+
+// ============================================
+// TASK CRUD OPERATIONS
+// ============================================
+
+function addTask() {
   const text = taskInput.value.trim();
+  const category = taskTypeSelect.value;
+  const eisenhower = eisenhowerSelect.value;
 
-  if (text === "") {
-    taskInput.focus();
-    taskInput.style.borderColor = "rgba(255, 80, 80, 0.8)";
-    setTimeout(() => { taskInput.style.borderColor = ""; }, 1200);
+  if (!text) {
+    showToast("⚠️ Please enter a task description!");
     return;
   }
 
-  const notes = document.querySelectorAll(".notes");
+  // Find category color from the dropdown configuration (fallback)
+  const selectedOption = taskTypeSelect.options[taskTypeSelect.selectedIndex];
+  const color = (selectedOption && selectedOption.getAttribute && selectedOption.getAttribute("data-color")) || "#ffb86b";
+ let idx = tasks.length;
+  // Create local task object
+  const selectedOption =
+    taskTypeSelect.options[taskTypeSelect.selectedIndex];
 
-  if (notes.length > 0) {
-    const lastNote = notes[notes.length - 1];
-    const taskText = lastNote.querySelector("span");
+  const color =
+    (selectedOption &&
+      selectedOption.getAttribute &&
+      selectedOption.getAttribute("data-color")) ||
+    "#ffb86b";
 
-    if (taskText && (taskText.innerText.trim() === "Click here to add a task..." || taskText.innerText.trim() === "")) {
-      alert("Please add a task to the previous note before creating a new one!");
-      return;
-    }
-  }
+  const newTask = {
+    id: Date.now(),
+    text: text,
+    category: category || "Miscellaneous",
+    eisenhower: eisenhower || "",
+    color: color,
+    completed: false,
+    task_no: tasks.length+ 1
+  };
 
-  const selectedType  = taskTypeSelect.value;
-  const typeColor     = TYPE_COLORS[selectedType] ?? null;
-  const isDefaultCard = !typeColor; // no type selected → follows theme
+  tasks.push(newTask);
 
-  // Card container
-  const note = document.createElement("div");
-  note.classList.add("notes");
-  note.dataset.defaultCard = isDefaultCard ? "true" : "false";
+  saveTasks();
+  renderTasks();
 
-  // Apply colour
-  note.style.backgroundColor = isDefaultCard
-    ? THEMES[currentTheme].card
-    : typeColor;
-
-  // Inner layout
-  const noteWrapper = document.createElement("div");
-  noteWrapper.style.cssText = "display:flex; align-items:flex-start; justify-content:space-between; width:100%; gap:8px;";
-
-  // Task text
-  const taskText = document.createElement("span");
-  taskText.className = "task-text";
-  taskText.innerText = text;
-  taskText.style.cssText = "flex:1; line-height:1.4; word-break:break-word;";
-
-  // Actions column
-  const actions = document.createElement("div");
-  actions.style.cssText = "display:flex; flex-direction:column; align-items:center; gap:6px; flex-shrink:0;";
-
-  // Tick / complete toggle
-  const tickBtn = document.createElement("button");
-  tickBtn.innerHTML = "&#10003;";
-  tickBtn.title = "Mark complete";
-  tickBtn.style.cssText = [
-    "background:none", "border:1.5px solid #555", "border-radius:50%",
-    "width:26px", "height:26px", "cursor:pointer", "font-size:14px",
-    "display:flex", "align-items:center", "justify-content:center",
-    "transition:background 0.2s, color 0.2s", "color:#333",
-  ].join(";");
-
-  tickBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    taskText.classList.toggle("completed");
-    tickBtn.style.background = taskText.classList.contains("completed") ? "#4caf50" : "none";
-    tickBtn.style.color      = taskText.classList.contains("completed") ? "white"   : "#333";
-    tickBtn.style.borderColor= taskText.classList.contains("completed") ? "#4caf50" : "#555";
-  });
-
-  // Delete button
-  const delBtn = document.createElement("button");
-  delBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
-  delBtn.title = "Delete task";
-  delBtn.style.cssText = [
-    "background:none", "border:none", "cursor:pointer",
-    "font-size:13px", "color:#c0392b", "padding:2px",
-    "transition:transform 0.2s",
-  ].join(";");
-  delBtn.addEventListener("mouseenter", () => { delBtn.style.transform = "scale(1.25)"; });
-  delBtn.addEventListener("mouseleave", () => { delBtn.style.transform = "scale(1)"; });
-  delBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    note.style.animation = "none";
-    note.style.transition = "opacity 0.25s, transform 0.25s";
-    note.style.opacity = "0";
-    note.style.transform = "scale(0.92)";
-    setTimeout(() => note.remove(), 250);
-  });
-
-  // Type badge (only if type was selected)
-  if (selectedType) {
-    const badge = document.createElement("span");
-    badge.innerText = selectedType;
-    badge.style.cssText = [
-      "font-size:10px", "font-weight:700", "padding:2px 7px",
-      "border-radius:20px", "background:rgba(0,0,0,0.12)",
-      "color:#333", "white-space:nowrap", "margin-top:4px",
-      "align-self:flex-end",
-    ].join(";");
-    note.appendChild(badge);
-  }
-
-  actions.appendChild(tickBtn);
-  actions.appendChild(delBtn);
-  noteWrapper.appendChild(taskText);
-  noteWrapper.appendChild(actions);
-  note.insertBefore(noteWrapper, note.firstChild);
-  notesContainer.appendChild(note);
-
-  // Reset inputs
   taskInput.value = "";
   taskTypeSelect.value = "";
-  taskInput.focus();
+  eisenhowerSelect.value = "";
+
+  showToast("✅ Task added successfully!");
 }
 
-// Allow pressing Enter in the input to add a task
-taskInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") Add();
-});
-
-// ─── Theme Switching ───────────────────────────────────────────────────────────
-function applyTheme(themeKey) {
-  const theme = THEMES[themeKey];
-  document.body.style.background = theme.body;
-  currentTheme = themeKey;
-
-  // Update CSS custom property → auto-updates all default cards via var()
-  document.documentElement.style.setProperty("--theme-card-bg", theme.card);
-
-  // Also imperatively update existing default cards
-  const cards = document.querySelectorAll(".notes[data-default-card='true']");
-  cards.forEach((card) => {
-    card.style.backgroundColor = theme.card;
-  });
-}
-
-function c1() { applyTheme("theme1"); }
-function c2() { applyTheme("theme2"); }
-function c3() { applyTheme("theme3"); }
-function c4() { applyTheme("theme4"); }
-function c5() { applyTheme("theme5"); }
-
-// ─── PDF Export ────────────────────────────────────────────────────────────────
-function saveAsPDF() {
-  const { jsPDF } = window.jspdf;
-  const doc  = new jsPDF();
-  const cards = document.querySelectorAll(".notes");
-
-  doc.setFontSize(18);
-  doc.text("My To-Do List", 20, 18);
-  doc.setFontSize(12);
-
-  let y = 30;
-  cards.forEach((card, i) => {
-    const textNode = card.querySelector(".task-text");
-    const text = textNode ? textNode.innerText.trim() : card.innerText.trim();
-    if (text) {
-      doc.text(`${i + 1}. ${text}`, 20, y);
-      y += 10;
-      if (y > 270) { doc.addPage(); y = 20; }
+function toggleTask(id) {
+  tasks = tasks.map(task => {
+    if (task.id === id) {
+      return {
+        ...task,
+        completed: !task.completed
+      };
     }
+
+    return task;
   });
 
-  const fileName = `ToDoList_${Date.now()}.pdf`;
-  const fileURL  = URL.createObjectURL(doc.output("blob"));
-  saveDocument(fileName, fileURL);
-  showPDFMessage();
+  saveTasks();
+  renderTasks();
 }
 
-function saveDocument(fileName, fileURL) {
-  const docItem = document.createElement("div");
-  docItem.className = "document-item";
-  docItem.innerHTML = `
-    <span>${fileName}</span>
-    <button onclick="viewPDF('${fileURL}')">View</button>
-    <button onclick="downloadPDF('${fileURL}', '${fileName}')">Download</button>
-    <button onclick="deletePDF(this)">Delete</button>
-  `;
-  documentsList.appendChild(docItem);
+function deleteTask(id) {
+  const card = document.querySelector(`[data-id="${id}"]`);
+
+  if (card) {
+    card.style.animation = "fadeOut 0.25s ease forwards";
+
+    setTimeout(() => {
+      tasks = tasks.filter(task => task.id !== id);
+      tasks.forEach((task, index) => {
+        task.task_no = index + 1;
+      });
+
+      saveTasks();
+      renderTasks();
+
+      showToast("🗑️ Task deleted!");
+    }, 250);
+  }
 }
 
-function viewPDF(fileURL)                  { window.open(fileURL, "_blank"); }
-function downloadPDF(fileURL, fileName)    {
-  const a = document.createElement("a");
-  a.href = fileURL; a.download = fileName; a.click();
-}
-function deletePDF(button)                 { button.parentElement.remove(); }
+function clearDone() {
+  const previousLength = tasks.length;
 
-function showPDFMessage() {
-  pdfMessage.style.display = "flex";
-  setTimeout(() => { pdfMessage.style.display = "none"; }, 3000);
+  tasks = tasks.filter(task => !task.completed);
+
+  if (tasks.length === previousLength) {
+    showToast("ℹ️ No completed tasks found.");
+  } else {
+    // Re-number tasks sequentially after clearing
+    tasks.forEach((task, index) => {
+      task.task_no = index + 1;
+    });
+    saveTasks();
+    renderTasks();
+
+    showToast("🧹 Completed tasks cleared!");
+  }
 }
 
-// ─── Tab Navigation ────────────────────────────────────────────────────────────
+function updateTaskText(id, newText) {
+  tasks = tasks.map(task => {
+    if (task.id === id) {
+      return {
+        ...task,
+        text: newText.trim() || "Untitled Task"
+      };
+    }
+
+    return task;
+  });
+
+  saveTasks();
+}
+
+// ============================================
+// FILTERING & RENDERING
+// ============================================
+
+function filterTasks(buttonElement, filterValue) {
+  document.querySelectorAll(".filter-btn")
+    .forEach(btn => btn.classList.remove("active"));
+
+  buttonElement.classList.add("active");
+
+  currentFilter = filterValue;
+
+  renderTasks();
+}
+
+function renderTasks() {
+  const filteredTasks = tasks.filter(task => {
+    if (currentFilter === "all") return true;
+
+    if (currentFilter === "pending") {
+      return !task.completed;
+    }
+
+    if (currentFilter === "done") {
+      return task.completed;
+    }
+
+    return task.category === currentFilter;
+  });
+
+  if (filteredTasks.length === 0) {
+    taskList.innerHTML = "";
+
+    if (emptyState) {
+      taskList.appendChild(emptyState);
+      emptyState.style.display = "flex";
+    }
+  } else {
+    if (emptyState) {
+      emptyState.style.display = "none";
+    }
+
+    taskList.innerHTML = "";
+
+    filteredTasks.forEach((task, idx) => {
+      const card = document.createElement("div");
+
+      card.className =
+        `notes ${task.completed ? "completed" : ""}`;
+
+      card.setAttribute("data-id", task.id);
+
+      card.style.setProperty("--i", idx);
+
+      card.innerHTML = `
+        <div class="note-row">
+
+          <textarea
+            class="note-text"
+            onchange="updateTaskText(${task.id}, this.value)"
+          >${task.text}</textarea>
+
+          <div class="note-actions">
+            <span class="task-number">${task.task_no}</span>
+
+            <div class="category-badge">
+              ${task.category}
+            </div>
+
+            ${
+              task.eisenhower
+                ? `
+                  <span class="priority-tag ${task.eisenhower}">
+                    ${
+                      {
+                        "urgent-important":
+                          "🔥 Urgent & Important",
+
+                        "important-only":
+                          "⭐ Important Only",
+
+                        "urgent-only":
+                          "⚡ Urgent Only",
+
+                        "neither":
+                          "🌱 Neither"
+                      }[task.eisenhower]
+                    }
+                  </span>
+                `
+                : ""
+            }
+
+            <button
+              class="note-check"
+              onclick="toggleTask(${task.id})"
+            >
+              ${task.completed ? "✓" : "✔"}
+            </button>
+
+            <button
+              class="note-delete"
+              onclick="deleteTask(${task.id})"
+            >
+              Delete
+            </button>
+
+          </div>
+        </div>
+      `;
+
+      taskList.appendChild(card);
+    });
+  }
+
+  updateMetrics();
+}
+
+// ============================================
+// PROGRESS METRICS
+// ============================================
+
+function updateMetrics() {
+  const total = tasks.length;
+
+  const done = tasks.filter(task => task.completed).length;
+
+  const percentage =
+    total === 0
+      ? 0
+      : Math.round((done / total) * 100);
+
+  if (progressFill) {
+    progressFill.style.width = `${percentage}%`;
+  }
+
+  if (progressText) {
+    progressText.innerText = `${done} / ${total} done`;
+  }
+}
+
+// ============================================
+// TAB NAVIGATION
+// ============================================
+
 function showHome() {
-  document.getElementById("home-tab").style.display      = "block";
-  document.getElementById("documents-tab").style.display = "none";
+  document
+    .getElementById("nav-home")
+    .classList.add("active");
+
+  document
+    .getElementById("nav-documents")
+    .classList.remove("active");
+
+  document
+    .getElementById("home-tab")
+    .removeAttribute("hidden");
+
+  document
+    .getElementById("home-tab")
+    .style.display = "block";
+
+  document
+    .getElementById("documents-tab")
+    .setAttribute("hidden", "");
+
+  document
+    .getElementById("documents-tab")
+    .style.display = "none";
 }
 
 function showDocuments() {
-  document.getElementById("home-tab").style.display      = "none";
-  document.getElementById("documents-tab").style.display = "block";
+  document
+    .getElementById("nav-home")
+    .classList.remove("active");
+
+  document
+    .getElementById("nav-documents")
+    .classList.add("active");
+
+  document
+    .getElementById("home-tab")
+    .setAttribute("hidden", "");
+
+  document
+    .getElementById("home-tab")
+    .style.display = "none";
+
+  document
+    .getElementById("documents-tab")
+    .removeAttribute("hidden");
+
+  document
+    .getElementById("documents-tab")
+    .style.display = "block";
+}
+
+// ============================================
+// NAVIGATION EVENT LISTENERS
+// ============================================
+
+const navHome = document.getElementById("nav-home");
+
+const navDocuments =
+  document.getElementById("nav-documents");
+
+if (navHome) {
+  navHome.addEventListener("click", (e) => {
+    e.preventDefault();
+    showHome();
+  });
+}
+
+if (navDocuments) {
+  navDocuments.addEventListener("click", (e) => {
+    e.preventDefault();
+    showDocuments();
+  });
+}
+
+// ============================================
+// THEME SYSTEM
+// ============================================
+
+function applyTheme(themeName) {
+  document.body.classList.remove(
+    "theme1",
+    "theme2",
+    "theme3",
+    "theme4",
+    "theme5"
+  );
+
+  document.body.classList.add(themeName);
+
+  document
+    .querySelectorAll(".theme-btn")
+    .forEach(btn => btn.classList.remove("active"));
+
+  const activeBtn = document.querySelector(
+    `[data-theme="${themeName}"]`
+  );
+
+  if (activeBtn) {
+    activeBtn.classList.add("active");
+  }
+
+  localStorage.setItem("todo-theme", themeName);
+}
+
+document
+  .querySelectorAll(".theme-btn")
+  .forEach(button => {
+    button.addEventListener("click", () => {
+      const theme = button.dataset.theme;
+
+      if (!theme) return;
+
+      applyTheme(theme);
+    });
+  });
+
+// ============================================
+// PDF EXPORT SYSTEM
+// ============================================
+
+function saveAsPDF() {
+  if (tasks.length === 0) {
+    showToast("❌ Cannot export empty list!");
+    return;
+  }
+
+  const snapshot = [...tasks];
+
+  const doneCount =
+    snapshot.filter(task => task.completed).length;
+
+  const pendingCount =
+    snapshot.length - doneCount;
+
+  const { jsPDF } = window.jspdf;
+
+  const doc = new jsPDF();
+
+  doc.setFont("Helvetica", "bold");
+  doc.setFontSize(22);
+
+  doc.text("TaskFlow Agenda Report", 20, 24);
+
+  doc.setFont("Helvetica", "normal");
+  doc.setFontSize(10);
+
+  doc.text(
+    `Generated on: ${new Date().toLocaleString()}`,
+    20,
+    32
+  );
+
+  doc.text(
+    `Tasks: ${snapshot.length} total | ${doneCount} done | ${pendingCount} pending`,
+    20,
+    38
+  );
+
+  doc.line(20, 42, 190, 42);
+
+  let verticalCursor = 52;
+
+  doc.setFontSize(12);
+
+  snapshot.forEach((task, index) => {
+    if (verticalCursor > 270) {
+      doc.addPage();
+      verticalCursor = 20;
+    }
+
+    const status =
+      task.completed ? "[DONE]" : "[PENDING]";
+
+    const line =
+      `${index + 1}. ${status} (${task.category}) — ${task.text}`;
+
+    doc.text(line, 20, verticalCursor);
+
+    verticalCursor += 10;
+  });
+
+  const timeLabel =
+    new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
+  const fileName =
+    `TaskFlow_${Date.now()}.pdf`;
+
+  const fileURL =
+    URL.createObjectURL(doc.output("blob"));
+
+  appendDocumentToList(
+    fileName,
+    fileURL,
+    snapshot.length,
+    doneCount,
+    timeLabel
+  );
+
+  showToast(
+    `📥 Saved ${snapshot.length} tasks to Documents!`
+  );
+
+  showDocuments();
+}
+
+function appendDocumentToList(
+  fileName,
+  fileURL,
+  taskCount,
+  doneCount,
+  timeLabel
+) {
+  const docEmptyState =
+    document.getElementById("emptyDocsState");
+
+  if (docEmptyState) {
+    docEmptyState.style.display = "none";
+  }
+
+  const docItem = document.createElement("div");
+
+  docItem.className = "doc-item";
+
+  docItem.innerHTML = `
+    <div class="doc-icon">📄</div>
+
+    <div class="doc-info">
+
+      <div class="doc-name">
+        ${fileName}
+      </div>
+
+      <div class="doc-meta">
+
+        <span class="doc-date">
+          ${new Date().toLocaleDateString()}
+          ${timeLabel || ""}
+        </span>
+
+        <span class="doc-task-count">
+          ${taskCount} tasks · ${doneCount} done
+        </span>
+
+      </div>
+    </div>
+
+    <div class="doc-actions">
+
+      <button
+        class="doc-btn"
+        onclick="window.open('${fileURL}', '_blank')"
+      >
+        View
+      </button>
+
+      <a
+        class="doc-btn"
+        href="${fileURL}"
+        download="${fileName}"
+        style="
+          text-decoration:none;
+          display:inline-block;
+          text-align:center;
+        "
+      >
+        Download
+      </a>
+
+      <button
+        class="doc-btn del"
+        onclick="removeDocumentItem(this)"
+      >
+        Delete
+      </button>
+
+    </div>
+  `;
+
+  documentsList.prepend(docItem);
+}
+
+function removeDocumentItem(button) {
+  button.closest(".doc-item").remove();
+
+  if (documentsList.children.length === 0) {
+    const docEmptyState =
+      document.getElementById("emptyDocsState");
+
+    if (docEmptyState) {
+      docEmptyState.style.display = "flex";
+    }
+  }
+}
+
+// ============================================
+// TOAST NOTIFICATION SYSTEM
+// ============================================
+
+function showToast(message) {
+  if (!toast) {
+    console.log(message);
+    return;
+  }
+
+  toast.innerText = message;
+
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 3000);
+}
+
+// ============================================
+// EVENT LISTENERS
+// ============================================
+
+const taskForm = document.getElementById("task-form");
+
+if (taskForm) {
+  taskForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    addTask();
+  });
+}
+
+taskInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+
+    addTask();
+  }
+});
+
+const savePdfBtn =
+  document.getElementById("savepdf");
+
+if (savePdfBtn) {
+  savePdfBtn.addEventListener("click", () => {
+    saveAsPDF();
+  });
+}
+
+// ============================================
+// INITIALIZATION
+// ============================================
+
+showHome();
+
+loadTasks();
+
+renderTasks();
+
+try {
+  const savedTheme =
+    localStorage.getItem("todo-theme");
+
+  applyTheme(savedTheme || "theme1");
+} catch (e) {
+  applyTheme("theme1");
 }

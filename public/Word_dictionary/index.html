@@ -1,46 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dictionary App</title>
-    <link rel="stylesheet" href="./style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lexicon — Smart Dictionary</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-    <nav>
-        <div class="container">
-            <h1>Word Dictionary</h1>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
+
+  <!-- Ambient background orbs -->
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
+
+  <nav>
+    <div class="nav-inner">
+      <div class="logo">
+        <span class="logo-mark">L</span>
+        <span class="logo-text">Lexicon</span>
+      </div>
+      <span class="nav-tagline">Word Intelligence</span>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <p class="hero-eyebrow">Explore Language</p>
+      <h1 class="hero-title">What word are you<br><em>curious about?</em></h1>
+
+      <div class="search-box">
+        <div class="search-field-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <input type="text" id="input" placeholder="Type any word…" autocomplete="off" spellcheck="false" />
+          <button id="clear-btn" class="clear-btn" title="Clear">✕</button>
         </div>
-    </nav>
-    <section class="input container">
-        <div id="box">
-            <h2>Find any word that exists in the world</h2>
-            <div class="form__wrap">
-                <div class="input__wrap">
-                    <input type="text" placeholder="Type a word" id="input">
-                    <button id="start-btn" aria-label="Start Speaking">Start Speaking</button>
-                    <button id="stop-btn" aria-label="Stop">Stop</button>
-                    <button id="search" aria-label="Search">Search</button>
-                </div>
-            </div>
+        <div class="search-actions">
+          <button id="search" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Search
+          </button>
+          <button id="start-btn" class="btn btn-ghost" title="Voice search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+            Speak
+          </button>
+          <button id="stop-btn" class="btn btn-ghost btn-danger hidden" title="Stop">
+            <svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+            Stop
+          </button>
         </div>
+      </div>
+
+      <div class="mic-status hidden" id="mic-status">
+        <span class="mic-pulse"></span>
+        <span>Listening…</span>
+      </div>
     </section>
 
-    <section class="words_Meaning">
-    </section>
+    <!-- Loading State -->
+    <div class="loading-state hidden" id="loading">
+      <div class="loader-ring"></div>
+      <p>Looking it up…</p>
+    </div>
 
-    <section class="data container">
-        <span class="loading">Loading...</span>
-        <p class="def"></p>
-        <div class="audio"></div>
-        <div class="not__found"></div>
-        <div class="words_and_meaning">
+    <!-- Error State -->
+    <div class="error-state hidden" id="error-state">
+      <div class="error-icon">∅</div>
+      <p id="error-msg">Word not found. Try a different spelling.</p>
+    </div>
+
+    <!-- Result Panel -->
+    <div class="result-panel hidden" id="result">
+
+      <!-- Header -->
+      <div class="result-header">
+        <div class="result-word-block">
+          <div class="word-meta-row">
+            <span class="pos-badge" id="pos-badge">noun</span>
+            <span class="word-index" id="word-index"></span>
+          </div>
+          <h2 class="result-word" id="result-word"></h2>
+          <p class="result-phonetic" id="result-phonetic"></p>
         </div>
-    </section>
-    <script src="./app.js"></script>
+        <button class="audio-play-btn hidden" id="audio-btn" title="Play pronunciation">
+          <svg id="audio-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Definition -->
+      <div class="result-section">
+        <div class="section-label">Definition</div>
+        <p class="result-definition" id="result-def"></p>
+        <p class="result-example hidden" id="result-example"></p>
+      </div>
+
+      <!-- Synonyms -->
+      <div class="result-section" id="syn-section">
+        <div class="section-label">Synonyms</div>
+        <div class="chip-row" id="synonyms"></div>
+      </div>
+
+      <!-- Antonyms -->
+      <div class="result-section" id="ant-section">
+        <div class="section-label">Antonyms</div>
+        <div class="chip-row" id="antonyms"></div>
+      </div>
+
+      <!-- Navigation if multiple meanings -->
+      <div class="result-nav hidden" id="result-nav">
+        <button class="nav-arrow" id="prev-btn">← Prev</button>
+        <span id="nav-counter"></span>
+        <button class="nav-arrow" id="next-btn">Next →</button>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="app.js"></script>
 </body>
-
 </html>

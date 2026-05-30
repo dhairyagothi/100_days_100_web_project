@@ -5,168 +5,302 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AeroStride</title>
-  <link rel="stylesheet" href="index.css">
-  <script type="module" src="index.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
   <link rel="icon" href="../favv.png" type="image/x-icon" />
+  <link rel="stylesheet" href="index.css">
 </head>
 <body>
 
-  <!-- Nav bar and the cart window-->
-  <header>
+  <!-- Navbar -->
+  <header class="site-header">
     <div class="navbar">
-      <div class="website_title">AeroStride</div>
-      <div class="button-container">
-        <button class="button">
-          <img src="images_used/home_icon.png" width="17px"/>
-        </button>
-        <button class="button">
-          <img src="images_used/search_icon.png" width="17px"/>
-        </button>
-        <button class="button">
-          <img src="images_used/profile_icon.png" width="19px"/>
-        </button>
-        <div class="box">
-          <div class="cart-count">0</div>
-          <img src="images_used/cart_icon.png" name="cart" id="cart-icon"/>
-        </div>
-      </div>
-    </div>
+      <div class="website_title">Aero<span>Stride</span></div>
 
-    <div class="nav">
-      <div class="cart">
-        <div class="cart-title">Cart Items</div>
-        <div class="cart-content">
-          <!-- Cart items will be dynamically inserted here -->
-        </div>
-        <div class="total">
-          <div class="total-title">Total</div>
-          <div class="total-price">Rs.0</div>
-        </div>
-        <button class="btn-buy">Place Order</button>
-        <img src="images_used/cross.png" name="close" id="cart-close"/>
+      <div class="button-container" aria-label="Header utilities">
+        <button class="button" type="button" aria-label="Search">
+          <img src="images_used/search_icon.png" alt="" aria-hidden="true">
+        </button>
+
+        <button class="button" type="button" aria-label="Profile">
+          <img src="images_used/profile_icon.png" alt="" aria-hidden="true">
+        </button>
+
+        <button class="wishlist-pill" id="wishlist-box" type="button" aria-label="Wishlist">
+          <span class="cart-count" id="wishlist-count">0</span>
+          <span class="wishlist-heart" aria-hidden="true">❤</span>
+        </button>
+
+        <button id="dark-mode-btn" class="button" type="button" aria-label="Toggle dark mode">🌙</button>
+
+        <button class="cart-pill" id="open-cart" type="button" aria-label="Open cart">
+          <img src="images_used/cart_icon.png" alt="" aria-hidden="true">
+          <span class="cart-pill-count" aria-label="Cart item count">0</span>
+        </button>
       </div>
     </div>
   </header>
 
+  <!-- Overlay (dims page when cart is open) -->
+  <div class="cart-overlay" id="cart-overlay"></div>
 
-  <!-- hero section of the website-->
-  <div class="hero" id="hero">
-    <div class="hero-content">
-      <div class="hero-text">
-        <h1>Exclusive Collections 2024</h1>
-        <p>Discover our latest range of stylish and comfortable footwear, designed for every occasion.</p>
-        <a class="button1" href="#trending-section">
-          Shop now
-          <img src="images_used/cart_icon.png"/>
-        </a>
+  <!-- Cart panel — lives outside header so z-index stacking is clean -->
+  <div class="cart-panel" id="cart-panel">
+    <div class="cart-header">
+      <div class="cart-header-left">
+        <span class="cart-title">Your Cart</span>
+        <span class="cart-badge" id="cart-badge">0</span>
       </div>
-      <div class="hero-image">
-        <img src="images_used/hero_shoe.png" alt="Shoe" width="70%">
+      <button id="cart-close" class="cart-close-btn" type="button" aria-label="Close cart">
+        <img src="images_used/cross.png" alt="" aria-hidden="true">
+      </button>
+    </div>
+
+    <div class="cart-body" id="cart-body">
+      <div class="cart-empty" id="cart-empty">
+        <span class="cart-empty-icon">🛒</span>
+        <span>Your cart is empty</span>
       </div>
+    </div>
+
+    <div class="cart-footer">
+      <div class="total">
+        <span class="total-title">Total</span>
+        <span class="total-price" id="total-price">Rs.0</span>
+      </div>
+      <button class="btn-buy" type="button">Place Order</button>
     </div>
   </div>
 
-  <!-- Trending Right Now section-->
-  <div class="trending-section" id="trending-section">
-    <div class="trending-line"></div>
-    <div class="trending-text">
-        <span>Trending Right Now</span>
-    </div>
-    <div class="trending-line"></div>
-</div>
+  <!-- Hero -->
+  <main>
+    <section class="hero" id="hero">
+      <div class="hero-content">
+        <div class="hero-text">
+          <div class="hero-eyebrow">Exclusive Collection 2024</div>
+          <h1>Step Into <span>Legend</span></h1>
+          <p>Footwear designed for those who move with purpose. High-performance silhouettes built for every occasion.</p>
+          <a class="button1" href="#trending-section">
+            Shop Now
+            <img src="images_used/cart_icon.png" alt="" aria-hidden="true">
+          </a>
+        </div>
+        <div class="hero-image">
+          <img src="images_used/hero_shoe.png" alt="AeroStride Hero Shoe">
+        </div>
+      </div>
+    </section>
 
-  <!--Shoe cards (contains same code repeated 8 times)-->
-  <div class="container">
-    <div class="shop-content">
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/messi shoes 0.png" class="shoe-img"></div>
-        <h2 class="shoe-title">GOAT</h2>
-        <span class="shoe-price">Rs.5000</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
+    <!-- Trending -->
+    <section class="trending-section" id="trending-section">
+      <div class="trending-heading-wrap">
+        <div class="trending-text">Trending Right Now</div>
       </div>
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/cristiano ronal 1.png" class="shoe-img"></div>
-        <h2 class="shoe-title">CR7</h2>
-        <span class="shoe-price">Rs.3000</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
-      </div>
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/giannis antetok 1.png" class="shoe-img"></div>
-        <h2 class="shoe-title">The Greek Freak</h2>
-        <span class="shoe-price">Rs.2500</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
-      </div>
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/ishowspeed shoe 1.png" class="shoe-img"></div>
-        <h2 class="shoe-title">Sewy</h2>
-        <span class="shoe-price">Rs.1500</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
-      </div>
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/kobe bryant sho 0.png" class="shoe-img"></div>
-        <h2 class="shoe-title">Black Mamba</h2>
-        <span class="shoe-price">Rs.3000</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
-      </div>
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/nike jordans 0.png" class="shoe-img"></div>
-        <h2 class="shoe-title">Jordan X</h2>
-        <span class="shoe-price">Rs.2500</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
-      </div>
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/virat_kohli.png" class="shoe-img"></div>
-        <h2 class="shoe-title">KING</h2>
-        <span class="shoe-price">Rs.5000</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
-      </div>
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/abd.png" class="shoe-img"></div>
-        <h2 class="shoe-title">Mr.360</h2>
-        <span class="shoe-price">Rs.5000</span>
-        <img src="images_used/cart_icon.png" name="cart" class="add-cart"></img>
-        <img src="images_used/cross.png" width="0px" name="cart" class="remove_icon"/>
-      </div>
-    </div>
-  </div>
+      <form class="search-form trending-search" role="search">
+        <label for="search-input" class="sr-only">Search products</label>
+        <input id="search-input" type="search" placeholder="Search shoes...">
+      </form>
+    </section>
 
-  <!--footer section of the website-->
+    <!-- Shop -->
+    <section class="container shop-section">
+
+      <p id="no-products-message" class="no-products-message" hidden>
+        No products found
+      </p>
+
+      <div class="shop-content product-grid">
+        <article class="shoe-box" data-price="5000">
+          <div class="pic">
+            <img src="images_used/messi shoes 0.png" class="shoe-img" alt="GOAT" loading="lazy">
+            <button class="wishlist-btn wishlist-fab" type="button" aria-label="Add GOAT to wishlist">❤</button>
+          </div>
+          <div class="shoe-info">
+            <h2 class="shoe-title">GOAT</h2>
+            <div class="shoe-price">Rs.5000</div>
+          </div>
+          <div class="product-actions">
+            <button class="add-cart" type="button" aria-label="Add GOAT to cart">
+              <img src="images_used/cart_icon.png" class="action-icon" alt="" aria-hidden="true">
+              <span>Add to Cart</span>
+            </button>
+          </div>
+        </article>
+
+        <article class="shoe-box" data-price="3000">
+          <div class="pic">
+            <img src="images_used/cristiano ronal 1.png" class="shoe-img" alt="CR7" loading="lazy">
+            <button class="wishlist-btn wishlist-fab" type="button" aria-label="Add CR7 to wishlist">❤</button>
+          </div>
+          <div class="shoe-info">
+            <h2 class="shoe-title">CR7</h2>
+            <div class="shoe-price">Rs.3000</div>
+          </div>
+          <div class="product-actions">
+            <button class="add-cart" type="button" aria-label="Add CR7 to cart">
+              <img src="images_used/cart_icon.png" class="action-icon" alt="" aria-hidden="true">
+              <span>Add to Cart</span>
+            </button>
+          </div>
+        </article>
+
+        <article class="shoe-box" data-price="2500">
+          <div class="pic">
+            <img src="images_used/giannis antetok 1.png" class="shoe-img" alt="The Greek Freak" loading="lazy">
+            <button class="wishlist-btn wishlist-fab" type="button" aria-label="Add The Greek Freak to wishlist">❤</button>
+          </div>
+          <div class="shoe-info">
+            <h2 class="shoe-title">The Greek Freak</h2>
+            <div class="shoe-price">Rs.2500</div>
+          </div>
+          <div class="product-actions">
+            <button class="add-cart" type="button" aria-label="Add The Greek Freak to cart">
+              <img src="images_used/cart_icon.png" class="action-icon" alt="" aria-hidden="true">
+              <span>Add to Cart</span>
+            </button>
+          </div>
+        </article>
+
+        <article class="shoe-box" data-price="1500">
+          <div class="pic">
+            <img src="images_used/ishowspeed shoe 1.png" class="shoe-img" alt="Sewy" loading="lazy">
+            <button class="wishlist-btn wishlist-fab" type="button" aria-label="Add Sewy to wishlist">❤</button>
+          </div>
+          <div class="shoe-info">
+            <h2 class="shoe-title">Sewy</h2>
+            <div class="shoe-price">Rs.1500</div>
+          </div>
+          <div class="product-actions">
+            <button class="add-cart" type="button" aria-label="Add Sewy to cart">
+              <img src="images_used/cart_icon.png" class="action-icon" alt="" aria-hidden="true">
+              <span>Add to Cart</span>
+            </button>
+          </div>
+        </article>
+
+        <article class="shoe-box" data-price="3000">
+          <div class="pic">
+            <img src="images_used/kobe bryant sho 0.png" class="shoe-img" alt="Black Mamba" loading="lazy">
+            <button class="wishlist-btn wishlist-fab" type="button" aria-label="Add Black Mamba to wishlist">❤</button>
+          </div>
+          <div class="shoe-info">
+            <h2 class="shoe-title">Black Mamba</h2>
+            <div class="shoe-price">Rs.3000</div>
+          </div>
+          <div class="product-actions">
+            <button class="add-cart" type="button" aria-label="Add Black Mamba to cart">
+              <img src="images_used/cart_icon.png" class="action-icon" alt="" aria-hidden="true">
+              <span>Add to Cart</span>
+            </button>
+          </div>
+        </article>
+
+        <article class="shoe-box" data-price="2500">
+          <div class="pic">
+            <img src="images_used/nike jordans 0.png" class="shoe-img" alt="Jordan X" loading="lazy">
+            <button class="wishlist-btn wishlist-fab" type="button" aria-label="Add Jordan X to wishlist">❤</button>
+          </div>
+          <div class="shoe-info">
+            <h2 class="shoe-title">Jordan X</h2>
+            <div class="shoe-price">Rs.2500</div>
+          </div>
+          <div class="product-actions">
+            <button class="add-cart" type="button" aria-label="Add Jordan X to cart">
+              <img src="images_used/cart_icon.png" class="action-icon" alt="" aria-hidden="true">
+              <span>Add to Cart</span>
+            </button>
+          </div>
+        </article>
+
+        <article class="shoe-box" data-price="5000">
+          <div class="pic">
+            <img src="images_used/virat_kohli.png" class="shoe-img" alt="KING" loading="lazy">
+            <button class="wishlist-btn wishlist-fab" type="button" aria-label="Add KING to wishlist">❤</button>
+          </div>
+          <div class="shoe-info">
+            <h2 class="shoe-title">KING</h2>
+            <div class="shoe-price">Rs.5000</div>
+          </div>
+          <div class="product-actions">
+            <button class="add-cart" type="button" aria-label="Add KING to cart">
+              <img src="images_used/cart_icon.png" class="action-icon" alt="" aria-hidden="true">
+              <span>Add to Cart</span>
+            </button>
+          </div>
+        </article>
+
+        <article class="shoe-box" data-price="5000">
+          <div class="pic">
+            <img src="images_used/abd.png" class="shoe-img" alt="Mr.360" loading="lazy">
+            <button class="wishlist-btn wishlist-fab" type="button" aria-label="Add Mr.360 to wishlist">❤</button>
+          </div>
+          <div class="shoe-info">
+            <h2 class="shoe-title">Mr.360</h2>
+            <div class="shoe-price">Rs.5000</div>
+          </div>
+          <div class="product-actions">
+            <button class="add-cart" type="button" aria-label="Add Mr.360 to cart">
+              <img src="images_used/cart_icon.png" class="action-icon" alt="" aria-hidden="true">
+              <span>Add to Cart</span>
+            </button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
   <footer class="site-footer">
     <div class="container1">
       <div class="footer-about">
         <h3>About Us</h3>
-        <p style="margin-top:15px;">At AeroStride, we blend innovative design with exceptional comfort
-          to create stylish, high-performance footwear. Our mission is to 
-          support your every step with shoes that fit seamlessly into your 
-          dynamic lifestyle. Discover the perfect balance of style and 
-          functionality with AeroStride.
-        </p>
+        <p>At AeroStride, we blend innovative design with exceptional comfort to create stylish, high-performance footwear. Our mission is to support your every step with shoes that fit seamlessly into your dynamic lifestyle.</p>
       </div>
       <div class="footer-links">
         <h3>Quick Links</h3>
         <ul>
-          <li><a href="#hero" style="margin-left:15px;font-size:18px;">Home</a></li>
-          <li><a href="#trending-section" style="margin-left:15px;font-size:18px;">Shoes</a></li>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#trending-section">Shoes</a></li>
         </ul>
       </div>
-      <div class="footer-contact" id="footer">
+      <div class="footer-contact">
         <h3>Contact Us</h3>
-        <p style="margin-top:15px;">Email: info@example.com</p>
+        <p>Email: info@aerostride.com</p>
         <p>Phone: +123 456 7890</p>
       </div>
     </div>
-    <div class="copyright_part"><span style="margin-right:10px;">&copy;</span>AeroStride 2024</div>
+    <div class="footer-divider"></div>
+    <div class="copyright_part">&copy; AeroStride 2024</div>
   </footer>
 
-  
+  <!-- Modals -->
+  <div class="checkout-modal">
+    <div class="checkout-content">
+      <span class="close-checkout">&times;</span>
+      <h2>Checkout</h2>
+      <input type="text" id="full-name" placeholder="Full Name">
+      <input type="text" id="address" placeholder="Address">
+      <input type="text" id="phone" placeholder="Phone Number">
+      <select id="payment-method">
+        <option value="">Select Payment Method</option>
+        <option>UPI</option>
+        <option>Cash on Delivery</option>
+        <option>Card</option>
+      </select>
+      <button id="submit-order" type="button">Submit Order</button>
+    </div>
+  </div>
 
-  <script src="js/script.js"></script>
+  <div class="quick-view-modal">
+    <div class="quick-view-content">
+      <span class="close-quick-view">&times;</span>
+      <img id="quick-view-img" src="" alt="Product Image">
+      <h2 id="quick-view-title"></h2>
+      <p id="quick-view-price"></p>
+      <button id="quick-view-cart-btn" type="button">Add To Cart</button>
+    </div>
+  </div>
+
+  <script src="index.js"></script>
 </body>
 </html>
