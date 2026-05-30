@@ -67,8 +67,8 @@ body.light-mode {
   --bg-surface: #eee8d5;
 
   --text-primary: #433422;
-  --text-secondary: rgba(67, 52, 34, 0.7);
-  --text-muted: rgba(67, 52, 34, 0.5);
+  --text-secondary: rgba(67, 52, 34, 0.85);
+  --text-muted: rgba(67, 52, 34, 0.7);
   --accent-color: #cb4b16; 
   --accent: #b58900;
   --accent-dim: rgba(181, 137, 0, 0.1);
@@ -550,8 +550,25 @@ body > header {
     justify-content: center;
     padding: 1rem;
   }
+
+}
+[data-theme="sepia"] .stats-strip {
+  background: rgba(67, 52, 34, 0.15);
+  border: 1px solid rgba(67, 52, 34, 0.2);
+  box-shadow: 0 0 0 1px rgba(67, 52, 34, 0.05),
+              0 18px 60px rgba(181, 137, 0, 0.08);
 }
 
+[data-theme="sepia"] .navbar,
+[data-theme="sepia"] header {
+  background: rgba(180, 145, 100, 0.55) !important;
+  border-bottom: 1px solid rgba(67, 52, 34, 0.2) !important;
+}
+
+[data-theme="sepia"] .nav-link,
+[data-theme="sepia"] .navbar a {
+  color: var(--text-primary) !important;
+}
 /* ============================================================
    THEME DROPDOWN
    ============================================================ */
