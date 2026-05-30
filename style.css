@@ -2879,7 +2879,7 @@ body > header {
 }
 
 /* Custom Cursor */
-* {
+.home-page * {
   cursor: none !important;
 }
 
