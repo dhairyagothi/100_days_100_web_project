@@ -1337,3 +1337,36 @@ input:checked + .toggle-slider:before {
   .card { padding: 18px 16px; }
   .world-time-display { font-size: 1rem; }
 }
+.world-time-weather {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.world-clock-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.world-time-display {
+  min-width: 120px;
+}
+
+.world-weather-inline {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.weather-emoji {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.weather-temp {
+  opacity: 0.9;
+}

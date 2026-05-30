@@ -684,6 +684,7 @@ body {
 }
 
 
+
 .main .image-container {
 
     padding: 25px;
@@ -750,6 +751,7 @@ body {
     align-items: center;
 
 }
+
 
 
 .main .image-container h1 {
@@ -858,6 +860,7 @@ body {
     margin-bottom: 10px;
 
 }
+
 
 
 .main .input:hover {
@@ -1218,7 +1221,11 @@ body {
     .main .image-container h1 {
         color: #00bcd4;
         text-align: center;
+
         margin-top: 20px;
+
+        margin-top: 20px; 
+
         margin-bottom: 8px; 
         font-size: 42px; 
         letter-spacing: 12px;

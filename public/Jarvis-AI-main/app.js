@@ -44,7 +44,7 @@ function wishMe() {
 
 window.addEventListener("load", () => {
 
-  
+
   if (localStorage.getItem("loggedIn") === "true") {
 
     document.getElementById("authContainer").style.display = "none";
@@ -366,7 +366,11 @@ function resetPassword() {
     return;
   }
 
+
   if (user.email == email) {
+
+  if (user.email === email) {
+
 
     user.password = btoa(newPassword);
 
