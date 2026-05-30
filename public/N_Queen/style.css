@@ -1,146 +1,229 @@
+:root {
+  --bg-dark: #0f0f1a;
+  --panel-bg: rgba(30, 30, 47, 0.7);
+  --primary: #ff6347;
+  --primary-glow: rgba(255, 99, 71, 0.4);
+  --accent: #ffa07a;
+  --success: #00e676;
+  --error: #ff1744;
+  --light-square: #e2e8f0;
+  --dark-square: #4a5568;
+}
 
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #121212;
-    color: #ffffff;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-  }
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: radial-gradient(circle at center, #1e1e38 0%, var(--bg-dark) 100%);
+  color: #ffffff;
+  text-align: center;
+  margin: 0;
+  padding: 80px 20px 40px 20px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
 
-  .container {
-    max-width: fit-content;
-    margin: 20px auto;
-    padding: 20px;
-    background: #1e1e2f;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    border-radius: 15px;
-  }
+.project-back-button {
+  position: fixed;
+  left: 24px;
+  top: 24px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-decoration: none;
+  z-index: 9999;
+  font-weight: 700;
+  color: #ffffff;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
 
-  h1 {
-    font-size: 2.5em;
-    color: #ff6347;
-    margin-bottom: 20px;
-  }
+.project-back-button:hover {
+  background: #ffffff;
+  color: var(--bg-dark);
+  transform: translateY(-2px);
+}
 
-  label {
-    font-weight: bold;
-    font-size: 1.2em;
-    color: #ffa07a;
-    padding-bottom: 20px;
-  }
+.container {
+  max-width: fit-content;
+  margin: 0 auto;
+  padding: 35px;
+  background: var(--panel-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.6);
+  border-radius: 24px;
+  animation: fadeIn 0.6s ease-out;
+}
 
-  input[type="number"] {
-    margin: 10px 0;
-    padding: 8px;
-    font-size: 1.1em;
-    border: 2px solid #ffa07a;
-    border-radius: 8px;
-    width: 80px;
-    text-align: center;
-    background-color: #282c34;
-    color: #f6f6f6;
-  }
+h1 {
+  font-size: 2.8em;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ff8a75 0%, var(--primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0 0 5px 0;
+}
 
-  button {
-    background-color:#48bb78 ;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1.2em;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
+.subtitle {
+  color: #a0aec0;
+  font-size: 1rem;
+  margin-bottom: 30px;
+}
 
-  button:hover {
-    background-color: #6cde9b;
-  }
+.board-details {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 15px 25px;
+  border-radius: 16px;
+  margin-bottom: 25px;
+}
+
+.board-size {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+label {
+  font-weight: 600;
+  font-size: 1.05em;
+  color: var(--accent);
+}
+
+input[type="number"] {
+  padding: 10px;
+  font-size: 1.1em;
+  font-weight: 600;
+  border: 2px solid rgba(255, 160, 122, 0.4);
+  border-radius: 10px;
+  width: 70px;
+  text-align: center;
+  background-color: #12121f;
+  color: #ffffff;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+input[type="number"]:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px rgba(255, 160, 122, 0.2);
+}
+
+button {
+  font-family: inherit;
+  font-weight: 700;
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+  color: #fff;
+  border: none;
+  padding: 12px 26px;
+  font-size: 1.1em;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(56, 161, 105, 0.3);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+}
+
+.reset-button {
+  background: linear-gradient(135deg, #ff6347 0%, #e53e3e 100%);
+  box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
+}
+
+.reset-button:hover {
+  box-shadow: 0 6px 20px rgba(255, 99, 71, 0.4);
+}
 
 #gameBoard {
   display: grid;
-  margin: 20px auto;
-  border: 4px solid #ff6347;
-  background: #2c2f40;
-  border-radius: 10px;
-  
-  /* --- Add/Update these lines --- */
-  width: fit-content;      /* Keeps it tight around small boards */
-  max-width: 95vw;        /* Prevents it from going off the screen edges */
-  max-height: 70vh;       /* Keeps it from being too tall on mobile */
-  overflow: auto;         /* Adds a scrollbar ONLY if the board is too big */
-  padding: 10px;          /* Adds some breathing room inside the border */
-  /* ------------------------------ */
+  margin: 25px auto;
+  border: 6px solid #1a1a2e;
+  background: #1a1a2e;
+  border-radius: 14px;
+  width: fit-content;      
+  max-width: 95vw;        
+  max-height: 65vh;       
+  overflow: auto;         
+  padding: 4px;
+  box-shadow: inset 0 4px 20px rgba(0,0,0,0.5);
 }
 
-  .square {
-    width: 60px;
-    height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    border: 0.5px solid #e4806e;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem; /* Makes the queen icon look bold and clear */
-  }
+.square {
+  width: 55px;
+  height: 55px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.2s, transform 0.1s;
+}
 
-  .square:nth-child(odd) {
-    background-color: #495057;
-  }
+/* Perfect Chessboard colors applied dynamically via JS classes */
+.square.light-tile { background-color: var(--light-square); }
+.square.dark-tile { background-color: var(--dark-square); }
 
-  .square:nth-child(even) {
-    background-color: #343a40;
-  }
+/* Track View Hover Guidance Lines */
+.square.guideline::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 160, 122, 0.15);
+  pointer-events: none;
+}
 
-  .queen {
-    font-size: 32px;
-    color: #ffa07a;
-    pointer-events: none;
-  }
+.square:hover {
+  filter: brightness(1.15);
+}
 
-  #message {
-    font-size: 1.4em;
-    font-weight: bold;
-    margin-top: 20px;
-    color: #48bb78;
-  }
+.queen {
+  font-size: 34px;
+  color: #1a1a2e;
+  pointer-events: none;
+  z-index: 2;
+  animation: dropIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
 
-  #message.error {
-    color: #e53e3e;
-  }
+#message {
+  font-size: 1.25em;
+  font-weight: 700;
+  margin: 15px 0;
+  min-height: 30px;
+  color: var(--success);
+  text-shadow: 0 2px 8px rgba(0, 230, 118, 0.2);
+}
 
-  .highlight {
-    background-color: rgba(229, 62, 62, 0.6);
-  }
+#message.error {
+  color: var(--error);
+  text-shadow: 0 2px 8px rgba(255, 23, 68, 0.2);
+}
 
-  .reset-button {
-    background-color: #ff6347;
-    margin-top: 10px;
-    padding: 10px 20px;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.2em;
-    cursor: pointer;
-    transition: background-color 0.3s;
-   
-  }
+.highlight {
+  background-color: var(--error) !important;
+  animation: shake 0.4s ease-in-out;
+}
 
-  .reset-button:hover {
-    background-color:#f34b2e;
-  }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-  .board-details {
-      display: flex;
-      flex-direction: column;
-  }
+@keyframes dropIn {
+  from { opacity: 0; transform: scale(0.3) rotate(-15deg); }
+  to { opacity: 1; transform: scale(1) rotate(0deg); }
+}
 
-  .board-size{
-      padding-bottom:20px;
-  }
-
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
