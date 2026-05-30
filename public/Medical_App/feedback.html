@@ -3,53 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FeedBack</title>
+    <title>Give Feedback | MedConsult Portal</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
 </head>
-<body style="background: url(pngtree-medical-device-line-draft-border-png-image_2392872.jpg);">
-    <div  class="feedbackmain">
-        <h2>FeedBack</h2>
-        <p>Help us help you.</p>
+<body>
 
+<div class="app-container">
+
+    <!-- Collapsible Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-brand-icon">
+                <i data-lucide="activity"></i>
+            </div>
+            <span class="sidebar-brand-name">MedConsult</span>
+        </div>
         
-            <form id="feedbackform">
-                <label for="feedbackMessage">Your Feedback:</label>
-                <br><br>
-                <textarea id="feedbackMessage" name="feedbackMessage" required></textarea>
-                <br><br>
-                <button type="submit">Submit Feedback</button>
-            </form>
-           <button class="back" onclick="window.location.href='./index.html'">
-    Back To the Main
-</button>
+        <ul class="sidebar-menu">
+            <li class="sidebar-menu-item">
+                <a href="index.html">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="remedies.html">
+                    <i data-lucide="heart-pulse"></i>
+                    <span>Basic Remedies</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item active">
+                <a href="feedback.html">
+                    <i data-lucide="message-square"></i>
+                    <span>Give Feedback</span>
+                </a>
+            </li>
+        </ul>
+        
+        <div class="sidebar-footer">
+            <div class="sidebar-footer-avatar">DA</div>
+            <div class="sidebar-footer-info">
+                <div class="sidebar-footer-name">Dr. Alex</div>
+                <div class="sidebar-footer-role">Local Practitioner</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <div class="main-panel">
+        
+        <!-- Top Navigation Header -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="sidebar-toggle-btn" id="sidebarToggle" aria-label="Toggle Sidebar">
+                    <i data-lucide="menu"></i>
+                </button>
+                <span class="topbar-title">MedConsult Portal</span>
+            </div>
+            <div class="topbar-right">
+                <button class="notification-bell" aria-label="Notifications">
+                    <i data-lucide="bell"></i>
+                    <span class="notification-badge"></span>
+                </button>
+                <div class="user-profile-badge">
+                    <span class="user-profile-dot"></span>
+                    <span>Active Session</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="content-body" style="display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 120px);">
+            
+            <section class="card" style="width: 100%; max-width: 550px; padding: 35px; box-shadow: var(--card-hover-shadow);">
+                <div class="card-header" style="justify-content: center; border-bottom: none; margin-bottom: 5px;">
+                    <div class="card-icon" style="width: 46px; height: 46px; background: rgba(20, 184, 166, 0.1);">
+                        <i data-lucide="star" style="width: 24px; height: 24px; color: var(--primary);"></i>
+                    </div>
+                </div>
+                
+                <h2 style="text-align: center; font-size: 1.5rem; margin-bottom: 8px;">Help Us Help You</h2>
+                <p style="text-align: center; color: #64748b; font-size: 0.95rem; margin-bottom: 30px;">We value your insights. Share your feedback to improve the MedConsult portal.</p>
+                
+                <form id="feedbackform">
+                    <div class="form-group">
+                        <textarea id="feedbackMessage" name="feedbackMessage" placeholder=" " required style="min-height: 120px;"></textarea>
+                        <label for="feedbackMessage">Your Feedback Message</label>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px;">
+                        <button type="submit" class="btn btn-success btn-full" aria-label="Submit feedback form">
+                            <i data-lucide="send"></i> Submit Feedback
+                        </button>
+                        <button type="reset" class="btn btn-outline btn-full" aria-label="Clear feedback message">
+                            <i data-lucide="rotccw"></i> Clear
+                        </button>
+                    </div>
+                </form>
+                
+                <button type="button" class="btn btn-secondary btn-full" onclick="window.location.href='./index.html'" style="margin-top: 12px;" aria-label="Return to dashboard">
+                    <i data-lucide="arrow-left"></i> Back to Dashboard
+                </button>
+            </section>
+            
+        </main>
+        
     </div>
 
-    <div id="toast-container"></div>
+</div>
 
+<!-- Custom toast alert messages -->
+<div id="toast-container"></div>
+
+<!-- Lucide Icons and Logic -->
+<script src="https://unpkg.com/lucide@latest"></script>
 <script>
+// Sidebar collapsible toggle functionality
+const sidebar = document.getElementById("sidebar");
+const sidebarToggle = document.getElementById("sidebarToggle");
+
+if (sidebar && sidebarToggle) {
+    sidebarToggle.addEventListener("click", () => {
+        sidebar.classList.toggle("collapsed");
+        localStorage.setItem("medConsultSidebarCollapsed", sidebar.classList.contains("collapsed"));
+    });
+
+    // Restore state
+    if (localStorage.getItem("medConsultSidebarCollapsed") === "true") {
+        sidebar.classList.add("collapsed");
+    }
+}
+
+// Toast notification helper
 function showToast(message, type = 'info') {
     const container = document.getElementById('toast-container');
+    if (!container) return;
 
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
 
+    let iconName = 'info';
+    if (type === 'success') iconName = 'check-circle';
+
     toast.innerHTML = `
-        <span>${message}</span>
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <i data-lucide="${iconName}" style="width: 18px; height: 18px;"></i>
+            <span>${message}</span>
+        </div>
         <button onclick="this.parentElement.remove()">&times;</button>
     `;
 
     container.appendChild(toast);
+    
+    if (typeof lucide !== "undefined") {
+        lucide.createIcons();
+    }
 
     setTimeout(() => {
-        toast.remove();
-    }, 3000);
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, 4000);
 }
 
 document.getElementById("feedbackform").addEventListener("submit", function(event) {
     event.preventDefault();
-
     showToast("Feedback submitted successfully!", "success");
+    document.getElementById("feedbackMessage").value = "";
+});
+
+// Render static Lucide Icons
+document.addEventListener("DOMContentLoaded", () => {
+    if (typeof lucide !== "undefined") {
+        lucide.createIcons();
+    }
 });
 </script>
 </body>

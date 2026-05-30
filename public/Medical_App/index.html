@@ -6,109 +6,364 @@
     <title>MedConsult Dashboard</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
 
-<header class="hero">
-    <div class="hero-content">
-        <h1>🏥 MedConsult Dashboard</h1>
-        <p>Connecting Local Doctors with Specialists</p>
-    </div>
-</header>
 
-<main class="dashboard">
+   
 
-    <section class="card">
-        <h2>📋 Request Consultation</h2>
-
-        <form id="requestForm">
-
-            <label for="doctorName">Doctor Name</label>
-            <input type="text" id="doctorName" placeholder="Enter doctor name" required>
-
-            <label for="patientCondition">Patient Condition</label>
-            <textarea id="patientCondition" placeholder="Describe patient condition" required></textarea>
-
-            <label for="specialistSearch">Specialist Needed</label>
-
-            <input type="text"
-                   id="specialistSearch"
-                   placeholder="Search specialist">
-
-            <select id="specialistType">
-                <option value="">Select Specialist</option>
-            </select>
-
-            <button type="submit" class="primary-btn">
-                Submit Consultation
-            </button>
-
-        </form>
-    </section>
-
-    <section class="card">
-        <h2>📊 Health Monitoring</h2>
-
-        <div class="stats-grid">
-
-            <div class="stat-box">
-                <h3>❤️ Heart Rate</h3>
-                <p id="heartRate">78 BPM</p>
-            </div>
-
-            <div class="stat-box">
-                <h3>🩸 Blood Pressure</h3>
-                <p>120 / 80</p>
-            </div>
-
-            <div class="stat-box">
-                <h3>🌡️ Temperature</h3>
-                <p>98.4°F</p>
-            </div>
-
-            <div class="stat-box">
-                <h3>🫁 Oxygen</h3>
-                <p>98%</p>
-            </div>
-
-        </div>
-    </section>
-
-    <section class="card">
-        <h2>💊 Safe Medicine Recommendations</h2>
-
-        <select id="symptomSelect">
-            <option value="">Select Symptom</option>
-            <option value="cold">Cold</option>
-            <option value="headache">Headache</option>
-            <option value="fever">Fever</option>
-            <option value="fatigue">Fatigue</option>
-        </select>
-
-        <div id="recommendationBox"></div>
-
-        <p class="disclaimer">
-            ⚠️ Informational only. Consult a medical professional for diagnosis.
-        </p>
-    </section>
-
-    <section class="card">
-        <h2>🕒 Consultation History</h2>
-
-        <ul id="historyList"></ul>
-    </section>
-
-    <section class="card feedback-card">
-        <h2>⭐ Feedback</h2>
-
-        <a href="feedback.html">
-            <button class="primary-btn">Give Feedback</button>
-        </a>
-    </section>
-
-</main>
-
-<script src="script.js"></script>
 
 </body>
+</html>
+
+<div class="app-container">
+
+    <!-- Collapsible Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-brand-icon">
+                <i data-lucide="activity"></i>
+            </div>
+            <span class="sidebar-brand-name">MedConsult</span>
+        </div>
+        
+        <ul class="sidebar-menu">
+            <li class="sidebar-menu-item active">
+                <a href="index.html">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="remedies.html">
+                    <i data-lucide="heart-pulse"></i>
+                    <span>Basic Remedies</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="feedback.html">
+                    <i data-lucide="message-square"></i>
+                    <span>Give Feedback</span>
+                </a>
+            </li>
+        </ul>
+        
+        <div class="sidebar-footer">
+            <div class="sidebar-footer-avatar">DA</div>
+            <div class="sidebar-footer-info">
+                <div class="sidebar-footer-name">Dr. Alex</div>
+                <div class="sidebar-footer-role">Local Practitioner</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <div class="main-panel">
+        <button id="themeToggle" class="theme-btn">🌙 Dark Mode</button>
+        
+        <!-- Top Navigation Header -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="sidebar-toggle-btn" id="sidebarToggle" aria-label="Toggle Sidebar">
+                    <i data-lucide="menu"></i>
+                </button>
+                <span class="topbar-title">MedConsult Portal</span>
+            </div>
+            <div class="topbar-right">
+                <button class="notification-bell" aria-label="Notifications">
+                    <i data-lucide="bell"></i>
+                    <span class="notification-badge"></span>
+                </button>
+                <div class="user-profile-badge">
+                    <span class="user-profile-dot"></span>
+                    <span>Active Session</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content Container -->
+        <main class="content-body">
+            
+            <!-- Welcome Hero -->
+            <div class="welcome-card">
+                <h1>🏥 MedConsult Dashboard</h1>
+                <p>Connecting local practitioners with specialist doctors in real time</p>
+            </div>
+         
+
+
+
+            <!-- Health Monitoring Live Stats Row -->
+            <section class="stats-grid">
+                <div class="stat-box stat-heart-box" id="heartBox">
+                    <div class="stat-box-icon stat-heart">
+                        <i data-lucide="heart"></i>
+                    </div>
+                    <div class="stat-box-info">
+                        <span class="stat-box-title">Heart Rate</span>
+                        <span class="stat-box-value" id="heartRate">78 BPM</span>
+                    </div>
+                </div>
+                <div class="stat-box stat-bp-box">
+                    <div class="stat-box-icon stat-bp">
+                        <i data-lucide="activity"></i>
+                    </div>
+                    <div class="stat-box-info">
+                        <span class="stat-box-title">Blood Pressure</span>
+                        <span class="stat-box-value">120 / 80</span>
+                    </div>
+                </div>
+                <div class="stat-box stat-temp-box">
+                    <div class="stat-box-icon stat-temp">
+                        <i data-lucide="thermometer"></i>
+                    </div>
+                    <div class="stat-box-info">
+                        <span class="stat-box-title">Temperature</span>
+                        <span class="stat-box-value">98.4°F</span>
+                    </div>
+                </div>
+                <div class="stat-box stat-ox-box">
+                    <div class="stat-box-icon stat-ox">
+                        <i data-lucide="wind"></i>
+                    </div>
+                    <div class="stat-box-info">
+                        <span class="stat-box-title">Oxygen Level</span>
+                        <span class="stat-box-value">98%</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard Columns Layout -->
+            <div class="dashboard-grid">
+                
+                <!-- Left Column (Primary) -->
+                <div style="display: flex; flex-direction: column; gap: 30px;">
+                    
+                    <!-- Our Specialist Doctors Section -->
+                    <section class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i data-lucide="users"></i>
+                            </div>
+                            <h2>Available Specialists</h2>
+                        </div>
+                        <div class="doctors-list-grid">
+                            
+                            <!-- Doctor 1: Cardiologist -->
+                            <div class="doctor-card" data-doctor-name="Dr. Sarah Jenkins" data-specialist-type="Cardiologist">
+                                <div class="doctor-header">
+                                    <div class="doctor-avatar-wrapper">
+                                        <div class="doctor-avatar" style="background-color: #e2f7f5; color: #14b8a6; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem;">SJ</div>
+                                        <span class="doctor-status-dot status-available"></span>
+                                    </div>
+                                    <div class="doctor-info-text">
+                                        <span class="doctor-name">Dr. Sarah Jenkins</span>
+                                        <span class="doctor-specialization">Cardiologist</span>
+                                    </div>
+                                </div>
+                                <div class="doctor-badges">
+                                    <span class="doctor-badge"><i data-lucide="award"></i> 12 yrs exp</span>
+                                    <span class="badge-status badge-available">Available</span>
+                                </div>
+                                <div class="doctor-footer">
+                                    <span class="doctor-rating"><i data-lucide="star"></i> 4.9</span>
+                                    <button type="button" class="btn btn-primary btn-sm book-doctor-btn" aria-label="Book appointment with Dr. Sarah Jenkins">Book Appointment</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Doctor 2: Neurologist -->
+                            <div class="doctor-card" data-doctor-name="Dr. Michael Chen" data-specialist-type="Neurologist">
+                                <div class="doctor-header">
+                                    <div class="doctor-avatar-wrapper">
+                                        <div class="doctor-avatar" style="background-color: #dbeafe; color: #3b82f6; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem;">MC</div>
+                                        <span class="doctor-status-dot status-busy"></span>
+                                    </div>
+                                    <div class="doctor-info-text">
+                                        <span class="doctor-name">Dr. Michael Chen</span>
+                                        <span class="doctor-specialization">Neurologist</span>
+                                    </div>
+                                </div>
+                                <div class="doctor-badges">
+                                    <span class="doctor-badge"><i data-lucide="award"></i> 15 yrs exp</span>
+                                    <span class="badge-status badge-busy">Busy</span>
+                                </div>
+                                <div class="doctor-footer">
+                                    <span class="doctor-rating"><i data-lucide="star"></i> 4.8</span>
+                                    <button type="button" class="btn btn-primary btn-sm book-doctor-btn" aria-label="Book appointment with Dr. Michael Chen">Book Appointment</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Doctor 3: Dermatologist -->
+                            <div class="doctor-card" data-doctor-name="Dr. Elena Rostova" data-specialist-type="Dermatologist">
+                                <div class="doctor-header">
+                                    <div class="doctor-avatar-wrapper">
+                                        <div class="doctor-avatar" style="background-color: #fce7f3; color: #ec4899; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem;">ER</div>
+                                        <span class="doctor-status-dot status-available"></span>
+                                    </div>
+                                    <div class="doctor-info-text">
+                                        <span class="doctor-name">Dr. Elena Rostova</span>
+                                        <span class="doctor-specialization">Dermatologist</span>
+                                    </div>
+                                </div>
+                                <div class="doctor-badges">
+                                    <span class="doctor-badge"><i data-lucide="award"></i> 8 yrs exp</span>
+                                    <span class="badge-status badge-available">Available</span>
+                                </div>
+                                <div class="doctor-footer">
+                                    <span class="doctor-rating"><i data-lucide="star"></i> 4.7</span>
+                                    <button type="button" class="btn btn-primary btn-sm book-doctor-btn" aria-label="Book appointment with Dr. Elena Rostova">Book Appointment</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Doctor 4: Pediatrician -->
+                            <div class="doctor-card" data-doctor-name="Dr. Marcus Vance" data-specialist-type="Pediatrician">
+                                <div class="doctor-header">
+                                    <div class="doctor-avatar-wrapper">
+                                        <div class="doctor-avatar" style="background-color: #fef3c7; color: #f59e0b; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem;">MV</div>
+                                        <span class="doctor-status-dot status-offline"></span>
+                                    </div>
+                                    <div class="doctor-info-text">
+                                        <span class="doctor-name">Dr. Marcus Vance</span>
+                                        <span class="doctor-specialization">Pediatrician</span>
+                                    </div>
+                                </div>
+                                <div class="doctor-badges">
+                                    <span class="doctor-badge"><i data-lucide="award"></i> 10 yrs exp</span>
+                                    <span class="badge-status badge-offline">Offline</span>
+                                </div>
+                                <div class="doctor-footer">
+                                    <span class="doctor-rating"><i data-lucide="star"></i> 4.9</span>
+                                    <button type="button" class="btn btn-primary btn-sm book-doctor-btn" aria-label="Book appointment with Dr. Marcus Vance">Book Appointment</button>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </section>
+
+                    <!-- Request Consultation Section -->
+                    <section class="card" id="bookingCard">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i data-lucide="clipboard-list"></i>
+                            </div>
+                            <h2>Request Consultation</h2>
+                        </div>
+                        
+                        <form id="requestForm">
+                            <div class="form-group">
+                                <input type="text" id="doctorName" placeholder=" " required autocomplete="off">
+                                <label for="doctorName">Doctor Name</label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <textarea id="patientCondition" placeholder=" " required></textarea>
+                                <label for="patientCondition">Patient Condition</label>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <input type="text" id="specialistSearch" placeholder=" " autocomplete="off">
+                                    <label for="specialistSearch">Search Specialist Type</label>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <select id="specialistType" required>
+                                        <option value="" disabled selected hidden></option>
+                                    </select>
+                                    <label for="specialistType">Select Specialist</label>
+                                </div>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                <button type="submit" class="btn btn-success btn-full" aria-label="Submit consultation request">
+                                    <i data-lucide="send"></i> Submit Request
+                                </button>
+                                <button type="reset" class="btn btn-outline btn-full" aria-label="Clear form fields">
+                                    <i data-lucide="x"></i> Clear Form
+                                </button>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+
+                <!-- Right Column (Secondary / Informational) -->
+                <div style="display: flex; flex-direction: column; gap: 30px;">
+                    
+                    <!-- Safe Medicine Recommendations -->
+                    <section class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i data-lucide="pill"></i>
+                            </div>
+                            <h2>Safe Medicine Recommendations</h2>
+                        </div>
+                        
+                        <div class="form-group" style="margin-top: 10px;">
+                            <select id="symptomSelect" required>
+                                <option value="" disabled selected hidden></option>
+                                <option value="cold">Cold</option>
+                                <option value="headache">Headache</option>
+                                <option value="fever">Fever</option>
+                                <option value="fatigue">Fatigue</option>
+                            </select>
+                            <label for="symptomSelect">Select Symptom</label>
+                        </div>
+                        
+                        <div id="recommendationBox">
+                            <p style="color: #64748b; font-size: 0.9rem; text-align: center; padding: 10px;">Select a symptom above to view recommendations.</p>
+                        </div>
+                        
+                        <div class="disclaimer">
+                            <i data-lucide="alert-triangle" style="width: 16px; height: 16px; flex-shrink: 0; color: #b45309;"></i>
+                            <span>Informational only. Consult a medical professional for diagnosis.</span>
+                        </div>
+                    </section>
+
+                    <!-- Consultation History -->
+                    <section class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i data-lucide="history"></i>
+                            </div>
+                            <h2>Consultation History</h2>
+                        </div>
+                        <ul id="historyList">
+                            <li style="text-align: center; color: #94a3b8; border: none; padding: 20px 0; background: none; border-left: none;">No previous requests found.</li>
+                        </ul>
+                    </section>
+
+                    <!-- Give Feedback Card CTA -->
+                    <section class="card feedback-card">
+                        <div class="card-icon" style="margin: 0 auto 12px; background: rgba(20, 184, 166, 0.1);">
+                            <i data-lucide="star" style="color: var(--primary);"></i>
+                        </div>
+                        <h2>Share Your Experience</h2>
+                        <p>Help us improve by providing quick feedback about the MedConsult system.</p>
+                        <a href="feedback.html" style="text-decoration: none;">
+                            <button class="btn btn-primary btn-full" aria-label="Navigate to feedback form">
+                                <i data-lucide="message-square"></i> Give Feedback
+                            </button>
+                        </a>
+                    </section>
+                    
+                </div>
+                
+            </div>
+            
+        </main>
+        
+    </div>
+
+</div>
+
+<!-- Custom toast alert messages -->
+<div id="toast-container"></div>
+
+<!-- Lucide Icons initialization script -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="script.js"></script>
+
+
+
+</body>
+
 </html>

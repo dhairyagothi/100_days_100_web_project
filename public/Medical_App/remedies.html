@@ -3,261 +3,301 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Basic Remedies | MedConsult</title>
-
+    <title>Basic Remedies | MedConsult Portal</title>
     <link rel="stylesheet" href="styles.css" />
-
     <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
+        .remedy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+        
+        .remedy-card {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .remedy-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-heading);
+        }
+        
+        .remedy-card p {
+            font-size: 0.92rem;
+            line-height: 1.6;
+            color: var(--text-main);
+        }
+        
+        .remedy-card p:last-of-type {
+            border-top: 1px dashed var(--border-color);
+            padding-top: 10px;
+            margin-top: auto;
+            color: #64748b;
         }
 
-        body{
-            font-family: Arial, Helvetica, sans-serif;
-            background: linear-gradient(135deg,#f4f9ff,#dff4ff);
-            color:#222;
-            min-height:100vh;
+        .warning-panel {
+            background-color: var(--warning-light);
+            border-left: 5px solid var(--warning);
+            padding: 20px 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        
+        .warning-panel-icon {
+            color: var(--warning);
+            flex-shrink: 0;
+            margin-top: 2px;
         }
 
-        .site-header{
-            text-align:center;
-            padding:40px 20px;
-            background:linear-gradient(135deg,#0f766e,#14b8a6);
-            color:white;
-            box-shadow:0 4px 15px rgba(0,0,0,0.15);
+        .warning-panel h2 {
+            color: #b45309;
+            font-size: 1.15rem;
+            margin-bottom: 6px;
         }
 
-        .site-header h1{
-            font-size:2.5rem;
-            margin-bottom:10px;
-        }
-
-        .site-header p{
-            font-size:1rem;
-            opacity:0.95;
-        }
-
-        .app-shell{
-            width:90%;
-            max-width:1200px;
-            margin:40px auto;
-        }
-
-        .warning-panel{
-            background:#fff3cd;
-            border-left:6px solid #ff9800;
-            padding:20px;
-            border-radius:14px;
-            margin-bottom:35px;
-            box-shadow:0 4px 12px rgba(0,0,0,0.08);
-        }
-
-        .warning-panel h2{
-            color:#b45309;
-            margin-bottom:10px;
-        }
-
-        .remedy-grid{
-            display:grid;
-            grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-            gap:25px;
-        }
-
-        .remedy-card{
-            background:white;
-            padding:25px;
-            border-radius:18px;
-            box-shadow:0 6px 20px rgba(0,0,0,0.08);
-            transition:0.3s ease;
-            position:relative;
-            overflow:hidden;
-        }
-
-        .remedy-card::before{
-            content:"";
-            position:absolute;
-            top:0;
-            left:0;
-            width:100%;
-            height:6px;
-            background:linear-gradient(90deg,#14b8a6,#06b6d4);
-        }
-
-        .remedy-card:hover{
-            transform:translateY(-8px);
-            box-shadow:0 10px 28px rgba(0,0,0,0.12);
-        }
-
-        .remedy-card h2{
-            color:#0f766e;
-            margin-bottom:15px;
-            font-size:1.4rem;
-        }
-
-        .remedy-card p{
-            margin-bottom:12px;
-            line-height:1.6;
-            color:#444;
-        }
-
-        .page-link{
-            display:inline-block;
-            margin-top:35px;
-            text-decoration:none;
-            background:#0f766e;
-            color:white;
-            padding:14px 24px;
-            border-radius:12px;
-            transition:0.3s ease;
-            font-weight:bold;
-        }
-
-        .page-link:hover{
-            background:#115e59;
-            transform:scale(1.05);
-        }
-
-        @media(max-width:768px){
-
-            .site-header h1{
-                font-size:2rem;
-            }
-
-            .site-header p{
-                font-size:0.95rem;
-            }
-
-            .remedy-card{
-                padding:20px;
-            }
+        .warning-panel p {
+            color: #b45309;
+            font-size: 0.92rem;
+            font-weight: 500;
+            line-height: 1.5;
         }
     </style>
 </head>
-
 <body>
 
-    <header class="site-header">
-        <h1>🏥 Basic Remedies</h1>
-        <p>
-            Simple first-aid and self-care guidance while waiting for professional consultation
-        </p>
-    </header>
+<div class="app-container">
 
-    <main class="app-shell">
+    <!-- Collapsible Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-brand-icon">
+                <i data-lucide="activity"></i>
+            </div>
+            <span class="sidebar-brand-name">MedConsult</span>
+        </div>
+        
+        <ul class="sidebar-menu">
+            <li class="sidebar-menu-item">
+                <a href="index.html">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item active">
+                <a href="remedies.html">
+                    <i data-lucide="heart-pulse"></i>
+                    <span>Basic Remedies</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="feedback.html">
+                    <i data-lucide="message-square"></i>
+                    <span>Give Feedback</span>
+                </a>
+            </li>
+        </ul>
+        
+        <div class="sidebar-footer">
+            <div class="sidebar-footer-avatar">DA</div>
+            <div class="sidebar-footer-info">
+                <div class="sidebar-footer-name">Dr. Alex</div>
+                <div class="sidebar-footer-role">Local Practitioner</div>
+            </div>
+        </div>
+    </aside>
 
-        <section class="warning-panel">
-            <h2>⚠ Emergency Warning</h2>
+    <!-- Main Content Panel -->
+    <div class="main-panel">
+        
+        <!-- Top Navigation Header -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="sidebar-toggle-btn" id="sidebarToggle" aria-label="Toggle Sidebar">
+                    <i data-lucide="menu"></i>
+                </button>
+                <span class="topbar-title">MedConsult Portal</span>
+            </div>
+            <div class="topbar-right">
+                <button class="notification-bell" aria-label="Notifications">
+                    <i data-lucide="bell"></i>
+                    <span class="notification-badge"></span>
+                </button>
+                <div class="user-profile-badge">
+                    <span class="user-profile-dot"></span>
+                    <span>Active Session</span>
+                </div>
+            </div>
+        </header>
 
-            <p>
-                This page is not a substitute for professional medical advice.
-                Seek emergency help immediately for chest pain, breathing difficulty,
-                stroke symptoms, fainting, severe bleeding, severe burns,
-                or rapidly worsening symptoms.
-            </p>
-        </section>
+        <!-- Main Remedies Content -->
+        <main class="content-body">
+            
+            <!-- Hero Welcome Card -->
+            <div class="welcome-card" style="background: linear-gradient(135deg, var(--primary-hover), var(--primary));">
+                <h1>🏥 Basic Remedies</h1>
+                <p>Simple first-aid and self-care guidance while waiting for professional consultation</p>
+            </div>
 
-        <section class="remedy-grid">
+            <!-- Emergency Warning alert panel -->
+            <section class="warning-panel">
+                <div class="warning-panel-icon">
+                    <i data-lucide="alert-octagon" style="width: 24px; height: 24px;"></i>
+                </div>
+                <div>
+                    <h2>Emergency Warning</h2>
+                    <p>
+                        This page is not a substitute for professional medical advice. Seek emergency help immediately for chest pain, breathing difficulty, stroke symptoms, fainting, severe bleeding, severe burns, or rapidly worsening symptoms.
+                    </p>
+                </div>
+            </section>
 
-            <article class="remedy-card">
-                <h2>🌡 Fever</h2>
+            <!-- Remedies cards grid layout -->
+            <section class="remedy-grid">
+                
+                <!-- Fever Card -->
+                <article class="card remedy-card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background-color: rgba(245, 158, 11, 0.08); color: var(--warning);">
+                            <i data-lucide="thermometer"></i>
+                        </div>
+                        <h3>Fever</h3>
+                    </div>
+                    <p>
+                        Rest properly, drink plenty of fluids, and use a cool damp cloth on your forehead if feeling uncomfortable.
+                    </p>
+                    <p>
+                        ⚠️ Seek medical help if the fever is exceptionally high, lasts several days, or comes with confusion, breathing trouble, a stiff neck, or severe dehydration.
+                    </p>
+                </article>
 
-                <p>
-                    Rest properly, drink plenty of fluids, and use a cool cloth
-                    if feeling uncomfortable.
-                </p>
+                <!-- Minor Cuts Card -->
+                <article class="card remedy-card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background-color: rgba(59, 130, 246, 0.08); color: var(--info);">
+                            <i data-lucide="shield"></i>
+                        </div>
+                        <h3>Minor Cuts</h3>
+                    </div>
+                    <p>
+                        Wash hands thoroughly, rinse the cut with clean water, apply gentle pressure with a clean cloth if bleeding, then cover with a clean bandage.
+                    </p>
+                    <p>
+                        ⚠️ Get professional medical care if the wound is deep, appears infected, is extremely dirty, or the bleeding does not stop after applying pressure.
+                    </p>
+                </article>
 
-                <p>
-                    Seek medical help if fever is very high, lasts long,
-                    or comes with confusion, breathing trouble,
-                    stiff neck, or dehydration.
-                </p>
-            </article>
+                <!-- Minor Burns Card -->
+                <article class="card remedy-card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background-color: rgba(239, 68, 68, 0.08); color: var(--danger);">
+                            <i data-lucide="flame"></i>
+                        </div>
+                        <h3>Minor Burns</h3>
+                    </div>
+                    <p>
+                        Cool the burn under cool running water for at least 10 minutes, remove tight items (like rings) nearby, and cover loosely with a sterile, non-adhesive dressing.
+                    </p>
+                    <p>
+                        ⚠️ Do not apply ice or butter directly. Seek urgent care for deep, blistered, large, chemical, electrical, or facial/joint burns.
+                    </p>
+                </article>
 
-            <article class="remedy-card">
-                <h2>🩹 Minor Cuts</h2>
+                <!-- Sprain or Strain Card -->
+                <article class="card remedy-card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background-color: rgba(16, 185, 129, 0.08); color: var(--success);">
+                            <i data-lucide="activity"></i>
+                        </div>
+                        <h3>Sprain or Strain</h3>
+                    </div>
+                    <p>
+                        Rest the affected area, apply ice wrapped in a cloth for 15-20 minutes, compress lightly with an elastic bandage, and elevate the limb above the heart.
+                    </p>
+                    <p>
+                        ⚠️ Seek medical help immediately if you experience severe pain, complete numbness, joint deformity, or an absolute inability to walk.
+                    </p>
+                </article>
 
-                <p>
-                    Wash hands, rinse the cut with clean water,
-                    apply gentle pressure if bleeding,
-                    then cover with a clean bandage.
-                </p>
+                <!-- Sore Throat Card -->
+                <article class="card remedy-card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background-color: rgba(139, 92, 246, 0.08); color: #8b5cf6;">
+                            <i data-lucide="frown"></i>
+                        </div>
+                        <h3>Sore Throat</h3>
+                    </div>
+                    <p>
+                        Drink warm fluids, rest your voice, and gargle with warm salt water periodically to reduce swelling and ease discomfort.
+                    </p>
+                    <p>
+                        ⚠️ Seek medical care if symptoms include high fever, significant breathing or swallowing difficulty, a new rash, or if pain lasts more than a few days.
+                    </p>
+                </article>
 
-                <p>
-                    Get medical care if the wound is deep,
-                    infected, dirty, or bleeding does not stop.
-                </p>
-            </article>
+                <!-- Dehydration Card -->
+                <article class="card remedy-card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background-color: rgba(6, 182, 212, 0.08); color: #06b6d4;">
+                            <i data-lucide="droplet"></i>
+                        </div>
+                        <h3>Dehydration</h3>
+                    </div>
+                    <p>
+                        Sip small amounts of water or an oral rehydration solution slowly and rest in a cool, shaded environment.
+                    </p>
+                    <p>
+                        ⚠️ Seek urgent emergency help for confusion, fainting, severe muscle weakness, extreme lethargy, or persistent vomiting that prevents fluid retention.
+                    </p>
+                </article>
 
-            <article class="remedy-card">
-                <h2>🔥 Minor Burns</h2>
+            </section>
 
-                <p>
-                    Cool the burn under cool running water,
-                    remove tight items nearby,
-                    and cover with a clean dressing.
-                </p>
+            <div style="margin-top: 35px; display: flex; gap: 12px;">
+                <a href="index.html" class="btn btn-primary" style="text-decoration: none; padding: 12px 24px;" aria-label="Return to dashboard">
+                    <i data-lucide="arrow-left"></i> Back to Dashboard
+                </a>
+                <button type="button" class="btn btn-outline" onclick="window.print()" style="padding: 12px 24px;" aria-label="Print page">
+                    <i data-lucide="printer"></i> Print Remedies
+                </button>
+            </div>
 
-                <p>
-                    Do not apply ice directly.
-                    Seek urgent care for deep, large,
-                    chemical, electrical, or facial burns.
-                </p>
-            </article>
+        </main>
+        
+    </div>
 
-            <article class="remedy-card">
-                <h2>🦵 Sprain or Strain</h2>
+</div>
 
-                <p>
-                    Rest the area, apply ice wrapped in cloth,
-                    compress lightly, and elevate the limb.
-                </p>
+<!-- Lucide Icons and Logic -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+// Sidebar collapsible toggle functionality
+const sidebar = document.getElementById("sidebar");
+const sidebarToggle = document.getElementById("sidebarToggle");
 
-                <p>
-                    Seek medical help if severe pain,
-                    numbness, deformity,
-                    or inability to walk occurs.
-                </p>
-            </article>
+if (sidebar && sidebarToggle) {
+    sidebarToggle.addEventListener("click", () => {
+        sidebar.classList.toggle("collapsed");
+        localStorage.setItem("medConsultSidebarCollapsed", sidebar.classList.contains("collapsed"));
+    });
 
-            <article class="remedy-card">
-                <h2>😷 Sore Throat</h2>
+    // Restore state
+    if (localStorage.getItem("medConsultSidebarCollapsed") === "true") {
+        sidebar.classList.add("collapsed");
+    }
+}
 
-                <p>
-                    Drink warm fluids, rest your voice,
-                    and gargle with warm salt water if suitable.
-                </p>
-
-                <p>
-                    Seek medical care if symptoms include
-                    breathing difficulty, rash,
-                    severe pain, or last several days.
-                </p>
-            </article>
-
-            <article class="remedy-card">
-                <h2>💧 Dehydration</h2>
-
-                <p>
-                    Sip water or oral rehydration solution slowly
-                    and rest in a cool environment.
-                </p>
-
-                <p>
-                    Seek urgent help for confusion,
-                    fainting, severe weakness,
-                    or persistent vomiting.
-                </p>
-            </article>
-
-        </section>
-
-        <a href="index.html" class="page-link">
-            ← Back to Consultation
-        </a>
-
-    </main>
-
+// Render static Lucide Icons
+document.addEventListener("DOMContentLoaded", () => {
+    if (typeof lucide !== "undefined") {
+        lucide.createIcons();
+    }
+});
+</script>
 </body>
 </html>
