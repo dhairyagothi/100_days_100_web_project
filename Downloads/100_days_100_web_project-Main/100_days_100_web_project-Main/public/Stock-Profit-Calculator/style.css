@@ -1,0 +1,144 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: url('https://i.pinimg.com/736x/ce/7c/90/ce7c90925d736b364348f7e1895705d7.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    background: rgba(46, 190, 209, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-width: 800px;
+    width: 100%;
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.calculator, .results {
+    padding: 20px;
+    flex: 1;
+    min-width: 300px;
+    transition: transform 0.3s ease-in-out;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #333;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.input-group input, .input-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #600ce6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background 0.3s, transform 0.3s;
+}
+
+button:hover {
+    background-color: #181718;
+    transform: scale(1.05);
+}
+
+.results {
+    background: rgba(189, 214, 240, 0.9);
+    border-left: 2px solid #e9ecef;
+}
+
+#result {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+#result p {
+    margin: 10px 0;
+}
+
+span {
+    font-weight: bold;
+    color: #007bff;
+}
+
+canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .calculator, .results {
+        min-width: 100%;
+        flex: none;
+    }
+
+    .results {
+        border-left: none;
+        border-top: 2px solid #e9ecef;
+    }
+
+    body {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    .input-group input, .input-group select {
+        font-size: 14px;
+    }
+
+    button {
+        font-size: 16px;
+    }
+
+    #result {
+        font-size: 16px;
+    }
+}
