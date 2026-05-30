@@ -318,3 +318,35 @@
     font-size: 24px;
   }
 }
+.chat-action-btn {
+
+  padding: 8px 12px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: rgba(255,255,255,0.08);
+
+  color: white;
+
+  cursor: pointer;
+
+  font-size: 13px;
+
+  transition: 0.3s ease;
+}
+
+.chat-action-btn:hover {
+
+  background: rgba(255,255,255,0.15);
+}
+
+.msg-timestamp {
+
+  margin-top: 6px;
+
+  font-size: 11px;
+
+  opacity: 0.6;
+}
