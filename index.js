@@ -329,6 +329,7 @@ function removeTechFilter(tech) {
   techStackFilters = techStackFilters.filter(t => t !== tech);
   updateTechFilterDisplay();
   renderGrid();
+  visibleProjects = INITIAL_RENDER_COUNT;
 }
 
 /**
@@ -343,6 +344,7 @@ function clearAllTechFilters() {
 
   updateTechFilterDisplay();
   renderGrid();
+  visibleProjects = INITIAL_RENDER_COUNT;
 }
 
 /**
@@ -692,7 +694,9 @@ function renderGrid() {
   const pageItems = filtered.slice(startIndex, endIndex);
   const fragment = document.createDocumentFragment();
 
-  pageItems.forEach(([day, name, url, tags]) => {
+  pageItems
+    .slice(0, visibleProjects)
+    .forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
@@ -714,6 +718,7 @@ function renderGrid() {
   });
   grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
+  initInfiniteScroll(pageItems.length);
   
   syncStateToURL();
 }
@@ -776,6 +781,7 @@ function renderPagination(totalItems, totalPages) {
     if (currentPage > 1) {
       currentPage--;
       renderGrid();
+      visibleProjects = INITIAL_RENDER_COUNT;
       // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
       setTimeout(() => {
         scrollToProjectSection();
@@ -812,6 +818,7 @@ function renderPagination(totalItems, totalPages) {
       e.preventDefault();
       currentPage = i;
       renderGrid();
+      visibleProjects = INITIAL_RENDER_COUNT;
       // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
       setTimeout(() => {
         scrollToProjectSection();
@@ -830,6 +837,7 @@ function renderPagination(totalItems, totalPages) {
     if (currentPage < totalPages) {
       currentPage++;
       renderGrid();
+      visibleProjects = INITIAL_RENDER_COUNT;
       // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
       setTimeout(() => {
         scrollToProjectSection();
@@ -922,6 +930,7 @@ function toggleBookmark(project) {
   }
   renderBookmarks();
   renderGrid();
+  visibleProjects = INITIAL_RENDER_COUNT;
   renderRecentProjects();
 }
 
@@ -1271,8 +1280,30 @@ function initFilterChips() {
       activeFilter = chip.dataset.filter;
       currentPage = 1;
       renderGrid();
+      visibleProjects = INITIAL_RENDER_COUNT;
     });
   });
+}
+
+function initInfiniteScroll(totalItems) {
+  const sentinel = document.getElementById('scrollSentinel');
+
+  if (!sentinel) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    if (
+      entries[0].isIntersecting &&
+      visibleProjects < totalItems
+    ) {
+      visibleProjects += LOAD_MORE_COUNT;
+      renderGrid();
+      visibleProjects = INITIAL_RENDER_COUNT;
+    }
+  }, {
+    rootMargin: '200px'
+  });
+
+  observer.observe(sentinel);
 }
 
 /* ============================================================
@@ -1302,6 +1333,12 @@ function initSearch() {
       renderGrid();
     }, 180)
   );
+  input.addEventListener('input', () => {
+    searchQuery = input.value.trim();
+    currentPage = 1;
+    renderGrid();
+    visibleProjects = INITIAL_RENDER_COUNT;
+  });
 
   // Tech stack dropdown filter listener
   const techStack = document.getElementById('techStackFilter');
@@ -1348,16 +1385,23 @@ function initTechStackSearch() {
   input.addEventListener('input', debounce((e) => {
     const value = e.target.value.trim().toLowerCase();
 
-    if (value) {
-      const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
-      techStackFilters = [...new Set(techs)];
-      updateTechFilterDisplay();
-      currentPage = 1;
-      renderGrid();
-    } else {
-      clearAllTechFilters();
-    }
-  }, 300));
+  input.addEventListener('input', (e) => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      const value = e.target.value.trim().toLowerCase();
+
+      if (value) {
+        const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
+        techStackFilters = [...new Set(techs)];
+        updateTechFilterDisplay();
+        currentPage = 1;
+        renderGrid();
+        visibleProjects = INITIAL_RENDER_COUNT;
+      } else {
+        clearAllTechFilters();
+      }
+    }, 300);
+  });
 
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
@@ -1650,6 +1694,13 @@ window.addEventListener(
     }
   }, 180)
 );
+window.addEventListener('resize', () => {
+  visibleProjects = INITIAL_RENDER_COUNT;
+
+  if (hasProjectGrid()) {
+    renderGrid();
+  }
+});
 
 /* ============================================================
    EXPOSE FUNCTIONS TO GLOBAL SCOPE
