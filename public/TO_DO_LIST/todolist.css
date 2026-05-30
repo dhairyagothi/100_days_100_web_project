@@ -293,12 +293,10 @@ main {
   padding: 20px;
   backdrop-filter: blur(20px);
   margin-bottom: 20px;
-  /* Fixed dropdown overlap: low stacking value relative to dropdown elements */
   position: relative;
   z-index: 10; 
 }
 
-/* Replaced strict grid setup with responsive, fluid Flexbox alignment */
 .input-group {
   display: flex;
   flex-direction: row;
@@ -317,9 +315,12 @@ main {
   font-size: 14px;
   background: rgba(255,255,255,.96);
   color: #111827;
-  flex: 0 1 180px; /* Allows dropdown selectors to scale down gracefully */
+  flex: 0 1 180px;
   min-width: 130px;
   cursor: pointer;
+  /* Added absolute layout layering parameters to push open menus clear over lower buttons */
+  position: relative;
+  z-index: 50;
 }
 
 #task {
@@ -331,7 +332,7 @@ main {
   font-size: 15px;
   background: rgba(255,255,255,.96);
   color: #111827;
-  flex: 2 1 auto; /* Input field takes maximum remaining space available */
+  flex: 2 1 auto;
   min-width: 180px;
 }
 
@@ -346,7 +347,7 @@ main {
   cursor: pointer;
   transition: .3s;
   white-space: nowrap;
-  flex: 0 0 auto; /* Button never shrinks or distorts */
+  flex: 0 0 auto;
 }
 
 #submittask:hover {
@@ -357,8 +358,9 @@ main {
   margin-top: 14px;
   display: flex;
   justify-content: center;
+  /* Lowered layer priority index relative to select items */
   position: relative;
-  z-index: 1; /* Pushes action section below active dropdown overlays */
+  z-index: 1; 
 }
 
 #savepdf {
@@ -543,7 +545,6 @@ main {
     gap: 12px;
   }
 
-  /* Drop down safely into vertical stacked list elements on portable mobile displays */
   .input-group {
     flex-direction: column;
     align-items: stretch;
