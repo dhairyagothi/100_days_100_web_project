@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BMI Calculator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="page">
+      <div class="bmi-grid">
+        <!-- Left: Calculator -->
+        <div class="card">
+          <div class="top-bar">
+            <p class="card-title">Body Mass Index</p>
+            <button
+              class="theme-toggle"
+              id="theme-toggle"
+              title="Toggle dark mode"
+              aria-label="Toggle dark mode"
+            >
+              <!-- Sun icon (visible in dark mode → click to go light) -->
+              <svg
+                class="icon-sun"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="5" />
+                <line x1="12" y1="1" x2="12" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="3" y2="12" />
+                <line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+              </svg>
+              <!-- Moon icon (visible in light mode → click to go dark) -->
+              <svg
+                class="icon-moon"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M21 12.79A9 9 0 1 1 11.21 3
+                         a7 7 0 0 0 9.79 9.79z"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <div class="field-label">Height unit</div>
+              <select id="height-unit">
+                <option value="cm">Centimetres</option>
+                <option value="feet">Feet / inches</option>
+              </select>
+            </div>
+            <div class="field">
+              <div class="field-label" id="height-lbl">Height (cm)</div>
+              <input type="text" id="height" placeholder="e.g. 170" />
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <div class="field-label">Weight unit</div>
+              <select id="weight-unit">
+                <option value="kg">Kilograms</option>
+                <option value="lb">Pounds</option>
+              </select>
+            </div>
+            <div class="field">
+              <div class="field-label" id="weight-lbl">Weight (kg)</div>
+              <input type="number" id="weight" placeholder="e.g. 70" min="1" />
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <div class="field-label">Age (years)</div>
+              <input
+                type="number"
+                id="age"
+                placeholder="e.g. 25"
+                min="2"
+                max="120"
+              />
+            </div>
+            <div class="field">
+              <div class="field-label">Gender</div>
+              <select id="gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+          </div>
+
+          <button id="btn">Calculate</button>
+          <div id="error-msg" class="error-msg hidden"></div>
+
+          <div class="result-row hidden" id="results">
+            <div class="metric-card">
+              <div class="metric-label">BMI score</div>
+              <div class="metric-value" id="bmi-val">—</div>
+              <span class="category-badge" id="cat-badge"></span>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Healthy weight range</div>
+              <div class="metric-value range-val" id="healthy-range">—</div>
+              <div class="tip-text" id="tip-text"></div>
+            </div>
+          </div>
+
+          <div id="range-vis" class="range-vis hidden">
+            <div class="range-bar">
+              <div class="range-segments">
+                <div class="seg seg-blue" style="flex: 2.1"></div>
+                <div class="seg seg-green" style="flex: 6.4"></div>
+                <div class="seg seg-amber" style="flex: 5"></div>
+                <div class="seg seg-red" style="flex: 6.5"></div>
+              </div>
+              <div class="bmi-pointer" id="bmi-ptr"></div>
+            </div>
+            <div class="range-labels">
+              <span>10</span><span>18.5</span><span>25</span><span>30</span
+              ><span>40+</span>
+            </div>
+          </div>
+
+          <!-- Body Fat Estimate -->
+          <div id="bf-section" class="bf-section hidden">
+            <div class="bf-header">
+              <div class="metric-label">Est. body fat</div>
+              <span class="bf-badge" id="bf-badge"></span>
+            </div>
+            <div class="bf-body">
+              <div class="bf-gauge-wrap">
+                <svg class="bf-gauge" viewBox="0 0 120 120">
+                  <circle
+                    class="bf-track"
+                    cx="60"
+                    cy="60"
+                    r="52"
+                    stroke-width="7"
+                    fill="none"
+                  />
+                  <circle
+                    class="bf-fill"
+                    id="bf-arc"
+                    cx="60"
+                    cy="60"
+                    r="52"
+                    stroke-width="7"
+                    fill="none"
+                    stroke-dasharray="326.73"
+                    stroke-dashoffset="326.73"
+                    stroke-linecap="round"
+                  />
+                  <text
+                    class="bf-pct-text"
+                    x="60"
+                    y="56"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    id="bf-pct"
+                  >
+                    —
+                  </text>
+                  <text
+                    class="bf-pct-unit"
+                    x="60"
+                    y="74"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                  >
+                    % body fat
+                  </text>
+                </svg>
+              </div>
+              <div class="bf-info">
+                <p class="bf-desc" id="bf-desc"></p>
+                <div class="bf-ranges">
+                  <div class="bf-range-item">
+                    <span class="bf-dot bf-dot-blue"></span>
+                    <span>Essential</span>
+                  </div>
+                  <div class="bf-range-item">
+                    <span class="bf-dot bf-dot-green"></span>
+                    <span>Athletic</span>
+                  </div>
+                  <div class="bf-range-item">
+                    <span class="bf-dot bf-dot-teal"></span>
+                    <span>Fitness</span>
+                  </div>
+                  <div class="bf-range-item">
+                    <span class="bf-dot bf-dot-amber"></span>
+                    <span>Average</span>
+                  </div>
+                  <div class="bf-range-item">
+                    <span class="bf-dot bf-dot-red"></span>
+                    <span>Obese</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Reference + Chart -->
+        <div class="card right-card">
+          <div class="top-bar" style="margin-bottom: 0">
+            <p class="card-title">Reference chart</p>
+          </div>
+
+          <table class="bmi-table">
+            <thead>
+              <tr>
+                <th>BMI</th>
+                <th>Category</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="underweight-row">
+                <td>&lt; 18.5</td>
+                <td>Underweight</td>
+                <td><span class="dot dot-blue"></span></td>
+              </tr>
+              <tr id="normal-row">
+                <td>18.5 – 24.9</td>
+                <td>Normal weight</td>
+                <td><span class="dot dot-green"></span></td>
+              </tr>
+              <tr id="overweight-row">
+                <td>25.0 – 29.9</td>
+                <td>Overweight</td>
+                <td><span class="dot dot-amber"></span></td>
+              </tr>
+              <tr id="obese1-row">
+                <td>30.0 – 34.9</td>
+                <td>Obese (Class I)</td>
+                <td><span class="dot dot-red1"></span></td>
+              </tr>
+              <tr id="obese2-row">
+                <td>35.0 – 39.9</td>
+                <td>Obese (Class II)</td>
+                <td><span class="dot dot-red2"></span></td>
+              </tr>
+              <tr id="obese3-row">
+                <td>≥ 40.0</td>
+                <td>Obese (Class III)</td>
+                <td><span class="dot dot-red3"></span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="chart-wrap">
+            <canvas id="bmiChart"></canvas>
+          </div>
+          <p class="chart-hint">
+            BMI history — calculate multiple times to track changes.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

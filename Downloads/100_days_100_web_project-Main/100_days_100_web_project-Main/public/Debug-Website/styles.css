@@ -1,0 +1,3509 @@
+body {
+    background-color: #000000;
+    color: #fff;
+    font-family: 'Courier New', Courier, monospace;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    animation: flicker 3s infinite;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-bottom: 2px solid #00ff00;
+}
+
+h1.logo {
+    font-size: 30px;
+}
+
+.score {
+    font-size: 18px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+.card {
+    background: rgba(50, 50, 50, 0.8);
+    padding: 20px;
+    border: 1px solid #ff0800;
+    border-radius: 10px;
+    position: relative;
+    padding-bottom: 0;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.card h2 {
+    margin-top: 0;
+}
+
+.action-btn {
+    color: #fff;
+    background-color: #00ff00;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.action-btn:hover {
+    background-color: #00cc00;
+}
+
+.ghost {
+    width: 100px;
+    height: 100px;
+    background-image: url('images/ghost.png'); 
+    position: fixed;
+    animation: fade 3s forwards;
+}
+
+.dark-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+}
+
+.creepy-image {
+    background-color: black;
+    background-size: cover;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+}
+
+/* Trailing Cursor Effect */
+.trailing-cursor {
+    width: 20px;
+    height: 200px;
+    background-color: #da0000;
+    border-radius: 50%;
+    position: absolute;
+    pointer-events: none;
+}
+
+/* Flickering Effect */
+@keyframes flicker {
+    0% { opacity: 1; }
+    10% { opacity: 0.5; }
+    20% { opacity: 1; }
+    30% { opacity: 0.5; }
+    40% { opacity: 1; }
+    50% { opacity: 0.5; }
+    60% { opacity: 1; }
+    70% { opacity: 0.5; }
+    80% { opacity: 1; }
+    90% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* Fade Effect for Ghost */
+@keyframes fade {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+
+.glitch-effect {
+    animation: glitch 1s infinite;
+}
+
+@keyframes glitch {
+    0% { transform: translate(2px, 0); }
+    10% { transform: translate(-2px, 0); }
+    20% { transform: translate(2px, 0); }
+    30% { transform: translate(-2px, 0); }
+    40% { transform: translate(2px, 0); }
+    50% { transform: translate(-2px, 0); }
+    100% { transform: translate(0, 0); }
+}
+/* Creepy Image Effect */
+.creepy-image {
+    background-color: black;
+    background-size: cover;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    animation: fade 1.5s forwards; /* Fade in effect */
+}
+.blood-drip {
+    position: absolute;
+    background: red;
+    height: 30px;
+    width: 3px;
+    left: 50%;
+    top: 0;
+    animation: drip 2s linear infinite;
+}
+
+@keyframes drip {
+    0% {
+        top: -30px;
+    }
+    100% {
+        top: 100%;
+    }
+}
+
+.dark-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+}
+
+.despair-text {
+    color: white;
+    text-align: center;
+    font-size: 48px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.ghost {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image: url('images/ghost.png'); 
+    background-size: cover;
+    opacity: 0.5;
+    animation: fade 3s ease-in-out infinite;
+}
+
+@keyframes fade {
+    0%, 100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+.trailing-cursor {
+    position: absolute;
+    background-color: red;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    pointer-events: none;
+    animation: fadeOut 1s forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.creepy-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    z-index: 999;
+}
+
+
+
+#card1 .distorted-text {
+    font-size: 1em;
+    font-weight: bold;
+    color: red;
+    animation: distortion 5s infinite;
+}
+
+#card1 .glitch-effect {
+    position: relative;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #ff0000;
+    text-shadow: 1px 1px 2px #000, -1px -1px 2px #000;
+    animation: glitch-animation 0.3s infinite;
+}
+
+#card1 .glitch-effect .glitch-text::before,
+#card1 .glitch-effect .glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    color: blue;
+    top: -2px;
+    opacity: 0.8;
+    clip: rect(20px, 450px, 70px, 0);
+    animation: glitch-shadow 0.5s infinite alternate-reverse;
+}
+
+@keyframes distortion {
+    0% { transform: skew(0deg); }
+    50% { transform: skew(20deg); }
+    100% { transform: skew(0deg); }
+}
+
+@keyframes glitch-animation {
+    0% { transform: translate(0); opacity: 1; }
+    25% { transform: translate(-2px, 2px); opacity: 0.8; }
+    50% { transform: translate(2px, -2px); opacity: 1; }
+    75% { transform: translate(-2px, 2px); opacity: 0.8; }
+    100% { transform: translate(0); opacity: 1; }
+}
+
+@keyframes glitch-shadow {
+    0% { clip: rect(15px, 9999px, 85px, 0); }
+    50% { clip: rect(45px, 9999px, 45px, 0); }
+    100% { clip: rect(25px, 9999px, 65px, 0); }
+}
+
+/* Blood Drip Effect */
+#card1 .blood-drip {
+    position: absolute;
+    background: red;
+    width: 2px;
+    height: 5px;
+    animation: blood-drip-animation 2s infinite ease-in;
+    border-radius: 2px;
+}
+
+@keyframes blood-drip-animation {
+    0% { top: -10px; opacity: 0; }
+    50% { top: 10px; opacity: 1; }
+    100% { top: 20px; opacity: 0; }
+}
+
+.vanish-on-click {
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.vanish-on-click.clicked {
+    opacity: 0;
+    transform: scale(0.5);
+}
+
+.vanish-btn:hover {
+    color: #ff0000;
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.6);
+}
+.distorted-text {
+    position: relative;
+    animation: distortion 0.3s infinite;
+}
+@keyframes distortion {
+    0% { transform: translate(1px, -1px) skew(2deg, 2deg); }
+    50% { transform: translate(-1px, 1px) skew(-2deg, -2deg); }
+    100% { transform: translate(1px, -1px) skew(2deg, 2deg); }
+}
+
+/* Styles for scary quotes */
+.quote-display {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Styles for countdown timer */
+.countdown-timer {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(255, 0, 0, 0.7);
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+/* Creepy background animation */
+@keyframes creepyBackground {
+    0% { background-color: #111; }
+    100% { background-color: #222; }
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none; /* Prevent interaction with the canvas */
+}
+
+.floating-shadow {
+    position: absolute;
+    top: -10%; /* Start position above the viewport */
+    width: 20px; /* Adjust size */
+    height: 20px; /* Adjust size */
+    background-image: url('images/shadow.png'); /* Use a creepy shadow image */
+    background-size: cover;
+    opacity: 0.7; /* Make it slightly transparent */
+    animation: float 5s linear infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(30px); /* Change this value to adjust the float height */
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* Add any additional styles for shadows here */
+.ghost-image {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30%; /* Adjust the size as needed */
+    height: auto; /* Maintain aspect ratio */
+    opacity: 0.8; /* Semi-transparent for a spooky effect */
+    animation: float 5s ease-in-out infinite; /* Floating effect */
+}
+
+/* Floating Animation */
+@keyframes float {
+    0%, 100% {
+        transform: translate(-50%, -50%) translateY(0);
+    }
+    50% {
+        transform: translate(-50%, -50%) translateY(-20px);
+    }
+}
+
+/* Basic Body and Font Settings */
+body {
+    background-color: #111;
+    color: #fff;
+    font-family: 'Courier New', Courier, monospace;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    animation: flicker 3s infinite;
+    overflow-y: scroll;
+}
+
+/* Navigation Bar Styling */
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-bottom: 2px solid #ff0000;
+}
+
+h1.logo {
+    font-size: 30px;
+}
+
+.score {
+    font-size: 18px;
+}
+
+/* Card Grid Layout */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 30px;
+}
+
+
+.card h2 {
+    margin-top: 0;
+}
+
+/* Button Styles */
+.action-btn {
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #00ff00;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.action-btn:hover {
+    background-color: #00cc00;
+}
+
+/* Ghost Element for Floating Effect */
+.ghost-image {
+    width: 100px; /* Adjust size as necessary */
+    height: auto;
+    position: fixed;
+    bottom: 20%; /* Adjust to control vertical position */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Centering adjustment */
+    animation: float 3s ease-in-out infinite; /* Floating animation */
+    z-index: 1001; /* Ensure it appears above other elements */
+}
+
+/* Thunder Background */
+.thunder-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('images/Thunder.jpg'); /* Path to your thunder background image */
+    background-size: cover; /* Cover the whole background */
+    background-repeat: no-repeat; /* No repeat */
+    z-index: 999; /* Ensure it covers everything else */
+    opacity: 0.8; /* Slightly transparent */
+    transition: opacity 3s ease; /* Transition for fading out */
+}
+
+/* Floating Animation for Ghost */
+@keyframes float {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-10px); }
+}
+
+/* Flickering Effect */
+@keyframes flicker {
+    0% { opacity: 1; }
+    10% { opacity: 0.5; }
+    20% { opacity: 1; }
+    30% { opacity: 0.5; }
+    40% { opacity: 1; }
+    50% { opacity: 0.5; }
+    60% { opacity: 1; }
+    70% { opacity: 0.5; }
+    80% { opacity: 1; }
+    90% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* Fade Effect for Ghost */
+@keyframes fade {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Additional CSS Styles as Needed... */
+
+/* Vanish effect on Card 1 */
+.vanish-on-click {
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.vanish-on-click.clicked {
+    opacity: 0;
+    transform: scale(0.5);
+}
+
+/* Styles for scary quotes */
+.quote-display {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Styles for countdown timer */
+.countdown-timer {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(255, 0, 0, 0.7);
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+
+
+/* Ghost Element for Floating Effect */
+.ghost {
+    width: 200px; /* Adjust the size as needed */
+    height: 200px; /* Adjust the size as needed */
+    background-image: url('images/valak.jpg'); /* Use the new ghost image */
+    background-size: cover;
+    background-position: center; /* Center the image */
+    position: fixed;
+    animation: fade 5s forwards;
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.7)); /* Add a glowing shadow effect */
+    position: absolute; /* Ensure the ghost is positioned absolutely */
+    animation: float 3s ease-in-out infinite, sway 1.5s ease-in-out infinite; 
+}
+
+
+
+/* Creepy Background Effect */
+.creepy-background {
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999; /* Ensure it stays on top */
+}
+
+/* Fade Effect for Ghost */
+@keyframes fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}   
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%; /* Ensure full height */
+    overflow: hidden; /* Prevent scrolling */
+}
+
+
+.ghost-image {
+    position: absolute; /* Position it relative to its closest positioned ancestor */
+    top: 20%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust position to center */
+    z-index: 999; /* Ensure it appears above other elements */
+    width: 400px; /* Desired width */
+    height: auto; /* Maintain aspect ratio */
+    opacity: 0.8; /* Adjust opacity if needed */
+    transition: opacity 2s; /* Fade transition */
+    pointer-events: none; /* Prevent interaction */
+    pointer-events: none; /* Prevent interaction */
+    filter: drop-shadow(0 0 15px rgb(252, 0, 0)) /* Soft glow on outline */
+            drop-shadow(0 0 30px rgb(255, 0, 0)); /* Stronger glow */
+            animation: ghostAnimation 15s infinite alternate; /* Combined animation for ghost */
+}
+
+/* Keyframes for ghost animation */
+@keyframes ghostAnimation {
+    0% {
+        transform: translate(-50%, -50%) scale(1); /* Original position and scale */
+    }
+    20% {
+        transform: translate(-50%, -5%) scale(1.5); /* Move down slightly */
+    }
+
+    50% {
+        transform: translate(-50%, -5%) scale(2); /* Rapid zoom in */
+    }
+    100% {
+        transform: translate(-50%, -5%) scale(1.1); /* Scale up slightly after moving down */
+    }
+}
+
+    
+.firework {
+    position: absolute;
+    width: 40px; /* Size of the firework */
+    height: 40px; /* Size of the firework */
+    border-radius: 50%; /* Circular shape */
+    opacity: 1; /* Fully visible */
+    pointer-events: none; /* Avoid interaction */
+    animation: explode 1s forwards; /* Explosion animation */
+}
+
+@keyframes explode {
+    0% {
+        transform: scale(1); /* Start with small size */
+        opacity: 1; /* Fully visible */
+    }
+    30% {
+        transform: scale(2); /* Expand for explosion */
+    }
+    100% {
+        transform: scale(5); /* Final size */
+        opacity: 0; /* Fade out */
+    }
+}
+
+/* Adding colorful effects */
+.firework {
+    background-color: #FF5733; /* Base color */
+    animation: explode 1s forwards; /* Explosion animation */
+}
+
+.firework:nth-child(odd) {
+    background-color: #33FF57; /* Vibrant green */
+}
+
+.firework:nth-child(even) {
+    background-color: #3357FF; /* Vibrant blue */
+}
+
+.firework:nth-child(3n) {
+    background-color: #FFFF33; /* Bright yellow */
+}
+
+.firework:nth-child(4n) {
+    background-color: #FF8C00; /* Bright orange */
+}
+
+.firework:nth-child(5n) {
+    background-color: #800080; /* Bright purple */
+}
+
+
+
+/* Blinking colorful text effect */
+@keyframes blinkColors {
+    0% { color: #ff0000; } /* Red */
+    20% { color: #fc00ac; } /* Orange */
+    40% { color: #fbff00; } /* Yellow */
+    60% { color: rgb(255, 255, 255); } /* Green */
+    80% { color: #0000ff; } /* Blue */
+    100% { color: #bb00ff; } /* Magenta */
+}
+
+@keyframes blinkVisibility {
+    0%, 100% { opacity: 1; }
+    0% { opacity: 0; } /* Creates the blinking effect */
+}
+
+.colorful-blink-text {
+    font-size: 1.2em; /* Adjust font size if needed */
+    font-weight: bold;
+    text-align: center;
+    animation: blinkColors 2s linear infinite, blinkVisibility 1s steps(2, start) infinite;
+}
+
+@keyframes floatButton {
+    0% {
+        transform: translate(50px, 50px); /* Start position */
+    }
+    20% {
+        transform: translate(100px, -100px); /* Move to top-right */
+    }
+    40% {
+        transform: translate(100px, 0); /* Move to far right */
+    }
+    60% {
+        transform: translate(100px, 0px); /* Move to bottom-right */
+    }
+    80% {
+        transform: translate(0, 100px); /* Move to bottom */
+    }
+    100% {
+        transform: translate(-100px, 100px); /* Move to bottom-left */
+    }
+}
+
+#celebrate-button {
+    animation: floatButton 12s ease-in-out infinite; /* Loop animation */
+}
+
+.card:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+
+@keyframes mixPotion {
+    0% { background-color: rgba(75, 255, 80, 0.7); }
+    50% { background-color: rgba(255, 75, 75, 0.7); }
+    100% { background-color: rgba(75, 255, 80, 0.7); }
+}
+.message {
+    margin-top: 10px;
+    font-size: 1.2em;
+    color: #ffcc33; /* Bright color for visibility */
+    transition: opacity 0.5s ease; /* Smooth transition for opacity */
+    opacity: 1; /* Initially fully visible */
+    text-align: center; /* Center text */
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1rem;
+    max-height: 80vh; /* Adjust as needed to fit your design */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding: 1rem;
+    margin: 0; /* Reset margin if needed */
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding-bottom: 60px; /* Add padding to prevent footer overlap */
+    max-height: calc(100vh - 100px); /* Adjust height to fit within viewport */
+    overflow-y: auto; /* Enable scrolling if content exceeds the height */
+}
+
+body {
+    display: flex;
+    flex-direction: column; /* Ensure footer stays at the bottom */
+    min-height: 100vh; /* Allow the body to take full height */
+}
+
+.footer {
+    background-color: rgba(0, 0, 0, 0.8); /* Dark background with slight transparency */
+    color: #f0f0f0; /* Light text color for contrast */
+    font-family: 'Creepster', cursive; /* Use a creepy font */
+    text-align: center; /* Center the text */
+    padding: 10px; /* Add some padding */
+    font-size: 18px; /* Small font size */
+    position: relative; /* Position for the pseudo-element */
+}
+
+.footer::before {
+    content: ''; /* Create a pseudo-element for added effect */
+    position: absolute; /* Position it relative to the footer */
+    top: 0; /* Start from the top */
+    left: 50%; /* Center horizontally */
+    width: 100%; /* Full width */
+    height: 4px; /* Height of the line */
+    background: linear-gradient(to right, red, black); /* Creepy gradient line */
+    transform: translateX(-50%); /* Center the line */
+    z-index: 0; /* Behind the text */
+}
+
+.footer p {
+    position: relative; /* Position for layering */
+    z-index: 1; /* Bring text above the line */
+    margin: 5px 0; /* Margin for spacing */
+}
+
+.footer p:hover {
+    color: red; /* Change text color on hover for an eerie effect */
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.8); /* Glow effect */
+}
+
+.card.potion {
+    background-color: #222; /* Dark background */
+    color: #fff; /* White text */
+    position: relative;
+    overflow: hidden; /* Hide overflow */
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5); /* Glow effect */
+    height: 300px; /* Set a fixed height for the card */
+    }
+    
+    .potion-bottle {
+    position: relative;
+    margin: 10px auto; /* Reduced margin */
+    width: 60px; /* Reduced width */
+    height: 120px; /* Reduced height */
+    border-radius: 40px 40px 10px 10px; /* Bottle shape */
+    background: linear-gradient(to bottom, #4B9CD3, #2F6B9B);
+    }
+    
+    /* Add hover glow effect for the potion bottle */
+.potion-bottle:hover {
+    box-shadow: 0 0 20px rgba(75, 255, 80, 0.8);
+    cursor: pointer;
+}
+
+/* Animation for revealing the hidden message */
+#hidden-message {
+    animation: revealMessage 1.5s ease-in-out forwards;
+    opacity: 0; /* Initially hidden */
+}
+
+@keyframes revealMessage {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+    .liquid {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40%; /* Reduced height for potion */
+    background-color: rgba(75, 255, 80, 0.7); /* Potion color */
+    animation: bubble 1.5s infinite; /* Bubble animation */
+    border-radius: 0 0 40px 40px; /* Adjust for rounded bottom */
+    }
+    
+    .bubbles {
+    position: absolute;
+    left: 50%;
+    bottom: 100%; /* Position bubbles above the liquid */
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Prevent interactions */
+    overflow: hidden; /* Hide overflow */
+    }
+    
+    .bubbles::before, .bubbles::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    animation: bubble-rise 1s infinite;
+    }
+    
+    .bubbles::before {
+    width: 10px; /* Reduced bubble size */
+    height: 10px; /* Reduced bubble size */
+    left: 20%;
+    animation-delay: 0.5s;
+    }
+    
+    .bubbles::after {
+    width: 8px; /* Reduced bubble size */
+    height: 8px; /* Reduced bubble size */
+    left: 60%;
+    animation-delay: 0.8s;
+    }
+    
+    @keyframes bubble {
+    0%, 100% {
+    transform: scale(1);
+    }
+    50% {
+    transform: scale(1.05);
+    }
+    }
+    
+    @keyframes bubble-rise {
+    0% {
+    bottom: 0;
+    opacity: 1;
+    }
+    100% {
+    bottom: 50%; /* Adjust so it stays within the card */
+    opacity: 0;
+    }
+    }
+    /* Animation for revealing the hidden message */
+#hidden-message {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+#hidden-message.show-message {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+    /* Keyframes for heading flicker effect */
+    @keyframes flickerHeading {
+        0% {
+            color: #ff0000; /* Red */
+        }
+        20% {
+            color: #00ff00; /* Gold */
+        }
+        40% {
+            color: #5e81ff; /* Blue */
+        }
+        60% {
+            color: #d9eed0; /* Green */
+        }
+        80% {
+            color: #ff33a1; /* Pink */
+        }
+        100% {
+            color: #ffffff; /* White */
+        }
+    }
+    
+    /* Keyframes for paragraph flicker effect */
+    @keyframes flickerParagraph {
+        0% {
+            color: #15ff00; /* Gold */
+        }
+        25% {
+            color: #ff0000; /* Red */
+        }
+        50% {
+            color: #fc00df; /* Magenta */
+        }
+        75% {
+            color: #0033ff; /* Light Blue */
+        }
+        100% {
+            color: #000000; /* Fuchsia */
+        }
+    }
+    /* Distorted screen effect for a disorienting experience */
+.distort-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    background: rgba(255, 0, 0, 0.2); /* Bloody red overlay */
+    animation: distortScreenAnim 0.1s infinite;
+}
+
+/* Keyframes for distortion */
+@keyframes distortScreenAnim {
+    0% {
+        clip-path: inset(0 0 80% 0);
+    }
+    25% {
+        clip-path: inset(0 70% 0 0);
+    }
+    50% {
+        clip-path: inset(80% 0 0 0);
+    }
+    75% {
+        clip-path: inset(0 0 0 70%);
+    }
+    100% {
+        clip-path: inset(0);
+    }
+}
+
+    
+    #chaotic{
+        padding:63px;
+        background: linear-gradient(135deg, #ffe100, #ff8ff0); /* Gradient for a lush, aesthetic look */
+    };
+
+    #chaotic {
+        position: relative;
+        background-color: #1c1c1c; /* Darker background for more contrast */
+        border: 2px dashed #ff33a1; /* Dashed pink border for a chaotic feel */
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 0 30px rgba(255, 51, 161, 0.7); /* Stronger glow */
+        overflow: hidden;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    #chaotic:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 40px rgba(255, 51, 161, 1);
+        background: linear-gradient(135deg, #260303, #000000);
+    }
+    
+    #chaotic h2 {
+        color: #ffcc00; /* Gold */
+    text-shadow: 2px 2px 0 rgba(255, 51, 161, 0.5), -1px -1px 0 rgba(0, 0, 0, 0.5); /* Creepy shadow */
+    animation: flickerHeading 1.5s infinite alternate; /* Flicker effect *//* Fun font choice */
+    }
+    
+    #chaotic p {
+        color: #33ccff; /* Light Blue */
+        animation: flickerParagraph 1.5s infinite alternate; /* Flicker effect */
+        font-family: 'Comic Sans MS', cursive, sans-serif; /* Fun, quirky font */
+    }
+    
+    #chaotic .action-btn {
+        background-color: #ff33a1; /* Pink */
+        color: white; 
+        border: none;
+        border-radius: 10px;
+        padding: 12px 25px; /* Slightly bigger button */
+        cursor: pointer;
+        font-weight: bold; /* Bold text for emphasis */
+        text-transform: uppercase; /* Uppercase letters for fun */
+        transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+    
+    #chaotic .action-btn:hover {
+        background-color: #ff0088; /* Darker pink */
+        transform: scale(1.1);
+        box-shadow: 0 0 15px rgba(255, 51, 161, 0.7);
+        background: linear-gradient(135deg, #0037ff, #6ab04c);
+    }
+    
+    #chaotic::before {
+        content: "🌀💀👻🎉🤪"; /* Fun chaotic emojis */
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 2.5rem; /* Larger emojis for more presence */
+        animation: spin 3s infinite linear; /* Spin effect for chaos */
+    }
+
+    /* Flashing background effect */
+    @keyframes intenseFlash {
+        0% { background-color: rgb(255, 0, 0); }    /* Bright Red */
+        20% { background-color: rgb(255, 255, 0); } /* Bright Yellow */
+        40% { background-color: rgb(0, 255, 0); }   /* Bright Green */
+        60% { background-color: rgb(0, 255, 255); } /* Bright Cyan */
+        80% { background-color: rgb(0, 0, 255); }   /* Bright Blue */
+        100% { background-color: rgb(255, 0, 255); }/* Bright Magenta */
+    }
+    
+    .intense-flash {
+        animation: intenseFlash 0.1s infinite; /* Faster, eye-straining flash */
+    }
+    
+
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    #safari-card {
+        position: relative;
+        background-color: #1c1c1c;/* Darker background for contrast */
+        border: 2px dashed #ff00e6; /* Yellow border */
+        background: linear-gradient(135deg, #0037ff, #6ab04c); /* Gradient for a lush, aesthetic look */
+        border: 3px solid #ffcc00; /* Bright yellow border */
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+        overflow: hidden;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    #safari-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 40px rgba(255, 204, 0, 0.8); /* Glow effect on hover */
+        background: linear-gradient(135deg, #f05705, #6ab04c); /* Gradient for a lush, aesthetic look */
+    }
+    
+    #safari-card h2 {
+        color: #fff; /* White color for text */
+        text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7); /* Shadow for readability */
+        animation: pulse 2s infinite; /* Pulsing animation */
+    }
+    
+    #safari-card .action-btn {
+        background-color: #ffcc00; /* Bright yellow */
+        color: #3f721d; /* Dark green for text */
+        border: none;
+        border-radius: 10px;
+        padding: 12px 25px; /* Button size */
+        cursor: pointer;
+        font-weight: bold;
+        text-transform: uppercase;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+    
+    #safari-card .action-btn:hover {
+        background-color: #e6b800; /* Slightly darker yellow on hover */
+        transform: scale(1.1);
+    }
+    
+    #safari-card::before {
+        content: "🦓🌿🐘🐅"; /* Safari-themed emojis */
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 2.9rem; /* Larger emojis for presence */
+        animation: shake 1s infinite; /* Shake effect for fun */
+    }
+    
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+    
+    @keyframes shake {
+        0% { transform: translate(0); }
+        25% { transform: translate(-5px, 0); }
+        50% { transform: translate(5px, 0); }
+        75% { transform: translate(-5px, 0); }
+        100% { transform: translate(0); }
+    }
+    
+    #safari-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 30px rgba(255, 204, 0, 1);
+    }
+    
+    #safari-card h2 {
+        color: #000000; /* Gold */
+        text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5); /* Light shadow */
+    }
+    
+    #safari-card .action-btn {
+        background-color: #ffcc00; /* Yellow */
+        color: #1c1c1c; /* Dark text */
+        border: none;
+        border-radius: 10px;
+        padding: 12px 25px;
+        cursor: pointer;
+        font-weight: bold;
+        text-transform: uppercase;
+        transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+    
+    #safari-card .action-btn:hover {
+        background-color: #ff9900; /* Darker yellow */
+        transform: scale(1.1);
+        box-shadow: 0 0 15px rgba(255, 204, 0, 0.7);
+    }
+    
+    .safari-effect {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 204, 0, 0.1);
+        transition: opacity 0.3s ease;
+        opacity: 0;
+        pointer-events: none;
+    }
+    
+    .safari-effect.active {
+        opacity: 1;
+        animation: safariEffectAnimation 0.5s forwards; /* Optional animation */
+    }
+    
+    @keyframes safariEffectAnimation {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+    
+    .glitch-effect {
+        animation: glitch-animation 1s infinite;
+    }
+    
+    @keyframes glitch-animation {
+        0% { transform: skew(0); }
+        20% { transform: skew(-5deg); }
+        40% { transform: skew(5deg); }
+        60% { transform: skew(-5deg); }
+        80% { transform: skew(5deg); }
+        100% { transform: skew(0); }
+    }
+    .bsd-effect {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #0000FF; /* BSOD blue */
+        color: #FFFFFF; /* Text color for BSOD */
+        display: none; /* Initially hidden */
+        z-index: 9999; /* Ensure it's on top */
+        justify-content: center;
+        align-items: center;
+        font-size: 24px; /* Adjust as needed */
+        text-align: center;
+        font-family: 'Courier New', Courier, monospace; /* Classic BSOD font */
+    }
+    
+    .bsd-effect.active {
+        display: flex; /* Show BSOD when active */
+    }
+    
+    .bsod-message {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #0000FF; /* BSOD blue */
+        color: #FFFFFF; /* Text color for BSOD */
+        display: flex; /* Set to flex to enable centering */
+        justify-content: center; /* Horizontally center */
+        align-items: center; /* Vertically center */
+        font-size: 24px; /* Adjust as needed */
+        text-align: center;
+        font-family: 'Courier New', Courier, monospace; /* Classic BSOD font */
+        z-index: 9999; /* Ensure it's on top */
+    }    
+    .bug {
+        position: absolute; /* Ensure bugs are absolutely positioned */
+        transition: transform 5s linear; /* Smooth transition for the bugs */
+        font-size: 24px; /* Size of the bug emojis */
+        pointer-events: none; /* Prevent interaction with bugs */
+        user-select: none; /* Prevent text selection */
+    }
+    
+    /* Original Rotation with Added Creepiness */
+@keyframes creepyRotateAnimation {
+    0% {
+        transform: rotate(0deg) scale(1);
+        filter: hue-rotate(0deg) blur(0px);
+    }
+    5% {
+        transform: rotate(30deg) scale(1.1);
+        filter: hue-rotate(20deg) blur(2px);
+    }
+    15% {
+        transform: rotate(70deg) scale(0.9);
+        filter: hue-rotate(50deg) blur(0px);
+    }
+    25% {
+        transform: rotate(100deg) scale(1.15);
+        filter: hue-rotate(90deg) blur(1px);
+    }
+    35% {
+        transform: rotate(150deg) scale(1.05);
+        filter: hue-rotate(120deg) blur(3px);
+    }
+    50% {
+        transform: rotate(200deg) scale(0.85);
+        filter: hue-rotate(180deg) blur(0px);
+    }
+    65% {
+        transform: rotate(270deg) scale(1.2);
+        filter: hue-rotate(240deg) blur(2px);
+    }
+    80% {
+        transform: rotate(330deg) scale(0.95);
+        filter: hue-rotate(300deg) blur(1px);
+    }
+    100% {
+        transform: rotate(360deg) scale(1.05);
+        filter: hue-rotate(360deg) blur(0px);
+    }
+}
+
+/* Quick jitter effect */
+@keyframes jitterEffect {
+    0%, 100% { transform: translate(0, 0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(2px, -2px); }
+    60% { transform: translate(-3px, 3px); }
+    80% { transform: translate(3px, -3px); }
+}
+
+/* Flickering effect */
+@keyframes flickerEffect {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.1; }
+    75% { opacity: 0.5; }
+}
+
+/* Shaking effect */
+@keyframes shakeEffect {
+    0% { transform: translate(0); }
+    10% { transform: translate(-5px, 0); }
+    20% { transform: translate(5px, 0); }
+    30% { transform: translate(-5px, 0); }
+    40% { transform: translate(5px, 0); }
+    50% { transform: translate(-5px, 0); }
+    60% { transform: translate(5px, 0); }
+    70% { transform: translate(-5px, 0); }
+    80% { transform: translate(5px, 0); }
+    90% { transform: translate(-5px, 0); }
+    100% { transform: translate(0); }
+}
+
+/* Comprehensive Class */
+.rotate-active {
+    animation: creepyRotateAnimation 5s linear infinite, 
+               jitterEffect 0.2s infinite, 
+               flickerEffect 5s infinite, 
+               shakeEffect 0.3s infinite;
+    will-change: transform, filter, opacity;
+}
+
+    @keyframes rotateAnimation {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+    
+    /* Rotate faster (5 seconds) */
+    .rotate-active {
+        animation: rotateAnimation 5s linear infinite;
+    }    
+    
+    @keyframes creepyRotateAnimation {
+        0% {
+            transform: rotate(0deg) scale(1);
+            filter: hue-rotate(0deg);
+        }
+        10% {
+            transform: rotate(45deg) scale(1.05);
+            filter: hue-rotate(30deg);
+        }
+        25% {
+            transform: rotate(90deg) scale(0.95);
+            filter: hue-rotate(60deg);
+        }
+        40% {
+            transform: rotate(135deg) scale(1.1);
+            filter: hue-rotate(90deg);
+        }
+        55% {
+            transform: rotate(180deg) scale(0.9);
+            filter: hue-rotate(120deg);
+        }
+        70% {
+            transform: rotate(225deg) scale(1.15);
+            filter: hue-rotate(150deg);
+        }
+        85% {
+            transform: rotate(270deg) scale(1);
+            filter: hue-rotate(180deg);
+        }
+        100% {
+            transform: rotate(360deg) scale(1.05);
+            filter: hue-rotate(0deg);
+        }
+    }
+    
+    .rotate-active {
+        animation: creepyRotateAnimation 3s linear infinite;
+        transition: transform 0.1s ease-in-out, filter 0.1s ease-in-out;
+        will-change: transform, filter;
+    }
+    
+  
+  /* Style for the orange button */
+.nav button {
+    background-color: orange;      /* Orange background */
+    color: white;                  /* White text color */
+    border: none;                  /* No border */
+    padding: 10px 20px;            /* Padding for a button-like look */
+    font-size: 16px;               /* Font size */
+    font-weight: bold;             /* Bold text */
+    border-radius: 5px;            /* Rounded corners */
+    cursor: pointer;               /* Pointer cursor on hover */
+    transition: background-color 1s, transform 1s; /* Smooth transition */
+  }
+  
+  /* Hover effect for the button */
+  .nav button:hover {
+    background-color: darkorange;  /* Darker orange on hover */
+    transform: scale(1.05);        /* Slightly enlarge on hover */
+  }
+  
+  /* Optional focus effect for accessibility */
+  .nav button:focus {
+    outline: 2px solid white;      /* White outline for keyboard focus */
+  }
+  
+  /* Styles specifically for the card with ID "disturb" */
+#disturb {
+    position: relative;
+    padding: 20px;
+    border: 2px solid #333;
+    background-color: #0000ff;
+    color: #eee;
+    overflow: hidden;
+    transition: transform 0.5s;
+}
+
+/* Title and text glitching effect */
+#disturbance-title, #disturbance-text {
+    animation: glitch-text 1s infinite alternate;
+    font-family: 'Creepster', cursive; /* Use a creepy font if available */
+}
+
+/* Glitch text animation */
+@keyframes glitch-text {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, -2px) rotate(-1deg); }
+    40% { transform: translate(2px, -2px) rotate(1deg); }
+    60% { transform: translate(-2px, 2px) rotate(0deg); }
+    80% { transform: translate(2px, 2px) rotate(-1deg); }
+    100% { transform: translate(0); }
+}
+
+/* Flashing button effect */
+#disturbance-btn {
+    position: relative; /* Ensure button is on top */
+    z-index: 1; /* Higher z-index to be clickable */
+    padding: 10px 20px;
+    font-size: 1.2em;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    animation: flash-btn 1s infinite;
+}
+
+/* Button flashing animation */
+@keyframes flash-btn {
+    0%, 100% { background-color: crimson; color: white; }
+    50% { background-color: black; color: yellow; }
+}
+
+/* Hidden message reveal */
+#hidden-disturbance {
+    display: none;
+    font-weight: bold;
+    color: purple;
+    animation: fadeIn 1s forwards;
+}
+
+/* Fade-in animation for hidden message */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Random shake effect on card hover */
+#disturb:hover {
+    animation: shake 0.5s;
+}
+
+/* Shake animation */
+@keyframes shake {
+    0% { transform: translate(0); }
+    25% { transform: translate(-2px, 0); }
+    50% { transform: translate(2px, 0); }
+    75% { transform: translate(0, 2px); }
+    100% { transform: translate(0); }
+}
+
+/* Flickering background */
+body {
+    animation: flicker 2s infinite alternate;
+}
+
+@keyframes flicker {
+    0% { background-color: #222; }
+    50% { background-color: #333; }
+    100% { background-color: #444; }
+}
+
+/* Creepy overlay effect */
+#creepy-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 0;
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.5s ease; /* Smooth transition */
+    pointer-events: none; /* Allow clicks through the overlay */
+}
+
+@keyframes creep {
+    0% { opacity: 0.2; }
+    50% { opacity: 0.5; }
+    100% { opacity: 0.2; }
+}
+/* Full-screen BSOD effect */
+.bsoD {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: blue;
+    color: white;
+    display: none; /* Hidden by default */
+    z-index: 9999; /* Above everything */
+    font-size: 48px;
+    text-align: center;
+    padding-top: 20%;
+}
+
+/* Annoying jump animation */
+@keyframes jump {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+/* Card movement style */
+.jumping {
+    animation: jump 10s infinite alternate;
+}
+/* Styles specifically for the card with ID "disturb" */
+#disturb {
+    position: relative;
+    padding: 20px;
+    border: 2px solid #333;
+    background-color: #111;
+    color: #eee;
+    overflow: hidden;
+    transition: transform 0.5s;
+}
+
+/* Full-screen BSOD effect */
+.bsoD {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: blue;
+    color: white;
+    display: none; /* Hidden by default */
+    z-index: 9999; /* Above everything */
+    font-size: 48px;
+    text-align: center;
+    padding-top: 20%;
+}
+
+/* Jumping animation */
+@keyframes jump {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+/* Annoying jump animation */
+#disturb {
+    animation: jump 0.5s infinite alternate;
+}
+
+/* Glitch text animation */
+#disturbance-title, #disturbance-text {
+    animation: glitch-text 1s infinite alternate;
+}
+
+/* Glitch text animation */
+@keyframes glitch-text {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, -2px) rotate(-1deg); }
+    40% { transform: translate(2px, -2px) rotate(1deg); }
+    60% { transform: translate(-2px, 2px) rotate(0deg); }
+    80% { transform: translate(2px, 2px) rotate(-1deg); }
+    100% { transform: translate(0); }
+}
+
+/* Hidden message reveal */
+.hidden-message {
+    display: none;
+    font-weight: bold;
+    color: purple;
+    animation: fadeIn 1s forwards;
+}
+
+/* Fade-in animation for hidden message */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+#disturb {
+    animation: jump 0.5s infinite alternate;
+}
+
+@keyframes jump {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-20px); } /* Adjust height as needed */
+    100% { transform: translateY(0); }
+}
+.card{
+    animation: jump 0.5s infinite alternate;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#disturb {
+    animation: spin 2s linear infinite; /* Adjust duration as needed */
+}
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+#disturb {
+    animation: pulse 1s infinite; /* Adjust duration as needed */
+}
+@keyframes flash {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+#disturb{
+    animation: flash 0.5s infinite; /* Adjust duration as needed */
+}
+@keyframes shake {
+    0% { transform: translate(0); }
+    25% { transform: translate(-2px, 0); }
+    50% { transform: translate(2px, 0); }
+    75% { transform: translate(0, -2px); }
+    100% { transform: translate(0); }
+}
+
+#disturb {
+    animation: shake 0.5s infinite; /* Adjust duration as needed */
+}
+@keyframes flip {
+    0% { transform: rotateY(0deg); }
+    50% { transform: rotateY(180deg); }
+    100% { transform: rotateY(0deg); }
+}
+
+#disturb {
+    animation: flip 2s infinite; /* Adjust duration as needed */
+}
+@keyframes twist {
+    0% { transform: rotateZ(0deg); }
+    100% { transform: rotateZ(360deg); }
+}
+
+#disturb{
+    animation: twist 3s linear infinite; /* Adjust duration as needed */
+}
+@keyframes zigzag {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(20px); }
+    50% { transform: translateX(-20px); }
+    75% { transform: translateX(20px); }
+    100% { transform: translateX(0); }
+}
+
+#disturb {
+    animation: zigzag 0.8s infinite; /* Adjust duration as needed */
+}
+@keyframes distort {
+    0% { transform: scale(1); }
+    25% { transform: scale(1.1, 0.9); }
+    50% { transform: scale(0.9, 1.1); }
+    75% { transform: scale(1.1, 0.9); }
+    100% { transform: scale(1); }
+}
+
+.distort {
+    animation: distort 1s infinite; /* Adjust duration as needed */
+}
+
+.dark-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Dark overlay with opacity */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it is on top of all content */
+}
+
+Styles for the despair text
+.despair-text {
+    font-size: 3em;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    color: red;
+}
+
+
+/* Rotate for 20 seconds */
+@keyframes websiteShake {
+    0% { transform: translate(0); }
+    10% { transform: translate(-5px, 0); }
+    20% { transform: translate(5px, 0); }
+    30% { transform: translate(-5px, 0); }
+    40% { transform: translate(5px, 0); }
+    50% { transform: translate(-5px, 0); }
+    60% { transform: translate(5px, 0); }
+    70% { transform: translate(-5px, 0); }
+    80% { transform: translate(5px, 0); }
+    90% { transform: translate(-5px, 0); }
+    100% { transform: translate(0); }
+}
+
+body.shake-active {
+    animation: websiteShake 0.3s infinite; /* Apply shake effect */
+}
+
+/* Ensure hidden messages are initially hidden */
+.hidden-message {
+    display: none; /* Adjust as needed */
+}
+
+/* Show message when class is removed */
+.hidden-message:not(.hidden-message) {
+    display: block; /* Adjust as needed */
+}
+.bsoD {
+    display: none; /* Initially hidden */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: blue;
+    color: white;
+    text-align: center;
+    font-size: 3em;
+    z-index: 9999; /* Ensure it appears above other elements */
+    padding-top: 20%; /* Center it vertically */
+}
+
+
+
+/* Styling for error memory text */
+.error-memory {
+    font-size: 2rem;
+    font-family: 'Courier New', Courier, monospace;
+    color: #ff0000; /* Bright red */
+    background-color: rgba(0, 0, 0, 0.8); /* Opaque black background */
+    padding: 5px 10px;
+    border: 2px dashed #ff0000; /* Matching red border */
+    z-index: 1000;
+    animation: error-fade 0.5s alternate infinite; /* Fast blink */
+}
+
+/* Animation for fading in and out */
+@keyframes error-fade {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.1); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* Styling for error memory text */
+.error-memory, .error-memory-trail {
+    font-size: 2rem;
+    font-family: 'Courier New', Courier, monospace;
+    color: #ff0000;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 5px 10px;
+    border: 2px dashed #ff0000;
+    z-index: 1000;
+    animation: error-fade 0.5s alternate infinite, rotate-wobble 1s infinite;
+}
+
+/* Mouse trail-specific style */
+.error-memory-trail {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+/* Animation for rotating and wobbling */
+@keyframes rotate-wobble {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(5deg); }
+    50% { transform: rotate(-5deg); }
+    75% { transform: rotate(3deg); }
+}
+
+/* Glitchy background effect */
+.glitch-background {
+    background: repeating-linear-gradient(
+        45deg,
+        #000,
+        #111 10px,
+        #ff0000 20px,
+        #111 30px,
+        #000 40px
+    );
+    animation: glitch-flash 0.1s step-end infinite;
+}
+
+/* Background flashing animation */
+@keyframes glitch-flash {
+    0%, 100% { background-color: #000; }
+    50% { background-color: #111; }
+}
+
+/* Random Pop-Up Dialog Styling */
+.error-dialog {
+    position: fixed;
+    background-color: rgba(255, 0, 0, 0.7);
+    color: #fff;
+    padding: 20px;
+    border: 2px dashed #fff;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.5rem;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+    animation: dialog-flicker 0.2s alternate infinite;
+}
+
+/* Dialog flickering effect */
+@keyframes dialog-flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+}
+
+/* Wobbly text animation */
+@keyframes rotate-wobble {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(5deg); }
+    50% { transform: rotate(-5deg); }
+    75% { transform: rotate(3deg); }
+}
+
+/* Glitchy background effect */
+.glitch-background {
+    background: repeating-linear-gradient(
+        45deg,
+        #000,
+        #111 10px,
+        #ff0000 20px,
+        #111 30px,
+        #000 40px
+    );
+    animation: glitch-flash 0.1s step-end infinite;
+}
+
+/* Background flashing animation */
+@keyframes glitch-flash {
+    0%, 100% { background-color: #000; }
+    50% { background-color: #111; }
+}
+
+/* Random cursor flickering effect */
+@keyframes cursor-flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+
+/*first*/
+
+/* Chaotic mode */
+.chaotic-mode {
+    overflow: hidden;
+    filter: blur(3px) brightness(0.7);
+    background-color: #000; /* Dark background */
+    cursor: crosshair;
+}
+
+/* Glitchy text */
+.glitchy-text {
+    position: absolute;
+    color: #ff0000; /* Red text */
+    font-size: 4rem;
+    font-family: 'Courier New', Courier, monospace;
+    animation: glitch-text 0.2s alternate infinite;
+}
+
+/* Styling for chaotic elements */
+.chaos-element {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    background-color: #f0f; /* Bright magenta */
+    border: 2px solid #00f; /* Bright blue border */
+    animation: spin-glitch 0.2s infinite linear, move-glitch 0.2s infinite;
+    border-radius: 50%;
+    z-index: 999;
+}
+
+/* Keyframes for text glitch */
+@keyframes glitch-text {
+    0% { transform: skewX(0deg) skewY(0deg); opacity: 1; }
+    50% { transform: skewX(15deg) skewY(-15deg); opacity: 0.5; }
+    100% { transform: skewX(-15deg) skewY(15deg); opacity: 1; }
+}
+
+/* Keyframes for spinning glitch */
+@keyframes spin-glitch {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(360deg); }
+}
+
+/* Keyframes for moving glitch */
+@keyframes move-glitch {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(30px, -30px); }
+}
+
+/* Error memory fading animation */
+@keyframes error-fade {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+/* ERROR message flickering effect */
+.error-message {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 5rem;
+    color: red;
+    font-weight: bold;
+    text-shadow: 0 0 20px red, 0 0 30px yellow;
+    animation: error-flash 0.5s infinite alternate;
+}
+
+@keyframes error-flash {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+}
+
+/* Invert page colors */
+.invert-colors {
+    filter: invert(100%);
+}
+
+/* Glitchy cursor effect */
+@keyframes mouse-jitter {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(5px, 5px); }
+    100% { transform: translate(-5px, -5px); }
+}
+/* ERROR message flickering effect */
+.error-message {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 5rem;
+    color: red;
+    font-weight: bold;
+    text-shadow: 0 0 20px red, 0 0 30px yellow;
+    animation: error-flash 0.5s infinite alternate;
+}
+
+@keyframes error-flash {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+}
+
+/* Invert page colors */
+.invert-colors {
+    filter: invert(100%);
+}
+
+/* Glitchy cursor effect */
+@keyframes mouse-jitter {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(5px, 5px); }
+    100% { transform: translate(-5px, -5px); }
+}
+/* Style for the "Unleash Chaos" button */
+#glitch-message {
+    background-color: #ff33a1; /* Bright pink */
+    color: white;
+    border: none;
+    padding: 7px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    display: inline-block; /* To avoid space between buttons */
+    margin: 5px;
+}
+
+/* Hover effect for the 'UNLEASH CHAOS' button */
+#glitch-message:hover {
+    background-color: #ff0088; /* Darker pink */
+    transform: scale(1.05);
+}
+
+/* Style for the 'ERROR MEMORY' button */
+#glitch-message2 {
+    background-color: #33a1ff; /* Cool blue */
+    color: white;
+    border: none;
+    padding: 7px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    display: inline-block;
+    margin: 5px;
+}
+
+/* Hover effect for the 'ERROR MEMORY' button */
+#glitch-message2:hover {
+    background-color: #0088ff; /* Darker blue */
+    transform: scale(1.05);
+}
+/* Cyberpunk theme for card7 */
+#card7 {
+    position: relative;
+    padding: 30px;
+    background: linear-gradient(45deg, #2b2b2b, #1f1f1f);
+    border: 2px solid #00ffcc; /* Neon border */
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.7);
+    color: #fff; /* Text color */
+    font-family: 'Courier New', Courier, monospace;
+    transition: all 0.5s ease;
+    z-index: 1; /* Keeps the content in focus */
+    overflow: hidden;
+    position: relative;
+}
+
+/* Floating cyberpunk elements */
+#card7 .floating-element {
+    position: absolute;
+    font-size: 3rem;
+    z-index: 0; /* Make sure they stay below the text */
+    opacity: 0.8;
+    pointer-events: none; /* Prevent interaction with the floating elements */
+}
+
+/* Randomly position floating elements while avoiding the buttons */
+#card7 .floating-element:nth-child(1) {
+    top: 5%;
+    left: 5%;
+    animation: float 6s ease-in-out infinite;
+}
+
+#card7 .floating-element:nth-child(2) {
+    top: 5%;
+    right: 5%;
+    animation: float 6s ease-in-out infinite reverse;
+}
+
+#card7 .floating-element:nth-child(3) {
+    top: 50%;
+    left: 20%;
+    animation: float 6s ease-in-out infinite reverse;
+}
+
+#card7 .floating-element:nth-child(4) {
+    top: 50%;
+    right: 20%;
+    animation: float 6s ease-in-out infinite;
+}
+
+/* Floating movement animation */
+@keyframes float {
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(15px, 15px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+/* Background animation */
+@keyframes backgroundShift {
+    0% {
+        background: linear-gradient(45deg, #00ffcc, #ff0099);
+    }
+    50% {
+        background: linear-gradient(45deg, #ff00cc, #0033ff);
+    }
+    100% {
+        background: linear-gradient(45deg, #00ffcc, #ff0099);
+    }
+}
+
+/* Animated background for the card */
+/* Cyberpunk-themed styling for the card */
+#card7 {
+    position: relative;
+    padding: 30px;
+    background: linear-gradient(45deg, #2b2b2b, #1f1f1f);
+    border: 2px solid #00ffcc; /* Neon border */
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.7);
+    color: #fff; /* Text color */
+    font-family: 'Courier New', Courier, monospace;
+    transition: all 0.3s ease;
+    z-index: 1; /* Keeps the content in focus */
+    overflow: hidden;
+}
+
+/* Floating cyberpunk emojis inside the card */
+#card7 .floating-element {
+    position: absolute;
+    font-size: 3rem;
+    z-index: 0; /* Make sure they stay behind the text */
+    opacity: 0.9;
+    animation: float 5s ease-in-out infinite, glow 1.5s ease-in-out infinite;
+    pointer-events: none; /* Prevent interaction with the floating elements */
+}
+
+/* Adjust floating emojis to not overlap the buttons or title text */
+#card7 .floating-element:nth-child(3) { /* First emoji (🦾) */
+    top: 10%;
+    left: 5%;
+}
+
+#card7 .floating-element:nth-child(4) { /* Second emoji (💀) */
+    top: 20%;
+    right: 10%;
+}
+
+#card7 .floating-element:nth-child(5) { /* Third emoji (🤖) */
+    top: 40%;
+    left: 25%;
+}
+
+#card7 .floating-element:nth-child(6) { /* Fourth emoji (👾) */
+    top: 50%;
+    left: 15%;
+}
+
+#card7 .floating-element:nth-child(7) { /* Fifth emoji (⚡) */
+    top: 60%;
+    right: 20%;
+}
+
+/* Floating movement animation */
+@keyframes float {
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(20px, -20px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+/* Glowing effect on the emojis to match cyberpunk theme */
+@keyframes glow {
+    0% {
+        text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 15px #00ffcc;
+    }
+    50% {
+        text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+    }
+    100% {
+        text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 15px #00ffcc;
+    }
+}
+
+/* Background animation */
+@keyframes backgroundShift {
+    0% {
+        background: linear-gradient(45deg, #00ffcc, #ff0099);
+    }
+    50% {
+        background: linear-gradient(45deg, #ff00cc, #0033ff);
+    }
+    100% {
+        background: linear-gradient(45deg, #00ffcc, #ff0099);
+    }
+}
+
+/* Animated background for the card */
+/* Cyberpunk-themed styling for the card */
+#card7 {
+    position: relative;
+    padding: 65px;
+    background: linear-gradient(45deg, #2b2b2b, #1f1f1f);
+    border: 2px solid #00ffcc; /* Neon border */
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.7);
+    color: #fff; /* Text color */
+    font-family: 'Courier New', Courier, monospace;
+    transition: all 0.3s ease;
+    z-index: 1; /* Keeps the content in focus */
+    overflow: hidden;
+    height: auto;
+    max-height: 400px; /* Ensure the card size is maintained */
+    overflow-y: auto; /* Allow scrolling for content */
+}
+
+/* Floating cyberpunk emojis inside the card */
+#card7 .floating-element {
+    position: absolute;
+    font-size: 3rem;
+    z-index: 0; /* Make sure they stay behind the text */
+    opacity: 0.9;
+    animation: float 5s ease-in-out infinite, glow 1.5s ease-in-out infinite;
+    pointer-events: none; /* Prevent interaction with the floating elements */
+}
+
+/* Adjust floating emojis to not overlap the buttons or title text */
+#card7 .floating-element:nth-child(3) { /* First emoji (🦾) */
+    top: 10%;
+    left: 5%;
+}
+
+#card7 .floating-element:nth-child(4) { /* Second emoji (💀) */
+    top: 25%;
+    right: 10%;
+}
+
+#card7 .floating-element:nth-child(5) { /* Third emoji (🤖) */
+    top: 40%;
+    left: 20%;
+}
+
+#card7 .floating-element:nth-child(6) { /* Fourth emoji (👾) */
+    top: 60%;
+    left: 10%;
+}
+
+#card7 .floating-element:nth-child(7) { /* Fifth emoji (⚡) */
+    top: 75%;
+    right: 15%;
+}
+
+/* Floating movement animation */
+@keyframes float {
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(20px, -20px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+/* Glowing effect on the emojis to match cyberpunk theme */
+@keyframes glow {
+    0% {
+        text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 15px #00ffcc;
+    }
+    50% {
+        text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+    }
+    100% {
+        text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 15px #00ffcc;
+    }
+}
+
+/* Background animation */
+@keyframes backgroundShift {
+    0% {
+        background: linear-gradient(45deg, #00ffcc, #ff0099);
+    }
+    50% {
+        background: linear-gradient(45deg, #ff00cc, #0033ff);
+    }
+    100% {
+        background: linear-gradient(45deg, #00ffcc, #ff0099);
+    }
+}
+
+/* Animated background for the card */
+/* Cyberpunk-themed styling for the card */
+#card7 {
+    position: relative;
+    padding: 30px;
+    background: linear-gradient(45deg, #2b2b2b, #1f1f1f);
+    border: 2px solid #00ffcc; /* Neon border */
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.7);
+    color: #fff; /* Text color */
+    font-family: 'Courier New', Courier, monospace;
+    transition: all 0.3s ease;
+    z-index: 1; /* Keeps the content in focus */
+    overflow: hidden;
+    height: auto;
+    max-height: 400px; /* Ensure the card size is maintained */
+    overflow-y: auto; /* Allow scrolling for content */
+}
+
+/* Floating cyberpunk emojis inside the card */
+#card7 .floating-element {
+    position: absolute;
+    font-size: 3rem;
+    z-index: 0; /* Make sure they stay behind the text */
+    opacity: 0.9;
+    animation: float 5s ease-in-out infinite, glow 1.5s ease-in-out infinite;
+    pointer-events: none; /* Prevent interaction with the floating elements */
+}
+
+/* Adjust floating emojis to not overlap the buttons or title text */
+#card7 .floating-element:nth-child(3) { /* First emoji (🦾) */
+    top: 10%;
+    left: 5%;
+}
+
+#card7 .floating-element:nth-child(4) { /* Second emoji (💀) */
+    top: 25%;
+    right: 10%;
+}
+
+#card7 .floating-element:nth-child(5) { /* Third emoji (🤖) */
+    top: 40%;
+    left: 20%;
+}
+
+#card7 .floating-element:nth-child(6) { /* Fourth emoji (👾) */
+    top: 60%;
+    left: 10%;
+}
+
+#card7 .floating-element:nth-child(7) { /* Fifth emoji (⚡) */
+    top: 75%;
+    right: 15%;
+}
+
+/* Floating movement animation */
+@keyframes float {
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(20px, -20px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+/* Glowing effect on the emojis to match cyberpunk theme */
+@keyframes glow {
+    0% {
+        text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 15px #00ffcc;
+    }
+    50% {
+        text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+    }
+    100% {
+        text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 15px #00ffcc;
+    }
+}
+
+/* Background animation */
+@keyframes backgroundShift {
+    0% {
+        background: linear-gradient(45deg, #00ffcc, #ff0099);
+    }
+    50% {
+        background: linear-gradient(45deg, #ff00cc, #0033ff);
+    }
+    100% {
+        background: linear-gradient(45deg, #00ffcc, #ff0099);
+    }
+}
+
+/* Animated background for the card */
+#card7 {
+    animation: backgroundShift 2s ease-in-out infinite;
+    position: relative; /* Ensure relative positioning for floating elements inside */
+}
+
+/* Floating movement animation for the h2 element */
+@keyframes titleFloat {
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(10px, -10px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+/* Card title with floating and glowing effect */
+#card7 h2 {
+    position: absolute; /* Make it float freely */
+    font-size: 2rem;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    color: #000dff; /* Neon color */
+    text-shadow: 0 0 10px #ffffff, 0 0 20px #06ff06, 0 0 30px #ff0e0e;
+    animation: glitchText 1s infinite, titleFloat 3s ease-in-out infinite; /* Title glitch and float animation */
+    z-index: 10; /* Make sure title stays on top */
+}
+
+/* Glitch effect for the title */
+@keyframes glitchText {
+    0% {
+        transform: skew(0.5deg);
+        opacity: 1;
+    }
+    50% {
+        transform: skew(-0.5deg);
+        opacity: 0.5;
+    }
+    100% {
+        transform: skew(0.5deg);
+        opacity: 1;
+    }
+}
+
+/* Glowing buttons */
+#card7 button {
+    background-color: #000000; /* Neon color */
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10; /* Ensure buttons are always on top */
+    position: absolute; /* Allow free movement */
+    animation: floatButton 19s infinite ease-in-out; /* Floating animation */
+}
+
+#card7 button:nth-child(1) {
+    animation-delay: 0s; /* First button starts immediately */
+}
+
+#card7 button:nth-child(2) {
+    animation-delay: 2.0s; /* Second button starts after the first */
+}
+
+#card7 button:nth-child(1) {
+    animation-delay: 0s; /* First button starts immediately */
+}
+
+#card7 button:nth-child(2) {
+    animation-delay: 2.5s; /* Second button starts after the first */
+}
+
+@keyframes floatButton {
+    0% {
+        transform: translate(0, 0);
+    }
+    15% {
+        transform: translate(120px, -120px); /* Random movement */
+    }
+    30% {
+        transform: translate(-80px, 70px); /* Random movement */
+    }
+    45% {
+        transform: translate(50px, -150px); /* Random movement */
+    }
+    60% {
+        transform: translate(-200px, 50px); /* Random movement */
+    }
+    75% {
+        transform: translate(100px, -100px); /* Random movement */
+    }
+    90% {
+        transform: translate(-120px, 120px); /* Random movement */
+    }
+    100% {
+        transform: translate(0, 0); /* Back to original position */
+    }
+}
+
+
+#card7 button:hover {
+    background-color: #ff0099; /* Change color on hover */
+    color: #fff;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px #ff0099;
+}
+
+/* Floating emojis below title and buttons */
+#card7 .floating-element {
+    position: absolute;
+    font-size: 3rem;
+    z-index: 1; /* Ensure emojis are below the text */
+    opacity: 0.8;
+    animation: float 1s ease-in-out infinite, glow 1.5s ease-in-out infinite;
+    pointer-events: none; /* Prevent interaction with the floating elements */
+}
+
+/* Adjust the floating emojis to appear below title and buttons */
+#card7 .floating-element:nth-child(1) { /* First emoji (🦾) */
+    top: 75%;
+    left: 10%;
+}
+
+#card7 .floating-element:nth-child(2) { /* Second emoji (💀) */
+    top: 70%;
+    right: 5%;
+}
+
+#card7 .floating-element:nth-child(3) { /* Third emoji (🤖) */
+    top: 60%;
+    left: 20%;
+}
+
+#card7 .floating-element:nth-child(4) { /* Fourth emoji (👾) */
+    top: 55%;
+    right: 10%;
+}
+
+#card7 .floating-element:nth-child(5) { /* Fifth emoji (⚡) */
+    top: 50%;
+    left: 30%;
+}
+
+/* Floating movement animation */
+@keyframes float {
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(30px, -30px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+/* Glowing effect on the emojis to match cyberpunk theme */
+@keyframes glow {
+    0% {
+        text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 15px #00ffcc;
+    }
+    50% {
+        text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+    }
+    100% {
+        text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 15px #00ffcc;
+    }
+}
+/* Floating movement animation for the h2 element */
+@keyframes titleFloat {
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(15px, -15px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+/* Card title with enhanced floating, glowing, and cyberpunk effect */
+#card7 h2 {
+    position: absolute; /* Make it float freely */
+    font-size: 2.5rem; /* Increase size for better visibility */
+    font-family: 'Orbitron', sans-serif; /* Cyberpunk-style font */
+    font-weight: bold;
+    color: #000000; /* Neon cyan color */
+    text-shadow: 
+        0 0 5px #f43fe7, 
+        0 0 10px #00ffcc, 
+        0 0 20px #0400fa, 
+        0 0 30px #ff00ff, 
+        0 0 40px #ff0099; /* Neon glowing effect */
+    animation: glitchText 1s infinite, titleFloat 1s ease-in-out infinite; /* Glitch and fast float animation */
+    z-index: 10; /* Ensure title stays on top */
+    letter-spacing: 2px; /* Add spacing for a more futuristic look */
+}
+
+/* Glitch effect for the title */
+@keyframes glitchText {
+    0% {
+        transform: skew(0.5deg);
+        opacity: 1;
+    }
+    25% {
+        transform: skew(-0.5deg);
+        opacity: 0.8;
+    }
+    50% {
+        transform: skew(0.5deg);
+        opacity: 1;
+    }
+    75% {
+        transform: skew(-0.5deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: skew(0.5deg);
+        opacity: 1;
+    }
+}
+/* Make sure to import the font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
+
+/* Floating movement animation for the h2 element */
+@keyframes titleFloat {
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(15px, -15px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+/* Card title with enhanced floating, glowing, and funky effect */
+#card7 h2 {
+    position: absolute; /* Make it float freely */
+    font-size: 2.5rem; /* Increase size for better visibility */
+    font-family: 'Bangers', sans-serif; /* Funky font */
+    font-weight: bold;
+    color: #79ff0b; /* Bright pink color for funkiness */
+    /* text-shadow: 
+        0 0 5px #ff0066, 
+        0 0 10px #ff0066, 
+        0 0 15px #ff6600, 
+        0 0 20px #ff6600, 
+        0 0 25px #ffcc00; Funky neon glow effect */
+    animation: glitchText 1s infinite, titleFloat 1s ease-in-out infinite; /* Glitch and fast float animation */
+    z-index: 10; /* Ensure title stays on top */
+    letter-spacing: 3px; /* Add spacing for a more funky look */
+}
+
+/* Glitch effect for the title */
+@keyframes glitchText {
+    0% {
+        transform: skew(0.5deg);
+        opacity: 1;
+    }
+    25% {
+        transform: skew(-0.5deg);
+        opacity: 0.8;
+    }
+    50% {
+        transform: skew(0.5deg);
+        opacity: 1;
+    }
+    75% {
+        transform: skew(-0.5deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: skew(0.5deg);
+        opacity: 1;
+    }
+}
+
+/* Base styling for the card */
+#card1 {
+    position: relative;
+    background-color: #121212; /* Very dark gray */
+    color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.7); /* Subtle red glow */
+    overflow: hidden;
+    font-family: 'Courier New', Courier, monospace; /* Horror-themed font */
+}
+
+/* Animated background */
+@keyframes bloodSpatter {
+    0% {
+        background-color: #121212;
+    }
+    25% {
+        background-color: #290d0d; /* Darker red */
+    }
+    50% {
+        background-color: #460f0f; /* Blood red */
+    }
+    75% {
+        background-color: #290d0d; /* Dark red again */
+    }
+    100% {
+        background-color: #121212; /* Back to dark gray */
+    }
+}
+
+#card1 {
+    animation: bloodSpatter 3s ease-in-out infinite; /* Apply the blood spatter animation */
+}
+
+/* Floating glitch effect on h2 */
+@keyframes titleFloat {
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(10px, -10px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+#card1 h2 {
+    position: absolute;
+    font-size: 2.5rem;
+    color: #ff0000; /* Glowing red */
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.7), 0 0 30px rgba(255, 0, 0, 0.6);
+    animation: titleFloat 3s ease-in-out infinite, glitchText 0.5s infinite alternate; /* Adding glitch effect */
+}
+
+/* Glitch effect for title */
+@keyframes glitchText {
+    0% {
+        transform: skew(1deg);
+        opacity: 1;
+    }
+    50% {
+        transform: skew(-1deg);
+        opacity: 0.5;
+    }
+    100% {
+        transform: skew(1deg);
+        opacity: 1;
+    }
+}
+
+/* Distorted text hover effect */
+#card1 .distorted-text {
+    font-size: 1.2rem;
+    font-family: 'Courier New', Courier, monospace;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+#card1 .distorted-text:hover {
+    transform: translateX(-50%) scale(1.2) skewX(15deg) skewY(15deg);
+    opacity: 1;
+    color: #ff0000;
+}
+
+/* Glitch effect on the text inside the glitch-effect div */
+.glitch-effect {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Courier New', Courier, monospace;
+}
+.glitch-text {
+    color: #ff0000; /* Red glowing color */
+    font-size: 3rem;
+    text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000;
+    animation: glitchText 1s infinite alternate;
+    display: inline-block; /* Makes the span behave more like a block for margin adjustments */
+    margin: 0 auto; /* Centers if parent has text-align */
+}
+
+
+/* Button animation */
+#card1 button {
+    background-color: #000000;
+    color: #fff;
+    border: 2px solid #ff0000;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#ghost-button{
+    left: 20px;
+}
+
+#ghost-button:hover {
+    background-color: #ff9500;
+    color: #fff;
+    box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+    cursor: pointer;
+}
+
+/* Fade-in effect for ghostly elements */
+@keyframes ghostFadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+#card1 .ghostly {
+    animation: ghostFadeIn 2s ease-in-out infinite;
+}
+
+#ghost-button {
+    background-color: #000000;
+    color: #fff;
+    border: 2px solid #ff0000;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 1.1rem; /* Adjusted font size */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 2;
+    margin-top: 40px; /* Space between button and text */
+    width: auto; /* Button width adjusted */
+    position: absolute;
+    left: 20px; /* Align it to the left side */
+    bottom: 20px; /* Positioning it at the bottom */
+}
+/* Title styling (placed at the top of the card) */
+#card1 h2 {
+    position: absolute;
+    top: 10px; /* Adjusted to be at the top */
+    transform: translateX(-50%);
+    font-size: 2rem; /* Adjusted font size */
+    color: #e1ff00; /* Red color */
+    text-shadow: 0 0 8px rgba(255, 0, 0, 0.8), 0 0 15px rgba(255, 0, 0, 0.7);
+    animation: titleFloat 3s ease-in-out infinite, glitchText 1s infinite alternate;
+    z-index: 3;
+}
+
+/* Floating and glitch effect for title */
+@keyframes titleFloat {
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(8px, -8px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes glitchText {
+    0% {
+        transform: skew(1deg);
+        opacity: 1;
+    }
+    50% {
+        transform: skew(-1deg);
+        opacity: 0.5;
+    }
+    100% {
+        transform: skew(1deg);
+        opacity: 1;
+    }
+}
+
+/* Clumsy Time Machine Background */
+#card8 {
+    background: #2c3e50;
+    color: #f39c12;
+    font-family: 'Courier New', Courier, monospace;
+    border: 3px solid #f39c12;
+    position: relative;
+    padding: 65px;
+    text-align: center;
+    overflow: hidden;
+    z-index: 0;
+    animation: timeFlicker 0.5s infinite alternate;
+}
+
+/* Glitchy time text effect */
+#card8 h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ecf0f1;
+    animation: glitch-text 1s infinite, timeShifter 2s ease-in-out infinite;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 20px;
+}
+
+/* Glitch effect for text */
+@keyframes glitch-text {
+    0% {
+        text-shadow: 1px 1px 5px #fff, 0 0 25px #ff0000, 0 0 5px #f39c12;
+    }
+    50% {
+        text-shadow: 1px 1px 5px #fff, 0 0 20px #00ff00, 0 0 5px #9b59b6;
+    }
+    100% {
+        text-shadow: 1px 1px 5px #fff, 0 0 25px #ff0000, 0 0 5px #f39c12;
+    }
+}
+
+/* Time machine flicker animation */
+@keyframes timeFlicker {
+    0% {
+        background-color: #2c3e50;
+    }
+    25% {
+        background-color: #34495e;
+    }
+    50% {
+        background-color: #2c3e50;
+    }
+    75% {
+        background-color: #34495e;
+    }
+    100% {
+        background-color: #2c3e50;
+    }
+}
+
+/* Button animation for malfunction */
+#timeButton {
+    background: #f39c12;
+    border: 3px solid #ecf0f1;
+    color: #2c3e50;
+    font-size: 1.5rem;
+    padding: 2px 2px;
+    border-radius: 8px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    z-index: 3;
+    animation: glitch-button 0.5s infinite alternate;
+}
+
+/* Button hover effect */
+#timeButton:hover {
+    background: linear-gradient(45deg, #ff7b00, #f39c12);
+    color: #2c3e50;
+    transform: scale(1.2) rotate(-5deg);
+    box-shadow: 0 0 20px 5px rgba(255, 0, 0, 0.7), 0 0 30px rgba(255, 255, 255, 0.8);
+    animation: glitchHover 0.2s infinite alternate;
+}
+
+/* Glitch effect animation */
+@keyframes glitch-button {
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(-5px, -5px);
+    }
+    100% {
+        transform: translate(5px, 5px);
+    }
+}
+
+/* Time distortion text */
+.time-text {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #ecf0f1;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: timeDistortion 2s infinite alternate;
+}
+
+/* Time distortion animation */
+@keyframes timeDistortion {
+    0% {
+        transform: translateX(-50%) scale(1);
+    }
+    50% {
+        transform: translateX(-50%) scale(1.2) rotate(10deg);
+    }
+    100% {
+        transform: translateX(-50%) scale(1) rotate(0deg);
+    }
+}
+
+/* Fake IP Address Text */
+/* Fake IP Address Text */
+#fake-ip {
+    display: none; /* Hidden by default */
+    position: relative;
+    top: 20px;
+    font-size: 1.2rem;
+    color: #00ff00;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    text-shadow: 0 0 10px #00ff00;
+    animation: flashIpText 1s infinite alternate;
+    padding-bottom: 35px;
+}
+
+/* Flash IP Address Text */
+@keyframes flashIpText {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.2;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+/* Clumsy Time Machine Background */
+/* Clumsy Time Machine Background */
+#card8 {
+    background-color: #1c1c3c; /* Deep space blue for the time machine background */
+    color: #00ffcc; /* Neon teal color for the text (futuristic/techy feel) */
+    font-family: 'Courier New', Courier, monospace;
+    border: 3px solid #00ffcc; /* Neon teal border to match the text */
+    position: relative;
+    padding: 20px;
+    text-align: center;
+    overflow: hidden;
+    z-index: 0;
+    border-radius: 10px; /* Slight rounded corners for smooth edges */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7); /* Dark shadow for a high-tech, mysterious vibe */
+    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8) 60%, #1c1c3c); /* Radial gradient to give a "depth" effect */
+}
+
+/* Creepy full-screen video overlay */
+.creepy-video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
+    background-color: rgba(0, 0, 0, 0.7); /* Dark overlay for creepiness */
+    z-index: 9999; /* Ensure the overlay is on top of everything else */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#finale {
+    background: linear-gradient(45deg, #0037ff, #6600cc, red, yellow, green); /* Gradient from blue to purple */
+    transition: background 1s ease-in-out; /* Smooth transition for background color */
+    color:black;
+    font-weight: bolder;
+    padding:65px;
+}
+
+#finale h2{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+#finale_btn{
+    padding: 15px;
+    text-align: center;
+    font-family:monospace;
+    font-weight: bolder;
+    font-size: larger;
+}
+#diwali-text {
+    background: linear-gradient(45deg, #1a0eff, #ffe600, #4b0082, #000000, #00bfff), green; /* A colorful gradient for a vibrant Diwali feel */
+    color: #000000; /* White text for better readability */
+    border: solid;
+    border-radius: 10px;
+    padding: 30px;
+    position: relative;
+    text-align: center;
+    overflow: hidden;
+    z-index: 2;
+}
+
+#diwali-text h2 {
+    padding-top: 5px;
+    font-size: 2.5rem;
+    font-family: 'Dancing Script', cursive, sans-serif; /* Cursive font */
+    color: black;
+    margin-bottom: 20px;
+}
+
+#diwali-text p {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    line-height: 1.4;
+    font-family: 'Droid Serif', serif; /* Apply the Indian-style cursive font */
+    color: white; /* Default color to start with */
+    animation: flickerTextColor 1.5s ease-in-out infinite; /* Flickering color effect on text */
+}
+
+/* Flickering Text Color Effect */
+@keyframes flickerTextColor {
+    0% {
+        color: #14ff1f; /* Red */
+    }
+    25% {
+        color: #f2ff00; /* Pink */
+    }
+    50% {
+        color: #ffffff; /* Purple */
+    }
+    75% {
+        color: #1e01ff; /* Light Blue */
+    }
+    100% {
+        color: #ffab10; /* Red (back to starting color) */
+    }
+}
+
+#celebrate-button {
+    background: linear-gradient(45deg, #ffffff, #ff0000); /* A celebratory orange gradient */
+    color: rgb(0, 0, 0);
+    padding: 12px 20px;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    transition: all 0.1s ease;
+    cursor: pointer;
+    position: relative;
+    font-family: 'Dancing Script', cursive, sans-serif; /* Cursive font */
+}
+
+#celebrate-button:hover {
+    background: linear-gradient(45deg, #00f60c, #ff6f61);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 165, 0, 1);
+}
+
+#celebrate-button:focus {
+    outline: none;
+}
+
+/* Flickering Light Effect for the background */
+@keyframes flicker {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+#diwali-text {
+    animation: flicker 5s infinite alternate;
+}
+
+/* Floral border for a festive look */
+#diwali-text::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border: 5px solid transparent;
+    background: linear-gradient(45deg, #00129a, #ff008c, green, purple, gold);
+    border-radius: 10px;
+    z-index: -1;
+}
+
+#hidden-message {
+    display: none;
+    font-size: 1.2rem;
+    color: #ff4747;
+    animation: flickerEffect 1s infinite alternate; /* Flicker effect */
+    margin-top: 15px;
+}
+
+/* Animation for showing the message */
+@keyframes flickerEffect {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.show-message {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#POTION {
+    color: #fff; /* Light text color */
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+#POTION h2 {
+    font-family: 'Cinzel', serif; /* Elegant font */
+    font-size: 1.8rem;
+    color: #ff69b4; /* Pink color for the title */
+    margin-bottom: 10px;
+}
+
+#POTION h3 {
+    font-family: 'Caveat', cursive; /* Handwriting style */
+    font-size: 1.2rem;
+    color: #f39c12; /* Yellow-orange color */
+    margin-bottom: 15px;
+}
+
+#POTION p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    margin: 10px 0;
+}
+
+#hidden-message {
+    display: none; /* Hidden initially */
+    font-size: 1.2rem;
+    color: #ff4747; /* Red text for hidden message */
+    animation: flickerEffect 1.5s infinite alternate; /* Flickering effect */
+    margin-top: 15px;
+}
+
+/* Potion bottle styling */
+#POTION .potion-bottle {
+    position: relative;
+    margin: 20px auto;
+    width: 50px; /* Slightly increased width for a more realistic potion bottle */
+    height: 100px; /* Taller height for a more classic look */
+    border-radius: 40px 40px 10px 10px; /* Sharper bottom edges */
+    background: linear-gradient(to bottom, #4B9CD3, #2F6B9B); /* Bottle gradient */
+    border: 2px solid #ffffff;
+    overflow: hidden;
+}
+
+/* Liquid inside the potion bottle */
+#POTION .potion-bottle .liquid {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 50%; /* Potion height */
+    background-color: rgba(75, 255, 80, 0.8); /* Green potion color */
+    animation: bubble 2s infinite; /* Bubble animation */
+    border-radius: 0 0 40px 40px; /* Smooth rounded bottom of the liquid */
+}
+
+/* Bubbles inside the potion bottle */
+#POTION .potion-bottle .bubbles {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Prevent interactions */
+    overflow: hidden;
+}
+
+/* Styling for each bubble */
+#POTION .potion-bottle .bubbles .bubble {
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.7); /* White bubbles */
+    opacity: 0;
+    animation: bubble-rise 3s infinite;
+}
+
+/* Bubble sizes and positions */
+#POTION .potion-bottle .bubbles .bubble:nth-child(1) {
+    width: 12px;
+    height: 12px;
+    left: 30%;
+    animation-delay: 0s;
+}
+
+#POTION .potion-bottle .bubbles .bubble:nth-child(2) {
+    width: 10px;
+    height: 10px;
+    left: 50%;
+    animation-delay: 0.5s;
+}
+
+#POTION .potion-bottle .bubbles .bubble:nth-child(3) {
+    width: 8px;
+    height: 8px;
+    left: 70%;
+    animation-delay: 1s;
+}
+
+#POTION .potion-bottle .bubbles .bubble:nth-child(4) {
+    width: 14px;
+    height: 14px;
+    left: 20%;
+    animation-delay: 1.5s;
+}
+
+#POTION .potion-bottle .bubbles .bubble:nth-child(5) {
+    width: 12px;
+    height: 12px;
+    left: 60%;
+    animation-delay: 2s;
+}
+
+#POTION .potion-bottle .bubbles .bubble:nth-child(6) {
+    width: 10px;
+    height: 10px;
+    left: 80%;
+    animation-delay: 2.5s;
+}
+
+#POTION .potion-bottle .bubbles .bubble:nth-child(7) {
+    width: 8px;
+    height: 8px;
+    left: 40%;
+    animation-delay: 3s;
+}
+
+/* Animations */
+@keyframes bubble {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes bubble-rise {
+    0% {
+        bottom: 0;
+        opacity: 1;
+    }
+    100% {
+        bottom: 100%;
+        opacity: 0;
+    }
+}
+
+@keyframes flickerEffect {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.4;
+    }
+}
+
+@keyframes randomMovement {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(10px, 5px); }
+    100% { transform: translate(-10px, -5px); }
+}
+
+body {
+    animation: randomMovement 3s infinite;
+}
+@keyframes randomScale {
+    0% { transform: scale(1); }
+    25% { transform: scale(1.1); }
+    50% { transform: scale(0.95); }
+    75% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+
+body {
+    animation: randomScale 3s infinite;
+}
+/* Body settings */
+body {
+    background-color: #111; /* Dark background for visibility */
+    height: 100vh; /* Full viewport height */
+    overflow: hidden; /* Prevent scrollbars */
+    position: relative; /* Allow spider positioning relative to body */
+}
+
+/* Spider container */
+.spider-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Prevent interaction with the spiders */
+    z-index: 10000; /* Ensure spiders are on top */
+}
+
+/* Spider styling */
+.spider {
+    font-size: 2rem;
+    position: absolute;
+    z-index: 10001; /* Make sure spiders are above other content */
+    opacity: 0.8;
+    animation: float 10s linear infinite, bounce 0.5s ease-in-out infinite; /* Floating and bouncing effects */
+}
+
+/* Floating spider animation */
+@keyframes float {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(var(--x), var(--y)); /* Random movement */
+    }
+}
+
+/* Bounce effect for spiders */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0); /* No vertical movement at start and end */
+    }
+    50% {
+        transform: translateY(-10px); /* Small bounce effect */
+    }
+}
+
+
+#floating-elements-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Allow interaction with other elements */
+    overflow: hidden;
+    z-index: 9999; /* Make sure it's above other content */
+}
+
+.floating-element {
+    position: absolute;
+    font-size: 30px;
+    opacity: 0.8;
+    animation: floatAnimation 10s linear infinite;
+    pointer-events: none; /* Prevent these emojis from interfering with clicks */
+}
+
+@keyframes floatAnimation {
+    0% {
+        transform: translate(0, 0);
+        opacity: 0.8;
+    }
+    25% {
+        transform: translate(100px, -100px);
+        opacity: 0.6;
+    }
+    50% {
+        transform: translate(200px, 0);
+        opacity: 0.4;
+    }
+    75% {
+        transform: translate(100px, 100px);
+        opacity: 0.6;
+    }
+    100% {
+        transform: translate(0, -100px);
+        opacity: 0.8;
+    }
+}
+
+@keyframes squeezeStretch {
+    0% {
+        transform: scale(1); /* Normal size */
+    }
+    25% {
+        transform: scale(1.2, 0.8); /* Stretch horizontally, squeeze vertically */
+    }
+    50% {
+        transform: scale(1); /* Back to normal size */
+    }
+    75% {
+        transform: scale(0.8, 1.2); /* Squeeze horizontally, stretch vertically */
+    }
+    100% {
+        transform: scale(1); /* Back to normal size */
+    }
+}
+
+#POTION {
+    animation: squeezeStretch 0.5s infinite; /* Apply the squeeze/stretch animation */
+    animation-timing-function: ease-in-out; /* Smooth transition */
+}
