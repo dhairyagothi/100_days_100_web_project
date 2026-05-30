@@ -237,7 +237,6 @@ function buildWeatherSummary(data) {
 
 // FIX: Safe UI update for main weather card
 function updateWeatherCard(cityLabel, summary) {
-  console.log("UPDATING UI:", cityLabel, summary); // DEBUG
 
   if (!summary) {
     console.error("Summary is undefined");
@@ -456,15 +455,11 @@ function bindSearchForm() {
 
   if (!searchForm || !cityInput) return;
 
-  console.log("Search system initialized"); // DEBUG
-
   // FIX: form submit (button click also triggers this)
   searchForm.addEventListener("submit", (event) => {
     event.preventDefault(); // stop page refresh
 
     const city = cityInput.value.trim();
-
-    console.log("SEARCH CLICKED:", city); // DEBUG
 
     if (!city) return;
 
