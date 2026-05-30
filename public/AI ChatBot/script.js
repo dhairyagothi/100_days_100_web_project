@@ -17,8 +17,13 @@ const MODEL_NAMES = {
   "gemini-2.0-flash": "Gemini 2.0 Flash",
 };
 
+// Optional local default config file.
+// Create public/AI ChatBot/default-config.js and set window.DEFAULT_GEMINI_API_KEY.
+const DEFAULT_GEMINI_API_KEY = window.DEFAULT_GEMINI_API_KEY?.trim() || "";
+const GEMINI_PROXY_ENDPOINT = "/api/gemini";
+
 /* STATE */
-let apiKey = localStorage.getItem(STORAGE.API_KEY) || "";
+let apiKey = localStorage.getItem(STORAGE.API_KEY) || DEFAULT_GEMINI_API_KEY || "";
 let hfKey = localStorage.getItem(STORAGE.HF_KEY) || "";
 let sessions = loadSessions();
 let activeSessionId = null;
@@ -789,10 +794,6 @@ function togglePinnedView() {
 
 /* VOICE INPUT */
 function toggleVoice() {
-  if (!apiKey) {
-    openSettings();
-    return;
-  } // add this guard
   if (isListening) stopListening();
   else startListening();
 }
@@ -1098,11 +1099,6 @@ function handleSend() {
     return;
   }
 
-  if (!apiKey) {
-    openSettings();
-    return;
-  }
-
   // 🧠 LAZY SESSION CREATION
   let session = getCurrentSession();
 
@@ -1150,18 +1146,33 @@ async function getAIResponse() {
   if (sysProm) body.systemInstruction = { parts: [{ text: sysProm }] };
 
   try {
-    const res = await fetch(`${API_URL}?key=${apiKey}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
+    const useProxy = !apiKey;
+    const fetchOptions = useProxy
+      ? {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            model,
+            contents: chatHistory,
+            systemPrompt: sysProm,
+          }),
+        }
+      : {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        };
+
+    const requestUrl = useProxy ? GEMINI_PROXY_ENDPOINT : `${API_URL}?key=${apiKey}`;
+    const res = await fetch(requestUrl, fetchOptions);
 
     removeTyping(typingRow);
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
+      const message = err.error?.message || err.error || `HTTP ${res.status}`;
       throw new Error(
-        err.error?.message || `HTTP ${res.status} — Check your API key.`,
+        message || "Unable to connect to Gemini. Check your hosted proxy or API key.",
       );
     }
 

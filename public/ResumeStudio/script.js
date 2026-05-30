@@ -200,18 +200,30 @@ function initResumeStudio() {
 
         if (!input) return;
 
-        input.addEventListener("input", () => {
-            updatePreview();
-            runResumeAnalysis();
-            saveToLocalStorage();
+    function debounce(fn, delay = 300) {
+    let timeout;
+    return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => fn(...args), delay);
+    };
+    }
 
-            const counter = document.getElementById(`${id}Count`);
-
-            if (counter && input.maxLength) {
-                counter.textContent =
-                    `${input.value.length}/${input.maxLength}`;
-            }
-        });
+    inputs.forEach(id => {
+        const inputEl = document.getElementById(id);
+        const counterEl = document.getElementById(`${id}Count`);
+        
+        if (inputEl) {
+            // Listen on input to run preview update & ATS scores in real-time
+            inputEl.addEventListener("input", debounce(() => {
+                if (counterEl) {
+                    counterEl.textContent = `${inputEl.value.length}/${inputEl.maxLength}`;
+                    counterEl.style.color = inputEl.value.length >= inputEl.maxLength ? "red" : "";
+                }
+                updatePreview();
+                runResumeAnalysis();
+                saveToLocalStorage();
+            }, 250));
+        }
     });
 
     // =========================
@@ -274,9 +286,18 @@ function initResumeStudio() {
         return html;
     }
 
-    // =========================
-    // UPDATE PREVIEW
-    // =========================
+    function escapeHTML(str) {
+    return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+    
+    // ==========================================
+    // 6. RENDER PREVIEW LAYOUTS
+    // ==========================================
     function updatePreview() {
         const values = {};
 
@@ -293,14 +314,67 @@ function initResumeStudio() {
         resumePreview.className = currentTemplate;
 
         resumePreview.innerHTML = `
-            <div class="resume-header">
-                <h1>${values.name || "Your Name"}</h1>
-                <h2>${values.title || "Professional Title"}</h2>
-
-                <div class="resume-contact">
-                    <span>${values.email}</span>
-                    <span>${values.phone}</span>
-                    <span>${values.location}</span>
+            <div class="modern-header" id="preview-section-personal">
+                <div class="modern-header-title">
+                    <h1>${v.name || "Your Name"}</h1>
+                    <p>${v.title || "Professional Role / Title"}</p>
+                </div>
+                <div class="modern-contact-info">
+                    ${v.email ? `<span>${v.email}</span>` : ""}
+                    ${v.phone ? `<span>${v.phone}</span>` : ""}
+                    ${v.location ? `<span>${v.location}</span>` : ""}
+                    ${v.website ? `<span>${v.website.replace(/^https?:\/\//, "")}</span>` : ""}
+                </div>
+            </div>
+            
+            <div class="modern-layout">
+                <div class="modern-main-col">
+                    ${v.summary ? `
+                        <div class="modern-section" id="preview-section-summary">
+                            <h3>Profile Summary</h3>
+                            <div class="modern-section-content"><p>${escapeHTML(v.summary)}</p></div>
+                        </div>
+                    ` : ""}
+                    
+                    ${v.experience ? `
+                        <div class="modern-section" id="preview-section-experience">
+                            <h3>Professional History</h3>
+                            <div class="modern-section-content">${parseBulletPoints(v.experience)}</div>
+                        </div>
+                    ` : ""}
+                    
+                    ${v.projects ? `
+                        <div class="modern-section" id="preview-section-projects">
+                            <h3>Key Projects</h3>
+                            <div class="modern-section-content">${parseBulletPoints(v.projects)}</div>
+                        </div>
+                    ` : ""}
+                </div>
+                
+                <div class="modern-sidebar-col">
+                    ${v.education ? `
+                        <div class="modern-section" id="preview-section-education">
+                            <h3>Education</h3>
+                            <div class="modern-section-content">${parseBulletPoints(v.education)}</div>
+                        </div>
+                    ` : ""}
+                    
+                    ${skillsArr.length > 0 ? `
+                        <div class="modern-section" id="preview-section-skills">
+                            <h3>Key Skills</h3>
+                            <ul class="modern-skills-list">
+                                ${skillsArr.map(s => `<li>${s}</li>`).join("")}
+                            </ul>
+                        </div>
+                    ` : ""}
+                    
+                    <div class="modern-section">
+                        <h3>Online Links</h3>
+                        <div class="modern-section-content" style="font-size: 0.78rem; display: flex; flex-direction: column; gap: 4px;">
+                            ${v.linkedin ? `<div><strong>LinkedIn:</strong> ${v.linkedin.replace(/^https?:\/\/(www\.)?/, "")}</div>` : ""}
+                            ${v.github ? `<div><strong>GitHub:</strong> ${v.github.replace(/^https?:\/\/(www\.)?/, "")}</div>` : ""}
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -309,16 +383,67 @@ function initResumeStudio() {
                     ? `
                 <section>
                     <h3>Summary</h3>
-                    <p>${values.summary}</p>
-                </section>
-            `
-                    : ""
-            }
+                    <div class="classic-section-content"><p>${escapeHTML(v.summary)}</p></div>
+                </div>
+            ` : ""}
+            
+            ${v.experience ? `
+                <div class="classic-section" id="preview-section-experience">
+                    <h3>Experience</h3>
+                    <div class="classic-section-content">${parseBulletPoints(v.experience)}</div>
+                </div>
+            ` : ""}
+            
+            ${v.projects ? `
+                <div class="classic-section" id="preview-section-projects">
+                    <h3>Projects</h3>
+                    <div class="classic-section-content">${parseBulletPoints(v.projects)}</div>
+                </div>
+            ` : ""}
+            
+            ${v.education ? `
+                <div class="classic-section" id="preview-section-education">
+                    <h3>Education</h3>
+                    <div class="classic-section-content">${parseBulletPoints(v.education)}</div>
+                </div>
+            ` : ""}
+            
+            ${v.skills ? `
+                <div class="classic-section" id="preview-section-skills">
+                    <h3>Skills</h3>
+                    <div class="classic-section-content classic-skills">
+                        <p>${v.skills}</p>
+                    </div>
+                </div>
+            ` : ""}
+        `;
+    }
 
-            ${
-                values.experience
-                    ? `
-                <section>
+    function renderMinimalTemplate(v) {
+        resumePreview.innerHTML = `
+            <div class="minimal-header" id="preview-section-personal">
+                <h1>${v.name || "Your Name"}</h1>
+                ${v.title ? `<p class="minimal-title">${v.title}</p>` : ""}
+                
+                <div class="minimal-contact">
+                    ${v.email ? `<span>${v.email}</span>` : ""}
+                    ${v.phone ? `<span>${v.phone}</span>` : ""}
+                    ${v.location ? `<span>${v.location}</span>` : ""}
+                    ${v.website ? `<span>${v.website.replace(/^https?:\/\//, "")}</span>` : ""}
+                    ${v.linkedin ? `<span>in/${v.linkedin.split("/").pop()}</span>` : ""}
+                    ${v.github ? `<span>github/${v.github.split("/").pop()}</span>` : ""}
+                </div>
+            </div>
+            
+            ${v.summary ? `
+                <div class="minimal-section" id="preview-section-summary">
+                    <h3>About</h3>
+                    <div class="minimal-section-content"><p>${escapeHTML(v.summary)}</p></div>
+                </div>
+            ` : ""}
+            
+            ${v.experience ? `
+                <div class="minimal-section" id="preview-section-experience">
                     <h3>Experience</h3>
                     ${parseBulletPoints(values.experience)}
                 </section>
@@ -608,6 +733,62 @@ function initResumeStudio() {
                 canvas.toDataURL("image/png");
 
             const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF("p", "mm", "a4");
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            const pageHeight = pdf.internal.pageSize.getHeight();
+            const imgWidth = pageWidth;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            let heightLeft = imgHeight;
+            let position = 0;
+            
+            // First page
+            pdf.addImage(
+                imgData,
+                "PNG",
+                0,
+                position,
+                imgWidth,
+                imgHeight
+            );
+            heightLeft -= pageHeight;
+            
+            // Additional pages
+            while (heightLeft > 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(
+                    imgData,
+                    "PNG",
+                    0,
+                    position,
+                    imgWidth,
+                    imgHeight
+                );
+                heightLeft -= pageHeight;
+            }
+            
+            const userName = document.getElementById("name").value.trim() || "My";
+            const formattedName = userName.toLowerCase().replace(/\s+/g, "_");
+            
+            pdfLoaderProgress.textContent = "Finalizing download...";
+            await new Promise(resolve => setTimeout(resolve, 400));
+            
+            pdf.save(`${formattedName}_resume.pdf`);
+        } catch (err) {
+            console.error(err);
+            alert("High-res PDF rendering failed. Try using the 'Print' option as an alternative.");
+        } finally {
+            pdfLoader.classList.remove("active");
+            // Restore transitions
+            resumePreview.style.transition = "";
+            // Re-run analysis to restore visual completeness highlights
+            runResumeAnalysis();
+            // Restore active section highlight
+            highlightPreviewSection(currentTabActive);
+            // Restore scaled preview layout zoom
+            scaleResumePreview();
+        }
+    });
 
             const pdf = new jsPDF(
                 "p",
@@ -639,7 +820,16 @@ function initResumeStudio() {
     });
 }
 
-document.addEventListener(
-    "DOMContentLoaded",
-    initResumeStudio
-);
+let resumeStudioInitialized = false;
+
+function safeInit() {
+    if (resumeStudioInitialized) return;
+    resumeStudioInitialized = true;
+    initResumeStudio();
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", safeInit);
+} else {
+    safeInit();
+}
