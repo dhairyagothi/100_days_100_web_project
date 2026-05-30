@@ -7,6 +7,7 @@ const resultBox = document.getElementById("result");
 const clearIcon = document.querySelector(".clear-icon");
 const loadingSpinner = document.querySelector(".loading-spinner");
 const suggestionsBox = document.getElementById("suggestions");
+const shortcutBadge = document.querySelector(".shortcut-badge");
 
 // Sample search suggestions (you can replace with API calls)
 const searchSuggestions = [
@@ -41,6 +42,7 @@ init();
 function init() {
   setupEventListeners();
   updateClearButton();
+  updateShortcutBadge();
 }
 
 function setupEventListeners() {
@@ -55,12 +57,14 @@ function setupEventListeners() {
   input.addEventListener("keydown", handleKeyDown);
   input.addEventListener("focus", () => {
     container.classList.add("active");
+    updateShortcutBadge();
     if (input.value.trim()) showSuggestions(input.value);
   });
   input.addEventListener("blur", () => {
     // Delay to allow suggestion click
     setTimeout(() => {
       container.classList.remove("active");
+      updateShortcutBadge();
       hideSuggestions();
     }, 200);
   });
@@ -85,12 +89,15 @@ function setupEventListeners() {
   });
 }
 
+const debouncedShowSuggestions = debounce(showSuggestions, 150);
+
 function handleInput(e) {
   const value = e.target.value;
   updateClearButton();
+  updateShortcutBadge();
   
   if (value.trim()) {
-    showSuggestions(value);
+    debouncedShowSuggestions(value);
   } else {
     hideSuggestions();
   }
@@ -112,7 +119,6 @@ function handleKeyDown(e) {
     navigateSuggestions(-1);
   } else if (e.key === "Escape") {
     hideSuggestions();
-    input.blur();
   }
 }
 
@@ -148,6 +154,10 @@ function updateSuggestionSelection() {
 }
 
 function showSuggestions(query) {
+  if (!input.value.trim()) {
+    hideSuggestions();
+    return;
+  }
   const filtered = searchSuggestions.filter(item =>
     item.toLowerCase().includes(query.toLowerCase())
   );
@@ -328,6 +338,7 @@ function resetVoiceUI() {
 function clearSearch() {
   input.value = "";
   updateClearButton();
+  updateShortcutBadge();
   hideSuggestions();
   hideResult();
   input.focus();
@@ -338,6 +349,15 @@ function updateClearButton() {
     clearIcon.classList.add("visible");
   } else {
     clearIcon.classList.remove("visible");
+  }
+}
+
+function updateShortcutBadge() {
+  if (!shortcutBadge) return;
+  if (document.activeElement === input || input.value.trim() !== "") {
+    shortcutBadge.classList.add("hidden");
+  } else {
+    shortcutBadge.classList.remove("hidden");
   }
 }
 
