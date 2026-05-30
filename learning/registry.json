@@ -42,6 +42,31 @@
         { "id": "dom", "title": "DOM Manipulation", "file": "topics/js/dom.md" },
         { "id": "events", "title": "Event Handling", "file": "topics/js/events.md" }
       ]
+    },
+    {
+      "id": "react",
+      "title": "React.js",
+      "icon": "fa-brands fa-react",
+      "topics": [
+        { "id": "introduction", "title": "Introduction to React", "file": "topics/react/introduction.md" },
+        { "id": "why-react", "title": "Why React?", "file": "topics/react/why-react.md" },
+        { "id": "setup", "title": "React Setup", "file": "topics/react/setup.md" },
+        { "id": "jsx", "title": "JSX", "file": "topics/react/jsx.md" },
+        { "id": "components", "title": "Components", "file": "topics/react/components.md" },
+        { "id": "props", "title": "Props", "file": "topics/react/props.md" },
+        { "id": "state", "title": "State", "file": "topics/react/state.md" },
+        { "id": "event-handling", "title": "Event Handling", "file": "topics/react/event-handling.md" },
+        { "id": "conditional-rendering", "title": "Conditional Rendering", "file": "topics/react/conditional-rendering.md" },
+        { "id": "lists-and-keys", "title": "Lists and Keys", "file": "topics/react/lists-and-keys.md" },
+        { "id": "forms", "title": "Forms", "file": "topics/react/forms.md" },
+        { "id": "hooks-overview", "title": "Hooks Overview", "file": "topics/react/hooks-overview.md" },
+        { "id": "use-state", "title": "useState", "file": "topics/react/use-state.md" },
+        { "id": "use-effect", "title": "useEffect", "file": "topics/react/use-effect.md" },
+        { "id": "project-structure", "title": "React Project Structure", "file": "topics/react/project-structure.md" },
+        { "id": "api-fetching", "title": "API Fetching Basics", "file": "topics/react/api-fetching.md" },
+        { "id": "best-practices", "title": "Best Practices", "file": "topics/react/best-practices.md" },
+        { "id": "mini-project", "title": "Mini Project Overview", "file": "topics/react/mini-project.md" }
+      ]
     }
   ]
 }

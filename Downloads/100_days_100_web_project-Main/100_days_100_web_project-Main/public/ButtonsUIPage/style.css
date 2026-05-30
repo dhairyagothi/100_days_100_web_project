@@ -1,0 +1,429 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(200deg, #bb8bbbf3 0%, #bdb8bb 100%);
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    color: white;
+    font-size: 3em;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.subtitle {
+    text-align: center;
+    color: rgba(255,255,255,0.9);
+    font-size: 1.2em;
+    margin-bottom: 50px;
+}
+
+.section {
+    background: linear-gradient(135deg, #f5f4f452 0%, #ececec 100%);
+    border-radius: 10px;
+    padding: 40px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.section-title {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+}
+
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.button-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.button-label {
+    font-size: 0.9em;
+    color: #666;
+    font-weight: 500;
+}
+
+/* Base Button Styles */
+button {
+    padding: 15px 40px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* GLOW BUTTONS */
+.glow-primary {
+    background: #4158D0;
+    color: white;
+    box-shadow: 0 0 20px rgba(65, 88, 208, 0.5);
+}
+
+.glow-primary:hover {
+    box-shadow: 0 0 40px rgba(65, 88, 208, 0.8);
+    transform: translateY(-2px);
+}
+
+.glow-success {
+    background: #06D6A0;
+    color: white;
+    box-shadow: 0 0 20px rgba(6, 214, 160, 0.5);
+}
+
+.glow-success:hover {
+    box-shadow: 0 0 40px rgba(6, 214, 160, 0.8);
+    transform: translateY(-2px);
+}
+
+.glow-danger {
+    background: #EF476F;
+    color: white;
+    box-shadow: 0 0 20px rgba(239, 71, 111, 0.5);
+}
+
+.glow-danger:hover {
+    box-shadow: 0 0 40px rgba(239, 71, 111, 0.8);
+    transform: translateY(-2px);
+}
+
+.glow-neon {
+    background: transparent;
+    color: #00ff88;
+    border: 2px solid #00ff88;
+    box-shadow: 0 0 10px #00ff88, inset 0 0 10px #00ff88;
+}
+
+.glow-neon:hover {
+    box-shadow: 0 0 30px #00ff88, inset 0 0 20px #00ff88;
+    background: rgba(0, 255, 136, 0.1);
+}
+
+/*  GRADIENT BUTTONS */
+.gradient-sunrise {
+    background: linear-gradient(45deg, #FF512F, #F09819);
+    color: white;
+}
+
+.gradient-sunrise:hover {
+    background: linear-gradient(45deg, #F09819, #FF512F);
+    transform: scale(1.05);
+}
+
+.gradient-ocean {
+    background: linear-gradient(45deg, #2E3192, #1BFFFF);
+    color: white;
+}
+
+.gradient-ocean:hover {
+    background: linear-gradient(45deg, #1BFFFF, #2E3192);
+    transform: scale(1.05);
+}
+
+.gradient-purple {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.gradient-purple:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    transform: scale(1.05);
+}
+
+.gradient-animated {
+    background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+    background-size: 200% 200%;
+    color: white;
+    animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* 3D BUTTONS  */
+.btn-3d-blue {
+    background: #3498db;
+    color: white;
+    box-shadow: 0 6px #2980b9;
+    border-radius: 10px;
+}
+
+.btn-3d-blue:hover {
+    background: #2980b9;
+}
+
+.btn-3d-blue:active {
+    box-shadow: 0 2px #2980b9;
+    transform: translateY(4px);
+}
+
+.btn-3d-green {
+    background: #2ecc71;
+    color: white;
+    box-shadow: 0 6px #27ae60;
+    border-radius: 10px;
+}
+
+.btn-3d-green:hover {
+    background: #27ae60;
+}
+
+.btn-3d-green:active {
+    box-shadow: 0 2px #27ae60;
+    transform: translateY(4px);
+}
+
+.btn-3d-red {
+    background: #e74c3c;
+    color: white;
+    box-shadow: 0 6px #c0392b;
+    border-radius: 10px;
+}
+
+.btn-3d-red:hover {
+    background: #c0392b;
+}
+
+.btn-3d-red:active {
+    box-shadow: 0 2px #c0392b;
+    transform: translateY(4px);
+}
+
+.btn-3d-layered {
+    background: #f39c12;
+    color: white;
+    box-shadow: 0 2px #d68910, 0 4px #b77408, 0 6px #986000;
+    border-radius: 10px;
+}
+
+.btn-3d-layered:active {
+    box-shadow: 0 1px #986000;
+    transform: translateY(5px);
+}
+
+/*  OUTLINE BUTTONS  */
+.outline-primary {
+    background: transparent;
+    color: #4158D0;
+    border: 3px solid #4158D0;
+}
+
+.outline-primary:hover {
+    background: #4158D0;
+    color: white;
+}
+
+.outline-success {
+    background: transparent;
+    color: #06D6A0;
+    border: 3px solid #06D6A0;
+}
+
+.outline-success:hover {
+    background: #06D6A0;
+    color: white;
+}
+
+.outline-danger {
+    background: transparent;
+    color: #EF476F;
+    border: 3px solid #EF476F;
+}
+
+.outline-danger:hover {
+    background: #EF476F;
+    color: white;
+}
+
+.outline-gradient {
+    background: white;
+    color: transparent;
+    border: 3px solid;
+    border-image: linear-gradient(45deg, #f093fb 0%, #f5576c 100%) 1;
+    background-clip: text;
+    -webkit-background-clip: text;
+    background-image: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+}
+
+.outline-gradient:hover {
+    background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+}
+
+/*  ANIMATION BUTTONS  */
+.ripple {
+    background: #9b59b6;
+    color: white;
+    position: relative;
+}
+
+.ripple::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.ripple:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.slide-right {
+    background: #e67e22;
+    color: white;
+    position: relative;
+    z-index: 1;
+}
+
+.slide-right::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: #d35400;
+    transition: width 0.4s;
+    z-index: -1;
+}
+
+.slide-right:hover::before {
+    width: 100%;
+}
+
+.bounce:hover {
+    animation: bounce 0.5s;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    25% { transform: translateY(-10px); }
+    50% { transform: translateY(0); }
+    75% { transform: translateY(-5px); }
+}
+
+.rotate:hover {
+    animation: rotate 0.6s;
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.pulse {
+    background: #16a085;
+    color: white;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(22, 160, 133, 0.7); }
+    50% { box-shadow: 0 0 0 15px rgba(22, 160, 133, 0); }
+}
+
+.shake:hover {
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.glow-expand {
+    background: #8e44ad;
+    color: white;
+}
+
+.glow-expand:hover {
+    box-shadow: 0 0 5px #8e44ad, 0 0 15px #8e44ad, 0 0 30px #8e44ad;
+    transform: scale(1.1);
+}
+
+.split {
+    background: #c0392b;
+    color: white;
+    position: relative;
+    z-index: 1;
+}
+
+.split::before,
+.split::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background: #e74c3c;
+    transition: width 0.3s;
+    z-index: -1;
+}
+
+.split::before {
+    left: 0;
+}
+
+.split::after {
+    right: 0;
+}
+
+.split:hover::before,
+.split:hover::after {
+    width: 51%;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2em;
+    }
+
+    .section {
+        padding: 20px;
+    }
+
+    .button-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}

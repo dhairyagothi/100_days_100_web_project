@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  
+</head>
+<style>
+    body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+
+.signup-box {
+  background-color: black;
+  margin-top: 50px;
+    padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.logo {
+  width: 50px;
+  margin-bottom: 10px;
+  margin-left: 150px;
+}
+
+h1 {
+  font-size: 40px;
+  margin-left: 80px;
+  margin-bottom: 20px;
+}
+#second{
+    font-size: 40px;
+    margin-top:-10px;
+    margin-left: 50px;
+}
+form {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #1db954;
+}
+
+.error-message {
+  display: none;
+  color: #e50000;
+  font-size: 12px;
+  margin: -5px 0 10px;
+}
+
+.alt-link {
+  color: #1db954;
+  font-size: 12px;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 20px;
+}
+.alt-link:hover {
+  color: #1db954;
+  font-size: 12px;
+  text-decoration: underline;
+  display: block;
+  margin-bottom: 20px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#next-btn {
+  background-color: #1db954;
+  color: black;
+  width: 368px;
+  border-radius: 25px;
+  font-weight: bold;
+}
+
+.social-btn {
+  background-color: #333;
+  margin-top: 10px;
+}
+
+.google { color: white; 
+border-radius: 25px;
+}
+.facebook { color: white; 
+    border-radius: 25px;}
+.apple { color: white;
+    border-radius: 25px; }
+
+.divider {
+  color: #ccc;
+  margin: 20px 0;
+  font-size: 14px;
+}
+#email{
+    width: 350px;
+    background-color: #333;
+    color:white;
+}
+.loginn{
+    margin-left: 50px;
+    display: flex;
+    gap:10px;
+}
+.bottom{
+    margin-left: 30px;margin-bottom: 10px;
+}
+.bottom2{
+    margin-left: 70px;
+    }
+</style>
+<body>
+  <div class="container">
+    <div class="signup-box">
+      <img src="./images/logo.png" alt="Spotify Logo" class="logo">
+      <h1>Sign up to</h1><h1 id="second">Start listening</h1>
+      <form id="signup-form">
+        <label for="email">Email address</label>
+        <input type="email" id="email" placeholder="name@domain.com" required>
+        <p class="error-message" id="error-message">This email is invalid. Make sure it's written like example@email.com</p>
+        <a href="#" class="alt-link">Use phone number instead.</a>
+        <button type="submit" id="next-btn">Next</button>
+      </form>
+      
+      <div class="divider" style="margin-left:180px ;">or</div>
+      <button class="social-btn google">Sign up with Google</button>
+      <button class="social-btn facebook">Sign up with Facebook</button>
+      <button class="social-btn apple">Sign up with Apple</button>
+    </div>
+    <hr>
+    <div class="loginn">
+    <a><h3>Already have an account? </h3></a>
+    <a href="#" style="margin-top:19px;color:white;text-decoration: underline;"> Log in here.</a>
+    </div>
+    <div class="bottom">
+        This site is protected by reCAPTCHA and the Google
+    </div>
+    <div class="bottom2">Privacy Policy and Terms of Service apply.</div>
+  </div>
+  <script>
+    document.getElementById("signup-form").addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  const emailField = document.getElementById("email");
+  const errorMessage = document.getElementById("error-message");
+
+  // Email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(emailField.value)) {
+    errorMessage.style.display = "block";
+    emailField.style.borderColor = "#e50000";
+  } else {
+    errorMessage.style.display = "none";
+    emailField.style.borderColor = "#1db954";
+    alert("Email is valid! Proceeding...");
+  }
+});
+
+  </script>
+</body>
+</html>
