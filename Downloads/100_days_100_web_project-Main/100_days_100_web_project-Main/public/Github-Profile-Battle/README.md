@@ -29,7 +29,6 @@ A small web app that lets two GitHub users "battle" by comparing public profile 
    ```
 
 2. Open the project folder in your browser:
-
    - Open `public/Github-Profile-Battle/index.html` directly in the browser.
    - Or serve the repository root with a simple static server, for example:
 

@@ -1,7 +1,7 @@
-import { useState } from "react";
-import PredictionForm from "../components/PredictionForm";
-import ResultCard from "../components/ResultCard";
-import Charts from "../components/Charts";
+import { useState } from 'react';
+import PredictionForm from '../components/PredictionForm';
+import ResultCard from '../components/ResultCard';
+import Charts from '../components/Charts';
 
 export default function PredictPage({ onPrediction, history }) {
   const [prediction, setPrediction] = useState(null);
@@ -22,7 +22,7 @@ export default function PredictPage({ onPrediction, history }) {
         </div>
         {prediction && (
           <div className="header-badge">
-            Last: ₹{prediction.toLocaleString("en-IN", { maximumFractionDigits: 0 })}
+            Last: ₹{prediction.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
           </div>
         )}
       </header>

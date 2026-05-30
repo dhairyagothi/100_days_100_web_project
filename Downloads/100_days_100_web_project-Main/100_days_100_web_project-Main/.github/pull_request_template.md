@@ -3,9 +3,6 @@
 [Cite any related issue(s) this pull request addresses. If none, simply state "None”]
 write issue no. here
 
-
-
-
 ## Description
 
 [Please include a brief description of the changes or features added]
@@ -16,8 +13,7 @@ write issue no. here
 - [ ] Feature enhancement
 - [ ] Documentation update
 - [ ] Security enhancement
-- [ ] Other (specify): _______________
-
+- [ ] Other (specify): ******\_\_\_******
 
 check in issue by entering [X] in boxes
 
@@ -26,6 +22,7 @@ check in issue by entering [X] in boxes
 [Attach any relevant screenshots or videos demonstrating the changes]
 
 ## Checklist
+
 - [ ] I have performed a self-review of my code.
 - [ ] I have read and followed the Contribution Guidelines.
 - [ ] I have tested the changes thoroughly before submitting this pull request.
@@ -39,12 +36,10 @@ check in issue by entering [X] in boxes
 - [ ] I have followed security best practices in my code changes.
 
 check in issue by entering [X] in boxes
+
 ## Additional Context
 
 [Include any additional information or context that might be helpful for reviewers.]
-
-
-
 
 ## Contribution Guidelines
 

@@ -1,5 +1,5 @@
 // src/hooks/useDictionary.ts
-import { useCallback } from "react";
+import { useCallback } from 'react';
 
 export type DictResult = {
   word: string;
@@ -11,22 +11,32 @@ export type DictResult = {
   raw?: unknown;
 };
 
-const CACHE_KEY_PREFIX = "dict_cache_";
-const API_BASE = "https://api.dictionaryapi.dev/api/v2/entries/en/";
+const CACHE_KEY_PREFIX = 'dict_cache_';
+const API_BASE = 'https://api.dictionaryapi.dev/api/v2/entries/en/';
 
 /** small helper: safe JSON parse */
 function safeParse(s: string | null) {
   if (!s) return null;
-  try { return JSON.parse(s); } catch { return null; }
+  try {
+    return JSON.parse(s);
+  } catch {
+    return null;
+  }
 }
 
 /** timeout wrapper for fetch */
 function fetchWithTimeout(input: RequestInfo, init: RequestInit = {}, timeout = 8000) {
   return new Promise<Response>((resolve, reject) => {
-    const timer = setTimeout(() => reject(new Error("timeout")), timeout);
+    const timer = setTimeout(() => reject(new Error('timeout')), timeout);
     fetch(input, init)
-      .then(res => { clearTimeout(timer); resolve(res); })
-      .catch(err => { clearTimeout(timer); reject(err); });
+      .then((res) => {
+        clearTimeout(timer);
+        resolve(res);
+      })
+      .catch((err) => {
+        clearTimeout(timer);
+        reject(err);
+      });
   });
 }
 
@@ -50,13 +60,13 @@ type ApiEntry = {
 };
 
 function isApiEntryArray(v: unknown): v is ApiEntry[] {
-  return Array.isArray(v) && v.length > 0 && typeof v[0] === "object" && v[0] !== null;
+  return Array.isArray(v) && v.length > 0 && typeof v[0] === 'object' && v[0] !== null;
 }
 
 function parseDictionaryApiResponse(data: unknown): DictResult | null {
   if (!isApiEntryArray(data)) return null;
   const entry = data[0] as ApiEntry;
-  const word = entry.word || "";
+  const word = entry.word || '';
   const meanings = Array.isArray(entry.meanings) ? entry.meanings : [];
 
   // collect candidate definitions, synonyms, examples across meanings/definitions
@@ -87,7 +97,7 @@ function parseDictionaryApiResponse(data: unknown): DictResult | null {
     partOfSpeech,
     synonyms: synonyms.length ? synonyms : undefined,
     example,
-    raw: data
+    raw: data,
   };
 }
 
@@ -129,8 +139,10 @@ export default function useDictionary() {
       }
     } catch (err) {
       // network error or timeout — do not spam the API, cache a short negative result
-      console.warn("dictionary fetch error:", err);
-      try { sessionStorage.setItem(key, JSON.stringify({ word })); } catch {
+      console.warn('dictionary fetch error:', err);
+      try {
+        sessionStorage.setItem(key, JSON.stringify({ word }));
+      } catch {
         // ignore storage errors
       }
       return null;

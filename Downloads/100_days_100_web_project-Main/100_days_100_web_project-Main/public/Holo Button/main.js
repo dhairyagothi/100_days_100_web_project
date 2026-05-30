@@ -1,4 +1,4 @@
-const fileName = "4SvKgmIrnw7KodjP";
+const fileName = '4SvKgmIrnw7KodjP';
 const canvas = document.getElementById('canvas3d');
 const holoButton = document.getElementById('holoButton');
 const statusText = document.getElementById('statusText');
@@ -14,7 +14,7 @@ const messages = {
   hover: 'Target locked. Click to run the hologram action.',
   loading: 'Initializing secure hologram channel...',
   active: 'AI assistant activated. This button can now trigger app logic.',
-  demo: 'Demo action complete: notification, loading state, and callback fired.'
+  demo: 'Demo action complete: notification, loading state, and callback fired.',
 };
 
 async function loadSplineScene() {
@@ -69,20 +69,25 @@ function showToast(message) {
   }, 3200);
 }
 
-function triggerHologramAction(message = messages.active, toastText = 'AI assistant activated successfully.') {
+function triggerHologramAction(
+  message = messages.active,
+  toastText = 'AI assistant activated successfully.'
+) {
   playFeedbackTone();
   setButtonState('loading', messages.loading);
 
   window.setTimeout(() => {
     setButtonState('active', message);
     showToast(toastText);
-    holoButton.dispatchEvent(new CustomEvent('hologram:activated', {
-      bubbles: true,
-      detail: {
-        action: holoButton.dataset.action,
-        theme: document.body.dataset.theme || 'cyan'
-      }
-    }));
+    holoButton.dispatchEvent(
+      new CustomEvent('hologram:activated', {
+        bubbles: true,
+        detail: {
+          action: holoButton.dataset.action,
+          theme: document.body.dataset.theme || 'cyan',
+        },
+      })
+    );
   }, 900);
 }
 
@@ -113,13 +118,15 @@ navigationDemo.addEventListener('click', () => {
   statusText.textContent = message;
   showToast('Navigation demo triggered. No page redirect needed.');
 
-  holoButton.dispatchEvent(new CustomEvent('hologram:activated', {
-    bubbles: true,
-    detail: {
-      action: holoButton.dataset.action,
-      theme: document.body.dataset.theme || 'cyan'
-    }
-  }));
+  holoButton.dispatchEvent(
+    new CustomEvent('hologram:activated', {
+      bubbles: true,
+      detail: {
+        action: holoButton.dataset.action,
+        theme: document.body.dataset.theme || 'cyan',
+      },
+    })
+  );
 });
 
 themeButtons.forEach((button) => {

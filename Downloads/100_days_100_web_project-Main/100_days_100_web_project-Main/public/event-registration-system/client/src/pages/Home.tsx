@@ -1,17 +1,16 @@
-import { useState } from "react";
-import { RegistrationForm } from "@/components/RegistrationForm";
-import { Link } from "wouter";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Shield } from "lucide-react";
+import { useState } from 'react';
+import { RegistrationForm } from '@/components/RegistrationForm';
+import { Link } from 'wouter';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Shield } from 'lucide-react';
 
 export default function Home() {
-  const [locationQuery, setLocationQuery] = useState("pune");
-  const displayLocation = locationQuery.trim() || "pune";
+  const [locationQuery, setLocationQuery] = useState('pune');
+  const displayLocation = locationQuery.trim() || 'pune';
 
   return (
     <div className="min-h-screen flex flex-col w-full bg-background font-sans">
-
       {/* Mobile-only top bar */}
       <div className="lg:hidden flex items-center justify-between px-4 py-3 border-b border-border/40 bg-card/80 backdrop-blur">
         <div className="flex items-center gap-2">
@@ -46,7 +45,7 @@ export default function Home() {
             </div>
             <div className="space-y-6">
               <h1 className="font-display text-5xl xl:text-6xl font-bold tracking-tight leading-tight max-w-2xl">
-                Welcome to <br/>
+                Welcome to <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-violet-400">
                   Zenith 2026
                 </span>
@@ -68,7 +67,8 @@ export default function Home() {
                 data-testid="input-location-search"
               />
               <p className="mt-3 text-sm text-white/80">
-                Showing results for <span className="font-semibold text-white">{displayLocation}</span>
+                Showing results for{' '}
+                <span className="font-semibold text-white">{displayLocation}</span>
               </p>
             </div>
           </div>
@@ -92,8 +92,12 @@ export default function Home() {
         <div className="flex-1 flex flex-col items-center justify-center p-4 sm:p-8 md:p-12 bg-gradient-to-br from-background to-secondary/10">
           <div className="w-full max-w-xl animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className="mb-6 lg:hidden text-center">
-              <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-foreground">Secure your spot</h1>
-              <p className="text-muted-foreground mt-2 text-sm sm:text-base">Join the premier event of 2026.</p>
+              <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+                Secure your spot
+              </h1>
+              <p className="text-muted-foreground mt-2 text-sm sm:text-base">
+                Join the premier event of 2026.
+              </p>
             </div>
             <RegistrationForm />
           </div>

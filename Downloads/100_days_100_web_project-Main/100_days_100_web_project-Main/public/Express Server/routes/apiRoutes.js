@@ -1,10 +1,6 @@
-const express = require("express");
+const express = require('express');
 
-const {
-  getHealthStatus,
-  getServerInfo,
-  getUsers
-} = require("../controllers/apiController");
+const { getHealthStatus, getServerInfo, getUsers } = require('../controllers/apiController');
 
 const router = express.Router();
 
@@ -14,7 +10,7 @@ const router = express.Router();
 |--------------------------------------------------------------------------
 */
 
-router.get("/health", getHealthStatus);
+router.get('/health', getHealthStatus);
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +18,7 @@ router.get("/health", getHealthStatus);
 |--------------------------------------------------------------------------
 */
 
-router.get("/info", getServerInfo);
+router.get('/info', getServerInfo);
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +26,6 @@ router.get("/info", getServerInfo);
 |--------------------------------------------------------------------------
 */
 
-router.get("/users", getUsers);
+router.get('/users', getUsers);
 
 module.exports = router;

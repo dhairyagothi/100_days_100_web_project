@@ -1,7 +1,7 @@
-import { Link } from "wouter";
-import { Button } from "@/components/ui/button";
-import { useAuth } from "@/hooks/use-auth";
-import { LogOut, LayoutDashboard, ArrowLeft } from "lucide-react";
+import { Link } from 'wouter';
+import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hooks/use-auth';
+import { LogOut, LayoutDashboard, ArrowLeft } from 'lucide-react';
 
 export function AdminNav() {
   const { logout } = useAuth();
@@ -13,7 +13,12 @@ export function AdminNav() {
           <span className="font-display font-bold text-lg text-primary">Zenith Admin</span>
           <nav className="flex items-center gap-2">
             <Link href="/admin/dashboard">
-              <Button variant="ghost" size="sm" className="text-muted-foreground" data-testid="link-dashboard">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-muted-foreground"
+                data-testid="link-dashboard"
+              >
                 <LayoutDashboard className="w-4 h-4 mr-1.5" />
                 <span className="hidden sm:inline">Dashboard</span>
               </Button>
@@ -26,7 +31,13 @@ export function AdminNav() {
             </Link>
           </nav>
         </div>
-        <Button variant="ghost" size="sm" onClick={() => logout()} className="text-muted-foreground shrink-0" data-testid="button-logout">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => logout()}
+          className="text-muted-foreground shrink-0"
+          data-testid="button-logout"
+        >
           <LogOut className="w-4 h-4 sm:mr-2" />
           <span className="hidden sm:inline">Logout</span>
         </Button>

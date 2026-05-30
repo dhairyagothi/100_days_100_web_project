@@ -1,10 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Protected Page</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
     <link rel="icon" href="../../favv.png" type="image/x-icon" />
   </head>
 
@@ -16,14 +19,14 @@
       <h2 class="text-3xl font-bold mb-4">Users List:</h2>
       <ul class="divide-y divide-gray-200">
         {% for user in users %}
-          <li class="py-4">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center">
-                <span class="font-medium text-lg text-gray-900">{{ user.name }}</span>
-                <span class="ml-2 text-lg text-gray-500">{{ user.email }}</span>
-              </div>
+        <li class="py-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <span class="font-medium text-lg text-gray-900">{{ user.name }}</span>
+              <span class="ml-2 text-lg text-gray-500">{{ user.email }}</span>
             </div>
-          </li>
+          </div>
+        </li>
         {% endfor %}
       </ul>
     </div>

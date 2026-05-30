@@ -13,11 +13,13 @@ This project is a simple dropdown menu navigation bar built using HTML, CSS, Jav
 To get started with this project, you will need to have Node.js installed. Follow the steps below to set up the project locally.
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/dhairyagothi/50_days_50_web_project
    cd ./public/dropdown_navbar
 
+   ```
 
 2. **Open the index.html file:**
 
-    Open the index.html file in your web browser to view the dropdown menu navigation bar.
+   Open the index.html file in your web browser to view the dropdown menu navigation bar.

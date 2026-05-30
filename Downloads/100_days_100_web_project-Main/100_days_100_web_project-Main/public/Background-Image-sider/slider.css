@@ -1,64 +1,58 @@
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-body{
-    background: black;
-    color: white;
-    background-image:placebackground;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    min-height: 100vh;
-    width: 100%;
-    animation: bg-change 40s infinite ;
+body {
+  background: black;
+  color: white;
+  background-image: placebackground;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  min-height: 100vh;
+  width: 100%;
+  animation: bg-change 40s infinite;
 }
 
-ul{
-    list-style-type: none;
-    display: flex;
-    flex-direction: row;
-    gap: 40px; 
-
+ul {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
 }
 
-.navbar{
-      font-size: x-large;
-    display: flex;
-    flex-direction: row;
-    padding: 20px;
-    justify-content: space-evenly;
-    align-items: center;
-    gap: 550px;
-    
-    
+.navbar {
+  font-size: x-large;
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 550px;
 }
 .navbar ul li {
   position: relative;
 }
 
-.navbar ul li a{
-  text-decoration:none;
+.navbar ul li a {
+  text-decoration: none;
   color: white;
-  
 }
 
-
-ul li::after{
+ul li::after {
   content: '';
   height: 3px;
   width: 0;
   background-color: green;
   position: absolute;
- left: 0;
- bottom: -10px;
- transition: 0.5s;
-  
+  left: 0;
+  bottom: -10px;
+  transition: 0.5s;
 }
 
-ul li:hover::after{
+ul li:hover::after {
   width: 100%;
 }
 
@@ -126,7 +120,7 @@ ul li:hover::after{
 }
 
 .container::after {
-  content: "Iceland - Explore the beauty of glaciers"; /* Default text */
+  content: 'Iceland - Explore the beauty of glaciers'; /* Default text */
   animation: text-change 40s infinite;
   position: absolute;
   bottom: 10%;
@@ -136,41 +130,38 @@ ul li:hover::after{
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
-.booking{
+.booking {
   background-color: rgba(0, 0, 0, 0.45);
   color: white;
   font-weight: bold;
   padding: 10px;
   width: 40%;
   margin-right: 30px;
-  border-radius: 100px ;
+  border-radius: 100px;
   border: solid 2px white;
 }
 
 @media only screen and (max-width: 768px) {
-
-    
-    ul {
-        flex-direction: column;
-        width: auto;
-        gap: 10px;
-    }
-    .navbar{
-        font-size: large;
-      align-items: baseline;
-      gap: 100px
+  ul {
+    flex-direction: column;
+    width: auto;
+    gap: 10px;
   }
-  .content{
+  .navbar {
+    font-size: large;
+    align-items: baseline;
+    gap: 100px;
+  }
+  .content {
     width: auto;
     top: 40vh;
     padding-left: 10px;
   }
 }
 
-
 #placeDescription {
   font-size: 1.2em;
-  margin-bottom: 50px; 
+  margin-bottom: 50px;
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.671);
 }
 
@@ -179,7 +170,7 @@ ul li:hover::after{
   margin-bottom: 50px;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
   color: white;
-  font-family: Georgia,serif;
+  font-family: Georgia, serif;
   font-style: italic;
   background-color: rgba(0, 0, 0, 0.45);
   padding: 15px;

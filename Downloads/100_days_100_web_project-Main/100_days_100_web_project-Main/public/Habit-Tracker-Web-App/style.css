@@ -13,7 +13,9 @@ body {
   align-items: flex-start;
   min-height: 100vh;
   padding: 40px;
-  transition: background 0.3s ease, color 0.3s ease;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
   position: relative;
 }
 
@@ -24,7 +26,9 @@ body {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: background 0.3s ease, color 0.3s ease;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
 }
 
 h1 {
@@ -417,7 +421,7 @@ body.dark-mode .modal-card {
 }
 
 .achievement-tooltip::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 100%;
   left: 50%;

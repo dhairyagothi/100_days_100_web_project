@@ -28,7 +28,7 @@
       @include border-top-radius($card-inner-border-radius);
     }
 
-    &:last-child  {
+    &:last-child {
       border-bottom-width: 0;
       @include border-bottom-radius($card-inner-border-radius);
     }
@@ -100,7 +100,6 @@
   }
 }
 
-
 //
 // Header navs
 //
@@ -150,7 +149,6 @@
 .card-img-bottom {
   @include border-bottom-radius($card-inner-border-radius);
 }
-
 
 //
 // Card groups

@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       from_issue:
-        description: "Starting issue number"
+        description: 'Starting issue number'
         required: true
         type: string
       to_issue:
-        description: "Ending issue number"
+        description: 'Ending issue number'
         required: true
         type: string
 

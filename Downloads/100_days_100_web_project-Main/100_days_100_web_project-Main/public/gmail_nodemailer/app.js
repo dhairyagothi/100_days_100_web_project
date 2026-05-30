@@ -4,8 +4,8 @@ const express = require('express');
 const app = express();
 
 const bodyParser = require('body-parser');
-const path = require("path");
-const nodemailer = require("nodemailer");
+const path = require('path');
+const nodemailer = require('nodemailer');
 
 const port = 5500;
 
@@ -14,15 +14,14 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'public', 'mail.html'));
 });
 
-app.post('/', function(req, res) {
-
+app.post('/', function (req, res) {
   const transporter = nodemailer.createTransport({
-    service: "Gmail",
-    host: "smtp.gmail.com",
+    service: 'Gmail',
+    host: 'smtp.gmail.com',
     port: 465,
     secure: true,
 
@@ -35,30 +34,23 @@ app.post('/', function(req, res) {
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: req.body.emailid,
-    subject: "Feedback form response",
+    subject: 'Feedback form response',
 
-    text:
-      "Thank you " +
-      req.body.name +
-      " for subscribing.",
+    text: 'Thank you ' + req.body.name + ' for subscribing.',
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
-
     if (error) {
       console.error(error);
-      return res.send("Email failed");
+      return res.send('Email failed');
     }
 
-    console.log("Email sent:", info.response);
+    console.log('Email sent:', info.response);
 
-    return res.send("Email sent successfully");
-
+    return res.send('Email sent successfully');
   });
-
 });
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
-

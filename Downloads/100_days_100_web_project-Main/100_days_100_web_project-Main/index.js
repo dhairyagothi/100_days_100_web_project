@@ -14,7 +14,6 @@ let itemsPerPage = 9;
 let projectData = [];
 let filteredProjectData = [];
 
-
 /* ============================================================
    TECHNOLOGY STACK FILTERING VARIABLES
    ============================================================ */
@@ -24,24 +23,24 @@ let techSearchQuery = ''; // Current tech search input
 // Technology normalization map (handles common variations)
 // Maps user input → actual tags in dataset
 const TECH_ALIASES = {
-  'js': 'javascript',
-  'react': 'javascript',
-  'node': 'javascript',
-  'vue': 'javascript',
-  'python': 'api',
-  'flask': 'api',
-  'game': 'game',
-  'games': 'game',
+  js: 'javascript',
+  react: 'javascript',
+  node: 'javascript',
+  vue: 'javascript',
+  python: 'api',
+  flask: 'api',
+  game: 'game',
+  games: 'game',
 };
 
 /* Maps data-filter values on chip buttons to display category names */
 const FILTER_CATEGORY_MAP = {
-  'all': 'all',
-  'game': 'Games',
-  'clone': 'Clones',
-  'tool': 'Tools',
-  'ui': 'UI / Animation',
-  'api': 'APIs',
+  all: 'all',
+  game: 'Games',
+  clone: 'Clones',
+  tool: 'Tools',
+  ui: 'UI / Animation',
+  api: 'APIs',
 };
 
 /**
@@ -59,7 +58,8 @@ function getCategoryFromTags(tags, name) {
   if (tagStr.includes('api') || tagStr.includes('weather')) return 'APIs';
 
   if (nameStr.includes('clone')) return 'Clones';
-  if (nameStr.includes('game') || nameStr.includes('puzzle') || nameStr.includes('quiz')) return 'Games';
+  if (nameStr.includes('game') || nameStr.includes('puzzle') || nameStr.includes('quiz'))
+    return 'Games';
 
   return 'Tools';
 }
@@ -69,168 +69,757 @@ const PROJECT_DATA = [
   ['Day 2', 'Digital Clock', './public/digital_clock/digitalclock.html', 'javascript', 'beginner'],
   ['Day 3', 'Indian Flag', './public/indianflag/flag.html', 'css', 'beginner'],
   ['Day 4', 'Dropdown Nav Bar', './public/dropdown_navbar/index.html', 'css', 'beginner'],
-  ['Day 5', 'Animated Cursor', './public/Animated-cursor/animated-cursor.html', 'ui javascript css', 'beginner'],
-  ['Day 6', 'Auto Background Image Slider', './public/Background-Image-sider/slider.html', 'javascript', 'beginner'],
+  [
+    'Day 5',
+    'Animated Cursor',
+    './public/Animated-cursor/animated-cursor.html',
+    'ui javascript css',
+    'beginner',
+  ],
+  [
+    'Day 6',
+    'Auto Background Image Slider',
+    './public/Background-Image-sider/slider.html',
+    'javascript',
+    'beginner',
+  ],
   ['Day 7', 'Typewriter', './public/typewriter/typewriter.html', 'html css javascript', 'advanced'],
-  ['Day 8', 'Parallel-X Website', './public/Parallel-x%20website/parallal.html', 'css', 'intermediate'],
+  [
+    'Day 8',
+    'Parallel-X Website',
+    './public/Parallel-x%20website/parallal.html',
+    'css',
+    'intermediate',
+  ],
   ['Day 9', 'Captcha Generator', './public/captcha/captcha.html', 'javascript', 'intermediate'],
-  ['Day 10', 'QR Code Generator', './public/qr%20generator/qr.html', 'api javascript', 'intermediate'],
+  [
+    'Day 10',
+    'QR Code Generator',
+    './public/qr%20generator/qr.html',
+    'api javascript',
+    'intermediate',
+  ],
   ['Day 11', 'Serve Website Using Express', './public/index.html', 'javascript', 'intermediate'],
-  ['Day 12', 'Nodemailer Contact Form', './public/gmail_nodemailer/public/mail.html', 'api javascript', 'intermediate'],
-  ['Day 13', 'Login Form Using MERN', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern', 'api javascript', 'intermediate'],
-  ['Day 14', 'File Uploader', './public/file_uploader/public/file_uploader.html', 'javascript', 'intermediate'],
-  ['Day 15', 'Progress Bar', './public/progress_bar/progress_bar.html', 'ui css javascript', 'beginner'],
+  [
+    'Day 12',
+    'Nodemailer Contact Form',
+    './public/gmail_nodemailer/public/mail.html',
+    'api javascript',
+    'intermediate',
+  ],
+  [
+    'Day 13',
+    'Login Form Using MERN',
+    'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern',
+    'api javascript',
+    'intermediate',
+  ],
+  [
+    'Day 14',
+    'File Uploader',
+    './public/file_uploader/public/file_uploader.html',
+    'javascript',
+    'intermediate',
+  ],
+  [
+    'Day 15',
+    'Progress Bar',
+    './public/progress_bar/progress_bar.html',
+    'ui css javascript',
+    'beginner',
+  ],
   ['Day 16', 'Scroll Bar CSS', './public/Custom Scroll Bar/index.html', 'css', 'beginner'],
-  ['Day 17', 'Slider Using Swiper API', './public/slider%20box/index.html', 'api javascript', 'intermediate'],
-  ['Day 18',
+  [
+    'Day 17',
+    'Slider Using Swiper API',
+    './public/slider%20box/index.html',
+    'api javascript',
+    'intermediate',
+  ],
+  [
+    'Day 18',
     'Carousel Solar System',
     './public/Carousel%20Solar%20System/index.html',
     'css canvas',
-    'intermediate'],
+    'intermediate',
+  ],
   ['Day 19', 'Planto', './public/plantwebsite/plant.html', 'css', 'beginner'],
   ['Day 20', 'EveSparks', 'https://evesparks.onrender.com/', 'javascript', 'intermediate'],
-  ['Day 21', 'Video BG Slider Using React', './public/travel_website/index.html', 'javascript', 'intermediate'],
+  [
+    'Day 21',
+    'Video BG Slider Using React',
+    './public/travel_website/index.html',
+    'javascript',
+    'intermediate',
+  ],
   ['Day 22', 'Page Loader', './public/pageloader/pageloader.html', 'ui css', 'beginner'],
-  ['Day 23', 'Jarvis Virtual Assistant', './public/Jarvis-AI-main/index.html', 'api javascript', 'intermediate'],
+  [
+    'Day 23',
+    'Jarvis Virtual Assistant',
+    './public/Jarvis-AI-main/index.html',
+    'api javascript',
+    'intermediate',
+  ],
   ['Day 24', 'Chat Bot', './public/AI%20ChatBot/chatbot.html', 'api javascript', 'intermediate'],
   ['Day 25', 'Tic-Tac-Toe', './public/TicTacToe/index.html', 'game javascript', 'beginner'],
   ['Day 26', 'Maze Game', './public/Maze-Game-main/index.html', 'game javascript', 'intermediate'],
   ['Day 27', 'Memory Game', './public/MemoryGame/index.html', 'game javascript', 'beginner'],
   ['Day 28', 'Wordle', './public/WORDLE/index.html', 'game javascript', 'intermediate'],
   ['Day 29', 'Snake Game', './public/snake_game/index.html', 'game javascript', 'beginner'],
-  ['Day 30', 'Flappy-bird-game', './public/Flappy-bird-main/index.html', 'game canvas', 'intermediate'],
-  ['Day 31', 'Password Manager', './public/password%20manager/index.html', 'tool javascript', 'intermediate'],
-  ['Day 32', 'Missionaries & Cannibals', './public/Missionaries&Cannibals/index.html', 'game javascript', 'intermediate'],
-  ['Day 33', 'Weather Forecasting', './public/Weather%20Forcasting/index.html', 'weather api', 'intermediate'],
-  ['Day 34', 'Email Validator', './public/email%20validator/index.html', 'api javascript', 'beginner'],
-  ['Day 35', 'Vanilla-JavaScript-Calculator', './public/Vanilla-JavaScript-Calculator-master/index.html', 'tool javascript', 'beginner'],
-['Day 36', 'Medical App', './public/Medical_App/index.html', 'javascript', 'intermediate'],
+  [
+    'Day 30',
+    'Flappy-bird-game',
+    './public/Flappy-bird-main/index.html',
+    'game canvas',
+    'intermediate',
+  ],
+  [
+    'Day 31',
+    'Password Manager',
+    './public/password%20manager/index.html',
+    'tool javascript',
+    'intermediate',
+  ],
+  [
+    'Day 32',
+    'Missionaries & Cannibals',
+    './public/Missionaries&Cannibals/index.html',
+    'game javascript',
+    'intermediate',
+  ],
+  [
+    'Day 33',
+    'Weather Forecasting',
+    './public/Weather%20Forcasting/index.html',
+    'weather api',
+    'intermediate',
+  ],
+  [
+    'Day 34',
+    'Email Validator',
+    './public/email%20validator/index.html',
+    'api javascript',
+    'beginner',
+  ],
+  [
+    'Day 35',
+    'Vanilla-JavaScript-Calculator',
+    './public/Vanilla-JavaScript-Calculator-master/index.html',
+    'tool javascript',
+    'beginner',
+  ],
+  ['Day 36', 'Medical App', './public/Medical_App/index.html', 'javascript', 'intermediate'],
   ['Day 37', '2048 Game', './public/2048_game/index.html', 'game javascript', 'intermediate'],
-  ['Day 38', 'Github Profile Finder', './public/github_profile_finder/index.html', 'api javascript', 'intermediate'],
+  [
+    'Day 38',
+    'Github Profile Finder',
+    './public/github_profile_finder/index.html',
+    'api javascript',
+    'intermediate',
+  ],
   ['Day 39', 'Notes App', './public/notes-app/index.html', 'todo javascript', 'beginner'],
   ['Day 40', 'Analog Clock', './public/AnalogClock/index.html', 'javascript css', 'beginner'],
-  ['Day 41', 'Scroll Dark Game', './public/Scroll%20Game%20Dark%20Run/index.html', 'game canvas', 'intermediate'],
+  [
+    'Day 41',
+    'Scroll Dark Game',
+    './public/Scroll%20Game%20Dark%20Run/index.html',
+    'game canvas',
+    'intermediate',
+  ],
   ['Day 42', 'Amazon App', './public/Amazon_Clone/index.html', 'clone javascript', 'intermediate'],
-  ['Day 43', 'Password Generator', './public/Password_Generator/index.html', 'tool javascript', 'beginner'],
+  [
+    'Day 43',
+    'Password Generator',
+    './public/Password_Generator/index.html',
+    'tool javascript',
+    'beginner',
+  ],
   ['Day 44', 'BMI Calculator', './public/BMI_Calculator/index.html', 'tool javascript', 'beginner'],
   ['Day 45', 'Black Jack', './public/BlackJack/blackJ.html', 'game javascript', 'intermediate'],
-  ['Day 46', 'Palindrome Generator', './public/Palindrome_Generator/index.html', 'javascript', 'beginner'],
+  [
+    'Day 46',
+    'Palindrome Generator',
+    './public/Palindrome_Generator/index.html',
+    'javascript',
+    'beginner',
+  ],
   ['Day 47', 'Ping Pong Game', './public/ping/index.html', 'game canvas', 'intermediate'],
-  ['Day 48', 'TextToVoiceConverter', './public/TextToVoiceConverter/index.html', 'api javascript', 'intermediate'],
-  ['Day 49', 'Url Shortener', './public/url_shortener/frontend/public/index.html', 'api javascript', 'intermediate'],
-  ['Day 50', 'Recipe Genie', './public/Recipe%20Genie/index.html', 'api javascript', 'intermediate'],
-  ['Day 51', 'Netflix Landing Page Clone', './public/Netflix_Cloning/Index.html', 'clone css', 'beginner'],
+  [
+    'Day 48',
+    'TextToVoiceConverter',
+    './public/TextToVoiceConverter/index.html',
+    'api javascript',
+    'intermediate',
+  ],
+  [
+    'Day 49',
+    'Url Shortener',
+    './public/url_shortener/frontend/public/index.html',
+    'api javascript',
+    'intermediate',
+  ],
+  [
+    'Day 50',
+    'Recipe Genie',
+    './public/Recipe%20Genie/index.html',
+    'api javascript',
+    'intermediate',
+  ],
+  [
+    'Day 51',
+    'Netflix Landing Page Clone',
+    './public/Netflix_Cloning/Index.html',
+    'clone css',
+    'beginner',
+  ],
   ['Day 52', 'ClimaCode', './public/ClimaCode%202.0/index.html', 'weather api', 'intermediate'],
-  ['Day 53', 'E-Commerce Website with Simple Cart Functionality', './public/e-commerce_cart/index.html', 'javascript', 'intermediate'],
-  ['Day 54', 'Budget Tracker', './public/Budget%20Tracker/index.html', 'todo javascript', 'intermediate'],
+  [
+    'Day 53',
+    'E-Commerce Website with Simple Cart Functionality',
+    './public/e-commerce_cart/index.html',
+    'javascript',
+    'intermediate',
+  ],
+  [
+    'Day 54',
+    'Budget Tracker',
+    './public/Budget%20Tracker/index.html',
+    'todo javascript',
+    'intermediate',
+  ],
   ['Day 55', 'Cricket Game', './public/cricket/index.html', 'game javascript', 'intermediate'],
-  ['Day 56', 'Pastebin using svelte', './public/pastebin/src/app.html', 'javascript', 'intermediate'],
-  ['Day 57', 'Glowing Social Media Icons', './public/Social%20Media%20Glowing/index.html', 'ui css', 'beginner'],
+  [
+    'Day 56',
+    'Pastebin using svelte',
+    './public/pastebin/src/app.html',
+    'javascript',
+    'intermediate',
+  ],
+  [
+    'Day 57',
+    'Glowing Social Media Icons',
+    './public/Social%20Media%20Glowing/index.html',
+    'ui css',
+    'beginner',
+  ],
   ['Day 58', 'Music App', './public/Music%20App/index.html', 'api javascript', 'intermediate'],
   ['Day 59', 'Blog Page', './public/Blog%20Page/index.html', 'css', 'beginner'],
-  ['Day 60', 'Marketing template website', './public/marketing_website/index.html', 'css', 'beginner'],
+  [
+    'Day 60',
+    'Marketing template website',
+    './public/marketing_website/index.html',
+    'css',
+    'beginner',
+  ],
   ['Day 61', 'Hologram Button', './public/Holo%20Button/index.html', 'ui css', 'beginner'],
-  ['Day 62', 'Solar System Explorer', './public/Solar%20System%20Explorer%20in%20CSS%20only%20haml/template.html', 'css', 'intermediate'],
-  ['Day 63', 'Image to Text App', './public/Image-To-Text-App/index.html', 'api javascript', 'intermediate'],
+  [
+    'Day 62',
+    'Solar System Explorer',
+    './public/Solar%20System%20Explorer%20in%20CSS%20only%20haml/template.html',
+    'css',
+    'intermediate',
+  ],
+  [
+    'Day 63',
+    'Image to Text App',
+    './public/Image-To-Text-App/index.html',
+    'api javascript',
+    'intermediate',
+  ],
   ['Day 64', 'Zomato-clone', './public/zomato-clone/zomato.html', 'clone css', 'beginner'],
   ['Day 65', 'The Cube', './public/The%20Cube/index.html', 'ui canvas css', 'intermediate'],
-  ['Day 66', 'Flask Authentication App', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/flask_auth_app', 'api javascript', 'intermediate'],
+  [
+    'Day 66',
+    'Flask Authentication App',
+    'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/flask_auth_app',
+    'api javascript',
+    'intermediate',
+  ],
   ['Day 67', 'Blog-Website', './public/blog/main.html', 'css', 'beginner'],
   ['Day 68', '3d Rotating Card', './public/3d%20cards/index.html', 'ui css', 'intermediate'],
-  ['Day 69', 'Spotify Clone Project', './public/spotify-clone%20-project/index.html', 'clone api javascript', 'intermediate'],
-  ['Day 70', 'Insect-Catch_Game', './public/Insect-Catch-Game/index.html', 'game canvas', 'intermediate'],
+  [
+    'Day 69',
+    'Spotify Clone Project',
+    './public/spotify-clone%20-project/index.html',
+    'clone api javascript',
+    'intermediate',
+  ],
+  [
+    'Day 70',
+    'Insect-Catch_Game',
+    './public/Insect-Catch-Game/index.html',
+    'game canvas',
+    'intermediate',
+  ],
   ['Day 71', 'Quotely Laughs', './public/Quotely-Laughs/index.html', 'api javascript', 'beginner'],
-  ['Day 72', 'Contact Book', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Contact%20Book', 'todo javascript', 'intermediate'],
-  ['Day 73', 'Candy_Crush_Game', './public/Candy_Crush_Game/index.html', 'game javascript', 'intermediate'],
-  ['Day 74', 'Stock Profit Calculator', './public/Stock-Profit-Calculator/index.html', 'tool javascript', 'beginner'],
-  ['Day 75', 'code-space-game project', './public/code-jump-space-game/index.html', 'game canvas', 'intermediate'],
-  ['Day 76', 'Animated Searchbar', './public/Animated%20Searchbar/index.html', 'ui css javascript', 'beginner'],
-  ['Day 77', 'Rock-Paper-Scissor-game project', './public/Stone-Paper-Scissor/index.html', 'game javascript', 'intermediate'],
-  ['Day 78', 'NPM Package Search', './public/NPM%20Package%20Search/index.html', 'tool api javascript', 'intermediate'],
-  ['Day 79', 'Linkedin Homepage Clone', './public/Linkedin-Clone/index.html', 'clone css', 'intermediate'],
-  ['Day 80', 'Resume Studio', './public/ResumeStudio/index.html', 'tool javascript', 'intermediate'],
-  ['Day 81', 'Simon Says Game', './public/Simon_Says_Game/index.html', 'game javascript', 'intermediate'],
-  ['Day 82', 'Love Calculator Game', './public/Love-Calculator/index.html', 'game javascript', 'beginner'],
-  ['Day 83', 'Exchange Currency', './public/Exchange_Currency/index.html', 'tool api javascript', 'intermediate'],
-  ['Day 84', 'Lights Out Puzzle', './public/Lights_Out_Puzzle/index.html', 'game javascript', 'intermediate'],
-  ['Day 85', 'Image Search Engine', './public/Image Search Engine/index.html', 'api javascript', 'intermediate'],
+  [
+    'Day 72',
+    'Contact Book',
+    'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Contact%20Book',
+    'todo javascript',
+    'intermediate',
+  ],
+  [
+    'Day 73',
+    'Candy_Crush_Game',
+    './public/Candy_Crush_Game/index.html',
+    'game javascript',
+    'intermediate',
+  ],
+  [
+    'Day 74',
+    'Stock Profit Calculator',
+    './public/Stock-Profit-Calculator/index.html',
+    'tool javascript',
+    'beginner',
+  ],
+  [
+    'Day 75',
+    'code-space-game project',
+    './public/code-jump-space-game/index.html',
+    'game canvas',
+    'intermediate',
+  ],
+  [
+    'Day 76',
+    'Animated Searchbar',
+    './public/Animated%20Searchbar/index.html',
+    'ui css javascript',
+    'beginner',
+  ],
+  [
+    'Day 77',
+    'Rock-Paper-Scissor-game project',
+    './public/Stone-Paper-Scissor/index.html',
+    'game javascript',
+    'intermediate',
+  ],
+  [
+    'Day 78',
+    'NPM Package Search',
+    './public/NPM%20Package%20Search/index.html',
+    'tool api javascript',
+    'intermediate',
+  ],
+  [
+    'Day 79',
+    'Linkedin Homepage Clone',
+    './public/Linkedin-Clone/index.html',
+    'clone css',
+    'intermediate',
+  ],
+  [
+    'Day 80',
+    'Resume Studio',
+    './public/ResumeStudio/index.html',
+    'tool javascript',
+    'intermediate',
+  ],
+  [
+    'Day 81',
+    'Simon Says Game',
+    './public/Simon_Says_Game/index.html',
+    'game javascript',
+    'intermediate',
+  ],
+  [
+    'Day 82',
+    'Love Calculator Game',
+    './public/Love-Calculator/index.html',
+    'game javascript',
+    'beginner',
+  ],
+  [
+    'Day 83',
+    'Exchange Currency',
+    './public/Exchange_Currency/index.html',
+    'tool api javascript',
+    'intermediate',
+  ],
+  [
+    'Day 84',
+    'Lights Out Puzzle',
+    './public/Lights_Out_Puzzle/index.html',
+    'game javascript',
+    'intermediate',
+  ],
+  [
+    'Day 85',
+    'Image Search Engine',
+    './public/Image Search Engine/index.html',
+    'api javascript',
+    'intermediate',
+  ],
   ['Day 86', 'Profile Card', './public/3d profile Card/index.html', 'ui css', 'beginner'],
   ['Day 87', 'Breakout game', './public/Breakout game/index.html', 'game canvas', 'intermediate'],
-  ['Day 88', 'Job dashboard', './public/Job dashboard/jobs.html', 'tool javascript', 'intermediate'],
+  [
+    'Day 88',
+    'Job dashboard',
+    './public/Job dashboard/jobs.html',
+    'tool javascript',
+    'intermediate',
+  ],
   ['Day 89', 'N-Queen', './public/N_Queen/index.html', 'game javascript', 'intermediate'],
   ['Day 90', 'Quiz App Timer', './public/QuizeApp Timer/index1.html', 'javascript', 'beginner'],
-  ['Day 91', 'Voting Application Backend', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Voting_Application_Backend', 'api javascript', 'intermediate'],
-  ['Day 92', 'Slide puzzle Game', './public/Slide puzzle Game/index.html', 'game javascript', 'intermediate'],
+  [
+    'Day 91',
+    'Voting Application Backend',
+    'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Voting_Application_Backend',
+    'api javascript',
+    'intermediate',
+  ],
+  [
+    'Day 92',
+    'Slide puzzle Game',
+    './public/Slide puzzle Game/index.html',
+    'game javascript',
+    'intermediate',
+  ],
   ['Day 93', 'TextUtils', './public/Textutils/public/index.html', 'javascript', 'beginner'],
   ['Day 94', 'Hangman Game', './public/HangmanGame/index.html', 'game javascript', 'intermediate'],
-  ['Day 95', 'TodoList in React TS Tailwind', './public/TodoList-React-TS-Tailwind/index.html', 'todo javascript', 'intermediate'],
-  ['Day 96', 'HCL Color Generator', './public/HCL Color Generator/index.html', 'ui css javascript', 'beginner'],
+  [
+    'Day 95',
+    'TodoList in React TS Tailwind',
+    './public/TodoList-React-TS-Tailwind/index.html',
+    'todo javascript',
+    'intermediate',
+  ],
+  [
+    'Day 96',
+    'HCL Color Generator',
+    './public/HCL Color Generator/index.html',
+    'ui css javascript',
+    'beginner',
+  ],
   ['Day 97', 'Time Capsule', './public/Time-Capsule/index.html', 'javascript', 'intermediate'],
-  ['Day 98', 'Virtual Piano', './public/Virtual Piano/index.html', 'css javascript', 'intermediate'],
-  ['Day 99', 'NASA-APOD Extension', './public/NASA-APOD/popup.html', 'api javascript', 'intermediate'],
-  ['Day 100', 'Text Saver Extension', './public/Text_Saver_Ext/popup.html', 'todo javascript', 'intermediate'],
-  ['Day 101', 'Personal Finance Tracker', './public/FinanceTracker/index.html', 'todo javascript', 'intermediate'],
-  ['Day 102', 'Travel Booking Website', './public/Travel_booking_website/index.html', 'javascript', 'intermediate'],
+  [
+    'Day 98',
+    'Virtual Piano',
+    './public/Virtual Piano/index.html',
+    'css javascript',
+    'intermediate',
+  ],
+  [
+    'Day 99',
+    'NASA-APOD Extension',
+    './public/NASA-APOD/popup.html',
+    'api javascript',
+    'intermediate',
+  ],
+  [
+    'Day 100',
+    'Text Saver Extension',
+    './public/Text_Saver_Ext/popup.html',
+    'todo javascript',
+    'intermediate',
+  ],
+  [
+    'Day 101',
+    'Personal Finance Tracker',
+    './public/FinanceTracker/index.html',
+    'todo javascript',
+    'intermediate',
+  ],
+  [
+    'Day 102',
+    'Travel Booking Website',
+    './public/Travel_booking_website/index.html',
+    'javascript',
+    'intermediate',
+  ],
   ['Day 103', 'Drumkit Game', './public/Drumkit_Game/index.html', 'game javascript', 'beginner'],
   ['Day 104', 'Debug-Website', './public/Debug-Website/index.html', 'css', 'beginner'],
   ['Day 105', 'Periodic Table', './public/Periodic Table/index.html', 'css javascript', 'beginner'],
   ['Day 106', 'Plants Website', './public/Plants Website/index.html', 'css', 'beginner'],
   ['Day 107', 'DocNow', './public/DocNow/index.html', 'api javascript', 'intermediate'],
-  ['Day 108', 'expense_Tracker', './public/expense_Tracker/index.html', 'todo javascript', 'intermediate'],
-  ['Day 109', 'Mood Tracker', './public/Mood Tracker/index.html', 'todo javascript', 'intermediate'],
+  [
+    'Day 108',
+    'expense_Tracker',
+    './public/expense_Tracker/index.html',
+    'todo javascript',
+    'intermediate',
+  ],
+  [
+    'Day 109',
+    'Mood Tracker',
+    './public/Mood Tracker/index.html',
+    'todo javascript',
+    'intermediate',
+  ],
   ['Day 110', 'CRYPTOSHOW', './public/CRYPTOSHOW/index.html', 'api javascript', 'intermediate'],
-  ['Day 111', 'Whack-a-Mole Game', './public/Whack-a-Mole Game/index.html', 'game canvas', 'intermediate'],
-  ['Day 112', 'Nykaa Clone Website', './public/Nykaa-clone/index.html', 'clone css', 'intermediate'],
-  ['Day 113', 'CPU Scheduler', './public/CpuScheduler/index.html', 'tool javascript', 'intermediate'],
+  [
+    'Day 111',
+    'Whack-a-Mole Game',
+    './public/Whack-a-Mole Game/index.html',
+    'game canvas',
+    'intermediate',
+  ],
+  [
+    'Day 112',
+    'Nykaa Clone Website',
+    './public/Nykaa-clone/index.html',
+    'clone css',
+    'intermediate',
+  ],
+  [
+    'Day 113',
+    'CPU Scheduler',
+    './public/CpuScheduler/index.html',
+    'tool javascript',
+    'intermediate',
+  ],
   ['Day 114', 'EchoNotes', './public/EchoNotes/index.html', 'todo javascript', 'intermediate'],
-  ['Day 115', 'Event Registration System', 'https://event-registration-system-w10a.onrender.com/', 'api javascript', 'intermediate'],
-  ['Day 116', 'AI Image Classifier', './public/AI%20Image%20Classifier/index.html', 'api javascript', 'intermediate'],
-  ['Day 117', 'Habit Tracker Web App', './public/Habit-Tracker-Web-App/index.html', 'ui tool html css js', 'intermediate'],
-  ['Day 118', 'Particle Effect', './public/particle-effect/index.html', 'ui html css js canvas', 'intermediate'],
+  [
+    'Day 115',
+    'Event Registration System',
+    'https://event-registration-system-w10a.onrender.com/',
+    'api javascript',
+    'intermediate',
+  ],
+  [
+    'Day 116',
+    'AI Image Classifier',
+    './public/AI%20Image%20Classifier/index.html',
+    'api javascript',
+    'intermediate',
+  ],
+  [
+    'Day 117',
+    'Habit Tracker Web App',
+    './public/Habit-Tracker-Web-App/index.html',
+    'ui tool html css js',
+    'intermediate',
+  ],
+  [
+    'Day 118',
+    'Particle Effect',
+    './public/particle-effect/index.html',
+    'ui html css js canvas',
+    'intermediate',
+  ],
   ['Day 119', 'Virtual Playground', './playground.html', 'ui game html css js', 'intermediate'],
-  ['Day 120', 'Typing Speed Test', './public/typing_test/index.html', 'html css js game', 'intermediate'],
-  ['Day 121', 'InterviewSimulator', './public/InterviewSimulator/index.html', 'tool', 'intermediate'],
-  ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html', 'html css javascript api-javascript', 'Advanced'],
-  ['Day 123', 'Pomodoro Timer', './public/Pomodoro_Timer/index.html', 'productivity tool', 'intermediate'],
+  [
+    'Day 120',
+    'Typing Speed Test',
+    './public/typing_test/index.html',
+    'html css js game',
+    'intermediate',
+  ],
+  [
+    'Day 121',
+    'InterviewSimulator',
+    './public/InterviewSimulator/index.html',
+    'tool',
+    'intermediate',
+  ],
+  [
+    'Day 122',
+    'AstronomyDashboard',
+    './public/AstronomyDashboard/astro.html',
+    'html css javascript api-javascript',
+    'Advanced',
+  ],
+  [
+    'Day 123',
+    'Pomodoro Timer',
+    './public/Pomodoro_Timer/index.html',
+    'productivity tool',
+    'intermediate',
+  ],
   ['Day 124', 'Hurdle Highway 2D', './public/Hurdle_Highway_2D/index.html', 'game', 'intermediate'],
   ['Day 125', 'Snakeladder', './public/snakeladder/index.html', 'game', 'intermediate'],
-  ['Day 126', 'Temperature Converter', './public/TemperatureConverter/index.html', 'tool javascript', 'beginner'],
-  ['Day 127', 'Particle Wave Animation', './public/Particle Wave Animation/index.html', 'css javascript', 'intermediate'],
-  ['Day 128', 'Reaction Time Test', './public/reaction-time-tester/main.html', 'animation simulation html css js javascript', 'intermediate'],
+  [
+    'Day 126',
+    'Temperature Converter',
+    './public/TemperatureConverter/index.html',
+    'tool javascript',
+    'beginner',
+  ],
+  [
+    'Day 127',
+    'Particle Wave Animation',
+    './public/Particle Wave Animation/index.html',
+    'css javascript',
+    'intermediate',
+  ],
+  [
+    'Day 128',
+    'Reaction Time Test',
+    './public/reaction-time-tester/main.html',
+    'animation simulation html css js javascript',
+    'intermediate',
+  ],
   ['Day 129', 'YouTube Clone', './public/youtube clone/index.html', 'Html CSS', 'beginner'],
-  ['Day 130', 'Dino Game', './public/DinoGame/DinoGame-main/index.html', 'game javascript', 'beginner'],
-  ['Day 131', 'Retro Highway Racer', './public/RetroHighwayRacer/index.html', 'game javascript', 'intermediate'],
+  [
+    'Day 130',
+    'Dino Game',
+    './public/DinoGame/DinoGame-main/index.html',
+    'game javascript',
+    'beginner',
+  ],
+  [
+    'Day 131',
+    'Retro Highway Racer',
+    './public/RetroHighwayRacer/index.html',
+    'game javascript',
+    'intermediate',
+  ],
   ['Day 132', 'Pokedex', './public/Pokedex/index.html', 'utility', 'intermediate'],
-  ['Day 133', 'Stock Market Simulator', './public/stock-market-simulator/index.html', 'simulator', 'intermediate'],
+  [
+    'Day 133',
+    'Stock Market Simulator',
+    './public/stock-market-simulator/index.html',
+    'simulator',
+    'intermediate',
+  ],
   ['Day 134', 'Coin Scratch', './public/Coin Scratch/index.html', 'asmr game', 'intermediate'],
   ['Day 135', 'Shooting game', './public/shooting game/index.html', '2d game', 'intermediate'],
-  ['Day 136', 'Sudoku Solver', './public/sudoku-solver/index.html', 'game javascript', 'intermediate'],
-  ['Day 137', 'Maths Quiz Game', './public/maths-quiz-game/index.html', 'game javascript', 'intermediate'],
-  ['Day 138', 'Age Calculator', './public/age-calculator/index.html', 'tool javascript', 'beginner'],
+  [
+    'Day 136',
+    'Sudoku Solver',
+    './public/sudoku-solver/index.html',
+    'game javascript',
+    'intermediate',
+  ],
+  [
+    'Day 137',
+    'Maths Quiz Game',
+    './public/maths-quiz-game/index.html',
+    'game javascript',
+    'intermediate',
+  ],
+  [
+    'Day 138',
+    'Age Calculator',
+    './public/age-calculator/index.html',
+    'tool javascript',
+    'beginner',
+  ],
   ['Day 139', 'Ludo game', './public/Ludo-game/index.html', 'Html css javascript', 'intermediate'],
-  ['Day 140', 'Big Sales Prediction', './public/BigSales-Prediction/frontend/index.html', 'machine learning python javascript', 'advanced'],
-  ['Day 141', 'Dice Roller', './public/Dice-Roller/main.html', 'html css javascript', 'intermediate'],
+  [
+    'Day 140',
+    'Big Sales Prediction',
+    './public/BigSales-Prediction/frontend/index.html',
+    'machine learning python javascript',
+    'advanced',
+  ],
+  [
+    'Day 141',
+    'Dice Roller',
+    './public/Dice-Roller/main.html',
+    'html css javascript',
+    'intermediate',
+  ],
   ['Day 142', 'Geo Guesser game', './public/geo-guesser/index.html', 'map game', 'intermediate'],
-  ['Day 143', 'Morse Code Translator', './public/MorseCodeTranslator/index.html', 'html css javascript', 'beginner'],
+  [
+    'Day 143',
+    'Morse Code Translator',
+    './public/MorseCodeTranslator/index.html',
+    'html css javascript',
+    'beginner',
+  ],
   ['Day 144', 'Car Racing game', './public/racing game/index.html', 'html css js', 'intermediate'],
-  ['Day 145', 'Magic 8 Ball', './public/magic-8ball/main.html', 'simulation html css javascript', 'beginner'],
-  ['Day 146', 'Data Sructures Visualizer', './public/Data Structures Visualizer/index.html', 'visualizer', 'intermediate'],
+  [
+    'Day 145',
+    'Magic 8 Ball',
+    './public/magic-8ball/main.html',
+    'simulation html css javascript',
+    'beginner',
+  ],
+  [
+    'Day 146',
+    'Data Sructures Visualizer',
+    './public/Data Structures Visualizer/index.html',
+    'visualizer',
+    'intermediate',
+  ],
   ['Day 147', 'Chronosphere', './public/Chronosphere/index.html', 'game canvas', 'intermediate'],
-  ['Day 148', 'Contest Tracker', './public/ContestTracker/index.html', 'tool javascript', 'advanced'],
-  ['Day 149', 'GitHub Profile Battle', './public/Github-Profile-Battle/index.html', 'tool javascript', 'advanced'],
-  ['Day 150', 'App Privacy Policy Generator', './public/AppPrivacyPolicyGenerator/index.html', 'tool javascript', 'intermediate'],
-  ['Day 151', 'Mini Carrom Game', './public/mini carrom/index.html', 'html css javascript', 'intermediate'],
-  ['Day 152', 'Physics Ball Simulation', './public/PhysicsBallSimulation/index.html', 'html css javascript canvas', 'advanced'],
-  ['Day 153', 'Material3 Showcase', './public/Material3Showcase/index.html', 'tool javascript', 'intermediate'],
-  ['Day 154', 'FocusRoom', './public/FocusRoom/index.html', 'html css javascript productivity timer tasks ambient', 'intermediate'],
-  ['Day 155', 'Hangman Game', './public/hangman-react-ts/HangmanGame/index.html', 'react typescript game hangman vite', 'advanced'],
-  ['Day 156', 'Placement Predictor', './public/Placement-Predictor/index.html', 'tool javascript html css', 'advanced'],
-  ['Day 157', 'Map Route Tracker', './public/Vector-Map-Route-Tracer/index.html', 'html css javascript', 'advanced'],
-  ['Day 158', 'GitHub Promo Maker', './public/GitHubPromoMaker/index.html', 'html css javascript', 'intermediate'],
-  ['Day 159' , 'Dining Philosophers Simulation' , './public/Dining Philosophers Simulation/index.html' , 'simulation algorithm javascript' , 'intermediate' ] ,
+  [
+    'Day 148',
+    'Contest Tracker',
+    './public/ContestTracker/index.html',
+    'tool javascript',
+    'advanced',
+  ],
+  [
+    'Day 149',
+    'GitHub Profile Battle',
+    './public/Github-Profile-Battle/index.html',
+    'tool javascript',
+    'advanced',
+  ],
+  [
+    'Day 150',
+    'App Privacy Policy Generator',
+    './public/AppPrivacyPolicyGenerator/index.html',
+    'tool javascript',
+    'intermediate',
+  ],
+  [
+    'Day 151',
+    'Mini Carrom Game',
+    './public/mini carrom/index.html',
+    'html css javascript',
+    'intermediate',
+  ],
+  [
+    'Day 152',
+    'Physics Ball Simulation',
+    './public/PhysicsBallSimulation/index.html',
+    'html css javascript canvas',
+    'advanced',
+  ],
+  [
+    'Day 153',
+    'Material3 Showcase',
+    './public/Material3Showcase/index.html',
+    'tool javascript',
+    'intermediate',
+  ],
+  [
+    'Day 154',
+    'FocusRoom',
+    './public/FocusRoom/index.html',
+    'html css javascript productivity timer tasks ambient',
+    'intermediate',
+  ],
+  [
+    'Day 155',
+    'Hangman Game',
+    './public/hangman-react-ts/HangmanGame/index.html',
+    'react typescript game hangman vite',
+    'advanced',
+  ],
+  [
+    'Day 156',
+    'Placement Predictor',
+    './public/Placement-Predictor/index.html',
+    'tool javascript html css',
+    'advanced',
+  ],
+  [
+    'Day 157',
+    'Map Route Tracker',
+    './public/Vector-Map-Route-Tracer/index.html',
+    'html css javascript',
+    'advanced',
+  ],
+  [
+    'Day 158',
+    'GitHub Promo Maker',
+    './public/GitHubPromoMaker/index.html',
+    'html css javascript',
+    'intermediate',
+  ],
+  [
+    'Day 159',
+    'Dining Philosophers Simulation',
+    './public/Dining Philosophers Simulation/index.html',
+    'simulation algorithm javascript',
+    'intermediate',
+  ],
 ];
 const PROJECTS = PROJECT_DATA;
-
 
 /* ============================================================
    SOURCE CODE URL GENERATOR
@@ -245,7 +834,6 @@ function getSourceUrl(url) {
   }
   return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main`;
 }
-
 
 /* ============================================================
    TECHNOLOGY STACK FILTERING FUNCTIONS
@@ -277,20 +865,21 @@ function matchesTechStack(projectTags) {
   if (!projectTags) return false;
 
   // Convert to single lowercase string for efficient matching
-  const tagsLower = (typeof projectTags === 'string' ? projectTags : projectTags.join(' ')).toLowerCase();
+  const tagsLower = (
+    typeof projectTags === 'string' ? projectTags : projectTags.join(' ')
+  ).toLowerCase();
 
   // EFFICIENT: Check if ALL filters exist in tags (AND logic)
   // Uses simple includes() - O(n*m) where n=filters, m=tag length
-  return techStackFilters.every(filter => tagsLower.includes(filter));
+  return techStackFilters.every((filter) => tagsLower.includes(filter));
 }
-
 
 /**
  * Remove a specific technology filter
  * @param {string} tech - Technology to remove from filters
  */
 function removeTechFilter(tech) {
-  techStackFilters = techStackFilters.filter(t => t !== tech);
+  techStackFilters = techStackFilters.filter((t) => t !== tech);
   updateTechFilterDisplay();
   renderGrid();
 }
@@ -333,14 +922,18 @@ function updateTechFilterDisplay() {
   container.style.display = 'flex';
 
   // Render filter tags with remove buttons
-  tagsContainer.innerHTML = techStackFilters.map(tech => `
+  tagsContainer.innerHTML = techStackFilters
+    .map(
+      (tech) => `
     <span class="tech-filter-tag">
       ${tech}
       <button onclick="removeTechFilter('${tech}')" aria-label="Remove ${tech} filter">
         <i class="fas fa-times"></i>
       </button>
     </span>
-  `).join('');
+  `
+    )
+    .join('');
 }
 
 /**
@@ -353,11 +946,9 @@ function getAllTechnologies() {
 
   PROJECTS.forEach(([, , , tags]) => {
     if (tags) {
-      const tagArray = typeof tags === 'string'
-        ? tags.split(/\s+/).filter(t => t)
-        : tags;
+      const tagArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
 
-      tagArray.forEach(tag => {
+      tagArray.forEach((tag) => {
         techSet.add(tag.toLowerCase());
       });
     }
@@ -388,7 +979,6 @@ const CATEGORY_LABEL = {
    GITHUB REPO STATS
    ============================================================ */
 async function fetchRepoStats() {
-
   const set = (id, val) => {
     const el = document.getElementById(id);
     if (el) el.textContent = val;
@@ -402,7 +992,6 @@ async function fetchRepoStats() {
   };
 
   try {
-
     // Optional loading state
     set('starCount', 'Loading...');
     set('forkCount', 'Loading...');
@@ -411,11 +1000,13 @@ async function fetchRepoStats() {
 
     const [repoRes, prRes] = await Promise.all([
       fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`),
-      fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`)
+      fetch(
+        `https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`
+      ),
     ]);
 
     if (!repoRes.ok || !prRes.ok) {
-      throw new Error("GitHub API request failed");
+      throw new Error('GitHub API request failed');
     }
 
     const repo = await repoRes.json();
@@ -425,10 +1016,8 @@ async function fetchRepoStats() {
     set('forkCount', repo.forks_count.toLocaleString());
     set('issueCount', (repo.open_issues_count - prs.total_count).toLocaleString());
     set('prCount', prs.total_count.toLocaleString());
-
   } catch (e) {
-
-    console.warn("GitHub stats unavailable:", e.message);
+    console.warn('GitHub stats unavailable:', e.message);
 
     // Show fallback text instead of permanent dashes
     setFallback();
@@ -480,8 +1069,7 @@ function renderGrid() {
     const matchesFilter = activeFilter === 'all' || category === targetCategory;
 
     const q = searchQuery.toLowerCase();
-    const matchesSearch =
-      !q || name.toLowerCase().includes(q) || day.toLowerCase().includes(q);
+    const matchesSearch = !q || name.toLowerCase().includes(q) || day.toLowerCase().includes(q);
 
     const matchesTech = matchesTechStack(tags);
 
@@ -503,14 +1091,11 @@ function renderGrid() {
     const difficultyOrder = {
       beginner: 1,
       intermediate: 2,
-      advanced: 3
+      advanced: 3,
     };
 
     filtered.sort((a, b) => {
-      return (
-        difficultyOrder[a[4].toLowerCase()] -
-        difficultyOrder[b[4].toLowerCase()]
-      );
+      return difficultyOrder[a[4].toLowerCase()] - difficultyOrder[b[4].toLowerCase()];
     });
   }
 
@@ -766,16 +1351,22 @@ function renderBookmarks() {
 
   const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
   if (bookmarkToggleBtn) {
-    bookmarkToggleBtn.style.display = bookmarkedProjects.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
+    bookmarkToggleBtn.style.display =
+      bookmarkedProjects.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
   }
 
-  const visibleBookmarks = showAllBookmarks ? bookmarkedProjects : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
+  const visibleBookmarks = showAllBookmarks
+    ? bookmarkedProjects
+    : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
   visibleBookmarks.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     card.className = 'project-card';
-    const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
+    const tagsHTML = tags
+      .split(' ')
+      .map((tag) => `<span class="tag">${tag}</span>`)
+      .join('');
     const sourceUrl = getSourceUrl(url);
 
     card.innerHTML = `
@@ -818,16 +1409,22 @@ function renderRecentProjects() {
 
   const recentToggleBtn = document.getElementById('recentToggleBtn');
   if (recentToggleBtn) {
-    recentToggleBtn.style.display = recentProjects.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
+    recentToggleBtn.style.display =
+      recentProjects.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
   }
 
-  const visibleRecent = showAllRecent ? recentProjects : recentProjects.slice(0, INITIAL_VISIBLE_ITEMS);
+  const visibleRecent = showAllRecent
+    ? recentProjects
+    : recentProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
   visibleRecent.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     card.className = 'project-card';
-    const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
+    const tagsHTML = tags
+      .split(' ')
+      .map((tag) => `<span class="tag">${tag}</span>`)
+      .join('');
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const sourceUrl = getSourceUrl(url);
 
@@ -978,7 +1575,7 @@ function initTechStackSearch() {
       if (value) {
         // Split by comma or space to support multiple technologies
         // More efficient: direct lowercase conversion
-        const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
+        const techs = value.split(/[,\s]+/).filter((t) => t.length > 0);
 
         techStackFilters = [...new Set(techs)];
 
@@ -1016,10 +1613,7 @@ const clearBtn = document.getElementById('clearSearch');
 function syncProjectCounts() {
   const total = PROJECTS.length.toLocaleString();
 
-  const countNodes = [
-    document.getElementById('projectCount'),
-    document.getElementById('allCount')
-  ];
+  const countNodes = [document.getElementById('projectCount'), document.getElementById('allCount')];
 
   countNodes.forEach((node) => {
     if (node) node.textContent = total;
@@ -1032,16 +1626,16 @@ function syncProjectCounts() {
 
 // Clear button functionality
 if (searchInput && clearBtn) {
-  clearBtn.addEventListener("click", () => {
-    searchInput.value = "";
-    searchInput.dispatchEvent(new Event("input"));
+  clearBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    searchInput.dispatchEvent(new Event('input'));
     searchInput.focus();
   });
 
-  searchInput.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      searchInput.value = "";
-      searchInput.dispatchEvent(new Event("input"));
+  searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      searchInput.value = '';
+      searchInput.dispatchEvent(new Event('input'));
       searchInput.focus();
     }
   });
@@ -1112,7 +1706,7 @@ function initTheme() {
   const syncThemeIcons = () => {
     const isLight = document.body.classList.contains('light-mode');
     const iconClass = isLight ? 'fas fa-sun' : 'fas fa-moon';
-    document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach(icon => {
+    document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach((icon) => {
       icon.className = iconClass;
     });
   };
@@ -1196,8 +1790,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-
-
 (() => {
   const initDirectMobileMenu = () => {
     const menuToggle = document.getElementById('menuToggle');
@@ -1232,8 +1824,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initDirectMobileMenu();
   }
 })();
-
-
 
 // Re-render the grid when the browser window is resized to adapt pagination density instantly
 window.addEventListener('resize', () => {

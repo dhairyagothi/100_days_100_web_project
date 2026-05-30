@@ -44,6 +44,7 @@ Ask a yes/no question, shake the ball, and reveal your fortune with animated res
 ## 🎯 Possible Answers
 
 ### ✅ Affirmative Answers
+
 - It is certain
 - It is decidedly so
 - Without a doubt
@@ -56,6 +57,7 @@ Ask a yes/no question, shake the ball, and reveal your fortune with animated res
 - Signs point to yes
 
 ### ❔ Non-Committal Answers
+
 - Reply hazy, try again
 - Ask again later
 - Better not tell you now
@@ -63,6 +65,7 @@ Ask a yes/no question, shake the ball, and reveal your fortune with animated res
 - Concentrate and ask again
 
 ### ❌ Negative Answers
+
 - Don't count on it
 - My reply is no
 - My sources say no
@@ -87,7 +90,7 @@ magic-8-ball/
 ## 💡 Inspiration
 
 This project is inspired by the classic **Magic 8 Ball fortune-telling toy** created by Mattel.  
-The original Magic 8 Ball contains 20 possible responses divided into affirmative, neutral, and negative categories.  [oai_citation:0‡screencapture-en-wikipedia-org-wiki-Magic-8-Ball-2026-05-21-19_26_51.pdf](sediment://file_00000000a2787209ab407014679d57e6)
+The original Magic 8 Ball contains 20 possible responses divided into affirmative, neutral, and negative categories. [oai_citation:0‡screencapture-en-wikipedia-org-wiki-Magic-8-Ball-2026-05-21-19_26_51.pdf](sediment://file_00000000a2787209ab407014679d57e6)
 
 ---
 

@@ -9,13 +9,13 @@ import Converter from './pages/converter/Converter';
 
 const App = () => {
   return (
-    <div className='app'>
+    <div className="app">
       <Navbar />
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/coin/:coinId' element={<Coin />} />
-        <Route path='/news' element={<News />} />
-        <Route path='/converter' element={<Converter />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/coin/:coinId" element={<Coin />} />
+        <Route path="/news" element={<News />} />
+        <Route path="/converter" element={<Converter />} />
       </Routes>
       <Footer />
     </div>

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Serif:ital@0;1&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Serif:ital@0;1&display=swap');
 
 /* =========================================
    Reset
@@ -36,8 +36,8 @@
   --amber-tint: #fef3e2;
   --red-tint: #fef2f2;
 
-  --f-mono: "DM Mono", "Courier New", monospace;
-  --f-serif: "Instrument Serif", Georgia, serif;
+  --f-mono: 'DM Mono', 'Courier New', monospace;
+  --f-serif: 'Instrument Serif', Georgia, serif;
 
   --r-sm: 4px;
   --r-md: 6px;
@@ -216,8 +216,8 @@ body.dark .icon-moon {
 }
 
 select,
-input[type="text"],
-input[type="number"] {
+input[type='text'],
+input[type='number'] {
   width: 100%;
   padding: 10px 12px;
   background: var(--surface);

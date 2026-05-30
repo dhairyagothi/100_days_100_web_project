@@ -2,7 +2,13 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'https://esm.sh/r
 import { createRoot } from 'https://esm.sh/react-dom@18.3.1/client';
 // NOTE (difficulty): Some OGL CDN builds don't export `Triangle` — use `Geometry`.
 // Also shader outputs vary widely across GPUs; we keep a CSS fallback for visibility.
-import { Renderer, Program, Mesh, Color, Geometry } from 'https://cdn.jsdelivr.net/npm/ogl@0.0.32/dist/ogl.mjs';
+import {
+  Renderer,
+  Program,
+  Mesh,
+  Color,
+  Geometry,
+} from 'https://cdn.jsdelivr.net/npm/ogl@0.0.32/dist/ogl.mjs';
 
 const vertexShader = `
 attribute vec2 position;
@@ -215,7 +221,7 @@ function hexToRgb(hex) {
   if (h.length === 3) {
     h = h
       .split('')
-      .map(c => c + c)
+      .map((c) => c + c)
       .join('');
   }
 
@@ -259,12 +265,19 @@ function FaultyTerminal({
   const timeOffsetRef = useRef(Math.random() * 100);
 
   const tintVec = useMemo(() => hexToRgb(tint), [tint]);
-  const ditherValue = useMemo(() => (typeof dither === 'boolean' ? (dither ? 1 : 0) : dither), [dither]);
+  const ditherValue = useMemo(
+    () => (typeof dither === 'boolean' ? (dither ? 1 : 0) : dither),
+    [dither]
+  );
 
   // basic touch/mobile detection
-  const isTouchDevice = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0 || window.matchMedia('(pointer: coarse)').matches);
+  const isTouchDevice =
+    typeof window !== 'undefined' &&
+    ('ontouchstart' in window ||
+      navigator.maxTouchPoints > 0 ||
+      window.matchMedia('(pointer: coarse)').matches);
 
-  const handleMouseMove = useCallback(event => {
+  const handleMouseMove = useCallback((event) => {
     const container = containerRef.current;
     if (!container) return;
 
@@ -291,7 +304,11 @@ function FaultyTerminal({
       gl = renderer.gl;
       if (!gl) throw new Error('No GL context');
       gl.clearColor(0, 0, 0, 1);
-      console.log('[hero-terminal] WebGL renderer initialized', { dpr: useDpr, width: gl.canvas.width, height: gl.canvas.height });
+      console.log('[hero-terminal] WebGL renderer initialized', {
+        dpr: useDpr,
+        width: gl.canvas.width,
+        height: gl.canvas.height,
+      });
     } catch (err) {
       console.warn('[hero-terminal] WebGL init failed, falling back to 2D canvas', err);
       // WebGL failed — create a lightweight 2D fallback canvas to keep the hero visible
@@ -381,39 +398,44 @@ function FaultyTerminal({
 
     const geometry = new Geometry(gl, {
       position: { size: 2, data: new Float32Array([-1, -1, 3, -1, -1, 3]) },
-      uv: { size: 2, data: new Float32Array([0, 0, 2, 0, 0, 2]) }
+      uv: { size: 2, data: new Float32Array([0, 0, 2, 0, 0, 2]) },
     });
 
     let program;
     try {
       program = new Program(gl, {
-      vertex: vertexShader,
-      fragment: fragmentShader,
-      uniforms: {
-        iTime: { value: 0 },
-        iResolution: { value: new Color(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height) },
-        uScale: { value: scale },
-        uGridMul: { value: new Float32Array(gridMul) },
-        uDigitSize: { value: digitSize },
-        uScanlineIntensity: { value: scanlineIntensity },
-        uGlitchAmount: { value: glitchAmount },
-        uFlickerAmount: { value: flickerAmount },
-        uNoiseAmp: { value: noiseAmp },
-        uChromaticAberration: { value: chromaticAberration },
-        uDither: { value: ditherValue },
-        uCurvature: { value: curvature },
-        uTint: { value: new Color(tintVec[0], tintVec[1], tintVec[2]) },
-        uMouse: { value: new Float32Array([smoothMouseRef.current.x, smoothMouseRef.current.y]) },
-        uMouseStrength: { value: mouseStrength },
-        uUseMouse: { value: mouseReact ? 1 : 0 },
-        uPageLoadProgress: { value: pageLoadAnimation ? 0 : 1 },
-        uUsePageLoadAnimation: { value: pageLoadAnimation ? 1 : 0 },
-        uBrightness: { value: brightness }
-      }
+        vertex: vertexShader,
+        fragment: fragmentShader,
+        uniforms: {
+          iTime: { value: 0 },
+          iResolution: {
+            value: new Color(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height),
+          },
+          uScale: { value: scale },
+          uGridMul: { value: new Float32Array(gridMul) },
+          uDigitSize: { value: digitSize },
+          uScanlineIntensity: { value: scanlineIntensity },
+          uGlitchAmount: { value: glitchAmount },
+          uFlickerAmount: { value: flickerAmount },
+          uNoiseAmp: { value: noiseAmp },
+          uChromaticAberration: { value: chromaticAberration },
+          uDither: { value: ditherValue },
+          uCurvature: { value: curvature },
+          uTint: { value: new Color(tintVec[0], tintVec[1], tintVec[2]) },
+          uMouse: { value: new Float32Array([smoothMouseRef.current.x, smoothMouseRef.current.y]) },
+          uMouseStrength: { value: mouseStrength },
+          uUseMouse: { value: mouseReact ? 1 : 0 },
+          uPageLoadProgress: { value: pageLoadAnimation ? 0 : 1 },
+          uUsePageLoadAnimation: { value: pageLoadAnimation ? 1 : 0 },
+          uBrightness: { value: brightness },
+        },
       });
       programRef.current = program;
     } catch (err) {
-      console.error('[hero-terminal] Shader/program compile failed, falling back to 2D canvas', err);
+      console.error(
+        '[hero-terminal] Shader/program compile failed, falling back to 2D canvas',
+        err
+      );
       fallbackCleanup = create2DFallback(container, tint);
       // if program creation failed, stop initialization early
       return () => {
@@ -444,10 +466,10 @@ function FaultyTerminal({
     resize();
 
     // FPS throttling: full RAF on desktop, limited on mobile
-    const minFrameInterval = smallScreen ? (1000 / 30) : (1000 / 60);
+    const minFrameInterval = smallScreen ? 1000 / 30 : 1000 / 60;
     let lastRenderTime = 0;
 
-    const update = now => {
+    const update = (now) => {
       rafRef.current = requestAnimationFrame(update);
 
       // throttle rendering to target FPS
@@ -491,13 +513,16 @@ function FaultyTerminal({
 
     rafRef.current = requestAnimationFrame(update);
 
-    if (mouseReact && !isTouchDevice && fallbackCleanup === null) container.addEventListener('mousemove', handleMouseMove);
+    if (mouseReact && !isTouchDevice && fallbackCleanup === null)
+      container.addEventListener('mousemove', handleMouseMove);
 
     return () => {
       cancelAnimationFrame(rafRef.current);
       resizeObserver.disconnect();
-      if (mouseReact && !isTouchDevice && fallbackCleanup === null) container.removeEventListener('mousemove', handleMouseMove);
-      if (gl && gl.canvas && gl.canvas.parentElement === container) container.removeChild(gl.canvas);
+      if (mouseReact && !isTouchDevice && fallbackCleanup === null)
+        container.removeEventListener('mousemove', handleMouseMove);
+      if (gl && gl.canvas && gl.canvas.parentElement === container)
+        container.removeChild(gl.canvas);
       if (gl) gl.getExtension('WEBGL_lose_context')?.loseContext();
       if (typeof fallbackCleanup === 'function') fallbackCleanup();
       loadAnimationStartRef.current = 0;
@@ -522,14 +547,14 @@ function FaultyTerminal({
     mouseStrength,
     pageLoadAnimation,
     brightness,
-    handleMouseMove
+    handleMouseMove,
   ]);
 
   return React.createElement('div', {
     ref: containerRef,
     className: `faulty-terminal-container ${className || ''}`.trim(),
     style,
-    ...rest
+    ...rest,
   });
 }
 
@@ -558,7 +583,7 @@ if (host) {
       pageLoadAnimation: false,
       brightness: 0.3,
       glitchAmount: 1,
-      style: { width: '100%', height: '100%' }
+      style: { width: '100%', height: '100%' },
     })
   );
 }

@@ -10,19 +10,19 @@ on:
   push:
     branches: [Main]
     paths-ignore:
-      - "README.md"
-      - "CONTRIBUTING.md"
-      - "DEPLOYMENT.md"
-      - "SECURITY.md"
-      - "LICENSE"
+      - 'README.md'
+      - 'CONTRIBUTING.md'
+      - 'DEPLOYMENT.md'
+      - 'SECURITY.md'
+      - 'LICENSE'
   pull_request:
     branches: [Main]
     paths-ignore:
-      - "README.md"
-      - "CONTRIBUTING.md"
-      - "DEPLOYMENT.md"
-      - "SECURITY.md"
-      - "LICENSE"
+      - 'README.md'
+      - 'CONTRIBUTING.md'
+      - 'DEPLOYMENT.md'
+      - 'SECURITY.md'
+      - 'LICENSE'
 
 permissions:
   contents: read
@@ -39,7 +39,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '20'
 
       - name: Run HTMLHint on main site
         run: npx -y htmlhint index.html contributors/contributor.html
@@ -121,7 +121,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: "100days-web:scan"
-          format: "table"
-          severity: "CRITICAL,HIGH"
-          exit-code: "0" # Warn-only — don't block on base image CVEs
+          image-ref: '100days-web:scan'
+          format: 'table'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '0' # Warn-only — don't block on base image CVEs

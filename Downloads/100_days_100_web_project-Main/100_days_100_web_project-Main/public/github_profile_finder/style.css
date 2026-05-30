@@ -34,12 +34,19 @@ body {
 }
 
 body {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
   background:
-    radial-gradient(circle at top left, rgba(99, 102, 241, 0.06), transparent 20%),
-    var(--bg);
+    radial-gradient(circle at top left, rgba(99, 102, 241, 0.06), transparent 20%), var(--bg);
   color: var(--text);
-  transition: background 0.3s ease, color 0.3s ease;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
 }
 
 .app {
@@ -145,7 +152,11 @@ input::placeholder {
 .quick-btn,
 .visit-link,
 .theme-toggle {
-  transition: transform 0.2s ease, opacity 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .search-btn {

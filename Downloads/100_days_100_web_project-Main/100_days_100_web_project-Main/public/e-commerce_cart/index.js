@@ -14,18 +14,20 @@ function init() {
 }
 
 function bindCart() {
-  document.querySelectorAll('.cart-remove').forEach(b => b.addEventListener('click', removeItem));
-  document.querySelectorAll('.cart-quantity').forEach(i => i.addEventListener('change', changeQty));
-  document.querySelectorAll('.qty-minus').forEach(b => b.addEventListener('click', decQty));
-  document.querySelectorAll('.qty-plus').forEach(b => b.addEventListener('click', incQty));
-  document.querySelectorAll('.card-add').forEach(b => b.addEventListener('click', addCart));
+  document.querySelectorAll('.cart-remove').forEach((b) => b.addEventListener('click', removeItem));
+  document
+    .querySelectorAll('.cart-quantity')
+    .forEach((i) => i.addEventListener('change', changeQty));
+  document.querySelectorAll('.qty-minus').forEach((b) => b.addEventListener('click', decQty));
+  document.querySelectorAll('.qty-plus').forEach((b) => b.addEventListener('click', incQty));
+  document.querySelectorAll('.card-add').forEach((b) => b.addEventListener('click', addCart));
   updateTotal();
 }
 
 function removeItem() {
   if (!confirm('Remove this item?')) return;
   const title = this.parentElement.querySelector('.cart-shoe-title').textContent;
-  itemList = itemList.filter(el => el.title !== title);
+  itemList = itemList.filter((el) => el.title !== title);
   this.parentElement.remove();
   bindCart();
 }
@@ -59,7 +61,7 @@ function addCart() {
   const imgSrc = card.querySelector('.card-img').src;
   const removeSrc = card.querySelector('.card-remove').src;
 
-  if (itemList.some(el => el.title === title)) {
+  if (itemList.some((el) => el.title === title)) {
     alert('Already in cart');
     return;
   }
@@ -93,11 +95,13 @@ function cartProduct(title, price, imgSrc, removeSrc) {
 
 function updateTotal() {
   let total = 0;
-  document.querySelectorAll('.cart-box').forEach(box => {
-    const p = parseFloat(box.querySelector('.cart-price').textContent.replace(/Rs\.?/g, '').replace(/,/g, ''));
+  document.querySelectorAll('.cart-box').forEach((box) => {
+    const p = parseFloat(
+      box.querySelector('.cart-price').textContent.replace(/Rs\.?/g, '').replace(/,/g, '')
+    );
     const q = parseInt(box.querySelector('.cart-quantity').value) || 1;
     total += p * q;
-    box.querySelector('.cart-amt').textContent = 'Rs.' + (p * q);
+    box.querySelector('.cart-amt').textContent = 'Rs.' + p * q;
   });
   document.querySelector('.cart-total-price').textContent = 'Rs.' + total;
 
@@ -129,21 +133,25 @@ if (slides.length) {
 }
 
 function goSlide(i) {
-  slides.forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
+  slides.forEach((s) => s.classList.remove('active'));
+  document.querySelectorAll('.dot').forEach((d) => d.classList.remove('active'));
   slides[i].classList.add('active');
   document.querySelectorAll('.dot')[i].classList.add('active');
   current = i;
 }
 
-function nextSlide() { goSlide((current + 1) % slides.length); }
+function nextSlide() {
+  goSlide((current + 1) % slides.length);
+}
 
 let interval = setInterval(nextSlide, 3000);
 
 const slider = document.querySelector('#slider');
 if (slider) {
   slider.addEventListener('mouseenter', () => clearInterval(interval));
-  slider.addEventListener('mouseleave', () => { interval = setInterval(nextSlide, 3000); });
+  slider.addEventListener('mouseleave', () => {
+    interval = setInterval(nextSlide, 3000);
+  });
 }
 
 // ===== THEME =====

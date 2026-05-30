@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap');
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -83,7 +85,7 @@ body {
   right: 14px;
   font-family: 'Space Mono', monospace;
   font-size: 11px;
-  color: rgba(255,255,255,0.25);
+  color: rgba(255, 255, 255, 0.25);
   pointer-events: none;
   letter-spacing: 0.05em;
 }
@@ -123,7 +125,7 @@ body {
   gap: 10px;
 }
 
-.slider-row input[type="range"] {
+.slider-row input[type='range'] {
   flex: 1;
   -webkit-appearance: none;
   appearance: none;
@@ -134,7 +136,7 @@ body {
   cursor: pointer;
 }
 
-.slider-row input[type="range"]::-webkit-slider-thumb {
+.slider-row input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 14px;
@@ -142,15 +144,17 @@ body {
   border-radius: 50%;
   background: var(--accent);
   cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
 }
 
-.slider-row input[type="range"]::-webkit-slider-thumb:hover {
+.slider-row input[type='range']::-webkit-slider-thumb:hover {
   transform: scale(1.25);
   box-shadow: 0 0 0 4px rgba(93, 202, 165, 0.2);
 }
 
-.slider-row input[type="range"]::-moz-range-thumb {
+.slider-row input[type='range']::-moz-range-thumb {
   width: 14px;
   height: 14px;
   border-radius: 50%;

@@ -8,7 +8,6 @@
 // Navbar position
 // Navbar themes
 
-
 // Navbar
 //
 // Provide a static navbar from which we expand to create full-width, fixed, and
@@ -48,7 +47,6 @@
   }
 }
 
-
 // Navbar brand
 //
 // Used for brand, project, or site names.
@@ -66,7 +64,6 @@
     text-decoration: if($link-hover-decoration == underline, none, null);
   }
 }
-
 
 // Navbar nav
 //
@@ -89,7 +86,6 @@
   }
 }
 
-
 // Navbar text
 //
 //
@@ -98,7 +94,6 @@
   padding-top: $nav-link-padding-y;
   padding-bottom: $nav-link-padding-y;
 }
-
 
 // Responsive navbar
 //
@@ -199,7 +194,6 @@
 }
 // scss-docs-end navbar-expand-loop
 
-
 // Navbar themes
 //
 // Styles for switching between navbars with light or dark background.
@@ -249,7 +243,7 @@
 
     a,
     a:hover,
-    a:focus  {
+    a:focus {
       color: $navbar-light-active-color;
     }
   }

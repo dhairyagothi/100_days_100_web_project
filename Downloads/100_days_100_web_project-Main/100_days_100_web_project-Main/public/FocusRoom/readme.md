@@ -10,44 +10,44 @@ Built using pure HTML, CSS, and JavaScript, this project provides a distraction-
 
 ### ⏳ Pomodoro Timer
 
-* Focus, Short Break, and Long Break modes
-* Circular animated progress ring
-* Start, Pause, Resume, and Reset controls
-* Session tracking with visual indicators
-* Dynamic browser tab timer updates
+- Focus, Short Break, and Long Break modes
+- Circular animated progress ring
+- Start, Pause, Resume, and Reset controls
+- Session tracking with visual indicators
+- Dynamic browser tab timer updates
 
 ### 🕒 Live Digital Clock
 
-* Real-time clock display
-* Updates every second automatically
+- Real-time clock display
+- Updates every second automatically
 
 ### 📝 Sticky Notes
 
-* Draggable sticky note widget
-* Write reminders, ideas, or tasks
-* Minimize and expand functionality
+- Draggable sticky note widget
+- Write reminders, ideas, or tasks
+- Minimize and expand functionality
 
 ### 🎨 Aesthetic User Interface
 
-* Minimal and cosy design
-* Ambient background layers and glow effects
-* Smooth transitions and animations
-* Fully responsive layout
+- Minimal and cosy design
+- Ambient background layers and glow effects
+- Smooth transitions and animations
+- Fully responsive layout
 
 ### 🔔 Productivity Experience
 
-* Visual feedback and notifications
-* Clean workspace focused on reducing distractions
-* Designed for studying, coding, and deep work sessions
+- Visual feedback and notifications
+- Clean workspace focused on reducing distractions
+- Designed for studying, coding, and deep work sessions
 
 ---
 
 ## 🛠️ Technologies Used
 
-* **HTML5** – Structure of the application
-* **CSS3** – Styling, animations, and responsive design
-* **JavaScript (Vanilla JS)** – Functionality and interactivity
-* **Google Fonts** – Typography and aesthetic UI design
+- **HTML5** – Structure of the application
+- **CSS3** – Styling, animations, and responsive design
+- **JavaScript (Vanilla JS)** – Functionality and interactivity
+- **Google Fonts** – Typography and aesthetic UI design
 
 ---
 
@@ -73,13 +73,17 @@ git clone https://github.com/Ras0105/100_days_100_web_project.git
 ```
 
 2. Open the project folder
+
 ```bash
 cd 100_days_100_web_project
 ```
+
 3. Navigate to the `public/FocusRoom` directory
+
 ```bash
 cd public/FocusRoom
 ```
+
 4. Open index.html in your browser
 
 Enjoy the project!
@@ -87,12 +91,14 @@ Enjoy the project!
 Note: If your project folder name is different from `FocusRoom`, replace it with the actual folder name.
 
 ---
+
 ## 🙌 Credits
 
 This project is part of the original repository created by Dhairya Gothi.
 
 Original Repository:
 https://github.com/dhairyagothi/100_days_100_web_project
+
 ## 📸 Screenshots
 
 Add screenshots of your project here.
@@ -106,18 +112,20 @@ Example:
 ![Timer Section](screenshots/homepage3.png)
 ![Notes Feature & Motivational Quotes](screenshots/homepage4.png)
 ![Rresponsive Design](screenshots/image.png)
+
 ---
 
 ## 🌟 Future Improvements
 
-* Background music and ambient sounds
-* Task management system
-* Dark/Light theme toggle
-* Local storage for notes and sessions
-* Custom timer durations
-* Productivity analytics dashboard
+- Background music and ambient sounds
+- Task management system
+- Dark/Light theme toggle
+- Local storage for notes and sessions
+- Custom timer durations
+- Productivity analytics dashboard
 
 ---
+
 ## 🐛 Known Issues
 
 ```bash
@@ -129,8 +137,8 @@ Example:
 
 **Rasshi Ashish Srivastav**
 
-* GitHub: urlRas0105 GitHub[https://github.com/Ras0105](https://github.com/Ras0105)
-* LinkedIn: urlRasshi Ashish Srivastav LinkedIn[https://www.linkedin.com/in/rasshi-ashish-srivastav](https://www.linkedin.com/in/rasshi-ashish-srivastav)
+- GitHub: urlRas0105 GitHub[https://github.com/Ras0105](https://github.com/Ras0105)
+- LinkedIn: urlRasshi Ashish Srivastav LinkedIn[https://www.linkedin.com/in/rasshi-ashish-srivastav](https://www.linkedin.com/in/rasshi-ashish-srivastav)
 
 ---
 

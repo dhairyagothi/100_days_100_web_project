@@ -128,34 +128,27 @@ function loadCache(key, maxAge = 1000 * 60 * 10) {
   }
 }
 
-async function openProfile(username){
+async function openProfile(username) {
+  modal.style.display = 'flex';
+  modal.style.position = 'fixed';
 
-    modal.style.display = "flex";
-    modal.style.position = "fixed";
+  modal.style.top = '0';
 
-    modal.style.top = "0";
+  modal.style.left = '0';
 
-    modal.style.left = "0";
+  modal.style.zIndex = '999999999';
 
-    modal.style.zIndex = "999999999";
+  modal.style.justifyContent = 'center';
 
-    modal.style.justifyContent = "center";
+  modal.style.alignItems = 'center';
 
-    modal.style.alignItems = "center";
+  modalBody.innerHTML = '<p>Loading...</p>';
 
-    modalBody.innerHTML =
-    "<p>Loading...</p>";
+  try {
+    const response = await fetch(`https://api.github.com/users/${username}`);
 
-    try{
-
-        const response =
-        await fetch(
-        `https://api.github.com/users/${username}`
-        );
-
-        if(!response.ok){
-
-            modalBody.innerHTML = `
+    if (!response.ok) {
+      modalBody.innerHTML = `
             <h2>${username}</h2>
 
             <p>
@@ -163,14 +156,12 @@ async function openProfile(username){
             </p>
             `;
 
-            return;
-        }
+      return;
+    }
 
-        const user =
-        await response.json();
+    const user = await response.json();
 
-
-        modalBody.innerHTML = `
+    modalBody.innerHTML = `
 
         <img
         src="${user.avatar_url}"
@@ -185,7 +176,7 @@ async function openProfile(username){
         </h2>
 
         <p>
-        ${user.bio || "No bio available"}
+        ${user.bio || 'No bio available'}
         </p>
 
         <p>
@@ -200,14 +191,12 @@ async function openProfile(username){
 
         <p>
         Location:
-        ${user.location || "Unknown"}
+        ${user.location || 'Unknown'}
         </p>
 
         ${
-        user.html_url
-        ?
-
-        `<a
+          user.html_url
+            ? `<a
         href="${user.html_url}"
         target="_blank"
         class="github-btn">
@@ -215,24 +204,15 @@ async function openProfile(username){
         GitHub Profile
 
         </a>`
-
-        :
-
-        ""
+            : ''
         }
 
         `;
+  } catch (err) {
+    modalBody.innerHTML = '<p>Failed to load profile</p>';
 
-    }
-
-    catch(err){
-
-        modalBody.innerHTML =
-        "<p>Failed to load profile</p>";
-
-        console.log(err);
-    }
-
+    console.log(err);
+  }
 }
 // Use global REPO_OWNER and REPO_NAME defined in index.js
 
@@ -281,10 +261,7 @@ async function fetchContributors() {
 
     contributorCountSpan.textContent = contributors.length;
 
-    const totalCommits = contributors.reduce(
-      (sum, c) => sum + c.contributions,
-      0
-    );
+    const totalCommits = contributors.reduce((sum, c) => sum + c.contributions, 0);
 
     const totalCommitsEl = document.getElementById('totalCommits');
 
@@ -328,8 +305,7 @@ function renderContributors(data) {
   data.forEach((contributor) => {
     const card = document.createElement('div');
 
-    const globalRank =
-      allContributors.findIndex((c) => c.login === contributor.login) + 1;
+    const globalRank = allContributors.findIndex((c) => c.login === contributor.login) + 1;
 
     let badge = '';
 
@@ -412,7 +388,7 @@ alt="${contributor.login}">
         'click',
 
         () => {
-    openProfile(contributor.login);
+          openProfile(contributor.login);
         }
       );
     }
@@ -494,14 +470,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Repo stats are now handled by index.js
   fetchContributors();
   fetchStargazers();
-  
-  document
-    .getElementById('retryContributors')
-    ?.addEventListener('click', fetchContributors);
 
-  document
-    .getElementById('retryStargazers')
-    ?.addEventListener('click', fetchStargazers);
+  document.getElementById('retryContributors')?.addEventListener('click', fetchContributors);
+
+  document.getElementById('retryStargazers')?.addEventListener('click', fetchStargazers);
 
   const searchInput = document.getElementById('contributorSearch');
 
@@ -509,9 +481,7 @@ document.addEventListener('DOMContentLoaded', () => {
   searchInput.addEventListener('input', (e) => {
     const value = e.target.value.toLowerCase();
 
-    filteredContributors = allContributors.filter((c) =>
-      c.login.toLowerCase().includes(value)
-    );
+    filteredContributors = allContributors.filter((c) => c.login.toLowerCase().includes(value));
 
     renderContributors(filteredContributors);
   });

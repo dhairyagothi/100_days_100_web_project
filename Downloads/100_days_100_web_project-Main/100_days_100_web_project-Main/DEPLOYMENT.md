@@ -3,10 +3,11 @@
 ## Quick Deploy Steps
 
 1. **Push changes to GitHub:**
+
    ```bash
    git add .
    git commit -m "Fix Vercel deployment configuration"
-   git push origin main 
+   git push origin main
    ```
 
 2. **Vercel Settings:**
@@ -26,7 +27,7 @@
 ✅ Set proper output directory to root (`.`)  
 ✅ Fixed absolute paths to relative paths in Login.html  
 ✅ Removed unnecessary rewrites that caused 404 errors  
-✅ Added proper cache headers for static assets  
+✅ Added proper cache headers for static assets
 
 ## Project Structure
 
@@ -54,9 +55,11 @@ If you still see 404 errors:
 ## Testing Locally
 
 ### Option 1: Simple File Open
+
 Open `index.html` directly in your browser to test locally before deploying.
 
 ### Option 2: Local Dev Server (Recommended)
+
 ```bash
 # Using npm scripts (requires Node.js)
 npm run dev
@@ -67,6 +70,7 @@ make dev
 ```
 
 ### Option 3: Docker (No Node.js Required)
+
 ```bash
 # Using Docker Compose (recommended)
 docker compose up --build
@@ -100,12 +104,12 @@ docker compose up --build -d
 
 ### What's Included
 
-| File | Purpose |
-|------|---------|
-| `Dockerfile` | Multi-stage Nginx Alpine build |
-| `docker-compose.yml` | One-command local development |
-| `nginx.conf` | Custom Nginx config with security headers & gzip |
-| `.dockerignore` | Optimized build context |
+| File                 | Purpose                                          |
+| -------------------- | ------------------------------------------------ |
+| `Dockerfile`         | Multi-stage Nginx Alpine build                   |
+| `docker-compose.yml` | One-command local development                    |
+| `nginx.conf`         | Custom Nginx config with security headers & gzip |
+| `.dockerignore`      | Optimized build context                          |
 
 ### Docker Image Features
 
@@ -118,11 +122,13 @@ docker compose up --build -d
 ### CI/CD
 
 On every push to `Main`, the Docker image is automatically:
+
 1. **Built and tested** via the CI pipeline
 2. **Scanned for vulnerabilities** using Trivy
 3. **Published to GitHub Container Registry** (`ghcr.io`)
 
 Pull the latest image:
+
 ```bash
 docker pull ghcr.io/dhairyagothi/100_days_100_web_project:latest
 docker run -p 8080:80 ghcr.io/dhairyagothi/100_days_100_web_project:latest

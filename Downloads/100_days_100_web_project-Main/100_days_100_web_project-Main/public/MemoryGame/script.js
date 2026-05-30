@@ -1,39 +1,39 @@
 // ── Config ────────────────────────────────────────────────
-const EMOJIS = ['🦊','🐬','🦋','🌸','🍄','⚡','🎸','🔮','🦄','🌈','🎯','🍀'];
+const EMOJIS = ['🦊', '🐬', '🦋', '🌸', '🍄', '⚡', '🎸', '🔮', '🦄', '🌈', '🎯', '🍀'];
 
 const DIFFICULTIES = {
-  easy:   { cols: 4, pairs: 8,  label: '4×4' },
+  easy: { cols: 4, pairs: 8, label: '4×4' },
   medium: { cols: 5, pairs: 10, label: '5×4' },
-  hard:   { cols: 6, pairs: 12, label: '6×4' }
+  hard: { cols: 6, pairs: 12, label: '6×4' },
 };
 
 // ── State ─────────────────────────────────────────────────
-let cards        = [];
-let flipped      = [];
-let matched      = [];
-let moves        = 0;
-let seconds      = 0;
+let cards = [];
+let flipped = [];
+let matched = [];
+let moves = 0;
+let seconds = 0;
 let timerInterval = null;
-let gameActive   = false;
-let lockBoard    = false;
-let hintUsed     = false;
-let difficulty   = 'easy';
-let highScores   = JSON.parse(localStorage.getItem('mmHighScores') || '{}');
+let gameActive = false;
+let lockBoard = false;
+let hintUsed = false;
+let difficulty = 'easy';
+let highScores = JSON.parse(localStorage.getItem('mmHighScores') || '{}');
 
 // ── DOM References ─────────────────────────────────────────
-const grid       = document.getElementById('gameGrid');
-const movesEl    = document.getElementById('movesVal');
-const timerEl    = document.getElementById('timerVal');
-const pairsEl    = document.getElementById('pairsVal');
-const bestEl     = document.getElementById('bestVal');
+const grid = document.getElementById('gameGrid');
+const movesEl = document.getElementById('movesVal');
+const timerEl = document.getElementById('timerVal');
+const pairsEl = document.getElementById('pairsVal');
+const bestEl = document.getElementById('bestVal');
 const progressEl = document.getElementById('progressBar');
-const winModal   = document.getElementById('winModal');
-const toastEl    = document.getElementById('toast');
+const winModal = document.getElementById('winModal');
+const toastEl = document.getElementById('toast');
 
 // ── Event Listeners ───────────────────────────────────────
-document.querySelectorAll('.diff-btn').forEach(btn => {
+document.querySelectorAll('.diff-btn').forEach((btn) => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.diff-btn').forEach((b) => b.classList.remove('active'));
     btn.classList.add('active');
     difficulty = btn.dataset.diff;
     updateGridClass();
@@ -138,19 +138,19 @@ function startGame() {
   hintUsed = false;
 
   // Reset all state
-  cards     = [];
-  flipped   = [];
-  matched   = [];
-  moves     = 0;
+  cards = [];
+  flipped = [];
+  matched = [];
+  moves = 0;
   gameActive = false;
-  lockBoard  = false;
+  lockBoard = false;
 
   // Reset UI
-  movesEl.textContent    = '0';
-  pairsEl.textContent    = `0/${cfg.pairs}`;
+  movesEl.textContent = '0';
+  pairsEl.textContent = `0/${cfg.pairs}`;
   progressEl.style.width = '0%';
-  timerEl.textContent    = '0:00';
-  timerEl.className      = 'stat-value';
+  timerEl.textContent = '0:00';
+  timerEl.className = 'stat-value';
 
   updateGridClass();
   updateBestDisplay();
@@ -163,10 +163,10 @@ function startGame() {
   grid.innerHTML = '';
   deck.forEach((emoji, i) => {
     const card = document.createElement('div');
-    card.className      = 'card';
-    card.dataset.emoji  = emoji;
-    card.dataset.idx    = i;
-    card.innerHTML      = `
+    card.className = 'card';
+    card.dataset.emoji = emoji;
+    card.dataset.idx = i;
+    card.innerHTML = `
       <div class="card-inner">
         <div class="card-face card-back"></div>
         <div class="card-face card-front">${emoji}</div>
@@ -177,9 +177,9 @@ function startGame() {
   });
 
   // Brief peek — show all cards, then flip them back
-  cards.forEach(c => c.classList.add('flipped'));
+  cards.forEach((c) => c.classList.add('flipped'));
   setTimeout(() => {
-    cards.forEach(c => c.classList.remove('flipped'));
+    cards.forEach((c) => c.classList.remove('flipped'));
     gameActive = true;
     startTimer();
   }, 900);
@@ -191,10 +191,10 @@ function startGame() {
  * Handle a card click event
  */
 function onCardClick(card) {
-  if (!gameActive || lockBoard)               return;
-  if (card.classList.contains('matched'))     return;
-  if (flipped.includes(card))                 return;
-  if (flipped.length === 2)                   return;
+  if (!gameActive || lockBoard) return;
+  if (card.classList.contains('matched')) return;
+  if (flipped.includes(card)) return;
+  if (flipped.length === 2) return;
 
   card.classList.add('flipped');
   flipped.push(card);
@@ -219,20 +219,19 @@ function checkMatch() {
       a.classList.add('matched');
       b.classList.add('matched');
       matched.push(a, b);
-      flipped   = [];
+      flipped = [];
       lockBoard = false;
 
-      const cfg      = DIFFICULTIES[difficulty];
+      const cfg = DIFFICULTIES[difficulty];
       const pairsDone = matched.length / 2;
 
       // Update pairs counter and progress bar
-      pairsEl.textContent    = `${pairsDone}/${cfg.pairs}`;
+      pairsEl.textContent = `${pairsDone}/${cfg.pairs}`;
       progressEl.style.width = `${(pairsDone / cfg.pairs) * 100}%`;
 
       if (pairsDone < cfg.pairs) showToast('✓ Match!');
       if (matched.length === cards.length) onWin();
     }, 300);
-
   } else {
     // ✗ No match — shake and flip back
     a.classList.add('wrong');
@@ -240,7 +239,7 @@ function checkMatch() {
     setTimeout(() => {
       a.classList.remove('flipped', 'wrong');
       b.classList.remove('flipped', 'wrong');
-      flipped   = [];
+      flipped = [];
       lockBoard = false;
     }, 900);
   }
@@ -260,7 +259,7 @@ function useHint() {
 
   // Collect unmatched, unflipped cards
   const unmatched = cards.filter(
-    c => !c.classList.contains('matched') && !c.classList.contains('flipped')
+    (c) => !c.classList.contains('matched') && !c.classList.contains('flipped')
   );
   if (!unmatched.length) return;
 
@@ -271,7 +270,7 @@ function useHint() {
     if (!emojiMap[e]) emojiMap[e] = [];
     emojiMap[e].push(c);
   }
-  const pair = Object.values(emojiMap).find(g => g.length >= 2);
+  const pair = Object.values(emojiMap).find((g) => g.length >= 2);
   if (!pair) return;
 
   // Briefly show the pair
@@ -294,11 +293,11 @@ function useHint() {
  */
 function onWin() {
   stopTimer();
-  gameActive             = false;
+  gameActive = false;
   progressEl.style.width = '100%';
 
   // Check and save high score
-  const hs        = highScores[difficulty];
+  const hs = highScores[difficulty];
   const isNewBest = !hs || moves < hs.moves || (moves === hs.moves && seconds < hs.seconds);
 
   if (isNewBest) {
@@ -309,14 +308,18 @@ function onWin() {
 
   // Populate modal
   const rating =
-    moves <= 12 ? 'Incredible!' :
-    moves <= 18 ? 'Great job!'  :
-    moves <= 25 ? 'Well done!'  : 'You did it!';
+    moves <= 12
+      ? 'Incredible!'
+      : moves <= 18
+        ? 'Great job!'
+        : moves <= 25
+          ? 'Well done!'
+          : 'You did it!';
 
-  document.getElementById('modalSub').textContent        = rating;
-  document.getElementById('modalMoves').textContent      = moves;
-  document.getElementById('modalTime').textContent       = fmt(seconds);
-  document.getElementById('newBest').style.display       = isNewBest ? 'block' : 'none';
+  document.getElementById('modalSub').textContent = rating;
+  document.getElementById('modalMoves').textContent = moves;
+  document.getElementById('modalTime').textContent = fmt(seconds);
+  document.getElementById('newBest').style.display = isNewBest ? 'block' : 'none';
 
   setTimeout(() => {
     winModal.classList.add('visible');
@@ -333,11 +336,11 @@ function launchConfetti() {
   const container = document.getElementById('confettiContainer');
   container.innerHTML = '';
 
-  const colors = ['#7c3aed','#a855f7','#f59e0b','#10b981','#ef4444','#60a5fa','#f472b6'];
+  const colors = ['#7c3aed', '#a855f7', '#f59e0b', '#10b981', '#ef4444', '#60a5fa', '#f472b6'];
 
   for (let i = 0; i < 70; i++) {
     const p = document.createElement('div');
-    p.className  = 'confetti-particle';
+    p.className = 'confetti-particle';
     p.style.cssText = `
       left: ${Math.random() * 100}%;
       background: ${colors[Math.floor(Math.random() * colors.length)]};
@@ -351,7 +354,9 @@ function launchConfetti() {
   }
 
   // Clean up particles after animation completes
-  setTimeout(() => { container.innerHTML = ''; }, 4000);
+  setTimeout(() => {
+    container.innerHTML = '';
+  }, 4000);
 }
 
 // ── Initialise ────────────────────────────────────────────

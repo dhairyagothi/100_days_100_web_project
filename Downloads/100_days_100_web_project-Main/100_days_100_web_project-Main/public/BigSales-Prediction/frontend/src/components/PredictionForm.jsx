@@ -1,5 +1,5 @@
-import { useState } from "react";
-import axios from "axios";
+import { useState } from 'react';
+import axios from 'axios';
 
 // Default form values — matches your /sample endpoint
 const DEFAULT_VALUES = {
@@ -34,12 +34,11 @@ export default function PredictionForm({ onPrediction, setLoading, setError, loa
 
     try {
       // POST to your FastAPI backend
-      const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+      const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
       const response = await axios.post(`${BASE_URL}/predict`, formData);
       onPrediction(response.data, formData);
     } catch (err) {
-      const message =
-        err.response?.data?.detail || "Could not connect to backend. Is it running?";
+      const message = err.response?.data?.detail || 'Could not connect to backend. Is it running?';
       setError(message);
     } finally {
       setLoading(false);
@@ -119,7 +118,11 @@ export default function PredictionForm({ onPrediction, setLoading, setError, loa
         <div className="form-row">
           <div className="form-group">
             <label>Fat Content</label>
-            <select name="Item_Fat_Content" value={formData.Item_Fat_Content} onChange={handleChange}>
+            <select
+              name="Item_Fat_Content"
+              value={formData.Item_Fat_Content}
+              onChange={handleChange}
+            >
               <option value={0}>Low Fat</option>
               <option value={1}>Regular</option>
             </select>
@@ -145,7 +148,11 @@ export default function PredictionForm({ onPrediction, setLoading, setError, loa
           </div>
           <div className="form-group">
             <label>Outlet Location</label>
-            <select name="Outlet_Location_Type" value={formData.Outlet_Location_Type} onChange={handleChange}>
+            <select
+              name="Outlet_Location_Type"
+              value={formData.Outlet_Location_Type}
+              onChange={handleChange}
+            >
               <option value={0}>Tier 1</option>
               <option value={1}>Tier 2</option>
               <option value={2}>Tier 3</option>
@@ -165,9 +172,15 @@ export default function PredictionForm({ onPrediction, setLoading, setError, loa
           </div>
           <div className="form-group">
             <label>Outlet Identifier</label>
-            <select name="Outlet_Identifier" value={formData.Outlet_Identifier} onChange={handleChange}>
+            <select
+              name="Outlet_Identifier"
+              value={formData.Outlet_Identifier}
+              onChange={handleChange}
+            >
               {[...Array(10)].map((_, i) => (
-                <option key={i} value={i}>Outlet {i}</option>
+                <option key={i} value={i}>
+                  Outlet {i}
+                </option>
               ))}
             </select>
           </div>
@@ -175,9 +188,11 @@ export default function PredictionForm({ onPrediction, setLoading, setError, loa
 
         <button type="submit" className="btn-predict" disabled={loading}>
           {loading ? (
-            <><span className="spinner" /> Predicting…</>
+            <>
+              <span className="spinner" /> Predicting…
+            </>
           ) : (
-            "🎯 Predict Sales"
+            '🎯 Predict Sales'
           )}
         </button>
       </form>

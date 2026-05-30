@@ -1,11 +1,11 @@
 // app.js
 
 const questions = [
-  "Tell me about yourself.",
-  "Why should we hire you?",
-  "What are your strengths and weaknesses?",
-  "Explain a challenging project you worked on.",
-  "Where do you see yourself in 5 years?"
+  'Tell me about yourself.',
+  'Why should we hire you?',
+  'What are your strengths and weaknesses?',
+  'Explain a challenging project you worked on.',
+  'Where do you see yourself in 5 years?',
 ];
 
 let currentQuestion = 0;
@@ -15,24 +15,24 @@ const totalTime = 60;
 let timer;
 
 // DOM Elements
-const questionText = document.getElementById("question");
-const questionCount = document.getElementById("question-count");
-const stressLevel = document.getElementById("stress-level");
-const timerText = document.getElementById("timer");
-const answerBox = document.getElementById("answer");
+const questionText = document.getElementById('question');
+const questionCount = document.getElementById('question-count');
+const stressLevel = document.getElementById('stress-level');
+const timerText = document.getElementById('timer');
+const answerBox = document.getElementById('answer');
 
-const nextBtn = document.getElementById("next-btn");
-const restartBtn = document.getElementById("restart-btn");
+const nextBtn = document.getElementById('next-btn');
+const restartBtn = document.getElementById('restart-btn');
 
 // Progress bars
-const questionProgress = document.getElementById("question-progress");
-const stressProgress = document.getElementById("stress-progress");
-const timerProgress = document.getElementById("timer-progress");
+const questionProgress = document.getElementById('question-progress');
+const stressProgress = document.getElementById('stress-progress');
+const timerProgress = document.getElementById('timer-progress');
 
 // Voice Control Elements
-const micBtn = document.getElementById("mic-btn");
-const micStatus = document.getElementById("mic-status");
-const recordingIndicator = document.getElementById("recording-indicator");
+const micBtn = document.getElementById('mic-btn');
+const micStatus = document.getElementById('mic-status');
+const recordingIndicator = document.getElementById('recording-indicator');
 
 // Speech Recognition Setup
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -48,9 +48,9 @@ if (SpeechRecognition) {
 
   recognition.onstart = () => {
     isRecording = true;
-    micBtn.classList.add("recording");
-    micStatus.innerText = "Listening...";
-    recordingIndicator.classList.remove("hidden");
+    micBtn.classList.add('recording');
+    micStatus.innerText = 'Listening...';
+    recordingIndicator.classList.remove('hidden');
     answerBox.focus();
   };
 
@@ -72,13 +72,15 @@ if (SpeechRecognition) {
   };
 
   recognition.onerror = (event) => {
-    console.error("Speech recognition error", event.error);
+    console.error('Speech recognition error', event.error);
     stopRecording();
-    if(event.error === 'not-allowed') {
-      micStatus.innerText = "Microphone access denied";
+    if (event.error === 'not-allowed') {
+      micStatus.innerText = 'Microphone access denied';
     } else if (event.error === 'network') {
-      micStatus.innerText = "Network/Security error";
-      alert("Speech Recognition failed with a 'network' error. This usually happens if you are accessing the site via an IP address (like 192.168.x.x) over HTTP instead of localhost or HTTPS. The Web Speech API requires a secure context (HTTPS or localhost) to function.");
+      micStatus.innerText = 'Network/Security error';
+      alert(
+        "Speech Recognition failed with a 'network' error. This usually happens if you are accessing the site via an IP address (like 192.168.x.x) over HTTP instead of localhost or HTTPS. The Web Speech API requires a secure context (HTTPS or localhost) to function."
+      );
     } else {
       micStatus.innerText = `Error: ${event.error}`;
     }
@@ -94,14 +96,14 @@ function stopRecording() {
     recognition.stop();
   }
   isRecording = false;
-  micBtn.classList.remove("recording");
-  micStatus.innerText = "Click mic to speak";
-  recordingIndicator.classList.add("hidden");
+  micBtn.classList.remove('recording');
+  micStatus.innerText = 'Click mic to speak';
+  recordingIndicator.classList.add('hidden');
 }
 
-micBtn.addEventListener("click", () => {
+micBtn.addEventListener('click', () => {
   if (!SpeechRecognition) {
-    alert("Speech Recognition API is not supported in this browser. Please use Chrome or Edge.");
+    alert('Speech Recognition API is not supported in this browser. Please use Chrome or Edge.');
     return;
   }
 
@@ -115,8 +117,8 @@ micBtn.addEventListener("click", () => {
     }
     try {
       recognition.start();
-    } catch(e) {
-      console.log("Recognition already started or error:", e);
+    } catch (e) {
+      console.log('Recognition already started or error:', e);
     }
   }
 });
@@ -129,14 +131,14 @@ function startTimer() {
     // Update progress bar
     let timePercent = (timeLeft / totalTime) * 100;
     timerProgress.style.width = `${timePercent}%`;
-    
-    timerProgress.className = "progress-fill";
+
+    timerProgress.className = 'progress-fill';
     if (timeLeft > 15) {
-      timerProgress.classList.add("success");
+      timerProgress.classList.add('success');
     } else if (timeLeft > 5) {
-      timerProgress.classList.add("warning");
+      timerProgress.classList.add('warning');
     } else {
-      timerProgress.classList.add("danger");
+      timerProgress.classList.add('danger');
     }
 
     if (timeLeft <= 10) {
@@ -147,17 +149,16 @@ function startTimer() {
     if (timeLeft <= 0) {
       clearInterval(timer);
       stopRecording();
-      
+
       let answerLength = answerBox.value.trim().length;
       if (answerLength < 20) {
         alert("Time's up! The interviewer looks disappointed with your short answer.");
       } else {
         alert("Time's up! Moving to the next question.");
       }
-      
+
       nextQuestion();
     }
-
   }, 1000);
 }
 
@@ -165,8 +166,8 @@ function resetTimer() {
   clearInterval(timer);
   timeLeft = totalTime;
   timerText.innerText = `${timeLeft}s`;
-  timerProgress.style.width = "100%";
-  timerProgress.className = "progress-fill success";
+  timerProgress.style.width = '100%';
+  timerProgress.className = 'progress-fill success';
   startTimer();
 }
 
@@ -178,32 +179,32 @@ function updateStress() {
   stressProgress.style.width = `${stress}%`;
 
   // Change color based on stress
-  stressProgress.className = "progress-fill";
+  stressProgress.className = 'progress-fill';
   if (stress < 40) {
-    stressProgress.classList.add("success");
+    stressProgress.classList.add('success');
   } else if (stress < 70) {
-    stressProgress.classList.add("warning");
+    stressProgress.classList.add('warning');
   } else {
-    stressProgress.classList.add("danger");
+    stressProgress.classList.add('danger');
   }
 
   // Visual background feedback
   if (stress >= 70) {
-    document.body.style.background = "linear-gradient(135deg, #450a0a, #0f172a)";
+    document.body.style.background = 'linear-gradient(135deg, #450a0a, #0f172a)';
   } else {
-    document.body.style.background = "var(--bg-color)";
+    document.body.style.background = 'var(--bg-color)';
   }
 }
 
 function loadQuestion() {
   questionText.innerText = questions[currentQuestion];
   questionCount.innerText = `${currentQuestion + 1}/${questions.length}`;
-  
+
   let qPercent = ((currentQuestion + 1) / questions.length) * 100;
   questionProgress.style.width = `${qPercent}%`;
 
-  answerBox.value = "";
-  finalTranscriptState = "";
+  answerBox.value = '';
+  finalTranscriptState = '';
   stopRecording();
   resetTimer();
 }
@@ -225,13 +226,13 @@ function nextQuestion() {
     clearInterval(timer);
     stopRecording();
 
-    let finalMessage = "";
+    let finalMessage = '';
     if (stress < 30) {
-      finalMessage = "Excellent performance. You stayed calm under pressure.";
+      finalMessage = 'Excellent performance. You stayed calm under pressure.';
     } else if (stress < 70) {
-      finalMessage = "Decent performance, but pressure affected your answers.";
+      finalMessage = 'Decent performance, but pressure affected your answers.';
     } else {
-      finalMessage = "You panicked. Your communication collapsed under stress.";
+      finalMessage = 'You panicked. Your communication collapsed under stress.';
     }
 
     setTimeout(() => {
@@ -244,9 +245,9 @@ function nextQuestion() {
   loadQuestion();
 }
 
-nextBtn.addEventListener("click", nextQuestion);
+nextBtn.addEventListener('click', nextQuestion);
 
-restartBtn.addEventListener("click", () => {
+restartBtn.addEventListener('click', () => {
   currentQuestion = 0;
   stress = 0;
   updateStress();

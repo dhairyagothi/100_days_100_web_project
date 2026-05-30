@@ -38,7 +38,9 @@ body {
   background: linear-gradient(135deg, #f2f6ff, #eef2ff);
   color: var(--text);
   padding: 20px;
-  transition: background-color 0.4s ease, color 0.4s ease;
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
 }
 
 /* =========================================================
@@ -76,7 +78,7 @@ body {
 }
 
 .mode::before {
-  content: "☀️";
+  content: '☀️';
   position: absolute;
   top: 2px;
   left: 2px;
@@ -95,7 +97,7 @@ body {
 }
 
 .mode:checked::before {
-  content: "🌙";
+  content: '🌙';
   transform: translateX(20px);
   box-shadow: 0 0 6px rgba(148, 163, 184, 0.6);
 }
@@ -110,7 +112,9 @@ body {
   background: transparent;
   color: var(--text);
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 #resetBtn:hover {
@@ -174,7 +178,7 @@ body {
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
-.add-transaction input[type="submit"] {
+.add-transaction input[type='submit'] {
   background: linear-gradient(135deg, #6366f1, #818cf8);
   color: #ffffff;
   border: none;
@@ -182,7 +186,7 @@ body {
   cursor: pointer;
 }
 
-.add-transaction input[type="submit"]:hover {
+.add-transaction input[type='submit']:hover {
   transform: translateY(-1px);
   background: linear-gradient(135deg, #4f46e5, #6366f1);
 }
@@ -337,7 +341,9 @@ body {
   padding: 12px 16px;
   border-radius: 12px;
   border: 1px solid var(--border);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .insight-card:hover {
@@ -446,7 +452,7 @@ body.dark .add-transaction input::placeholder {
   color: #94a3b8;
 }
 
-body.dark input[type="date"]::-webkit-calendar-picker-indicator {
+body.dark input[type='date']::-webkit-calendar-picker-indicator {
   filter: invert(1);
 }
 

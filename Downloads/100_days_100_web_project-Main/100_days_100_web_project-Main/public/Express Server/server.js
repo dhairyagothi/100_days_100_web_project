@@ -1,9 +1,9 @@
-const express = require("express");
-const dotenv = require("dotenv");
+const express = require('express');
+const dotenv = require('dotenv');
 
-const apiRoutes = require("./routes/apiRoutes");
-const loggerMiddleware = require("./middleware/loggerMiddleware");
-const errorMiddleware = require("./middleware/errorMiddleware");
+const apiRoutes = require('./routes/apiRoutes');
+const loggerMiddleware = require('./middleware/loggerMiddleware');
+const errorMiddleware = require('./middleware/errorMiddleware');
 
 dotenv.config();
 
@@ -26,10 +26,10 @@ app.use(loggerMiddleware);
 |--------------------------------------------------------------------------
 */
 
-app.get("/", (req, res) => {
+app.get('/', (req, res) => {
   res.status(200).json({
     success: true,
-    message: "Express Server API is running successfully"
+    message: 'Express Server API is running successfully',
   });
 });
 
@@ -39,7 +39,7 @@ app.get("/", (req, res) => {
 |--------------------------------------------------------------------------
 */
 
-app.use("/api", apiRoutes);
+app.use('/api', apiRoutes);
 
 /*
 |--------------------------------------------------------------------------
@@ -50,7 +50,7 @@ app.use("/api", apiRoutes);
 app.use((req, res) => {
   res.status(404).json({
     success: false,
-    message: "Requested route not found"
+    message: 'Requested route not found',
   });
 });
 
@@ -69,7 +69,5 @@ app.use(errorMiddleware);
 */
 
 app.listen(PORT, () => {
-  console.log(
-    `Server running on http://localhost:${PORT}`
-  );
+  console.log(`Server running on http://localhost:${PORT}`);
 });

@@ -7,6 +7,7 @@ Zenith 2026 is a full-stack event registration system built to manage participan
 **Problem it solves:** Manual event registration through spreadsheets or Google Forms offers no duplicate prevention, no real-time analytics, and no role-based access control. This system replaces that with a purpose-built web application that handles validation, deduplication, JWT-protected admin views, and live charts — all in one place.
 
 **Core functionality:**
+
 - Public registration form with full field validation
 - Unique registration ID generation per attendee
 - JWT-authenticated admin login
@@ -18,6 +19,7 @@ Zenith 2026 is a full-stack event registration system built to manage participan
 ## Features
 
 ### User Features
+
 - Register for the event using a clean, responsive form
 - Fields: Full Name, Email, College/University, Year of Study, Domain (Technical / Non-Technical), Interest description
 - Client-side validation with real-time error messages
@@ -26,6 +28,7 @@ Zenith 2026 is a full-stack event registration system built to manage participan
 - Fully mobile-responsive layout
 
 ### Admin Features
+
 - Secure login with email and password (JWT-based)
 - View all registrations in a paginated, sortable table
 - Search registrations by name or email
@@ -34,6 +37,7 @@ Zenith 2026 is a full-stack event registration system built to manage participan
 - One-click navigation back to the registration portal from the admin panel
 
 ### Backend Features
+
 - RESTful API built with Express and TypeScript
 - Server-side validation using Zod schemas shared between frontend and backend
 - Duplicate email prevention before insert
@@ -47,39 +51,43 @@ Zenith 2026 is a full-stack event registration system built to manage participan
 ## Tech Stack
 
 ### Frontend
-| Technology | Purpose |
-|---|---|
-| React 18 (Vite) | UI framework and build tooling |
-| TypeScript | Static typing across all components |
-| Tailwind CSS | Utility-first styling |
+
+| Technology                      | Purpose                                         |
+| ------------------------------- | ----------------------------------------------- |
+| React 18 (Vite)                 | UI framework and build tooling                  |
+| TypeScript                      | Static typing across all components             |
+| Tailwind CSS                    | Utility-first styling                           |
 | TanStack Query (React Query v5) | Server state management, caching, and mutations |
-| React Hook Form + Zod | Form state and schema-driven validation |
-| Recharts | Analytics charts (bar chart, pie chart) |
-| Wouter | Lightweight client-side routing |
-| Lucide React | Icon library |
+| React Hook Form + Zod           | Form state and schema-driven validation         |
+| Recharts                        | Analytics charts (bar chart, pie chart)         |
+| Wouter                          | Lightweight client-side routing                 |
+| Lucide React                    | Icon library                                    |
 
 ### Backend
-| Technology | Purpose |
-|---|---|
-| Node.js + Express | HTTP server and API routing |
-| TypeScript | Type-safe server logic |
-| Drizzle ORM | Type-safe database queries and schema definition |
-| Zod | Runtime validation of request payloads |
-| jsonwebtoken | JWT generation and verification |
-| Node.js `crypto` (scrypt) | Secure password hashing with salt |
+
+| Technology                | Purpose                                          |
+| ------------------------- | ------------------------------------------------ |
+| Node.js + Express         | HTTP server and API routing                      |
+| TypeScript                | Type-safe server logic                           |
+| Drizzle ORM               | Type-safe database queries and schema definition |
+| Zod                       | Runtime validation of request payloads           |
+| jsonwebtoken              | JWT generation and verification                  |
+| Node.js `crypto` (scrypt) | Secure password hashing with salt                |
 
 ### Database
-| Technology | Purpose |
-|---|---|
-| PostgreSQL | Relational database for persistent storage |
-| drizzle-kit | Schema migration tooling (`db:push`) |
+
+| Technology  | Purpose                                    |
+| ----------- | ------------------------------------------ |
+| PostgreSQL  | Relational database for persistent storage |
+| drizzle-kit | Schema migration tooling (`db:push`)       |
 
 ### Other Tools
-| Tool | Purpose |
-|---|---|
-| `drizzle-zod` | Auto-generates Zod schemas from Drizzle table definitions |
-| `date-fns` | Date formatting in the dashboard |
-| `tsx` | TypeScript execution for the Express server in development |
+
+| Tool          | Purpose                                                    |
+| ------------- | ---------------------------------------------------------- |
+| `drizzle-zod` | Auto-generates Zod schemas from Drizzle table definitions  |
+| `date-fns`    | Date formatting in the dashboard                           |
+| `tsx`         | TypeScript execution for the Express server in development |
 
 ---
 
@@ -171,28 +179,28 @@ The database has two tables: `users` for admin accounts and `registrations` for 
 
 ### `users` table — Admin accounts
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `id` | `serial` | PRIMARY KEY | Auto-incrementing integer |
-| `email` | `text` | NOT NULL, UNIQUE | Admin login identifier |
-| `password` | `text` | NOT NULL | Scrypt-hashed password with embedded salt |
-| `role` | `text` | NOT NULL, DEFAULT `'admin'` | Role field for future RBAC extension |
+| Column     | Type     | Constraints                 | Description                               |
+| ---------- | -------- | --------------------------- | ----------------------------------------- |
+| `id`       | `serial` | PRIMARY KEY                 | Auto-incrementing integer                 |
+| `email`    | `text`   | NOT NULL, UNIQUE            | Admin login identifier                    |
+| `password` | `text`   | NOT NULL                    | Scrypt-hashed password with embedded salt |
+| `role`     | `text`   | NOT NULL, DEFAULT `'admin'` | Role field for future RBAC extension      |
 
 **Design rationale:** Passwords are stored as `hash.salt` in a single text column using Node's `scrypt` with a 16-byte random salt and a 64-byte derived key. This avoids any third-party dependency while remaining cryptographically secure. The `role` field is included for forward compatibility with multi-level access control.
 
 ### `registrations` table — Event attendees
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| `id` | `serial` | PRIMARY KEY | Internal auto-increment ID |
-| `registration_id` | `text` | NOT NULL, UNIQUE | Public-facing ID e.g. `REG-3A4F9C1B` |
-| `name` | `text` | NOT NULL | Full name of attendee |
-| `email` | `text` | NOT NULL, UNIQUE | Enforces one registration per email |
-| `college` | `text` | NOT NULL | College/university name |
-| `year` | `text` | NOT NULL | Year of study (1st–4th, Postgrad, Other) |
-| `domain` | `text` | NOT NULL | `'Tech'` or `'Non-Tech'` |
-| `interest_answer` | `text` | NOT NULL | Short description of interest |
-| `created_at` | `timestamp` | NOT NULL, DEFAULT `now()` | Registration timestamp for analytics |
+| Column            | Type        | Constraints               | Description                              |
+| ----------------- | ----------- | ------------------------- | ---------------------------------------- |
+| `id`              | `serial`    | PRIMARY KEY               | Internal auto-increment ID               |
+| `registration_id` | `text`      | NOT NULL, UNIQUE          | Public-facing ID e.g. `REG-3A4F9C1B`     |
+| `name`            | `text`      | NOT NULL                  | Full name of attendee                    |
+| `email`           | `text`      | NOT NULL, UNIQUE          | Enforces one registration per email      |
+| `college`         | `text`      | NOT NULL                  | College/university name                  |
+| `year`            | `text`      | NOT NULL                  | Year of study (1st–4th, Postgrad, Other) |
+| `domain`          | `text`      | NOT NULL                  | `'Tech'` or `'Non-Tech'`                 |
+| `interest_answer` | `text`      | NOT NULL                  | Short description of interest            |
+| `created_at`      | `timestamp` | NOT NULL, DEFAULT `now()` | Registration timestamp for analytics     |
 
 **Design rationale:** The `registration_id` is a human-readable `REG-` prefixed 8-character uppercase hex string generated via `crypto.randomUUID()`. This is used on the confirmation page and is distinct from the internal integer `id`. The `email` column has a UNIQUE constraint at the database level as a final safety net against duplicates — the application layer also checks before inserting. The `created_at` field drives the daily registrations graph in the analytics dashboard.
 
@@ -204,12 +212,12 @@ The database has two tables: `users` for admin accounts and `registrations` for 
 
 All endpoints are prefixed with `/api`. Admin-protected endpoints require an `Authorization: Bearer <token>` header.
 
-| Method | Endpoint | Auth Required | Description |
-|--------|----------|:---:|-------------|
-| `POST` | `/api/admin/login` | No | Authenticate admin, returns JWT |
-| `POST` | `/api/register` | No | Register a new attendee |
-| `GET` | `/api/registrations` | Yes | List all registrations (supports filters) |
-| `GET` | `/api/analytics` | Yes | Aggregated analytics data |
+| Method | Endpoint             | Auth Required | Description                               |
+| ------ | -------------------- | :-----------: | ----------------------------------------- |
+| `POST` | `/api/admin/login`   |      No       | Authenticate admin, returns JWT           |
+| `POST` | `/api/register`      |      No       | Register a new attendee                   |
+| `GET`  | `/api/registrations` |      Yes      | List all registrations (supports filters) |
+| `GET`  | `/api/analytics`     |      Yes      | Aggregated analytics data                 |
 
 ---
 
@@ -217,24 +225,26 @@ All endpoints are prefixed with `/api`. Admin-protected endpoints require an `Au
 
 State is managed using a layered approach:
 
-| Layer | Tool | Responsibility |
-|-------|------|----------------|
-| Server state | **TanStack Query v5** | Fetching, caching, and invalidating API data. All queries use typed `queryKey` arrays. Mutations call `queryClient.invalidateQueries` on success to keep the UI in sync. |
-| Form state | **React Hook Form** | Controlled inputs with Zod resolver for schema-driven validation. Default values are always set to prevent uncontrolled component warnings. |
-| Auth state | **localStorage + custom hook** | The JWT token is persisted in `localStorage`. The `use-auth.ts` hook exposes `getToken()`, `isAuthenticated()`, `login` mutation, and `logout`. This avoids a global auth context while keeping auth logic centralised. |
-| UI state | **React `useState`** | Local component state for filter inputs (search, college, domain) on the dashboard. |
-| Navigation state | **Wouter** | Client-side routing between `/`, `/success`, `/admin/login`, and `/admin/dashboard`. No server-side redirects are needed. |
+| Layer            | Tool                           | Responsibility                                                                                                                                                                                                          |
+| ---------------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Server state     | **TanStack Query v5**          | Fetching, caching, and invalidating API data. All queries use typed `queryKey` arrays. Mutations call `queryClient.invalidateQueries` on success to keep the UI in sync.                                                |
+| Form state       | **React Hook Form**            | Controlled inputs with Zod resolver for schema-driven validation. Default values are always set to prevent uncontrolled component warnings.                                                                             |
+| Auth state       | **localStorage + custom hook** | The JWT token is persisted in `localStorage`. The `use-auth.ts` hook exposes `getToken()`, `isAuthenticated()`, `login` mutation, and `logout`. This avoids a global auth context while keeping auth logic centralised. |
+| UI state         | **React `useState`**           | Local component state for filter inputs (search, college, domain) on the dashboard.                                                                                                                                     |
+| Navigation state | **Wouter**                     | Client-side routing between `/`, `/success`, `/admin/login`, and `/admin/dashboard`. No server-side redirects are needed.                                                                                               |
 
 ---
 
 ## Error Handling Strategy
 
 **Client-side (form validation):**
+
 - Zod schemas from `shared/routes.ts` are used directly with `zodResolver` in React Hook Form
 - Errors render below each field using shadcn's `<FormMessage />`
 - The submit button is disabled during pending mutations
 
 **Server-side (API validation):**
+
 - Every request body is parsed with `schema.parse(req.body)` — a `ZodError` is caught and returns `400` with the failing field name
 - Duplicate email is checked at the application layer before insert, returning `400` with `{ field: "email" }`
 - The database has a UNIQUE constraint on `email` as a final safety net
@@ -247,17 +257,20 @@ State is managed using a layered approach:
 The system uses **stateless JWT authentication** for all admin routes.
 
 **Login flow:**
+
 1. Admin submits email and password to `POST /api/admin/login`
 2. Server fetches the user record by email, then verifies the supplied password against the stored scrypt hash using timing-safe comparison (`timingSafeEqual`)
 3. On success, a JWT is signed with `{ id, email, role }` payload, `24h` expiry, using the `SESSION_SECRET` environment variable as the signing key
 4. The token is returned to the client and stored in `localStorage`
 
 **Protecting routes:**
+
 - The `authenticateToken` Express middleware extracts the `Authorization: Bearer <token>` header
 - `jwt.verify()` validates the signature and expiry — on failure it returns `401`
 - The decoded user payload is attached to `req.user` for downstream handlers
 
 **Frontend guard:**
+
 - The Dashboard component calls `isAuthenticated()` on mount and redirects to `/admin/login` if no valid token is found
 - The `use-auth.ts` hook calls `logout()` automatically when a `401` response is received from any protected endpoint, clearing the token and redirecting
 
@@ -265,20 +278,21 @@ The system uses **stateless JWT authentication** for all admin routes.
 
 ## Scalability Considerations
 
-| Area | Approach |
-|-----|-----|
-| Database | PostgreSQL supports large datasets and indexing for faster queries. |
-| Authentication | JWT-based stateless authentication allows horizontal scaling without session storage. |
-| API Design | Filtering is performed at the database level to avoid loading unnecessary data into memory. |
-| Architecture | Frontend, backend, and shared layers are separated, allowing independent scaling and deployment. |
+| Area           | Approach                                                                                         |
+| -------------- | ------------------------------------------------------------------------------------------------ |
+| Database       | PostgreSQL supports large datasets and indexing for faster queries.                              |
+| Authentication | JWT-based stateless authentication allows horizontal scaling without session storage.            |
+| API Design     | Filtering is performed at the database level to avoid loading unnecessary data into memory.      |
+| Architecture   | Frontend, backend, and shared layers are separated, allowing independent scaling and deployment. |
 
 ---
 
 ## How to Run the Project Locally
 
 ### Prerequisites
+
 - Node.js 20+
-- PostgreSQL database 
+- PostgreSQL database
 
 ### Clone and install
 
@@ -317,10 +331,10 @@ This starts both the Express backend (port 5000) and the Vite frontend dev serve
 
 The admin user is seeded automatically on startup if it does not already exist:
 
-| Field | Value |
-|-------|-------|
-| Email | `adminzen@event.com` |
-| Password | `admin123zen` |
+| Field    | Value                |
+| -------- | -------------------- |
+| Email    | `adminzen@event.com` |
+| Password | `admin123zen`        |
 
 ---
 
@@ -329,11 +343,13 @@ The admin user is seeded automatically on startup if it does not already exist:
 The project is structured as a unified full-stack application where Vite's built output is served by Express in production.
 
 **Build:**
+
 ```bash
 npm run build
 ```
 
 **Start production server:**
+
 ```bash
 npm start
 ```
@@ -342,11 +358,11 @@ The Express server serves the compiled React app as static files and handles all
 
 **Environment variables required in production:**
 
-| Variable | Description |
-|----------|-------------|
-| `DATABASE_URL` | PostgreSQL connection string |
+| Variable         | Description                                           |
+| ---------------- | ----------------------------------------------------- |
+| `DATABASE_URL`   | PostgreSQL connection string                          |
 | `SESSION_SECRET` | Secret key for JWT signing (use a long random string) |
-| `NODE_ENV` | Set to `production` |
+| `NODE_ENV`       | Set to `production`                                   |
 
 ---
 

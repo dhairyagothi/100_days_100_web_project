@@ -1,21 +1,21 @@
-const sendResponse = require("../utils/responseHandler");
+const sendResponse = require('../utils/responseHandler');
 
 const users = [
   {
     id: 1,
-    name: "John Doe",
-    email: "john@example.com"
+    name: 'John Doe',
+    email: 'john@example.com',
   },
   {
     id: 2,
-    name: "Jane Smith",
-    email: "jane@example.com"
+    name: 'Jane Smith',
+    email: 'jane@example.com',
   },
   {
     id: 3,
-    name: "Alex Johnson",
-    email: "alex@example.com"
-  }
+    name: 'Alex Johnson',
+    email: 'alex@example.com',
+  },
 ];
 
 /*
@@ -25,16 +25,10 @@ const users = [
 */
 
 exports.getHealthStatus = (req, res) => {
-  sendResponse(
-    res,
-    200,
-    true,
-    "Server health status fetched successfully",
-    {
-      uptime: process.uptime(),
-      timestamp: new Date().toISOString()
-    }
-  );
+  sendResponse(res, 200, true, 'Server health status fetched successfully', {
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString(),
+  });
 };
 
 /*
@@ -44,19 +38,12 @@ exports.getHealthStatus = (req, res) => {
 */
 
 exports.getServerInfo = (req, res) => {
-  sendResponse(
-    res,
-    200,
-    true,
-    "Server information fetched successfully",
-    {
-      project: "Express Server",
-      framework: "Express.js",
-      version: "1.0.0",
-      environment:
-        process.env.NODE_ENV || "development"
-    }
-  );
+  sendResponse(res, 200, true, 'Server information fetched successfully', {
+    project: 'Express Server',
+    framework: 'Express.js',
+    version: '1.0.0',
+    environment: process.env.NODE_ENV || 'development',
+  });
 };
 
 /*
@@ -66,11 +53,5 @@ exports.getServerInfo = (req, res) => {
 */
 
 exports.getUsers = (req, res) => {
-  sendResponse(
-    res,
-    200,
-    true,
-    "Users fetched successfully",
-    users
-  );
+  sendResponse(res, 200, true, 'Users fetched successfully', users);
 };

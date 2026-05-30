@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -22,7 +22,6 @@
     </div>
 
     <div class="wrapper">
-
       <div class="flag-assembly">
         <div class="bar">
           <div class="bar-1"></div>
@@ -34,10 +33,7 @@
           <div class="top"></div>
 
           <div class="middle">
-            <img
-              src="../indianflag/img/ashokchakr.gif"
-              alt="Ashoka Chakra"
-            />
+            <img src="../indianflag/img/ashokchakr.gif" alt="Ashoka Chakra" />
           </div>
 
           <div class="bottom"></div>
@@ -49,9 +45,7 @@
           <img id="patriot-image" src="" alt="Patriot Image" />
         </div>
 
-        <div class="quote">
-          "Give me blood and I will give you freedom."
-        </div>
+        <div class="quote">"Give me blood and I will give you freedom."</div>
 
         <div class="author">- Subhas Chandra Bose</div>
 
@@ -64,7 +58,7 @@
 
     <div class="music-controls">
       <audio id="bgMusic" controls autoplay loop>
-        <source src="vande_mataram.mp3" type="audio/mpeg">
+        <source src="vande_mataram.mp3" type="audio/mpeg" />
       </audio>
     </div>
 
@@ -73,79 +67,78 @@
       const quotes = [
         {
           text: '"Give me blood and I will give you freedom."',
-          author: "- Subhas Chandra Bose",
-          image: "./img/subhas_bose.png",
+          author: '- Subhas Chandra Bose',
+          image: './img/subhas_bose.png',
         },
         {
           text: '"Swaraj is my birthright and I shall have it."',
-          author: "- Bal Gangadhar Tilak",
-          image: "./img/bal_tilak.png",
+          author: '- Bal Gangadhar Tilak',
+          image: './img/bal_tilak.png',
         },
         {
           text: '"Inquilab Zindabad."',
-          author: "- Bhagat Singh",
-          image: "./img/bhagat_singh.jpg",
+          author: '- Bhagat Singh',
+          image: './img/bhagat_singh.jpg',
         },
         {
           text: '"Jai Jawan Jai Kisan."',
-          author: "- Lal Bahadur Shastri",
-          image: "./img/lal_bahadur.png",
+          author: '- Lal Bahadur Shastri',
+          image: './img/lal_bahadur.png',
         },
         {
           text: '"Jai Hind!"',
-          author: "- Netaji Subhas Chandra Bose",
-          image: "./img/subhas_bose.png",
+          author: '- Netaji Subhas Chandra Bose',
+          image: './img/subhas_bose.png',
         },
         {
           text: '"Sarfaroshi ki tamanna ab hamare dil mein hai."',
-          author: "- Ram Prasad Bismil",
-          image: "./img/ram_prasad.png",
+          author: '- Ram Prasad Bismil',
+          image: './img/ram_prasad.png',
         },
         {
-          text:
-            '"Dushman ki goliyon ka hum samna karenge, Azad hee rahein hain, azad hee rahenge."',
-          author: "- Chandrashekhar Azad",
-          image: "./img/azad.png",
+          text: '"Dushman ki goliyon ka hum samna karenge, Azad hee rahein hain, azad hee rahenge."',
+          author: '- Chandrashekhar Azad',
+          image: './img/azad.png',
         },
         {
           text: '"Satyameva Jayate."',
-          author: "- Pandit Madan Mohan Malaviya",
-          image: "./img/pandit_madan_mohan.webp",
+          author: '- Pandit Madan Mohan Malaviya',
+          image: './img/pandit_madan_mohan.webp',
         },
         {
           text: '"Sarvodaya, Samaj Sudharak, Samaj Sevak."',
-          author: "- Mahatma Gandhi",
-          image: "./img/gandhi.png",
+          author: '- Mahatma Gandhi',
+          image: './img/gandhi.png',
         },
         {
           text: '"Karo ya maro."',
-          author: "- Mahatma Gandhi",
-          image: "./img/gandhi.png",
+          author: '- Mahatma Gandhi',
+          image: './img/gandhi.png',
         },
       ];
 
       let currentQuoteIndex = 0;
 
-      const quoteText = document.querySelector(".quote");
-      const quoteAuthor = document.querySelector(".author");
-      const patriotImage = document.getElementById("patriot-image");
+      const quoteText = document.querySelector('.quote');
+      const quoteAuthor = document.querySelector('.author');
+      const patriotImage = document.getElementById('patriot-image');
 
       function displayQuote() {
-  const currentQuote = quotes[currentQuoteIndex];
+        const currentQuote = quotes[currentQuoteIndex];
 
-  // Preload image first
-  const img = new Image();
+        // Preload image first
+        const img = new Image();
 
-  img.onload = () => {
-    patriotImage.src = currentQuote.image;
-    patriotImage.alt = currentQuote.author;
+        img.onload = () => {
+          patriotImage.src = currentQuote.image;
+          patriotImage.alt = currentQuote.author;
 
-    quoteText.textContent = currentQuote.text;
-    quoteAuthor.textContent = currentQuote.author;
-  };
+          quoteText.textContent = currentQuote.text;
+          quoteAuthor.textContent = currentQuote.author;
+        };
 
-  img.src = currentQuote.image;
-}
+        img.src = currentQuote.image;
+      }
 
       displayQuote();
 
@@ -154,23 +147,21 @@
         displayQuote();
       }, 5000);
 
-      document.getElementById("prev-quote").addEventListener("click", () => {
-        currentQuoteIndex =
-          (currentQuoteIndex - 1 + quotes.length) % quotes.length;
+      document.getElementById('prev-quote').addEventListener('click', () => {
+        currentQuoteIndex = (currentQuoteIndex - 1 + quotes.length) % quotes.length;
         displayQuote();
       });
 
-      document.getElementById("next-quote").addEventListener("click", () => {
-        currentQuoteIndex =
-          (currentQuoteIndex + 1) % quotes.length;
+      document.getElementById('next-quote').addEventListener('click', () => {
+        currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
         displayQuote();
       });
 
-      const music = document.getElementById("bgMusic");
+      const music = document.getElementById('bgMusic');
 
-      window.addEventListener("load", () => {
+      window.addEventListener('load', () => {
         music.play().catch(() => {
-          console.log("Autoplay blocked by browser");
+          console.log('Autoplay blocked by browser');
         });
       });
     </script>

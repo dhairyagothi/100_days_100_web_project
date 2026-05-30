@@ -1,9 +1,9 @@
 async function convertImage() {
-  const fileInput = document.getElementById("fileInput");
-  const outputDiv = document.getElementById("output");
+  const fileInput = document.getElementById('fileInput');
+  const outputDiv = document.getElementById('output');
 
   if (!fileInput.files || fileInput.files.length === 0) {
-    outputDiv.innerText = "Please select an image file.";
+    outputDiv.innerText = 'Please select an image file.';
     return;
   }
 
@@ -12,20 +12,20 @@ async function convertImage() {
   try {
     const {
       data: { text },
-    } = await Tesseract.recognize(file, "eng", {
+    } = await Tesseract.recognize(file, 'eng', {
       logger: (m) => console.log(m),
     });
 
     outputDiv.innerText = text;
     showImagePreview(file);
   } catch (error) {
-    console.error("Error:", error);
-    outputDiv.innerText = "Error processing image. Please try again.";
+    console.error('Error:', error);
+    outputDiv.innerText = 'Error processing image. Please try again.';
   }
 }
 
 function showImagePreview(file) {
-    const imagePreview = document.getElementById("imagePreview");
-    imagePreview.src = URL.createObjectURL(file);
-    imagePreview.classList.remove('hidden');
+  const imagePreview = document.getElementById('imagePreview');
+  imagePreview.src = URL.createObjectURL(file);
+  imagePreview.classList.remove('hidden');
 }

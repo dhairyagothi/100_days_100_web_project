@@ -7,7 +7,7 @@ let folders = JSON.parse(localStorage.getItem('echo_folders') || '[]');
 const defaultFolders = [
   { id: 'personal', name: 'Personal', icon: '👤' },
   { id: 'work', name: 'Work', icon: '💼' },
-  { id: 'ideas', name: 'Ideas', icon: '💡' }
+  { id: 'ideas', name: 'Ideas', icon: '💡' },
 ];
 
 // Initialize default folders if not present
@@ -42,7 +42,7 @@ function applyTheme(dark) {
   document.getElementById('themeIcon').textContent = dark ? '☀️' : '🌙';
   document.getElementById('themeText').textContent = dark ? 'Light Theme' : 'Dark Theme';
   localStorage.setItem('echo_theme', dark ? 'dark' : 'light');
-  
+
   // Re-apply theme classes on body
   document.body.classList.remove('theme-dark', 'theme-light');
   document.body.classList.add(dark ? 'theme-dark' : 'theme-light');
@@ -65,14 +65,14 @@ function renderFoldersList() {
         <span class="folder-item-icon">⭐</span>
         <span class="folder-item-name">Favorites</span>
       </div>
-      <span class="folder-count">${notes.filter(n => n.isFavorite).length}</span>
+      <span class="folder-count">${notes.filter((n) => n.isFavorite).length}</span>
     </div>
     <div class="folder-item ${activeFolderId === 'pinned' ? 'active' : ''}" onclick="selectFolder('pinned')">
       <div class="folder-item-left">
         <span class="folder-item-icon">📌</span>
         <span class="folder-item-name">Pinned</span>
       </div>
-      <span class="folder-count">${notes.filter(n => n.isPinned).length}</span>
+      <span class="folder-count">${notes.filter((n) => n.isPinned).length}</span>
     </div>
     <div class="folder-item ${activeFolderId === 'all' ? 'active' : ''}" onclick="selectFolder('all')">
       <div class="folder-item-left">
@@ -83,11 +83,12 @@ function renderFoldersList() {
     </div>
   `;
 
-  html += folders.map(f => {
-    const count = notes.filter(n => n.folderId === f.id).length;
-    const isDefault = f.id === 'personal' || f.id === 'work' || f.id === 'ideas';
+  html += folders
+    .map((f) => {
+      const count = notes.filter((n) => n.folderId === f.id).length;
+      const isDefault = f.id === 'personal' || f.id === 'work' || f.id === 'ideas';
 
-    return `
+      return `
       <div class="folder-item ${activeFolderId === f.id ? 'active' : ''}" onclick="selectFolder('${f.id}')">
         <div class="folder-item-left">
           <span class="folder-item-icon">${f.icon || '📂'}</span>
@@ -99,7 +100,8 @@ function renderFoldersList() {
         </div>
       </div>
     `;
-  }).join('');
+    })
+    .join('');
 
   list.innerHTML = html;
 }
@@ -108,7 +110,7 @@ function selectFolder(folderId) {
   activeFolderId = folderId;
   renderFoldersList();
   renderNotesList();
-  
+
   // Close mobile sidebar drawer and return to list
   if (window.innerWidth <= 768) {
     setMobileView('list');
@@ -141,7 +143,7 @@ function saveNewFolder() {
   const name = input.value.trim();
   if (name) {
     // Check for duplicate names
-    const exists = folders.some(f => f.name.toLowerCase() === name.toLowerCase());
+    const exists = folders.some((f) => f.name.toLowerCase() === name.toLowerCase());
     if (exists) {
       showToast('⚠️', 'Folder name already exists', 'error');
       renderFoldersList();
@@ -151,7 +153,7 @@ function saveNewFolder() {
     const newFolder = {
       id: 'folder_' + Date.now().toString(),
       name: name,
-      icon: '📂'
+      icon: '📂',
     };
     folders.push(newFolder);
     localStorage.setItem('echo_folders', JSON.stringify(folders));
@@ -179,38 +181,47 @@ function deleteFolder(folderId, e) {
     return;
   }
 
-  openModal('Delete Folder', 'Are you sure? Notes in this folder will be uncategorized (but not deleted).', () => {
-    folders = folders.filter(f => f.id !== folderId);
-    localStorage.setItem('echo_folders', JSON.stringify(folders));
+  openModal(
+    'Delete Folder',
+    'Are you sure? Notes in this folder will be uncategorized (but not deleted).',
+    () => {
+      folders = folders.filter((f) => f.id !== folderId);
+      localStorage.setItem('echo_folders', JSON.stringify(folders));
 
-    // Clear folder association for notes in this folder
-    notes.forEach(n => {
-      if (n.folderId === folderId) {
-        n.folderId = null;
+      // Clear folder association for notes in this folder
+      notes.forEach((n) => {
+        if (n.folderId === folderId) {
+          n.folderId = null;
+        }
+      });
+      saveAll();
+
+      if (activeFolderId === folderId) {
+        activeFolderId = 'all';
       }
-    });
-    saveAll();
 
-    if (activeFolderId === folderId) {
-      activeFolderId = 'all';
+      renderFoldersList();
+      renderNotesList();
+      showToast('🗑️', 'Folder deleted', '');
     }
-
-    renderFoldersList();
-    renderNotesList();
-    showToast('🗑️', 'Folder deleted', '');
-  });
+  );
 }
 
 function populateFolderSelect(folderId) {
   const select = document.getElementById('noteFolderSelect');
   if (!select) return;
-  select.innerHTML = folders.map(f => `<option value="${f.id}" ${f.id === folderId ? 'selected' : ''}>${escHtml(f.name)}</option>`).join('');
+  select.innerHTML = folders
+    .map(
+      (f) =>
+        `<option value="${f.id}" ${f.id === folderId ? 'selected' : ''}>${escHtml(f.name)}</option>`
+    )
+    .join('');
 }
 
 function changeNoteFolder() {
   if (!activeId) return;
   const select = document.getElementById('noteFolderSelect');
-  const note = notes.find(n => n.id === activeId);
+  const note = notes.find((n) => n.id === activeId);
   if (note && select) {
     note.folderId = select.value;
     note.updated = new Date().toISOString();
@@ -222,7 +233,7 @@ function changeNoteFolder() {
 }
 
 function updatePinFavoriteButtons() {
-  const note = notes.find(n => n.id === activeId);
+  const note = notes.find((n) => n.id === activeId);
   if (!note) return;
   document.getElementById('pinBtn').classList.toggle('active', !!note.isPinned);
   document.getElementById('favBtn').classList.toggle('active', !!note.isFavorite);
@@ -230,7 +241,7 @@ function updatePinFavoriteButtons() {
 
 function togglePin() {
   if (!activeId) return;
-  const note = notes.find(n => n.id === activeId);
+  const note = notes.find((n) => n.id === activeId);
   if (note) {
     note.isPinned = !note.isPinned;
     saveAll();
@@ -242,7 +253,7 @@ function togglePin() {
 
 function toggleFavorite() {
   if (!activeId) return;
-  const note = notes.find(n => n.id === activeId);
+  const note = notes.find((n) => n.id === activeId);
   if (note) {
     note.isFavorite = !note.isFavorite;
     saveAll();
@@ -256,9 +267,9 @@ function handleTagInput(e) {
   if (e.key === 'Enter') {
     e.preventDefault();
     if (!activeId) return;
-    const note = notes.find(n => n.id === activeId);
+    const note = notes.find((n) => n.id === activeId);
     if (!note) return;
-    
+
     const val = e.target.value.trim();
     if (val) {
       if (!note.tags) note.tags = [];
@@ -274,9 +285,9 @@ function handleTagInput(e) {
 
 function removeTag(tag) {
   if (!activeId) return;
-  const note = notes.find(n => n.id === activeId);
+  const note = notes.find((n) => n.id === activeId);
   if (note && note.tags) {
-    note.tags = note.tags.filter(t => t !== tag);
+    note.tags = note.tags.filter((t) => t !== tag);
     saveAll();
     renderTags();
   }
@@ -285,18 +296,22 @@ function removeTag(tag) {
 function renderTags() {
   const list = document.getElementById('tagsList');
   if (!list) return;
-  const note = notes.find(n => n.id === activeId);
+  const note = notes.find((n) => n.id === activeId);
   if (!note || !note.tags) {
     list.innerHTML = '';
     return;
   }
-  
-  list.innerHTML = note.tags.map(t => `
+
+  list.innerHTML = note.tags
+    .map(
+      (t) => `
     <div class="tag-pill">
       #${escHtml(t)}
       <button onclick="removeTag('${escHtml(t)}')">✕</button>
     </div>
-  `).join('');
+  `
+    )
+    .join('');
 }
 
 // ==========================================================================
@@ -317,7 +332,7 @@ function createNewNote() {
     size: '16',
     folderId: folderId,
     created: new Date().toISOString(),
-    updated: new Date().toISOString()
+    updated: new Date().toISOString(),
   };
 
   notes.unshift(note);
@@ -332,7 +347,7 @@ function createNewNote() {
 
 function openNote(id) {
   activeId = id;
-  const note = notes.find(n => n.id === id);
+  const note = notes.find((n) => n.id === id);
   if (!note) return;
 
   document.getElementById('welcomeScreen').style.display = 'none';
@@ -341,14 +356,14 @@ function openNote(id) {
   ew.style.display = 'flex';
 
   document.getElementById('noteTitleInput').value = note.title || '';
-  
+
   populateFolderSelect(note.folderId);
   updatePinFavoriteButtons();
   renderTags();
-  
+
   const editor = document.getElementById('note-content');
   editor.innerHTML = convertPlainToHtml(note.content || '');
-  
+
   // Apply formatting preferences (global text color and font size)
   editor.style.color = note.color || (isDark ? '#f5f5f7' : '#1c1c1a');
   editor.style.fontSize = (note.size || '16') + 'px';
@@ -381,7 +396,7 @@ function triggerAutosave() {
 
 function saveNoteSilently() {
   if (!activeId) return;
-  const note = notes.find(n => n.id === activeId);
+  const note = notes.find((n) => n.id === activeId);
   if (!note) return;
 
   note.title = document.getElementById('noteTitleInput').value.trim() || 'Untitled Note';
@@ -404,26 +419,30 @@ function saveNote() {
 
 function deleteNote(id, e) {
   if (e) e.stopPropagation();
-  const note = notes.find(n => n.id === id);
-  const noteTitle = note ? (note.title || 'Untitled Note') : 'this note';
+  const note = notes.find((n) => n.id === id);
+  const noteTitle = note ? note.title || 'Untitled Note' : 'this note';
 
-  openModal('Delete Note', `Are you sure you want to permanently delete "${noteTitle}"? This action cannot be undone.`, () => {
-    notes = notes.filter(n => n.id !== id);
-    saveAll();
+  openModal(
+    'Delete Note',
+    `Are you sure you want to permanently delete "${noteTitle}"? This action cannot be undone.`,
+    () => {
+      notes = notes.filter((n) => n.id !== id);
+      saveAll();
 
-    if (activeId === id) {
-      activeId = null;
-      document.getElementById('welcomeScreen').style.display = 'flex';
-      document.getElementById('editorWrapper').style.display = 'none';
-      if (window.innerWidth <= 768) {
-        setMobileView('list');
+      if (activeId === id) {
+        activeId = null;
+        document.getElementById('welcomeScreen').style.display = 'flex';
+        document.getElementById('editorWrapper').style.display = 'none';
+        if (window.innerWidth <= 768) {
+          setMobileView('list');
+        }
       }
-    }
 
-    renderNotesList();
-    renderFoldersList();
-    showToast('🗑️', 'Note deleted', '');
-  });
+      renderNotesList();
+      renderFoldersList();
+      showToast('🗑️', 'Note deleted', '');
+    }
+  );
 }
 
 function confirmClear() {
@@ -456,17 +475,17 @@ function renderNotesList(filter = '') {
   // 1. Filter by Folder
   let filtered = sortedNotes;
   if (activeFolderId === 'favorites') {
-    filtered = sortedNotes.filter(n => n.isFavorite);
+    filtered = sortedNotes.filter((n) => n.isFavorite);
   } else if (activeFolderId === 'pinned') {
-    filtered = sortedNotes.filter(n => n.isPinned);
+    filtered = sortedNotes.filter((n) => n.isPinned);
   } else if (activeFolderId !== 'all') {
-    filtered = sortedNotes.filter(n => n.folderId === activeFolderId);
+    filtered = sortedNotes.filter((n) => n.folderId === activeFolderId);
   }
 
   // 2. Filter by Search Query (Realtime Title & Content match)
   const q = (filter || document.getElementById('searchInput').value).toLowerCase().trim();
   if (q) {
-    filtered = filtered.filter(n => {
+    filtered = filtered.filter((n) => {
       const plainText = stripHtml(n.content || '').toLowerCase();
       const titleText = (n.title || '').toLowerCase();
       return titleText.includes(q) || plainText.includes(q);
@@ -484,9 +503,10 @@ function renderNotesList(filter = '') {
     return;
   }
 
-  list.innerHTML = filtered.map(n => {
-    const preview = stripHtml(n.content || '');
-    return `
+  list.innerHTML = filtered
+    .map((n) => {
+      const preview = stripHtml(n.content || '');
+      return `
       <div class="note-card ${n.id === activeId ? 'active' : ''}" onclick="openNote('${n.id}')">
         <div class="note-card-title">${escHtml(n.title || 'Untitled Note')}</div>
         <div class="note-card-preview">${escHtml(preview || 'No content…')}</div>
@@ -502,7 +522,8 @@ function renderNotesList(filter = '') {
         </div>
       </div>
     `;
-  }).join('');
+    })
+    .join('');
 }
 
 function filterNotes(q) {
@@ -538,7 +559,9 @@ function exportPDF() {
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-  const marginL = 20, marginR = 20, marginT = 24;
+  const marginL = 20,
+    marginR = 20,
+    marginT = 24;
   const pageW = doc.internal.pageSize.getWidth();
   const contentW = pageW - marginL - marginR;
 
@@ -576,7 +599,7 @@ function exportPDF() {
   const lineH = 6;
   const pageH = doc.internal.pageSize.getHeight();
 
-  lines.forEach(line => {
+  lines.forEach((line) => {
     if (y + lineH > pageH - 16) {
       doc.addPage();
       y = 20;
@@ -591,17 +614,17 @@ function exportPDF() {
 
 function exportTXT() {
   if (!activeId) return;
-  const note = notes.find(n => n.id === activeId);
+  const note = notes.find((n) => n.id === activeId);
   if (!note) return;
-  
+
   const title = document.getElementById('noteTitleInput').value || 'Untitled Note';
   const content = document.getElementById('note-content').innerText;
-  
+
   if (!content.trim()) {
     showToast('⚠️', 'Note is empty!', 'error');
     return;
   }
-  
+
   const blob = new Blob([`${title}\n\n${content}`], { type: 'text/plain' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -657,10 +680,7 @@ function exitDistractionFree() {
 // ==========================================================================
 function escHtml(s) {
   if (!s) return '';
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 function stripHtml(html) {
@@ -686,7 +706,7 @@ function formatDate(iso) {
     month: 'short',
     year: 'numeric',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
   });
 }
 
@@ -721,15 +741,17 @@ function showToast(icon, msg, type) {
   const t = document.getElementById('toast');
   const tIcon = document.getElementById('toastIcon');
   const tMsg = document.getElementById('toastMsg');
-  
+
   if (!t || !tIcon || !tMsg) return;
-  
+
   tIcon.textContent = icon;
   tMsg.textContent = msg;
   t.className = 'toast show' + (type ? ' ' + type : '');
-  
+
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { t.classList.remove('show'); }, 2400);
+  toastTimer = setTimeout(() => {
+    t.classList.remove('show');
+  }, 2400);
 }
 
 // ==========================================================================
@@ -777,15 +799,20 @@ function checkActiveFormats() {
   if (btns[0]) btns[0].classList.toggle('active', document.queryCommandState('bold'));
   if (btns[1]) btns[1].classList.toggle('active', document.queryCommandState('italic'));
   if (btns[2]) btns[2].classList.toggle('active', document.queryCommandState('underline'));
-  
+
   // Group 2: Headings & text
   const blockType = document.queryCommandValue('formatBlock');
   if (btns[3]) btns[3].classList.toggle('active', blockType === 'h3');
   if (btns[4]) btns[4].classList.toggle('active', blockType === 'h4');
-  if (btns[5]) btns[5].classList.toggle('active', blockType === 'p' || (blockType !== 'h3' && blockType !== 'h4'));
+  if (btns[5])
+    btns[5].classList.toggle(
+      'active',
+      blockType === 'p' || (blockType !== 'h3' && blockType !== 'h4')
+    );
 
   // Group 3: Lists
-  if (btns[6]) btns[6].classList.toggle('active', document.queryCommandState('insertUnorderedList'));
+  if (btns[6])
+    btns[6].classList.toggle('active', document.queryCommandState('insertUnorderedList'));
   if (btns[7]) btns[7].classList.toggle('active', document.queryCommandState('insertOrderedList'));
 
   // Group 4: Alignments
@@ -815,7 +842,7 @@ document.getElementById('fontSizeSelect').addEventListener('change', triggerAuto
 // ==========================================================================
 // KEYBOARD SHORTCUTS
 // ==========================================================================
-document.addEventListener('keydown', e => {
+document.addEventListener('keydown', (e) => {
   if ((e.ctrlKey || e.metaKey) && e.key === 's') {
     e.preventDefault();
     saveNote();

@@ -453,10 +453,7 @@ async function fetchContributors() {
 
     contributorCountSpan.textContent = contributors.length;
 
-    const totalCommits = contributors.reduce(
-      (sum, c) => sum + c.contributions,
-      0
-    );
+    const totalCommits = contributors.reduce((sum, c) => sum + c.contributions, 0);
 
     const totalCommitsEl = document.getElementById('totalCommits');
 
@@ -500,8 +497,7 @@ function renderContributors(data) {
   data.forEach((contributor) => {
     const card = document.createElement('div');
 
-    const globalRank =
-      allContributors.findIndex((c) => c.login === contributor.login) + 1;
+    const globalRank = allContributors.findIndex((c) => c.login === contributor.login) + 1;
 
     let badge = '';
 
@@ -670,14 +666,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Repo stats are now handled by index.js
   fetchContributors();
   fetchStargazers();
-  
-  document
-    .getElementById('retryContributors')
-    ?.addEventListener('click', fetchContributors);
 
-  document
-    .getElementById('retryStargazers')
-    ?.addEventListener('click', fetchStargazers);
+  document.getElementById('retryContributors')?.addEventListener('click', fetchContributors);
+
+  document.getElementById('retryStargazers')?.addEventListener('click', fetchStargazers);
 
   const searchInput = document.getElementById('contributorSearch');
 
@@ -685,9 +677,7 @@ document.addEventListener('DOMContentLoaded', () => {
   searchInput.addEventListener('input', (e) => {
     const value = e.target.value.toLowerCase();
 
-    filteredContributors = allContributors.filter((c) =>
-      c.login.toLowerCase().includes(value)
-    );
+    filteredContributors = allContributors.filter((c) => c.login.toLowerCase().includes(value));
 
     renderContributors(filteredContributors);
   });

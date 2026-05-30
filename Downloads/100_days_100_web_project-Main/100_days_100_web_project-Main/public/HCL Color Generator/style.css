@@ -15,9 +15,9 @@ body {
 
 .bg-orbs {
   position: fixed;
-  inset: 0;           
+  inset: 0;
   pointer-events: none;
-  overflow: hidden;   
+  overflow: hidden;
   z-index: 0;
 }
 
@@ -29,11 +29,25 @@ body {
   transition: background 0.2s ease;
 }
 
-.orb1 { width: 500px; height: 500px; top: -100px;  left: -100px; }
-.orb2 { width: 400px; height: 400px; bottom: -80px; right: -70px; }
-.orb3 { width: 350px; height: 350px; top: 50%;     left: 50%;
-        transform: translate(-50%, -50%); }
-
+.orb1 {
+  width: 500px;
+  height: 500px;
+  top: -100px;
+  left: -100px;
+}
+.orb2 {
+  width: 400px;
+  height: 400px;
+  bottom: -80px;
+  right: -70px;
+}
+.orb3 {
+  width: 350px;
+  height: 350px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
 .container {
   position: relative;
@@ -44,10 +58,9 @@ body {
   padding: 40px;
   width: 560px;
   text-align: center;
-  backdrop-filter: blur(16px); 
+  backdrop-filter: blur(16px);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
-
 
 h1 {
   color: #fff;
@@ -64,7 +77,7 @@ h1 {
 }
 
 label {
-  color: rgba(255,255,255,0.7);
+  color: rgba(255, 255, 255, 0.7);
   font-size: 20px;
   width: 100px;
   text-align: left;
@@ -77,7 +90,7 @@ label {
   appearance: none;
   height: 6px;
   border-radius: 99px;
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.15);
   outline: none;
   cursor: pointer;
 }
@@ -89,7 +102,7 @@ label {
   border-radius: 50%;
   background: #fff;
   border: 3px solid #0e0e12;
-  box-shadow: 0 0 6px rgba(0,0,0,0.4);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
   cursor: pointer;
 }
 
@@ -106,16 +119,19 @@ span {
   height: 160px;
   margin: 24px auto 16px;
   border-radius: 16px;
-  border: 2px solid rgba(255,255,255,0.15);
-  transition: background-color 0.1s ease, box-shadow 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  transition:
+    background-color 0.1s ease,
+    box-shadow 0.3s ease;
 
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-#rgbText, #hexText {
-  color: rgba(255,255,255,0.75);
+#rgbText,
+#hexText {
+  color: rgba(255, 255, 255, 0.75);
   font-size: 14px;
   font-family: monospace;
   margin: 4px 0;
@@ -145,12 +161,16 @@ span {
   border-radius: 50%;
   border: 2px solid rgba(255, 255, 255, 0.15);
   cursor: pointer;
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
   outline: none;
   padding: 0;
 }
 
-.palette-swatch:hover, .palette-swatch:focus-visible {
+.palette-swatch:hover,
+.palette-swatch:focus-visible {
   transform: scale(1.15);
   border-color: #fff;
 }
@@ -169,10 +189,17 @@ span {
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
-  transition: opacity 0.2s, transform 0.15s;
+  transition:
+    opacity 0.2s,
+    transform 0.15s;
 }
-#copyBtn:hover  { opacity: 0.85; transform: translateY(-2px); }
-#copyBtn:active { transform: translateY(0); }
+#copyBtn:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
+}
+#copyBtn:active {
+  transform: translateY(0);
+}
 
 #colorValue {
   color: #fff;

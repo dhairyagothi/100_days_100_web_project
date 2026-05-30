@@ -1,14 +1,14 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const slides = document.querySelectorAll(".slide");
-  const miniPlanets = document.querySelectorAll(".mini-planet");
-  const prevBtn = document.getElementById("prev");
-  const nextBtn = document.getElementById("next");
+document.addEventListener('DOMContentLoaded', () => {
+  const slides = document.querySelectorAll('.slide');
+  const miniPlanets = document.querySelectorAll('.mini-planet');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
 
   let currentIndex = 0;
 
   function showSlide(index) {
-    slides.forEach(slide => slide.classList.remove("active"));
-    miniPlanets.forEach(planet => planet.classList.remove("active"));
+    slides.forEach((slide) => slide.classList.remove('active'));
+    miniPlanets.forEach((planet) => planet.classList.remove('active'));
 
     if (index < 0) {
       currentIndex = slides.length - 1;
@@ -18,42 +18,42 @@ document.addEventListener("DOMContentLoaded", () => {
       currentIndex = index;
     }
 
-    slides[currentIndex].classList.add("active");
+    slides[currentIndex].classList.add('active');
 
     if (miniPlanets[currentIndex]) {
-      miniPlanets[currentIndex].classList.add("active");
+      miniPlanets[currentIndex].classList.add('active');
     }
 
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
+      behavior: 'smooth',
     });
   }
 
   if (nextBtn) {
-    nextBtn.addEventListener("click", () => {
+    nextBtn.addEventListener('click', () => {
       showSlide(currentIndex + 1);
     });
   }
 
   if (prevBtn) {
-    prevBtn.addEventListener("click", () => {
+    prevBtn.addEventListener('click', () => {
       showSlide(currentIndex - 1);
     });
   }
 
   miniPlanets.forEach((planet, index) => {
-    planet.addEventListener("click", () => {
+    planet.addEventListener('click', () => {
       showSlide(index);
     });
   });
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowRight") {
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') {
       showSlide(currentIndex + 1);
     }
 
-    if (e.key === "ArrowLeft") {
+    if (e.key === 'ArrowLeft') {
       showSlide(currentIndex - 1);
     }
   });
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let isScrolling = false;
 
   window.addEventListener(
-    "wheel",
+    'wheel',
     (e) => {
       if (isScrolling) return;
 
@@ -83,11 +83,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let touchStartX = 0;
   let touchEndX = 0;
 
-  document.addEventListener("touchstart", (e) => {
+  document.addEventListener('touchstart', (e) => {
     touchStartX = e.changedTouches[0].screenX;
   });
 
-  document.addEventListener("touchend", (e) => {
+  document.addEventListener('touchend', (e) => {
     touchEndX = e.changedTouches[0].screenX;
 
     const diff = touchStartX - touchEndX;

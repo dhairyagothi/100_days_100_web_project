@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -6,22 +6,10 @@
     <link rel="stylesheet" href="styles.css" />
     <meta name="k1" content="GREAT_DEVELOPER" />
     <meta name="k2" content="SECRET_KEY" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Creepster&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Creepster&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bangers&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet" />
     <link
       href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap"
       rel="stylesheet"
@@ -34,7 +22,7 @@
 
     <style>
       .debug-key::after {
-        --secret: "76616c7565";
+        --secret: '76616c7565';
         content: attr(data-null);
       }
       .key-fragment {
@@ -53,29 +41,25 @@
       data-part2="eW91IGFyZSBh"
       data-part3="Z3JlYXQgZGV2ZWxvcGVy"
     ></div>
-    <div
-      style="display: none"
-      class="debug-key"
-      data-value="fake_key_here"
-    ></div>
+    <div style="display: none" class="debug-key" data-value="fake_key_here"></div>
 
-    <div
-      class="trailing-cursor"
-      style="position: absolute; left: 100px; top: 100px"
-    ></div>
+    <div class="trailing-cursor" style="position: absolute; left: 100px; top: 100px"></div>
 
     <div class="nav">
-      <button onclick="startRotation(); playSpinSound()">O for Orange</button>
+      <button
+        onclick="
+          startRotation();
+          playSpinSound();
+        "
+      >
+        O for Orange
+      </button>
       <h1 class="logo">Debug Quest | Level 2</h1>
       <div class="score">Score: <span id="score">0</span>/10</div>
     </div>
 
     <div class="grid">
-      <div
-        class="card glitch vanish-on-click"
-        id="card1"
-        onclick="improveVanishingAct()"
-      >
+      <div class="card glitch vanish-on-click" id="card1" onclick="improveVanishingAct()">
         <h2 style="padding-top: 10px">The Ghostly Revelation</h2>
         <p>
           Unravel the mystery as shadows blend with the night,<br />
@@ -83,17 +67,11 @@
         </p>
         <p class="distorted-text">Hover to Reveal the Distortion!</p>
         <div class="glitch-effect">
-          <span
-            class="glitch-text"
-            style="display: inline-block; margin: 0 auto"
+          <span class="glitch-text" style="display: inline-block; margin: 0 auto"
             >You can't escape!</span
           >
         </div>
-        <button
-          class="action-btn vanish-btn"
-          id="ghost-button"
-          onclick="playEerieSound()"
-        >
+        <button class="action-btn vanish-btn" id="ghost-button" onclick="playEerieSound()">
           Discover the Secret
         </button>
       </div>
@@ -105,9 +83,7 @@
           Light the diyas, gather the crowd.
         </p>
         <p>Points: <span id="points">0</span></p>
-        <button id="celebrate-button" class="action-btn" onclick="celebrate()">
-          Celebrate
-        </button>
+        <button id="celebrate-button" class="action-btn" onclick="celebrate()">Celebrate</button>
       </div>
 
       <div class="card potion" id="POTION">
@@ -140,7 +116,13 @@
           🎈 Bouncing around with no sense of space,<br />
           🚀 I zoom through your screen, leaving no trace!
         </p>
-        <button class="action-btn" onclick="distortScreen(); playDisSound();">
+        <button
+          class="action-btn"
+          onclick="
+            distortScreen();
+            playDisSound();
+          "
+        >
           🚀 Launch Into Chaos! 🎉
         </button>
       </div>
@@ -148,13 +130,11 @@
       <div class="card glitch" id="safari-card">
         <h2>Safari Adventure</h2>
         <p>
-          "Venture into the safari, where the wild is tamed and the tamed is
-          wild—just don’t ask the giraffe for directions, they never look down."
+          "Venture into the safari, where the wild is tamed and the tamed is wild—just don’t ask the
+          giraffe for directions, they never look down."
         </p>
         <div class="chamber">
-          <button class="action-btn" onclick="embarkOnAdventure()">
-            Embark on Adventure
-          </button>
+          <button class="action-btn" onclick="embarkOnAdventure()">Embark on Adventure</button>
         </div>
         <div class="safari-effect"></div>
         <div class="bsod-message" style="display: none"></div>
@@ -165,14 +145,12 @@
         <button
           class="action-btn"
           id="disturbance-btn"
-          onclick="triggerDisturbance(),moveCardAround(), playAmogus();"
+          onclick="(triggerDisturbance(), moveCardAround(), playAmogus())"
         >
           Tap If You Dare
         </button>
         <p id="disturbance-text">What you seek is... unfindable.</p>
-        <p id="hidden-disturbance" class="hidden-message">
-          Nothing is as it seems...
-        </p>
+        <p id="hidden-disturbance" class="hidden-message">Nothing is as it seems...</p>
         <div
           class="bsoD"
           id="bsod"
@@ -192,11 +170,7 @@
 
       <div id="card7">
         <h2>SYSTEM FAILURE</h2>
-        <button
-          id="glitch-message"
-          class="actionbutton"
-          onclick="triggerCrash()"
-        >
+        <button id="glitch-message" class="actionbutton" onclick="triggerCrash()">
           UNLEASH CHAOS
         </button>
         <button id="glitch-message2" class="sevencard" onclick="createMemory()">
@@ -230,11 +204,7 @@
           A simple press, and you may weep,<br />
           What you seek is far from deep.
         </p>
-        <button
-          class="action-btn"
-          id="finale_btn"
-          onclick="triggerFullScreenImage()"
-        >
+        <button class="action-btn" id="finale_btn" onclick="triggerFullScreenImage()">
           Embrace the Unknown
         </button>
       </div>

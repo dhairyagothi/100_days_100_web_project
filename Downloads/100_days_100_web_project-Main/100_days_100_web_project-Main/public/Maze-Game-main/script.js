@@ -41,7 +41,9 @@ function updateMoveDisplay(count) {
 }
 
 function formatTime(seconds) {
-  const minutes = Math.floor(seconds / 60).toString().padStart(2, '0');
+  const minutes = Math.floor(seconds / 60)
+    .toString()
+    .padStart(2, '0');
   const secs = (seconds % 60).toString().padStart(2, '0');
   return `${minutes}:${secs}`;
 }
@@ -105,7 +107,7 @@ function Maze(width, height) {
     n: { y: -1, x: 0, o: 's' },
     s: { y: 1, x: 0, o: 'n' },
     e: { y: 0, x: 1, o: 'w' },
-    w: { y: 0, x: -1, o: 'e' }
+    w: { y: 0, x: -1, o: 'e' },
   };
   let startCoord, endCoord;
 
@@ -121,7 +123,7 @@ function Maze(width, height) {
         e: false,
         w: false,
         visited: false,
-        priorPos: null
+        priorPos: null,
       }))
     );
   }
@@ -257,7 +259,14 @@ function DrawMaze(maze, ctx, cellSize) {
     const pulse = 4 + Math.sin(time / 300) * 2;
     const radius = size * 0.28;
 
-    const gradient = ctx.createRadialGradient(centerX, centerY, radius * 0.2, centerX, centerY, radius + pulse);
+    const gradient = ctx.createRadialGradient(
+      centerX,
+      centerY,
+      radius * 0.2,
+      centerX,
+      centerY,
+      radius + pulse
+    );
     gradient.addColorStop(0, 'rgba(152, 128, 255, 0.9)');
     gradient.addColorStop(0.4, 'rgba(96, 212, 255, 0.35)');
     gradient.addColorStop(1, 'rgba(15, 22, 56, 0)');
@@ -276,10 +285,16 @@ function DrawMaze(maze, ctx, cellSize) {
     ctx.lineWidth = 2;
     ctx.strokeStyle = '#d3f1ff';
     for (let i = 0; i < 5; i++) {
-      const angle = i * (Math.PI * 2) / 5 + time / 800;
+      const angle = (i * (Math.PI * 2)) / 5 + time / 800;
       ctx.beginPath();
-      ctx.moveTo(centerX + Math.cos(angle) * radius * 0.6, centerY + Math.sin(angle) * radius * 0.6);
-      ctx.lineTo(centerX + Math.cos(angle) * radius * 0.95, centerY + Math.sin(angle) * radius * 0.95);
+      ctx.moveTo(
+        centerX + Math.cos(angle) * radius * 0.6,
+        centerY + Math.sin(angle) * radius * 0.6
+      );
+      ctx.lineTo(
+        centerX + Math.cos(angle) * radius * 0.95,
+        centerY + Math.sin(angle) * radius * 0.95
+      );
       ctx.stroke();
     }
   }
@@ -361,7 +376,10 @@ function Player(maze, canvas, cellSize, onComplete) {
     }
 
     const keyCode = e.keyCode || e.which;
-    if ([37, 38, 39, 40, 65, 68, 83, 87].includes(keyCode) && typeof e.preventDefault === 'function') {
+    if (
+      [37, 38, 39, 40, 65, 68, 83, 87].includes(keyCode) &&
+      typeof e.preventDefault === 'function'
+    ) {
       e.preventDefault();
     }
 
@@ -409,7 +427,9 @@ function Player(maze, canvas, cellSize, onComplete) {
 
     if (moved) {
       moves++;
-      updateMoveDisplay(moves);      ensurePlayerVisible(cellCoords);    } else if ([65, 68, 83, 87, 37, 38, 39, 40].includes(e.keyCode)) {
+      updateMoveDisplay(moves);
+      ensurePlayerVisible(cellCoords);
+    } else if ([65, 68, 83, 87, 37, 38, 39, 40].includes(e.keyCode)) {
       showToast('Blocked! You cannot move through a wall.', 'warning');
     }
   }
@@ -434,7 +454,7 @@ function Player(maze, canvas, cellSize, onComplete) {
               break;
           }
         },
-        threshold: 0
+        threshold: 0,
       });
     }
   };
@@ -500,7 +520,10 @@ function ensurePlayerVisible(coord) {
 
   const maxScrollLeft = Math.max(0, container.scrollWidth - container.clientWidth);
   const maxScrollTop = Math.max(0, container.scrollHeight - container.clientHeight);
-  const targetLeft = Math.max(0, Math.min(maxScrollLeft, playerCenterX - container.clientWidth / 2));
+  const targetLeft = Math.max(
+    0,
+    Math.min(maxScrollLeft, playerCenterX - container.clientWidth / 2)
+  );
   const targetTop = Math.max(0, Math.min(maxScrollTop, playerCenterY - container.clientHeight / 2));
 
   container.scrollTo({ left: targetLeft, top: targetTop, behavior: 'smooth' });

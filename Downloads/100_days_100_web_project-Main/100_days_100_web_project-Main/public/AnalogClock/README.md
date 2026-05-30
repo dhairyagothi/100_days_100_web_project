@@ -45,15 +45,19 @@ AnalogClock/
 ## 🎮 Controls
 
 ### Start Timer
+
 Begin the countdown timer.
 
 ### Pause Timer
+
 Pause or stop the active timer.
 
 ### Restart Timer
+
 Reset the timer back to its default value.
 
 ### Automatic Clock Update
+
 Clock hands update automatically according to your system time.
 
 ---
@@ -63,7 +67,6 @@ Clock hands update automatically according to your system time.
 🔗 Live Demo: [https://100-days-100-web-project.vercel.app/public/AnalogClock/index.html](https://100-days-100-web-project.vercel.app/public/AnalogClock/index.html)
 
 🔗 GitHub Repository: [https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/AnalogClock](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/AnalogClock)
-
 
 ### Clone Repository
 
@@ -92,7 +95,6 @@ This project works smoothly across multiple devices:
 git clone https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/AnalogClock.git
 ```
 
-
 ### 2. Navigate to Project Folder
 
 ```bash
@@ -118,4 +120,3 @@ Enjoy using the Analog Clock & Countdown Timer ⏳
 This project is created for **educational, learning, and portfolio purposes**.
 
 You are free to modify and use this project for personal development and practice.
-

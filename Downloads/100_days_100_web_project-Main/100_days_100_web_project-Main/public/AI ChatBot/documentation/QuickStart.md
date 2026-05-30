@@ -76,28 +76,28 @@ chatbot/
 
 ## 📱 What Works
 
-| Feature | Status |
-|---------|--------|
-| Chat with Gemini | ✅ Works |
-| Send images | ✅ Works |
-| Copy responses | ✅ Works |
-| Dark/Light mode | ✅ Works |
-| Save chat history | ✅ Works |
-| Rename chats | ✅ Works (hover & pencil) |
-| Delete chats | ✅ Works (hover & trash) |
-| Mobile responsive | ✅ Works |
-| Works offline | ❌ Needs internet for API |
+| Feature           | Status                    |
+| ----------------- | ------------------------- |
+| Chat with Gemini  | ✅ Works                  |
+| Send images       | ✅ Works                  |
+| Copy responses    | ✅ Works                  |
+| Dark/Light mode   | ✅ Works                  |
+| Save chat history | ✅ Works                  |
+| Rename chats      | ✅ Works (hover & pencil) |
+| Delete chats      | ✅ Works (hover & trash)  |
+| Mobile responsive | ✅ Works                  |
+| Works offline     | ❌ Needs internet for API |
 
 ---
 
 ## ⌨️ Quick Keyboard Shortcuts
 
-| Shortcut | Action |
-|----------|--------|
-| `Enter` | Send message |
-| `Shift + Enter` | New line in input |
-| `Escape` | Close sidebar (mobile) |
-| `☀️` icon | Toggle dark/light |
+| Shortcut        | Action                 |
+| --------------- | ---------------------- |
+| `Enter`         | Send message           |
+| `Shift + Enter` | New line in input      |
+| `Escape`        | Close sidebar (mobile) |
+| `☀️` icon       | Toggle dark/light      |
 
 ---
 
@@ -168,15 +168,19 @@ Fix: Clear cache + refresh page
 ## 🎨 Customize (Optional)
 
 ### Change the accent color:
+
 Open `style.css`, find line ~8:
+
 ```css
---accent: #e8673a;  /* Change orange to your color */
+--accent: #e8673a; /* Change orange to your color */
 ```
 
 ### Change the model:
+
 Open `script.js`, find line ~4:
+
 ```javascript
-const API_URL = "...gemini-2.5-flash...";
+const API_URL = '...gemini-2.5-flash...';
 // Try: gemini-2-pro, gemini-1.5-pro, etc.
 ```
 
@@ -184,14 +188,14 @@ const API_URL = "...gemini-2.5-flash...";
 
 ## 📚 Need Help?
 
-| Question | Answer |
-|----------|--------|
-| "Where's my API key?" | Check email from Google AI Studio, or regenerate at aistudio.google.com |
-| "Can I use this offline?" | No, needs internet for Gemini API |
-| "Is my data safe?" | Yes, only stored locally in your browser |
-| "Can I export chats?" | Copy from sidebar or use browser DevTools |
-| "Can I use this on mobile?" | Yes! It's fully responsive |
-| "Can multiple people use this?" | Yes, each device stores its own history |
+| Question                        | Answer                                                                  |
+| ------------------------------- | ----------------------------------------------------------------------- |
+| "Where's my API key?"           | Check email from Google AI Studio, or regenerate at aistudio.google.com |
+| "Can I use this offline?"       | No, needs internet for Gemini API                                       |
+| "Is my data safe?"              | Yes, only stored locally in your browser                                |
+| "Can I export chats?"           | Copy from sidebar or use browser DevTools                               |
+| "Can I use this on mobile?"     | Yes! It's fully responsive                                              |
+| "Can multiple people use this?" | Yes, each device stores its own history                                 |
 
 ---
 

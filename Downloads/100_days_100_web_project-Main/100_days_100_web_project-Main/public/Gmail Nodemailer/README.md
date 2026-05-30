@@ -2,7 +2,6 @@ Gmail Nodemailer 📧
 
 A backend email service built with Node.js, Express.js, and Nodemailer for sending emails using Gmail SMTP. This project demonstrates how to configure and integrate email functionality into backend applications using a clean and scalable structure.
 
-
 📌 Features
 
 Send emails using Gmail SMTP
@@ -13,16 +12,14 @@ Modular folder structure
 Error handling and response management
 Easy integration into full-stack applications
 
-
 🛠️ Tech Stack
 
-Technology	Usage
-Node.js	Runtime Environment
-Express.js	Backend Framework
-Nodemailer	Email Service
-dotenv	Environment Variables
-CORS	Cross-Origin Requests
-
+Technology Usage
+Node.js Runtime Environment
+Express.js Backend Framework
+Nodemailer Email Service
+dotenv Environment Variables
+CORS Cross-Origin Requests
 
 📂 Project Structure
 
@@ -46,7 +43,6 @@ gmail-nodemailer/
 └── server.js
 ```
 
-
 ⚙️ Installation & Setup
 
 1️⃣ Clone the Repository
@@ -64,7 +60,6 @@ PORT=5000
 EMAIL_USER=yourgmail@gmail.com
 EMAIL_PASS=your_app_password
 
-
 🔑 Gmail App Password Setup
 
 To use Gmail SMTP, follow these steps:
@@ -74,7 +69,6 @@ Enable 2-Step Verification
 Navigate to App Passwords
 Generate a new App Password
 Use the generated password as EMAIL_PASS
-
 
 🚀 Start the Server
 Development Mode
@@ -88,8 +82,8 @@ http://localhost:5000
 
 📜 Package.json Scripts
 "scripts": {
-  "start": "node server.js",
-  "dev": "nodemon server.js"
+"start": "node server.js",
+"dev": "nodemon server.js"
 }
 
 🧠 Main Server Configuration
@@ -112,9 +106,8 @@ app.use("/api/mail", mailRoutes);
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+console.log(`Server running on port ${PORT}`);
 });
-
 
 ⚙️ Nodemailer Configuration
 
@@ -122,23 +115,22 @@ config/mailConfig.js
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
+service: "gmail",
+auth: {
+user: process.env.EMAIL_USER,
+pass: process.env.EMAIL_PASS,
+},
 });
 
 module.exports = transporter;
-
 
 📧 Mail Controller
 controllers/mailController.js
 const transporter = require("../config/mailConfig");
 
 const sendMail = async (req, res) => {
-  try {
-    const { to, subject, text } = req.body;
+try {
+const { to, subject, text } = req.body;
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
@@ -153,18 +145,17 @@ const sendMail = async (req, res) => {
       success: true,
       message: "Email sent successfully",
     });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to send email",
-      error: error.message,
-    });
-  }
+
+} catch (error) {
+res.status(500).json({
+success: false,
+message: "Failed to send email",
+error: error.message,
+});
+}
 };
 
 module.exports = { sendMail };
-
-
 
 🛣️ Routes
 routes/mailRoutes.js
@@ -181,22 +172,20 @@ Send Email
 POST /api/mail/send
 📨 Request Body Example
 {
-  "to": "example@gmail.com",
-  "subject": "Test Email",
-  "text": "Hello from Nodemailer"
+"to": "example@gmail.com",
+"subject": "Test Email",
+"text": "Hello from Nodemailer"
 }
 ✅ Success Response
 {
-  "success": true,
-  "message": "Email sent successfully"
+"success": true,
+"message": "Email sent successfully"
 }
 ❌ Error Response
 {
-  "success": false,
-  "message": "Failed to send email"
+"success": false,
+"message": "Failed to send email"
 }
-
-
 
 📦 Required Packages
 npm install express nodemailer dotenv cors
@@ -204,11 +193,10 @@ Development Dependency
 npm install nodemon --save-dev
 
 🌍 Environment Variables
-Variable	Description
-PORT	Server Port
-EMAIL_USER	Gmail Address
-EMAIL_PASS	Gmail App Password
-
+Variable Description
+PORT Server Port
+EMAIL_USER Gmail Address
+EMAIL_PASS Gmail App Password
 
 🚀 Future Improvements
 
@@ -219,7 +207,6 @@ OAuth2 authentication
 Email logging system
 Rate limiting and security middleware
 Deployment with Docker
-
 
 🌐 Deployment
 
@@ -241,7 +228,6 @@ git commit -m "Add new feature"
 Push to GitHub
 git push origin feature/new-feature
 Open a Pull Request
-
 
 ⭐ Support
 

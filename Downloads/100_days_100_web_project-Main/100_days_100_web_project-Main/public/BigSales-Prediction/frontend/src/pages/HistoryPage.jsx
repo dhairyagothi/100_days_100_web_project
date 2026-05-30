@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 export default function HistoryPage({ history }) {
   // useNavigate gives us a function to programmatically change pages
@@ -6,15 +6,9 @@ export default function HistoryPage({ history }) {
 
   // Summary stats computed from history
   const total = history.length;
-  const avgSales = total > 0
-    ? Math.round(history.reduce((sum, h) => sum + h.sales, 0) / total)
-    : 0;
-  const highest = total > 0
-    ? Math.round(Math.max(...history.map((h) => h.sales)))
-    : 0;
-  const lowest = total > 0
-    ? Math.round(Math.min(...history.map((h) => h.sales)))
-    : 0;
+  const avgSales = total > 0 ? Math.round(history.reduce((sum, h) => sum + h.sales, 0) / total) : 0;
+  const highest = total > 0 ? Math.round(Math.max(...history.map((h) => h.sales))) : 0;
+  const lowest = total > 0 ? Math.round(Math.min(...history.map((h) => h.sales))) : 0;
 
   return (
     <>
@@ -23,7 +17,7 @@ export default function HistoryPage({ history }) {
           <h1>Prediction History</h1>
           <p className="subtitle">All predictions made in this session</p>
         </div>
-        <button className="btn-ghost" onClick={() => navigate("/")}>
+        <button className="btn-ghost" onClick={() => navigate('/')}>
           ← Back to Predict
         </button>
       </header>
@@ -37,21 +31,15 @@ export default function HistoryPage({ history }) {
           </div>
           <div className="stat-card">
             <span className="stat-card-label">Average Sales</span>
-            <span className="stat-card-value">
-              ₹{avgSales.toLocaleString("en-IN")}
-            </span>
+            <span className="stat-card-value">₹{avgSales.toLocaleString('en-IN')}</span>
           </div>
           <div className="stat-card">
             <span className="stat-card-label">Highest</span>
-            <span className="stat-card-value green">
-              ₹{highest.toLocaleString("en-IN")}
-            </span>
+            <span className="stat-card-value green">₹{highest.toLocaleString('en-IN')}</span>
           </div>
           <div className="stat-card">
             <span className="stat-card-label">Lowest</span>
-            <span className="stat-card-value amber">
-              ₹{lowest.toLocaleString("en-IN")}
-            </span>
+            <span className="stat-card-value amber">₹{lowest.toLocaleString('en-IN')}</span>
           </div>
         </div>
       )}
@@ -60,13 +48,19 @@ export default function HistoryPage({ history }) {
       {total === 0 ? (
         <div className="empty-charts" style={{ marginTop: 24 }}>
           <span>🗂️</span>
-          <p>No predictions yet. Go to <strong>Predict</strong> and run your first one!</p>
-          <button className="btn-predict" style={{ marginTop: 8, width: "auto", padding: "10px 24px" }} onClick={() => navigate("/")}>
+          <p>
+            No predictions yet. Go to <strong>Predict</strong> and run your first one!
+          </p>
+          <button
+            className="btn-predict"
+            style={{ marginTop: 8, width: 'auto', padding: '10px 24px' }}
+            onClick={() => navigate('/')}
+          >
             Go to Predict →
           </button>
         </div>
       ) : (
-        <div className="card" style={{ overflow: "auto", marginTop: 8 }}>
+        <div className="card" style={{ overflow: 'auto', marginTop: 8 }}>
           <table className="history-table">
             <thead>
               <tr>
@@ -86,13 +80,13 @@ export default function HistoryPage({ history }) {
                 <tr key={h.id}>
                   <td className="muted">{i + 1}</td>
                   <td className="muted">{h.timestamp}</td>
-                  <td className="sales-cell">
-                    ₹{Math.round(h.sales).toLocaleString("en-IN")}
-                  </td>
+                  <td className="sales-cell">₹{Math.round(h.sales).toLocaleString('en-IN')}</td>
                   <td>₹{h.mrp}</td>
                   <td>{h.itemType}</td>
                   <td>
-                    <span className={`badge ${h.fatContent === "Low Fat" ? "badge-green" : "badge-amber"}`}>
+                    <span
+                      className={`badge ${h.fatContent === 'Low Fat' ? 'badge-green' : 'badge-amber'}`}
+                    >
                       {h.fatContent}
                     </span>
                   </td>

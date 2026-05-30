@@ -27,4 +27,4 @@ jobs:
           image_size: 96
           columns_per_row: 5
           use_username: true
-          commit_message: "docs(readme): refresh contributors section [skip ci]"
+          commit_message: 'docs(readme): refresh contributors section [skip ci]'

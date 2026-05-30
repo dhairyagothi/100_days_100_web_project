@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 type Props = {
   word: string;
@@ -15,18 +15,18 @@ export default function WordDisplay({ word, guessed, revealFirst = false }: Prop
 
   return (
     <div className="word-display" aria-live="polite" role="group" aria-label="Secret word">
-      {word.split("").map((ch, i) => {
+      {word.split('').map((ch, i) => {
         const lower = ch.toLowerCase();
         const isAlpha = isLetter(ch);
         const revealed = isAlpha && (guessed.has(lower) || (revealFirst && lower === first));
-        const displayChar = !isAlpha ? ch : revealed ? ch : "_";
+        const displayChar = !isAlpha ? ch : revealed ? ch : '_';
 
         return (
           <span
             key={i}
-            className={`slot ${isAlpha ? (revealed ? "slot--revealed" : "slot--hidden") : "slot--sep"}`}
+            className={`slot ${isAlpha ? (revealed ? 'slot--revealed' : 'slot--hidden') : 'slot--sep'}`}
             aria-hidden={!isAlpha ? false : !revealed}
-            title={!isAlpha ? (ch === " " ? "space" : ch) : undefined}
+            title={!isAlpha ? (ch === ' ' ? 'space' : ch) : undefined}
           >
             <span className="slot-inner">{displayChar}</span>
           </span>

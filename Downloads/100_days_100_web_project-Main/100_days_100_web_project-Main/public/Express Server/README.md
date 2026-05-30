@@ -94,12 +94,12 @@ Express Server/
 
 # 🛠️ Technologies Used
 
-| Technology | Purpose |
-|------------|---------|
-| Node.js | JavaScript Runtime |
-| Express.js | Backend Framework |
-| Dotenv | Environment Variable Management |
-| Nodemon | Development Server Reloading |
+| Technology | Purpose                         |
+| ---------- | ------------------------------- |
+| Node.js    | JavaScript Runtime              |
+| Express.js | Backend Framework               |
+| Dotenv     | Environment Variable Management |
+| Nodemon    | Development Server Reloading    |
 
 ---
 
@@ -350,7 +350,6 @@ Contributions are welcome.
 5. Open a Pull Request
 
 ---
-
 
 ### ⭐ If you find this project useful, consider starring the repository:
 

@@ -53,7 +53,7 @@ document.getElementById('holoButton').addEventListener('hologram:activated', (ev
 Change the action name with the `data-action` attribute:
 
 ```html
-<button class="holo-button" id="holoButton" data-action="open-login">
+<button class="holo-button" id="holoButton" data-action="open-login"></button>
 ```
 
 ## Files

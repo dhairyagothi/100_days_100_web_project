@@ -11,23 +11,19 @@ function resetscore(scorestr) {
   };
 
   score.display_results = function () {
-    return `<br>Won: ${score.win/2}<br><span style="color:red"> Lost: ${score.lost/2}</span><br>
-    Tie: ${score.tie/2} <br> <span style="color:purple;">Total Games: ${score.win/2 + score.lost/2 + score.tie/2}</span>`;
+    return `<br>Won: ${score.win / 2}<br><span style="color:red"> Lost: ${score.lost / 2}</span><br>
+    Tie: ${score.tie / 2} <br> <span style="color:purple;">Total Games: ${score.win / 2 + score.lost / 2 + score.tie / 2}</span>`;
   };
 
   // Save the reset score back to localStorage
   localStorage.setItem('SCORE', JSON.stringify(score));
-
-  
-  
 }
-
 
 function computergeneratechoice() {
   let randomnum = Math.random() * 3;
 
   if (randomnum > 0 && randomnum <= 1) {
-    return 'Bat'; 
+    return 'Bat';
   } else if (randomnum > 1 && randomnum <= 2) {
     return 'Ball';
   } else {
@@ -35,16 +31,16 @@ function computergeneratechoice() {
   }
 }
 
-
 function choiceimage(choice) {
   if (choice === 'Bat') {
     return '<div style="display: flex; justify-content: center; align-items: center; height: 100px;"><img src="bat.jpeg" alt="Bat" class="game-image" style="width: 80px; height: 80px;"></div>';
   } else if (choice === 'Ball') {
     return '<div style="display: flex; justify-content: center; align-items: center; height: 100px;"><img src="ball.jpeg" alt="Ball" class="game-image" style="width: 80px; height: 80px;"></div>';
-  } else if (choice === 'stump') {  // ensure 'stump' is used properly
+  } else if (choice === 'stump') {
+    // ensure 'stump' is used properly
     return '<div style="display: flex; justify-content: center; align-items: center; height: 100px;"><img src="wickets.jpeg" alt="Stump" class="game-image" style="width: 80px; height: 80px;"></div>';
   }
-  return '';  
+  return '';
 }
 
 function getresult(usermove, cmpchoice) {
@@ -79,7 +75,7 @@ function getresult(usermove, cmpchoice) {
       score.win += 1;
       resultMessage = ` User won.`;
     }
-  } else if (usermove === 'stump') {  
+  } else if (usermove === 'stump') {
     if (cmpchoice === 'stump') {
       score.tie += 1;
       resultMessage = ` It's a tie.`;
@@ -95,12 +91,9 @@ function getresult(usermove, cmpchoice) {
   return `<span style="color:gold">${resultMessage}</span>`;
 }
 
-
 function showresult(usermove, cmpchoice) {
-  
   let result = getresult(usermove, cmpchoice);
 
-  
   localStorage.setItem('SCORE', JSON.stringify(score));
 
   // Display only the images of the user and computer's choices
@@ -108,6 +101,6 @@ function showresult(usermove, cmpchoice) {
   document.querySelector('#computer-move').innerHTML = `Computer chose: ${choiceimage(cmpchoice)}`;
 
   // Display the result text (not repeating images)
-  document.querySelector('#result').innerHTML = result; 
+  document.querySelector('#result').innerHTML = result;
   document.querySelector('#score').innerHTML = `${score.display_results()}`;
 }

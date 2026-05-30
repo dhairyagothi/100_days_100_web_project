@@ -1,44 +1,45 @@
 /* ===========================
    CONFIG
 =========================== */
-const API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent";
-const STORAGE_KEY_API     = 'gemini_api_key';
+const API_URL =
+  'https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent';
+const STORAGE_KEY_API = 'gemini_api_key';
 const STORAGE_KEY_HISTORY = 'gemini_chat_history';
-const STORAGE_KEY_THEME   = 'gemini_theme';
+const STORAGE_KEY_THEME = 'gemini_theme';
 
 /* ===========================
    STATE
 =========================== */
-let geminiApiKey      = localStorage.getItem(STORAGE_KEY_API) || '';
+let geminiApiKey = localStorage.getItem(STORAGE_KEY_API) || '';
 let selectedImageBase64 = null;
-let chatHistory       = [];   // [{role:"user"|"model", parts:[{text}]}]
-let sessions          = loadSessions();
-let activeSessionId   = null;
+let chatHistory = []; // [{role:"user"|"model", parts:[{text}]}]
+let sessions = loadSessions();
+let activeSessionId = null;
 
 /* ===========================
    DOM REFS
 =========================== */
-const apiModal        = document.getElementById('api-modal');
-const apiKeyInput     = document.getElementById('api-key-input');
-const saveKeyBtn      = document.getElementById('save-key-btn');
-const toggleKeyBtn    = document.getElementById('toggle-key-visibility');
-const changeKeyBtn    = document.getElementById('change-key-btn');
-const messagesInner   = document.getElementById('messages-inner');
-const viewport        = document.getElementById('messages-viewport');
-const promptInput     = document.getElementById('prompt-input');
-const sendBtn         = document.getElementById('send-btn');
-const imageInput      = document.getElementById('image-input');
-const previewImg      = document.getElementById('preview-img');
-const previewWrap     = document.getElementById('image-preview-wrap');
-const removeImgBtn    = document.getElementById('remove-image-btn');
-const emptyState      = document.getElementById('empty-state');
-const historyList     = document.getElementById('history-list');
-const newChatBtn      = document.getElementById('new-chat-btn');
+const apiModal = document.getElementById('api-modal');
+const apiKeyInput = document.getElementById('api-key-input');
+const saveKeyBtn = document.getElementById('save-key-btn');
+const toggleKeyBtn = document.getElementById('toggle-key-visibility');
+const changeKeyBtn = document.getElementById('change-key-btn');
+const messagesInner = document.getElementById('messages-inner');
+const viewport = document.getElementById('messages-viewport');
+const promptInput = document.getElementById('prompt-input');
+const sendBtn = document.getElementById('send-btn');
+const imageInput = document.getElementById('image-input');
+const previewImg = document.getElementById('preview-img');
+const previewWrap = document.getElementById('image-preview-wrap');
+const removeImgBtn = document.getElementById('remove-image-btn');
+const emptyState = document.getElementById('empty-state');
+const historyList = document.getElementById('history-list');
+const newChatBtn = document.getElementById('new-chat-btn');
 const clearHistoryBtn = document.getElementById('clear-history-btn');
-const themeToggle     = document.getElementById('theme-toggle');
-const sidebarToggle   = document.getElementById('sidebar-toggle');
-const sidebar         = document.getElementById('sidebar');
-const sidebarClose    = document.getElementById('sidebar-close');
+const themeToggle = document.getElementById('theme-toggle');
+const sidebarToggle = document.getElementById('sidebar-toggle');
+const sidebar = document.getElementById('sidebar');
+const sidebarClose = document.getElementById('sidebar-close');
 
 /* ===========================
    INIT
@@ -68,13 +69,17 @@ function init() {
    API KEY MODAL
 =========================== */
 saveKeyBtn.addEventListener('click', saveApiKey);
-apiKeyInput.addEventListener('keydown', e => { if (e.key === 'Enter') saveApiKey(); });
+apiKeyInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') saveApiKey();
+});
 
 function saveApiKey() {
   const val = apiKeyInput.value.trim();
   if (!val) {
     apiKeyInput.style.borderColor = '#e05252';
-    setTimeout(() => { apiKeyInput.style.borderColor = ''; }, 1500);
+    setTimeout(() => {
+      apiKeyInput.style.borderColor = '';
+    }, 1500);
     return;
   }
   geminiApiKey = val;
@@ -103,14 +108,17 @@ themeToggle.addEventListener('click', () => {
    SIDEBAR
 =========================== */
 sidebarToggle.addEventListener('click', () => sidebar.classList.toggle('open'));
-sidebarClose.addEventListener('click',  () => sidebar.classList.remove('open'));
+sidebarClose.addEventListener('click', () => sidebar.classList.remove('open'));
 
 /* ===========================
    SESSIONS
 =========================== */
 function loadSessions() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY_HISTORY)) || []; }
-  catch { return []; }
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY_HISTORY)) || [];
+  } catch {
+    return [];
+  }
 }
 
 function saveSessions() {
@@ -127,24 +135,26 @@ function startNewChat() {
 }
 
 function loadSession(id) {
-  const session = sessions.find(s => s.id === id);
+  const session = sessions.find((s) => s.id === id);
   if (!session) return;
   activeSessionId = id;
   // Rebuild API history — map stored role "ai" -> "model" for legacy data
   chatHistory = session.messages
-    .filter(m => m.text)
-    .map(m => ({
+    .filter((m) => m.text)
+    .map((m) => ({
       role: m.role === 'ai' ? 'model' : m.role,
-      parts: [{ text: m.text }]
+      parts: [{ text: m.text }],
     }));
   clearMessages();
-  session.messages.forEach(m => renderMessage(m.role === 'ai' ? 'ai' : m.role, m.text, m.image, false));
+  session.messages.forEach((m) =>
+    renderMessage(m.role === 'ai' ? 'ai' : m.role, m.text, m.image, false)
+  );
   renderHistoryList();
   if (window.innerWidth <= 700) sidebar.classList.remove('open');
 }
 
 function getCurrentSession() {
-  return sessions.find(s => s.id === activeSessionId);
+  return sessions.find((s) => s.id === activeSessionId);
 }
 
 function deleteSession(id, e) {
@@ -156,7 +166,7 @@ function deleteSession(id, e) {
     startNewChat();
     return;
   }
-  sessions = sessions.filter(s => s.id !== id);
+  sessions = sessions.filter((s) => s.id !== id);
   saveSessions();
   if (id === activeSessionId) {
     loadSession(sessions[0].id);
@@ -167,7 +177,7 @@ function deleteSession(id, e) {
 
 function renameSession(id, e) {
   e.stopPropagation();
-  const session = sessions.find(s => s.id === id);
+  const session = sessions.find((s) => s.id === id);
   if (!session) return;
   const newTitle = prompt('Rename chat:', session.title);
   if (newTitle && newTitle.trim()) {
@@ -179,7 +189,7 @@ function renameSession(id, e) {
 
 function renderHistoryList() {
   historyList.innerHTML = '';
-  sessions.forEach(session => {
+  sessions.forEach((session) => {
     const item = document.createElement('div');
     item.className = 'history-item' + (session.id === activeSessionId ? ' active' : '');
 
@@ -205,8 +215,12 @@ function renderHistoryList() {
         </button>
       </div>`;
 
-    item.querySelector('.rename-btn').addEventListener('click', e => renameSession(session.id, e));
-    item.querySelector('.delete-btn').addEventListener('click', e => deleteSession(session.id, e));
+    item
+      .querySelector('.rename-btn')
+      .addEventListener('click', (e) => renameSession(session.id, e));
+    item
+      .querySelector('.delete-btn')
+      .addEventListener('click', (e) => deleteSession(session.id, e));
     item.addEventListener('click', () => loadSession(session.id));
     historyList.appendChild(item);
   });
@@ -229,7 +243,7 @@ imageInput.addEventListener('change', () => {
   const file = imageInput.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = e => {
+  reader.onload = (e) => {
     selectedImageBase64 = e.target.result.split(',')[1];
     previewImg.src = e.target.result;
     previewWrap.classList.remove('hidden');
@@ -257,7 +271,7 @@ promptInput.addEventListener('input', () => {
   updateSendBtn();
 });
 
-promptInput.addEventListener('keydown', e => {
+promptInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
     if (!sendBtn.disabled) handleSend();
@@ -285,17 +299,20 @@ function bindChip(chip) {
    SEND / RECEIVE
 =========================== */
 function handleSend() {
-  const text  = promptInput.value.trim();
+  const text = promptInput.value.trim();
   const image = selectedImageBase64;
   if (!text && !image) return;
 
-  if (!geminiApiKey) { apiModal.classList.remove('hidden'); return; }
+  if (!geminiApiKey) {
+    apiModal.classList.remove('hidden');
+    return;
+  }
 
   renderMessage('user', text || 'Sent an image', image, true);
 
   // Build parts for API
   const parts = [];
-  if (text)  parts.push({ text });
+  if (text) parts.push({ text });
   if (image) parts.push({ inline_data: { mime_type: 'image/jpeg', data: image } });
   chatHistory.push({ role: 'user', parts });
 
@@ -314,14 +331,16 @@ async function getAIResponse() {
     const response = await fetch(`${API_URL}?key=${geminiApiKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: chatHistory })
+      body: JSON.stringify({ contents: chatHistory }),
     });
 
     removeTyping(typingRow);
 
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));
-      throw new Error(err.error?.message || `HTTP ${response.status} — check your API key and try again.`);
+      throw new Error(
+        err.error?.message || `HTTP ${response.status} — check your API key and try again.`
+      );
     }
 
     const data = await response.json();
@@ -335,14 +354,13 @@ async function getAIResponse() {
     // Auto-title after first reply
     const session = getCurrentSession();
     if (session && session.title === 'New chat') {
-      const firstUserText = chatHistory.find(m => m.role === 'user')?.parts?.[0]?.text || '';
+      const firstUserText = chatHistory.find((m) => m.role === 'user')?.parts?.[0]?.text || '';
       if (firstUserText) {
         session.title = firstUserText.slice(0, 40) + (firstUserText.length > 40 ? '…' : '');
       }
     }
     saveSessions();
     renderHistoryList();
-
   } catch (err) {
     removeTyping(typingRow);
     renderMessage('ai', `**Error:** ${err.message}`, null, true);
@@ -384,7 +402,7 @@ function renderMessage(role, text, image, save) {
     bubble.innerHTML = marked.parse(text);
 
     // Per-codeblock copy buttons
-    bubble.querySelectorAll('pre').forEach(pre => {
+    bubble.querySelectorAll('pre').forEach((pre) => {
       pre.style.position = 'relative';
       const btn = document.createElement('button');
       btn.className = 'copy-btn';
@@ -393,7 +411,9 @@ function renderMessage(role, text, image, save) {
         const code = pre.querySelector('code');
         navigator.clipboard.writeText(code ? code.innerText : pre.innerText);
         btn.textContent = 'Copied!';
-        setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+        }, 2000);
       });
       pre.appendChild(btn);
     });
@@ -405,7 +425,6 @@ function renderMessage(role, text, image, save) {
         this.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy`;
       }, 2000);
     });
-
   } else {
     const bubble = document.createElement('div');
     bubble.className = 'bubble';
@@ -478,10 +497,7 @@ function scrollToBottom() {
 }
 
 function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 /* ===========================

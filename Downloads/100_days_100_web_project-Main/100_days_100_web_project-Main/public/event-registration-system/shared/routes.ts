@@ -45,11 +45,13 @@ export const api = {
     list: {
       method: 'GET' as const,
       path: '/api/registrations' as const,
-      input: z.object({
-        search: z.string().optional(),
-        college: z.string().optional(),
-        domain: z.enum(['Tech', 'Non-Tech']).optional(),
-      }).optional(),
+      input: z
+        .object({
+          search: z.string().optional(),
+          college: z.string().optional(),
+          domain: z.enum(['Tech', 'Non-Tech']).optional(),
+        })
+        .optional(),
       responses: {
         200: z.array(z.custom<typeof registrations.$inferSelect>()),
         401: errorSchemas.unauthorized,
@@ -67,15 +69,17 @@ export const api = {
             tech: z.number(),
             nonTech: z.number(),
           }),
-          dailyRegistrations: z.array(z.object({
-            date: z.string(),
-            count: z.number(),
-          })),
+          dailyRegistrations: z.array(
+            z.object({
+              date: z.string(),
+              count: z.number(),
+            })
+          ),
         }),
         401: errorSchemas.unauthorized,
       },
-    }
-  }
+    },
+  },
 };
 
 export function buildUrl(path: string, params?: Record<string, string | number>): string {

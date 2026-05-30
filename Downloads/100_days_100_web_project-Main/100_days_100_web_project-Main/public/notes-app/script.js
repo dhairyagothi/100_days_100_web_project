@@ -1,15 +1,15 @@
-const modal = document.getElementById("modal");
-const openModal = document.getElementById("openModal");
-const openCard = document.getElementById("openCard");
-const closeModal = document.getElementById("closeModal");
-const saveBtn = document.getElementById("saveBtn");
-const toast = document.getElementById("toast");
-const notesGrid = document.getElementById("notesGrid");
-const searchInput = document.getElementById("searchInput");
-const noteCount = document.getElementById("noteCount");
-const greeting = document.getElementById("greeting");
+const modal = document.getElementById('modal');
+const openModal = document.getElementById('openModal');
+const openCard = document.getElementById('openCard');
+const closeModal = document.getElementById('closeModal');
+const saveBtn = document.getElementById('saveBtn');
+const toast = document.getElementById('toast');
+const notesGrid = document.getElementById('notesGrid');
+const searchInput = document.getElementById('searchInput');
+const noteCount = document.getElementById('noteCount');
+const greeting = document.getElementById('greeting');
 
-let notes = JSON.parse(localStorage.getItem("notes")) || [];
+let notes = JSON.parse(localStorage.getItem('notes')) || [];
 
 /* GREETING */
 
@@ -17,11 +17,11 @@ function setGreeting() {
   const hour = new Date().getHours();
 
   if (hour < 12) {
-    greeting.innerText = "Good Morning 👋";
+    greeting.innerText = 'Good Morning 👋';
   } else if (hour < 18) {
-    greeting.innerText = "Good Afternoon 👋";
+    greeting.innerText = 'Good Afternoon 👋';
   } else {
-    greeting.innerText = "Good Evening 👋";
+    greeting.innerText = 'Good Evening 👋';
   }
 }
 
@@ -29,8 +29,8 @@ setGreeting();
 
 /* OPEN */
 
-openModal.addEventListener("click", () => {
-  modal.classList.add("active");
+openModal.addEventListener('click', () => {
+  modal.classList.add('active');
 });
 
 // document.addEventListener("click", (e) => {
@@ -41,16 +41,16 @@ openModal.addEventListener("click", () => {
 
 // });
 
-document.addEventListener("click", (e) => {
-  if (e.target.id === "openCard" || e.target.closest("#openCard")) {
-    modal.classList.add("active");
+document.addEventListener('click', (e) => {
+  if (e.target.id === 'openCard' || e.target.closest('#openCard')) {
+    modal.classList.add('active');
   }
 });
 
 /* CLOSE */
 
-closeModal.addEventListener("click", () => {
-  modal.classList.remove("active");
+closeModal.addEventListener('click', () => {
+  modal.classList.remove('active');
 });
 
 /* SAVE */
@@ -147,15 +147,15 @@ closeModal.addEventListener("click", () => {
 
 // });
 
-saveBtn.addEventListener("click", () => {
-  const title = document.getElementById("title").value.trim();
+saveBtn.addEventListener('click', () => {
+  const title = document.getElementById('title').value.trim();
 
-  const content = document.getElementById("content").value.trim();
+  const content = document.getElementById('content').value.trim();
 
-  const tag = document.getElementById("tag").value;
+  const tag = document.getElementById('tag').value;
 
-  if (title === "" || content === "") {
-    alert("Please fill all fields");
+  if (title === '' || content === '') {
+    alert('Please fill all fields');
     return;
   }
 
@@ -172,21 +172,21 @@ saveBtn.addEventListener("click", () => {
 
   notes.push(note);
 
-  localStorage.setItem("notes", JSON.stringify(notes));
+  localStorage.setItem('notes', JSON.stringify(notes));
 
   renderNotes(currentView);
 
-  modal.classList.remove("active");
+  modal.classList.remove('active');
 
-  document.getElementById("title").value = "";
-  document.getElementById("content").value = "";
-  document.getElementById("tag").selectedIndex = 0;
+  document.getElementById('title').value = '';
+  document.getElementById('content').value = '';
+  document.getElementById('tag').selectedIndex = 0;
 
   showToast();
 });
 /* RENDER */
 
-function renderNotes(type = "all") {
+function renderNotes(type = 'all') {
   notesGrid.innerHTML = `
     <div class="card add-card" id="openCard">
       <div class="plus">+</div>
@@ -196,20 +196,20 @@ function renderNotes(type = "all") {
 
   let filtered = notes;
 
-  if (type === "favorites") {
+  if (type === 'favorites') {
     filtered = notes.filter((note) => note.favorite);
   }
 
-  if (type === "locked") {
+  if (type === 'locked') {
     filtered = notes.filter((note) => note.locked);
   }
 
-  if (type === "trash") {
+  if (type === 'trash') {
     filtered = notes.filter((note) => note.trash);
   }
 
   filtered.forEach((note) => {
-    if (type !== "trash" && note.trash) {
+    if (type !== 'trash' && note.trash) {
       return;
     }
 
@@ -217,13 +217,13 @@ function renderNotes(type = "all") {
 
       <div class="card">
 
-        ${note.locked ? `<div class="lock-badge">🔒 Locked</div>` : ""}
+        ${note.locked ? `<div class="lock-badge">🔒 Locked</div>` : ''}
 
         <button
           class="favorite-btn"
           onclick="toggleFavorite(${note.id})"
         >
-          ${note.favorite ? "⭐" : "☆"}
+          ${note.favorite ? '⭐' : '☆'}
         </button>
 
 
@@ -231,13 +231,13 @@ function renderNotes(type = "all") {
             class="lock-btn"
             onclick="toggleLock(${note.id})"
          >
-        ${note.locked ? "🔒" : "🔓"}
+        ${note.locked ? '🔒' : '🔓'}
         </button>
 
         <h2>${note.title}</h2>
 
         <p>
-${note.locked && currentView !== "locked" ? "🔒 Locked Note" : note.content}
+${note.locked && currentView !== 'locked' ? '🔒 Locked Note' : note.content}
 </p>
 
         <div class="badge">${note.tag}</div>
@@ -245,7 +245,7 @@ ${note.locked && currentView !== "locked" ? "🔒 Locked Note" : note.content}
         
 
        ${
-         type === "trash"
+         type === 'trash'
            ? `
   <div class="card-footer">
 
@@ -296,9 +296,7 @@ ${note.locked && currentView !== "locked" ? "🔒 Locked Note" : note.content}
   });
 
   //   noteCount.innerText = `You have ${filtered.length} notes`;
-  noteCount.innerText = `You have ${
-    filtered.filter((n) => !n.trash).length
-  } notes`;
+  noteCount.innerText = `You have ${filtered.filter((n) => !n.trash).length} notes`;
 }
 
 /* FAVORITE */
@@ -312,7 +310,7 @@ function toggleFavorite(id) {
     return note;
   });
 
-  localStorage.setItem("notes", JSON.stringify(notes));
+  localStorage.setItem('notes', JSON.stringify(notes));
 
   renderNotes(currentView);
 }
@@ -326,7 +324,7 @@ function toggleLock(id) {
     return note;
   });
 
-  localStorage.setItem("notes", JSON.stringify(notes));
+  localStorage.setItem('notes', JSON.stringify(notes));
 
   renderNotes(currentView);
 }
@@ -342,7 +340,7 @@ function moveToTrash(id) {
     return note;
   });
 
-  localStorage.setItem("notes", JSON.stringify(notes));
+  localStorage.setItem('notes', JSON.stringify(notes));
 
   renderNotes(currentView);
 }
@@ -354,9 +352,9 @@ function restoreNote(id) {
     return note;
   });
 
-  localStorage.setItem("notes", JSON.stringify(notes));
+  localStorage.setItem('notes', JSON.stringify(notes));
 
-  renderNotes("trash");
+  renderNotes('trash');
 }
 
 /* DELETE */
@@ -364,13 +362,13 @@ function restoreNote(id) {
 function deleteForever(id) {
   notes = notes.filter((note) => note.id !== id);
 
-  localStorage.setItem("notes", JSON.stringify(notes));
+  localStorage.setItem('notes', JSON.stringify(notes));
 
-  renderNotes("trash");
+  renderNotes('trash');
 }
 
 /* SEARCH */
-searchInput.addEventListener("keyup", () => {
+searchInput.addEventListener('keyup', () => {
   const value = searchInput.value.toLowerCase();
 
   const filtered = notes.filter(
@@ -378,7 +376,7 @@ searchInput.addEventListener("keyup", () => {
       !note.trash &&
       (note.title.toLowerCase().includes(value) ||
         note.content.toLowerCase().includes(value) ||
-        note.tag.toLowerCase().includes(value)),
+        note.tag.toLowerCase().includes(value))
   );
 
   notesGrid.innerHTML = `
@@ -395,13 +393,13 @@ searchInput.addEventListener("keyup", () => {
 
       <div class="card">
 
-        ${note.locked ? `<div class="lock-badge">🔒 Locked</div>` : ""}
+        ${note.locked ? `<div class="lock-badge">🔒 Locked</div>` : ''}
 
         <button
           class="favorite-btn"
           onclick="toggleFavorite(${note.id})"
         >
-          ${note.favorite ? "⭐" : "☆"}
+          ${note.favorite ? '⭐' : '☆'}
         </button>
 
         <h2>${note.title}</h2>
@@ -451,40 +449,40 @@ searchInput.addEventListener("keyup", () => {
 /* TOAST */
 
 function showToast() {
-  toast.classList.add("show");
+  toast.classList.add('show');
 
   setTimeout(() => {
-    toast.classList.remove("show");
+    toast.classList.remove('show');
   }, 2500);
 }
 
 /* DARK MODE */
 
-const themeToggle = document.getElementById("themeToggle");
+const themeToggle = document.getElementById('themeToggle');
 
-themeToggle.addEventListener("click", () => {
-  document.body.classList.toggle("light");
+themeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('light');
 
-  const themeText = document.getElementById("themeText");
+  const themeText = document.getElementById('themeText');
 
-  if (document.body.classList.contains("light")) {
-    themeText.innerHTML = "☀️ Light Mode";
+  if (document.body.classList.contains('light')) {
+    themeText.innerHTML = '☀️ Light Mode';
   } else {
-    themeText.innerHTML = "🌙 Dark Mode";
+    themeText.innerHTML = '🌙 Dark Mode';
   }
 });
 
 /* MENU */
 
-let currentView = "all";
+let currentView = 'all';
 
-const menuItems = document.querySelectorAll(".menu-item");
+const menuItems = document.querySelectorAll('.menu-item');
 
 menuItems.forEach((item) => {
-  item.addEventListener("click", () => {
-    menuItems.forEach((i) => i.classList.remove("active"));
+  item.addEventListener('click', () => {
+    menuItems.forEach((i) => i.classList.remove('active'));
 
-    item.classList.add("active");
+    item.classList.add('active');
 
     currentView = item.dataset.filter;
 

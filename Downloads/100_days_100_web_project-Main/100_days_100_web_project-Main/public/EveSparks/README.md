@@ -17,15 +17,13 @@ Mobile-friendly layout
 Clean and elegant interface
 Pure HTML, CSS, and JavaScript
 
-
 🛠️ Tech Stack
 
-| Technology | Usage |
-|------------|-------|
-| HTML5      | Structure |
+| Technology | Usage                       |
+| ---------- | --------------------------- |
+| HTML5      | Structure                   |
 | CSS3       | Styling & Responsive Design |
-| JavaScript | Interactivity |
-
+| JavaScript | Interactivity               |
 
 📂 Project Structure
 
@@ -59,21 +57,20 @@ You can also use a local development server such as:
 
 VS Code Live Server Extension
 
-
 🧠 Website Sections
 
 The project includes the following UI sections:
 
-| Section | Description |
-|----------|-------------|
-| Hero Banner | Promotional event showcase section |
-| Navigation Bar | Website navigation links and menu |
-| Search Bar | Search functionality for services and events |
-| Event Categories | Wedding, Birthday, Corporate, and Social Events |
-| Service Listings | Vendor and package display cards |
-| Budget Planner | Event budgeting and planning section |
-| Contact Buttons | Interactive call-to-action buttons |
-| Responsive Layout | Mobile-friendly adaptable interface |
+| Section           | Description                                     |
+| ----------------- | ----------------------------------------------- |
+| Hero Banner       | Promotional event showcase section              |
+| Navigation Bar    | Website navigation links and menu               |
+| Search Bar        | Search functionality for services and events    |
+| Event Categories  | Wedding, Birthday, Corporate, and Social Events |
+| Service Listings  | Vendor and package display cards                |
+| Budget Planner    | Event budgeting and planning section            |
+| Contact Buttons   | Interactive call-to-action buttons              |
+| Responsive Layout | Mobile-friendly adaptable interface             |
 
 🖥️ Homepage Preview
 
@@ -87,8 +84,6 @@ Add services section screenshot inside:
 
 assets/preview-services.png
 
-
-
 🧠 HTML Structure
 
 index.html
@@ -96,20 +91,17 @@ index.html
 <header>
 
   <nav class="navbar">
-    
+
 
     <input
       type="text"
       placeholder="Search for services..."
     />
 
-    
-
   <section class="hero-banner">
-    
+
 
 </header>
-
 
 🎨 CSS Features
 
@@ -124,7 +116,6 @@ Banner overlays
 Interactive buttons
 Mobile responsiveness
 
-
 ⚡ JavaScript Functionality
 
 script.js
@@ -132,21 +123,18 @@ script.js
 const buttons = document.querySelectorAll("button");
 
 buttons.forEach((button) => {
-  
-});
 
+});
 
 🌟 Features Demonstrated
 
-
-| Feature | Description |
-|----------|-------------|
-| Responsive Layout | Adapts across devices |
-| Event Listings | Displays event packages |
-| Search UI | Service search section |
-| Interactive Buttons | User engagement |
-| Modern Design | Clean and elegant interface |
-
+| Feature             | Description                 |
+| ------------------- | --------------------------- |
+| Responsive Layout   | Adapts across devices       |
+| Event Listings      | Displays event packages     |
+| Search UI           | Service search section      |
+| Interactive Buttons | User engagement             |
+| Modern Design       | Clean and elegant interface |
 
 🌐 Live Demo
 
@@ -160,7 +148,6 @@ Netlify
 Vercel
 GitHub Pages
 
-
 🚀 Future Improvements
 
 Backend integration
@@ -172,7 +159,6 @@ User dashboard
 Admin panel
 Dark mode support
 
-
 🤝 Contributing
 
 Contributions are welcome.
@@ -183,18 +169,15 @@ Create a feature branch
 
 git checkout -b feature/new-feature
 
-
 Commit your changes
 
 git commit -m "Add new feature"
-
 
 Push to GitHub
 
 git push origin feature/new-feature
 
 Open a Pull Request
-
 
 ⭐ Support
 
