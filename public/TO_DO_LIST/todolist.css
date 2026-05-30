@@ -1,3 +1,17 @@
+:root {
+  --theme-card-bg: rgba(232, 221, 227, 1); /* default: theme 1 */
+  --theme-text: #1a1a2e;
+  --nav-bg: rgba(225, 225, 225, 0.45);
+  --nav-link-bg: rgba(20, 48, 65, 0.7);
+  --btn-bg: #2d2d2d;
+  --btn-hover: #000;
+  --radius-card: 14px;
+  --radius-btn: 9px;
+  --shadow-card: 0 4px 18px rgba(0, 0, 0, 0.18);
+  --shadow-nav: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --transition: 0.28s ease;
+  --font-main: 'Segoe UI', system-ui, sans-serif;
+}
 /* ============================================
    🎨 TO-DO LIST — COMPLETE UPDATED CSS
    ============================================ */
@@ -9,6 +23,26 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(
+    135deg,
+    rgba(43, 48, 121, 1) 0%,
+    rgba(101, 78, 170, 0.97) 55%,
+    rgba(136, 136, 168, 1) 100%
+  );
+  min-height: 100vh;
+  font-family: var(--font-main);
+  transition: background var(--transition);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 /* ---------- VARIABLES ---------- */
@@ -378,12 +412,211 @@ main {
 
 #submittask:hover {
   transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(78, 98, 254, 0.40);
+}
+
+#savepdf {
+  background-color: #1a5c2a;
+}
+
+#savepdf:hover {
+  background-color: #0f3d1c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  transition: all 0.2s;
+}
+
+.tab-btn.active,
+.tab-btn:hover {
+  background: var(--accent);
+  color: #111;
+  font-weight: 700;
+}
+
+.nav-themes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.theme-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+}
+.theme-swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s;
+}
+.theme-swatch:hover,
+.theme-swatch.active {
+  transform: scale(1.25);
+  border-color: white;
+}
+#t1 {
+  background: linear-gradient(135deg, #1a0533, #f5c842);
+}
+#t2 {
+  background: linear-gradient(135deg, #0a1628, #00d4ff);
+}
+#t3 {
+  background: linear-gradient(135deg, #0a1f0a, #7fff00);
+}
+#t4 {
+  background: linear-gradient(135deg, #000, #a855f7);
+}
+#t5 {
+  background: linear-gradient(135deg, #001a1a, #00ffcc);
+}
+
+/* ====== MAIN ====== */
+main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* ====== PAGE HEADER ====== */
+.page-header {
+  margin-bottom: 40px;
+}
+.main-heading {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(60px, 12vw, 120px);
+  line-height: 0.9;
+  color: var(--text);
+  letter-spacing: 2px;
+  position: relative;
+}
+.main-heading::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 5px;
+  background: var(--accent);
+  margin-top: 12px;
+  border-radius: 3px;
+  box-shadow: 0 0 16px var(--accent);
+}
+.sub-heading {
+  margin-top: 14px;
+  font-size: 16px;
+  color: var(--text-muted);
+  font-weight: 300;
+  font-style: italic;
+}
+
+/* ====== ADD TASK BAR ====== */
+.add-task-bar {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(10px);
+}
+.input-row {
 }
 
 .input-actions {
   margin-top: 14px;
   display: flex;
-  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+#task-input {
+  flex: 1;
+  min-width: 180px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+#task-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(245, 200, 66, 0.15);
+}
+#task-input::placeholder {
+  color: var(--text-muted);
+}
+
+#task-type-select {
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+}
+#task-type-select:focus {
+  border-color: var(--accent);
+}
+#task-type-select option {
+  background: #1a1a2e;
+  color: #fff;
+}
+
+.btn-add {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #111;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 12px 22px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-add:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 200, 66, 0.4);
+  filter: brightness(1.1);
+}
+.btn-add:active {
+  transform: translateY(0);
+}
+
+.progress-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 999px;
+  width: 0%;
+  transition: width 0.5s ease;
+  box-shadow: 0 0 10px var(--accent);
+}
+.progress-pct {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  color: var(--accent);
+  min-width: 35px;
 }
 
 #savepdf {
@@ -430,6 +663,11 @@ main {
 #notes-container {
   display: flex;
   flex-wrap: wrap;
+  gap: 16px;
+  width: 100%;
+  justify-content: center;
+  padding: 0 0 20px;
+  
   gap: 18px;
 
   list-style: none;
@@ -684,6 +922,35 @@ main {
   }
 }
 
+.task-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #000000;
+  font-size: 12px;
+  font-weight: 700;
+  margin-right: 8px;
+  border: #000000 1px solid;
+}
+
+/* ---------- Category Badge ---------- */
+.category-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  width: fit-content;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 768px) {
 
@@ -765,6 +1032,18 @@ main {
   --accent-gradient: linear-gradient(135deg,#ff9800,#ffb74d);
 }
 
+/* Empty state spacing fix */
+#empty-state {
+  margin-top: 20px;
+}
+#task-input {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #000000 !important;
+}
+
+#task-input::placeholder {
+  color: #555555 !important;
+}
 .theme5 {
   --page-bg-start: #ef1414;
   --page-bg-mid: #7f1d1d;

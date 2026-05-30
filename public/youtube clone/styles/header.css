@@ -41,6 +41,10 @@
   background-color: rgba(0, 0, 0, 0.2);
 }
 
+.hamburger-menu {
+  cursor: pointer;
+}
+
 .youtube-logo {
   height: 20px;
 }
@@ -61,13 +65,13 @@
   padding-left: 16px;
   font-size: 16px;
   border: 1px solid rgb(204, 204, 204);
-  border-right: none; 
+  border-right: none;
   border-top-left-radius: 40px;
   border-bottom-left-radius: 40px;
   background-color: transparent;
   outline: none;
   width: 0;
-  box-sizing: border-box; /* Secures exact 40px computation */
+  box-sizing: border-box;
   transition: border-color 0.15s ease;
 }
 
