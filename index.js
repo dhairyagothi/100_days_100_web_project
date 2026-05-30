@@ -181,8 +181,7 @@ const PROJECT_DATA = [
   ['Day 114', 'EchoNotes', './public/EchoNotes/index.html', ['todo', 'javascript'], 'intermediate'],
   ['Day 115', 'Event Registration System', 'https://event-registration-system-w10a.onrender.com/', ['api', 'javascript'], 'intermediate'],
   ['Day 116', 'AI Image Classifier', './public/AI%20Image%20Classifier/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 117', 'Habit Tracker Web App', './public/Habit-Tracker-Web-App/index.html', ['ui', 'tool', 'html', 'css', 'js'], 'intermediate'],
-  ['Day 118', 'Particle Effect', './public/particle-effect/index.html', ['ui', 'html', 'css', 'js', 'canvas'], 'intermediate'],
+  ['Day 117', 'Particle Effect', './public/particle-effect/index.html', ['ui', 'html', 'css', 'js', 'canvas'], 'intermediate'],
   ['Day 119', 'Virtual Playground', './playground.html', ['ui', 'game', 'html', 'css', 'js'], 'intermediate'],
   ['Day 120', 'Typing Speed Test', './public/typing_test/index.html', ['html', 'css', 'js', 'game'], 'intermediate'],
   ['Day 121', 'InterviewSimulator', './public/InterviewSimulator/index.html', ['tool'], 'intermediate'],
@@ -240,6 +239,7 @@ const PROJECT_DATA = [
   ['Day 173', 'AI-Resume-Analyzer', './public/AI-Resume-Analyzer/index.html', ['tool', 'javascript', 'html', 'css'], 'advanced'],
   ['Day 174', 'Unit Kitchen', './public/Unit-Kitchen/index.html', ['html', 'css', 'javascript','game'], 'intermediate'],
    ['Day 175', 'Fruit Slice game', './public/fruitslice/index.html', ['html', 'css', 'javascript','game'], 'intermediate'],
+  ['Day 176', 'Habit Tracker', './public/HabitTracker/index.html', ['todo', 'productivity', 'javascript'], 'intermediate'],
 
 ];
 const PROJECTS = PROJECT_DATA;
@@ -572,6 +572,9 @@ const PROJECT_DESCRIPTIONS = {
 "Mood Tracker":
 "Record emotions over time and observe personal mood patterns. Combines wellness concepts with data tracking.",
 
+"Habit Tracker":
+"Modern productivity habit tracker with daily completion, streak tracking, progress stats, and localStorage persistence.",
+
 "CRYPTOSHOW":
 "Displays cryptocurrency information dynamically with market-related insights. Introduces API usage and dashboards.",
 
@@ -592,9 +595,6 @@ const PROJECT_DESCRIPTIONS = {
 
 "AI Image Classifier":
 "Classifies uploaded images using AI-based prediction concepts. Introduces machine learning integrations.",
-
-"Habit Tracker Web App":
-"Track routines and monitor consistency across personal habits over time. Encourages productivity and discipline.",
 
 "Particle Effect":
 "Interactive particle animation creating visually engaging motion effects. Focuses on graphics and performance.",
