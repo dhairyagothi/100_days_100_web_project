@@ -1,0 +1,428 @@
+import React from "react";
+import css from "./complete.css";
+import { IoMdSearch } from "react-icons/io";
+import { FaStarHalf } from "react-icons/fa6";
+import { FaStar } from "react-icons/fa6";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+function Product() {
+  const settings = {
+  dots: true,
+  infinite: true,
+  autoplay: true,
+  autoplaySpeed: 2500,
+  speed: 800,
+  pauseOnHover: true,
+  arrows: false,
+  fade: true
+};
+    const eventpacks = [
+  {
+    img: "../image/b3.png",
+    name: "Wedding Event Packs",
+    desc: "Complete Wedding Pack",
+    includes:
+      "Wedding Decor, Wedding Catering, Wedding Photography, Wedding Event Planner and many more..."
+  },
+
+  {
+    img: "../image/birthday.jpg",
+    name: "Birthday Event Packs",
+    desc: "Complete Birthday Pack",
+    includes:
+      "Birthday Decor, Birthday Catering, Birthday Photography, Birthday Event Planner and many more..."
+  },
+
+  {
+    img: "../image/concert.jpg",
+    name: "Concert Packs",
+    desc: "Complete Concert Pack",
+    includes:
+      "Concert Decor, Concert Catering, Concert Photography, Concert Event Planner and many more..."
+  },
+
+  {
+    img: "../image/b3.png",
+    name: "Corporate Event Packs",
+    desc: "Complete Corporate Event Pack",
+    includes:
+      "Corporate Event Decor, Corporate Event Photography, Corporate Event Planner and many more..."
+  },
+
+  {
+    img: "../image/festival.jpeg",
+    name: "Festival Event Packs",
+    desc: "Complete Festival Pack",
+    includes:
+      "Festival Decor, Festival Catering, Festival Photography, Festival Event Planner and many more..."
+  },
+
+  {
+    img: "../image/customized.jpg",
+    name: "Customized Event Packs",
+    desc: "Customize Your Pack",
+    includes:
+      "Build your own package according to your budget and preferences."
+  }
+];
+    return (
+        
+        <div className="products-page-container">
+            <div >
+
+                <div class="banner">
+
+                    <div class="container">
+
+                        <Slider {...settings}>
+
+                            <div class="slider-item">
+
+                                <img src="../image/b1.jpg" alt="banner" class="banner-img" />
+
+                                <div class="banner-content">
+
+                                    <p class="banner-subtitle">Trending Offers</p>
+
+                                    <h2 class="banner-title">Wedding Season sale</h2>
+
+                                    <p class="banner-text">
+                                        <b>Extra 20% off </b> On <b>complete Wedding package</b>
+                                    </p>
+
+                                    <a href="#" class="banner-btn">Get Quote now</a>
+
+                                </div>
+
+                            </div>
+
+                            <div class="slider-item">
+
+                                <img src="../image/b2.jpg" alt="banner" class="banner-img" />
+
+                                <div class="banner-content">
+
+                                    <p class="banner-subtitle">Trending Offers</p>
+
+                                    <h2 class="banner-title">Concerts</h2>
+
+                                    <p class="banner-text">
+                                        Get extra <b>10% off</b>on  <b>Concerts Event</b>
+                                    </p>
+
+                                    <a href="#" class="banner-btn">Book now</a>
+
+                                </div>
+
+                            </div>
+
+                            <div class="slider-item">
+
+                                <img src="../image/b3.png" alt="banner" class="banner-img" />
+
+                                <div class="banner-content">
+
+                                    <p class="banner-subtitle">Organise your event in your Budget</p>
+
+                                    <h2 class="banner-title">Customized Event Planner</h2>
+
+                                    <p class="banner-text">
+                                        Customized event pack   according to your budget
+                                    </p>
+
+                                    <a href="#" class="banner-btn">Contact now</a>
+
+                                </div>
+
+                            </div>
+
+                        </Slider>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+
+
+
+
+            {/* <!--
+      - PRODUCT
+    --> */}
+
+
+
+
+<section className="events-section">
+  <div className="section-header">
+    <h2>Event Packs</h2>
+    <p>Choose premium event packages crafted for every occasion</p>
+  </div>
+
+  <div className="horizontal-card-grid">
+    {eventpacks.map((item, index) => (
+      <div className="modern-event-card" key={index}>
+        
+        <div className="modern-event-image">
+          <img src={item.img} alt={item.name} />
+        </div>
+
+        <div className="modern-event-content">
+          <h3>{item.name}</h3>
+
+          <p className="event-subtitle">
+            {item.desc}
+          </p>
+
+          <p className="event-description">
+            {item.includes}
+          </p>
+
+          <div className="event-card-footer">
+            <span className="price-text">
+              Find best Price
+            </span>
+
+            <button className="modern-btn">
+              GET QUOTE NOW
+            </button>
+          </div>
+        </div>
+
+      </div>
+    ))}
+  </div>
+</section>
+<section className="search-section">
+
+  <div className="section-header">
+    <h2>Search Near Your Location</h2>
+    <p>Showing results for Bhopal</p>
+  </div>
+
+  <div className="modern-search-bar">
+    <input
+      type="text"
+      placeholder="Enter your location..."
+    />
+
+    <button>
+      <IoMdSearch />
+    </button>
+  </div>
+
+  <div className="horizontal-list">
+
+    <div className="horizontal-info-card">
+
+      <div className="info-content">
+
+        <h3>Evoke Event Management</h3>
+
+        <div className="rating-row">
+          <FaStar />
+          <FaStar />
+          <FaStar />
+          <FaStar />
+          <FaStarHalf />
+        </div>
+
+        <p>
+          E-3/114, Arera Colony, Bhopal, Madhya Pradesh
+        </p>
+
+      </div>
+
+      <button className="modern-btn">
+        Contact Now
+      </button>
+
+    </div>
+
+    <div className="horizontal-info-card">
+
+      <div className="info-content">
+
+        <h3>Soni Decorators</h3>
+
+        <div className="rating-row">
+          <FaStar />
+          <FaStar />
+          <FaStar />
+          <FaStar />
+        </div>
+
+        <p>
+          Shop No.9-10, Bittan Market, Bhopal
+        </p>
+
+      </div>
+
+      <button className="modern-btn">
+        Contact Now
+      </button>
+
+    </div>
+
+    <div className="horizontal-info-card">
+
+      <div className="info-content">
+
+        <h3>Benchmark Events & Weddings</h3>
+
+        <div className="rating-row">
+          <FaStar />
+          <FaStar />
+          <FaStar />
+          <FaStar />
+          <FaStarHalf />
+        </div>
+
+        <p>
+          Shivaji Nagar, Bhopal, Madhya Pradesh
+        </p>
+
+      </div>
+
+      <button className="modern-btn">
+        Contact Now
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+<section className="top-rated-section">
+
+  <div className="section-header">
+    <h2>Top Rated Organisers & Their Packages</h2>
+
+    <p>
+      Best Event Packages of organisers in Bhopal
+    </p>
+  </div>
+
+  <div className="horizontal-list">
+
+    <div className="horizontal-info-card">
+
+      <div className="info-content">
+
+        <h3>The Wedding Rituals</h3>
+
+        <div className="rating-row">
+          <FaStar />
+          <FaStar />
+          <FaStar />
+          <FaStar />
+          <FaStar />
+        </div>
+
+        <p>
+          Zone-II, Maharana Pratap Nagar, Bhopal
+        </p>
+
+      </div>
+
+      <button className="modern-btn">
+        Package Details
+      </button>
+
+    </div>
+
+    <div className="horizontal-info-card">
+
+      <div className="info-content">
+
+        <h3>AMG EVENT & ENTERTAINMENT</h3>
+
+        <div className="rating-row">
+          <FaStar />
+          <FaStar />
+          <FaStar />
+          <FaStar />
+          <FaStarHalf />
+        </div>
+
+        <p>
+          Near Axis Bank, Zone-I, Bhopal
+        </p>
+
+      </div>
+
+      <button className="modern-btn">
+        Package Details
+      </button>
+
+    </div>
+
+    <div className="horizontal-info-card">
+
+      <div className="info-content">
+
+        <h3>Luxury Event Management</h3>
+
+        <div className="rating-row">
+          <FaStar />
+          <FaStar />
+          <FaStar />
+          <FaStar />
+          <FaStarHalf />
+        </div>
+
+        <p>
+          M.P Nagar, Bhopal, Madhya Pradesh
+        </p>
+
+      </div>
+
+      <button className="modern-btn">
+        Package Details
+      </button>
+
+    </div>
+
+    <div className="horizontal-info-card">
+
+      <div className="info-content">
+
+        <h3>Dream World Events</h3>
+
+        <div className="rating-row">
+          <FaStar />
+          <FaStar />
+          <FaStar />
+          <FaStar />
+          <FaStarHalf />
+        </div>
+
+        <p>
+          Maharana Pratap Nagar, Bhopal
+        </p>
+
+      </div>
+
+      <button className="modern-btn">
+        Package Details
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+        </div>
+    );
+}
+
+export default Product;
+

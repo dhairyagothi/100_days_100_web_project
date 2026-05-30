@@ -1,248 +1,71 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&display=swap');
-
-
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-:root {
-  --sky:    #0a0a1a;
-  --mid:    #0d1b3e;
-  --glow:   #00e5ff;
-  --star:   #ffd700;
-  --bird:   #ff6b35;
-  --accent: #7c4dff;
-  --green:  #00e676;
-  --text:   #e0f7fa;
-}
-
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  background: var(--sky);
+  background: radial-gradient(ellipse at 50% 40%, #1b2a3b 0%, #0d1117 100%);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  font-family: 'Press Start 2P', monospace;
+  min-height: 100dvh;
   overflow: hidden;
   user-select: none;
+  -webkit-user-select: none;
 }
 
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image:
-    radial-gradient(1px   1px   at 10% 15%, rgba(255,255,255,0.6) 0%, transparent 100%),
-    radial-gradient(1px   1px   at 25% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 45% 30%, rgba(255,255,255,0.5) 0%, transparent 100%),
-    radial-gradient(1px   1px   at 65% 75%, rgba(255,255,255,0.3) 0%, transparent 100%),
-    radial-gradient(2px   2px   at 80% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
-    radial-gradient(1px   1px   at 90% 50%, rgba(255,255,255,0.6) 0%, transparent 100%),
-    radial-gradient(1px   1px   at  5% 85%, rgba(255,255,255,0.3) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 55% 90%, rgba(255,255,255,0.5) 0%, transparent 100%),
-    radial-gradient(1px   1px   at 35% 45%, rgba(255,255,255,0.4) 0%, transparent 100%),
-    radial-gradient(2px   2px   at 70%  5%, rgba(255,255,255,0.5) 0%, transparent 100%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-
-.wrapper {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  z-index: 1;
-}
-
-
-.hud {
-  display: flex;
-  gap: 32px;
-  align-items: center;
-  background: rgba(0,0,0,0.5);
-  border: 2px solid var(--glow);
-  border-radius: 4px;
-  padding: 10px 24px;
-  box-shadow: 0 0 20px rgba(0,229,255,0.3), inset 0 0 10px rgba(0,0,0,0.5);
-}
-
-.hud-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.hud-label {
-  font-size: 7px;
-  color: var(--glow);
-  letter-spacing: 2px;
-  opacity: 0.7;
-}
-
-.hud-value {
-  font-size: 14px;
-  color: #fff;
-  text-shadow: 0 0 10px var(--glow);
-  min-width: 60px;
-  text-align: center;
-}
-
-#score-display { color: var(--star);  text-shadow: 0 0 10px var(--star);  }
-#timer-display { color: var(--green); text-shadow: 0 0 10px var(--green); }
-
-
-.canvas-container {
-  position: relative;
-  width: 600px;
-  height: 450px;
+@font-face {
+  font-family: "Flappy";
+  src: url("FlappyBirdRegular.ttf") format("truetype");
+  font-display: swap;
 }
 
 #gameCanvas {
   display: block;
-  border: 2px solid var(--glow);
-  border-radius: 4px;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.10);
   box-shadow:
-    0 0 40px rgba(0,229,255,0.25),
-    0 0 80px rgba(0,229,255,0.1),
-    inset 0 0 60px rgba(0,0,30,0.8);
-  cursor: crosshair;
-}
-
-
-.overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  background: rgba(0,0,10,0.85);
-  backdrop-filter: blur(4px);
-  border-radius: 2px;
-  z-index: 10;
-  pointer-events: all;
-}
-
-.overlay.hidden {
-  display: none;
-  pointer-events: none;
-}
-
-.overlay-title {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 28px;
-  font-weight: 900;
-  color: var(--star);
-  text-shadow: 0 0 20px var(--star), 0 0 40px rgba(255,215,0,0.5);
-  letter-spacing: 4px;
-  animation: pulse 2s ease-in-out infinite;
-}
-
-.overlay-sub {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 13px;
-  font-weight: 400;
-  color: #ffffff;
-  opacity: 1;
-  line-height: 2.2;
-  text-align: center;
-  text-shadow: 0 0 10px rgba(0,229,255,0.6);
-  letter-spacing: 1px;
-}
-
-.controls-hint {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  color: #00e5ff;
-  line-height: 2.4;
-  text-align: center;
-  text-shadow: 0 0 8px rgba(0,229,255,0.8);
-  letter-spacing: 1.5px;
-  border: 1px solid rgba(0,229,255,0.3);
-  padding: 12px 20px;
-  border-radius: 4px;
-  background: rgba(0,229,255,0.05);
-}
-
-
-.btn {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 10px;
-  color: var(--sky);
-  background: var(--glow);
-  border: none;
-  padding: 14px 28px;
+    0 0  0   1px rgba(255,255,255,0.04),
+    0 8px 32px rgba(0,0,0,0.70),
+    0 0 80px  rgba(100,200,255,0.07);
+  /* Responsive: shrink on small viewports without stretching */
+  max-width:  min(1000px, 100vw);
+  max-height: min(600px,  calc(100dvh - 52px));
+  aspect-ratio: 1000 / 600;
+  width: 100%;
+  touch-action: none;
   cursor: pointer;
-  border-radius: 2px;
-  letter-spacing: 2px;
-  box-shadow: 0 0 20px rgba(0,229,255,0.5);
-  transition: all 0.15s;
-  margin-top: 8px;
+  image-rendering: pixelated;
 }
 
-.btn:hover {
-  background: #fff;
-  box-shadow: 0 0 30px rgba(0,229,255,0.8);
-  transform: scale(1.05);
-}
-
-.btn:active {
-  transform: scale(0.97);
-}
-
-
-.final-score {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text);
+.hint {
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.35);
+  font-family: "Flappy", sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.06em;
   text-align: center;
-  letter-spacing: 2px;
 }
 
-.final-score span {
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 900;
-  color: var(--star);
-  font-size: 32px;
-  display: block;
-  margin-top: 6px;
-  text-shadow: 0 0 15px var(--star);
-  letter-spacing: 4px;
+/* Mobile: stack nicely */
+@media (max-width: 600px) {
+  .hint { font-size: 11px; margin-top: 6px; }
+}
+.back-home {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 1000;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: all 0.2s ease;
 }
 
-
-.score-pop {
-  position: absolute;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 11px;
-  color: var(--star);
-  text-shadow: 0 0 8px var(--star);
-  pointer-events: none;
-  z-index: 20;
-  animation: floatUp 0.8s ease-out forwards;
-}
-
-
-@keyframes timerUrgent {
-  0%, 100% { opacity: 1;   transform: scale(1);    }
-  50%       { opacity: 0.5; transform: scale(1.15); }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1;   }
-  50%       { opacity: 0.7; }
-}
-
-@keyframes floatUp {
-  0%   { opacity: 1; transform: translateY(0)     scale(1.2); }
-  100% { opacity: 0; transform: translateY(-50px) scale(0.8); }
+.back-home:hover {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,0.15);
 }
