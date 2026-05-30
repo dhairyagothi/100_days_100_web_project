@@ -1,0 +1,33 @@
+/* Analytics navigation button styling for Habit Tracker */
+
+#analytics-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: bold;
+  background: #2962ff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.1s ease;
+}
+
+#analytics-btn:hover {
+  background: #448aff;
+}
+
+#analytics-btn:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 500px) {
+  #analytics-btn {
+    position: static;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}
+

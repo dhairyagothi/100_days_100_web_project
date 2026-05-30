@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedConsult Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header class="hero">
+    <h1>🏥 MedConsult Dashboard</h1>
+    <p>Connecting Local Doctors with Specialists</p>
+</header>
+
+<main class="dashboard">
+
+    <section class="card">
+        <h2>📋 Request Consultation</h2>
+
+        <form id="requestForm">
+
+            <label>Doctor Name</label>
+            <input type="text" id="doctorName" required>
+
+            <label>Patient Condition</label>
+            <textarea id="patientCondition" required></textarea>
+
+            <label>Specialist Needed</label>
+
+            <input type="text" id="specialistSearch"
+                   placeholder="Search Specialist">
+
+            <select id="specialistType"></select>
+
+            <button type="submit">Submit Consultation</button>
+        </form>
+    </section>
+
+    <section class="card">
+        <h2>📊 Health Monitoring</h2>
+
+        <div class="stats-grid">
+
+            <div class="stat-box">
+                <h3>❤️ Heart Rate</h3>
+                <p id="heartRate">78 BPM</p>
+            </div>
+
+            <div class="stat-box">
+                <h3>🩸 Blood Pressure</h3>
+                <p>120 / 80</p>
+            </div>
+
+            <div class="stat-box">
+                <h3>🌡️ Temperature</h3>
+                <p>98.4°F</p>
+            </div>
+
+            <div class="stat-box">
+                <h3>🫁 Oxygen</h3>
+                <p>98%</p>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>💊 Safe Medicine Recommendations</h2>
+
+        <select id="symptomSelect">
+            <option value="">Select Symptom</option>
+            <option value="cold">Cold</option>
+            <option value="headache">Headache</option>
+            <option value="fever">Fever</option>
+            <option value="fatigue">Fatigue</option>
+        </select>
+
+        <div id="recommendationBox"></div>
+
+        <p class="disclaimer">
+            ⚠️ Informational only. Consult a medical professional for diagnosis.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>🕒 Consultation History</h2>
+
+        <ul id="historyList"></ul>
+    </section>
+
+    <section class="card">
+        <h2>⭐ Feedback</h2>
+
+        <a href="feedback.html">
+            <button>Give Feedback</button>
+        </a>
+    </section>
+
+</main>
+
+<script src="script.js"></script>
+
+</body>
+</html>

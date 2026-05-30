@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image-Particle Converter | OpenPlayground</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Controls -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="ri-image-circle-line logo-icon"></i>
+                <h1>Particle <span class="gradient-text">Studio</span></h1>
+            </div>
+
+            <div class="control-group">
+                <label for="imageUpload" class="upload-label">
+                    <i class="ri-upload-cloud-2-line"></i>
+                    <span>Upload Image</span>
+                    <input type="file" id="imageUpload" accept="image/*" hidden>
+                </label>
+                <p class="helper-text">Support: JPG, PNG, WebP (Max: 10MB)</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="control-group">
+                <div class="label-row">
+                    <label>Density (Resolution)</label>
+                    <span id="resolutionVal" class="value-tag">3</span>
+                </div>
+                <input type="range" id="resolution" min="1" max="10" step="1" value="3">
+            </div>
+
+            <div class="control-group">
+                <div class="label-row">
+                    <label>Particle Size</label>
+                    <span id="radiusVal" class="value-tag">2</span>
+                </div>
+                <input type="range" id="radius" min="0.5" max="5" step="0.1" value="2">
+            </div>
+
+            <div class="control-group">
+                <div class="label-row">
+                    <label>Interaction Radius</label>
+                    <span id="mouseRadiusVal" class="value-tag">150</span>
+                </div>
+                <input type="range" id="mouseRadius" min="50" max="300" step="10" value="150">
+            </div>
+
+            <div class="control-group">
+                <label>Physics Preset</label>
+                <div class="preset-buttons">
+                    <button class="preset-btn active" data-preset="liquid">Liquid</button>
+                    <button class="preset-btn" data-preset="stiff">Stiff</button>
+                    <button class="preset-btn" data-preset="magnetic">Magnetic</button>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="action-buttons">
+                <button id="explodeBtn" class="btn secondary">
+                    <i class="ri-fire-line"></i> Explode
+                </button>
+                <button id="resetBtn" class="btn outline">
+                    <i class="ri-restart-line"></i> Reset
+                </button>
+                <button id="saveBtn" class="btn primary">
+                    <i class="ri-download-2-line"></i> Save Frame
+                </button>
+            </div>
+
+            <div class="sidebar-footer">
+                <a href="../../index.html" class="back-link">
+                    <i class="ri-arrow-left-line"></i> Back to Hub
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Canvas Area -->
+        <main class="viewport">
+            <canvas id="canvas1"></canvas>
+            
+            <!-- Performance Warning Toast -->
+            <div id="toast" class="toast">
+                <i class="ri-speed-mini-line"></i>
+                <span>Image resized for optimal performance</span>
+            </div>
+
+            <!-- Initial State Overlay -->
+            <div id="overlay" class="overlay">
+                <div class="overlay-content">
+                    <i class="ri-image-add-line"></i>
+                    <h2>Transform Images into Atoms</h2>
+                    <p>Upload a photo to see the magic happen</p>
+                    <button onclick="document.getElementById('imageUpload').click()" class="btn primary">Get Started</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Processing Canvas (Hidden) -->
+    <canvas id="hiddenCanvas" style="display: none;"></canvas>
+
+    <script src="script.js"></script>
+</body>
+</html>

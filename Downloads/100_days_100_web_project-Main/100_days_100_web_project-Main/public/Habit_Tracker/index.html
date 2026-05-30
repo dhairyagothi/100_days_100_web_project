@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Habit Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>🌱 Habit Tracker</h1>
+      <div class="actions">
+        <button id="addHabitBtn">+ Add Habit</button>
+        <div class="theme-toggle-container">
+          <span id="themeLabel">☀️ Light</span>
+          <label class="theme-toggle">
+            <input type="checkbox" id="themeToggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </header>
+
+    <section id="habitsSection">
+      <h2>Your Habits</h2>
+      <div id="habitList"></div>
+    </section>
+
+    <section id="calendarSection">
+      <div class="month-nav">
+        <button id="prevMonth">◀</button>
+        <span id="monthLabel"></span>
+        <button id="nextMonth">▶</button>
+      </div>
+      <div id="calendar"></div>
+    </section>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="habitModal">
+    <div class="modal-content">
+      <h3>Add a new Habit</h3>
+      <input type="text" id="habitName" placeholder="Habit name (e.g. Read 📚)">
+      <input type="color" id="habitColor" value="#4caf50">
+      <button id="saveHabitBtn">Save</button>
+      <button id="closeModal">Cancel</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
