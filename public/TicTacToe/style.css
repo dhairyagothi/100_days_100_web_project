@@ -485,3 +485,298 @@ body {
 .score-card[data-player="O"] strong {
     color: var(--accent);
 }
+
+/* =======================================================
+   ✨ GSSOC '26: TIC-TAC-TOE ULTIMATE PREMIUM UI REDESIGN ✨
+   ======================================================= */
+
+/* 1. CSS Custom Properties for Repeated Global Values */
+:root {
+    --bg-cyber-dark: #0b0f19;
+    --panel-glass-dark: linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(10, 15, 30, 0.99));
+    --font-game: 'Space Grotesk', sans-serif;
+    
+    /* Neon Color Palette */
+    --neon-mint: #40f5d2;
+    --neon-coral: #ff7d7d;
+    --neon-pink: #ff66b2;
+    --neon-pink-hover: #ff3399;
+    --text-muted: #94a3b8;
+    
+    /* Glow/Aura Configurations */
+    --mint-glow-soft: rgba(64, 245, 210, 0.12);
+    --mint-glow-strong: rgba(64, 245, 210, 0.4);
+    --pink-glow-soft: rgba(255, 102, 178, 0.25);
+    --pink-glow-strong: rgba(255, 102, 178, 0.7);
+}
+
+/* 2. Background Canvas Grid Layer */
+body {
+    position: relative;
+    background-color: var(--bg-cyber-dark) !important;
+    background-image: 
+        linear-gradient(rgba(64, 245, 210, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(64, 245, 210, 0.02) 1px, transparent 1px) !important;
+    background-size: 40px 40px !important;
+    animation: digitalGridDrift 24s linear infinite !important;
+}
+
+@keyframes digitalGridDrift {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 80px; }
+}
+
+/* 3. Entrance Kinetics & Animations */
+.start-modal, .winner-modal, .winner-overlay {
+    animation: premiumOverlayBlur 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+.start-card, .winner-card {
+    position: relative !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    animation: luxuryCardPop 0.5s cubic-bezier(0.34, 1.6, 0.64, 1) forwards !important;
+}
+
+@keyframes premiumOverlayBlur {
+    from { opacity: 0; backdrop-filter: blur(0px); }
+    to { opacity: 1; backdrop-filter: blur(24px); }
+}
+
+@keyframes luxuryCardPop {
+    from { transform: translateY(40px) scale(0.92); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* 4. Cyber-Glassmorphic Presentation Cards */
+.start-card, .winner-card {
+    /* Layout & Sizing */
+    padding: 50px 35px !important;
+    border-radius: 28px !important;
+    
+    /* Typography */
+    font-family: var(--font-game) !important;
+    
+    /* Borders & Backgrounds */
+    background: var(--panel-glass-dark) !important;
+    border: 1px solid rgba(64, 245, 210, 0.3) !important;
+    
+    /* Visual Effects */
+    box-shadow: 0 40px 90px rgba(0, 0, 0, 0.85), 
+                0 0 50px var(--mint-glow-soft),
+                inset 0 1px 2px rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Laser top accent banner line */
+.start-card::before, .winner-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 10;
+    height: 4px;
+    background: linear-gradient(90deg, var(--neon-mint) 0%, var(--neon-coral) 50%, var(--neon-mint) 100%) !important;
+    background-size: 200% auto !important;
+    animation: laserShift 4s linear infinite !important;
+}
+
+@keyframes laserShift {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+/* 5. Typography & Headings */
+.start-title, .winner-title, .modal-title {
+    /* Layout & Margins */
+    margin: 16px 0 !important;
+    text-align: center !important;
+    
+    /* Typography */
+    font-family: var(--font-game) !important;
+    font-size: 2.75rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -1.5px !important;
+    
+    /* Background Gradient Text Clip */
+    background: linear-gradient(135deg, #ffffff 30%, #c7d2fe 70%, var(--neon-mint) 100%) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important; 
+    -webkit-text-fill-color: transparent !important;
+    text-shadow: 0 0 40px rgba(64, 245, 210, 0.25) !important;
+}
+
+.start-subtitle, .winner-subtitle {
+    /* Layout & Sizing */
+    max-width: 330px;
+    margin: 0 auto 24px auto !important;
+    text-align: center !important;
+    
+    /* Typography */
+    font-family: var(--font-game) !important;
+    font-size: 1.05rem !important;
+    line-height: 1.65 !important;
+    color: var(--text-muted) !important;
+}
+
+/* Centered Compact Pill Badges */
+.start-badge, .winner-badge {
+    /* Layout & Sizing */
+    display: inline-flex !important;
+    align-self: center !important; 
+    justify-content: center !important;
+    align-items: center !important;
+    width: fit-content !important; 
+    max-width: 160px !important;
+    padding: 6px 18px !important;
+    margin: 0 auto 10px auto !important;
+    border-radius: 999px !important;
+    
+    /* Typography */
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 2px !important;
+    text-transform: uppercase !important;
+    
+    /* Borders & Backgrounds */
+    background: rgba(64, 245, 210, 0.1) !important;
+    color: var(--neon-mint) !important;
+    border: 1px solid rgba(64, 245, 210, 0.4) !important;
+}
+
+/* 6. Action Container Layout Layout */
+.start-actions, .winner-actions {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 16px !important;
+    width: 100% !important;
+    margin-top: 26px !important;
+}
+
+/* 7. Primary Action Buttons (Start Playing / Play Next Round) */
+#startGameBtn, #winnerNext {
+    /* Layout & Sizing */
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    overflow: hidden !important;
+    height: 48px !important;
+    padding: 0 32px !important;
+    
+    /* Typography */
+    font-family: var(--font-game) !important;
+    font-weight: 700 !important;
+    font-size: 1.05rem !important;
+    white-space: nowrap !important;
+    
+    /* Borders & Backgrounds */
+    color: #0f172a !important; 
+    background: linear-gradient(135deg, var(--neon-mint) 0%, var(--neon-coral) 100%) !important;
+    border: none !important;
+    border-radius: 14px !important;
+    cursor: pointer !important;
+    
+    /* Visual Effects */
+    box-shadow: 0 6px 24px var(--mint-glow-strong) !important;
+    transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+#startGameBtn::after, #winnerNext::after {
+    content: '';
+    position: absolute;
+    top: -50%; left: -100%;
+    width: 40%; height: 200%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    transform: rotate(25deg);
+    animation: luxuryShineSweep 4.5s infinite linear !important;
+}
+
+@keyframes luxuryShineSweep {
+    0% { left: -100%; }
+    20% { left: 160%; }
+    100% { left: 160%; }
+}
+
+/* 8. Holographic Neon Pink Radiant Close Button */
+#winnerClose {
+    /* Layout & Sizing */
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 48px !important;
+    padding: 0 30px !important;
+    margin: 0 !important;
+    
+    /* Typography */
+    font-family: var(--font-game) !important;
+    font-weight: 700 !important;
+    font-size: 1.05rem !important;
+    letter-spacing: 0.5px !important;
+    white-space: nowrap !important;
+    
+    /* Borders & Backgrounds */
+    color: var(--neon-pink) !important; 
+    background: rgba(255, 102, 178, 0.03) !important; 
+    border: 2px solid rgba(255, 102, 178, 0.6) !important; 
+    border-radius: 14px !important;
+    cursor: pointer !important;
+    
+    /* Visual Effects */
+    box-shadow: 0 0 14px var(--pink-glow-soft),
+                inset 0 0 8px rgba(255, 102, 178, 0.15) !important;
+    text-shadow: 0 0 8px rgba(255, 102, 178, 0.65) !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* 9. Interactive Hover Mechanical Physics */
+#startGameBtn:hover, #winnerNext:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 14px 35px rgba(255, 125, 125, 0.45), 0 0 25px rgba(64, 245, 210, 0.3) !important;
+}
+
+#winnerClose:hover {
+    transform: translateY(-4px) scale(1.02);
+    color: #ffffff !important; 
+    background: rgba(255, 102, 178, 0.14) !important;
+    border-color: var(--neon-pink-hover) !important;
+    box-shadow: 0 0 25px var(--pink-glow-strong),
+                0 0 50px rgba(255, 102, 178, 0.3),
+                inset 0 0 12px rgba(255, 102, 178, 0.4) !important;
+    text-shadow: 0 0 12px #ffffff, 0 0 4px var(--neon-pink) !important;
+}
+
+#startGameBtn:active, #winnerNext:active, #winnerClose:active {
+    transform: translateY(-1px) scale(0.97);
+}
+
+/* 10. Card Ambient Background Particles */
+.start-card::after, .winner-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(64, 245, 210, 0.15) 1px, transparent 1px),
+        radial-gradient(circle at 75% 20%, rgba(255, 125, 125, 0.15) 2px, transparent 2px),
+        radial-gradient(circle at 85% 70%, rgba(64, 245, 210, 0.12) 1.5px, transparent 1px);
+    background-size: 100% 100%;
+    animation: ambientSparkle 4s ease-in-out infinite alternate;
+}
+
+@keyframes ambientSparkle {
+    0% { transform: scale(1) opacity(0.6); }
+    100% { transform: scale(1.05) opacity(1); filter: hue-rotate(15deg); }
+}
+
+/* 11. Mobile Adaptability Grid Track */
+@media (max-width: 420px) {
+    .start-actions, .winner-actions {
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+    #startGameBtn, #winnerNext, #winnerClose {
+        width: 100% !important;
+    }
+}
