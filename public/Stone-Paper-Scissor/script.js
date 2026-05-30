@@ -14,6 +14,10 @@ const opt_U3 = document.getElementById("opt-U3");
 const opt_P3 = document.getElementById("opt-P3");
 const com_score = document.getElementById("comscore");
 const your_score = document.getElementById("youscore");
+const finalHeading = document.getElementById("final-heading");
+const finalMessage = document.getElementById("final-message");
+const finalYourScore = document.getElementById("final-your-score");
+const finalComputerScore = document.getElementById("final-computer-score");
 
 if (
   localStorage.getItem("clickcount") === null &&
@@ -27,9 +31,8 @@ function resetscore() {
   
   localStorage.setItem("clickcount", 0); 
   localStorage.setItem("clickcount2", 0); 
-  
-  your_score.innerHTML = 0;
-  com_score.innerHTML = 0;
+  if (your_score) your_score.innerHTML = 0;
+  if (com_score) com_score.innerHTML = 0;
 
   alert("Resetting your score!");
 }
@@ -55,11 +58,15 @@ resetButton.style.borderRadius = "5px";
 resetButton.style.display = "inline-block";
 
 resetButton.onclick = resetscore;
-document.body.appendChild(resetButton);
+if (your_score && com_score) {
+  document.body.appendChild(resetButton);
+}
 
 
 
 function displayscore() {
+  if (!your_score || !com_score) return;
+
   if (
     localStorage.getItem("clickcount") === null &&
     localStorage.getItem("clickcount2") === null
@@ -71,14 +78,55 @@ function displayscore() {
   com_score.textContent = localStorage.getItem("clickcount2");
 }
 displayscore();
+
+function updateFinalScreen() {
+  if (!finalHeading || !finalMessage || !finalYourScore || !finalComputerScore) {
+    return;
+  }
+
+  const userScore = Number(localStorage.getItem("clickcount")) || 0;
+  const computerScore = Number(localStorage.getItem("clickcount2")) || 0;
+  let result = "tie";
+
+  if (userScore > computerScore) result = "win";
+  else if (computerScore > userScore) result = "lose";
+
+  const resultText = {
+    win: {
+      heading: "HURRAY!!",
+      message: "YOU WON THE GAME",
+    },
+    lose: {
+      heading: "OOPS!!",
+      message: "YOU LOST THE GAME",
+    },
+    tie: {
+      heading: "NICE TRY!!",
+      message: "THE GAME IS TIED",
+    },
+  };
+
+  const finalResult = resultText[result];
+  document.body.classList.remove("result-win", "result-tie", "result-lose");
+  document.body.classList.add(`result-${result}`);
+  finalHeading.textContent = finalResult.heading;
+  finalMessage.textContent = finalResult.message;
+  finalYourScore.textContent = userScore;
+  finalComputerScore.textContent = computerScore;
+}
+updateFinalScreen();
+
 function popup() {
+  if (!getRuleBox) return;
   getRuleBox.style.display = "block";
 }
 function popdown() {
+  if (!getRuleBox) return;
   getRuleBox.style.display = "none";
 }
 
 function replay() {
+  if (!getWinBox || !getLoseBox || !getDrawBox || !getGameBox) return;
   getWinBox.style.display = "none";
   getLoseBox.style.display = "none";
   getDrawBox.style.display = "none";

@@ -354,6 +354,13 @@ ul li::before {
   cursor: pointer;
   border: none;
 }
+.result a {
+  text-decoration: none;
+}
+.result .final-link {
+  display: block;
+  margin: 8px auto 0;
+}
 .ipt-U1 {
   position: absolute;
   z-index: 1;
