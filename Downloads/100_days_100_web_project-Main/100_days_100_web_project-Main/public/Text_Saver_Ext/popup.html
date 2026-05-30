@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saved Texts</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; width: 320px; background: #f9f9f9; color: #222; }
+
+    .header { display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 14px; border-bottom: 1px solid #eee; background: white; }
+    .header h2 { font-size: 14px; font-weight: 600; }
+    #itemCount { font-size: 11px; background: #eee; color: #666;
+      border-radius: 20px; padding: 2px 8px; }
+
+    #textList { max-height: 300px; overflow-y: auto; padding: 8px;
+      display: flex; flex-direction: column; gap: 6px; }
+
+    .text-entry { background: white; border: 1px solid #eee; border-radius: 8px; padding: 10px 12px; }
+    .saved-text { font-size: 13px; line-height: 1.5; margin-bottom: 6px;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden; }
+    .url { font-size: 11px; color: #2563eb; text-decoration: none;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+
+    .empty-state { text-align: center; padding: 28px 16px; color: #999; font-size: 13px; }
+
+    .hint { font-size: 11px; color: #999; text-align: center; padding: 4px 10px 8px; }
+
+    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px;
+      border-top: 1px solid #eee; background: white; }
+    button { padding: 8px; border-radius: 7px; font-size: 12px; font-weight: 600;
+      border: none; cursor: pointer; }
+    #downloadButton { background: #dcfce7; color: #166534; }
+    #clearButton { background: #fee2e2; color: #991b1b; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h2>Saved texts</h2>
+    <span id="itemCount">0 items</span>
+  </div>
+
+  <div id="textList"></div>
+  <p class="hint">Press <strong>Ctrl+C</strong> to save highlighted text</p>
+
+  <div class="actions">
+    <button id="downloadButton">⬇ Download</button>
+    <button id="clearButton">🗑 Clear all</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

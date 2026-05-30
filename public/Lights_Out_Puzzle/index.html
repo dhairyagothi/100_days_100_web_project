@@ -9,18 +9,33 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
   <h1>Lights Out Puzzle <i class="fa-solid fa-lightbulb"></i></h1>
+  <div id="hint-tracker">
+  <span id="hint-label"><i class="fa-solid fa-lightbulb"></i> Hints left:</span>
+  <div id="hint-pips">
+    <span class="pip" id="pip-0"></span>
+    <span class="pip" id="pip-1"></span>
+    <span class="pip" id="pip-2"></span>
+  </div>
+</div>
+<div id="move-tracker">Moves: <span id="move-count">0</span></div>
   <div id="game-board"></div>
-  <button id="reset-button">Reset</button>
+  <div id="toast"></div>
+ <div id="button-row">
+  <button id="reset-button"><i class="fa-solid fa-rotate-right"></i> Reset</button>
+  <button id="hint-button"><i class="fa-solid fa-lightbulb"></i> Get Hint</button>
   <button onclick="window.location.href='https://www.wikihow.com/Solve-Lights-Out-Game';">Help</button>
+</div>
 
   <div class="Game-rules">
     <h2>Game rules</h2>
     <p>The goal of the game is to turn off all the lights on the board.</p>
     <p>Clicking on a cell will toggle the state of the cell and its adjacent cells.</p>
     <p>Click the reset button to reset the board to its initial state.</p>
+    <p>Click the reset button to reset the board to its initial state.</p>
+    <p>Use <strong>Get Hint</strong> to highlight the best next cell (3 hints per game).</p>
     </div>
   <script src="./script.js"></script>
 </body>
