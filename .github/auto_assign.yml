@@ -1,0 +1,19 @@
+# Set to true to add reviewers to pull requests
+addReviewers: true
+
+# Set to true to add assignees to pull requests
+addAssignees: false
+
+# A list of reviewers to be added to pull requests
+reviewers:
+  - dhairyagothi
+
+# A number of reviewers added to pull requests
+# Set 0 to add all the reviewers (default: 0)
+numberOfReviewers: 1
+
+# A list of keywords to ignore reviewer assignment
+# If any keyword is contained in PR title or branch name, auto-assignment is skipped.
+skipKeywords:
+  - draft
+  - wip
