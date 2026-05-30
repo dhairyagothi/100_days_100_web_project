@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
   <head>
@@ -88,6 +88,7 @@
               </div>
             </div>
           </div>
+
         </div>
 
           <div class="field-row">
@@ -103,20 +104,30 @@
               <input type="number" id="weight" placeholder="e.g. 70" min="1" max="600" />
             </div>
           </div>
+
         </div>
 
         <div class="field-row">
+
           <div class="field">
-            <div class="field-label">Age (years)</div>
-            <input type="number" id="age" placeholder="e.g. 25" min="2" max="120" />
+            <label class="field-label">Age (Years)</label>
+
+            <input
+              type="number"
+              id="age"
+              placeholder="21"
+            />
           </div>
+
           <div class="field">
-            <div class="field-label">Gender</div>
+            <label class="field-label">Gender</label>
+
             <select id="gender">
               <option value="male">Male</option>
               <option value="female">Female</option>
             </select>
           </div>
+
         </div>
 
           <div class="action-buttons" style="display: flex; gap: 12px; margin-bottom: 16px;">
@@ -155,100 +166,114 @@
             <div class="range-labels">
               <span>10</span><span>18.5</span><span>25</span><span>30</span><span>40+</span>
             </div>
+
           </div>
 
-          <div id="range-vis" class="range-vis hidden">
+          <!-- RANGE -->
+          <div class="range-section">
+
             <div class="range-bar">
-              <div class="range-segments">
-                <div class="seg seg-blue" style="flex: 2.1"></div>
-                <div class="seg seg-green" style="flex: 6.4"></div>
-                <div class="seg seg-amber" style="flex: 5"></div>
-                <div class="seg seg-red" style="flex: 6.5"></div>
-              </div>
-              <div class="bmi-pointer" id="bmi-ptr"></div>
+
+              <div class="seg blue"></div>
+              <div class="seg green"></div>
+              <div class="seg amber"></div>
+              <div class="seg red"></div>
+
+              <div class="pointer" id="pointer"></div>
+
             </div>
+
             <div class="range-labels">
-              <span>10</span><span>18.5</span><span>25</span><span>30</span><span>40+</span>
+              <span>10</span>
+              <span>18.5</span>
+              <span>25</span>
+              <span>30</span>
+              <span>40+</span>
             </div>
+
           </div>
 
-          <!-- Goal Tracker Section -->
-          <div id="goal-section" class="goal-section hidden">
-            <div class="goal-header">
-              <div class="metric-label">Goal Progress</div>
-              <span class="goal-status" id="goal-status">In Progress</span>
-            </div>
+          <!-- BODY FAT -->
+          <div class="body-fat">
 
-            <div class="goal-body">
-              <!-- Progress Bar -->
-              <div class="goal-progress-wrap">
-                <div class="goal-progress-bar">
-                  <div class="goal-progress-fill" id="goal-progress-fill"></div>
-                </div>
-                <div class="goal-progress-text" id="goal-progress-text">0%</div>
+            <div class="bf-header">
+
+              <div class="metric-label">
+                Est. Body Fat
               </div>
 
-              <!-- Goal Metrics Grid -->
-              <div class="goal-metrics">
-                <div class="goal-metric">
-                  <div class="goal-metric-label">Target BMI</div>
-                  <div class="goal-metric-value" id="target-bmi-display">—</div>
-                </div>
-                <div class="goal-metric">
-                  <div class="goal-metric-label">Target Weight</div>
-                  <div class="goal-metric-value" id="target-weight-display">—</div>
-                </div>
-                <div class="goal-metric">
-                  <div class="goal-metric-label">Weight to Lose/Gain</div>
-                  <div class="goal-metric-value" id="weight-diff-display">—</div>
-                </div>
-                <div class="goal-metric">
-                  <div class="goal-metric-label">Estimated Timeline</div>
-                  <div class="goal-metric-value" id="timeline-display">—</div>
-                </div>
+              <div class="bf-badge" id="bf-badge">
+                Fitness
               </div>
+
             </div>
-          </div>
-            <div class="bf-body">
-              <div class="bf-gauge-wrap">
-                <svg class="bf-gauge" viewBox="0 0 120 120">
-                  <circle class="bf-track" cx="60" cy="60" r="52" stroke-width="7" fill="none" />
-                  <circle class="bf-fill" id="bf-arc" cx="60" cy="60" r="52" stroke-width="7" fill="none"
-                    stroke-dasharray="326.73" stroke-dashoffset="326.73" stroke-linecap="round" />
-                  <text class="bf-pct-text" x="60" y="56" text-anchor="middle" dominant-baseline="central"
-                    id="bf-pct">—</text>
-                  <text class="bf-pct-unit" x="60" y="74" text-anchor="middle" dominant-baseline="central">% body
-                    fat</text>
+
+            <div class="bf-layout">
+
+              <div class="gauge-wrap">
+
+                <svg viewBox="0 0 120 120">
+
+                  <circle
+                    class="track"
+                    cx="60"
+                    cy="60"
+                    r="52"
+                  />
+
+                  <circle
+                    class="progress"
+                    id="bf-progress"
+                    cx="60"
+                    cy="60"
+                    r="52"
+                  />
+
+                  <text
+                    x="60"
+                    y="58"
+                    text-anchor="middle"
+                    class="gauge-value"
+                    id="bf-percent"
+                  >
+                    0
+                  </text>
+
+                  <text
+                    x="60"
+                    y="76"
+                    text-anchor="middle"
+                    class="gauge-label"
+                  >
+                    % Body Fat
+                  </text>
+
                 </svg>
+
               </div>
+
               <div class="bf-info">
-                <p class="bf-desc" id="bf-desc"></p>
-                <div class="bf-ranges">
-                  <div class="bf-range-item">
-                    <span class="bf-dot bf-dot-blue"></span>
-                    <span>Essential</span>
-                  </div>
-                  <div class="bf-range-item">
-                    <span class="bf-dot bf-dot-green"></span>
-                    <span>Athletic</span>
-                  </div>
-                  <div class="bf-range-item">
-                    <span class="bf-dot bf-dot-teal"></span>
-                    <span>Fitness</span>
-                  </div>
-                  <div class="bf-range-item">
-                    <span class="bf-dot bf-dot-amber"></span>
-                    <span>Average</span>
-                  </div>
-                  <div class="bf-range-item">
-                    <span class="bf-dot bf-dot-red"></span>
-                    <span>Obese</span>
-                  </div>
+
+                <p id="bf-desc"></p>
+
+                <div class="legend">
+
+                  <div><span class="dot blue-dot"></span> Essential</div>
+                  <div><span class="dot green-dot"></span> Athletic</div>
+                  <div><span class="dot teal-dot"></span> Fitness</div>
+                  <div><span class="dot amber-dot"></span> Average</div>
+                  <div><span class="dot red-dot"></span> Obese</div>
+
                 </div>
+
               </div>
+
             </div>
+
           </div>
+
         </div>
+
       </div>
 
         <!-- Right: Reference + Chart & Persistent History -->
@@ -316,12 +341,12 @@
         </div>
 
       </div>
+
     </div>
+
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="script.js"></script>
-</body>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="script.js"></script>
