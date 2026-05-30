@@ -120,6 +120,24 @@ nav ul li a:hover {
   color: var(--white);
 }
 
+
+.project-back-button {
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: white;
+  color: #111827;
+  text-decoration: none;
+  z-index: 9999;
+  font-weight: 700;
+  font-family: Inter, sans-serif;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.25s ease;
+}
+
+.project-back-button:hover {
+  transform: translateY(-2px);
+}
+
 /* hamburger */
 .hamburger {
   display: none;
