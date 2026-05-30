@@ -14,7 +14,6 @@ let itemsPerPage = 9;
 let projectData = [];
 let filteredProjectData = [];
 
-
 /* ============================================================
    TECHNOLOGY STACK FILTERING VARIABLES
    ============================================================ */
@@ -24,24 +23,24 @@ let techSearchQuery = ''; // Current tech search input
 // Technology normalization map (handles common variations)
 // Maps user input → actual tags in dataset
 const TECH_ALIASES = {
-  'js': 'javascript',
-  'react': 'javascript',
-  'node': 'javascript',
-  'vue': 'javascript',
-  'python': 'api',
-  'flask': 'api',
-  'game': 'game',
-  'games': 'game',
+  js: 'javascript',
+  react: 'javascript',
+  node: 'javascript',
+  vue: 'javascript',
+  python: 'api',
+  flask: 'api',
+  game: 'game',
+  games: 'game',
 };
 
 /* Maps data-filter values on chip buttons to display category names */
 const FILTER_CATEGORY_MAP = {
-  'all': 'all',
-  'game': 'Games',
-  'clone': 'Clones',
-  'tool': 'Tools',
-  'ui': 'UI / Animation',
-  'api': 'APIs',
+  all: 'all',
+  game: 'Games',
+  clone: 'Clones',
+  tool: 'Tools',
+  ui: 'UI / Animation',
+  api: 'APIs',
 };
 
 /**
@@ -49,7 +48,7 @@ const FILTER_CATEGORY_MAP = {
  * Uses the existing tag structure so no new data field is needed.
  */
 function getCategoryFromTags(tags, name) {
-  const tagStr = (Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase();
+  const tagStr = (Array.isArray(tags) ? tags.join(' ') : tags || '').toLowerCase();
   const nameStr = (name || '').toLowerCase();
 
   if (tagStr.includes('game')) return 'Games';
@@ -59,12 +58,11 @@ function getCategoryFromTags(tags, name) {
   if (tagStr.includes('api') || tagStr.includes('weather')) return 'APIs';
 
   if (nameStr.includes('clone')) return 'Clones';
-  if (nameStr.includes('game') || nameStr.includes('puzzle') || nameStr.includes('quiz')) return 'Games';
+  if (nameStr.includes('game') || nameStr.includes('puzzle') || nameStr.includes('quiz'))
+    return 'Games';
 
   return 'Tools';
 }
-
-
 
 let PROJECTS = [];
 let projectsPromise = null;
@@ -84,9 +82,7 @@ function loadProjects() {
     projectsPromise = (async () => {
       const isRoot = !window.location.pathname.includes('/contributors/');
       const base = isRoot ? '' : '../';
-     const projectsUrl =
-new URL(`${base}projects.json`,
-window.location.href).toString();
+      const projectsUrl = new URL(`${base}projects.json`, window.location.href).toString();
       const response = await fetch(projectsUrl);
       if (!response.ok) {
         throw new Error(`Failed to load projects: ${response.statusText}`);
@@ -94,14 +90,14 @@ window.location.href).toString();
       const payload = await response.text();
       const data = parseProjectsData(payload);
 
-PROJECTS = data.map(project => [
-   `Day ${project.projectNo}`,
-   project.projectName,
-   project.projectPath,
-   project.techStack,
-   project.difficulty,
-   project.projectDesc
-]);
+      PROJECTS = data.map((project) => [
+        `Day ${project.projectNo}`,
+        project.projectName,
+        project.projectPath,
+        project.techStack,
+        project.difficulty,
+        project.projectDesc,
+      ]);
     })();
   }
   return projectsPromise;
@@ -109,7 +105,6 @@ PROJECTS = data.map(project => [
 
 // Start fetching immediately
 loadProjects();
-
 
 /* ============================================================
    PROJECT LINK RESOLUTION (demo vs source / source-only)
@@ -127,7 +122,9 @@ function isGithubTreeUrl(url) {
 }
 
 function parseGithubTreePath(url) {
-  const match = String(url || '').trim().match(/\/tree\/[^/]+\/(.+?)(?:\?|#|$)/);
+  const match = String(url || '')
+    .trim()
+    .match(/\/tree\/[^/]+\/(.+?)(?:\?|#|$)/);
   return match ? decodeURIComponent(match[1].replace(/\/$/, '')) : null;
 }
 
@@ -135,7 +132,9 @@ function isSourceOnlyProject(day, tags) {
   if (day === 'Day 13' || day === 'Day 72') return true;
   const tagList = Array.isArray(tags)
     ? tags
-    : String(tags || '').split(/\s+/).filter(Boolean);
+    : String(tags || '')
+        .split(/\s+/)
+        .filter(Boolean);
   return tagList.includes(SOURCE_ONLY_TAG);
 }
 
@@ -168,7 +167,7 @@ function resolveProjectUrls(day, name, url, tags) {
 
   if (isGithubTreeUrl(trimmed)) {
     sourceUrl = trimmed;
-    demoUrl = sourceOnly ? trimmed : (githubTreeToLocalDemo(trimmed) || trimmed);
+    demoUrl = sourceOnly ? trimmed : githubTreeToLocalDemo(trimmed) || trimmed;
   }
 
   if (!sourceOnly && demoUrl && !demoUrl.startsWith('http')) {
@@ -178,18 +177,14 @@ function resolveProjectUrls(day, name, url, tags) {
       if (demoUrl.startsWith('./')) {
         demoUrl = basePrefix + demoUrl.substring(2);
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   return { demoUrl, sourceUrl, sourceOnly };
 }
 
 function getProjectDescription(project) {
-  return (
-    (project && project[5]) ||
-    'Explore this project to discover interactive functionality.'
-  );
+  return (project && project[5]) || 'Explore this project to discover interactive functionality.';
 }
 
 function buildProjectCardHTML({
@@ -208,11 +203,9 @@ function buildProjectCardHTML({
         .split(/\s+/)
         .filter((t) => t && t !== SOURCE_ONLY_TAG);
   const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
-  const project =
-PROJECTS.find(p => p[1] === name);
+  const project = PROJECTS.find((p) => p[1] === name);
 
-const description =
-getProjectDescription(project);
+  const description = getProjectDescription(project);
   const sourceOnlyBadge = sourceOnly
     ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
     : '';
@@ -266,16 +259,15 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
   card.style.cursor = 'pointer';
   card.onclick = (e) => {
     if (e.target.closest('a, button')) return;
-    
+
     // Track the project visit if projectData is provided
     if (projectData) {
       trackRecentProject(projectData);
     }
-    
+
     window.open(demoUrl, '_blank', 'noopener');
   };
 }
-
 
 /* ============================================================
    TECHNOLOGY STACK FILTERING FUNCTIONS
@@ -320,13 +312,12 @@ function matchesTechStack(projectTags) {
   return techStackFilters.every((filter) => tagSet.has(filter.toLowerCase()));
 }
 
-
 /**
  * Remove a specific technology filter
  * @param {string} tech - Technology to remove from filters
  */
 function removeTechFilter(tech) {
-  techStackFilters = techStackFilters.filter(t => t !== tech);
+  techStackFilters = techStackFilters.filter((t) => t !== tech);
   updateTechFilterDisplay();
   renderGrid();
 }
@@ -369,14 +360,18 @@ function updateTechFilterDisplay() {
   container.style.display = 'flex';
 
   // Render filter tags with remove buttons
-  tagsContainer.innerHTML = techStackFilters.map(tech => `
+  tagsContainer.innerHTML = techStackFilters
+    .map(
+      (tech) => `
     <span class="tech-filter-tag">
       ${tech}
       <button onclick="removeTechFilter('${tech}')" aria-label="Remove ${tech} filter">
         <i class="fas fa-times"></i>
       </button>
     </span>
-  `).join('');
+  `
+    )
+    .join('');
 }
 
 /**
@@ -389,11 +384,9 @@ function getAllTechnologies() {
 
   PROJECTS.forEach(([, , , tags]) => {
     if (tags) {
-      const tagArray = typeof tags === 'string'
-        ? tags.split(/\s+/).filter(t => t)
-        : tags;
+      const tagArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
 
-      tagArray.forEach(tag => {
+      tagArray.forEach((tag) => {
         techSet.add(tag.toLowerCase());
       });
     }
@@ -428,12 +421,12 @@ const ONE_HOUR_MS = 60 * 60 * 1000; // 1 hour in milliseconds
  */
 function migrateRecentProjects() {
   if (recentProjects.length === 0) return;
-  
+
   // Check if already in new format (has timestamp)
   if (typeof recentProjects[0] === 'object' && recentProjects[0].timestamp) {
     return; // Already migrated
   }
-  
+
   // Migrate old format [day, name, url, tags] to new format {day, name, url, tags, timestamp}
   recentProjects = recentProjects.map((project) => {
     if (Array.isArray(project)) {
@@ -442,12 +435,12 @@ function migrateRecentProjects() {
         name: project[1],
         url: project[2],
         tags: project[3],
-        timestamp: Date.now() - (ONE_HOUR_MS / 2) // Set to 30 mins ago to preserve them initially
+        timestamp: Date.now() - ONE_HOUR_MS / 2, // Set to 30 mins ago to preserve them initially
       };
     }
     return project;
   });
-  
+
   localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
 }
 
@@ -461,7 +454,7 @@ migrateRecentProjects();
 function cleanupExpiredRecentProjects() {
   const initialLength = recentProjects.length;
   recentProjects = getRecentProjectsWithinWindow();
-  
+
   if (recentProjects.length !== initialLength) {
     localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
     renderRecentProjects();
@@ -484,7 +477,6 @@ const CATEGORY_LABEL = {
    GITHUB REPO STATS
    ============================================================ */
 async function fetchRepoStats() {
-
   const set = (id, val) => {
     const el = document.getElementById(id);
     if (el) el.textContent = val;
@@ -498,7 +490,6 @@ async function fetchRepoStats() {
   };
 
   try {
-
     // Optional loading state
     set('starCount', 'Loading...');
     set('forkCount', 'Loading...');
@@ -507,11 +498,13 @@ async function fetchRepoStats() {
 
     const [repoRes, prRes] = await Promise.all([
       fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`),
-      fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`)
+      fetch(
+        `https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`
+      ),
     ]);
 
     if (!repoRes.ok || !prRes.ok) {
-      throw new Error("GitHub API request failed");
+      throw new Error('GitHub API request failed');
     }
 
     const repo = await repoRes.json();
@@ -521,10 +514,8 @@ async function fetchRepoStats() {
     set('forkCount', repo.forks_count.toLocaleString());
     set('issueCount', (repo.open_issues_count - prs.total_count).toLocaleString());
     set('prCount', prs.total_count.toLocaleString());
-
   } catch (e) {
-
-    console.warn("GitHub stats unavailable:", e.message);
+    console.warn('GitHub stats unavailable:', e.message);
 
     // Show fallback text instead of permanent dashes
     setFallback();
@@ -568,7 +559,7 @@ let difficultyFilter = 'all';
 
 function syncStateToURL() {
   const url = new URL(window.location);
-  
+
   if (searchQuery) {
     url.searchParams.set('search', searchQuery);
   } else {
@@ -592,7 +583,7 @@ function syncStateToURL() {
 
 function readStateFromURL() {
   const urlParams = new URLSearchParams(window.location.search);
-  
+
   if (urlParams.has('search')) {
     searchQuery = urlParams.get('search');
     const searchInput = document.getElementById('searchInput');
@@ -600,11 +591,11 @@ function readStateFromURL() {
       searchInput.value = searchQuery;
     }
   }
-  
+
   if (urlParams.has('category')) {
     activeFilter = urlParams.get('category');
   }
-  
+
   if (urlParams.has('page')) {
     const page = parseInt(urlParams.get('page'), 10);
     if (!isNaN(page) && page > 0) {
@@ -630,16 +621,21 @@ function renderGrid() {
 
     // Search filter
     const q = searchQuery.toLowerCase().trim();
-    const matchesSearch = !q || q.split(/\s+/).every(term =>
-      name.toLowerCase().includes(term) ||
-      day.toLowerCase().includes(term) ||
-      ((Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase().includes(term))
-    );
+    const matchesSearch =
+      !q ||
+      q
+        .split(/\s+/)
+        .every(
+          (term) =>
+            name.toLowerCase().includes(term) ||
+            day.toLowerCase().includes(term) ||
+            (Array.isArray(tags) ? tags.join(' ') : tags || '').toLowerCase().includes(term)
+        );
 
     // Tech stack dropdown filter
     let matchesTech = true;
     if (techStackFilter && techStackFilter !== 'all') {
-      const tagStr = (Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase();
+      const tagStr = (Array.isArray(tags) ? tags.join(' ') : tags || '').toLowerCase();
       matchesTech = tagStr.includes(techStackFilter.toLowerCase());
     }
 
@@ -714,7 +710,7 @@ function renderGrid() {
   });
   grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
-  
+
   syncStateToURL();
 }
 
@@ -839,7 +835,7 @@ function renderPagination(totalItems, totalPages) {
   controlsDiv.appendChild(nextBtn);
   const lastBtn = document.createElement('button');
   lastBtn.className = 'last-btn';
-  lastBtn.innerHTML =  'Last ⏭';
+  lastBtn.innerHTML = 'Last ⏭';
   lastBtn.disabled = currentPage === totalPages;
 
   lastBtn.addEventListener('click', (e) => {
@@ -929,7 +925,7 @@ function updateBookmarkURL() {
   const url = new URL(window.location);
 
   if (bookmarkedProjects.length > 0) {
-    const bookmarkIds = bookmarkedProjects.map(project => project[0]);
+    const bookmarkIds = bookmarkedProjects.map((project) => project[0]);
     url.searchParams.set('bookmarks', bookmarkIds.join(','));
   } else {
     url.searchParams.delete('bookmarks');
@@ -944,18 +940,11 @@ function loadBookmarksFromURL() {
 
   if (!bookmarkParam) return;
 
-  const bookmarkIds = bookmarkParam
-    .split(',')
-    .map(id => id.trim());
+  const bookmarkIds = bookmarkParam.split(',').map((id) => id.trim());
 
-  bookmarkedProjects = PROJECTS.filter(project =>
-    bookmarkIds.includes(project[0])
-  );
+  bookmarkedProjects = PROJECTS.filter((project) => bookmarkIds.includes(project[0]));
 
-  localStorage.setItem(
-    'bookmarkedProjects',
-    JSON.stringify(bookmarkedProjects)
-  );
+  localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
 }
 
 function getRecentProjectsWithinWindow() {
@@ -982,18 +971,18 @@ function trackRecentProject(project) {
       name: project[1],
       url: project[2],
       tags: project[3],
-      timestamp: Date.now()
+      timestamp: Date.now(),
     };
   } else {
     projectObj = {
       ...project,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     };
   }
 
   // Remove duplicate if exists
   recentProjects = recentProjects.filter((item) => item.day !== projectObj.day);
-  
+
   // Add to front
   recentProjects.unshift(projectObj);
 
@@ -1024,10 +1013,13 @@ function renderBookmarks() {
 
   const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
   if (bookmarkToggleBtn) {
-    bookmarkToggleBtn.style.display = bookmarkedProjects.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
+    bookmarkToggleBtn.style.display =
+      bookmarkedProjects.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
   }
 
-  const visibleBookmarks = showAllBookmarks ? bookmarkedProjects : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
+  const visibleBookmarks = showAllBookmarks
+    ? bookmarkedProjects
+    : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
   visibleBookmarks.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
@@ -1067,7 +1059,8 @@ function renderRecentProjects() {
 
   const recentToggleBtn = document.getElementById('recentToggleBtn');
   if (recentToggleBtn) {
-    recentToggleBtn.style.display = validRecent.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
+    recentToggleBtn.style.display =
+      validRecent.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
   }
 
   const visibleRecent = showAllRecent ? validRecent : validRecent.slice(0, INITIAL_VISIBLE_ITEMS);
@@ -1078,7 +1071,7 @@ function renderRecentProjects() {
     const name = projectObj.name || projectObj[1];
     const url = projectObj.url || projectObj[2];
     const tags = projectObj.tags || projectObj[3];
-    
+
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
@@ -1122,14 +1115,16 @@ if (copyBookmarksBtn) {
       showToast('No bookmarks to copy!');
       return;
     }
-    const textToCopy = bookmarkedProjects.map(p => {
-      const projectName = p[1];
-      const { demoUrl } = resolveProjectUrls(p[0], p[1], p[2], p[3]);
-      const projectLink = demoUrl.startsWith('http')
-        ? demoUrl
-        : new URL(demoUrl, window.location.href).href;
-      return `${projectName} - ${projectLink}`;
-    }).join('\n');
+    const textToCopy = bookmarkedProjects
+      .map((p) => {
+        const projectName = p[1];
+        const { demoUrl } = resolveProjectUrls(p[0], p[1], p[2], p[3]);
+        const projectLink = demoUrl.startsWith('http')
+          ? demoUrl
+          : new URL(demoUrl, window.location.href).href;
+        return `${projectName} - ${projectLink}`;
+      })
+      .join('\n');
 
     try {
       await navigator.clipboard.writeText(textToCopy);
@@ -1210,7 +1205,8 @@ function resetAllFilters() {
   // 1. Reset Category filter chips
   const chips = document.querySelectorAll('.chip[data-filter]');
   chips.forEach((c) => c.classList.remove('active'));
-  const allChip = document.getElementById('filterAll') || document.querySelector('.chip[data-filter="all"]');
+  const allChip =
+    document.getElementById('filterAll') || document.querySelector('.chip[data-filter="all"]');
   if (allChip) allChip.classList.add('active');
   activeFilter = 'all';
 
@@ -1345,19 +1341,22 @@ function initTechStackSearch() {
   if (!input) return;
 
   // Use the shared debounce utility instead of a manual inline timer
-  input.addEventListener('input', debounce((e) => {
-    const value = e.target.value.trim().toLowerCase();
+  input.addEventListener(
+    'input',
+    debounce((e) => {
+      const value = e.target.value.trim().toLowerCase();
 
-    if (value) {
-      const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
-      techStackFilters = [...new Set(techs)];
-      updateTechFilterDisplay();
-      currentPage = 1;
-      renderGrid();
-    } else {
-      clearAllTechFilters();
-    }
-  }, 300));
+      if (value) {
+        const techs = value.split(/[,\s]+/).filter((t) => t.length > 0);
+        techStackFilters = [...new Set(techs)];
+        updateTechFilterDisplay();
+        currentPage = 1;
+        renderGrid();
+      } else {
+        clearAllTechFilters();
+      }
+    }, 300)
+  );
 
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
@@ -1398,11 +1397,11 @@ function updateCategoryCounts() {
   });
 
   const categorySpans = {
-    'game': document.getElementById('gameCount'),
-    'clone': document.getElementById('cloneCount'),
-    'tool': document.getElementById('toolCount'),
-    'ui': document.getElementById('uiCount'),
-    'api': document.getElementById('apiCount')
+    game: document.getElementById('gameCount'),
+    clone: document.getElementById('cloneCount'),
+    tool: document.getElementById('toolCount'),
+    ui: document.getElementById('uiCount'),
+    api: document.getElementById('apiCount'),
   };
 
   for (const [key, span] of Object.entries(categorySpans)) {
@@ -1417,9 +1416,10 @@ function syncProjectCounts() {
 
   // Apply search filter
   if (searchQuery) {
-    filtered = filtered.filter(([day, name]) =>
-      name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      day.toLowerCase().includes(searchQuery.toLowerCase())
+    filtered = filtered.filter(
+      ([day, name]) =>
+        name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        day.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }
 
@@ -1439,16 +1439,16 @@ function syncProjectCounts() {
 
 // Clear button functionality
 if (searchInput && clearSearchBtn) {
-  clearSearchBtn.addEventListener("click", () => {
-    searchInput.value = "";
-    searchInput.dispatchEvent(new Event("input"));
+  clearSearchBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    searchInput.dispatchEvent(new Event('input'));
     searchInput.focus();
   });
 
-  searchInput.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      searchInput.value = "";
-      searchInput.dispatchEvent(new Event("input"));
+  searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      searchInput.value = '';
+      searchInput.dispatchEvent(new Event('input'));
       searchInput.focus();
     }
   });
@@ -1496,11 +1496,11 @@ function initScrollBtn() {
     if (footer) {
       const footerRect = footer.getBoundingClientRect();
       const windowHeight = window.innerHeight;
-      
+
       if (footerRect.top < windowHeight) {
         const overlap = windowHeight - footerRect.top;
         // Cap the upward movement to a maximum of 120px.
-        // This ensures it dodges the important bottom footer links but 
+        // This ensures it dodges the important bottom footer links but
         // doesn't fly completely off the top of the screen when the footer is huge.
         const maxOverlap = Math.min(overlap, 120);
         btn.style.bottom = `calc(2rem + ${maxOverlap}px)`;
@@ -1563,7 +1563,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     syncProjectCounts();
     fetchRepoStats();
     initScrollBtn();
-
   } catch (error) {
     console.error('Failed to load projects:', error);
 
@@ -1578,7 +1577,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 });
-
 
 (() => {
   const initDirectMobileMenu = () => {
@@ -1638,8 +1636,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     initDirectMobileMenu();
   }
 })();
-
-
 
 // Re-render the grid when the browser window is resized to adapt pagination density instantly
 window.addEventListener(
@@ -1924,7 +1920,7 @@ function getQueryParams() {
   const params = new URLSearchParams(window.location.search);
   return {
     search: params.get('search') || '',
-    category: params.get('category') || 'all'
+    category: params.get('category') || 'all',
   };
 }
 
@@ -1940,7 +1936,8 @@ function updateURL(search, category) {
 
 function restoreStateFromURL() {
   const { search, category } = getQueryParams();
-  const searchInput = document.getElementById('searchInput') ||
+  const searchInput =
+    document.getElementById('searchInput') ||
     document.querySelector('input[type="text"]') ||
     document.querySelector('.search-input');
   if (searchInput && search) searchInput.value = search;
@@ -1974,16 +1971,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   } catch (error) {
     console.error('Failed to restore state or load projects:', error);
   }
-  const searchInput = document.getElementById('search') ||
+  const searchInput =
+    document.getElementById('search') ||
     document.querySelector('input[type="text"]') ||
     document.querySelector('.search-input');
   if (searchInput) {
     // Debounced so rapid typing doesn't trigger a renderGrid() on every keystroke
-    searchInput.addEventListener('input', debounce(() => {
-      const { category } = getQueryParams();
-      updateURL(searchInput.value, category);
-      applyFilters(searchInput.value, category);
-    }, 200));
+    searchInput.addEventListener(
+      'input',
+      debounce(() => {
+        const { category } = getQueryParams();
+        updateURL(searchInput.value, category);
+        applyFilters(searchInput.value, category);
+      }, 200)
+    );
   }
   const categoryFilter = document.getElementById('category');
   if (categoryFilter) {
@@ -1995,3 +1996,33 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   window.addEventListener('popstate', () => restoreStateFromURL());
 });
+
+// Custom Cursor
+(function () {
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+
+  const dot = document.createElement('div');
+  dot.id = 'cur-dot';
+  const ring = document.createElement('div');
+  ring.id = 'cur-ring';
+  document.body.append(dot, ring);
+
+  let mx = 0,
+    my = 0,
+    rx = 0,
+    ry = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mx = e.clientX;
+    my = e.clientY;
+    dot.style.transform = `translate(${mx - 4}px, ${my - 4}px)`;
+  });
+
+  function loop() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
