@@ -25,9 +25,9 @@
     <section class="hero-section">
       <h1 class="hero-title">100 Days 100 Web Projects</h1>
       <p class="auth-title">
-        Dive in to explore a seamless access to 100+ exciting web experiments
-        crafted for learning and inspiration. Log in to continue building,
-        exploring, and creating amazing web experiences every day.
+        Dive in to explore a seamless access to 100+ exciting web experiments crafted for learning
+        and inspiration. Log in to continue building, exploring, and creating amazing web
+        experiences every day.
       </p>
 
       <div class="auth-container">
@@ -65,45 +65,41 @@
             </button>
           </form>
 
-          <p class="already-signed-up">
-            Not signed up? <a href="./SignUp.html">Sign Up</a>
-          </p>
+          <p class="already-signed-up">Not signed up? <a href="./SignUp.html">Sign Up</a></p>
         </div>
       </div>
     </section>
 
     <script>
-      document
-        .getElementById("loginForm")
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
+      document.getElementById('loginForm').addEventListener('submit', function (event) {
+        event.preventDefault();
 
-          const username = document.getElementById("username").value.trim();
-          const password = document.getElementById("password").value.trim();
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
 
-          // Get stored user
-          const storedUser = localStorage.getItem(username);
+        // Get stored user
+        const storedUser = localStorage.getItem(username);
 
-          // Check if user exists
-          if (!storedUser) {
-            alert("User does not exist.");
-            return;
-          }
+        // Check if user exists
+        if (!storedUser) {
+          alert('User does not exist.');
+          return;
+        }
 
-          const userData = JSON.parse(storedUser);
+        const userData = JSON.parse(storedUser);
 
-          // Password matching
-          if (password !== userData.password) {
-            alert("Incorrect password.");
-            return;
-          }
+        // Password matching
+        if (password !== userData.password) {
+          alert('Incorrect password.');
+          return;
+        }
 
-          // Login successful
-          alert("Login successful!");
+        // Login successful
+        alert('Login successful!');
 
-          localStorage.setItem("loggedInUser", username);
-          window.location.href = "../index.html";
-        });
+        localStorage.setItem('loggedInUser', username);
+        window.location.href = '../index.html';
+      });
     </script>
   </body>
 </html>

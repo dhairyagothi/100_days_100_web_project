@@ -36,30 +36,44 @@
     <div class="noise-layer" aria-hidden="true"></div>
 
     <nav class="navbar" id="navbar">
-        <a class="navbar-brand" href="../index.html" style="text-decoration:none;">
-            <span class="brand-mark" aria-hidden="true">100</span>
-            <span class="brand-copy">
-                <span class="brand-kicker">Open Source Archive</span>
-                <strong>100 Days · 100 Web Projects</strong>
-            </span>
-        </a>
-        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation menu" aria-controls="navButtons" aria-expanded="false">
-            <i class="fas fa-bars"></i>
+      <a class="navbar-brand" href="../index.html" style="text-decoration: none">
+        <span class="brand-mark" aria-hidden="true">100</span>
+        <span class="brand-copy">
+          <span class="brand-kicker">Open Source Archive</span>
+          <strong>100 Days · 100 Web Projects</strong>
+        </span>
+      </a>
+      <button
+        class="menu-toggle"
+        id="menuToggle"
+        type="button"
+        aria-label="Toggle navigation menu"
+        aria-controls="navButtons"
+        aria-expanded="false"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="nav-buttons mobile-drawer-layer" id="navButtons">
+        <a class="btn btn-ghost btn-sm" href="../index.html"><i class="fas fa-home"></i> Home</a>
+        <a class="btn btn-primary btn-sm" href="https://www.github-readme.tech" target="_blank"
+          ><i class="fas fa-rocket"></i> Generate README</a
+        >
+        <a
+          class="btn btn-ghost btn-sm"
+          href="https://github.com/dhairyagothi/100_days_100_web_project"
+          target="_blank"
+          ><i class="fab fa-github"></i> GitHub</a
+        >
+        <button class="btn btn-ghost btn-sm" id="themeToggle" aria-label="Toggle theme">
+          <i class="fas fa-moon"></i> Theme
         </button>
-        <div class="nav-buttons mobile-drawer-layer" id="navButtons">
-            <a class="btn btn-ghost btn-sm" href="../index.html"><i class="fas fa-home"></i> Home</a>
-            <a class="btn btn-primary btn-sm" href="https://www.github-readme.tech" target="_blank"><i class="fas fa-rocket"></i> Generate README</a>
-            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-          <button class="btn btn-ghost btn-sm" id="themeToggle" aria-label="Toggle theme"><i class="fas fa-moon"></i> Theme</button>
-        </div>
+      </div>
     </nav>
 
     <div class="container">
       <div class="contributor-header">
         <h1>Project Contributors</h1>
-        <p class="subtitle">
-          Highlighting the brilliant minds behind this journey
-        </p>
+        <p class="subtitle">Highlighting the brilliant minds behind this journey</p>
       </div>
 
       <div class="stats-overview">
@@ -90,11 +104,7 @@
       </div>
 
       <div class="contributors-controls">
-        <input
-          type="text"
-          id="contributorSearch"
-          placeholder="Search contributors..."
-        />
+        <input type="text" id="contributorSearch" placeholder="Search contributors..." />
 
         <select id="sortContributors">
           <option value="desc">Highest Commits</option>
@@ -111,9 +121,7 @@
         <button id="retryContributors">Retry</button>
       </div>
 
-      <div id="contributorsLoading" class="loading-state">
-        Loading contributors...
-      </div>
+      <div id="contributorsLoading" class="loading-state">Loading contributors...</div>
 
       <div id="contributors" class="contributors-grid"></div>
 
@@ -127,9 +135,7 @@
         <button id="retryStargazers">Retry</button>
       </div>
 
-      <div id="stargazersLoading" class="loading-state">
-        Loading stargazers...
-      </div>
+      <div id="stargazersLoading" class="loading-state">Loading stargazers...</div>
 
       <div id="stargazers" class="stargazers-grid"></div>
     </div>
@@ -139,22 +145,15 @@
         <div>
           <h3>About</h3>
           <p>
-            This repository contains a growing collection of web projects from
-            basic to intermediate using HTML, CSS, and JS.
+            This repository contains a growing collection of web projects from basic to intermediate
+            using HTML, CSS, and JS.
           </p>
-          <p>
-            <strong>&copy; 2024 100 Days, 100 Projects</strong> by Dhairya and
-            Contributors.
-          </p>
+          <p><strong>&copy; 2024 100 Days, 100 Projects</strong> by Dhairya and Contributors.</p>
         </div>
         <div>
           <h3>Connect With Us</h3>
           <div class="social-links">
-            <a
-              href="https://www.instagram.com/dhairyaa__31/"
-              target="_blank"
-              class="social-btn"
-            >
+            <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" class="social-btn">
               <i class="fab fa-instagram"></i>
             </a>
             <a
@@ -202,12 +201,12 @@
       </div>
     </div>
     <button id="scrollBtn" aria-label="Back to top">
-        <svg class="progress-ring" viewBox="0 0 48 48">
-            <circle class="ring-track" cx="24" cy="24" r="22"/>
-            <circle class="ring-fill" id="ringFill" cx="24" cy="24" r="22"/>
-        </svg>
-        <i class="fas fa-arrow-up scroll-arrow"></i>
-        <span class="scroll-tooltip">Back to top</span>
+      <svg class="progress-ring" viewBox="0 0 48 48">
+        <circle class="ring-track" cx="24" cy="24" r="22" />
+        <circle class="ring-fill" id="ringFill" cx="24" cy="24" r="22" />
+      </svg>
+      <i class="fas fa-arrow-up scroll-arrow"></i>
+      <span class="scroll-tooltip">Back to top</span>
     </button>
     <div class="toast" id="toast"></div>
 
