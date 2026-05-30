@@ -33,8 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const resetBtn =
     document.getElementById("reset");
 
-  
-
   const themeToggle =
     document.getElementById("themeToggle");
 
@@ -43,14 +41,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const circleLength = 691;
 
-  
+  // BROWSER NOTIFICATION
+
+  function showTimerNotification() {
+
+    if (!("Notification" in window)) {
+      return;
+    }
+
+    if (Notification.permission === "granted") {
+
+      new Notification("⏰ Timer Complete", {
+        body: "Your focus session has ended. Take a break!"
+      });
+
+    }
+
+  }
 
   // THEME
 
   const savedTheme =
     localStorage.getItem("theme");
 
-  if(savedTheme === "dark"){
+  if (savedTheme === "dark") {
 
     document.body.classList.add("dark");
 
@@ -61,24 +75,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.body.classList.toggle("dark");
 
-    if(document.body.classList.contains("dark")){
+    if (document.body.classList.contains("dark")) {
 
-      localStorage.setItem("theme","dark");
+      localStorage.setItem("theme", "dark");
 
       themeToggle.textContent = "☀";
 
     } else {
 
-      localStorage.setItem("theme","light");
+      localStorage.setItem("theme", "light");
 
       themeToggle.textContent = "🌙";
     }
 
   });
 
+  // REQUEST NOTIFICATION PERMISSION
+
+  if ("Notification" in window &&
+      Notification.permission === "default") {
+
+    Notification.requestPermission();
+
+  }
+
   // UPDATE DISPLAY
 
-  function updateDisplay(){
+  function updateDisplay() {
 
     let mins =
       Math.floor(remainingTime / 60);
@@ -87,10 +110,10 @@ document.addEventListener("DOMContentLoaded", () => {
       remainingTime % 60;
 
     minutesEl.textContent =
-      String(mins).padStart(2,"0");
+      String(mins).padStart(2, "0");
 
     secondsEl.textContent =
-      String(secs).padStart(2,"0");
+      String(secs).padStart(2, "0");
 
     let progress =
       remainingTime / totalTime;
@@ -101,9 +124,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // START TIMER
 
-  function startTimer(){
+  function startTimer() {
 
-    if(remainingTime <= 0){
+    if (remainingTime <= 0) {
 
       totalTime =
         Number(inputHours.value) * 3600 +
@@ -113,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
       remainingTime = totalTime;
     }
 
-    if(remainingTime <= 0){
+    if (remainingTime <= 0) {
 
       return;
     }
@@ -126,34 +149,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
       updateDisplay();
 
-      if(remainingTime <= 0){
+      if (remainingTime <= 0) {
 
         clearInterval(countdown);
-
-
 
         alarmSound.play();
 
         confetti({
-          particleCount:180,
-          spread:90
+          particleCount: 180,
+          spread: 90
         });
+
+        showTimerNotification();
 
       }
 
-    },1000);
+    }, 1000);
   }
 
   // PAUSE TIMER
 
-  function pauseTimer(){
+  function pauseTimer() {
 
     clearInterval(countdown);
   }
 
   // RESET TIMER
 
-  function resetTimer(){
+  function resetTimer() {
 
     clearInterval(countdown);
 
@@ -167,7 +190,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     progressCircle.style.strokeDashoffset = 0;
 
-
     inputHours.value = 0;
 
     inputMinutes.value = 0;
@@ -177,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // PRESETS
 
-  window.setPreset = function(seconds){
+  window.setPreset = function (seconds) {
 
     inputHours.value =
       Math.floor(seconds / 3600);
@@ -187,7 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     inputSeconds.value =
       seconds % 60;
-  }
+  };
 
   // EVENTS
 
