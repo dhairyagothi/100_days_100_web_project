@@ -264,7 +264,11 @@ getProjectDescription(project);
 
 function attachProjectCardInteraction(card, demoUrl, projectData = null) {
   card.style.cursor = 'pointer';
-  card.onclick = (e) => {
+  card.tabIndex = 0;
+  card.setAttribute('role', 'button');
+  card.setAttribute('aria-label', `Open project: ${projectData ? projectData[1] : 'Demo'}`);
+
+  const handleActivation = (e) => {
     if (e.target.closest('a, button')) return;
     
     // Track the project visit if projectData is provided
@@ -273,6 +277,14 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
     }
     
     window.open(demoUrl, '_blank', 'noopener');
+  };
+
+  card.onclick = handleActivation;
+  card.onkeydown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleActivation(e);
+    }
   };
 }
 
