@@ -14,6 +14,7 @@ const highScoreText = document.getElementById("highscore");
 const strictToggle = document.getElementById("strict-toggle");
 const themeToggle = document.getElementById("theme-toggle");
 const startBtn = document.getElementById("start-btn");
+const stopBtn = document.getElementById("stop-btn");
 const board = document.getElementById("board");
 const allBtns = document.querySelectorAll(".btn");
 
@@ -106,6 +107,21 @@ function checkAns(idx) {
   }
 }
 
+function stopGame() {
+  if (!started) return;
+
+  h2.innerHTML = `🛑 Game Stopped! Final Score: <b>${level}</b>`;
+
+  updateHighScore();
+
+  started = false;
+  gameSeq = [];
+  userSeq = [];
+  level = 0;
+  lives = 3;
+  clickable = true;
+}
+
 function gameOver() {
   board.classList.add("shake");
   board.addEventListener("animationend", () => board.classList.remove("shake"), { once: true });
@@ -144,6 +160,7 @@ function resetGame() {
 
 // ---------------- Event Listeners ----------------
 startBtn.addEventListener("click", startGame);
+stopBtn.addEventListener("click", stopGame);
 strictToggle.addEventListener("change", (e) => {
   strictMode = e.target.checked;
 });

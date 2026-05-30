@@ -1,144 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DocNow</title>
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./docstyle.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DocNow</title>
+  <link rel="stylesheet" href="docstyle.css">
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+  <div class="overlay" id="modal-overlay">
+    <div class="modal">
+      <h2 id="modal-title">New Card</h2>
+      <div>
+        <label>Title</label>
+        <input type="text" id="input-title" placeholder="Card title" />
+      </div>
+      <div>
+        <label>Content</label>
+        <textarea id="input-content" placeholder="Notes, info, reference…"></textarea>
+      </div>
+      <div>
+        <label>Category</label>
+        <select id="input-category">
+          <option value="note">Note</option>
+          <option value="link">Link</option>
+          <option value="reminder">Reminder</option>
+          <option value="reference">Reference</option>
+          <option value="work">Work</option>
+        </select>
+      </div>
+      <div>
+        <label>URL (optional)</label>
+        <input type="text" id="input-url" placeholder="https://…" />
+      </div>
+      <div class="modal-footer">
+        <button id="btn-cancel">Cancel</button>
+        <button id="btn-save">Save</button>
+      </div>
+    </div>
+  </div>
 
-    <header class="nav">
-        <a class="logo" href="index.html"><img src="./images/docnow.png" alt="DocNow logo"></a>
-        <nav class="link">
-            <a href="./pages/about.html">About</a>
-            <a href="./pages/services.html">Services</a>
-            <a href="./pages/appointment.html">Appointment</a>
-            <a href="./pages/doctors.html">Doctors</a>
-            <a href="./pages/contact.html">Contact</a>
-            <a href="./pages/contact.html" class="button">Chat now</a>
-        </nav>
-    </header>
+  <nav>
+    <h1>DocNow</h1>
+    <input type="text" id="search-input" placeholder="Search cards…" />
+    <button id="btn-theme" title="Toggle theme">☀︎</button>
+    <button id="btn-new">+ New</button>
+  </nav>
 
-    <main>
-        <section class="hero">
-            <div class="hero-copy" data-aos="fade-right" data-aos-duration="1200">
-                <span class="eyebrow">Book instantly. Consult confidently.</span>
-                <h1>Smart care for every moment.</h1>
-                <p>DocNow connects you to experienced doctors, fast appointment booking, and secure medical records — all in one polished healthcare experience.</p>
-                <div class="hero-actions">
-                    <a href="./pages/appointment.html" class="btn primary">Book an appointment</a>
-                    <a href="./pages/services.html" class="btn secondary">Explore services</a>
-                </div>
-                <div class="stats">
-                    <div class="stat-card"><strong>24/7</strong><span>Live support</span></div>
-                    <div class="stat-card"><strong>120+</strong><span>Specialists</span></div>
-                    <div class="stat-card"><strong>99%</strong><span>Satisfaction</span></div>
-                    <div class="stat-card"><strong>30+</strong><span>Care services</span></div>
-                </div>
-            </div>
-            <div class="hero-visual" data-aos="fade-left" data-aos-duration="1200">
-                <img src="./images/banner_img.jpg" alt="DocNow patient dashboard">
-            </div>
-        </section>
+  <div class="filters" id="filter-bar"></div>
 
-        <section class="section section-light">
-            <div class="section-heading" data-aos="fade-up" data-aos-duration="1200">
-                <h2>Healthy care, simplified.</h2>
-                <p>DocNow makes it easy to schedule appointments, manage records, and stay connected with your medical team from a single trusted hub.</p>
-            </div>
-            <div class="hero-row">
-                <div class="info-panel" data-aos="fade-right" data-aos-duration="1200">
-                    <h3>Your health journey in one place.</h3>
-                    <p>Whether it is specialist appointments, medical history access, or direct doctor chat, DocNow keeps every care step smooth and reliable.</p>
-                    <ul>
-                        <li><strong>01</strong> Fast appointment booking</li>
-                        <li><strong>02</strong> Trusted specialist directory</li>
-                        <li><strong>03</strong> Secure medical record access</li>
-                        <li><strong>04</strong> Easy patient-doctor communication</li>
-                    </ul>
-                    <a href="./pages/services.html" class="button">View services</a>
-                </div>
-                <div data-aos="fade-left" data-aos-duration="1200">
-                    <img src="./images/ability_img.png" alt="DocNow healthcare illustration">
-                </div>
-            </div>
-        </section>
+  <div class="card-grid" id="card-grid"></div>
+  <p id="empty-message" style="display:none">No cards found.</p>
 
-        <section class="section">
-            <div class="section-heading" data-aos="fade-up" data-aos-duration="1200">
-                <h2>Care services for every need.</h2>
-                <p>Choose the service that fits your situation and connect with doctors, records, and support instantly.</p>
-            </div>
-            <div class="grid grid-3" data-aos="fade-up" data-aos-duration="1200">
-                <article class="service-card">
-                    <div class="icon"><img src="./images/banner_1.svg" alt="Appointment icon"></div>
-                    <h3>Appointment booking</h3>
-                    <p>Reserve time with top specialists across dentistry, cardiology, dermatology, and more.</p>
-                    <div class="card-footer"><a href="./pages/appointment.html">Book now</a></div>
-                </article>
-                <article class="service-card">
-                    <div class="icon"><img src="./images/banner_1.svg" alt="Doctor icon"></div>
-                    <h3>Doctor directory</h3>
-                    <p>Browse experienced doctors by specialty, availability, and patient reviews.</p>
-                    <div class="card-footer"><a href="./pages/doctors.html">See doctors</a></div>
-                </article>
-                <article class="service-card">
-                    <div class="icon"><img src="./images/banner_1.svg" alt="Record icon"></div>
-                    <h3>Medical records</h3>
-                    <p>Keep your history organized and share records easily during consultations.</p>
-                    <div class="card-footer"><a href="./pages/contact.html">Get support</a></div>
-                </article>
-                <article class="service-card">
-                    <div class="icon"><img src="./images/banner_1.svg" alt="Chat icon"></div>
-                    <h3>Patient chat</h3>
-                    <p>Send quick messages to your care team and get guidance on your health questions.</p>
-                    <div class="card-footer"><a href="./pages/contact.html">Start chat</a></div>
-                </article>
-                <article class="service-card">
-                    <div class="icon"><img src="./images/banner_1.svg" alt="Support icon"></div>
-                    <h3>Health tracking</h3>
-                    <p>Monitor your progress with easy access to appointments, notes, and follow-up care.</p>
-                    <div class="card-footer"><a href="./pages/contact.html">Learn more</a></div>
-                </article>
-            </div>
-        </section>
+  <script>
+    let cards = JSON.parse(localStorage.getItem("docnow-cards") || "[]");
+    let activeFilter = "all";
+    let editingId = null;
 
-        <section class="section section-light">
-            <div class="cta-banner" data-aos="fade-up" data-aos-duration="1200">
-                <div>
-                    <h2>Download the DocNow companion app.</h2>
-                    <p>Keep appointments, records, and care conversations with you everywhere you go.</p>
-                    <div class="download-links">
-                        <img src="./images/AndroidPNG.png" alt="Download on Android">
-                        <img src="./images/iosPNG.png" alt="Download on iOS">
-                    </div>
-                </div>
-                <div>
-                    <img src="./images/app.png" alt="DocNow mobile app">
-                </div>
+    function saveToStorage() {
+      localStorage.setItem("docnow-cards", JSON.stringify(cards));
+    }
+
+    function renderCards() {
+      const searchText = document.getElementById("search-input").value.toLowerCase();
+
+      const filteredCards = cards.filter(function(card) {
+        const matchesCategory = activeFilter === "all" || card.category === activeFilter;
+        const matchesSearch = card.title.toLowerCase().includes(searchText) ||
+                              card.content.toLowerCase().includes(searchText);
+        return matchesCategory && matchesSearch;
+      });
+
+      const grid = document.getElementById("card-grid");
+      const emptyMessage = document.getElementById("empty-message");
+
+      grid.innerHTML = "";
+
+      if (filteredCards.length === 0) {
+        emptyMessage.style.display = "block";
+        return;
+      }
+
+      emptyMessage.style.display = "none";
+
+      filteredCards.forEach(function(card) {
+        const cardElement = document.createElement("div");
+        cardElement.className = "card";
+        cardElement.innerHTML = `
+          <div class="category">${card.category}</div>
+          <h3>${card.title}</h3>
+          <p>${card.content}</p>
+          ${card.url ? `<a href="${card.url}" target="_blank">${card.url}</a>` : ""}
+          <div class="card-footer">
+            <span>${formatDate(card.createdAt)}</span>
+            <div style="display:flex; gap:6px">
+              <button data-id="${card.id}" data-action="edit">Edit</button>
+              <button data-id="${card.id}" data-action="delete">Delete</button>
             </div>
-        </section>
-    </main>
+          </div>
+        `;
+        grid.appendChild(cardElement);
+      });
+    }
 
-    <footer class="footer">
-        <div class="footer-links">
-            <a href="index.html">Home</a>
-            <a href="./pages/about.html">About</a>
-            <a href="./pages/services.html">Services</a>
-            <a href="./pages/doctors.html">Doctors</a>
-            <a href="./pages/contact.html">Contact</a>
-        </div>
-        <div class="footer-copy">© 2026 DocNow — Virtual healthcare that feels human.</div>
-    </footer>
+    function renderFilters() {
+      const categories = ["all", "note", "link", "reminder", "reference", "work"];
+      const filterBar = document.getElementById("filter-bar");
+      filterBar.innerHTML = "";
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.js"></script>
-    <script>AOS.init();</script>
+      categories.forEach(function(category) {
+        const button = document.createElement("button");
+        button.textContent = category;
+        if (category === activeFilter) {
+          button.style.outline = "2px solid #60a5fa";
+        }
+        button.addEventListener("click", function() {
+          activeFilter = category;
+          renderFilters();
+          renderCards();
+        });
+        filterBar.appendChild(button);
+      });
+    }
+
+    function openModal(card = null) {
+      editingId = card ? card.id : null;
+      document.getElementById("modal-title").textContent = card ? "Edit Card" : "New Card";
+      document.getElementById("input-title").value = card ? card.title : "";
+      document.getElementById("input-content").value = card ? card.content : "";
+      document.getElementById("input-category").value = card ? card.category : "note";
+      document.getElementById("input-url").value = card ? card.url : "";
+      document.getElementById("modal-overlay").classList.add("open");
+    }
+
+    function closeModal() {
+      document.getElementById("modal-overlay").classList.remove("open");
+      editingId = null;
+    }
+
+    function saveCard() {
+      const title = document.getElementById("input-title").value.trim();
+      const content = document.getElementById("input-content").value.trim();
+
+      if (!title || !content) {
+        alert("Title and content are required.");
+        return;
+      }
+
+      const cardData = {
+        title: title,
+        content: content,
+        category: document.getElementById("input-category").value,
+        url: document.getElementById("input-url").value.trim(),
+      };
+
+      if (editingId) {
+        const index = cards.findIndex(function(c) { return c.id === editingId; });
+        cards[index] = Object.assign(cards[index], cardData);
+      } else {
+        cardData.id = Date.now().toString();
+        cardData.createdAt = Date.now();
+        cards.unshift(cardData);
+      }
+
+      saveToStorage();
+      closeModal();
+      renderCards();
+    }
+
+    function deleteCard(id) {
+      if (!confirm("Delete this card?")) return;
+      cards = cards.filter(function(c) { return c.id !== id; });
+      saveToStorage();
+      renderCards();
+    }
+
+    function formatDate(timestamp) {
+      const diff = Date.now() - timestamp;
+      if (diff < 3600000) return Math.floor(diff / 60000) + "m ago";
+      if (diff < 86400000) return Math.floor(diff / 3600000) + "h ago";
+      return Math.floor(diff / 86400000) + "d ago";
+    }
+
+    document.getElementById("btn-new").addEventListener("click", function() {
+      openModal();
+    });
+
+    document.getElementById("btn-cancel").addEventListener("click", function() {
+      closeModal();
+    });
+
+    document.getElementById("btn-save").addEventListener("click", function() {
+      saveCard();
+    });
+
+    document.getElementById("search-input").addEventListener("input", function() {
+      renderCards();
+    });
+
+    document.getElementById("btn-theme").addEventListener("click", function() {
+      document.body.classList.toggle("light");
+      this.textContent = document.body.classList.contains("light") ? "☾" : "☀︎";
+    });
+
+    document.getElementById("modal-overlay").addEventListener("click", function(event) {
+      if (event.target === this) closeModal();
+    });
+
+    document.getElementById("card-grid").addEventListener("click", function(event) {
+      const button = event.target.closest("button[data-action]");
+      if (!button) return;
+      const id = button.dataset.id;
+      if (button.dataset.action === "edit") {
+        openModal(cards.find(function(c) { return c.id === id; }));
+      }
+      if (button.dataset.action === "delete") {
+        deleteCard(id);
+      }
+    });
+
+    renderFilters();
+    renderCards();
+  </script>
 </body>
 </html>

@@ -32,12 +32,89 @@
       <section class="editor-panel" aria-labelledby="editor-title">
         <div class="panel-header">
           <p class="eyebrow">Live profile builder</p>
-          <h1 id="editor-title">Create your 3D profile card</h1>
+
         </div>
 
-        <form class="profile-form" id="profileForm" novalidate>
-          <div class="form-grid">
-            <label class="field">
+
+  <main class="app-shell">
+
+
+    <section
+      class="preview-panel"
+      aria-label="Generated profile card preview"
+    >
+      <article class="card layout-classic" id="profileCard">
+        <div class="container1">
+          <img
+            src="logo/Adobe Express - file.png"
+            alt="Profile picture"
+            class="image"
+            id="previewImage"
+          />
+        </div>
+
+        <div class="container2">
+          <p class="card-label">Digital profile</p>
+
+          <h2 class="heading" id="previewName">Krishna Bhati</h2>
+
+          <p class="subhead" id="previewRole">UI/UX Designer</p>
+
+          <p class="info" id="previewBio">
+            Hardworking and reliable UI/UX designer focused on going above and
+            beyond to support teams and serve customers.
+          </p>
+
+          <div class="profile" id="socialLinks">
+            <a href="#" data-platform="github" aria-label="GitHub profile">
+              <img
+                src="logo/github-142-svgrepo-com.svg"
+                alt=""
+                class="logo monochrome"
+              />
+            </a>
+
+            <a href="#" data-platform="linkedin" aria-label="LinkedIn profile">
+              <img
+                src="logo/linkedin-svgrepo-com (1).svg"
+                alt=""
+                class="logo"
+              />
+            </a>
+
+            <a href="#" data-platform="twitter" aria-label="Twitter profile">
+              <img
+                src="logo/twitter-svgrepo-com.svg"
+                alt=""
+                class="logo"
+              />
+            </a>
+
+            <a
+              href="#"
+              data-platform="instagram"
+              aria-label="Instagram profile"
+            >
+              <img
+                src="logo/instagram-svgrepo-com.svg"
+                alt=""
+                class="logo"
+              />
+            </a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+
+    <section class="editor-panel" aria-labelledby="editor-title">
+      <div class="panel-header">
+        <h1 id="editor-title">Create your 3D profile card</h1>
+      </div>
+
+      <form class="profile-form" id="profileForm" novalidate>
+        <div class="form-grid">
+          <label class="field">
             <span>Name</span>
             <input
               type="text"
@@ -178,72 +255,10 @@
       </form>
     </section>
 
-    <section
-      class="preview-panel"
-      aria-label="Generated profile card preview"
-    >
-      <article class="card layout-classic" id="profileCard">
-        <div class="container1">
-          <img
-            src="logo/Adobe Express - file.png"
-            alt="Profile picture"
-            class="image"
-            id="previewImage"
-          />
-        </div>
+    </main>
 
-        <div class="container2">
-          <p class="card-label">Digital profile</p>
-
-          <h2 class="heading" id="previewName">Krishna Bhati</h2>
-
-          <p class="subhead" id="previewRole">UI/UX Designer</p>
-
-          <p class="info" id="previewBio">
-            Hardworking and reliable UI/UX designer focused on going above and
-            beyond to support teams and serve customers.
-          </p>
-
-          <div class="profile" id="socialLinks">
-            <a href="#" data-platform="github" aria-label="GitHub profile">
-              <img
-                src="logo/github-142-svgrepo-com.svg"
-                alt=""
-                class="logo monochrome"
-              />
-            </a>
-
-            <a href="#" data-platform="linkedin" aria-label="LinkedIn profile">
-              <img
-                src="logo/linkedin-svgrepo-com (1).svg"
-                alt=""
-                class="logo"
-              />
-            </a>
-
-            <a href="#" data-platform="twitter" aria-label="Twitter profile">
-              <img
-                src="logo/twitter-svgrepo-com.svg"
-                alt=""
-                class="logo"
-              />
-            </a>
-
-            <a
-              href="#"
-              data-platform="instagram"
-              aria-label="Instagram profile"
-            >
-              <img
-                src="logo/instagram-svgrepo-com.svg"
-                alt=""
-                class="logo"
-              />
-            </a>
-          </div>
-        </div>
-      </article>
     </section>
+
   </main>
 
   <script
