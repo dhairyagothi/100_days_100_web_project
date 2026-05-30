@@ -1,0 +1,262 @@
+/* Global Box Model and Reset */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    /* Enhanced gradient palette */
+    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-boat: linear-gradient(135deg, #ffd166 0%, #ff9a3d 100%);
+    --gradient-missionary: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --gradient-cannibal: linear-gradient(135deg, #ff5858 0%, #f09819 100%);
+    
+    /* Refined shadows with better depth perception */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 15px 25px rgba(0, 0, 0, 0.15), 0 5px 10px rgba(0, 0, 0, 0.05);
+    
+    /* Refined border radiuses */
+    --border-radius-sm: 8px;
+    --border-radius-md: 16px;
+    --border-radius-lg: 24px;
+    
+    /* Smooth transitions */
+    --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-medium: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Spacing system */
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 1.5rem;
+    --space-lg: 2rem;
+    --space-xl: 3rem;
+}
+
+/* Enhanced Body Styles */
+body {
+    min-height: 100vh;
+    padding: var(--space-lg);
+    font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--gradient-primary);
+    background-attachment: fixed;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    line-height: 1.6;
+}
+
+/* Enhanced Typography */
+h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-align: center;
+    margin: var(--space-lg) 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Improved Instructions Panel */
+.instructions {
+    background: rgba(255, 255, 255, 0.98);
+    padding: var(--space-lg);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-lg);
+    max-width: 600px;
+    margin: var(--space-md) auto var(--space-lg);
+    color: #2d3748;
+    font-size: 1.1rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Enhanced Game Container */
+.game-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--space-xl);
+    max-width: 1200px;
+    width: 100%;
+    perspective: 1000px;
+}
+
+/* Improved Banks and Boat */
+.bank, .boat {
+    background: rgba(255, 255, 255, 0.98);
+    padding: var(--space-xl);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    min-height: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: transform var(--transition-medium);
+    position: relative;
+    overflow: hidden;
+}
+
+.bank:hover, .boat:hover {
+    transform: translateY(-5px);
+}
+
+.boat {
+    background: var(--gradient-boat);
+    position: relative;
+}
+
+.boat::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    pointer-events: none;
+}
+
+.bank h2 {
+    margin-bottom: var(--space-md);
+    color: #2d3748;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* Enhanced People Container */
+.people {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    justify-content: center;
+    padding: var(--space-sm);
+}
+
+/* Improved Individual Person */
+.person {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    user-select: none;
+}
+
+.person:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-md);
+}
+
+.person:active {
+    transform: scale(0.95);
+}
+
+.missionary {
+    background: var(--gradient-missionary);
+}
+
+.cannibal {
+    background: var(--gradient-cannibal);
+}
+
+/* Enhanced Controls */
+.controls {
+    display: flex;
+    gap: var(--space-md);
+    margin-top: var(--space-xl);
+    justify-content: center;
+}
+
+button {
+    padding: 0.875rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    background: var(--gradient-primary);
+    border: none;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-medium);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    transition: opacity var(--transition-fast);
+    opacity: 0;
+}
+
+button:hover::before {
+    opacity: 1;
+}
+
+/* Enhanced Message Display */
+#message {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin: var(--space-lg) 0;
+    padding: var(--space-md);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-md);
+    backdrop-filter: blur(5px);
+    transition: all var(--transition-medium);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .game-container {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+    }
+    
+    .bank, .boat {
+        min-height: 250px;
+    }
+    
+    h1 {
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+    }
+    
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    button {
+        width: 100%;
+    }
+}
