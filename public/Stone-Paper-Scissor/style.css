@@ -42,6 +42,16 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
+  /* Spreads header, game area, and buttons out evenly */
+  height: 100vh;
+  /* Locks container to exactly the screen height */
+  box-sizing: border-box;
+  padding: 20px;
+  position: relative;
+  /* Lets us position the lower corner buttons cleanly */
+  overflow: hidden;
+  /* Prevents weird scrollbars */
 }
 
 h1 {
@@ -61,7 +71,6 @@ button {
   color: var(--text-secondary);
   font-size: 16px;
 }
-
 
 .display {
   width: 100%;

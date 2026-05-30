@@ -17,9 +17,23 @@ $(document).ready(function(){
     })
     // FAQ function 
     $('.subject-header').click(function(){
-        $('.subject .subject-body').slideUp();
+
+    $('.subject-body').slideUp();
+    $('.subject-header span').text('+');
+
+    if($(this).next('.subject-body').is(':visible')){
+        $(this).next('.subject-body').slideUp();
+        $(this).children('span').text('+');
+    }else{
         $(this).next('.subject-body').slideDown();
-        $('.subject .subject-header span').text('+')
-        $(this).children('span').text('-')
-    });
+        $(this).children('span').text('-');
+    }
+});
+});
+ScrollReveal().reveal('.row', {
+    delay: 200,
+    distance: '50px',
+    duration: 1000,
+    origin: 'bottom',
+    reset: false
 });
