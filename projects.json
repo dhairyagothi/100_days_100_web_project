@@ -2413,17 +2413,28 @@
   },
   {
     "projectNo": 194,
-    "projectName": "Neural Network Playground",
-    "projectType": "Tool",
-    "projectDesc": "Interactive neural network visualizer with live backpropagation, decision boundary heatmaps, configurable architectures, and 5 toy datasets — built entirely in vanilla JavaScript.",
+    "projectName": "Lost & Found Portal",
+    "projectType": "Website",
+    "projectDesc": "A modern web application to report lost items, report found items, browse listings, and contact item owners.",
     "techStack": [
       "html",
       "css",
-      "javascript",
-      "canvas",
-      "api"
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Lost_And_Found_Portal/index.html"
+  },
+  {
+    "projectNo": 195,
+    "projectName": "Complaint Management System",
+    "projectType": "Web Application",
+    "projectDesc": "A professional portal for submitting, tracking, and managing complaints efficiently with a premium modern UI.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/NeuralNetworkPlayground/index.html"
+    "projectPath": "./public/Complaint_Management_System/index.html"
   }
 ]
