@@ -492,7 +492,8 @@ const PROJECT_DATA = [
     'Connect4 Game',
     './public/Connect4/index.html',
     'javascript game',
-    'intermediate'
+    'intermediate'.,
+    ],
 
   ['Day 68', '3d Rotating Card', './public/3d%20cards/index.html', 'ui css', 'intermediate'],
   ['Day 69', 'Spotify Clone Project', './public/spotify-clone%20-project/index.html', 'clone api javascript', 'intermediate'],
