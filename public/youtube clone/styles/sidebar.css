@@ -1,0 +1,61 @@
+.sidebar {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  top: 55px; /* Sits flush under the fixed utility bar layer */
+  background-color: #ffffff;
+  width: 72px;
+  z-index: 200;
+  padding: 4px; /* Creates clean framing gutters around inline navigation nodes */
+  display: flex;
+  flex-direction: column;
+  gap: 4px;      /* Standard spacing between item containers */
+  box-sizing: border-box;
+  padding-top: 5px;
+  overflow: hidden;
+  transition: width 0.3s ease;
+}
+
+.sidebar.hide-sidebar {
+  width: 0;
+  padding-top: 0;
+}
+
+.sidebar-link {
+  width: 64px;
+  height: 74px;
+  margin: 0 auto; /* Horizontally centers the navigation blocks within the sidebar strip */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+  border-radius: 12px; /* Generates the premium modern rounding frame seen on the screenshot */
+  transition: background-color 0.15s ease;
+  box-sizing: border-box;
+}
+
+/* Real-time Interaction Engine: Applies background capsule highlights exclusively on hover states */
+.sidebar-link:hover {
+  background-color: #f2f2f2;
+}
+
+/* Selected State Refactor: Strips the static background calculation from the mini-sidebar node */
+.sidebar-link.is-active {
+  background-color: transparent; 
+}
+
+.sidebar-link img {
+  height: 24px;
+  width: 24px;
+  margin-bottom: 6px;
+}
+
+.sidebar-link div {
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  text-align: center;
+  color: #0f0f0f;
+  white-space: nowrap;
+}

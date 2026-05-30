@@ -3,30 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced CAPTCHA</title>
+    <title>CAPTCHA</title>
     <link rel="stylesheet" href="captcha.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="icon" href="../favv.png" type="image/x-icon" />
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
     <div class="container">
         <header>CAPTCHA</header>
         <p>Select CAPTCHA type:</p>
-        <select id="captchaType">
-            <option value="text">Text</option>
-            <option value="image">Image</option>
-            <option value="audio">Audio</option>
-            <option value="math">Math</option>
-        </select>
-        <div id="captchaContainer"></div>
-        <div class="textcaptcha">
-            <input type="text" placeholder="Enter CAPTCHA">
+        <div class="captcha-types">
+            <button class="type-btn active" data-type="text">Text</button>
+            <button class="type-btn active" data-type="image">Image</button>
+            <button class="type-btn active" data-type="audio">Audio</button>
+            <button class="type-btn active" data-type="math">Math</button>
         </div>
-        <button class="refresh">↻</button>
+        <div id="captchaContainer"></div>
+        <div class="captcha-input-group">
+            <div class="textcaptcha">
+                <input type="text" placeholder="Enter CAPTCHA">
+            </div>
+            <button class="refresh">↻</button>
+        </div>
         <p class="result"></p>
         <div class="button">
             <button>Submit CAPTCHA</button>
         </div>
     </div>
     <script src="captcha.js"></script>
-</body>
+</body> 
 </html>

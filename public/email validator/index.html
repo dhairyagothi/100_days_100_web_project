@@ -4,11 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Email Validator</title>
-
     <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
     <div class="container">
       <h1>Email Validator</h1>
       <p class="subtitle">
@@ -16,20 +17,41 @@
       </p>
 
       <div class="input-group">
-        <input type="text" id="username" placeholder="Enter email address" />
-
+        <input
+          type="text"
+          id="username"
+          placeholder="Enter email address"
+          autocomplete="email"
+        />
         <button id="submitBtn" class="btn">Validate Email</button>
       </div>
 
-      <div id="resultCont"></div>
-    </div>
+      <!-- Typo suggestion banner -->
+      <div id="suggestionBanner" class="suggestion-banner" style="display:none" aria-live="polite">
+        <span class="suggestion-icon">💡</span>
+        <span id="suggestionText"></span>
+        <button id="suggestionBtn" class="suggestion-apply-btn">Use this</button>
+      </div>
 
-    <script>
-      const submitBtn = document.getElementById("submitBtn");
-      const resultCont = document.getElementById("resultCont");
-    </script>
+      <!-- Format error details (shown before API call) -->
+      <div id="formatErrors" class="format-error-box" style="display:none" aria-live="polite">
+        <p class="format-error-title">⚠️ Please fix the following:</p>
+        <ul id="formatErrorList"></ul>
+      </div>
+
+      <!-- Part breakdown badges -->
+      <div id="partBreakdown" class="part-breakdown" style="display:none">
+        <span class="part-label">Local:</span>
+        <span id="partLocal" class="part-badge"></span>
+        <span class="part-sep">@</span>
+        <span class="part-label">Domain:</span>
+        <span id="partDomain" class="part-badge"></span>
+      </div>
+
+      <!-- API results / loading / error -->
+      <div id="resultCont" class="result-container" aria-live="polite"></div>
+    </div>
 
     <script src="script.js"></script>
   </body>
 </html>
-
