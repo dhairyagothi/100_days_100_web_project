@@ -1,6 +1,6 @@
 /* ============================================
-   🎨 TO-DO LIST — KANBAN OVERHAUL
-   Glassmorphism · Responsive · Smooth Animations
+   🎨 TO-DO LIST — COMPLETE OVERHAUL
+   Glassmorphism · Responsive · Clean Alignment
    ============================================ */
 
 /* ---------- Reset ---------- */
@@ -745,12 +745,8 @@ section {
 
 /* ---------- Responsive ---------- */
 @media (max-width: 992px) {
-  .kanban-board {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  .kanban-column {
-    min-height: unset;
+  .task-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   }
 }
 
