@@ -13,6 +13,8 @@
     <link rel="icon" href="../favv.png" type="image/x-icon" />
   </head>
   <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
 
      <!-- job filter section starts -->
     
@@ -93,6 +95,15 @@
                          </div>
                      </div>
                  </div>
+                 <div class="dropdown">
+   <input type="text" readonly name="sortBy" placeholder="sort jobs" maxlength="20" class="output">
+   <div class="lists">
+      <p class="items" onclick="selectDropdown(this)">salary low to high</p>
+      <p class="items" onclick="selectDropdown(this)">salary high to low</p>
+      <p class="items" onclick="selectDropdown(this)">newest first</p>
+      <p class="items" onclick="selectDropdown(this)">title a-z</p>
+   </div>
+</div>
                  <button type="submit" class="btn">Apply Filter</button>
                  <button type="button" id="resetButton" class="btn">Reset Filters</button>
 
@@ -106,7 +117,17 @@
  <section class="job-container">
      <h1 class="heading">All Jobs</h1>
      <div class="box-container">
-         <div class="box">
+         <div class="box" data-id="job1">
+            <div class="box" data-id="job2">
+                <div class="box" data-id="job3">
+                    <div class="box" data-id="job4">
+                        <div class="box" data-id="job5">
+                            <div class="box" data-id="job6"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         </div>
              <div class="company">
                  <img src="./image/html.webp" alt=" ">
                  <div>
@@ -232,6 +253,13 @@
  
  </section>
  <!-- all jobs section end -->
+  <section class="job-container saved-jobs-section">
+   <h1 class="heading">Saved Jobs</h1>
+
+   <div class="box-container" id="savedJobsContainer">
+      <p class="no-saved">No saved jobs yet.</p>
+   </div>
+</section>
  
 
    

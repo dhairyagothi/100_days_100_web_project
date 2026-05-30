@@ -6,6 +6,8 @@ import { BsPinAngle, BsPinAngleFill } from "react-icons/bs";
 import './TodolistItem.css'
 
 
+type PriorityType = "High" | "Medium" | "Low";
+
 type typeTodoListItem = {
     id: string;
     title: string;
@@ -13,6 +15,9 @@ type typeTodoListItem = {
     checked: boolean;
     recurring: boolean;
     tag: string;
+
+    priority: PriorityType;
+    dueDate: string;
 }
 
 function Todolist() {
@@ -20,6 +25,8 @@ function Todolist() {
     const inputRef = useRef<HTMLInputElement>(null);
     const tagRef = useRef<HTMLInputElement>(null);
     const [ todoTag, setTodoTag ] = useState<string>('personal');
+   const [ todoPriority, setTodoPriority ] = useState<PriorityType>("Medium");
+const [ todoDueDate, setTodoDueDate ] = useState<string>("");
     const [ todoFilter, setTodoFilter ] = useState<string>('all');
     const [ userTodoListItems, setUserTodoListItems ] = useState<typeTodoListItem[]>(JSON.parse(localStorage.getItem('TodoListItems') || '[]'));
     const [ todoTags, setTodoTags ] = useState<string[]>(JSON.parse(localStorage.getItem('userTodoTags') || '[\"personal\", \"work\"]'));
@@ -47,15 +54,57 @@ function Todolist() {
 
 	// Create todo item DOM (React JSX)
 	const createTodoItem = (todo: typeTodoListItem) => {
+        const isOverdue =
+    todo.dueDate &&
+    new Date(todo.dueDate) < new Date() &&
+    !todo.checked;
 		return (
-            <div className={`p-2 bg-slate-300 dark:bg-slate-700 max-w-screen-sm w-full rounded-2xl hover:scale-105 max-md:scale-90 max-md:hover:scale-90 transition-all duration-300 ${todo.checked ? "dark:bg-slate-900 bg-slate-200" : ""}`} key={todo.id} 
+            <div
+    className={`p-2 max-w-screen-sm w-full rounded-2xl hover:scale-105 max-md:scale-90 max-md:hover:scale-90 transition-all duration-300
+    ${
+        isOverdue
+            ? "bg-red-200 dark:bg-red-900 border-2 border-red-500"
+            : "bg-slate-300 dark:bg-slate-700"
+    }
+    ${todo.checked ? "dark:bg-slate-900 bg-slate-200" : ""}`}
+    key={todo.id}
 			onClick={() => {
 				toggleTodoStatus(todo.id, "checked");
 			}}>
                 <div className='flex relative'>
-                    <div className={`p-2 bg-transparent break-words w-full font-medium ${todo.checked ? "line-through decoration-2" : ""}`}>
-                        {sanitizeInput(todo.title)}
-                    </div>
+                    <div className="p-2 w-full">
+    <div className={`break-words font-medium ${todo.checked ? "line-through decoration-2" : ""}`}>
+        {sanitizeInput(todo.title)}
+    </div>
+
+    <div className="flex gap-2 mt-2 flex-wrap">
+        <span
+            className={`px-2 py-1 text-xs rounded-full text-white
+            ${
+                todo.priority === "High"
+                    ? "bg-red-500"
+                    : todo.priority === "Medium"
+                    ? "bg-yellow-500"
+                    : "bg-green-500"
+            }`}
+        >
+            {todo.priority}
+        </span>
+        {todo.dueDate && (
+
+    <span className="px-2 py-1 text-xs rounded-full bg-slate-500 text-white">
+        📅 {todo.dueDate}
+    </span>
+    
+    
+)}
+{isOverdue && (
+    <span className="px-2 py-1 text-xs rounded-full bg-red-600 text-white">
+        ⚠ Overdue
+    </span>
+)}
+    </div>
+</div>
                 </div>
                 <div className='flex gap-2 p-2 justify-between'>
                     <div className='flex gap-2'>
@@ -140,13 +189,16 @@ function Todolist() {
         }
         const id = "tl" + Date.now();
         TodoListItems.push({
-            id: id,
-            title: todoTitle,
-            pinned: false,
-            checked: false,
-            recurring: false,
-            tag: todoTag,
-        })
+    id: id,
+    title: todoTitle,
+    pinned: false,
+    checked: false,
+    recurring: false,
+    tag: todoTag,
+
+    priority: todoPriority,
+    dueDate: todoDueDate,
+})
         saveUserTodoListItems(TodoListItems);
         if (inputRef.current) {
             inputRef.current.value = ''; // Clear the input by directly modifying the DOM element
@@ -193,6 +245,22 @@ function Todolist() {
 			localStorage.setItem("todoLastUpdateDate",todoCurrentDate);
 		}
 	}, []);
+    const sortedTodos = [...userTodoListItems].sort((a, b) => {
+    const aOverdue =
+        a.dueDate &&
+        new Date(a.dueDate) < new Date() &&
+        !a.checked;
+
+    const bOverdue =
+        b.dueDate &&
+        new Date(b.dueDate) < new Date() &&
+        !b.checked;
+
+    if (aOverdue && !bOverdue) return -1;
+    if (!aOverdue && bOverdue) return 1;
+
+    return 0;
+});
 
     return (
         <div className='Todolist flex flex-col w-full items-center justify-center mt-20 gap-6 pb-8'>
@@ -203,7 +271,11 @@ function Todolist() {
                     className='p-2 pr-14 bg-transparent w-full outline-none placeholder:text-slate-500 dark:placeholder:text-slate-400'
                     placeholder='Add Item...'
                     ref={inputRef}
-                    onKeyDown={(e) => e.key === 'Enter' && addTodoItem()}
+                    onKeyDown={(e) => {
+    if (e.key === "Enter") {
+        addTodoItem();
+    }
+}}
                     />
                     <button className='absolute flex items-center justify-center px-3 py-2 leading-4 dark:bg-red-500 bg-blue-600 text-slate-50 right-1.5 top-1 rounded-lg active:scale-75 transition-all duration-300' onClick={addTodoItem}>+</button>
                 </div>
@@ -230,11 +302,30 @@ function Todolist() {
                             type='text'
                             className='bg-transparent text-xs w-full max-w-16 outline-none placeholder:text-slate-500 dark:placeholder:text-slate-400'
                             placeholder='Add Tag...'
-                            onKeyDown={(e) => e.key === 'Enter' && addTodoTag()}
+                           onKeyDown={(e) => {
+    if (e.key === "Enter") {
+        addTodoItem();
+    }
+}}
                             ref={tagRef}
                         />
                         <button onClick={addTodoTag}>+</button>
                     </div>
+                    <select
+    className="px-2 py-1 rounded-md bg-slate-200 dark:bg-slate-800"
+    value={todoPriority}
+    onChange={(e) => setTodoPriority(e.target.value as PriorityType)}
+>
+    <option value="High">🔴 High</option>
+    <option value="Medium">🟡 Medium</option>
+    <option value="Low">🟢 Low</option>
+</select>
+<input
+    type="date"
+    className="px-2 py-1 rounded-md bg-slate-200 dark:bg-slate-800"
+    value={todoDueDate}
+    onChange={(e) => setTodoDueDate(e.target.value)}
+/>
                     <button onClick={()=> {saveUserTodoTags(["personal", "work"])}}><TbRepeat /></button>
                 </div>
             </div>
@@ -250,13 +341,14 @@ function Todolist() {
                 </div>
             </div>
             {
-                ((todoFilter==="tags") ? <TagWiseList /> : ((todoFilter==="checked") ? DisplayStatusList(todoFilter) : ((todoFilter==="pinned") ? DisplayStatusList(todoFilter) : ((todoFilter==="recurring") ? DisplayStatusList(todoFilter) : TodoListItems.map((elem)=>{return createTodoItem(elem)})))))
+                ((todoFilter==="tags") ? <TagWiseList /> : ((todoFilter==="checked") ? DisplayStatusList(todoFilter) : ((todoFilter==="pinned") ? DisplayStatusList(todoFilter) : ((todoFilter==="recurring") ? DisplayStatusList(todoFilter) : sortedTodos.map((elem)=>{return createTodoItem(elem)})))))
             }
             {
                 // true ? TodoListItems.filter((todo: typeTodoListItem) => { return todo['checked'] }).map((todo: typeTodoListItem) => { return createTodoItem(todo) })
                 // : TodoListItems.map((todo: typeTodoListItem) => { return createTodoItem(todo) })
             }
         </div>
+
     )
 }
 

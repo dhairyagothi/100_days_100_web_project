@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit Kitchen</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header class="site-header">
+    <h1 class="site-header__title">Unit Kitchen</h1>
+    <span class="site-header__subtitle">converter &amp; recipe scaler</span>
+  </header>
+
+  <div class="layout">
+
+    <!-- LEFT: unit converter -->
+    <aside class="sidebar">
+
+      <div class="sidebar__section">
+        <p class="section-label">Category</p>
+        <nav class="tabs" role="group" aria-label="Converter categories">
+          <button class="tabs__btn tabs__btn--active" data-cat="volume">Volume</button>
+          <button class="tabs__btn" data-cat="weight">Weight</button>
+          <button class="tabs__btn" data-cat="temp">Temp</button>
+          <button class="tabs__btn" data-cat="length">Length</button>
+        </nav>
+      </div>
+
+      <div class="sidebar__section">
+        <p class="section-label">Convert</p>
+        <div class="converter">
+          <div class="converter__row">
+            <div class="converter__field">
+              <label for="fromVal">From</label>
+              <input type="number" id="fromVal" placeholder="0" value="1">
+              <select id="fromUnit" aria-label="From unit"></select>
+            </div>
+            <span class="converter__arrow" aria-hidden="true">→</span>
+            <div class="converter__field">
+              <label for="toVal">To</label>
+              <input type="number" id="toVal" readonly aria-label="Converted value">
+              <select id="toUnit" aria-label="To unit"></select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar__section">
+        <p class="section-label">Quick Reference</p>
+        <div class="quick-refs" id="quickRefs"></div>
+      </div>
+
+    </aside>
+
+    <!-- RIGHT: recipe scaler -->
+    <main class="main">
+
+      <header class="recipe-header">
+        <div class="recipe-header__text">
+          <h2 class="recipe-header__title">Recipe Scaler</h2>
+          <p class="recipe-header__desc">Paste ingredients below. Amounts scale automatically<br>as you change the serving size.</p>
+        </div>
+        <div class="servings-ctrl">
+          <label class="servings-ctrl__label">Servings</label>
+          <button class="servings-ctrl__btn" id="srvDown" aria-label="Decrease servings">−</button>
+          <span class="servings-ctrl__num" id="srvNum">4</span>
+          <button class="servings-ctrl__btn" id="srvUp" aria-label="Increase servings">+</button>
+        </div>
+      </header>
+
+      <section class="paste-area">
+        <textarea
+          id="ingredientInput"
+          class="paste-area__input"
+          aria-label="Ingredient list"
+          placeholder="Paste your ingredient list, one per line:
+
+2 cups all-purpose flour
+1.5 tsp baking powder
+200g sugar
+3 large eggs
+1/2 cup butter
+250 ml milk"></textarea>
+        <button class="paste-area__btn" id="parseBtn">Scale Ingredients ↵</button>
+      </section>
+
+      <section class="output-box">
+        <div class="output-box__head">
+          <span>Scaled Output</span>
+          <button class="output-box__copy-btn" id="copyBtn">Copy all</button>
+        </div>
+        <ul class="ingredient-list" id="outputList" aria-live="polite">
+          <li>
+            <div class="empty-state" style="width:100%">
+              <span class="empty-state__icon">☕</span>
+              Paste ingredients above and hit "Scale Ingredients"
+            </div>
+          </li>
+        </ul>
+      </section>
+
+    </main>
+  </div>
+
+  <output class="toast" id="toast" role="status" aria-live="polite"></output>
+
+  <footer class="site-footer">
+    <span>Made by Saubhagya Srivastava</span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

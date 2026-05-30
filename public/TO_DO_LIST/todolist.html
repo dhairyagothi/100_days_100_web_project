@@ -1,198 +1,408 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="A clean, responsive To-Do List app with theme switching and PDF export — part of the 100 Days 100 Projects challenge."
-    />
-    <title>To-Do List | 100 Days 100 Projects</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="todolist.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  </head>
-  <body>
-    <!-- NAVBAR -->
-    <nav class="navbar">
-      <div class="nav-brand">
-        <span class="brand-dot"></span>
-        <span class="brand-name">TaskFlow</span>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-      <div class="nav-tabs">
-        <button class="tab-btn active" id="btn-home" onclick="showHome()">
-          Home
-        </button>
+  <title>To-Do List | Modern Productivity App</title>
 
-        <button class="tab-btn" id="btn-docs" onclick="showDocuments()">
-          Saved Docs
-        </button>
-      </div>
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-      <div class="nav-themes">
-        <button class="theme-swatch" onclick="applyTheme('theme1')"></button>
-        <button
-          class="theme-swatch ocean"
-          onclick="applyTheme('theme2')"
-        ></button>
-        <button
-          class="theme-swatch forest"
-          onclick="applyTheme('theme3')"
-        ></button>
-        <button
-          class="theme-swatch midnight"
-          onclick="applyTheme('theme4')"
-        ></button>
-        <button
-          class="theme-swatch aurora"
-          onclick="applyTheme('theme5')"
-        ></button>
-      </div>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="todolist.css" />
+
+  <!-- jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+
+<body>
+
+  <!-- BACK BUTTON -->
+  <a
+    href="/"
+    class="project-back-button"
+    style="
+      position:fixed;
+      left:18px;
+      top:18px;
+      padding:10px 14px;
+      border-radius:10px;
+      background:white;
+      color:#111827;
+      text-decoration:none;
+      z-index:9999;
+      font-weight:700;
+      font-family:Inter,sans-serif;
+      box-shadow:0 8px 20px rgba(0,0,0,.2);
+    "
+  >
+    ← Back to Home
+  </a>
+
+  <!-- FLOATING SHAPES -->
+  <div class="floating-shapes" aria-hidden="true">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+<<<<<<< HEAD
+
+    <ul class="navbar">
+
+      <!-- LEFT NAV -->
+      <li class="nav-left">
+
+        <ul>
+
+          <li>
+            <a
+              href="#"
+              id="nav-home"
+              class="active"
+              onclick="showHome(); return false;"
+            >
+              🏠 Home
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="#"
+              id="nav-documents"
+              onclick="showDocuments(); return false;"
+            >
+              📄 Documents
+            </a>
+          </li>
+
+        </ul>
+
+      </li>
+
+      <!-- RIGHT NAV -->
+      <li class="nav-right">
+
+        <span class="theme-label">Theme</span>
+
+        <ul>
+
+          <li>
+            <button
+              id="colour1"
+              class="theme-btn active"
+              data-theme="theme1"
+              aria-label="Theme 1"
+            ></button>
+          </li>
+
+          <li>
+            <button
+              id="colour2"
+              class="theme-btn"
+              data-theme="theme2"
+              aria-label="Theme 2"
+            ></button>
+          </li>
+
+          <li>
+            <button
+              id="colour3"
+              class="theme-btn"
+              data-theme="theme3"
+              aria-label="Theme 3"
+            ></button>
+          </li>
+
+          <li>
+            <button
+              id="colour4"
+              class="theme-btn"
+              data-theme="theme4"
+              aria-label="Theme 4"
+            ></button>
+          </li>
+
+          <li>
+            <button
+              id="colour5"
+              class="theme-btn"
+              data-theme="theme5"
+              aria-label="Theme 5"
+            ></button>
+          </li>
+
+        </ul>
+
+      </li>
+
+    </ul>
+
+=======
+    <nav>
+      <ul class="navbar">
+        <li class="nav-left">
+          <ul>
+            <li><a href="#" id="nav-home"  " aria-current="page">🏠 Home</a></li>
+            <li><a href="#" id="nav-documents" >📄 Documents</a></li>
+          </ul>
+        </li>
+        <li class="nav-right">
+          <span class="theme-label">Theme</span>
+          <ul>
+            <li><button id="colour1" class="theme-btn" data-theme="theme1" aria-label="Theme 1"></button></li>
+            <li><button id="colour2" class="theme-btn" data-theme="theme2" aria-label="Theme 2"></button></li>
+            <li><button id="colour3" class="theme-btn" data-theme="theme3" aria-label="Theme 3"></button></li>
+            <li><button id="colour4" class="theme-btn" data-theme="theme4" aria-label="Theme 4"></button></li>
+            <li><button id="colour5" class="theme-btn" data-theme="theme5" aria-label="Theme 5"></button></li>
+          </ul>
+        </li>
+      </ul>
     </nav>
+>>>>>>> upstream/main
+  </header>
 
-    <main class="main-container">
-      <!-- HOME TAB -->
-      <section id="home-tab">
-        <div class="hero-section">
-          <h1 class="main-heading">JUST DO IT.</h1>
+  <!-- MAIN -->
+  <main>
+
+    <!-- ================= HOME TAB ================= -->
+    <section id="home-tab">
+
+      <!-- HERO -->
+      <div class="hero">
+
+        <div class="hero-badge">
+          🚀 Stay Productive
+        </div>
+
+        <h1 class="heading">
+          JUST DO IT.
+        </h1>
+
+        <p class="hero-subtitle">
+          Organise your tasks and conquer your goals.
+        </p>
+
+        <!-- PROGRESS -->
+        <div class="progress-wrapper">
+
+          <div class="progress-bar-track">
+            <div
+              class="progress-bar-fill"
+              id="progressFill"
+            ></div>
+          </div>
+
+          <output
+            class="progress-text"
+            id="progressText"
+          >
+            0 / 0 done
+          </output>
+
+        </div>
+
+      </div>
+
+      <!-- INPUT PANEL -->
+      <form
+        class="input-panel"
+        id="task-form"
+      >
+
+        <div class="input-group">
+
+          <!-- CATEGORY -->
+          <label for="task-category" class="sr-only">
+            Choose Category
+          </label>
+
+          <select
+            id="task-category"
+          >
+            <option value="" disabled selected>
+              📂 Category
+            </option>
+
+            <option value="Work">
+              💼 Work
+            </option>
+
+            <option value="Personal">
+              🧑 Personal
+            </option>
+
+            <option value="Urgent">
+              ⚡ Urgent
+            </option>
+
+            <option value="Fitness">
+              💪 Fitness
+            </option>
+
+            <option value="Miscellaneous">
+              📌 Miscellaneous
+            </option>
+          </select>
+
+          <!-- EISENHOWER -->
+          <label for="eisenhower-select" class="sr-only">
+            Priority
+          </label>
+
+          <select id="eisenhower-select">
+
+            <option value="" disabled selected>
+              Eisenhower Matrix
+            </option>
+
+            <option value="urgent-important">
+              🔥 Urgent & Important
+            </option>
+
+            <option value="important-only">
+              ⭐ Important Only
+            </option>
+
+            <option value="urgent-only">
+              ⚡ Urgent Only
+            </option>
+
+            <option value="neither">
+              🌱 Neither
+            </option>
+
+          </select>
+
+          <!-- TASK INPUT -->
+          <label for="task" class="sr-only">
+            Enter Task
+          </label>
+
+          <input
+            type="text"
+            id="task"
+            placeholder="What do you need to do?"
+            autocomplete="off"
+          />
+
+          <!-- ADD BUTTON -->
+          <button
+            type="submit"
+            id="submittask"
+          >
+            ➕ Add Task
+          </button>
+
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="input-actions">
+
+          <button
+            type="button"
+            id="savepdf"
+          >
+            📥 Save as PDF
+          </button>
+
+        </div>
+
+      </form>
+
+      <!-- EMPTY STATE -->
+      <div
+        class="empty-state"
+        id="emptyState"
+      >
+
+        <div class="empty-icon">
+          📋
+        </div>
+
+        <p class="empty-title">
+          No tasks yet
+        </p>
+
+        <p class="empty-desc">
+          Add your first task above and start being productive!
+        </p>
+
+      </div>
 
       <!-- TASK LIST -->
-      <div id="task-list">
+      <ul
+        id="notes-container"
+      ></ul>
 
-  <!-- Pending Column -->
-  <div class="status-section">
-    <h3>📌 Pending</h3>
-    <div 
-      id="pending-list"
-      class="drop-zone"
-      ondrop="dropTask(event,'pending-list')"
-      ondragover="allowDrop(event)">
-    </div>
-  </div>
+    </section>
 
-  <!-- In Progress Column -->
-  <div class="status-section">
-    <h3>⚡ In Progress</h3>
-    <div 
-      id="progress-list"
-      class="drop-zone"
-      ondrop="dropTask(event,'progress-list')"
-      ondragover="allowDrop(event)">
-    </div>
-  </div>
+    <!-- ================= DOCUMENTS TAB ================= -->
+    <section
+      id="documents-tab"
+      hidden
+    >
 
-  <!-- Completed Column -->
-  <div class="status-section">
-    <h3>✅ Completed</h3>
-    <div 
-      id="completed-list"
-      class="drop-zone"
-      ondrop="dropTask(event,'completed-list')"
-      ondragover="allowDrop(event)">
-    </div>
-  </div>
+      <div class="documents-header">
 
-</div>
-</div>
+        <h2 class="heading">
+          📄 Saved Documents
+        </h2>
 
-<div class="empty-state" id="empty-state">
-  <div class="empty-icon">📋</div>
-  <p>No tasks yet. Add one above!</p>
-</div>
-          <p class="sub-heading">Organize your work beautifully.</p>
+      </div>
+
+      <!-- EMPTY DOCS -->
+      <div
+        class="empty-state"
+        id="emptyDocsState"
+      >
+
+        <div class="empty-icon">
+          📂
         </div>
 
-        <div class="task-panel">
-          <!-- INPUT -->
-          <div class="input-row">
-            <input
-              type="text"
-              id="task-input"
-              placeholder="Add your next task..."
-            />
+        <p class="empty-title">
+          No saved documents
+        </p>
 
-            <select id="task-type">
-              <option value="">Category</option>
+        <p class="empty-desc">
+          Export your tasks as PDF to see them here.
+        </p>
 
-              <option value="Work">💼 Work</option>
+      </div>
 
-              <option value="Personal">🌸 Personal</option>
+      <!-- DOCUMENTS LIST -->
+      <div
+        class="documents-list"
+      ></div>
 
-              <option value="Professional">📚 Professional</option>
+    </section>
 
-              <option value="Fitness">💪 Fitness</option>
+  </main>
 
-              <option value="Miscellaneous">✨ Misc</option>
-            </select>
+<<<<<<< HEAD
+  <!-- TOAST -->
+  <div
+    id="pdfMessage"
+    class="pdf-message"
+  ></div>
+=======
+  <!-- PDF Notification -->
+  <div id="pdfMessage" class="pdf-message" role="alert" aria-live="polite"></div>
+>>>>>>> upstream/main
 
-            <button id="submittask" onclick="Add()">Add Task</button>
-          </div>
+  <!-- JAVASCRIPT -->
+  <script src="todolist.js"></script>
 
-          <!-- STATS -->
-          <div class="stats-bar">
-            <div class="stat-box">
-              <span id="totalTasks">0</span>
-              <p>Total</p>
-            </div>
-
-            <div class="stat-box">
-              <span id="completedTasks">0</span>
-              <p>Completed</p>
-            </div>
-
-            <div class="stat-box">
-              <span id="pendingTasks">0</span>
-              <p>Pending</p>
-            </div>
-          </div>
-
-          <!-- PROGRESS -->
-          <div class="progress-container">
-            <div class="progress-bar">
-              <div id="progressFill"></div>
-            </div>
-          </div>
-
-          <!-- TASKS -->
-          <div id="notes-container"></div>
-
-          <!-- PDF -->
-          <button id="savepdf" onclick="saveAsPDF()">Save PDF</button>
-        </div>
-      </section>
-
-      <!-- DOCUMENTS TAB -->
-      <section id="documents-tab" style="display: none">
-        <div class="hero-section">
-          <h1 class="main-heading">SAVED DOCS.</h1>
-
-          <p class="sub-heading">Your exported PDFs appear here.</p>
-        </div>
-
-        <div class="documents-wrapper">
-          <div class="documents-list">
-            <div class="empty-docs">
-              <div class="empty-icon">📂</div>
-
-              <p>No documents exported yet.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <div id="toast" class="toast"></div>
-
-    <script src="todolist.js?v=2"></script>
-  </body>
+</body>
 </html>
