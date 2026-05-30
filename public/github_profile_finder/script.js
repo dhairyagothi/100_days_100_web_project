@@ -9,7 +9,7 @@ const UI = {
   themeToggle: document.getElementById("themeToggle"),
   themeIcon: document.getElementById("themeIcon"),
   offlineIndicator: document.getElementById("offlineIndicator"),
-  exportPdfBtn: document.getElementById("exportPdfBtn")
+  printProfileBtn: document.getElementById("printProfileBtn")
 };
 
 const Nodes = {
@@ -561,8 +561,8 @@ document.querySelectorAll(".workspace-tabs-nav .tab-nav-item").forEach(tabBtn =>
   });
 });
 
-if (UI.exportPdfBtn) {
-  UI.exportPdfBtn.addEventListener("click", () => {
+if (UI.printProfileBtn) {
+  UI.printProfileBtn.addEventListener("click", () => {
     window.print();
   });
 }

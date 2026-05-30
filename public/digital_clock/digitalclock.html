@@ -25,6 +25,15 @@
       <span class="status-dot" aria-hidden="true"></span>
       <span>Live &middot; Synchronized</span>
     </div>
+    <!-- Dark Mode Toggle -->
+    <button 
+      class="dark-mode-btn" 
+      id="dark-mode-toggle"
+      onclick="toggleDarkMode()"
+      aria-label="Toggle dark mode"
+      title="Toggle dark mode">
+      🌙
+    </button>
 
     <!-- Main Clock Card -->
     <article class="clock-card" aria-label="Current time display">
@@ -45,6 +54,8 @@
         <span id="seconds" aria-hidden="true">00</span>
         <span id="ampm" class="ampm" aria-label="AM or PM">PM</span>
       </section>
+
+      <button id="format-toggle" class="format-toggle">24H</button>
 
       <footer class="bottom-info">
         <div class="info-tag">
@@ -121,18 +132,74 @@
           </div>
         </div>
 
-        <hr class="mt-2" aria-hidden="true" />
+      </div>
+    </div>
 
-        <!-- Alarms Section -->
-        <div class="alarm-header-row">
-          <h3 class="card-title">
-            <span class="card-title-dot" aria-hidden="true"></span>
-            Alarms
-          </h3>
-          <button class="alarm-toggle" id="alarm-section-toggle" onclick="toggleAlarmSection()" aria-expanded="false" aria-controls="alarm-controls">
-            Manage
-          </button>
-        </div>
+    <div class="controls-container">
+
+      <div class="theme-buttons">
+
+        <button
+          class="theme-btn active classic-btn"
+          onclick="setTheme('classic')"
+        >
+          Classic
+        </button>
+
+        <button
+          class="theme-btn modern-btn"
+          onclick="setTheme('modern')"
+        >
+          Modern
+        </button>
+
+        <button
+          class="theme-btn futuristic-btn"
+          onclick="setTheme('futuristic')"
+        >
+          Futuristic
+        </button>
+        <button class="dark-mode-btn" onclick="toggleDarkMode()">
+  ☀️ Light Mode
+</button>
+
+      </div>
+
+      <div class="select-group">
+
+        <label>Select Timezone</label>
+
+        <select id="timezone" onchange="updateClock()">
+
+          <option value="local">Local Time</option>
+          <option value="UTC">UTC</option>
+          <option value="America/New_York">New York</option>
+          <option value="Europe/London">London</option>
+          <option value="Asia/Kolkata">India</option>
+
+        </select>
+
+      </div>
+
+      <div class="alarm-section">
+
+        <button class="alarm-toggle-btn" onclick="toggleAlarmSection()">
+          <b>Set Alarm</b>
+        </button>
+
+        <div class="alarm-controls hidden" id="alarm-controls">
+
+          <input type="time" id="alarm-time" />
+
+          <div class="alarm-actions">
+
+            <button onclick="setAlarm()" class="confirm-btn">
+              Confirm
+            </button>
+
+            <button onclick="clearAlarm()" class="clear-btn">
+              Clear
+            </button>
 
         <div class="alarm-controls hidden" id="alarm-controls" role="region" aria-label="Alarm management controls">
 

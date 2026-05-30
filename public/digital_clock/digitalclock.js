@@ -1,5 +1,8 @@
 // App configuration and state
-let activeAccent = localStorage.getItem("clockAccent") || "classic";
+// Dark mode state
+let isDarkMode = localStorage.getItem("clockDarkMode") === "true";
+if (isDarkMode) document.body.classList.add("dark-mode");
+let activeTheme = localStorage.getItem("clockTheme") || "classic";
 let primaryTimezone = localStorage.getItem("primaryTimezone") || "local";
 let alarms = JSON.parse(localStorage.getItem("clock_alarms")) || [];
 let worldClocks = JSON.parse(localStorage.getItem("clock_worldClocks")) || [];
@@ -11,6 +14,7 @@ let ringInterval = null;
 let audioCtx = null;
 let triggeredAlarms = new Set();
 let currentTimeTheme = "";
+let is24HourFormat = localStorage.getItem("is24HourFormat") === "true"; 
 
 // DOM Selectors
 const hoursEl = document.getElementById("hours");
@@ -29,6 +33,7 @@ const popupAlarmLabel = document.getElementById("popup-alarm-label");
 const alarmSound = document.getElementById("alarm-sound");
 const historyHeader = document.getElementById("history-header");
 const historyChevron = document.getElementById("history-chevron");
+const formatToggleBtn = document.getElementById("format-toggle");
 
 // World Clock Modal DOM
 const worldModal = document.getElementById("world-clock-modal");
@@ -76,14 +81,17 @@ function applyTimeBasedTheme() {
 
 // INIT
 document.addEventListener("DOMContentLoaded", () => {
-  // Initialize time-based theme first
-  applyTimeBasedTheme();
-  // Then apply manual accent color
-  setAccentColor(activeAccent);
+  const btn = document.getElementById("dark-mode-toggle");
+  if (btn) btn.textContent = isDarkMode ? "☀️" : "🌙";
+  applyDarkMode(isDarkMode);
+  setTheme(activeTheme);
+
+  formatToggleBtn.textContent = is24HourFormat ? "12H" : "24H";
 
   populateTimezoneDropdown();
   renderAlarmsList();
   renderWorldClocks();
+  tickWorldClocks();
   renderHistoryLogs();
   updateAlarmSummary();
 
@@ -95,6 +103,16 @@ document.addEventListener("DOMContentLoaded", () => {
     tickWorldClocks();
     applyTimeBasedTheme();
   }, 1000);
+    formatToggleBtn.addEventListener("click", () => {
+    is24HourFormat = !is24HourFormat;
+
+    formatToggleBtn.textContent = is24HourFormat ? "12H" : "24H";
+
+    localStorage.setItem("is24HourFormat", is24HourFormat);
+
+    updateClock();
+    tickWorldClocks();
+});
 });
 
 // ================= ACCENT COLOR =================
@@ -102,10 +120,7 @@ function setAccentColor(accent) {
   activeAccent = accent;
   localStorage.setItem("clockAccent", accent);
 
-  // Remove only manual accent classes, keep time-based theme class
-  document.body.classList.remove("classic-theme", "modern-theme", "future-theme", "nebula-theme");
-  // Add the selected manual accent class
-  document.body.classList.add(`${accent}-theme`);
+  document.body.className = `${theme}-theme${isDarkMode ? " dark-mode" : ""}`;
 
   document.querySelectorAll(".theme-swatch").forEach(swatch => {
     swatch.classList.toggle("active", swatch.dataset.theme === accent);
@@ -125,12 +140,12 @@ function updateClock() {
   const s = now.getSeconds();
 
   const ampm = h >= 12 ? "PM" : "AM";
-  let hh = h % 12 || 12;
+  let hh = is24HourFormat ? h : (h % 12 || 12);
 
   hoursEl.textContent = String(hh).padStart(2, "0");
   minutesEl.textContent = String(m).padStart(2, "0");
   secondsEl.textContent = String(s).padStart(2, "0");
-  ampmEl.textContent = ampm;
+  ampmEl.textContent = is24HourFormat ? "" : ampm;
 
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   dayNameEl.textContent = days[now.getDay()];
@@ -452,7 +467,7 @@ function tickWorldClocks() {
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
-      hour12: true
+      hour12: !is24HourFormat
     });
   });
 }
@@ -472,17 +487,30 @@ function renderHistoryLogs() {
     .join("");
 }
 
-function addHistoryLog(text) {
-  historyLogs.unshift({ text });
-  if (historyLogs.length > 50) historyLogs.pop();
-  localStorage.setItem("clock_historyLogs", JSON.stringify(historyLogs));
-}
+ function toggleDarkMode() {
+    const isLight = document.body.classList.toggle('light-mode');
+    document.querySelector('.dark-mode-btn').textContent = isLight ? '🌙 Dark Mode' : '☀️ Light Mode';
+    localStorage.setItem('lightMode', isLight);
+  }
 
-function toggleHistoryLogs() {
-  const logs = document.getElementById("history-logs");
-  if (!logs) return;
-  logs.classList.toggle("hidden");
-  if (historyHeader) historyHeader.classList.toggle("open");
+  if (localStorage.getItem('lightMode') === 'true') {
+    document.body.classList.add('light-mode');
+    document.querySelector('.dark-mode-btn').textContent = '🌙 Dark Mode';
+  } 
+function clearAlarm() {
+
+  localStorage.removeItem(
+    "alarmTime"
+  );
+
+  alarmTime = null;
+
+  alarmTriggered = false;
+
+  alarmStatus.textContent =
+    "Not Set";
+
+  showToast("Alarm cleared");
 }
 
 // ================= TIMEZONE DROPDOWN =================
@@ -633,4 +661,17 @@ function escapeHtml(text) {
   const div = document.createElement("div");
   div.textContent = text;
   return div.innerHTML;
+}
+
+// ================= DARK MODE =================
+function applyDarkMode(enabled) {
+  isDarkMode = enabled;
+  document.body.classList.toggle("dark-mode", enabled);
+  const btn = document.getElementById("dark-mode-toggle");
+  if (btn) btn.textContent = enabled ? "☀️" : "🌙";
+  localStorage.setItem("clockDarkMode", enabled);
+}
+
+function toggleDarkMode() {
+  applyDarkMode(!isDarkMode);
 }

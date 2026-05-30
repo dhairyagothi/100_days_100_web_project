@@ -13,10 +13,17 @@
   --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+:root[data-theme="light"],
 body.light-mode {
   --bg-primary: #f4f6f9;
+  --bg-elevated: #ffffff;
+  --bg-surface: #eef2f7;
   --text-primary: #0f172a;
   --text-secondary: #475569;
+  --text-muted: #64748b;
+  --border: rgba(15, 23, 42, 0.12);
+  --border-hover: rgba(15, 23, 42, 0.2);
+  --border-accent: rgba(37, 99, 235, 0.32);
   --accent-color: #2563eb;
   --accent-glow: rgba(37, 99, 235, 0.2);
   --glass-bg: rgba(255, 255, 255, 0.7);
@@ -1113,7 +1120,7 @@ body {
 
     
     .nav-buttons.mobile-drawer-layer {
-        display: none !important; 
+        display: flex !important; 
         position: fixed !important;
         top: 60px !important; 
         left: 0 !important;
@@ -1128,14 +1135,27 @@ body {
         z-index: 99998 !important; 
         box-sizing: border-box !important;
         overflow-y: auto !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        transform: translateY(-8px) !important;
+        transition:
+          opacity 0.2s var(--ease),
+          transform 0.2s var(--ease),
+          visibility 0.2s var(--ease) !important;
     }
 
+    :root[data-theme="light"] .nav-buttons.mobile-drawer-layer,
     body.light-mode .nav-buttons.mobile-drawer-layer {
         background-color: #f4f6f9 !important;
     }
 
     .nav-buttons.mobile-drawer-layer.active {
         display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        transform: translateY(0) !important;
     }
 
     .nav-buttons.mobile-drawer-layer .btn {
