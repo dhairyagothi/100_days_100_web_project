@@ -1162,3 +1162,25 @@ footer {
     position:relative;
     z-index:10;
 }
+.tv-container {
+    position: relative;
+    width: 800px; /* adjust as needed */
+}
+
+.tv_frame {
+    width: 100%;
+    display: block;
+    position: relative;
+    z-index: 2;
+}
+
+.tv-container video {
+    position: absolute;
+    top: 21%;
+    left: 14%;
+    width: 72%;
+    height: 55%;
+    object-fit: cover;
+    z-index: 3;
+   
+}
