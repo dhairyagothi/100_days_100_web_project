@@ -54,14 +54,14 @@
       >Back to Home</a
     >
 
-    <!-- ============= LANDING PAGE ============= -->
+
     <div id="landingPage">
-      <!-- ============= NAVBAR ============= -->
+
       <header class="navbar">
         <img src="./img/logo.svg" alt="Netflix Logo" class="logo" />
 
         <div class="nav-right">
-          <!-- LANGUAGE DROPDOWN -->
+    
           <div class="language-dropdown">
             <button class="language-toggle" id="languageToggle">
               <i class="fas fa-globe"></i>
@@ -79,7 +79,7 @@
         </div>
       </header>
 
-      <!-- ============= HERO SECTION ============= -->
+
       <section class="hero">
         <h1>Unlimited movies, shows, and more</h1>
         <p class="p1">Starts at ₹149. Cancel at any time.</p>
@@ -93,7 +93,7 @@
         </form>
       </section>
 
-      <!-- TRENDING NOW -->
+   
       <div class="top-glow"></div>
       <div class="trending-section">
         <h2>Trending Now</h2>
@@ -154,10 +154,10 @@
         </div>
       </div>
 
-      <!-- ============= SEPARATION ============= -->
+
       <div class="separation"></div>
 
-      <!-- ============= FEATURE SECTIONS ============= -->
+
       <section class="feature">
         <div class="text">
           <h2>Enjoy on your TV</h2>
@@ -223,7 +223,7 @@
 
       <div class="separation"></div>
 
-      <!-- ============= FAQ SECTION ============= -->
+
       <section class="faq">
         <h2>Frequently Asked Questions</h2>
         <div class="faq-container">
@@ -265,7 +265,7 @@
 
       <div class="separation"></div>
 
-      <!-- ============= FOOTER ============= -->
+    
       <footer>
         <div class="questions">Questions? Call 000-800-919-1694</div>
         <div class="footer">
@@ -299,10 +299,8 @@
         </div>
       </footer>
     </div>
-    <!-- End of landing page -->
 
-    <!-- ============= AUTHENTICATION MODALS ============= -->
-    <!-- SIGN UP MODAL -->
+   
     <div id="signupModal" class="modal">
       <div class="modal-content">
         <button class="modal-close" onclick="closeSignupModal()">&times;</button>
@@ -319,7 +317,7 @@
             <label for="signupEmail">Email Address</label>
             <input type="email" id="signupEmail" placeholder="Enter your email" required />
           </div>
-          <!-- ✅ FIX: Password visibility toggle added in Sign Up form -->
+
           <div class="form-group">
             <label for="signupPassword">Password</label>
             <div class="password-wrapper">
@@ -342,7 +340,7 @@
       </div>
     </div>
 
-    <!-- SIGN IN MODAL -->
+
     <div id="signinModal" class="modal">
       <div class="modal-content">
         <button class="modal-close" onclick="closeSigninModal()">&times;</button>
@@ -355,7 +353,7 @@
             <label for="signinEmail">Email Address</label>
             <input type="email" id="signinEmail" placeholder="Enter your email" required />
           </div>
-          <!-- ✅ FIX: Password visibility toggle added in Sign In form -->
+      
           <div class="form-group">
             <label for="signinPassword">Password</label>
             <div class="password-wrapper">
@@ -383,9 +381,9 @@
       </div>
     </div>
 
-    <!-- ============= MOVIES PAGE (Hidden initially) ============= -->
+
     <div id="moviesPage" class="hidden">
-      <!-- MOVIES NAVBAR -->
+    
       <header class="navbar movies-navbar">
         <img src="./img/logo.svg" alt="Netflix Logo" class="logo" />
         <div class="navbar-right">
@@ -397,7 +395,7 @@
         </div>
       </header>
 
-      <!-- FEATURED SECTION -->
+
       <section class="featured-section">
         <div class="featured-content">
           <h1 id="featuredTitle">Stranger Things</h1>
@@ -411,12 +409,9 @@
         </div>
       </section>
 
-      <!-- MOVIE CATEGORIES -->
+
       <section class="movies-container">
-        <!-- <div class="category">
-                <h2>Trending Now</h2>
-                <div class="movies-grid" id="trendingMovies"></div>
-            </div> -->
+
         <div class="category">
           <h2>Action</h2>
           <div class="movies-grid" id="actionMovies"></div>
@@ -427,7 +422,7 @@
         </div>
       </section>
 
-      <!-- FOOTER -->
+ 
       <footer class="movies-footer">
         <p>&copy; 2026 Netflix Clone. All rights reserved.</p>
       </footer>
@@ -435,7 +430,7 @@
 
     <script src="script.js"></script>
     <script>
-      // ✅ FIX: Password visibility toggle function
+     
       function togglePassword(inputId, iconSpan) {
         const input = document.getElementById(inputId);
         const icon = iconSpan.querySelector('i');
