@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="style.css" />
 
   <link rel="icon" href="../favv.png" type="image/x-icon" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,6 +30,54 @@
 
 <body>
 
+  <button id="theme-toggle" class="theme-btn" aria-label="Toggle Theme">
+    <i class="fas fa-moon"></i>
+  </button>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+    <h1>Countdown Timer</h1>
+
+    <div id="countdown">
+      <div class="time-block">
+        <span id="days">00</span>
+        <label>Days</label>
+      </div>
+      <div class="time-block">
+        <span id="hours">00</span>
+        <label>Hours</label>
+      </div>
+      <div class="time-block">
+        <span id="minutes">00</span>
+        <label>Minutes</label>
+      </div>
+      <div class="time-block">
+        <span id="seconds">00</span>
+        <label>Seconds</label>
+      </div>
+    </div>
+
+    <div class="input-section">
+      <h3>Set Custom Timer</h3>
+      <div class="inputs-container">
+        <div class="input-field">
+          <input type="number" id="input-hours" min="0" max="23" placeholder="00">
+          <label>Hrs</label>
+        </div>
+        <div class="input-field">
+          <input type="number" id="input-minutes" min="0" max="59" placeholder="00">
+          <label>Min</label>
+        </div>
+        <div class="input-field">
+          <input type="number" id="input-seconds" min="0" max="59" placeholder="00">
+          <label>Sec</label>
+        </div>
+      </div>
+      <button id="set-time-btn">Set Target Time</button>
+    </div>
+
+    <div class="controls">
+      <button id="start" class="btn primary-btn" disabled>Start</button>
+      <button id="pause" class="btn secondary-btn" disabled>Pause</button>
+      <button id="reset" class="btn danger-btn">Reset</button>
   <!-- Back Button -->
   <a
     href="/"
@@ -181,6 +230,7 @@
 
   </div>
 
+  <audio id="alarm-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-500.wav" preload="auto"></audio>
   <!-- Alarm -->
   <audio id="alarmSound">
     <source

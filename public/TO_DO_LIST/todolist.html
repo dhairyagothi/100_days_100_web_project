@@ -1,62 +1,153 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>To-Do List | Modern Productivity App</title>
+  <title>To-Do List | Modern Productivity App</title>
 
-    <!-- Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="todolist.css" />
+  <!-- CSS -->
+  <link rel="stylesheet" href="todolist.css" />
 
-    <!-- jsPDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  </head>
+  <!-- jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
 
-  <body>
-    <!-- BACK BUTTON -->
-    <a
-      href="/"
-      class="project-back-button"
-      style="
-        position: fixed;
-        left: 18px;
-        top: 18px;
-        padding: 10px 14px;
-        border-radius: 10px;
-        background: white;
-        color: #111827;
-        text-decoration: none;
-        z-index: 9999;
-        font-weight: 700;
-        font-family: Inter, sans-serif;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      "
-    >
-      ← Back to Home
-    </a>
+<body>
 
-    <!-- FLOATING SHAPES -->
-    <div class="floating-shapes" aria-hidden="true">
-      <div class="shape shape-1"></div>
-      <div class="shape shape-2"></div>
-      <div class="shape shape-3"></div>
-      <div class="shape shape-4"></div>
-    </div>
+  <!-- BACK BUTTON -->
+  <a
+    href="/"
+    class="project-back-button"
+    style="
+      position:fixed;
+      left:18px;
+      top:18px;
+      padding:10px 14px;
+      border-radius:10px;
+      background:white;
+      color:#111827;
+      text-decoration:none;
+      z-index:9999;
+      font-weight:700;
+      font-family:Inter,sans-serif;
+      box-shadow:0 8px 20px rgba(0,0,0,.2);
+    "
+  >
+    ← Back to Home
+  </a>
 
-    <!-- HEADER -->
-    <header>
-      <<<<<<< HEAD
+  <!-- FLOATING SHAPES -->
+  <div class="floating-shapes" aria-hidden="true">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+  </div>
 
+  <!-- HEADER -->
+  <header>
+
+    <ul class="navbar">
+
+      <!-- LEFT NAV -->
+      <li class="nav-left">
+
+        <ul>
+
+          <li>
+            <a
+              href="#"
+              id="nav-home"
+              class="active"
+              onclick="showHome(); return false;"
+            >
+              🏠 Home
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="#"
+              id="nav-documents"
+              onclick="showDocuments(); return false;"
+            >
+              📄 Documents
+            </a>
+          </li>
+
+        </ul>
+
+      </li>
+
+      <!-- RIGHT NAV -->
+      <li class="nav-right">
+
+        <span class="theme-label">Theme</span>
+
+        <ul>
+
+          <li>
+            <button
+              id="colour1"
+              class="theme-btn active"
+              data-theme="theme1"
+              aria-label="Theme 1"
+            ></button>
+          </li>
+
+          <li>
+            <button
+              id="colour2"
+              class="theme-btn"
+              data-theme="theme2"
+              aria-label="Theme 2"
+            ></button>
+          </li>
+
+          <li>
+            <button
+              id="colour3"
+              class="theme-btn"
+              data-theme="theme3"
+              aria-label="Theme 3"
+            ></button>
+          </li>
+
+          <li>
+            <button
+              id="colour4"
+              class="theme-btn"
+              data-theme="theme4"
+              aria-label="Theme 4"
+            ></button>
+          </li>
+
+          <li>
+            <button
+              id="colour5"
+              class="theme-btn"
+              data-theme="theme5"
+              aria-label="Theme 5"
+            ></button>
+          </li>
+
+        </ul>
+
+      </li>
+
+    </ul>
+
+    <nav>
       <ul class="navbar">
         <!-- LEFT NAV -->
         <li class="nav-left">
@@ -142,7 +233,8 @@
           </ul>
         </li>
       </ul>
-    </header>
+    </nav>
+  </header>
 
     <!-- MAIN -->
     <main>
@@ -196,7 +288,12 @@
 
               <option value="important-only">⭐ Important Only</option>
 
-              <option value="urgent-only">⚡ Urgent Only</option>
+      <!-- Task List Container -->
+      <ol id="notes-container" aria-label="Task list"></ol>
+      <!-- TASK LIST -->
+      <ul
+        id="notes-container"
+      ></ul>
 
               <option value="neither">🌱 Neither</option>
             </select>
@@ -244,10 +341,13 @@
           <p class="empty-desc">Export your tasks as PDF to see them here.</p>
         </div>
 
-        <!-- DOCUMENTS LIST -->
-        <div class="documents-list"></div>
-      </section>
-    </main>
+  <!-- TOAST -->
+  <div
+    id="pdfMessage"
+    class="pdf-message"
+  ></div>
+  <!-- PDF Notification -->
+  <div id="pdfMessage" class="pdf-message" role="alert" aria-live="polite"></div>
 
     <!-- PDF Notification -->
     <div id="pdfMessage" class="pdf-message" role="alert" aria-live="polite"></div>

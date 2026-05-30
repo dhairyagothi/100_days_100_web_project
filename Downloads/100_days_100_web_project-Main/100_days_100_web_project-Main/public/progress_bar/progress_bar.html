@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress_bar</title>
+    <link rel="stylesheet" href="progress_bar.css">
+</head>
+
+<body>
+    <main class="progress-container">
+        <section class="progress-card">
+            <div class="progress-wrapper">
+                <div class="progress-ring" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-ring__inner">
+                        <span id="progress-value">0%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="button-group">
+                <button id="stopBtn" class="action-button action-button--stop">
+                    Stop
+                </button>
+                <button id="btn" class="action-button action-button--start">
+                    Start Progress
+                </button>
+                <button id="resetBtn" class="action-button action-button--reset">
+                    Reset
+                </button>
+            </div>
+        </section>
+    </main>
+    <script src="progress_bar.js"></script>
+</body>
+
+</html>
