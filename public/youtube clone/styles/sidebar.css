@@ -11,6 +11,14 @@
   flex-direction: column;
   gap: 4px;      /* Standard spacing between item containers */
   box-sizing: border-box;
+  padding-top: 5px;
+  overflow: hidden;
+  transition: width 0.3s ease;
+}
+
+.sidebar.hide-sidebar {
+  width: 0;
+  padding-top: 0;
 }
 
 .sidebar-link {
