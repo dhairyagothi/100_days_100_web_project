@@ -1865,9 +1865,8 @@ function initVideoPlayerControls() {
 // 8. LIFECYCLE STARTUP HANDLER
 // ==========================================
 
-window.onload = () => {
+// FIX: Use DOMContentLoaded instead of window.onload so the #root div is available
+// before images finish loading, and remove the duplicate immediate renderApp() call.
+document.addEventListener('DOMContentLoaded', () => {
   renderApp();
-};
-
-// Also invoke immediately to prevent double hooks in containers
-renderApp();
+});
