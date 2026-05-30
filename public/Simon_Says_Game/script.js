@@ -14,20 +14,23 @@ const highScoreText = document.getElementById("highscore");
 const strictToggle = document.getElementById("strict-toggle");
 const themeToggle = document.getElementById("theme-toggle");
 const startBtn = document.getElementById("start-btn");
+const stopBtn = document.getElementById("stop-btn");
+const board = document.getElementById("board");
 const allBtns = document.querySelectorAll(".btn");
 
 let highScore = localStorage.getItem("highScore") || 0;
-highScoreText.innerText = `High Score: ${highScore}`;
+highScoreText.innerText = `🏆 High Score: ${highScore}`;
 
 // ---------------- Flash functions ----------------
 function gameFlash(btn) {
   btn.classList.add("flash");
-  setTimeout(() => btn.classList.remove("flash"), 300);
+  btn.addEventListener("animationend", () => btn.classList.remove("flash"), { once: true });
 }
 
 function userFlash(btn) {
   btn.classList.add("userflash");
-  setTimeout(() => btn.classList.remove("userflash"), 200);
+  btn.addEventListener("animationend", () => btn.classList.remove("userflash"), { once: true });
+
 }
 
 // ---------------- Game logic ----------------
@@ -38,7 +41,7 @@ function startGame() {
     lives = 3;
     gameSeq = [];
     userSeq = [];
-    h2.innerText = "Game Started!";
+    h2.innerText = "Get ready! 👀";
     levelUp();
   }
 }
@@ -47,16 +50,18 @@ function levelUp() {
   userSeq = [];
   level++;
   flashSpeed = Math.max(250, 600 - level * 30);
-  h2.innerText = `Level ${level}`;
+  h2.innerText = `Level ${level} 🎯`;
+  h2.classList.remove("level-up");
+  void h2.offsetWidth; 
   h2.classList.add("level-up");
-  setTimeout(() => h2.classList.remove("level-up"), 500);
+
 
   let randIdx = Math.floor(Math.random() * 4);
   let randColor = btns[randIdx];
   gameSeq.push(randColor);
 
   clickable = false;
-  setTimeout(playSequence, 500);
+  setTimeout(playSequence, 600);
 }
 
 function playSequence() {
@@ -69,29 +74,32 @@ function playSequence() {
     if (i >= gameSeq.length) {
       clearInterval(interval);
       clickable = true;
+      h2.innerText = "Your turn! 👆";
+
     }
-  }, flashSpeed);
+  }, flashSpeed + 100);
 }
 
 function checkAns(idx) {
   if (userSeq[idx] === gameSeq[idx]) {
     if (userSeq.length === gameSeq.length) {
       clickable = false;
-      setTimeout(levelUp, 800);
+      h2.innerText = "✅ Correct! Nice!";
+      setTimeout(levelUp, 900);
     }
   } else {
     if (strictMode) {
       lives--;
       if (lives > 0) {
-        h2.innerText = `Wrong! Lives left: ${lives}`;
+        h2.innerText = `❌ Wrong! Lives left: ${lives}`;
         userSeq = [];
         clickable = false;
-        setTimeout(playSequence, 1000);
+        setTimeout(playSequence, 1200);
       } else {
         gameOver();
       }
     } else {
-      h2.innerText = `Wrong! Try again...`;
+      h2.innerText = ` ❌ Oops! Try again...`;
       userSeq = [];
       clickable = false;
       setTimeout(playSequence, 1000);
@@ -99,10 +107,25 @@ function checkAns(idx) {
   }
 }
 
+function stopGame() {
+  if (!started) return;
+
+  h2.innerHTML = `🛑 Game Stopped! Final Score: <b>${level}</b>`;
+
+  updateHighScore();
+
+  started = false;
+  gameSeq = [];
+  userSeq = [];
+  level = 0;
+  lives = 3;
+  clickable = true;
+}
+
 function gameOver() {
-  h2.innerHTML = `💀 Game Over! Score: <b>${level}</b><br>Press Start to play again.`;
-  document.body.style.backgroundColor = "red";
-  setTimeout(() => (document.body.style.backgroundColor = "white"), 200);
+  board.classList.add("shake");
+  board.addEventListener("animationend", () => board.classList.remove("shake"), { once: true });
+  h2.innerHTML = `💀 Game Over! Score: <b>${level}</b>`;
   updateHighScore();
   resetGame();
 }
@@ -111,7 +134,7 @@ function updateHighScore() {
   if (level > highScore) {
     highScore = level;
     localStorage.setItem("highScore", highScore);
-    highScoreText.innerText = `High Score: ${highScore}`;
+    highScoreText.innerText = ` 🏆 High Score: ${highScore}`;
   }
 }
 
@@ -119,6 +142,7 @@ function btnPress() {
   if (!started || !clickable) return;
   const btn = this;
   userFlash(btn);
+  if (navigator.vibrate) navigator.vibrate(50);
 
   let userColor = btn.getAttribute("id");
   userSeq.push(userColor);
@@ -136,6 +160,7 @@ function resetGame() {
 
 // ---------------- Event Listeners ----------------
 startBtn.addEventListener("click", startGame);
+stopBtn.addEventListener("click", stopGame);
 strictToggle.addEventListener("change", (e) => {
   strictMode = e.target.checked;
 });
@@ -144,12 +169,8 @@ const themeIcon = document.querySelector(".theme-icon");
 
 themeToggle.addEventListener("change", () => {
   document.body.classList.toggle("dark");
-
-  if (document.body.classList.contains("dark")) {
-    themeIcon.innerText = "☀️";
-  } else {
-    themeIcon.innerText = "🌙";
-  }
+  themeIcon.innerText = document.body.classList.contains("dark") ? "☀️" : "🌙";
+ 
 });
 
 allBtns.forEach((btn) => btn.addEventListener("click", btnPress));
