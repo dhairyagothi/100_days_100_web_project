@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A premium CSS Glassmorphism & UI Shadow Generator. Customize glass blur, opacity, border-radius, multiple shadow layers, and copy cross-browser CSS code."
+    />
+    <title>CSS Glassmorphism & Shadow Studio | UI Design Tool</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header" id="css-header">
+      <div class="header__container">
+        <div class="header__brand">
+          <span class="header__icon" aria-hidden="true">💎</span>
+          <h1 class="header__title">Glass & Shadow Studio</h1>
+        </div>
+        <p class="header__tagline">
+          Design premium glassmorphic interfaces and generate perfect CSS rules
+        </p>
+      </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <main class="main" id="css-main">
+      <!-- Live Preview Canvas -->
+      <section class="preview-section" aria-label="Visual Studio Canvas">
+        <div class="preview-card" id="studio-canvas">
+          <!-- Floating neon color blobs for realistic glass backdrops -->
+          <div class="blob blob--cyan"></div>
+          <div class="blob blob--purple"></div>
+
+          <!-- Live Glassmorphic Card Preview -->
+          <div
+            class="glass-card-preview"
+            id="glass-card-preview"
+            aria-label="Glassmorphic card preview container"
+          >
+            <div class="glass-card-content">
+              <span class="glass-card-icon">✨</span>
+              <h3 class="glass-card-title">UI Element</h3>
+              <p class="glass-card-text">
+                Adjust sliders below to modify card texture, background glow, and outlines in real
+                time.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Controls Panel -->
+      <section class="controls-section" aria-label="Generator Sliders Panel">
+        <div class="controls-card">
+          <h2 class="card-title">Glassmorphism Settings</h2>
+
+          <div class="control-sliders">
+            <!-- Opacity Slider -->
+            <div class="control-group">
+              <label class="control-label" for="opacity-slider">
+                Glass Opacity: <span class="control-value" id="opacity-value">25%</span>
+              </label>
+              <input
+                type="range"
+                class="range-slider"
+                id="opacity-slider"
+                min="0"
+                max="100"
+                value="25"
+                aria-label="Card transparency opacity"
+              />
+            </div>
+
+            <!-- Blur Slider -->
+            <div class="control-group">
+              <label class="control-label" for="blur-slider">
+                Glass Blur: <span class="control-value" id="blur-value">16px</span>
+              </label>
+              <input
+                type="range"
+                class="range-slider"
+                id="blur-slider"
+                min="0"
+                max="40"
+                value="16"
+                aria-label="Card backdrop blur amount"
+              />
+            </div>
+
+            <!-- Border Opacity Slider -->
+            <div class="control-group">
+              <label class="control-label" for="border-slider">
+                Border Opacity: <span class="control-value" id="border-value">10%</span>
+              </label>
+              <input
+                type="range"
+                class="range-slider"
+                id="border-slider"
+                min="0"
+                max="100"
+                value="10"
+                aria-label="Border outline opacity"
+              />
+            </div>
+
+            <!-- Border Radius Slider -->
+            <div class="control-group">
+              <label class="control-label" for="radius-slider">
+                Border Radius: <span class="control-value" id="radius-value">24px</span>
+              </label>
+              <input
+                type="range"
+                class="range-slider"
+                id="radius-slider"
+                min="0"
+                max="80"
+                value="24"
+                aria-label="Card corner border radius"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Shadow controls card -->
+        <div class="controls-card">
+          <h2 class="card-title">Shadow Settings</h2>
+
+          <div class="control-sliders">
+            <!-- Shadow Offset Y -->
+            <div class="control-group">
+              <label class="control-label" for="shadow-y-slider">
+                Vertical Offset (Y): <span class="control-value" id="shadow-y-value">16px</span>
+              </label>
+              <input
+                type="range"
+                class="range-slider"
+                id="shadow-y-slider"
+                min="-50"
+                max="50"
+                value="16"
+                aria-label="Shadow Y offset"
+              />
+            </div>
+
+            <!-- Shadow Blur -->
+            <div class="control-group">
+              <label class="control-label" for="shadow-blur-slider">
+                Shadow Blur: <span class="control-value" id="shadow-blur-value">32px</span>
+              </label>
+              <input
+                type="range"
+                class="range-slider"
+                id="shadow-blur-slider"
+                min="0"
+                max="80"
+                value="32"
+                aria-label="Shadow blur radius"
+              />
+            </div>
+
+            <!-- Shadow Color Opacity -->
+            <div class="control-group">
+              <label class="control-label" for="shadow-opacity-slider">
+                Shadow Opacity: <span class="control-value" id="shadow-opacity-value">20%</span>
+              </label>
+              <input
+                type="range"
+                class="range-slider"
+                id="shadow-opacity-slider"
+                min="0"
+                max="100"
+                value="20"
+                aria-label="Shadow opacity multiplier"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- CSS Code Panel -->
+        <div class="controls-card">
+          <h2 class="card-title">CSS Outputs</h2>
+          <div class="control-group">
+            <div class="code-output">
+              <code class="code-text" id="css-output" aria-label="Generated CSS code"></code>
+            </div>
+            <button
+              class="btn btn--primary btn--large"
+              id="btn-copy-css"
+              type="button"
+              aria-label="Copy CSS code"
+            >
+              <span>📋</span> Copy CSS Code
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Toast notification -->
+    <div class="toast" id="toast" role="alert" aria-live="polite">
+      <span class="toast__text" id="toast-text"></span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" id="css-footer">
+      <p class="footer__text">Made with ❤️ by <strong>Omer</strong> &bull; GSSoC 2026</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
