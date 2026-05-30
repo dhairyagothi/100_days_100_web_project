@@ -357,7 +357,9 @@ select {
     linear-gradient(to top, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
     linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
 
-  background-size: 100% 25%, 8.333% 100%;
+  background-size:
+    100% 25%,
+    8.333% 100%;
 }
 
 .bar-group {

@@ -1,460 +1,404 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expense Tracker</title>
 
-  <title>Expense Tracker</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-  <link rel="stylesheet" href="style.css" />
-</head>
+  <body>
+    <div class="app-shell">
+      <!-- SIDEBAR -->
 
-<body>
-
-  <div class="app-shell">
-
-    <!-- SIDEBAR -->
-
-    <aside class="sidebar">
-
-      <div class="brand">
-        <div class="brand-icon">₹</div>
-
-        <div>
-          <h1>Expense Tracker</h1>
-          <p>Personal Finance Dashboard</p>
-        </div>
-      </div>
-
-      <nav class="nav">
-        <a class="nav-link active" href="#dashboard">Dashboard</a>
-        <a class="nav-link" href="#analytics">Analytics</a>
-        <a class="nav-link" href="#add-transaction">Add Transaction</a>
-        <a class="nav-link" href="#transactions">Transactions</a>
-      </nav>
-
-      <div class="sidebar-card">
-
-        <p class="label">Quick Overview</p>
-
-        <div class="mini-stat">
-          <span>Income</span>
-          <strong>₹0.00</strong>
-        </div>
-
-        <div class="mini-stat">
-          <span>Expense</span>
-          <strong>₹0.00</strong>
-        </div>
-
-        <div class="mini-stat">
-          <span>Balance</span>
-          <strong>₹0.00</strong>
-        </div>
-
-      </div>
-
-      <div class="sidebar-footer">
-        <span class="dot"></span>
-        <p>Modern UI for expense management</p>
-      </div>
-
-    </aside>
-
-    <!-- MAIN -->
-
-    <main class="main">
-
-      <!-- TOPBAR -->
-
-      <header class="topbar" id="dashboard">
-
-        <div>
-          <p class="eyebrow">GSSOC ENHANCEMENT</p>
-
-          <h2>Dashboard Overview</h2>
-
-          <p class="subtitle">
-            A clean, responsive expense tracking interface with better spacing,
-            cards, and structure.
-          </p>
-        </div>
-
-        <div class="topbar-chip" id="liveDate"></div>
-
-      </header>
-
-      <!-- STATS -->
-
-      <section class="stats-grid">
-
-        <article class="stat-card accent-purple">
-          <div class="stat-icon">💰</div>
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-icon">₹</div>
 
           <div>
-            <p>Account Balance</p>
-            <h3>₹0.00</h3>
-            <span>Total balance</span>
+            <h1>Expense Tracker</h1>
+            <p>Personal Finance Dashboard</p>
           </div>
-        </article>
+        </div>
 
-        <article class="stat-card accent-green">
-          <div class="stat-icon">⬆</div>
+        <nav class="nav">
+          <a class="nav-link active" href="#dashboard">Dashboard</a>
+          <a class="nav-link" href="#analytics">Analytics</a>
+          <a class="nav-link" href="#add-transaction">Add Transaction</a>
+          <a class="nav-link" href="#transactions">Transactions</a>
+        </nav>
 
+        <div class="sidebar-card">
+          <p class="label">Quick Overview</p>
+
+          <div class="mini-stat">
+            <span>Income</span>
+            <strong>₹0.00</strong>
+          </div>
+
+          <div class="mini-stat">
+            <span>Expense</span>
+            <strong>₹0.00</strong>
+          </div>
+
+          <div class="mini-stat">
+            <span>Balance</span>
+            <strong>₹0.00</strong>
+          </div>
+        </div>
+
+        <div class="sidebar-footer">
+          <span class="dot"></span>
+          <p>Modern UI for expense management</p>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+
+      <main class="main">
+        <!-- TOPBAR -->
+
+        <header class="topbar" id="dashboard">
           <div>
-            <p>Total Income</p>
-            <h3>₹0.00</h3>
-            <span>This month</span>
+            <p class="eyebrow">GSSOC ENHANCEMENT</p>
+
+            <h2>Dashboard Overview</h2>
+
+            <p class="subtitle">
+              A clean, responsive expense tracking interface with better spacing, cards, and
+              structure.
+            </p>
           </div>
-        </article>
 
-        <article class="stat-card accent-red">
-          <div class="stat-icon">⬇</div>
+          <div class="topbar-chip" id="liveDate"></div>
+        </header>
 
-          <div>
-            <p>Total Expense</p>
-            <h3>₹0.00</h3>
-            <span>This month</span>
-          </div>
-        </article>
+        <!-- STATS -->
 
-        <article class="stat-card accent-blue">
-          <div class="stat-icon">🧾</div>
+        <section class="stats-grid">
+          <article class="stat-card accent-purple">
+            <div class="stat-icon">💰</div>
 
-          <div>
-            <p>Transactions</p>
-            <h3>0</h3>
-            <span>Total entries</span>
-          </div>
-        </article>
+            <div>
+              <p>Account Balance</p>
+              <h3>₹0.00</h3>
+              <span>Total balance</span>
+            </div>
+          </article>
 
-      </section>
+          <article class="stat-card accent-green">
+            <div class="stat-icon">⬆</div>
 
-      <!--CONTENT GRID-->
+            <div>
+              <p>Total Income</p>
+              <h3>₹0.00</h3>
+              <span>This month</span>
+            </div>
+          </article>
 
-      <section class="content-grid" id="analytics">
+          <article class="stat-card accent-red">
+            <div class="stat-icon">⬇</div>
 
-        <!-- CATEGORY PANEL -->
+            <div>
+              <p>Total Expense</p>
+              <h3>₹0.00</h3>
+              <span>This month</span>
+            </div>
+          </article>
 
-        <article class="panel">
+          <article class="stat-card accent-blue">
+            <div class="stat-icon">🧾</div>
 
+            <div>
+              <p>Transactions</p>
+              <h3>0</h3>
+              <span>Total entries</span>
+            </div>
+          </article>
+        </section>
+
+        <!--CONTENT GRID-->
+
+        <section class="content-grid" id="analytics">
+          <!-- CATEGORY PANEL -->
+
+          <article class="panel">
+            <div class="panel-header">
+              <div>
+                <p class="panel-kicker">CATEGORY BREAKDOWN</p>
+                <h3>Expense by Category</h3>
+              </div>
+            </div>
+
+            <div class="category-list">
+              <div class="category-item">
+                <strong>Food</strong>
+                <span>₹0.00 - 0%</span>
+
+                <div class="progress">
+                  <div style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div class="category-item">
+                <strong>Travel</strong>
+                <span>₹0.00 - 0%</span>
+
+                <div class="progress">
+                  <div style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div class="category-item">
+                <strong>Shopping</strong>
+                <span>₹0.00 - 0%</span>
+
+                <div class="progress">
+                  <div style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div class="category-item">
+                <strong>Utilities</strong>
+                <span>₹0.00 - 0%</span>
+
+                <div class="progress">
+                  <div style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div class="category-item">
+                <strong>Others</strong>
+                <span>₹0.00 - 0%</span>
+
+                <div class="progress">
+                  <div style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- CHART PANEL -->
+
+          <article class="panel">
+            <div class="panel-header">
+              <div>
+                <p class="panel-kicker">ACTIVITY TREND</p>
+                <h3>Monthly Overview</h3>
+              </div>
+            </div>
+
+            <div class="chart-wrap">
+              <div class="chart-legend">
+                <span><i class="legend income"></i> Income</span>
+                <span><i class="legend expense"></i> Expense</span>
+              </div>
+
+              <div class="chart">
+                <div class="bar-group">
+                  <div class="bar income" style="height: 16%"></div>
+                  <div class="bar expense" style="height: 8%"></div>
+                  <span class="month-label">Jan</span>
+                </div>
+
+                <div class="bar-group">
+                  <div class="bar income" style="height: 24%"></div>
+                  <div class="bar expense" style="height: 12%"></div>
+                  <span class="month-label">Feb</span>
+                </div>
+
+                <div class="bar-group">
+                  <div class="bar income" style="height: 18%"></div>
+                  <div class="bar expense" style="height: 10%"></div>
+                  <span class="month-label">Mar</span>
+                </div>
+
+                <div class="bar-group">
+                  <div class="bar income" style="height: 20%"></div>
+                  <div class="bar expense" style="height: 14%"></div>
+                  <span class="month-label">Apr</span>
+                </div>
+
+                <div class="bar-group">
+                  <div class="bar income" style="height: 12%"></div>
+                  <div class="bar expense" style="height: 7%"></div>
+                  <span class="month-label">May</span>
+                </div>
+
+                <div class="bar-group">
+                  <div class="bar income" style="height: 10%"></div>
+                  <div class="bar expense" style="height: 6%"></div>
+                  <span class="month-label">Jun</span>
+                </div>
+
+                <div class="bar-group">
+                  <div class="bar income" style="height: 14%"></div>
+                  <div class="bar expense" style="height: 9%"></div>
+                  <span class="month-label">Jul</span>
+                </div>
+
+                <div class="bar-group">
+                  <div class="bar income" style="height: 22%"></div>
+                  <div class="bar expense" style="height: 16%"></div>
+                  <span class="month-label">Aug</span>
+                </div>
+
+                <div class="bar-group">
+                  <div class="bar income" style="height: 17%"></div>
+                  <div class="bar expense" style="height: 11%"></div>
+                  <span class="month-label">Sep</span>
+                </div>
+
+                <div class="bar-group">
+                  <div class="bar income" style="height: 15%"></div>
+                  <div class="bar expense" style="height: 8%"></div>
+                  <span class="month-label">Oct</span>
+                </div>
+
+                <div class="bar-group">
+                  <div class="bar income" style="height: 21%"></div>
+                  <div class="bar expense" style="height: 13%"></div>
+                  <span class="month-label">Nov</span>
+                </div>
+
+                <div class="bar-group">
+                  <div class="bar income" style="height: 26%"></div>
+                  <div class="bar expense" style="height: 18%"></div>
+                  <span class="month-label">Dec</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- FORM PANEL -->
+
+          <article class="panel form-panel" id="add-transaction">
+            <div class="panel-header">
+              <div>
+                <p class="panel-kicker">QUICK ENTRY</p>
+                <h3>Add New Transaction</h3>
+              </div>
+            </div>
+
+            <form class="transaction-form">
+              <label>
+                Amount *
+                <input type="number" placeholder="0.00" />
+              </label>
+
+              <label>
+                Description *
+                <input type="text" placeholder="Enter description" />
+              </label>
+
+              <div class="type-group">
+                <span>Type *</span>
+
+                <div class="type-options">
+                  <label class="type-pill income">
+                    <input type="radio" name="type" checked />
+                    Income
+                  </label>
+
+                  <label class="type-pill expense">
+                    <input type="radio" name="type" />
+                    Expense
+                  </label>
+                </div>
+              </div>
+
+              <label>
+                Category *
+                <select>
+                  <option>Select a category</option>
+                  <option>Food</option>
+                  <option>Travel</option>
+                  <option>Shopping</option>
+                  <option>Utilities</option>
+                  <option>Others</option>
+                </select>
+              </label>
+
+              <label>
+                Date *
+                <input type="date" />
+              </label>
+
+              <button type="button" class="btn-primary">Add Transaction</button>
+            </form>
+          </article>
+        </section>
+
+        <!--TABLE -->
+
+        <section class="panel transactions-panel" id="transactions">
           <div class="panel-header">
             <div>
-              <p class="panel-kicker">CATEGORY BREAKDOWN</p>
-              <h3>Expense by Category</h3>
+              <p class="panel-kicker">HISTORY</p>
+              <h3>Recent Transactions</h3>
             </div>
+
+            <button class="btn-secondary" type="button">Clear All</button>
           </div>
 
-          <div class="category-list">
+          <div class="table-wrap">
+            <table class="transactions-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th>Category</th>
+                  <th>Type</th>
+                  <th>Amount</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
 
-            <div class="category-item">
-              <strong>Food</strong>
-              <span>₹0.00 - 0%</span>
+              <tbody>
+                <tr>
+                  <td colspan="6">
+                    <div class="empty-state">
+                      <div class="empty-icon">📭</div>
 
-              <div class="progress">
-                <div style="width:0%"></div>
-              </div>
-            </div>
+                      <h4>No transactions yet</h4>
 
-            <div class="category-item">
-              <strong>Travel</strong>
-              <span>₹0.00 - 0%</span>
-
-              <div class="progress">
-                <div style="width:0%"></div>
-              </div>
-            </div>
-
-            <div class="category-item">
-              <strong>Shopping</strong>
-              <span>₹0.00 - 0%</span>
-
-              <div class="progress">
-                <div style="width:0%"></div>
-              </div>
-            </div>
-
-            <div class="category-item">
-              <strong>Utilities</strong>
-              <span>₹0.00 - 0%</span>
-
-              <div class="progress">
-                <div style="width:0%"></div>
-              </div>
-            </div>
-
-            <div class="category-item">
-              <strong>Others</strong>
-              <span>₹0.00 - 0%</span>
-
-              <div class="progress">
-                <div style="width:0%"></div>
-              </div>
-            </div>
-
+                      <p>Add your first transaction to get started.</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-
-        </article>
-
-        <!-- CHART PANEL -->
-
-        <article class="panel">
-
-          <div class="panel-header">
-            <div>
-              <p class="panel-kicker">ACTIVITY TREND</p>
-              <h3>Monthly Overview</h3>
-            </div>
-          </div>
-
-          <div class="chart-wrap">
-
-            <div class="chart-legend">
-              <span><i class="legend income"></i> Income</span>
-              <span><i class="legend expense"></i> Expense</span>
-            </div>
-
-            <div class="chart">
-
-              <div class="bar-group">
-                <div class="bar income" style="height:16%"></div>
-                <div class="bar expense" style="height:8%"></div>
-                <span class="month-label">Jan</span>
-              </div>
-
-              <div class="bar-group">
-                <div class="bar income" style="height:24%"></div>
-                <div class="bar expense" style="height:12%"></div>
-                <span class="month-label">Feb</span>
-              </div>
-
-              <div class="bar-group">
-                <div class="bar income" style="height:18%"></div>
-                <div class="bar expense" style="height:10%"></div>
-                <span class="month-label">Mar</span>
-              </div>
-
-              <div class="bar-group">
-                <div class="bar income" style="height:20%"></div>
-                <div class="bar expense" style="height:14%"></div>
-                <span class="month-label">Apr</span>
-              </div>
-
-              <div class="bar-group">
-                <div class="bar income" style="height:12%"></div>
-                <div class="bar expense" style="height:7%"></div>
-                <span class="month-label">May</span>
-              </div>
-
-              <div class="bar-group">
-                <div class="bar income" style="height:10%"></div>
-                <div class="bar expense" style="height:6%"></div>
-                <span class="month-label">Jun</span>
-              </div>
-
-              <div class="bar-group">
-                <div class="bar income" style="height:14%"></div>
-                <div class="bar expense" style="height:9%"></div>
-                <span class="month-label">Jul</span>
-              </div>
-
-              <div class="bar-group">
-                <div class="bar income" style="height:22%"></div>
-                <div class="bar expense" style="height:16%"></div>
-                <span class="month-label">Aug</span>
-              </div>
-
-              <div class="bar-group">
-                <div class="bar income" style="height:17%"></div>
-                <div class="bar expense" style="height:11%"></div>
-                <span class="month-label">Sep</span>
-              </div>
-
-              <div class="bar-group">
-                <div class="bar income" style="height:15%"></div>
-                <div class="bar expense" style="height:8%"></div>
-                <span class="month-label">Oct</span>
-              </div>
-
-              <div class="bar-group">
-                <div class="bar income" style="height:21%"></div>
-                <div class="bar expense" style="height:13%"></div>
-                <span class="month-label">Nov</span>
-              </div>
-
-              <div class="bar-group">
-                <div class="bar income" style="height:26%"></div>
-                <div class="bar expense" style="height:18%"></div>
-                <span class="month-label">Dec</span>
-              </div>
-
-            </div>
-
-          </div>
-
-        </article>
-
-        <!-- FORM PANEL -->
-
-        <article class="panel form-panel" id="add-transaction">
-
-          <div class="panel-header">
-            <div>
-              <p class="panel-kicker">QUICK ENTRY</p>
-              <h3>Add New Transaction</h3>
-            </div>
-          </div>
-
-          <form class="transaction-form">
-
-            <label>
-              Amount *
-              <input type="number" placeholder="0.00">
-            </label>
-
-            <label>
-              Description *
-              <input type="text" placeholder="Enter description">
-            </label>
-
-            <div class="type-group">
-
-              <span>Type *</span>
-
-              <div class="type-options">
-
-                <label class="type-pill income">
-                  <input type="radio" name="type" checked>
-                  Income
-                </label>
-
-                <label class="type-pill expense">
-                  <input type="radio" name="type">
-                  Expense
-                </label>
-
-              </div>
-
-            </div>
-
-            <label>
-              Category *
-              <select>
-                <option>Select a category</option>
-                <option>Food</option>
-                <option>Travel</option>
-                <option>Shopping</option>
-                <option>Utilities</option>
-                <option>Others</option>
-              </select>
-            </label>
-
-            <label>
-              Date *
-              <input type="date">
-            </label>
-
-            <button type="button" class="btn-primary">
-              Add Transaction
-            </button>
-
-          </form>
-
-        </article>
-
-      </section>
-
-      <!--TABLE -->
-
-      <section class="panel transactions-panel" id="transactions">
-
-        <div class="panel-header">
-
-          <div>
-            <p class="panel-kicker">HISTORY</p>
-            <h3>Recent Transactions</h3>
-          </div>
-
-          <button class="btn-secondary" type="button">
-            Clear All
-          </button>
-
-        </div>
-
-        <div class="table-wrap">
-
-          <table class="transactions-table">
-
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th>Type</th>
-                <th>Amount</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-
-            <tbody>
-
-              <tr>
-                <td colspan="6">
-
-                  <div class="empty-state">
-
-                    <div class="empty-icon">📭</div>
-
-                    <h4>No transactions yet</h4>
-
-                    <p>Add your first transaction to get started.</p>
-
-                  </div>
-
-                </td>
-              </tr>
-
-            </tbody>
-
-          </table>
-
-        </div>
-
-      </section>
-
-    </main>
-
-  </div>
-
-  <script>
-    function updateLiveDate() {
-      const today = new Date();
-
-      const formatted = new Intl.DateTimeFormat("en-US", {
-        month: "long",
-        day: "numeric",
-        year: "numeric"
-      }).format(today);
-
-      document.getElementById("liveDate").textContent = formatted;
-
-      const dateInput = document.querySelector('input[type="date"]');
-
-      if (dateInput && !dateInput.value) {
-        const localDate = new Date(
-          today.getTime() - today.getTimezoneOffset() * 60000
-        )
-          .toISOString()
-          .split("T")[0];
-
-        dateInput.value = localDate;
+        </section>
+      </main>
+    </div>
+
+    <script>
+      function updateLiveDate() {
+        const today = new Date();
+
+        const formatted = new Intl.DateTimeFormat('en-US', {
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric',
+        }).format(today);
+
+        document.getElementById('liveDate').textContent = formatted;
+
+        const dateInput = document.querySelector('input[type="date"]');
+
+        if (dateInput && !dateInput.value) {
+          const localDate = new Date(today.getTime() - today.getTimezoneOffset() * 60000)
+            .toISOString()
+            .split('T')[0];
+
+          dateInput.value = localDate;
+        }
       }
-    }
 
-    updateLiveDate();
-  </script>
-
-</body>
-
+      updateLiveDate();
+    </script>
+  </body>
 </html>
