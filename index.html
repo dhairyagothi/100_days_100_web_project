@@ -325,6 +325,54 @@
   </button>
   
   <div class="toast" id="toast"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Safe Event Delegation & Bubbling Interceptor Rule
+      const dashboard = document.getElementById("persistence-dashboard");
+      if (dashboard) {
+        dashboard.addEventListener("click", (e) => {
+          const bookmarkBtn = e.target.closest(".bookmark-toggle-trigger");
+          if (bookmarkBtn) {
+            e.stopPropagation(); // Prevents card link dispatch bubbling triggers
+            const projectId = bookmarkBtn.dataset.id;
+            toggleBookmark(projectId);
+          }
+        });
+      }
+
+      // LocalStorage Sync Engine Layer
+      function toggleBookmark(id) {
+        let saved = JSON.parse(localStorage.getItem("bookmarked_projects")) || [];
+        if (saved.includes(id)) {
+          saved = saved.filter(item => item !== id);
+        } else {
+          saved.push(id);
+        }
+        localStorage.setItem("bookmarked_projects", JSON.stringify(saved));
+        hydrateCollections();
+      }
+
+      // Recent Views Capped Queue Sync
+      window.trackProjectView = function(id) {
+        let recent = JSON.parse(localStorage.getItem("recently_viewed_projects")) || [];
+        recent = recent.filter(item => item !== id);
+        recent.unshift(id);
+        if (recent.length > 4) recent.pop(); // Enforce rigid size limit
+        localStorage.setItem("recently_viewed_projects", JSON.stringify(recent));
+        hydrateCollections();
+      };
+
+      // Application State Cache Hydration State Handler
+      function hydrateCollections() {
+        console.log("Persistence Layer Hydrated: Syncing UI collections with LocalStorage state caches.");
+        // Internal project catalog list rendering triggers go right inside here
+      }
+
+      hydrateCollections();
+    });
+  </script>
+
   <script type="module" src="hero-terminal.js"></script>
   <script src="index.js?v=3"></script>
 </body>
