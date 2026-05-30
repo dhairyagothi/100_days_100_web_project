@@ -2410,5 +2410,20 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/Escape_Room/index.html"
+  },
+  {
+    "projectNo": 194,
+    "projectName": "Neural Network Playground",
+    "projectType": "Tool",
+    "projectDesc": "Interactive neural network visualizer with live backpropagation, decision boundary heatmaps, configurable architectures, and 5 toy datasets — built entirely in vanilla JavaScript.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "canvas",
+      "api"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/NeuralNetworkPlayground/index.html"
   }
 ]
