@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Spotify - Web Player: Music for Everyone</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="main">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="nav">
+                <div class="nav-option">
+                    <i class="fa-solid fa-house"></i>
+                    <a href="#">Home</a>
+                </div>
+                <div class="nav-option">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <a href="#">Search</a>
+                </div>
+            </div>
+            <div class="library">
+                <div class="options">
+                    <div class="lib-option nav-option">
+                        <img src="library_icon.png">
+                        <a href="#"> Your Library</a>
+                    </div>
+                    <div class="icons">
+                        <i class="fa-solid fa-plus"></i>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+                <div class="lib-box">
+                    <div class="box">
+                        <p class="box-p1">Create your own playlist</p>
+                        <p class="box-p2">It's easy, we'll help you</p>
+                        <button class="badge">Create Playlist</button>
+                    </div>
+                    <div class="box">
+                        <p class="box-p1">Let's find some Podcast to follow</p>
+                        <p class="box-p2">We'll keep you updated on new episodes</p>
+                        <button class="badge">Browse Podcast</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Section -->
+        <div class="main-content">
+            <div class="sticky-nav">
+                <div class="sticky-nav-icons">
+                    <img src="backward_icon.png">
+                    <img src="forward_icon.png" class="hide">
+                </div>
+                <div class="sticky-nav-options" id="auth-container">
+                    <button class="badge nav-items hide">Explore Premium</button>
+                    <button class="badge nav-items dark-badge"><i class="fa-regular fa-circle-down" style="margin-right: 3px;"></i>Install App</button>
+                    <!-- Dynamic Login Button -->
+                    <button class="badge login-btn" id="loginAuthBtn">Log in</button>
+                </div>
+            </div>
+        
+            <h2>Recently Played</h2>
+            <div class="cards-container">
+                <div class="card" data-song="card1">
+                    <img src="card1img.jpeg" class="card-img">
+                    <p class="card-title">Top 50 - Global</p>
+                    <p class="card-info">Your daily updates of the most played tracks...</p>
+                </div>
+            </div>
+              
+            <h2>Trending now near you</h2>
+            <div class="cards-container">
+                <div class="card" data-song="card2">
+                    <img src="card2img.jpeg" class="card-img">
+                    <p class="card-title">Maiye Jitna Sohna</p>
+                    <p class="card-info">Darshan Raval Special Hits...</p>
+                </div>
+                <div class="card" data-song="card3">
+                    <img src="card3img.jpeg" class="card-img">
+                    <p class="card-title">Trending India</p>
+                    <p class="card-info">Top charts breaking the internet right now...</p>
+                </div>
+                <div class="card" data-song="card4">
+                    <img src="card4img.jpeg" class="card-img">
+                    <p class="card-title">Global Beats</p>
+                    <p class="card-info">Listen to the rhythm of the world...</p>
+                </div>
+            </div>
+
+            <h2>Featured Chart</h2>
+            <div class="cards-container">
+                <div class="card" data-song="card5">
+                    <img src="card5img.jpeg" class="card-img">
+                    <p class="card-title">Top 50 - Global</p>
+                    <p class="card-info">The biggest tracks right now...</p>
+                </div>
+                <div class="card" data-song="card6">
+                    <img src="card6img.jpeg" class="card-img">
+                    <p class="card-title">Top Songs - India</p>
+                    <p class="card-info">Catch up with Indian blockbusters...</p>
+                </div>
+            </div>
+            <div class="footer"><div class="line"></div></div>
+        </div>
+
+        <!-- Bottom Music Player -->
+        <div class="music-player">
+            <div class="song-icon">
+                <img src="card2img.jpeg" alt="Song Cover" class="cover-image">
+                <div class="song-info">
+                    <h3 class="song-title">Maiye Jitna Sohna</h3>
+                    <p class="song-author">Darshan Rawal</p>
+                </div>
+                <i class="fa-regular fa-heart icon-for-song"></i>
+            </div>
+            
+            <div class="player">
+                <div class="player-controls">
+                    <img src="player_icon1.png" class="player-control-icon">
+                    <img src="player_icon2.png" class="player-control-icon">
+                    <!-- Play/Pause Handler -->
+                    <i class="fa-solid fa-circle-play main-play-btn" id="ctrl-play-btn"></i>
+                    <img src="player_icon4.png" class="player-control-icon">
+                    <img src="player_icon5.png" class="player-control-icon">
+                </div>
+                <div class="playback-bar">
+                    <span class="curr-time">0:00</span>
+                    <input type="range" min="0" max="100" value="0" class="progress-bar" id="mainSeekbar">
+                    <span class="tot-time">3:33</span>
+                </div>
+            </div>
+            
+            <div class="diff-icons">
+                <i class="fa-solid fa-music"></i>
+                <i class="fa-brands fa-bluetooth-b"></i>
+                <i class="fa-solid fa-volume-low"></i>
+                <input type="range" min="0" max="100" class="volume-slider">
+                <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+            </div>    
+        </div>
+    </div>
+
+   <!-- Login/Signup Modal (Popup) -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-box">
+            <i class="fa-solid fa-xmark modal-close" id="closeModal"></i>
+            <h2>Log in to Spotify</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username or Email</label>
+                    <input type="text" id="username" placeholder="Username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="modal-submit-btn">Log In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- CRITICAL FIX: Yeh script tag add hona zaroori hai -->
+    <script src="script.js"></script>
+</body>
+</html>

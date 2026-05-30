@@ -99,9 +99,12 @@ closeChat.addEventListener("click", () => {
 
 // SEND MESSAGE FUNCTION
 function formatResponse(text) {
+  // Security: Prevent XSS by HTML escaping the raw text before formatting
+  const div = document.createElement("div");
+  div.textContent = text;
+  const escapedText = div.innerHTML;
 
-  return text
-
+  return escapedText
     // Bold text
     .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
 
@@ -110,7 +113,6 @@ function formatResponse(text) {
 
     // Line breaks
     .replace(/\n/g, "<br>");
-
 }
 async function sendMessage() {
   const message = userInput.value.trim();

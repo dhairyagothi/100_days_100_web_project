@@ -64,6 +64,8 @@ function getCategoryFromTags(tags, name) {
   return 'Tools';
 }
 
+
+
 let PROJECTS = [];
 let projectsPromise = null;
 
@@ -909,6 +911,10 @@ function toggleBookmark(project) {
     showToast('Project bookmarked');
   }
 
+  localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
+
+  updateBookmarkURL();
+
   try {
     localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
   } catch (error) {
@@ -919,15 +925,46 @@ function toggleBookmark(project) {
   renderRecentProjects();
 }
 
-/**
- * Removes projects older than 1 hour from the recent projects list
- * @returns {array} Filtered recent projects within the 1-hour window
- */
+function updateBookmarkURL() {
+  const url = new URL(window.location);
+
+  if (bookmarkedProjects.length > 0) {
+    const bookmarkIds = bookmarkedProjects.map(project => project[0]);
+    url.searchParams.set('bookmarks', bookmarkIds.join(','));
+  } else {
+    url.searchParams.delete('bookmarks');
+  }
+
+  window.history.replaceState({}, '', url);
+}
+
+function loadBookmarksFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const bookmarkParam = params.get('bookmarks');
+
+  if (!bookmarkParam) return;
+
+  const bookmarkIds = bookmarkParam
+    .split(',')
+    .map(id => id.trim());
+
+  bookmarkedProjects = PROJECTS.filter(project =>
+    bookmarkIds.includes(project[0])
+  );
+
+  localStorage.setItem(
+    'bookmarkedProjects',
+    JSON.stringify(bookmarkedProjects)
+  );
+}
+
 function getRecentProjectsWithinWindow() {
   const now = Date.now();
+
   return recentProjects.filter((item) => {
     const timestamp = item.timestamp || Date.now();
     const age = now - timestamp;
+
     return age <= ONE_HOUR_MS;
   });
 }
@@ -1560,19 +1597,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     syncProjectCounts();
 
     if (hasProjectGrid()) {
+      loadBookmarksFromURL();
+
       renderGrid();
       renderBookmarks();
       renderRecentProjects();
     }
+
+    syncProjectCounts();
+    fetchRepoStats();
+    initScrollBtn();
+
   } catch (error) {
     console.error('Failed to load projects:', error);
+
     const grid = document.getElementById('projectGrid');
+
     if (grid) {
-      grid.innerHTML = '<div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">Failed to load projects. Please try refreshing the page.</div>';
+      grid.innerHTML = `
+        <div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">
+          Failed to load projects. Please try refreshing the page.
+        </div>
+      `;
     }
   }
 });
-
 
 
 (() => {
