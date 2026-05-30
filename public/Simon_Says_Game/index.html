@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
 
   <div class="theme-toggle-wrapper">
   <label class="theme-switch">
@@ -15,14 +17,14 @@
   </label>
 </div>
 
-  <h1>Simon Says</h1>
-  <h2>Press Start to play</h2>
-  <h3 id="highscore">High Score: 0</h3>
+  <h1>🎮 Simon Says!</h1>
+  <h2>Press Start to play 🙌</h2>
+  <h3 id="highscore">🏆 High Score: 0</h3>
 
   <div class="controls">
 
   <button id="start-btn">▶ Start Game</button>
-
+  <button id="stop-btn">⏹ Stop Game</button>
   <div class="toggle-group">
     <span class="toggle-label">⚡ Strict Mode</span>
 
@@ -44,7 +46,6 @@
       <div class="btn purple" id="purple"></div>
     </div>
   </div>
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

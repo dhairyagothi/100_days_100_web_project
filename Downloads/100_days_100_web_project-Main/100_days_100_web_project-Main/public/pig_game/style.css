@@ -1,0 +1,139 @@
+/* Modern CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    color: #2f2f2f;
+    padding: 20px;
+}
+
+.row {
+    height: 450px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.player--0,
+.player--1 {
+    padding: 30px 40px;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+    backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
+    width: 300px;
+    text-align: center;
+}
+
+span {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #444;
+}
+
+.col-2 {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+#dice {
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+#dice:hover {
+    transform: scale(1.05);
+}
+
+.hidden {
+    display: none;
+}
+
+.player--winner {
+    background: linear-gradient(145deg, #2f2f2f, #3a3a3a);
+    color: white;
+    transform: scale(1.02);
+}
+
+.player--active {
+    background: linear-gradient(145deg, #ED4C67, #B53471);
+    color: white;
+    transform: scale(1.02);
+}
+
+#buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+#buttons button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    background: #fff;
+    color: #333;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+#buttons button:hover {
+    background: #ED4C67;
+    color: white;
+    transform: translateY(-2px);
+}
+
+#current {
+    padding: 15px 25px;
+    background: linear-gradient(145deg, #B53471, #ED4C67);
+    color: white;
+    border-radius: 10px;
+    margin-top: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+ul {
+    color: #fa8f4c;
+    padding-top: 40px;
+    font-size: 1.1rem;
+    list-style-type: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .row {
+        flex-direction: column;
+        height: auto;
+        gap: 20px;
+    }
+
+    .player--0,
+    .player--1 {
+        width: 90%;
+        padding: 20px;
+    }
+}
