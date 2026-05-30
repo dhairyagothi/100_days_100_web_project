@@ -9,36 +9,55 @@
 </head>
 
 <body>
+
     <div class="header-actions">
         <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()">🌙</button>
     </div>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
-
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
 
     <div class="container">
+        <div class="left-panel">
+            <h1>Sudoku Game</h1>
+            <div id="board" class="board"></div>
+        </div>
 
-        <h1>// SUDOKU_SOLVER</h1>
+        <div class="right-panel">
+            <div class="stats">
+                <div class="mistakes-box">
+                    <span class="label">Mistakes</span>
+                    <span id="mistakeCount">0/3</span>
+                </div>
+                <div class="timer-box">
+                    <span class="label">Time</span>
+                    <span id="timer">00:00</span>
+                </div>
+            </div>
 
-        <p class="subtitle">
-            System.vizia_backtrack_algo
-        </p>
+            <div class="tools">
+                <button class="tool-btn" onclick="undoMove()">↩</button>
+                <button class="tool-btn" onclick="giveHint()">💡</button>
+                <button class="tool-btn" onclick="togglePause()" id="pauseBtn">⏸</button>
+            </div>
 
-        <div id="grid" class="sudoku-grid"></div>
+            <div class="difficulty">
+                <button id="easyBtn" onclick="newGame('easy')">Easy</button>
+                <button id="mediumBtn" onclick="newGame('medium')">Medium</button>
+                <button id="hardBtn" onclick="newGame('hard')">Hard</button>
+            </div>
 
-        <div class="controls">
+            <div class="number-pad" id="numberPad"></div>
 
-            <button onclick="solveSudoku()">
-                Execute
+            <button class="new-game-btn" onclick="newGame(currentDifficulty)">
+                New Game
             </button>
+        </div>
+    </div>
 
-            <button onclick="clearGrid()">
-                Clear
-            </button>
-
-            <button onclick="generatePuzzle()">
-                Initialize
-            </button>
-
+    <div id="resultModal" class="result-modal hidden">
+        <div class="result-card">
+            <h2 id="resultTitle">Game Over</h2>
+            <p id="resultMessage"></p>
+            <button onclick="closeModalAndNewGame()">New Game</button>
         </div>
 
     </div>
