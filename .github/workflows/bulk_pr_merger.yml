@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       from_pr:
-        description: "Starting PR Number"
+        description: 'Starting PR Number'
         required: true
         type: string
       to_pr:
-        description: "Ending PR Number"
+        description: 'Ending PR Number'
         required: true
         type: string
 

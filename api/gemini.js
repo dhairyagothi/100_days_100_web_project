@@ -1,18 +1,18 @@
-const dotenv = require("dotenv");
+const dotenv = require('dotenv');
 dotenv.config();
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 module.exports = async (req, res) => {
-  if (req.method !== "POST") {
-    res.setHeader("Allow", "POST");
-    return res.status(405).json({ error: "Method not allowed" });
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', 'POST');
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   if (!GEMINI_API_KEY) {
     return res.status(500).json({
       error:
-        "Gemini API key is not configured on the server. Set GEMINI_API_KEY in your hosting environment.",
+        'Gemini API key is not configured on the server. Set GEMINI_API_KEY in your hosting environment.',
     });
   }
 
@@ -21,20 +21,20 @@ module.exports = async (req, res) => {
   // gemini-1.5-pro-002) that cost significantly more per token. The server
   // owner pays all charges, so only explicitly permitted models are allowed.
   const ALLOWED_MODELS = new Set([
-    "gemini-2.5-flash",
-    "gemini-2.0-flash",
-    "gemini-1.5-flash",
-    "gemini-1.5-flash-8b",
+    'gemini-2.5-flash',
+    'gemini-2.0-flash',
+    'gemini-1.5-flash',
+    'gemini-1.5-flash-8b',
   ]);
 
   const { model, contents, systemPrompt } = req.body || {};
   if (!model || !Array.isArray(contents) || contents.length === 0) {
-    return res.status(400).json({ error: "Invalid request body" });
+    return res.status(400).json({ error: 'Invalid request body' });
   }
 
   if (!ALLOWED_MODELS.has(model)) {
     return res.status(400).json({
-      error: `Model '${model}' is not permitted. Allowed models: ${[...ALLOWED_MODELS].join(", ")}`,
+      error: `Model '${model}' is not permitted. Allowed models: ${[...ALLOWED_MODELS].join(', ')}`,
     });
   }
 
@@ -45,13 +45,13 @@ module.exports = async (req, res) => {
 
   try {
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(
-      model,
+      model
     )}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
 
     const response = await fetch(apiUrl, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
     });
@@ -65,7 +65,7 @@ module.exports = async (req, res) => {
     return res.status(200).json(data);
   } catch (error) {
     return res.status(500).json({
-      error: error.message || "Unexpected server error",
+      error: error.message || 'Unexpected server error',
     });
   }
 };

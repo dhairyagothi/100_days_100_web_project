@@ -1,4 +1,4 @@
-name: "Git Branch Prefix Validator"
+name: 'Git Branch Prefix Validator'
 
 on:
   pull_request:
@@ -14,11 +14,11 @@ jobs:
           script: |
             const pr = context.payload.pull_request;
             const branchName = pr.head.ref;
-            
+
             // Standard prefix naming prefixes
             const allowedPrefixes = ['feat/', 'fix/', 'docs/', 'refactor/', 'perf/', 'accessibility/', 'ci/', 'enhancement/', 'bugfix/'];
             const isValid = allowedPrefixes.some(prefix => branchName.startsWith(prefix));
-            
+
             if (!isValid) {
               core.setFailed(`Branch name "${branchName}" violates repository conventions. Source branches must be prefixed with one of the following prefixes: ${allowedPrefixes.join(', ')}`);
             } else {

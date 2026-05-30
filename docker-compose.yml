@@ -11,10 +11,10 @@ services:
       dockerfile: Dockerfile
     container_name: 100days-web
     ports:
-      - "8080:80"
+      - '8080:80'
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost/"]
+      test: ['CMD', 'wget', '-q', '--spider', 'http://localhost/']
       interval: 30s
       timeout: 3s
       retries: 3

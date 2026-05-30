@@ -10,12 +10,12 @@ on:
   push:
     branches: [Main]
     paths-ignore:
-      - "**.md"
-      - "LICENSE"
-      - ".github/workflows/ci.yml"
-      - ".github/ISSUE_TEMPLATE/**"
-      - ".github/pull_request_template.md"
-      - ".github/labels.yml"
+      - '**.md'
+      - 'LICENSE'
+      - '.github/workflows/ci.yml'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/pull_request_template.md'
+      - '.github/labels.yml'
 
 permissions:
   contents: read

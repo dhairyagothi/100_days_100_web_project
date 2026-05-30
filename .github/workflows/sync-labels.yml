@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - ".github/labels.yml"
+      - '.github/labels.yml'
 
 permissions:
   issues: write
