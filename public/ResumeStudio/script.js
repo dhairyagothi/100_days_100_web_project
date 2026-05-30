@@ -181,13 +181,21 @@ const targetRole = document.getElementById("targetRole");
     // 4. REAL-TIME INPUTS & CHAR COUNTERS
     // ==========================================
 
+    function debounce(fn, delay = 300) {
+    let timeout;
+    return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => fn(...args), delay);
+    };
+    }
+
     inputs.forEach(id => {
         const inputEl = document.getElementById(id);
         const counterEl = document.getElementById(`${id}Count`);
         
         if (inputEl) {
             // Listen on input to run preview update & ATS scores in real-time
-            inputEl.addEventListener("input", () => {
+            inputEl.addEventListener("input", debounce(() => {
                 if (counterEl) {
                     counterEl.textContent = `${inputEl.value.length}/${inputEl.maxLength}`;
                     counterEl.style.color = inputEl.value.length >= inputEl.maxLength ? "red" : "";
@@ -195,7 +203,7 @@ const targetRole = document.getElementById("targetRole");
                 updatePreview();
                 runResumeAnalysis();
                 saveToLocalStorage();
-            });
+            }, 250));
         }
     });
 
@@ -258,6 +266,15 @@ const targetRole = document.getElementById("targetRole");
         return html;
     }
 
+    function escapeHTML(str) {
+    return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+    
     // ==========================================
     // 6. RENDER PREVIEW LAYOUTS
     // ==========================================
@@ -456,7 +473,7 @@ const targetRole = document.getElementById("targetRole");
                     ${v.summary ? `
                         <div class="modern-section" id="preview-section-summary">
                             <h3>Profile Summary</h3>
-                            <div class="modern-section-content"><p>${v.summary}</p></div>
+                            <div class="modern-section-content"><p>${escapeHTML(v.summary)}</p></div>
                         </div>
                     ` : ""}
                     
@@ -533,7 +550,7 @@ const targetRole = document.getElementById("targetRole");
             ${v.summary ? `
                 <div class="classic-section" id="preview-section-summary">
                     <h3>Summary</h3>
-                    <div class="classic-section-content"><p>${v.summary}</p></div>
+                    <div class="classic-section-content"><p>${escapeHTML(v.summary)}</p></div>
                 </div>
             ` : ""}
             
@@ -588,7 +605,7 @@ const targetRole = document.getElementById("targetRole");
             ${v.summary ? `
                 <div class="minimal-section" id="preview-section-summary">
                     <h3>About</h3>
-                    <div class="minimal-section-content"><p>${v.summary}</p></div>
+                    <div class="minimal-section-content"><p>${escapeHTML(v.summary)}</p></div>
                 </div>
             ` : ""}
             
@@ -1250,24 +1267,37 @@ const targetRole = document.getElementById("targetRole");
             const imgData = canvas.toDataURL("image/png");
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF("p", "mm", "a4");
-            
             const pageWidth = pdf.internal.pageSize.getWidth();
             const pageHeight = pdf.internal.pageSize.getHeight();
-            
-            // Calculate height in mm to preserve aspect ratio
-            const imgHeight = (canvas.height * pageWidth) / canvas.width;
-            
+            const imgWidth = pageWidth;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            let heightLeft = imgHeight;
             let position = 0;
-            let remainingHeight = imgHeight;
             
-            // Render pages
-            while (remainingHeight > 0) {
-                pdf.addImage(imgData, "PNG", 0, position, pageWidth, imgHeight);
-                remainingHeight -= pageHeight;
-                position -= pageHeight;
-                if (remainingHeight > 0) {
-                    pdf.addPage();
-                }
+            // First page
+            pdf.addImage(
+                imgData,
+                "PNG",
+                0,
+                position,
+                imgWidth,
+                imgHeight
+            );
+            heightLeft -= pageHeight;
+            
+            // Additional pages
+            while (heightLeft > 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(
+                    imgData,
+                    "PNG",
+                    0,
+                    position,
+                    imgWidth,
+                    imgHeight
+                );
+                heightLeft -= pageHeight;
             }
             
             const userName = document.getElementById("name").value.trim() || "My";
@@ -1350,8 +1380,16 @@ const targetRole = document.getElementById("targetRole");
     });
 }
 
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initResumeStudio);
-} else {
+let resumeStudioInitialized = false;
+
+function safeInit() {
+    if (resumeStudioInitialized) return;
+    resumeStudioInitialized = true;
     initResumeStudio();
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", safeInit);
+} else {
+    safeInit();
 }
