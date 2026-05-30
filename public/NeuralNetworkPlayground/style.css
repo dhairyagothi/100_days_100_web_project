@@ -36,8 +36,8 @@
   --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.35);
   --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
 
-  --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-main: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
 
   --header-height: 56px;
   --sidebar-width: 300px;
@@ -340,7 +340,7 @@ body {
   min-width: 36px;
 }
 
-.speed-control input[type='range'] {
+.speed-control input[type="range"] {
   flex: 1;
 }
 
@@ -408,7 +408,7 @@ body {
   min-width: 50px;
 }
 
-.form-row input[type='range'] {
+.form-row input[type="range"] {
   flex: 1;
 }
 
@@ -440,7 +440,7 @@ body {
 }
 
 /* --- Range slider styling --- */
-input[type='range'] {
+input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
   height: 4px;
@@ -449,7 +449,7 @@ input[type='range'] {
   outline: none;
 }
 
-input[type='range']::-webkit-slider-thumb {
+input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 14px;
   height: 14px;
@@ -497,7 +497,7 @@ input[type='range']::-webkit-slider-thumb {
   font-weight: 500;
 }
 
-.layer-row input[type='range'] {
+.layer-row input[type="range"] {
   flex: 1;
 }
 
@@ -586,7 +586,7 @@ input[type='range']::-webkit-slider-thumb {
   cursor: pointer;
 }
 
-.toggle-label input[type='checkbox'] {
+.toggle-label input[type="checkbox"] {
   accent-color: var(--accent-primary);
 }
 

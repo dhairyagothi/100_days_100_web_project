@@ -48,12 +48,23 @@
       <aside class="controls-panel" id="controlsPanel">
         <!-- Training Controls -->
         <section class="control-group">
-          <h3 class="control-title"><i class="fas fa-play-circle"></i> Training</h3>
+          <h3 class="control-title">
+            <i class="fas fa-play-circle"></i> Training
+          </h3>
           <div class="btn-row">
-            <button id="btnTrain" class="btn btn-primary" title="Start Training">
+            <button
+              id="btnTrain"
+              class="btn btn-primary"
+              title="Start Training"
+            >
               <i class="fas fa-play"></i> Train
             </button>
-            <button id="btnPause" class="btn btn-warning" title="Pause Training" disabled>
+            <button
+              id="btnPause"
+              class="btn btn-warning"
+              title="Pause Training"
+              disabled
+            >
               <i class="fas fa-pause"></i> Pause
             </button>
             <button id="btnReset" class="btn btn-danger" title="Reset Network">
@@ -71,9 +82,20 @@
         <section class="control-group">
           <h3 class="control-title"><i class="fas fa-database"></i> Dataset</h3>
           <div class="dataset-grid" id="datasetGrid">
-            <button class="dataset-btn active" data-dataset="circle" title="Circle">
+            <button
+              class="dataset-btn active"
+              data-dataset="circle"
+              title="Circle"
+            >
               <svg viewBox="0 0 40 40">
-                <circle cx="20" cy="20" r="10" fill="none" stroke="currentColor" stroke-width="2" />
+                <circle
+                  cx="20"
+                  cy="20"
+                  r="10"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
                 <circle cx="20" cy="12" r="2" fill="#4fc3f7" />
                 <circle cx="28" cy="20" r="2" fill="#4fc3f7" />
                 <circle cx="12" cy="20" r="2" fill="#4fc3f7" />
@@ -110,7 +132,11 @@
               </svg>
               <span>Spiral</span>
             </button>
-            <button class="dataset-btn" data-dataset="gaussian" title="Gaussian">
+            <button
+              class="dataset-btn"
+              data-dataset="gaussian"
+              title="Gaussian"
+            >
               <svg viewBox="0 0 40 40">
                 <circle cx="14" cy="14" r="2" fill="#4fc3f7" />
                 <circle cx="16" cy="12" r="2" fill="#4fc3f7" />
@@ -148,7 +174,14 @@
           </div>
           <div class="form-row">
             <label>Points</label>
-            <input type="range" id="pointsSlider" min="50" max="500" value="200" step="50" />
+            <input
+              type="range"
+              id="pointsSlider"
+              min="50"
+              max="500"
+              value="200"
+              step="50"
+            />
             <span id="pointsLabel">200</span>
           </div>
           <button id="btnRegenData" class="btn btn-sm btn-outline">
@@ -158,12 +191,18 @@
 
         <!-- Network Architecture -->
         <section class="control-group">
-          <h3 class="control-title"><i class="fas fa-project-diagram"></i> Architecture</h3>
+          <h3 class="control-title">
+            <i class="fas fa-project-diagram"></i> Architecture
+          </h3>
           <div class="layer-config" id="layerConfig">
             <div class="layer-header">
               <span>Hidden Layers</span>
               <div class="layer-add-remove">
-                <button id="btnRemoveLayer" class="btn-icon" title="Remove Layer">
+                <button
+                  id="btnRemoveLayer"
+                  class="btn-icon"
+                  title="Remove Layer"
+                >
                   <i class="fas fa-minus"></i>
                 </button>
                 <button id="btnAddLayer" class="btn-icon" title="Add Layer">
@@ -179,7 +218,9 @@
 
         <!-- Hyperparameters -->
         <section class="control-group">
-          <h3 class="control-title"><i class="fas fa-sliders-h"></i> Hyperparameters</h3>
+          <h3 class="control-title">
+            <i class="fas fa-sliders-h"></i> Hyperparameters
+          </h3>
           <div class="form-row">
             <label>Learning Rate</label>
             <select id="learningRate">
@@ -235,7 +276,9 @@
           <!-- Network Graph -->
           <div class="viz-card" id="networkCard">
             <div class="viz-card-header">
-              <h3><i class="fas fa-project-diagram"></i> Network Architecture</h3>
+              <h3>
+                <i class="fas fa-project-diagram"></i> Network Architecture
+              </h3>
               <div class="viz-card-actions">
                 <label class="toggle-label">
                   <input type="checkbox" id="showWeightsToggle" checked />
@@ -263,7 +306,10 @@
 
     <!-- Footer -->
     <footer class="app-footer">
-      <span>Neural Network Playground — Built with vanilla JavaScript &amp; Canvas</span>
+      <span
+        >Neural Network Playground — Built with vanilla JavaScript &amp;
+        Canvas</span
+      >
     </footer>
 
     <script src="script.js"></script>

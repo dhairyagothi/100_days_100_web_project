@@ -14,7 +14,10 @@ const Activations = {
     },
   },
   tanh: { fn: (x) => Math.tanh(x), deriv: (x) => 1 - Math.tanh(x) ** 2 },
-  leaky_relu: { fn: (x) => (x > 0 ? x : 0.01 * x), deriv: (x) => (x > 0 ? 1 : 0.01) },
+  leaky_relu: {
+    fn: (x) => (x > 0 ? x : 0.01 * x),
+    deriv: (x) => (x > 0 ? 1 : 0.01),
+  },
 };
 
 // ── Dataset Generators ───────────────────────────────────────
@@ -23,23 +26,27 @@ function generateDataset(type, n, noise) {
   const nr = noise / 100;
   const rand = () => (Math.random() - 0.5) * 2 * nr;
   switch (type) {
-    case 'circle':
+    case "circle":
       for (let i = 0; i < n; i++) {
         const a = Math.random() * Math.PI * 2,
           r = Math.random();
         const inner = r < 0.5;
         const rad = inner ? Math.random() * 0.35 : 0.55 + Math.random() * 0.4;
-        pts.push([Math.cos(a) * rad + rand(), Math.sin(a) * rad + rand(), inner ? 1 : 0]);
+        pts.push([
+          Math.cos(a) * rad + rand(),
+          Math.sin(a) * rad + rand(),
+          inner ? 1 : 0,
+        ]);
       }
       break;
-    case 'xor':
+    case "xor":
       for (let i = 0; i < n; i++) {
         const x = (Math.random() - 0.5) * 2,
           y = (Math.random() - 0.5) * 2;
         pts.push([x + rand(), y + rand(), x * y > 0 ? 1 : 0]);
       }
       break;
-    case 'spiral':
+    case "spiral":
       for (let i = 0; i < n; i++) {
         const c = i % 2,
           t = (i / n) * 3 * Math.PI + c * Math.PI;
@@ -47,7 +54,7 @@ function generateDataset(type, n, noise) {
         pts.push([r * Math.cos(t) + rand(), r * Math.sin(t) + rand(), c]);
       }
       break;
-    case 'gaussian':
+    case "gaussian":
       for (let i = 0; i < n; i++) {
         const c = i % 2;
         const cx = c ? -0.4 : 0.4,
@@ -59,19 +66,23 @@ function generateDataset(type, n, noise) {
         ]);
       }
       break;
-    case 'moon':
+    case "moon":
       for (let i = 0; i < n; i++) {
         const c = i % 2;
         const a = Math.random() * Math.PI;
         if (c === 0) {
           pts.push([Math.cos(a) + rand(), Math.sin(a) + rand() - 0.2, 0]);
         } else {
-          pts.push([1 - Math.cos(a) + rand(), 1 - Math.sin(a) - 0.5 + rand(), 1]);
+          pts.push([
+            1 - Math.cos(a) + rand(),
+            1 - Math.sin(a) - 0.5 + rand(),
+            1,
+          ]);
         }
       }
       break;
     default:
-      return generateDataset('circle', n, noise);
+      return generateDataset("circle", n, noise);
   }
   // Normalize to [-1,1]
   let minX = Infinity,
@@ -95,7 +106,7 @@ function generateDataset(type, n, noise) {
 
 // ── Neural Network Class ─────────────────────────────────────
 class NeuralNetwork {
-  constructor(layers, activationName = 'relu', lr = 0.01) {
+  constructor(layers, activationName = "relu", lr = 0.01) {
     this.layers = layers; // e.g. [2, 4, 4, 1]
     this.activationName = activationName;
     this.activation = Activations[activationName] || Activations.relu;
@@ -115,7 +126,8 @@ class NeuralNetwork {
       const w = [];
       for (let j = 0; j < fanOut; j++) {
         const row = [];
-        for (let k = 0; k < fanIn; k++) row.push((Math.random() * 2 - 1) * scale);
+        for (let k = 0; k < fanIn; k++)
+          row.push((Math.random() * 2 - 1) * scale);
         w.push(row);
       }
       this.weights.push(w);
@@ -139,7 +151,9 @@ class NeuralNetwork {
       zs.push(z);
       // Last layer: sigmoid, others: chosen activation
       const isLast = l === this.weights.length - 1;
-      a = z.map((v) => (isLast ? Activations.sigmoid.fn(v) : this.activation.fn(v)));
+      a = z.map((v) =>
+        isLast ? Activations.sigmoid.fn(v) : this.activation.fn(v),
+      );
       as.push(a);
     }
     return { zs, as, output: a };
@@ -164,7 +178,9 @@ class NeuralNetwork {
     for (let bStart = 0; bStart < indices.length; bStart += bs) {
       const bEnd = Math.min(bStart + bs, indices.length);
       // Accumulate gradients
-      const dW = this.weights.map((w) => w.map((row) => new Array(row.length).fill(0)));
+      const dW = this.weights.map((w) =>
+        w.map((row) => new Array(row.length).fill(0)),
+      );
       const dB = this.biases.map((b) => new Array(b.length).fill(0));
       const batchLen = bEnd - bStart;
 
@@ -229,12 +245,12 @@ class NeuralNetwork {
 
 // ── APP STATE ────────────────────────────────────────────────
 const state = {
-  dataset: 'circle',
+  dataset: "circle",
   noise: 15,
   numPoints: 200,
   hiddenLayers: [6, 4],
   learningRate: 0.01,
-  activationName: 'relu',
+  activationName: "relu",
   batchSize: 16,
   speed: 50,
   training: false,
@@ -249,20 +265,24 @@ const state = {
 
 // ── DOM REFS ─────────────────────────────────────────────────
 const $ = (id) => document.getElementById(id);
-const boundaryCanvas = $('boundaryCanvas');
-const networkCanvas = $('networkCanvas');
-const lossCanvas = $('lossCanvas');
-const bCtx = boundaryCanvas.getContext('2d');
-const nCtx = networkCanvas.getContext('2d');
-const lCtx = lossCanvas.getContext('2d');
+const boundaryCanvas = $("boundaryCanvas");
+const networkCanvas = $("networkCanvas");
+const lossCanvas = $("lossCanvas");
+const bCtx = boundaryCanvas.getContext("2d");
+const nCtx = networkCanvas.getContext("2d");
+const lCtx = lossCanvas.getContext("2d");
 
 // ── INITIALIZATION ───────────────────────────────────────────
 function initNetwork() {
   const layers = [2, ...state.hiddenLayers, 1];
-  state.net = new NeuralNetwork(layers, state.activationName, state.learningRate);
+  state.net = new NeuralNetwork(
+    layers,
+    state.activationName,
+    state.learningRate,
+  );
   state.epoch = 0;
   state.lossHistory = [];
-  updateStats(0, '—', '—');
+  updateStats(0, "—", "—");
 }
 
 function initData() {
@@ -270,9 +290,11 @@ function initData() {
 }
 
 function updateStats(epoch, loss, acc) {
-  $('epochCount').textContent = epoch;
-  $('lossValue').textContent = typeof loss === 'number' ? loss.toFixed(4) : loss;
-  $('accuracyValue').textContent = typeof acc === 'number' ? (acc * 100).toFixed(1) + '%' : acc;
+  $("epochCount").textContent = epoch;
+  $("lossValue").textContent =
+    typeof loss === "number" ? loss.toFixed(4) : loss;
+  $("accuracyValue").textContent =
+    typeof acc === "number" ? (acc * 100).toFixed(1) + "%" : acc;
 }
 
 // ── RENDERING: DECISION BOUNDARY ─────────────────────────────
@@ -310,7 +332,7 @@ function drawBoundary() {
   ctx.putImageData(imgData, 0, 0);
 
   // Draw decision boundary contour (pred ≈ 0.5)
-  ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+  ctx.strokeStyle = "rgba(255,255,255,0.25)";
   ctx.lineWidth = 1;
 
   // Draw data points
@@ -320,9 +342,9 @@ function drawBoundary() {
       const py = ((y + 1) / 2) * h;
       ctx.beginPath();
       ctx.arc(px, py, 3.5, 0, Math.PI * 2);
-      ctx.fillStyle = label === 1 ? '#ef5350' : '#4fc3f7';
+      ctx.fillStyle = label === 1 ? "#ef5350" : "#4fc3f7";
       ctx.fill();
-      ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+      ctx.strokeStyle = "rgba(255,255,255,0.6)";
       ctx.lineWidth = 1;
       ctx.stroke();
     });
@@ -372,7 +394,9 @@ function drawNetwork() {
           ctx.moveTo(from.x, from.y);
           ctx.lineTo(to.x, to.y);
           ctx.strokeStyle =
-            v > 0 ? `rgba(79,195,247,${0.1 + absV * 0.7})` : `rgba(239,83,80,${0.1 + absV * 0.7})`;
+            v > 0
+              ? `rgba(79,195,247,${0.1 + absV * 0.7})`
+              : `rgba(239,83,80,${0.1 + absV * 0.7})`;
           ctx.lineWidth = 0.5 + absV * 2.5;
           ctx.stroke();
         }
@@ -381,28 +405,34 @@ function drawNetwork() {
   }
 
   // Draw neurons
-  const labels = ['Input', ...state.hiddenLayers.map((_, i) => `Hidden ${i + 1}`), 'Output'];
+  const labels = [
+    "Input",
+    ...state.hiddenLayers.map((_, i) => `Hidden ${i + 1}`),
+    "Output",
+  ];
   for (let l = 0; l < numLayers; l++) {
     // Layer label
-    ctx.fillStyle = 'rgba(139,157,195,0.7)';
-    ctx.font = '500 10px Inter, sans-serif';
-    ctx.textAlign = 'center';
+    ctx.fillStyle = "rgba(139,157,195,0.7)";
+    ctx.font = "500 10px Inter, sans-serif";
+    ctx.textAlign = "center";
     ctx.fillText(labels[l], positions[l][0].x, padY - 10);
 
     for (let i = 0; i < layers[l]; i++) {
       const { x, y } = positions[l][i];
       // Glow
       const grad = ctx.createRadialGradient(x, y, 0, x, y, 16);
-      grad.addColorStop(0, 'rgba(79,195,247,0.15)');
-      grad.addColorStop(1, 'rgba(79,195,247,0)');
+      grad.addColorStop(0, "rgba(79,195,247,0.15)");
+      grad.addColorStop(1, "rgba(79,195,247,0)");
       ctx.fillStyle = grad;
       ctx.fillRect(x - 16, y - 16, 32, 32);
 
       ctx.beginPath();
       ctx.arc(x, y, 10, 0, Math.PI * 2);
-      ctx.fillStyle = l === 0 ? '#1a3a5c' : l === numLayers - 1 ? '#3a1a2c' : '#1a2a3c';
+      ctx.fillStyle =
+        l === 0 ? "#1a3a5c" : l === numLayers - 1 ? "#3a1a2c" : "#1a2a3c";
       ctx.fill();
-      ctx.strokeStyle = l === 0 ? '#4fc3f7' : l === numLayers - 1 ? '#ef5350' : '#7c4dff';
+      ctx.strokeStyle =
+        l === 0 ? "#4fc3f7" : l === numLayers - 1 ? "#ef5350" : "#7c4dff";
       ctx.lineWidth = 2;
       ctx.stroke();
     }
@@ -419,10 +449,10 @@ function drawLossChart() {
 
   const hist = state.lossHistory;
   if (hist.length < 2) {
-    ctx.fillStyle = 'rgba(139,157,195,0.3)';
-    ctx.font = '12px Inter, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('Training loss will appear here...', w / 2, h / 2);
+    ctx.fillStyle = "rgba(139,157,195,0.3)";
+    ctx.font = "12px Inter, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("Training loss will appear here...", w / 2, h / 2);
     return;
   }
 
@@ -433,7 +463,7 @@ function drawLossChart() {
   const minLoss = 0;
 
   // Grid lines
-  ctx.strokeStyle = 'rgba(42,53,80,0.5)';
+  ctx.strokeStyle = "rgba(42,53,80,0.5)";
   ctx.lineWidth = 1;
   for (let i = 0; i <= 4; i++) {
     const y = pad.top + (plotH / 4) * i;
@@ -441,16 +471,21 @@ function drawLossChart() {
     ctx.moveTo(pad.left, y);
     ctx.lineTo(w - pad.right, y);
     ctx.stroke();
-    ctx.fillStyle = 'rgba(139,157,195,0.5)';
-    ctx.font = '10px JetBrains Mono, monospace';
-    ctx.textAlign = 'right';
+    ctx.fillStyle = "rgba(139,157,195,0.5)";
+    ctx.font = "10px JetBrains Mono, monospace";
+    ctx.textAlign = "right";
     ctx.fillText((maxLoss - (maxLoss / 4) * i).toFixed(3), pad.left - 6, y + 3);
   }
 
   // Loss curve
-  const gradient = ctx.createLinearGradient(pad.left, pad.top, pad.left, pad.top + plotH);
-  gradient.addColorStop(0, 'rgba(255,183,77,0.3)');
-  gradient.addColorStop(1, 'rgba(255,183,77,0)');
+  const gradient = ctx.createLinearGradient(
+    pad.left,
+    pad.top,
+    pad.left,
+    pad.top + plotH,
+  );
+  gradient.addColorStop(0, "rgba(255,183,77,0.3)");
+  gradient.addColorStop(1, "rgba(255,183,77,0)");
 
   // Fill area
   ctx.beginPath();
@@ -472,15 +507,15 @@ function drawLossChart() {
     const y = pad.top + (1 - (hist[i] - minLoss) / (maxLoss - minLoss)) * plotH;
     i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
   }
-  ctx.strokeStyle = '#ffb74d';
+  ctx.strokeStyle = "#ffb74d";
   ctx.lineWidth = 2;
   ctx.stroke();
 
   // Epoch label
-  ctx.fillStyle = 'rgba(139,157,195,0.5)';
-  ctx.font = '10px Inter, sans-serif';
-  ctx.textAlign = 'center';
-  ctx.fillText('Epoch', w / 2, h - 4);
+  ctx.fillStyle = "rgba(139,157,195,0.5)";
+  ctx.font = "10px Inter, sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText("Epoch", w / 2, h - 4);
 }
 
 // ── RENDER ALL ───────────────────────────────────────────────
@@ -498,7 +533,11 @@ function trainStep() {
   const targets = state.data.map((d) => d[2]);
 
   for (let s = 0; s < state.speed; s++) {
-    const { loss, accuracy } = state.net.train(inputs, targets, state.batchSize);
+    const { loss, accuracy } = state.net.train(
+      inputs,
+      targets,
+      state.batchSize,
+    );
     state.epoch++;
     // Record every few epochs to avoid huge arrays
     if (
@@ -519,44 +558,44 @@ function startTraining() {
   if (state.training) return;
   if (!state.net) initNetwork();
   state.training = true;
-  $('btnTrain').disabled = true;
-  $('btnPause').disabled = false;
-  document.body.classList.add('training-active');
+  $("btnTrain").disabled = true;
+  $("btnPause").disabled = false;
+  document.body.classList.add("training-active");
   trainStep();
 }
 
 function pauseTraining() {
   state.training = false;
   if (state.animId) cancelAnimationFrame(state.animId);
-  $('btnTrain').disabled = false;
-  $('btnPause').disabled = true;
-  $('btnTrain').innerHTML = '<i class="fas fa-play"></i> Resume';
-  document.body.classList.remove('training-active');
+  $("btnTrain").disabled = false;
+  $("btnPause").disabled = true;
+  $("btnTrain").innerHTML = '<i class="fas fa-play"></i> Resume';
+  document.body.classList.remove("training-active");
 }
 
 function resetAll() {
   pauseTraining();
-  $('btnTrain').innerHTML = '<i class="fas fa-play"></i> Train';
+  $("btnTrain").innerHTML = '<i class="fas fa-play"></i> Train';
   initNetwork();
   renderAll();
 }
 
 // ── LAYER UI ─────────────────────────────────────────────────
 function renderLayerUI() {
-  const container = $('layerNeurons');
-  container.innerHTML = '';
+  const container = $("layerNeurons");
+  container.innerHTML = "";
   state.hiddenLayers.forEach((n, i) => {
-    const row = document.createElement('div');
-    row.className = 'layer-row';
+    const row = document.createElement("div");
+    row.className = "layer-row";
     row.innerHTML = `
       <span class="layer-label">Layer ${i + 1}</span>
       <input type="range" min="1" max="12" value="${n}" data-layer="${i}">
       <span class="neuron-count">${n}</span>
     `;
-    row.querySelector('input').addEventListener('input', (e) => {
+    row.querySelector("input").addEventListener("input", (e) => {
       const val = parseInt(e.target.value);
       state.hiddenLayers[i] = val;
-      row.querySelector('.neuron-count').textContent = val;
+      row.querySelector(".neuron-count").textContent = val;
       resetAll();
     });
     container.appendChild(row);
@@ -565,21 +604,23 @@ function renderLayerUI() {
 
 // ── EVENT LISTENERS ──────────────────────────────────────────
 function setupEvents() {
-  $('btnTrain').addEventListener('click', startTraining);
-  $('btnPause').addEventListener('click', pauseTraining);
-  $('btnReset').addEventListener('click', resetAll);
+  $("btnTrain").addEventListener("click", startTraining);
+  $("btnPause").addEventListener("click", pauseTraining);
+  $("btnReset").addEventListener("click", resetAll);
 
   // Speed
-  $('speedSlider').addEventListener('input', (e) => {
+  $("speedSlider").addEventListener("input", (e) => {
     state.speed = parseInt(e.target.value);
-    $('speedLabel').textContent = state.speed + ' steps/frame';
+    $("speedLabel").textContent = state.speed + " steps/frame";
   });
 
   // Dataset
-  document.querySelectorAll('.dataset-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.dataset-btn').forEach((b) => b.classList.remove('active'));
-      btn.classList.add('active');
+  document.querySelectorAll(".dataset-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document
+        .querySelectorAll(".dataset-btn")
+        .forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
       state.dataset = btn.dataset.dataset;
       initData();
       resetAll();
@@ -587,28 +628,28 @@ function setupEvents() {
   });
 
   // Noise & Points
-  $('noiseSlider').addEventListener('input', (e) => {
+  $("noiseSlider").addEventListener("input", (e) => {
     state.noise = parseInt(e.target.value);
-    $('noiseLabel').textContent = state.noise + '%';
+    $("noiseLabel").textContent = state.noise + "%";
   });
-  $('pointsSlider').addEventListener('input', (e) => {
+  $("pointsSlider").addEventListener("input", (e) => {
     state.numPoints = parseInt(e.target.value);
-    $('pointsLabel').textContent = state.numPoints;
+    $("pointsLabel").textContent = state.numPoints;
   });
-  $('btnRegenData').addEventListener('click', () => {
+  $("btnRegenData").addEventListener("click", () => {
     initData();
     resetAll();
   });
 
   // Layers
-  $('btnAddLayer').addEventListener('click', () => {
+  $("btnAddLayer").addEventListener("click", () => {
     if (state.hiddenLayers.length < 6) {
       state.hiddenLayers.push(4);
       renderLayerUI();
       resetAll();
     }
   });
-  $('btnRemoveLayer').addEventListener('click', () => {
+  $("btnRemoveLayer").addEventListener("click", () => {
     if (state.hiddenLayers.length > 1) {
       state.hiddenLayers.pop();
       renderLayerUI();
@@ -617,24 +658,24 @@ function setupEvents() {
   });
 
   // Hyperparameters
-  $('learningRate').addEventListener('change', (e) => {
+  $("learningRate").addEventListener("change", (e) => {
     state.learningRate = parseFloat(e.target.value);
     if (state.net) state.net.lr = state.learningRate;
   });
-  $('activation').addEventListener('change', (e) => {
+  $("activation").addEventListener("change", (e) => {
     state.activationName = e.target.value;
     resetAll();
   });
-  $('batchSize').addEventListener('change', (e) => {
+  $("batchSize").addEventListener("change", (e) => {
     state.batchSize = parseInt(e.target.value);
   });
 
   // Toggles
-  $('showDataToggle').addEventListener('change', (e) => {
+  $("showDataToggle").addEventListener("change", (e) => {
     state.showData = e.target.checked;
     renderAll();
   });
-  $('showWeightsToggle').addEventListener('change', (e) => {
+  $("showWeightsToggle").addEventListener("change", (e) => {
     state.showWeights = e.target.checked;
     renderAll();
   });
@@ -654,12 +695,12 @@ function setupEvents() {
     });
     renderAll();
   }
-  window.addEventListener('resize', resizeCanvases);
+  window.addEventListener("resize", resizeCanvases);
   setTimeout(resizeCanvases, 100);
 }
 
 // ── BOOT ─────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   initData();
   initNetwork();
   renderLayerUI();
