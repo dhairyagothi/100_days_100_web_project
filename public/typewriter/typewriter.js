@@ -13,9 +13,12 @@ let paperContent = '';
 let soundEnabled = true;
 let capsLockEnabled = false;
 let capsLockKey;
+let shiftEnabled = false;   // tracks on-screen SHIFT state (one-shot)
+let shiftKeyEl;             // reference to the on-screen SHIFT button
 
 document.addEventListener("DOMContentLoaded", () => {
     capsLockKey = document.querySelector(".caps-lock");
+    shiftKeyEl  = document.querySelector(".shift-key");
     
     /* ---------- Onscreen Keys ---------- */
     document.querySelectorAll(".key").forEach(key=>{
@@ -31,11 +34,17 @@ document.addEventListener("DOMContentLoaded", () => {
             playReturn();
             updateCopyButtonState();
             updateCounters();
-        return;
+            return;
         }
         if(ch==="SPACE"){
             addCharToPaper(" ");
+            resetShift();
             return;
+        }
+        if (ch === "TAB") {
+                // Tab inserts four spaces on the paper (classic typewriter behaviour)
+                addCharToPaper("    ");
+                return;
         }
         if(ch==="CAPSLOCK"){
             capsLockEnabled = !capsLockEnabled;
@@ -43,14 +52,28 @@ document.addEventListener("DOMContentLoaded", () => {
             capsLockKey.classList.toggle("pressed", capsLockEnabled);
             return;
         }
-        
-        let charToAdd;
-        if (capsLockEnabled) {
-            charToAdd = ch.toUpperCase();
-        } else {
-            charToAdd = ch.toLowerCase();
+        if (ch === "SHIFT") {
+                // One-shot toggle: highlight stays until next character is typed
+                shiftEnabled = !shiftEnabled;
+                shiftKeyEl.setAttribute("aria-pressed", shiftEnabled);
+                shiftKeyEl.classList.toggle("pressed", shiftEnabled);
+                return;
         }
-        addCharToPaper(charToAdd);
+
+        // ---- Dual-character keys (numbers row + symbol rows) ----
+        const shiftChar = key.dataset.shift;
+        if (shiftChar !== undefined) {
+            // For these keys, CapsLock has NO effect — only SHIFT matters
+            const charToAdd = shiftEnabled ? shiftChar : ch;
+            addCharToPaper(charToAdd);
+            resetShift();
+            return;
+        }
+
+        // ---- Letter keys: apply CapsLock XOR Shift ----
+        const shouldBeUpper = capsLockEnabled !== shiftEnabled;
+        addCharToPaper(shouldBeUpper ? ch.toUpperCase() : ch.toLowerCase());
+        resetShift();
         };
     });
 });
@@ -59,6 +82,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function getCurrentText(){
     return document.querySelectorAll(".typewriterText")[currentPage];
+}
+
+function resetShift() {
+    if (!shiftEnabled) return;
+    shiftEnabled = false;
+    if (shiftKeyEl) {
+        shiftKeyEl.setAttribute("aria-pressed", false);
+        shiftKeyEl.classList.remove("pressed");
+    }
 }
 
 function createPage(){
@@ -212,16 +244,21 @@ document.addEventListener("keydown",(e)=>{
         addCharToPaper(" ");
         return;
     }
+    if(e.key === "Tab"){
+        e.preventDefault();
+        addCharToPaper("    "); // 4 spaces = one tab stop
+        flashKey("TAB");
+        return;
+    }
 
 
     if(e.key.length===1){
         e.preventDefault();
         let charToAdd;
-        if (capsLockEnabled) {
-            charToAdd = e.key.toUpperCase();
-        } else {
-            charToAdd = e.key.toLowerCase();
-        }
+        // e.shiftKey tells us if Shift is held at the moment of the keypress.
+        // CapsLock XOR Shift gives the correct case behaviour:
+        const shouldBeUpper = capsLockEnabled !== e.shiftKey; // XOR
+        charToAdd = shouldBeUpper ? e.key.toUpperCase() : e.key.toLowerCase();
         addCharToPaper(charToAdd);
     }
 });
