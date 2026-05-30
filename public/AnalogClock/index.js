@@ -267,14 +267,15 @@ const s = Math.max(
       return;
     }
 
-        timerPaused = false;
-        if (!pauseBtn) return;
-pauseBtn.innerText = "Pause";
-        
-        renderTimer();
-        tickCountdown();
-    };
+       timerPaused = false;
 
+if (pauseBtn) {
+  pauseBtn.innerText = "Pause";
+}
+
+renderTimer();
+tickCountdown();
+  }
 function tickCountdown() {
   clearInterval(timerInterval);
 
@@ -291,7 +292,7 @@ function tickCountdown() {
       finishTimer();
     }
   }, 1000);
-};
+}
 
   window.pauseCountdown = function () {
     if (timerRemaining <= 0) return;
