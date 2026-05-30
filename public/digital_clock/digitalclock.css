@@ -239,6 +239,26 @@ body {
   user-select: none;
 }
 
+.format-toggle {
+  background: var(--accent-light);
+  color: var(--accent);
+  padding: 10px 18px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  border: 1px solid var(--accent-border);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+  margin-bottom: 15px;
+}
+
+.format-toggle:hover {
+  transform: translateY(-1px);
+}
+
 .clock-top-row {
   display: flex;
   justify-content: space-between;

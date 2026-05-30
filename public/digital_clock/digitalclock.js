@@ -14,6 +14,7 @@ let ringInterval = null;
 let audioCtx = null;
 let triggeredAlarms = new Set();
 let currentTimeTheme = "";
+let is24HourFormat = localStorage.getItem("is24HourFormat") === "true"; 
 
 // DOM Selectors
 const hoursEl = document.getElementById("hours");
@@ -32,6 +33,7 @@ const popupAlarmLabel = document.getElementById("popup-alarm-label");
 const alarmSound = document.getElementById("alarm-sound");
 const historyHeader = document.getElementById("history-header");
 const historyChevron = document.getElementById("history-chevron");
+const formatToggleBtn = document.getElementById("format-toggle");
 
 // World Clock Modal DOM
 const worldModal = document.getElementById("world-clock-modal");
@@ -84,9 +86,12 @@ document.addEventListener("DOMContentLoaded", () => {
   applyDarkMode(isDarkMode);
   setTheme(activeTheme);
 
+  formatToggleBtn.textContent = is24HourFormat ? "12H" : "24H";
+
   populateTimezoneDropdown();
   renderAlarmsList();
   renderWorldClocks();
+  tickWorldClocks();
   renderHistoryLogs();
   updateAlarmSummary();
 
@@ -98,6 +103,16 @@ document.addEventListener("DOMContentLoaded", () => {
     tickWorldClocks();
     applyTimeBasedTheme();
   }, 1000);
+    formatToggleBtn.addEventListener("click", () => {
+    is24HourFormat = !is24HourFormat;
+
+    formatToggleBtn.textContent = is24HourFormat ? "12H" : "24H";
+
+    localStorage.setItem("is24HourFormat", is24HourFormat);
+
+    updateClock();
+    tickWorldClocks();
+});
 });
 
 // ================= ACCENT COLOR =================
@@ -125,12 +140,12 @@ function updateClock() {
   const s = now.getSeconds();
 
   const ampm = h >= 12 ? "PM" : "AM";
-  let hh = h % 12 || 12;
+  let hh = is24HourFormat ? h : (h % 12 || 12);
 
   hoursEl.textContent = String(hh).padStart(2, "0");
   minutesEl.textContent = String(m).padStart(2, "0");
   secondsEl.textContent = String(s).padStart(2, "0");
-  ampmEl.textContent = ampm;
+  ampmEl.textContent = is24HourFormat ? "" : ampm;
 
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   dayNameEl.textContent = days[now.getDay()];
@@ -452,7 +467,7 @@ function tickWorldClocks() {
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
-      hour12: true
+      hour12: !is24HourFormat
     });
   });
 }

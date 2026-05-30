@@ -64,6 +64,8 @@ function getCategoryFromTags(tags, name) {
   return 'Tools';
 }
 
+
+
 let PROJECTS = [];
 let projectsPromise = null;
 

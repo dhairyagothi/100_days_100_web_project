@@ -405,6 +405,7 @@ body.dark .logo {
   position: relative;
   width: fit-content;
   margin: 0 auto;
+  overflow: visible;
 }
 
 .board {
@@ -448,8 +449,7 @@ body.dark .cell {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  position: absolute;
-  inset: 0;
+  z-index: 5;
 }
 
 .tile {
@@ -615,8 +615,11 @@ body.dark .cell {
   align-items: center;
   justify-content: center;
   gap: 11px;
-  z-index: 15;
+
+  z-index: 9999; /* FIX */
   animation: fdin 0.35s ease;
+
+  backdrop-filter: blur(6px);
 }
 
 body.light .ov {
@@ -731,28 +734,30 @@ body.dark .ov {
 /* ---------- Toast ---------- */
 .toast {
   position: absolute;
-  bottom: -50px;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.18);
+
+  background: rgba(0, 0, 0, 0.85);
   color: #fff;
-  padding: 7px 18px;
+
+  padding: 10px 18px;
   border-radius: 20px;
+
   font-size: 13px;
   font-weight: 800;
+
   opacity: 0;
-  transition:
-    opacity 0.25s,
-    bottom 0.25s;
+  transition: opacity 0.25s ease;
+
   pointer-events: none;
   white-space: nowrap;
-  z-index: 30;
-  border: 1px solid rgba(255, 255, 255, 0.22);
+
+  z-index: 10000;
 }
 
 .toast.show {
   opacity: 1;
-  bottom: -42px;
 }
 
 /* ---------- Timer paused state ---------- */

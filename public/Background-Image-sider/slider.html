@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,9 +8,12 @@
     <link rel="icon" href="../favv.png" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap"
+        rel="stylesheet" />
     <link rel="stylesheet" href="slider.css" />
 </head>
+
 <body id="top">
 
     <!-- Back to Home -->
@@ -40,6 +44,15 @@
                 <option value="Scotland">Scotland</option>
                 <option value="Ireland">Ireland</option>
                 <option value="Germany">Germany</option>
+                <option value="India">India</option>
+                <option value="Korea">Korea</option>
+                <option value="Japan">Japan</option>
+                <option value="China">China</option>
+                <option value="Bali">Bali</option>
+                <option value="Italy">Italy</option>
+                <option value="France">France</option>
+                <option value="Thailand">Thailand</option>
+                <option value="Dubai">Dubai</option>
             </select>
             
             <!-- Destination Indicators -->
@@ -60,7 +73,8 @@
             </div>
             <div id="about">
                 <h3>About Us</h3>
-                <p>We are a travel platform helping you discover the most beautiful destinations around the world. Our mission is to make travel planning simple, beautiful and inspiring.</p>
+                <p>We are a travel platform helping you discover the most beautiful destinations around the world. Our
+                    mission is to make travel planning simple, beautiful and inspiring.</p>
             </div>
             <div id="services">
                 <h3>Services</h3>
@@ -75,6 +89,88 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        const placeBackgrounds = {
+            "Iceland": "url('images/iceland.jpg')",
+            "Switzerland": "url('images/Jennifer.avif')",
+            "Scotland": "url('images/Daniel.jpeg')",
+            "Ireland": "url('images/kai.jpg')",
+            "Germany": "url('images/Hannes-Becker4.jpg')",
+            "India": "url('images/tajmehal.png')",
+            "Korea": "url('images/korea.png')",
+            "Japan": "url('images/japan.png')",
+            "China": "url('images/china.png')",
+            "Bali": "url('images/bali.png')",
+            "Italy": "url('images/italy.png')",
+            "France": "url('images/france.png')",
+            "Thailand": "url('images/thailand.png')",
+            "Dubai": "url('images/dubai.png')"
+         };
+
+        const placeDescriptions = {
+            "Iceland": "Explore the beauty of glaciers and the breathtaking landscapes of Iceland.",
+            "Switzerland": "Experience the serene beauty of the Swiss Alps and picturesque villages.",
+            "Scotland": "Discover the rich history and stunning highlands of Scotland.",
+            "Ireland": "Immerse yourself in the lush green landscapes and vibrant culture of Ireland.",
+            "Germany": "Explore Germany's charming cities and stunning countryside.",
+            "India": "Experience the vibrant culture, majestic forts, colorful festivals, and timeless beauty of the Taj Mahal.",
+            "Korea": "Discover the perfect blend of modern cities, ancient palaces, K-pop culture, and breathtaking mountain landscapes.",
+            "Japan": "Immerse yourself in Japan's peaceful temples, neon-lit streets, cherry blossoms, and rich traditions.",
+            "China": "Explore China's ancient wonders, bustling megacities, beautiful landscapes, and legendary historical sites.",
+            "Bali": "Relax in Bali's tropical paradise filled with stunning beaches, lush rice terraces, spiritual temples, and vibrant sunsets.",
+            "Italy": "Explore Italy's rich history, stunning architecture, delicious cuisine, and romantic coastal towns.",
+            "France": "Discover the elegance of Paris, beautiful countryside, world-famous art, and iconic landmarks.",
+            "Thailand": "Enjoy Thailand's tropical beaches, vibrant nightlife, golden temples, and flavorful street food.",
+            "Dubai": "Experience futuristic skyscrapers, luxury shopping, desert adventures, and dazzling city lights."
+
+        };
+
+        const placeSelector = document.getElementById('placeSelector');
+        const bookingButton = document.getElementById('bookingButton');
+        const placeTitle = document.getElementById('placeTitle');
+        const placeDescription = document.getElementById('placeDescription');
+        const body = document.body;
+
+        function updatePlace(place) {
+          body.style.backgroundImage = placeBackgrounds[place];
+          placeTitle.textContent = place;
+          placeDescription.textContent = placeDescriptions[place];
+          bookingButton.textContent = `Book a Trip to ${place}`;
+
+          bookingButton.classList.remove("booked");
+}
+
+        placeSelector.addEventListener('change', function () {
+            updatePlace(placeSelector.value);
+        });
+
+
+    // Booking button functionality
+bookingButton.addEventListener('click', function () {
+    const selectedPlace = placeSelector.value;
+
+    alert(`Your trip to ${selectedPlace} has been booked successfully!`);
+
+    bookingButton.textContent = `Trip Booked to ${selectedPlace} ✓`;
+
+    bookingButton.classList.add("booked");
+});
+
+    
+    window.onload = function () {
+        const defaultPlace = "Iceland";
+        updatePlace(defaultPlace);
+        placeSelector.value = defaultPlace;
+    };
+</script>
+
+        window.onload = function () {
+            const defaultPlace = "Iceland";
+            updatePlace(defaultPlace);
+            placeSelector.value = defaultPlace;
+        };
+    </script>
+
 </body>
+
 </html>
