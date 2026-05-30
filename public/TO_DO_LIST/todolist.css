@@ -25,15 +25,15 @@
   --hero-tint: rgba(28, 20, 70, 0.75);
 
   --text-primary: #ffffff;
-  --text-muted: rgba(255,255,255,0.7);
+  --text-muted: rgba(255, 255, 255, 0.7);
 
   --accent: #7c63ff;
-  --accent-gradient: linear-gradient(135deg,#7c63ff,#4f8dff);
+  --accent-gradient: linear-gradient(135deg, #7c63ff, #4f8dff);
 
   --success: #14b8a6;
   --danger: #ef4444;
 
-  --card-bg: rgba(255,255,255,0.96);
+  --card-bg: rgba(255, 255, 255, 0.96);
 
   --transition: .3s ease;
 }
@@ -48,12 +48,10 @@ body {
   overflow-x: hidden;
   font-family: var(--font-family);
   background:
-    linear-gradient(
-      135deg,
+    linear-gradient(135deg,
       var(--page-bg-start),
       var(--page-bg-mid),
-      var(--page-bg-end)
-    );
+      var(--page-bg-end));
   color: var(--text-primary);
   transition: background .4s ease;
 }
@@ -116,20 +114,22 @@ body {
 }
 
 @keyframes floatShape {
-  0%,100% {
-    transform: translate(0,0);
+
+  0%,
+  100% {
+    transform: translate(0, 0);
   }
 
   25% {
-    transform: translate(40px,-30px);
+    transform: translate(40px, -30px);
   }
 
   50% {
-    transform: translate(-20px,20px);
+    transform: translate(-20px, 20px);
   }
 
   75% {
-    transform: translate(30px,10px);
+    transform: translate(30px, 10px);
   }
 }
 
@@ -186,7 +186,7 @@ header {
 
 .navbar a:hover,
 .navbar a.active {
-  background: rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 /* ---------- THEME BUTTONS ---------- */
@@ -200,7 +200,7 @@ header {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  border: 2px solid rgba(255,255,255,.3);
+  border: 2px solid rgba(255, 255, 255, .3);
   cursor: pointer;
   transition: .3s;
 }
@@ -214,11 +214,25 @@ header {
   border-color: white;
 }
 
-#colour1 { background: #7c63ff; }
-#colour2 { background: #4f8dff; }
-#colour3 { background: #14b8a6; }
-#colour4 { background: #ff9800; }
-#colour5 { background: #ef4444; }
+#colour1 {
+  background: #7c63ff;
+}
+
+#colour2 {
+  background: #4f8dff;
+}
+
+#colour3 {
+  background: #14b8a6;
+}
+
+#colour4 {
+  background: #ff9800;
+}
+
+#colour5 {
+  background: #ef4444;
+}
 
 /* ---------- MAIN ---------- */
 main {
@@ -253,7 +267,7 @@ main {
   padding: 6px 16px;
   border-radius: 999px;
 
-  background: rgba(255,255,255,.1);
+  background: rgba(255, 255, 255, .1);
 
   color: white;
   font-size: 13px;
@@ -263,11 +277,11 @@ main {
 }
 
 .heading {
-  font-size: clamp(42px,6vw,74px);
+  font-size: clamp(42px, 6vw, 74px);
   font-weight: 900;
   letter-spacing: -2px;
 
-  background: linear-gradient(135deg,#fff,#c4b5ff);
+  background: linear-gradient(135deg, #fff, #c4b5ff);
 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -293,7 +307,7 @@ main {
   height: 8px;
   border-radius: 999px;
   overflow: hidden;
-  background: rgba(255,255,255,.12);
+  background: rgba(255, 255, 255, .12);
 }
 
 .progress-bar-fill {
@@ -343,7 +357,7 @@ main {
 
   font-size: 15px;
 
-  background: rgba(255,255,255,.96);
+  background: rgba(255, 255, 255, .96);
   color: #111827;
 
   flex: 1;
@@ -399,7 +413,7 @@ main {
   color: white;
   font-weight: 700;
 
-  background: linear-gradient(135deg,#ff8276,#ffb86b);
+  background: linear-gradient(135deg, #ff8276, #ffb86b);
 }
 
 /* ---------- EMPTY STATE ---------- */
@@ -447,7 +461,7 @@ main {
 
   color: #111827;
 
-  box-shadow: 0 14px 40px rgba(0,0,0,.18);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, .18);
 
   animation: fadeInUp .4s ease;
 
@@ -469,7 +483,7 @@ main {
   width: 100%;
   min-height: 80px;
 
-  border: 1px solid rgba(0,0,0,.08);
+  border: 1px solid rgba(0, 0, 0, .08);
   border-radius: 14px;
 
   padding: 14px;
@@ -510,7 +524,7 @@ main {
   font-size: 12px;
   font-weight: 700;
 
-  background: rgba(124,99,255,.12);
+  background: rgba(124, 99, 255, .12);
   color: #5b3df5;
 }
 
@@ -562,11 +576,11 @@ main {
 }
 
 .note-check {
-  background: linear-gradient(135deg,#14b8a6,#0f766e);
+  background: linear-gradient(135deg, #14b8a6, #0f766e);
 }
 
 .note-delete {
-  background: linear-gradient(135deg,#ef4444,#b91c1c);
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
 }
 
 .note-check:hover,
@@ -626,14 +640,14 @@ main {
 
   cursor: pointer;
 
-  background: rgba(255,255,255,.1);
+  background: rgba(255, 255, 255, .1);
   color: white;
 
   text-decoration: none;
 }
 
 .doc-btn.del {
-  background: rgba(239,68,68,.2);
+  background: rgba(239, 68, 68, .2);
 }
 
 /* ---------- TOAST ---------- */
@@ -642,7 +656,7 @@ main {
   top: 24px;
   right: 24px;
 
-  background: rgba(16,185,129,.95);
+  background: rgba(16, 185, 129, .95);
 
   color: white;
 
@@ -735,7 +749,7 @@ main {
   --page-bg-end: #080a1e;
 
   --accent: #7c63ff;
-  --accent-gradient: linear-gradient(135deg,#7c63ff,#4f8dff);
+  --accent-gradient: linear-gradient(135deg, #7c63ff, #4f8dff);
 }
 
 .theme2 {
@@ -744,7 +758,7 @@ main {
   --page-bg-end: #001219;
 
   --accent: #4f8dff;
-  --accent-gradient: linear-gradient(135deg,#4f8dff,#38bdf8);
+  --accent-gradient: linear-gradient(135deg, #4f8dff, #38bdf8);
 }
 
 .theme3 {
@@ -753,7 +767,7 @@ main {
   --page-bg-end: #022c22;
 
   --accent: #14b8a6;
-  --accent-gradient: linear-gradient(135deg,#14b8a6,#22c55e);
+  --accent-gradient: linear-gradient(135deg, #14b8a6, #22c55e);
 }
 
 .theme4 {
@@ -762,7 +776,7 @@ main {
   --page-bg-end: #cb550c;
 
   --accent: #ff9800;
-  --accent-gradient: linear-gradient(135deg,#ff9800,#ffb74d);
+  --accent-gradient: linear-gradient(135deg, #ff9800, #ffb74d);
 }
 
 .theme5 {
@@ -771,5 +785,5 @@ main {
   --page-bg-end: #cb0808;
 
   --accent: #ef4444;
-  --accent-gradient: linear-gradient(135deg,#ef4444,#f97316);
+  --accent-gradient: linear-gradient(135deg, #ef4444, #f97316);
 }
