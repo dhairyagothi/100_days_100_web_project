@@ -7,8 +7,8 @@ const t0 = performance.now();
 
 window.addEventListener("load", function () {
   const preloader = document.getElementById("preloader");
-  const page      = document.getElementById("page");
-  const loadStat  = document.getElementById("loadTimeStat");
+  const page = document.getElementById("page");
+  const loadStat = document.getElementById("loadTimeStat");
 
   // Show real load time in the hero stat
   const elapsed = Math.round(performance.now() - t0);
@@ -42,15 +42,15 @@ function handleRouting() {
   });
 }
 
-window.addEventListener("hashchange",       handleRouting);
+window.addEventListener("hashchange", handleRouting);
 window.addEventListener("DOMContentLoaded", handleRouting);
 
 /* ── 3. Contact form — send + success + clear ── */
 window.addEventListener("DOMContentLoaded", function () {
-  const sendBtn    = document.getElementById("sendBtn");
-  const nameInput  = document.getElementById("fname");
+  const sendBtn = document.getElementById("sendBtn");
+  const nameInput = document.getElementById("fname");
   const emailInput = document.getElementById("femail");
-  const msgInput   = document.getElementById("fmsg");
+  const msgInput = document.getElementById("fmsg");
   const successMsg = document.getElementById("successMsg");
 
   if (!sendBtn) return;
@@ -63,17 +63,17 @@ window.addEventListener("DOMContentLoaded", function () {
     }
 
     // Simulate sending (button loading state)
-    sendBtn.disabled    = true;
+    sendBtn.disabled = true;
     sendBtn.textContent = "Sending…";
 
     setTimeout(function () {
       // Clear all fields
-      nameInput.value  = "";
+      nameInput.value = "";
       emailInput.value = "";
-      msgInput.value   = "";
+      msgInput.value = "";
 
       // Reset button
-      sendBtn.disabled    = false;
+      sendBtn.disabled = false;
       sendBtn.textContent = "Send Message";
 
       // Show success
@@ -83,7 +83,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
   function showMsg(text, type) {
     successMsg.textContent = text;
-    successMsg.className   = "success-msg " + type + " show";
+    successMsg.className = "success-msg " + type + " show";
 
     // Auto-hide after 4 seconds
     setTimeout(function () {

@@ -1461,53 +1461,8 @@ syncProjectCounts();
    NAVBAR — dynamic based on login state
    ============================================================ */
 function updateNavbar() {
-  const container = document.getElementById('navButtons');
-  if (!container) return;
-  const username = window.username || localStorage.getItem('loggedInUser') || null;   // Read logged-in user from localStorage so navbar consists of logged in user when page reloads
-  const isRoot = !window.location.pathname.includes('/contributors/');
-  const base = isRoot ? '' : '../';
-  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-  const themeButton = `
-        <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
-          <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i> Theme
-        </button>
-        `;
-  const otherLink = isRoot
-    ? `<a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>
-       <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>`
-    : `<a class="btn btn-ghost btn-sm" href="${base}index.html"><i class="fas fa-home"></i> Home</a>
-       <a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>`;
-
-  if (username) {
-    container.innerHTML = `
-            ${themeButton}
-            <span class="welcome-text">Hi, ${username}</span>
-            <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
-            <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
-            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
-              <i class="fab fa-github"></i> GitHub
-            </a>
-            ${otherLink}
-        `;
-      document.getElementById('logoutBtn').addEventListener('click', () => {
-      window.username = null;
-      localStorage.removeItem('loggedInUser');  // cleared logged in info on logout
-      updateNavbar();
-      });
-  } else {
-    container.innerHTML = `
-            ${themeButton}
-            ${otherLink}
-            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
-                <i class="fab fa-github"></i> GitHub
-            </a>
-          <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
-           <div class="auth-buttons">
-           <a class="btn btn-ghost btn-sm" href="${base}public/Login.html">Sign Up</a>
-           <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign In</a>
-          </div>
-        `;
-  }
+  // The navbar is now managed by navbar.js which creates the dropdowns properly.
+  // This function is kept empty to prevent legacy calls from breaking.
 }
 
 /* ============================================================
