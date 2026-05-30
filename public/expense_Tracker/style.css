@@ -146,7 +146,7 @@ select {
   display: flex;
   justify-content: space-between;
   padding: 10px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .mini-stat:last-child {
@@ -198,7 +198,7 @@ select {
 .topbar-chip {
   padding: 12px 16px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.06);
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--panel-border);
 }
 
@@ -288,8 +288,8 @@ select {
 .category-item {
   padding: 14px 16px;
   border-radius: 18px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .category-item strong {
@@ -307,7 +307,7 @@ select {
   height: 10px;
   border-radius: 999px;
   overflow: hidden;
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .progress div {
@@ -354,8 +354,8 @@ select {
   padding: 14px;
   border-radius: 18px;
   background:
-    linear-gradient(to top, rgba(255,255,255,0.05) 1px, transparent 1px),
-    linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px);
+    linear-gradient(to top, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
 
   background-size: 100% 25%, 8.333% 100%;
 }
@@ -373,11 +373,11 @@ select {
 }
 
 .bar.income {
-  background: linear-gradient(180deg, #22c55e, rgba(34,197,94,0.35));
+  background: linear-gradient(180deg, #22c55e, rgba(34, 197, 94, 0.35));
 }
 
 .bar.expense {
-  background: linear-gradient(180deg, #ff4d6d, rgba(255,77,109,0.35));
+  background: linear-gradient(180deg, #ff4d6d, rgba(255, 77, 109, 0.35));
 }
 
 .month-label {
@@ -403,16 +403,16 @@ select {
   width: 100%;
   padding: 13px 14px;
   border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
   color: var(--text);
   outline: none;
 }
 
 .transaction-form input:focus,
 .transaction-form select:focus {
-  border-color: rgba(255,123,0,0.6);
-  box-shadow: 0 0 0 4px rgba(255,123,0,0.15);
+  border-color: rgba(255, 123, 0, 0.6);
+  box-shadow: 0 0 0 4px rgba(255, 123, 0, 0.15);
 }
 
 .type-options {
@@ -428,8 +428,8 @@ select {
   padding: 12px 14px;
   border-radius: 14px;
   cursor: pointer;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .btn-primary,
@@ -444,13 +444,13 @@ select {
 .btn-primary {
   color: white;
   background: linear-gradient(135deg, #ff7b00, #ff0080);
-  box-shadow: 0 12px 28px rgba(255,123,0,0.25);
+  box-shadow: 0 12px 28px rgba(255, 123, 0, 0.25);
 }
 
 .btn-secondary {
   color: var(--text);
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* ================= TABLE ================= */
@@ -464,7 +464,7 @@ select {
 .transactions-table td {
   text-align: left;
   padding: 14px 12px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .transactions-table th {
