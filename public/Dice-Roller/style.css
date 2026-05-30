@@ -19,7 +19,7 @@
   --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.15);
 }
 
-[data-theme='dark'] {
+[data-theme="dark"] {
   --bg-page: #000000;
   --bg-card: #111111;
   --bg-controls: #1e1e1e;
@@ -37,12 +37,12 @@
 body {
   background: var(--bg-page);
   min-height: 100vh;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
-  padding-top: 70px; /* room for fixed toggle */
+  padding-top: 70px;
   transition: background 0.3s ease;
 }
 
@@ -77,9 +77,7 @@ body {
   max-width: 600px;
   padding: 40px;
   animation: slideUp 0.6s ease-out;
-  transition:
-    background 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 @keyframes slideUp {
@@ -118,7 +116,16 @@ body {
   font-size: 2.4em;
   font-weight: 800;
   line-height: 1;
-  background: linear-gradient(90deg, #ff0000, #ff7700, #ffdd00, #00cc44, #0088ff, #6600cc, #cc00cc);
+  background: linear-gradient(
+    90deg,
+    #ff0000,
+    #ff7700,
+    #ffdd00,
+    #00cc44,
+    #0088ff,
+    #6600cc,
+    #cc00cc
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -169,6 +176,14 @@ body {
   border-color: #888;
 }
 
+.error {
+  color: #d32f2f;
+  font-size: 0.75em;
+  margin-top: 4px;
+  font-weight: 600;
+  min-height: 16px;
+}
+
 .color-picker {
   display: flex;
   gap: 8px;
@@ -189,15 +204,11 @@ body {
 }
 .color-option.selected {
   border-color: #333;
-  box-shadow:
-    0 0 0 2px #fff,
-    0 0 0 4px #333;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #333;
 }
-[data-theme='dark'] .color-option.selected {
+[data-theme="dark"] .color-option.selected {
   border-color: #fff;
-  box-shadow:
-    0 0 0 2px #111,
-    0 0 0 4px #fff;
+  box-shadow: 0 0 0 2px #111, 0 0 0 4px #fff;
 }
 
 /* ── Buttons ── */
@@ -223,7 +234,7 @@ button {
 /* Roll Dice & Reset Stats — equal width, flanking the sound btn */
 .btn-roll,
 .btn-reset {
-  flex: 1; /* both grow equally */
+  flex: 1;
   padding: 15px 10px;
 }
 
@@ -233,7 +244,7 @@ button {
   color: #ffffff;
 }
 /* dark mode: cream bg, black text */
-[data-theme='dark'] .btn-roll {
+[data-theme="dark"] .btn-roll {
   background: #f5f0e8;
   color: #111111;
 }
@@ -255,7 +266,7 @@ button {
   background: #111111;
   color: #ffffff;
 }
-[data-theme='dark'] .btn-reset {
+[data-theme="dark"] .btn-reset {
   background: #f5f0e8;
   color: #111111;
 }
@@ -266,7 +277,7 @@ button {
 
 /* Sound toggle — fixed square, centred between the two */
 .btn-sound {
-  flex: 0 0 52px; /* fixed width, no grow/shrink */
+  flex: 0 0 52px;
   width: 52px;
   height: 52px;
   padding: 0;
@@ -277,7 +288,7 @@ button {
   align-items: center;
   justify-content: center;
 }
-[data-theme='dark'] .btn-sound {
+[data-theme="dark"] .btn-sound {
   background: #2a2a2a;
   color: #cccccc;
 }
