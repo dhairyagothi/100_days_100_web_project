@@ -2,6 +2,10 @@ const GEOCODING_API = 'https://geocoding-api.open-meteo.com/v1/search';
 const WEATHER_API = 'https://api.open-meteo.com/v1/forecast';
 
 const COMMON_CITIES = ['Bengaluru', 'Chennai', 'Hyderabad', 'Pune', 'Noida', 'Delhi'];
+let weatherChart = null;
+let activeMetric  = 'temperature';
+let lastForecastData = null;
+let isCelsius = true;
 
 const weatherFields = {
   temp: document.getElementById('temp'),
@@ -138,7 +142,7 @@ async function fetchWeather(latitude, longitude) {
     latitude: String(latitude),
     longitude: String(longitude),
     current: 'temperature_2m,relative_humidity_2m,apparent_temperature,cloud_cover,wind_speed_10m,wind_direction_10m',
-    daily: 'temperature_2m_max,temperature_2m_min,sunrise,sunset',
+    daily: 'temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_probability_max,wind_speed_10m_max',
     timezone: 'auto'
   });
 
@@ -150,18 +154,31 @@ async function fetchWeather(latitude, longitude) {
   return response.json();
 }
 
+function formatTemperature(temp) {
+
+  if (!Number.isFinite(temp)) return '—';
+
+  if (isCelsius) {
+    return `${Math.round(temp)}°C`;
+  }
+
+  return `${Math.round((temp * 9/5) + 32)}°F`;
+}
+
 function buildWeatherSummary(data) {
   const current = data?.current || {};
   const daily = data?.daily || {};
 
   return {
-    temperatureValue: Number.isFinite(current.temperature_2m) ? `${Math.round(current.temperature_2m)}` : '—',
-    temperatureLabel: Number.isFinite(current.temperature_2m) ? `${Math.round(current.temperature_2m)}°C` : '—',
-    feelsLike: Number.isFinite(current.apparent_temperature) ? `${Math.round(current.apparent_temperature)}°C` : '—',
+    temperatureValue: Number.isFinite(current.temperature_2m)
+? formatTemperature(current.temperature_2m)
+: '—',
+    temperatureLabel: Number.isFinite(current.temperature_2m) ? formatTemperature(current.temperature_2m) : '—',
+    feelsLike: Number.isFinite(current.apparent_temperature) ? formatTemperature(current.apparent_temperature) : '—',
     humidityValue: Number.isFinite(current.relative_humidity_2m) ? `${Math.round(current.relative_humidity_2m)}` : '—',
     humidityLabel: Number.isFinite(current.relative_humidity_2m) ? `${Math.round(current.relative_humidity_2m)}%` : '—',
-    minTemperature: Number.isFinite(daily.temperature_2m_min?.[0]) ? `${Math.round(daily.temperature_2m_min[0])}°C` : '—',
-    maxTemperature: Number.isFinite(daily.temperature_2m_max?.[0]) ? `${Math.round(daily.temperature_2m_max[0])}°C` : '—',
+    minTemperature: Number.isFinite(daily.temperature_2m_min?.[0]) ? formatTemperature(daily.temperature_2m_min[0]) : '—',
+    maxTemperature: Number.isFinite(daily.temperature_2m_max?.[0]) ? formatTemperature(daily.temperature_2m_max[0]) : '—',
     windSpeedValue: Number.isFinite(current.wind_speed_10m) ? `${Math.round(current.wind_speed_10m)}` : '—',
     windSpeedLabel: Number.isFinite(current.wind_speed_10m) ? `${Math.round(current.wind_speed_10m)} km/h` : '—',
     windDirection: Number.isFinite(current.wind_direction_10m) ? `${Math.round(current.wind_direction_10m)}°` : '—',
@@ -172,7 +189,6 @@ function buildWeatherSummary(data) {
 
 // FIX: Safe UI update for main weather card
 function updateWeatherCard(cityLabel, summary) {
-  console.log("UPDATING UI:", cityLabel, summary); // DEBUG
 
   if (!summary) {
     console.error("Summary is undefined");
@@ -270,13 +286,13 @@ function renderRowWeather(row, data, cachedHeaders = null) {
   // 1. Map API values directly to keys that match the exact HTML header text strings
   const weatherMap = {
     'Cloud_pct': Number.isFinite(current.cloud_cover) ? `${Math.round(current.cloud_cover)}%` : '—',
-    'Feels_like' : Number.isFinite(current.apparent_temperature) ? `${Math.round(current.apparent_temperature)}°C` : '—',
+    'Feels_like' : formatTemperature(current.apparent_temperature),
     'Humidity' : Number.isFinite(current.relative_humidity_2m) ? `${Math.round(current.relative_humidity_2m)}%` : '—',
-    'Max_temp' : Number.isFinite(daily.temperature_2m_max?.[0]) ? `${Math.round(daily.temperature_2m_max[0])}°C` : '—',
-    'Min_temp' : Number.isFinite(daily.temperature_2m_min?.[0]) ? `${Math.round(daily.temperature_2m_min[0])}°C` : '—',
+    'Max_temp' : formatTemperature(daily.temperature_2m_max?.[0]),
+    'Min_temp' : formatTemperature(daily.temperature_2m_min?.[0]),
     'Sunrise' : formatTime(daily.sunrise?.[0]),
     'Sunset' : formatTime(daily.sunset?.[0]),
-    'Temp' : Number.isFinite(current.temperature_2m) ? `${Math.round(current.temperature_2m)}°C` : '—',
+    'Temp' : formatTemperature(current.temperature_2m),
     'Wind_degrees' : Number.isFinite(current.wind_direction_10m) ? `${Math.round(current.wind_direction_10m)}°` : '—',
     'Wind_speed' : Number.isFinite(current.wind_speed_10m) ? `${Math.round(current.wind_speed_10m)} km/h` : '—'
   };  
@@ -302,6 +318,143 @@ function renderRowWeather(row, data, cachedHeaders = null) {
     }
   });
 }
+
+// ── Chart helpers ────────────────────────────────────────
+
+function buildChartDatasets(forecastData) {
+  const daily = forecastData?.daily || {};
+  const labels = (daily.time || []).map(d =>
+    new Intl.DateTimeFormat('en-IN', { weekday: 'short', month: 'short', day: 'numeric' })
+      .format(new Date(d))
+  );
+
+  return {
+    labels,
+    temperature: {
+      label: isCelsius ? 'Temp (°C)' : 'Temp (°F)',
+      data: (daily.temperature_2m_max || []).map(t =>
+        isCelsius ? Math.round(t) : Math.round((t * 9 / 5) + 32)
+      ),
+      dataMin: (daily.temperature_2m_min || []).map(t =>
+        isCelsius ? Math.round(t) : Math.round((t * 9 / 5) + 32)
+      ),
+      color: '#f97316',
+      colorMin: '#facc15',
+      type: 'line'
+    },
+    humidity: {
+      label: 'Humidity (%)',
+      data: daily.precipitation_probability_max || [],
+      color: '#38bdf8',
+      type: 'bar'
+    },
+    wind: {
+      label: 'Wind Speed (km/h)',
+      data: daily.wind_speed_10m_max || [],
+      color: '#a78bfa',
+      type: 'line',
+      fill: true
+    }
+  };
+}
+
+function renderChart(forecastData) {
+  const section = document.getElementById('charts-section');
+  const ctx     = document.getElementById('weatherChart');
+  if (!ctx || !forecastData) return;
+
+  section.style.display = 'block';
+
+  const datasets = buildChartDatasets(forecastData);
+  const metric   = datasets[activeMetric];
+
+  const chartDatasets = [{
+    label: metric.label,
+    data: metric.data,
+    borderColor: metric.color,
+    backgroundColor: metric.type === 'bar'
+      ? metric.color + '99'
+      : metric.fill
+        ? metric.color + '33'
+        : metric.color + '22',
+    borderWidth: 2.5,
+    fill: metric.fill || false,
+    tension: 0.4,
+    pointBackgroundColor: metric.color,
+    pointRadius: 4,
+    pointHoverRadius: 7,
+    type: metric.type
+  }];
+
+  // For temperature, also add min line
+  if (activeMetric === 'temperature' && metric.dataMin) {
+    chartDatasets.push({
+      label: isCelsius ? 'Min Temp (°C)' : 'Min Temp (°F)',
+      data: metric.dataMin,
+      borderColor: metric.colorMin,
+      backgroundColor: metric.colorMin + '15',
+      borderWidth: 2,
+      fill: false,
+      tension: 0.4,
+      pointBackgroundColor: metric.colorMin,
+      pointRadius: 3,
+      pointHoverRadius: 6,
+      borderDash: [5, 4],
+      type: 'line'
+    });
+  }
+
+  if (weatherChart) {
+    weatherChart.destroy();
+    weatherChart = null;
+  }
+
+  weatherChart = new Chart(ctx, {
+    type: metric.type,
+    data: { labels: datasets.labels, datasets: chartDatasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          labels: { color: 'rgba(255,255,255,0.75)', font: { size: 12 } }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(17,24,39,0.95)',
+          titleColor: '#fff',
+          bodyColor: 'rgba(255,255,255,0.8)',
+          borderColor: 'rgba(255,255,255,0.1)',
+          borderWidth: 1,
+          padding: 10,
+          cornerRadius: 10
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: 'rgba(255,255,255,0.55)', font: { size: 11 } },
+          grid:  { color: 'rgba(255,255,255,0.05)' }
+        },
+        y: {
+          ticks: { color: 'rgba(255,255,255,0.55)', font: { size: 11 } },
+          grid:  { color: 'rgba(255,255,255,0.07)' }
+        }
+      }
+    }
+  });
+}
+
+function bindChartTabs() {
+  document.querySelectorAll('.chart-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.chart-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeMetric = btn.dataset.metric;
+      if (lastForecastData) renderChart(lastForecastData);
+    });
+  });
+}
+
 
 async function loadCityWeather(city, options = {}) {
   const { updateTable = false } = options;
@@ -335,6 +488,8 @@ async function loadCityWeather(city, options = {}) {
     if (weatherData && weatherData.current) {
       updateRecommendations(weatherData.current.temperature_2m, weatherData.current.weather_code);
     }
+      lastForecastData = weatherData;
+      renderChart(weatherData); 
 
     setStatus(updateTable ? `Updated ${label} and the comparison table.` : `Showing weather for ${label}.`, 'success');
 
@@ -391,15 +546,11 @@ function bindSearchForm() {
 
   if (!searchForm || !cityInput) return;
 
-  console.log("Search system initialized"); // DEBUG
-
   // FIX: form submit (button click also triggers this)
   searchForm.addEventListener("submit", (event) => {
     event.preventDefault(); // stop page refresh
 
     const city = cityInput.value.trim();
-
-    console.log("SEARCH CLICKED:", city); // DEBUG
 
     if (!city) return;
 
@@ -424,7 +575,31 @@ function bindPresetCityLinks() {
   });
 }
 
+const toggleBtn = document.getElementById("unit-toggle");
+
+toggleBtn?.addEventListener("click", async () => {
+
+  isCelsius = !isCelsius;
+
+  toggleBtn.textContent = isCelsius
+    ? "Switch to °F"
+    : "Switch to °C";
+
+  const city = cityName?.textContent?.split(",")[0] || "Delhi";
+
+  await loadCityWeather(city);
+
+commonCityRows.forEach((row) => {
+  setRowMessage(row, 'Loading...');
+});
+
+await updateComparisonTable();
+if (lastForecastData) renderChart(lastForecastData)
+
+});
+
 document.addEventListener('DOMContentLoaded', async () => {
+  bindChartTabs()
   bindSearchForm();
   bindPresetCityLinks();
   resetWeatherSummary();
@@ -434,4 +609,48 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // 2. RUN THE FIX: Populate the comparison table using your declarative mapping
   await updateComparisonTable();
+});
+
+/* Usage Guide */
+
+const guideBtn =
+document.getElementById("openGuide");
+
+const guideModal =
+document.getElementById("guideModal");
+
+const closeGuide =
+document.querySelector(".close-guide");
+
+
+guideBtn?.addEventListener(
+"click",
+(e)=>{
+
+e.preventDefault();
+
+guideModal.style.display="block";
+
+});
+
+
+closeGuide?.addEventListener(
+"click",
+()=>{
+
+guideModal.style.display="none";
+
+});
+
+
+window.addEventListener(
+"click",
+(e)=>{
+
+if(e.target===guideModal){
+
+guideModal.style.display="none";
+
+}
+
 });

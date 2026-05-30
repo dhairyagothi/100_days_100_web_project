@@ -1,72 +1,22 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Star Catcher — Flappy Bird</title>
-  <link rel="icon" href="Flappy-logo.png">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0d1117" />
+    <title>Flappy Bird</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <a href="../../index.html" class="back-home">
+  ← Back to Home
+</a>
 
-<div class="wrapper">
-
-  
-  <div class="hud">
-    <div class="hud-item">
-      <span class="hud-label">SCORE</span>
-      <span class="hud-value" id="score-display">0</span>
-    </div>
-    <div class="hud-item">
-      <span class="hud-label">TIME LEFT</span>
-      <span class="hud-value" id="timer-display">00:00</span>
-    </div>
-    <div class="hud-item">
-      <span class="hud-label">BEST</span>
-      <span class="hud-value" id="best-display">0</span>
-    </div>
-  </div>
-
-  
-  <div class="canvas-container">
-    <canvas id="gameCanvas" width="600" height="450"></canvas>
-
-    
-    <div class="overlay" id="startScreen">
-      <div class="overlay-title">★ STAR CATCHER ★</div>
-      <div class="overlay-sub">
-        Catch every star before it vanishes!<br>
-        Stars disappear after 2 seconds
-      </div>
-      <div class="controls-hint">
-        ↑ ↓ ← → ARROW KEYS to move<br>
-        WASD keys also supported<br>
-        SPACE to pause / resume
-      </div>
-      <button class="btn" id="startBtn">▶ START GAME</button>
-    </div>
-
-    
-    <div class="overlay hidden" id="pauseScreen">
-      <div class="overlay-title" style="font-size:22px;">PAUSED</div>
-      <button class="btn" id="resumeBtn">▶ RESUME</button>
-    </div>
-
-  
-    <div class="overlay hidden" id="gameOverScreen">
-      <div class="overlay-title" style="font-size:20px;">GAME OVER</div>
-      <div class="final-score">FINAL SCORE<span id="finalScore">0</span></div>
-      <div class="final-score" style="font-size:11px; margin-top:-8px;">
-        TIME PLAYED<span id="finalTime" style="font-size:28px; color:#00e676; text-shadow: 0 0 12px #00e676;">00:00</span>
-      </div>
-      <button class="btn" id="restartBtn">↺ PLAY AGAIN</button>
-    </div>
-
-  </div>
-</div>
-
-<script src="script.js"></script>
-</body>
+    <canvas id="gameCanvas"></canvas>
+    <p class="hint">SPACE &nbsp;·&nbsp; Tap to flap &nbsp;·&nbsp; P to pause</p>
+    <script src="script.js"></script>
+  </body>
 </html>
-
-

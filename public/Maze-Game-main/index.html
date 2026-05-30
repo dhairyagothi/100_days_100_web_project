@@ -9,6 +9,8 @@
   <link rel="icon" href="../favv.png" type="image/x-icon" />
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
   <div class="overlay-stars"></div>
 
   <div id="page">
@@ -43,7 +45,12 @@
         <button id="startMazeBtn" type="button">Start Game</button>
         <button id="restartMazeBtn" type="button" disabled>New Game</button>
       </div>
+
+    <input id="startMazeBtn" type="button" onclick="startGame()" value="Start" />
+    </div>
+=======
     </section>
+
 
     <section id="view" class="game-board">
       <div id="mazeContainer" class="card">
