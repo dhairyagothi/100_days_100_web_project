@@ -24,9 +24,21 @@ const game_container = document.getElementById('game-container')
 const timeEl = document.getElementById('time')
 const scoreEl = document.getElementById('score')
 const message = document.getElementById('message')
+
+// End game popup and final result elements
+const endBtn = document.getElementById('end-btn')
+const gameOverPopup = document.getElementById('game-over')
+const yesBtn = document.getElementById('yes-btn')
+const noBtn = document.getElementById('no-btn')
+const finalResult = document.getElementById('final-result')
+const finalScore = document.getElementById('final-score')
+const finalTime = document.getElementById('final-time')
+
 let seconds = 0
 let score = 0
 let selected_insect = {}
+let gameInterval // Stores the time interval
+let isGamePaused = false // Helps pausing timer when user clicks 'End Game' button
 
 function playButtonClickSound(onComplete) {
     let completed = false
@@ -78,16 +90,16 @@ choose_insect_btns.forEach(btn => {
 })
 
 function startGame() {
-    setInterval(increaseTime, 1000)
+    gameInterval = setInterval(increaseTime, 1000)
 }
 
 function increaseTime() {
+    seconds++
     let m = Math.floor(seconds / 60)
     let s = seconds % 60
     m = m < 10 ? `0${m}` : m
     s = s < 10 ? `0${s}` : s
     timeEl.innerHTML = `Time: ${m}:${s}`
-    seconds++
 }
 
 function createInsect() {
@@ -135,13 +147,11 @@ function increaseScore() {
     scoreEl.innerHTML = `Score: ${score}`
 }
 
-// --- Mute Toggle ---
-muteBtn.addEventListener('click', () => {
-    isMuted = !isMuted
-    backgroundMusic.muted = isMuted
-    catchSound.muted = isMuted
-    buttonClickSound.muted = isMuted
-    muteBtn.textContent = isMuted ? '🔇' : '🔊'
+// Show confirmation popup when user clicks 'End Game' button
+endBtn.addEventListener('click', () => {
+    gameOverPopup.style.display = 'flex'
+    clearInterval(gameInterval) 
+    isGamePaused = true
 })
 
 // --- Volume Slider ---
@@ -151,3 +161,36 @@ volumeSlider.addEventListener('input', () => {
     catchSound.volume = volume
     buttonClickSound.volume = volume
 })
+
+// Resume game
+noBtn.addEventListener('click', () => {
+    gameOverPopup.style.display = 'none'
+
+    if (isGamePaused) {
+        gameInterval = setInterval(increaseTime, 1000)
+        isGamePaused = false
+    }
+})
+
+// Ends the game
+yesBtn.addEventListener('click', endGame)
+
+// Stops timer, removes insects and display final results
+function endGame() {
+    clearInterval(gameInterval)
+    document.querySelectorAll('.insect').forEach(insect => {
+        insect.remove()
+    })
+
+    gameOverPopup.style.display = 'none'
+
+    const m = Math.floor(seconds / 60)
+    const s = seconds % 60
+    const paddedMins = m < 10 ? `0${m}` : `${m}`
+    const paddedSeconds = s < 10 ? `0${s}` : `${s}`
+
+    finalScore.innerHTML = `Final Score: ${score}`
+    finalTime.innerHTML = `Time Taken: ${paddedMins}:${paddedSeconds}`
+
+    finalResult.style.display = 'flex'
+}
