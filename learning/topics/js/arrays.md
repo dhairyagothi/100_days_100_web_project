@@ -40,7 +40,7 @@ const squares = nums.map((n) => n * n);
 const evens = nums.filter((n) => n % 2 === 0);
 
 console.log(squares); // [1, 4, 9, 16, 25]
-console.log(evens);  // [2, 4]
+console.log(evens); // [2, 4]
 ```
 
 ---
@@ -55,6 +55,7 @@ console.log(evens);  // [2, 4]
 ### Task:
 
 Given `arr = [1, 2, 3, 4, 5]`:
+
 - compute the sum of squares
 - create a new array containing only even numbers
 
@@ -71,4 +72,3 @@ const evens = arr.filter((n) => n % 2 === 0);
 console.log(sumOfSquares); // 55
 console.log(evens); // [2, 4]
 ```
-

@@ -35,10 +35,13 @@ saveweb2zip-com-www-naukri-com/
 You can run this project locally in a few easy ways:
 
 ### Method 1: Double-Click (Direct Launch)
+
 Simply open the `index.html` file in any modern web browser (Google Chrome, Firefox, Microsoft Edge, Safari) by double-clicking it.
 
 ### Method 2: Serve via Python (Recommended)
+
 To prevent CORS issues with local fonts or asynchronous scripts, it is highly recommended to run a lightweight local HTTP server.
+
 1. Open your terminal/shell in the project directory.
 2. Run the following command:
    ```bash
@@ -47,6 +50,7 @@ To prevent CORS issues with local fonts or asynchronous scripts, it is highly re
 3. Open your browser and navigate to `http://localhost:8000`.
 
 ### Method 3: VS Code Live Server
+
 If you are using **VS Code**, install the **Live Server** extension, open the project folder, and click **"Go Live"** in the bottom-right corner.
 
 ---

@@ -20,8 +20,8 @@ It replicates the **homepage layout of Amazon**, including navigation, product c
 
 ## 🛠️ Technologies Used
 
-- HTML5  
-- CSS3  
+- HTML5
+- CSS3
 
 ---
 
@@ -47,13 +47,11 @@ Amazon_Clone/
 
 ---
 
-
 ## 🌐 Demo & Repository
 
 🔗 Live Demo: [https://100-days-100-web-project.vercel.app/public/Amazon_Clone/index.html](https://100-days-100-web-project.vercel.app/public/Amazon_Clone/index.html)
 
 🔗 GitHub Repository: [https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Amazon_Clone](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Amazon_Clone)
-
 
 ### Clone Repository
 
@@ -82,7 +80,6 @@ This project works smoothly across multiple devices:
 git clone https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Amazon_Clone.git
 ```
 
-
 ### 2. Navigate to Project Folder
 
 ```bash
@@ -93,7 +90,7 @@ cd Amazon_Clone
 
 Open the `index.html` file in your browser.
 
-Enjoy using the Amazon_Clone 
+Enjoy using the Amazon_Clone
 
 ---
 
@@ -108,4 +105,3 @@ Enjoy using the Amazon_Clone
 This project is created for **educational, learning, and portfolio purposes**.
 
 You are free to modify and use this project for personal development and practice.
-

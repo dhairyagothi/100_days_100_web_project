@@ -51,6 +51,7 @@ Here is a visual chart showing how an HTML structure maps into a hierarchical DO
     <!-- p element -->
     <rect x="440" y="210" width="110" height="35" rx="6" class="svg-node" />
     <text x="495" y="232" text-anchor="middle" class="svg-text svg-text-heading">&lt;p&gt;</text>
+
   </svg>
 </div>
 
@@ -66,16 +67,16 @@ Before you can change a node, you must select it. JavaScript provides several se
 
 ```javascript
 // 1. Get a single element by its unique ID attribute
-const mainHeading = document.getElementById('heading');
+const mainHeading = document.getElementById("heading");
 
 // 2. Get a list of elements by their CSS class name
-const cards = document.getElementsByClassName('card');
+const cards = document.getElementsByClassName("card");
 
 // 3. The modern querySelector (returns the FIRST matching element using CSS rules)
-const firstBtn = document.querySelector('.btn-primary');
+const firstBtn = document.querySelector(".btn-primary");
 
 // 4. querySelectorAll (returns a NodeList of ALL matching elements)
-const allParagraphs = document.querySelectorAll('p');
+const allParagraphs = document.querySelectorAll("p");
 ```
 
 ---
@@ -85,21 +86,23 @@ const allParagraphs = document.querySelectorAll('p');
 Once selected, you can easily read or write properties to change the visual representation on the fly.
 
 ### A. Changing Text Content
+
 Use `.textContent` to change raw, plain text inside elements safely.
 
 ```javascript
-const paragraph = document.querySelector('p');
-paragraph.textContent = 'Hello, this is new text!';
+const paragraph = document.querySelector("p");
+paragraph.textContent = "Hello, this is new text!";
 ```
 
 ### B. Changing Styles Directly
+
 Use the `.style` property to apply inline CSS values dynamically.
 
 ```javascript
-const box = document.getElementById('box');
-box.style.backgroundColor = '#3b82f6';
-box.style.borderRadius = '10px';
-box.style.transform = 'scale(1.05)';
+const box = document.getElementById("box");
+box.style.backgroundColor = "#3b82f6";
+box.style.borderRadius = "10px";
+box.style.transform = "scale(1.05)";
 ```
 
 ---
@@ -110,14 +113,14 @@ You can create brand new HTML tags programmatically and inject them straight int
 
 ```javascript
 // 1. Create a new element node
-const newDiv = document.createElement('div');
+const newDiv = document.createElement("div");
 
 // 2. Set content or classes
-newDiv.className = 'info-card';
-newDiv.textContent = 'I was generated programmatically by JavaScript!';
+newDiv.className = "info-card";
+newDiv.textContent = "I was generated programmatically by JavaScript!";
 
 // 3. Select an existing parent container element
-const container = document.getElementById('parentContainer');
+const container = document.getElementById("parentContainer");
 
 // 4. Append/insert the child div element inside the parent
 container.appendChild(newDiv);
@@ -157,36 +160,38 @@ container.appendChild(newDiv);
 Let's put this into practice with a dynamic counter!
 
 ### Task:
+
 Write a JavaScript script that listens to a button click on an element with the ID `incrementBtn`. Every time it's clicked, increment a number displayed inside a `<span id="counter">0</span>` tag by 1.
 
 ##### Solution
 
 ```html
 <div class="counter-card">
-    <span id="counter">0</span>
-    <button id="incrementBtn">Increment</button>
+  <span id="counter">0</span>
+  <button id="incrementBtn">Increment</button>
 </div>
 ```
 
 ```javascript
 // 1. Select the DOM elements
-const counterSpan = document.getElementById('counter');
-const incrementBtn = document.getElementById('incrementBtn');
+const counterSpan = document.getElementById("counter");
+const incrementBtn = document.getElementById("incrementBtn");
 
 // 2. Initialize the counter state value
 let count = 0;
 
 // 3. Add the click event listener
-incrementBtn.addEventListener('click', () => {
+incrementBtn.addEventListener("click", () => {
   // 4. Increment the value
   count++;
-  
+
   // 5. Update the text content of the span in the DOM
   counterSpan.textContent = count;
 });
 ```
 
-**Explanation**: 
+**Explanation**:
+
 - We select the elements safely using `document.getElementById`.
 - We maintain the state in a clean, simple JavaScript let variable.
 - We add a click event listener using `.addEventListener()` which triggers our callback function to increment the state and write the update straight to the DOM!

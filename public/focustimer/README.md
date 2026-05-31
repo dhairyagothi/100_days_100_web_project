@@ -42,11 +42,13 @@ git clone https://github.com/dhairyagothi/100_days_100_web_project.git
 cd 100_days_100_web_project
 cd public/focustimer
 ```
+
 Then open `index.html` with Live Server in VS Code.
 
 ## 👩‍💻 Author
 
 **Aishee Mukherjee**
+
 - GitHub: [@aisheeem7](https://github.com/aisheeem7)
 
 ## 📄 License

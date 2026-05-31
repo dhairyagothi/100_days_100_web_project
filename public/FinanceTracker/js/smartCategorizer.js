@@ -1,17 +1,9 @@
 // js/smartCategorizer.js
 
-export const autoCategorize = (
-  description
-) => {
+export const autoCategorize = (description) => {
+  const text = description.toLowerCase();
 
-  const text =
-    description.toLowerCase();
-
-  if (
-    text.includes("uber") ||
-    text.includes("ola")
-  ) {
-
+  if (text.includes("uber") || text.includes("ola")) {
     return "travel";
   }
 
@@ -20,23 +12,14 @@ export const autoCategorize = (
     text.includes("burger") ||
     text.includes("restaurant")
   ) {
-
     return "food";
   }
 
-  if (
-    text.includes("netflix") ||
-    text.includes("spotify")
-  ) {
-
+  if (text.includes("netflix") || text.includes("spotify")) {
     return "entertainment";
   }
 
-  if (
-    text.includes("amazon") ||
-    text.includes("shopping")
-  ) {
-
+  if (text.includes("amazon") || text.includes("shopping")) {
     return "shopping";
   }
 

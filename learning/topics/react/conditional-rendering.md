@@ -28,8 +28,8 @@ Inline choice between two elements:
 ```jsx
 function StatusBadge({ isOnline }) {
   return (
-    <span className={isOnline ? 'badge online' : 'badge offline'}>
-      {isOnline ? 'Online' : 'Offline'}
+    <span className={isOnline ? "badge online" : "badge offline"}>
+      {isOnline ? "Online" : "Offline"}
     </span>
   );
 }
@@ -43,11 +43,7 @@ Render something **only when** a condition is true:
 
 ```jsx
 function Notifications({ count }) {
-  return (
-    <div>
-      {count > 0 && <p>You have {count} new messages.</p>}
-    </div>
-  );
+  return <div>{count > 0 && <p>You have {count} new messages.</p>}</div>;
 }
 ```
 
@@ -61,11 +57,11 @@ function Notifications({ count }) {
 ```jsx
 function TrafficLight({ color }) {
   switch (color) {
-    case 'red':
+    case "red":
       return <div className="light red">Stop</div>;
-    case 'yellow':
+    case "yellow":
       return <div className="light yellow">Caution</div>;
-    case 'green':
+    case "green":
       return <div className="light green">Go</div>;
     default:
       return <div className="light off">Unknown</div>;
@@ -128,7 +124,9 @@ function AuthMessage({ isLoggedIn, username }) {
       {isLoggedIn ? (
         <h2>Hello, {username}</h2>
       ) : (
-        <p><a href="/login">Please log in</a></p>
+        <p>
+          <a href="/login">Please log in</a>
+        </p>
       )}
     </div>
   );

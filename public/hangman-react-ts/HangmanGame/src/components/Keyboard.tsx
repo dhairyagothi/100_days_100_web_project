@@ -9,12 +9,21 @@ type Props = {
 
 const KEYS = "abcdefghijklmnopqrstuvwxyz".split("");
 
-export default function Keyboard({ onGuess, word, guessedLetters, disabled = false }: Props) {
+export default function Keyboard({
+  onGuess,
+  word,
+  guessedLetters,
+  disabled = false,
+}: Props) {
   const normalizedWord = word.toLowerCase();
 
   return (
-    <div className="keyboard" role="application" aria-label="On screen keyboard">
-      {KEYS.map(k => {
+    <div
+      className="keyboard"
+      role="application"
+      aria-label="On screen keyboard"
+    >
+      {KEYS.map((k) => {
         const isGuessed = guessedLetters.includes(k);
         const isCorrect = isGuessed && normalizedWord.includes(k);
         const isIncorrect = isGuessed && !normalizedWord.includes(k);
@@ -39,4 +48,3 @@ export default function Keyboard({ onGuess, word, guessedLetters, disabled = fal
     </div>
   );
 }
-

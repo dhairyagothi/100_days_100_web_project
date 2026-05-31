@@ -18,14 +18,14 @@ You will build an app where users can:
 
 ## 2. Features Breakdown
 
-| Feature | React Concepts Used |
-| :--- | :--- |
-| Task list display | `map()`, **keys**, **props** |
-| Add task form | **Controlled inputs**, **events** |
-| Toggle complete | **State**, immutable array updates |
-| Delete task | **Event handlers**, filter state |
-| Filter tabs | **Conditional rendering** |
-| Save on refresh | **useEffect**, `localStorage` |
+| Feature           | React Concepts Used                |
+| :---------------- | :--------------------------------- |
+| Task list display | `map()`, **keys**, **props**       |
+| Add task form     | **Controlled inputs**, **events**  |
+| Toggle complete   | **State**, immutable array updates |
+| Delete task       | **Event handlers**, filter state   |
+| Filter tabs       | **Conditional rendering**          |
+| Save on refresh   | **useEffect**, `localStorage`      |
 
 ---
 
@@ -58,6 +58,7 @@ You will build an app where users can:
 
     <rect x="230" y="240" width="120" height="35" rx="6" class="svg-node" style="stroke: #61dafb;" />
     <text x="290" y="262" text-anchor="middle" class="svg-text">TaskItem</text>
+
   </svg>
 </div>
 
@@ -82,11 +83,11 @@ const initialTasks = [
 ## 5. Starter Implementation Sketch
 
 ```jsx
-import { useState } from 'react';
+import { useState } from "react";
 
 function App() {
   const [tasks, setTasks] = useState(initialTasks);
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState("all");
 
   function addTask(text) {
     setTasks((prev) => [
@@ -97,7 +98,7 @@ function App() {
 
   function toggleTask(id) {
     setTasks((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, done: !t.done } : t))
+      prev.map((t) => (t.id === id ? { ...t, done: !t.done } : t)),
     );
   }
 
@@ -106,8 +107,8 @@ function App() {
   }
 
   const visible = tasks.filter((t) => {
-    if (filter === 'active') return !t.done;
-    if (filter === 'completed') return t.done;
+    if (filter === "active") return !t.done;
+    if (filter === "completed") return t.done;
     return true;
   });
 
@@ -182,16 +183,18 @@ Implement `TaskItem` that shows checkbox, task text (line-through if done), and 
 ```jsx
 function TaskItem({ task, onToggle, onDelete }) {
   return (
-    <li className={task.done ? 'done' : ''}>
+    <li className={task.done ? "done" : ""}>
       <input
         type="checkbox"
         checked={task.done}
         onChange={() => onToggle(task.id)}
       />
-      <span style={{ textDecoration: task.done ? 'line-through' : 'none' }}>
+      <span style={{ textDecoration: task.done ? "line-through" : "none" }}>
         {task.text}
       </span>
-      <button type="button" onClick={() => onDelete(task.id)}>Delete</button>
+      <button type="button" onClick={() => onDelete(task.id)}>
+        Delete
+      </button>
     </li>
   );
 }

@@ -57,7 +57,11 @@ window.addEventListener("DOMContentLoaded", function () {
 
   sendBtn.addEventListener("click", function () {
     // Basic validation
-    if (!nameInput.value.trim() || !emailInput.value.trim() || !msgInput.value.trim()) {
+    if (
+      !nameInput.value.trim() ||
+      !emailInput.value.trim() ||
+      !msgInput.value.trim()
+    ) {
       showMsg("⚠️ Please fill in all fields before sending.", "error");
       return;
     }

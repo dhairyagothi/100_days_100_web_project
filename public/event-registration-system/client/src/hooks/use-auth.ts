@@ -12,10 +12,10 @@ export function useAuth() {
       const validated = api.auth.login.input.parse(data);
       const res = await fetch(api.auth.login.path, {
         method: api.auth.login.method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(validated),
       });
-      
+
       if (!res.ok) {
         if (res.status === 401) throw new Error("Invalid credentials");
         throw new Error("Login failed");
@@ -28,18 +28,21 @@ export function useAuth() {
       setLocation("/admin/dashboard");
     },
     onError: (error: Error) => {
-      toast({ 
-        title: "Login Failed", 
+      toast({
+        title: "Login Failed",
         description: error.message,
-        variant: "destructive"
+        variant: "destructive",
       });
-    }
+    },
   });
 
   const logout = () => {
     localStorage.removeItem("admin_token");
     setLocation("/admin/login");
-    toast({ title: "Logged out", description: "You have been securely logged out." });
+    toast({
+      title: "Logged out",
+      description: "You have been securely logged out.",
+    });
   };
 
   const getToken = () => localStorage.getItem("admin_token");
@@ -49,6 +52,6 @@ export function useAuth() {
     login,
     logout,
     getToken,
-    isAuthenticated
+    isAuthenticated,
   };
 }

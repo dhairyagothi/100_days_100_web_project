@@ -2,12 +2,20 @@ const mongoose = require("mongoose");
 
 const ApplicationSchema = new mongoose.Schema(
   {
-    job:        { type: mongoose.Schema.Types.ObjectId, ref: "Job", required: true },
-    candidate:  { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    coverLetter:{ type: String, required: true, maxlength: 2000 },
-    status:     { type: String, enum: ["pending", "reviewed", "accepted", "rejected"], default: "pending" },
+    job: { type: mongoose.Schema.Types.ObjectId, ref: "Job", required: true },
+    candidate: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    coverLetter: { type: String, required: true, maxlength: 2000 },
+    status: {
+      type: String,
+      enum: ["pending", "reviewed", "accepted", "rejected"],
+      default: "pending",
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // One application per candidate per job

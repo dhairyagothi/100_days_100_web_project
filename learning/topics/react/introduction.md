@@ -10,12 +10,12 @@ In this lesson, you will learn what React is, how it fits into the modern web st
 
 React is **not** a full framework like Angular. It focuses on the **view layer**—what users see and interact with. You combine React with other tools (routing, state management, build tools) to build complete applications.
 
-| Term | Meaning |
-| :--- | :--- |
-| **Library** | You call React; it does not control your entire app structure |
-| **Component** | A reusable UI building block (button, navbar, page section) |
-| **Virtual DOM** | React's in-memory representation of the UI for efficient updates |
-| **Declarative** | You describe *what* the UI should look like; React handles *how* to update it |
+| Term            | Meaning                                                                       |
+| :-------------- | :---------------------------------------------------------------------------- |
+| **Library**     | You call React; it does not control your entire app structure                 |
+| **Component**   | A reusable UI building block (button, navbar, page section)                   |
+| **Virtual DOM** | React's in-memory representation of the UI for efficient updates              |
+| **Declarative** | You describe _what_ the UI should look like; React handles _how_ to update it |
 
 ```jsx
 function Welcome() {
@@ -55,6 +55,7 @@ React sits on top of the fundamentals you already know:
 
     <rect x="200" y="150" width="180" height="40" rx="6" class="svg-node" style="fill: rgba(97, 218, 251, 0.15); stroke: #61dafb;" />
     <text x="290" y="175" text-anchor="middle" class="svg-text svg-text-heading">React.js</text>
+
   </svg>
 </div>
 
@@ -95,6 +96,7 @@ Follow these lessons in order for the smoothest learning experience:
 
     <rect x="450" y="40" width="120" height="40" rx="6" class="svg-node" style="stroke: #61dafb;" />
     <text x="510" y="65" text-anchor="middle" class="svg-text" style="font-size: 9px;">Hooks &amp; Projects</text>
+
   </svg>
 </div>
 
@@ -148,6 +150,7 @@ Follow these lessons in order for the smoothest learning experience:
 
     <rect x="200" y="240" width="180" height="35" rx="6" class="svg-node" style="stroke: #10b981;" />
     <text x="290" y="262" text-anchor="middle" class="svg-text" style="fill: #10b981;">Interactive Application</text>
+
   </svg>
 </div>
 

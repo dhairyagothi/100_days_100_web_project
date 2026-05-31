@@ -16,11 +16,11 @@ A modern, responsive web application that aggregates and displays upcoming compe
   - Shows days, hours, minutes, seconds for contests far away
   - Reduces to hours/minutes/seconds as the contest approaches
 
-- **Smart Filtering**: 
+- **Smart Filtering**:
   - Filter by platform
   - Sort by time or platform
 
-- **Responsive Design**: 
+- **Responsive Design**:
   - Works seamlessly on desktop, tablet, and mobile devices
   - Mobile-optimized grid layout
   - Touch-friendly controls

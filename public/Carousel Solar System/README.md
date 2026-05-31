@@ -10,23 +10,23 @@ The project displays the Sun and all eight planets in a beautiful carousel inter
 
 ## ✨ Features
 
-* Responsive design for desktop, tablet, and mobile
-* Previous and Next navigation buttons
-* Mouse scroll navigation
-* Keyboard arrow navigation
-* Touch swipe support for mobile devices
-* Mini planet navigation menu
-* Animated star background
-* Floating planet animations
+- Responsive design for desktop, tablet, and mobile
+- Previous and Next navigation buttons
+- Mouse scroll navigation
+- Keyboard arrow navigation
+- Touch swipe support for mobile devices
+- Mini planet navigation menu
+- Animated star background
+- Floating planet animations
 
 ---
 
 ## 🛠️ Technologies Used
 
-* HTML5
-* CSS3
-* JavaScript (ES6)
-* Google Fonts
+- HTML5
+- CSS3
+- JavaScript (ES6)
+- Google Fonts
 
 ---
 
@@ -57,12 +57,12 @@ Carousel-Solar-System/
 
 ## 🎮 Navigation Controls
 
-* NEXT button → Show next planet
-* PREV button → Show previous planet
-* Mouse scroll → Navigate between planets
-* Arrow keys → Left/Right navigation
-* Mini planet icons → Jump to a specific planet
-* Swipe gestures → Mobile navigation
+- NEXT button → Show next planet
+- PREV button → Show previous planet
+- Mouse scroll → Navigate between planets
+- Arrow keys → Left/Right navigation
+- Mini planet icons → Jump to a specific planet
+- Swipe gestures → Mobile navigation
 
 ---
 
@@ -96,21 +96,22 @@ git https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Ca
 
 The website works smoothly on:
 
-* Desktop
-* Laptop
-* Tablet
-* Mobile
+- Desktop
+- Laptop
+- Tablet
+- Mobile
 
 ---
 
 ## ▶️ How to Run
 
 1. Clone the repository:
-
    - **My Fork (with updated README and Code):**
+
      ```bash
      git clone https://github.com/gayatridot/100_days_100_web_project.git
      ```
+
      Navigate to:
      [Carousel Solar System (Fork)](https://github.com/gayatridot/100_days_100_web_project/tree/fix/carousel-solar-system/public/Carousel%20Solar%20System)
 
@@ -121,9 +122,9 @@ The website works smoothly on:
      Navigate to:
      [Carousel Solar System (Upstream)](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Carousel%20Solar%20System)
 
-2. Open the project folder.  
-3. Open `index.html` in your browser.  
-4. Explore the Solar System 🚀  
+2. Open the project folder.
+3. Open `index.html` in your browser.
+4. Explore the Solar System 🚀
 5. (Optional) Try the **Live Demo**: [Solar System Carousel](https://100-days-100-web-project-5sit.vercel.app/)
 
 ---
@@ -134,8 +135,6 @@ The website works smoothly on:
 
 ---
 
-
 ## 📄 License
 
 This project is created for educational and portfolio purposes.
-

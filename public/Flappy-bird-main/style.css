@@ -1,4 +1,10 @@
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 body {
   background: radial-gradient(ellipse at 50% 40%, #1b2a3b 0%, #0d1117 100%);
@@ -21,14 +27,14 @@ body {
 #gameCanvas {
   display: block;
   border-radius: 10px;
-  border: 2px solid rgba(255, 255, 255, 0.10);
+  border: 2px solid rgba(255, 255, 255, 0.1);
   box-shadow:
-    0 0  0   1px rgba(255,255,255,0.04),
-    0 8px 32px rgba(0,0,0,0.70),
-    0 0 80px  rgba(100,200,255,0.07);
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 8px 32px rgba(0, 0, 0, 0.7),
+    0 0 80px rgba(100, 200, 255, 0.07);
   /* Responsive: shrink on small viewports without stretching */
-  max-width:  min(1000px, 100vw);
-  max-height: min(600px,  calc(100dvh - 52px));
+  max-width: min(1000px, 100vw);
+  max-height: min(600px, calc(100dvh - 52px));
   aspect-ratio: 1000 / 600;
   width: 100%;
   touch-action: none;
@@ -47,7 +53,10 @@ body {
 
 /* Mobile: stack nicely */
 @media (max-width: 600px) {
-  .hint { font-size: 11px; margin-top: 6px; }
+  .hint {
+    font-size: 11px;
+    margin-top: 6px;
+  }
 }
 .back-home {
   position: fixed;
@@ -61,11 +70,11 @@ body {
   text-decoration: none;
   font-weight: 600;
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   transition: all 0.2s ease;
 }
 
 .back-home:hover {
   transform: translateY(-2px);
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.15);
 }

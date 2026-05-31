@@ -19,7 +19,12 @@ export default function App() {
       visibility: inputData.Item_Visibility,
       fatContent: inputData.Item_Fat_Content === 0 ? "Low Fat" : "Regular",
       itemType: ["Food", "Health & Household", "Others"][inputData.Item_Type],
-      outletType: ["Grocery", "Supermarket 1", "Supermarket 2", "Supermarket 3"][inputData.Outlet_Type],
+      outletType: [
+        "Grocery",
+        "Supermarket 1",
+        "Supermarket 2",
+        "Supermarket 3",
+      ][inputData.Outlet_Type],
       outletSize: ["Small", "Medium", "High"][inputData.Outlet_Size],
       location: ["Tier 1", "Tier 2", "Tier 3"][inputData.Outlet_Location_Type],
       timestamp: new Date().toLocaleTimeString(),
@@ -38,12 +43,11 @@ export default function App() {
         <Routes>
           <Route
             path="/"
-            element={<PredictPage onPrediction={addToHistory} history={history} />}
+            element={
+              <PredictPage onPrediction={addToHistory} history={history} />
+            }
           />
-          <Route
-            path="/history"
-            element={<HistoryPage history={history} />}
-          />
+          <Route path="/history" element={<HistoryPage history={history} />} />
         </Routes>
       </main>
     </div>

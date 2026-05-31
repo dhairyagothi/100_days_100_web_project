@@ -10,6 +10,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <CoinContextProvider>
       <App />
     </CoinContextProvider>
-  </HashRouter>
-
+  </HashRouter>,
 );

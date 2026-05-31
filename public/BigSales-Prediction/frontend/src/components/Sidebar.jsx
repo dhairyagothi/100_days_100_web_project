@@ -8,7 +8,8 @@ export default function Sidebar({ historyCount }) {
       <div className="sidebar-logo">
         <span className="logo-icon">📦</span>
         <span className="logo-text">
-          BigSales<br />
+          BigSales
+          <br />
           <small>PREDICTOR</small>
         </span>
       </div>

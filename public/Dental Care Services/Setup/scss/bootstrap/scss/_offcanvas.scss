@@ -22,7 +22,8 @@
 
   .btn-close {
     padding: ($offcanvas-padding-y / 2) ($offcanvas-padding-x / 2);
-    margin: ($offcanvas-padding-y / -2) ($offcanvas-padding-x / -2) ($offcanvas-padding-y / -2) auto;
+    margin: ($offcanvas-padding-y / -2) ($offcanvas-padding-x / -2)
+      ($offcanvas-padding-y / -2) auto;
   }
 }
 

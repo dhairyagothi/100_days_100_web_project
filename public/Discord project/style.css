@@ -116,21 +116,24 @@
 @font-face {
   font-family: GintoNord;
   font-weight: 500;
-  src: url(fonts/Ginto-Nord/Ginto-Nord-500.woff2) format("woff2"),
+  src:
+    url(fonts/Ginto-Nord/Ginto-Nord-500.woff2) format("woff2"),
     url(fonts/Ginto-Nord/Ginto-Nord-500.woff) format("woff");
 }
 
 @font-face {
   font-family: GintoNord;
   font-weight: 600;
-  src: url(fonts/Ginto-Nord/Ginto-Nord-600.woff2) format("woff2"),
+  src:
+    url(fonts/Ginto-Nord/Ginto-Nord-600.woff2) format("woff2"),
     url(fonts/Ginto-Nord/Ginto-Nord-600.woff) format("woff");
 }
 
 @font-face {
   font-family: GintoNord;
   font-weight: 700;
-  src: url(fonts/Ginto-Nord/Ginto-Nord-700.woff2) format("woff2"),
+  src:
+    url(fonts/Ginto-Nord/Ginto-Nord-700.woff2) format("woff2"),
     url(fonts/Ginto-Nord/Ginto-Nord-700.woff) format("woff");
 }
 

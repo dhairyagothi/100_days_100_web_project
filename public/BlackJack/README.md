@@ -4,14 +4,15 @@ A browser-based Blackjack card game built with vanilla HTML, CSS, and JavaScript
 
 ## 🎮 How to Play
 
-| Action | What it does |
-|--------|--------------|
-| **Hit** | Draw one card from the deck |
-| **Stand** | Stop drawing; the dealer plays automatically |
-| **Deal** | Reset the board and start a new round |
-| **Play Again** | Shortcut to start a new round immediately |
+| Action         | What it does                                 |
+| -------------- | -------------------------------------------- |
+| **Hit**        | Draw one card from the deck                  |
+| **Stand**      | Stop drawing; the dealer plays automatically |
+| **Deal**       | Reset the board and start a new round        |
+| **Play Again** | Shortcut to start a new round immediately    |
 
 ### Rules
+
 - Get as close to **21** as possible without going over.
 - **Face cards** (K, Q, J) are worth **10**.
 - **Aces** count as **11**, or **1** if 11 would cause a bust.

@@ -1,4 +1,11 @@
-import { registrations, users, type InsertRegistration, type InsertUser, type Registration, type User } from "@shared/schema";
+import {
+  registrations,
+  users,
+  type InsertRegistration,
+  type InsertUser,
+  type Registration,
+  type User,
+} from "@shared/schema";
 import { eq, desc, ilike, and, or } from "drizzle-orm";
 import { randomUUID } from "crypto";
 
@@ -11,14 +18,19 @@ async function getDb() {
   return dbInstance;
 }
 
-const useInMemoryStorage = !process.env.DATABASE_URL && process.env.NODE_ENV !== "production";
+const useInMemoryStorage =
+  !process.env.DATABASE_URL && process.env.NODE_ENV !== "production";
 
 export interface IStorage {
   getUserByEmail(email: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
 
   createRegistration(registration: InsertRegistration): Promise<Registration>;
-  getRegistrations(filters?: { search?: string; college?: string; domain?: string }): Promise<Registration[]>;
+  getRegistrations(filters?: {
+    search?: string;
+    college?: string;
+    domain?: string;
+  }): Promise<Registration[]>;
   getRegistration(id: number): Promise<Registration | undefined>;
 }
 
@@ -29,7 +41,9 @@ export class InMemoryStorage implements IStorage {
   private nextRegistrationId = 1;
 
   async getUserByEmail(email: string): Promise<User | undefined> {
-    return this.users.find((user) => user.email.toLowerCase() === email.toLowerCase());
+    return this.users.find(
+      (user) => user.email.toLowerCase() === email.toLowerCase(),
+    );
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
@@ -44,7 +58,9 @@ export class InMemoryStorage implements IStorage {
     return user;
   }
 
-  async createRegistration(insertRegistration: InsertRegistration): Promise<Registration> {
+  async createRegistration(
+    insertRegistration: InsertRegistration,
+  ): Promise<Registration> {
     const registration: Registration = {
       id: this.nextRegistrationId++,
       registrationId: `REG-${randomUUID().slice(0, 8).toUpperCase()}`,
@@ -61,11 +77,20 @@ export class InMemoryStorage implements IStorage {
     return registration;
   }
 
-  async getRegistrations(filters?: { search?: string; college?: string; domain?: string }): Promise<Registration[]> {
+  async getRegistrations(filters?: {
+    search?: string;
+    college?: string;
+    domain?: string;
+  }): Promise<Registration[]> {
     return this.registrations.filter((entry) => {
-      const matchesSearch = !filters?.search || [entry.name, entry.email, entry.registrationId]
-        .some((field) => field.toLowerCase().includes(filters.search!.toLowerCase()));
-      const matchesCollege = !filters?.college || entry.college.toLowerCase().includes(filters.college.toLowerCase());
+      const matchesSearch =
+        !filters?.search ||
+        [entry.name, entry.email, entry.registrationId].some((field) =>
+          field.toLowerCase().includes(filters.search!.toLowerCase()),
+        );
+      const matchesCollege =
+        !filters?.college ||
+        entry.college.toLowerCase().includes(filters.college.toLowerCase());
       const matchesDomain = !filters?.domain || entry.domain === filters.domain;
       return matchesSearch && matchesCollege && matchesDomain;
     });
@@ -85,21 +110,33 @@ export class DatabaseStorage implements IStorage {
 
   async createUser(insertUser: InsertUser): Promise<User> {
     const db = await getDb();
-    const [user] = await db.insert(users).values({ ...insertUser, role: 'admin' }).returning();
+    const [user] = await db
+      .insert(users)
+      .values({ ...insertUser, role: "admin" })
+      .returning();
     return user;
   }
 
-  async createRegistration(insertRegistration: InsertRegistration): Promise<Registration> {
+  async createRegistration(
+    insertRegistration: InsertRegistration,
+  ): Promise<Registration> {
     const db = await getDb();
     const registrationId = `REG-${randomUUID().slice(0, 8).toUpperCase()}`;
-    const [registration] = await db.insert(registrations).values({
-      ...insertRegistration,
-      registrationId
-    }).returning();
+    const [registration] = await db
+      .insert(registrations)
+      .values({
+        ...insertRegistration,
+        registrationId,
+      })
+      .returning();
     return registration;
   }
 
-  async getRegistrations(filters?: { search?: string; college?: string; domain?: string }): Promise<Registration[]> {
+  async getRegistrations(filters?: {
+    search?: string;
+    college?: string;
+    domain?: string;
+  }): Promise<Registration[]> {
     const db = await getDb();
     let conditions = [];
 
@@ -108,8 +145,8 @@ export class DatabaseStorage implements IStorage {
         or(
           ilike(registrations.name, `%${filters.search}%`),
           ilike(registrations.email, `%${filters.search}%`),
-          ilike(registrations.registrationId, `%${filters.search}%`)
-        )
+          ilike(registrations.registrationId, `%${filters.search}%`),
+        ),
       );
     }
 
@@ -121,7 +158,10 @@ export class DatabaseStorage implements IStorage {
       conditions.push(eq(registrations.domain, filters.domain));
     }
 
-    const query = db.select().from(registrations).orderBy(desc(registrations.createdAt));
+    const query = db
+      .select()
+      .from(registrations)
+      .orderBy(desc(registrations.createdAt));
 
     if (conditions.length > 0) {
       return await query.where(and(...conditions));
@@ -132,9 +172,14 @@ export class DatabaseStorage implements IStorage {
 
   async getRegistration(id: number): Promise<Registration | undefined> {
     const db = await getDb();
-    const [registration] = await db.select().from(registrations).where(eq(registrations.id, id));
+    const [registration] = await db
+      .select()
+      .from(registrations)
+      .where(eq(registrations.id, id));
     return registration;
   }
 }
 
-export const storage = useInMemoryStorage ? new InMemoryStorage() : new DatabaseStorage();
+export const storage = useInMemoryStorage
+  ? new InMemoryStorage()
+  : new DatabaseStorage();

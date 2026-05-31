@@ -9,7 +9,7 @@
 Hooks always start with `use` (e.g. `useState`, `useEffect`). They connect your component logic to React's rendering system.
 
 ```jsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 function Timer() {
   const [seconds, setSeconds] = useState(0);
@@ -47,26 +47,27 @@ React enforces two rules:
 
     <rect x="360" y="95" width="140" height="35" rx="6" class="svg-node" />
     <text x="430" y="117" text-anchor="middle" class="svg-text" style="font-size: 9px;">Components or custom hooks</text>
+
   </svg>
 </div>
 
-| Rule | Meaning |
-| :--- | :--- |
-| **Top level only** | Never call hooks inside loops, conditions, or nested functions |
+| Rule                     | Meaning                                                                |
+| :----------------------- | :--------------------------------------------------------------------- |
+| **Top level only**       | Never call hooks inside loops, conditions, or nested functions         |
 | **React functions only** | Call from function components or custom hooks—not regular JS functions |
 
 ---
 
 ## 3. Built-in Hooks (Common Set)
 
-| Hook | Purpose |
-| :--- | :--- |
-| `useState` | Local state |
-| `useEffect` | Side effects (fetch, subscriptions, DOM sync) |
-| `useContext` | Read shared context |
-| `useRef` | Mutable ref without re-render |
-| `useMemo` / `useCallback` | Performance optimization |
-| `useReducer` | Complex state logic |
+| Hook                      | Purpose                                       |
+| :------------------------ | :-------------------------------------------- |
+| `useState`                | Local state                                   |
+| `useEffect`               | Side effects (fetch, subscriptions, DOM sync) |
+| `useContext`              | Read shared context                           |
+| `useRef`                  | Mutable ref without re-render                 |
+| `useMemo` / `useCallback` | Performance optimization                      |
+| `useReducer`              | Complex state logic                           |
 
 You will study `useState` and `useEffect` in depth in the next lessons.
 
@@ -82,8 +83,8 @@ function useWindowWidth() {
 
   useEffect(() => {
     const onResize = () => setWidth(window.innerWidth);
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, []);
 
   return width;
@@ -120,6 +121,7 @@ Custom hooks share **stateful logic**, not state itself (each call gets its own 
     <rect x="300" y="55" width="200" height="50" rx="6" class="svg-node" style="stroke: #61dafb;" />
     <text x="400" y="78" text-anchor="middle" class="svg-text svg-text-heading">useEffect(() => { ... }, [deps])</text>
     <text x="400" y="95" text-anchor="middle" class="svg-text" style="font-size: 9px;">+ cleanup return function</text>
+
   </svg>
 </div>
 
@@ -158,7 +160,7 @@ Outline a custom hook `useToggle(initial)` that returns `[value, toggle]` where 
 ##### Solution
 
 ```jsx
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
 function useToggle(initial = false) {
   const [value, setValue] = useState(initial);
@@ -170,7 +172,7 @@ function Panel() {
   const [open, toggleOpen] = useToggle(false);
   return (
     <>
-      <button onClick={toggleOpen}>{open ? 'Close' : 'Open'}</button>
+      <button onClick={toggleOpen}>{open ? "Close" : "Open"}</button>
       {open && <p>Panel content</p>}
     </>
   );

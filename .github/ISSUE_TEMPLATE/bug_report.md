@@ -1,9 +1,9 @@
 ---
 name: Bug report
 about: Report a reproducible bug or regression.
-title: '[Bug]: '
-labels: ['bug']
-assignees: ''
+title: "[Bug]: "
+labels: ["bug"]
+assignees: ""
 ---
 
 **Describe the bug**

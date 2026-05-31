@@ -42,7 +42,9 @@ function buildDiceSVG(value, color) {
   const pip = "#222222";
   const pips = value
     ? (PIP_LAYOUTS[value] || [])
-        .map(([cx, cy]) => `<circle cx="${cx}" cy="${cy}" r="7" fill="${pip}"/>`)
+        .map(
+          ([cx, cy]) => `<circle cx="${cx}" cy="${cy}" r="7" fill="${pip}"/>`,
+        )
         .join("")
     : `<text x="50" y="56" text-anchor="middle" font-size="30" fill="${
         isDark ? "#555" : "#ccc"
@@ -216,13 +218,13 @@ function buildTallySVG(count) {
     const gx = x;
     for (let i = 0; i < 4; i++) {
       lines.push(
-        `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke-width="2" stroke-linecap="round"/>`
+        `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke-width="2" stroke-linecap="round"/>`,
       );
       x += sp;
     }
     // diagonal cross-stroke
     lines.push(
-      `<line x1="${gx - 3}" y1="${y2 + 3}" x2="${x + 1}" y2="${y1 - 3}" stroke-width="2" stroke-linecap="round"/>`
+      `<line x1="${gx - 3}" y1="${y2 + 3}" x2="${x + 1}" y2="${y1 - 3}" stroke-width="2" stroke-linecap="round"/>`,
     );
     x += 10; // gap after the group
   }
@@ -230,14 +232,14 @@ function buildTallySVG(count) {
   // Draw leftover individual marks
   for (let i = 0; i < remainder; i++) {
     lines.push(
-      `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke-width="2" stroke-linecap="round"/>`
+      `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke-width="2" stroke-linecap="round"/>`,
     );
     x += sp;
   }
 
   const w = x + 4;
   return `<svg viewBox="0 0 ${w} 30" width="${w}" height="28" style="overflow:visible">${lines.join(
-    ""
+    "",
   )}</svg>`;
 }
 
@@ -261,7 +263,7 @@ function updateStats() {
     dist.innerHTML += `<div class="dist-item">
                     <div class="dist-number">${i}</div>
                     <div class="dist-tally">${buildTallySVG(
-                      state.distribution[i]
+                      state.distribution[i],
                     )}</div>
                 </div>`;
   }

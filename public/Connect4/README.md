@@ -6,26 +6,26 @@ This project recreates the classic Connect 4 experience with modern frontend tec
 
 ---
 
-##  Features
+## Features
 
-* 🎯 Classic Connect 4 gameplay
-* 🔴🟡 Two-player turn-based system
-* ✨ Smooth falling disc animations
-* 🏆 Winner detection system
-* 🔄 Restart game functionality
-* 📱 Fully responsive design
-* ⚡ Fast and lightweight React application
-* 🎨 Modern UI with clean styling
-* 🧠 Efficient game logic implementation
+- 🎯 Classic Connect 4 gameplay
+- 🔴🟡 Two-player turn-based system
+- ✨ Smooth falling disc animations
+- 🏆 Winner detection system
+- 🔄 Restart game functionality
+- 📱 Fully responsive design
+- ⚡ Fast and lightweight React application
+- 🎨 Modern UI with clean styling
+- 🧠 Efficient game logic implementation
 
 ---
 
 ## 🛠️ Tech Stack
 
-* **React**
-* **Vite**
-* **Tailwind CSS**
-* **Framer Motion**
+- **React**
+- **Vite**
+- **Tailwind CSS**
+- **Framer Motion**
 
 ---
 
@@ -51,12 +51,12 @@ connect4-game/
 1. Players take turns dropping discs into columns.
 2. The disc falls to the lowest available position.
 3. The first player to connect:
-
-   * 4 horizontally
-   * 4 vertically
-   * 4 diagonally
+   - 4 horizontally
+   - 4 vertically
+   - 4 diagonally
 
    wins the game.
+
 4. Use the **Restart Game** button to play again.
 
 ---
@@ -86,13 +86,14 @@ Run the development server:
 ```bash
 npm run dev
 ```
+
 ## 🌟 Future Enhancements
 
-* 🔊 Sound effects
-* 🎆 Win animations
-* 🏅 Score tracking
-* 👆 Hover column preview
-* 🎵 Background music
+- 🔊 Sound effects
+- 🎆 Win animations
+- 🏅 Score tracking
+- 👆 Hover column preview
+- 🎵 Background music
 
 ---
 
@@ -102,10 +103,10 @@ Contributions are welcome.
 
 If you'd like to improve this project:
 
-* Fork the repository
-* Create a feature branch
-* Commit your changes
-* Open a pull request
+- Fork the repository
+- Create a feature branch
+- Commit your changes
+- Open a pull request
 
 ---
 

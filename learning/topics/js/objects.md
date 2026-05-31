@@ -12,7 +12,7 @@ Use object literals:
 const user = {
   name: "Vasud",
   role: "Learner",
-  active: true
+  active: true,
 };
 ```
 
@@ -21,11 +21,13 @@ const user = {
 ## 2. Accessing properties
 
 Dot notation:
+
 ```javascript
 console.log(user.name);
 ```
 
 Bracket notation:
+
 ```javascript
 console.log(user["role"]);
 ```
@@ -68,6 +70,7 @@ console.log(restored.hello); // "world"
 ### Task:
 
 Create:
+
 - a `user` object with `name` and `theme`
 - a JSON string using `JSON.stringify`
 - parse it back using `JSON.parse`
@@ -82,4 +85,3 @@ const parsed = JSON.parse(text);
 
 console.log(parsed.name); // "Vasud"
 ```
-

@@ -1,5 +1,9 @@
-import { z } from 'zod';
-import { insertRegistrationSchema, insertUserSchema, registrations } from './schema';
+import { z } from "zod";
+import {
+  insertRegistrationSchema,
+  insertUserSchema,
+  registrations,
+} from "./schema";
 
 export const errorSchemas = {
   validation: z.object({
@@ -20,8 +24,8 @@ export const errorSchemas = {
 export const api = {
   auth: {
     login: {
-      method: 'POST' as const,
-      path: '/api/admin/login' as const,
+      method: "POST" as const,
+      path: "/api/admin/login" as const,
       input: insertUserSchema,
       responses: {
         200: z.object({ token: z.string() }),
@@ -31,10 +35,10 @@ export const api = {
   },
   registrations: {
     create: {
-      method: 'POST' as const,
-      path: '/api/register' as const,
+      method: "POST" as const,
+      path: "/api/register" as const,
       input: insertRegistrationSchema.extend({
-        domain: z.enum(['Tech', 'Non-Tech']),
+        domain: z.enum(["Tech", "Non-Tech"]),
         email: z.string().email(),
       }),
       responses: {
@@ -43,13 +47,15 @@ export const api = {
       },
     },
     list: {
-      method: 'GET' as const,
-      path: '/api/registrations' as const,
-      input: z.object({
-        search: z.string().optional(),
-        college: z.string().optional(),
-        domain: z.enum(['Tech', 'Non-Tech']).optional(),
-      }).optional(),
+      method: "GET" as const,
+      path: "/api/registrations" as const,
+      input: z
+        .object({
+          search: z.string().optional(),
+          college: z.string().optional(),
+          domain: z.enum(["Tech", "Non-Tech"]).optional(),
+        })
+        .optional(),
       responses: {
         200: z.array(z.custom<typeof registrations.$inferSelect>()),
         401: errorSchemas.unauthorized,
@@ -58,8 +64,8 @@ export const api = {
   },
   analytics: {
     get: {
-      method: 'GET' as const,
-      path: '/api/analytics' as const,
+      method: "GET" as const,
+      path: "/api/analytics" as const,
       responses: {
         200: z.object({
           totalRegistrations: z.number(),
@@ -67,18 +73,23 @@ export const api = {
             tech: z.number(),
             nonTech: z.number(),
           }),
-          dailyRegistrations: z.array(z.object({
-            date: z.string(),
-            count: z.number(),
-          })),
+          dailyRegistrations: z.array(
+            z.object({
+              date: z.string(),
+              count: z.number(),
+            }),
+          ),
         }),
         401: errorSchemas.unauthorized,
       },
-    }
-  }
+    },
+  },
 };
 
-export function buildUrl(path: string, params?: Record<string, string | number>): string {
+export function buildUrl(
+  path: string,
+  params?: Record<string, string | number>,
+): string {
   let url = path;
   if (params) {
     Object.entries(params).forEach(([key, value]) => {

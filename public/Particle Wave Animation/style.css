@@ -1,6 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap");
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -23,7 +25,7 @@
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Syne', sans-serif;
+  font-family: "Syne", sans-serif;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -58,7 +60,7 @@ body {
 .header .subtitle {
   color: var(--text-muted);
   font-size: 0.95rem;
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   letter-spacing: 0.02em;
 }
 
@@ -81,9 +83,9 @@ body {
   position: absolute;
   top: 12px;
   right: 14px;
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 11px;
-  color: rgba(255,255,255,0.25);
+  color: rgba(255, 255, 255, 0.25);
   pointer-events: none;
   letter-spacing: 0.05em;
 }
@@ -111,7 +113,7 @@ body {
 
 .control-group label {
   font-size: 11px;
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-muted);
@@ -142,7 +144,9 @@ body {
   border-radius: 50%;
   background: var(--accent);
   cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
 }
 
 .slider-row input[type="range"]::-webkit-slider-thumb:hover {
@@ -160,7 +164,7 @@ body {
 }
 
 .slider-row span {
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 13px;
   font-weight: 700;
   color: var(--accent);
@@ -186,7 +190,7 @@ body {
   border: 1px solid var(--border);
   background: var(--surface2);
   color: var(--text-muted);
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 11px;
   letter-spacing: 0.04em;
   cursor: pointer;
@@ -211,7 +215,7 @@ body {
   border: 1px solid var(--border);
   background: var(--surface2);
   color: var(--text);
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 11px;
   letter-spacing: 0.04em;
   cursor: pointer;

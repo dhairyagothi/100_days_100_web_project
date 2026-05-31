@@ -1,4 +1,11 @@
-import React, { useEffect, useMemo, useReducer, useState, useRef, useCallback } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useReducer,
+  useState,
+  useRef,
+  useCallback,
+} from "react";
 import WordDisplay from "./WordDisplay";
 import Keyboard from "./Keyboard";
 import HangmanSVG from "./HangmanSVG";
@@ -33,7 +40,7 @@ function reducer(state: State, action: Action): State {
         wrongCount: 0,
         status: "PLAYING",
         revealLevel: 0,
-        hintData: action.hintData ?? null
+        hintData: action.hintData ?? null,
       };
     case "MAKE_GUESS": {
       if (state.status !== "PLAYING") return state;
@@ -43,12 +50,14 @@ function reducer(state: State, action: Action): State {
       const guessedLetters = [...state.guessedLetters, letter];
 
       // Compute if all alphabet letters of the word are guessed
-      const revealedAll = state.word.split("").every(ch => {
+      const revealedAll = state.word.split("").every((ch) => {
         if (!/^[a-zA-Z]$/.test(ch)) return true; // non-letters are pre-revealed
         return guessedLetters.includes(ch.toLowerCase());
       });
 
-      const wrong = state.word.toLowerCase().includes(letter) ? state.wrongCount : state.wrongCount + 1;
+      const wrong = state.word.toLowerCase().includes(letter)
+        ? state.wrongCount
+        : state.wrongCount + 1;
       const status = revealedAll ? "WON" : wrong >= 6 ? "LOST" : "PLAYING";
 
       return { ...state, guessedLetters, wrongCount: wrong, status };
@@ -73,7 +82,7 @@ export default function Game() {
     wrongCount: 0,
     status: "PLAYING",
     revealLevel: 0,
-    hintData: null
+    hintData: null,
   });
 
   const [loadingHint, setLoadingHint] = useState(false);
@@ -98,12 +107,18 @@ export default function Game() {
         const key = state.word.toLowerCase();
         if (prefetchRef.current[key] !== undefined) {
           const cached = prefetchRef.current[key];
-          if (!cancelled) dispatch({ type: "START_GAME", word: state.word, hintData: cached ?? null });
+          if (!cancelled)
+            dispatch({
+              type: "START_GAME",
+              word: state.word,
+              hintData: cached ?? null,
+            });
           return;
         }
 
         const h = await fetchDefinition(state.word);
-        if (!cancelled) dispatch({ type: "START_GAME", word: state.word, hintData: h });
+        if (!cancelled)
+          dispatch({ type: "START_GAME", word: state.word, hintData: h });
       } catch (err) {
         console.warn("hint load error", err);
       } finally {
@@ -139,7 +154,10 @@ export default function Game() {
   // Physical keyboard listener
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement
+      ) {
         return;
       }
       const k = e.key.toLowerCase();
@@ -155,7 +173,11 @@ export default function Game() {
     // If first reveal, treat first letter as correct guess to show it visually and count in win calculation
     if (state.revealLevel === 0) {
       const first = state.word[0]?.toLowerCase();
-      if (first && /^[a-z]$/.test(first) && !state.guessedLetters.includes(first)) {
+      if (
+        first &&
+        /^[a-z]$/.test(first) &&
+        !state.guessedLetters.includes(first)
+      ) {
         dispatch({ type: "MAKE_GUESS", letter: first });
       }
     }
@@ -166,7 +188,7 @@ export default function Game() {
     const newWord = pickRandomWord();
     setLoadingHint(true);
     fetchDefinition(newWord)
-      .then(h => {
+      .then((h) => {
         prefetchRef.current[newWord.toLowerCase()] = h ?? null;
         dispatch({ type: "START_GAME", word: newWord, hintData: h });
       })
@@ -210,7 +232,7 @@ export default function Game() {
             guessedLetters={state.guessedLetters}
             revealFirst={state.revealLevel >= 1}
           />
-          
+
           <div className="status-display">
             {state.status === "WON" && (
               <div className="status-alert win-alert animate-fade-in">
@@ -219,11 +241,15 @@ export default function Game() {
             )}
             {state.status === "LOST" && (
               <div className="status-alert lose-alert animate-fade-in">
-                <span>You Lost — the word was <strong className="correct-word">{state.word}</strong></span>
+                <span>
+                  You Lost — the word was{" "}
+                  <strong className="correct-word">{state.word}</strong>
+                </span>
               </div>
             )}
             <div className="attempts-badge">
-              Attempts left: <span className="remaining-count">{6 - state.wrongCount}</span>
+              Attempts left:{" "}
+              <span className="remaining-count">{6 - state.wrongCount}</span>
             </div>
           </div>
 
@@ -247,4 +273,3 @@ export default function Game() {
     </main>
   );
 }
-

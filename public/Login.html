@@ -38,14 +38,17 @@
           <h2 class="auth-title-1">Login</h2>
 
           <!-- Status message area -->
-          <div id="statusMsg" style="
-            display:none;
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 13px;
-            margin-bottom: 16px;
-            text-align: center;
-          "></div>
+          <div
+            id="statusMsg"
+            style="
+              display: none;
+              padding: 10px 14px;
+              border-radius: 8px;
+              font-size: 13px;
+              margin-bottom: 16px;
+              text-align: center;
+            "
+          ></div>
 
           <form id="loginForm" class="auth-form">
             <div class="form-group">
@@ -70,7 +73,12 @@
                 autocomplete="current-password"
                 required
               />
-              <span class="toggle-password" onclick="togglePassword()" title="Show/hide password">👁</span>
+              <span
+                class="toggle-password"
+                onclick="togglePassword()"
+                title="Show/hide password"
+                >👁</span
+              >
             </div>
 
             <button type="submit" class="button home-btn" id="loginBtn">
@@ -80,7 +88,9 @@
           </form>
 
           <p class="already-signed-up">
-            <a href="./ForgotPassword.html" id="forgotPasswordLink">Forgot Password?</a>
+            <a href="./ForgotPassword.html" id="forgotPasswordLink"
+              >Forgot Password?</a
+            >
           </p>
 
           <p class="already-signed-up">
@@ -140,7 +150,10 @@
           const storedRaw = localStorage.getItem(username);
 
           if (!storedRaw) {
-            showStatus("No account found for that username. Please sign up first.", "error");
+            showStatus(
+              "No account found for that username. Please sign up first.",
+              "error",
+            );
             return;
           }
 
@@ -148,7 +161,10 @@
           try {
             userData = JSON.parse(storedRaw);
           } catch (e) {
-            showStatus("Account data is corrupted. Please sign up again.", "error");
+            showStatus(
+              "Account data is corrupted. Please sign up again.",
+              "error",
+            );
             return;
           }
 
@@ -168,7 +184,7 @@
               name: userData.name || username,
               email: userData.email || "",
               loginTime: Date.now(),
-            })
+            }),
           );
 
           showStatus("Login successful! Redirecting…", "success");
@@ -183,4 +199,5 @@
         });
     </script>
   </body>
-</html>  i solving it for gssoc   and the problem in there is an empty space on top 
+</html>
+i solving it for gssoc and the problem in there is an empty space on top

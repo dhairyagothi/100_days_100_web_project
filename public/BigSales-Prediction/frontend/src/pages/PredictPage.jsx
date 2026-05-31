@@ -18,11 +18,14 @@ export default function PredictPage({ onPrediction, history }) {
       <header className="page-header">
         <div>
           <h1>Sales Prediction Dashboard</h1>
-          <p className="subtitle">Enter product & outlet details to predict item outlet sales</p>
+          <p className="subtitle">
+            Enter product & outlet details to predict item outlet sales
+          </p>
         </div>
         {prediction && (
           <div className="header-badge">
-            Last: ₹{prediction.toLocaleString("en-IN", { maximumFractionDigits: 0 })}
+            Last: ₹
+            {prediction.toLocaleString("en-IN", { maximumFractionDigits: 0 })}
           </div>
         )}
       </header>

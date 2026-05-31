@@ -37,23 +37,23 @@ An interactive astronomy dashboard built with HTML, CSS, and JavaScript.
 This project is registered in the main repository index at `index.js` as:
 
 ```js
-['Day 119', 'Astronomy Dashboard', './public/AstronomyDashboard/']
+["Day 119", "Astronomy Dashboard", "./public/AstronomyDashboard/"];
 ```
 
 ## External Resources and APIs
 
-| Resource | Purpose |
-|---|---|
-| `https://api.spaceflightnewsapi.net/v4/articles/` | Live astronomy news feed |
-| `https://api.open-meteo.com/v1/forecast` | Sky and weather forecast data |
-| `https://aa.usno.navy.mil/api/moon/phases/year` | Moon phase calendar data |
-| `https://aa.usno.navy.mil/api/moon/phases/date` | Moon phase for a selected date |
-| `https://aa.usno.navy.mil/api/rsttsp` | Sun/moon rise, set, and transit times |
-| `https://api.farmsense.net/v1/moonphases/` | Moon phase lookup |
+| Resource                                            | Purpose                                         |
+| --------------------------------------------------- | ----------------------------------------------- |
+| `https://api.spaceflightnewsapi.net/v4/articles/`   | Live astronomy news feed                        |
+| `https://api.open-meteo.com/v1/forecast`            | Sky and weather forecast data                   |
+| `https://aa.usno.navy.mil/api/moon/phases/year`     | Moon phase calendar data                        |
+| `https://aa.usno.navy.mil/api/moon/phases/date`     | Moon phase for a selected date                  |
+| `https://aa.usno.navy.mil/api/rsttsp`               | Sun/moon rise, set, and transit times           |
+| `https://api.farmsense.net/v1/moonphases/`          | Moon phase lookup                               |
 | `https://en.wikipedia.org/api/rest_v1/page/summary` | Topic summary text for astronomy learning cards |
-| `https://api.le-systeme-solaire.net/rest/bodies` | Solar system body data and properties |
-| `https://visibleplanets.dev/api` | Visible planet sky object data |
-| `https://images-api.nasa.gov/search` | NASA image search fallback support |
+| `https://api.le-systeme-solaire.net/rest/bodies`    | Solar system body data and properties           |
+| `https://visibleplanets.dev/api`                    | Visible planet sky object data                  |
+| `https://images-api.nasa.gov/search`                | NASA image search fallback support              |
 
 ## External Visual Resources
 
@@ -81,8 +81,6 @@ The project uses local fallback arrays defined in `script.js` for:
 ![Astronomy News Panel](pic2.png)
 
 ![Moon Phase and Sky Tools](pic3.png)
-
-
 
 ## Contribution Context
 

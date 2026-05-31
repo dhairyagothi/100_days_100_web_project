@@ -23,7 +23,7 @@ const Coin = () => {
     };
     fetch(
       `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency.name}&days=10&interval=daily`,
-      options
+      options,
     )
       .then((res) => res.json())
       .then((res) => setHistoricalData(res))
@@ -72,7 +72,9 @@ const Coin = () => {
             <li>Current Price</li>
             <li>
               {currency.symbol}{" "}
-              {coinData.market_data.current_price[currency.name].toLocaleString()}
+              {coinData.market_data.current_price[
+                currency.name
+              ].toLocaleString()}
             </li>
           </ul>
           <ul>

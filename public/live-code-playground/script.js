@@ -1,10 +1,10 @@
 const STORAGE_KEYS = {
-  html: 'live-code-playground-html',
-  css: 'live-code-playground-css',
-  js: 'live-code-playground-js',
-  theme: 'live-code-playground-theme',
-  autoRun: 'live-code-playground-auto-run',
-  template: 'live-code-playground-template',
+  html: "live-code-playground-html",
+  css: "live-code-playground-css",
+  js: "live-code-playground-js",
+  theme: "live-code-playground-theme",
+  autoRun: "live-code-playground-auto-run",
+  template: "live-code-playground-template",
 };
 
 const STARTER_TEMPLATES = {
@@ -188,7 +188,7 @@ const safeStorage = {
     try {
       return localStorage.getItem(key) ?? fallback;
     } catch (error) {
-      console.warn('Storage read failed:', error);
+      console.warn("Storage read failed:", error);
       return fallback;
     }
   },
@@ -196,14 +196,14 @@ const safeStorage = {
     try {
       localStorage.setItem(key, value);
     } catch (error) {
-      console.warn('Storage write failed:', error);
+      console.warn("Storage write failed:", error);
     }
   },
   remove(keys) {
     try {
       keys.forEach((key) => localStorage.removeItem(key));
     } catch (error) {
-      console.warn('Storage clear failed:', error);
+      console.warn("Storage clear failed:", error);
     }
   },
 };
@@ -214,19 +214,19 @@ const getCurrentCode = () => ({
   js: state.editors.js.getValue(),
 });
 
-const escapeClosingScript = (code) => code.replace(/<\/script/gi, '<\\/script');
-const escapeClosingStyle = (code) => code.replace(/<\/style/gi, '<\\/style');
+const escapeClosingScript = (code) => code.replace(/<\/script/gi, "<\\/script");
+const escapeClosingStyle = (code) => code.replace(/<\/style/gi, "<\\/style");
 
 const appendConsoleLine = (level, values) => {
-  const line = document.createElement('p');
+  const line = document.createElement("p");
   line.className = `console-line ${level}`;
-  line.textContent = `[${level}] ${values.join(' ')}`;
+  line.textContent = `[${level}] ${values.join(" ")}`;
   elements.consoleOutput.append(line);
   elements.consoleOutput.scrollTop = elements.consoleOutput.scrollHeight;
 };
 
 const clearConsole = () => {
-  elements.consoleOutput.innerHTML = '';
+  elements.consoleOutput.innerHTML = "";
 };
 
 const buildPreviewDocument = ({ html, css, js }) => `<!DOCTYPE html>
@@ -283,18 +283,18 @@ ${escapeClosingScript(js)}
 
 const setStatus = (message, running = false) => {
   elements.runStatus.textContent = message;
-  elements.runStatus.classList.toggle('is-running', running);
+  elements.runStatus.classList.toggle("is-running", running);
 };
 
 const renderPreview = () => {
   clearConsole();
-  setStatus('Rendering', true);
+  setStatus("Rendering", true);
   const code = getCurrentCode();
   elements.previewFrame.srcdoc = buildPreviewDocument(code);
   saveState();
 
   window.setTimeout(() => {
-    setStatus('Rendered', false);
+    setStatus("Rendered", false);
   }, 220);
 };
 
@@ -315,8 +315,8 @@ const saveState = () => {
 };
 
 const showToast = (message) => {
-  const toast = document.createElement('div');
-  toast.className = 'toast';
+  const toast = document.createElement("div");
+  toast.className = "toast";
   toast.textContent = message;
   elements.toastRegion.append(toast);
 
@@ -326,9 +326,11 @@ const showToast = (message) => {
 };
 
 const getInitialCode = () => {
-  const templateKey = safeStorage.get(STORAGE_KEYS.template, 'landing');
+  const templateKey = safeStorage.get(STORAGE_KEYS.template, "landing");
   const template = STARTER_TEMPLATES[templateKey] || STARTER_TEMPLATES.landing;
-  elements.templateSelect.value = STARTER_TEMPLATES[templateKey] ? templateKey : 'landing';
+  elements.templateSelect.value = STARTER_TEMPLATES[templateKey]
+    ? templateKey
+    : "landing";
 
   return {
     html: safeStorage.get(STORAGE_KEYS.html, template.html),
@@ -339,17 +341,20 @@ const getInitialCode = () => {
 
 const updateMonacoTheme = (theme) => {
   if (!window.monaco) return;
-  monaco.editor.setTheme(theme === 'light' ? 'vs' : 'vs-dark');
+  monaco.editor.setTheme(theme === "light" ? "vs" : "vs-dark");
 };
 
 const applyTheme = (theme) => {
-  const normalizedTheme = theme === 'light' ? 'light' : 'dark';
+  const normalizedTheme = theme === "light" ? "light" : "dark";
   document.documentElement.dataset.theme = normalizedTheme;
   elements.themeToggle.setAttribute(
-    'aria-label',
-    normalizedTheme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme',
+    "aria-label",
+    normalizedTheme === "dark"
+      ? "Switch to light theme"
+      : "Switch to dark theme",
   );
-  elements.themeToggle.querySelector('span').textContent = normalizedTheme === 'dark' ? '☾' : '☀';
+  elements.themeToggle.querySelector("span").textContent =
+    normalizedTheme === "dark" ? "☾" : "☀";
   safeStorage.set(STORAGE_KEYS.theme, normalizedTheme);
   updateMonacoTheme(normalizedTheme);
 };
@@ -359,29 +364,29 @@ const setupEditors = () => {
   const commonOptions = {
     automaticLayout: true,
     fontSize: 14,
-    lineNumbers: 'on',
+    lineNumbers: "on",
     minimap: { enabled: false },
     scrollBeyondLastLine: false,
     tabSize: 2,
-    wordWrap: 'on',
+    wordWrap: "on",
   };
 
   state.editors.html = monaco.editor.create(elements.htmlEditor, {
     ...commonOptions,
     value: initialCode.html,
-    language: 'html',
+    language: "html",
   });
 
   state.editors.css = monaco.editor.create(elements.cssEditor, {
     ...commonOptions,
     value: initialCode.css,
-    language: 'css',
+    language: "css",
   });
 
   state.editors.js = monaco.editor.create(elements.jsEditor, {
     ...commonOptions,
     value: initialCode.js,
-    language: 'javascript',
+    language: "javascript",
   });
 
   Object.values(state.editors).forEach((editor) => {
@@ -390,13 +395,15 @@ const setupEditors = () => {
 };
 
 const resetPlayground = () => {
-  const template = STARTER_TEMPLATES[elements.templateSelect.value] || STARTER_TEMPLATES.landing;
+  const template =
+    STARTER_TEMPLATES[elements.templateSelect.value] ||
+    STARTER_TEMPLATES.landing;
   state.editors.html.setValue(template.html);
   state.editors.css.setValue(template.css);
   state.editors.js.setValue(template.js);
   safeStorage.remove([STORAGE_KEYS.html, STORAGE_KEYS.css, STORAGE_KEYS.js]);
   renderPreview();
-  showToast('Starter template restored.');
+  showToast("Starter template restored.");
 };
 
 const copyCode = async (type) => {
@@ -404,7 +411,7 @@ const copyCode = async (type) => {
     await navigator.clipboard.writeText(state.editors[type].getValue());
     showToast(`${type.toUpperCase()} copied to clipboard.`);
   } catch (error) {
-    showToast('Clipboard copy is unavailable in this browser.');
+    showToast("Clipboard copy is unavailable in this browser.");
   }
 };
 
@@ -426,165 +433,167 @@ ${code.html}
 
   try {
     if (!window.JSZip) {
-      throw new Error('JSZip failed to load');
+      throw new Error("JSZip failed to load");
     }
 
     const zip = new JSZip();
-    zip.file('index.html', htmlFile);
-    zip.file('style.css', code.css);
-    zip.file('script.js', code.js);
+    zip.file("index.html", htmlFile);
+    zip.file("style.css", code.css);
+    zip.file("script.js", code.js);
 
-    const blob = await zip.generateAsync({ type: 'blob' });
+    const blob = await zip.generateAsync({ type: "blob" });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
-    link.download = 'live-code-playground-project.zip';
+    link.download = "live-code-playground-project.zip";
     document.body.append(link);
     link.click();
     link.remove();
     URL.revokeObjectURL(url);
-    showToast('Project ZIP generated.');
+    showToast("Project ZIP generated.");
   } catch (error) {
-    console.error('Download failed:', error);
-    showToast('Unable to generate ZIP. Check your connection and try again.');
+    console.error("Download failed:", error);
+    showToast("Unable to generate ZIP. Check your connection and try again.");
   }
 };
 
 const togglePanel = (panelName, button) => {
   const panel = document.querySelector(`[data-panel="${panelName}"]`);
-  const collapsed = panel.classList.toggle('is-collapsed');
-  button.textContent = collapsed ? 'Expand' : 'Collapse';
-  button.setAttribute('aria-expanded', String(!collapsed));
+  const collapsed = panel.classList.toggle("is-collapsed");
+  button.textContent = collapsed ? "Expand" : "Collapse";
+  button.setAttribute("aria-expanded", String(!collapsed));
   window.setTimeout(() => {
     Object.values(state.editors).forEach((editor) => editor.layout());
   }, 0);
 };
 
 const setupEventListeners = () => {
-  elements.runBtn.addEventListener('click', renderPreview);
-  elements.resetBtn.addEventListener('click', resetPlayground);
-  elements.downloadBtn.addEventListener('click', downloadProject);
-  elements.clearConsoleBtn.addEventListener('click', clearConsole);
+  elements.runBtn.addEventListener("click", renderPreview);
+  elements.resetBtn.addEventListener("click", resetPlayground);
+  elements.downloadBtn.addEventListener("click", downloadProject);
+  elements.clearConsoleBtn.addEventListener("click", clearConsole);
 
-  elements.autoRunToggle.addEventListener('change', () => {
+  elements.autoRunToggle.addEventListener("change", () => {
     saveState();
     if (elements.autoRunToggle.checked) renderPreview();
   });
 
-  elements.themeToggle.addEventListener('click', () => {
-    const nextTheme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+  elements.themeToggle.addEventListener("click", () => {
+    const nextTheme =
+      document.documentElement.dataset.theme === "light" ? "dark" : "light";
     applyTheme(nextTheme);
-    showToast(`${nextTheme === 'light' ? 'Light' : 'Dark'} theme enabled.`);
+    showToast(`${nextTheme === "light" ? "Light" : "Dark"} theme enabled.`);
   });
 
-  elements.templateSelect.addEventListener('change', () => {
+  elements.templateSelect.addEventListener("change", () => {
     safeStorage.set(STORAGE_KEYS.template, elements.templateSelect.value);
     resetPlayground();
   });
 
-  elements.fullscreenBtn.addEventListener('click', () => {
-    const enabled = elements.appShell.classList.toggle('is-fullscreen');
-    elements.fullscreenBtn.textContent = enabled ? 'Exit Fullscreen' : 'Fullscreen';
-    showToast(enabled ? 'Preview expanded.' : 'Workspace restored.');
+  elements.fullscreenBtn.addEventListener("click", () => {
+    const enabled = elements.appShell.classList.toggle("is-fullscreen");
+    elements.fullscreenBtn.textContent = enabled
+      ? "Exit Fullscreen"
+      : "Fullscreen";
+    showToast(enabled ? "Preview expanded." : "Workspace restored.");
   });
 
-  document.querySelectorAll('[data-copy]').forEach((button) => {
-    button.addEventListener('click', () => copyCode(button.dataset.copy));
+  document.querySelectorAll("[data-copy]").forEach((button) => {
+    button.addEventListener("click", () => copyCode(button.dataset.copy));
   });
 
-  document.querySelectorAll('[data-collapse]').forEach((button) => {
-    button.addEventListener('click', () => togglePanel(button.dataset.collapse, button));
+  document.querySelectorAll("[data-collapse]").forEach((button) => {
+    button.addEventListener("click", () =>
+      togglePanel(button.dataset.collapse, button),
+    );
   });
 
-window.addEventListener('message', (event) => {
-  const previewFrame = elements.previewFrame;
+  window.addEventListener("message", (event) => {
+    const previewFrame = elements.previewFrame;
 
-  // Ensure iframe exists
-  if (!previewFrame?.contentWindow) return;
+    // Ensure iframe exists
+    if (!previewFrame?.contentWindow) return;
 
-  // Accept messages only from the sandbox preview iframe
-  if (event.source !== previewFrame.contentWindow) return;
+    // Accept messages only from the sandbox preview iframe
+    if (event.source !== previewFrame.contentWindow) return;
 
-  const data = event.data;
+    const data = event.data;
 
-  // Validate payload
-  if (!data || data.source !== 'live-code-playground') return;
+    // Validate payload
+    if (!data || data.source !== "live-code-playground") return;
 
-  // Allow only expected console levels
-  const allowedLevels = ['log', 'warn', 'error', 'info'];
+    // Allow only expected console levels
+    const allowedLevels = ["log", "warn", "error", "info"];
 
-  const level = allowedLevels.includes(data.level)
-    ? data.level
-    : 'log';
+    const level = allowedLevels.includes(data.level) ? data.level : "log";
 
-  const values = Array.isArray(data.values)
-    ? data.values
-    : [];
+    const values = Array.isArray(data.values) ? data.values : [];
 
-  appendConsoleLine(level, values);
-});
+    appendConsoleLine(level, values);
+  });
 
-  window.addEventListener('keydown', (event) => {
+  window.addEventListener("keydown", (event) => {
     const modifierPressed = event.ctrlKey || event.metaKey;
     if (!modifierPressed) return;
 
-    if (event.key.toLowerCase() === 's') {
+    if (event.key.toLowerCase() === "s") {
       event.preventDefault();
       renderPreview();
-      showToast('Code executed.');
+      showToast("Code executed.");
     }
 
-    if (event.key.toLowerCase() === 'r') {
+    if (event.key.toLowerCase() === "r") {
       event.preventDefault();
       resetPlayground();
     }
   });
 
-  window.addEventListener('beforeunload', saveState);
+  window.addEventListener("beforeunload", saveState);
 };
 
 const cacheElements = () => {
-  elements.appShell = document.querySelector('#app-shell');
-  elements.htmlEditor = document.querySelector('#html-editor');
-  elements.cssEditor = document.querySelector('#css-editor');
-  elements.jsEditor = document.querySelector('#js-editor');
-  elements.previewFrame = document.querySelector('#preview-frame');
-  elements.consoleOutput = document.querySelector('#console-output');
-  elements.runStatus = document.querySelector('#run-status');
-  elements.runBtn = document.querySelector('#run-btn');
-  elements.resetBtn = document.querySelector('#reset-btn');
-  elements.downloadBtn = document.querySelector('#download-btn');
-  elements.themeToggle = document.querySelector('#theme-toggle');
-  elements.autoRunToggle = document.querySelector('#auto-run-toggle');
-  elements.clearConsoleBtn = document.querySelector('#clear-console-btn');
-  elements.fullscreenBtn = document.querySelector('#fullscreen-btn');
-  elements.templateSelect = document.querySelector('#template-select');
-  elements.toastRegion = document.querySelector('#toast-region');
+  elements.appShell = document.querySelector("#app-shell");
+  elements.htmlEditor = document.querySelector("#html-editor");
+  elements.cssEditor = document.querySelector("#css-editor");
+  elements.jsEditor = document.querySelector("#js-editor");
+  elements.previewFrame = document.querySelector("#preview-frame");
+  elements.consoleOutput = document.querySelector("#console-output");
+  elements.runStatus = document.querySelector("#run-status");
+  elements.runBtn = document.querySelector("#run-btn");
+  elements.resetBtn = document.querySelector("#reset-btn");
+  elements.downloadBtn = document.querySelector("#download-btn");
+  elements.themeToggle = document.querySelector("#theme-toggle");
+  elements.autoRunToggle = document.querySelector("#auto-run-toggle");
+  elements.clearConsoleBtn = document.querySelector("#clear-console-btn");
+  elements.fullscreenBtn = document.querySelector("#fullscreen-btn");
+  elements.templateSelect = document.querySelector("#template-select");
+  elements.toastRegion = document.querySelector("#toast-region");
 };
 
 const initializePlayground = () => {
   try {
     cacheElements();
-    elements.autoRunToggle.checked = safeStorage.get(STORAGE_KEYS.autoRun, 'true') !== 'false';
-    applyTheme(safeStorage.get(STORAGE_KEYS.theme, 'dark'));
+    elements.autoRunToggle.checked =
+      safeStorage.get(STORAGE_KEYS.autoRun, "true") !== "false";
+    applyTheme(safeStorage.get(STORAGE_KEYS.theme, "dark"));
 
     require.config({
       paths: {
-        vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.49.0/min/vs',
+        vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.49.0/min/vs",
       },
     });
 
-    require(['vs/editor/editor.main'], () => {
+    require(["vs/editor/editor.main"], () => {
       setupEditors();
       setupEventListeners();
       state.initialized = true;
       renderPreview();
-      showToast('Playground ready.');
+      showToast("Playground ready.");
     });
   } catch (error) {
-    console.error('Initialization failed:', error);
-    setStatus('Initialization failed', false);
+    console.error("Initialization failed:", error);
+    setStatus("Initialization failed", false);
   }
 };
 
-document.addEventListener('DOMContentLoaded', initializePlayground);
+document.addEventListener("DOMContentLoaded", initializePlayground);

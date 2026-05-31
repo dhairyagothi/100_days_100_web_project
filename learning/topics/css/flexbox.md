@@ -9,6 +9,7 @@ Before Flexbox was introduced, developers had to rely on floats, tables, and dis
 ## 1. Parent vs. Child Concepts
 
 Flexbox is structured around two key players:
+
 - **Flex Container**: The parent element. You activate Flexbox by declaring `display: flex` or `display: inline-flex` on this parent element.
 - **Flex Items**: The child elements nested directly inside the Flex Container.
 
@@ -41,6 +42,7 @@ Once a parent is declared a flex container, it establishes a coordinate space ba
     <!-- Flex Items Box 3 -->
     <rect x="370" y="100" width="100" height="80" rx="8" class="svg-node" />
     <text x="420" y="145" text-anchor="middle" class="svg-text svg-text-heading">Item 3</text>
+
   </svg>
 </div>
 
@@ -51,6 +53,7 @@ Once a parent is declared a flex container, it establishes a coordinate space ba
 These properties control how all the child items are positioned relative to each other inside the parent element container.
 
 ### A. flex-direction
+
 Defines the main axis direction. By default, items align in a row.
 
 ```css
@@ -61,18 +64,20 @@ Defines the main axis direction. By default, items align in a row.
 ```
 
 ### B. justify-content
+
 Aligns items along the **Main Axis** (horizontally by default).
 
-| Value | Alignment Effect |
-| :--- | :--- |
-| `flex-start` | Items are packed toward the start of the line (Default). |
-| `flex-end` | Items are packed toward the end of the line. |
-| `center` | Items are centered along the line. |
+| Value           | Alignment Effect                                                                        |
+| :-------------- | :-------------------------------------------------------------------------------------- |
+| `flex-start`    | Items are packed toward the start of the line (Default).                                |
+| `flex-end`      | Items are packed toward the end of the line.                                            |
+| `center`        | Items are centered along the line.                                                      |
 | `space-between` | Items are distributed evenly; the first item is at the start, the last item at the end. |
-| `space-around` | Items are distributed with equal spaces around each item. |
-| `space-evenly` | Items are distributed so that the space between any two items is identical. |
+| `space-around`  | Items are distributed with equal spaces around each item.                               |
+| `space-evenly`  | Items are distributed so that the space between any two items is identical.             |
 
 ### C. align-items
+
 Aligns items along the **Cross Axis** (vertically by default).
 
 ```css
@@ -89,10 +94,10 @@ One of the biggest struggles in CSS before Flexbox was vertical centering. With 
 
 ```html
 <div class="parent">
-    <div class="card">
-        <h3>Perfect Centering</h3>
-        <p>I am centered horizontally and vertically!</p>
-    </div>
+  <div class="card">
+    <h3>Perfect Centering</h3>
+    <p>I am centered horizontally and vertically!</p>
+  </div>
 </div>
 ```
 
@@ -164,17 +169,18 @@ Understanding how item sizing interacts is key to mastering flex layouts.
 ## 5. Coding Exercise: Practice Your Layout Skills
 
 ### Task:
+
 Create a horizontal navigation bar layout with three links. They should be aligned horizontally inside a container. The first link must remain on the left, while the other two links should float to the right side of the navigation bar!
 
 ##### Solution
 
 ```html
 <nav class="navbar">
-    <a href="#" class="logo">Brand</a>
-    <div class="menu">
-        <a href="#">About</a>
-        <a href="#">Contact</a>
-    </div>
+  <a href="#" class="logo">Brand</a>
+  <div class="menu">
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+  </div>
 </nav>
 ```
 
@@ -193,6 +199,7 @@ Create a horizontal navigation bar layout with three links. They should be align
 }
 ```
 
-**Explanation**: 
+**Explanation**:
+
 - `justify-content: space-between` pushes the `.logo` block to the left, and the `.menu` block container to the right.
 - The `.menu` block uses its own nested `display: flex` layout to align "About" and "Contact" side-by-side with a consistent `gap` spacing property!

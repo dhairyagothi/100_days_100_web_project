@@ -10,7 +10,7 @@ Most React apps load data from **REST APIs** or **GraphQL** backends. This lesso
 
 ```jsx
 async function getPosts() {
-  const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+  const response = await fetch("https://jsonplaceholder.typicode.com/posts");
   if (!response.ok) {
     throw new Error(`HTTP error: ${response.status}`);
   }
@@ -23,7 +23,7 @@ async function getPosts() {
 ## 2. Fetching in useEffect
 
 ```jsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 function PostList() {
   const [posts, setPosts] = useState([]);
@@ -36,8 +36,8 @@ function PostList() {
     async function loadPosts() {
       try {
         setLoading(true);
-        const res = await fetch('https://jsonplaceholder.typicode.com/posts');
-        if (!res.ok) throw new Error('Failed to load');
+        const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+        if (!res.ok) throw new Error("Failed to load");
         const data = await res.json();
         if (!cancelled) setPosts(data.slice(0, 5));
       } catch (err) {
@@ -48,7 +48,9 @@ function PostList() {
     }
 
     loadPosts();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   if (loading) return <p>Loading posts...</p>;
@@ -89,6 +91,7 @@ function PostList() {
 
     <rect x="410" y="65" width="90" height="30" rx="6" class="svg-node" style="stroke: #ef4444;" />
     <text x="455" y="85" text-anchor="middle" class="svg-text" style="font-size: 9px;">error</text>
+
   </svg>
 </div>
 
@@ -98,9 +101,9 @@ function PostList() {
 
 ```jsx
 async function createPost(title, body) {
-  const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ title, body, userId: 1 }),
   });
   return response.json();
@@ -176,7 +179,7 @@ Fetch a single user from `https://jsonplaceholder.typicode.com/users/1` and disp
 ##### Solution
 
 ```jsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 function UserProfile() {
   const [user, setUser] = useState(null);
@@ -184,9 +187,9 @@ function UserProfile() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/users/1')
+    fetch("https://jsonplaceholder.typicode.com/users/1")
       .then((res) => {
-        if (!res.ok) throw new Error('Failed');
+        if (!res.ok) throw new Error("Failed");
         return res.json();
       })
       .then(setUser)

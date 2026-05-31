@@ -15,6 +15,7 @@ A modern, interactive Interview Simulator web application designed to help you p
 Since this project utilizes the **Web Speech API**, it requires a **secure context** (HTTPS or `localhost`) to function properly. You cannot just double-click the `index.html` file or access it over a local IP address (like `192.168.x.x`) without a secure connection.
 
 ### Prerequisites
+
 - Node.js installed on your machine (for serving the app).
 - A modern browser like **Google Chrome** or **Microsoft Edge** (Recommended for the best Speech Recognition support).
 
@@ -22,28 +23,34 @@ Since this project utilizes the **Web Speech API**, it requires a **secure conte
 
 1. **Navigate to the Directory**
    Open your terminal and navigate to the project folder:
+
    ```bash
    cd InterviewSimulator
    ```
 
 2. **Serve the Project via Localhost**
    You need a local server to run this securely. You can use `npx serve`:
+
    ```bash
    npx serve .
    ```
-   *Alternatively, if you use VS Code, you can use the **Live Server** extension.*
+
+   _Alternatively, if you use VS Code, you can use the **Live Server** extension._
 
 3. **Open the App**
    Open your browser and navigate strictly to:
+
    ```text
    http://localhost:3000
    ```
-   *(Note: Do not use your network IP address like `192.168.x.x` as browsers will block the microphone).*
+
+   _(Note: Do not use your network IP address like `192.168.x.x` as browsers will block the microphone)._
 
 4. **Start Practicing!**
    Click the microphone button, grant the necessary permissions, and start speaking your answers.
 
 ## 🛠️ Technologies Used
+
 - **HTML5**: Semantic structure.
 - **CSS3**: Modern styling, Flexbox, Animations, and Glassmorphism effects.
 - **JavaScript (ES6+)**: Core logic, Timer Management, and Web Speech API integration.

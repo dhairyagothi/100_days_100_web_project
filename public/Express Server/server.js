@@ -1,14 +1,14 @@
 const express = require("express");
-const path    = require("path");
-const dotenv  = require("dotenv");
+const path = require("path");
+const dotenv = require("dotenv");
 
-const apiRoutes        = require("./routes/apiRoutes");
+const apiRoutes = require("./routes/apiRoutes");
 const loggerMiddleware = require("./middleware/loggerMiddleware");
-const errorMiddleware  = require("./middleware/errorMiddleware");
+const errorMiddleware = require("./middleware/errorMiddleware");
 
 dotenv.config();
 
-const app  = express();
+const app = express();
 const PORT = process.env.PORT;
 if (!PORT) {
   console.error("\x1b[31m[ERROR] PORT is not defined in .env\x1b[0m");
@@ -51,7 +51,7 @@ app.get("/api", (req, res) => {
     message: `${process.env.APP_NAME || "Express Server"} API is running`,
     version: process.env.APP_VERSION || "1.0.0",
     environment: process.env.NODE_ENV,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 });
 
@@ -71,7 +71,7 @@ app.use((req, res) => {
     return res.status(404).json({
       success: false,
       message: `Route ${req.originalUrl} not found`,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 
@@ -96,7 +96,7 @@ app.listen(PORT, () => {
   console.log("  ║       Express Server Running       ║");
   console.log("  ╠═══════════════════════════════════╣");
   console.log(`  ║  Local:  http://localhost:${PORT}      ║`);
-  console.log(`  ║  Env:    ${(process.env.NODE_ENV).padEnd(25)}║`);
+  console.log(`  ║  Env:    ${process.env.NODE_ENV.padEnd(25)}║`);
   console.log("  ╚═══════════════════════════════════╝");
   console.log("\x1b[0m");
 });

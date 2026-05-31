@@ -716,13 +716,19 @@ const host = document.getElementById("heroTerminal");
 if (!host)
   console.error("[hero-terminal] mount target #heroTerminal not found");
 
-const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const isCoarsePointer = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches;
-const isSmallScreen = typeof window !== "undefined" && window.innerWidth <= 1200;
-const shouldRenderHero = !prefersReducedMotion && !isCoarsePointer && !isSmallScreen;
+const prefersReducedMotion =
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const isCoarsePointer =
+  typeof window !== "undefined" &&
+  window.matchMedia("(pointer: coarse)").matches;
+const isSmallScreen =
+  typeof window !== "undefined" && window.innerWidth <= 1200;
+const shouldRenderHero =
+  !prefersReducedMotion && !isCoarsePointer && !isSmallScreen;
 
 if (host && !shouldRenderHero) {
-  host.style.display = 'none';
+  host.style.display = "none";
 }
 
 if (host && shouldRenderHero) {

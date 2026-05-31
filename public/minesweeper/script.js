@@ -47,18 +47,23 @@
     const remainingSeconds = seconds % 60;
     return `${pad(minutes).slice(-2)}:${String(remainingSeconds).padStart(2, "0")}`;
   };
-  const formatMineCount = (count) => `${count < 0 ? "-" : ""}${pad(Math.abs(count))}`;
+  const formatMineCount = (count) =>
+    `${count < 0 ? "-" : ""}${pad(Math.abs(count))}`;
   const indexOf = (row, col) => row * state.cols + col;
-  const isInside = (row, col) => row >= 0 && row < state.rows && col >= 0 && col < state.cols;
+  const isInside = (row, col) =>
+    row >= 0 && row < state.rows && col >= 0 && col < state.cols;
   const icon = {
     flag: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V4"/><path d="M6 5h11l-2 4 2 4H6"/></svg>',
     mine: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M19.1 4.9l-2.8 2.8M7.7 16.3l-2.8 2.8"/></svg>',
-    restart: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v6h-6"/></svg>',
+    restart:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v6h-6"/></svg>',
     win: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>',
     moon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.4 15.4A8.5 8.5 0 0 1 8.6 3.6 8.7 8.7 0 1 0 20.4 15.4Z"/></svg>',
     sun: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>',
-    soundOn: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z"/><path d="M17 9a4 4 0 0 1 0 6"/></svg>',
-    soundOff: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z"/><path d="M19 9l-4 6M15 9l4 6"/></svg>',
+    soundOn:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z"/><path d="M17 9a4 4 0 0 1 0 6"/></svg>',
+    soundOff:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z"/><path d="M19 9l-4 6M15 9l4 6"/></svg>',
   };
 
   function newGame(difficulty = state.difficulty) {
@@ -81,24 +86,28 @@
     gameCard.classList.remove("won", "game-lost");
     boardEl.classList.remove("board-locked");
 
-    state.grid = Array.from({ length: state.rows * state.cols }, (_, index) => ({
-      index,
-      row: Math.floor(index / state.cols),
-      col: index % state.cols,
-      mine: false,
-      revealed: false,
-      flagged: false,
-      exploded: false,
-      justRevealed: false,
-      adjacent: 0,
-    }));
+    state.grid = Array.from(
+      { length: state.rows * state.cols },
+      (_, index) => ({
+        index,
+        row: Math.floor(index / state.cols),
+        col: index % state.cols,
+        mine: false,
+        revealed: false,
+        flagged: false,
+        exploded: false,
+        justRevealed: false,
+        adjacent: 0,
+      }),
+    );
 
     placeMines();
     calculateNumbers();
     renderBoard();
     updateStatus();
     updateBestScore();
-    messageEl.textContent = "Find every safe tile. Right click or long press to flag.";
+    messageEl.textContent =
+      "Find every safe tile. Right click or long press to flag.";
   }
 
   function placeMines() {
@@ -133,11 +142,13 @@
 
   function renderBoard() {
     boardEl.style.gridTemplateColumns = `repeat(${state.cols}, var(--cell-size))`;
-    boardEl.innerHTML = state.grid.map((cell) => {
-      const content = getCellContent(cell);
-      const classes = getCellClasses(cell).join(" ");
-      return `<button class="${classes}" type="button" role="gridcell" data-index="${cell.index}" aria-label="${getCellLabel(cell)}">${content}</button>`;
-    }).join("");
+    boardEl.innerHTML = state.grid
+      .map((cell) => {
+        const content = getCellContent(cell);
+        const classes = getCellClasses(cell).join(" ");
+        return `<button class="${classes}" type="button" role="gridcell" data-index="${cell.index}" aria-label="${getCellLabel(cell)}">${content}</button>`;
+      })
+      .join("");
     clearRevealMarks();
   }
 
@@ -148,7 +159,8 @@
     else if (cell.revealed) classes.push("revealed-cell");
     else if (cell.flagged) classes.push("hidden-cell", "flagged-cell");
     else classes.push("hidden-cell");
-    if (cell.revealed && cell.adjacent > 0) classes.push(`number-${cell.adjacent}`);
+    if (cell.revealed && cell.adjacent > 0)
+      classes.push(`number-${cell.adjacent}`);
     if (cell.justRevealed) classes.push("newly-revealed");
     return classes;
   }
@@ -207,7 +219,8 @@
 
     while (queue.length) {
       const cell = queue.shift();
-      if (seen.has(cell.index) || cell.flagged || cell.revealed || cell.mine) continue;
+      if (seen.has(cell.index) || cell.flagged || cell.revealed || cell.mine)
+        continue;
       seen.add(cell.index);
       cell.revealed = true;
       cell.justRevealed = true;
@@ -242,12 +255,18 @@
     updateStatus();
     gameCard.classList.add("game-lost");
     boardEl.classList.add("board-locked");
-    messageEl.textContent = "Mine triggered. Study the field before the next sweep.";
+    messageEl.textContent =
+      "Mine triggered. Study the field before the next sweep.";
     playTone(120, 0.12);
     setTimeout(() => playTone(90, 0.12), 120);
 
     state.lossModalTimer = setTimeout(() => {
-      openModal("Game Over", "A mine was triggered. Reset the grid and make a cleaner sweep.", "lose", getLossStats());
+      openModal(
+        "Game Over",
+        "A mine was triggered. Reset the grid and make a cleaner sweep.",
+        "lose",
+        getLossStats(),
+      );
       state.lossModalTimer = null;
     }, 2400);
   }
@@ -270,7 +289,11 @@
     updateBestScore();
     messageEl.textContent = "Board cleared. Nicely done.";
     gameCard.classList.add("won");
-    openModal("You Win", `Board cleared in ${formatTimer(state.seconds)}. Best time saved for ${state.difficulty} mode.`, "win");
+    openModal(
+      "You Win",
+      `Board cleared in ${formatTimer(state.seconds)}. Best time saved for ${state.difficulty} mode.`,
+      "win",
+    );
     playTone(620, 0.1);
     setTimeout(() => playTone(880, 0.12), 100);
     return true;
@@ -316,7 +339,9 @@
   }
 
   function getLossStats() {
-    const correctFlags = state.grid.filter((cell) => cell.mine && cell.flagged).length;
+    const correctFlags = state.grid.filter(
+      (cell) => cell.mine && cell.flagged,
+    ).length;
     const safeCells = state.rows * state.cols - state.mines;
     return [
       ["Final time", formatTimer(state.seconds)],
@@ -338,9 +363,12 @@
   }
 
   function buildModalMessage(message, stats) {
-    const statMarkup = stats.map(([label, value]) => (
-      `<span class="modal-stat"><span>${label}</span><strong>${value}</strong></span>`
-    )).join("");
+    const statMarkup = stats
+      .map(
+        ([label, value]) =>
+          `<span class="modal-stat"><span>${label}</span><strong>${value}</strong></span>`,
+      )
+      .join("");
     return `${message}${statMarkup ? `<span class="modal-stats">${statMarkup}</span>` : ""}`;
   }
 
@@ -358,7 +386,9 @@
   }
 
   function updateChromeIcons() {
-    themeIconEl.innerHTML = document.body.classList.contains("light-mode") ? icon.sun : icon.moon;
+    themeIconEl.innerHTML = document.body.classList.contains("light-mode")
+      ? icon.sun
+      : icon.moon;
     soundIconEl.innerHTML = state.soundEnabled ? icon.soundOn : icon.soundOff;
     document.querySelector(".restart-icon").innerHTML = icon.restart;
     document.querySelector("[data-guide-flag]").innerHTML = icon.flag;
@@ -393,8 +423,12 @@
     }, 480);
   });
 
-  boardEl.addEventListener("pointerup", () => clearTimeout(state.longPressTimer));
-  boardEl.addEventListener("pointerleave", () => clearTimeout(state.longPressTimer));
+  boardEl.addEventListener("pointerup", () =>
+    clearTimeout(state.longPressTimer),
+  );
+  boardEl.addEventListener("pointerleave", () =>
+    clearTimeout(state.longPressTimer),
+  );
 
   difficultyButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -412,13 +446,19 @@
 
   soundToggle.addEventListener("click", () => {
     state.soundEnabled = !state.soundEnabled;
-    localStorage.setItem("minesweeper-sound", state.soundEnabled ? "on" : "off");
+    localStorage.setItem(
+      "minesweeper-sound",
+      state.soundEnabled ? "on" : "off",
+    );
     updateChromeIcons();
   });
 
   themeToggle.addEventListener("click", () => {
     document.body.classList.toggle("light-mode");
-    localStorage.setItem("minesweeper-theme", document.body.classList.contains("light-mode") ? "light" : "dark");
+    localStorage.setItem(
+      "minesweeper-theme",
+      document.body.classList.contains("light-mode") ? "light" : "dark",
+    );
     updateChromeIcons();
   });
 

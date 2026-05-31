@@ -1,11 +1,11 @@
 /* Romantic aesthetic fonts */
 
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Pacifico&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Pacifico&display=swap");
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Nunito', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Nunito", sans-serif;
 }
 
 /* Updated body styling with animated gradient background */
@@ -13,41 +13,35 @@
 /* Animated gradient background */
 
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 
-    overflow: hidden;
+  overflow: hidden;
 
-   /* Darker consistent pink gradient */
+  /* Darker consistent pink gradient */
 
-background: linear-gradient(
-    -45deg,
-    #ff4e9b,
-    #f54291,
-    #ec4899,
-    #db2777
-);
+  background: linear-gradient(-45deg, #ff4e9b, #f54291, #ec4899, #db2777);
 
-    background-size: 400% 400%;
+  background-size: 400% 400%;
 
-    animation: gradientBG 12s ease infinite;
+  animation: gradientBG 12s ease infinite;
 }
 /* Smooth animated gradient movement */
 
 @keyframes gradientBG {
-    0% {
-        background-position: 0% 50%;
-    }
+  0% {
+    background-position: 0% 50%;
+  }
 
-    50% {
-        background-position: 100% 50%;
-    }
+  50% {
+    background-position: 100% 50%;
+  }
 
-    100% {
-        background-position: 0% 50%;
-    }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* Modern glassmorphism card UI */
@@ -55,46 +49,47 @@ background: linear-gradient(
 /* Glassmorphism card design */
 
 .contentbox {
-    /* Keeps calculator above floating hearts */
-    position: relative;
-    z-index: 2;
-    text-align: center;
+  /* Keeps calculator above floating hearts */
+  position: relative;
+  z-index: 2;
+  text-align: center;
 
-    width: 90%;
-    max-width: 420px;
+  width: 90%;
+  max-width: 420px;
 
-    min-height: 620px;
+  min-height: 620px;
 
-    padding: 35px;
+  padding: 35px;
 
-    border-radius: 30px;
+  border-radius: 30px;
 
-    /* Stronger glass effect */
-    background: rgba(255, 255, 255, 0.15);
+  /* Stronger glass effect */
+  background: rgba(255, 255, 255, 0.15);
 
-    backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
 
-    border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.25);
 
-    /* Better shadow */
-    box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.18),
-        0 0 20px rgba(255, 255, 255, 0.08);
+  /* Better shadow */
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.18),
+    0 0 20px rgba(255, 255, 255, 0.08);
 
-    color: white;
+  color: white;
 
-    animation: floatCard 4s ease-in-out infinite;
+  animation: floatCard 4s ease-in-out infinite;
 }
 /* Floating card animation */
 
 @keyframes floatCard {
-    0%, 100% {
-        transform: translateY(0px);
-    }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
 
-    50% {
-        transform: translateY(-10px);
-    }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 /* Improved heading color */
 
@@ -103,125 +98,117 @@ background: linear-gradient(
 /* Love themed heading */
 
 .contentbox h1 {
+  font-family: "Pacifico", cursive;
 
-    font-family: 'Pacifico', cursive;
+  font-size: 3.2rem;
 
-    font-size: 3.2rem;
+  margin-bottom: 20px;
 
-    margin-bottom: 20px;
+  font-weight: normal;
 
-    font-weight: normal;
+  color: white;
 
-    color: white;
+  letter-spacing: 1px;
 
-    letter-spacing: 1px;
-
-    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
 }
 
-
-
-
 .contentbox h1 span {
+  font-family: "Pacifico", cursive;
 
-    font-family: 'Pacifico', cursive;
-
-    color: #fff0f6;
+  color: #fff0f6;
 }
 /* Softer romantic description text */
 
 .contentbox p {
+  font-size: 1.05rem;
 
-    font-size: 1.05rem;
+  line-height: 1.6;
 
-    line-height: 1.6;
+  color: rgba(255, 255, 255, 0.92);
 
-    color: rgba(255, 255, 255, 0.92);
-
-    margin-bottom: 25px;
+  margin-bottom: 25px;
 }
 /* Modern calculate button */
 
 #calculate {
-    letter-spacing: 0.5px;
-    margin-top: 2rem;
+  letter-spacing: 0.5px;
+  margin-top: 2rem;
 
-    width: 100%;
+  width: 100%;
 
-    height: 60px;
+  height: 60px;
 
-    border: none;
+  border: none;
 
-    border-radius: 18px;
+  border-radius: 18px;
 
-    background: white;
+  background: white;
 
-    color: #ff4e9b;
+  color: #ff4e9b;
 
-    font-size: 24px;
+  font-size: 24px;
 
-    font-weight: 600;
+  font-weight: 600;
 
-    cursor: pointer;
+  cursor: pointer;
 
-    transition: 0.3s ease;
+  transition: 0.3s ease;
 
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 /* Button hover effect */
 
 #calculate:hover {
-    transform: translateY(-3px) scale(1.02);
+  transform: translateY(-3px) scale(1.02);
 
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
 }
-@keyframes pulsate{
-    0%{
-        transform: scale(1);
-        opacity: 1;
-    }
-    50%{
-        transform: scale(1.1);
-        opacity: 0.8;
-    }
-    100%{
-        transform: scale(1);
-        opacity: 1;
-    }
+@keyframes pulsate {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
-
 
 .gap {
-    margin-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .footer {
-    margin-top: 2rem;
+  margin-top: 2rem;
 }
 /* Romantic result styling */
 
 .footer h2 {
+  font-family: "Pacifico", cursive;
 
-    font-family: 'Pacifico', cursive;
+  font-size: 3rem;
 
-    font-size: 3rem;
+  color: white;
 
-    color: white;
+  margin-bottom: 12px;
 
-    margin-bottom: 12px;
+  font-weight: normal;
 
-    font-weight: normal;
-
-    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .hidden {
-    display: none;
+  display: none;
 }
 
 .input-group {
-    position: relative;
-    margin: 40px 0 20px;
+  position: relative;
+  margin: 40px 0 20px;
 }
 
 /* Improved modern input fields */
@@ -229,30 +216,30 @@ background: linear-gradient(
 /* Modern input styling */
 
 input {
-    width: 100%;
+  width: 100%;
 
-    padding: 16px;
+  padding: 16px;
 
-    border: none;
+  border: none;
 
-    border-radius: 15px;
+  border-radius: 15px;
 
-    background: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.22);
 
-    color: white;
+  color: white;
 
-    font-size: 18px;
+  font-size: 18px;
 
-    backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 
-    transition: 0.3s ease;
+  transition: 0.3s ease;
 
-    border: 1px solid transparent;
+  border: 1px solid transparent;
 }
 /* Placeholder color */
 
 input::placeholder {
-    color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 /* Input focus effect */
@@ -260,200 +247,195 @@ input::placeholder {
 /* Input focus animation */
 
 input:focus {
-    outline: none;
+  outline: none;
 
-    background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.3);
 
-    border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.6);
 
-    transform: scale(1.02);
+  transform: scale(1.02);
 }
 
 label {
-    color: #999;
-    font-size: 18px;
-    font-weight: normal;
-    position: absolute;
-    pointer-events: none;
-    left: 5px;
-    top: 10px;
-    transition: 0.2s ease all;
-    -moz-transition: 0.2s ease all;
-    -webkit-transition: 0.2s ease all;
+  color: #999;
+  font-size: 18px;
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  left: 5px;
+  top: 10px;
+  transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -webkit-transition: 0.2s ease all;
 }
 
-input:focus~label,
-input:valid~label {
-    top: -20px;
-    font-size: 14px;
-    color: #ec4899;
+input:focus ~ label,
+input:valid ~ label {
+  top: -20px;
+  font-size: 14px;
+  color: #ec4899;
 }
 
 .bar {
-    position: relative;
-    display: block;
-    width: 315px;
+  position: relative;
+  display: block;
+  width: 315px;
 }
 
 .bar:before,
 .bar:after {
-    content: '';
-    height: 2px;
-    width: 0;
-    bottom: 1px;
-    position: absolute;
-    background: #ec4899;
-    transition: 0.2s ease all;
-    -moz-transition: 0.2s ease all;
-    -webkit-transition: 0.2s ease all;
+  content: "";
+  height: 2px;
+  width: 0;
+  bottom: 1px;
+  position: absolute;
+  background: #ec4899;
+  transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -webkit-transition: 0.2s ease all;
 }
 
 .bar:before {
-    left: 50%;
+  left: 50%;
 }
 
 .bar:after {
-    right: 50%;
+  right: 50%;
 }
 
-input:focus~.bar:before,
-input:focus~.bar:after {
-    width: 50%;
+input:focus ~ .bar:before,
+input:focus ~ .bar:after {
+  width: 50%;
 }
 
 .highlight {
-    position: absolute;
-    height: 60%;
-    width: 100px;
-    top: 25%;
-    left: 0;
-    pointer-events: none;
-    opacity: 0.5;
+  position: absolute;
+  height: 60%;
+  width: 100px;
+  top: 25%;
+  left: 0;
+  pointer-events: none;
+  opacity: 0.5;
 }
 
-input:focus~.highlight {
-    -webkit-animation: inputHighlighter 0.3s ease;
-    -moz-animation: inputHighlighter 0.3s ease;
-    animation: inputHighlighter 0.3s ease;
+input:focus ~ .highlight {
+  -webkit-animation: inputHighlighter 0.3s ease;
+  -moz-animation: inputHighlighter 0.3s ease;
+  animation: inputHighlighter 0.3s ease;
 }
-
 
 /* animations */
 
 @-webkit-keyframes inputHighlighter {
-    from {
-        background: #ec4899;
-    }
-    to {
-        width: 0;
-        background: #ec4899;
-    }
+  from {
+    background: #ec4899;
+  }
+  to {
+    width: 0;
+    background: #ec4899;
+  }
 }
 
 @-moz-keyframes inputHighlighter {
-    from {
-        background: #ec4899;
-    }
-    to {
-        width: 0;
-        background: transparent;
-    }
+  from {
+    background: #ec4899;
+  }
+  to {
+    width: 0;
+    background: transparent;
+  }
 }
 
 @keyframes inputHighlighter {
-    from {
-        background: #ec4899;
-    }
-    to {
-        width: 0;
-        background: transparent;
-    }
+  from {
+    background: #ec4899;
+  }
+  to {
+    width: 0;
+    background: transparent;
+  }
 }
 
 /* Result percentage styling */
 
 .footer h2 {
-    font-size: 40px;
+  font-size: 40px;
 
-    color: white;
+  color: white;
 
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 
-    font-weight: 700;
+  font-weight: 700;
 }
 
 /* Result message styling */
 
 .footer p {
-    font-size: 18px;
+  font-size: 18px;
 
-    color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.9);
 
-    margin-top: 6px;
+  margin-top: 6px;
 }
 #calculate.hidden {
-    display: none;
+  display: none;
 }
-
 
 #reset {
-    margin-top: 1rem;
-    width: 150px;
-    height: 50px;
-    color: white;
-    font-size: 18px;
-    border: none;
-    border-radius: 10px;
-    background: #ec4899;
-    cursor: pointer;
+  margin-top: 1rem;
+  width: 150px;
+  height: 50px;
+  color: white;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  background: #ec4899;
+  cursor: pointer;
 }
 #calculate {
+  letter-spacing: 1px;
 
-    letter-spacing: 1px;
+  font-family: "Pacifico", cursive;
 
-    font-family: 'Pacifico', cursive;
+  font-size: 1.5rem;
 
-    font-size: 1.5rem;
+  font-weight: normal;
 
-    font-weight: normal;
+  margin-top: 2rem;
 
-    margin-top: 2rem;
+  width: 100%;
 
-    width: 100%;
+  height: 60px;
 
-    height: 60px;
+  border: none;
 
-    border: none;
+  border-radius: 18px;
 
-    border-radius: 18px;
+  background: white;
 
-    background: white;
+  color: #ff4e9b;
 
-    color: #ff4e9b;
+  cursor: pointer;
 
-    cursor: pointer;
+  transition: 0.3s ease;
 
-    transition: 0.3s ease;
-
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 /* Responsive design for mobile devices */
 
 @media screen and (max-width: 480px) {
+  .contentbox {
+    padding: 20px;
+  }
 
-    .contentbox {
-        padding: 20px;
-    }
+  .contentbox h1 {
+    font-size: 2rem;
+  }
 
-    .contentbox h1 {
-        font-size: 2rem;
-    }
-
-   #calculate {
-
+  #calculate {
     letter-spacing: 1px;
 
-    font-family: 'Pacifico', cursive;
+    font-family: "Pacifico", cursive;
 
     font-size: 1.5rem;
 
@@ -478,166 +460,163 @@ input:focus~.highlight {
     transition: 0.3s ease;
 
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-}
+  }
 
-    .footer h2 {
-        font-size: 30px;
-    }
+  .footer h2 {
+    font-size: 30px;
+  }
 
-    .footer p {
-        font-size: 16px;
-    }
+  .footer p {
+    font-size: 16px;
+  }
 }
 /* Floating hearts container */
 
 .hearts {
-    position: fixed;
+  position: fixed;
 
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 
-    top: 0;
-    left: 0;
+  top: 0;
+  left: 0;
 
-    overflow: hidden;
+  overflow: hidden;
 
-    pointer-events: none;
+  pointer-events: none;
 
-    z-index: 0;
+  z-index: 0;
 }
 
 /* Individual floating hearts */
 
 .hearts span {
-    position: absolute;
+  position: absolute;
 
-    bottom: -50px;
+  bottom: -50px;
 
-    color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.7);
 
-    font-size: 22px;
+  font-size: 22px;
 
-    animation: floatUp linear infinite;
+  animation: floatUp linear infinite;
 }
 
 /* Different positions + speeds */
 
 .hearts span:nth-child(1) {
-    left: 10%;
-    animation-duration: 8s;
+  left: 10%;
+  animation-duration: 8s;
 }
 
 .hearts span:nth-child(2) {
-    left: 20%;
-    animation-duration: 12s;
-    font-size: 18px;
+  left: 20%;
+  animation-duration: 12s;
+  font-size: 18px;
 }
 
 .hearts span:nth-child(3) {
-    left: 30%;
-    animation-duration: 10s;
+  left: 30%;
+  animation-duration: 10s;
 }
 
 .hearts span:nth-child(4) {
-    left: 40%;
-    animation-duration: 14s;
-    font-size: 26px;
+  left: 40%;
+  animation-duration: 14s;
+  font-size: 26px;
 }
 
 .hearts span:nth-child(5) {
-    left: 50%;
-    animation-duration: 9s;
+  left: 50%;
+  animation-duration: 9s;
 }
 
 .hearts span:nth-child(6) {
-    left: 60%;
-    animation-duration: 13s;
+  left: 60%;
+  animation-duration: 13s;
 }
 
 .hearts span:nth-child(7) {
-    left: 70%;
-    animation-duration: 11s;
-    font-size: 20px;
+  left: 70%;
+  animation-duration: 11s;
+  font-size: 20px;
 }
 
 .hearts span:nth-child(8) {
-    left: 80%;
-    animation-duration: 15s;
+  left: 80%;
+  animation-duration: 15s;
 }
 
 .hearts span:nth-child(9) {
-    left: 90%;
-    animation-duration: 10s;
+  left: 90%;
+  animation-duration: 10s;
 }
 
 .hearts span:nth-child(10) {
-    left: 95%;
-    animation-duration: 7s;
+  left: 95%;
+  animation-duration: 7s;
 }
 
 /* Floating animation */
 
 @keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(0.8);
+    opacity: 0;
+  }
 
-    0% {
-        transform: translateY(0) scale(0.8);
-        opacity: 0;
-    }
+  10% {
+    opacity: 1;
+  }
 
-    10% {
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateY(-120vh) scale(1.4);
-        opacity: 0;
-    }
+  100% {
+    transform: translateY(-120vh) scale(1.4);
+    opacity: 0;
+  }
 }
 /* Smooth result reveal animation */
 
 .footer {
-    margin-top: 2rem;
+  margin-top: 2rem;
 
-    opacity: 0;
+  opacity: 0;
 
-    transform: translateY(20px);
+  transform: translateY(20px);
 
-    transition: all 0.5s ease;
+  transition: all 0.5s ease;
 }
 
 /* Active result animation */
 
 .footer.show-result {
-    opacity: 1;
+  opacity: 1;
 
-    transform: translateY(0);
+  transform: translateY(0);
 }
 /* Loading animation styling */
 
 #loading {
+  margin-top: 20px;
 
-    margin-top: 20px;
+  font-size: 18px;
 
-    font-size: 18px;
+  color: white;
 
-    color: white;
-
-    animation: pulseText 1s infinite;
+  animation: pulseText 1s infinite;
 }
 
 /* Pulsing effect */
 
 @keyframes pulseText {
+  0% {
+    opacity: 0.5;
+  }
 
-    0% {
-        opacity: 0.5;
-    }
+  50% {
+    opacity: 1;
+  }
 
-    50% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0.5;
-    }
+  100% {
+    opacity: 0.5;
+  }
 }

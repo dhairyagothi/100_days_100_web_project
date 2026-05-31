@@ -18,7 +18,7 @@ const Home = () => {
   const searchHandler = async (event) => {
     event.preventDefault();
     const filteredCoins = await allCoins.filter((coin) =>
-      coin.name.toLowerCase().includes(input.toLowerCase())
+      coin.name.toLowerCase().includes(input.toLowerCase()),
     );
     setDisplayCoin(filteredCoins);
   };
@@ -32,11 +32,13 @@ const Home = () => {
       <div className="hero">
         <div className="hero-eyebrow">Live Market Data</div>
         <h1>
-          The crypto market,<br />
+          The crypto market,
+          <br />
           <em>beautifully</em> tracked.
         </h1>
         <p>
-          Real-time prices, market caps, and 24h changes for the world's top cryptocurrencies. Stay informed, trade smarter.
+          Real-time prices, market caps, and 24h changes for the world's top
+          cryptocurrencies. Stay informed, trade smarter.
         </p>
         <form onSubmit={searchHandler}>
           <input
@@ -76,14 +78,21 @@ const Home = () => {
               </div>
             </div>
             <p className="price">
-              {currency.symbol}{item.current_price.toLocaleString()}
+              {currency.symbol}
+              {item.current_price.toLocaleString()}
             </p>
-            <p className={item.price_change_percentage_24h > 0 ? "green" : "red"}>
+            <p
+              className={item.price_change_percentage_24h > 0 ? "green" : "red"}
+            >
               {item.price_change_percentage_24h > 0 ? "▲" : "▼"}{" "}
-              {Math.abs(Math.floor(item.price_change_percentage_24h * 100) / 100)}%
+              {Math.abs(
+                Math.floor(item.price_change_percentage_24h * 100) / 100,
+              )}
+              %
             </p>
             <p className="market-cap">
-              {currency.symbol}{item.market_cap.toLocaleString()}
+              {currency.symbol}
+              {item.market_cap.toLocaleString()}
             </p>
           </Link>
         ))}

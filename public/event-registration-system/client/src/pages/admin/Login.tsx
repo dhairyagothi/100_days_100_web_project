@@ -2,8 +2,21 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api, type LoginRequest } from "@shared/routes";
 import { useAuth } from "@/hooks/use-auth";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Shield, Loader2, ArrowLeft } from "lucide-react";
@@ -36,7 +49,12 @@ export default function Login() {
 
       <div className="w-full max-w-md space-y-4">
         <Link href="/">
-          <Button variant="ghost" size="sm" className="text-muted-foreground mb-2" data-testid="link-back-home">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-muted-foreground mb-2"
+            data-testid="link-back-home"
+          >
             <ArrowLeft className="w-4 h-4 mr-1.5" />
             Back to Registration
           </Button>
@@ -47,12 +65,19 @@ export default function Login() {
             <div className="mx-auto bg-primary/15 w-12 h-12 rounded-full flex items-center justify-center mb-2">
               <Shield className="w-6 h-6 text-primary" />
             </div>
-            <CardTitle className="text-2xl font-display">Admin Portal</CardTitle>
-            <CardDescription>Sign in to manage Zenith 2026 registrations</CardDescription>
+            <CardTitle className="text-2xl font-display">
+              Admin Portal
+            </CardTitle>
+            <CardDescription>
+              Sign in to manage Zenith 2026 registrations
+            </CardDescription>
           </CardHeader>
           <CardContent className="pb-8">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+              >
                 <FormField
                   control={form.control}
                   name="email"
@@ -73,7 +98,12 @@ export default function Login() {
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input type="password" placeholder="••••••••" {...field} data-testid="input-password" />
+                        <Input
+                          type="password"
+                          placeholder="••••••••"
+                          {...field}
+                          data-testid="input-password"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

@@ -6,7 +6,8 @@
 .form-select {
   display: block;
   width: 100%;
-  padding: $form-select-padding-y $form-select-indicator-padding $form-select-padding-y $form-select-padding-x;
+  padding: $form-select-padding-y $form-select-indicator-padding
+    $form-select-padding-y $form-select-padding-x;
   font-family: $form-select-font-family;
   @include font-size($form-select-font-size);
   font-weight: $form-select-font-weight;
@@ -26,7 +27,10 @@
     border-color: $form-select-focus-border-color;
     outline: 0;
     @if $enable-shadows {
-      @include box-shadow($form-select-box-shadow, $form-select-focus-box-shadow);
+      @include box-shadow(
+        $form-select-box-shadow,
+        $form-select-focus-box-shadow
+      );
     } @else {
       // Avoid using mixin so we can pass custom focus shadow properly
       box-shadow: $form-select-focus-box-shadow;

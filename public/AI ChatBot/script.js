@@ -23,7 +23,8 @@ const DEFAULT_GEMINI_API_KEY = window.DEFAULT_GEMINI_API_KEY?.trim() || "";
 const GEMINI_PROXY_ENDPOINT = "/api/gemini";
 
 /* STATE */
-let apiKey = localStorage.getItem(STORAGE.API_KEY) || DEFAULT_GEMINI_API_KEY || "";
+let apiKey =
+  localStorage.getItem(STORAGE.API_KEY) || DEFAULT_GEMINI_API_KEY || "";
 let hfKey = localStorage.getItem(STORAGE.HF_KEY) || "";
 let sessions = loadSessions();
 let activeSessionId = null;
@@ -1163,7 +1164,9 @@ async function getAIResponse() {
           body: JSON.stringify(body),
         };
 
-    const requestUrl = useProxy ? GEMINI_PROXY_ENDPOINT : `${API_URL}?key=${apiKey}`;
+    const requestUrl = useProxy
+      ? GEMINI_PROXY_ENDPOINT
+      : `${API_URL}?key=${apiKey}`;
     const res = await fetch(requestUrl, fetchOptions);
 
     removeTyping(typingRow);
@@ -1172,7 +1175,8 @@ async function getAIResponse() {
       const err = await res.json().catch(() => ({}));
       const message = err.error?.message || err.error || `HTTP ${res.status}`;
       throw new Error(
-        message || "Unable to connect to Gemini. Check your hosted proxy or API key.",
+        message ||
+          "Unable to connect to Gemini. Check your hosted proxy or API key.",
       );
     }
 

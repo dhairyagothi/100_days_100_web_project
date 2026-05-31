@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './News.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./News.css";
 
 const API_KEY = import.meta.env.VITE_CRYPTOCOMPARE_KEY;
 
@@ -9,13 +9,16 @@ const Newses = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`https://min-api.cryptocompare.com/data/v2/news/?lang=EN&api_key=${API_KEY}`)
-      .then(res => {
+    axios
+      .get(
+        `https://min-api.cryptocompare.com/data/v2/news/?lang=EN&api_key=${API_KEY}`,
+      )
+      .then((res) => {
         setArticles(res.data.Data);
         setLoading(false);
       })
-      .catch(err => {
-        console.error('Error fetching news:', err);
+      .catch((err) => {
+        console.error("Error fetching news:", err);
         setLoading(false);
       });
   }, []);
@@ -36,13 +39,13 @@ const Newses = () => {
       <h1 className="news-page-title">Crypto News</h1>
       <p className="news-page-sub">Latest headlines from the crypto world.</p>
       <div className="news-container">
-        {articles.map(article => (
+        {articles.map((article) => (
           <div key={article.id} className="news-article">
             <img
               src={article.imageurl}
               alt={article.title}
               className="news-image"
-              onError={(e) => e.target.style.display = 'none'}
+              onError={(e) => (e.target.style.display = "none")}
             />
             <div className="news-details">
               <div className="news-header">

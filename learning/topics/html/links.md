@@ -17,6 +17,7 @@ Use `<a href="...">` to create a hyperlink.
 ```
 
 Notes:
+
 - `target="_blank"` opens a new tab
 - `rel="noopener noreferrer"` helps security when opening new tabs
 
@@ -55,7 +56,12 @@ If an image is purely decorative, you can use an empty alt: `alt=""`.
 
 ```html
 <section class="hero">
-  <img src="product.png" alt="Screenshot of the product" width="420" height="260" />
+  <img
+    src="product.png"
+    alt="Screenshot of the product"
+    width="420"
+    height="260"
+  />
   <a class="btn" href="#pricing">See pricing</a>
 </section>
 
@@ -77,6 +83,7 @@ If an image is purely decorative, you can use an empty alt: `alt=""`.
 ### Task:
 
 Build a mini snippet that includes:
+
 - a link to `#faq`
 - an image with `src` and `alt`
 - an `h2` with `id="faq"`
@@ -86,8 +93,12 @@ Build a mini snippet that includes:
 ```html
 <a href="#faq">Read the FAQ</a>
 
-<img src="faq-illustration.png" alt="Illustration for FAQ section" width="260" height="180" />
+<img
+  src="faq-illustration.png"
+  alt="Illustration for FAQ section"
+  width="260"
+  height="180"
+/>
 
 <h2 id="faq">Frequently Asked Questions</h2>
 ```
-

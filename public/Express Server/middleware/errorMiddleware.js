@@ -8,7 +8,7 @@ const errorMiddleware = (err, req, res, next) => {
     success: false,
     message,
     error: process.env.NODE_ENV === "production" ? undefined : err.stack,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 };
 

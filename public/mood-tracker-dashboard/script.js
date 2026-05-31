@@ -7,7 +7,6 @@ const chartData = document.getElementById("chartData");
 const jar = document.querySelector(".jar");
 
 function updateUI() {
-
   document.getElementById("greatCount").innerText = great;
   document.getElementById("goodCount").innerText = good;
   document.getElementById("neutralCount").innerText = neutral;
@@ -20,23 +19,16 @@ function updateUI() {
 
   if (great >= good && great >= neutral && great >= bad) {
     document.getElementById("mainMood").innerText = "Great 😊";
-  }
-
-  else if (good >= great && good >= neutral && good >= bad) {
+  } else if (good >= great && good >= neutral && good >= bad) {
     document.getElementById("mainMood").innerText = "Good 😄";
-  }
-
-  else if (neutral >= great && neutral >= good && neutral >= bad) {
+  } else if (neutral >= great && neutral >= good && neutral >= bad) {
     document.getElementById("mainMood").innerText = "Neutral 😐";
-  }
-
-  else {
+  } else {
     document.getElementById("mainMood").innerText = "Bad 😢";
   }
 }
 
 function createBall(emoji, color) {
-
   const mood = document.createElement("div");
 
   mood.classList.add("mood-ball");
@@ -59,22 +51,21 @@ function createBall(emoji, color) {
     [
       {
         transform: "scale(0)",
-        opacity: 0
+        opacity: 0,
       },
 
       {
         transform: "scale(1)",
-        opacity: 1
-      }
+        opacity: 1,
+      },
     ],
     {
-      duration: 500
-    }
+      duration: 500,
+    },
   );
 }
 
 function addChartEmoji(emoji) {
-
   const item = document.createElement("span");
 
   item.innerHTML = emoji;
@@ -83,26 +74,24 @@ function addChartEmoji(emoji) {
     [
       {
         transform: "translateY(20px)",
-        opacity: 0
+        opacity: 0,
       },
 
       {
         transform: "translateY(0px)",
-        opacity: 1
-      }
+        opacity: 1,
+      },
     ],
     {
-      duration: 400
-    }
+      duration: 400,
+    },
   );
 
   chartData.appendChild(item);
 }
 
 function addMood(type) {
-
   if (type === "great") {
-
     great++;
 
     createBall("😊", "#ffb347");
@@ -111,7 +100,6 @@ function addMood(type) {
   }
 
   if (type === "good") {
-
     good++;
 
     createBall("😄", "#7dff7d");
@@ -120,7 +108,6 @@ function addMood(type) {
   }
 
   if (type === "neutral") {
-
     neutral++;
 
     createBall("😐", "#70d6ff");
@@ -129,7 +116,6 @@ function addMood(type) {
   }
 
   if (type === "bad") {
-
     bad++;
 
     createBall("😢", "#b799ff");
@@ -143,27 +129,20 @@ function addMood(type) {
 }
 
 function saveData() {
-
   const data = {
     great,
     good,
     neutral,
     bad,
     chart: chartData.innerHTML,
-    jar: jar.innerHTML
+    jar: jar.innerHTML,
   };
 
-  localStorage.setItem(
-    "moodTrackerData",
-    JSON.stringify(data)
-  );
+  localStorage.setItem("moodTrackerData", JSON.stringify(data));
 }
 
 function loadData() {
-
-  const saved = JSON.parse(
-    localStorage.getItem("moodTrackerData")
-  );
+  const saved = JSON.parse(localStorage.getItem("moodTrackerData"));
 
   if (!saved) return;
 

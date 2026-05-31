@@ -22,7 +22,7 @@
 
 ::before,
 ::after {
-  --tw-content: '';
+  --tw-content: "";
 }
 
 /*
@@ -44,9 +44,11 @@ html,
   -moz-tab-size: 4;
   /* 3 */
   -o-tab-size: 4;
-     tab-size: 4;
+  tab-size: 4;
   /* 3 */
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family:
+    ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
   /* 4 */
   font-feature-settings: normal;
   /* 5 */
@@ -89,7 +91,7 @@ Add the correct text decoration in Chrome, Edge, and Safari.
 
 abbr:where([title]) {
   -webkit-text-decoration: underline dotted;
-          text-decoration: underline dotted;
+  text-decoration: underline dotted;
 }
 
 /*
@@ -135,7 +137,9 @@ code,
 kbd,
 samp,
 pre {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
   /* 1 */
   font-feature-settings: normal;
   /* 2 */
@@ -236,9 +240,9 @@ select {
 */
 
 button,
-input:where([type='button']),
-input:where([type='reset']),
-input:where([type='submit']) {
+input:where([type="button"]),
+input:where([type="reset"]),
+input:where([type="submit"]) {
   -webkit-appearance: button;
   /* 1 */
   background-color: transparent;
@@ -285,7 +289,7 @@ Correct the cursor style of increment and decrement buttons in Safari.
 2. Correct the outline style in Safari.
 */
 
-[type='search'] {
+[type="search"] {
   -webkit-appearance: textfield;
   /* 1 */
   outline-offset: -2px;
@@ -378,7 +382,8 @@ textarea {
 2. Set the default placeholder color to the user's configured gray 400 color.
 */
 
-input::-moz-placeholder, textarea::-moz-placeholder {
+input::-moz-placeholder,
+textarea::-moz-placeholder {
   opacity: 1;
   /* 1 */
   color: #9ca3af;
@@ -446,7 +451,9 @@ video {
   display: none;
 }
 
-*, ::before, ::after {
+*,
+::before,
+::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
   --tw-translate-x: 0;
@@ -643,7 +650,7 @@ video {
 }
 
 .max-w-\[\] {
-  max-width: ;
+  max-width:;
 }
 
 .max-w-\[350px\] {
@@ -675,7 +682,7 @@ video {
 }
 
 .max-w-\[\.00px\] {
-  max-width: .00px;
+  max-width: 0px;
 }
 
 .max-w-\[11\] {
@@ -692,8 +699,8 @@ video {
 
 .select-none {
   -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 .scroll-px-8 {
@@ -767,7 +774,7 @@ video {
 
 .gap-x-5 {
   -moz-column-gap: 1.25rem;
-       column-gap: 1.25rem;
+  column-gap: 1.25rem;
 }
 
 .gap-y-5 {
@@ -784,7 +791,7 @@ video {
 
 .gap-x-3 {
   -moz-column-gap: 0.75rem;
-       column-gap: 0.75rem;
+  column-gap: 0.75rem;
 }
 
 .self-center {
@@ -864,7 +871,7 @@ video {
 }
 
 .bg-\[\] {
-  background-color: ;
+  background-color:;
 }
 
 .bg-\[\#\] {
@@ -948,7 +955,7 @@ video {
 }
 
 .pt-\[\] {
-  padding-top: ;
+  padding-top:;
 }
 
 .pt-\[25px\] {
@@ -984,15 +991,17 @@ video {
 }
 
 .font-sans {
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family:
+    ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 .font-\[\'GintoNord\'\] {
-  font-family: 'GintoNord';
+  font-family: "GintoNord";
 }
 
 .font-\[\'ggSans\'\] {
-  font-family: 'ggSans';
+  font-family: "ggSans";
 }
 
 .text-2xl {
@@ -1094,7 +1103,7 @@ video {
 }
 
 .leading-3 {
-  line-height: .75rem;
+  line-height: 0.75rem;
 }
 
 .leading-7 {
@@ -1137,7 +1146,7 @@ video {
 }
 
 .text-\[\] {
-  color: ;
+  color:;
 }
 
 .text-\[\#1f1f1f00\] {
@@ -1318,7 +1327,8 @@ video {
 
   font-weight: 500;
 
-  src: url(fonts/Ginto-Nord/Ginto-Nord-500.woff2) format("woff2"),
+  src:
+    url(fonts/Ginto-Nord/Ginto-Nord-500.woff2) format("woff2"),
     url(fonts/Ginto-Nord/Ginto-Nord-500.woff) format("woff");
 }
 
@@ -1327,7 +1337,8 @@ video {
 
   font-weight: 600;
 
-  src: url(fonts/Ginto-Nord/Ginto-Nord-600.woff2) format("woff2"),
+  src:
+    url(fonts/Ginto-Nord/Ginto-Nord-600.woff2) format("woff2"),
     url(fonts/Ginto-Nord/Ginto-Nord-600.woff) format("woff");
 }
 
@@ -1336,7 +1347,8 @@ video {
 
   font-weight: 700;
 
-  src: url(fonts/Ginto-Nord/Ginto-Nord-700.woff2) format("woff2"),
+  src:
+    url(fonts/Ginto-Nord/Ginto-Nord-700.woff2) format("woff2"),
     url(fonts/Ginto-Nord/Ginto-Nord-700.woff) format("woff");
 }
 

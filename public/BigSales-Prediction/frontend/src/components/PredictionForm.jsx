@@ -15,7 +15,12 @@ const DEFAULT_VALUES = {
   Outlet_Type: 1,
 };
 
-export default function PredictionForm({ onPrediction, setLoading, setError, loading }) {
+export default function PredictionForm({
+  onPrediction,
+  setLoading,
+  setError,
+  loading,
+}) {
   const [formData, setFormData] = useState(DEFAULT_VALUES);
 
   const handleChange = (e) => {
@@ -39,7 +44,8 @@ export default function PredictionForm({ onPrediction, setLoading, setError, loa
       onPrediction(response.data, formData);
     } catch (err) {
       const message =
-        err.response?.data?.detail || "Could not connect to backend. Is it running?";
+        err.response?.data?.detail ||
+        "Could not connect to backend. Is it running?";
       setError(message);
     } finally {
       setLoading(false);
@@ -119,14 +125,22 @@ export default function PredictionForm({ onPrediction, setLoading, setError, loa
         <div className="form-row">
           <div className="form-group">
             <label>Fat Content</label>
-            <select name="Item_Fat_Content" value={formData.Item_Fat_Content} onChange={handleChange}>
+            <select
+              name="Item_Fat_Content"
+              value={formData.Item_Fat_Content}
+              onChange={handleChange}
+            >
               <option value={0}>Low Fat</option>
               <option value={1}>Regular</option>
             </select>
           </div>
           <div className="form-group">
             <label>Item Type</label>
-            <select name="Item_Type" value={formData.Item_Type} onChange={handleChange}>
+            <select
+              name="Item_Type"
+              value={formData.Item_Type}
+              onChange={handleChange}
+            >
               <option value={0}>Food</option>
               <option value={1}>Health &amp; Household</option>
               <option value={2}>Others</option>
@@ -137,7 +151,11 @@ export default function PredictionForm({ onPrediction, setLoading, setError, loa
         <div className="form-row">
           <div className="form-group">
             <label>Outlet Size</label>
-            <select name="Outlet_Size" value={formData.Outlet_Size} onChange={handleChange}>
+            <select
+              name="Outlet_Size"
+              value={formData.Outlet_Size}
+              onChange={handleChange}
+            >
               <option value={0}>Small</option>
               <option value={1}>Medium</option>
               <option value={2}>High</option>
@@ -145,7 +163,11 @@ export default function PredictionForm({ onPrediction, setLoading, setError, loa
           </div>
           <div className="form-group">
             <label>Outlet Location</label>
-            <select name="Outlet_Location_Type" value={formData.Outlet_Location_Type} onChange={handleChange}>
+            <select
+              name="Outlet_Location_Type"
+              value={formData.Outlet_Location_Type}
+              onChange={handleChange}
+            >
               <option value={0}>Tier 1</option>
               <option value={1}>Tier 2</option>
               <option value={2}>Tier 3</option>
@@ -156,7 +178,11 @@ export default function PredictionForm({ onPrediction, setLoading, setError, loa
         <div className="form-row">
           <div className="form-group">
             <label>Outlet Type</label>
-            <select name="Outlet_Type" value={formData.Outlet_Type} onChange={handleChange}>
+            <select
+              name="Outlet_Type"
+              value={formData.Outlet_Type}
+              onChange={handleChange}
+            >
               <option value={0}>Grocery Store</option>
               <option value={1}>Supermarket Type 1</option>
               <option value={2}>Supermarket Type 2</option>
@@ -165,9 +191,15 @@ export default function PredictionForm({ onPrediction, setLoading, setError, loa
           </div>
           <div className="form-group">
             <label>Outlet Identifier</label>
-            <select name="Outlet_Identifier" value={formData.Outlet_Identifier} onChange={handleChange}>
+            <select
+              name="Outlet_Identifier"
+              value={formData.Outlet_Identifier}
+              onChange={handleChange}
+            >
               {[...Array(10)].map((_, i) => (
-                <option key={i} value={i}>Outlet {i}</option>
+                <option key={i} value={i}>
+                  Outlet {i}
+                </option>
               ))}
             </select>
           </div>
@@ -175,7 +207,9 @@ export default function PredictionForm({ onPrediction, setLoading, setError, loa
 
         <button type="submit" className="btn-predict" disabled={loading}>
           {loading ? (
-            <><span className="spinner" /> Predicting…</>
+            <>
+              <span className="spinner" /> Predicting…
+            </>
           ) : (
             "🎯 Predict Sales"
           )}

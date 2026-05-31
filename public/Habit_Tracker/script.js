@@ -1,5 +1,5 @@
 const state = {
-  habits: JSON.parse(localStorage.getItem('habits')) || [],
+  habits: JSON.parse(localStorage.getItem("habits")) || [],
   view: new Date(),
 };
 
@@ -7,11 +7,11 @@ const $ = (s) => document.querySelector(s);
 
 // ---- Render Functions ----
 function renderHabits() {
-  const list = $('#habitList');
-  list.innerHTML = '';
+  const list = $("#habitList");
+  list.innerHTML = "";
   state.habits.forEach((h) => {
-    const div = document.createElement('div');
-    div.className = 'habit-item';
+    const div = document.createElement("div");
+    div.className = "habit-item";
     div.innerHTML = `
       <div class="habit-info">
         <strong>${h.name}</strong> 
@@ -22,53 +22,49 @@ function renderHabits() {
     list.appendChild(div);
   });
 
-  document.querySelectorAll('.delete-btn').forEach((btn) =>
-    btn.addEventListener('click', (e) => {
+  document.querySelectorAll(".delete-btn").forEach((btn) =>
+    btn.addEventListener("click", (e) => {
       const id = e.target.dataset.id;
       state.habits = state.habits.filter((h) => h.id != id);
       save();
       renderHabits();
-    })
+    }),
   );
 }
 
 function renderCalendar() {
-  const cal = $('#calendar');
-  cal.innerHTML = '';
+  const cal = $("#calendar");
+  cal.innerHTML = "";
   const y = state.view.getFullYear();
   const m = state.view.getMonth();
   const days = new Date(y, m + 1, 0).getDate();
 
-  $('#monthLabel').textContent = state.view.toLocaleString('default', {
-    month: 'long',
-    year: 'numeric',
+  $("#monthLabel").textContent = state.view.toLocaleString("default", {
+    month: "long",
+    year: "numeric",
   });
 
   for (let d = 1; d <= days; d++) {
-    const day = document.createElement('div');
-    day.className = 'day';
+    const day = document.createElement("div");
+    day.className = "day";
     day.textContent = d;
-    
+
     const monthKey = `${y}-${m}`;
 
-    const savedDays =
-      JSON.parse(localStorage.getItem(monthKey)) || [];
+    const savedDays = JSON.parse(localStorage.getItem(monthKey)) || [];
 
     if (savedDays.includes(String(d))) {
-      day.classList.add('checked');
+      day.classList.add("checked");
     }
 
     day.onclick = () => {
-      day.classList.toggle('checked');
+      day.classList.toggle("checked");
 
-      const checkedDays = [
-        ...document.querySelectorAll('.day.checked')
-      ].map((d) => d.textContent);
-
-      localStorage.setItem(
-        monthKey,
-        JSON.stringify(checkedDays)
+      const checkedDays = [...document.querySelectorAll(".day.checked")].map(
+        (d) => d.textContent,
       );
+
+      localStorage.setItem(monthKey, JSON.stringify(checkedDays));
 
       updateProgress();
     };
@@ -77,8 +73,8 @@ function renderCalendar() {
 }
 
 function updateProgress() {
-  const totalDays = document.querySelectorAll('.day').length;
-  const checkedDays = document.querySelectorAll('.day.checked').length;
+  const totalDays = document.querySelectorAll(".day").length;
+  const checkedDays = document.querySelectorAll(".day.checked").length;
   const progress = Math.round((checkedDays / totalDays) * 100);
 
   state.habits.forEach((h) => (h.progress = progress));
@@ -87,66 +83,54 @@ function updateProgress() {
 }
 
 function save() {
-  localStorage.setItem('habits', JSON.stringify(state.habits));
+  localStorage.setItem("habits", JSON.stringify(state.habits));
 }
 
-
 // ---- Theme Toggle ----
-$('#themeToggle').onchange = (e) => {
+$("#themeToggle").onchange = (e) => {
   const isDark = e.target.checked;
 
-  document.documentElement.setAttribute(
-    'data-theme',
-    isDark ? 'dark' : ''
-  );
+  document.documentElement.setAttribute("data-theme", isDark ? "dark" : "");
 
-  $('#themeLabel').textContent =
-    isDark ? '🌙 Dark' : '☀️ Light';
+  $("#themeLabel").textContent = isDark ? "🌙 Dark" : "☀️ Light";
 
-  localStorage.setItem(
-    'theme',
-    isDark ? 'dark' : 'light'
-  );
+  localStorage.setItem("theme", isDark ? "dark" : "light");
 };
 
 // ---- Modal ----
-$('#addHabitBtn').onclick = () => $('#habitModal').classList.add('show');
-$('#closeModal').onclick = () => $('#habitModal').classList.remove('show');
-$('#saveHabitBtn').onclick = () => {
-  const name = $('#habitName').value.trim();
-  const color = $('#habitColor').value;
-  if (!name) return alert('Please enter a habit name!');
+$("#addHabitBtn").onclick = () => $("#habitModal").classList.add("show");
+$("#closeModal").onclick = () => $("#habitModal").classList.remove("show");
+$("#saveHabitBtn").onclick = () => {
+  const name = $("#habitName").value.trim();
+  const color = $("#habitColor").value;
+  if (!name) return alert("Please enter a habit name!");
   state.habits.push({ id: Date.now(), name, color, progress: 0 });
   save();
   renderHabits();
-  $('#habitModal').classList.remove('show');
-  $('#habitName').value = '';
+  $("#habitModal").classList.remove("show");
+  $("#habitName").value = "";
 };
 
 // ---- Month Navigation ----
-$('#prevMonth').onclick = () => {
+$("#prevMonth").onclick = () => {
   state.view.setMonth(state.view.getMonth() - 1);
   renderCalendar();
 };
-$('#nextMonth').onclick = () => {
+$("#nextMonth").onclick = () => {
   state.view.setMonth(state.view.getMonth() + 1);
   renderCalendar();
 };
 
 // ---- Init ----
 
-const savedTheme = localStorage.getItem('theme');
+const savedTheme = localStorage.getItem("theme");
 
-if (savedTheme === 'dark') {
-  document.documentElement.setAttribute(
-    'data-theme',
-    'dark'
-  );
+if (savedTheme === "dark") {
+  document.documentElement.setAttribute("data-theme", "dark");
 
-  $('#themeToggle').checked = true;
+  $("#themeToggle").checked = true;
 
-  $('#themeLabel').textContent =
-    '🌙 Dark';
+  $("#themeLabel").textContent = "🌙 Dark";
 }
 
 renderHabits();

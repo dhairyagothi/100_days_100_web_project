@@ -4,16 +4,16 @@ An interactive visualizer inspired by modern, transparent hardware aesthetics. U
 
 ## Core Features
 
-* **Interactive Canvas:** A dynamic matrix where users can click and drag to toggle LEDs on and off, sketching custom shapes or symbols seamlessly.
-* **Hardware Aesthetic:** High-contrast, dark mode UI utilizing advanced CSS `box-shadow` properties to create realistic, glowing neon hardware effects.
-* **Animation Sequencer:** Built-in playback controls allowing users to animate their active patterns utilizing pulse, flash, and programmatic scrolling effects.
-* **JSON Export:** A direct utility button that translates the current matrix state into a multi-dimensional array object and downloads it as a `.json` configuration file.
+- **Interactive Canvas:** A dynamic matrix where users can click and drag to toggle LEDs on and off, sketching custom shapes or symbols seamlessly.
+- **Hardware Aesthetic:** High-contrast, dark mode UI utilizing advanced CSS `box-shadow` properties to create realistic, glowing neon hardware effects.
+- **Animation Sequencer:** Built-in playback controls allowing users to animate their active patterns utilizing pulse, flash, and programmatic scrolling effects.
+- **JSON Export:** A direct utility button that translates the current matrix state into a multi-dimensional array object and downloads it as a `.json` configuration file.
 
 ## Tech Stack
 
-* HTML5
-* CSS3
-* Vanilla JavaScript
+- HTML5
+- CSS3
+- Vanilla JavaScript
 
 ## Setup & Usage
 

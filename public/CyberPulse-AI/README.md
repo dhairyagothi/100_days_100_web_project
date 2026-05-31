@@ -45,10 +45,10 @@ Each pattern increases a **threat score**, which determines the final result:
 ---
 
 ## 📁 Project Structure
+
 index.html
 style.css
 script.js
-
 
 ---
 
@@ -75,14 +75,13 @@ This tool is for educational purposes only and does not guarantee accurate phish
 
 ---
 
-
 ## 👩‍💻 Author
 
 **Sapna Jha**
 
-* GitHub: https://github.com/sapnajha757
+- GitHub: https://github.com/sapnajha757
 
-* LinkedIn: https://in.linkedin.com/in/sapna-jha-672598387 
+- LinkedIn: https://in.linkedin.com/in/sapna-jha-672598387
 
 ---
 

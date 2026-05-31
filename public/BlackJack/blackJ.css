@@ -7,35 +7,37 @@
 
 /* ── Design Tokens ─────────────────────────────────────────── */
 :root {
-  --felt:          #1a5c38;   /* Casino green felt */
-  --felt-dark:     #0f3d25;   /* Darker felt for depth */
-  --felt-border:   #2d7a50;   /* Subtle felt edge */
-  --gold:          #d4af37;   /* Classic casino gold */
-  --gold-light:    #f0d060;   /* Highlight gold */
-  --card-bg:       #fdfaf3;   /* Warm off-white card face */
-  --bg:            #0b2819;   /* Deep table surround */
-  --surface:       #122e1e;   /* Slightly lighter panel */
-  --text-primary:  #f5f0e8;   /* Warm white */
-  --text-muted:    #a8c4b0;   /* Muted green-white */
-  --win-green:     #4caf7d;
-  --loss-red:      #e05252;
-  --draw-amber:    #f0b429;
+  --felt: #1a5c38; /* Casino green felt */
+  --felt-dark: #0f3d25; /* Darker felt for depth */
+  --felt-border: #2d7a50; /* Subtle felt edge */
+  --gold: #d4af37; /* Classic casino gold */
+  --gold-light: #f0d060; /* Highlight gold */
+  --card-bg: #fdfaf3; /* Warm off-white card face */
+  --bg: #0b2819; /* Deep table surround */
+  --surface: #122e1e; /* Slightly lighter panel */
+  --text-primary: #f5f0e8; /* Warm white */
+  --text-muted: #a8c4b0; /* Muted green-white */
+  --win-green: #4caf7d;
+  --loss-red: #e05252;
+  --draw-amber: #f0b429;
 
   --radius-sm: 0.4rem;
   --radius-md: 0.75rem;
   --radius-lg: 1.25rem;
   --radius-xl: 2rem;
 
-  --shadow-card:   0 4px 16px rgba(0,0,0,0.55);
-  --shadow-btn:    0 2px 8px rgba(0,0,0,0.4);
-  --transition:    200ms cubic-bezier(0.16,1,0.3,1);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.55);
+  --shadow-btn: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --transition: 200ms cubic-bezier(0.16, 1, 0.3, 1);
 
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-ui:      'Inter', system-ui, sans-serif;
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-ui: "Inter", system-ui, sans-serif;
 }
 
 /* ── Reset & Base ───────────────────────────────────────────── */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -50,16 +52,27 @@ html {
 body {
   min-height: 100dvh;
   background-color: var(--bg);
-  background-image:
-    radial-gradient(ellipse at 50% 0%, rgba(26,92,56,0.45) 0%, transparent 60%);
+  background-image: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(26, 92, 56, 0.45) 0%,
+    transparent 60%
+  );
   color: var(--text-primary);
   font-family: var(--font-ui);
   font-size: 1rem;
   line-height: 1.5;
 }
 
-ul { list-style: none; padding: 0; }
-button { cursor: pointer; border: none; background: none; font: inherit; }
+ul {
+  list-style: none;
+  padding: 0;
+}
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font: inherit;
+}
 
 :focus-visible {
   outline: 2px solid var(--gold);
@@ -74,19 +87,21 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   left: 1rem;
   z-index: 100;
   padding: 0.45rem 1rem;
-  background: rgba(0,0,0,0.55);
+  background: rgba(0, 0, 0, 0.55);
   color: var(--text-primary);
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-md);
   font-size: 0.85rem;
   font-weight: 600;
   font-family: var(--font-ui);
   text-decoration: none;
-  transition: background var(--transition), border-color var(--transition);
+  transition:
+    background var(--transition),
+    border-color var(--transition);
   backdrop-filter: blur(6px);
 }
 .back-btn:hover {
-  background: rgba(0,0,0,0.75);
+  background: rgba(0, 0, 0, 0.75);
   border-color: var(--gold);
   color: var(--gold);
 }
@@ -96,7 +111,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   position: relative;
   text-align: center;
   padding: 2rem 1.5rem 1.5rem;
-  border-bottom: 1px solid rgba(212,175,55,0.2);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
 }
 
 .game-title {
@@ -104,7 +119,12 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   font-size: clamp(2.5rem, 8vw, 5.5rem);
   font-weight: 900;
   letter-spacing: 0.25em;
-  background: linear-gradient(135deg, var(--gold) 20%, var(--gold-light) 50%, var(--gold) 80%);
+  background: linear-gradient(
+    135deg,
+    var(--gold) 20%,
+    var(--gold-light) 50%,
+    var(--gold) 80%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -125,7 +145,9 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   font-size: 0.95rem;
   font-weight: 600;
   background: transparent;
-  transition: background var(--transition), color var(--transition);
+  transition:
+    background var(--transition),
+    color var(--transition);
 }
 .rules-btn:hover,
 .rules-btn[aria-expanded="true"] {
@@ -139,15 +161,19 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   top: 5.5rem;
   right: 1.5rem;
   width: clamp(18rem, 30vw, 24rem);
-  background: rgba(10,26,17,0.97);
+  background: rgba(10, 26, 17, 0.97);
   border: 1.5px solid var(--gold);
   border-radius: var(--radius-lg);
   padding: 1.5rem 1.75rem;
   z-index: 200;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 20px rgba(212,175,55,0.15);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(212, 175, 55, 0.15);
   animation: fadeSlideIn 0.22s ease;
 }
-.rules-box[hidden] { display: none; }
+.rules-box[hidden] {
+  display: none;
+}
 
 .rules-box h3 {
   font-family: var(--font-display);
@@ -162,15 +188,25 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   font-size: 0.92rem;
   color: var(--text-primary);
   padding: 0.35rem 0;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   line-height: 1.5;
 }
-.rules-box li:last-child { border-bottom: none; }
-.rules-box strong { color: var(--gold-light); }
+.rules-box li:last-child {
+  border-bottom: none;
+}
+.rules-box strong {
+  color: var(--gold-light);
+}
 
 @keyframes fadeSlideIn {
-  from { opacity: 0; transform: translateY(-8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ── Game Board ─────────────────────────────────────────────── */
@@ -200,11 +236,23 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   gap: 0;
   background: var(--felt);
   background-image:
-    radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.04) 0%, transparent 70%),
-    repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(0,0,0,0.03) 40px, rgba(0,0,0,0.03) 41px);
+    radial-gradient(
+      ellipse at 50% 50%,
+      rgba(255, 255, 255, 0.04) 0%,
+      transparent 70%
+    ),
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(0, 0, 0, 0.03) 40px,
+      rgba(0, 0, 0, 0.03) 41px
+    );
   border: 3px solid var(--felt-border);
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-card), inset 0 1px 0 rgba(255,255,255,0.08);
+  box-shadow:
+    var(--shadow-card),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
   overflow: hidden;
   margin-bottom: 1.5rem;
 }
@@ -212,7 +260,12 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 /* Vertical divider between player and dealer on desktop */
 .table-divider {
   height: 2px;
-  background: linear-gradient(90deg, transparent, var(--felt-border), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--felt-border),
+    transparent
+  );
   margin: 0 1rem;
 }
 
@@ -226,7 +279,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   font-family: var(--font-display);
   font-size: 1.2rem;
   font-weight: 700;
-  color: rgba(255,255,255,0.9);
+  color: rgba(255, 255, 255, 0.9);
   margin-bottom: 0.75rem;
   display: flex;
   align-items: center;
@@ -241,14 +294,16 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   min-width: 2.2rem;
   height: 2.2rem;
   padding: 0 0.5rem;
-  background: rgba(0,0,0,0.4);
-  border: 1.5px solid rgba(255,255,255,0.2);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
   border-radius: var(--radius-xl);
   font-family: var(--font-ui);
   font-size: 1rem;
   font-weight: 700;
   color: var(--gold-light);
-  transition: color var(--transition), background var(--transition);
+  transition:
+    color var(--transition),
+    background var(--transition);
 }
 
 /* Card row — horizontally scrollable on mobile */
@@ -264,23 +319,42 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   height: 9rem;
   width: auto;
   border-radius: var(--radius-sm);
-  box-shadow: 3px 4px 10px rgba(0,0,0,0.5);
-  animation: cardDeal 0.25s cubic-bezier(0.22,1,0.36,1);
+  box-shadow: 3px 4px 10px rgba(0, 0, 0, 0.5);
+  animation: cardDeal 0.25s cubic-bezier(0.22, 1, 0.36, 1);
   flex-shrink: 0;
 }
 
 /* Card deal entrance animation */
 @keyframes cardDeal {
-  from { opacity: 0; transform: translateY(-16px) scale(0.92); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* Desktop: side-by-side hands */
 @media (min-width: 640px) {
-  .card-table    { flex-direction: row; }
-  .table-divider { width: 2px; height: auto; margin: 1rem 0;
-                   background: linear-gradient(180deg, transparent, var(--felt-border), transparent); }
-  .hand-area     { flex: 1; }
+  .card-table {
+    flex-direction: row;
+  }
+  .table-divider {
+    width: 2px;
+    height: auto;
+    margin: 1rem 0;
+    background: linear-gradient(
+      180deg,
+      transparent,
+      var(--felt-border),
+      transparent
+    );
+  }
+  .hand-area {
+    flex: 1;
+  }
 }
 
 /* ── Action Buttons ─────────────────────────────────────────── */
@@ -300,29 +374,56 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   font-weight: 700;
   font-family: var(--font-ui);
   letter-spacing: 0.04em;
-  transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    filter var(--transition);
   box-shadow: var(--shadow-btn);
   border: 2px solid transparent;
 }
-.btn:hover  { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.5); }
-.btn:active { transform: translateY(0);    filter: brightness(0.9); }
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+}
+.btn:active {
+  transform: translateY(0);
+  filter: brightness(0.9);
+}
 
 /* Hit — green */
-.btn-hit    { background: #2d7a50; color: #fff; border-color: #3d9a65; }
-.btn-hit:hover { background: #359460; }
+.btn-hit {
+  background: #2d7a50;
+  color: #fff;
+  border-color: #3d9a65;
+}
+.btn-hit:hover {
+  background: #359460;
+}
 
 /* Stand — amber */
-.btn-stand  { background: #c08a1a; color: #fff; border-color: var(--gold); }
-.btn-stand:hover { background: #d4a020; }
+.btn-stand {
+  background: #c08a1a;
+  color: #fff;
+  border-color: var(--gold);
+}
+.btn-stand:hover {
+  background: #d4a020;
+}
 
 /* Deal — red */
-.btn-deal   { background: #b03030; color: #fff; border-color: #d04040; }
-.btn-deal:hover { background: #c53838; }
+.btn-deal {
+  background: #b03030;
+  color: #fff;
+  border-color: #d04040;
+}
+.btn-deal:hover {
+  background: #c53838;
+}
 
 /* ── Scoreboard ─────────────────────────────────────────────── */
 .scoreboard {
   background: var(--surface);
-  border: 1px solid rgba(212,175,55,0.2);
+  border: 1px solid rgba(212, 175, 55, 0.2);
   border-radius: var(--radius-lg);
   padding: 1.5rem 1.25rem;
   text-align: center;
@@ -352,8 +453,8 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   gap: 0.25rem;
   padding: 0.75rem 0.5rem;
   border-radius: var(--radius-md);
-  background: rgba(0,0,0,0.3);
-  border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .score-num {
@@ -372,9 +473,15 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 
 /* Colour-code each stat */
-.wins   .score-num { color: var(--win-green); }
-.losses .score-num { color: var(--loss-red); }
-.draws  .score-num { color: var(--draw-amber); }
+.wins .score-num {
+  color: var(--win-green);
+}
+.losses .score-num {
+  color: var(--loss-red);
+}
+.draws .score-num {
+  color: var(--draw-amber);
+}
 
 /* Scoreboard action buttons */
 .score-actions {
@@ -393,22 +500,29 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   font-size: 0.95rem;
   font-weight: 600;
 }
-.btn-play-again:hover { background: var(--felt-dark); }
+.btn-play-again:hover {
+  background: var(--felt-dark);
+}
 
 .btn-reset {
   background: transparent;
   color: var(--text-muted);
-  border: 1.5px solid rgba(255,255,255,0.15);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-md);
   padding: 0.5rem 1.5rem;
   font-size: 0.95rem;
   font-weight: 600;
 }
-.btn-reset:hover { border-color: var(--loss-red); color: var(--loss-red); }
+.btn-reset:hover {
+  border-color: var(--loss-red);
+  color: var(--loss-red);
+}
 
 /* ── Reduced Motion ─────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
@@ -416,8 +530,17 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 
 /* ── Mobile Fine-tuning ─────────────────────────────────────── */
 @media (max-width: 420px) {
-  .game-title { letter-spacing: 0.1em; }
-  .btn        { padding: 0.6rem 1.5rem; font-size: 0.95rem; }
-  .hand-area  { min-height: 10rem; }
-  .card-row img { height: 7rem; }
+  .game-title {
+    letter-spacing: 0.1em;
+  }
+  .btn {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.95rem;
+  }
+  .hand-area {
+    min-height: 10rem;
+  }
+  .card-row img {
+    height: 7rem;
+  }
 }

@@ -1,4 +1,4 @@
-const jwt  = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 // Verify JWT
@@ -19,10 +19,16 @@ const protect = async (req, res, next) => {
 };
 
 // Role check middleware factory
-const requireRole = (...roles) => (req, res, next) => {
-  if (!roles.includes(req.user.role))
-    return res.status(403).json({ message: `Access denied. Requires role: ${roles.join(" or ")}` });
-  next();
-};
+const requireRole =
+  (...roles) =>
+  (req, res, next) => {
+    if (!roles.includes(req.user.role))
+      return res
+        .status(403)
+        .json({
+          message: `Access denied. Requires role: ${roles.join(" or ")}`,
+        });
+    next();
+  };
 
 module.exports = { protect, requireRole };

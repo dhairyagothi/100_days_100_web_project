@@ -7,8 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentIndex = 0;
 
   function showSlide(index) {
-    slides.forEach(slide => slide.classList.remove("active"));
-    miniPlanets.forEach(planet => planet.classList.remove("active"));
+    slides.forEach((slide) => slide.classList.remove("active"));
+    miniPlanets.forEach((planet) => planet.classList.remove("active"));
 
     if (index < 0) {
       currentIndex = slides.length - 1;
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
+      behavior: "smooth",
     });
   }
 
@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
         isScrolling = false;
       }, 800);
     },
-    { passive: true }
+    { passive: true },
   );
 
   let touchStartX = 0;

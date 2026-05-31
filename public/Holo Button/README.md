@@ -44,16 +44,18 @@ Add a new theme by creating a new `body[data-theme="name"]` block, then add a ma
 Listen for the activation event in your app:
 
 ```js
-document.getElementById('holoButton').addEventListener('hologram:activated', (event) => {
-  console.log(event.detail.action);
-  console.log(event.detail.theme);
-});
+document
+  .getElementById("holoButton")
+  .addEventListener("hologram:activated", (event) => {
+    console.log(event.detail.action);
+    console.log(event.detail.theme);
+  });
 ```
 
 Change the action name with the `data-action` attribute:
 
 ```html
-<button class="holo-button" id="holoButton" data-action="open-login">
+<button class="holo-button" id="holoButton" data-action="open-login"></button>
 ```
 
 ## Files

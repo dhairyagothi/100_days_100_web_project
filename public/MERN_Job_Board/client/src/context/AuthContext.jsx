@@ -5,7 +5,11 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    try { return JSON.parse(localStorage.getItem("jbUser")) || null; } catch { return null; }
+    try {
+      return JSON.parse(localStorage.getItem("jbUser")) || null;
+    } catch {
+      return null;
+    }
   });
   const [toasts, setToasts] = useState([]);
   const [onlineCount, setOnlineCount] = useState(0);
@@ -52,7 +56,9 @@ export const AuthProvider = ({ children }) => {
   }, [user]);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, addToast, toasts, onlineCount }}>
+    <AuthContext.Provider
+      value={{ user, login, logout, addToast, toasts, onlineCount }}
+    >
       {children}
     </AuthContext.Provider>
   );

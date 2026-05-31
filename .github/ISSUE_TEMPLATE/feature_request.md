@@ -1,9 +1,9 @@
 ---
 name: Feature request
 about: Suggest a focused enhancement for the project.
-title: '[Enhancement]: '
-labels: ['enhancement']
-assignees: ''
+title: "[Enhancement]: "
+labels: ["enhancement"]
+assignees: ""
 ---
 
 **Is your feature request related to a problem? Please describe.**

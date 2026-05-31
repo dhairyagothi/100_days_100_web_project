@@ -3,6 +3,7 @@
 A dark luxury casino themed Memory Match card game built with HTML, CSS, and JavaScript only.
 
 ## Features
+
 - Fully playable Memory Match gameplay
 - Fisher-Yates card shuffle
 - Score tracking, move counter, timer, and local-storage high score
@@ -15,6 +16,7 @@ A dark luxury casino themed Memory Match card game built with HTML, CSS, and Jav
 - Mobile responsive casino-table layout
 
 ## Technologies Used
+
 - HTML
 - CSS
 - JavaScript
@@ -22,8 +24,10 @@ A dark luxury casino themed Memory Match card game built with HTML, CSS, and Jav
 - Canvas API
 
 ## How to Run
+
 1. Open `index.html` in a browser.
 2. Flip two cards at a time and match all pairs.
 
 ## Author
+
 Contributor

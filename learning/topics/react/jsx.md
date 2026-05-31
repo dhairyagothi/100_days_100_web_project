@@ -13,18 +13,18 @@ JSX is **syntactic sugar**—it is not HTML and not required by the browser. A b
 const element = <h1 className="title">Hello</h1>;
 
 // Compiles roughly to:
-const element = React.createElement('h1', { className: 'title' }, 'Hello');
+const element = React.createElement("h1", { className: "title" }, "Hello");
 ```
 
 ### Rules of JSX
 
-| Rule | Example |
-| :--- | :--- |
+| Rule                                            | Example                        |
+| :---------------------------------------------- | :----------------------------- |
 | Return **one parent** element (or use Fragment) | `<>...</>` or `<div>...</div>` |
-| Use **className** instead of `class` | `<div className="card">` |
-| Close all tags | `<img />`, `<br />` |
-| Use **camelCase** for most attributes | `onClick`, `tabIndex` |
-| Embed JavaScript with **{ }** | `{user.name}` |
+| Use **className** instead of `class`            | `<div className="card">`       |
+| Close all tags                                  | `<img />`, `<br />`            |
+| Use **camelCase** for most attributes           | `onClick`, `tabIndex`          |
+| Embed JavaScript with **{ }**                   | `{user.name}`                  |
 
 ---
 
@@ -91,8 +91,11 @@ function List() {
 }
 
 // Or explicit:
-import { Fragment } from 'react';
-<Fragment><li>A</li><li>B</li></Fragment>
+import { Fragment } from "react";
+<Fragment>
+  <li>A</li>
+  <li>B</li>
+</Fragment>;
 ```
 
 ---

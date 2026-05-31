@@ -16,16 +16,17 @@ type Props = {
   loading?: boolean;
 };
 
-export default function HintsPanel({ hintData, revealLevel, word, loading = false }: Props) {
+export default function HintsPanel({
+  hintData,
+  revealLevel,
+  word,
+  loading = false,
+}: Props) {
   return (
     <aside className="hints-panel" aria-live="polite" aria-atomic="true">
       <h3>Hints</h3>
 
-      {loading && (
-        <div className="hint-row animate-fade-in">
-          Loading hint…
-        </div>
-      )}
+      {loading && <div className="hint-row animate-fade-in">Loading hint…</div>}
 
       {!loading && revealLevel === 0 && (
         <div className="hint-row animate-fade-in">
@@ -41,25 +42,38 @@ export default function HintsPanel({ hintData, revealLevel, word, loading = fals
       )}
 
       {!loading && revealLevel >= 2 && (
-        <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "10px" }}>
+        <div
+          className="animate-fade-in"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+            marginTop: "10px",
+          }}
+        >
           {hintData?.definition ? (
             <div className="hint-row">
               <strong>Definition</strong>: {hintData.definition}
               {hintData.partOfSpeech && (
-                <span style={{ marginLeft: 8, color: "var(--text-muted)", fontStyle: "italic" }}>
+                <span
+                  style={{
+                    marginLeft: 8,
+                    color: "var(--text-muted)",
+                    fontStyle: "italic",
+                  }}
+                >
                   ({hintData.partOfSpeech})
                 </span>
               )}
             </div>
           ) : (
-            <div className="hint-row">
-              No dictionary definition available.
-            </div>
+            <div className="hint-row">No dictionary definition available.</div>
           )}
 
           {hintData?.synonyms && hintData.synonyms.length > 0 && (
             <div className="hint-row">
-              <strong>Synonyms</strong>: {(hintData.synonyms as string[]).slice(0, 6).join(", ")}
+              <strong>Synonyms</strong>:{" "}
+              {(hintData.synonyms as string[]).slice(0, 6).join(", ")}
             </div>
           )}
 
@@ -73,4 +87,3 @@ export default function HintsPanel({ hintData, revealLevel, word, loading = fals
     </aside>
   );
 }
-

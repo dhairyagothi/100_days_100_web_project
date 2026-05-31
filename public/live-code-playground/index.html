@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -33,14 +33,31 @@
             <input id="auto-run-toggle" type="checkbox" checked />
             <span>Auto run</span>
           </label>
-          <button class="btn btn-primary" id="run-btn" type="button" title="Run code (Ctrl+S)">
+          <button
+            class="btn btn-primary"
+            id="run-btn"
+            type="button"
+            title="Run code (Ctrl+S)"
+          >
             Run
           </button>
-          <button class="btn" id="reset-btn" type="button" title="Reset code (Ctrl+R)">
+          <button
+            class="btn"
+            id="reset-btn"
+            type="button"
+            title="Reset code (Ctrl+R)"
+          >
             Reset
           </button>
-          <button class="btn" id="download-btn" type="button">Download ZIP</button>
-          <button class="icon-btn" id="theme-toggle" type="button" aria-label="Switch to light theme">
+          <button class="btn" id="download-btn" type="button">
+            Download ZIP
+          </button>
+          <button
+            class="icon-btn"
+            id="theme-toggle"
+            type="button"
+            aria-label="Switch to light theme"
+          >
             <span aria-hidden="true">☾</span>
           </button>
         </nav>
@@ -53,7 +70,11 @@
               <p class="eyebrow">Editors</p>
               <h2 id="editors-heading">Source files</h2>
             </div>
-            <select id="template-select" class="template-select" aria-label="Choose starter template">
+            <select
+              id="template-select"
+              class="template-select"
+              aria-label="Choose starter template"
+            >
               <option value="landing">Landing Card</option>
               <option value="counter">Counter Widget</option>
               <option value="todo">Mini Todo</option>
@@ -65,39 +86,75 @@
               <div class="panel-bar">
                 <h3>index.html</h3>
                 <div class="panel-actions">
-                  <button class="text-btn" type="button" data-copy="html">Copy</button>
-                  <button class="text-btn" type="button" data-collapse="html" aria-expanded="true">
+                  <button class="text-btn" type="button" data-copy="html">
+                    Copy
+                  </button>
+                  <button
+                    class="text-btn"
+                    type="button"
+                    data-collapse="html"
+                    aria-expanded="true"
+                  >
                     Collapse
                   </button>
                 </div>
               </div>
-              <div class="editor-host" id="html-editor" role="region" aria-label="HTML editor"></div>
+              <div
+                class="editor-host"
+                id="html-editor"
+                role="region"
+                aria-label="HTML editor"
+              ></div>
             </article>
 
             <article class="editor-panel" data-panel="css">
               <div class="panel-bar">
                 <h3>style.css</h3>
                 <div class="panel-actions">
-                  <button class="text-btn" type="button" data-copy="css">Copy</button>
-                  <button class="text-btn" type="button" data-collapse="css" aria-expanded="true">
+                  <button class="text-btn" type="button" data-copy="css">
+                    Copy
+                  </button>
+                  <button
+                    class="text-btn"
+                    type="button"
+                    data-collapse="css"
+                    aria-expanded="true"
+                  >
                     Collapse
                   </button>
                 </div>
               </div>
-              <div class="editor-host" id="css-editor" role="region" aria-label="CSS editor"></div>
+              <div
+                class="editor-host"
+                id="css-editor"
+                role="region"
+                aria-label="CSS editor"
+              ></div>
             </article>
 
             <article class="editor-panel" data-panel="js">
               <div class="panel-bar">
                 <h3>script.js</h3>
                 <div class="panel-actions">
-                  <button class="text-btn" type="button" data-copy="js">Copy</button>
-                  <button class="text-btn" type="button" data-collapse="js" aria-expanded="true">
+                  <button class="text-btn" type="button" data-copy="js">
+                    Copy
+                  </button>
+                  <button
+                    class="text-btn"
+                    type="button"
+                    data-collapse="js"
+                    aria-expanded="true"
+                  >
                     Collapse
                   </button>
                 </div>
               </div>
-              <div class="editor-host" id="js-editor" role="region" aria-label="JavaScript editor"></div>
+              <div
+                class="editor-host"
+                id="js-editor"
+                role="region"
+                aria-label="JavaScript editor"
+              ></div>
             </article>
           </div>
         </section>
@@ -107,8 +164,12 @@
             <div class="panel-bar">
               <h2>Preview</h2>
               <div class="panel-actions">
-                <span class="status-pill" id="run-status" aria-live="polite">Ready</span>
-                <button class="text-btn" id="fullscreen-btn" type="button">Fullscreen</button>
+                <span class="status-pill" id="run-status" aria-live="polite"
+                  >Ready</span
+                >
+                <button class="text-btn" id="fullscreen-btn" type="button">
+                  Fullscreen
+                </button>
               </div>
             </div>
             <iframe
@@ -122,9 +183,16 @@
           <section class="console-panel" aria-labelledby="console-heading">
             <div class="panel-bar">
               <h2 id="console-heading">Console</h2>
-              <button class="text-btn" id="clear-console-btn" type="button">Clear</button>
+              <button class="text-btn" id="clear-console-btn" type="button">
+                Clear
+              </button>
             </div>
-            <div class="console-output" id="console-output" role="log" aria-live="polite">
+            <div
+              class="console-output"
+              id="console-output"
+              role="log"
+              aria-live="polite"
+            >
               <p class="console-line info">Console output will appear here.</p>
             </div>
           </section>
@@ -132,7 +200,12 @@
       </main>
     </div>
 
-    <div class="toast-region" id="toast-region" aria-live="assertive" aria-label="Notifications"></div>
+    <div
+      class="toast-region"
+      id="toast-region"
+      aria-live="assertive"
+      aria-label="Notifications"
+    ></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.49.0/min/vs/loader.min.js"></script>

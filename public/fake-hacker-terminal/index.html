@@ -1,38 +1,29 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fake Hacker Terminal</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fake Hacker Terminal</title>
 
-  <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<body>
+  <body>
+    <div class="terminal">
+      <h1 class="title">⚡ SAPNA TERMINAL v1.0</h1>
 
-  <div class="terminal">
+      <div class="output" id="output">
+        <p>Welcome to the Fake Hacker Terminal 😎</p>
+        <p>Type <span>"help"</span> to see commands.</p>
+      </div>
 
-    <h1 class="title">⚡ SAPNA TERMINAL v1.0</h1>
+      <div class="input-line">
+        <span class="prompt">root@terminal:~$</span>
 
-    <div class="output" id="output">
-      <p>Welcome to the Fake Hacker Terminal 😎</p>
-      <p>Type <span>"help"</span> to see commands.</p>
+        <input type="text" id="commandInput" autocomplete="off" autofocus />
+      </div>
     </div>
 
-    <div class="input-line">
-      <span class="prompt">root@terminal:~$</span>
-
-      <input 
-        type="text" 
-        id="commandInput"
-        autocomplete="off"
-        autofocus
-      >
-    </div>
-
-  </div>
-
-  <script src="script.js"></script>
-
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>

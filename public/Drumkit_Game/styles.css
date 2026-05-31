@@ -1,19 +1,18 @@
 body {
   text-align: center;
   /* background-color: #0fe4e4; */
-  background-image: url("images/17973908.jpg") ;
+  background-image: url("images/17973908.jpg");
 }
 
 h1 {
   font-size: 5rem;
   color: #070707;
   font-family: "Arvo", cursive;
-  text-shadow: 3px 0 #DA0463;
-
+  text-shadow: 3px 0 #da0463;
 }
 
 footer {
-  color: #DBEDF3;
+  color: #dbedf3;
   font-family: sans-serif;
 }
 
@@ -50,7 +49,7 @@ footer {
 }
 
 .pressed {
-  box-shadow: 0 3px 4px 0 #DBEDF3;
+  box-shadow: 0 3px 4px 0 #dbedf3;
   opacity: 0.5;
 }
 
@@ -60,13 +59,13 @@ footer {
 
 .drum {
   outline: none;
-  border: 10px solid #404B69;
+  border: 10px solid #404b69;
   font-size: 5rem;
-  font-family: 'Arvo', cursive;
+  font-family: "Arvo", cursive;
   line-height: 2;
   font-weight: 900;
-  color: #DA0463;
-  text-shadow: 3px 0 #DBEDF3;
+  color: #da0463;
+  text-shadow: 3px 0 #dbedf3;
   border-radius: 15px;
   display: inline-block;
   width: 150px;

@@ -7,6 +7,7 @@ Selectors tell the browser which elements to style. When multiple rules apply, *
 ## 1. Basic selector types
 
 Common selectors:
+
 - Element: `p { ... }`
 - Class: `.card { ... }`
 - ID: `#main { ... }`
@@ -18,6 +19,7 @@ Common selectors:
 ## 2. Combinators (how selectors relate)
 
 Combinators decide relationships:
+
 - Descendant: `nav a` (any `a` inside `nav`)
 - Child: `nav > a` (direct children only)
 
@@ -26,6 +28,7 @@ Combinators decide relationships:
 ## 3. Specificity rules (the practical mental model)
 
 Specificity roughly follows this order:
+
 1. Inline styles (`style="..."`)
 2. ID selectors (`#id`)
 3. Class/attribute/pseudo-class selectors (`.c`, `[type=...]`, `:hover`)
@@ -56,6 +59,7 @@ If you later add:
   border-color: #10b981;
 }
 ```
+
 The `#special` border will win because IDs outrank classes.
 
 ---
@@ -70,6 +74,7 @@ The `#special` border will win because IDs outrank classes.
 ### Task:
 
 Create CSS rules that:
+
 - style navigation links with a class `.nav-link`
 - change link color on hover
 - apply a different background to only the element with `id="menu"`
@@ -90,4 +95,3 @@ Create CSS rules that:
   color: #10b981;
 }
 ```
-

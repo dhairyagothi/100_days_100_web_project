@@ -1,67 +1,40 @@
 // js/aiInsights.js
 
-import {
-  GROQ_API_KEY
-} from "./config.js";
+import { GROQ_API_KEY } from "./config.js";
 
-export const generateInsights =
-  async (
-    transactions,
-    analytics
-  ) => {
+export const generateInsights = async (transactions, analytics) => {
+  try {
+    const expenses = transactions.filter(
+      (transaction) => transaction.type === "expense",
+    );
 
-    try {
+    const categoryTotals = {};
 
-      const expenses =
-        transactions.filter(
-          (transaction) =>
-            transaction.type === "expense"
-        );
+    expenses.forEach((expense) => {
+      if (categoryTotals[expense.category]) {
+        categoryTotals[expense.category] += expense.amount;
+      } else {
+        categoryTotals[expense.category] = expense.amount;
+      }
+    });
 
-      const categoryTotals = {};
+    const highestCategory = Object.entries(categoryTotals).sort(
+      (a, b) => b[1] - a[1],
+    )[0];
 
-      expenses.forEach((expense) => {
-
-        if (
-          categoryTotals[
-            expense.category
-          ]
-        ) {
-
-          categoryTotals[
-            expense.category
-          ] += expense.amount;
-
-        } else {
-
-          categoryTotals[
-            expense.category
-          ] = expense.amount;
-        }
-      });
-
-      const highestCategory =
-        Object.entries(
-          categoryTotals
-        ).sort(
-          (a, b) => b[1] - a[1]
-        )[0];
-
-      const formattedTransactions =
-        transactions
-          .map(
-            (transaction) =>
-
-              `
+    const formattedTransactions = transactions
+      .map(
+        (transaction) =>
+          `
 ${transaction.description}
 | ${transaction.category}
 | ${transaction.type}
 | $${transaction.amount}
-`
-          )
-          .join("\n");
+`,
+      )
+      .join("\n");
 
-      const prompt = `
+    const prompt = `
 
 You are an advanced AI financial advisor.
 
@@ -89,9 +62,7 @@ Transaction Count:
 ${analytics.transactionCount}
 
 Top Spending Category:
-${highestCategory
-  ? highestCategory[0]
-  : "None"}
+${highestCategory ? highestCategory[0] : "None"}
 
 TRANSACTIONS
 
@@ -114,70 +85,47 @@ RULES
 - Actionable recommendations
 `;
 
-      const response =
-        await fetch(
-          "https://api.groq.com/openai/v1/chat/completions",
-          {
+    const response = await fetch(
+      "https://api.groq.com/openai/v1/chat/completions",
+      {
+        method: "POST",
 
-            method: "POST",
+        headers: {
+          "Content-Type": "application/json",
 
-            headers: {
+          Authorization: `Bearer ${GROQ_API_KEY}`,
+        },
 
-              "Content-Type":
-                "application/json",
+        body: JSON.stringify({
+          model: "llama-3.1-8b-instant",
 
-              Authorization:
-                `Bearer ${GROQ_API_KEY}`,
+          messages: [
+            {
+              role: "user",
+
+              content: prompt,
             },
+          ],
 
-            body: JSON.stringify({
+          temperature: 0.7,
 
-              model:
-                "llama-3.1-8b-instant",
+          max_tokens: 300,
+        }),
+      },
+    );
 
-              messages: [
-                {
+    const data = await response.json();
 
-                  role: "user",
+    const aiText = data?.choices?.[0]?.message?.content;
 
-                  content: prompt,
-                },
-              ],
-
-              temperature: 0.7,
-
-              max_tokens: 300,
-            }),
-          }
-        );
-
-      const data =
-        await response.json();
-
-      const aiText =
-        data?.choices?.[0]
-          ?.message?.content;
-
-      if (!aiText) {
-
-        return [
-          "Unable to generate AI financial insights currently."
-        ];
-      }
-
-      return aiText
-        .split("\n")
-        .filter(
-          (line) =>
-            line.trim() !== ""
-        );
-
-    } catch (error) {
-
-      console.error(error);
-
-      return [
-        "AI financial analysis is temporarily unavailable."
-      ];
+    if (!aiText) {
+      return ["Unable to generate AI financial insights currently."];
     }
+
+    return aiText.split("\n").filter((line) => line.trim() !== "");
+  } catch (error) {
+    console.error(error);
+
+    return ["AI financial analysis is temporarily unavailable."];
+  }
 };

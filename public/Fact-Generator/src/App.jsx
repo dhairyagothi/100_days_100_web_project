@@ -3,15 +3,17 @@ import { useEffect, useState } from "react";
 export default function App() {
   const [fact, setFact] = useState("Loading...");
   const generateFact = async () => {
-    try{
-      const res = await fetch("https://uselessfacts.jsph.pl/api/v2/facts/random");
-      const data= await res.json();
+    try {
+      const res = await fetch(
+        "https://uselessfacts.jsph.pl/api/v2/facts/random",
+      );
+      const data = await res.json();
       setFact(data.text);
-    } catch(error){
-      setFact("Failed to fetch fact")
+    } catch (error) {
+      setFact("Failed to fetch fact");
     }
-    
-    useEffect(()=>{
+
+    useEffect(() => {
       generateFact();
     }, []);
   };
@@ -26,7 +28,9 @@ export default function App() {
           </h1>
         </div>
 
-        <p className="bg-violet-50 border border-violet-200 text-indigo-950 p-6 w-3xl wrap-break-word rounded-2xl font-medium">{fact}</p>
+        <p className="bg-violet-50 border border-violet-200 text-indigo-950 p-6 w-3xl wrap-break-word rounded-2xl font-medium">
+          {fact}
+        </p>
 
         <button
           onClick={generateFact}
@@ -36,5 +40,5 @@ export default function App() {
         </button>
       </div>
     </div>
-  )
+  );
 }

@@ -11,8 +11,12 @@
 }
 
 body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  background: radial-gradient(circle at center, #1e1e38 0%, var(--bg-dark) 100%);
+  font-family: "Plus Jakarta Sans", sans-serif;
+  background: radial-gradient(
+    circle at center,
+    #1e1e38 0%,
+    var(--bg-dark) 100%
+  );
   color: #ffffff;
   text-align: center;
   margin: 0;
@@ -149,12 +153,12 @@ button:hover {
   border: 6px solid #1a1a2e;
   background: #1a1a2e;
   border-radius: 14px;
-  width: fit-content;      
-  max-width: 95vw;        
-  max-height: 65vh;       
-  overflow: auto;         
+  width: fit-content;
+  max-width: 95vw;
+  max-height: 65vh;
+  overflow: auto;
   padding: 4px;
-  box-shadow: inset 0 4px 20px rgba(0,0,0,0.5);
+  box-shadow: inset 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .square {
@@ -165,16 +169,22 @@ button:hover {
   align-items: center;
   cursor: pointer;
   position: relative;
-  transition: background-color 0.2s, transform 0.1s;
+  transition:
+    background-color 0.2s,
+    transform 0.1s;
 }
 
 /* Perfect Chessboard colors applied dynamically via JS classes */
-.square.light-tile { background-color: var(--light-square); }
-.square.dark-tile { background-color: var(--dark-square); }
+.square.light-tile {
+  background-color: var(--light-square);
+}
+.square.dark-tile {
+  background-color: var(--dark-square);
+}
 
 /* Track View Hover Guidance Lines */
 .square.guideline::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background-color: rgba(255, 160, 122, 0.15);
@@ -213,17 +223,36 @@ button:hover {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes dropIn {
-  from { opacity: 0; transform: scale(0.3) rotate(-15deg); }
-  to { opacity: 1; transform: scale(1) rotate(0deg); }
+  from {
+    opacity: 0;
+    transform: scale(0.3) rotate(-15deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  75% { transform: translateX(4px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
 }

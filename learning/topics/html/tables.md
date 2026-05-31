@@ -7,6 +7,7 @@ Tables represent data in rows and columns. Use semantic table elements so the st
 ## 1. When should you use a table?
 
 Use tables for:
+
 - schedules
 - comparison data
 - structured rows/columns
@@ -18,6 +19,7 @@ Avoid using tables for layout. For layout, prefer CSS grid or flexbox.
 ## 2. Core table elements
 
 Common elements:
+
 - `<table>` container
 - `<caption>` description (optional but helpful)
 - `<thead>` header group
@@ -32,7 +34,9 @@ Common elements:
 
 ```html
 <table>
-  <caption>Menu for today</caption>
+  <caption>
+    Menu for today
+  </caption>
   <thead>
     <tr>
       <th>Item</th>
@@ -70,6 +74,7 @@ If your table includes a complex layout, use `th` cells and keep header rows in 
 ### Task:
 
 Create a table with:
+
 - a caption
 - one header row with two columns using `<th>`
 - two body rows using `<td>`
@@ -78,7 +83,9 @@ Create a table with:
 
 ```html
 <table>
-  <caption>Quick stats</caption>
+  <caption>
+    Quick stats
+  </caption>
   <thead>
     <tr>
       <th>Metric</th>
@@ -97,4 +104,3 @@ Create a table with:
   </tbody>
 </table>
 ```
-

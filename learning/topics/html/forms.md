@@ -9,6 +9,7 @@ Forms let users submit data to a server or handle it in the browser. Understandi
 The `<form>` element groups controls and defines how submission works.
 
 Common attributes:
+
 - `action`: where data goes
 - `method`: `get` or `post`
 
@@ -19,12 +20,12 @@ For many demos, you can use a placeholder `action` and handle submission with Ja
 ## 2. Labels and `name`
 
 Each input should have:
+
 - a `<label>` for accessibility
 - a `name` attribute so the submitted data includes that field
 
 ```html
-<label for="email">Email</label>
-<input id="email" name="email" type="email" />
+<label for="email">Email</label> <input id="email" name="email" type="email" />
 ```
 
 ---
@@ -32,6 +33,7 @@ Each input should have:
 ## 3. Common input types
 
 Examples:
+
 - `text`, `email`, `password`
 - `number`
 - `checkbox`, `radio`
@@ -63,6 +65,7 @@ Examples:
 ### Task:
 
 Create a login form with:
+
 - email input (`type="email"`)
 - password input (`type="password"`)
 - a submit button
@@ -81,4 +84,3 @@ Create a login form with:
   <button type="submit">Log in</button>
 </form>
 ```
-

@@ -14,18 +14,20 @@ Building complex UIs with plain JavaScript becomes hard when:
 
 React addresses these with:
 
-| Problem | React Solution |
-| :--- | :--- |
-| Repeated UI logic | Reusable **components** |
-| Hard-to-track UI state | **State** in one place per component |
-| Manual DOM updates | **Declarative** rendering from data |
-| Slow full-page refreshes | Efficient **Virtual DOM** diffing |
+| Problem                  | React Solution                       |
+| :----------------------- | :----------------------------------- |
+| Repeated UI logic        | Reusable **components**              |
+| Hard-to-track UI state   | **State** in one place per component |
+| Manual DOM updates       | **Declarative** rendering from data  |
+| Slow full-page refreshes | Efficient **Virtual DOM** diffing    |
 
 ```jsx
 // UI is a function of state — when count changes, React updates the button label
 function Counter() {
   const [count, setCount] = useState(0);
-  return <button onClick={() => setCount(count + 1)}>Clicked {count} times</button>;
+  return (
+    <button onClick={() => setCount(count + 1)}>Clicked {count} times</button>
+  );
 }
 ```
 
@@ -93,12 +95,12 @@ React may be **overkill** for:
 
 ## 4. React vs Other Options (High Level)
 
-| Technology | Type | Best For |
-| :--- | :--- | :--- |
-| **React** | Library | Flexible UIs, large ecosystem |
-| **Vue** | Framework | Gentle learning curve, templates |
+| Technology  | Type           | Best For                          |
+| :---------- | :------------- | :-------------------------------- |
+| **React**   | Library        | Flexible UIs, large ecosystem     |
+| **Vue**     | Framework      | Gentle learning curve, templates  |
 | **Angular** | Full framework | Enterprise apps, TypeScript-first |
-| **Svelte** | Compiler | Minimal runtime, small bundles |
+| **Svelte**  | Compiler       | Minimal runtime, small bundles    |
 
 There is no single "best" choice—React is popular because of flexibility, hiring demand, and mature tooling.
 

@@ -1,14 +1,14 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   box-sizing: border-box;
 }
 
 body {
   background-color: #eef3f8;
   color: #333333;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 a {
@@ -179,7 +179,7 @@ a:hover {
 
 .navbar-center ul li a:hover::after,
 .navbar-center ul li a.active-link::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;

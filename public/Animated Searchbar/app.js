@@ -30,12 +30,11 @@ const searchSuggestions = [
   "Machine learning",
   "Artificial intelligence",
   "Cloud computing",
-  "DevOps practices"
+  "DevOps practices",
 ];
 
 let selectedSuggestionIndex = -1;
 let currentSuggestions = [];
-
 
 init();
 
@@ -95,7 +94,7 @@ function handleInput(e) {
   const value = e.target.value;
   updateClearButton();
   updateShortcutBadge();
-  
+
   if (value.trim()) {
     debouncedShowSuggestions(value);
   } else {
@@ -106,7 +105,10 @@ function handleInput(e) {
 function handleKeyDown(e) {
   if (e.key === "Enter") {
     e.preventDefault();
-    if (selectedSuggestionIndex >= 0 && currentSuggestions[selectedSuggestionIndex]) {
+    if (
+      selectedSuggestionIndex >= 0 &&
+      currentSuggestions[selectedSuggestionIndex]
+    ) {
       selectSuggestion(currentSuggestions[selectedSuggestionIndex]);
     } else {
       handleSearch();
@@ -158,8 +160,8 @@ function showSuggestions(query) {
     hideSuggestions();
     return;
   }
-  const filtered = searchSuggestions.filter(item =>
-    item.toLowerCase().includes(query.toLowerCase())
+  const filtered = searchSuggestions.filter((item) =>
+    item.toLowerCase().includes(query.toLowerCase()),
   );
 
   if (filtered.length === 0) {
@@ -178,7 +180,7 @@ function showSuggestions(query) {
         <i class="fa-solid fa-magnifying-glass"></i>
         <span>${highlightMatch(item, query)}</span>
       </div>
-    `
+    `,
     )
     .join("");
 
@@ -238,8 +240,8 @@ function handleSearch() {
 // Function to perform Google search
 function performGoogleSearch(query) {
   const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-  window.open(searchUrl, '_blank');
-  
+  window.open(searchUrl, "_blank");
+
   showResult(
     `<strong><i class="fa-brands fa-google"></i> Searching Google for:</strong><br>
     <span style="color:#ffa31a; font-size: 1.2em;">"${escapeHtml(query)}"</span><br><br>
@@ -247,17 +249,18 @@ function performGoogleSearch(query) {
     <button onclick="performGoogleSearch('${escapeHtml(query)}')" style="background: #ffa31a; color: #1a1a2e; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold;">
       <i class="fa-brands fa-google"></i> Search Again
     </button>`,
-    "success"
+    "success",
   );
 }
 
 function handleVoiceSearch() {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
 
   if (!SpeechRecognition) {
     showResult(
       '<i class="fa-solid fa-triangle-exclamation"></i><br>Sorry, your browser doesn\'t support voice search.<br><small>Try Chrome, Edge, or Safari.</small>',
-      "error"
+      "error",
     );
     return;
   }
@@ -278,7 +281,7 @@ function handleVoiceSearch() {
   } catch (error) {
     showResult(
       `<i class="fa-solid fa-triangle-exclamation"></i><br>Voice recognition is already active or unavailable.`,
-      "error"
+      "error",
     );
     resetVoiceUI();
     return;
@@ -298,7 +301,7 @@ function handleVoiceSearch() {
       <button onclick="performGoogleSearch('${escapeHtml(transcript)}')" style="background: #ffa31a; color: #1a1a2e; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold; margin-top: 10px;">
         <i class="fa-brands fa-google"></i> Search on Google
       </button>`,
-      "success"
+      "success",
     );
 
     resetVoiceUI();
@@ -306,20 +309,22 @@ function handleVoiceSearch() {
 
   recognition.onerror = function (event) {
     let errorMessage = "Could not recognize your voice. Please try again.";
-    
+
     if (event.error === "no-speech") {
       errorMessage = "No speech detected. Please speak clearly and try again.";
     } else if (event.error === "not-allowed") {
-      errorMessage = "Microphone access denied. Please allow microphone access in your browser settings.";
+      errorMessage =
+        "Microphone access denied. Please allow microphone access in your browser settings.";
     } else if (event.error === "network") {
-      errorMessage = "Voice recognition works offline in most browsers. Please try speaking again.";
+      errorMessage =
+        "Voice recognition works offline in most browsers. Please try speaking again.";
     } else if (event.error === "aborted") {
       errorMessage = "Voice recognition was cancelled.";
     }
 
     showResult(
       `<i class="fa-solid fa-triangle-exclamation"></i><br>${errorMessage}`,
-      "error"
+      "error",
     );
     resetVoiceUI();
   };
@@ -375,7 +380,7 @@ function showResult(message, type = "success") {
   resultBox.innerHTML = message;
   resultBox.classList.add("visible");
   resultBox.style.display = "block";
-  
+
   if (type === "error") {
     resultBox.style.borderLeft = "4px solid #ff4444";
   } else {

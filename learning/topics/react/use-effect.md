@@ -7,7 +7,7 @@ The **`useEffect`** hook runs **side effects** after render—data fetching, sub
 ## 1. Basic Syntax
 
 ```jsx
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 useEffect(() => {
   // side effect runs after paint
@@ -21,11 +21,11 @@ useEffect(() => {
 
 ## 2. Dependency Array
 
-| Dependencies | Behavior |
-| :--- | :--- |
-| **Omitted** | Runs after **every** render (rarely what you want) |
-| **`[]`** | Runs **once** on mount (like componentDidMount) |
-| **`[a, b]`** | Runs on mount and when `a` or `b` change |
+| Dependencies | Behavior                                           |
+| :----------- | :------------------------------------------------- |
+| **Omitted**  | Runs after **every** render (rarely what you want) |
+| **`[]`**     | Runs **once** on mount (like componentDidMount)    |
+| **`[a, b]`** | Runs on mount and when `a` or `b` change           |
 
 ```jsx
 function UserProfile({ userId }) {
@@ -50,7 +50,7 @@ Return a function to clean up before the effect runs again or on unmount:
 
 ```jsx
 useEffect(() => {
-  const timer = setInterval(() => console.log('tick'), 1000);
+  const timer = setInterval(() => console.log("tick"), 1000);
   return () => clearInterval(timer); // cleanup on unmount or before re-run
 }, []);
 ```
@@ -71,6 +71,7 @@ useEffect(() => {
     <path d="M 290 155 L 290 175" class="svg-line" />
     <rect x="200" y="175" width="180" height="30" rx="6" class="svg-node" style="stroke: #ef4444;" />
     <text x="290" y="195" text-anchor="middle" class="svg-text" style="font-size: 10px;">Cleanup runs</text>
+
   </svg>
 </div>
 
@@ -91,10 +92,10 @@ useEffect(() => {
 ```jsx
 useEffect(() => {
   function onKeyDown(e) {
-    if (e.key === 'Escape') closeModal();
+    if (e.key === "Escape") closeModal();
   }
-  window.addEventListener('keydown', onKeyDown);
-  return () => window.removeEventListener('keydown', onKeyDown);
+  window.addEventListener("keydown", onKeyDown);
+  return () => window.removeEventListener("keydown", onKeyDown);
 }, []);
 ```
 
@@ -111,7 +112,9 @@ useEffect(() => {
   }
 
   load();
-  return () => { cancelled = true; };
+  return () => {
+    cancelled = true;
+  };
 }, [url]);
 ```
 
@@ -153,10 +156,10 @@ When `username` state changes, update `document.title` to `"Chat - {username}"`.
 ##### Solution
 
 ```jsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 function ChatHeader() {
-  const [username, setUsername] = useState('Guest');
+  const [username, setUsername] = useState("Guest");
 
   useEffect(() => {
     document.title = `Chat - ${username}`;
