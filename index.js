@@ -1015,12 +1015,16 @@ const bookmarkGrid = document.getElementById('bookmarkGrid');
 function renderBookmarks() {
   if (!bookmarkGrid) return;
 
+  const section = bookmarkGrid.closest('.projects-section');
   bookmarkGrid.innerHTML = '';
 
   if (bookmarkedProjects.length === 0) {
     bookmarkGrid.innerHTML = `<p class="empty-state">No bookmarked projects yet.</p>`;
+    if (section) section.style.display = 'none';
     return;
   }
+
+  if (section) section.style.display = 'block';
 
   const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
   if (bookmarkToggleBtn) {
@@ -1055,6 +1059,7 @@ const recentGrid = document.getElementById('recentGrid');
 function renderRecentProjects() {
   if (!recentGrid) return;
 
+  const section = recentGrid.closest('.projects-section');
   recentGrid.innerHTML = '';
 
   // Filter projects within the 1-hour window
@@ -1062,8 +1067,11 @@ function renderRecentProjects() {
 
   if (validRecent.length === 0) {
     recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects within the last hour.</p>`;
+    if (section) section.style.display = 'none';
     return;
   }
+
+  if (section) section.style.display = 'block';
 
   const recentToggleBtn = document.getElementById('recentToggleBtn');
   if (recentToggleBtn) {

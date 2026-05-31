@@ -1,4 +1,4 @@
-const CACHE_NAME = '100-days-web-projects-v1';
+const CACHE_NAME = '100-days-web-projects-v2';
 
 const urlsToCache = [
   '/',
