@@ -982,6 +982,10 @@ body.light-mode .hero-terminal-text {
   width: 100%;
   max-width: 650px;
 }
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+}
 
 #sortProjects,
 #difficultyFilter,
@@ -1047,17 +1051,12 @@ body.light-mode .hero-terminal-text {
 }
 
 .search-input {
+  width: 100%;
   flex: 1;
   min-width: 250px;
-  background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  color: var(--text-primary);
-  font-family: 'Inter Tight', sans-serif;
-  font-size: 0.875rem;
   padding: 0.625rem 2.5rem 0.625rem 2.5rem;
-  outline: none;
-  transition: var(--t);
 }
 
 .search-input::placeholder {
@@ -1078,21 +1077,25 @@ input:focus,
 }
 
 .clear-btn {
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background: var(--bg-elevated);
-  color: var(--text-primary);
-  display: flex;
+  position: absolute;
+  right:12px;
+  top:50%;
+  transform: translateY(-50%);
+
+  width: 24px;
+  height: 24px;
+
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  
+  display: none;
+  z-index: 10;
+}
+.clear-btn.show{
+  display:flex;
   align-items: center;
   justify-content: center;
-
-  cursor: pointer;
-
-  transition: 0.3s ease;
-
-  flex-shrink: 0;
 }
 
 .clear-btn:hover {

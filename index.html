@@ -174,18 +174,25 @@
         </div>
 
         <div class="search-bar">
+          <div class="search-input-wrapper">
           <i class="fas fa-search search-icon"></i>
+
           <input
             type="text"
             id="searchInput"
             class="search-input"
             placeholder="Search projects…"
             autocomplete="off"
-            aria-label="Search projects"
           />
-          <button id="clearSearch" class="clear-btn" aria-label="Clear search" type="button">
+
+          <button id="clearSearch" 
+          class="clear-btn"
+          type="button"
+          aria-label="Clear search">
             &times;
           </button>
+          </div>
+
           <select id="sortProjects" aria-label="Sort projects">
             <option value="default">Sort By</option>
             <option value="az">A-Z</option>
