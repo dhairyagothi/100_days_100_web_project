@@ -1,3 +1,29 @@
+const authContainer =
+  document.getElementById("authContainer");
+
+const mainApp =
+  document.getElementById("mainApp");
+
+const authBtn =
+  document.getElementById("authBtn");
+
+const authTitle =
+  document.getElementById("authTitle");
+
+const toggleAuth =
+  document.getElementById("toggleAuth");
+
+const usernameInput =
+  document.getElementById("username");
+
+const passwordInput =
+  document.getElementById("password");
+
+const logoutBtn =
+  document.getElementById("logoutBtn");
+
+let isLogin = true;
+
 const progressCircle =
   document.getElementById("progressCircle");
 
@@ -439,11 +465,12 @@ function loadUserData() {
   updateBtn.click();
 }
 window.addEventListener("load", () => {
-
   loadUserData();
+});
 
 /* =========================
    THEME TOGGLE
+========================= */
 
 const themeToggle =
   document.getElementById("themeToggle");
@@ -487,3 +514,127 @@ themeToggle.addEventListener("click", () => {
     themeToggle.textContent = "☀️";
   }
 });
+function showApp(){
+
+  authContainer.style.display =
+    "none";
+
+  mainApp.style.display =
+    "block";
+}
+
+function showAuth(){
+
+  authContainer.style.display =
+    "flex";
+
+  mainApp.style.display =
+    "none";
+}
+const currentUser =
+  localStorage.getItem(
+    "placemateUser"
+  );
+
+if(currentUser){
+
+  showApp();
+
+}else{
+
+  showAuth();
+}
+toggleAuth.addEventListener(
+  "click",
+  () => {
+
+    isLogin = !isLogin;
+
+    authTitle.textContent =
+      isLogin
+        ? "Login"
+        : "Sign Up";
+
+    toggleAuth.innerHTML =
+      isLogin
+      ? `Don't have an account? <span>Sign Up</span>`
+      : `Already have an account? <span>Login</span>`;
+  }
+);
+authBtn.addEventListener(
+  "click",
+  () => {
+
+    const username =
+      usernameInput.value.trim();
+
+    const password =
+      passwordInput.value.trim();
+
+    if(
+      !username ||
+      !password
+    ){
+      alert(
+        "Please fill all fields"
+      );
+      return;
+    }
+
+    const users =
+      JSON.parse(
+        localStorage.getItem(
+          "placemateUsers"
+        )
+      ) || [];
+
+    if(isLogin){
+
+      const foundUser =
+        users.find(
+          user =>
+            user.username === username &&
+            user.password === password
+        );
+
+      if(!foundUser){
+
+        alert(
+          "Invalid Credentials"
+        );
+
+        return;
+      }
+
+    }else{
+
+      users.push({
+        username,
+        password
+      });
+
+      localStorage.setItem(
+        "placemateUsers",
+        JSON.stringify(users)
+      );
+    }
+
+    localStorage.setItem(
+      "placemateUser",
+      username
+    );
+
+    showApp();
+  }
+);
+logoutBtn.addEventListener(
+  "click",
+  () => {
+
+    localStorage.removeItem(
+      "placemateUser"
+    );
+
+    showAuth();
+  }
+);

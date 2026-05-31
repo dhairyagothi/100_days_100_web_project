@@ -184,6 +184,7 @@ function generateChart(score) {
 }
 
 generateAnalysis();
+
 const themeToggle =
   document.getElementById("themeToggle");
 
@@ -193,32 +194,24 @@ const savedTheme =
 if (savedTheme === "light") {
 
   document.body.classList.add("light-mode");
-
+  
   themeToggle.textContent = "☀️";
+} else {
+  themeToggle.textContent = "🌙";
 }
 
 themeToggle.addEventListener("click", () => {
 
   document.body.classList.toggle("light-mode");
 
-  if (
-    document.body.classList.contains("light-mode")
-  ) {
+  const isLight =
+    document.body.classList.contains("light-mode");
 
-    localStorage.setItem(
-      "resumeTheme",
-      "light"
-    );
+  localStorage.setItem(
+    "resumeTheme",
+    isLight ? "light" : "dark"
+  );
 
-    themeToggle.textContent = "☀️";
-
-  } else {
-
-    localStorage.setItem(
-      "resumeTheme",
-      "dark"
-    );
-
-    themeToggle.textContent = "🌙";
-  }
+  themeToggle.textContent =
+    isLight ? "☀️" : "🌙";
 });

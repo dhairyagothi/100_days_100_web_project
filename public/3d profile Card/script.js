@@ -49,7 +49,7 @@ const elements = {
   socialLinks: document.querySelector('#socialLinks'),
 };
 
-let state = loadState();
+let state = loadState() || { ...defaults };
 
 function loadState() {
   try {
