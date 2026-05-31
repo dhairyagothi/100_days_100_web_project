@@ -9,16 +9,17 @@
 body {
     background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
     min-height: 100vh;
-    overflow: hidden;
 }
 
 /* Centering Logic */
 .main-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
+    padding: 40px 20px;
 }
 
 .glass-card {
