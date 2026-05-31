@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Go Green — Live Sustainably</title>
-  <link rel="stylesheet" href="parallal.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Green — Live Sustainably</title>
+    <link rel="stylesheet" href="parallal.css">
 </head>
 
 <body>
 
-  <div class="cursor-dot" id="cursorDot"></div>
-  <div class="cursor-ring" id="cursorRing"></div>
-
-  <header id="mainHeader">
+  <header>
+      <a href="/" class="project-back-button">← Back to Home</a>
       <div class="name">GO-GREEN</div>
 
       <div class="hamburger" id="hamburger">
@@ -27,6 +26,8 @@
               <li><a href="#about">About</a></li>
               <li><a href="#service">Service</a></li>
               <li><a href="#contact">Contact</a></li>
+              <li><a href="tracker.html" id="nav-tracker-link">Eco Tracker</a></li>
+              <li><button class="theme-toggle" aria-label="Toggle theme">🌙</button></li>
           </ul>
       </nav>
   </header>
@@ -101,6 +102,39 @@
       </div>
   </section>
 
+      <div class="tracker-cta" style="margin-top:18px;display:flex;gap:18px;align-items:center;flex-wrap:wrap;">
+          <div style="flex:1;min-width:260px;padding:18px;border-radius:12px;background:linear-gradient(90deg,#effaf1,#ffffff);box-shadow:0 8px 30px rgba(16,185,129,0.06);">
+              <h3 style="margin:0 0 8px 0;color:#065f46;">Eco Habit Tracker</h3>
+              <p style="margin:0 0 12px 0;color:#345;">Track small daily actions and see your environmental impact over time.</p>
+              <div style="display:flex;gap:8px;align-items:center;">
+                  <a href="tracker.html" style="text-decoration:none;">
+                      <button style="background:#10b981;color:#fff;border:none;padding:10px 18px;border-radius:10px;font-weight:700;">Open Tracker</button>
+                  </a>
+                  <a href="tracker.html" id="tracker-quick-stats" style="text-decoration:none;color:#065f46;margin-left:6px;align-self:center;">View stats →</a>
+              </div>
+          </div>
+
+          <div id="homepage-tracker-preview" style="min-width:220px;padding:14px;border-radius:12px;background:#fff;box-shadow:0 6px 18px rgba(12,18,40,0.06);">
+              <div style="font-weight:700;color:#065f46;margin-bottom:8px;">Today's Snapshot</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <div style="background:#f0fff7;padding:8px;border-radius:8px;min-width:86px;text-align:center;">
+                      <div style="font-size:18px;font-weight:700;color:#065f46;" id="ph-score">0</div>
+                      <div style="font-size:11px;color:#6b7280;">Eco Pts</div>
+                  </div>
+                  <div style="background:#f6fbff;padding:8px;border-radius:8px;min-width:86px;text-align:center;">
+                      <div style="font-size:18px;font-weight:700;color:#1e40af;" id="ph-co2">0g</div>
+                      <div style="font-size:11px;color:#6b7280;">CO₂</div>
+                  </div>
+                  <div style="background:#fff7ed;padding:8px;border-radius:8px;min-width:86px;text-align:center;">
+                      <div style="font-size:18px;font-weight:700;color:#b45309;" id="ph-water">0L</div>
+                      <div style="font-size:11px;color:#6b7280;">Water</div>
+                  </div>
+              </div>
+              <div style="margin-top:10px;font-size:12px;color:#6b7280;">Open the tracker to log actions and view achievements.</div>
+          </div>
+      </div>
+  </section>
+
   <section id="contact" class="contact-section">
 
       <h2>Contact Us</h2>
@@ -137,14 +171,25 @@
       <p>© 2026 Parallel-x. All rights reserved.</p>
 
       <div class="footer-links">
-          <a href="#home">Home</a>
-          <a href="#about">About</a>
+          
           <a href="#">Projects</a>
       </div>
 
   </footer>
 
-  <script src="parallal.js"></script>
+    <script src="theme-toggle.js"></script>
+    <script src="parallal.js"></script>
+    <script>
+        (function(){
+            try{
+                const totals = JSON.parse(localStorage.getItem('eco_totals')) || { score:0, co2:0, water:0 };
+                document.getElementById('ph-score').innerText = totals.score || 0;
+                document.getElementById('ph-co2').innerText = (totals.co2 || 0) + 'g';
+                document.getElementById('ph-water').innerText = (totals.water || 0) + 'L';
+            }catch(e){/* ignore */}
+        })();
+    </script>
 
 </body>
+
 </html>

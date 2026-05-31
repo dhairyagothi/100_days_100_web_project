@@ -1,551 +1,156 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Linkedin</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-  </head>
-  <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
-
-    <nav class="navbar">
-      <div class="navbar-inner">
-        <div class="navbar-left">
-          <a href="index.html" class="logo">
-            <img src="images/logo.png" alt="LinkedIn Logo" />
-          </a>
-          <div class="search-box" role="search">
-            <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d="M11 4a7 7 0 1 1 0 14 7 7 0 0 1 0-14z" fill="none" stroke="#666" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M21 21l-4.35-4.35" fill="none" stroke="#666" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <input type="search" aria-label="Search" placeholder="Search" />
-          </div>
-        </div>
-        <div class="navbar-center">
-          <ul>
-            <li>
-              <a href="#" class="active-link">
-                <i class="fa-solid fa-house"></i>
-                <span>Home</span>
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <i class="fa-solid fa-user"></i>
-                <span>My Network</span>
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <i class="fa-solid fa-briefcase"></i>
-                <span>Jobs</span>
-              </a>
-            </li>
-            <li class="message-link">
-              <a href="#">
-                <i class="fa-solid fa-comment-dots"></i>
-                <span>Messaging</span>
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <i class="fa-solid fa-bell"></i>
-                <span>Notifications</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class="navbar-right">
-          <a href="#">
-            <img src="images/user-2.png" alt="User Profile" class="profile-pic" />
-            <span>Me</span>
-          </a>
-        </div>
-      </div>
-    </nav>
-
-    <div class="container">
-
-      <div class="left-sidebar">
-        <!-- Profile Card -->
-        <aside class="profile-card card">
-          <div class="cover"><img src="images/cover-pic.png" alt="Cover" /></div>
-          <div class="profile-overlap">
-            <img src="images/user-2.png" alt="Profile" />
-          </div>
-          <div class="profile-body">
-            <h2>Jane Smith</h2>
-            <p class="title">Software Engineer at Google</p>
-            
-          </div>
-        </aside>
-
-        <!-- Premium Card -->
-        <aside class="premium-card card">
-          <div class="premium-content">
-            <img src="images/premium.png" alt="Premium" />
-            <div class="premium-text">
-              <p>Try Premium free</p>
-              <small>Get more insights and opportunities</small>
-            </div>
-          </div>
-        </aside>
-
-        <!-- Stats Card -->
-        <aside class="stats-card card">
-          <ul>
-            <li><span class="label">Profile views</span> <span>50</span></li>
-            <li><span class="label">Post impressions</span> <span>150</span></li>
-          </ul>
-        </aside>
-
-        <!-- Shortcuts Card -->
-        <aside class="shortcuts-card card">
-          <ul>
-            <li><img src="images/items.png" alt="Saved" /><span class="label">Saved items</span></li>
-            <li><img src="images/recent.png" alt="Newsletter" /><span class="label">Newsletters</span></li>
-            <li><img src="images/event.png" alt="Events" /><span class="label">Events</span></li>
-          </ul>
-        </aside>
-
-        <p id="showMoreLink" onclick="toggleActivity()">Show more <b>+</b></p>
-      </div>
-
-      <div class="content-area">
-      <div class="main-content">
-        <div class="create-post" id="createPost">
-          <div class="create-post-input">
-            <img src="images/user-2.png" />
-            <div class="start-post" id="startPost" tabindex="0" role="button">Start a post</div>
-            <textarea id="postContent" rows="2" placeholder="Write Something"></textarea>
-          </div>
-          <div class="create-post-links">
-            <li data-action="photo"><img src="images/photo.png" />Photo</li>
-            <li data-action="video"><img src="images/video.png" />Video</li>
-            <li data-action="article"><img src="images/items.png" />Write article</li>
-            <button id="postButton" class="post-btn hidden">Post</button>
-          </div>
-        </div>
-        <div class="sort-by">
-          <hr />
-          <p>
-            Sort by : <span>top <img src="images/down-arrow.png" /></span>
-          </p>
-        </div>
-        <div class="post">
-          <div class="post-author">
-            <img src="images/user-5.png" />
-            <div>
-              <h1>Oliver Brown</h1>
-              <small>CTO at TechCorp | Innovator</small>
-              <small>1 hour ago </small>
-            </div>
-          </div>
-          <p>
-            Exploring the future of quantum computing and its applications in
-            various industries.
-          </p>
-          <img src="images/post-image-3.png" width="100%" />
-          <div class="post-stats">
-            <div>
-              <img src="images/thumbsup.png" />
-              <img src="images/love.png" />
-              <img src="images/clap.png" />
-              <span class="liked-users">Sarah Lee and 45 others</span>
-            </div>
-            <div>
-              <span>15 comments &middot; 30 shares</span>
-            </div>
-          </div>
-          <div class="post-activity">
-            <div>
-              <img src="images/user-2.png" class="post-activity-user-icon" />
-              <img
-                src="images/down-arrow.png"
-                class="post-activity-arrow-icon"
-              />
-            </div>
-            <div class="post-activity-link">
-              <img src="images/like.png" />
-              <span>Like</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/comment.png" />
-              <span>Comment</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/share.png" />
-              <span>Share</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/send.png" />
-              <span>Send</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="post">
-          <div class="post-author">
-            <img src="images/user-5.png" />
-            <div>
-              <h1>Emma Williams</h1>
-              <small>Senior Developer at CodeWorks</small>
-              <small>3 hours ago </small>
-            </div>
-          </div>
-          <p>
-            New tech blog coming up about the role of AI in modern web
-            development.
-          </p>
-          <img src="images/post-image-4.png" width="100%" />
-          <div class="post-stats">
-            <div>
-              <img src="images/thumbsup.png" />
-              <img src="images/love.png" />
-              <img src="images/clap.png" />
-              <span class="liked-users">John Doe and 65 others</span>
-            </div>
-            <div>
-              <span>18 comments &middot; 50 shares</span>
-            </div>
-          </div>
-          <div class="post-activity">
-            <div>
-              <img src="images/user-2.png" class="post-activity-user-icon" />
-              <img
-                src="images/down-arrow.png"
-                class="post-activity-arrow-icon"
-              />
-            </div>
-            <div class="post-activity-link">
-              <img src="images/like.png" />
-              <span>Like</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/comment.png" />
-              <span>Comment</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/share.png" />
-              <span>Share</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/send.png" />
-              <span>Send</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="post">
-          <div class="post-author">
-            <img src="images/user-3.png" />
-            <div>
-              <h1>Bejamin Leo</h1>
-              <small>Founder and CEO at Giva | Angel Investor</small>
-              <small>2 hours ago </small>
-            </div>
-          </div>
-          <p>
-            The sucess of every website depends on Search engine optimisation
-            and digital marketing strategy. If you are not in the first page of
-            all major search engines then you are ahead among your competitors.
-          </p>
-          <img src="images/post-image-3.png" width="100%" />
-
-          <div class="post-stats">
-            <div>
-              <img src="images/thumbsup.png" />
-              <img src="images/love.png" />
-              <img src="images/clap.png" />
-              <span class="liked-users">Adam Doe and 89 others</span>
-            </div>
-            <div>
-              <span>22 comments &middot; 40 shares</span>
-            </div>
-          </div>
-          <div class="post-activity">
-            <div>
-              <img src="images/user-1.png" class="post-activity-user-icon" />
-              <img
-                src="images/down-arrow.png"
-                class="post-activity-arrow-icon"
-              />
-            </div>
-            <div class="post-activity-link">
-              <img src="images/like.png" />
-              <span>Like</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/comment.png" />
-              <span>Comment</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/share.png" />
-              <span>Share</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/send.png" />
-              <span>Send</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="post">
-          <div class="post-author">
-            <img src="images/user-3.png" />
-            <div>
-              <h1>Bejamin Leo</h1>
-              <small>Founder and CEO at Giva | Angel Investor</small>
-              <small>2 hours ago </small>
-            </div>
-          </div>
-          <p>
-            The sucess of every website depends on Search engine optimisation
-            and digital marketing strategy. If you are not in the first page of
-            all major search engines then you are ahead among your competitors.
-          </p>
-          <img src="images/post-image-4.png" width="100%" />
-
-          <div class="post-stats">
-            <div>
-              <img src="images/thumbsup.png" />
-              <img src="images/love.png" />
-              <img src="images/clap.png" />
-              <span class="liked-users">Adam Doe and 89 others</span>
-            </div>
-            <div>
-              <span>22 comments &middot; 40 shares</span>
-            </div>
-          </div>
-          <div class="post-activity">
-            <div>
-              <img src="images/user-1.png" class="post-activity-user-icon" />
-              <img
-                src="images/down-arrow.png"
-                class="post-activity-arrow-icon"
-              />
-            </div>
-            <div class="post-activity-link">
-              <img src="images/like.png" />
-              <span>Like</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/comment.png" />
-              <span>Comment</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/share.png" />
-              <span>Share</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/send.png" />
-              <span>Send</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="right-sidebar">
-        <div class="sidebar-news">
-          <img src="images/more.png" class="info-icon" />
-          <h3>LinkedIn News</h3>
-
-          <a href="#">High Demand for Skilled Employees</a>
-          <span>1d ago &middot; 10,934 readers</span>
-
-          <a href="#">Inflation in Canada Affects the Workforce</a>
-          <span>2d ago &middot; 7,043 readers</span>
-
-          <a href="#">Mass Recruiters fire Employees</a>
-          <span>4d ago &middot; 17,789 readers</span>
-
-          <a href="#">Crypto predicted to Boom this year</a>
-          <span>9d ago &middot; 2, 436 readers</span>
-
-          <a href="#" class="read-more-link">Read More</a>
-        </div>
-
-        <div class="sidebar-ad">
-          <small>Ad &middot; &middot; &middot;</small>
-          <p>Master Web Development</p>
-          <div>
-            <img src="images/user-1.png" />
-            <img src="images/mi-logo.png" />
-          </div>
-          <b>Brand and Demand in Xiaomi</b>
-          <a href="#" class="ad-link">Learn More</a>
-        </div>
-
-        <div class="sidebar-useful-links">
-          <a href="#">About</a>
-          <a href="#">Accessibility</a>
-          <a href="#">Help Center</a>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Advertising</a>
-          <a href="#">Get the App</a>
-          <a href="#">More</a>
-
-          <div class="copyright-msg">
-            <img src="images/logo.png" />
-            <p>Linkedin &#169; 2022. All Rights Reserved</p>
-          </div>
-        </div>
-      </div>
-      </div>
-      
-    </div>
-
-    <script>
-      let profileMenu = document.getElementById("profileMenu");
-
-      function toggleMenu() {
-        profileMenu.classList.toggle("open-menu");
-      }
-
-      let sideActivity = document.getElementById("sidebarActivity");
-      let moreLink = document.getElementById("showMoreLink");
-
-      function toggleActivity() {
-        sideActivity.classList.toggle("open-activity");
-        if (sideActivity.classList.contains("open-activity")) {
-          moreLink.innerHTML = "Show less <b>-</b>";
-        } else {
-          moreLink.innerHTML = "Show More <b>+</b>";
-        }
-      }
-
-      // Create Post functionality
-      const postBtn = document.getElementById('postButton');
-      const postTextarea = document.getElementById('postContent');
-      const startPostBtn = document.getElementById('startPost');
-      const createPostWrapper = document.getElementById('createPost');
-
-      function expandCreate() {
-        createPostWrapper.classList.add('expanded');
-        postTextarea.style.display = 'block';
-        postBtn.classList.remove('hidden');
-        postTextarea.focus();
-        // slide main content and right sidebar together
-        const contentArea = document.querySelector('.content-area');
-        if (contentArea) {
-          const leftSidebar = document.querySelector('.left-sidebar');
-          const mainContent = document.querySelector('.main-content');
-          const defaultGap = 24;
-          const gap = mainContent ? parseInt(getComputedStyle(mainContent).marginLeft) || defaultGap : defaultGap;
-          const leftWidth = leftSidebar ? leftSidebar.offsetWidth : 216;
-          const offset = leftWidth + gap;
-          contentArea.style.setProperty('--slide-x', offset + 'px');
-          contentArea.classList.add('shifted');
-        }
-      }
-
-      startPostBtn && startPostBtn.addEventListener('click', expandCreate);
-      startPostBtn && startPostBtn.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); expandCreate(); }
-      });
-
-      function createPost() {
-        const content = postTextarea.value.trim();
-        if (!content) return;
-
-        const authorName = document.querySelector('.sidebar-profile-info h1')?.textContent || 'You';
-        const authorTitle = document.querySelector('.sidebar-profile-info h3')?.textContent || '';
-        const authorImg = document.querySelector('.sidebar-profile-info img')?.getAttribute('src') || 'images/user-2.png';
-
-        const postHtml = `
-        <div class="post">
-          <div class="post-author">
-            <img src="${authorImg}" />
-            <div>
-              <h1>${authorName}</h1>
-              <small>${authorTitle}</small>
-              <small>Just now</small>
-            </div>
-          </div>
-          <p>${escapeHtml(content)}</p>
-          <div class="post-stats">
-            <div>
-              <img src="images/thumbsup.png" />
-              <img src="images/love.png" />
-              <img src="images/clap.png" />
-              <span class="liked-users">You</span>
-            </div>
-            <div>
-              <span>0 comments &middot; 0 shares</span>
-            </div>
-          </div>
-          <div class="post-activity">
-            <div>
-              <img src="images/user-2.png" class="post-activity-user-icon" />
-              <img src="images/down-arrow.png" class="post-activity-arrow-icon" />
-            </div>
-            <div class="post-activity-link">
-              <img src="images/like.png" />
-              <span>Like</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/comment.png" />
-              <span>Comment</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/share.png" />
-              <span>Share</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/send.png" />
-              <span>Send</span>
-            </div>
-          </div>
-        </div>
-        `;
-
-        const createPostEl = document.querySelector('.create-post');
-        createPostEl.insertAdjacentHTML('afterend', postHtml);
-        postTextarea.value = '';
-        postTextarea.focus();
-        // collapse create UI
-        createPostWrapper.classList.remove('expanded');
-        postTextarea.style.display = 'none';
-        postBtn.classList.add('hidden');
-        // remove slide
-        const contentArea = document.querySelector('.content-area');
-        if (contentArea) {
-          contentArea.classList.remove('shifted');
-          contentArea.style.removeProperty('--slide-x');
-        }
-      }
-
-      // Simple HTML escape to avoid injecting raw HTML
-      function escapeHtml(str) {
-        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
-      }
-
-      postBtn && postBtn.addEventListener('click', createPost);
-      postTextarea && postTextarea.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-          e.preventDefault();
-          createPost();
-        }
-      });
-    </script>
-    
-    <!-- Mobile bottom navigation -->
-    <div class="mobile-bottom-nav" role="navigation" aria-label="Mobile navigation">
-      <a href="#" class="mb-home"><i class="fa-solid fa-house"></i><span>Home</span></a>
-      <a href="#" class="mb-network"><i class="fa-solid fa-user"></i><span>My Network</span></a>
-      <a href="#" class="mb-post"><i class="fa-solid fa-plus-circle"></i><span>Post</span></a>
-      <a href="#" class="mb-notif"><i class="fa-solid fa-bell"></i><span>Notifications</span></a>
-      <a href="#" class="mb-jobs"><i class="fa-solid fa-briefcase"></i><span>Jobs</span></a>
-    </div>
-  </body>
-</html>
+* { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; box-sizing: border-box; } body {
+background-color: #eef3f8; color: #333333; font-family: 'Roboto', sans-serif; } a { text-decoration:
+none; color: #5f5f5f; transition: color 0.3s ease; } a:hover { color: #045be6; } /* Navbar */
+.navbar { position: fixed; top: 0; left: 0; width: 100%; z-index: 100; height: 51.2px; background:
+#ffffff; border-bottom: 1px solid #edf3f8; } .navbar-inner { max-width: 1128px; height: 100%;
+margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between;
+gap: 12px; } .navbar-left, .navbar-center, .navbar-right { display: flex; align-items: center; }
+.navbar-left { gap: 12px; flex: 1 1 auto; min-width: 0; } .navbar-left .logo img { width: 34px;
+height: 34px; cursor: pointer; } .navbar-left .search-box { display: flex; align-items: center; gap:
+8px; background-color: white; padding: 0 10px 0 36px; border-radius: 10px; border: 1px solid #ccc;
+width: clamp(200px, 30vw, 280px); height: 34px; position: relative; flex: 0 0 auto; transition:
+background-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; } .navbar-left
+.search-box:hover, .navbar-left .search-box:focus-within { background-color: white; border-color:
+#000000; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04); } .navbar-left .search-box img { width: 14px;
+height: 14px; opacity: 0.800; flex: 0 0 auto; } .navbar-left .search-box input { border: none;
+outline: none; background: transparent; font-size: 14px; width: 100%; color: #111111; } .navbar-left
+.search-box .search-icon { position: absolute; left: 10px; width: 16px; height: 16px; display:
+block; fill: none; stroke: #020202; opacity: 0.9; pointer-events: none; } @media (max-width: 900px)
+{ .navbar-center ul li a span { display: none; } .navbar-center ul { gap: 4px; } .navbar-left
+.search-box { width: 220px; } } .navbar-center ul { display: flex; list-style: none; gap: 6px;
+padding: 0; margin: 0; align-items: center; } .navbar-center ul li { display: flex; align-items:
+center; justify-content: center; flex-direction: column; font-size: 12px; font-weight: 500;
+text-align: center; width: 80px; padding: 0; overflow: hidden; } .navbar-center ul li a { display:
+flex; align-items: center; flex-direction: column; gap: 4px; text-decoration: none; color: #666666;
+width: 100%; padding: 6px 0 4px; position: relative; transition: color 0.18s ease; } .navbar-center
+ul li a i { font-size: 20px; width: 20px; height: 20px; display: flex; align-items: center;
+justify-content: center; } .navbar-center ul li a:hover, .navbar-center ul li a.active-link { color:
+#000000; } .navbar-center ul li a:hover::after, .navbar-center ul li a.active-link::after { content:
+""; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: #000000; }
+.navbar-right { display: flex; align-items: center; gap: 16px; flex: 0 0 auto; } .navbar-right a {
+display: flex; align-items: center; gap: 6px; text-decoration: none; color: #666666; font-size:
+12px; font-weight: 500; } .navbar-right a:hover { color: #000000; } .profile-pic { width: 28px;
+height: 28px; border-radius: 50%; object-fit: cover; display: inline-block; } /* Container */
+.container { display: flex; padding: 80px 24px 20px 24px; flex-wrap: nowrap; justify-content:
+center; max-width: 1128px; margin: 0 auto; } /* Left Sidebar */ .left-sidebar { width: 216px; flex:
+0 0 216px; max-width: 216px; min-width: 216px; align-self: flex-start; position: sticky; top: 80px;
+} /* ============================================= FIX: Profile card link wrapper (Issue #5195)
+============================================= */ .profile-card-link { display: block;
+text-decoration: none; color: inherit; border-radius: 12px; margin-bottom: 12px; transition:
+box-shadow 0.2s ease, transform 0.2s ease; } .profile-card-link:hover { box-shadow: 0 6px 16px
+rgba(0, 0, 0, 0.14); transform: translateY(-2px); color: inherit; } .profile-card-link:hover
+.profile-body h2 { color: #045be6; } /* Cards for left sidebar */ .card { background: #fff;
+border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.06); padding: 0; margin-bottom: 12px;
+overflow: hidden; } /* Override margin on profile-card since link wrapper handles it */
+.profile-card-link .card { margin-bottom: 0; } .profile-card .cover img { width: 100%; display:
+block; height: 72px; object-fit: cover; } .profile-card { position: relative; text-align: center;
+padding-bottom: 14px; cursor: pointer; } .profile-overlap { position: absolute; left: 50%; top:
+38px; transform: translateX(-50%); width: 88px; height: 88px; border-radius: 50%; padding: 4px;
+background: #fff; border: 2px solid #045be6; } .profile-overlap img { width: 100%; height: 100%;
+border-radius: 50%; object-fit: cover; display: block; } .profile-body { margin-top: 54px; padding:
+12px 14px 18px; } .profile-body h2 { font-size: 16px; margin-bottom: 4px; color: #222; transition:
+color 0.2s ease; } .profile-body .title { font-size: 13px; color: #666; } .profile-body .summary {
+margin-top: 8px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; } .profile-body
+.summary .skill { display: inline-block; padding: 6px 10px; font-size: 12px; color: #084ab3;
+background: rgba(4,91,230,0.08); border-radius: 999px; border: 1px solid rgba(4,91,230,0.12); }
+.premium-card .premium-content { display: flex; gap: 10px; align-items: center; padding: 12px; }
+.premium-card img { width: 36px; height: 36px; } .premium-text p { font-weight: 600; margin: 0; }
+.premium-text small { color: #666; } .stats-card ul { list-style: none; padding: 12px 14px; margin:
+0; } .stats-card li { display: flex; justify-content: space-between; padding: 8px 0; color: #555;
+font-weight: 500; } .stats-card li span { color: #045be6; font-weight: 700; } .shortcuts-card ul {
+list-style: none; padding: 10px 12px; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.shortcuts-card li { display: flex; align-items: center; gap: 10px; color: #555; padding: 8px 0; }
+.shortcuts-card li img { width: 20px; height: 20px; } /* Right Sidebar */ .right-sidebar { width:
+312px; flex: 0 0 312px; max-width: 312px; min-width: 312px; align-self: flex-start; position:
+sticky; top: 80px; } .sidebar-news { background: #fff; padding: 15px 20px; border-radius: 12px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); } .info-icon { width: 15px; float: right; margin-top:
+15px; } .sidebar-news h3 { font-size: 16px; font-weight: 600; color: #333; margin: 10px 0 20px; }
+.sidebar-news a { display: block; font-size: 13px; font-weight: 500; color: #5f5f5f; margin-top:
+10px; transition: color 0.3s ease; } .sidebar-news a:hover { color: #045be6; } .sidebar-news span {
+font-size: 12px; color: #777; } .sidebar-news .read-more-link { color: #045be6; font-weight: 500;
+margin: 20px 0 10px; display: block; } .sidebar-ad { background: #fff; padding: 15px 20px;
+text-align: center; margin: 15px 0; font-size: 12px; border-radius: 12px; box-shadow: 0 4px 8px
+rgba(0, 0, 0, 0.1); } .sidebar-ad img { width: 60px; border-radius: 50%; margin: 10px 0; }
+.sidebar-ad small { float: right; font-weight: 500; color: #777; } .sidebar-ad p { margin-top: 20px;
+margin-bottom: 10px; font-size: 14px; color: #555; } .sidebar-ad b { display: block; font-weight:
+600; margin-top: 10px; color: #333; } .ad-link { display: inline-block; border: 1px solid #045be6;
+border-radius: 30px; padding: 6px 20px; color: #045be6; font-weight: 500; font-size: 13px; margin:
+20px auto 10px; transition: background 0.3s ease, color 0.3s ease; } .ad-link:hover { background:
+#045be6; color: #fff; } .sidebar-useful-links { padding: 15px 20px; text-align: center; background:
+transparent; } .sidebar-useful-links a { display: inline-block; font-size: 14px; color: #5f5f5f;
+margin: 4px 6px; transition: color 0.3s ease; } .sidebar-useful-links a:hover { color: #045be6; }
+.copyright-msg { display: flex; align-items: center; justify-content: center; font-size: 12px;
+margin-top: 15px; font-weight: 500; color: #777; } .copyright-msg img { width: 18px; margin-right:
+6px; } /* Main Content */ .main-content { flex: 1 1 auto; min-width: 0; max-width: 552px; margin: 0
+24px; } /* Content Area */ .content-area { display: flex; align-items: flex-start; transition:
+transform 0.35s cubic-bezier(.2,.8,.2,1); will-change: transform; } .content-area.shifted {
+transform: translateX(var(--slide-x, 240px)); } .mobile-bottom-nav { display: none; } @media
+(max-width: 900px) { .content-area.shifted { transform: none; } } /* Create Post */ .create-post {
+background: #fff; padding: 15px 20px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+} .create-post-input { padding: 20px 25px 10px; display: flex; align-items: flex-start; background:
+#f9f9f9; border-radius: 10px; transition: box-shadow 0.3s ease-in-out; } .create-post-input:hover {
+box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); } .create-post-input img { width: 35px; border-radius:
+50%; margin-right: 10px; } .create-post-input .start-post { flex: 1; background: transparent;
+border-radius: 20px; padding: 10px 14px; color: #666; font-weight: 600; cursor: text; border: 1px
+solid #e6e6e6; } .create-post-input textarea { width: 100%; border: 0; outline: 0; resize: none;
+background: transparent; margin-top: 8px; font-size: 14px; font-weight: 500; color: #333; display:
+none; } .create-post.expanded .start-post { display: none; } .create-post.expanded textarea {
+display: block; } .post-btn { background: #045be6; color: #fff; border: none; padding: 8px 14px;
+border-radius: 6px; cursor: pointer; font-weight: 600; } .hidden { display: none; } ::placeholder {
+font-weight: 500; color: #aaa; } .create-post-links { display: flex; align-items: center; gap: 10px;
+margin-top: 10px; width: 100%; } .create-post-links li { list-style: none; height: 44px; font-size:
+13px; display: flex; align-items: center; justify-content: center; cursor: pointer; position:
+relative; overflow: hidden; padding: 8px 6px; border-radius: 8px; transition: background 0.2s
+ease-in-out, transform 0.2s ease-in-out; flex: 1 1 0; } .create-post-links li:hover { background:
+#e6f7ff; color: #045be6; transform: scale(1.05); } .create-post-links li img { width: 16px;
+margin-right: 8px; transition: transform 0.2s ease-in-out; } .create-post-links li:hover img {
+transform: rotate(15deg); } .create-post-links li:last-child { background: #045be6; color: #fff;
+border-top: 0; border-right: 0; transition: background-color 0.3s ease-in-out; } .create-post-links
+li:last-child:hover { background: #0044cc; } /* Sort by */ .sort-by { display: flex; align-items:
+center; margin: 10px 0; } .sort-by hr { flex: 1; border: 0; height: 1px; background: #ccc; }
+.sort-by p { font-size: 13px; padding-left: 5px; } .sort-by p span { font-weight: 600; cursor:
+pointer; position: relative; } .sort-by p span img { width: 12px; margin-left: 3px; transition:
+transform 0.3s ease-in-out; } .sort-by p span:hover img { transform: rotate(90deg); } /* Posts */
+.post { background: #fff; padding: 20px 25px 5px; margin: 5px 0 15px; border-radius: 10px;
+transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; } .post:hover { transform:
+translateY(-5px); box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); } .post-author { display: flex;
+align-items: flex-start; margin-bottom: 20px; } .post-author img { width: 35px; border-radius: 50%;
+margin-top: 5px; margin-right: 10px; } .post-author h1 { font-size: 18px; font-weight: 600; color:
+#333; } .post-author small { display: block; margin-bottom: -2px; color: #777; } .post p {
+font-size: 14px; margin-bottom: 15px; color: #555; } .post-stats { display: flex; flex-wrap: wrap;
+align-items: center; justify-content: space-between; font-size: 12px; border-bottom: 1px solid #ccc;
+padding-bottom: 6px; } .post-stats div { display: flex; align-items: center; } .post-stats img {
+width: 15px; margin-right: -5px; transition: transform 0.3s ease-in-out; } .post-stats img:hover {
+transform: scale(1.2); } .liked-users { margin-left: 10px; } .post-activity { display: flex;
+align-items: center; justify-content: space-between; padding: 10px; font-size: 14px; font-weight:
+500; } .post-activity div { display: flex; align-items: center; } .post-activity-user-icon { width:
+22px; border-radius: 50%; transition: transform 0.3s ease-in-out; } .post-activity-user-icon:hover {
+transform: rotate(360deg); } .post-activity-arrow-icon { width: 12px; margin-left: 5px; }
+.post-activity-link img { width: 18px; margin-right: 8px; transition: transform 0.3s ease-in-out; }
+.post-activity-link img:hover { transform: scale(1.2); } /* Misc */ .profile-menu-wrap { position:
+absolute; top: 100%; right: 5%; width: 320px; max-height: 0; overflow: hidden; border-radius: 10px;
+background: #fff; box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); transition: max-height 0.5s
+ease-in-out, box-shadow 0.3s ease-in-out; } .profile-menu-wrap.open-menu { max-height: 400px;
+transition: max-height 0.5s ease-in-out, box-shadow 0.3s ease-in-out; } #showMoreLink { display:
+none; font-size: 14px; text-align: center; padding: 10px; background: #045be6; color: #fff;
+border-radius: 5px; cursor: pointer; transition: background 0.3s ease; } #showMoreLink:hover {
+background: #0044cc; } /* Responsive */ @media (max-width: 1100px) { .container { padding: 80px
+24px; flex-wrap: wrap; justify-content: center; } .right-sidebar { display: none; } .left-sidebar {
+display: none; } .main-content { max-width: 720px; margin: 0 12px; } .content-area { flex-wrap:
+nowrap; } } @media (max-width: 900px) { .container { padding: 70px 16px; justify-content: center; }
+.left-sidebar { width: 72px; flex: 0 0 72px; max-width: 72px; min-width: 72px; display: block; }
+.content-area { flex-direction: column; align-items: stretch; } .main-content { max-width: 100%;
+margin: 0; } .right-sidebar { display: block; order: 3; width: 100%; flex: 0 0 100%; position:
+relative; top: unset; } .navbar-center ul li a span { display: none; } .navbar-center ul li a {
+padding: 6px; } .search-box { display: none; } .content-area.shifted { transform: none; } .sort-by {
+display: none; } } @media only screen and (max-width: 600px) { .left-sidebar, .right-sidebar {
+display: none; } .navbar-center ul li { display: none; } .navbar-center ul li.message-link {
+display: flex; } .navbar-right { display: none; } .navbar-left { display: flex; align-items: center;
+gap: 8px; flex: 1 1 auto; min-width: 0; } .navbar-center { flex: 0 0 auto; } .navbar-left
+.search-box { display: flex; flex: 1 1 auto; width: 100%; max-width: none; } .container { padding:
+64px 12px 96px; } .mobile-bottom-nav { display: flex; position: fixed; left: 0; right: 0; bottom: 0;
+height: 56px; background: #fff; border-top: 1px solid #e6e6e6; justify-content: space-around;
+align-items: center; z-index: 1200; } .mobile-bottom-nav a { color: #333; text-align: center;
+font-size: 12px; display: flex; flex-direction: column; align-items: center; gap: 2px;
+text-decoration: none; } .mobile-bottom-nav a i { font-size: 18px; } .create-post { display: none; }
+.post-activity-link span { display: none; } .sort-by { display: none; } }

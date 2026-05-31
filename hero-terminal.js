@@ -484,11 +484,6 @@ function FaultyTerminal({
       gl.clearColor(0, 0, 0, 1);
       // iOS/Safari: force context loss handler for quirks
       gl.getExtension("WEBGL_lose_context");
-      console.log("[hero-terminal] WebGL renderer initialized", {
-        dpr: useDpr,
-        width: gl.canvas.width,
-        height: gl.canvas.height,
-      });
     } catch (err) {
       console.warn(
         "[hero-terminal] WebGL init failed, falling back to tech animation canvas",
@@ -721,7 +716,16 @@ const host = document.getElementById("heroTerminal");
 if (!host)
   console.error("[hero-terminal] mount target #heroTerminal not found");
 
-if (host) {
+const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const isCoarsePointer = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches;
+const isSmallScreen = typeof window !== "undefined" && window.innerWidth <= 1200;
+const shouldRenderHero = !prefersReducedMotion && !isCoarsePointer && !isSmallScreen;
+
+if (host && !shouldRenderHero) {
+  host.style.display = 'none';
+}
+
+if (host && shouldRenderHero) {
   const root = createRoot(host);
 
   const getBreakpoint = () => {
