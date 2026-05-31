@@ -16,9 +16,26 @@ module.exports = async (req, res) => {
     });
   }
 
+  // Server-side model allowlist. Accepting any caller-supplied model name lets
+  // a caller request expensive or experimental models (gemini-2.5-pro,
+  // gemini-1.5-pro-002) that cost significantly more per token. The server
+  // owner pays all charges, so only explicitly permitted models are allowed.
+  const ALLOWED_MODELS = new Set([
+    "gemini-2.5-flash",
+    "gemini-2.0-flash",
+    "gemini-1.5-flash",
+    "gemini-1.5-flash-8b",
+  ]);
+
   const { model, contents, systemPrompt } = req.body || {};
   if (!model || !Array.isArray(contents) || contents.length === 0) {
     return res.status(400).json({ error: "Invalid request body" });
+  }
+
+  if (!ALLOWED_MODELS.has(model)) {
+    return res.status(400).json({
+      error: `Model '${model}' is not permitted. Allowed models: ${[...ALLOWED_MODELS].join(", ")}`,
+    });
   }
 
   const payload = { contents };
