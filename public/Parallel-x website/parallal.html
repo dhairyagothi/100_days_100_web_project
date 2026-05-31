@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset= "UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -76,7 +77,19 @@
         </div>
     </footer>
 
-  <script src="parallal.js"></script>
+    <script src="theme-toggle.js"></script>
+    <script src="parallal.js"></script>
+    <script>
+        (function(){
+            try{
+                const totals = JSON.parse(localStorage.getItem('eco_totals')) || { score:0, co2:0, water:0 };
+                document.getElementById('ph-score').innerText = totals.score || 0;
+                document.getElementById('ph-co2').innerText = (totals.co2 || 0) + 'g';
+                document.getElementById('ph-water').innerText = (totals.water || 0) + 'L';
+            }catch(e){/* ignore */}
+        })();
+    </script>
 
 </body>
+
 </html>
