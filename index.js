@@ -61,6 +61,21 @@ function getCategoryFromTags(tags, name) {
 let PROJECTS = [];
 let projectsPromise = null;
 
+function hydrateProjects(data) {
+  PROJECTS = data.map(project => [
+   `Day ${project.projectNo}`,
+   project.projectName,
+   project.projectPath,
+   project.techStack,
+   project.difficulty,
+   project.projectDesc
+  ]);
+}
+
+function getPreloadedProjectsData() {
+  return Array.isArray(window.PROJECTS_DATA) ? window.PROJECTS_DATA : null;
+}
+
 function parseProjectsData(payload) {
   try {
     return JSON.parse(payload);
@@ -73,6 +88,12 @@ function parseProjectsData(payload) {
 function loadProjects() {
   if (!projectsPromise) {
     projectsPromise = (async () => {
+      const preloadedData = getPreloadedProjectsData();
+      if (preloadedData) {
+        hydrateProjects(preloadedData);
+        return PROJECTS;
+      }
+
       const isRoot = !window.location.pathname.includes('/contributors/');
       const base = isRoot ? '' : '../';
       const projectsUrl = new URL(`${base}projects.json`, window.location.href).toString();
@@ -563,7 +584,7 @@ function renderGrid() {
       day, name, url, tags, category, isBookmarked, showDescription: true
     });
 
-    card.className = sourceOnly ? 'project-card source-only' : 'project-card';
+    card.className = sourceOnly ? 'project-card source-only visible' : 'project-card visible';
     card.innerHTML = html;
     attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
     fragment.appendChild(card);
@@ -767,7 +788,7 @@ function renderRecentProjects() {
       day, name, url, tags, category, isBookmarked, showDescription: true,
     });
 
-    card.className = sourceOnly ? 'project-card source-only' : 'project-card';
+    card.className = sourceOnly ? 'project-card source-only visible' : 'project-card visible';
     card.innerHTML = html;
     attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
     recentGrid.appendChild(card);
