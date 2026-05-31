@@ -1,9 +1,9 @@
 // --- Sound Setup ---
-const backgroundMusic = document.getElementById('background-music');
-const catchSound = document.getElementById('catch-sound');
-const buttonClickSound = document.getElementById('button-click-sound');
-const muteBtn = document.getElementById('mute-btn');
-const volumeSlider = document.getElementById('volume-slider');
+const backgroundMusic = document.getElementById("background-music");
+const catchSound = document.getElementById("catch-sound");
+const buttonClickSound = document.getElementById("button-click-sound");
+const muteBtn = document.getElementById("mute-btn");
+const volumeSlider = document.getElementById("volume-slider");
 
 let isMuted = false;
 
@@ -17,22 +17,22 @@ backgroundMusic.volume = 0.5;
 catchSound.volume = 0.5;
 buttonClickSound.volume = 0.5;
 
-const screens = document.querySelectorAll('.screen');
-const choose_insect_btns = document.querySelectorAll('.choose-insect-btn');
-const start_btn = document.getElementById('start-btn');
-const game_container = document.getElementById('game-container');
-const timeEl = document.getElementById('time');
-const scoreEl = document.getElementById('score');
-const message = document.getElementById('message');
+const screens = document.querySelectorAll(".screen");
+const choose_insect_btns = document.querySelectorAll(".choose-insect-btn");
+const start_btn = document.getElementById("start-btn");
+const game_container = document.getElementById("game-container");
+const timeEl = document.getElementById("time");
+const scoreEl = document.getElementById("score");
+const message = document.getElementById("message");
 
 // End game popup and final result elements
-const endBtn = document.getElementById('end-btn');
-const gameOverPopup = document.getElementById('game-over');
-const yesBtn = document.getElementById('yes-btn');
-const noBtn = document.getElementById('no-btn');
-const finalResult = document.getElementById('final-result');
-const finalScore = document.getElementById('final-score');
-const finalTime = document.getElementById('final-time');
+const endBtn = document.getElementById("end-btn");
+const gameOverPopup = document.getElementById("game-over");
+const yesBtn = document.getElementById("yes-btn");
+const noBtn = document.getElementById("no-btn");
+const finalResult = document.getElementById("final-result");
+const finalScore = document.getElementById("final-score");
+const finalTime = document.getElementById("final-time");
 
 let seconds = 0;
 let score = 0;
@@ -48,17 +48,17 @@ function playButtonClickSound(onComplete) {
     if (completed) return;
     completed = true;
     clearTimeout(fallbackTimer);
-    buttonClickSound.removeEventListener('ended', finish);
+    buttonClickSound.removeEventListener("ended", finish);
     onComplete();
   };
 
-  buttonClickSound.addEventListener('ended', finish, { once: true });
+  buttonClickSound.addEventListener("ended", finish, { once: true });
   fallbackTimer = setTimeout(finish, 700);
 
   try {
     buttonClickSound.currentTime = 0;
     const playPromise = buttonClickSound.play();
-    if (playPromise && typeof playPromise.catch === 'function') {
+    if (playPromise && typeof playPromise.catch === "function") {
       playPromise.catch(finish);
     }
   } catch (error) {
@@ -66,21 +66,21 @@ function playButtonClickSound(onComplete) {
   }
 }
 
-start_btn.addEventListener('click', () => {
+start_btn.addEventListener("click", () => {
   playButtonClickSound(() => {
-    screens[0].classList.add('up');
+    screens[0].classList.add("up");
   });
 });
 
 choose_insect_btns.forEach((btn) => {
-  btn.addEventListener('click', () => {
-    const img = btn.querySelector('img');
-    const src = img.getAttribute('src');
-    const alt = img.getAttribute('alt');
+  btn.addEventListener("click", () => {
+    const img = btn.querySelector("img");
+    const src = img.getAttribute("src");
+    const alt = img.getAttribute("alt");
     selected_insect = { src, alt };
 
     playButtonClickSound(() => {
-      screens[1].classList.add('up');
+      screens[1].classList.add("up");
       setTimeout(createInsect, 1000);
       startGame();
 
@@ -106,14 +106,14 @@ function increaseTime() {
 }
 
 function createInsect() {
-  const insect = document.createElement('div');
-  insect.classList.add('insect');
+  const insect = document.createElement("div");
+  insect.classList.add("insect");
   const { x, y } = getRandomLocation();
   insect.style.top = `${y}px`;
   insect.style.left = `${x}px`;
   insect.innerHTML = `<img src="${selected_insect.src}" alt="${selected_insect.alt}" style="transform: rotate(${Math.random() * 360}deg)" />`;
 
-  insect.addEventListener('click', catchInsect);
+  insect.addEventListener("click", catchInsect);
 
   game_container.appendChild(insect);
 }
@@ -131,8 +131,8 @@ function catchInsect() {
   catchSound.play();
 
   increaseScore();
-  this.classList.add('caught');
-  this.style.pointerEvents = 'none';
+  this.classList.add("caught");
+  this.style.pointerEvents = "none";
   setTimeout(() => this.remove(), 300);
   addInsects();
 }
@@ -145,20 +145,20 @@ function addInsects() {
 function increaseScore() {
   score++;
   if (score > 19) {
-    message.classList.add('visible');
+    message.classList.add("visible");
   }
   scoreEl.innerHTML = `Score: ${score}`;
 }
 
 // Show confirmation popup when user clicks 'End Game' button
-endBtn.addEventListener('click', () => {
-  gameOverPopup.style.display = 'flex';
+endBtn.addEventListener("click", () => {
+  gameOverPopup.style.display = "flex";
   clearInterval(gameInterval);
   isGamePaused = true;
 });
 
 // --- Volume Slider ---
-volumeSlider.addEventListener('input', () => {
+volumeSlider.addEventListener("input", () => {
   const volume = volumeSlider.value;
   backgroundMusic.volume = volume;
   catchSound.volume = volume;
@@ -166,8 +166,8 @@ volumeSlider.addEventListener('input', () => {
 });
 
 // Resume game
-noBtn.addEventListener('click', () => {
-  gameOverPopup.style.display = 'none';
+noBtn.addEventListener("click", () => {
+  gameOverPopup.style.display = "none";
 
   if (isGamePaused) {
     gameInterval = setInterval(increaseTime, 1000);
@@ -176,16 +176,16 @@ noBtn.addEventListener('click', () => {
 });
 
 // Ends the game
-yesBtn.addEventListener('click', endGame);
+yesBtn.addEventListener("click", endGame);
 
 // Stops timer, removes insects and display final results
 function endGame() {
   clearInterval(gameInterval);
-  document.querySelectorAll('.insect').forEach((insect) => {
+  document.querySelectorAll(".insect").forEach((insect) => {
     insect.remove();
   });
 
-  gameOverPopup.style.display = 'none';
+  gameOverPopup.style.display = "none";
 
   const m = Math.floor(seconds / 60);
   const s = seconds % 60;
@@ -195,5 +195,5 @@ function endGame() {
   finalScore.innerHTML = `Final Score: ${score}`;
   finalTime.innerHTML = `Time Taken: ${paddedMins}:${paddedSeconds}`;
 
-  finalResult.style.display = 'flex';
+  finalResult.style.display = "flex";
 }

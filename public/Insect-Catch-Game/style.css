@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
 * {
   box-sizing: border-box;
 }
@@ -10,7 +10,7 @@ body {
     linear-gradient(135deg, #03131d, #071d2b, #021018);
   background-color: #021018;
   color: white;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   height: 100vh;
   overflow: hidden;
   margin: 0;
@@ -18,15 +18,23 @@ body {
   position: relative;
 }
 body::before {
-  content: '';
+  content: "";
 
   position: absolute;
 
   inset: 0;
 
   background:
-    radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.08), transparent 25%),
-    radial-gradient(circle at 80% 30%, rgba(255, 0, 255, 0.08), transparent 25%),
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(0, 255, 255, 0.08),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 80% 30%,
+      rgba(255, 0, 255, 0.08),
+      transparent 25%
+    ),
     radial-gradient(circle at 50% 80%, rgba(0, 255, 255, 0.06), transparent 25%);
 
   pointer-events: none;
@@ -339,7 +347,7 @@ h1 {
   color: #516dff;
   border: none;
   padding: 10px 15px;
-  font-family: 'Press Start 2P', sans-serif;
+  font-family: "Press Start 2P", sans-serif;
   font-size: 10px;
   cursor: pointer;
   transition: 0.2s ease;
