@@ -24,11 +24,10 @@ canvas.width  = 1000;
 canvas.height = 600;
 
 // ─── Sprites ──────────────────────────────────────────────────────────────────
-const topPipeImg    = new Image(); topPipeImg.src    = 'toppipe.png';
-const bottomPipeImg = new Image(); bottomPipeImg.src = 'bottompipe.png';
-const birdImg       = new Image(); birdImg.src       = 'flappybird.png';
-const bgImg         = new Image(); bgImg.src         = 'flappybirdbg.png';
-
+const topPipeImg    = new Image(); topPipeImg.src    = '/public/Flappy-bird-main/toppipe.png';
+const bottomPipeImg = new Image(); bottomPipeImg.src = '/public/Flappy-bird-main/bottompipe.png';
+const birdImg       = new Image(); birdImg.src       = '/public/Flappy-bird-main/flappybird.png';
+const bgImg         = new Image(); bgImg.src         = '/public/Flappy-bird-main/flappybirdbg.png';
 // ─── Timing ───────────────────────────────────────────────────────────────────
 /** Nominal frame duration — all physics constants are calibrated to this. */
 const TARGET_MS = 1000 / 60;

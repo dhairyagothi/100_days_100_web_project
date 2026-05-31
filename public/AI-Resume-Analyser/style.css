@@ -62,6 +62,33 @@ body {
   max-width: 1300px;
   margin: auto;
 }
+.theme-toggle-wrapper{
+  display:flex;
+  justify-content:flex-end;
+  margin-bottom:15px;
+}
+
+#themeToggle{
+  width:50px;
+  height:50px;
+  border:none;
+  border-radius:50%;
+  cursor:pointer;
+  font-size:20px;
+
+  background:var(--card-bg);
+  color:var(--text);
+
+  border:1px solid var(--border);
+
+  backdrop-filter:blur(12px);
+
+  transition:all .3s ease;
+}
+
+#themeToggle:hover{
+  transform:scale(1.08);
+}
 
 .hero {
   text-align: center;

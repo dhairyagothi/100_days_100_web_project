@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700&display=swap');
-
 /* ============================================================
    CORE THEME CUSTOM PROPERTIES (Fixes Issue #4359)
    ============================================================ */
@@ -340,8 +338,8 @@ body > header {
   z-index: 9999;
 }
 
-body.light-mode .navbar {
-[data-theme="light"] .navbar {
+body.light-mode .navbar,
+:root[data-theme="light"] .navbar {
   background: rgba(244, 246, 249, 0.92);
 }
 
@@ -909,11 +907,15 @@ body.light-mode .hero-terminal-text {
   /* FIX: was padding:4rem 2rem 8rem — 8rem bottom stacked between sections */
   padding: 3rem 2rem 4rem;
   position: relative;
+  z-index: 2;
+  isolation: isolate;
 }
 
 .projects-inner {
   max-width: 1200px;
   margin: 0 auto;
+  position: relative;
+  z-index: 2;
 }
 
 .projects-intro {
@@ -1328,6 +1330,7 @@ input:focus,
     0 0 0 1px rgba(255, 255, 255, 0.02),
     0 20px 80px rgba(59, 130, 246, 0.08);
   position: relative;
+  z-index: 2000;
 }
 
 /* FIX: collapse empty grid containers so they don't take up layout space */
@@ -2577,7 +2580,7 @@ body.light-mode .footer.homepage-footer .social-btn {
    Applied only when [data-theme="light"] is active to replace hard
    dark-mode gradients/backgrounds with light-friendly variants.
    ============================================================ */
- [data-theme="light"] .hero-terminal{
+:root[data-theme="light"] .hero-terminal {
     filter: invert(1) hue-rotate(180deg) brightness(1.05) contrast(0.9);
     opacity: 0.6;
     mix-blend-mode: multiply;
@@ -2879,4 +2882,20 @@ body::after {
 body > header {
   position: relative;
   z-index: 999999 !important;
+}
+/* ============================================================
+   PERFORMANCE ANIMATION
+   ============================================================ */
+
+.project-card {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+.project-card.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
