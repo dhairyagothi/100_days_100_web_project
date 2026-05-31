@@ -958,11 +958,15 @@ body.light-mode .hero-terminal-text {
   /* FIX: was padding:4rem 2rem 8rem — 8rem bottom stacked between sections */
   padding: 3rem 2rem 4rem;
   position: relative;
+  z-index: 2;
+  isolation: isolate;
 }
 
 .projects-inner {
   max-width: 1200px;
   margin: 0 auto;
+  position: relative;
+  z-index: 2;
 }
 
 .projects-intro {
@@ -1382,6 +1386,7 @@ input:focus,
     0 0 0 1px rgba(255, 255, 255, 0.02),
     0 20px 80px rgba(59, 130, 246, 0.08);
   position: relative;
+  z-index: 2000;
 }
 
 /* FIX: collapse empty grid containers so they don't take up layout space */

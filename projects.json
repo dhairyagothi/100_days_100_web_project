@@ -2436,5 +2436,21 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/Complaint_Management_System/index.html"
-  }
+  },
+  {
+  "projectNo": 196,
+  "projectName": "AirCast",
+  "projectType": "Tool",
+  "projectDesc": "Weather forecasting application with real-time weather updates and Air Quality Index (AQI) monitoring.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript",
+    "api",
+    "weather"
+  ],
+  "difficulty": "intermediate",
+  "projectPath": "./public/Weather App with AQI/index.html"
+}
+
 ]

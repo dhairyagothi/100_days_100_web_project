@@ -73,6 +73,21 @@ function getCategoryFromTags(tags, name) {
 let PROJECTS = [];
 let projectsPromise = null;
 
+function hydrateProjects(data) {
+  PROJECTS = data.map((project) => [
+    `Day ${project.projectNo}`,
+    project.projectName,
+    project.projectPath,
+    project.techStack,
+    project.difficulty,
+    project.projectDesc,
+  ]);
+}
+
+function getPreloadedProjectsData() {
+  return Array.isArray(window.PROJECTS_DATA) ? window.PROJECTS_DATA : null;
+}
+
 function parseProjectsData(payload) {
   try {
     return JSON.parse(payload);
@@ -489,9 +504,6 @@ function cleanupExpiredRecentProjects() {
     renderRecentProjects();
   }
 }
-
-// Clean up on page load
-cleanupExpiredRecentProjects();
 
 // Clean up every 5 minutes
 setInterval(cleanupExpiredRecentProjects, 5 * 60 * 1000);
@@ -962,7 +974,9 @@ function scrollToProjectSection() {
 }
 
 function toggleBookmark(project) {
-  const exists = bookmarkedProjects.find((item) => item[0] === project[0]);
+  const exists = bookmarkedProjects.find(
+    (item) => normalizeProjectEntry(item).day === project[0],
+  );
 
   if (exists) {
     bookmarkedProjects = bookmarkedProjects.filter(
@@ -1103,7 +1117,6 @@ function renderBookmarks() {
     ? bookmarkedProjects
     : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleBookmarks.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement("div");
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
@@ -1176,6 +1189,9 @@ function renderRecentProjects() {
     recentGrid.appendChild(card);
   });
 }
+
+// Clean up after grid references are initialized.
+cleanupExpiredRecentProjects();
 
 /* ============================================================
    VIEW ALL TOGGLE

@@ -1,57 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unit Converter</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit Converter</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0.1 8px 20px rgba(0, 0, 0);">← Back to Home</a>    
-    <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">🌙</button>
-    <div class="container">
-        <div class="heading">
-            <h1>Unit Converter</h1>
-            <p>Convert between different units easily and accurately</p>
-        </div>
 
-        <div class="box">
-            <div class="category" id="category">
-                <button class="categories active" data-cat="length">Length</button>
-                <button class="categories" data-cat="weight">Weight</button>
-                <button class="categories" data-cat="temperature">Temperature</button>
-                <button class="categories" data-cat="time">Time</button>
-                <button class="categories" data-cat="speed">Speed</button>
-            </div> 
+  <div class="uc-wrap">
+    <div class="glass-card">
+      <h1 class="card-title">
+        <i class="ti ti-arrows-exchange" aria-hidden="true"></i>
+        Unit Converter
+      </h1>
 
-            <div class="input-val">
-                <div>
-                <div class="input-label">From:</div>
-                    <div class="input-section">
-                        <input type="number" id="fromInput" class="input-value">
-                        <select id="fromUnit" class="unit-select"></select>
-                    </div>
-                    <div class="input-hint"></div>
-                </div>
-                <div>
-                <div class="input-label">To:</div>
-                    <div class="input-section to-input">
-                        <input type="number" id="toInput" readonly class="input-value">
-                        <select id="toUnit" class="unit-select"></select>
-                    </div>
-                    <div class="input-hint"></div>
-                </div>
-            </div>
-                <div class="result">
-                    Result:
-                    <div id="output" class="output"></div>
-                </div>
+      <div class="tabs" id="tabs">
+        <button class="tab-btn active" data-cat="length">Length</button>
+        <button class="tab-btn" data-cat="weight">Weight</button>
+        <button class="tab-btn" data-cat="temperature">Temp</button>
+        <button class="tab-btn" data-cat="time">Time</button>
+        <button class="tab-btn" data-cat="speed">Speed</button>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">From</div>
+        <div class="row">
+          <input class="glass-input" type="number" id="fromInput" value="1" placeholder="0">
+          <div class="select-wrap">
+            <select class="glass-select" id="fromUnit"></select>
+          </div>
         </div>
+      </div>
+
+      <div class="swap-row">
+        <button class="swap-btn" id="swapBtn" title="Swap units" aria-label="Swap units">
+          <i class="ti ti-arrows-up-down" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">To</div>
+        <div class="row">
+          <input class="glass-input" type="number" id="toInput" readonly placeholder="—">
+          <div class="select-wrap">
+            <select class="glass-select" id="toUnit"></select>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-banner" id="output">Enter a value above</div>
     </div>
+  </div>
 
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
-
 </html>
