@@ -3,29 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Programming Contest Tracker</title>
+    <title>Multi-Platform Contest Tracker</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
+<body class="crt">
+    <div class="scanlines"></div>
     <header class="hero-section">
-        <h1 class="hero-title">Contest Tracker</h1>
-        <p class="hero-description">Track upcoming competitive programming matches across all platforms.</p>
+        <h1 class="hero-title">CONTEST_TRACKER</h1>
+        <p class="hero-description">>_ Tracking upcoming competitive programming matches across the mainframe.</p>
     </header>
 
     <main class="container">
         <div class="dashboard-controls">
-            <label for="platform-filter">Filter by Platform: </label>
-            <select id="platform-filter" class="filter-dropdown">
-                <option value="ALL">All Platforms</option>
-                </select>
+            <div class="controls-group">
+                <label for="platform-filter">Filter by Platform:</label>
+                <div class="select-wrapper">
+                    <select id="platform-filter" class="filter-dropdown">
+                        <option value="ALL">ALL PLATFORMS</option>
+                        <!-- Options populated via JS -->
+                    </select>
+                </div>
+            </div>
+            <div class="controls-group">
+                <label for="sort-filter">Sort by:</label>
+                <div class="select-wrapper">
+                    <select id="sort-filter" class="filter-dropdown">
+                        <option value="time">TIME (NEAREST FIRST)</option>
+                        <option value="platform">PLATFORM (A-Z)</option>
+                    </select>
+                </div>
+            </div>
+
         </div>
 
-        <div id="loading" class="loading">Aggregating global contests...</div>
-        <div id="contest-grid" class="contest-grid">
+        <div id="status-container">
+            <div id="loading" class="status-message loading">
+                <span class="spinner">|</span> [SYS.INIT] Aggregating platform data...
             </div>
+            <div id="error" class="status-message error" style="display: none;"></div>
+        </div>
+
+        <div id="contest-grid" class="contest-grid"></div>
     </main>
+
+    <footer class="footer">
+        <p>>_ SYSTEM_UPDATE: <span id="last-updated">NEVER</span> | STATUS: <span class="status-online">ONLINE</span></p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
