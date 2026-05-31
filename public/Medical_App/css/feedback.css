@@ -1,0 +1,261 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family: Arial, sans-serif;
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:20px;
+
+    background:
+    linear-gradient(
+        rgba(15,23,42,0.65),
+        rgba(15,23,42,0.65)
+    ),
+    url("../assets/bg/medical-feedback.jpg");
+
+    background-size:cover;
+    background-position:center;
+}
+
+.feedbackmain{
+
+    width:100%;
+    max-width:550px;
+
+    background:rgba(255,255,255,0.12);
+
+    backdrop-filter:blur(12px);
+
+    border:1px solid rgba(255,255,255,0.2);
+
+    padding:40px;
+
+    border-radius:24px;
+
+    color:white;
+
+    box-shadow:0 8px 30px rgba(0,0,0,0.25);
+
+    animation:fadeIn .5s ease;
+}
+
+.feedbackmain h2{
+
+    text-align:center;
+
+    font-size:2.2rem;
+
+    margin-bottom:10px;
+}
+
+.feedbackmain p{
+
+    text-align:center;
+
+    margin-bottom:30px;
+
+    color:#dbeafe;
+}
+
+form{
+
+    display:flex;
+    flex-direction:column;
+}
+
+label{
+
+    margin-bottom:10px;
+
+    font-weight:bold;
+}
+
+textarea{
+
+    width:100%;
+
+    min-height:180px;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:16px;
+
+    resize:none;
+
+    font-size:1rem;
+
+    outline:none;
+
+    background:rgba(255,255,255,0.95);
+
+    color:#1e293b;
+}
+
+button{
+
+    border:none;
+
+    cursor:pointer;
+
+    transition:.3s ease;
+}
+
+.submit-btn{
+
+    margin-top:25px;
+
+    background:linear-gradient(135deg,#2563eb,#0ea5e9);
+
+    color:white;
+
+    padding:14px;
+
+    border-radius:14px;
+
+    font-size:1rem;
+
+    font-weight:bold;
+}
+
+.submit-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 6px 18px rgba(37,99,235,0.35);
+}
+
+.back{
+
+    width:100%;
+
+    margin-top:15px;
+
+    background:#e2e8f0;
+
+    color:#1e293b;
+
+    padding:14px;
+
+    border-radius:14px;
+
+    font-weight:bold;
+}
+
+.back:hover{
+
+    background:white;
+}
+
+/* Toast */
+
+#toast-container{
+
+    position:fixed;
+
+    top:20px;
+    right:20px;
+
+    z-index:9999;
+}
+
+.toast{
+
+    min-width:280px;
+
+    background:white;
+
+    color:#1e293b;
+
+    margin-bottom:15px;
+
+    padding:16px 18px;
+
+    border-radius:14px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    gap:15px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,0.18);
+
+    animation:slideIn .4s ease;
+}
+
+.toast.success{
+
+    border-left:6px solid #22c55e;
+}
+
+.toast button{
+
+    background:none;
+
+    font-size:1.2rem;
+
+    color:#64748b;
+}
+
+.toast button:hover{
+
+    color:#ef4444;
+}
+
+/* Animations */
+
+@keyframes slideIn{
+
+    from{
+        transform:translateX(100%);
+        opacity:0;
+    }
+
+    to{
+        transform:translateX(0);
+        opacity:1;
+    }
+}
+
+@keyframes fadeIn{
+
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@media(max-width:600px){
+
+    .feedbackmain{
+
+        padding:30px 20px;
+    }
+
+    .feedbackmain h2{
+
+        font-size:1.8rem;
+    }
+
+    textarea{
+
+        min-height:150px;
+    }
+}

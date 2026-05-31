@@ -26,6 +26,9 @@ out/
 .env.production.local
 .env.build
 
+# Local AI ChatBot default Gemini API key
+/public/AI ChatBot/default-config.js
+
 # IDE and editor files
 .vscode/
 .idea/
@@ -176,3 +179,4 @@ dmypy.json
 # Docker
 *.tar
 docker-compose.override.yml
+.vercel
