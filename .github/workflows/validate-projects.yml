@@ -20,3 +20,6 @@ jobs:
 
       - name: Validate projects.json
         run: node scripts/validateProjects.js
+
+      - name: Run projects validator tests
+        run: node --test scripts/validateProjects.test.js

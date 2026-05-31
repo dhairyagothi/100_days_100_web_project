@@ -1,10 +1,12 @@
 {
   "type": "array",
   "items": {
+    "additionalProperties": false,
     "type": "object",
     "required": [
       "projectNo",
       "projectName",
+      "projectType",
       "projectPath",
       "techStack",
       "difficulty",
@@ -12,25 +14,41 @@
     ],
     "properties": {
       "projectNo": {
-        "type": "number"
+        "type": "integer",
+        "minimum": 1
       },
       "projectName": {
-        "type": "string"
+        "type": "string",
+        "minLength": 1
+      },
+      "projectType": {
+        "type": "string",
+        "minLength": 1
       },
       "projectPath": {
-        "type": "string"
+        "type": "string",
+        "minLength": 1
       },
       "techStack": {
         "type": "array",
+        "minItems": 1,
+        "uniqueItems": true,
         "items": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         }
       },
       "difficulty": {
-        "type": "string"
+        "type": "string",
+        "enum": [
+          "beginner",
+          "intermediate",
+          "advanced"
+        ]
       },
       "projectDesc": {
-        "type": "string"
+        "type": "string",
+        "minLength": 1
       }
     }
   }
