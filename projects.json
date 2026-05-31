@@ -2402,6 +2402,15 @@
     "projectPath": "./public/Escape_Room/index.html"
   },
   {
+        "projectNo": 200,
+        "projectName": "Pinterest Clone",
+        "projectType": "Clone",
+        "projectDesc": "Pinterest-style moodboard with masonry grid, infinite scroll, saved pins, and modal previews.",
+        "techStack": ["clone", "html", "css", "javascript", "ui"],
+        "difficulty": "intermediate",
+        "projectPath": "./public/pinterest clone/index.html"
+     }
+]
     "projectNo": 194,
     "projectName": "Lost & Found Portal",
     "projectType": "Website",
