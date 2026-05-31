@@ -107,7 +107,7 @@ function checkAns(idx) {
       } else {
         gameOver();
       }
-    } else {
+    else {
       h2.innerText = ` ❌ Oops! Try again...`;
       userSeq = [];
       clickable = false;
