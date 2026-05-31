@@ -10,7 +10,7 @@ const loaders = [
     description: 'The standard dual-color rotating ring.',
     type: 'spinner',
     getHtml: () => `<div class="spinner"></div>`,
-    getCss: (size, color, speed) => `
+    getCss: (size, color, speed, glow) => `
 .spinner {
   width: ${size}px;
   height: ${size}px;
@@ -37,7 +37,7 @@ const loaders = [
   <div></div>
 </div>
 `,
-    getCss: (size, color, speed) => `
+    getCss: (size, color, speed, glow) => `
 .loader-dots {
   display: flex;
   gap: ${size/6}px;
@@ -67,7 +67,7 @@ const loaders = [
     description: 'Minimalist expanding ring for subtle background loading.',
     type: 'pulse',
     getHtml: () => `<div class="loader-pulse"></div>`,
-    getCss: (size, color, speed) => `
+    getCss: (size, color, speed, glow) => `
 .loader-pulse {
   width: ${size/2}px;
   height: ${size/2}px;
@@ -87,7 +87,7 @@ const loaders = [
     description: 'Elegant, intersecting spinning paths.',
     type: 'ring',
     getHtml: () => `<div class="loader-double-ring"></div>`,
-    getCss: (size, color, speed) => `
+    getCss: (size, color, speed, glow) => `
 .loader-double-ring {
   width: ${size}px;
   height: ${size}px;
@@ -126,7 +126,7 @@ const loaders = [
   <div></div>
 </div>
 `,
-    getCss: (size, color, speed) => `
+    getCss: (size, color, speed, glow) => `
 .loader-bars {
   display: flex;
   gap: ${size/12}px;
@@ -155,7 +155,7 @@ const loaders = [
     description: 'A geometric 3D rotation effect for a sharp, modern feel.',
     type: 'spinner',
     getHtml: () => `<div class="loader-flip"></div>`,
-    getCss: (size, color, speed) => `
+    getCss: (size, color, speed, glow) => `
 .loader-flip {
   width: ${size/2}px;
   height: ${size/2}px;
@@ -175,7 +175,7 @@ const loaders = [
     description: 'A continuous orbital path spinning around a solid core.',
     type: 'ring',
     getHtml: () => `<div class="loader-orbit"></div>`,
-    getCss: (size, color, speed) => `
+    getCss: (size, color, speed, glow) => `
 .loader-orbit {
   width: ${size/6}px;
   height: ${size/6}px;
@@ -269,11 +269,14 @@ window.addEventListener("load", function () {
 /* ── 2. Single-page router (hash-based) ── */
 function handleRouting() {
   const hash = window.location.hash || "#home";
+
   document.querySelectorAll(".page-section").forEach(function (sec) {
     sec.classList.remove("active");
   });
+
   const target = document.querySelector(hash);
   if (target) target.classList.add("active");
+
   document.querySelectorAll(".nav-link").forEach(function (link) {
     link.classList.toggle("active", link.getAttribute("href") === hash);
   });
