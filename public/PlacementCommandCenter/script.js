@@ -2,9 +2,7 @@
 // DATE
 // ===============================
 
-document.getElementById("currentDate").textContent =
-    new Date().toDateString();
-
+document.getElementById("currentDate").textContent = new Date().toDateString();
 
 // ===============================
 // STORAGE KEYS
@@ -17,227 +15,147 @@ const GOAL_KEY = "placementGoal";
 const ACTIVITY_KEY = "placementActivity";
 const THEME_KEY = "placementTheme";
 
-
 // ===============================
 // THEME
 // ===============================
 
-const themeToggle =
-    document.getElementById("themeToggle");
+const themeToggle = document.getElementById("themeToggle");
 
-if (
-    localStorage.getItem(THEME_KEY) === "dark"
-) {
-    document.body.classList.add("dark");
+if (localStorage.getItem(THEME_KEY) === "dark") {
+  document.body.classList.add("dark");
 }
 
 themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
 
-    document.body.classList.toggle("dark");
-
-    localStorage.setItem(
-        THEME_KEY,
-        document.body.classList.contains("dark")
-            ? "dark"
-            : "light"
-    );
+  localStorage.setItem(
+    THEME_KEY,
+    document.body.classList.contains("dark") ? "dark" : "light",
+  );
 });
-
 
 // ===============================
 // NAVIGATION
 // ===============================
 
-const navButtons =
-    document.querySelectorAll(".nav-btn");
+const navButtons = document.querySelectorAll(".nav-btn");
 
-const sections =
-    document.querySelectorAll(".section");
+const sections = document.querySelectorAll(".section");
 
-navButtons.forEach(button => {
+navButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    navButtons.forEach((btn) => btn.classList.remove("active"));
 
-    button.addEventListener("click", () => {
+    button.classList.add("active");
 
-        navButtons.forEach(btn =>
-            btn.classList.remove("active")
-        );
+    const target = button.dataset.section;
 
-        button.classList.add("active");
+    sections.forEach((section) => {
+      section.classList.remove("active-section");
 
-        const target =
-            button.dataset.section;
-
-        sections.forEach(section => {
-
-            section.classList.remove(
-                "active-section"
-            );
-
-            if (section.id === target) {
-                section.classList.add(
-                    "active-section"
-                );
-            }
-
-        });
-
+      if (section.id === target) {
+        section.classList.add("active-section");
+      }
     });
-
+  });
 });
-
 
 // ===============================
 // DATA
 // ===============================
 
-let companies =
-    JSON.parse(
-        localStorage.getItem(COMPANY_KEY)
-    ) || [];
+let companies = JSON.parse(localStorage.getItem(COMPANY_KEY)) || [];
 
-let resumeVersions =
-    JSON.parse(
-        localStorage.getItem(RESUME_KEY)
-    ) || [];
+let resumeVersions = JSON.parse(localStorage.getItem(RESUME_KEY)) || [];
 
-let activities =
-    JSON.parse(
-        localStorage.getItem(ACTIVITY_KEY)
-    ) || [];
+let activities = JSON.parse(localStorage.getItem(ACTIVITY_KEY)) || [];
 
 let editingIndex = null;
-
 
 // ===============================
 // ELEMENTS
 // ===============================
 
-const companyName =
-    document.getElementById("companyName");
+const companyName = document.getElementById("companyName");
 
-const companyStatus =
-    document.getElementById("companyStatus");
+const companyStatus = document.getElementById("companyStatus");
 
-const addCompanyBtn =
-    document.getElementById("addCompanyBtn");
+const addCompanyBtn = document.getElementById("addCompanyBtn");
 
-const companyTableBody =
-    document.getElementById(
-        "companyTableBody"
-    );
+const companyTableBody = document.getElementById("companyTableBody");
 
-const searchCompany =
-    document.getElementById(
-        "searchCompany"
-    );
+const searchCompany = document.getElementById("searchCompany");
 
-const filterStatus =
-    document.getElementById(
-        "filterStatus"
-    );
-
+const filterStatus = document.getElementById("filterStatus");
 
 // ===============================
 // ACTIVITY SYSTEM
 // ===============================
 
 function addActivity(message) {
+  activities.unshift(`${new Date().toLocaleTimeString()} - ${message}`);
 
-    activities.unshift(
-        `${new Date().toLocaleTimeString()} - ${message}`
-    );
+  if (activities.length > 15) {
+    activities.pop();
+  }
 
-    if (activities.length > 15) {
-        activities.pop();
-    }
+  localStorage.setItem(ACTIVITY_KEY, JSON.stringify(activities));
 
-    localStorage.setItem(
-        ACTIVITY_KEY,
-        JSON.stringify(activities)
-    );
-
-    renderActivities();
+  renderActivities();
 }
 
 function renderActivities() {
+  const activityFeed = document.getElementById("activityFeed");
 
-    const activityFeed =
-        document.getElementById(
-            "activityFeed"
-        );
+  activityFeed.innerHTML = "";
 
-    activityFeed.innerHTML = "";
+  if (activities.length === 0) {
+    activityFeed.innerHTML = "<li>No activity yet.</li>";
 
-    if (activities.length === 0) {
+    return;
+  }
 
-        activityFeed.innerHTML =
-            "<li>No activity yet.</li>";
+  activities.forEach((item) => {
+    const li = document.createElement("li");
 
-        return;
-    }
+    li.textContent = item;
 
-    activities.forEach(item => {
-
-        const li =
-            document.createElement("li");
-
-        li.textContent = item;
-
-        activityFeed.appendChild(li);
-    });
+    activityFeed.appendChild(li);
+  });
 }
-
 
 // ===============================
 // COMPANIES
 // ===============================
 
 function saveCompanies() {
+  localStorage.setItem(COMPANY_KEY, JSON.stringify(companies));
 
-    localStorage.setItem(
-        COMPANY_KEY,
-        JSON.stringify(companies)
-    );
-
-    updateStats();
-    updateGoalProgress();
+  updateStats();
+  updateGoalProgress();
 }
 
 function renderCompanies() {
+  companyTableBody.innerHTML = "";
 
-    companyTableBody.innerHTML = "";
+  let filtered = [...companies];
 
-    let filtered = [...companies];
+  const search = searchCompany.value.trim().toLowerCase();
 
-    const search =
-        searchCompany.value
-            .trim()
-            .toLowerCase();
+  const status = filterStatus.value;
 
-    const status =
-        filterStatus.value;
+  if (search) {
+    filtered = filtered.filter((company) =>
+      company.name.toLowerCase().includes(search),
+    );
+  }
 
-    if (search) {
+  if (status !== "All") {
+    filtered = filtered.filter((company) => company.status === status);
+  }
 
-        filtered = filtered.filter(
-            company =>
-                company.name
-                    .toLowerCase()
-                    .includes(search)
-        );
-    }
-
-    if (status !== "All") {
-
-        filtered = filtered.filter(
-            company =>
-                company.status === status
-        );
-    }
-
-    if (filtered.length === 0) {
-
-        companyTableBody.innerHTML = `
+  if (filtered.length === 0) {
+    companyTableBody.innerHTML = `
         <tr>
             <td colspan="3">
                 No matching records found.
@@ -245,18 +163,15 @@ function renderCompanies() {
         </tr>
         `;
 
-        return;
-    }
+    return;
+  }
 
-    filtered.forEach(company => {
+  filtered.forEach((company) => {
+    const actualIndex = companies.indexOf(company);
 
-        const actualIndex =
-            companies.indexOf(company);
+    const row = document.createElement("tr");
 
-        const row =
-            document.createElement("tr");
-
-        row.innerHTML = `
+    row.innerHTML = `
             <td>${company.name}</td>
 
             <td>${company.status}</td>
@@ -280,367 +195,206 @@ function renderCompanies() {
             </td>
         `;
 
-        companyTableBody.appendChild(row);
-
-    });
+    companyTableBody.appendChild(row);
+  });
 }
 
-window.deleteCompany =
-function(index) {
+window.deleteCompany = function (index) {
+  const company = companies[index];
 
-    const company =
-        companies[index];
+  addActivity(`Deleted ${company.name}`);
 
-    addActivity(
-        `Deleted ${company.name}`
-    );
+  companies.splice(index, 1);
 
-    companies.splice(index, 1);
+  saveCompanies();
 
-    saveCompanies();
-
-    renderCompanies();
+  renderCompanies();
 };
 
-window.editCompany =
-function(index) {
+window.editCompany = function (index) {
+  companyName.value = companies[index].name;
 
-    companyName.value =
-        companies[index].name;
+  companyStatus.value = companies[index].status;
 
-    companyStatus.value =
-        companies[index].status;
+  editingIndex = index;
 
-    editingIndex = index;
-
-    addCompanyBtn.textContent =
-        "Update Company";
+  addCompanyBtn.textContent = "Update Company";
 };
 
-addCompanyBtn.addEventListener(
-    "click",
-    () => {
+addCompanyBtn.addEventListener("click", () => {
+  const name = companyName.value.trim();
 
-        const name =
-            companyName.value.trim();
+  const status = companyStatus.value;
 
-        const status =
-            companyStatus.value;
+  if (!name) {
+    alert("Enter company name");
 
-        if (!name) {
+    return;
+  }
 
-            alert(
-                "Enter company name"
-            );
+  if (editingIndex !== null) {
+    companies[editingIndex] = {
+      name,
+      status,
+    };
 
-            return;
-        }
+    addActivity(`Updated ${name}`);
 
-        if (
-            editingIndex !== null
-        ) {
+    editingIndex = null;
 
-            companies[
-                editingIndex
-            ] = {
-                name,
-                status
-            };
+    addCompanyBtn.textContent = "Add Company";
+  } else {
+    companies.push({
+      name,
+      status,
+    });
 
-            addActivity(
-                `Updated ${name}`
-            );
+    addActivity(`Added ${name}`);
+  }
 
-            editingIndex = null;
+  companyName.value = "";
 
-            addCompanyBtn.textContent =
-                "Add Company";
+  saveCompanies();
 
-        } else {
+  renderCompanies();
+});
 
-            companies.push({
-                name,
-                status
-            });
+searchCompany.addEventListener("input", renderCompanies);
 
-            addActivity(
-                `Added ${name}`
-            );
-        }
-
-        companyName.value = "";
-
-        saveCompanies();
-
-        renderCompanies();
-    }
-);
-
-searchCompany.addEventListener(
-    "input",
-    renderCompanies
-);
-
-filterStatus.addEventListener(
-    "change",
-    renderCompanies
-);
-
+filterStatus.addEventListener("change", renderCompanies);
 
 // ===============================
 // DASHBOARD STATS
 // ===============================
 
 function updateStats() {
+  const applications = companies.length;
 
-    const applications =
-        companies.length;
+  const interviews = companies.filter((c) => c.status === "Interview").length;
 
-    const interviews =
-        companies.filter(
-            c => c.status === "Interview"
-        ).length;
+  const offers = companies.filter((c) => c.status === "Offer").length;
 
-    const offers =
-        companies.filter(
-            c => c.status === "Offer"
-        ).length;
+  const rejected = companies.filter((c) => c.status === "Rejected").length;
 
-    const rejected =
-        companies.filter(
-            c => c.status === "Rejected"
-        ).length;
+  document.getElementById("totalApplications").textContent = applications;
 
-    document.getElementById(
-        "totalApplications"
-    ).textContent = applications;
+  document.getElementById("totalInterviews").textContent = interviews;
 
-    document.getElementById(
-        "totalInterviews"
-    ).textContent = interviews;
+  document.getElementById("totalOffers").textContent = offers;
 
-    document.getElementById(
-        "totalOffers"
-    ).textContent = offers;
+  document.getElementById("totalRejected").textContent = rejected;
 
-    document.getElementById(
-        "totalRejected"
-    ).textContent = rejected;
+  let successRate = 0;
 
-    let successRate = 0;
+  if (applications > 0) {
+    successRate = (offers / applications) * 100;
+  }
 
-    if (applications > 0) {
-
-        successRate =
-            (
-                offers /
-                applications
-            ) * 100;
-    }
-
-    document.getElementById(
-        "successRate"
-    ).textContent =
-        successRate.toFixed(1) + "%";
+  document.getElementById("successRate").textContent =
+    successRate.toFixed(1) + "%";
 }
-
 
 // ===============================
 // GOAL TRACKER
 // ===============================
 
-const goalInput =
-    document.getElementById(
-        "goalInput"
-    );
+const goalInput = document.getElementById("goalInput");
 
-const saveGoalBtn =
-    document.getElementById(
-        "saveGoalBtn"
-    );
+const saveGoalBtn = document.getElementById("saveGoalBtn");
 
-saveGoalBtn.addEventListener(
-    "click",
-    () => {
+saveGoalBtn.addEventListener("click", () => {
+  localStorage.setItem(GOAL_KEY, goalInput.value);
 
-        localStorage.setItem(
-            GOAL_KEY,
-            goalInput.value
-        );
+  addActivity("Updated placement goal");
 
-        addActivity(
-            "Updated placement goal"
-        );
-
-        updateGoalProgress();
-    }
-);
+  updateGoalProgress();
+});
 
 function updateGoalProgress() {
+  const goal = Number(localStorage.getItem(GOAL_KEY)) || 0;
 
-    const goal =
-        Number(
-            localStorage.getItem(
-                GOAL_KEY
-            )
-        ) || 0;
+  goalInput.value = goal || "";
 
-    goalInput.value =
-        goal || "";
+  const applications = companies.length;
 
-    const applications =
-        companies.length;
+  let percent = 0;
 
-    let percent = 0;
+  if (goal > 0) {
+    percent = Math.min(100, (applications / goal) * 100);
+  }
 
-    if (goal > 0) {
+  document.getElementById("goalProgress").style.width = percent + "%";
 
-        percent =
-            Math.min(
-                100,
-                (
-                    applications /
-                    goal
-                ) * 100
-            );
-    }
-
-    document.getElementById(
-        "goalProgress"
-    ).style.width =
-        percent + "%";
-
-    document.getElementById(
-        "goalPercentage"
-    ).textContent =
-        percent.toFixed(1) + "%";
+  document.getElementById("goalPercentage").textContent =
+    percent.toFixed(1) + "%";
 }
-
 
 // ===============================
 // CODING
 // ===============================
 
-const leetcodeSolved =
-    document.getElementById(
-        "leetcodeSolved"
-    );
+const leetcodeSolved = document.getElementById("leetcodeSolved");
 
-const contestRating =
-    document.getElementById(
-        "contestRating"
-    );
+const contestRating = document.getElementById("contestRating");
 
-const weeklyProblems =
-    document.getElementById(
-        "weeklyProblems"
-    );
+const weeklyProblems = document.getElementById("weeklyProblems");
 
-const saveCodingBtn =
-    document.getElementById(
-        "saveCodingBtn"
-    );
+const saveCodingBtn = document.getElementById("saveCodingBtn");
 
 function loadCoding() {
+  const data = JSON.parse(localStorage.getItem(CODING_KEY));
 
-    const data =
-        JSON.parse(
-            localStorage.getItem(
-                CODING_KEY
-            )
-        );
+  if (!data) return;
 
-    if (!data) return;
+  leetcodeSolved.value = data.leetcodeSolved || "";
 
-    leetcodeSolved.value =
-        data.leetcodeSolved || "";
+  contestRating.value = data.contestRating || "";
 
-    contestRating.value =
-        data.contestRating || "";
-
-    weeklyProblems.value =
-        data.weeklyProblems || "";
+  weeklyProblems.value = data.weeklyProblems || "";
 }
 
-saveCodingBtn.addEventListener(
-    "click",
-    () => {
+saveCodingBtn.addEventListener("click", () => {
+  localStorage.setItem(
+    CODING_KEY,
+    JSON.stringify({
+      leetcodeSolved: leetcodeSolved.value,
+      contestRating: contestRating.value,
+      weeklyProblems: weeklyProblems.value,
+    }),
+  );
 
-        localStorage.setItem(
-            CODING_KEY,
-            JSON.stringify({
-                leetcodeSolved:
-                    leetcodeSolved.value,
-                contestRating:
-                    contestRating.value,
-                weeklyProblems:
-                    weeklyProblems.value
-            })
-        );
+  addActivity("Updated coding progress");
 
-        addActivity(
-            "Updated coding progress"
-        );
-
-        alert(
-            "Coding progress saved"
-        );
-    }
-);
-
+  alert("Coding progress saved");
+});
 
 // ===============================
 // RESUME
 // ===============================
 
-const resumeVersion =
-    document.getElementById(
-        "resumeVersion"
-    );
+const resumeVersion = document.getElementById("resumeVersion");
 
-const addResumeBtn =
-    document.getElementById(
-        "addResumeBtn"
-    );
+const addResumeBtn = document.getElementById("addResumeBtn");
 
-const resumeList =
-    document.getElementById(
-        "resumeList"
-    );
+const resumeList = document.getElementById("resumeList");
 
 function saveResume() {
-
-    localStorage.setItem(
-        RESUME_KEY,
-        JSON.stringify(
-            resumeVersions
-        )
-    );
+  localStorage.setItem(RESUME_KEY, JSON.stringify(resumeVersions));
 }
 
 function renderResume() {
+  resumeList.innerHTML = "";
 
-    resumeList.innerHTML = "";
+  if (resumeVersions.length === 0) {
+    resumeList.innerHTML = "<li>No resume versions added.</li>";
 
-    if (
-        resumeVersions.length === 0
-    ) {
+    return;
+  }
 
-        resumeList.innerHTML =
-            "<li>No resume versions added.</li>";
+  resumeVersions.forEach((version, index) => {
+    const li = document.createElement("li");
 
-        return;
-    }
-
-    resumeVersions.forEach(
-        (version,index) => {
-
-            const li =
-                document.createElement(
-                    "li"
-                );
-
-            li.innerHTML = `
+    li.innerHTML = `
                 <span>${version}</span>
 
                 <button
@@ -651,89 +405,51 @@ function renderResume() {
                 </button>
             `;
 
-            resumeList.appendChild(
-                li
-            );
-        }
-    );
+    resumeList.appendChild(li);
+  });
 }
 
-window.deleteResume =
-function(index) {
+window.deleteResume = function (index) {
+  addActivity(`Removed ${resumeVersions[index]}`);
 
-    addActivity(
-        `Removed ${resumeVersions[index]}`
-    );
+  resumeVersions.splice(index, 1);
 
-    resumeVersions.splice(
-        index,
-        1
-    );
+  saveResume();
 
-    saveResume();
-
-    renderResume();
+  renderResume();
 };
 
-addResumeBtn.addEventListener(
-    "click",
-    () => {
+addResumeBtn.addEventListener("click", () => {
+  const version = resumeVersion.value.trim();
 
-        const version =
-            resumeVersion.value.trim();
+  if (!version) return;
 
-        if (!version) return;
+  resumeVersions.push(version);
 
-        resumeVersions.push(
-            version
-        );
+  addActivity(`Added ${version}`);
 
-        addActivity(
-            `Added ${version}`
-        );
+  resumeVersion.value = "";
 
-        resumeVersion.value = "";
+  saveResume();
 
-        saveResume();
-
-        renderResume();
-    }
-);
-
+  renderResume();
+});
 
 // ===============================
 // CLEAR ALL
 // ===============================
 
-document
-.getElementById("clearAllBtn")
-.addEventListener(
-    "click",
-    () => {
+document.getElementById("clearAllBtn").addEventListener("click", () => {
+  const ok = confirm("Delete all saved data?");
 
-        const ok =
-            confirm(
-                "Delete all saved data?"
-            );
+  if (!ok) return;
 
-        if (!ok) return;
+  [COMPANY_KEY, CODING_KEY, RESUME_KEY, GOAL_KEY, ACTIVITY_KEY].forEach((key) =>
+    localStorage.removeItem(key),
+  );
 
-        [
-            COMPANY_KEY,
-            CODING_KEY,
-            RESUME_KEY,
-            GOAL_KEY,
-            ACTIVITY_KEY
-        ].forEach(key =>
-            localStorage.removeItem(
-                key
-            )
-        );
-
-        location.reload();
-    }
-);
-
+  location.reload();
+});
 
 // ===============================
 // INITIAL LOAD
