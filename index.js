@@ -222,7 +222,7 @@ const PROJECT_DATA = [
 
   ['Day 149', 'GitHub Profile Battle', './public/GitHub-Profile-Battle/index.html', 'tool javascript', 'advanced'],
   ['Day 150', 'App Privacy Policy Generator', './public/AppPrivacyPolicyGenerator/index.html', 'tool javascript', 'intermediate'],
-  
+   ]
 
 
 let PROJECTS = [];
