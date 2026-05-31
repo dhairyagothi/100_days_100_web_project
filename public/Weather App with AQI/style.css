@@ -1,0 +1,127 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #9BEC00, #06D001, #059212);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.app {
+  width: 1100px;
+  max-width: 95%;
+  padding: 30px;
+  border-radius: 26px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(20px);
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-bar {
+  display: flex;
+  gap: 8px;
+}
+
+.search-bar input {
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+}
+
+.search-bar button {
+  border: none;
+  padding: 10px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.3);
+  color: white;
+  cursor: pointer;
+}
+
+#location {
+  margin: 20px 0 5px;
+}
+
+.error-message {
+  color: #ffb3b3;
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr;
+  gap: 24px;
+}
+
+.card {
+  background: rgba(255,255,255,0.2);
+  padding: 18px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.weather-meta-horizontal {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+}
+
+.meta-label {
+  font-size: 13px;
+  opacity: 0.75;
+}
+
+.aqi-main {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.aqi-number {
+  font-size: 36px;
+  font-weight: 600;
+}
+
+.aqi-status {
+  font-size: 18px;
+}
+
+.aqi-recommendation,
+.aqi-trend {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.pollutant {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.extra-weather {
+  margin-top: 20px;
+}
+
+.hourly-forecast {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.hourly-forecast div {
+  text-align: center;
+}
+
+
+
