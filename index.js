@@ -275,7 +275,7 @@ getProjectDescription(project);
                     ${primaryLink}
                     ${codeLink}
                 </div>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}" onclick="event.stopPropagation()">
+                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}" onclick="event.stopPropagation()" aria-label="${isBookmarked ? 'Remove bookmark for ' + name : 'Bookmark ' + name}">
                     <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
                 </button>
             </div>
@@ -287,6 +287,10 @@ getProjectDescription(project);
 
 function attachProjectCardInteraction(card, demoUrl, projectData = null) {
   card.style.cursor = 'pointer';
+  card.setAttribute('tabindex', '0');
+  card.setAttribute('role', 'button');
+  card.setAttribute('aria-label', `Project Card: ${projectData ? projectData[1] : 'Open project'}`);
+  
   card.onclick = (e) => {
     if (e.target.closest('a, button')) return;
     
@@ -296,6 +300,14 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
     }
     
     window.open(demoUrl, '_blank', 'noopener');
+  };
+
+  card.onkeydown = (e) => {
+    if (e.target.closest('a, button')) return;
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      card.click();
+    }
   };
 }
 
@@ -1294,6 +1306,13 @@ function initFilterChips() {
       activeFilter = chip.dataset.filter;
       currentPage = 1;
       renderGrid();
+    });
+
+    chip.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        chip.click();
+      }
     });
   });
 }

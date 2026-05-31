@@ -2884,6 +2884,24 @@ body > header {
   z-index: 999999 !important;
 }
 /* ============================================================
+   ACCESSIBILITY & KEYBOARD FOCUS STYLES
+   ============================================================ */
+button:focus-visible,
+a:focus-visible,
+select:focus-visible,
+input:focus-visible,
+.project-card:focus-visible {
+  outline: 3px solid var(--accent) !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25) !important;
+  transform: translateY(-2px);
+}
+
+.project-card:focus-visible {
+  border-color: var(--accent) !important;
+}
+
+/* ============================================================
    PERFORMANCE ANIMATION
    ============================================================ */
 
