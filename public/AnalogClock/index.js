@@ -253,20 +253,26 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    timerPaused = false;
+        isPaused = false;
+        if(!pausebtn) return ;
+        pausebtn.innerText = 'Pause';
+        
+        updateTimerDisplay();
+        tickCountdown();
+    };
 
-    pauseBtn.innerHTML = "Pause";
+function tickCountdown() {
 
-    renderTimer();
+    clearInterval(countdownInterval);
 
-    timerInterval = setInterval(() => {
-      if (!timerPaused) {
-        timerRemaining--;
+    updateTimerDisplay();
 
-        renderTimer();
-
-        if (timerRemaining <= 0) {
-          finishTimer();
+    countdownInterval = setInterval(() => {
+        if (countdownTime <= 0) {
+            triggerTimerFinished();
+        } else {
+            countdownTime--;
+            updateTimerDisplay();
         }
       }
     }, 1000);
@@ -549,14 +555,18 @@ document.addEventListener("DOMContentLoaded", () => {
        FOCUS MODE
     ========================================= */
 
-  const focusModeBtn = document.getElementById("focusModeBtn");
+ const focusModeBtn = document.getElementById("focusModeBtn");
 
-  if (focusModeBtn) {
-    focusModeBtn.addEventListener("click", () => {
-      document.body.classList.toggle("focus-mode");
-    });
-  }
+if (focusModeBtn) {
+  focusModeBtn.addEventListener("click", () => {
+    document.body.classList.toggle("focus-mode");
 
+    focusModeBtn.textContent =
+      document.body.classList.contains("focus-mode")
+        ? "Exit Focus Mode"
+        : "Focus Mode";
+  });
+}
   /* =========================================
        KEYBOARD SHORTCUTS
     ========================================= */
