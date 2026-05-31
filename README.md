@@ -96,7 +96,7 @@ The website features:
 | 24 | AI ChatBot | HTML, CSS, JS | 💬 AI | [View Demo](https://100-days-100-web-project.vercel.app/public/AI%20ChatBot/chatbot.html) |
 | 25 | Tic-Tac-Toe | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/TicTacToe/index.html) |
 | 26 | Maze Game | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Maze-Game-main) |
-| 27 | Memory Game | HTML, CSS, JS | 🧠 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/MemoryGame) |
+| 27 | Memory Game | HTML, CSS, JS | 🧠 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/MemoryGame/index.html) |
 | 28 | Wordle Clone | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/WORDLE) |
 | 29 | Snake Game | HTML, CSS, JS | 🐍 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/snake_game) |
 | 30 | Flappy Bird | HTML, CSS, JS | 🐦 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Flappy-bird-main) |
