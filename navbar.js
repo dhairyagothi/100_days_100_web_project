@@ -18,7 +18,7 @@
 
   window.ThemeManager?.init?.();
   const isLight = window.ThemeManager?.currentTheme?.() === "light";
-  const themeIcon = isLight ? "fa-sun" : "fa-moon";
+  const themeIcon = isLight ? "☀" : "☾";
 
   // FIX: Avoid appending "index.html" on web servers to prevent 308 Redirect lag.
   // We only append it if we detect the file:// protocol (for local double-click testing).
@@ -30,21 +30,21 @@
   const themeBtn = `
     <div class="theme-dropdown-container">
       <button class="btn btn-ghost btn-sm dropdown-toggle" id="themeToggleNav" aria-label="Select theme" aria-haspopup="true" aria-expanded="false">
-        <i class="fas ${themeIcon}"></i> Theme
+        <span aria-hidden="true">${themeIcon}</span> Theme
       </button>
       <div class="dropdown-menu">
-        <button class="dropdown-item" data-theme-value="light"><i class="fas fa-sun"></i> Light</button>
-        <button class="dropdown-item" data-theme-value="dark"><i class="fas fa-moon"></i> Dark</button>
-        <button class="dropdown-item" data-theme-value="sepia"><i class="fas fa-coffee"></i> Sepia</button>
-        <button class="dropdown-item" data-theme-value="cyberpunk"><i class="fas fa-bolt"></i> Cyberpunk</button>
-        <button class="dropdown-item" data-theme-value="nord"><i class="fas fa-snowflake"></i> Nord</button>
+        <button class="dropdown-item" data-theme-value="light">☀ Light</button>
+        <button class="dropdown-item" data-theme-value="dark">☾ Dark</button>
+        <button class="dropdown-item" data-theme-value="sepia">☕ Sepia</button>
+        <button class="dropdown-item" data-theme-value="cyberpunk">⚡ Cyberpunk</button>
+        <button class="dropdown-item" data-theme-value="nord">❄ Nord</button>
       </div>
     </div>
   `;
-  const homeBtn = `<a class="btn ${isHome ? "btn-primary active" : "btn-ghost"} btn-sm" href="${homeHref}"><i class="fas fa-home"></i> Home</a>`;
-  const learnBtn = `<a class="btn ${isLearn ? "btn-primary active" : "btn-ghost"} btn-sm" href="${learnHref}"><i class="fas fa-graduation-cap"></i> Learn</a>`;
+  const homeBtn = `<a class="btn ${isHome ? "btn-primary active" : "btn-ghost"} btn-sm" href="${homeHref}">🏠 Home</a>`;
+  const learnBtn = `<a class="btn ${isLearn ? "btn-primary active" : "btn-ghost"} btn-sm" href="${learnHref}">🎓 Learn</a>`;
   const contributorsBtn = `<a class="btn ${isContributors ? "btn-primary active" : "btn-ghost"} btn-sm" href="${contributorsHref}">Contributors</a>`;
-  const githubBtn = `<a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank"><i class="fab fa-github"></i> GitHub</a>`;
+  const githubBtn = `<a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">GitHub</a>`;
   const readmeBtn = `<a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>`;
 
   let navButtonsHTML = "";
@@ -59,27 +59,25 @@
     navButtonsHTML = `${themeBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${signinBtn}`;
   }
 
-  container.innerHTML = `
-      <header>
-          <nav class="navbar" id="navbar" aria-label="Main Navigation">
-              <a class="navbar-brand" href="${homeHref}" style="text-decoration:none;">
-                  <span class="brand-mark" aria-label="100 Days logo">100</span>
-                  <span class="brand-copy">
-                      <span class="brand-kicker">Open Source Archive</span>
-                      <strong>100 Days · 100 Web Projects</strong>
-                  </span>
-              </a>
+    container.innerHTML = `
+      <nav class="navbar" id="navbar" aria-label="Main Navigation">
+        <a class="navbar-brand" href="${homeHref}" style="text-decoration:none;">
+          <span class="brand-mark" aria-label="100 Days logo">100</span>
+          <span class="brand-copy">
+            <span class="brand-kicker">Open Source Archive</span>
+            <strong>100 Days · 100 Web Projects</strong>
+          </span>
+        </a>
 
-              <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation menu" aria-controls="navButtons" aria-expanded="false">
-                  <i class="fas fa-bars" aria-hidden="true"></i>
-              </button>
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation menu" aria-controls="navButtons" aria-expanded="false">
+          ☰
+        </button>
 
-              <div class="nav-buttons mobile-drawer-layer" id="navButtons">
-                  ${navButtonsHTML}
-              </div>
-          </nav>
-      </header>
-  `;
+        <div class="nav-buttons mobile-drawer-layer" id="navButtons">
+          ${navButtonsHTML}
+        </div>
+      </nav>
+    `;
 
   window.ThemeManager?.applyTheme?.(window.ThemeManager.currentTheme(), { persist: false });
 

@@ -299,16 +299,15 @@ function DrawMaze(maze, ctx, cellSize) {
 }
 
 function Player(maze, canvas, cellSize, onComplete) {
-  const ctx = canvas.getContext('2d');
+  const playerCtx = canvas.getContext('2d');
   const self = this;
   const map = maze.map();
   let cellCoords = { x: maze.startCoord().x, y: maze.startCoord().y };
   let size = cellSize;
-  const halfCellSize = size / 2;
   let moves = 0;
   let hasWon = false;
 
-  this.redrawPlayer = function (newSize) {
+  this.redrawPlayer = function(newSize) {
     size = newSize;
     drawPlayerOrb(cellCoords);
   };
@@ -317,26 +316,22 @@ function Player(maze, canvas, cellSize, onComplete) {
     const x = coord.x * size + size / 2;
     const y = coord.y * size + size / 2;
     const radius = Math.max(size * 0.16, 6);
-    const gradient = ctx.createRadialGradient(x, y, radius * 0.2, x, y, radius);
+    const gradient = playerCtx.createRadialGradient(x, y, radius * 0.2, x, y, radius);
     gradient.addColorStop(0, 'rgba(255, 249, 196, 0.95)');
     gradient.addColorStop(0.6, 'rgba(255, 162, 59, 0.85)');
     gradient.addColorStop(1, 'rgba(255, 72, 103, 0.55)');
-
-    ctx.beginPath();
-    ctx.fillStyle = gradient;
-    ctx.arc(x, y, radius, 0, 2 * Math.PI);
-    ctx.fill();
-
-    ctx.strokeStyle = 'rgba(255, 196, 129, 0.85)';
-    ctx.lineWidth = Math.max(size * 0.015, 1.5);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
-    ctx.lineWidth = 1.5;
-    ctx.arc(x, y, radius * 0.6, 0, 2 * Math.PI);
-    ctx.stroke();
-
+    playerCtx.beginPath();
+    playerCtx.fillStyle = gradient;
+    playerCtx.arc(x, y, radius, 0, 2 * Math.PI);
+    playerCtx.fill();
+    playerCtx.strokeStyle = 'rgba(255, 196, 129, 0.85)';
+    playerCtx.lineWidth = Math.max(size * 0.015, 1.5);
+    playerCtx.stroke();
+    playerCtx.beginPath();
+    playerCtx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+    playerCtx.lineWidth = 1.5;
+    playerCtx.arc(x, y, radius * 0.6, 0, 2 * Math.PI);
+    playerCtx.stroke();
     if (!hasWon && coord.x === maze.endCoord().x && coord.y === maze.endCoord().y) {
       hasWon = true;
       onComplete(moves);
@@ -344,188 +339,53 @@ function Player(maze, canvas, cellSize, onComplete) {
     }
   }
 
-  function removeSprite(coord) {
-    const offsetLeft = size / 50;
-    const offsetRight = size / 25;
-    ctx.clearRect(
-      coord.x * size + offsetLeft,
-      coord.y * size + offsetLeft,
-      size - offsetRight,
-      size - offsetRight
-    );
-  }
-
   function check(e) {
-    if (isGameOver) {
-      return;
-    }
-
+    if (isGameOver) return;
     const keyCode = e.keyCode || e.which;
-    if ([37, 38, 39, 40, 65, 68, 83, 87].includes(keyCode) && typeof e.preventDefault === 'function') {
+    if ([37,38,39,40,65,68,83,87].includes(keyCode) && typeof e.preventDefault === 'function') {
       e.preventDefault();
     }
-
     const cell = map[cellCoords.x][cellCoords.y];
     let moved = false;
-
     switch (keyCode) {
-      case 65:
-      case 37:
-        if (cell.w) {
-          removeSprite(cellCoords);
-          cellCoords = { x: cellCoords.x - 1, y: cellCoords.y };
-          drawPlayerOrb(cellCoords);
-          moved = true;
-        }
-        break;
-      case 87:
-      case 38:
-        if (cell.n) {
-          removeSprite(cellCoords);
-          cellCoords = { x: cellCoords.x, y: cellCoords.y - 1 };
-          drawPlayerOrb(cellCoords);
-          moved = true;
-        }
-        break;
-      case 68:
-      case 39:
-        if (cell.e) {
-          removeSprite(cellCoords);
-          cellCoords = { x: cellCoords.x + 1, y: cellCoords.y };
-          drawPlayerOrb(cellCoords);
-          moved = true;
-        }
-        break;
-      case 83:
-      case 40:
-        if (cell.s) {
-          removeSprite(cellCoords);
-          cellCoords = { x: cellCoords.x, y: cellCoords.y + 1 };
-          drawPlayerOrb(cellCoords);
-          moved = true;
-        }
-        break;
+      case 65: case 37: if (cell.w) { cellCoords = { x: cellCoords.x-1, y: cellCoords.y }; moved = true; } break;
+      case 87: case 38: if (cell.n) { cellCoords = { x: cellCoords.x, y: cellCoords.y-1 }; moved = true; } break;
+      case 68: case 39: if (cell.e) { cellCoords = { x: cellCoords.x+1, y: cellCoords.y }; moved = true; } break;
+      case 83: case 40: if (cell.s) { cellCoords = { x: cellCoords.x, y: cellCoords.y+1 }; moved = true; } break;
     }
-
     if (moved) {
       moves++;
-      updateMoveDisplay(moves);      ensurePlayerVisible(cellCoords);    } else if ([65, 68, 83, 87, 37, 38, 39, 40].includes(e.keyCode)) {
+      updateMoveDisplay(moves);
+      ensurePlayerVisible(cellCoords);
+    } else if ([65,68,83,87,37,38,39,40].includes(keyCode)) {
       showToast('Blocked! You cannot move through a wall.', 'warning');
     }
   }
 
-  this.bindKeyDown = function () {
+  this.unbindKeyDown = function() {
+    window.removeEventListener('keydown', check, false);
+    if (window.jQuery && typeof $.fn.swipe === 'function') {
+      try { $('#view').swipe('destroy'); } catch(err) {}
+    }
+  };
+
+  this.bindKeyDown = function() {
     window.addEventListener('keydown', check, false);
     if (window.jQuery && typeof $.fn.swipe === 'function') {
       $('#view').swipe({
-        swipe: function (event, direction) {
-          switch (direction) {
-            case 'up':
-              check({ keyCode: 38 });
-              break;
-            case 'down':
-              check({ keyCode: 40 });
-              break;
-            case 'left':
-              check({ keyCode: 37 });
-              break;
-            case 'right':
-              check({ keyCode: 39 });
-              break;
-          }
+        swipe: function(event, direction) {
+          const map = { up: 38, down: 40, left: 37, right: 39 };
+          if (map[direction]) check({ keyCode: map[direction] });
         },
         threshold: 0
       });
-
-    };
-  
-    this.unbindKeyDown = function() {
-      window.removeEventListener("keydown", check, false);
-      $("#view").swipe("destroy");
-    };
-  
-    drawSprite(maze.startCoord());
-  
-    this.bindKeyDown();
-  }
-  
-  var mazeCanvas = document.getElementById("mazeCanvas");
-  var ctx = mazeCanvas.getContext("2d");
-  var sprite;
-  var finishSprite;
-  var maze, draw, player;
-  var cellSize;
-  var difficulty;
-  // sprite.src = 'media/sprite.png';
-  
-  window.onload = function() {
-    document.getElementById("mazeContainer").classList.add("preview");
-    let viewWidth = $("#view").width();
-    let viewHeight = $("#view").height();
-    if (viewHeight < viewWidth) {
-      ctx.canvas.width = viewHeight - viewHeight / 100;
-      ctx.canvas.height = viewHeight - viewHeight / 100;
-    } else {
-      ctx.canvas.width = viewWidth - viewWidth / 100;
-      ctx.canvas.height = viewWidth - viewWidth / 100;
-    }
-  
-    //Load and edit sprites
-    var completeOne = false;
-    var completeTwo = false;
-    var isComplete = () => {
-      if(completeOne === true && completeTwo === true)
-         {
-           console.log("Runs");
-          // setTimeout(function(){
-          //   makeMaze();
-           //}, 500);         
-         }
-    };
-    sprite = new Image();
-    sprite.src =
-      "./key.png" +
-      "?" +
-      new Date().getTime();
-    sprite.setAttribute("crossOrigin", " ");
-    sprite.onload = function() {
-      sprite = changeBrightness(1.2, sprite);
-      completeOne = true;
-      console.log(completeOne);
-      isComplete();
-    };
-  
-    finishSprite = new Image();
-    finishSprite.src = "./home.png"+
-    "?" +
-    new Date().getTime();
-    finishSprite.setAttribute("crossOrigin", " ");
-    finishSprite.onload = function() {
-      finishSprite = changeBrightness(1.1, finishSprite);
-      completeTwo = true;
-      console.log(completeTwo);
-      isComplete();
-    };
-    
-=======
-    }
-
-  };
-
-  this.unbindKeyDown = function () {
-    window.removeEventListener('keydown', check, false);
-    if (window.jQuery && typeof $.fn.swipe === 'function') {
-      try {
-        $('#view').swipe('destroy');
-      } catch (error) {
-        // swipe may not be initialized yet
-      }
     }
   };
 
-  drawPlayerOrb(maze.startCoord());
+  drawPlayerOrb(cellCoords);
   this.bindKeyDown();
 }
+
 
 const mazeCanvas = document.getElementById('mazeCanvas');
 const ctx = mazeCanvas.getContext('2d');
@@ -641,21 +501,13 @@ function cancelRenderLoop() {
 
 function startRenderLoop() {
   cancelRenderLoop();
-  if (draw) {
-    draw.render(0);
-  }
-  if (player) {
-    player.redrawPlayer(cellSize);
-  }
   const loop = (time) => {
-    if (draw) {
-      draw.render(time);
-    }
-    if (player) {
-      player.redrawPlayer(cellSize);
-    }
+    if (draw) draw.render(time);
+    if (player) player.redrawPlayer(cellSize);
     animationFrameId = requestAnimationFrame(loop);
   };
+  animationFrameId = requestAnimationFrame(loop);
+}
 
   
   function makeMaze() {
@@ -678,16 +530,6 @@ function startRenderLoop() {
     }
   }
 
-  function startGame() {
-  const mazeContainer = document.getElementById("mazeContainer");
-
-  mazeContainer.classList.remove("preview");
-  mazeContainer.classList.add("active");
-
-  makeMaze();
-=======
-  animationFrameId = requestAnimationFrame(loop);
-}
 
 function startGame() {
   const selectedDifficulty = Number(diffSelect.value);

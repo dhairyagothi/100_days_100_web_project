@@ -69,6 +69,21 @@ function getCategoryFromTags(tags, name) {
 let PROJECTS = [];
 let projectsPromise = null;
 
+function hydrateProjects(data) {
+  PROJECTS = data.map(project => [
+   `Day ${project.projectNo}`,
+   project.projectName,
+   project.projectPath,
+   project.techStack,
+   project.difficulty,
+   project.projectDesc
+  ]);
+}
+
+function getPreloadedProjectsData() {
+  return Array.isArray(window.PROJECTS_DATA) ? window.PROJECTS_DATA : null;
+}
+
 function parseProjectsData(payload) {
   try {
     return JSON.parse(payload);
@@ -82,26 +97,34 @@ function parseProjectsData(payload) {
 function loadProjects() {
   if (!projectsPromise) {
     projectsPromise = (async () => {
+      const preloadedData = getPreloadedProjectsData();
+      if (preloadedData) {
+        hydrateProjects(preloadedData);
+        return PROJECTS;
+      }
+
       const isRoot = !window.location.pathname.includes('/contributors/');
       const base = isRoot ? '' : '../';
      const projectsUrl =
 new URL(`${base}projects.json`,
 window.location.href).toString();
-      const response = await fetch(projectsUrl);
-      if (!response.ok) {
-        throw new Error(`Failed to load projects: ${response.statusText}`);
+      try {
+        const response = await fetch(projectsUrl);
+        if (!response.ok) {
+          throw new Error(`Failed to load projects: ${response.statusText}`);
+        }
+        const payload = await response.text();
+        const data = parseProjectsData(payload);
+        hydrateProjects(data);
+        return PROJECTS;
+      } catch (error) {
+        const fallbackData = getPreloadedProjectsData();
+        if (fallbackData) {
+          hydrateProjects(fallbackData);
+          return PROJECTS;
+        }
+        throw error;
       }
-      const payload = await response.text();
-      const data = parseProjectsData(payload);
-
-PROJECTS = data.map(project => [
-   `Day ${project.projectNo}`,
-   project.projectName,
-   project.projectPath,
-   project.techStack,
-   project.difficulty,
-   project.projectDesc
-]);
     })();
   }
   return projectsPromise;
@@ -706,7 +729,7 @@ function renderGrid() {
       showDescription: true,
     });
 
-    card.className = sourceOnly ? 'project-card source-only' : 'project-card';
+    card.className = sourceOnly ? 'project-card source-only visible' : 'project-card visible';
     card.innerHTML = html;
     attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
@@ -1042,7 +1065,7 @@ function renderBookmarks() {
       showDescription: true,
     });
 
-    card.className = sourceOnly ? 'project-card source-only' : 'project-card';
+    card.className = sourceOnly ? 'project-card source-only visible' : 'project-card visible';
     card.innerHTML = html;
     attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
@@ -1092,7 +1115,7 @@ function renderRecentProjects() {
       showDescription: true,
     });
 
-    card.className = sourceOnly ? 'project-card source-only' : 'project-card';
+    card.className = sourceOnly ? 'project-card source-only visible' : 'project-card visible';
     card.innerHTML = html;
     attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 

@@ -1,8 +1,0 @@
-# .gitignore
-__pycache__/
-*.pyc
-.env
-node_modules/
-frontend/dist/
-backend/__pycache__/
-.DS_Store

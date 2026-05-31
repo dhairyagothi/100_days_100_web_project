@@ -2410,5 +2410,47 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/Escape_Room/index.html"
-  }
+  },
+  {
+    "projectNo": 194,
+    "projectName": "Lost & Found Portal",
+    "projectType": "Website",
+    "projectDesc": "A modern web application to report lost items, report found items, browse listings, and contact item owners.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Lost_And_Found_Portal/index.html"
+  },
+  {
+    "projectNo": 195,
+    "projectName": "Complaint Management System",
+    "projectType": "Web Application",
+    "projectDesc": "A professional portal for submitting, tracking, and managing complaints efficiently with a premium modern UI.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Complaint_Management_System/index.html"
+  },
+  {
+  "projectNo": 196,
+  "projectName": "AirCast",
+  "projectType": "Tool",
+  "projectDesc": "Weather forecasting application with real-time weather updates and Air Quality Index (AQI) monitoring.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript",
+    "api",
+    "weather"
+  ],
+  "difficulty": "intermediate",
+  "projectPath": "./public/Weather App with AQI/index.html"
+}
+
 ]

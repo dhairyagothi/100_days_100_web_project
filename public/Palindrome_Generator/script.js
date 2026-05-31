@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let educationalMode = true;
   educationalToggle.addEventListener('click', () => {
     educationalMode = !educationalMode;
-
     educationalToggle.innerText = educationalMode
       ? 'Educational Mode: ON'
       : 'Educational Mode: OFF';
@@ -33,11 +32,21 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Function to dynamically generate a palindrome
+    // ✅ FIX: Detect if input is numeric or string
+    const isNumeric = !isNaN(val) && val !== '';
+    const inputType = isNumeric ? 'Number' : 'String';
+
+    // ✅ FIX: Apply appropriate palindrome logic based on type
     const generatePalindrome = (str) => {
       if (!str) return '';
-      // Remove the terminal letter in generated palindrome
-      const reversed = str.slice(0, -1).split('').reverse().join('');
+      if (!isNaN(str) && str !== '') {
+        // Numeric palindrome logic
+        const num = str.replace(/^0+/, '') || '0';
+        const reversed = num.split('').reverse().join('');
+        return num === reversed ? num : num + reversed.slice(1);
+      }
+      // String palindrome logic
+      const reversed = str.split('').reverse().join('');
       return str + reversed;
     };
 
@@ -45,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const cleanedText = palindromeResult.toLowerCase().replace(/[^a-z0-9]/g, '');
 
-    processedText.innerHTML = `Processed String: <strong>${cleanedText}</strong>`;
+    processedText.innerHTML = `Processed String (Type: <strong>${inputType}</strong>): <strong>${cleanedText}</strong>`;
 
     characterContainer.innerHTML = '';
 
@@ -53,10 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     cleanedText.split('').forEach((char) => {
       const charBox = document.createElement('div');
-
       charBox.classList.add('char-box');
       charBox.innerText = char;
-
       characterContainer.appendChild(charBox);
     });
 
@@ -104,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update UI
     resultBox.className = 'result-container mt-4 text-center success-bg';
-    resultText.innerText = `Result: ${palindromeResult}`;
+    resultText.innerText = `Result: ${palindromeResult} (${inputType})`;
     resultIcon.innerText = '🎯';
 
     confetti({
@@ -116,17 +123,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   clearBtn.addEventListener('click', () => {
     input.value = '';
-
     resultBox.className = 'result-container mt-4 text-center';
-
     resultText.innerText = 'Waiting for you to click generate...';
-
     resultIcon.innerText = '⌨️';
-
     characterContainer.innerHTML = '';
-
     processedText.innerHTML = '';
-
     comparisonCount.innerText = 'Comparisons: 0';
   });
 });
