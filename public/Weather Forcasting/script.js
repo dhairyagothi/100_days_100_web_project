@@ -189,7 +189,7 @@ async function fetchWeather(latitude, longitude) {
   url.search = new URLSearchParams({
     latitude: String(latitude),
     longitude: String(longitude),
-    current: 'temperature_2m,relative_humidity_2m,apparent_temperature,cloud_cover,wind_speed_10m,wind_direction_10m',
+    current: 'temperature_2m,relative_humidity_2m,apparent_temperature,cloud_cover,wind_speed_10m,wind_direction_10m,weather_code',
     daily: 'temperature_2m_max,temperature_2m_min,sunrise,sunset',
     timezone: 'auto'
   });
