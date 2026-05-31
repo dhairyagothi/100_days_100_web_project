@@ -138,20 +138,31 @@ async function fetchRepos(username) {
     let allRepos = [];
     let page = 1;
     const perPage = 100;
+
     while (true) {
-        const res = await fetch(`${API_BASE}/users/${username}/repos?per_page=${perPage}&page=${page}&sort=updated`);
+        const res = await fetch(
+            `${API_BASE}/users/${username}/repos?per_page=${perPage}&page=${page}&sort=updated`
+        );
+
         if (!res.ok) {
-    throw new Error(
-        `Failed to fetch repositories for ${username} (HTTP ${res.status})`
-    );
-}
+            console.warn(
+                `Failed to fetch repositories for ${username} (HTTP ${res.status})`
+            );
+            break; // important: prevents app crash
+        }
+
         const repos = await res.json();
+
         if (repos.length === 0) break;
+
         allRepos = allRepos.concat(repos);
+
         if (repos.length < perPage) break;
+
         page++;
         if (page > 5) break; // Cap at 500 repos
     }
+
     return allRepos;
 }
 
@@ -549,81 +560,87 @@ async function startBattle() {
         return;
     }
 
-    // Show loading
-    DOM.inputSection.classList.add('hidden');
-    DOM.resultSection.classList.add('hidden');
-    DOM.loadingSection.classList.remove('hidden');
-    DOM.battleBtn.disabled = true;
+   // Show loading
+DOM.inputSection.classList.add('hidden');
+DOM.resultSection.classList.add('hidden');
+DOM.loadingSection.classList.remove('hidden');
+DOM.battleBtn.disabled = true;
 
-    try {
-        // Fetch data in parallel
-        const [user1, user2, repos1, repos2, events1, events2] = await Promise.all([
-            fetchUser(u1),
-            fetchUser(u2),
-            fetchRepos(u1),
-            fetchRepos(u2),
-            fetchEvents(u1),
-            fetchEvents(u2),
-        ]);
+try {
+    // Fetch data in parallel (SAFE VERSION)
+    const results = await Promise.allSettled([
+        fetchUser(u1),
+        fetchUser(u2),
+        fetchRepos(u1),
+        fetchRepos(u2),
+        fetchEvents(u1),
+        fetchEvents(u2),
+    ]);
 
-        const stats1 = calcStats(user1, repos1);
-        const stats2 = calcStats(user2, repos2);
-        const score1 = calcScore(stats1);
-        const score2 = calcScore(stats2);
+    const [user1, user2, repos1, repos2, events1, events2] =
+        results.map(r => r.status === "fulfilled" ? r.value : null);
 
-        // Small delay for dramatic effect
-        await new Promise((r) => setTimeout(r, 1800));
+    const stats1 = calcStats(user1, repos1);
+    const stats2 = calcStats(user2, repos2);
+    const score1 = calcScore(stats1);
+    const score2 = calcScore(stats2);
 
-        // Hide loading, show results
-        DOM.loadingSection.classList.add('hidden');
-        DOM.resultSection.classList.remove('hidden');
+    // Small delay for dramatic effect
+    await new Promise((r) => setTimeout(r, 1800));
 
-        // Winner banner
-        const isP1Winner = score1 > score2;
-        const isTie = score1 === score2;
-        const winnerName = isTie ? "It's a Tie!" : isP1Winner ? stats1.name : stats2.name;
-        DOM.winnerText.textContent = isTie ? "🤝 It's a Tie!" : `${winnerName} Wins!`;
-        DOM.winnerScore.textContent = isTie
-            ? `Both scored ${score1} points`
-            : `${score1} vs ${score2} — won by ${Math.abs(score1 - score2)} points`;
+    // Hide loading, show results
+    DOM.loadingSection.classList.add('hidden');
+    DOM.resultSection.classList.remove('hidden');
 
-        if (!isTie) spawnConfetti();
+    // Winner banner
+    const isP1Winner = score1 > score2;
+    const isTie = score1 === score2;
+    const winnerName = isTie ? "It's a Tie!" : isP1Winner ? stats1.name : stats2.name;
 
-        // Profile cards
-        renderProfileCard(DOM.profileCard1, stats1, 'player-1-card', isP1Winner && !isTie);
-        renderProfileCard(DOM.profileCard2, stats2, 'player-2-card', !isP1Winner && !isTie);
+    DOM.winnerText.textContent = isTie ? "🤝 It's a Tie!" : `${winnerName} Wins!`;
+    DOM.winnerScore.textContent = isTie
+        ? `Both scored ${score1} points`
+        : `${score1} vs ${score2} — won by ${Math.abs(score1 - score2)} points`;
 
-        // Stat bars
-        renderStatBars(stats1, stats2);
+    if (!isTie) spawnConfetti();
 
-        // Radar chart
-        DOM.legendP1Name.textContent = stats1.username;
-        DOM.legendP2Name.textContent = stats2.username;
-        drawRadarChart(stats1, stats2);
+    // Profile cards
+    renderProfileCard(DOM.profileCard1, stats1, 'player-1-card', isP1Winner && !isTie);
+    renderProfileCard(DOM.profileCard2, stats2, 'player-2-card', !isP1Winner && !isTie);
 
-        // Contribution heatmaps
-        const contribData1 = generateContribData(events1);
-        const contribData2 = generateContribData(events2);
-        DOM.heatmapAvatar1.src = stats1.avatar;
-        DOM.heatmapAvatar1.alt = stats1.username;
-        DOM.heatmapName1.textContent = stats1.username;
-        DOM.heatmapAvatar2.src = stats2.avatar;
-        DOM.heatmapAvatar2.alt = stats2.username;
-        DOM.heatmapName2.textContent = stats2.username;
-        renderHeatmap(DOM.heatmap1, contribData1);
-        renderHeatmap(DOM.heatmap2, contribData2);
+    // Stat bars
+    renderStatBars(stats1, stats2);
 
-        // Share card
-        renderShareCard(stats1, stats2, score1, score2);
+    // Radar chart
+    DOM.legendP1Name.textContent = stats1.username;
+    DOM.legendP2Name.textContent = stats2.username;
+    drawRadarChart(stats1, stats2);
 
-    } catch (err) {
-        DOM.loadingSection.classList.add('hidden');
-        DOM.inputSection.classList.remove('hidden');
-        DOM.errorMsg.textContent = err.message || 'Something went wrong. Check usernames and try again.';
-    } finally {
-        DOM.battleBtn.disabled = false;
-    }
-}
+    // Contribution heatmaps
+    const contribData1 = generateContribData(events1);
+    const contribData2 = generateContribData(events2);
+
+    DOM.heatmapAvatar1.src = stats1.avatar;
+    DOM.heatmapAvatar1.alt = stats1.username;
+    DOM.heatmapName1.textContent = stats1.username;
+
+    DOM.heatmapAvatar2.src = stats2.avatar;
+    DOM.heatmapAvatar2.alt = stats2.username;
+    DOM.heatmapName2.textContent = stats2.username;
+
+    renderHeatmap(DOM.heatmap1, contribData1);
+    renderHeatmap(DOM.heatmap2, contribData2);
+
+    // Share card
+    renderShareCard(stats1, stats2, score1, score2);
+
+} catch (err) {
+    DOM.loadingSection.classList.add('hidden');
+    DOM.inputSection.classList.remove('hidden');
+    DOM.errorMsg.textContent = err.message || 'Something went wrong. Check usernames and try again.';
+} finally {
+    DOM.battleBtn.disabled = false;
+}}
 
 // ===== Legacy Copy Card as Image =====
 async function legacyCopyCardAsImage() {
