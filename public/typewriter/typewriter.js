@@ -13,9 +13,12 @@ let paperContent = '';
 let soundEnabled = true;
 let capsLockEnabled = false;
 let capsLockKey;
+let shiftEnabled = false;   // tracks on-screen SHIFT state (one-shot)
+let shiftKeyEl;             // reference to the on-screen SHIFT button
 
 document.addEventListener("DOMContentLoaded", () => {
     capsLockKey = document.querySelector(".caps-lock");
+    shiftKeyEl  = document.querySelector(".shift-key");
     
     /* ---------- Onscreen Keys ---------- */
     document.querySelectorAll(".key").forEach(key=>{
@@ -31,11 +34,17 @@ document.addEventListener("DOMContentLoaded", () => {
             playReturn();
             updateCopyButtonState();
             updateCounters();
-        return;
+            return;
         }
         if(ch==="SPACE"){
             addCharToPaper(" ");
+            resetShift();
             return;
+        }
+        if (ch === "TAB") {
+                // Tab inserts four spaces on the paper (classic typewriter behaviour)
+                addCharToPaper("    ");
+                return;
         }
         if(ch==="CAPSLOCK"){
             capsLockEnabled = !capsLockEnabled;
@@ -43,14 +52,28 @@ document.addEventListener("DOMContentLoaded", () => {
             capsLockKey.classList.toggle("pressed", capsLockEnabled);
             return;
         }
-        
-        let charToAdd;
-        if (capsLockEnabled) {
-            charToAdd = ch.toUpperCase();
-        } else {
-            charToAdd = ch.toLowerCase();
+        if (ch === "SHIFT") {
+                // One-shot toggle: highlight stays until next character is typed
+                shiftEnabled = !shiftEnabled;
+                shiftKeyEl.setAttribute("aria-pressed", shiftEnabled);
+                shiftKeyEl.classList.toggle("pressed", shiftEnabled);
+                return;
         }
-        addCharToPaper(charToAdd);
+
+        // ---- Dual-character keys (numbers row + symbol rows) ----
+        const shiftChar = key.dataset.shift;
+        if (shiftChar !== undefined) {
+            // For these keys, CapsLock has NO effect — only SHIFT matters
+            const charToAdd = shiftEnabled ? shiftChar : ch;
+            addCharToPaper(charToAdd);
+            resetShift();
+            return;
+        }
+
+        // ---- Letter keys: apply CapsLock XOR Shift ----
+        const shouldBeUpper = capsLockEnabled !== shiftEnabled;
+        addCharToPaper(shouldBeUpper ? ch.toUpperCase() : ch.toLowerCase());
+        resetShift();
         };
     });
 });
@@ -61,89 +84,32 @@ function getCurrentText(){
     return document.querySelectorAll(".typewriterText")[currentPage];
 }
 
-function createPage(){
-    paperContent = "";
-    currentPage++;
-    const page = document.createElement("div");
-    page.className = "paper-sheet page";
-    page.innerHTML = `<span class="typewriterText"></span><span class="cursor-paper"></span>`;
-    pagesContainer.appendChild(page);
-    pageCounter.innerText = `Page ${currentPage+1}`;
-}
-
-/* ---------- AUDIO ---------- */
-
-function getAudioCtx(){
-    if(!audioCtx){
-        try{
-            audioCtx = 
-                new(
-                window.AudioContext ||
-                window.webkitAudioContext
-                )();
-        }
-        catch(e){}
-        }
-    return audioCtx;
-}
-
-
-function playClick(noiseVol,freq1,freq2,dur){
-    if(!soundEnabled) return;
-    const ctx = getAudioCtx();
-    if(!ctx) return;
-    const now = ctx.currentTime;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.frequency.setValueAtTime(freq1,now);
-    osc.frequency.exponentialRampToValueAtTime(freq2,now+dur);
-    gain.gain.setValueAtTime(noiseVol,now);
-    gain.gain.exponentialRampToValueAtTime(0.001,now+dur);
-    osc.start(now);
-    osc.stop(now+dur);
-}
-
-
-function playKeyClick(){
-    playClick(0.55,900,200,0.035);
-}
-
-function playHeavyKey(){
-    playClick(0.40,140,75,0.12);
-}
-
-function playSpaceClick(){
-    playHeavyKey();
-}
-
-function playReturn(){
-    playHeavyKey();
-}
-
-function playBackspace(){
-    playHeavyKey();
-}
-
-
-/* ---------- Typing ---------- */
-
-function addCharToPaper(ch){
-    paperContent += ch;
-    getCurrentText().textContent = paperContent;
-    if(ch===" ") {
-        playSpaceClick();
-        flashKey("SPACE");
+function resetShift() {
+    if (!shiftEnabled) return;
+    shiftEnabled = false;
+    if (shiftKeyEl) {
+        shiftKeyEl.setAttribute("aria-pressed", false);
+        shiftKeyEl.classList.remove("pressed");
     }
-    else {
-        playKeyClick();
-        if(ch!=="\n")
-            flashKey(ch.toUpperCase());
-    }
+}
 
-    /* overflow check */
-    let page = document.querySelectorAll(".paper-sheet")[currentPage];
+// FIX: Use addEventListener with preventDefault to stop form submission reload (closes #856)
+addTextButton.addEventListener("click", function (e) {
+    e.preventDefault(); // Prevent any form submission / page reload
+
+    const newText = userInput.value.trim();
+    if (!newText) return; // Do nothing if empty
+
+    phrases.push(newText);
+    userInput.value = '';
+    isPaused = false;
+    isDeleting = false;
+    charIndex = 0;
+    phraseIndex = phrases.length - 1;
+    clearTimeout(typingTimeout);
+    type();
+    pauseResumeButton.textContent = "Pause";
+});
 
     /* check actual page overflow */
     if(page.scrollHeight > page.clientHeight){
@@ -212,16 +178,21 @@ document.addEventListener("keydown",(e)=>{
         addCharToPaper(" ");
         return;
     }
+    if(e.key === "Tab"){
+        e.preventDefault();
+        addCharToPaper("    "); // 4 spaces = one tab stop
+        flashKey("TAB");
+        return;
+    }
 
 
     if(e.key.length===1){
         e.preventDefault();
         let charToAdd;
-        if (capsLockEnabled) {
-            charToAdd = e.key.toUpperCase();
-        } else {
-            charToAdd = e.key.toLowerCase();
-        }
+        // e.shiftKey tells us if Shift is held at the moment of the keypress.
+        // CapsLock XOR Shift gives the correct case behaviour:
+        const shouldBeUpper = capsLockEnabled !== e.shiftKey; // XOR
+        charToAdd = shouldBeUpper ? e.key.toUpperCase() : e.key.toLowerCase();
         addCharToPaper(charToAdd);
     }
 });
