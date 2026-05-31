@@ -470,3 +470,6 @@ document.getElementById("flipBoard").addEventListener("click", () => {
 });
 
 newGame();
+document.getElementById("backHome").addEventListener("click", () => {
+    window.location.href = "/";
+});

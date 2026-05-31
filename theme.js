@@ -32,12 +32,6 @@
   };
 
   const syncToggleIcons = (theme) => {
-    // Update simple toggle buttons (if any remain)
-    const fallbackIconClass = theme === "light" ? "fas fa-sun" : "fas fa-moon";
-    document.querySelectorAll("#themeToggle i").forEach((icon) => {
-      icon.className = fallbackIconClass;
-    });
-
     // Update active state in dropdown menus
     document.querySelectorAll(".theme-dropdown-container .dropdown-item").forEach(item => {
       if (item.dataset.themeValue === theme) {
@@ -47,17 +41,16 @@
       }
     });
 
-    // Update the main dropdown toggle icon
-    const themeIcons = {
-      light: "fa-sun",
-      dark: "fa-moon",
-      sepia: "fa-coffee",
-      cyberpunk: "fa-bolt",
-      nord: "fa-snowflake"
+    const themeSymbols = {
+      light: "☀",
+      dark: "☾",
+      sepia: "☕",
+      cyberpunk: "⚡",
+      nord: "❄"
     };
-    const currentIcon = themeIcons[theme] || "fa-palette";
-    document.querySelectorAll("#themeToggleNav i").forEach((icon) => {
-      icon.className = `fas ${currentIcon}`;
+    const currentSymbol = themeSymbols[theme] || "◌";
+    document.querySelectorAll("#themeToggleNav span[aria-hidden='true']").forEach((icon) => {
+      icon.textContent = currentSymbol;
     });
   };
 
