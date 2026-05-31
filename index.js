@@ -593,30 +593,28 @@ function syncStateToURL() {
 function readStateFromURL() {
   const urlParams = new URLSearchParams(window.location.search);
   
-  if (urlParams.has('search')) {
-    searchQuery = urlParams.get('search');
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-      searchInput.value = searchQuery;
-    }
+  searchQuery = urlParams.get('search') || '';
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.value = searchQuery;
   }
   
-  if (urlParams.has('category')) {
-    activeFilter = urlParams.get('category');
-  }
+  activeFilter = urlParams.get('category') || 'all';
   
-  if (urlParams.has('page')) {
-    const page = parseInt(urlParams.get('page'), 10);
-    if (!isNaN(page) && page > 0) {
-      currentPage = page;
-    }
-  }
+  const page = parseInt(urlParams.get('page'), 10);
+  currentPage = (!isNaN(page) && page > 0) ? page : 1;
 }
 
 function renderGrid() {
   const grid = document.getElementById('projectGrid');
   const noResults = document.getElementById('noResults');
   if (!grid) return;
+
+  // Sync active chip selection with activeFilter state (useful for popstate & reset)
+  const chips = document.querySelectorAll('.chip[data-filter]');
+  chips.forEach((chip) => {
+    chip.classList.toggle('active', chip.dataset.filter === activeFilter);
+  });
 
   if (typeof updateClearFiltersBtnVisibility === 'function') {
     updateClearFiltersBtnVisibility();
@@ -1235,9 +1233,7 @@ function resetAllFilters() {
   sortOption = 'default';
 
   // 6. Sync URL
-  if (typeof updateURL === 'function') {
-    updateURL('', 'all');
-  }
+  syncStateToURL();
 
   // 7. Refresh grid and pagination
   currentPage = 1;
@@ -1545,6 +1541,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   initSorting();
   initTechStackSearch();
   initClearAllFilters();
+
+  window.addEventListener('popstate', () => {
+    readStateFromURL();
+    renderGrid();
+    syncProjectCounts();
+  });
 
   try {
     // Await the projects to be fetched
@@ -1916,82 +1918,4 @@ initTheme();
   rebuild();
 })();
 
-// =============================================
-// PERSISTENT FILTERS & SEARCH — Issue #3320
-// =============================================
 
-function getQueryParams() {
-  const params = new URLSearchParams(window.location.search);
-  return {
-    search: params.get('search') || '',
-    category: params.get('category') || 'all'
-  };
-}
-
-function updateURL(search, category) {
-  const params = new URLSearchParams();
-  if (search) params.set('search', search);
-  if (category && category !== 'all') params.set('category', category);
-  const newURL = params.toString()
-    ? `${window.location.pathname}?${params.toString()}`
-    : window.location.pathname;
-  history.pushState({ search, category }, '', newURL);
-}
-
-function restoreStateFromURL() {
-  const { search, category } = getQueryParams();
-  const searchInput = document.getElementById('searchInput') ||
-    document.querySelector('input[type="text"]') ||
-    document.querySelector('.search-input');
-  if (searchInput && search) searchInput.value = search;
-  const categoryFilter = document.getElementById('category');
-  if (categoryFilter && category !== 'all') categoryFilter.value = category;
-  if (search || category !== 'all') applyFilters(search, category);
-}
-
-function applyFilters(search, category) {
-  searchQuery = search || '';
-  activeFilter = category || 'all';
-  currentPage = 1;
-
-  // Sync active chip selection with URL state
-  const chips = document.querySelectorAll('.chip[data-filter]');
-  chips.forEach((chip) => {
-    if (chip.dataset.filter === activeFilter) {
-      chip.classList.add('active');
-    } else {
-      chip.classList.remove('active');
-    }
-  });
-
-  renderGrid();
-}
-
-document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    await loadProjects();
-    restoreStateFromURL();
-  } catch (error) {
-    console.error('Failed to restore state or load projects:', error);
-  }
-  const searchInput = document.getElementById('search') ||
-    document.querySelector('input[type="text"]') ||
-    document.querySelector('.search-input');
-  if (searchInput) {
-    // Debounced so rapid typing doesn't trigger a renderGrid() on every keystroke
-    searchInput.addEventListener('input', debounce(() => {
-      const { category } = getQueryParams();
-      updateURL(searchInput.value, category);
-      applyFilters(searchInput.value, category);
-    }, 200));
-  }
-  const categoryFilter = document.getElementById('category');
-  if (categoryFilter) {
-    categoryFilter.addEventListener('change', () => {
-      const { search } = getQueryParams();
-      updateURL(search, categoryFilter.value);
-      applyFilters(search, categoryFilter.value);
-    });
-  }
-  window.addEventListener('popstate', () => restoreStateFromURL());
-});
