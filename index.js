@@ -217,6 +217,16 @@ function resolveProjectUrls(day, name, url, tags) {
   return { demoUrl, sourceUrl, sourceOnly };
 }
 
+function escapeHTML(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 function getProjectDescription(project) {
   return (
     (project && project[5]) ||
@@ -244,9 +254,7 @@ function buildProjectCardHTML({
     : String(tags || "")
         .split(/\s+/)
         .filter((t) => t && t !== SOURCE_ONLY_TAG);
-  const tagsHTML = tagsArray
-    .map((t) => `<span class="tag">${t}</span>`)
-    .join("");
+  const tagsHTML = tagsArray.map((t) => `<span class="tag">${escapeHTML(t)}</span>`).join("");
   const project = PROJECTS.find((p) => p[1] === name);
 
   const description = getProjectDescription(project);
@@ -254,10 +262,10 @@ function buildProjectCardHTML({
     ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
     : "";
   const primaryLink = sourceOnly
-    ? `<a href="${sourceUrl}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer" onclick="event.stopPropagation()">
+    ? `<a href="${sourceUrl}" target="_blank" class="card-link open-project" data-id="${escapeHTML(day)}" rel="noopener noreferrer" onclick="event.stopPropagation()">
                         <i class="fab fa-github"></i> Source
                     </a>`
-    : `<a href="${demoUrl}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer" onclick="event.stopPropagation()">
+    : `<a href="${demoUrl}" target="_blank" class="card-link open-project" data-id="${escapeHTML(day)}" rel="noopener noreferrer" onclick="event.stopPropagation()">
                         Demo <i class="fas fa-arrow-right"></i>
                     </a>`;
   const codeLink = sourceOnly
@@ -269,17 +277,17 @@ function buildProjectCardHTML({
   return {
     html: `
             <div class="card-meta">
-                <span class="card-day">${day}</span>
+                <span class="card-day">${escapeHTML(day)}</span>
                 <span class="card-category-wrap">
-                  <span class="card-category">${category}</span>
+                  <span class="card-category">${escapeHTML(category)}</span>
                   ${sourceOnlyBadge}
                 </span>
             </div>
-            <h3 class="card-name">${name}</h3>
+            <h3 class="card-name">${escapeHTML(name)}</h3>
             ${
               showDescription
                 ? `<div class="card-description">
-    ${description}
+    ${escapeHTML(description)}
 </div>`
                 : ""
             }
@@ -289,7 +297,7 @@ function buildProjectCardHTML({
                     ${primaryLink}
                     ${codeLink}
                 </div>
-                <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${day}">
+                <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${escapeHTML(day)}" onclick="event.stopPropagation()">
                     <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark"></i>
                 </button>
             </div>
