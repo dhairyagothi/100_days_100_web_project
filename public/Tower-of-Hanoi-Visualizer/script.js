@@ -251,4 +251,3 @@ autoButton.addEventListener("click", startAuto);
 towerButtons.forEach((button) => button.addEventListener("click", handleTowerClick));
 
 startGame();
-
