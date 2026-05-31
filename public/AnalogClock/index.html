@@ -28,12 +28,19 @@
         <!-- Header Banner & Theme Toggle -->
         <header>
             <div class="brand-section">
-                <h1>Chronos</h1>
-                <p>Premium Local &amp; World Clock Dashboard</p>
-            </div>
-            
-            <!-- Sleek Neumorphic Theme Switcher -->
-            <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle visual theme">
+    <h1>Chronos</h1>
+    <p>Premium Local &amp; World Clock Dashboard</p>
+</div>
+
+<div class="header-actions">
+    <button
+        id="focusModeBtn"
+        class="btn btn-primary focus-btn"
+        aria-label="Toggle Focus Mode"
+    >
+        Focus Mode
+    </button>
+   <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle visual theme">
                 <!-- Sun Icon (Dark Mode Active: click to go Light) -->
                 <svg id="sunIcon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <circle cx="12" cy="12" r="5" />
@@ -51,7 +58,10 @@
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                 </svg>
             </button>
-        </header>
+
+</div>            
+            <!-- Sleek Neumorphic Theme Switcher -->
+                   </header>
 
         <!-- Main Workspace: Large Local Clock + Countdown Timer -->
         <main class="main-dashboard">

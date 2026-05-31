@@ -210,5 +210,15 @@
         </div>
       </section>
     </main>
+  <script>
+  const hamburgerMenu = document.querySelector('.hamburger-menu');
+  const sidebar = document.querySelector('.sidebar');
+  const body = document.body;
+
+  hamburgerMenu.addEventListener('click', () => {
+    sidebar.classList.toggle('hide-sidebar');
+    body.classList.toggle('full-width');
+  });
+</script>
   </body>
 </html>
