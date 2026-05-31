@@ -2672,8 +2672,8 @@ body.light-mode .noise-layer {
 #scrollToTopBtn {
   display: none;
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
+ bottom: 20px;
+  right: 30px;
   z-index: 99;
   border: none;
   outline: none;
