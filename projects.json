@@ -2436,5 +2436,14 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/Complaint_Management_System/index.html"
-  }
+  },
+  {
+  "projectNo":196,
+    "projectName":"CGPA calculator",
+    "projectType":"Tool",
+    "projectDesc":"GPA calculator web app with real-time calculation, dark/light theme, and localStorage support.",
+    "techStack":["tool","html","css","javascript"],
+    "difficulty":"advance",
+    "projectPath":"./public/CGPA_calculator/index.html"
+   }
 ]
