@@ -728,16 +728,3 @@ function escapeHtml(text) {
   div.textContent = text;
   return div.innerHTML;
 }
-
-// ================= DARK MODE =================
-function applyDarkMode(enabled) {
-  isDarkMode = enabled;
-  document.body.classList.toggle("dark-mode", enabled);
-  const btn = document.getElementById("dark-mode-toggle");
-  if (btn) btn.textContent = enabled ? "☀️" : "🌙";
-  localStorage.setItem("clockDarkMode", enabled);
-}
-
-function toggleDarkMode() {
-  applyDarkMode(!isDarkMode);
-}
