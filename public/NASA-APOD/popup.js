@@ -20,25 +20,44 @@ async function fetchAPOD(date = null) {
         : NASA_APOD_URL;
       
       const response = await fetch(url);
-      const data = await response.json();
+
+if (!response.ok) {
+  throw new Error(`NASA API Error: ${response.status}`);
+}
+
+const data = await response.json();
+
+if (!data.url) {
+  throw new Error("Invalid APOD response");
+}
   
       currentApodDate = data.date;
+      
       currentApodTitle = data.title;
       
+    document.getElementById("title").textContent = data.title;
+document.getElementById("description").textContent = data.explanation;
 
-      const img = new Image();
-      
-      await new Promise((resolve, reject) => {
-        img.onload = resolve;
-        img.onerror = reject;
-        img.src = data.url;
+if (data.media_type === "image") {
+  const img = new Image();
 
-        setTimeout(reject, 10000);
-      });
+  await new Promise((resolve, reject) => {
+    img.onload = resolve;
+    img.onerror = reject;
+    img.src = data.url;
 
-      document.getElementById("title").textContent = data.title;
-      document.getElementById("description").textContent = data.explanation;
-      image.src = data.url;
+    setTimeout(reject, 10000);
+  });
+
+  image.src = data.url;
+} else if (data.media_type === "video") {
+  image.src = "/api/placeholder/400/250";
+
+  document.getElementById("description").textContent =
+    `${data.explanation}\n\nVideo URL: ${data.url}`;
+} else {
+  throw new Error(`Unsupported media type: ${data.media_type}`);
+}
 
       const bookmarks = await getBookmarks();
       updateBookmarkButton(bookmarks.some(bookmark => bookmark.date === currentApodDate));
