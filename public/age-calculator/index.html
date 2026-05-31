@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Age Calculator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>📅 Age Calculator</h1>
+      <p class="subtitle">
+        Calculate your exact age in years, months, and days
+      </p>
+
+      <div class="input-group">
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" class="date-input" />
+      </div>
+
+      <button id="calculate-btn" class="calculate-btn">Calculate Age</button>
+
+      <div class="result" id="result" style="display: none">
+        <h2>Your Age</h2>
+        <div class="age-details">
+          <div class="age-card">
+            <span class="age-number" id="years">0</span>
+            <span class="age-label">Years</span>
+          </div>
+          <div class="age-card">
+            <span class="age-number" id="months">0</span>
+            <span class="age-label">Months</span>
+          </div>
+          <div class="age-card">
+            <span class="age-number" id="days">0</span>
+            <span class="age-label">Days</span>
+          </div>
+        </div>
+
+        <div class="extra-info">
+          <div class="info-item">
+            <span class="info-label">Next Birthday:</span>
+            <span id="next-birthday">-</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Days Until Birthday:</span>
+            <span id="days-until">-</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Zodiac Sign:</span>
+            <span id="zodiac">-</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Total Weeks:</span>
+            <span id="weeks">-</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Total Hours:</span>
+            <span id="hours">-</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Time Spent Sleeping:</span>
+            <span id="sleep-time">-</span>
+          </div>
+        </div>
+
+        <div class="milestones-container">
+          <h3>🏆 Metric Milestones</h3>
+          <div class="extra-info" id="milestones-list">
+            <!-- Milestones injected here -->
+          </div>
+        </div>
+
+        <div class="zodiac-section">
+          <h3>🐉 Chinese Zodiac</h3>
+          <div class="zodiac-card">
+            <span class="zodiac-emoji" id="chinese-zodiac-sign">-</span>
+            <span class="zodiac-name" id="chinese-zodiac-name">-</span>
+          </div>
+        </div>
+
+        <div class="cosmic-section">
+          <h3>🌌 Planetary Ages</h3>
+          <div class="cosmic-grid">
+            <div class="cosmic-card mercury">
+              <span class="planet-icon">☿</span>
+              <span class="planet-age" id="age-mercury">-</span>
+              <span class="planet-name">Mercury years</span>
+            </div>
+            <div class="cosmic-card venus">
+              <span class="planet-icon">♀</span>
+              <span class="planet-age" id="age-venus">-</span>
+              <span class="planet-name">Venus years</span>
+            </div>
+            <div class="cosmic-card mars">
+              <span class="planet-icon">♂</span>
+              <span class="planet-age" id="age-mars">-</span>
+              <span class="planet-name">Mars years</span>
+            </div>
+            <div class="cosmic-card jupiter">
+              <span class="planet-icon">♃</span>
+              <span class="planet-age" id="age-jupiter">-</span>
+              <span class="planet-name">Jupiter years</span>
+            </div>
+            <div class="cosmic-card saturn">
+              <span class="planet-icon">♄</span>
+              <span class="planet-age" id="age-saturn">-</span>
+              <span class="planet-name">Saturn years</span>
+            </div>
+          </div>
+        </div>
+
+        <button id="share-btn" class="share-btn">Share Your Stats</button>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

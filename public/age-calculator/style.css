@@ -1,0 +1,361 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 2rem;
+}
+
+.subtitle {
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.date-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    transition: border-color 0.3s;
+}
+
+.date-input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.calculate-btn {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    width: 100%;
+}
+
+.calculate-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    background: #5a67d8;
+}
+
+.result {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #f0f0f0;
+}
+
+.result h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.age-details {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+    gap: 15px;
+}
+
+.age-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    flex: 1;
+    text-align: center;
+}
+
+.age-number {
+    font-size: 2rem;
+    font-weight: bold;
+    display: block;
+}
+
+.age-label {
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+.extra-info {
+    text-align: left;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: bold;
+    color: #555;
+}
+
+.info-item span:last-child {
+    color: #667eea;
+    font-weight: bold;
+}
+
+.share-btn {
+    background: #25D366;
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.share-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    background: #20ba56;
+}
+
+.milestones-container {
+    margin-top: 25px;
+    text-align: left;
+}
+
+.milestones-container h3 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.milestone-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.milestone-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.milestone-title {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.milestone-desc {
+    font-size: 14px;
+    color: #667eea;
+}
+
+@media (max-width: 500px) {
+    .container {
+        padding: 20px;
+    }
+    
+    .age-details {
+        flex-direction: column;
+    }
+    
+    .age-number {
+        font-size: 1.5rem;
+    }
+}
+
+/* Chinese Zodiac Animal Section */
+.zodiac-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #f0f0f0;
+    text-align: center;
+}
+
+.zodiac-section h3,
+.cosmic-section h3 {
+    color: #333;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    letter-spacing: -0.02em;
+}
+
+.zodiac-card {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.zodiac-emoji {
+    font-size: 2.5rem;
+}
+
+.zodiac-name {
+    color: #f1f5f9;
+    font-size: 1.3rem;
+    font-weight: 700;
+    font-family: inherit;
+}
+
+/* Cosmic Planet Age Section */
+.cosmic-section {
+    margin-top: 35px;
+    padding-top: 25px;
+    border-top: 2px solid #f0f0f0;
+    text-align: center;
+}
+
+.cosmic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.cosmic-card {
+    border-radius: 16px;
+    padding: 18px 12px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.cosmic-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+}
+
+/* Planet-Specific Gradient Backgrounds */
+.cosmic-card.mercury {
+    background: linear-gradient(135deg, #475569 0%, #334155 100%);
+    color: #f1f5f9;
+}
+
+.cosmic-card.venus {
+    background: linear-gradient(135deg, #ca8a04 0%, #a16207 100%);
+    color: #fef08a;
+}
+
+.cosmic-card.mars {
+    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+    color: #fecaca;
+}
+
+.cosmic-card.jupiter {
+    background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+    color: #ffedd5;
+}
+
+.cosmic-card.saturn {
+    background: linear-gradient(135deg, #854d0e 0%, #713f12 100%);
+    color: #fef9c3;
+}
+
+.planet-icon {
+    font-size: 1.8rem;
+    margin-bottom: 6px;
+}
+
+.planet-name {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
+    font-weight: 600;
+}
+
+.planet-age {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 8px 0 2px;
+    font-family: monospace;
+}
+
+.planet-sub {
+    font-size: 10px;
+    opacity: 0.7;
+    font-weight: 500;
+}
+
+.project-back-button:hover {
+    transform: scale(1.05);
+    background: #f1f5f9 !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25) !important;
+}
+
+@media (max-width: 600px) {
+    .cosmic-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .project-back-button {
+        position: static !important;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+}
+@media (max-width: 400px) {
+    .cosmic-grid {
+        grid-template-columns: 1fr;
+    }
+}

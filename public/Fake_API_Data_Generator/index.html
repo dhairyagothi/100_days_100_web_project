@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fake API Data Generator</title>
+  <meta name="description" content="Generate realistic mock API and database data instantly.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <header class="header">
+      <div class="header-content">
+        <div class="title-container">
+          <div class="logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+          </div>
+          <div class="titles">
+            <h1>Fake API Data Generator</h1>
+            <p>Generate realistic mock API and database data instantly.</p>
+          </div>
+        </div>
+        <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme">
+          <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <section class="controls-panel glass-panel">
+        <form id="generator-form">
+          <div class="control-group">
+            <label for="record-count">Records to Generate</label>
+            <div class="input-wrapper">
+              <input type="number" id="record-count" name="record-count" min="1" max="100" value="10" required>
+              <span class="input-suffix">records</span>
+            </div>
+            <span class="error-msg" id="count-error">Must be between 1 and 100</span>
+          </div>
+
+          <div class="control-group">
+            <label>Select Fields</label>
+            <div class="fields-grid" id="fields-container">
+              <!-- Field checkboxes generated via JS -->
+              <label class="checkbox-label"><input type="checkbox" name="fields" value="id" checked disabled> <span>ID</span></label>
+              <label class="checkbox-label"><input type="checkbox" name="fields" value="name" checked> <span>Name</span></label>
+              <label class="checkbox-label"><input type="checkbox" name="fields" value="email" checked> <span>Email</span></label>
+              <label class="checkbox-label"><input type="checkbox" name="fields" value="phone"> <span>Phone</span></label>
+              <label class="checkbox-label"><input type="checkbox" name="fields" value="address"> <span>Address</span></label>
+              <label class="checkbox-label"><input type="checkbox" name="fields" value="company"> <span>Company</span></label>
+              <label class="checkbox-label"><input type="checkbox" name="fields" value="username"> <span>Username</span></label>
+              <label class="checkbox-label"><input type="checkbox" name="fields" value="age"> <span>Age</span></label>
+              <label class="checkbox-label"><input type="checkbox" name="fields" value="gender"> <span>Gender</span></label>
+              <label class="checkbox-label"><input type="checkbox" name="fields" value="website"> <span>Website</span></label>
+              <label class="checkbox-label"><input type="checkbox" name="fields" value="image"> <span>Profile Image URL</span></label>
+            </div>
+            <span class="error-msg" id="fields-error">Select at least one field</span>
+          </div>
+
+          <div class="control-group">
+            <label>Output Format</label>
+            <div class="format-options">
+              <label class="radio-label">
+                <input type="radio" name="format" value="json" checked>
+                <div class="radio-card">
+                  <span class="format-icon">{ }</span>
+                  <span>JSON</span>
+                </div>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="format" value="csv">
+                <div class="radio-card">
+                  <span class="format-icon">,</span>
+                  <span>CSV</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="primary-btn generate-btn" id="generate-btn">
+            <span class="btn-text">Generate Data</span>
+            <div class="spinner hidden" id="generate-spinner"></div>
+          </button>
+        </form>
+      </section>
+
+      <section class="output-panel glass-panel">
+        <div class="output-header">
+          <div class="response-status">
+            <span class="method">GET</span>
+            <span class="endpoint">/api/users</span>
+            <span class="status-code">200 OK</span>
+          </div>
+          <div class="output-actions">
+            <button id="copy-btn" class="secondary-btn" disabled>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy</span>
+            </button>
+            <div class="dropdown">
+              <button id="download-trigger" class="secondary-btn" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>Download</span>
+              </button>
+              <div class="dropdown-menu">
+                <button id="download-json-btn">Download JSON</button>
+                <button id="download-csv-btn">Download CSV</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="output-content-container">
+          <div class="stats-bar hidden" id="stats-bar">
+            <span>Generated Records: <strong id="generated-count" class="counter">0</strong></span>
+          </div>
+          
+          <div id="loading-overlay" class="loading-overlay hidden">
+            <div class="glowing-spinner"></div>
+            <p>Generating realistic data...</p>
+          </div>
+
+          <div id="empty-state" class="empty-state">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="empty-icon"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+            <p>No data generated yet.</p>
+            <span class="hint">Select fields and click Generate to view data.</span>
+          </div>
+
+          <pre id="code-output" class="code-output hidden"><code id="code-content" class="language-json"></code></pre>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+    <span id="toast-message">Copied Successfully</span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -3,21 +3,489 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Story</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body style="text-align: center;background: linear-gradient(0deg, #000046, #1CB5E0);color: white;">    
-    
-    
-    <h1 style="text-align: center;">The clever Rabbit and the Lion</h1>
-    <img id="image"  src="images/lion.webp" height="500" style="border-radius: 20px;border: 2px solid black;box-shadow: 5px 5px 5px 5px  white;">
-    <br>
-    <p id="text"></p>
-    <button id="play">Play</button>
-    <button id="pause">Pause</button>
-    <button id="next">Next</button>
-    <button id="stop">Stop</button>
-<script src="script.js"></script>
-</body>
+    <title>Story Player</title>
+    <style>
+        :root {
+            --progress: 0%;
+        }
 
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 16px;
+            background:
+                radial-gradient(circle at 20% 18%, rgba(123, 94, 167, 0.18), transparent 36%),
+                radial-gradient(circle at 80% 30%, rgba(232, 201, 122, 0.12), transparent 40%),
+                radial-gradient(circle at 50% 65%, rgba(130, 80, 190, 0.16), transparent 52%),
+                radial-gradient(circle at 12% 80%, rgba(255, 255, 255, 0.08) 0.8px, transparent 1px),
+                radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.12) 1px, transparent 1.2px),
+                radial-gradient(circle at 55% 18%, rgba(255, 255, 255, 0.12) 0.8px, transparent 1px),
+                radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.08) 1px, transparent 1.2px),
+                radial-gradient(circle at 90% 48%, rgba(255, 255, 255, 0.1) 0.9px, transparent 1.1px),
+                #0a0a1a;
+            color: #f0ead6;
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: 560px;
+            margin: 0 auto;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            position: relative;
+        }
+
+        h1 {
+            margin: 0;
+            font-family: Georgia, "Times New Roman", serif;
+            font-style: italic;
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 700;
+            color: #e8c97a;
+            letter-spacing: 0.4px;
+            text-shadow: 0 0 22px rgba(232, 201, 122, 0.38);
+        }
+
+        .chapter-badge {
+            display: inline-block;
+            margin: 0 auto 2px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 200, 100, 0.55);
+            background: rgba(16, 10, 24, 0.88);
+            color: #e8c97a;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 13px;
+            letter-spacing: 0.3px;
+        }
+
+        .image-frame {
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 200, 100, 0.4);
+            box-shadow: 0 0 40px rgba(120, 60, 200, 0.4);
+            padding: 8px;
+            background: rgba(8, 8, 20, 0.82);
+        }
+
+        #image {
+            width: 100%;
+            display: block;
+            border-radius: 18px;
+            object-fit: cover;
+            aspect-ratio: 4 / 3;
+        }
+
+        .progress-wrap {
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: var(--progress);
+            height: 100%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #7b5ea7, #e8c97a);
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            margin-top: 7px;
+            font-size: 12px;
+            text-align: right;
+            color: rgba(255, 255, 255, 0.4);
+            font-family: Georgia, "Times New Roman", serif;
+        }
+
+        #text {
+            margin: 0 auto;
+            max-width: 520px;
+            font-family: Georgia, "Times New Roman", serif;
+            font-style: italic;
+            font-size: 16px;
+            line-height: 1.8;
+            color: #f0ead6;
+            text-align: center;
+            min-height: 86px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        button {
+            font-size: 14px;
+            font-family: Arial, Helvetica, sans-serif;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        button:focus-visible {
+            box-shadow: 0 0 0 3px rgba(232, 201, 122, 0.34);
+        }
+
+        #play {
+            background: #e8c97a;
+            color: #1a1200;
+            font-weight: 700;
+            border: 1px solid rgba(232, 201, 122, 0.95);
+            padding: 10px 24px;
+        }
+
+        #play::before { content: "▶ "; }
+        #play:hover {
+            filter: brightness(1.1);
+            transform: scale(1.03);
+        }
+
+        #pause, #next, #back-btn {
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 10px 18px;
+        }
+
+        #pause::before { content: "⏸ "; }
+        #next::before { content: "⏭ "; }
+        #back-btn::before { content: "⬅ "; }
+
+        #pause:hover, #next:hover, #back-btn:hover {
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        #stop {
+            background: rgba(220, 60, 60, 0.12);
+            color: #f08080;
+            border: 1px solid rgba(220, 60, 60, 0.25);
+            padding: 10px 18px;
+        }
+
+        #stop::before { content: "■ "; }
+        #stop:hover { background: rgba(220, 60, 60, 0.22); }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.2);
+            transition: width 0.3s ease, background 0.3s ease;
+        }
+
+        .dot.active {
+            width: 20px;
+            background: #e8c97a;
+        }
+
+        #scene-label {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            padding: 0;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        @media (max-width: 480px) {
+            .wrapper { gap: 20px; }
+            #text { font-size: 15px; }
+        }
+    </style>
+</head>
+<body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
+    <main class="wrapper">
+        <h1 id="story-main-title">Story Title</h1>
+        <span id="chapter-badge" class="chapter-badge">Scene 1 of 1</span>
+        <span id="scene-label">Scene 1</span>
+        
+        <div class="image-frame">
+            <img id="image" src="" alt="Story visual scene element">
+        </div>
+        
+        <div class="progress-wrap">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div id="progress-text" class="progress-text">1 / 1</div>
+        </div>
+        
+        <p id="text"></p>
+        
+        <div class="controls">
+            <button id="back-btn" onclick="window.location.href='main.html'">Home</button>
+            <button id="play">Play</button>
+            <button id="pause">Pause</button>
+            <button id="next">Next</button>
+            <button id="stop">Stop</button>
+        </div>
+        
+        <div id="dots-container" class="dots" aria-hidden="true"></div>
+    </main>
+
+    <script>
+        // 1. DYNAMIC STORIES DATABASE
+        const storiesData = {
+            "rabbit-lion": {
+                mainTitle: "The Clever Rabbit and the Lion",
+                lines: [
+                    "The Fearsome Lion: A mighty lion ruled the forest, terrifying all animals. Every day, he hunted mercilessly, making the creatures live in fear.",
+                    "The Scared Animals: The animals were terrified of the lion and desperately searched for a way to stop his constant hunting.",
+                    "The Lion’s Daily Kill: With no one to challenge him, the lion continued to hunt and kill animals every day, causing panic in the jungle.",
+                    "Choosing the Rabbit: To prevent random killings, the animals decided that one of them would be sent as a sacrifice each day. When it was the rabbit’s turn, he was chosen reluctantly because of his small size.",
+                    "The Rabbit’s Plan: Instead of going directly to the lion, the clever rabbit thought of a way to trick him. He delayed his arrival and came up with a story to deceive the lion.",
+                    "The Deception: The rabbit told the lion that another, stronger lion had claimed the jungle and had stopped him on the way. Enraged, the lion demanded to see his so-called rival.",
+                    "The Well Trick: The rabbit led the lion to a deep well and pointed inside, saying the rival lion was inside. The lion looked in and saw his own reflection in the water.",
+                    "The Fatal Leap: The lion, thinking his reflection was a real enemy, roared angrily. He jumped into the well to attack, only to drown in the deep water.",
+                    "The Animals’ Celebration: The rabbit returned to the other animals and announced the lion’s demise. Overjoyed, the animals cheered and finally lived in peace, free from fear. THE END"
+                ],
+                images: [
+                    "images/lion.webp", "images/second.webp", "images/lion+kill.jpg", 
+                    "images/rabbit.png", "images/rabbit+thinking.avif", "images/well.jpg", 
+                    "images/poster.jpeg", "images/lion+look.jpeg", "images/animal+happy.avif"
+                ],
+                sceneLabels: [
+                    "The Fearsome Lion", "The Scared Animals", "The Lion’s Daily Kill", 
+                    "Choosing the Rabbit", "The Rabbit’s Plan", "The Deception", 
+                    "The Well Trick", "The Fatal Leap", "The Animals’ Celebration"
+                ]
+            },
+            "tortoise-hare": {
+    mainTitle: "The Tortoise and the Hare",
+    lines: [
+        "The Boastful Rabbit: One day a rabbit was boasting about how fast he could run. He was laughing at the turtle for being so slow. Much to the rabbit’s surprise, the turtle challenged him to a race.",
+        "The Challenge Accepted: The rabbit thought this was a good joke and accepted the challenge. The fox was chosen to be the umpire of the race.",
+        "The Race Begins: As the race began, the rabbit raced way ahead of the turtle, just like everyone thought it would go.",
+        "The Nap Choice: The rabbit got to the halfway point and could not see the turtle anywhere. Hot and tired, he decided to take a short nap, confident he could easily catch up if the turtle passed him.",
+        "Step by Step: All this time, the turtle kept walking step by step by step. He never quit, no matter how hot or tired he got. He just kept going.",
+        "Slow and Steady Wins: The rabbit slept much longer than he thought. Waking up, he dashed at full speed to the finish line, only to find the turtle already there waiting for him! THE END"
+    ],
+    images: [
+        "images/rabbit-boasting.png", 
+        "images/fox-umpire.png", 
+        "images/rabbit-running.jpg", 
+        "images/rabbit-sleeping.png", 
+        "images/turtle-walking.png", 
+        "images/turtle-winning.png"
+    ],
+    sceneLabels: [
+        "The Boastful Rabbit", 
+        "The Challenge Accepted", 
+        "The Race Begins", 
+        "The Nap Choice", 
+        "Step by Step", 
+        "Slow and Steady Wins"
+    ]
+            },
+            "cap-seller": {
+    mainTitle: "The Cap Seller and the Monkeys",
+    lines: [
+        "The Tired Cap Seller: Once a cap seller was going to the village to sell his caps in the market. He was carrying a basket of caps on his head. When crossing the forest, he got tired, laid down under a shady tree, and fell asleep.",
+        "The Naughty Monkeys: There were many monkeys living on that tree who were very naughty. While the man was sleeping soundly, they quietly came down, took all the colorful caps from his basket, and climbed back up into the branches.",
+        "An Empty Basket: When the cap seller woke up, he was shocked and surprised to see that his basket was completely empty. He looked up into the tree and saw that the monkeys were all wearing his caps!",
+        "The Clever Trick: He tried shouting, but the monkeys just copied his gestures. Observing that the monkeys were imitating everything he did, the clever cap seller took off the cap he was wearing and threw it onto the ground.",
+        "The Happy Departure: Just as he hoped, all the monkeys immediately copied him and threw their caps to the ground! The cap seller quickly gathered all his caps back into the basket and went away happily. THE END"
+    ],
+    images: [
+        "images/caps-sleeping.png", 
+        "images/monkeys-stealing.png", 
+        "images/caps-empty-basket.png", 
+        "images/caps-throwing.png", 
+        "images/caps-gathered.png"
+    ],
+    sceneLabels: [
+        "The Tired Cap Seller", 
+        "The Naughty Monkeys", 
+        "An Empty Basket", 
+        "The Clever Trick", 
+        "The Happy Departure"
+    ]
+},
+"fox-stork": {
+    mainTitle: "The Fox and the Stork",
+    lines: [
+        "The Selfish Invitation: Once upon a time, there lived a selfish fox. One day, the fox decided to play a trick on his friend Stork and invited her over to his house for dinner.",
+        "An Evening Arrival: In the evening, the stork arrived at the fox’s house and knocked on the door. The fox opened the door with a smile and said, 'Welcome, my friend! Let’s have dinner.'",
+        "The Shallow Bowls: The fox brought out two very shallow bowls of soup. The stork was incredibly hungry, but because of her long beak, she couldn’t eat a single drop from the flat plate. Meanwhile, the fox lapped up all his soup easily.",
+        "The Clever Counter: The fox looked at her and slyly asked, 'Why haven’t you drunk your soup, my friend?' The polite stork didn't complain. Instead, she replied, 'Thank you for the invitation. I would love to invite you to dinner at my home tomorrow.'",
+        "The Table Turns: The next day, the fox excitedly went to the stork's house. This time, the stork served the delicious soup inside two tall, deep jars with very narrow necks. The stork drank easily using her long beak, but the fox couldn't reach inside at all.",
+        "A Lesson Learned: The fox could only lick the outside of the jar while the stork finished her meal. It was finally his turn to go home completely hungry, realizing that selfishness always comes back around. THE END"
+    ],
+    images: [
+        "images/fox-invitation.png", 
+        "images/stork-arriving.png", 
+        "images/stork-shallow-bowl.png", 
+        "images/stork-inviting.png", 
+        "images/fox-deep-jar.png", 
+        "images/fox-hungry-lesson.png"
+    ],
+    sceneLabels: [
+        "The Selfish Invitation", 
+        "An Evening Arrival", 
+        "The Shallow Bowls", 
+        "The Clever Counter", 
+        "The Table Turns", 
+        "A Lesson Learned"
+    ]
+}
+            
+        };
+
+        // 2. QUERY PARAMETER DECODER
+        const urlParams = new URLSearchParams(window.location.search);
+        const storyId = urlParams.get('story') || 'rabbit-lion';
+        const currentStory = storiesData[storyId] || storiesData['rabbit-lion'];
+
+        const line = currentStory.lines;
+        const images = currentStory.images;
+        const sceneLabels = currentStory.sceneLabels;
+
+        // 3. DOM ELEMENT BINDINGS
+        const mainTitleEl = document.getElementById("story-main-title");
+        const chapterBadgeEl = document.getElementById("chapter-badge");
+        const sceneLabelEl = document.getElementById("scene-label");
+        const textElement = document.getElementById("text");
+        const imageElement = document.getElementById("image");
+        const progressTextEl = document.getElementById("progress-text");
+        const dotsContainer = document.getElementById("dots-container");
+
+        let i = 0;
+        let speech = null;
+        let isPaused = false;
+
+        // Apply Main Title on load
+        mainTitleEl.textContent = currentStory.mainTitle;
+
+        // 4. DYNAMIC DOT GENERATION
+        function buildNavigationDots() {
+            dotsContainer.innerHTML = "";
+            for (let d = 0; d < line.length; d++) {
+                const dotElement = document.createElement("span");
+                dotElement.className = d === 0 ? "dot active" : "dot";
+                dotsContainer.appendChild(dotElement);
+            }
+        }
+
+        // 5. RENDER ENGINE WITH UI UPDATES
+        function renderScene() {
+            textElement.textContent = line[i];
+            imageElement.src = images[i];
+            imageElement.alt = sceneLabels[i];
+            
+            // Update Text Readouts
+            chapterBadgeEl.textContent = `Scene ${i + 1} of ${line.length}`;
+            sceneLabelEl.textContent = `${sceneLabels[i]} • Scene ${i + 1} of ${line.length}`;
+            progressTextEl.textContent = `${i + 1} / ${line.length}`;
+
+            // Calculate Progress Bar Width percentage
+            const percentage = Math.round(((i + 1) / line.length) * 100);
+            document.documentElement.style.setProperty('--progress', `${percentage}%`);
+
+            // Synchronize active dot status indicators
+            const allDots = dotsContainer.querySelectorAll(".dot");
+            allDots.forEach((dot, index) => {
+                if (index === i) {
+                    dot.classList.add("active");
+                } else {
+                    dot.classList.remove("active");
+                }
+            });
+
+            // Cleanly cancel active narration if running
+            if (speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+                isPaused = false;
+            }
+        }
+
+        // 6. AUDIO ENGINE
+        function speak(text) {
+            if (speechSynthesis.speaking && isPaused) {
+                speechSynthesis.resume();
+                isPaused = false;
+                return;
+            }
+            if (speech) {
+                speechSynthesis.cancel();
+            }
+
+            speech = new SpeechSynthesisUtterance(text);
+            speech.lang = "en-US";
+            speech.volume = 1;
+            speech.rate = 1;
+            speech.pitch = 1;
+
+            const voices = speechSynthesis.getVoices();
+            speech.voice = voices.find((v) => v.name === "Google US English") || voices.find((v) => v.lang.startsWith("en")) || null;
+
+            isPaused = false;
+            speechSynthesis.speak(speech);
+        }
+
+        // 7. EVENT LISTENERS
+        document.getElementById("next").addEventListener("click", function () {
+            i = (i + 1) % line.length;
+            renderScene();
+        });
+
+        document.getElementById("pause").addEventListener("click", function () {
+            if (speechSynthesis.speaking && !speechSynthesis.paused) {
+                speechSynthesis.pause();
+                isPaused = true;
+            }
+        });
+
+        document.getElementById("play").addEventListener("click", function () {
+            if (isPaused) {
+                speechSynthesis.resume();
+                isPaused = false;
+            } else {
+                speak(textElement.textContent);
+            }
+        });
+
+        document.getElementById("stop").addEventListener("click", function () {
+            speechSynthesis.cancel();
+            isPaused = false;
+        });
+
+        // Setup environment
+        buildNavigationDots();
+        renderScene();
+    </script>
+</body>
 </html>

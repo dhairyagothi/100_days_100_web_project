@@ -7,20 +7,45 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
     <div class="whole">
     <div class="container">
         <h1 class="title">Text to Voice Converter</h1>
+
+        <!-- Added multilingual feature (3 languages for now)-->
+        <label>Select Language:</label>
+        <select id="language">
+            <option value="en-US">English</option>
+            <option value="hi-IN">Hindi</option>
+            <option value="es-ES">Spanish</option>
+        </select>
+
         <div class="input-area">
             <textarea class="textarea1" id ="text-input" placeholder="Enter text here..."></textarea>
             <button id="convert-btn">Convert to Speech</button>
-            <button id="stop-btn" disabled>Stop</button>
+
+            <!-- Changed Id for stop btn -->
+            <button id="stop-btn-text" disabled>Stop</button>
         </div>
     </div>
 
     <div class="container2">
         <h1 class="title">Voice to Text Converter</h1>
+
+        <!-- Added multilingual feature (3 languages for now)-->
+        <label>Select Language:</label>
+        <select id="language">
+            <option value="en-US">English</option>
+            <option value="hi-IN">Hindi</option>
+            <option value="es-ES">Spanish</option>
+        </select>
+        
         <button id="start-btn">Speak</button>
-        <button id="stop-btn">Stop</button>
+
+        <!-- Id matched with other Stop so changed this one too -->
+        <button id="stop-btn-voice" disabled>Stop</button> 
+
         <textarea class="textarea2" id="output" placeholder="Your speech will appear here..."></textarea>
     </div>
 </div>

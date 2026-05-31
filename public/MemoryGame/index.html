@@ -1,18 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memory Matching Game</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memory Match</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
-    <h1 id="game-title">Memory Matching Game</h1>
-    <div id="game-container" class="grid"></div>
-    <p id="score-board">Matches: 0</p>
 
-    <script src="script.js"></script>
+  <!-- Confetti Container -->
+  <div class="confetti-container" id="confettiContainer"></div>
+
+  <div class="container">
+
+    <!-- Header -->
+    <header>
+      <h1 class="game-title">MEMORY MATCH</h1>
+      <p class="game-subtitle">flip · match · conquer</p>
+    </header>
+
+    <!-- Difficulty Selector -->
+    <div class="difficulty-bar">
+      <button class="diff-btn active" data-diff="easy">Easy 4×4</button>
+      <button class="diff-btn" data-diff="medium">Medium 5×4</button>
+      <button class="diff-btn" data-diff="hard">Hard 6×4</button>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-label">Moves</div>
+        <div class="stat-value" id="movesVal">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Time</div>
+        <div class="stat-value" id="timerVal">0:00</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-label">Pairs</div>
+        <div class="stat-value" id="pairsVal">0/8</div>
+      </div>
+      <div class="stat-card highlight">
+        <div class="stat-label">Best</div>
+        <div class="stat-value" id="bestVal">—</div>
+      </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-wrap">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Game Grid -->
+    <div class="game-grid grid-4x4" id="gameGrid"></div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <button class="btn btn-primary" id="startBtn">Start Game</button>
+<button class="btn btn-outline" id="restartBtn">Restart</button>
+      <button class="btn btn-outline" id="hintBtn">Hint</button>
+    </div>
+
+  </div>
+
+  <!-- Win Modal -->
+  <div class="modal-overlay" id="winModal">
+    <div class="modal">
+      <span class="modal-emoji"><i class="fas fa-trophy fa-bounce" style="color: #fbbf24; font-size: 4rem; display: block; margin-bottom: 1rem;"></i></span>
+      <h2 class="modal-title">You Won!</h2>
+      <p class="modal-sub" id="modalSub">Amazing memory!</p>
+      <div id="newBest" class="new-best" style="display:none">🏆 New Best Score!</div>
+      <div class="modal-stats">
+        <div class="modal-stat">
+          <div class="modal-stat-label">Moves</div>
+          <div class="modal-stat-val" id="modalMoves">—</div>
+        </div>
+        <div class="modal-stat">
+          <div class="modal-stat-label">Time</div>
+          <div class="modal-stat-val" id="modalTime">—</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" id="playAgainBtn" style="width:100%">Play Again</button>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
 </body>
 </html>

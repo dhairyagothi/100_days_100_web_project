@@ -183,8 +183,21 @@ body{
     transition: font-size 0.3s ;
 }
 
-#nav a:hover{
-  font-size: 2vw;
+#nav a {
+    text-decoration: none;
+    font-weight: 400;
+    color: #000;
+    font-size: 1rem;
+    letter-spacing: -1px;
+    transition: color 0.25s ease, transform 0.25s ease, text-decoration-color 0.25s ease;
+    display: inline-block;
+}
+
+#nav a:hover {
+    color: #2b2b2b;
+    transform: translateY(-1px);
+    text-decoration: underline;
+    text-underline-offset: 4px;
 }
 
 @media (min-width: 768px) {
@@ -213,17 +226,19 @@ body{
 
 #right a.login-btn {
     padding: 10px 20px;
-    background-color: #000000;
+    background-color: #000;
     color: white;
     border-radius: 25px;
     font-size: 1.5rem;
     text-decoration: none;
     font-weight: bold;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
 }
 
 #right a.login-btn:hover {
     color: black;
-    background-color: #ffffff; 
+    background-color: #ffffff;
+    transform: translateY(-1px);
 }
 
 
@@ -322,6 +337,13 @@ body{
     justify-content: space-between;
     column-gap: 1rem;
     flex-wrap: wrap;
+}
+.job-container .box-container .box{
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.job-container .box-container .box:hover{
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 18px rgba(0,0,0,0.15);
 }
 .job-container .heading{
     font-size: 3.5rem;
@@ -531,13 +553,13 @@ color: black;
    background-color: white;
    padding: 1rem;
    border-radius: .5rem;
-   background-color: white;
-   border: blue;
    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-
    z-index: 10;
    transform: scaleY(0);
    transform-origin: top;
+
+   overflow-y: auto;
+   max-height: 20rem;
 
 }
 
@@ -657,6 +679,20 @@ color: black;
  .job-details .details .save:hover span{
     color:white; 
  }
+ .saved-jobs-section {
+    margin-top: 5rem;
+}
+
+.no-saved {
+    font-size: 2rem;
+    text-align: center;
+    padding: 2rem;
+    color: #444;
+}
+
+.fas.fa-heart {
+    color: red !important;
+}
 
 
 
