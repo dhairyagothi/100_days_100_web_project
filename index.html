@@ -71,11 +71,11 @@
 
       <div class="hero-actions">
         <a href="#projects" class="btn btn-primary" id="heroBrowseBtn">
-          Browse Projects <i class="fas fa-arrow-down"></i>
+          Browse Projects <i class="fas fa-arrow-down" aria-hidden="true"></i>
         </a>
         <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer"
           class="btn btn-ghost" id="heroGithubBtn">
-          <i class="fab fa-github"></i> GitHub
+          <i class="fab fa-github" aria-hidden="true"></i> GitHub
         </a>
       </div>
 
@@ -129,7 +129,7 @@
 
           <div style="display: flex; gap: 0.5rem; align-items: center;">
             <button class="view-all-btn" id="copyBookmarksBtn" title="Copy Bookmarks" aria-label="Copy bookmarks">
-              <i class="fas fa-copy"></i>
+              <i class="fas fa-copy" aria-hidden="true"></i>
             </button>
             <button class="view-all-btn" id="bookmarkToggleBtn" aria-label="View bookmarked projects">
               View All
@@ -174,7 +174,7 @@
         </div>
 
         <div class="search-bar">
-          <i class="fas fa-search search-icon"></i>
+          <i class="fas fa-search search-icon" aria-hidden="true"></i>
           <input
             type="text"
             id="searchInput"
@@ -213,8 +213,10 @@
           <option value="typescript">TypeScript</option>
           <option value="tailwindcss">Tailwind CSS</option>
         </select>
+        
         <button id="clearAllFiltersBtn" class="clear-filters-btn">
-          <i class="fas fa-filter-circle-xmark"></i> Clear Filters
+  <i class="fas fa-filter-circle-xmark" aria-hidden="true"></i> Clear Filters
+</butto
         </button>
       </div>
 
@@ -223,7 +225,7 @@
 
     <!-- No Results -->
     <div class="no-results" id="noResults">
-      <i class="fas fa-search"></i>
+      <i class="fas fa-search" aria-hidden="true"></i>
       <p>No projects match your search.</p>
     </div>
   </div>
@@ -325,7 +327,7 @@
       <circle class="ring-track" cx="24" cy="24" r="22" />
       <circle class="ring-fill" id="ringFill" cx="24" cy="24" r="22" />
     </svg>
-    <i class="fas fa-arrow-up scroll-arrow"></i>
+    <i class="fas fa-arrow-up scroll-arrow" aria-hidden="true"></i>
     <span class="scroll-tooltip">Back to top</span>
   </button>
   <div class="toast" id="toast"></div>
