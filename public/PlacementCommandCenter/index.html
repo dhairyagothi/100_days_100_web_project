@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Command Center</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<a href="/" class="back-btn">← Back to Home</a>
+
+<div class="app-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <h2>PlacementHub</h2>
+            <p>Career Dashboard</p>
+        </div>
+
+        <nav>
+
+            <button class="nav-btn active" data-section="dashboard">
+                📊 Dashboard
+            </button>
+
+            <button class="nav-btn" data-section="applications">
+                🏢 Applications
+            </button>
+
+            <button class="nav-btn" data-section="coding">
+                💻 Coding Tracker
+            </button>
+
+            <button class="nav-btn" data-section="resume">
+                📄 Resume Tracker
+            </button>
+
+        </nav>
+
+        <div class="sidebar-footer">
+
+            <button id="themeToggle">
+                🌙 Toggle Theme
+            </button>
+
+        </div>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+
+        <!-- HEADER -->
+        <header class="header">
+
+            <div>
+                <h1>Placement Command Center</h1>
+                <p id="currentDate"></p>
+            </div>
+
+        </header>
+
+        <!-- DASHBOARD -->
+        <section id="dashboard" class="section active-section">
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <h3>Total Applications</h3>
+                    <p id="totalApplications">0</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>Interviews</h3>
+                    <p id="totalInterviews">0</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>Offers</h3>
+                    <p id="totalOffers">0</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>Rejected</h3>
+                    <p id="totalRejected">0</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>Success Rate</h3>
+                    <p id="successRate">0%</p>
+                </div>
+
+            </div>
+
+            <!-- GOAL TRACKER -->
+
+            <div class="card">
+
+                <h2>Placement Goal Tracker</h2>
+
+                <div class="goal-container">
+
+                    <input
+                        type="number"
+                        id="goalInput"
+                        placeholder="Enter target applications"
+                    >
+
+                    <button id="saveGoalBtn">
+                        Save Goal
+                    </button>
+
+                </div>
+
+                <div class="progress-wrapper">
+
+                    <div class="progress-bar">
+
+                        <div
+                            id="goalProgress"
+                            class="progress-fill"
+                        ></div>
+
+                    </div>
+
+                    <p id="goalPercentage">
+                        0%
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- ACTIVITY FEED -->
+
+            <div class="card">
+
+                <h2>Recent Activity</h2>
+
+                <ul id="activityFeed" class="activity-feed">
+
+                    <li>No activity yet.</li>
+
+                </ul>
+
+            </div>
+
+        </section>
+
+        <!-- APPLICATIONS -->
+
+        <section id="applications" class="section">
+
+            <!-- ADD COMPANY -->
+
+            <div class="card">
+
+                <h2>Add Company</h2>
+
+                <div class="form-grid">
+
+                    <input
+                        type="text"
+                        id="companyName"
+                        placeholder="Company Name"
+                    >
+
+                    <select id="companyStatus">
+
+                        <option value="Applied">
+                            Applied
+                        </option>
+
+                        <option value="Interview">
+                            Interview
+                        </option>
+
+                        <option value="Offer">
+                            Offer
+                        </option>
+
+                        <option value="Rejected">
+                            Rejected
+                        </option>
+
+                    </select>
+
+                    <button id="addCompanyBtn">
+                        Add Company
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- SEARCH + FILTER -->
+
+            <div class="card">
+
+                <h2>Application Management</h2>
+
+                <div class="search-filter">
+
+                    <input
+                        type="text"
+                        id="searchCompany"
+                        placeholder="Search company..."
+                    >
+
+                    <select id="filterStatus">
+
+                        <option value="All">
+                            All Status
+                        </option>
+
+                        <option value="Applied">
+                            Applied
+                        </option>
+
+                        <option value="Interview">
+                            Interview
+                        </option>
+
+                        <option value="Offer">
+                            Offer
+                        </option>
+
+                        <option value="Rejected">
+                            Rejected
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <!-- TABLE -->
+
+            <div class="card">
+
+                <h2>Company Tracker</h2>
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Company</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="companyTableBody">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+        <!-- CODING -->
+
+        <section id="coding" class="section">
+
+            <div class="card">
+
+                <h2>Coding Progress Tracker</h2>
+
+                <div class="coding-grid">
+
+                    <div class="input-group">
+
+                        <label>
+                            Leetcode Solved
+                        </label>
+
+                        <input
+                            type="number"
+                            id="leetcodeSolved"
+                        >
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>
+                            Contest Rating
+                        </label>
+
+                        <input
+                            type="number"
+                            id="contestRating"
+                        >
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>
+                            Problems This Week
+                        </label>
+
+                        <input
+                            type="number"
+                            id="weeklyProblems"
+                        >
+
+                    </div>
+
+                </div>
+
+                <button id="saveCodingBtn">
+                    Save Progress
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- RESUME -->
+
+        <section id="resume" class="section">
+
+            <div class="card">
+
+                <h2>Resume Version Manager</h2>
+
+                <div class="resume-input">
+
+                    <input
+                        type="text"
+                        id="resumeVersion"
+                        placeholder="Resume Version"
+                    >
+
+                    <button id="addResumeBtn">
+                        Add Version
+                    </button>
+
+                </div>
+
+                <ul id="resumeList">
+
+                </ul>
+
+            </div>
+
+        </section>
+
+        <!-- DANGER -->
+
+        <section>
+
+            <div class="card">
+
+                <h2>Danger Zone</h2>
+
+                <button
+                    id="clearAllBtn"
+                    class="danger-btn"
+                >
+                    Clear All Data
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

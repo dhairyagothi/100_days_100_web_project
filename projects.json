@@ -2436,5 +2436,18 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/Complaint_Management_System/index.html"
-  }
+  },
+{
+  "projectNo": 196,
+  "projectName": "Placement Command Center",
+  "projectType": "Web Application",
+  "projectDesc": "A centralized dashboard for tracking job applications, interview progress, coding preparation, and resume versions with persistent local storage.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript"
+  ],
+  "difficulty": "advanced",
+  "projectPath": "./public/PlacementCommandCenter/index.html"
+}
 ]
