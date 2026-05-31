@@ -106,8 +106,7 @@ function checkAns(idx) {
         setTimeout(playSequence, 1200);
       } else {
         gameOver();
-      }
-    else {
+      } else {
       h2.innerText = ` ❌ Oops! Try again...`;
       userSeq = [];
       clickable = false;
