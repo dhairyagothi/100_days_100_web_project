@@ -100,19 +100,15 @@ function checkAns(idx) {
       lives--;
       updateLivesDisplay();
       if (lives > 0) {
-        h2.innerText = `❌ Wrong! Lives left: ${lives}`;
-        userSeq = [];
-        clickable = false;
-        setTimeout(playSequence, 1200);
-      } else {
-        gameOver();
-      } else {
-      h2.innerText = ` ❌ Oops! Try again...`;
-      userSeq = [];
-      clickable = false;
-      setTimeout(playSequence, 1000);
-    }
+  h2.innerText = `❌ Wrong! Lives left: ${lives}`;
+  userSeq = [];
+  clickable = false;
+  setTimeout(playSequence, 1200);
+} else {
+  gameOver();
+}
   }
+}
 }
 
 function stopGame() {
