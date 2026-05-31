@@ -7,6 +7,11 @@ const resumeInput =
 const fileName =
   document.getElementById("fileName");
 
+const downloadReportBtn =
+  document.getElementById(
+    "downloadReportBtn"
+  );
+
 uploadBtn.addEventListener("click", () => {
 
   resumeInput.click();
@@ -41,10 +46,16 @@ progressCircle.style.strokeDasharray =
 progressCircle.style.strokeDashoffset =
   circumference;
 
+let currentATSScore = 0;
+
 function generateAnalysis() {
 
-  const atsScore =
+   currentATSScore =
     Math.floor(Math.random() * 21) + 70;
+
+
+  const atsScore =
+   currentATSScore;
 
   animateMeter(atsScore);
 
@@ -215,3 +226,51 @@ themeToggle.addEventListener("click", () => {
   themeToggle.textContent =
     isLight ? "☀️" : "🌙";
 });
+
+downloadReportBtn.addEventListener(
+"click",
+() => {
+
+const report = `
+AI Resume Analyzer Report
+=========================
+
+ATS Score: ${currentATSScore}%
+
+Resume Insights
+---------------
+Technical Skills: 88%
+Projects: 82%
+Communication: 74%
+Experience: 68%
+
+AI Suggestions
+--------------
+• Add more quantified project achievements.
+• Include keywords like React, APIs, and Node.js.
+• Improve resume summary section.
+• Add GitHub and portfolio links.
+`;
+
+const blob =
+  new Blob(
+    [report],
+    { type: "text/plain" }
+  );
+
+const url =
+  URL.createObjectURL(blob);
+
+const a =
+  document.createElement("a");
+
+a.href = url;
+
+a.download =
+  "resume-analysis-report.txt";
+
+a.click();
+
+URL.revokeObjectURL(url);
+}
+);
