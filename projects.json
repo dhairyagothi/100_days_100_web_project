@@ -1800,6 +1800,16 @@
   "techStack":["html","css","javascript","map"],
   "difficulty":"intermediate",
   "projectPath":"./public/RouteMaster/index.html"
+},
+
+{
+  "projectNo":181,
+  "projectName":"AirCast",
+  "projectType":"API",
+  "projectDesc":"Weather forecasting application with Air Quality Index (AQI) monitoring and real-time weather updates.",
+  "techStack":["html","css","javascript","api","weather"],
+  "difficulty":"intermediate",
+  "projectPath":"./public/Weather App with AQI/index.html"
 }
 
 ]
