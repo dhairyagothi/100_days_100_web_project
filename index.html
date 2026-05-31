@@ -175,24 +175,26 @@
 
         <div class="search-bar">
           <i class="fas fa-search search-icon"></i>
+          <label for="searchInput" class="sr-only">Search projects</label>
           <input
             type="text"
             id="searchInput"
             class="search-input"
             placeholder="Search projects…"
             autocomplete="off"
-            aria-label="Search projects"
           />
           <button id="clearSearch" class="clear-btn" aria-label="Clear search" type="button">
             &times;
           </button>
-          <select id="sortProjects" aria-label="Sort projects">
+          <label for="sortProjects" class="sr-only">Sort projects</label>
+          <select id="sortProjects">
             <option value="default">Sort By</option>
             <option value="az">A-Z</option>
             <option value="latest">Latest Day</option>
             <option value="difficulty">Difficulty</option>
           </select>
-          <select id="difficultyFilter" aria-label="Filter projects by difficulty">
+          <label for="difficultyFilter" class="sr-only">Filter projects by difficulty</label>
+          <select id="difficultyFilter">
             <option value="all">Difficulty (All)</option>
             <option value="beginner">Beginner</option>
             <option value="intermediate">Intermediate</option>
@@ -203,6 +205,7 @@
 
       <!-- Tech Stack Dropdown & Clear Filters -->
       <div class="filter-toolbar">
+        <label for="techStackFilter" class="sr-only">Filter by tech stack</label>
         <select id="techStackFilter" aria-label="Filter by tech stack">
           <option value="all">Filter by Tech Stack (All)</option>
           <option value="javascript">JavaScript</option>
