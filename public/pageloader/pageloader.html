@@ -23,6 +23,8 @@
     </div>
   </div>
 
+  <div id="toast-container"></div>
+
   <div class="page" id="page">
 
     <nav class="navbar" role="navigation" aria-label="Main navigation">
@@ -39,7 +41,7 @@
 
       <section id="home" class="page-section active">
         <span class="eyebrow">Welcome</span>
-        <h1>Built to <em>Load</em><br>Fast &amp; Smooth.</h1>
+        <h1>Built to <em>Load</em><br>Fast & Smooth.</h1>
         <p class="subtext">A clean, minimal pageloader demo. Navigate between sections and browse our gallery of
           different loader styles.</p>
         <div class="cta-group">
@@ -62,86 +64,27 @@
         <p class="subtext">A variety of CSS-only loading animations to fit different UI requirements and brand
           aesthetics.</p>
 
-        <div class="loader-grid">
-          <article class="loader-showcase-card">
-            <div class="showcase-box">
-              <div class="spinner"></div>
-            </div>
-            <h3>Classic Spinner</h3>
-            <p>The standard dual-color rotating ring.</p>
-          </article>
+        <!-- Search Bar -->
+        <input type="text" id="search-input" class="search-input" placeholder="Search by name or type..." />
 
-          <article class="loader-showcase-card">
-            <div class="showcase-box">
-              <div class="loader-dots">
-                <div></div>
-                <div></div>
-                <div></div>
-              </div>
-            </div>
-            <h3>Bouncing Dots</h3>
-            <p>Playful and modern, great for chat or dynamic content.</p>
-          </article>
-
-          <article class="loader-showcase-card">
-            <div class="showcase-box">
-              <div class="loader-pulse"></div>
-            </div>
-            <h3>Radar Pulse</h3>
-            <p>Minimalist expanding ring for subtle background loading.</p>
-          </article>
-
-          <article class="loader-showcase-card">
-            <div class="showcase-box">
-              <div class="loader-double-ring"></div>
-            </div>
-            <h3>Double Ring</h3>
-            <p>Elegant, intersecting spinning paths.</p>
-          </article>
-
-          <article class="loader-showcase-card">
-            <div class="showcase-box">
-              <div class="loader-bars">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-              </div>
-            </div>
-            <h3>Wave Bars</h3>
-            <p>Smooth vertical scaling, perfect for media or audio loading.</p>
-          </article>
-
-          <article class="loader-showcase-card">
-            <div class="showcase-box">
-              <div class="loader-flip"></div>
-            </div>
-            <h3>Flipping Square</h3>
-            <p>A geometric 3D rotation effect for a sharp, modern feel.</p>
-          </article>
-
-          <article class="loader-showcase-card">
-            <div class="showcase-box">
-              <div class="loader-orbit"></div>
-            </div>
-            <h3>Orbit</h3>
-            <p>A continuous orbital path spinning around a solid core.</p>
-          </article>
-
-          <article class="loader-showcase-card">
-            <div class="showcase-box">
-              <div class="loader-glow"></div>
-            </div>
-            <h3>Glow Ring</h3>
-            <p>A neon-inspired pulsing gradient with dynamic shadows.</p>
-          </article>
+        <!-- Filter Tabs -->
+        <div class="filter-tabs" id="filter-tabs">
+          <button class="filter-tab active" data-filter="all">All</button>
+          <button class="filter-tab" data-filter="spinner">Spinner</button>
+          <button class="filter-tab" data-filter="dots">Dots</button>
+          <button class="filter-tab" data-filter="ring">Ring</button>
+          <button class="filter-tab" data-filter="pulse">Pulse</button>
+          <button class="filter-tab" data-filter="glow">Glow</button>
+          <button class="filter-tab" data-filter="favorites">❤️ Favorites</button>
         </div>
+
+        <div class="loader-grid" id="loader-grid"></div>
       </section>
 
       <section id="about" class="page-section">
         <span class="eyebrow">About</span>
         <h2>What Is a Pageloader?</h2>
-        <p class="subtext">A pageloader masks the initial network &amp; render delay, giving users a polished first
+        <p class="subtext">A pageloader masks the initial network & render delay, giving users a polished first
           impression instead of a blank screen.</p>
         <div class="feature-grid">
           <article class="feature-card">
@@ -191,6 +134,81 @@
     </footer>
 
   </div>
+
+  <!-- Loader Preview Modal -->
+  <div id="loader-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <h2 id="modal-loader-name"></h2>
+      <p id="modal-loader-description"></p>
+      
+      <div id="modal-preview-container" class="modal-preview-container">
+        <div id="modal-loader-preview"></div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls-section">
+        <div class="control-group">
+          <label for="size-slider">Size: <span id="size-value">80px</span></label>
+          <input type="range" id="size-slider" min="30" max="200" value="80" />
+        </div>
+
+        <div class="control-group">
+          <label for="speed-slider">Speed: <span id="speed-value">1.0x</span></label>
+          <input type="range" id="speed-slider" min="0.5" max="3" step="0.1" value="1" />
+        </div>
+
+        <div class="control-group">
+          <label for="color-picker">Primary Color</label>
+          <input type="color" id="color-picker" value="#38bdf8" />
+        </div>
+
+        <div class="control-group">
+          <label for="glow-slider">Glow Intensity: <span id="glow-value">1</span></label>
+          <input type="range" id="glow-slider" min="0" max="3" step="0.1" value="1" />
+        </div>
+
+        <div class="control-group">
+          <label for="theme-select">Background Theme</label>
+          <select id="theme-select">
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+            <option value="neon">Neon</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Performance Metrics -->
+      <div class="metrics-section">
+        <div class="metric">
+          <span class="metric-label">FPS</span>
+          <span class="metric-value" id="fps-display">60</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Animation Speed</span>
+          <span class="metric-value" id="speed-display">1.0x</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Size</span>
+          <span class="metric-value" id="size-display">80px</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="modal-actions">
+        <button class="cta ghost" id="copy-css-btn">Copy CSS</button>
+        <button class="cta ghost" id="download-css-btn">Download CSS</button>
+        <button class="cta primary" id="fullscreen-btn">Fullscreen Preview</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fullscreen Preview -->
+  <div id="fullscreen-preview" class="fullscreen-overlay hidden">
+    <button class="fullscreen-close" id="fullscreen-close">&times;</button>
+    <div id="fullscreen-loader-preview"></div>
+  </div>
+
   <script src="pageloader.js"></script>
 </body>
 
