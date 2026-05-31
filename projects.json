@@ -2438,7 +2438,22 @@
     "projectPath": "./public/Complaint_Management_System/index.html"
   },
   {
-    "projectNo": 196,
+  "projectNo": 196,
+  "projectName": "AirCast",
+  "projectType": "Tool",
+  "projectDesc": "Weather forecasting application with real-time weather updates and Air Quality Index (AQI) monitoring.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript",
+    "api",
+    "weather"
+  ],
+  "difficulty": "intermediate",
+  "projectPath": "./public/Weather App with AQI/index.html"
+  },
+  {
+    "projectNo": 197,
     "projectName": "Neon Forge",
     "projectType": "Tool",
     "projectDesc": "An interactive CSS neon glow effects playground with live preview, presets, generated CSS, copy support, and PNG export.",
@@ -2449,5 +2464,6 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/NeonForge/index.html"
-  }
+   }
+
 ]
