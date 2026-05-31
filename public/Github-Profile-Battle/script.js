@@ -140,17 +140,12 @@ async function fetchRepos(username) {
     const perPage = 100;
 
     while (true) {
-        const res = await fetch(
-            `${API_BASE}/users/${username}/repos?per_page=${perPage}&page=${page}&sort=updated`
-        );
-
+        const res = await fetch(`${API_BASE}/users/${username}/repos?per_page=${perPage}&page=${page}&sort=updated`);
         if (!res.ok) {
-            console.warn(
-                `Failed to fetch repositories for ${username} (HTTP ${res.status})`
-            );
-            break; // important: prevents app crash
-        }
-
+    throw new Error(
+        `Failed to fetch repositories for ${username} (HTTP ${res.status})`
+    );
+}
         const repos = await res.json();
 
         if (repos.length === 0) break;

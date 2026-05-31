@@ -9,7 +9,7 @@
 body {
     background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
     min-height: 100vh;
-    overflow: hidden;
+    overflow: auto;
 }
 
 /* Centering Logic */
@@ -18,7 +18,8 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
+    padding: 20px;
 }
 
 .glass-card {
@@ -78,4 +79,66 @@ body {
 @keyframes bounce {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.05); }
+}
+
+.visualizer-container {
+    padding: 20px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+}
+
+.character-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.char-box {
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    background: white;
+    color: #222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 20px;
+    transition: all 0.4s ease;
+}
+
+.active {
+    transform: scale(1.15);
+    background: #ffd166;
+}
+
+.match {
+    background: #06d6a0;
+    color: white;
+}
+
+.mismatch {
+    background: #ef476f;
+    color: white;
+}
+
+.processed-text {
+    color: white;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.stats p {
+    margin: 4px 0;
+}
+
+@media (max-width: 600px) {
+    .char-box {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
 }
