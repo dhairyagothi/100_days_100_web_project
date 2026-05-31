@@ -42,15 +42,18 @@ let isGamePaused = false // Helps pausing timer when user clicks 'End Game' butt
 
 function playButtonClickSound(onComplete) {
     let completed = false
+    let fallbackTimer
 
     const finish = () => {
         if (completed) return
         completed = true
+        clearTimeout(fallbackTimer)
         buttonClickSound.removeEventListener('ended', finish)
         onComplete()
     }
 
     buttonClickSound.addEventListener('ended', finish, { once: true })
+    fallbackTimer = setTimeout(finish, 700)
 
     try {
         buttonClickSound.currentTime = 0

@@ -237,9 +237,9 @@ h1 {
   height: 120px;
 }
 
-.insect:hover img,
-.insect:active img {
-  filter: drop-shadow(0 0 6px rgba(255,140,0,0.6));
+.insect:hover,
+.insect:active {
+  transform: translate(-50%, -50%) scale(1.05);
 }
 
 .sound-controls {
