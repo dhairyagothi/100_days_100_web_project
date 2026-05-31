@@ -35,7 +35,7 @@
 }
 
 /* Dark Theme - Darker Blue & Orange */
-[data-theme="dark"] {
+[data-theme='dark'] {
   --bg-primary: #0a1628; /* Very dark blue */
   --bg-secondary: #132540; /* Dark blue */
   --bg-card: #1a3554; /* Medium dark blue */
@@ -65,8 +65,8 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
@@ -165,15 +165,15 @@ body {
   transition: var(--transition);
 }
 
-[data-theme="dark"] .theme-icon.light {
+[data-theme='dark'] .theme-icon.light {
   display: none;
 }
 
-[data-theme="light"] .theme-icon.dark {
+[data-theme='light'] .theme-icon.dark {
   display: none;
 }
 
-[data-theme="dark"] .theme-icon.dark {
+[data-theme='dark'] .theme-icon.dark {
   display: inline-block !important;
   color: #fbbf24 !important; /* Bright yellow for moon emoji in dark mode */
   font-size: 2rem !important;
@@ -183,15 +183,15 @@ body {
   z-index: 2;
 }
 
-[data-theme="light"] .theme-icon.light {
+[data-theme='light'] .theme-icon.light {
   display: inline-block;
 }
 
-[data-theme="dark"] .theme-icon.light {
+[data-theme='dark'] .theme-icon.light {
   display: none;
 }
 
-[data-theme="light"] .theme-icon.dark {
+[data-theme='light'] .theme-icon.dark {
   display: none;
 }
 

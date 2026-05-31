@@ -2,7 +2,7 @@
    pageloader.css  —  Pageloader Demo
    ============================================================ */
 
-@import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
 
 /* ── Design Tokens ── */
 :root {
@@ -17,8 +17,8 @@
   --shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
   --radius-lg: 20px;
   --radius-pill: 999px;
-  --font-display: "Syne", sans-serif;
-  --font-body: "DM Sans", sans-serif;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -44,7 +44,7 @@ body {
 }
 
 body::before {
-  content: "";
+  content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
@@ -65,7 +65,9 @@ body::before {
   place-items: center;
   background: rgba(8, 12, 20, 0.96);
   backdrop-filter: blur(6px);
-  transition: opacity 0.6s ease, visibility 0.6s ease;
+  transition:
+    opacity 0.6s ease,
+    visibility 0.6s ease;
 }
 
 #preloader.hidden {
@@ -126,7 +128,9 @@ body::before {
   gap: 48px;
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.8s ease 0.1s, transform 0.8s ease 0.1s;
+  transition:
+    opacity 0.8s ease 0.1s,
+    transform 0.8s ease 0.1s;
 }
 
 .page.visible {
@@ -174,7 +178,9 @@ body::before {
   font-size: 0.9rem;
   padding: 8px 16px;
   border-radius: var(--radius-pill);
-  transition: background var(--transition), color var(--transition);
+  transition:
+    background var(--transition),
+    color var(--transition);
 }
 
 .nav-link:hover,
@@ -269,7 +275,10 @@ h3 {
   border-radius: var(--radius-pill);
   border: none;
   cursor: pointer;
-  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    background var(--transition);
 }
 
 .cta.primary {
@@ -339,7 +348,9 @@ h3 {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   backdrop-filter: blur(12px);
-  transition: transform var(--transition), border-color var(--transition);
+  transition:
+    transform var(--transition),
+    border-color var(--transition);
 }
 
 .feature-card:hover {
@@ -390,7 +401,9 @@ h3 {
   font-family: var(--font-body);
   font-size: 0.92rem;
   outline: none;
-  transition: border-color var(--transition), box-shadow var(--transition);
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition);
   backdrop-filter: blur(8px);
 }
 
@@ -416,7 +429,9 @@ h3 {
   font-weight: 500;
   opacity: 0;
   transform: translateY(6px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
 
 .success-msg.show {
@@ -556,7 +571,7 @@ h3 {
 }
 
 .loader-double-ring::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 4px;
   border-radius: 50%;
@@ -617,7 +632,7 @@ h3 {
 }
 
 .loader-orbit::before {
-  content: "";
+  content: '';
   position: absolute;
   top: -15px;
   left: -15px;
@@ -636,7 +651,9 @@ h3 {
   height: 48px;
   border-radius: 50%;
   border: 4px solid var(--accent);
-  box-shadow: 0 0 16px rgba(56, 189, 248, 0.6), inset 0 0 16px rgba(56, 189, 248, 0.6);
+  box-shadow:
+    0 0 16px rgba(56, 189, 248, 0.6),
+    inset 0 0 16px rgba(56, 189, 248, 0.6);
   animation: glow-pulse 1.5s ease-in-out infinite alternate;
 }
 
@@ -665,23 +682,23 @@ h3 {
 
 @keyframes dots {
   0% {
-    content: "";
+    content: '';
   }
 
   25% {
-    content: ".";
+    content: '.';
   }
 
   50% {
-    content: "..";
+    content: '..';
   }
 
   75% {
-    content: "...";
+    content: '...';
   }
 
   100% {
-    content: "";
+    content: '';
   }
 }
 
@@ -708,7 +725,6 @@ h3 {
 }
 
 @keyframes wave {
-
   0%,
   100% {
     transform: scaleY(0.4);
@@ -737,13 +753,17 @@ h3 {
 @keyframes glow-pulse {
   0% {
     transform: scale(0.9);
-    box-shadow: 0 0 8px rgba(56, 189, 248, 0.4), inset 0 0 8px rgba(56, 189, 248, 0.4);
+    box-shadow:
+      0 0 8px rgba(56, 189, 248, 0.4),
+      inset 0 0 8px rgba(56, 189, 248, 0.4);
     opacity: 0.7;
   }
 
   100% {
     transform: scale(1.1);
-    box-shadow: 0 0 24px rgba(94, 234, 212, 0.8), inset 0 0 24px rgba(94, 234, 212, 0.8);
+    box-shadow:
+      0 0 24px rgba(94, 234, 212, 0.8),
+      inset 0 0 24px rgba(94, 234, 212, 0.8);
     opacity: 1;
     border-color: var(--accent2);
   }
@@ -792,7 +812,6 @@ h3 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-
   *,
   *::before,
   *::after {

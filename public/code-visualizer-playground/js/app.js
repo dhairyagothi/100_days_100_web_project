@@ -1,9 +1,7 @@
 // Encapsulates app state/controller and avoids leaking globals.
 (function () {
   if (!window.VisualizerUtils || !window.SortingAlgorithms) {
-    console.error(
-      "Missing required scripts: utils or algorithms did not load.",
-    );
+    console.error('Missing required scripts: utils or algorithms did not load.');
     return;
   }
 
@@ -15,108 +13,106 @@
   var sleep = window.VisualizerUtils.sleep;
   var speedValueToDelay = window.VisualizerUtils.speedValueToDelay;
 
-  var STOP_ERROR_MESSAGE = "VISUALIZATION_STOPPED";
+  var STOP_ERROR_MESSAGE = 'VISUALIZATION_STOPPED';
   var ARRAY_SIZE = 32;
   var MIN_ARRAY_VALUE = 10;
   var MAX_ARRAY_VALUE = 100;
 
   var ALGORITHMS = {
-    bubble: { label: "Bubble Sort", run: window.SortingAlgorithms.bubble },
+    bubble: { label: 'Bubble Sort', run: window.SortingAlgorithms.bubble },
     selection: {
-      label: "Selection Sort",
+      label: 'Selection Sort',
       run: window.SortingAlgorithms.selection,
     },
     insertion: {
-      label: "Insertion Sort",
+      label: 'Insertion Sort',
       run: window.SortingAlgorithms.insertion,
     },
-    merge: { label: "Merge Sort", run: window.SortingAlgorithms.merge },
-    quick: { label: "Quick Sort", run: window.SortingAlgorithms.quick },
+    merge: { label: 'Merge Sort', run: window.SortingAlgorithms.merge },
+    quick: { label: 'Quick Sort', run: window.SortingAlgorithms.quick },
   };
 
   var ALGORITHM_GUIDES = {
     bubble: {
       theory:
-        "Bubble Sort compares adjacent values and swaps them when out of order. Each pass pushes the largest unsorted value to the right. It is easy to understand but slower on large arrays.",
-      complexity:
-        "Time: O(n²) avg/worst, O(n) best (nearly sorted) · Space: O(1)",
+        'Bubble Sort compares adjacent values and swaps them when out of order. Each pass pushes the largest unsorted value to the right. It is easy to understand but slower on large arrays.',
+      complexity: 'Time: O(n²) avg/worst, O(n) best (nearly sorted) · Space: O(1)',
       code: [
-        "for (let end = n - 1; end > 0; end--) {",
-        "  let swapped = false;",
-        "  for (let i = 0; i < end; i++) {",
-        "    if (arr[i] > arr[i + 1]) {",
-        "      [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];",
-        "      swapped = true;",
-        "    }",
-        "  }",
-        "  if (!swapped) break;",
-        "}",
-      ].join("\n"),
+        'for (let end = n - 1; end > 0; end--) {',
+        '  let swapped = false;',
+        '  for (let i = 0; i < end; i++) {',
+        '    if (arr[i] > arr[i + 1]) {',
+        '      [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];',
+        '      swapped = true;',
+        '    }',
+        '  }',
+        '  if (!swapped) break;',
+        '}',
+      ].join('\n'),
     },
     selection: {
       theory:
-        "Selection Sort repeatedly selects the minimum value from the unsorted part and places it at the current index. It performs fewer swaps than Bubble Sort but still scans repeatedly.",
-      complexity: "Time: O(n²) avg/worst/best · Space: O(1)",
+        'Selection Sort repeatedly selects the minimum value from the unsorted part and places it at the current index. It performs fewer swaps than Bubble Sort but still scans repeatedly.',
+      complexity: 'Time: O(n²) avg/worst/best · Space: O(1)',
       code: [
-        "for (let i = 0; i < n - 1; i++) {",
-        "  let minIndex = i;",
-        "  for (let j = i + 1; j < n; j++) {",
-        "    if (arr[j] < arr[minIndex]) minIndex = j;",
-        "  }",
-        "  if (minIndex !== i) {",
-        "    [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];",
-        "  }",
-        "}",
-      ].join("\n"),
+        'for (let i = 0; i < n - 1; i++) {',
+        '  let minIndex = i;',
+        '  for (let j = i + 1; j < n; j++) {',
+        '    if (arr[j] < arr[minIndex]) minIndex = j;',
+        '  }',
+        '  if (minIndex !== i) {',
+        '    [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];',
+        '  }',
+        '}',
+      ].join('\n'),
     },
     insertion: {
       theory:
-        "Insertion Sort grows a sorted prefix one item at a time by inserting each new value into its correct position. It works very well for small or nearly sorted datasets.",
-      complexity: "Time: O(n²) avg/worst, O(n) best · Space: O(1)",
+        'Insertion Sort grows a sorted prefix one item at a time by inserting each new value into its correct position. It works very well for small or nearly sorted datasets.',
+      complexity: 'Time: O(n²) avg/worst, O(n) best · Space: O(1)',
       code: [
-        "for (let i = 1; i < n; i++) {",
-        "  const key = arr[i];",
-        "  let j = i - 1;",
-        "  while (j >= 0 && arr[j] > key) {",
-        "    arr[j + 1] = arr[j];",
-        "    j--;",
-        "  }",
-        "  arr[j + 1] = key;",
-        "}",
-      ].join("\n"),
+        'for (let i = 1; i < n; i++) {',
+        '  const key = arr[i];',
+        '  let j = i - 1;',
+        '  while (j >= 0 && arr[j] > key) {',
+        '    arr[j + 1] = arr[j];',
+        '    j--;',
+        '  }',
+        '  arr[j + 1] = key;',
+        '}',
+      ].join('\n'),
     },
     merge: {
       theory:
-        "Merge Sort uses divide-and-conquer: split the array into halves, recursively sort each half, then merge them in order. It is stable and efficient for large inputs.",
-      complexity: "Time: O(n log n) avg/worst/best · Space: O(n)",
+        'Merge Sort uses divide-and-conquer: split the array into halves, recursively sort each half, then merge them in order. It is stable and efficient for large inputs.',
+      complexity: 'Time: O(n log n) avg/worst/best · Space: O(n)',
       code: [
-        "function mergeSort(arr) {",
-        "  if (arr.length <= 1) return arr;",
-        "  const mid = Math.floor(arr.length / 2);",
-        "  const left = mergeSort(arr.slice(0, mid));",
-        "  const right = mergeSort(arr.slice(mid));",
-        "  return merge(left, right);",
-        "}",
-      ].join("\n"),
+        'function mergeSort(arr) {',
+        '  if (arr.length <= 1) return arr;',
+        '  const mid = Math.floor(arr.length / 2);',
+        '  const left = mergeSort(arr.slice(0, mid));',
+        '  const right = mergeSort(arr.slice(mid));',
+        '  return merge(left, right);',
+        '}',
+      ].join('\n'),
     },
     quick: {
       theory:
-        "Quick Sort picks a pivot, partitions values into smaller/greater sides, then recursively sorts each side. It is very fast in practice, though worst-case time appears with poor pivots.",
-      complexity:
-        "Time: O(n log n) avg/best, O(n²) worst · Space: O(log n) recursion",
+        'Quick Sort picks a pivot, partitions values into smaller/greater sides, then recursively sorts each side. It is very fast in practice, though worst-case time appears with poor pivots.',
+      complexity: 'Time: O(n log n) avg/best, O(n²) worst · Space: O(log n) recursion',
       code: [
-        "function quickSort(arr, low, high) {",
-        "  if (low >= high) return;",
-        "  const pivotIndex = partition(arr, low, high);",
-        "  quickSort(arr, low, pivotIndex - 1);",
-        "  quickSort(arr, pivotIndex + 1, high);",
-        "}",
-      ].join("\n"),
+        'function quickSort(arr, low, high) {',
+        '  if (low >= high) return;',
+        '  const pivotIndex = partition(arr, low, high);',
+        '  quickSort(arr, low, pivotIndex - 1);',
+        '  quickSort(arr, pivotIndex + 1, high);',
+        '}',
+      ].join('\n'),
     },
   };
 
   var state = {
-    activeAlgorithm: "bubble",
+    activeAlgorithm: 'bubble',
     isComparisonMode: false,
     initialArray: [],
     array: [],
@@ -136,61 +132,55 @@
   };
 
   var elements = {
-    barsContainer: document.getElementById("bars-container"),
-    mainVisualizerPanel: document.getElementById("main-visualizer-panel"),
-    mainExplanationPanel: document.getElementById("main-explanation-panel"),
-    mainGuidePanel: document.getElementById("main-guide-panel"),
-    tabs: document.querySelectorAll(".tab"),
-    generateButton: document.getElementById("generate-btn"),
-    comparisonModeButton: document.getElementById("comparison-mode-btn"),
-    customArrayInput: document.getElementById("custom-array-input"),
-    applyArrayButton: document.getElementById("apply-array-btn"),
-    reversedArrayButton: document.getElementById("reversed-array-btn"),
-    nearlySortedArrayButton: document.getElementById("nearly-sorted-array-btn"),
-    arrayStatus: document.getElementById("array-status"),
-    speedSlider: document.getElementById("speed-slider"),
-    speedLabel: document.getElementById("speed-label"),
-    playButton: document.getElementById("play-btn"),
-    pauseButton: document.getElementById("pause-btn"),
-    resetButton: document.getElementById("reset-btn"),
-    stepButton: document.getElementById("step-btn"),
-    comparisonsCount: document.getElementById("comparisons-count"),
-    swapsCount: document.getElementById("swaps-count"),
-    explanationText: document.getElementById("explanation-text"),
-    guideTitle: document.getElementById("guide-title"),
-    guideTheory: document.getElementById("guide-theory"),
-    guideComplexity: document.getElementById("guide-complexity"),
-    guideCode: document.getElementById("guide-code"),
-    comparisonPanel: document.getElementById("comparison-panel"),
-    comparisonRunButton: document.getElementById("comparison-run-btn"),
-    comparisonResetButton: document.getElementById("comparison-reset-btn"),
-    comparisonLeftSelect: document.getElementById("comparison-left-select"),
-    comparisonRightSelect: document.getElementById("comparison-right-select"),
-    comparisonStatus: document.getElementById("comparison-status"),
-    comparisonLeftTitle: document.getElementById("comparison-left-title"),
-    comparisonLeftSubtitle: document.getElementById("comparison-left-subtitle"),
-    comparisonLeftTime: document.getElementById("comparison-left-time"),
-    comparisonLeftComparisons: document.getElementById(
-      "comparison-left-comparisons",
-    ),
-    comparisonLeftSwaps: document.getElementById("comparison-left-swaps"),
-    comparisonLeftBars: document.getElementById("comparison-left-bars"),
-    comparisonRightTitle: document.getElementById("comparison-right-title"),
-    comparisonRightSubtitle: document.getElementById(
-      "comparison-right-subtitle",
-    ),
-    comparisonRightTime: document.getElementById("comparison-right-time"),
-    comparisonRightComparisons: document.getElementById(
-      "comparison-right-comparisons",
-    ),
-    comparisonRightSwaps: document.getElementById("comparison-right-swaps"),
-    comparisonRightBars: document.getElementById("comparison-right-bars"),
-    performanceChartCanvas: document.getElementById("performance-chart"),
-    performanceSummary: document.getElementById("performance-summary"),
-    quizForm: document.getElementById("quiz-form"),
-    quizSubmitButton: document.getElementById("quiz-submit-btn"),
-    quizScore: document.getElementById("quiz-score"),
-    quizFeedback: document.getElementById("quiz-feedback"),
+    barsContainer: document.getElementById('bars-container'),
+    mainVisualizerPanel: document.getElementById('main-visualizer-panel'),
+    mainExplanationPanel: document.getElementById('main-explanation-panel'),
+    mainGuidePanel: document.getElementById('main-guide-panel'),
+    tabs: document.querySelectorAll('.tab'),
+    generateButton: document.getElementById('generate-btn'),
+    comparisonModeButton: document.getElementById('comparison-mode-btn'),
+    customArrayInput: document.getElementById('custom-array-input'),
+    applyArrayButton: document.getElementById('apply-array-btn'),
+    reversedArrayButton: document.getElementById('reversed-array-btn'),
+    nearlySortedArrayButton: document.getElementById('nearly-sorted-array-btn'),
+    arrayStatus: document.getElementById('array-status'),
+    speedSlider: document.getElementById('speed-slider'),
+    speedLabel: document.getElementById('speed-label'),
+    playButton: document.getElementById('play-btn'),
+    pauseButton: document.getElementById('pause-btn'),
+    resetButton: document.getElementById('reset-btn'),
+    stepButton: document.getElementById('step-btn'),
+    comparisonsCount: document.getElementById('comparisons-count'),
+    swapsCount: document.getElementById('swaps-count'),
+    explanationText: document.getElementById('explanation-text'),
+    guideTitle: document.getElementById('guide-title'),
+    guideTheory: document.getElementById('guide-theory'),
+    guideComplexity: document.getElementById('guide-complexity'),
+    guideCode: document.getElementById('guide-code'),
+    comparisonPanel: document.getElementById('comparison-panel'),
+    comparisonRunButton: document.getElementById('comparison-run-btn'),
+    comparisonResetButton: document.getElementById('comparison-reset-btn'),
+    comparisonLeftSelect: document.getElementById('comparison-left-select'),
+    comparisonRightSelect: document.getElementById('comparison-right-select'),
+    comparisonStatus: document.getElementById('comparison-status'),
+    comparisonLeftTitle: document.getElementById('comparison-left-title'),
+    comparisonLeftSubtitle: document.getElementById('comparison-left-subtitle'),
+    comparisonLeftTime: document.getElementById('comparison-left-time'),
+    comparisonLeftComparisons: document.getElementById('comparison-left-comparisons'),
+    comparisonLeftSwaps: document.getElementById('comparison-left-swaps'),
+    comparisonLeftBars: document.getElementById('comparison-left-bars'),
+    comparisonRightTitle: document.getElementById('comparison-right-title'),
+    comparisonRightSubtitle: document.getElementById('comparison-right-subtitle'),
+    comparisonRightTime: document.getElementById('comparison-right-time'),
+    comparisonRightComparisons: document.getElementById('comparison-right-comparisons'),
+    comparisonRightSwaps: document.getElementById('comparison-right-swaps'),
+    comparisonRightBars: document.getElementById('comparison-right-bars'),
+    performanceChartCanvas: document.getElementById('performance-chart'),
+    performanceSummary: document.getElementById('performance-summary'),
+    quizForm: document.getElementById('quiz-form'),
+    quizSubmitButton: document.getElementById('quiz-submit-btn'),
+    quizScore: document.getElementById('quiz-score'),
+    quizFeedback: document.getElementById('quiz-feedback'),
   };
 
   var comparisonState = {
@@ -203,34 +193,34 @@
   var performanceChart = null;
   var QUIZ_QUESTIONS = [
     {
-      id: "quiz-q1",
-      prompt: "What is the average-case time complexity of Bubble Sort?",
-      options: ["O(n)", "O(n log n)", "O(n²)", "O(log n)"],
-      answer: "O(n²)",
+      id: 'quiz-q1',
+      prompt: 'What is the average-case time complexity of Bubble Sort?',
+      options: ['O(n)', 'O(n log n)', 'O(n²)', 'O(log n)'],
+      answer: 'O(n²)',
     },
     {
-      id: "quiz-q2",
-      prompt: "Which algorithm is stable in its standard implementation?",
-      options: ["Selection Sort", "Quick Sort", "Merge Sort", "Heap Sort"],
-      answer: "Merge Sort",
+      id: 'quiz-q2',
+      prompt: 'Which algorithm is stable in its standard implementation?',
+      options: ['Selection Sort', 'Quick Sort', 'Merge Sort', 'Heap Sort'],
+      answer: 'Merge Sort',
     },
     {
-      id: "quiz-q3",
-      prompt: "What is the best-case time complexity of Insertion Sort?",
-      options: ["O(n)", "O(n²)", "O(log n)", "O(n log n)"],
-      answer: "O(n)",
+      id: 'quiz-q3',
+      prompt: 'What is the best-case time complexity of Insertion Sort?',
+      options: ['O(n)', 'O(n²)', 'O(log n)', 'O(n log n)'],
+      answer: 'O(n)',
     },
     {
-      id: "quiz-q4",
-      prompt: "What extra space complexity does Merge Sort typically require?",
-      options: ["O(1)", "O(log n)", "O(n)", "O(n²)"],
-      answer: "O(n)",
+      id: 'quiz-q4',
+      prompt: 'What extra space complexity does Merge Sort typically require?',
+      options: ['O(1)', 'O(log n)', 'O(n)', 'O(n²)'],
+      answer: 'O(n)',
     },
     {
-      id: "quiz-q5",
-      prompt: "What is the worst-case time complexity of Quick Sort?",
-      options: ["O(n)", "O(n log n)", "O(n²)", "O(log n)"],
-      answer: "O(n²)",
+      id: 'quiz-q5',
+      prompt: 'What is the worst-case time complexity of Quick Sort?',
+      options: ['O(n)', 'O(n log n)', 'O(n²)', 'O(log n)'],
+      answer: 'O(n²)',
     },
   ];
 
@@ -245,53 +235,41 @@
     updateStats();
     updateControls();
     updateAlgorithmGuide();
-    explain("Choose an algorithm and press Play to watch each step.");
+    explain('Choose an algorithm and press Play to watch each step.');
   }
 
   // Wires all control and navigation events.
   function bindEvents() {
-    elements.generateButton.addEventListener("click", generateNewArray);
-    elements.comparisonModeButton.addEventListener(
-      "click",
-      handleComparisonModeToggle,
-    );
-    elements.comparisonRunButton.addEventListener("click", handleComparisonRun);
-    elements.comparisonResetButton.addEventListener(
-      "click",
-      handleComparisonReset,
-    );
-    elements.comparisonLeftSelect.addEventListener("change", function () {
-      handleComparisonSelectionChange("left");
+    elements.generateButton.addEventListener('click', generateNewArray);
+    elements.comparisonModeButton.addEventListener('click', handleComparisonModeToggle);
+    elements.comparisonRunButton.addEventListener('click', handleComparisonRun);
+    elements.comparisonResetButton.addEventListener('click', handleComparisonReset);
+    elements.comparisonLeftSelect.addEventListener('change', function () {
+      handleComparisonSelectionChange('left');
     });
-    elements.comparisonRightSelect.addEventListener("change", function () {
-      handleComparisonSelectionChange("right");
+    elements.comparisonRightSelect.addEventListener('change', function () {
+      handleComparisonSelectionChange('right');
     });
-    elements.quizSubmitButton.addEventListener("click", handleQuizSubmit);
-    elements.applyArrayButton.addEventListener("click", handleCustomArrayApply);
-    elements.reversedArrayButton.addEventListener(
-      "click",
-      generateReversedArray,
-    );
-    elements.nearlySortedArrayButton.addEventListener(
-      "click",
-      generateNearlySortedArray,
-    );
-    elements.customArrayInput.addEventListener("input", handleCustomArrayInput);
-    elements.customArrayInput.addEventListener("keydown", function (event) {
-      if (event.key === "Enter") {
+    elements.quizSubmitButton.addEventListener('click', handleQuizSubmit);
+    elements.applyArrayButton.addEventListener('click', handleCustomArrayApply);
+    elements.reversedArrayButton.addEventListener('click', generateReversedArray);
+    elements.nearlySortedArrayButton.addEventListener('click', generateNearlySortedArray);
+    elements.customArrayInput.addEventListener('input', handleCustomArrayInput);
+    elements.customArrayInput.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
         event.preventDefault();
         handleCustomArrayApply();
       }
     });
-    elements.playButton.addEventListener("click", handlePlay);
-    elements.pauseButton.addEventListener("click", handlePause);
-    elements.resetButton.addEventListener("click", handleReset);
-    elements.stepButton.addEventListener("click", handleStep);
-    elements.speedSlider.addEventListener("input", handleSpeedChange);
+    elements.playButton.addEventListener('click', handlePlay);
+    elements.pauseButton.addEventListener('click', handlePause);
+    elements.resetButton.addEventListener('click', handleReset);
+    elements.stepButton.addEventListener('click', handleStep);
+    elements.speedSlider.addEventListener('input', handleSpeedChange);
 
     elements.tabs.forEach(function (tabButton) {
-      tabButton.addEventListener("click", function () {
-        var algorithmKey = tabButton.getAttribute("data-algo");
+      tabButton.addEventListener('click', function () {
+        var algorithmKey = tabButton.getAttribute('data-algo');
         switchAlgorithm(algorithmKey);
       });
     });
@@ -300,28 +278,28 @@
   // Creates the paired visualizer sessions used by comparison mode.
   function initComparisonSessions() {
     comparisonState.left = createComparisonSession(
-      "left",
+      'left',
       elements.comparisonLeftSelect,
       elements.comparisonLeftTitle,
       elements.comparisonLeftSubtitle,
       elements.comparisonLeftTime,
       elements.comparisonLeftComparisons,
       elements.comparisonLeftSwaps,
-      elements.comparisonLeftBars,
+      elements.comparisonLeftBars
     );
     comparisonState.right = createComparisonSession(
-      "right",
+      'right',
       elements.comparisonRightSelect,
       elements.comparisonRightTitle,
       elements.comparisonRightSubtitle,
       elements.comparisonRightTime,
       elements.comparisonRightComparisons,
       elements.comparisonRightSwaps,
-      elements.comparisonRightBars,
+      elements.comparisonRightBars
     );
 
-    elements.comparisonLeftSelect.value = "bubble";
-    elements.comparisonRightSelect.value = "quick";
+    elements.comparisonLeftSelect.value = 'bubble';
+    elements.comparisonRightSelect.value = 'quick';
     refreshComparisonPreview();
     updateComparisonModeUI();
   }
@@ -335,7 +313,7 @@
     timeElement,
     comparisonsElement,
     swapsElement,
-    barsContainer,
+    barsContainer
   ) {
     return {
       side: side,
@@ -353,7 +331,7 @@
       compareIndices: [],
       swapIndices: [],
       sortedIndices: new Set(),
-      algorithmKey: selectElement ? selectElement.value : "bubble",
+      algorithmKey: selectElement ? selectElement.value : 'bubble',
       isRunning: false,
       shouldStop: false,
       elapsedTime: 0,
@@ -382,11 +360,11 @@
   function updateComparisonModeUI() {
     var enabled = state.isComparisonMode;
 
-    elements.comparisonModeButton.classList.toggle("is-on", enabled);
-    elements.comparisonModeButton.setAttribute("aria-pressed", String(enabled));
+    elements.comparisonModeButton.classList.toggle('is-on', enabled);
+    elements.comparisonModeButton.setAttribute('aria-pressed', String(enabled));
     elements.comparisonModeButton.textContent = enabled
-      ? "Exit Comparison Mode"
-      : "Enable Comparison Mode";
+      ? 'Exit Comparison Mode'
+      : 'Enable Comparison Mode';
 
     if (elements.comparisonPanel) {
       elements.comparisonPanel.hidden = !enabled;
@@ -418,15 +396,14 @@
 
     if (updateStatus !== false && elements.comparisonStatus) {
       elements.comparisonStatus.textContent =
-        "Comparison preview ready. Choose two algorithms and press Run Comparison.";
-      elements.comparisonStatus.classList.remove("is-error");
+        'Comparison preview ready. Choose two algorithms and press Run Comparison.';
+      elements.comparisonStatus.classList.remove('is-error');
     }
   }
 
   // Responds when one of the comparison algorithm selectors changes.
   function handleComparisonSelectionChange(side) {
-    var session =
-      side === "left" ? comparisonState.left : comparisonState.right;
+    var session = side === 'left' ? comparisonState.left : comparisonState.right;
 
     if (!session || !session.selectElement) {
       return;
@@ -463,35 +440,31 @@
     var algorithm = ALGORITHMS[session.algorithmKey];
 
     if (session.titleElement) {
-      session.titleElement.textContent = algorithm
-        ? algorithm.label
-        : "Unknown Algorithm";
+      session.titleElement.textContent = algorithm ? algorithm.label : 'Unknown Algorithm';
     }
 
     if (session.subtitleElement) {
       session.subtitleElement.textContent =
-        session.side === "left" ? "Left visualizer" : "Right visualizer";
+        session.side === 'left' ? 'Left visualizer' : 'Right visualizer';
     }
 
     if (session.timeElement) {
-      session.timeElement.textContent = "Time: 0ms";
+      session.timeElement.textContent = 'Time: 0ms';
     }
   }
 
   // Updates the counters for a comparison session.
   function updateComparisonSessionStats(session) {
     if (session.comparisonsElement) {
-      session.comparisonsElement.textContent =
-        "Comparisons: " + session.comparisons;
+      session.comparisonsElement.textContent = 'Comparisons: ' + session.comparisons;
     }
 
     if (session.swapsElement) {
-      session.swapsElement.textContent = "Swaps: " + session.swaps;
+      session.swapsElement.textContent = 'Swaps: ' + session.swaps;
     }
 
     if (session.timeElement) {
-      session.timeElement.textContent =
-        "Time: " + Math.round(session.elapsedTime) + "ms";
+      session.timeElement.textContent = 'Time: ' + Math.round(session.elapsedTime) + 'ms';
     }
   }
 
@@ -520,12 +493,12 @@
     renderComparisonSession(comparisonState.right);
 
     setComparisonStatus(
-      "Running " +
+      'Running ' +
         ALGORITHMS[comparisonState.left.algorithmKey].label +
-        " vs " +
+        ' vs ' +
         ALGORITHMS[comparisonState.right.algorithmKey].label +
-        ".",
-      false,
+        '.',
+      false
     );
 
     try {
@@ -550,27 +523,21 @@
       ]);
 
       setComparisonStatus(
-        buildComparisonResultMessage(
-          comparisonState.left,
-          comparisonState.right,
-        ),
-        false,
+        buildComparisonResultMessage(comparisonState.left, comparisonState.right),
+        false
       );
     } catch (error) {
       if (!error || error.message !== STOP_ERROR_MESSAGE) {
         console.error(error);
         setComparisonStatus(
-          "An unexpected error occurred during comparison. Check the console.",
-          true,
+          'An unexpected error occurred during comparison. Check the console.',
+          true
         );
       }
     } finally {
       comparisonState.isRunning = false;
       if (comparisonState.shouldStop) {
-        setComparisonStatus(
-          "Comparison reset. Press Run Comparison to try again.",
-          false,
-        );
+        setComparisonStatus('Comparison reset. Press Run Comparison to try again.', false);
       }
 
       comparisonState.shouldStop = false;
@@ -585,13 +552,10 @@
 
     if (!comparisonState.isRunning) {
       refreshComparisonPreview(false);
-      setComparisonStatus(
-        "Comparison reset. Press Run Comparison to try again.",
-        false,
-      );
+      setComparisonStatus('Comparison reset. Press Run Comparison to try again.', false);
       updateControls();
     } else {
-      setComparisonStatus("Stopping comparison run...", false);
+      setComparisonStatus('Stopping comparison run...', false);
     }
   }
 
@@ -602,13 +566,13 @@
 
     return (
       leftLabel +
-      ": " +
+      ': ' +
       Math.round(leftSession.elapsedTime) +
-      "ms, " +
+      'ms, ' +
       rightLabel +
-      ": " +
+      ': ' +
       Math.round(rightSession.elapsedTime) +
-      "ms."
+      'ms.'
     );
   }
 
@@ -619,18 +583,15 @@
     }
 
     elements.comparisonStatus.textContent = text;
-    elements.comparisonStatus.classList.toggle("is-error", Boolean(isError));
+    elements.comparisonStatus.classList.toggle('is-error', Boolean(isError));
   }
 
   // Runs one comparison session with its own counters and timing.
   async function runComparisonSession(session) {
-    var runner =
-      ALGORITHMS[session.algorithmKey] && ALGORITHMS[session.algorithmKey].run;
+    var runner = ALGORITHMS[session.algorithmKey] && ALGORITHMS[session.algorithmKey].run;
 
-    if (typeof runner !== "function") {
-      throw new Error(
-        "Unsupported comparison algorithm: " + session.algorithmKey,
-      );
+    if (typeof runner !== 'function') {
+      throw new Error('Unsupported comparison algorithm: ' + session.algorithmKey);
     }
 
     session.isRunning = true;
@@ -642,11 +603,7 @@
     var startedAt = performance.now();
 
     try {
-      await runner(
-        copyArray(session.array),
-        state.delay,
-        createComparisonCallbacks(session),
-      );
+      await runner(copyArray(session.array), state.delay, createComparisonCallbacks(session));
       markComparisonSessionComplete(session);
     } finally {
       session.elapsedTime = performance.now() - startedAt;
@@ -743,7 +700,7 @@
     }
 
     if (!session.array.length) {
-      container.innerHTML = "";
+      container.innerHTML = '';
       return;
     }
 
@@ -754,17 +711,17 @@
       var fragment = document.createDocumentFragment();
 
       for (var i = 0; i < session.array.length; i += 1) {
-        var bar = document.createElement("div");
-        bar.className = "bar default";
+        var bar = document.createElement('div');
+        bar.className = 'bar default';
 
-        var label = document.createElement("span");
-        label.className = "bar-label";
+        var label = document.createElement('span');
+        label.className = 'bar-label';
         bar.appendChild(label);
 
         fragment.appendChild(bar);
       }
 
-      container.innerHTML = "";
+      container.innerHTML = '';
       container.appendChild(fragment);
     }
 
@@ -772,23 +729,18 @@
 
     for (var index = 0; index < session.array.length; index += 1) {
       var currentBar = bars[index];
-      var currentLabel = currentBar.querySelector(".bar-label");
+      var currentLabel = currentBar.querySelector('.bar-label');
 
       if (!currentLabel) {
-        currentLabel = document.createElement("span");
-        currentLabel.className = "bar-label";
+        currentLabel = document.createElement('span');
+        currentLabel.className = 'bar-label';
         currentBar.appendChild(currentLabel);
       }
 
-      currentBar.className =
-        "bar " + getComparisonBarStateClass(session, index);
-      currentBar.style.height =
-        (Math.max(0, session.array[index]) / safeMaxValue) * 100 + "%";
-      currentBar.title = "Index " + index + ": " + session.array[index];
-      currentBar.setAttribute(
-        "aria-label",
-        "Index " + index + " value " + session.array[index],
-      );
+      currentBar.className = 'bar ' + getComparisonBarStateClass(session, index);
+      currentBar.style.height = (Math.max(0, session.array[index]) / safeMaxValue) * 100 + '%';
+      currentBar.title = 'Index ' + index + ': ' + session.array[index];
+      currentBar.setAttribute('aria-label', 'Index ' + index + ' value ' + session.array[index]);
       currentLabel.textContent = String(session.array[index]);
     }
   }
@@ -796,38 +748,35 @@
   // Returns the correct state class for a comparison session bar.
   function getComparisonBarStateClass(session, index) {
     if (session.sortedIndices.has(index)) {
-      return "sorted";
+      return 'sorted';
     }
 
     if (session.swapIndices.indexOf(index) !== -1) {
-      return "swapping";
+      return 'swapping';
     }
 
     if (session.compareIndices.indexOf(index) !== -1) {
-      return "comparing";
+      return 'comparing';
     }
 
-    return "default";
+    return 'default';
   }
 
   // Initializes the Chart.js bar chart used for completed-run metrics.
   function initPerformanceChart() {
-    if (
-      !elements.performanceChartCanvas ||
-      typeof window.Chart !== "function"
-    ) {
+    if (!elements.performanceChartCanvas || typeof window.Chart !== 'function') {
       if (elements.performanceSummary) {
         elements.performanceSummary.textContent =
-          "Chart.js is unavailable, so performance metrics are shown in the counters only.";
+          'Chart.js is unavailable, so performance metrics are shown in the counters only.';
       }
 
       return;
     }
 
     performanceChart = new window.Chart(elements.performanceChartCanvas, {
-      type: "bar",
+      type: 'bar',
       data: {
-        labels: ["Comparisons", "Swaps", "Time (ms)"],
+        labels: ['Comparisons', 'Swaps', 'Time (ms)'],
         datasets: [],
       },
       options: {
@@ -835,28 +784,28 @@
         maintainAspectRatio: false,
         plugins: {
           legend: {
-            position: "bottom",
+            position: 'bottom',
             labels: {
-              color: "#e6edf9",
+              color: '#e6edf9',
             },
           },
         },
         scales: {
           x: {
             ticks: {
-              color: "#9fb0d5",
+              color: '#9fb0d5',
             },
             grid: {
-              color: "rgba(148, 163, 184, 0.14)",
+              color: 'rgba(148, 163, 184, 0.14)',
             },
           },
           y: {
             beginAtZero: true,
             ticks: {
-              color: "#9fb0d5",
+              color: '#9fb0d5',
             },
             grid: {
-              color: "rgba(148, 163, 184, 0.14)",
+              color: 'rgba(148, 163, 184, 0.14)',
             },
           },
         },
@@ -871,8 +820,8 @@
     }
 
     var colors = [
-      { fill: "rgba(45, 212, 191, 0.75)", border: "rgba(45, 212, 191, 1)" },
-      { fill: "rgba(14, 165, 233, 0.75)", border: "rgba(14, 165, 233, 1)" },
+      { fill: 'rgba(45, 212, 191, 0.75)', border: 'rgba(45, 212, 191, 1)' },
+      { fill: 'rgba(14, 165, 233, 0.75)', border: 'rgba(14, 165, 233, 1)' },
     ];
 
     performanceChart.data.datasets = runs.map(function (run, index) {
@@ -893,14 +842,14 @@
       elements.performanceSummary.textContent =
         runs.length === 1
           ? runs[0].label +
-            " finished with " +
+            ' finished with ' +
             runs[0].comparisons +
-            " comparisons, " +
+            ' comparisons, ' +
             runs[0].swaps +
-            " swaps, and " +
+            ' swaps, and ' +
             Math.round(runs[0].time) +
-            "ms."
-          : "Comparison chart updated with the latest run metrics.";
+            'ms.'
+          : 'Comparison chart updated with the latest run metrics.';
     }
   }
 
@@ -916,13 +865,13 @@
       var question = QUIZ_QUESTIONS[i];
       var fieldsetMarkup = [
         '<fieldset class="quiz-card">',
-        "<h3>" + (i + 1) + ". " + question.prompt + "</h3>",
+        '<h3>' + (i + 1) + '. ' + question.prompt + '</h3>',
         '<div class="quiz-options">',
       ];
 
       for (var j = 0; j < question.options.length; j += 1) {
         var option = question.options[j];
-        var optionId = question.id + "-" + j;
+        var optionId = question.id + '-' + j;
 
         fieldsetMarkup.push(
           '<label class="quiz-option" for="' +
@@ -935,24 +884,21 @@
             '" value="' +
             option +
             '" />' +
-            "<span>" +
+            '<span>' +
             option +
-            "</span>" +
-            "</label>",
+            '</span>' +
+            '</label>'
         );
       }
 
-      fieldsetMarkup.push("</div></fieldset>");
-      markup.push(fieldsetMarkup.join(""));
+      fieldsetMarkup.push('</div></fieldset>');
+      markup.push(fieldsetMarkup.join(''));
     }
 
-    elements.quizForm.innerHTML = markup.join("");
-    setQuizFeedback(
-      "Answer all five questions and submit to see your score.",
-      false,
-    );
+    elements.quizForm.innerHTML = markup.join('');
+    setQuizFeedback('Answer all five questions and submit to see your score.', false);
     if (elements.quizScore) {
-      elements.quizScore.textContent = "Score: 0/5";
+      elements.quizScore.textContent = 'Score: 0/5';
     }
   }
 
@@ -967,9 +913,7 @@
 
     for (var i = 0; i < QUIZ_QUESTIONS.length; i += 1) {
       var question = QUIZ_QUESTIONS[i];
-      var selected = elements.quizForm.querySelector(
-        'input[name="' + question.id + '"]:checked',
-      );
+      var selected = elements.quizForm.querySelector('input[name="' + question.id + '"]:checked');
 
       if (!selected) {
         unanswered += 1;
@@ -982,29 +926,20 @@
     }
 
     if (elements.quizScore) {
-      elements.quizScore.textContent =
-        "Score: " + score + "/" + QUIZ_QUESTIONS.length;
+      elements.quizScore.textContent = 'Score: ' + score + '/' + QUIZ_QUESTIONS.length;
     }
 
     if (unanswered > 0) {
       setQuizFeedback(
-        "You left " +
-          unanswered +
-          " question" +
-          (unanswered === 1 ? "" : "s") +
-          " unanswered.",
-        true,
+        'You left ' + unanswered + ' question' + (unanswered === 1 ? '' : 's') + ' unanswered.',
+        true
       );
       return;
     }
 
     setQuizFeedback(
-      "Quiz complete. You scored " +
-        score +
-        " out of " +
-        QUIZ_QUESTIONS.length +
-        ".",
-      score < QUIZ_QUESTIONS.length,
+      'Quiz complete. You scored ' + score + ' out of ' + QUIZ_QUESTIONS.length + '.',
+      score < QUIZ_QUESTIONS.length
     );
   }
 
@@ -1015,7 +950,7 @@
     }
 
     elements.quizFeedback.textContent = text;
-    elements.quizFeedback.classList.toggle("is-error", Boolean(isError));
+    elements.quizFeedback.classList.toggle('is-error', Boolean(isError));
   }
 
   // Adds a short visual click flash to a button so clicks feel responsive.
@@ -1024,10 +959,10 @@
       return;
     }
 
-    buttonElement.classList.add("flash-click");
+    buttonElement.classList.add('flash-click');
 
     setTimeout(function () {
-      buttonElement.classList.remove("flash-click");
+      buttonElement.classList.remove('flash-click');
     }, 130);
   }
 
@@ -1035,10 +970,10 @@
   function generateNewArray() {
     loadArray(
       randomArray(ARRAY_SIZE, MIN_ARRAY_VALUE, MAX_ARRAY_VALUE),
-      "Random array generated. Press Play to start " +
+      'Random array generated. Press Play to start ' +
         ALGORITHMS[state.activeAlgorithm].label +
-        ".",
-      true,
+        '.',
+      true
     );
   }
 
@@ -1046,8 +981,8 @@
   function generateReversedArray() {
     loadArray(
       createDescendingArray(ARRAY_SIZE, MIN_ARRAY_VALUE, MAX_ARRAY_VALUE),
-      "Reversed array generated. Use it to compare algorithm behavior.",
-      true,
+      'Reversed array generated. Use it to compare algorithm behavior.',
+      true
     );
   }
 
@@ -1055,8 +990,8 @@
   function generateNearlySortedArray() {
     loadArray(
       createNearlySortedArray(ARRAY_SIZE, MIN_ARRAY_VALUE, MAX_ARRAY_VALUE),
-      "Nearly sorted array generated. This is useful for best-case demos.",
-      true,
+      'Nearly sorted array generated. This is useful for best-case demos.',
+      true
     );
   }
 
@@ -1071,14 +1006,10 @@
 
     if (parsed.valid) {
       setArrayStatus(
-        "Custom array looks valid. It is applied automatically while you type.",
-        false,
+        'Custom array looks valid. It is applied automatically while you type.',
+        false
       );
-      loadArray(
-        parsed.values,
-        "Custom array updated from the input field.",
-        false,
-      );
+      loadArray(parsed.values, 'Custom array updated from the input field.', false);
       return;
     }
 
@@ -1094,11 +1025,7 @@
       return;
     }
 
-    loadArray(
-      parsed.values,
-      "Custom array applied. Press Play to sort it.",
-      false,
-    );
+    loadArray(parsed.values, 'Custom array applied. Press Play to sort it.', false);
   }
 
   // Commits a new array to both the rendered state and the reset baseline.
@@ -1112,7 +1039,7 @@
     resetVisualState();
 
     if (syncInput) {
-      elements.customArrayInput.value = values.join(", ");
+      elements.customArrayInput.value = values.join(', ');
     }
 
     renderBars();
@@ -1127,7 +1054,7 @@
     }
 
     elements.arrayStatus.textContent = text;
-    elements.arrayStatus.classList.toggle("is-error", Boolean(isError));
+    elements.arrayStatus.classList.toggle('is-error', Boolean(isError));
   }
 
   // Handles algorithm tab switching without reloading the page.
@@ -1138,18 +1065,12 @@
 
     state.activeAlgorithm = algorithmKey;
     elements.tabs.forEach(function (tabButton) {
-      tabButton.classList.toggle(
-        "active",
-        tabButton.getAttribute("data-algo") === algorithmKey,
-      );
+      tabButton.classList.toggle('active', tabButton.getAttribute('data-algo') === algorithmKey);
     });
 
     handleReset();
     updateAlgorithmGuide();
-    explain(
-      ALGORITHMS[algorithmKey].label +
-        " selected. Press Play or Step to begin.",
-    );
+    explain(ALGORITHMS[algorithmKey].label + ' selected. Press Play or Step to begin.');
   }
 
   // Updates the learning panel with theory and code for the active algorithm.
@@ -1160,8 +1081,7 @@
       return;
     }
 
-    elements.guideTitle.textContent =
-      ALGORITHMS[state.activeAlgorithm].label + " Guide";
+    elements.guideTitle.textContent = ALGORITHMS[state.activeAlgorithm].label + ' Guide';
     elements.guideTheory.textContent = guide.theory;
     elements.guideComplexity.textContent = guide.complexity;
     elements.guideCode.textContent = guide.code;
@@ -1176,7 +1096,7 @@
       state.pendingStep = false;
       state.stepQueue = 0;
       updateControls();
-      explain("Resumed " + ALGORITHMS[state.activeAlgorithm].label + ".");
+      explain('Resumed ' + ALGORITHMS[state.activeAlgorithm].label + '.');
       return;
     }
 
@@ -1195,7 +1115,7 @@
     state.pendingStep = false;
     state.stepQueue = 0;
     updateControls();
-    explain("Paused. Press Step for one operation, or Play to continue.");
+    explain('Paused. Press Step for one operation, or Play to continue.');
   }
 
   // Resets current run and restores the original unsorted array.
@@ -1209,9 +1129,9 @@
     state.array = copyArray(state.initialArray);
     resetVisualState();
     renderBars();
-    elements.customArrayInput.value = state.initialArray.join(", ");
-    setArrayStatus("Reset complete. The current array is restored.", false);
-    explain("Reset complete. The current array is restored.");
+    elements.customArrayInput.value = state.initialArray.join(', ');
+    setArrayStatus('Reset complete. The current array is restored.', false);
+    explain('Reset complete. The current array is restored.');
     refreshComparisonPreview(false);
   }
 
@@ -1268,13 +1188,11 @@
       state.compareIndices = [];
       state.swapIndices = [];
       renderBars();
-      explain(
-        ALGORITHMS[state.activeAlgorithm].label + " complete. Array is sorted.",
-      );
+      explain(ALGORITHMS[state.activeAlgorithm].label + ' complete. Array is sorted.');
     } catch (error) {
       if (!error || error.message !== STOP_ERROR_MESSAGE) {
         console.error(error);
-        explain("An unexpected error occurred. Check console for details.");
+        explain('An unexpected error occurred. Check console for details.');
       }
     } finally {
       state.isRunning = false;
@@ -1396,17 +1314,17 @@
       var fragment = document.createDocumentFragment();
 
       for (var barIndex = 0; barIndex < state.array.length; barIndex += 1) {
-        var newBar = document.createElement("div");
-        newBar.className = "bar default";
+        var newBar = document.createElement('div');
+        newBar.className = 'bar default';
 
-        var valueLabel = document.createElement("span");
-        valueLabel.className = "bar-label";
+        var valueLabel = document.createElement('span');
+        valueLabel.className = 'bar-label';
         newBar.appendChild(valueLabel);
 
         fragment.appendChild(newBar);
       }
 
-      elements.barsContainer.innerHTML = "";
+      elements.barsContainer.innerHTML = '';
       elements.barsContainer.appendChild(fragment);
     }
 
@@ -1416,18 +1334,18 @@
       var bar = bars[i];
       var normalizedValue = Math.max(0, state.array[i]);
       var heightPercent = (normalizedValue / safeMaxValue) * 100;
-      var label = bar.querySelector(".bar-label");
+      var label = bar.querySelector('.bar-label');
 
       if (!label) {
-        label = document.createElement("span");
-        label.className = "bar-label";
+        label = document.createElement('span');
+        label.className = 'bar-label';
         bar.appendChild(label);
       }
 
-      bar.className = "bar " + getBarStateClass(i);
-      bar.style.height = heightPercent + "%";
-      bar.title = "Index " + i + ": " + state.array[i];
-      bar.setAttribute("aria-label", "Index " + i + " value " + state.array[i]);
+      bar.className = 'bar ' + getBarStateClass(i);
+      bar.style.height = heightPercent + '%';
+      bar.title = 'Index ' + i + ': ' + state.array[i];
+      bar.setAttribute('aria-label', 'Index ' + i + ' value ' + state.array[i]);
       label.textContent = String(state.array[i]);
     }
   }
@@ -1435,29 +1353,29 @@
   // Returns the correct CSS state class for a bar index.
   function getBarStateClass(index) {
     if (state.sortedIndices.has(index)) {
-      return "sorted";
+      return 'sorted';
     }
 
     if (state.swapIndices.indexOf(index) !== -1) {
-      return "swapping";
+      return 'swapping';
     }
 
     if (state.compareIndices.indexOf(index) !== -1) {
-      return "comparing";
+      return 'comparing';
     }
 
-    return "default";
+    return 'default';
   }
 
   // Updates live comparison and swap counters.
   function updateStats() {
-    elements.comparisonsCount.textContent = "Comparisons: " + state.comparisons;
-    elements.swapsCount.textContent = "Swaps: " + state.swaps;
+    elements.comparisonsCount.textContent = 'Comparisons: ' + state.comparisons;
+    elements.swapsCount.textContent = 'Swaps: ' + state.swaps;
   }
 
   // Updates the visible speed text in milliseconds.
   function updateSpeedLabel() {
-    elements.speedLabel.textContent = state.delay + "ms";
+    elements.speedLabel.textContent = state.delay + 'ms';
   }
 
   // Writes current explanatory text for the learner.
@@ -1484,8 +1402,7 @@
     }
 
     if (elements.comparisonResetButton) {
-      elements.comparisonResetButton.disabled =
-        !comparisonActive || !state.initialArray.length;
+      elements.comparisonResetButton.disabled = !comparisonActive || !state.initialArray.length;
     }
 
     if (elements.comparisonLeftSelect) {
@@ -1500,25 +1417,17 @@
       tabButton.disabled = running || comparisonActive;
     });
 
-    elements.playButton.disabled =
-      comparisonActive || (!running && state.array.length === 0);
+    elements.playButton.disabled = comparisonActive || (!running && state.array.length === 0);
     elements.pauseButton.disabled = comparisonActive || !running;
-    elements.resetButton.disabled =
-      comparisonActive || (!running && state.array.length === 0);
+    elements.resetButton.disabled = comparisonActive || (!running && state.array.length === 0);
     elements.stepButton.disabled = comparisonActive || state.array.length === 0;
 
     // Keep mode buttons visually in sync with current playback state.
-    elements.playButton.classList.toggle("is-on", running && !state.isPaused);
-    elements.pauseButton.classList.toggle("is-on", running && state.isPaused);
+    elements.playButton.classList.toggle('is-on', running && !state.isPaused);
+    elements.pauseButton.classList.toggle('is-on', running && state.isPaused);
 
-    elements.playButton.setAttribute(
-      "aria-pressed",
-      String(running && !state.isPaused),
-    );
-    elements.pauseButton.setAttribute(
-      "aria-pressed",
-      String(running && state.isPaused),
-    );
+    elements.playButton.setAttribute('aria-pressed', String(running && !state.isPaused));
+    elements.pauseButton.setAttribute('aria-pressed', String(running && state.isPaused));
   }
 
   init();

@@ -12,8 +12,8 @@ const Convert = () => {
   const handleConvert = () => {
     const apiUrl = `https://min-api.cryptocompare.com/data/price?fsym=${toCurrency}&tsyms=${fromCurrency}&api_key=${apiKey}`;
     fetch(apiUrl)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         const rate = data[fromCurrency];
         const conversionResult = amount / rate;
         setResult(`${amount} ${fromCurrency} = ${conversionResult.toFixed(8)} ${toCurrency}`);

@@ -3,29 +3,29 @@
 
   // Returns true when the app requests an immediate stop.
   function shouldStop(callbacks) {
-    return typeof callbacks.shouldStop === "function" && callbacks.shouldStop();
+    return typeof callbacks.shouldStop === 'function' && callbacks.shouldStop();
   }
 
   // Pauses between operations while respecting app-level controls.
   async function checkpoint(speed, callbacks) {
     if (shouldStop(callbacks)) {
-      throw new Error("VISUALIZATION_STOPPED");
+      throw new Error('VISUALIZATION_STOPPED');
     }
 
-    if (typeof callbacks.wait === "function") {
+    if (typeof callbacks.wait === 'function') {
       await callbacks.wait(speed);
     } else {
       await sleep(speed);
     }
 
     if (shouldStop(callbacks)) {
-      throw new Error("VISUALIZATION_STOPPED");
+      throw new Error('VISUALIZATION_STOPPED');
     }
   }
 
   // Updates the explanation panel with a plain-English message.
   function explain(callbacks, text) {
-    if (typeof callbacks.onExplain === "function") {
+    if (typeof callbacks.onExplain === 'function') {
       callbacks.onExplain(text);
     }
   }
@@ -41,34 +41,25 @@
     while (i < leftPart.length && j < rightPart.length) {
       explain(
         callbacks,
-        "Comparing left value " +
-          leftPart[i] +
-          " with right value " +
-          rightPart[j] +
-          ".",
+        'Comparing left value ' + leftPart[i] + ' with right value ' + rightPart[j] + '.'
       );
 
-      if (typeof callbacks.onCompare === "function") {
-        await callbacks.onCompare(
-          left + i,
-          middle + 1 + j,
-          leftPart[i],
-          rightPart[j],
-        );
+      if (typeof callbacks.onCompare === 'function') {
+        await callbacks.onCompare(left + i, middle + 1 + j, leftPart[i], rightPart[j]);
       }
       await checkpoint(speed, callbacks);
 
       if (leftPart[i] <= rightPart[j]) {
         array[k] = leftPart[i];
-        explain(callbacks, "Placing " + leftPart[i] + " at index " + k + ".");
+        explain(callbacks, 'Placing ' + leftPart[i] + ' at index ' + k + '.');
         i += 1;
       } else {
         array[k] = rightPart[j];
-        explain(callbacks, "Placing " + rightPart[j] + " at index " + k + ".");
+        explain(callbacks, 'Placing ' + rightPart[j] + ' at index ' + k + '.');
         j += 1;
       }
 
-      if (typeof callbacks.onSwap === "function") {
+      if (typeof callbacks.onSwap === 'function') {
         await callbacks.onSwap(k, k, array);
       }
       await checkpoint(speed, callbacks);
@@ -77,12 +68,9 @@
 
     while (i < leftPart.length) {
       array[k] = leftPart[i];
-      explain(
-        callbacks,
-        "Copying remaining left value " + leftPart[i] + " to index " + k + ".",
-      );
+      explain(callbacks, 'Copying remaining left value ' + leftPart[i] + ' to index ' + k + '.');
 
-      if (typeof callbacks.onSwap === "function") {
+      if (typeof callbacks.onSwap === 'function') {
         await callbacks.onSwap(k, k, array);
       }
       await checkpoint(speed, callbacks);
@@ -93,16 +81,9 @@
 
     while (j < rightPart.length) {
       array[k] = rightPart[j];
-      explain(
-        callbacks,
-        "Copying remaining right value " +
-          rightPart[j] +
-          " to index " +
-          k +
-          ".",
-      );
+      explain(callbacks, 'Copying remaining right value ' + rightPart[j] + ' to index ' + k + '.');
 
-      if (typeof callbacks.onSwap === "function") {
+      if (typeof callbacks.onSwap === 'function') {
         await callbacks.onSwap(k, k, array);
       }
       await checkpoint(speed, callbacks);
@@ -128,12 +109,12 @@
   async function visualize(array, speed, callbacks) {
     explain(
       callbacks,
-      "Merge sort splits the array into halves, then merges them in sorted order.",
+      'Merge sort splits the array into halves, then merges them in sorted order.'
     );
     await divideAndSort(array, 0, array.length - 1, speed, callbacks);
 
     for (var i = 0; i < array.length; i += 1) {
-      if (typeof callbacks.onSorted === "function") {
+      if (typeof callbacks.onSorted === 'function') {
         await callbacks.onSorted(i);
       }
       await checkpoint(speed, callbacks);

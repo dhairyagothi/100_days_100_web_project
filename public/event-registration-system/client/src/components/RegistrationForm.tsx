@@ -1,16 +1,29 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { api, type RegistrationInput } from "@shared/routes";
-import { useCreateRegistration } from "@/hooks/use-registrations";
-import { useLocation } from "wouter";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { ArrowRight, Loader2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { api, type RegistrationInput } from '@shared/routes';
+import { useCreateRegistration } from '@/hooks/use-registrations';
+import { useLocation } from 'wouter';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { ArrowRight, Loader2 } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 export function RegistrationForm() {
   const [, setLocation] = useLocation();
@@ -20,26 +33,26 @@ export function RegistrationForm() {
   const form = useForm<RegistrationInput>({
     resolver: zodResolver(api.registrations.create.input),
     defaultValues: {
-      name: "",
-      email: "",
-      college: "",
-      year: "",
+      name: '',
+      email: '',
+      college: '',
+      year: '',
       domain: undefined as any,
-      interestAnswer: "",
+      interestAnswer: '',
     },
   });
 
   function onSubmit(data: RegistrationInput) {
     createRegistration.mutate(data, {
       onSuccess: (result) => {
-        sessionStorage.setItem("lastRegistration", JSON.stringify(result));
-        setLocation("/success");
+        sessionStorage.setItem('lastRegistration', JSON.stringify(result));
+        setLocation('/success');
       },
       onError: (error) => {
         toast({
-          title: "Registration Error",
+          title: 'Registration Error',
           description: error.message,
-          variant: "destructive",
+          variant: 'destructive',
         });
       },
     });
@@ -49,9 +62,7 @@ export function RegistrationForm() {
     <Card className="shadow-2xl border-border/40 backdrop-blur-sm bg-card/95 w-full">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-display">Register for Zenith 2026</CardTitle>
-        <CardDescription>
-          Fill out the form below to secure your spot at the event.
-        </CardDescription>
+        <CardDescription>Fill out the form below to secure your spot at the event.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -62,7 +73,9 @@ export function RegistrationForm() {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Full Name <span className="text-destructive">*</span></FormLabel>
+                    <FormLabel>
+                      Full Name <span className="text-destructive">*</span>
+                    </FormLabel>
                     <FormControl>
                       <Input placeholder="John Doe" {...field} data-testid="input-name" />
                     </FormControl>
@@ -75,9 +88,16 @@ export function RegistrationForm() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email Address <span className="text-destructive">*</span></FormLabel>
+                    <FormLabel>
+                      Email Address <span className="text-destructive">*</span>
+                    </FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="john@university.edu" {...field} data-testid="input-email" />
+                      <Input
+                        type="email"
+                        placeholder="john@university.edu"
+                        {...field}
+                        data-testid="input-email"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -91,7 +111,9 @@ export function RegistrationForm() {
                 name="college"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>College / University <span className="text-destructive">*</span></FormLabel>
+                    <FormLabel>
+                      College / University <span className="text-destructive">*</span>
+                    </FormLabel>
                     <FormControl>
                       <Input placeholder="e.g. MIT" {...field} data-testid="input-college" />
                     </FormControl>
@@ -104,7 +126,9 @@ export function RegistrationForm() {
                 name="year"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Year of Study <span className="text-destructive">*</span></FormLabel>
+                    <FormLabel>
+                      Year of Study <span className="text-destructive">*</span>
+                    </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger data-testid="select-year">
@@ -131,7 +155,9 @@ export function RegistrationForm() {
               name="domain"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Domain <span className="text-destructive">*</span></FormLabel>
+                  <FormLabel>
+                    Domain <span className="text-destructive">*</span>
+                  </FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger data-testid="select-domain">
@@ -153,7 +179,10 @@ export function RegistrationForm() {
               name="interestAnswer"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Why are you interested in Zenith 2026? <span className="text-destructive">*</span></FormLabel>
+                  <FormLabel>
+                    Why are you interested in Zenith 2026?{' '}
+                    <span className="text-destructive">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Describe in short"

@@ -347,7 +347,7 @@ const applyTheme = (theme) => {
   document.documentElement.dataset.theme = normalizedTheme;
   elements.themeToggle.setAttribute(
     'aria-label',
-    normalizedTheme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme',
+    normalizedTheme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
   );
   elements.themeToggle.querySelector('span').textContent = normalizedTheme === 'dark' ? '☾' : '☀';
   safeStorage.set(STORAGE_KEYS.theme, normalizedTheme);
@@ -496,33 +496,29 @@ const setupEventListeners = () => {
     button.addEventListener('click', () => togglePanel(button.dataset.collapse, button));
   });
 
-window.addEventListener('message', (event) => {
-  const previewFrame = elements.previewFrame;
+  window.addEventListener('message', (event) => {
+    const previewFrame = elements.previewFrame;
 
-  // Ensure iframe exists
-  if (!previewFrame?.contentWindow) return;
+    // Ensure iframe exists
+    if (!previewFrame?.contentWindow) return;
 
-  // Accept messages only from the sandbox preview iframe
-  if (event.source !== previewFrame.contentWindow) return;
+    // Accept messages only from the sandbox preview iframe
+    if (event.source !== previewFrame.contentWindow) return;
 
-  const data = event.data;
+    const data = event.data;
 
-  // Validate payload
-  if (!data || data.source !== 'live-code-playground') return;
+    // Validate payload
+    if (!data || data.source !== 'live-code-playground') return;
 
-  // Allow only expected console levels
-  const allowedLevels = ['log', 'warn', 'error', 'info'];
+    // Allow only expected console levels
+    const allowedLevels = ['log', 'warn', 'error', 'info'];
 
-  const level = allowedLevels.includes(data.level)
-    ? data.level
-    : 'log';
+    const level = allowedLevels.includes(data.level) ? data.level : 'log';
 
-  const values = Array.isArray(data.values)
-    ? data.values
-    : [];
+    const values = Array.isArray(data.values) ? data.values : [];
 
-  appendConsoleLine(level, values);
-});
+    appendConsoleLine(level, values);
+  });
 
   window.addEventListener('keydown', (event) => {
     const modifierPressed = event.ctrlKey || event.metaKey;

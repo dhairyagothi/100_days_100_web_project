@@ -15,7 +15,9 @@
 }
 
 @keyframes rotate {
-  100% { transform: rotate(360deg); }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .coin {
@@ -89,7 +91,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px 24px;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   list-style: none;
 }
 
@@ -111,7 +113,13 @@
 }
 
 @media (max-width: 768px) {
-  .coin { padding: 24px 20px 80px; }
-  .coin-name { flex-wrap: wrap; }
-  .coin-rank-badge { margin-left: 0; }
+  .coin {
+    padding: 24px 20px 80px;
+  }
+  .coin-name {
+    flex-wrap: wrap;
+  }
+  .coin-rank-badge {
+    margin-left: 0;
+  }
 }

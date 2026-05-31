@@ -1,12 +1,12 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from 'react';
 
 export const CoinContext = createContext();
 
 const CoinContextProvider = (props) => {
   const [allCoins, setAllCoins] = useState([]);
   const [currency, setCurrency] = useState({
-    name: "usd",
-    symbol: "$",
+    name: 'usd',
+    symbol: '$',
   });
 
   // Use the API key from environment variables
@@ -14,17 +14,14 @@ const CoinContextProvider = (props) => {
   const apiKey = import.meta.env.VITE_CG_API_KEY;
   const fetchAllCoins = async () => {
     const options = {
-      method: "GET",
+      method: 'GET',
       headers: {
-        accept: "application/json",
-        "x-cg-api-key": apiKey, // Use environment variable
+        accept: 'application/json',
+        'x-cg-api-key': apiKey, // Use environment variable
       },
     };
 
-    fetch(
-      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency.name}`,
-      options
-    )
+    fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency.name}`, options)
       .then((response) => response.json())
       .then((response) => setAllCoins(response))
       .catch((err) => console.error(err));
@@ -40,11 +37,7 @@ const CoinContextProvider = (props) => {
     setCurrency,
   };
 
-  return (
-    <CoinContext.Provider value={contextValue}>
-      {props.children}
-    </CoinContext.Provider>
-  );
+  return <CoinContext.Provider value={contextValue}>{props.children}</CoinContext.Provider>;
 };
 
 export default CoinContextProvider;

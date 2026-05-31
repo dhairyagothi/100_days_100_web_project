@@ -1,30 +1,30 @@
 /* CONFIG & CONSTANTS */
 const STORAGE = {
-  API_KEY: "gc_api_key",
-  SESSIONS: "gc_sessions",
-  THEME: "gc_theme",
-  MODEL: "gc_model",
-  SYSTEM_PROMPT: "gc_system_prompt",
-  AUTO_SPEAK: "gc_auto_speak",
-  VOICE_LANG: "gc_voice_lang",
-  ONBOARDED: "gc_onboarded",
-  HF_KEY: "gc_hf_key",
+  API_KEY: 'gc_api_key',
+  SESSIONS: 'gc_sessions',
+  THEME: 'gc_theme',
+  MODEL: 'gc_model',
+  SYSTEM_PROMPT: 'gc_system_prompt',
+  AUTO_SPEAK: 'gc_auto_speak',
+  VOICE_LANG: 'gc_voice_lang',
+  ONBOARDED: 'gc_onboarded',
+  HF_KEY: 'gc_hf_key',
 };
 
 const MODEL_NAMES = {
-  "gemini-2.5-flash": "Gemini 2.5 Flash",
-  "gemini-2.5-pro": "Gemini 2.5 Pro",
-  "gemini-2.0-flash": "Gemini 2.0 Flash",
+  'gemini-2.5-flash': 'Gemini 2.5 Flash',
+  'gemini-2.5-pro': 'Gemini 2.5 Pro',
+  'gemini-2.0-flash': 'Gemini 2.0 Flash',
 };
 
 // Optional local default config file.
 // Create public/AI ChatBot/default-config.js and set window.DEFAULT_GEMINI_API_KEY.
-const DEFAULT_GEMINI_API_KEY = window.DEFAULT_GEMINI_API_KEY?.trim() || "";
-const GEMINI_PROXY_ENDPOINT = "/api/gemini";
+const DEFAULT_GEMINI_API_KEY = window.DEFAULT_GEMINI_API_KEY?.trim() || '';
+const GEMINI_PROXY_ENDPOINT = '/api/gemini';
 
 /* STATE */
-let apiKey = localStorage.getItem(STORAGE.API_KEY) || DEFAULT_GEMINI_API_KEY || "";
-let hfKey = localStorage.getItem(STORAGE.HF_KEY) || "";
+let apiKey = localStorage.getItem(STORAGE.API_KEY) || DEFAULT_GEMINI_API_KEY || '';
+let hfKey = localStorage.getItem(STORAGE.HF_KEY) || '';
 let sessions = loadSessions();
 let activeSessionId = null;
 let chatHistory = [];
@@ -41,56 +41,56 @@ let emptyStateEl = null;
 
 /* DOM */
 const $ = (id) => document.getElementById(id);
-const messagesInner = $("messages-inner");
-const viewport = $("messages-viewport");
-const promptInput = $("prompt-input");
-const sendBtn = $("send-btn");
-const imageInput = $("image-input");
-const previewImg = $("preview-img");
-const previewWrap = $("image-preview-wrap");
-const historyList = $("history-list");
-const sidebar = $("sidebar");
-const sidebarOverlay = $("sidebar-overlay");
-const headerTitle = $("header-title");
-const modelDisplay = $("model-display");
-const modelPill = $("model-pill");
-const voiceBtn = $("voice-btn");
-const pinnedBanner = $("pinned-banner");
-const pinnedCount = $("pinned-count");
-const charCounter = $("char-counter");
+const messagesInner = $('messages-inner');
+const viewport = $('messages-viewport');
+const promptInput = $('prompt-input');
+const sendBtn = $('send-btn');
+const imageInput = $('image-input');
+const previewImg = $('preview-img');
+const previewWrap = $('image-preview-wrap');
+const historyList = $('history-list');
+const sidebar = $('sidebar');
+const sidebarOverlay = $('sidebar-overlay');
+const headerTitle = $('header-title');
+const modelDisplay = $('model-display');
+const modelPill = $('model-pill');
+const voiceBtn = $('voice-btn');
+const pinnedBanner = $('pinned-banner');
+const pinnedCount = $('pinned-count');
+const charCounter = $('char-counter');
 
 /* INIT */
 function init() {
   // Theme
-  const savedTheme = localStorage.getItem(STORAGE.THEME) || "dark";
-  document.documentElement.setAttribute("data-theme", savedTheme);
+  const savedTheme = localStorage.getItem(STORAGE.THEME) || 'dark';
+  document.documentElement.setAttribute('data-theme', savedTheme);
   updateThemeOptions(savedTheme);
 
   // Model
-  const savedModel = localStorage.getItem(STORAGE.MODEL) || "gemini-2.5-flash";
-  $("model-select").value = savedModel;
+  const savedModel = localStorage.getItem(STORAGE.MODEL) || 'gemini-2.5-flash';
+  $('model-select').value = savedModel;
   modelDisplay.textContent = MODEL_NAMES[savedModel] || savedModel;
 
   // Settings fields
-  if (apiKey) $("settings-api-input").value = apiKey;
-  if (hfKey && $("settings-hf-input")) $("settings-hf-input").value = hfKey;
+  if (apiKey) $('settings-api-input').value = apiKey;
+  if (hfKey && $('settings-hf-input')) $('settings-hf-input').value = hfKey;
 
-  const sysProm = localStorage.getItem(STORAGE.SYSTEM_PROMPT) || "";
-  $("system-prompt-input").value = sysProm;
+  const sysProm = localStorage.getItem(STORAGE.SYSTEM_PROMPT) || '';
+  $('system-prompt-input').value = sysProm;
 
-  const autoSpeak = localStorage.getItem(STORAGE.AUTO_SPEAK) === "true";
-  $("auto-speak-toggle").checked = autoSpeak;
+  const autoSpeak = localStorage.getItem(STORAGE.AUTO_SPEAK) === 'true';
+  $('auto-speak-toggle').checked = autoSpeak;
 
   populateVoices();
   window.speechSynthesis.onvoiceschanged = populateVoices;
 
   // Model pill click = open settings
-  modelPill.addEventListener("click", openSettings);
+  modelPill.addEventListener('click', openSettings);
 
   // Onboarding
   const onboarded = localStorage.getItem(STORAGE.ONBOARDED);
   if (!onboarded) {
-    $("onboarding").classList.remove("hidden");
+    $('onboarding').classList.remove('hidden');
   }
 
   // Sessions
@@ -101,45 +101,42 @@ function init() {
     activeSessionId = null;
     chatHistory = [];
     clearMessages();
-    headerTitle.textContent = "New Chat";
+    headerTitle.textContent = 'New Chat';
   }
 
   // Input events
-  promptInput.addEventListener("input", onInputChange);
-  promptInput.addEventListener("keydown", onInputKeydown);
-  imageInput.addEventListener("change", onImageChange);
+  promptInput.addEventListener('input', onInputChange);
+  promptInput.addEventListener('keydown', onInputKeydown);
+  imageInput.addEventListener('change', onImageChange);
 
   // Suggestion chips
-  document.querySelectorAll(".suggestion-chip").forEach((c) =>
-    c.addEventListener("click", () => {
+  document.querySelectorAll('.suggestion-chip').forEach((c) =>
+    c.addEventListener('click', () => {
       promptInput.value = c.dataset.text;
       onInputChange();
       promptInput.focus();
-    }),
+    })
   );
 
   // Voice support check
-  if (
-    !("webkitSpeechRecognition" in window) &&
-    !("SpeechRecognition" in window)
-  ) {
-    voiceBtn.style.opacity = "0.3";
-    voiceBtn.title = "Voice not supported in this browser";
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    voiceBtn.style.opacity = '0.3';
+    voiceBtn.title = 'Voice not supported in this browser';
     voiceBtn.onclick = null;
   }
   updateSidebarToggleIcon();
 }
 
 // Keep sidebar consistent on window resize
-window.addEventListener("resize", () => {
+window.addEventListener('resize', () => {
   // On desktop, if sidebar isn't explicitly open, ensure compact rail
-  if (window.innerWidth > 720 && !sidebar.classList.contains("open")) {
+  if (window.innerWidth > 720 && !sidebar.classList.contains('open')) {
     setCompact();
   }
   updateSidebarToggleIcon();
 });
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener('DOMContentLoaded', () => {
   syncAllEyes();
 });
 
@@ -147,80 +144,73 @@ window.addEventListener("DOMContentLoaded", () => {
 let currentObStep = 1;
 
 function nextStep(n) {
-  document
-    .querySelector(`.ob-step[data-step="${currentObStep}"]`)
-    .classList.remove("active");
-  document
-    .querySelector(`.ob-prog-dot[data-dot="${currentObStep}"]`)
-    .classList.remove("active");
+  document.querySelector(`.ob-step[data-step="${currentObStep}"]`).classList.remove('active');
+  document.querySelector(`.ob-prog-dot[data-dot="${currentObStep}"]`).classList.remove('active');
   currentObStep = n;
-  document.querySelector(`.ob-step[data-step="${n}"]`).classList.add("active");
-  document
-    .querySelector(`.ob-prog-dot[data-dot="${n}"]`)
-    .classList.add("active");
+  document.querySelector(`.ob-step[data-step="${n}"]`).classList.add('active');
+  document.querySelector(`.ob-prog-dot[data-dot="${n}"]`).classList.add('active');
 }
 
 function toggleObKey() {
-  const inp = $("ob-api-input");
-  inp.type = inp.type === "password" ? "text" : "password";
+  const inp = $('ob-api-input');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
 }
 
 function finishOnboarding() {
-  const val = $("ob-api-input").value.trim();
-  const errEl = $("ob-key-error");
-  if (val && !val.startsWith("AIza")) {
-    errEl.classList.remove("hidden");
+  const val = $('ob-api-input').value.trim();
+  const errEl = $('ob-key-error');
+  if (val && !val.startsWith('AIza')) {
+    errEl.classList.remove('hidden');
     return;
   }
-  errEl.classList.add("hidden");
+  errEl.classList.add('hidden');
   if (val) {
     apiKey = val;
     localStorage.setItem(STORAGE.API_KEY, apiKey);
-    $("settings-api-input").value = apiKey;
+    $('settings-api-input').value = apiKey;
   }
 
-  const hfVal = $("ob-hf-input")?.value.trim();
+  const hfVal = $('ob-hf-input')?.value.trim();
   if (hfVal) {
     hfKey = hfVal;
     localStorage.setItem(STORAGE.HF_KEY, hfKey);
-    if ($("settings-hf-input")) $("settings-hf-input").value = hfKey;
+    if ($('settings-hf-input')) $('settings-hf-input').value = hfKey;
   }
 
-  localStorage.setItem(STORAGE.ONBOARDED, "1");
-  $("onboarding").classList.add("hidden");
+  localStorage.setItem(STORAGE.ONBOARDED, '1');
+  $('onboarding').classList.add('hidden');
 }
 
 function skipOnboarding() {
-  localStorage.setItem(STORAGE.ONBOARDED, "1");
-  $("onboarding").classList.add("hidden");
+  localStorage.setItem(STORAGE.ONBOARDED, '1');
+  $('onboarding').classList.add('hidden');
 }
 
 /* THEME */
 function toggleTheme() {
-  const curr = document.documentElement.getAttribute("data-theme");
-  setTheme(curr === "dark" ? "light" : "dark");
+  const curr = document.documentElement.getAttribute('data-theme');
+  setTheme(curr === 'dark' ? 'light' : 'dark');
 }
 
 function setTheme(t) {
   localStorage.setItem(STORAGE.THEME, t);
 
-  if (t === "system") {
-    const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-      .matches
-      ? "dark"
-      : "light";
+  if (t === 'system') {
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
 
-    document.documentElement.setAttribute("data-theme", systemTheme);
+    document.documentElement.setAttribute('data-theme', systemTheme);
   } else {
-    document.documentElement.setAttribute("data-theme", t);
+    document.documentElement.setAttribute('data-theme', t);
   }
 
   updateThemeOptions(t);
 }
 
 function updateThemeOptions(t) {
-  document.querySelectorAll(".theme-option").forEach((b) => {
-    b.classList.toggle("active", b.dataset.theme === t);
+  document.querySelectorAll('.theme-option').forEach((b) => {
+    b.classList.toggle('active', b.dataset.theme === t);
   });
 }
 
@@ -228,10 +218,10 @@ function updateThemeOptions(t) {
 function toggleSidebar() {
   // Desktop: toggle between compact (icon rail) and expanded (full sidebar)
   if (window.innerWidth > 720) {
-    if (sidebar.classList.contains("open")) {
+    if (sidebar.classList.contains('open')) {
       // currently expanded -> collapse to compact
       setCompact();
-    } else if (sidebar.classList.contains("compact")) {
+    } else if (sidebar.classList.contains('compact')) {
       // compact -> expand
       setExpanded();
     } else {
@@ -240,8 +230,8 @@ function toggleSidebar() {
     }
   } else {
     // Mobile: slide in/out full sidebar with overlay
-    const isOpen = sidebar.classList.toggle("open");
-    sidebarOverlay.classList.toggle("open", isOpen);
+    const isOpen = sidebar.classList.toggle('open');
+    sidebarOverlay.classList.toggle('open', isOpen);
     updateSidebarToggleIcon();
   }
 }
@@ -252,47 +242,45 @@ function closeSidebar() {
     setCompact();
   } else {
     // hide on mobile
-    sidebar.classList.remove("open");
-    sidebarOverlay.classList.remove("open");
+    sidebar.classList.remove('open');
+    sidebarOverlay.classList.remove('open');
     updateSidebarToggleIcon();
   }
 }
 
 function updateSidebarToggleIcon() {
-  const btn = $("sidebar-toggle");
+  const btn = $('sidebar-toggle');
   if (!btn) return;
   // consider compact vs expanded state for the icon
-  const isExpanded =
-    sidebar.classList.contains("open") ||
-    !sidebar.classList.contains("compact");
-  btn.setAttribute("aria-expanded", isExpanded ? "true" : "false");
+  const isExpanded = sidebar.classList.contains('open') || !sidebar.classList.contains('compact');
+  btn.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
   const hamburger = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></svg>`;
   const closeX = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>`;
   btn.innerHTML = isExpanded ? closeX : hamburger;
 }
 
 function setCompact() {
-  sidebar.classList.add("compact");
-  sidebar.classList.remove("open");
-  sidebarOverlay.classList.remove("open");
+  sidebar.classList.add('compact');
+  sidebar.classList.remove('open');
+  sidebarOverlay.classList.remove('open');
   updateSidebarToggleIcon();
 }
 
 function setExpanded() {
-  sidebar.classList.remove("compact");
-  sidebar.classList.add("open");
+  sidebar.classList.remove('compact');
+  sidebar.classList.add('open');
   // only show overlay on small screens
-  if (window.innerWidth <= 720) sidebarOverlay.classList.add("open");
+  if (window.innerWidth <= 720) sidebarOverlay.classList.add('open');
   updateSidebarToggleIcon();
 }
 
 /* SETTINGS */
 function openSettings() {
-  $("settings-modal").classList.remove("hidden");
+  $('settings-modal').classList.remove('hidden');
 }
 
 function closeSettings() {
-  $("settings-modal").classList.add("hidden");
+  $('settings-modal').classList.add('hidden');
 }
 
 function eyeOpenIcon() {
@@ -315,25 +303,25 @@ function eyeClosedIcon() {
 }
 
 function syncAllEyes() {
-  syncEye("settings-api-input");
-  syncEye("settings-hf-input");
+  syncEye('settings-api-input');
+  syncEye('settings-hf-input');
 }
 
 function syncEye(inputId) {
   const inp = $(inputId);
-  const btn = inp.parentElement.querySelector(".settings-eye-btn");
-  const icon = btn.querySelector(".eye-icon");
+  const btn = inp.parentElement.querySelector('.settings-eye-btn');
+  const icon = btn.querySelector('.eye-icon');
 
-  const isHidden = inp.type === "password";
+  const isHidden = inp.type === 'password';
   icon.innerHTML = isHidden ? eyeOpenIcon() : eyeClosedIcon();
 }
 
 function toggleKey(btn, inputId) {
   const inp = $(inputId);
-  const icon = btn.querySelector(".eye-icon");
+  const icon = btn.querySelector('.eye-icon');
 
-  const isHidden = inp.type === "password";
-  inp.type = isHidden ? "text" : "password";
+  const isHidden = inp.type === 'password';
+  inp.type = isHidden ? 'text' : 'password';
 
   icon.innerHTML = isHidden ? eyeClosedIcon() : eyeOpenIcon();
 }
@@ -341,17 +329,17 @@ function toggleKey(btn, inputId) {
 function saveKey(type) {
   let inputId, storageKey, statusId, setGlobal;
 
-  if (type === "gemini") {
-    inputId = "settings-api-input";
+  if (type === 'gemini') {
+    inputId = 'settings-api-input';
     storageKey = STORAGE.API_KEY;
-    statusId = "settings-key-status";
+    statusId = 'settings-key-status';
     setGlobal = (val) => (apiKey = val);
   }
 
-  if (type === "hf") {
-    inputId = "settings-hf-input";
+  if (type === 'hf') {
+    inputId = 'settings-hf-input';
     storageKey = STORAGE.HF_KEY;
-    statusId = "settings-hf-status";
+    statusId = 'settings-hf-status';
     setGlobal = (val) => (hfKey = val);
   }
 
@@ -363,66 +351,66 @@ function saveKey(type) {
   setGlobal(val);
   localStorage.setItem(storageKey, val);
 
-  statusEl.textContent = "✓ API key saved successfully";
-  statusEl.className = "settings-key-status success";
+  statusEl.textContent = '✓ API key saved successfully';
+  statusEl.className = 'settings-key-status success';
 
   setTimeout(() => {
-    statusEl.className = "settings-key-status hidden";
+    statusEl.className = 'settings-key-status hidden';
   }, 2500);
 }
 
 function saveAllSettings() {
   // API key
-  const keyVal = $("settings-api-input").value.trim();
+  const keyVal = $('settings-api-input').value.trim();
   if (keyVal) {
     apiKey = keyVal;
     localStorage.setItem(STORAGE.API_KEY, apiKey);
   }
 
-  const hfVal = $("settings-hf-input").value.trim();
+  const hfVal = $('settings-hf-input').value.trim();
   if (hfVal) {
     hfKey = hfVal;
     localStorage.setItem(STORAGE.HF_KEY, hfKey);
   }
 
   // Model
-  const model = $("model-select").value;
+  const model = $('model-select').value;
   localStorage.setItem(STORAGE.MODEL, model);
   modelDisplay.textContent = MODEL_NAMES[model] || model;
 
   // System prompt
-  const sp = $("system-prompt-input").value.trim();
+  const sp = $('system-prompt-input').value.trim();
   localStorage.setItem(STORAGE.SYSTEM_PROMPT, sp);
 
   // Auto speak
-  localStorage.setItem(STORAGE.AUTO_SPEAK, $("auto-speak-toggle").checked);
+  localStorage.setItem(STORAGE.AUTO_SPEAK, $('auto-speak-toggle').checked);
 
   // Voice lang
-  localStorage.setItem(STORAGE.VOICE_LANG, $("voice-lang-select").value);
+  localStorage.setItem(STORAGE.VOICE_LANG, $('voice-lang-select').value);
 
   closeSettings();
 }
 
 /* Close modal on backdrop click */
-$("settings-modal").addEventListener("click", (e) => {
-  if (e.target === $("settings-modal")) closeSettings();
+$('settings-modal').addEventListener('click', (e) => {
+  if (e.target === $('settings-modal')) closeSettings();
 });
 
 /* SEARCH */
 function openSearch() {
-  $("search-modal").classList.remove("hidden");
-  setTimeout(() => $("search-input").focus(), 50);
+  $('search-modal').classList.remove('hidden');
+  setTimeout(() => $('search-input').focus(), 50);
 }
 
 function closeSearch() {
-  $("search-modal").classList.add("hidden");
-  $("search-input").value = "";
-  $("search-results").innerHTML = "";
+  $('search-modal').classList.add('hidden');
+  $('search-input').value = '';
+  $('search-results').innerHTML = '';
 }
 
 function doSearch(query) {
-  const results = $("search-results");
-  results.innerHTML = "";
+  const results = $('search-results');
+  results.innerHTML = '';
   if (!query.trim()) return;
 
   const q = query.toLowerCase();
@@ -433,16 +421,16 @@ function doSearch(query) {
       if (!msg.text) return;
       if (msg.text.toLowerCase().includes(q)) {
         found++;
-        const item = document.createElement("div");
-        item.className = "search-result-item";
+        const item = document.createElement('div');
+        item.className = 'search-result-item';
         const highlighted = msg.text.replace(
-          new RegExp(`(${escapeRegex(query)})`, "gi"),
-          "<mark>$1</mark>",
+          new RegExp(`(${escapeRegex(query)})`, 'gi'),
+          '<mark>$1</mark>'
         );
         item.innerHTML = `
-          <div class="search-result-role">${msg.role === "ai" ? "Lumix" : "You"} · ${session.title}</div>
+          <div class="search-result-role">${msg.role === 'ai' ? 'Lumix' : 'You'} · ${session.title}</div>
           <div class="search-result-text">${highlighted.slice(0, 200)}</div>`;
-        item.addEventListener("click", () => {
+        item.addEventListener('click', () => {
           closeSearch();
           loadSession(session.id);
         });
@@ -456,16 +444,16 @@ function doSearch(query) {
   }
 }
 
-$("search-modal").addEventListener("click", (e) => {
-  if (e.target === $("search-modal")) closeSearch();
+$('search-modal').addEventListener('click', (e) => {
+  if (e.target === $('search-modal')) closeSearch();
 });
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
     closeSearch();
     closeSettings();
     closeExport();
   }
-  if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
     e.preventDefault();
     openSearch();
   }
@@ -473,77 +461,74 @@ document.addEventListener("keydown", (e) => {
 
 /* EXPORT */
 function openExport() {
-  $("export-modal").classList.remove("hidden");
+  $('export-modal').classList.remove('hidden');
 }
 
 function closeExport() {
-  $("export-modal").classList.add("hidden");
+  $('export-modal').classList.add('hidden');
 }
 
-$("export-modal").addEventListener("click", (e) => {
-  if (e.target === $("export-modal")) closeExport();
+$('export-modal').addEventListener('click', (e) => {
+  if (e.target === $('export-modal')) closeExport();
 });
 
 function exportAs(format) {
   const session = getCurrentSession();
-  if (!session || !session.messages.length)
-    return alert("No messages to export.");
+  if (!session || !session.messages.length) return alert('No messages to export.');
 
   const title = session.title;
   const msgs = session.messages;
-  let content = "",
+  let content = '',
     ext = format,
-    mime = "text/plain";
+    mime = 'text/plain';
 
-  if (format === "txt") {
-    content = `${title}\n${"=".repeat(title.length)}\n\n`;
+  if (format === 'txt') {
+    content = `${title}\n${'='.repeat(title.length)}\n\n`;
     msgs.forEach((m) => {
-      content += `[${m.role === "ai" ? "Lumix" : "You"}]\n${m.text || "[image]"}\n\n`;
+      content += `[${m.role === 'ai' ? 'Lumix' : 'You'}]\n${m.text || '[image]'}\n\n`;
     });
-  } else if (format === "md") {
+  } else if (format === 'md') {
     content = `# ${title}\n\n`;
 
     msgs.forEach((m) => {
-      content += `**${m.role === "ai" ? "Lumix" : "You"}**\n\n${m.text || "_[image]_"}\n\n---\n\n`;
+      content += `**${m.role === 'ai' ? 'Lumix' : 'You'}**\n\n${m.text || '_[image]_'}\n\n---\n\n`;
     });
 
-    mime = "text/markdown";
-  } else if (format === "json") {
+    mime = 'text/markdown';
+  } else if (format === 'json') {
     const exportMsgs = msgs.map((m) => ({
       ...m,
-      image: m.image ? "[base64 image omitted]" : null,
+      image: m.image ? '[base64 image omitted]' : null,
     }));
 
     content = JSON.stringify({ title, messages: exportMsgs }, null, 2);
-    mime = "application/json";
-  } else if (format === "html") {
+    mime = 'application/json';
+  } else if (format === 'html') {
     const rows = msgs
       .map((m) => {
-        const role = m.role === "ai" ? "Lumix" : "You";
-        const cls = m.role === "ai" ? "ai" : "user";
+        const role = m.role === 'ai' ? 'Lumix' : 'You';
+        const cls = m.role === 'ai' ? 'ai' : 'user';
         let bodyContent;
         if (m.image) {
           bodyContent = `<img src="${m.image}" style="max-width:340px;border-radius:8px;display:block;">`;
         } else {
-          const raw = window.marked
-            ? marked.parse(m.text || "")
-            : escapeHtml(m.text || "");
+          const raw = window.marked ? marked.parse(m.text || '') : escapeHtml(m.text || '');
           bodyContent = raw;
         }
         return `<div class="msg ${cls}"><span class="role">${role}</span><div class="text">${bodyContent}</div></div>`;
       })
-      .join("");
+      .join('');
     content = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${escapeHtml(title)}</title><style>body{font-family:sans-serif;max-width:720px;margin:40px auto;padding:0 20px;background:#0e0d0b;color:#f0ece3}.msg{margin:18px 0;padding:14px 18px;border-radius:12px}.ai{background:#1a1916;border:1px solid #2c2a26}.user{background:#e8e0cc;color:#100f0d;text-align:right}.role{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;opacity:.5;display:block;margin-bottom:6px}pre{background:#111;padding:12px;border-radius:8px;overflow-x:auto}code{font-family:monospace}</style></head><body><h1>${escapeHtml(title)}</h1>${rows}</body></html>`;
-    ext = "html";
-    mime = "text/html";
+    ext = 'html';
+    mime = 'text/html';
   }
 
   try {
     const blob = new Blob([content], { type: mime });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = url;
-    a.download = `${(title || "export").replace(/[^a-z0-9]/gi, "_").toLowerCase()}.${ext}`;
+    a.download = `${(title || 'export').replace(/[^a-z0-9]/gi, '_').toLowerCase()}.${ext}`;
     a.click();
     URL.revokeObjectURL(url);
   } finally {
@@ -570,14 +555,14 @@ function startNewChat() {
   pinnedMessages = [];
   sessions.unshift({
     id: activeSessionId,
-    title: "New Chat",
+    title: 'New Chat',
     messages: [],
     pins: [],
   });
   saveSessions();
   renderHistoryList();
   clearMessages();
-  headerTitle.textContent = "New Chat";
+  headerTitle.textContent = 'New Chat';
   if (window.innerWidth <= 720) closeSidebar();
   updatePinnedBanner();
 }
@@ -590,13 +575,11 @@ function loadSession(id) {
   chatHistory = session.messages
     .filter((m) => m.text)
     .map((m) => ({
-      role: m.role === "ai" ? "model" : m.role,
+      role: m.role === 'ai' ? 'model' : m.role,
       parts: [{ text: m.text }],
     }));
   clearMessages();
-  session.messages.forEach((m) =>
-    renderMessage(m.role, m.text, m.image, false, m.id),
-  );
+  session.messages.forEach((m) => renderMessage(m.role, m.text, m.image, false, m.id));
   headerTitle.textContent = session.title;
   renderHistoryList();
   updatePinnedBanner();
@@ -610,16 +593,16 @@ function getCurrentSession() {
 // Rename Session
 function openRenameModal(id, currentTitle) {
   renameSessionId = id;
-  document.getElementById("rename-input").value = currentTitle;
-  document.getElementById("rename-modal").classList.remove("hidden");
+  document.getElementById('rename-input').value = currentTitle;
+  document.getElementById('rename-modal').classList.remove('hidden');
 }
 
 function closeRenameModal() {
-  document.getElementById("rename-modal").classList.add("hidden");
+  document.getElementById('rename-modal').classList.add('hidden');
 }
 
 function confirmRename() {
-  const newTitle = document.getElementById("rename-input").value.trim();
+  const newTitle = document.getElementById('rename-input').value.trim();
 
   if (!newTitle) return;
 
@@ -634,11 +617,11 @@ function confirmRename() {
 // Delete Session
 function openDeleteModal(id) {
   deleteSessionId = id;
-  document.getElementById("delete-modal").classList.remove("hidden");
+  document.getElementById('delete-modal').classList.remove('hidden');
 }
 
 function closeDeleteModal() {
-  document.getElementById("delete-modal").classList.add("hidden");
+  document.getElementById('delete-modal').classList.add('hidden');
 }
 
 function confirmDelete() {
@@ -655,11 +638,11 @@ function confirmDelete() {
 
 // Clear History
 function openClearModal() {
-  document.getElementById("clear-modal").classList.remove("hidden");
+  document.getElementById('clear-modal').classList.remove('hidden');
 }
 
 function closeClearModal() {
-  document.getElementById("clear-modal").classList.add("hidden");
+  document.getElementById('clear-modal').classList.add('hidden');
 }
 
 function confirmClear() {
@@ -672,7 +655,7 @@ function confirmClear() {
 
   // Reset main chat area
   clearMessages();
-  headerTitle.textContent = "New Chat";
+  headerTitle.textContent = 'New Chat';
   chatHistory = [];
   pinnedMessages = [];
   updatePinnedBanner();
@@ -683,7 +666,7 @@ function confirmClearHistory() {
 }
 
 function renderHistoryList() {
-  historyList.innerHTML = "";
+  historyList.innerHTML = '';
 
   if (sessions.length === 0) {
     historyList.innerHTML = `
@@ -700,15 +683,14 @@ function renderHistoryList() {
 
   sessions.forEach((session) => {
     const hasPins = session.pins && session.pins.length > 0;
-    const item = document.createElement("div");
-    item.className =
-      "history-item" + (session.id === activeSessionId ? " active" : "");
+    const item = document.createElement('div');
+    item.className = 'history-item' + (session.id === activeSessionId ? ' active' : '');
     item.innerHTML = `
       <svg class="hist-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
       </svg>
       <span class="hist-title">${escapeHtml(session.title)}</span>
-      ${hasPins ? '<span class="hist-pin"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg></span>' : ""}
+      ${hasPins ? '<span class="hist-pin"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg></span>' : ''}
       <div class="hist-actions">
         <button class="hist-btn rename-btn" title="Rename">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -726,17 +708,17 @@ function renderHistoryList() {
         </button>
       </div>`;
 
-    item.querySelector(".rename-btn").addEventListener("click", (e) => {
+    item.querySelector('.rename-btn').addEventListener('click', (e) => {
       e.stopPropagation();
       openRenameModal(session.id, session.title);
     });
 
-    item.querySelector(".delete-btn").addEventListener("click", (e) => {
+    item.querySelector('.delete-btn').addEventListener('click', (e) => {
       e.stopPropagation();
       openDeleteModal(session.id);
     });
 
-    item.addEventListener("click", () => loadSession(session.id));
+    item.addEventListener('click', () => loadSession(session.id));
     historyList.appendChild(item);
   });
 }
@@ -750,13 +732,13 @@ function togglePin(messageId, btn) {
 
   if (idx === -1) {
     pinnedMessages.push(messageId);
-    btn.classList.add("active");
-    btn.title = "Unpin message";
+    btn.classList.add('active');
+    btn.title = 'Unpin message';
     btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg> Unpin`;
   } else {
     pinnedMessages.splice(idx, 1);
-    btn.classList.remove("active");
-    btn.title = "Pin message";
+    btn.classList.remove('active');
+    btn.title = 'Pin message';
     btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg> Pin`;
   }
 
@@ -767,28 +749,28 @@ function togglePin(messageId, btn) {
 
 function updatePinnedBanner() {
   if (pinnedMessages.length > 0) {
-    pinnedBanner.classList.remove("hidden");
-    pinnedCount.textContent = `${pinnedMessages.length} pinned message${pinnedMessages.length > 1 ? "s" : ""}`;
+    pinnedBanner.classList.remove('hidden');
+    pinnedCount.textContent = `${pinnedMessages.length} pinned message${pinnedMessages.length > 1 ? 's' : ''}`;
   } else {
-    pinnedBanner.classList.add("hidden");
+    pinnedBanner.classList.add('hidden');
   }
 }
 
 function togglePinnedView() {
-  const rows = messagesInner.querySelectorAll(".message-row");
-  const viewBtn = pinnedBanner.querySelector("button");
+  const rows = messagesInner.querySelectorAll('.message-row');
+  const viewBtn = pinnedBanner.querySelector('button');
 
   if (!showingPins) {
     rows.forEach((row) => {
       const id = row.dataset.id;
-      row.style.display = pinnedMessages.includes(id) ? "" : "none";
+      row.style.display = pinnedMessages.includes(id) ? '' : 'none';
     });
     showingPins = true;
-    if (viewBtn) viewBtn.textContent = "Hide";
+    if (viewBtn) viewBtn.textContent = 'Hide';
   } else {
-    rows.forEach((row) => (row.style.display = ""));
+    rows.forEach((row) => (row.style.display = ''));
     showingPins = false;
-    if (viewBtn) viewBtn.textContent = "View";
+    if (viewBtn) viewBtn.textContent = 'View';
   }
 }
 
@@ -801,7 +783,7 @@ function toggleVoice() {
 function startListening() {
   const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRec) return;
-  const lang = localStorage.getItem(STORAGE.VOICE_LANG) || "en-US";
+  const lang = localStorage.getItem(STORAGE.VOICE_LANG) || 'en-US';
   recognition = new SpeechRec();
   recognition.continuous = false;
   recognition.interimResults = true;
@@ -809,21 +791,21 @@ function startListening() {
 
   recognition.onstart = () => {
     isListening = true;
-    voiceBtn.classList.add("active");
-    $("input-box").classList.add("listening");
-    promptInput.placeholder = "Listening...";
+    voiceBtn.classList.add('active');
+    $('input-box').classList.add('listening');
+    promptInput.placeholder = 'Listening...';
   };
 
   recognition.onresult = (e) => {
     const transcript = Array.from(e.results)
       .map((r) => r[0].transcript)
-      .join("");
+      .join('');
     promptInput.value = transcript;
     onInputChange();
   };
 
   recognition.onerror = (e) => {
-    console.warn("Speech recognition error:", e.error);
+    console.warn('Speech recognition error:', e.error);
     stopListening();
   };
 
@@ -841,14 +823,14 @@ function stopListening() {
     } catch (e) {}
     recognition = null;
   }
-  voiceBtn.classList.remove("active");
-  $("input-box").classList.remove("listening");
-  promptInput.placeholder = "Message Lumix...";
+  voiceBtn.classList.remove('active');
+  $('input-box').classList.remove('listening');
+  promptInput.placeholder = 'Message Lumix...';
 }
 
 /* TTS (text to speech) */
 function speakText(text, btn) {
-  if (!("speechSynthesis" in window)) return;
+  if (!('speechSynthesis' in window)) return;
 
   if (isSpeaking) {
     window.speechSynthesis.cancel();
@@ -861,10 +843,10 @@ function speakText(text, btn) {
 
   if (currentSpeech) window.speechSynthesis.cancel();
 
-  const plain = text.replace(/[#*`>_~\[\]]/g, "").replace(/\n+/g, " ");
+  const plain = text.replace(/[#*`>_~\[\]]/g, '').replace(/\n+/g, ' ');
   const utt = new SpeechSynthesisUtterance(plain);
 
-  const savedVoice = localStorage.getItem(STORAGE.VOICE_LANG) || "";
+  const savedVoice = localStorage.getItem(STORAGE.VOICE_LANG) || '';
   const voices = window.speechSynthesis.getVoices();
   const matched = voices.find((v) => v.name === savedVoice);
   if (matched) utt.voice = matched;
@@ -895,15 +877,15 @@ function speakText(text, btn) {
 }
 
 function populateVoices() {
-  const select = $("voice-lang-select");
+  const select = $('voice-lang-select');
   const voices = window.speechSynthesis.getVoices();
   if (!voices.length) return;
 
-  const saved = localStorage.getItem(STORAGE.VOICE_LANG) || "";
-  select.innerHTML = "";
+  const saved = localStorage.getItem(STORAGE.VOICE_LANG) || '';
+  select.innerHTML = '';
 
   voices.forEach((voice) => {
-    const option = document.createElement("option");
+    const option = document.createElement('option');
     option.value = voice.name;
     option.textContent = `${voice.name} (${voice.lang})`;
     option.selected = voice.name === saved;
@@ -917,9 +899,9 @@ function onImageChange() {
   if (!file) return;
   const reader = new FileReader();
   reader.onload = (e) => {
-    selectedImage = e.target.result.split(",")[1];
+    selectedImage = e.target.result.split(',')[1];
     previewImg.src = e.target.result;
-    previewWrap.classList.remove("hidden");
+    previewWrap.classList.remove('hidden');
     updateSendBtn();
   };
   reader.readAsDataURL(file);
@@ -927,9 +909,9 @@ function onImageChange() {
 
 function clearImage() {
   selectedImage = null;
-  imageInput.value = "";
-  previewWrap.classList.add("hidden");
-  previewImg.src = "#";
+  imageInput.value = '';
+  previewWrap.classList.add('hidden');
+  previewImg.src = '#';
   updateSendBtn();
 }
 
@@ -939,10 +921,10 @@ async function handleImageGenerate() {
 
   if (!hfKey) {
     renderMessage(
-      "ai",
-      "**No Hugging Face API key** — add one in Settings to generate images.",
+      'ai',
+      '**No Hugging Face API key** — add one in Settings to generate images.',
       null,
-      true,
+      true
     );
     openSettings();
     return;
@@ -953,37 +935,37 @@ async function handleImageGenerate() {
     activeSessionId = Date.now().toString();
     session = {
       id: activeSessionId,
-      title: "New Chat",
+      title: 'New Chat',
       messages: [],
       pins: [],
     };
     sessions.unshift(session);
     saveSessions();
     renderHistoryList();
-    headerTitle.textContent = "New Chat";
+    headerTitle.textContent = 'New Chat';
   }
 
   const userMsgId = Date.now().toString();
-  renderMessage("user", text, null, true, userMsgId);
+  renderMessage('user', text, null, true, userMsgId);
 
-  promptInput.value = "";
-  promptInput.style.height = "auto";
-  charCounter.textContent = "";
+  promptInput.value = '';
+  promptInput.style.height = 'auto';
+  charCounter.textContent = '';
   sendBtn.disabled = true;
 
   const typingRow = showTyping();
 
   try {
     const res = await fetch(
-      "https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell",
+      'https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell',
       {
-        method: "POST",
+        method: 'POST',
         headers: {
           Authorization: `Bearer ${hfKey}`,
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ inputs: text }),
-      },
+      }
     );
 
     if (!res.ok) {
@@ -1004,13 +986,13 @@ async function handleImageGenerate() {
 
     removeTyping(typingRow);
 
-    const aiMsgId = Date.now().toString() + "-ai";
-    const es = messagesInner.querySelector(".empty-state");
+    const aiMsgId = Date.now().toString() + '-ai';
+    const es = messagesInner.querySelector('.empty-state');
     if (es) es.remove();
 
-    const row = document.createElement("div");
+    const row = document.createElement('div');
     row.dataset.id = aiMsgId;
-    row.className = "message-row ai";
+    row.className = 'message-row ai';
     row.innerHTML = `
       <div class="ai-sender">
         <div class="logo-mark">
@@ -1029,14 +1011,13 @@ async function handleImageGenerate() {
         </button>
       </div>`;
 
-    const img = document.createElement("img");
+    const img = document.createElement('img');
     img.src = imgUrl;
-    img.style.cssText =
-      "max-width:340px;width:100%;border-radius:14px;display:block;";
-    row.querySelector(".bubble").appendChild(img);
+    img.style.cssText = 'max-width:340px;width:100%;border-radius:14px;display:block;';
+    row.querySelector('.bubble').appendChild(img);
 
-    row.querySelector(".download-img-btn").addEventListener("click", () => {
-      const a = document.createElement("a");
+    row.querySelector('.download-img-btn').addEventListener('click', () => {
+      const a = document.createElement('a');
       a.href = imgUrl;
       a.download = `lumix-${Date.now()}.png`;
       a.click();
@@ -1047,35 +1028,35 @@ async function handleImageGenerate() {
 
     session.messages.push({
       id: aiMsgId,
-      role: "ai",
+      role: 'ai',
       text: `[Generated image: ${text}]`,
       image: base64,
     });
     saveSessions();
 
-    if (session.title === "New Chat") {
-      session.title = text.slice(0, 42) + (text.length > 42 ? "…" : "");
+    if (session.title === 'New Chat') {
+      session.title = text.slice(0, 42) + (text.length > 42 ? '…' : '');
       headerTitle.textContent = session.title;
       saveSessions();
       renderHistoryList();
     }
   } catch (err) {
     removeTyping(typingRow);
-    renderMessage("ai", `**Error:** ${err.message}`, null, true);
+    renderMessage('ai', `**Error:** ${err.message}`, null, true);
   }
 }
 
 /* INPUT */
 function onInputChange() {
-  promptInput.style.height = "auto";
-  promptInput.style.height = Math.min(promptInput.scrollHeight, 160) + "px";
+  promptInput.style.height = 'auto';
+  promptInput.style.height = Math.min(promptInput.scrollHeight, 160) + 'px';
   updateSendBtn();
   const len = promptInput.value.length;
-  charCounter.textContent = len > 100 ? `${len}` : "";
+  charCounter.textContent = len > 100 ? `${len}` : '';
 }
 
 function onInputKeydown(e) {
-  if (e.key === "Enter" && !e.shiftKey) {
+  if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
     if (!sendBtn.disabled) handleSend();
   }
@@ -1093,7 +1074,7 @@ function handleSend() {
   if (!text && !image) return;
 
   // Route to image generation if starts with /imagine
-  if (text.toLowerCase().startsWith("/imagine ")) {
+  if (text.toLowerCase().startsWith('/imagine ')) {
     promptInput.value = text.slice(9).trim(); // strip the command
     handleImageGenerate();
     return;
@@ -1107,7 +1088,7 @@ function handleSend() {
 
     session = {
       id: activeSessionId,
-      title: "New Chat",
+      title: 'New Chat',
       messages: [],
       pins: [],
     };
@@ -1115,21 +1096,20 @@ function handleSend() {
     sessions.unshift(session);
     saveSessions();
     renderHistoryList();
-    headerTitle.textContent = "New Chat";
+    headerTitle.textContent = 'New Chat';
   }
 
   const userMsgId = Date.now().toString();
-  renderMessage("user", text || "", image, true, userMsgId);
+  renderMessage('user', text || '', image, true, userMsgId);
 
   const parts = [];
   if (text) parts.push({ text });
-  if (image)
-    parts.push({ inline_data: { mime_type: "image/jpeg", data: image } });
-  chatHistory.push({ role: "user", parts });
+  if (image) parts.push({ inline_data: { mime_type: 'image/jpeg', data: image } });
+  chatHistory.push({ role: 'user', parts });
 
-  promptInput.value = "";
-  promptInput.style.height = "auto";
-  charCounter.textContent = "";
+  promptInput.value = '';
+  promptInput.style.height = 'auto';
+  charCounter.textContent = '';
   clearImage();
   sendBtn.disabled = true;
 
@@ -1138,8 +1118,8 @@ function handleSend() {
 
 async function getAIResponse() {
   const typingRow = showTyping();
-  const model = localStorage.getItem(STORAGE.MODEL) || "gemini-2.5-flash";
-  const sysProm = localStorage.getItem(STORAGE.SYSTEM_PROMPT) || "";
+  const model = localStorage.getItem(STORAGE.MODEL) || 'gemini-2.5-flash';
+  const sysProm = localStorage.getItem(STORAGE.SYSTEM_PROMPT) || '';
   const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 
   const body = { contents: chatHistory };
@@ -1149,8 +1129,8 @@ async function getAIResponse() {
     const useProxy = !apiKey;
     const fetchOptions = useProxy
       ? {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             model,
             contents: chatHistory,
@@ -1158,8 +1138,8 @@ async function getAIResponse() {
           }),
         }
       : {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body),
         };
 
@@ -1172,31 +1152,28 @@ async function getAIResponse() {
       const err = await res.json().catch(() => ({}));
       const message = err.error?.message || err.error || `HTTP ${res.status}`;
       throw new Error(
-        message || "Unable to connect to Gemini. Check your hosted proxy or API key.",
+        message || 'Unable to connect to Gemini. Check your hosted proxy or API key.'
       );
     }
 
     const data = await res.json();
     const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!aiText) throw new Error("Empty response from Gemini.");
+    if (!aiText) throw new Error('Empty response from Gemini.');
 
-    const aiMsgId = Date.now().toString() + "-ai";
-    renderMessage("ai", aiText, null, true, aiMsgId);
+    const aiMsgId = Date.now().toString() + '-ai';
+    renderMessage('ai', aiText, null, true, aiMsgId);
 
-    chatHistory.push({ role: "model", parts: [{ text: aiText }] });
+    chatHistory.push({ role: 'model', parts: [{ text: aiText }] });
 
     // Auto-speak
-    if (localStorage.getItem(STORAGE.AUTO_SPEAK) === "true")
-      speakText(aiText, null);
+    if (localStorage.getItem(STORAGE.AUTO_SPEAK) === 'true') speakText(aiText, null);
 
     // Auto-title
     const session = getCurrentSession();
-    if (session && session.title === "New Chat") {
-      const firstText =
-        chatHistory.find((m) => m.role === "user")?.parts?.[0]?.text || "";
+    if (session && session.title === 'New Chat') {
+      const firstText = chatHistory.find((m) => m.role === 'user')?.parts?.[0]?.text || '';
       if (firstText) {
-        session.title =
-          firstText.slice(0, 42) + (firstText.length > 42 ? "…" : "");
+        session.title = firstText.slice(0, 42) + (firstText.length > 42 ? '…' : '');
         headerTitle.textContent = session.title;
       }
     }
@@ -1204,30 +1181,24 @@ async function getAIResponse() {
     renderHistoryList();
   } catch (err) {
     removeTyping(typingRow);
-    renderMessage("ai", `**Error:** ${err.message}`, null, true);
+    renderMessage('ai', `**Error:** ${err.message}`, null, true);
   }
 }
 
 /* RENDER MESSAGE */
-function renderMessage(
-  role,
-  text,
-  image,
-  save,
-  messageId = Date.now().toString(),
-) {
+function renderMessage(role, text, image, save, messageId = Date.now().toString()) {
   // Remove empty state
-  const es = messagesInner.querySelector(".empty-state");
+  const es = messagesInner.querySelector('.empty-state');
   if (es) es.remove();
 
   const session = getCurrentSession();
 
-  const row = document.createElement("div");
+  const row = document.createElement('div');
   row.dataset.id = messageId;
   row.className = `message-row ${role}`;
-  if (pinnedMessages.includes(messageId)) row.classList.add("pinned");
+  if (pinnedMessages.includes(messageId)) row.classList.add('pinned');
 
-  if (role === "ai") {
+  if (role === 'ai') {
     row.innerHTML = `
       <div class="ai-sender">
         <div class="logo-mark">
@@ -1258,34 +1229,33 @@ function renderMessage(
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
           Read
         </button>
-        <button class="msg-action-btn pinned-btn ${pinnedMessages.includes(messageId) ? "active" : ""}" title="${pinnedMessages.includes(messageId) ? "Unpin" : "Pin"} message">
+        <button class="msg-action-btn pinned-btn ${pinnedMessages.includes(messageId) ? 'active' : ''}" title="${pinnedMessages.includes(messageId) ? 'Unpin' : 'Pin'} message">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg>
           Pin
         </button>
       </div>`;
 
     // Code block copy buttons
-    const bubble = row.querySelector(".bubble");
+    const bubble = row.querySelector('.bubble');
 
     if (image) {
-      const img = document.createElement("img");
+      const img = document.createElement('img');
       img.src = image;
-      img.style.cssText =
-        "max-width:340px;width:100%;border-radius:14px;display:block;";
+      img.style.cssText = 'max-width:340px;width:100%;border-radius:14px;display:block;';
       bubble.appendChild(img);
 
-      const actionsEl = row.querySelector(".msg-actions");
+      const actionsEl = row.querySelector('.msg-actions');
 
       // Hide Copy and Read, irrelevant for images
-      row.querySelector(".copy-response-btn").style.display = "none";
-      row.querySelector(".speak-btn").style.display = "none";
+      row.querySelector('.copy-response-btn').style.display = 'none';
+      row.querySelector('.speak-btn').style.display = 'none';
 
       // Add Download button
-      const dlBtn = document.createElement("button");
-      dlBtn.className = "msg-action-btn download-img-btn";
+      const dlBtn = document.createElement('button');
+      dlBtn.className = 'msg-action-btn download-img-btn';
       dlBtn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download`;
-      dlBtn.addEventListener("click", () => {
-        const a = document.createElement("a");
+      dlBtn.addEventListener('click', () => {
+        const a = document.createElement('a');
         a.href = image;
         a.download = `lumix-${Date.now()}.png`;
         a.click();
@@ -1295,74 +1265,70 @@ function renderMessage(
       bubble.innerHTML = window.marked ? marked.parse(text) : text;
 
       // code block copy buttons (already present, keep as-is)
-      bubble.querySelectorAll("pre").forEach((pre) => {
-        const btn = document.createElement("button");
-        btn.className = "copy-btn";
-        btn.textContent = "Copy";
-        btn.addEventListener("click", () => {
-          const code = pre.querySelector("code");
+      bubble.querySelectorAll('pre').forEach((pre) => {
+        const btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', () => {
+          const code = pre.querySelector('code');
           navigator.clipboard.writeText(code ? code.innerText : pre.innerText);
-          btn.textContent = "Copied!";
-          setTimeout(() => (btn.textContent = "Copy"), 2000);
+          btn.textContent = 'Copied!';
+          setTimeout(() => (btn.textContent = 'Copy'), 2000);
         });
-        pre.style.position = "relative";
+        pre.style.position = 'relative';
         pre.appendChild(btn);
       });
     }
 
     // Copy full response
-    row
-      .querySelector(".copy-response-btn")
-      .addEventListener("click", function () {
-        navigator.clipboard.writeText(text);
-        const orig = this.innerHTML;
-        this.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
-        setTimeout(() => (this.innerHTML = orig), 2000);
-      });
+    row.querySelector('.copy-response-btn').addEventListener('click', function () {
+      navigator.clipboard.writeText(text);
+      const orig = this.innerHTML;
+      this.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
+      setTimeout(() => (this.innerHTML = orig), 2000);
+    });
 
     // Speak button
-    row.querySelector(".speak-btn").addEventListener("click", function () {
+    row.querySelector('.speak-btn').addEventListener('click', function () {
       speakText(text, this);
     });
 
     const msgId = messageId;
 
-    row.querySelector(".pinned-btn").addEventListener("click", function () {
+    row.querySelector('.pinned-btn').addEventListener('click', function () {
       togglePin(messageId, this);
     });
   } else {
     // User message
-    const bubble = document.createElement("div");
-    bubble.className = "bubble";
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
 
     if (image) {
-      const img = document.createElement("img");
-      img.src = image.startsWith("data:")
-        ? image
-        : `data:image/jpeg;base64,${image}`;
-      img.className = "msg-image";
+      const img = document.createElement('img');
+      img.src = image.startsWith('data:') ? image : `data:image/jpeg;base64,${image}`;
+      img.className = 'msg-image';
       bubble.appendChild(img);
     }
 
     if (text) {
-      const p = document.createElement("p");
+      const p = document.createElement('p');
       p.textContent = text;
       bubble.appendChild(p);
     }
 
-    const actions = document.createElement("div");
-    actions.className = "msg-actions";
+    const actions = document.createElement('div');
+    actions.className = 'msg-actions';
 
-    const copyBtn = document.createElement("button");
-    copyBtn.className = "msg-action-btn";
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'msg-action-btn';
     copyBtn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy`;
-    copyBtn.addEventListener("click", () => {
+    copyBtn.addEventListener('click', () => {
       navigator.clipboard.writeText(text);
-      copyBtn.textContent = "✓ Copied";
+      copyBtn.textContent = '✓ Copied';
       setTimeout(
         () =>
           (copyBtn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy`),
-        2000,
+        2000
       );
     });
     actions.appendChild(copyBtn);
@@ -1387,8 +1353,8 @@ function renderMessage(
 
 /* TYPING */
 function showTyping() {
-  const row = document.createElement("div");
-  row.className = "typing-row";
+  const row = document.createElement('div');
+  row.className = 'typing-row';
   row.innerHTML = `
     <div class="ai-sender">
       <div class="logo-mark">
@@ -1425,7 +1391,7 @@ function removeTyping(row) {
 
 /* HELPERS */
 function clearMessages() {
-  messagesInner.innerHTML = "";
+  messagesInner.innerHTML = '';
 
   const noSessions = sessions.length === 0;
 
@@ -1465,28 +1431,25 @@ function clearMessages() {
     </div>`;
 
   // Re-bind chips
-  messagesInner.querySelectorAll(".suggestion-chip").forEach((c) =>
-    c.addEventListener("click", () => {
+  messagesInner.querySelectorAll('.suggestion-chip').forEach((c) =>
+    c.addEventListener('click', () => {
       promptInput.value = c.dataset.text;
       onInputChange();
       promptInput.focus();
-    }),
+    })
   );
 }
 
 function scrollToBottom() {
-  viewport.scrollTo({ top: viewport.scrollHeight, behavior: "smooth" });
+  viewport.scrollTo({ top: viewport.scrollHeight, behavior: 'smooth' });
 }
 
 function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 function escapeRegex(str) {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 /* START */

@@ -23,7 +23,7 @@ body {
 
 body {
   margin: 0;
-  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
   color: var(--text);
   background:
     radial-gradient(circle at top left, rgba(96, 165, 250, 0.22), transparent 30%),
@@ -69,7 +69,7 @@ a {
 }
 
 .hero-panel::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: auto 0 0 0;
   height: 1px;
@@ -182,9 +182,9 @@ a {
 
 .input,
 .select,
-input[type="text"],
-input[type="email"],
-input[type="password"] {
+input[type='text'],
+input[type='email'],
+input[type='password'] {
   width: 100%;
   padding: 14px 16px;
   border: 1px solid rgba(148, 163, 184, 0.2);
@@ -192,14 +192,17 @@ input[type="password"] {
   background: rgba(15, 23, 42, 0.9);
   color: var(--text);
   outline: none;
-  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
 }
 
 .input:focus,
 .select:focus,
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus {
+input[type='text']:focus,
+input[type='email']:focus,
+input[type='password']:focus {
   border-color: rgba(96, 165, 250, 0.7);
   box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.14);
 }
@@ -212,7 +215,7 @@ input[type="password"]:focus {
 }
 
 .btn,
-button[type="submit"],
+button[type='submit'],
 .link-btn {
   display: inline-flex;
   align-items: center;
@@ -224,18 +227,21 @@ button[type="submit"],
   border-radius: 14px;
   font-weight: 800;
   cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
 }
 
 .btn:hover,
-button[type="submit"]:hover,
+button[type='submit']:hover,
 .link-btn:hover {
   transform: translateY(-1px);
 }
 
 .btn-primary,
 button.btn-primary,
-button[type="submit"],
+button[type='submit'],
 .link-btn.primary {
   color: white;
   background: linear-gradient(135deg, var(--accent), #2563eb);

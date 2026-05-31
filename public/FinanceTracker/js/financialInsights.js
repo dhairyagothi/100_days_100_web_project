@@ -1,37 +1,23 @@
 // js/financialInsights.js
 
-export const renderInsights =
-  (insights) => {
+export const renderInsights = (insights) => {
+  const container = document.getElementById('aiInsights');
 
-    const container =
-      document.getElementById(
-        "aiInsights"
-      );
+  if (!container) return;
 
-    if (!container) return;
+  container.innerHTML = '';
 
-    container.innerHTML = "";
+  insights.forEach((insight) => {
+    const card = document.createElement('div');
 
-    insights.forEach(
-      (insight) => {
+    card.className = 'insight-card';
 
-        const card =
-          document.createElement(
-            "div"
-          );
-
-        card.className =
-          "insight-card";
-
-        card.innerHTML = `
+    card.innerHTML = `
 
           <p>${insight}</p>
 
         `;
 
-        container.appendChild(
-          card
-        );
-      }
-    );
+    container.appendChild(card);
+  });
 };

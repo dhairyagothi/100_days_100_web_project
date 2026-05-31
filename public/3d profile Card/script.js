@@ -64,7 +64,8 @@ function saveState() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   } catch (error) {
-    elements.validation.textContent = 'This image is too large to save locally, but the live preview still works.';
+    elements.validation.textContent =
+      'This image is too large to save locally, but the live preview still works.';
   }
 }
 
@@ -80,7 +81,8 @@ function hydrateForm() {
   elements.theme.value = state.theme;
   elements.darkMode.checked = state.darkMode;
   const selectedLayout = document.querySelector(`input[name="layout"][value="${state.layout}"]`);
-  (selectedLayout || document.querySelector('input[name="layout"][value="classic"]')).checked = true;
+  (selectedLayout || document.querySelector('input[name="layout"][value="classic"]')).checked =
+    true;
 }
 
 function getDisplayValue(value, fallback) {
@@ -101,24 +103,24 @@ const SOCIAL_PLATFORMS = {
 function getAbsoluteSocialUrl(platform, value) {
   const cleaned = value.trim();
   if (!cleaned) return '';
-  
+
   if (/^https?:\/\//i.test(cleaned)) {
     return cleaned;
   }
-  
+
   const info = SOCIAL_PLATFORMS[platform];
   if (!info) return cleaned;
-  
+
   if (cleaned.toLowerCase().includes(info.domain)) {
     return `https://${cleaned.replace(/^www\./i, '')}`;
   }
-  
+
   const username = cleaned.replace(/^@/, '');
-  
+
   if (platform === 'linkedin' && username.startsWith('in/')) {
     return `https://linkedin.com/${username}`;
   }
-  
+
   return `${info.base}${username}`;
 }
 
@@ -151,11 +153,11 @@ function updateSocialLinks() {
 
 function updateValidation() {
   const invalidFields = [];
-  
+
   if (elements.imageUrl.value.trim() && !isValidUrl(elements.imageUrl.value)) {
     invalidFields.push(elements.imageUrl);
   }
-  
+
   const socialPlatforms = ['github', 'linkedin', 'twitter', 'instagram'];
   socialPlatforms.forEach((platform) => {
     const field = elements[platform];
@@ -174,7 +176,7 @@ function updateValidation() {
     elements.twitter,
     elements.instagram,
   ];
-  
+
   urlFields.forEach((field) => {
     field.classList.toggle('invalid', invalidFields.includes(field));
   });
@@ -203,11 +205,11 @@ function updateThemeColor() {
   document.documentElement.style.setProperty('--dark-card-bg', darkCard);
   document.documentElement.style.setProperty(
     '--theme-focus',
-    `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.18)`,
+    `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.18)`
   );
   document.documentElement.style.setProperty(
     '--theme-shadow',
-    `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.34)`,
+    `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.34)`
   );
 }
 
@@ -232,8 +234,7 @@ function hexToRgb(hex) {
 function mixColors(color, base, amount) {
   const foreground = hexToRgb(color);
   const background = hexToRgb(base);
-  const channel = (key) =>
-    Math.round(foreground[key] * amount + background[key] * (1 - amount));
+  const channel = (key) => Math.round(foreground[key] * amount + background[key] * (1 - amount));
 
   return `rgb(${channel('r')}, ${channel('g')}, ${channel('b')})`;
 }
@@ -245,7 +246,7 @@ function getColorBrightness(hex) {
 
 function getContrastColor(themeHex, isDarkMode) {
   const brightness = getColorBrightness(themeHex);
-  
+
   if (isDarkMode) {
     if (brightness < 120) {
       return mixColors(themeHex, '#ffffff', 0.65);
@@ -311,7 +312,7 @@ function compressAndLoadImage(file, callback) {
       const canvas = document.createElement('canvas');
       let width = img.width;
       let height = img.height;
-      
+
       const maxDim = 400;
       if (width > height) {
         if (width > maxDim) {
@@ -324,12 +325,12 @@ function compressAndLoadImage(file, callback) {
           height = maxDim;
         }
       }
-      
+
       canvas.width = width;
       canvas.height = height;
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, width, height);
-      
+
       // Compress to JPEG with 0.82 quality
       const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
       callback(compressedDataUrl);
@@ -357,7 +358,8 @@ function handleImageUpload(event) {
 
 async function downloadCard() {
   if (typeof html2canvas !== 'function') {
-    elements.validation.textContent = 'Download is unavailable until the export library finishes loading.';
+    elements.validation.textContent =
+      'Download is unavailable until the export library finishes loading.';
     return;
   }
 
@@ -386,7 +388,8 @@ async function downloadCard() {
     link.href = canvas.toDataURL('image/png');
     link.click();
   } catch (error) {
-    elements.validation.textContent = 'Unable to export this image. Try an uploaded image or a CORS-enabled image URL.';
+    elements.validation.textContent =
+      'Unable to export this image. Try an uploaded image or a CORS-enabled image URL.';
   } finally {
     document.body.classList.remove('is-exporting');
     elements.card.classList.remove('is-exporting');
@@ -408,7 +411,7 @@ function waitForImages(container) {
         new Promise((resolve) => {
           image.addEventListener('load', resolve, { once: true });
           image.addEventListener('error', resolve, { once: true });
-        }),
+        })
     );
 
   return Promise.all(pendingImages);

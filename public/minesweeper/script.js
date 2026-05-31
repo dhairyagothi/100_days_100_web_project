@@ -5,26 +5,26 @@
     hard: { rows: 16, cols: 18, mines: 52 },
   };
 
-  const boardEl = document.querySelector("#board");
-  const mineCountEl = document.querySelector("#mine-count");
-  const timerEl = document.querySelector("#timer");
-  const messageEl = document.querySelector("#game-message");
-  const restartButton = document.querySelector("#restart-button");
-  const gameCard = document.querySelector(".game-card");
-  const difficultyButtons = document.querySelectorAll("[data-difficulty]");
-  const bestScoreEl = document.querySelector("#best-score");
-  const themeToggle = document.querySelector("[data-theme-toggle]");
-  const themeIconEl = document.querySelector("[data-theme-icon]");
-  const soundToggle = document.querySelector("[data-sound-toggle]");
-  const soundIconEl = document.querySelector("[data-sound-icon]");
-  const modalEl = document.querySelector("[data-modal]");
-  const modalTitleEl = document.querySelector("[data-modal-title]");
-  const modalMessageEl = document.querySelector("[data-modal-message]");
-  const modalIconEl = document.querySelector("[data-modal-icon]");
-  const modalRestartButton = document.querySelector("[data-modal-restart]");
+  const boardEl = document.querySelector('#board');
+  const mineCountEl = document.querySelector('#mine-count');
+  const timerEl = document.querySelector('#timer');
+  const messageEl = document.querySelector('#game-message');
+  const restartButton = document.querySelector('#restart-button');
+  const gameCard = document.querySelector('.game-card');
+  const difficultyButtons = document.querySelectorAll('[data-difficulty]');
+  const bestScoreEl = document.querySelector('#best-score');
+  const themeToggle = document.querySelector('[data-theme-toggle]');
+  const themeIconEl = document.querySelector('[data-theme-icon]');
+  const soundToggle = document.querySelector('[data-sound-toggle]');
+  const soundIconEl = document.querySelector('[data-sound-icon]');
+  const modalEl = document.querySelector('[data-modal]');
+  const modalTitleEl = document.querySelector('[data-modal-title]');
+  const modalMessageEl = document.querySelector('[data-modal-message]');
+  const modalIconEl = document.querySelector('[data-modal-icon]');
+  const modalRestartButton = document.querySelector('[data-modal-restart]');
 
   const state = {
-    difficulty: "easy",
+    difficulty: 'easy',
     grid: [],
     rows: 0,
     cols: 0,
@@ -38,27 +38,30 @@
     seconds: 0,
     longPressTimer: null,
     skipNextClick: false,
-    soundEnabled: localStorage.getItem("minesweeper-sound") !== "off",
+    soundEnabled: localStorage.getItem('minesweeper-sound') !== 'off',
   };
 
-  const pad = (value) => String(value).padStart(3, "0");
+  const pad = (value) => String(value).padStart(3, '0');
   const formatTimer = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-    return `${pad(minutes).slice(-2)}:${String(remainingSeconds).padStart(2, "0")}`;
+    return `${pad(minutes).slice(-2)}:${String(remainingSeconds).padStart(2, '0')}`;
   };
-  const formatMineCount = (count) => `${count < 0 ? "-" : ""}${pad(Math.abs(count))}`;
+  const formatMineCount = (count) => `${count < 0 ? '-' : ''}${pad(Math.abs(count))}`;
   const indexOf = (row, col) => row * state.cols + col;
   const isInside = (row, col) => row >= 0 && row < state.rows && col >= 0 && col < state.cols;
   const icon = {
     flag: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V4"/><path d="M6 5h11l-2 4 2 4H6"/></svg>',
     mine: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M19.1 4.9l-2.8 2.8M7.7 16.3l-2.8 2.8"/></svg>',
-    restart: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v6h-6"/></svg>',
+    restart:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v6h-6"/></svg>',
     win: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>',
     moon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.4 15.4A8.5 8.5 0 0 1 8.6 3.6 8.7 8.7 0 1 0 20.4 15.4Z"/></svg>',
     sun: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>',
-    soundOn: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z"/><path d="M17 9a4 4 0 0 1 0 6"/></svg>',
-    soundOff: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z"/><path d="M19 9l-4 6M15 9l4 6"/></svg>',
+    soundOn:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z"/><path d="M17 9a4 4 0 0 1 0 6"/></svg>',
+    soundOff:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z"/><path d="M19 9l-4 6M15 9l4 6"/></svg>',
   };
 
   function newGame(difficulty = state.difficulty) {
@@ -78,8 +81,8 @@
     state.lossModalTimer = null;
     closeModal();
     setControlsDisabled(false);
-    gameCard.classList.remove("won", "game-lost");
-    boardEl.classList.remove("board-locked");
+    gameCard.classList.remove('won', 'game-lost');
+    boardEl.classList.remove('board-locked');
 
     state.grid = Array.from({ length: state.rows * state.cols }, (_, index) => ({
       index,
@@ -98,7 +101,7 @@
     renderBoard();
     updateStatus();
     updateBestScore();
-    messageEl.textContent = "Find every safe tile. Right click or long press to flag.";
+    messageEl.textContent = 'Find every safe tile. Right click or long press to flag.';
   }
 
   function placeMines() {
@@ -133,23 +136,25 @@
 
   function renderBoard() {
     boardEl.style.gridTemplateColumns = `repeat(${state.cols}, var(--cell-size))`;
-    boardEl.innerHTML = state.grid.map((cell) => {
-      const content = getCellContent(cell);
-      const classes = getCellClasses(cell).join(" ");
-      return `<button class="${classes}" type="button" role="gridcell" data-index="${cell.index}" aria-label="${getCellLabel(cell)}">${content}</button>`;
-    }).join("");
+    boardEl.innerHTML = state.grid
+      .map((cell) => {
+        const content = getCellContent(cell);
+        const classes = getCellClasses(cell).join(' ');
+        return `<button class="${classes}" type="button" role="gridcell" data-index="${cell.index}" aria-label="${getCellLabel(cell)}">${content}</button>`;
+      })
+      .join('');
     clearRevealMarks();
   }
 
   function getCellClasses(cell) {
-    const classes = ["cell"];
-    if (cell.exploded) classes.push("exploded-mine");
-    else if (cell.revealed && cell.mine) classes.push("mine-cell");
-    else if (cell.revealed) classes.push("revealed-cell");
-    else if (cell.flagged) classes.push("hidden-cell", "flagged-cell");
-    else classes.push("hidden-cell");
+    const classes = ['cell'];
+    if (cell.exploded) classes.push('exploded-mine');
+    else if (cell.revealed && cell.mine) classes.push('mine-cell');
+    else if (cell.revealed) classes.push('revealed-cell');
+    else if (cell.flagged) classes.push('hidden-cell', 'flagged-cell');
+    else classes.push('hidden-cell');
     if (cell.revealed && cell.adjacent > 0) classes.push(`number-${cell.adjacent}`);
-    if (cell.justRevealed) classes.push("newly-revealed");
+    if (cell.justRevealed) classes.push('newly-revealed');
     return classes;
   }
 
@@ -161,17 +166,17 @@
 
   function getCellContent(cell) {
     if (cell.flagged && !cell.revealed) return icon.flag;
-    if (!cell.revealed) return "";
+    if (!cell.revealed) return '';
     if (cell.mine) return icon.mine;
-    return cell.adjacent || "";
+    return cell.adjacent || '';
   }
 
   function getCellLabel(cell) {
-    if (cell.flagged && !cell.revealed) return "Flagged cell";
-    if (!cell.revealed) return "Hidden cell";
-    if (cell.mine) return "Mine";
+    if (cell.flagged && !cell.revealed) return 'Flagged cell';
+    if (!cell.revealed) return 'Hidden cell';
+    if (cell.mine) return 'Mine';
     if (cell.adjacent) return `${cell.adjacent} adjacent mines`;
-    return "Empty revealed cell";
+    return 'Empty revealed cell';
   }
 
   function startTimer() {
@@ -240,14 +245,19 @@
     });
     renderBoard();
     updateStatus();
-    gameCard.classList.add("game-lost");
-    boardEl.classList.add("board-locked");
-    messageEl.textContent = "Mine triggered. Study the field before the next sweep.";
+    gameCard.classList.add('game-lost');
+    boardEl.classList.add('board-locked');
+    messageEl.textContent = 'Mine triggered. Study the field before the next sweep.';
     playTone(120, 0.12);
     setTimeout(() => playTone(90, 0.12), 120);
 
     state.lossModalTimer = setTimeout(() => {
-      openModal("Game Over", "A mine was triggered. Reset the grid and make a cleaner sweep.", "lose", getLossStats());
+      openModal(
+        'Game Over',
+        'A mine was triggered. Reset the grid and make a cleaner sweep.',
+        'lose',
+        getLossStats()
+      );
       state.lossModalTimer = null;
     }, 2400);
   }
@@ -268,9 +278,13 @@
     renderBoard();
     updateStatus();
     updateBestScore();
-    messageEl.textContent = "Board cleared. Nicely done.";
-    gameCard.classList.add("won");
-    openModal("You Win", `Board cleared in ${formatTimer(state.seconds)}. Best time saved for ${state.difficulty} mode.`, "win");
+    messageEl.textContent = 'Board cleared. Nicely done.';
+    gameCard.classList.add('won');
+    openModal(
+      'You Win',
+      `Board cleared in ${formatTimer(state.seconds)}. Best time saved for ${state.difficulty} mode.`,
+      'win'
+    );
     playTone(620, 0.1);
     setTimeout(() => playTone(880, 0.12), 100);
     return true;
@@ -287,7 +301,7 @@
 
   function updateBestScore() {
     const score = localStorage.getItem(bestScoreKey());
-    bestScoreEl.textContent = score ? formatTimer(Number(score)) : "--";
+    bestScoreEl.textContent = score ? formatTimer(Number(score)) : '--';
   }
 
   function saveBestScore() {
@@ -306,7 +320,7 @@
     const oscillator = audio.createOscillator();
     const gain = audio.createGain();
     oscillator.frequency.value = frequency;
-    oscillator.type = "sine";
+    oscillator.type = 'sine';
     gain.gain.setValueAtTime(0.04, audio.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + duration);
     oscillator.connect(gain);
@@ -319,9 +333,9 @@
     const correctFlags = state.grid.filter((cell) => cell.mine && cell.flagged).length;
     const safeCells = state.rows * state.cols - state.mines;
     return [
-      ["Final time", formatTimer(state.seconds)],
-      ["Mines cleared", `${correctFlags}/${state.mines}`],
-      ["Safe tiles opened", `${state.revealed}/${safeCells}`],
+      ['Final time', formatTimer(state.seconds)],
+      ['Mines cleared', `${correctFlags}/${state.mines}`],
+      ['Safe tiles opened', `${state.revealed}/${safeCells}`],
     ];
   }
 
@@ -329,7 +343,7 @@
     setControlsDisabled(false);
     modalTitleEl.textContent = title;
     modalMessageEl.innerHTML = buildModalMessage(message, stats);
-    modalIconEl.innerHTML = type === "win" ? icon.win : icon.mine;
+    modalIconEl.innerHTML = type === 'win' ? icon.win : icon.mine;
     modalEl.hidden = false;
   }
 
@@ -338,10 +352,13 @@
   }
 
   function buildModalMessage(message, stats) {
-    const statMarkup = stats.map(([label, value]) => (
-      `<span class="modal-stat"><span>${label}</span><strong>${value}</strong></span>`
-    )).join("");
-    return `${message}${statMarkup ? `<span class="modal-stats">${statMarkup}</span>` : ""}`;
+    const statMarkup = stats
+      .map(
+        ([label, value]) =>
+          `<span class="modal-stat"><span>${label}</span><strong>${value}</strong></span>`
+      )
+      .join('');
+    return `${message}${statMarkup ? `<span class="modal-stats">${statMarkup}</span>` : ''}`;
   }
 
   function setControlsDisabled(disabled) {
@@ -352,40 +369,40 @@
   }
 
   function restartWithAnimation() {
-    gameCard.classList.add("restarting");
-    setTimeout(() => gameCard.classList.remove("restarting"), 460);
+    gameCard.classList.add('restarting');
+    setTimeout(() => gameCard.classList.remove('restarting'), 460);
     newGame();
   }
 
   function updateChromeIcons() {
-    themeIconEl.innerHTML = document.body.classList.contains("light-mode") ? icon.sun : icon.moon;
+    themeIconEl.innerHTML = document.body.classList.contains('light-mode') ? icon.sun : icon.moon;
     soundIconEl.innerHTML = state.soundEnabled ? icon.soundOn : icon.soundOff;
-    document.querySelector(".restart-icon").innerHTML = icon.restart;
-    document.querySelector("[data-guide-flag]").innerHTML = icon.flag;
-    document.querySelector("[data-guide-mine]").innerHTML = icon.mine;
-    document.querySelector("[data-guide-explosion]").innerHTML = icon.mine;
+    document.querySelector('.restart-icon').innerHTML = icon.restart;
+    document.querySelector('[data-guide-flag]').innerHTML = icon.flag;
+    document.querySelector('[data-guide-mine]').innerHTML = icon.mine;
+    document.querySelector('[data-guide-explosion]').innerHTML = icon.mine;
   }
 
-  boardEl.addEventListener("click", (event) => {
+  boardEl.addEventListener('click', (event) => {
     if (state.skipNextClick) {
       state.skipNextClick = false;
       return;
     }
-    const cellEl = event.target.closest(".cell");
+    const cellEl = event.target.closest('.cell');
     if (!cellEl) return;
     revealCell(Number(cellEl.dataset.index));
   });
 
-  boardEl.addEventListener("contextmenu", (event) => {
-    const cellEl = event.target.closest(".cell");
+  boardEl.addEventListener('contextmenu', (event) => {
+    const cellEl = event.target.closest('.cell');
     if (!cellEl) return;
     event.preventDefault();
     toggleFlag(Number(cellEl.dataset.index));
   });
 
-  boardEl.addEventListener("pointerdown", (event) => {
-    const cellEl = event.target.closest(".cell");
-    if (!cellEl || event.pointerType === "mouse") return;
+  boardEl.addEventListener('pointerdown', (event) => {
+    const cellEl = event.target.closest('.cell');
+    if (!cellEl || event.pointerType === 'mouse') return;
     state.longPressTimer = setTimeout(() => {
       toggleFlag(Number(cellEl.dataset.index));
       state.skipNextClick = true;
@@ -393,37 +410,40 @@
     }, 480);
   });
 
-  boardEl.addEventListener("pointerup", () => clearTimeout(state.longPressTimer));
-  boardEl.addEventListener("pointerleave", () => clearTimeout(state.longPressTimer));
+  boardEl.addEventListener('pointerup', () => clearTimeout(state.longPressTimer));
+  boardEl.addEventListener('pointerleave', () => clearTimeout(state.longPressTimer));
 
   difficultyButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      difficultyButtons.forEach((item) => item.classList.remove("active"));
-      button.classList.add("active");
+    button.addEventListener('click', () => {
+      difficultyButtons.forEach((item) => item.classList.remove('active'));
+      button.classList.add('active');
       newGame(button.dataset.difficulty);
     });
   });
 
-  restartButton.addEventListener("click", restartWithAnimation);
-  modalRestartButton.addEventListener("click", restartWithAnimation);
-  modalEl.addEventListener("click", (event) => {
+  restartButton.addEventListener('click', restartWithAnimation);
+  modalRestartButton.addEventListener('click', restartWithAnimation);
+  modalEl.addEventListener('click', (event) => {
     if (event.target === modalEl) closeModal();
   });
 
-  soundToggle.addEventListener("click", () => {
+  soundToggle.addEventListener('click', () => {
     state.soundEnabled = !state.soundEnabled;
-    localStorage.setItem("minesweeper-sound", state.soundEnabled ? "on" : "off");
+    localStorage.setItem('minesweeper-sound', state.soundEnabled ? 'on' : 'off');
     updateChromeIcons();
   });
 
-  themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("light-mode");
-    localStorage.setItem("minesweeper-theme", document.body.classList.contains("light-mode") ? "light" : "dark");
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('light-mode');
+    localStorage.setItem(
+      'minesweeper-theme',
+      document.body.classList.contains('light-mode') ? 'light' : 'dark'
+    );
     updateChromeIcons();
   });
 
-  if (localStorage.getItem("minesweeper-theme") === "light") {
-    document.body.classList.add("light-mode");
+  if (localStorage.getItem('minesweeper-theme') === 'light') {
+    document.body.classList.add('light-mode');
   }
 
   updateChromeIcons();

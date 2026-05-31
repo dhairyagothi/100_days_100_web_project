@@ -48,11 +48,10 @@ function renderCalendar() {
     const day = document.createElement('div');
     day.className = 'day';
     day.textContent = d;
-    
+
     const monthKey = `${y}-${m}`;
 
-    const savedDays =
-      JSON.parse(localStorage.getItem(monthKey)) || [];
+    const savedDays = JSON.parse(localStorage.getItem(monthKey)) || [];
 
     if (savedDays.includes(String(d))) {
       day.classList.add('checked');
@@ -61,14 +60,9 @@ function renderCalendar() {
     day.onclick = () => {
       day.classList.toggle('checked');
 
-      const checkedDays = [
-        ...document.querySelectorAll('.day.checked')
-      ].map((d) => d.textContent);
+      const checkedDays = [...document.querySelectorAll('.day.checked')].map((d) => d.textContent);
 
-      localStorage.setItem(
-        monthKey,
-        JSON.stringify(checkedDays)
-      );
+      localStorage.setItem(monthKey, JSON.stringify(checkedDays));
 
       updateProgress();
     };
@@ -90,23 +84,15 @@ function save() {
   localStorage.setItem('habits', JSON.stringify(state.habits));
 }
 
-
 // ---- Theme Toggle ----
 $('#themeToggle').onchange = (e) => {
   const isDark = e.target.checked;
 
-  document.documentElement.setAttribute(
-    'data-theme',
-    isDark ? 'dark' : ''
-  );
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : '');
 
-  $('#themeLabel').textContent =
-    isDark ? '🌙 Dark' : '☀️ Light';
+  $('#themeLabel').textContent = isDark ? '🌙 Dark' : '☀️ Light';
 
-  localStorage.setItem(
-    'theme',
-    isDark ? 'dark' : 'light'
-  );
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
 };
 
 // ---- Modal ----
@@ -138,15 +124,11 @@ $('#nextMonth').onclick = () => {
 const savedTheme = localStorage.getItem('theme');
 
 if (savedTheme === 'dark') {
-  document.documentElement.setAttribute(
-    'data-theme',
-    'dark'
-  );
+  document.documentElement.setAttribute('data-theme', 'dark');
 
   $('#themeToggle').checked = true;
 
-  $('#themeLabel').textContent =
-    '🌙 Dark';
+  $('#themeLabel').textContent = '🌙 Dark';
 }
 
 renderHabits();

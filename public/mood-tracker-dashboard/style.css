@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -114,7 +114,7 @@ h1 {
 }
 
 .jar::before {
-  content: "";
+  content: '';
   position: absolute;
   width: 180px;
   height: 45px;
@@ -276,7 +276,6 @@ h1 {
 /* Responsive */
 
 @media (max-width: 768px) {
-
   h1 {
     font-size: 48px;
   }

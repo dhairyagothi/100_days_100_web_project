@@ -9,7 +9,8 @@ h1 {
   color: #1e293b;
 }
 
-.controls input, select {
+.controls input,
+select {
   padding: 8px;
   margin: 5px;
   border-radius: 6px;
@@ -43,7 +44,7 @@ button:hover {
   background: white;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 textarea {
@@ -62,10 +63,19 @@ textarea {
   font-weight: bold;
 }
 
-.Low { background: #bbf7d0; }
-.Medium { background: #fde68a; }
-.High { background: #fecaca; }
-.Critical { background: #ef4444; color: white; }
+.Low {
+  background: #bbf7d0;
+}
+.Medium {
+  background: #fde68a;
+}
+.High {
+  background: #fecaca;
+}
+.Critical {
+  background: #ef4444;
+  color: white;
+}
 
 .timeline-entry {
   text-align: left;

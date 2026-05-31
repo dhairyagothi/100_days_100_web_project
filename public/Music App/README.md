@@ -1,9 +1,11 @@
 # Pulse Music App
 
 ## Description
+
 Pulse Music App is a modern, responsive web-based music player that lets users browse songs by category, search the music library, play tracks, control playback, adjust volume, like favorite songs, and switch between dark and light themes.
 
 ## Features
+
 - Fully functional audio playback
 - Play, pause, next, and previous controls
 - Floating translucent music player bar
@@ -19,11 +21,13 @@ Pulse Music App is a modern, responsive web-based music player that lets users b
 - Responsive design for desktop, tablet, and mobile screens
 
 ## Technologies Used
+
 - HTML5
 - CSS3
 - JavaScript ES6
 
 ## Installation/Setup
+
 1. Clone or download the repository.
 2. Open the project folder.
 3. Navigate to `public/Music App`.
@@ -40,6 +44,7 @@ http://localhost:8080/public/Music%20App/
 ```
 
 ## Usage
+
 Use the sidebar to filter songs by category. Search for tracks using the search bar, then click any song card to start playback. Use the floating player to play or pause music, skip tracks, seek through the song, adjust volume, enable shuffle or repeat, and like the current song. Use the theme toggle to switch between dark and light mode.
 
 ## Screenshots
@@ -48,9 +53,8 @@ Use the sidebar to filter songs by category. Search for tracks using the search 
 
 <img width="1890" height="943" alt="image" src="https://github.com/user-attachments/assets/b0ed2a56-1cba-42f4-9bed-aeabf72e2a8e" />
 
-
-
 ## Contributing
+
 Contributions are welcome. To contribute:
 
 1. Fork the repository.
@@ -60,7 +64,9 @@ Contributions are welcome. To contribute:
 5. Submit a pull request with a clear description of your changes.
 
 ## License
+
 MIT License
 
 ## Author
+
 Created by Indrayani Verulkar

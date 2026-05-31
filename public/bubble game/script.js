@@ -3,7 +3,8 @@ const ctx = canvas.getContext('2d');
 const nextCanvas = document.getElementById('nextCanvas');
 const nextCtx = nextCanvas.getContext('2d');
 
-const W = canvas.width, H = canvas.height;
+const W = canvas.width,
+  H = canvas.height;
 const COLS = 11;
 const R = 18;
 const BUBBLE_DIAM = R * 2;
@@ -12,12 +13,12 @@ const SHOOTER_X = W / 2;
 const MAX_ROWS = 14;
 
 const COLORS = [
-  { name:'cyan',   hex:'#00f5ff' },
-  { name:'pink',   hex:'#ff006e' },
-  { name:'yellow', hex:'#ffea00' },
-  { name:'green',  hex:'#39ff14' },
-  { name:'orange', hex:'#ff6d00' },
-  { name:'purple', hex:'#bf5fff' },
+  { name: 'cyan', hex: '#00f5ff' },
+  { name: 'pink', hex: '#ff006e' },
+  { name: 'yellow', hex: '#ffea00' },
+  { name: 'green', hex: '#39ff14' },
+  { name: 'orange', hex: '#ff6d00' },
+  { name: 'purple', hex: '#bf5fff' },
 ];
 
 // Safe color getter
@@ -32,20 +33,30 @@ function getAudio() {
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   return audioCtx;
 }
-function playTone(freq, dur, type='sine', vol=0.2) {
+function playTone(freq, dur, type = 'sine', vol = 0.2) {
   try {
     const ac = getAudio();
-    const o = ac.createOscillator(), g = ac.createGain();
-    o.connect(g); g.connect(ac.destination);
-    o.type = type; o.frequency.value = freq;
+    const o = ac.createOscillator(),
+      g = ac.createGain();
+    o.connect(g);
+    g.connect(ac.destination);
+    o.type = type;
+    o.frequency.value = freq;
     g.gain.setValueAtTime(vol, ac.currentTime);
     g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + dur);
-    o.start(); o.stop(ac.currentTime + dur);
-  } catch(e) {}
+    o.start();
+    o.stop(ac.currentTime + dur);
+  } catch (e) {}
 }
-function playShoot() { playTone(300, 0.08, 'sine', 0.15); }
-function playPop(i) { playTone(350 + i * 70, 0.12, 'sine', 0.25); }
-function playCombo(n) { playTone(300 + n * 80, 0.18, 'square', 0.12); }
+function playShoot() {
+  playTone(300, 0.08, 'sine', 0.15);
+}
+function playPop(i) {
+  playTone(350 + i * 70, 0.12, 'sine', 0.25);
+}
+function playCombo(n) {
+  playTone(300 + n * 80, 0.18, 'square', 0.12);
+}
 
 // ---- State ----
 let grid = [];
@@ -53,10 +64,18 @@ let currentBubble = 0;
 let nextBubble = 1;
 let shooting = false;
 let bulletX, bulletY, bulletVX, bulletVY, bulletColor;
-let mouseX = W/2, mouseY = H/2;
-let score = 0, highScore = Number(localStorage.getItem('HighScore')) || 0, level = 1, shots = 0, popped = 0;
-let combo = 1, bestCombo = 1, levelProgress = 0;
-let paused = false, gameActive = false;
+let mouseX = W / 2,
+  mouseY = H / 2;
+let score = 0,
+  highScore = Number(localStorage.getItem('HighScore')) || 0,
+  level = 1,
+  shots = 0,
+  popped = 0;
+let combo = 1,
+  bestCombo = 1,
+  levelProgress = 0;
+let paused = false,
+  gameActive = false;
 let particles = [];
 let rafId = null;
 
@@ -72,7 +91,7 @@ function safeRandomColor() {
 
 // ---- Grid helpers ----
 function bubbleXY(row, col) {
-  const offset = (row % 2 === 1) ? R : 0;
+  const offset = row % 2 === 1 ? R : 0;
   const startX = (W - COLS * BUBBLE_DIAM) / 2;
   const x = startX + col * BUBBLE_DIAM + R + offset;
   const y = row * (BUBBLE_DIAM - 4) + R + 10;
@@ -80,7 +99,7 @@ function bubbleXY(row, col) {
 }
 
 function colsInRow(row) {
-  return (row % 2 === 0) ? COLS : COLS - 1;
+  return row % 2 === 0 ? COLS : COLS - 1;
 }
 
 function initGrid() {
@@ -112,12 +131,14 @@ function setCell(r, c, val) {
 }
 
 function getNeighbors(r, c) {
-  const isOdd = (r % 2 === 1);
+  const isOdd = r % 2 === 1;
   return [
-    [r,   c-1], [r,   c+1],
-    [r-1, c  ], [r+1, c  ],
-    [r-1, isOdd ? c+1 : c-1],
-    [r+1, isOdd ? c+1 : c-1],
+    [r, c - 1],
+    [r, c + 1],
+    [r - 1, c],
+    [r + 1, c],
+    [r - 1, isOdd ? c + 1 : c - 1],
+    [r + 1, isOdd ? c + 1 : c - 1],
   ].filter(([nr, nc]) => nr >= 0 && nc >= 0 && nc < colsInRow(nr));
 }
 
@@ -152,7 +173,10 @@ function findConnected() {
   for (let c = 0; c < grid[0].length; c++) {
     if (grid[0][c] !== null && grid[0][c] !== undefined) {
       const key = 0 * 100 + c;
-      if (!connected.has(key)) { connected.add(key); queue.push([0, c]); }
+      if (!connected.has(key)) {
+        connected.add(key);
+        queue.push([0, c]);
+      }
     }
   }
   let safety = 0;
@@ -171,7 +195,9 @@ function findConnected() {
 
 // Snap bullet to nearest empty cell
 function snapToGrid(bx, by) {
-  let bestRow = 0, bestCol = 0, bestDist = Infinity;
+  let bestRow = 0,
+    bestCol = 0,
+    bestDist = Infinity;
   const checkRows = Math.min(grid.length + 2, MAX_ROWS);
   for (let r = 0; r < checkRows; r++) {
     const cols = colsInRow(r);
@@ -179,7 +205,11 @@ function snapToGrid(bx, by) {
       if (getCell(r, c) !== null && getCell(r, c) !== undefined) continue;
       const { x, y } = bubbleXY(r, c);
       const d = Math.hypot(bx - x, by - y);
-      if (d < bestDist) { bestDist = d; bestRow = r; bestCol = c; }
+      if (d < bestDist) {
+        bestDist = d;
+        bestRow = r;
+        bestCol = c;
+      }
     }
   }
   return { row: bestRow, col: bestCol };
@@ -194,7 +224,7 @@ function drawBubbleOn(c, x, y, r, colorIdx) {
   c.arc(x, y, r, 0, Math.PI * 2);
   c.fillStyle = col.hex;
   c.fill();
-  const grad = c.createRadialGradient(x - r*0.3, y - r*0.35, r*0.05, x, y, r);
+  const grad = c.createRadialGradient(x - r * 0.3, y - r * 0.35, r * 0.05, x, y, r);
   grad.addColorStop(0, 'rgba(255,255,255,0.65)');
   grad.addColorStop(0.45, 'rgba(255,255,255,0.08)');
   grad.addColorStop(1, 'rgba(0,0,0,0.38)');
@@ -237,47 +267,47 @@ function drawShooter() {
   const dy = Math.sin(clampedAngle);
 
   // --- Dotted aim line with wall bounce ---
-ctx.save();
-ctx.setLineDash([5, 9]);
-ctx.strokeStyle = 'rgba(0,245,255,0.28)';
-ctx.lineWidth = 1.5;
+  ctx.save();
+  ctx.setLineDash([5, 9]);
+  ctx.strokeStyle = 'rgba(0,245,255,0.28)';
+  ctx.lineWidth = 1.5;
 
-ctx.beginPath();
+  ctx.beginPath();
 
-let tx = SHOOTER_X;
-let ty = SHOOTER_Y;
-let tvx = dx;
-let tvy = dy;
+  let tx = SHOOTER_X;
+  let ty = SHOOTER_Y;
+  let tvx = dx;
+  let tvy = dy;
 
-ctx.moveTo(tx, ty);
+  ctx.moveTo(tx, ty);
 
-for (let i = 0; i < 400; i++) {
-  tx += tvx * 3;
-  ty += tvy * 3;
+  for (let i = 0; i < 400; i++) {
+    tx += tvx * 3;
+    ty += tvy * 3;
 
-  // bounce left wall
-  if (tx < R) {
-    tx = R;
-    tvx *= -1;
+    // bounce left wall
+    if (tx < R) {
+      tx = R;
+      tvx *= -1;
+      ctx.lineTo(tx, ty);
+      ctx.moveTo(tx, ty);
+    }
+
+    // bounce right wall
+    if (tx > W - R) {
+      tx = W - R;
+      tvx *= -1;
+      ctx.lineTo(tx, ty);
+      ctx.moveTo(tx, ty);
+    }
+
     ctx.lineTo(tx, ty);
-    ctx.moveTo(tx, ty);
+
+    if (ty < 0) break;
   }
 
-  // bounce right wall
-  if (tx > W - R) {
-    tx = W - R;
-    tvx *= -1;
-    ctx.lineTo(tx, ty);
-    ctx.moveTo(tx, ty);
-  }
-
-  ctx.lineTo(tx, ty);
-
-  if (ty < 0) break;
-}
-
-ctx.stroke();
-ctx.restore();
+  ctx.stroke();
+  ctx.restore();
 
   // --- Shooter base (circle platform) ---
   ctx.save();
@@ -298,17 +328,18 @@ ctx.restore();
   ctx.rotate(clampedAngle + Math.PI / 2); // +90deg so "up" = angle -PI/2
 
   // Barrel body
-  const barrelW = 10, barrelH = 34;
-  const grad = ctx.createLinearGradient(-barrelW/2, 0, barrelW/2, 0);
-  grad.addColorStop(0,   'rgba(0,180,220,0.6)');
+  const barrelW = 10,
+    barrelH = 34;
+  const grad = ctx.createLinearGradient(-barrelW / 2, 0, barrelW / 2, 0);
+  grad.addColorStop(0, 'rgba(0,180,220,0.6)');
   grad.addColorStop(0.4, 'rgba(0,245,255,1)');
-  grad.addColorStop(1,   'rgba(0,130,160,0.6)');
+  grad.addColorStop(1, 'rgba(0,130,160,0.6)');
   ctx.fillStyle = grad;
   ctx.shadowColor = '#00f5ff';
   ctx.shadowBlur = 16;
   // Draw from center upward (negative y = upward after rotation)
   ctx.beginPath();
-  ctx.roundRect(-barrelW/2, -barrelH, barrelW, barrelH, 3);
+  ctx.roundRect(-barrelW / 2, -barrelH, barrelW, barrelH, 3);
   ctx.fill();
 
   // Barrel tip highlight
@@ -322,9 +353,9 @@ ctx.restore();
   ctx.shadowColor = '#00f5ff';
   ctx.shadowBlur = 20;
   ctx.beginPath();
-  ctx.moveTo(0, -barrelH - 10);   // tip point
-  ctx.lineTo(-7, -barrelH + 2);   // left base
-  ctx.lineTo( 7, -barrelH + 2);   // right base
+  ctx.moveTo(0, -barrelH - 10); // tip point
+  ctx.lineTo(-7, -barrelH + 2); // left base
+  ctx.lineTo(7, -barrelH + 2); // right base
   ctx.closePath();
   ctx.fill();
 
@@ -339,8 +370,14 @@ ctx.restore();
 function drawParticles() {
   for (let i = particles.length - 1; i >= 0; i--) {
     const p = particles[i];
-    p.x += p.vx; p.y += p.vy; p.vy += 0.18; p.life -= 0.028;
-    if (p.life <= 0) { particles.splice(i, 1); continue; }
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.18;
+    p.life -= 0.028;
+    if (p.life <= 0) {
+      particles.splice(i, 1);
+      continue;
+    }
     ctx.save();
     ctx.globalAlpha = p.life;
     ctx.beginPath();
@@ -359,24 +396,36 @@ function drawDangerLine() {
   ctx.setLineDash([6, 6]);
   ctx.strokeStyle = 'rgba(255,0,110,0.25)';
   ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.moveTo(0, dy); ctx.lineTo(W, dy); ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(0, dy);
+  ctx.lineTo(W, dy);
+  ctx.stroke();
   ctx.restore();
 }
 
 function drawBg() {
   ctx.clearRect(0, 0, W, H);
-  const vg = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, W * 0.8);
+  const vg = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W * 0.8);
   vg.addColorStop(0, 'rgba(10,22,40,0)');
   vg.addColorStop(1, 'rgba(0,0,0,0.55)');
-  ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = vg;
+  ctx.fillRect(0, 0, W, H);
 }
 
 // ---- Particles ----
 function spawnParticles(x, y, colorHex, count = 12) {
   for (let i = 0; i < count; i++) {
-    const angle = (Math.PI * 2 * i / count) + Math.random() * 0.5;
+    const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5;
     const spd = 2 + Math.random() * 4;
-    particles.push({ x, y, vx: Math.cos(angle)*spd, vy: Math.sin(angle)*spd, r: 4+Math.random()*4, color: colorHex, life: 0.8+Math.random()*0.3 });
+    particles.push({
+      x,
+      y,
+      vx: Math.cos(angle) * spd,
+      vy: Math.sin(angle) * spd,
+      r: 4 + Math.random() * 4,
+      color: colorHex,
+      life: 0.8 + Math.random() * 0.3,
+    });
   }
 }
 
@@ -386,8 +435,8 @@ function showPopup(text, x, y) {
   el.className = 'combo-popup';
   el.textContent = text;
   const rect = canvas.getBoundingClientRect();
-  el.style.left = (rect.left + x - 30) + 'px';
-  el.style.top  = (rect.top  + y - 20) + 'px';
+  el.style.left = rect.left + x - 30 + 'px';
+  el.style.top = rect.top + y - 20 + 'px';
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 1000);
 }
@@ -399,7 +448,12 @@ function onBubbleLand(row, col) {
   col = Math.max(0, Math.min(col, maxCol));
 
   // Validate color
-  if (!getColor(bulletColor)) { shooting = false; nextBubble = safeRandomColor(); updateUI(); return; }
+  if (!getColor(bulletColor)) {
+    shooting = false;
+    nextBubble = safeRandomColor();
+    updateUI();
+    return;
+  }
 
   setCell(row, col, bulletColor);
   shots++;
@@ -440,11 +494,10 @@ function onBubbleLand(row, col) {
     popped += group.length + floaters;
     score += (group.length * 50 + floaters * 100) * combo;
     levelProgress += (group.length + floaters) * 6;
-    if (score > highScore) 
-      {
-        highScore = score;
-        localStorage.setItem('HighScore', highScore);
-      }
+    if (score > highScore) {
+      highScore = score;
+      localStorage.setItem('HighScore', highScore);
+    }
 
     combo = Math.min(combo + 1, 10);
     if (combo > bestCombo) bestCombo = combo;
@@ -452,7 +505,7 @@ function onBubbleLand(row, col) {
 
     const { x: px, y: py } = bubbleXY(row, col);
     if (combo >= 2) showPopup(`COMBO x${combo}!`, px, py);
-    if (floaters > 0) showPopup(`+${floaters*100}!`, px + 50, py - 10);
+    if (floaters > 0) showPopup(`+${floaters * 100}!`, px + 50, py - 10);
   } else {
     combo = 1;
   }
@@ -467,14 +520,18 @@ function onBubbleLand(row, col) {
   outer: for (let r = 0; r < grid.length; r++) {
     if (!grid[r]) continue;
     for (let c2 = 0; c2 < grid[r].length; c2++) {
-      if (getCell(r, c2) !== null && getCell(r, c2) !== undefined) { any = true; break outer; }
+      if (getCell(r, c2) !== null && getCell(r, c2) !== undefined) {
+        any = true;
+        break outer;
+      }
     }
   }
   if (!any) {
     score += 1000 * level;
     document.getElementById('winScore').textContent = score;
     document.getElementById('winOverlay').classList.remove('hidden');
-    gameActive = false; return;
+    gameActive = false;
+    return;
   }
 
   // Check game over — bottom rows
@@ -486,7 +543,8 @@ function onBubbleLand(row, col) {
         if (y + R > H - 80) {
           document.getElementById('finalScore').textContent = score;
           document.getElementById('gameOverOverlay').classList.remove('hidden');
-          gameActive = false; return;
+          gameActive = false;
+          return;
         }
       }
     }
@@ -494,7 +552,8 @@ function onBubbleLand(row, col) {
 
   // Level up
   if (levelProgress >= 100) {
-    levelProgress = 0; level++;
+    levelProgress = 0;
+    level++;
     const newRow = [];
     const cols = colsInRow(grid.length % 2);
     for (let c2 = 0; c2 < cols; c2++) newRow.push(safeRandomColor());
@@ -509,12 +568,19 @@ function moveBullet() {
   bulletX += bulletVX * speed;
   bulletY += bulletVY * speed;
 
-  if (bulletX < R)     { bulletX = R;     bulletVX =  Math.abs(bulletVX); }
-  if (bulletX > W - R) { bulletX = W - R; bulletVX = -Math.abs(bulletVX); }
+  if (bulletX < R) {
+    bulletX = R;
+    bulletVX = Math.abs(bulletVX);
+  }
+  if (bulletX > W - R) {
+    bulletX = W - R;
+    bulletVX = -Math.abs(bulletVX);
+  }
 
   if (bulletY < R + 5) {
     const { row, col } = snapToGrid(bulletX, R + 5);
-    onBubbleLand(row, col); return;
+    onBubbleLand(row, col);
+    return;
   }
 
   for (let r = 0; r < grid.length; r++) {
@@ -524,7 +590,8 @@ function moveBullet() {
       const { x, y } = bubbleXY(r, c);
       if (Math.hypot(bulletX - x, bulletY - y) < BUBBLE_DIAM - 3) {
         const { row, col: sc } = snapToGrid(bulletX, bulletY);
-        onBubbleLand(row, sc); return;
+        onBubbleLand(row, sc);
+        return;
       }
     }
   }
@@ -533,10 +600,13 @@ function moveBullet() {
 // ---- Shoot ----
 function shoot() {
   if (shooting || !gameActive || paused) return;
-  if (!getColor(currentBubble)) { currentBubble = safeRandomColor(); }
+  if (!getColor(currentBubble)) {
+    currentBubble = safeRandomColor();
+  }
   const angle = Math.atan2(mouseY - SHOOTER_Y, mouseX - SHOOTER_X);
   const clampedAngle = Math.max(-Math.PI + 0.05, Math.min(-0.05, angle));
-  bulletX = SHOOTER_X; bulletY = SHOOTER_Y;
+  bulletX = SHOOTER_X;
+  bulletY = SHOOTER_Y;
   bulletVX = Math.cos(clampedAngle);
   bulletVY = Math.sin(clampedAngle);
   bulletColor = currentBubble;
@@ -563,16 +633,25 @@ function drawNextBubble() {
 }
 
 function hideAllOverlays() {
-  ['startOverlay','pauseOverlay','gameOverOverlay','winOverlay'].forEach(id =>
-    document.getElementById(id).classList.add('hidden'));
+  ['startOverlay', 'pauseOverlay', 'gameOverOverlay', 'winOverlay'].forEach((id) =>
+    document.getElementById(id).classList.add('hidden')
+  );
 }
 
 // ---- Game control ----
 function startGame() {
   if (rafId) cancelAnimationFrame(rafId);
-  score = 0; level = 1; shots = 0; popped = 0;
-  combo = 1; bestCombo = 1; levelProgress = 0;
-  particles = []; shooting = false; paused = false; gameActive = true;
+  score = 0;
+  level = 1;
+  shots = 0;
+  popped = 0;
+  combo = 1;
+  bestCombo = 1;
+  levelProgress = 0;
+  particles = [];
+  shooting = false;
+  paused = false;
+  gameActive = true;
   initGrid();
   currentBubble = safeRandomColor();
   nextBubble = safeRandomColor();
@@ -583,11 +662,15 @@ function startGame() {
 }
 
 function nextLevel() {
-  level++; levelProgress = 0; particles = []; shooting = false;
+  level++;
+  levelProgress = 0;
+  particles = [];
+  shooting = false;
   initGrid();
   currentBubble = safeRandomColor();
   nextBubble = safeRandomColor();
-  updateUI(); hideAllOverlays();
+  updateUI();
+  hideAllOverlays();
   rafId = requestAnimationFrame(gameLoop);
 }
 
@@ -617,7 +700,7 @@ function gameLoop() {
 }
 
 // ---- Events ----
-canvas.addEventListener('mousemove', e => {
+canvas.addEventListener('mousemove', (e) => {
   const rect = canvas.getBoundingClientRect();
   mouseX = e.clientX - rect.left;
   mouseY = e.clientY - rect.top;

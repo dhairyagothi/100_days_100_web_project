@@ -44,9 +44,11 @@ html,
   -moz-tab-size: 4;
   /* 3 */
   -o-tab-size: 4;
-     tab-size: 4;
+  tab-size: 4;
   /* 3 */
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family:
+    ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
   /* 4 */
   font-feature-settings: normal;
   /* 5 */
@@ -89,7 +91,7 @@ Add the correct text decoration in Chrome, Edge, and Safari.
 
 abbr:where([title]) {
   -webkit-text-decoration: underline dotted;
-          text-decoration: underline dotted;
+  text-decoration: underline dotted;
 }
 
 /*
@@ -135,7 +137,9 @@ code,
 kbd,
 samp,
 pre {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
   /* 1 */
   font-feature-settings: normal;
   /* 2 */
@@ -378,7 +382,8 @@ textarea {
 2. Set the default placeholder color to the user's configured gray 400 color.
 */
 
-input::-moz-placeholder, textarea::-moz-placeholder {
+input::-moz-placeholder,
+textarea::-moz-placeholder {
   opacity: 1;
   /* 1 */
   color: #9ca3af;
@@ -398,7 +403,7 @@ Set the default cursor for buttons.
 */
 
 button,
-[role="button"] {
+[role='button'] {
   cursor: pointer;
 }
 
@@ -446,7 +451,9 @@ video {
   display: none;
 }
 
-*, ::before, ::after {
+*,
+::before,
+::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
   --tw-translate-x: 0;
@@ -643,7 +650,7 @@ video {
 }
 
 .max-w-\[\] {
-  max-width: ;
+  max-width:;
 }
 
 .max-w-\[350px\] {
@@ -675,7 +682,7 @@ video {
 }
 
 .max-w-\[\.00px\] {
-  max-width: .00px;
+  max-width: 0px;
 }
 
 .max-w-\[11\] {
@@ -692,8 +699,8 @@ video {
 
 .select-none {
   -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 .scroll-px-8 {
@@ -767,7 +774,7 @@ video {
 
 .gap-x-5 {
   -moz-column-gap: 1.25rem;
-       column-gap: 1.25rem;
+  column-gap: 1.25rem;
 }
 
 .gap-y-5 {
@@ -784,7 +791,7 @@ video {
 
 .gap-x-3 {
   -moz-column-gap: 0.75rem;
-       column-gap: 0.75rem;
+  column-gap: 0.75rem;
 }
 
 .self-center {
@@ -864,7 +871,7 @@ video {
 }
 
 .bg-\[\] {
-  background-color: ;
+  background-color:;
 }
 
 .bg-\[\#\] {
@@ -948,7 +955,7 @@ video {
 }
 
 .pt-\[\] {
-  padding-top: ;
+  padding-top:;
 }
 
 .pt-\[25px\] {
@@ -984,7 +991,9 @@ video {
 }
 
 .font-sans {
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family:
+    ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
 }
 
 .font-\[\'GintoNord\'\] {
@@ -1094,7 +1103,7 @@ video {
 }
 
 .leading-3 {
-  line-height: .75rem;
+  line-height: 0.75rem;
 }
 
 .leading-7 {
@@ -1137,7 +1146,7 @@ video {
 }
 
 .text-\[\] {
-  color: ;
+  color:;
 }
 
 .text-\[\#1f1f1f00\] {
@@ -1170,7 +1179,7 @@ video {
 
   font-weight: 300;
 
-  src: url(fonts/Whitney/Whitney-300.woff) format("woff");
+  src: url(fonts/Whitney/Whitney-300.woff) format('woff');
 }
 
 @font-face {
@@ -1178,7 +1187,7 @@ video {
 
   font-weight: 400;
 
-  src: url(fonts/Whitney/Whitney-400.woff) format("woff");
+  src: url(fonts/Whitney/Whitney-400.woff) format('woff');
 }
 
 @font-face {
@@ -1186,7 +1195,7 @@ video {
 
   font-weight: 500;
 
-  src: url(fonts/Whitney/Whitney-500.woff) format("woff");
+  src: url(fonts/Whitney/Whitney-500.woff) format('woff');
 }
 
 @font-face {
@@ -1194,7 +1203,7 @@ video {
 
   font-weight: 600;
 
-  src: url(fonts/Whitney/Whitney-600.woff) format("woff");
+  src: url(fonts/Whitney/Whitney-600.woff) format('woff');
 }
 
 @font-face {
@@ -1202,7 +1211,7 @@ video {
 
   font-weight: 700;
 
-  src: url(fonts/Whitney/Whitney-700.woff) format("woff");
+  src: url(fonts/Whitney/Whitney-700.woff) format('woff');
 }
 
 /***************/
@@ -1216,7 +1225,7 @@ video {
 
   font-weight: 300;
 
-  src: url(fonts/Ginto/Ginto-300.woff) format("woff");
+  src: url(fonts/Ginto/Ginto-300.woff) format('woff');
 }
 
 @font-face {
@@ -1224,7 +1233,7 @@ video {
 
   font-weight: 400;
 
-  src: url(fonts/Ginto/Ginto-400.woff) format("woff");
+  src: url(fonts/Ginto/Ginto-400.woff) format('woff');
 }
 
 @font-face {
@@ -1232,13 +1241,13 @@ video {
 
   font-weight: 500;
 
-  src: url(fonts/Ginto/Ginto-500.woff) format("woff");
+  src: url(fonts/Ginto/Ginto-500.woff) format('woff');
 }
 
 @font-face {
   font-family: Ginto;
 
-  src: url(fonts/Ginto/Ginto-600.woff) format("woff");
+  src: url(fonts/Ginto/Ginto-600.woff) format('woff');
 
   font-weight: 600;
 }
@@ -1248,7 +1257,7 @@ video {
 
   font-weight: 700;
 
-  src: url(fonts/Ginto/Ginto-700.woff) format("woff");
+  src: url(fonts/Ginto/Ginto-700.woff) format('woff');
 }
 
 /****************/
@@ -1264,7 +1273,7 @@ video {
 
   font-style: italic;
 
-  src: url(fonts/Ginto/Ginto-300-italic.woff) format("woff");
+  src: url(fonts/Ginto/Ginto-300-italic.woff) format('woff');
 }
 
 @font-face {
@@ -1274,7 +1283,7 @@ video {
 
   font-style: italic;
 
-  src: url(fonts/Ginto/Ginto-400-italic.woff) format("woff");
+  src: url(fonts/Ginto/Ginto-400-italic.woff) format('woff');
 }
 
 @font-face {
@@ -1284,7 +1293,7 @@ video {
 
   font-style: italic;
 
-  src: url(fonts/Ginto/Ginto-500-italic.woff) format("woff");
+  src: url(fonts/Ginto/Ginto-500-italic.woff) format('woff');
 }
 
 @font-face {
@@ -1294,7 +1303,7 @@ video {
 
   font-style: italic;
 
-  src: url(fonts/Ginto/Ginto-600-italic.woff) format("woff");
+  src: url(fonts/Ginto/Ginto-600-italic.woff) format('woff');
 }
 
 @font-face {
@@ -1304,7 +1313,7 @@ video {
 
   font-style: italic;
 
-  src: url(fonts/Ginto/Ginto-700-italic.woff) format("woff");
+  src: url(fonts/Ginto/Ginto-700-italic.woff) format('woff');
 }
 
 /**************/
@@ -1318,8 +1327,9 @@ video {
 
   font-weight: 500;
 
-  src: url(fonts/Ginto-Nord/Ginto-Nord-500.woff2) format("woff2"),
-    url(fonts/Ginto-Nord/Ginto-Nord-500.woff) format("woff");
+  src:
+    url(fonts/Ginto-Nord/Ginto-Nord-500.woff2) format('woff2'),
+    url(fonts/Ginto-Nord/Ginto-Nord-500.woff) format('woff');
 }
 
 @font-face {
@@ -1327,8 +1337,9 @@ video {
 
   font-weight: 600;
 
-  src: url(fonts/Ginto-Nord/Ginto-Nord-600.woff2) format("woff2"),
-    url(fonts/Ginto-Nord/Ginto-Nord-600.woff) format("woff");
+  src:
+    url(fonts/Ginto-Nord/Ginto-Nord-600.woff2) format('woff2'),
+    url(fonts/Ginto-Nord/Ginto-Nord-600.woff) format('woff');
 }
 
 @font-face {
@@ -1336,8 +1347,9 @@ video {
 
   font-weight: 700;
 
-  src: url(fonts/Ginto-Nord/Ginto-Nord-700.woff2) format("woff2"),
-    url(fonts/Ginto-Nord/Ginto-Nord-700.woff) format("woff");
+  src:
+    url(fonts/Ginto-Nord/Ginto-Nord-700.woff2) format('woff2'),
+    url(fonts/Ginto-Nord/Ginto-Nord-700.woff) format('woff');
 }
 
 /***************/
@@ -1347,7 +1359,7 @@ video {
 /***************/
 
 @font-face {
-  font-family: "ggSans";
+  font-family: 'ggSans';
 
   font-weight: 400;
 
@@ -1355,7 +1367,7 @@ video {
 }
 
 @font-face {
-  font-family: "ggSans";
+  font-family: 'ggSans';
 
   font-weight: 500;
 
@@ -1363,7 +1375,7 @@ video {
 }
 
 @font-face {
-  font-family: "ggSans";
+  font-family: 'ggSans';
 
   font-weight: 600;
 
@@ -1371,7 +1383,7 @@ video {
 }
 
 @font-face {
-  font-family: "ggSans";
+  font-family: 'ggSans';
 
   font-weight: 700;
 

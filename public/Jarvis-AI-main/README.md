@@ -55,19 +55,19 @@ The UI features a animated particle background and a live wave animation while l
 3. Click the **microphone button**
 4. Speak one of the supported commands:
 
-| Command | Action |
-|---|---|
-| `"hello"` / `"hey"` | JARVIS greets you |
-| `"open google"` | Opens Google in a new tab |
-| `"open youtube"` | Opens YouTube in a new tab |
-| `"open facebook"` | Opens Facebook in a new tab |
-| `"what is [topic]"` | Searches Google for the topic |
-| `"who is [person]"` | Searches Google for the person |
-| `"wikipedia [topic]"` | Opens Wikipedia for the topic |
-| `"time"` | Tells the current time |
-| `"date"` | Tells today's date |
-| `"calculator"` | Opens system Calculator |
-| _anything else_ | Searches Google automatically |
+| Command               | Action                         |
+| --------------------- | ------------------------------ |
+| `"hello"` / `"hey"`   | JARVIS greets you              |
+| `"open google"`       | Opens Google in a new tab      |
+| `"open youtube"`      | Opens YouTube in a new tab     |
+| `"open facebook"`     | Opens Facebook in a new tab    |
+| `"what is [topic]"`   | Searches Google for the topic  |
+| `"who is [person]"`   | Searches Google for the person |
+| `"wikipedia [topic]"` | Opens Wikipedia for the topic  |
+| `"time"`              | Tells the current time         |
+| `"date"`              | Tells today's date             |
+| `"calculator"`        | Opens system Calculator        |
+| _anything else_       | Searches Google automatically  |
 
 > ⚠️ **Browser Compatibility:** Web Speech API is supported on **Chrome and Edge only**.
 > Firefox and Safari are not supported.
@@ -79,7 +79,6 @@ The UI features a animated particle background and a live wave animation while l
 ![Home-Page](Screenshots/img2.png)
 ![Voice](Screenshots/img1.png)
 
-
 ```
 public/Jarvis-AI-main/
 ├── index.html       # Main HTML file
@@ -88,6 +87,7 @@ public/Jarvis-AI-main/
 ├── giphy.gif        # JARVIS avatar animation
 └── avatar.png       # Favicon
 ```
+
 ---
 
 ## Contributing

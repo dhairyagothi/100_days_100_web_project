@@ -1,4 +1,4 @@
-# 🛒 Amazon App 
+# 🛒 Amazon App
 
 ## 🚀 Overview
 
@@ -25,12 +25,12 @@ This version also includes **Sign In / Sign Up authentication using LocalStorage
 
 # 🛠️ Technologies Used
 
-| Technology | Purpose |
-|------------|----------|
-| HTML5 | Structure and markup |
-| CSS3 | Styling, responsiveness, themes |
+| Technology       | Purpose                                  |
+| ---------------- | ---------------------------------------- |
+| HTML5            | Structure and markup                     |
+| CSS3             | Styling, responsiveness, themes          |
 | JavaScript (ES6) | Authentication, cart logic, interactions |
-| LocalStorage | User and cart data persistence |
+| LocalStorage     | User and cart data persistence           |
 
 ---
 
@@ -59,27 +59,30 @@ Amazon-App/
 # 🔑 Authentication Flow
 
 ## Sign Up
+
 - Creates a new account
 - Stores user credentials in LocalStorage
 
 ## Sign In
+
 - Validates credentials from LocalStorage
 - Creates an active session
 
 ## Sign Out
+
 - Clears current user session data
 
 ---
 
 # 🎮 Controls & Interactions
 
-| Feature | Function |
-|----------|-----------|
-| Theme Toggle | Switch between dark and light mode |
-| Sidebar Navigation | Open/close navigation menu |
-| Add to Cart | Adds products and updates cart badge |
-| Search Bar | Simulated Amazon search UI |
-| Responsive Layout | Optimized for all screen sizes |
+| Feature            | Function                             |
+| ------------------ | ------------------------------------ |
+| Theme Toggle       | Switch between dark and light mode   |
+| Sidebar Navigation | Open/close navigation menu           |
+| Add to Cart        | Adds products and updates cart badge |
+| Search Bar         | Simulated Amazon search UI           |
+| Responsive Layout  | Optimized for all screen sizes       |
 
 ---
 
@@ -124,9 +127,9 @@ Open `index.html` in your browser.
 
 ## 📸 Screenshots
 
-| Home Screen | Sidebar Functionality | 
-|-------------|----------|
-|<img src="https://files.catbox.moe/0s61g5.jpeg" width="600" height="1000"/> | <img src="https://files.catbox.moe/739bp6.jpeg" width="600" height="1000"/> |
+| Home Screen                                                                 | Sidebar Functionality                                                       |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| <img src="https://files.catbox.moe/0s61g5.jpeg" width="600" height="1000"/> | <img src="https://files.catbox.moe/739bp6.jpeg" width="600" height="1000"/> |
 
 ---
 

@@ -1,9 +1,8 @@
 MERN Login Form 🔐
 
-A full-stack authentication system built with MongoDB, Express, React, and Node.js. 
+A full-stack authentication system built with MongoDB, Express, React, and Node.js.
 
 This project is a complete MERN stack authentication application featuring user registration, login, secure password hashing, JWT authentication, protected routes, and modern frontend integration using React.
-
 
 📌 Features
 
@@ -20,19 +19,17 @@ This project is a complete MERN stack authentication application featuring user 
 📱 Mobile-Friendly UI
 🛠️ Tech Stack
 
+Technology Usage
 
-Technology	Usage
-
-MongoDB	Database
-Express.js	Backend Framework
-React.js	Frontend Library
-Node.js	Runtime Environment
-JWT	Authentication
-bcrypt.js	Password Hashing
-Axios	API Communication
-React Router DOM	Routing
-dotenv	Environment Variables
-
+MongoDB Database
+Express.js Backend Framework
+React.js Frontend Library
+Node.js Runtime Environment
+JWT Authentication
+bcrypt.js Password Hashing
+Axios API Communication
+React Router DOM Routing
+dotenv Environment Variables
 
 📂 Project Structure
 
@@ -91,7 +88,6 @@ mern-login-form/
 git clone https://github.com/your-username/mern-login-form.git
 cd mern-login-form
 
-
 🚀 Backend Setup
 
 Navigate to Backend
@@ -109,7 +105,6 @@ Server runs on:
 
 http://localhost:5000
 
-
 💻 Frontend Setup
 Navigate to Frontend
 cd frontend
@@ -122,29 +117,27 @@ Frontend runs on:
 
 http://localhost:3000
 
-
 🔑 API Endpoints
 
 Register User
 POST /api/auth/register
 Request Body
 {
-  "name": "John Doe",
-  "email": "john@example.com",
-  "password": "123456"
+"name": "John Doe",
+"email": "john@example.com",
+"password": "123456"
 }
 Login User
 POST /api/auth/login
 Request Body
 {
-  "email": "john@example.com",
-  "password": "123456"
+"email": "john@example.com",
+"password": "123456"
 }
 Get Protected User Data
 GET /api/auth/user
 Headers
 Authorization: Bearer <token>
-
 
 🔒 Authentication Flow
 
@@ -181,13 +174,11 @@ Add screenshot here:
 
 /frontend/screenshots/dashboard.png
 
-
 🌍 Environment Variables
-Variable	Description
-PORT	Backend Port
-MONGO_URI	MongoDB Connection URL
-JWT_SECRET	Secret Key for JWT
-
+Variable Description
+PORT Backend Port
+MONGO_URI MongoDB Connection URL
+JWT_SECRET Secret Key for JWT
 
 ✅ Future Improvements
 
@@ -201,12 +192,10 @@ JWT_SECRET	Secret Key for JWT
 ☁️ Deployment with Docker & CI/CD
 🚀 Deployment
 
-
 Frontend Deploy using:
 
 Vercel
 Netlify
-
 
 Backend Deploy using:
 
@@ -231,9 +220,6 @@ Push to the branch
 git push origin feature/AmazingFeature
 Open a Pull Request
 
-
-
-
 ⭐ Support
 
 If you found this project useful:
@@ -241,4 +227,3 @@ If you found this project useful:
 ⭐ Star the repository
 🍴 Fork the project
 🛠️ Build something cool with it
-

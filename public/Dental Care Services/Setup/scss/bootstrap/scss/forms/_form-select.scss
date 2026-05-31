@@ -6,7 +6,8 @@
 .form-select {
   display: block;
   width: 100%;
-  padding: $form-select-padding-y $form-select-indicator-padding $form-select-padding-y $form-select-padding-x;
+  padding: $form-select-padding-y $form-select-indicator-padding $form-select-padding-y
+    $form-select-padding-x;
   font-family: $form-select-font-family;
   @include font-size($form-select-font-size);
   font-weight: $form-select-font-weight;
@@ -34,7 +35,7 @@
   }
 
   &[multiple],
-  &[size]:not([size="1"]) {
+  &[size]:not([size='1']) {
     padding-right: $form-select-padding-x;
     background-image: none;
   }

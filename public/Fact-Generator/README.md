@@ -4,18 +4,18 @@ A simple and interactive web application that generates interesting random facts
 
 ## Features
 
-* Generate random facts with a single click
-* Responsive and modern user interface
-* Fetches real-time facts from an API
-* Smooth user experience with attractive styling
+- Generate random facts with a single click
+- Responsive and modern user interface
+- Fetches real-time facts from an API
+- Smooth user experience with attractive styling
 
 ## Technologies Used
 
-* React.js
-* Tailwind CSS
-* JavaScript
-* Vite
-* Facts API
+- React.js
+- Tailwind CSS
+- JavaScript
+- Vite
+- Facts API
 
 ## How to Run
 
@@ -50,7 +50,6 @@ npm run dev
 ## Screenshots
 
 ![alt text](image.png)
-
 
 ## Author
 

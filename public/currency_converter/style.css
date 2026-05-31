@@ -14,7 +14,7 @@
 
 body {
   min-height: 100vh;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   background: linear-gradient(135deg, #020b16, #071a2f, #0d2d52);
 
   overflow-x: hidden;
@@ -117,7 +117,7 @@ body {
 ========================= */
 
 .heading {
-  font-family: "Lobster", cursive;
+  font-family: 'Lobster', cursive;
   font-size: 52px;
   margin-bottom: 5px;
   letter-spacing: 1px;
@@ -448,11 +448,7 @@ select.form-control {
 
   border-radius: 24px;
 
-  background: linear-gradient(
-    135deg,
-    rgba(0, 123, 255, 0.15),
-    rgba(0, 255, 170, 0.08)
-  );
+  background: linear-gradient(135deg, rgba(0, 123, 255, 0.15), rgba(0, 255, 170, 0.08));
 
   border: 1px solid rgba(255, 255, 255, 0.08);
 

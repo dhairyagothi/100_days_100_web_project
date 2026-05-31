@@ -4,28 +4,29 @@
   --green-deep: #01372d;
   --green-mid: #1a5c48;
   --green-accent: #359381;
-  --green-light:  #5ab89e;
-  --lime:         #a8e063;
-  --cream:        #f5f2eb;
-  --white:        #ffffff;
-  --text-dark:    #0d1f1a;
-  --shadow-green: rgba(53,147,129,0.35);
-  
+  --green-light: #5ab89e;
+  --lime: #a8e063;
+  --cream: #f5f2eb;
+  --white: #ffffff;
+  --text-dark: #0d1f1a;
+  --shadow-green: rgba(53, 147, 129, 0.35);
+
   /* Themeable variables */
   --page-bg: var(--cream);
   --page-text: var(--text-dark);
-  --header-bg: rgba(1,57,47,0.5);
+  --header-bg: rgba(1, 57, 47, 0.5);
   --card-bg: var(--white);
-  --muted: rgba(255,255,255,0.6);
+  --muted: rgba(255, 255, 255, 0.6);
 }
 
 /* Dark theme overrides */
-:root[data-theme="dark"], [data-theme="dark"] {
+:root[data-theme='dark'],
+[data-theme='dark'] {
   --page-bg: #0b1410;
   --page-text: #e6f6ef;
-  --header-bg: rgba(3,42,35,0.9);
+  --header-bg: rgba(3, 42, 35, 0.9);
   --card-bg: #081312;
-  --muted: rgba(255,255,255,0.5);
+  --muted: rgba(255, 255, 255, 0.5);
 }
 
 *,
@@ -43,8 +44,8 @@ html {
 
 body {
   font-family: 'DM Sans', sans-serif;
-    background: var(--page-bg);
-    color: var(--page-text);
+  background: var(--page-bg);
+  color: var(--page-text);
   overflow-x: hidden;
 }
 
@@ -72,7 +73,7 @@ body {
   height: 36px;
   border: 2px solid var(--green-accent);
   transform: translate(-50%, -50%);
-  opacity: .5;
+  opacity: 0.5;
   transition: all 0.25s ease;
 }
 
@@ -86,15 +87,17 @@ body {
   padding: 6px 10px;
   font-size: 0.95rem;
   border-radius: 8px;
-  background: linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));
+  background: linear-gradient(90deg, rgba(124, 99, 255, 0.14), rgba(79, 141, 255, 0.1));
   color: #fff;
   text-decoration: none;
   z-index: 10001;
   font-weight: 700;
   font-family: Inter, system-ui, sans-serif;
-  box-shadow: 0 8px 20px rgba(12,18,40,0.35);
+  box-shadow: 0 8px 20px rgba(12, 18, 40, 0.35);
 }
-.project-back-button:hover{ opacity:0.95 }
+.project-back-button:hover {
+  opacity: 0.95;
+}
 
 /* ══════════════════════════════════════
    HEADER / NAV
@@ -109,9 +112,11 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 20px 5%;
-    background: var(--header-bg);
+  background: var(--header-bg);
   backdrop-filter: blur(14px);
-  transition: background 0.4s, padding 0.3s;
+  transition:
+    background 0.4s,
+    padding 0.3s;
 }
 
 header.scrolled {
@@ -150,15 +155,15 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-  background: rgba(255,255,255,0.12);
-  border-color: rgba(255,255,255,0.18);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.18);
   color: var(--white);
 }
 
 /* Theme toggle button */
 .theme-toggle {
   background: transparent;
-  border: 1px solid rgba(255,255,255,0.12);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   color: var(--white);
   padding: 8px 10px;
   border-radius: 10px;
@@ -226,7 +231,9 @@ nav ul li a:hover {
   color: var(--white);
   letter-spacing: 4px;
   margin: 0;
-  text-shadow: 0 4px 32px rgba(0, 0, 0, 0.6), 0 0 80px rgba(53, 147, 129, 0.4);
+  text-shadow:
+    0 4px 32px rgba(0, 0, 0, 0.6),
+    0 0 80px rgba(53, 147, 129, 0.4);
   line-height: 1;
 }
 
@@ -297,8 +304,6 @@ nav ul li a:hover {
   }
 }
 
-
-
 .nav-logo-btn {
   gap: 18px;
   display: flex;
@@ -330,7 +335,6 @@ nav ul li a:hover {
 }
 
 @keyframes bounce {
-
   0%,
   100% {
     transform: translateX(-50%) translateY(0);
@@ -507,7 +511,10 @@ nav ul li a:hover {
   padding: 36px 28px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    background 0.3s ease;
 }
 
 .service-card:hover {
@@ -648,7 +655,9 @@ nav ul li a:hover {
   padding: 36px 28px;
   position: relative;
   overflow: hidden;
-  transition: transform 0.4s cubic-bezier(.23, 1, .32, 1), box-shadow 0.4s ease;
+  transition:
+    transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.4s ease;
   cursor: default;
   border: 1px solid rgba(53, 147, 129, 0.1);
 }
@@ -720,7 +729,9 @@ nav ul li a:hover {
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 16px;
   padding: 32px 28px;
-  transition: background 0.3s, transform 0.3s;
+  transition:
+    background 0.3s,
+    transform 0.3s;
 }
 
 .fact-card:hover {
@@ -798,7 +809,9 @@ nav ul li a:hover {
   border-radius: 50px;
   text-decoration: none;
   letter-spacing: 0.5px;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
   box-shadow: 0 8px 32px rgba(168, 224, 99, 0.35);
 }
 
@@ -851,8 +864,6 @@ nav ul li a:hover {
 /* ================= TABLET ================= */
 
 @media (max-width: 992px) {
-
-
   header {
     padding: 18px 5%;
   }
@@ -880,13 +891,11 @@ nav ul li a:hover {
     height: auto;
     cursor: default;
   }
-
 }
 
 /* ================= MOBILE ================= */
 
 @media (max-width: 768px) {
-
   .hamburger {
     display: flex;
   }
@@ -905,19 +914,27 @@ nav ul li a:hover {
     align-items: center;
     gap: 15px;
     text-align: center;
-}
+  }
 
   /* Show back button on small screens only */
-  .project-back-button { display:block; position:absolute; left:12px; top:50%; transform:translateY(-50%); }
+  .project-back-button {
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 
   /* ensure header leaves space for back button on small screens */
-  header{ padding-left: 60px; }
+  header {
+    padding-left: 60px;
+  }
 
-.name{
+  .name {
     font-size: 1.5rem;
-}
+  }
 
-nav ul{
+  nav ul {
     justify-content: center;
     transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 105;
@@ -953,10 +970,12 @@ nav ul{
     padding: 15px 6% !important;
   }
 
-/* prevent header content from overlapping the fixed back button on small screens */
-header{ padding-left: 80px; }
+  /* prevent header content from overlapping the fixed back button on small screens */
+  header {
+    padding-left: 80px;
+  }
 
-.parallal{
+  .parallal {
     height: 90vh;
   }
 
@@ -969,7 +988,6 @@ header{ padding-left: 80px; }
 /* ================= SMALL MOBILE ================= */
 
 @media (max-width: 480px) {
-
   header {
     padding: 15px 4% !important;
   }
@@ -1138,7 +1156,6 @@ header{ padding-left: 80px; }
     text-align: center;
   }
 
-
   .parallal {
     height: 100vh;
     overflow: hidden;
@@ -1159,7 +1176,6 @@ header{ padding-left: 80px; }
     top: 0;
   }
 }
-
 
 @media (max-width: 480px) {
   .text {

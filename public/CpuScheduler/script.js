@@ -1,35 +1,35 @@
 let currentProcesses = [];
 let currentTimeline = [];
-let currentAlgorithm = "";
+let currentAlgorithm = '';
 
 // ----------------------------------------------------------
 // DOM Elements
 // ----------------------------------------------------------
 const elements = {
-  algorithm: document.getElementById("algorithm"),
-  numProcesses: document.getElementById("numProcesses"),
-  timeQuantum: document.getElementById("timeQuantum"),
-  timeQuantumDiv: document.getElementById("timeQuantumDiv"),
-  processForm: document.getElementById("processForm"),
-  processFormContainer: document.getElementById("processFormContainer"),
-  sampleBtn: document.getElementById("sampleBtn"),
-  runSimulation: document.getElementById("runSimulation"),
+  algorithm: document.getElementById('algorithm'),
+  numProcesses: document.getElementById('numProcesses'),
+  timeQuantum: document.getElementById('timeQuantum'),
+  timeQuantumDiv: document.getElementById('timeQuantumDiv'),
+  processForm: document.getElementById('processForm'),
+  processFormContainer: document.getElementById('processFormContainer'),
+  sampleBtn: document.getElementById('sampleBtn'),
+  runSimulation: document.getElementById('runSimulation'),
 
-  errorMessage: document.getElementById("errorMessage"),
-  errorText: document.getElementById("errorText"),
+  errorMessage: document.getElementById('errorMessage'),
+  errorText: document.getElementById('errorText'),
 
-  results: document.getElementById("results"),
-  outputTable: document.getElementById("outputTable"),
-  ganttChart: document.getElementById("ganttChart"),
-  processLegend: document.getElementById("processLegend"),
-  metricsPanel: document.getElementById("metricsPanel"),
-  analysisContent: document.getElementById("analysisContent"),
+  results: document.getElementById('results'),
+  outputTable: document.getElementById('outputTable'),
+  ganttChart: document.getElementById('ganttChart'),
+  processLegend: document.getElementById('processLegend'),
+  metricsPanel: document.getElementById('metricsPanel'),
+  analysisContent: document.getElementById('analysisContent'),
 
-  algorithmDescription: document.getElementById("algorithmDescription"),
+  algorithmDescription: document.getElementById('algorithmDescription'),
 
-  buttonText: document.getElementById("buttonText"),
-  loadingSpinner: document.getElementById("loadingSpinner"),
-  ganttTooltip: document.getElementById("ganttTooltip"),
+  buttonText: document.getElementById('buttonText'),
+  loadingSpinner: document.getElementById('loadingSpinner'),
+  ganttTooltip: document.getElementById('ganttTooltip'),
 };
 
 // ----------------------------------------------------------
@@ -37,43 +37,40 @@ const elements = {
 // ----------------------------------------------------------
 const algorithmInfo = {
   fcfs: {
-    name: "First Come First Serve",
+    name: 'First Come First Serve',
     description:
-      "Processes execute in order of arrival. Simple and fair, but may suffer from convoy effect.",
+      'Processes execute in order of arrival. Simple and fair, but may suffer from convoy effect.',
   },
   sjf: {
-    name: "Shortest Job First",
+    name: 'Shortest Job First',
     description:
-      "Chooses the process with the smallest burst time. Minimizes average waiting time.",
+      'Chooses the process with the smallest burst time. Minimizes average waiting time.',
   },
   srtf: {
-    name: "Shortest Remaining Time First",
+    name: 'Shortest Remaining Time First',
     description:
-      "Preemptive version of SJF. Always selects the process with the least remaining time.",
+      'Preemptive version of SJF. Always selects the process with the least remaining time.',
   },
   rr: {
-    name: "Round Robin",
+    name: 'Round Robin',
     description:
-      "Each process receives CPU for a fixed time quantum. Ideal for time-sharing systems.",
+      'Each process receives CPU for a fixed time quantum. Ideal for time-sharing systems.',
   },
   priority: {
-    name: "Priority Scheduling (Non-Preemptive)",
-    description:
-      "Processes are executed based on priority. Lower number means higher priority.",
+    name: 'Priority Scheduling (Non-Preemptive)',
+    description: 'Processes are executed based on priority. Lower number means higher priority.',
   },
   priority_preemptive: {
-    name: "Priority Scheduling (Preemptive)",
-    description:
-      "Higher-priority arriving processes can interrupt currently running ones.",
+    name: 'Priority Scheduling (Preemptive)',
+    description: 'Higher-priority arriving processes can interrupt currently running ones.',
   },
   hrrn: {
-    name: "Highest Response Ratio Next",
-    description:
-      "Selects process with highest response ratio to reduce starvation.",
+    name: 'Highest Response Ratio Next',
+    description: 'Selects process with highest response ratio to reduce starvation.',
   },
   multilevel: {
-    name: "Multilevel Queue Scheduling",
-    description: "Processes are assigned to queues based on priority classes.",
+    name: 'Multilevel Queue Scheduling',
+    description: 'Processes are assigned to queues based on priority classes.',
   },
 };
 
@@ -81,37 +78,37 @@ const algorithmInfo = {
 // Fields Required by Algorithm
 // ----------------------------------------------------------
 const algorithmFields = {
-  fcfs: ["arrival", "burst"],
-  sjf: ["arrival", "burst"],
-  srtf: ["arrival", "burst"],
-  rr: ["arrival", "burst"],
-  priority: ["arrival", "burst", "priority"],
-  priority_preemptive: ["arrival", "burst", "priority"],
-  hrrn: ["arrival", "burst"],
-  multilevel: ["arrival", "burst", "priority"],
+  fcfs: ['arrival', 'burst'],
+  sjf: ['arrival', 'burst'],
+  srtf: ['arrival', 'burst'],
+  rr: ['arrival', 'burst'],
+  priority: ['arrival', 'burst', 'priority'],
+  priority_preemptive: ['arrival', 'burst', 'priority'],
+  hrrn: ['arrival', 'burst'],
+  multilevel: ['arrival', 'burst', 'priority'],
 };
 
 const fieldLabels = {
-  arrival: "Arrival Time",
-  burst: "Burst Time",
-  priority: "Priority (Lower = Higher Priority)",
+  arrival: 'Arrival Time',
+  burst: 'Burst Time',
+  priority: 'Priority (Lower = Higher Priority)',
 };
 
 // ----------------------------------------------------------
 // Event Listeners
 // ----------------------------------------------------------
-elements.algorithm.addEventListener("change", () => {
+elements.algorithm.addEventListener('change', () => {
   updateAlgorithmInfo();
   updateUIForAlgorithm();
   generateProcessForm();
 });
 
-elements.numProcesses.addEventListener("input", () => {
+elements.numProcesses.addEventListener('input', () => {
   generateProcessForm();
 });
 
-elements.sampleBtn.addEventListener("click", loadSampleData);
-elements.runSimulation.addEventListener("click", runSimulation);
+elements.sampleBtn.addEventListener('click', loadSampleData);
+elements.runSimulation.addEventListener('click', runSimulation);
 
 // ----------------------------------------------------------
 // Initialization
@@ -125,17 +122,16 @@ generateProcessForm();
 // ==========================================================
 function updateAlgorithmInfo() {
   const algorithm = elements.algorithm.value;
-  elements.algorithmDescription.textContent =
-    algorithmInfo[algorithm].description;
+  elements.algorithmDescription.textContent = algorithmInfo[algorithm].description;
 }
 
 function updateUIForAlgorithm() {
   const algorithm = elements.algorithm.value;
 
-  if (algorithm === "rr") {
-    elements.timeQuantumDiv.classList.remove("hidden");
+  if (algorithm === 'rr') {
+    elements.timeQuantumDiv.classList.remove('hidden');
   } else {
-    elements.timeQuantumDiv.classList.add("hidden");
+    elements.timeQuantumDiv.classList.add('hidden');
   }
 }
 
@@ -145,20 +141,20 @@ function generateProcessForm() {
   const fields = algorithmFields[algorithm];
 
   if (numProcesses < 1 || numProcesses > 20) {
-    elements.processForm.innerHTML = "";
+    elements.processForm.innerHTML = '';
     return;
   }
 
-  elements.processForm.innerHTML = "";
+  elements.processForm.innerHTML = '';
 
   for (let i = 1; i <= numProcesses; i++) {
-    const card = document.createElement("div");
-    card.className = "process-card";
+    const card = document.createElement('div');
+    card.className = 'process-card';
 
-    let fieldsHTML = "";
+    let fieldsHTML = '';
 
     fields.forEach((field) => {
-      const min = field === "burst" ? 1 : 0;
+      const min = field === 'burst' ? 1 : 0;
 
       fieldsHTML += `
                 <div>
@@ -191,22 +187,22 @@ function generateProcessForm() {
 
 function showError(message) {
   elements.errorText.textContent = message;
-  elements.errorMessage.classList.remove("hidden");
+  elements.errorMessage.classList.remove('hidden');
 }
 
 function hideError() {
-  elements.errorMessage.classList.add("hidden");
+  elements.errorMessage.classList.add('hidden');
 }
 
 function setLoading(isLoading) {
   elements.runSimulation.disabled = isLoading;
 
   if (isLoading) {
-    elements.buttonText.textContent = "Running Simulation...";
-    elements.loadingSpinner.classList.remove("hidden");
+    elements.buttonText.textContent = 'Running Simulation...';
+    elements.loadingSpinner.classList.remove('hidden');
   } else {
-    elements.buttonText.textContent = "🚀 Run Simulation";
-    elements.loadingSpinner.classList.add("hidden");
+    elements.buttonText.textContent = '🚀 Run Simulation';
+    elements.loadingSpinner.classList.add('hidden');
   }
 }
 
@@ -218,12 +214,12 @@ function collectInputData() {
   const numProcesses = parseInt(elements.numProcesses.value);
 
   if (!numProcesses || numProcesses < 1 || numProcesses > 20) {
-    showError("Please set the number of processes between 1 and 20.");
+    showError('Please set the number of processes between 1 and 20.');
     return null;
   }
 
   const processes = [];
-  const cards = elements.processForm.querySelectorAll(".process-card");
+  const cards = elements.processForm.querySelectorAll('.process-card');
 
   for (let i = 0; i < cards.length; i++) {
     const process = {
@@ -240,7 +236,7 @@ function collectInputData() {
         return null;
       }
 
-      if (field === "burst" && value < 1) {
+      if (field === 'burst' && value < 1) {
         showError(`Burst time for Process P${i + 1} must be at least 1.`);
         return null;
       }
@@ -258,11 +254,11 @@ function collectInputData() {
   }
 
   let timeQuantum = 0;
-  if (algorithm === "rr") {
+  if (algorithm === 'rr') {
     timeQuantum = parseInt(elements.timeQuantum.value);
 
     if (!timeQuantum || timeQuantum < 1) {
-      showError("Time quantum must be a positive number for Round Robin scheduling.");
+      showError('Time quantum must be a positive number for Round Robin scheduling.');
       return null;
     }
   }
@@ -292,9 +288,9 @@ async function runSimulation() {
 
     displayResults(result);
 
-    elements.results.classList.remove("hidden");
+    elements.results.classList.remove('hidden');
     elements.results.scrollIntoView({
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   } catch (error) {
     showError(error.message);
@@ -317,29 +313,21 @@ function simulate({ algorithm, processes, timeQuantum }) {
   let quantumRemaining = timeQuantum;
 
   while (completed < currentProcesses.length) {
-    const ready = currentProcesses.filter(
-      (p) => p.arrival <= currentTime && p.remainingTime > 0,
-    );
+    const ready = currentProcesses.filter((p) => p.arrival <= currentTime && p.remainingTime > 0);
 
-    const next = selectProcess(
-      algorithm,
-      ready,
-      currentProcess,
-      currentTime,
-      quantumRemaining,
-    );
+    const next = selectProcess(algorithm, ready, currentProcess, currentTime, quantumRemaining);
 
     if (!next) {
       timeline.push({
         time: currentTime,
-        process: "IDLE",
+        process: 'IDLE',
       });
       currentTime++;
       continue;
     }
 
     // Round Robin queue handling
-    if (algorithm === "rr" && currentProcess !== next) {
+    if (algorithm === 'rr' && currentProcess !== next) {
       quantumRemaining = timeQuantum;
     }
 
@@ -358,7 +346,7 @@ function simulate({ algorithm, processes, timeQuantum }) {
     currentProcess.remainingTime--;
     currentTime++;
 
-    if (algorithm === "rr") {
+    if (algorithm === 'rr') {
       quantumRemaining--;
     }
 
@@ -366,15 +354,14 @@ function simulate({ algorithm, processes, timeQuantum }) {
     if (currentProcess.remainingTime === 0) {
       currentProcess.completionTime = currentTime;
       currentProcess.turnaroundTime = currentTime - currentProcess.arrival;
-      currentProcess.waitingTime =
-        currentProcess.turnaroundTime - currentProcess.burst;
+      currentProcess.waitingTime = currentProcess.turnaroundTime - currentProcess.burst;
 
       completed++;
       currentProcess = null;
       quantumRemaining = timeQuantum;
     }
     // Round Robin quantum expiration
-    else if (algorithm === "rr" && quantumRemaining === 0) {
+    else if (algorithm === 'rr' && quantumRemaining === 0) {
       currentProcess = null;
     }
   }
@@ -392,22 +379,16 @@ function simulate({ algorithm, processes, timeQuantum }) {
 // ==========================================================
 // Process Selection Logic
 // ==========================================================
-function selectProcess(
-  algorithm,
-  ready,
-  currentProcess,
-  currentTime,
-  quantumRemaining,
-) {
+function selectProcess(algorithm, ready, currentProcess, currentTime, quantumRemaining) {
   // Continue current process for non-preemptive algorithms
-  const nonPreemptive = ["fcfs", "sjf", "priority", "hrrn", "multilevel"];
+  const nonPreemptive = ['fcfs', 'sjf', 'priority', 'hrrn', 'multilevel'];
 
   if (currentProcess && currentProcess.remainingTime > 0) {
     if (nonPreemptive.includes(algorithm)) {
       return currentProcess;
     }
 
-    if (algorithm === "rr" && quantumRemaining > 0) {
+    if (algorithm === 'rr' && quantumRemaining > 0) {
       return currentProcess;
     }
   }
@@ -415,39 +396,30 @@ function selectProcess(
   if (ready.length === 0) return null;
 
   switch (algorithm) {
-    case "fcfs":
+    case 'fcfs':
+      return [...ready].sort((a, b) => a.arrival - b.arrival || a.pid.localeCompare(b.pid))[0];
+
+    case 'sjf':
+      return [...ready].sort((a, b) => a.burst - b.burst || a.arrival - b.arrival)[0];
+
+    case 'srtf':
       return [...ready].sort(
-        (a, b) => a.arrival - b.arrival || a.pid.localeCompare(b.pid),
+        (a, b) => a.remainingTime - b.remainingTime || a.arrival - b.arrival
       )[0];
 
-    case "sjf":
-      return [...ready].sort(
-        (a, b) => a.burst - b.burst || a.arrival - b.arrival,
-      )[0];
+    case 'rr':
+      return [...ready].sort((a, b) => a.arrival - b.arrival || a.pid.localeCompare(b.pid))[0];
 
-    case "srtf":
-      return [...ready].sort(
-        (a, b) => a.remainingTime - b.remainingTime || a.arrival - b.arrival,
-      )[0];
+    case 'priority':
+    case 'priority_preemptive':
+    case 'multilevel':
+      return [...ready].sort((a, b) => a.priority - b.priority || a.arrival - b.arrival)[0];
 
-    case "rr":
-      return [...ready].sort(
-        (a, b) => a.arrival - b.arrival || a.pid.localeCompare(b.pid),
-      )[0];
-
-    case "priority":
-    case "priority_preemptive":
-    case "multilevel":
-      return [...ready].sort(
-        (a, b) => a.priority - b.priority || a.arrival - b.arrival,
-      )[0];
-
-    case "hrrn":
+    case 'hrrn':
       return ready.reduce((best, p) => {
         const ratio = (currentTime - p.arrival + p.burst) / p.burst;
 
-        const bestRatio =
-          (currentTime - best.arrival + best.burst) / best.burst;
+        const bestRatio = (currentTime - best.arrival + best.burst) / best.burst;
 
         return ratio > bestRatio ? p : best;
       });
@@ -463,10 +435,7 @@ function selectProcess(
 function calculateMetrics(processes, totalTime) {
   const n = processes.length;
 
-  const totalTurnaround = processes.reduce(
-    (sum, p) => sum + p.turnaroundTime,
-    0,
-  );
+  const totalTurnaround = processes.reduce((sum, p) => sum + p.turnaroundTime, 0);
 
   const totalWaiting = processes.reduce((sum, p) => sum + p.waitingTime, 0);
 
@@ -500,20 +469,20 @@ function displayResults(result) {
 function displayMetrics(metrics) {
   const cards = [
     {
-      label: "Avg Turnaround",
+      label: 'Avg Turnaround',
       value: metrics.averageTurnaroundTime.toFixed(2),
     },
     {
-      label: "Avg Waiting",
+      label: 'Avg Waiting',
       value: metrics.averageWaitingTime.toFixed(2),
     },
     {
-      label: "Avg Response",
+      label: 'Avg Response',
       value: metrics.averageResponseTime.toFixed(2),
     },
     {
-      label: "CPU Utilization",
-      value: metrics.cpuUtilization.toFixed(1) + "%",
+      label: 'CPU Utilization',
+      value: metrics.cpuUtilization.toFixed(1) + '%',
     },
   ];
 
@@ -528,34 +497,28 @@ function displayMetrics(metrics) {
                     ${card.label}
                 </div>
             </div>
-        `,
+        `
     )
-    .join("");
+    .join('');
 }
 
 // ----------------------------------------------------------
 // Results Table
 // ----------------------------------------------------------
 function displayResultsTable(processes) {
-  let extraColumn = "";
-  let extraHeader = "";
+  let extraColumn = '';
+  let extraHeader = '';
 
-  if (
-    ["priority", "priority_preemptive", "multilevel"].includes(currentAlgorithm)
-  ) {
-    extraHeader = "<th>Priority</th>";
+  if (['priority', 'priority_preemptive', 'multilevel'].includes(currentAlgorithm)) {
+    extraHeader = '<th>Priority</th>';
   }
 
   const rows = processes
     .map((p) => {
-      if (
-        ["priority", "priority_preemptive", "multilevel"].includes(
-          currentAlgorithm,
-        )
-      ) {
+      if (['priority', 'priority_preemptive', 'multilevel'].includes(currentAlgorithm)) {
         extraColumn = `<td>${p.priority}</td>`;
       } else {
-        extraColumn = "";
+        extraColumn = '';
       }
 
       return `
@@ -571,7 +534,7 @@ function displayResultsTable(processes) {
                 </tr>
             `;
     })
-    .join("");
+    .join('');
 
   elements.outputTable.innerHTML = `
         <table>
@@ -627,14 +590,10 @@ function displayGanttChart(timeline) {
             <div class="gantt-timeline">
                 ${blocks
                   .map((block) => {
-                    const index = currentProcesses.findIndex(
-                      (p) => p.pid === block.process,
-                    );
+                    const index = currentProcesses.findIndex((p) => p.pid === block.process);
 
                     const colorClass =
-                      block.process === "IDLE"
-                        ? "idle-block"
-                        : `process-color-${index % 10}`;
+                      block.process === 'IDLE' ? 'idle-block' : `process-color-${index % 10}`;
 
                     return `
                             <div
@@ -647,7 +606,7 @@ function displayGanttChart(timeline) {
                             </div>
                         `;
                   })
-                  .join("")}
+                  .join('')}
             </div>
         </div>
     `;
@@ -665,9 +624,9 @@ function displayGanttChart(timeline) {
                         ${p.pid}
                     </span>
                 </div>
-            `,
+            `
       )
-      .join("") +
+      .join('') +
     `
         <div class="flex items-center gap-2">
             <div class="w-4 h-4 rounded idle-block"></div>
@@ -722,7 +681,7 @@ function displayAnalysis(result) {
 // Sample Data
 // ==========================================================
 function loadSampleData() {
-  elements.algorithm.value = "rr";
+  elements.algorithm.value = 'rr';
   elements.numProcesses.value = 4;
   elements.timeQuantum.value = 2;
 
@@ -737,10 +696,10 @@ function loadSampleData() {
     { arrival: 3, burst: 6 },
   ];
 
-  const cards = elements.processForm.querySelectorAll(".process-card");
+  const cards = elements.processForm.querySelectorAll('.process-card');
 
   cards.forEach((card, index) => {
-    const inputs = card.querySelectorAll("input");
+    const inputs = card.querySelectorAll('input');
 
     inputs[0].value = sample[index].arrival;
     inputs[1].value = sample[index].burst;

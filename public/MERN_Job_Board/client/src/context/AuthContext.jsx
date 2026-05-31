@@ -1,28 +1,32 @@
-import { createContext, useState, useContext, useEffect } from "react";
-import socket from "../socket/socket";
+import { createContext, useState, useContext, useEffect } from 'react';
+import socket from '../socket/socket';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    try { return JSON.parse(localStorage.getItem("jbUser")) || null; } catch { return null; }
+    try {
+      return JSON.parse(localStorage.getItem('jbUser')) || null;
+    } catch {
+      return null;
+    }
   });
   const [toasts, setToasts] = useState([]);
   const [onlineCount, setOnlineCount] = useState(0);
 
-  const addToast = (message, type = "success") => {
+  const addToast = (message, type = 'success') => {
     const id = Date.now();
     setToasts((t) => [...t, { id, message, type }]);
     setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 4500);
   };
 
   const login = (data) => {
-    localStorage.setItem("jbUser", JSON.stringify(data));
+    localStorage.setItem('jbUser', JSON.stringify(data));
     setUser(data);
   };
 
   const logout = () => {
-    localStorage.removeItem("jbUser");
+    localStorage.removeItem('jbUser');
     setUser(null);
     socket.disconnect();
   };
@@ -33,20 +37,20 @@ export const AuthProvider = ({ children }) => {
       socket.connect();
 
       // Join employer room for private notifications
-      if (user.role === "employer") {
-        socket.emit("joinRoom", `employer_${user._id}`);
+      if (user.role === 'employer') {
+        socket.emit('joinRoom', `employer_${user._id}`);
       }
 
-      socket.on("onlineCount", (count) => setOnlineCount(count));
+      socket.on('onlineCount', (count) => setOnlineCount(count));
 
       // Live notification: new application received
-      socket.on("newApplication", ({ candidateName, jobTitle }) => {
-        addToast(`⚡ ${candidateName} applied for "${jobTitle}"`, "success");
+      socket.on('newApplication', ({ candidateName, jobTitle }) => {
+        addToast(`⚡ ${candidateName} applied for "${jobTitle}"`, 'success');
       });
 
       return () => {
-        socket.off("onlineCount");
-        socket.off("newApplication");
+        socket.off('onlineCount');
+        socket.off('newApplication');
       };
     }
   }, [user]);
@@ -60,6 +64,6 @@ export const AuthProvider = ({ children }) => {
 
 export const useAuth = () => {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth must be inside AuthProvider");
+  if (!ctx) throw new Error('useAuth must be inside AuthProvider');
   return ctx;
 };

@@ -25,12 +25,12 @@ An interactive dice roller web application built with **HTML**, **CSS**, and **J
 
 ## 🛠️ Tech Stack
 
-| Technology | Usage |
-|------------|-------|
-| HTML5 | Structure and layout |
-| CSS3 | Styling, animations, dark/light theming via CSS variables |
-| JavaScript (Vanilla) | Game logic, DOM manipulation, Web Audio API |
-| SVG | Dice faces with pip layouts, tally mark rendering |
+| Technology           | Usage                                                     |
+| -------------------- | --------------------------------------------------------- |
+| HTML5                | Structure and layout                                      |
+| CSS3                 | Styling, animations, dark/light theming via CSS variables |
+| JavaScript (Vanilla) | Game logic, DOM manipulation, Web Audio API               |
+| SVG                  | Dice faces with pip layouts, tally mark rendering         |
 
 ---
 
@@ -59,14 +59,14 @@ Dice-Roller/
 
 ## 🎮 How to Use
 
-| Action | What it does |
-|--------|-------------|
-| Set **Number of Dice** | Choose 1–10 dice to roll |
-| Pick a **Dice Color** | 5 pastel options (pink, peach, yellow, green, blue) |
-| Click **Roll Dice** | Rolls all dice with animation + sound |
-| Click **🔊** | Toggles sound on/off |
-| Click **Reset Stats** | Clears all statistics and tally marks |
-| Click **🌙 / ☀️** | Toggles dark/light mode |
+| Action                 | What it does                                        |
+| ---------------------- | --------------------------------------------------- |
+| Set **Number of Dice** | Choose 1–10 dice to roll                            |
+| Pick a **Dice Color**  | 5 pastel options (pink, peach, yellow, green, blue) |
+| Click **Roll Dice**    | Rolls all dice with animation + sound               |
+| Click **🔊**           | Toggles sound on/off                                |
+| Click **Reset Stats**  | Clears all statistics and tally marks               |
+| Click **🌙 / ☀️**      | Toggles dark/light mode                             |
 
 ---
 

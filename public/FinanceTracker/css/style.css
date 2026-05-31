@@ -1,14 +1,13 @@
 :root {
-
   --primary: #8b5cf6;
   --secondary: #06b6d4;
 
   --success: #10b981;
   --danger: #ef4444;
 
-  --card: rgba(255,255,255,0.05);
+  --card: rgba(255, 255, 255, 0.05);
 
-  --border: rgba(255,255,255,0.08);
+  --border: rgba(255, 255, 255, 0.08);
 
   --text: #ffffff;
 }
@@ -20,16 +19,9 @@
 }
 
 body {
-
   font-family: Poppins, sans-serif;
 
-  background:
-    linear-gradient(
-      135deg,
-      #020617,
-      #0f172a,
-      #111827
-    );
+  background: linear-gradient(135deg, #020617, #0f172a, #111827);
 
   color: white;
 
@@ -39,7 +31,6 @@ body {
 }
 
 .container {
-
   width: 95%;
 
   max-width: 1400px;
@@ -50,12 +41,11 @@ body {
 }
 
 header {
-
   padding: 50px;
 
   border-radius: 30px;
 
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
 
   backdrop-filter: blur(20px);
 
@@ -63,18 +53,11 @@ header {
 }
 
 header h1 {
-
   font-size: 4rem;
 
   font-weight: 800;
 
-  background:
-    linear-gradient(
-      to right,
-      #fff,
-      #a78bfa,
-      #67e8f9
-    );
+  background: linear-gradient(to right, #fff, #a78bfa, #67e8f9);
 
   -webkit-background-clip: text;
 
@@ -82,18 +65,15 @@ header h1 {
 }
 
 header p {
-
   margin-top: 10px;
 
   color: #94a3b8;
 }
 
 .dashboard {
-
   display: grid;
 
-  grid-template-columns:
-    repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 
   gap: 20px;
 
@@ -101,7 +81,6 @@ header p {
 }
 
 .card {
-
   background: var(--card);
 
   border-radius: 24px;
@@ -114,14 +93,12 @@ header p {
 }
 
 .card h2 {
-
   color: #94a3b8;
 
   margin-bottom: 15px;
 }
 
 .card p {
-
   font-size: 2.3rem;
 
   font-weight: 700;
@@ -140,7 +117,6 @@ header p {
 }
 
 .section {
-
   margin-top: 30px;
 
   padding: 30px;
@@ -153,25 +129,21 @@ header p {
 }
 
 .section-title {
-
   font-size: 1.5rem;
 
   margin-bottom: 20px;
 }
 
 .grid {
-
   display: grid;
 
-  grid-template-columns:
-    repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 
   gap: 15px;
 }
 
 input,
 select {
-
   width: 100%;
 
   padding: 16px;
@@ -180,7 +152,7 @@ select {
 
   border: 1px solid var(--border);
 
-  background: rgba(255,255,255,0.06);
+  background: rgba(255, 255, 255, 0.06);
 
   color: white;
 
@@ -188,19 +160,13 @@ select {
 }
 
 button {
-
   border: none;
 
   padding: 16px;
 
   border-radius: 16px;
 
-  background:
-    linear-gradient(
-      135deg,
-      var(--primary),
-      var(--secondary)
-    );
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
 
   color: white;
 
@@ -210,25 +176,21 @@ button {
 }
 
 .main-btn {
-
   margin-top: 20px;
 
   width: 100%;
 }
 
 .analytics {
-
   display: grid;
 
-  grid-template-columns:
-    repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 
   gap: 20px;
 }
 
 .analytics-card {
-
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
 
   padding: 25px;
 
@@ -238,19 +200,16 @@ button {
 }
 
 .analytics-card p {
-
   font-size: 2rem;
 
   font-weight: 700;
 }
 
 .chart-box {
-
   height: 500px;
 }
 
 table {
-
   width: 100%;
 
   margin-top: 20px;
@@ -260,27 +219,23 @@ table {
 
 th,
 td {
-
   padding: 15px;
 
   text-align: left;
 }
 
 th {
-
   color: #94a3b8;
 }
 
 td {
-
-  border-top: 1px solid rgba(255,255,255,0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .goal-card {
-
   margin-top: 15px;
 
-  background: rgba(255,255,255,0.04);
+  background: rgba(255, 255, 255, 0.04);
 
   padding: 20px;
 
@@ -288,7 +243,6 @@ td {
 }
 
 .progress {
-
   width: 100%;
 
   height: 12px;
@@ -303,19 +257,12 @@ td {
 }
 
 .progress-fill {
-
   height: 100%;
 
-  background:
-    linear-gradient(
-      90deg,
-      #8b5cf6,
-      #06b6d4
-    );
+  background: linear-gradient(90deg, #8b5cf6, #06b6d4);
 }
 
 .goal-info {
-
   display: flex;
 
   justify-content: space-between;
@@ -324,7 +271,6 @@ td {
 }
 
 .toast {
-
   position: fixed;
 
   bottom: 20px;
@@ -341,12 +287,10 @@ td {
 }
 
 .search-box {
-
   margin-top: 15px;
 }
 
 #theme-toggle {
-
   position: fixed;
 
   top: 20px;
@@ -357,20 +301,16 @@ td {
 }
 
 @media (max-width: 768px) {
-
   header h1 {
-
     font-size: 2.5rem;
   }
 
   .dashboard {
-
     grid-template-columns: 1fr;
   }
 }
 
 .toast-notification {
-
   position: fixed;
 
   bottom: 20px;
@@ -387,40 +327,27 @@ td {
 
   z-index: 9999;
 
-  box-shadow:
-    0 10px 30px rgba(0,0,0,0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 
-  animation:
-    slideUp 0.3s ease;
+  animation: slideUp 0.3s ease;
 }
 
 @keyframes slideUp {
-
   from {
-
-    transform:
-      translateY(20px);
+    transform: translateY(20px);
 
     opacity: 0;
   }
 
   to {
-
-    transform:
-      translateY(0);
+    transform: translateY(0);
 
     opacity: 1;
   }
 }
 
 .light-mode {
-
-  background:
-    linear-gradient(
-      135deg,
-      #f8fafc,
-      #e2e8f0
-    );
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
 
   color: #111827;
 }
@@ -431,16 +358,13 @@ td {
 .light-mode .analytics-card,
 .light-mode .score-card,
 .light-mode .insight-card {
-
-  background:
-    rgba(255,255,255,0.9);
+  background: rgba(255, 255, 255, 0.9);
 
   color: #111827;
 }
 
 .light-mode input,
 .light-mode select {
-
   background: white;
 
   color: black;

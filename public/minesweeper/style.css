@@ -34,11 +34,17 @@ body {
     radial-gradient(circle at 50% 92%, rgba(255, 79, 216, 0.16), transparent 32%),
     linear-gradient(135deg, var(--bg-a), var(--bg-b));
   color: var(--text);
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
 }
 
 body::before {
-  content: "";
+  content: '';
   position: fixed;
   inset: -24%;
   pointer-events: none;
@@ -121,7 +127,9 @@ h1 {
   font-size: clamp(2.15rem, 7vw, 4.7rem);
   line-height: 0.95;
   font-weight: 800;
-  text-shadow: 0 0 24px rgba(40, 216, 255, 0.42), 0 0 46px rgba(154, 92, 255, 0.32);
+  text-shadow:
+    0 0 24px rgba(40, 216, 255, 0.42),
+    0 0 46px rgba(154, 92, 255, 0.32);
 }
 
 h2 {
@@ -264,10 +272,10 @@ h2 {
   padding: 10px;
   border: 1px solid rgba(40, 216, 255, 0.22);
   border-radius: 18px;
-  background:
-    linear-gradient(135deg, rgba(40, 216, 255, 0.08), transparent),
-    rgba(2, 6, 23, 0.66);
-  box-shadow: 0 0 38px rgba(40, 216, 255, 0.17), inset 0 0 22px rgba(154, 92, 255, 0.06);
+  background: linear-gradient(135deg, rgba(40, 216, 255, 0.08), transparent), rgba(2, 6, 23, 0.66);
+  box-shadow:
+    0 0 38px rgba(40, 216, 255, 0.17),
+    inset 0 0 22px rgba(154, 92, 255, 0.06);
   touch-action: manipulation;
 }
 
@@ -303,7 +311,9 @@ h2 {
 .cell.hidden-cell,
 .guide-tile.hidden-cell {
   background: linear-gradient(145deg, rgba(42, 75, 166, 0.9), rgba(109, 70, 207, 0.72));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24), 0 0 12px rgba(91, 129, 255, 0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    0 0 12px rgba(91, 129, 255, 0.16);
 }
 
 .cell.hidden-cell:hover {
@@ -342,17 +352,35 @@ h2 {
     0 0 0 4px rgba(255, 85, 115, 0.16),
     0 0 34px rgba(255, 85, 115, 0.78),
     0 0 58px rgba(255, 79, 216, 0.36);
-  animation: explode 640ms var(--ease-out), dangerPulse 900ms ease infinite alternate 640ms;
+  animation:
+    explode 640ms var(--ease-out),
+    dangerPulse 900ms ease infinite alternate 640ms;
 }
 
-.number-1 { color: #58a6ff; }
-.number-2 { color: #2ee59d; }
-.number-3 { color: #ff5573; }
-.number-4 { color: #a78bfa; }
-.number-5 { color: #ffc857; }
-.number-6 { color: #22d3ee; }
-.number-7 { color: #f472b6; }
-.number-8 { color: #d5e2ff; }
+.number-1 {
+  color: #58a6ff;
+}
+.number-2 {
+  color: #2ee59d;
+}
+.number-3 {
+  color: #ff5573;
+}
+.number-4 {
+  color: #a78bfa;
+}
+.number-5 {
+  color: #ffc857;
+}
+.number-6 {
+  color: #22d3ee;
+}
+.number-7 {
+  color: #f472b6;
+}
+.number-8 {
+  color: #d5e2ff;
+}
 
 .guide-list {
   display: grid;
@@ -404,7 +432,9 @@ h2 {
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03)),
     rgba(15, 21, 52, 0.88);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.46), 0 0 42px rgba(40, 216, 255, 0.18);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.46),
+    0 0 42px rgba(40, 216, 255, 0.18);
   animation: modalIn 280ms var(--ease-out);
 }
 
@@ -471,7 +501,9 @@ h2 {
 }
 
 .game-card.game-lost {
-  animation: screenShake 520ms var(--ease-out), lossGlow 1500ms ease-out;
+  animation:
+    screenShake 520ms var(--ease-out),
+    lossGlow 1500ms ease-out;
 }
 
 .game-card.game-lost .board {
@@ -513,58 +545,127 @@ body.light-mode .result-modal {
 }
 
 @keyframes driftGlow {
-  from { transform: translate3d(-2%, -1%, 0) scale(1); }
-  to { transform: translate3d(2%, 1%, 0) scale(1.05); }
+  from {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(2%, 1%, 0) scale(1.05);
+  }
 }
 
 @keyframes cardEnter {
-  from { opacity: 0; transform: translateY(14px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 @keyframes revealPop {
-  from { transform: scale(0.72); filter: brightness(1.45); }
-  to { transform: scale(1); filter: brightness(1); }
+  from {
+    transform: scale(0.72);
+    filter: brightness(1.45);
+  }
+  to {
+    transform: scale(1);
+    filter: brightness(1);
+  }
 }
 
 @keyframes explode {
-  0% { transform: scale(0.52) rotate(-5deg); filter: brightness(1); }
-  45% { transform: scale(1.28) rotate(4deg); filter: brightness(2); }
-  72% { transform: scale(0.94) rotate(-2deg); filter: brightness(1.25); }
-  100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+  0% {
+    transform: scale(0.52) rotate(-5deg);
+    filter: brightness(1);
+  }
+  45% {
+    transform: scale(1.28) rotate(4deg);
+    filter: brightness(2);
+  }
+  72% {
+    transform: scale(0.94) rotate(-2deg);
+    filter: brightness(1.25);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    filter: brightness(1);
+  }
 }
 
 @keyframes dangerPulse {
-  from { transform: scale(1); }
-  to { transform: scale(1.08); }
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
 }
 
 @keyframes modalIn {
-  from { opacity: 0; transform: translateY(16px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes winGlow {
-  0%, 100% { box-shadow: 0 22px 60px rgba(0, 0, 0, 0.38), 0 0 34px rgba(40, 216, 255, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.11); }
-  45% { box-shadow: 0 22px 60px rgba(0, 0, 0, 0.38), 0 0 58px rgba(46, 229, 157, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.11); }
+  0%,
+  100% {
+    box-shadow:
+      0 22px 60px rgba(0, 0, 0, 0.38),
+      0 0 34px rgba(40, 216, 255, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.11);
+  }
+  45% {
+    box-shadow:
+      0 22px 60px rgba(0, 0, 0, 0.38),
+      0 0 58px rgba(46, 229, 157, 0.34),
+      inset 0 1px 0 rgba(255, 255, 255, 0.11);
+  }
 }
 
 @keyframes screenShake {
-  0%, 100% { transform: translateX(0); }
-  15% { transform: translateX(-8px); }
-  30% { transform: translateX(7px); }
-  45% { transform: translateX(-5px); }
-  60% { transform: translateX(4px); }
-  75% { transform: translateX(-2px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  15% {
+    transform: translateX(-8px);
+  }
+  30% {
+    transform: translateX(7px);
+  }
+  45% {
+    transform: translateX(-5px);
+  }
+  60% {
+    transform: translateX(4px);
+  }
+  75% {
+    transform: translateX(-2px);
+  }
 }
 
 @keyframes lossGlow {
-  0%, 100% { filter: drop-shadow(0 0 0 rgba(255, 85, 115, 0)); }
-  35% { filter: drop-shadow(0 0 26px rgba(255, 85, 115, 0.32)); }
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0 rgba(255, 85, 115, 0));
+  }
+  35% {
+    filter: drop-shadow(0 0 26px rgba(255, 85, 115, 0.32));
+  }
 }
 
 @media (max-width: 880px) {

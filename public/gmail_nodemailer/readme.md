@@ -12,27 +12,27 @@ The application allows users to submit their name and email through a responsive
 
 ## Backend Features
 
-* Send emails using Gmail SMTP
-* Express.js backend server
-* Secure environment variable configuration
-* Nodemailer integration
-* Form handling using Express
-* REST API-style email handling
-* Error handling and response management
-* JSON and form-data support
-* Beginner-friendly project structure
+- Send emails using Gmail SMTP
+- Express.js backend server
+- Secure environment variable configuration
+- Nodemailer integration
+- Form handling using Express
+- REST API-style email handling
+- Error handling and response management
+- JSON and form-data support
+- Beginner-friendly project structure
 
 ## Frontend Features
 
-* Responsive subscription/contact form UI
-* Modern glassmorphism design
-* Improved spacing and visual hierarchy
-* Accessible labels and placeholders
-* Input focus animations
-* Hover effects and smooth transitions
-* Mobile-friendly layout
-* Improved typography and readability
-* Dark-themed modern interface
+- Responsive subscription/contact form UI
+- Modern glassmorphism design
+- Improved spacing and visual hierarchy
+- Accessible labels and placeholders
+- Input focus animations
+- Hover effects and smooth transitions
+- Mobile-friendly layout
+- Improved typography and readability
+- Dark-themed modern interface
 
 ---
 
@@ -42,17 +42,17 @@ The frontend contact form was redesigned to improve usability, responsiveness, a
 
 ## Improvements Added
 
-* Improved dark-themed background design
-* Added glassmorphism card effect
-* Improved typography hierarchy
-* Added accessible labels
-* Improved spacing and alignment
-* Added hover animations
-* Added input focus effects
-* Improved button styling
-* Enhanced readability and contrast
-* Improved responsive layout behavior
-* Reduced excessive empty spacing
+- Improved dark-themed background design
+- Added glassmorphism card effect
+- Improved typography hierarchy
+- Added accessible labels
+- Improved spacing and alignment
+- Added hover animations
+- Added input focus effects
+- Improved button styling
+- Enhanced readability and contrast
+- Improved responsive layout behavior
+- Reduced excessive empty spacing
 
 ---
 
@@ -199,8 +199,8 @@ const express = require('express');
 const app = express();
 
 const bodyParser = require('body-parser');
-const path = require("path");
-const nodemailer = require("nodemailer");
+const path = require('path');
+const nodemailer = require('nodemailer');
 
 const port = 5500;
 
@@ -209,15 +209,14 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'public', 'mail.html'));
 });
 
-app.post('/', function(req, res) {
-
+app.post('/', function (req, res) {
   const transporter = nodemailer.createTransport({
-    service: "Gmail",
-    host: "smtp.gmail.com",
+    service: 'Gmail',
+    host: 'smtp.gmail.com',
     port: 465,
     secure: true,
 
@@ -230,27 +229,21 @@ app.post('/', function(req, res) {
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: req.body.emailid,
-    subject: "Feedback form response",
+    subject: 'Feedback form response',
 
-    text:
-      "Thank you " +
-      req.body.name +
-      " for subscribing.",
+    text: 'Thank you ' + req.body.name + ' for subscribing.',
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
-
     if (error) {
       console.error(error);
-      return res.send("Email failed");
+      return res.send('Email failed');
     }
 
-    console.log("Email sent:", info.response);
+    console.log('Email sent:', info.response);
 
-    return res.send("Email sent successfully");
-
+    return res.send('Email sent successfully');
   });
-
 });
 
 app.listen(port, () => {
@@ -299,14 +292,14 @@ POST /
 
 ## Contact Form Includes
 
-* Full Name input field
-* Email Address input field
-* Subscribe button
-* Responsive card container
-* Modern dark glassmorphism UI
-* Hover and focus interactions
-* Accessibility improvements
-* Responsive mobile layout
+- Full Name input field
+- Email Address input field
+- Subscribe button
+- Responsive card container
+- Modern dark glassmorphism UI
+- Hover and focus interactions
+- Accessibility improvements
+- Responsive mobile layout
 
 ---
 
@@ -314,21 +307,21 @@ POST /
 
 ## Before
 
-* Basic layout
-* Excessive black empty background
-* Limited responsiveness
-* Minimal button styling
-* Poor visual hierarchy
+- Basic layout
+- Excessive black empty background
+- Limited responsiveness
+- Minimal button styling
+- Poor visual hierarchy
 
 ## After
 
-* Modern glassmorphism design
-* Responsive centered layout
-* Improved readability
-* Better hover and focus effects
-* Enhanced spacing and typography
-* Improved accessibility
-* Modern interactive styling
+- Modern glassmorphism design
+- Responsive centered layout
+- Improved readability
+- Better hover and focus effects
+- Enhanced spacing and typography
+- Improved accessibility
+- Modern interactive styling
 
 (Add screenshots here)
 
@@ -380,10 +373,10 @@ The frontend form was being submitted without the backend Express server handlin
 
 Ensure:
 
-* Express server is running
-* HTML page is opened through Express server
-* Correct POST route exists
-* `express.static()` is configured properly
+- Express server is running
+- HTML page is opened through Express server
+- Correct POST route exists
+- `express.static()` is configured properly
 
 ---
 
@@ -391,31 +384,31 @@ Ensure:
 
 ### Possible Causes
 
-* Invalid Gmail App Password
-* Incorrect `.env` configuration
-* Gmail 2FA not enabled
-* Wrong SMTP credentials
+- Invalid Gmail App Password
+- Incorrect `.env` configuration
+- Gmail 2FA not enabled
+- Wrong SMTP credentials
 
 ### Fix
 
-* Enable Gmail App Passwords
-* Verify `.env` values
-* Restart server after editing `.env`
+- Enable Gmail App Passwords
+- Verify `.env` values
+- Restart server after editing `.env`
 
 ---
 
 # 🚀 Future Improvements
 
-* HTML email templates
-* Success/error toast notifications
-* File attachment support
-* Contact form validation
-* OAuth2 authentication
-* Rate limiting
-* MongoDB integration
-* Email logging system
-* Docker deployment
-* Admin dashboard integration
+- HTML email templates
+- Success/error toast notifications
+- File attachment support
+- Contact form validation
+- OAuth2 authentication
+- Rate limiting
+- MongoDB integration
+- Email logging system
+- Docker deployment
+- Admin dashboard integration
 
 ---
 
@@ -423,10 +416,10 @@ Ensure:
 
 You can deploy this backend using:
 
-* Render
-* Railway
-* Vercel
-* Cyclic
+- Render
+- Railway
+- Vercel
+- Cyclic
 
 ---
 
@@ -464,13 +457,12 @@ git push origin feature/new-feature
 
 If you found this project useful:
 
-* Star the repository
-* Fork the project
-* Contribute to improve the project
+- Star the repository
+- Fork the project
+- Contribute to improve the project
 
 ---
 
 # 📄 License
 
 This project is open-source and available under the MIT License.
-

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600&display=swap');
 :root {
   --neon-cyan: #00f5ff;
   --neon-pink: #ff006e;
@@ -16,7 +16,7 @@
 }
 body {
   background: var(--bg-dark);
-  font-family: "Orbitron", monospace;
+  font-family: 'Orbitron', monospace;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -64,18 +64,13 @@ body {
   overflow: hidden;
 }
 .panel-box::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--neon-cyan),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
 }
 .panel-label {
   font-size: 9px;
@@ -128,7 +123,7 @@ body {
   border: 1px solid rgba(0, 245, 255, 0.3);
   border-radius: 6px;
   color: var(--neon-cyan);
-  font-family: "Orbitron", monospace;
+  font-family: 'Orbitron', monospace;
   font-size: 10px;
   letter-spacing: 2px;
   cursor: pointer;
@@ -195,7 +190,7 @@ body {
   text-shadow: var(--glow-pink);
 }
 .overlay-sub {
-  font-family: "Rajdhani", sans-serif;
+  font-family: 'Rajdhani', sans-serif;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.5);
   letter-spacing: 3px;
@@ -214,7 +209,7 @@ body {
   border: 2px solid var(--neon-cyan);
   border-radius: 6px;
   color: var(--neon-cyan);
-  font-family: "Orbitron", monospace;
+  font-family: 'Orbitron', monospace;
   font-size: 14px;
   letter-spacing: 4px;
   cursor: pointer;
@@ -267,15 +262,15 @@ body {
     opacity: 0.4;
   }
 }
-.home-btn{
- position:absolute;
- top:20px;
- left:20px;
- padding:10px 18px;
- text-decoration:none;
- color:white;
- border:1px solid rgba(255,255,255,.2);
- border-radius:10px;
- background:rgba(0,0,0,.25);
- z-index:1000;
+.home-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 10px 18px;
+  text-decoration: none;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 1000;
 }

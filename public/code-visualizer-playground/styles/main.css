@@ -22,7 +22,7 @@ body {
     radial-gradient(circle at 15% 20%, #164e63 0%, transparent 35%),
     radial-gradient(circle at 85% 15%, #1d4ed8 0%, transparent 32%),
     linear-gradient(145deg, var(--bg) 0%, #030712 100%);
-  font-family: "Trebuchet MS", "Segoe UI", Verdana, sans-serif;
+  font-family: 'Trebuchet MS', 'Segoe UI', Verdana, sans-serif;
 }
 
 .topbar {
@@ -81,7 +81,10 @@ body {
   padding: 0.5rem 0.75rem;
   border-radius: 999px;
   cursor: pointer;
-  transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease;
 }
 
 .tab:hover {
@@ -350,7 +353,9 @@ body {
 
 .btn.is-on {
   border-color: #67e8f9;
-  box-shadow: 0 0 0 1px rgba(103, 232, 249, 0.35), 0 10px 22px rgba(14, 165, 233, 0.35);
+  box-shadow:
+    0 0 0 1px rgba(103, 232, 249, 0.35),
+    0 10px 22px rgba(14, 165, 233, 0.35);
 }
 
 #play-btn.is-on {
@@ -565,10 +570,10 @@ body {
   .layout {
     grid-template-columns: 3fr 1.15fr;
     grid-template-areas:
-      "controls controls"
-      "performance performance"
-      "visualizer explanation"
-      "guide guide";
+      'controls controls'
+      'performance performance'
+      'visualizer explanation'
+      'guide guide';
     align-items: start;
   }
 

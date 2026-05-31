@@ -1,282 +1,141 @@
 // js/app.js
 
-import {
-  getTransactions,
-  saveTransactions,
-  getGoals,
-  saveGoals,
-} from "./storage.js";
+import { getTransactions, saveTransactions, getGoals, saveGoals } from './storage.js';
 
-import {
-  calculateAnalytics,
-} from "./analyticsEngine.js";
+import { calculateAnalytics } from './analyticsEngine.js';
 
-import {
-  calculateFinancialScore,
-} from "./financialScore.js";
+import { calculateFinancialScore } from './financialScore.js';
 
-import {
-  generateInsights,
-} from "./aiInsights.js";
+import { generateInsights } from './aiInsights.js';
 
-import {
-  renderInsights,
-} from "./financialInsights.js";
+import { renderInsights } from './financialInsights.js';
 
-import {
-  renderChart,
-} from "./chartManager.js";
+import { renderChart } from './chartManager.js';
 
-import {
-  renderTransactions,
-  addTransaction,
-  filterTransactions,
-} from "./transactionManager.js";
+import { renderTransactions, addTransaction, filterTransactions } from './transactionManager.js';
 
-import {
-  renderGoals,
-  addGoal,
-} from "./savingsManager.js";
+import { renderGoals, addGoal } from './savingsManager.js';
 
-import {
-  autoCategorize,
-} from "./smartCategorizer.js";
+import { autoCategorize } from './smartCategorizer.js';
 
-import {
-  showNotification,
-} from "./notificationManager.js";
+import { showNotification } from './notificationManager.js';
 
+let transactions = getTransactions();
 
-let transactions =
-  getTransactions();
-
-let goals =
-  getGoals();
-
+let goals = getGoals();
 
 // DASHBOARD UPDATE
 
 const updateDashboard = () => {
+  const analytics = calculateAnalytics(transactions);
 
-  const analytics =
-    calculateAnalytics(
-      transactions
-    );
+  document.getElementById('balance').innerText = `$${analytics.balance.toFixed(2)}`;
 
-  document.getElementById(
-    "balance"
-  ).innerText =
-    `$${analytics.balance.toFixed(2)}`;
+  document.getElementById('income').innerText = `$${analytics.income.toFixed(2)}`;
 
-  document.getElementById(
-    "income"
-  ).innerText =
-    `$${analytics.income.toFixed(2)}`;
+  document.getElementById('expense').innerText = `$${analytics.expense.toFixed(2)}`;
 
-  document.getElementById(
-    "expense"
-  ).innerText =
-    `$${analytics.expense.toFixed(2)}`;
+  document.getElementById('count').innerText = analytics.transactionCount;
 
-  document.getElementById(
-    "count"
-  ).innerText =
-    analytics.transactionCount;
+  document.getElementById('highestExpense').innerText = `$${analytics.highestExpense}`;
 
-  document.getElementById(
-    "highestExpense"
-  ).innerText =
-    `$${analytics.highestExpense}`;
+  document.getElementById('highestIncome').innerText = `$${analytics.highestIncome}`;
 
-  document.getElementById(
-    "highestIncome"
-  ).innerText =
-    `$${analytics.highestIncome}`;
-
-  document.getElementById(
-    "savingRate"
-  ).innerText =
-    `${analytics.savingsRate}%`;
+  document.getElementById('savingRate').innerText = `${analytics.savingsRate}%`;
 
   // FINANCIAL SCORE
 
-  const score =
-    calculateFinancialScore(
-      analytics
-    );
+  const score = calculateFinancialScore(analytics);
 
-  document.getElementById(
-    "financialScore"
-  ).innerText = score;
+  document.getElementById('financialScore').innerText = score;
 
   // AI INSIGHTS
 
-  generateInsights(
-  transactions,
-  analytics
-).then((insights) => {
-
-  renderInsights(
-    insights
-  );
-
-});
+  generateInsights(transactions, analytics).then((insights) => {
+    renderInsights(insights);
+  });
 
   // CHART
 
   renderChart(transactions);
 };
 
-
 // INITIAL RENDER
 
-renderTransactions(
-  transactions
-);
+renderTransactions(transactions);
 
 renderGoals(goals);
 
 updateDashboard();
 
-
 // TRANSACTION FORM
 
-const transactionForm =
-  document.getElementById(
-    "transactionForm"
-  );
+const transactionForm = document.getElementById('transactionForm');
 
-transactionForm.addEventListener(
-  "submit",
-  (event) => {
+transactionForm.addEventListener('submit', (event) => {
+  event.preventDefault();
 
-    event.preventDefault();
+  const description = document.getElementById('desc').value;
 
-    const description =
-      document.getElementById(
-        "desc"
-      ).value;
+  const amount = Number(document.getElementById('amount').value);
 
-    const amount =
-      Number(
-        document.getElementById(
-          "amount"
-        ).value
-      );
+  const type = document.getElementById('type').value;
 
-    const type =
-      document.getElementById(
-        "type"
-      ).value;
+  let category = document.getElementById('category').value;
 
-    let category =
-      document.getElementById(
-        "category"
-      ).value;
+  // SMART AUTO CATEGORY
 
-    // SMART AUTO CATEGORY
-
-    if (
-      !category ||
-      category === "auto"
-    ) {
-
-      category =
-        autoCategorize(
-          description
-        );
-    }
-
-    const transaction = {
-
-      description,
-
-      amount,
-
-      type,
-
-      category,
-
-      date:
-        new Date()
-          .toLocaleDateString(),
-    };
-
-    transactions =
-      addTransaction(
-        transactions,
-        transaction
-      );
-
-    saveTransactions(
-      transactions
-    );
-
-    renderTransactions(
-      transactions
-    );
-
-    updateDashboard();
-
-    transactionForm.reset();
+  if (!category || category === 'auto') {
+    category = autoCategorize(description);
   }
-);
 
+  const transaction = {
+    description,
+
+    amount,
+
+    type,
+
+    category,
+
+    date: new Date().toLocaleDateString(),
+  };
+
+  transactions = addTransaction(transactions, transaction);
+
+  saveTransactions(transactions);
+
+  renderTransactions(transactions);
+
+  updateDashboard();
+
+  transactionForm.reset();
+});
 
 // SEARCH
 
-const searchInput =
-  document.getElementById(
-    "search"
-  );
+const searchInput = document.getElementById('search');
 
-searchInput.addEventListener(
-  "input",
-  (event) => {
+searchInput.addEventListener('input', (event) => {
+  const filtered = filterTransactions(transactions, event.target.value);
 
-    const filtered =
-      filterTransactions(
-        transactions,
-        event.target.value
-      );
-
-    renderTransactions(
-      filtered
-    );
-  }
-);
-
+  renderTransactions(filtered);
+});
 
 // GOALS
 
 window.addGoal = () => {
+  const name = document.getElementById('goalName').value;
 
-  const name =
-    document.getElementById(
-      "goalName"
-    ).value;
+  const target = Number(document.getElementById('goalAmount').value);
 
-  const target =
-    Number(
-      document.getElementById(
-        "goalAmount"
-      ).value
-    );
-
-  if (
-    !name ||
-    !target
-  ) {
-
-    showNotification(
-      "Please enter valid goal details"
-    );
+  if (!name || !target) {
+    showNotification('Please enter valid goal details');
 
     return;
   }
 
   const goal = {
-
     name,
 
     target,
@@ -284,43 +143,23 @@ window.addGoal = () => {
     saved: 0,
   };
 
-  goals =
-    addGoal(
-      goals,
-      goal
-    );
+  goals = addGoal(goals, goal);
 
   saveGoals(goals);
 
   renderGoals(goals);
 
-  showNotification(
-    "Savings Goal Added"
-  );
+  showNotification('Savings Goal Added');
 
-  document.getElementById(
-    "goalName"
-  ).value = "";
+  document.getElementById('goalName').value = '';
 
-  document.getElementById(
-    "goalAmount"
-  ).value = "";
+  document.getElementById('goalAmount').value = '';
 };
-
 
 // THEME TOGGLE
 
-const themeToggle =
-  document.getElementById(
-    "theme-toggle"
-  );
+const themeToggle = document.getElementById('theme-toggle');
 
-themeToggle.addEventListener(
-  "click",
-  () => {
-
-    document.body.classList.toggle(
-      "light-mode"
-    );
-  }
-);
+themeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('light-mode');
+});

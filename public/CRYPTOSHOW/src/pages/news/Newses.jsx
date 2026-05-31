@@ -9,12 +9,13 @@ const Newses = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`https://min-api.cryptocompare.com/data/v2/news/?lang=EN&api_key=${API_KEY}`)
-      .then(res => {
+    axios
+      .get(`https://min-api.cryptocompare.com/data/v2/news/?lang=EN&api_key=${API_KEY}`)
+      .then((res) => {
         setArticles(res.data.Data);
         setLoading(false);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error('Error fetching news:', err);
         setLoading(false);
       });
@@ -36,21 +37,19 @@ const Newses = () => {
       <h1 className="news-page-title">Crypto News</h1>
       <p className="news-page-sub">Latest headlines from the crypto world.</p>
       <div className="news-container">
-        {articles.map(article => (
+        {articles.map((article) => (
           <div key={article.id} className="news-article">
             <img
               src={article.imageurl}
               alt={article.title}
               className="news-image"
-              onError={(e) => e.target.style.display = 'none'}
+              onError={(e) => (e.target.style.display = 'none')}
             />
             <div className="news-details">
               <div className="news-header">
                 <h2 className="news-title">{article.title}</h2>
                 {article.sentiment && (
-                  <span className={`news-sentiment ${article.sentiment}`}>
-                    {article.sentiment}
-                  </span>
+                  <span className={`news-sentiment ${article.sentiment}`}>{article.sentiment}</span>
                 )}
               </div>
               <p className="news-body">{article.body}</p>

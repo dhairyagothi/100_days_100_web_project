@@ -37,10 +37,15 @@ body {
   min-height: 100vh;
   background:
     radial-gradient(circle at 10% 0%, rgba(45, 212, 191, 0.18), transparent 30rem),
-    radial-gradient(circle at 95% 10%, rgba(245, 158, 11, 0.15), transparent 28rem),
-    var(--bg);
+    radial-gradient(circle at 95% 10%, rgba(245, 158, 11, 0.15), transparent 28rem), var(--bg);
   color: var(--text);
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
 }
 
 button,
@@ -136,7 +141,10 @@ label.file-action {
   min-height: 2.65rem;
   border-radius: 0.5rem;
   font-weight: 800;
-  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
 }
 
 .primary-action {
@@ -368,7 +376,7 @@ body.light .primary-action {
 }
 
 .note-card::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0 0 auto;
   height: 0.35rem;
@@ -378,18 +386,42 @@ body.light .primary-action {
 /* =====================
    THEME COLORS (12 total)
    ===================== */
-.note-card[data-color="teal"]   { --accent: #2dd4bf; }
-.note-card[data-color="violet"] { --accent: #8b5cf6; }
-.note-card[data-color="amber"]  { --accent: #f59e0b; }
-.note-card[data-color="rose"]   { --accent: #fb7185; }
-.note-card[data-color="blue"]   { --accent: #3b82f6; }
-.note-card[data-color="green"]  { --accent: #22c55e; }
-.note-card[data-color="purple"] { --accent: #a855f7; }
-.note-card[data-color="orange"] { --accent: #f97316; }
-.note-card[data-color="pink"]   { --accent: #ec4899; }
-.note-card[data-color="yellow"] { --accent: #eab308; }
-.note-card[data-color="indigo"] { --accent: #6366f1; }
-.note-card[data-color="red"]    { --accent: #ef4444; }
+.note-card[data-color='teal'] {
+  --accent: #2dd4bf;
+}
+.note-card[data-color='violet'] {
+  --accent: #8b5cf6;
+}
+.note-card[data-color='amber'] {
+  --accent: #f59e0b;
+}
+.note-card[data-color='rose'] {
+  --accent: #fb7185;
+}
+.note-card[data-color='blue'] {
+  --accent: #3b82f6;
+}
+.note-card[data-color='green'] {
+  --accent: #22c55e;
+}
+.note-card[data-color='purple'] {
+  --accent: #a855f7;
+}
+.note-card[data-color='orange'] {
+  --accent: #f97316;
+}
+.note-card[data-color='pink'] {
+  --accent: #ec4899;
+}
+.note-card[data-color='yellow'] {
+  --accent: #eab308;
+}
+.note-card[data-color='indigo'] {
+  --accent: #6366f1;
+}
+.note-card[data-color='red'] {
+  --accent: #ef4444;
+}
 
 /* =====================
    NOTE CARD BODY
@@ -590,8 +622,8 @@ body.light .primary-action {
   font-weight: 800;
 }
 
-.note-modal input[type="text"],
-.note-modal input[type="password"],
+.note-modal input[type='text'],
+.note-modal input[type='password'],
 .note-modal textarea,
 .note-modal select {
   width: 100%;
@@ -602,8 +634,8 @@ body.light .primary-action {
   color: var(--text);
 }
 
-.note-modal input[type="text"],
-.note-modal input[type="password"],
+.note-modal input[type='text'],
+.note-modal input[type='password'],
 .note-modal select {
   min-height: 2.8rem;
   padding: 0 0.75rem;
@@ -683,7 +715,7 @@ body.light .primary-action {
   font-size: 0.9rem;
 }
 
-.unlock-body input[type="password"] {
+.unlock-body input[type='password'] {
   width: 100%;
   min-height: 2.8rem;
   padding: 0 0.75rem;
@@ -696,7 +728,7 @@ body.light .primary-action {
   font-size: 1rem;
 }
 
-.unlock-body input[type="password"]:focus {
+.unlock-body input[type='password']:focus {
   border-color: var(--primary);
 }
 
@@ -732,7 +764,9 @@ body.light .primary-action {
   opacity: 0;
   transform: translateY(0.75rem);
   pointer-events: none;
-  transition: opacity 180ms ease, transform 180ms ease;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
 }
 
 .toast.show {

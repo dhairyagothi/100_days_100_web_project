@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (cartBadge) {
       cartBadge.textContent = count;
-       cartBadge.style.display = count ? 'inline-block' : 'none';
+      cartBadge.style.display = count ? 'inline-block' : 'none';
     }
     if (cartEmpty) cartEmpty.style.display = count ? 'none' : 'flex';
   }

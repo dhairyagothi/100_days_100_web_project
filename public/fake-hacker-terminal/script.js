@@ -1,8 +1,7 @@
-const input = document.getElementById("commandInput");
-const output = document.getElementById("output");
+const input = document.getElementById('commandInput');
+const output = document.getElementById('output');
 
 const commands = {
-
   help: `
 Available Commands:
 
@@ -49,13 +48,11 @@ GitHub: https://github.com/sapnajha757
 
 LinkedIn:
 https://in.linkedin.com/in/sapna-jha-672598387
-`
+`,
 };
 
-input.addEventListener("keydown", function(e){
-
-  if(e.key === "Enter"){
-
+input.addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') {
     const command = input.value.trim().toLowerCase();
 
     output.innerHTML += `
@@ -65,14 +62,12 @@ root@terminal:~$ ${command}
 `;
 
     // CLEAR COMMAND
-    if(command === "clear"){
-
-      output.innerHTML = "";
+    if (command === 'clear') {
+      output.innerHTML = '';
     }
 
     // DATE COMMAND
-    else if(command === "date"){
-
+    else if (command === 'date') {
       output.innerHTML += `
 <div class="response">
 ${new Date()}
@@ -81,8 +76,7 @@ ${new Date()}
     }
 
     // HACK COMMAND
-    else if(command === "hack"){
-
+    else if (command === 'hack') {
       output.innerHTML += `
 <div class="response">
 Initializing hack sequence...
@@ -98,8 +92,7 @@ Hack Complete ✅
     }
 
     // PWD COMMAND
-    else if(command === "pwd"){
-
+    else if (command === 'pwd') {
       output.innerHTML += `
 <div class="response">
 /home/sapna/projects
@@ -108,8 +101,7 @@ Hack Complete ✅
     }
 
     // WHOAMI COMMAND
-    else if(command === "whoami"){
-
+    else if (command === 'whoami') {
       output.innerHTML += `
 <div class="response">
 sapna
@@ -118,8 +110,7 @@ sapna
     }
 
     // LS COMMAND
-    else if(command === "ls"){
-
+    else if (command === 'ls') {
       output.innerHTML += `
 <div class="response">
 projects   documents   secrets.txt
@@ -128,8 +119,7 @@ projects   documents   secrets.txt
     }
 
     // COMMANDS OBJECT
-    else if(commands[command]){
-
+    else if (commands[command]) {
       output.innerHTML += `
 <div class="response">
 ${commands[command]}
@@ -138,8 +128,7 @@ ${commands[command]}
     }
 
     // INVALID COMMAND
-    else{
-
+    else {
       output.innerHTML += `
 <div class="response">
 Command not found ❌
@@ -150,10 +139,9 @@ Type "help"
     }
 
     // CLEAR INPUT
-    input.value = "";
+    input.value = '';
 
     // AUTO SCROLL
     output.scrollTop = output.scrollHeight;
   }
-
 });

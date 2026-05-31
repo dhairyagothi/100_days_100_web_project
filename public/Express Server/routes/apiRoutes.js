@@ -1,10 +1,10 @@
-const express = require("express");
+const express = require('express');
 const {
   getHealthStatus,
   getServerInfo,
   getUsers,
-  getUserById
-} = require("../controllers/apiController");
+  getUserById,
+} = require('../controllers/apiController');
 
 const router = express.Router();
 
@@ -13,21 +13,21 @@ const router = express.Router();
 | Health Check Route
 |--------------------------------------------------------------------------
 */
-router.get("/health", getHealthStatus);
+router.get('/health', getHealthStatus);
 
 /*
 |--------------------------------------------------------------------------
 | Server Information Route
 |--------------------------------------------------------------------------
 */
-router.get("/info", getServerInfo);
+router.get('/info', getServerInfo);
 
 /*
 |--------------------------------------------------------------------------
 | Users Routes
 |--------------------------------------------------------------------------
 */
-router.get("/users",     getUsers);
-router.get("/users/:id", getUserById);
+router.get('/users', getUsers);
+router.get('/users/:id', getUserById);
 
 module.exports = router;

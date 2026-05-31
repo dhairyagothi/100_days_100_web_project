@@ -1,11 +1,11 @@
-const display = document.getElementById("display");
+const display = document.getElementById('display');
 
 function appendValue(value) {
   display.value += value;
 }
 
 function clearDisplay() {
-  display.value = "";
+  display.value = '';
 }
 
 function deleteLast() {
@@ -17,6 +17,6 @@ function calculate() {
     const result = Function('"use strict"; return (' + display.value + ')')();
     display.value = result;
   } catch (error) {
-    display.value = "Error";
+    display.value = 'Error';
   }
 }

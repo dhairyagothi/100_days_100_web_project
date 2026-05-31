@@ -4,41 +4,41 @@
   /* Cosmic Dark Space Palette */
   --bg-gradient: linear-gradient(135deg, #090d16 0%, #111827 50%, #1e1b4b 100%);
   --bg-color: #090d16;
-  
+
   /* Glassmorphism Panel Colors */
   --panel-bg: rgba(17, 24, 39, 0.7);
   --panel-border: rgba(255, 255, 255, 0.08);
   --panel-border-hover: rgba(99, 102, 241, 0.25);
-  
+
   /* Typography Colors */
   --text-primary: #f3f4f6;
   --text-secondary: #9ca3af;
   --text-muted: #6b7280;
-  
+
   /* Semantic Status Colors */
   --color-success: #10b981;
   --color-success-bg: rgba(16, 185, 129, 0.12);
   --color-success-glow: rgba(16, 185, 129, 0.4);
-  
+
   --color-error: #f43f5e;
   --color-error-bg: rgba(244, 63, 94, 0.12);
   --color-error-glow: rgba(244, 63, 94, 0.4);
-  
+
   /* Action Button Gradients */
   --btn-primary: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
   --btn-hint: linear-gradient(135deg, #ec4899 0%, #d946ef 100%);
-  
+
   /* Keyboard Interactive Colors */
   --key-bg: rgba(31, 41, 55, 0.6);
   --key-border: rgba(255, 255, 255, 0.05);
   --key-hover-bg: rgba(99, 102, 241, 0.15);
   --key-hover-border: rgba(99, 102, 241, 0.5);
-  
+
   /* SVG Custom Colors */
   --gallows-color: #475569;
   --rope-color: #f59e0b;
   --hangman-color: #e2e8f0;
-  
+
   /* Global Shadow & Glow */
   --glow-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
   --panel-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.5);
@@ -50,12 +50,18 @@
   padding: 0;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
 }
 
 body {
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-family:
+    'Plus Jakarta Sans',
+    system-ui,
+    -apple-system,
+    sans-serif;
   background: var(--bg-gradient);
   background-attachment: fixed;
   color: var(--text-primary);
@@ -73,14 +79,14 @@ body {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(0,0,0,0.2);
+  background: rgba(0, 0, 0, 0.2);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* Main Layout Centered container */
@@ -141,7 +147,7 @@ body {
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   display: inline-flex;
   align-items: center;
@@ -155,7 +161,7 @@ body {
 .btn--reset:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
-  border-color: rgba(255,255,255,0.2);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .btn--hint {
@@ -165,7 +171,7 @@ body {
 .btn--hint:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 0 20px rgba(236, 72, 153, 0.4);
-  border-color: rgba(255,255,255,0.2);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .btn:active {
@@ -235,8 +241,9 @@ body {
   opacity: 0;
   transform: translateY(12px) scale(0.95);
   transform-origin: center;
-  transition: opacity 500ms cubic-bezier(0.34, 1.56, 0.64, 1), 
-              transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition:
+    opacity 500ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .part.visible {
@@ -264,7 +271,7 @@ body {
   justify-content: center;
   background: rgba(17, 24, 39, 0.5);
   border: 1.5px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);
+  box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.3);
   font-weight: 800;
   font-size: 24px;
   color: var(--text-primary);
@@ -281,7 +288,7 @@ body {
   border-color: rgba(99, 102, 241, 0.4);
   color: #818cf8;
   box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
-  text-shadow: 0 0 8px rgba(99,102,241,0.5);
+  text-shadow: 0 0 8px rgba(99, 102, 241, 0.5);
 }
 
 .slot--sep {
@@ -326,7 +333,7 @@ body {
   font-size: 14px;
   font-weight: 700;
   border: 1px solid transparent;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .win-alert {
@@ -489,19 +496,19 @@ body {
   .game-area {
     grid-template-columns: 1fr;
   }
-  
+
   .card-panel {
     min-height: auto;
   }
-  
+
   .left-panel {
     padding: 16px;
   }
-  
+
   .hangman-svg {
     max-width: 200px;
   }
-  
+
   body {
     padding: 16px;
   }
@@ -513,25 +520,24 @@ body {
     gap: 16px;
     align-items: flex-start;
   }
-  
+
   .controls {
     width: 100%;
     justify-content: space-between;
   }
-  
+
   .controls button {
     flex-grow: 1;
   }
-  
+
   .keyboard {
     grid-template-columns: repeat(7, 1fr);
     gap: 6px;
   }
-  
+
   .slot {
     width: 38px;
     height: 48px;
     font-size: 18px;
   }
 }
-

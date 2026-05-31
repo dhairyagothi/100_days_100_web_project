@@ -17,28 +17,28 @@ That’s it. No server, no install, no terminal — just open the file.
 
 ## ✨ Features
 
-| Category | Detail |
-|---|---|
-| **Physics** | Gravity `0.5 px/frame²`, jump impulse `-8.5 px/frame`, terminal velocity `12 px/frame` |
-| **Fair pipe generation** | Gap centre clamped within `±110 px` of the previous pipe — every opening is reachable |
-| **Consistent spacing** | Pipe gap measured in pixels (`380 px`), not milliseconds, so spacing stays constant at all speeds |
-| **Progressive difficulty** | Speed ↑ and gap ↓ every 5 points, both capped at safe limits |
-| **Screen shake** | Decaying camera shake on death, fades to zero over ~0.67 s (40 frames) |
-| **Scrolling ground** | Animated dashed strip synced to pipe speed |
-| **Sound effects** | Flap / score / death tones via Web Audio API — no audio files needed |
-| **Best score** | Persists across restarts in the same session; ★ NEW BEST badge on game-over |
-| **Milestone flash** | Full-screen flash + score popup every 5 points |
-| **Tab auto-pause** | Pauses automatically when you switch tabs |
-| **Mobile support** | Touch events on canvas |
+| Category                   | Detail                                                                                            |
+| -------------------------- | ------------------------------------------------------------------------------------------------- |
+| **Physics**                | Gravity `0.5 px/frame²`, jump impulse `-8.5 px/frame`, terminal velocity `12 px/frame`            |
+| **Fair pipe generation**   | Gap centre clamped within `±110 px` of the previous pipe — every opening is reachable             |
+| **Consistent spacing**     | Pipe gap measured in pixels (`380 px`), not milliseconds, so spacing stays constant at all speeds |
+| **Progressive difficulty** | Speed ↑ and gap ↓ every 5 points, both capped at safe limits                                      |
+| **Screen shake**           | Decaying camera shake on death, fades to zero over ~0.67 s (40 frames)                            |
+| **Scrolling ground**       | Animated dashed strip synced to pipe speed                                                        |
+| **Sound effects**          | Flap / score / death tones via Web Audio API — no audio files needed                              |
+| **Best score**             | Persists across restarts in the same session; ★ NEW BEST badge on game-over                       |
+| **Milestone flash**        | Full-screen flash + score popup every 5 points                                                    |
+| **Tab auto-pause**         | Pauses automatically when you switch tabs                                                         |
+| **Mobile support**         | Touch events on canvas                                                                            |
 
 ---
 
 ## 🎮 Controls
 
-| Action | Input |
-|---|---|
-| Flap | `Space` / Click / Tap |
-| Pause / Resume | `P` |
+| Action                | Input                 |
+| --------------------- | --------------------- |
+| Flap                  | `Space` / Click / Tap |
+| Pause / Resume        | `P`                   |
 | Restart (after death) | `Space` / Click / Tap |
 
 ---
@@ -62,18 +62,18 @@ Flappy-bird-main/
 
 ## ⚙️ Physics Reference
 
-| Constant | Value | Purpose |
-|---|---|---|
-| `GRAVITY` | `0.5` | Downward acceleration (px/frame²) |
-| `JUMP_VEL` | `-8.5` | Velocity on flap (px/frame) |
-| `TERM_VEL` | `12` | Terminal velocity cap (px/frame) |
-| `BASE_GAP` | `200 px` | Opening height at level 1 |
-| `MIN_GAP` | `150 px` | Minimum opening at max difficulty |
-| `BASE_SPEED` | `2.5 px/frame` | Pipe speed at level 1 |
-| `MAX_SPEED` | `5.5 px/frame` | Hard cap on pipe speed |
-| `MAX_GAP_JUMP` | `110 px` | Max vertical shift between consecutive pipe centres |
-| `PIPE_SPACING` | `380 px` | Horizontal distance between pipe leading edges |
-| `SHAKE_FRAMES` | `40 frames` | Death shake duration (~0.67 s) |
+| Constant       | Value          | Purpose                                             |
+| -------------- | -------------- | --------------------------------------------------- |
+| `GRAVITY`      | `0.5`          | Downward acceleration (px/frame²)                   |
+| `JUMP_VEL`     | `-8.5`         | Velocity on flap (px/frame)                         |
+| `TERM_VEL`     | `12`           | Terminal velocity cap (px/frame)                    |
+| `BASE_GAP`     | `200 px`       | Opening height at level 1                           |
+| `MIN_GAP`      | `150 px`       | Minimum opening at max difficulty                   |
+| `BASE_SPEED`   | `2.5 px/frame` | Pipe speed at level 1                               |
+| `MAX_SPEED`    | `5.5 px/frame` | Hard cap on pipe speed                              |
+| `MAX_GAP_JUMP` | `110 px`       | Max vertical shift between consecutive pipe centres |
+| `PIPE_SPACING` | `380 px`       | Horizontal distance between pipe leading edges      |
+| `SHAKE_FRAMES` | `40 frames`    | Death shake duration (~0.67 s)                      |
 
 ---
 

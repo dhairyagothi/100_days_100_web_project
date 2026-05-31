@@ -3,29 +3,29 @@
 
   // Returns true when the app requests an immediate stop.
   function shouldStop(callbacks) {
-    return typeof callbacks.shouldStop === "function" && callbacks.shouldStop();
+    return typeof callbacks.shouldStop === 'function' && callbacks.shouldStop();
   }
 
   // Pauses between operations while respecting app-level controls.
   async function checkpoint(speed, callbacks) {
     if (shouldStop(callbacks)) {
-      throw new Error("VISUALIZATION_STOPPED");
+      throw new Error('VISUALIZATION_STOPPED');
     }
 
-    if (typeof callbacks.wait === "function") {
+    if (typeof callbacks.wait === 'function') {
       await callbacks.wait(speed);
     } else {
       await sleep(speed);
     }
 
     if (shouldStop(callbacks)) {
-      throw new Error("VISUALIZATION_STOPPED");
+      throw new Error('VISUALIZATION_STOPPED');
     }
   }
 
   // Updates the explanation panel with a plain-English message.
   function explain(callbacks, text) {
-    if (typeof callbacks.onExplain === "function") {
+    if (typeof callbacks.onExplain === 'function') {
       callbacks.onExplain(text);
     }
   }
@@ -34,7 +34,7 @@
   async function visualize(array, speed, callbacks) {
     var n = array.length;
 
-    if (typeof callbacks.onSorted === "function") {
+    if (typeof callbacks.onSorted === 'function') {
       await callbacks.onSorted(0);
     }
 
@@ -44,26 +44,16 @@
 
       explain(
         callbacks,
-        "Take value " +
-          key +
-          " from index " +
-          i +
-          " and insert it in the sorted part.",
+        'Take value ' + key + ' from index ' + i + ' and insert it in the sorted part.'
       );
 
       while (j >= 0) {
         explain(
           callbacks,
-          "Comparing key value " +
-            key +
-            " with index " +
-            j +
-            " (value " +
-            array[j] +
-            ").",
+          'Comparing key value ' + key + ' with index ' + j + ' (value ' + array[j] + ').'
         );
 
-        if (typeof callbacks.onCompare === "function") {
+        if (typeof callbacks.onCompare === 'function') {
           await callbacks.onCompare(j, j + 1, array[j], key);
         }
         await checkpoint(speed, callbacks);
@@ -72,14 +62,10 @@
           array[j + 1] = array[j];
           explain(
             callbacks,
-            "Value " +
-              array[j] +
-              " is larger than " +
-              key +
-              ", so shift it right by one position.",
+            'Value ' + array[j] + ' is larger than ' + key + ', so shift it right by one position.'
           );
 
-          if (typeof callbacks.onSwap === "function") {
+          if (typeof callbacks.onSwap === 'function') {
             await callbacks.onSwap(j + 1, j, array);
           }
           await checkpoint(speed, callbacks);
@@ -90,18 +76,15 @@
       }
 
       array[j + 1] = key;
-      explain(
-        callbacks,
-        "Place key value " + key + " at index " + (j + 1) + ".",
-      );
+      explain(callbacks, 'Place key value ' + key + ' at index ' + (j + 1) + '.');
 
-      if (typeof callbacks.onSwap === "function") {
+      if (typeof callbacks.onSwap === 'function') {
         await callbacks.onSwap(j + 1, j + 1, array);
       }
       await checkpoint(speed, callbacks);
 
       for (var k = 0; k <= i; k += 1) {
-        if (typeof callbacks.onSorted === "function") {
+        if (typeof callbacks.onSorted === 'function') {
           await callbacks.onSorted(k);
         }
       }

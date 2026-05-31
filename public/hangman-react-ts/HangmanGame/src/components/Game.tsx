@@ -1,13 +1,13 @@
-import React, { useEffect, useMemo, useReducer, useState, useRef, useCallback } from "react";
-import WordDisplay from "./WordDisplay";
-import Keyboard from "./Keyboard";
-import HangmanSVG from "./HangmanSVG";
-import HintsPanel from "./HintsPanel";
-import type { DictResult } from "../hooks/useDictionary";
-import useDictionary from "../hooks/useDictionary";
-import { pickRandomWord } from "../utils/words";
+import React, { useEffect, useMemo, useReducer, useState, useRef, useCallback } from 'react';
+import WordDisplay from './WordDisplay';
+import Keyboard from './Keyboard';
+import HangmanSVG from './HangmanSVG';
+import HintsPanel from './HintsPanel';
+import type { DictResult } from '../hooks/useDictionary';
+import useDictionary from '../hooks/useDictionary';
+import { pickRandomWord } from '../utils/words';
 
-export type GameStatus = "PLAYING" | "WON" | "LOST";
+export type GameStatus = 'PLAYING' | 'WON' | 'LOST';
 
 type State = {
   word: string;
@@ -19,45 +19,47 @@ type State = {
 };
 
 type Action =
-  | { type: "START_GAME"; word: string; hintData?: DictResult | null }
-  | { type: "MAKE_GUESS"; letter: string }
-  | { type: "REVEAL_HINT" }
-  | { type: "SET_HINT_DATA"; hintData: DictResult | null };
+  | { type: 'START_GAME'; word: string; hintData?: DictResult | null }
+  | { type: 'MAKE_GUESS'; letter: string }
+  | { type: 'REVEAL_HINT' }
+  | { type: 'SET_HINT_DATA'; hintData: DictResult | null };
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
-    case "START_GAME":
+    case 'START_GAME':
       return {
         word: action.word,
         guessedLetters: [],
         wrongCount: 0,
-        status: "PLAYING",
+        status: 'PLAYING',
         revealLevel: 0,
-        hintData: action.hintData ?? null
+        hintData: action.hintData ?? null,
       };
-    case "MAKE_GUESS": {
-      if (state.status !== "PLAYING") return state;
+    case 'MAKE_GUESS': {
+      if (state.status !== 'PLAYING') return state;
       const letter = action.letter.toLowerCase();
       if (state.guessedLetters.includes(letter)) return state;
 
       const guessedLetters = [...state.guessedLetters, letter];
 
       // Compute if all alphabet letters of the word are guessed
-      const revealedAll = state.word.split("").every(ch => {
+      const revealedAll = state.word.split('').every((ch) => {
         if (!/^[a-zA-Z]$/.test(ch)) return true; // non-letters are pre-revealed
         return guessedLetters.includes(ch.toLowerCase());
       });
 
-      const wrong = state.word.toLowerCase().includes(letter) ? state.wrongCount : state.wrongCount + 1;
-      const status = revealedAll ? "WON" : wrong >= 6 ? "LOST" : "PLAYING";
+      const wrong = state.word.toLowerCase().includes(letter)
+        ? state.wrongCount
+        : state.wrongCount + 1;
+      const status = revealedAll ? 'WON' : wrong >= 6 ? 'LOST' : 'PLAYING';
 
       return { ...state, guessedLetters, wrongCount: wrong, status };
     }
-    case "REVEAL_HINT": {
+    case 'REVEAL_HINT': {
       const next = Math.min(2, state.revealLevel + 1);
       return { ...state, revealLevel: next };
     }
-    case "SET_HINT_DATA":
+    case 'SET_HINT_DATA':
       return { ...state, hintData: action.hintData };
     default:
       return state;
@@ -71,9 +73,9 @@ export default function Game() {
     word: initialWord,
     guessedLetters: [],
     wrongCount: 0,
-    status: "PLAYING",
+    status: 'PLAYING',
     revealLevel: 0,
-    hintData: null
+    hintData: null,
   });
 
   const [loadingHint, setLoadingHint] = useState(false);
@@ -98,14 +100,15 @@ export default function Game() {
         const key = state.word.toLowerCase();
         if (prefetchRef.current[key] !== undefined) {
           const cached = prefetchRef.current[key];
-          if (!cancelled) dispatch({ type: "START_GAME", word: state.word, hintData: cached ?? null });
+          if (!cancelled)
+            dispatch({ type: 'START_GAME', word: state.word, hintData: cached ?? null });
           return;
         }
 
         const h = await fetchDefinition(state.word);
-        if (!cancelled) dispatch({ type: "START_GAME", word: state.word, hintData: h });
+        if (!cancelled) dispatch({ type: 'START_GAME', word: state.word, hintData: h });
       } catch (err) {
-        console.warn("hint load error", err);
+        console.warn('hint load error', err);
       } finally {
         if (!cancelled) setLoadingHint(false);
       }
@@ -133,7 +136,7 @@ export default function Game() {
 
   // Stable callback for making guesses, ensuring no race conditions or stale event closures
   const handleGuess = useCallback((letter: string) => {
-    dispatch({ type: "MAKE_GUESS", letter });
+    dispatch({ type: 'MAKE_GUESS', letter });
   }, []);
 
   // Physical keyboard listener
@@ -147,8 +150,8 @@ export default function Game() {
         handleGuess(k);
       }
     }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   }, [handleGuess]);
 
   const handleRevealHint = useCallback(() => {
@@ -156,22 +159,22 @@ export default function Game() {
     if (state.revealLevel === 0) {
       const first = state.word[0]?.toLowerCase();
       if (first && /^[a-z]$/.test(first) && !state.guessedLetters.includes(first)) {
-        dispatch({ type: "MAKE_GUESS", letter: first });
+        dispatch({ type: 'MAKE_GUESS', letter: first });
       }
     }
-    dispatch({ type: "REVEAL_HINT" });
+    dispatch({ type: 'REVEAL_HINT' });
   }, [state.revealLevel, state.word, state.guessedLetters]);
 
   const handleReset = useCallback(() => {
     const newWord = pickRandomWord();
     setLoadingHint(true);
     fetchDefinition(newWord)
-      .then(h => {
+      .then((h) => {
         prefetchRef.current[newWord.toLowerCase()] = h ?? null;
-        dispatch({ type: "START_GAME", word: newWord, hintData: h });
+        dispatch({ type: 'START_GAME', word: newWord, hintData: h });
       })
       .catch(() => {
-        dispatch({ type: "START_GAME", word: newWord, hintData: null });
+        dispatch({ type: 'START_GAME', word: newWord, hintData: null });
       })
       .finally(() => {
         if (mountedRef.current) setLoadingHint(false);
@@ -189,7 +192,7 @@ export default function Game() {
           <button
             onClick={handleRevealHint}
             className="btn btn--hint"
-            disabled={state.revealLevel >= 2 || state.status !== "PLAYING"}
+            disabled={state.revealLevel >= 2 || state.status !== 'PLAYING'}
           >
             Reveal Hint
           </button>
@@ -210,16 +213,18 @@ export default function Game() {
             guessedLetters={state.guessedLetters}
             revealFirst={state.revealLevel >= 1}
           />
-          
+
           <div className="status-display">
-            {state.status === "WON" && (
+            {state.status === 'WON' && (
               <div className="status-alert win-alert animate-fade-in">
                 <span>You Won! 🎉 Excellent guess.</span>
               </div>
             )}
-            {state.status === "LOST" && (
+            {state.status === 'LOST' && (
               <div className="status-alert lose-alert animate-fade-in">
-                <span>You Lost — the word was <strong className="correct-word">{state.word}</strong></span>
+                <span>
+                  You Lost — the word was <strong className="correct-word">{state.word}</strong>
+                </span>
               </div>
             )}
             <div className="attempts-badge">
@@ -231,7 +236,7 @@ export default function Game() {
             onGuess={handleGuess}
             word={state.word}
             guessedLetters={state.guessedLetters}
-            disabled={state.status !== "PLAYING"}
+            disabled={state.status !== 'PLAYING'}
           />
         </div>
 
@@ -247,4 +252,3 @@ export default function Game() {
     </main>
   );
 }
-

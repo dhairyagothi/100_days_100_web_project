@@ -25,7 +25,8 @@ body {
   padding: 0;
   font-family: 'Inter', sans-serif;
   color: var(--text);
-  background: radial-gradient(circle at top left, rgba(96, 212, 255, 0.14), transparent 22%),
+  background:
+    radial-gradient(circle at top left, rgba(96, 212, 255, 0.14), transparent 22%),
     linear-gradient(180deg, var(--bg-start), var(--bg-end));
   overflow-x: hidden;
 }
@@ -189,7 +190,10 @@ button {
   font-weight: 600;
   letter-spacing: 0.01em;
   color: #09101f;
-  transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    background 0.22s ease;
   background: linear-gradient(135deg, #60d4ff, #9c6cff);
   box-shadow: 0 18px 50px rgba(96, 212, 255, 0.22);
 }
@@ -218,7 +222,9 @@ button:disabled {
   background: rgba(9, 12, 28, 0.9);
   border: 1px solid rgba(96, 212, 255, 0.12);
   box-shadow: var(--shadow);
-  transition: transform 0.3s ease, opacity 0.4s ease;
+  transition:
+    transform 0.3s ease,
+    opacity 0.4s ease;
 }
 
 .card.visible {
@@ -231,7 +237,8 @@ button:disabled {
   height: auto;
   display: block;
   border-radius: 20px;
-  background: radial-gradient(circle at 30% 30%, rgba(96, 212, 255, 0.12), transparent 25%),
+  background:
+    radial-gradient(circle at 30% 30%, rgba(96, 212, 255, 0.12), transparent 25%),
     linear-gradient(180deg, rgba(15, 22, 56, 0.98), rgba(8, 10, 20, 0.98));
 }
 
@@ -272,7 +279,9 @@ button:disabled {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
   opacity: 0;
   transform: translateY(14px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
 }
 
 .toast.visible {
@@ -302,7 +311,9 @@ button:disabled {
   place-items: center;
   background: rgba(4, 8, 20, 0.85);
   backdrop-filter: blur(6px);
-  transition: opacity 0.25s ease, visibility 0.25s ease;
+  transition:
+    opacity 0.25s ease,
+    visibility 0.25s ease;
   z-index: 80;
 }
 
@@ -404,7 +415,6 @@ button:disabled {
   }
 }
 
-
 #mazeContainer.preview canvas {
   filter: blur(8px);
   opacity: 0.5;
@@ -424,14 +434,12 @@ button:disabled {
   to {
     box-shadow: 0 0 25px #00ffff;
   }
-}#mazeContainer.preview canvas {
+}
+#mazeContainer.preview canvas {
   filter: blur(10px);
   opacity: 0.6;
   pointer-events: none;
-  transition: filter 0.8s ease, opacity 0.8s ease;
+  transition:
+    filter 0.8s ease,
+    opacity 0.8s ease;
 }
-
-
-
-
-

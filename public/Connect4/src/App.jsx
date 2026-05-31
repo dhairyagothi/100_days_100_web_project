@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 const ROWS = 6;
 const COLS = 7;
@@ -11,9 +11,9 @@ export default function App() {
       .map(() => Array(COLS).fill(null));
 
   const [board, setBoard] = useState(createBoard());
-  const [player, setPlayer] = useState("red");
+  const [player, setPlayer] = useState('red');
   const [winner, setWinner] = useState(null);
-  const [gameMode, setGameMode] = useState("pvp");
+  const [gameMode, setGameMode] = useState('pvp');
   const [aiThinking, setAiThinking] = useState(false);
 
   const checkWinner = (grid, row, col, color) => {
@@ -31,13 +31,7 @@ export default function App() {
         let r = row + dx * dir;
         let c = col + dy * dir;
 
-        while (
-          r >= 0 &&
-          r < ROWS &&
-          c >= 0 &&
-          c < COLS &&
-          grid[r][c] === color
-        ) {
+        while (r >= 0 && r < ROWS && c >= 0 && c < COLS && grid[r][c] === color) {
           count++;
           r += dx * dir;
           c += dy * dir;
@@ -50,11 +44,7 @@ export default function App() {
     return false;
   };
 
-  const makeMove = (
-    col,
-    currentPlayer = player,
-    currentBoard = board
-  ) => {
+  const makeMove = (col, currentPlayer = player, currentBoard = board) => {
     if (winner) return;
 
     const newBoard = currentBoard.map((row) => [...row]);
@@ -75,36 +65,21 @@ export default function App() {
 
     if (placedRow === -1) return;
 
-    const simpleBoard = newBoard.map((r) =>
-      r.map((c) => (c ? c.color : null))
-    );
+    const simpleBoard = newBoard.map((r) => r.map((c) => (c ? c.color : null)));
 
     setBoard(newBoard);
 
-    if (
-      checkWinner(
-        simpleBoard,
-        placedRow,
-        col,
-        currentPlayer
-      )
-    ) {
+    if (checkWinner(simpleBoard, placedRow, col, currentPlayer)) {
       setWinner(currentPlayer);
       return;
     }
 
-    const nextPlayer =
-      currentPlayer === "red"
-        ? "yellow"
-        : "red";
+    const nextPlayer = currentPlayer === 'red' ? 'yellow' : 'red';
 
     setPlayer(nextPlayer);
 
     // ONLY HUMAN MOVE TRIGGERS AI
-    if (
-      gameMode === "ai" &&
-      currentPlayer === "red"
-    ) {
+    if (gameMode === 'ai' && currentPlayer === 'red') {
       setAiThinking(true);
 
       setTimeout(() => {
@@ -115,9 +90,7 @@ export default function App() {
   };
 
   const aiMove = (currentBoard) => {
-    const simpleBoard = currentBoard.map((r) =>
-      r.map((c) => (c ? c.color : null))
-    );
+    const simpleBoard = currentBoard.map((r) => r.map((c) => (c ? c.color : null)));
 
     // AI WINNING MOVE
     for (let col = 0; col < COLS; col++) {
@@ -125,21 +98,10 @@ export default function App() {
 
       for (let row = ROWS - 1; row >= 0; row--) {
         if (!tempBoard[row][col]) {
-          tempBoard[row][col] = "yellow";
+          tempBoard[row][col] = 'yellow';
 
-          if (
-            checkWinner(
-              tempBoard,
-              row,
-              col,
-              "yellow"
-            )
-          ) {
-            makeMove(
-              col,
-              "yellow",
-              currentBoard
-            );
+          if (checkWinner(tempBoard, row, col, 'yellow')) {
+            makeMove(col, 'yellow', currentBoard);
             return;
           }
 
@@ -154,21 +116,10 @@ export default function App() {
 
       for (let row = ROWS - 1; row >= 0; row--) {
         if (!tempBoard[row][col]) {
-          tempBoard[row][col] = "red";
+          tempBoard[row][col] = 'red';
 
-          if (
-            checkWinner(
-              tempBoard,
-              row,
-              col,
-              "red"
-            )
-          ) {
-            makeMove(
-              col,
-              "yellow",
-              currentBoard
-            );
+          if (checkWinner(tempBoard, row, col, 'red')) {
+            makeMove(col, 'yellow', currentBoard);
             return;
           }
 
@@ -182,11 +133,7 @@ export default function App() {
 
     for (let col of preferredCols) {
       if (!simpleBoard[0][col]) {
-        makeMove(
-          col,
-          "yellow",
-          currentBoard
-        );
+        makeMove(col, 'yellow', currentBoard);
         return;
       }
     }
@@ -195,27 +142,23 @@ export default function App() {
   const resetGame = () => {
     setBoard(createBoard());
     setWinner(null);
-    setPlayer("red");
+    setPlayer('red');
     setAiThinking(false);
   };
 
   return (
     <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center px-4 py-8 text-white">
-      <h1 className="text-5xl md:text-6xl font-black mb-6">
-        CONNECT 4
-      </h1>
+      <h1 className="text-5xl md:text-6xl font-black mb-6">CONNECT 4</h1>
 
       {/* GAME MODES */}
       <div className="flex gap-4 mb-6">
         <button
           onClick={() => {
-            setGameMode("pvp");
+            setGameMode('pvp');
             resetGame();
           }}
           className={`px-5 py-2 rounded-xl font-bold transition ${
-            gameMode === "pvp"
-              ? "bg-white text-black"
-              : "bg-gray-700"
+            gameMode === 'pvp' ? 'bg-white text-black' : 'bg-gray-700'
           }`}
         >
           2 Player
@@ -223,13 +166,11 @@ export default function App() {
 
         <button
           onClick={() => {
-            setGameMode("ai");
+            setGameMode('ai');
             resetGame();
           }}
           className={`px-5 py-2 rounded-xl font-bold transition ${
-            gameMode === "ai"
-              ? "bg-white text-black"
-              : "bg-gray-700"
+            gameMode === 'ai' ? 'bg-white text-black' : 'bg-gray-700'
           }`}
         >
           VS AI
@@ -239,16 +180,12 @@ export default function App() {
       {/* STATUS */}
       <div className="mb-6">
         {winner ? (
-          <div className="text-3xl font-bold">
-            🎉 {winner.toUpperCase()} WINS!
-          </div>
+          <div className="text-3xl font-bold">🎉 {winner.toUpperCase()} WINS!</div>
         ) : (
           <div className="flex items-center gap-3 text-2xl font-semibold">
             <div
               className={`w-6 h-6 rounded-full ${
-                player === "red"
-                  ? "bg-red-500"
-                  : "bg-yellow-400"
+                player === 'red' ? 'bg-red-500' : 'bg-yellow-400'
               }`}
             />
             {player.toUpperCase()}'s TURN
@@ -264,11 +201,7 @@ export default function App() {
               <div
                 key={colIndex}
                 onClick={() => {
-                  if (
-                    gameMode === "ai" &&
-                    (player === "yellow" ||
-                      aiThinking)
-                  ) {
+                  if (gameMode === 'ai' && (player === 'yellow' || aiThinking)) {
                     return;
                   }
 
@@ -282,14 +215,12 @@ export default function App() {
                     initial={{ y: -600 }}
                     animate={{ y: 0 }}
                     transition={{
-                      type: "tween",
+                      type: 'tween',
                       duration: 0.55,
-                      ease: "linear",
+                      ease: 'linear',
                     }}
                     className={`absolute left-1/2 top-1/2 w-10 h-10 md:w-16 md:h-16 rounded-full -translate-x-1/2 -translate-y-1/2 ${
-                      cell.color === "red"
-                        ? "bg-red-500"
-                        : "bg-yellow-400"
+                      cell.color === 'red' ? 'bg-red-500' : 'bg-yellow-400'
                     }`}
                   />
                 )}

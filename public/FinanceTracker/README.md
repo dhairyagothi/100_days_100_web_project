@@ -237,7 +237,7 @@ Clone the repository:
 
 ```bash
 git clone <repository-url>
-````
+```
 
 Open the project folder:
 
@@ -254,8 +254,7 @@ Run the application using Live Server or any local development server.
 Create a `config.js` file inside the `js/` directory:
 
 ```js
-export const GROQ_API_KEY =
-  "YOUR_GROQ_API_KEY";
+export const GROQ_API_KEY = 'YOUR_GROQ_API_KEY';
 ```
 
 Get your Groq API key from:
@@ -268,16 +267,16 @@ Get your Groq API key from:
 
 Potential future enhancements include:
 
-* Authentication system
-* Cloud database integration
-* Multi-user support
-* Real-time sync
-* Budget forecasting
-* Voice-based AI assistant
-* Monthly financial reports
-* Advanced predictive analytics
-* Exportable financial summaries
-* AI chatbot support
+- Authentication system
+- Cloud database integration
+- Multi-user support
+- Real-time sync
+- Budget forecasting
+- Voice-based AI assistant
+- Monthly financial reports
+- Advanced predictive analytics
+- Exportable financial summaries
+- AI chatbot support
 
 ---
 
@@ -286,6 +285,3 @@ Potential future enhancements include:
 AI Financial Insights Tracker combines intelligent analytics, financial visualization, and AI-powered insights into a modern finance management experience.
 
 The platform focuses on improving financial awareness through interactive dashboards, intelligent recommendations, and advanced spending analysis while maintaining a scalable and modular frontend architecture.
-
-
-

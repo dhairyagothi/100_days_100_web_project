@@ -26,37 +26,44 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use(session({
-  secret: process.env.JWT_SECRET || 'secretkey',
-  resave: false,
-  saveUninitialized: false,
-}));
+app.use(
+  session({
+    secret: process.env.JWT_SECRET || 'secretkey',
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 // ─── Passport Google Strategy ──────────────────────────────────
-passport.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: '/auth/google/callback',
-}, async (accessToken, refreshToken, profile, done) => {
-  try {
-    let user = await collection.findOne({ email: profile.emails[0].value });
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: '/auth/google/callback',
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        let user = await collection.findOne({ email: profile.emails[0].value });
 
-    if (!user) {
-      user = await collection.create({
-        username: profile.displayName,
-        email: profile.emails[0].value,
-        password: 'google-oauth',
-      });
+        if (!user) {
+          user = await collection.create({
+            username: profile.displayName,
+            email: profile.emails[0].value,
+            password: 'google-oauth',
+          });
+        }
+
+        return done(null, user);
+      } catch (err) {
+        return done(err, null);
+      }
     }
-
-    return done(null, user);
-  } catch (err) {
-    return done(err, null);
-  }
-}));
+  )
+);
 
 passport.serializeUser((user, done) => {
   done(null, user._id);
@@ -87,11 +94,10 @@ app.get('/logout', (req, res) => {
 });
 
 // ─── Google OAuth Routes ───────────────────────────────────────
-app.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
-);
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-app.get('/auth/google/callback',
+app.get(
+  '/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
     const token = jwt.sign(
@@ -126,7 +132,9 @@ app.post('/signup', async (req, res) => {
     }
 
     if (!validator.isStrongPassword(password)) {
-      return res.status(400).send('Weak password! Use 8+ chars with uppercase, lowercase, number & symbol.');
+      return res
+        .status(400)
+        .send('Weak password! Use 8+ chars with uppercase, lowercase, number & symbol.');
     }
 
     const hashedPw = await bcrypt.hash(password, 10);

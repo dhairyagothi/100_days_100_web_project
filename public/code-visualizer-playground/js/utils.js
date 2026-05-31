@@ -12,8 +12,7 @@
     var values = [];
 
     for (var i = 0; i < length; i += 1) {
-      var value =
-        Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
+      var value = Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
       values.push(value);
     }
 
@@ -54,10 +53,7 @@
     var swapCount = Math.max(1, Math.round(length * 0.12));
 
     for (var i = 0; i < swapCount; i += 1) {
-      var index = Math.min(
-        values.length - 2,
-        Math.floor((i * values.length) / swapCount),
-      );
+      var index = Math.min(values.length - 2, Math.floor((i * values.length) / swapCount));
 
       if (index >= 0 && index < values.length - 1) {
         var temp = values[index];
@@ -71,36 +67,32 @@
 
   // Parses a comma-separated list of numbers into an array or a validation error.
   function parseNumberList(inputValue) {
-    var rawValue = String(inputValue || "").trim();
+    var rawValue = String(inputValue || '').trim();
     var result = {
       valid: false,
       values: [],
-      message: "Enter comma-separated numbers to build a custom array.",
+      message: 'Enter comma-separated numbers to build a custom array.',
     };
 
     if (!rawValue) {
       return result;
     }
 
-    var tokens = rawValue.split(",");
+    var tokens = rawValue.split(',');
     var values = [];
 
     for (var i = 0; i < tokens.length; i += 1) {
       var token = tokens[i].trim();
 
       if (!token) {
-        result.message =
-          "Remove empty values and keep the list in comma-separated form.";
+        result.message = 'Remove empty values and keep the list in comma-separated form.';
         return result;
       }
 
       var numericValue = Number(token);
 
       if (!isFinite(numericValue)) {
-        result.message =
-          '"' +
-          token +
-          '" is not a valid number. Use digits separated by commas.';
+        result.message = '"' + token + '" is not a valid number. Use digits separated by commas.';
         return result;
       }
 
@@ -109,7 +101,7 @@
 
     result.valid = true;
     result.values = values;
-    result.message = "Custom array ready.";
+    result.message = 'Custom array ready.';
 
     return result;
   }

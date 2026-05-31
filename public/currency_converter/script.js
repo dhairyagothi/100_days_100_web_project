@@ -2,65 +2,65 @@
    API
 ========================= */
 
-const api = "https://api.exchangerate-api.com/v4/latest/USD";
+const api = 'https://api.exchangerate-api.com/v4/latest/USD';
 
 /* =========================
    SELECTORS
 ========================= */
 
-const amountInput = document.querySelector(".searchBox");
+const amountInput = document.querySelector('.searchBox');
 
-const convertBtn = document.querySelector(".convert");
+const convertBtn = document.querySelector('.convert');
 
-const fromCurrency = document.querySelector(".from");
+const fromCurrency = document.querySelector('.from');
 
-const toCurrency = document.querySelector(".to");
+const toCurrency = document.querySelector('.to');
 
-const finalValue = document.querySelector(".finalValue");
+const finalValue = document.querySelector('.finalValue');
 
-const finalAmount = document.querySelector("#finalAmount");
+const finalAmount = document.querySelector('#finalAmount');
 
-const loading = document.querySelector(".loading");
+const loading = document.querySelector('.loading');
 
-const swapBtn = document.querySelector("#swap");
+const swapBtn = document.querySelector('#swap');
 
-const historyList = document.querySelector(".history-list");
+const historyList = document.querySelector('.history-list');
 
-const quickButtons = document.querySelectorAll(".quick-btn");
+const quickButtons = document.querySelectorAll('.quick-btn');
 
-const clearHistoryBtn = document.querySelector(".clear-history");
+const clearHistoryBtn = document.querySelector('.clear-history');
 
 /* =========================
    INITIAL STATE
 ========================= */
 
-finalAmount.style.display = "none";
+finalAmount.style.display = 'none';
 
 /* DEFAULT CURRENCIES */
 
-fromCurrency.value = "USD";
-toCurrency.value = "INR";
+fromCurrency.value = 'USD';
+toCurrency.value = 'INR';
 
 /* =========================
    EVENT LISTENERS
 ========================= */
 
-convertBtn.addEventListener("click", getResults);
+convertBtn.addEventListener('click', getResults);
 
-swapBtn.addEventListener("click", swapCurrencies);
+swapBtn.addEventListener('click', swapCurrencies);
 
-amountInput.addEventListener("input", debounce(autoConvert, 600));
+amountInput.addEventListener('input', debounce(autoConvert, 600));
 
-fromCurrency.addEventListener("change", autoConvert);
+fromCurrency.addEventListener('change', autoConvert);
 
-toCurrency.addEventListener("change", autoConvert);
+toCurrency.addEventListener('change', autoConvert);
 
-clearHistoryBtn.addEventListener("click", clearHistory);
+clearHistoryBtn.addEventListener('click', clearHistory);
 
 /* QUICK BUTTONS */
 
 quickButtons.forEach((button) => {
-  button.addEventListener("click", () => {
+  button.addEventListener('click', () => {
     fromCurrency.value = button.dataset.from;
 
     toCurrency.value = button.dataset.to;
@@ -74,11 +74,7 @@ quickButtons.forEach((button) => {
 ========================= */
 
 function autoConvert() {
-  if (
-    amountInput.value.trim() !== "" &&
-    fromCurrency.value &&
-    toCurrency.value
-  ) {
+  if (amountInput.value.trim() !== '' && fromCurrency.value && toCurrency.value) {
     getResults();
   }
 }
@@ -93,7 +89,7 @@ async function getResults() {
   /* VALIDATION */
 
   if (isNaN(amount) || amount <= 0) {
-    showNotification("Please enter a valid amount.", "error");
+    showNotification('Please enter a valid amount.', 'error');
 
     return;
   }
@@ -104,7 +100,7 @@ async function getResults() {
     const response = await fetch(api);
 
     if (!response.ok) {
-      throw new Error("API request failed");
+      throw new Error('API request failed');
     }
 
     const data = await response.json();
@@ -113,7 +109,7 @@ async function getResults() {
   } catch (error) {
     console.error(error);
 
-    showNotification("Unable to fetch live exchange rates.", "error");
+    showNotification('Unable to fetch live exchange rates.', 'error');
   } finally {
     toggleLoading(false);
   }
@@ -138,7 +134,7 @@ function displayResults(data, amount) {
         ${toCurrency.value}
         `;
 
-  finalAmount.style.display = "block";
+  finalAmount.style.display = 'block';
 
   saveHistory(amount, fromCurrency.value, convertedAmount, toCurrency.value);
 
@@ -156,10 +152,10 @@ function swapCurrencies() {
 
   toCurrency.value = temp;
 
-  swapBtn.style.transform = "rotate(180deg)";
+  swapBtn.style.transform = 'rotate(180deg)';
 
   setTimeout(() => {
-    swapBtn.style.transform = "rotate(0deg)";
+    swapBtn.style.transform = 'rotate(0deg)';
   }, 400);
 
   autoConvert();
@@ -170,7 +166,7 @@ function swapCurrencies() {
 ========================= */
 
 function toggleLoading(state) {
-  loading.style.display = state ? "block" : "none";
+  loading.style.display = state ? 'block' : 'none';
 
   convertBtn.disabled = state;
 
@@ -190,17 +186,17 @@ function toggleLoading(state) {
 ========================= */
 
 function clearVal() {
-  amountInput.value = "";
+  amountInput.value = '';
 
-  fromCurrency.value = "USD";
+  fromCurrency.value = 'USD';
 
-  toCurrency.value = "INR";
+  toCurrency.value = 'INR';
 
-  finalAmount.style.display = "none";
+  finalAmount.style.display = 'none';
 
-  finalValue.innerHTML = "0.00";
+  finalValue.innerHTML = '0.00';
 
-  showNotification("Fields reset successfully.", "success");
+  showNotification('Fields reset successfully.', 'success');
 }
 
 /* =========================
@@ -208,7 +204,7 @@ function clearVal() {
 ========================= */
 
 function saveHistory(amount, from, converted, to) {
-  let history = JSON.parse(localStorage.getItem("conversionHistory")) || [];
+  let history = JSON.parse(localStorage.getItem('conversionHistory')) || [];
 
   const newEntry = `
         ${amount} ${from}
@@ -225,7 +221,7 @@ function saveHistory(amount, from, converted, to) {
 
   history = history.slice(0, 6);
 
-  localStorage.setItem("conversionHistory", JSON.stringify(history));
+  localStorage.setItem('conversionHistory', JSON.stringify(history));
 
   renderHistory();
 }
@@ -235,9 +231,9 @@ function saveHistory(amount, from, converted, to) {
 ========================= */
 
 function renderHistory() {
-  let history = JSON.parse(localStorage.getItem("conversionHistory")) || [];
+  let history = JSON.parse(localStorage.getItem('conversionHistory')) || [];
 
-  historyList.innerHTML = "";
+  historyList.innerHTML = '';
 
   if (history.length === 0) {
     historyList.innerHTML = `
@@ -250,7 +246,7 @@ function renderHistory() {
   }
 
   history.forEach((item) => {
-    const li = document.createElement("li");
+    const li = document.createElement('li');
 
     li.innerHTML = `
             <i class="fa-solid fa-clock"></i>
@@ -266,11 +262,11 @@ function renderHistory() {
 ========================= */
 
 function clearHistory() {
-  localStorage.removeItem("conversionHistory");
+  localStorage.removeItem('conversionHistory');
 
   renderHistory();
 
-  showNotification("History cleared.", "success");
+  showNotification('History cleared.', 'success');
 }
 
 /* =========================
@@ -278,10 +274,10 @@ function clearHistory() {
 ========================= */
 
 function animateResult() {
-  finalAmount.style.animation = "none";
+  finalAmount.style.animation = 'none';
 
   setTimeout(() => {
-    finalAmount.style.animation = "fadeIn 0.4s ease";
+    finalAmount.style.animation = 'fadeIn 0.4s ease';
   }, 10);
 }
 
@@ -290,19 +286,19 @@ function animateResult() {
 ========================= */
 
 function showNotification(message, type) {
-  const existing = document.querySelector(".custom-toast");
+  const existing = document.querySelector('.custom-toast');
 
   if (existing) {
     existing.remove();
   }
 
-  const toast = document.createElement("div");
+  const toast = document.createElement('div');
 
   toast.className = `custom-toast ${type}`;
 
   toast.innerHTML = `
         <i class="fa-solid
-        ${type === "success" ? "fa-circle-check" : "fa-circle-exclamation"}
+        ${type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation'}
         "></i>
 
         ${message}
@@ -311,11 +307,11 @@ function showNotification(message, type) {
   document.body.appendChild(toast);
 
   setTimeout(() => {
-    toast.classList.add("show");
+    toast.classList.add('show');
   }, 50);
 
   setTimeout(() => {
-    toast.classList.remove("show");
+    toast.classList.remove('show');
 
     setTimeout(() => {
       toast.remove();

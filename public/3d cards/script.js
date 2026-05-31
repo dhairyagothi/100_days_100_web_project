@@ -104,13 +104,13 @@ generateGallery();
    PHYSICS & INTERACTIVE ENGINE
 ========================= */
 
-let currentAngle = 0;      // Current absolute rotation of the carousel
-let targetAngle = 0;       // Easing target rotation
-let isDragging = false;    // Whether user is dragging
-let startX = 0;            // Drag start coordinate
-let startAngle = 0;        // Angle when drag started
-let velocity = 0;          // Momentum rotation velocity
-let lastX = 0;             // Last coordinate to calculate delta velocity
+let currentAngle = 0; // Current absolute rotation of the carousel
+let targetAngle = 0; // Easing target rotation
+let isDragging = false; // Whether user is dragging
+let startX = 0; // Drag start coordinate
+let startAngle = 0; // Angle when drag started
+let velocity = 0; // Momentum rotation velocity
+let lastX = 0; // Last coordinate to calculate delta velocity
 let lastTime = performance.now();
 let isTransitioning = false; // Stepping transition active
 const autoRotationSpeed = 18; // Degrees rotated per second (approx 20s per full spin)
@@ -243,12 +243,12 @@ const angleStep = 360 / totalCards;
 
 function stepCarousel(direction) {
   isTransitioning = true;
-  
+
   // Snap target rotation strictly to nearest card division to prevent floating drift
   const nearestAngle = Math.round(targetAngle / angleStep) * angleStep;
-  
+
   // direction: -1 for next, 1 for prev
-  targetAngle = nearestAngle - (direction * angleStep);
+  targetAngle = nearestAngle - direction * angleStep;
   velocity = 0;
 }
 
@@ -261,7 +261,9 @@ nextBtn.addEventListener('click', () => stepCarousel(-1));
 
 pauseBtn.addEventListener('click', () => {
   isPaused = !isPaused;
-  pauseBtn.querySelector('.btn-label').textContent = isPaused ? 'Resume Rotation' : 'Pause Rotation';
+  pauseBtn.querySelector('.btn-label').textContent = isPaused
+    ? 'Resume Rotation'
+    : 'Pause Rotation';
   isTransitioning = false;
 });
 
@@ -271,7 +273,9 @@ pauseBtn.addEventListener('click', () => {
 
 directionBtn.addEventListener('click', () => {
   isReversed = !isReversed;
-  directionBtn.querySelector('.btn-label').textContent = isReversed ? 'Normal Rotation' : 'Reverse Rotation';
+  directionBtn.querySelector('.btn-label').textContent = isReversed
+    ? 'Normal Rotation'
+    : 'Reverse Rotation';
 });
 
 /* =========================

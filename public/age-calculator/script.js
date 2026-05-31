@@ -142,20 +142,20 @@ class AgeCalculator {
   getMilestones(birthDate, today) {
     const milestones = [
       { name: '10,000 Days', days: 10000 },
-      { name: '500,000 Hours', days: 500000 / 24 }
+      { name: '500,000 Hours', days: 500000 / 24 },
     ];
 
     let html = '';
-    
-    milestones.forEach(m => {
+
+    milestones.forEach((m) => {
       const milestoneDate = new Date(birthDate.getTime() + m.days * 24 * 60 * 60 * 1000);
       const diffTime = milestoneDate.getTime() - today.getTime();
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      
+
       html += `<div class="milestone-item">
         <span class="milestone-title">${m.name} Old</span>
         <span class="milestone-desc">`;
-        
+
       if (diffDays > 0) {
         html += `Target date: ${milestoneDate.toLocaleDateString()} (${diffDays.toLocaleString()} days left!)`;
       } else {
@@ -163,7 +163,7 @@ class AgeCalculator {
       }
       html += `</span></div>`;
     });
-    
+
     return html;
   }
 
@@ -178,18 +178,21 @@ class AgeCalculator {
     const textToShare = `📅 My Age Stats Summary:\n• Age: ${years} Years, ${months} Months, ${days} Days\n• Zodiac Sign: ${zodiac}\n• Time spent sleeping: ${sleepTime}\n\nCalculate yours here: ${currentUrl}`;
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(textToShare).then(() => {
-        const shareBtn = document.getElementById('share-btn');
-        const originalText = shareBtn.textContent;
-        shareBtn.textContent = '✅ Copied to Clipboard!';
-        
-        setTimeout(() => {
-          shareBtn.textContent = originalText;
-        }, 2000);
-      }).catch(err => {
-        console.error('Failed to copy: ', err);
-        alert('Failed to copy to clipboard');
-      });
+      navigator.clipboard
+        .writeText(textToShare)
+        .then(() => {
+          const shareBtn = document.getElementById('share-btn');
+          const originalText = shareBtn.textContent;
+          shareBtn.textContent = '✅ Copied to Clipboard!';
+
+          setTimeout(() => {
+            shareBtn.textContent = originalText;
+          }, 2000);
+        })
+        .catch((err) => {
+          console.error('Failed to copy: ', err);
+          alert('Failed to copy to clipboard');
+        });
     } else {
       alert('Clipboard API not supported in this browser.');
     }
@@ -212,10 +215,7 @@ class AgeCalculator {
 
     const age = this.calculateAge(birthDate);
     const nextBirthday = this.getNextBirthday(birthDate);
-    const zodiac = this.getZodiacSign(
-      birthDate.getMonth() + 1,
-      birthDate.getDate()
-    );
+    const zodiac = this.getZodiacSign(birthDate.getMonth() + 1, birthDate.getDate());
     const totalDays = Math.floor((today - birthDate) / (1000 * 60 * 60 * 24));
     const { weeks, hours } = this.getAgeInWeeksAndHours(totalDays);
     const sleepTime = this.getSleepTime(totalDays);
@@ -224,15 +224,11 @@ class AgeCalculator {
     document.getElementById('years').textContent = age.years;
     document.getElementById('months').textContent = age.months;
     document.getElementById('days').textContent = age.days;
-    document.getElementById('next-birthday').textContent =
-      nextBirthday.date.toLocaleDateString();
-    document.getElementById('days-until').textContent =
-      `${nextBirthday.days} days`;
+    document.getElementById('next-birthday').textContent = nextBirthday.date.toLocaleDateString();
+    document.getElementById('days-until').textContent = `${nextBirthday.days} days`;
     document.getElementById('zodiac').textContent = zodiac;
-    document.getElementById('weeks').textContent =
-      `${weeks.toLocaleString()} weeks`;
-    document.getElementById('hours').textContent =
-      `${hours.toLocaleString()} hours`;
+    document.getElementById('weeks').textContent = `${weeks.toLocaleString()} weeks`;
+    document.getElementById('hours').textContent = `${hours.toLocaleString()} hours`;
     document.getElementById('sleep-time').textContent = sleepTime;
     document.getElementById('milestones-list').innerHTML = milestonesHtml;
 

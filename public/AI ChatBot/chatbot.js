@@ -50,12 +50,12 @@ imageInput.addEventListener('change', (e) => {
   if (!file) return;
 
   const reader = new FileReader();
-  
-  reader.onload = function(event) {
+
+  reader.onload = function (event) {
     attachedFilePayload = {
       name: file.name,
       type: file.type,
-      dataUrl: event.target.result // Base64 encoding for synchronization
+      dataUrl: event.target.result, // Base64 encoding for synchronization
     };
 
     imagePreviewWrap.classList.remove('hidden');
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const savedKey = localStorage.getItem('gemini_api_key');
   if (savedKey) {
     apiModal.classList.add('hidden');
-    apiModal.style.display = 'none'; 
+    apiModal.style.display = 'none';
   }
 });
 
@@ -105,7 +105,7 @@ saveKeyBtn.addEventListener('click', () => {
     apiModal.classList.add('hidden');
     apiModal.style.display = 'none';
   } else {
-    alert("Please enter a valid API key to proceed.");
+    alert('Please enter a valid API key to proceed.');
   }
 });
 
@@ -127,7 +127,7 @@ changeKeyBtn.addEventListener('click', () => {
 });
 
 clearHistoryBtn.addEventListener('click', () => {
-  if (confirm("Are you sure you want to clear your chat environment data?")) {
+  if (confirm('Are you sure you want to clear your chat environment data?')) {
     localStorage.removeItem('gemini_api_key');
     messagesInner.innerHTML = '';
     if (emptyState) emptyState.style.display = 'flex';
@@ -148,10 +148,10 @@ socket.on('receive_message', (data) => {
 });
 
 socket.on('user_joined', (data) => {
-  roomStatusBadge.textContent = "👥 Connected Group";
-  roomStatusBadge.style.background = "#eefbf4";
-  roomStatusBadge.style.color = "#187741";
-  roomStatusBadge.style.borderColor = "#187741";
+  roomStatusBadge.textContent = '👥 Connected Group';
+  roomStatusBadge.style.background = '#eefbf4';
+  roomStatusBadge.style.color = '#187741';
+  roomStatusBadge.style.borderColor = '#187741';
 });
 
 // ----------------------------------------------------
@@ -163,22 +163,24 @@ collabBtn.addEventListener('click', async () => {
     const data = await response.json();
     window.location.search = `?room=${data.roomId}`;
   } catch (err) {
-    console.error("Failed to generate collaborative room channel:", err);
+    console.error('Failed to generate collaborative room channel:', err);
   }
 });
 
 copyRoomLinkBtn.addEventListener('click', () => {
   shareUrlInput.select();
   document.execCommand('copy');
-  copyRoomLinkBtn.textContent = "Copied link! ✔";
-  setTimeout(() => { copyRoomLinkBtn.textContent = "Copy Session Link"; }, 2000);
+  copyRoomLinkBtn.textContent = 'Copied link! ✔';
+  setTimeout(() => {
+    copyRoomLinkBtn.textContent = 'Copy Session Link';
+  }, 2000);
 });
 
 function setupCollaborationUI(roomId) {
   collabCard.style.display = 'block';
   shareUrlInput.value = window.location.href;
   roomStatusBadge.style.display = 'inline-flex';
-  roomStatusBadge.textContent = "👤 Live Session Link";
+  roomStatusBadge.textContent = '👤 Live Session Link';
 }
 
 promptInput.addEventListener('input', () => {
@@ -198,7 +200,7 @@ function processOutgoingMessage() {
   if (!text && !attachedFilePayload) return;
 
   hideEmptyState();
-  
+
   // 1. Render locally on sender's UI workspace instantly
   appendMessageBubble(text, 'user', 'You', attachedFilePayload);
 
@@ -209,7 +211,7 @@ function processOutgoingMessage() {
       message: text,
       sender: `Peer (${socket.id.slice(0, 4)})`,
       isAI: false,
-      file: attachedFilePayload
+      file: attachedFilePayload,
     });
   }
 
@@ -219,7 +221,7 @@ function processOutgoingMessage() {
   promptInput.value = '';
   sendBtn.disabled = true;
   clearAttachmentPreview();
-  
+
   // Execute LLM parsing pipeline connection
   fetchGeminiResponse(text, activeFileForAI);
 }
@@ -230,7 +232,12 @@ function processOutgoingMessage() {
 async function fetchGeminiResponse(userPrompt, fileAttachment) {
   const savedKey = localStorage.getItem('gemini_api_key');
   if (!savedKey) {
-    appendMessageBubble("Missing API Key! Click 'Change API Key' in the sidebar to configure it.", "ai", "System Error", null);
+    appendMessageBubble(
+      "Missing API Key! Click 'Change API Key' in the sidebar to configure it.",
+      'ai',
+      'System Error',
+      null
+    );
     return;
   }
 
@@ -238,31 +245,33 @@ async function fetchGeminiResponse(userPrompt, fileAttachment) {
 
   try {
     const targetUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${savedKey}`;
-    
+
     // Assemble multimodal parts collection array structure dynamically
     let requestParts = [];
 
     if (fileAttachment) {
       // Split off metadata prefix to parse clean base64 data string
       const base64CleanData = fileAttachment.dataUrl.split(',')[1];
-      
+
       requestParts.push({
         inlineData: {
           mimeType: fileAttachment.type,
-          data: base64CleanData
-        }
+          data: base64CleanData,
+        },
       });
     }
 
     // Append text prompt instruction block part if user entered text alongside document
-    requestParts.push({ text: userPrompt || `Analyze the attached file named ${fileAttachment.name}` });
+    requestParts.push({
+      text: userPrompt || `Analyze the attached file named ${fileAttachment.name}`,
+    });
 
     const response = await fetch(targetUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        contents: [{ parts: requestParts }]
-      })
+        contents: [{ parts: requestParts }],
+      }),
     });
 
     const data = await response.json();
@@ -270,7 +279,7 @@ async function fetchGeminiResponse(userPrompt, fileAttachment) {
 
     if (data.candidates && data.candidates[0].content.parts[0].text) {
       const aiReplyText = data.candidates[0].content.parts[0].text;
-      
+
       appendMessageBubble(aiReplyText, 'ai', 'Gemini Engine', null);
 
       if (currentRoomId) {
@@ -279,17 +288,21 @@ async function fetchGeminiResponse(userPrompt, fileAttachment) {
           message: aiReplyText,
           sender: 'Gemini Engine',
           isAI: true,
-          file: null
+          file: null,
         });
       }
     } else {
-      throw new Error("Invalid output format returned by API");
+      throw new Error('Invalid output format returned by API');
     }
-
   } catch (error) {
-    console.error("Gemini API Request Failed:", error);
+    console.error('Gemini API Request Failed:', error);
     removeTypingIndicator();
-    appendMessageBubble("Failed to obtain context. Note: Gemini 2.5 Flash natively reads images, plain text files, and PDFs directly.", "ai", "Gemini Engine", null);
+    appendMessageBubble(
+      'Failed to obtain context. Note: Gemini 2.5 Flash natively reads images, plain text files, and PDFs directly.',
+      'ai',
+      'Gemini Engine',
+      null
+    );
   }
 }
 
@@ -335,7 +348,11 @@ function appendMessageBubble(text, type, senderName, fileInfo) {
     }
   }
 
-  const formattedContent = text ? ((typeof marked !== 'undefined') ? marked.parse(text) : `<p>${text}</p>`) : '';
+  const formattedContent = text
+    ? typeof marked !== 'undefined'
+      ? marked.parse(text)
+      : `<p>${text}</p>`
+    : '';
 
   row.innerHTML = `
     ${headerContext}
@@ -344,9 +361,10 @@ function appendMessageBubble(text, type, senderName, fileInfo) {
       ${formattedContent}
     </div>
   `;
-  
+
   messagesInner.appendChild(row);
-  document.getElementById('messages-viewport').scrollTop = document.getElementById('messages-viewport').scrollHeight;
+  document.getElementById('messages-viewport').scrollTop =
+    document.getElementById('messages-viewport').scrollHeight;
 }
 
 function showTypingIndicator() {
@@ -364,7 +382,8 @@ function showTypingIndicator() {
     </div>
   `;
   messagesInner.appendChild(row);
-  document.getElementById('messages-viewport').scrollTop = document.getElementById('messages-viewport').scrollHeight;
+  document.getElementById('messages-viewport').scrollTop =
+    document.getElementById('messages-viewport').scrollHeight;
 }
 
 function removeTypingIndicator() {

@@ -30,7 +30,7 @@ A sleek, privacy-first AI chatbot powered by Google Gemini with dark mode, multi
 If you want to keep a Gemini key locally without committing it to git, create `public/AI ChatBot/default-config.js` with:
 
 ```js
-window.DEFAULT_GEMINI_API_KEY = "YOUR_GEMINI_KEY_HERE";
+window.DEFAULT_GEMINI_API_KEY = 'YOUR_GEMINI_KEY_HERE';
 ```
 
 That file is already gitignored by the project.
@@ -159,7 +159,7 @@ Click the model pill in the header or ⚙️ to open Settings:
 **Default model** — `script.js`:
 
 ```javascript
-const savedModel = localStorage.getItem(STORAGE.MODEL) || "gemini-2.5-flash";
+const savedModel = localStorage.getItem(STORAGE.MODEL) || 'gemini-2.5-flash';
 ```
 
 **AI personality** — Settings → System Prompt field

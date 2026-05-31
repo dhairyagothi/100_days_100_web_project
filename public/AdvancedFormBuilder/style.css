@@ -18,13 +18,17 @@ header {
   padding: 20px;
 }
 
-.builder, .preview {
+.builder,
+.preview {
   background: #1e293b;
   padding: 15px;
   border-radius: 10px;
 }
 
-input, select, button, textarea {
+input,
+select,
+button,
+textarea {
   width: 100%;
   margin-top: 10px;
   padding: 10px;

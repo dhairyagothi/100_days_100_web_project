@@ -185,7 +185,7 @@ Not supported: GIFs, SVGs, HEIC
 or edit `script.js`:
 
 ```javascript
-const savedModel = localStorage.getItem(STORAGE.MODEL) || "gemini-2.5-flash";
+const savedModel = localStorage.getItem(STORAGE.MODEL) || 'gemini-2.5-flash';
 ```
 
 **Set a permanent AI personality** — open Settings → System Prompt.

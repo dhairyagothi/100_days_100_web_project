@@ -1,42 +1,42 @@
 // ── Config ────────────────────────────────────────────────
-const EMOJIS = ['🦊','🐬','🦋','🌸','🍄','⚡','🎸','🔮','🦄','🌈','🎯','🍀'];
+const EMOJIS = ['🦊', '🐬', '🦋', '🌸', '🍄', '⚡', '🎸', '🔮', '🦄', '🌈', '🎯', '🍀'];
 
 const DIFFICULTIES = {
-  easy:   { cols: 4, pairs: 8,  label: '4×4' },
+  easy: { cols: 4, pairs: 8, label: '4×4' },
   medium: { cols: 5, pairs: 10, label: '5×4' },
-  hard:   { cols: 6, pairs: 12, label: '6×4' }
+  hard: { cols: 6, pairs: 12, label: '6×4' },
 };
 
 // ── State ─────────────────────────────────────────────────
-let cards        = [];
-let flipped      = [];
-let matched      = [];
-let moves        = 0;
-let seconds      = 0;
+let cards = [];
+let flipped = [];
+let matched = [];
+let moves = 0;
+let seconds = 0;
 let timerInterval = null;
-let previewInterval=null;
-let gameActive   = false;
-let lockBoard    = false;
-let hintUsed     = false;
-let difficulty   = 'easy';
-let highScores   = JSON.parse(localStorage.getItem('mmHighScores') || '{}');
+let previewInterval = null;
+let gameActive = false;
+let lockBoard = false;
+let hintUsed = false;
+let difficulty = 'easy';
+let highScores = JSON.parse(localStorage.getItem('mmHighScores') || '{}');
 
 // ── DOM References ─────────────────────────────────────────
-const grid       = document.getElementById('gameGrid');
-const movesEl    = document.getElementById('movesVal');
-const timerEl    = document.getElementById('timerVal');
-const pairsEl    = document.getElementById('pairsVal');
-const bestEl     = document.getElementById('bestVal');
+const grid = document.getElementById('gameGrid');
+const movesEl = document.getElementById('movesVal');
+const timerEl = document.getElementById('timerVal');
+const pairsEl = document.getElementById('pairsVal');
+const bestEl = document.getElementById('bestVal');
 const progressEl = document.getElementById('progressBar');
-const winModal   = document.getElementById('winModal');
-const toastEl    = document.getElementById('toast');
-const startBtn   = document.getElementById('startBtn');
-const hintBtn    = document.getElementById('hintBtn');
+const winModal = document.getElementById('winModal');
+const toastEl = document.getElementById('toast');
+const startBtn = document.getElementById('startBtn');
+const hintBtn = document.getElementById('hintBtn');
 
 // ── Event Listeners ───────────────────────────────────────
-document.querySelectorAll('.diff-btn').forEach(btn => {
+document.querySelectorAll('.diff-btn').forEach((btn) => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.diff-btn').forEach((b) => b.classList.remove('active'));
     btn.classList.add('active');
     difficulty = btn.dataset.diff;
     updateGridClass();
@@ -133,7 +133,7 @@ function stopTimer() {
 }
 
 // ── Preview Countdown ─────────────────────────────────────
- 
+
 /**
  * Count down from 3 seconds while cards are face-up, then auto-start.
  * The Start button label reflects the countdown and acts as a skip.
@@ -141,10 +141,10 @@ function stopTimer() {
 function startPreviewCountdown() {
   let countdown = 3;
   startBtn.textContent = `Skip Preview (${countdown})`;
- 
+
   previewInterval = setInterval(() => {
     countdown--;
- 
+
     if (countdown > 0) {
       startBtn.textContent = `Skip Preview (${countdown})`;
     } else {
@@ -163,8 +163,8 @@ function setupPreview() {
 
   // Cancel any running preview countdown or game timer
   if (previewInterval) {
-     clearInterval(previewInterval);
-     previewInterval = null;
+    clearInterval(previewInterval);
+    previewInterval = null;
   }
 
   stopTimer();
@@ -187,7 +187,7 @@ function setupPreview() {
   pairsEl.textContent = `0/${cfg.pairs}`;
   progressEl.style.width = '0%';
 
-  hintBtn.disabled    = true;
+  hintBtn.disabled = true;
   hintBtn.textContent = 'Hint';
 
   updateGridClass();
@@ -224,13 +224,12 @@ function setupPreview() {
  * Initialise and start a fresh game
  */
 function startGame() {
-
   if (previewInterval) {
     clearInterval(previewInterval);
     previewInterval = null;
   }
 
-  cards.forEach(card => {
+  cards.forEach((card) => {
     card.classList.remove('flipped');
   });
 
@@ -240,8 +239,8 @@ function startGame() {
   lockBoard = false;
 
   startBtn.textContent = 'New Game';
-  hintBtn.disabled     = false;
-  hintBtn.textContent  = 'Hint';
+  hintBtn.disabled = false;
+  hintBtn.textContent = 'Hint';
 
   startTimer();
 }
@@ -252,10 +251,10 @@ function startGame() {
  * Handle a card click event
  */
 function onCardClick(card) {
-  if (!gameActive || lockBoard)               return;
-  if (card.classList.contains('matched'))     return;
-  if (flipped.includes(card))                 return;
-  if (flipped.length === 2)                   return;
+  if (!gameActive || lockBoard) return;
+  if (card.classList.contains('matched')) return;
+  if (flipped.includes(card)) return;
+  if (flipped.length === 2) return;
 
   card.classList.add('flipped');
   flipped.push(card);
@@ -280,20 +279,19 @@ function checkMatch() {
       a.classList.add('matched');
       b.classList.add('matched');
       matched.push(a, b);
-      flipped   = [];
+      flipped = [];
       lockBoard = false;
 
-      const cfg      = DIFFICULTIES[difficulty];
+      const cfg = DIFFICULTIES[difficulty];
       const pairsDone = matched.length / 2;
 
       // Update pairs counter and progress bar
-      pairsEl.textContent    = `${pairsDone}/${cfg.pairs}`;
+      pairsEl.textContent = `${pairsDone}/${cfg.pairs}`;
       progressEl.style.width = `${(pairsDone / cfg.pairs) * 100}%`;
 
       if (pairsDone < cfg.pairs) showToast('✓ Match!');
       if (matched.length === cards.length) onWin();
     }, 300);
-
   } else {
     // ✗ No match — shake and flip back
     a.classList.add('wrong');
@@ -301,7 +299,7 @@ function checkMatch() {
     setTimeout(() => {
       a.classList.remove('flipped', 'wrong');
       b.classList.remove('flipped', 'wrong');
-      flipped   = [];
+      flipped = [];
       lockBoard = false;
     }, 900);
   }
@@ -313,47 +311,47 @@ function checkMatch() {
  * Briefly reveal a matching pair (one use per game)
  */
 function useHint() {
- if (hintUsed) {
+  if (hintUsed) {
     showToast('💡 Hint already used!');
     return;
   }
- 
+
   // Guard: only works during an active game
   if (!gameActive) return;
- 
+
   // Consume the hint
-  hintUsed            = true;
-  hintBtn.disabled    = true;
+  hintUsed = true;
+  hintBtn.disabled = true;
   hintBtn.textContent = 'Hint Used';
- 
-  const cols      = DIFFICULTIES[difficulty].cols;
+
+  const cols = DIFFICULTIES[difficulty].cols;
   const totalRows = Math.ceil(cards.length / cols);
- 
+
   // Collect row indices that still contain unmatched, unflipped cards
   const validRows = [];
   for (let r = 0; r < totalRows; r++) {
-    const rowSlice     = cards.slice(r * cols, (r + 1) * cols);
+    const rowSlice = cards.slice(r * cols, (r + 1) * cols);
     const hasCandidate = rowSlice.some(
-      c => !c.classList.contains('matched') && !c.classList.contains('flipped')
+      (c) => !c.classList.contains('matched') && !c.classList.contains('flipped')
     );
     if (hasCandidate) validRows.push(r);
   }
- 
-  if (!validRows.length) return;   // nothing left to reveal
- 
+
+  if (!validRows.length) return; // nothing left to reveal
+
   // Pick one random valid row
-  const rowIdx   = validRows[Math.floor(Math.random() * validRows.length)];
+  const rowIdx = validRows[Math.floor(Math.random() * validRows.length)];
   const rowCards = cards
     .slice(rowIdx * cols, (rowIdx + 1) * cols)
-    .filter(c => !c.classList.contains('matched') && !c.classList.contains('flipped'));
- 
+    .filter((c) => !c.classList.contains('matched') && !c.classList.contains('flipped'));
+
   // Briefly flip the row face-up
-  rowCards.forEach(c => c.classList.add('flipped'));
+  rowCards.forEach((c) => c.classList.add('flipped'));
   showToast('💡 Hint used!');
- 
+
   // Flip back after 1.5 seconds (skip already-matched cards)
   setTimeout(() => {
-    rowCards.forEach(c => {
+    rowCards.forEach((c) => {
       if (!c.classList.contains('matched')) {
         c.classList.remove('flipped');
       }
@@ -368,11 +366,11 @@ function useHint() {
  */
 function onWin() {
   stopTimer();
-  gameActive             = false;
+  gameActive = false;
   progressEl.style.width = '100%';
 
   // Check and save high score
-  const hs        = highScores[difficulty];
+  const hs = highScores[difficulty];
   const isNewBest = !hs || moves < hs.moves || (moves === hs.moves && seconds < hs.seconds);
 
   if (isNewBest) {
@@ -383,14 +381,18 @@ function onWin() {
 
   // Populate modal
   const rating =
-    moves <= 12 ? 'Incredible!' :
-    moves <= 18 ? 'Great job!'  :
-    moves <= 25 ? 'Well done!'  : 'You did it!';
+    moves <= 12
+      ? 'Incredible!'
+      : moves <= 18
+        ? 'Great job!'
+        : moves <= 25
+          ? 'Well done!'
+          : 'You did it!';
 
-  document.getElementById('modalSub').textContent        = rating;
-  document.getElementById('modalMoves').textContent      = moves;
-  document.getElementById('modalTime').textContent       = fmt(seconds);
-  document.getElementById('newBest').style.display       = isNewBest ? 'block' : 'none';
+  document.getElementById('modalSub').textContent = rating;
+  document.getElementById('modalMoves').textContent = moves;
+  document.getElementById('modalTime').textContent = fmt(seconds);
+  document.getElementById('newBest').style.display = isNewBest ? 'block' : 'none';
 
   setTimeout(() => {
     winModal.classList.add('visible');
@@ -407,11 +409,11 @@ function launchConfetti() {
   const container = document.getElementById('confettiContainer');
   container.innerHTML = '';
 
-  const colors = ['#7c3aed','#a855f7','#f59e0b','#10b981','#ef4444','#60a5fa','#f472b6'];
+  const colors = ['#7c3aed', '#a855f7', '#f59e0b', '#10b981', '#ef4444', '#60a5fa', '#f472b6'];
 
   for (let i = 0; i < 70; i++) {
     const p = document.createElement('div');
-    p.className  = 'confetti-particle';
+    p.className = 'confetti-particle';
     p.style.cssText = `
       left: ${Math.random() * 100}%;
       background: ${colors[Math.floor(Math.random() * colors.length)]};
@@ -425,7 +427,9 @@ function launchConfetti() {
   }
 
   // Clean up particles after animation completes
-  setTimeout(() => { container.innerHTML = ''; }, 4000);
+  setTimeout(() => {
+    container.innerHTML = '';
+  }, 4000);
 }
 
 // ── Initialise ────────────────────────────────────────────

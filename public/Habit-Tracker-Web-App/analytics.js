@@ -79,7 +79,7 @@ function calcCompletionRate(habit) {
 
 // ── Heatmap colour tables ──────────────────────────────────────────────────
 
-const HEAT_DARK  = ['#161a2e', '#2d2a6a', '#4a44b0', '#7c6af7', '#a78bfa'];
+const HEAT_DARK = ['#161a2e', '#2d2a6a', '#4a44b0', '#7c6af7', '#a78bfa'];
 const HEAT_LIGHT = ['#e8eaf6', '#c5cae9', '#9fa8da', '#7986cb', '#5c6bc0'];
 
 function getHeatColors() {
@@ -120,10 +120,10 @@ function renderSummaryCards(habits) {
   const avgRate = Math.round(rates.reduce((a, b) => a + b, 0) / rates.length);
   document.getElementById('avg-rate').textContent = avgRate + '%';
 
-  const bestStreak = Math.max(...habits.map(h => h.maxStreak || 0));
+  const bestStreak = Math.max(...habits.map((h) => h.maxStreak || 0));
   document.getElementById('best-streak').textContent = bestStreak > 0 ? bestStreak + 'd' : '0d';
 
-  const active = habits.filter(h => (h.streak || 0) > 0).length;
+  const active = habits.filter((h) => (h.streak || 0) > 0).length;
   document.getElementById('active-streaks').textContent = active;
 }
 
@@ -132,8 +132,8 @@ function renderSummaryCards(habits) {
 /** Build date → completion count map across all habits. */
 function buildCompletionMap(habits) {
   const map = {};
-  habits.forEach(h => {
-    getHistory(h).forEach(date => {
+  habits.forEach((h) => {
+    getHistory(h).forEach((date) => {
       map[date] = (map[date] || 0) + 1;
     });
   });
@@ -154,8 +154,8 @@ function getHeatmapStartDate(weeksBack) {
 }
 
 function buildHeatmapSVG(habits, weeks, cellSize, cellGap, isMini = false) {
-  const LABEL_W  = isMini ? 0 : 26;
-  const MONTH_H  = isMini ? 0 : 16;
+  const LABEL_W = isMini ? 0 : 26;
+  const MONTH_H = isMini ? 0 : 16;
   const MONO_FONT = 'JetBrains Mono, monospace';
 
   const svgW = LABEL_W + weeks * (cellSize + cellGap) - cellGap;
@@ -180,13 +180,15 @@ function buildHeatmapSVG(habits, weeks, cellSize, cellGap, isMini = false) {
     const dayLabels = ['M', '', 'W', '', 'F', '', 'S'];
     dayLabels.forEach((label, i) => {
       if (!label) return;
-      svg.appendChild(svgText(label, {
-        x: 0,
-        y: MONTH_H + i * (cellSize + cellGap) + cellSize - 2,
-        'font-size': '9',
-        fill: '#64748b',
-        'font-family': MONO_FONT,
-      }));
+      svg.appendChild(
+        svgText(label, {
+          x: 0,
+          y: MONTH_H + i * (cellSize + cellGap) + cellSize - 2,
+          'font-size': '9',
+          fill: '#64748b',
+          'font-family': MONO_FONT,
+        })
+      );
     });
   }
 
@@ -203,19 +205,32 @@ function buildHeatmapSVG(habits, weeks, cellSize, cellGap, isMini = false) {
       // Month label — full heatmap only
       if (!isMini && d === 0 && cellDate.getMonth() !== prevMonth) {
         prevMonth = cellDate.getMonth();
-        const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-        svg.appendChild(svgText(MONTHS[cellDate.getMonth()], {
-          x: LABEL_W + w * (cellSize + cellGap),
-          y: MONTH_H - 4,
-          'font-size': '9',
-          fill: '#64748b',
-          'font-family': MONO_FONT,
-        }));
+        const MONTHS = [
+          'Jan',
+          'Feb',
+          'Mar',
+          'Apr',
+          'May',
+          'Jun',
+          'Jul',
+          'Aug',
+          'Sep',
+          'Oct',
+          'Nov',
+          'Dec',
+        ];
+        svg.appendChild(
+          svgText(MONTHS[cellDate.getMonth()], {
+            x: LABEL_W + w * (cellSize + cellGap),
+            y: MONTH_H - 4,
+            'font-size': '9',
+            fill: '#64748b',
+            'font-family': MONO_FONT,
+          })
+        );
       }
 
-      const count = isMini
-        ? (historySet.has(dateStr) ? 1 : 0)
-        : (completionMap[dateStr] || 0);
+      const count = isMini ? (historySet.has(dateStr) ? 1 : 0) : completionMap[dateStr] || 0;
 
       const rect = svgEl('rect', {
         x: LABEL_W + w * (cellSize + cellGap),
@@ -234,7 +249,9 @@ function buildHeatmapSVG(habits, weeks, cellSize, cellGap, isMini = false) {
 
       // Native SVG tooltip
       const habitsLabel = isMini
-        ? (count ? 'Completed' : 'Not completed')
+        ? count
+          ? 'Completed'
+          : 'Not completed'
         : `${count} of ${maxHabits} habit${maxHabits !== 1 ? 's' : ''} completed`;
       const tip = svgEl('title');
       tip.textContent = `${dateStr}: ${habitsLabel}`;
@@ -255,7 +272,7 @@ function renderHeatmap(habits) {
   // Legend cells
   const legendContainer = document.getElementById('legend-cells');
   legendContainer.innerHTML = '';
-  getHeatColors().forEach(color => {
+  getHeatColors().forEach((color) => {
     const cell = document.createElement('div');
     cell.className = 'legend-cell';
     cell.style.background = color;
@@ -274,10 +291,12 @@ function renderCompletionRates(habits) {
   }
 
   const sorted = habits
-    .map(h => ({ name: h.name, rate: calcCompletionRate(h) }))
+    .map((h) => ({ name: h.name, rate: calcCompletionRate(h) }))
     .sort((a, b) => b.rate - a.rate);
 
-  container.innerHTML = sorted.map(h => `
+  container.innerHTML = sorted
+    .map(
+      (h) => `
     <div class="rate-row">
       <span class="rate-name" title="${h.name}">${h.name}</span>
       <div class="rate-track">
@@ -285,11 +304,13 @@ function renderCompletionRates(habits) {
       </div>
       <span class="rate-pct">${h.rate}%</span>
     </div>
-  `).join('');
+  `
+    )
+    .join('');
 
   // Animate on next paint (width starts at 0 from CSS)
   requestAnimationFrame(() => {
-    container.querySelectorAll('.rate-fill').forEach(el => {
+    container.querySelectorAll('.rate-fill').forEach((el) => {
       el.style.width = el.dataset.pct + '%';
     });
   });
@@ -306,14 +327,15 @@ function renderStreakChart(habits) {
   }
 
   const sorted = [...habits].sort((a, b) => (b.maxStreak || 0) - (a.maxStreak || 0));
-  const maxVal = Math.max(...sorted.map(h => h.maxStreak || 0), 1);
+  const maxVal = Math.max(...sorted.map((h) => h.maxStreak || 0), 1);
 
-  container.innerHTML = sorted.map(h => {
-    const current = h.streak || 0;
-    const best    = h.maxStreak || 0;
-    const currentPct = ((current / maxVal) * 100).toFixed(1);
-    const bestPct    = ((best    / maxVal) * 100).toFixed(1);
-    return `
+  container.innerHTML = sorted
+    .map((h) => {
+      const current = h.streak || 0;
+      const best = h.maxStreak || 0;
+      const currentPct = ((current / maxVal) * 100).toFixed(1);
+      const bestPct = ((best / maxVal) * 100).toFixed(1);
+      return `
       <div class="streak-row">
         <span class="streak-name">${h.name}</span>
         <div class="streak-bar-pair">
@@ -334,10 +356,11 @@ function renderStreakChart(habits) {
         </div>
       </div>
     `;
-  }).join('');
+    })
+    .join('');
 
   requestAnimationFrame(() => {
-    container.querySelectorAll('.streak-fill').forEach(el => {
+    container.querySelectorAll('.streak-fill').forEach((el) => {
       el.style.width = el.dataset.pct + '%';
     });
   });
@@ -355,7 +378,7 @@ function renderPerHabitHeatmaps(habits) {
 
   container.innerHTML = '';
 
-  habits.forEach(habit => {
+  habits.forEach((habit) => {
     const item = document.createElement('div');
     item.className = 'habit-heatmap-item';
 
@@ -404,7 +427,7 @@ function initTheme() {
 
 function renderEmptyState() {
   document.querySelector('.summary-cards').remove();
-  document.querySelectorAll('.chart-section').forEach(s => s.remove());
+  document.querySelectorAll('.chart-section').forEach((s) => s.remove());
 
   const empty = document.createElement('div');
   empty.className = 'empty-state';

@@ -1,6 +1,7 @@
 # 🇮🇳 Indian Flag Animation Project
 
 ## 📌 Description
+
 A UI-based web project featuring a waving Indian flag animation, inspirational quotes, and background music.
 
 ---
@@ -16,6 +17,7 @@ A UI-based web project featuring a waving Indian flag animation, inspirational q
 ---
 
 ## 🛠️ Technologies Used
+
 - HTML5
 - CSS3 (Flexbox + Animations)
 - JavaScript (DOM manipulation)
@@ -24,19 +26,20 @@ A UI-based web project featuring a waving Indian flag animation, inspirational q
 ---
 
 ## 🧪 Testing
+
 - Tested on Chrome browser
 - Responsive across multiple screen sizes
 
 ---
 
 ## 🚀 Improvements Made
+
 - UI enhancement for better readability
 - Animation added for realistic flag movement
 - Background music integration
 - Layout optimization for responsiveness
 
 ---
-
 
 ## 📂 Project Structure
 
@@ -49,6 +52,7 @@ public/indianflag/
 ```
 
 ## 📂 How to Run
+
 1. Open `flag.html` in browser
 2. Enjoy the animation and music
 

@@ -1,14 +1,21 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { api, type LoginRequest } from "@shared/routes";
-import { useAuth } from "@/hooks/use-auth";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Shield, Loader2, ArrowLeft } from "lucide-react";
-import { useEffect } from "react";
-import { useLocation, Link } from "wouter";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { api, type LoginRequest } from '@shared/routes';
+import { useAuth } from '@/hooks/use-auth';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Shield, Loader2, ArrowLeft } from 'lucide-react';
+import { useEffect } from 'react';
+import { useLocation, Link } from 'wouter';
 
 export default function Login() {
   const { login, isAuthenticated } = useAuth();
@@ -16,13 +23,13 @@ export default function Login() {
 
   useEffect(() => {
     if (isAuthenticated()) {
-      setLocation("/admin/dashboard");
+      setLocation('/admin/dashboard');
     }
   }, [isAuthenticated, setLocation]);
 
   const form = useForm<LoginRequest>({
     resolver: zodResolver(api.auth.login.input),
-    defaultValues: { email: "", password: "" },
+    defaultValues: { email: '', password: '' },
   });
 
   function onSubmit(data: LoginRequest) {
@@ -36,7 +43,12 @@ export default function Login() {
 
       <div className="w-full max-w-md space-y-4">
         <Link href="/">
-          <Button variant="ghost" size="sm" className="text-muted-foreground mb-2" data-testid="link-back-home">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-muted-foreground mb-2"
+            data-testid="link-back-home"
+          >
             <ArrowLeft className="w-4 h-4 mr-1.5" />
             Back to Registration
           </Button>
@@ -73,7 +85,12 @@ export default function Login() {
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input type="password" placeholder="••••••••" {...field} data-testid="input-password" />
+                        <Input
+                          type="password"
+                          placeholder="••••••••"
+                          {...field}
+                          data-testid="input-password"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -85,9 +102,7 @@ export default function Login() {
                   disabled={login.isPending}
                   data-testid="button-signin"
                 >
-                  {login.isPending ? (
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  ) : null}
+                  {login.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
                   Sign In
                 </Button>
               </form>

@@ -1,7 +1,7 @@
 .popover {
   position: absolute;
   top: 0;
-  left: 0 #{"/* rtl:ignore */"};
+  left: 0 #{'/* rtl:ignore */'};
   z-index: $zindex-popover;
   display: block;
   max-width: $popover-max-width;
@@ -27,7 +27,7 @@
     &::after {
       position: absolute;
       display: block;
-      content: "";
+      content: '';
       border-color: transparent;
       border-style: solid;
     }
@@ -97,7 +97,7 @@
     display: block;
     width: $popover-arrow-width;
     margin-left: -$popover-arrow-width / 2;
-    content: "";
+    content: '';
     border-bottom: $popover-border-width solid $popover-header-bg;
   }
 }
@@ -123,16 +123,16 @@
 }
 
 .bs-popover-auto {
-  &[data-popper-placement^="top"] {
+  &[data-popper-placement^='top'] {
     @extend .bs-popover-top;
   }
-  &[data-popper-placement^="right"] {
+  &[data-popper-placement^='right'] {
     @extend .bs-popover-end;
   }
-  &[data-popper-placement^="bottom"] {
+  &[data-popper-placement^='bottom'] {
     @extend .bs-popover-bottom;
   }
-  &[data-popper-placement^="left"] {
+  &[data-popper-placement^='left'] {
     @extend .bs-popover-start;
   }
 }

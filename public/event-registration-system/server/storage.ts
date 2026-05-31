@@ -1,24 +1,35 @@
-import { registrations, users, type InsertRegistration, type InsertUser, type Registration, type User } from "@shared/schema";
-import { eq, desc, ilike, and, or } from "drizzle-orm";
-import { randomUUID } from "crypto";
+import {
+  registrations,
+  users,
+  type InsertRegistration,
+  type InsertUser,
+  type Registration,
+  type User,
+} from '@shared/schema';
+import { eq, desc, ilike, and, or } from 'drizzle-orm';
+import { randomUUID } from 'crypto';
 
 let dbInstance: any | null = null;
 async function getDb() {
   if (!dbInstance) {
-    const module = await import("./db");
+    const module = await import('./db');
     dbInstance = module.db;
   }
   return dbInstance;
 }
 
-const useInMemoryStorage = !process.env.DATABASE_URL && process.env.NODE_ENV !== "production";
+const useInMemoryStorage = !process.env.DATABASE_URL && process.env.NODE_ENV !== 'production';
 
 export interface IStorage {
   getUserByEmail(email: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
 
   createRegistration(registration: InsertRegistration): Promise<Registration>;
-  getRegistrations(filters?: { search?: string; college?: string; domain?: string }): Promise<Registration[]>;
+  getRegistrations(filters?: {
+    search?: string;
+    college?: string;
+    domain?: string;
+  }): Promise<Registration[]>;
   getRegistration(id: number): Promise<Registration | undefined>;
 }
 
@@ -37,7 +48,7 @@ export class InMemoryStorage implements IStorage {
       id: this.nextUserId++,
       email: insertUser.email,
       password: insertUser.password,
-      role: "admin",
+      role: 'admin',
     } as User;
 
     this.users.push(user);
@@ -61,11 +72,19 @@ export class InMemoryStorage implements IStorage {
     return registration;
   }
 
-  async getRegistrations(filters?: { search?: string; college?: string; domain?: string }): Promise<Registration[]> {
+  async getRegistrations(filters?: {
+    search?: string;
+    college?: string;
+    domain?: string;
+  }): Promise<Registration[]> {
     return this.registrations.filter((entry) => {
-      const matchesSearch = !filters?.search || [entry.name, entry.email, entry.registrationId]
-        .some((field) => field.toLowerCase().includes(filters.search!.toLowerCase()));
-      const matchesCollege = !filters?.college || entry.college.toLowerCase().includes(filters.college.toLowerCase());
+      const matchesSearch =
+        !filters?.search ||
+        [entry.name, entry.email, entry.registrationId].some((field) =>
+          field.toLowerCase().includes(filters.search!.toLowerCase())
+        );
+      const matchesCollege =
+        !filters?.college || entry.college.toLowerCase().includes(filters.college.toLowerCase());
       const matchesDomain = !filters?.domain || entry.domain === filters.domain;
       return matchesSearch && matchesCollege && matchesDomain;
     });
@@ -85,21 +104,31 @@ export class DatabaseStorage implements IStorage {
 
   async createUser(insertUser: InsertUser): Promise<User> {
     const db = await getDb();
-    const [user] = await db.insert(users).values({ ...insertUser, role: 'admin' }).returning();
+    const [user] = await db
+      .insert(users)
+      .values({ ...insertUser, role: 'admin' })
+      .returning();
     return user;
   }
 
   async createRegistration(insertRegistration: InsertRegistration): Promise<Registration> {
     const db = await getDb();
     const registrationId = `REG-${randomUUID().slice(0, 8).toUpperCase()}`;
-    const [registration] = await db.insert(registrations).values({
-      ...insertRegistration,
-      registrationId
-    }).returning();
+    const [registration] = await db
+      .insert(registrations)
+      .values({
+        ...insertRegistration,
+        registrationId,
+      })
+      .returning();
     return registration;
   }
 
-  async getRegistrations(filters?: { search?: string; college?: string; domain?: string }): Promise<Registration[]> {
+  async getRegistrations(filters?: {
+    search?: string;
+    college?: string;
+    domain?: string;
+  }): Promise<Registration[]> {
     const db = await getDb();
     let conditions = [];
 

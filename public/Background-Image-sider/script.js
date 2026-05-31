@@ -1,89 +1,89 @@
 // ───── DESTINATION DATA ─────
 const destinations = [
   {
-    name: "Iceland",
-    region: "Europe",
+    name: 'Iceland',
+    region: 'Europe',
     bg: "url('images/iceland.jpg')",
-    desc: "Explore glaciers, geysers, and the ethereal Northern Lights across volcanic landscapes."
+    desc: 'Explore glaciers, geysers, and the ethereal Northern Lights across volcanic landscapes.',
   },
   {
-    name: "Switzerland",
-    region: "Europe",
+    name: 'Switzerland',
+    region: 'Europe',
     bg: "url('images/Jennifer.avif')",
-    desc: "Experience the serene beauty of the Swiss Alps and impossibly picturesque alpine villages."
+    desc: 'Experience the serene beauty of the Swiss Alps and impossibly picturesque alpine villages.',
   },
   {
-    name: "Scotland",
-    region: "Europe",
+    name: 'Scotland',
+    region: 'Europe',
     bg: "url('images/Daniel.jpeg')",
-    desc: "Discover ancient castles, rugged Highlands, and a culture steeped in myth and legend."
+    desc: 'Discover ancient castles, rugged Highlands, and a culture steeped in myth and legend.',
   },
   {
-    name: "Ireland",
-    region: "Europe",
+    name: 'Ireland',
+    region: 'Europe',
     bg: "url('images/kai.jpg')",
-    desc: "Immerse yourself in emerald landscapes, dramatic coastal cliffs, and warm Celtic hospitality."
+    desc: 'Immerse yourself in emerald landscapes, dramatic coastal cliffs, and warm Celtic hospitality.',
   },
   {
-    name: "Germany",
-    region: "Europe",
+    name: 'Germany',
+    region: 'Europe',
     bg: "url('images/Hannes-Becker4.jpg')",
-    desc: "Explore fairy-tale castles, medieval towns, and a legendary beer and sausage culture."
+    desc: 'Explore fairy-tale castles, medieval towns, and a legendary beer and sausage culture.',
   },
   {
-    name: "India",
-    region: "Asia",
+    name: 'India',
+    region: 'Asia',
     bg: "url('images/tajmehal.png')",
-    desc: "A tapestry of majestic forts, colorful festivals, ancient spice routes, and the iconic Taj Mahal."
+    desc: 'A tapestry of majestic forts, colorful festivals, ancient spice routes, and the iconic Taj Mahal.',
   },
   {
-    name: "Korea",
-    region: "Asia",
+    name: 'Korea',
+    region: 'Asia',
     bg: "url('images/korea.png')",
-    desc: "Discover a perfect blend of futuristic cities, ancient palaces, K-culture, and mountain serenity."
+    desc: 'Discover a perfect blend of futuristic cities, ancient palaces, K-culture, and mountain serenity.',
   },
   {
-    name: "Japan",
-    region: "Asia",
+    name: 'Japan',
+    region: 'Asia',
     bg: "url('images/japan.png')",
-    desc: "Journey through ancient temples, neon-lit streets, and ethereal cherry blossom forests."
+    desc: 'Journey through ancient temples, neon-lit streets, and ethereal cherry blossom forests.',
   },
   {
-    name: "China",
-    region: "Asia",
+    name: 'China',
+    region: 'Asia',
     bg: "url('images/china.png')",
-    desc: "Explore the Great Wall, misty karst mountains, and the dazzling energy of its megacities."
+    desc: 'Explore the Great Wall, misty karst mountains, and the dazzling energy of its megacities.',
   },
   {
-    name: "Bali",
-    region: "Asia",
+    name: 'Bali',
+    region: 'Asia',
     bg: "url('images/bali.png')",
-    desc: "Unwind in a tropical paradise of rice terraces, spiritual temples, and golden sunsets."
+    desc: 'Unwind in a tropical paradise of rice terraces, spiritual temples, and golden sunsets.',
   },
   {
-    name: "Italy",
-    region: "Europe",
+    name: 'Italy',
+    region: 'Europe',
     bg: "url('images/italy.png')",
-    desc: "Wander through millennia of history, breathtaking art, and the world's finest cuisine."
+    desc: "Wander through millennia of history, breathtaking art, and the world's finest cuisine.",
   },
   {
-    name: "France",
-    region: "Europe",
+    name: 'France',
+    region: 'Europe',
     bg: "url('images/france.png')",
-    desc: "Discover Parisian elegance, lavender fields of Provence, and the storied French Riviera."
+    desc: 'Discover Parisian elegance, lavender fields of Provence, and the storied French Riviera.',
   },
   {
-    name: "Thailand",
-    region: "Asia",
+    name: 'Thailand',
+    region: 'Asia',
     bg: "url('images/thailand.png')",
-    desc: "Enjoy tropical beaches, vibrant night markets, golden temples, and unforgettable street food."
+    desc: 'Enjoy tropical beaches, vibrant night markets, golden temples, and unforgettable street food.',
   },
   {
-    name: "Dubai",
-    region: "Middle East",
+    name: 'Dubai',
+    region: 'Middle East',
     bg: "url('images/dubai.png')",
-    desc: "Experience futuristic skylines, luxury beyond imagination, and desert adventures at golden dusk."
-  }
+    desc: 'Experience futuristic skylines, luxury beyond imagination, and desert adventures at golden dusk.',
+  },
 ];
 
 // ───── STATE ─────
@@ -95,22 +95,22 @@ let isTransitioning = false;
 const AUTOPLAY_INTERVAL = 5000;
 
 // ───── DOM REFS ─────
-const bgEl           = document.getElementById('wl-bg');
-const bgNext         = document.getElementById('wl-bg-next');
-const titleEl        = document.getElementById('placeTitle');
-const descEl         = document.getElementById('placeDescription');
-const regionEl       = document.getElementById('placeRegion');
-const bookBtn        = document.getElementById('bookingButton');
-const dotsEl         = document.getElementById('destinationIndicators');
-const selector       = document.getElementById('placeSelector');
-const autoBtn        = document.getElementById('autoplayBtn');
-const autoIcon       = document.getElementById('autoplayIcon');
-const autoLabel      = document.getElementById('autoplayLabel');
-const counterEl      = document.getElementById('wlCounter');
-const progressBar    = document.getElementById('progressBar');
-const prevBtn        = document.getElementById('prevBtn');
-const nextBtn        = document.getElementById('nextBtn');
-const homeLink       = document.getElementById('homeLink');
+const bgEl = document.getElementById('wl-bg');
+const bgNext = document.getElementById('wl-bg-next');
+const titleEl = document.getElementById('placeTitle');
+const descEl = document.getElementById('placeDescription');
+const regionEl = document.getElementById('placeRegion');
+const bookBtn = document.getElementById('bookingButton');
+const dotsEl = document.getElementById('destinationIndicators');
+const selector = document.getElementById('placeSelector');
+const autoBtn = document.getElementById('autoplayBtn');
+const autoIcon = document.getElementById('autoplayIcon');
+const autoLabel = document.getElementById('autoplayLabel');
+const counterEl = document.getElementById('wlCounter');
+const progressBar = document.getElementById('progressBar');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const homeLink = document.getElementById('homeLink');
 
 // ───── BUILD DROPDOWN + DOTS ─────
 function buildUI() {
@@ -127,9 +127,16 @@ function buildUI() {
     dot.setAttribute('role', 'tab');
     dot.setAttribute('aria-label', `Go to ${d.name}`);
     dot.setAttribute('tabindex', '0');
-    dot.addEventListener('click', () => { stopAutoplay(); goTo(i); });
-    dot.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); stopAutoplay(); goTo(i); }
+    dot.addEventListener('click', () => {
+      stopAutoplay();
+      goTo(i);
+    });
+    dot.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        stopAutoplay();
+        goTo(i);
+      }
     });
     dotsEl.appendChild(dot);
   });
@@ -193,8 +200,12 @@ function goTo(idx) {
   resetProgress();
 }
 
-function goNext() { goTo((current + 1) % destinations.length); }
-function goPrev() { goTo((current - 1 + destinations.length) % destinations.length); }
+function goNext() {
+  goTo((current + 1) % destinations.length);
+}
+function goPrev() {
+  goTo((current - 1 + destinations.length) % destinations.length);
+}
 
 // ───── PROGRESS BAR ─────
 function resetProgress() {
@@ -243,8 +254,14 @@ autoBtn.addEventListener('click', () => {
   autoplaying ? stopAutoplay() : startAutoplay();
 });
 
-nextBtn.addEventListener('click', () => { stopAutoplay(); goNext(); });
-prevBtn.addEventListener('click', () => { stopAutoplay(); goPrev(); });
+nextBtn.addEventListener('click', () => {
+  stopAutoplay();
+  goNext();
+});
+prevBtn.addEventListener('click', () => {
+  stopAutoplay();
+  goPrev();
+});
 
 selector.addEventListener('change', () => {
   stopAutoplay();
@@ -257,10 +274,9 @@ bookBtn.addEventListener('click', () => {
   bookBtn.classList.add('booked');
 });
 
-
 // HOME link resets to first destination
 if (homeLink) {
-  homeLink.addEventListener('click', e => {
+  homeLink.addEventListener('click', (e) => {
     e.preventDefault();
     stopAutoplay();
     goTo(0);
@@ -269,16 +285,26 @@ if (homeLink) {
 }
 
 // Keyboard arrow navigation
-document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight') { stopAutoplay(); goNext(); }
-  if (e.key === 'ArrowLeft')  { stopAutoplay(); goPrev(); }
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight') {
+    stopAutoplay();
+    goNext();
+  }
+  if (e.key === 'ArrowLeft') {
+    stopAutoplay();
+    goPrev();
+  }
 });
 
 // Pause autoplay on card hover
 const card = document.querySelector('.wl-card');
 if (card) {
-  card.addEventListener('mouseenter', () => { if (autoplaying) clearInterval(progressTimer); });
-  card.addEventListener('mouseleave', () => { if (autoplaying) startProgress(); });
+  card.addEventListener('mouseenter', () => {
+    if (autoplaying) clearInterval(progressTimer);
+  });
+  card.addEventListener('mouseleave', () => {
+    if (autoplaying) startProgress();
+  });
 }
 
 // ───── INIT ─────

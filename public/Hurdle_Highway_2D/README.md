@@ -10,39 +10,39 @@ This project demonstrates strong fundamentals of **JavaScript DOM manipulation, 
 
 ## 🎮 Gameplay
 
-* Control your car and **dodge obstacles** coming from the front
-* Survive longer to **increase your score**
-* Game speed gradually increases, making it more challenging over time
+- Control your car and **dodge obstacles** coming from the front
+- Survive longer to **increase your score**
+- Game speed gradually increases, making it more challenging over time
 
 ---
 
 ## 🚀 Features
 
-* 🎯 **Score System**
+- 🎯 **Score System**
   Real-time score tracking based on survival time
 
-* 🏁 **Scoreboard Display**
+- 🏁 **Scoreboard Display**
   Displays current score dynamically during gameplay
 
-* ⚡ **Speed Meter**
+- ⚡ **Speed Meter**
   Shows increasing game speed as difficulty rises
 
-* 🚗 **Smooth Car Animations**
+- 🚗 **Smooth Car Animations**
   Dynamic movement and transitions for realistic gameplay feel
 
-* 🎹 **Keyboard Controls**
+- 🎹 **Keyboard Controls**
   Implemented using JavaScript event listeners for responsive control
 
-* 🧠 **Core Game Logic (Vanilla JS)**
+- 🧠 **Core Game Logic (Vanilla JS)**
   Built entirely using DOM manipulation and custom logic - no libraries
 
 ---
 
 ## 🧑‍💻 Tech Stack
 
-* **HTML** – Structure of the game
-* **CSS** – Styling and animations
-* **JavaScript (Vanilla JS)** – Game logic, DOM manipulation, event handling
+- **HTML** – Structure of the game
+- **CSS** – Styling and animations
+- **JavaScript (Vanilla JS)** – Game logic, DOM manipulation, event handling
 
 ---
 
@@ -53,6 +53,7 @@ Hurdle-Highway-2D/
 │── index.css
 │── index.js
 │── media
+
 ```
 
 ---
@@ -61,9 +62,11 @@ Hurdle-Highway-2D/
 
 1. Clone the repository
 
-   ```
-   git clone https://github.com/Arjun-Shukla/HurdleHighway2D.git
-   ```
+```
+
+git clone https://github.com/Arjun-Shukla/HurdleHighway2D.git
+
+```
 2. Open the project folder
 3. Run `index.html` in your browser
 
@@ -98,3 +101,4 @@ GitHub: https://github.com/Arjun-Shukla
 ## ⭐ Support
 
 If you enjoyed this project, consider giving it a ⭐ on GitHub!
+```

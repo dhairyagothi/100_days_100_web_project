@@ -100,5 +100,3 @@ code-visualizer-playground/
 Contributions are welcome! Please follow the repository’s contribution guidelines from the root project before submitting changes.
 
 ## 📄 License
-
-

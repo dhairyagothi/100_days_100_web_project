@@ -1,38 +1,20 @@
 // js/savingsManager.js
 
-import {
-  saveGoals,
-} from "./storage.js";
+import { saveGoals } from './storage.js';
 
-export const renderGoals = (
-  goals
-) => {
-
-  const container =
-    document.getElementById(
-      "goalsContainer"
-    );
+export const renderGoals = (goals) => {
+  const container = document.getElementById('goalsContainer');
 
   if (!container) return;
 
-  container.innerHTML = "";
+  container.innerHTML = '';
 
   goals.forEach((goal) => {
+    const percentage = Math.min((goal.saved / goal.target) * 100, 100);
 
-    const percentage =
-      Math.min(
-        (
-          goal.saved
-          / goal.target
-        ) * 100,
-        100
-      );
+    const card = document.createElement('div');
 
-    const card =
-      document.createElement("div");
-
-    card.className =
-      "goal-card";
+    card.className = 'goal-card';
 
     card.innerHTML = `
 
@@ -66,11 +48,7 @@ export const renderGoals = (
   });
 };
 
-export const addGoal = (
-  goals,
-  goal
-) => {
-
+export const addGoal = (goals, goal) => {
   goals.push(goal);
 
   saveGoals(goals);
