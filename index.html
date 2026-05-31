@@ -12,6 +12,7 @@
   <meta name="author" content="Dhairya Gothi and Contributors" />
   <meta name="theme-color" content="#0a0a1a" />
   <script src="theme.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
   <!-- Open Graph / Social Media -->
   <meta property="og:type" content="website" />
@@ -36,18 +37,6 @@
     rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
   <link rel="stylesheet" href="style.css" />
-  <style>
-    /* ── NAVBAR OVERLAP FIX ── */
-    body {
-      padding-top: 60px !important;
-    }
-    .projects-section {
-      padding-top: 80px !important;
-    }
-    .hero {
-      margin-top: 0 !important;
-    }
-  </style>
 </head>
 
 <body>
@@ -59,7 +48,7 @@
   <canvas id="particleCanvas" aria-hidden="true" style="position: fixed !important; inset: 0 !important; width: 100% !important; height: 100% !important; pointer-events: none !important; z-index: 0 !important; display: block !important;"></canvas>
 
     <!-- ── NAVBAR ──────────────────────────────────────────── -->
- <div id="navbar-container"></div>   
+  <div id="navbar-container"></div>     
     <!-- ── HERO ───────────────────────────────────────────── -->
     <section class="hero" id="hero">
       <div class="hero-terminal" id="heroTerminal" aria-hidden="true"></div>
@@ -114,7 +103,7 @@
     </div>
   </section>
 
- <section class="projects-section">
+  <section class="projects-section">
     <div class="projects-inner">
       <div class="projects-intro">
         <p class="section-label">Continue Exploring</p>
@@ -343,34 +332,6 @@
   <script type="module" src="hero-terminal.js" defer></script>
   <script src="index.js?v=3" defer></script>
   <script src="navbar.js" defer></script>
-  <script>
-    // NAVBAR OVERLAP FIX — runs last, directly sets DOM styles
-    window.addEventListener('load', function () {
-      var NAVBAR_H = 60;
-      // Force body padding so all content starts below fixed navbar
-      document.body.style.setProperty('padding-top', NAVBAR_H + 'px', 'important');
-      // Force each projects-section to have enough top padding
-      document.querySelectorAll('.projects-section').forEach(function (el) {
-        el.style.setProperty('padding-top', '80px', 'important');
-      });
-      console.log('[NavbarFix] Applied padding-top fixes');
-
-      // Unregister any active root-level Service Workers to bypass aggressive caching
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(function (registrations) {
-          if (registrations.length > 0) {
-            console.log('[ServiceWorkerFix] Active Service Workers found, cleaning up...');
-            Promise.all(registrations.map(function (reg) {
-              return reg.unregister();
-            })).then(function () {
-              console.log('[ServiceWorkerFix] All Service Workers unregistered. Reloading for clean state...');
-              window.location.reload();
-            });
-          }
-        });
-      }
-    });
-  </script>
   </body>
 
 </html>

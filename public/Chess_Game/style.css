@@ -406,3 +406,8 @@ h1 {
         padding: 6px 8px;
     }
 }
+.controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+}

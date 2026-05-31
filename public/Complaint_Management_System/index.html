@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Management System</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="/public/Complaint_Management_System/style.css">
+</head>
+<body data-theme="light">
+    <!-- Background Effects -->
+    <div class="bg-effects">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+    </div>
+
+    <div class="app-container glass-panel">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">
+                    <i class="ph-fill ph-shield-check"></i>
+                </div>
+                <h2>ResolveIt</h2>
+            </div>
+
+            <nav class="nav-menu">
+                <p class="nav-label">Menu</p>
+                <button class="nav-item active" data-view="dashboard">
+                    <i class="ph ph-squares-four"></i> Dashboard
+                </button>
+                <button class="nav-item" data-view="submit">
+                    <i class="ph ph-plus-circle"></i> Submit Complaint
+                </button>
+                <button class="nav-item" data-view="listings">
+                    <i class="ph ph-list-dashes"></i> View Complaints
+                </button>
+                
+                <p class="nav-label mt-4">Management</p>
+                <button class="nav-item" data-view="admin">
+                    <i class="ph ph-lock-key"></i> Admin Panel
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button id="theme-toggle" class="nav-item">
+                    <i class="ph ph-moon"></i> Dark Mode
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Header -->
+            <header class="top-header">
+                <div class="mobile-toggle">
+                    <i class="ph ph-list"></i>
+                </div>
+                <div class="header-title">
+                    <h1 id="page-title">Dashboard</h1>
+                </div>
+                <div class="header-actions">
+                    <div class="user-profile">
+                        <img src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff" alt="User">
+                        <span>Current User</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard View -->
+            <section id="view-dashboard" class="view-section active fade-in">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-indigo"><i class="ph ph-files"></i></div>
+                        <div class="stat-info">
+                            <p>Total Complaints</p>
+                            <h3 id="stat-total">0</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon bg-amber"><i class="ph ph-hourglass-high"></i></div>
+                        <div class="stat-info">
+                            <p>Pending</p>
+                            <h3 id="stat-pending">0</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon bg-blue"><i class="ph ph-arrows-clockwise"></i></div>
+                        <div class="stat-info">
+                            <p>In Progress</p>
+                            <h3 id="stat-progress">0</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon bg-emerald"><i class="ph ph-check-circle"></i></div>
+                        <div class="stat-info">
+                            <p>Resolved</p>
+                            <h3 id="stat-resolved">0</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-content">
+                    <div class="card recent-complaints">
+                        <div class="card-header">
+                            <h3>Recent Complaints</h3>
+                            <button class="btn btn-text" onclick="window.app.switchView('listings')">View All</button>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Title</th>
+                                        <th>Category</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recent-table-body">
+                                    <!-- Dynamic content -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Submit View -->
+            <section id="view-submit" class="view-section fade-in">
+                <div class="card form-card">
+                    <div class="card-header">
+                        <h3>File a New Complaint</h3>
+                        <p class="text-muted">Please provide detailed information to help us resolve your issue quickly.</p>
+                    </div>
+                    <form id="complaint-form" class="modern-form">
+                        <div class="form-grid">
+                            <div class="form-group span-full">
+                                <label for="title">Complaint Title <span class="required">*</span></label>
+                                <input type="text" id="title" required placeholder="Brief summary of the issue">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="category">Category <span class="required">*</span></label>
+                                <select id="category" required>
+                                    <option value="" disabled selected>Select category</option>
+                                    <option value="hardware">Hardware / Equipment</option>
+                                    <option value="software">Software / IT</option>
+                                    <option value="facility">Facility / Maintenance</option>
+                                    <option value="hr">Human Resources</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="priority">Priority Level <span class="required">*</span></label>
+                                <select id="priority" required>
+                                    <option value="low">Low - General inquiry or minor issue</option>
+                                    <option value="medium" selected>Medium - Noticeable impact on work</option>
+                                    <option value="high">High - Urgent, stopping work</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="department">Target Department</label>
+                                <select id="department">
+                                    <option value="it">IT Support</option>
+                                    <option value="facilities">Facilities</option>
+                                    <option value="hr">HR</option>
+                                    <option value="general" selected>General Admin</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="location">Location / Room (if applicable)</label>
+                                <input type="text" id="location" placeholder="e.g., Room 402 or Remote">
+                            </div>
+
+                            <div class="form-group span-full">
+                                <label for="description">Detailed Description <span class="required">*</span></label>
+                                <textarea id="description" rows="5" required placeholder="Please describe the issue in detail..."></textarea>
+                            </div>
+
+                            <div class="form-group span-full">
+                                <label>Attachments (Optional)</label>
+                                <div class="file-upload-zone" id="file-drop-area">
+                                    <input type="file" id="attachment" accept="image/*,.pdf" hidden>
+                                    <div class="upload-content">
+                                        <i class="ph ph-upload-simple"></i>
+                                        <p>Click to browse or drag and drop</p>
+                                        <span class="text-xs text-muted">PNG, JPG, PDF up to 5MB</span>
+                                    </div>
+                                    <div class="file-preview hidden" id="file-preview">
+                                        <i class="ph ph-file-text"></i>
+                                        <span id="file-name">filename.png</span>
+                                        <button type="button" id="remove-file"><i class="ph ph-x"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group span-full">
+                                <label for="contact">Contact Email or Phone <span class="required">*</span></label>
+                                <input type="text" id="contact" required placeholder="How can we reach you?">
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('complaint-form').reset(); window.app.removeAttachment();">Reset</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="ph ph-paper-plane-right"></i> Submit Complaint
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Listings View -->
+            <section id="view-listings" class="view-section fade-in">
+                <div class="card listings-card">
+                    <div class="listings-toolbar">
+                        <div class="search-box">
+                            <i class="ph ph-magnifying-glass"></i>
+                            <input type="text" id="search-input" placeholder="Search by ID or Title...">
+                        </div>
+                        <div class="filter-group">
+                            <select id="filter-status" class="filter-select">
+                                <option value="all">All Statuses</option>
+                                <option value="pending">Pending</option>
+                                <option value="in_progress">In Progress</option>
+                                <option value="resolved">Resolved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                            <select id="filter-priority" class="filter-select">
+                                <option value="all">All Priorities</option>
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="data-table" id="complaints-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>Priority</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="listings-table-body">
+                                <!-- Dynamic content -->
+                            </tbody>
+                        </table>
+                        <div id="listings-empty" class="empty-state hidden">
+                            <i class="ph ph-magnifying-glass"></i>
+                            <h3>No complaints found</h3>
+                            <p>Try adjusting your search or filters.</p>
+                            <button class="btn btn-secondary mt-4" onclick="window.app.clearFilters()">Clear Filters</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Details View -->
+            <section id="view-details" class="view-section fade-in">
+                <div class="details-header-actions">
+                    <button class="btn btn-secondary" onclick="window.app.switchView('listings')">
+                        <i class="ph ph-arrow-left"></i> Back to List
+                    </button>
+                </div>
+                
+                <div class="details-grid" id="details-content">
+                    <!-- Dynamic details content -->
+                </div>
+            </section>
+
+            <!-- Admin Panel View -->
+            <section id="view-admin" class="view-section fade-in">
+                <div class="card admin-card">
+                    <div class="card-header">
+                        <h3>Management Console</h3>
+                        <p class="text-muted">Process and resolve active complaints.</p>
+                    </div>
+                    
+                    <div class="admin-grid">
+                        <!-- Left col: List of active complaints -->
+                        <div class="admin-list-col">
+                            <div class="search-box mb-4">
+                                <i class="ph ph-magnifying-glass"></i>
+                                <input type="text" id="admin-search" placeholder="Search active...">
+                            </div>
+                            <div class="admin-complaints-list" id="admin-complaints-list">
+                                <!-- Dynamic admin list -->
+                            </div>
+                        </div>
+                        
+                        <!-- Right col: Editor -->
+                        <div class="admin-editor-col">
+                            <div id="admin-editor-empty" class="empty-state">
+                                <i class="ph ph-cursor-click"></i>
+                                <h3>Select a complaint</h3>
+                                <p>Choose a complaint from the list to manage it.</p>
+                            </div>
+                            
+                            <div id="admin-editor-form" class="hidden">
+                                <h3 id="admin-edit-title" class="mb-4">Complaint ID</h3>
+                                
+                                <div class="form-group">
+                                    <label>Current Status</label>
+                                    <select id="admin-status" class="status-select">
+                                        <option value="pending">Pending</option>
+                                        <option value="in_progress">In Progress</option>
+                                        <option value="resolved">Resolved</option>
+                                        <option value="rejected">Rejected</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Assigned Department</label>
+                                    <select id="admin-department">
+                                        <option value="it">IT Support</option>
+                                        <option value="facilities">Facilities</option>
+                                        <option value="hr">HR</option>
+                                        <option value="general">General Admin</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Resolution Notes (Visible to user)</label>
+                                    <textarea id="admin-notes" rows="6" placeholder="Enter troubleshooting steps or resolution details..."></textarea>
+                                </div>
+                                
+                                <button class="btn btn-primary w-full mt-4" onclick="window.app.saveAdminChanges()">
+                                    <i class="ph ph-floppy-disk"></i> Save Changes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">
+        <div class="toast-icon" id="toast-icon"><i class="ph ph-check-circle"></i></div>
+        <div class="toast-content">
+            <h4 id="toast-title">Success</h4>
+            <p id="toast-message">Action completed.</p>
+        </div>
+        <button class="toast-close" onclick="document.getElementById('toast').classList.add('hidden')"><i class="ph ph-x"></i></button>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/public/Complaint_Management_System/script.js"></script>
+</body>
+</html>

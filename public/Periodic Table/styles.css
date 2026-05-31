@@ -1091,3 +1091,18 @@ text-decoration:underline;
 color:#1d4ed8;
 
 }
+
+#exportPdfBtn{
+    padding:10px 18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#2563eb;
+    color:white;
+    font-weight:600;
+    transition:.3s;
+}
+
+#exportPdfBtn:hover{
+    transform:translateY(-2px);
+}
