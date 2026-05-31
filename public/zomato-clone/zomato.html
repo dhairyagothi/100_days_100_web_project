@@ -63,8 +63,10 @@
         <div class="search_container">
           <div class="location">
             <i data-feather="map-pin"></i>
-            <input placeholder="Enter Location"
-              class="location-input" />
+          <input id="locationInput" 
+placeholder="Enter Location" 
+class="location-input"
+onkeypress="handleLocation(event)" />
             <i class="fa fa-chevron-down dropdown-toggle"></i>
             <div class="location-dropdown hidden">
               <!-- <div class="dropdown-item">Delhi NCR</div>
@@ -75,36 +77,27 @@
             </div>
           </div>
           <div class="line"></div>
-          <div class="search">
+          <div class="search" onclick="searchFood()">
             <div class="search_icon">
               <i data-feather="search"></i>
             </div>
-            <input placeholder="Search for restaurant, cuisine or a dish" class="search_box" value="" />
+            <input id="searchInput" placeholder="Search for restaurant, cuisine or a dish" class="search_box" value="" />
           </div>
         </div>
-      </div>
-    </div>
-    <div class="main-body">
-      <div class="options">
-        <div class="option">
-          <div class="image">
-            <img
-              src="https://b.zmtcdn.com/webFrontend/e5b8785c257af2a7f354f1addaf37e4e1647364814.jpeg?output-format=webp&fit=around|402:360&crop=402:360;*,*" />
+        <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMobileNav()" aria-label="Toggle navigation">&#9776;</button>
+        <div class="right" id="mobileNav">
+          <div class="nav-item">
+            <a href="#">Investor Relations</a>
           </div>
           <div class="info">
             <p class="title">Order Online</p>
             <p class="description">Stay home and order on your doorstep</p>
           </div>
-        </div>
-
-        <div class="option">
-          <div class="image">
-            <img
-              src="https://b.zmtcdn.com/webFrontend/d026b357feb0d63c997549f6398da8cc1647364915.jpeg?output-format=webp&fit=around|402:360&crop=402:360;*,*" />
+          <div class="nav-item login-nav">
+            <a href="login.html">Log in</a>
           </div>
-          <div class="info">
-            <p class="title">Dining</p>
-            <p class="description">View the city's favorite dining venues</p>
+          <div class="nav-item signup-nav">
+            <a href="signup.html">Sign up</a>
           </div>
         </div>
 
@@ -670,6 +663,64 @@
   </script>
 
   <script src="accordion.js"></script>
+  <script>
+  function searchFood() {
+    let value = document.getElementById("searchInput").value;
+
+    if (value === "") {
+      alert("Please enter something!");
+    } else {
+      alert("You searched for: " + value);
+    }
+  }
+</script>
+
+<script>
+function handleLocation(event) {
+  if (event.key === "Enter") {
+    let location = document.getElementById("locationInput").value;
+
+    if (location === "") {
+      alert("Please enter a location!");
+    } else {
+      alert("Location selected: " + location);
+    }
+  }
+}
+</script>
 </body>
 
+        <hr />
+        <section class="end">
+          By continuing past this page, you agree to our Terms of Service,
+          Cookie Policy, Privacy Policy and Content Policies. All trademarks are
+          properties of their respective owners. 2008-2023 © Zomato™ Ltd. All
+          rights reserved.
+        </section>
+        <section class="end">Made by: Kratik Khatri</section>
+      </div>
+    </footer>
+
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>
+      feather.replace();
+    </script>
+   
+    <script src="accordion.js"></script>
+    <script>
+      function toggleMobileNav() {
+        const nav = document.getElementById('mobileNav');
+        const btn = document.getElementById('hamburgerBtn');
+        nav.classList.toggle('mobile-open');
+        btn.classList.toggle('active');
+      }
+      // Close mobile nav on link click
+      document.querySelectorAll('#mobileNav .nav-item a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          document.getElementById('mobileNav').classList.remove('mobile-open');
+          document.getElementById('hamburgerBtn').classList.remove('active');
+        });
+      });
+    </script>
+  </body>
 </html>

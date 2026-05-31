@@ -191,11 +191,33 @@ if (window.innerWidth <= 768) {
 }
 
 // Contact form submission
+// 1. THIS IS THE CLEANER TOOL (Paste this function)
+function sanitizeInput(str) {
+  if (!str) return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .replace(/\//g, '&#x2F;');
+}
+
+// 2. THIS IS YOUR CONTACT FORM SUBMISSION LISTENER
 document.getElementById('contactForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    // Implement contact form submission logic here
-    alert('Thank you for your message. We will get back to you soon!');
-    e.target.reset();
+  e.preventDefault();
+  
+  // Find the input fields inside the form
+  const nameField = e.target.querySelector('input[type="text"]') || document.getElementById('nameInput');
+  const messageField = e.target.querySelector('textarea') || document.getElementById('messageInput');
+  
+  // Clean the text data using our tool before doing anything else
+  const safeName = nameField ? sanitizeInput(nameField.value) : '';
+  const safeMessage = messageField ? sanitizeInput(messageField.value) : '';
+
+  // Show the success message safely
+  alert('Thank you for your message. We will get back to you soon!');
+  e.target.reset();
 });
 
 // Subscribe form submission
