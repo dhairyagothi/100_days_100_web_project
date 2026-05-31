@@ -134,6 +134,7 @@ button#reset-btn:active { transform: scale(0.997); }
   color: var(--red1);
   margin-top: 10px;
   letter-spacing: 0.02em;
+}
 .theme-toggle{
 
   width:42px;
@@ -652,6 +653,7 @@ select{
   height: 220px;
   border-top: 1px solid var(--rule);
   padding-top: 20px;
+}
 .history-item{
 
   display:flex;
