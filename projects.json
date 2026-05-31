@@ -2413,61 +2413,28 @@
   },
   {
     "projectNo": 194,
-    "projectName": "Gradient Palette Generator",
-    "projectType": "Tool",
-    "projectDesc": "Create, preview, and save beautiful CSS gradients with live editing, multiple gradient types, and clipboard copy support.",
+    "projectName": "Lost & Found Portal",
+    "projectType": "Website",
+    "projectDesc": "A modern web application to report lost items, report found items, browse listings, and contact item owners.",
     "techStack": [
-      "tool",
       "html",
       "css",
       "javascript"
     ],
-    "difficulty": "beginner",
-    "projectPath": "./public/GradientPaletteGenerator/index.html"
+    "difficulty": "intermediate",
+    "projectPath": "./public/Lost_And_Found_Portal/index.html"
   },
   {
     "projectNo": 195,
-    "projectName": "Audio Wave Synth & Visualizer",
-    "projectType": "Tool",
-    "projectDesc": "Interactive real-time wave synthesizer and audio frequency visualizer built using the Web Audio API.",
+    "projectName": "Complaint Management System",
+    "projectType": "Web Application",
+    "projectDesc": "A professional portal for submitting, tracking, and managing complaints efficiently with a premium modern UI.",
     "techStack": [
-      "tool",
-      "html",
-      "css",
-      "javascript",
-      "audio",
-      "canvas"
-    ],
-    "difficulty": "intermediate",
-    "projectPath": "./public/VirtualAudioSynth/index.html"
-  },
-  {
-    "projectNo": 196,
-    "projectName": "Pixel Art Canvas Designer",
-    "projectType": "Tool",
-    "projectDesc": "Design vintage pixel-perfect drawings on custom grids with custom palettes and download outputs as sharp PNGs.",
-    "techStack": [
-      "tool",
-      "html",
-      "css",
-      "javascript",
-      "canvas"
-    ],
-    "difficulty": "intermediate",
-    "projectPath": "./public/PixelArtCanvasEditor/index.html"
-  },
-  {
-    "projectNo": 197,
-    "projectName": "Glass & Shadow UI Studio",
-    "projectType": "Tool",
-    "projectDesc": "Design glassmorphic elements, configure backdrop blur, adjust advanced shadows, and output clean cross-browser CSS styles.",
-    "techStack": [
-      "tool",
       "html",
       "css",
       "javascript"
     ],
-    "difficulty": "beginner",
-    "projectPath": "./public/CSSShadowGenerator/index.html"
+    "difficulty": "advanced",
+    "projectPath": "./public/Complaint_Management_System/index.html"
   }
 ]
