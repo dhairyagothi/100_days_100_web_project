@@ -154,6 +154,28 @@ body {
   transform: translateY(-3px);
 }
 
+/* Drag & Drop Styles */
+
+.upload-box{
+  border:2px dashed var(--border);
+  border-radius:16px;
+  padding:30px;
+  transition:.3s ease;
+}
+
+.drag-text{
+  margin-top:15px;
+  color:var(--subtitle);
+  font-size:15px;
+}
+
+.upload-box.drag-over{
+  border-color:#3b82f6;
+  background:rgba(59,130,246,.12);
+  transform:scale(1.01);
+}
+
+
 #fileName {
   margin-top: 18px;
   color: var(--subtitle);
