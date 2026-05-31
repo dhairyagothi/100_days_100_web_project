@@ -217,15 +217,15 @@ getProjectDescription(project);
     ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
     : '';
   const primaryLink = sourceOnly
-    ? `<a href="${sourceUrl}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer" onclick="event.stopPropagation()">
+    ? `<a href="${sourceUrl}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source code for ${name} on GitHub">
                         <i class="fab fa-github"></i> Source
                     </a>`
-    : `<a href="${demoUrl}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer" onclick="event.stopPropagation()">
+    : `<a href="${demoUrl}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="Open live demo for ${name}">
                         Demo <i class="fas fa-arrow-right"></i>
                     </a>`;
   const codeLink = sourceOnly
     ? ''
-    : `<a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()">
+    : `<a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source code for ${name} on GitHub">
                         <i class="fab fa-github"></i> Code
                     </a>`;
 
@@ -252,7 +252,7 @@ getProjectDescription(project);
                     ${primaryLink}
                     ${codeLink}
                 </div>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}" onclick="event.stopPropagation()">
+                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}" onclick="event.stopPropagation()" aria-label="${isBookmarked ? 'Remove bookmark for ' + name : 'Bookmark ' + name}">
                     <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
                 </button>
             </div>
@@ -264,6 +264,11 @@ getProjectDescription(project);
 
 function attachProjectCardInteraction(card, demoUrl, projectData = null) {
   card.style.cursor = 'pointer';
+  card.setAttribute('tabindex', '0');
+  if (projectData && projectData[1]) {
+    card.setAttribute('aria-label', `Project: ${projectData[1]}. Press Enter to view demo.`);
+  }
+  
   card.onclick = (e) => {
     if (e.target.closest('a, button')) return;
     
@@ -273,6 +278,17 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
     }
     
     window.open(demoUrl, '_blank', 'noopener');
+  };
+
+  card.onkeydown = (e) => {
+    if (e.target.closest('a, button')) return;
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      if (projectData) {
+        trackRecentProject(projectData);
+      }
+      window.open(demoUrl, '_blank', 'noopener');
+    }
   };
 }
 
