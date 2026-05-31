@@ -66,11 +66,9 @@ body {
   padding: 100px 2rem 0;
 }
 
-/* Ensure navbar stays fixed at top (override style.css body > * rule) */
-#navbar {
-  position: fixed !important;
-  top: 0 !important;
-  z-index: 100 !important;
+/* Ensure navbar container stacks above content (override style.css body > * rule) */
+#navbar-container {
+  z-index: 9999;
 }
 
 
