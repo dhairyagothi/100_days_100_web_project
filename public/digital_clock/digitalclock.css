@@ -1370,3 +1370,16 @@ input:checked + .toggle-slider:before {
 .weather-temp {
   opacity: 0.9;
 }
+
+.controls-container {
+  display: none;
+}
+
+.theme-buttons,
+.controls-container > .select-group {
+  display: none;
+}
+
+.controls-container {
+  margin-top: 20px;
+}
