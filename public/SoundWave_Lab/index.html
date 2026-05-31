@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundWave Lab - Interactive Audio Synthesizer & Visualizer</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="glass-bg"></div>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-area">
+                <span class="pulse-dot"></span>
+                <h1 id="app-title">SOUNDWAVE <span class="highlight">LAB</span></h1>
+            </div>
+            <p class="subtitle">Interactive Web Audio Synthesizer & Real-time Visualizer</p>
+            <div class="header-controls">
+                <button id="btn-start-audio" class="btn primary glowing-btn">Start Audio Engine</button>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Layout -->
+        <main class="dashboard-grid">
+            
+            <!-- Left Panel: Visualizer -->
+            <section class="panel visualizer-panel" aria-labelledby="visualizer-heading">
+                <div class="panel-header">
+                    <h2 id="visualizer-heading">Audio Visualization</h2>
+                    <div class="visualizer-controls">
+                        <select id="select-visualizer-mode" class="custom-select">
+                            <option value="bars">Frequency Neon Bars</option>
+                            <option value="wave">Oscilloscope Waveform</option>
+                            <option value="circular">Circular Particle Ring</option>
+                        </select>
+                        <button id="btn-demo-loop" class="btn secondary">Play Demo Beat</button>
+                    </div>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="visualizer-canvas"></canvas>
+                    <div id="audio-engine-overlay" class="overlay">
+                        <p>Click "Start Audio Engine" or play a key to activate synthesizer visualization</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Panel: Synthesizer Controls -->
+            <section class="panel synth-controls-panel" aria-labelledby="controls-heading">
+                <div class="panel-header">
+                    <h2 id="controls-heading">Synthesis & Effects Engine</h2>
+                </div>
+                
+                <div class="controls-grid">
+                    <!-- Envelope Controls -->
+                    <div class="control-group">
+                        <h3>ADSR Envelope</h3>
+                        <div class="slider-row">
+                            <label for="input-attack">Attack</label>
+                            <input type="range" id="input-attack" min="0.01" max="2" step="0.01" value="0.1">
+                            <span class="value-display" id="display-attack">0.1s</span>
+                        </div>
+                        <div class="slider-row">
+                            <label for="input-decay">Decay</label>
+                            <input type="range" id="input-decay" min="0.01" max="2" step="0.01" value="0.2">
+                            <span class="value-display" id="display-decay">0.2s</span>
+                        </div>
+                        <div class="slider-row">
+                            <label for="input-sustain">Sustain</label>
+                            <input type="range" id="input-sustain" min="0" max="1" step="0.01" value="0.7">
+                            <span class="value-display" id="display-sustain">70%</span>
+                        </div>
+                        <div class="slider-row">
+                            <label for="input-release">Release</label>
+                            <input type="range" id="input-release" min="0.01" max="3" step="0.01" value="0.5">
+                            <span class="value-display" id="display-release">0.5s</span>
+                        </div>
+                    </div>
+
+                    <!-- Oscillator Selection -->
+                    <div class="control-group">
+                        <h3>Wave Type</h3>
+                        <div class="wave-selectors">
+                            <button class="wave-btn active" data-type="sine">
+                                <svg viewBox="0 0 100 40" class="wave-icon"><path d="M 0 20 Q 25 0, 50 20 T 100 20" /></svg>
+                                <span>Sine</span>
+                            </button>
+                            <button class="wave-btn" data-type="triangle">
+                                <svg viewBox="0 0 100 40" class="wave-icon"><path d="M 0 20 L 25 5 L 75 35 L 100 20" /></svg>
+                                <span>Triangle</span>
+                            </button>
+                            <button class="wave-btn" data-type="sawtooth">
+                                <svg viewBox="0 0 100 40" class="wave-icon"><path d="M 0 20 L 50 5 L 50 35 L 100 20" /></svg>
+                                <span>Sawtooth</span>
+                            </button>
+                            <button class="wave-btn" data-type="square">
+                                <svg viewBox="0 0 100 40" class="wave-icon"><path d="M 0 20 L 0 5 L 50 5 L 50 35 L 100 35 L 100 20" /></svg>
+                                <span>Square</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Filter Section -->
+                    <div class="control-group">
+                        <h3>Lowpass Filter</h3>
+                        <div class="slider-row">
+                            <label for="input-cutoff">Cutoff Freq</label>
+                            <input type="range" id="input-cutoff" min="50" max="15000" step="10" value="5000">
+                            <span class="value-display" id="display-cutoff">5000 Hz</span>
+                        </div>
+                        <div class="slider-row">
+                            <label for="input-resonance">Resonance</label>
+                            <input type="range" id="input-resonance" min="0" max="20" step="0.1" value="1">
+                            <span class="value-display" id="display-resonance">1.0 Q</span>
+                        </div>
+                    </div>
+
+                    <!-- Space Delay & FX -->
+                    <div class="control-group">
+                        <h3>Delay Effect</h3>
+                        <div class="slider-row">
+                            <label for="input-delay-time">Delay Time</label>
+                            <input type="range" id="input-delay-time" min="0" max="1" step="0.05" value="0.3">
+                            <span class="value-display" id="display-delay-time">0.3s</span>
+                        </div>
+                        <div class="slider-row">
+                            <label for="input-delay-feedback">Feedback</label>
+                            <input type="range" id="input-delay-feedback" min="0" max="0.9" step="0.05" value="0.4">
+                            <span class="value-display" id="display-delay-feedback">40%</span>
+                        </div>
+                    </div>
+
+                    <!-- Distortion / Drive -->
+                    <div class="control-group">
+                        <h3>Distortion FX</h3>
+                        <div class="slider-row">
+                            <label for="input-drive">Drive (Boost)</label>
+                            <input type="range" id="input-drive" min="0" max="100" step="1" value="0">
+                            <span class="value-display" id="display-drive">Clean</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bottom Panel: Playable Controllers (Keys and Drums) -->
+            <section class="panel controllers-panel" aria-labelledby="controllers-heading">
+                <div class="panel-header">
+                    <h2 id="controllers-heading">Performance Pads & Synthesizer Keys</h2>
+                    <div class="octave-controls">
+                        <button id="btn-octave-down" class="btn secondary-sm">Octave Down (-1)</button>
+                        <span id="display-octave" class="octave-display">Octave: 4</span>
+                        <button id="btn-octave-up" class="btn secondary-sm">Octave Up (+1)</button>
+                    </div>
+                </div>
+
+                <div class="play-area-layout">
+                    <!-- Drum Pads -->
+                    <div class="drum-pads-container">
+                        <h3>Synth Drum Pads</h3>
+                        <div class="drum-pads">
+                            <button class="drum-pad" id="pad-kick" data-key="1">
+                                <span class="pad-label">KICK</span>
+                                <span class="pad-trigger">[1]</span>
+                            </button>
+                            <button class="drum-pad" id="pad-snare" data-key="2">
+                                <span class="pad-label">SNARE</span>
+                                <span class="pad-trigger">[2]</span>
+                            </button>
+                            <button class="drum-pad" id="pad-hihat" data-key="3">
+                                <span class="pad-label">HI-HAT</span>
+                                <span class="pad-trigger">[3]</span>
+                            </button>
+                            <button class="drum-pad" id="pad-clap" data-key="4">
+                                <span class="pad-label">CLAP</span>
+                                <span class="pad-trigger">[4]</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Piano Keyboard -->
+                    <div class="keyboard-container">
+                        <div class="piano-keyboard" id="piano-keyboard">
+                            <!-- Keys will be dynamically created by JS, or hardcoded for direct representation and keyboard shortcuts -->
+                            <div class="key white-key" data-note="C" data-key="a"><span class="key-shortcut">A</span><span class="key-label">C</span></div>
+                            <div class="key black-key" data-note="C#" data-key="w"><span class="key-shortcut">W</span><span class="key-label">C#</span></div>
+                            <div class="key white-key" data-note="D" data-key="s"><span class="key-shortcut">S</span><span class="key-label">D</span></div>
+                            <div class="key black-key" data-note="D#" data-key="e"><span class="key-shortcut">E</span><span class="key-label">D#</span></div>
+                            <div class="key white-key" data-note="E" data-key="d"><span class="key-shortcut">D</span><span class="key-label">E</span></div>
+                            <div class="key white-key" data-note="F" data-key="f"><span class="key-shortcut">F</span><span class="key-label">F</span></div>
+                            <div class="key black-key" data-note="F#" data-key="t"><span class="key-shortcut">T</span><span class="key-label">F#</span></div>
+                            <div class="key white-key" data-note="G" data-key="g"><span class="key-shortcut">G</span><span class="key-label">G</span></div>
+                            <div class="key black-key" data-note="G#" data-key="y"><span class="key-shortcut">Y</span><span class="key-label">G#</span></div>
+                            <div class="key white-key" data-note="A" data-key="h"><span class="key-shortcut">H</span><span class="key-label">A</span></div>
+                            <div class="key black-key" data-note="A#" data-key="u"><span class="key-shortcut">U</span><span class="key-label">A#</span></div>
+                            <div class="key white-key" data-note="B" data-key="j"><span class="key-shortcut">J</span><span class="key-label">B</span></div>
+                            <div class="key white-key" data-note="C2" data-key="k"><span class="key-shortcut">K</span><span class="key-label">C</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer class="app-footer">
+            <p>Developed with Web Audio API & HTML5 Canvas. Practice synthesizing sounds & visualizing live frequencies!</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

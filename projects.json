@@ -2451,6 +2451,19 @@
   ],
   "difficulty": "intermediate",
   "projectPath": "./public/Weather App with AQI/index.html"
+},
+{
+  "projectNo": 197,
+  "projectName": "SoundWave Lab",
+  "projectType": "Tool",
+  "projectDesc": "A high-fidelity browser-native interactive synthesizer and real-time canvas audio visualizer. Customize oscillator types, lowpass filter, delay effects, and distortion drive, play keys using computer keyboard or touch, synthesize 4-pad beats, and experience gorgeous dynamic canvas reactions.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript",
+    "api"
+  ],
+  "difficulty": "advanced",
+  "projectPath": "./public/SoundWave_Lab/index.html"
 }
-
 ]
