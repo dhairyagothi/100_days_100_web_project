@@ -307,7 +307,10 @@ document.addEventListener('DOMContentLoaded', async () => {
      ============================================================ */
   async function loadTopic(topic) {
     activeTopic = topic;
-
+    if (topic.id === 'quiz') {
+      launchQuiz(topic.categoryId, topic.title);
+      return;
+    }
     // Highlight selected item in sidebar list
     document
       .querySelectorAll('.topic-item')
@@ -513,7 +516,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       // Update next/prev footer cards
       updateNavigationFooter();
-      renderQuizButton(topic);
     } catch (err) {
       console.error(err);
       if (contentViewport) {
@@ -723,37 +725,167 @@ document.addEventListener('DOMContentLoaded', async () => {
   initReadingProgress();
   initScrollBtn();
   initParticles();
-  function renderQuizButton(topic) {
-    const container = document.getElementById('quizContainer');
 
-    if (!container) return;
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+  function launchQuiz(categoryId, quizTitle) {
+    document.getElementById('topicNavigation').style.display = 'none';
+    const questions = quizData[categoryId];
 
-    const quizKey = `${topic.categoryId}/${topic.id}`;
-    const questions = quizData[quizKey];
-
-    if (!questions || !questions.length) {
-      container.innerHTML = '';
+    if (!questions || questions.length === 0) {
+      contentViewport.innerHTML = `
+      <div class="quiz-result-card">
+        <h2>No Quiz Available</h2>
+      </div>
+    `;
       return;
     }
 
-    container.innerHTML = `
-    <div class="quiz-card">
-      <h3>Test Your Knowledge</h3>
-      <p>Take a quick quiz on this lesson.</p>
+    let currentQuestion = 0;
+    let score = 0;
+    let correct = 0;
+    let wrong = 0;
 
-      <button class="start-quiz-btn">
-        Start Quiz
-      </button>
-    </div>
-  `;
+    renderQuestion();
 
-    container
-      .querySelector('.start-quiz-btn')
-      .addEventListener('click', () => startQuiz(quizKey));
-  }
+    function renderQuestion() {
+      const q = questions[currentQuestion];
 
-  function startQuiz(quizKey) {
-    alert('Quiz system coming next step');
+      contentViewport.innerHTML = `
+      <div class="quiz-card">
+
+        <h2>${quizTitle}</h2>
+
+        <p>
+          Question ${currentQuestion + 1}
+          of
+          ${questions.length}
+        </p>
+
+        <div class="quiz-question">
+          ${q.question}
+        </div>
+
+        <div class="quiz-options">
+
+          ${q.options
+            .map(
+              (option, index) => `
+               <label class="quiz-option">
+  <input
+    type="radio"
+    name="answer"
+    value="${index}"
+  />
+ <span>${escapeHtml(option)}</span>
+</label>
+              `
+            )
+            .join('')}
+
+        </div>
+
+        <button class="submit-answer-btn">
+          Submit Answer
+        </button>
+
+        <div id="quizFeedback"></div>
+
+      </div>
+    `;
+
+      document
+        .querySelector('.submit-answer-btn')
+        .addEventListener('click', submitAnswer);
+    }
+
+    function submitAnswer() {
+      const selected = document.querySelector('input[name="answer"]:checked');
+
+      if (!selected) {
+        alert('Select an answer');
+        return;
+      }
+
+      const selectedAnswer = Number(selected.value);
+
+      const feedback = document.getElementById('quizFeedback');
+
+      if (selectedAnswer === questions[currentQuestion].answer) {
+        score++;
+        correct++;
+
+        feedback.innerHTML = `
+        <p class="quiz-correct">
+          ✅ Correct Answer
+        </p>
+      `;
+      } else {
+        wrong++;
+
+        feedback.innerHTML = `
+        <p class="quiz-wrong">
+          ❌ Wrong Answer
+        </p>
+      `;
+      }
+
+      setTimeout(() => {
+        currentQuestion++;
+
+        if (currentQuestion < questions.length) {
+          renderQuestion();
+        } else {
+          showResult();
+        }
+      }, 1200);
+    }
+
+    function showResult() {
+      document.getElementById('topicNavigation').style.display = 'flex';
+      const percentage = Math.round((score / questions.length) * 100);
+
+      contentViewport.innerHTML = `
+      <div class="quiz-result-card">
+
+        <h2>Quiz Completed 🎉</h2>
+
+        <div class="quiz-score">
+          ${score}/${questions.length}
+        </div>
+
+        <p>
+          ✅ Correct Answers:
+          ${correct}
+        </p>
+
+        <p>
+          ❌ Wrong Answers:
+          ${wrong}
+        </p>
+
+        <p>
+          📊 Percentage:
+          ${percentage}%
+        </p>
+
+        <button
+          class="retake-btn"
+          id="retakeQuiz"
+        >
+          Retake Quiz
+        </button>
+
+      </div>
+    `;
+
+      document
+        .getElementById('retakeQuiz')
+        .addEventListener('click', () => launchQuiz(categoryId, quizTitle));
+    }
   }
   await loadQuizData();
   await loadRegistry();
