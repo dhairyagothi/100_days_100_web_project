@@ -346,6 +346,16 @@ updateBtn.addEventListener("click", () => {
 
   skillsChart.update();
 
+  saveUserData({
+  dsa,
+  mock,
+  aptitude,
+  resume,
+  communication,
+  development
+  });
+
+
   const companyGrid =
     document.getElementById("companyGrid");
 
@@ -388,4 +398,92 @@ updateBtn.addEventListener("click", () => {
     `;
   }
 
+});
+function saveUserData(data) {
+
+  localStorage.setItem(
+    "placemateUserData",
+    JSON.stringify(data)
+  );
+}
+
+function loadUserData() {
+
+  const savedData =
+    localStorage.getItem(
+      "placemateUserData"
+    );
+
+  if (!savedData) return;
+
+  const data = JSON.parse(savedData);
+
+  document.getElementById("dsaInput").value =
+    data.dsa;
+
+  document.getElementById("mockInput").value =
+    data.mock;
+
+  document.getElementById("aptitudeInput").value =
+    data.aptitude;
+
+  document.getElementById("resumeInput").value =
+    data.resume;
+
+  document.getElementById("communicationInput").value =
+    data.communication;
+
+  document.getElementById("developmentInput").value =
+    data.development;
+
+  updateBtn.click();
+}
+window.addEventListener("load", () => {
+
+  loadUserData();
+
+/* =========================
+   THEME TOGGLE
+
+const themeToggle =
+  document.getElementById("themeToggle");
+
+const savedTheme =
+  localStorage.getItem("placemateTheme");
+
+if (savedTheme === "light") {
+
+  document.body.classList.add("light-mode");
+
+  themeToggle.textContent = "🌙";
+
+} else {
+
+  themeToggle.textContent = "☀️";
+}
+
+themeToggle.addEventListener("click", () => {
+
+  document.body.classList.toggle("light-mode");
+
+  if (
+    document.body.classList.contains("light-mode")
+  ) {
+
+    localStorage.setItem(
+      "placemateTheme",
+      "light"
+    );
+
+    themeToggle.textContent = "🌙";
+
+  } else {
+
+    localStorage.setItem(
+      "placemateTheme",
+      "dark"
+    );
+
+    themeToggle.textContent = "☀️";
+  }
 });

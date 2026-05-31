@@ -1,29 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Go Green — Live Sustainably</title>
-  <link rel="stylesheet" href="parallal.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Green — Live Sustainably</title>
+    <link rel="stylesheet" href="parallal.css">
 </head>
 
 <body>
 
-  <a href="/"
-     class="project-back-button"
-      style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">
-     ← Back to Home
-  </a>
-
   <header>
+      <a href="/" class="project-back-button">← Back to Home</a>
       <div class="name">GO-GREEN</div>
 
-      <nav>
+      <div class="hamburger" id="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+      </div>
+
+      <nav id="mainNav">
           <ul>
               <li><a href="#home">Home</a></li>
               <li><a href="#about">About</a></li>
               <li><a href="#service">Service</a></li>
               <li><a href="#contact">Contact</a></li>
+              <li><a href="tracker.html" id="nav-tracker-link">Eco Tracker</a></li>
+              <li><button class="theme-toggle" aria-label="Toggle theme">🌙</button></li>
           </ul>
       </nav>
   </header>
@@ -36,63 +40,99 @@
       <img src="hill4.png" id="hill4" alt="">
       <img src="hill5.png" id="hill5" alt="">
 
-      <div class="text" id="text1">GO-GREEN</div>
+      <div class="hero-content" id="text1">
+          <h1 class="hero-title">GO-GREEN</h1>
+          <p class="hero-subtitle">Small habits. Green planet. Track your journey toward a sustainable tomorrow.</p>
+          <div class="hero-actions">
+              <a href="#about" class="hero-cta primary">Explore Impact</a>
+              <a href="tracker.html" class="hero-cta secondary">Try Habit Tracker</a>
+          </div>
+      </div>
 
       <img src="plant.png" id="plant" alt="">
       <img src="leaf.png" id="leaf" alt="">
   </section>
 
   <section id="about" class="content">
+      <div class="section-label">About Us</div>
+      <h2 class="section-heading">Our Mission: <span>GO-GREEN</span></h2>
 
-      <div>GO-GREEN</div>
-      <br>
-
-      <div>
-          Going green is a fundamental reimagining of how we interact with our
-          planet. It’s about making conscious choices—like reducing single-use
-          plastics and adopting renewable energy—to protect Earth’s delicate
-          ecosystems.
+      <div class="about-container">
+          <div class="content-paragraphs">
+              <p>
+                  Going green is a fundamental reimagining of how we interact with our
+                  planet. It’s about making conscious choices—like reducing single-use
+                  plastics and adopting renewable energy—to protect Earth’s delicate
+                  ecosystems.
+              </p>
+              <p>
+                  Sustainability begins at home through mindful resource management.
+                  By using energy-efficient tools and embracing the "Reduce, Reuse,
+                  Recycle" philosophy, we significantly lower our carbon footprint.
+              </p>
+              <p>
+                  Eco-friendly living also means rethinking how we consume. Supporting
+                  local businesses and choosing high-quality, long-lasting goods helps
+                  dismantle the culture of disposability.
+              </p>
+              <p>
+                  True change often happens when individual efforts meet community
+                  action. Sharing knowledge and participating in local conservation
+                  efforts helps turn personal habits into systemic progress.
+              </p>
+              <p>
+                  Ultimately, this journey is about progress rather than perfection.
+                  Together, we can build a future where clean air and thriving
+                  landscapes are a reality for everyone.
+              </p>
+          </div>
+          
+          <div class="about-cta-card">
+              <div class="quote-text">
+                  "Small habits, green planet: Track your daily steps toward a
+                  sustainable tomorrow."
+              </div>
+              <div class="about-btn-wrapper">
+                  <a href="tracker.html" class="tracker-btn">
+                      <span>Launch Eco Tracker</span>
+                      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                  </a>
+              </div>
+          </div>
       </div>
-      <br>
+  </section>
 
-      <div>
-          Sustainability begins at home through mindful resource management.
-          By using energy-efficient tools and embracing the "Reduce, Reuse,
-          Recycle" philosophy, we significantly lower our carbon footprint.
+      <div class="tracker-cta" style="margin-top:18px;display:flex;gap:18px;align-items:center;flex-wrap:wrap;">
+          <div style="flex:1;min-width:260px;padding:18px;border-radius:12px;background:linear-gradient(90deg,#effaf1,#ffffff);box-shadow:0 8px 30px rgba(16,185,129,0.06);">
+              <h3 style="margin:0 0 8px 0;color:#065f46;">Eco Habit Tracker</h3>
+              <p style="margin:0 0 12px 0;color:#345;">Track small daily actions and see your environmental impact over time.</p>
+              <div style="display:flex;gap:8px;align-items:center;">
+                  <a href="tracker.html" style="text-decoration:none;">
+                      <button style="background:#10b981;color:#fff;border:none;padding:10px 18px;border-radius:10px;font-weight:700;">Open Tracker</button>
+                  </a>
+                  <a href="tracker.html" id="tracker-quick-stats" style="text-decoration:none;color:#065f46;margin-left:6px;align-self:center;">View stats →</a>
+              </div>
+          </div>
+
+          <div id="homepage-tracker-preview" style="min-width:220px;padding:14px;border-radius:12px;background:#fff;box-shadow:0 6px 18px rgba(12,18,40,0.06);">
+              <div style="font-weight:700;color:#065f46;margin-bottom:8px;">Today's Snapshot</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <div style="background:#f0fff7;padding:8px;border-radius:8px;min-width:86px;text-align:center;">
+                      <div style="font-size:18px;font-weight:700;color:#065f46;" id="ph-score">0</div>
+                      <div style="font-size:11px;color:#6b7280;">Eco Pts</div>
+                  </div>
+                  <div style="background:#f6fbff;padding:8px;border-radius:8px;min-width:86px;text-align:center;">
+                      <div style="font-size:18px;font-weight:700;color:#1e40af;" id="ph-co2">0g</div>
+                      <div style="font-size:11px;color:#6b7280;">CO₂</div>
+                  </div>
+                  <div style="background:#fff7ed;padding:8px;border-radius:8px;min-width:86px;text-align:center;">
+                      <div style="font-size:18px;font-weight:700;color:#b45309;" id="ph-water">0L</div>
+                      <div style="font-size:11px;color:#6b7280;">Water</div>
+                  </div>
+              </div>
+              <div style="margin-top:10px;font-size:12px;color:#6b7280;">Open the tracker to log actions and view achievements.</div>
+          </div>
       </div>
-      <br>
-
-      <div>
-          Eco-friendly living also means rethinking how we consume. Supporting
-          local businesses and choosing high-quality, long-lasting goods helps
-          dismantle the culture of disposability.
-      </div>
-      <br>
-
-      <div>
-          True change often happens when individual efforts meet community
-          action. Sharing knowledge and participating in local conservation
-          efforts helps turn personal habits into systemic progress.
-      </div>
-      <br>
-
-      <div>
-          Ultimately, this journey is about progress rather than perfection.
-          Together, we can build a future where clean air and thriving
-          landscapes are a reality for everyone.
-      </div>
-
-      <div>
-          "Small habits, green planet: Track your daily steps toward a
-          sustainable tomorrow."
-      </div>
-
-      <div>
-          <a href="tracker.html">
-              <button>Tracker</button>
-          </a>
-      </div>
-
   </section>
 
   <section id="contact" class="contact-section">
@@ -102,19 +142,26 @@
       <p>Have questions or suggestions? Reach out to us.</p>
 
       <form class="contact-form">
+          <div class="form-group">
+              <label for="contact-name" class="form-label">Name</label>
+              <input type="text" id="contact-name" placeholder="Your Name" required>
+          </div>
 
-          <input type="text" placeholder="Your Name" required>
+          <div class="form-group">
+              <label for="contact-email" class="form-label">Email Address</label>
+              <input type="email" id="contact-email" placeholder="Your Email" required>
+          </div>
 
-          <input type="email" placeholder="Your Email" required>
-
-          <textarea
-              placeholder="Your Message"
-              rows="6"
-              required>
-          </textarea>
+          <div class="form-group">
+              <label for="contact-message" class="form-label">Your Message / Feedback</label>
+              <textarea
+                  id="contact-message"
+                  placeholder="Tell us how we can improve or share your sustainability ideas..."
+                  rows="6"
+                  required></textarea>
+          </div>
 
           <button type="submit">Send Message</button>
-
       </form>
 
   </section>
@@ -124,14 +171,25 @@
       <p>© 2026 Parallel-x. All rights reserved.</p>
 
       <div class="footer-links">
-          <a href="#home">Home</a>
-          <a href="#about">About</a>
+          
           <a href="#">Projects</a>
       </div>
 
   </footer>
 
-  <script src="parallal.js"></script>
+    <script src="theme-toggle.js"></script>
+    <script src="parallal.js"></script>
+    <script>
+        (function(){
+            try{
+                const totals = JSON.parse(localStorage.getItem('eco_totals')) || { score:0, co2:0, water:0 };
+                document.getElementById('ph-score').innerText = totals.score || 0;
+                document.getElementById('ph-co2').innerText = (totals.co2 || 0) + 'g';
+                document.getElementById('ph-water').innerText = (totals.water || 0) + 'L';
+            }catch(e){/* ignore */}
+        })();
+    </script>
 
 </body>
+
 </html>
