@@ -1,4 +1,4 @@
-const diskSelect = document.getElementById("disk-count");
+﻿const diskSelect = document.getElementById("disk-count");
 const startButton = document.getElementById("start-button");
 const resetButton = document.getElementById("reset-button");
 const stepButton = document.getElementById("step-button");
@@ -251,3 +251,4 @@ autoButton.addEventListener("click", startAuto);
 towerButtons.forEach((button) => button.addEventListener("click", handleTowerClick));
 
 startGame();
+
