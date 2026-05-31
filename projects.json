@@ -2329,28 +2329,36 @@
       "difficulty": "advanced",
       "projectPath": "./public/Streak-Visualizer/index.html"
     },
-    {
-      "projectNo": 189,
-      "projectName": "PeerRTC Video Chat",
-      "projectType": "Tool",
-      "projectDesc": "Advanced Peer-to-Peer video conferencing app using WebRTC and PeerJS with screen sharing and media controls.",
-      "techStack": ["html", "css", "javascript", "webrtc", "api"],
-      "difficulty": "advanced",
-      "projectPath": "./public/webrtc-video-chat/index.html"
-    }
-  
      {
     "projectNo": 189,
-     "projectName": "Endless train game",
+    "projectName": "PeerRTC Video Chat",
+    "projectType": "Tool",
+    "projectDesc": "Advanced Peer-to-Peer video conferencing app using WebRTC and PeerJS with screen sharing and media controls.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "webrtc",
+      "api"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/webrtc-video-chat/index.html"
+  },
+  {
+    "projectNo": 190,
+    "projectName": "Endless train game",
     "projectType": "game",
     "projectDesc": "A game with train moving on rails and switching tails and earning coins.",
-    "techStack": [ "html", "css", "javascript"],
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
     "difficulty": "advanced",
     "projectPath": "./public/endless_train_game/index.html"
   },
-  
   {
-    "projectNo": 190,
+    "projectNo": 191,
     "projectName": "Saturn Particle Gesture",
     "projectType": "Animation",
     "projectDesc": "Interactive space visualization rendering a Saturn-like planet using 3000+ dynamic particles, controlled via real-time hand gesture recognition using webcam and MediaPipe.",
@@ -2365,13 +2373,72 @@
     "difficulty": "advanced",
     "projectPath": "./public/Planet_gesture_formation/index.html"
   },
+   
   {
-  "projectNo": 190,
-  "projectName": "Interactive Story Player",
-  "projectType": "UI / Animation",
-  "projectDesc": "A dynamic, choice-driven storytelling application where users shape their own narrative paths.",
-  "techStack": ["ui", "html", "css", "javascript"],
+    "projectNo": 192,
+    "projectName": "Interactive Story Player",
+    "projectType": "UI / Animation",
+    "projectDesc": "A dynamic, choice-driven storytelling application where users shape their own narrative paths.",
+    "techStack": [
+      "ui",
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/story/main.html"
+  },
+  {
+    "projectNo": 193,
+    "projectName": "Escape Room",
+    "projectType": "Game",
+    "projectDesc": "A thrilling escape room experience in your browser.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Escape_Room/index.html"
+  },
+  {
+    "projectNo": 194,
+    "projectName": "Lost & Found Portal",
+    "projectType": "Website",
+    "projectDesc": "A modern web application to report lost items, report found items, browse listings, and contact item owners.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Lost_And_Found_Portal/index.html"
+  },
+  {
+    "projectNo": 195,
+    "projectName": "Complaint Management System",
+    "projectType": "Web Application",
+    "projectDesc": "A professional portal for submitting, tracking, and managing complaints efficiently with a premium modern UI.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Complaint_Management_System/index.html"
+  },
+  {
+  "projectNo": 196,
+  "projectName": "Flipkart Clone",
+  "projectType": "E-Commerce",
+  "projectDesc": "A responsive Flipkart-inspired e-commerce website featuring a modern navbar, product categories, hero carousel, brand spotlight section, promotional banners, home decor showcase, and a fully designed footer.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript"
+  ],
   "difficulty": "intermediate",
-  "projectPath": "./public/story/main.html"
+  "projectPath": "./public/Flipkart-Clone/index.html"
 }
+  
 ]

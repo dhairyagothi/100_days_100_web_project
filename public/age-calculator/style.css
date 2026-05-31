@@ -147,6 +147,59 @@ label {
     font-weight: bold;
 }
 
+.share-btn {
+    background: #25D366;
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.share-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    background: #20ba56;
+}
+
+.milestones-container {
+    margin-top: 25px;
+    text-align: left;
+}
+
+.milestones-container h3 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.milestone-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.milestone-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.milestone-title {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.milestone-desc {
+    font-size: 14px;
+    color: #667eea;
+}
+
 @media (max-width: 500px) {
     .container {
         padding: 20px;

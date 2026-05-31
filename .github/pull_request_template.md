@@ -1,39 +1,54 @@
-## 🤝 Pull Request Overview
+## 📝 Pull Request Description
 
-### 🔗 Related Issue
-- Closes #[Insert Issue Number] (e.g. Closes #123)
+### Related Issue
+Closes #ISSUE_NUMBER
 
-### 📝 Summary of Changes
-Provide a brief summary of the changes made and the target features added/bugs resolved.
+### Summary
+Provide a short, reviewer-friendly summary of what changed and why.
 
-### 🛠️ Type of Change
-- [ ] 🐛 Bug Fix (non-breaking change resolving an issue)
-- [ ] ✨ Feature Update (non-breaking change adding functionality)
-- [ ] 🎨 UI/UX Polish (aesthetics, micro-animations, theme support)
-- [ ] ♿ Accessibility Improvement (screen-reader labels, tab-index focus states)
-- [ ] ⚡ Performance Optimization (debounce, requestAnimationFrame)
-- [ ] 📖 Documentation (guides, setup instructions)
-- [ ] 🧪 Tests (adding new regression verification tests)
-
----
-
-## 📸 Visual Regression (if UI/UX changed)
-
-| Before | After |
-| :--- | :--- |
-| *[Attach visual representation]* | *[Attach visual representation]* |
+### Type of Change
+- [ ] 🐛 Bug fix (non-breaking change which fixes an issue)
+- [ ] ✨ New project addition
+- [ ] 🚀 New feature or UI/UX enhancement
+- [ ] ♻️ Code refactoring / clean-up
+- [ ] 📝 Documentation update
+- [ ] ⚙️ GitHub Workflow automation or DX improvements
 
 ---
 
-## ✅ Quality Checklist
-
-- [ ] **Code Standards**: My code follows the repository formatting guidelines and style checklists.
-- [ ] **Manual Verification**: I have loaded and verified these changes locally under all target viewports (mobile, tablet, desktop).
-- [ ] **Accessibility (A11y)**: I have verified standard screen reader labels are correct and `:focus-visible` styling displays cleanly under keyboard-only navigation.
-- [ ] **Documentation**: I have updated the associated README or developer onboarding documents if applicable.
-- [ ] **No Regression**: My changes do not impact or break other standalone showcase pages.
+## 🛠️ Changes Made
+- Detailed description of change 1
+- Detailed description of change 2
 
 ---
 
-### 💡 Additional Context & Notes
-Provide any additional information, deployment requirements, or technical context that will help the reviewer merge this contribution quickly.
+## 🧪 Testing and Verification
+
+### Local Validation
+- [ ] I have run `node scripts/validateProjects.js` locally and it passed with zero errors.
+
+### Browser Compatibility Check
+- [ ] Tested and verified in **Google Chrome**
+- [ ] Tested and verified in **Mozilla Firefox**
+- [ ] Tested and verified in **Safari** / **Microsoft Edge**
+
+### Responsive & Accessibility Checks
+- [ ] Verified responsive layout on Mobile viewports (using DevTools)
+- [ ] Verified responsive layout on Tablet viewports
+- [ ] Keyboard navigation and focus outlines checked
+- [ ] Semantic HTML and ARIA labels checked
+
+---
+
+## 📷 Screenshots / Video Recording
+*Please attach screenshots or screen recordings showing before vs after behavior if this PR includes visual changes.*
+
+---
+
+## 🤝 Contributor Checklist
+- [ ] My code follows the code style guidelines of this project.
+- [ ] I have performed a self-review of my own code.
+- [ ] I have commented my code, particularly in hard-to-understand areas.
+- [ ] I have updated the documentation / README files accordingly.
+- [ ] My changes generate no new warnings or console errors.
+- [ ] There are no unrelated changes or formatter noise in this PR.

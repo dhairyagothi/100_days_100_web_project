@@ -5,13 +5,40 @@
   padding: 0;
 }
 
-body {
-  font-family: "Nunito", sans-serif;
-  text-align: center;
-  background:#fff9f0;
-  color: #333;
-  min-height: 100vh;
-  transition: background 0.3s ,color 0.3s;
+h1 {
+  font-size: 3rem;
+  margin-top: 25px;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 1.4rem;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+h3 {
+  margin-top: 8px;
+  color: #666;
+}
+
+.start-btn {
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  background-color: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.start-btn:hover {
+  background-color: #16a34a;
+  transform: scale(1.05);
+}
+
+/* ----- Buttons ----- */
+.btn-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -99,6 +126,34 @@ h3 {
 }
  
 #start-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #c94040;
+}
+
+#pause-btn,
+#stop-btn {
+  width: 100%;
+  padding: 14px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  color: white;
+  background: #ff6b6b;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #c94040;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+ 
+#pause-btn:hover,
+#stop-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 0 #c94040;
+}
+ 
+#pause-btn:active,
+#stop-btn:active {
   transform: translateY(4px);
   box-shadow: 0 1px 0 #c94040;
 }
