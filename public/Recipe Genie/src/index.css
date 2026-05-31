@@ -6,9 +6,10 @@ body {
   font-family: "Poppins", sans-serif;
   background: #fffaf5;
   scroll-behavior: smooth;
-  .shepherd-element {
-    animation: fadeInUp 0.3s ease;
-  }
+}
+
+.shepherd-element {
+  animation: fadeInUp 0.3s ease;
 }
 
 @keyframes fadeInUp {
