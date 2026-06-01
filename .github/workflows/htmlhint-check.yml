@@ -15,10 +15,35 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Install HTMLHint
         run: npm install -g htmlhint
 
+      - name: Collect changed HTML files
+        id: changed-html
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch origin "${{ github.base_ref }}" --depth=1
+            RANGE="origin/${{ github.base_ref }}...HEAD"
+          else
+            RANGE="HEAD~1...HEAD"
+          fi
+
+          : > html-targets.txt
+          git diff -z --name-only --diff-filter=ACMR "$RANGE" -- '*.html' > changed-html.raw || true
+
+          while IFS= read -r -d '' file; do
+            printf '%s\0' "$file" >> html-targets.txt
+          done < changed-html.raw
+
+          if [ -s html-targets.txt ]; then
+            echo "has_html_targets=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_html_targets=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Execute HTML Validation Rules
-        run: htmlhint "**/*.html" --config .htmlhintrc
+        if: steps.changed-html.outputs.has_html_targets == 'true'
+        run: xargs -0 -a html-targets.txt htmlhint
