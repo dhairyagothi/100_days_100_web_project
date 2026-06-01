@@ -9,7 +9,7 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
+  z-index: 300;
 
   background-color: white;
   border-bottom-width: 1px;
@@ -25,20 +25,9 @@
 
 .hamburger-menu {
   height: 24px;
-  width: 24px;
-  padding: 8px;
-  border-radius: 50%; 
+  margin-left: 24px;
+  margin-right: 24px;
   cursor: pointer;
-  margin-right: 16px; 
-  transition: background-color 0.15s ease;
-}
-
-.hamburger-menu:hover {
-  background-color: rgba(0, 0, 0, 0.1); 
-}
-
-.hamburger-menu:active {
-  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .hamburger-menu {
