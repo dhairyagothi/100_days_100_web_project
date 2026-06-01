@@ -490,6 +490,17 @@
       border: 1px solid rgba(248,113,113,0.3);
       color: var(--c-error);
     }
+    .banner-demo {
+      background: rgba(251,191,36,0.1);
+      border: 1px solid rgba(251,191,36,0.3);
+      color: #f59e0b;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.85rem 1.2rem;
+      border-radius: 0.5rem;
+      font-size: 0.92rem;
+      margin-top: 0.75rem;
+    }
 
     /* ── Divider ────────────────────────────────────────────── */
     .section-divider {
@@ -851,6 +862,12 @@
             <span class="spinner" aria-hidden="true"></span>
           </button>
 
+          <!-- Demo notice (shown when no form backend is configured) -->
+          <div class="form-banner banner-demo" id="demoBanner" role="status" aria-live="polite" style="display:none;">
+            <i class="fas fa-info-circle" aria-hidden="true"></i>
+            <strong>Demo Mode:</strong> This form is not connected to a backend yet. Your message was not sent.
+          </div>
+
           <!-- Banners -->
           <div class="form-banner banner-success" id="successBanner" role="status" aria-live="polite">
             <i class="fas fa-check-circle" aria-hidden="true"></i>
@@ -1087,38 +1104,57 @@
       });
     });
 
+    /* ── Web3Forms Configuration ──────────────────────────────
+       To enable real form submissions:
+       1. Sign up at https://web3forms.com (free tier: 250 submissions/month)
+       2. Replace the empty string below with your Web3Forms Access Key
+       ────────────────────────────────────────────────────────── */
+    const WEB3FORMS_ACCESS_KEY = ''; // TODO: Add your Web3Forms access key
+
+    const demoBanner = document.getElementById('demoBanner');
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       successBanner.classList.remove('visible');
       errorBanner.classList.remove('visible');
+      demoBanner.style.display = 'none';
 
       if (!validateForm()) return;
 
-      /* ── Simulated async submission ──────────────────────
-         Replace this block with your real fetch() / EmailJS /
-         Formspree / Netlify Forms call.
-      ────────────────────────────────────────────────────── */
       submitBtn.classList.add('loading');
       submitBtn.disabled = true;
 
       try {
-        await new Promise(resolve => setTimeout(resolve, 1600)); // demo delay
+        /* ── Demo mode fallback ──────────────────────────────
+           If no access key is configured, show a visible demo notice
+           instead of silently pretending the message was sent.
+        ────────────────────────────────────────────────────── */
+        if (!WEB3FORMS_ACCESS_KEY) {
+          await new Promise(resolve => setTimeout(resolve, 800));
+          demoBanner.style.display = 'flex';
+          demoBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          return;
+        }
 
-        /* Swap to real endpoint:
-        const res = await fetch('https://formspree.io/f/YOUR_ID', {
+        /* ── Real submission via Web3Forms ──────────────────── */
+        const payload = {
+          access_key: WEB3FORMS_ACCESS_KEY,
+          name:    document.getElementById('contactName').value.trim(),
+          email:   document.getElementById('contactEmail').value.trim(),
+          subject: document.getElementById('contactSubject').value.trim(),
+          github:  document.getElementById('contactGithub').value.trim(),
+          reason:  document.getElementById('reasonField').value,
+          message: document.getElementById('contactMessage').value.trim(),
+        };
+
+        const res = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({
-            name:    document.getElementById('contactName').value,
-            email:   document.getElementById('contactEmail').value,
-            subject: document.getElementById('contactSubject').value,
-            github:  document.getElementById('contactGithub').value,
-            reason:  document.getElementById('reasonField').value,
-            message: document.getElementById('contactMessage').value,
-          })
+          body: JSON.stringify(payload),
         });
-        if (!res.ok) throw new Error('Network error');
-        */
+
+        const data = await res.json();
+        if (!data.success) throw new Error(data.message || 'Submission failed');
 
         form.reset();
         counter.textContent = '0 / 1000';
