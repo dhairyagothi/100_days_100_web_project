@@ -54,7 +54,7 @@ html {
 
 body {
   font-family:
-    'Inter Tight',
+    "Inter Tight",
     system-ui,
     -apple-system,
     sans-serif;
@@ -73,7 +73,7 @@ body {
 
 body::before,
 body::after {
-  content: '';
+  content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
@@ -95,15 +95,21 @@ body::before {
 
 body::after {
   background:
-    radial-gradient(circle at 18% 16%,
+    radial-gradient(
+      circle at 18% 16%,
       rgba(59, 130, 246, 0.18),
-      transparent 30%),
-    radial-gradient(circle at 82% 22%,
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 82% 22%,
       rgba(139, 92, 246, 0.14),
-      transparent 28%),
-    radial-gradient(circle at 50% 78%,
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 50% 78%,
       rgba(59, 130, 246, 0.08),
-      transparent 32%);
+      transparent 32%
+    );
   opacity: 0.6;
   filter: blur(44px);
   mix-blend-mode: screen;
@@ -119,7 +125,7 @@ body::after {
 }
 
 .ambient::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: -10%;
   border-radius: 999px;
@@ -129,9 +135,11 @@ body::after {
 }
 
 .ambient-left::before {
-  background: radial-gradient(circle,
-      rgba(59, 130, 246, 0.24),
-      transparent 58%);
+  background: radial-gradient(
+    circle,
+    rgba(59, 130, 246, 0.24),
+    transparent 58%
+  );
   top: 8%;
   left: -14%;
   width: 38vw;
@@ -151,12 +159,16 @@ body::after {
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.35) 1px, transparent 1px),
-    radial-gradient(circle at 20% 20%,
+    radial-gradient(
+      circle at 20% 20%,
       rgba(255, 255, 255, 0.28) 0.5px,
-      transparent 0.6px),
-    radial-gradient(circle at 80% 40%,
+      transparent 0.6px
+    ),
+    radial-gradient(
+      circle at 80% 40%,
       rgba(255, 255, 255, 0.22) 0.5px,
-      transparent 0.6px);
+      transparent 0.6px
+    );
   background-size:
     3px 3px,
     5px 5px,
@@ -222,25 +234,25 @@ body > *:not(.ambient):not(.noise-layer):not(.cursor-ring) {
    NAVBAR & RESPONSIVE DRAWER ARCHITECTURE
    ============================================================ */
 .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 999999;
-    background: rgba(11, 13, 15, 0.88);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 3rem;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    transition: var(--t);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999999;
+  background: rgba(11, 13, 15, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 3rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: var(--t);
 }
 
 .navbar {
-    isolation: isolate;
+  isolation: isolate;
   position: fixed;
   top: 0;
   width: 100%;
@@ -276,14 +288,16 @@ body.light-mode .navbar {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(180deg,
-      rgba(59, 130, 246, 0.22),
-      rgba(11, 17, 32, 0.88));
+  background: linear-gradient(
+    180deg,
+    rgba(59, 130, 246, 0.22),
+    rgba(11, 17, 32, 0.88)
+  );
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
     0 0 0 1px rgba(59, 130, 246, 0.08),
     0 12px 40px rgba(59, 130, 246, 0.12);
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-size: 0.72rem;
   letter-spacing: 0.12em;
   color: var(--text-primary);
@@ -296,7 +310,7 @@ body.light-mode .navbar {
 }
 
 .brand-kicker {
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-size: 0.62rem;
   font-weight: 600;
   letter-spacing: 0.18em;
@@ -341,7 +355,7 @@ body.light-mode .navbar {
   align-items: center;
   gap: 0.4rem;
   padding: 0.5rem 1rem;
-  font-family: 'Inter Tight', sans-serif;
+  font-family: "Inter Tight", sans-serif;
   font-size: 0.8125rem;
   font-weight: 500;
   border-radius: var(--radius-md);
@@ -402,7 +416,6 @@ body.light-mode .navbar {
 
 /* Mobile navbar */
 @media (max-width: 768px) {
-
   .navbar {
     padding: 1rem;
     flex-wrap: wrap;
@@ -483,12 +496,16 @@ body.light-mode .navbar {
   mix-blend-mode: normal;
   overflow: hidden;
   background:
-    radial-gradient(circle at 50% 42%,
+    radial-gradient(
+      circle at 50% 42%,
       rgba(56, 189, 248, 0.18),
-      transparent 34%),
-    radial-gradient(circle at 50% 72%,
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 50% 72%,
       rgba(14, 165, 233, 0.08),
-      transparent 28%),
+      transparent 28%
+    ),
     linear-gradient(180deg, rgba(4, 8, 18, 0.2), rgba(2, 6, 23, 0.78));
   filter: saturate(1.3) contrast(1.08) brightness(1.05);
 }
@@ -499,15 +516,17 @@ body.light-mode .navbar {
 }
 
 .hero-terminal::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background-image:
     linear-gradient(rgba(56, 189, 248, 0.04) 1px, transparent 1px),
     linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px),
-    radial-gradient(circle at 50% 42%,
+    radial-gradient(
+      circle at 50% 42%,
       rgba(56, 189, 248, 0.16),
-      transparent 28%);
+      transparent 28%
+    );
   background-size:
     100% 6px,
     6px 100%,
@@ -535,7 +554,11 @@ body.light-mode .navbar {
   padding: 1rem 1.1rem;
   border-radius: 24px;
   border: 1px solid rgba(96, 165, 250, 0.2);
-  background: linear-gradient(180deg, rgba(15, 23, 42, 0.82), rgba(2, 6, 23, 0.58));
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.82),
+    rgba(2, 6, 23, 0.58)
+  );
   box-shadow: 0 24px 60px rgba(2, 6, 23, 0.28);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -571,12 +594,12 @@ body.light-mode .navbar {
   grid-template-columns: auto 1fr;
   gap: 0.75rem;
   align-items: start;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: clamp(0.72rem, 2vw, 0.92rem);
   color: rgba(224, 242, 254, 0.86);
 }
 
-.hero-terminal-line+.hero-terminal-line {
+.hero-terminal-line + .hero-terminal-line {
   margin-top: 0.72rem;
 }
 
@@ -589,7 +612,11 @@ body.light-mode .navbar {
 }
 
 body.light-mode .hero-terminal-shell {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(226, 232, 240, 0.72));
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.92),
+    rgba(226, 232, 240, 0.72)
+  );
 }
 
 body.light-mode .hero-terminal-prompt {
@@ -610,7 +637,7 @@ body.light-mode .hero-terminal-text {
 
 .hero-overline {
   font-size: 0.75rem;
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -643,18 +670,20 @@ body.light-mode .hero-terminal-text {
 }
 
 .hero-line-accent::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   height: 2px;
   border-radius: 999px;
-  background: linear-gradient(90deg,
-      transparent,
-      rgba(59, 130, 246, 0.95),
-      rgba(139, 92, 246, 0.65),
-      transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(59, 130, 246, 0.95),
+    rgba(139, 92, 246, 0.65),
+    transparent
+  );
   box-shadow: 0 0 20px rgba(59, 130, 246, 0.26);
   opacity: 0.9;
 }
@@ -720,7 +749,7 @@ body.light-mode .hero-terminal-text {
 }
 
 .stat-item strong {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-weight: 600;
   color: var(--text-primary);
   font-size: 0.86rem;
@@ -755,7 +784,7 @@ body.light-mode .hero-terminal-text {
 }
 
 .section-label {
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.18em;
@@ -861,8 +890,8 @@ body.light-mode .hero-terminal-text {
 
 #sortProjects option,
 #difficultyFilter option {
- background: var(--bg-elevated);
-color: var(--text-primary);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
 }
 
 .search-icon {
@@ -882,7 +911,7 @@ color: var(--text-primary);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   color: var(--text-primary);
-  font-family: 'Inter Tight', sans-serif;
+  font-family: "Inter Tight", sans-serif;
   font-size: 0.875rem;
   padding: 0.625rem 2.5rem 0.625rem 2.5rem;
   outline: none;
@@ -1079,8 +1108,8 @@ color: var(--text-primary);
   gap: 0.25rem;
   padding: 0.4rem 0.85rem;
   font-family:
-    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco,
-    'Courier New', monospace;
+    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    "Courier New", monospace;
   font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -1143,9 +1172,11 @@ color: var(--text-primary);
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
   background:
-    linear-gradient(180deg,
+    linear-gradient(
+      180deg,
       rgba(255, 255, 255, 0.04),
-      rgba(255, 255, 255, 0.02)),
+      rgba(255, 255, 255, 0.02)
+    ),
     rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: var(--radius-lg);
@@ -1185,7 +1216,7 @@ color: var(--text-primary);
 }
 
 .project-card::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 0;
@@ -1198,14 +1229,16 @@ color: var(--text-primary);
 }
 
 .project-card::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background:
     linear-gradient(135deg, rgba(59, 130, 246, 0.16), transparent 40%),
-    radial-gradient(circle at top right,
+    radial-gradient(
+      circle at top right,
       rgba(139, 92, 246, 0.08),
-      transparent 34%);
+      transparent 34%
+    );
   opacity: 0;
   transition: opacity 0.22s ease;
   mix-blend-mode: screen;
@@ -1234,7 +1267,7 @@ color: var(--text-primary);
 }
 
 .card-day {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.67rem;
   font-weight: 500;
   color: var(--text-muted);
@@ -1243,7 +1276,7 @@ color: var(--text-primary);
 }
 
 .card-category {
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-size: 0.55rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -1282,7 +1315,7 @@ color: var(--text-primary);
 }
 
 .source-only-badge {
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-size: 0.5rem;
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -1308,7 +1341,7 @@ color: var(--text-primary);
 }
 
 .card-name {
-  font-family: 'Inter Tight', sans-serif;
+  font-family: "Inter Tight", sans-serif;
   font-size: 1.02rem;
   font-weight: 700;
   color: var(--text-primary);
@@ -1330,7 +1363,7 @@ color: var(--text-primary);
   border: 1px solid rgba(255, 255, 255, 0.05);
   padding: 0.1rem 0.45rem;
   border-radius: 4px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 .card-footer {
@@ -1464,7 +1497,12 @@ color: var(--text-primary);
 }
 
 .footer.homepage-footer {
-  background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.12), transparent 30%),
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(59, 130, 246, 0.12),
+      transparent 30%
+    ),
     linear-gradient(180deg, rgba(11, 13, 15, 0.98), rgba(11, 13, 15, 1));
   padding: 0 2rem 2rem;
   border-top: 1px solid rgba(59, 130, 246, 0.16);
@@ -1483,7 +1521,7 @@ color: var(--text-primary);
 }
 
 .homepage-footer-kicker {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.78rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -1517,7 +1555,7 @@ color: var(--text-primary);
   border-radius: 999px;
   background: rgba(17, 24, 39, 0.58);
   color: var(--text-secondary);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.76rem;
 }
 
@@ -1542,7 +1580,7 @@ color: var(--text-primary);
 
 .homepage-footer-card h3 {
   margin: 0;
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-size: 1rem;
   color: var(--text-primary);
 }
@@ -1639,14 +1677,19 @@ color: var(--text-primary);
 }
 
 .homepage-footer-bottom-links a {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.76rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 body.light-mode .footer.homepage-footer {
-  background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 28%),
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(37, 99, 235, 0.08),
+      transparent 28%
+    ),
     linear-gradient(180deg, rgba(244, 246, 249, 0.98), rgba(244, 246, 249, 1));
 }
 
@@ -1804,7 +1847,9 @@ body.light-mode .footer.homepage-footer .social-btn {
 
 #themeToggle i,
 #themeToggleNav i {
-  transition: transform 0.25s var(--t), color 0.25s var(--t);
+  transition:
+    transform 0.25s var(--t),
+    color 0.25s var(--t);
 }
 
 #themeToggle:hover,
@@ -1915,8 +1960,11 @@ body.light-mode .footer.homepage-footer .social-btn {
   opacity: 0;
   transform: translateY(16px);
   pointer-events: none;
-  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease),
-    border-color 0.2s ease, color 0.2s ease;
+  transition:
+    opacity 0.3s var(--ease),
+    transform 0.3s var(--ease),
+    border-color 0.2s ease,
+    color 0.2s ease;
   z-index: 50;
 }
 
@@ -2197,14 +2245,14 @@ body.light-mode .footer.homepage-footer .social-btn {
 .pagination-info {
   font-size: 0.875rem;
   color: var(--text-secondary);
-  font-family: 'Inter Tight', sans-serif;
+  font-family: "Inter Tight", sans-serif;
   font-weight: 500;
 }
 
 .pagination-info strong {
   font-weight: 700;
   color: var(--text-primary);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 .pagination-controls {
@@ -2217,7 +2265,7 @@ body.light-mode .footer.homepage-footer .social-btn {
   background: transparent;
   border: none;
   color: var(--text-secondary);
-  font-family: 'Inter Tight', sans-serif;
+  font-family: "Inter Tight", sans-serif;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
@@ -2233,7 +2281,7 @@ body.light-mode .footer.homepage-footer .social-btn {
   width: 32px;
   height: 32px;
   border-radius: 6px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 .pagination-controls button.page-num:hover:not(.active):not(:disabled) {
@@ -2384,21 +2432,26 @@ body.light-mode .noise-layer {
   opacity: 0.15;
 }
 @media (max-width: 768px) {
-
   .projects-header {
     align-items: stretch;
   }
 
-body.light-mode .stats-strip {
-  background: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 18px 60px rgba(0, 0, 0, 0.02);
-}
+  body.light-mode .stats-strip {
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.05),
+      0 18px 60px rgba(0, 0, 0, 0.02);
+  }
 
-body.light-mode .brand-mark {
-  background: linear-gradient(180deg, rgba(59, 130, 246, 0.15), rgba(255, 255, 255, 0.9));
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  body.light-mode .brand-mark {
+    background: linear-gradient(
+      180deg,
+      rgba(59, 130, 246, 0.15),
+      rgba(255, 255, 255, 0.9)
+    );
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
 }
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -2436,7 +2489,10 @@ body.light-mode .brand-mark {
   padding: 12px 16px;
   border-radius: 50%;
   font-size: 18px;
-  transition: opacity 0.3s, background-color 0.3s, transform 0.2s;
+  transition:
+    opacity 0.3s,
+    background-color 0.3s,
+    transform 0.2s;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 }
 
@@ -2445,14 +2501,13 @@ body.light-mode .brand-mark {
   transform: scale(1.1);
 }
 
-
 /* ==========================================================
    MOBILE RESPONSIVE FIX FOR SUBFOLDER TEMPLATES (Issue #3674)
    ========================================================== */
 @media (max-width: 768px) {
   /* Targets card view containers inside subfolders */
-  .main-container, 
-  .container, 
+  .main-container,
+  .container,
   .wrapper {
     display: flex !important;
     flex-direction: column !important;
@@ -2531,56 +2586,50 @@ body::after {
 .toast {
   z-index: 100001;
 }
-.card-description{
-    color: var(--text-secondary);
-    font-size: 0.82rem;
-    line-height: 1.6;
+.card-description {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.6;
 
-    opacity: 0;
-    max-height: 0;
+  opacity: 0;
+  max-height: 0;
 
-    overflow: hidden;
+  overflow: hidden;
 
-    transform: translateY(-8px);
+  transform: translateY(-8px);
 
-    transition:
-        opacity .25s ease,
-        max-height .35s ease,
-        transform .35s ease,
-        margin .35s ease;
+  transition:
+    opacity 0.25s ease,
+    max-height 0.35s ease,
+    transform 0.35s ease,
+    margin 0.35s ease;
 
-    margin-top: 0;
+  margin-top: 0;
 }
-.project-card{
+.project-card {
+  overflow: hidden;
 
-    overflow:hidden;
+  min-height: 220px;
 
-    min-height:220px;
-
-    transition:
-        transform .35s ease,
-        max-height .35s ease,
-        border-color .35s ease,
-        box-shadow .35s ease;
-
+  transition:
+    transform 0.35s ease,
+    max-height 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
 }
-.project-card:hover{
+.project-card:hover {
+  transform: translateY(-4px);
 
-    transform: translateY(-4px);
-
-    box-shadow:
-      0 18px 40px rgba(59,130,246,.10);
-
+  box-shadow: 0 18px 40px rgba(59, 130, 246, 0.1);
 }
-.project-card:hover .card-description{
+.project-card:hover .card-description {
+  opacity: 1;
 
-    opacity:1;
+  max-height: 100px;
 
-    max-height:100px;
+  transform: translateY(0);
 
-    transform:translateY(0);
-
-    margin-top:16px;
+  margin-top: 16px;
 }
 
 /* Navbar Container */
@@ -2631,7 +2680,6 @@ body::after {
 
 /* Mobile Responsiveness */
 @media screen and (max-width: 768px) {
-
   .navbar {
     flex-direction: column;
     align-items: center;
@@ -2651,7 +2699,6 @@ body::after {
 
 /* Small Mobile Devices */
 @media screen and (max-width: 480px) {
-
   .navbar {
     padding: 0.8rem;
   }
@@ -2666,4 +2713,4 @@ body::after {
     display: block;
     padding: 0.5rem 0;
   }
-  }
+}
