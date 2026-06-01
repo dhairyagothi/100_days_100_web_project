@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GO-GREEN – Contact</title>
+<link rel="stylesheet" href="parallal.css">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <div class="name">GO-GREEN</div>
+        <nav>
+                        <nav>
+                        <ul>
+                <li><a href="parallal.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="service.html">Service</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+            </ul>
+            </nav>
+    </header>
+
+    <div class="page-hero" aria-label="Contact page banner">
+        <div class="page-hero-text">
+            <h1>Get In Touch</h1>
+            <p>Questions, partnerships, or just want to say hello — we'd love to hear from you.</p>
+        </div>
+    </div>
+
+    <section class="content contact-page" aria-labelledby="contact-heading">
+        <div id="contact-heading">Contact Us</div>
+        <p class="intro-lead">Whether you're an individual curious about going green, a school looking for workshops, or a business ready for a sustainability audit — reach out and we'll respond within one business day.</p>
+
+        <div class="contact-layout">
+
+            <div class="contact-form-wrap">
+                <h3>Send a Message</h3>
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" placeholder="Your name" />
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="you@example.com" />
+                </div>
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <select id="subject">
+                        <option value="">— Select a topic —</option>
+                        <option>Green Audit Enquiry</option>
+                        <option>Renewable Energy Consulting</option>
+                        <option>Workshop Booking</option>
+                        <option>Community Reforestation</option>
+                        <option>Partnership / Sponsorship</option>
+                        <option>General Question</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" rows="5" placeholder="Tell us about your project or question…"></textarea>
+                </div>
+                <button class="cta-btn submit-btn" onclick="handleSubmit()">Send Message →</button>
+                <p class="form-notice" id="form-notice" aria-live="polite"></p>
+            </div>
+
+            <div class="contact-info">
+                <h3>Other Ways to Reach Us</h3>
+
+                <div class="info-item">
+                    <span class="info-icon">
+                        <span class="material-symbols-outlined" style="font-size: 48px;color:#ffffff; display:block; margin-bottom: 8px;">
+                            photo_camera_back
+                        </span>
+                    </span>
+                    <div>
+                        <strong>Email</strong>
+                        <p>hello@gogreen.earth</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">
+                        <span class="material-symbols-outlined" style="font-size: 48px;color:#ffffff; display:block; margin-bottom: 8px;">
+                            phone_enabled
+                        </span>
+                    </span>
+                    <div>
+                        <strong>Phone</strong>
+                        <p>+91 98400 12345</p>
+                        <p class="muted">Mon–Fri, 9 am – 6 pm IST</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">
+                        <span class="material-symbols-outlined" style="font-size: 48px;color:#ffffff; display:block; margin-bottom: 8px;">
+                            globe_location_pin
+                        </span>
+                    </span>
+                    <div>
+                        <strong>Head Office</strong>
+                        <p>12 Eco Park Road, Albany<br>Bangalore, Karnataka 560001</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">
+                        <span class="material-symbols-outlined" style="font-size: 48px;color:#ffffff; display:block; margin-bottom: 8px;">
+                            web
+                        </span>
+                    </span>
+                    <div>
+                        <strong>Social</strong>
+                        <p>@GoGreenEarth on Instagram, X &amp; LinkedIn</p>
+                    </div>
+                </div>
+
+                <div class="response-badge">
+                    <span class="material-symbols-outlined" style="font-size: 24px;color:#ffffff; display:block; margin-bottom: 4px;">
+                        info
+                    </span> We typically reply within <strong>24 hours</strong>.
+                </div>
+            </div>
+
+        </div>
+
+        <div class="divider-leaf">
+            <span class="material-symbols-outlined" style="font-size: 48px;color:#ffffff; display:block; margin-bottom: 8px;">
+                page_control
+            </span>
+        </div>
+
+        <div class="faq-section">
+            <div class="section-sub-heading">Frequently Asked Questions</div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h4>Is there a fee for the initial consultation?</h4>
+                    <p>No — our first conversation is always free. We want to understand your needs before recommending any paid service.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Do you work outside Tamil Nadu?</h4>
+                    <p>Yes. Workshops and consulting are available nationwide in-person and online. Reforestation drives are currently Tamil Nadu-focused.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>How do I volunteer?</h4>
+                    <p>Fill in the contact form above, select "Partnership / Sponsorship", and mention you'd like to volunteer. We'll add you to our next onboarding batch.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Can schools get free workshops?</h4>
+                    <p>Government schools and registered non-profits receive a 50 % discount automatically, and in many cases full sponsorship through our CSR partners.</p>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <footer class="footer" aria-label="Site footer">
+        <p>© 2026 GO-GREEN. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="parallal.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="service.html">Service</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </footer>
+
+    <script>
+    function handleSubmit() {
+        const name    = document.getElementById('name').value.trim();
+        const email   = document.getElementById('email').value.trim();
+        const message = document.getElementById('message').value.trim();
+        const notice  = document.getElementById('form-notice');
+        if (!name || !email || !message) {
+            notice.style.color = '#e74c3c';
+            notice.textContent = 'Please fill in your name, email, and message.';
+            return;
+        }
+        notice.style.color = '#359381';
+        notice.textContent = '✓ Message sent! We\'ll get back to you within 24 hours.';
+    }
+    </script>
+</body>
+</html>

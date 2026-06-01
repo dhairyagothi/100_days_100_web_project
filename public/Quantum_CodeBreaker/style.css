@@ -1,0 +1,375 @@
+:root {
+    --bg-dark: #03050a;
+    --card-bg: rgba(10, 15, 28, 0.9);
+    --border-color: rgba(45, 62, 92, 0.8);
+    --text-main: #f0f4f8;
+    --text-muted: #7b94b0;
+    
+    /* Cyber Colors */
+    --node-cyan: #00bcd4;
+    --node-magenta: #e91e63;
+    --node-yellow: #ffeb3b;
+    --node-purple: #9c27b0;
+    --node-orange: #ff9800;
+    --node-green: #4caf50;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow-x: hidden;
+    position: relative;
+}
+
+#terminalStreamCanvas {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -2;
+    pointer-events: none;
+}
+
+.scanlines {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
+    background-size: 100% 4px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.glass-panel {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.game-container {
+    width: 100%;
+    max-width: 1050px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 2;
+}
+
+.game-header {
+    text-align: center;
+}
+
+.game-header h1 {
+    font-size: 2.2rem;
+    font-weight: bold;
+    letter-spacing: 4px;
+    color: #fff;
+    border-bottom: 1px solid var(--border-color);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding-bottom: 10px;
+}
+
+.game-header p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 12px;
+}
+
+/* ============================================================
+   WORKSPACE GRID ARCHITECTURE
+   ============================================================ */
+.workspace {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 20px;
+    align-items: stretch;
+}
+
+.board-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.history-board {
+    background: rgba(5, 8, 15, 0.95);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+    height: 100%;
+}
+
+.history-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    border-radius: 2px;
+}
+
+.row-index {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: bold;
+    width: 70px;
+}
+
+.row-nodes, .guess-deck {
+    display: flex;
+    gap: 16px;
+}
+
+.node-circle {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%; 
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.slot {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+    border: 1px dashed var(--border-color);
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slot.packed {
+    border-radius: 50%;
+    border-style: solid;
+}
+
+.feedback-pegs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 44px;
+}
+
+.peg {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    background: #0d1321;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.peg.green { background: var(--node-green); }
+.peg.yellow { background: var(--node-yellow); }
+.peg.red { background: #ef4444; }
+
+/* Control Layout Track Section */
+.control-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.status-card {
+    display: flex;
+    justify-content: space-around;
+    padding: 18px;
+}
+
+.status-item .label {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.status-item .value {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.input-card {
+    padding: 24px;
+}
+
+.panel-subtitle {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    margin: 18px 0 12px 0;
+}
+
+.guess-deck {
+    margin-bottom: 25px;
+    justify-content: center;
+}
+
+.color-picker {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.picker-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%; 
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* ============================================================
+   INTEGRATED RIGHT PANEL DIAGNOSTICS CARD
+   ============================================================ */
+.diagnostics-card {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    flex-grow: 1;
+}
+
+.card-header-accent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+}
+
+.diagnostics-card h3 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #fff;
+}
+
+.legend-items-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid rgba(45, 62, 92, 0.3);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 0.76rem;
+    color: var(--text-main);
+}
+
+/* Action Controls Base Rules */
+.btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-terminal-action {
+    background: transparent;
+    color: #fff;
+    border: 1px solid var(--border-color);
+    text-transform: uppercase;
+}
+
+.btn-terminal-action .bracket {
+    color: var(--text-muted);
+}
+
+.btn-primary {
+    background: transparent;
+    color: #fff;
+    border: 1px solid var(--border-color);
+}
+
+.btn-primary:disabled {
+    background: rgba(20, 28, 46, 0.5);
+    border-color: var(--border-color);
+    color: var(--text-muted);
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background: rgba(42, 59, 92, 0.4);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+}
+
+/* Modals Overlay Base Templates */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(3, 5, 10, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    padding: 40px;
+    max-width: 440px;
+    width: 90%;
+    text-align: center;
+}
+
+.modal-content h2 {
+    margin-bottom: 15px;
+    font-size: 1.6rem;
+}
+
+.modal-content p {
+    color: var(--text-muted);
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.secret-reveal {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+@media (max-width: 820px) {
+    .workspace { grid-template-columns: 1fr; }
+}
