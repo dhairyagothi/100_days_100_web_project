@@ -62,6 +62,34 @@
         <div class="wl-progress-bar" id="progressBar"></div>
       </div>
 
+
+        placeSelector.addEventListener('change', function () {
+            updatePlace(placeSelector.value);
+        });
+
+
+    // Booking button functionality
+bookingButton.addEventListener('click', function () {
+    const selectedPlace = placeSelector.value;
+
+    alert(`Your trip to ${selectedPlace} has been booked successfully!`);
+
+    bookingButton.textContent = `Trip Booked to ${selectedPlace} ✓`;
+
+    bookingButton.classList.add("booked");
+});
+
+    
+    window.onload = function () {
+        const defaultPlace = "Iceland";
+        updatePlace(defaultPlace);
+        placeSelector.value = defaultPlace;
+    };
+</script>
+
+</body>
+
+</html>
     </div>
   </div>
 

@@ -36,20 +36,73 @@ footer {
     max-width: 100%;
     cursor: pointer;
     position: relative;
-    padding: 0.3rem 0.7rem;
+    padding: 0.7rem 1rem;
     border: 1px solid rgb(181, 181, 181);
-    border-radius: 0.6rem;
+    border-radius: 0.8rem;
     display: flex;
-    font-size: 1.6rem;
-    font-weight: 200;
-    gap: 5px;
+    font-size: 1.5rem;
+    font-weight: 400;
+    gap: 0.75rem;
     align-items: center;
     text-overflow: ellipsis;
+    background: #fff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .footer-top .country-dropdown:hover {
+    border-color: rgb(140, 140, 140);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.09);
+  }
+  
+  .footer-top .country-dropdown i.fa-chevron-down {
+    transition: transform 0.2s ease;
+  }
+  
+  .footer-top .country-dropdown:hover i.fa-chevron-down {
+    transform: rotate(180deg);
   }
   
   .country-dropdown img {
     height: 3rem;
     width: auto;
+  }
+  
+  .country-options {
+    position: absolute;
+    bottom: calc(100% + 0.7rem);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-radius: 0.8rem;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    box-shadow: 0 16px 35px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+    z-index: 10;
+  }
+  
+  .footer-top .country-dropdown:hover .country-options {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  .country-option {
+    padding: 0.85rem 1rem;
+    font-size: 1.4rem;
+    color: #303030;
+    cursor: pointer;
+  }
+  
+  .country-option:not(:last-child) {
+    border-bottom: 1px solid #f2f2f2;
+  }
+  
+  .country-option:hover {
+    background: #fafafa;
   }
   
   .footer-top .row {
@@ -115,14 +168,27 @@ footer {
     width: fit-content;
   }
   
-  .socials li i {
-    background-color: black;
+  .socials li a {
+    display: inline-flex;
+    text-decoration: none;
     color: white;
-    padding: 0.5rem;
-    border-radius: 100%;
     width: 3rem;
     height: 3rem;
-    display: flex;
+    background-color: black;
+    border-radius: 999px;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  }
+  
+  .socials li a:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+    background-color: #333;
+  }
+  
+  .socials li i {
+    display: inline-flex;
     justify-content: center;
     align-items: center;
   }

@@ -2683,6 +2683,15 @@ body.light-mode .noise-layer {
   background-color: #007bff;
   transform: scale(1.1);
 }
+/* Accessibility Focus Styles */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid #0FF26C;
+  outline-offset: 3px;
+  border-radius: 6px;
 /* ==========================================================================
    Accessibility Fix: Low Color Contrast Ratio (#4358)
    ========================================================================== */
