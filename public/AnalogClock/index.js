@@ -205,6 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const pauseBtn = document.getElementById("pausebtn");
 
   function renderTimer() {
+    if (!countdownDisplay) return;
     const hrs = Math.floor(timerRemaining / 3600);
     const mins = Math.floor((timerRemaining % 3600) / 60);
     const secs = timerRemaining % 60;
@@ -224,7 +225,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function finishTimer() {
     clearInterval(timerInterval);
-
+    timerInterval = null;
+timerRemaining = 0;
+renderTimer();
     timerUpMsg.style.display = "flex";
 
     if (timerSound) {
@@ -241,9 +244,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     stopTimerSound();
 
-    const h = parseInt(hoursInput.value) || 0;
-    const m = parseInt(minutesInput.value) || 0;
-    const s = parseInt(secondsInput.value) || 0;
+    const h = Math.max(
+  0,
+  Math.min(23, parseInt(hoursInput.value) || 0)
+);
+
+const m = Math.max(
+  0,
+  Math.min(59, parseInt(minutesInput.value) || 0)
+);
+
+const s = Math.max(
+  0,
+  Math.min(59, parseInt(secondsInput.value) || 0)
+);
 
     timerRemaining = h * 3600 + m * 60 + s;
 
@@ -253,43 +267,46 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-        isPaused = false;
-        if(!pausebtn) return ;
-        pausebtn.innerText = 'Pause';
-        
-        updateTimerDisplay();
-        tickCountdown();
-    };
+       timerPaused = false;
 
+if (pauseBtn) {
+  pauseBtn.innerText = "Pause";
+}
+
+renderTimer();
+tickCountdown();
+  }
 function tickCountdown() {
+  clearInterval(timerInterval);
 
-    clearInterval(countdownInterval);
+  renderTimer();
 
-    updateTimerDisplay();
+  timerInterval = setInterval(() => {
+    if (timerPaused) return;
 
-    countdownInterval = setInterval(() => {
-        if (countdownTime <= 0) {
-            triggerTimerFinished();
-        } else {
-            countdownTime--;
-            updateTimerDisplay();
-        }
-      }
-    }, 1000);
-  };
+    timerRemaining = Math.max(0, timerRemaining - 1);
+
+    renderTimer();
+
+    if (timerRemaining === 0) {
+      finishTimer();
+    }
+  }, 1000);
+}
 
   window.pauseCountdown = function () {
     if (timerRemaining <= 0) return;
 
     timerPaused = !timerPaused;
 
-    pauseBtn.innerHTML = timerPaused ? "Resume" : "Pause";
+    pauseBtn.textContent =   timerPaused ? "Resume" : "Pause";
   };
 
   window.restartCountdown = function () {
     clearInterval(timerInterval);
+timerInterval = null;
 
-    timerRemaining = 0;
+timerRemaining = 0;
 
     timerPaused = false;
 
@@ -299,7 +316,7 @@ function tickCountdown() {
     minutesInput.value = "";
     secondsInput.value = "";
 
-    pauseBtn.innerHTML = "Pause";
+    pauseBtn.textContent = "Pause";
 
     timerUpMsg.style.display = "none";
 
