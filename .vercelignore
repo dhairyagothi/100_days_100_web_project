@@ -12,9 +12,26 @@ SECURITY.md
 LICENSE
 
 # Development
-node_modules
+**/node_modules
+**/.next
+**/.cache
+**/dist
+**/__pycache__
 .vscode
 .idea
+
+# Large binary files
+**/*.mp4
+**/*.avi
+**/*.mov
+**/*.pkl
+**/*.h5
+**/*.model
+**/*.zip
+**/*.tar.gz
+**/*.rar
+**/*.psd
+**/*.ai
 
 # Logs
 *.log
