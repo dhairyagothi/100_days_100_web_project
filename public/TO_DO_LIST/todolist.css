@@ -709,11 +709,14 @@ section {
   border: 1px solid var(--glass-border);
 }
 
-.doc-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  flex: 1;
+.document-item .doc-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.document-item:hover {
+  transform: translateY(-3px);
+  background: rgba(23, 35, 68, 0.85);
 }
 
 .doc-name {
@@ -733,7 +736,7 @@ section {
   gap: 8px;
 }
 
-.doc-btn {
+.document-item .doc-btn {
   cursor: pointer;
   padding: 8px 16px;
   border-radius: 12px;
@@ -743,24 +746,21 @@ section {
   font-size: 13px;
   font-weight: 600;
   font-family: var(--font-family);
-  transition: background var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
 
-.doc-btn:hover {
+.document-item .doc-btn:hover {
   background: rgba(255, 255, 255, 0.18);
 }
 
-.doc-btn.del {
-  background: rgba(239, 68, 68, 0.15);
-  border-color: rgba(239, 68, 68, 0.3);
-  color: #fca5a5;
+.document-item .doc-btn.del {
+  color: #ffcfcb;
 }
 
-.doc-btn.del:hover {
-  background: rgba(239, 68, 68, 0.3);
-}
-
-/* ---------- Theme-matched sliding Toast ---------- */
+/* ---------- PDF Toast ---------- */
 .pdf-message {
   position: fixed;
   top: 24px;
@@ -824,6 +824,88 @@ section {
   }
 
   #submittask {
+    width: 100%;
+  }
+
+  .notes {
+    width: 100%;
+  }
+
+  .document-item {
+    width: 100%;
+  }
+
+  .hero {
+    padding: 28px 18px 24px;
+  }
+
+  .input-panel {
+    padding: 16px 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  header {
+    padding: 10px 10px 0;
+  }
+
+  .navbar {
+    flex-direction: column;
+    padding: 10px 12px;
+  }
+
+  .nav-left ul,
+  .nav-right ul {
+    justify-content: center;
+  }
+
+  .navbar a {
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+
+  .theme-label {
+    display: none;
+  }
+
+  .theme-btn {
+    height: 34px;
+    width: 34px;
+  }
+
+  .heading {
+    font-size: 36px;
+  }
+
+  .hero-badge {
+    font-size: 11px;
+    padding: 4px 14px;
+  }
+
+  .note-actions {
+    flex-direction: column;
+  }
+
+  .note-type {
+    width: 100%;
+  }
+
+  .note-check,
+  .note-delete {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .document-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .doc-actions {
+    flex-direction: column;
+  }
+
+  .document-item .doc-btn {
     width: 100%;
   }
 }

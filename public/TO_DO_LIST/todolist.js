@@ -13,23 +13,142 @@ const progressText = document.getElementById("progressText");
 
 // Data State
 let tasks = [];
-let savedDocs = [];
-let currentStatusFilter = "all";
+let currentFilter = "all";
+const documentsDbName = "taskflow-documents";
+const documentsStoreName = "saved-documents";
+const emptyDocumentsState = document.getElementById("emptyDocsState");
+let documentsDbPromise = null;
 
-// 2. Local Storage Persistence
-function saveTasks() {
-  try {
-    localStorage.setItem("todo-tasks", JSON.stringify(tasks));
-  } catch (e) {
-    console.error("Error saving tasks:", e);
+function openDocumentsDb() {
+  if (!("indexedDB" in window)) {
+    return Promise.reject(new Error("IndexedDB is not available."));
   }
+
+  if (!documentsDbPromise) {
+    documentsDbPromise = new Promise((resolve, reject) => {
+      const request = window.indexedDB.open(documentsDbName, 1);
+
+      request.onupgradeneeded = () => {
+        const db = request.result;
+        if (!db.objectStoreNames.contains(documentsStoreName)) {
+          db.createObjectStore(documentsStoreName, { keyPath: "id" });
+        }
+      };
+
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error || new Error("Unable to open the documents store."));
+    });
+  }
+
+  return documentsDbPromise;
 }
 
-function saveDocuments() {
+async function getStoredDocuments() {
+  const db = await openDocumentsDb();
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(documentsStoreName, "readonly");
+    const store = transaction.objectStore(documentsStoreName);
+    const request = store.getAll();
+
+    request.onsuccess = () => resolve(request.result || []);
+    request.onerror = () => reject(request.error || new Error("Unable to read saved documents."));
+  });
+}
+
+async function saveStoredDocument(documentRecord) {
+  const db = await openDocumentsDb();
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(documentsStoreName, "readwrite");
+    const store = transaction.objectStore(documentsStoreName);
+    store.put(documentRecord);
+
+    transaction.oncomplete = () => resolve(documentRecord);
+    transaction.onerror = () => reject(transaction.error || new Error("Unable to save the document."));
+  });
+}
+
+async function deleteStoredDocument(documentId) {
+  const db = await openDocumentsDb();
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(documentsStoreName, "readwrite");
+    const store = transaction.objectStore(documentsStoreName);
+    store.delete(documentId);
+
+    transaction.oncomplete = () => resolve();
+    transaction.onerror = () => reject(transaction.error || new Error("Unable to delete the document."));
+  });
+}
+
+function updateDocumentsEmptyState() {
+  if (!emptyDocumentsState) return;
+  emptyDocumentsState.hidden = documentsList && documentsList.children.length > 0;
+}
+
+function createDocumentItem(documentRecord) {
+  const docItem = document.createElement("div");
+  docItem.className = "document-item";
+  docItem.dataset.documentId = documentRecord.id;
+
+  const fileURL = URL.createObjectURL(documentRecord.blob);
+  docItem.dataset.fileUrl = fileURL;
+
+  const fileName = documentRecord.fileName || "Saved document.pdf";
+  const savedDate = new Date(documentRecord.createdAt || Date.now()).toLocaleDateString();
+
+  docItem.innerHTML = `
+    <div class="doc-icon" aria-hidden="true">📄</div>
+    <span class="doc-name">${fileName}</span>
+    <span class="doc-date">${savedDate}</span>
+    <div class="doc-actions">
+      <button class="doc-btn doc-view" type="button">View</button>
+      <a class="doc-btn doc-download" href="${fileURL}" download="${fileName}">Download</a>
+      <button class="doc-btn del doc-delete" type="button">Delete</button>
+    </div>
+  `;
+
+  const viewButton = docItem.querySelector(".doc-view");
+  const deleteButton = docItem.querySelector(".doc-delete");
+
+  if (viewButton) {
+    viewButton.addEventListener("click", () => {
+      window.open(fileURL, "_blank", "noopener,noreferrer");
+    });
+  }
+
+  if (deleteButton) {
+    deleteButton.addEventListener("click", () => {
+      removeDocumentItem(deleteButton);
+    });
+  }
+
+  return docItem;
+}
+
+async function loadSavedDocuments() {
+  if (!documentsList) return;
+
   try {
-    localStorage.setItem("todo-documents", JSON.stringify(savedDocs));
-  } catch (e) {
-    console.error("Error saving documents:", e);
+    const storedDocuments = await getStoredDocuments();
+    documentsList.innerHTML = "";
+
+    if (!storedDocuments.length) {
+      updateDocumentsEmptyState();
+      return;
+    }
+
+    storedDocuments
+      .sort((left, right) => (right.createdAt || 0) - (left.createdAt || 0))
+      .forEach((documentRecord) => {
+        documentsList.appendChild(createDocumentItem(documentRecord));
+      });
+
+    updateDocumentsEmptyState();
+  } catch (error) {
+    console.error("Failed to load saved documents:", error);
+    updateDocumentsEmptyState();
   }
 }
 
@@ -255,18 +374,43 @@ function updateMetrics() {
 
 // 6. Tab switching (Home vs Documents)
 function showHome() {
-  document.getElementById("nav-home").classList.add("active");
-  document.getElementById("nav-documents").classList.remove("active");
-  document.getElementById("home-tab").style.display = "block";
-  document.getElementById("documents-tab").style.display = "none";
+  const homeLink = document.getElementById("nav-home");
+  const documentsLink = document.getElementById("nav-documents");
+  const homeTab = document.getElementById("home-tab");
+  const documentsTab = document.getElementById("documents-tab");
+
+  if (homeLink) homeLink.setAttribute("aria-current", "page");
+  if (documentsLink) documentsLink.removeAttribute("aria-current");
+  if (homeTab) homeTab.hidden = false;
+  if (documentsTab) documentsTab.hidden = true;
 }
 
 function showDocuments() {
-  document.getElementById("nav-home").classList.remove("active");
-  document.getElementById("nav-documents").classList.add("active");
-  document.getElementById("home-tab").style.display = "none";
-  document.getElementById("documents-tab").style.display = "block";
-  renderSavedDocuments();
+  const homeLink = document.getElementById("nav-home");
+  const documentsLink = document.getElementById("nav-documents");
+  const homeTab = document.getElementById("home-tab");
+  const documentsTab = document.getElementById("documents-tab");
+
+  if (homeLink) homeLink.removeAttribute("aria-current");
+  if (documentsLink) documentsLink.setAttribute("aria-current", "page");
+  if (homeTab) homeTab.hidden = true;
+  if (documentsTab) documentsTab.hidden = false;
+}
+
+const homeNavLink = document.getElementById("nav-home");
+if (homeNavLink) {
+  homeNavLink.addEventListener("click", (event) => {
+    event.preventDefault();
+    showHome();
+  });
+}
+
+const documentsNavLink = document.getElementById("nav-documents");
+if (documentsNavLink) {
+  documentsNavLink.addEventListener("click", (event) => {
+    event.preventDefault();
+    showDocuments();
+  });
 }
 
 // 7. Theme Customization System
@@ -292,8 +436,8 @@ document.querySelectorAll(".theme-btn").forEach((button) => {
   });
 });
 
-// 8. PDF Exporter &Snapshots History
-function saveAsPDF() {
+// 6. PDF System using jsPDF Global Library
+async function saveAsPDF() {
   if (tasks.length === 0) {
     showToast("❌ Cannot export empty list!");
     return;
@@ -333,56 +477,47 @@ function saveAsPDF() {
   });
 
   const fileName = `TaskFlow_${Date.now()}.pdf`;
-  const pdfOutput = doc.output("blob");
-  const fileURL = URL.createObjectURL(pdfOutput);
-
-  const docItem = {
-    name: fileName,
-    url: fileURL,
-    total: tasks.length,
-    completed: completedCount,
-    time: new Date().toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    }),
-    date: new Date().toLocaleDateString(),
+  const fileBlob = doc.output("blob");
+  const documentRecord = {
+    id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    fileName,
+    createdAt: Date.now(),
+    blob: fileBlob
   };
 
-  savedDocs.unshift(docItem);
-  saveDocuments();
-  showToast(`📥 Exported PDF snapshot successfully!`);
-  showDocuments();
+  try {
+    await saveStoredDocument(documentRecord);
+    documentsList.appendChild(createDocumentItem(documentRecord));
+    updateDocumentsEmptyState();
+    showToast("📥 Exported list to Documents Tab!");
+  } catch (error) {
+    console.error("Failed to save the exported PDF:", error);
+    documentsList.appendChild(createDocumentItem({
+      ...documentRecord,
+      id: `${documentRecord.id}-session`
+    }));
+    updateDocumentsEmptyState();
+    showToast("📥 Exported list, but document history could not be saved.");
+  }
 }
 
-function renderSavedDocuments() {
-  const docEmptyState = document.getElementById("emptyDocsState");
-  if (!documentsList) return;
+function removeDocumentItem(button) {
+  const documentItem = button.closest(".document-item");
+  if (!documentItem) return;
 
-  documentsList.innerHTML = "";
+  const documentId = documentItem.dataset.documentId;
+  const fileURL = documentItem.dataset.fileUrl;
 
-  if (savedDocs.length === 0) {
-    if (docEmptyState) docEmptyState.style.display = "flex";
-  } else {
-    if (docEmptyState) docEmptyState.style.display = "none";
-    savedDocs.forEach((doc, idx) => {
-      const docItem = document.createElement("li");
-      docItem.className = "doc-item";
-      docItem.innerHTML = `
-        <div class="doc-icon">📄</div>
-        <div class="doc-info">
-          <div class="doc-name">${doc.name}</div>
-          <div class="doc-meta">
-            <span class="doc-date">${doc.date} ${doc.time}</span>
-            <span class="doc-task-count">${doc.total} tasks · ${doc.completed} completed</span>
-          </div>
-        </div>
-        <div class="doc-actions">
-          <button class="doc-btn" onclick="window.open('${doc.url}', '_blank')">View</button>
-          <a class="doc-btn" href="${doc.url}" download="${doc.name}" style="text-decoration:none;display:inline-block;text-align:center;line-height:42px;padding:0 18px;">Download</a>
-          <button class="doc-btn del" onclick="deleteDocument(${idx})">Delete</button>
-        </div>
-      `;
-      documentsList.appendChild(docItem);
+  if (fileURL) {
+    URL.revokeObjectURL(fileURL);
+  }
+
+  documentItem.remove();
+  updateDocumentsEmptyState();
+
+  if (documentId && !documentId.endsWith("-session")) {
+    deleteStoredDocument(documentId).catch((error) => {
+      console.error("Failed to delete the saved document:", error);
     });
   }
 }
@@ -419,29 +554,23 @@ if (taskForm) {
   });
 }
 
-const savePdfBtn = document.getElementById("savepdf");
-if (savePdfBtn) {
-  savePdfBtn.addEventListener("click", () => saveAsPDF());
+const savePdfButton = document.getElementById("savepdf");
+if (savePdfButton) {
+  savePdfButton.addEventListener("click", () => {
+    saveAsPDF();
+  });
 }
 
-// Initial Loading Routines
-showHome();
+taskInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    addTask();
+  }
+});
 
 try {
-  const savedTasks = localStorage.getItem("todo-tasks");
-  if (savedTasks) {
-    tasks = JSON.parse(savedTasks);
-  }
+  const saved = localStorage.getItem('todo-theme');
+  if (saved) applyTheme(saved);
+} catch (e) {}
 
-  const savedDocsData = localStorage.getItem("todo-documents");
-  if (savedDocsData) {
-    savedDocs = JSON.parse(savedDocsData);
-  }
-
-  const savedTheme = localStorage.getItem("todo-theme");
-  applyTheme(savedTheme || "theme1");
-} catch (e) {
-  applyTheme("theme1");
-}
-
-renderTasks();
+loadSavedDocuments();
