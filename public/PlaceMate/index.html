@@ -11,7 +11,46 @@
 </head>
 <body>
 
-  <div class="container">
+  <button id="themeToggle" class="theme-toggle">
+    ☀️
+  </button>
+
+  <div id="authContainer" class="auth-container">
+
+    <div class="auth-card">
+
+      <h2 id="authTitle">Login</h2>
+
+      <input
+        type="text"
+        id="username"
+        placeholder="Enter Username"
+      >
+
+      <input
+        type="password"
+        id="password"
+        placeholder="Enter Password"
+      >
+
+      <button id="authBtn">
+        Login
+      </button>
+
+      <p id="toggleAuth">
+        Don't have an account?
+        <span>Sign Up</span>
+      </p>
+
+    </div>
+
+  </div>
+
+  <div
+  class="container"
+  id="mainApp"
+  style="display:none;"
+>
 
     <header class="hero">
       <h1>🚀 PlaceMate</h1>
@@ -20,29 +59,84 @@
         Track your interview preparation journey and become placement ready
       </p>
 
-      <button>Start Preparing</button>
+      <div class="hero-buttons">
+
+        <button>
+          Start Preparing
+        </button>
+
+        <button id="logoutBtn">
+          Logout
+        </button>
+
+      </div>
+
     </header>
+
+    <section class="input-section">
+      <div class="input-card">
+        <h2>📊 Enter Your Preparation Data</h2>
+
+        <div class="input-grid">
+
+          <div class="input-group">
+            <label>DSA Solved</label>
+            <input type="number" id="dsaInput" value="240">
+          </div>
+
+          <div class="input-group">
+            <label>Mock Interviews</label>
+            <input type="number" id="mockInput" value="18">
+          </div>
+
+          <div class="input-group">
+            <label>Aptitude Score</label>
+            <input type="number" id="aptitudeInput" value="82">
+          </div>
+
+          <div class="input-group">
+            <label>Resume Score</label>
+            <input type="number" id="resumeInput" value="88">
+          </div>
+
+          <div class="input-group">
+            <label>Communication Skill</label>
+            <input type="number" id="communicationInput" value="72">
+          </div>
+
+          <div class="input-group">
+            <label>Development Skill</label>
+            <input type="number" id="developmentInput" value="78">
+          </div>
+
+        </div>
+
+        <button id="updateBtn">
+          Update Dashboard
+        </button>
+      </div>
+  </section>
 
     <section class="stats-grid">
 
       <div class="stat-card">
         <h3>DSA Solved</h3>
-        <h2>240</h2>
+        <h2 id="dsaSolved">240</h2>
       </div>
 
       <div class="stat-card">
         <h3>Mock Interviews</h3>
-        <h2>18</h2>
+        <h2 id="mockSolved">18</h2>
       </div>
 
       <div class="stat-card">
         <h3>Aptitude Score</h3>
-        <h2>82%</h2>
+        <h2 id="aptitudeScore">82%</h2>
       </div>
 
       <div class="stat-card">
         <h3>Resume Score</h3>
-        <h2>88%</h2>
+        <h2 id="resumeScore">88%</h2>
       </div>
 
     </section>
@@ -78,7 +172,7 @@
 
             <div class="meter-content">
               <h2 id="meterScore">82%</h2>
-              <p>Placement Ready</p>
+              <p id="statusText">Placement Ready</p>
             </div>
 
           </div>
@@ -154,7 +248,7 @@
 
       <h2>🏢 Company Preparation</h2>
 
-      <div class="company-grid">
+      <div class="company-grid" id="companyGrid">
 
         <div class="company-card">
           <h3>Google</h3>

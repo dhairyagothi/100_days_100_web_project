@@ -232,23 +232,49 @@ function onIntersect(entries){
 }
 
 // Filters & search: efficient toggling
+function resizeParticlesCanvas(){
+  const canvas = document.getElementById('particles');
+  const section = document.querySelector('.timeline-section');
+
+  if(!canvas || !section) return;
+
+  canvas.width = section.clientWidth;
+  canvas.height = Math.max(240, section.offsetHeight);
+}
+
 function applyFilters(){
   const q = state.search.trim().toLowerCase();
   const cats = state.filters.categories;
   const eras = state.filters.eras;
   const imps = state.filters.importance;
 
-  state.nodes.forEach(({ev,el})=>{
+  let visibleIndex = 0;
+
+  state.nodes.forEach(({ev, el})=>{
     let visible = true;
+
     if(cats.size && !cats.has(ev.category)) visible = false;
     if(eras.size && !eras.has(ev.era)) visible = false;
     if(imps.size && !imps.has(String(ev.importance))) visible = false;
+
     if(q){
       const hay = (ev.title + ' ' + ev.description + ' ' + ev.category + ' ' + ev.era).toLowerCase();
       if(!hay.includes(q)) visible = false;
     }
-    el.style.display = visible ? '' : 'none';
+
+    if(visible){
+      el.style.display = '';
+
+      el.classList.remove('side-left', 'side-right');
+      el.classList.add(visibleIndex % 2 === 0 ? 'side-left' : 'side-right');
+
+      visibleIndex++;
+    }else{
+      el.style.display = 'none';
+    }
   });
+
+  requestAnimationFrame(resizeParticlesCanvas);
 }
 
 // UI wiring
