@@ -264,6 +264,7 @@ h1 {
   transform: scale(0.96);
 }
 
+/* Mobile view adjustments */
 @media (max-width: 768px) {
 
   h1 {
