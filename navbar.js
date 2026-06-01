@@ -14,17 +14,11 @@
   const isLearn = path.includes("/learning/");
   const isContributors = path.includes("/contributors/");
 
-  const username = window.username || null;
+  const username = window.username || localStorage.getItem('loggedInUser') || null;
 
-  // Initialize Theme based on localStorage before rendering
-  const savedTheme = localStorage.getItem("theme") || "dark";
-  if (savedTheme === "light") {
-    document.body.classList.add("light-mode");
-  } else {
-    document.body.classList.remove("light-mode");
-  }
-  const isLight = document.body.classList.contains("light-mode");
-  const themeIcon = isLight ? "fa-sun" : "fa-moon";
+  window.ThemeManager?.init?.();
+  const isLight = window.ThemeManager?.currentTheme?.() === "light";
+  const themeIcon = isLight ? "☀" : "☾";
 
   // FIX: Avoid appending "index.html" on web servers to prevent 308 Redirect lag.
   // We only append it if we detect the file:// protocol (for local double-click testing).
@@ -33,11 +27,24 @@
   const learnHref = `${base}learning/learning.html`;
   const contributorsHref = `${base}contributors/contributor.html`;
 
-  const themeBtn = `<button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme"><i class="fas ${themeIcon}"></i> Theme</button>`;
-  const homeBtn = `<a class="btn ${isHome ? "btn-primary active" : "btn-ghost"} btn-sm" href="${homeHref}"><i class="fas fa-home"></i> Home</a>`;
-  const learnBtn = `<a class="btn ${isLearn ? "btn-primary active" : "btn-ghost"} btn-sm" href="${learnHref}"><i class="fas fa-graduation-cap"></i> Learn</a>`;
+  const themeBtn = `
+    <div class="theme-dropdown-container">
+      <button class="btn btn-ghost btn-sm dropdown-toggle" id="themeToggleNav" aria-label="Select theme" aria-haspopup="true" aria-expanded="false">
+        <span aria-hidden="true">${themeIcon}</span> Theme
+      </button>
+      <div class="dropdown-menu">
+        <button class="dropdown-item" data-theme-value="light">☀ Light</button>
+        <button class="dropdown-item" data-theme-value="dark">☾ Dark</button>
+        <button class="dropdown-item" data-theme-value="sepia">☕ Sepia</button>
+        <button class="dropdown-item" data-theme-value="cyberpunk">⚡ Cyberpunk</button>
+        <button class="dropdown-item" data-theme-value="nord">❄ Nord</button>
+      </div>
+    </div>
+  `;
+  const homeBtn = `<a class="btn ${isHome ? "btn-primary active" : "btn-ghost"} btn-sm" href="${homeHref}">🏠 Home</a>`;
+  const learnBtn = `<a class="btn ${isLearn ? "btn-primary active" : "btn-ghost"} btn-sm" href="${learnHref}">🎓 Learn</a>`;
   const contributorsBtn = `<a class="btn ${isContributors ? "btn-primary active" : "btn-ghost"} btn-sm" href="${contributorsHref}">Contributors</a>`;
-  const githubBtn = `<a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank"><i class="fab fa-github"></i> GitHub</a>`;
+  const githubBtn = `<a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">GitHub</a>`;
   const readmeBtn = `<a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>`;
 
   let navButtonsHTML = "";
@@ -52,69 +59,68 @@
     navButtonsHTML = `${themeBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${signinBtn}`;
   }
 
-  container.innerHTML = `
-      <header>
-          <nav class="navbar" id="navbar" aria-label="Main Navigation">
-              <a class="navbar-brand" href="${homeHref}" style="text-decoration:none;">
-                  <span class="brand-mark" aria-label="100 Days logo">100</span>
-                  <span class="brand-copy">
-                      <span class="brand-kicker">Open Source Archive</span>
-                      <strong>100 Days · 100 Web Projects</strong>
-                  </span>
-              </a>
+    container.innerHTML = `
+      <nav class="navbar" id="navbar" aria-label="Main Navigation">
+        <a class="navbar-brand" href="${homeHref}" style="text-decoration:none;">
+          <span class="brand-mark" aria-label="100 Days logo">100</span>
+          <span class="brand-copy">
+            <span class="brand-kicker">Open Source Archive</span>
+            <strong>100 Days · 100 Web Projects</strong>
+          </span>
+        </a>
 
-              <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-controls="navButtons" aria-expanded="false">
-                  <i class="fas fa-bars" aria-hidden="true"></i>
-              </button>
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation menu" aria-controls="navButtons" aria-expanded="false">
+          ☰
+        </button>
 
-              <div class="nav-buttons mobile-drawer-layer" id="navButtons">
-                  ${navButtonsHTML}
-              </div>
-          </nav>
-      </header>
-  `;
+        <div class="nav-buttons mobile-drawer-layer" id="navButtons">
+          ${navButtonsHTML}
+        </div>
+      </nav>
+    `;
 
-  // Theme Toggle Logic
-  const themeToggleBtn = document.getElementById("themeToggleNav");
-  let transitionTimer;
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener("click", () => {
-      document.body.classList.toggle("light-mode");
-      const currentlyLight = document.body.classList.contains("light-mode");
-      localStorage.setItem("theme", currentlyLight ? "light" : "dark");
-
-      themeToggleBtn.querySelector("i").className = currentlyLight
-        ? "fas fa-sun"
-        : "fas fa-moon";
-
-      document.body.classList.add("theme-transitioning");
-      if (transitionTimer) clearTimeout(transitionTimer);
-      transitionTimer = setTimeout(() => {
-        document.body.classList.remove("theme-transitioning");
-      }, 400);
-    });
-  }
+  window.ThemeManager?.applyTheme?.(window.ThemeManager.currentTheme(), { persist: false });
 
   // Mobile Menu Logic
   const menuToggle = document.getElementById("menuToggle");
   const navButtonsDiv = document.getElementById("navButtons");
   if (menuToggle && navButtonsDiv) {
+    if (menuToggle.dataset.mobileNavBound === "true") return;
+    menuToggle.dataset.mobileNavBound = "true";
+
     const closeMenu = () => {
       menuToggle.classList.remove("active");
       navButtonsDiv.classList.remove("active");
       menuToggle.setAttribute("aria-expanded", "false");
     };
 
+    const openMenu = () => {
+      menuToggle.classList.add("active");
+      navButtonsDiv.classList.add("active");
+      menuToggle.setAttribute("aria-expanded", "true");
+      const firstLink = navButtonsDiv.querySelector("a, button");
+      firstLink?.focus({ preventScroll: true });
+    };
+
     menuToggle.addEventListener("click", (e) => {
       e.stopPropagation();
-      const isOpen = navButtonsDiv.classList.toggle("active");
-      menuToggle.classList.toggle("active", isOpen);
-      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      if (navButtonsDiv.classList.contains("active")) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
     });
 
     document.addEventListener("click", (e) => {
       if (!navButtonsDiv.contains(e.target) && !menuToggle.contains(e.target)) {
         closeMenu();
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && navButtonsDiv.classList.contains("active")) {
+        closeMenu();
+        menuToggle.focus({ preventScroll: true });
       }
     });
 
@@ -134,7 +140,37 @@
   if (logoutBtn) {
     logoutBtn.addEventListener("click", () => {
       window.username = null;
+      localStorage.removeItem('loggedInUser');
       location.reload();
+    });
+  }
+
+  // Dropdown Logic
+  const dropdownToggle = document.getElementById("themeToggleNav");
+  const dropdownMenu = dropdownToggle?.nextElementSibling;
+  
+  if (dropdownToggle && dropdownMenu) {
+    dropdownToggle.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const isExpanded = dropdownToggle.getAttribute("aria-expanded") === "true";
+      dropdownToggle.setAttribute("aria-expanded", !isExpanded);
+      dropdownMenu.classList.toggle("show");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+        dropdownToggle.setAttribute("aria-expanded", "false");
+        dropdownMenu.classList.remove("show");
+      }
+    });
+    
+    // Close dropdown on item click
+    dropdownMenu.addEventListener("click", (e) => {
+      if (e.target.closest(".dropdown-item")) {
+        dropdownToggle.setAttribute("aria-expanded", "false");
+        dropdownMenu.classList.remove("show");
+      }
     });
   }
 })();

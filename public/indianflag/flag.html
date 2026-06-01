@@ -253,6 +253,7 @@
       const musicProgress = document.getElementById("music-progress");
       const musicCurrent = document.getElementById("music-current");
       const musicDuration = document.getElementById("music-duration");
+      let isSeeking = false;
 
       window.addEventListener("load", () => {
         music.play().then(() => {
@@ -291,10 +292,36 @@
         const duration = music.duration || 0;
         const progress = duration ? (music.currentTime / duration) * 100 : 0;
 
-        musicProgress.value = progress;
-        musicProgress.style.setProperty("--progress", `${progress}%`);
+        if (!isSeeking) {
+          musicProgress.value = progress;
+          musicProgress.style.setProperty("--progress", `${progress}%`);
+        }
+
         musicCurrent.textContent = formatTime(music.currentTime);
         musicDuration.textContent = formatTime(duration);
+      }
+
+      function updateProgressPreview() {
+        const duration = music.duration || 0;
+        const progress = Number(musicProgress.value);
+
+        musicProgress.style.setProperty("--progress", `${progress}%`);
+
+        if (duration) {
+          musicCurrent.textContent = formatTime((progress / 100) * duration);
+        }
+      }
+
+      function seekMusic() {
+        const duration = music.duration || 0;
+
+        if (!duration) {
+          updateMusicProgress();
+          return;
+        }
+
+        music.currentTime = (Number(musicProgress.value) / 100) * duration;
+        updateMusicProgress();
       }
 
       musicToggle.addEventListener("click", () => {
@@ -305,12 +332,34 @@
         }
       });
 
-      musicProgress.addEventListener("input", () => {
-        if (!music.duration) {
-          return;
-        }
+      musicProgress.addEventListener("pointerdown", () => {
+        isSeeking = true;
+      });
 
-        music.currentTime = (musicProgress.value / 100) * music.duration;
+      musicProgress.addEventListener("pointerup", () => {
+        seekMusic();
+        isSeeking = false;
+      });
+
+      musicProgress.addEventListener("pointercancel", () => {
+        isSeeking = false;
+        updateMusicProgress();
+      });
+
+      musicProgress.addEventListener("input", updateProgressPreview);
+
+      musicProgress.addEventListener("change", () => {
+        seekMusic();
+        isSeeking = false;
+      });
+
+      musicProgress.addEventListener("keydown", () => {
+        isSeeking = true;
+      });
+
+      musicProgress.addEventListener("keyup", () => {
+        seekMusic();
+        isSeeking = false;
       });
 
       music.addEventListener("play", updateMusicButton);

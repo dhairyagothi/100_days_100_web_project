@@ -1,12 +1,12 @@
 /* ============================================================
    CONFIGURATION
    ============================================================ */
-if (typeof REPO_OWNER === 'undefined') {
-  window.REPO_OWNER = 'dhairyagothi';
-  window.REPO_NAME = '100_days_100_web_project';
+if (typeof REPO_OWNER === "undefined") {
+  window.REPO_OWNER = "dhairyagothi";
+  window.REPO_NAME = "100_days_100_web_project";
 }
-window.REPO_OWNER = window.REPO_OWNER || 'dhairyagothi';
-window.REPO_NAME = window.REPO_NAME || '100_days_100_web_project';
+window.REPO_OWNER = window.REPO_OWNER || "dhairyagothi";
+window.REPO_NAME = window.REPO_NAME || "100_days_100_web_project";
 
 let currentPage = 1;
 //for the number of visible projects in one page.
@@ -14,34 +14,33 @@ let itemsPerPage = 9;
 let projectData = [];
 let filteredProjectData = [];
 
-
 /* ============================================================
    TECHNOLOGY STACK FILTERING VARIABLES
    ============================================================ */
 let techStackFilters = []; // Array of active tech filters
-let techSearchQuery = ''; // Current tech search input
+let techSearchQuery = ""; // Current tech search input
 
 // Technology normalization map (handles common variations)
 // Maps user input → actual tags in dataset
 const TECH_ALIASES = {
-  'js': 'javascript',
-  'react': 'javascript',
-  'node': 'javascript',
-  'vue': 'javascript',
-  'python': 'api',
-  'flask': 'api',
-  'game': 'game',
-  'games': 'game',
+  js: "javascript",
+  react: "javascript",
+  node: "javascript",
+  vue: "javascript",
+  python: "api",
+  flask: "api",
+  game: "game",
+  games: "game",
 };
 
 /* Maps data-filter values on chip buttons to display category names */
 const FILTER_CATEGORY_MAP = {
-  'all': 'all',
-  'game': 'Games',
-  'clone': 'Clones',
-  'tool': 'Tools',
-  'ui': 'UI / Animation',
-  'api': 'APIs',
+  all: "all",
+  game: "Games",
+  clone: "Clones",
+  tool: "Tools",
+  ui: "UI / Animation",
+  api: "APIs",
 };
 
 /**
@@ -49,46 +48,88 @@ const FILTER_CATEGORY_MAP = {
  * Uses the existing tag structure so no new data field is needed.
  */
 function getCategoryFromTags(tags, name) {
-  const tagStr = (Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase();
-  const nameStr = (name || '').toLowerCase();
+  const tagStr = (
+    Array.isArray(tags) ? tags.join(" ") : tags || ""
+  ).toLowerCase();
+  const nameStr = (name || "").toLowerCase();
 
-  if (tagStr.includes('game')) return 'Games';
-  if (tagStr.includes('clone')) return 'Clones';
-  if (tagStr.includes('tool')) return 'Tools';
-  if (tagStr.includes('ui')) return 'UI / Animation';
-  if (tagStr.includes('api') || tagStr.includes('weather')) return 'APIs';
+  if (tagStr.includes("game")) return "Games";
+  if (tagStr.includes("clone")) return "Clones";
+  if (tagStr.includes("tool")) return "Tools";
+  if (tagStr.includes("ui")) return "UI / Animation";
+  if (tagStr.includes("api") || tagStr.includes("weather")) return "APIs";
 
-  if (nameStr.includes('clone')) return 'Clones';
-  if (nameStr.includes('game') || nameStr.includes('puzzle') || nameStr.includes('quiz')) return 'Games';
+  if (nameStr.includes("clone")) return "Clones";
+  if (
+    nameStr.includes("game") ||
+    nameStr.includes("puzzle") ||
+    nameStr.includes("quiz")
+  )
+    return "Games";
 
-  return 'Tools';
+  return "Tools";
 }
 
 let PROJECTS = [];
 let projectsPromise = null;
 
+function hydrateProjects(data) {
+  PROJECTS = data.map((project) => [
+    `Day ${project.projectNo}`,
+    project.projectName,
+    project.projectPath,
+    project.techStack,
+    project.difficulty,
+    project.projectDesc,
+  ]);
+}
+
+function getPreloadedProjectsData() {
+  return Array.isArray(window.PROJECTS_DATA) ? window.PROJECTS_DATA : null;
+}
+
+function parseProjectsData(payload) {
+  try {
+    return JSON.parse(payload);
+  } catch (error) {
+    // Fallback for common malformed object separators in projects.json
+    const repairedPayload = String(payload).replace(/}\s*{/g, "},{");
+    return JSON.parse(repairedPayload);
+  }
+}
+
 function loadProjects() {
   if (!projectsPromise) {
     projectsPromise = (async () => {
-      const isRoot = !window.location.pathname.includes('/contributors/');
-      const base = isRoot ? '' : '../';
-     const projectsUrl =
-new URL(`${base}projects.json`,
-window.location.href).toString();
-      const response = await fetch(projectsUrl);
-      if (!response.ok) {
-        throw new Error(`Failed to load projects: ${response.statusText}`);
+      const preloadedData = getPreloadedProjectsData();
+      if (preloadedData) {
+        hydrateProjects(preloadedData);
+        return PROJECTS;
       }
-const data = await response.json();
 
-PROJECTS = data.map(project => [
-   `Day ${project.projectNo}`,
-   project.projectName,
-   project.projectPath,
-   project.techStack,
-   project.difficulty,
-   project.projectDesc
-]);
+      const isRoot = !window.location.pathname.includes("/contributors/");
+      const base = isRoot ? "" : "../";
+      const projectsUrl = new URL(
+        `${base}projects.json`,
+        window.location.href,
+      ).toString();
+      try {
+        const response = await fetch(projectsUrl);
+        if (!response.ok) {
+          throw new Error(`Failed to load projects: ${response.statusText}`);
+        }
+        const payload = await response.text();
+        const data = parseProjectsData(payload);
+        hydrateProjects(data);
+        return PROJECTS;
+      } catch (error) {
+        const fallbackData = getPreloadedProjectsData();
+        if (fallbackData) {
+          hydrateProjects(fallbackData);
+          return PROJECTS;
+        }
+        throw error;
+      }
     })();
   }
   return projectsPromise;
@@ -97,32 +138,37 @@ PROJECTS = data.map(project => [
 // Start fetching immediately
 loadProjects();
 
-
 /* ============================================================
    PROJECT LINK RESOLUTION (demo vs source / source-only)
    ============================================================ */
-const SOURCE_ONLY_TAG = 'source-only';
+const SOURCE_ONLY_TAG = "source-only";
 
 /** Live demos hosted outside the repo — Code links point to in-repo source folders */
 const EXTERNAL_DEMO_SOURCE_FOLDERS = {
-  'Day 20': 'public/EveSparks',
-  'Day 115': 'public/event-registration-system',
+  "Day 20": "public/EveSparks",
+  "Day 115": "public/event-registration-system",
 };
 
 function isGithubTreeUrl(url) {
-  return /^https:\/\/github\.com\/[^/]+\/[^/]+\/tree\/[^/]+\//i.test(String(url || '').trim());
+  return /^https:\/\/github\.com\/[^/]+\/[^/]+\/tree\/[^/]+\//i.test(
+    String(url || "").trim(),
+  );
 }
 
 function parseGithubTreePath(url) {
-  const match = String(url || '').trim().match(/\/tree\/[^/]+\/(.+?)(?:\?|#|$)/);
-  return match ? decodeURIComponent(match[1].replace(/\/$/, '')) : null;
+  const match = String(url || "")
+    .trim()
+    .match(/\/tree\/[^/]+\/(.+?)(?:\?|#|$)/);
+  return match ? decodeURIComponent(match[1].replace(/\/$/, "")) : null;
 }
 
 function isSourceOnlyProject(day, tags) {
-  if (day === 'Day 13' || day === 'Day 72') return true;
+  if (day === "Day 13" || day === "Day 72") return true;
   const tagList = Array.isArray(tags)
     ? tags
-    : String(tags || '').split(/\s+/).filter(Boolean);
+    : String(tags || "")
+        .split(/\s+/)
+        .filter(Boolean);
   return tagList.includes(SOURCE_ONLY_TAG);
 }
 
@@ -133,40 +179,39 @@ function githubTreeToLocalDemo(url) {
 }
 
 function getSourceUrl(url, day) {
-  const trimmed = (url || '').trim();
+  const trimmed = (url || "").trim();
   const repoSourceFolder = day && EXTERNAL_DEMO_SOURCE_FOLDERS[day];
   if (repoSourceFolder) {
     return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main/${repoSourceFolder}`;
   }
   if (isGithubTreeUrl(trimmed)) return trimmed;
-  if (trimmed.startsWith('http')) return trimmed;
-  if (trimmed.startsWith('./')) {
-    const folderPath = trimmed.substring(2, trimmed.lastIndexOf('/'));
+  if (trimmed.startsWith("http")) return trimmed;
+  if (trimmed.startsWith("./")) {
+    const folderPath = trimmed.substring(2, trimmed.lastIndexOf("/"));
     return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main/${folderPath}`;
   }
   return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main`;
 }
 
 function resolveProjectUrls(day, name, url, tags) {
-  const trimmed = (url || '').trim();
+  const trimmed = (url || "").trim();
   const sourceOnly = isSourceOnlyProject(day, tags);
   let demoUrl = trimmed;
   let sourceUrl = getSourceUrl(trimmed, day);
 
   if (isGithubTreeUrl(trimmed)) {
     sourceUrl = trimmed;
-    demoUrl = sourceOnly ? trimmed : (githubTreeToLocalDemo(trimmed) || trimmed);
+    demoUrl = sourceOnly ? trimmed : githubTreeToLocalDemo(trimmed) || trimmed;
   }
 
-  if (!sourceOnly && demoUrl && !demoUrl.startsWith('http')) {
+  if (!sourceOnly && demoUrl && !demoUrl.startsWith("http")) {
     try {
-      const isRoot = !window.location.pathname.includes('/contributors/');
-      const basePrefix = isRoot ? '' : '../';
-      if (demoUrl.startsWith('./')) {
+      const isRoot = !window.location.pathname.includes("/contributors/");
+      const basePrefix = isRoot ? "" : "../";
+      if (demoUrl.startsWith("./")) {
         demoUrl = basePrefix + demoUrl.substring(2);
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   return { demoUrl, sourceUrl, sourceOnly };
@@ -175,7 +220,7 @@ function resolveProjectUrls(day, name, url, tags) {
 function getProjectDescription(project) {
   return (
     (project && project[5]) ||
-    'Explore this project to discover interactive functionality.'
+    "Explore this project to discover interactive functionality."
   );
 }
 
@@ -188,21 +233,26 @@ function buildProjectCardHTML({
   isBookmarked = false,
   showDescription = true,
 }) {
-  const { demoUrl, sourceUrl, sourceOnly } = resolveProjectUrls(day, name, url, tags);
+  const { demoUrl, sourceUrl, sourceOnly } = resolveProjectUrls(
+    day,
+    name,
+    url,
+    tags,
+  );
   const tagsArray = Array.isArray(tags)
     ? tags.filter((t) => t !== SOURCE_ONLY_TAG)
-    : String(tags || '')
+    : String(tags || "")
         .split(/\s+/)
         .filter((t) => t && t !== SOURCE_ONLY_TAG);
-  const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
-  const project =
-PROJECTS.find(p => p[1] === name);
+  const tagsHTML = tagsArray
+    .map((t) => `<span class="tag">${t}</span>`)
+    .join("");
+  const project = PROJECTS.find((p) => p[1] === name);
 
-const description =
-getProjectDescription(project);
+  const description = getProjectDescription(project);
   const sourceOnlyBadge = sourceOnly
     ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
-    : '';
+    : "";
   const primaryLink = sourceOnly
     ? `<a href="${sourceUrl}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer" onclick="event.stopPropagation()">
                         <i class="fab fa-github"></i> Source
@@ -211,7 +261,7 @@ getProjectDescription(project);
                         Demo <i class="fas fa-arrow-right"></i>
                     </a>`;
   const codeLink = sourceOnly
-    ? ''
+    ? ""
     : `<a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()">
                         <i class="fab fa-github"></i> Code
                     </a>`;
@@ -231,7 +281,7 @@ getProjectDescription(project);
                 ? `<div class="card-description">
     ${description}
 </div>`
-                : ''
+                : ""
             }
             <div class="card-tags">${tagsHTML}</div>
             <div class="card-footer">
@@ -239,8 +289,8 @@ getProjectDescription(project);
                     ${primaryLink}
                     ${codeLink}
                 </div>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}" onclick="event.stopPropagation()">
-                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+                <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${day}">
+                    <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark"></i>
                 </button>
             </div>
         `,
@@ -250,19 +300,18 @@ getProjectDescription(project);
 }
 
 function attachProjectCardInteraction(card, demoUrl, projectData = null) {
-  card.style.cursor = 'pointer';
+  card.style.cursor = "pointer";
   card.onclick = (e) => {
-    if (e.target.closest('a, button')) return;
-    
+    if (e.target.closest("a, button")) return;
+
     // Track the project visit if projectData is provided
     if (projectData) {
       trackRecentProject(projectData);
     }
-    
-    window.open(demoUrl, '_blank', 'noopener');
+
+    window.open(demoUrl, "_blank", "noopener");
   };
 }
-
 
 /* ============================================================
    TECHNOLOGY STACK FILTERING FUNCTIONS
@@ -297,9 +346,12 @@ function matchesTechStack(projectTags) {
   // Normalize to a set of individual lowercase tokens for whole-word matching.
   // Using a Set avoids repeated linear scans for each filter.
   const tagSet = new Set(
-    (Array.isArray(projectTags) ? projectTags : String(projectTags).split(/\s+/))
+    (Array.isArray(projectTags)
+      ? projectTags
+      : String(projectTags).split(/\s+/)
+    )
       .map((t) => t.toLowerCase().trim())
-      .filter(Boolean)
+      .filter(Boolean),
   );
 
   // Every active filter must match an exact token in the tag set (AND logic).
@@ -307,13 +359,12 @@ function matchesTechStack(projectTags) {
   return techStackFilters.every((filter) => tagSet.has(filter.toLowerCase()));
 }
 
-
 /**
  * Remove a specific technology filter
  * @param {string} tech - Technology to remove from filters
  */
 function removeTechFilter(tech) {
-  techStackFilters = techStackFilters.filter(t => t !== tech);
+  techStackFilters = techStackFilters.filter((t) => t !== tech);
   updateTechFilterDisplay();
   renderGrid();
 }
@@ -323,10 +374,10 @@ function removeTechFilter(tech) {
  */
 function clearAllTechFilters() {
   techStackFilters = [];
-  techSearchQuery = '';
+  techSearchQuery = "";
 
-  const input = document.getElementById('techStackSearch');
-  if (input) input.value = '';
+  const input = document.getElementById("techStackSearch");
+  if (input) input.value = "";
 
   updateTechFilterDisplay();
   renderGrid();
@@ -336,34 +387,38 @@ function clearAllTechFilters() {
  * Update the visual display of active tech filters
  */
 function updateTechFilterDisplay() {
-  const container = document.getElementById('activeTechFilters');
-  const tagsContainer = document.getElementById('techFilterTags');
-  const clearBtn = document.getElementById('clearTechFilter');
+  const container = document.getElementById("activeTechFilters");
+  const tagsContainer = document.getElementById("techFilterTags");
+  const clearBtn = document.getElementById("clearTechFilter");
 
   if (!container || !tagsContainer) return;
 
   // Show/hide clear button in search input
   if (clearBtn) {
-    clearBtn.style.display = techStackFilters.length > 0 ? 'block' : 'none';
+    clearBtn.style.display = techStackFilters.length > 0 ? "block" : "none";
   }
 
   // Show/hide active filters container
   if (techStackFilters.length === 0) {
-    container.style.display = 'none';
+    container.style.display = "none";
     return;
   }
 
-  container.style.display = 'flex';
+  container.style.display = "flex";
 
   // Render filter tags with remove buttons
-  tagsContainer.innerHTML = techStackFilters.map(tech => `
+  tagsContainer.innerHTML = techStackFilters
+    .map(
+      (tech) => `
     <span class="tech-filter-tag">
       ${tech}
       <button onclick="removeTechFilter('${tech}')" aria-label="Remove ${tech} filter">
         <i class="fas fa-times"></i>
       </button>
     </span>
-  `).join('');
+  `,
+    )
+    .join("");
 }
 
 /**
@@ -376,11 +431,10 @@ function getAllTechnologies() {
 
   PROJECTS.forEach(([, , , tags]) => {
     if (tags) {
-      const tagArray = typeof tags === 'string'
-        ? tags.split(/\s+/).filter(t => t)
-        : tags;
+      const tagArray =
+        typeof tags === "string" ? tags.split(/\s+/).filter((t) => t) : tags;
 
-      tagArray.forEach(tag => {
+      tagArray.forEach((tag) => {
         techSet.add(tag.toLowerCase());
       });
     }
@@ -397,10 +451,14 @@ let bookmarkedProjects = [];
 let recentProjects = [];
 
 try {
-  bookmarkedProjects = JSON.parse(localStorage.getItem('bookmarkedProjects')) || [];
-  recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
+  bookmarkedProjects =
+    JSON.parse(localStorage.getItem("bookmarkedProjects")) || [];
+  recentProjects = JSON.parse(localStorage.getItem("recentProjects")) || [];
 } catch (error) {
-  console.warn('localStorage is not available or access is denied:', error.message);
+  console.warn(
+    "localStorage is not available or access is denied:",
+    error.message,
+  );
 }
 
 let showAllBookmarks = false;
@@ -415,12 +473,12 @@ const ONE_HOUR_MS = 60 * 60 * 1000; // 1 hour in milliseconds
  */
 function migrateRecentProjects() {
   if (recentProjects.length === 0) return;
-  
+
   // Check if already in new format (has timestamp)
-  if (typeof recentProjects[0] === 'object' && recentProjects[0].timestamp) {
+  if (typeof recentProjects[0] === "object" && recentProjects[0].timestamp) {
     return; // Already migrated
   }
-  
+
   // Migrate old format [day, name, url, tags] to new format {day, name, url, tags, timestamp}
   recentProjects = recentProjects.map((project) => {
     if (Array.isArray(project)) {
@@ -429,13 +487,13 @@ function migrateRecentProjects() {
         name: project[1],
         url: project[2],
         tags: project[3],
-        timestamp: Date.now() - (ONE_HOUR_MS / 2) // Set to 30 mins ago to preserve them initially
+        timestamp: Date.now() - ONE_HOUR_MS / 2, // Set to 30 mins ago to preserve them initially
       };
     }
     return project;
   });
-  
-  localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+
+  localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
 }
 
 // Migrate on load
@@ -448,53 +506,52 @@ migrateRecentProjects();
 function cleanupExpiredRecentProjects() {
   const initialLength = recentProjects.length;
   recentProjects = getRecentProjectsWithinWindow();
-  
+
   if (recentProjects.length !== initialLength) {
-    localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+    localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
     renderRecentProjects();
   }
 }
-
-// Clean up on page load
-cleanupExpiredRecentProjects();
 
 // Clean up every 5 minutes
 setInterval(cleanupExpiredRecentProjects, 5 * 60 * 1000);
 
 const CATEGORY_LABEL = {
-  beginner: 'Beginner',
-  intermediate: 'Intermediate',
-  advanced: 'Advanced',
+  beginner: "Beginner",
+  intermediate: "Intermediate",
+  advanced: "Advanced",
 };
 
 /* ============================================================
    GITHUB REPO STATS
    ============================================================ */
 async function fetchRepoStats() {
-
   const set = (id, val) => {
     const el = document.getElementById(id);
     if (el) el.textContent = val;
   };
 
   const setFallback = () => {
-    set('starCount', 'N/A');
-    set('forkCount', 'N/A');
-    set('issueCount', 'N/A');
-    set('prCount', 'N/A');
+    set("starCount", "N/A");
+    set("forkCount", "N/A");
+    set("issueCount", "N/A");
+    set("prCount", "N/A");
   };
 
   try {
-
     // Optional loading state
-    set('starCount', 'Loading...');
-    set('forkCount', 'Loading...');
-    set('issueCount', 'Loading...');
-    set('prCount', 'Loading...');
+    set("starCount", "Loading...");
+    set("forkCount", "Loading...");
+    set("issueCount", "Loading...");
+    set("prCount", "Loading...");
 
     const [repoRes, prRes] = await Promise.all([
-      fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`),
-      fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`)
+      fetch(
+        `https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`,
+      ),
+      fetch(
+        `https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`,
+      ),
     ]);
 
     if (!repoRes.ok || !prRes.ok) {
@@ -504,13 +561,14 @@ async function fetchRepoStats() {
     const repo = await repoRes.json();
     const prs = await prRes.json();
 
-    set('starCount', repo.stargazers_count.toLocaleString());
-    set('forkCount', repo.forks_count.toLocaleString());
-    set('issueCount', (repo.open_issues_count - prs.total_count).toLocaleString());
-    set('prCount', prs.total_count.toLocaleString());
-
+    set("starCount", repo.stargazers_count.toLocaleString());
+    set("forkCount", repo.forks_count.toLocaleString());
+    set(
+      "issueCount",
+      (repo.open_issues_count - prs.total_count).toLocaleString(),
+    );
+    set("prCount", prs.total_count.toLocaleString());
   } catch (e) {
-
     console.warn("GitHub stats unavailable:", e.message);
 
     // Show fallback text instead of permanent dashes
@@ -520,80 +578,82 @@ async function fetchRepoStats() {
 function generateReadme() {
   try {
     const lines = [];
-    lines.push('# 100 Days · 100 Web Projects');
-    lines.push('A curated archive of frontend experiments — browse, fork, contribute.');
-    lines.push('');
-    lines.push('## Projects');
+    lines.push("# 100 Days · 100 Web Projects");
+    lines.push(
+      "A curated archive of frontend experiments — browse, fork, contribute.",
+    );
+    lines.push("");
+    lines.push("## Projects");
     PROJECTS.forEach(([day, name, url, tags]) => {
       const { demoUrl } = resolveProjectUrls(day, name, url, tags);
       const category = getCategoryFromTags(tags, name);
       lines.push(`- **${day} — ${name}** — ${demoUrl} — _${category}_`);
     });
 
-    const blob = new Blob([lines.join('\n')], { type: 'text/markdown' });
-    const a = document.createElement('a');
+    const blob = new Blob([lines.join("\n")], { type: "text/markdown" });
+    const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = 'README.md';
+    a.download = "README.md";
     document.body.appendChild(a);
     a.click();
     a.remove();
     URL.revokeObjectURL(a.href);
   } catch (e) {
-    console.error('Failed to generate README:', e);
-    alert('Could not generate README. See console for details.');
+    console.error("Failed to generate README:", e);
+    alert("Could not generate README. See console for details.");
   }
 }
 
 /* ============================================================
    RENDER PROJECT GRID
    ============================================================ */
-let activeFilter = 'all';
-let searchQuery = '';
-let sortOption = 'default';
-let techStackFilter = 'all';
-let difficultyFilter = 'all';
+let activeFilter = "all";
+let searchQuery = "";
+let sortOption = "default";
+let techStackFilter = "all";
+let difficultyFilter = "all";
 
 function syncStateToURL() {
   const url = new URL(window.location);
-  
+
   if (searchQuery) {
-    url.searchParams.set('search', searchQuery);
+    url.searchParams.set("search", searchQuery);
   } else {
-    url.searchParams.delete('search');
+    url.searchParams.delete("search");
   }
 
-  if (activeFilter && activeFilter !== 'all') {
-    url.searchParams.set('category', activeFilter);
+  if (activeFilter && activeFilter !== "all") {
+    url.searchParams.set("category", activeFilter);
   } else {
-    url.searchParams.delete('category');
+    url.searchParams.delete("category");
   }
 
   if (currentPage > 1) {
-    url.searchParams.set('page', currentPage);
+    url.searchParams.set("page", currentPage);
   } else {
-    url.searchParams.delete('page');
+    url.searchParams.delete("page");
   }
 
-  window.history.replaceState({}, '', url);
+  window.history.replaceState({}, "", url);
 }
 
 function readStateFromURL() {
   const urlParams = new URLSearchParams(window.location.search);
-  
-  if (urlParams.has('search')) {
-    searchQuery = urlParams.get('search');
-    const searchInput = document.getElementById('searchInput');
+
+  if (urlParams.has("search")) {
+    searchQuery = urlParams.get("search");
+    const searchInput = document.getElementById("searchInput");
     if (searchInput) {
       searchInput.value = searchQuery;
     }
   }
-  
-  if (urlParams.has('category')) {
-    activeFilter = urlParams.get('category');
+
+  if (urlParams.has("category")) {
+    activeFilter = urlParams.get("category");
   }
-  
-  if (urlParams.has('page')) {
-    const page = parseInt(urlParams.get('page'), 10);
+
+  if (urlParams.has("page")) {
+    const page = parseInt(urlParams.get("page"), 10);
     if (!isNaN(page) && page > 0) {
       currentPage = page;
     }
@@ -601,54 +661,67 @@ function readStateFromURL() {
 }
 
 function renderGrid() {
-  const grid = document.getElementById('projectGrid');
-  const noResults = document.getElementById('noResults');
+  const grid = document.getElementById("projectGrid");
+  const noResults = document.getElementById("noResults");
   if (!grid) return;
 
-  if (typeof updateClearFiltersBtnVisibility === 'function') {
+  if (typeof updateClearFiltersBtnVisibility === "function") {
     updateClearFiltersBtnVisibility();
   }
 
-  const filtered = PROJECTS.filter(([day, name, url, tags, difficulty = '']) => {
-    // Category filter
-    const category = getCategoryFromTags(tags, name);
-    const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || 'all';
-    const matchesFilter = activeFilter === 'all' || category === targetCategory;
+  const filtered = PROJECTS.filter(
+    ([day, name, url, tags, difficulty = ""]) => {
+      // Category filter
+      const category = getCategoryFromTags(tags, name);
+      const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || "all";
+      const matchesFilter =
+        activeFilter === "all" || category === targetCategory;
 
-    // Search filter
-    const q = searchQuery.toLowerCase().trim();
-    const matchesSearch = !q || q.split(/\s+/).every(term =>
-      name.toLowerCase().includes(term) ||
-      day.toLowerCase().includes(term) ||
-      ((Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase().includes(term))
-    );
+      // Search filter
+      const q = searchQuery.toLowerCase().trim();
+      const matchesSearch =
+        !q ||
+        q
+          .split(/\s+/)
+          .every(
+            (term) =>
+              name.toLowerCase().includes(term) ||
+              day.toLowerCase().includes(term) ||
+              (Array.isArray(tags) ? tags.join(" ") : tags || "")
+                .toLowerCase()
+                .includes(term),
+          );
 
-    // Tech stack dropdown filter
-    let matchesTech = true;
-    if (techStackFilter && techStackFilter !== 'all') {
-      const tagStr = (Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase();
-      matchesTech = tagStr.includes(techStackFilter.toLowerCase());
-    }
+      // Tech stack dropdown filter
+      let matchesTech = true;
+      if (techStackFilter && techStackFilter !== "all") {
+        const tagStr = (
+          Array.isArray(tags) ? tags.join(" ") : tags || ""
+        ).toLowerCase();
+        matchesTech = tagStr.includes(techStackFilter.toLowerCase());
+      }
 
-    // Difficulty filter
-    let matchesDifficulty = true;
-    if (difficultyFilter && difficultyFilter !== 'all') {
-      matchesDifficulty = (difficulty || '').toLowerCase() === difficultyFilter.toLowerCase();
-    }
+      // Difficulty filter
+      let matchesDifficulty = true;
+      if (difficultyFilter && difficultyFilter !== "all") {
+        matchesDifficulty =
+          (difficulty || "").toLowerCase() === difficultyFilter.toLowerCase();
+      }
 
-    return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
-  });
+      return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
+    },
+  );
 
   // Apply sorting
-  if (sortOption === 'az') {
+  if (sortOption === "az") {
     filtered.sort((a, b) => a[1].localeCompare(b[1]));
-  } else if (sortOption === 'latest') {
+  } else if (sortOption === "latest") {
     filtered.sort((a, b) => {
-      const dayA = parseInt(a[0].replace('Day ', ''));
-      const dayB = parseInt(b[0].replace('Day ', ''));
+      const dayA = parseInt(a[0].replace("Day ", ""));
+      const dayB = parseInt(b[0].replace("Day ", ""));
       return dayB - dayA;
     });
-  } else if (sortOption === 'difficulty') {
+  } else if (sortOption === "difficulty") {
     const difficultyOrder = { beginner: 1, intermediate: 2, advanced: 3 };
     filtered.sort((a, b) => {
       const diffA = a[4] ? difficultyOrder[a[4].toLowerCase()] || 0 : 0;
@@ -657,18 +730,18 @@ function renderGrid() {
     });
   }
 
-  grid.innerHTML = '';
+  grid.innerHTML = "";
 
   if (filtered.length === 0) {
-    grid.style.display = 'none';
-    if (noResults) noResults.style.display = 'block';
-    const container = document.getElementById('paginationContainer');
+    grid.style.display = "none";
+    if (noResults) noResults.style.display = "block";
+    const container = document.getElementById("paginationContainer");
     if (container) container.remove();
     return;
   }
 
-  grid.style.display = 'grid';
-  if (noResults) noResults.style.display = 'none';
+  grid.style.display = "grid";
+  if (noResults) noResults.style.display = "none";
 
   const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
   if (currentPage > totalPages) currentPage = totalPages;
@@ -681,8 +754,10 @@ function renderGrid() {
 
   pageItems.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
-    const card = document.createElement('div');
-    const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
+    const card = document.createElement("div");
+    const isBookmarked = bookmarkedProjects.some(
+      (item) => normalizeProjectEntry(item).day === day,
+    );
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
       name,
@@ -693,7 +768,9 @@ function renderGrid() {
       showDescription: true,
     });
 
-    card.className = sourceOnly ? 'project-card source-only' : 'project-card';
+    card.className = sourceOnly
+      ? "project-card source-only visible"
+      : "project-card visible";
     card.innerHTML = html;
     attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
@@ -701,22 +778,22 @@ function renderGrid() {
   });
   grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
-  
+
   syncStateToURL();
 }
 
 function renderPagination(totalItems, totalPages) {
-  const grid = document.getElementById('projectGrid');
+  const grid = document.getElementById("projectGrid");
   if (!grid) return;
 
-  let container = document.getElementById('paginationContainer');
+  let container = document.getElementById("paginationContainer");
   if (!container) {
-    container = document.createElement('div');
-    container.id = 'paginationContainer';
-    container.className = 'pagination-container';
+    container = document.createElement("div");
+    container.id = "paginationContainer";
+    container.className = "pagination-container";
   }
 
-  container.innerHTML = '';
+  container.innerHTML = "";
 
   // If there is only 1 page of results, hide and detach the pagination block
   if (totalPages <= 1) {
@@ -727,22 +804,22 @@ function renderPagination(totalItems, totalPages) {
   }
 
   // Render showing info range (e.g. "Showing 1 to 9 of 100")
-  const infoDiv = document.createElement('div');
-  infoDiv.className = 'pagination-info';
+  const infoDiv = document.createElement("div");
+  infoDiv.className = "pagination-info";
   const startItem = (currentPage - 1) * itemsPerPage + 1;
   const endItem = Math.min(currentPage * itemsPerPage, totalItems);
   infoDiv.innerHTML = `Showing <strong>${startItem}</strong> to <strong>${endItem}</strong> of <strong>${totalItems}</strong> projects`;
   container.appendChild(infoDiv);
 
-  const controlsDiv = document.createElement('div');
-  controlsDiv.className = 'pagination-controls';
+  const controlsDiv = document.createElement("div");
+  controlsDiv.className = "pagination-controls";
 
-  const firstBtn = document.createElement('button');
-  firstBtn.className = 'first-btn';
-  firstBtn.innerHTML = '⏮ First';
+  const firstBtn = document.createElement("button");
+  firstBtn.className = "first-btn";
+  firstBtn.innerHTML = "⏮ First";
   firstBtn.disabled = currentPage === 1;
 
-  firstBtn.addEventListener('click', (e) => {
+  firstBtn.addEventListener("click", (e) => {
     e.preventDefault();
     if (currentPage !== 1) {
       currentPage = 1;
@@ -753,12 +830,12 @@ function renderPagination(totalItems, totalPages) {
 
   controlsDiv.appendChild(firstBtn);
 
-  const prevBtn = document.createElement('button');
-  prevBtn.className = 'prev-btn';
+  const prevBtn = document.createElement("button");
+  prevBtn.className = "prev-btn";
   prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
   prevBtn.disabled = currentPage === 1;
-  prevBtn.setAttribute('aria-label', 'Previous Page');
-  prevBtn.addEventListener('click', (e) => {
+  prevBtn.setAttribute("aria-label", "Previous Page");
+  prevBtn.addEventListener("click", (e) => {
     e.preventDefault();
     if (currentPage > 1) {
       currentPage--;
@@ -791,11 +868,11 @@ function renderPagination(totalItems, totalPages) {
   }
 
   for (let i = startPage; i <= endPage; i++) {
-    const pageBtn = document.createElement('button');
-    pageBtn.className = `page-num ${currentPage === i ? 'active' : ''}`;
+    const pageBtn = document.createElement("button");
+    pageBtn.className = `page-num ${currentPage === i ? "active" : ""}`;
     pageBtn.textContent = i;
-    pageBtn.setAttribute('aria-label', `Page ${i}`);
-    pageBtn.addEventListener('click', (e) => {
+    pageBtn.setAttribute("aria-label", `Page ${i}`);
+    pageBtn.addEventListener("click", (e) => {
       e.preventDefault();
       currentPage = i;
       renderGrid();
@@ -807,12 +884,12 @@ function renderPagination(totalItems, totalPages) {
     controlsDiv.appendChild(pageBtn);
   }
 
-  const nextBtn = document.createElement('button');
-  nextBtn.className = 'next-btn';
+  const nextBtn = document.createElement("button");
+  nextBtn.className = "next-btn";
   nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
   nextBtn.disabled = currentPage === totalPages;
-  nextBtn.setAttribute('aria-label', 'Next Page');
-  nextBtn.addEventListener('click', (e) => {
+  nextBtn.setAttribute("aria-label", "Next Page");
+  nextBtn.addEventListener("click", (e) => {
     e.preventDefault();
     if (currentPage < totalPages) {
       currentPage++;
@@ -824,12 +901,12 @@ function renderPagination(totalItems, totalPages) {
     }
   });
   controlsDiv.appendChild(nextBtn);
-  const lastBtn = document.createElement('button');
-  lastBtn.className = 'last-btn';
-  lastBtn.innerHTML =  'Last ⏭';
+  const lastBtn = document.createElement("button");
+  lastBtn.className = "last-btn";
+  lastBtn.innerHTML = "Last ⏭";
   lastBtn.disabled = currentPage === totalPages;
 
-  lastBtn.addEventListener('click', (e) => {
+  lastBtn.addEventListener("click", (e) => {
     e.preventDefault();
     if (currentPage !== totalPages) {
       currentPage = totalPages;
@@ -847,17 +924,18 @@ function renderPagination(totalItems, totalPages) {
 }
 
 function scrollToProjectSection() {
-  const header = document.querySelector('.projects-header');
+  const header = document.querySelector(".projects-header");
   if (!header) return;
 
   // Only scroll if the projects section is fully below the viewport.
   // If the user is already within or past the project grid, don't move them.
   if (header.getBoundingClientRect().top < window.innerHeight) return;
 
-  const navbar = document.querySelector('.navbar');
+  const navbar = document.querySelector(".navbar");
   // Subtract height of fixed navbar with a 50px buffer to prevent overlaying the search bar
   const offset = navbar ? navbar.offsetHeight - 50 : 30;
-  const targetY = header.getBoundingClientRect().top + window.pageYOffset - offset;
+  const targetY =
+    header.getBoundingClientRect().top + window.pageYOffset - offset;
   const startY = window.pageYOffset;
   const distance = targetY - startY;
 
@@ -869,7 +947,12 @@ function scrollToProjectSection() {
     if (startTime === null) startTime = currentTime;
     const timeElapsed = currentTime - startTime;
     // Cap scroll position math exactly to distance to avoid landing slightly off target
-    const run = easeInOutQuad(Math.min(timeElapsed, duration), startY, distance, duration);
+    const run = easeInOutQuad(
+      Math.min(timeElapsed, duration),
+      startY,
+      distance,
+      duration,
+    );
     window.scrollTo(0, run);
     if (timeElapsed < duration) {
       requestAnimationFrame(animation);
@@ -888,35 +971,75 @@ function scrollToProjectSection() {
 }
 
 function toggleBookmark(project) {
-  const exists = bookmarkedProjects.find((item) => item[0] === project[0]);
+  const exists = bookmarkedProjects.find(
+    (item) => normalizeProjectEntry(item).day === project[0],
+  );
 
   if (exists) {
-    bookmarkedProjects = bookmarkedProjects.filter((item) => item[0] !== project[0]);
-    showToast('Bookmark removed');
+    bookmarkedProjects = bookmarkedProjects.filter(
+      (item) => normalizeProjectEntry(item).day !== project[0],
+    );
+    showToast("Bookmark removed");
   } else {
     bookmarkedProjects.push(project);
-    showToast('Project bookmarked');
+    showToast("Project bookmarked");
   }
 
+  updateBookmarkURL();
+
   try {
-    localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
+    localStorage.setItem(
+      "bookmarkedProjects",
+      JSON.stringify(bookmarkedProjects),
+    );
   } catch (error) {
-    console.warn('Could not save bookmark due to localStorage restrictions');
+    console.warn("Could not save bookmark due to localStorage restrictions");
   }
   renderBookmarks();
   renderGrid();
   renderRecentProjects();
 }
 
-/**
- * Removes projects older than 1 hour from the recent projects list
- * @returns {array} Filtered recent projects within the 1-hour window
- */
+function updateBookmarkURL() {
+  const url = new URL(window.location);
+
+  if (bookmarkedProjects.length > 0) {
+    const bookmarkIds = bookmarkedProjects.map(
+      (project) => normalizeProjectEntry(project).day,
+    );
+    url.searchParams.set("bookmarks", bookmarkIds.join(","));
+  } else {
+    url.searchParams.delete("bookmarks");
+  }
+
+  window.history.replaceState({}, "", url);
+}
+
+function loadBookmarksFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const bookmarkParam = params.get("bookmarks");
+
+  if (!bookmarkParam) return;
+
+  const bookmarkIds = bookmarkParam.split(",").map((id) => id.trim());
+
+  bookmarkedProjects = PROJECTS.filter((project) =>
+    bookmarkIds.includes(project[0]),
+  );
+
+  localStorage.setItem(
+    "bookmarkedProjects",
+    JSON.stringify(bookmarkedProjects),
+  );
+}
+
 function getRecentProjectsWithinWindow() {
   const now = Date.now();
+
   return recentProjects.filter((item) => {
     const timestamp = item.timestamp || Date.now();
     const age = now - timestamp;
+
     return age <= ONE_HOUR_MS;
   });
 }
@@ -934,18 +1057,18 @@ function trackRecentProject(project) {
       name: project[1],
       url: project[2],
       tags: project[3],
-      timestamp: Date.now()
+      timestamp: Date.now(),
     };
   } else {
     projectObj = {
       ...project,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     };
   }
 
   // Remove duplicate if exists
   recentProjects = recentProjects.filter((item) => item.day !== projectObj.day);
-  
+
   // Add to front
   recentProjects.unshift(projectObj);
 
@@ -955,35 +1078,63 @@ function trackRecentProject(project) {
   }
 
   try {
-    localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+    localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
   } catch (error) {
-    console.warn('Could not save recent projects due to localStorage restrictions');
+    console.warn(
+      "Could not save recent projects due to localStorage restrictions",
+    );
   }
   renderRecentProjects();
 }
 
-const bookmarkGrid = document.getElementById('bookmarkGrid');
+const bookmarkGrid = document.getElementById("bookmarkGrid");
+
+function normalizeProjectEntry(project) {
+  if (Array.isArray(project)) {
+    return {
+      day: project[0],
+      name: project[1],
+      url: project[2],
+      tags: project[3],
+    };
+  }
+
+  return {
+    day: project.day,
+    name: project.name,
+    url: project.url,
+    tags: project.tags,
+  };
+}
 
 function renderBookmarks() {
   if (!bookmarkGrid) return;
 
-  bookmarkGrid.innerHTML = '';
+  bookmarkGrid.innerHTML = "";
 
   if (bookmarkedProjects.length === 0) {
     bookmarkGrid.innerHTML = `<p class="empty-state">No bookmarked projects yet.</p>`;
     return;
   }
 
-  const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
+  const bookmarkToggleBtn = document.getElementById("bookmarkToggleBtn");
   if (bookmarkToggleBtn) {
-    bookmarkToggleBtn.style.display = bookmarkedProjects.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
+    bookmarkToggleBtn.style.display =
+      bookmarkedProjects.length <= INITIAL_VISIBLE_ITEMS
+        ? "none"
+        : "inline-flex";
   }
 
-  const visibleBookmarks = showAllBookmarks ? bookmarkedProjects : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
+  const visibleBookmarks = showAllBookmarks
+    ? bookmarkedProjects
+    : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleBookmarks.forEach(([day, name, url, tags]) => {
+  visibleBookmarks.forEach((project) => {
+    const { day, name, url, tags } = normalizeProjectEntry(project);
+    if (!day || !name) return;
+
     const category = getCategoryFromTags(tags, name);
-    const card = document.createElement('div');
+    const card = document.createElement("div");
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
       name,
@@ -994,7 +1145,9 @@ function renderBookmarks() {
       showDescription: true,
     });
 
-    card.className = sourceOnly ? 'project-card source-only' : 'project-card';
+    card.className = sourceOnly
+      ? "project-card source-only visible"
+      : "project-card visible";
     card.innerHTML = html;
     attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
@@ -1002,12 +1155,12 @@ function renderBookmarks() {
   });
 }
 
-const recentGrid = document.getElementById('recentGrid');
+const recentGrid = document.getElementById("recentGrid");
 
 function renderRecentProjects() {
   if (!recentGrid) return;
 
-  recentGrid.innerHTML = '';
+  recentGrid.innerHTML = "";
 
   // Filter projects within the 1-hour window
   const validRecent = getRecentProjectsWithinWindow();
@@ -1017,12 +1170,15 @@ function renderRecentProjects() {
     return;
   }
 
-  const recentToggleBtn = document.getElementById('recentToggleBtn');
+  const recentToggleBtn = document.getElementById("recentToggleBtn");
   if (recentToggleBtn) {
-    recentToggleBtn.style.display = validRecent.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
+    recentToggleBtn.style.display =
+      validRecent.length <= INITIAL_VISIBLE_ITEMS ? "none" : "inline-flex";
   }
 
-  const visibleRecent = showAllRecent ? validRecent : validRecent.slice(0, INITIAL_VISIBLE_ITEMS);
+  const visibleRecent = showAllRecent
+    ? validRecent
+    : validRecent.slice(0, INITIAL_VISIBLE_ITEMS);
 
   visibleRecent.forEach((projectObj) => {
     // Handle both old array format and new object format
@@ -1030,10 +1186,12 @@ function renderRecentProjects() {
     const name = projectObj.name || projectObj[1];
     const url = projectObj.url || projectObj[2];
     const tags = projectObj.tags || projectObj[3];
-    
+
     const category = getCategoryFromTags(tags, name);
-    const card = document.createElement('div');
-    const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
+    const card = document.createElement("div");
+    const isBookmarked = bookmarkedProjects.some(
+      (item) => normalizeProjectEntry(item).day === day,
+    );
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
       name,
@@ -1044,7 +1202,9 @@ function renderRecentProjects() {
       showDescription: true,
     });
 
-    card.className = sourceOnly ? 'project-card source-only' : 'project-card';
+    card.className = sourceOnly
+      ? "project-card source-only visible"
+      : "project-card visible";
     card.innerHTML = html;
     attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
@@ -1052,68 +1212,73 @@ function renderRecentProjects() {
   });
 }
 
+// Clean up after grid references are initialized.
+cleanupExpiredRecentProjects();
+
 /* ============================================================
    VIEW ALL TOGGLE
    ============================================================ */
 
-const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
-const recentToggleBtn = document.getElementById('recentToggleBtn');
-const copyBookmarksBtn = document.getElementById('copyBookmarksBtn');
+const bookmarkToggleBtn = document.getElementById("bookmarkToggleBtn");
+const recentToggleBtn = document.getElementById("recentToggleBtn");
+const copyBookmarksBtn = document.getElementById("copyBookmarksBtn");
 
 if (bookmarkToggleBtn) {
-  bookmarkToggleBtn.addEventListener('click', () => {
+  bookmarkToggleBtn.addEventListener("click", () => {
     showAllBookmarks = !showAllBookmarks;
-    bookmarkToggleBtn.textContent = showAllBookmarks ? 'Show Less' : 'View All';
+    bookmarkToggleBtn.textContent = showAllBookmarks ? "Show Less" : "View All";
     renderBookmarks();
   });
 }
 
 if (copyBookmarksBtn) {
-  copyBookmarksBtn.addEventListener('click', async () => {
+  copyBookmarksBtn.addEventListener("click", async () => {
     if (bookmarkedProjects.length === 0) {
-      showToast('No bookmarks to copy!');
+      showToast("No bookmarks to copy!");
       return;
     }
-    const textToCopy = bookmarkedProjects.map(p => {
-      const projectName = p[1];
-      const { demoUrl } = resolveProjectUrls(p[0], p[1], p[2], p[3]);
-      const projectLink = demoUrl.startsWith('http')
-        ? demoUrl
-        : new URL(demoUrl, window.location.href).href;
-      return `${projectName} - ${projectLink}`;
-    }).join('\n');
+    const textToCopy = bookmarkedProjects
+      .map((p) => {
+        const { day, name, url, tags } = normalizeProjectEntry(p);
+        const { demoUrl } = resolveProjectUrls(day, name, url, tags);
+        const projectLink = demoUrl.startsWith("http")
+          ? demoUrl
+          : new URL(demoUrl, window.location.href).href;
+        return `${name} - ${projectLink}`;
+      })
+      .join("\n");
 
     try {
       await navigator.clipboard.writeText(textToCopy);
-      showToast('Bookmarks copied to clipboard!');
+      showToast("Bookmarks copied to clipboard!");
     } catch (err) {
-      showToast('Failed to copy bookmarks.');
+      showToast("Failed to copy bookmarks.");
     }
   });
 }
 
 if (recentToggleBtn) {
-  recentToggleBtn.addEventListener('click', () => {
+  recentToggleBtn.addEventListener("click", () => {
     showAllRecent = !showAllRecent;
-    recentToggleBtn.textContent = showAllRecent ? 'Show Less' : 'View All';
+    recentToggleBtn.textContent = showAllRecent ? "Show Less" : "View All";
     renderRecentProjects();
   });
 }
 
 function showToast(message) {
-  const toast = document.getElementById('toast');
+  const toast = document.getElementById("toast");
   if (!toast) return;
 
   toast.textContent = message;
-  toast.classList.add('show');
+  toast.classList.add("show");
 
   setTimeout(() => {
-    toast.classList.remove('show');
+    toast.classList.remove("show");
   }, 3000);
 }
 
-document.addEventListener('click', (e) => {
-  const bookmarkBtn = e.target.closest('.bookmark-btn');
+document.addEventListener("click", (e) => {
+  const bookmarkBtn = e.target.closest(".bookmark-btn");
   if (!bookmarkBtn) return;
 
   e.preventDefault();
@@ -1124,8 +1289,8 @@ document.addEventListener('click', (e) => {
   toggleBookmark(project);
 });
 
-document.addEventListener('click', (e) => {
-  const projectLink = e.target.closest('.open-project');
+document.addEventListener("click", (e) => {
+  const projectLink = e.target.closest(".open-project");
   if (!projectLink) return;
 
   const projectDay = projectLink.dataset.id;
@@ -1139,56 +1304,58 @@ document.addEventListener('click', (e) => {
    CLEAR ALL FILTERS SYSTEM
    ============================================================ */
 function updateClearFiltersBtnVisibility() {
-  const btn = document.getElementById('clearAllFiltersBtn');
+  const btn = document.getElementById("clearAllFiltersBtn");
   if (!btn) return;
 
-  const input = document.getElementById('searchInput');
-  const techStack = document.getElementById('techStackFilter');
-  const difficultyElement = document.getElementById('difficultyFilter');
+  const input = document.getElementById("searchInput");
+  const techStack = document.getElementById("techStackFilter");
+  const difficultyElement = document.getElementById("difficultyFilter");
 
-  const hasSearch = input && input.value.trim() !== '';
-  const hasTech = techStack && techStack.value !== 'all';
-  const hasDiff = difficultyElement && difficultyElement.value !== 'all';
-  const hasCategory = activeFilter && activeFilter !== 'all';
+  const hasSearch = input && input.value.trim() !== "";
+  const hasTech = techStack && techStack.value !== "all";
+  const hasDiff = difficultyElement && difficultyElement.value !== "all";
+  const hasCategory = activeFilter && activeFilter !== "all";
 
   if (hasSearch || hasTech || hasDiff || hasCategory) {
-    btn.style.display = 'inline-flex';
+    btn.style.display = "inline-flex";
   } else {
-    btn.style.display = 'none';
+    btn.style.display = "none";
   }
 }
 
 function resetAllFilters() {
   // 1. Reset Category filter chips
-  const chips = document.querySelectorAll('.chip[data-filter]');
-  chips.forEach((c) => c.classList.remove('active'));
-  const allChip = document.getElementById('filterAll') || document.querySelector('.chip[data-filter="all"]');
-  if (allChip) allChip.classList.add('active');
-  activeFilter = 'all';
+  const chips = document.querySelectorAll(".chip[data-filter]");
+  chips.forEach((c) => c.classList.remove("active"));
+  const allChip =
+    document.getElementById("filterAll") ||
+    document.querySelector('.chip[data-filter="all"]');
+  if (allChip) allChip.classList.add("active");
+  activeFilter = "all";
 
   // 2. Clear Search input
-  const input = document.getElementById('searchInput');
-  if (input) input.value = '';
-  searchQuery = '';
+  const input = document.getElementById("searchInput");
+  if (input) input.value = "";
+  searchQuery = "";
 
   // 3. Reset Tech Stack dropdown select
-  const techStack = document.getElementById('techStackFilter');
-  if (techStack) techStack.value = 'all';
-  techStackFilter = 'all';
+  const techStack = document.getElementById("techStackFilter");
+  if (techStack) techStack.value = "all";
+  techStackFilter = "all";
 
   // 4. Reset Difficulty dropdown select
-  const difficultyElement = document.getElementById('difficultyFilter');
-  if (difficultyElement) difficultyElement.value = 'all';
-  difficultyFilter = 'all';
+  const difficultyElement = document.getElementById("difficultyFilter");
+  if (difficultyElement) difficultyElement.value = "all";
+  difficultyFilter = "all";
 
   // 5. Reset Sorting to default
-  const sortSelect = document.getElementById('sortProjects');
-  if (sortSelect) sortSelect.value = 'default';
-  sortOption = 'default';
+  const sortSelect = document.getElementById("sortProjects");
+  if (sortSelect) sortSelect.value = "default";
+  sortOption = "default";
 
   // 6. Sync URL
-  if (typeof updateURL === 'function') {
-    updateURL('', 'all');
+  if (typeof updateURL === "function") {
+    updateURL("", "all");
   }
 
   // 7. Refresh grid and pagination
@@ -1196,13 +1363,13 @@ function resetAllFilters() {
   renderGrid();
   syncProjectCounts();
 
-  showToast('Filters cleared!');
+  showToast("Filters cleared!");
 }
 
 function initClearAllFilters() {
-  const btn = document.getElementById('clearAllFiltersBtn');
+  const btn = document.getElementById("clearAllFiltersBtn");
   if (btn) {
-    btn.addEventListener('click', resetAllFilters);
+    btn.addEventListener("click", resetAllFilters);
   }
 }
 
@@ -1210,16 +1377,16 @@ function initClearAllFilters() {
    FILTER CHIPS
    ============================================================ */
 function initFilterChips() {
-  const chips = document.querySelectorAll('.chip[data-filter]');
+  const chips = document.querySelectorAll(".chip[data-filter]");
   chips.forEach((chip) => {
     if (chip.dataset.filter === activeFilter) {
-      chips.forEach((c) => c.classList.remove('active'));
-      chip.classList.add('active');
+      chips.forEach((c) => c.classList.remove("active"));
+      chip.classList.add("active");
     }
 
-    chip.addEventListener('click', () => {
-      chips.forEach((c) => c.classList.remove('active'));
-      chip.classList.add('active');
+    chip.addEventListener("click", () => {
+      chips.forEach((c) => c.classList.remove("active"));
+      chip.classList.add("active");
       activeFilter = chip.dataset.filter;
       currentPage = 1;
       renderGrid();
@@ -1243,22 +1410,22 @@ function debounce(fn, delay = 300) {
 }
 
 function initSearch() {
-  const input = document.getElementById('searchInput');
+  const input = document.getElementById("searchInput");
   if (!input) return;
 
   input.addEventListener(
-    'input',
+    "input",
     debounce(() => {
       searchQuery = input.value.trim();
       currentPage = 1;
       renderGrid();
-    }, 180)
+    }, 180),
   );
 
   // Tech stack dropdown filter listener
-  const techStack = document.getElementById('techStackFilter');
+  const techStack = document.getElementById("techStackFilter");
   if (techStack) {
-    techStack.addEventListener('change', () => {
+    techStack.addEventListener("change", () => {
       techStackFilter = techStack.value;
       currentPage = 1;
       renderGrid();
@@ -1266,9 +1433,9 @@ function initSearch() {
   }
 
   // Difficulty dropdown filter listener
-  const diffFilterElement = document.getElementById('difficultyFilter');
+  const diffFilterElement = document.getElementById("difficultyFilter");
   if (diffFilterElement) {
-    diffFilterElement.addEventListener('change', () => {
+    diffFilterElement.addEventListener("change", () => {
       difficultyFilter = diffFilterElement.value;
       currentPage = 1;
       renderGrid();
@@ -1277,10 +1444,10 @@ function initSearch() {
 }
 
 function initSorting() {
-  const sortSelect = document.getElementById('sortProjects');
+  const sortSelect = document.getElementById("sortProjects");
   if (!sortSelect) return;
 
-  sortSelect.addEventListener('change', (e) => {
+  sortSelect.addEventListener("change", (e) => {
     sortOption = e.target.value;
     currentPage = 1;
     renderGrid();
@@ -1291,34 +1458,37 @@ function initSorting() {
    TECH STACK SEARCH INITIALIZATION
    ============================================================ */
 function initTechStackSearch() {
-  const input = document.getElementById('techStackSearch');
-  const clearBtn = document.getElementById('clearTechFilter');
+  const input = document.getElementById("techStackSearch");
+  const clearBtn = document.getElementById("clearTechFilter");
 
   if (!input) return;
 
   // Use the shared debounce utility instead of a manual inline timer
-  input.addEventListener('input', debounce((e) => {
-    const value = e.target.value.trim().toLowerCase();
+  input.addEventListener(
+    "input",
+    debounce((e) => {
+      const value = e.target.value.trim().toLowerCase();
 
-    if (value) {
-      const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
-      techStackFilters = [...new Set(techs)];
-      updateTechFilterDisplay();
-      currentPage = 1;
-      renderGrid();
-    } else {
-      clearAllTechFilters();
-    }
-  }, 300));
+      if (value) {
+        const techs = value.split(/[,\s]+/).filter((t) => t.length > 0);
+        techStackFilters = [...new Set(techs)];
+        updateTechFilterDisplay();
+        currentPage = 1;
+        renderGrid();
+      } else {
+        clearAllTechFilters();
+      }
+    }, 300),
+  );
 
   if (clearBtn) {
-    clearBtn.addEventListener('click', () => {
+    clearBtn.addEventListener("click", () => {
       clearAllTechFilters();
     });
   }
 
-  input.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
+  input.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
       e.preventDefault();
       input.blur();
     }
@@ -1328,13 +1498,13 @@ function initTechStackSearch() {
 /* ============================================================
    SEARCH CONTROLS
    ============================================================ */
-const searchInput = document.getElementById('searchInput');
-const clearSearchBtn = document.getElementById('clearSearch');
+const searchInput = document.getElementById("searchInput");
+const clearSearchBtn = document.getElementById("clearSearch");
 
 function updateCategoryCounts() {
   const counts = {};
   for (const key of Object.keys(FILTER_CATEGORY_MAP)) {
-    if (key !== 'all') {
+    if (key !== "all") {
       counts[key] = 0;
     }
   }
@@ -1342,19 +1512,19 @@ function updateCategoryCounts() {
   PROJECTS.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
     const filterKey = Object.keys(FILTER_CATEGORY_MAP).find(
-      (key) => FILTER_CATEGORY_MAP[key] === category
+      (key) => FILTER_CATEGORY_MAP[key] === category,
     );
-    if (filterKey && filterKey !== 'all') {
+    if (filterKey && filterKey !== "all") {
       counts[filterKey]++;
     }
   });
 
   const categorySpans = {
-    'game': document.getElementById('gameCount'),
-    'clone': document.getElementById('cloneCount'),
-    'tool': document.getElementById('toolCount'),
-    'ui': document.getElementById('uiCount'),
-    'api': document.getElementById('apiCount')
+    game: document.getElementById("gameCount"),
+    clone: document.getElementById("cloneCount"),
+    tool: document.getElementById("toolCount"),
+    ui: document.getElementById("uiCount"),
+    api: document.getElementById("apiCount"),
   };
 
   for (const [key, span] of Object.entries(categorySpans)) {
@@ -1369,14 +1539,18 @@ function syncProjectCounts() {
 
   // Apply search filter
   if (searchQuery) {
-    filtered = filtered.filter(([day, name]) =>
-      name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      day.toLowerCase().includes(searchQuery.toLowerCase())
+    filtered = filtered.filter(
+      ([day, name]) =>
+        name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        day.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   }
 
   const total = filtered.length.toLocaleString();
-  const countNodes = [document.getElementById('projectCount'), document.getElementById('allCount')];
+  const countNodes = [
+    document.getElementById("projectCount"),
+    document.getElementById("allCount"),
+  ];
 
   countNodes.forEach((node) => {
     if (node) node.textContent = total;
@@ -1413,157 +1587,86 @@ syncProjectCounts();
    NAVBAR — dynamic based on login state
    ============================================================ */
 function updateNavbar() {
-  const container = document.getElementById('navButtons');
-  if (!container) return;
-  const username = window.username || localStorage.getItem('loggedInUser') || null;   // Read logged-in user from localStorage so navbar consists of logged in user when page reloads
-  const isRoot = !window.location.pathname.includes('/contributors/');
-  const base = isRoot ? '' : '../';
-  const isLight = document.body.classList.contains('light-mode');
-  const themeButton = `
-        <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
-          <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i> Theme
-        </button>
-        `;
-  const otherLink = isRoot
-    ? `<a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>
-       <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>`
-    : `<a class="btn btn-ghost btn-sm" href="${base}index.html"><i class="fas fa-home"></i> Home</a>
-       <a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>`;
-
-  if (username) {
-    container.innerHTML = `
-            ${themeButton}
-            <span class="welcome-text">Hi, ${username}</span>
-            <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
-            <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
-            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
-              <i class="fab fa-github"></i> GitHub
-            </a>
-            ${otherLink}
-        `;
-      document.getElementById('logoutBtn').addEventListener('click', () => {
-      window.username = null;
-      localStorage.removeItem('loggedInUser');  // cleared logged in info on logout
-      updateNavbar();
-      });
-  } else {
-    container.innerHTML = `
-            ${themeButton}
-            ${otherLink}
-            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
-                <i class="fab fa-github"></i> GitHub
-            </a>
-          <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
-           <div class="auth-buttons">
-           <a class="btn btn-ghost btn-sm" href="${base}public/Login.html">Sign Up</a>
-           <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign In</a>
-          </div>
-        `;
-  }
+  // The navbar is now managed by navbar.js which creates the dropdowns properly.
+  // This function is kept empty to prevent legacy calls from breaking.
 }
 
 /* ============================================================
    THEME TOGGLE
    ============================================================ */
-function initTheme() {
-  const saved = localStorage.getItem('theme') || 'dark';
-  let transitionTimer = null;
-
-  const syncThemeIcons = () => {
-    const isLight = document.body.classList.contains('light-mode');
-    const iconClass = isLight ? 'fas fa-sun' : 'fas fa-moon';
-    document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach(icon => {
-      icon.className = iconClass;
-    });
-  };
-
-  if (saved === 'light') {
-    document.body.classList.add('light-mode');
-  }
-  syncThemeIcons();
-
-  document.body.addEventListener('click', (e) => {
-    const target = e.target.closest('#themeToggle') || e.target.closest('#themeToggleNav');
-    if (!target) return;
-
-    document.body.classList.toggle('light-mode');
-    const isLight = document.body.classList.contains('light-mode');
-    localStorage.setItem('theme', isLight ? 'light' : 'dark');
-    syncThemeIcons();
-
-    document.body.classList.add('theme-transitioning');
-    if (transitionTimer) clearTimeout(transitionTimer);
-    transitionTimer = setTimeout(() => {
-      document.body.classList.remove('theme-transitioning');
-    }, 400);
-  });
-}
+// Implemented by the shared ThemeManager in theme.js.
 
 /* ============================================================
    SCROLL TO TOP
    ============================================================ */
 function initScrollBtn() {
-  const btn = document.getElementById('scrollBtn');
-  const ring = document.getElementById('ringFill');
+  const btn = document.getElementById("scrollBtn");
+  const ring = document.getElementById("ringFill");
   if (!btn) return;
 
   const circumference = 2 * Math.PI * 22;
   const updateScrollProgress = () => {
     const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const docHeight =
+      document.documentElement.scrollHeight - window.innerHeight;
     const progress = docHeight > 0 ? scrollTop / docHeight : 0;
 
-    btn.classList.toggle('show', scrollTop > 400);
+    btn.classList.toggle("show", scrollTop > 400);
+    btn.classList.toggle("completed", progress >= 0.98);
 
     if (ring) {
       ring.style.strokeDashoffset = circumference * (1 - progress);
     }
 
     // Footer collision avoidance
-    const footer = document.querySelector('.footer');
+    const footer = document.querySelector(".footer");
     if (footer) {
       const footerRect = footer.getBoundingClientRect();
       const windowHeight = window.innerHeight;
-      
+
       if (footerRect.top < windowHeight) {
         const overlap = windowHeight - footerRect.top;
         // Cap the upward movement to a maximum of 120px.
-        // This ensures it dodges the important bottom footer links but 
+        // This ensures it dodges the important bottom footer links but
         // doesn't fly completely off the top of the screen when the footer is huge.
         const maxOverlap = Math.min(overlap, 120);
         btn.style.bottom = `calc(2rem + ${maxOverlap}px)`;
       } else {
-        btn.style.bottom = '2rem';
+        btn.style.bottom = "2rem";
       }
     }
   };
 
   updateScrollProgress();
-  window.addEventListener('scroll', updateScrollProgress, { passive: true });
+  window.addEventListener("scroll", updateScrollProgress, { passive: true });
 
-  btn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  btn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   });
 }
 
 function initCurrentYear() {
-  document.querySelectorAll('[data-current-year], #Current-Year').forEach((node) => {
-    node.textContent = new Date().getFullYear();
-  });
+  document
+    .querySelectorAll("[data-current-year], #Current-Year")
+    .forEach((node) => {
+      node.textContent = new Date().getFullYear();
+    });
 }
 
 /* ============================================================
    INIT
    ============================================================ */
 function hasProjectGrid() {
-  return Boolean(document.getElementById('projectGrid'));
+  return Boolean(document.getElementById("projectGrid"));
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener("DOMContentLoaded", async () => {
   readStateFromURL();
 
   initTheme();
   updateNavbar();
+  initScrollBtn();
+  fetchRepoStats();
 
   initCurrentYear();
   initFilterChips();
@@ -1577,82 +1680,104 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadProjects();
 
     syncProjectCounts();
-    fetchRepoStats();
-    initScrollBtn();
 
     if (hasProjectGrid()) {
+      loadBookmarksFromURL();
+
       renderGrid();
       renderBookmarks();
       renderRecentProjects();
     }
+
+    syncProjectCounts();
+    fetchRepoStats();
+    initScrollBtn();
   } catch (error) {
-    console.error('Failed to load projects:', error);
-    const grid = document.getElementById('projectGrid');
+    console.error("Failed to load projects:", error);
+
+    const grid = document.getElementById("projectGrid");
+
     if (grid) {
-      grid.innerHTML = '<div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">Failed to load projects. Please try refreshing the page.</div>';
+      grid.innerHTML = `
+        <div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">
+          Failed to load projects. Please try refreshing the page.
+        </div>
+      `;
     }
   }
 });
 
-
-
 (() => {
   const initDirectMobileMenu = () => {
-    const menuToggle = document.getElementById('menuToggle');
-    const navButtons = document.getElementById('navButtons');
+    const menuToggle = document.getElementById("menuToggle");
+    const navButtons = document.getElementById("navButtons");
 
     if (!menuToggle || !navButtons) return;
+    if (menuToggle.dataset.mobileNavBound === "true") return;
+    menuToggle.dataset.mobileNavBound = "true";
 
     const closeMenu = () => {
-      menuToggle.classList.remove('active');
-      navButtons.classList.remove('active');
-      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.classList.remove("active");
+      navButtons.classList.remove("active");
+      menuToggle.setAttribute("aria-expanded", "false");
     };
 
-    menuToggle.addEventListener('click', (e) => {
+    const openMenu = () => {
+      menuToggle.classList.add("active");
+      navButtons.classList.add("active");
+      menuToggle.setAttribute("aria-expanded", "true");
+      const firstLink = navButtons.querySelector("a, button");
+      firstLink?.focus({ preventScroll: true });
+    };
+
+    menuToggle.addEventListener("click", (e) => {
       e.stopPropagation();
-      const isOpen = navButtons.classList.toggle('active');
-      menuToggle.classList.toggle('active', isOpen);
-      menuToggle.setAttribute('aria-expanded', String(isOpen));
+      if (navButtons.classList.contains("active")) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
     });
 
-    document.addEventListener('click', (e) => {
+    document.addEventListener("click", (e) => {
       if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
         closeMenu();
       }
     });
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && navButtons.classList.contains('active')) {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && navButtons.classList.contains("active")) {
         closeMenu();
         menuToggle.focus();
       }
     });
 
-    navButtons.addEventListener('click', (e) => {
-      if (e.target.closest('.btn') || e.target.closest('a') || e.target.closest('button')) {
+    navButtons.addEventListener("click", (e) => {
+      if (
+        e.target.closest(".btn") ||
+        e.target.closest("a") ||
+        e.target.closest("button")
+      ) {
         closeMenu();
       }
     });
   };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initDirectMobileMenu);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initDirectMobileMenu);
   } else {
     initDirectMobileMenu();
   }
 })();
 
-
-
 // Re-render the grid when the browser window is resized to adapt pagination density instantly
 window.addEventListener(
-  'resize',
+  "resize",
   debounce(() => {
     if (hasProjectGrid()) {
       renderGrid();
     }
-  }, 180)
+  }, 180),
 );
 
 /* ============================================================
@@ -1662,12 +1787,30 @@ window.addEventListener(
 window.removeTechFilter = removeTechFilter;
 window.clearAllTechFilters = clearAllTechFilters;
 
+/* ============================================================
+   THEME CORE ENGINE (Fixes Issue #4359)
+   ============================================================ */
+function initTheme() {
+  window.ThemeManager?.init?.();
+}
+
+// Initialize the theme engine
+initTheme();
 // Custom cursor
 (function () {
-  const outerCursor = document.querySelector('.cursor-ring--outer');
-  const innerCursor = document.querySelector('.cursor-ring--inner');
-
+  const outerCursor = document.querySelector(".cursor-ring--outer");
+  const innerCursor = document.querySelector(".cursor-ring--inner");
   if (!outerCursor || !innerCursor) return;
+
+  const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  if (coarsePointer || prefersReducedMotion) {
+    outerCursor.style.display = "none";
+    innerCursor.style.display = "none";
+    return;
+  }
 
   const target = { x: 0, y: 0 };
   const current = { x: 0, y: 0 };
@@ -1684,43 +1827,45 @@ window.clearAllTechFilters = clearAllTechFilters;
   };
 
   const showCursor = () => {
-    outerCursor.classList.add('is-visible');
-    innerCursor.classList.add('is-visible');
+    outerCursor.classList.add("is-visible");
+    innerCursor.classList.add("is-visible");
   };
 
   const hideCursor = () => {
-    outerCursor.classList.remove('is-visible');
-    innerCursor.classList.remove('is-visible');
+    outerCursor.classList.remove("is-visible");
+    innerCursor.classList.remove("is-visible");
   };
 
   window.addEventListener(
-    'mousemove',
+    "mousemove",
     (event) => {
       target.x = event.clientX;
       target.y = event.clientY;
       showCursor();
     },
-    { passive: true }
+    { passive: true },
   );
 
-  window.addEventListener('mouseleave', hideCursor);
-  window.addEventListener('mouseenter', showCursor);
+  window.addEventListener("mouseleave", hideCursor);
+  window.addEventListener("mouseenter", showCursor);
 
   requestAnimationFrame(update);
 })();
 
 // Particle Network Background
 (function () {
-  const canvas = document.getElementById('particleCanvas');
+  const canvas = document.getElementById("particleCanvas");
   if (!canvas) return;
 
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
-  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const coarsePointerQuery = window.matchMedia('(pointer: coarse)');
+  const reducedMotionQuery = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  );
+  const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
   const palette = [220, 250, 280];
-  const DEFAULT_PARTICLE_FPS = 36;
+  const DEFAULT_PARTICLE_FPS = 24;
   let W = 0;
   let H = 0;
   let dpr = 1;
@@ -1737,16 +1882,17 @@ window.clearAllTechFilters = clearAllTechFilters;
     const smallScreen = window.innerWidth <= 768 || coarsePointerQuery.matches;
     const reducedMotion = reducedMotionQuery.matches;
     const disableAnimation = smallScreen || reducedMotion;
+    const largeScreen = window.innerWidth > 1280;
 
     return {
-      minParticles: reducedMotion ? 8 : smallScreen ? 12 : 24,
-      maxParticles: reducedMotion ? 18 : smallScreen ? 28 : 72,
-      areaPerParticle: reducedMotion ? 110000 : smallScreen ? 70000 : 26000,
-      linkDistance: reducedMotion ? 68 : smallScreen ? 84 : 120,
-      velocity: reducedMotion ? 0.12 : smallScreen ? 0.18 : 0.3,
-      radius: reducedMotion ? 1.8 : smallScreen ? 2.2 : 4,
-      fps: reducedMotion ? 14 : smallScreen ? 20 : 36,
-      showLinks: !reducedMotion && !smallScreen,
+      minParticles: reducedMotion ? 8 : smallScreen ? 12 : 18,
+      maxParticles: reducedMotion ? 18 : smallScreen ? 28 : 48,
+      areaPerParticle: reducedMotion ? 110000 : smallScreen ? 70000 : 32000,
+      linkDistance: reducedMotion ? 68 : smallScreen ? 84 : 100,
+      velocity: reducedMotion ? 0.12 : smallScreen ? 0.18 : 0.24,
+      radius: reducedMotion ? 1.8 : smallScreen ? 2.2 : 3.2,
+      fps: reducedMotion ? 14 : smallScreen ? 20 : 24,
+      showLinks: !reducedMotion && !smallScreen && largeScreen,
       disableAnimation,
     };
   };
@@ -1765,7 +1911,10 @@ window.clearAllTechFilters = clearAllTechFilters;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     particleCount = Math.min(
       profile.maxParticles,
-      Math.max(profile.minParticles, Math.round((W * H) / profile.areaPerParticle))
+      Math.max(
+        profile.minParticles,
+        Math.round((W * H) / profile.areaPerParticle),
+      ),
     );
     linkDistance = profile.linkDistance;
     maxDistanceSq = linkDistance * linkDistance;
@@ -1859,11 +2008,11 @@ window.clearAllTechFilters = clearAllTechFilters;
     if (profile.disableAnimation) {
       stopAnimation();
       ctx.clearRect(0, 0, W, H);
-      canvas.style.display = 'none';
+      canvas.style.display = "none";
       return;
     }
 
-    canvas.style.display = '';
+    canvas.style.display = "";
     init();
     startAnimation();
   };
@@ -1882,17 +2031,17 @@ window.clearAllTechFilters = clearAllTechFilters;
   };
 
   const bindMediaChange = (query, handler) => {
-    if (typeof query.addEventListener === 'function') {
-      query.addEventListener('change', handler);
+    if (typeof query.addEventListener === "function") {
+      query.addEventListener("change", handler);
       return;
     }
-    if (typeof query.addListener === 'function') {
+    if (typeof query.addListener === "function") {
       query.addListener(handler);
     }
   };
 
-  window.addEventListener('resize', handleResize, { passive: true });
-  document.addEventListener('visibilitychange', () => {
+  window.addEventListener("resize", handleResize, { passive: true });
+  document.addEventListener("visibilitychange", () => {
     if (!document.hidden) {
       lastFrameTime = 0;
     }
@@ -1910,75 +2059,80 @@ window.clearAllTechFilters = clearAllTechFilters;
 function getQueryParams() {
   const params = new URLSearchParams(window.location.search);
   return {
-    search: params.get('search') || '',
-    category: params.get('category') || 'all'
+    search: params.get("search") || "",
+    category: params.get("category") || "all",
   };
 }
 
 function updateURL(search, category) {
   const params = new URLSearchParams();
-  if (search) params.set('search', search);
-  if (category && category !== 'all') params.set('category', category);
+  if (search) params.set("search", search);
+  if (category && category !== "all") params.set("category", category);
   const newURL = params.toString()
     ? `${window.location.pathname}?${params.toString()}`
     : window.location.pathname;
-  history.pushState({ search, category }, '', newURL);
+  history.pushState({ search, category }, "", newURL);
 }
 
 function restoreStateFromURL() {
   const { search, category } = getQueryParams();
-  const searchInput = document.getElementById('searchInput') ||
+  const searchInput =
+    document.getElementById("searchInput") ||
     document.querySelector('input[type="text"]') ||
-    document.querySelector('.search-input');
+    document.querySelector(".search-input");
   if (searchInput && search) searchInput.value = search;
-  const categoryFilter = document.getElementById('category');
-  if (categoryFilter && category !== 'all') categoryFilter.value = category;
-  if (search || category !== 'all') applyFilters(search, category);
+  const categoryFilter = document.getElementById("category");
+  if (categoryFilter && category !== "all") categoryFilter.value = category;
+  if (search || category !== "all") applyFilters(search, category);
 }
 
 function applyFilters(search, category) {
-  searchQuery = search || '';
-  activeFilter = category || 'all';
+  searchQuery = search || "";
+  activeFilter = category || "all";
   currentPage = 1;
 
   // Sync active chip selection with URL state
-  const chips = document.querySelectorAll('.chip[data-filter]');
+  const chips = document.querySelectorAll(".chip[data-filter]");
   chips.forEach((chip) => {
     if (chip.dataset.filter === activeFilter) {
-      chip.classList.add('active');
+      chip.classList.add("active");
     } else {
-      chip.classList.remove('active');
+      chip.classList.remove("active");
     }
   });
 
   renderGrid();
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener("DOMContentLoaded", async () => {
   try {
     await loadProjects();
     restoreStateFromURL();
   } catch (error) {
-    console.error('Failed to restore state or load projects:', error);
+    console.error("Failed to restore state or load projects:", error);
   }
-  const searchInput = document.getElementById('search') ||
+  const searchInput =
+    document.getElementById("search") ||
     document.querySelector('input[type="text"]') ||
-    document.querySelector('.search-input');
+    document.querySelector(".search-input");
   if (searchInput) {
     // Debounced so rapid typing doesn't trigger a renderGrid() on every keystroke
-    searchInput.addEventListener('input', debounce(() => {
-      const { category } = getQueryParams();
-      updateURL(searchInput.value, category);
-      applyFilters(searchInput.value, category);
-    }, 200));
+    searchInput.addEventListener(
+      "input",
+      debounce(() => {
+        const { category } = getQueryParams();
+        updateURL(searchInput.value, category);
+        applyFilters(searchInput.value, category);
+      }, 200),
+    );
   }
-  const categoryFilter = document.getElementById('category');
+  const categoryFilter = document.getElementById("category");
   if (categoryFilter) {
-    categoryFilter.addEventListener('change', () => {
+    categoryFilter.addEventListener("change", () => {
       const { search } = getQueryParams();
       updateURL(search, categoryFilter.value);
       applyFilters(search, categoryFilter.value);
     });
   }
-  window.addEventListener('popstate', () => restoreStateFromURL());
+  window.addEventListener("popstate", () => restoreStateFromURL());
 });
