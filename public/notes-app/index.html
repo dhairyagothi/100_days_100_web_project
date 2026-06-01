@@ -12,6 +12,77 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <a href="/" class="back-link">← Back to Home</a>
+
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand">
+        <img src="NotesApp-Logo.png" alt="Notes App logo" class="brand-logo" />
+        <div>
+          <p class="brand-title">Notes App</p>
+          <p class="brand-copy">Create, edit, search and organize notes using local storage.</p>
+        </div>
+      </div>
+      <button class="primary-btn" id="newNoteBtn" type="button">+ New Note</button>
+    </header>
+
+    <section class="controls" aria-label="Note search and status">
+      <label for="searchInput" class="visually-hidden">Search notes</label>
+      <input id="searchInput" type="search" placeholder="Search notes, titles or tags..." autocomplete="off" />
+      <div class="status-bar">
+        <span id="noteCount">0 notes</span>
+        <span id="activeCount">0 active</span>
+      </div>
+    </section>
+
+    <main class="notes-grid" id="notesGrid" aria-live="polite"></main>
+
+    <div class="empty-state" id="emptyState">
+      <strong>No notes yet</strong>
+      <p>Create your first note to keep ideas, reminders and daily tasks in one place.</p>
+      <button class="secondary-btn" id="emptyAddBtn" type="button">Add a note</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay" hidden></div>
+
+  <div class="modal" id="noteModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <div>
+          <p id="modalTitle" class="modal-title">New note</p>
+          <p class="modal-subtitle">Save notes with timestamp and categories.</p>
+        </div>
+        <button class="icon-btn" id="closeModalBtn" type="button" aria-label="Close dialog">✕</button>
+      </div>
+
+      <form id="noteForm">
+        <div class="form-group">
+          <label for="noteTitle">Title</label>
+          <input id="noteTitle" name="noteTitle" type="text" maxlength="80" placeholder="Enter a title" />
+        </div>
+
+        <div class="form-group">
+          <label for="noteContent">Note</label>
+          <textarea id="noteContent" name="noteContent" rows="5" placeholder="Write your note here"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="noteTag">Category</label>
+          <select id="noteTag" name="noteTag">
+            <option value="Personal">Personal</option>
+            <option value="Work">Work</option>
+            <option value="Study">Study</option>
+            <option value="Ideas">Ideas</option>
+          </select>
+        </div>
+
+        <div class="modal-actions">
+          <button class="secondary-btn" id="cancelBtn" type="button">Cancel</button>
+          <button class="primary-btn" id="saveBtn" type="submit">Save note</button>
+        </div>
+      </form>
+    </div>
   <a href="../../index.html" class="back-link" aria-label="Back to project gallery">Back</a>
 
   <div class="app-shell">
