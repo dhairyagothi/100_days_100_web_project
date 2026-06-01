@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Why the Flask Authentication App needs a Flask server and what Flask does." />
+  <title>Flask Authentication App - Demo Info</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b1020;
+      --panel: rgba(15, 23, 42, 0.9);
+      --panel-border: rgba(148, 163, 184, 0.18);
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #60a5fa;
+      --accent-2: #34d399;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, Segoe UI, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(96, 165, 250, 0.18), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(52, 211, 153, 0.14), transparent 28%),
+        linear-gradient(180deg, #070b16, var(--bg));
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: min(880px, 100%);
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(16px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(96, 165, 250, 0.12);
+      color: var(--accent);
+      font-size: 0.86rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 18px 0 12px;
+      font-size: clamp(2rem, 4vw, 3.6rem);
+      line-height: 1.05;
+    }
+
+    p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 1.02rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .box {
+      border: 1px solid var(--panel-border);
+      border-radius: 18px;
+      padding: 18px;
+      background: rgba(15, 23, 42, 0.55);
+    }
+
+    .box h2 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+      color: #f8fafc;
+    }
+
+    .box p {
+      margin: 0;
+      font-size: 0.98rem;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    a.button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: transform 0.18s ease, background 0.18s ease;
+    }
+
+    a.button:hover {
+      transform: translateY(-1px);
+    }
+
+    .primary {
+      background: linear-gradient(135deg, var(--accent), #2563eb);
+      color: white;
+    }
+
+    .secondary {
+      background: rgba(148, 163, 184, 0.12);
+      color: var(--text);
+      border: 1px solid var(--panel-border);
+    }
+
+    .note {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-left: 3px solid var(--accent-2);
+      background: rgba(52, 211, 153, 0.08);
+      border-radius: 12px;
+      color: #d1fae5;
+    }
+
+    .mono {
+      font-family: Consolas, Monaco, 'Courier New', monospace;
+      font-size: 0.96em;
+      color: #bfdbfe;
+    }
+
+    @media (max-width: 640px) {
+      .card {
+        padding: 22px;
+        border-radius: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
+  <main class="card">
+    <span class="eyebrow">Demo info</span>
+    <h1>Why this app does not open like a normal static page</h1>
+    <p>
+      The Flask Authentication App is a backend project. It needs a Flask server running locally,
+      because the browser alone cannot create users, hash passwords, store sessions in cookies, or read the SQLite database.
+    </p>
+
+    <div class="grid">
+      <section class="box">
+        <h2>What Flask is</h2>
+        <p>
+          Flask is a lightweight Python web framework. It lets Python handle routes like <span class="mono">/signup</span>,
+          <span class="mono">/login</span>, and <span class="mono">/protected</span>.
+        </p>
+      </section>
+      <section class="box">
+        <h2>What a Flask server does</h2>
+        <p>
+          The server runs the Python code, talks to SQLite, checks JWT cookies, and returns HTML pages to the browser.
+        </p>
+      </section>
+      <section class="box">
+        <h2>Why GitHub is not the demo</h2>
+        <p>
+          A GitHub repo only shows the code. It does not run the app, so people who are new to Flask may think the project is broken.
+        </p>
+      </section>
+    </div>
+
+    <p>
+      To actually use the app, the project must be started with <span class="mono">python app.py</span> inside the Flask folder after installing the Python packages.
+    </p>
+
+    <div class="note">
+      Short version: this is a backend demo, so the site now shows this explanation page first instead of sending users straight to the repo.
+    </div>
+
+    <div class="actions">
+      <a class="button primary" href="./README.md">Open app README</a>
+      <a class="button secondary" href="../../index.html">Back to main site</a>
+      <a class="button secondary" href="https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/flask_auth_app" target="_blank" rel="noopener noreferrer">View code on GitHub</a>
+    </div>
+  </main>
+</body>
+</html>
