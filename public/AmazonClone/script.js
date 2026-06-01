@@ -42,3 +42,13 @@ for(const item of scroll){
         item.scrollLeft+=evt.deltaY;
     });
 };
+
+const backToTop = document.querySelector('.foot-panel1');
+if (backToTop) {
+    backToTop.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+}
