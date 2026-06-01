@@ -199,6 +199,26 @@ input::placeholder {
     background: rgba(110, 222, 10, 0.08);
     border-color: rgba(110, 222, 10, 0.28);
 }
+.history-empty {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    color: var(--muted);
+    padding: 24px;
+}
+
+.history-empty h3 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    color: var(--text);
+}
+
+.history-empty p {
+    font-size: 0.95rem;
+}
 
 #clearHistory {
     width: 100%;
@@ -326,4 +346,29 @@ input::placeholder {
         font-size: 2.5rem;
         padding: 20px 18px;
     }
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.history-content {
+    flex: 1;
+}
+
+.history-delete {
+    background: transparent;
+    border: none;
+    color: var(--danger);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.history-delete:hover {
+    background: rgba(255, 93, 77, 0.15);
 }
