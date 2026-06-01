@@ -1,10 +1,10 @@
-/**
- * blackJ.js — BlackJack game logic, UI state, and event handling.
+﻿/**
+ * blackJ.js ΓÇö BlackJack game logic, UI state, and event handling.
  */
 
 /**
  * Card face values for all four suits.
- * Aces use [1, 11] — the higher value is applied unless it causes a bust.
+ * Aces use [1, 11] ΓÇö the higher value is applied unless it causes a bust.
  * Defined at module level to prevent accidental mutation during resets.
  */
 const CARD_VALUES = {
@@ -55,11 +55,11 @@ const Dealer = BJgame.dealer;
 /**
  * Single source of truth for whether a round is in progress.
  * Prevents duplicate findWinner() calls and stray Hit/Stand actions.
- * true  → round active; false → awaiting Deal or Play Again.
+ * true  ΓåÆ round active; false ΓåÆ awaiting Deal or Play Again.
  */
 let gameActive = false;
 
-// Audio — declared at module level; const is not hoisted so order matters.
+// Audio ΓÇö declared at module level; const is not hoisted so order matters.
 const hitsound  = new Audio('./static/sounds/swish.m4a');
 const tink      = new Audio('./static/sounds/tink.wav');
 const winSound  = new Audio('./static/sounds/cash.mp3');
@@ -70,7 +70,7 @@ const drawSound = new Audio('./static/sounds/ohh.mp3');
 /** @param {string} selector @returns {Element|null} */
 const $ = selector => document.querySelector(selector);
 
-// ── Button helpers ───────────────────────────────────────────────────────────
+// ΓöÇΓöÇ Button helpers ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 
 /** Disables Hit and Stand at round end so stale clicks are rejected. */
 function disableGameButtons() {
@@ -94,7 +94,7 @@ function enableGameButtons() {
   });
 }
 
-// ── Core logic ───────────────────────────────────────────────────────────────
+// ΓöÇΓöÇ Core logic ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 
 /**
  * Draws one card from the deck for the given player, renders its image,
@@ -135,22 +135,57 @@ function updateScore(card, activePlayer) {
   }
 }
 
-/**
- * Renders the player's current score. Shows "BUST!" in red above 21.
- * @param {Object} activePlayer
- */
-function showScore(activePlayer) {
-  const el = $(activePlayer.scoreSpan);
-  if (activePlayer.score > 21) {
-    el.textContent = 'BUST!';
-    el.style.color = '#e05252';
-  } else {
-    el.textContent = activePlayer.score;
-    el.style.color = '';
-  }
+// Dealer's Logic (2nd player) OR Stand button
+document.querySelector('#stand').addEventListener('click', BJstand)
+
+function BJstand(){
+    if(You['score']===0){
+        alert('Please Hit Some Cards First!');
+    }
+    else{
+        while(Dealer['score']<16){
+            drawCard(Dealer);
+        }
+        setTimeout(function(){
+            showresults(findwinner());
+            scoreboard();
+            
+            // Show countdown message
+            const countdownEl = document.querySelector('#countdown-message');
+            let count = 3;
+            countdownEl.textContent = `Resetting in ${count}...`;
+            
+            // Countdown timer
+            const countdownInterval = setInterval(function() {
+                count--;
+                if (count > 0) {
+                    countdownEl.textContent = `Resetting in ${count}...`;
+                } else {
+                    countdownEl.textContent = '';
+                    clearInterval(countdownInterval);
+                }
+            }, 1000);
+            
+            // Auto-trigger Play Again after 3 seconds
+            setTimeout(function(){
+                BJdeal();
+            }, 3000);
+        }, 800); 
+    }
+}
+// Rules button
+
+document.querySelector('#rules-btn')
+.addEventListener('click', ()=>{
+
+let box =
+document.querySelector('#rules-box');
+
+if(box.style.display==="none"){
+box.style.display="block";
 }
 
-// ── Round resolution ─────────────────────────────────────────────────────────
+// ΓöÇΓöÇ Round resolution ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 
 /**
  * Compares final scores and increments the matching lifetime counter.
@@ -184,17 +219,17 @@ function showResults(winner) {
   const el = $('#command');
 
   if (winner === You) {
-    el.textContent = '🏆 You Won!';
+    el.textContent = '≡ƒÅå You Won!';
     el.style.color = '#4caf7d';
     winSound.play().catch(() => {});
     cheers.volume = 0.4; // Must be set before play() to avoid volume spike
     cheers.play().catch(() => {});
   } else if (winner === Dealer) {
-    el.textContent = '😔 You Lost!';
+    el.textContent = '≡ƒÿö You Lost!';
     el.style.color = '#e05252';
     loseSound.play().catch(() => {});
   } else {
-    el.textContent = "🤝 It's a Draw!";
+    el.textContent = "≡ƒñ¥ It's a Draw!";
     el.style.color = '#f0b429';
     drawSound.play().catch(() => {});
   }
@@ -225,11 +260,11 @@ function endRound(winner) {
   updateScoreboard();
 }
 
-// ── Button handlers ──────────────────────────────────────────────────────────
+// ΓöÇΓöÇ Button handlers ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 
 /**
  * Draws one card for the player.
- * Auto-resolves the round if the player busts — no Stand click required.
+ * Auto-resolves the round if the player busts ΓÇö no Stand click required.
  */
 function BJhit() {
   if (!gameActive) return;
@@ -261,7 +296,7 @@ function BJstand() {
  */
 function BJdeal() {
   if (gameActive) {
-    alert('Finish your current turn first — Hit or Stand before dealing.');
+    alert('Finish your current turn first ΓÇö Hit or Stand before dealing.');
     return;
   }
   if (You.score === 0 && Dealer.score === 0 &&
@@ -298,7 +333,7 @@ function startNewRound() {
   gameActive = true;
 }
 
-// ── Rules toggle ─────────────────────────────────────────────────────────────
+// ΓöÇΓöÇ Rules toggle ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 
 /** Toggles the rules panel and keeps aria-expanded in sync. */
 function toggleRules() {
@@ -310,7 +345,7 @@ function toggleRules() {
   btn.setAttribute('aria-expanded', String(isHidden));
 }
 
-// ── Event listeners ──────────────────────────────────────────────────────────
+// ΓöÇΓöÇ Event listeners ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 
 $('#hit').addEventListener('click',   BJhit);
 $('#stand').addEventListener('click', BJstand);
@@ -331,5 +366,6 @@ document.querySelector('.action-buttons').addEventListener('mouseover', e => {
   }
 });
 
-// Initialise with buttons disabled — Deal opens the first round
+// Initialise with buttons disabled ΓÇö Deal opens the first round
 disableGameButtons();
+});
