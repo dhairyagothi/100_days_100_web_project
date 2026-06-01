@@ -131,6 +131,180 @@ body {
   gap: 0.85rem;
 }
 
+#comparison-mode-btn.is-on {
+  background: linear-gradient(135deg, #22c55e, #10b981);
+  color: #041b12;
+  border-color: transparent;
+  font-weight: 700;
+}
+
+.array-tools {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.85rem;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 0.85rem;
+  background: rgba(7, 12, 26, 0.35);
+}
+
+.array-tools label {
+  font-weight: 600;
+  color: var(--text-soft);
+}
+
+.array-input-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.6rem;
+}
+
+.array-input-row input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 0.7rem;
+  padding: 0.65rem 0.8rem;
+  color: var(--text);
+  background: #0e1730;
+  font: inherit;
+}
+
+.array-input-row input::placeholder {
+  color: #7f90b8;
+}
+
+.array-input-row input:focus {
+  outline: 2px solid rgba(103, 232, 249, 0.45);
+  outline-offset: 1px;
+}
+
+.array-preset-row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.array-preset-row .btn {
+  flex: 1 1 10rem;
+}
+
+.array-status {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.88rem;
+  line-height: 1.4;
+  min-height: 1.25rem;
+}
+
+.array-status.is-error {
+  color: #fca5a5;
+}
+
+.comparison-panel {
+  padding: 1rem;
+}
+
+.comparison-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.comparison-head h2,
+.comparison-card h3 {
+  margin: 0;
+}
+
+.comparison-head p,
+.comparison-card p,
+.comparison-status {
+  margin: 0.35rem 0 0;
+  color: var(--text-soft);
+}
+
+.comparison-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.comparison-config {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.comparison-config label {
+  display: grid;
+  gap: 0.45rem;
+  color: var(--text-soft);
+  font-weight: 600;
+}
+
+.comparison-config select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 0.7rem;
+  padding: 0.65rem 0.8rem;
+  color: var(--text);
+  background: #0e1730;
+  font: inherit;
+}
+
+.comparison-config select:focus {
+  outline: 2px solid rgba(103, 232, 249, 0.45);
+  outline-offset: 1px;
+}
+
+.comparison-status {
+  grid-column: 1 / -1;
+  min-height: 1.4rem;
+}
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.comparison-card {
+  border: 1px solid rgba(59, 130, 246, 0.18);
+  border-radius: 1rem;
+  background: rgba(8, 13, 28, 0.56);
+  padding: 0.9rem;
+}
+
+.comparison-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: baseline;
+}
+
+.comparison-time {
+  color: #93c5fd;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.comparison-stats {
+  display: flex;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  margin-top: 0.45rem;
+  color: var(--text-soft);
+  font-weight: 600;
+}
+
+.comparison-bars {
+  margin-top: 0.75rem;
+  height: 320px;
+  min-height: 320px;
+}
+
 .btn {
   border: 1px solid var(--border);
   background: #162547;
@@ -246,6 +420,92 @@ body {
   padding: 1rem;
 }
 
+.performance-panel,
+.quiz-panel {
+  padding: 1rem;
+}
+
+.panel-head h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.panel-head p {
+  margin: 0.35rem 0 0;
+  color: var(--text-soft);
+}
+
+.chart-wrap {
+  margin-top: 0.9rem;
+  padding: 0.85rem;
+  border: 1px solid rgba(59, 130, 246, 0.18);
+  border-radius: 0.95rem;
+  background: rgba(8, 13, 28, 0.5);
+}
+
+.chart-wrap canvas {
+  width: 100% !important;
+  display: block;
+}
+
+.quiz-form {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 0.9rem;
+}
+
+.quiz-card {
+  border: 1px solid rgba(59, 130, 246, 0.18);
+  border-radius: 0.9rem;
+  background: rgba(8, 13, 28, 0.5);
+  padding: 0.85rem;
+}
+
+.quiz-card h3 {
+  margin: 0 0 0.55rem;
+  font-size: 0.96rem;
+}
+
+.quiz-options {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.quiz-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  color: #dbe7ff;
+}
+
+.quiz-option input {
+  margin-top: 0.2rem;
+}
+
+.quiz-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.9rem;
+}
+
+.quiz-score {
+  color: #93c5fd;
+  font-weight: 700;
+}
+
+.quiz-feedback {
+  margin: 0.65rem 0 0;
+  color: var(--text-soft);
+  min-height: 1.3rem;
+}
+
+.quiz-feedback.is-error {
+  color: #fca5a5;
+}
+
 .guide-head h2 {
   margin: 0;
   font-size: 1.05rem;
@@ -306,6 +566,7 @@ body {
     grid-template-columns: 3fr 1.15fr;
     grid-template-areas:
       "controls controls"
+      "performance performance"
       "visualizer explanation"
       "guide guide";
     align-items: start;
@@ -317,6 +578,10 @@ body {
 
   .visualizer-panel {
     grid-area: visualizer;
+  }
+
+  .performance-panel {
+    grid-area: performance;
   }
 
   .explanation-panel {
@@ -331,6 +596,11 @@ body {
 
   .guide-grid {
     grid-template-columns: 1.15fr 1fr;
+  }
+
+  .comparison-head,
+  .comparison-card-head {
+    align-items: center;
   }
 }
 
@@ -359,6 +629,34 @@ body {
 
   .speed-control {
     grid-template-columns: 1fr;
+  }
+
+  .array-input-row {
+    grid-template-columns: 1fr;
+  }
+
+  .comparison-head,
+  .comparison-config,
+  .comparison-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .comparison-head {
+    display: grid;
+  }
+
+  .comparison-card-head {
+    display: grid;
+    align-items: start;
+  }
+
+  .comparison-bars {
+    height: 260px;
+    min-height: 260px;
+  }
+
+  .quiz-actions {
+    align-items: stretch;
   }
 }
 

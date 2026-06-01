@@ -11,20 +11,77 @@
 </head>
 
 <body>
+    <div class="image"><iframe
+            src="https://lottie.host/embed/e9326b10-fe9a-446e-bc8d-56640e47e816/TeItgXRxNd.json"></iframe></div>
+    <form>
+        <!-- Headings for the form -->
+        <div class="headingsContainer">
+            <h3>Log In
+            </h3>
+        </div>
 
-  <div class="page-wrapper">
+        <!-- The Wrapper contains all the inputs -->
+        <div class="mainContainer">
+            <!-- Username -->
+            <div class="input-group">
+                <label for="username">Username</label>
 
-    <!-- Lottie Animation -->
-    <div class="image">
-      <iframe src="https://lottie.host/embed/e9326b10-fe9a-446e-bc8d-56640e47e816/TeItgXRxNd.json"></iframe>
-    </div>
+                <input type="text" placeholder="Enter Your Username Here" name="username" id="username"
+                    autocomplete="username" required>
+                <div class="error"></div>
+            </div>
 
-    <!-- Login Card -->
-    <div class="card">
-      <div class="card-header">
-        <h3>Welcome Back</h3>
-        <p>Log in to your account to continue</p>
-      </div>
+            <br><br>
+
+            <div class="password-field">
+                <div class="input-group">
+                    <label for="password">Password</label>
+
+                    <div class="input-wrapper">
+                        <input type="password" placeholder="Enter Your Password Here" name="password" id="password"
+                            required autocomplete="current-password">
+
+                        <span id="togglePassword">👁️</span>
+                    </div>
+                    <div class="error"></div>
+                </div>
+            </div>
+
+                <input type="text" placeholder="Enter Your Username Here" name="username" id="username"
+                    autocomplete="username" required>
+                <div class="error"></div>
+            </div>
+
+            <!-- Password -->
+
+            <div class="password-field">
+                <div class="input-group">
+                    <label for="password">Password</label>
+
+                    <div class="input-wrapper">
+                        <input type="password" placeholder="Enter Your Password Here" name="password" id="password"
+                            required autocomplete="current-password">
+
+                        <span id="togglePassword">👁️</span>
+                    </div>
+                    <div class="error"></div>
+                </div>
+            </div>
+
+            <!-- sub-container for the checkbox and forgot password link -->
+            <div class="subcontainer">
+                <label>
+                    <input type="checkbox" checked="checked" name="remember">Keep me signed in
+                </label>
+                <p class="forgotpsd"> <a href="#">Forgot Password?</a></p>
+            </div>
+
+
+            <!-- Submit button -->
+            <button type="button" onclick="getDetails()">Login</button>
+
+            <!-- Sign up link -->
+            <p class="register">Not a member? <a href="/signup">Sign Up here!</a></p>
 
       <div class="form-body">
 
@@ -35,86 +92,160 @@
             required>
         </div>
 
-        <!-- Password -->
-        <div class="field-group">
-          <label for="password">Password</label>
-          <div class="password-container">
-            <input type="password" id="password" name="password" placeholder="Enter your password"
-              autocomplete="current-password" required>
-            <span class="toggle-password" onclick="togglePassword('password', this)">
-              <i class="fa-regular fa-eye"></i>
-            </span>
-          </div>
-        </div>
+    </form>
+</body>
+<script>
+    async function postRequest(data) {
+        try {
+            const res = await fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
 
-        <!-- Remember me + Forgot password -->
-        <div class="subcontainer">
-          <label>
-            <input type="checkbox" name="remember" checked>
-            <span>Keep me signed in</span>
-          </label>
-          <a href="#">Forgot Password?</a>
-        </div>
+            const text = await res.text();
 
-        <!-- Login Button -->
-        <button type="button" class="btn-primary" onclick="getDetails()">
-          Log In
-        </button>
+            showMessage(text, !res.ok);
 
-        <!-- Divider -->
-        <div class="divider">or</div>
+    </form>
+</body>
+<script>
+    async function postRequest(data) {
+        try {
+            const res = await fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
 
-        <!-- Google Button -->
-        <a href="/auth/google">
-          <button type="button" class="google-btn">
-            <i class="fa-brands fa-google"></i>
-            Continue with Google
-          </button>
-        </a>
+            const text = await res.text();
 
-        <!-- Sign Up Link -->
-        <p class="register">
-          Not a member? <a href="/signup">Sign Up here!</a>
-        </p>
+            showMessage(text, !res.ok);
 
-      </div><!-- /.form-body -->
-    </div><!-- /.card -->
+            if (res.ok) {
 
-  </div><!-- /.page-wrapper -->
+                setTimeout(() => {
+                    window.location.href = "/home";
+                }, 1500);
+            }
 
-  <!-- Toast Notification -->
-  <div class="toast" id="toast"></div>
-
-  <script>
-    function showToast(msg, type = 'error') {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.className = `toast ${type} show`;
-      setTimeout(() => t.classList.remove('show'), 3500);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
-    async function getDetails() {
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value;
+    function showMessage(message, isError = false) {
 
-      if (!username || !password) {
-        showToast('Please fill in all fields', 'error');
-        return;
-      }
+    let messageBox = document.getElementById('messageBox');
 
-      try {
-        const res = await fetch('/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password })
+    if (!messageBox) {
+
+        messageBox = document.createElement('div');
+
+        messageBox.id = 'messageBox';
+
+        document.querySelector('.mainContainer')
+            .appendChild(messageBox);
+    }
+
+    messageBox.innerText = message;
+
+    messageBox.className = isError
+        ? 'message error-message'
+        : 'message success-message';
+}
+
+    function setError(inputId, message) {
+
+        const input = document.getElementById(inputId);
+
+        const inputGroup = input.closest('.input-group');
+
+        const errorDisplay = inputGroup.querySelector('.error');
+
+        errorDisplay.innerText = message;
+    }
+
+    function clearErrors() {
+
+        document.querySelectorAll('.error').forEach(error => {
+            error.innerText = '';
         });
 
-        const text = await res.text();
+        document.querySelectorAll('input').forEach(input => {
+            input.classList.remove('input-error');
+        });
+    }
 
-        if (!res.ok) {
-          showToast(text, 'error');
-          return;
+    function getDetails() {
+
+        clearErrors();
+
+        const username = document.getElementById('username');
+
+        const password = document.getElementById('password');
+
+        let isValid = true;
+
+        // Username validation
+        if (!username.value.trim()) {
+
+            setError('username', 'Username is required');
+
+            username.classList.add('input-error');
+
+            isValid = false;
         }
+
+        // Password validation
+        if (!password.value.trim()) {
+
+            setError('password', 'Password is required');
+
+            password.classList.add('input-error');
+
+            isValid = false;
+        }
+
+        if (!isValid) return;
+
+        postRequest({
+            username: username.value,
+            password: password.value
+        });
+    }
+    function togglePassword(id, element) {
+
+    const input = document.getElementById(id);
+    const icon = element.querySelector("i");
+
+    if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+    } else {
+        input.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    }
+}
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const passwordInput = document.getElementById("password");
+        const togglePassword = document.getElementById("togglePassword");
+
+        togglePassword.addEventListener("click", () => {
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                togglePassword.textContent = "🙈";
+            } else {
+                passwordInput.type = "password";
+                togglePassword.textContent = "👁️";
+            }
+
+        });
 
         showToast(text, 'success');
         setTimeout(() => window.location.href = '/home', 800);
@@ -125,24 +256,23 @@
       }
     }
 
-    function togglePassword(id, el) {
-      const input = document.getElementById(id);
-      const icon = el.querySelector('i');
-      if (input.type === 'password') {
-        input.type = 'text';
-        icon.classList.replace('fa-eye', 'fa-eye-slash');
-      } else {
-        input.type = 'password';
-        icon.classList.replace('fa-eye-slash', 'fa-eye');
-      }
-    }
+    document.querySelectorAll('input').forEach(input => {
 
-    // Allow Enter key to submit
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Enter') getDetails();
+    input.addEventListener('input', () => {
+
+        input.classList.remove('input-error');
+
+        const inputGroup = input.closest('.input-group');
+
+        const error = inputGroup.querySelector('.error');
+
+        if (error) {
+            error.innerText = '';
+        }
     });
-  </script>
+});
 
-</body>
+
+</script>
 
 </html>

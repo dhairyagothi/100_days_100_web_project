@@ -1,1 +1,25 @@
+# ─────────────────────────────────────────
+#   Express Server — .gitignore
+# ─────────────────────────────────────────
 
+# ── Environment / Secrets ───────────────
+.env
+.env.local
+.env.production
+.env.staging
+
+# ── Dependencies ────────────────────────
+node_modules/
+
+# ── Logs ────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+
+# ── OS Files ────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Editor / IDE ────────────────────────
+.vscode/
+.idea/
