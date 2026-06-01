@@ -25,6 +25,12 @@
   border-radius: 1.2rem;
   overflow: hidden;
   height: 24rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.option:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
 }
 
 .info {
@@ -114,6 +120,12 @@
   width: 100%;
   max-width: 25%;
   height: 32rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.collection:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
 }
 
 .image {
