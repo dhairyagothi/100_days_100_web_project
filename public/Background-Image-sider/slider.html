@@ -38,12 +38,43 @@
     Explore glaciers, geysers, and the ethereal Northern Lights across volcanic landscapes.
   </p>
 
+
   <div class="wl-controls-row">
     <button class="wl-nav-btn" id="prevBtn">&#8592;</button>
 
     <div class="wl-select-wrap">
       <select id="placeSelector"></select>
       <span class="wl-select-arrow">▾</span>
+
+
+        placeSelector.addEventListener('change', function () {
+            updatePlace(placeSelector.value);
+        });
+
+
+    // Booking button functionality
+bookingButton.addEventListener('click', function () {
+    const selectedPlace = placeSelector.value;
+
+    alert(`Your trip to ${selectedPlace} has been booked successfully!`);
+
+    bookingButton.textContent = `Trip Booked to ${selectedPlace} ✓`;
+
+    bookingButton.classList.add("booked");
+});
+
+    
+    window.onload = function () {
+        const defaultPlace = "Iceland";
+        updatePlace(defaultPlace);
+        placeSelector.value = defaultPlace;
+    };
+</script>
+
+</body>
+
+</html>
+
     </div>
 
     <button class="wl-nav-btn" id="nextBtn">&#8594;</button>
@@ -120,3 +151,6 @@
   <script src="script.js"></script>
 
 </body>
+
+</html>
+
