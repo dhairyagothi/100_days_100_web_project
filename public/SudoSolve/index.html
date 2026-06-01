@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sudoku</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="start-screen" id="start-screen" aria-labelledby="start-title">
+      <div class="brand-block">
+        <div class="start-topline">
+          <p class="eyebrow">Classic Logic Puzzle</p>
+          <span>9 x 9</span>
+        </div>
+        <h1 id="start-title">Sudoku</h1>
+        <p class="intro">Choose a difficulty, start a fresh puzzle, solve it by hand, or ask for a hint when the next move gets stubborn.</p>
+        <div class="feature-row" aria-label="Game features">
+          <span>Unique puzzles</span>
+          <span>Live conflicts</span>
+          <span>Smart solver</span>
+        </div>
+      </div>
+
+      <div class="menu-panel">
+        <div class="menu-heading">
+          <p class="eyebrow">Ready?</p>
+          <h2>New Game</h2>
+        </div>
+        <div class="difficulty-group" role="radiogroup" aria-label="Difficulty">
+          <button class="difficulty-option active" type="button" data-difficulty="easy" aria-pressed="true">
+            <strong>Easy</strong>
+            <span>45 clues</span>
+          </button>
+          <button class="difficulty-option" type="button" data-difficulty="medium" aria-pressed="false">
+            <strong>Medium</strong>
+            <span>36 clues</span>
+          </button>
+          <button class="difficulty-option" type="button" data-difficulty="hard" aria-pressed="false">
+            <strong>Hard</strong>
+            <span>30 clues</span>
+          </button>
+          <button class="difficulty-option" type="button" data-difficulty="extreme" aria-pressed="false">
+            <strong>Extreme</strong>
+            <span>24 clues</span>
+          </button>
+        </div>
+        <button class="primary-action" id="start-game" type="button">Start Game</button>
+      </div>
+    </section>
+
+    <section class="game-screen hidden" id="game-screen" aria-label="Sudoku board">
+      <header class="game-header">
+        <div>
+          <button class="back-menu-btn" id="menu-btn" type="button"><span aria-hidden="true">&larr;</span> Back to Menu</button>
+          <h1>Sudoku</h1>
+        </div>
+        <div class="stats-bar">
+          <div class="stat">
+            <span>Level</span>
+            <strong id="level-label">Easy</strong>
+          </div>
+          <div class="stat">
+            <span>Time</span>
+            <strong id="timer">00:00</strong>
+          </div>
+        </div>
+      </header>
+
+      <div class="board-layout">
+        <div class="board-wrap">
+          <div class="sudoku-board" id="board" aria-label="Sudoku puzzle grid"></div>
+          <p class="message" id="message" role="status" aria-live="polite"></p>
+        </div>
+
+        <aside class="controls-panel" aria-label="Game controls">
+          <div class="number-pad" id="number-pad" aria-label="Number pad"></div>
+          <div class="solver-tools">
+            <div class="speed-head">
+              <span>Solver Speed</span>
+              <strong id="speed-label">150 ms</strong>
+            </div>
+            <input id="speed-control" type="range" min="50" max="500" step="10" value="150" aria-label="Solver speed">
+          </div>
+          <div class="action-grid">
+            <button id="solve-btn" type="button">Start Solve</button>
+            <button id="pause-solve-btn" type="button" disabled>Pause</button>
+            <button id="hint-btn" type="button">Hint</button>
+            <button id="new-puzzle-btn" type="button">New Puzzle</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

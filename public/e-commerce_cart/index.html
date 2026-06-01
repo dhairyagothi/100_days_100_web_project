@@ -1,866 +1,1677 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AeroStride</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
-  <link rel="icon" href="../favv.png" type="image/x-icon" />
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --red: #E8282A;
-      --red-dark: #B01E20;
-      --red-light: #FF4547;
-      --black: #0A0A0A;
-       background-color: #00000080;
-      --warm-gray: #E8E4DE;
-      --mid-gray: #8A8680;
-      --card-bg: #FFFFFF;
-      --text-primary: #0A0A0A;
-      --text-secondary: #5A5550;
-    }
-
-    body {
-      background-color: var(--off-white);
-      font-family: 'DM Sans', sans-serif;
-      color: var(--text-primary);
-      overflow-x: hidden;
-    }
-
-    /* ── NAVBAR ── */
-    header {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      z-index: 999;
-    }
-
-    .navbar {
-      display: flex;
-      align-items: center;
-    background-color: rgba(18, 168, 192, 0.2);
-      height: 72px;
-      padding: 0 40px;
-      border-bottom: 1px solid rgba(92, 184, 190, 0.548);
-    }
-
-    .website_title {
-      color: #fff;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 38px;
-      letter-spacing: 2px;
-      flex-grow: 1;
-      line-height: 1;
-    }
-    .website_title span { color: var(--red); }
-
-    .button-container { display: flex; align-items: center; gap: 4px; }
-
-    .button {
-      outline: none; border: none;
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      background-color: transparent;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .button:hover { background-color: rgba(255,255,255,0.08); }
-    .button img { width: 18px; filter: invert(1); opacity: 0.8; }
-
-    .box {
-      position: relative;
-      width: 40px; height: 40px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      margin-left: 8px;
-    }
-
-    .cart-count {
-      position: absolute;
-      background-color: var(--red);
-      top: 0; right: 0;
-      width: 18px; height: 18px;
-      line-height: 18px;
-      border-radius: 50%;
-      font-size: 10px;
-      font-weight: 500;
-      text-align: center;
-      color: #fff;
-      display: none;
-      z-index: 10;
-    }
-
-    #cart-icon {
-      width: 20px;
-      filter: invert(1);
-      opacity: 0.85;
-      cursor: pointer;
-    }
-
-    /* ── OVERLAY ── */
-    .cart-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(144, 56, 56, 0.4);
-      z-index: 1000;
-    }
-    .cart-overlay.active { display: block; }
-
-    /* ── SIDE CART PANEL ── */
-    /* Fixed panel: header + scrollable body + footer — no overflow on the panel itself */
-    .cart-panel {
-      position: fixed;
-      top: 0; right: -440px;
-      width: 420px;
-      height: 100vh;
-      background: #ffffff;
-      border-left: 1px solid #e0ddd8;
-      box-shadow: -12px 0 40px rgba(0,0,0,0.12);
-      z-index: 1001;
-      transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    .cart-panel.active { right: 0; }
-
-    /* sticky header inside panel */
-    .cart-header {
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 22px 24px 18px;
-      border-bottom: 1px solid #eeebe6;
-      background: #ffffff;
-    }
-
-    .cart-header-left { display: flex; align-items: center; gap: 10px; }
-
-    .cart-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 26px;
-      letter-spacing: 2px;
-      color: var(--black);
-    }
-
-    .cart-badge {
-      font-size: 11px;
-      font-weight: 500;
-      color: #fff;
-      background: var(--red);
-      padding: 3px 9px;
-      border-radius: 20px;
-      display: none;
-    }
-
-    #cart-close {
-      width: 32px; height: 32px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 50%;
-      background: #f0ede8;
-      cursor: pointer;
-      transition: background 0.2s;
-      flex-shrink: 0;
-    }
-    #cart-close:hover { background: #e0ddd8; }
-    #cart-close img { width: 12px; opacity: 0.5; }
-
-    /* scrollable middle */
-    .cart-body {
-      flex: 1;
-      overflow-y: auto;
-      overflow-x: hidden;
-      padding: 4px 24px 8px;
-      background: #ffffff;
-    }
-
-    /* empty state */
-    .cart-empty {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 60px 0;
-      color: var(--mid-gray);
-      font-size: 14px;
-      gap: 12px;
-      background: #ffffff;
-    }
-    .cart-empty-icon { font-size: 44px; opacity: 0.25; }
-
-    /* cart item row */
-    .cart-box {
-      display: grid;
-      grid-template-columns: 76px 1fr 32px;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 0;
-      border-bottom: 1px solid #eeebe6;
-      background: #ffffff;
-      animation: slideIn 0.22s ease;
-    }
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateX(10px); }
-      to   { opacity: 1; transform: translateX(0); }
-    }
-
-    .cart-img {
-      width: 76px; height: 76px;
-      object-fit: cover;
-      border-radius: 10px;
-      border: 1px solid #eeebe6;
-      background: #f8f6f3;
-    }
-
-    .detail-box { display: flex; flex-direction: column; gap: 5px; }
-
-    .cart-shoe-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 18px;
-      letter-spacing: 1px;
-      color: var(--black);
-      line-height: 1;
-    }
-
-    .price-box { display: flex; align-items: center; gap: 8px; }
-
-    .cart-price { font-size: 12px; color: var(--mid-gray); }
-
-    .cart-amt { font-size: 14px; font-weight: 500; color: var(--red); }
-
-    /* quantity stepper */
-    .qty-stepper {
-      display: inline-flex;
-      align-items: center;
-      border: 1px solid #e0ddd8;
-      border-radius: 8px;
-      overflow: hidden;
-      margin-top: 4px;
-    }
-
-    .qty-btn {
-      width: 28px; height: 28px;
-      border: none;
-      background: #f5f2ee;
-      color: var(--text-primary);
-      font-size: 16px;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.15s;
-      font-family: 'DM Sans', sans-serif;
-      line-height: 1;
-      flex-shrink: 0;
-    }
-    .qty-btn:hover { background: #e8e4de; }
-
-    .cart-quantity {
-      width: 36px; height: 28px;
-      border: none;
-      border-left: 1px solid #e0ddd8;
-      border-right: 1px solid #e0ddd8;
-      font-size: 13px;
-      font-family: 'DM Sans', sans-serif;
-      text-align: center;
-      color: var(--text-primary);
-      outline: none;
-      background: #ffffff;
-    }
-    .cart-quantity::-webkit-outer-spin-button,
-    .cart-quantity::-webkit-inner-spin-button { -webkit-appearance: none; }
-
-    /* remove button */
-    .cart-remove {
-      width: 32px; height: 32px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 8px;
-      cursor: pointer;
-      border: none;
-      background: transparent;
-      color: var(--mid-gray);
-      transition: background 0.15s, color 0.15s;
-      align-self: center;
-    }
-    .cart-remove:hover { background: #FEE8E8; color: var(--red); }
-    .cart-remove svg {
-      width: 15px; height: 15px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    /* sticky footer */
-    .cart-footer {
-      flex-shrink: 0;
-      padding: 16px 24px 28px;
-      border-top: 1px solid #eeebe6;
-      background: #ffffff;
-    }
-
-    .total {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 14px;
-    }
-
-    .total-title {
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--text-secondary);
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    .total-price {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 28px;
-      letter-spacing: 1px;
-      color: var(--black);
-    }
-
-    .btn-buy {
-      width: 100%;
-      padding: 15px;
-      background-color: var(--red);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 18px;
-      letter-spacing: 2.5px;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-    }
-    .btn-buy:hover { background-color: var(--red-dark); }
-    .btn-buy:active { transform: scale(0.98); }
-
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      background-color: var(--black);
-      padding: 100px 60px 60px;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -200px; right: -200px;
-      width: 700px; height: 700px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(232,40,42,0.18) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero::after {
-      content: 'AEROSTRIDE';
-      position: absolute;
-      bottom: -40px; left: -20px;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 200px;
-      color: rgba(255,255,255,0.03);
-      letter-spacing: 10px;
-      white-space: nowrap;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .hero-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-text { max-width: 480px; }
-
-    .hero-eyebrow {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--red);
-      border: 1px solid rgba(196, 56, 56, 0.4);
-      padding: 5px 12px;
-      border-radius: 20px;
-      margin-bottom: 24px;
-    }
-
-    .hero-text h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(52px, 7vw, 90px);
-      color: #fff;
-      line-height: 0.95;
-      letter-spacing: 2px;
-      margin-bottom: 24px;
-    }
-    .hero-text h1 span { color: var(--red); }
-
-    .hero-text p {
-      font-size: 17px;
-      color: rgba(255,255,255,0.55);
-      line-height: 1.7;
-      margin-bottom: 40px;
-      font-weight: 300;
-    }
-
-    .button1 {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      height: 52px;
-      padding: 0 28px;
-      background-color: var(--red);
-      border-radius: 52px;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 500;
-      text-decoration: none;
-      letter-spacing: 0.5px;
-      transition: background 0.2s, transform 0.15s;
-    }
-    .button1:hover { background-color: var(--red-light); transform: translateY(-2px); }
-    .button1 img { width: 16px; filter: invert(1); }
-
-    .hero-image img {
-      width: 520px;
-      max-width: 50vw;
-      filter: drop-shadow(0 30px 60px rgba(232,40,42,0.25));
-      animation: float 4s ease-in-out infinite;
-    }
-    @keyframes float {
-      0%, 100% { transform: rotate(-8deg) translateY(-20px); }
-      50%       { transform: rotate(-6deg) translateY(-40px); }
-    }
-
-    /* ── TRENDING ── */
-    .trending-section {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      padding: 60px 60px 0;
-      max-width: 1260px;
-      margin: 0 auto;
-    }
-    .trending-line { flex: 1; height: 1px; background: var(--warm-gray); }
-    .trending-text {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 24px;
-      letter-spacing: 4px;
-      color: var(--mid-black);
-      white-space: nowrap;
-    }
-
-    /* ── SHOE GRID ── */
-    .container { max-width: 1260px; padding: 40px 60px 80px; margin: 0 auto; }
-
-    .shop-content {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 20px;
-    }
-
-    .shoe-box {
-      background-color: var(--card-bg);
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid var(--warm-gray);
-      cursor: pointer;
-      transition: transform 0.25s, box-shadow 0.25s;
-      position: relative;
-    }
-    .shoe-box:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.10); }
-
-    .pic { overflow: hidden; background-color: var(--off-white); aspect-ratio: 1/1; }
-    .pic img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-    .shoe-box:hover .pic img { transform: scale(1.08); }
-
-    .shoe-info { padding: 14px 16px 60px; }
-
-    .shoe-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 22px;
-      letter-spacing: 1px;
-      color: var(--text-primary);
-      margin-bottom: 4px;
-    }
-
-    .shoe-price { font-size: 14px; color: var(--text-secondary); font-weight: 300; }
-
-    .add-cart {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      width: 100%;
-      background-color: var(--white);
-      border: none;
-      padding: 12px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .add-cart:hover { background-color: blueviolet; }
-    .add-cart img { width: 18px; filter: invert(1); }
-
-    .remove_icon { display: none; }
-
-    /* ── FOOTER ── */
-    .site-footer {
-      background-color: var(--black);
-      color: #ccc;
-      padding: 60px 60px 30px;
-    }
-
-    .container1 {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 40px;
-      max-width: 1200px;
-      margin: 0 auto 40px;
-    }
-
-    .footer-about, .footer-links, .footer-contact { flex: 1; min-width: 200px; }
-
-    .footer-about h3, .footer-links h3, .footer-contact h3 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 20px;
-      letter-spacing: 2px;
-      color: #fff;
-      margin-bottom: 16px;
-    }
-
-    .footer-about p, .footer-contact p { font-size: 14px; line-height: 1.8; font-weight: 400; color: #ccc; }
-
-    .footer-links ul { list-style: none; }
-    .footer-links ul li { margin-bottom: 10px; }
-    .footer-links ul li a {
-      color: #ddd;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 400;
-      transition: color 0.2s;
-    }
-    .footer-links ul li a:hover { color: var(--red); }
-
-    .footer-divider {
-      height: 1px;
-      background: rgba(255,255,255,0.08);
-      max-width: 1200px;
-      margin: 0 auto 24px;
-    }
-
-    .copyright_part {
-      display: flex;
-      justify-content: center;
-      font-size: 13px;
-      color: rgba(255,255,255,0.5);
-      font-weight: 300;
-    }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
-      .hero { padding: 100px 24px 60px; }
-      .hero-content { flex-direction: column; gap: 40px; }
-      .hero-image img { max-width: 80vw; animation: none; transform: none; }
-      .trending-section, .container { padding-left: 24px; padding-right: 24px; }
-      .site-footer { padding: 40px 24px 24px; }
-      .navbar { padding: 0 20px; }
-      .cart-panel { width: 100%; right: -100%; }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Navbar -->
-  <header>
-    <div class="navbar">
-      <div class="website_title">Aero<span>Stride</span></div>
-      <div class="button-container">
-        <button class="button"><img src="images_used/home_icon.png"/></button>
-        <button class="button"><img src="images_used/search_icon.png"/></button>
-        <button class="button"><img src="images_used/profile_icon.png"/></button>
-        <div class="box" id="open-cart">
-          <div class="cart-count">0</div>
-          <img src="images_used/cart_icon.png" id="cart-icon"/>
-        </div>
-      </div>
-    </div>
-  </header>  
-
-  <!-- Overlay (dims page when cart is open) -->
-  <div class="cart-overlay" id="cart-overlay"></div>
-
-  <!-- Cart panel — lives outside header so z-index stacking is clean -->
-  <div class="cart-panel" id="cart-panel">
-    <!-- sticky header -->
-    <div class="cart-header">
-      <div class="cart-header-left">
-        <span class="cart-title">Your Cart</span>
-        <span class="cart-badge" id="cart-badge">0</span>
-      </div>
-      <div id="cart-close">
-        <img src="images_used/cross.png"/>
-      </div>
-    </div>
-
-    <!-- scrollable items -->
-    <div class="cart-body" id="cart-body">
-      <div class="cart-empty" id="cart-empty">
-        <span class="cart-empty-icon">🛒</span>
-        <span>Your cart is empty</span>
-      </div>
-    </div>
-
-    <!-- sticky footer -->
-    <div class="cart-footer">
-      <div class="total">
-        <span class="total-title">Total</span>
-        <span class="total-price" id="total-price">Rs.0</span>
-      </div>
-      <button class="btn-buy">Place Order</button>
-    </div>
-  </div>
-
-  <!-- Hero -->
-  <div class="hero" id="hero">
-    <div class="hero-content">
-      <div class="hero-text">
-        <div class="hero-eyebrow">Exclusive Collection 2024</div>
-        <h1>Step Into <span>Legend</span></h1>
-        <p>Footwear designed for those who move with purpose. High-performance silhouettes built for every occasion.</p>
-        <a class="button1" href="#trending-section">
-          Shop Now
-          <img src="images_used/cart_icon.png"/>
-        </a>
-      </div>
-      <div class="hero-image">
-        <img src="images_used/hero_shoe.png" alt="AeroStride Hero Shoe">
-      </div>
-    </div>
-  </div>
-
-  <!-- Trending -->
-  <div class="trending-section" id="trending-section">
-    <div class="trending-line"></div>
-    <div class="trending-text">Trending Right Now</div>
-    <div class="trending-line"></div>
-  </div>
-
-  <!-- Shoe Grid -->
-  <div class="container">
-    <div class="shop-content">
-
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/messi shoes 0.png" class="shoe-img"></div>
-        <div class="shoe-info"><h2 class="shoe-title">GOAT</h2><span class="shoe-price">Rs.5000</span></div>
-        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
-      </div>
-
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/cristiano ronal 1.png" class="shoe-img"></div>
-        <div class="shoe-info"><h2 class="shoe-title">CR7</h2><span class="shoe-price">Rs.3000</span></div>
-        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
-      </div>
-
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/giannis antetok 1.png" class="shoe-img"></div>
-        <div class="shoe-info"><h2 class="shoe-title">The Greek Freak</h2><span class="shoe-price">Rs.2500</span></div>
-        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
-      </div>
-
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/ishowspeed shoe 1.png" class="shoe-img"></div>
-        <div class="shoe-info"><h2 class="shoe-title">Sewy</h2><span class="shoe-price">Rs.1500</span></div>
-        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
-      </div>
-
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/kobe bryant sho 0.png" class="shoe-img"></div>
-        <div class="shoe-info"><h2 class="shoe-title">Black Mamba</h2><span class="shoe-price">Rs.3000</span></div>
-        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
-      </div>
-
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/nike jordans 0.png" class="shoe-img"></div>
-        <div class="shoe-info"><h2 class="shoe-title">Jordan X</h2><span class="shoe-price">Rs.2500</span></div>
-        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
-      </div>
-
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/virat_kohli.png" class="shoe-img"></div>
-        <div class="shoe-info"><h2 class="shoe-title">KING</h2><span class="shoe-price">Rs.5000</span></div>
-        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
-      </div>
-
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/abd.png" class="shoe-img"></div>
-        <div class="shoe-info"><h2 class="shoe-title">Mr.360</h2><span class="shoe-price">Rs.5000</span></div>
-        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="container1">
-      <div class="footer-about">
-        <h3>About Us</h3>
-        <p>At AeroStride, we blend innovative design with exceptional comfort to create stylish, high-performance footwear. Our mission is to support your every step with shoes that fit seamlessly into your dynamic lifestyle.</p>
-      </div>
-      <div class="footer-links">
-        <h3>Quick Links</h3>
-        <ul>
-          <li><a href="#hero">Home</a></li>
-          <li><a href="#trending-section">Shoes</a></li>
-        </ul>
-      </div>
-      <div class="footer-contact">
-        <h3>Contact Us</h3>
-        <p>Email: info@aerostride.com</p>
-        <p>Phone: +123 456 7890</p>
-      </div>
-    </div>
-    <div class="footer-divider"></div>
-    <div class="copyright_part">&copy; AeroStride 2024</div>
-  </footer>
-
-  <script>
-    /* ── Elements ── */
-    const cartPanel   = document.getElementById('cart-panel');
-    const cartOverlay = document.getElementById('cart-overlay');
-    const cartBody    = document.getElementById('cart-body');
-    const cartEmpty   = document.getElementById('cart-empty');
-    const cartBadge   = document.getElementById('cart-badge');
-    const cartCount   = document.querySelector('.cart-count');
-    const totalPrice  = document.getElementById('total-price');
-
-    /* ── Open / Close ── */
-    function openCart()  { cartPanel.classList.add('active'); cartOverlay.classList.add('active'); }
-    function closeCart() { cartPanel.classList.remove('active'); cartOverlay.classList.remove('active'); }
-
-    document.getElementById('open-cart').addEventListener('click', openCart);
-    document.getElementById('cart-close').addEventListener('click', closeCart);
-    cartOverlay.addEventListener('click', closeCart);
-
-    /* ── State ── */
-    let itemList = [];
-
-    /* ── Add to cart ── */
-    document.querySelectorAll('.add-cart').forEach(btn => {
-      btn.addEventListener('click', function() {
-        const box   = this.closest('.shoe-box');
-        const title = box.querySelector('.shoe-title').textContent;
-        const price = box.querySelector('.shoe-price').textContent;
-        const img   = box.querySelector('.shoe-img').src;
-
-        if (itemList.find(i => i.title === title)) {
-          alert('Already in cart!');
-          return;
-        }
-
-        itemList.push({ title, price, img });
-
-        const row = document.createElement('div');
-        row.className = 'cart-box';
-        row.dataset.title = title;
-        row.innerHTML = cartRowHTML(title, price, img);
-        cartBody.appendChild(row);
-
-        bindRow(row);
-        updateUI();
-        openCart();
-      });
-    });
-
-    /* ── Row template ── */
-    function cartRowHTML(title, price, img) {
-      return `
-        <img src="${img}" class="cart-img">
-        <div class="detail-box">
-          <div class="cart-shoe-title">${title}</div>
-          <div class="price-box">
-            <span class="cart-price">${price}</span>
-            <span class="cart-amt">${price}</span>
-          </div>
-          <div class="qty-stepper">
-            <button class="qty-btn qty-down">−</button>
-            <input type="number" class="cart-quantity" value="1" min="1">
-            <button class="qty-btn qty-up">+</button>
-          </div>
-        </div>
-        <button class="cart-remove" title="Remove">
-          <svg viewBox="0 0 24 24">
-            <polyline points="3 6 5 6 21 6"/>
-            <path d="M19 6l-1 14H6L5 6"/>
-            <path d="M10 11v6M14 11v6"/>
-            <path d="M9 6V4h6v2"/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AeroStride — Premium Footwear</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <!-- ===== NAVBAR ===== -->
+    <header class="header" id="header">
+      <nav class="navbar">
+        <a href="#" class="logo">
+          <svg viewBox="0 0 220 36" height="30" class="logo-svg">
+            <defs>
+              <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ff4500" />
+                <stop offset="100%" stop-color="#ff8c00" />
+              </linearGradient>
+            </defs>
+            <path d="M4 26 Q14 4 34 2 Q20 12 10 24 Z" fill="url(#lg)" />
+            <path
+              d="M2 30 Q14 8 38 4 Q22 14 12 30 Z"
+              fill="url(#lg)"
+              opacity="0.45"
+            />
+            <text
+              x="44"
+              y="27"
+              fill="#ffffff"
+              font-family="'Bebas Neue',sans-serif"
+              font-size="24"
+              letter-spacing="6"
+            >
+              AEROSTRIDE
+            </text>
           </svg>
-        </button>`;
-    }
+        </a>
 
-    /* ── Bind events on a row ── */
-    function bindRow(row) {
-      const qtyInput = row.querySelector('.cart-quantity');
+        <div class="nav-end">
+          <button class="nav-icon" id="search-btn" aria-label="Search">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="M21 21l-4.35-4.35" />
+            </svg>
+          </button>
+          <button class="nav-icon" id="profile-btn" aria-label="Profile">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </button>
+          <button
+            class="nav-icon theme-btn"
+            id="theme-toggle"
+            aria-label="Toggle theme"
+          >
+            <svg
+              id="sun-icon"
+              style="display: none"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              width="18"
+              height="18"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+              />
+            </svg>
+            <svg
+              id="moon-icon"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              width="18"
+              height="18"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+              />
+            </svg>
+          </button>
+          <button class="cart-trigger" id="cart-icon" aria-label="Open Cart">
+            <span class="cart-badge" id="cart-count">0</span>
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 01-8 0" />
+            </svg>
+          </button>
+        </div>
+      </nav>
+    </header>
 
-      row.querySelector('.qty-down').addEventListener('click', () => {
-        let v = parseInt(qtyInput.value) || 1;
-        if (v > 1) { qtyInput.value = v - 1; updateUI(); }
-      });
+    <!-- ===== CART SIDEBAR ===== -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+    <aside class="cart" id="cart">
+      <div class="cart-header">
+        <div class="cart-title-wrap">
+          <h2 class="cart-title">Your Cart</h2>
+          <span class="cart-item-count" id="cart-item-label">0 items</span>
+        </div>
+        <button class="cart-close-btn" id="cart-close" aria-label="Close cart">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
 
-      row.querySelector('.qty-up').addEventListener('click', () => {
-        qtyInput.value = (parseInt(qtyInput.value) || 1) + 1;
-        updateUI();
-      });
+      <div class="cart-body" id="cart-content">
+        <div class="cart-empty" id="cart-empty">
+          <div class="cart-empty-icon">
+            <svg
+              width="56"
+              height="56"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.2"
+            >
+              <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 01-8 0" />
+            </svg>
+          </div>
+          <p class="cart-empty-text">Your cart is empty</p>
+          <p class="cart-empty-sub">Add some fresh kicks to get started</p>
+        </div>
+      </div>
 
-      qtyInput.addEventListener('change', () => {
-        if (!qtyInput.value || qtyInput.value < 1) qtyInput.value = 1;
-        updateUI();
-      });
+      <div class="cart-footer" id="cart-footer" style="display: none">
+        <div class="cart-summary">
+          <div class="cart-summary-row">
+            <span>Subtotal</span>
+            <span id="cart-subtotal">Rs.0</span>
+          </div>
+          <div class="cart-summary-row">
+            <span>Shipping</span>
+            <span class="free-tag">FREE</span>
+          </div>
+          <div class="cart-summary-divider"></div>
+          <div class="cart-summary-row total-row">
+            <span>Total</span>
+            <span id="cart-total-price">Rs.0</span>
+          </div>
+        </div>
+        <button class="btn-checkout" id="checkout-btn">
+          <span>Proceed to Checkout</span>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </button>
+        <button class="btn-clear-cart" id="clear-cart-btn">Clear Cart</button>
+      </div>
+    </aside>
 
-      row.querySelector('.cart-remove').addEventListener('click', () => {
-        const title = row.dataset.title;
-        itemList = itemList.filter(i => i.title !== title);
-        row.remove();
-        updateUI();
-      });
-    }
+    <!-- ===== CHECKOUT MODAL ===== -->
+    <div class="modal-overlay" id="checkout-overlay"></div>
+    <div class="checkout-modal" id="checkout-modal">
+      <div class="checkout-modal-header">
+        <h2>Complete Your Order</h2>
+        <button class="modal-close" id="checkout-close">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+      <div class="checkout-modal-body">
+        <div class="checkout-fields">
+          <div class="field-group">
+            <label>Full Name</label>
+            <input
+              type="text"
+              id="co-name"
+              placeholder="John Doe"
+              autocomplete="name"
+            />
+          </div>
+          <div class="field-group">
+            <label>Email Address</label>
+            <input
+              type="email"
+              id="co-email"
+              placeholder="john@example.com"
+              autocomplete="email"
+            />
+          </div>
+          <div class="field-group">
+            <label>Phone Number</label>
+            <input
+              type="tel"
+              id="co-phone"
+              placeholder="+91 98765 43210"
+              autocomplete="tel"
+            />
+          </div>
+          <div class="field-group full">
+            <label>Delivery Address</label>
+            <textarea
+              id="co-address"
+              placeholder="Street, City, State, PIN"
+              rows="3"
+            ></textarea>
+          </div>
+          <div class="field-group">
+            <label>Payment Method</label>
+            <div class="select-wrap">
+              <select id="co-payment">
+                <option value="">Select method</option>
+                <option value="cod">Cash on Delivery</option>
+                <option value="upi">UPI</option>
+                <option value="card">Credit / Debit Card</option>
+                <option value="netbanking">Net Banking</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="checkout-order-summary">
+          <h3>Order Summary</h3>
+          <div id="checkout-items-list"></div>
+          <div class="checkout-total-row">
+            <span>Grand Total</span>
+            <span id="checkout-grand-total">Rs.0</span>
+          </div>
+        </div>
+      </div>
+      <div class="checkout-modal-footer">
+        <button class="btn-submit-order" id="submit-order-btn">
+          <span>Place Order</span>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+    </div>
 
-    /* ── Recalculate totals & badges ── */
-    function updateUI() {
-      let total = 0;
-      document.querySelectorAll('.cart-box').forEach(row => {
-        const priceStr = row.querySelector('.cart-price').textContent.replace('Rs.', '');
-        const price    = parseFloat(priceStr);
-        const qty      = parseInt(row.querySelector('.cart-quantity').value) || 1;
-        const sub      = price * qty;
-        row.querySelector('.cart-amt').textContent = 'Rs.' + sub;
-        total += sub;
-      });
+    <!-- ===== ORDER SUCCESS TOAST ===== -->
+    <div class="toast" id="toast">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+      >
+        <polyline points="20 6 9 17 4 12" />
+      </svg>
+      <span id="toast-msg">Order placed successfully!</span>
+    </div>
 
-      totalPrice.textContent = 'Rs.' + total;
+    <!-- ===== SEARCH MODAL ===== -->
+    <div class="modal-overlay" id="search-overlay"></div>
+    <div class="search-modal" id="search-modal">
+      <div class="search-modal-inner">
+        <div class="search-input-wrap">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" />
+          </svg>
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search shoes by name..."
+            autocomplete="off"
+          />
+          <button class="modal-close" id="search-close">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <div id="search-results"></div>
+      </div>
+    </div>
 
-      const count = itemList.length;
-      cartCount.textContent  = count;
-      cartCount.style.display = count ? 'block' : 'none';
-      cartBadge.textContent   = count;
-      cartBadge.style.display = count ? 'inline-block' : 'none';
-      cartEmpty.style.display = count ? 'none' : 'flex';
-    }
-  </script>
-</body>
+    <!-- ===== PROFILE MODAL ===== -->
+    <div class="modal-overlay" id="profile-overlay"></div>
+    <div class="profile-modal" id="profile-modal">
+      <div class="profile-modal-inner">
+        <div class="profile-modal-header">
+          <h2>My Account</h2>
+          <button class="modal-close" id="profile-close">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <div class="profile-tabs">
+          <button class="ptab active" data-tab="login">Login</button>
+          <button class="ptab" data-tab="signup">Sign Up</button>
+        </div>
+        <div class="ptab-content" id="login-tab">
+          <div class="field-group">
+            <label>Email</label
+            ><input type="email" placeholder="you@example.com" />
+          </div>
+          <div class="field-group">
+            <label>Password</label
+            ><input type="password" placeholder="••••••••" />
+          </div>
+          <button class="btn-profile-action">Login</button>
+        </div>
+        <div class="ptab-content hidden" id="signup-tab">
+          <div class="field-group">
+            <label>Full Name</label
+            ><input type="text" placeholder="Your Name" />
+          </div>
+          <div class="field-group">
+            <label>Email</label
+            ><input type="email" placeholder="you@example.com" />
+          </div>
+          <div class="field-group">
+            <label>Password</label
+            ><input type="password" placeholder="••••••••" />
+          </div>
+          <button class="btn-profile-action">Create Account</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="hero">
+      <div class="hero-bg">
+        <div class="hero-blob b1"></div>
+        <div class="hero-blob b2"></div>
+        <div class="hero-grain"></div>
+      </div>
+      <div class="hero-inner">
+        <div class="hero-content">
+          <div class="hero-eyebrow">
+            <span class="eyebrow-dot"></span>
+            <span>Exclusive Collection 2024</span>
+          </div>
+          <h1 class="hero-heading">
+            <span class="line1">STEP INTO</span>
+            <span class="line2">GREATNESS</span>
+          </h1>
+          <p class="hero-sub">
+            Footwear designed for those who move with purpose. High-performance
+            silhouettes built for every occasion.
+          </p>
+          <div class="hero-actions">
+            <a class="btn-hero" href="#shop">
+              <span>Shop Now</span>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+            <div class="hero-stats">
+              <div class="stat">
+                <span class="stat-num">16+</span
+                ><span class="stat-label">Styles</span>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="stat">
+                <span class="stat-num">4.9</span
+                ><span class="stat-label">Rating</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual" id="slider">
+          <div class="slide active">
+            <img src="images_used/hero_shoe.png" alt="Hero Shoe" />
+          </div>
+          <div class="slide">
+            <img src="images_used/shoe2.png" alt="Shoe 2" />
+          </div>
+          <div class="slide">
+            <img src="images_used/shoe3.png" alt="Shoe 3" />
+          </div>
+          <div class="slide">
+            <img src="images_used/shoe4.png" alt="Shoe 4" />
+          </div>
+          <div class="slide">
+            <img src="images_used/shoe5.png" alt="Shoe 5" />
+          </div>
+          <div class="slider-ring r1"></div>
+          <div class="slider-ring r2"></div>
+          <div class="slide-shadow"></div>
+          <div class="slider-dots" id="slider-dots"></div>
+          <button class="slider-arrow prev" id="slider-prev">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+          <button class="slider-arrow next" id="slider-next">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION DIVIDER ===== -->
+    <div class="section-divider" id="shop">
+      <span class="divider-tag">TRENDING RIGHT NOW</span>
+    </div>
+
+    <!-- ===== FILTER BAR ===== -->
+    <div class="filter-bar">
+      <div class="filter-inner">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="football">Football</button>
+        <button class="filter-btn" data-filter="basketball">Basketball</button>
+        <button class="filter-btn" data-filter="running">Running</button>
+        <button class="filter-btn" data-filter="cricket">Cricket</button>
+      </div>
+      <div class="sort-wrap">
+        <select id="sort-select">
+          <option value="default">Sort: Featured</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="name-asc">Name: A–Z</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- ===== PRODUCT GRID ===== -->
+    <main class="main">
+      <div class="grid" id="grid">
+        <!-- 1 GOAT -->
+        <div
+          class="card"
+          data-category="football"
+          data-price="5000"
+          data-name="GOAT"
+        >
+          <div class="card-badge">Bestseller</div>
+          <figure class="card-figure">
+            <img
+              src="images_used/messi shoes 0.png"
+              class="card-img"
+              alt="GOAT"
+              loading="lazy"
+            />
+            <div class="card-overlay">
+              <button
+                class="btn-quick-view"
+                data-name="GOAT"
+                data-price="5000"
+                data-img="images_used/messi shoes 0.png"
+              >
+                Quick View
+              </button>
+            </div>
+          </figure>
+          <div class="card-body">
+            <span class="card-brand-tag">AeroStride</span>
+            <h3 class="card-title">GOAT</h3>
+            <div class="card-rating">
+              <span class="stars">★★★★★</span>
+              <span class="review-count">(128)</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price-wrap">
+                <span class="card-price">Rs.5,000</span>
+              </div>
+              <button
+                class="card-add"
+                data-title="GOAT"
+                data-price="5000"
+                data-img="images_used/messi shoes 0.png"
+                aria-label="Add GOAT to cart"
+              >
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 CR7 -->
+        <div
+          class="card"
+          data-category="football"
+          data-price="3000"
+          data-name="CR7"
+        >
+          <figure class="card-figure">
+            <img
+              src="images_used/cristiano ronal 1.png"
+              class="card-img"
+              alt="CR7"
+              loading="lazy"
+            />
+            <div class="card-overlay">
+              <button
+                class="btn-quick-view"
+                data-name="CR7"
+                data-price="3000"
+                data-img="images_used/cristiano ronal 1.png"
+              >
+                Quick View
+              </button>
+            </div>
+          </figure>
+          <div class="card-body">
+            <span class="card-brand-tag">AeroStride</span>
+            <h3 class="card-title">CR7</h3>
+            <div class="card-rating">
+              <span class="stars">★★★★★</span>
+              <span class="review-count">(241)</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price-wrap">
+                <span class="card-price">Rs.3,000</span>
+              </div>
+              <button
+                class="card-add"
+                data-title="CR7"
+                data-price="3000"
+                data-img="images_used/cristiano ronal 1.png"
+                aria-label="Add CR7 to cart"
+              >
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 The Greek Freak -->
+        <div
+          class="card"
+          data-category="basketball"
+          data-price="2500"
+          data-name="The Greek Freak"
+        >
+          <figure class="card-figure">
+            <img
+              src="images_used/giannis antetok 1.png"
+              class="card-img"
+              alt="The Greek Freak"
+              loading="lazy"
+            />
+            <div class="card-overlay">
+              <button
+                class="btn-quick-view"
+                data-name="The Greek Freak"
+                data-price="2500"
+                data-img="images_used/giannis antetok 1.png"
+              >
+                Quick View
+              </button>
+            </div>
+          </figure>
+          <div class="card-body">
+            <span class="card-brand-tag">AeroStride</span>
+            <h3 class="card-title">The Greek Freak</h3>
+            <div class="card-rating">
+              <span class="stars">★★★★★</span>
+              <span class="review-count">(87)</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price-wrap">
+                <span class="card-price">Rs.2,500</span>
+              </div>
+              <button
+                class="card-add"
+                data-title="The Greek Freak"
+                data-price="2500"
+                data-img="images_used/giannis antetok 1.png"
+                aria-label="Add The Greek Freak to cart"
+              >
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Sewy -->
+        <div
+          class="card"
+          data-category="running"
+          data-price="1500"
+          data-name="Sewy"
+        >
+          <div class="card-badge new-badge">New</div>
+          <figure class="card-figure">
+            <img
+              src="images_used/ishowspeed shoe 1.png"
+              class="card-img"
+              alt="Sewy"
+              loading="lazy"
+            />
+            <div class="card-overlay">
+              <button
+                class="btn-quick-view"
+                data-name="Sewy"
+                data-price="1500"
+                data-img="images_used/ishowspeed shoe 1.png"
+              >
+                Quick View
+              </button>
+            </div>
+          </figure>
+          <div class="card-body">
+            <span class="card-brand-tag">AeroStride</span>
+            <h3 class="card-title">Sewy</h3>
+            <div class="card-rating">
+              <span class="stars">★★★★★</span>
+              <span class="review-count">(312)</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price-wrap">
+                <span class="card-price">Rs.1,500</span>
+              </div>
+              <button
+                class="card-add"
+                data-title="Sewy"
+                data-price="1500"
+                data-img="images_used/ishowspeed shoe 1.png"
+                aria-label="Add Sewy to cart"
+              >
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5 Black Mamba -->
+        <div
+          class="card"
+          data-category="basketball"
+          data-price="3000"
+          data-name="Black Mamba"
+        >
+          <figure class="card-figure">
+            <img
+              src="images_used/kobe bryant sho 0.png"
+              class="card-img"
+              alt="Black Mamba"
+              loading="lazy"
+            />
+            <div class="card-overlay">
+              <button
+                class="btn-quick-view"
+                data-name="Black Mamba"
+                data-price="3000"
+                data-img="images_used/kobe bryant sho 0.png"
+              >
+                Quick View
+              </button>
+            </div>
+          </figure>
+          <div class="card-body">
+            <span class="card-brand-tag">AeroStride</span>
+            <h3 class="card-title">Black Mamba</h3>
+            <div class="card-rating">
+              <span class="stars">★★★★★</span>
+              <span class="review-count">(196)</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price-wrap">
+                <span class="card-price">Rs.3,000</span>
+              </div>
+              <button
+                class="card-add"
+                data-title="Black Mamba"
+                data-price="3000"
+                data-img="images_used/kobe bryant sho 0.png"
+                aria-label="Add Black Mamba to cart"
+              >
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6 Jordan X -->
+        <div
+          class="card"
+          data-category="basketball"
+          data-price="2500"
+          data-name="Jordan X"
+        >
+          <div class="card-badge">Popular</div>
+          <figure class="card-figure">
+            <img
+              src="images_used/nike jordans 0.png"
+              class="card-img"
+              alt="Jordan X"
+              loading="lazy"
+            />
+            <div class="card-overlay">
+              <button
+                class="btn-quick-view"
+                data-name="Jordan X"
+                data-price="2500"
+                data-img="images_used/nike jordans 0.png"
+              >
+                Quick View
+              </button>
+            </div>
+          </figure>
+          <div class="card-body">
+            <span class="card-brand-tag">AeroStride</span>
+            <h3 class="card-title">Jordan X</h3>
+            <div class="card-rating">
+              <span class="stars">★★★★★</span>
+              <span class="review-count">(445)</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price-wrap">
+                <span class="card-price">Rs.2,500</span>
+              </div>
+              <button
+                class="card-add"
+                data-title="Jordan X"
+                data-price="2500"
+                data-img="images_used/nike jordans 0.png"
+                aria-label="Add Jordan X to cart"
+              >
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7 KING -->
+        <div
+          class="card"
+          data-category="cricket"
+          data-price="5000"
+          data-name="KING"
+        >
+          <figure class="card-figure">
+            <img
+              src="images_used/virat_kohli.png"
+              class="card-img"
+              alt="KING"
+              loading="lazy"
+            />
+            <div class="card-overlay">
+              <button
+                class="btn-quick-view"
+                data-name="KING"
+                data-price="5000"
+                data-img="images_used/virat_kohli.png"
+              >
+                Quick View
+              </button>
+            </div>
+          </figure>
+          <div class="card-body">
+            <span class="card-brand-tag">AeroStride</span>
+            <h3 class="card-title">KING</h3>
+            <div class="card-rating">
+              <span class="stars">★★★★★</span>
+              <span class="review-count">(301)</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price-wrap">
+                <span class="card-price">Rs.5,000</span>
+              </div>
+              <button
+                class="card-add"
+                data-title="KING"
+                data-price="5000"
+                data-img="images_used/virat_kohli.png"
+                aria-label="Add KING to cart"
+              >
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 8 Mr.360 -->
+        <div
+          class="card"
+          data-category="cricket"
+          data-price="5000"
+          data-name="Mr.360"
+        >
+          <figure class="card-figure">
+            <img
+              src="images_used/abd.png"
+              class="card-img"
+              alt="Mr.360"
+              loading="lazy"
+            />
+            <div class="card-overlay">
+              <button
+                class="btn-quick-view"
+                data-name="Mr.360"
+                data-price="5000"
+                data-img="images_used/abd.png"
+              >
+                Quick View
+              </button>
+            </div>
+          </figure>
+          <div class="card-body">
+            <span class="card-brand-tag">AeroStride</span>
+            <h3 class="card-title">Mr.360</h3>
+            <div class="card-rating">
+              <span class="stars">★★★★★</span>
+              <span class="review-count">(78)</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price-wrap">
+                <span class="card-price">Rs.5,000</span>
+              </div>
+              <button
+                class="card-add"
+                data-title="Mr.360"
+                data-price="5000"
+                data-img="images_used/abd.png"
+                aria-label="Add Mr.360 to cart"
+              >
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 9 Curry Splash -->
+        <div
+          class="card"
+          data-category="basketball"
+          data-price="4000"
+          data-name="Curry Splash"
+        >
+          <figure class="card-figure">
+            <img
+              src="images_used/giannis antetok 1.png"
+              class="card-img"
+              alt="Curry Splash"
+              loading="lazy"
+            />
+            <div class="card-overlay">
+              <button
+                class="btn-quick-view"
+                data-name="Curry Splash"
+                data-price="4000"
+                data-img="images_used/giannis antetok 1.png"
+              >
+                Quick View
+              </button>
+            </div>
+          </figure>
+          <div class="card-body">
+            <span class="card-brand-tag">AeroStride</span>
+            <h3 class="card-title">Curry Splash</h3>
+            <div class="card-rating">
+              <span class="stars">★★★★★</span>
+              <span class="review-count">(154)</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price-wrap">
+                <span class="card-price">Rs.4,000</span>
+              </div>
+              <button
+                class="card-add"
+                data-title="Curry Splash"
+                data-price="4000"
+                data-img="images_used/giannis antetok 1.png"
+                aria-label="Add Curry Splash to cart"
+              >
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 10 Pele Magic -->
+        <div
+          class="card"
+          data-category="football"
+          data-price="4500"
+          data-name="Pele Magic"
+        >
+          <figure class="card-figure">
+            <img
+              src="images_used/cristiano ronal 1.png"
+              class="card-img"
+              alt="Pele Magic"
+              loading="lazy"
+            />
+            <div class="card-overlay">
+              <button
+                class="btn-quick-view"
+                data-name="Pele Magic"
+                data-price="4500"
+                data-img="images_used/cristiano ronal 1.png"
+              >
+                Quick View
+              </button>
+            </div>
+          </figure>
+          <div class="card-body">
+            <span class="card-brand-tag">AeroStride</span>
+            <h3 class="card-title">Pele Magic</h3>
+            <div class="card-rating">
+              <span class="stars">★★★★★</span>
+              <span class="review-count">(203)</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price-wrap">
+                <span class="card-price">Rs.4,500</span>
+              </div>
+              <button
+                class="card-add"
+                data-title="Pele Magic"
+                data-price="4500"
+                data-img="images_used/cristiano ronal 1.png"
+                aria-label="Add Pele Magic to cart"
+              >
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 11 Bolt Speed -->
+        <div
+          class="card"
+          data-category="running"
+          data-price="2000"
+          data-name="Bolt Speed"
+        >
+          <figure class="card-figure">
+            <img
+              src="images_used/ishowspeed shoe 1.png"
+              class="card-img"
+              alt="Bolt Speed"
+              loading="lazy"
+            />
+            <div class="card-overlay">
+              <button
+                class="btn-quick-view"
+                data-name="Bolt Speed"
+                data-price="2000"
+                data-img="images_used/ishowspeed shoe 1.png"
+              >
+                Quick View
+              </button>
+            </div>
+          </figure>
+          <div class="card-body">
+            <span class="card-brand-tag">AeroStride</span>
+            <h3 class="card-title">Bolt Speed</h3>
+            <div class="card-rating">
+              <span class="stars">★★★★★</span>
+              <span class="review-count">(89)</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price-wrap">
+                <span class="card-price">Rs.2,000</span>
+              </div>
+              <button
+                class="card-add"
+                data-title="Bolt Speed"
+                data-price="2000"
+                data-img="images_used/ishowspeed shoe 1.png"
+                aria-label="Add Bolt Speed to cart"
+              >
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 12 Serena Ace -->
+        <div
+          class="card"
+          data-category="running"
+          data-price="3500"
+          data-name="Serena Ace"
+        >
+          <figure class="card-figure">
+            <img
+              src="images_used/nike jordans 0.png"
+              class="card-img"
+              alt="Serena Ace"
+              loading="lazy"
+            />
+            <div class="card-overlay">
+              <button
+                class="btn-quick-view"
+                data-name="Serena Ace"
+                data-price="3500"
+                data-img="images_used/nike jordans 0.png"
+              >
+                Quick View
+              </button>
+            </div>
+          </figure>
+          <div class="card-body">
+            <span class="card-brand-tag">AeroStride</span>
+            <h3 class="card-title">Serena Ace</h3>
+            <div class="card-rating">
+              <span class="stars">★★★★★</span>
+              <span class="review-count">(167)</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price-wrap">
+                <span class="card-price">Rs.3,500</span>
+              </div>
+              <button
+                class="card-add"
+                data-title="Serena Ace"
+                data-price="3500"
+                data-img="images_used/nike jordans 0.png"
+                aria-label="Add Serena Ace to cart"
+              >
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 13 Air Icon -->
+        <div
+          class="card"
+          data-category="running"
+          data-price="4800"
+          data-name="Air Icon"
+        >
+          <div class="card-badge">Top Pick</div>
+          <figure class="card-figure">
+            <img
+              src="images_used/hero_shoe.png"
+              class="card-img"
+              alt="Air Icon"
+              loading="lazy"
+            />
+            <div class="card-overlay">
+              <button
+                class="btn-quick-view"
+                data-name="Air Icon"
+                data-price="4800"
+                data-img="images_used/hero_shoe.png"
+              >
+                Quick View
+              </button>
+            </div>
+          </figure>
+          <div class="card-body">
+            <span class="card-brand-tag">AeroStride</span>
+            <h3 class="card-title">Air Icon</h3>
+            <div class="card-rating">
+              <span class="stars">★★★★★</span>
+              <span class="review-count">(512)</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price-wrap">
+                <span class="card-price">Rs.4,800</span>
+              </div>
+              <button
+                class="card-add"
+                data-title="Air Icon"
+                data-price="4800"
+                data-img="images_used/hero_shoe.png"
+                aria-label="Add Air Icon to cart"
+              >
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 14 Torch Runner -->
+        <div
+          class="card"
+          data-category="football"
+          data-price="3200"
+          data-name="Torch Runner"
+        >
+          <figure class="card-figure">
+            <img
+              src="images_used/messi shoes 0.png"
+              class="card-img"
+              alt="Torch Runner"
+              loading="lazy"
+            />
+            <div class="card-overlay">
+              <button
+                class="btn-quick-view"
+                data-name="Torch Runner"
+                data-price="3200"
+                data-img="images_used/messi shoes 0.png"
+              >
+                Quick View
+              </button>
+            </div>
+          </figure>
+          <div class="card-body">
+            <span class="card-brand-tag">AeroStride</span>
+            <h3 class="card-title">Torch Runner</h3>
+            <div class="card-rating">
+              <span class="stars">★★★★★</span>
+              <span class="review-count">(94)</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price-wrap">
+                <span class="card-price">Rs.3,200</span>
+              </div>
+              <button
+                class="card-add"
+                data-title="Torch Runner"
+                data-price="3200"
+                data-img="images_used/messi shoes 0.png"
+                aria-label="Add Torch Runner to cart"
+              >
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 15 Phantom Stride -->
+        <div
+          class="card"
+          data-category="basketball"
+          data-price="2800"
+          data-name="Phantom Stride"
+        >
+          <figure class="card-figure">
+            <img
+              src="images_used/kobe bryant sho 0.png"
+              class="card-img"
+              alt="Phantom Stride"
+              loading="lazy"
+            />
+            <div class="card-overlay">
+              <button
+                class="btn-quick-view"
+                data-name="Phantom Stride"
+                data-price="2800"
+                data-img="images_used/kobe bryant sho 0.png"
+              >
+                Quick View
+              </button>
+            </div>
+          </figure>
+          <div class="card-body">
+            <span class="card-brand-tag">AeroStride</span>
+            <h3 class="card-title">Phantom Stride</h3>
+            <div class="card-rating">
+              <span class="stars">★★★★★</span>
+              <span class="review-count">(139)</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price-wrap">
+                <span class="card-price">Rs.2,800</span>
+              </div>
+              <button
+                class="card-add"
+                data-title="Phantom Stride"
+                data-price="2800"
+                data-img="images_used/kobe bryant sho 0.png"
+                aria-label="Add Phantom Stride to cart"
+              >
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 16 Nova Dash -->
+        <div
+          class="card"
+          data-category="running"
+          data-price="2200"
+          data-name="Nova Dash"
+        >
+          <div class="card-badge new-badge">New</div>
+          <figure class="card-figure">
+            <img
+              src="images_used/ishowspeed shoe 1.png"
+              class="card-img"
+              alt="Nova Dash"
+              loading="lazy"
+            />
+            <div class="card-overlay">
+              <button
+                class="btn-quick-view"
+                data-name="Nova Dash"
+                data-price="2200"
+                data-img="images_used/ishowspeed shoe 1.png"
+              >
+                Quick View
+              </button>
+            </div>
+          </figure>
+          <div class="card-body">
+            <span class="card-brand-tag">AeroStride</span>
+            <h3 class="card-title">Nova Dash</h3>
+            <div class="card-rating">
+              <span class="stars">★★★★★</span>
+              <span class="review-count">(58)</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price-wrap">
+                <span class="card-price">Rs.2,200</span>
+              </div>
+              <button
+                class="card-add"
+                data-title="Nova Dash"
+                data-price="2200"
+                data-img="images_used/ishowspeed shoe 1.png"
+                aria-label="Add Nova Dash to cart"
+              >
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- No results message -->
+      <div class="no-results" id="no-results" style="display: none">
+        <p>No shoes found in this category.</p>
+      </div>
+    </main>
+
+    <!-- ===== QUICK VIEW MODAL ===== -->
+    <div class="modal-overlay" id="qv-overlay"></div>
+    <div class="quick-view-modal" id="qv-modal">
+      <button class="modal-close qv-close" id="qv-close">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+        >
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+      <div class="qv-content">
+        <div class="qv-img-wrap">
+          <img id="qv-img" src="" alt="" />
+        </div>
+        <div class="qv-details">
+          <span class="qv-brand">AeroStride</span>
+          <h2 id="qv-name"></h2>
+          <div class="qv-rating">
+            <span class="stars">★★★★★</span
+            ><span class="review-count">(Premium Collection)</span>
+          </div>
+          <div class="qv-price" id="qv-price"></div>
+          <p class="qv-desc">
+            Experience unmatched comfort and style. Crafted for champions,
+            designed for everyday greatness. Premium materials meet cutting-edge
+            athletic technology.
+          </p>
+          <div class="qv-actions">
+            <div class="qty-stepper">
+              <button class="qty-btn" id="qv-minus">–</button>
+              <span id="qv-qty">1</span>
+              <button class="qty-btn" id="qv-plus">+</button>
+            </div>
+            <button class="btn-add-qv" id="qv-add-btn">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <path d="M16 10a4 4 0 01-8 0" />
+              </svg>
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <svg viewBox="0 0 220 36" height="28" class="logo-svg">
+            <defs>
+              <linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ff4500" />
+                <stop offset="100%" stop-color="#ff8c00" />
+              </linearGradient>
+            </defs>
+            <path d="M4 26 Q14 4 34 2 Q20 12 10 24 Z" fill="url(#lg2)" />
+            <path
+              d="M2 30 Q14 8 38 4 Q22 14 12 30 Z"
+              fill="url(#lg2)"
+              opacity="0.45"
+            />
+            <text
+              x="44"
+              y="27"
+              fill="#ffffff"
+              font-family="'Bebas Neue',sans-serif"
+              font-size="24"
+              letter-spacing="6"
+            >
+              AEROSTRIDE
+            </text>
+          </svg>
+          <p class="footer-tagline">Step into greatness, every single day.</p>
+          <div class="footer-social">
+            <a href="#" class="social-link" aria-label="Instagram">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="2" y="2" width="20" height="20" rx="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle
+                  cx="17.5"
+                  cy="6.5"
+                  r="1"
+                  fill="currentColor"
+                  stroke="none"
+                />
+              </svg>
+            </a>
+            <a href="#" class="social-link" aria-label="Twitter">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#shop">Shop All</a></li>
+            <li><a href="#shop">New Arrivals</a></li>
+            <li><a href="#shop">Best Sellers</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Size Guide</a></li>
+            <li><a href="#">Returns</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Track Order</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li>
+              <a href="mailto:info@aerostride.com">info@aerostride.com</a>
+            </li>
+            <li><a href="tel:+1234567890">+123 456 7890</a></li>
+            <li>
+              <span style="opacity: 0.5; font-size: 0.8rem"
+                >Mon–Sat: 9am–6pm IST</span
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2024 AeroStride. All rights reserved.</span>
+        <span>Made with ❤️ for champions</span>
+      </div>
+    </footer>
+
+    <script src="index.js"></script>
+  </body>
 </html>
