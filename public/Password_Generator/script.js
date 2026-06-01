@@ -79,24 +79,7 @@ function calcStrength() {
 }
 
 function updateSuggestions() {
-    let missing = [];
-    if (!uppercaseCheck.checked) missing.push("uppercase letters");
-    if (!lowercaseCheck.checked) missing.push("lowercase letters");
-    if (!numbersCheck.checked) missing.push("numbers");
-    if (!symbolsCheck.checked) missing.push("symbols");
-
-    if (missing.length === 0) {
-        suggestionsText.innerText = "Looking good! All options selected.";
-        suggestionsText.style.color = "#2dd4bf"; 
-    } else {
-        suggestionsText.innerText = "Suggestions: Include " + missing.join(", ");
-        suggestionsText.style.color = "var(--vb-yellow)";
-    }
-    updateSuggestions();
-}
-
-function updateSuggestions() {
-    if (!suggestionBox) return;
+    if (!suggestionsText) return;
     const hasUpper = uppercaseCheck.checked;
     const hasLower = lowercaseCheck.checked;
     const hasNum = numbersCheck.checked;
@@ -105,9 +88,17 @@ function updateSuggestions() {
     const strength = (strengthText && strengthText.innerText) ? strengthText.innerText : '';
 
     if (strength === 'Strong') {
-        suggestionBox.innerText = '';
+        suggestionsText.innerText = "Looking good! All options selected.";
+        suggestionsText.style.color = "#2dd4bf";
         return;
     }
+
+    if (hasUpper && hasLower && hasNum && hasSym) {
+        suggestionsText.innerText = "Looking good! All options selected.";
+        suggestionsText.style.color = "#2dd4bf";
+        return;
+    }
+
     if (strength === 'Medium') {
         if (!(hasUpper && hasLower)) {
             if (!hasUpper) suggestions.push('Include uppercase letters');
@@ -125,8 +116,13 @@ function updateSuggestions() {
         if (!(hasNum || hasSym)) suggestions.push('Include numbers or symbols');
         if (passwordLength < 6) suggestions.push('Increase length to at least 6');
     }
-    if (suggestions.length === 0) suggestionBox.innerText = '';
-    else suggestionBox.innerText = 'Suggestions: ' + suggestions.join(', ');
+
+    if (suggestions.length === 0) {
+        suggestionsText.innerText = '';
+    } else {
+        suggestionsText.innerText = 'Suggestions: ' + suggestions.join(', ');
+        suggestionsText.style.color = "var(--vb-yellow)";
+    }
 }
 
 async function copyContent() {
@@ -260,6 +256,4 @@ generateBtn.addEventListener("click", () => {
     calcStrength();
 });
 
-if (clearHistoryBtn) {
-    clearHistoryBtn.addEventListener('click', clearPasswordHistory);
-}
+
