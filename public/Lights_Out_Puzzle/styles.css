@@ -49,6 +49,52 @@ body {
   button:hover {
     background-color: #555;
   }
-  
+  /* ── Button row ── */
+#button-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+/* ── Hint button ── */
+#hint-button {
+  background-color: #1a5fa8;
+  border: 2px solid #4a9eff;
+}
+#hint-button:hover { background-color: #2272c3; }
+#hint-button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* ── Pip indicators ── */
+#hint-tracker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 16px 0 4px;
+}
+#hint-label { color: #fff; font-size: 15px; font-family: 'Courier New', Courier, monospace; }
+#hint-pips  { display: flex; gap: 5px; }
+.pip        { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background-color: #ffcc00; transition: background-color 0.3s ease; }
+.pip.used   { background-color: #555; }
+
+/* ── Move counter ── */
+#move-tracker { color: #fff; font-family: 'Courier New', Courier, monospace; font-size: 16px; margin: 4px 0 0; }
+#move-count   { font-weight: bold; color: #ffcc00; }
+
+/* ── Hint cell glow ── */
+@keyframes hint-pulse {
+  0%, 100% { box-shadow: 0 0 0 3px #4a9eff, 0 0 10px 4px rgba(74,158,255,0.4); }
+  50%       { box-shadow: 0 0 0 5px #4a9eff, 0 0 18px 7px rgba(74,158,255,0.6); }
+}
+.cell.hint-glow { border-color: #4a9eff; animation: hint-pulse 1.4s ease-in-out infinite; position: relative; z-index: 1; }
+
+/* ── Toast ── */
+#toast              { min-height: 24px; font-family: 'Courier New', Courier, monospace; font-size: 15px; margin: 10px auto 0; opacity: 0; transition: opacity 0.3s ease; }
+#toast.show         { opacity: 1; color: #fff; }
+#toast.show.info    { color: #4a9eff; }
+#toast.show.warn    { color: #ffaa33; }
+#toast.show.success { color: #66dd88; font-weight: bold; }
 
   

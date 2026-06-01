@@ -195,14 +195,20 @@ function formatTime(seconds) {
 
 function getFilteredSongs() {
     const query = searchInput.value.trim().toLowerCase();
+    const queryWords = query.split(/\s+/).filter(Boolean);
 
     return songs.filter((song) => {
         const matchesCategory =
             activeCategory === "All" ||
             (activeCategory === "Liked Songs" && likedSongs.has(song.id)) ||
             song.category === activeCategory;
+
+        if (!query) return matchesCategory;
+
         const searchable = `${song.title} ${song.artist} ${song.album} ${song.category}`.toLowerCase();
-        return matchesCategory && searchable.includes(query);
+        const matchesSearch = queryWords.every(word => searchable.includes(word));
+
+        return matchesCategory && matchesSearch;
     });
 }
 
