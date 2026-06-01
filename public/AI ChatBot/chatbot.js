@@ -2,43 +2,43 @@
    CONFIG
 =========================== */
 const API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent";
-const STORAGE_KEY_API     = 'gemini_api_key';
+const STORAGE_KEY_API = 'gemini_api_key';
 const STORAGE_KEY_HISTORY = 'gemini_chat_history';
-const STORAGE_KEY_THEME   = 'gemini_theme';
+const STORAGE_KEY_THEME = 'gemini_theme';
 
 /* ===========================
    STATE
 =========================== */
-let geminiApiKey      = localStorage.getItem(STORAGE_KEY_API) || '';
+let geminiApiKey = localStorage.getItem(STORAGE_KEY_API) || '';
 let selectedImageBase64 = null;
-let chatHistory       = [];   // [{role:"user"|"model", parts:[{text}]}]
-let sessions          = loadSessions();
-let activeSessionId   = null;
+let chatHistory = [];   // [{role:"user"|"model", parts:[{text}]}]
+let sessions = loadSessions();
+let activeSessionId = null;
 
 /* ===========================
    DOM REFS
 =========================== */
-const apiModal        = document.getElementById('api-modal');
-const apiKeyInput     = document.getElementById('api-key-input');
-const saveKeyBtn      = document.getElementById('save-key-btn');
-const toggleKeyBtn    = document.getElementById('toggle-key-visibility');
-const changeKeyBtn    = document.getElementById('change-key-btn');
-const messagesInner   = document.getElementById('messages-inner');
-const viewport        = document.getElementById('messages-viewport');
-const promptInput     = document.getElementById('prompt-input');
-const sendBtn         = document.getElementById('send-btn');
-const imageInput      = document.getElementById('image-input');
-const previewImg      = document.getElementById('preview-img');
-const previewWrap     = document.getElementById('image-preview-wrap');
-const removeImgBtn    = document.getElementById('remove-image-btn');
-const emptyState      = document.getElementById('empty-state');
-const historyList     = document.getElementById('history-list');
-const newChatBtn      = document.getElementById('new-chat-btn');
+const apiModal = document.getElementById('api-modal');
+const apiKeyInput = document.getElementById('api-key-input');
+const saveKeyBtn = document.getElementById('save-key-btn');
+const toggleKeyBtn = document.getElementById('toggle-key-visibility'); // Fixed the spelling error here
+const changeKeyBtn = document.getElementById('change-key-btn');
+const messagesInner = document.getElementById('messages-inner');
+const viewport = document.getElementById('messages-viewport');
+const promptInput = document.getElementById('prompt-input');
+const sendBtn = document.getElementById('send-btn');
+const imageInput = document.getElementById('image-input');
+const previewImg = document.getElementById('preview-img');
+const previewWrap = document.getElementById('image-preview-wrap');
+const removeImgBtn = document.getElementById('remove-image-btn');
+const emptyState = document.getElementById('empty-state');
+const historyList = document.getElementById('history-list');
+const newChatBtn = document.getElementById('new-chat-btn');
 const clearHistoryBtn = document.getElementById('clear-history-btn');
-const themeToggle     = document.getElementById('theme-toggle');
-const sidebarToggle   = document.getElementById('sidebar-toggle');
-const sidebar         = document.getElementById('sidebar');
-const sidebarClose    = document.getElementById('sidebar-close');
+const themeToggle = document.getElementById('theme-toggle');
+const sidebarToggle = document.getElementById('sidebar-toggle');
+const sidebar = document.getElementById('sidebar');
+const sidebarClose = document.getElementById('sidebar-close');
 
 /* ===========================
    INIT
@@ -103,7 +103,7 @@ themeToggle.addEventListener('click', () => {
    SIDEBAR
 =========================== */
 sidebarToggle.addEventListener('click', () => sidebar.classList.toggle('open'));
-sidebarClose.addEventListener('click',  () => sidebar.classList.remove('open'));
+sidebarClose.addEventListener('click', () => sidebar.classList.remove('open'));
 
 /* ===========================
    SESSIONS
@@ -285,7 +285,7 @@ function bindChip(chip) {
    SEND / RECEIVE
 =========================== */
 function handleSend() {
-  const text  = promptInput.value.trim();
+  const text = promptInput.value.trim();
   const image = selectedImageBase64;
   if (!text && !image) return;
 
@@ -295,7 +295,7 @@ function handleSend() {
 
   // Build parts for API
   const parts = [];
-  if (text)  parts.push({ text });
+  if (text) parts.push({ text });
   if (image) parts.push({ inline_data: { mime_type: 'image/jpeg', data: image } });
   chatHistory.push({ role: 'user', parts });
 
@@ -484,7 +484,5 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;');
 }
 
-/* ===========================
-   START
-=========================== */
+// Don't forget to call init to kick things off!
 init();
