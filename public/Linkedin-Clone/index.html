@@ -659,7 +659,8 @@
         `;
 
         const createPostEl = document.querySelector('.create-post');
-        createPostEl.insertAdjacentHTML('afterend', postHtml);
+        const p = document.createElement("p");
+        p.textContent = content;
         postTextarea.value = '';
         postTextarea.focus();
         // collapse create UI
