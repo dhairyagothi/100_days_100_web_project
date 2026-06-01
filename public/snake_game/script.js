@@ -1,4 +1,3 @@
-
 const canvas = document.getElementById('gameCanvas');
 const ctx    = canvas.getContext('2d');
 
@@ -8,14 +7,75 @@ const CELL = 20;
 canvas.width  = COLS * CELL;
 canvas.height = ROWS * CELL;
 
-let snake, dir, nextDir, food, score, level, speed, gameLoop, running, paused;
+let snake, dir, nextDir, food, score, level, speed, running, paused;
 
 let highScore = 0;
-let isGameOver = false; // FIX 1: new flag — single source of truth for dead state
-let finalScore = 0;     // FIX 2: captures score the instant collision occurs 
+let isGameOver = false;
+let finalScore = 0;
+
+// ─── RAF game loop state ───────────────────────────────────────────────────
+let rafId        = null;   // requestAnimationFrame handle (main loop)
+let lastTickTime = 0;      // timestamp of last logic tick
+let accumulator  = 0;      // ms accumulated since last tick
+// ──────────────────────────────────────────────────────────────────────────
+
+// ─── Web Audio sound engine ────────────────────────────────────────────────
+let audioCtx = null;
+
+function getAudioCtx() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  // Some browsers suspend the context until a user gesture
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+
+function playTone(freq, type = 'square', duration = 0.08, gainPeak = 0.18) {
+  try {
+    const ac  = getAudioCtx();
+    const osc = ac.createOscillator();
+    const gain = ac.createGain();
+
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, ac.currentTime);
+
+    gain.gain.setValueAtTime(0, ac.currentTime);
+    gain.gain.linearRampToValueAtTime(gainPeak, ac.currentTime + 0.005);
+    gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + duration);
+
+    osc.connect(gain);
+    gain.connect(ac.destination);
+    osc.start(ac.currentTime);
+    osc.stop(ac.currentTime + duration + 0.01);
+  } catch (e) {
+
+  }
+}
+
+function soundEat() {
+  // Quick rising blip — classic 8-bit pick-up
+  playTone(440, 'square', 0.06, 0.15);
+  setTimeout(() => playTone(660, 'square', 0.08, 0.12), 40);
+}
+
+function soundLevelUp() {
+  // Ascending fanfare
+  [330, 440, 550, 660].forEach((f, i) =>
+    setTimeout(() => playTone(f, 'square', 0.12, 0.14), i * 60)
+  );
+}
+
+function soundDie() {
+  // Descending crunch
+  [220, 180, 140, 100].forEach((f, i) =>
+    setTimeout(() => playTone(f, 'sawtooth', 0.12, 0.20), i * 70)
+  );
+}
+// ──────────────────────────────────────────────────────────────────────────
 
 function initGame() {
-  
   const startX = Math.floor(COLS / 2);
   const startY = Math.floor(ROWS / 2);
   snake = [
@@ -23,13 +83,14 @@ function initGame() {
     { x: startX - 1, y: startY },
     { x: startX - 2, y: startY },
   ];
-  dir     = { x: 1, y: 0 };
-  nextDir = { x: 1, y: 0 };
-  score   = 0;
-  level   = 1;
-  speed   = 160; // ms per tick
-  running = false;
-  paused  = false;
+  dir        = { x: 1, y: 0 };
+  nextDir    = { x: 1, y: 0 };
+  score      = 0;
+  level      = 1;
+  speed      = 160; // ms per logic tick
+  running    = false;
+  paused     = false;
+  accumulator = 0;
   placeFood();
   updateHUD();
 }
@@ -45,7 +106,6 @@ function placeFood() {
   food = pos;
 }
 
-
 function updateHUD(bumped) {
   const scoreEl = document.getElementById('score');
   const hsEl    = document.getElementById('highscore');
@@ -58,20 +118,19 @@ function updateHUD(bumped) {
   if (bumped) {
     [scoreEl, hsEl, lvlEl].forEach(el => {
       el.classList.remove('bump');
-      void el.offsetWidth; 
+      void el.offsetWidth;
       el.classList.add('bump');
       el.addEventListener('transitionend', () => el.classList.remove('bump'), { once: true });
     });
   }
 }
 
-
 function draw() {
-  
+  // Background
   ctx.fillStyle = '#050a05';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  
+  // Grid dots
   ctx.fillStyle = '#0d1f0d';
   for (let r = 0; r < ROWS; r++) {
     for (let c = 0; c < COLS; c++) {
@@ -79,7 +138,7 @@ function draw() {
     }
   }
 
-  
+  // Food — pulsing glow
   const fx    = food.x * CELL + CELL / 2;
   const fy    = food.y * CELL + CELL / 2;
   const pulse = 0.6 + 0.4 * Math.abs(Math.sin(Date.now() / 300));
@@ -93,15 +152,12 @@ function draw() {
   ctx.fill();
   ctx.restore();
 
-  
+  // Snake
   snake.forEach((seg, i) => {
     const isHead = i === 0;
     const t      = i / (snake.length - 1 || 1);
-
-  
-    const g     = Math.round(255 * (1 - t * 0.65));
-    const color = isHead ? '#39ff14' : `rgb(0, ${g}, 0)`;
-
+    const g      = Math.round(255 * (1 - t * 0.65));
+    const color  = isHead ? '#39ff14' : `rgb(0, ${g}, 0)`;
     const padding = isHead ? 1 : Math.min(3, 1 + t * 2);
     const x       = seg.x * CELL + padding;
     const y       = seg.y * CELL + padding;
@@ -116,25 +172,23 @@ function draw() {
     ctx.fillRect(x, y, size, size);
     ctx.restore();
 
-    
+    // Eyes
     if (isHead) {
       ctx.fillStyle = '#050a05';
       const eyeSize = 3;
       let e1, e2;
-      if      (dir.x ===  1) { e1 = [x + size - 5, y + 3];          e2 = [x + size - 5, y + size - 6]; }
-      else if (dir.x === -1) { e1 = [x + 2,         y + 3];          e2 = [x + 2,         y + size - 6]; }
-      else if (dir.y === -1) { e1 = [x + 3,         y + 2];          e2 = [x + size - 6,  y + 2]; }
-      else                   { e1 = [x + 3,         y + size - 5];   e2 = [x + size - 6,  y + size - 5]; }
+      if      (dir.x ===  1) { e1 = [x + size - 5, y + 3];         e2 = [x + size - 5, y + size - 6]; }
+      else if (dir.x === -1) { e1 = [x + 2,         y + 3];         e2 = [x + 2,         y + size - 6]; }
+      else if (dir.y === -1) { e1 = [x + 3,         y + 2];         e2 = [x + size - 6,  y + 2]; }
+      else                   { e1 = [x + 3,         y + size - 5];  e2 = [x + size - 6,  y + size - 5]; }
       ctx.fillRect(e1[0], e1[1], eyeSize, eyeSize);
       ctx.fillRect(e2[0], e2[1], eyeSize, eyeSize);
     }
   });
 }
 
-
+// ─── Logic tick (called by RAF loop when enough time has elapsed) ──────────
 function tick() {
-  if (!running || paused) return;
-
   dir = { ...nextDir };
 
   const head = {
@@ -142,13 +196,13 @@ function tick() {
     y: snake[0].y + dir.y,
   };
 
-  
+  // Wall collision
   if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) {
     endGame();
     return;
   }
 
-  
+  // Self collision
   if (snake.some(s => s.x === head.x && s.y === head.y)) {
     endGame();
     return;
@@ -156,81 +210,126 @@ function tick() {
 
   snake.unshift(head);
 
-  
+  // Food eaten
   if (head.x === food.x && head.y === food.y) {
     score += level * 10;
     if (score > highScore) highScore = score;
 
-    
     const foodsEaten = snake.length - 3;
     const newLevel   = Math.floor(foodsEaten / 5) + 1;
     if (newLevel !== level) {
       level = newLevel;
       speed = Math.max(60, 150 - (level - 1) * 15);
-      restartLoop();
+      soundLevelUp();
+    } else {
+      soundEat();
     }
 
     updateHUD(true);
     placeFood();
-    
   } else {
     snake.pop();
     updateHUD(false);
   }
-
-  draw();
 }
 
-function restartLoop() {
-  clearInterval(gameLoop);
-  gameLoop = setInterval(tick, speed);
+// ─── Main RAF loop — smooth rendering, time-stepped logic ─────────────────
+function gameLoop(timestamp) {
+  if (!running || paused) {
+    // Redraw each frame even when paused so food pulse still animates
+    if (!isGameOver) draw();
+    rafId = requestAnimationFrame(gameLoop);
+    return;
+  }
+
+  const delta = timestamp - lastTickTime;
+  lastTickTime = timestamp;
+
+  // Guard against huge deltas (tab was backgrounded, etc.)
+  accumulator += Math.min(delta, 200);
+
+  // Run logic ticks for however many intervals have elapsed
+  while (accumulator >= speed) {
+    accumulator -= speed;
+    if (running && !isGameOver) tick();
+    if (!running || isGameOver) break; // tick() may have called endGame()
+  }
+
+  if (!isGameOver) {
+    draw();
+    rafId = requestAnimationFrame(gameLoop);
+  }
 }
+
+function startLoop() {
+  if (rafId) cancelAnimationFrame(rafId);
+  lastTickTime = performance.now();
+  accumulator  = 0;
+  rafId = requestAnimationFrame(gameLoop);
+}
+
+function stopLoop() {
+  if (rafId) cancelAnimationFrame(rafId);
+  rafId = null;
+}
+
+// ──────────────────────────────────────────────────────────────────────────
 
 function startGame() {
   document.getElementById('startOverlay').classList.add('hidden');
   document.getElementById('gameOverOverlay').classList.add('hidden');
-  cancelAnimationFrame(animFrame); // stop idle animation
 
-  isGameOver = false; // FIX 1: clear the flag so inputs can be taken again
- 
-  // FIX 3: re-attach the listener as the player has restarted the game
+  isGameOver = false;
+
   document.removeEventListener('keydown', handleKeyDown);
   document.addEventListener('keydown', handleKeyDown);
 
-  
   initGame();
   running = true;
   draw();
-  restartLoop();
+  startLoop();
 }
 
+// ─── Game-over flash — uses RAF, not a competing setInterval ──────────────
 function endGame() {
-
-  // FIX 2: Changes finalScore early
   finalScore = score;
+  running    = false;
+  isGameOver = true;
+  stopLoop();
 
-  running = false;
-  isGameOver = true; // FIX 1: raises the dead flag
-  clearInterval(gameLoop);
-
-  // FIX 3: remove the listener when game ends so no more inputs are taken after death
   document.removeEventListener('keydown', handleKeyDown);
 
-  
-  let flashes = 0;
-  const flash = setInterval(() => {
-    ctx.fillStyle = flashes % 2 === 0 ? 'rgba(255,0,0,0.15)' : 'transparent';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    if (++flashes >= 6) {
-      clearInterval(flash);
+  soundDie();
+
+  // Capture the final snake frame once
+  draw();
+
+  let flashes   = 0;
+  const FLASHES = 6;
+
+  function flashFrame() {
+    if (flashes < FLASHES) {
+      // Alternate: red overlay / fully transparent (just redraw base)
+      if (flashes % 2 === 0) {
+        ctx.fillStyle = 'rgba(255, 0, 0, 0.20)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      } else {
+        draw(); // clean frame between flashes
+      }
+      flashes++;
+      setTimeout(flashFrame, 80); // 80 ms between each flash step
+    } else {
+      // Done flashing — show final state and overlay
       draw();
       document.getElementById('finalScore').textContent =
-        `SCORE: ${finalScore}  |  BEST: ${highScore}`; // FIX 2: Chooses between finalScore and highScore (Not score, which could have changed at death)
+        `SCORE: ${finalScore}  |  BEST: ${highScore}`;
       document.getElementById('gameOverOverlay').classList.remove('hidden');
     }
-  }, 80);
-}
+  }
 
+  flashFrame();
+}
+// ──────────────────────────────────────────────────────────────────────────
 
 const KEY_MAP = {
   ArrowUp:    { x:  0, y: -1 },
@@ -246,12 +345,10 @@ const KEY_MAP = {
   A: { x: -1, y:  0 },
   D: { x:  1, y:  0 },
 };
-function handleKeyDown(e) { // FIX 3: Named the function so it can be added/removed cleanly
 
-  // FIX 1: If the game is over, dont take any key input
+function handleKeyDown(e) {
   if (isGameOver) return;
 
-  
   if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
     e.preventDefault();
   }
@@ -264,45 +361,32 @@ function handleKeyDown(e) { // FIX 3: Named the function so it can be added/remo
       nextDir = newDir;
     }
   } else if (newDir && running && !paused) {
-    
     if (newDir.x !== -dir.x || newDir.y !== -dir.y) {
       nextDir = newDir;
     }
   }
 
-  
   if (e.key === ' ' && running) {
     paused = !paused;
     if (!paused) {
-      draw();
-      restartLoop();
+      lastTickTime = performance.now();
+      accumulator  = 0;
     }
-  }
-};
-
-// Attach the named listener on start screen
-document.addEventListener('keydown', handleKeyDown);
-
-// FIX 4: Play Again button is the only restart path
-document.getElementById('startBtn').addEventListener('click', startGame);
-document.getElementById('restartBtn').addEventListener('click', startGame);
-
-//NOTE: the mousedown "click anywhere to start" listener has been intentionally removed.
-// document.addEventListener('mousedown', e => {
-//   if (!running && e.target.id !== 'startBtn' && e.target.id !== 'restartBtn') {
-//     startGame();
-//   }
-// });
-
-let animFrame;
-
-function animateIdle() {
-  if (!running) {
-    draw();
-    animFrame = requestAnimationFrame(animateIdle);
   }
 }
 
+document.addEventListener('keydown', handleKeyDown);
+
+document.getElementById('startBtn').addEventListener('click', startGame);
+document.getElementById('restartBtn').addEventListener('click', startGame);
+
+// Idle animation on start screen
+function animateIdle() {
+  if (!running && !isGameOver) {
+    draw();
+    rafId = requestAnimationFrame(animateIdle);
+  }
+}
 
 initGame();
 animateIdle();
@@ -310,109 +394,81 @@ animateIdle();
 // ========== MOBILE TOUCH CONTROLS ==========
 (function() {
   const mobileCanvas = document.getElementById('gameCanvas');
-  const controls = document.getElementById('mobileControls');
-  
+  const controls     = document.getElementById('mobileControls');
+
   if (!controls) return;
-  
+
   let lastTouch = 0;
   let startX = 0, startY = 0;
-  
+
   const setDir = (direction) => {
-    // Direct variable access - no stale snapshots
     if (typeof isGameOver !== 'undefined' && isGameOver) return;
-    
+
     const now = Date.now();
     if (now - lastTouch < 80) return;
     lastTouch = now;
-    
-    const dirMap = { 
-      up: {x: 0, y: -1}, 
-      down: {x: 0, y: 1}, 
-      left: {x: -1, y: 0}, 
-      right: {x: 1, y: 0} 
+
+    const dirMap = {
+      up:    { x:  0, y: -1 },
+      down:  { x:  0, y:  1 },
+      left:  { x: -1, y:  0 },
+      right: { x:  1, y:  0 },
     };
-    
+
     const newDir = dirMap[direction];
     if (!newDir) return;
-    
-    // Game not started yet
+
     if (typeof running !== 'undefined' && !running) {
-      if (typeof startGame === 'function') {
-        startGame();
-      }
-      // Direct assignment - no setTimeout needed
+      if (typeof startGame === 'function') startGame();
       if (typeof nextDir !== 'undefined' && typeof dir !== 'undefined') {
-        if (newDir.x !== -dir.x || newDir.y !== -dir.y) {
-          nextDir = newDir;
-        }
+        if (newDir.x !== -dir.x || newDir.y !== -dir.y) nextDir = newDir;
       }
       return;
     }
-    
-    // Game is running
-    if (typeof running !== 'undefined' && running && typeof paused !== 'undefined' && !paused) {
+
+    if (typeof running !== 'undefined' && running &&
+        typeof paused  !== 'undefined' && !paused) {
       if (typeof dir !== 'undefined' && typeof nextDir !== 'undefined') {
-        // Prevent 180-degree turns
         if (newDir.x !== -dir.x || newDir.y !== -dir.y) {
           nextDir = newDir;
-          // Haptic feedback
-          if ('vibrate' in navigator) {
-            navigator.vibrate(20);
-          }
+          if ('vibrate' in navigator) navigator.vibrate(20);
         }
       }
     }
   };
-  
-  // Button controls
-  const buttons = document.querySelectorAll('.dpad-btn');
-  buttons.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      setDir(btn.dataset.dir);
-    });
-    btn.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setDir(btn.dataset.dir);
-    });
+
+  // D-pad buttons
+  document.querySelectorAll('.dpad-btn').forEach(btn => {
+    btn.addEventListener('click',      e => { e.preventDefault(); setDir(btn.dataset.dir); });
+    btn.addEventListener('touchstart', e => { e.preventDefault(); e.stopPropagation(); setDir(btn.dataset.dir); });
   });
-  
-  // Swipe controls
+
+  // Swipe on canvas
   if (mobileCanvas) {
-    mobileCanvas.addEventListener('touchstart', (e) => {
+    mobileCanvas.addEventListener('touchstart', e => {
       e.preventDefault();
       startX = e.touches[0].clientX;
       startY = e.touches[0].clientY;
     }, { passive: false });
-    
-    mobileCanvas.addEventListener('touchend', (e) => {
+
+    mobileCanvas.addEventListener('touchend', e => {
       e.preventDefault();
       const dx = e.changedTouches[0].clientX - startX;
       const dy = e.changedTouches[0].clientY - startY;
-      
       if (Math.abs(dx) < 30 && Math.abs(dy) < 30) return;
-      
-      const swipe = Math.abs(dx) > Math.abs(dy) 
-        ? (dx > 0 ? 'right' : 'left') 
-        : (dy > 0 ? 'down' : 'up');
-      
-      setDir(swipe);
+      setDir(Math.abs(dx) > Math.abs(dy)
+        ? (dx > 0 ? 'right' : 'left')
+        : (dy > 0 ? 'down'  : 'up'));
     });
-    
-    mobileCanvas.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    mobileCanvas.addEventListener('contextmenu', e => e.preventDefault());
   }
-  
-  // Auto show/hide on mobile
+
+  // Auto show/hide
   const isMobile = () => window.innerWidth <= 768 || 'ontouchstart' in window;
-  const toggle = () => {
-    if (controls) {
-      controls.style.display = isMobile() ? 'flex' : 'none';
-    }
-  };
-  
+  const toggle   = () => { controls.style.display = isMobile() ? 'flex' : 'none'; };
   toggle();
   window.addEventListener('resize', toggle);
-  
-  console.log('✅ Mobile touch controls loaded');
+
+  console.log(' Mobile touch controls loaded');
 })();
