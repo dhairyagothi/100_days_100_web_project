@@ -59,7 +59,7 @@ The website features:
 - Beautiful dark/light theme toggle
 - Responsive design for all devices
 
-## 📚 All Projects (196 Total)
+## 📚 All Projects (200 Total)
 
 <div align="center">
 
@@ -267,6 +267,10 @@ The website features:
 | 194 | Lost & Found Portal | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Lost_And_Found_Portal/index.html) |
 | 195 | Complaint Management System | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Complaint_Management_System/index.html) |
 | 196 | Flipkart Clone | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Flipkart-Clone/index.html) |
+| 197 | Theme-Toggler | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Theme-toggler/src/App.jsx) |
+| 198 | Pac-Man | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/pacman/index.html) |
+| 199 | Number Guesser Game | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/NumberGuessGame/index.html) |
+| 200 | Cricket Ultra Pro X | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Cricket-Ultra-Pro-X/cricket.html) |
 
 | Day | Project Name | Technologies | Type | Demo Link |
 |-----|--------------|-------------|------|-----------|
@@ -466,6 +470,10 @@ The website features:
 | 194 | Lost & Found Portal | HTML, CSS, JS | ❤️ Social Impact | [View Demo](https://100-days-100-web-project.vercel.app/public/Lost_And_Found_Portal/index.html) |
 | 195 | Complaint Management System | HTML, CSS, JS | 📋 Management | [View Demo](https://100-days-100-web-project.vercel.app/public/Complaint_Management_System/index.html) |
 | 196 | AirCast | HTML, CSS, JavaScript | 🌐 APIs | [View Demo](https://100-days-100-web-project.vercel.app/public/Weather%20App%20with%20AQI/index.html) |
+| 197 | Theme-Toggler | React, TailwindCSS, JS | 🎨 UI / Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/Theme-toggler/src/App.jsx) |
+| 198 | Pac-Man | HTML, CSS, JS, jQuery | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/pacman/index.html) |
+| 199 | Number Guesser Game | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/NumberGuessGame/index.html) |
+| 200 | Cricket Ultra Pro X | HTML, CSS, JS | 🏏 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Cricket-Ultra-Pro-X/cricket.html) |
 
 
 ### 📊 Project Categories:

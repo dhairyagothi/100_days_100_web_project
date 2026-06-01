@@ -2471,6 +2471,19 @@
     "techStack": ["game", "html", "css", "javascript"],
     "difficulty": "advanced",
     "projectPath": "./public/NumberGuessGame/index.html"
-}
-  
+},
+  {
+    "projectNo": 200,
+    "projectName": "Cricket Ultra Pro X",
+    "projectType": "Game",
+    "projectDesc": "A cinematic arcade cricket simulator featuring timing-based batting, dynamic run chases, crowd animations, wickets, power shots, and a 5-over championship experience.",
+    "techStack": [
+      "game",
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Cricket-Ultra-Pro-X/cricket.html"
+  }
 ]
