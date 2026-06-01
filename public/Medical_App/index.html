@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css/toast.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/hero.css">
+</head>
 <body>
 <nav class="navbar">
     <div class="logo">
@@ -23,6 +24,7 @@
         <li><a href="feedback.html">Feedback</a></li>
     </ul>
 </nav>
+
 <header class="hero">
     <button id="themeToggle" class="theme-btn">🌙</button>
     <div class="hero-content">
@@ -31,26 +33,28 @@
             <p>Connecting Local Doctors with Specialists</p>
         </div>
 
-        <div class="nav-links">
-            <a href="/public/Medical_App/index.html" class="active">
+        <div class="hero-nav-links">
+            <a href="index.html" class="active">
                 <i class="ph ph-squares-four"></i> Dashboard
             </a>
-            <a href="/public/Medical_App/remedies.html">
+            <a href="remedies.html">
                 <i class="ph ph-prescription"></i> Home Remedies
             </a>
-            <a href="/public/Medical_App/feedback.html">
+            <a href="feedback.html">
                 <i class="ph ph-chat-circle-text"></i> Feedback
             </a>
 
             <button class="btn-icon theme-toggle" id="themeToggleBtn" aria-label="Toggle Theme">
                 <i class="ph ph-moon"></i>
             </button>
+        </div>
+    </div>
+</header>
 
-        </form>
-    </section>
-
-    <section class="card">
+    <!-- Doctors Section -->
+    <section class="card doctors-section">
         <h2>👨‍⚕️ Available Doctors</h2>
+        <input type="text" id="doctorSearch" class="doctor-search-input" placeholder="Search Doctors...">
         <div class="doctors-grid">
             <!-- Card 1: Dr. Sarah Jenkins -->
             <div class="doctor-card">
@@ -131,9 +135,6 @@
             </div>
         </div>
     </section>
-    <input type="text" id="doctorSearch" placeholder="Search Doctors...">
-    <section class="card">
-        <h2>📊 Health Monitoring</h2>
 
     <!-- Main Dashboard -->
     <main class="dashboard-container">
@@ -370,6 +371,7 @@
         <!-- Right Section -->
         <div class="dashboard-right">
 
+            <!-- Live Progress Status -->
             <section id="consultation-status" class="card status-card">
                 <div class="card-header">
                     <div class="icon-wrapper success">
@@ -415,27 +417,55 @@
                             </div>
                         </div>
 
-        <a href="feedback.html">
-            <button class="primary-btn">Give Feedback</button>
-        </a>
-    </section>
-    <section class="card">
-        <h2>🧠 Daily Health Tips</h2>
+                    </div>
+                </div>
+            </section>
 
-        <div id="healthTip"></div>
-    </section>
-    <section class="card emergency-card">
-        <h2>🚑 Emergency Help</h2>
+            <!-- Health Monitoring -->
+            <section class="card">
+                <h2>📊 Health Monitoring</h2>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <h3>Heart Rate</h3>
+                        <p id="heartRate">--</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>BP</h3>
+                        <p>120/80</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>SpO2</h3>
+                        <p>98%</p>
+                    </div>
+                </div>
+            </section>
 
-        <div class="emergency-grid">
-            <button>📞 Ambulance</button>
-            <button>🏥 Nearby Hospital</button>
-            <button>🧑‍⚕️ Emergency Doctor</button>
+            <!-- Daily Health Tips -->
+            <section class="card">
+                <h2>🧠 Daily Health Tips</h2>
+                <div id="healthTip"></div>
+            </section>
+
+            <!-- Emergency Help -->
+            <section class="card emergency-card">
+                <h2>🚑 Emergency Help</h2>
+                <div class="emergency-grid">
+                    <button>📞 Ambulance</button>
+                    <button>🏥 Nearby Hospital</button>
+                    <button>🧑‍⚕️ Emergency Doctor</button>
+                </div>
+            </section>
+
+            <!-- Feedback Link -->
+            <a href="feedback.html">
+                <button class="primary-btn feedback-btn">Give Feedback</button>
+            </a>
+
         </div>
-    </section>
-</main>
 
-        </div>
+    </main>
+
+<div id="toast-container" class="toast-container"></div>
 
 <script src="js/script.js"></script>
 <script src="js/darkmode.js"></script>

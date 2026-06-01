@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#000000">
   <title>SNAKE</title>
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
-
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
   <div class="title">SNAKE</div>
 
@@ -31,7 +31,6 @@
     <canvas id="gameCanvas"></canvas>
     <div id="scanline"></div>
 
-    
     <div class="overlay" id="startOverlay">
       <div class="overlay-title">READY</div>
       <div class="overlay-sub">GUIDE THE SNAKE<br>CONSUME. GROW. SURVIVE.</div>
@@ -45,14 +44,28 @@
       </div>
     </div>
 
-  
     <div class="overlay hidden" id="gameOverOverlay">
       <div class="overlay-title">GAME OVER</div>
       <div class="game-over-score" id="finalScore"></div>
       <button class="btn" id="restartBtn"><span>PLAY AGAIN</span></button>
     </div>
+  </div> 
+
+  <!-- ========== MOBILE TOUCH CONTROLS with Accessibility ========== -->
+  <div class="mobile-controls" id="mobileControls">
+    <div class="dpad">
+      <div class="dpad-row top-row">
+        <button class="dpad-btn" aria-label="Move Up" data-dir="up">▲</button>
+      </div>
+      <div class="dpad-row bottom-row">
+        <button class="dpad-btn" aria-label="Move Left" data-dir="left">◀</button>
+        <button class="dpad-btn" aria-label="Move Down" data-dir="down">▼</button>
+        <button class="dpad-btn" aria-label="Move Right" data-dir="right">▶</button>
+      </div>
+    </div>
   </div>
 
+  <!-- ONLY ONE script tag at the bottom -->
   <script src="./script.js"></script>
 </body>
 </html>

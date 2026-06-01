@@ -80,7 +80,14 @@ class Calculator {
     if (this.expression === '' || this.expression === 'Error') return;
     try {
       const formatted = this.formatExpression(this.expression);
-      let result = eval(formatted);
+      
+      // Security: Validate the expression contains only math characters before execution
+      if (/[^0-9+\-*/().^\se]/.test(formatted)) {
+        throw new Error("Invalid characters in expression");
+      }
+      
+      // Safely evaluate without giving access to local scope
+      let result = new Function('return ' + formatted)();
       if (!isFinite(result) || isNaN(result)) {
         this.setError();
         return;
