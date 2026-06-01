@@ -775,15 +775,6 @@ a:hover {
   display: block;
 }
 
-.post-btn {
-  background: #045be6;
-  color: #fff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-}
 .hidden {
   display: none;
 }
@@ -841,24 +832,25 @@ a:hover {
   transform: rotate(15deg);
 }
 
-/* Post button (last child) styling */
+/* Post button styling */
 .post-btn {
-  background: #045be6 !important;
-  color: #fff !important;
-  border: none !important;
-  padding: 8px 14px !important;
-  border-radius: 6px !important;
+  background: #045be6;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
   height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600 !important;
+  font-weight: 600;
+  cursor: pointer;
   flex: 1 1 0;
   transition: background-color 0.3s ease-in-out;
 }
 
 .post-btn:hover {
-  background: #0044cc !important;
+  background: #0044cc;
 }
 
 /* Fallback for list items if any */
