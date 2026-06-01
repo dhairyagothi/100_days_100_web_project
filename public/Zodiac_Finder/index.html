@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zodiac Finder</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="stylesheet" href="css/style.css"> 
+</head>
+<body class="index-page">
+    <div class="container">
+        <h1>Find Your Zodiac Sign</h1>
+        <form id="zodiacForm">
+            <label for="name">Enter your Name:</label><input type="text" id="name" name="name" required>
+            <label for="dob">Enter your Date of Birth:</label><input type="date" id="dob" name="dob" required>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('zodiacForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const dob = document.getElementById('dob').value;
+            if (name && dob) {
+                localStorage.setItem('name', name);
+                localStorage.setItem('dob', dob);
+                window.location.href = 'src/result.html'; 
+            }
+        });
+    </script>
+</body>
+</html>
