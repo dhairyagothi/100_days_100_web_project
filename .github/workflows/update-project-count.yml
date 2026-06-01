@@ -1,0 +1,34 @@
+name: Auto Update README Project Count
+
+on:
+  push:
+    paths:
+      - 'projects.json'
+    branches:
+      - main
+      - Main
+
+permissions:
+  contents: write
+
+jobs:
+  update-count:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Run Update Script
+        run: node scripts/updateReadmeCount.js
+
+      - name: Commit & Push Changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add README.md
+          git diff --quiet && git diff --staged --quiet || (git commit -m "docs: auto-update projects count in README.md [skip ci]" && git push)
