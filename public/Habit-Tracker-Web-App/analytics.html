@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Habit Analytics</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="analytics.css" />
+</head>
+<body>
+  <div class="dashboard">
+
+    <!-- Header -->
+    <header class="dash-header">
+      <a href="index.html" class="back-btn">← Back to Tracker</a>
+      <h1 class="dash-title">Analytics</h1>
+      <button id="theme-toggle" class="theme-btn">☀️ Light</button>
+    </header>
+
+    <!-- Summary Cards -->
+    <section class="summary-cards">
+      <div class="stat-card">
+        <div class="stat-value" id="total-habits">—</div>
+        <div class="stat-label">Total Habits</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value accent-green" id="avg-rate">—</div>
+        <div class="stat-label">Avg Completion (30d)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value accent-orange" id="best-streak">—</div>
+        <div class="stat-label">Best Streak</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value accent-blue" id="active-streaks">—</div>
+        <div class="stat-label">Active Streaks</div>
+      </div>
+    </section>
+
+    <!-- Completion Heatmap -->
+    <section class="chart-section">
+      <div class="section-header">
+        <h2>Completion Heatmap</h2>
+        <span class="section-sub">Last 16 weeks · all habits combined</span>
+      </div>
+      <div class="heatmap-scroll-wrapper">
+        <div id="heatmap-container"></div>
+      </div>
+      <div class="heatmap-legend">
+        <span>Less</span>
+        <div class="legend-cells" id="legend-cells"></div>
+        <span>More</span>
+      </div>
+    </section>
+
+    <!-- Completion Rates -->
+    <section class="chart-section">
+      <div class="section-header">
+        <h2>Habit Completion Rates</h2>
+        <span class="section-sub">% of last 30 days completed</span>
+      </div>
+      <div id="completion-rates"></div>
+    </section>
+
+    <!-- Streak Overview -->
+    <section class="chart-section">
+      <div class="section-header">
+        <h2>Streak Overview</h2>
+        <span class="section-sub">Current vs. personal best</span>
+      </div>
+      <div id="streak-chart"></div>
+    </section>
+
+    <!-- Per-Habit Activity Heatmaps -->
+    <section class="chart-section">
+      <div class="section-header">
+        <h2>Per-Habit Activity</h2>
+        <span class="section-sub">Individual 12-week completion calendar</span>
+      </div>
+      <div id="per-habit-heatmaps"></div>
+    </section>
+
+  </div>
+
+  <script src="analytics.js"></script>
+</body>
+</html>

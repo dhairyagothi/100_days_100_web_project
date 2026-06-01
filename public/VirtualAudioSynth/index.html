@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="An interactive audio synthesizer and real-time audio visualizer built with the Web Audio API. Play notes, change waveforms, adjust filters, and see sound visualized live."
+    />
+    <title>Virtual Synth & Audio Visualizer | Web Audio Tool</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header" id="synth-header">
+      <div class="header__container">
+        <div class="header__brand">
+          <span class="header__icon" aria-hidden="true">🎹</span>
+          <h1 class="header__title">Audio Wave Synth</h1>
+        </div>
+        <p class="header__tagline">
+          Play notes, synthesize waveforms, and visualize sound in real-time
+        </p>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main" id="synth-main">
+      <!-- Visualizer Panel -->
+      <section class="visualizer-section" id="visualizer-section" aria-label="Audio Visualizer">
+        <div class="visualizer-card">
+          <canvas
+            id="visualizer-canvas"
+            class="visualizer-canvas"
+            aria-label="Real-time audio frequency visualizer"
+          ></canvas>
+          <div class="visualizer-overlay" id="visualizer-overlay">
+            <button class="btn btn--primary btn--large" id="btn-start-audio" type="button">
+              <span class="btn__icon">🔊</span>
+              <span>Enable Audio & Start Synthesizer</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Controls Panel -->
+      <section class="controls-section" id="controls-section" aria-label="Synth Controls">
+        <div class="controls-grid">
+          <!-- Waveform Selector -->
+          <div class="controls-card">
+            <h2 class="card-title">Oscillator Waveform</h2>
+            <div class="toggle-group" role="radiogroup" aria-label="Waveform type selection">
+              <button
+                class="toggle-btn toggle-btn--active"
+                data-wave="sine"
+                type="button"
+                role="radio"
+                aria-checked="true"
+              >
+                Sine
+              </button>
+              <button
+                class="toggle-btn"
+                data-wave="triangle"
+                type="button"
+                role="radio"
+                aria-checked="false"
+              >
+                Triangle
+              </button>
+              <button
+                class="toggle-btn"
+                data-wave="square"
+                type="button"
+                role="radio"
+                aria-checked="false"
+              >
+                Square
+              </button>
+              <button
+                class="toggle-btn"
+                data-wave="sawtooth"
+                type="button"
+                role="radio"
+                aria-checked="false"
+              >
+                Sawtooth
+              </button>
+            </div>
+          </div>
+
+          <!-- Envelope & Settings -->
+          <div class="controls-card">
+            <h2 class="card-title">Synth Settings</h2>
+            <div class="control-sliders">
+              <!-- Volume Slider -->
+              <div class="control-group">
+                <label class="control-label" for="volume-slider">
+                  Volume: <span class="control-value" id="volume-value">50%</span>
+                </label>
+                <input
+                  type="range"
+                  class="range-slider"
+                  id="volume-slider"
+                  min="0"
+                  max="100"
+                  value="50"
+                  aria-label="Master volume"
+                />
+              </div>
+
+              <!-- Octave Selector -->
+              <div class="control-group">
+                <label class="control-label">Octave Shift</label>
+                <div class="octave-group">
+                  <button
+                    class="btn btn--small btn--secondary"
+                    id="btn-octave-down"
+                    type="button"
+                    aria-label="Shift octave down"
+                  >
+                    -
+                  </button>
+                  <span class="octave-value" id="octave-value">Octave 4</span>
+                  <button
+                    class="btn btn--small btn--secondary"
+                    id="btn-octave-up"
+                    type="button"
+                    aria-label="Shift octave up"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Keyboard Panel -->
+      <section class="keyboard-section" id="keyboard-section" aria-label="Virtual Keyboard">
+        <div class="keyboard-card">
+          <div class="keyboard" id="piano-keyboard" role="none">
+            <!-- Piano keys generated dynamically by JS for safety & responsiveness -->
+          </div>
+          <div class="keyboard-shortcuts-help">
+            <p class="shortcuts-text">
+              🎹 Play using your computer keyboard: <strong>A S D F G H J K L ;</strong> (white
+              keys) and <strong>W E T Y U O P</strong> (black keys)
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Toast/Notification -->
+    <div class="toast" id="toast" role="alert" aria-live="polite">
+      <span class="toast__text" id="toast-text"></span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" id="synth-footer">
+      <p class="footer__text">Made with ❤️ by <strong>Omer</strong> &bull; GSSoC 2026</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

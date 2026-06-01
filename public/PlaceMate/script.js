@@ -1,3 +1,29 @@
+const authContainer =
+  document.getElementById("authContainer");
+
+const mainApp =
+  document.getElementById("mainApp");
+
+const authBtn =
+  document.getElementById("authBtn");
+
+const authTitle =
+  document.getElementById("authTitle");
+
+const toggleAuth =
+  document.getElementById("toggleAuth");
+
+const usernameInput =
+  document.getElementById("username");
+
+const passwordInput =
+  document.getElementById("password");
+
+const logoutBtn =
+  document.getElementById("logoutBtn");
+
+let isLogin = true;
+
 const progressCircle =
   document.getElementById("progressCircle");
 
@@ -346,6 +372,16 @@ updateBtn.addEventListener("click", () => {
 
   skillsChart.update();
 
+  saveUserData({
+  dsa,
+  mock,
+  aptitude,
+  resume,
+  communication,
+  development
+  });
+
+
   const companyGrid =
     document.getElementById("companyGrid");
 
@@ -389,3 +425,216 @@ updateBtn.addEventListener("click", () => {
   }
 
 });
+function saveUserData(data) {
+
+  localStorage.setItem(
+    "placemateUserData",
+    JSON.stringify(data)
+  );
+}
+
+function loadUserData() {
+
+  const savedData =
+    localStorage.getItem(
+      "placemateUserData"
+    );
+
+  if (!savedData) return;
+
+  const data = JSON.parse(savedData);
+
+  document.getElementById("dsaInput").value =
+    data.dsa;
+
+  document.getElementById("mockInput").value =
+    data.mock;
+
+  document.getElementById("aptitudeInput").value =
+    data.aptitude;
+
+  document.getElementById("resumeInput").value =
+    data.resume;
+
+  document.getElementById("communicationInput").value =
+    data.communication;
+
+  document.getElementById("developmentInput").value =
+    data.development;
+
+  updateBtn.click();
+}
+window.addEventListener("load", () => {
+  loadUserData();
+});
+
+/* =========================
+   THEME TOGGLE
+========================= */
+
+const themeToggle =
+  document.getElementById("themeToggle");
+
+const savedTheme =
+  localStorage.getItem("placemateTheme");
+
+if (savedTheme === "light") {
+
+  document.body.classList.add("light-mode");
+
+  themeToggle.textContent = "🌙";
+
+} else {
+
+  themeToggle.textContent = "☀️";
+}
+
+themeToggle.addEventListener("click", () => {
+
+  document.body.classList.toggle("light-mode");
+
+  if (
+    document.body.classList.contains("light-mode")
+  ) {
+
+    localStorage.setItem(
+      "placemateTheme",
+      "light"
+    );
+
+    themeToggle.textContent = "🌙";
+
+  } else {
+
+    localStorage.setItem(
+      "placemateTheme",
+      "dark"
+    );
+
+    themeToggle.textContent = "☀️";
+  }
+});
+function showApp(){
+
+  authContainer.style.display =
+    "none";
+
+  mainApp.style.display =
+    "block";
+}
+
+function showAuth(){
+
+  authContainer.style.display =
+    "flex";
+
+  mainApp.style.display =
+    "none";
+}
+const currentUser =
+  localStorage.getItem(
+    "placemateUser"
+  );
+
+if(currentUser){
+
+  showApp();
+
+}else{
+
+  showAuth();
+}
+toggleAuth.addEventListener(
+  "click",
+  () => {
+
+    isLogin = !isLogin;
+
+    authTitle.textContent =
+      isLogin
+        ? "Login"
+        : "Sign Up";
+
+    toggleAuth.innerHTML =
+      isLogin
+      ? `Don't have an account? <span>Sign Up</span>`
+      : `Already have an account? <span>Login</span>`;
+  }
+);
+authBtn.addEventListener(
+  "click",
+  () => {
+
+    const username =
+      usernameInput.value.trim();
+
+    const password =
+      passwordInput.value.trim();
+
+    if(
+      !username ||
+      !password
+    ){
+      alert(
+        "Please fill all fields"
+      );
+      return;
+    }
+
+    const users =
+      JSON.parse(
+        localStorage.getItem(
+          "placemateUsers"
+        )
+      ) || [];
+
+    if(isLogin){
+
+      const foundUser =
+        users.find(
+          user =>
+            user.username === username &&
+            user.password === password
+        );
+
+      if(!foundUser){
+
+        alert(
+          "Invalid Credentials"
+        );
+
+        return;
+      }
+
+    }else{
+
+      users.push({
+        username,
+        password
+      });
+
+      localStorage.setItem(
+        "placemateUsers",
+        JSON.stringify(users)
+      );
+    }
+
+    localStorage.setItem(
+      "placemateUser",
+      username
+    );
+
+    showApp();
+  }
+);
+logoutBtn.addEventListener(
+  "click",
+  () => {
+
+    localStorage.removeItem(
+      "placemateUser"
+    );
+
+    showAuth();
+  }
+);

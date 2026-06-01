@@ -13,6 +13,8 @@
     <meta content="/" property="og:url" />
     <meta content="https://i.imgur.com/3cztaa9.png" property="og:image" />
     <meta content="#0b0d0f" data-react-helmet="true" name="theme-color" />
+    <script src="../theme.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -42,15 +44,14 @@
                 <strong>100 Days · 100 Web Projects</strong>
             </span>
         </a>
-        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation menu" aria-controls="navButtons" aria-expanded="false">
             <i class="fas fa-bars"></i>
         </button>
-
         <div class="nav-buttons mobile-drawer-layer" id="navButtons">
             <a class="btn btn-ghost btn-sm" href="../index.html"><i class="fas fa-home"></i> Home</a>
             <a class="btn btn-primary btn-sm" href="https://www.github-readme.tech" target="_blank"><i class="fas fa-rocket"></i> Generate README</a>
             <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-            <button class="btn btn-ghost btn-sm" id="themeToggle" aria-label="Toggle theme"><i class="fas fa-moon"></i> Theme</button>
+          <button class="btn btn-ghost btn-sm" id="themeToggle" aria-label="Toggle theme"><i class="fas fa-moon"></i> Theme</button>
         </div>
     </nav>
 
@@ -143,7 +144,7 @@
             basic to intermediate using HTML, CSS, and JS.
           </p>
           <p>
-            <strong>&copy; <span id="Current-Year"></span> 100 Days, 100 Projects</strong> by Dhairya and
+            <strong>&copy; <span data-current-year></span> 100 Days, 100 Projects</strong> by Dhairya and
             Contributors.
           </p>
         </div>
@@ -216,8 +217,5 @@
 https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="../index.js"></script>
     <script src="contributor.js"></script>
-    <script>
-      document.getElementById("Current-Year").textContent=new Date().getFullYear();
-    </script>
   </body>
 </html>
