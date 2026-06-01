@@ -1114,6 +1114,7 @@ function renderBookmarks() {
 
   if (bookmarkedProjects.length === 0) {
     bookmarkGrid.innerHTML = `<p class="empty-state">No bookmarked projects yet.</p>`;
+    if (section) section.style.display = 'none';
     return;
   }
 
@@ -1167,6 +1168,7 @@ function renderRecentProjects() {
 
   if (validRecent.length === 0) {
     recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects within the last hour.</p>`;
+    if (section) section.style.display = 'none';
     return;
   }
 
