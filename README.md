@@ -1,4 +1,4 @@
-# 🚀 100 Days 100 Web Projects
+I# 🚀 100 Days 100 Web Projects
 
 
 <div align="center">
@@ -229,7 +229,8 @@ The website features:
 | 157 | Map Route Tracker | HTML, CSS, JavaScript | 🗺️ Tracker | [View Demo](https://100-days-100-web-project.vercel.app/public/Vector-Map-Route-Tracer/index.html) |
 | 158 | GitHub Promo Maker | HTML, CSS, JavaScript | 🚀 Generator | [View Demo](https://100-days-100-web-project.vercel.app/public/GitHubPromoMaker/index.html) |
 | 159 | Dining Philosophers Simulation | JavaScript | 🔮 Simulator | [View Demo](https://100-days-100-web-project.vercel.app/public/Dining Philosophers Simulation/index.html) |
-| 182 | Code Execution Visualizer | HTML, CSS, JavaScript | 🧠 Visualizer | [View Demo](https://100-days-100-web-project.vercel.app/public/code-execution-visualizer/index.html) |
+| 182 | Code Execution Visualizer | HTML, CSS, JavaScript | 🧠 Visualizer | [View Demo](https://100-days-100-web-project.vercel.app/public/code-execution-vhttps://medical-tau-six.vercel.app/isualizer/index.html) |
+| 183 | Medical Prescription | HTML, CSS, JavaScript | 🧠 Visualizer | [View Demo](https://medical-tau-six.vercel.app/) |
 
 
 
@@ -3291,6 +3292,13 @@ Thanks to all these amazing people who have contributed to this project:
                     <img src="https://avatars.githubusercontent.com/u/220489458?v=4" width="96;" alt="Asthatiwari05"/>
                     <br />
                     <sub><b>Asthatiwari05</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/khushiiish">
+                    <img src="https://avatars.githubusercontent.com/u/189465615?s=400&v=4" width="96;" alt="Khushiiish"/>
+                    <br />
+                    <sub><b>Gyanam09</b></sub>
                 </a>
             </td>
 		</tr>
