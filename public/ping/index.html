@@ -3,6 +3,7 @@
  <meta charset="UTF-8">
  <meta http-equiv="X-UA-Compatible" content="IE=edge">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
  <link rel="stylesheet" href="style.css">
  <script src="script.js" defer></script>
  <title>Ping Pong Game</title>
@@ -11,16 +12,43 @@
 <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
  <div class="header">
-  <img src="https://img.freepik.com/premium-vector/table-tennis-vector-logo-ping-pong-ball-with-emblem-shape-perfect-table-tennis_297778-950.jpg" alt="logo" width="60px">
-  <div class="buttons">
+  <i class="fa-solid fa-table-tennis-paddle-ball" style="color: rgb(250, 248, 244);"></i>
+  <h1> THE PING PONG CHALLENGE </h1>
+  <i class="fa-solid fa-table-tennis-paddle-ball" style="color: rgb(250, 248, 244);"></i>
+</div>
+<h2> SELECT DIFFICULTY </h2>
+    <div class="buttons">
+    <button class ="easy" onclick="setDifficulty('easy')">
+        Easy
+    </button>
+    <button class ="medium" onclick="setDifficulty('medium')">
+        Medium
+    </button>
+    <button class="hard" onclick="setDifficulty('hard')">
+        Hard
+    </button>
+    </div>
+
+    <div class ="score">
+        <h2>Score</h2>
+        <div id="user-score">0</div><div> - </div><div id="computer-score">0</div>
+    </div>
+ <div class="pong-wrapper">
+  <canvas id="ping-pong" width="600px" height="400px"></canvas>
+ </div>
+ <div class ="result" id ="result"> 
+    <div class ="result-inner">
+        <h2 id="msg1">winner</h2>
+        <p id="msg"> WINNER</p>
+        <div class="buttons">
+        <button class ="new-btn">NEW GAME</button>
+        </div>
+    </div>    
+</div>
+ <div class="buttons">
    <button class="start-btn">Start</button>
    <button class="pause-btn">Pause</button>
    <button class="restart-btn">Restart</button>
   </div>
- </div>
-
- <div class="pong-wrapper">
-  <canvas id="ping-pong" width="600px" height="400px"></canvas>
- </div>
 </body>
 </html>
