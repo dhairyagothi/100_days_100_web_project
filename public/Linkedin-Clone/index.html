@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Linkedin</title>
     <link rel="stylesheet" href="style.css" />
-    <title>Linkedin</title>
+    
 
       <link rel="icon" type="image/png" href="favicon.png">
     <link
@@ -434,9 +434,7 @@
     </div>
 
   <script>
-  // =========================
-  // PROFILE MENU FUNCTIONALITY
-  // =========================
+
 
   const navbarRight = document.querySelector(".navbar-right");
 
@@ -473,7 +471,7 @@
 
   navbarRight.insertAdjacentHTML("beforeend", menuHTML);
 
-  const profileToggle = document.querySelector(".navbar-right a");
+  const profileToggle = document.getElementById("profileToggle");
   const profileMenu = document.getElementById("profileMenu");
 
   // Toggle menu
@@ -494,9 +492,6 @@
     }
   });
 
-  // =========================
-  // SIDEBAR ACTIVITY
-  // =========================
 
   let sideActivity = document.getElementById("sidebarActivity");
   let moreLink = document.getElementById("showMoreLink");
@@ -513,9 +508,6 @@
     }
   }
 
-  // =========================
-  // CREATE POST FUNCTIONALITY
-  // =========================
 
   const postBtn = document.getElementById("postButton");
   const postTextarea = document.getElementById("postContent");
