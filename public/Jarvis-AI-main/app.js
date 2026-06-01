@@ -1,3 +1,5 @@
+
+
 const btn = document.querySelector(".talk");
 const content = document.querySelector(".content");
 const statusText = document.querySelector(".status-text");
@@ -6,12 +8,11 @@ const logoutBtn = document.getElementById("logoutBtn");
 
 let recognition;
 
-// ================= SAFE ELEMENT =================
 function safe(el) {
   return el || { textContent: "" };
 }
 
-// ================= SPEAK FUNCTION =================
+
 function speak(text) {
   window.speechSynthesis.cancel();
 
@@ -24,7 +25,6 @@ function speak(text) {
   window.speechSynthesis.speak(utterance);
 }
 
-// ================= GREETING =================
 function wishMe() {
   const hour = new Date().getHours();
 
@@ -41,7 +41,7 @@ function wishMe() {
   }
 }
 
-// ================= PAGE LOAD =================
+
 window.addEventListener("load", () => {
 
   // LOGIN CHECK
@@ -66,7 +66,6 @@ window.addEventListener("load", () => {
   wishMe();
 });
 
-// ================= SPEECH RECOGNITION =================
 const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -78,7 +77,7 @@ if (SpeechRecognition) {
   recognition.lang = "en-US";
   recognition.interimResults = false;
 
-  // RESULT
+ 
   recognition.onresult = (event) => {
 
     const transcript =
@@ -89,7 +88,7 @@ if (SpeechRecognition) {
     takeCommand(transcript.toLowerCase());
   };
 
-  // ERROR
+ 
   recognition.onerror = () => {
 
     safe(statusText).textContent =
@@ -99,7 +98,7 @@ if (SpeechRecognition) {
     wave?.classList.remove("active");
   };
 
-  // END
+ 
   recognition.onend = () => {
 
     btn?.classList.remove("active");
@@ -112,7 +111,7 @@ if (SpeechRecognition) {
       "Idle";
   };
 
-  // BUTTON CLICK
+ 
   btn?.addEventListener("click", () => {
 
     btn.classList.add("active");
@@ -133,10 +132,9 @@ if (SpeechRecognition) {
 
 }
 
-// ================= COMMAND HANDLER =================
+
 function takeCommand(message) {
 
-  // GREETING
   if (
     message.includes("hello") ||
     message.includes("hey")
@@ -146,7 +144,7 @@ function takeCommand(message) {
 
   }
 
-  // GOOGLE
+  
   else if (message.includes("open google")) {
 
     window.open("https://google.com", "_blank");
@@ -155,7 +153,7 @@ function takeCommand(message) {
 
   }
 
-  // YOUTUBE
+  
   else if (message.includes("open youtube")) {
 
     window.open("https://youtube.com", "_blank");
@@ -164,7 +162,7 @@ function takeCommand(message) {
 
   }
 
-  // TIME
+ 
   else if (message.includes("time")) {
 
     const time =
@@ -174,7 +172,7 @@ function takeCommand(message) {
 
   }
 
-  // DATE
+ 
   else if (message.includes("date")) {
 
     const date =
@@ -184,14 +182,14 @@ function takeCommand(message) {
 
   }
 
-  // LOGOUT COMMAND
+  
   else if (message.includes("logout")) {
 
     logout();
 
   }
 
-  // DEFAULT SEARCH
+  
   else {
 
     window.open(
@@ -204,7 +202,6 @@ function takeCommand(message) {
   }
 }
 
-// ================= SIGNUP =================
 function signup() {
 
   const username =
@@ -216,7 +213,6 @@ function signup() {
   const password =
     document.getElementById("signupPassword").value.trim();
 
-  // VALIDATION
   if (!username || !email || !password) {
 
     document.getElementById("status").innerText =
@@ -225,14 +221,14 @@ function signup() {
     return;
   }
 
-  // USER OBJECT
+  
   const user = {
     username,
     email,
     password: btoa(password)
   };
 
-  // SAVE
+
   localStorage.setItem(
     "user",
     JSON.stringify(user)
@@ -241,12 +237,12 @@ function signup() {
   document.getElementById("status").innerText =
     "Signup successful";
 
-  // CLEAR INPUTS
+  
   document.getElementById("signupUsername").value = "";
   document.getElementById("signupEmail").value = "";
   document.getElementById("signupPassword").value = "";
 
-  // REDIRECT
+  
   setTimeout(() => {
 
     showLogin();
@@ -257,7 +253,7 @@ function signup() {
   }, 1000);
 }
 
-// ================= LOGIN =================
+
 function login() {
 
   const email =
@@ -277,7 +273,7 @@ function login() {
   const user =
     JSON.parse(localStorage.getItem("user"));
 
-  // CHECK
+  
   if (
     user &&
     email === user.email &&
@@ -295,7 +291,7 @@ function login() {
     document.getElementById("status").innerText =
       "";
 
-    // CLEAR INPUTS
+  
     document.getElementById("loginEmail").value = "";
     document.getElementById("loginPassword").value = "";
 
@@ -309,7 +305,6 @@ function login() {
   }
 }
 
-// ================= LOGOUT =================
 function logout() {
 
   localStorage.removeItem("loggedIn");
@@ -320,7 +315,7 @@ function logout() {
   document.getElementById("mainApp").style.display =
     "none";
 
-  // RESET UI
+  
   safe(content).textContent =
     "Click to Speak";
 
@@ -333,10 +328,10 @@ function logout() {
   speak("Logged out successfully");
 }
 
-// ================= LOGOUT BUTTON =================
+
 logoutBtn?.addEventListener("click", logout);
 
-// ================= FORGOT PASSWORD =================
+
 function showForgot() {
 
   document.getElementById("signupBox").style.display =
@@ -352,7 +347,6 @@ function showForgot() {
     "";
 }
 
-// ================= RESET PASSWORD =================
 function resetPassword() {
 
   const email =
@@ -384,7 +378,7 @@ function resetPassword() {
     document.getElementById("status").innerText =
       "Password reset successful";
 
-    // CLEAR INPUTS
+  
     document.getElementById("forgotEmail").value = "";
     document.getElementById("newPassword").value = "";
 
@@ -405,7 +399,7 @@ function resetPassword() {
   }
 }
 
-// ================= TOGGLE AUTH =================
+
 function showSignup() {
 
   document.getElementById("signupBox").style.display =
@@ -435,3 +429,552 @@ function showLogin() {
   document.getElementById("status").innerText =
     "";
 }
+
+const btn = document.querySelector('.talk');
+const content = document.querySelector('.content');
+const status = document.querySelector('.status-text');
+const wave =document.querySelector('.wave-container');
+function speak(text) {
+    const text_speak = new SpeechSynthesisUtterance(text);
+
+    text_speak.rate = 1;
+    text_speak.volume = 1;
+    text_speak.pitch = 1;
+
+    window.speechSynthesis.speak(text_speak);
+}
+
+function wishMe() {
+    var day = new Date();
+    var hour = day.getHours();
+
+    if (hour >= 0 && hour < 12) {
+        speak("Good Morning Boss...");
+    } else if (hour >= 12 && hour < 17) {
+        speak("Good Afternoon Master...");
+    } else {
+        speak("Good Evening Sir...");
+    }
+}
+
+window.addEventListener('load', () => {
+    speak("Initializing JARVIS...");
+    wishMe();
+});
+
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+if (!SpeechRecognition) {
+    alert("Speech Recognition is not supported in this browser.");
+    status.textContent = "Speech Recognition not supported";
+} else {
+    const recognition = new SpeechRecognition();
+
+recognition.onresult = (event) => {
+    const currentIndex = event.resultIndex;
+    const transcript = event.results[currentIndex][0].transcript;
+    content.textContent = transcript;
+    takeCommand(transcript.toLowerCase());
+};
+
+btn.addEventListener('click', () => {
+    btn.classList.add('active');
+    wave.classList.add('active');
+    content.textContent = "Listening...";
+    status.textContent ="Jarvis is listening";
+    recognition.start();
+});
+}
+
+recognition.onend = () => {
+    btn.classList.remove('active');
+    wave.classList.remove('active');
+    content.textContent ="Click here to speak";
+    status.textContent ="Idle";
+};
+
+function takeCommand(message) {
+    if (message.includes('hey') || message.includes('hello')) {
+        speak("Hello Sir, How May I Help You?");
+    } else if (message.includes("open google")) {
+        window.open("https://google.com", "_blank");
+        speak("Opening Google...");
+    } else if (message.includes("open youtube")) {
+        window.open("https://youtube.com", "_blank");
+        speak("Opening Youtube...");
+    } else if (message.includes("open facebook")) {
+        window.open("https://facebook.com", "_blank");
+        speak("Opening Facebook...");
+    } else if (message.includes('what is') || message.includes('who is') || message.includes('what are')) {
+        window.open(`https://www.google.com/search?q=${message.replace(" ", "+")}`, "_blank");
+        const finalText = "This is what I found on the internet regarding " + message;
+        speak(finalText);
+    } else if (message.includes('wikipedia')) {
+        window.open(`https://en.wikipedia.org/wiki/${message.replace("wikipedia", "").trim()}`, "_blank");
+        const finalText = "This is what I found on Wikipedia regarding " + message;
+        speak(finalText);
+    } else if (message.includes('time')) {
+        const time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });
+        const finalText = "The current time is " + time;
+        speak(finalText);
+    } else if (message.includes('date')) {
+        const date = new Date().toLocaleString(undefined, { month: "short", day: "numeric" });
+        const finalText = "Today's date is " + date;
+        speak(finalText);
+    } else if (message.includes('calculator')) {
+        window.open('Calculator:///');
+        const finalText = "Opening Calculator";
+        speak(finalText);
+    } else {
+        window.open(`https://www.google.com/search?q=${message.replace(" ", "+")}`, "_blank");
+        const finalText = "I found some information for " + message + " on Google";
+        speak(finalText);
+    }
+}
+
+particlesJS("particles-js", {
+
+    particles: {
+        number: {value: 45,density: {enable: true,value_area: 800}},
+        color: {value: "#00bcd4"},
+        shape: {type: "circle"},
+        opacity: {value: 0.25},
+        size: { value: 2},
+        line_linked: {
+            enable: true,
+            distance: 140,
+            color: "#00bcd4",
+            opacity: 0.08,
+            width: 1
+        },
+        move: {
+            enable: true,
+            speed: 0.4
+        }
+    },
+
+    interactivity: {
+        detect_on: "canvas",
+        events: {
+            onhover: {enable: false},
+            resize: true
+        }
+    },
+    retina_detect: true
+});
+
+
+const btn = document.querySelector('.talk');
+const content = document.querySelector('.content');
+const typingText = document.getElementById('typing-text');
+const status = document.querySelector('.status-text');
+const wave =document.querySelector('.wave-container');
+function speak(text) {
+
+    const text_speak = new SpeechSynthesisUtterance(text);
+
+    text_speak.rate = 1;
+    text_speak.volume = 1;
+    text_speak.pitch = 1;
+
+    window.speechSynthesis.speak(text_speak);
+}
+
+function wishMe() {
+
+    const hour = new Date().getHours();
+
+    if (hour >= 0 && hour < 12) {
+
+        speak("Good Morning Boss");
+
+    } else if (hour >= 12 && hour < 17) {
+
+        speak("Good Afternoon Boss");
+
+    } else {
+
+        speak("Good Evening Boss");
+    }
+}
+
+
+
+window.addEventListener('load', () => {
+
+    speak("Initializing JARVIS");
+
+    typingAnimation();
+
+    setTimeout(() => {
+        wishMe();
+    }, 2000);
+});
+
+
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+if (!SpeechRecognition) {
+    alert("Speech Recognition is not supported in this browser.");
+    status.textContent = "Speech Recognition not supported";
+} else {
+    const recognition = new SpeechRecognition();
+
+
+
+const messages = [
+    "Initializing JARVIS...",
+    "AI Assistant Activated...",
+    "Listening for your commands...",
+    "Ready to assist you..."
+];
+
+let messageIndex = 0;
+let charIndex = 0;
+
+function typingAnimation() {
+
+    if (!typingText) return;
+
+    typingText.textContent =
+        messages[messageIndex].slice(0, charIndex++);
+
+    if (charIndex > messages[messageIndex].length) {
+
+        charIndex = 0;
+
+        messageIndex++;
+
+        if (messageIndex >= messages.length) {
+            messageIndex = 0;
+        }
+    }
+
+    setTimeout(typingAnimation, 120);
+}
+
+const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+const recognition = new SpeechRecognition();
+recognition.onresult = (event) => {
+
+    const currentIndex = event.resultIndex;
+
+    const transcript =
+        event.results[currentIndex][0].transcript;
+
+    content.textContent = transcript;
+
+    takeCommand(transcript.toLowerCase());
+};
+
+btn.addEventListener('click', () => {
+
+
+    content.textContent = "Listening...";
+
+    btn.classList.add('active');
+
+if (wave) {
+    wave.classList.add('active');
+}
+
+content.textContent = "Listening...";
+
+if (status) {
+    status.textContent = "Jarvis is listening";
+}
+
+recognition.start();
+
+speak("Listening");
+    speak("Listening");
+});
+}
+
+recognition.onend = () => {
+    btn.classList.remove('active');
+    wave.classList.remove('active');
+    content.textContent ="Click here to speak";
+    status.textContent ="Idle";
+};
+
+function takeCommand(message) {
+
+    btn.classList.remove("active");
+
+    if (
+        message.includes('hey') ||
+        message.includes('hello')
+    ) {
+
+        speak("Hello Boss, How May I Help You?");
+
+        content.textContent = "Hello Boss";
+
+    }
+
+    else if (message.includes("open google")) {
+
+        window.open("https://google.com", "_blank");
+
+        speak("Opening Google");
+
+    }
+
+    else if (message.includes("open youtube")) {
+
+        window.open("https://youtube.com", "_blank");
+
+        speak("Opening YouTube");
+
+    }
+
+    else if (message.includes("open facebook")) {
+
+        window.open("https://facebook.com", "_blank");
+
+        speak("Opening Facebook");
+
+    }
+
+    else if (
+        message.includes('what is') ||
+        message.includes('who is') ||
+        message.includes('what are')
+    ) {
+
+        window.open(
+            `https://www.google.com/search?q=${message}`,
+            "_blank"
+        );
+
+        speak(
+            "Here is what I found on the internet regarding " +
+            message
+        );
+    }
+
+    else if (message.includes('wikipedia')) {
+
+        window.open(
+            `https://en.wikipedia.org/wiki/${message.replace("wikipedia", "")}`,
+            "_blank"
+        );
+
+        speak("Opening Wikipedia");
+    }
+
+    else if (message.includes('time')) {
+
+        const time = new Date().toLocaleString(
+            undefined,
+            {
+                hour: "numeric",
+                minute: "numeric"
+            }
+        );
+
+        speak("The current time is " + time);
+
+    }
+
+    else if (message.includes('date')) {
+
+        const date = new Date().toLocaleString(
+            undefined,
+            {
+                month: "short",
+                day: "numeric"
+            }
+        );
+
+        speak("Today's date is " + date);
+
+    }
+
+    else if (message.includes('calculator')) {
+
+        speak("Opening Calculator");
+
+        window.open('Calculator:///');
+
+    }
+
+    else {
+
+        window.open(
+            `https://www.google.com/search?q=${message}`,
+            "_blank"
+        );
+
+        speak(
+            "I found some information for " + message
+        );
+    }
+}
+
+particlesJS("particles-js", {
+
+    particles: {
+        number: {value: 45,density: {enable: true,value_area: 800}},
+        color: {value: "#00bcd4"},
+        shape: {type: "circle"},
+        opacity: {value: 0.25},
+        size: { value: 2},
+        line_linked: {
+            enable: true,
+            distance: 140,
+            color: "#00bcd4",
+            opacity: 0.08,
+            width: 1
+        },
+        move: {
+            enable: true,
+            speed: 0.4
+        }
+    },
+
+    interactivity: {
+        detect_on: "canvas",
+        events: {
+            onhover: {enable: false},
+            resize: true
+        }
+    },
+    retina_detect: true
+ = document.querySelector('.talk');
+const content = document.querySelector('.content');
+const status = document.querySelector('.status-text');
+const wave =document.querySelector('.wave-container');
+function speak(text) {
+    const text_speak = new SpeechSynthesisUtterance(text);
+
+    text_speak.rate = 1;
+    text_speak.volume = 1;
+    text_speak.pitch = 1;
+
+    window.speechSynthesis.speak(text_speak);
+}
+
+function wishMe() {
+    var day = new Date();
+    var hour = day.getHours();
+
+    if (hour >= 0 && hour < 12) {
+        speak("Good Morning Boss...");
+    } else if (hour >= 12 && hour < 17) {
+        speak("Good Afternoon Master...");
+    } else {
+        speak("Good Evening Sir...");
+    }
+}
+
+window.addEventListener('load', () => {
+    speak("Initializing JARVIS...");
+    wishMe();
+});
+
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+if (!SpeechRecognition) {
+    alert("Speech Recognition is not supported in this browser.");
+    status.textContent = "Speech Recognition not supported";
+} else {
+    const recognition = new SpeechRecognition();
+
+recognition.onresult = (event) => {
+    const currentIndex = event.resultIndex;
+    const transcript = event.results[currentIndex][0].transcript;
+    content.textContent = transcript;
+    takeCommand(transcript.toLowerCase());
+};
+
+btn.addEventListener('click', () => {
+    btn.classList.add('active');
+    wave.classList.add('active');
+    content.textContent = "Listening...";
+    status.textContent ="Jarvis is listening";
+    recognition.start();
+});
+}
+
+recognition.onend = () => {
+    btn.classList.remove('active');
+    wave.classList.remove('active');
+    content.textContent ="Click here to speak";
+    status.textContent ="Idle";
+};
+
+function takeCommand(message) {
+    if (message.includes('hey') || message.includes('hello')) {
+        speak("Hello Sir, How May I Help You?");
+    } else if (message.includes("open google")) {
+        window.open("https://google.com", "_blank");
+        speak("Opening Google...");
+    } else if (message.includes("open youtube")) {
+        window.open("https://youtube.com", "_blank");
+        speak("Opening Youtube...");
+    } else if (message.includes("open facebook")) {
+        window.open("https://facebook.com", "_blank");
+        speak("Opening Facebook...");
+    } else if (message.includes('what is') || message.includes('who is') || message.includes('what are')) {
+        window.open(`https://www.google.com/search?q=${message.replace(" ", "+")}`, "_blank");
+        const finalText = "This is what I found on the internet regarding " + message;
+        speak(finalText);
+    } else if (message.includes('wikipedia')) {
+        window.open(`https://en.wikipedia.org/wiki/${message.replace("wikipedia", "").trim()}`, "_blank");
+        const finalText = "This is what I found on Wikipedia regarding " + message;
+        speak(finalText);
+    } else if (message.includes('time')) {
+        const time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });
+        const finalText = "The current time is " + time;
+        speak(finalText);
+    } else if (message.includes('date')) {
+        const date = new Date().toLocaleString(undefined, { month: "short", day: "numeric" });
+        const finalText = "Today's date is " + date;
+        speak(finalText);
+    } else if (message.includes('calculator')) {
+        window.open('Calculator:///');
+        const finalText = "Opening Calculator";
+        speak(finalText);
+    } else {
+        window.open(`https://www.google.com/search?q=${message.replace(" ", "+")}`, "_blank");
+        const finalText = "I found some information for " + message + " on Google";
+        speak(finalText);
+    }
+}
+
+particlesJS("particles-js", {
+
+    particles: {
+        number: {value: 45,density: {enable: true,value_area: 800}},
+        color: {value: "#00bcd4"},
+        shape: {type: "circle"},
+        opacity: {value: 0.25},
+        size: { value: 2},
+        line_linked: {
+            enable: true,
+            distance: 140,
+            color: "#00bcd4",
+            opacity: 0.08,
+            width: 1
+        },
+        move: {
+            enable: true,
+            speed: 0.4
+        }
+    },
+
+    interactivity: {
+        detect_on: "canvas",
+        events: {
+            onhover: {enable: false},
+            resize: true
+        }
+    },
+    retina_detect: true
+});
+

@@ -252,8 +252,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (savedTheme === "dark") {
         document.body.classList.add("dark-mode");
-        toggleBtn.textContent = "☀️ Light Mode";
     }
+
+    // Update icon based on current theme
+    const updateThemeIcon = () => {
+        const isDark = document.body.classList.contains("dark-mode");
+        const icon = toggleBtn.querySelector("i");
+        if (icon) {
+            icon.setAttribute("data-lucide", isDark ? "sun" : "moon");
+            if (typeof lucide !== "undefined") {
+                lucide.createIcons();
+            }
+        }
+    };
+
+    // Set initial icon
+    updateThemeIcon();
 
     toggleBtn.addEventListener("click", () => {
         document.body.classList.toggle("dark-mode");
@@ -266,9 +280,8 @@ document.addEventListener("DOMContentLoaded", () => {
             isDark ? "dark" : "light"
         );
 
-        toggleBtn.textContent = isDark
-            ? "☀️ Light Mode"
-            : "🌙 Dark Mode";
+        // Update icon on toggle
+        updateThemeIcon();
     });
 });
 

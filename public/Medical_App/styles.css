@@ -1,23 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
 
 :root {
-    --primary: #14b8a6;          /* Modern Teal */
+    --primary: #14b8a6;         
     --primary-hover: #0d9488;
     --primary-light: #e2f7f5;
-    --secondary: #0f172a;        /* Deep Navy */
+    --secondary: #0f172a;        
     --secondary-light: #1e293b;
-    --bg-main: #f8fafc;          /* Sleek Light Gray-Blue */
+    --bg-main: #f8fafc;          
     --bg-card: #ffffff;
     --border-color: #e2e8f0;
-    --text-main: #475569;        /* Cool Slate Gray */
+    --text-main: #475569;       
     --text-heading: #0f172a;
-    --success: #10b981;          /* Emerald Green */
+    --success: #10b981;         
     --success-light: #d1fae5;
-    --warning: #f59e0b;          /* Warm Amber */
+    --warning: #f59e0b;          
     --warning-light: #fef3c7;
-    --danger: #ef4444;           /* Coral Red */
+    --danger: #ef4444;           
     --danger-light: #fee2e2;
-    --info: #3b82f6;             /* Modern Blue */
+    --info: #3b82f6;             
     --info-light: #dbeafe;
     
     --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03), 0 10px 15px -3px rgba(0, 0, 0, 0.03);
@@ -50,7 +50,7 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
 }
 
-/* Scrollbar styling */
+
 ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -66,7 +66,7 @@ h1, h2, h3, h4, h5, h6 {
     background: #94a3b8;
 }
 
-/* Layout Framework */
+
 .app-container {
     display: flex;
     min-height: 100vh;
@@ -74,7 +74,7 @@ h1, h2, h3, h4, h5, h6 {
     position: relative;
 }
 
-/* Sidebar Styling */
+
 .sidebar {
     width: var(--sidebar-width);
     background-color: var(--secondary);
@@ -231,19 +231,19 @@ h1, h2, h3, h4, h5, h6 {
     color: #64748b;
 }
 
-/* Main Dashboard Panel */
+
 .main-panel {
     flex-grow: 1;
     margin-left: var(--sidebar-width);
     transition: margin-left var(--transition-normal);
-    min-width: 0; /* Prevents flex items from overflowing */
+    min-width: 0; 
 }
 
 .sidebar.collapsed + .main-panel {
     margin-left: var(--sidebar-collapsed-width);
 }
 
-/* Top Navigation Bar */
+
 .topbar {
     height: 70px;
     background-color: white;
@@ -310,6 +310,28 @@ h1, h2, h3, h4, h5, h6 {
     background-color: var(--bg-main);
 }
 
+.theme-toggle-btn {
+    background: none;
+    border: none;
+    color: var(--text-main);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+    font-size: 1.2rem;
+}
+
+.theme-toggle-btn:hover {
+    background-color: var(--bg-main);
+}
+
+.theme-toggle-btn:active {
+    transform: scale(0.95);
+}
+
 .notification-badge {
     position: absolute;
     top: 6px;
@@ -339,14 +361,13 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 50%;
 }
 
-/* Dashboard Content Body */
 .content-body {
     padding: 30px;
     max-width: 1400px;
     margin: 0 auto;
 }
 
-/* Hero Welcome Card */
+
 .welcome-card {
     background: linear-gradient(135deg, var(--secondary), #1e293b);
     border-radius: 16px;
@@ -381,7 +402,7 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 1.05rem;
 }
 
-/* Modern Card Redesign */
+
 .card {
     background-color: var(--bg-card);
     border-radius: 16px;
@@ -421,7 +442,7 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
 }
 
-/* Dashboard Layout Grid */
+
 .dashboard-grid {
     display: grid;
     grid-template-columns: 1.6fr 1fr;
@@ -433,7 +454,7 @@ h1, h2, h3, h4, h5, h6 {
     grid-column: 1 / -1;
 }
 
-/* Health Monitoring Stats Grid */
+
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -487,7 +508,7 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Poppins', sans-serif;
 }
 
-/* Distinct color themes for stats */
+
 .stat-heart {
     background-color: rgba(239, 68, 68, 0.06);
     color: var(--danger);
@@ -523,7 +544,7 @@ h1, h2, h3, h4, h5, h6 {
     animation: heartPulse 0.8s ease-in-out;
 }
 
-/* Doctor Cards styling */
+
 .doctors-list-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -664,11 +685,7 @@ h1, h2, h3, h4, h5, h6 {
     color: #64748b;
 }
 
-/* ============================================
-   BUTTON DESIGN SYSTEM - MODERN HEALTHCARE UI
-   ============================================ */
 
-/* Base button – shared foundation for all variants */
 .btn,
 .primary-btn {
     display: inline-flex;
@@ -676,7 +693,7 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: center;
     gap: 8px;
     padding: 11px 22px;
-    min-height: 44px;                         /* Touch-friendly WCAG-A target */
+    min-height: 44px;                        
     border: 2px solid transparent;
     border-radius: 11px;
     cursor: pointer;
@@ -695,7 +712,7 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-/* Focus state for keyboard accessibility */
+
 .btn:focus-visible,
 .primary-btn:focus-visible {
     outline: 3px solid var(--primary);
@@ -703,7 +720,7 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 0 0 1px white, 0 0 0 3px var(--primary);
 }
 
-/* Disabled state */
+
 .btn:disabled,
 .btn.disabled,
 .primary-btn:disabled,
@@ -714,7 +731,7 @@ h1, h2, h3, h4, h5, h6 {
     transform: none !important;
 }
 
-/* Loading state with spinner animation */
+
 .btn.loading,
 .primary-btn.loading {
     color: transparent !important;
@@ -749,7 +766,7 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-/* ========== PRIMARY BUTTON (Teal) ========== */
+
 .btn-primary,
 .primary-btn {
     background-color: var(--primary);
@@ -760,7 +777,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-primary:hover,
 .primary-btn:hover {
-    background-color: #0d9488;                /* Darker teal for hover */
+    background-color: #0d9488;                
     border-color: #0d9488;
     transform: translateY(-2px);
     box-shadow: 0 12px 20px -4px rgba(20, 184, 166, 0.4), 0 4px 8px -2px rgba(20, 184, 166, 0.25);
@@ -787,7 +804,7 @@ h1, h2, h3, h4, h5, h6 {
     border-top-color: white;
 }
 
-/* ========== SECONDARY BUTTON (Navy) ========== */
+
 .btn-secondary,
 .secondary-btn {
     background-color: var(--secondary);
@@ -798,7 +815,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-secondary:hover,
 .secondary-btn:hover {
-    background-color: #0a0e27;                /* Darker navy */
+    background-color: #0a0e27;                
     border-color: #0a0e27;
     transform: translateY(-2px);
     box-shadow: 0 12px 20px -4px rgba(15, 23, 42, 0.4), 0 4px 8px -2px rgba(15, 23, 42, 0.25);
@@ -825,7 +842,7 @@ h1, h2, h3, h4, h5, h6 {
     border-top-color: white;
 }
 
-/* ========== SUCCESS BUTTON (Emerald) ========== */
+
 .btn-success,
 .success-btn {
     background-color: var(--success);
@@ -836,7 +853,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-success:hover,
 .success-btn:hover {
-    background-color: #059669;                /* Darker emerald */
+    background-color: #059669;                
     border-color: #059669;
     transform: translateY(-2px);
     box-shadow: 0 12px 20px -4px rgba(16, 185, 129, 0.4), 0 4px 8px -2px rgba(16, 185, 129, 0.25);
@@ -863,7 +880,7 @@ h1, h2, h3, h4, h5, h6 {
     border-top-color: white;
 }
 
-/* ========== DANGER BUTTON (Red) ========== */
+
 .btn-danger,
 .danger-btn {
     background-color: var(--danger);
@@ -874,7 +891,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-danger:hover,
 .danger-btn:hover {
-    background-color: #dc2626;                /* Darker red */
+    background-color: #dc2626;                
     border-color: #dc2626;
     transform: translateY(-2px);
     box-shadow: 0 12px 20px -4px rgba(239, 68, 68, 0.4), 0 4px 8px -2px rgba(239, 68, 68, 0.25);
@@ -901,7 +918,7 @@ h1, h2, h3, h4, h5, h6 {
     border-top-color: white;
 }
 
-/* ========== OUTLINE BUTTON ========== */
+
 .btn-outline,
 .outline-btn {
     background-color: transparent;
@@ -941,7 +958,7 @@ h1, h2, h3, h4, h5, h6 {
     border-top-color: var(--primary);
 }
 
-/* ========== SIZE MODIFIERS ========== */
+
 .btn-sm {
     padding: 7px 14px;
     font-size: 0.8rem;
@@ -973,7 +990,7 @@ h1, h2, h3, h4, h5, h6 {
     padding-bottom: 13px;
 }
 
-/* ========== ICON-ONLY BUTTON ========== */
+
 .btn-icon {
     padding: 10px;
     min-height: 44px;
@@ -982,7 +999,7 @@ h1, h2, h3, h4, h5, h6 {
     gap: 0;
 }
 
-/* ========== RESPONSIVE BUTTON ADJUSTMENTS ========== */
+
 @media (max-width: 768px) {
     .btn,
     .btn-sm,
@@ -993,7 +1010,7 @@ h1, h2, h3, h4, h5, h6 {
     .success-btn,
     .danger-btn,
     .outline-btn {
-        min-height: 44px;  /* Ensure touch-friendly size on mobile */
+        min-height: 44px;  
         font-size: 0.85rem;
     }
 
@@ -1003,7 +1020,7 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-/* Floating Label Forms styling */
+
 .form-group {
     position: relative;
     margin-bottom: 22px;
@@ -1030,7 +1047,7 @@ h1, h2, h3, h4, h5, h6 {
     padding-top: 20px;
 }
 
-/* Select needs standard styling height adjustments */
+
 .form-group select {
     padding: 14px 12px 6px 12px;
     height: 52px;
@@ -1052,7 +1069,7 @@ h1, h2, h3, h4, h5, h6 {
     transform-origin: left top;
 }
 
-/* Floating behavior for inputs and textareas */
+
 .form-group input:focus ~ label,
 .form-group input:not(:placeholder-shown) ~ label,
 .form-group textarea:focus ~ label,
@@ -1065,7 +1082,7 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
 }
 
-/* Input validation/focus outlines */
+
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
@@ -1073,14 +1090,14 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
 }
 
-/* Double column form layouts */
+
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px;
 }
 
-/* Safe Medicine Recommendation styles */
+
 #recommendationBox {
     margin-top: 15px;
     background-color: var(--primary-light);
@@ -1131,7 +1148,7 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 500;
 }
 
-/* Consultation History custom styles */
+
 #historyList {
     list-style: none;
     display: flex;
@@ -1157,7 +1174,7 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--text-heading);
 }
 
-/* Feedback CTA modern styling */
+
 .feedback-card {
     text-align: center;
     background: linear-gradient(135deg, var(--primary-light), #ccfbf1);
@@ -1175,7 +1192,7 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--text-main);
 }
 
-/* Toast styling for notifications */
+
 #toast-container {
     position: fixed;
     bottom: 24px;
@@ -1262,7 +1279,7 @@ h1, h2, h3, h4, h5, h6 {
         margin-left: var(--sidebar-collapsed-width);
     }
     .sidebar-toggle-btn {
-        display: none; /* Hide toggle on tablet/mobile since it is narrow by default */
+        display: none; 
     }
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -1288,241 +1305,59 @@ h1, h2, h3, h4, h5, h6 {
     .form-row {
         grid-template-columns: 1fr;
     }
-    .topbar {
-        padding: 0 15px;
-    }
-    .topbar-right .user-profile-badge {
-        display: none; /* Hide profile badge on very small screens to save space */
-    }
 }
-/* ==========================================
-   DARK MODE THEME
-========================================== */
 
+/* Dark Mode */
 body.dark-mode {
-    --bg-main: #0f172a;
-    --bg-card: #1e293b;
-
-    --text-main: #cbd5e1;
-    --text-heading: #f8fafc;
-
-    --border-color: #334155;
-
-    --secondary: #020617;
-    --secondary-light: #334155;
-
-    --primary: #13133e;
-    --primary-hover: #14b8a6;
-    --primary-light: rgba(28, 31, 30, 0.12);
-
-    --success-light: rgba(16,185,129,0.15);
-    --warning-light: rgba(245,158,11,0.15);
-    --danger-light: rgba(239,68,68,0.15);
-    --info-light: rgba(59,130,246,0.15);
-}
-
-/* Smooth transition */
-body,
-.sidebar,
-.topbar,
-.card,
-.stat-box,
-.doctor-card,
-.welcome-card,
-input,
-textarea,
-select,
-button {
-    transition: all 0.3s ease;
-}
-
-/* Body */
-body.dark-mode {
-    background-color: var(--bg-main);
-    color: var(--text-main);
-}
-
-/* Sidebar */
-body.dark-mode .sidebar {
-    background: #020617;
-    border-right: 1px solid #1e293b;
-}
-
-body.dark-mode .sidebar-menu-item a {
-    color: #94a3b8;
-}
-
-body.dark-mode .sidebar-menu-item a:hover {
-    background: #1e293b;
-    color: white;
-}
-
-/* Topbar */
-body.dark-mode .topbar {
-    background: #1e293b;
-    border-bottom: 1px solid #334155;
-}
-
-body.dark-mode .topbar-title,
-body.dark-mode .notification-bell,
-body.dark-mode .sidebar-toggle-btn {
-    color: #f8fafc;
-}
-
-body.dark-mode .user-profile-badge {
-    background: #0f172a;
-    color: #f8fafc;
-}
-
-/* Cards */
-body.dark-mode .card {
-    background: var(--bg-card);
-    border-color: var(--border-color);
-}
-
-body.dark-mode .card h2,
-body.dark-mode .doctor-name,
-body.dark-mode .stat-box-value {
-    color: var(--text-heading);
-}
-
-/* Welcome Card */
-body.dark-mode .welcome-card {
-    background: linear-gradient(
-        135deg,
-        #020617,
-        #1e293b
-    );
-}
-
-/* Stats Cards */
-body.dark-mode .stat-box {
-    background: var(--bg-card);
-    border-color: var(--border-color);
-}
-
-/* Doctor Cards */
-body.dark-mode .doctor-card {
-    background: #0f172a;
-    border-color: #334155;
-}
-
-body.dark-mode .doctor-card:hover {
-    background: #1e293b;
-}
-
-body.dark-mode .doctor-footer {
-    border-top-color: #334155;
-}
-
-/* Form Inputs */
-body.dark-mode .form-group input,
-body.dark-mode .form-group textarea,
-body.dark-mode .form-group select {
-    background: #0f172a;
-    color: #f8fafc;
-    border-color: #334155;
-}
-
-body.dark-mode .form-group label {
-    color: #94a3b8;
-}
-
-body.dark-mode .form-group input:focus,
-body.dark-mode .form-group textarea:focus,
-body.dark-mode .form-group select:focus {
-    border-color: var(--primary);
-}
-
-/* Recommendation Box */
-body.dark-mode #recommendationBox {
-    background: rgba(45, 212, 191, 0.08);
-}
-
-body.dark-mode #recommendationBox h3 {
-    color: #2dd4bf;
-}
-
-body.dark-mode #recommendationBox li {
+    background-color: #0f172a;
     color: #cbd5e1;
 }
 
-/* Consultation History */
-body.dark-mode #historyList li {
-    background: #0f172a;
+body.dark-mode .card,
+body.dark-mode .stat-box,
+body.dark-mode .doctor-card {
+    background-color: #1e293b;
+    border-color: #334155;
+    color: #cbd5e1;
+}
+
+body.dark-mode .topbar {
+    background-color: #1e293b;
     border-color: #334155;
 }
 
-body.dark-mode #historyList li strong {
-    color: #f8fafc;
+body.dark-mode .content-body {
+    background-color: #0f172a;
 }
 
-/* Feedback Card */
-body.dark-mode .feedback-card {
-    background: linear-gradient(
-        135deg,
-        rgba(45, 212, 191, 0.08),
-        rgba(45, 212, 191, 0.15)
-    );
+body.dark-mode .form-group input,
+body.dark-mode .form-group textarea,
+body.dark-mode .form-group select {
+    background-color: #1e293b;
+    color: #f1f5f9;
+    border-color: #334155;
 }
 
-/* Toasts */
-body.dark-mode .toast {
-    background: #020617;
-    color: white;
+body.dark-mode #recommendationBox {
+    background-color: rgba(20, 184, 166, 0.1);
+    color: #cbd5e1;
 }
 
-/* Scrollbar */
-body.dark-mode ::-webkit-scrollbar-thumb {
-    background: #475569;
+body.dark-mode .welcome-card {
+    background: linear-gradient(135deg, #1e293b, #334155);
 }
 
-body.dark-mode ::-webkit-scrollbar-thumb:hover {
-    background: #64748b;
+body.dark-mode .notification-bell,
+body.dark-mode .theme-toggle-btn {
+    color: #cbd5e1;
 }
 
-/* Theme Toggle Button */
-.theme-btn {
-    background: var(--primary);
-    color: white;
-    
-    border: none;
-    border-radius: 10px;
-    padding: 8px 14px;
-    cursor: pointer;
-    font-weight: 600;
-}
-.topbar-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-left: auto;
+body.dark-mode .notification-bell:hover,
+body.dark-mode .theme-toggle-btn:hover {
+    background-color: #334155;
 }
 
-.theme-btn:hover {
-    opacity: 0.9;
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-    body.dark-mode .sidebar {
-        background: #020617;
-    }
-
-    body.dark-mode .topbar {
-        background: #1e293b;
-    }
-}
-.quick-actions {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 30px;
-}
-
-.quick-actions .btn {
-    height: 60px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    border-radius: 14px;
+body.dark-mode .user-profile-badge {
+    background-color: #334155;
+    color: #cbd5e1;
 }

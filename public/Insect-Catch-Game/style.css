@@ -233,83 +233,62 @@ h1 {
 }
 
 .insect img {
-  width: 120px;
-  height: 120px;
-  filter: drop-shadow(0 0 12px rgba(255,140,0,0.8));
-}
-@keyframes float {
-  0% {
-    transform: translate(-50%, -50%) translateY(0px);
-  }
-
-  50% {
-    transform: translate(-50%, -50%) translateY(-10px);
-  }
-
-  100% {
-    transform: translate(-50%, -50%) translateY(0px);
-  }
+  width: 100px;
+  height: 100px;
 }
 
-/* RESPONSIVE */
-
-@media(max-width: 768px) {
-
-  h1 {
-    font-size: 2rem;
-  }
-
-  .insects-list {
-    gap: 15px;
-  }
-
-  .choose-insect-btn {
-    width: 150px;
-    height: 180px;
-  }
-
-  .choose-insect-btn img {
-    width: 90px;
-    height: 90px;
-  }
-
-  .message {
-    width: 90%;
-    font-size: 0.7rem;
-  }
-
-  .time,
-  .score {
-    font-size: 0.8rem;
-  }
-}.corner-design {
+.end-btn {
   position: absolute;
-  width: 200px;
-  height: 200px;
-  border: 2px solid rgba(0,255,255,0.25);
-  z-index: 0;
+  bottom: 20px;
+  right: 20px;
+  background-color: #fff;
+  color: #516dff;
+  border: none;
+  padding: 10px 15px;
+  font-family: 'Press Start 2P', sans-serif;
+  font-size: 10px;
+  cursor: pointer;
+  transition: 0.2s ease;
 }
 
-.top-left {
-  top: -100px;
-  left: -100px;
-  border-radius: 0 0 100% 0;
+.end-btn:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
 }
 
-.top-right {
-  top: -100px;
-  right: -100px;
-  border-radius: 0 0 0 100%;
+.game-over-box,
+.final-result-box {
+  background: #fff;
+  color: #516dff;
+  padding: 40px;
+  border-radius: 15px;
+  text-align: center;
+  width: 500px;
+  max-width: 90%;
 }
 
-.bottom-left {
-  bottom: -100px;
-  left: -100px;
-  border-radius: 0 100% 0 0;
+.game-over-box h2,
+.final-result-box h1 {
+  line-height: 1.6;
 }
 
-.bottom-right {
-  bottom: -100px;
-  right: -100px;
-  border-radius: 100% 0 0 0;
+.game-over-container,
+.final-result-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.game-over-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
 }

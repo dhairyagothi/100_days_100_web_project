@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
     <div class="app-container">
         <!-- Sidebar Controls -->
         <aside class="sidebar">
@@ -96,7 +98,7 @@
                 <div class="overlay-content">
                     <i class="ri-image-add-line"></i>
                     <h2>Transform Images into Atoms</h2>
-                    <p>Upload a photo to see the magic happen</p>
+                    <p id = "upload-photo">Upload a photo to see the magic happen</p>
                     <button onclick="document.getElementById('imageUpload').click()" class="btn primary">Get Started</button>
                 </div>
             </div>

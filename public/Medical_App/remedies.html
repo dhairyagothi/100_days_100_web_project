@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Basic Remedies | MedConsult Portal</title>
     <link rel="stylesheet" href="styles.css" />
+
+    <title>Basic Remedies | MedConsult</title>
+    <link rel="stylesheet" href="/public/Medical_App/styles.css" />
+
+
     <style>
         .remedy-grid {
             display: grid;
@@ -70,6 +76,8 @@
     </style>
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
 
 <div class="app-container">
 
@@ -273,10 +281,10 @@
 
 </div>
 
-<!-- Lucide Icons and Logic -->
+
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
-// Sidebar collapsible toggle functionality
+
 const sidebar = document.getElementById("sidebar");
 const sidebarToggle = document.getElementById("sidebarToggle");
 
@@ -286,13 +294,54 @@ if (sidebar && sidebarToggle) {
         localStorage.setItem("medConsultSidebarCollapsed", sidebar.classList.contains("collapsed"));
     });
 
-    // Restore state
+
+    
     if (localStorage.getItem("medConsultSidebarCollapsed") === "true") {
         sidebar.classList.add("collapsed");
     }
 }
+    <main>
+        <section class="remedy-grid">
+            <article class="remedy-card">
+                <h2>😷 Sore Throat</h2>
 
-// Render static Lucide Icons
+                <p>
+                    Drink warm fluids, rest your voice,
+                    and gargle with warm salt water if suitable.
+                </p>
+
+                <p>
+                    Seek medical care if symptoms include
+                    breathing difficulty, rash,
+                    severe pain, or last several days.
+                </p>
+            </article>
+
+            <article class="remedy-card">
+                <h2>💧 Dehydration</h2>
+
+                <p>
+                    Sip water or oral rehydration solution slowly
+                    and rest in a cool environment.
+                </p>
+
+                <p>
+                    Seek urgent help for confusion,
+                    fainting, severe weakness,
+                    or persistent vomiting.
+                </p>
+            </article>
+
+        </section>
+
+        <a href="/public/Medical_App/index.html" class="page-link">
+            ← Back to Consultation
+        </a>
+
+    </main>
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
     if (typeof lucide !== "undefined") {
         lucide.createIcons();

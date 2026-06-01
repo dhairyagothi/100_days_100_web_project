@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Give Feedback | MedConsult Portal</title>
     <link rel="stylesheet" href="styles.css">
@@ -10,7 +11,7 @@
 
 <div class="app-container">
 
-    <!-- Collapsible Sidebar -->
+  
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
             <div class="sidebar-brand-icon">
@@ -49,10 +50,9 @@
         </div>
     </aside>
 
-    <!-- Main Content Panel -->
     <div class="main-panel">
         
-        <!-- Top Navigation Header -->
+       
         <header class="topbar">
             <div class="topbar-left">
                 <button class="sidebar-toggle-btn" id="sidebarToggle" aria-label="Toggle Sidebar">
@@ -72,7 +72,7 @@
             </div>
         </header>
 
-        <!-- Main Content -->
+      
         <main class="content-body" style="display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 120px);">
             
             <section class="card" style="width: 100%; max-width: 550px; padding: 35px; box-shadow: var(--card-hover-shadow);">
@@ -112,13 +112,14 @@
 
 </div>
 
-<!-- Custom toast alert messages -->
+
+
 <div id="toast-container"></div>
 
-<!-- Lucide Icons and Logic -->
+
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
-// Sidebar collapsible toggle functionality
+
 const sidebar = document.getElementById("sidebar");
 const sidebarToggle = document.getElementById("sidebarToggle");
 
@@ -128,13 +129,13 @@ if (sidebar && sidebarToggle) {
         localStorage.setItem("medConsultSidebarCollapsed", sidebar.classList.contains("collapsed"));
     });
 
-    // Restore state
+  
     if (localStorage.getItem("medConsultSidebarCollapsed") === "true") {
         sidebar.classList.add("collapsed");
     }
 }
 
-// Toast notification helper
+
 function showToast(message, type = 'info') {
     const container = document.getElementById('toast-container');
     if (!container) return;
@@ -173,12 +174,13 @@ document.getElementById("feedbackform").addEventListener("submit", function(even
     document.getElementById("feedbackMessage").value = "";
 });
 
-// Render static Lucide Icons
+
 document.addEventListener("DOMContentLoaded", () => {
     if (typeof lucide !== "undefined") {
         lucide.createIcons();
     }
 });
 </script>
+
 </body>
 </html>
