@@ -7,6 +7,13 @@ const resumeInput =
 const fileName =
   document.getElementById("fileName");
 
+const dropZone =
+  document.getElementById("dropZone");
+
+const dragText =
+  document.querySelector(".drag-text");
+  
+
 uploadBtn.addEventListener("click", () => {
 
   resumeInput.click();
@@ -23,6 +30,64 @@ resumeInput.addEventListener("change", () => {
     generateAnalysis();
   }
 });
+
+["dragenter", "dragover"].forEach(eventName => {
+
+  dropZone.addEventListener(
+    eventName,
+    e => {
+
+      e.preventDefault();
+
+      dropZone.classList.add(
+        "drag-over"
+      );
+
+      dragText.textContent =
+        "Drop your resume here";
+    }
+  );
+
+});
+
+["dragleave", "drop"].forEach(eventName => {
+
+  dropZone.addEventListener(
+    eventName,
+    e => {
+
+      e.preventDefault();
+
+      dropZone.classList.remove(
+        "drag-over"
+      );
+
+      dragText.textContent =
+        "or drag & drop your resume here";
+    }
+  );
+
+});
+
+dropZone.addEventListener(
+  "drop",
+  e => {
+
+    const files =
+      e.dataTransfer.files;
+
+    if (files.length > 0) {
+
+      resumeInput.files = files;
+      
+      fileName.textContent =
+        files[0].name;
+
+      generateAnalysis();
+    }
+  }
+);
+
 
 const progressCircle =
   document.getElementById("progressCircle");
@@ -184,6 +249,7 @@ function generateChart(score) {
 }
 
 generateAnalysis();
+
 const themeToggle =
   document.getElementById("themeToggle");
 
@@ -193,32 +259,24 @@ const savedTheme =
 if (savedTheme === "light") {
 
   document.body.classList.add("light-mode");
-
+  
   themeToggle.textContent = "☀️";
+} else {
+  themeToggle.textContent = "🌙";
 }
 
 themeToggle.addEventListener("click", () => {
 
   document.body.classList.toggle("light-mode");
 
-  if (
-    document.body.classList.contains("light-mode")
-  ) {
+  const isLight =
+    document.body.classList.contains("light-mode");
 
-    localStorage.setItem(
-      "resumeTheme",
-      "light"
-    );
+  localStorage.setItem(
+    "resumeTheme",
+    isLight ? "light" : "dark"
+  );
 
-    themeToggle.textContent = "☀️";
-
-  } else {
-
-    localStorage.setItem(
-      "resumeTheme",
-      "dark"
-    );
-
-    themeToggle.textContent = "🌙";
-  }
+  themeToggle.textContent =
+    isLight ? "☀️" : "🌙";
 });

@@ -2,84 +2,98 @@
 const destinations = [
   {
     name: "Iceland",
+    flag: "🇮🇸",
     region: "Europe",
     bg: "url('images/iceland.jpg')",
     desc: "Explore glaciers, geysers, and the ethereal Northern Lights across volcanic landscapes."
   },
   {
     name: "Switzerland",
+    flag: "🇨🇭",
     region: "Europe",
     bg: "url('images/Jennifer.avif')",
     desc: "Experience the serene beauty of the Swiss Alps and impossibly picturesque alpine villages."
   },
   {
     name: "Scotland",
+    flag: "🏴",
     region: "Europe",
     bg: "url('images/Daniel.jpeg')",
     desc: "Discover ancient castles, rugged Highlands, and a culture steeped in myth and legend."
   },
   {
     name: "Ireland",
+    flag: "🇮🇪",
     region: "Europe",
     bg: "url('images/kai.jpg')",
     desc: "Immerse yourself in emerald landscapes, dramatic coastal cliffs, and warm Celtic hospitality."
   },
   {
     name: "Germany",
+    flag: "🇩🇪",
     region: "Europe",
     bg: "url('images/Hannes-Becker4.jpg')",
     desc: "Explore fairy-tale castles, medieval towns, and a legendary beer and sausage culture."
   },
   {
     name: "India",
+    flag: "🇮🇳",
     region: "Asia",
     bg: "url('images/tajmehal.png')",
     desc: "A tapestry of majestic forts, colorful festivals, ancient spice routes, and the iconic Taj Mahal."
   },
   {
     name: "Korea",
+    flag: "🇰🇷",
     region: "Asia",
     bg: "url('images/korea.png')",
     desc: "Discover a perfect blend of futuristic cities, ancient palaces, K-culture, and mountain serenity."
   },
   {
     name: "Japan",
+    flag: "🇯🇵",
     region: "Asia",
     bg: "url('images/japan.png')",
     desc: "Journey through ancient temples, neon-lit streets, and ethereal cherry blossom forests."
   },
   {
     name: "China",
+    flag: "🇨🇳",
     region: "Asia",
     bg: "url('images/china.png')",
     desc: "Explore the Great Wall, misty karst mountains, and the dazzling energy of its megacities."
   },
   {
     name: "Bali",
+    flag: "🇮🇩",
     region: "Asia",
     bg: "url('images/bali.png')",
     desc: "Unwind in a tropical paradise of rice terraces, spiritual temples, and golden sunsets."
   },
   {
     name: "Italy",
+    flag: "🇮🇹",
     region: "Europe",
     bg: "url('images/italy.png')",
     desc: "Wander through millennia of history, breathtaking art, and the world's finest cuisine."
   },
   {
     name: "France",
+    flag: "🇫🇷",
     region: "Europe",
     bg: "url('images/france.png')",
     desc: "Discover Parisian elegance, lavender fields of Provence, and the storied French Riviera."
   },
   {
     name: "Thailand",
+    flag: "🇹🇭",
     region: "Asia",
     bg: "url('images/thailand.png')",
     desc: "Enjoy tropical beaches, vibrant night markets, golden temples, and unforgettable street food."
   },
   {
     name: "Dubai",
+    flag: "🇦🇪",
     region: "Middle East",
     bg: "url('images/dubai.png')",
     desc: "Experience futuristic skylines, luxury beyond imagination, and desert adventures at golden dusk."
@@ -118,7 +132,7 @@ function buildUI() {
     // Dropdown option
     const opt = document.createElement('option');
     opt.value = i;
-    opt.textContent = `${d.region} · ${d.name}`;
+    opt.textContent = ` ${d.flag} ${d.region} · ${d.name}`;
     selector.appendChild(opt);
 
     // Indicator dot

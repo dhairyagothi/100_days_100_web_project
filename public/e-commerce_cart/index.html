@@ -15,6 +15,60 @@
   <!-- Navbar -->
   <header class="site-header">
     <div class="navbar">
+      <div class="website_title">AeroStride</div>
+      <div class="button-container">
+        <button class="button">
+          <img src="images_used/home_icon.png" width="17px"/>
+        </button>
+        <button class="button">
+          <img src="images_used/search_icon.png" width="17px"/>
+        </button>
+        <button class="button">
+          <img src="images_used/profile_icon.png" width="19px"/>
+        </button>
+        <div class="box" id="wishlist-box">
+  <div class="cart-count" id="wishlist-count">0</div>
+  <span style="color:white;font-size:20px;">❤</span>
+</div>
+
+<button id="dark-mode-btn" class="button">
+  🌙
+</button>
+
+<div class="box">
+  <div class="cart-count">0</div>
+  <img src="images_used/cart_icon.png" name="cart" id="cart-icon"/>
+</div>
+      </div>
+    </div>
+
+    <div class="nav">
+      <div class="cart">
+        <div class="cart-title">Cart Items</div>
+        <div class="cart-content">
+          <!-- Cart items will be dynamically inserted here -->
+        </div>
+        <div class="total">
+          <div class="total-title">Total</div>
+          <div class="total-price">Rs.0</div>
+        </div>
+        <div class="cart-footer">
+
+  <button class="btn-buy">
+    Place Order
+  </button>
+
+  <button class="clear-cart-btn">
+    Clear Cart
+  </button>
+
+</div>
+        <div class="checkout-modal">
+  <div class="checkout-content">
+
+    <span class="close-checkout">&times;</span>
+
+    <h2>Checkout</h2>
       <div class="website_title">Aero<span>Stride</span></div>
 
       <div class="button-container" aria-label="Header utilities">
@@ -55,6 +109,15 @@
         <img src="images_used/cross.png" alt="" aria-hidden="true">
       </button>
     </div>
+    <div class="trending-line"></div>
+</div>
+<div class="search-container">
+  <input type="text" id="search-input" placeholder="Search shoes...">
+</div>
+
+<p id="no-products-message" style="display:none; text-align:center; margin-top:20px;">
+  No products found
+</p>
 
     <div class="cart-body" id="cart-body">
       <div class="cart-empty" id="cart-empty">
@@ -301,6 +364,28 @@
     </div>
   </div>
 
+  <script src="js/script.js"></script>
+  <!-- Quick View Modal -->
+
+<div class="quick-view-modal">
+
+  <div class="quick-view-content">
+
+    <span class="close-quick-view">&times;</span>
+
+    <img id="quick-view-img" src="" alt="Product Image">
+
+    <h2 id="quick-view-title"></h2>
+
+    <p id="quick-view-price"></p>
+
+    <button id="quick-view-cart-btn">
+      Add To Cart
+    </button>
+
+  </div>
+
+</div>
   <script src="index.js"></script>
 </body>
 </html>
