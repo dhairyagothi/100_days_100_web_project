@@ -393,6 +393,30 @@ body {
   transform: translateY(-5px);
 }
 
+.download-btn{
+  margin-top:20px;
+  padding:12px 24px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+
+  background:linear-gradient(
+    135deg,
+    var(--green),
+    var(--blue)
+  );
+
+  color:white;
+  font-size:15px;
+  font-weight:600;
+
+  transition:.3s ease;
+}
+
+.download-btn:hover{
+  transform:translateY(-3px);
+}
+
 @media (max-width: 900px) {
 
   .dashboard-grid {
