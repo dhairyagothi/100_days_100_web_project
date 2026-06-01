@@ -1482,15 +1482,26 @@ input:checked + .toggle-slider:before {
   opacity: 0.9;
 }
 
-.controls-container {
-  display: none;
+.pomodoro-display {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 20px 0;
 }
 
-.theme-buttons,
-.controls-container > .select-group {
-  display: none;
+.pomodoro-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 
-.controls-container {
-  margin-top: 20px;
+.pomodoro-controls button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#pomodoro-status {
+  text-align: center;
+  margin-top: 12px;
 }
