@@ -2508,4 +2508,14 @@
     "projectPath": "./public/NumberGuessGame/index.html"
 },
   
+    {
+    "projectNo": 201,
+    "projectName": "Zodiac Finder",
+    "projectType": "Game",
+    "projectDesc": "A sleek web app that lets users discover their zodiac sign by entering their name and date of birth, featuring a cosmic-themed UI, smooth UX, and instant results.",
+    "techStack": ["html", "css", "javascript"],
+    "difficulty": "easy",
+    "projectPath": "./public/Zodiac_Finder/index.html"
+}
+
 ]
