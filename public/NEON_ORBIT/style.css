@@ -28,7 +28,8 @@ body {
     sans-serif;
   color: var(--text);
   overflow: hidden;
-  background: radial-gradient(
+  background:
+    radial-gradient(
       circle at 20% 20%,
       rgba(0, 246, 255, 0.18),
       transparent 32%
@@ -163,10 +164,8 @@ body::after {
 .grid {
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.08) 1px,
-      transparent 1px
-    ),
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
   background-size: 32px 32px;
   opacity: 0.24;
