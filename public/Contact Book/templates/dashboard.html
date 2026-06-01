@@ -36,23 +36,37 @@
         </li>
         {% endfor %}
     </ul>
+
+<p id="noResultsMessage" class="hidden text-center text-gray-500 mt-4">
+    No contacts found.
+</p>
 </div>
 <script>
 document.getElementById('search').addEventListener('input', function() {
     let filter = this.value.toLowerCase();
     let contacts = document.querySelectorAll('.contact-item');
+    let visibleContacts = 0;
 
     contacts.forEach(function(contact) {
         let name = contact.querySelector('.contact-name').textContent.toLowerCase();
         let email = contact.querySelector('.contact-email').textContent.toLowerCase();
         let phone = contact.querySelector('.contact-phone').textContent.toLowerCase();
-        
+
         if (name.includes(filter) || email.includes(filter) || phone.includes(filter)) {
             contact.style.display = '';
+            visibleContacts++;
         } else {
             contact.style.display = 'none';
         }
     });
+
+    const noResults = document.getElementById('noResultsMessage');
+
+    if (visibleContacts === 0) {
+        noResults.classList.remove('hidden');
+    } else {
+        noResults.classList.add('hidden');
+    }
 });
 </script>
 {% endblock %}

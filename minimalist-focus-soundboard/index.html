@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0a1a" />
+    <title>Minimalist Focus Soundboard · 100 Days 100 Web Projects</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-left" aria-hidden="true"></div>
+    <div class="ambient ambient-right" aria-hidden="true"></div>
+    <div class="noise-layer" aria-hidden="true"></div>
+
+    <div class="soundboard-container">
+      <header class="board-header">
+        <h1>Ambient Focus Soundboard</h1>
+        <p>
+          Mix ambient sounds and use the Pomodoro timer to build your ultimate
+          workflow state.
+        </p>
+      </header>
+
+      <section class="timer-section">
+        <div class="timer-display" id="timerDisplay">25:00</div>
+        <div class="timer-controls">
+          <button id="timerStartBtn" class="btn-timer">
+            <i class="fas fa-play"></i> Start
+          </button>
+          <button id="timerResetBtn" class="btn-timer">
+            <i class="fas fa-redo"></i> Reset
+          </button>
+        </div>
+      </section>
+
+      <main class="sound-grid">
+        <div class="sound-card" data-sound="rain">
+          <div class="icon-wrapper">
+            <i class="fas fa-cloud-showers-heavy"></i>
+          </div>
+          <h3>Rainfall</h3>
+          <input
+            type="range"
+            class="volume-slider"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0.5"
+            aria-label="Rain volume"
+          />
+        </div>
+        <div class="sound-card" data-sound="cafe">
+          <div class="icon-wrapper"><i class="fas fa-coffee"></i></div>
+          <h3>Coffee Shop</h3>
+          <input
+            type="range"
+            class="volume-slider"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0.5"
+            aria-label="Cafe volume"
+          />
+        </div>
+        <div class="sound-card" data-sound="white-noise">
+          <div class="icon-wrapper"><i class="fas fa-wave-square"></i></div>
+          <h3>White Noise</h3>
+          <input
+            type="range"
+            class="volume-slider"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0.5"
+            aria-label="White noise volume"
+          />
+        </div>
+        <div class="sound-card" data-sound="train">
+          <div class="icon-wrapper"><i class="fas fa-train"></i></div>
+          <h3>Train Journey</h3>
+          <input
+            type="range"
+            class="volume-slider"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0.5"
+            aria-label="Train volume"
+          />
+        </div>
+        <div class="sound-card" data-sound="forest">
+          <div class="icon-wrapper"><i class="fas fa-tree"></i></div>
+          <h3>Forest Birds</h3>
+          <input
+            type="range"
+            class="volume-slider"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0.5"
+            aria-label="Forest volume"
+          />
+        </div>
+        <div class="sound-card" data-sound="fire">
+          <div class="icon-wrapper"><i class="fas fa-fire"></i></div>
+          <h3>Campfire</h3>
+          <input
+            type="range"
+            class="volume-slider"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0.5"
+            aria-label="Fire volume"
+          />
+        </div>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
