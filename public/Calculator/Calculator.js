@@ -129,6 +129,16 @@ function normalizeExpression(expression) {
 }
 
 function addHistoryEntry(expression, result) {
+    const latestEntry = history[0];
+
+    if (
+        latestEntry &&
+        latestEntry.expression === expression &&
+        latestEntry.result === result
+    ) {
+        return;
+    }
+
     history.unshift({ expression, result });
 
     if (history.length > MAX_HISTORY_ENTRIES) {
@@ -161,9 +171,9 @@ function createHistoryItem(entry) {
     div.textContent = `${entry.expression} = ${entry.result}`;
 
     div.addEventListener('click', () => {
-        string = entry.result;
-        input.value = entry.result;
-        calculated = true;
+        string = entry.expression;
+        input.value = entry.expression;
+        calculated = false;
     });
 
     return div;
@@ -177,6 +187,8 @@ function renderHistory() {
         historyList.appendChild(createHistoryItem(entry));
     });
 }
+
+renderHistory();
 
 const arr = Array.from(buttons);
 

@@ -1444,3 +1444,27 @@ input:checked + .toggle-slider:before {
 .weather-temp {
   opacity: 0.9;
 }
+
+.pomodoro-display {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 20px 0;
+}
+
+.pomodoro-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.pomodoro-controls button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#pomodoro-status {
+  text-align: center;
+  margin-top: 12px;
+}

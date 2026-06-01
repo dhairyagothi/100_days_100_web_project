@@ -130,6 +130,7 @@ h3 {
   box-shadow: 0 1px 0 #c94040;
 }
 
+#pause-btn,
 #stop-btn {
   width: 100%;
   padding: 14px;
@@ -145,11 +146,13 @@ h3 {
   transition: transform 0.12s, box-shadow 0.12s;
 }
  
+#pause-btn:hover,
 #stop-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 7px 0 #c94040;
 }
  
+#pause-btn:active,
 #stop-btn:active {
   transform: translateY(4px);
   box-shadow: 0 1px 0 #c94040;
