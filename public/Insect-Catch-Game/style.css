@@ -244,6 +244,11 @@ h1 {
   filter: drop-shadow(0 0 12px rgba(255, 140, 0, 0.8));
 }
 
+.insect:hover,
+.insect:active {
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
 .sound-controls {
   position: absolute;
   bottom: 20px;
@@ -288,6 +293,7 @@ h1 {
   background: #fff;
   cursor: pointer;
 }
+
 @keyframes float {
   0% {
     transform: translate(-50%, -50%) translateY(0px);
@@ -333,6 +339,63 @@ h1 {
     font-size: 0.8rem;
   }
 }
+
+.corner-design {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: #fff;
+  color: #516dff;
+  border: none;
+  padding: 10px 15px;
+  font-family: "Press Start 2P", sans-serif;
+  font-size: 10px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.end-btn:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
+
+.game-over-box,
+.final-result-box {
+  background: #fff;
+  color: #516dff;
+  padding: 40px;
+  border-radius: 15px;
+  text-align: center;
+  width: 500px;
+  max-width: 90%;
+}
+
+.game-over-box h2,
+.final-result-box h1 {
+  line-height: 1.6;
+}
+
+.game-over-container,
+.final-result-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.game-over-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
 .corner-design {
   position: absolute;
   width: 200px;

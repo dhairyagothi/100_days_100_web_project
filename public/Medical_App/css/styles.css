@@ -145,6 +145,21 @@ body {
 .logo img {
   width: 40px;
   height: 40px;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--clr-bg);
+    color: var(--clr-text-main);
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+.logo img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
 }
 
 /* ==========================================================================
@@ -196,6 +211,34 @@ body {
 .nav-links a.active {
   color: var(--clr-primary);
 }
+.navbar .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+
+.navbar .nav-links a {
+    text-decoration: none;
+    color: var(--clr-text-muted);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition);
+}
+
+.navbar .nav-links a:hover, .navbar .nav-links a.active { color: var(--clr-primary); }
+
+/* Hero navigation links (distinct from navbar) */
+.hero-nav-links { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
+
+.hero-nav-links a {
+    text-decoration: none;
+    color: rgba(255,255,255,0.8);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition);
+}
+
+.hero-nav-links a:hover, .hero-nav-links a.active { color: #ffffff; }
 
 /* ==========================================================================
    Hero
@@ -1015,6 +1058,24 @@ body.modal-open {
   font-size: 0.82rem;
   color: var(--clr-text-muted);
   font-weight: 500;
+.hero-text-group { text-align: left; }
+.hero h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+.hero p { font-size: 1.1rem; opacity: 0.9; }
+
+/* Theme Toggle Button (hero-style, from Main) */
+.theme-toggle-btn {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: white;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
 }
 .doctor-card .btn {
   width: 100%;
@@ -1163,6 +1224,149 @@ body.modal-open {
 }
 .cancel-btn:hover {
   background: var(--button-cancel-hover);
+.grid-2-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+.file-upload-wrapper { position: relative; border: 2px dashed var(--clr-border); border-radius: var(--radius-md); background: var(--clr-bg); transition: var(--transition); }
+.file-upload-wrapper:hover { border-color: var(--clr-primary); background: #f0f9ff; }
+.file-input { position: absolute; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 10; }
+.file-upload-ui { padding: 2rem 1rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: var(--clr-text-muted); }
+.file-upload-ui i { font-size: 2rem; color: var(--clr-primary); }
+.file-upload-ui small { font-size: 0.75rem; }
+.file-list { padding: 0 1rem 1rem 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.file-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; background: var(--clr-surface); padding: 0.5rem; border-radius: var(--radius-md); border: 1px solid var(--clr-border); }
+
+/* ==========================================================================
+   Status & Progress Stepper
+   ========================================================================== */
+.status-content { min-height: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+
+.empty-status, .empty-state { color: var(--clr-text-muted); font-style: italic; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+.empty-state i { font-size: 2.5rem; color: var(--clr-border); }
+
+.stepper-container { width: 100%; display: flex; flex-direction: column; gap: 1.5rem; padding: 1rem 0; text-align: left; }
+
+.step { display: flex; gap: 1rem; position: relative; opacity: 0.5; transition: var(--transition); }
+.step::before { content: ''; position: absolute; left: 19px; top: 40px; bottom: -24px; width: 2px; background: var(--clr-border); z-index: 0; }
+.step:last-child::before { display: none; }
+.step.active, .step.completed { opacity: 1; }
+.step.completed::before { background: var(--clr-primary); }
+
+.step-icon { width: 40px; height: 40px; border-radius: 50%; background: var(--clr-surface); border: 2px solid var(--clr-border); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; color: var(--clr-text-muted); z-index: 1; transition: var(--transition); }
+.step.active .step-icon { border-color: var(--clr-primary); color: var(--clr-primary); background: #e0f2fe; box-shadow: 0 0 0 4px #bae6fd; }
+.step.completed .step-icon { background: var(--clr-primary); border-color: var(--clr-primary); color: white; }
+.step-content { flex: 1; }
+.step-content h4 { font-size: 0.95rem; margin-bottom: 0.2rem; }
+.step-content p { font-size: 0.8rem; color: var(--clr-text-muted); }
+
+/* ==========================================================================
+   History
+   ========================================================================== */
+.history-list { list-style: none; max-height: 500px; overflow-y: auto; padding-right: 0.5rem; }
+.history-list::-webkit-scrollbar { width: 6px; }
+.history-list::-webkit-scrollbar-thumb { background-color: var(--clr-border); border-radius: 10px; }
+
+.history-item { padding: 1rem; border: 1px solid var(--clr-border); border-radius: var(--radius-md); margin-bottom: 1rem; background: var(--clr-surface); transition: var(--transition); }
+.history-item:hover { border-color: var(--clr-border-focus); box-shadow: var(--shadow-sm); }
+
+.history-meta { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--clr-text-muted); margin-bottom: 0.5rem; }
+.history-title { font-weight: 600; color: var(--clr-text-main); margin-bottom: 0.25rem; }
+.history-details { font-size: 0.9rem; color: var(--clr-text-muted); margin-bottom: 1rem; }
+.history-actions { display: flex; gap: 0.5rem; border-top: 1px dashed var(--clr-border); padding-top: 0.75rem; }
+
+.badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 99px; font-size: 0.75rem; font-weight: 600; background: #e2e8f0; color: var(--clr-text-muted); }
+.badge.pending { background: #fef3c7; color: #b45309; }
+.badge.success { background: #d1fae5; color: #065f46; }
+.badge.priority-normal { background: #e0f2fe; color: #0284c7; }
+.badge.priority-urgent { background: #ffedd5; color: #c2410c; }
+.badge.priority-emergency { background: #fee2e2; color: #b91c1c; }
+
+/* ==========================================================================
+   Health Stats
+   ========================================================================== */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-top: 1rem; }
+
+.stat-box { background: var(--bg-stat-box); color: var(--text-primary); padding: 20px; border-radius: 14px; text-align: center; }
+.stat-box h3 { font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text-secondary); }
+.stat-box p { font-size: 1.3rem; font-weight: 700; color: var(--text-brand); }
+
+/* ==========================================================================
+   Doctor Cards
+   ========================================================================== */
+.doctors-section {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.doctor-search-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--clr-border);
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--clr-text-main);
+    background: var(--clr-surface);
+    transition: var(--transition);
+    margin: 1rem 0;
+}
+.doctor-search-input:focus {
+    outline: none;
+    border-color: var(--clr-primary);
+    box-shadow: 0 0 0 3px var(--clr-border-focus);
+}
+
+.doctors-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 10px; }
+
+.doctor-card { background: var(--clr-surface); padding: 1.5rem; border-radius: var(--radius-lg); border: 1px solid var(--clr-border); display: flex; flex-direction: column; align-items: center; }
+@media (hover: hover) {
+    .doctor-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .doctor-card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(37,99,235,0.08); }
+}
+
+.card-status-header { display: flex; justify-content: flex-end; width: 100%; margin-bottom: 12px; }
+
+.availability { font-size: 0.8rem; font-weight: 700; padding: 3px 8px; border-radius: 12px; display: inline-flex; align-items: center; gap: 6px; }
+.availability.available { background: var(--bg-available); color: var(--text-available); }
+.availability.limited { background: var(--bg-limited); color: var(--text-limited); }
+
+.status-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+.status-dot.green { background: #22c55e; }
+.status-dot.yellow { background: #eab308; }
+
+.doctor-avatar { width: 60px; height: 60px; border-radius: 50%; flex-shrink: 0; display: flex; justify-content: center; align-items: center; background: var(--bg-stat-box); border: 1px solid var(--clr-border); font-size: 1.8rem; overflow: hidden; }
+.doctor-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.doctor-profile { display: flex; align-items: center; gap: 15px; text-align: left; width: 100%; }
+.doctor-identity { display: flex; flex-direction: column; min-width: 0; }
+.doctor-identity h3 { margin-bottom: 3px; color: var(--clr-text-main); font-size: 1.1rem; }
+
+.specialty-badge { background: var(--bg-stat-box); color: var(--text-brand); font-size: 0.8rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; align-self: flex-start; margin-top: 4px; }
+
+.doctor-meta { display: flex; justify-content: space-between; gap: 10px; margin: 18px 0; border-top: 1px dashed var(--clr-border); border-bottom: 1px dashed var(--clr-border); padding: 12px 0; width: 100%; }
+.experience, .rating { font-size: 0.82rem; color: var(--clr-text-muted); font-weight: 500; }
+.doctor-card .btn { width: 100%; }
+
+/* ==========================================================================
+   Medicine Recommendations
+   ========================================================================== */
+#recommendationBox { background: var(--bg-stat-box); padding: 18px; border-radius: 12px; margin-top: 15px; border: 1px solid var(--clr-border); color: var(--clr-text-main); }
+#recommendationBox h3 { color: var(--text-brand); margin-bottom: 10px; font-size: 1.1rem; font-weight: 600; }
+#recommendationBox ul { padding-left: 20px; margin: 0; }
+#recommendationBox li { margin-bottom: 6px; }
+
+.disclaimer { font-size: 0.85rem; color: var(--clr-text-muted); margin-top: 1rem; display: flex; align-items: center; gap: 0.4rem; }
+
+/* ==========================================================================
+   Booking Modal
+   ========================================================================== */
+.booking-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-backdrop); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
+
+.booking-modal-content { background: var(--clr-surface); padding: 30px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); width: 100%; max-width: 500px; position: relative; max-height: 90vh; overflow-y: auto; animation: modalSlideDown 0.3s ease; color: var(--clr-text-main); }
+
+@keyframes modalSlideDown {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 .success-message {
@@ -1250,6 +1454,101 @@ body.modal-open {
 }
 
 /* ==========================================================================
+   Primary Button (Book Appointment, Feedback, Emergency)
+   ========================================================================== */
+.primary-btn {
+    background: var(--button-primary-bg);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition);
+    width: 100%;
+}
+.primary-btn:hover {
+    background: var(--button-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.feedback-btn {
+    margin-top: 0.5rem;
+}
+
+/* ==========================================================================
+   Emergency Grid
+   ========================================================================== */
+.emergency-card h2 { color: var(--clr-danger); }
+.emergency-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-top: 1rem;
+}
+.emergency-grid button {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--clr-text-main);
+}
+.emergency-grid button:hover {
+    background: #fee2e2;
+    border-color: var(--clr-danger);
+}
+
+/* ==========================================================================
+   Health Tip Card
+   ========================================================================== */
+.tip-card {
+    background: var(--bg-stat-box);
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-md);
+    margin-top: 0.75rem;
+    font-size: 0.95rem;
+    color: var(--clr-text-main);
+    border-left: 4px solid var(--clr-primary);
+}
+
+/* ==========================================================================
+   Emergency Toast
+   ========================================================================== */
+.emergency-toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--clr-danger);
+    color: white;
+    padding: 14px 28px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    z-index: 9999;
+    animation: slideIn 0.3s ease;
+}
+.emergency-toast.hide-toast {
+    animation: slideOut 0.5s ease forwards;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--clr-text-muted);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--clr-border);
+    margin-top: 1rem;
+}
+
+/* ==========================================================================
    Responsive
    ========================================================================== */
 @media (max-width: 900px) {
@@ -1300,4 +1599,36 @@ body.modal-open {
     gap: 6px;
     align-items: center;
   }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .dashboard-container { grid-template-columns: 1fr; }
+    .doctors-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .hero-content { gap: 15px; }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .navbar { flex-direction: column; gap: 0.75rem; padding: 1rem; }
+    .hero-content { flex-direction: column; text-align: center; }
+    .hero-text-group { text-align: center; }
+    .hero-nav-links { justify-content: center; }
+    .doctors-section { padding: 0 0.75rem; }
+    .dashboard-container { padding: 0 0.75rem; gap: 1.5rem; }
+    .modal-footer { flex-direction: column; gap: 10px; }
+    .grid-2-cols { grid-template-columns: 1fr; }
+    .form-actions { flex-direction: column; }
+    .emergency-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+    .hero h1 { font-size: 1.5rem; }
+    .hero p { font-size: 0.95rem; }
+    .hero-nav-links { flex-direction: column; gap: 0.75rem; }
+    .doctor-profile { flex-direction: column; align-items: center; text-align: center; gap: 10px; }
+    .specialty-badge { align-self: center; }
+    .doctor-meta { flex-direction: column; gap: 6px; align-items: center; }
+    .card { padding: 1rem; }
+    .card-header { flex-direction: column; text-align: center; gap: 0.5rem; }
 }

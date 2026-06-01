@@ -9,7 +9,12 @@ const UI = {
   themeToggle: document.getElementById("themeToggle"),
   themeIcon: document.getElementById("themeIcon"),
   offlineIndicator: document.getElementById("offlineIndicator"),
-  exportPdfBtn: document.getElementById("exportPdfBtn")
+  exportPdfBtn: document.getElementById("exportPdfBtn"),
+  compareForm: document.getElementById("compareForm"),
+  compareA: document.getElementById("compareA"),
+  compareB: document.getElementById("compareB"),
+  comparisonPanel: document.getElementById("comparisonPanel"),
+  comparisonContainer: document.getElementById("comparisonContainer")
 };
 
 const Nodes = {
@@ -55,47 +60,7 @@ if (!searchResultsContainer) {
 const CACHE_DURATION = 300000;
 let liveSearchDebounceTimer = null;
 
-const workerScript = `
-  self.onmessage = function(e) {
-    const repositories = e.data;
-    const distribution = {};
-    const metricsMapping = [];
-    let accumulatedStars = 0;
-    let totalForks = 0;
-
-    repositories.forEach(repo => {
-      accumulatedStars += repo.stargazers_count;
-      totalForks += repo.forks_count;
-      if (repo.language) {
-        distribution[repo.language] = (distribution[repo.language] || 0) + 1;
-      }
-      metricsMapping.push({
-        name: repo.name,
-        stars: repo.stargazers_count,
-        forks: repo.forks_count
-      });
-    });
-
-    const totalLanguagesCount = Object.values(distribution).reduce((a, b) => a + b, 0);
-    const formattedDistribution = Object.entries(distribution).map(([lang, count]) => ({
-      language: lang,
-      percentage: Math.round((count / totalLanguagesCount) * 100)
-    })).sort((a, b) => b.percentage - a.percentage);
-
-    const topLanguages = formattedDistribution.slice(0, 3).map(node => node.language);
-
-    self.postMessage({
-      languages: topLanguages,
-      distribution: formattedDistribution.slice(0, 4),
-      rawMetrics: metricsMapping.slice(0, 4),
-      stars: accumulatedStars,
-      forks: totalForks
-    });
-  };
-`;
-
-const blob = new Blob([workerScript], { type: "application/javascript" });
-const metricsWorker = new Worker(URL.createObjectURL(blob));
+// Removed inlined worker and synthetic analytics to keep comparisons data-driven
 
 class DataCacheEngine {
   static get(storageKey) {
@@ -170,10 +135,153 @@ function hideStatus() {
 
 function showLoading() {
   showStatus("Syncing workspace records and evaluating analytics models...", "success");
+  document.body.classList.remove("compare-mode");
   if (UI.profileCard) UI.profileCard.classList.add("hidden");
   if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
   if (UI.reposSection) UI.reposSection.classList.add("hidden");
+  if (UI.comparisonPanel) UI.comparisonPanel.classList.add("hidden");
   searchResultsContainer.style.display = "none";
+}
+
+function showCompareLoading() {
+  document.body.classList.add("compare-mode");
+  if (UI.profileCard) UI.profileCard.classList.add("hidden");
+  if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
+  if (UI.reposSection) UI.reposSection.classList.add("hidden");
+  if (UI.comparisonPanel) UI.comparisonPanel.classList.remove("hidden");
+  if (UI.comparisonContainer) {
+    UI.comparisonContainer.innerHTML = `
+      <div class="compare-loading-state" role="status" aria-live="polite">
+        <div class="spinner" aria-hidden="true"></div>
+        <div>
+          <strong>Preparing comparison</strong>
+          <p>Loading both profiles and repository summaries.</p>
+        </div>
+      </div>`;
+  }
+  UI.comparisonPanel?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// computeMetricsForRepos removed — no derived/fake analytics required
+
+async function fetchProfileData(username) {
+  const cleanName = username.trim().replace(/^@/, "");
+
+  if (!cleanName) {
+    throw new Error("A GitHub username is required.");
+  }
+
+  const cachedProfile = DataCacheEngine.get(`profile_${cleanName}`);
+  const cachedRepos = DataCacheEngine.get(`repos_${cleanName}`);
+
+  if (cachedProfile && cachedRepos) {
+    return { user: cachedProfile, repos: cachedRepos };
+  }
+
+  if (!navigator.onLine) {
+    throw new Error(`Offline mode cannot fetch ${cleanName}.`);
+  }
+
+  const userResponse = await fetch(`https://api.github.com/users/${encodeURIComponent(cleanName)}`);
+  if (!userResponse.ok) {
+    throw new Error(`GitHub user not found: ${cleanName}`);
+  }
+
+  const user = await userResponse.json();
+  const repoResponse = await fetch(`https://api.github.com/users/${encodeURIComponent(cleanName)}/repos?per_page=50&sort=updated`);
+  const repos = await repoResponse.json();
+  const verifiedRepos = Array.isArray(repos) ? repos : [];
+  const sortedRepos = verifiedRepos.sort((alpha, beta) => beta.stargazers_count - alpha.stargazers_count).slice(0, 6);
+
+  DataCacheEngine.set(`profile_${cleanName}`, user);
+  DataCacheEngine.set(`repos_${cleanName}`, sortedRepos);
+
+  return { user, repos: sortedRepos };
+}
+
+function buildRepoListSmall(repos) {
+  if (!Array.isArray(repos) || repos.length === 0) {
+    return '<div class="empty-state-inline">No repositories available.</div>';
+  }
+
+  return `
+    <div class="repo-mini-list">
+      ${repos.map((repo) => `
+        <article class="repo-mini-card">
+          <div class="repo-mini-title-row">
+            <a class="repo-link" href="${repo.html_url}" target="_blank" rel="noreferrer">${repo.name}</a>
+            <span class="repo-mini-stars">★ ${repo.stargazers_count}</span>
+          </div>
+          <p class="repo-mini-description">${safeText(repo.description, "No description provided.")}</p>
+          <div class="repo-mini-meta">
+            ${repo.language ? `<span class="badge-chip">${repo.language}</span>` : ""}
+            <span class="badge-chip">Forks ${repo.forks_count}</span>
+          </div>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function renderComparisonCard(profileData, compareType, peerData) {
+  const leadFollowers = profileData.user.followers > peerData.user.followers;
+  const leadRepos = profileData.user.public_repos > peerData.user.public_repos;
+  const primaryBadge = leadFollowers ? "Leader in followers" : leadRepos ? "Leader in repos" : "Balanced profile";
+  return `
+    <article class="compare-panel compare-panel-${compareType}">
+      <div class="compare-panel-top">
+        <div class="panel-head">
+          <img src="${profileData.user.avatar_url}" alt="${profileData.user.login} avatar" loading="lazy" />
+          <div class="compare-identity">
+            <div class="compare-title-row">
+              <strong class="compare-name">${safeText(profileData.user.name, profileData.user.login)}</strong>
+              <span class="badge-strong">${primaryBadge}</span>
+            </div>
+            <p class="compare-handle">@${profileData.user.login}</p>
+          </div>
+        </div>
+        <p class="compare-bio">${safeText(profileData.user.bio, "—")}</p>
+
+        <div class="compare-badges">
+          <span class="badge-chip ${leadRepos ? "badge-chip-accent" : ""}">Repos ${profileData.user.public_repos}</span>
+          <span class="badge-chip ${leadFollowers ? "badge-chip-accent" : ""}">Followers ${profileData.user.followers}</span>
+          <span class="badge-chip">Following ${profileData.user.following}</span>
+          <span class="badge-chip">Joined ${formatDate(profileData.user.created_at)}</span>
+        </div>
+
+        <div class="compare-actions">
+          <a class="compare-action-btn" href="${profileData.user.html_url}" target="_blank" rel="noreferrer">
+            View GitHub Profile
+          </a>
+        </div>
+      </div>
+      
+      <div class="compare-section">
+        <div class="section-title-row">
+          <h4>Top Repositories</h4>
+          <span class="section-subtitle">Sorted by stars and update activity</span>
+        </div>
+        ${buildRepoListSmall(profileData.repos)}
+      </div>
+    </article>
+  `;
+}
+
+function renderComparison(leftData, rightData) {
+  if (!UI.comparisonContainer) return;
+
+  document.body.classList.add("compare-mode");
+  if (UI.profileCard) UI.profileCard.classList.add("hidden");
+  if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
+  if (UI.reposSection) UI.reposSection.classList.add("hidden");
+
+  UI.comparisonContainer.innerHTML = `
+    ${renderComparisonCard(leftData, "left", rightData)}
+    ${renderComparisonCard(rightData, "right", leftData)}
+  `;
+
+  UI.comparisonPanel?.classList.remove("hidden");
+  UI.comparisonPanel?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function formatDate(dateString) {
@@ -188,63 +296,7 @@ function safeText(value, fallback = "—") {
   return value && String(value).trim() ? value : fallback;
 }
 
-function computeAccountHealthIndex(user, metrics) {
-  const repoFactor = user.public_repos * 1.5;
-  const tractionFactor = (metrics.stars * 2.5) + (metrics.forks * 1.2);
-  const networkFactor = user.followers * 0.8;
-  const matrixScore = Math.min(100, Math.round((repoFactor + tractionFactor + networkFactor) / 12));
-  
-  if (matrixScore > 75) return "Enterprise Authority";
-  if (matrixScore > 40) return "Core Contributor";
-  return "Active Developer";
-}
-
-function renderVisualInsightsCharts(metrics) {
-  const langContainer = document.getElementById("languageDistributionChart");
-  const tractionContainer = document.getElementById("systemTractionChart");
-  
-  if (langContainer) {
-    langContainer.innerHTML = "";
-    if (metrics.distribution.length === 0) {
-      langContainer.innerHTML = '<span class="meta-output" style="text-align:left;">Insufficient environment distribution metrics.</span>';
-    } else {
-      metrics.distribution.forEach(item => {
-        const layoutRow = document.createElement("div");
-        layoutRow.style.cssText = "display:flex; flex-direction:column; gap:4px; width:100%;";
-        layoutRow.innerHTML = `
-          <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:600;">
-            <span>${item.language}</span>
-            <span class="user-handle">${item.percentage}%</span>
-          </div>
-          <div style="width:100%; height:6px; background:var(--bg-secondary); border-radius:99px; overflow:hidden;">
-            <div style="width:${item.percentage}%; height:100%; background:var(--accent); border-radius:99px;"></div>
-          </div>
-        `;
-        langContainer.appendChild(layoutRow);
-      });
-    }
-  }
-
-  if (tractionContainer) {
-    tractionContainer.innerHTML = "";
-    if (metrics.rawMetrics.length === 0) {
-      tractionContainer.innerHTML = '<span class="meta-output" style="text-align:left;">No tracking metrics registered.</span>';
-    } else {
-      metrics.rawMetrics.forEach(repo => {
-        const layoutRow = document.createElement("div");
-        layoutRow.style.cssText = "display:flex; align-items:center; justify-content:space-between; font-size:0.85rem; padding: 4px 0;";
-        layoutRow.innerHTML = `
-          <span style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:160px;">${repo.name}</span>
-          <div style="display:flex; gap:8px;">
-            <span class="pill" style="padding:2px 6px;">★ ${repo.stars}</span>
-            <span class="pill" style="padding:2px 6px;">⑂ ${repo.forks}</span>
-          </div>
-        `;
-        tractionContainer.appendChild(layoutRow);
-      });
-    }
-  }
-}
+// Removed synthetic analytics chart rendering — charts are not populated here to keep UI simple
 
 function animateCounter(element, targetValue) {
   if (!element) return;
@@ -273,22 +325,17 @@ function animateCounter(element, targetValue) {
   requestAnimationFrame(updateNumber);
 }
 
-function renderProfile(user, metrics) {
+function renderProfile(user, repos = []) {
+  document.body.classList.remove("compare-mode");
+  if (UI.comparisonPanel) UI.comparisonPanel.classList.add("hidden");
   Nodes.avatar.src = user.avatar_url;
-  Nodes.avatar.alt = `${user.login} workflow footprint`;
+  Nodes.avatar.alt = `${user.login} avatar`;
   Nodes.name.textContent = safeText(user.name, user.login);
   Nodes.username.textContent = `@${user.login}`;
 
-  const architectureClassification = computeAccountHealthIndex(user, metrics);
-  const ecosystemSummary = metrics.languages.length > 0 
-    ? `Specializes in ${metrics.languages.join(", ")} environments.`
-    : "Maintains a diversified structural codebase.";
-
-  const baselineBio = user.bio ? user.bio : "Independent open source developer profile dashboard.";
-  Nodes.bio.textContent = `${baselineBio} [Rank: ${architectureClassification}] — ${ecosystemSummary}`;
-  
-  Nodes.location.textContent = safeText(user.location, "Distributed/Remote");
-  Nodes.company.textContent = safeText(user.company, "Independent Workspace");
+  Nodes.bio.textContent = safeText(user.bio, "—");
+  Nodes.location.textContent = safeText(user.location, "—");
+  Nodes.company.textContent = safeText(user.company, "—");
 
   if (user.blog) {
     const blogUrl = user.blog.startsWith("http") ? user.blog : `https://${user.blog}`;
@@ -305,8 +352,7 @@ function renderProfile(user, metrics) {
   animateCounter(Nodes.following, user.following);
   animateCounter(Nodes.gists, user.public_gists);
 
-  renderVisualInsightsCharts(metrics);
-
+  // Keep profile and metrics panels visible
   if (UI.profileCard) UI.profileCard.classList.remove("hidden");
   if (UI.metricsPanel) UI.metricsPanel.classList.remove("hidden");
 }
@@ -336,7 +382,7 @@ function renderRepos(repos) {
         </h4>
         <span class="badge" style="margin:0; padding:2px 8px; font-size:0.7rem;">${engineeringStatus}</span>
       </div>
-      <p class="repo-description">${repo.description || "No structural layout documentation provided for this ecosystem."}</p>
+      <p class="repo-description">${repo.description || "No description."}</p>
       <div class="repo-meta">
         ${repo.language ? `<span class="pill">● ${repo.language}</span>` : ""}
         <span class="pill">★ ${repo.stargazers_count}</span>
@@ -468,19 +514,12 @@ async function fetchUser(username) {
         .sort((alpha, beta) => beta.stargazers_count - alpha.stargazers_count)
         .slice(0, 6);
 
-      metricsWorker.onmessage = function(e) {
-        const structuralMetrics = e.data;
-        
-        DataCacheEngine.set(`profile_${cleanName}`, user);
-        DataCacheEngine.set(`repos_${cleanName}`, sortedRepos);
-        DataCacheEngine.set(`metrics_${cleanName}`, structuralMetrics);
+      DataCacheEngine.set(`profile_${cleanName}`, user);
+      DataCacheEngine.set(`repos_${cleanName}`, sortedRepos);
 
-        renderProfile(user, structuralMetrics);
-        renderRepos(sortedRepos);
-        hideStatus();
-      };
-
-      metricsWorker.postMessage(sortedRepos);
+      renderProfile(user, sortedRepos);
+      renderRepos(sortedRepos);
+      hideStatus();
     } else {
       const searchResponse = await fetch(
         `https://api.github.com/search/users?q=${encodeURIComponent(cleanName)}&per_page=10`
@@ -535,6 +574,7 @@ if (UI.input) {
 
 document.querySelectorAll(".tag-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
+    if (!btn.dataset.user) return;
     if (UI.input) {
       UI.input.value = btn.dataset.user;
     }
@@ -561,11 +601,52 @@ document.querySelectorAll(".workspace-tabs-nav .tab-nav-item").forEach(tabBtn =>
   });
 });
 
-if (UI.exportPdfBtn) {
-  UI.exportPdfBtn.addEventListener("click", () => {
-    window.print();
+if (UI.compareForm) {
+  UI.compareForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const leftUsername = UI.compareA ? UI.compareA.value : "";
+    const rightUsername = UI.compareB ? UI.compareB.value : "";
+
+    if (!leftUsername.trim() || !rightUsername.trim()) {
+      showStatus("Enter two GitHub usernames to compare.", "error");
+      return;
+    }
+
+    hideStatus();
+    showCompareLoading();
+
+    try {
+      const [leftData, rightData] = await Promise.all([
+        fetchProfileData(leftUsername),
+        fetchProfileData(rightUsername)
+      ]);
+
+      renderComparison(leftData, rightData);
+    } catch (error) {
+      document.body.classList.add("compare-mode");
+      if (UI.profileCard) UI.profileCard.classList.add("hidden");
+      if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
+      if (UI.reposSection) UI.reposSection.classList.add("hidden");
+      if (UI.comparisonPanel) UI.comparisonPanel.classList.remove("hidden");
+      if (UI.comparisonContainer) {
+        UI.comparisonContainer.innerHTML = `<div class="status-banner error">${safeText(error.message, "Unable to compare profiles.")}</div>`;
+      }
+      UI.comparisonPanel?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   });
 }
+
+document.querySelectorAll(".compare-tag-btn").forEach((button) => {
+  button.addEventListener("click", () => {
+    const [leftUsername, rightUsername] = String(button.dataset.compare || "").split(",");
+    if (UI.compareA) UI.compareA.value = leftUsername || "";
+    if (UI.compareB) UI.compareB.value = rightUsername || "";
+    UI.compareForm?.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+  });
+});
+
+// Export functionality removed — keep UI focused on fetched data only
 
 if (UI.themeToggle) {
   UI.themeToggle.addEventListener("click", () => {

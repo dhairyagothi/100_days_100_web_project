@@ -42,6 +42,26 @@
         <button type="submit" class="primary-search-btn">Analyze Profile</button>
       </form>
 
+      <div class="compare-workspace" aria-hidden="false">
+        <form id="compareForm" class="modern-search-form" autocomplete="off">
+          <label class="sr-only" for="compareA">First GitHub username</label>
+          <label class="sr-only" for="compareB">Second GitHub username</label>
+          <div class="search-input-container">
+            <input id="compareA" type="text" placeholder="First handle (e.g., gaearon)" spellcheck="false" />
+            <input id="compareB" type="text" placeholder="Second handle (e.g., torvalds)" spellcheck="false" />
+          </div>
+          <button id="compareBtn" type="submit" class="primary-search-btn">Compare Profiles</button>
+        </form>
+      </div>
+      <div class="compare-examples" style="margin-top:10px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+        <span class="suggestion-label">Compare examples:</span>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="tag-btn compare-tag-btn" data-compare="gaearon,torvalds" type="button">gaearon vs torvalds</button>
+          <button class="tag-btn compare-tag-btn" data-compare="sindresorhus,yyx990803" type="button">sindresorhus vs evan</button>
+          <button class="tag-btn compare-tag-btn" data-compare="octocat,mojombo" type="button">octocat vs mojombo</button>
+        </div>
+      </div>
+
       <div class="quick-suggestions">
         <span class="suggestion-label">Quick search:</span>
         <div class="suggestion-tags">
@@ -59,7 +79,7 @@
         
         <div class="profile-essence">
           <div class="avatar-wrapper">
-            <img id="avatar" class="dashboard-avatar" src="" alt="GitHub avatar representation" />
+            <img id="avatar" class="dashboard-avatar" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="GitHub avatar representation" />
           </div>
           
           <div class="identity-block">
@@ -74,8 +94,8 @@
               <span>View GitHub Profile</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
             </a>
-            <button id="exportPdfBtn" class="external-profile-btn" type="button" style="background: transparent; border-style: dashed; width: 100%;">
-              <span>Export Executive Brief</span>
+            <button id="printProfileBtn" class="external-profile-btn" type="button" style="background: transparent; border-style: dashed; width: 100%;" aria-label="Print Profile Summary">
+              <span>Print Profile Summary</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
             </button>
           </div>
@@ -117,38 +137,12 @@
       </section>
 
       <div class="main-dashboard-content">
-        <section id="metricsPanel" class="metrics-overview-strip hidden">
-          <div class="metric-dashboard-card">
-            <div class="metric-card-inner">
-              <span class="metric-title">Public Repos</span>
-              <strong id="repoCount" class="metric-value">0</strong>
-            </div>
-          </div>
-          <div class="metric-dashboard-card">
-            <div class="metric-card-inner">
-              <span class="metric-title">Followers</span>
-              <strong id="followers" class="metric-value">0</strong>
-            </div>
-          </div>
-          <div class="metric-dashboard-card">
-            <div class="metric-card-inner">
-              <span class="metric-title">Following</span>
-              <strong id="following" class="metric-value">0</strong>
-            </div>
-          </div>
-          <div class="metric-dashboard-card">
-            <div class="metric-card-inner">
-              <span class="metric-title">Public Gists</span>
-              <strong id="gists" class="metric-value">0</strong>
-            </div>
-          </div>
-        </section>
+        <!-- metrics panel removed to keep UI minimal and data-driven -->
 
         <section id="reposSection" class="repositories-showcase-panel hidden">
           <div class="panel-header-block">
             <div class="workspace-tabs-nav">
               <button class="tab-nav-item active" type="button" data-pane="repositoriesPane">Overview &amp; Repos</button>
-              <button class="tab-nav-item" type="button" data-pane="insightsPane">Distribution Charts</button>
             </div>
             <div class="title-meta" style="margin-top: 16px;">
               <h3>Popular Repositories</h3>
@@ -160,25 +154,19 @@
             <div id="reposList" class="repositories-bento-grid"></div>
           </div>
 
-          <div id="insightsPane" class="tab-pane">
-            <div class="chart-layout-wrapper">
-              <div class="chart-canvas-card">
-                <div class="title-meta" style="margin-bottom: 16px;">
-                  <h4 style="margin: 0; font-size: 1rem;">Language Distribution</h4>
-                  <p style="font-size: 0.8rem;">Relative ecosystem density by tracking public asset storage footprints</p>
-                </div>
-                <div id="languageDistributionChart" style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;"></div>
-              </div>
-              
-              <div class="chart-canvas-card">
-                <div class="title-meta" style="margin-bottom: 16px;">
-                  <h4 style="margin: 0; font-size: 1rem;">System Traction Evaluation</h4>
-                  <p style="font-size: 0.8rem;">Relative star weight balance vs repository fragmentation</p>
-                </div>
-                <div id="systemTractionChart" style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;"></div>
-              </div>
+          <!-- insights pane removed to simplify UI -->
+        </section>
+
+        <!-- Comparison container -->
+        <section id="comparisonPanel" class="repositories-showcase-panel hidden" aria-live="polite">
+          <div class="panel-header-block">
+            <div class="title-meta">
+              <h3>Profile Comparison</h3>
+              <p>Side-by-side comparison of two GitHub users including top repositories and metrics.</p>
             </div>
           </div>
+
+          <div id="comparisonContainer" class="comparison-grid"></div>
         </section>
       </div>
     </div>

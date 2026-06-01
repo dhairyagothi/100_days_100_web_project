@@ -78,9 +78,40 @@ function getCategoryFromTags(tags, name) {
 let PROJECTS = [];
 let projectsPromise = null;
 
+function hydrateProjects(data) {
+  PROJECTS = data.map((project) => [
+    `Day ${project.projectNo}`,
+    project.projectName,
+    project.projectPath,
+    project.techStack,
+    project.difficulty,
+    project.projectDesc,
+  ]);
+}
+
+function getPreloadedProjectsData() {
+  return Array.isArray(window.PROJECTS_DATA) ? window.PROJECTS_DATA : null;
+}
+
+function parseProjectsData(payload) {
+  try {
+    return JSON.parse(payload);
+  } catch (error) {
+    // Fallback for common malformed object separators in projects.json
+    const repairedPayload = String(payload).replace(/}\s*{/g, "},{");
+    return JSON.parse(repairedPayload);
+  }
+}
+
 function loadProjects() {
   if (!projectsPromise) {
     projectsPromise = (async () => {
+      const preloadedData = getPreloadedProjectsData();
+      if (preloadedData) {
+        hydrateProjects(preloadedData);
+        return PROJECTS;
+      }
+
       const isRoot = !window.location.pathname.includes("/contributors/");
       const base = isRoot ? "" : "../";
       const projectsUrl = new URL(
@@ -101,6 +132,23 @@ function loadProjects() {
         project.difficulty,
         project.projectDesc,
       ]);
+      try {
+        const response = await fetch(projectsUrl);
+        if (!response.ok) {
+          throw new Error(`Failed to load projects: ${response.statusText}`);
+        }
+        const payload = await response.text();
+        const data = parseProjectsData(payload);
+        hydrateProjects(data);
+        return PROJECTS;
+      } catch (error) {
+        const fallbackData = getPreloadedProjectsData();
+        if (fallbackData) {
+          hydrateProjects(fallbackData);
+          return PROJECTS;
+        }
+        throw error;
+      }
     })();
   }
   return projectsPromise;
@@ -177,10 +225,12 @@ function resolveProjectUrls(day, name, url, tags) {
 
   if (!sourceOnly && demoUrl && !demoUrl.startsWith("http")) {
     try {
-      demoUrl = new URL(demoUrl, window.location.href).href;
-    } catch (error) {
-      // Keep the original path if URL normalization fails.
-    }
+      const isRoot = !window.location.pathname.includes("/contributors/");
+      const basePrefix = isRoot ? "" : "../";
+      if (demoUrl.startsWith("./")) {
+        demoUrl = basePrefix + demoUrl.substring(2);
+      }
+    } catch (error) {}
   }
 
   return { demoUrl, sourceUrl, sourceOnly };
@@ -189,6 +239,8 @@ function resolveProjectUrls(day, name, url, tags) {
 function getProjectDescription(project) {
   return (
     project[5] || "Explore this project to discover interactive functionality."
+    (project && project[5]) ||
+    "Explore this project to discover interactive functionality."
   );
 }
 
@@ -258,6 +310,7 @@ function buildProjectCardHTML({
                     ${codeLink}
                 </div>
                 <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${day}" onclick="event.stopPropagation()">
+                <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${day}">
                     <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark"></i>
                 </button>
             </div>
@@ -298,8 +351,9 @@ function normalizeTech(tech) {
 }
 
 /**
- * Check if project matches the active tech stack filters
- * EFFICIENT APPROACH: Direct string matching without complex transformations
+ * Check if project matches the active tech stack filters.
+ * Each filter must match a complete tag token, not a substring of another tag.
+ * Example: searching "java" must not return projects tagged "javascript".
  * @param {string|array} projectTags - Project tags (space-separated string or array)
  * @returns {boolean} True if project matches all active filters
  */
@@ -318,6 +372,20 @@ function matchesTechStack(projectTags) {
   // EFFICIENT: Check if ALL filters exist in tags (AND logic)
   // Uses simple includes() - O(n*m) where n=filters, m=tag length
   return techStackFilters.every((filter) => tagsLower.includes(filter));
+  // Normalize to a set of individual lowercase tokens for whole-word matching.
+  // Using a Set avoids repeated linear scans for each filter.
+  const tagSet = new Set(
+    (Array.isArray(projectTags)
+      ? projectTags
+      : String(projectTags).split(/\s+/)
+    )
+      .map((t) => t.toLowerCase().trim())
+      .filter(Boolean),
+  );
+
+  // Every active filter must match an exact token in the tag set (AND logic).
+  // This prevents "java" from matching "javascript", "css" from matching "canvas", etc.
+  return techStackFilters.every((filter) => tagSet.has(filter.toLowerCase()));
 }
 
 /**
@@ -411,6 +479,19 @@ function getAllTechnologies() {
 let bookmarkedProjects =
   JSON.parse(localStorage.getItem("bookmarkedProjects")) || [];
 let recentProjects = JSON.parse(localStorage.getItem("recentProjects")) || [];
+let bookmarkedProjects = [];
+let recentProjects = [];
+
+try {
+  bookmarkedProjects =
+    JSON.parse(localStorage.getItem("bookmarkedProjects")) || [];
+  recentProjects = JSON.parse(localStorage.getItem("recentProjects")) || [];
+} catch (error) {
+  console.warn(
+    "localStorage is not available or access is denied:",
+    error.message,
+  );
+}
 
 let showAllBookmarks = false;
 let showAllRecent = false;
@@ -463,9 +544,6 @@ function cleanupExpiredRecentProjects() {
     renderRecentProjects();
   }
 }
-
-// Clean up on page load
-cleanupExpiredRecentProjects();
 
 // Clean up every 5 minutes
 setInterval(cleanupExpiredRecentProjects, 5 * 60 * 1000);
@@ -615,6 +693,94 @@ function renderGrid() {
         matchesTech = tagStr.includes(techStackFilter.toLowerCase());
       }
 
+function syncStateToURL() {
+  const url = new URL(window.location);
+
+  if (searchQuery) {
+    url.searchParams.set("search", searchQuery);
+  } else {
+    url.searchParams.delete("search");
+  }
+
+  if (activeFilter && activeFilter !== "all") {
+    url.searchParams.set("category", activeFilter);
+  } else {
+    url.searchParams.delete("category");
+  }
+
+  if (currentPage > 1) {
+    url.searchParams.set("page", currentPage);
+  } else {
+    url.searchParams.delete("page");
+  }
+
+  window.history.replaceState({}, "", url);
+}
+
+function readStateFromURL() {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  if (urlParams.has("search")) {
+    searchQuery = urlParams.get("search");
+    const searchInput = document.getElementById("searchInput");
+    if (searchInput) {
+      searchInput.value = searchQuery;
+    }
+  }
+
+  if (urlParams.has("category")) {
+    activeFilter = urlParams.get("category");
+  }
+
+  if (urlParams.has("page")) {
+    const page = parseInt(urlParams.get("page"), 10);
+    if (!isNaN(page) && page > 0) {
+      currentPage = page;
+    }
+  }
+}
+
+function renderGrid() {
+  const grid = document.getElementById("projectGrid");
+  const noResults = document.getElementById("noResults");
+  if (!grid) return;
+
+  if (typeof updateClearFiltersBtnVisibility === "function") {
+    updateClearFiltersBtnVisibility();
+  }
+
+  const filtered = PROJECTS.filter(
+    ([day, name, url, tags, difficulty = ""]) => {
+      // Category filter
+      const category = getCategoryFromTags(tags, name);
+      const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || "all";
+      const matchesFilter =
+        activeFilter === "all" || category === targetCategory;
+
+      // Search filter
+      const q = searchQuery.toLowerCase().trim();
+      const matchesSearch =
+        !q ||
+        q
+          .split(/\s+/)
+          .every(
+            (term) =>
+              name.toLowerCase().includes(term) ||
+              day.toLowerCase().includes(term) ||
+              (Array.isArray(tags) ? tags.join(" ") : tags || "")
+                .toLowerCase()
+                .includes(term),
+          );
+
+      // Tech stack dropdown filter
+      let matchesTech = true;
+      if (techStackFilter && techStackFilter !== "all") {
+        const tagStr = (
+          Array.isArray(tags) ? tags.join(" ") : tags || ""
+        ).toLowerCase();
+        matchesTech = tagStr.includes(techStackFilter.toLowerCase());
+      }
+
       // Difficulty filter
       let matchesDifficulty = true;
       if (difficultyFilter && difficultyFilter !== "all") {
@@ -670,6 +836,9 @@ function renderGrid() {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement("div");
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
+    const isBookmarked = bookmarkedProjects.some(
+      (item) => normalizeProjectEntry(item).day === day,
+    );
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
       name,
@@ -681,6 +850,9 @@ function renderGrid() {
     });
 
     card.className = sourceOnly ? "project-card source-only" : "project-card";
+    card.className = sourceOnly
+      ? "project-card source-only visible"
+      : "project-card visible";
     card.innerHTML = html;
     attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
@@ -688,6 +860,8 @@ function renderGrid() {
   });
   grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
+
+  syncStateToURL();
 }
 
 function renderPagination(totalItems, totalPages) {
@@ -721,6 +895,23 @@ function renderPagination(totalItems, totalPages) {
 
   const controlsDiv = document.createElement("div");
   controlsDiv.className = "pagination-controls";
+
+
+  const firstBtn = document.createElement("button");
+  firstBtn.className = "first-btn";
+  firstBtn.innerHTML = "⏮ First";
+  firstBtn.disabled = currentPage === 1;
+
+  firstBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (currentPage !== 1) {
+      currentPage = 1;
+      renderGrid();
+      setTimeout(() => scrollToProjectSection(), 50);
+    }
+  });
+
+  controlsDiv.appendChild(firstBtn);
 
   const prevBtn = document.createElement("button");
   prevBtn.className = "prev-btn";
@@ -793,6 +984,21 @@ function renderPagination(totalItems, totalPages) {
     }
   });
   controlsDiv.appendChild(nextBtn);
+  const lastBtn = document.createElement("button");
+  lastBtn.className = "last-btn";
+  lastBtn.innerHTML = "Last ⏭";
+  lastBtn.disabled = currentPage === totalPages;
+
+  lastBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (currentPage !== totalPages) {
+      currentPage = totalPages;
+      renderGrid();
+      setTimeout(() => scrollToProjectSection(), 50);
+    }
+  });
+
+  controlsDiv.appendChild(lastBtn);
 
   container.appendChild(controlsDiv);
 
@@ -803,6 +1009,10 @@ function renderPagination(totalItems, totalPages) {
 function scrollToProjectSection() {
   const header = document.querySelector(".projects-header");
   if (!header) return;
+
+  // Only scroll if the projects section is fully below the viewport.
+  // If the user is already within or past the project grid, don't move them.
+  if (header.getBoundingClientRect().top < window.innerHeight) return;
 
   const navbar = document.querySelector(".navbar");
   // Subtract height of fixed navbar with a 50px buffer to prevent overlaying the search bar
@@ -844,11 +1054,14 @@ function scrollToProjectSection() {
 }
 
 function toggleBookmark(project) {
-  const exists = bookmarkedProjects.find((item) => item[0] === project[0]);
+  const exists = bookmarkedProjects.find(
+    (item) => normalizeProjectEntry(item).day === project[0],
+  );
 
   if (exists) {
     bookmarkedProjects = bookmarkedProjects.filter(
       (item) => item[0] !== project[0],
+      (item) => normalizeProjectEntry(item).day !== project[0],
     );
     showToast("Bookmark removed");
   } else {
@@ -860,20 +1073,61 @@ function toggleBookmark(project) {
     "bookmarkedProjects",
     JSON.stringify(bookmarkedProjects),
   );
+  updateBookmarkURL();
+
+  try {
+    localStorage.setItem(
+      "bookmarkedProjects",
+      JSON.stringify(bookmarkedProjects),
+    );
+  } catch (error) {
+    console.warn("Could not save bookmark due to localStorage restrictions");
+  }
   renderBookmarks();
   renderGrid();
   renderRecentProjects();
 }
 
-/**
- * Removes projects older than 1 hour from the recent projects list
- * @returns {array} Filtered recent projects within the 1-hour window
- */
+function updateBookmarkURL() {
+  const url = new URL(window.location);
+
+  if (bookmarkedProjects.length > 0) {
+    const bookmarkIds = bookmarkedProjects.map(
+      (project) => normalizeProjectEntry(project).day,
+    );
+    url.searchParams.set("bookmarks", bookmarkIds.join(","));
+  } else {
+    url.searchParams.delete("bookmarks");
+  }
+
+  window.history.replaceState({}, "", url);
+}
+
+function loadBookmarksFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const bookmarkParam = params.get("bookmarks");
+
+  if (!bookmarkParam) return;
+
+  const bookmarkIds = bookmarkParam.split(",").map((id) => id.trim());
+
+  bookmarkedProjects = PROJECTS.filter((project) =>
+    bookmarkIds.includes(project[0]),
+  );
+
+  localStorage.setItem(
+    "bookmarkedProjects",
+    JSON.stringify(bookmarkedProjects),
+  );
+}
+
 function getRecentProjectsWithinWindow() {
   const now = Date.now();
+
   return recentProjects.filter((item) => {
     const timestamp = item.timestamp || Date.now();
     const age = now - timestamp;
+
     return age <= ONE_HOUR_MS;
   });
 }
@@ -912,10 +1166,35 @@ function trackRecentProject(project) {
   }
 
   localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+  try {
+    localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+  } catch (error) {
+    console.warn(
+      "Could not save recent projects due to localStorage restrictions",
+    );
+  }
   renderRecentProjects();
 }
 
 const bookmarkGrid = document.getElementById("bookmarkGrid");
+
+function normalizeProjectEntry(project) {
+  if (Array.isArray(project)) {
+    return {
+      day: project[0],
+      name: project[1],
+      url: project[2],
+      tags: project[3],
+    };
+  }
+
+  return {
+    day: project.day,
+    name: project.name,
+    url: project.url,
+    tags: project.tags,
+  };
+}
 
 function renderBookmarks() {
   if (!bookmarkGrid) return;
@@ -939,7 +1218,10 @@ function renderBookmarks() {
     ? bookmarkedProjects
     : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleBookmarks.forEach(([day, name, url, tags]) => {
+  visibleBookmarks.forEach((project) => {
+    const { day, name, url, tags } = normalizeProjectEntry(project);
+    if (!day || !name) return;
+
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement("div");
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
@@ -953,6 +1235,9 @@ function renderBookmarks() {
     });
 
     card.className = sourceOnly ? "project-card source-only" : "project-card";
+    card.className = sourceOnly
+      ? "project-card source-only visible"
+      : "project-card visible";
     card.innerHTML = html;
     attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
@@ -995,6 +1280,9 @@ function renderRecentProjects() {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement("div");
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
+    const isBookmarked = bookmarkedProjects.some(
+      (item) => normalizeProjectEntry(item).day === day,
+    );
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
       name,
@@ -1002,16 +1290,22 @@ function renderRecentProjects() {
       tags,
       category,
       isBookmarked,
-      showDescription: false,
+      showDescription: true,
     });
 
     card.className = sourceOnly ? "project-card source-only" : "project-card";
+    card.className = sourceOnly
+      ? "project-card source-only visible"
+      : "project-card visible";
     card.innerHTML = html;
     attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
     recentGrid.appendChild(card);
   });
 }
+
+// Clean up after grid references are initialized.
+cleanupExpiredRecentProjects();
 
 /* ============================================================
    VIEW ALL TOGGLE
@@ -1043,6 +1337,12 @@ if (copyBookmarksBtn) {
           ? demoUrl
           : new URL(demoUrl, window.location.href).href;
         return `${projectName} - ${projectLink}`;
+        const { day, name, url, tags } = normalizeProjectEntry(p);
+        const { demoUrl } = resolveProjectUrls(day, name, url, tags);
+        const projectLink = demoUrl.startsWith("http")
+          ? demoUrl
+          : new URL(demoUrl, window.location.href).href;
+        return `${name} - ${projectLink}`;
       })
       .join("\n");
 
@@ -1099,11 +1399,89 @@ document.addEventListener("click", (e) => {
 });
 
 /* ============================================================
+   CLEAR ALL FILTERS SYSTEM
+   ============================================================ */
+function updateClearFiltersBtnVisibility() {
+  const btn = document.getElementById("clearAllFiltersBtn");
+  if (!btn) return;
+
+  const input = document.getElementById("searchInput");
+  const techStack = document.getElementById("techStackFilter");
+  const difficultyElement = document.getElementById("difficultyFilter");
+
+  const hasSearch = input && input.value.trim() !== "";
+  const hasTech = techStack && techStack.value !== "all";
+  const hasDiff = difficultyElement && difficultyElement.value !== "all";
+  const hasCategory = activeFilter && activeFilter !== "all";
+
+  if (hasSearch || hasTech || hasDiff || hasCategory) {
+    btn.style.display = "inline-flex";
+  } else {
+    btn.style.display = "none";
+  }
+}
+
+function resetAllFilters() {
+  // 1. Reset Category filter chips
+  const chips = document.querySelectorAll(".chip[data-filter]");
+  chips.forEach((c) => c.classList.remove("active"));
+  const allChip =
+    document.getElementById("filterAll") ||
+    document.querySelector('.chip[data-filter="all"]');
+  if (allChip) allChip.classList.add("active");
+  activeFilter = "all";
+
+  // 2. Clear Search input
+  const input = document.getElementById("searchInput");
+  if (input) input.value = "";
+  searchQuery = "";
+
+  // 3. Reset Tech Stack dropdown select
+  const techStack = document.getElementById("techStackFilter");
+  if (techStack) techStack.value = "all";
+  techStackFilter = "all";
+
+  // 4. Reset Difficulty dropdown select
+  const difficultyElement = document.getElementById("difficultyFilter");
+  if (difficultyElement) difficultyElement.value = "all";
+  difficultyFilter = "all";
+
+  // 5. Reset Sorting to default
+  const sortSelect = document.getElementById("sortProjects");
+  if (sortSelect) sortSelect.value = "default";
+  sortOption = "default";
+
+  // 6. Sync URL
+  if (typeof updateURL === "function") {
+    updateURL("", "all");
+  }
+
+  // 7. Refresh grid and pagination
+  currentPage = 1;
+  renderGrid();
+  syncProjectCounts();
+
+  showToast("Filters cleared!");
+}
+
+function initClearAllFilters() {
+  const btn = document.getElementById("clearAllFiltersBtn");
+  if (btn) {
+    btn.addEventListener("click", resetAllFilters);
+  }
+}
+
+/* ============================================================
    FILTER CHIPS
    ============================================================ */
 function initFilterChips() {
   const chips = document.querySelectorAll(".chip[data-filter]");
   chips.forEach((chip) => {
+    if (chip.dataset.filter === activeFilter) {
+      chips.forEach((c) => c.classList.remove("active"));
+      chip.classList.add("active");
+    }
+
     chip.addEventListener("click", () => {
       chips.forEach((c) => c.classList.remove("active"));
       chip.classList.add("active");
@@ -1188,6 +1566,10 @@ function initTechStackSearch() {
   input.addEventListener("input", (e) => {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
+  // Use the shared debounce utility instead of a manual inline timer
+  input.addEventListener(
+    "input",
+    debounce((e) => {
       const value = e.target.value.trim().toLowerCase();
 
       if (value) {
@@ -1199,8 +1581,8 @@ function initTechStackSearch() {
       } else {
         clearAllTechFilters();
       }
-    }, 300);
-  });
+    }, 300),
+  );
 
   if (clearBtn) {
     clearBtn.addEventListener("click", () => {
@@ -1352,6 +1734,8 @@ function updateNavbar() {
             <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign in</a>
         `;
   }
+  // The navbar is now managed by navbar.js which creates the dropdowns properly.
+  // This function is kept empty to prevent legacy calls from breaking.
 }
 
 /* ============================================================
@@ -1393,6 +1777,7 @@ function initTheme() {
     }, 400);
   });
 }
+// Implemented by the shared ThemeManager in theme.js.
 
 /* ============================================================
    SCROLL TO TOP
@@ -1410,6 +1795,7 @@ function initScrollBtn() {
     const progress = docHeight > 0 ? scrollTop / docHeight : 0;
 
     btn.classList.toggle("show", scrollTop > 400);
+    btn.classList.toggle("completed", progress >= 0.98);
 
     if (ring) {
       ring.style.strokeDashoffset = circumference * (1 - progress);
@@ -1458,34 +1844,52 @@ function hasProjectGrid() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  readStateFromURL();
+
   initTheme();
   updateNavbar();
+  initScrollBtn();
+  fetchRepoStats();
 
   initCurrentYear();
   initFilterChips();
   initSearch();
   initSorting();
   initTechStackSearch();
+  initClearAllFilters();
 
   try {
     // Await the projects to be fetched
     await loadProjects();
 
     syncProjectCounts();
-    fetchRepoStats();
-    initScrollBtn();
 
     if (hasProjectGrid()) {
+      loadBookmarksFromURL();
+
       renderGrid();
       renderBookmarks();
       renderRecentProjects();
     }
+
+    syncProjectCounts();
+    fetchRepoStats();
+    initScrollBtn();
   } catch (error) {
     console.error("Failed to load projects:", error);
     const grid = document.getElementById("projectGrid");
     if (grid) {
       grid.innerHTML =
         '<div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">Failed to load projects. Please try refreshing the page.</div>';
+
+    const grid = document.getElementById("projectGrid");
+
+    if (grid) {
+      grid.innerHTML = `
+        <div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">
+          Failed to load projects. Please try refreshing the page.
+        </div>
+      `;
     }
   }
 });
@@ -1496,6 +1900,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const navButtons = document.getElementById("navButtons");
 
     if (!menuToggle || !navButtons) return;
+    if (menuToggle.dataset.mobileNavBound === "true") return;
+    menuToggle.dataset.mobileNavBound = "true";
 
     const closeMenu = () => {
       menuToggle.classList.remove("active");
@@ -1508,6 +1914,21 @@ document.addEventListener("DOMContentLoaded", async () => {
       const isOpen = navButtons.classList.toggle("active");
       menuToggle.classList.toggle("active", isOpen);
       menuToggle.setAttribute("aria-expanded", String(isOpen));
+    const openMenu = () => {
+      menuToggle.classList.add("active");
+      navButtons.classList.add("active");
+      menuToggle.setAttribute("aria-expanded", "true");
+      const firstLink = navButtons.querySelector("a, button");
+      firstLink?.focus({ preventScroll: true });
+    };
+
+    menuToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (navButtons.classList.contains("active")) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
     });
 
     document.addEventListener("click", (e) => {
@@ -1558,12 +1979,31 @@ window.addEventListener(
 window.removeTechFilter = removeTechFilter;
 window.clearAllTechFilters = clearAllTechFilters;
 
+/* ============================================================
+   THEME CORE ENGINE (Fixes Issue #4359)
+   ============================================================ */
+function initTheme() {
+  window.ThemeManager?.init?.();
+}
+
+// Initialize the theme engine
+initTheme();
 // Custom cursor
 (function () {
   const outerCursor = document.querySelector(".cursor-ring--outer");
   const innerCursor = document.querySelector(".cursor-ring--inner");
 
   if (!outerCursor || !innerCursor) return;
+
+  const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  if (coarsePointer || prefersReducedMotion) {
+    outerCursor.style.display = "none";
+    innerCursor.style.display = "none";
+    return;
+  }
 
   const target = { x: 0, y: 0 };
   const current = { x: 0, y: 0 };
@@ -1618,7 +2058,7 @@ window.clearAllTechFilters = clearAllTechFilters;
   );
   const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
   const palette = [220, 250, 280];
-  const DEFAULT_PARTICLE_FPS = 36;
+  const DEFAULT_PARTICLE_FPS = 24;
   let W = 0;
   let H = 0;
   let dpr = 1;
@@ -1635,16 +2075,17 @@ window.clearAllTechFilters = clearAllTechFilters;
     const smallScreen = window.innerWidth <= 768 || coarsePointerQuery.matches;
     const reducedMotion = reducedMotionQuery.matches;
     const disableAnimation = smallScreen || reducedMotion;
+    const largeScreen = window.innerWidth > 1280;
 
     return {
-      minParticles: reducedMotion ? 8 : smallScreen ? 12 : 24,
-      maxParticles: reducedMotion ? 18 : smallScreen ? 28 : 72,
-      areaPerParticle: reducedMotion ? 110000 : smallScreen ? 70000 : 26000,
-      linkDistance: reducedMotion ? 68 : smallScreen ? 84 : 120,
-      velocity: reducedMotion ? 0.12 : smallScreen ? 0.18 : 0.3,
-      radius: reducedMotion ? 1.8 : smallScreen ? 2.2 : 4,
-      fps: reducedMotion ? 14 : smallScreen ? 20 : 36,
-      showLinks: !reducedMotion && !smallScreen,
+      minParticles: reducedMotion ? 8 : smallScreen ? 12 : 18,
+      maxParticles: reducedMotion ? 18 : smallScreen ? 28 : 48,
+      areaPerParticle: reducedMotion ? 110000 : smallScreen ? 70000 : 32000,
+      linkDistance: reducedMotion ? 68 : smallScreen ? 84 : 100,
+      velocity: reducedMotion ? 0.12 : smallScreen ? 0.18 : 0.24,
+      radius: reducedMotion ? 1.8 : smallScreen ? 2.2 : 3.2,
+      fps: reducedMotion ? 14 : smallScreen ? 20 : 24,
+      showLinks: !reducedMotion && !smallScreen && largeScreen,
       disableAnimation,
     };
   };
@@ -1833,6 +2274,8 @@ function restoreStateFromURL() {
     document.querySelector('input[type="text"]') ||
     document.querySelector(".search-input");
   if (searchInput && search) searchInput.value = search;
+  const categoryFilter = document.getElementById("category");
+  if (categoryFilter && category !== "all") categoryFilter.value = category;
   if (search || category !== "all") applyFilters(search, category);
 }
 
@@ -1870,6 +2313,24 @@ document.addEventListener("DOMContentLoaded", async () => {
       const { category } = getQueryParams();
       updateURL(searchInput.value, category);
       applyFilters(searchInput.value, category);
+    });
+  }
+    // Debounced so rapid typing doesn't trigger a renderGrid() on every keystroke
+    searchInput.addEventListener(
+      "input",
+      debounce(() => {
+        const { category } = getQueryParams();
+        updateURL(searchInput.value, category);
+        applyFilters(searchInput.value, category);
+      }, 200),
+    );
+  }
+  const categoryFilter = document.getElementById("category");
+  if (categoryFilter) {
+    categoryFilter.addEventListener("change", () => {
+      const { search } = getQueryParams();
+      updateURL(search, categoryFilter.value);
+      applyFilters(search, categoryFilter.value);
     });
   }
   window.addEventListener("popstate", () => restoreStateFromURL());
