@@ -263,3 +263,83 @@ h1 {
 .timer-btn:active {
   transform: scale(0.96);
 }
+
+@media (max-width: 768px) {
+
+  h1 {
+    font-size: 1.5rem;
+    padding: 0 15px;
+  }
+
+  .insects-list {
+    gap: 10px;
+  }
+
+  .choose-insect-btn {
+    width: 120px;
+    height: 120px;
+  }
+
+  .choose-insect-btn img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .choose-insect-btn p {
+    font-size: 0.7rem;
+  }
+
+  .timer-options {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 70%;
+  }
+
+  .timer-btn {
+    width: 85%;
+    max-width: 280px;
+    height: 80px;
+    font-size: 0.9rem;
+  }
+
+  .time,
+  .score {
+    font-size: 0.7rem;
+  }
+
+  .time {
+    left: 10px;
+  }
+
+  .score {
+    right: 10px;
+  }
+
+  .message {
+    font-size: 0.7rem;
+    width: 95%;
+    padding: 15px;
+  }
+
+  .game-over-box,
+  .final-result-box {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .game-over-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn {
+    padding: 10px 15px;
+    font-size: 0.7rem;
+  }
+
+  .end-btn {
+    font-size: 0.6rem;
+    padding: 8px 10px;
+  }
+}
