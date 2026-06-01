@@ -2320,7 +2320,7 @@
       "difficulty": "intermediate",
       "projectPath": "./public/ImageCompressor/index.html"
     },
-    {
+  {
       "projectNo": 188,
       "projectName": "Leetcode Streak Visualizer",
       "projectType": "Tool",
@@ -2343,11 +2343,10 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/webrtc-video-chat/index.html"
-  },
+   },
   {
     "projectNo": 190,
     "projectName": "Endless train game",
-
     "projectType": "game",
     "projectDesc": "A game with train moving on rails and switching tails and earning coins.",
     "techStack": [
@@ -2373,8 +2372,7 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/Planet_gesture_formation/index.html"
-  },
-   
+   },
   {
     "projectNo": 192,
     "projectName": "Interactive Story Player",
