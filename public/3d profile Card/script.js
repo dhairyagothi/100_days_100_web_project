@@ -5,6 +5,13 @@ const defaults = {
   role: 'UI/UX Designer',
   bio: 'Hardworking and reliable UI/UX designer focused on going above and beyond to support teams and serve customers.',
   image: 'logo/Adobe Express - file.png',
+};
+
+const initialFormState = {
+  name: '',
+  role: '',
+  bio: '',
+  image: '',
   imageUrl: '',
   github: '',
   linkedin: '',
@@ -42,18 +49,14 @@ const elements = {
   socialLinks: document.querySelector('#socialLinks'),
 };
 
-let state = loadState();
+let state = loadState() || { ...defaults };
 
 function loadState() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (saved?.theme === '#bb7ab1' && saved?.darkMode === false) {
-      saved.theme = defaults.theme;
-      saved.darkMode = defaults.darkMode;
-    }
-    return { ...defaults, ...saved };
+    return { ...initialFormState, ...saved };
   } catch (error) {
-    return { ...defaults };
+    return { ...initialFormState };
   }
 }
 
@@ -88,6 +91,37 @@ function setText(element, value, fallback) {
   element.textContent = getDisplayValue(value, fallback);
 }
 
+const SOCIAL_PLATFORMS = {
+  github: { base: 'https://github.com/', domain: 'github.com' },
+  linkedin: { base: 'https://linkedin.com/in/', domain: 'linkedin.com' },
+  twitter: { base: 'https://x.com/', domain: 'x.com' },
+  instagram: { base: 'https://instagram.com/', domain: 'instagram.com' },
+};
+
+function getAbsoluteSocialUrl(platform, value) {
+  const cleaned = value.trim();
+  if (!cleaned) return '';
+  
+  if (/^https?:\/\//i.test(cleaned)) {
+    return cleaned;
+  }
+  
+  const info = SOCIAL_PLATFORMS[platform];
+  if (!info) return cleaned;
+  
+  if (cleaned.toLowerCase().includes(info.domain)) {
+    return `https://${cleaned.replace(/^www\./i, '')}`;
+  }
+  
+  const username = cleaned.replace(/^@/, '');
+  
+  if (platform === 'linkedin' && username.startsWith('in/')) {
+    return `https://linkedin.com/${username}`;
+  }
+  
+  return `${info.base}${username}`;
+}
+
 function isValidUrl(value) {
   if (!value.trim()) {
     return true;
@@ -102,26 +136,37 @@ function isValidUrl(value) {
 }
 
 function updateSocialLinks() {
-  const socialValues = {
-    github: state.github,
-    linkedin: state.linkedin,
-    twitter: state.twitter,
-    instagram: state.instagram,
-  };
-
   elements.socialLinks.querySelectorAll('a').forEach((link) => {
     const platform = link.dataset.platform;
-    const url = socialValues[platform];
-    const isActive = isValidUrl(url) && url.trim().length > 0;
+    const inputValue = state[platform];
+    const absoluteUrl = getAbsoluteSocialUrl(platform, inputValue);
+    const isActive = absoluteUrl && isValidUrl(absoluteUrl);
 
     link.classList.toggle('is-hidden', !isActive);
-    link.href = isActive ? url : '#';
+    link.href = isActive ? absoluteUrl : '#';
     link.target = isActive ? '_blank' : '';
     link.rel = isActive ? 'noopener noreferrer' : '';
   });
 }
 
 function updateValidation() {
+  const invalidFields = [];
+  
+  if (elements.imageUrl.value.trim() && !isValidUrl(elements.imageUrl.value)) {
+    invalidFields.push(elements.imageUrl);
+  }
+  
+  const socialPlatforms = ['github', 'linkedin', 'twitter', 'instagram'];
+  socialPlatforms.forEach((platform) => {
+    const field = elements[platform];
+    if (field.value.trim()) {
+      const absoluteUrl = getAbsoluteSocialUrl(platform, field.value);
+      if (!isValidUrl(absoluteUrl)) {
+        invalidFields.push(field);
+      }
+    }
+  });
+
   const urlFields = [
     elements.imageUrl,
     elements.github,
@@ -129,14 +174,13 @@ function updateValidation() {
     elements.twitter,
     elements.instagram,
   ];
-
-  const invalidFields = urlFields.filter((field) => !isValidUrl(field.value));
+  
   urlFields.forEach((field) => {
     field.classList.toggle('invalid', invalidFields.includes(field));
   });
 
   elements.validation.textContent = invalidFields.length
-    ? 'Please use complete links that start with http:// or https://.'
+    ? 'Please use complete links or valid usernames/handles.'
     : '';
 }
 
@@ -148,7 +192,11 @@ function updateThemeColor() {
   const darkCard = mixColors(theme, '#111522', 0.2);
   const rgb = hexToRgb(theme);
 
+  // Compute high contrast theme color for card text elements
+  const contrastTheme = getContrastColor(theme, state.darkMode);
+
   document.documentElement.style.setProperty('--theme', theme);
+  document.documentElement.style.setProperty('--theme-text', contrastTheme);
   document.documentElement.style.setProperty('--theme-soft', soft);
   document.documentElement.style.setProperty('--theme-muted', muted);
   document.documentElement.style.setProperty('--dark-theme-bg', darkTheme);
@@ -188,6 +236,26 @@ function mixColors(color, base, amount) {
     Math.round(foreground[key] * amount + background[key] * (1 - amount));
 
   return `rgb(${channel('r')}, ${channel('g')}, ${channel('b')})`;
+}
+
+function getColorBrightness(hex) {
+  const rgb = hexToRgb(hex);
+  return (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
+}
+
+function getContrastColor(themeHex, isDarkMode) {
+  const brightness = getColorBrightness(themeHex);
+  
+  if (isDarkMode) {
+    if (brightness < 120) {
+      return mixColors(themeHex, '#ffffff', 0.65);
+    }
+  } else {
+    if (brightness > 160) {
+      return mixColors(themeHex, '#10131e', 0.65);
+    }
+  }
+  return themeHex;
 }
 
 function render() {
@@ -235,6 +303,42 @@ function syncStateFromInputs() {
   render();
 }
 
+function compressAndLoadImage(file, callback) {
+  const reader = new FileReader();
+  reader.addEventListener('load', (e) => {
+    const img = new Image();
+    img.addEventListener('load', () => {
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+      
+      const maxDim = 400;
+      if (width > height) {
+        if (width > maxDim) {
+          height = Math.round((height * maxDim) / width);
+          width = maxDim;
+        }
+      } else {
+        if (height > maxDim) {
+          width = Math.round((width * maxDim) / height);
+          height = maxDim;
+        }
+      }
+      
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      
+      // Compress to JPEG with 0.82 quality
+      const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+      callback(compressedDataUrl);
+    });
+    img.src = e.target.result;
+  });
+  reader.readAsDataURL(file);
+}
+
 function handleImageUpload(event) {
   const file = event.target.files[0];
 
@@ -242,15 +346,13 @@ function handleImageUpload(event) {
     return;
   }
 
-  const reader = new FileReader();
-  reader.addEventListener('load', () => {
-    state.uploadedImage = reader.result;
-    state.image = reader.result;
+  compressAndLoadImage(file, (compressedDataUrl) => {
+    state.uploadedImage = compressedDataUrl;
+    state.image = compressedDataUrl;
     state.imageUrl = '';
     elements.imageUrl.value = '';
     render();
   });
-  reader.readAsDataURL(file);
 }
 
 async function downloadCard() {
@@ -335,7 +437,7 @@ function resetCardTilt() {
 }
 
 function resetBuilder() {
-  state = { ...defaults };
+  state = { ...initialFormState };
   elements.imageFile.value = '';
   hydrateForm();
   render();
