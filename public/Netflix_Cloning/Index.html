@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,27 +6,139 @@
     <title>Netflix Clone</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+        }
+        .password-wrapper input {
+            width: 100%;
+            padding-right: 42px;
+            box-sizing: border-box;
+        }
+        .toggle-eye {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #aaa;
+            font-size: 16px;
+            user-select: none;
+        }
+        .toggle-eye:hover {
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:30px;top:100px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">Back to Home</a>
+
     <!-- ============= LANDING PAGE ============= -->
     <div id="landingPage">
         <!-- ============= NAVBAR ============= -->
-        <header class="navbar">
-            <img src="./img/logo.svg" alt="Netflix Logo" class="logo">
-            <button class="signin-btn" id="navSignInBtn">Sign In</button>
-        </header>
+    <header class="navbar">
+    <img src="./img/logo.svg" alt="Netflix Logo" class="logo">
+
+    <div class="nav-right">
+        
+        <!-- LANGUAGE DROPDOWN -->
+        <div class="language-dropdown">
+            <button class="language-toggle" id="languageToggle">
+                <i class="fas fa-globe"></i>
+                <span id="languageText">English</span>
+                <i class="fas fa-caret-down"></i>
+            </button>
+
+            <div class="language-menu">
+                <div>English</div>
+                <div>हिन्दी</div>
+            </div>
+        </div>
+
+        <button class="signin-btn" id="navSignInBtn">
+            Sign In
+        </button>
+
+    </div>
+    </header>
 
     <!-- ============= HERO SECTION ============= -->
     <section class="hero">
-        <h1>Unlimited movies, TV shows, and more.</h1>
-        <p>Watch anywhere. Cancel anytime.</p>
+        <h1>Unlimited movies, shows, and more</h1>
+        <p class="p1">Starts at ₹149. Cancel at any time.</p>
         <p style="font-size: 18px; color: rgba(255, 255, 255, 0.8); margin-bottom: 30px;">Ready to watch? Enter your email to create or restart your membership.</p>
         
         <form class="hero-form" id="emailForm">
             <input type="email" id="heroEmail" placeholder="Email address" required>
             <button type="submit" id="getStartedBtn">Get Started ></button>
         </form>
+        
     </section>
+
+    <!-- TRENDING NOW -->
+     <div class="top-glow"></div>
+     <div class="trending-section">
+
+            <h2>Trending Now</h2>
+
+            <div class="slider-btn left-btn">&#10094;</div>
+            <div class="slider-btn right-btn">&#10095;</div>
+
+            <div class="trending-slider">
+
+                <div class="trend-card">
+                    <span>1</span>
+                    <img src="./img/dhurandar.jpg">
+                </div>
+
+                <div class="trend-card">
+                    <span>2</span>
+                    <img src="./img/Dhurandar2.jpg">
+                </div>
+
+                <div class="trend-card">
+                    <span>3</span>
+                    <img src="./img/KapilSharma.jpg">
+                </div>
+
+                <div class="trend-card">
+                    <span>4</span>
+                    <img src="./img/berlin.jpg">
+                </div>
+
+                <div class="trend-card">
+                    <span>5</span>
+                    <img src="./img/Youth.jpg">
+                </div>
+
+                <div class="trend-card">
+                    <span>6</span>
+                    <img src="./img/Kartavya.jpg">
+                </div>
+
+                <div class="trend-card">
+                    <span>7</span>
+                    <img src="./img/DesiBling.jpg">
+                </div>
+
+                <div class="trend-card">
+                    <span>8</span>
+                    <img src="./img/Mohiniyattam.jpg">
+                </div>
+
+                <div class="trend-card">
+                    <span>9</span>
+                    <img src="./img/swapped.jpg">
+                </div>
+
+                <div class="trend-card">
+                    <span>10</span>
+                    <img src="./img/Stranger Things.jpg">
+                </div>
+            </div>
+        </div>
+
 
     <!-- ============= SEPARATION ============= -->
     <div class="separation"></div>
@@ -65,7 +177,9 @@
     <section class="feature">
         <div class="text">
             <h2>Create profiles for kids</h2>
+
             <p>Send children on adventures with their favourite characters in a space made just for them—free with your membership.</p>
+
         </div>
         <img src="https://occ-0-2849-3646.1.nflxso.net/dnm/api/v6/19OhWN2dO19C9txTON9tvTFtefw/AAAABVr8nYuAg0xDpXDv0VI9HUoH7r2aGp4TKRCsKNQrMwxzTtr-NlwOHeS8bCI2oeZddmu3nMYr3j9MjYhHyjBASb1FaOGYZNYvPBCL.png?r=54d" alt="Kids">
     </section>
@@ -76,27 +190,29 @@
     <section class="faq">
         <h2>Frequently Asked Questions</h2>
         <div class="faq-container">
-            <button class="faq-question" onclick="toggleFAQ(this)">What is Netflix?</button>
+            <button class="faq-question">What is Netflix?</button>
             <div class="faq-answer">
-                Netflix is a streaming service that offers a wide variety of award-winning TV shows, movies, anime, documentaries and more on thousands of internet-connected devices. You can watch as much as you want, when you want without a single ad – all for one low monthly price.
+
+                Netflix is a streaming service that offers a wide variety of award-winning TV shows, movies, anime, documentaries and more on thousands of internet-connected devices. You can watch as much as you want, when you want without a single ad — all for one low monthly price.
+
             </div>
 
-            <button class="faq-question" onclick="toggleFAQ(this)">How much does Netflix cost?</button>
+            <button class="faq-question">How much does Netflix cost?</button>
             <div class="faq-answer">
                 Watch Netflix on your smartphone, tablet, Smart TV, laptop, or streaming device, all for one fixed monthly fee. Plans range from ₹149 to ₹649 a month. No extra costs, no contracts.
             </div>
 
-            <button class="faq-question" onclick="toggleFAQ(this)">What can I watch on Netflix?</button>
+            <button class="faq-question">What can I watch on Netflix?</button>
             <div class="faq-answer">
                 Netflix has an extensive library of feature films, documentaries, TV shows, anime, award-winning Netflix originals, and more. Watch as much as you want, anytime you want.
             </div>
 
-            <button class="faq-question" onclick="toggleFAQ(this)">Is Netflix good for kids?</button>
+            <button class="faq-question">Is Netflix good for kids?</button>
             <div class="faq-answer">
                 Netflix has an extensive library of family-friendly TV shows and movies. With parental controls available on Netflix, parents can restrict the maturity rating of content kids are able to watch and control their ability to purchase or rent additional content.
             </div>
 
-            <button class="faq-question" onclick="toggleFAQ(this)">Why am I seeing this language?</button>
+            <button class="faq-question">Why am I seeing this language?</button>
             <div class="faq-answer">
                 This is the default language associated with your account. You can also change the language at any time in Account settings.
             </div>
@@ -160,9 +276,15 @@
                     <label for="signupEmail">Email Address</label>
                     <input type="email" id="signupEmail" placeholder="Enter your email" required>
                 </div>
+                <!-- ✅ FIX: Password visibility toggle added in Sign Up form -->
                 <div class="form-group">
                     <label for="signupPassword">Password</label>
-                    <input type="password" id="signupPassword" placeholder="Create a password" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="signupPassword" placeholder="Create a password" required>
+                        <span class="toggle-eye" onclick="togglePassword('signupPassword', this)" title="Show/Hide Password">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
                 </div>
                 <button type="submit" class="btn-primary">Create Account</button>
             </form>
@@ -186,9 +308,15 @@
                     <label for="signinEmail">Email Address</label>
                     <input type="email" id="signinEmail" placeholder="Enter your email" required>
                 </div>
+                <!-- ✅ FIX: Password visibility toggle added in Sign In form -->
                 <div class="form-group">
                     <label for="signinPassword">Password</label>
-                    <input type="password" id="signinPassword" placeholder="Enter your password" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="signinPassword" placeholder="Enter your password" required>
+                        <span class="toggle-eye" onclick="togglePassword('signinPassword', this)" title="Show/Hide Password">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
                 </div>
                 <button type="submit" class="btn-primary">Sign In</button>
             </form>
@@ -227,10 +355,10 @@
 
         <!-- MOVIE CATEGORIES -->
         <section class="movies-container">
-            <div class="category">
+            <!-- <div class="category">
                 <h2>Trending Now</h2>
                 <div class="movies-grid" id="trendingMovies"></div>
-            </div>
+            </div> -->
             <div class="category">
                 <h2>Action</h2>
                 <div class="movies-grid" id="actionMovies"></div>
@@ -248,5 +376,21 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+        // ✅ FIX: Password visibility toggle function
+        function togglePassword(inputId, iconSpan) {
+            const input = document.getElementById(inputId);
+            const icon = iconSpan.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+    </script>
 </body>
 </html>
