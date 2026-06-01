@@ -1,5 +1,5 @@
 const input = document.getElementById('inputBox');
-const buttons = document.querySelectorAll('.calculator button');
+const buttons = document.querySelectorAll('.calculator-button');
 const STORAGE_KEY = 'calcHistory';
 const MAX_HISTORY_ENTRIES = 50;
 let string = "";
@@ -7,6 +7,40 @@ let calculated = false;
 let history = loadHistory();
 
 const pi = Math.PI;
+
+function showConfirmToast(message, onYes, onNo) {
+    const container = document.querySelector('.toast-container');
+
+    const toast = document.createElement('div');
+    toast.classList.add('toast');
+
+    toast.innerHTML = `
+        <div>${message}</div>
+        <div class="toast-actions">
+            <button class="yes">Yes</button>
+            <button class="no">No</button>
+        </div>
+    `;
+
+    container.appendChild(toast);
+
+    const yesBtn = toast.querySelector('.yes');
+    const noBtn = toast.querySelector('.no');
+
+    const removeToast = () => {
+        toast.remove();
+    };
+
+    yesBtn.addEventListener('click', () => {
+        removeToast();
+        if (onYes) onYes();
+    });
+
+    noBtn.addEventListener('click', () => {
+        removeToast();
+        if (onNo) onNo();
+    });
+}
 
 function sin(value) {
     return Math.sin(Math.PI / 180 * Number(value));
@@ -95,6 +129,16 @@ function normalizeExpression(expression) {
 }
 
 function addHistoryEntry(expression, result) {
+    const latestEntry = history[0];
+
+    if (
+        latestEntry &&
+        latestEntry.expression === expression &&
+        latestEntry.result === result
+    ) {
+        return;
+    }
+
     history.unshift({ expression, result });
 
     if (history.length > MAX_HISTORY_ENTRIES) {
@@ -121,16 +165,36 @@ function isSavableResult(result) {
     return true;
 }
 
-function createHistoryItem(entry) {
+function createHistoryItem(entry, index) {
     const div = document.createElement('div');
     div.classList.add('history-item');
-    div.textContent = `${entry.expression} = ${entry.result}`;
 
-    div.addEventListener('click', () => {
-        string = entry.result;
-        input.value = entry.result;
-        calculated = true;
+    const content = document.createElement('div');
+    content.classList.add('history-content');
+    content.textContent = `${entry.expression} = ${entry.result}`;
+
+    content.addEventListener('click', () => {
+        string = entry.expression;
+        input.value = entry.expression;
+        calculated = false;
     });
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.classList.add('history-delete');
+    deleteBtn.innerHTML = '✕';
+    deleteBtn.setAttribute('aria-label', 'Delete history entry');
+
+    deleteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+
+        history.splice(index, 1);
+
+        saveHistory();
+        renderHistory();
+    });
+
+    div.appendChild(content);
+    div.appendChild(deleteBtn);
 
     return div;
 }
@@ -139,10 +203,29 @@ function renderHistory() {
     const historyList = document.getElementById('historyList');
     historyList.innerHTML = '';
 
-    history.forEach(entry => {
-        historyList.appendChild(createHistoryItem(entry));
+    if (history.length === 0) {
+        const emptyState = document.createElement('div');
+
+        emptyState.classList.add('history-empty');
+
+        emptyState.innerHTML = `
+            <h3>No calculations yet</h3>
+            <p>Your recent calculations will appear here.</p>
+        `;
+
+        historyList.appendChild(emptyState);
+
+        return;
+    }
+
+    history.forEach((entry, index) => {
+        historyList.appendChild(
+            createHistoryItem(entry, index)
+        );
     });
 }
+
+renderHistory();
 
 const arr = Array.from(buttons);
 
@@ -205,17 +288,13 @@ arr.forEach(button => {
 });
 
 document.getElementById('clearHistory').addEventListener('click', () => {
-    const confirmed = window.confirm(
-        'Are you sure you want to clear calculation history?'
+    showConfirmToast(
+        "Are you sure you want to clear history?",
+        () => {
+            // YES action
+            history = [];
+            localStorage.removeItem(STORAGE_KEY);
+            renderHistory();
+        }
     );
-
-    if (!confirmed) {
-        return;
-    }
-
-    history = [];
-    localStorage.removeItem(STORAGE_KEY);
-    renderHistory();
 });
-
-renderHistory();

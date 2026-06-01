@@ -1,77 +1,153 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mood Tracker</title>
-    <!-- Materialize CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
-    <!-- Font Awesome for icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mood OS</title>
 
-    <a href="../../index.html" class="back-home-btn">← Back to Home</a>
-    <div class="theme-toggle">
-        <button id="toggle-theme" class="btn waves-effect waves-light">
-            <i id="theme-icon" class="fas fa-sun"></i>
-        </button>
-    </div>
-    <div class="container">
-        <h1 class="center-align">Mood Flow</h1>
-        <div class="welcome-message">
-            <p>Welcome to your Mood Tracker! Start by selecting your current mood and intensity. Add notes to reflect on your day.</p>
-        </div>
-        <div id="mood-buttons" class="mood-buttons">
-            <button class="mood-button btn-floating btn-large waves-effect waves-light yellow" data-mood="Happy">😊</button>
-            <button class="mood-button btn-floating btn-large waves-effect waves-light blue" data-mood="Sad">😢</button>
-            <button class="mood-button btn-floating btn-large waves-effect waves-light red" data-mood="Angry">😡</button>
-            <button class="mood-button btn-floating btn-large waves-effect waves-light green" data-mood="Calm">😌</button>
-            <button class="mood-button btn-floating btn-large waves-effect waves-light orange" data-mood="Excited">😃</button>
-        </div>
-        <div class="intensity-slider">
-            <label for="intensity">Intensity: <span id="intensity-value">5</span></label>
-            <p class="range-field">
-                <input type="range" id="intensity" min="1" max="10" value="5">
-            </p>
-        </div>
-        <div class="notes-section input-field">
-            <textarea id="notes" class="materialize-textarea" placeholder="What made you feel this way?"></textarea>
-            <label for="notes">Notes</label>
-        </div>
-        <button id="save-entry" class="btn waves-effect waves-light">Save Entry</button>
-        <div class="entries-section">
-            <h2>Saved Entries</h2>
-            <ul id="entries-list" class="collection">
-                <li class="collection-item">No entries yet. Start tracking your mood today!</li>
-            </ul>
-        </div>
-        <div class="entry-days-section">
-            <h2>Entry Days</h2>
-            <ul id="entry-days-list" class="collection">
-                <li class="collection-item">No entries yet. Your entry days will appear here.</li>
-            </ul>
-        </div>
-        <div class="graph-section">
-            <h2>Mood History</h2>
-            <canvas id="moodChart"></canvas>
-            <p class="center-align">Your mood history will be visualized here once you start adding entries.</p>
-        </div>
-        <div class="summary-section">
-            <h2>Mood Summary</h2>
-            <p id="mood-summary">Your mood summary will appear here after you add some entries.</p>
-        </div>
-        <div class="recommendations-section">
-            <h2>Recommendations</h2>
-            <div id="recommendations-content">
-                <p>Select a mood to see recommendations.</p>
-            </div>
-        </div>
-    </div>
-    <!-- Materialize JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+
+  <body class="dark">
+    <div class="app">
+      <!-- ================= LEFT SIDEBAR ================= -->
+      <aside class="sidebar">
+        <h3>🧠 Mood OS</h3>
+
+        <!-- LIVE TIME -->
+        <div class="time-box">
+          <p id="currentDate"></p>
+          <p id="currentTime"></p>
+        </div>
+
+        <hr />
+
+        <!-- NAVIGATION -->
+        <button onclick="switchSection('mood')">🌤 Mood Tracker</button>
+        <button onclick="switchSection('analysis')">📊 Analysis</button>
+        <button onclick="switchSection('journal')">📓 Journal</button>
+        <button onclick="switchSection('insights')">🧠 Insights</button>
+        <button onclick="switchSection('trends')">📈 Trends</button>
+
+        <hr />
+
+        <!-- FILTERS -->
+        <h5>Filters</h5>
+
+        <select id="filterRange" onchange="applyFilter()">
+          <option value="day">Today</option>
+          <option value="week">This Week</option>
+          <option value="month">This Month</option>
+        </select>
+
+        <hr />
+
+        <button onclick="toggleTheme()">🌙 Toggle Theme</button>
+      </aside>
+
+      <!-- ================= MAIN AREA ================= -->
+      <main class="main">
+        <!-- ================= TOP STATS BAR ================= -->
+        <div class="stats-bar">
+          <div>🔥 Streak: <span id="streakText">0</span></div>
+          <div>📊 Mood Avg: <span id="avgMood">-</span></div>
+          <div>⚡ Energy Avg: <span id="avgEnergy">-</span></div>
+          <div>😵 Stress Avg: <span id="avgStress">-</span></div>
+        </div>
+
+        <!-- ================= MOOD TRACKER ================= -->
+        <section id="mood" class="section active">
+          <h2>🌤 Mood Tracker</h2>
+
+          <div class="card">
+            <input id="moodInput" placeholder="How are you feeling?" />
+
+            <select id="energyLevel">
+              <option value="1">Energy Low</option>
+              <option value="3">Energy Medium</option>
+              <option value="5">Energy High</option>
+            </select>
+
+            <select id="stressLevel">
+              <option value="1">Stress Low</option>
+              <option value="3">Stress Medium</option>
+              <option value="5">Stress High</option>
+            </select>
+
+            <textarea
+              id="journalText"
+              placeholder="Write about your day..."
+            ></textarea>
+
+            <input id="highlight" placeholder="Best moment of your day ✨" />
+
+            <!-- LIVE FEEDBACK AREA -->
+            <div id="liveMoodPreview" class="preview-box">
+              Live mood preview will appear here...
+            </div>
+
+            <button onclick="addEntry()">Save Entry</button>
+          </div>
+        </section>
+
+        <!-- ================= ANALYSIS ================= -->
+        <section id="analysis" class="section">
+          <h2>📊 Analysis Dashboard</h2>
+
+          <div class="card">
+            <canvas id="chart"></canvas>
+          </div>
+
+          <div class="card">
+            <h4>Pattern Insight</h4>
+            <p id="analysisInsight">Select a filter to see patterns...</p>
+          </div>
+        </section>
+
+        <!-- ================= JOURNAL ================= -->
+        <section id="journal" class="section">
+          <h2>📓 Journal Timeline</h2>
+
+          <input
+            id="searchJournal"
+            placeholder="Search entries..."
+            oninput="filterJournal()"
+          />
+
+          <ul id="entriesList"></ul>
+        </section>
+
+        <!-- ================= INSIGHTS ================= -->
+        <section id="insights" class="section">
+          <h2>🧠 AI Insights</h2>
+
+          <button onclick="generateInsight()">Generate New Insight</button>
+
+          <div class="card">
+            <p id="insightBox">Insights will appear here...</p>
+          </div>
+        </section>
+
+        <!-- ================= TRENDS ================= -->
+        <section id="trends" class="section">
+          <h2>📈 Emotional Trends</h2>
+
+          <div class="card">
+            <div id="heatmap"></div>
+          </div>
+
+          <div class="card">
+            <p id="trendSummary">Trend analysis will appear here...</p>
+          </div>
+        </section>
+      </main>
+    </div>
+
     <script src="script.js"></script>
-</body>
-</html> 
+  </body>
+</html>

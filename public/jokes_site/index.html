@@ -1,29 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Roast My Code - Terminal</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <div class="box">
-        <h1>LaughLounge</h1>
-    <div class="container" style="background-color: aliceblue;">
-        <h2>Kick back, relax, and let the laughs roll.</h2>
-        <img src="3-32410_clip-art-library-kids-free-for-download-laughing.png" title="Hahahaha" height="250px">
-        <br>
-        <br>
-        <!-- <p id="joke"></p> -->
-        <button class="btn" onclick="getjoke()">Get a Joke</button>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
+    <div class="terminal-container">
+        <div class="terminal-header">
+            <div class="window-controls">
+                <span class="control red"></span>
+                <span class="control yellow"></span>
+                <span class="control green"></span>
+            </div>
+            <div class="window-title">bash -- user@macbook -- 80x24</div>
+        </div>
+
+        <div class="terminal-body" id="terminalBody">
+            <div id="outputArea">
+                <div class="system-msg">Welcome to RoastOS v1.0.0</div>
+                <div class="system-msg">Type <span class="highlight">'help'</span> to see a list of available commands.
+                </div>
+                <br>
+            </div>
+
+            <div class="input-line">
+                <span class="prompt">user@macbook ~ % </span>
+                <input type="text" id="commandInput" autocomplete="off" spellcheck="false" autofocus>
+            </div>
+        </div>
     </div>
-    <div style="margin-bottom: 5px;"></div>
-    <div class="joke1">
-        <p id="joke"></p>
-    </div>
-    </div>
-    
+
     <script src="script.js"></script>
 </body>
+
 </html>
