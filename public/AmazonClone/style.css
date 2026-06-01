@@ -281,21 +281,6 @@ footer{
     color: #fff;
     text-decoration: underline;
 }
-.foot-panel3{
-    background-color: #232f3e;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px 0;
-}
-.foot-panel3 .logo{
-    width: 100px;
-    height: 30px;
-    background-image: url('./assets/amazon_logo.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-}
 .foot-panel4{
     background-color: #131a22;
     color: #ddd;
