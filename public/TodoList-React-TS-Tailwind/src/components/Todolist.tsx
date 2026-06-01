@@ -1,355 +1,302 @@
-import { useRef, useState, useEffect } from 'react'
-import { FaCircleCheck, FaRegCircle } from "react-icons/fa6";
-import { IoIosCloseCircle } from "react-icons/io";
-import { TbRepeatOff, TbRepeat } from "react-icons/tb";
-import { BsPinAngle, BsPinAngleFill } from "react-icons/bs";
-import './TodolistItem.css'
+import { useRef, useState, useEffect } from 'react';
+import { FaCircleCheck, FaRegCircle } from 'react-icons/fa6';
+import { IoIosCloseCircle } from 'react-icons/io';
+import { TbRepeatOff, TbRepeat } from 'react-icons/tb';
+import { BsPinAngle, BsPinAngleFill } from 'react-icons/bs';
+import './TodolistItem.css';
 
+type TodoItem = {
+  id: string;
+  title: string;
+  pinned: boolean;
+  checked: boolean;
+  recurring: boolean;
+  tag: string;
+};
 
-type PriorityType = "High" | "Medium" | "Low";
+const STORAGE_KEYS = {
+  ITEMS: 'TodoListItems',
+  TAGS: 'userTodoTags',
+  DARK_MODE: 'DarkMode',
+  LAST_UPDATE: 'todoLastUpdateDate',
+} as const;
 
-type typeTodoListItem = {
-    id: string;
-    title: string;
-    pinned: boolean;
-    checked: boolean;
-    recurring: boolean;
-    tag: string;
+const DEFAULT_TAGS = ['personal', 'work'];
 
-    priority: PriorityType;
-    dueDate: string;
+function loadFromStorage<T>(key: string, fallback: T): T {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as T) : fallback;
+  } catch {
+    return fallback;
+  }
 }
 
 function Todolist() {
-    
-    const inputRef = useRef<HTMLInputElement>(null);
-    const tagRef = useRef<HTMLInputElement>(null);
-    const [ todoTag, setTodoTag ] = useState<string>('personal');
-   const [ todoPriority, setTodoPriority ] = useState<PriorityType>("Medium");
-const [ todoDueDate, setTodoDueDate ] = useState<string>("");
-    const [ todoFilter, setTodoFilter ] = useState<string>('all');
-    const [ userTodoListItems, setUserTodoListItems ] = useState<typeTodoListItem[]>(JSON.parse(localStorage.getItem('TodoListItems') || '[]'));
-    const [ todoTags, setTodoTags ] = useState<string[]>(JSON.parse(localStorage.getItem('userTodoTags') || '[\"personal\", \"work\"]'));
+  const inputRef = useRef<HTMLInputElement>(null);
+  const tagRef = useRef<HTMLInputElement>(null);
 
-    const saveUserTodoListItems = (newData: typeTodoListItem[]) => {
-        localStorage.setItem('TodoListItems', JSON.stringify(newData));
-        setUserTodoListItems(newData);
-    };
-    
-    const saveUserTodoTags = (newData: string[]) => {
-        localStorage.setItem('userTodoTags', JSON.stringify(newData));
-        setTodoTags(newData);
-    };
+  const [items, setItems] = useState<TodoItem[]>(() =>
+    loadFromStorage<TodoItem[]>(STORAGE_KEYS.ITEMS, [])
+  );
+  const [tags, setTags] = useState<string[]>(() =>
+    loadFromStorage<string[]>(STORAGE_KEYS.TAGS, DEFAULT_TAGS)
+  );
+  const [activeTag, setActiveTag] = useState<string>('personal');
+  const [filter, setFilter] = useState<string>('all');
 
-	let TodoListItems: typeTodoListItem[] = [
-		...userTodoListItems
-	];
+  // Save helpers
+  const saveItems = (updated: TodoItem[]) => {
+    localStorage.setItem(STORAGE_KEYS.ITEMS, JSON.stringify(updated));
+    setItems(updated);
+  };
 
-	// Utility function to sanitize input
-	const sanitizeInput = (input: string): string => {
-		const div = document.createElement("div");
-		div.textContent = input;
-		return div.innerHTML;
-	};
+  const saveTags = (updated: string[]) => {
+    localStorage.setItem(STORAGE_KEYS.TAGS, JSON.stringify(updated));
+    setTags(updated);
+  };
 
-	// Create todo item DOM (React JSX)
-	const createTodoItem = (todo: typeTodoListItem) => {
-        const isOverdue =
-    todo.dueDate &&
-    new Date(todo.dueDate) < new Date() &&
-    !todo.checked;
-		return (
-            <div
-    className={`p-2 max-w-screen-sm w-full rounded-2xl hover:scale-105 max-md:scale-90 max-md:hover:scale-90 transition-all duration-300
-    ${
-        isOverdue
-            ? "bg-red-200 dark:bg-red-900 border-2 border-red-500"
-            : "bg-slate-300 dark:bg-slate-700"
-    }
-    ${todo.checked ? "dark:bg-slate-900 bg-slate-200" : ""}`}
-    key={todo.id}
-			onClick={() => {
-				toggleTodoStatus(todo.id, "checked");
-			}}>
-                <div className='flex relative'>
-                    <div className="p-2 w-full">
-    <div className={`break-words font-medium ${todo.checked ? "line-through decoration-2" : ""}`}>
-        {sanitizeInput(todo.title)}
-    </div>
-
-    <div className="flex gap-2 mt-2 flex-wrap">
-        <span
-            className={`px-2 py-1 text-xs rounded-full text-white
-            ${
-                todo.priority === "High"
-                    ? "bg-red-500"
-                    : todo.priority === "Medium"
-                    ? "bg-yellow-500"
-                    : "bg-green-500"
-            }`}
-        >
-            {todo.priority}
-        </span>
-        {todo.dueDate && (
-
-    <span className="px-2 py-1 text-xs rounded-full bg-slate-500 text-white">
-        📅 {todo.dueDate}
-    </span>
-    
-    
-)}
-{isOverdue && (
-    <span className="px-2 py-1 text-xs rounded-full bg-red-600 text-white">
-        ⚠ Overdue
-    </span>
-)}
-    </div>
-</div>
-                </div>
-                <div className='flex gap-2 p-2 justify-between'>
-                    <div className='flex gap-2'>
-                        <span>Tags &rarr; </span>
-                        <label className='px-3 py-0.5 max-w-[110px] text-ellipsis overflow-hidden rounded-full bg-blue-600 dark:bg-red-500 text-slate-50' >
-                            {todo.tag}
-                        </label>
-                    </div>
-                    <div className='TodoIcons flex gap-4 justify-center items-center'>
-                        <div className='p-1 rounded-md hover:scale-125 dark:text-slate-400 transition-all duration-300 hover:dark:text-slate-50 text-slate-700 hover:text-slate-950 cursor-pointer'>
-                            { todo.checked ? <FaCircleCheck /> : <FaRegCircle />}
-                        </div>
-
-                        <div
-                            className="p-1 rounded-md hover:scale-125 dark:text-slate-400 transition-all duration-300 hover:dark:text-slate-50 text-slate-700 hover:text-slate-950 cursor-pointer"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                toggleTodoStatus(todo.id, "pinned");
-                            }}
-                        >
-                            { todo.pinned ? <BsPinAngleFill /> : <BsPinAngle />}
-                        </div>
-
-                        <div
-                            className="p-1 rounded-md hover:scale-125 dark:text-slate-400 transition-all duration-300 hover:dark:text-slate-50 text-slate-700 hover:text-slate-950 cursor-pointer"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                toggleTodoStatus(todo.id, "recurring");
-                            }}
-                        >
-                            { todo.recurring ? <TbRepeat /> : <TbRepeatOff />}
-                        </div>
-
-                        <div
-                            className="p-1 rounded-md hover:scale-125 dark:text-slate-400 transition-all duration-300 hover:dark:text-slate-50 text-slate-700 hover:text-slate-950 cursor-pointer todoremove"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                removeTodoItem(todo.id);
-                            }}
-                        >
-                            <IoIosCloseCircle />
-                        </div>
-                    </div>
-                </div>
-            </div>
-		);
-	};
-
-	// Toggle Pinned or Completed Status
-	const toggleTodoStatus = (id: string, field: "checked" | "pinned" | "recurring") => {
-		const item = TodoListItems.find(item => item.id === id);
-		if (item) {
-			item[field] = !item[field];
-		}
-		saveUserTodoListItems(TodoListItems);
-	};
-	
-	// Remove todo item
-	const removeTodoItem = (id: string) => {
-		const index = TodoListItems.findIndex(item => item.id === id);
-		if (index !== -1) {
-			TodoListItems.splice(index, 1);
-		}
-		saveUserTodoListItems(TodoListItems);
-	};
-
-    const addTodoTag = () => {
-        const tagTitle = tagRef.current?.value.trim() || '';
-        if (tagTitle === '' || (todoTags.findIndex( (elem) => (elem === tagTitle) ) !== -1)) {
-            return
-        }
-        saveUserTodoTags([ ...todoTags, tagTitle ]);
-        if (tagRef.current) {
-            tagRef.current.value = ''; // Clear the input by directly modifying the DOM element
-        }
-    }
-
-    const addTodoItem = () => {
-        const todoTitle = inputRef.current?.value.trim() || '';
-        if (todoTitle === '' || todoTag === '') {
-            return
-        }
-        const id = "tl" + Date.now();
-        TodoListItems.push({
-    id: id,
-    title: todoTitle,
-    pinned: false,
-    checked: false,
-    recurring: false,
-    tag: todoTag,
-
-    priority: todoPriority,
-    dueDate: todoDueDate,
-})
-        saveUserTodoListItems(TodoListItems);
-        if (inputRef.current) {
-            inputRef.current.value = ''; // Clear the input by directly modifying the DOM element
-        }
-    }
-
-    const TagWiseList = () => {
-        return todoTags.map((tag)=>{
-            return (
-                <div key={tag} className='flex flex-col w-full items-center justify-center gap-6'>
-                    {(TodoListItems.filter((todo: typeTodoListItem) => { return todo.tag===tag }).length > 0) ? <h1 className='text-2xl font-semibold'>{tag.charAt(0).toUpperCase()+tag.slice(1)}</h1> : <></>}
-                    {TodoListItems.filter((todo: typeTodoListItem) => { return todo.tag===tag }).map((todo: typeTodoListItem) => { return createTodoItem(todo) })}
-                </div>
-            )
-        })
-    }
-
-    const DisplayStatusList = (status: 'pinned' | 'checked' | 'recurring') => {
-        return (
-            <>
-            {(TodoListItems.filter((todo: typeTodoListItem) => { return todo[status] }).length > 0) ? <h1 className='text-2xl font-semibold'>
-                {(status==='checked') ? "Completed" : ((status==='pinned') ? "Pinned" : "Dalies" )}
-            </h1> : <></>}
-            {TodoListItems.filter((todo: typeTodoListItem) => { return todo[status] }).map((todo: typeTodoListItem) => { return createTodoItem(todo) })}
-            </>
+  // Daily reset for recurring tasks
+  useEffect(() => {
+    const lastUpdate = localStorage.getItem(STORAGE_KEYS.LAST_UPDATE);
+    const today = new Date().toLocaleDateString();
+    if (lastUpdate !== today) {
+      setItems((prev) => {
+        const reset = prev.map((todo) =>
+          todo.recurring && todo.checked ? { ...todo, checked: false } : todo
         );
+        localStorage.setItem(STORAGE_KEYS.ITEMS, JSON.stringify(reset));
+        return reset;
+      });
+      localStorage.setItem(STORAGE_KEYS.LAST_UPDATE, today);
     }
+  }, []);
 
-    // Handle outside click to close the dropdown
-	useEffect(() => {
-		const todoLastUpdateDate = localStorage.getItem("todoLastUpdateDate");
-		const todoCurrentDate = new Date().toLocaleDateString();
+  const sanitizeInput = (input: string): string => {
+    const div = document.createElement('div');
+    div.textContent = input;
+    return div.innerHTML;
+  };
 
-		if (todoLastUpdateDate !== todoCurrentDate) {
-			const updatedTodoListItems: typeTodoListItem[] = [];
-			for (const todo of TodoListItems) {
-				if (todo.recurring && todo.checked) {
-					todo.checked = false;
-				}
-                updatedTodoListItems.push(todo);
-			}
-			TodoListItems = updatedTodoListItems;
-			saveUserTodoListItems(TodoListItems);
-			localStorage.setItem("todoLastUpdateDate",todoCurrentDate);
-		}
-	}, []);
-    const sortedTodos = [...userTodoListItems].sort((a, b) => {
-    const aOverdue =
-        a.dueDate &&
-        new Date(a.dueDate) < new Date() &&
-        !a.checked;
+  const toggleField = (
+    id: string,
+    field: keyof Pick<TodoItem, 'checked' | 'pinned' | 'recurring'>
+  ) => {
+    const updated = items.map((todo) =>
+      todo.id === id ? { ...todo, [field]: !todo[field] } : todo
+    );
+    saveItems(updated);
+  };
 
-    const bOverdue =
-        b.dueDate &&
-        new Date(b.dueDate) < new Date() &&
-        !b.checked;
+  const removeItem = (id: string) => {
+    saveItems(items.filter((todo) => todo.id !== id));
+  };
 
-    if (aOverdue && !bOverdue) return -1;
-    if (!aOverdue && bOverdue) return 1;
+  const addItem = () => {
+    const title = inputRef.current?.value.trim() ?? '';
+    if (!title || !activeTag) return;
+    const newItem: TodoItem = {
+      id: 'tl' + Date.now(),
+      title,
+      pinned: false,
+      checked: false,
+      recurring: false,
+      tag: activeTag,
+    };
+    saveItems([...items, newItem]);
+    if (inputRef.current) inputRef.current.value = '';
+  };
 
-    return 0;
-});
+  const addTag = () => {
+    const tag = tagRef.current?.value.trim() ?? '';
+    if (!tag || tags.includes(tag)) return;
+    saveTags([...tags, tag]);
+    if (tagRef.current) tagRef.current.value = '';
+  };
 
+  const resetTags = () => saveTags(DEFAULT_TAGS);
+
+  const renderItem = (todo: TodoItem) => (
+    <div
+      key={todo.id}
+      className={`p-2 bg-slate-300 dark:bg-slate-700 max-w-screen-sm w-full rounded-2xl hover:scale-105 max-md:scale-90 max-md:hover:scale-90 transition-all duration-300 ${todo.checked ? 'dark:bg-slate-900 bg-slate-200' : ''}`}
+      onClick={() => toggleField(todo.id, 'checked')}
+    >
+      <div className="flex relative">
+        <div
+          className={`p-2 pr-14 bg-transparent break-words w-full font-medium ${todo.checked ? 'line-through decoration-2' : ''}`}
+        >
+          {sanitizeInput(todo.title)}
+        </div>
+      </div>
+      <div className="flex gap-2 p-2 justify-between">
+        <div className="flex gap-2 items-center">
+          <span>Tags &rarr;</span>
+          <label className="px-3 py-0.5 max-w-[110px] text-ellipsis overflow-hidden rounded-full bg-blue-600 dark:bg-red-500 text-slate-50">
+            {todo.tag}
+          </label>
+        </div>
+        <div className="TodoIcons flex gap-4 justify-center items-center">
+          <div className="p-1 rounded-md hover:scale-125 dark:text-slate-400 transition-all duration-300 hover:dark:text-slate-50 text-slate-700 hover:text-slate-950 cursor-pointer">
+            {todo.checked ? <FaCircleCheck /> : <FaRegCircle />}
+          </div>
+          <div
+            className="p-1 rounded-md hover:scale-125 dark:text-slate-400 transition-all duration-300 hover:dark:text-slate-50 text-slate-700 hover:text-slate-950 cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleField(todo.id, 'pinned');
+            }}
+          >
+            {todo.pinned ? <BsPinAngleFill /> : <BsPinAngle />}
+          </div>
+          <div
+            className="p-1 rounded-md hover:scale-125 dark:text-slate-400 transition-all duration-300 hover:dark:text-slate-50 text-slate-700 hover:text-slate-950 cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleField(todo.id, 'recurring');
+            }}
+          >
+            {todo.recurring ? <TbRepeat /> : <TbRepeatOff />}
+          </div>
+          <div
+            className="p-1 rounded-md hover:scale-125 dark:text-slate-400 transition-all duration-300 hover:dark:text-slate-50 text-slate-700 hover:text-slate-950 cursor-pointer todoremove"
+            onClick={(e) => {
+              e.stopPropagation();
+              removeItem(todo.id);
+            }}
+          >
+            <IoIosCloseCircle />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderByTags = () => (
+    <>
+      {tags.map((tag) => {
+        const tagItems = items.filter((todo) => todo.tag === tag);
+        if (tagItems.length === 0) return null;
+        return (
+          <div key={tag} className="flex flex-col w-full items-center justify-center gap-6">
+            <h1 className="text-2xl font-semibold">{tag.charAt(0).toUpperCase() + tag.slice(1)}</h1>
+            {tagItems.map(renderItem)}
+          </div>
+        );
+      })}
+    </>
+  );
+
+  const renderByStatus = (status: 'pinned' | 'checked' | 'recurring') => {
+    const filtered = items.filter((todo) => todo[status]);
+    if (filtered.length === 0) return null;
+    const label = status === 'checked' ? 'Completed' : status === 'pinned' ? 'Pinned' : 'Dailies';
     return (
-        <div className='Todolist flex flex-col w-full items-center justify-center mt-20 gap-6 pb-8'>
-            <div className='p-2 bg-slate-300 dark:bg-slate-700 max-w-screen-sm w-full rounded-2xl scale-125 origin-bottom hover:scale-[1.35] max-md:scale-90 max-md:hover:scale-90 transition-all duration-300'>
-                <div className='flex relative'>
-                    <input
-                    type="text"
-                    className='p-2 pr-14 bg-transparent w-full outline-none placeholder:text-slate-500 dark:placeholder:text-slate-400'
-                    placeholder='Add Item...'
-                    ref={inputRef}
-                    onKeyDown={(e) => {
-    if (e.key === "Enter") {
-        addTodoItem();
+      <>
+        <h1 className="text-2xl font-semibold">{label}</h1>
+        {filtered.map(renderItem)}
+      </>
+    );
+  };
+
+  const renderList = () => {
+    switch (filter) {
+      case 'tags':
+        return renderByTags();
+      case 'checked':
+        return renderByStatus('checked');
+      case 'pinned':
+        return renderByStatus('pinned');
+      case 'recurring':
+        return renderByStatus('recurring');
+      default:
+        return items.map(renderItem);
     }
-}}
-                    />
-                    <button className='absolute flex items-center justify-center px-3 py-2 leading-4 dark:bg-red-500 bg-blue-600 text-slate-50 right-1.5 top-1 rounded-lg active:scale-75 transition-all duration-300' onClick={addTodoItem}>+</button>
-                </div>
-                <div className='flex gap-2 p-2 flex-wrap'>
-                    <span>Tags &rarr; </span>
-                    {todoTags.map((elem, key)=> {
-                        return (
-                                <label className='px-3 py-0.5 max-w-[110px] text-ellipsis overflow-hidden rounded-full cursor-pointer bg-slate-950/20 dark:bg-slate-950/30 has-[:checked]:bg-blue-600 has-[:checked]:dark:bg-red-500 has-[:checked]:text-slate-50' htmlFor={`todotag`+(key+1)} key={`todotag`+(key+1)} >
-                                    {elem}
-                                    <input
-                                        hidden
-                                        type='radio'
-                                        name='todotag'
-                                        checked={todoTag===elem}
-                                        id={`todotag`+(key+1)}
-                                        value={elem}
-                                        onChange={(e) => setTodoTag(e.target.value)}
-                                    />
-                                </label>
-                        )
-                    })}
-                    <div className='px-3 py-0.5 rounded-full flex gap-1 bg-slate-950/20 dark:bg-slate-950/30 has-[:checked]:bg-blue-600 has-[:checked]:dark:bg-red-500 has-[:checked]:text-slate-50'>
-                        <input
-                            type='text'
-                            className='bg-transparent text-xs w-full max-w-16 outline-none placeholder:text-slate-500 dark:placeholder:text-slate-400'
-                            placeholder='Add Tag...'
-                           onKeyDown={(e) => {
-    if (e.key === "Enter") {
-        addTodoItem();
-    }
-}}
-                            ref={tagRef}
-                        />
-                        <button onClick={addTodoTag}>+</button>
-                    </div>
-                    <select
-    className="px-2 py-1 rounded-md bg-slate-200 dark:bg-slate-800"
-    value={todoPriority}
-    onChange={(e) => setTodoPriority(e.target.value as PriorityType)}
->
-    <option value="High">🔴 High</option>
-    <option value="Medium">🟡 Medium</option>
-    <option value="Low">🟢 Low</option>
-</select>
-<input
-    type="date"
-    className="px-2 py-1 rounded-md bg-slate-200 dark:bg-slate-800"
-    value={todoDueDate}
-    onChange={(e) => setTodoDueDate(e.target.value)}
-/>
-                    <button onClick={()=> {saveUserTodoTags(["personal", "work"])}}><TbRepeat /></button>
-                </div>
-            </div>
-            <div>
-                <div>
-                    Filter By <select className='bg-slate-300 dark:bg-slate-800 p-1 rounded-md ml-2 outline-none accent-red-600' onChange={(e)=>{setTodoFilter(e.target.value)}} defaultValue={"all"}>
-                        <option value={"all"}>All</option>
-                        <option value={"tags"}>Tags</option>
-                        <option value={"checked"}>Completed</option>
-                        <option value={"pinned"}>Pinned</option>
-                        <option value={"recurring"}>Dalies</option>
-                    </select>
-                </div>
-            </div>
-            {
-                ((todoFilter==="tags") ? <TagWiseList /> : ((todoFilter==="checked") ? DisplayStatusList(todoFilter) : ((todoFilter==="pinned") ? DisplayStatusList(todoFilter) : ((todoFilter==="recurring") ? DisplayStatusList(todoFilter) : sortedTodos.map((elem)=>{return createTodoItem(elem)})))))
-            }
-            {
-                // true ? TodoListItems.filter((todo: typeTodoListItem) => { return todo['checked'] }).map((todo: typeTodoListItem) => { return createTodoItem(todo) })
-                // : TodoListItems.map((todo: typeTodoListItem) => { return createTodoItem(todo) })
-            }
+  };
+
+  return (
+    <div className="Todolist flex flex-col w-full items-center justify-center mt-20 gap-6 pb-8">
+      {/* Add Todo Input */}
+      <div className="p-2 bg-slate-300 dark:bg-slate-700 max-w-screen-sm w-full rounded-2xl scale-125 origin-bottom hover:scale-[1.35] max-md:scale-90 max-md:hover:scale-90 transition-all duration-300">
+        <div className="flex relative">
+          <input
+            type="text"
+            className="p-2 pr-14 bg-transparent w-full outline-none placeholder:text-slate-500 dark:placeholder:text-slate-400"
+            placeholder="Add Item..."
+            ref={inputRef}
+            onKeyDown={(e) => e.key === 'Enter' && addItem()}
+          />
+          <button
+            className="absolute flex items-center justify-center px-3 py-2 leading-4 dark:bg-red-500 bg-blue-600 text-slate-50 right-1.5 top-1 rounded-lg active:scale-75 transition-all duration-300"
+            onClick={addItem}
+          >
+            +
+          </button>
         </div>
 
-    )
+        {/* Tag Selector */}
+        <div className="flex gap-2 p-2 flex-wrap items-center">
+          <span>Tags &rarr;</span>
+          {tags.map((tag, key) => (
+            <label
+              key={tag}
+              htmlFor={`todotag${key + 1}`}
+              className="px-3 py-0.5 max-w-[110px] text-ellipsis overflow-hidden rounded-full cursor-pointer bg-slate-950/20 dark:bg-slate-950/30 has-[:checked]:bg-blue-600 has-[:checked]:dark:bg-red-500 has-[:checked]:text-slate-50"
+            >
+              {tag}
+              <input
+                hidden
+                type="radio"
+                name="todotag"
+                id={`todotag${key + 1}`}
+                value={tag}
+                checked={activeTag === tag}
+                onChange={(e) => setActiveTag(e.target.value)}
+              />
+            </label>
+          ))}
+
+          {/* Add Tag Input */}
+          <div className="px-3 py-0.5 rounded-full flex gap-1 bg-slate-950/20 dark:bg-slate-950/30">
+            <input
+              type="text"
+              className="bg-transparent text-xs w-full max-w-16 outline-none placeholder:text-slate-500 dark:placeholder:text-slate-400"
+              placeholder="Add Tag..."
+              onKeyDown={(e) => e.key === 'Enter' && addTag()}
+              ref={tagRef}
+            />
+            <button onClick={addTag}>+</button>
+          </div>
+
+          {/* Reset Tags */}
+          <button onClick={resetTags} title="Reset tags">
+            <TbRepeat />
+          </button>
+        </div>
+      </div>
+
+      {/* Filter */}
+      <div>
+        <label>
+          Filter By{' '}
+          <select
+            className="bg-slate-300 dark:bg-slate-800 p-1 rounded-md ml-2 outline-none"
+            onChange={(e) => setFilter(e.target.value)}
+            defaultValue="all"
+          >
+            <option value="all">All</option>
+            <option value="tags">Tags</option>
+            <option value="checked">Completed</option>
+            <option value="pinned">Pinned</option>
+            <option value="recurring">Dailies</option>
+          </select>
+        </label>
+      </div>
+
+      {/* Todo List */}
+      {renderList()}
+    </div>
+  );
 }
 
-export default Todolist
+export default Todolist;
