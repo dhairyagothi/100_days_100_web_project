@@ -2322,9 +2322,6 @@ body.light-mode .footer.homepage-footer .social-btn {
     animation: none !important;
   }
 
-  #particleCanvas {
-    display: none;
-  }
 
   .stats-strip {
     gap: 0.5rem;
