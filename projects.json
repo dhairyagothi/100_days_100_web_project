@@ -2312,35 +2312,24 @@
     "projectPath": "./public/canvas_multitrack_sequencer/index.html"
   },
   {
-    "projectNo": 187,
-    "projectName": "Image Compressor Web App",
-    "projectType": "Tool",
-    "projectDesc": "Modern utility app to compress and optimize images directly in the browser with beautiful glassmorphism UI.",
-    "techStack": [
-      "tool",
-      "html",
-      "css",
-      "javascript",
-      "ui"
-    ],
-    "difficulty": "intermediate",
-    "projectPath": "./public/ImageCompressor/index.html"
-  },
-  {
-    "projectNo": 188,
-    "projectName": "Leetcode Streak Visualizer",
-    "projectType": "Tool",
-    "projectDesc": "A web based tool to compare between 2 leetcode users. Uses Battery Like UI to compare and show stats.",
-    "techStack": [
-      "tool",
-      "html",
-      "css",
-      "javascript"
-    ],
-    "difficulty": "advanced",
-    "projectPath": "./public/Streak-Visualizer/index.html"
-  },
-  {
+      "projectNo": 187,
+      "projectName": "Image Compressor Web App",
+      "projectType": "Tool",
+      "projectDesc": "Modern utility app to compress and optimize images directly in the browser with beautiful glassmorphism UI.",
+      "techStack": ["tool", "html", "css", "javascript", "ui"],
+      "difficulty": "intermediate",
+      "projectPath": "./public/ImageCompressor/index.html"
+    },
+    {
+      "projectNo": 188,
+      "projectName": "Leetcode Streak Visualizer",
+      "projectType": "Tool",
+      "projectDesc": "A web based tool to compare between 2 leetcode users. Uses Battery Like UI to compare and show stats.",
+      "techStack": ["tool", "html", "css", "javascript"],
+      "difficulty": "advanced",
+      "projectPath": "./public/Streak-Visualizer/index.html"
+    },
+     {
     "projectNo": 189,
     "projectName": "PeerRTC Video Chat",
     "projectType": "Tool",
@@ -2384,6 +2373,7 @@
     "difficulty": "advanced",
     "projectPath": "./public/Planet_gesture_formation/index.html"
   },
+   
   {
     "projectNo": 192,
     "projectName": "Interactive Story Player",
@@ -2403,12 +2393,74 @@
     "projectName": "Escape Room",
     "projectType": "Game",
     "projectDesc": "A thrilling escape room experience in your browser.",
-    "techStack": [
+     "techStack": [
       "html",
       "css",
       "javascript"
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/Escape_Room/index.html"
-  }
+   },
+  {
+    "projectNo": 194,
+    "projectName": "Lost & Found Portal",
+    "projectType": "Website",
+    "projectDesc": "A modern web application to report lost items, report found items, browse listings, and contact item owners.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Lost_And_Found_Portal/index.html"
+  },
+  {
+    "projectNo": 195,
+    "projectName": "Complaint Management System",
+    "projectType": "Web Application",
+    "projectDesc": "A professional portal for submitting, tracking, and managing complaints efficiently with a premium modern UI.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Complaint_Management_System/index.html"
+  },
+  {
+  "projectNo": 196,
+  "projectName": "Flipkart Clone",
+  "projectType": "E-Commerce",
+  "projectDesc": "A responsive Flipkart-inspired e-commerce website featuring a modern navbar, product categories, hero carousel, brand spotlight section, promotional banners, home decor showcase, and a fully designed footer.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript"
+  ],
+  "difficulty": "intermediate",
+  "projectPath": "./public/Flipkart-Clone/index.html"
+},
+{
+    "projectNo": 197,
+    "projectName": "Theme-Toggler",
+    "projectType": "UI / Animation",
+    "projectDesc": "A responsive theme toggler that switches between light and dark modes and saves the user's preference using localStorage.",
+    "techStack": [
+      "react",
+      "tailwindcss",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Theme-toggler/src/App.jsx"
+  },  
+  {
+    "projectNo": 198,
+    "projectName": "Pac-Man",
+    "projectType": "Game",
+    "projectDesc": "A classic Pac-Man game built with HTML5 Canvas and JavaScript. Features all 4 ghosts, touch and keyboard controls, score tracking, sound toggle, and is fully responsive for all devices.",
+    "techStack": ["game", "html", "css", "javascript", "jquery"],
+    "difficulty": "advanced",
+    "projectPath": "./public/pacman/index.html"
+}
+  
 ]
