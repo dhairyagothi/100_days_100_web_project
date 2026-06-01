@@ -48,7 +48,7 @@ Welcome to **100 Days 100 Web Projects**! This is a comprehensive collection of 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![Flask](https://img.shields.io/badge/Flask-000000?style=flat-square&logo=flask&logoColor=white)
 
-## 🚀 Live Demo
+## 🚀Live Demo
 
 **🌐 Visit the Live Website:** [100-days-100-web-project.vercel.app](https://100-days-100-web-project.vercel.app/)
 
