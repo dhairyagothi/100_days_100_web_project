@@ -35,4 +35,6 @@ function animateValue(id, start, end, duration) {
     }, stepTime);
 }
 
-animateValue("heartRate", 60, 78, 2000);
+if (document.getElementById("heartRate")) {
+    animateValue("heartRate", 60, 78, 2000);
+}

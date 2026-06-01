@@ -62,6 +62,33 @@ body {
   max-width: 1300px;
   margin: auto;
 }
+.theme-toggle-wrapper{
+  display:flex;
+  justify-content:flex-end;
+  margin-bottom:15px;
+}
+
+#themeToggle{
+  width:50px;
+  height:50px;
+  border:none;
+  border-radius:50%;
+  cursor:pointer;
+  font-size:20px;
+
+  background:var(--card-bg);
+  color:var(--text);
+
+  border:1px solid var(--border);
+
+  backdrop-filter:blur(12px);
+
+  transition:all .3s ease;
+}
+
+#themeToggle:hover{
+  transform:scale(1.08);
+}
 
 .hero {
   text-align: center;
@@ -126,6 +153,28 @@ body {
 .upload-box button:hover {
   transform: translateY(-3px);
 }
+
+/* Drag & Drop Styles */
+
+.upload-box{
+  border:2px dashed var(--border);
+  border-radius:16px;
+  padding:30px;
+  transition:.3s ease;
+}
+
+.drag-text{
+  margin-top:15px;
+  color:var(--subtitle);
+  font-size:15px;
+}
+
+.upload-box.drag-over{
+  border-color:#3b82f6;
+  background:rgba(59,130,246,.12);
+  transform:scale(1.01);
+}
+
 
 #fileName {
   margin-top: 18px;
