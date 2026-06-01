@@ -26,7 +26,30 @@ body {
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(247, 247, 251, 0.9)),
     radial-gradient(circle at top left, var(--theme-soft), transparent 34rem);
-  font-family: "Inter", Arial, sans-serif;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+.project-back-button {
+  position: fixed;
+  left: 18px;
+  top: 18px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #111827;
+  text-decoration: none;
+  z-index: 9999;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.project-back-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
 }
 
 button,
@@ -251,11 +274,11 @@ h1 {
 }
 
 .mode-toggle .toggle-face::before {
-  content: "☀";
+  content: '☀';
 }
 
 .mode-toggle input:checked + .toggle-face::before {
-  content: "☾";
+  content: '☾';
 }
 
 .validation-message {
@@ -309,6 +332,9 @@ h1 {
 }
 
 .card {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
   --rotate-x: 0deg;
   --rotate-y: 0deg;
   display: grid;
@@ -335,7 +361,7 @@ h1 {
 }
 
 .card::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 1px;
   z-index: 5;
@@ -371,9 +397,7 @@ h1 {
   overflow: hidden;
   position: relative;
   z-index: 1;
-  background:
-    linear-gradient(160deg, rgba(255, 255, 255, 0.3), transparent),
-    var(--theme-muted);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.3), transparent), var(--theme-muted);
   transform: translateZ(24px);
 }
 
@@ -393,9 +417,7 @@ h1 {
   position: relative;
   z-index: 2;
   padding: clamp(28px, 5vw, 56px);
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.6), transparent 42%),
-    var(--theme-soft);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.6), transparent 42%), var(--theme-soft);
   transform: translateZ(42px);
 }
 
@@ -409,11 +431,13 @@ h1 {
 
 .heading {
   margin-bottom: 10px;
-  overflow-wrap: break-word;
-  word-break: keep-all;
   color: var(--text);
-  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-size: clamp(2rem, 4vw, 3.2rem);
   line-height: 1.1;
+
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .subhead {
@@ -421,17 +445,22 @@ h1 {
   color: var(--theme-text);
   font-size: 1rem;
   font-weight: 800;
+
+  word-break: break-word;
   overflow-wrap: break-word;
-  word-break: keep-all;
+  white-space: normal;
 }
 
 .info {
   margin: 32px 0;
   color: var(--copy);
-  font-family: "Roboto Mono", monospace;
+  font-family: 'Roboto Mono', monospace;
   font-size: 0.96rem;
   line-height: 1.8;
-  overflow-wrap: anywhere;
+
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .profile {
@@ -565,15 +594,12 @@ h1 {
 }
 
 .is-dark .container1 {
-  background:
-    linear-gradient(160deg, rgba(255, 255, 255, 0.08), transparent),
-    var(--dark-theme-bg);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), transparent), var(--dark-theme-bg);
 }
 
 .is-dark .container2 {
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.06), transparent 42%),
-    var(--dark-card-bg);
+    linear-gradient(145deg, rgba(255, 255, 255, 0.06), transparent 42%), var(--dark-card-bg);
 }
 
 .is-dark .profile a {
@@ -593,7 +619,6 @@ h1 {
   .card {
     transform: rotateX(0deg) rotateY(0deg);
   }
-
 }
 
 @media (max-width: 760px) {
@@ -607,7 +632,32 @@ h1 {
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 680px) {
+  .project-back-button {
+    left: 12px;
+    top: 12px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+
+  .heading {
+    font-size: 2rem;
+    line-height: 1.15;
+  }
+
+  .subhead {
+    font-size: 0.95rem;
+  }
+
+  .info {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .layout-poster .container2 {
+    padding: 24px;
+    justify-content: flex-end;
+  }
   .app-shell {
     width: min(100% - 20px, 560px);
     padding: 10px 0 18px;
