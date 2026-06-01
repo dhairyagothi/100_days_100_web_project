@@ -907,8 +907,7 @@ body.light-mode .hero-terminal-text {
   /* FIX: was padding:4rem 2rem 8rem — 8rem bottom stacked between sections */
   padding: 3rem 2rem 4rem;
   position: relative;
-  z-index: 2;
-  isolation: isolate;
+  z-index: 0 !important;
 }
 
 .projects-inner {
