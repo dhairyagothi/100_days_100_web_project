@@ -1326,6 +1326,13 @@ function initSearch() {
     }, 180)
   );
 
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      input.focus();
+    }
+  });
+
   // Tech stack dropdown filter listener
   const techStack = document.getElementById('techStackFilter');
   if (techStack) {
