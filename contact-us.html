@@ -10,6 +10,8 @@
     content="contact, 100 days, 100 web projects, open source, contribute, feedback, Dhairya Gothi" />
   <meta name="author" content="Dhairya Gothi and Contributors" />
   <meta name="theme-color" content="#0a0a1a" />
+  <script src="theme.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
@@ -63,6 +65,19 @@
       --radius-md:   12px;
       --radius-lg:   20px;
       --shadow-card: 0 2px 24px rgba(0,0,0,0.45);
+    }
+
+    :root[data-theme="light"] {
+      --c-bg:        #f4f6f9;
+      --c-surface:   #ffffff;
+      --c-card:      #ffffff;
+      --c-border:    rgba(15,23,42,0.1);
+      --c-border-hi: rgba(37,99,235,0.3);
+      --c-text:      rgba(15,23,42,0.86);
+      --c-muted:     rgba(15,23,42,0.58);
+      --c-accent:    #2563eb;
+      --c-accent-2:  #7c3aed;
+      --shadow-card: 0 18px 40px rgba(15,23,42,0.08);
     }
 
     html { scroll-behavior: smooth; }
@@ -594,8 +609,15 @@
       </button>
 
       <div class="nav-buttons mobile-drawer-layer" id="navButtons">
+        <a href="index.html" class="btn btn-ghost btn-sm" aria-label="Back to Home">
+          <i class="fas fa-home" aria-hidden="true"></i>
+          Home
+        </a>
+        <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme" type="button">
+          <i class="fas fa-moon" aria-hidden="true"></i> Theme
+        </button>
         <!-- Active state — already on Contact page -->
-        <a href="contact.html" class="nav-contact-link" aria-current="page" aria-label="Contact Us">
+        <a href="contact-us.html" class="nav-contact-link" aria-current="page" aria-label="Contact Us">
           <i class="fas fa-envelope" aria-hidden="true"></i>
           Contact Us
         </a>
@@ -933,10 +955,48 @@
     const menuToggle = document.getElementById('menuToggle');
     const navButtons = document.getElementById('navButtons');
     if (menuToggle && navButtons) {
-      menuToggle.addEventListener('click', () => {
-        const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
-        menuToggle.setAttribute('aria-expanded', String(!expanded));
-        navButtons.classList.toggle('open');
+      menuToggle.dataset.mobileNavBound = 'true';
+
+      const closeMenu = () => {
+        menuToggle.classList.remove('active');
+        navButtons.classList.remove('active');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      };
+
+      const openMenu = () => {
+        menuToggle.classList.add('active');
+        navButtons.classList.add('active');
+        menuToggle.setAttribute('aria-expanded', 'true');
+        const firstLink = navButtons.querySelector('a, button');
+        firstLink?.focus({ preventScroll: true });
+      };
+
+      menuToggle.addEventListener('click', (event) => {
+        event.stopPropagation();
+        if (navButtons.classList.contains('active')) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+      });
+
+      document.addEventListener('click', (event) => {
+        if (!navButtons.contains(event.target) && !menuToggle.contains(event.target)) {
+          closeMenu();
+        }
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && navButtons.classList.contains('active')) {
+          closeMenu();
+          menuToggle.focus({ preventScroll: true });
+        }
+      });
+
+      navButtons.addEventListener('click', (event) => {
+        if (event.target.closest('a, button')) {
+          closeMenu();
+        }
       });
     }
 

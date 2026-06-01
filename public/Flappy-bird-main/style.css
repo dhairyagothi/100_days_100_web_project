@@ -49,3 +49,23 @@ body {
 @media (max-width: 600px) {
   .hint { font-size: 11px; margin-top: 6px; }
 }
+.back-home {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 1000;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: all 0.2s ease;
+}
+
+.back-home:hover {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,0.15);
+}

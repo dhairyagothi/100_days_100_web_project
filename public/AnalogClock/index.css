@@ -578,11 +578,19 @@ body.dark-theme .clock-frame {
   padding-left: 16px;
 }
 
-.form-control:focus,
-.form-select:focus {
-  border: none;
+#countdownDisplay {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.02em;
+    text-shadow: 0px 2px 4px rgba(0,0,0,0.02);
+}
 
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+.timer-controls {
+    display: flex;
+    gap: 15px;
+    width: 100%;
 }
 
 /* =========================
@@ -829,35 +837,24 @@ body.focus-mode .stopwatch-section {
   }
 }
 
-@media (max-width: 576px) {
-  .hero-banner {
-    padding: 2rem 1rem !important;
-  }
+.world-clock-card .digital-readout {
+    font-size: 1.15rem;
+    padding: 6px 14px;
+    border-radius: 8px;
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-  .main-clock-section .clock-frame {
-    width: 180px;
-    height: 180px;
-  }
+.focus-btn {
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 600;
+  transition: var(--transition);
+}
 
-  .world-clock-card .clock-frame {
-    width: 120px;
-    height: 120px;
-  }
-
-  .digital-readout {
-    font-size: 1rem;
-  }
-
-  .stopwatch-display h1,
-  #countdownDisplay {
-    font-size: 1.2rem;
-  }
-
-  .btn {
-    width: 100%;
-  }
-
-  .world-clock-card {
-    min-height: auto;
-  }
+.focus-btn:hover {
+  transform: translateY(-2px);
 }

@@ -1,0 +1,145 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Inter Tight", sans-serif;
+}
+
+body {
+  background-color: #0a0a1a;
+  color: #e2e8f0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.soundboard-container {
+  width: 100%;
+  max-width: 900px;
+  position: relative;
+  z-index: 10;
+  background: rgba(15, 15, 35, 0.65);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.board-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.board-header h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.board-header p {
+  color: #94a3b8;
+  font-size: 1rem;
+}
+
+.timer-section {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 40px;
+}
+
+.timer-display {
+  font-size: 3.5rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #3b82f6;
+}
+
+.timer-controls {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-timer {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-timer:hover {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.sound-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.sound-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    background 0.2s,
+    border-color 0.2s;
+}
+
+.sound-card:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.sound-card.active {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+.icon-wrapper {
+  font-size: 2rem;
+  color: #94a3b8;
+  margin-bottom: 12px;
+  transition: color 0.2s;
+}
+
+.sound-card.active .icon-wrapper {
+  color: #3b82f6;
+}
+
+.sound-card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.volume-slider {
+  width: 100%;
+  accent-color: #3b82f6;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.sound-card.active .volume-slider {
+  opacity: 1;
+}

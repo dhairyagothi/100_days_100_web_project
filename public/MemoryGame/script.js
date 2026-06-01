@@ -176,6 +176,9 @@ function setupPreview() {
   moves = 0;
   seconds = 0;
   hintUsed = false;
+const hintBtn = document.getElementById('hintBtn');
+hintBtn.disabled = false;
+hintBtn.textContent = 'Hint';
 
   gameActive = false;
   lockBoard = true;
@@ -317,26 +320,23 @@ function useHint() {
     showToast('💡 Hint already used!');
     return;
   }
- 
-  // Guard: only works during an active game
-  if (!gameActive) return;
- 
-  // Consume the hint
-  hintUsed            = true;
-  hintBtn.disabled    = true;
-  hintBtn.textContent = 'Hint Used';
- 
-  const cols      = DIFFICULTIES[difficulty].cols;
-  const totalRows = Math.ceil(cards.length / cols);
- 
-  // Collect row indices that still contain unmatched, unflipped cards
-  const validRows = [];
-  for (let r = 0; r < totalRows; r++) {
-    const rowSlice     = cards.slice(r * cols, (r + 1) * cols);
-    const hasCandidate = rowSlice.some(
-      c => !c.classList.contains('matched') && !c.classList.contains('flipped')
-    );
-    if (hasCandidate) validRows.push(r);
+  hintUsed = true;
+const hintBtn = document.getElementById('hintBtn');
+hintBtn.disabled = true;
+hintBtn.textContent = 'Hint Used';
+
+  // Collect unmatched, unflipped cards
+  const unmatched = cards.filter(
+    c => !c.classList.contains('matched') && !c.classList.contains('flipped')
+  );
+  if (!unmatched.length) return;
+
+  // Group by emoji to find a valid pair
+  const emojiMap = {};
+  for (const c of unmatched) {
+    const e = c.dataset.emoji;
+    if (!emojiMap[e]) emojiMap[e] = [];
+    emojiMap[e].push(c);
   }
  
   if (!validRows.length) return;   // nothing left to reveal
