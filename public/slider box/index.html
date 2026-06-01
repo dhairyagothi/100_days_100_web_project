@@ -10,6 +10,8 @@
 </head>
 
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
 
   <h1>IMAGE SLIDER</h1>
 
@@ -38,7 +40,10 @@
     <div id="dots" class="dots"></div>
 
   </div>
- 
+  <div id="lightbox-modal" class="lightbox">
+    <span class="close-btn">&times;</span>
+    <img class="lightbox-content" id="lightbox-img" src="" alt="Full Screen Preview">
+  </div>
 
   <script src="swiper-bundle.min.js"></script>
   <script src="index.js"></script>

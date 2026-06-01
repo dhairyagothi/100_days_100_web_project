@@ -10,7 +10,8 @@
     "docker:build": "docker build -t 100days-web .",
     "docker:run": "docker run --rm -p 8080:80 100days-web",
     "docker:up": "docker compose up --build -d",
-    "docker:down": "docker compose down"
+    "docker:down": "docker compose down",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,12 @@
     "dotenv": "^17.4.2"
   },
   "devDependencies": {
-    "serve": "^14.2.6"
+    "serve": "^14.2.6",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2"
+  },
+  "lint-staged": {
+    "projects.json": "node scripts/validateProjects.js",
+    "*.html": "npx htmlhint"
   }
 }
