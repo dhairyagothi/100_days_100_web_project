@@ -84,45 +84,57 @@ function createInsect() {
     insect.style.left = `${x}px`
     insect.innerHTML = `<img src="${selected_insect.src}" alt="${selected_insect.alt}" style="transform: rotate(${Math.random() * 360}deg)" />`
 
-    insect.addEventListener('click', catchInsect)
+  insect.addEventListener("click", catchInsect);
 
-    game_container.appendChild(insect)
+  game_container.appendChild(insect);
 }
 
 function getRandomLocation() {
-    const width = window.innerWidth
-    const height = window.innerHeight
-    const x = Math.random() * (width - 200) + 100
-    const y = Math.random() * (height - 200) + 100
-    return { x, y }
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  const x = Math.random() * (width - 200) + 100;
+  const y = Math.random() * (height - 200) + 100;
+  return { x, y };
 }
 
 function catchInsect() {
-    increaseScore()
-    this.classList.add('caught')
-    setTimeout(() => this.remove(), 2000)
-    addInsects()
+  catchSound.currentTime = 0;
+  catchSound.play();
+
+  increaseScore();
+  this.classList.add("caught");
+  this.style.pointerEvents = "none";
+  setTimeout(() => this.remove(), 300);
+  addInsects();
 }
 
 function addInsects() {
-    setTimeout(createInsect, 1000)
-    setTimeout(createInsect, 1500)
+  setTimeout(createInsect, 1000);
+  setTimeout(createInsect, 1500);
 }
 
 function increaseScore() {
-    score++
-    if(score > 19) {
-        message.classList.add('visible')
-    }
-    scoreEl.innerHTML = `Score: ${score}`
+  score++;
+  if (score > 19) {
+    message.classList.add("visible");
+  }
+  scoreEl.innerHTML = `Score: ${score}`;
 }
 
 // Show confirmation popup when user clicks 'End Game' button
-endBtn.addEventListener('click', () => {
-    gameOverPopup.style.display = 'flex'
-    clearInterval(gameInterval) 
-    isGamePaused = true
-})
+endBtn.addEventListener("click", () => {
+  gameOverPopup.style.display = "flex";
+  clearInterval(gameInterval);
+  isGamePaused = true;
+});
+
+// --- Volume Slider ---
+volumeSlider.addEventListener("input", () => {
+  const volume = volumeSlider.value;
+  backgroundMusic.volume = volume;
+  catchSound.volume = volume;
+  buttonClickSound.volume = volume;
+});
 
 // Resume game
 noBtn.addEventListener('click', () => {
@@ -135,8 +147,8 @@ noBtn.addEventListener('click', () => {
     }
 })
 
-// Ends the game 
-yesBtn.addEventListener('click', endGame)
+// Ends the game
+yesBtn.addEventListener("click", endGame);
 
 // Stops timer, removes insects and display final results
 function endGame() {
@@ -147,17 +159,14 @@ function endGame() {
         insect.remove()
     })
 
-    gameOverPopup.style.display = 'none'
+  gameOverPopup.style.display = "none";
 
     const timeTaken = gameDuration - timeRemaining
     let m = Math.floor(timeTaken / 60)
     let s = timeTaken % 60
 
-    m = m < 10 ? `0${m}` : m
-    s = s < 10 ? `0${s}` : s
+  finalScore.innerHTML = `Final Score: ${score}`;
+  finalTime.innerHTML = `Time Taken: ${paddedMins}:${paddedSeconds}`;
 
-    finalScore.innerHTML = `Final Score: ${score}`
-    finalTime.innerHTML = `Time Taken: ${m}:${s}`
-
-    finalResult.style.display = 'flex'
+  finalResult.style.display = "flex";
 }

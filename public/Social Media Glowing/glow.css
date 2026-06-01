@@ -15,8 +15,16 @@ html,body{
   place-items: center;
   background: #000;
 }
-.icons{
-  display: inline-flex;
+
+ .icons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 45px;
+    flex-wrap: wrap;
+   margin-top: 90px;
+   position: relative;
+    z-index: 5;
 }
 .icons a{
   margin: 0 25px;
@@ -25,28 +33,30 @@ html,body{
   display: block;
   position: relative;
 }
-.icons a .layer{
-  width: 55px;
-  height: 55px;
-  transition: transform 0.3s;
+
+ .icons a .layer{
+    width: 105px;
+    height: 105px;
+
+    transition: 0.4s ease;
 }
 .icons a:hover .layer{
-  transform: rotate(-35deg) skew(20deg);
+  transform: rotate(-35deg) skew(20deg) scale(1.08);
 }
+
 .icons a .layer span{
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  border: 1px solid #fff;
-  border-radius: 5px;
-  transition: all 0.3s;
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(14px);
+    transition: 0.35s ease;
 }
 .icons a .layer span.fab{
-  font-size: 30px;
-  line-height: 55px;
-  text-align: center;
+    font-size: 42px;
+    line-height: 105px;
+    text-align: center;
 }
 .icons a:hover .layer span:nth-child(1){
   opacity: 0.2;

@@ -2,25 +2,56 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Arial, sans-serif;
   }
   
+
   body {
-    background-color: #2c3e50;
+    margin:0;
+    background: #05001a;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    overflow: hidden;
+    color: #ecf0f1;
+    text-align: center;
+    padding : 20px;
   }
   
   .header {
-    display: flex;
+    display:flex;
+    height :60px;
     align-items: center;
     justify-content: space-around;
     padding: 0.5em;
     margin-top: 0.5em;
-    background-color: #34495e;
-    border-bottom: 5px solid #ecf0f1;
+    background-color: #05001a;
     animation: slide-down 0.5s ease-out;
   }
+  .header i{
+    padding :10px;
+    font-size: 55px;
+    display: flex;
+    justify-content: center;
+    text-shadow: 
+    0 0 10px #ff5ef1,
+    0 0 20px #ff5ef1,
+    0 0 30px #ff5ef1;
   
+  }
+  .header h1 {
+    font-size: 55px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 
+    0 0 10px #ff5ef1,
+    0 0 20px #ff5ef1,
+    0 0 30px #ff5ef1;
+  }
+  
+  h2{
+    margin-top: 40px;
+    font-size: 32px;
+  }
+
   @keyframes slide-down {
     from {
       transform: translateY(-100%);
@@ -28,11 +59,6 @@
     to {
       transform: translateY(0);
     }
-  }
-  
-  .header img {
-    width: 60px;
-    animation: spin 5s linear infinite;
   }
   
   @keyframes spin {
@@ -43,30 +69,64 @@
       transform: rotate(360deg);
     }
   }
+  .buttons{
+    display:flex;
+    justify-content: center;
+    gap: 25px;
+    margin: 25px 0;
+    flex-wrap: wrap;
+  }
   
   .buttons button {
+    width: 180px;
+    height: 70px;
+    margin-top: 50px;
     letter-spacing: 2px;
     text-transform: uppercase;
     border: none;
+    border-radius: 15px;
     color: #ecf0f1;
-    background-color: #e74c3c;
-    padding: 10px;
-    letter-spacing: 1px;
-    font-size: 1em;
+    padding: 12px 25px;
+    font-size: 28px;
     font-weight: bold;
     cursor: pointer;
     transition: transform 0.3s ease, background-color 0.3s ease;
+  
   }
   
+  .easy {
+    background-color: #39d353;
+    box-shadow: 0 0 20px #39d353;
+  }
+  .medium {
+    background-color: #ffc107;
+    box-shadow: 0 0 20px #ffc107;
+  }
+  .hard {
+    background-color: #ff3b3b;
+    box-shadow: 0 0 20px #ff3b3b;
+  }
   .buttons button:hover {
-    text-decoration: underline;
     font-size: 1.05em;
     transform: scale(1.1);
-    background-color: #c0392b;
   }
   
   .buttons button:active {
     transform: scale(1.05);
+  }
+  
+  .score{
+    margin:30px;
+  }
+  .score h2{
+    margin-bottom: 15px;
+  }
+
+  .score div{
+    font-size: 60px;
+    font-weight: bold;
+    color: #4da6ff;
+    display: inline;
   }
   
   .pong-wrapper {
@@ -89,9 +149,13 @@
   #ping-pong {
     width: 80%;
     max-width: 680px;
-    border: 12px solid #ecf0f1;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    border: 4px solid #ff4dd2;
+    border-radius: 10px;
+    background-color :#040016;
     animation: grow 1s ease-in-out;
+    box-shadow: 
+    0 0 15px #4da6ff,
+    0 0 25px #ff4dd2;
   }
   
   @keyframes grow {
@@ -108,18 +172,71 @@
       width: 40px;
     }
   
-    .buttons button {
-      letter-spacing: 1px;
-      padding: 5px;
-      font-size: 0.7em;
-    }
-  
-    .buttons button:hover {
-      font-size: 0.75em;
-    }
-  
     #ping-pong {
       width: 90%;
     }
+  }
+
+  .result{
+    opacity:0;
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    transition: all 0.3s ease-in-out;
+    z-index:-1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .result.open{
+    opacity:1;
+    z-index:999;
+  }
+  .result-inner {
+    
+    background-color: #F0FDF4;
+    border-radius:15px;
+    box-shadow: 0 1px 4px #86EFAC;
+    padding:15px 25px;
+    text-align: center;
+    width: 380px;
+    flex-wrap: wrap;
+  }
+  .result-inner h2{
+    color:#E6A700;
+    margin:0;
+  }
+  .result-inner p{
+    color:#444444;
+    line-height:24px ;
+    margin:10px 0;
+  }
+
+  .start-btn{
+    background-color: #9c27b0;
+    box-shadow: 0 0 20px #9c27b0;
+  }
+  .pause-btn{
+    background-color: #ff9800;
+    box-shadow: 0 0 20px #ff9800;
+
+  }
+  .restart-btn{
+    background-color: #03a9f4;
+    box-shadow: 0 0 20px #03a9f4;
+  }
+
+  .new-btn{
+    background-color:#FFD166 ;
+    box-shadow: 0 0 20px #FFD166;
+    color: #333333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    
   }
   

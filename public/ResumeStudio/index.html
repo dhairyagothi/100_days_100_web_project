@@ -1,95 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Resume Studio</title>
-    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="style.css"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
-<body>
-    <header class="header">
-        <div class="header-left"></div>
-        <h1>Resume Studio</h1>
-        <div class="header-right">
-            <button id="themeSwitcher" title="Switch Theme" aria-label="Switch to dark mode">
-                <span id="themeIcon">&#9790;</span>
-            </button>
-        </div>
-    </header>
-    <main>
-        <section class="builder">
-            <h2>Resume Builder</h2>
 
-            <div class="template-selector">
-                <label class="template-label">Choose Template:</label>
-                <div class="template-btns">
-                    <button class="tpl-btn active" data-template="modern">Modern</button>
-                    <button class="tpl-btn" data-template="classic">Classic</button>
-                    <button class="tpl-btn" data-template="minimal">Minimal</button>
+<body>
+
+<div class="bg-glow"></div>
+<!-- Animated Background -->
+<div class="animated-bg">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
+<div class="app">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-box">RS</div>
+            <div>
+                <h2>Resume Studio</h2>
+                <p>ATS Resume Builder</p>
+            </div>
+        </div>
+
+        <div class="ats-card glass">
+            <h3>ATS Score</h3>
+
+            <div class="score-circle">
+                <span id="atsScore">82%</span>
+            </div>
+
+            <p>Good Resume Structure</p>
+        </div>
+
+        <button id="themeSwitcher" class="theme-btn">
+            🌙 Dark Mode
+        </button>
+
+    </aside>
+
+    <!-- FORM SECTION -->
+
+    <section class="editor">
+
+        <div class="form-card glass">
+
+            <div class="top-bar">
+                <div>
+                    <h1>Build Your Resume</h1>
+                    <p>Create a professional ATS-ready resume</p>
+                </div>
+
+                <div class="template-buttons">
+                    <button class="template active">Modern</button>
+                    <button class="template">Classic</button>
+                    <button class="template">Minimal</button>
                 </div>
             </div>
 
             <form id="resumeForm">
+
                 <div class="form-row">
+
                     <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" placeholder="Enter your name" maxlength="60">
-                        <span class="char-count" id="nameCount">0/60</span>
+                        <label>Full Name</label>
+                        <input type="text" id="name" placeholder="John Doe">
                     </div>
+
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" placeholder="Enter your email" maxlength="80">
-                        <span class="char-count" id="emailCount">0/80</span>
+                        <label>Email Address</label>
+                        <input type="email" id="email" placeholder="john@example.com">
                     </div>
+
                 </div>
+
                 <div class="form-row">
+
                     <div class="form-group">
-                        <label for="phone">Phone</label>
-                        <input type="tel" id="phone" placeholder="Enter your phone number" maxlength="15">
-                        <span class="char-count" id="phoneCount">0/15</span>
+                        <label>Phone Number</label>
+                        <input type="text" id="phone" placeholder="+91 9876543210">
                     </div>
+
                     <div class="form-group">
-                        <label for="education">Education</label>
-                        <input type="text" id="education" placeholder="Enter your education details" maxlength="120">
-                        <span class="char-count" id="educationCount">0/120</span>
+                        <label>Education</label>
+                        <input type="text" id="education" placeholder="B.Tech in AI & DS">
                     </div>
+
                 </div>
+
                 <div class="form-group">
-                    <label for="summary">Summary</label>
-                    <textarea id="summary" placeholder="Brief about yourself" maxlength="300"></textarea>
-                    <span class="char-count" id="summaryCount">0/300</span>
+                    <label>Professional Summary</label>
+
+                    <textarea
+                        id="summary"
+                        rows="5"
+                        placeholder="Write a short professional summary..."
+                    ></textarea>
                 </div>
+
                 <div class="form-group">
-                    <label for="projects">Projects</label>
-                    <textarea id="projects" placeholder="Brief about projects developed by you" maxlength="400"></textarea>
-                    <span class="char-count" id="projectsCount">0/400</span>
+                    <label>Projects</label>
+
+                    <textarea
+                        id="projects"
+                        rows="5"
+                        placeholder="Describe your projects..."
+                    ></textarea>
                 </div>
+
                 <div class="form-group">
-                    <label for="skills">Skills</label>
-                    <textarea id="skills" placeholder="Separate skills with commas" maxlength="200"></textarea>
-                    <span class="char-count" id="skillsCount">0/200</span>
+                    <label>Skills</label>
+
+                    <textarea
+                        id="skills"
+                        rows="4"
+                        placeholder="HTML, CSS, JavaScript, React..."
+                    ></textarea>
                 </div>
+
                 <div class="form-group">
-                    <label for="experience">Experience</label>
-                    <textarea id="experience" placeholder="Describe your past experiences" maxlength="400"></textarea>
-                    <span class="char-count" id="experienceCount">0/400</span>
+                    <label>Experience</label>
+
+                    <textarea
+                        id="experience"
+                        rows="5"
+                        placeholder="Describe your work experience..."
+                    ></textarea>
                 </div>
-                <p class="error-msg" id="errorMsg">&#9888; Please fill in all fields before previewing.</p>
-                <div class="btn-row">
-                    <button type="button" id="previewBtn">Live Preview</button>
-                    <button type="button" id="downloadBtn">⬇ Download PDF</button>
+
+                <div class="buttons">
+
+                    <button
+                        type="button"
+                        id="previewBtn"
+                        class="primary-btn"
+                    >
+                        Live Preview
+                    </button>
+
+                    <button
+                        type="button"
+                        id="downloadBtn"
+                        class="secondary-btn"
+                    >
+                        Download PDF
+                    </button>
+
                 </div>
+
             </form>
-        </section>
-        <section class="preview-section">
-            <h2>Live Preview</h2>
-            <div id="resumePreview">
-                <p class="placeholder">Fill the form to see live preview...</p>
+
+        </div>
+
+    </section>
+
+    <!-- PREVIEW -->
+
+    <section class="preview">
+
+        <div class="preview-header">
+            <h2>Live Resume Preview</h2>
+        </div>
+
+        <div id="resumePreview" class="resume-sheet">
+
+            <div class="resume-header">
+
+                <h1>John Doe</h1>
+
+                <p>
+                    john@example.com |
+                    +91 9876543210
+                </p>
+
             </div>
-        </section>
-    </main>
-    <script src="script.js"></script>
+
+            <div class="resume-section">
+                <h3>Summary</h3>
+
+                <p>
+                    Passionate frontend developer with
+                    experience in building responsive and
+                    modern web applications.
+                </p>
+            </div>
+
+            <div class="resume-section">
+                <h3>Projects</h3>
+
+                <p>
+                    Resume Studio - Built a modern ATS
+                    resume builder with PDF export.
+                </p>
+            </div>
+
+            <div class="resume-section">
+                <h3>Skills</h3>
+
+                <p>
+                    HTML, CSS, JavaScript, React
+                </p>
+            </div>
+
+            <div class="resume-section">
+                <h3>Experience</h3>
+
+                <p>
+                    Frontend Developer Intern at XYZ Company
+                </p>
+            </div>
+
+            <div class="resume-section">
+                <h3>Education</h3>
+
+                <p>
+                    B.Tech in AI & Data Science
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+<script src="script.js"></script>
+
 </body>
 </html>

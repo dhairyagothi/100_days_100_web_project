@@ -8,6 +8,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
     <div class="container">
         <div class="calculator">
             <h1>Stock Profit Calculator</h1>
@@ -22,10 +24,19 @@
                 </select>
             </div>
 
-            <div class="input-group">
-                <label for="shares">Number of Shares</label>
-                <input type="number" id="shares" min="0" step="1">
-            </div>
+           <div class="input-group">
+    <label for="shares">Number of Shares</label>
+
+    <input
+        type="number"
+        id="shares"
+        min="1"
+        step="1"
+        required
+    >
+
+    <small id="sharesError" class="error-message"></small>
+</div>
 
             <div class="input-group">
                 <label for="purchasePrice">Purchase Price</label>

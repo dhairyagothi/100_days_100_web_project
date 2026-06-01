@@ -1,0 +1,20 @@
+.toast{
+    position:fixed;
+    top:20px;
+    right:20px;
+    background:#2563eb;
+    color:white;
+    padding:15px 20px;
+    border-radius:10px;
+    z-index:9999;
+    animation:slideIn .3s ease;
+}
+
+@keyframes slideIn{
+    from{
+        transform:translateX(100%);
+    }
+    to{
+        transform:translateX(0);
+    }
+}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Micro-Learning Flashcard App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="game-container">
+    <div class="score-board">
+      <p>Score: <span id="score">0</span></p>
+      <p>Progress: <span id="card-progress">1/5</span></p>
+    </div>
+
+    <div class="flashcard-wrapper">
+      <div class="flashcard" id="flashcard">
+        <div class="card-face card-front">
+          <h2 id="word-title">Loading...</h2>
+          <p class="hint">Click to flip and reveal definition</p>
+        </div>
+        <div class="card-face card-back">
+          <h3>Definition:</h3>
+          <p id="word-definition">...</p>
+          <p id="word-example" class="example">...</p>
+          <button id="audio-btn">🔊 Listen Pronunciation</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="correct-btn" class="btn success">I Knew It</button>
+      <button id="incorrect-btn" class="btn danger">Got It Wrong</button>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
