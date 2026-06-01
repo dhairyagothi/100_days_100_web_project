@@ -2437,4 +2437,20 @@
     "difficulty": "advanced",
     "projectPath": "./public/Complaint_Management_System/index.html"
   }
+  {
+    "projectNo": 196,
+    "projectName": "Collaborative Study Room",
+    "projectType": "Web Application",
+    "projectDesc": "It is an advanced, high-fidelity collaborative study room platform designed to help students and professionals focus, maintain accountability, and study productively in virtual group environments. It features real-time video and audio communication, customizable study timers, shared virtual whiteboards, and integrated task management tools to create an immersive and interactive study experience that fosters collaboration and enhances productivity.",
+    "techStack": [
+      "Java 17", "Spring Boot 3.x (Spring MVC REST Web Services)",
+      "Spring Data JPA (Java Persistence API)", "Hibernate ORM",
+      "Supabase PostgreSQL",
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/collaborative-study-room/backend/src/main/resources/static/index.html"
+  }
 ]

@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus - Collaborative Study Room Platform (Full-Stack)</title>
+  <!-- Modern Premium Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./index.css">
+  
+  <!-- Supabase client integration CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Google Identity Services SDK -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script>
+    window.onerror = function(msg, url, line, col, error) {
+      const errDiv = document.createElement('div');
+      errDiv.style.position = 'fixed';
+      errDiv.style.top = '0';
+      errDiv.style.left = '0';
+      errDiv.style.width = '100%';
+      errDiv.style.background = 'red';
+      errDiv.style.color = 'white';
+      errDiv.style.padding = '10px';
+      errDiv.style.zIndex = '99999';
+      errDiv.innerHTML = 'Global Error: ' + msg + ' at ' + line + ':' + col;
+      document.body.appendChild(errDiv);
+    };
+  </script>
+</head>
+<body>
+  <!-- 3D Parallax Constellation Background -->
+  <canvas id="bg-canvas-3d"></canvas>
+
+  <!-- Global Ambient Background Glows -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-glow bg-glow-3"></div>
+
+  <!-- Global Application Shell -->
+  <div id="app" class="app-container hidden">
+    <!-- Header -->
+    <header class="app-header glass">
+      <div class="header-logo" style="cursor: pointer;" id="header-logo-btn">
+        <span class="logo-icon">✦</span>
+        <h1>Nexus</h1>
+        <span class="badge badge-beta">Full-Stack</span>
+      </div>
+
+      <!-- Public Navigation Links (Anonymous users) -->
+      <div id="header-public-nav" class="header-public-nav" style="display: flex; align-items: center; gap: 1.5rem;">
+        <a href="#hero" class="public-nav-link" style="color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: color var(--transition-fast);">Home</a>
+        <a href="#features" class="public-nav-link" style="color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: color var(--transition-fast);">Features</a>
+        <a href="#contact" class="public-nav-link" style="color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: color var(--transition-fast);">Contact</a>
+        <button id="btn-nav-login" class="btn btn-primary btn-small">Enter Workspace</button>
+      </div>
+
+      <div id="header-user-panel" class="header-user-panel hidden" style="position: relative;">
+        <div class="user-stats-pill">
+          <span class="xp-label">XP:</span>
+          <span id="header-xp-value" class="xp-val">0</span>
+          <span id="header-level-badge" class="level-badge">Lvl 1</span>
+        </div>
+        
+        <div class="user-profile-trigger" id="header-profile-trigger" title="View Profile & Settings">
+          <div class="user-avatar-small" id="header-avatar">👤</div>
+          <div class="user-info-text">
+            <span class="user-name" id="header-username">Guest</span>
+            <span class="user-status" id="header-status">Studying...</span>
+          </div>
+          <span class="dropdown-chevron">▼</span>
+        </div>
+
+        <!-- Floating Profile Dropdown Card -->
+        <div id="profile-dropdown-card" class="profile-dropdown-card glass hidden">
+          <div class="dropdown-profile-header">
+            <div class="dropdown-avatar" id="dropdown-user-avatar">🦉</div>
+            <div class="dropdown-info">
+              <h4 id="dropdown-username">Guest</h4>
+              <p id="dropdown-email">guest@nexus.com</p>
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+
+          <!-- LEVEL PROGRESS SECTION -->
+          <div class="dropdown-section">
+            <div class="level-progress-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+              <span class="section-label" id="dropdown-level-text" style="color: var(--color-primary); font-weight: 800;">Level 1</span>
+              <span id="dropdown-xp-progress-text" style="font-size: 0.75rem; color: var(--text-secondary); font-family: var(--font-mono);">0 / 100 XP</span>
+            </div>
+            <div class="dropdown-progress-bar-container" style="width: 100%; height: 6px; background: rgba(255, 255, 255, 0.05); border-radius: 99px; overflow: hidden;">
+              <div class="dropdown-progress-bar-fill" id="dropdown-level-progress-fill" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--color-primary), var(--color-secondary)); transition: width 0.4s ease-out; border-radius: 99px;"></div>
+            </div>
+          </div>
+
+          <div class="dropdown-divider"></div>
+          
+          <div class="dropdown-section">
+            <span class="section-label">Study Focus Rating</span>
+            <div class="dropdown-rating">
+              <span id="dropdown-rank-name">Deep Focus Cadet</span>
+              <div class="rating-stars" id="dropdown-stars">⭐⭐⭐</div>
+            </div>
+          </div>
+          
+          <div class="dropdown-section">
+            <span class="section-label">Unlocked Badges</span>
+            <div class="dropdown-badges-grid" id="dropdown-badges-list">
+              <!-- Dynamic icons -->
+            </div>
+          </div>
+          
+          <div class="dropdown-divider"></div>
+          <button id="btn-dropdown-logout" class="btn btn-secondary btn-block btn-small">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+            <span>Log Out</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Screens Container -->
+    <main class="app-main" style="display: flex; flex-direction: column; width: 100%; margin: 0 auto; max-width: 1400px; gap: 2rem;">
+      
+      <!-- 0. PUBLIC LANDING SCREEN -->
+      <section id="screen-landing" class="screen landing-screen" style="display: flex; flex-direction: column; gap: 4rem; width: 100%;">
+        <!-- Hero Section -->
+        <div class="landing-hero glass-panel border-glow" id="hero" style="padding: 3rem; border-radius: 20px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 3rem; align-items: center; background: linear-gradient(135deg, rgba(15, 18, 28, 0.8), rgba(25, 20, 42, 0.6));">
+          <div class="hero-content" style="display: flex; flex-direction: column; gap: 1.5rem; align-items: flex-start; text-align: left;">
+            <span class="hero-tag" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; color: var(--color-secondary); background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); padding: 0.2rem 0.6rem; border-radius: 6px;">✦ Academic & Medical Study Space</span>
+            <h2 style="font-size: 2.8rem; font-weight: 800; line-height: 1.1; background: linear-gradient(to right, #ffffff, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Cooperative Focus Portal For Scholars</h2>
+            <p style="font-size: 1.05rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">Nexus unites medical practitioners, engineers, and scholars. Enter virtual study rooms, sync timers, collaborate on whiteboards, and query our custom Jaypee Medical Study AI model.</p>
+            <div class="hero-actions" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+              <button id="btn-hero-launch" class="btn btn-primary btn-large">Launch Workspace</button>
+              <a href="#features" class="btn btn-secondary btn-large" style="text-decoration: none;">Explore Features</a>
+            </div>
+          </div>
+          
+          <!-- Glowing Visual Graphics -->
+          <div class="hero-graphic" style="position: relative; display: flex; align-items: center; justify-content: center; height: 300px;">
+            <div class="graphic-circle sphere-glow" style="width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, var(--color-primary-glow) 0%, transparent 70%); filter: blur(20px); position: absolute; z-index: -1;"></div>
+            
+            <div class="graphic-card glass border-glow" style="padding: 1.5rem; border-radius: 16px; background: rgba(15, 18, 28, 0.75); display: flex; flex-direction: column; gap: 0.75rem; width: 220px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 1;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 600;">🧬 Jaypee Medical AI</span>
+                <span class="status-indicator online"></span>
+              </div>
+              <div style="font-size: 1.1rem; font-weight: 700; color: #fff;">Cardiology Quiz</div>
+              <div style="font-size: 0.75rem; color: var(--color-secondary); font-family: var(--font-mono);">Generating cards...</div>
+            </div>
+            
+            <div class="graphic-card glass border-glow" style="padding: 1rem; border-radius: 12px; background: rgba(15, 18, 28, 0.75); display: flex; align-items: center; gap: 0.75rem; position: absolute; top: 30px; right: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); z-index: 2;">
+              <span style="font-size: 1.5rem;">⏱</span>
+              <div>
+                <div style="font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700;">Pomodoro</div>
+                <div style="font-size: 1rem; font-weight: 700; color: #fff;">25:00</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Features Showcase Section -->
+        <div class="landing-section" id="features" style="display: flex; flex-direction: column; gap: 2rem;">
+          <div style="text-align: center;">
+            <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; color: var(--color-secondary);">Workspace Capabilities</span>
+            <h3 style="font-size: 2rem; font-weight: 800; margin-top: 0.25rem;">Built for Peak Academic Performance</h3>
+          </div>
+          <div class="landing-features-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+            
+            <div class="landing-feature-card glass border-glow" style="padding: 1.75rem; border-radius: 16px; display: flex; flex-direction: column; gap: 0.75rem; transition: all var(--transition-fast);">
+              <div class="feature-icon" style="font-size: 2rem; color: var(--color-primary);">⏱</div>
+              <h4 style="font-size: 1.15rem; font-weight: 700; margin: 0;">Synchronized Pomodoro</h4>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">Work in blocks with peer students. Emits audio notifications and handles synchronized study queues automatically.</p>
+            </div>
+
+            <div class="landing-feature-card glass border-glow" style="padding: 1.75rem; border-radius: 16px; display: flex; flex-direction: column; gap: 0.75rem; transition: all var(--transition-fast);">
+              <div class="feature-icon" style="font-size: 2rem; color: var(--color-secondary);">🏥</div>
+              <h4 style="font-size: 1.15rem; font-weight: 700; margin: 0;">Jaypee Medical AI</h4>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">Specialist study partner model. Prompt it for anatomical explanations, drug details, and flashcard generation.</p>
+            </div>
+
+            <div class="landing-feature-card glass border-glow" style="padding: 1.75rem; border-radius: 16px; display: flex; flex-direction: column; gap: 0.75rem; transition: all var(--transition-fast);">
+              <div class="feature-icon" style="font-size: 2rem; color: var(--color-accent);">✏️</div>
+              <h4 style="font-size: 1.15rem; font-weight: 700; margin: 0;">Cooperative Whiteboard</h4>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">Draw architectural structures, physiological pathways, or equations collaboratively on a shared canvas.</p>
+            </div>
+
+            <div class="landing-feature-card glass border-glow" style="padding: 1.75rem; border-radius: 16px; display: flex; flex-direction: column; gap: 0.75rem; transition: all var(--transition-fast);">
+              <div class="feature-icon" style="font-size: 2rem; color: var(--color-warning);">🃏</div>
+              <h4 style="font-size: 1.15rem; font-weight: 700; margin: 0;">Leitner Recall Cards</h4>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">Track study cards through review stages. Boost memory retention, flip cards in 3D, and gain focus XP rewards.</p>
+            </div>
+
+            <div class="landing-feature-card glass border-glow" style="padding: 1.75rem; border-radius: 16px; display: flex; flex-direction: column; gap: 0.75rem; transition: all var(--transition-fast);">
+              <div class="feature-icon" style="font-size: 2rem; color: var(--color-primary);">🎵</div>
+              <h4 style="font-size: 1.15rem; font-weight: 700; margin: 0;">Audio Focus Mixer</h4>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">Generate White Noise, modulated Ocean Wave swells, and Binaural Alpha beats programmatically without network delays.</p>
+            </div>
+
+            <div class="landing-feature-card glass border-glow" style="padding: 1.75rem; border-radius: 16px; display: flex; flex-direction: column; gap: 0.75rem; transition: all var(--transition-fast);">
+              <div class="feature-icon" style="font-size: 2rem; color: var(--color-secondary);">📝</div>
+              <h4 style="font-size: 1.15rem; font-weight: 700; margin: 0;">Synced Notepad</h4>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">Collaborative notes editor that propagates content in real-time across users in the study room.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="landing-section" id="contact" style="display: flex; flex-direction: column; gap: 2rem;">
+          <div style="text-align: center;">
+            <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; color: var(--color-secondary);">Get in Touch</span>
+            <h3 style="font-size: 2rem; font-weight: 800; margin-top: 0.25rem;">We'd Love to Hear From You</h3>
+          </div>
+          <div class="landing-contact-grid" style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 2rem; align-items: start;">
+            
+            <!-- Contact Info -->
+            <div class="contact-info-card glass" style="padding: 2rem; border-radius: 16px; display: flex; flex-direction: column; gap: 1.5rem; text-align: left;">
+              <h4 style="font-size: 1.25rem; font-weight: 700;">Connect with Nexus</h4>
+              <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">Have questions about SDE assessment implementations, Supabase integrations, or hosting parameters?</p>
+              
+              <div style="display: flex; gap: 1rem; align-items: center;">
+                <span style="font-size: 1.8rem;">🏢</span>
+                <div>
+                  <h5 style="font-size: 0.9rem; font-weight: 700; margin: 0;">Jaypee Brothers Medical Publishers</h5>
+                  <p style="font-size: 0.75rem; color: var(--text-secondary); margin: 0;">Corporate Office, New Delhi, India</p>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 1rem; align-items: center;">
+                <span style="font-size: 1.8rem;">✉️</span>
+                <div>
+                  <h5 style="font-size: 0.9rem; font-weight: 700; margin: 0;">Support & Collaboration</h5>
+                  <p style="font-size: 0.75rem; color: var(--text-secondary); margin: 0;">sde-assessment@jaypeebrothers.com</p>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 1rem; align-items: center;">
+                <span style="font-size: 1.8rem;">🌐</span>
+                <div>
+                  <h5 style="font-size: 0.9rem; font-weight: 700; margin: 0;">Official Storefront</h5>
+                  <p style="font-size: 0.75rem; color: var(--text-secondary); margin: 0;">www.jaypeebrothers.com</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="contact-form-card glass border-glow" style="padding: 2rem; border-radius: 16px;">
+              <h4 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1.25rem; text-align: left;">Send us a message</h4>
+              <form id="form-landing-contact" style="display: flex; flex-direction: column; gap: 1rem; text-align: left;">
+                <div class="form-group" style="margin: 0;">
+                  <label for="contact-name">Full Name</label>
+                  <input type="text" id="contact-name" placeholder="John Doe" required>
+                </div>
+                <div class="form-group" style="margin: 0;">
+                  <label for="contact-email">Email Address</label>
+                  <input type="email" id="contact-email" placeholder="name@domain.com" required>
+                </div>
+                <div class="form-group" style="margin: 0;">
+                  <label for="contact-msg">Message</label>
+                  <textarea id="contact-msg" rows="4" placeholder="How can we support your study sessions?" required style="resize: none;"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Send Message</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="landing-footer" style="padding: 1.5rem 0; border-top: 1px solid rgba(255,255,255,0.03); font-size: 0.8rem; color: var(--text-muted); text-align: center;">
+          <p>© 2026 Nexus Study Rooms. Powered by Spring Boot, Supabase, and Jaypee Brothers Medical Catalog.</p>
+        </footer>
+      </section>
+      
+      <!-- 1. AUTH SCREEN -->
+      <section id="screen-auth" class="screen glass-panel auth-screen hidden" style="display: grid; grid-template-columns: 1fr 1fr; max-width: 900px; margin: 3rem auto; border-radius: 20px; overflow: hidden; padding: 0; min-height: 520px; border: 1px solid rgba(139, 92, 246, 0.25); box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 25px rgba(139, 92, 246, 0.15);">
+        <!-- Left Visual Side Panel -->
+        <div class="auth-visual-side" style="padding: 2.5rem; background: linear-gradient(135deg, rgba(9, 10, 18, 0.8), rgba(20, 15, 32, 0.85)); display: flex; flex-direction: column; justify-content: space-between; position: relative; border-right: 1px solid rgba(255, 255, 255, 0.05); text-align: left; overflow: hidden;">
+          <div class="visual-glow-sphere" style="width: 250px; height: 250px; border-radius: 50%; background: radial-gradient(circle, var(--color-primary-glow) 0%, transparent 70%); filter: blur(35px); position: absolute; top: -50px; left: -50px; opacity: 0.6; z-index: -1;"></div>
+          
+          <div style="z-index: 2; display: flex; flex-direction: column; gap: 0.75rem;">
+            <span class="visual-tag" style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; color: var(--color-secondary); background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); padding: 0.15rem 0.5rem; border-radius: 4px; align-self: flex-start;">✦ Gamified Study Hub</span>
+            <h2 style="font-size: 2.2rem; font-weight: 800; line-height: 1.1; margin: 0.25rem 0 0 0; background: linear-gradient(to right, #ffffff, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Unleash Your Academic Potential</h2>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin: 0.5rem 0 0 0;">Collaborate with peers globally. Sync Pomodoros, draw on shared whiteboards, flip revision flashcards, and study using our specialist Jaypee Medical AI model.</p>
+          </div>
+
+          <div class="visual-floating-badge" style="z-index: 2; padding: 1rem; border-radius: 12px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.04); backdrop-filter: blur(10px); display: flex; align-items: center; gap: 0.75rem; box-shadow: 0 10px 25px rgba(0,0,0,0.3); animation: floatBadge 5s ease-in-out infinite alternate;">
+            <span style="font-size: 1.5rem;">⏱</span>
+            <div>
+              <h5 style="font-size: 0.8rem; font-weight: 750; margin: 0; color: #fff;">Interactive Dashboards</h5>
+              <p style="font-size: 0.7rem; color: var(--text-secondary); margin: 0.15rem 0 0 0;">Gain focus XP, unlock unique badges, and track ratings directly inside your profile menu.</p>
+            </div>
+          </div>
+
+          <div class="visual-footer" style="z-index: 2; font-size: 0.75rem; color: var(--text-muted);">
+            Secured by state-of-the-art stateless JWT credentials.
+          </div>
+        </div>
+
+        <!-- Right Form Side Panel -->
+        <div class="auth-form-side" style="padding: 2.5rem; background: rgba(9, 10, 18, 0.45); display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; width: 100%;">
+          <div class="auth-card-wrapper" style="width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 1.25rem;">
+            <div class="auth-header" style="text-align: left; margin-bottom: 0.25rem;">
+              <h2 style="font-size: 1.7rem; font-weight: 800; margin-bottom: 0.25rem; background: linear-gradient(to right, #fff, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Welcome Back</h2>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">Log in or create a new student account to enter the portal.</p>
+              <a href="#hero" id="auth-back-to-home" style="display: inline-block; font-size: 0.8rem; color: var(--color-secondary); text-decoration: none; margin-top: 0.5rem; font-weight: 600; transition: color var(--transition-fast);">← Back to Home Page</a>
+            </div>
+            
+            <div class="auth-tabs" style="display: flex; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-light); padding: 0.2rem; border-radius: 8px;">
+              <button id="tab-login" class="auth-tab-btn active" style="flex: 1; padding: 0.45rem; font-size: 0.85rem;">Log In</button>
+              <button id="tab-signup" class="auth-tab-btn" style="flex: 1; padding: 0.45rem; font-size: 0.85rem;">Sign Up</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="form-login" class="auth-form active">
+              <div class="form-group" style="margin-bottom: 0.85rem;">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" required placeholder="name@domain.com">
+              </div>
+              <div class="form-group" style="margin-bottom: 1.1rem;">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" required placeholder="••••••••">
+              </div>
+              <div id="login-error" class="error-msg hidden"></div>
+              <button type="submit" class="btn btn-primary btn-block">Enter Workspace</button>
+              
+              <div class="auth-divider" style="margin: 0.85rem 0;">
+                <span>OR</span>
+              </div>
+              
+              <button type="button" id="btn-google-login" class="btn btn-secondary btn-block">
+                <svg width="18" height="18" viewBox="0 0 24 24" style="margin-right: 8px;">
+                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05" />
+                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335" />
+                </svg>
+                <span>Sign in with Google</span>
+              </button>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="form-signup" class="auth-form hidden">
+              <div class="form-group" style="margin-bottom: 0.65rem;">
+                <label for="signup-username">Username</label>
+                <input type="text" id="signup-username" required placeholder="study_pioneer">
+              </div>
+              <div class="form-group" style="margin-bottom: 0.65rem;">
+                <label for="signup-email">Email Address</label>
+                <input type="email" id="signup-email" required placeholder="name@domain.com">
+              </div>
+              <div class="form-group" style="margin-bottom: 0.65rem;">
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" required placeholder="••••••••">
+              </div>
+              
+              <div class="form-group" style="margin-bottom: 0.85rem;">
+                <label style="margin-bottom: 0.25rem;">Select Your Focus Avatar</label>
+                <div class="avatar-selector">
+                  <input type="radio" name="avatar" value="🦉" id="av1" checked><label for="av1">🦉</label>
+                  <input type="radio" name="avatar" value="🦊" id="av2"><label for="av2">🦊</label>
+                  <input type="radio" name="avatar" value="🐼" id="av3"><label for="av3">🐼</label>
+                  <input type="radio" name="avatar" value="🐨" id="av4"><label for="av4">🐨</label>
+                  <input type="radio" name="avatar" value="🦁" id="av5"><label for="av5">🦁</label>
+                  <input type="radio" name="avatar" value="🤖" id="av6"><label for="av6">🤖</label>
+                  <input type="radio" name="avatar" value="🚀" id="av7"><label for="av7">🚀</label>
+                  <input type="radio" name="avatar" value="🎯" id="av8"><label for="av8">🎯</label>
+                </div>
+              </div>
+              
+              <div id="signup-error" class="error-msg hidden"></div>
+              <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+
+              <div class="auth-divider" style="margin: 0.65rem 0;">
+                <span>OR</span>
+              </div>
+              
+              <button type="button" id="btn-google-signup" class="btn btn-secondary btn-block">
+                <svg width="18" height="18" viewBox="0 0 24 24" style="margin-right: 8px;">
+                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05" />
+                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335" />
+                </svg>
+                <span>Sign up with Google</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. LOBBY & DASHBOARD SCREEN -->
+      <section id="screen-lobby" class="screen lobby-screen hidden">
+        <!-- Dual Mode Switching Configuration -->
+        <div class="backend-mode-card glass border-glow">
+          <div class="mode-info">
+            <span class="mode-tag">Full-Stack Mode Selector</span>
+            <h4>⚡ Spring Boot Backend Connection (Port 8080)</h4>
+            <p>Toggle this on to route Auth, Rooms, Notes, and AI chat directly through the Spring Boot Java JWT Server. Otherwise, Nexus will emulate the server routes in LocalStorage.</p>
+          </div>
+          <div class="mode-toggle-switch">
+            <label class="switch-container">
+              <input type="checkbox" id="chk-backend-mode">
+              <span class="switch-slider"></span>
+            </label>
+            <span id="mode-status-text" class="status-offline">LocalStorage Mode</span>
+          </div>
+        </div>
+
+        <!-- Stats and Dashboard Grid -->
+        <div class="lobby-grid">
+          
+          <!-- Left side: Analytics and Welcome -->
+          <div class="lobby-left">
+            <div class="welcome-card glass border-glow">
+              <div class="welcome-text">
+                <h2>Welcome Back, <span id="lobby-username-span">Scholar</span>!</h2>
+                <p>You have studied for <strong id="lobby-total-hours">0m</strong> this week. Keep up the momentum!</p>
+              </div>
+              <div class="rank-badge-container">
+                <div class="rank-badge" id="lobby-rank-badge">Deep Focus Cadet</div>
+              </div>
+            </div>
+
+            <!-- Stats Overview Cards -->
+            <div class="stats-overview-row">
+              <div class="stat-card glass">
+                <div class="stat-icon focus-color">⏱</div>
+                <div class="stat-details">
+                  <h3>Focus Minutes</h3>
+                  <p id="stat-total-time">0</p>
+                </div>
+              </div>
+              <div class="stat-card glass">
+                <div class="stat-icon chat-color">✓</div>
+                <div class="stat-details">
+                  <h3>Sessions Done</h3>
+                  <p id="stat-sessions-count">0</p>
+                </div>
+              </div>
+              <div class="stat-card glass">
+                <div class="stat-icon rank-color">🏆</div>
+                <div class="stat-details">
+                  <h3>Badges Unlocked</h3>
+                  <p id="stat-badges-count">1 / 9</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Analytics Visual Charts (SVG based) -->
+            <div class="analytics-card glass">
+              <div class="card-header">
+                <h3>Productivity Analytics</h3>
+                <span class="card-subtitle">Last 7 Days (Minutes Focused)</span>
+              </div>
+              <div class="chart-container" id="lobby-chart-container">
+                <!-- Programmatically rendered SVG charts go here -->
+              </div>
+            </div>
+
+            <!-- Gamified Badges Grid -->
+            <div class="badges-card glass">
+              <div class="card-header">
+                <h3>Achievement Badges</h3>
+                <span class="card-subtitle">Unlock cards to boost your motivation</span>
+              </div>
+              <div class="badges-grid" id="lobby-badges-grid">
+                <!-- Badges will be generated dynamically -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Right side: Active Study Rooms & Room Management -->
+          <div class="lobby-right">
+            <div class="rooms-header-row">
+              <h2>Study Rooms</h2>
+              <div style="display: flex; gap: 10px;">
+                <button id="btn-open-join-modal" class="btn btn-secondary">
+                  Join by Code
+                </button>
+                <button id="btn-open-create-modal" class="btn btn-primary">
+                  <span>+</span> Create Room
+                </button>
+              </div>
+            </div>
+
+            <div class="rooms-container" id="rooms-list-container">
+              <!-- Active Rooms List (dynamic cards) -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Room Creation Modal Overlay -->
+        <div id="modal-create-room" class="modal-overlay hidden">
+          <div class="modal-card glass border-glow">
+            <div class="modal-header">
+              <h3>Create Virtual Study Room</h3>
+              <button id="btn-close-modal" class="btn-close">&times;</button>
+            </div>
+            <form id="form-create-room">
+              <div class="form-group">
+                <label for="room-name">Room Name</label>
+                <input type="text" id="room-name" required placeholder="E.g., Algorithms & Chill, Deep Work Library">
+              </div>
+              <div class="form-group">
+                <label for="room-category">Subject / Category</label>
+                <select id="room-category">
+                  <option value="General">General Study</option>
+                  <option value="Computer Science">Computer Science</option>
+                  <option value="Mathematics">Mathematics</option>
+                  <option value="Languages">Languages</option>
+                  <option value="Sciences">Sciences</option>
+                  <option value="Design">Design & Arts</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="room-description">Description</label>
+                <textarea id="room-description" rows="3" placeholder="Set the focus topic and environment rule..."></textarea>
+              </div>
+              <div class="form-group">
+                <label for="room-focus-time">Default Timer (Minutes)</label>
+                <input type="number" id="room-focus-time" value="25" min="5" max="180">
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">Launch Room</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Join Room Modal Overlay -->
+        <div id="modal-join-room" class="modal-overlay hidden">
+          <div class="modal-card glass border-glow">
+            <div class="modal-header">
+              <h3>Join Study Room</h3>
+              <button id="btn-close-join-modal" class="btn-close">&times;</button>
+            </div>
+            <form id="form-join-room">
+              <div class="form-group">
+                <label for="join-room-code">Enter Room Code</label>
+                <input type="text" id="join-room-code" required placeholder="e.g. A9F2K1" style="text-transform: uppercase;">
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">Join Room</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. STUDY ROOM SCREEN -->
+      <section id="screen-room" class="screen room-screen hidden">
+        <!-- Room Control Header bar -->
+        <div class="room-top-bar glass">
+          <div class="room-title-info">
+            <button id="btn-leave-room" class="btn btn-secondary btn-icon-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              <span>Leave Room</span>
+            </button>
+            <div class="room-text">
+              <h2 id="room-display-name">Loading Room...</h2>
+              <span id="room-display-category" class="room-category-pill">Category</span>
+              <span id="room-display-code" class="room-category-pill" style="background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.5);">Code: Loading...</span>
+            </div>
+          </div>
+          
+          <div class="room-actions">
+            <!-- Distraction Free Mode Toggle -->
+            <button id="btn-toggle-distraction-free" class="btn btn-secondary btn-icon-label" title="Collapse sidebar & chat to focus">
+              <span id="df-icon">👁</span>
+              <span id="df-text">Distraction-Free</span>
+            </button>
+            
+            <button id="btn-invite-link" class="btn btn-accent btn-icon-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              <span>Copy Invite Code</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Room Workspace Grid -->
+        <div class="room-grid" id="room-workspace-grid">
+          
+          <!-- Column 1: Left (Timer & Focus Sounds) -->
+          <div class="room-column-left" style="display: flex; flex-direction: column; gap: 1.5rem;">
+            
+            <!-- Timer & Focus Module -->
+            <div class="timer-card glass border-glow" id="timer-card">
+              <!-- Mode Selection (Pomodoro Focus, Break, Stopwatch) -->
+              <div class="timer-modes" id="timer-modes-panel">
+                <button class="timer-mode-btn active" data-mode="focus">Focus</button>
+                <button class="timer-mode-btn" data-mode="break">Break</button>
+                <button class="timer-mode-btn" data-mode="stopwatch">Watch</button>
+              </div>
+
+              <div class="timer-display-container" style="width: 180px; height: 180px; margin: 0.5rem auto 1rem auto; position: relative;">
+                <!-- SVG Timer Circular Progress -->
+                <svg class="timer-progress-svg" width="180" height="180" viewBox="0 0 180 180" style="transform: rotate(-90deg);">
+                  <circle class="timer-circle-bg" cx="90" cy="90" r="78" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="6"></circle>
+                  <circle class="timer-circle-progress" id="timer-circle-progress" cx="90" cy="90" r="78" fill="none" stroke="var(--color-primary)" stroke-width="6" stroke-linecap="round" style="stroke-dasharray: 490; stroke-dashoffset: 0; transition: stroke-dashoffset 1s linear;"></circle>
+                </svg>
+                <div class="timer-text-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1;">
+                  <div class="timer-time" id="timer-time-display" style="font-family: var(--font-mono); font-size: 2.2rem; font-weight: 700; letter-spacing: -1px;">25:00</div>
+                  <div class="timer-state-label" id="timer-label" style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-top: 2px;">Ready</div>
+                </div>
+              </div>
+
+              <!-- Synced Timer Controls -->
+              <div class="timer-controls">
+                <button id="btn-timer-toggle" class="btn btn-primary btn-small" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">Start</button>
+                <button id="btn-timer-reset" class="btn btn-secondary btn-small" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">Reset</button>
+              </div>
+
+              <div class="timer-sync-status" style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.4rem;">
+                <span class="status-indicator online"></span>
+                <span id="timer-sync-msg">Timer Synced</span>
+              </div>
+            </div>
+
+            <!-- Guided Breathing Overlay (Displays during break) -->
+            <div class="breathing-card glass hidden" id="breathing-card" style="padding: 1.5rem; border-radius: 16px; text-align: center;">
+              <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 0.25rem;">Breathing Break</h3>
+              <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Follow the bubble</p>
+              <div class="breathing-outer-ring" style="width: 110px; height: 110px; border: 1px dashed rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                <div class="breathing-bubble" id="breathing-bubble" style="width: 36px; height: 36px; border-radius: 50%; background: radial-gradient(circle, var(--color-secondary), var(--color-primary)); box-shadow: 0 0 20px rgba(6, 182, 212, 0.4); transition: transform 4s ease-in-out;"></div>
+              </div>
+              <div class="breathing-text" id="breathing-text" style="font-size: 0.95rem; font-weight: 700; color: var(--color-secondary); margin: 0.75rem 0;">Inhale...</div>
+              <button id="btn-skip-breathing" class="btn btn-secondary btn-small" style="padding: 0.35rem 0.75rem; font-size: 0.7rem;">Skip</button>
+            </div>
+
+            <!-- Ambient Focus Sounds Widget -->
+            <div class="sidebar-widget sounds-widget glass" style="padding: 1.25rem; display: flex; flex-direction: column; gap: 0.85rem; border-radius: 16px;">
+              <div class="widget-header" style="border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 0.4rem; display: flex; align-items: center; justify-content: space-between;">
+                <h3 style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: var(--text-secondary); margin: 0;">Focus Sounds</h3>
+              </div>
+              
+              <div class="soundscape-visualizer-container" style="background: #08090e; border: 1px solid var(--border-light); border-radius: 10px; height: 50px; overflow: hidden; position: relative;">
+                <canvas id="soundscape-visualizer" width="240" height="50" style="width: 100%; height: 50px; display: block;"></canvas>
+              </div>
+              
+              <div class="sound-grid" style="display: flex; flex-direction: column; gap: 0.65rem;">
+                <!-- Sound Item 1 -->
+                <div class="sound-card glass" data-sound="white-noise" style="padding: 0.65rem 0.85rem; border-radius: 10px; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; border: 1px solid var(--border-light);">
+                  <div class="sound-info" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="sound-icon" style="font-size: 1.3rem;">💨</span>
+                    <div class="sound-text">
+                      <h5 style="font-size: 0.85rem; font-weight: 700; margin: 0;">White Noise</h5>
+                    </div>
+                  </div>
+                  <div class="sound-controls" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <button class="btn btn-play-sound btn-small" style="padding: 0.25rem 0.6rem; font-size: 0.7rem; border-radius: 6px;">Play</button>
+                    <input type="range" class="sound-vol" min="0" max="1" step="0.05" value="0.5" style="width: 48px; cursor: pointer; accent-color: var(--color-primary);">
+                  </div>
+                </div>
+
+                <!-- Sound Item 2 -->
+                <div class="sound-card glass" data-sound="ocean" style="padding: 0.65rem 0.85rem; border-radius: 10px; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; border: 1px solid var(--border-light);">
+                  <div class="sound-info" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="sound-icon" style="font-size: 1.3rem;">🌊</span>
+                    <div class="sound-text">
+                      <h5 style="font-size: 0.85rem; font-weight: 700; margin: 0;">Ocean Waves</h5>
+                    </div>
+                  </div>
+                  <div class="sound-controls" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <button class="btn btn-play-sound btn-small" style="padding: 0.25rem 0.6rem; font-size: 0.7rem; border-radius: 6px;">Play</button>
+                    <input type="range" class="sound-vol" min="0" max="1" step="0.05" value="0.5" style="width: 48px; cursor: pointer; accent-color: var(--color-primary);">
+                  </div>
+                </div>
+
+                <!-- Sound Item 3 -->
+                <div class="sound-card glass" data-sound="binaural" style="padding: 0.65rem 0.85rem; border-radius: 10px; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; border: 1px solid var(--border-light);">
+                  <div class="sound-info" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="sound-icon" style="font-size: 1.3rem;">🧠</span>
+                    <div class="sound-text">
+                      <h5 style="font-size: 0.85rem; font-weight: 700; margin: 0;">Binaural Beats</h5>
+                    </div>
+                  </div>
+                  <div class="sound-controls" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <button class="btn btn-play-sound btn-small" style="padding: 0.25rem 0.6rem; font-size: 0.7rem; border-radius: 6px;">Play</button>
+                    <input type="range" class="sound-vol" min="0" max="1" step="0.05" value="0.5" style="width: 48px; cursor: pointer; accent-color: var(--color-primary);">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Center (Workspace options & contents) -->
+          <div class="room-column-center" style="display: flex; flex-direction: column; gap: 1.5rem; min-width: 0;">
+            <!-- Multi-tab Workspace Options Tabs -->
+            <div class="workspace-tabs-bar glass">
+              <button class="workspace-tab active" data-tab="whiteboard">✏️ Shared Whiteboard</button>
+              <button class="workspace-tab" data-tab="flashcards">🃏 Revision Flashcards</button>
+              <button class="workspace-tab" data-tab="notepad">📝 Synced Notes</button>
+              <button class="workspace-tab" data-tab="jaypee-ai">🏥 Jaypee Medical AI</button>
+            </div>
+
+            <!-- Tab Content Containers -->
+            <div class="workspace-tab-contents">
+              
+              <!-- Tab 1: Collaborative Drawing Canvas -->
+              <div class="tab-content active" id="tab-whiteboard">
+                <div class="whiteboard-container">
+                  <div class="canvas-controls">
+                    <div class="control-group">
+                      <label>Color:</label>
+                      <div class="color-palette">
+                        <button class="color-btn active" style="background-color: #8b5cf6;" data-color="#8b5cf6"></button>
+                        <button class="color-btn" style="background-color: #06b6d4;" data-color="#06b6d4"></button>
+                        <button class="color-btn" style="background-color: #f43f5e;" data-color="#f43f5e"></button>
+                        <button class="color-btn" style="background-color: #10b981;" data-color="#10b981"></button>
+                        <button class="color-btn" style="background-color: #eab308;" data-color="#eab308"></button>
+                        <button class="color-btn" style="background-color: #ffffff;" data-color="#ffffff"></button>
+                      </div>
+                    </div>
+                    
+                    <div class="control-group">
+                      <label for="brush-size">Size:</label>
+                      <input type="range" id="brush-size" min="2" max="20" value="4">
+                      <span id="brush-size-val">4px</span>
+                    </div>
+
+                    <button id="btn-whiteboard-clear" class="btn btn-secondary btn-small">Clear Canvas</button>
+                  </div>
+
+                  <div class="canvas-wrapper">
+                    <canvas id="whiteboard-canvas" width="650" height="350"></canvas>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab 2: Revision Flashcards -->
+              <div class="tab-content hidden" id="tab-flashcards">
+                <div class="flashcards-layout">
+                  <div class="flashcards-creator">
+                    <h4>Add Flashcard</h4>
+                    <form id="form-add-flashcard">
+                      <input type="text" id="fc-front" required placeholder="Question (Front side)...">
+                      <input type="text" id="fc-back" required placeholder="Answer (Back side)...">
+                      <button type="submit" class="btn btn-accent btn-small btn-block">Add to Deck</button>
+                    </form>
+                  </div>
+
+                  <div class="flashcard-viewer">
+                    <div class="deck-controls">
+                      <span>Card <strong id="fc-current-index">0</strong> of <strong id="fc-total-count">0</strong></span>
+                      <div class="deck-nav">
+                        <button id="btn-fc-prev" class="btn btn-secondary btn-small">&lt;</button>
+                        <button id="btn-fc-next" class="btn btn-secondary btn-small">&gt;</button>
+                      </div>
+                    </div>
+
+                    <!-- 3D Card Display -->
+                    <div class="card-3d-scene" id="card-3d-scene">
+                      <div class="card-3d" id="card-3d-body">
+                        <div class="card-3d-face card-3d-front">
+                          <p id="card-display-front">Add a flashcard to start studying!</p>
+                          <span class="card-hint">Click Card to Flip</span>
+                        </div>
+                        <div class="card-3d-face card-3d-back">
+                          <p id="card-display-back">The answer will appear here.</p>
+                          <span class="card-hint">Click Card to Flip</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Leitner Active Recall Controls -->
+                    <div class="leitner-controls hidden" id="leitner-panel">
+                      <span class="leitner-label">Did you recall this correctly?</span>
+                      <div class="leitner-buttons">
+                        <button type="button" id="btn-fc-again" class="btn btn-secondary btn-small">Review Again 🔴</button>
+                        <button type="button" id="btn-fc-master" class="btn btn-accent btn-small">Mastered 🟢</button>
+                      </div>
+                      <div class="leitner-score-row">
+                        <span>Mastered: <strong id="leitner-progress-text">0 / 0</strong></span>
+                        <div class="leitner-progress-bar-container">
+                          <div class="leitner-progress-bar-fill" id="leitner-progress-fill" style="width: 0%"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab 3: Synced Study Notepad -->
+              <div class="tab-content hidden" id="tab-notepad">
+                <div class="notepad-container">
+                  <div class="notepad-header">
+                    <h4>Synced Collaborative Notepad</h4>
+                    <span id="notepad-char-count" class="badge badge-beta">0 chars</span>
+                  </div>
+                  <textarea id="notepad-textarea" rows="12" placeholder="Start typing notes collaboratively. Updates will sync in real-time with other active members..."></textarea>
+                </div>
+              </div>
+
+              <!-- Tab 4: Jaypee Medical Study AI Chatbot -->
+              <div class="tab-content hidden" id="tab-jaypee-ai">
+                <div class="medical-ai-container">
+                  <div class="medical-ai-header">
+                    <h4>Jaypee Medical Study AI</h4>
+                    <span class="badge badge-beta">Specialist LLM</span>
+                  </div>
+                  <div class="medical-ai-chat-box" id="medical-ai-chat-box">
+                    <div class="ai-chat-bubble system">
+                      🧬 Ask me medical physiology or anatomy questions. Type e.g., "explain heart anatomy" or "generate physiology flashcards about the kidney"!
+                    </div>
+                  </div>
+                  <form id="form-medical-ai" class="medical-ai-form">
+                    <input type="text" id="medical-ai-input" autocomplete="off" placeholder="Ask anatomy, renal filtration, cardiac pacemakers..." required>
+                    <button type="submit" class="btn btn-accent btn-small">Ask AI</button>
+                  </form>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Right Sidebar Panels (Chat & Checklist & Members) -->
+          <div class="room-sidebar" id="room-sidebar-panels">
+            
+            <!-- Collaborative Task Checklist -->
+            <div class="sidebar-widget tasks-widget glass">
+              <div class="widget-header">
+                <h3>Session Checklist</h3>
+                <span class="badge" id="tasks-completed-badge">0/0</span>
+              </div>
+              <div class="task-list" id="room-task-list">
+                <!-- Task list generated dynamically -->
+              </div>
+              <form id="form-add-task" class="widget-form">
+                <input type="text" id="task-input" required placeholder="Add session goal...">
+                <button type="submit" class="btn btn-accent btn-small">+</button>
+              </form>
+            </div>
+
+            <!-- Room Chat with FocusBot Integration -->
+            <div class="sidebar-widget chat-widget glass">
+              <div class="widget-header">
+                <h3>Room Activity & Chat</h3>
+                <div class="active-users-pill">
+                  <span class="online-indicator"></span>
+                  <span id="active-members-count">1 Online</span>
+                </div>
+              </div>
+              
+              <!-- Chat board -->
+              <div class="chat-messages" id="chat-messages-container">
+                <!-- Chat messages and events appear here -->
+              </div>
+
+              <!-- Quick Command Helpers row -->
+              <div class="chat-helper-tags">
+                <button class="btn-chat-helper" data-command="/quote">💬 /quote</button>
+                <button class="btn-chat-helper" data-command="/stretch">🧘 /stretch</button>
+                <button class="btn-chat-helper" data-command="/books">📚 /books</button>
+              </div>
+
+              <form id="form-chat" class="widget-form">
+                <input type="text" id="chat-input" autocomplete="off" placeholder="Say something or type /cmd...">
+                <button type="submit" class="btn btn-primary btn-small">Send</button>
+              </form>
+            </div>
+
+            <!-- Members List -->
+            <div class="sidebar-widget members-widget glass">
+              <div class="widget-header">
+                <h3>Active Members</h3>
+              </div>
+              <div class="members-list" id="room-members-list">
+                <!-- Active user tags -->
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Loading / Boot Screen -->
+  <div id="boot-loader" class="boot-loader">
+    <div class="spinner-container">
+      <div class="spinner-core"></div>
+      <div class="spinner-pulse"></div>
+    </div>
+    <h2>Initiating Focus Space</h2>
+    <p>Calibrating cloud sync channels...</p>
+  </div>
+
+  <!-- Main script modules -->
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>

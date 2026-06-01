@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus - Admin Dashboard</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+  
+  <style>
+    .admin-container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .stat-card {
+      padding: 20px;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--color-primary);
+      text-shadow: 0 0 10px var(--color-primary-glow);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: rgba(12, 10, 24, 0.45);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .data-table th, .data-table td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .data-table th {
+      background: rgba(139, 92, 246, 0.15);
+      color: var(--color-secondary);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+    }
+    .data-table tr:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .delete-btn {
+      background: rgba(244, 63, 94, 0.15);
+      color: #f43f5e;
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .delete-btn:hover {
+      background: rgba(244, 63, 94, 0.3);
+      box-shadow: 0 0 10px rgba(244, 63, 94, 0.4);
+    }
+    .tabs {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.1);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 600;
+    }
+    .tab-btn.active {
+      background: rgba(139, 92, 246, 0.2);
+      border-color: var(--color-primary);
+      box-shadow: 0 0 10px var(--color-primary-glow);
+    }
+    @media (max-width: 600px) {
+      .admin-header { flex-direction: column; gap: 15px; text-align: center; }
+      .admin-container { padding: 10px; margin: 20px auto; }
+      .tabs { flex-direction: column; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="stars"></div>
+  <div id="stars2"></div>
+  <div id="stars3"></div>
+
+  <div class="admin-container">
+    <div class="admin-header">
+      <h1 class="gradient-text" style="font-size: 2.5rem; margin: 0;">Admin Dashboard</h1>
+      <button class="btn btn-secondary" onclick="window.location.href='index.html'">Back to Lobby</button>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card glass">
+        <h3 style="color: rgba(255,255,255,0.7); font-size: 0.9rem; text-transform: uppercase;">Total Users</h3>
+        <div class="stat-value" id="stat-total-users">-</div>
+      </div>
+      <div class="stat-card glass">
+        <h3 style="color: rgba(255,255,255,0.7); font-size: 0.9rem; text-transform: uppercase;">Active Rooms</h3>
+        <div class="stat-value" id="stat-total-rooms" style="color: var(--color-secondary); text-shadow: 0 0 10px var(--color-secondary-glow);">-</div>
+      </div>
+    </div>
+
+    <div class="glass" style="padding: 20px; border-radius: 16px;">
+      <div class="tabs">
+        <button class="tab-btn active" id="tab-users" onclick="switchTab('users')">Manage Users</button>
+        <button class="tab-btn" id="tab-rooms" onclick="switchTab('rooms')">Manage Rooms</button>
+      </div>
+
+      <div id="view-users" style="overflow-x: auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Avatar</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>XP</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="users-table-body">
+            <tr><td colspan="7" style="text-align: center;">Loading users...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="view-rooms" style="display: none; overflow-x: auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Room Name</th>
+              <th>Subject</th>
+              <th>Creator</th>
+              <th>Focus Lvl</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="rooms-table-body">
+            <tr><td colspan="6" style="text-align: center;">Loading rooms...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/state.js" type="module"></script>
+  <script src="js/components/admin.js" type="module"></script>
+</body>
+</html>

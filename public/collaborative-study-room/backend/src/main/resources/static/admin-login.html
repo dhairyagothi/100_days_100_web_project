@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus - Admin Security Portal</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+  
+  <style>
+    body {
+      background: #090a12;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+    .admin-login-card {
+      width: 100%;
+      max-width: 400px;
+      padding: 40px;
+      border-radius: 16px;
+      text-align: center;
+      background: rgba(15, 12, 29, 0.85);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      box-shadow: 0 0 40px rgba(244, 63, 94, 0.15);
+      position: relative;
+      z-index: 10;
+    }
+    .admin-login-card h2 {
+      margin-top: 0;
+      color: #f43f5e;
+      font-size: 2rem;
+      text-shadow: 0 0 15px rgba(244, 63, 94, 0.5);
+    }
+    .admin-login-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 30px;
+    }
+    .form-group {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 12px 15px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: white;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.3s;
+    }
+    .form-group input:focus {
+      border-color: #f43f5e;
+      box-shadow: 0 0 10px rgba(244, 63, 94, 0.2);
+    }
+    .btn-admin {
+      background: linear-gradient(135deg, #e11d48, #f43f5e);
+      color: white;
+      border: none;
+      padding: 14px;
+      width: 100%;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(244, 63, 94, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-admin:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(244, 63, 94, 0.6);
+    }
+    .error-msg {
+      color: #f43f5e;
+      background: rgba(244, 63, 94, 0.1);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      font-size: 0.85rem;
+      display: none;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 25px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      transition: color 0.2s;
+    }
+    .back-link:hover {
+      color: white;
+    }
+    
+    /* Background effects */
+    .bg-circle {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(244,63,94,0.1) 0%, transparent 70%);
+      filter: blur(40px);
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-circle"></div>
+
+  <div class="admin-login-card glass">
+    <h2>Admin Portal</h2>
+    <p>Restricted Access - Authorized Personnel Only</p>
+    
+    <div id="error-box" class="error-msg"></div>
+
+    <form id="admin-login-form">
+      <div class="form-group">
+        <label>Admin Email</label>
+        <input type="email" id="email" required placeholder="admin@nexus.com">
+      </div>
+      <div class="form-group">
+        <label>Admin Password</label>
+        <input type="password" id="password" required placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn-admin">Authenticate System</button>
+    </form>
+    
+    <a href="index.html" class="back-link">← Return to Public Workspace</a>
+  </div>
+
+  <script type="module" src="js/components/admin-auth.js"></script>
+</body>
+</html>

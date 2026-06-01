@@ -1,0 +1,32 @@
+# =============================================================
+# Nexus Project Git Ignore Configuration
+# =============================================================
+
+# Environment Configurations (Ignore private keys and client IDs)
+.env
+frontend/.env
+backend/.env
+
+# Java / Maven build output
+backend/target/
+target/
+*.class
+*.jar
+*.war
+
+# Node.js dependencies
+node_modules/
+package-lock.json
+
+# IDEs and Text Editors settings
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# OS System Files
+Thumbs.db
+.DS_Store
