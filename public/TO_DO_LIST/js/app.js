@@ -37,7 +37,8 @@ function showToast(msg) {
   const container = document.getElementById('toast-container');
   const toast = document.createElement('div');
   toast.className = 'toast';
-  toast.innerHTML = `<i class="fa-solid fa-check-circle" style="color:var(--accent-green)"></i> ${msg}`;
+  const safe = msg.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  toast.innerHTML = `<i class="fa-solid fa-check-circle" style="color:var(--accent-green)"></i> ${safe}`;
   container.appendChild(toast);
   setTimeout(() => toast.remove(), 3000);
 }
