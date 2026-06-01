@@ -1,11 +1,24 @@
+/* Dark Mode – overrides using .dark-mode class toggled by JS */
 .dark-mode {
-    background: #0f172a;
-    color: white;
+    --clr-bg: #0f172a;
+    --clr-surface: #1e293b;
+    --clr-text-main: #f8fafc;
+    --clr-text-muted: #94a3b8;
+    --clr-border: #334155;
+    --bg-stat-box: #334155;
+    --text-brand: #38bdf8;
+    --button-primary-bg: #0284c7;
+    --button-primary-hover: #0369a1;
+    --button-cancel-bg: #334155;
+    --button-cancel-text: #f8fafc;
+    --bg-available: #064e3b;
+    --text-available: #34d399;
+    --bg-limited: #78350f;
+    --text-limited: #fbbf24;
 }
 
-.dark-mode .card {
+.dark-mode .navbar {
     background: #1e293b;
-    color: white;
 }
 
 .dark-mode input,
@@ -13,7 +26,17 @@
 .dark-mode select {
     background: #334155;
     color: white;
-    border: 1px solid #475569;
+    border-color: #475569;
+}
+
+.dark-mode .emergency-grid button {
+    background: #334155;
+    border-color: #475569;
+    color: #f8fafc;
+}
+
+.dark-mode .emergency-grid button:hover {
+    background: #450a0a;
 }
 
 .theme-btn{
@@ -24,4 +47,10 @@
     padding:10px 14px;
     border-radius:10px;
     cursor:pointer;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-size: 1.1rem;
+}
+.theme-btn:hover {
+    background: rgba(255,255,255,0.3);
 }
