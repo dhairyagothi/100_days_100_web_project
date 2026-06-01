@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/darkmode.css">
     <link rel="stylesheet" href="css/toast.css">
+
 </head>
 <body>
     <!-- Sidebar Navigation -->
@@ -56,10 +57,50 @@
 
         <div class="sidebar-footer">
             <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
+
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/hero.css">
+</head>
+<body>
+<nav class="navbar">
+    <div class="logo">
+        <img src="assets/logo.png" alt="logo">
+        <span>MedConsult</span>
+    </div>
+
+    <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="remedies.html">Remedies</a></li>
+        <li><a href="feedback.html">Feedback</a></li>
+    </ul>
+</nav>
+
+<header class="hero">
+    <button id="themeToggle" class="theme-btn">🌙</button>
+    <div class="hero-content">
+        <div class="hero-text-group">
+            <h1>🏥 MedConsult Dashboard</h1>
+            <p>Connecting Local Doctors with Specialists</p>
+        </div>
+
+        <div class="hero-nav-links">
+            <a href="index.html" class="active">
+                <i class="ph ph-squares-four"></i> Dashboard
+            </a>
+            <a href="remedies.html">
+                <i class="ph ph-prescription"></i> Home Remedies
+            </a>
+            <a href="feedback.html">
+                <i class="ph ph-chat-circle-text"></i> Feedback
+            </a>
+
+            <button class="btn-icon theme-toggle" id="themeToggleBtn" aria-label="Toggle Theme">
+
                 <i class="ph ph-moon"></i>
                 <span>Dark Mode</span>
             </button>
         </div>
+
     </aside>
 
     <!-- Main Content -->
@@ -72,6 +113,22 @@
                 </button>
                 <div class="breadcrumb">
                     <span class="breadcrumb-item">Dashboard</span>
+
+    </div>
+</header>
+
+    <!-- Doctors Section -->
+    <section class="card doctors-section">
+        <h2>👨‍⚕️ Available Doctors</h2>
+        <input type="text" id="doctorSearch" class="doctor-search-input" placeholder="Search Doctors...">
+        <div class="doctors-grid">
+            <!-- Card 1: Dr. Sarah Jenkins -->
+            <div class="doctor-card">
+                <div class="card-status-header">
+                    <span class="availability available" aria-label="Status: Available Today">
+                        <span class="status-dot green"></span> Available Today
+                    </span>
+
                 </div>
             </div>
             <div class="navbar-right">
@@ -141,6 +198,7 @@
                             <span class="stat-label">Next 7 days</span>
                         </div>
                     </div>
+
                     <div class="stat-card">
                         <div class="stat-card-icon info">
                             <i class="ph ph-heart"></i>
@@ -160,6 +218,31 @@
                             <p class="stat-value">1</p>
                             <span class="stat-label">Requires attention</span>
                         </div>
+
+                </div>
+                
+                <div class="doctor-meta">
+                    <div class="experience">💼 8 Years Experience</div>
+                    <div class="rating" aria-label="Doctor rating 5.0 out of 5">⭐ 5.0 Rating</div>
+                </div>
+                
+                <button class="primary-btn book-btn" data-doctor="Dr. Emily Watson" data-specialty="Pediatrician">Book Appointment</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Dashboard -->
+    <main class="dashboard-container">
+
+        <!-- Left Section -->
+        <div class="dashboard-left">
+
+            <!-- Consultation Request -->
+            <section class="card form-card">
+                <div class="card-header">
+                    <div class="icon-wrapper primary">
+                        <i class="ph ph-stethoscope"></i>
+
                     </div>
                 </div>
             </section>
@@ -525,6 +608,7 @@
                                 <div class="health-status">Normal</div>
                             </div>
 
+
                             <div class="health-item">
                                 <div class="health-label">
                                     <i class="ph ph-thermometer"></i>
@@ -535,6 +619,16 @@
                             </div>
                         </div>
                     </section>
+
+            <!-- Live Progress Status -->
+            <section id="consultation-status" class="card status-card">
+                <div class="card-header">
+                    <div class="icon-wrapper success">
+                        <i class="ph ph-activity"></i>
+                    </div>
+                    <h2>Live Progress Status</h2>
+                </div>
+
 
                     <!-- Daily Health Tips -->
                     <section class="card">
@@ -584,6 +678,7 @@
                             <h2>Quick Actions</h2>
                         </div>
 
+
                         <div class="quick-actions">
                             <a href="feedback.html" class="quick-action-btn">
                                 <i class="ph ph-chat-circle-text"></i>
@@ -624,5 +719,67 @@
     <script src="js/emergency.js"></script>
     <script src="js/appointments.js"></script>
     <script src="js/reschedule.js"></script>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Health Monitoring -->
+            <section class="card">
+                <h2>📊 Health Monitoring</h2>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <h3>Heart Rate</h3>
+                        <p id="heartRate">--</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>BP</h3>
+                        <p>120/80</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>SpO2</h3>
+                        <p>98%</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Daily Health Tips -->
+            <section class="card">
+                <h2>🧠 Daily Health Tips</h2>
+                <div id="healthTip"></div>
+            </section>
+
+            <!-- Emergency Help -->
+            <section class="card emergency-card">
+                <h2>🚑 Emergency Help</h2>
+                <div class="emergency-grid">
+                    <button>📞 Ambulance</button>
+                    <button>🏥 Nearby Hospital</button>
+                    <button>🧑‍⚕️ Emergency Doctor</button>
+                </div>
+            </section>
+
+            <!-- Feedback Link -->
+            <a href="feedback.html">
+                <button class="primary-btn feedback-btn">Give Feedback</button>
+            </a>
+
+        </div>
+
+    </main>
+
+<div id="toast-container" class="toast-container"></div>
+
+<script src="js/script.js"></script>
+<script src="js/darkmode.js"></script>
+<script src="js/toast.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/emergency.js"></script>
+<script src="js/appointments.js"></script>
+<script src="js/reschedule.js"></script>
+<footer class="footer">
+    <p>© 2026 MedConsult Dashboard</p>
+</footer>
+
 </body>
 </html>

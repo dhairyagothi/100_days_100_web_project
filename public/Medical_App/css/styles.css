@@ -113,6 +113,7 @@ html {
 }
 
 body {
+
     font-family: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     background-color: var(--background);
     color: var(--text-primary);
@@ -157,9 +158,7 @@ a:hover {
     text-decoration: underline;
 }
 
-/* ============================================================================
-   Layout - Sidebar
-   ============================================================================ */
+
 
 .sidebar {
     position: fixed;
@@ -180,6 +179,28 @@ a:hover {
 .sidebar-header {
     padding: var(--spacing-xl);
     border-bottom: 1px solid var(--border);
+
+    font-family: 'Inter', sans-serif;
+    background-color: var(--clr-bg);
+    color: var(--clr-text-main);
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+.logo img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.navbar {
+    background: var(--clr-surface);
+    padding: 1rem 2rem;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -208,6 +229,7 @@ a:hover {
     margin: 0;
 }
 
+
 .sidebar-toggle {
     display: none;
     background: none;
@@ -232,6 +254,14 @@ a:hover {
 }
 
 .nav-item {
+
+.navbar .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+
+.navbar .nav-links a {
+    text-decoration: none;
+    color: var(--clr-text-muted);
+    font-weight: 500;
+
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
@@ -241,6 +271,7 @@ a:hover {
     border-left: 3px solid transparent;
     font-weight: 500;
 }
+
 
 .nav-item:hover {
     background-color: var(--surface-hover);
@@ -280,13 +311,33 @@ a:hover {
 
 .theme-toggle-btn:hover {
     background-color: var(--primary);
+
+.navbar .nav-links a:hover, .navbar .nav-links a.active { color: var(--clr-primary); }
+
+/* Hero navigation links (distinct from navbar) */
+.hero-nav-links { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
+
+.hero-nav-links a {
+    text-decoration: none;
+    color: rgba(255,255,255,0.8);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition);
+}
+
+.hero-nav-links a:hover, .hero-nav-links a.active { color: #ffffff; }
+
+
+.hero {
+    background: linear-gradient(135deg, var(--clr-primary), var(--clr-primary-hover));
+
     color: white;
     border-color: var(--primary);
 }
 
-/* ============================================================================
-   Layout - Main Content
-   ============================================================================ */
+
 
 .main-content {
     margin-left: 280px;
@@ -314,6 +365,7 @@ a:hover {
     align-items: center;
     gap: var(--spacing-lg);
 }
+
 
 .sidebar-trigger {
     display: none;
@@ -426,9 +478,7 @@ a:hover {
     padding: var(--spacing-2xl);
 }
 
-/* ============================================================================
-   Sections
-   ============================================================================ */
+
 
 .hero-section {
     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
@@ -734,9 +784,7 @@ a:hover {
     background-color: var(--background-alt);
 }
 
-/* ============================================================================
-   Cards & Containers
-   ============================================================================ */
+
 
 .card {
     background-color: var(--surface);
@@ -803,9 +851,7 @@ a:hover {
     font-size: 1.5rem;
 }
 
-/* ============================================================================
-   Dashboard Grid
-   ============================================================================ */
+
 
 .dashboard-grid {
     display: grid;
@@ -820,9 +866,7 @@ a:hover {
     gap: var(--spacing-xl);
 }
 
-/* ============================================================================
-   Forms
-   ============================================================================ */
+
 
 .modern-form {
     display: flex;
@@ -979,9 +1023,6 @@ a:hover {
     border-top: 1px solid var(--border);
 }
 
-/* ============================================================================
-   Buttons
-   ============================================================================ */
 
 .btn {
     display: inline-flex;
@@ -1053,9 +1094,7 @@ a:hover {
     margin-top: var(--spacing-lg);
 }
 
-/* ============================================================================
-   Status & Progress
-   ============================================================================ */
+
 
 .empty-status {
     text-align: center;
@@ -1125,9 +1164,7 @@ a:hover {
     margin-left: 23px;
 }
 
-/* ============================================================================
-   Health Monitoring
-   ============================================================================ */
+
 
 .health-stats {
     display: grid;
@@ -1143,6 +1180,16 @@ a:hover {
 }
 
 .health-label {
+=======
+/* Theme Toggle Button (hero-style, from Main) */
+.theme-toggle-btn {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: white;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1180,9 +1227,7 @@ a:hover {
     color: var(--text-primary);
 }
 
-/* ============================================================================
-   Emergency
-   ============================================================================ */
+
 
 .emergency-card {
     border: 2px solid var(--danger);
@@ -1219,9 +1264,7 @@ a:hover {
     font-size: 2.5rem;
 }
 
-/* ============================================================================
-   Quick Actions
-   ============================================================================ */
+
 
 .quick-actions {
     display: grid;
@@ -1256,9 +1299,7 @@ a:hover {
     color: var(--primary);
 }
 
-/* ============================================================================
-   Footer
-   ============================================================================ */
+
 
 .footer {
     background-color: var(--surface);
@@ -1289,9 +1330,7 @@ a:hover {
     color: var(--primary);
 }
 
-/* ============================================================================
-   Responsive Design
-   ============================================================================ */
+
 
 @media (max-width: 1024px) {
     .dashboard-grid {
@@ -1348,10 +1387,39 @@ a:hover {
         gap: var(--spacing-2xl);
     }
 
+
     .hero-stats {
         flex-direction: column;
         width: 100%;
     }
+
+
+.doctors-section {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.doctor-search-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--clr-border);
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--clr-text-main);
+    background: var(--clr-surface);
+    transition: var(--transition);
+    margin: 1rem 0;
+}
+.doctor-search-input:focus {
+    outline: none;
+    border-color: var(--clr-primary);
+    box-shadow: 0 0 0 3px var(--clr-border-focus);
+}
+
+.doctors-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 10px; }
+
 
     .section-header {
         flex-direction: column;
@@ -1370,6 +1438,7 @@ a:hover {
         grid-template-columns: 1fr;
     }
 
+
     .stat-card {
         flex-direction: row;
     }
@@ -1377,6 +1446,14 @@ a:hover {
     .form-row-2 {
         grid-template-columns: 1fr;
     }
+
+.doctor-avatar { width: 60px; height: 60px; border-radius: 50%; flex-shrink: 0; display: flex; justify-content: center; align-items: center; background: var(--bg-stat-box); border: 1px solid var(--clr-border); font-size: 1.8rem; overflow: hidden; }
+.doctor-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.doctor-profile { display: flex; align-items: center; gap: 15px; text-align: left; width: 100%; }
+.doctor-identity { display: flex; flex-direction: column; min-width: 0; }
+.doctor-identity h3 { margin-bottom: 3px; color: var(--clr-text-main); font-size: 1.1rem; }
+
 
     .health-stats {
         grid-template-columns: 1fr;
@@ -1448,9 +1525,7 @@ a:hover {
     }
 }
 
-/* ============================================================================
-   Accessibility
-   ============================================================================ */
+
 
 @media (prefers-reduced-motion: reduce) {
     * {
@@ -1470,3 +1545,122 @@ a:focus-visible {
     outline: 2px solid var(--primary);
     outline-offset: 2px;
 }
+
+
+.primary-btn {
+    background: var(--button-primary-bg);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition);
+    width: 100%;
+}
+.primary-btn:hover {
+    background: var(--button-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.feedback-btn {
+    margin-top: 0.5rem;
+}
+
+.emergency-card h2 { color: var(--clr-danger); }
+.emergency-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-top: 1rem;
+}
+.emergency-grid button {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--clr-text-main);
+}
+.emergency-grid button:hover {
+    background: #fee2e2;
+    border-color: var(--clr-danger);
+}
+
+
+.tip-card {
+    background: var(--bg-stat-box);
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-md);
+    margin-top: 0.75rem;
+    font-size: 0.95rem;
+    color: var(--clr-text-main);
+    border-left: 4px solid var(--clr-primary);
+}
+
+
+.emergency-toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--clr-danger);
+    color: white;
+    padding: 14px 28px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    z-index: 9999;
+    animation: slideIn 0.3s ease;
+}
+.emergency-toast.hide-toast {
+    animation: slideOut 0.5s ease forwards;
+}
+
+
+.footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--clr-text-muted);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--clr-border);
+    margin-top: 1rem;
+}
+
+/
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .dashboard-container { grid-template-columns: 1fr; }
+    .doctors-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .hero-content { gap: 15px; }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .navbar { flex-direction: column; gap: 0.75rem; padding: 1rem; }
+    .hero-content { flex-direction: column; text-align: center; }
+    .hero-text-group { text-align: center; }
+    .hero-nav-links { justify-content: center; }
+    .doctors-section { padding: 0 0.75rem; }
+    .dashboard-container { padding: 0 0.75rem; gap: 1.5rem; }
+    .modal-footer { flex-direction: column; gap: 10px; }
+    .grid-2-cols { grid-template-columns: 1fr; }
+    .form-actions { flex-direction: column; }
+    .emergency-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+    .hero h1 { font-size: 1.5rem; }
+    .hero p { font-size: 0.95rem; }
+    .hero-nav-links { flex-direction: column; gap: 0.75rem; }
+    .doctor-profile { flex-direction: column; align-items: center; text-align: center; gap: 10px; }
+    .specialty-badge { align-self: center; }
+    .doctor-meta { flex-direction: column; gap: 6px; align-items: center; }
+    .card { padding: 1rem; }
+    .card-header { flex-direction: column; text-align: center; gap: 0.5rem; }
+}
+
