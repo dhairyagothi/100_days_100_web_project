@@ -12,50 +12,31 @@ btnNext.addEventListener("click",()=>{
 })
 
 btnPreve.addEventListener("click",()=>{
-    ImageContainerSlider.scrollLeft -= 100
+    ImageContainerSlider.scrollLeft -= 200;
 })
 
 
 const listofProductEL = document.querySelector(".listofProduct")
-
-let listofProductHTMl = "" ;
-
-for(let i  = 0 ; i < listofProduct.length ; i++){
-    listofProductHTMl  += `
+listofProductEL.innerHTML = listofProduct.map(p => `
     <a href="#">
-        <img src="${listofProduct[i].img}"/>
-        <p>${listofProduct[i].dis}</p>
+        <img src="${p.img}" alt="${p.dis}" loading="lazy"/>
+        <p>${p.dis}</p>
     </a>
-        `
-}
-listofProductEL.innerHTML = listofProductHTMl
+`).join("")
 
 
 const brandTopproductEl = document.querySelector(".brandTopproduct")
-
-let brandTopproductHTML = ""
-
-for(let i = 0 ; i < topbrands.length ; i++){
-    brandTopproductHTML += `
+brandTopproductEl.innerHTML = topbrands.map(b => `
     <a href="#">
-        <img src="${topbrands[i].img}"/>
-        <p>${topbrands[i].dis}</p>
+        <img src="${b.img}" alt="${b.dis}" loading="lazy"/>
+        <p>${b.dis}</p>
     </a>
-    `
-}
-
-brandTopproductEl.innerHTML = brandTopproductHTML
+`).join("")
 
 
 const hardToResistDeals_image = document.querySelector(".hardToResistDeals_image")
-let hardToResistDeals_imageHTML = ""
-
-for(let i = 0 ; i < hardtoResistDeals.length ; i++){
-    hardToResistDeals_imageHTML += `
+hardToResistDeals_image.innerHTML = hardtoResistDeals.map(url => `
     <a href="#">
-        <img src="${hardtoResistDeals[i]}"/>
+        <img src="${url}" alt="Deal image" loading="lazy"/>
     </a>
-    `
-}
-
-hardToResistDeals_image.innerHTML = hardToResistDeals_imageHTML
+`).join("")

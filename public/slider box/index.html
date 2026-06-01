@@ -3,38 +3,57 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Swiper demo</title>
+  <title>Image Slider Gallery</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
 
   <link rel="stylesheet" href="swiper-bundle.min.css" />
-<link rel="stylesheet" href="index.css">
-
-   
+  <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
- 
-  <div class="swiper mySwiper">
-     <h1 class="title">IMAGE-SLIDER</h1>
-    <div class="swiper-wrapper">
-      <div class="swiper-slide"><img src="public/images/i1.jpg" alt="ujjain" srcset=""><snap class="text">slide 1</snap></div>
-      <div class="swiper-slide"><img src="public/images/i2.jpg" alt="ujjain" srcset=""><snap class="text">slide 2</snap></div>
-      <div class="swiper-slide"><img src="public/images/i3.jpg" alt="ujjain" srcset=""><snap class="text">slide 3</snap></div>
-      <div class="swiper-slide"><img src="public/images/i4.jpg" alt="ujjain" srcset=""><snap class="text">slide 4</snap></div>
-      <div class="swiper-slide"><video src="public/images/i5.mp4" loop></video><span class="text">slide 5</snap></div>
-      <div class="swiper-slide"><img src="public/images/i5.jpg" alt="ujjain" srcset=""><snap class="text">slide 6</snap></div>
-      <div class="swiper-slide"><img src="public/images/i7.jpg" alt="ujjain" srcset=""><snap class="text">slide 7</snap></div>
-      <div class="swiper-slide"><img src="public/images/i8.jpg" alt="ujjain" srcset=""><snap class="text">slide 8</snap></div>
-      <div class="swiper-slide"><img src="public/images/i6.jpg" alt="ujjain" srcset=""><snap class="text">slide 9</snap></div>
+  <main class="gallery-app">
+    <section class="gallery-panel">
+      <header class="gallery-header">
+        <div>
+          <p class="eyebrow">Curated visual library</p>
+          <h1 class="title">Image Slider</h1>
+        </div>
+        <div class="slide-counter" aria-live="polite">
+          <span id="currentSlide">01</span>
+          <span>/</span>
+          <span id="totalSlides">40</span>
+        </div>
+      </header>
+
+      <nav class="category-filter" aria-label="Image categories">
+        <button class="category-btn active" type="button" data-category="all">All</button>
+        <button class="category-btn" type="button" data-category="cars">Cars</button>
+        <button class="category-btn" type="button" data-category="animals">Animals</button>
+        <button class="category-btn" type="button" data-category="landscapes">Landscapes</button>
+        <button class="category-btn" type="button" data-category="bungalows">Bungalows</button>
+      </nav>
+
+      <div class="swiper mySwiper">
+        <div class="swiper-wrapper" id="sliderWrapper"></div>
+        <button class="swiper-button-next" aria-label="Next slide"></button>
+        <button class="swiper-button-prev" aria-label="Previous slide"></button>
+      </div>
+    </section>
+  </main>
+
+  <template id="slideTemplate">
+    <div class="swiper-slide">
+      <div class="media-frame"></div>
+      <div class="slide-details">
+        <span class="slide-category"></span>
+        <h2 class="slide-title"></h2>
+        <p class="slide-description"></p>
+      </div>
     </div>
-    <div class="swiper-button-next"></div>
-    <div class="swiper-button-prev"></div>
-    <div class="swiper-pagination"></div>
-  </div>
+  </template>
 
   <script src="swiper-bundle.min.js"></script>
-
-<script src="index.js"></script>
+  <script src="index.js"></script>
 </body>
 
 </html>

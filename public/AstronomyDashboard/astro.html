@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astronomy Dashboard</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="dashboard" id="home">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">Observatory - Live</p>
+                <h1>Astronomy Dashboard</h1>
+                <p class="subtitle">Explore the universe from your screen</p>
+            </div>
+
+            <div class="status-pills" aria-label="Live status">
+                <span class="pill live"><i></i><span id="istTime">--:--:-- IST</span></span>
+                <span class="pill" id="todayDate">Today</span>
+            </div>
+        </header>
+
+        <section class="apod-card feature-card">
+            <div class="apod-image" id="apodImage" role="img" aria-label="NASA astronomy picture of the day">
+                <img id="apodImg" src="" alt="NASA astronomy picture of the day" referrerpolicy="no-referrer" decoding="async">
+            </div>
+            <div class="apod-copy">
+                <div class="section-head">
+                    <p class="eyebrow">Picture of the Day</p>
+                    <span class="mini-pill" id="apodDate">May 15, 2026</span>
+                </div>
+                <h2 id="apodTitle">Loading NASA Picture of the Day</h2>
+                <p id="apodDescription">Fetching today's astronomy image from NASA.</p>
+                <a class="primary-action" id="apodLink" href="https://apod.nasa.gov/" target="_blank" rel="noreferrer">View HD Image</a>
+                <a class="apod-source" id="apodSource" href="https://apod.nasa.gov/" target="_blank" rel="noreferrer">Source: NASA APOD</a>
+            </div>
+        </section>
+
+        <section class="fact-card feature-card">
+            <div>
+                <p class="eyebrow">Daily Space Fact</p>
+                <blockquote id="spaceFact">Loading today's space fact…</blockquote>
+                <a class="fact-source" id="factSource" href="https://science.nasa.gov/" target="_blank" rel="noreferrer">Source: loading…</a>
+            </div>
+            <button class="ghost-action" id="shuffleFact" type="button">Shuffle</button>
+        </section>
+
+        <section class="dashboard-grid">
+            <article class="panel news-panel" id="news">
+                <div class="panel-title row">
+                    <div class="news-titlebar">
+                        <button class="news-back" id="newsBack" type="button" aria-label="Back to news list">&lt;</button>
+                        <p class="eyebrow">Astronomy News</p>
+                    </div>
+                    <span class="mini-pill green">Live</span>
+                </div>
+                <div class="news-scroll" id="newsScroll">
+                    <div class="news-list" id="newsList"></div>
+                    <p class="news-loading" id="newsLoading">Loading more space news...</p>
+                </div>
+                <article class="news-detail" id="newsDetail" hidden></article>
+            </article>
+
+            <article class="panel learn-panel">
+                <div class="panel-title row">
+                    <div class="card-titlebar">
+                        <button class="card-back" id="topicBack" type="button" aria-label="Back to topics">&lt;</button>
+                        <p class="eyebrow">Learn Astronomy</p>
+                    </div>
+                    <span class="mini-pill">Topics</span>
+                </div>
+                <div class="topic-list" id="topicList"></div>
+                <article class="info-detail" id="topicDetail" hidden></article>
+                <button class="outline-action" id="exploreTopics" type="button">Explore Topics</button>
+            </article>
+
+            <article class="panel scientists-panel" id="scientists">
+                <div class="panel-title row">
+                    <div class="card-titlebar">
+                        <button class="card-back" id="scientistBack" type="button" aria-label="Back to scientists">&lt;</button>
+                        <p class="eyebrow">Scientists & Astronomers</p>
+                    </div>
+                    <span class="mini-pill">Profiles</span>
+                </div>
+                <div class="scientist-list" id="scientistList"></div>
+                <article class="info-detail" id="scientistDetail" hidden></article>
+                <button class="outline-action" id="meetScientists" type="button">Meet More People</button>
+            </article>
+
+            <section class="feature-switcher">
+                <div class="feature-tabs" role="tablist" aria-label="Astronomy tools">
+                    <button class="feature-tab active" type="button" data-feature="moon">Moon Phase</button>
+                    <button class="feature-tab" type="button" data-feature="sky">Sky Tonight</button>
+                    <button class="feature-tab" type="button" data-feature="distance">Distance</button>
+                    <button class="feature-tab" type="button" data-feature="events">Events</button>
+                </div>
+
+                <div class="feature-content">
+                    <article class="feature-pane active" id="feature-moon">
+                        <div class="feature-copy">
+                            <p class="eyebrow">Moon Phase</p>
+                            <span class="mini-pill" id="moonPhaseSource">Loading phase…</span>
+                            <span class="field-label">Pick a date</span>
+                            <label class="moon-date-field" for="moonDate">
+                                <input id="moonDate" type="date" aria-label="Pick a date">
+                            </label>
+                        </div>
+                        <div class="moon-visual compact-moon">
+                            <div class="moon-orb" id="moonOrb"></div>
+                        </div>
+                        <div>
+                            <h3 id="moonName">Loading…</h3>
+                            <dl class="metric-list">
+                                <div>
+                                    <dt>Illumination</dt>
+                                    <dd id="illumination">--</dd>
+                                </div>
+                                <div>
+                                    <dt>Lunar age</dt>
+                                    <dd id="lunarAge">--</dd>
+                                </div>
+                            </dl>
+                        </div>
+                    </article>
+
+                    <article class="feature-pane" id="feature-sky">
+                        <div class="feature-copy">
+                            <p class="eyebrow">Sky Tonight</p>
+                            <span class="mini-pill" id="skyLocation">Locating sky…</span>
+                        </div>
+                        <div class="sky-list compact-list" id="skyList"></div>
+                        <a class="outline-action compact" href="https://stellarium-web.org/" target="_blank" rel="noreferrer">View Full Sky Map</a>
+                    </article>
+
+                    <article class="feature-pane" id="feature-distance">
+                        <div class="distance-layout">
+                            <p class="eyebrow">Planet Distance</p>
+                            <span class="mini-pill" id="distanceSource">Loading distance…</span>
+                            <div class="distance-picker">
+                                <label class="distance-select">
+                                    <span>From</span>
+                                    <select id="fromPlanet"></select>
+                                </label>
+                                <span class="distance-arrow" aria-hidden="true">→</span>
+                                <label class="distance-select">
+                                    <span>To</span>
+                                    <select id="toPlanet"></select>
+                                </label>
+                            </div>
+                            <div class="distance-stats">
+                                <div class="distance-stat">
+                                    <span class="distance-stat-label">Distance</span>
+                                    <p class="distance-stat-value" id="distanceKm"><span class="stat-num">--</span><span class="stat-unit">km</span></p>
+                                </div>
+                                <div class="distance-stat">
+                                    <span class="distance-stat-label">Astronomical units</span>
+                                    <p class="distance-stat-value" id="distanceAu"><span class="stat-num">--</span><span class="stat-unit">AU</span></p>
+                                </div>
+                                <div class="distance-stat">
+                                    <span class="distance-stat-label">Light travel</span>
+                                    <p class="distance-stat-value" id="lightTime"><span class="stat-num">--</span><span class="stat-unit">min</span></p>
+                                </div>
+                            </div>
+                            <button class="primary-action distance-calc-btn" id="calculateDistance" type="button">Calculate distance</button>
+                        </div>
+                    </article>
+
+                    <article class="feature-pane" id="feature-events">
+                        <div class="feature-copy">
+                            <p class="eyebrow">Upcoming Astronomy Events</p>
+                            <a class="outline-action compact" href="https://in-the-sky.org/newscal.php" target="_blank" rel="noreferrer">View Calendar</a>
+                        </div>
+                        <div class="event-list compact-list" id="eventList"></div>
+                    </article>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

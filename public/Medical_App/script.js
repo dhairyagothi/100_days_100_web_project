@@ -1,102 +1,165 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const requestForm = document.getElementById('requestForm');
-    const responseForm = document.getElementById('responseForm');
-    const feedbackForm = document.getElementById('feedbackForm');
-    const statusMessage = document.getElementById('statusMessage');
-    const loading = document.getElementById('loading');
-    const specialistResponseSection = document.getElementById('specialist-response');
-    const historyList = document.getElementById('historyList');
-    const specialistSearch = document.getElementById('specialistSearch');
-    const specialistTypeSelect = document.getElementById('specialistType');
 
-    const specialists = ['Allergist/Immunologist', 'Anesthesiologist', 'Cardiologist', 'Dermatologist', 'Endocrinologist', 'Gastroenterologist', 'Hematologist', 'Nephrologist', 'Neurologist', 'Oncologist', 'Ophthalmologist', 'Otolaryngologist (ENT)', 'Pediatrician', 'Psychiatrist', 'Pulmonologist', 'Rheumatologist', 'Urologist', 'Cardiothoracic Surgeon', 'General Surgeon', 'Neurosurgeon', 'Orthopedic Surgeon', 'Plastic Surgeon', 'Vascular Surgeon', 'Family Medicine Physician', 'General Practitioner (GP)', 'Internal Medicine Physician (Internist)'];
+    const requestForm = document.getElementById('requestForm');
+
+    const historyList = document.getElementById('historyList');
+
+    const specialistSearch =
+        document.getElementById('specialistSearch');
+
+    const specialistTypeSelect =
+        document.getElementById('specialistType');
+
+    // Target DOM nodes for the Safe Medicine module
+    const symptomSelect =
+        document.getElementById('symptomSelect');
+    const recommendationBox =
+        document.getElementById('recommendationBox');    
+
+    const specialists = [
+        'Cardiologist',
+        'Dermatologist',
+        'Neurologist',
+        'Psychiatrist',
+        'Pediatrician',
+        'Orthopedic Surgeon'
+    ];
+
     const consultationHistory = [];
 
+    // Immutable Data Mapping Engine for Symptoms and Safe Recommendations
+    const MEDICINE_CATALOG = Object.freeze({
+        cold: {
+            medicines: ["Antihistamines", "Saline Nasal Spray"],
+            guidelines: "Stay hydrated, prioritize deep rest, and leverage steam inhalation protocols.",
+            contraindications: "Severe hypertension"
+        },
+        headache: {
+            medicines: ["Ibuprofen", "Acetaminophen"],
+            guidelines: "Maintain aggressive liquid hydration and avoid excessive screen emission exposure.",
+            contraindications: "Active stomach ulcers"
+        },
+        fever: {
+            medicines: ["Paracetamol (Acetaminophen)"],
+            guidelines: "Track thermal core temperature variations carefully. Avoid exceeding 4,000mg per 24 hours.",
+            contraindications: "Advanced liver impairment"
+        },
+        fatigue: {
+            medicines: ["Multivitamin Supplements", "Electrolyte Replacements"],
+            guidelines: "Ensure consistent REM sleep cycles, hydration balance, and balanced caloric nutrition intake.",
+            contraindications: "Chronic underlying metabolic conditions"
+        }
+    });
+
     function updateSpecialistOptions(searchText) {
+
         specialistTypeSelect.innerHTML = '';
-        const filteredSpecialists = specialists.filter(specialist => specialist.toLowerCase().includes(searchText.toLowerCase()));
-        filteredSpecialists.forEach(specialist => {
+
+        const filtered = specialists.filter(item =>
+            item.toLowerCase().includes(searchText.toLowerCase())
+        );
+
+        filtered.forEach(specialist => {
+
             const option = document.createElement('option');
+
             option.value = specialist;
+
             option.textContent = specialist;
+
             specialistTypeSelect.appendChild(option);
+
         });
     }
 
-    function renderHistory() {
-        historyList.innerHTML = '';
-        consultationHistory.forEach((historyItem) => {
-            const listItem = document.createElement('li');
-            listItem.innerHTML = `
-                <strong>${historyItem.date}</strong><br>
-                Doctor: ${historyItem.doctorName} <br>
-                Condition: ${historyItem.condition} <br>
-                Specialist: ${historyItem.specialist} <br>
-                Status: ${historyItem.status} <br>
-                <em>${historyItem.notes || ''}</em>
-                <br><br>
-            `;
-            historyList.appendChild(listItem);
-        });
-    }
-
-    specialistSearch.addEventListener('input', (event) => {
-        updateSpecialistOptions(event.target.value);
+    specialistSearch.addEventListener('input', e => {
+        updateSpecialistOptions(e.target.value);
     });
 
     updateSpecialistOptions('');
 
-    requestForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const doctorName = document.getElementById('doctorName').value;
-        const patientCondition = document.getElementById('patientCondition').value;
-        const specialistType = document.getElementById('specialistType').value;
+    requestForm.addEventListener('submit', e => {
 
-        loading.style.display = 'block';
-        statusMessage.textContent = '';
+        e.preventDefault();
 
-        setTimeout(() => {
-            loading.style.display = 'none';
-            const currentDate = new Date().toLocaleString();
-            const newHistoryItem = {
-                date: currentDate,
-                doctorName: doctorName,
-                condition: patientCondition,
-                specialist: specialistType,
-                status: 'Pending',
-                notes: ''
-            };
-            consultationHistory.push(newHistoryItem);
-            renderHistory();
+        const doctorName =
+            document.getElementById('doctorName').value;
 
-            statusMessage.textContent = `Consultation requested for Dr.${doctorName} regarding ${patientCondition}.            
-            Specialist type: ${specialistType}.`;
-            specialistResponseSection.style.display = 'block';
-            requestForm.reset();
-        }, 2000);
+        const patientCondition =
+            document.getElementById('patientCondition').value;
+
+        const specialistType =
+            document.getElementById('specialistType').value;
+
+        const consultation = {
+            doctorName,
+            patientCondition,
+            specialistType,
+            date: new Date().toLocaleString()
+        };
+
+        consultationHistory.push(consultation);
+
+        renderHistory();
+
+        alert('Consultation Submitted Successfully');
+
+        requestForm.reset();
     });
 
-    responseForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const consultationId = document.getElementById('consultationId').value;
-        const suggestion = document.getElementById('suggestion').value;
+    function renderHistory() {
 
-        const historyItem = consultationHistory.find(item => item.date === consultationId);
-        if (historyItem) {
-            historyItem.status = 'Completed';
-            historyItem.notes = suggestion;
-            renderHistory();
-        }
+        historyList.innerHTML = '';
 
-        statusMessage.innerHTML = `Suggestion submitted for Consultation ID <strong>${consultationId}</strong>:${suggestion}`;
-        responseForm.reset();
-    });
+        consultationHistory.forEach(item => {
 
-    feedbackForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const feedbackMessage = document.getElementById('feedbackMessage').value;
+            const li = document.createElement('li');
 
-        statusMessage.textContent = `Feedback received: ${feedbackMessage}`;
-        feedbackForm.reset();
-    });
+            li.innerHTML = `
+                <strong>${item.date}</strong><br>
+                Doctor: ${item.doctorName}<br>
+                Condition: ${item.patientCondition}<br>
+                Specialist: ${item.specialistType}
+            `;
+
+            historyList.appendChild(li);
+        });
+    }
+
+//Modern Real-time Data-Driven State Event Architecture
+function handleSymptomRenderPipeline(){
+    const selectedValue = symptomSelect.value;
+
+    if(!selectedValue || !MEDICINE_CATALOG[selectedValue]){
+        recommendationBox.innerHTML = `
+            <p class="text-slate-400 italic" style="color: #64748b; font-style: italic;">
+                Please select a documented symptom category from the dropdown menu to generate therapeutic recommendations.
+            </p>
+        `;
+        return;
+    }
+
+    const data = MEDICINE_CATALOG[selectedValue];
+
+    recommendationBox.innerHTML = `
+       <div class="recommendation-card" style="border-left: 4px solid #3b82f6; padding: 1rem; margin-top: 1rem; background-color: #f8fafc; border-radius: 0 4px 4px 0;">
+                <h4 style="margin: 0 0 0.5rem 0; color: #1e293b; font-size: 1rem; font-weight: 700;">💊 Suggested Alternatives:</h4>
+                <p style="margin: 0 0 1rem 0; color: #475569; font-size: 0.9rem;">${data.medicines.join(", ")}</p>
+                
+                <h4 style="margin: 0 0 0.5rem 0; color: #1e293b; font-size: 1rem; font-weight: 700;">📋 Functional Guidelines:</h4>
+                <p style="margin: 0 0 1rem 0; color: #475569; font-size: 0.9rem;">${data.guidelines}</p>
+                
+                <div style="padding: 0.5rem; background-color: #fef2f2; border: 1px solid #fee2e2; border-radius: 4px; margin-top: 0.5rem;">
+                    <span style="color: #dc2626; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 0.25rem;">⚠️ Critical Contraindications:</span>
+                    <span style="color: #991b1b; font-size: 0.75rem;">${data.contraindications}</span>
+                </div>
+            </div> 
+    `;
+}
+
+// Attach modern, scalable change listener to the selection dropdown block
+symptomSelect.addEventListener('change', handleSymptomRenderPipeline);
+
+// Initialize standard fallback layout on page startup
+handleSymptomRenderPipeline();
 });

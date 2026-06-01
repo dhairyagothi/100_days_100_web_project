@@ -8,24 +8,65 @@
   <link rel="icon" href="../favv.png" type="image/x-icon" />
 </head>
 <body>
-    <div class="container">
-        
+  <div class="container">
+
     <h1>Custom Color Picker</h1>
+
     <div class="slider-container">
-        <label for="red">Red: </label>
-        <input type="range" id="red" class="slider" min="0" max="255" value="255">
-    </div>
-    <div class="slider-container">
-        <label for="green">Green: </label>
-        <input type="range" id="green" class="slider" min="0" max="255" value="0">
-    </div>
-    <div class="slider-container">
-        <label for="blue">Blue: </label>
-        <input type="range" id="blue" class="slider" min="0" max="255" value="0">
-    </div>
-    <div class="color-display" id="customColorDisplay"></div>
+      <label for="red">Red:</label>
+      <input type="range" id="red" class="slider" min="0" max="255" value="255">
     </div>
 
-    <script src="script.js"></script>
+    <div class="slider-container">
+      <label for="green">Green:</label>
+      <input type="range" id="green" class="slider" min="0" max="255" value="0">
+    </div>
+
+    <div class="slider-container">
+      <label for="blue">Blue:</label>
+      <input type="range" id="blue" class="slider" min="0" max="255" value="0">
+    </div>
+
+    <div class="hex-container">
+  <label for="hexInput">HEX:</label>
+  <input type="text" id="hexInput" placeholder="#6C63FF">
+</div>
+
+    <!-- Single color box (FIXED duplicate issue) -->
+    <div class="color-display" id="customColorDisplay"></div>
+
+    <div class="color-info">
+      <p id="hexValue">HEX: #000000</p>
+      <p id="rgbValue">RGB: rgb(0,0,0)</p>
+    </div>
+    
+
+    <button id="copyHex">Copy HEX</button>
+<button id="copyRgb">Copy RGB</button>
+<button id="copyHsl">Copy HSL</button>
+
+
+
+<button id="saveColorBtn">⭐ Save This Color</button>
+
+<h3>Saved Favorites</h3>
+<div id="favoritesContainer"></div>
+
+<hr class="section-divider">
+
+    <h3>Generated Palette</h3>
+    <p class="copy-hint">💡 Click any color box to copy HEX value</p>
+
+<div class="palette-container">
+  <div class="palette-box" id="color1"></div>
+  <div class="palette-box" id="color2"></div>
+  <div class="palette-box" id="color3"></div>
+  <div class="palette-box" id="color4"></div>
+  <div class="palette-box" id="color5"></div>
+</div>
+
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>

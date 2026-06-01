@@ -150,6 +150,23 @@ body {
   background: var(--surface);
 }
 
+/* SVG icon toggle — moon visible in light, sun visible in dark */
+.theme-toggle svg {
+  position: absolute;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.theme-toggle {
+  position: relative;
+  overflow: hidden;
+}
+
+.icon-sun  { opacity: 0; transform: rotate(-90deg) scale(0.6); }
+.icon-moon { opacity: 1; transform: rotate(0deg)   scale(1);   }
+
+body.dark .icon-sun  { opacity: 1; transform: rotate(0deg)   scale(1);   }
+body.dark .icon-moon { opacity: 0; transform: rotate(90deg)  scale(0.6); }
+
 /* =========================================
    Forms
    ========================================= */
@@ -339,6 +356,118 @@ button#btn:active { transform: scale(0.997); }
 }
 
 /* =========================================
+   Body Fat Estimate
+   ========================================= */
+.bf-section {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--rule);
+}
+
+.bf-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.bf-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 2px;
+  font-family: var(--f-mono);
+}
+
+.bf-body {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.bf-gauge-wrap {
+  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
+}
+
+.bf-gauge {
+  width: 100%;
+  height: 100%;
+}
+
+.bf-track {
+  stroke: var(--rule);
+}
+
+.bf-fill {
+  stroke: var(--green);
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              stroke 0.3s ease;
+}
+
+.bf-pct-text {
+  font-family: var(--f-serif);
+  font-size: 28px;
+  font-style: italic;
+  font-weight: 400;
+  fill: var(--ink);
+}
+
+.bf-pct-unit {
+  font-family: var(--f-mono);
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  fill: var(--ink-3);
+}
+
+.bf-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.bf-desc {
+  font-size: 11px;
+  color: var(--ink-2);
+  line-height: 1.65;
+  margin-bottom: 14px;
+}
+
+.bf-ranges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+}
+
+.bf-range-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+}
+
+.bf-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.bf-dot-blue  { background: #2563b0; }
+.bf-dot-green { background: #16a34a; }
+.bf-dot-teal  { background: #0d9488; }
+.bf-dot-amber { background: #d97706; }
+.bf-dot-red   { background: #dc2626; }
+
+/* =========================================
    Reference Table
    ========================================= */
 .bmi-table {
@@ -409,4 +538,139 @@ button#btn:active { transform: scale(0.997); }
 *::-webkit-scrollbar {
   width: 0;
   height: 0;
+}
+
+
+
+@media (max-width: 768px) {
+
+  /* =========================
+     Page spacing fix
+  ========================= */
+  body {
+    padding: 16px 10px;
+  }
+
+  .page {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .bmi-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+    border-radius: 10px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .right-card {
+    gap: 18px;
+  }
+
+  .top-bar {
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+  }
+
+  .card-title {
+    font-size: 22px;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  select,
+  input {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  button#btn {
+    font-size: 11px;
+    padding: 14px;
+  }
+
+  .result-row {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-card + .metric-card {
+    border-left: none;
+    border-top: 1px solid var(--rule);
+    padding-left: 0;
+    margin-top: 16px;
+  }
+
+  .metric-value {
+    font-size: 34px;
+  }
+
+  .range-val {
+    font-size: 18px;
+  }
+
+  .range-vis {
+    margin-top: 18px;
+  }
+
+  .range-labels {
+    font-size: 10px;
+  }
+
+  /* =========================
+     TABLE scroll fix
+  ========================= */
+  .bmi-table {
+    font-size: 11px;
+  }
+
+  .bmi-table td {
+    padding: 8px 0;
+  }
+
+
+  .chart-wrap {
+    min-height: 180px;
+    padding-top: 12px;
+  }
+
+  .chart-wrap canvas {
+    width: 100% !important;
+    height: 160px !important;
+  }
+
+  .chart-hint {
+    font-size: 10px;
+  }
+
+  .bf-body {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .bf-gauge-wrap {
+    width: 100px;
+    height: 100px;
+    align-self: center;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+}
+
+input::placeholder {
+  opacity: 1;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+input:focus::placeholder {
+  opacity: 0;
+  transform: translateX(6px);
 }

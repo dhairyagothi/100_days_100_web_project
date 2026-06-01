@@ -3,7 +3,7 @@ var candies = ["Blue", "Orange", "Green", "Yellow", "Red", "Purple"];
 var board = [];
 var rows = 9;
 var columns = 9;
-var score = 0;
+var score =0;
 
 var currTile;
 var otherTile;
@@ -11,19 +11,11 @@ var otherTile;
 
 window.onload = function() {
     startGame();
-
-    //1/10th of a second
-    window.setInterval(function(){
-        crushCandy();
-        slideCandy();
-        generateCandy();
-    }, 100);
-}
-    // Reset button functionality
+     // Reset button functionality
     document.getElementById("Reset").addEventListener("click", function() {
+        score=0
         // Reset score
-        score = 0;
-        document.getElementById("score").innerText = score; // Update the score display
+        document.getElementById("score1").innerText = score; // Update the score display
 
         // Clear the board array and HTML content
         board = [];
@@ -32,6 +24,14 @@ window.onload = function() {
         // Reinitialize the game
         startGame();
     });
+    //1/10th of a second
+    window.setInterval(function(){
+        crushCandy();
+        slideCandy();
+        generateCandy();
+    }, 100);
+}
+    
 
 
 function randomCandy() {
@@ -39,13 +39,26 @@ function randomCandy() {
 }
 
 function startGame() {
+    score=0;
+    document.getElementById("score1").innerText=score;
     for (let r = 0; r < rows; r++) {
         let row = [];
         for (let c = 0; c < columns; c++) {
             // <img id="0-0" src="./images/Red.png">
-            let tile = document.createElement("img");
-            tile.id = r.toString() + "-" + c.toString();
-            tile.src = "./images/" + randomCandy() + ".png";
+            let candy;
+            // keep picking until it doesn’t form a 3-in-a-row
+            do {
+                candy = randomCandy();
+            } while (
+                (c >= 2 && row[c-1].src.includes(candy) && row[c-2].src.includes(candy)) ||
+                (r >= 2 && board[r-1][c].src.includes(candy) && board[r-2][c].src.includes(candy))
+            );
+             let tile = document.createElement("img");
+            tile.id = r + "-" + c;
+            tile.src = "./images/" + candy + ".png";
+            // let tile = document.createElement("img");
+            // tile.id = r.toString() + "-" + c.toString();
+            // tile.src = "./images/" + randomCandy() + ".png";
 
             //DRAG FUNCTIONALITY
             tile.addEventListener("dragstart", dragStart); //click on a candy, initialize drag process
@@ -128,7 +141,7 @@ function crushCandy() {
     //crushFive();
     //crushFour();
     crushThree();
-    document.getElementById("score").innerText = score;
+    document.getElementById("score1").innerText = score;
 
 }
 

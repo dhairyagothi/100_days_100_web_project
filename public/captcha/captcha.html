@@ -11,17 +11,19 @@
     <div class="container">
         <header>CAPTCHA</header>
         <p>Select CAPTCHA type:</p>
-        <select id="captchaType">
-            <option value="text">Text</option>
-            <option value="image">Image</option>
-            <option value="audio">Audio</option>
-            <option value="math">Math</option>
-        </select>
-        <div id="captchaContainer"></div>
-        <div class="textcaptcha">
-            <input type="text" placeholder="Enter CAPTCHA">
+        <div class="captcha-types">
+            <button class="type-btn active" data-type="text">Text</button>
+            <button class="type-btn active" data-type="image">Image</button>
+            <button class="type-btn active" data-type="audio">Audio</button>
+            <button class="type-btn active" data-type="math">Math</button>
         </div>
-        <button class="refresh">↻</button>
+        <div id="captchaContainer"></div>
+        <div class="captcha-input-group">
+            <div class="textcaptcha">
+                <input type="text" placeholder="Enter CAPTCHA">
+            </div>
+            <button class="refresh">↻</button>
+        </div>
         <p class="result"></p>
         <div class="button">
             <button>Submit CAPTCHA</button>

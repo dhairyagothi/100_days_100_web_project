@@ -104,8 +104,7 @@ dist/
 
 # Gatsby files
 .cache/
- 
-public/
+
 # Storybook build outputs
 .out
 .storybook-out
@@ -173,3 +172,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Docker
+*.tar
+docker-compose.override.yml

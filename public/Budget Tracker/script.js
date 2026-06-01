@@ -121,6 +121,96 @@ function updateBudget() {
   progressFill.style.width = monthlyBudget ? `${Math.min((expense / monthlyBudget) * 100, 100)}%` : "0%";
 }
 
+/* ---------- INSIGHTS ---------- */
+function updateInsights() {
+  const totals = { food: 0, travel: 0, shopping: 0, other: 0 };
+  let totalExpense = 0;
+  let totalIncome = 0;
+
+  transactions.forEach(txn => {
+    if (txn.type === "expense") {
+      if (totals[txn.category] !== undefined) {
+        totals[txn.category] += txn.amount;
+      } else {
+        totals.other += txn.amount;
+      }
+      totalExpense += txn.amount;
+    } else if (txn.type === "income") {
+      totalIncome += txn.amount;
+    }
+  });
+
+  const highestSpendingCatEl = document.getElementById("highest-spending-cat");
+  const smartSuggestionEl = document.getElementById("smart-suggestion");
+  const financialStatusEl = document.getElementById("financial-status");
+
+  // Determine highest spending category
+  let maxCat = "";
+  let maxAmount = 0;
+  Object.keys(totals).forEach(cat => {
+    if (totals[cat] > maxAmount) {
+      maxAmount = totals[cat];
+      maxCat = cat;
+    }
+  });
+
+  // 1. Update Highest Spending Category
+  if (maxAmount > 0) {
+    const formattedCat = maxCat === "other" ? "Others" : maxCat.charAt(0).toUpperCase() + maxCat.slice(1);
+    highestSpendingCatEl.textContent = `${formattedCat} (₹${maxAmount})`;
+  } else {
+    highestSpendingCatEl.textContent = "None";
+  }
+
+  // 2. Determine Smart Suggestion
+  let suggestion = "Add transactions to generate suggestions.";
+  if (maxAmount > 0) {
+    if (maxCat === "food") {
+      suggestion = "You spent more on food this month compared to other categories. Consider cooking at home to save money.";
+    } else if (maxCat === "travel") {
+      suggestion = "You spent more on travel this month compared to other categories. Consider using public transport or carpooling.";
+    } else if (maxCat === "shopping") {
+      suggestion = "You spent more on shopping this month compared to other categories. Try waiting 48 hours before buying non-essential items.";
+    } else if (maxCat === "other") {
+      suggestion = "You spent more on other items. Try tracking smaller expenses to see where your money goes.";
+    }
+  }
+  smartSuggestionEl.textContent = suggestion;
+
+  // 3. Determine Financial Status
+  let status = "No data available";
+  if (totalExpense > 0 || totalIncome > 0) {
+    if (totalExpense > totalIncome && totalIncome > 0) {
+      status = "Warning: Expenses exceed income. Review your budget!";
+    } else if (monthlyBudget > 0) {
+      const budgetPct = (totalExpense / monthlyBudget) * 100;
+      if (budgetPct >= 100) {
+        status = "Budget Exceeded: Overspending! Restrict further purchases.";
+      } else if (budgetPct >= 80) {
+        status = "Caution: You have used over 80% of your monthly budget.";
+      } else if (budgetPct <= 50) {
+        status = "Healthy: Expenses are under 50% of your budget. Good job!";
+      } else {
+        status = "Moderate: Spending is on track with your budget.";
+      }
+    } else {
+      if (totalIncome > 0) {
+        const savingsRate = ((totalIncome - totalExpense) / totalIncome) * 100;
+        if (savingsRate >= 50) {
+          status = `Excellent: Saving ${Math.round(savingsRate)}% of your income!`;
+        } else if (savingsRate >= 20) {
+          status = `Good: Saving ${Math.round(savingsRate)}% of your income.`;
+        } else {
+          status = `Tight: Saving only ${Math.round(savingsRate)}% of your income.`;
+        }
+      } else {
+        status = "Add income to view detailed saving progress.";
+      }
+    }
+  }
+  financialStatusEl.textContent = status;
+}
+
 /* ---------- RESET ---------- */
 resetBtn.addEventListener("click", () => {
   if (!confirm("Reset all data?")) return;
@@ -139,6 +229,7 @@ function saveAndUpdate() {
   updateSummary();
   updateCategories();
   updateBudget();
+  updateInsights();
 }
 
 /* ---------- INIT ---------- */

@@ -14,6 +14,7 @@ const SignUp_route = require('./routes/SignUP_route')
 const API_shortner =  require('./routes/response')
 const Redirect_route = require('./routes/redirect_window')
 const Logged_user = require('./routes/Auth/User_route')
+const { AppError, errorHandler } = require('./middlewares/errorHandler')
 
 const app =  express()
 app.use(express.json());
@@ -29,11 +30,15 @@ app.get("/health", (req, res) => {
 
 app.use('/login', Login_route)
 app.use('/signup', SignUp_route)
-app.use('/api/shortern/', API_shortner)
-app.use('/', Redirect_route)
+app.use('/api/shorten/', API_shortner)
 app.use('/api/', Logged_user)
+app.use('/', Redirect_route)
 
+app.use((req, res, next) => {
+  next(new AppError(`Route ${req.originalUrl} not found`, 404));
+});
 
+app.use(errorHandler);
 
 
 

@@ -45,6 +45,26 @@ function createBoard() {
     }
 }
 
+
+function isSolvable(order) {
+    // convert strings to numbers
+    let tiles = order.map(Number);
+
+    let inversions = 0;
+
+    for (let i = 0; i < tiles.length; i++) {
+        for (let j = i + 1; j < tiles.length; j++) {
+            if (tiles[i] > tiles[j]) {
+                inversions++;
+            }
+        }
+    }
+
+    // even = solvable, odd = unsolvable
+    return inversions % 2 === 0;
+}
+
+
 function randomizeBoard() {
 
     for (let i = imgOrder.length - 1; i > 0; i--) {
@@ -52,6 +72,12 @@ function randomizeBoard() {
         let j = Math.floor(Math.random() * (i + 1));
 
         [imgOrder[i], imgOrder[j]] = [imgOrder[j], imgOrder[i]];
+    }
+
+    // check if solvable
+    if (!isSolvable(imgOrder)) {
+        alert("This arrangement is not solvable! Click Randomize again.");
+        return;
     }
 
     createBoard();
@@ -156,7 +182,7 @@ function dragEnd() {
 
 function checkWin() {
 
-    let tiles = document.getElementsByTagName("img");
+    let tiles = document.querySelectorAll("#board img");
 
     for (let i = 0; i < tiles.length; i++) {
 

@@ -6,7 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <title>Register</title>
+    
 </head>
 
 <body>
@@ -19,23 +21,29 @@
                 <div class="error"></div>
             </div>
             <div class="input-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email">
+                <label for="email" >Email</label>
+                <input type="email" id="email" name="email" autocomplete="email">
                 <div class="error"></div>
             </div>
             <div class="input-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password">
+                <input type="password" id="password" name="password"  autocomplete="new-password">
                 <div class="error"></div>
             </div>
             <div class="input-group">
                 <label for="cpassword">Confirm Password</label>
-                <input type="password" id="cpassword" name="cpassword">
+                <input type="password" id="cpassword" name="cpassword"  autocomplete="new-password">
                 <div class="error"></div>
             </div>
+
             <button type="button" onclick="getDetails()">Register</button>
+            <p style="text-align:center; color:#888; font-size:13px;">or</p>
+            <button type="button" class="google-btn"><i class="fa-brands fa-google"></i>Continue with Google</button>
+            <p class="register">Already a member? <a href="/">Login here!</a></p>
+
+        
         </form>
-        <p class="register">Already a member? <a href="/">Login here!</a></p>
+      
 
     </div>
 </body>
@@ -86,7 +94,26 @@
 
   postRequest({ username, email, password });
 }
+function togglePassword(id, element) {
 
+    const input = document.getElementById(id);
+    const icon = element.querySelector("i");
+
+    if (input.type === "password") {
+
+        input.type = "text";
+
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+
+    } else {
+
+        input.type = "password";
+
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    }
+}
 
 </script>
 

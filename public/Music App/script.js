@@ -1,470 +1,307 @@
 
-"use strict";
 
-let audioTrack = document.createElement("audio");
-audioTrack.preload = "metadata";
-document.body.append(audioTrack);
+const AUDIUS_APP  = "AuraMusicPlayer";          // app name for API attribution
+let   AUDIUS_HOST = "https://discoveryprovider.audius.co"; // default; may update
 
-let blurElement = document.getElementById("blurElement");
 
-let themes = document.getElementById("themes");
+const audio            = new Audio();
+const cover            = document.getElementById("cover");
+const coverWrap        = document.getElementById("coverWrap");
+const titleEl          = document.getElementById("title");
+const artistEl         = document.getElementById("artist");
+const playBtn          = document.getElementById("play");
+const nextBtn          = document.getElementById("next");
+const prevBtn          = document.getElementById("prev");
+const progressFill     = document.getElementById("progress");
+const progressThumb    = document.getElementById("progressThumb");
+const progressContainer= document.getElementById("progressContainer");
+const currentTimeEl    = document.getElementById("currentTime");
+const durationEl       = document.getElementById("duration");
+const playlistEl       = document.getElementById("playlist");
+const volumeEl         = document.getElementById("volume");
+const searchInput      = document.getElementById("searchInput");
+const searchBtn        = document.getElementById("searchBtn");
+const lyricsBox        = document.getElementById("lyricsBox");
+const toast            = document.getElementById("toast");
+const likeBtn          = document.getElementById("likeBtn");
+const eqEl             = document.getElementById("eq");
+const tabs             = document.querySelectorAll(".tab");
+const tabPanels        = document.querySelectorAll(".tab-panel");
 
-let musicBox = document.getElementById("musicBox");
 
-let trackItemsWrapper = document.getElementById("trackItemsWrapper");
+let songs       = [];
+let currentIdx  = 0;
+let isPlaying   = false;
+let likedTracks = JSON.parse(localStorage.getItem("aura_liked") || "[]");
 
-let trackArtistName = document.getElementById("trackArtistName");
-let trackAlbumName = document.getElementById("trackAlbumName");
 
-let coverImage = document.getElementById("coverImage");
-
-let playButton = document.getElementById("playButton");
-let playButtonIcon = playButton.firstElementChild;
-let pauseButtonIcon = playButton.lastElementChild;
-
-let previousButton = document.getElementById("previousButton");
-let nextButton = document.getElementById("nextButton");
-
-let volumeWrapper = document.getElementById("volumeWrapper");
-let volumeButton = document.getElementById("volumeButton");
-let volumeNumber = document.getElementById("volumeNumber");
-
-let wavesVolumeButton = document.getElementById("wavesVolumeButton");
-let highVolumeSymbol = document.getElementById("highVolumeSymbol");
-let mediumVolumeSymbol = document.getElementById("mediumVolumeSymbol");
-let lowVolumeSymbol = document.getElementById("lowVolumeSymbol");
-let volumeCross = document.getElementById("volumeCross");
-
-let currentTrackTimeNumber = document.getElementById("currentTrackTimeNumber");
-let currentTrackDuration = document.getElementById("currentTrackDuration");
-
-let trackProgressBar = document.getElementById("trackProgressBar");
-let trackLoading = document.getElementById("trackLoading");
-let currentTrackTimeBar = document.getElementById("currentTrackTimeBar");
-
-let musics = [{
-        trackName: "Losing Control",
-        artist: "Villain of the story",
-        album: "Divided",
-        coverImage: "https://i.postimg.cc/y62Drhym/image.jpg",
-        audioSource: "https://cdns-preview-4.dzcdn.net/stream/c-465dbacd317d67cc6a4d1adb22355970-2.mp3"
-    },
-    {
-        trackName: "Senden Baska",
-        artist: "Serhet Durmus",
-        album: "Singles",
-        coverImage: "https://i.postimg.cc/cCtNnnKZ/image.jpg",
-        audioSource: "https://cdns-preview-9.dzcdn.net/stream/c-94e53a428fd9dbf35c5b06d800447c2a-4.mp3"
-    },
-    {
-        trackName: "I don't care",
-        artist: "Apocalyptica",
-        album: "Singles",
-        coverImage: "https://i.postimg.cc/BZj8g7HZ/image.jpg",
-        audioSource: "https://cdns-preview-d.dzcdn.net/stream/c-dbbdb0dd57e34c52b2379fb69bc7da4f-3.mp3"
-    },
-    {
-        trackName: "Monster",
-        artist: "Fight the Fade",
-        album: "APOPHYSITIS",
-        coverImage: "https://i.postimg.cc/BnS4htk5/image.jpg",
-        audioSource: "https://cdns-preview-4.dzcdn.net/stream/c-46413a2a74ddd53a2f13ef2b853202f7-3.mp3"
-    },
-
-    {
-        trackName: "Dance With the Devil",
-        artist: "Breaking Benjamin",
-        album: "Phobia",
-        coverImage: "https://i.postimg.cc/15Xzmj0J/image.jpg",
-        audioSource: "https://cdns-preview-b.dzcdn.net/stream/c-b2bbd0db3fb9e1314ef56dfc11c86a65-5.mp3"
-    },
-    {
-        trackName: "The Catalyst",
-        artist: "Linkin Park",
-        album: "A Thousand Sun",
-        coverImage: "https://i.postimg.cc/FK3jRqxM/image.jpg",
-        audioSource: "https://cdns-preview-8.dzcdn.net/stream/c-8930ac6a4a087666b651b8aad5cd4a26-5.mp3"
-    },
-    {
-        trackName: "Lali",
-        artist: "Jony",
-        album: "Spisok tvoikh mysley",
-        coverImage: "https://i.postimg.cc/hvyGBHCW/image.jpg",
-        audioSource: "https://cdns-preview-0.dzcdn.net/stream/c-095471cd71c784daa9eab6beb69c5848-3.mp3"
+async function bootstrapHost() {
+  try {
+    const res  = await fetch("https://api.audius.co");
+    const data = await res.json();
+    const hosts = data?.data;
+    if (Array.isArray(hosts) && hosts.length) {
+      AUDIUS_HOST = hosts[Math.floor(Math.random() * Math.min(3, hosts.length))];
     }
-];
-
-musics.forEach((item, index) => {
-    trackItemsWrapper.innerHTML += `<div class="track-item" data-index="${index}">${index + 1
-        }. ${item.trackName}</div>`;
-});
-
-trackItemsWrapper.firstElementChild.classList.add("active");
-
-function informationUpdate(target) {
-    target = target ? target : 0;
-    coverImage.src = "";
-    coverImage.src = musics[target].coverImage;
-    audioTrack.src = musics[target].audioSource;
-    trackArtistName.textContent = musics[target].artist;
-    trackAlbumName.textContent = musics[target].album;
+  } catch (_) {
+    /* fallback to default */
+  }
 }
 
-informationUpdate();
+// ── Fetch trending / search ───────────────────────────────────
+async function fetchSongs(query = "") {
+  playlistEl.innerHTML = `
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>${query ? `Searching for "${query}"…` : "Loading trending tracks…"}</p>
+    </div>`;
 
-themes.addEventListener("click", (e) => {
-    if (e.target == e.currentTarget) return;
-    let targetTheme = e.target.dataset.theme;
+  try {
+    const endpoint = query
+      ? `${AUDIUS_HOST}/v1/tracks/search?query=${encodeURIComponent(query)}&limit=25&app_name=${AUDIUS_APP}`
+      : `${AUDIUS_HOST}/v1/tracks/trending?limit=25&app_name=${AUDIUS_APP}`;
 
-    let activeTheme = document.querySelector(".active-theme");
-    activeTheme.classList.remove("active-theme");
+    const res  = await fetch(endpoint);
+    const data = await res.json();
 
-    e.target.classList.add("active-theme");
+    songs = (data?.data || []).filter(t => t?.id && t?.title);
 
-    switch (targetTheme) {
-        case "theme1":
-            blurElement.style.visibility = "hidden";
-            musicBox.style.border = "";
-            musicBox.style.boxShadow = "";
-            coverImage.style.background = "";
-            trackProgressBar.style.background = "";
-            currentTrackTimeBar.style.background = "";
-            trackLoading.style.background = "";
-            break;
-
-        case "theme2":
-            blurElement.style.visibility = "visible";
-            musicBox.style.border = "1px solid #ffffff12";
-            musicBox.style.boxShadow =
-                "inset -10px -10px 15px #ffffff0a, inset 10px 10px 15px #ffffff0a";
-            blurElement.style.background =
-                "linear-gradient(135deg, #dc143c, #009688)";
-            coverImage.style.background = "#00968875";
-            trackProgressBar.style.background = "#0fd5ca73";
-            currentTrackTimeBar.style.background = "#0fd5ca";
-            trackLoading.style.background = "#0fd5ca";
-            break;
-
-        case "theme3":
-            blurElement.style.visibility = "visible";
-            musicBox.style.border = "1px solid #ffffff12";
-            musicBox.style.boxShadow =
-                "inset -10px -10px 15px #ffffff0a, inset 10px 10px 15px #ffffff0a";
-            blurElement.style.background =
-                "linear-gradient(135deg, #7f0096, #14abdc)";
-            coverImage.style.background = "#288bcf75";
-            trackProgressBar.style.background = "#0fd5ca73";
-            currentTrackTimeBar.style.background = "#0fd5ca";
-            trackLoading.style.background = "#0fd5ca";
-            break;
+    if (!songs.length) {
+      playlistEl.innerHTML = `<div class="loading-state"><p>No tracks found. Try another search.</p></div>`;
+      return;
     }
-});
 
-trackItemsWrapper.addEventListener("click", (e) => {
-    if (e.target == e.currentTarget) return;
-    let activeAudio = document.querySelector(".active");
-    activeAudio.classList.remove("active");
-    e.target.classList.add("active");
+    renderPlaylist();
+    loadSong(0);
 
-    let targetIndex = e.target.dataset.index;
-
-    informationUpdate(targetIndex);
-});
-
-audioTrack.addEventListener("waiting", waitingEvent);
-
-function waitingEvent() {
-    trackLoading.classList.add("track-loading");
+  } catch (err) {
+    console.error(err);
+    playlistEl.innerHTML = `<div class="loading-state"><p>⚠ Could not load tracks. Please try again.</p></div>`;
+  }
 }
 
-audioTrack.addEventListener("canplay", (e) => {
-    trackLoading.classList.remove("track-loading");
-    audioTrack.removeEventListener("waiting", waitingEvent);
-});
 
-let firstPlay = true;
-audioTrack.addEventListener("loadstart", (e) => {
-    audioTrack.addEventListener("waiting", waitingEvent);
-    currentTrackTimeBar.style.width = 0;
-    if (!firstPlay) {
-        audioTrack.play();
-    }
-    firstPlay = false;
-});
+function renderPlaylist() {
+  playlistEl.innerHTML = "";
+  songs.forEach((song, i) => {
+    const art = getArtwork(song, "150x150");
+    const dur = fmtTime(song.duration || 0);
 
-let requestAnimationTimeArgument = performance.now();
+    const div = document.createElement("div");
+    div.className = "song-item" + (i === currentIdx ? " active" : "");
+    div.innerHTML = `
+      <img class="song-thumb" src="${art}" alt="" loading="lazy" />
+      <div class="song-meta">
+        <div class="song-name">${esc(song.title)}</div>
+        <div class="song-artist">${esc(song.user?.name || "Unknown")}</div>
+      </div>
+      <div class="song-duration">${dur}</div>`;
 
-requestAnimationFrame(function currentTimeUpdater(
-    requestAnimationTimeArgument
-) {
-    let currentTime = audioTrack.currentTime;
-
-    let currentMinute = Math.trunc(currentTime / 60);
-    let currentSeconds = Math.trunc(currentTime % 60);
-
-    if (currentSeconds < 10) {
-        currentSeconds = "0" + currentSeconds;
-    }
-
-    currentTrackTimeNumber.textContent = `${currentMinute}:${currentSeconds}`;
-
-    currentTrackTimeBar.style.width =
-        (currentTime / audioTrack.duration) * 100 + "%";
-
-    requestAnimationFrame(currentTimeUpdater);
-});
-
-audioTrack.addEventListener("canplay", canPlayEvent);
-
-audioTrack.addEventListener("durationchange", canPlayEvent);
-
-function canPlayEvent(e) {
-    let totalTime = audioTrack.duration;
-
-    let totalMinute = Math.trunc(totalTime / 60);
-    let totalSeconds = Math.trunc(totalTime % 60);
-
-    if (totalSeconds < 10) {
-        totalSeconds = "0" + totalSeconds;
-    }
-
-    currentTrackDuration.textContent = `${totalMinute}:${totalSeconds}`;
-}
-
-trackProgressBar.addEventListener("pointerdown", (e) => {
-    audioTrack.currentTime =
-        ((e.offsetX / trackProgressBar.offsetWidth) * 100 * audioTrack.duration) /
-        100;
-    trackProgressBar.addEventListener("pointermove", trackProgressBarPointerMove);
-
-    function trackProgressBarPointerMove(e) {
-        audioTrack.currentTime =
-            ((e.offsetX / trackProgressBar.offsetWidth) * 100 * audioTrack.duration) /
-            100;
-    }
-    document.addEventListener("pointerup", (e) => {
-        trackProgressBar.removeEventListener(
-            "pointermove",
-            trackProgressBarPointerMove
-        );
+    div.addEventListener("click", () => {
+      currentIdx = i;
+      loadSong(i);
+      playSong();
     });
-});
-
-trackProgressBar.addEventListener("wheel", (e) => {
-    if (e.deltaY < 0) {
-        audioTrack.currentTime += 5;
-    }
-    if (e.deltaY > 0) {
-        audioTrack.currentTime -= 5;
-    }
-});
-
-playButton.addEventListener("click", (e) => {
-    if (audioTrack.paused) {
-        audioTrack.play();
-    } else {
-        audioTrack.pause();
-    }
-});
-
-previousButton.addEventListener("click", (e) => {
-    let activeAudio = document.querySelector(".active");
-
-    let trackItems = document.querySelectorAll(".track-item");
-
-    let activeIndex = +activeAudio.dataset.index == 0 ?
-        trackItems.length :
-        +activeAudio.dataset.index;
-
-    let targetIndex = +activeIndex - 1;
-
-    activeAudio.classList.remove("active");
-    trackItems[targetIndex].classList.add("active");
-
-    informationUpdate(targetIndex);
-});
-
-nextButton.addEventListener("click", (e) => {
-    let activeAudio = document.querySelector(".active");
-
-    let trackItems = document.querySelectorAll(".track-item");
-
-    let activeIndex = +activeAudio.dataset.index == trackItems.length - 1 ?
-        -1 :
-        +activeAudio.dataset.index;
-
-    let targetIndex = +activeIndex + 1;
-
-    activeAudio.classList.remove("active");
-    trackItems[targetIndex].classList.add("active");
-
-    informationUpdate(targetIndex);
-});
-
-audioTrack.addEventListener("play", (e) => {
-    playButtonIcon.style.opacity = 0;
-    pauseButtonIcon.style.opacity = 1;
-    if (wasPlaying) {
-        wasPlaying = false;
-    }
-});
-
-// prevent from nested animations
-let firstTimeAnimation = true;
-audioTrack.addEventListener("playing", (e) => {
-    if (firstTimeAnimation) {
-        blurElement.animate({ filter: "blur(30px)" }, {
-            duration: 5000,
-            easing: "ease-in-out",
-            direction: "alternate",
-            iterations: Infinity
-        });
-        firstTimeAnimation = false;
-    }
-});
-
-audioTrack.addEventListener("pause", (e) => {
-    playButtonIcon.style.opacity = 1;
-    pauseButtonIcon.style.opacity = 0;
-
-    blurElement.animate({ filter: "blur(10px)" }, {
-        duration: 1000,
-        easing: "linear",
-        fill: "forwards"
-    });
-
-    firstTimeAnimation = true;
-});
-
-volumeWrapper.addEventListener(
-    "wheel",
-    (e) => {
-        e.preventDefault();
-        switch (true) {
-            case e.deltaY < 0:
-                audioTrack.volume = (audioTrack.volume += 0.05).toFixed(2);
-                break;
-
-            case e.deltaY > 0:
-                audioTrack.volume = (audioTrack.volume -= 0.05).toFixed(2);
-                break;
-        }
-        volumeNumberUpdate();
-    }, { passive: false }
-);
-
-function volumeNumberUpdate() {
-    // trunc is just for (0.55 * 100)!
-    volumeNumber.textContent = Math.trunc(audioTrack.volume * 100);
+    playlistEl.appendChild(div);
+  });
 }
 
-let wasPlaying;
-audioTrack.addEventListener("volumechange", (e) => {
-    let currentVolume = audioTrack.volume;
-    switch (true) {
-        case 0.66 < currentVolume:
-            highVolumeSymbol.style.fill = "white";
-            mediumVolumeSymbol.style.fill = "white";
-            lowVolumeSymbol.style.fill = "white";
-            wavesVolumeButton.style.opacity = 1;
-            volumeCross.style.opacity = 0;
-            if (wasPlaying) {
-                audioTrack.play();
-                wasPlaying = false;
-            }
-            break;
+function highlightActive() {
+  document.querySelectorAll(".song-item").forEach((el, i) => {
+    el.classList.toggle("active", i === currentIdx);
+  });
+  // scroll active item into view
+  const active = playlistEl.querySelector(".song-item.active");
+  if (active) active.scrollIntoView({ block: "nearest", behavior: "smooth" });
+}
 
-        case 0.33 < currentVolume && currentVolume < 0.66:
-            highVolumeSymbol.style.fill = "#808080";
-            mediumVolumeSymbol.style.fill = "white";
-            lowVolumeSymbol.style.fill = "white";
-            wavesVolumeButton.style.opacity = 1;
-            volumeCross.style.opacity = 0;
-            if (wasPlaying) {
-                audioTrack.play();
-                wasPlaying = false;
-            }
-            break;
+// ── Load a track ──────────────────────────────────────────────
+function loadSong(idx) {
+  const song = songs[idx];
+  if (!song) return;
 
-        case 0 < currentVolume && currentVolume < 0.33:
-            highVolumeSymbol.style.fill = "#808080";
-            mediumVolumeSymbol.style.fill = "#808080";
-            lowVolumeSymbol.style.fill = "white";
-            wavesVolumeButton.style.opacity = 1;
-            volumeCross.style.opacity = 0;
-            if (wasPlaying) {
-                audioTrack.play();
-                wasPlaying = false;
-            }
-            break;
+  currentIdx = idx;
 
-        case currentVolume == 0:
-            wavesVolumeButton.style.opacity = 0;
-            volumeCross.style.opacity = 1;
-            if (!audioTrack.paused) {
-                wasPlaying = true;
-                audioTrack.pause();
-            }
-            break;
-    }
+  titleEl.textContent  = song.title;
+  artistEl.textContent = song.user?.name || "Unknown";
+  cover.src            = getArtwork(song, "480x480");
 
-    volumeNumberUpdate();
+  // Full-quality stream URL  (no 30-second preview limitation)
+  audio.src = `${AUDIUS_HOST}/v1/tracks/${song.id}/stream?app_name=${AUDIUS_APP}`;
+  audio.load();
+
+  // Like button state
+  const liked = likedTracks.includes(song.id);
+  likeBtn.classList.toggle("liked", liked);
+  likeBtn.querySelector("i").className = liked ? "fas fa-heart" : "far fa-heart";
+
+  highlightActive();
+  fetchLyrics(song.user?.name || "", song.title);
+}
+
+// ── Playback ──────────────────────────────────────────────────
+function playSong() {
+  audio.play().catch(e => console.warn("Playback blocked:", e));
+  isPlaying = true;
+  playBtn.innerHTML = `<i class="fas fa-pause"></i>`;
+  coverWrap.classList.add("playing");
+  eqEl.classList.add("active");
+}
+
+function pauseSong() {
+  audio.pause();
+  isPlaying = false;
+  playBtn.innerHTML = `<i class="fas fa-play"></i>`;
+  coverWrap.classList.remove("playing");
+  eqEl.classList.remove("active");
+}
+
+playBtn.addEventListener("click", () => {
+  isPlaying ? pauseSong() : playSong();
 });
 
-document.addEventListener("keydown", (e) => {
-    switch (e.code) {
-        case "ArrowDown":
-            audioTrack.volume = (audioTrack.volume -= 0.05).toFixed(2);
-            break;
-
-        case "ArrowUp":
-            audioTrack.volume = (audioTrack.volume += 0.05).toFixed(2);
-            break;
-
-        case "ArrowLeft":
-            audioTrack.currentTime -= 5;
-            break;
-
-        case "ArrowRight":
-            audioTrack.currentTime += 5;
-            break;
-
-        case "Space":
-            if (audioTrack.paused) {
-                audioTrack.play();
-            } else {
-                audioTrack.pause();
-            }
-            break;
-    }
-
-    if (e.code == "ArrowDown" || e.code == "ArrowUp") {
-        volumeButton.style.opacity = 0;
-        volumeNumber.style.opacity = 1;
-
-        document.addEventListener("keyup", (e) => {
-            let volumeChangeAnimation = setTimeout(() => {
-                volumeButton.style.opacity = 1;
-                volumeNumber.style.opacity = 0;
-            }, 600);
-
-            document.addEventListener("keydown", (e) => {
-                if (e.code == "ArrowDown" || e.code == "ArrowUp") {
-                    clearTimeout(volumeChangeAnimation);
-                }
-            });
-        });
-    }
+nextBtn.addEventListener("click", () => {
+  currentIdx = (currentIdx + 1) % songs.length;
+  loadSong(currentIdx);
+  playSong();
 });
 
-coverImage.addEventListener("pointerdown", (e) => {
-    e.preventDefault();
-    let coverImageBigSize = coverImage.cloneNode();
-    coverImageBigSize.className = "cover-image-big-size";
-    coverImageBigSize.removeAttribute("id");
-    document.body.append(coverImageBigSize);
+prevBtn.addEventListener("click", () => {
+  currentIdx = (currentIdx - 1 + songs.length) % songs.length;
+  loadSong(currentIdx);
+  playSong();
+});
 
-    document.addEventListener("pointerup", (e) => {
-        coverImageBigSize.remove();
+audio.addEventListener("ended", () => {
+  currentIdx = (currentIdx + 1) % songs.length;
+  loadSong(currentIdx);
+  playSong();
+});
+
+// ── Progress bar ──────────────────────────────────────────────
+audio.addEventListener("timeupdate", () => {
+  const { currentTime, duration } = audio;
+  if (!duration || isNaN(duration)) return;
+
+  const pct = (currentTime / duration) * 100;
+  progressFill.style.width   = pct + "%";
+  progressThumb.style.left   = pct + "%";
+  currentTimeEl.textContent  = fmtTime(currentTime);
+  durationEl.textContent     = fmtTime(duration);
+});
+
+progressContainer.addEventListener("click", e => {
+  const rect  = progressContainer.getBoundingClientRect();
+  const pct   = (e.clientX - rect.left) / rect.width;
+  audio.currentTime = pct * audio.duration;
+});
+
+// ── Volume ────────────────────────────────────────────────────
+volumeEl.addEventListener("input", () => {
+  audio.volume = volumeEl.value;
+});
+
+// ── Like / favourite ──────────────────────────────────────────
+likeBtn.addEventListener("click", () => {
+  if (!songs.length) return;
+  const id = songs[currentIdx]?.id;
+  if (!id) return;
+
+  const idx = likedTracks.indexOf(id);
+  if (idx === -1) {
+    likedTracks.push(id);
+    likeBtn.classList.add("liked");
+    likeBtn.querySelector("i").className = "fas fa-heart";
+    showToast("❤  Added to Favourites");
+  } else {
+    likedTracks.splice(idx, 1);
+    likeBtn.classList.remove("liked");
+    likeBtn.querySelector("i").className = "far fa-heart";
+    showToast("Removed from Favourites");
+  }
+  localStorage.setItem("aura_liked", JSON.stringify(likedTracks));
+});
+
+// ── Search ────────────────────────────────────────────────────
+searchBtn.addEventListener("click", () => {
+  const q = searchInput.value.trim();
+  if (q) fetchSongs(q);
+});
+
+searchInput.addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    const q = searchInput.value.trim();
+    if (q) fetchSongs(q);
+  }
+});
+
+// ── Tabs ──────────────────────────────────────────────────────
+tabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    tabs.forEach(t => t.classList.remove("tab--active"));
+    tab.classList.add("tab--active");
+
+    const target = tab.dataset.tab;
+    tabPanels.forEach(p => {
+      p.classList.toggle("tab-panel--active", p.id === "tab-" + target);
     });
+  });
 });
+
+// ── Lyrics ────────────────────────────────────────────────────
+async function fetchLyrics(artist, song) {
+  lyricsBox.textContent = "Fetching lyrics…";
+  try {
+    const res  = await fetch(`https://api.lyrics.ovh/v1/${encodeURIComponent(artist)}/${encodeURIComponent(song)}`);
+    const data = await res.json();
+    lyricsBox.textContent = data.lyrics || "No lyrics found for this track.";
+  } catch {
+    lyricsBox.textContent = "Lyrics unavailable.";
+  }
+}
+
+// ── Helpers ───────────────────────────────────────────────────
+function fmtTime(sec) {
+  if (!sec || isNaN(sec)) return "0:00";
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60).toString().padStart(2, "0");
+  return `${m}:${s}`;
+}
+
+function getArtwork(song, size = "480x480") {
+  const art = song?.artwork;
+  if (!art) return `https://via.placeholder.com/${size.split("x")[0]}/1a1a2e/0fd5ca?text=♫`;
+  return art[size] || art["480x480"] || art["150x150"] || Object.values(art)[0]
+      || `https://via.placeholder.com/${size.split("x")[0]}/1a1a2e/0fd5ca?text=♫`;
+}
+
+function esc(str) {
+  return String(str)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;");
+}
+
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add("show");
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => toast.classList.remove("show"), 2400);
+}
+
+// ── Keyboard shortcuts ─────────────────────────────────────────
+document.addEventListener("keydown", e => {
+  if (e.target === searchInput) return;
+  if (e.code === "Space")       { e.preventDefault(); isPlaying ? pauseSong() : playSong(); }
+  if (e.code === "ArrowRight")  { audio.currentTime = Math.min(audio.duration, audio.currentTime + 10); }
+  if (e.code === "ArrowLeft")   { audio.currentTime = Math.max(0, audio.currentTime - 10); }
+  if (e.code === "ArrowUp")     { volumeEl.value = Math.min(1, +volumeEl.value + 0.1); audio.volume = volumeEl.value; }
+  if (e.code === "ArrowDown")   { volumeEl.value = Math.max(0, +volumeEl.value - 0.1); audio.volume = volumeEl.value; }
+});
+
+// ── Init ──────────────────────────────────────────────────────
+(async () => {
+  await bootstrapHost();
+  fetchSongs();           // load trending on start
+})();
