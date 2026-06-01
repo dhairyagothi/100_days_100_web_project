@@ -9,6 +9,7 @@
 body {
     background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
     min-height: 100vh;
+    overflow: auto;
 }
 
 /* Centering Logic */
@@ -19,7 +20,7 @@ body {
     align-items: center;
     width: 100%;
     min-height: 100vh;
-    padding: 40px 20px;
+    padding: 20px;
 }
 
 .glass-card {
@@ -137,8 +138,8 @@ body {
 
 @media (max-width: 600px) {
     .char-box {
-        width: 38px;
-        height: 38px;
-        font-size: 16px;
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
     }
 }
