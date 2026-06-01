@@ -161,7 +161,12 @@ function createInsect() {
   const { x, y } = getRandomLocation();
   insect.style.top = `${y}px`;
   insect.style.left = `${x}px`;
-  insect.innerHTML = `<img src="${selected_insect.src}" alt="${selected_insect.alt}" style="transform: rotate(${Math.random() * 360}deg)" />`;
+
+  const img = document.createElement("img");
+  img.src = selected_insect.src;
+  img.alt = selected_insect.alt;
+  img.style.transform = `rotate(${Math.random() * 360}deg)`;
+  insect.appendChild(img);
 
   insect.addEventListener("click", catchInsect);
 
