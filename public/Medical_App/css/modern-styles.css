@@ -1323,7 +1323,6 @@ a:hover {
 
     .sidebar.open {
         left: 0;
-        box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
     }
 
     .main-content {

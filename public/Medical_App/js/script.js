@@ -1,5 +1,48 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // =====================================================================
+    // Sidebar Navigation
+    // =====================================================================
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarTrigger = document.getElementById('sidebarTrigger');
+    
+    // Toggle sidebar
+    const toggleSidebar = () => {
+        if (sidebar) {
+            sidebar.classList.toggle('open');
+        }
+    };
+    
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', toggleSidebar);
+    }
+    
+    if (sidebarTrigger) {
+        sidebarTrigger.addEventListener('click', toggleSidebar);
+    }
+    
+    // Close sidebar on navigation
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            if (window.innerWidth < 768) {
+                sidebar.classList.remove('open');
+            }
+        });
+    });
+    
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth < 768) {
+            if (!sidebar.contains(e.target) && !sidebarTrigger.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        }
+    });
+
+    // =====================================================================
     // DOM Elements
+    // =====================================================================
     const requestForm = document.getElementById('requestForm');
     const responseForm = document.getElementById('responseForm');
 

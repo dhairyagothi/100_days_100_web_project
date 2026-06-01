@@ -1,27 +1,35 @@
-.dark-mode {
-    background: #0f172a;
-    color: white;
+/* ============================================================================
+   Dark Mode Support
+   ============================================================================ */
+
+/* Dark mode theme variables are defined in styles.css in the body[data-theme="dark"] selector */
+
+/* Additional dark mode adjustments if needed */
+body[data-theme="dark"] {
+    /* All color variables are already handled by the CSS variable system */
 }
 
-.dark-mode .card {
-    background: #1e293b;
-    color: white;
+/* Ensure proper contrast in dark mode for specific elements */
+body[data-theme="dark"] .search-bar {
+    background-color: var(--surface);
+    border-color: var(--border);
 }
 
-.dark-mode input,
-.dark-mode textarea,
-.dark-mode select {
-    background: #334155;
-    color: white;
-    border: 1px solid #475569;
+body[data-theme="dark"] .search-bar input::placeholder {
+    color: var(--text-tertiary);
 }
 
-.theme-btn{
-    position:absolute;
-    right:20px;
-    top:20px;
-    border:none;
-    padding:10px 14px;
-    border-radius:10px;
-    cursor:pointer;
+body[data-theme="dark"] .input-wrapper {
+    background-color: var(--background);
+}
+
+/* Ensure buttons work well in dark mode */
+body[data-theme="dark"] .btn-outline {
+    color: var(--text-primary);
+    border-color: var(--border);
+}
+
+body[data-theme="dark"] .btn-outline:hover:not(:disabled) {
+    background-color: var(--surface-hover);
+    color: var(--primary);
 }
