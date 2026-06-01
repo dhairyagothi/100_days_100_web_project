@@ -1074,7 +1074,7 @@ body.light-mode .vector-flowchart {
   font-size: 15px;
   font-weight: 500;
 }
-.quiz-option input[type="radio"] {
+.quiz-option input[type='radio'] {
   accent-color: var(--accent);
   flex-shrink: 0;
 }
@@ -1086,7 +1086,7 @@ body.light-mode .vector-flowchart {
 
 .quiz-option.selected {
   border-color: var(--accent);
-  background: rgba(59,130,246,0.12);
+  background: rgba(59, 130, 246, 0.12);
 }
 
 .quiz-option:hover {
@@ -1133,4 +1133,60 @@ body.light-mode .vector-flowchart {
 .quiz-card {
   max-width: 900px;
   margin: 0 auto;
+}
+
+.learning-progress-header {
+  margin-bottom: 1.5rem;
+}
+
+.continue-learning-btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 10px;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.continue-learning-btn:hover {
+  opacity: 0.9;
+}
+
+.overall-progress {
+  margin-bottom: 1rem;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.progress-bar {
+  height: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  transition: width 0.3s ease;
+}
+
+/* completed lesson */
+
+.topic-item.completed a {
+  color: #22c55e;
+}
+
+.topic-item.completed a::after {
+  content: '✓';
+  float: right;
+  font-weight: bold;
 }
