@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Code Playground</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="playground-header">
+    <h1>Code Sandbox Playground</h1>
+    <button id="runBtn" class="action-btn">Run Code</button>
+  </header>
+  <main class="playground-main">
+    <div class="editor-pane">
+      <textarea id="htmlCode" placeholder="<!-- HTML goes here -->"><h1>Hello World</h1></textarea>
+      <textarea id="cssCode" placeholder="/* CSS goes here */">h1 { color: #3b82f6; text-align: center; font-family: sans-serif; }</textarea>
+      <textarea id="jsCode" placeholder="// JS goes here"></textarea>
+    </div>
+    <div class="preview-pane">
+      <iframe id="previewFrame" title="Code Preview Output"></iframe>
+    </div>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

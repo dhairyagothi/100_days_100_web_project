@@ -63,6 +63,15 @@ ScrollReveal().reveal(".offer_card", {
   interval: 500,
 });
 
+const faqItems = document.querySelectorAll(".faq_item");
+
+faqItems.forEach(item => {
+  const question = item.querySelector(".faq_question");
+
+  question.addEventListener("click", () => {
+    item.classList.toggle("active");
+  });
+});
 // ================= CHATBOT =================
 
 const chatToggle = document.getElementById("chat-toggle");
@@ -72,6 +81,11 @@ const closeChat = document.getElementById("close-chat");
 const sendBtn = document.getElementById("send-btn");
 const userInput = document.getElementById("user-input");
 const chatMessages = document.getElementById("chat-messages");
+const savedChat = localStorage.getItem("travel_chat");
+
+if (savedChat) {
+  chatMessages.innerHTML = savedChat;
+}
 
 // OPEN / CLOSE CHATBOT
 
@@ -89,11 +103,23 @@ closeChat.addEventListener("click", () => {
   chatbotBox.style.display = "none";
 });
 
+function getTime() {
+
+  return new Date().toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+}
+
 // SEND MESSAGE FUNCTION
 function formatResponse(text) {
+  // Security: Prevent XSS by HTML escaping the raw text before formatting
+  const div = document.createElement("div");
+  div.textContent = text;
+  const escapedText = div.innerHTML;
 
-  return text
-
+  return escapedText
     // Bold text
     .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
 
@@ -102,7 +128,6 @@ function formatResponse(text) {
 
     // Line breaks
     .replace(/\n/g, "<br>");
-
 }
 async function sendMessage() {
   const message = userInput.value.trim();
@@ -115,9 +140,16 @@ async function sendMessage() {
 
   userMessage.classList.add("user-message");
 
-  userMessage.textContent = message;
+  userMessage.innerHTML = `
+  ${message}
+  <div class="msg-timestamp">${getTime()}</div>
+`;
 
   chatMessages.appendChild(userMessage);
+  localStorage.setItem(
+  "travel_chat",
+  chatMessages.innerHTML
+);
 
   // CLEAR INPUT
 
@@ -137,80 +169,25 @@ async function sendMessage() {
 
   chatMessages.appendChild(loadingMessage);
 
+
   chatMessages.scrollTop = chatMessages.scrollHeight;
 
   try {
-    const response = await fetch(
-      "https://api.groq.com/openai/v1/chat/completions",
-      {
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json",
-
-          Authorization: `Bearer ${GROQ_API_KEY}`,
-        },
-
-        body: JSON.stringify({
-          model: "llama-3.1-8b-instant",
-
-          messages: [
-            {
-              role: "system",
-
-              content: `You are Travel AI, a modern and friendly travel assistant.
-
-Help users with:
-- travel destinations
-- trip planning
-- flights
-- hotels
-- budgeting
-- tourism
-- itineraries
-- local food
-- attractions
-- travel tips
-
-Response Rules:
-- Use short paragraphs
-- Use bullet points when useful
-- Keep responses clean and readable
-- Avoid huge text blocks
-- Give practical suggestions
-- Use friendly conversational tone
-- Format itineraries clearly
-- Use emojis occasionally for better UX
-
-Keep answers concise but informative.`,
-            },
-
-            {
-              role: "user",
-              content: message,
-            },
-          ],
-        }),
+    const response = await fetch("http://localhost:5000/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify({ message: message }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
     const data = await response.json();
 
     loadingMessage.remove();
-
-    // HANDLE API ERROR
-
-    if (!data.choices) {
-      const errorMessage = document.createElement("div");
-
-      errorMessage.classList.add("bot-message");
-
-      errorMessage.textContent = "Unable to get response right now.";
-
-      chatMessages.appendChild(errorMessage);
-
-      return;
-    }
 
     // BOT RESPONSE
 
@@ -218,9 +195,16 @@ Keep answers concise but informative.`,
 
     botMessage.classList.add("bot-message");
 
-    botMessage.innerHTML = formatResponse(data.choices[0].message.content);
+    botMessage.innerHTML = `
+  ${formatResponse(data.choices[0].message.content)}
+  <div class="msg-timestamp">${getTime()}</div>
+`;
 
     chatMessages.appendChild(botMessage);
+    localStorage.setItem(
+  "travel_chat",
+  chatMessages.innerHTML
+);
 
     // AUTO SCROLL
 
@@ -228,7 +212,7 @@ Keep answers concise but informative.`,
   } catch (error) {
     loadingMessage.textContent = "Error getting response.";
 
-    console.error(error);
+    console.error("Frontend Error:", error);
   }
 }
 
@@ -242,4 +226,43 @@ userInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") {
     sendMessage();
   }
+});
+
+
+document
+  .getElementById("export-chat")
+  .addEventListener("click", () => {
+
+    const blob = new Blob(
+      [chatMessages.innerText],
+      { type: "text/plain" }
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+
+    a.href = url;
+
+    a.download = "travel-chat.txt";
+
+    a.click();
+
+    URL.revokeObjectURL(url);
+});
+document
+  .getElementById("clear-chat")
+  .addEventListener("click", () => {
+
+    if (confirm("Clear all chat history?")) {
+
+      chatMessages.innerHTML = `
+<div class="bot-message">
+  Hi! 👋<br>
+  Ask me anything about destinations, hotels, flights, or travel planning.
+</div>
+`;
+
+      localStorage.removeItem("travel_chat");
+    }
 });

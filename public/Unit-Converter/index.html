@@ -1,61 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unit Converter</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit Converter</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <div class="container">
-        <div class="heading">
-            <div class="heading1">
-                    Unit Converter
-            </div>
-            <div>
-                <p>Convert between different units easily and accurately</p>
-            </div>
+
+  <div class="uc-wrap">
+    <div class="glass-card">
+      <h1 class="card-title">
+        <i class="ti ti-arrows-exchange" aria-hidden="true"></i>
+        Unit Converter
+      </h1>
+
+      <div class="tabs" id="tabs">
+        <button class="tab-btn active" data-cat="length">Length</button>
+        <button class="tab-btn" data-cat="weight">Weight</button>
+        <button class="tab-btn" data-cat="temperature">Temp</button>
+        <button class="tab-btn" data-cat="time">Time</button>
+        <button class="tab-btn" data-cat="speed">Speed</button>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">From</div>
+        <div class="row">
+          <input class="glass-input" type="number" id="fromInput" value="1" placeholder="0">
+          <div class="select-wrap">
+            <select class="glass-select" id="fromUnit"></select>
+          </div>
         </div>
+      </div>
 
-        <div class="box">
-            <div class="category">
-                <label for="categoryList">Category:</label>
-                <select id="categoryList">
-                    <option value="length">Length</option>
-                    <option value="weight">Weight</option>
-                    <option value="temperature">Temperature</option>
-                    <option value="time">Time</option>
-                    <option value="speed">Speed</option>
-                </select>
-            </div>
+      <div class="swap-row">
+        <button class="swap-btn" id="swapBtn" title="Swap units" aria-label="Swap units">
+          <i class="ti ti-arrows-up-down" aria-hidden="true"></i>
+        </button>
+      </div>
 
-            <div class="input-val">
-                <div>
-                    From:
-                    <div class="input-section">
-                        <input type="number" id="fromInput">
-                        <select id="fromUnit"></select>
-                    </div>
-                </div>
-
-                <div>
-                    To:
-                    <div class="input-section to-input">
-                        <input type="number" id="toInput" readonly>
-                        <select id="toUnit"></select>
-                    </div>
-                </div>
-            </div>
-                <div class="result">
-                    Result:
-                    <div id="output" class="output"></div>
-                </div>
+      <div class="field-group">
+        <div class="field-label">To</div>
+        <div class="row">
+          <input class="glass-input" type="number" id="toInput" readonly placeholder="—">
+          <div class="select-wrap">
+            <select class="glass-select" id="toUnit"></select>
+          </div>
         </div>
+      </div>
+
+      <div class="result-banner" id="output">Enter a value above</div>
     </div>
+  </div>
 
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
-
 </html>

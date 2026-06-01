@@ -2,33 +2,79 @@ name: Code Linting and Formatting Check
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [Main, main, master]
   pull_request:
-    branches: [ main, master ]
+    branches: [Main, main, master]
 
 jobs:
   check-code:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-    - name: Install Dependencies
-      run: |
-        if [ -f package-lock.json ]; then
-          npm ci
-        else
-          npm install
-        fi
+      - name: Install Dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
 
-    - name: Run Prettier Check
-      run: npx prettier --check "**/*.{html,css,js}"
+      - name: Collect changed lint targets
+        id: changed-files
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch origin "${{ github.base_ref }}" --depth=1
+            RANGE="origin/${{ github.base_ref }}...HEAD"
+          elif [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+            RANGE="${{ github.event.before }}...${{ github.sha }}"
+          else
+            RANGE="HEAD~1...HEAD"
+          fi
 
-    - name: Run ESLint Check
-      run: npx eslint "**/*.js" --allow-empty-files || echo "No JS files or ESLint not fully configured yet"
+          : > lint-targets.txt
+          : > js-targets.txt
+          git diff -z --name-only --diff-filter=ACMR "$RANGE" > changed-files.raw || true
+
+          while IFS= read -r -d '' file; do
+            case "$file" in
+              *.html|*.css|*.js)
+                printf '%s\0' "$file" >> lint-targets.txt
+                ;;
+            esac
+            case "$file" in
+              *.js)
+                printf '%s\0' "$file" >> js-targets.txt
+                ;;
+            esac
+          done < changed-files.raw
+
+          if [ -s lint-targets.txt ]; then
+            echo "has_lint_targets=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_lint_targets=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          if [ -s js-targets.txt ]; then
+            echo "has_js_targets=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_js_targets=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run Prettier Check
+        if: steps.changed-files.outputs.has_lint_targets == 'true'
+        run: xargs -0 -a lint-targets.txt npx prettier --check
+
+      - name: Run ESLint Check
+        if: steps.changed-files.outputs.has_js_targets == 'true'
+        run: xargs -0 -a js-targets.txt npx eslint --allow-empty-files || echo "No JS files or ESLint not fully configured yet"
