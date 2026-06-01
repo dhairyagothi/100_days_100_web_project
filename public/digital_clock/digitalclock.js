@@ -138,35 +138,26 @@ function setAccentColor(accent) {
 
 // ================= CLOCK =================
 function updateClock() {
-  let now;
+  let now = new Date();
 
-  if (primaryTimezone === "local") {
-    now = new Date();
-  } else {
-    now = new Date(
-      new Date().toLocaleString("en-US", {
-        timeZone: primaryTimezone
-      })
-    );
+  if (primaryTimezone !== "local") {
+    now = new Date(now.toLocaleString("en-US", { timeZone: primaryTimezone }));
   }
 
   const h = now.getHours();
   const m = now.getMinutes();
   const s = now.getSeconds();
 
-  const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-  const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-
-  dayNameEl.textContent = days[now.getDay()];
-  fullDateEl.textContent =
-    `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
-
   const ampm = h >= 12 ? "PM" : "AM";
-
+  let hh = h % 12 || 12;
 
   hoursEl.textContent = String(hh).padStart(2, "0");
   minutesEl.textContent = String(m).padStart(2, "0");
   secondsEl.textContent = String(s).padStart(2, "0");
+  ampmEl.textContent = ampm;
+
+  checkAlarms(`${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`);
+}
 // ================= ALARMS =================
 function addNewAlarm() {
   const timeInput = document.getElementById("alarm-time");
