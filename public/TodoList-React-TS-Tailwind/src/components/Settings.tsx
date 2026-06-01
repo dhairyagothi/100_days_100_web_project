@@ -1,10 +1,5 @@
-// import React from 'react'
-
 function Settings() {
-  return (
-    <>
-    </>
-  )
+  return null;
 }
 
-export default Settings
+export default Settings;

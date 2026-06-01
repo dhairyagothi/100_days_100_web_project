@@ -179,7 +179,52 @@ body{
   transform:scale(1.2) rotate(10deg);
   filter:drop-shadow(0 0 12px white);
 }
+.planet-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
 
+    padding:6px 10px;
+    border-radius:12px;
+
+    transition:0.3s;
+}
+
+.planet-item span{
+    color:white;
+
+    font-size:0.9rem;
+    font-weight:500;
+
+    letter-spacing:1px;
+
+    opacity:.85;
+
+    transition:.3s;
+}
+
+.planet-item:hover{
+    background:
+    rgba(255,255,255,.06);
+}
+
+.mini-planet.active{
+    transform:scale(1.2);
+
+    filter:
+    drop-shadow(0 0 10px white);
+}
+
+.planet-item:has(.mini-planet.active)
+span{
+
+    color:#8ca8ff;
+
+    text-shadow:
+    0 0 12px rgba(138,170,255,.7);
+
+    font-weight:600;
+}
 /* =========================
    SLIDER
 ========================= */
@@ -571,4 +616,61 @@ body{
   .control-btn{
     width:110px;
   }
+}
+
+/* =========================
+   BACK TO HOME BUTTON
+========================= */
+
+.project-back-button{
+  position:fixed;
+  top:30px;
+  right:250px;
+  z-index:9999;
+
+  padding:12px 22px;
+
+  border-radius:50px;
+
+  background:
+    linear-gradient(135deg,#6fa7ff,#8b5cff);
+
+  color:white;
+  text-decoration:none;
+
+  font-family:'Orbitron',sans-serif;
+  font-size:0.9rem;
+  font-weight:600;
+  letter-spacing:1px;
+
+  box-shadow:
+    0 10px 30px rgba(111,167,255,0.35);
+
+  transition:0.35s;
+}
+
+.project-back-button:hover{
+  transform:
+    translateY(-3px)
+    scale(1.04);
+
+  box-shadow:
+    0 15px 40px rgba(111,167,255,0.55);
+
+  background:
+    linear-gradient(135deg,#8b5cff,#6fa7ff);
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+  .project-back-button{
+    top:20px;
+    right:20px;
+
+    padding:10px 18px;
+
+    font-size:0.75rem;
+  }
+
 }

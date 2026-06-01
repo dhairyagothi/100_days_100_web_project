@@ -1,35 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="preconnect" href="https://fonts.googleapis.com"> 
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Oooh+Baby&family=Pushster&family=Teko&family=Ubuntu:ital@1&family=Vujahday+Script&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./blackJ.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <title>Black Jack</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="BlackJack — a browser-based card game. Hit, Stand, or Deal your way to 21." />
+  <title>Black Jack</title>
+
+  <!-- Google Fonts: Playfair Display for headings, Inter for UI -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./blackJ.css" />
+  <link rel="icon" href="../favv.png" type="image/x-icon" />
 </head>
 <body>
-    <div class="title-container">
-    <h1 class="title">BLACK JACK</h1>
 
-    <button class="btn btn-info" id="rules-btn">
-        Rules
+  <!-- ── Navigation ── -->
+  <a href="/" class="back-btn" aria-label="Back to Home">← Back to Home</a>
+
+  <!-- ── Page Header ── -->
+  <header class="site-header">
+    <h1 class="game-title">BLACK JACK</h1>
+    <button class="rules-btn" id="rules-btn" aria-expanded="false" aria-controls="rules-box">
+      Rules
     </button>
-</div>
+  </header>
 
-<div id="rules-box" style="display:none;">
+  <!-- ── Rules Popup ── -->
+  <aside id="rules-box" class="rules-box" role="dialog" aria-label="Game Rules" hidden>
     <h3>How To Play</h3>
-
     <ul>
-        <li>Reach 21 without exceeding it</li>
-        <li>Hit → Draw another card</li>
-        <li>Stand → Stop drawing cards</li>
-        <li>Dealer plays after Stand</li>
-        <li>Closest to 21 wins</li>
+      <li><strong>Goal:</strong> Reach 21 without exceeding it</li>
+      <li><strong>Hit</strong> → Draw another card</li>
+      <li><strong>Stand</strong> → Stop drawing; dealer plays</li>
+      <li><strong>Dealer</strong> draws until score ≥ 17</li>
+      <li><strong>Closest to 21 wins</strong> — ties are a Draw</li>
+      <li><strong>Bust</strong> → Score &gt; 21 is an instant loss</li>
     </ul>
 </div>
     <div class="main">
@@ -50,6 +57,7 @@
             </div>
         </div>
         <div class="row3">
+            <div id="countdown-message" class="countdown-message"></div>
             <h3>Scoreboard: </h3>
             <table>
                 <tr>
@@ -66,23 +74,67 @@
             <div class="score-buttons">
 
 <button class="btn btn-success"
-id="play-again">
+id="play-again" style="display:none;">
 
-Play Again
+    <!-- Status Message -->
+    <p class="status-msg" id="command" aria-live="polite">Let's Play!</p>
 
-</button>
+    <!-- Card Table -->
+    <section class="card-table" aria-label="Card Table">
 
-<button class="btn btn-secondary"
-id="reset-score">
+      <!-- Player Hand -->
+      <div class="hand-area" id="your-box" aria-label="Your hand">
+        <h2 class="hand-label">
+          You &nbsp;<span class="score-badge" id="yourscore">0</span>
+        </h2>
+        <div class="card-row" id="your-cards" role="list" aria-label="Your cards"></div>
+      </div>
 
-Reset Scoreboard
+      <!-- Divider -->
+      <div class="table-divider" aria-hidden="true"></div>
 
-</button>
+      <!-- Dealer Hand -->
+      <div class="hand-area" id="dealer-box" aria-label="Dealer hand">
+        <h2 class="hand-label">
+          Dealer &nbsp;<span class="score-badge" id="dealerscore">0</span>
+        </h2>
+        <div class="card-row" id="dealer-cards" role="list" aria-label="Dealer cards"></div>
+      </div>
 
-</div>
-        </div>
+    </section>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons" role="group" aria-label="Game actions">
+      <button class="btn btn-hit"   id="hit"   aria-label="Hit — draw a card">Hit</button>
+      <button class="btn btn-stand" id="stand" aria-label="Stand — stop drawing">Stand</button>
+      <button class="btn btn-deal"  id="deal"  aria-label="Deal — start new round">Deal</button>
     </div>
 
-    <script src="./blackJ.js"></script>
+    <!-- Scoreboard -->
+    <section class="scoreboard" aria-label="Scoreboard">
+      <h3 class="scoreboard-title">Scoreboard</h3>
+      <div class="score-grid">
+        <div class="score-cell wins">
+          <span class="score-num" id="wins">0</span>
+          <span class="score-lbl">Wins</span>
+        </div>
+        <div class="score-cell losses">
+          <span class="score-num" id="losses">0</span>
+          <span class="score-lbl">Losses</span>
+        </div>
+        <div class="score-cell draws">
+          <span class="score-num" id="draws">0</span>
+          <span class="score-lbl">Draws</span>
+        </div>
+      </div>
+      <div class="score-actions">
+        <button class="btn btn-play-again" id="play-again">Play Again</button>
+        <button class="btn btn-reset"      id="reset-score">Reset Score</button>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="./blackJ.js"></script>
 </body>
 </html>
