@@ -466,6 +466,7 @@ The website features:
 | 194 | Lost & Found Portal | HTML, CSS, JS | ❤️ Social Impact | [View Demo](https://100-days-100-web-project.vercel.app/public/Lost_And_Found_Portal/index.html) |
 | 195 | Complaint Management System | HTML, CSS, JS | 📋 Management | [View Demo](https://100-days-100-web-project.vercel.app/public/Complaint_Management_System/index.html) |
 | 196 | AirCast | HTML, CSS, JavaScript | 🌐 APIs | [View Demo](https://100-days-100-web-project.vercel.app/public/Weather%20App%20with%20AQI/index.html) |
+| 197 | Zodiac Finder | HTML, CSS, JavaScript | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Zodiac_Finder/index.html) |
 
 
 ### 📊 Project Categories:
