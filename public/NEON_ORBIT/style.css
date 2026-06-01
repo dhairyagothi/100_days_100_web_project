@@ -28,10 +28,21 @@ body {
     sans-serif;
   color: var(--text);
   overflow: hidden;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(0, 246, 255, 0.18), transparent 32%),
-    radial-gradient(circle at 80% 15%, rgba(255, 44, 195, 0.14), transparent 40%),
-    radial-gradient(circle at 45% 78%, rgba(139, 93, 255, 0.18), transparent 42%),
+  background: radial-gradient(
+      circle at 20% 20%,
+      rgba(0, 246, 255, 0.18),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 80% 15%,
+      rgba(255, 44, 195, 0.14),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 45% 78%,
+      rgba(139, 93, 255, 0.18),
+      transparent 42%
+    ),
     linear-gradient(140deg, var(--bg-1), var(--bg-2), var(--bg-3));
   display: grid;
   place-items: center;
@@ -41,7 +52,7 @@ body {
 
 body::before,
 body::after {
-  content: '';
+  content: "";
   position: fixed;
   width: 520px;
   height: 520px;
@@ -87,7 +98,11 @@ body::after {
   position: relative;
   min-height: 760px;
   border-radius: 30px;
-  background: linear-gradient(180deg, rgba(10, 18, 40, 0.85), rgba(7, 9, 18, 0.92));
+  background: linear-gradient(
+    180deg,
+    rgba(10, 18, 40, 0.85),
+    rgba(7, 9, 18, 0.92)
+  );
   border: 1px solid var(--glass-stroke);
   box-shadow:
     var(--shadow),
@@ -148,8 +163,10 @@ body::after {
 .grid {
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.08) 1px,
+      transparent 1px
+    ),
     linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
   background-size: 32px 32px;
   opacity: 0.24;
@@ -162,7 +179,11 @@ body::after {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(circle at center, transparent 45%, rgba(0, 0, 0, 0.56));
+  background: radial-gradient(
+    circle at center,
+    transparent 45%,
+    rgba(0, 0, 0, 0.56)
+  );
 }
 
 #paddle,
@@ -342,7 +363,11 @@ body::after {
 .card {
   width: min(480px, 100%);
   border-radius: 22px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.09),
+    rgba(255, 255, 255, 0.03)
+  );
   border: 1px solid rgba(255, 255, 255, 0.16);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
   padding: 28px;
@@ -406,7 +431,11 @@ button:active {
 .panel {
   border-radius: 30px;
   border: 1px solid var(--glass-stroke);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.03));
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.07),
+    rgba(255, 255, 255, 0.03)
+  );
   box-shadow: var(--shadow);
   padding: 28px 24px;
   backdrop-filter: blur(12px);
