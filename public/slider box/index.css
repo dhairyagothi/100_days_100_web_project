@@ -187,3 +187,61 @@ button:hover {
     gap: 12px;
   }
 }
+/* ── ADDED FOR FULL-SCREEN LIGHTBOX MODAL ENHANCEMENT ── */
+.lightbox {
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(15, 23, 42, 0.95);
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+.lightbox-content{
+  max-width: 85%;
+  max-height: 85%;
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  transform: scale(0.75);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+.close-btn{
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  color: #94a3b8;
+  font-size: 44px;
+  font-weight: 300;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+  user-select: none;
+}
+.close-btn:hover{
+  color: #ffffff;
+  transform: scale(1.1);
+}
+.lightbox.show{
+  display: flex;
+  opacity: 1;
+}
+.lightbox.show .lightbox-content{
+  transform: scale(1);
+}
+@media(max-width: 600px){
+  .close-btn{
+    top: 16px;
+    right: 20px;
+    font-size: 36px;
+  }
+  .lightbox-content{
+    max-width: 92%;
+    max-height: 80%;
+  }
+}
