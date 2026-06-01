@@ -282,6 +282,28 @@ h1 {
 /* ==========================================
    BUTTONS & PLAYER CONTROLS
    ========================================== */
+.project-back-button {
+    position: absolute !important; /* Replaced fixed position with layout absolute to respect constraints */
+    top: -54px;                    /* Rests neatly outside the main text box bounds */
+    left: 0;
+    padding: 8px 16px !important;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    text-decoration: none;
+    font-weight: 700;
+    font-family: system-ui, -apple-system, sans-serif;
+    color: var(--text) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transition: all 0.2s ease-in-out;
+}
+
+.project-back-button:hover {
+    background: #ffffff !important;
+    color: #020617 !important;
+    transform: translateY(-1px);
+}
+
 .controls {
     display: flex;
     justify-content: center;
