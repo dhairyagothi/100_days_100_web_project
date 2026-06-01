@@ -11,8 +11,9 @@
             : "light";
     }
 
-const bmiValue = document.getElementById("bmi-value");
-const bmiBadge = document.getElementById("bmi-badge");
+    function applyTheme(theme) {
+        document.body.classList.toggle("dark", theme === "dark");
+    }
 
     applyTheme(getPreferred());
 
@@ -101,21 +102,15 @@ const CATS = [
 ];
 
 function getCategory(bmi) {
-  return categories.find(c => bmi < c.max);
+    return CATS.find((c) => bmi < c.max);
 }
 
-function calculateBMI(weight, heightCm) {
-  return weight / Math.pow(heightCm / 100, 2);
-}
-
-function healthyWeight(heightCm) {
-
-  const h = heightCm / 100;
-
-  return [
-    (18.5 * h * h).toFixed(1),
-    (24.9 * h * h).toFixed(1)
-  ];
+function calcHealthyWeight(heightCm) {
+    const h = heightCm / 100;
+    return [
+        Math.round(18.5 * h * h * 10) / 10,
+        Math.round(24.9 * h * h * 10) / 10,
+    ];
 }
 
 function bmiToPercent(bmi) {
@@ -127,46 +122,46 @@ function bmiToPercent(bmi) {
 // Setup Chart.js
 const ctx = document.getElementById("bmiChart").getContext("2d");
 const bmiChart = new Chart(ctx, {
-  type: "line",
-  data: {
-    labels: [],
-    datasets: [
-      {
-        label: "BMI",
-        data: [],
-        borderWidth: 2,
-        borderColor: "#7F77DD",
-        backgroundColor: "rgba(127,119,221,0.08)",
-        pointBackgroundColor: "#7F77DD",
-        pointRadius: 4,
-        tension: 0.35,
-        fill: true,
-      },
-    ],
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    animation: { duration: 400 },
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: { label: (ctx) => ` BMI ${ctx.parsed.y}` },
-      },
+    type: "line",
+    data: {
+        labels: [],
+        datasets: [
+            {
+                label: "BMI",
+                data: [],
+                borderWidth: 2,
+                borderColor: "#7F77DD",
+                backgroundColor: "rgba(127,119,221,0.08)",
+                pointBackgroundColor: "#7F77DD",
+                pointRadius: 4,
+                tension: 0.35,
+                fill: true,
+            },
+        ],
     },
-    scales: {
-      x: {
-        grid: { display: false },
-        ticks: { font: { size: 10 } },
-      },
-      y: {
-        beginAtZero: false,
-        min: 10,
-        grid: { color: "rgba(128,128,128,0.1)" },
-        ticks: { font: { size: 10 } },
-      },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 400 },
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                callbacks: { label: (ctx) => ` BMI ${ctx.parsed.y}` },
+            },
+        },
+        scales: {
+            x: {
+                grid: { display: false },
+                ticks: { font: { size: 10 } },
+            },
+            y: {
+                beginAtZero: false,
+                min: 10,
+                grid: { color: "rgba(128,128,128,0.1)" },
+                ticks: { font: { size: 10 } },
+            },
+        },
     },
-  },
 });
 
 // ─── LocalStorage History Engine ───
@@ -231,22 +226,19 @@ weightUnitEl.addEventListener("change", () => {
     clearError();
 });
 
-  document
-    .getElementById(map[label])
-    ?.classList.add("active-row");
+function showError(msg) {
+    errEl.textContent = msg;
+    errEl.classList.remove("hidden");
 }
 
-calculateBtn.addEventListener("click", () => {
-
-  const heightUnit =
-    document.getElementById("height-unit").value;
-
-  const weightUnit =
-    document.getElementById("weight-unit").value;
+function clearError() {
+    errEl.classList.add("hidden");
+    errEl.textContent = "";
+}
 
 // ─── Execution Calculation Handling Block ───
 btn.addEventListener("click", () => {
-  clearError();
+    clearError();
 
     let w = parseFloat(weightInp.value);
     const hUnit = heightUnitEl.value;
@@ -366,65 +358,6 @@ btn.addEventListener("click", () => {
     } else {
         bfSection.classList.add("hidden");
     }
-  }
-
-  if (heightUnit === "feet") {
-    height *= 30.48;
-  }
-
-  const bmi = calculateBMI(weight, height);
-
-  const rounded = bmi.toFixed(1);
-
-  const category = getCategory(bmi);
-
-  bmiValue.textContent = rounded;
-
-  bmiBadge.textContent = category.label;
-
-  bmiBadge.style.background = category.bg;
-
-  bmiBadge.style.color = category.color;
-
-  tipText.textContent = category.tip;
-
-  const [low, high] = healthyWeight(height);
-
-  healthyRange.textContent =
-    `${low}-${high} kg`;
-
-  updatePointer(bmi);
-
-  clearActiveRows();
-
-  highlightRow(category.label);
-
-  const bodyFat =
-    (
-      (1.20 * bmi) +
-      (0.23 * age) -
-      (10.8 * (gender === "male" ? 1 : 0)) -
-      5.4
-    ).toFixed(1);
-
-  bfPercent.textContent = bodyFat;
-
-  const circumference = 326.7;
-
-  const offset =
-    circumference -
-    (bodyFat / 60) * circumference;
-
-  bfProgress.style.strokeDashoffset = offset;
-
-  bfDesc.textContent =
-    "Fitness range — a healthy body composition with good muscle definition.";
-
-  results.classList.remove("hidden");
-
-  addHistory(rounded, category.label);
-
-  updateChart(rounded);
 });
 
 // ─── Feature 2: Complete Global Application State Reset Button ───
@@ -457,7 +390,7 @@ resetBtn.addEventListener("click", () => {
     if(arc) arc.style.strokeDashoffset = "326.73";
 });
 
-// ─── Feature 3: Clear All Persistent Logs Handling Engine ───
+// ─── Feature 4: Clear All Persistent Logs Handling Engine ───
 clearHistoryBtn.addEventListener("click", () => {
     localStorage.removeItem("bmi-history-logs");
     updateHistoryUI(); 
@@ -465,83 +398,33 @@ clearHistoryBtn.addEventListener("click", () => {
 
 // ─── Body Fat Classification ───
 function getBodyFatCategory(bf, gender) {
-  const ranges =
-    gender === "male"
-      ? [
-          {
-            max: 6,
-            label: "Essential",
-            color: "#2563b0",
-            bg: "#eff4fc",
-            tip: "Essential fat is the minimum needed for basic physiological function.",
-          },
-          {
-            max: 14,
-            label: "Athletic",
-            color: "#16a34a",
-            bg: "#edf6ef",
-            tip: "Athletic range — typical of competitive athletes with rigorous training.",
-          },
-          {
-            max: 18,
-            label: "Fitness",
-            color: "#0d9488",
-            bg: "#f0fdfa",
-            tip: "Fitness range — a healthy body composition with good muscle definition.",
-          },
-          {
-            max: 25,
-            label: "Average",
-            color: "#d97706",
-            bg: "#fef3e2",
-            tip: "Average range — generally healthy, but there's room for improvement via exercise.",
-          },
-          {
-            max: Infinity,
-            label: "Obese",
-            color: "#dc2626",
-            bg: "#fef2f2",
-            tip: "Elevated body fat — consider consulting a healthcare professional for guidance.",
-          },
-        ]
-      : [
-          {
-            max: 14,
-            label: "Essential",
-            color: "#2563b0",
-            bg: "#eff4fc",
-            tip: "Essential fat is the minimum needed for hormonal and reproductive health.",
-          },
-          {
-            max: 21,
-            label: "Athletic",
-            color: "#16a34a",
-            bg: "#edf6ef",
-            tip: "Athletic range — typical of competitive female athletes.",
-          },
-          {
-            max: 25,
-            label: "Fitness",
-            color: "#0d9488",
-            bg: "#f0fdfa",
-            tip: "Fitness range — a healthy and active body composition.",
-          },
-          {
-            max: 32,
-            label: "Average",
-            color: "#d97706",
-            bg: "#fef3e2",
-            tip: "Average range — generally healthy, but regular exercise can improve outcomes.",
-          },
-          {
-            max: Infinity,
-            label: "Obese",
-            color: "#dc2626",
-            bg: "#fef2f2",
-            tip: "Elevated body fat — consider consulting a healthcare professional for guidance.",
-          },
-        ];
-  return ranges.find((r) => bf < r.max);
+    const ranges =
+        gender === "male"
+            ? [
+                  { max: 6,  label: "Essential",  color: "#2563b0", bg: "#eff4fc",
+                    tip: "Essential fat is the minimum needed for basic physiological function." },
+                  { max: 14, label: "Athletic",   color: "#16a34a", bg: "#edf6ef",
+                    tip: "Athletic range — typical of competitive athletes with rigorous training." },
+                  { max: 18, label: "Fitness",    color: "#0d9488", bg: "#f0fdfa",
+                    tip: "Fitness range — a healthy body composition with good muscle definition." },
+                  { max: 25, label: "Average",    color: "#d97706", bg: "#fef3e2",
+                    tip: "Average range — generally healthy, but there's room for improvement via exercise." },
+                  { max: Infinity, label: "Obese", color: "#dc2626", bg: "#fef2f2",
+                    tip: "Elevated body fat — consider consulting a healthcare professional for guidance." },
+              ]
+            : [
+                  { max: 14, label: "Essential",  color: "#2563b0", bg: "#eff4fc",
+                    tip: "Essential fat is the minimum needed for hormonal and reproductive health." },
+                  { max: 21, label: "Athletic",   color: "#16a34a", bg: "#edf6ef",
+                    tip: "Athletic range — typical of competitive female athletes." },
+                  { max: 25, label: "Fitness",    color: "#0d9488", bg: "#f0fdfa",
+                    tip: "Fitness range — a healthy and active body composition." },
+                  { max: 32, label: "Average",    color: "#d97706", bg: "#fef3e2",
+                    tip: "Average range — generally healthy, but regular exercise can improve outcomes." },
+                  { max: Infinity, label: "Obese", color: "#dc2626", bg: "#fef2f2",
+                    tip: "Elevated body fat — consider consulting a healthcare professional for guidance." },
+              ];
+    return ranges.find((r) => bf < r.max);
 }
 
 // ─── Initialize Storage Log Viewports On First Dom Content Execution ───
