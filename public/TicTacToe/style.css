@@ -14,12 +14,12 @@ body {
   flex-direction: column;
   padding: 20px;
   position: relative;
-  font-family: 'Courier New', 'Monaco', monospace;
+  font-family: "Courier New", "Monaco", monospace;
 }
 
 /* CRT Scanline effect */
 body::before {
-  content: '';
+  content: "";
   position: fixed;
   top: 0;
   left: 0;
@@ -38,13 +38,17 @@ body::before {
 
 /* Vignette effect */
 body::after {
-  content: '';
+  content: "";
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at center, transparent 50%, rgba(0, 0, 0, 0.5) 100%);
+  background: radial-gradient(
+    circle at center,
+    transparent 50%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
   pointer-events: none;
   z-index: 10;
 }
@@ -73,13 +77,13 @@ body::after {
 
 /* Glitchy neon title */
 h1 {
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   font-size: 3.5em;
   font-weight: bold;
   color: #00ffff;
   text-align: center;
   margin: 20px 0;
-  text-shadow: 
+  text-shadow:
     0 0 5px #00ffff,
     0 0 10px #00ffff,
     0 0 20px #00ffff,
@@ -90,16 +94,24 @@ h1 {
 }
 
 @keyframes glitch {
-  0%, 100% {
-    text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+  0%,
+  100% {
+    text-shadow:
+      0 0 5px #00ffff,
+      0 0 10px #00ffff;
     transform: skew(0deg);
   }
-  95%, 97% {
-    text-shadow: -2px 0 #ff00ff, 2px 0 #00ffff;
+  95%,
+  97% {
+    text-shadow:
+      -2px 0 #ff00ff,
+      2px 0 #00ffff;
     transform: skew(2deg);
   }
   96% {
-    text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff;
+    text-shadow:
+      2px 0 #ff00ff,
+      -2px 0 #00ffff;
     transform: skew(-2deg);
   }
 }
@@ -112,7 +124,7 @@ h1 {
   background: rgba(0, 0, 0, 0.8);
   padding: 20px;
   border: 2px solid #00ffff;
-  box-shadow: 
+  box-shadow:
     0 0 20px rgba(0, 255, 255, 0.5),
     inset 0 0 20px rgba(0, 255, 255, 0.2);
 }
@@ -129,18 +141,22 @@ h1 {
   transition: all 0.1s ease;
   color: #00ffff;
   text-shadow: 0 0 10px #00ffff;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   position: relative;
 }
 
 .cell::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at center, rgba(0, 255, 255, 0.1), transparent);
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 255, 255, 0.1),
+    transparent
+  );
   opacity: 0;
   transition: opacity 0.2s;
 }
@@ -158,12 +174,16 @@ h1 {
 /* X and O different neon colors */
 .cell[data-mark="X"] {
   color: #ff00ff;
-  text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+  text-shadow:
+    0 0 10px #ff00ff,
+    0 0 20px #ff00ff;
 }
 
 .cell[data-mark="O"] {
   color: #00ffff;
-  text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+  text-shadow:
+    0 0 10px #00ffff,
+    0 0 20px #00ffff;
 }
 
 button {
@@ -177,7 +197,7 @@ button {
   border-radius: 0;
   transition: all 0.3s ease;
   margin-top: 20px;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   text-transform: uppercase;
   letter-spacing: 2px;
   position: relative;
@@ -186,13 +206,18 @@ button {
 }
 
 button::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 255, 255, 0.3),
+    transparent
+  );
   transition: left 0.5s;
 }
 
@@ -250,7 +275,7 @@ button:hover {
   margin-bottom: 25px;
   color: #00ffff;
   text-shadow: 0 0 10px #00ffff;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
 }
 
 .close {
@@ -279,7 +304,7 @@ button:hover {
 }
 
 .scoreboard::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 5px;
   left: 5px;
@@ -295,7 +320,7 @@ button:hover {
   color: #ff00ff;
   text-shadow: 0 0 8px #ff00ff;
   text-align: center;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   letter-spacing: 2px;
 }
 
@@ -325,7 +350,8 @@ button:hover {
 
 /* Retro terminal blink effect */
 @keyframes blink {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -406,7 +432,8 @@ button:hover {
 
 /* Win animation - Arcade flash */
 @keyframes arcadeWin {
-  0%, 100% {
+  0%,
+  100% {
     background: #0a0a0f;
     border-color: #00ffff;
     box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
