@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Amazon</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/public/Amazon_Clone/style.css">
   <link rel="icon" href="../favv.png" type="image/x-icon" />
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
   <header>
     <div class="navbar">
@@ -69,71 +69,123 @@
       </div>
 
   </header>
-  <div class="hero-section">
-    <div class="hero-msg">
-      <p>You are on amazon. You can also shop on Amazon India for millions of products with fast local delivery. <a>Click here to go to amazon.in</a></p>
+<section class="amz-cat-section">
+  <h2 class="amz-cat-heading">Trending Categories</h2>
+
+  <div class="amz-cat-grid">
+
+    <div class="amz-cat-card">
+      <p class="amz-cat-title">Clothes</p>
+      <img class="amz-cat-img"
+        src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=600&h=300&fit=crop"
+        alt="Clothes">
+    </div>
+
+    <div class="amz-cat-card">
+      <p class="amz-cat-title">Electronics</p>
+      <img class="amz-cat-img"
+        src="https://images.unsplash.com/photo-1498049794561-7780e7231661?w=600&h=300&fit=crop"
+        alt="Electronics">
+    </div>
+
+    <div class="amz-cat-card">
+      <p class="amz-cat-title">Beauty</p>
+      <img class="amz-cat-img"
+        src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600&h=300&fit=crop"
+        alt="Beauty">
+    </div>
+
+    <div class="amz-cat-card">
+      <p class="amz-cat-title">Furniture</p>
+      <img class="amz-cat-img"
+        src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=300&fit=crop"
+        alt="Furniture">
+    </div>
+
+    <div class="amz-cat-card">
+      <p class="amz-cat-title">Toys</p>
+      <img class="amz-cat-img"
+        src="https://images.unsplash.com/photo-1583623025817-d180a2221d0a?w=600&h=300&fit=crop"
+        alt="Toys">
+    </div>
+
+    <div class="amz-cat-card">
+      <p class="amz-cat-title">Pet Care</p>
+      <img class="amz-cat-img"
+        src="https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=600&h=300&fit=crop"
+        alt="Pet Care">
+    </div>
+
+  </div>
+</section>
+
+  <div class="shop-section">
+
+  <div class="box">
+    <div class="box-content">
+      <h2>Clothes</h2>
+      <div class="box-img" style="background-image: url('https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400&h=300&fit=crop');"></div>
+      <a href="#">see more</a>
     </div>
   </div>
 
-   <div class="shop-section">
-         <div class="box">
-       <div class="box-content">
-          <h2>Clothes</h2>
-          <div class="box-img" style="background-image: url('box1_image.jpg');"></div>
-          <a style="padding-right: 20px;" href="3"> see more</a>
-      </div>
-   </div>
-    <div class="box">
-      <div class="box-content">
-        <h2>Health & Personal Care</h2>
-        <div class="box-img" style="background-image: url('box2_image.jpg');"></div>
-        <a style="padding-right: 20px;" href="#">see more</a>
+  <div class="box">
+    <div class="box-content">
+      <h2>Health & Personal Care</h2>
+      <div class="box-img" style="background-image: url('https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=300&fit=crop');"></div>
+      <a href="#">see more</a>
     </div>
-    </div>
-    <div class="box">
-      <div class="box-content">
+  </div>
+
+  <div class="box">
+    <div class="box-content">
       <h2>Furniture</h2>
-      <div class="box-img" style="background-image: url('box3_image.jpg');"></div>
-      <a style="padding-right: 20px;" href="#">see more</a>
-      </div>
+      <div class="box-img" style="background-image: url('https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=300&fit=crop');"></div>
+      <a href="#">see more</a>
     </div>
-    <div class="box">
-      <div class="box-content">
-      <h2>Electronics</h2>
-      <div class="box-img" style="background-image: url('box4_image.jpg');"></div>
-      <a style="padding-right: 20px;" href="#">see more</a>
-      </div>
-    </div>
-    <div class="box">
-      <div class="box-content">
-         <h2>Beauty Picks</h2>
-         <div class="box-img" style="background-image: url('box5_image.jpg');"></div>
-          <a style="padding-right: 20px;" href="#">see more</a>
-     </div>
   </div>
-   <div class="box">
-     <div class="box-content">
-       <h2>Pet Care</h2>
-       <div class="box-img" style="background-image: url('box6_image.jpg');"></div>
-       <a style="padding-right: 20px;" href="#">see more</a>
-   </div>
-   </div>
-   <div class="box">
-     <div class="box-content">
-     <h2>New Arrival in Toys</h2>
-     <div class="box-img" style="background-image: url('box7_image.jpg');"></div>
-     <a style="padding-right: 20px;" href="#">see more</a>
-     </div>
-   </div>
-   <div class="box">
-     <div class="box-content">
-     <h2>Discover Fashion Trends</h2>
-     <div class="box-img" style="background-image: url('box8_image.jpg');"></div>
-     <a style="padding-right: 20px;" href="#">see more</a>
-     </div>
-   </div>
- </div>
 
+  <div class="box">
+    <div class="box-content">
+      <h2>Electronics</h2>
+      <div class="box-img" style="background-image: url('https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400&h=300&fit=crop');"></div>
+      <a href="#">see more</a>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="box-content">
+      <h2>Beauty Picks</h2>
+      <div class="box-img" style="background-image: url('https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=300&fit=crop');"></div>
+      <a href="#">see more</a>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="box-content">
+      <h2>Pet Care</h2>
+      <div class="box-img" style="background-image: url('https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=400&h=300&fit=crop');"></div>
+      <a href="#">see more</a>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="box-content">
+      <h2>New Arrival in Toys</h2>
+      <div class="box-img" style="background-image: url('https://images.unsplash.com/photo-1583623025817-d180a2221d0a?w=400&h=300&fit=crop');"></div>
+      <a href="#">see more</a>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="box-content">
+      <h2>Discover Fashion Trends</h2>
+      <div class="box-img" style="background-image: url('https://images.unsplash.com/photo-1445205170230-053b83016050?w=400&h=300&fit=crop');"></div>
+      <a href="#">see more</a>
+    </div>
+  </div>
+
+</div>
  <footer>
 
   <div class="foot-panel1">

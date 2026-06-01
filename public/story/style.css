@@ -56,29 +56,71 @@ h1 {
 
 .story-card {
     margin: 0 auto;
-    width: min(100%, 420px);
+    width: min(100%, 540px); /* Increased from 420px to make the card bigger */
     background: rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 20px;
-    padding: 18px;
+    padding: 24px;          /* Increased padding for proportional scaling */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .story-card h2 {
     font-size: 1.2rem;
     margin-top: 0;
+    min-height: 2.4rem; /* Keeps layout stable during title shifts */
 }
 
 .cover-image {
     width: 100%;
-    max-width: 300px;
-    aspect-ratio: 3 / 4;
+    max-width: 480px;       /* Increased from 300px to expand view scale */
+    aspect-ratio: auto;     /* Removed strict 3/4 constraint to fit dimensions naturally */
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.3);
-    object-fit: cover;
+    object-fit: contain;    /* Keeps full picture fully visible instead of cropping */
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
-    margin: 8px 0 16px;
+    margin: 12px 0 20px;
 }
 
+/* CAROUSEL LAYOUT STYLES */
+.carousel-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 480px;       /* Matched to new image container maximum width */
+    margin: 0 auto 16px;
+}
+
+.btn-secondary {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.08);
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.18);
+    transform: translateY(-1px);
+}
+
+.btn-secondary:active {
+    transform: translateY(0);
+}
+
+#story-indicator {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--accent);
+    letter-spacing: 0.5px;
+}
+
+/* BUTTONS & CONTROLS */
 .btn-primary,
 .control-btn {
     border: none;
@@ -95,6 +137,16 @@ h1 {
 .control-btn:hover {
     transform: translateY(-1px);
     box-shadow: 0 10px 18px rgba(0, 0, 0, 0.26);
+}
+
+.btn-primary:active,
+.control-btn:active {
+    transform: translateY(0);
+}
+
+.btn-primary {
+    width: 100%;
+    max-width: 480px;       /* Matched to image container for crisp vertical lines */
 }
 
 .story-header p {
@@ -142,6 +194,7 @@ h1 {
     background: linear-gradient(135deg, #ffe0e0, #ff9a9a);
 }
 
+/* RESPONSIVE BREAKPOINTS */
 @media (max-width: 700px) {
     body {
         padding: 14px;
@@ -157,4 +210,20 @@ h1 {
         font-size: 1rem;
         min-height: 140px;
     }
+}
+
+
+.carousel-hint {
+    font-size: 0.95rem;
+    color: var(--accent); /* Uses your beautiful bright cyan accent color */
+    margin: -10px auto 20px;
+    font-style: italic;
+    letter-spacing: 0.3px;
+    opacity: 0.9;
+    animation: pulseHint 2s infinite alternate; /* Adds a gentle pulse to draw attention */
+}
+
+@keyframes pulseHint {
+    from { opacity: 0.75; }
+    to { opacity: 1; }
 }

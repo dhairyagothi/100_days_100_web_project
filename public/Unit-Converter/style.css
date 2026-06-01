@@ -1,82 +1,298 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
-*{
-    font-family: "Noto Sans", sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-body{
-    background-color: rgb(203, 235, 255);
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Sans', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 40%, #f093fb 100%);
 }
-.box{
-    border: 2px solid grey;
-    border-radius: 30px;
-    background-color: rgb(226, 244, 255);
+
+/* ── Outer wrapper ── */
+.uc-wrap {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
 }
-.heading1{
-    font-size:xx-large;
-    font-weight: bold;
+
+/* Decorative blurred orbs */
+.uc-wrap::before {
+  content: '';
+  position: fixed;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  top: -120px;
+  left: -100px;
+  pointer-events: none;
 }
-.container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 30px;
+
+.uc-wrap::after {
+  content: '';
+  position: fixed;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  bottom: -80px;
+  right: -60px;
+  pointer-events: none;
 }
-.heading{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+
+/* ── Glass card ── */
+.glass-card {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  position: relative;
+  z-index: 1;
 }
-.box{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 50px;
+
+/* ── Title ── */
+.card-title {
+  color: #fff;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.3px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
-.input-val{
-    display: flex;
-    align-items: center;
-    justify-content:space-between;
-    gap: 100px;
-    padding: 50px;
-    font-size: xx-large;
+
+.card-title i {
+  font-size: 22px;
+  opacity: 0.85;
 }
-.output{
-    border: 2px solid black;
-    margin: 50px;
-    margin-top: 0;
-    font-size: xx-large;
-    padding: 10px;
-    color: rgb(55, 223, 52);
-    border-radius: 40px;
-    background-color: rgb(234, 255, 233) ;
-    /* background-color: rgb(134, 203, 255); */
+
+/* ── Category tabs ── */
+.tabs {
+  display: flex;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
 }
-input{
-    font-size: xx-large;
+
+.tab-btn {
+  flex: 1;
+  padding: 7px 6px;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.65);
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
 }
-.input-section{
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+
+.tab-btn.active {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
 }
-select{
-    font-size: x-large;
+
+.tab-btn:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
 }
-.result{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    font-size: xx-large;
-    color: rgb(0, 0, 69);
+
+/* ── Field groups ── */
+.field-group {
+  margin-bottom: 12px;
 }
-.to-input input{
-    color: rgb(56, 56, 227);
+
+.field-label {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
 }
-.category label{
-    font-size: xx-large;
-    color: rgb(50, 38, 76);
+
+.row {
+  display: flex;
+  gap: 8px;
+}
+
+/* ── Inputs ── */
+.glass-input {
+  flex: 1;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  color: #fff;
+  font-family: 'DM Mono', monospace;
+  font-size: 15px;
+  font-weight: 500;
+  outline: none;
+  transition: background 0.2s, border-color 0.2s;
+  width: 100%;
+}
+
+.glass-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.glass-input:focus {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.glass-input[readonly] {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.9);
+  cursor: default;
+}
+
+/* Remove number input arrows */
+.glass-input::-webkit-outer-spin-button,
+.glass-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.glass-input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* ── Selects ── */
+.select-wrap {
+  position: relative;
+  flex: 1.3;
+}
+
+.select-wrap::after {
+  content: '▾';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+  font-size: 13px;
+}
+
+.glass-select {
+  width: 100%;
+  padding: 12px 32px 12px 14px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.glass-select:focus {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.glass-select option {
+  background: #5a3e9e;
+  color: #fff;
+}
+
+/* ── Swap button ── */
+.swap-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.swap-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  transition: background 0.2s, transform 0.35s ease;
+}
+
+.swap-btn:hover {
+  background: rgba(255, 255, 255, 0.32);
+  transform: rotate(180deg);
+}
+
+/* ── Result banner ── */
+.result-banner {
+  margin-top: 1.25rem;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 14px;
+  padding: 14px 16px;
+  color: #fff;
+  font-size: 13px;
+  text-align: center;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.1px;
+  line-height: 1.5;
+}
+
+.result-banner strong {
+  font-size: 16px;
+  margin: 0 3px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .glass-card {
+    padding: 1.5rem;
+    border-radius: 20px;
+  }
+
+  .card-title {
+    font-size: 18px;
+  }
+
+  .tab-btn {
+    font-size: 11px;
+    padding: 6px 4px;
+  }
 }

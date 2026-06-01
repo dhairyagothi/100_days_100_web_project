@@ -38,17 +38,33 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // 3. Handle Form Interceptions safely
-  if (formLogin) {
-    formLogin.addEventListener("submit", (e) => {
-      e.preventDefault();
-      console.log("Sign In data intercepted. Ready for production integration.");
-    });
-  }
+if (formLogin) {
+
+  formLogin.addEventListener("submit", (e) => {
+
+    e.preventDefault();
+
+    alert("Login successful!");
+
+    window.location.href = "index.html";
+
+  });
+
+}
 
   if (formRegister) {
-    formRegister.addEventListener("submit", (e) => {
-      e.preventDefault();
-      console.log("Create Account verification active. Ready for production integration.");
-    });
-  }
+
+  formRegister.addEventListener("submit", (e) => {
+
+    e.preventDefault();
+
+    // Optional success message
+    alert("Account created successfully!");
+
+    // Redirect to home page
+    window.location.href = "index.html";
+
+  });
+
+}
 });
