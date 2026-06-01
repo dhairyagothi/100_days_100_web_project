@@ -330,6 +330,16 @@ const searchClose = document.getElementById("search-close");
 const searchInput = document.getElementById("search-input");
 const searchResults = document.getElementById("search-results");
 
+// Security: escape HTML to prevent XSS
+function escapeHTML(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 searchBtn.addEventListener("click", () => {
   openModal(searchOverlay, searchModal);
   setTimeout(() => searchInput.focus(), 100);
@@ -364,17 +374,17 @@ searchInput.addEventListener("input", function () {
   });
 
   if (!matched.length) {
-    searchResults.innerHTML = `<div class="search-no-result">No shoes found for "${q}"</div>`;
+    searchResults.innerHTML = `<div class="search-no-result">No shoes found for "${escapeHTML(q)}"</div>`;
     return;
   }
 
   searchResults.innerHTML = matched
     .map(
       (r) => `
-    <div class="search-result-item" data-name="${r.name}" data-price="${r.price}" data-img="${r.imgSrc}">
-      <img src="${r.imgSrc}" alt="${r.name}" />
+    <div class="search-result-item" data-name="${escapeHTML(r.name)}" data-price="${r.price}" data-img="${r.imgSrc}">
+      <img src="${escapeHTML(r.imgSrc)}" alt="${escapeHTML(r.name)}" />
       <div class="search-result-info">
-        <div class="search-result-name">${r.name}</div>
+        <div class="search-result-name">${escapeHTML(r.name)}</div>
         <div class="search-result-price">${fmt(r.price)}</div>
       </div>
     </div>
