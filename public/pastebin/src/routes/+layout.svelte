@@ -3,7 +3,7 @@
 	import Header from './Header.svelte';
 </script>
 
-<div class="m-4">
-	<Header></Header>
-	<slot></slot>
+<div class="m-4 max-w-5xl mx-auto">
+	<Header />
+	<slot />
 </div>
