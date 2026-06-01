@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sammu Trial Login Page</title>
+    <title>Login — 100 Days 100 Web Projects</title>
 
     <link
       rel="stylesheet"
@@ -91,23 +91,58 @@
     </section>
 
     <script>
-      // ── Helper: show status message ──
-      function showStatus(message, type) {
-        const el = document.getElementById("statusMsg");
-        el.textContent = message;
-        el.style.display = "block";
-        if (type === "error") {
-          el.style.background = "rgba(248, 113, 113, 0.15)";
-          el.style.color = "#f87171";
-          el.style.border = "1px solid rgba(248, 113, 113, 0.3)";
-        } else if (type === "success") {
-          el.style.background = "rgba(52, 211, 153, 0.15)";
-          el.style.color = "#34d399";
-          el.style.border = "1px solid rgba(52, 211, 153, 0.3)";
+      // Toast System
+      function showToast(message, type = 'info') {
+        let container = document.querySelector('.toast-container');
+        if (!container) {
+          container = document.createElement('div');
+          container.className = 'toast-container';
+          container.style.cssText = 'position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 999999; display: flex; flex-direction: column; gap: 12px; max-width: 380px; width: calc(100% - 48px); pointer-events: none;';
+          document.body.appendChild(container);
+        }
+
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+
+        const iconMap = {
+          success: '<i class="fa-solid fa-circle-check"></i>',
+          error: '<i class="fa-solid fa-circle-exclamation"></i>',
+          warning: '<i class="fa-solid fa-triangle-exclamation"></i>',
+          info: '<i class="fa-solid fa-circle-info"></i>'
+        };
+
+        toast.innerHTML = `
+          <div class="toast-icon">${iconMap[type] || iconMap.info}</div>
+          <div class="toast-message">${message}</div>
+          <button class="toast-close" aria-label="Close message">&times;</button>
+        `;
+
+        container.appendChild(toast);
+
+        // Close on button click
+        toast.querySelector('.toast-close').addEventListener('click', () => {
+          removeToast(toast);
+        });
+
+        // Auto remove
+        const autoRemoveTimeout = setTimeout(() => {
+          removeToast(toast);
+        }, 4000);
+
+        function removeToast(el) {
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(-10px) scale(0.95)';
+          setTimeout(() => {
+            el.remove();
+            if (container.childNodes.length === 0) {
+              container.remove();
+            }
+          }, 300);
+          clearTimeout(autoRemoveTimeout);
         }
       }
 
-      // ── Password visibility toggle ──
+      // Show password toggle
       function togglePassword() {
         const passwordInput = document.getElementById("password");
         const toggleIcon = document.querySelector(".toggle-password");
@@ -138,9 +173,9 @@
 
           // Look up user stored by SignUp.html (keyed by username)
           const storedRaw = localStorage.getItem(username);
-
-          if (!storedRaw) {
-            showStatus("No account found for that username. Please sign up first.", "error");
+          // Check if user exists
+          if (!storedUser) {
+            showToast("User does not exist.", "error");
             return;
           }
 
@@ -154,6 +189,19 @@
 
           // Password check
           if (password !== userData.password) {
+            showToast("Incorrect password.", "error");
+            return;
+          }
+
+          // Login successful
+          showToast("Login successful!", "success");
+
+          localStorage.setItem("loggedInUser", username);
+       
+          // Delay redirection to allow toast to be visible
+          setTimeout(() => {
+            window.location.href = "../index.html";
+          }, 1200);
             showStatus("Incorrect password. Please try again.", "error");
             return;
           }
@@ -183,4 +231,4 @@
         });
     </script>
   </body>
-</html>  i solving it for gssoc   and the problem in there is an empty space on top 
+</html> 

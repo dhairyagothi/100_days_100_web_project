@@ -36,6 +36,7 @@ h1 {
   font-weight: 700;
   margin-bottom: 8px;
   background: linear-gradient(135deg, #38bdf8 0%, #3b82f6 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: flex;
@@ -216,6 +217,33 @@ textarea:focus {
   font-size: 13px;
   font-weight: 500;
   border: 1px solid rgba(250, 204, 21, 0.15);
+}
+
+.result-disclaimer {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+
+    margin-top: 16px;
+    padding: 14px 16px;
+
+    background-color: #fff8e1;
+    border-left: 4px solid #f59e0b;
+
+    border-radius: 8px;
+
+    color: #444;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.disclaimer-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.result-disclaimer p {
+    margin: 0;
 }
 
 /* Back Button Responsive positioning */
