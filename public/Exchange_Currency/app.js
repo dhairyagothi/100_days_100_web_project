@@ -10,7 +10,6 @@ let historyChart;
 const swapIcon = document.querySelector(".dropdown i");
 const amtInput = document.querySelector(".amount input");
 const convertedAmountField = document.querySelector(".converted-amount input");
-const swapIcon = document.querySelector(".dropdown i");
 const resetBtn = document.querySelector(".reset-btn");
 
 let errorTimeout;
@@ -59,12 +58,9 @@ for (let select of dropdowns) {
   }
 
   select.addEventListener("change", (evt) => {
-  updateFlag(evt.target);
-  updateExchangeRate();
-  loadHistoricalChart();
-});
     updateFlag(evt.target);
     updateExchangeRate();
+    loadHistoricalChart();
   });
 }
 const loadHistoricalChart = async () => {
@@ -194,8 +190,7 @@ swapIcon.addEventListener("click", () => {
   updateExchangeRate();
   loadHistoricalChart();
 });
-btn.addEventListener("click", (evt) => {
-  evt.preventDefault();
+
 window.addEventListener("load", () => {
   updateExchangeRate(true);
 });
