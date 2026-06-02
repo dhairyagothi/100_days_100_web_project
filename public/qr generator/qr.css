@@ -1146,6 +1146,19 @@ button {
 }
 
 @media (max-width: 600px) {
+    .qr-actions {
+        flex-direction: column;
+    }
+
+    .option {
+        flex-basis: 100%;
+    }
+}
+
+select option {
+    color: black;
+    background-color: white;
+}
   .qr-actions {
     flex-direction: column;
   }

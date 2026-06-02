@@ -7,6 +7,29 @@ const resumeInput =
 const fileName =
   document.getElementById("fileName");
 
+const downloadReportBtn =
+  document.getElementById(
+    "downloadReportBtn"
+  );
+const dropZone =
+  document.getElementById("dropZone");
+
+const dragText =
+  document.querySelector(".drag-text");
+
+const statType =
+  document.getElementById("statType");
+
+const statSize =
+  document.getElementById("statSize");
+
+const statModified =
+  document.getElementById("statModified");
+
+const statReadTime =
+  document.getElementById("statReadTime");
+  
+
 uploadBtn.addEventListener("click", () => {
 
   resumeInput.click();
@@ -17,12 +40,74 @@ resumeInput.addEventListener("change", () => {
 
   if (resumeInput.files.length > 0) {
 
-    fileName.textContent =
-      resumeInput.files[0].name;
+    const file =
+      resumeInput.files[0];
 
+    fileName.textContent =
+      file.name;
+
+    updateStats(file);
     generateAnalysis();
   }
 });
+
+["dragenter", "dragover"].forEach(eventName => {
+
+  dropZone.addEventListener(
+    eventName,
+    e => {
+
+      e.preventDefault();
+
+      dropZone.classList.add(
+        "drag-over"
+      );
+
+      dragText.textContent =
+        "Drop your resume here";
+    }
+  );
+
+});
+
+["dragleave", "drop"].forEach(eventName => {
+
+  dropZone.addEventListener(
+    eventName,
+    e => {
+
+      e.preventDefault();
+
+      dropZone.classList.remove(
+        "drag-over"
+      );
+
+      dragText.textContent =
+        "or drag & drop your resume here";
+    }
+  );
+
+});
+
+dropZone.addEventListener(
+  "drop",
+  e => {
+
+    const files =
+      e.dataTransfer.files;
+
+    if (files.length > 0) {
+
+      resumeInput.files = files;
+      
+      fileName.textContent =
+        files[0].name;
+
+      generateAnalysis();
+    }
+  }
+);
+
 
 const progressCircle =
   document.getElementById("progressCircle");
@@ -41,10 +126,16 @@ progressCircle.style.strokeDasharray =
 progressCircle.style.strokeDashoffset =
   circumference;
 
+let currentATSScore = 0;
+
 function generateAnalysis() {
 
-  const atsScore =
+   currentATSScore =
     Math.floor(Math.random() * 21) + 70;
+
+
+  const atsScore =
+   currentATSScore;
 
   animateMeter(atsScore);
 
@@ -183,7 +274,31 @@ function generateChart(score) {
   });
 }
 
+function updateStats(file){
+
+  statType.textContent =
+    file.type || "Unknown";
+
+  statSize.textContent =
+    `${(file.size/1024).toFixed(1)} KB`;
+
+  statModified.textContent =
+    new Date(
+      file.lastModified
+    ).toLocaleDateString();
+
+  const estimatedMinutes =
+    Math.max(
+      1,
+      Math.round(file.size/50000)
+    );
+
+  statReadTime.textContent =
+    `${estimatedMinutes} min`;
+}
+
 generateAnalysis();
+
 const themeToggle =
   document.getElementById("themeToggle");
 
@@ -193,32 +308,72 @@ const savedTheme =
 if (savedTheme === "light") {
 
   document.body.classList.add("light-mode");
-
+  
   themeToggle.textContent = "☀️";
+} else {
+  themeToggle.textContent = "🌙";
 }
 
 themeToggle.addEventListener("click", () => {
 
   document.body.classList.toggle("light-mode");
 
-  if (
-    document.body.classList.contains("light-mode")
-  ) {
+  const isLight =
+    document.body.classList.contains("light-mode");
 
-    localStorage.setItem(
-      "resumeTheme",
-      "light"
-    );
+  localStorage.setItem(
+    "resumeTheme",
+    isLight ? "light" : "dark"
+  );
 
-    themeToggle.textContent = "☀️";
-
-  } else {
-
-    localStorage.setItem(
-      "resumeTheme",
-      "dark"
-    );
-
-    themeToggle.textContent = "🌙";
-  }
+  themeToggle.textContent =
+    isLight ? "☀️" : "🌙";
 });
+
+downloadReportBtn.addEventListener(
+"click",
+() => {
+
+const report = `
+AI Resume Analyzer Report
+=========================
+
+ATS Score: ${currentATSScore}%
+
+Resume Insights
+---------------
+Technical Skills: 88%
+Projects: 82%
+Communication: 74%
+Experience: 68%
+
+AI Suggestions
+--------------
+• Add more quantified project achievements.
+• Include keywords like React, APIs, and Node.js.
+• Improve resume summary section.
+• Add GitHub and portfolio links.
+`;
+
+const blob =
+  new Blob(
+    [report],
+    { type: "text/plain" }
+  );
+
+const url =
+  URL.createObjectURL(blob);
+
+const a =
+  document.createElement("a");
+
+a.href = url;
+
+a.download =
+  "resume-analysis-report.txt";
+
+a.click();
+
+URL.revokeObjectURL(url);
+}
+);

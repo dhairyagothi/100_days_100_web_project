@@ -1,0 +1,352 @@
+:root {
+  color-scheme: dark;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #e8eef7;
+  background: #0c1120;
+  background-image: radial-gradient(circle at top left, rgba(59, 130, 246, 0.24), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.14), transparent 22%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background-color: #0b1226;
+  color: #e8eef7;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.page-shell {
+  width: min(1150px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2.5rem 0 3rem;
+}
+
+.site-header {
+  max-width: 780px;
+  margin: 0 auto 2rem;
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #6fb9ff;
+  margin-bottom: 0.9rem;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(2.4rem, 4vw, 3.9rem);
+  letter-spacing: -0.04em;
+}
+
+.intro,
+.card-copy,
+.hint-text {
+  color: #b8c7e0;
+}
+
+.intro {
+  max-width: 680px;
+  margin: 1.1rem auto 0;
+  font-size: 1.05rem;
+}
+
+.tracker-card {
+  background: linear-gradient(180deg, rgba(9, 15, 30, 0.96), rgba(8, 15, 27, 0.98));
+  border: 1px solid rgba(103, 145, 255, 0.12);
+  border-radius: 32px;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.28);
+  padding: 2rem;
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.card-header h2 {
+  font-size: clamp(1.7rem, 2.6vw, 2.6rem);
+}
+
+.card-copy {
+  margin-top: 0.75rem;
+  max-width: 530px;
+}
+
+.ghost-btn,
+.primary-btn,
+.secondary-btn,
+.water-button {
+  border: 1px solid transparent;
+  border-radius: 18px;
+  padding: 0.95rem 1.3rem;
+  cursor: pointer;
+  transition: transform 0.24s ease, background 0.24s ease, border-color 0.24s ease;
+}
+
+.ghost-btn {
+  background: rgba(255, 255, 255, 0.04);
+  color: #cfd9f4;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.ghost-btn:hover,
+.primary-btn:hover,
+.secondary-btn:hover,
+.water-button:hover {
+  transform: translateY(-2px);
+}
+
+.primary-btn,
+.secondary-btn,
+.water-button {
+  min-width: 130px;
+  font-weight: 600;
+}
+
+.primary-btn {
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  color: #ffffff;
+}
+
+.secondary-btn {
+  background: rgba(59, 130, 246, 0.12);
+  color: #e8eef7;
+}
+
+.water-button {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(96, 165, 250, 0.16));
+  color: #e8eef7;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: rgba(18, 28, 51, 0.95);
+  border: 1px solid rgba(96, 165, 250, 0.08);
+  border-radius: 22px;
+  padding: 1.3rem;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.85rem;
+  color: #90a7cc;
+  margin-bottom: 0.85rem;
+}
+
+.stat-card strong {
+  display: block;
+  font-size: 1.45rem;
+  letter-spacing: -0.03em;
+}
+
+.progress-panel {
+  background: rgba(18, 28, 51, 0.9);
+  border: 1px solid rgba(96, 165, 250, 0.1);
+  border-radius: 24px;
+  padding: 1.6rem;
+  margin-bottom: 2rem;
+}
+
+.progress-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.progress-label {
+  color: #9ba9d4;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.75rem;
+}
+
+#percentageLabel {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.progress-bar {
+  margin-top: 1rem;
+  width: 100%;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  width: 0%;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #3b82f6, #38bdf8 55%, #60a5fa);
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.32);
+  transition: width 0.45s ease;
+}
+
+.completion-message {
+  margin-top: 1rem;
+  min-height: 1.5rem;
+  color: #a5d8ff;
+  font-weight: 500;
+}
+
+.controls-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.control-panel {
+  background: rgba(15, 22, 38, 0.96);
+  border: 1px solid rgba(96, 165, 250, 0.08);
+  border-radius: 24px;
+  padding: 1.5rem;
+}
+
+.control-panel h3 {
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+}
+
+.goal-form,
+.custom-form {
+  display: grid;
+  gap: 1rem;
+}
+
+label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+input[type='number'] {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #eef2ff;
+  padding: 0.95rem 1rem;
+  outline: none;
+}
+
+input[type='number']::placeholder {
+  color: #9ca8c3;
+}
+
+input[type='number']:focus {
+  border-color: rgba(59, 130, 246, 0.48);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
+}
+
+.custom-input-group {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem;
+}
+
+.button-group {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.hint-text {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 960px) {
+  .stats-grid,
+  .controls-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .page-shell {
+    padding: 1.6rem 0 2rem;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .controls-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .button-group {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .water-button,
+  .ghost-btn,
+  .primary-btn,
+  .secondary-btn {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 440px) {
+  .eyebrow {
+    font-size: 0.72rem;
+    gap: 0.35rem;
+  }
+
+  .tracker-card {
+    padding: 1.6rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .progress-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

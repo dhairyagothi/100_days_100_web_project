@@ -8,6 +8,8 @@ const instructionsNavItem = document.getElementById('instructionsNavItem');
 
 let DPR = Math.max(1, window.devicePixelRatio || 1);
 let width = 1280, height = 720;
+let PARTICLE_COUNT = 3200; // default
+let particles = [];
 
 function resize(){
   const w = window.innerWidth;
@@ -225,8 +227,6 @@ class Particle{
   }
 }
 
-let PARTICLE_COUNT = 3200; // default
-let particles = [];
 function initParticles(){
   particles = [];
   const w = canvas.width/DPR; const h = canvas.height/DPR;
@@ -478,7 +478,7 @@ function updatePhysicsAndDraw(dt){
          p.vx += (Math.random() - 0.5) * 120; // massive blast
          p.vy += (Math.random() - 0.5) * 120;
        }
-       chargeTimer = 0;
+       chargeTimer = -1500; // 1.5s cooldown before charging again
        setGesture1('open'); // temporary override to reset gesture state
      }
   }
