@@ -190,16 +190,47 @@
               </div>
             </div>
           </div>
-        </section>
+        </div>
 
-        <div class="controls-container">
-          <div class="theme-buttons">
-            <button
-              class="theme-btn active classic-btn"
-              onclick="setTheme('classic')"
-            >
-              Classic
-            </button>
+      </div>
+    </div>
+
+    <div class="controls-container">
+
+      <div class="theme-buttons">
+        <button class="dark-mode-btn" onclick="toggleDarkMode()">
+  ☀️ Light Mode
+</button>
+
+      </div>
+
+      <div class="select-group">
+
+        <label>Select Timezone</label>
+
+        <select id="timezone" onchange="updateClock()">
+
+          <option value="local">Local Time</option>
+          <option value="UTC">UTC</option>
+          <option value="America/New_York">New York</option>
+          <option value="Europe/London">London</option>
+          <option value="Asia/Kolkata">India</option>
+
+        </select>
+
+      </div>
+
+      <div class="alarm-section">
+
+        <button class="alarm-toggle-btn" onclick="toggleAlarmSection()">
+          <b>Set Alarm</b>
+        </button>
+
+        <div class="alarm-controls hidden" id="alarm-controls">
+
+          <input type="time" id="alarm-time" />
+
+          <div class="alarm-actions">
 
             <button class="theme-btn modern-btn" onclick="setTheme('modern')">
               Modern

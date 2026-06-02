@@ -140,12 +140,17 @@ async function fetchRepos(username) {
     const perPage = 100;
 
     while (true) {
-        const res = await fetch(`${API_BASE}/users/${username}/repos?per_page=${perPage}&page=${page}&sort=updated`);
+        const res = await fetch(
+            `${API_BASE}/users/${username}/repos?per_page=${perPage}&page=${page}&sort=updated`
+        );
+
         if (!res.ok) {
-    throw new Error(
-        `Failed to fetch repositories for ${username} (HTTP ${res.status})`
-    );
-}
+            console.warn(
+                `Failed to fetch repositories for ${username} (HTTP ${res.status})`
+            );
+            break; // important: prevents app crash
+        }
+
         const repos = await res.json();
 
         if (repos.length === 0) break;
@@ -538,6 +543,9 @@ async function createShareCardBlob() {
     const canvas = await createShareCardCanvas();
     return canvasToBlob(canvas);
 }
+function isValidGitHubUsername(username) {
+    return /^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$/.test(username);
+}
 
 // ===== Battle Flow =====
 async function startBattle() {
@@ -550,6 +558,17 @@ async function startBattle() {
         DOM.errorMsg.textContent = 'Please enter both usernames';
         return;
     }
+
+    if (!isValidGitHubUsername(u1)) {
+        DOM.errorMsg.textContent = `Invalid GitHub username: ${u1}`;
+        return;
+    }
+
+    if (!isValidGitHubUsername(u2)) {
+        DOM.errorMsg.textContent = `Invalid GitHub username: ${u2}`;
+        return;
+    }
+
     if (u1.toLowerCase() === u2.toLowerCase()) {
         DOM.errorMsg.textContent = "Can't battle yourself! Enter different usernames.";
         return;

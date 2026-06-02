@@ -2508,7 +2508,20 @@
     "projectPath": "./public/NumberGuessGame/index.html"
 },
   {
-    "projectNo": 201,
+    "projectNo": 202,
+    "projectName": "Traffic signal game",
+    "projectType": "Game",
+    "projectDesc": "A traffic game with red , green , yellow light.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/traffic_signal/index.html"
+  },
+  {
+    "projectNo": 203,
     "projectName": "Neon Forge",
     "projectType": "Tool",
     "projectDesc": "An interactive CSS neon glow effects playground with live preview, presets, generated CSS, copy support, and PNG export.",
@@ -2520,5 +2533,4 @@
     "difficulty": "advanced",
     "projectPath": "./public/NeonForge/index.html"
    }
-  
 ]
