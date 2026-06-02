@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Website Personalizer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
+
+  <div id="quiz-phase" class="phase active">
+    <div class="quiz-wrap">
+      <div class="quiz-progress">
+        <div class="progress-bar"><div id="progress-fill"></div></div>
+        <span id="progress-label">1 / 5</span>
+      </div>
+      <div id="card-stack"></div>
+    </div>
+  </div>
+
+  <div id="brew-phase" class="phase">
+    <div class="brew-wrap">
+      <div class="brew-terminal">
+        <div class="term-bar">
+          <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+          <span class="term-title">personalizer.sh</span>
+        </div>
+        <div class="term-body">
+          <div id="brew-lines"></div>
+          <div class="term-cursor"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="site-phase" class="phase">
+
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="grain-layer"></div>
+    <div class="grid-layer" id="grid-layer"></div>
+
+    <nav class="navbar">
+      <div class="logo" id="studio-name">FORMA</div>
+      <div class="nav-links">
+        <a href="#" id="nav-1">Work</a>
+        <a href="#" id="nav-2">About</a>
+        <a href="#" id="nav-3">Lab</a>
+        <a href="#" id="nav-4">Contact</a>
+      </div>
+      <button id="repersonalize-btn">Repersonalize</button>
+    </nav>
+
+    <header class="hero-section">
+      <div class="hero-copy">
+        <p class="hero-tag" id="hero-tag">Creative Studio</p>
+        <h1 class="hero-heading">
+          We craft <em id="hero-em">digital</em><br>experiences
+        </h1>
+        <p class="hero-sub" id="hero-sub">Branding · Motion · Web · Strategy</p>
+        <div class="hero-cta">
+          <button class="btn-primary">See Our Work</button>
+          <button class="btn-ghost">Get in Touch</button>
+        </div>
+      </div>
+
+      <div class="hero-media" id="hero-media">
+        <div class="hero-shape" id="hero-shape"></div>
+        <div class="hero-code" id="hero-code">
+          <div class="hc-bar">
+            <span class="hc-prompt">$</span> cat studio.config
+          </div>
+          <pre class="hc-body"><span class="ck">const</span> <span class="cv">studio</span> = {
+  name:   <span class="cs">"FRG.SYS"</span>,
+  stack:  <span class="cs">"next-gen"</span>,
+  mode:   <span class="cs">"always_on"</span>,
+  craft:  [<span class="cs">"web"</span>, <span class="cs">"code"</span>, <span class="cs">"motion"</span>],
+  status: <span class="cs">"online"</span>  <span class="ck">// ██████ 100%</span>
+}<span class="c-blink">▮</span></pre>
+        </div>
+      </div>
+    </header>
+
+    <div class="marquee">
+      <div class="marquee-track">
+        <span>Branding</span><span class="msep">·</span>
+        <span>Motion</span><span class="msep">·</span>
+        <span>Development</span><span class="msep">·</span>
+        <span>Art Direction</span><span class="msep">·</span>
+        <span>Strategy</span><span class="msep">·</span>
+        <span>Branding</span><span class="msep">·</span>
+        <span>Motion</span><span class="msep">·</span>
+        <span>Development</span><span class="msep">·</span>
+        <span>Art Direction</span><span class="msep">·</span>
+        <span>Strategy</span><span class="msep">·</span>
+      </div>
+    </div>
+
+    <section class="work-section">
+      <div class="work-top">
+        <h2>Selected Work</h2>
+        <a href="#" class="work-all">View all →</a>
+      </div>
+      <div class="work-grid">
+        <div class="work-card" data-index="0">
+          <div class="work-thumb"><span class="work-num">01</span></div>
+          <div class="work-info">
+            <span class="work-tag">Branding</span>
+            <h3>Aether Identity</h3>
+            <p class="proj-desc">Full brand system for a tech startup — mark, type, and motion guidelines.</p>
+          </div>
+        </div>
+        <div class="work-card" data-index="1">
+          <div class="work-thumb"><span class="work-num">02</span></div>
+          <div class="work-info">
+            <span class="work-tag">Web</span>
+            <h3>Solstice Digital</h3>
+            <p class="proj-desc">E-commerce platform with custom interaction design and 3D product views.</p>
+          </div>
+        </div>
+        <div class="work-card" data-index="2">
+          <div class="work-thumb"><span class="work-num">03</span></div>
+          <div class="work-info">
+            <span class="work-tag">Motion</span>
+            <h3>Drift Campaign</h3>
+            <p class="proj-desc">Integrated motion campaign across OOH, social, and broadcast channels.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="services-section">
+      <div class="services-intro">
+        <h2 id="services-h2">What We Do</h2>
+        <p id="services-sub">End-to-end creative execution for brands that want to stand out.</p>
+      </div>
+      <div class="serv-grid">
+        <div class="serv-item" data-num="01">
+          <h3>Brand Identity</h3>
+          <p>Logo, system, voice. Built to outlast trends and built to scale.</p>
+        </div>
+        <div class="serv-item" data-num="02">
+          <h3>Digital Design</h3>
+          <p>Web, app, motion — pixels with purpose and interfaces that convert.</p>
+        </div>
+        <div class="serv-item" data-num="03">
+          <h3>Strategy</h3>
+          <p>Research-backed positioning for ambitious brands at every stage.</p>
+        </div>
+        <div class="serv-item" data-num="04">
+          <h3>Creative Direction</h3>
+          <p>Unifying creative voice across every touchpoint and platform.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section">
+      <div class="about-text">
+        <h2 id="about-h2">We are Forma</h2>
+        <p>A small team of designers and developers who care deeply about the craft. We work with ambitious brands to create work that sticks.</p>
+        <a href="#" class="about-link">Our story →</a>
+      </div>
+      <div class="about-stats">
+        <div class="stat"><span class="stat-num">7+</span><span class="stat-label">Years</span></div>
+        <div class="stat"><span class="stat-num">120</span><span class="stat-label">Projects</span></div>
+        <div class="stat"><span class="stat-num">40</span><span class="stat-label">Clients</span></div>
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      <div class="footer-left">
+        <span class="footer-logo" id="footer-name">FORMA</span>
+        <span class="footer-copy">© 2025. All rights reserved.</span>
+      </div>
+      <div class="footer-right">
+        <a href="#">Twitter</a>
+        <a href="#">Dribbble</a>
+        <a href="#">LinkedIn</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

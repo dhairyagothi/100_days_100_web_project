@@ -403,3 +403,35 @@ button:disabled {
     padding: 10px 14px;
   }
 }
+
+
+#mazeContainer.preview canvas {
+  filter: blur(8px);
+  opacity: 0.5;
+  transition: all 0.8s ease;
+  animation: pulseGlow 2s infinite alternate;
+}
+
+#mazeContainer.active canvas {
+  filter: blur(0px);
+  opacity: 1;
+}
+
+@keyframes pulseGlow {
+  from {
+    box-shadow: 0 0 10px #00ffff;
+  }
+  to {
+    box-shadow: 0 0 25px #00ffff;
+  }
+}#mazeContainer.preview canvas {
+  filter: blur(10px);
+  opacity: 0.6;
+  pointer-events: none;
+  transition: filter 0.8s ease, opacity 0.8s ease;
+}
+
+
+
+
+

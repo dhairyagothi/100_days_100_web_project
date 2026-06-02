@@ -283,6 +283,34 @@ main.experience-container {
     opacity: 1;
     transform: translateY(0);
 }
+.brush-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 12px 18px;
+    border-radius: 40px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.brush-controls label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--button-text);
+}
+
+.brush-controls input[type="range"] {
+    width: 140px;
+    cursor: pointer;
+}
+
+#brush-size-value {
+    min-width: 24px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--button-text);
+}
 
 @keyframes heart-glow {
     0%, 100% {

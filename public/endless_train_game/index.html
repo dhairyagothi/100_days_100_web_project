@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Endless Train Runner 🚄</title>
+<link rel="stylesheet" href="train.css">
+</head>
+<body>
+
+<div id="gameWrapper">
+  <canvas id="gameCanvas" width="480" height="700"></canvas>
+
+  <!-- HUD -->
+  <div id="ui">
+    <div id="scoreBar" class="hidden">
+      <div class="stat-box">
+        <div class="stat-label">Score</div>
+        <div class="stat-value" id="hudScore">0</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Coins</div>
+        <div class="stat-value coin" id="hudCoins">🪙 0</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Lives</div>
+        <div class="stat-value" id="hudLives">❤️❤️❤️</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Best</div>
+        <div class="stat-value" id="hudBest">0</div>
+      </div>
+    </div>
+
+    <div id="powerupBar" class="hidden">
+      <div class="pup-icon" id="pup-shield" title="Shield">🛡️</div>
+      <div class="pup-icon" id="pup-magnet" title="Magnet">🧲</div>
+      <div class="pup-icon" id="pup-slow" title="Slow Motion">⏱️</div>
+      <div class="pup-icon" id="pup-boost" title="Speed Boost">⚡</div>
+    </div>
+
+  </div>
+
+    
+
+  <!-- START SCREEN -->
+  <div class="screen" id="startScreen">
+    <div class="train-anim">🚄</div>
+    <div class="game-title">ENDLESS<span>TRAIN</span>RUNNER</div>
+    <div class="tagline">Survive the rails</div>
+    <div class="controls-box">
+      <div class="controls-title">Controls</div>
+      <div class="ctrl-row">
+        <span class="ctrl-key">← Left Arrow</span>
+        <span class="ctrl-key">→ Right Arrow</span>
+      </div>
+      <div class="ctrl-row" style="margin-top:6px">
+        <span class="ctrl-key">A / D</span>
+        <span style="font-size:11px;color:rgba(255,255,255,0.4)">Switch Tracks</span>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="startBtn">BOARD TRAIN</button>
+    <div style="margin-top:20px;font-size:11px;color:rgba(255,255,255,0.25);letter-spacing:1px">
+      Collect coins · Dodge obstacles · Beat your best
+    </div>
+    <div id="startBest" style="margin-top:10px;font-family:'Orbitron',monospace;font-size:12px;color:rgba(255,215,0,0.6);letter-spacing:2px"></div>
+  </div>
+
+  <!-- GAME OVER SCREEN -->
+  <div class="screen hidden" id="gameOverScreen">
+    <div class="go-title">DERAILED!</div>
+    <div class="go-sub">Train has crashed</div>
+    <div class="results-grid">
+      <div class="result-item">
+        <div class="result-label">Score</div>
+        <div class="result-num" id="goScore">0</div>
+      </div>
+      <div class="result-item best">
+        <div class="result-label gold">Best Score</div>
+        <div class="result-num gold" id="goBest">0</div>
+      </div>
+      <div class="result-item">
+        <div class="result-label">Distance</div>
+        <div class="result-num" id="goDist">0m</div>
+      </div>
+      <div class="result-item">
+        <div class="result-label">Coins</div>
+        <div class="result-num" id="goCoins">0</div>
+      </div>
+    </div>
+    <div id="newBestBanner" class="hidden" style="font-family:'Orbitron',monospace;font-size:13px;color:#FFD700;letter-spacing:3px;margin-bottom:16px;text-shadow:0 0 20px rgba(255,215,0,0.8);animation:pulse 0.8s infinite alternate;">🏆 NEW BEST! 🏆</div>
+    <button class="btn btn-primary" id="restartBtn">TRY AGAIN</button>
+    <button class="btn btn-secondary" id="menuBtn">MAIN MENU</button>
+  </div>
+</div>
+<script src="train.js"></script>
+</body>
+</html>
