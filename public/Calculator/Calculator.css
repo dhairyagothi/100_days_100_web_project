@@ -64,6 +64,9 @@ body::before {
     padding: 30px 26px;
     width: min(100%, 465px);
 }
+.display-wrapper {
+    position: relative;
+}
 
 input {
     width: 100%;
@@ -93,7 +96,7 @@ input::placeholder {
 }
 
 /* Buttons */
-button {
+.calculator-button {
     border: none;
     width: 64px;
     height: 64px;
@@ -110,7 +113,7 @@ button {
     overflow: hidden;
 }
 
-button::before {
+.calculator-button::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -120,12 +123,12 @@ button::before {
     pointer-events: none;
 }
 
-button:hover {
+.calculator-button:hover {
     transform: translateY(-2px);
     box-shadow: 6px 12px 30px rgba(0, 0, 0, 0.35), inset -2px -2px 10px rgba(255, 255, 255, 0.05);
 }
 
-button:active {
+.calculator-button:active {
     transform: translateY(1px) scale(0.98);
     box-shadow: 2px 4px 14px rgba(0, 0, 0, 0.33);
 }
@@ -146,7 +149,7 @@ button:active {
     background: linear-gradient(145deg, rgba(255, 93, 77, 0.18), rgba(255, 44, 40, 0.15));
 }
 
-button:focus-visible {
+.calculator-button:focus-visible {
     outline: 2px solid rgba(110, 222, 10, 0.45);
     outline-offset: 3px;
 }
@@ -199,6 +202,26 @@ button:focus-visible {
     background: rgba(110, 222, 10, 0.08);
     border-color: rgba(110, 222, 10, 0.28);
 }
+.history-empty {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    color: var(--muted);
+    padding: 24px;
+}
+
+.history-empty h3 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    color: var(--text);
+}
+
+.history-empty p {
+    font-size: 0.95rem;
+}
 
 #clearHistory {
     width: 100%;
@@ -237,6 +260,68 @@ button:focus-visible {
     background: transparent;
 }
 
+.toast-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.toast {
+    background: #1e1e1e;
+    color: white;
+    padding: 12px 14px;
+    border-radius: 10px;
+    min-width: 260px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    animation: slideIn 0.3s ease;
+    font-size: 14px;
+}
+
+.toast-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    justify-content: space-evenly;
+}
+
+.toast .yes, .toast .no {
+    padding: 8px 16px;
+    width: 80px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.toast .yes {
+    background: #3edc26;
+    color: white;
+}
+
+.toast .no {
+    background: #ff0000;
+    color: white;
+    font-size: 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
 @media (max-width: 820px) {
     .container {
         flex-direction: column;
@@ -253,7 +338,7 @@ button:focus-visible {
         padding: 20px 16px;
     }
 
-    button {
+    .calculator-button {
         width: 54px;
         height: 54px;
         margin: 6px;
@@ -264,4 +349,51 @@ button:focus-visible {
         font-size: 2.5rem;
         padding: 20px 18px;
     }
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.history-content {
+    flex: 1;
+}
+
+.history-delete {
+    background: transparent;
+    border: none;
+    color: var(--danger);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.history-delete:hover {
+    background: rgba(255, 93, 77, 0.15);
+}
+#copyResult {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+
+    width: 40px;
+    height: 40px;
+
+    border: none;
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    background: rgba(255,255,255,0.08);
+    color: var(--text);
+
+    transition: all 0.2s ease;
+}
+
+#copyResult:hover {
+    background: rgba(110,222,10,0.15);
 }
