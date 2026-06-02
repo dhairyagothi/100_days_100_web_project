@@ -404,9 +404,6 @@ footer p {
   color: rgba(255, 255, 255, 0.3);
   letter-spacing: 0.05em;
 }
-    rgba(0, 0, 0, 0.5) 100%
-  );
-}
 
 /* ───── RESPONSIVE ───── */
 @media screen and (max-width: 768px) {

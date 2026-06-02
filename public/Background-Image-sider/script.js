@@ -242,6 +242,7 @@ function startAutoplay() {
   resetProgress();
 }
 
+
 function stopAutoplay() {
   autoplaying = false;
   autoBtn.classList.remove('playing');
