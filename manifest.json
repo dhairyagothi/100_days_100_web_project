@@ -1,16 +1,67 @@
 {
-  "name": "100 Days 100 Web Projects",
-  "short_name": "100DaysProjects",
+  "name": "100 Days · 100 Web Projects",
+  "short_name": "100Days",
+  "description": "A comprehensive collection of 112+ web development projects ranging from beginner to intermediate level, designed to help developers learn and practice through hands-on experience.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#000000",
   "theme_color": "#0f172a",
-  "orientation": "portrait-primary",
+  "categories": ["education", "productivity"],
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "fav.ico",
       "sizes": "64x64",
-      "type": "image/x-icon"
+      "type": "image/x-icon",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%230f172a' width='192' height='192'/><text x='50%' y='50%' font-size='96' font-weight='bold' fill='%23fff' text-anchor='middle' dominant-baseline='central' font-family='system-ui'>100</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%230f172a' width='512' height='512'/><text x='50%' y='50%' font-size='256' font-weight='bold' fill='%23fff' text-anchor='middle' dominant-baseline='central' font-family='system-ui'>100</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%230f172a' width='192' height='192'/><text x='50%' y='50%' font-size='96' font-weight='bold' fill='%23fff' text-anchor='middle' dominant-baseline='central' font-family='system-ui'>100</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 540 720'><rect fill='%230f172a' width='540' height='720'/><text x='50%' y='50%' font-size='72' font-weight='bold' fill='%23fff' text-anchor='middle' dominant-baseline='central' font-family='system-ui'>100 Days Projects</text></svg>",
+      "sizes": "540x720",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1280 720'><rect fill='%230f172a' width='1280' height='720'/><text x='50%' y='50%' font-size='96' font-weight='bold' fill='%23fff' text-anchor='middle' dominant-baseline='central' font-family='system-ui'>100 Days Projects</text></svg>",
+      "sizes": "1280x720",
+      "type": "image/svg+xml",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Browse Projects",
+      "short_name": "Projects",
+      "description": "Browse all 100+ web projects",
+      "url": "/#projects",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect fill='%230f172a' width='96' height='96'/><text x='50%' y='50%' font-size='48' font-weight='bold' fill='%23fff' text-anchor='middle' dominant-baseline='central' font-family='system-ui'>📚</text></svg>",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
     }
   ]
 }

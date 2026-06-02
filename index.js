@@ -1,4 +1,146 @@
 /* ============================================================
+   PWA REGISTRATION & INSTALLATION
+   ============================================================ */
+
+// Register Service Worker for offline support
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js')
+      .then((registration) => {
+        console.log('[PWA] Service Worker registered successfully:', registration);
+        
+        // Check for updates periodically
+        setInterval(() => {
+          registration.update();
+        }, 3600000); // Check every hour
+      })
+      .catch((error) => {
+        console.warn('[PWA] Service Worker registration failed:', error);
+      });
+    
+    // Listen for controller changes (update available)
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!refreshing) {
+        refreshing = true;
+        console.log('[PWA] Update detected - reloading page');
+        window.location.reload();
+      }
+    });
+  });
+}
+
+// PWA Install Prompt Handler
+let installPromptEvent = null;
+const installButton = document.getElementById('installAppBtn');
+const installBanner = document.getElementById('installBanner');
+const installBannerBtn = document.getElementById('installBannerBtn');
+const closeBannerBtn = document.getElementById('closeBannerBtn');
+
+window.addEventListener('beforeinstallprompt', (event) => {
+  // Prevent the browser's default install prompt
+  event.preventDefault();
+  
+  // Store the event for later use
+  installPromptEvent = event;
+  
+  console.log('[PWA] Install prompt ready');
+  
+  // Show install button/banner if element exists
+  if (installButton) {
+    installButton.style.display = 'block';
+  }
+  if (installBanner) {
+    installBanner.style.display = 'flex';
+  }
+});
+
+// Handle install button click
+if (installButton) {
+  installButton.addEventListener('click', async (e) => {
+    e.preventDefault();
+    showInstallPrompt();
+  });
+}
+
+// Handle banner install button click
+if (installBannerBtn) {
+  installBannerBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    showInstallPrompt();
+  });
+}
+
+// Handle banner close button
+if (closeBannerBtn) {
+  closeBannerBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (installBanner) {
+      installBanner.style.display = 'none';
+    }
+  });
+}
+
+async function showInstallPrompt() {
+  if (!installPromptEvent) {
+    console.log('[PWA] Install not available');
+    return;
+  }
+  
+  // Show install prompt
+  installPromptEvent.prompt();
+  
+  // Wait for user choice
+  const { outcome } = await installPromptEvent.userChoice;
+  
+  if (outcome === 'accepted') {
+    console.log('[PWA] App installed successfully');
+    showToast('🎉 App installed successfully!');
+  } else {
+    console.log('[PWA] Installation cancelled');
+  }
+  
+  // Clear the saved prompt
+  installPromptEvent = null;
+  
+  // Hide install button and banner
+  hideInstallUI();
+}
+
+function hideInstallUI() {
+  if (installButton) {
+    installButton.style.display = 'none';
+  }
+  if (installBanner) {
+    installBanner.style.display = 'none';
+  }
+}
+
+// Hide install prompt on successful app install
+window.addEventListener('appinstalled', () => {
+  console.log('[PWA] App successfully installed');
+  installPromptEvent = null;
+  hideInstallUI();
+  showToast('✨ App installed! Access it from your home screen.');
+});
+
+// Check for Service Worker updates
+function checkForUpdates() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.ready
+      .then((registration) => {
+        return registration.update();
+      })
+      .catch((error) => {
+        console.warn('[PWA] Update check failed:', error);
+      });
+  }
+}
+
+// Expose update function to window for manual refresh
+window.checkPWAUpdates = checkForUpdates;
+
+/* ============================================================
    CONFIGURATION
    ============================================================ */
 if (typeof REPO_OWNER === 'undefined') {
