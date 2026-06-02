@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Repo Analyzer | Premium Portfolio Project</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js" integrity="sha512-RX/OFugIG/bQ50008Eof2tBwXofmI2uA1B/5A2A38tX2tA99/qH4O4xQ7fB3y1YtCgC29F8aZ5/Xn6M//Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div class="container">
+        <header>
+            <h1 class="glow-text"><i class="fab fa-github"></i> GitHub Repo Analyzer</h1>
+            <p>Analyze any repository or user instantly with deep insights.</p>
+        </header>
+
+        <main>
+            <section class="search-section glass-panel">
+                <form id="search-form">
+                    <div class="input-group">
+                        <i class="fas fa-search input-icon"></i>
+                        <input type="text" id="search-input" placeholder="Enter GitHub username OR repo URL..." required>
+                        <button type="submit" id="analyze-btn" class="glow-button">
+                            <span class="btn-text">Analyze</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+                <div class="recent-searches">
+                    <h3>Recent Searches:</h3>
+                    <div id="history-container" class="history-tags">
+                    </div>
+                </div>
+            </section>
+
+            <section id="loading-state" class="hidden">
+                <div class="loader">
+                    <div class="spinner"></div>
+                    <p>Analyzing Repository...</p>
+                </div>
+            </section>
+
+            <section id="error-state" class="hidden">
+                <div class="error-card glass-panel tilt-card">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h2 id="error-title">Error</h2>
+                    <p id="error-message">Something went wrong.</p>
+                </div>
+            </section>
+
+            <section id="results-state" class="hidden">
+                <div id="user-repos-container" class="hidden">
+                    <h2 class="section-title">Repositories</h2>
+                    <div class="repo-grid" id="repos-list">
+                    </div>
+                </div>
+
+                <div id="repo-details" class="glass-panel tilt-card hidden">
+                    <div class="repo-header">
+                        <div class="repo-title-wrapper">
+                            <img src="" alt="Owner Avatar" id="repo-owner-avatar" class="avatar">
+                            <div>
+                                <h2 id="repo-name" class="glow-text">Repo Name</h2>
+                                <p id="repo-owner" class="owner-name">Owner Name</p>
+                            </div>
+                        </div>
+                        <div class="repo-actions">
+                            <button id="copy-btn" class="icon-btn" title="Copy Link"><i class="fas fa-link"></i></button>
+                            <a href="#" id="open-btn" class="icon-btn" target="_blank" title="Open in GitHub"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                    
+                    <p id="repo-description" class="repo-desc">Description goes here...</p>
+
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <i class="fas fa-star text-yellow"></i>
+                            <div class="stat-info">
+                                <span class="stat-value counter" id="stat-stars">0</span>
+                                <span class="stat-label">Stars</span>
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <i class="fas fa-code-branch text-blue"></i>
+                            <div class="stat-info">
+                                <span class="stat-value counter" id="stat-forks">0</span>
+                                <span class="stat-label">Forks</span>
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <i class="fas fa-exclamation-circle text-red"></i>
+                            <div class="stat-info">
+                                <span class="stat-value counter" id="stat-issues">0</span>
+                                <span class="stat-label">Open Issues</span>
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <i class="fas fa-users text-green"></i>
+                            <div class="stat-info">
+                                <span class="stat-value counter" id="stat-contributors">0</span>
+                                <span class="stat-label">Contributors</span>
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <i class="fas fa-balance-scale text-purple"></i>
+                            <div class="stat-info">
+                                <span class="stat-value" id="stat-license">MIT</span>
+                                <span class="stat-label">License</span>
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <i class="fas fa-eye text-cyan"></i>
+                            <div class="stat-info">
+                                <span class="stat-value" id="stat-visibility">Public</span>
+                                <span class="stat-label">Visibility</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="meta-footer">
+                        <div class="meta-item">
+                            <i class="fas fa-code"></i>
+                            <span id="meta-language">JavaScript</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-database"></i>
+                            <span id="meta-size">1.2 MB</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span id="meta-updated">Updated 2 days ago</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>Made with <i class="fas fa-heart text-red"></i> for GSSoC & Beyond</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

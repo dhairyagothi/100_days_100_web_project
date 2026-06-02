@@ -25,6 +25,7 @@
       border-bottom: 1px solid #2a2a2a;
       padding: 18px 24px;
       text-align: center;
+      position: relative;
     }
 
     header h1 {
@@ -40,6 +41,24 @@
       margin-top: 4px;
       letter-spacing: 1.5px;
       text-transform: uppercase;
+    }
+
+    #theme-toggle {
+      position: absolute;
+      top: 18px;
+      right: 24px;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #333;
+      color: white;
+      font-size: 0.8rem;
+      transition: 0.3s ease;
+    }
+
+    #theme-toggle:hover {
+      background: #444;
     }
 
     main {
@@ -172,19 +191,80 @@
       animation: spin 0.8s linear infinite;
     }
 
+    body.light-theme {
+      background-color: #f5f5f5;
+    }
+
+    body.light-theme header {
+      background-color: white;
+      border-bottom: 1px solid #ddd;
+    }
+
+    body.light-theme header h1 {
+      color: #1a1a1a;
+    }
+
+    body.light-theme header p {
+      color: #555;
+    }
+
+    body.light-theme .card {
+      background: white;
+      border: 1px solid #ddd;
+    }
+
+    body.light-theme #quote,
+    body.light-theme #joke {
+      color: #222;
+    }
+
+    body.light-theme .card-type {
+      color: #555;
+    }
+
+    body.light-theme .share-row {
+      border-top: 1px solid #ddd;
+    }
+
+    body.light-theme .share-btn {
+      background: #f0f0f0;
+      color: #333;
+      border: 1px solid #ccc;
+    }
+
+    body.light-theme .share-btn:hover {
+      background: #e5e5e5;
+    }
+
+    body.light-theme #generate {
+      background-color: #1a1a1a;
+      color: white;
+    }
+
     @keyframes spin {
       to {
         transform: rotate(360deg);
       }
     }
+    
+    @media (max-width: 640px) {
+      #theme-toggle {
+        position: static;
+        margin-top: 12px;
+      }
+    }
+
   </style>
   <script defer src="script.js"></script>
 </head>
 
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
   <header>
     <h1>Quotely Laughs</h1>
     <p>quotes & jokes, daily</p>
+    <button id="theme-toggle">🌙 Dark Mode</button>
   </header>
 
   <main>

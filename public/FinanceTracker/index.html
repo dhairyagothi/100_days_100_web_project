@@ -1,1453 +1,202 @@
-<!-- Kept Everything in one file  for ease of access -->
-<!-- Kept Everything in one file  for ease of access -->
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Finance Tracker</title>
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+    <title>AI Financial Insights Tracker</title>
 
-        :root {
-            --primary-color: #6c5ce7;
-            --secondary-color: #a29bfe;
-            --accent-color: #fd79a8;
-            --background-color: #f0f3f6;
-            --text-color: #2d3436;
-            --card-background: #ffffff;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--background-color);
-            transition: background-color 0.3s ease;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: auto;
-            overflow: hidden;
-            padding: 20px;
-        }
-
-        header {
-            background: var(--primary-color);
-            color: white;
-            padding: 30px 0;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, var(--secondary-color) 0%, transparent 50%);
-            animation: rotate 20s linear infinite;
-            z-index: 1;
-        }
-
-        @keyframes rotate {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        header h1 {
-            margin: 0;
-            position: relative;
-            z-index: 2;
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .dashboard {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 40px;
-            flex-wrap: wrap;
-        }
-
-        .balance,
-        .income,
-        .expense {
-            flex: 1;
-            min-width: 250px;
-            background: var(--card-background);
-            padding: 20px;
-            margin: 10px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .balance:hover,
-        .income:hover,
-        .expense:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .balance {
-            border-bottom: 5px solid var(--primary-color);
-        }
-
-        .income {
-            border-bottom: 5px solid #2ecc71;
-        }
-
-        .expense {
-            border-bottom: 5px solid var(--accent-color);
-        }
-
-        h2 {
-            margin-top: 0;
-            font-size: 1.2em;
-            color: #7f8c8d;
-        }
-
-        #balance,
-        #income,
-        #expense {
-            font-size: 2em;
-            font-weight: bold;
-            margin-top: 10px;
-            transition: all 0.3s ease;
-        }
-
-        #balance:hover,
-        #income:hover,
-        #expense:hover {
-            transform: scale(1.05);
-        }
-
-        form {
-            background: var(--card-background);
-            padding: 30px;
-            margin-top: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        form:hover {
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        input[type="text"],
-        input[type="number"],
-        input[type="date"],
-        select {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1em;
-            transition: all 0.3s ease;
-            background: var(--card-background);
-            color: var(--text-color);
-        }
-
-        input[type="text"]:focus,
-        input[type="number"]:focus,
-        input[type="date"]:focus,
-        select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.2);
-        }
-
-        input[type="submit"],
-        button {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: all 0.3s ease;
-        }
-
-        input[type="submit"]:hover,
-        button:hover {
-            background: var(--secondary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        #transactions {
-            margin-top: 40px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 10px;
-            background: var(--card-background);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        th,
-        td {
-            text-align: left;
-            padding: 15px;
-        }
-
-        th {
-            background-color: var(--primary-color);
-            color: white;
-            text-transform: uppercase;
-            font-size: 0.9em;
-            letter-spacing: 1px;
-        }
-
-        tr {
-            background-color: var(--card-background);
-            transition: all 0.3s ease;
-        }
-
-        tr:hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .income-row {
-            background-color: rgba(46, 204, 113, 0.1);
-        }
-
-        .expense-row {
-            background-color: rgba(253, 121, 168, 0.1);
-        }
-
-        #chart-container {
-            width: 100%;
-            height: 400px;
-            margin-top: 40px;
-            background: var(--card-background);
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #chart-container:hover {
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        #expense-chart {
-            max-width: 100%;
-            max-height: 100%;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .dashboard>div,
-        form,
-        #transactions,
-        #chart-container {
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-
-        @media (max-width: 768px) {
-            .dashboard {
-                flex-direction: column;
-            }
-
-            .balance,
-            .income,
-            .expense {
-                width: 100%;
-                margin: 10px 0;
-            }
-        }
-
-        #theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--card-background);
-            border: none;
-            border-radius: 50%;
-            padding: 8px;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            transition: all 0.3s ease;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #theme-toggle svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        body.dark-mode {
-            --background-color: #1a1a2e;
-            --text-color: #e0e0e0;
-            --card-background: #16213e;
-            --primary-color: #0f3460;
-            --secondary-color: #533483;
-            --accent-color: #e94560;
-        }
-
-        body.dark-mode #theme-toggle svg {
-            transform: rotate(180deg);
-        }
-
-        #clear-storage {
-            margin-top: 20px;
-            background-color: #e74c3c;
-        }
-
-        #clear-storage:hover {
-            background-color: #c0392b;
-        }
-
-        #empty-message {
-            text-align: center;
-            margin-top: 20px;
-            color: #7f8c8d;
-            font-size: 1.1rem;
-        }
-
-        /* ===== SAVINGS TRACKER STYLES ===== */
-        #savings-section {
-            background: var(--card-background);
-            padding: 30px;
-            margin-top: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-
-        #savings-section > h2 {
-            font-size: 1.5em;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            border-bottom: 3px solid var(--secondary-color);
-            padding-bottom: 10px;
-        }
-
-        #goal-form {
-            margin: 0 0 30px 0;
-            padding: 20px;
-            background: rgba(108, 92, 231, 0.05);
-            border-radius: 8px;
-            box-shadow: none;
-        }
-
-        #goal-form:hover {
-            box-shadow: none;
-        }
-
-        #goal-form h3 {
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            font-size: 1.1em;
-        }
-
-        #goals-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .goal-card {
-            background: var(--card-background);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            border-top: 4px solid var(--primary-color);
-            animation: fadeIn 0.5s ease-out forwards;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .goal-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .goal-card.completed {
-            border-top-color: #2ecc71;
-        }
-
-        .goal-card.delayed {
-            border-top-color: #e74c3c;
-        }
-
-        .goal-card.on-track {
-            border-top-color: #f39c12;
-        }
-
-        .goal-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 15px;
-        }
-
-        .goal-title {
-            font-size: 1.1em;
-            font-weight: 600;
-            color: var(--text-color);
-        }
-
-        .goal-status-badge {
-            font-size: 0.7em;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .badge-completed {
-            background: rgba(46, 204, 113, 0.15);
-            color: #27ae60;
-        }
-
-        .badge-on-track {
-            background: rgba(243, 156, 18, 0.15);
-            color: #e67e22;
-        }
-
-        .badge-delayed {
-            background: rgba(231, 76, 60, 0.15);
-            color: #c0392b;
-        }
-
-        /* Circular progress */
-        .goal-progress-circle {
-            display: flex;
-            justify-content: center;
-            margin: 15px 0;
-        }
-
-        .circular-progress {
-            position: relative;
-            width: 100px;
-            height: 100px;
-        }
-
-        .circular-progress svg {
-            transform: rotate(-90deg);
-        }
-
-        .circular-progress .track {
-            fill: none;
-            stroke: #e0e0e0;
-            stroke-width: 8;
-        }
-
-        .circular-progress .fill {
-            fill: none;
-            stroke-width: 8;
-            stroke-linecap: round;
-            transition: stroke-dashoffset 1s ease;
-        }
-
-        .circular-progress .percent-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.1em;
-            font-weight: 700;
-            color: var(--text-color);
-        }
-
-        /* Linear progress bar */
-        .goal-progress-bar-wrap {
-            margin: 10px 0;
-        }
-
-        .goal-progress-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.82em;
-            color: #7f8c8d;
-            margin-bottom: 5px;
-        }
-
-        .goal-progress-bar {
-            width: 100%;
-            height: 10px;
-            background: #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .goal-progress-fill {
-            height: 100%;
-            border-radius: 10px;
-            transition: width 1s ease;
-        }
-
-        .fill-completed { background: linear-gradient(90deg, #2ecc71, #27ae60); }
-        .fill-on-track  { background: linear-gradient(90deg, #f39c12, #e67e22); }
-        .fill-delayed   { background: linear-gradient(90deg, #e74c3c, #c0392b); }
-
-        .goal-meta {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 12px;
-            font-size: 0.85em;
-            color: #7f8c8d;
-        }
-
-        .goal-meta span {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .goal-amounts {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-            font-size: 0.9em;
-        }
-
-        .goal-amounts .saved {
-            font-weight: 600;
-            color: #2ecc71;
-        }
-
-        .goal-amounts .remaining {
-            font-weight: 600;
-            color: var(--accent-color);
-        }
-
-        .goal-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 15px;
-        }
-
-        .btn-contribute {
-            flex: 1;
-            padding: 8px 12px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85em;
-            transition: all 0.3s ease;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .btn-contribute:hover {
-            background: var(--secondary-color);
-            transform: translateY(-2px);
-        }
-
-        .btn-delete-goal {
-            padding: 8px 12px;
-            background: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85em;
-            transition: all 0.3s ease;
-            font-family: 'Poppins', sans-serif;
-            width: auto;
-        }
-
-        .btn-delete-goal:hover {
-            background: #c0392b;
-            transform: translateY(-2px);
-        }
-
-        .goal-alert {
-            margin-top: 10px;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 0.82em;
-            font-weight: 500;
-        }
-
-        .alert-completed {
-            background: rgba(46, 204, 113, 0.12);
-            color: #27ae60;
-        }
-
-        .alert-almost {
-            background: rgba(243, 156, 18, 0.12);
-            color: #e67e22;
-        }
-
-        .alert-behind {
-            background: rgba(231, 76, 60, 0.12);
-            color: #c0392b;
-        }
-
-        /* Contribution history inside goal card */
-        .contribution-history {
-            margin-top: 12px;
-            font-size: 0.8em;
-            color: #7f8c8d;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease;
-        }
-
-        .contribution-history.open {
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .contribution-history ul {
-            list-style: none;
-            padding: 0;
-            margin-top: 6px;
-        }
-
-        .contribution-history ul li {
-            display: flex;
-            justify-content: space-between;
-            padding: 4px 0;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .btn-toggle-history {
-            background: transparent;
-            color: var(--primary-color);
-            border: 1px solid var(--primary-color);
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.78em;
-            cursor: pointer;
-            width: auto;
-            display: inline-block;
-            margin-top: 10px;
-            transition: all 0.2s ease;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .btn-toggle-history:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: none;
-            box-shadow: none;
-        }
-
-        /* Savings Analytics Section */
-        #savings-analytics {
-            background: var(--card-background);
-            border-radius: 10px;
-            padding: 25px;
-            margin-top: 25px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.08);
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-
-        #savings-analytics h3 {
-            color: var(--primary-color);
-            font-size: 1.1em;
-            margin-bottom: 18px;
-            border-bottom: 2px solid var(--secondary-color);
-            padding-bottom: 8px;
-        }
-
-        .analytics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 15px;
-        }
-
-        .analytic-card {
-            background: rgba(108, 92, 231, 0.06);
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .analytic-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-        .analytic-card .analytic-value {
-            font-size: 1.6em;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 5px;
-        }
-
-        .analytic-card .analytic-label {
-            font-size: 0.78em;
-            color: #7f8c8d;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Savings chart */
-        #savings-chart-container {
-            width: 100%;
-            height: 300px;
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Contribute modal */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal-box {
-            background: var(--card-background);
-            border-radius: 12px;
-            padding: 30px;
-            width: 90%;
-            max-width: 420px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        .modal-box h3 {
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .btn-cancel {
-            background: #95a5a6;
-        }
-
-        .btn-cancel:hover {
-            background: #7f8c8d;
-        }
-
-        #no-goals-message {
-            text-align: center;
-            color: #7f8c8d;
-            font-size: 0.95em;
-            padding: 20px 0;
-        }
-
-        @media (max-width: 768px) {
-            #goals-container {
-                grid-template-columns: 1fr;
-            }
-            .analytics-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-    <button id="theme-toggle" aria-label="Toggle dark mode">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-        </svg>
-    </button>
-    <header>
-        <div class="container">
-            <h1>Personal Finance Tracker</h1>
-        </div>
-    </header>
+
+    <button id="theme-toggle">🌙</button>
 
     <div class="container">
-        <div class="dashboard">
-            <div class="balance">
-                <h2>Current Balance</h2>
-                <div id="balance">$0.00</div>
+
+        <h1>AI Financial Insights Tracker</h1>
+
+        <p class="subtitle">
+            Intelligent spending analysis, smart budgeting, and analytics dashboard.
+        </p>
+
+        <!-- SUMMARY CARDS -->
+        <div class="cards">
+
+            <div class="card">
+                <h3>Total Balance</h3>
+                <p id="balance">$0</p>
             </div>
-            <div class="income">
-                <h2>Total Income</h2>
-                <div id="income">$0.00</div>
+
+            <div class="card">
+                <h3>Total Income</h3>
+                <p id="income">$0</p>
             </div>
-            <div class="expense">
-                <h2>Total Expenses</h2>
-                <div id="expense">$0.00</div>
+
+            <div class="card">
+                <h3>Total Expense</h3>
+                <p id="expense">$0</p>
             </div>
+
+            <div class="card">
+                <h3>Total Transactions</h3>
+                <p id="total-transactions">0</p>
+            </div>
+
         </div>
 
-        <form id="transaction-form">
-            <input type="text" id="description" placeholder="Description" required>
-            <input type="number" id="amount" placeholder="Amount" step="0.01" required>
-            <select id="type" required>
-                <option value="">Select Type</option>
-                <option value="income">Income</option>
-                <option value="expense">Expense</option>
-            </select>
-            <select id="category" required>
-                <option value="">Select Category</option>
-                <option value="salary">Salary</option>
-                <option value="food">Food</option>
-                <option value="rent">Rent</option>
-                <option value="utilities">Utilities</option>
-                <option value="entertainment">Entertainment</option>
-                <option value="other">Other</option>
-            </select>
-            <input type="submit" value="Add Transaction">
-        </form>
+        <!-- TRANSACTION FORM -->
+        <div class="section">
 
-        <!-- ===== SAVINGS PROGRESS TRACKER ===== -->
-        <div id="savings-section">
-            <h2>🎯 Savings Progress Tracker</h2>
+            <h2>Add Financial Transaction</h2>
 
-            <form id="goal-form">
-                <h3>Create a New Savings Goal</h3>
-                <input type="text" id="goal-title" placeholder="Goal Name (e.g. Buy Laptop)" required>
-                <input type="number" id="goal-target" placeholder="Target Amount ($)" step="0.01" required>
-                <input type="date" id="goal-date" required>
-                <input type="submit" value="➕ Create Goal">
+            <form id="transaction-form">
+
+                <input
+                    type="text"
+                    id="description"
+                    placeholder="Transaction Description"
+                    required
+                >
+
+                <input
+                    type="number"
+                    id="amount"
+                    placeholder="Transaction Amount"
+                    required
+                >
+
+                <select id="type">
+
+                    <option value="Income">
+                        Income
+                    </option>
+
+                    <option value="Expense">
+                        Expense
+                    </option>
+
+                </select>
+
+                <select id="category">
+
+                    <option value="Salary">
+                        Salary
+                    </option>
+
+                    <option value="Food">
+                        Food
+                    </option>
+
+                    <option value="Travel">
+                        Travel
+                    </option>
+
+                    <option value="Shopping">
+                        Shopping
+                    </option>
+
+                </select>
+
+                <button type="submit">
+                    Add Transaction
+                </button>
+
             </form>
 
-            <p id="no-goals-message">No savings goals yet. Create one above! 🚀</p>
-            <div id="goals-container"></div>
-
-            <!-- Savings Analytics -->
-            <div id="savings-analytics">
-                <h3>📈 Savings Analytics</h3>
-                <div class="analytics-grid">
-                    <div class="analytic-card">
-                        <div class="analytic-value" id="analytic-total-saved">$0</div>
-                        <div class="analytic-label">Total Saved</div>
-                    </div>
-                    <div class="analytic-card">
-                        <div class="analytic-value" id="analytic-savings-rate">0%</div>
-                        <div class="analytic-label">Savings Rate</div>
-                    </div>
-                    <div class="analytic-card">
-                        <div class="analytic-value" id="analytic-goals-count">0</div>
-                        <div class="analytic-label">Active Goals</div>
-                    </div>
-                    <div class="analytic-card">
-                        <div class="analytic-value" id="analytic-goals-completed">0</div>
-                        <div class="analytic-label">Goals Completed</div>
-                    </div>
-                </div>
-                <div id="savings-chart-container">
-                    <canvas id="savings-chart"></canvas>
-                </div>
-            </div>
         </div>
 
-        <button id="clear-storage">Clear All Data</button>
+        <!-- AI INSIGHTS -->
+        <div class="section">
 
-        <div id="transactions">
+            <h2>AI Financial Insights</h2>
+
+            <div id="insights-box">
+                Add transactions to receive insights.
+            </div>
+
+        </div>
+
+        <!-- TRANSACTIONS -->
+        <div class="section">
+
             <h2>Recent Transactions</h2>
-            <table id="transactions-table">
+
+            <table>
+
                 <thead>
+
                     <tr>
                         <th>Description</th>
                         <th>Amount</th>
                         <th>Type</th>
                         <th>Category</th>
                         <th>Date</th>
+                        <th>Action</th>
                     </tr>
+
                 </thead>
-                <tbody></tbody>
+
+                <tbody id="transaction-list">
+
+                </tbody>
+
             </table>
-            <p id="empty-message">No transactions added yet.</p>
+
         </div>
 
-        <div id="chart-container">
-            <canvas id="expense-chart"></canvas>
+        <!-- SAVINGS GOALS -->
+        <div class="section">
+
+            <h2>Savings Goals</h2>
+
+            <form id="goal-form">
+
+                <input
+                    type="text"
+                    id="goal-name"
+                    placeholder="Savings Goal Name"
+                    required
+                >
+
+                <input
+                    type="number"
+                    id="goal-amount"
+                    placeholder="Target Amount"
+                    required
+                >
+
+                <button type="submit">
+                    Add Savings Goal
+                </button>
+
+            </form>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Goal</th>
+                        <th>Amount</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="goal-list">
+
+                </tbody>
+
+            </table>
+
         </div>
+
     </div>
 
-    <!-- Contribute Modal -->
-    <div class="modal-overlay" id="contribute-modal">
-        <div class="modal-box">
-            <h3>💰 Add Contribution</h3>
-            <p id="modal-goal-name" style="color:#7f8c8d; margin-bottom:12px; font-size:0.9em;"></p>
-            <input type="number" id="contribute-amount" placeholder="Amount to contribute ($)" step="0.01" min="0.01">
-            <div class="modal-actions">
-                <button id="btn-confirm-contribute">Add Contribution</button>
-                <button class="btn-cancel" id="btn-cancel-contribute">Cancel</button>
-            </div>
-        </div>
-    </div>
+    <script type="module" src="js/app.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // =================== ORIGINAL CODE ===================
-        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
-        const balanceEl = document.getElementById('balance');
-        const incomeEl = document.getElementById('income');
-        const expenseEl = document.getElementById('expense');
-        const form = document.getElementById('transaction-form');
-        const transactionsTable = document.getElementById('transactions-table').getElementsByTagName('tbody')[0];
-        const emptyMessage = document.getElementById('empty-message');
-        const chartContainer = document.getElementById('chart-container');
-        const clearStorageBtn = document.getElementById('clear-storage');
-
-        function updateBalance() {
-            const balance = transactions.reduce((acc, transaction) => {
-                if (transaction.type === 'income') {
-                    return acc + transaction.amount;
-                } else {
-                    return acc - transaction.amount;
-                }
-            }, 0);
-
-            const income = transactions
-                .filter(transaction => transaction.type === 'income')
-                .reduce((acc, transaction) => acc + transaction.amount, 0);
-
-            const expense = transactions
-                .filter(transaction => transaction.type === 'expense')
-                .reduce((acc, transaction) => acc + transaction.amount, 0);
-
-            balanceEl.textContent = `$${balance.toFixed(2)}`;
-            incomeEl.textContent = `$${income.toFixed(2)}`;
-            expenseEl.textContent = `$${expense.toFixed(2)}`;
-
-            [balanceEl, incomeEl, expenseEl].forEach(el => {
-                el.style.animation = 'none';
-                el.offsetHeight;
-                el.style.animation = 'fadeIn 0.5s ease-out';
-            });
-        }
-
-        function addTransaction(e) {
-            e.preventDefault();
-
-            const description = document.getElementById('description').value;
-            const amount = parseFloat(document.getElementById('amount').value);
-            const type = document.getElementById('type').value;
-            const category = document.getElementById('category').value;
-            const date = new Date().toISOString().split('T')[0];
-
-            const transaction = { description, amount, type, category, date };
-            transactions.push(transaction);
-
-            localStorage.setItem('transactions', JSON.stringify(transactions));
-
-            updateBalance();
-            displayTransactions();
-            updateChart();
-            updateSavingsAnalytics(); // update analytics on new transaction
-
-            form.reset();
-
-            form.style.animation = 'none';
-            form.offsetHeight;
-            form.style.animation = 'fadeIn 0.5s ease-out';
-        }
-
-        function displayTransactions() {
-            transactionsTable.innerHTML = '';
-            if (transactions.length === 0) {
-                emptyMessage.style.display = 'block';
-            } else {
-                emptyMessage.style.display = 'none';
-            }
-
-            transactions.slice().reverse().forEach((transaction, index) => {
-                const row = transactionsTable.insertRow();
-                row.className = transaction.type === 'income' ? 'income-row' : 'expense-row';
-
-                const descCell = row.insertCell(0);
-                const amountCell = row.insertCell(1);
-                const typeCell = row.insertCell(2);
-                const categoryCell = row.insertCell(3);
-                const dateCell = row.insertCell(4);
-
-                descCell.textContent = transaction.description;
-                amountCell.textContent = `$${transaction.amount.toFixed(2)}`;
-                typeCell.textContent = transaction.type;
-                categoryCell.textContent = transaction.category;
-                dateCell.textContent = transaction.date;
-
-                row.style.animation = `fadeIn 0.5s ease-out ${index * 0.1}s`;
-            });
-        }
-
-        function updateChart() {
-            const categories = {};
-            transactions.forEach(transaction => {
-                if (transaction.type === 'expense') {
-                    if (categories[transaction.category]) {
-                        categories[transaction.category] += transaction.amount;
-                    } else {
-                        categories[transaction.category] = transaction.amount;
-                    }
-                }
-            });
-
-            const labels = Object.keys(categories);
-            const data = Object.values(categories);
-
-            if (window.myChart) {
-                window.myChart.destroy();
-            }
-
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            const chartColors = isDarkMode
-                ? ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff', '#ff9f40']
-                : ['#ff9ff3', '#54a0ff', '#5f27cd', '#48dbfb', '#ff6b6b', '#10ac84'];
-
-            const ctx = document.getElementById('expense-chart').getContext('2d');
-            window.myChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: data,
-                        backgroundColor: chartColors,
-                        borderColor: isDarkMode ? '#2d3436' : 'white',
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Expense Breakdown by Category',
-                            font: { size: 18 },
-                            color: isDarkMode ? '#e0e0e0' : '#2d3436'
-                        },
-                        legend: {
-                            position: 'right',
-                            labels: { color: isDarkMode ? '#e0e0e0' : '#2d3436' }
-                        }
-                    },
-                    animation: {
-                        animateScale: true,
-                        animateRotate: true
-                    }
-                }
-            });
-        }
-
-        function clearStorage() {
-            if (confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
-                localStorage.removeItem('transactions');
-                localStorage.removeItem('savingsGoals');
-                transactions = [];
-                savingsGoals = [];
-                updateBalance();
-                displayTransactions();
-                updateChart();
-                renderGoals();
-                updateSavingsAnalytics();
-                alert('All data has been cleared.');
-            }
-        }
-
-        form.addEventListener('submit', addTransaction);
-        clearStorageBtn.addEventListener('click', clearStorage);
-
-        const themeToggle = document.getElementById('theme-toggle');
-        const body = document.body;
-
-        themeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-            localStorage.setItem('dark-mode', body.classList.contains('dark-mode'));
-            updateChart();
-            updateSavingsChart();
-        });
-
-        if (localStorage.getItem('dark-mode') === 'true') {
-            body.classList.add('dark-mode');
-        }
-
-        updateBalance();
-        displayTransactions();
-        updateChart();
-
-        // =================== SAVINGS TRACKER CODE ===================
-
-        let savingsGoals = JSON.parse(localStorage.getItem('savingsGoals')) || [];
-        let activeContributeGoalId = null;
-
-        const goalForm = document.getElementById('goal-form');
-        const goalsContainer = document.getElementById('goals-container');
-        const noGoalsMessage = document.getElementById('no-goals-message');
-        const contributeModal = document.getElementById('contribute-modal');
-        const contributeAmountInput = document.getElementById('contribute-amount');
-        const modalGoalName = document.getElementById('modal-goal-name');
-
-        // ---- Helper: get status of a goal ----
-        function getGoalStatus(goal) {
-            const pct = goal.target > 0 ? (goal.saved / goal.target) * 100 : 0;
-            if (pct >= 100) return 'completed';
-            const today = new Date();
-            const targetDate = new Date(goal.targetDate);
-            const totalDays = (targetDate - new Date(goal.createdAt)) / (1000 * 60 * 60 * 24);
-            const daysElapsed = (today - new Date(goal.createdAt)) / (1000 * 60 * 60 * 24);
-            const expectedPct = totalDays > 0 ? Math.min((daysElapsed / totalDays) * 100, 100) : 0;
-            if (pct >= expectedPct - 5) return 'on-track';
-            return 'delayed';
-        }
-
-        // ---- Helper: days remaining ----
-        function daysRemaining(targetDate) {
-            const diff = new Date(targetDate) - new Date();
-            return Math.ceil(diff / (1000 * 60 * 60 * 24));
-        }
-
-        // ---- Helper: monthly savings needed ----
-        function monthlySavingsNeeded(goal) {
-            const remaining = goal.target - goal.saved;
-            if (remaining <= 0) return 0;
-            const days = daysRemaining(goal.targetDate);
-            if (days <= 0) return remaining;
-            const months = days / 30;
-            return remaining / months;
-        }
-
-        // ---- Render all goal cards ----
-        function renderGoals() {
-            goalsContainer.innerHTML = '';
-            if (savingsGoals.length === 0) {
-                noGoalsMessage.style.display = 'block';
-                updateSavingsAnalytics();
-                return;
-            }
-            noGoalsMessage.style.display = 'none';
-
-            savingsGoals.forEach((goal, idx) => {
-                const pct = goal.target > 0 ? Math.min((goal.saved / goal.target) * 100, 100) : 0;
-                const status = getGoalStatus(goal);
-                const remaining = Math.max(goal.target - goal.saved, 0);
-                const days = daysRemaining(goal.targetDate);
-                const monthly = monthlySavingsNeeded(goal);
-
-                const badgeClass = status === 'completed' ? 'badge-completed' : status === 'on-track' ? 'badge-on-track' : 'badge-delayed';
-                const badgeText = status === 'completed' ? '✅ Completed' : status === 'on-track' ? '🟡 On Track' : '🔴 Delayed';
-                const fillClass = status === 'completed' ? 'fill-completed' : status === 'on-track' ? 'fill-on-track' : 'fill-delayed';
-                const strokeColor = status === 'completed' ? '#2ecc71' : status === 'on-track' ? '#f39c12' : '#e74c3c';
-
-                // Circular progress values
-                const radius = 40;
-                const circumference = 2 * Math.PI * radius;
-                const dashOffset = circumference - (pct / 100) * circumference;
-
-                // Alert message
-                let alertHTML = '';
-                if (status === 'completed') {
-                    alertHTML = `<div class="goal-alert alert-completed">🎉 Goal achieved! Congratulations!</div>`;
-                } else if (pct >= 80) {
-                    alertHTML = `<div class="goal-alert alert-almost">🔔 Almost there! Just $${remaining.toFixed(2)} more to go.</div>`;
-                } else if (status === 'delayed') {
-                    alertHTML = `<div class="goal-alert alert-behind">⚠️ You're behind pace. Save $${monthly.toFixed(2)}/month to catch up.</div>`;
-                } else {
-                    alertHTML = `<div class="goal-alert alert-almost">💡 On track! Need $${monthly.toFixed(2)}/month to reach goal.</div>`;
-                }
-
-                // Contribution history
-                let historyHTML = '<p style="color:#7f8c8d">No contributions yet.</p>';
-                if (goal.contributions && goal.contributions.length > 0) {
-                    const items = goal.contributions.slice().reverse().map(c =>
-                        `<li><span>${c.date}</span><span style="color:#2ecc71;font-weight:600;">+$${c.amount.toFixed(2)}</span></li>`
-                    ).join('');
-                    historyHTML = `<ul>${items}</ul>`;
-                }
-
-                const card = document.createElement('div');
-                card.className = `goal-card ${status}`;
-                card.dataset.id = goal.id;
-                card.innerHTML = `
-                    <div class="goal-card-header">
-                        <div class="goal-title">${goal.title}</div>
-                        <span class="goal-status-badge ${badgeClass}">${badgeText}</span>
-                    </div>
-
-                    <div class="goal-progress-circle">
-                        <div class="circular-progress">
-                            <svg viewBox="0 0 100 100" width="100" height="100">
-                                <circle class="track" cx="50" cy="50" r="${radius}"/>
-                                <circle class="fill" cx="50" cy="50" r="${radius}"
-                                    stroke="${strokeColor}"
-                                    stroke-dasharray="${circumference}"
-                                    stroke-dashoffset="${dashOffset}"
-                                />
-                            </svg>
-                            <div class="percent-text">${pct.toFixed(0)}%</div>
-                        </div>
-                    </div>
-
-                    <div class="goal-progress-bar-wrap">
-                        <div class="goal-progress-label">
-                            <span>$${goal.saved.toFixed(2)} saved</span>
-                            <span>$${goal.target.toFixed(2)} target</span>
-                        </div>
-                        <div class="goal-progress-bar">
-                            <div class="goal-progress-fill ${fillClass}" style="width:${pct}%"></div>
-                        </div>
-                    </div>
-
-                    <div class="goal-amounts">
-                        <span class="saved">💰 Saved: $${goal.saved.toFixed(2)}</span>
-                        <span class="remaining">🏁 Left: $${remaining.toFixed(2)}</span>
-                    </div>
-
-                    <div class="goal-meta">
-                        <span>📅 Target: ${goal.targetDate}</span>
-                        <span>${days > 0 ? `⏳ ${days} days left` : days === 0 ? '🔔 Due today!' : `⚠️ ${Math.abs(days)} days overdue`}</span>
-                    </div>
-
-                    ${alertHTML}
-
-                    <div class="goal-actions">
-                        ${status !== 'completed' ? `<button class="btn-contribute" onclick="openContributeModal('${goal.id}')">+ Add Contribution</button>` : ''}
-                        <button class="btn-delete-goal" onclick="deleteGoal('${goal.id}')">🗑️</button>
-                    </div>
-
-                    <button class="btn-toggle-history" onclick="toggleHistory(this)">📋 View History</button>
-                    <div class="contribution-history">
-                        ${historyHTML}
-                    </div>
-                `;
-                goalsContainer.appendChild(card);
-            });
-
-            updateSavingsAnalytics();
-        }
-
-        // ---- Create a goal ----
-        goalForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const title = document.getElementById('goal-title').value.trim();
-            const target = parseFloat(document.getElementById('goal-target').value);
-            const targetDate = document.getElementById('goal-date').value;
-
-            if (!title || isNaN(target) || target <= 0 || !targetDate) return;
-
-            const goal = {
-                id: Date.now().toString(),
-                title,
-                target,
-                targetDate,
-                saved: 0,
-                contributions: [],
-                createdAt: new Date().toISOString().split('T')[0]
-            };
-
-            savingsGoals.push(goal);
-            localStorage.setItem('savingsGoals', JSON.stringify(savingsGoals));
-            renderGoals();
-            goalForm.reset();
-        });
-
-        // ---- Delete a goal ----
-        function deleteGoal(id) {
-            if (!confirm('Delete this savings goal?')) return;
-            savingsGoals = savingsGoals.filter(g => g.id !== id);
-            localStorage.setItem('savingsGoals', JSON.stringify(savingsGoals));
-            renderGoals();
-        }
-
-        // ---- Open contribute modal ----
-        function openContributeModal(id) {
-            activeContributeGoalId = id;
-            const goal = savingsGoals.find(g => g.id === id);
-            modalGoalName.textContent = `Goal: ${goal.title} — $${goal.saved.toFixed(2)} / $${goal.target.toFixed(2)}`;
-            contributeAmountInput.value = '';
-            contributeModal.classList.add('active');
-        }
-
-        document.getElementById('btn-cancel-contribute').addEventListener('click', () => {
-            contributeModal.classList.remove('active');
-            activeContributeGoalId = null;
-        });
-
-        document.getElementById('btn-confirm-contribute').addEventListener('click', () => {
-            const amount = parseFloat(contributeAmountInput.value);
-            if (isNaN(amount) || amount <= 0) {
-                alert('Please enter a valid amount.');
-                return;
-            }
-            const goal = savingsGoals.find(g => g.id === activeContributeGoalId);
-            if (!goal) return;
-            goal.saved = parseFloat((goal.saved + amount).toFixed(2));
-            goal.contributions = goal.contributions || [];
-            goal.contributions.push({
-                amount,
-                date: new Date().toISOString().split('T')[0]
-            });
-            localStorage.setItem('savingsGoals', JSON.stringify(savingsGoals));
-            contributeModal.classList.remove('active');
-            activeContributeGoalId = null;
-            renderGoals();
-        });
-
-        // ---- Toggle contribution history ----
-        function toggleHistory(btn) {
-            const historyEl = btn.nextElementSibling;
-            historyEl.classList.toggle('open');
-            btn.textContent = historyEl.classList.contains('open') ? '🔼 Hide History' : '📋 View History';
-        }
-
-        // ---- Savings Analytics ----
-        function updateSavingsAnalytics() {
-            const totalSaved = savingsGoals.reduce((acc, g) => acc + g.saved, 0);
-            const completedGoals = savingsGoals.filter(g => getGoalStatus(g) === 'completed').length;
-            const activeGoals = savingsGoals.filter(g => getGoalStatus(g) !== 'completed').length;
-
-            // Savings rate: totalSaved / totalIncome * 100
-            const totalIncome = transactions
-                .filter(t => t.type === 'income')
-                .reduce((acc, t) => acc + t.amount, 0);
-            const savingsRate = totalIncome > 0 ? ((totalSaved / totalIncome) * 100).toFixed(1) : 0;
-
-            document.getElementById('analytic-total-saved').textContent = `$${totalSaved.toFixed(0)}`;
-            document.getElementById('analytic-savings-rate').textContent = `${savingsRate}%`;
-            document.getElementById('analytic-goals-count').textContent = activeGoals;
-            document.getElementById('analytic-goals-completed').textContent = completedGoals;
-
-            updateSavingsChart();
-        }
-
-        // ---- Savings Chart (bar: goal progress) ----
-        function updateSavingsChart() {
-            if (window.savingsChart) {
-                window.savingsChart.destroy();
-            }
-            if (savingsGoals.length === 0) return;
-
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            const labels = savingsGoals.map(g => g.title);
-            const savedData = savingsGoals.map(g => g.saved);
-            const remainingData = savingsGoals.map(g => Math.max(g.target - g.saved, 0));
-
-            const ctx = document.getElementById('savings-chart').getContext('2d');
-            window.savingsChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels,
-                    datasets: [
-                        {
-                            label: 'Saved',
-                            data: savedData,
-                            backgroundColor: 'rgba(46, 204, 113, 0.75)',
-                            borderColor: '#27ae60',
-                            borderWidth: 2,
-                            borderRadius: 6
-                        },
-                        {
-                            label: 'Remaining',
-                            data: remainingData,
-                            backgroundColor: 'rgba(108, 92, 231, 0.3)',
-                            borderColor: 'rgba(108, 92, 231, 0.7)',
-                            borderWidth: 2,
-                            borderRadius: 6
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Savings Goals Progress',
-                            font: { size: 16 },
-                            color: isDarkMode ? '#e0e0e0' : '#2d3436'
-                        },
-                        legend: {
-                            labels: { color: isDarkMode ? '#e0e0e0' : '#2d3436' }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            stacked: true,
-                            ticks: { color: isDarkMode ? '#e0e0e0' : '#2d3436' },
-                            grid: { color: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }
-                        },
-                        y: {
-                            stacked: true,
-                            ticks: { color: isDarkMode ? '#e0e0e0' : '#2d3436' },
-                            grid: { color: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }
-                        }
-                    },
-                    animation: { duration: 800 }
-                }
-            });
-        }
-
-        // ---- Close modal on overlay click ----
-        contributeModal.addEventListener('click', function(e) {
-            if (e.target === contributeModal) {
-                contributeModal.classList.remove('active');
-                activeContributeGoalId = null;
-            }
-        });
-
-        // ---- Init savings on page load ----
-        renderGoals();
-    </script>
 </body>
 
 </html>

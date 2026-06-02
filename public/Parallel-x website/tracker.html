@@ -18,6 +18,28 @@
             --transition: all 0.3s ease;
         }
 
+        /* theme toggle button styling */
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid rgba(0,0,0,0.08);
+            color: var(--text-main);
+            padding: 6px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        /* Dark theme overrides (applied when html[data-theme="dark"]) */
+        :root[data-theme="dark"], [data-theme="dark"] {
+            --bg-primary: #071412;
+            --bg-card: #0b1d16;
+            --text-main: #e6f6ef;
+            --text-muted: #9fbfb0;
+            --emerald: #06b07a;
+            --emerald-light: #063c2d;
+            --emerald-dark: #0a532f;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -138,6 +160,10 @@
             transition: var(--transition);
         }
 
+        @media (max-width: 700px) {
+            .habit-item { flex-direction: column; align-items:flex-start; gap:10px; }
+        }
+
         .habit-item:hover {
             border-color: var(--emerald);
             background-color: #fcfdfd;
@@ -165,6 +191,9 @@
             transition: var(--transition);
             outline: none;
         }
+
+        .action-btn { min-width: 84px; text-align:center; box-shadow: 0 6px 18px rgba(16,185,129,0.06); }
+        .action-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(16,185,129,0.12); }
 
         .action-btn.completed {
             background-color: var(--emerald);
@@ -250,14 +279,72 @@
             padding: 20px 0;
             font-style: italic;
         }
+
+        /* Back to Home Button */
+        .back-home-btn {
+            position: fixed;
+            left: 24px;
+            top: 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 22px;
+            border-radius: 30px;
+            background-color: var(--bg-card);
+            color: var(--emerald-dark);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(6, 95, 70, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            z-index: 999;
+            transition: var(--transition);
+        }
+
+        .back-home-btn:hover {
+            background-color: var(--emerald);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.25);
+            border-color: transparent;
+        }
+
+        .back-home-btn .back-icon {
+            width: 16px;
+            height: 16px;
+            transition: var(--transition);
+        }
+
+        .back-home-btn:hover .back-icon {
+            transform: translateX(-3px);
+        }
+
+        /* Responsive configuration for Back to Home on small screens */
+        @media (max-width: 600px) {
+            .back-home-btn {
+                position: static;
+                margin-top: 10px;
+                margin-bottom: 20px;
+                display: inline-flex;
+                box-shadow: var(--shadow);
+            }
+        }
     </style>
 </head>
 <body>
+<a href="parallal.html" class="back-home-btn">
+    <svg class="back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+    <span>Back to Home</span>
+</a>
+
 
     <div class="container">
         <header>
             <h1>Eco Habit Tracker</h1>
             <p>Small daily shifts build a sustainable future</p>
+            <div style="margin-top:8px;">
+                <button class="theme-toggle" aria-label="Toggle theme">🌙</button>
+            </div>
         </header>
 
         <div class="dashboard-grid">
@@ -280,6 +367,7 @@
                     <div class="value" id="stat-plastic">0</div>
                     <div class="label">Plastics Avoided</div>
                 </div>
+                <!-- Weekly chart removed to reduce page length per user request -->
             </div>
 
             <!-- Active Habits Panel -->
@@ -296,6 +384,10 @@
             <!-- Accomplishments Panel -->
             <aside class="card">
                 <div class="card-title">Milestones</div>
+                <div style="margin-bottom:12px;">
+                    <div id="streak-count" style="font-size:14px;font-weight:700;color:var(--emerald-dark);margin-bottom:8px;">Current streak: 0 days</div>
+                    <div id="weekly-summary" style="font-size:13px;color:var(--text-muted);">Weekly progress: —</div>
+                </div>
                 <div class="badge-grid" id="badge-container">
                     <!-- Dynamic rendering via JavaScript -->
                 </div>
@@ -324,15 +416,49 @@
         </div>
     </div>
 
+    <script src="theme-toggle.js"></script>
     <script>
-        // Core Habit Dataset with specific impact weight configurations
-        const habitTemplate = [
-            { id: 'water', title: 'Bring a Reusable Bottle', desc: 'Avoid single-use plastic production cycles.', points: 10, co2: 80, water: 3, plastic: 1 },
-            { id: 'meat', title: 'Plant-Based Meals Only', desc: 'Significantly reduce dietary carbon footprint.', points: 25, co2: 1200, water: 540, plastic: 0 },
-            { id: 'commute', title: 'Active or Public Transit', desc: 'Walk, cycle, or take a bus instead of driving.', points: 20, co2: 900, water: 0, plastic: 0 },
-            { id: 'bags', title: 'Utilize Reusable Bags', desc: 'Keep microplastics out of ocean environments.', points: 10, co2: 30, water: 1, plastic: 2 },
-            { id: 'energy', title: 'Unplug Standby Electronics', desc: 'Curtail subtle vampire power consumption.', points: 15, co2: 150, water: 0, plastic: 0 }
+        // Default Habit Dataset with impact weight configurations (persisted and editable)
+        const defaultHabits = [
+            { id: 'water', title: 'Bring a Reusable Bottle', desc: 'Avoid single-use plastic production cycles.', category: 'Waste Reduction', points: 10, co2: 80, water: 3, plastic: 1 },
+            { id: 'meat', title: 'Plant-Based Meals Only', desc: 'Significantly reduce dietary carbon footprint.', category: 'Eco-Friendly Lifestyle', points: 25, co2: 1200, water: 540, plastic: 0 },
+            { id: 'commute', title: 'Active or Public Transit', desc: 'Walk, cycle, or take a bus instead of driving.', category: 'Sustainable Transport', points: 20, co2: 900, water: 0, plastic: 0 },
+            { id: 'bags', title: 'Utilize Reusable Bags', desc: 'Keep microplastics out of ocean environments.', category: 'Waste Reduction', points: 10, co2: 30, water: 1, plastic: 2 },
+            { id: 'energy', title: 'Unplug Standby Electronics', desc: 'Curtail subtle vampire power consumption.', category: 'Energy Saving', points: 15, co2: 150, water: 0, plastic: 0 }
         ];
+
+        // Load habit list from storage or fallback to defaults
+        let habitList = JSON.parse(localStorage.getItem('eco_habits')) || defaultHabits.slice();
+
+        // Helpers to persist habits
+        function saveHabits() {
+            localStorage.setItem('eco_habits', JSON.stringify(habitList));
+        }
+
+        // Bind add habit form (attach immediately if DOM is ready)
+        (function bindAddForm(){
+            function attach(){
+                const addForm = document.getElementById('add-habit-form');
+                if (!addForm) return;
+                addForm.addEventListener('submit', function(e){
+                    e.preventDefault();
+                    const title = document.getElementById('new-title').value.trim();
+                    if (!title) return;
+                    const desc = document.getElementById('new-desc').value.trim();
+                    const category = document.getElementById('new-category').value;
+                    const points = parseInt(document.getElementById('new-points').value,10) || 10;
+                    const id = title.toLowerCase().replace(/[^a-z0-9]+/g,'-') + '-' + Date.now().toString().slice(-4);
+                    const habit = { id, title, desc, category, points, co2: 0, water: 0, plastic: 0 };
+                    habitList.unshift(habit);
+                    saveHabits();
+                    renderHabits();
+                    // reset small fields
+                    addForm.reset();
+                });
+            }
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', attach);
+            else attach();
+        })();
 
         // Milestone configuration targets based on Cumulative Eco Score
         const milestoneBadges = [
@@ -366,6 +492,8 @@
             
             localStorage.setItem('eco_totals', JSON.stringify(appState.totals));
             evaluateMilestones();
+            computeWeeklySummary();
+            computeStreak();
         }
 
         // Daily structural reset validation checking calendar cross-over
@@ -383,7 +511,7 @@
 
         // Execution of completion toggle toggling system state array strings
         function toggleHabit(habitId) {
-            const targetHabit = habitTemplate.find(h => h.id === habitId);
+            const targetHabit = habitList.find(h => h.id === habitId);
             if (!targetHabit) return;
 
             const index = appState.completedToday.indexOf(habitId);
@@ -399,11 +527,13 @@
                 appState.totals.water += targetHabit.water;
                 appState.totals.plastic += targetHabit.plastic;
 
-                // Push an entry out to historical logger array string format
+                // Push an entry to history with ISO date for analytics
+                const iso = new Date().toISOString().slice(0,10); // YYYY-MM-DD
                 const logEntry = {
+                    iso: iso,
                     date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
                     title: targetHabit.title,
-                    impact: `+${targetHabit.points} Pts, -${targetHabit.co2}g CO₂`
+                    impact: `+${targetHabit.points} Pts, -${targetHabit.co2 || 0}g CO₂`
                 };
                 appState.historyLog.unshift(logEntry); // Top entry insertion 
             } else {
@@ -415,14 +545,15 @@
                 appState.totals.water = Math.max(0, appState.totals.water - targetHabit.water);
                 appState.totals.plastic = Math.max(0, appState.totals.plastic - targetHabit.plastic);
 
-                // Clean entry from log for the current instance
-                const logIndex = appState.historyLog.findIndex(entry => entry.title === targetHabit.title);
+                // Remove the most recent matching history entry for this habit (if any)
+                const logIndex = appState.historyLog.findIndex(entry => entry.title === targetHabit.title && entry.iso === new Date().toISOString().slice(0,10));
                 if (logIndex !== -1) appState.historyLog.splice(logIndex, 1);
             }
 
             // Sync structural arrays out onto LocalStorage strings
             localStorage.setItem('eco_completed_today', JSON.stringify(appState.completedToday));
             localStorage.setItem('eco_history_log', JSON.stringify(appState.historyLog));
+            saveHabits();
 
             updateDashboardMetrics();
             renderHabits();
@@ -431,20 +562,49 @@
 
         // Render functions constructing raw component string structures
         function renderHabits() {
-            habitContainer.innerHTML = habitTemplate.map(habit => {
+            if (!habitList || !Array.isArray(habitList)) habitList = defaultHabits.slice();
+            habitContainer.innerHTML = habitList.map(habit => {
                 const isDone = appState.completedToday.includes(habit.id);
                 return `
                     <div class="habit-item">
                         <div class="habit-details">
                             <h3>${habit.title}</h3>
-                            <p>${habit.desc}</p>
+                            <p style="margin:6px 0 0 0;">${habit.desc || ''}</p>
+                            <div style="font-size:12px;color:#718096;margin-top:6px;">${habit.category || 'General'}</div>
                         </div>
-                        <button class="action-btn ${isDone ? 'completed' : ''}" onclick="toggleHabit('${habit.id}')">
-                            ${isDone ? '✓ Logged' : `+ ${habit.points} pts`}
-                        </button>
+                        <div style="display:flex;gap:8px;align-items:center;">
+                            <button class="action-btn ${isDone ? 'completed' : ''}" onclick="toggleHabit('${habit.id}')">
+                                ${isDone ? '✓ Logged' : ('+ ' + habit.points + ' pts')}
+                            </button>
+                            <button class="action-btn" style="border-color:#cbd5e1;color:#475569;" onclick="editHabit('${habit.id}')">Edit</button>
+                            <button class="action-btn" style="border-color:#fca5a5;color:#b91c1c;" onclick="deleteHabit('${habit.id}')">Delete</button>
+                        </div>
                     </div>
                 `;
             }).join('');
+        }
+
+        // Edit/Delete helpers
+        function editHabit(id) {
+            const h = habitList.find(x => x.id === id);
+            if (!h) return alert('Habit not found');
+            const newTitle = prompt('Edit habit title', h.title);
+            if (newTitle === null) return; // cancelled
+            h.title = newTitle.trim() || h.title;
+            const newDesc = prompt('Edit description', h.desc || '');
+            if (newDesc !== null) h.desc = newDesc.trim();
+            saveHabits(); renderHabits();
+        }
+
+        function deleteHabit(id) {
+            if (!confirm('Delete this habit?')) return;
+            habitList = habitList.filter(h => h.id !== id);
+            // remove completions related to habit
+            appState.completedToday = appState.completedToday.filter(x => x !== id);
+            saveHabits();
+            localStorage.setItem('eco_completed_today', JSON.stringify(appState.completedToday));
+            renderHabits();
+            renderHistory();
         }
 
         function evaluateMilestones() {
@@ -479,6 +639,47 @@
                     <td><span style="color: var(--emerald-dark); font-weight:500;">${entry.impact}</span></td>
                 </tr>
             `).join('');
+        }
+
+        // Compute simple weekly summary (last 7 days) and update sidebar
+        function computeWeeklySummary() {
+            const rows = appState.historyLog || [];
+            const today = new Date();
+            const last7 = {};
+            for (let i=6;i>=0;i--) {
+                const d = new Date(today);
+                d.setDate(today.getDate() - i);
+                last7[d.toISOString().slice(0,10)] = 0;
+            }
+            rows.forEach(r => {
+                const iso = r.iso || (new Date(r.date).toISOString().slice(0,10));
+                if (iso in last7) last7[iso]++;
+            });
+            const total = Object.values(last7).reduce((a,b)=>a+b,0);
+            const summaryText = `${total} actions in last 7 days`;
+            const weeklyEl = document.getElementById('weekly-summary');
+            if (weeklyEl) weeklyEl.innerText = summaryText;
+            return last7;
+        }
+
+        // Compute consecutive-day streak based on historyLog dates (ISO)
+        function computeStreak() {
+            const rows = (appState.historyLog || []).map(r => r.iso || new Date(r.date).toISOString().slice(0,10));
+            const unique = Array.from(new Set(rows)).sort().reverse();
+            let streak = 0;
+            const todayIso = new Date().toISOString().slice(0,10);
+            let cursor = new Date();
+            // Walk back day-by-day until a day is missing
+            while (true) {
+                const iso = cursor.toISOString().slice(0,10);
+                if (unique.includes(iso)) {
+                    streak++;
+                    cursor.setDate(cursor.getDate() - 1);
+                } else break;
+            }
+            const streakEl = document.getElementById('streak-count');
+            if (streakEl) streakEl.innerText = `Current streak: ${streak} day${streak!==1?'s':''}`;
+            return streak;
         }
 
         // Application Lifecyle initializer execution

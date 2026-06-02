@@ -1,35 +1,29 @@
-
-var candies = ["Blue", "Orange", "Green", "Yellow", "Red", "Purple"];
+﻿var candies = ["Blue", "Orange", "Green", "Yellow", "Red", "Purple"];
 var board = [];
 var rows = 9;
 var columns = 9;
-var score =0;
+var score = 0;
 
 var currTile;
 var otherTile;
-
+var isProcessing = false;
+var hintTimer;
+var HINT_DELAY = 7000;
 
 window.onload = function() {
     startGame();
-     // Reset button functionality
+    resetHintTimer();
+
+    // Reset button functionality
     document.getElementById("Reset").addEventListener("click", function() {
-        score=0
-        // Reset score
-        document.getElementById("score1").innerText = score; // Update the score display
-
-        // Clear the board array and HTML content
+        if (isProcessing) return;
+        score = 0;
+        document.getElementById("score1").innerText = score;
         board = [];
-        document.getElementById("board").innerHTML = ""; // Clear the board visually
-
-        // Reinitialize the game
+        document.getElementById("board").innerHTML = "";
         startGame();
+        resetHintTimer();
     });
-    //1/10th of a second
-    window.setInterval(function(){
-        crushCandy();
-        slideCandy();
-        generateCandy();
-    }, 100);
 }
     
 
@@ -39,45 +33,49 @@ function randomCandy() {
 }
 
 function startGame() {
-    score=0;
-    document.getElementById("score1").innerText=score;
+    isProcessing = false;
+    score = 0;
+    document.getElementById("score1").innerText = score;
+    const boardElement = document.getElementById("board");
+    boardElement.innerHTML = "";
+    board = [];
+
     for (let r = 0; r < rows; r++) {
         let row = [];
         for (let c = 0; c < columns; c++) {
-            // <img id="0-0" src="./images/Red.png">
             let candy;
-            // keep picking until it doesn’t form a 3-in-a-row
             do {
                 candy = randomCandy();
             } while (
-                (c >= 2 && row[c-1].src.includes(candy) && row[c-2].src.includes(candy)) ||
-                (r >= 2 && board[r-1][c].src.includes(candy) && board[r-2][c].src.includes(candy))
+                (c >= 2 && row[c - 1].src.includes(candy) && row[c - 2].src.includes(candy)) ||
+                (r >= 2 && board[r - 1][c].src.includes(candy) && board[r - 2][c].src.includes(candy))
             );
-             let tile = document.createElement("img");
+            let tile = document.createElement("img");
             tile.id = r + "-" + c;
             tile.src = "./images/" + candy + ".png";
-            // let tile = document.createElement("img");
-            // tile.id = r.toString() + "-" + c.toString();
-            // tile.src = "./images/" + randomCandy() + ".png";
 
-            //DRAG FUNCTIONALITY
-            tile.addEventListener("dragstart", dragStart); //click on a candy, initialize drag process
-            tile.addEventListener("dragover", dragOver);  //clicking on candy, moving mouse to drag the candy
-            tile.addEventListener("dragenter", dragEnter); //dragging candy onto another candy
-            tile.addEventListener("dragleave", dragLeave); //leave candy over another candy
-            tile.addEventListener("drop", dragDrop); //dropping a candy over another candy
-            tile.addEventListener("dragend", dragEnd); //after drag process completed, we swap candies
+            tile.addEventListener("dragstart", dragStart);
+            tile.addEventListener("dragover", dragOver);
+            tile.addEventListener("dragenter", dragEnter);
+            tile.addEventListener("dragleave", dragLeave);
+            tile.addEventListener("drop", dragDrop);
+            tile.addEventListener("dragend", dragEnd);
 
-            document.getElementById("board").append(tile);
+            boardElement.append(tile);
             row.push(tile);
         }
         board.push(row);
     }
 
-    console.log(board);
+    if (!hasAvailableMoves()) {
+        shuffleBoard();
+    }
 }
 
 function dragStart() {
+    if (isProcessing) return;
+    clearHint();
+    resetHintTimer();
     //this refers to tile that was clicked on for dragging
     currTile = this;
 }
@@ -99,7 +97,8 @@ function dragDrop() {
     otherTile = this;
 }
 
-function dragEnd() {
+async function dragEnd() {
+    if (isProcessing || !otherTile) return;
 
     if (currTile.src.includes("blank") || otherTile.src.includes("blank")) {
         return;
@@ -129,103 +128,222 @@ function dragEnd() {
 
         let validMove = checkValid();
         if (!validMove) {
-            let currImg = currTile.src;
-            let otherImg = otherTile.src;
-            currTile.src = otherImg;
-            otherTile.src = currImg;    
+            currTile.src = currImg;
+            otherTile.src = otherImg;
+        } else {
+            await resolveCascades();
         }
     }
+    otherTile = null;
+    resetHintTimer();
 }
 
-function crushCandy() {
-    //crushFive();
-    //crushFour();
-    crushThree();
-    document.getElementById("score1").innerText = score;
-
-}
-
-function crushThree() {
-    //check rows
+function findMatches() {
+    let matches = new Set();
+    // check rows
     for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < columns-2; c++) {
+        for (let c = 0; c < columns - 2; c++) {
             let candy1 = board[r][c];
-            let candy2 = board[r][c+1];
-            let candy3 = board[r][c+2];
-            if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
-                candy1.src = "./images/blank.png";
-                candy2.src = "./images/blank.png";
-                candy3.src = "./images/blank.png";
-                score += 30;
+            let candy2 = board[r][c + 1];
+            let candy3 = board[r][c + 2];
+            if (candy1.src === candy2.src && candy2.src === candy3.src && !candy1.src.includes("blank")) {
+                matches.add(candy1);
+                matches.add(candy2);
+                matches.add(candy3);
             }
         }
     }
-
-    //check columns
+    // check columns
     for (let c = 0; c < columns; c++) {
-        for (let r = 0; r < rows-2; r++) {
+        for (let r = 0; r < rows - 2; r++) {
             let candy1 = board[r][c];
-            let candy2 = board[r+1][c];
-            let candy3 = board[r+2][c];
-            if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
-                candy1.src = "./images/blank.png";
-                candy2.src = "./images/blank.png";
-                candy3.src = "./images/blank.png";
-                score += 30;
+            let candy2 = board[r + 1][c];
+            let candy3 = board[r + 2][c];
+            if (candy1.src === candy2.src && candy2.src === candy3.src && !candy1.src.includes("blank")) {
+                matches.add(candy1);
+                matches.add(candy2);
+                matches.add(candy3);
             }
         }
     }
+    return Array.from(matches);
 }
 
 function checkValid() {
-    //check rows
-    for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < columns-2; c++) {
-            let candy1 = board[r][c];
-            let candy2 = board[r][c+1];
-            let candy3 = board[r][c+2];
-            if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
-                return true;
-            }
-        }
-    }
+    return findMatches().length > 0;
+}
 
-    //check columns
+async function resolveCascades() {
+    clearHint();
+    clearTimeout(hintTimer);
+    isProcessing = true;
+    let combo = 1;
+    while (true) {
+        let matches = findMatches();
+        if (matches.length === 0) break;
+
+        if (combo > 1) {
+            showCombo(combo);
+        }
+
+        score += matches.length * 10 * combo;
+        document.getElementById("score1").innerText = score;
+
+        matches.forEach(tile => {
+            tile.src = "./images/blank.png";
+        });
+
+        await new Promise(resolve => setTimeout(resolve, 300));
+
+        await slideAndRefill();
+        combo++;
+    }
+    
+    if (!hasAvailableMoves()) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+        shuffleBoard();
+        await resolveCascades();
+    }
+    
+    isProcessing = false;
+    resetHintTimer();
+}
+
+async function slideAndRefill() {
+    // Sliding logic
     for (let c = 0; c < columns; c++) {
-        for (let r = 0; r < rows-2; r++) {
-            let candy1 = board[r][c];
-            let candy2 = board[r+1][c];
-            let candy3 = board[r+2][c];
-            if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
-                return true;
+        let emptySpaces = 0;
+        for (let r = rows - 1; r >= 0; r--) {
+            if (board[r][c].src.includes("blank")) {
+                emptySpaces++;
+            } else if (emptySpaces > 0) {
+                board[r + emptySpaces][c].src = board[r][c].src;
+                board[r][c].src = "./images/blank.png";
             }
         }
     }
 
+    await new Promise(resolve => setTimeout(resolve, 200));
+
+    // Refill logic
+    for (let c = 0; c < columns; c++) {
+        for (let r = rows - 1; r >= 0; r--) {
+            if (board[r][c].src.includes("blank")) {
+                board[r][c].src = "./images/" + randomCandy() + ".png";
+            }
+        }
+    }
+    
+    await new Promise(resolve => setTimeout(resolve, 200));
+}
+
+function resetHintTimer() {
+    clearHint();
+    clearTimeout(hintTimer);
+
+    hintTimer = setTimeout(() => {
+        if (!isProcessing) {
+            showHint();
+        }
+    }, HINT_DELAY);
+}
+
+function clearHint() {
+    document.querySelectorAll(".candy-hint").forEach(tile => {
+        tile.classList.remove("candy-hint");
+    });
+}
+
+function findAvailableMove() {
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < columns; c++) {
+            if (c < columns - 1 && testSwap(r, c, r, c + 1)) {
+                return [board[r][c], board[r][c + 1]];
+            }
+
+            if (r < rows - 1 && testSwap(r, c, r + 1, c)) {
+                return [board[r][c], board[r + 1][c]];
+            }
+        }
+    }
+
+    return [];
+}
+
+function showHint() {
+    clearHint();
+
+    const hintTiles = findAvailableMove();
+    hintTiles.forEach(tile => {
+        tile.classList.add("candy-hint");
+    });
+}
+
+function hasAvailableMoves() {
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < columns; c++) {
+            // Try swapping with right
+            if (c < columns - 1) {
+                if (testSwap(r, c, r, c + 1)) return true;
+            }
+            // Try swapping with down
+            if (r < rows - 1) {
+                if (testSwap(r, c, r + 1, c)) return true;
+            }
+        }
+    }
     return false;
 }
 
-
-function slideCandy() {
-    for (let c = 0; c < columns; c++) {
-        let ind = rows - 1;
-        for (let r = columns-1; r >= 0; r--) {
-            if (!board[r][c].src.includes("blank")) {
-                board[ind][c].src = board[r][c].src;
-                ind -= 1;
-            }
-        }
-
-        for (let r = ind; r >= 0; r--) {
-            board[r][c].src = "./images/blank.png";
-        }
-    }
+function testSwap(r1, c1, r2, c2) {
+    let img1 = board[r1][c1].src;
+    let img2 = board[r2][c2].src;
+    
+    // Temporary swap
+    board[r1][c1].src = img2;
+    board[r2][c2].src = img1;
+    
+    let valid = checkValid();
+    
+    // Swap back
+    board[r1][c1].src = img1;
+    board[r2][c2].src = img2;
+    
+    return valid;
 }
 
-function generateCandy() {
-    for (let c = 0; c < columns;  c++) {
-        if (board[0][c].src.includes("blank")) {
-            board[0][c].src = "./images/" + randomCandy() + ".png";
+function shuffleBoard() {
+    clearHint();
+
+    let allCandies = [];
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < columns; c++) {
+            allCandies.push(board[r][c].src);
         }
     }
+
+    do {
+        // Shuffle the array
+        for (let i = allCandies.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [allCandies[i], allCandies[j]] = [allCandies[j], allCandies[i]];
+        }
+
+        // Apply to board
+        let idx = 0;
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < columns; c++) {
+                board[r][c].src = allCandies[idx++];
+            }
+        }
+    } while (checkValid() || !hasAvailableMoves());
+}
+
+function showCombo(combo) {
+    const display = document.getElementById("combo-display");
+    display.innerText = "COMBO x" + combo + "!";
+    display.classList.add("show");
+    setTimeout(() => {
+        display.classList.remove("show");
+    }, 800);
 }
