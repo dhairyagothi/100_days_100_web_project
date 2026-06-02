@@ -1,12 +1,12 @@
 /* ============================================================
    CONFIGURATION & GLOBAL VARIABLES
    ============================================================ */
-if (typeof REPO_OWNER === 'undefined') {
-  window.REPO_OWNER = 'dhairyagothi';
-  window.REPO_NAME = '100_days_100_web_project';
+if (typeof REPO_OWNER === "undefined") {
+  window.REPO_OWNER = "dhairyagothi";
+  window.REPO_NAME = "100_days_100_web_project";
 }
-window.REPO_OWNER = window.REPO_OWNER || 'dhairyagothi';
-window.REPO_NAME = window.REPO_NAME || '100_days_100_web_project';
+window.REPO_OWNER = window.REPO_OWNER || "dhairyagothi";
+window.REPO_NAME = window.REPO_NAME || "100_days_100_web_project";
 
 let currentPage = 1;
 let itemsPerPage = 9; 
@@ -240,15 +240,15 @@ function renderPagination(totalItems, totalPages) {
   if (!grid) return;
 
   if (!container) {
-    container = document.createElement('div');
-    container.id = 'paginationContainer';
-    container.className = 'pagination-container';
+    container = document.createElement("div");
+    container.id = "paginationContainer";
+    container.className = "pagination-container";
   }
   container.innerHTML = '';
   if (totalPages <= 1) return;
 
-  const controlsDiv = document.createElement('div');
-  controlsDiv.className = 'pagination-controls';
+  const controlsDiv = document.createElement("div");
+  controlsDiv.className = "pagination-controls";
 
   for (let i = 1; i <= totalPages; i++) {
     const pageBtn = document.createElement('button');
