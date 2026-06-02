@@ -628,6 +628,18 @@ function syncStateToURL() {
     url.searchParams.delete("category");
   }
 
+  if (techStackFilter && techStackFilter !== 'all') {
+    url.searchParams.set('tech', techStackFilter);
+  } else {
+    url.searchParams.delete('tech');
+  }
+
+  if (difficultyFilter && difficultyFilter !== 'all') {
+    url.searchParams.set('diff', difficultyFilter);
+  } else {
+    url.searchParams.delete('diff');
+  }
+
   if (currentPage > 1) {
     url.searchParams.set("page", currentPage);
   } else {
@@ -650,6 +662,15 @@ function readStateFromURL() {
 
   if (urlParams.has("category")) {
     activeFilter = urlParams.get("category");
+  }
+
+  if (urlParams.has("tech")) {
+    techStackFilter = urlParams.get("tech");
+    // UI sync for tech filter not strictly necessary here, but state is set
+  }
+
+  if (urlParams.has("diff")) {
+    difficultyFilter = urlParams.get("diff");
   }
 
   if (urlParams.has("page")) {
