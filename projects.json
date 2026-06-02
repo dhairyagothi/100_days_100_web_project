@@ -2520,7 +2520,7 @@
     "difficulty": "intermediate",
     "projectPath": "./public/traffic_signal/index.html"
   },
-   {
+  {
   "projectNo": 203,
   "projectName": "Pomodoro With Miu",
   "projectType": "Tool",
@@ -2528,5 +2528,18 @@
   "projectPath": "./public/Pomodoro_With_Miu-Electronjs/index.html",
   "techStack": ["javascript", "css", "html", "electron"],
   "difficulty": "intermediate"
-  }
+  },
+  {
+  "projectNo": 204,
+  "projectName": "Escape the Matrix Game",
+  "projectType": "Web Application",
+  "projectDesc": "An immersive, interactive web-based survival and puzzle game challenging players to hack their way out of a simulated reality.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript"
+  ],
+  "difficulty": "advanced",
+  "projectPath": "./public/Escape The Matrix/index.html"
+}
 ]
