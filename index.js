@@ -217,6 +217,20 @@ function resolveProjectUrls(day, name, url, tags) {
   return { demoUrl, sourceUrl, sourceOnly };
 }
 
+function escapeHTML(str) {
+  if (typeof str !== "string") return str;
+  return str.replace(/[&<>"']/g, function (match) {
+    const map = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    };
+    return map[match];
+  });
+}
+
 function getProjectDescription(project) {
   return (
     (project && project[5]) ||
@@ -245,11 +259,12 @@ function buildProjectCardHTML({
         .split(/\s+/)
         .filter((t) => t && t !== SOURCE_ONLY_TAG);
   const tagsHTML = tagsArray
-    .map((t) => `<span class="tag">${t}</span>`)
+    .map((t) => `<span class="tag">${escapeHTML(t)}</span>`)
     .join("");
   const project = PROJECTS.find((p) => p[1] === name);
 
-  const description = getProjectDescription(project);
+  const description = escapeHTML(getProjectDescription(project));
+  const safeName = escapeHTML(name);
   const sourceOnlyBadge = sourceOnly
     ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
     : "";
@@ -275,7 +290,7 @@ function buildProjectCardHTML({
                   ${sourceOnlyBadge}
                 </span>
             </div>
-            <h3 class="card-name">${name}</h3>
+            <h3 class="card-name">${safeName}</h3>
             ${
               showDescription
                 ? `<div class="card-description">
