@@ -16,7 +16,7 @@
 
 <div align="center">
   
-  > 🚀 Looking to generate a polished GitHub profile README? [Click here to go to GitHub Readme Tech](https://www.github-readme.tech)
+  > 🚀 Looking to generate a polished and real world  GitHub profile README? [Click here to go to GitHub Readme Tech](https://www.github-readme.tech)
   
   [![Generate README](https://img.shields.io/badge/Generate-README-blue?style=for-the-badge)](https://www.github-readme.tech)
 
@@ -25,7 +25,7 @@
 [![oosmetrics](https://api.oosmetrics.com/api/v1/badge/achievement/504bb60b-df6f-4e90-94f7-123a64ba852d.svg)](https://oosmetrics.com/repo/dhairyagothi/100_days_100_web_project)
 </div>
 
-## 🌟 About This Project
+## 🌟 About This 
 
 Welcome to **100 Days 100 Web Projects**! This is a comprehensive collection of **112+ web development projects** ranging from beginner to intermediate level. Our goal is to help developers learn and practice web development through hands-on projects using various technologies.
 
