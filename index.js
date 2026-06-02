@@ -724,6 +724,7 @@ function renderBookmarks() {
             <div class="card-name">${name}</div>
             <div class="card-tags">${tagsHTML}</div>
             <div class="card-footer">
+<<<<<<< HEAD
                 <div class="card-actions-left">
                     <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
                         Demo <i class="fas fa-arrow-right"></i>
@@ -732,6 +733,11 @@ function renderBookmarks() {
                         <i class="fab fa-github"></i> Code
                     </a>
                 </div>
+=======
+                <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
+                    View Demo <i class="fas fa-arrow-right"></i>
+                </a>
+>>>>>>> eb4d25517c07edfcfe9e2502013c2b43ac24352f
                 <button class="bookmark-btn active" data-id="${day}">
                     <i class="fa-solid fa-bookmark"></i>
                 </button>
@@ -777,6 +783,7 @@ function renderRecentProjects() {
             <div class="card-name">${name}</div>
             <div class="card-tags">${tagsHTML}</div>
             <div class="card-footer">
+<<<<<<< HEAD
                 <div class="card-actions-left">
                     <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
                         Demo <i class="fas fa-arrow-right"></i>
@@ -785,6 +792,11 @@ function renderRecentProjects() {
                         <i class="fab fa-github"></i> Code
                     </a>
                 </div>
+=======
+                <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
+                    View Demo <i class="fas fa-arrow-right"></i>
+                </a>
+>>>>>>> eb4d25517c07edfcfe9e2502013c2b43ac24352f
                 <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
                     <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
                 </button>
@@ -868,15 +880,45 @@ function initFilterChips() {
 /* ============================================================
    LIVE SEARCH
    ============================================================ */
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
 function initSearch() {
   const input = document.getElementById('searchInput');
   if (!input) return;
 
+<<<<<<< HEAD
   input.addEventListener('input', () => {
+=======
+  const debouncedFilter = debounce(() => {
+>>>>>>> eb4d25517c07edfcfe9e2502013c2b43ac24352f
     searchQuery = input.value.trim();
     currentPage = 1;
     renderGrid();
-  });
+  }, 300);
+
+  const handleSearch = () => {
+    const value = input.value.trim();
+    if (value === '') {
+      searchQuery = '';
+      currentPage = 1;
+      renderGrid();
+    } else {
+      debouncedFilter();
+    }
+  };
+
+  input.addEventListener('input', handleSearch);
+  input.addEventListener('search', handleSearch);
 }
 
 /* ============================================================
@@ -997,7 +1039,7 @@ function updateNavbar() {
             <span class="welcome-text">Hi, ${username}</span>
             <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
             <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
-            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
+            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer">
                 <i class="fab fa-github"></i> GitHub
             </a>
             <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
@@ -1012,7 +1054,7 @@ function updateNavbar() {
         container.innerHTML = `
             ${themeButton}
             <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
-            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi" target="_blank">
+            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi" target="_blank" rel="noopener noreferrer">
                 <i class="fab fa-github"></i> GitHub
             </a>
             <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
