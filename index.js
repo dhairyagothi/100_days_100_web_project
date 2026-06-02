@@ -275,7 +275,7 @@ function buildProjectCardHTML({
                   ${sourceOnlyBadge}
                 </span>
             </div>
-            <div class="card-name">${name}</div>
+            <h3 class="card-name">${name}</h3>
             ${
               showDescription
                 ? `<div class="card-description">
