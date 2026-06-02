@@ -1,3 +1,29 @@
+const authContainer =
+  document.getElementById("authContainer");
+
+const mainApp =
+  document.getElementById("mainApp");
+
+const authBtn =
+  document.getElementById("authBtn");
+
+const authTitle =
+  document.getElementById("authTitle");
+
+const toggleAuth =
+  document.getElementById("toggleAuth");
+
+const usernameInput =
+  document.getElementById("username");
+
+const passwordInput =
+  document.getElementById("password");
+
+const logoutBtn =
+  document.getElementById("logoutBtn");
+
+let isLogin = true;
+
 const progressCircle =
   document.getElementById("progressCircle");
 
@@ -15,7 +41,7 @@ progressCircle.style.strokeDasharray =
 progressCircle.style.strokeDashoffset =
   circumference;
 
-const readinessScore = 82;
+let readinessScore = 82;
 
 const offset =
   circumference -
@@ -50,7 +76,7 @@ if (readinessScore >= 80) {
 const ctx =
   document.getElementById("skillsChart");
 
-new Chart(ctx, {
+const skillsChart = new Chart(ctx, {
 
   type: "radar",
 
@@ -242,3 +268,373 @@ goalCheckboxes.forEach((checkbox) => {
     }
   );
 });
+const updateBtn =
+  document.getElementById("updateBtn");
+
+updateBtn.addEventListener("click", () => {
+
+  const dsa =
+    parseInt(
+      document.getElementById("dsaInput").value
+    );
+
+  const mock =
+    parseInt(
+      document.getElementById("mockInput").value
+    );
+
+  const aptitude =
+    parseInt(
+      document.getElementById("aptitudeInput").value
+    );
+
+  const resume =
+    parseInt(
+      document.getElementById("resumeInput").value
+    );
+
+  const communication =
+    parseInt(
+      document.getElementById("communicationInput").value
+    );
+
+  const development =
+    parseInt(
+      document.getElementById("developmentInput").value
+    );
+
+  document.getElementById("dsaSolved")
+    .textContent = dsa;
+
+  document.getElementById("mockSolved")
+    .textContent = mock;
+
+  document.getElementById("aptitudeScore")
+    .textContent = `${aptitude}%`;
+
+  document.getElementById("resumeScore")
+    .textContent = `${resume}%`;
+
+  readinessScore = Math.round(
+    (
+      aptitude +
+      resume +
+      communication +
+      development
+    ) / 4
+  );
+
+  const offset =
+    circumference -
+    (readinessScore / 100) * circumference;
+
+  progressCircle.style.strokeDashoffset =
+    offset;
+
+  meterScore.textContent =
+    `${readinessScore}%`;
+
+  const statusText =
+    document.getElementById("statusText");
+
+  if (readinessScore >= 80) {
+
+    progressCircle.style.stroke =
+      "#22c55e";
+
+    statusText.textContent =
+      "Placement Ready";
+
+  } else if (readinessScore >= 60) {
+
+    progressCircle.style.stroke =
+      "#eab308";
+
+    statusText.textContent =
+      "Almost Ready";
+
+  } else {
+
+    progressCircle.style.stroke =
+      "#ef4444";
+
+    statusText.textContent =
+      "Need Improvement";
+  }
+
+  skillsChart.data.datasets[0].data = [
+    dsa > 100 ? 100 : dsa,
+    development,
+    aptitude,
+    communication,
+    resume
+  ];
+
+  skillsChart.update();
+
+  saveUserData({
+  dsa,
+  mock,
+  aptitude,
+  resume,
+  communication,
+  development
+  });
+
+
+  const companyGrid =
+    document.getElementById("companyGrid");
+
+  if (readinessScore >= 80) {
+
+    companyGrid.innerHTML = `
+      <div class="company-card">
+        <h3>Google</h3>
+        <p>Focus: DSA + System Design</p>
+      </div>
+
+      <div class="company-card">
+        <h3>Microsoft</h3>
+        <p>Focus: Core CS + Problem Solving</p>
+      </div>
+
+      <div class="company-card">
+        <h3>Adobe</h3>
+        <p>Focus: Development + Projects</p>
+      </div>
+    `;
+
+  } else {
+
+    companyGrid.innerHTML = `
+      <div class="company-card">
+        <h3>TCS</h3>
+        <p>Focus: Aptitude + Communication</p>
+      </div>
+
+      <div class="company-card">
+        <h3>Infosys</h3>
+        <p>Focus: Resume + HR Round</p>
+      </div>
+
+      <div class="company-card">
+        <h3>Wipro</h3>
+        <p>Focus: Basics + Coding</p>
+      </div>
+    `;
+  }
+
+});
+function saveUserData(data) {
+
+  localStorage.setItem(
+    "placemateUserData",
+    JSON.stringify(data)
+  );
+}
+
+function loadUserData() {
+
+  const savedData =
+    localStorage.getItem(
+      "placemateUserData"
+    );
+
+  if (!savedData) return;
+
+  const data = JSON.parse(savedData);
+
+  document.getElementById("dsaInput").value =
+    data.dsa;
+
+  document.getElementById("mockInput").value =
+    data.mock;
+
+  document.getElementById("aptitudeInput").value =
+    data.aptitude;
+
+  document.getElementById("resumeInput").value =
+    data.resume;
+
+  document.getElementById("communicationInput").value =
+    data.communication;
+
+  document.getElementById("developmentInput").value =
+    data.development;
+
+  updateBtn.click();
+}
+window.addEventListener("load", () => {
+  loadUserData();
+});
+
+/* =========================
+   THEME TOGGLE
+========================= */
+
+const themeToggle =
+  document.getElementById("themeToggle");
+
+const savedTheme =
+  localStorage.getItem("placemateTheme");
+
+if (savedTheme === "light") {
+
+  document.body.classList.add("light-mode");
+
+  themeToggle.textContent = "🌙";
+
+} else {
+
+  themeToggle.textContent = "☀️";
+}
+
+themeToggle.addEventListener("click", () => {
+
+  document.body.classList.toggle("light-mode");
+
+  if (
+    document.body.classList.contains("light-mode")
+  ) {
+
+    localStorage.setItem(
+      "placemateTheme",
+      "light"
+    );
+
+    themeToggle.textContent = "🌙";
+
+  } else {
+
+    localStorage.setItem(
+      "placemateTheme",
+      "dark"
+    );
+
+    themeToggle.textContent = "☀️";
+  }
+});
+function showApp(){
+
+  authContainer.style.display =
+    "none";
+
+  mainApp.style.display =
+    "block";
+}
+
+function showAuth(){
+
+  authContainer.style.display =
+    "flex";
+
+  mainApp.style.display =
+    "none";
+}
+const currentUser =
+  localStorage.getItem(
+    "placemateUser"
+  );
+
+if(currentUser){
+
+  showApp();
+
+}else{
+
+  showAuth();
+}
+toggleAuth.addEventListener(
+  "click",
+  () => {
+
+    isLogin = !isLogin;
+
+    authTitle.textContent =
+      isLogin
+        ? "Login"
+        : "Sign Up";
+
+    toggleAuth.innerHTML =
+      isLogin
+      ? `Don't have an account? <span>Sign Up</span>`
+      : `Already have an account? <span>Login</span>`;
+  }
+);
+authBtn.addEventListener(
+  "click",
+  () => {
+
+    const username =
+      usernameInput.value.trim();
+
+    const password =
+      passwordInput.value.trim();
+
+    if(
+      !username ||
+      !password
+    ){
+      alert(
+        "Please fill all fields"
+      );
+      return;
+    }
+
+    const users =
+      JSON.parse(
+        localStorage.getItem(
+          "placemateUsers"
+        )
+      ) || [];
+
+    if(isLogin){
+
+      const foundUser =
+        users.find(
+          user =>
+            user.username === username &&
+            user.password === password
+        );
+
+      if(!foundUser){
+
+        alert(
+          "Invalid Credentials"
+        );
+
+        return;
+      }
+
+    }else{
+
+      users.push({
+        username,
+        password
+      });
+
+      localStorage.setItem(
+        "placemateUsers",
+        JSON.stringify(users)
+      );
+    }
+
+    localStorage.setItem(
+      "placemateUser",
+      username
+    );
+
+    showApp();
+  }
+);
+logoutBtn.addEventListener(
+  "click",
+  () => {
+
+    localStorage.removeItem(
+      "placemateUser"
+    );
+
+    showAuth();
+  }
+);

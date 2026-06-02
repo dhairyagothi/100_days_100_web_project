@@ -22,6 +22,8 @@
 </head>
 
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
   <header>
     <nav>
       <div class="user-icon">
@@ -89,29 +91,20 @@ onkeypress="handleLocation(event)" />
             <input id="searchInput" placeholder="Search for restaurant, cuisine or a dish" class="search_box" value="" />
           </div>
         </div>
-      </div>
-    </div>
-    <div class="main-body">
-      <div class="options">
-        <div class="option">
-          <div class="image">
-            <img
-              src="https://b.zmtcdn.com/webFrontend/e5b8785c257af2a7f354f1addaf37e4e1647364814.jpeg?output-format=webp&fit=around|402:360&crop=402:360;*,*" />
+        <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMobileNav()" aria-label="Toggle navigation">&#9776;</button>
+        <div class="right" id="mobileNav">
+          <div class="nav-item">
+            <a href="#">Investor Relations</a>
           </div>
           <div class="info">
             <p class="title">Order Online</p>
             <p class="description">Stay home and order on your doorstep</p>
           </div>
-        </div>
-
-        <div class="option">
-          <div class="image">
-            <img
-              src="https://b.zmtcdn.com/webFrontend/d026b357feb0d63c997549f6398da8cc1647364915.jpeg?output-format=webp&fit=around|402:360&crop=402:360;*,*" />
+          <div class="nav-item login-nav">
+            <a href="login.html">Log in</a>
           </div>
-          <div class="info">
-            <p class="title">Dining</p>
-            <p class="description">View the city's favorite dining venues</p>
+          <div class="nav-item signup-nav">
+            <a href="signup.html">Sign up</a>
           </div>
         </div>
 
@@ -579,15 +572,25 @@ onkeypress="handleLocation(event)" />
           src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png?fit=around|198:42&amp;crop=198:42;*,*"
           alt="Zomato logo" class="sc-elhb8j-1 ixsoFB" />
         <div class="row">
-          <div class="country-dropdown">
+          <div class="country-dropdown" tabindex="0">
             <img src="images/india.png" class="flag" />
             <p>India</p>
             <i class="fa fa-chevron-down"></i>
+            <div class="country-options">
+              <div class="country-option">India</div>
+              <div class="country-option">United States</div>
+              <div class="country-option">United Kingdom</div>
+            </div>
           </div>
-          <div class="country-dropdown">
+          <div class="country-dropdown" tabindex="0">
             <i data-feather="globe"></i>
             <p>English</p>
             <i class="fa fa-chevron-down"></i>
+            <div class="country-options">
+              <div class="country-option">English</div>
+              <div class="country-option">Hindi</div>
+              <div class="country-option">Spanish</div>
+            </div>
           </div>
         </div>
       </section>
@@ -646,11 +649,11 @@ onkeypress="handleLocation(event)" />
           <h6 class="footer-title">Social Links</h6>
           <div class="socials">
             <ul>
-              <li><i class="fa fa-linkedin"></i></li>
-              <li><i class="fa fa-instagram"></i></li>
-              <li><i class="fa fa-twitter"></i></li>
-              <li><i class="fa fa-youtube"></i></li>
-              <li><i class="fa fa-facebook"></i></li>
+              <li><a href="https://www.linkedin.com/company/zomato/" target="_blank" rel="noopener noreferrer" aria-label="Zomato on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+              <li><a href="https://www.instagram.com/zomato/" target="_blank" rel="noopener noreferrer" aria-label="Zomato on Instagram"><i class="fa fa-instagram"></i></a></li>
+              <li><a href="https://twitter.com/zomato" target="_blank" rel="noopener noreferrer" aria-label="Zomato on Twitter"><i class="fa fa-twitter"></i></a></li>
+              <li><a href="https://www.youtube.com/zomato" target="_blank" rel="noopener noreferrer" aria-label="Zomato on YouTube"><i class="fa fa-youtube"></i></a></li>
+              <li><a href="https://www.facebook.com/Zomato" target="_blank" rel="noopener noreferrer" aria-label="Zomato on Facebook"><i class="fa fa-facebook"></i></a></li>
             </ul>
           </div>
           <div class="buttons">
@@ -704,4 +707,37 @@ function handleLocation(event) {
 </script>
 </body>
 
+        <hr />
+        <section class="end">
+          By continuing past this page, you agree to our Terms of Service,
+          Cookie Policy, Privacy Policy and Content Policies. All trademarks are
+          properties of their respective owners. 2008-2023 © Zomato™ Ltd. All
+          rights reserved.
+        </section>
+        <section class="end">Made by: Kratik Khatri</section>
+      </div>
+    </footer>
+
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>
+      feather.replace();
+    </script>
+   
+    <script src="accordion.js"></script>
+    <script>
+      function toggleMobileNav() {
+        const nav = document.getElementById('mobileNav');
+        const btn = document.getElementById('hamburgerBtn');
+        nav.classList.toggle('mobile-open');
+        btn.classList.toggle('active');
+      }
+      // Close mobile nav on link click
+      document.querySelectorAll('#mobileNav .nav-item a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          document.getElementById('mobileNav').classList.remove('mobile-open');
+          document.getElementById('hamburgerBtn').classList.remove('active');
+        });
+      });
+    </script>
+  </body>
 </html>

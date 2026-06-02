@@ -1,0 +1,45 @@
+const fs = require('fs');
+const path = require('path');
+
+const projectsPath = path.join(__dirname, '..', 'projects.json');
+
+try {
+  const data = fs.readFileSync(projectsPath, 'utf8');
+  const projects = JSON.parse(data);
+
+  if (!Array.isArray(projects)) {
+    console.error('Validation Error: projects.json must be a JSON Array');
+    process.exit(1);
+  }
+
+  projects.forEach((project, index) => {
+    const requiredKeys = ['projectNo', 'projectName', 'projectType', 'projectDesc', 'techStack', 'difficulty', 'projectPath'];
+    requiredKeys.forEach(key => {
+      if (project[key] === undefined || project[key] === null || project[key] === '') {
+        console.error(`Validation Error at index ${index}: Missing key "${key}"`);
+        process.exit(1);
+      }
+    });
+
+    if (typeof project.projectNo !== 'number') {
+      console.error(`Validation Error at index ${index}: "projectNo" must be a number`);
+      process.exit(1);
+    }
+
+    if (!Array.isArray(project.techStack)) {
+      console.error(`Validation Error at index ${index}: "techStack" must be an array`);
+      process.exit(1);
+    }
+
+    if (typeof project.difficulty !== 'string') {
+      console.error(`Validation Error at index ${index}: "difficulty" must be a string`);
+      process.exit(1);
+    }
+  });
+
+  console.log('Success: projects.json metadata validated perfectly!');
+  process.exit(0);
+} catch (error) {
+  console.error('Validation failed with error:', error.message);
+  process.exit(1);
+}

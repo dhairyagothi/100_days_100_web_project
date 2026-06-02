@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A feature-rich Pixel Art Canvas Editor built with vanilla HTML, CSS, and JS. Create grids, pick colors, use pen/eraser tools, toggle grids, and download PNGs."
+    />
+    <title>Pixel Art Designer | Grid Draw Tool</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header" id="pixel-header">
+      <div class="header__container">
+        <div class="header__brand">
+          <span class="header__icon" aria-hidden="true">👾</span>
+          <h1 class="header__title">Pixel Art Lab</h1>
+        </div>
+        <p class="header__tagline">Design retro pixel graphics and export your creations</p>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main" id="pixel-main">
+      <!-- Toolbar Section -->
+      <section class="toolbar-section" aria-label="Toolbar Settings">
+        <div class="controls-card">
+          <div class="tools-layout">
+            <!-- Tool Options -->
+            <div class="tool-section">
+              <h2 class="section-title">Controls</h2>
+              <div class="buttons-row">
+                <button
+                  class="btn btn--secondary btn--active"
+                  id="btn-draw"
+                  type="button"
+                  aria-label="Draw Pen Tool"
+                >
+                  <span>✏️</span> Pen
+                </button>
+                <button
+                  class="btn btn--secondary"
+                  id="btn-erase"
+                  type="button"
+                  aria-label="Eraser Tool"
+                >
+                  <span>🧼</span> Eraser
+                </button>
+                <button
+                  class="btn btn--danger"
+                  id="btn-clear"
+                  type="button"
+                  aria-label="Clear Canvas"
+                >
+                  Clear
+                </button>
+              </div>
+            </div>
+
+            <!-- Color Customizer -->
+            <div class="tool-section">
+              <h2 class="section-title">Colors</h2>
+              <div class="color-options">
+                <div class="picker-container">
+                  <input
+                    type="color"
+                    class="color-input"
+                    id="paint-color"
+                    value="#00f2fe"
+                    aria-label="Select paint color"
+                  />
+                  <span class="color-hex" id="paint-hex">#00f2fe</span>
+                </div>
+                <div
+                  class="swatches"
+                  id="color-swatches"
+                  role="listbox"
+                  aria-label="Quick swatches"
+                >
+                  <!-- Swatch divs injected dynamically -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Canvas Size selection -->
+            <div class="tool-section">
+              <h2 class="section-title">Grid Settings</h2>
+              <div class="grid-controls">
+                <select class="select-dropdown" id="grid-size" aria-label="Select canvas size">
+                  <option value="8">8 x 8 Grid</option>
+                  <option value="16" selected>16 x 16 Grid</option>
+                  <option value="32">32 x 32 Grid</option>
+                </select>
+                <button class="btn btn--secondary" id="btn-toggle-gridlines" type="button">
+                  Toggle Borders
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Canvas Section -->
+      <section class="canvas-section" aria-label="Artboard">
+        <div class="canvas-container">
+          <!-- Interactive Drawing Grid -->
+          <div class="pixel-grid" id="pixel-grid" role="grid" aria-label="Drawing grid"></div>
+        </div>
+      </section>
+
+      <!-- Export Action Section -->
+      <section class="export-section" aria-label="Export Actions">
+        <div class="export-card">
+          <p class="export-note">
+            💡 Drag and click across cells to paint seamlessly. Export outputs transparent pixel
+            maps.
+          </p>
+          <button
+            class="btn btn--primary btn--large"
+            id="btn-export"
+            type="button"
+            aria-label="Download Drawing as PNG"
+          >
+            <span>💾</span> Download as PNG
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Toast alerts -->
+    <div class="toast" id="toast" role="alert" aria-live="polite">
+      <span class="toast__text" id="toast-text"></span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" id="pixel-footer">
+      <p class="footer__text">Made with ❤️ by <strong>Omer</strong> &bull; GSSoC 2026</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
