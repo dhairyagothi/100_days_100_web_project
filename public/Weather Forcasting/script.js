@@ -1,111 +1,66 @@
+const GEOCODING_API = "https://geocoding-api.open-meteo.com/v1/search";
+const WEATHER_API = "https://api.open-meteo.com/v1/forecast";
 
-const getWeather = (city) => {
-    cityName.innerHTML = city;
+const COMMON_CITIES = [
+  "Bengaluru",
+  "Chennai",
+  "Hyderabad",
+  "Pune",
+  "Delhi",
+  "Mumbai"
+];
 
-    fetch(`https://wttr.in/${city}?format=j1`)
-        .then((response) => response.json())
-        .then((response) => {
-            console.log(response);
-
-            temp.innerHTML =
-                response.current_condition[0].temp_C;
-
-            temp2.innerHTML =
-                response.current_condition[0].temp_C;
-
-            feels_like.innerHTML =
-                response.current_condition[0].FeelsLikeC;
-
-            humidity.innerHTML =
-                response.current_condition[0].humidity;
-
-            humidity2.innerHTML =
-                response.current_condition[0].humidity;
-
-            wind_speed.innerHTML =
-                response.current_condition[0].windspeedKmph;
-
-            wind_speed2.innerHTML =
-                response.current_condition[0].windspeedKmph;
-
-            wind_degrees.innerHTML =
-                response.current_condition[0].winddirDegree;
-
-            sunrise.innerHTML =
-                response.weather[0].astronomy[0].sunrise;
-
-            sunset.innerHTML =
-                response.weather[0].astronomy[0].sunset;
-
-            min_temp.innerHTML = "N/A";
-            max_temp.innerHTML = "N/A";
-        })
-
-        .catch((err) => console.error(err));
-};
-
-submit.addEventListener("click", (e) => {
-    e.preventDefault();
-    getWeather(city.value);
-});
-
-const GEOCODING_API = 'https://geocoding-api.open-meteo.com/v1/search';
-const WEATHER_API = 'https://api.open-meteo.com/v1/forecast';
-
-const COMMON_CITIES = ['Bengaluru', 'Chennai', 'Hyderabad', 'Pune', 'Noida', 'Delhi'];
+let weatherChart = null;
+let activeMetric = "temperature";
+let lastForecastData = null;
 let isCelsius = true;
+let activeWeatherRequestId = 0;
+
+/* =========================
+   DOM ELEMENTS
+========================= */
 
 const weatherFields = {
-  temp: document.getElementById('temp'),
-  temp2: document.getElementById('temp2'),
-  feels_like: document.getElementById('feels_like'),
-  humidity: document.getElementById('humidity'),
-  humidity2: document.getElementById('humidity2'),
-  min_temp: document.getElementById('min_temp'),
-  max_temp: document.getElementById('max_temp'),
-  wind_speed: document.getElementById('wind_speed'),
-  wind_speed2: document.getElementById('wind_speed2'),
-  wind_degrees: document.getElementById('wind_degrees'),
-  sunrise: document.getElementById('sunrise'),
-  sunset: document.getElementById('sunset')
+  temp: document.getElementById("temp"),
+  temp2: document.getElementById("temp2"),
+  feels_like: document.getElementById("feels_like"),
+  humidity: document.getElementById("humidity"),
+  humidity2: document.getElementById("humidity2"),
+  min_temp: document.getElementById("min_temp"),
+  max_temp: document.getElementById("max_temp"),
+  wind_speed: document.getElementById("wind_speed"),
+  wind_speed2: document.getElementById("wind_speed2"),
+  wind_degrees: document.getElementById("wind_degrees"),
+  sunrise: document.getElementById("sunrise"),
+  sunset: document.getElementById("sunset")
 };
 
-const cityInput = document.getElementById('city');
-const searchButton = document.getElementById('submit');
-const loading = document.getElementById('loading');
-const cityName = document.getElementById('cityName');
-const statusMessage = document.getElementById('statusMessage');
-const presetCityLinks = document.querySelectorAll('.dropdown-item[data-city]');
-const commonCityRows = Array.from(document.querySelectorAll('tbody tr')).filter((row) => {
-  const rowHeader = row.querySelector('th[scope="row"]');
-  return rowHeader && COMMON_CITIES.includes(rowHeader.textContent.trim());
+const cityInput = document.getElementById("city");
+const searchButton = document.getElementById("submit");
+const cityName = document.getElementById("cityName");
+const statusMessage = document.getElementById("statusMessage");
+const themeToggle = document.getElementById("themeToggle");
+const unitToggle = document.getElementById("unit-toggle");
+
+const presetCityLinks = document.querySelectorAll(
+  ".dropdown-item[data-city]"
+);
+
+const commonCityRows = Array.from(
+  document.querySelectorAll("tbody tr")
+).filter((row) => {
+  const header = row.querySelector('th[scope="row"]');
+  return header && COMMON_CITIES.includes(header.textContent.trim());
 });
 
+/* =========================
+   HELPERS
+========================= */
+
 function normalizeCity(value) {
-  return String(value || '').trim().replace(/\s+/g, ' ');
-}
-
-function setStatus(message, tone = 'info') {
-  if (!statusMessage) return;
-
-  statusMessage.textContent = message;
-  statusMessage.dataset.tone = tone;
-  statusMessage.hidden = !message;
-  statusMessage.style.display = message ? 'block' : 'none';
-}
-
-function setLoading(isLoading) {
-  if (loading) {
-    loading.style.display = isLoading ? 'block' : 'none';
-  }
-
-  if (searchButton) {
-    searchButton.disabled = isLoading;
-  }
-
-  if (cityInput) {
-    cityInput.disabled = isLoading;
-  }
+  return String(value || "")
+    .trim()
+    .replace(/\s+/g, " ");
 }
 
 function setText(node, value) {
@@ -113,456 +68,732 @@ function setText(node, value) {
   node.textContent = value;
 }
 
-function setWeatherSummary(summary) {
-  setText(weatherFields.temp, summary.temperatureLabel);
-  setText(weatherFields.temp2, summary.temperatureValue);
-  setText(weatherFields.feels_like, summary.feelsLike);
-  setText(weatherFields.humidity, summary.humidityLabel);
-  setText(weatherFields.humidity2, summary.humidityValue);
-  setText(weatherFields.min_temp, summary.minTemperature);
-  setText(weatherFields.max_temp, summary.maxTemperature);
-  setText(weatherFields.wind_speed, summary.windSpeedLabel);
-  setText(weatherFields.wind_speed2, summary.windSpeedValue);
-  setText(weatherFields.wind_degrees, summary.windDirection);
-  setText(weatherFields.sunrise, summary.sunrise);
-  setText(weatherFields.sunset, summary.sunset);
+function setStatus(message, tone = "info") {
+  if (!statusMessage) return;
+
+  statusMessage.textContent = message;
+  statusMessage.dataset.tone = tone;
+  statusMessage.style.display = message ? "block" : "none";
 }
 
-function resetWeatherSummary() {
-  setWeatherSummary({
-    temperatureValue: '—',
-    temperatureLabel: '—',
-    feelsLike: '—',
-    humidityValue: '—',
-    humidityLabel: '—',
-    minTemperature: '—',
-    maxTemperature: '—',
-    windSpeedValue: '—',
-    windSpeedLabel: '—',
-    windDirection: '—',
-    sunrise: '—',
-    sunset: '—'
-  });
-  hideRecommendations();
+function setLoading(isLoading) {
+  if (!searchButton || !cityInput) return;
+
+  searchButton.disabled = isLoading;
+  cityInput.disabled = isLoading;
+
+  if (isLoading) {
+    searchButton.innerHTML =
+      `<span class="spinner-border spinner-border-sm"></span>`;
+  } else {
+    searchButton.innerHTML = `Search`;
+  }
 }
 
 function formatTime(isoDateTime) {
-  if (!isoDateTime) return '—';
+  if (!isoDateTime) return "—";
 
-  return new Intl.DateTimeFormat('en-IN', {
-    hour: 'numeric',
-    minute: '2-digit'
+  return new Intl.DateTimeFormat("en-IN", {
+    hour: "numeric",
+    minute: "2-digit"
   }).format(new Date(isoDateTime));
 }
 
-function formatCityLabel(location, originalQuery) {
-  const parts = [location.name, location.admin1, location.country].filter(Boolean);
-  return parts.length ? parts.join(', ') : originalQuery;
-}
-
-async function geocodeCity(city) {
-  const url = new URL(GEOCODING_API);
-  url.search = new URLSearchParams({
-    name: city,
-    count: '1',
-    language: 'en',
-    format: 'json'
-  });
-
-  const response = await fetch(url.toString());
-  if (!response.ok) {
-    throw new Error(`Geocoding request failed (${response.status})`);
-  }
-
-  const data = await response.json();
-  const location = data?.results?.[0];
-
-  if (!location) {
-    return null;
-  }
-
-  return location;
-}
-
-async function fetchWeather(latitude, longitude) {
-  const url = new URL(WEATHER_API);
-  url.search = new URLSearchParams({
-    latitude: String(latitude),
-    longitude: String(longitude),
-    current: 'temperature_2m,relative_humidity_2m,apparent_temperature,cloud_cover,wind_speed_10m,wind_direction_10m',
-    daily: 'temperature_2m_max,temperature_2m_min,sunrise,sunset',
-    timezone: 'auto'
-  });
-
-  const response = await fetch(url.toString());
-  if (!response.ok) {
-    throw new Error(`Weather request failed (${response.status})`);
-  }
-
-  return response.json();
-}
-
 function formatTemperature(temp) {
-
-  if (!Number.isFinite(temp)) return '—';
+  if (!Number.isFinite(temp)) return "—";
 
   if (isCelsius) {
     return `${Math.round(temp)}°C`;
   }
 
-  return `${Math.round((temp * 9/5) + 32)}°F`;
+  return `${Math.round((temp * 9) / 5 + 32)}°F`;
 }
+
+function formatCityLabel(location, originalQuery) {
+  const parts = [
+    location.name,
+    location.admin1,
+    location.country
+  ].filter(Boolean);
+
+  return parts.length ? parts.join(", ") : originalQuery;
+}
+
+/* =========================
+   API
+========================= */
+
+async function geocodeCity(city) {
+  const url = new URL(GEOCODING_API);
+
+  url.search = new URLSearchParams({
+    name: city,
+    count: "1",
+    language: "en",
+    format: "json"
+  });
+
+  const response = await fetch(url.toString());
+
+  if (!response.ok) {
+    throw new Error(`Geocoding failed (${response.status})`);
+  }
+
+  const data = await response.json();
+
+  return data?.results?.[0] || null;
+}
+
+async function fetchWeather(latitude, longitude) {
+  const url = new URL(WEATHER_API);
+
+  url.search = new URLSearchParams({
+    latitude: String(latitude),
+    longitude: String(longitude),
+    current:
+      "temperature_2m,relative_humidity_2m,apparent_temperature,cloud_cover,wind_speed_10m,wind_direction_10m,weather_code",
+    daily:
+      "temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_probability_max,wind_speed_10m_max",
+    timezone: "auto"
+  });
+
+  const response = await fetch(url.toString());
+
+  if (!response.ok) {
+    throw new Error(`Weather API failed (${response.status})`);
+  }
+
+  return response.json();
+}
+
+/* =========================
+   WEATHER SUMMARY
+========================= */
 
 function buildWeatherSummary(data) {
   const current = data?.current || {};
   const daily = data?.daily || {};
 
   return {
-    temperatureValue: Number.isFinite(current.temperature_2m)
-? formatTemperature(current.temperature_2m)
-: '—',
-    temperatureLabel: Number.isFinite(current.temperature_2m) ? formatTemperature(current.temperature_2m) : '—',
-    feelsLike: Number.isFinite(current.apparent_temperature) ? formatTemperature(current.apparent_temperature) : '—',
-    humidityValue: Number.isFinite(current.relative_humidity_2m) ? `${Math.round(current.relative_humidity_2m)}` : '—',
-    humidityLabel: Number.isFinite(current.relative_humidity_2m) ? `${Math.round(current.relative_humidity_2m)}%` : '—',
-    minTemperature: Number.isFinite(daily.temperature_2m_min?.[0]) ? formatTemperature(daily.temperature_2m_min[0]) : '—',
-    maxTemperature: Number.isFinite(daily.temperature_2m_max?.[0]) ? formatTemperature(daily.temperature_2m_max[0]) : '—',
-    windSpeedValue: Number.isFinite(current.wind_speed_10m) ? `${Math.round(current.wind_speed_10m)}` : '—',
-    windSpeedLabel: Number.isFinite(current.wind_speed_10m) ? `${Math.round(current.wind_speed_10m)} km/h` : '—',
-    windDirection: Number.isFinite(current.wind_direction_10m) ? `${Math.round(current.wind_direction_10m)}°` : '—',
+    temperatureValue: formatTemperature(current.temperature_2m),
+    temperatureLabel: formatTemperature(current.temperature_2m),
+
+    feelsLike: formatTemperature(current.apparent_temperature),
+
+    humidityValue: Number.isFinite(current.relative_humidity_2m)
+      ? `${Math.round(current.relative_humidity_2m)}`
+      : "—",
+
+    humidityLabel: Number.isFinite(current.relative_humidity_2m)
+      ? `${Math.round(current.relative_humidity_2m)}%`
+      : "—",
+
+    minTemperature: formatTemperature(
+      daily.temperature_2m_min?.[0]
+    ),
+
+    maxTemperature: formatTemperature(
+      daily.temperature_2m_max?.[0]
+    ),
+
+    windSpeedValue: Number.isFinite(current.wind_speed_10m)
+      ? `${Math.round(current.wind_speed_10m)}`
+      : "—",
+
+    windSpeedLabel: Number.isFinite(current.wind_speed_10m)
+      ? `${Math.round(current.wind_speed_10m)} km/h`
+      : "—",
+
+    windDirection: Number.isFinite(current.wind_direction_10m)
+      ? `${Math.round(current.wind_direction_10m)}°`
+      : "—",
+
     sunrise: formatTime(daily.sunrise?.[0]),
     sunset: formatTime(daily.sunset?.[0])
   };
 }
 
-// FIX: Safe UI update for main weather card
 function updateWeatherCard(cityLabel, summary) {
-  console.log("UPDATING UI:", cityLabel, summary); // DEBUG
+  cityName.textContent = cityLabel;
 
-  if (!summary) {
-    console.error("Summary is undefined");
-    return;
-  }
+  setText(weatherFields.temp, summary.temperatureLabel);
+  setText(weatherFields.temp2, summary.temperatureValue);
 
-  if (cityName) {
-    cityName.textContent = cityLabel || "Unknown City";
-  }
+  setText(weatherFields.feels_like, summary.feelsLike);
 
-  setWeatherSummary({
-    temperatureValue: summary.temperatureValue || "—",
-    temperatureLabel: summary.temperatureLabel || "—",
-    feelsLike: summary.feelsLike || "—",
-    humidityValue: summary.humidityValue || "—",
-    humidityLabel: summary.humidityLabel || "—",
-    minTemperature: summary.minTemperature || "—",
-    maxTemperature: summary.maxTemperature || "—",
-    windSpeedValue: summary.windSpeedValue || "—",
-    windSpeedLabel: summary.windSpeedLabel || "—",
-    windDirection: summary.windDirection || "—",
-    sunrise: summary.sunrise || "—",
-    sunset: summary.sunset || "—"
+  setText(weatherFields.humidity, summary.humidityLabel);
+  setText(weatherFields.humidity2, summary.humidityValue);
+
+  setText(weatherFields.min_temp, summary.minTemperature);
+  setText(weatherFields.max_temp, summary.maxTemperature);
+
+  setText(weatherFields.wind_speed, summary.windSpeedLabel);
+  setText(weatherFields.wind_speed2, summary.windSpeedValue);
+
+  setText(weatherFields.wind_degrees, summary.windDirection);
+
+  setText(weatherFields.sunrise, summary.sunrise);
+  setText(weatherFields.sunset, summary.sunset);
+}
+
+function resetWeatherSummary() {
+  updateWeatherCard("Search for a city", {
+    temperatureValue: "—",
+    temperatureLabel: "—",
+    feelsLike: "—",
+    humidityValue: "—",
+    humidityLabel: "—",
+    minTemperature: "—",
+    maxTemperature: "—",
+    windSpeedValue: "—",
+    windSpeedLabel: "—",
+    windDirection: "—",
+    sunrise: "—",
+    sunset: "—"
   });
 }
+
+/* =========================
+   WEATHER RECOMMENDATIONS
+========================= */
 
 function getRecommendations(temp, weatherCode) {
   let clothing = "";
   let travel = "";
 
-  const isRain = [51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82, 95, 96, 99].includes(weatherCode);
-  const isSnow = [71, 73, 75, 77, 85, 86].includes(weatherCode);
+  const isRain = [
+    51,53,55,56,57,
+    61,63,65,66,67,
+    80,81,82,95,96,99
+  ].includes(weatherCode);
+
+  const isSnow = [
+    71,73,75,77,85,86
+  ].includes(weatherCode);
 
   if (isRain) {
-    clothing = "☔ <strong>Umbrella & Rainwear:</strong> It's currently wet or raining. Carry an umbrella or wear a waterproof raincoat/jacket, and opt for water-resistant footwear.";
+    clothing =
+      "☔ Carry umbrella and wear waterproof clothing.";
   } else if (isSnow) {
-    clothing = "❄️ <strong>Heavy Winter Wear:</strong> It is snowing. Dress in thick, warm layers with a thermal base, a heavy down jacket, gloves, scarf, beanie, and insulated boots.";
+    clothing =
+      "❄️ Heavy winter wear and insulated boots recommended.";
   } else if (temp < 15) {
-    clothing = "🧥 <strong>Warm Outerwear:</strong> The weather is chilly. A thick sweater, fleece, or windbreaker jacket, along with long pants, is recommended to stay warm.";
-  } else if (temp > 28) {
-    clothing = "👕 <strong>Light & Breathable:</strong> It's warm/hot. Wear lightweight, light-colored cotton or linen clothing, sunglasses, and a sun hat if heading outdoors.";
+    clothing =
+      "🧥 Wear warm jackets or hoodies.";
+  } else if (temp > 30) {
+    clothing =
+      "👕 Light breathable clothes recommended.";
   } else {
-    clothing = "👟 <strong>Casual/Comfortable Wear:</strong> The temperature is mild and pleasant. A standard t-shirt, jeans, or a light cardigan/hoodie will be perfectly comfortable.";
+    clothing =
+      "😎 Comfortable weather for casual clothing.";
   }
 
-  const isThunderstorm = [95, 96, 99].includes(weatherCode);
-  const isHeavyRain = [65, 82].includes(weatherCode);
-  const isFog = [45, 48].includes(weatherCode);
-
-  if (isThunderstorm) {
-    travel = "⚡ <strong>Severe Warning:</strong> Thunderstorms active. Avoid outdoor activities, seek shelter indoors immediately, and stay away from open windows and tall metal structures.";
-  } else if (isHeavyRain) {
-    travel = "🚗 <strong>Hazardous Driving:</strong> Heavy downpour is causing low visibility and wet roads. Drive slowly, maintain safe following distance, and avoid flooded areas.";
-  } else if (isFog) {
-    travel = "🌫️ <strong>Dense Fog:</strong> Visibility is severely reduced. Use low-beam fog lights while driving, reduce your speed, and stay alert on the roads.";
-  } else if (temp > 35) {
-    travel = "☀️ <strong>Extreme Heat Advisory:</strong> Extremely hot weather. Stay indoors as much as possible, keep hydrated by drinking water/electrolytes, and avoid strenuous outdoor exercise during peak heat hours (11 AM - 4 PM).";
+  if (weatherCode >= 95) {
+    travel =
+      "⚡ Avoid outdoor travel due to thunderstorms.";
+  } else if (isRain) {
+    travel =
+      "🚗 Drive carefully on wet roads.";
+  } else if (temp > 36) {
+    travel =
+      "☀️ Stay hydrated and avoid direct sunlight.";
   } else {
-    travel = "🟢 <strong>Safe to Travel:</strong> Weather conditions are clear and highly favorable. Perfect for road trips, outdoor walks, or sightseeing. Have a safe journey!";
+    travel =
+      "🟢 Weather is suitable for travel and outdoor activities.";
   }
 
   return { clothing, travel };
 }
 
 function updateRecommendations(temp, weatherCode) {
-  const recsCard = document.getElementById('recommendations-card');
-  const clothingRecEl = document.getElementById('clothing-recommendation');
-  const travelRecEl = document.getElementById('travel-recommendation');
+  const card = document.getElementById(
+    "recommendations-card"
+  );
 
-  if (!recsCard || !clothingRecEl || !travelRecEl) return;
+  const clothingEl = document.getElementById(
+    "clothing-recommendation"
+  );
+
+  const travelEl = document.getElementById(
+    "travel-recommendation"
+  );
+
+  if (!card || !clothingEl || !travelEl) return;
 
   const recs = getRecommendations(temp, weatherCode);
-  clothingRecEl.innerHTML = recs.clothing;
-  travelRecEl.innerHTML = recs.travel;
-  recsCard.style.display = 'block';
+
+  clothingEl.innerHTML = recs.clothing;
+  travelEl.innerHTML = recs.travel;
+
+  card.style.display = "block";
 }
 
-function hideRecommendations() {
-  const recsCard = document.getElementById('recommendations-card');
-  if (recsCard) {
-    recsCard.style.display = 'none';
-  }
-}
+/* =========================
+   TABLE
+========================= */
 
 function setRowMessage(row, message) {
-  row.querySelectorAll('td').forEach((cell) => {
+  row.querySelectorAll("td").forEach((cell) => {
     cell.textContent = message;
   });
 }
 
-function renderRowWeather(row, data, cachedHeaders = null) {
+function renderRowWeather(row, data) {
   const current = data?.current || {};
   const daily = data?.daily || {};
-  
-  // 1. Map API values directly to keys that match the exact HTML header text strings
-  const weatherMap = {
-    'Cloud_pct': Number.isFinite(current.cloud_cover) ? `${Math.round(current.cloud_cover)}%` : '—',
-    'Feels_like' : formatTemperature(current.apparent_temperature),
-    'Humidity' : Number.isFinite(current.relative_humidity_2m) ? `${Math.round(current.relative_humidity_2m)}%` : '—',
-    'Max_temp' : formatTemperature(daily.temperature_2m_max?.[0]),
-    'Min_temp' : formatTemperature(daily.temperature_2m_min?.[0]),
-    'Sunrise' : formatTime(daily.sunrise?.[0]),
-    'Sunset' : formatTime(daily.sunset?.[0]),
-    'Temp' : formatTemperature(current.temperature_2m),
-    'Wind_degrees' : Number.isFinite(current.wind_direction_10m) ? `${Math.round(current.wind_direction_10m)}°` : '—',
-    'Wind_speed' : Number.isFinite(current.wind_speed_10m) ? `${Math.round(current.wind_speed_10m)} km/h` : '—'
-  };  
 
-  let headers = cachedHeaders;
-  if (!headers) {
-    const tableEl = row.closest('table');
-    if (!tableEl) return;
-    headers = Array.from(tableEl.querySelectorAll('thead th')).map(th => th.textContent.trim());
-  }
+  const values = [
+    `${Math.round(current.cloud_cover || 0)}%`,
+    formatTemperature(current.apparent_temperature),
+    `${Math.round(current.relative_humidity_2m || 0)}%`,
+    formatTemperature(daily.temperature_2m_max?.[0]),
+    formatTemperature(daily.temperature_2m_min?.[0]),
+    formatTime(daily.sunrise?.[0]),
+    formatTime(daily.sunset?.[0]),
+    formatTemperature(current.temperature_2m),
+    `${Math.round(current.wind_direction_10m || 0)}°`,
+    `${Math.round(current.wind_speed_10m || 0)} km/h`
+  ];
 
-  const cells = row.querySelectorAll('td');
+  const cells = row.querySelectorAll("td");
 
-  // 3. Iterate over table cells and bind data by structural name matching
   cells.forEach((cell, index) => {
-    // index + 1 skips first header colums
-    const headerName = headers[index + 1]; // Get the header text for this cell
-
-    if(headerName && weatherMap[headerName] !== undefined) {
-      cell.textContent = weatherMap[headerName]; // Set cell text based on header mapping
-    } else {
-      cell.textContent = '—'; // Default if no mapping found
-    }
+    cell.textContent = values[index] || "—";
   });
 }
 
-async function loadCityWeather(city, options = {}) {
-  const { updateTable = false } = options;
-  const normalizedCity = normalizeCity(city);
-
-  if (!normalizedCity) {
-    resetWeatherSummary();
-    setStatus('Type a city name to fetch weather data.', 'info');
-    if (cityName) {
-      cityName.textContent = 'Search for a city';
-    }
-    return;
-  }
-
-  setLoading(true);
-  setStatus(`Searching weather for ${normalizedCity}...`, 'info');
-
-  try {
-    const location = await geocodeCity(normalizedCity);
-
-    if (!location) {
-      throw new Error(`No city found for "${normalizedCity}".`);
-    }
-
-    const weatherData = await fetchWeather(location.latitude, location.longitude);
-    const summary = buildWeatherSummary(weatherData);
-    const label = formatCityLabel(location, normalizedCity);
-
-    updateWeatherCard(label, summary);
-
-    if (weatherData && weatherData.current) {
-      updateRecommendations(weatherData.current.temperature_2m, weatherData.current.weather_code);
-    }
-
-    setStatus(updateTable ? `Updated ${label} and the comparison table.` : `Showing weather for ${label}.`, 'success');
-
-    return { location, weatherData };
-  } catch (error) {
-    console.error('Weather lookup failed:', error);
-    resetWeatherSummary();
-    if (cityName) {
-      cityName.textContent = 'Search for a city';
-    }
-    setStatus(error.message || 'Unable to load weather data right now.', 'error');
-    return null;
-  } finally {
-    setLoading(false);
-  }
-}
-
 async function updateComparisonTable() {
-  const tableEl = commonCityRows[0]?.closest('table');
-  if (!tableEl) return;
-
-  const cachedHeaders = Array.from(tableEl.querySelectorAll('thead th')).map(th => th.textContent.trim());
-
   await Promise.allSettled(
     commonCityRows.map(async (row) => {
-      const city = row.querySelector('th[scope="row"]')?.textContent.trim();
+      const city =
+        row.querySelector('th[scope="row"]')
+          ?.textContent.trim();
+
       if (!city) return;
 
-      setRowMessage(row, 'Loading...');
+      setRowMessage(row, "Loading...");
 
       const location = await geocodeCity(city);
+
       if (!location) {
-        setRowMessage(row, '—');
+        setRowMessage(row, "—");
         return;
       }
 
-      const weatherData = await fetchWeather(location.latitude, location.longitude);
-      renderRowWeather(row, weatherData, cachedHeaders);
+      const weatherData = await fetchWeather(
+        location.latitude,
+        location.longitude
+      );
+
+      renderRowWeather(row, weatherData);
     })
   );
 }
 
-// FIX: Clean and stable search handler
-function handleSearch(event) {
-  if (event) event.preventDefault(); // stop page reload
+/* =========================
+   CHARTS
+========================= */
 
-  const city = cityInput.value.trim(); // take input safely
-  loadCityWeather(city); // send to API function
+function buildChartData(data) {
+  const daily = data?.daily || {};
+
+  const labels = (daily.time || []).map((d) =>
+    new Intl.DateTimeFormat("en-IN", {
+      weekday: "short"
+    }).format(new Date(d))
+  );
+
+  return {
+    labels,
+    temperature: {
+      label: isCelsius
+        ? "Temperature °C"
+        : "Temperature °F",
+
+      data: (daily.temperature_2m_max || []).map((t) =>
+        isCelsius
+          ? Math.round(t)
+          : Math.round((t * 9) / 5 + 32)
+      ),
+
+      color: "#4da3ff"
+    },
+
+    humidity: {
+      label: "Rain Probability %",
+      data: daily.precipitation_probability_max || [],
+      color: "#7b61ff"
+    },
+
+    wind: {
+      label: "Wind Speed km/h",
+      data: daily.wind_speed_10m_max || [],
+      color: "#00d4ff"
+    }
+  };
 }
 
-// FIX: Reliable search handling (button + Enter)
-function bindSearchForm() {
-  const searchForm = cityInput?.form;
+function renderChart(data) {
+  const canvas = document.getElementById("weatherChart");
 
-  if (!searchForm || !cityInput) return;
+  if (!canvas || !data) return;
 
-  console.log("Search system initialized"); // DEBUG
+  document.getElementById(
+    "charts-section"
+  ).style.display = "block";
 
-  // FIX: form submit (button click also triggers this)
-  searchForm.addEventListener("submit", (event) => {
-    event.preventDefault(); // stop page refresh
+  const datasets = buildChartData(data);
 
-    const city = cityInput.value.trim();
+  const metric = datasets[activeMetric];
 
-    console.log("SEARCH CLICKED:", city); // DEBUG
+  if (weatherChart) {
+    weatherChart.destroy();
+  }
 
-    if (!city) return;
+  weatherChart = new Chart(canvas, {
+    type: "line",
 
-    loadCityWeather(city);
+    data: {
+      labels: datasets.labels,
 
-    cityInput.value = ""; // clear after capture
+      datasets: [
+        {
+          label: metric.label,
+          data: metric.data,
+          borderColor: metric.color,
+          backgroundColor: metric.color + "22",
+          borderWidth: 3,
+          fill: true,
+          tension: 0.45,
+          pointRadius: 5,
+          pointHoverRadius: 8
+        }
+      ]
+    },
+
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+
+      plugins: {
+        legend: {
+          labels: {
+            color: "#fff"
+          }
+        }
+      },
+
+      scales: {
+        x: {
+          ticks: {
+            color: "#ddd"
+          },
+          grid: {
+            color: "rgba(255,255,255,0.06)"
+          }
+        },
+
+        y: {
+          ticks: {
+            color: "#ddd"
+          },
+          grid: {
+            color: "rgba(255,255,255,0.06)"
+          }
+        }
+      }
+    }
   });
 }
 
-function bindPresetCityLinks() {
-  presetCityLinks.forEach((link) => {
-    link.addEventListener('click', (event) => {
-      event.preventDefault();
-      const presetCity = link.dataset.city;
+function bindChartTabs() {
+  document.querySelectorAll(".chart-tab").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document
+        .querySelectorAll(".chart-tab")
+        .forEach((b) =>
+          b.classList.remove("active")
+        );
 
-      if (cityInput) {
-        cityInput.value = presetCity;
+      btn.classList.add("active");
+
+      activeMetric = btn.dataset.metric;
+
+      if (lastForecastData) {
+        renderChart(lastForecastData);
       }
-
-      loadCityWeather(presetCity);
     });
   });
 }
 
-const toggleBtn = document.getElementById("unit-toggle");
+/* =========================
+   SEARCH WEATHER
+========================= */
 
-toggleBtn?.addEventListener("click", async () => {
+async function loadCityWeather(city) {
+  const requestId = ++activeWeatherRequestId;
+  const normalizedCity = normalizeCity(city);
 
+  if (!normalizedCity) {
+    setLoading(false);
+    setStatus(
+      "Please enter a city name.",
+      "error"
+    );
+    return;
+  }
+
+  try {
+    setLoading(true);
+
+    setStatus(
+      `Searching weather for ${normalizedCity}...`,
+      "info"
+    );
+
+    const location = await geocodeCity(
+      normalizedCity
+    );
+
+    if (requestId !== activeWeatherRequestId) {
+      return;
+    }
+
+    if (!location) {
+      throw new Error("City not found.");
+    }
+
+    const weatherData = await fetchWeather(
+      location.latitude,
+      location.longitude
+    );
+
+    if (requestId !== activeWeatherRequestId) {
+      return;
+    }
+
+    const summary = buildWeatherSummary(
+      weatherData
+    );
+
+    const label = formatCityLabel(
+      location,
+      normalizedCity
+    );
+
+    updateWeatherCard(label, summary);
+
+    updateRecommendations(
+      weatherData.current.temperature_2m,
+      weatherData.current.weather_code
+    );
+
+    lastForecastData = weatherData;
+
+    renderChart(weatherData);
+
+    setStatus(
+      `Showing weather for ${label}`,
+      "success"
+    );
+
+  } catch (error) {
+    if (requestId !== activeWeatherRequestId) {
+      return;
+    }
+
+    console.error(error);
+
+    setStatus(
+      error.message ||
+        "Unable to fetch weather.",
+      "error"
+    );
+
+  } finally {
+    if (requestId === activeWeatherRequestId) {
+      setLoading(false);
+    }
+  }
+}
+
+/* =========================
+   SEARCH FORM
+========================= */
+
+function bindSearchForm() {
+  const form = cityInput?.form;
+
+  if (!form) return;
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const city = cityInput.value.trim();
+
+    if (!city) return;
+
+    loadCityWeather(city);
+  });
+}
+
+/* =========================
+   PRESET CITY LINKS
+========================= */
+
+function bindPresetCities() {
+  presetCityLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      const city = link.dataset.city;
+
+      cityInput.value = city;
+
+      loadCityWeather(city);
+    });
+  });
+}
+
+/* =========================
+   UNIT TOGGLE
+========================= */
+
+unitToggle?.addEventListener("click", async () => {
   isCelsius = !isCelsius;
 
-  toggleBtn.textContent = isCelsius
+  unitToggle.textContent = isCelsius
     ? "Switch to °F"
     : "Switch to °C";
 
-  const city = cityName?.textContent?.split(",")[0] || "Delhi";
+  const currentCity =
+    cityName.textContent.split(",")[0];
 
-  await loadCityWeather(city);
+  if (
+    currentCity &&
+    currentCity !== "Search for a city"
+  ) {
+    await loadCityWeather(currentCity);
+  }
 
-commonCityRows.forEach((row) => {
-  setRowMessage(row, 'Loading...');
-});
-
-await updateComparisonTable();
-
-});
-
-document.addEventListener('DOMContentLoaded', async () => {
-  bindSearchForm();
-  bindPresetCityLinks();
-  resetWeatherSummary();
-  setStatus('Search for a city to load live weather data.', 'info');
-
-  await loadCityWeather('Delhi', { updateTable: false });
-
-  // 2. RUN THE FIX: Populate the comparison table using your declarative mapping
   await updateComparisonTable();
 });
 
-/* Usage Guide */
+/* =========================
+   THEME TOGGLE
+========================= */
 
-const guideBtn =
-document.getElementById("openGuide");
+function applyTheme(theme) {
+  if (theme === "light") {
+    document.body.classList.add("light-mode");
 
-const guideModal =
-document.getElementById("guideModal");
+    if (themeToggle) {
+      themeToggle.innerHTML = "☀️";
+    }
+  } else {
+    document.body.classList.remove("light-mode");
 
-const closeGuide =
-document.querySelector(".close-guide");
+    if (themeToggle) {
+      themeToggle.innerHTML = "🌙";
+    }
+  }
 
-
-guideBtn?.addEventListener(
-"click",
-(e)=>{
-
-e.preventDefault();
-
-guideModal.style.display="block";
-
-});
-
-
-closeGuide?.addEventListener(
-"click",
-()=>{
-
-guideModal.style.display="none";
-
-});
-
-
-window.addEventListener(
-"click",
-(e)=>{
-
-if(e.target===guideModal){
-
-guideModal.style.display="none";
-
+  localStorage.setItem("weather-theme", theme);
 }
 
+themeToggle?.addEventListener("click", () => {
+  const isLight =
+    document.body.classList.contains(
+      "light-mode"
+    );
+
+  applyTheme(isLight ? "dark" : "light");
 });
+
+/* =========================
+   GUIDE MODAL
+========================= */
+
+const guideBtn =
+  document.getElementById("openGuide");
+
+const guideModal =
+  document.getElementById("guideModal");
+
+const closeGuide =
+  document.querySelector(".close-guide");
+
+guideBtn?.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  guideModal.style.display = "block";
+});
+
+closeGuide?.addEventListener("click", () => {
+  guideModal.style.display = "none";
+});
+
+window.addEventListener("click", (e) => {
+  if (e.target === guideModal) {
+    guideModal.style.display = "none";
+  }
+});
+
+/* =========================
+   WEATHER ANIMATION
+========================= */
+
+function createFloatingParticles() {
+  const particleCount = 20;
+
+  for (let i = 0; i < particleCount; i++) {
+    const particle =
+      document.createElement("div");
+
+    particle.className = "weather-particle";
+
+    particle.style.left =
+      Math.random() * 100 + "vw";
+
+    particle.style.animationDuration =
+      Math.random() * 10 + 8 + "s";
+
+    particle.style.animationDelay =
+      Math.random() * 5 + "s";
+
+    document.body.appendChild(particle);
+  }
+}
+
+/* =========================
+   INIT
+========================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  async () => {
+
+    bindSearchForm();
+
+    bindPresetCities();
+
+    bindChartTabs();
+
+    resetWeatherSummary();
+
+    setStatus(
+      "Search for a city to get live weather updates.",
+      "info"
+    );
+
+    await updateComparisonTable();
+
+    const savedTheme =
+      localStorage.getItem("weather-theme") ||
+      "dark";
+
+    applyTheme(savedTheme);
+
+    createFloatingParticles();
+  }
+);

@@ -1,12 +1,12 @@
 /* ============================================================
    CONFIGURATION
    ============================================================ */
-if (typeof REPO_OWNER === 'undefined') {
-  window.REPO_OWNER = 'dhairyagothi';
-  window.REPO_NAME = '100_days_100_web_project';
+if (typeof REPO_OWNER === "undefined") {
+  window.REPO_OWNER = "dhairyagothi";
+  window.REPO_NAME = "100_days_100_web_project";
 }
-window.REPO_OWNER = window.REPO_OWNER || 'dhairyagothi';
-window.REPO_NAME = window.REPO_NAME || '100_days_100_web_project';
+window.REPO_OWNER = window.REPO_OWNER || "dhairyagothi";
+window.REPO_NAME = window.REPO_NAME || "100_days_100_web_project";
 
 let currentPage = 1;
 let itemsPerPage = 9; // Visible projects per page
@@ -406,17 +406,6 @@ function renderPagination(totalItems, totalPages) {
 
 /* ============================================================
    BOOKMARK + RECENT SYSTEM
-============================================================ */
-let bookmarkedProjects = [];
-let recentProjects = [];
-const ONE_HOUR_MS = 60 * 60 * 1000;
-const INITIAL_VISIBLE_ITEMS = 3;
-
-try {
-    bookmarkedProjects = JSON.parse(localStorage.getItem('bookmarkedProjects')) || [];
-    recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
-} catch (e) {
-    console.warn('localStorage disabled');
 }
 
 function trackRecentProject(project) {
