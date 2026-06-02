@@ -267,8 +267,15 @@ The website features:
 | 193 | Escape Room | HTML, CSS, JS | 🎮 Games | [View Demo](https://100-days-100-web-project.vercel.app/public/Escape_Room/index.html) |
 | 194 | Lost & Found Portal | HTML, CSS, JS | ❤️ Social Impact | [View Demo](https://100-days-100-web-project.vercel.app/public/Lost_And_Found_Portal/index.html) |
 | 195 | Complaint Management System | HTML, CSS, JS | 📋 Management | [View Demo](https://100-days-100-web-project.vercel.app/public/Complaint_Management_System/index.html) |
-| 196 | AirCast | HTML, CSS, JavaScript | 🌐 APIs | [View Demo](https://100-days-100-web-project.vercel.app/public/Weather%20App%20with%20AQI/index.html) |
+| 196 | Naukri Campus Clone | HTML, CSS, JavaScript | 💼 Job Portal Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/Naukri-Campus-Clone/index.html) |
+ 
 
+> The full project list is large and maintained in `projects.json` and on the live website. To keep this README concise and avoid duplicated tables, please view the complete, up-to-date list at:
+
+ - Live website with demos: https://100-days-100-web-project.vercel.app/
+ - Static data file: [projects.json](projects.json)
+
+You can still browse the projects on the website where each entry links to a working demo.
 
 ### 📊 Project Categories:
 - 🎮 **Games**: 25+ interactive games and puzzles

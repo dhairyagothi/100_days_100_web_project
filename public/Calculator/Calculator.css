@@ -64,6 +64,9 @@ body::before {
     padding: 30px 26px;
     width: min(100%, 465px);
 }
+.display-wrapper {
+    position: relative;
+}
 
 input {
     width: 100%;
@@ -371,4 +374,26 @@ input::placeholder {
 
 .history-delete:hover {
     background: rgba(255, 93, 77, 0.15);
+}
+#copyResult {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+
+    width: 40px;
+    height: 40px;
+
+    border: none;
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    background: rgba(255,255,255,0.08);
+    color: var(--text);
+
+    transition: all 0.2s ease;
+}
+
+#copyResult:hover {
+    background: rgba(110,222,10,0.15);
 }

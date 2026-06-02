@@ -9,7 +9,8 @@ body{
     background:#081120;
     color:white;
     min-height:100vh;
-    overflow:hidden;
+    overflow-x:hidden;
+    overflow-y:auto;
 }
 
 /* BACKGROUND GLOW */
@@ -33,8 +34,10 @@ body{
 
 .app{
     display:grid;
-    grid-template-columns:260px 1fr 1fr;
-    height:100vh;
+    grid-template-columns:280px 1fr 1fr;
+    min-height:100vh;
+    gap:20px;
+    padding:20px;
 }
 
 /* GLASS EFFECT */
@@ -161,16 +164,18 @@ body{
 /* EDITOR */
 
 .editor{
-    padding:32px;
-    overflow-y:auto;
+    padding:20px;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
 }
 
 /* FORM CARD */
 
 .form-card{
+    width:100%;
+    max-width:900px;
     padding:32px;
-    max-width:850px;
-    margin:auto;
 }
 
 /* TOP BAR */
@@ -238,6 +243,7 @@ form{
 .form-group{
     display:flex;
     flex-direction:column;
+    gap:8px;
 }
 
 label{
@@ -255,21 +261,13 @@ label{
 input,
 textarea{
     width:100%;
-
-    padding:15px 18px;
-
-    border:none;
-
-    border-radius:16px;
-
-    background:rgba(255,255,255,0.05);
-
+    padding:14px 16px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.12);
+    background:rgba(255,255,255,0.06);
     color:white;
-
     font-size:15px;
-
     outline:none;
-
     transition:0.3s;
 }
 
@@ -343,8 +341,9 @@ textarea:focus{
 /* RESUME SHEET */
 
 .resume-sheet{
-    width:210mm;
-    min-height:297mm;
+    width:100%;
+    max-width:850px;
+    min-height:auto;
 
     margin:auto;
 
@@ -535,4 +534,162 @@ textarea:focus{
         transform: translateY(-120vh) rotate(720deg);
         opacity: 0;
     }
+}
+
+@media (max-width: 768px){
+
+    .app{
+        grid-template-columns:1fr;
+    }
+
+    .sidebar{
+        border-right:none;
+        border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .form-row{
+        grid-template-columns:1fr;
+    }
+
+    .top-bar{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:20px;
+    }
+
+    .template-buttons{
+        flex-wrap:wrap;
+    }
+
+    .buttons{
+        flex-direction:column;
+    }
+
+    .resume-sheet{
+        padding:24px;
+    }
+}
+
+/* =========================
+   LIGHT MODE
+========================= */
+
+body.light-mode {
+    background: #f4f7fb !important;
+    color: #111827;
+}
+
+body.light-mode .animated-bg,
+body.light-mode .bg-glow {
+    display: none;
+}
+
+body.light-mode .sidebar,
+body.light-mode .form-card {
+    background: #ffffff;
+}
+
+body.light-mode .glass {
+    background: rgba(255,255,255,0.95);
+    border: 1px solid #e5e7eb;
+}
+
+body.light-mode input,
+body.light-mode textarea {
+    background: #ffffff;
+    color: #111827;
+    border: 1px solid #d1d5db;
+}
+
+body.light-mode label,
+body.light-mode .logo h2,
+body.light-mode .top-bar h1 {
+    color: #111827;
+}
+
+body.light-mode .logo p,
+body.light-mode .top-bar p {
+    color: #6b7280;
+}
+
+body.light-mode .preview {
+    background: #f3f4f6;
+}
+
+body.light-mode .theme-btn,
+body.light-mode .template,
+body.light-mode .secondary-btn {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+/* =========================
+   MODERN TEMPLATE
+========================= */
+
+.modern-template{
+    border-top:8px solid #3b82f6;
+}
+
+.modern-template .resume-header h1{
+    color:#2563eb;
+}
+
+.modern-template .resume-section h3{
+    color:#2563eb;
+}
+
+/* =========================
+   CLASSIC TEMPLATE
+========================= */
+
+.classic-template{
+    border:2px solid #1f2937;
+    border-radius:0;
+    box-shadow:none;
+}
+
+.classic-template .resume-header{
+    border-bottom:2px solid #1f2937;
+    padding-bottom:20px;
+}
+
+.classic-template .resume-header h1{
+    font-family: Georgia, serif;
+    color:#111827;
+}
+
+.classic-template .resume-section h3{
+    text-transform:uppercase;
+    letter-spacing:1px;
+    font-size:16px;
+}
+
+/* =========================
+   MINIMAL TEMPLATE
+========================= */
+
+.minimal-template{
+    box-shadow:none;
+    border-radius:0;
+    border-left:6px solid #10b981;
+}
+
+.minimal-template .resume-header{
+    text-align:left;
+}
+
+.minimal-template .resume-header h1{
+    font-size:34px;
+    color:#111827;
+}
+
+.minimal-template .resume-section h3{
+    border-bottom:none;
+    color:#10b981;
+    font-size:18px;
+}
+
+.minimal-template .resume-section{
+    margin-bottom:22px;
 }

@@ -16,6 +16,18 @@ const dropZone =
 
 const dragText =
   document.querySelector(".drag-text");
+
+const statType =
+  document.getElementById("statType");
+
+const statSize =
+  document.getElementById("statSize");
+
+const statModified =
+  document.getElementById("statModified");
+
+const statReadTime =
+  document.getElementById("statReadTime");
   
 
 uploadBtn.addEventListener("click", () => {
@@ -28,9 +40,13 @@ resumeInput.addEventListener("change", () => {
 
   if (resumeInput.files.length > 0) {
 
-    fileName.textContent =
-      resumeInput.files[0].name;
+    const file =
+      resumeInput.files[0];
 
+    fileName.textContent =
+      file.name;
+
+    updateStats(file);
     generateAnalysis();
   }
 });
@@ -256,6 +272,29 @@ function generateChart(score) {
       }
     }
   });
+}
+
+function updateStats(file){
+
+  statType.textContent =
+    file.type || "Unknown";
+
+  statSize.textContent =
+    `${(file.size/1024).toFixed(1)} KB`;
+
+  statModified.textContent =
+    new Date(
+      file.lastModified
+    ).toLocaleDateString();
+
+  const estimatedMinutes =
+    Math.max(
+      1,
+      Math.round(file.size/50000)
+    );
+
+  statReadTime.textContent =
+    `${estimatedMinutes} min`;
 }
 
 generateAnalysis();

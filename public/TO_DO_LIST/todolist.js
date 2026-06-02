@@ -27,7 +27,10 @@ function saveTasks() {
 
 function saveDocuments() {
   try {
-    localStorage.setItem("todo-documents", JSON.stringify(savedDocs));
+    // Don't persist blob URLs — they are revoked on page close.
+    // Save metadata only; stale docs will show a warning in the UI.
+    const metaOnly = savedDocs.map(({ url, ...rest }) => rest);
+    localStorage.setItem("todo-documents", JSON.stringify(metaOnly));
   } catch (e) {
     console.error("Error saving documents:", e);
   }
@@ -46,16 +49,16 @@ function addTask() {
 
   // Accent Colors
   const selectedCatOption =
-    taskTypeSelect.options[taskTypeSelect.selectedIndex];
+      taskTypeSelect.options[taskTypeSelect.selectedIndex];
   const catColor =
-    (selectedCatOption && selectedCatOption.getAttribute("data-color")) ||
-    "#7c63ff";
+      (selectedCatOption && selectedCatOption.getAttribute("data-color")) ||
+      "#7c63ff";
 
   const selectedPriOption =
-    taskPrioritySelect.options[taskPrioritySelect.selectedIndex];
+      taskPrioritySelect.options[taskPrioritySelect.selectedIndex];
   const priColor =
-    (selectedPriOption && selectedPriOption.getAttribute("data-color")) ||
-    "#3b82f6";
+      (selectedPriOption && selectedPriOption.getAttribute("data-color")) ||
+      "#3b82f6";
 
   const newTask = {
     id: Date.now(),
@@ -168,6 +171,7 @@ function renderTasks() {
   taskList.innerHTML = "";
 
   if (tasks.length === 0) {
+    currentStatusFilter = "all";
     emptyState.style.display = "flex";
     statusTabsContainer.style.display = "none";
     taskList.style.display = "none";
@@ -194,7 +198,7 @@ function renderTasks() {
       filteredTasks.forEach((task, idx) => {
         const card = document.createElement("li");
         card.className =
-          "notes" + (task.status === "completed" ? " completed" : "");
+            "notes" + (task.status === "completed" ? " completed" : "");
         card.setAttribute("data-id", task.id);
         card.style.setProperty("--i", idx);
 
@@ -203,7 +207,7 @@ function renderTasks() {
 
         card.innerHTML = `
           <div class="note-row">
-            <textarea class="note-text" onchange="updateTaskText(${task.id}, this.value)" placeholder="Edit task...">${task.text}</textarea>
+            <textarea class="note-text" oninput="updateTaskText(${task.id}, this.value)" onblur="updateTaskText(${task.id}, this.value)" placeholder="Edit task..." aria-label="Task description">${task.text}</textarea>
             <div class="note-badges">
               <span class="category-badge" style="border-color: ${task.categoryColor}; color: ${task.categoryColor}; background: ${task.categoryColor}12">
                 📂 ${task.category}
@@ -213,13 +217,13 @@ function renderTasks() {
               </span>
             </div>
             <div class="note-actions">
-              <button class="note-check state-btn ${isInProgress ? "active" : ""}" onclick="toggleInProgress(${task.id})" title="Toggle In Progress" style="background: ${isInProgress ? "rgba(79, 141, 255, 0.2)" : ""}; color: ${isInProgress ? "#2563eb" : ""}">
+              <button type="button" class="note-check state-btn ${isInProgress ? "active" : ""}" onclick="toggleInProgress(${task.id})" title="Toggle In Progress" aria-label="Mark as In Progress" style="background: ${isInProgress ? "rgba(79, 141, 255, 0.2)" : ""}; color: ${isInProgress ? "#2563eb" : ""}">
                 ⚡
               </button>
-              <button class="note-check state-btn ${isCompleted ? "active" : ""}" onclick="toggleComplete(${task.id})" title="Toggle Complete" style="background: ${isCompleted ? "rgba(20, 184, 166, 0.2)" : ""}; color: ${isCompleted ? "#0d9488" : ""}">
+              <button type="button" class="note-check state-btn ${isCompleted ? "active" : ""}" onclick="toggleComplete(${task.id})" title="Toggle Complete" aria-label="${isCompleted ? "Mark as Pending" : "Mark as Complete"}" style="background: ${isCompleted ? "rgba(20, 184, 166, 0.2)" : ""}; color: ${isCompleted ? "#0d9488" : ""}">
                 ${isCompleted ? "↩️" : "✓"}
               </button>
-              <button class="note-delete" onclick="deleteTask(${task.id})" title="Delete Task">🗑️</button>
+              <button type="button" class="note-delete" onclick="deleteTask(${task.id})" title="Delete Task" aria-label="Delete task">🗑️</button>
             </div>
           </div>
         `;
@@ -238,11 +242,11 @@ function updateMetrics() {
 
   // Update progress bar
   if (progressFill) progressFill.style.width = `${pct}%`;
-  if (progressText) progressText.innerText = `${done} / ${total} done`;
+  if (progressText) progressText.value = `${done} / ${total} done`;
 
   // Update status tabs counts
   const pendingCount = tasks.filter(
-    (t) => t.status === "pending" || !t.status,
+      (t) => t.status === "pending" || !t.status,
   ).length;
   const inProgressCount = tasks.filter((t) => t.status === "inprogress").length;
   const completedCount = tasks.filter((t) => t.status === "completed").length;
@@ -275,8 +279,8 @@ function applyTheme(themeName) {
   document.body.classList.add(themeName);
 
   document
-    .querySelectorAll(".theme-btn")
-    .forEach((btn) => btn.classList.remove("active"));
+      .querySelectorAll(".theme-btn")
+      .forEach((btn) => btn.classList.remove("active"));
   const activeBtn = document.querySelector(`[data-theme="${themeName}"]`);
   if (activeBtn) activeBtn.classList.add("active");
 
@@ -312,9 +316,9 @@ function saveAsPDF() {
 
   const completedCount = tasks.filter((t) => t.status === "completed").length;
   doc.text(
-    `Tasks: ${tasks.length} total  |  ${completedCount} completed  |  ${tasks.length - completedCount} pending/in progress`,
-    20,
-    38,
+      `Tasks: ${tasks.length} total  |  ${completedCount} completed  |  ${tasks.length - completedCount} pending/in progress`,
+      20,
+      38,
   );
   doc.line(20, 42, 190, 42);
 
@@ -337,6 +341,7 @@ function saveAsPDF() {
   const fileURL = URL.createObjectURL(pdfOutput);
 
   const docItem = {
+    id: Date.now(),
     name: fileName,
     url: fileURL,
     total: tasks.length,
@@ -350,8 +355,7 @@ function saveAsPDF() {
 
   savedDocs.unshift(docItem);
   saveDocuments();
-  showToast(`📥 Exported PDF snapshot successfully!`);
-  showDocuments();
+  showToast(`📥 PDF exported! Go to Documents to download.`);
 }
 
 function renderSavedDocuments() {
@@ -364,9 +368,10 @@ function renderSavedDocuments() {
     if (docEmptyState) docEmptyState.style.display = "flex";
   } else {
     if (docEmptyState) docEmptyState.style.display = "none";
-    savedDocs.forEach((doc, idx) => {
+    savedDocs.forEach((doc) => {
       const docItem = document.createElement("li");
       docItem.className = "doc-item";
+      const hasUrl = !!doc.url;
       docItem.innerHTML = `
         <div class="doc-icon">📄</div>
         <div class="doc-info">
@@ -375,11 +380,12 @@ function renderSavedDocuments() {
             <span class="doc-date">${doc.date} ${doc.time}</span>
             <span class="doc-task-count">${doc.total} tasks · ${doc.completed} completed</span>
           </div>
+          ${!hasUrl ? '<div class="doc-stale">⚠️ File unavailable after page reload — re-export to download again.</div>' : ''}
         </div>
         <div class="doc-actions">
-          <button class="doc-btn" onclick="window.open('${doc.url}', '_blank')">View</button>
-          <a class="doc-btn" href="${doc.url}" download="${doc.name}" style="text-decoration:none;display:inline-block;text-align:center;line-height:42px;padding:0 18px;">Download</a>
-          <button class="doc-btn del" onclick="deleteDocument(${idx})">Delete</button>
+          ${hasUrl ? `<button class="doc-btn" onclick="window.open('${doc.url}', '_blank')">View</button>` : ''}
+          ${hasUrl ? `<a class="doc-btn" href="${doc.url}" download="${doc.name}" style="text-decoration:none;display:inline-block;text-align:center;line-height:42px;padding:0 18px;">Download</a>` : ''}
+          <button class="doc-btn del" onclick="deleteDocument('${doc.id}')">Delete</button>
         </div>
       `;
       documentsList.appendChild(docItem);
@@ -387,8 +393,8 @@ function renderSavedDocuments() {
   }
 }
 
-function deleteDocument(index) {
-  savedDocs.splice(index, 1);
+function deleteDocument(id) {
+  savedDocs = savedDocs.filter((doc) => String(doc.id) !== String(id));
   saveDocuments();
   renderSavedDocuments();
   showToast("🧹 Snapshot record cleared!");
@@ -400,10 +406,8 @@ function showToast(message) {
   if (!toast) return;
 
   toast.innerText = message;
-  toast.className = "pdf-message show";
-
   const activeTheme = localStorage.getItem("todo-theme") || "theme1";
-  toast.classList.add(activeTheme);
+  toast.className = `pdf-message show ${activeTheme}`;
 
   setTimeout(() => {
     toast.classList.remove("show");
