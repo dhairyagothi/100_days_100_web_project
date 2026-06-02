@@ -1,109 +1,366 @@
-body {
-    font-family: Arial, sans-serif;
-    background-image: url(./budget.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+/* =========================================================
+   ADVANCED MOBILE RESPONSIVE IMPROVEMENTS
+========================================================= */
+
+@media(max-width:768px){
+
+  /* MAIN CONTAINER */
+  .main{
+    width:100%;
+  }
+
+  /* HEADER */
+  .header{
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    gap:18px;
+
+    padding:18px;
+  }
+
+  .header-right{
+
+    width:100%;
+
+    flex-wrap:wrap;
+
+    gap:14px;
+
+    justify-content:space-between;
+  }
+
+  .main-heading{
+
+    font-size:26px;
+
+    line-height:1.3;
+  }
+
+  .main-heading i{
+
+    padding:12px;
+  }
+
+  /* LIVE CLOCK */
+  .live-clock{
+
+    flex:1;
+
+    justify-content:center;
+
+    width:100%;
+  }
+
+  /* MODE TOGGLE */
+  .mode-toggle{
+
+    width:100%;
+
+    justify-content:space-between;
+  }
+
+  /* MAIN LAYOUT */
+  .main-layout{
+
+    grid-template-columns:1fr;
+
+    gap:20px;
+  }
+
+  /* SUMMARY BODY */
+  .summary-body{
+
+    grid-template-columns:1fr;
+
+    gap:20px;
+  }
+
+  /* INCOME EXPENSE */
+  .income-expense{
+
+    grid-template-columns:1fr;
+
+    gap:18px;
+  }
+
+  /* CARDS */
+  .card{
+
+    min-height:auto;
+
+    padding:24px;
+  }
+
+  .acc-balance{
+
+    min-height:180px;
+
+    padding:20px;
+  }
+
+  .amount{
+
+    font-size:32px;
+
+    text-align:center;
+  }
+
+  .expense .amount{
+
+    font-size:30px;
+  }
+
+  /* CATEGORY */
+  .category-item{
+
+    font-size:16px;
+  }
+
+  /* BUDGET */
+  .budget-header{
+
+    flex-direction:column;
+
+    align-items:stretch;
+
+    gap:16px;
+  }
+
+  #budgetInput{
+
+    width:100%;
+  }
+
+  /* FORM */
+  .input-group input,
+  .input-group select{
+
+    font-size:16px;
+
+    padding:18px 18px 18px 50px;
+  }
+
+  /* BUTTONS */
+  .submit-btn,
+  #resetBtn{
+
+    width:100%;
+
+    min-height:50px;
+
+    font-size:15px;
+  }
+
+  /* INSIGHTS */
+  .insight-card{
+
+    align-items:flex-start;
+  }
+
+  .insight-icon{
+
+    width:50px;
+    height:50px;
+  }
+
+  /* TABLE */
+  .table-container{
+
+    overflow-x:visible;
+  }
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr{
+
+    display:block;
+
+    width:100%;
+  }
+
+  thead{
+
+    display:none;
+  }
+
+  tbody{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+  }
+
+  tr{
+
+    background:rgba(255,255,255,0.55);
+
+    border-radius:20px;
+
+    padding:16px;
+
+    box-shadow:
+      0 8px 20px rgba(0,0,0,0.06);
+  }
+
+  body.dark tr{
+
+    background:rgba(15,23,42,0.8);
+  }
+
+  td{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:15px;
+
+    text-align:right;
+
+    padding:12px 0;
+
+    border-bottom:
+      1px solid rgba(99,102,241,0.08);
+
+    font-size:14px;
+  }
+
+  td:last-child{
+
+    border-bottom:none;
+  }
+
+  td::before{
+
+    font-weight:600;
+
+    color:var(--primary);
+
+    text-align:left;
+  }
+
+  td:nth-child(1)::before{
+    content:"Date";
+  }
+
+  td:nth-child(2)::before{
+    content:"Description";
+  }
+
+  td:nth-child(3)::before{
+    content:"Category";
+  }
+
+  td:nth-child(4)::before{
+    content:"Amount";
+  }
+
+  td:nth-child(5)::before{
+    content:"Action";
+  }
+
+  /* DELETE BUTTON */
+  .delete-btn{
+
+    width:42px;
+    height:42px;
+  }
+
+  /* EMPTY STATE */
+  .empty-state{
+
+    padding:30px 15px;
+  }
 }
 
-.main-container {
-    margin-bottom: 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 80%;
-    max-width: 1200px;
-    height: 90vh;
+/* =========================================================
+   EXTRA SMALL DEVICES
+========================================================= */
+
+@media(max-width:480px){
+
+  body{
+
+    padding:12px;
+  }
+
+  .header{
+
+    border-radius:18px;
+  }
+
+  .main-heading{
+
+    font-size:22px;
+  }
+
+  .section-title h3{
+
+    font-size:18px;
+  }
+
+  .add-data,
+  .summary,
+  .insights,
+  .recent-activity{
+
+    padding:18px;
+
+    border-radius:22px;
+  }
+
+  .acc-balance{
+
+    min-height:160px;
+  }
+
+  .amount{
+
+    font-size:28px;
+  }
+
+  .expense .amount{
+
+    font-size:24px;
+  }
+
+  .category-item{
+
+    font-size:15px;
+  }
+
+  .insight-card{
+
+    padding:15px;
+  }
+
+  .insight-value{
+
+    font-size:14px;
+  }
+
+  .footer{
+
+    font-size:13px;
+  }
+}
+#budget{
+  font-weight:700;
+  transition:all 0.3s ease;
 }
 
-.container {
-    margin-left: 30px;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 48%;
-    height: 100%;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-h1 {
-    text-align: center;
-    font-size: 53px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
-
-.budget-summary {
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.budget-summary h3 {
-    margin: 5px 0;
-}
-
-.expense-table {
-    margin-top: 20px;
-    overflow: auto; /* Scrollbar for the table */
-    max-height: 300px; /* Adjust the height as needed */
-    width: 97%;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
-
-table th, table td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-table th {
-    background-color: #3498db;
-    color: #fff;
-}
-
-table tbody tr:hover {
-    background-color: #f9f9f9;
-}
-
-input[type="number"], input[type="text"], select, button {
-    width: calc(100% - 22px);
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
-
-button {
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    
-}
-
-button:hover {
-    background-color: #2980b9;
-}
-
-.charts {
-    margin-top: 20px;
-    text-align: center;
-    overflow: auto; /* Add scrollbar */
-    max-height: calc(90vh - 80px); /* Adjust height as needed, considering margins and other container heights */
+.progress-fill{
+  transition:
+    width 0.4s ease,
+    background 0.4s ease;
 }

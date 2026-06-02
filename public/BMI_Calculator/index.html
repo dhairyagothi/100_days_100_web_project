@@ -1,81 +1,449 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>BMI Calculator</title>
-    <meta name="description" content="JS app to calculates Body Mass Index">
-    <meta name="author" content="Supritha">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-     <!-- =====BOX ICONS===== -->
-     <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced BMI Calculator</title>
+
+    <link rel="stylesheet" href="style.css" />
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
+
   <body>
-    <div class="bmi">
-      <h2 style="color: azure;font-weight: bold;font-size:40px">Body Mass Index Calculator</h2>
-      <p class="text" style="font-weight: bold;font-size:20px">Height</p>
-        <select id="height-unit" style="text-align: center;">
-            <option value="cm" >Centimeter</option>
-            <option value="feet">Feet/Inches</option>
-        </select>
-        <input type="text" id="height" title="Enter your height" placeholder="Height">
-        <br>
-        <br>
+    <a
+      href="/"
+      class="project-back-button"
+      style="
+        position: fixed;
+        left: 18px;
+        top: 18px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: white;
+        text-decoration: none;
+        z-index: 9999;
+        font-weight: 700;
+        font-family: Inter, system-ui, sans-serif;
+        box-shadow: 0 8px 20px rgba(0, 0, 0);
+      "
+      >← Back to Home</a
+    >
 
-        <p class="text" style="font-weight: bold;font-size:20px">Weight</p>
-        <select id="weight-unit" style="text-align: center;">
-            <option value="kg">Kilogram</option>
-            <option value="lb">Pounds</option>
-        </select>
-        <input type="text" id="weight" title="Enter your weight" placeholder="Weight">
-        <p id="result"></p><button id="btn">Calculate</button>
-        <br>
-        <div id="result"></div>
-        <div id="category"></div>
-        <div id="tips"></div>
-    </div>
-    <div class="chart">
+    <div class="page">
+      <div class="bmi-grid">
+        <!-- Left: Calculator -->
 
-      <table>
-        <thead>
-          <tr>
-            <th>BMI</th>
-            <th>Category</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td data-column="bmi">less than 18.5</td>
-            <td data-column="category">Underweight</td>
-          </tr>
-          <tr>
-            <td data-column="bmi">between 18.5 and 24.9</td>
-            <td data-column="category">Ideal</td>
-          </tr>
-          <tr>
-            <td data-column="bmi">between 25 and 29.9</td>
-            <td data-column="category">Overweight</td>
-          </tr>
-          <tr>
-            <td data-column="bmi">over 30 </td>
-            <td data-column="category">Obesity</td>
-          </tr>
-        </tbody>
-      </table>
-      <canvas id="bmiChart" style="background-color: black;"></canvas>
-    </div>
-    <script src="script.js"></script>
-    <footer class="footer">
-      <p class="footer__title">Supritha Ravishankar</p>
-      <div class="footer__social">
-          <a href="https://de-de.facebook.com/supritha.ravishankar" class="footer__icon"><i class='bx bxl-facebook' ></i></a>
-          <a href="https://github.com/supzi-del" class="footer__icon"><i class='bx bxl-github' ></i></a>
-          <a href="https://twitter.com/SuprithaRavish1" class="footer__icon"><i class='bx bxl-twitter' ></i></a>
-          <a href="https://www.linkedin.com/in/supritha-ravishankar-560008216/" class="footer__icon"><i class='bx bxl-linkedin' ></i></a>
+        <!-- LEFT PANEL -->
+        <div class="card">
+          <div class="top-bar">
+            <h1 class="card-title">Body Mass Index</h1>
+
+            <button id="theme-toggle" class="theme-toggle">☾</button>
+          </div>
+
+          <!-- FORM -->
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Height Unit</label>
+
+              <select id="height-unit">
+                <option value="cm">Centimetres</option>
+                <option value="feet">Feet / inches</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label class="field-label" id="height-label"> Height (cm) </label>
+
+              <div id="height-wrapper">
+                <input type="number" id="height" placeholder="170" />
+              </div>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Weight Unit</label>
+
+              <select id="weight-unit">
+                <option value="kg">Kilograms</option>
+                <option value="lb">Pounds</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Weight</label>
+
+              <input type="number" id="weight" placeholder="70" />
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Age (Years)</label>
+
+              <input type="number" id="age" placeholder="21" />
+            </div>
+
+            <div class="field">
+              <label class="field-label">Gender</label>
+
+              <select id="gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- BUTTONS -->
+          <div class="btn-row">
+            <button id="calculate-btn" class="primary-btn">Calculate</button>
+
+            <button id="reset-btn" class="secondary-btn">Reset</button>
+          </div>
+
+          <button id="btn">Calculate</button>
+          <button id="reset-btn">Reset</button>
+
+          <div id="error-msg" class="error-msg hidden"></div>
+
+          <div class="result-row hidden" id="results">
+            <div class="metric-card">
+              <div class="metric-label">BMI score</div>
+              <div class="metric-value" id="bmi-val">—</div>
+              <span class="category-badge" id="cat-badge"></span>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Healthy weight range</div>
+              <div class="metric-value range-val" id="healthy-range">—</div>
+              <div class="tip-text" id="tip-text"></div>
+              <button id="btn">Calculate</button>
+              <div id="error-msg" class="error-msg hidden"></div>
+              <div id="error-msg" class="error-msg"></div>
+
+              <!-- RESULTS -->
+              <div class="results hidden" id="results">
+                <div class="results-grid">
+                  <div class="metric-card">
+                    <div class="metric-label">BMI Score</div>
+
+                    <div class="metric-value" id="bmi-value">0</div>
+
+                    <div class="badge" id="bmi-badge">Normal</div>
+                  </div>
+
+                  <div class="metric-card">
+                    <div class="metric-label">Healthy Weight Range</div>
+
+                    <div class="healthy-range" id="healthy-range">--</div>
+
+                    <p class="tip-text" id="tip-text"></p>
+                  </div>
+                </div>
+
+                <!-- RANGE -->
+                <div class="range-section">
+                  <div class="range-bar">
+                    <div class="seg blue"></div>
+                    <div class="seg green"></div>
+                    <div class="seg amber"></div>
+                    <div class="seg red"></div>
+
+                    <div class="pointer" id="pointer"></div>
+                  </div>
+
+                  <div class="range-labels">
+                    <span>10</span>
+                    <span>18.5</span>
+                    <span>25</span>
+                    <span>30</span>
+                    <span>40+</span>
+                  </div>
+                </div>
+
+                <!-- BODY FAT -->
+                <div class="body-fat">
+                  <div class="bf-header">
+                    <div class="metric-label">Est. Body Fat</div>
+
+                    <div class="bf-badge" id="bf-badge">Fitness</div>
+                  </div>
+
+                  <div class="bf-layout">
+                    <div class="gauge-wrap">
+                      <svg viewBox="0 0 120 120">
+                        <circle class="track" cx="60" cy="60" r="52" />
+
+                        <circle class="progress" id="bf-progress" cx="60" cy="60" r="52" />
+
+                        <text
+                          x="60"
+                          y="58"
+                          text-anchor="middle"
+                          class="gauge-value"
+                          id="bf-percent"
+                        >
+                          0
+                        </text>
+
+                        <text x="60" y="76" text-anchor="middle" class="gauge-label">
+                          % Body Fat
+                        </text>
+                      </svg>
+                    </div>
+
+                    <div class="bf-info">
+                      <p id="bf-desc"></p>
+
+                      <div class="legend">
+                        <div><span class="dot blue-dot"></span> Essential</div>
+                        <div><span class="dot green-dot"></span> Athletic</div>
+                        <div><span class="dot teal-dot"></span> Fitness</div>
+                        <div><span class="dot amber-dot"></span> Average</div>
+                        <div><span class="dot red-dot"></span> Obese</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT PANEL -->
+            <div class="card right-card">
+              <div class="top-bar">
+                <h2 class="card-title">Reference chart</h2>
+              </div>
+
+              <!-- TABLE -->
+              <table class="bmi-table">
+                <thead>
+                  <tr>
+                    <th>BMI</th>
+                    <th>Category</th>
+                    <th></th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr id="underweight-row">
+                    <td>&lt; 18.5</td>
+                    <td>Underweight</td>
+                    <td><span class="dot blue-dot"></span></td>
+                  </tr>
+
+                  <tr id="normal-row">
+                    <td>18.5 - 24.9</td>
+                    <td>Normal weight</td>
+                    <td><span class="dot green-dot"></span></td>
+                  </tr>
+
+                  <tr id="overweight-row">
+                    <td>25 - 29.9</td>
+                    <td>Overweight</td>
+                    <td><span class="dot amber-dot"></span></td>
+                  </tr>
+
+                  <tr id="obese1-row">
+                    <td>30 - 34.9</td>
+                    <td>Obese (Class I)</td>
+                    <td><span class="dot red-dot"></span></td>
+                  </tr>
+
+                  <tr id="obese2-row">
+                    <td>35 - 39.9</td>
+                    <td>Obese (Class II)</td>
+                    <td><span class="dot red-dot"></span></td>
+                  </tr>
+
+                  <tr id="obese3-row">
+                    <td>&ge; 40</td>
+                    <td>Obese (Class III)</td>
+                    <td><span class="dot red-dot"></span></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!-- CHART -->
+              <div class="chart-wrap">
+                <canvas id="bmiChart"></canvas>
+              </div>
+
+              <!-- HISTORY -->
+              <div class="history-section">
+                <div class="history-top">
+                  <h3>Log History</h3>
+
+                  <button id="clear-history">Clear History</button>
+                </div>
+
+                <div id="history-list"></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="range-vis" class="range-vis hidden">
+            <div class="range-bar">
+              <div class="range-segments">
+                <div class="seg seg-blue" style="flex: 2.1"></div>
+                <div class="seg seg-green" style="flex: 6.4"></div>
+                <div class="seg seg-amber" style="flex: 5"></div>
+                <div class="seg seg-red" style="flex: 6.5"></div>
+              </div>
+              <div class="bmi-pointer" id="bmi-ptr"></div>
+            </div>
+            <div class="range-labels">
+              <span>10</span><span>18.5</span><span>25</span><span>30</span><span>40+</span>
+            </div>
+          </div>
+
+          <!-- Body Fat Estimate -->
+          <div id="bf-section" class="bf-section hidden">
+            <div class="bf-header">
+              <div class="metric-label">Est. body fat</div>
+              <span class="bf-badge" id="bf-badge"></span>
+            </div>
+            <div class="bf-body">
+              <div class="bf-gauge-wrap">
+                <svg class="bf-gauge" viewBox="0 0 120 120">
+                  <circle class="bf-track" cx="60" cy="60" r="52" stroke-width="7" fill="none" />
+                  <circle
+                    class="bf-fill"
+                    id="bf-arc"
+                    cx="60"
+                    cy="60"
+                    r="52"
+                    stroke-width="7"
+                    fill="none"
+                    stroke-dasharray="326.73"
+                    stroke-dashoffset="326.73"
+                    stroke-linecap="round"
+                  />
+                  <text
+                    class="bf-pct-text"
+                    x="60"
+                    y="56"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    id="bf-pct"
+                  >
+                    —
+                  </text>
+                  <text
+                    class="bf-pct-unit"
+                    x="60"
+                    y="74"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                  >
+                    % body fat
+                  </text>
+                </svg>
+              </div>
+              <div class="bf-info">
+                <p class="bf-desc" id="bf-desc"></p>
+                <div class="bf-ranges">
+                  <div class="bf-range-item">
+                    <span class="bf-dot bf-dot-blue"></span>
+                    <span>Essential</span>
+                  </div>
+                  <div class="bf-range-item">
+                    <span class="bf-dot bf-dot-green"></span>
+                    <span>Athletic</span>
+                  </div>
+                  <div class="bf-range-item">
+                    <span class="bf-dot bf-dot-teal"></span>
+                    <span>Fitness</span>
+                  </div>
+                  <div class="bf-range-item">
+                    <span class="bf-dot bf-dot-amber"></span>
+                    <span>Average</span>
+                  </div>
+                  <div class="bf-range-item">
+                    <span class="bf-dot bf-dot-red"></span>
+                    <span>Obese</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Reference + Chart -->
+        <div class="card right-card">
+          <div class="top-bar" style="margin-bottom: 0">
+            <p class="card-title">Reference chart</p>
+          </div>
+
+          <table class="bmi-table">
+            <thead>
+              <tr>
+                <th>BMI</th>
+                <th>Category</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="underweight-row">
+                <td>&lt; 18.5</td>
+                <td>Underweight</td>
+                <td><span class="dot dot-blue"></span></td>
+              </tr>
+              <tr id="normal-row">
+                <td>18.5 – 24.9</td>
+                <td>Normal weight</td>
+                <td><span class="dot dot-green"></span></td>
+              </tr>
+              <tr id="overweight-row">
+                <td>25.0 – 29.9</td>
+                <td>Overweight</td>
+                <td><span class="dot dot-amber"></span></td>
+              </tr>
+              <tr id="obese1-row">
+                <td>30.0 – 34.9</td>
+                <td>Obese (Class I)</td>
+                <td><span class="dot dot-red1"></span></td>
+              </tr>
+              <tr id="obese2-row">
+                <td>35.0 – 39.9</td>
+                <td>Obese (Class II)</td>
+                <td><span class="dot dot-red2"></span></td>
+              </tr>
+              <tr id="obese3-row">
+                <td>≥ 40.0</td>
+                <td>Obese (Class III)</td>
+                <td><span class="dot dot-red3"></span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="chart-wrap">
+            <canvas id="bmiChart"></canvas>
+          </div>
+          <button
+            id="clear-history"
+            style="
+              width: 100%;
+              padding: 8px 12px;
+              font-size: 10px;
+              letter-spacing: 0.1em;
+              text-transform: uppercase;
+              cursor: pointer;
+              background: transparent;
+              border: 1px solid var(--rule-strong);
+              border-radius: 4px;
+              color: var(--ink-2);
+              font-family: var(--f-mono);
+              margin-top: 8px;
+            "
+          >
+            Clear History
+          </button>
+          <p class="chart-hint">BMI history — calculate multiple times to track changes.</p>
+        </div>
       </div>
-      <p>&#169; 2021 copyright all right reserved</p>
-     </footer>
+    </div>
+
+    <script src="script.js"></script>
   </body>
 </html>

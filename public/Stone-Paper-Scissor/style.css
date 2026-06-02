@@ -1,6 +1,16 @@
+/* ==========================================================================
+   1. GLOBAL STYLES & RESET
+   ========================================================================== */
 * {
-  font-family: "Dangrek", "Roboto";
+  box-sizing: border-box;
 }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Dangrek", "Roboto", sans-serif;
+}
+
 body {
   background: linear-gradient(0deg, #12c2e9 0%, #c471ed 50%, #f64f59 100%);
   overflow: hidden;
@@ -10,20 +20,37 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between; /* Spreads header, game area, and buttons out evenly */
+  height: 100vh;                  /* Locks container to exactly the screen height */
+  padding: 20px;
+  position: relative;             /* Lets us position the lower corner buttons cleanly */
+  overflow: hidden;               /* Prevents weird scrollbars */
 }
+
+/* ==========================================================================
+   2. TYPOGRAPHY & BASIC ELEMENTS
+   ========================================================================== */
 h1 {
   color: #fff;
 }
 
-label, input, button {
+label,
+input,
+button {
   margin: 10px;
 }
 
-#result, #category, #tips {
+#result,
+#category,
+#tips {
   margin-top: 20px;
   color: #fff;
   font-size: 18px;
 }
+
+/* ==========================================================================
+   3. HEADER & SCOREBOARD
+   ========================================================================== */
 .display {
   margin-top: 30px;
   display: flex;
@@ -34,10 +61,11 @@ label, input, button {
   width: 800px;
   height: 120px;
 }
+
 .heading {
   color: #fff;
   background-color: #000;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 30px;
   font-style: normal;
   font-weight: 600;
@@ -46,21 +74,22 @@ label, input, button {
   border: 8px solid white;
   padding-left: 10px;
   padding-bottom: 10px;
-  
 }
+
 .scoreboard {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 15px;
 }
+
 .score {
   border-radius: 9px;
   background: #fff;
   width: 125px;
   height: 110px;
   color: #656565;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 17px;
   font-style: normal;
   font-weight: 600;
@@ -68,24 +97,31 @@ label, input, button {
   letter-spacing: 1.7px;
   text-align: center;
 }
+
+#comscore, 
+#youscore {
+  font-size: 45px;
+  font-weight: bold;
+  line-height: 2;
+  margin-bottom: 2%;
+  margin-top: 1%;
+  color: #000;
+}
+
+/* ==========================================================================
+   4. MAIN GAME PLAYGROUND (STONE, PAPER, SCISSORS)
+   ========================================================================== */
 .game {
   margin-top: 5vh;
 }
-.export {
-  display: none;
-}
-.stone1 {
-  position: relative;
-}
-.paper1 {
-  position: relative;
-}
-.scissor1 {
-  position: relative;
-}
+
+.stone1, 
+.paper1, 
+.scissor1, 
 .line {
   position: relative;
 }
+
 .line1 {
   position: absolute;
   background: none;
@@ -93,11 +129,13 @@ label, input, button {
   left: 2.5%;
   z-index: 1;
 }
+
 .stone {
   position: relative;
   right: 90%;
   background: none;
 }
+
 .logo1 {
   position: absolute;
   top: 25%;
@@ -105,11 +143,13 @@ label, input, button {
   background: none;
   cursor: pointer;
 }
+
 .paper {
   position: relative;
   left: 76.5%;
   margin-top: -175px;
 }
+
 .logo2 {
   position: absolute;
   top: 25%;
@@ -117,6 +157,7 @@ label, input, button {
   background: none;
   cursor: pointer;
 }
+
 .line3 {
   position: absolute;
   background: none;
@@ -124,6 +165,7 @@ label, input, button {
   right: 80%;
   z-index: 1;
 }
+
 .line2 {
   position: absolute;
   background: none;
@@ -131,6 +173,7 @@ label, input, button {
   left: 68%;
   z-index: 1;
 }
+
 .scissor {
   position: relative;
   background: none;
@@ -138,11 +181,6 @@ label, input, button {
   right: 7%;
 }
 
-.reset_button{
-  background-color: purple;
-  color: white;
-  margin-top: 85vh;
-}
 .logo3 {
   position: absolute;
   top: 28%;
@@ -150,28 +188,27 @@ label, input, button {
   background: none;
   cursor: pointer;
 }
-@keyframes example {
-  from {
-    background-color: #FF0099;
-  }
-  to {
-    background-color: #6f2a61;
-  }
+
+.chart {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
 }
+
+@keyframes example {
+  from { background-color: #FF0099; }
+  to   { background-color: #6f2a61; }
+}
+
 .bg img {
   border-radius: 100%;
   animation-name: example;
   animation-duration: 1s;
 }
-#rul {
-  color: #fff;
-  font-family: Roboto;
-  font-size: 21px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  letter-spacing: 2.1px;
-}
+
+/* ==========================================================================
+   5. POPUP MODAL (RULES BOX)
+   ========================================================================== */
 .box {
   width: 278px;
   height: 325px;
@@ -184,9 +221,10 @@ label, input, button {
   position: fixed;
   z-index: 1;
 }
+
 .headline {
   color: #fff;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 29px;
   font-style: normal;
   font-weight: 500;
@@ -194,21 +232,25 @@ label, input, button {
   background-color: #004429;
   text-align: center;
 }
+
 .listrule {
   color: #fff;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 13px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
   background-color: #004429;
 }
+
 li {
   margin: 5px 5px;
 }
+
 ul {
   list-style: none;
 }
+
 ul li::before {
   color: #ffd600;
   content: "\25AA";
@@ -218,6 +260,7 @@ ul li::before {
   margin-left: -2em;
   text-align: center;
 }
+
 .close {
   position: relative;
   text-align: center;
@@ -228,71 +271,31 @@ ul li::before {
   background: none;
   cursor: pointer;
 }
+
 .close img {
   background: none;
 }
-.symbol {
-  position: absolute;
-  color: #fff;
-  font-family: Dangrek;
-  font-size: 44px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  top: -7px;
-  right: 23px;
-  background: none;
-}
-.you-win {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 7%;
-  margin-bottom: -80px;
-  gap: 80px;
-  display: none;
-}
-.you-lost {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: 7%;
-  margin-bottom: -80px;
-  gap: 80px;
-  display: none;
-}
+
+/* ==========================================================================
+   6. GAME SCREENS (WIN / LOSE / TIE INFRASTRUCTURE)
+   ========================================================================== */
+.you-win,
+.you-lost,
 .tie-up {
-  display: flex;
+  display: none; /* Kept for JavaScript toggle operations */
   justify-content: center;
   align-items: center;
-  margin-top: 100px;
-  padding-bottom: 50px;
-  gap: 80px;
-  background: none;
-  display: none;
+  gap: 40px;     /* Scaled down slightly so it fits smaller laptops */
+  margin: auto 0;/* Centers the active screen vertically in available space */
 }
+
 .you-picked {
   position: relative;
 }
-.ipt-U {
-  background: none;
+
+.ipt-U, .ipt-P {
   color: #fff;
-  font-family: Roboto;
-  font-size: 17px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  letter-spacing: 1.7px;
-}
-.opt-U {
-  background: none;
-}
-.opt-P {
-  background: none;
-}
-.ipt-P {
-  color: #fff;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 17px;
   font-style: normal;
   font-weight: 600;
@@ -300,16 +303,15 @@ ul li::before {
   letter-spacing: 1.7px;
   background: none;
 }
-.opt-U img {
+
+.opt-U, .opt-P, .opt-U img, .opt-P img {
   background: none;
 }
-.opt-P img {
-  background: none;
-}
+
 .result h2 {
   color: #fff;
   text-align: center;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 39px;
   font-style: normal;
   font-weight: 800;
@@ -317,10 +319,11 @@ ul li::before {
   letter-spacing: 3.9px;
   background: none;
 }
+
 .result h3 {
   color: #fff;
   text-align: center;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 25px;
   font-style: normal;
   font-weight: 800;
@@ -328,13 +331,14 @@ ul li::before {
   letter-spacing: 2.5px;
   background: none;
 }
+
 .result button {
   width: 174px;
   height: 44px;
   border-radius: 9px;
   background: #fff;
   color: #6b6b6b;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 15px;
   font-style: normal;
   font-weight: 600;
@@ -343,158 +347,44 @@ ul li::before {
   cursor: pointer;
   border: none;
 }
+
+/* Screen Configuration Variant 1 */
 .ipt-U1 {
   position: absolute;
   z-index: 1;
   top: 100px;
   left: 42%;
 }
+
 .opt-U1 {
   position: absolute;
   z-index: 1;
   bottom: 32%;
   left: 33%;
 }
+
 .ipt-P1 {
   margin-left: 30px;
   margin-top: -55px;
 }
+
 .opt-P1 {
   margin-top: 35px;
 }
+
 .result1 {
   margin-left: -140px;
   background: none;
   z-index: 1;
 }
+
 .result1 h3 {
   margin-top: -25px;
 }
+
 .result1 button {
   margin-left: 5px;
 }
 
-.ipt-U2 {
-  margin-top: -50px;
-  margin-left: 30px;
-}
-.opt-U2 {
-  margin-top: 40px;
-}
-.ipt-P2 {
-  position: absolute;
-  z-index: 1;
-  margin-top: 100px;
-  margin-left: 185px;
-}
-.opt-P2 {
-  position: absolute;
-  z-index: 1;
-  margin-top: -322px;
-  margin-left: 155px;
-}
-.result2 {
-  margin-right: -150px;
-  background: none;
-  z-index: 1;
-}
-.result2 h3 {
-  margin-top: -25px;
-}
-.result2 button {
-  margin-left: 15px;
-}
-
-.ipt-U3 {
-  margin-left: 50px;
-}
-.opt-U3 {
-  margin-left: 30px;
-  margin-top: 30px;
-}
-.ipt-P3 {
-  margin-left: 60px;
-}
-.opt-P3 {
-  margin-left: 30px;
-  margin-top: 30px;
-}
-.next {
-  border: 2px solid white;
-  color: white;
-  border-radius: 5px;
-  background-color: #8cc461;
-  padding: 5px 20px;
-  text-align: center;
-  font-family: "Roboto Mono", monospace;
-  letter-spacing: 3px;
-  font-weight: bold;
-}
-.btn {
-  text-align: right;
-  
-  margin-left: 85vw;
-  margin-bottom: 20vh;
-  
-}
-.rules {
-  border: 2px solid white;
-  color: white;
-  border-radius: 5px;
-  background-color: purple;
-  padding: 5px 20px;
-  text-align: center;
-  font-family: "Roboto Mono", monospace;
-  letter-spacing: 3px;
-  font-weight: bold;
-  font-size: 20px;
-  height: 60px;
-}
-.btn1 {
-  text-align: right;
-  position: absolute;
-  margin-left: 60vw;
-  margin-top: 91vh;
-  
-}
-#nxt {
-  color: #fff;
-  font-family: Roboto;
-  font-size: 21px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  letter-spacing: 2.1px;
-}
-#comscore {
-  font-size: 45px;
-  font-weight: bold;
-  line-height: 2;
-  margin-bottom: 2%;
-  margin-top: 1%;
-  color: #000;
-}
-#youscore {
-  font-size: 45px;
-  font-weight: bold;
-  line-height: 2;
-  margin-bottom: 2%;
-  margin-top: 1%;
-  color: #000;
-}
-.symbol {
-  background-color: red;
-  border-radius: 100%;
-  border: 3px solid white;
-  height: 70px;
-  width: 60px;
-  margin-top: 3vh;
-  margin-left: 3vw;
-}
-/* Add this to your existing CSS */
-.chart {
-  margin-top: 30px;
-  display: flex;
-  justify-content: center;
-}
+/* Screen Configuration Variant 2 */
 
