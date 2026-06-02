@@ -99,11 +99,16 @@ body {
     align-items: center;
     flex-wrap: wrap;
     gap: 16px;
-    background-color: var(--card-bg);
+
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(14px);
+
     border: 1px solid var(--border-color);
     padding: 16px 24px;
-    border-radius: 12px;
+    border-radius: 16px;
     margin-bottom: 24px;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
 .logo-group h1 { font-size: 1.4rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.01em; }
@@ -177,7 +182,7 @@ body {
 }
 
 .floating-theme-btn:hover {
-    transform: translateY(-2px);
+    transform: translateY(-4px) rotate(15deg);
     background-color: var(--panel-bg);
     border-color: var(--text-sub);
 }
@@ -224,8 +229,23 @@ body {
     }
 
     #transactionForm .btn-primary {
-        margin-top: auto;      /* Snaps form action button level with the right baseline */
-    }
+    background: linear-gradient(
+        135deg,
+        #4F46E5,
+        #7C3AED
+    );
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 4px;
+    min-height: 44px;
+
+    box-shadow:
+        0 8px 20px rgba(79,70,229,0.25);
+}
 
     .full-width-layout { width: 100%; }
 }
@@ -296,7 +316,10 @@ h2 { font-size: 1.05rem; font-weight: 600; margin-bottom: 16px; color: var(--tex
 /* Controls Base Config */
 button { font-family: inherit; font-weight: 500; border-radius: 8px; cursor: pointer; transition: all 0.15s; min-height: 38px; }
 .btn-primary { background-color: var(--brand-color); color: white; border: none; padding: 12px; font-size: 0.9rem; font-weight: 600; width: 100%; margin-top: 4px; min-height: 44px; }
-.btn-primary:hover { background-color: var(--brand-color-hover); }
+.btn-primary:hover {
+    background-color: var(--brand-color-hover);
+    transform: translateY(-2px);
+}
 .btn-secondary { background-color: transparent; border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 12px; font-size: 0.8rem; }
 .btn-secondary:hover { background-color: var(--panel-bg); }
 .btn-danger { background-color: transparent; border: 1px solid rgba(239, 68, 68, 0.3); color: var(--red-error); padding: 8px 12px; font-size: 0.8rem; }
@@ -311,6 +334,13 @@ button { font-family: inherit; font-weight: 500; border-radius: 8px; cursor: poi
     margin-bottom: 24px;
 }
 .stat-box { background-color: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px 18px; }
+.stat-box{
+    transition: all 0.3s ease;
+}
+
+.stat-box:hover{
+    transform: scale(1.02);
+}
 .stat-box.balance-box { grid-column: span 2; background-color: var(--balance-bg); padding: 20px 24px; }
 .stat-title { font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; font-weight: 600; letter-spacing: 0.02em; }
 .stat-number { font-size: 1.4rem; font-weight: 700; margin-top: 4px; word-break: break-all; }
@@ -351,7 +381,21 @@ button { font-family: inherit; font-weight: 500; border-radius: 8px; cursor: poi
 .progress-text { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-sub); }
 .progress-text span:last-child { color: var(--text-main); font-weight: 600; }
 .progress-track { height: 6px; background-color: var(--border-color); border-radius: 4px; overflow: hidden; }
-.progress-fill { height: 100%; border-radius: 4px; width: 0%; transition: width 0.3s ease-out; }
+.progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    width: 0%;
+    transition: width 0.3s ease-out;
+
+    background: linear-gradient(
+        90deg,
+        #10B981,
+        #3B82F6
+    );
+
+    box-shadow:
+        0 0 12px rgba(59,130,246,0.35);
+}
 
 @media (min-width: 480px) { .visual-chart-box { flex-direction: row; gap: 28px; } }
 

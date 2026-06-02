@@ -1,370 +1,731 @@
-// Variable Declarations to monitor state engines
-let countdownInterval = null;
-let timeRemaining = 0; // Tracks total remaining seconds
-let isPaused = true;
+// =============================================
+// STATE
+// =============================================
+const CIRCUMFERENCE = 2 * Math.PI * 140; // r=140
 
-// DOM Target Element Fetch Configurations
-const daysEl = document.getElementById('days');
-const hoursEl = document.getElementById('hours');
-const minutesEl = document.getElementById('minutes');
-const secondsEl = document.getElementById('seconds');
+let state = {
+  mode: 'custom',       // custom | pomodoro | stopwatch
+  status: 'idle',       // idle | running | paused | finished
+  totalSeconds: 300,    // initial duration
+  remaining: 300,       // current remaining
+  elapsed: 0,           // for stopwatch
+  interval: null,
+  pomoCycle: 0,         // 0-indexed pomodoro cycle
+  pomoPhase: 'work',    // work | break | longbreak
+  pomoCompleted: 0,
+  pomoConfig: { work: 25, shortBreak: 5, longBreak: 15, cycles: 4 },
+  sessionCount: 1,
+  isDark: true,
+};
 
-const startBtn = document.getElementById('start');
-const pauseBtn = document.getElementById('pause');
-const resetBtn = document.getElementById('reset');
-const setTimeBtn = document.getElementById('set-time-btn');
+// Session history stored in localStorage
+let sessionHistory = JSON.parse(localStorage.getItem('ft_history') || '[]');
+let preferences = JSON.parse(localStorage.getItem('ft_prefs') || '{}');
 
-const inputHours = document.getElementById('input-hours');
-const inputMinutes = document.getElementById('input-minutes');
-const inputSeconds = document.getElementById('input-seconds');
+// Apply saved preferences
+if (preferences.theme) {
+  state.isDark = preferences.theme === 'dark';
+  document.documentElement.setAttribute('data-theme', preferences.theme);
+  document.getElementById('themeBtn').textContent = state.isDark ? '☀️' : '🌙';
+}
 
-const themeToggle = document.getElementById('theme-toggle');
-const alarmSound = document.getElementById('alarm-sound');
+// =============================================
+// DOM REFS
+// =============================================
+const $ = id => document.getElementById(id);
+const els = {
+  app: $('app'),
+  display: $('timerDisplay'),
+  modeLabel: $('modeLabel'),
+  ringProgress: $('ringProgress'),
+  ringDot: $('ringDot'),
+  progressBarFill: $('progressBarFill'),
+  progressPct: $('progressPct'),
+  percentLabel: $('percentLabel'),
+  sessionLabel: $('sessionLabel'),
+  startPauseBtn: $('startPauseBtn'),
+  resetBtn: $('resetBtn'),
+  skipBtn: $('skipBtn'),
+  inputHours: $('inputHours'),
+  inputMinutes: $('inputMinutes'),
+  inputSeconds: $('inputSeconds'),
+  presets: $('presets'),
+  timeInputRow: $('timeInputRow'),
+  pomodoroInfo: $('pomodoroInfo'),
+  pomoCompleted: $('pomoCompleted'),
+  statsOverlay: $('statsOverlay'),
+  keyboardOverlay: $('keyboardOverlay'),
+  completionOverlay: $('completionOverlay'),
+  completionTitle: $('completionTitle'),
+  completionMsg: $('completionMsg'),
+  completionEmoji: $('completionEmoji'),
+  toast: $('toast'),
+  statsGrid: $('statsGrid'),
+  sessionHistoryEl: $('sessionHistory'),
+  themeBtn: $('themeBtn'),
+};
 
-/* ==========================================================================
-   1. Theme Management System (Light/Dark Engine)
-   ========================================================================== */
-const savedTheme = localStorage.getItem('theme') || 'light';
-document.documentElement.setAttribute('data-theme', savedTheme);
-updateThemeIcon(savedTheme);
+// =============================================
+// AUDIO (Web Audio API — no file needed)
+// =============================================
+let audioCtx = null;
 
-themeToggle.addEventListener('click', () => {
-  const currentTheme = document.documentElement.getAttribute('data-theme');
-  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
 
-  document.documentElement.setAttribute('data-theme', newTheme);
-  localStorage.setItem('theme', newTheme);
-  updateThemeIcon(newTheme);
-});
+function playBeep(freq = 440, duration = 0.3, type = 'sine', vol = 0.4) {
+  try {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value = freq;
+    osc.type = type;
+    gain.gain.setValueAtTime(vol, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + duration);
+  } catch (e) {}
+}
 
-function updateThemeIcon(theme) {
-  const icon = themeToggle.querySelector('i');
-  if (theme === 'dark') {
-    icon.className = 'fas fa-sun';
-  } else {
-    icon.className = 'fas fa-moon';
+function playCompletionSound() {
+  // Ascending arpeggio
+  [523, 659, 784, 1047].forEach((freq, i) => {
+    setTimeout(() => playBeep(freq, 0.4, 'triangle', 0.3), i * 150);
+  });
+}
+
+function playTickSound() {
+  playBeep(800, 0.05, 'square', 0.08);
+}
+
+// =============================================
+// TIMER CORE
+// =============================================
+function startTimer() {
+  if (state.status === 'finished') return;
+
+  // If idle, read inputs (custom/stopwatch)
+  if (state.status === 'idle') {
+    if (state.mode === 'custom') {
+      const h = parseInt(els.inputHours.value) || 0;
+      const m = parseInt(els.inputMinutes.value) || 0;
+      const s = parseInt(els.inputSeconds.value) || 0;
+      const total = h * 3600 + m * 60 + s;
+      if (total <= 0) { showToast('⚠️ Set a duration first!'); return; }
+      state.totalSeconds = total;
+      state.remaining = total;
+    } else if (state.mode === 'pomodoro') {
+      state.pomoPhase = 'work';
+      state.pomoCycle = 0;
+      state.totalSeconds = state.pomoConfig.work * 60;
+      state.remaining = state.totalSeconds;
+      updateModeLabel();
+    } else if (state.mode === 'stopwatch') {
+      state.elapsed = 0;
+    }
   }
+
+  state.status = 'running';
+  els.app.classList.add('running');
+  els.ringProgress.classList.add('running');
+  updateStartPauseBtn();
+  lockInputs(true);
+
+  clearInterval(state.interval);
+  state.interval = setInterval(tick, 1000);
 }
 
-/* ==========================================================================
-   2. Calculations Engine & State Updates
-   ========================================================================== */
-function updateDisplay() {
-  const d = Math.floor(timeRemaining / (3600 * 24));
-  const h = Math.floor((timeRemaining % (3600 * 24)) / 3600);
-  const m = Math.floor((timeRemaining % 3600) / 60);
-  const s = timeRemaining % 60;
-
-  daysEl.textContent = String(d).padStart(2, '0');
-  hoursEl.textContent = String(h).padStart(2, '0');
-  minutesEl.textContent = String(m).padStart(2, '0');
-  secondsEl.textContent = String(s).padStart(2, '0');
-}
-
-// Processing User Custom Input Fields setup
-setTimeBtn.addEventListener('click', () => {
-  const hrs = parseInt(inputHours.value) || 0;
-  const mins = parseInt(inputMinutes.value) || 0;
-  const secs = parseInt(inputSeconds.value) || 0;
-
-  // Convert everything into a clean singular unit pool of seconds
-  timeRemaining = (hrs * 3600) + (mins * 60) + secs;
-
-  if (timeRemaining <= 0) {
-    alert("Please enter a valid time duration duration to track!");
+function tick() {
+  if (state.mode === 'stopwatch') {
+    state.elapsed += 1000;
+    updateStopwatchDisplay();
     return;
   }
 
-  updateDisplay();
+  state.remaining--;
 
-  // Enable running mechanism button profiles
-  startBtn.disabled = false;
-  pauseBtn.disabled = true;
-
-  // Clear any residual background cycles
-  clearInterval(countdownInterval);
-  isPaused = true;
-});
-
-/* ==========================================================================
-   3. Operational Trigger Engine Framework (Start, Pause, Reset)
-   ========================================================================== */
-startBtn.addEventListener('click', () => {
-  if (!isPaused) return;
-
-  isPaused = false;
-  startBtn.disabled = true;
-  pauseBtn.disabled = false;
-
-  countdownInterval = setInterval(() => {
-    if (timeRemaining <= 0) {
-      clearInterval(countdownInterval);
-      alarmSound.play(); // Trigger ending alert
-      isPaused = true;
-      startBtn.disabled = true;
-      pauseBtn.disabled = true;
-      alert("Time is up!");
-      return;
-    }
-
-    timeRemaining--;
-    updateDisplay();
-  }, 1000);
-});
-
-pauseBtn.addEventListener('click', () => {
-  if (isPaused) return;
-
-  clearInterval(countdownInterval);
-  isPaused = true;
-  startBtn.disabled = false;
-  pauseBtn.disabled = true;
-});
-
-resetBtn.addEventListener('click', () => {
-  clearInterval(countdownInterval);
-  timeRemaining = 0;
-  isPaused = true;
+  // Tick sound in last 10 seconds
+  if (state.remaining <= 10 && state.remaining > 0) playTickSound();
 
   updateDisplay();
+  updateRing();
+  updateProgressBar();
+  updateWarningState();
 
-  // Empty user interface field blocks
-  inputHours.value = '';
-  inputMinutes.value = '';
-  inputSeconds.value = '';
+  if (state.remaining <= 0) {
+    handleTimerComplete();
+  }
+}
 
-  startBtn.disabled = true;
-  pauseBtn.disabled = true;
-  alarmSound.pause();
-  alarmSound.currentTime = 0;
-document.addEventListener("DOMContentLoaded", () => {
+function pauseTimer() {
+  clearInterval(state.interval);
+  state.status = 'paused';
+  els.app.classList.remove('running');
+  els.ringProgress.classList.remove('running');
+  updateStartPauseBtn();
+  showToast('⏸ Paused');
+}
 
-  let countdown;
+function resetTimer() {
+  clearInterval(state.interval);
+  state.status = 'idle';
+  state.elapsed = 0;
+  els.app.classList.remove('running');
+  els.ringProgress.classList.remove('running');
+  els.display.classList.remove('warning', 'danger');
 
-  let totalTime = 0;
-
-  let remainingTime = 0;
-
-  const minutesEl =
-    document.getElementById("minutes");
-
-  const secondsEl =
-    document.getElementById("seconds");
-
-  const inputHours =
-    document.getElementById("inputHours");
-
-  const inputMinutes =
-    document.getElementById("inputMinutes");
-
-  const inputSeconds =
-    document.getElementById("inputSeconds");
-
-  const progressCircle =
-    document.querySelector(".progress-circle");
-
-  const startBtn =
-    document.getElementById("start");
-
-  const pauseBtn =
-    document.getElementById("pause");
-
-  const resetBtn =
-    document.getElementById("reset");
-
-  const themeToggle =
-    document.getElementById("themeToggle");
-
-  const alarmSound =
-    document.getElementById("alarmSound");
-
-  const circleLength = 691;
-
-  // BROWSER NOTIFICATION
-
-  function showTimerNotification() {
-
-    if (!("Notification" in window)) {
-      return;
-    }
-
-    if (Notification.permission === "granted") {
-
-      new Notification("⏰ Timer Complete", {
-        body: "Your focus session has ended. Take a break!"
-      });
-
-    }
-
+  if (state.mode === 'custom') {
+    const h = parseInt(els.inputHours.value) || 0;
+    const m = parseInt(els.inputMinutes.value) || 0;
+    const s = parseInt(els.inputSeconds.value) || 0;
+    state.totalSeconds = h * 3600 + m * 60 + s || 300;
+    state.remaining = state.totalSeconds;
+  } else if (state.mode === 'pomodoro') {
+    state.pomoPhase = 'work';
+    state.pomoCycle = 0;
+    state.totalSeconds = state.pomoConfig.work * 60;
+    state.remaining = state.totalSeconds;
+    updateModeLabel();
+  } else {
+    state.remaining = state.totalSeconds;
   }
 
-  // THEME
+  updateDisplay();
+  updateRing();
+  updateProgressBar();
+  lockInputs(false);
+  updateStartPauseBtn();
+}
 
-  const savedTheme =
-    localStorage.getItem("theme");
+function skipTime() {
+  if (state.mode === 'stopwatch') {
+    state.elapsed += 15000;
+    updateStopwatchDisplay();
+    return;
+  }
+  if (state.status !== 'running') return;
+  state.remaining = Math.max(0, state.remaining - 15);
+  updateDisplay();
+  updateRing();
+  updateProgressBar();
+  showToast('⏩ Skipped 15s');
+}
 
-  if (savedTheme === "dark") {
+function handleTimerComplete() {
+  clearInterval(state.interval);
+  state.status = 'finished';
+  els.app.classList.remove('running');
+  els.ringProgress.classList.remove('running');
+  playCompletionSound();
 
-    document.body.classList.add("dark");
+  // Save session
+  const session = {
+    type: state.mode === 'pomodoro' ? `Pomodoro ${state.pomoPhase}` : 'Custom',
+    duration: formatSeconds(state.totalSeconds),
+    completedAt: new Date().toLocaleString(),
+    timestamp: Date.now()
+  };
+  sessionHistory.unshift(session);
+  if (sessionHistory.length > 50) sessionHistory.pop();
+  localStorage.setItem('ft_history', JSON.stringify(sessionHistory));
 
-    themeToggle.textContent = "☀";
+  // Pomodoro auto-advance
+  if (state.mode === 'pomodoro') {
+    handlePomoAdvance();
+    return;
   }
 
-  themeToggle.addEventListener("click", () => {
+  showCompletion('🎉', "Time's Up!", 'Great work! Session complete.');
+  updateRing(0);
+  els.display.classList.remove('warning', 'danger');
+}
 
-    document.body.classList.toggle("dark");
+// =============================================
+// POMODORO LOGIC
+// =============================================
+function handlePomoAdvance() {
+  if (state.pomoPhase === 'work') {
+    state.pomoCompleted++;
+    $('pomoCompleted').textContent = state.pomoCompleted;
+    state.pomoCycle++;
 
-    if (document.body.classList.contains("dark")) {
-
-      localStorage.setItem("theme", "dark");
-
-      themeToggle.textContent = "☀";
-
+    if (state.pomoCycle >= state.pomoConfig.cycles) {
+      // Long break
+      state.pomoPhase = 'longbreak';
+      state.totalSeconds = state.pomoConfig.longBreak * 60;
+      showCompletion('☕', 'Long Break!', `${state.pomoConfig.cycles} cycles done! Take a ${state.pomoConfig.longBreak} min break.`);
     } else {
-
-      localStorage.setItem("theme", "light");
-
-      themeToggle.textContent = "🌙";
+      state.pomoPhase = 'break';
+      state.totalSeconds = state.pomoConfig.shortBreak * 60;
+      showCompletion('😌', 'Short Break!', `Cycle ${state.pomoCycle}/${state.pomoConfig.cycles} done! Rest for ${state.pomoConfig.shortBreak} min.`);
     }
+  } else if (state.pomoPhase === 'break') {
+    state.pomoPhase = 'work';
+    state.totalSeconds = state.pomoConfig.work * 60;
+    showCompletion('💪', 'Back to Work!', 'Break over. Stay focused!');
+  } else {
+    // Long break done — full reset
+    state.pomoCycle = 0;
+    state.pomoPhase = 'work';
+    state.pomoCompleted = 0;
+    state.totalSeconds = state.pomoConfig.work * 60;
+    $('pomoCompleted').textContent = 0;
+    showCompletion('🏆', 'Session Complete!', `All ${state.pomoConfig.cycles} pomodoro cycles finished!`);
+  }
 
+  state.remaining = state.totalSeconds;
+  updateModeLabel();
+  updateDisplay();
+  updateRing(0);
+}
+
+// =============================================
+// DISPLAY UPDATES
+// =============================================
+function updateDisplay() {
+  els.display.textContent = formatSeconds(state.remaining);
+}
+
+function updateStopwatchDisplay() {
+  const ms = state.elapsed;
+  const h = Math.floor(ms / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  const s = Math.floor((ms % 60000) / 1000);
+  els.display.textContent = h > 0
+    ? `${pad(h)}:${pad(m)}:${pad(s)}`
+    : `${pad(m)}:${pad(s)}`;
+}
+
+function updateRing(overridePct) {
+  const pct = overridePct !== undefined
+    ? overridePct
+    : state.totalSeconds > 0
+      ? (state.totalSeconds - state.remaining) / state.totalSeconds
+      : 0;
+
+  const offset = CIRCUMFERENCE * (1 - pct);
+  els.ringProgress.style.strokeDashoffset = offset;
+
+  // Move dot along ring
+  const angle = pct * 360 - 90;
+  const rad = (angle * Math.PI) / 180;
+  const cx = 160 + 140 * Math.cos(rad);
+  const cy = 160 + 140 * Math.sin(rad);
+  els.ringDot.setAttribute('cx', cx);
+  els.ringDot.setAttribute('cy', cy);
+}
+
+function updateProgressBar() {
+  const pct = state.totalSeconds > 0
+    ? Math.round(((state.totalSeconds - state.remaining) / state.totalSeconds) * 100)
+    : 0;
+  els.progressBarFill.style.width = pct + '%';
+  els.progressPct.textContent = pct + '%';
+  els.percentLabel.textContent = pct + '%';
+}
+
+function updateWarningState() {
+  const pct = state.remaining / state.totalSeconds;
+  els.display.classList.remove('warning', 'danger');
+  if (pct <= 0.1) els.display.classList.add('danger');
+  else if (pct <= 0.25) els.display.classList.add('warning');
+}
+
+function updateModeLabel() {
+  const labels = {
+    work: 'FOCUS',
+    break: 'SHORT BREAK',
+    longbreak: 'LONG BREAK',
+    custom: 'COUNTDOWN',
+    stopwatch: 'STOPWATCH'
+  };
+  if (state.mode === 'pomodoro') {
+    els.modeLabel.textContent = labels[state.pomoPhase] || 'FOCUS';
+  } else {
+    els.modeLabel.textContent = labels[state.mode] || 'FOCUS';
+  }
+}
+
+function updateStartPauseBtn() {
+  if (state.status === 'running') {
+    els.startPauseBtn.textContent = '⏸ Pause';
+    els.startPauseBtn.style.background = 'linear-gradient(135deg, #6366f1, #8b5cf6)';
+  } else {
+    els.startPauseBtn.textContent = '▶ Start';
+    els.startPauseBtn.style.background = '';
+  }
+}
+
+function lockInputs(lock) {
+  els.inputHours.disabled = lock;
+  els.inputMinutes.disabled = lock;
+  els.inputSeconds.disabled = lock;
+  document.querySelectorAll('.preset-btn').forEach(b => b.disabled = lock);
+}
+
+// =============================================
+// MODE SWITCHING
+// =============================================
+function switchMode(mode) {
+  if (state.status === 'running') pauseTimer();
+
+  state.mode = mode;
+  state.status = 'idle';
+  state.elapsed = 0;
+  clearInterval(state.interval);
+  els.display.classList.remove('warning', 'danger');
+
+  document.querySelectorAll('.mode-tab').forEach(t => t.classList.toggle('active', t.dataset.mode === mode));
+
+  // Show/hide UI sections
+  els.timeInputRow.style.display = (mode === 'stopwatch') ? 'none' : '';
+  els.presets.style.display = (mode === 'stopwatch') ? 'none' : '';
+  els.skipBtn.textContent = mode === 'stopwatch' ? '+15s' : '+15s';
+  els.pomodoroInfo.classList.toggle('hidden', mode !== 'pomodoro');
+
+  if (mode === 'pomodoro') {
+    state.pomoPhase = 'work';
+    state.pomoCycle = 0;
+    state.pomoCompleted = 0;
+    state.totalSeconds = state.pomoConfig.work * 60;
+    state.remaining = state.totalSeconds;
+    $('pomoCompleted').textContent = 0;
+  } else if (mode === 'stopwatch') {
+    state.totalSeconds = 0;
+    state.remaining = 0;
+    els.display.textContent = '00:00';
+  } else {
+    const h = parseInt(els.inputHours.value) || 0;
+    const m = parseInt(els.inputMinutes.value) || 0;
+    const s = parseInt(els.inputSeconds.value) || 0;
+    state.totalSeconds = h * 3600 + m * 60 + s || 300;
+    state.remaining = state.totalSeconds;
+  }
+
+  updateModeLabel();
+  updateDisplay();
+  updateRing(0);
+  updateProgressBar();
+  lockInputs(false);
+  updateStartPauseBtn();
+}
+
+// =============================================
+// PRESETS
+// =============================================
+document.querySelectorAll('.preset-btn').forEach((btn, i) => {
+  btn.addEventListener('click', () => {
+    if (state.status === 'running') return;
+    const secs = parseInt(btn.dataset.seconds);
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const h = Math.floor(secs / 3600);
+    const m = Math.floor((secs % 3600) / 60);
+    const s = secs % 60;
+    els.inputHours.value = h;
+    els.inputMinutes.value = m;
+    els.inputSeconds.value = s;
+    state.totalSeconds = secs;
+    state.remaining = secs;
+    updateDisplay();
+    updateRing(0);
+    updateProgressBar();
+    playBeep(600, 0.1, 'sine', 0.2);
+  });
+});
+
+// Keyboard shortcut: keys 1-7 for presets
+// handled in keydown below
+
+// =============================================
+// MODE TABS
+// =============================================
+document.querySelectorAll('.mode-tab').forEach(tab => {
+  tab.addEventListener('click', () => switchMode(tab.dataset.mode));
+});
+
+// =============================================
+// CONTROLS
+// =============================================
+els.startPauseBtn.addEventListener('click', () => {
+  if (state.status === 'running') pauseTimer();
+  else startTimer();
+});
+
+els.resetBtn.addEventListener('click', resetTimer);
+els.skipBtn.addEventListener('click', skipTime);
+
+// Input change → update state
+[els.inputHours, els.inputMinutes, els.inputSeconds].forEach(inp => {
+  inp.addEventListener('change', () => {
+    if (state.status !== 'idle') return;
+    const h = parseInt(els.inputHours.value) || 0;
+    const m = parseInt(els.inputMinutes.value) || 0;
+    const s = parseInt(els.inputSeconds.value) || 0;
+    state.totalSeconds = h * 3600 + m * 60 + s;
+    state.remaining = state.totalSeconds;
+    updateDisplay();
+    updateRing(0);
+    updateProgressBar();
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  });
+});
+
+// =============================================
+// HEADER BUTTONS
+// =============================================
+els.themeBtn.addEventListener('click', () => {
+  state.isDark = !state.isDark;
+  const theme = state.isDark ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', theme);
+  els.themeBtn.textContent = state.isDark ? '☀️' : '🌙';
+  preferences.theme = theme;
+  localStorage.setItem('ft_prefs', JSON.stringify(preferences));
+  showToast(state.isDark ? '🌙 Dark mode' : '☀️ Light mode');
+});
+
+$('fullscreenBtn').addEventListener('click', toggleFullscreen);
+$('statsBtn').addEventListener('click', openStats);
+$('keyboardBtn').addEventListener('click', () => {
+  $('keyboardOverlay').classList.remove('hidden');
+});
+
+// =============================================
+// FULLSCREEN
+// =============================================
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {});
+    document.body.classList.add('fullscreen-mode');
+    $('fullscreenBtn').textContent = '⛶';
+  } else {
+    document.exitFullscreen();
+    document.body.classList.remove('fullscreen-mode');
+  }
+}
+
+document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement) {
+    document.body.classList.remove('fullscreen-mode');
+  }
+});
+
+// =============================================
+// STATS
+// =============================================
+function openStats() {
+  const total = sessionHistory.length;
+  const totalFocusMs = sessionHistory
+    .filter(s => s.type.includes('Focus') || s.type === 'Custom')
+    .reduce((sum, s) => {
+      const parts = s.duration.split(':').map(Number);
+      const secs = parts.length === 3
+        ? parts[0]*3600 + parts[1]*60 + parts[2]
+        : parts[0]*60 + parts[1];
+      return sum + secs;
+    }, 0);
+
+  const pomoSessions = sessionHistory.filter(s => s.type.includes('Pomodoro')).length;
+
+  els.statsGrid.innerHTML = [
+    ['📅', 'Total Sessions', total],
+    ['⏱', 'Focus Time', formatSeconds(totalFocusMs)],
+    ['🍅', 'Pomodoros', pomoSessions],
+    ['🔥', 'Today', sessionHistory.filter(s => {
+      const d = new Date(s.timestamp);
+      const now = new Date();
+      return d.toDateString() === now.toDateString();
+    }).length],
+  ].map(([icon, lbl, val]) => `
+    <div class="stat-card">
+      <span style="font-size:1.5rem;">${icon}</span>
+      <span class="stat-val">${val}</span>
+      <span class="stat-lbl">${lbl}</span>
+    </div>
+  `).join('');
+
+  els.sessionHistoryEl.innerHTML = sessionHistory.length === 0
+    ? '<p style="color:var(--text-2);font-size:0.85rem;text-align:center;padding:20px;">No sessions yet.</p>'
+    : sessionHistory.slice(0, 10).map(s => `
+      <div class="session-item">
+        <div>
+          <span class="si-type">${s.type}</span>
+          <div style="font-size:0.8rem;color:var(--text);margin-top:2px;">${s.duration}</div>
+        </div>
+        <span class="si-time">${s.completedAt}</span>
+      </div>
+    `).join('');
+
+  els.statsOverlay.classList.remove('hidden');
+}
+
+function exportHistory() {
+  const csv = ['Type,Duration,Completed At']
+    .concat(sessionHistory.map(s => `${s.type},${s.duration},${s.completedAt}`))
+    .join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'focus-sessions.csv';
+  a.click();
+  showToast('⬇️ Exported!');
+}
+
+function clearHistory() {
+  sessionHistory = [];
+  localStorage.removeItem('ft_history');
+  openStats();
+  showToast('🗑️ History cleared');
+}
+
+// =============================================
+// COMPLETION
+// =============================================
+function showCompletion(emoji, title, msg) {
+  els.completionEmoji.textContent = emoji;
+  els.completionTitle.textContent = title;
+  els.completionMsg.textContent = msg;
+  els.completionOverlay.classList.remove('hidden');
+}
+
+function closeCompletion() {
+  els.completionOverlay.classList.add('hidden');
+  state.status = 'idle';
+  updateStartPauseBtn();
+}
+
+function restartTimer() {
+  closeCompletion();
+  resetTimer();
+  startTimer();
+}
+
+// =============================================
+// PANEL CLOSE
+// =============================================
+function closePanel(id) {
+  $(id).classList.add('hidden');
+}
+
+// Click outside panel to close
+['statsOverlay','keyboardOverlay'].forEach(id => {
+  $(id).addEventListener('click', e => {
+    if (e.target === $(id)) closePanel(id);
+  });
+});
+
+// =============================================
+// KEYBOARD SHORTCUTS
+// =============================================
+document.addEventListener('keydown', e => {
+  const tag = e.target.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
+  switch(e.key) {
+    case ' ':
+    case 'Space':
+      e.preventDefault();
+      if (state.status === 'running') pauseTimer();
+      else startTimer();
+      break;
+    case 'r': case 'R': resetTimer(); break;
+    case 'f': case 'F': toggleFullscreen(); break;
+    case 't': case 'T': els.themeBtn.click(); break;
+    case 's': case 'S': skipTime(); break;
+    case 'Escape':
+      closePanel('statsOverlay');
+      closePanel('keyboardOverlay');
+      closeCompletion();
+      break;
+    case '1': case '2': case '3': case '4': case '5': case '6': case '7':
+      const idx = parseInt(e.key) - 1;
+      const presetBtns = document.querySelectorAll('.preset-btn');
+      if (presetBtns[idx]) presetBtns[idx].click();
+      break;
+  }
+});
+
+// =============================================
+// TOAST
+// =============================================
+let toastTimer;
+function showToast(msg) {
+  clearTimeout(toastTimer);
+  els.toast.textContent = msg;
+  els.toast.classList.remove('hidden');
+  els.toast.classList.add('show');
+  toastTimer = setTimeout(() => {
+    els.toast.classList.remove('show');
+    setTimeout(() => els.toast.classList.add('hidden'), 300);
+  }, 2000);
+}
+
+// =============================================
+// HELPERS
+// =============================================
+function formatSeconds(s) {
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  if (h > 0) return `${pad(h)}:${pad(m)}:${pad(sec)}`;
+  return `${pad(m)}:${pad(sec)}`;
+}
+
+function pad(n) { return String(n).padStart(2, '0'); }
+
+// =============================================
+// INIT
+// =============================================
+function init() {
+  // Set ring circumference
+  els.ringProgress.style.strokeDasharray = CIRCUMFERENCE;
+  els.ringProgress.style.strokeDashoffset = CIRCUMFERENCE;
+
+  // Load saved preferences
+  if (preferences.lastMode) switchMode(preferences.lastMode);
+  if (preferences.lastDuration) {
+    const d = preferences.lastDuration;
+    els.inputHours.value = Math.floor(d / 3600);
+    els.inputMinutes.value = Math.floor((d % 3600) / 60);
+    els.inputSeconds.value = d % 60;
+    state.totalSeconds = d;
+    state.remaining = d;
+  }
+
+  updateDisplay();
+  updateRing(0);
+  updateProgressBar();
+  updateModeLabel();
+
+  // Save mode/duration preference on change
+  document.querySelectorAll('.mode-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      preferences.lastMode = t.dataset.mode;
+      localStorage.setItem('ft_prefs', JSON.stringify(preferences));
+    });
   });
 
-  // REQUEST NOTIFICATION PERMISSION
+  [els.inputHours, els.inputMinutes, els.inputSeconds].forEach(inp => {
+    inp.addEventListener('change', () => {
+      const h = parseInt(els.inputHours.value)||0;
+      const m = parseInt(els.inputMinutes.value)||0;
+      const s = parseInt(els.inputSeconds.value)||0;
+      preferences.lastDuration = h*3600+m*60+s;
+      localStorage.setItem('ft_prefs', JSON.stringify(preferences));
+    });
+  });
 
-  if ("Notification" in window &&
-      Notification.permission === "default") {
-
-    Notification.requestPermission();
-
-  }
-
-  // UPDATE DISPLAY
-
-  function updateDisplay() {
-
-    let mins =
-      Math.floor(remainingTime / 60);
-
-    let secs =
-      remainingTime % 60;
-
-    minutesEl.textContent =
-      String(mins).padStart(2, "0");
-
-    secondsEl.textContent =
-      String(secs).padStart(2, "0");
-
-    let progress =
-      remainingTime / totalTime;
-
-    progressCircle.style.strokeDashoffset =
-      circleLength * (1 - progress);
-  }
-
-  // START TIMER
-
-  function startTimer() {
-
-    if (remainingTime <= 0) {
-
-      totalTime =
-        Number(inputHours.value) * 3600 +
-        Number(inputMinutes.value) * 60 +
-        Number(inputSeconds.value);
-
-      remainingTime = totalTime;
+  // Session counter update
+  setInterval(() => {
+    if (state.status === 'running' && state.mode !== 'pomodoro') {
+      els.sessionLabel.textContent = `Session ${state.sessionCount}`;
     }
+  }, 1000);
+}
 
-    if (remainingTime <= 0) {
-
-      return;
-    }
-
-    clearInterval(countdown);
-
-    countdown = setInterval(() => {
-
-      remainingTime--;
-
-      updateDisplay();
-
-      if (remainingTime <= 0) {
-
-        clearInterval(countdown);
-
-        alarmSound.play();
-
-        confetti({
-          particleCount: 180,
-          spread: 90
-        });
-
-        showTimerNotification();
-
-      }
-
-    }, 1000);
-  }
-
-  // PAUSE TIMER
-
-  function pauseTimer() {
-
-    clearInterval(countdown);
-  }
-
-  // RESET TIMER
-
-  function resetTimer() {
-
-    clearInterval(countdown);
-
-    remainingTime = 0;
-
-    totalTime = 0;
-
-    minutesEl.textContent = "00";
-
-    secondsEl.textContent = "00";
-
-    progressCircle.style.strokeDashoffset = 0;
-
-    inputHours.value = 0;
-
-    inputMinutes.value = 0;
-
-    inputSeconds.value = 0;
-  }
-
-  // PRESETS
-
-  window.setPreset = function (seconds) {
-
-    inputHours.value =
-      Math.floor(seconds / 3600);
-
-    inputMinutes.value =
-      Math.floor((seconds % 3600) / 60);
-
-    inputSeconds.value =
-      seconds % 60;
-  };
-
-  // EVENTS
-
-  startBtn.addEventListener(
-    "click",
-    startTimer
-  );
-
-  pauseBtn.addEventListener(
-    "click",
-    pauseTimer
-  );
-
-  resetBtn.addEventListener(
-    "click",
-    resetTimer
-  );
-
-});
+init();
