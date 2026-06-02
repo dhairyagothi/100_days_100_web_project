@@ -3183,3 +3183,10 @@ body > header {
         transform: translateY(0);
     }
 }
+
+mark.highlight {
+  background-color: transparent;
+  color: #ff00ff; /* Neon Magenta */
+  text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff;
+  font-weight: bold;
+}

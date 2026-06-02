@@ -718,7 +718,15 @@ function renderGrid() {
 
   if (filtered.length === 0) {
     grid.style.display = "none";
-    if (noResults) noResults.style.display = "block";
+    if (noResults) {
+      noResults.style.display = "block";
+      noResults.innerHTML = `
+    <div class="glass-empty-state">
+      <h3>No projects match your criteria.</h3>
+      <button onclick="resetAllFilters()" class="btn-clear">Clear all filters</button>
+    </div>
+  ` ;
+    }
     const container = document.getElementById("paginationContainer");
     if (container) container.remove();
     return;
@@ -737,16 +745,22 @@ function renderGrid() {
   const fragment = document.createDocumentFragment();
 
   // --- Card Creation ---
-  pageItems.forEach(([day, name, url, tags], index) => {
-    const category = getCategoryFromTags(tags, name);
-    const card = document.createElement("div");
-    
-    const isBookmarked = bookmarkedProjects.some(
-      (item) => normalizeProjectEntry(item).day === day,
-    );
-    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
-      day, name, url, tags, category, isBookmarked, showDescription: true,
-    });
+ pageItems.forEach(([day, name, url, tags], index) => {
+
+  const displayName = highlightText(name, searchQuery); 
+  
+  const category = getCategoryFromTags(tags, name);
+  const card = document.createElement("div");
+  
+  const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+    day, 
+    name: displayName, // Use the highlighted version here
+    url, 
+    tags, 
+    category, 
+    isBookmarked: false, 
+    showDescription: true,
+  });
 
     card.className = sourceOnly ? "project-card source-only" : "project-card";
     card.innerHTML = html;
@@ -1361,23 +1375,19 @@ function initClearAllFilters() {
   }
 }
 
-/* ============================================================
-   FILTER CHIPS
-   ============================================================ */
 function initFilterChips() {
-  const chips = document.querySelectorAll(".chip[data-filter]");
-  chips.forEach((chip) => {
-    if (chip.dataset.filter === activeFilter) {
-      chips.forEach((c) => c.classList.remove("active"));
-      chip.classList.add("active");
-    }
-
+  const chips = document.querySelectorAll(".chip");
+  chips.forEach(chip => {
     chip.addEventListener("click", () => {
-      chips.forEach((c) => c.classList.remove("active"));
+      // Update global variable
+      activeFilter = chip.getAttribute("data-filter");
+      
+      // Update UI classes
+      chips.forEach(c => c.classList.remove("active"));
       chip.classList.add("active");
-      activeFilter = chip.dataset.filter;
-      currentPage = 1;
-      renderGrid();
+      
+      currentPage = 1; // Always reset to page 1 on filter change
+      renderGrid();    // The Glue: This forces the grid to re-draw
     });
   });
 }
@@ -1398,17 +1408,15 @@ function debounce(fn, delay = 300) {
 }
 
 function initSearch() {
-  const input = document.getElementById("searchInput");
-  if (!input) return;
+  const searchInput = document.getElementById("searchInput");
+  if (!searchInput) return;
 
-  input.addEventListener(
-    "input",
-    debounce(() => {
-      searchQuery = input.value.trim();
-      currentPage = 1;
-      renderGrid();
-    }, 180),
-  );
+  searchInput.addEventListener("input", (e) => {
+    searchQuery = e.target.value; // Update the global search variable
+    currentPage = 1;              // Reset to first page so results aren't hidden
+    renderGrid();                 // Trigger the Matrix!
+  });
+}
 
   // Tech stack dropdown filter listener
   const techStack = document.getElementById("techStackFilter");
@@ -1429,7 +1437,6 @@ function initSearch() {
       renderGrid();
     });
   }
-}
 
 function initSorting() {
   const sortSelect = document.getElementById("sortProjects");
@@ -2229,3 +2236,18 @@ document.addEventListener('click', (e) => {
         document.querySelector('.dropdown-menu').classList.remove('show');
     }
 });
+
+/**
+ * Wraps search query matches in <mark> tags for neon-style highlighting.
+ * @param {string} text - The original text (e.g., project name)
+ * @param {string} query - The search query
+ */
+function highlightText(text, query) {
+  if (!query || query.trim() === "") return text;
+  
+  // Escapes special regex characters and creates a case-insensitive matcher
+  const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const regex = new RegExp(`(${escapedQuery})`, 'gi');
+  
+  return text.replace(regex, '<mark class="highlight">$1</mark>');
+}
