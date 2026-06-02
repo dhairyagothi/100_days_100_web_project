@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Habit Loop Tracker · 100 Days 100 Web Projects</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="app-wrapper">
+      <header class="app-header">
+        <h1><i class="fas fa-brain"></i> Psychology Habit Loop Tracker</h1>
+        <p>
+          Analyze why you succeed or fail by tracking the Cue, Routine, and
+          Reward cycles.
+        </p>
+      </header>
+
+      <div class="dashboard-grid">
+        <section class="form-container">
+          <h2>Log New Habit Cycle</h2>
+          <form id="habitForm">
+            <div class="input-group">
+              <label for="habitName">Habit Title</label>
+              <input
+                type="text"
+                id="habitName"
+                placeholder="e.g., Evening Coding Session"
+                required
+              />
+            </div>
+
+            <div class="loop-box cue">
+              <label for="habitCue"
+                ><i class="fas fa-bolt"></i> The Cue (The Trigger)</label
+              >
+              <small
+                >What event, time, or emotional state triggers this
+                routine?</small
+              >
+              <input
+                type="text"
+                id="habitCue"
+                placeholder="e.g., Phone alarm goes off at 8 PM"
+                required
+              />
+            </div>
+
+            <div class="loop-box routine">
+              <label for="habitRoutine"
+                ><i class="fas fa-running"></i> The Routine (The Action)</label
+              >
+              <small>What behavior do you perform in response?</small>
+              <input
+                type="text"
+                id="habitRoutine"
+                placeholder="e.g., Open VS Code and build for 45 minutes"
+                required
+              />
+            </div>
+
+            <div class="loop-box reward">
+              <label for="habitReward"
+                ><i class="fas fa-award"></i> The Reward (The
+                Satisfaction)</label
+              >
+              <small
+                >What immediate satisfaction do you gain from this loop?</small
+              >
+              <input
+                type="text"
+                id="habitReward"
+                placeholder="e.g., Checking off a task, drinking a hot tea"
+                required
+              />
+            </div>
+
+            <div class="input-group row">
+              <label for="loopStatus">Was the Reward Satisfying?</label>
+              <select id="loopStatus">
+                <option value="success">Yes, loop reinforced</option>
+                <option value="fail">No, routine broken/unsatisfying</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn-submit">
+              <i class="fas fa-plus-circle"></i> Log Loop Cycle
+            </button>
+          </form>
+        </section>
+
+        <main class="analytics-container">
+          <section class="chart-panel">
+            <h2>Loop Success Breakdown</h2>
+            <div class="chart-wrapper">
+              <canvas id="analyticsChart"></canvas>
+            </div>
+          </section>
+
+          <section class="history-panel">
+            <h2>Active Behavioral Log</h2>
+            <div class="log-list" id="logList"></div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -504,6 +504,73 @@ const addComment = () => {
 
 renderComments();
 
+// =======================
+// SEARCH FUNCTIONALITY
+// =======================
+
+const searchBlogs = () => {
+    const sidebarSearch = document.getElementById("sidebarSearch");
+    const navSearch = document.querySelector(".nav-search");
+    
+    // Determine the query and sync input values
+    let query = "";
+    if (sidebarSearch && document.activeElement === sidebarSearch) {
+        query = sidebarSearch.value.toLowerCase().trim();
+        if (navSearch) navSearch.value = sidebarSearch.value;
+    } else if (navSearch && document.activeElement === navSearch) {
+        query = navSearch.value.toLowerCase().trim();
+        if (sidebarSearch) sidebarSearch.value = navSearch.value;
+    } else {
+        query = sidebarSearch ? sidebarSearch.value.toLowerCase().trim() : "";
+    }
+
+    const blogCards = document.querySelectorAll(".blog-card");
+    let visibleCount = 0;
+
+    blogCards.forEach((card) => {
+        const title = card.querySelector(".blog-title")?.textContent.toLowerCase() || "";
+        const description = card.querySelector(".blog-description")?.textContent.toLowerCase() || "";
+        const category = card.querySelector(".blog-category")?.textContent.toLowerCase() || "";
+
+        if (title.includes(query) || description.includes(query) || category.includes(query)) {
+            card.style.display = ""; // Show card
+            visibleCount++;
+        } else {
+            card.style.display = "none"; // Hide card
+        }
+    });
+
+    // Show a clean "No articles found" message if there are no matches
+    let noResultsMsg = document.getElementById("noBlogsMessage");
+    if (visibleCount === 0 && query !== "") {
+        if (!noResultsMsg) {
+            noResultsMsg = document.createElement("p");
+            noResultsMsg.id = "noBlogsMessage";
+            noResultsMsg.className = "text-center text-gray-500 my-8 text-lg w-full col-span-full";
+            noResultsMsg.textContent = "No articles match your search.";
+            const container = document.getElementById("blogCards");
+            if (container) container.appendChild(noResultsMsg);
+        }
+    } else if (noResultsMsg) {
+        noResultsMsg.remove();
+    }
+};
+
+// Bind to window so global inline onclick="searchBlogs()" works
+window.searchBlogs = searchBlogs;
+
+// Add real-time event listeners for interactive typing search
+const sidebarSearchInput = document.getElementById("sidebarSearch");
+const navSearchInput = document.querySelector(".nav-search");
+
+if (sidebarSearchInput) {
+    sidebarSearchInput.addEventListener("input", searchBlogs);
+}
+if (navSearchInput) {
+    navSearchInput.addEventListener("input", searchBlogs);
+}
+
+
 
 
 

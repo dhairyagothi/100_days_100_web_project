@@ -528,7 +528,7 @@ function exportAs(format) {
           const raw = window.marked
             ? marked.parse(m.text || "")
             : escapeHtml(m.text || "");
-          bodyContent = raw;
+          bodyContent = sanitizeHtml(raw);
         }
         return `<div class="msg ${cls}"><span class="role">${role}</span><div class="text">${bodyContent}</div></div>`;
       })
@@ -1177,6 +1177,20 @@ async function getAIResponse() {
     }
 
     const data = await res.json();
+
+    if (data.candidates && data.candidates[0]) {
+      const candidate = data.candidates[0];
+      if (candidate.finishReason && candidate.finishReason !== "STOP") {
+        if (candidate.finishReason === "SAFETY") {
+          throw new Error("Response was blocked by Gemini safety filters. Please try rephrasing your request.");
+        } else if (candidate.finishReason === "RECITATION") {
+          throw new Error("Response was blocked due to recitation/copyright constraints.");
+        } else {
+          throw new Error(`Response generation ended with reason: ${candidate.finishReason}`);
+        }
+      }
+    }
+
     const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!aiText) throw new Error("Empty response from Gemini.");
 
@@ -1292,7 +1306,8 @@ function renderMessage(
       });
       actionsEl.prepend(dlBtn);
     } else {
-      bubble.innerHTML = window.marked ? marked.parse(text) : text;
+      const htmlContent = window.marked ? marked.parse(text) : text;
+      bubble.innerHTML = sanitizeHtml(htmlContent);
 
       // code block copy buttons (already present, keep as-is)
       bubble.querySelectorAll("pre").forEach((pre) => {
@@ -1476,6 +1491,29 @@ function clearMessages() {
 
 function scrollToBottom() {
   viewport.scrollTo({ top: viewport.scrollHeight, behavior: "smooth" });
+}
+
+function sanitizeHtml(html) {
+  const temp = document.createElement("div");
+  temp.innerHTML = html;
+  
+  // Strip dangerous tags completely
+  const dangerousElements = temp.querySelectorAll("script, iframe, object, embed, link, meta, style");
+  dangerousElements.forEach(el => el.remove());
+  
+  // Sanitize all remaining elements
+  const allElements = temp.querySelectorAll("*");
+  allElements.forEach(el => {
+    const attributes = el.attributes;
+    for (let i = attributes.length - 1; i >= 0; i--) {
+      const attrName = attributes[i].name;
+      // Strip event handlers (onload, onerror, onclick, etc.) and javascript URI schemes
+      if (attrName.startsWith("on") || attributes[i].value.trim().toLowerCase().startsWith("javascript:")) {
+        el.removeAttribute(attrName);
+      }
+    }
+  });
+  return temp.innerHTML;
 }
 
 function escapeHtml(str) {

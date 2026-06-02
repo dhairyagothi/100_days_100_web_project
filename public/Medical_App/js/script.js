@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const savedTheme = localStorage.getItem('medConsultTheme');
         if (savedTheme === 'dark') {
             document.body.classList.add('dark-mode');
-            themeToggleBtn.innerHTML = '<i class="ph ph-sun"></i>';
+            if (themeToggleBtn) themeToggleBtn.innerHTML = '<i class="ph ph-sun"></i>';
         }
 
         updateSpecialistOptions('');
@@ -64,47 +64,62 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setupEventListeners() {
-        themeToggleBtn.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                const isDark = document.body.classList.contains('dark-mode');
 
-            localStorage.setItem('medConsultTheme', isDark ? 'dark' : 'light');
-            themeToggleBtn.innerHTML = isDark
-                ? '<i class="ph ph-sun"></i>'
-                : '<i class="ph ph-moon"></i>';
-        });
+                localStorage.setItem('medConsultTheme', isDark ? 'dark' : 'light');
+                themeToggleBtn.innerHTML = isDark
+                    ? '<i class="ph ph-sun"></i>'
+                    : '<i class="ph ph-moon"></i>';
+            });
+        }
 
-        specialistSearch.addEventListener('input', (e) => {
-            updateSpecialistOptions(e.target.value);
-        });
+        if (specialistSearch) {
+            specialistSearch.addEventListener('input', (e) => {
+                updateSpecialistOptions(e.target.value);
+            });
+        }
 
-        toggleAdvancedBtn.addEventListener('click', () => {
-            advancedFields.classList.toggle('hidden');
+        if (toggleAdvancedBtn) {
+            toggleAdvancedBtn.addEventListener('click', () => {
+                advancedFields.classList.toggle('hidden');
 
-            const icon = advancedFields.classList.contains('hidden')
-                ? 'ph-caret-down'
-                : 'ph-caret-up';
+                const icon = advancedFields.classList.contains('hidden')
+                    ? 'ph-caret-down'
+                    : 'ph-caret-up';
 
-            const text = advancedFields.classList.contains('hidden')
-                ? 'Show Advanced Details'
-                : 'Hide Advanced Details';
+                const text = advancedFields.classList.contains('hidden')
+                    ? 'Show Advanced Details'
+                    : 'Hide Advanced Details';
 
-            toggleAdvancedBtn.innerHTML = `<i class="ph ${icon}"></i> ${text}`;
-        });
+                toggleAdvancedBtn.innerHTML = `<i class="ph ${icon}"></i> ${text}`;
+            });
+        }
 
-        medicalFiles.addEventListener('change', handleFileSelection);
+        if (medicalFiles) {
+            medicalFiles.addEventListener('change', handleFileSelection);
+        }
 
-        resetRequestBtn.addEventListener('click', () => {
-            requestForm.reset();
-            fileList.innerHTML = '';
-            showToast('Form cleared', 'success');
-        });
+        if (resetRequestBtn) {
+            resetRequestBtn.addEventListener('click', () => {
+                requestForm.reset();
+                if (fileList) fileList.innerHTML = '';
+                showToast('Form cleared', 'success');
+            });
+        }
 
-        requestForm.addEventListener('submit', handleRequestSubmit);
-        responseForm.addEventListener('submit', handleResponseSubmit);
+        if (requestForm) {
+            requestForm.addEventListener('submit', handleRequestSubmit);
+        }
+        if (responseForm) {
+            responseForm.addEventListener('submit', handleResponseSubmit);
+        }
     }
 
     function handleFileSelection(e) {
+        if (!fileList) return;
         fileList.innerHTML = '';
 
         Array.from(e.target.files).forEach(file => {
@@ -119,6 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateSpecialistOptions(searchText) {
+        if (!specialistTypeSelect) return;
         specialistTypeSelect.innerHTML =
             '<option value="">Select a Specialist...</option>';
 
@@ -176,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const contact = document.getElementById('contactInfo').value.trim();
         const priority = document.getElementById('priorityLevel').value;
         const apptDate = document.getElementById('appointmentDate').value;
-        const fileCount = medicalFiles.files.length;
+        const fileCount = medicalFiles ? medicalFiles.files.length : 0;
 
         const newConsultation = {
             id: 'CONS-' + Math.floor(Math.random() * 10000),
@@ -220,7 +236,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
             document.getElementById('step3').classList.replace('active', 'completed');
-            document.getElementById('step4').classList.add('completed');
 
             submitBtn.disabled = false;
 
@@ -230,11 +245,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             showToast('Consultation request completed successfully!', 'success');
 
-            specialistResponseSection.style.display = 'block';
-            document.getElementById('consultationId').value = newConsultation.id;
+            if (specialistResponseSection) {
+                specialistResponseSection.style.display = 'block';
+                document.getElementById('consultationId').value = newConsultation.id;
+            }
 
             requestForm.reset();
-            fileList.innerHTML = '';
+            if (fileList) fileList.innerHTML = '';
             updateSpecialistOptions('');
         }, 3000);
     }
@@ -262,21 +279,22 @@ document.addEventListener('DOMContentLoaded', () => {
             showToast('Suggestion added successfully!', 'success');
 
             responseForm.reset();
-            specialistResponseSection.style.display = 'none';
+            if (specialistResponseSection) specialistResponseSection.style.display = 'none';
         } else {
             showToast('Consultation ID not found.', 'error');
         }
     }
 
     function renderHistory() {
+        if (!historyList) return;
         historyList.innerHTML = '';
 
         if (consultationHistory.length === 0) {
-            emptyHistoryState.style.display = 'flex';
+            if (emptyHistoryState) emptyHistoryState.style.display = 'flex';
             return;
         }
 
-        emptyHistoryState.style.display = 'none';
+        if (emptyHistoryState) emptyHistoryState.style.display = 'none';
 
         consultationHistory.forEach((item, index) => {
             const li = document.createElement('li');
@@ -346,45 +364,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-<<<<<<< HEAD:public/Medical_App/js/script.js
-            statusMessage.textContent = `Consultation requested for Dr.${doctorName} regarding ${patientCondition}.            
-            Specialist type: ${specialistType}.`;
-            specialistResponseSection.style.display = 'block';
-            buttons.style.display = 'flex';
-            requestForm.reset();
-        }, 2000);
-    });
-    if(responseForm){    
-        responseForm.addEventListener('submit', function (event) {
-            event.preventDefault();
-            const consultationId = document.getElementById('consultationId').value;
-            const suggestion = document.getElementById('suggestion').value;
-
-            // Simulating response submission
-            loading.style.display = 'block';
-            statusMessage.textContent = '';
-
-            setTimeout(() => {
-                loading.style.display = 'none';
-                const consultation = consultationHistory.find(c => c.date === consultationId);
-                if (consultation) {
-                    consultation.status = 'Completed';
-                    consultation.notes = suggestion;
-                    localStorage.setItem('consultations', JSON.stringify(consultationHistory));
-                    renderHistory();
-                    statusMessage.textContent = `Response submitted for Consultation ID: ${consultationId}`;
-                } else {
-                    statusMessage.textContent = `Consultation ID: ${consultationId} not found.`;
-                }
-                responseForm.reset();
-            }, 2000);
-        });
-    }
-    
-    feedbackForm.addEventListener('submit', function (event) {
-        event.preventDefault();
-        const feedbackMessage = document.getElementById('feedbackMessage').value;
-=======
     function saveHistory() {
         localStorage.setItem(
             'medConsultHistoryV2',
@@ -393,6 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showToast(message, type = 'success') {
+        if (!toastContainer) return;
         const toast = document.createElement('div');
         toast.className = `toast ${type}`;
 
@@ -411,150 +391,33 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             toast.style.animation =
                 'slideOut 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
->>>>>>> 9398ffd3b288433a29a8baedf3de5c3e4ed2a480:public/Medical_App/script.js
 
             setTimeout(() => {
                 toast.remove();
             }, 300);
         }, 3000);
     }
-<<<<<<< HEAD:public/Medical_App/js/script.js
-}
 
-// Bind open events to booking buttons
-bookBtns.forEach(btn => {
-    btn.addEventListener("click", (e) => {
-        const doctor = btn.getAttribute("data-doctor");
-        const specialty = btn.getAttribute("data-specialty");
-        openModal(doctor, specialty, btn);
+    // Doctor search functionality
+    const doctorSearch = document.getElementById("doctorSearch");
+    if (doctorSearch) {
+        doctorSearch.addEventListener("input", () => {
+            const value = doctorSearch.value.toLowerCase();
+            document.querySelectorAll(".doctor-card").forEach(card => {
+                const name = card.innerText.toLowerCase();
+                card.style.display = name.includes(value) ? "" : "none";
+            });
+        });
+    }
+});
+
+// FAQ Accordion Toggle functionality
+document.querySelectorAll(".faq-question").forEach((question) => {
+    question.addEventListener("click", () => {
+        const item = question.parentElement;
+        const isActive = item.classList.toggle("active");
+        
+        // Update accessibility attribute dynamically
+        question.setAttribute("aria-expanded", isActive);
     });
-});
-
-// Bind close button actions
-closeModalBtn.addEventListener("click", closeModal);
-cancelModalBtn.addEventListener("click", closeModal);
-closeSuccessBtn.addEventListener("click", closeModal);
-
-// Close on backdrop overlay click (only when clicking overlay specifically)
-bookingModal.addEventListener("click", (e) => {
-    if (e.target === bookingModal) {
-        closeModal();
-    }
-});
-
-// Close on Escape key press
-window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && !bookingModal.classList.contains("hidden")) {
-        closeModal();
-    }
-});
-
-// Real-time input clearing of invalid state
-const setupRealTimeClear = (input, errorSpan) => {
-    input.addEventListener("input", () => {
-        if (input.value.trim() !== "") {
-            input.classList.remove("invalid-input");
-            errorSpan.textContent = "";
-        }
-    });
-};
-
-setupRealTimeClear(patientNameInput, nameError);
-setupRealTimeClear(patientPhoneInput, phoneError);
-setupRealTimeClear(appointmentDateInput, dateError);
-setupRealTimeClear(appointmentTimeInput, timeError);
-
-// Submit form & validate
-bookingForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    clearErrors();
-
-    const nameVal = patientNameInput.value.trim();
-    const phoneVal = patientPhoneInput.value.trim();
-    const dateVal = appointmentDateInput.value;
-    const timeVal = appointmentTimeInput.value;
-
-    let isValid = true;
-
-    // Validate Name
-    if (nameVal === "") {
-        nameError.textContent = "Patient name is required.";
-        patientNameInput.classList.add("invalid-input");
-        isValid = false;
-    }
-
-    // Validate Phone (10 digits numeric)
-    const phoneRegex = /^\d{10}$/;
-    if (!phoneRegex.test(phoneVal)) {
-        phoneError.textContent = "Please enter a valid 10-digit phone number.";
-        patientPhoneInput.classList.add("invalid-input");
-        isValid = false;
-    }
-
-    // Validate Date
-    if (!dateVal) {
-        dateError.textContent = "Preferred date is required.";
-        appointmentDateInput.classList.add("invalid-input");
-        isValid = false;
-    } else {
-        // Enforce today or future date in JS validation as well
-        const parts = dateVal.split('-');
-        const selectedDate = new Date(parts[0], parts[1] - 1, parts[2]);
-        selectedDate.setHours(0,0,0,0);
-        const today = new Date();
-        today.setHours(0,0,0,0);
-
-        if (selectedDate < today) {
-            dateError.textContent = "Date cannot be in the past.";
-            appointmentDateInput.classList.add("invalid-input");
-            isValid = false;
-        }
-    }
-
-    // Validate Time Slot
-    if (timeVal === "") {
-        timeError.textContent = "Please select an available time slot.";
-        appointmentTimeInput.classList.add("invalid-input");
-        isValid = false;
-    }
-
-    if (!isValid) {
-        return;
-    }
-
-    // Dynamic History Item Addition matching existing format
-    const listItem = document.createElement("li");
-    listItem.innerHTML = `
-        <strong>${nameVal}</strong> scheduled appointment with 
-        <strong>${currentDoctor}</strong> (${currentSpecialty}) on 
-        <strong>${dateVal}</strong> at <strong>${timeVal}</strong>
-    `;
-    historyList.prepend(listItem);
-
-    // Render persistent success banner
-    const successText = modalSuccess.querySelector(".success-text");
-    successText.innerHTML = `✅ <strong>Success!</strong> Appointment booked for <strong>${nameVal}</strong> with <strong>${currentDoctor}</strong> on <strong>${dateVal}</strong> at <strong>${timeVal}</strong>.`;
-    
-    bookingForm.classList.add("hidden");
-    modalSuccess.classList.remove("hidden");
-    
-    // Focus the Success Close button for accessibility
-    closeSuccessBtn.focus();
-});
-const doctorSearch = document.getElementById("doctorSearch");
-
-doctorSearch.addEventListener("input", () => {
-
-    const value = doctorSearch.value.toLowerCase();
-
-    document.querySelectorAll(".doctor-card").forEach(card => {
-
-        const name = card.innerText.toLowerCase();
-
-        card.style.display = name.includes(value)
-            ? "block"
-            : "none";
-    });
-=======
->>>>>>> 9398ffd3b288433a29a8baedf3de5c3e4ed2a480:public/Medical_App/script.js
 });
