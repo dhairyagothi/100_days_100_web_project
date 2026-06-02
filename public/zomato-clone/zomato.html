@@ -47,6 +47,9 @@
         <div class="nav-item">
           <a href="#">Sign up</a>
         </div>
+        
+ <button id="darkModeToggle">🌙 Dark Mode</button>
+
       </div>
     </nav>
   </header>
@@ -565,15 +568,25 @@ onkeypress="handleLocation(event)" />
           src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png?fit=around|198:42&amp;crop=198:42;*,*"
           alt="Zomato logo" class="sc-elhb8j-1 ixsoFB" />
         <div class="row">
-          <div class="country-dropdown">
+          <div class="country-dropdown" tabindex="0">
             <img src="images/india.png" class="flag" />
             <p>India</p>
             <i class="fa fa-chevron-down"></i>
+            <div class="country-options">
+              <div class="country-option">India</div>
+              <div class="country-option">United States</div>
+              <div class="country-option">United Kingdom</div>
+            </div>
           </div>
-          <div class="country-dropdown">
+          <div class="country-dropdown" tabindex="0">
             <i data-feather="globe"></i>
             <p>English</p>
             <i class="fa fa-chevron-down"></i>
+            <div class="country-options">
+              <div class="country-option">English</div>
+              <div class="country-option">Hindi</div>
+              <div class="country-option">Spanish</div>
+            </div>
           </div>
         </div>
       </section>
@@ -632,11 +645,11 @@ onkeypress="handleLocation(event)" />
           <h6 class="footer-title">Social Links</h6>
           <div class="socials">
             <ul>
-              <li><i class="fa fa-linkedin"></i></li>
-              <li><i class="fa fa-instagram"></i></li>
-              <li><i class="fa fa-twitter"></i></li>
-              <li><i class="fa fa-youtube"></i></li>
-              <li><i class="fa fa-facebook"></i></li>
+              <li><a href="https://www.linkedin.com/company/zomato/" target="_blank" rel="noopener noreferrer" aria-label="Zomato on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+              <li><a href="https://www.instagram.com/zomato/" target="_blank" rel="noopener noreferrer" aria-label="Zomato on Instagram"><i class="fa fa-instagram"></i></a></li>
+              <li><a href="https://twitter.com/zomato" target="_blank" rel="noopener noreferrer" aria-label="Zomato on Twitter"><i class="fa fa-twitter"></i></a></li>
+              <li><a href="https://www.youtube.com/zomato" target="_blank" rel="noopener noreferrer" aria-label="Zomato on YouTube"><i class="fa fa-youtube"></i></a></li>
+              <li><a href="https://www.facebook.com/Zomato" target="_blank" rel="noopener noreferrer" aria-label="Zomato on Facebook"><i class="fa fa-facebook"></i></a></li>
             </ul>
           </div>
           <div class="buttons">
