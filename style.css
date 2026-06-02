@@ -3098,8 +3098,64 @@ body > header {
     opacity: 1 !important;
   }
 }
+/* ============================================================
+   SEARCH ENHANCEMENTS 
+   ============================================================ */
 
-* {
-  cursor: none !important;
+.clear-search {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  background: none;
+  border:none;
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: none;
+  font-size: 18px;
+  color:var(--text-muted);
+  transition:0.2s;
 }
+
+.clear-search:hover {
+  color: var(--accent);
+}
+
+.result-count {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.highlight {
+  background: #00ffe1;
+  color: black;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+.suggestions-box {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 100%;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    max-height: 220px;
+    overflow-y: auto;
+    display: none;
+    z-index: 20;
+}
+
+.suggestion-item {
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.suggestion-item:hover,
+.suggestion-item.active {
+    background: var(--accent-dim);
+    color: var(--accent);
 }

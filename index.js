@@ -661,65 +661,16 @@ function readStateFromURL() {
 }
 
 function renderGrid() {
-  const grid = document.getElementById("projectGrid");
-  const noResults = document.getElementById("noResults");
-  if (!grid) return;
+    const grid = document.getElementById('projectGrid');
+    const noResults = document.getElementById('noResults');
+    if (!grid) return;
 
-  if (typeof updateClearFiltersBtnVisibility === "function") {
-    updateClearFiltersBtnVisibility();
-  }
-
-  const filtered = PROJECTS.filter(
-    ([day, name, url, tags, difficulty = ""]) => {
-      // Category filter
-      const category = getCategoryFromTags(tags, name);
-      const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || "all";
-      const matchesFilter =
-        activeFilter === "all" || category === targetCategory;
-
-      // Search filter
-      const q = searchQuery.toLowerCase().trim();
-      const matchesSearch =
-        !q ||
-        q
-          .split(/\s+/)
-          .every(
-            (term) =>
-              name.toLowerCase().includes(term) ||
-              day.toLowerCase().includes(term) ||
-              (Array.isArray(tags) ? tags.join(" ") : tags || "")
-                .toLowerCase()
-                .includes(term),
-          );
-
-      // Tech stack dropdown filter
-      let matchesTech = true;
-      if (techStackFilter && techStackFilter !== "all") {
-        const tagStr = (
-          Array.isArray(tags) ? tags.join(" ") : tags || ""
-        ).toLowerCase();
-        matchesTech = tagStr.includes(techStackFilter.toLowerCase());
-      }
-
-      // Difficulty filter
-      let matchesDifficulty = true;
-      if (difficultyFilter && difficultyFilter !== "all") {
-        matchesDifficulty =
-          (difficulty || "").toLowerCase() === difficultyFilter.toLowerCase();
-      }
-
-      return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
-    },
-  );
-
-  // Apply sorting
-  if (sortOption === "az") {
-    filtered.sort((a, b) => a[1].localeCompare(b[1]));
-  } else if (sortOption === "latest") {
-    filtered.sort((a, b) => {
-      const dayA = parseInt(a[0].replace("Day ", ""));
-      const dayB = parseInt(b[0].replace("Day ", ""));
-      return dayB - dayA;
+    const filtered = PROJECTS.filter(([day, name, , , cat]) => {
+        const resultCountEl = document.getElementById('resultCount');
+        const matchesFilter = activeFilter === 'all' || cat === activeFilter;
+        const q = searchQuery.toLowerCase();
+        const matchesSearch = !q || name.toLowerCase().includes(q) || day.toLowerCase().includes(q);
+        return matchesFilter && matchesSearch;
     });
   } else if (sortOption === "difficulty") {
     const difficultyOrder = { beginner: 1, intermediate: 2, advanced: 3 };
@@ -743,62 +694,11 @@ function renderGrid() {
   grid.style.display = "grid";
   if (noResults) noResults.style.display = "none";
 
-  const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
-  if (currentPage > totalPages) currentPage = totalPages;
-  if (currentPage < 1) currentPage = 1;
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const pageItems = filtered.slice(startIndex, endIndex);
-  const fragment = document.createDocumentFragment();
-
-  pageItems.forEach(([day, name, url, tags]) => {
-    const category = getCategoryFromTags(tags, name);
-    const card = document.createElement("div");
-    const isBookmarked = bookmarkedProjects.some(
-      (item) => normalizeProjectEntry(item).day === day,
-    );
-    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
-      day,
-      name,
-      url,
-      tags,
-      category,
-      isBookmarked,
-      showDescription: true,
-    });
-
-    card.className = sourceOnly
-      ? "project-card source-only visible"
-      : "project-card visible";
-    card.innerHTML = html;
-    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
-
-    fragment.appendChild(card);
-  });
-  grid.appendChild(fragment);
-  renderPagination(filtered.length, totalPages);
-
-  syncStateToURL();
-}
-
-function renderPagination(totalItems, totalPages) {
-  const grid = document.getElementById("projectGrid");
-  if (!grid) return;
-
-  let container = document.getElementById("paginationContainer");
-  if (!container) {
-    container = document.createElement("div");
-    container.id = "paginationContainer";
-    container.className = "pagination-container";
-  }
-
-  container.innerHTML = "";
-
-  // If there is only 1 page of results, hide and detach the pagination block
-  if (totalPages <= 1) {
-    if (container.parentElement === grid) {
-      grid.removeChild(container);
+    if (filtered.length === 0) {
+        grid.style.display = 'none';
+        noResults.style.display = 'block';
+          if (resultCountEl) resultCountEl.textContent = "0 results found";
+        return;
     }
     return;
   }
@@ -811,359 +711,40 @@ function renderPagination(totalItems, totalPages) {
   infoDiv.innerHTML = `Showing <strong>${startItem}</strong> to <strong>${endItem}</strong> of <strong>${totalItems}</strong> projects`;
   container.appendChild(infoDiv);
 
-  const controlsDiv = document.createElement("div");
-  controlsDiv.className = "pagination-controls";
+    if (resultCountEl && searchQuery) {
+    resultCountEl.textContent = `${filtered.length} result(s) found`;
+} else if (resultCountEl) {
+    resultCountEl.textContent = '';
+}
+
+    filtered.forEach(([day, name, url, tags, cat]) => {
+        let displayName = name;
+
+if (searchQuery) {
+    const regex = new RegExp(`(${searchQuery})`, "gi");
+    displayName = name.replace(regex, `<span class="highlight">$1</span>`);
+}
+        const card = document.createElement('div');
+        card.className = 'project-card';
 
   const firstBtn = document.createElement("button");
   firstBtn.className = "first-btn";
   firstBtn.innerHTML = "⏮ First";
   firstBtn.disabled = currentPage === 1;
 
-  firstBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    if (currentPage !== 1) {
-      currentPage = 1;
-      renderGrid();
-      setTimeout(() => scrollToProjectSection(), 50);
-    }
-  });
-
-  controlsDiv.appendChild(firstBtn);
-
-  const prevBtn = document.createElement("button");
-  prevBtn.className = "prev-btn";
-  prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
-  prevBtn.disabled = currentPage === 1;
-  prevBtn.setAttribute("aria-label", "Previous Page");
-  prevBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    if (currentPage > 1) {
-      currentPage--;
-      renderGrid();
-      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
-      setTimeout(() => {
-        scrollToProjectSection();
-      }, 50);
-    }
-  });
-  controlsDiv.appendChild(prevBtn);
-
-  // Initialize bounds for numeric pagination window (displays maximum of 4 page buttons)
-  let startPage = 1;
-  let endPage = totalPages;
-  const maxVisible = 4;
-
-  // Sliding window pagination logic centering the active page
-  if (totalPages > maxVisible) {
-    if (currentPage <= 2) {
-      startPage = 1;
-      endPage = 4;
-    } else if (currentPage >= totalPages - 1) {
-      startPage = totalPages - 3;
-      endPage = totalPages;
-    } else {
-      startPage = currentPage - 1;
-      endPage = currentPage + 2;
-    }
-  }
-
-  for (let i = startPage; i <= endPage; i++) {
-    const pageBtn = document.createElement("button");
-    pageBtn.className = `page-num ${currentPage === i ? "active" : ""}`;
-    pageBtn.textContent = i;
-    pageBtn.setAttribute("aria-label", `Page ${i}`);
-    pageBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      currentPage = i;
-      renderGrid();
-      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
-      setTimeout(() => {
-        scrollToProjectSection();
-      }, 50);
-    });
-    controlsDiv.appendChild(pageBtn);
-  }
-
-  const nextBtn = document.createElement("button");
-  nextBtn.className = "next-btn";
-  nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
-  nextBtn.disabled = currentPage === totalPages;
-  nextBtn.setAttribute("aria-label", "Next Page");
-  nextBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    if (currentPage < totalPages) {
-      currentPage++;
-      renderGrid();
-      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
-      setTimeout(() => {
-        scrollToProjectSection();
-      }, 50);
-    }
-  });
-  controlsDiv.appendChild(nextBtn);
-  const lastBtn = document.createElement("button");
-  lastBtn.className = "last-btn";
-  lastBtn.innerHTML = "Last ⏭";
-  lastBtn.disabled = currentPage === totalPages;
-
-  lastBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    if (currentPage !== totalPages) {
-      currentPage = totalPages;
-      renderGrid();
-      setTimeout(() => scrollToProjectSection(), 50);
-    }
-  });
-
-  controlsDiv.appendChild(lastBtn);
-
-  container.appendChild(controlsDiv);
-
-  // Append container dynamically inside the projectGrid element to keep it attached
-  grid.appendChild(container);
-}
-
-function scrollToProjectSection() {
-  const header = document.querySelector(".projects-header");
-  if (!header) return;
-
-  // Only scroll if the projects section is fully below the viewport.
-  // If the user is already within or past the project grid, don't move them.
-  if (header.getBoundingClientRect().top < window.innerHeight) return;
-
-  const navbar = document.querySelector(".navbar");
-  // Subtract height of fixed navbar with a 50px buffer to prevent overlaying the search bar
-  const offset = navbar ? navbar.offsetHeight - 50 : 30;
-  const targetY =
-    header.getBoundingClientRect().top + window.pageYOffset - offset;
-  const startY = window.pageYOffset;
-  const distance = targetY - startY;
-
-  // Custom snappy scroll duration (100ms matches the quick transitions in your CSS)
-  const duration = 100;
-  let startTime = null;
-
-  function animation(currentTime) {
-    if (startTime === null) startTime = currentTime;
-    const timeElapsed = currentTime - startTime;
-    // Cap scroll position math exactly to distance to avoid landing slightly off target
-    const run = easeInOutQuad(
-      Math.min(timeElapsed, duration),
-      startY,
-      distance,
-      duration,
-    );
-    window.scrollTo(0, run);
-    if (timeElapsed < duration) {
-      requestAnimationFrame(animation);
-    }
-  }
-
-  // Mathematical Quadratic Ease-In-Out formula for momentum-like deceleration
-  function easeInOutQuad(t, b, c, d) {
-    t /= d / 2;
-    if (t < 1) return (c / 2) * t * t + b;
-    t--;
-    return (-c / 2) * (t * (t - 2) - 1) + b;
-  }
-
-  requestAnimationFrame(animation);
-}
-
-function toggleBookmark(project) {
-  const exists = bookmarkedProjects.find(
-    (item) => normalizeProjectEntry(item).day === project[0],
-  );
-
-  if (exists) {
-    bookmarkedProjects = bookmarkedProjects.filter(
-      (item) => normalizeProjectEntry(item).day !== project[0],
-    );
-    showToast("Bookmark removed");
-  } else {
-    bookmarkedProjects.push(project);
-    showToast("Project bookmarked");
-  }
-
-  updateBookmarkURL();
-
-  try {
-    localStorage.setItem(
-      "bookmarkedProjects",
-      JSON.stringify(bookmarkedProjects),
-    );
-  } catch (error) {
-    console.warn("Could not save bookmark due to localStorage restrictions");
-  }
-  renderBookmarks();
-  renderGrid();
-  renderRecentProjects();
-}
-
-function updateBookmarkURL() {
-  const url = new URL(window.location);
-
-  if (bookmarkedProjects.length > 0) {
-    const bookmarkIds = bookmarkedProjects.map(
-      (project) => normalizeProjectEntry(project).day,
-    );
-    url.searchParams.set("bookmarks", bookmarkIds.join(","));
-  } else {
-    url.searchParams.delete("bookmarks");
-  }
-
-  window.history.replaceState({}, "", url);
-}
-
-function loadBookmarksFromURL() {
-  const params = new URLSearchParams(window.location.search);
-  const bookmarkParam = params.get("bookmarks");
-
-  if (!bookmarkParam) return;
-
-  const bookmarkIds = bookmarkParam.split(",").map((id) => id.trim());
-
-  bookmarkedProjects = PROJECTS.filter((project) =>
-    bookmarkIds.includes(project[0]),
-  );
-
-  localStorage.setItem(
-    "bookmarkedProjects",
-    JSON.stringify(bookmarkedProjects),
-  );
-}
-
-function getRecentProjectsWithinWindow() {
-  const now = Date.now();
-
-  return recentProjects.filter((item) => {
-    const timestamp = item.timestamp || Date.now();
-    const age = now - timestamp;
-
-    return age <= ONE_HOUR_MS;
-  });
-}
-
-/**
- * Tracks a recently viewed project with a timestamp
- * @param {array} project - Project data [day, name, url, tags]
- */
-function trackRecentProject(project) {
-  // Convert old format to new format if needed
-  let projectObj;
-  if (Array.isArray(project)) {
-    projectObj = {
-      day: project[0],
-      name: project[1],
-      url: project[2],
-      tags: project[3],
-      timestamp: Date.now(),
-    };
-  } else {
-    projectObj = {
-      ...project,
-      timestamp: Date.now(),
-    };
-  }
-
-  // Remove duplicate if exists
-  recentProjects = recentProjects.filter((item) => item.day !== projectObj.day);
-
-  // Add to front
-  recentProjects.unshift(projectObj);
-
-  // Keep only the 20 most recent entries (not filtered by time yet)
-  if (recentProjects.length > 20) {
-    recentProjects.pop();
-  }
-
-  try {
-    localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
-  } catch (error) {
-    console.warn(
-      "Could not save recent projects due to localStorage restrictions",
-    );
-  }
-  renderRecentProjects();
-}
-
-const bookmarkGrid = document.getElementById("bookmarkGrid");
-
-function normalizeProjectEntry(project) {
-  if (Array.isArray(project)) {
-    return {
-      day: project[0],
-      name: project[1],
-      url: project[2],
-      tags: project[3],
-    };
-  }
-
-  return {
-    day: project.day,
-    name: project.name,
-    url: project.url,
-    tags: project.tags,
-  };
-}
-
-function renderBookmarks() {
-  if (!bookmarkGrid) return;
-
-  bookmarkGrid.innerHTML = "";
-
-  if (bookmarkedProjects.length === 0) {
-    bookmarkGrid.innerHTML = `<p class="empty-state">No bookmarked projects yet.</p>`;
-    return;
-  }
-
-  const bookmarkToggleBtn = document.getElementById("bookmarkToggleBtn");
-  if (bookmarkToggleBtn) {
-    bookmarkToggleBtn.style.display =
-      bookmarkedProjects.length <= INITIAL_VISIBLE_ITEMS
-        ? "none"
-        : "inline-flex";
-  }
-
-  const visibleBookmarks = showAllBookmarks
-    ? bookmarkedProjects
-    : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
-
-  visibleBookmarks.forEach((project) => {
-    const { day, name, url, tags } = normalizeProjectEntry(project);
-    if (!day || !name) return;
-
-    const category = getCategoryFromTags(tags, name);
-    const card = document.createElement("div");
-    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
-      day,
-      name,
-      url,
-      tags,
-      category,
-      isBookmarked: true,
-      showDescription: true,
-    });
-
-    card.className = sourceOnly
-      ? "project-card source-only visible"
-      : "project-card visible";
-    card.innerHTML = html;
-    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
-
-    bookmarkGrid.appendChild(card);
-  });
-}
-
-const recentGrid = document.getElementById("recentGrid");
-
-function renderRecentProjects() {
-  if (!recentGrid) return;
-
-  recentGrid.innerHTML = "";
-
-  // Filter projects within the 1-hour window
-  const validRecent = getRecentProjectsWithinWindow();
+        card.innerHTML = `
+            <div class="card-meta">
+                <span class="card-day">${day}</span>
+                <span class="card-category">${CATEGORY_LABEL[cat] || cat}</span>
+            </div>
+           <div class="card-name">${displayName}</div>
+            <div class="card-tags">${tagsHTML}</div>
+            <div class="card-footer">
+                <a href="${url.trim()}" target="_blank" class="card-link" rel="noopener noreferrer">
+                    View Demo <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        `;
 
   if (validRecent.length === 0) {
     recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects within the last hour.</p>`;
@@ -1393,44 +974,125 @@ function initFilterChips() {
     });
   });
 }
-
+function highlightMatch(text, query) {
+    const regex = new RegExp(`(${query})`, 'gi');
+    return text.replace(regex, `<span class="highlight">$1</span>`);
+}
 /* ============================================================
    LIVE SEARCH & TECH STACK FILTER
    ============================================================ */
-function debounce(fn, delay = 300) {
-  let timeout;
-
-  return (...args) => {
-    clearTimeout(timeout);
-
-    timeout = setTimeout(() => {
-      fn(...args);
-    }, delay);
-  };
+function highlightMatch(text, query) {
+    const regex = new RegExp(`(${query})`, 'gi');
+    return text.replace(regex, `<span class="highlight">$1</span>`);
 }
 
 function initSearch() {
-  const input = document.getElementById("searchInput");
-  if (!input) return;
+    const input = document.getElementById('searchInput');
+    const box = document.getElementById('suggestionsBox');
+    const clearBtn = document.getElementById('clearSearch');
 
-  input.addEventListener(
-    "input",
-    debounce(() => {
-      searchQuery = input.value.trim();
-      currentPage = 1;
-      renderGrid();
-    }, 180),
-  );
+    if (!input || !box || !clearBtn) return;
 
-  // Tech stack dropdown filter listener
-  const techStack = document.getElementById("techStackFilter");
-  if (techStack) {
-    techStack.addEventListener("change", () => {
-      techStackFilter = techStack.value;
-      currentPage = 1;
-      renderGrid();
+    let activeIndex = -1;
+
+    input.addEventListener('input', () => {
+        const query = input.value.toLowerCase().trim();
+        searchQuery = query;
+        renderGrid();
+
+        // ✅ Show/hide ❌ button
+        clearBtn.style.display = query ? 'block' : 'none';
+
+        // Reset suggestions
+        box.innerHTML = '';
+        activeIndex = -1;
+
+        if (!query) {
+            box.style.display = 'none';
+            return;
+        }
+
+        // Filter matching projects
+        const matches = PROJECTS.filter(([day, name]) =>
+            name.toLowerCase().includes(query)
+        ).slice(0, 5);
+
+        if (!matches.length) {
+            box.innerHTML = `<div class="suggestion-item">No results found</div>`;
+            box.style.display = 'block';
+            return;
+        }
+
+        // Create suggestion items
+        matches.forEach(([day, name]) => {
+            const item = document.createElement('div');
+            item.className = 'suggestion-item';
+
+            item.innerHTML = `
+                ${highlightMatch(name, query)}
+                <span style="opacity:0.5; font-size:0.75rem; margin-left:6px;">
+                    (${day})
+                </span>
+            `;
+
+            // Click suggestion
+            item.addEventListener('click', () => {
+                input.value = name;
+                searchQuery = name.toLowerCase();
+                box.style.display = 'none';
+                clearBtn.style.display = 'block';
+                renderGrid();
+            });
+
+            box.appendChild(item);
+        });
+
+        box.style.display = 'block';
     });
-  }
+
+    // ⌨️ Keyboard navigation
+    input.addEventListener('keydown', (e) => {
+        const items = box.querySelectorAll('.suggestion-item');
+        if (!items.length) return;
+
+        if (e.key === 'ArrowDown') {
+            activeIndex++;
+            if (activeIndex >= items.length) activeIndex = 0;
+        } 
+        else if (e.key === 'ArrowUp') {
+            activeIndex--;
+            if (activeIndex < 0) activeIndex = items.length - 1;
+        } 
+        else if (e.key === 'Enter') {
+            if (activeIndex >= 0) {
+                items[activeIndex].click();
+                e.preventDefault();
+            }
+        }
+
+        items.forEach(item => item.classList.remove('active'));
+        if (activeIndex >= 0) {
+            items[activeIndex].classList.add('active');
+        }
+    });
+
+    // ❌ Clear button
+    clearBtn.addEventListener('click', () => {
+        input.value = '';
+        searchQuery = '';
+        box.style.display = 'none';
+        clearBtn.style.display = 'none';
+        renderGrid();
+    });
+
+    // Click outside → close dropdown
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.search-bar')) {
+            box.style.display = 'none';
+        }
+    });
+}
+   
 
   // Difficulty dropdown filter listener
   const diffFilterElement = document.getElementById("difficultyFilter");
