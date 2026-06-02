@@ -1676,6 +1676,27 @@ document.addEventListener("DOMContentLoaded", async () => {
   initClearAllFilters();
 
   try {
+    // Show skeleton loading while projects fetch
+    const projectGrid = document.getElementById("projectGrid");
+    if (projectGrid) {
+      let skeletonHTML = '<div class="skeleton-grid">';
+      for (let i = 0; i < 9; i++) {
+        skeletonHTML += `
+          <div class="skeleton-card">
+            <div class="skeleton-block"></div>
+            <div class="skeleton-line short"></div>
+            <div class="skeleton-line long"></div>
+            <div class="skeleton-line medium"></div>
+            <div>
+              <span class="skeleton-tag"></span>
+              <span class="skeleton-tag"></span>
+            </div>
+          </div>`;
+      }
+      skeletonHTML += '</div>';
+      projectGrid.innerHTML = skeletonHTML;
+    }
+
     // Await the projects to be fetched
     await loadProjects();
 
