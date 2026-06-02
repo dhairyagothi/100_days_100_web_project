@@ -275,7 +275,7 @@ function buildProjectCardHTML({
                   ${sourceOnlyBadge}
                 </span>
             </div>
-            <div class="card-name">${name}</div>
+            <h3 class="card-name">${name}</h3>
             ${
               showDescription
                 ? `<div class="card-description">
@@ -1796,39 +1796,62 @@ function initTheme() {
 
 // Initialize the theme engine
 initTheme();
-// Custom cursor
+// Custom cursor with accessibility, interactivity & fail-safe upgrades
 (function () {
   const outerCursor = document.querySelector(".cursor-ring--outer");
   const innerCursor = document.querySelector(".cursor-ring--inner");
   if (!outerCursor || !innerCursor) return;
 
-  const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
-  const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  ).matches;
-  if (coarsePointer || prefersReducedMotion) {
-    outerCursor.style.display = "none";
-    innerCursor.style.display = "none";
-    return;
-  }
+  let isKeyboardNavigating = false;
+
+  const getActivationState = () => {
+    let cursorEnabled = true;
+    try {
+      cursorEnabled = localStorage.getItem("customCursorEnabled") !== "false";
+    } catch (_) {
+      // Default to true if localStorage is blocked in sandboxed iframe
+    }
+    const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    return cursorEnabled && !coarsePointer && !prefersReducedMotion;
+  };
+
+  const updateCursorActivationState = () => {
+    if (getActivationState() && !isKeyboardNavigating) {
+      document.body.classList.add("custom-cursor-active");
+    } else {
+      document.body.classList.remove("custom-cursor-active");
+      // Reset styles if cursor is deactivated
+      outerCursor.classList.remove("is-visible");
+      innerCursor.classList.remove("is-visible");
+    }
+  };
+
+  // Expose function to global scope so it can be called from navbar.js when settings toggles
+  window.updateCustomCursorState = updateCursorActivationState;
 
   const target = { x: 0, y: 0 };
   const current = { x: 0, y: 0 };
   const speed = 0.18;
 
   const update = () => {
-    current.x += (target.x - current.x) * speed;
-    current.y += (target.y - current.y) * speed;
+    if (getActivationState() && !isKeyboardNavigating) {
+      current.x += (target.x - current.x) * speed;
+      current.y += (target.y - current.y) * speed;
 
-    outerCursor.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%)`;
-    innerCursor.style.transform = `translate3d(${target.x}px, ${target.y}px, 0) translate(-50%, -50%)`;
-
+      outerCursor.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%)`;
+      innerCursor.style.transform = `translate3d(${target.x}px, ${target.y}px, 0) translate(-50%, -50%)`;
+    }
     requestAnimationFrame(update);
   };
 
   const showCursor = () => {
-    outerCursor.classList.add("is-visible");
-    innerCursor.classList.add("is-visible");
+    if (getActivationState() && !isKeyboardNavigating) {
+      outerCursor.classList.add("is-visible");
+      innerCursor.classList.add("is-visible");
+    }
   };
 
   const hideCursor = () => {
@@ -1841,6 +1864,10 @@ initTheme();
     (event) => {
       target.x = event.clientX;
       target.y = event.clientY;
+      if (isKeyboardNavigating) {
+        isKeyboardNavigating = false;
+        updateCursorActivationState();
+      }
       showCursor();
     },
     { passive: true },
@@ -1849,6 +1876,59 @@ initTheme();
   window.addEventListener("mouseleave", hideCursor);
   window.addEventListener("mouseenter", showCursor);
 
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Tab") {
+      isKeyboardNavigating = true;
+      updateCursorActivationState();
+    }
+  });
+
+  // Watch for system accessibility media query changes
+  const reducedMotionQuery = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  );
+  const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
+
+  const handleQueryChange = () => {
+    updateCursorActivationState();
+  };
+
+  if (typeof reducedMotionQuery.addEventListener === "function") {
+    reducedMotionQuery.addEventListener("change", handleQueryChange);
+    coarsePointerQuery.addEventListener("change", handleQueryChange);
+  } else if (typeof reducedMotionQuery.addListener === "function") {
+    reducedMotionQuery.addListener(handleQueryChange);
+    coarsePointerQuery.addListener(handleQueryChange);
+  }
+
+  // Hover target animations (interactive micro-animations)
+  const hoverTargets =
+    'a, button, [role="button"], input, select, .chip, .project-card, .bookmark-btn';
+
+  document.addEventListener("mouseover", (e) => {
+    if (!getActivationState() || isKeyboardNavigating) return;
+    const item = e.target.closest(hoverTargets);
+    if (item) {
+      outerCursor.style.borderColor = "rgba(59, 130, 246, 1)";
+      outerCursor.style.boxShadow = "0 0 18px rgba(59, 130, 246, 0.6)";
+      outerCursor.style.width = "52px";
+      outerCursor.style.height = "52px";
+    }
+  });
+
+  document.addEventListener("mouseout", (e) => {
+    if (!getActivationState() || isKeyboardNavigating) return;
+    const item = e.target.closest(hoverTargets);
+    if (item) {
+      outerCursor.style.borderColor = "rgba(59, 130, 246, 0.7)";
+      outerCursor.style.boxShadow = "0 0 12px rgba(59, 130, 246, 0.35)";
+      outerCursor.style.width = "36px";
+      outerCursor.style.height = "36px";
+    }
+  });
+
+  // Initialize activation state
+  updateCursorActivationState();
   requestAnimationFrame(update);
 })();
 
