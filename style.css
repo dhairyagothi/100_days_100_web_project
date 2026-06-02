@@ -2640,3 +2640,29 @@ body::after {
     padding: 0.5rem 0;
   }
   }
+}
+.card-thumbnail {
+  width: 100%;
+  height: 130px; /* reduced from 180px */
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.card-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.project-card:hover .card-thumbnail img {
+  transform: scale(1.05);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .card-thumbnail {
+    height: 110px;
+  }
+}

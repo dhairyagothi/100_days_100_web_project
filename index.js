@@ -212,38 +212,60 @@ getProjectDescription(project);
     : `<a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()">
                         <i class="fab fa-github"></i> Code
                     </a>`;
+  const PROJECT_THUMBNAILS = {
+  'Todo List': './public/thumbnails/todo-list.png',
+  'Spotify Clone': './public/thumbnails/spotify-clone.png',
+  'Amazon Clone': './public/thumbnails/amazon-clone.png',
+  'Netflix Landing Page Clone': './public/thumbnails/netflix-clone.png',
+  'Weather Forecasting': './public/thumbnails/weather-forcasting.png',
+  'Zomato Clone': './public/thumbnails/zomato.png'
+};
 
-  return {
-    html: `
-            <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category-wrap">
-                  <span class="card-category">${category}</span>
-                  ${sourceOnlyBadge}
-                </span>
-            </div>
-            <div class="card-name">${name}</div>
-            ${
-              showDescription
-                ? `<div class="card-description">
-    ${description}
-</div>`
-                : ''
-            }
-            <div class="card-tags">${tagsHTML}</div>
-            <div class="card-footer">
-                <div class="card-actions-left">
-                    ${primaryLink}
-                    ${codeLink}
-                </div>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}" onclick="event.stopPropagation()">
-                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
-                </button>
-            </div>
-        `,
-    demoUrl,
-    sourceOnly,
-  };
+const thumbnail =
+  PROJECT_THUMBNAILS[name] || './public/thumbnails/placeholder.png';
+
+return {
+  html: `
+    <div class="card-thumbnail">
+      <img src="${thumbnail}" alt="${name}" loading="lazy">
+    </div>
+
+    <div class="card-meta">
+      <span class="card-day">${day}</span>
+      <span class="card-category-wrap">
+        <span class="card-category">${category}</span>
+        ${sourceOnlyBadge}
+      </span>
+    </div>
+
+    <div class="card-name">${name}</div>
+
+    ${
+      showDescription
+        ? `<div class="card-description">${description}</div>`
+        : ''
+    }
+
+    <div class="card-tags">${tagsHTML}</div>
+
+    <div class="card-footer">
+      <div class="card-actions-left">
+        ${primaryLink}
+        ${codeLink}
+      </div>
+
+      <button class="bookmark-btn ${
+        isBookmarked ? 'active' : ''
+      }" data-id="${day}" onclick="event.stopPropagation()">
+        <i class="${
+          isBookmarked ? 'fa-solid' : 'fa-regular'
+        } fa-bookmark"></i>
+      </button>
+    </div>
+  `,
+  demoUrl,
+  sourceOnly,
+};
 }
 
 function attachProjectCardInteraction(card, demoUrl, projectData = null) {
@@ -569,8 +591,14 @@ function renderGrid() {
       matchesDifficulty = (difficulty || '').toLowerCase() === difficultyFilter.toLowerCase();
     }
 
-    return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
-  });
+    return (
+  matchesFilter &&
+  matchesSearch &&
+  matchesTech &&
+  matchesDifficulty &&
+  matchesTechStack(tags)
+);
+  })
 
   // Apply sorting
   if (sortOption === 'az') {
