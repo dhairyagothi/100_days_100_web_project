@@ -47,6 +47,11 @@ body {
   background: rgba(255, 255, 255, 0.3);
   color: white;
   cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.search-bar button:hover {
+  background: rgba(255, 255, 255, 0.45);
 }
 
 #location {
@@ -55,6 +60,8 @@ body {
 
 .error-message {
   color: #ffb3b3;
+  min-height: 1.4em;
+  font-size: 14px;
 }
 
 .dashboard {
@@ -121,4 +128,60 @@ body {
 
 .hourly-forecast div {
   text-align: center;
+}
+
+/* ─── Loading Overlay ──────────────────────────────────────────────────── */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.loading-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ─── Responsive ───────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .top-bar {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .hourly-forecast {
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
 }

@@ -2,6 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="AirCast - Real-time weather and Air Quality Index (AQI) companion. Check current weather, temperature, humidity, wind, sunrise/sunset, hourly forecast, and pollutant breakdown for any city."
+    />
     <title>AirCast - Your Daily Air & Weather Companion</title>
     <link rel="icon" href="logo.png" />
 
@@ -18,6 +23,12 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <!-- Loading overlay -->
+    <div id="loadingOverlay" class="loading-overlay" aria-live="polite">
+      <div class="spinner"></div>
+      <p>Fetching weather data…</p>
+    </div>
+
     <div class="app">
       <header class="top-bar">
         <div>
@@ -25,15 +36,21 @@
         </div>
 
         <div class="search-bar">
-          <input type="text" id="cityInput" placeholder="Search city" />
-          <button onclick="getWeather()">
+          <input
+            type="text"
+            id="cityInput"
+            placeholder="Search city…"
+            autocomplete="off"
+            aria-label="Enter city name"
+          />
+          <button onclick="getWeather()" aria-label="Search weather">
             <span class="material-icons">search</span>
           </button>
         </div>
       </header>
 
       <h2 id="location">--</h2>
-      <p id="errorMessage" class="error-message"></p>
+      <p id="errorMessage" class="error-message" role="alert"></p>
 
       <div class="dashboard">
         <!-- LEFT PANEL -->
