@@ -11,7 +11,46 @@
 </head>
 <body>
 
-  <div class="container">
+  <button id="themeToggle" class="theme-toggle">
+    ☀️
+  </button>
+
+  <div id="authContainer" class="auth-container">
+
+    <div class="auth-card">
+
+      <h2 id="authTitle">Login</h2>
+
+      <input
+        type="text"
+        id="username"
+        placeholder="Enter Username"
+      >
+
+      <input
+        type="password"
+        id="password"
+        placeholder="Enter Password"
+      >
+
+      <button id="authBtn">
+        Login
+      </button>
+
+      <p id="toggleAuth">
+        Don't have an account?
+        <span>Sign Up</span>
+      </p>
+
+    </div>
+
+  </div>
+
+  <div
+  class="container"
+  id="mainApp"
+  style="display:none;"
+>
 
     <header class="hero">
       <h1>🚀 PlaceMate</h1>
@@ -20,7 +59,18 @@
         Track your interview preparation journey and become placement ready
       </p>
 
-      <button>Start Preparing</button>
+      <div class="hero-buttons">
+
+        <button>
+          Start Preparing
+        </button>
+
+        <button id="logoutBtn">
+          Logout
+        </button>
+
+      </div>
+
     </header>
 
     <section class="input-section">
