@@ -2729,139 +2729,22 @@ body.light-mode .footer.homepage-footer .social-btn {
     font-size: 0.8rem;
   }
 }
-
 /* ============================================================
-   THEME TRANSITION REPAINT GUARD
+   SEARCH ENHANCEMENTS 
    ============================================================ */
-[data-theme-transitioning],
-[data-theme-transitioning] * {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    transition-duration: 0.2s !important;
-}
 
-/* ============================================================
-   LIGHT-MODE OVERRIDES
-   Applied only when [data-theme="light"] is active to replace hard
-   dark-mode gradients/backgrounds with light-friendly variants.
-   ============================================================ */
-:root[data-theme="light"] .hero-terminal {
-    filter: invert(1) hue-rotate(180deg) brightness(1.05) contrast(0.9);
-    opacity: 0.6;
-    mix-blend-mode: multiply;
-    background: transparent;
-}
-
-:root[data-theme="light"] body::before,
-:root[data-theme="light"] body::after,
-:root[data-theme="light"] body .ambient-left::before,
-:root[data-theme="light"] body .ambient-right::before,
-:root[data-theme="light"] body .noise-layer {
-    mix-blend-mode: multiply;
-    opacity: 0.15;
-}
-
-/* ============================================================
-   LIGHT-MODE OVERRIDES (body.light-mode class)
-   ============================================================ */
-body.light-mode .hero-terminal {
-  filter: invert(1) hue-rotate(180deg) brightness(1.05) contrast(0.9);
-  opacity: 0.6;
-  mix-blend-mode: multiply;
-  background: transparent;
-}
-
-body.light-mode::before,
-body.light-mode::after,
-body.light-mode .ambient-left::before,
-body.light-mode .ambient-right::before,
-body.light-mode .noise-layer {
-  mix-blend-mode: multiply;
-  opacity: 0.15;
-}
-@media (max-width: 768px) {
-  .projects-header {
-    align-items: stretch;
-  }
-
-  [data-theme="light"] .stats-strip,
-  body.light-mode .stats-strip {
-    background: rgba(255, 255, 255, 0.85);
-    box-shadow:
-      0 0 0 1px rgba(0, 0, 0, 0.05),
-      0 18px 60px rgba(0, 0, 0, 0.02);
-  }
-
-  [data-theme="light"] .brand-mark,
-  body.light-mode .brand-mark {
-    background: linear-gradient(180deg, rgba(59, 130, 246, 0.15), rgba(255, 255, 255, 0.9));
-    border: 1px solid rgba(0, 0, 0, 0.08);
-  }
-}
-
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  body::before,
-  body::after,
-  .ambient::before,
-  .noise-layer,
-  .hero-overline,
-  .hero-headline,
-  .hero-sub,
-  .hero-extra,
-  .hero-actions,
-  .stats-strip {
-    animation: none !important;
-  }
-
-  .hero-terminal {
-    opacity: 0.35;
-  }
-
-  /* ── Global accessibility override ──────────────────────────
-     Catches every animation / transition / smooth-scroll that
-     the component-specific rules above may not cover.
-     Using 0.01ms (not 0) keeps JS animationend events firing
-     so interactive components don't break.
-  ────────────────────────────────────────────────────────── */
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-#scrollToTopBtn {
-  display: none;
-  position: fixed;
-  bottom: 20px;
-  right: 30px;
-  z-index: 99;
-  border: none;
-  outline: none;
-  background-color: #24292e;
-  color: white;
+.clear-search {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  background: none;
+  border:none;
+  transform: translateY(-50%);
   cursor: pointer;
-  padding: 12px 16px;
-  border-radius: 50%;
+  display: none;
   font-size: 18px;
-  transition:
-    opacity 0.3s,
-    background-color 0.3s,
-    transform 0.2s;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-#scrollToTopBtn:hover {
-  background-color: #007bff;
-  transform: scale(1.1);
+  color:var(--text-muted);
+  transition:0.2s;
 }
 /* Accessibility Focus Styles */
 
@@ -2926,180 +2809,46 @@ footer a {
   color: #fff;
 }
 
-/* ==========================================================
-   MOBILE RESPONSIVE FIX FOR SUBFOLDER TEMPLATES (Issue #3674)
-   ========================================================== */
-@media (max-width: 768px) {
-  /* Targets card view containers inside subfolders */
-  .main-container,
-  .container,
-  .wrapper {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 95% !important;
-    position: static !important;
-    transform: none !important;
-    margin: 10px auto !important;
-  }
-
-  /* Shrinks titles so they don't break boundaries on mobile */
-  .main-container h1,
-  .main-container h2,
-  .main-container .title,
-  .container h1,
-  .container h2,
-  .container .title,
-  .wrapper h1,
-  .wrapper h2,
-  .wrapper .title {
-    font-size: 1.8rem !important;
-    line-height: 1.3 !important;
-    text-align: center !important;
-    margin-bottom: 1rem !important;
-  }
-
-  /* Ensures structural inputs remain cleanly within view constraints */
-  .main-container input,
-  .main-container button,
-  .main-container .btn,
-  .container input,
-  .container button,
-  .container .btn,
-  .wrapper input,
-  .wrapper button,
-  .wrapper .btn {
-    width: 100% !important;
-    max-width: 300px !important;
-  }
-}
-/* ============================================================
-   CANVAS FIX — particle canvas was pushing hero content down
-   by occupying block layout space equal to window.innerHeight.
-   position:fixed takes it out of flow as a pure background layer.
-   ============================================================ */
-#particleCanvas {
-  position: fixed !important;
-  inset: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  pointer-events: none !important;
-  z-index: 0 !important;
-  display: block !important;
+.clear-search:hover {
+  color: var(--accent);
 }
 
-/* ============================================================
-   POINTER-EVENTS STACKING FIX
-   All decorative background layers must never intercept clicks.
-   ============================================================ */
-
-/* body pseudo-elements are purely decorative */
-body::before,
-body::after {
-  pointer-events: none;
-}
-
-/* ambient blobs and noise grain — purely visual, never clickable */
-.ambient,
-.ambient::before,
-.noise-layer {
-  pointer-events: none;
-}
-
-/* Toast sits above content */
-.toast {
-  z-index: 100001;
-}
-.card-description {
+.result-count {
+  margin-top: 8px;
+  font-size: 14px;
   color: var(--text-secondary);
-  font-size: 0.82rem;
-  line-height: 1.6;
-
-  opacity: 0;
-  max-height: 0;
-
-  overflow: hidden;
-
-  transform: translateY(-8px);
-
-  transition:
-    opacity 0.25s ease,
-    max-height 0.35s ease,
-    transform 0.35s ease,
-    margin 0.35s ease;
-
-  margin-top: 0;
-}
-.project-card {
-  overflow: hidden;
-
-  min-height: 220px;
-
-  transition:
-    transform 0.35s ease,
-    max-height 0.35s ease,
-    border-color 0.35s ease,
-    box-shadow 0.35s ease;
-}
-.project-card:hover {
-  transform: translateY(-4px);
-
-  box-shadow: 0 18px 40px rgba(59, 130, 246, 0.1);
-}
-.project-card:hover .card-description {
-  opacity: 1;
-
-  max-height: 100px;
-
-  transform: translateY(0);
-
-  margin-top: 16px;
 }
 
-.clear-filters-btn:hover {
-  background: var(--accent) !important;
-  color: #ffffff !important;
-  transform: scale(1.03);
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.25);
+.highlight {
+  background: #00ffe1;
+  color: black;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+.suggestions-box {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 100%;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    max-height: 220px;
+    overflow-y: auto;
+    display: none;
+    z-index: 20;
 }
 
-.clear-filters-btn:active {
-  transform: scale(0.97);
+.suggestion-item {
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: 0.2s;
 }
 
-body > header {
-  position: relative;
-  z-index: 999999 !important;
-}
-/* ============================================================
-   PERFORMANCE ANIMATION
-   ============================================================ */
-
-.project-card {
-  opacity: 0;
-  transform: translateY(20px);
-  transition:
-    opacity 0.4s ease,
-    transform 0.4s ease;
-}
-
-.project-card.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-@media (pointer: fine) {
-  .cursor-ring {
-    display: block !important;
-    opacity: 0;
-  }
-  .cursor-ring.is-visible {
-    opacity: 1 !important;
-  }
-}
-
-* {
-  cursor: none !important;
-}
+.suggestion-item:hover,
+.suggestion-item.active {
+    background: var(--accent-dim);
+    color: var(--accent);
 }
