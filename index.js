@@ -224,6 +224,21 @@ function getProjectDescription(project) {
   );
 }
 
+/**
+ * Escape HTML special characters to prevent XSS when values are
+ * interpolated into innerHTML template strings.
+ * @param {string} str - Raw string from data file or user input
+ * @returns {string} HTML-safe string
+ */
+function escapeHtml(str) {
+  return String(str || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function buildProjectCardHTML({
   day,
   name,
@@ -245,7 +260,7 @@ function buildProjectCardHTML({
         .split(/\s+/)
         .filter((t) => t && t !== SOURCE_ONLY_TAG);
   const tagsHTML = tagsArray
-    .map((t) => `<span class="tag">${t}</span>`)
+    .map((t) => `<span class="tag">${escapeHtml(t)}</span>`)
     .join("");
   const project = PROJECTS.find((p) => p[1] === name);
 
@@ -269,13 +284,13 @@ function buildProjectCardHTML({
   return {
     html: `
             <div class="card-meta">
-                <span class="card-day">${day}</span>
+                <span class="card-day">${escapeHtml(day)}</span>
                 <span class="card-category-wrap">
-                  <span class="card-category">${category}</span>
+                  <span class="card-category">${escapeHtml(category)}</span>
                   ${sourceOnlyBadge}
                 </span>
             </div>
-            <h3 class="card-name">${name}</h3>
+            <h3 class="card-name">${escapeHtml(name)}</h3>
             ${
               showDescription
                 ? `<div class="card-description">
