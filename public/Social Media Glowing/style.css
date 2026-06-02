@@ -1,73 +1,87 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  body {
-    height: 100vh;
-    width: 100vw;
-    background: #18191f;
-    margin: 0;
+  margin: 0;
   padding: 0;
-  font-family: 'Arial', sans-serif;
+  box-sizing: border-box;
+}
+body {
+  height: 100vh;
+  width: 100vw;
+  background: #18191f;
+  margin: 0;
+  padding: 0;
+  font-family: "Arial", sans-serif;
   background-color: #000000;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  }
-  .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    width: 100vw;
-    flex-wrap: wrap;
-  }
-  #apple,
-  #twitter,
-  #github,
-  #facebook {
-    font-size: 8em;
-    background-color: #18191f;
-    color: #fff;
-    box-shadow: 2px 2px 2px #00000080, 10px 1px 12px #00000080,
-      2px 2px 10px #00000080, 2px 2px 3px #00000080, inset 2px 2px 10px #00000080,
-      inset 2px 2px 10px #00000080, inset 2px 2px 10px #00000080,
-      inset 2px 2px 10px #00000080;
-    border-radius: 29px;
-    padding: 11px 19px;
-    margin: 20px;
-    animation: animate 3s linear infinite;
-    text-shadow: 0 0 50px #0072ff, 0 0 100px #0072ff, 0 0 150px #0072ff,
-      0 0 200px #0072ff;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  /* Icon Hover Effects */
-#apple:hover, #twitter:hover, #github:hover, #facebook:hover {
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  flex-wrap: wrap;
+}
+#apple,
+#twitter,
+#github,
+#facebook {
+  font-size: 8em;
+  background-color: #18191f;
+  color: #fff;
+  box-shadow:
+    2px 2px 2px #00000080,
+    10px 1px 12px #00000080,
+    2px 2px 10px #00000080,
+    2px 2px 3px #00000080,
+    inset 2px 2px 10px #00000080,
+    inset 2px 2px 10px #00000080,
+    inset 2px 2px 10px #00000080,
+    inset 2px 2px 10px #00000080;
+  border-radius: 29px;
+  padding: 11px 19px;
+  margin: 20px;
+  animation: animate 3s linear infinite;
+  text-shadow:
+    0 0 50px #0072ff,
+    0 0 100px #0072ff,
+    0 0 150px #0072ff,
+    0 0 200px #0072ff;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+/* Icon Hover Effects */
+#apple:hover,
+#twitter:hover,
+#github:hover,
+#facebook:hover {
   transform: scale(1.2);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-  #twitter {
-    animation-delay: 0.3s;
+#twitter {
+  animation-delay: 0.3s;
+}
+#facebook {
+  animation-delay: 0.7s;
+}
+#github {
+  animation-delay: 0.1s;
+}
+
+@keyframes animate {
+  from {
+    filter: hue-rotate(0deg);
   }
-  #facebook {
-    animation-delay: 0.7s;
+  to {
+    filter: hue-rotate(360deg);
   }
-  #github {
-    animation-delay: 0.1s;
-  }
-  
-  @keyframes animate {
-    from {
-      filter: hue-rotate(0deg);
-    }
-    to {
-      filter: hue-rotate(360deg);
-    }
-  }
-  
-  /* Responsive Design */
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
@@ -75,8 +89,227 @@
     padding: 20px;
   }
 
-  #apple, #twitter, #github, #facebook {
+  #apple,
+  #twitter,
+  #github,
+  #facebook {
     font-size: 4em;
     margin: 10px 0;
   }
+}
+
+/* Navbar */
+.navbar {
+  width: 100%;
+  padding: 20px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-left: 140px;
+}
+
+.logo i {
+  font-size: 32px;
+  color: #ff0080;
+  text-shadow:
+    0 0 10px #ff0080,
+    0 0 20px #ff0080,
+    0 0 40px #ff0080;
+}
+
+.logo h2 {
+  color: white;
+  font-size: 30px;
+  font-weight: 700;
+  font-family: Arial, sans-serif;
+}
+
+.logo span {
+  color: #ff0080;
+}
+
+.nav-btn {
+  padding: 12px 24px;
+  border: 1px solid #ff0080;
+  background: transparent;
+  color: white;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s ease;
+}
+
+.nav-btn:hover {
+  background: #ff0080;
+  box-shadow:
+    0 0 10px #ff0080,
+    0 0 20px #ff0080,
+    0 0 40px #ff0080;
+}
+
+/* Galaxy Background */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow: hidden;
+  background: radial-gradient(
+    circle at top,
+    #1a1a40 0%,
+    #0f0f2d 35%,
+    #050510 70%,
+    #000000 100%
+  );
+  position: relative;
+}
+
+/* Stars */
+body::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(white 1px, transparent 1px),
+    radial-gradient(#00ffff 1px, transparent 1px),
+    radial-gradient(#ff00ff 1px, transparent 1px);
+
+  background-size:
+    120px 120px,
+    180px 180px,
+    240px 240px;
+
+  opacity: 0.4;
+  animation: starsMove 20s linear infinite;
+}
+
+/* Glow Effect */
+body::after {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: #ff0080;
+  filter: blur(180px);
+  top: -100px;
+  left: -100px;
+  opacity: 0.25;
+}
+
+/* Hero Section */
+.hero {
+  width: 100%;
+  text-align: center;
+  margin-top: 120px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Glowing Heading */
+.hero-title {
+  font-size: 75px;
+  font-weight: 800;
+  color: white;
+  font-family: Arial, sans-serif;
+  margin-bottom: 20px;
+
+  text-shadow:
+    0 0 10px #ff0080,
+    0 0 20px #ff0080,
+    0 0 40px #ff0080,
+    0 0 80px #ff0080;
+
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+/* Paragraph */
+.hero-text {
+  color: #d1d1d1;
+  font-size: 20px;
+  letter-spacing: 1px;
+}
+
+/* Glow Animation */
+@keyframes glow {
+  from {
+    text-shadow:
+      0 0 10px #ff0080,
+      0 0 20px #ff0080,
+      0 0 40px #ff0080;
+  }
+
+  to {
+    text-shadow:
+      0 0 20px #ff0080,
+      0 0 40px #ff0080,
+      0 0 80px #ff0080,
+      0 0 120px #ff0080;
+  }
+}
+
+/* Animation */
+@keyframes starsMove {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-200px);
+  }
+}
+
+/* Small Top Text */
+.hero-subtitle {
+  color: white;
+  font-size: 18px;
+  letter-spacing: 6px;
+  margin-bottom: 18px;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 10px white,
+    0 0 20px white;
+  animation: subtitleGlow 2s ease-in-out infinite alternate;
+}
+
+/* Subtitle Glow Animation */
+@keyframes subtitleGlow {
+  from {
+    text-shadow:
+      0 0 10px white,
+      0 0 20px white;
+  }
+  to {
+    text-shadow:
+      0 0 20px white,
+      0 0 40px white,
+      0 0 80px white;
+  }
+}
+
+/* Footer */
+.footer {
+  width: 100%;
+  text-align: center;
+  padding: 20px;
+  position: relative;
+  z-index: 2;
+  margin-top: 50px;
+}
+
+.footer p {
+  color: white;
+  font-size: 16px;
+  letter-spacing: 1px;
+
+  text-shadow:
+    0 0 10px #ff0080,
+    0 0 20px #ff0080;
 }
