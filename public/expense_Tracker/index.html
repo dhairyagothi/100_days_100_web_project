@@ -6,44 +6,41 @@
     <title>Expense Tracker</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Forces equal vertical alignment matching on the cards and their contents */
         @media (min-width: 992px) {
             .main-layout {
                 display: flex !important;
-                align-items: stretch !important; /* Forces uniform vertical card stretching */
+                align-items: stretch !important;
                 gap: 24px; 
             }
             .content-card.form-section {
-                flex: 0 0 420px !important;     /* Increased from 350px for a bit more room */
-                max-width: 450px !important;    /* Increased from 380px */
+                flex: 0 0 420px !important;
+                max-width: 450px !important;
                 margin: 0 !important;
-                height: auto !important;         /* Cancels out fit-content block from stylesheet */
+                height: auto !important;
                 display: flex !important;        
                 flex-direction: column !important;
             }
             .content-card.summary-section {
-                flex: 1 !important;             /* Let the summary panel stretch horizontally */
+                flex: 1 !important;
                 margin: 0 !important;
                 height: auto !important;
                 display: flex !important;
                 flex-direction: column !important;
             }
-            
-            /* Structural alignment mechanics to flush card bottoms identically */
             #transactionForm {
                 display: flex !important;
                 flex-direction: column !important;
-                flex-grow: 1 !important;         /* Stretches form internally to fill card bottom space */
+                flex-grow: 1 !important;
             }
-            /* Pushes the primary action button exactly to the matching bottom floor */
             #transactionForm .btn-primary {
-                margin-top: auto !important;     /* Locks button flush against the baseline */
+                margin-top: auto !important;
             }
         }
     </style>
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
 
     <div class="app-container">
         <header class="app-header">
@@ -181,7 +178,7 @@
         </div>
     </div>
 
-    <button id="themeToggle" class="floating-theme-btn" aria-label="Toggle dark and light mode">🌓</button>
+    <button id="themeToggle" class="floating-theme-btn" aria-label="Toggle dark and light mode">🌙</button>
 
     <script src="expense.js" defer></script>
 </body>
