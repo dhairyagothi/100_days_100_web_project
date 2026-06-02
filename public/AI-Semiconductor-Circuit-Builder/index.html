@@ -187,6 +187,17 @@
 </div>
 
 <script>
+
+function escapeHTML(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
 // Architectural Variable State Tracker
 let selectedArch = "npu";
 let activeDesignData = null;
@@ -282,7 +293,12 @@ function calculatePPA(goal, nodeValue, cores, freq) {
 }
 
 function generateDesign() {
-  const name = document.getElementById('projectName').value.trim() || 'Unnamed_Design';
+  
+    const name = escapeHTML(
+  document.getElementById('projectName').value.trim() || 'Unnamed_Design'
+);
+
+
   const goal = document.getElementById('goal').value;
   const node = document.getElementById('node').value;
   const cores = parseInt(document.getElementById('cores').value);
@@ -630,15 +646,20 @@ function renderSavedProjectsList() {
   }
 
   container.innerHTML = projects.map(p => `
-    <div onclick="loadSavedProject('${p.id}')" class="bg-gray-800/40 hover:bg-gray-800 border border-gray-800 hover:border-gray-700 p-2.5 rounded-xl cursor-pointer flex justify-between items-center transition group">
-      <div class="truncate mr-2">
-        <div class="font-mono font-bold text-gray-200 text-xs truncate">${p.name}</div>
-        <div class="text-[10px] text-gray-400 truncate">${p.architecture} &bull; ${p.node}nm &bull; ${p.cores} Cores</div>
-      </div>
-      <button onclick="deleteProject('${p.id}', event)" class="text-gray-500 hover:text-red-400 p-1 rounded opacity-0 group-hover:opacity-100 transition duration-150">
-        <i class="fas fa-trash-alt"></i>
-      </button>
+<div onclick="loadSavedProject('${escapeHTML(p.id)}')" class="bg-gray-800/40 hover:bg-gray-800 border border-gray-800 hover:border-gray-700 p-2.5 rounded-xl cursor-pointer flex justify-between items-center transition group">
+  <div class="truncate mr-2">
+    <div class="font-mono font-bold text-gray-200 text-xs truncate">
+      ${escapeHTML(p.name)}
     </div>
+    <div class="text-[10px] text-gray-400 truncate">
+      ${escapeHTML(p.architecture)} &bull; ${escapeHTML(p.node)}nm &bull; ${escapeHTML(p.cores)} Cores
+    </div>
+  </div>
+  <button onclick="deleteProject('${escapeHTML(p.id)}', event)" class="text-gray-500 hover:text-red-400 p-1 rounded opacity-0 group-hover:opacity-100 transition duration-150">
+    <i class="fas fa-trash-alt"></i>
+  </button>
+</div>
+
   `).join('');
 }
 
@@ -654,17 +675,25 @@ function renderComparisonTable() {
     return;
   }
 
+
   tbody.innerHTML = list.map(c => `
-    <tr class="hover:bg-gray-900/40 border-b border-gray-900 transition">
-      <td class="p-3 font-sans font-semibold text-white">${c.name} <span class="text-[10px] font-mono text-gray-500 block">${c.architecture} Base</span></td>
-      <td class="p-3 text-blue-400">${c.node}nm</td>
-      <td class="p-3 text-gray-400">${c.frequency ? c.frequency.toFixed(2) : '2.50'} GHz</td>
-      <td class="p-3 font-bold text-cyan-400">${c.metrics.power} W</td>
-      <td class="p-3 text-amber-400">${c.metrics.area} mm²</td>
-      <td class="p-3 text-purple-400">${c.metrics.tops} TOPS</td>
-      <td class="p-3 text-emerald-400">${c.metrics.efficiency} <span class="text-[9px] text-gray-500">T/W</span></td>
-    </tr>
-  `).join('');
+  <tr class="hover:bg-gray-900/40 border-b border-gray-900 transition">
+    <td class="p-3 font-sans font-semibold text-white">
+      ${escapeHTML(c.name)}
+      <span class="text-[10px] font-mono text-gray-500 block">
+        ${escapeHTML(c.architecture)} Base
+      </span>
+    </td>
+    <td class="p-3 text-blue-400">${escapeHTML(c.node)}nm</td>
+    <td class="p-3 text-gray-400">${c.frequency ? c.frequency.toFixed(2) : '2.50'} GHz</td>
+    <td class="p-3 font-bold text-cyan-400">${c.metrics.power} W</td>
+    <td class="p-3 text-amber-400">${c.metrics.area} mm²</td>
+    <td class="p-3 text-purple-400">${c.metrics.tops} TOPS</td>
+    <td class="p-3 text-emerald-400">${c.metrics.efficiency} <span class="text-[9px] text-gray-500">T/W</span></td>
+  </tr>
+`).join('');
+
+
 }
 
 function clearComparison() {
