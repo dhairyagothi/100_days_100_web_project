@@ -208,6 +208,20 @@ function startTimer() {
         }
 
         updateDisplay();
+
+        // ── Keyboard Shortcuts ──────────────────────────────────────────────────────
+        // Space → Start / Pause  |  R → Reset  |  1 → Focus  |  2 → Short  |  3 → Long
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            switch (e.key) {
+                case ' ':  e.preventDefault(); startTimer(); break;
+                case 'r':
+                case 'R':  resetTimer(); break;
+                case '1':  setMode('work');  break;
+                case '2':  setMode('short'); break;
+                case '3':  setMode('long');  break;
+            }
+        });
         updateProgress();
     }, 500);
 }
