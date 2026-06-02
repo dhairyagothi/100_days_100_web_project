@@ -266,6 +266,7 @@ The website features:
 | 193 | Escape Room | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Escape_Room/index.html) |
 | 194 | Lost & Found Portal | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Lost_And_Found_Portal/index.html) |
 | 195 | Complaint Management System | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Complaint_Management_System/index.html) |
+| 196 | Naukri Campus Clone | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Naukri-Campus-Clone/index.html) |
 | 129 | YouTube Clone | HTML, CSS | 🎬 Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/youtube%20clone/index.html) |
 | 130 | Dino Game | JavaScript | 🦖 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/DinoGame/DinoGame-main/index.html) |
 | 131 | Retro Highway Racer | JavaScript | 🏎️ Game | [View Demo](https://100-days-100-web-project.vercel.app/public/RetroHighwayRacer/index.html) |
@@ -333,6 +334,7 @@ The website features:
 | 193 | Escape Room | HTML, CSS, JS | 🎮 Games | [View Demo](https://100-days-100-web-project.vercel.app/public/Escape_Room/index.html) |
 | 194 | Lost & Found Portal | HTML, CSS, JS | ❤️ Social Impact | [View Demo](https://100-days-100-web-project.vercel.app/public/Lost_And_Found_Portal/index.html) |
 | 195 | Complaint Management System | HTML, CSS, JS | 📋 Management | [View Demo](https://100-days-100-web-project.vercel.app/public/Complaint_Management_System/index.html) |
+| 196 | Naukri Campus Clone | HTML, CSS, JavaScript | 💼 Job Portal Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/Naukri-Campus-Clone/index.html) |
  
 
 > The full project list is large and maintained in `projects.json` and on the live website. To keep this README concise and avoid duplicated tables, please view the complete, up-to-date list at:
