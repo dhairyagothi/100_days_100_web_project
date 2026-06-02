@@ -1,4 +1,4 @@
-body {
+﻿body {
     background: url("./background.jpg") no-repeat center center fixed;
     background-size: cover;
     font-family: Arial, Helvetica, sans-serif;
@@ -109,6 +109,29 @@ li:hover{
     object-fit: contain;
     user-select: none;
     -webkit-user-drag: none;
+}
+
+#board img.candy-hint {
+    animation: candyHintPulse 1s ease-in-out infinite;
+    border-radius: 12px;
+    box-shadow:
+        0 0 0 4px rgba(255, 235, 59, 0.95),
+        0 0 18px rgba(255, 64, 129, 0.9),
+        0 0 32px rgba(255, 193, 7, 0.75);
+    transform: scale(1.08);
+    z-index: 2;
+}
+
+@keyframes candyHintPulse {
+    0%, 100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+        filter: brightness(1.25);
+    }
 }
 
 #combo-display {
