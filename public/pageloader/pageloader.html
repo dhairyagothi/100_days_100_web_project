@@ -1,38 +1,277 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset= "UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="pageloader.css">
-<title>Pageloader</title>
-</head>
-<body>
-    <div id="container">
-        <div id="loading"></div>
-        <nav class="navbar">
-            <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-        <header id ="home">
-        <h1>Welcome to Pageloader!</h1></div>
-        </header>
-        <section id="about" class="content">
-            <h2>About Us</h2>
-            <p>Thank you for visiting our website. Here is a simple example of a pageloader.</p>
-        </section>
-        <footer id="contact">
-            <h2>Contact Us</h2>
-            <p>&copy; 2024 Your Company. All rights reserved.</p>
-        </footer>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pageloader Gallery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="pageloader.css" />
+  </head>
+
+  <body>
+    <div id="preloader" aria-hidden="true">
+      <div class="loader-card">
+        <div class="spinner"></div>
+        <div class="progress"><span class="progress-bar"></span></div>
+        <p class="loading-text">Loading<span class="dots"></span></p>
+      </div>
     </div>
-       <script>
-         window.addEventListener("load", function () {
-            const loader = document.getElementById("loading");
-            loader.style.display = "none";
-        });
-    </script>
-</body>
+
+    <div id="toast-container"></div>
+
+    <div class="page" id="page">
+      <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <span class="brand">PL<span class="accent-dot">.</span></span>
+        <ul class="nav-links">
+          <li><a href="#home" class="nav-link">Home</a></li>
+          <li><a href="#gallery" class="nav-link">Gallery</a></li>
+          <li><a href="#about" class="nav-link">About</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <main class="content-wrapper">
+        <section id="home" class="page-section active">
+          <span class="eyebrow">Welcome</span>
+          <h1>Built to <em>Load</em><br />Fast & Smooth.</h1>
+          <p class="subtext">
+            A clean, minimal pageloader demo. Navigate between sections and
+            browse our gallery of different loader styles.
+          </p>
+          <div class="cta-group">
+            <a href="#gallery" class="cta primary">View Gallery</a>
+            <a href="#contact" class="cta ghost">Contact Us</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat">
+              <span class="stat-num"
+                ><span id="loadTimeStat">—</span><small>ms</small></span
+              ><span class="stat-label">Load Time</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num">100<small>%</small></span
+              ><span class="stat-label">Smooth</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num">0<small>px</small></span
+              ><span class="stat-label">Layout Shift</span>
+            </div>
+          </div>
+        </section>
+
+        <section id="gallery" class="page-section">
+          <span class="eyebrow">Showcase</span>
+          <h2>Loader Collection</h2>
+          <p class="subtext">
+            A variety of CSS-only loading animations to fit different UI
+            requirements and brand aesthetics.
+          </p>
+
+          <!-- Search Bar -->
+          <input
+            type="text"
+            id="search-input"
+            class="search-input"
+            placeholder="Search by name or type..."
+          />
+
+          <!-- Filter Tabs -->
+          <div class="filter-tabs" id="filter-tabs">
+            <button class="filter-tab active" data-filter="all">All</button>
+            <button class="filter-tab" data-filter="spinner">Spinner</button>
+            <button class="filter-tab" data-filter="dots">Dots</button>
+            <button class="filter-tab" data-filter="ring">Ring</button>
+            <button class="filter-tab" data-filter="pulse">Pulse</button>
+            <button class="filter-tab" data-filter="glow">Glow</button>
+            <button class="filter-tab" data-filter="favorites">
+              ❤️ Favorites
+            </button>
+          </div>
+
+          <div class="loader-grid" id="loader-grid"></div>
+        </section>
+
+        <section id="about" class="page-section">
+          <span class="eyebrow">About</span>
+          <h2>What Is a Pageloader?</h2>
+          <p class="subtext">
+            A pageloader masks the initial network & render delay, giving users
+            a polished first impression instead of a blank screen.
+          </p>
+          <div class="feature-grid">
+            <article class="feature-card">
+              <div class="feature-icon">⚡</div>
+              <h3>Instant Feedback</h3>
+              <p>Users see activity immediately, so the wait feels shorter.</p>
+            </article>
+            <article class="feature-card">
+              <div class="feature-icon">🎨</div>
+              <h3>Brand Aligned</h3>
+              <p>Your loader can reflect the brand colours and personality.</p>
+            </article>
+            <article class="feature-card">
+              <div class="feature-icon">♿</div>
+              <h3>Accessible</h3>
+              <p>
+                Built with <code>aria-hidden</code> and reduced-motion support.
+              </p>
+            </article>
+            <article class="feature-card">
+              <div class="feature-icon">📦</div>
+              <h3>Zero Deps</h3>
+              <p>Pure HTML, CSS and vanilla JS — no frameworks needed.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="contact" class="page-section">
+          <span class="eyebrow">Contact</span>
+          <h2>Get In Touch</h2>
+          <p class="subtext">
+            Have a question or want to collaborate? Drop us a message and we'll
+            get back to you shortly.
+          </p>
+          <div class="contact-form">
+            <div class="form-row">
+              <input
+                type="text"
+                id="fname"
+                class="form-input"
+                placeholder="Your Name"
+              />
+              <input
+                type="email"
+                id="femail"
+                class="form-input"
+                placeholder="Email Address"
+              />
+            </div>
+            <textarea
+              id="fmsg"
+              class="form-input form-textarea"
+              placeholder="Your message…"
+            ></textarea>
+            <button class="cta primary" id="sendBtn" type="button">
+              Send Message
+            </button>
+            <div id="successMsg" class="success-msg" aria-live="polite"></div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span class="brand">PL<span class="accent-dot">.</span></span>
+        <p>&copy; 2026 Pageloader Demo. All rights reserved.</p>
+      </footer>
+    </div>
+
+    <!-- Loader Preview Modal -->
+    <div id="loader-modal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <button class="modal-close" id="modal-close">&times;</button>
+        <h2 id="modal-loader-name"></h2>
+        <p id="modal-loader-description"></p>
+
+        <div id="modal-preview-container" class="modal-preview-container">
+          <div id="modal-loader-preview"></div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls-section">
+          <div class="control-group">
+            <label for="size-slider"
+              >Size: <span id="size-value">80px</span></label
+            >
+            <input
+              type="range"
+              id="size-slider"
+              min="30"
+              max="200"
+              value="80"
+            />
+          </div>
+
+          <div class="control-group">
+            <label for="speed-slider"
+              >Speed: <span id="speed-value">1.0x</span></label
+            >
+            <input
+              type="range"
+              id="speed-slider"
+              min="0.5"
+              max="3"
+              step="0.1"
+              value="1"
+            />
+          </div>
+
+          <div class="control-group">
+            <label for="color-picker">Primary Color</label>
+            <input type="color" id="color-picker" value="#38bdf8" />
+          </div>
+
+          <div class="control-group">
+            <label for="glow-slider"
+              >Glow Intensity: <span id="glow-value">1</span></label
+            >
+            <input
+              type="range"
+              id="glow-slider"
+              min="0"
+              max="3"
+              step="0.1"
+              value="1"
+            />
+          </div>
+
+          <div class="control-group">
+            <label for="theme-select">Background Theme</label>
+            <select id="theme-select">
+              <option value="dark">Dark</option>
+              <option value="light">Light</option>
+              <option value="neon">Neon</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Performance Metrics -->
+        <div class="metrics-section">
+          <div class="metric">
+            <span class="metric-label">FPS</span>
+            <span class="metric-value" id="fps-display">60</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Animation Speed</span>
+            <span class="metric-value" id="speed-display">1.0x</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Size</span>
+            <span class="metric-value" id="size-display">80px</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="modal-actions">
+          <button class="cta ghost" id="copy-css-btn">Copy CSS</button>
+          <button class="cta ghost" id="download-css-btn">Download CSS</button>
+          <button class="cta primary" id="fullscreen-btn">
+            Fullscreen Preview
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fullscreen Preview -->
+    <div id="fullscreen-preview" class="fullscreen-overlay hidden">
+      <button class="fullscreen-close" id="fullscreen-close">&times;</button>
+      <div id="fullscreen-loader-preview"></div>
+    </div>
+
+    <script src="pageloader.js"></script>
+  </body>
 </html>

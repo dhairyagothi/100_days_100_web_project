@@ -1,185 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Trip Advisor</title>
-    <link rel="stylesheet" href="slider.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <style>
-        body {
-            background-size: cover;
-            background-position: center;
-            transition: background-image 0.5s ease-in-out;
-            color: white;
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-
-        header {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 10px 20px;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .navbar h1 {
-            font-size: 24px;
-            margin: 0;
-        }
-
-        .navbar ul {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            gap: 20px;
-        }
-
-        .navbar ul li a {
-            text-decoration: none;
-            color: white;
-            font-size: 18px;
-            transition: color 0.3s;
-        }
-
-        .navbar ul li a:hover {
-            color: #00ff00;
-        }
-
-        .content {
-            text-align: center;
-            margin-top: 5%;
-            padding: 20px;
-        }
-
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
-        }
-
-        p {
-            font-size: 1.2em;
-            margin-bottom: 20px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-        }
-
-        select {
-            padding: 10px;
-            font-size: 1em;
-            margin: 20px 0;
-        }
-
-        .booking {
-            background-color: black;
-            color: white;
-            font-weight: bold;
-            padding: 10px 20px;
-            border-radius: 50px;
-            border: 2px solid white;
-            cursor: pointer;
-            font-size: 1em;
-        }
-
-        @media screen and (max-width: 768px) {
-            header {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .navbar ul {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .content {
-                margin-top: 10%;
-                padding: 10px;
-            }
-
-            h1 {
-                font-size: 2em;
-            }
-
-            p {
-                font-size: 1em;
-            }
-
-            .booking {
-                width: 80%;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wanderlust — Discover Your Next Destination</title>
+  <link rel="icon" href="../favv.png" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="slider.css" />
 </head>
-<body>
-<header>
-    <div class="navbar">
-        <h1 style="font-family: Verdana, Geneva, Tahoma, sans-serif;font-style:italic;font-style:bold">TRIP ADVISOR</h1>
-        <ul>
-            <li><a href="#">HOME</a></li>
-            <li><a href="#">CONTACT US</a></li>
-            <li><a href="#">ABOUT US</a></li>
-            <li><a href="#">SERVICES</a></li>
-        </ul>
-    </div>
-</header>
+<body id="top">
 
-<div class="content">
-    <p id="placeDescription">Explore the beauty of glaciers and the breathtaking landscapes of Iceland.</p>
-    <h1 id="placeTitle">Iceland</h1>
-    
-    <select id="placeSelector">
-        <option value="Iceland">Iceland</option>
-        <option value="Switzerland">Switzerland</option>
-        <option value="Scotland">Scotland</option>
-        <option value="Ireland">Ireland</option>
-        <option value="Germany">Germany</option>
-    </select>
-    <br>
-    <button class="booking" id="bookingButton">Book a Trip to Iceland</button>
-</div>
+  <!-- Background layers for crossfade -->
+  <div id="wl-bg" aria-hidden="true"></div>
+  <div id="wl-bg-next" aria-hidden="true"></div>
+  <div class="wl-overlay" aria-hidden="true"></div>
 
-<script>
-    const placeBackgrounds = {
-        "Iceland": "url('images/iceland.jpg')",
-        "Switzerland": "url('images/Jennifer.avif')",
-        "Scotland": "url('images/Daniel.jpeg')",
-        "Ireland": "url('images/kai.jpg')",
-        "Germany": "url('images/Hannes-Becker4.jpg')"
-    };
 
-    const placeDescriptions = {
-        "Iceland": "Explore the beauty of glaciers and the breathtaking landscapes of Iceland.",
-        "Switzerland": "Experience the serene beauty of the Swiss Alps and picturesque villages.",
-        "Scotland": "Discover the rich history and stunning highlands of Scotland.",
-        "Ireland": "Immerse yourself in the lush green landscapes and vibrant culture of Ireland.",
-        "Germany": "Explore Germany's charming cities and stunning countryside."
-    };
+  <!-- Header -->
+  <header class="wl-header">
+    <div class="wl-logo">✈ Wanderlust <span>· Discover</span></div>
+    <nav class="wl-nav" aria-label="Site navigation">
+      <a href="#top" id="homeLink">Home</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a href="#services">Services</a>
+    </nav>
+  </header>
 
-    const placeSelector = document.getElementById('placeSelector');
-    const bookingButton = document.getElementById('bookingButton');
-    const placeTitle = document.getElementById('placeTitle');
-    const placeDescription = document.getElementById('placeDescription');
-    const body = document.body;
+  <!-- Hero -->
+  <div class="wl-hero">
+    <div class="wl-card" role="region" aria-live="polite" aria-label="Destination information">
 
-    // Function to update the UI
-    function updatePlace(place) {
-        body.style.backgroundImage = placeBackgrounds[place];
-        placeTitle.textContent = place;
-        placeDescription.textContent = placeDescriptions[place];
-        bookingButton.textContent = `Book a Trip to ${place}`;
-    }
+      <div class="wl-country-label" id="placeRegion">Europe · Destination 1 of 14</div>
+      <h1 class="wl-place-title" id="placeTitle">Iceland</h1>
+      <p class="wl-place-desc" id="placeDescription">Explore glaciers, geysers, and the ethereal Northern Lights across volcanic landscapes.</p>
 
-    // Event listener for place selection
-    placeSelector.addEventListener('change', function () {
-        const selectedPlace = placeSelector.value;
-        updatePlace(selectedPlace);
-    });
+      <div class="wl-controls-row">
+        <button class="wl-nav-btn" id="prevBtn" aria-label="Previous destination">&#8592;</button>
+        <div class="wl-select-wrap">
+          <select id="placeSelector" aria-label="Choose a destination"></select>
+          <span class="wl-select-arrow" aria-hidden="true">▾</span>
+        </div>
+        <button class="wl-nav-btn" id="nextBtn" aria-label="Next destination">&#8594;</button>
+      </div>
+
+      <!-- Indicator dots (generated by JS) -->
+      <div id="destinationIndicators" class="destination-indicators" role="tablist" aria-label="Destination navigation"></div>
+
+      <button class="booking" id="bookingButton">Book a Trip to Iceland</button>
+
+      <div class="wl-autoplay-row">
+        <button class="wl-autoplay-btn" id="autoplayBtn" aria-label="Toggle autoplay">
+          <span id="autoplayIcon">▶</span>
+          <span id="autoplayLabel">Autoplay</span>
+        </button>
+        <span class="wl-counter" id="wlCounter">1 / 14</span>
+      </div>
+      <div class="wl-progress">
+        <div class="wl-progress-bar" id="progressBar"></div>
+      </div>
+
+
+        placeSelector.addEventListener('change', function () {
+            updatePlace(placeSelector.value);
+        });
+
+
+    // Booking button functionality
+bookingButton.addEventListener('click', function () {
+    const selectedPlace = placeSelector.value;
+
+    alert(`Your trip to ${selectedPlace} has been booked successfully!`);
+
+    bookingButton.textContent = `Trip Booked to ${selectedPlace} ✓`;
+
+    bookingButton.classList.add("booked");
+});
 
     
     window.onload = function () {
@@ -188,5 +86,39 @@
         placeSelector.value = defaultPlace;
     };
 </script>
+
+</body>
+
+</html>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="footer-grid">
+      <div>
+        <h3>Contact Us</h3>
+        <p>📧 contact@wanderlust.com</p>
+        <p>📞 +1 800 123 4567</p>
+        <p>🕐 Mon–Fri, 9am–6pm</p>
+      </div>
+      <div id="about">
+        <h3>About Us</h3>
+        <p>We are a travel platform helping you discover the most beautiful destinations around the world. Our mission is to make travel planning simple, beautiful and inspiring.</p>
+      </div>
+      <div id="services">
+        <h3>Services</h3>
+        <p>✈️ Flight Booking</p>
+        <p>🏨 Hotel Reservations</p>
+        <p>🗺️ Tour Packages</p>
+        <p>🚗 Car Rentals</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 Wanderlust. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
