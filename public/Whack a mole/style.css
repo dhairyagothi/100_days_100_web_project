@@ -1,0 +1,86 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #eca9a9;
+    font-family: Arial, sans-serif;
+}
+.game-container{
+    text-align: center;
+    background-color: #854a4a;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(72, 21, 21, 0.1);
+    width: 500px;
+    cursor: url('hammer.png') 16 16 , auto;
+
+}
+h1{
+    color: #fff;
+    margin-bottom: 10px;
+}
+p{
+    color: #f5d5d5;
+    font-size: 18px;
+}
+#gameOver{
+    color: #ffdd57;
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.grid{
+    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-gap: 20px;
+    margin-top: 20px;
+    justify-items: center;
+}
+.hole{
+    width: 100px;
+    height: 100px;
+    background-color: #5c3030;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative; 
+    cursor: url('hammer.png') 16 16 , auto;
+}
+.mole{
+    width: 80%;
+    height: 80%;
+    background-color: #8b4513;
+    border-radius: 50% 50% 0 0;
+    position: absolute;
+    bottom: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: bottom 0.1s ease;
+    pointer-events: none;
+}
+.hole.active .mole{
+    bottom: 0;
+}
+button{
+    margin-top: 20px;
+    padding: 10px 24px;
+    background-color: #5c3030;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: url('hammer.png') 16 16 , auto;
+}
+button:hover{
+    background-color: #3e1f1f;
+}
+button:disabled{
+    opacity: 0.5;
+    cursor: not-allowed;
+}
