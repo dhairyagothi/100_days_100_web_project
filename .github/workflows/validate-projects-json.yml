@@ -20,4 +20,4 @@ jobs:
           node-version: 20
 
       - name: Run Schema Validator
-        run: node scripts/validate-metadata.js
+        run: node scripts/validate-projects.js

@@ -1404,7 +1404,7 @@
       "canvas"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/Particle Wave Animation/index.html"
+    "projectPath": "./public/image-particle-engine/index.html"
   },
   {
     "projectNo": 119,
@@ -1419,7 +1419,7 @@
       "js"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/code-visualizer-playground/index.html"
+    "projectPath": "./public/live-code-playground/index.html"
   },
   {
     "projectNo": 120,
@@ -2169,20 +2169,6 @@
     "projectPath": "./public/story/main.html"
   },
   {
-    "projectNo": 177,
-    "projectName": "Interview Prep Hub",
-    "projectType": "Tool",
-    "projectDesc": "Centralized platform for interview preparation resources and practice tools.",
-    "techStack": [
-      "tool",
-      "javascript",
-      "html",
-      "css"
-    ],
-    "difficulty": "advanced",
-    "projectPath": "./public/InterviewSimulator/index.html"
-  },
-  {
     "projectNo": 178,
     "projectName": "Plane Take Off Simulation",
     "projectType": "Animation",
@@ -2309,7 +2295,7 @@
       "javascript"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/canvas_multitrack_sequencer/index.html"
+    "projectPath": "./public/Breakout-game/canvas_multitrack_sequencer/index.html"
   },
   {
       "projectNo": 187,
@@ -2386,7 +2372,7 @@
       "javascript"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/story/main.html"
+    "projectPath": "./public/story/story.html"
   },
   {
     "projectNo": 193,
@@ -2427,7 +2413,7 @@
     "difficulty": "advanced",
     "projectPath": "./public/Complaint_Management_System/index.html"
   },
-{
+  {
     "projectNo": 196,
     "projectName": "AirCast",
     "projectType": "Tool",
@@ -2443,7 +2429,7 @@
     "projectPath": "./public/Weather App with AQI/index.html"
   },
   {
-"projectNo": 197,
+    "projectNo": 197,
     "projectName": "Flipkart Clone",
     "projectType": "E-Commerce",
     "projectDesc": "A responsive Flipkart-inspired e-commerce website featuring a modern navbar, product categories, hero carousel, brand spotlight section, promotional banners, home decor showcase, and a fully designed footer.",
@@ -2495,10 +2481,8 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/Movie-Matcher/index.html"
-  
-},
-
-    {
+  },
+  {
     "projectNo": 201,
     "projectName": "Number Guesser Game",
     "projectType": "Game",
@@ -2506,7 +2490,7 @@
     "techStack": ["game", "html", "css", "javascript"],
     "difficulty": "advanced",
     "projectPath": "./public/NumberGuessGame/index.html"
-},
+  },
   {
     "projectNo": 202,
     "projectName": "Traffic signal game",
@@ -2521,25 +2505,25 @@
     "projectPath": "./public/traffic_signal/index.html"
   },
   {
-  "projectNo": 203,
-  "projectName": "Pomodoro With Miu",
-  "projectType": "Tool",
-  "projectDesc": "A cute cat-themed Pomodoro timer built with Electron.js. Features 25/5 focus-break cycles, animated cat GIFs, meow sound notifications, and encouraging messages. Originally a desktop app — browser preview included.",
-  "projectPath": "./public/Pomodoro_With_Miu-Electronjs/index.html",
-  "techStack": ["javascript", "css", "html", "electron"],
-  "difficulty": "intermediate"
+    "projectNo": 203,
+    "projectName": "Pomodoro With Miu",
+    "projectType": "Tool",
+    "projectDesc": "A cute cat-themed Pomodoro timer built with Electron.js. Features 25/5 focus-break cycles, animated cat GIFs, meow sound notifications, and encouraging messages. Originally a desktop app — browser preview included.",
+    "projectPath": "./public/Pomodoro_With_Miu-Electronjs/index.html",
+    "techStack": ["javascript", "css", "html", "electron"],
+    "difficulty": "intermediate"
   },
   {
-  "projectNo": 204,
-  "projectName": "Escape the Matrix Game",
-  "projectType": "Web Application",
-  "projectDesc": "An immersive, interactive web-based survival and puzzle game challenging players to hack their way out of a simulated reality.",
-  "techStack": [
-    "html",
-    "css",
-    "javascript"
-  ],
-  "difficulty": "advanced",
-  "projectPath": "./public/Escape The Matrix/index.html"
-}
+    "projectNo": 204,
+    "projectName": "Escape the Matrix Game",
+    "projectType": "Web Application",
+    "projectDesc": "An immersive, interactive web-based survival and puzzle game challenging players to hack their way out of a simulated reality.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Escape The Matrix/index.html"
+  }
 ]
