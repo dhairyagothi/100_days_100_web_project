@@ -1972,6 +1972,7 @@ input:focus,
 }
 
 /* No results */
+
 .no-results {
   display: none;
   text-align: center;

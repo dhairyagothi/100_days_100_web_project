@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Modern Habit Tracker with daily habits, streaks, progress summary, and localStorage persistence." />
+  <title>Habit Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div>
+        <span class="eyebrow">Habit Tracker</span>
+        <h1>Stay Consistent</h1>
+        <p class="hero-copy">Track habits, protect your streak, and see progress in a clean, responsive interface.</p>
+      </div>
+      <a class="home-link" href="../index.html">← Back to projects</a>
+    </header>
+
+    <main class="main-grid">
+      <section class="stats-panel" aria-labelledby="stats-heading">
+        <div class="panel-heading">
+          <p id="stats-heading">Progress summary</p>
+          <span class="status-pill">Daily focus</span>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span class="stat-title">Habits</span>
+            <strong id="totalHabits">0</strong>
+          </article>
+
+          <article class="stat-card">
+            <span class="stat-title">Completed today</span>
+            <strong id="completedCount">0</strong>
+          </article>
+
+          <article class="stat-card">
+            <span class="stat-title">Completion</span>
+            <strong id="completionRate">0%</strong>
+          </article>
+
+          <article class="stat-card">
+            <span class="stat-title">Current streak</span>
+            <strong id="currentStreak">0</strong>
+          </article>
+
+          <article class="stat-card">
+            <span class="stat-title">Longest streak</span>
+            <strong id="longestStreak">0</strong>
+          </article>
+        </div>
+
+        <div class="progress-card" aria-label="Completion progress">
+          <div class="progress-header">
+            <span>Daily completion</span>
+            <strong id="progressLabel">0 / 0</strong>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progressBar"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tracker-panel" aria-labelledby="tracker-heading">
+        <div class="panel-heading">
+          <p id="tracker-heading">Habit workflow</p>
+          <span class="status-pill">Responsive & modern</span>
+        </div>
+
+        <form id="habitForm" class="habit-form" novalidate>
+          <label for="habitInput">Add a new habit</label>
+          <div class="input-group">
+            <input
+              id="habitInput"
+              type="text"
+              placeholder="Read, exercise, meditate..."
+              autocomplete="off"
+              aria-describedby="feedback"
+            />
+            <button class="btn-primary" type="submit">Add</button>
+          </div>
+          <p class="feedback" id="feedback">Use short habit names and avoid duplicates.</p>
+        </form>
+
+        <div class="task-bar">
+          <div>
+            <h2>Today's habits</h2>
+            <p id="taskSubtitle">Add a habit to begin.</p>
+          </div>
+        </div>
+
+        <ul class="habit-list" id="habitList" aria-live="polite"></ul>
+
+        <div class="empty-state" id="emptyState">
+          <div class="empty-icon">✓</div>
+          <h2>No habits yet</h2>
+          <p>Add your first habit and mark it complete every day to build momentum.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
