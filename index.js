@@ -406,19 +406,29 @@ function updateTechFilterDisplay() {
 
   container.style.display = "flex";
 
-  // Render filter tags with remove buttons
-  tagsContainer.innerHTML = techStackFilters
-    .map(
-      (tech) => `
-    <span class="tech-filter-tag">
-      ${tech}
-      <button onclick="removeTechFilter('${tech}')" aria-label="Remove ${tech} filter">
-        <i class="fas fa-times"></i>
-      </button>
-    </span>
-  `,
-    )
-    .join("");
+  // Render filter tags using DOM methods to prevent XSS.
+  // Assigning techStackFilters values directly to innerHTML would allow a
+  // filter value containing HTML special characters or a quote-breaking
+  // sequence to inject markup or break out of the onclick attribute string.
+  tagsContainer.textContent = "";
+  techStackFilters.forEach((tech) => {
+    const span = document.createElement("span");
+    span.className = "tech-filter-tag";
+
+    const label = document.createTextNode(tech);
+    span.appendChild(label);
+
+    const btn = document.createElement("button");
+    btn.setAttribute("aria-label", `Remove ${tech} filter`);
+    btn.addEventListener("click", () => removeTechFilter(tech));
+
+    const icon = document.createElement("i");
+    icon.className = "fas fa-times";
+    btn.appendChild(icon);
+
+    span.appendChild(btn);
+    tagsContainer.appendChild(span);
+  });
 }
 
 /**
