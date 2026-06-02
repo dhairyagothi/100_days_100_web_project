@@ -264,6 +264,19 @@ class LostAndFoundApp {
             this.showToast('Invalid Date', 'The date lost cannot be in the future.');
             return;
         }
+
+        const contactInput = document.getElementById(`${type}-contact`).value.trim();
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^[0-9]{10}$/;
+
+        const isValidEmail = emailRegex.test(contactInput);
+        const isValidPhone = phoneRegex.test(contactInput);
+
+        if (!isValidEmail && !isValidPhone) {
+            this.showToast('Invalid Contact Info', 'Please enter a valid 10-digit phone number or a proper email address.');
+            return;
+        }
         
         const previewImg = document.getElementById(`${type}-preview-img`);
         const imageSrc = previewImg.src && !previewImg.src.includes(window.location.host) ? previewImg.src : null;

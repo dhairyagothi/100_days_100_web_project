@@ -8,10 +8,12 @@
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/darkmode.css">
     <link rel="stylesheet" href="css/toast.css">
-    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/animation.css">
     <link rel="stylesheet" href="css/hero.css">
+    <link rel="stylesheet" href="assets/css/auth.css">
 </head>
 <body>
+<div id="appShell">
 <nav class="navbar">
     <div class="logo">
         <img src="assets/logo.png" alt="logo">
@@ -20,9 +22,21 @@
 
     <ul class="nav-links">
         <li><a href="#">Home</a></li>
-        <li><a href="remedies.html">Remedies</a></li>
-        <li><a href="feedback.html">Feedback</a></li>
+        <li data-role="patient"><a href="remedies.html">Remedies</a></li>
+        <li data-role="patient"><a href="feedback.html">Feedback</a></li>
     </ul>
+
+    <div class="user-area">
+        <div id="userBadge" class="user-badge hidden" aria-live="polite">
+            <span id="userAvatar" class="user-avatar" aria-hidden="true">👤</span>
+            <div class="user-meta">
+                <span id="userBadgeName">Guest</span>
+                <span id="userBadgeRole">Role: --</span>
+            </div>
+        </div>
+        <button id="loginTrigger" class="auth-btn" type="button">Login</button>
+        <button id="logoutBtn" class="auth-btn secondary is-role-hidden" type="button">Logout</button>
+    </div>
 </nav>
 
 <header class="hero">
@@ -31,16 +45,17 @@
         <div class="hero-text-group">
             <h1>🏥 MedConsult Dashboard</h1>
             <p>Connecting Local Doctors with Specialists</p>
+            <p id="welcomeMessage" class="welcome-message">Welcome to MedConsult</p>
         </div>
 
         <div class="hero-nav-links">
             <a href="index.html" class="active">
                 <i class="ph ph-squares-four"></i> Dashboard
             </a>
-            <a href="remedies.html">
+            <a href="remedies.html" data-role="patient">
                 <i class="ph ph-prescription"></i> Home Remedies
             </a>
-            <a href="feedback.html">
+            <a href="feedback.html" data-role="patient">
                 <i class="ph ph-chat-circle-text"></i> Feedback
             </a>
 
@@ -143,7 +158,7 @@
         <div class="dashboard-left">
 
             <!-- Consultation Request -->
-            <section class="card form-card">
+            <section class="card form-card" data-role="patient">
                 <div class="card-header">
                     <div class="icon-wrapper primary">
                         <i class="ph ph-stethoscope"></i>
@@ -324,7 +339,7 @@
             </section>
 
             <!-- Specialist Response -->
-            <section id="specialist-response" class="card form-card" style="display:none;">
+            <section id="specialist-response" class="card form-card is-role-hidden" data-role="doctor">
                 <div class="card-header">
                     <div class="icon-wrapper accent">
                         <i class="ph ph-lightbulb"></i>
@@ -457,16 +472,233 @@
             </section>
 
             <!-- Feedback Link -->
-            <a href="feedback.html">
-                <button class="primary-btn feedback-btn">Give Feedback</button>
-            </a>
+            <div data-role="patient">
+                <a href="feedback.html">
+                    <button class="primary-btn feedback-btn">Give Feedback</button>
+                </a>
+            </div>
+
+            <section class="card doctor-controls is-role-hidden" data-role="doctor">
+                <h2>🩺 Doctor Controls</h2>
+                <p class="role-note">Manage your availability for incoming consultations.</p>
+                <div class="form-actions" style="margin-top: 1rem;">
+                    <button type="button" id="availabilityToggle" class="btn btn-primary">
+                        Set Available
+                    </button>
+                </div>
+                <p id="availabilityStatus" class="disclaimer">Currently: Offline</p>
+            </section>
 
         </div>
 
     </main>
 
+    <section class="faq-section card">
+        <div class="faq-header">
+            <h2>Frequently Asked Questions</h2>
+            <p>Got questions about your care? Find quick answers regarding our medical network and data protocols below.</p>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+                <span>How long does it take to get matched with a specialized physician?</span>
+                <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    <p>Urgent consultation requests are typically reviewed by our triage team within 15 minutes. For non-emergency specialized care, assignments are completed within 2 to 4 hours based on physician availability and clinical priority.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+                <span>Are the home remedies and wellness articles peer-reviewed?</span>
+                <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    <p>Yes. All supportive home care remedies, dietary suggestions, and wellness resources are curated and rigorously peer-reviewed by our Board of Medical Advisors. However, these materials are strictly informational and should never supersede direct instructions from your primary care provider.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+                <span>How is my health data protected under privacy regulations?</span>
+                <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    <p>Your privacy is our core priority. The MedConsult platform architecture is fully HIPAA and GDPR compliant. Your protected health information (PHI) is encrypted both in transit and at rest using AES-256 bit encryption, and access is restricted solely to your authorized healthcare team.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+
+            <div class="footer-section footer-brand">
+                <div class="brand-row">
+                    <img src="assets/logo.png" alt="MedConsult Logo" class="footer-logo">
+                    <h3>MedConsult</h3>
+                </div>
+                <p>
+                    Connecting patients with qualified doctors and specialists for faster, smarter healthcare support.
+                </p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Dashboard</a></li>
+                    <li><a href="remedies.html">Home Remedies</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Emergency Help</h3>
+                <ul>
+                    <li><a href="tel:108">🚑 Ambulance (108)</a></li>
+                    <li><a href="#">🏥 Nearby Hospitals</a></li>
+                    <li><a href="#">🧑‍⚕️ Emergency Doctor</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 MedConsult Dashboard • All Rights Reserved</p>
+        </div>
+    </footer>
+</div>
+
+<div id="authOverlay" class="auth-overlay" aria-hidden="true">
+    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+        <div class="auth-brand">
+            <img src="assets/logo.png" alt="MedConsult logo">
+            <div>
+                <h2 id="authTitle">MedConsult Access</h2>
+                <p id="authSubtitle">Sign in to continue</p>
+            </div>
+        </div>
+
+        <section class="auth-panel" data-auth-panel="login">
+            <form id="loginForm">
+                <div class="auth-field">
+                    <label for="loginEmail">Email</label>
+                    <input id="loginEmail" class="auth-input" type="email" autocomplete="email" required>
+                </div>
+                <div class="auth-field">
+                    <label for="loginPassword">Password</label>
+                    <input id="loginPassword" class="auth-input" type="password" autocomplete="current-password" required>
+                </div>
+                <div class="auth-row">
+                    <label class="auth-remember">
+                        <input id="rememberMe" type="checkbox">
+                        Remember Me
+                    </label>
+                </div>
+                <p id="loginError" class="auth-error"></p>
+                <button type="submit" class="auth-submit">Login</button>
+                <div class="auth-footer">
+                    <span>Don't have an account?</span>
+                    <button type="button" data-auth-switch="signup">Sign Up</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="auth-panel is-hidden" data-auth-panel="signup">
+            <form id="signupForm">
+                <div class="auth-field">
+                    <label for="signupName">Full Name</label>
+                    <input id="signupName" class="auth-input" type="text" autocomplete="name" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupEmail">Email</label>
+                    <input id="signupEmail" class="auth-input" type="email" autocomplete="email" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupPassword">Password</label>
+                    <input id="signupPassword" class="auth-input" type="password" autocomplete="new-password" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupConfirm">Confirm Password</label>
+                    <input id="signupConfirm" class="auth-input" type="password" autocomplete="new-password" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupRole">Role</label>
+                    <select id="signupRole" class="auth-select" required>
+                        <option value="">Select role</option>
+                        <option value="patient">Patient</option>
+                        <option value="doctor">Doctor</option>
+                    </select>
+                </div>
+                <p id="signupError" class="auth-error"></p>
+                <button type="submit" class="auth-submit">Create Account</button>
+                <div class="auth-footer">
+                    <span>Already have an account?</span>
+                    <button type="button" data-auth-switch="login">Login</button>
+                </div>
+                <p class="auth-note">
+                    Demo only: passwords are encoded for storage. Real apps require server-side hashing (e.g., bcrypt).
+                </p>
+            </form>
+        </section>
+    </div>
+</div>
+
 <div id="toast-container" class="toast-container"></div>
 
+
+<section class="faq-section card">
+    <div class="faq-header">
+        <h2>Frequently Asked Questions</h2>
+        <p>Got questions about your care? Find quick answers regarding our medical network and data protocols below.</p>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+            <span>How long does it take to get matched with a specialized physician?</span>
+            <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+            <div class="faq-answer-content">
+                <p>Urgent consultation requests are typically reviewed by our triage team within 15 minutes. For non-emergency specialized care, assignments are completed within 2 to 4 hours based on physician availability and clinical priority.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+            <span>Are the home remedies and wellness articles peer-reviewed?</span>
+            <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+            <div class="faq-answer-content">
+                <p>Yes. All supportive home care remedies, dietary suggestions, and wellness resources are curated and rigorously peer-reviewed by our Board of Medical Advisors. However, these materials are strictly informational and should never supersede direct instructions from your primary care provider.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+            <span>How is my health data protected under privacy regulations?</span>
+            <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+            <div class="faq-answer-content">
+                <p>Your privacy is our core priority. The MedConsult platform architecture is fully HIPAA and GDPR compliant. Your protected health information (PHI) is encrypted both in transit and at rest using AES-256 bit encryption, and access is restricted solely to your authorized healthcare team.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="assets/js/session.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/roleManager.js"></script>
 <script src="js/script.js"></script>
 <script src="js/darkmode.js"></script>
 <script src="js/toast.js"></script>
@@ -474,8 +706,48 @@
 <script src="js/emergency.js"></script>
 <script src="js/appointments.js"></script>
 <script src="js/reschedule.js"></script>
+
 <footer class="footer">
-    <p>© 2026 MedConsult Dashboard</p>
+    <div class="footer-container">
+
+        <!-- About -->
+        <div class="footer-section footer-brand">
+    <div class="brand-row">
+        <img src="assets/logo.png" alt="MedConsult Logo" class="footer-logo">
+        <h3>MedConsult</h3>
+    </div>
+    <p>
+        Connecting patients with qualified doctors and specialists for faster, smarter healthcare support.
+    </p>
+</div>
+
+        <!-- Quick Links -->
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="remedies.html">Home Remedies</a></li>
+                <li><a href="feedback.html">Feedback</a></li>
+            </ul>
+        </div>
+
+        <!-- Emergency -->
+        <div class="footer-section">
+            <h3>Emergency Help</h3>
+            <ul>
+                <li><a href="tel:108">🚑 Ambulance (108)</a></li>
+                <li><a href="#">🏥 Nearby Hospitals</a></li>
+                <li><a href="#">🧑‍⚕️ Emergency Doctor</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 MedConsult Dashboard • All Rights Reserved</p>
+    </div>
 </footer>
+
+
 </body>
 </html>
