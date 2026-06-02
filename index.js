@@ -275,7 +275,7 @@ function buildProjectCardHTML({
                   ${sourceOnlyBadge}
                 </span>
             </div>
-            <div class="card-name">${name}</div>
+            <h3 class="card-name">${name}</h3>
             ${
               showDescription
                 ? `<div class="card-description">
@@ -1815,25 +1815,60 @@ initTheme();
   const target = { x: 0, y: 0 };
   const current = { x: 0, y: 0 };
   const speed = 0.18;
+  const settleThreshold = 0.1;
+  let cursorVisible = false;
+  let cursorFrameId = null;
+
+  const renderCursor = () => {
+    outerCursor.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%)`;
+    innerCursor.style.transform = `translate3d(${target.x}px, ${target.y}px, 0) translate(-50%, -50%)`;
+  };
+
+  const stopCursorLoop = () => {
+    if (cursorFrameId !== null) {
+      cancelAnimationFrame(cursorFrameId);
+      cursorFrameId = null;
+    }
+  };
 
   const update = () => {
     current.x += (target.x - current.x) * speed;
     current.y += (target.y - current.y) * speed;
+    renderCursor();
 
-    outerCursor.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%)`;
-    innerCursor.style.transform = `translate3d(${target.x}px, ${target.y}px, 0) translate(-50%, -50%)`;
+    const isSettled =
+      Math.abs(target.x - current.x) < settleThreshold &&
+      Math.abs(target.y - current.y) < settleThreshold;
 
-    requestAnimationFrame(update);
+    if (!cursorVisible || isSettled) {
+      current.x = target.x;
+      current.y = target.y;
+      renderCursor();
+      cursorFrameId = null;
+      return;
+    }
+
+    cursorFrameId = requestAnimationFrame(update);
+  };
+
+  const startCursorLoop = () => {
+    if (cursorFrameId === null) {
+      cursorFrameId = requestAnimationFrame(update);
+    }
   };
 
   const showCursor = () => {
+    cursorVisible = true;
     outerCursor.classList.add("is-visible");
     innerCursor.classList.add("is-visible");
+    startCursorLoop();
   };
 
   const hideCursor = () => {
+    cursorVisible = false;
     outerCursor.classList.remove("is-visible");
     innerCursor.classList.remove("is-visible");
+    stopCursorLoop();
   };
 
   window.addEventListener(
@@ -1848,8 +1883,6 @@ initTheme();
 
   window.addEventListener("mouseleave", hideCursor);
   window.addEventListener("mouseenter", showCursor);
-
-  requestAnimationFrame(update);
 })();
 
 // Particle Network Background

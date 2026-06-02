@@ -41,7 +41,21 @@ function showConfirmToast(message, onYes, onNo) {
         if (onNo) onNo();
     });
 }
+function showToast(message) {
+    const container = document.querySelector('.toast-container');
 
+    const toast = document.createElement('div');
+
+    toast.classList.add('toast');
+
+    toast.textContent = message;
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.remove();
+    }, 2000);
+}
 function sin(value) {
     return Math.sin(Math.PI / 180 * Number(value));
 }
@@ -198,8 +212,12 @@ function createHistoryItem(entry, index) {
 
     return div;
 }
-
+function updateHistoryTitle() {
+    const historyTitle = document.getElementById('historyTitle');
+    historyTitle.textContent = `History (${history.length})`;
+}
 function renderHistory() {
+    updateHistoryTitle();
     const historyList = document.getElementById('historyList');
     historyList.innerHTML = '';
 
@@ -286,7 +304,24 @@ arr.forEach(button => {
         input.value = string;
     });
 });
+document
+    .getElementById('copyResult')
+    .addEventListener('click', async () => {
 
+        const value = input.value.trim();
+
+        if (!value || value === 'Error') {
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(value);
+
+            showToast('Copied to clipboard');
+        } catch {
+            showToast('Failed to copy');
+        }
+    });
 document.getElementById('clearHistory').addEventListener('click', () => {
     showConfirmToast(
         "Are you sure you want to clear history?",

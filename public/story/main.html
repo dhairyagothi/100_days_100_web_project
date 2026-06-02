@@ -7,18 +7,18 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="landing-page">
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+    <div style="width: 100%; max-width: 940px; margin: 0 auto 16px; display: flex; justify-content: flex-start;">
+        <a href="index.html" class="btn-secondary" style="text-decoration: none; padding: 10px 16px;" aria-label="Back to project homepage">← Back to Home</a>
+    </div>
 
     <main class="landing-container">
         <h1>Story Animations</h1>
         <p class="lead">
             Step into a world where stories come to life. Listen, follow each scene, and enjoy these interactive adventures.
         </p>
-        <p class="carousel-hint">💡 Click <strong>Next</strong> or <strong>Prev</strong> on the card below to explore other stories!</p>
+        <p class="carousel-hint" id="carousel-instructions">💡 Click <strong>Next</strong> or <strong>Prev</strong> on the card below to explore other stories! You can also use your Left and Right arrow keys.</p>
 
-
-        <!-- Dynamic Story Card Container -->
-        <section class="story-card">
+        <section class="story-card" aria-labelledby="story-title" aria-describedby="carousel-instructions">
             <h2 id="story-title">The Clever Rabbit and the Lion</h2>
             <img
                 id="story-cover"
@@ -28,44 +28,20 @@
                 title="Story Poster"
             >
             
-            <!-- Navigation Controls -->
             <div class="carousel-controls" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin: 15px 0;">
-                <button id="prev-btn" class="btn-secondary" style="padding: 8px 16px; cursor: pointer;">&larr; Prev</button>
-                <span id="story-indicator" style="font-weight: bold;">1 / 3</span>
-                <button id="next-btn" class="btn-secondary" style="padding: 8px 16px; cursor: pointer;">Next &rarr;</button>
+                <button id="prev-btn" class="btn-secondary" style="padding: 8px 16px; cursor: pointer;" aria-label="Previous Story">&larr; Prev</button>
+                <span id="story-indicator" style="font-weight: bold;" aria-live="polite">1 / 4</span>
+                <button id="next-btn" class="btn-secondary" style="padding: 8px 16px; cursor: pointer;" aria-label="Next Story">Next &rarr;</button>
             </div>
 
-            <button id="start" class="btn-primary" style="width: 100%;">Start Story</button>
+            <button id="start" class="btn-primary" style="width: 100%;" aria-label="Start selected story">Start Story</button>
         </section>
     </main>
 
-    <script>
+    <script type="module">
+        import { stories } from './storiesData.js';
+
         // 1. Array of Story Objects (Easily expandable!)
-        const stories = [
-            {
-                id: "rabbit-lion",
-                title: "The Clever Rabbit and the Lion",
-                cover: "images/poster.jpeg"
-            },
-            
-            {
-                id: "tortoise-hare",
-                title: "The Rabbit and the Turtle",
-                cover: "images/race.jpg" // Update with your actual asset path
-            },
-            {
-    id: "cap-seller",
-    title: "The Cap Seller and the Monkeys",
-    cover: "images/monkey-capseller-intro.jpg" // Update with your actual asset path
-},
-
-{
-    id: "fox-stork",
-    title: "The Fox and the Stork",
-    cover: "images/stork-poster.jpg" // Update with your actual asset path
-}
-
-        ];
 
         let currentIndex = 0;
 
@@ -105,6 +81,16 @@
             const selectedStoryId = stories[currentIndex].id;
             // Passes the unique story identifier via URL params to story.html
             window.location.href = `story.html?story=${selectedStoryId}`;
+        });
+
+        window.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowLeft") {
+                prevBtn.click();
+            } else if (event.key === "ArrowRight") {
+                nextBtn.click();
+            } else if (event.key === "Enter" && document.activeElement !== startBtn) {
+                startBtn.click();
+            }
         });
 
         // Initialize display
