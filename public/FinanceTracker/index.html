@@ -1,7 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Finance Tracker</title>
+
+  <link rel="icon" href="../favv.png" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* KEEP ONLY ONE STYLE SYSTEM (use Main version styles) */
+    :root {
+      --primary-color: #6c5ce7;
+      --secondary-color: #a29bfe;
+      --accent-color: #fd79a8;
+      --background-color: #f0f3f6;
+      --text-color: #2d3436;
+      --card-background: #ffffff;
+    }
+
+    body.dark-mode {
+      --background-color: #1a1a2e;
+      --text-color: #e0e0e0;
+      --card-background: #16213e;
+      --primary-color: #0f3460;
+      --secondary-color: #533483;
+      --accent-color: #e94560;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--background-color);
+      color: var(--text-color);
+      margin: 0;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .dashboard {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      flex: 1;
+      padding: 20px;
+      background: var(--card-background);
+      border-radius: 10px;
+    }
+
+    button {
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
 
   <meta charset="UTF-8" />
 
@@ -73,6 +139,22 @@
 
 <body>
 
+<header>
+  Personal Finance Tracker
+</header>
+
+<div class="container">
+
+  <div class="dashboard">
+    <div class="card">
+      <h3>Balance</h3>
+      <p id="balance">$0.00</p>
+    </div>
+
+    <div class="card">
+      <h3>Income</h3>
+      <p id="income">$0.00</p>
+    </div>
   <!-- THEME TOGGLE -->
 
   <button
@@ -440,4 +522,99 @@
 
 </body>
 
+    <div class="card">
+      <h3>Expense</h3>
+      <p id="expense">$0.00</p>
+    </div>
+  </div>
+
+  <form id="transaction-form">
+    <input id="description" placeholder="Description" required>
+    <input id="amount" type="number" placeholder="Amount" required>
+
+    <select id="type">
+      <option value="income">Income</option>
+      <option value="expense">Expense</option>
+    </select>
+
+    <select id="category">
+      <option value="salary">Salary</option>
+      <option value="food">Food</option>
+      <option value="rent">Rent</option>
+      <option value="other">Other</option>
+    </select>
+
+    <button type="submit">Add Transaction</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Type</th>
+        <th>Category</th>
+      </tr>
+    </thead>
+    <tbody id="list"></tbody>
+  </table>
+
+  <canvas id="chart"></canvas>
+
+</div>
+
+<script>
+let data = JSON.parse(localStorage.getItem("data")) || [];
+
+function update(){
+  let inc = 0, exp = 0, bal = 0;
+
+  data.forEach(t => {
+    if(t.type === "income"){
+      inc += t.amount;
+      bal += t.amount;
+    } else {
+      exp += t.amount;
+      bal -= t.amount;
+    }
+  });
+
+  document.getElementById("balance").innerText = "$" + bal.toFixed(2);
+  document.getElementById("income").innerText = "$" + inc.toFixed(2);
+  document.getElementById("expense").innerText = "$" + exp.toFixed(2);
+
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+
+  data.slice().reverse().forEach(t => {
+    list.innerHTML += `
+      <tr>
+        <td>${t.desc}</td>
+        <td>$${t.amount}</td>
+        <td>${t.type}</td>
+        <td>${t.cat}</td>
+      </tr>`;
+  });
+
+  localStorage.setItem("data", JSON.stringify(data));
+}
+
+document.getElementById("transaction-form").addEventListener("submit", e => {
+  e.preventDefault();
+
+  data.push({
+    desc: description.value,
+    amount: +amount.value,
+    type: type.value,
+    cat: category.value
+  });
+
+  e.target.reset();
+  update();
+});
+
+update();
+</script>
+
+</body>
 </html>
