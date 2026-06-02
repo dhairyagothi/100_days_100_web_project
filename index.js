@@ -461,6 +461,17 @@ try {
   );
 }
 
+function safeSetItem(key, value, alertUser = false) {
+  try {
+    localStorage.setItem(key, value);
+  } catch (error) {
+    console.warn(`Could not save ${key} to localStorage:`, error.message);
+    if (alertUser && typeof showToast === "function") {
+      showToast("Storage full: cannot save data");
+    }
+  }
+}
+
 let showAllBookmarks = false;
 let showAllRecent = false;
 
@@ -493,7 +504,7 @@ function migrateRecentProjects() {
     return project;
   });
 
-  localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+  safeSetItem("recentProjects", JSON.stringify(recentProjects));
 }
 
 // Migrate on load
@@ -508,7 +519,7 @@ function cleanupExpiredRecentProjects() {
   recentProjects = getRecentProjectsWithinWindow();
 
   if (recentProjects.length !== initialLength) {
-    localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+    safeSetItem("recentProjects", JSON.stringify(recentProjects));
     renderRecentProjects();
   }
 }
@@ -987,14 +998,11 @@ function toggleBookmark(project) {
 
   updateBookmarkURL();
 
-  try {
-    localStorage.setItem(
-      "bookmarkedProjects",
-      JSON.stringify(bookmarkedProjects),
-    );
-  } catch (error) {
-    console.warn("Could not save bookmark due to localStorage restrictions");
-  }
+  safeSetItem(
+    "bookmarkedProjects",
+    JSON.stringify(bookmarkedProjects),
+    true
+  );
   renderBookmarks();
   renderGrid();
   renderRecentProjects();
@@ -1027,7 +1035,7 @@ function loadBookmarksFromURL() {
     bookmarkIds.includes(project[0]),
   );
 
-  localStorage.setItem(
+  safeSetItem(
     "bookmarkedProjects",
     JSON.stringify(bookmarkedProjects),
   );
@@ -1077,13 +1085,7 @@ function trackRecentProject(project) {
     recentProjects.pop();
   }
 
-  try {
-    localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
-  } catch (error) {
-    console.warn(
-      "Could not save recent projects due to localStorage restrictions",
-    );
-  }
+  safeSetItem("recentProjects", JSON.stringify(recentProjects));
   renderRecentProjects();
 }
 
