@@ -2,100 +2,606 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Signup-Flipkart Clone</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login / Sign Up — Flipkart</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
 
     <style>
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: 'Poppins', sans-serif;
+        font-family: "Poppins", sans-serif;
       }
 
       body {
         background: #f1f3f6;
+        min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
+        padding: 20px;
       }
 
-      .auth-container {
-        width: 340px;
-        background: #fff;
-        padding: 25px;
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      /* ─── CARD ─── */
+      .auth-wrapper {
+        display: flex;
+        width: 100%;
+        max-width: 780px;
+        min-height: 500px;
+        border-radius: 4px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      /* ─── LEFT PANEL ─── */
+      .auth-left {
+        background: #2874f0;
+        padding: 40px 30px;
+        width: 280px;
+        flex-shrink: 0;
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .auth-left .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        margin-bottom: 20px;
+      }
+
+      .auth-left .brand h2 {
+        color: #fff;
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .auth-left h3 {
+        color: #fff;
+        font-size: 22px;
+        font-weight: 600;
+        line-height: 1.4;
+        margin-bottom: 12px;
+      }
+
+      .auth-left p {
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .auth-left .illustration {
+        margin-top: auto;
+        text-align: center;
+      }
+
+      .auth-left .illustration i {
+        font-size: 90px;
+        color: rgba(255, 255, 255, 0.15);
+      }
+
+      /* ─── RIGHT PANEL ─── */
+      .auth-right {
+        background: #fff;
+        flex: 1;
+        padding: 40px 35px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* ─── TABS ─── */
+      .auth-tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 2px solid #f1f1f1;
+        margin-bottom: 28px;
+      }
+
+      .tab-btn {
+        flex: 1;
+        padding: 10px;
+        background: none;
+        border: none;
+        font-size: 15px;
+        font-weight: 600;
+        color: #888;
+        cursor: pointer;
+        transition: color 0.2s;
+        position: relative;
+      }
+
+      .tab-btn::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #2874f0;
+        transform: scaleX(0);
+        transition: transform 0.25s ease;
+      }
+
+      .tab-btn.active {
+        color: #2874f0;
+      }
+
+      .tab-btn.active::after {
+        transform: scaleX(1);
+      }
+
+      /* ─── FORMS ─── */
+      .auth-form {
+        display: none;
+        flex-direction: column;
+        gap: 16px;
+        flex: 1;
+      }
+
+      .auth-form.active {
+        display: flex;
+      }
+
+      .input-group {
+        position: relative;
+      }
+
+      .input-group i {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #aaa;
+        font-size: 14px;
+        pointer-events: none;
+        transition: color 0.2s;
+      }
+
+      .input-group input {
+        width: 100%;
+        padding: 12px 14px 12px 40px;
+        border: 1.5px solid #e0e0e0;
+        border-radius: 4px;
+        outline: none;
+        font-size: 14px;
+        color: #333;
+        transition: border-color 0.2s;
+        background: #fafafa;
+      }
+
+      .input-group input:focus {
+        border-color: #2874f0;
+        background: #fff;
+      }
+
+      .input-group input:focus + i,
+      .input-group:focus-within i {
+        color: #2874f0;
+      }
+
+      .input-group input::placeholder {
+        color: #bbb;
+        font-size: 13px;
+      }
+
+      /* icon order fix — icon after input in DOM but visually left */
+      .input-group {
+        display: flex;
+        align-items: center;
+      }
+
+      .input-group input {
+        order: 2;
+      }
+
+      .input-group i {
+        order: 1;
+        position: absolute;
+        left: 14px;
+      }
+
+      /* ─── ERROR MSG ─── */
+      .error-msg {
+        font-size: 12px;
+        color: #e53935;
+        display: none;
+        margin-top: -8px;
+        padding-left: 4px;
+      }
+
+      .error-msg.show {
+        display: block;
+      }
+
+      /* ─── SUBMIT BTN ─── */
+      .submit-btn {
+        padding: 13px;
+        background: #fb641b;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition:
+          background 0.2s,
+          transform 0.15s;
+        margin-top: 6px;
+      }
+
+      .submit-btn:hover {
+        background: #e8560f;
+        transform: translateY(-1px);
+      }
+
+      .submit-btn:active {
+        transform: translateY(0);
+      }
+
+      /* ─── DIVIDER ─── */
+      .divider {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #aaa;
+        font-size: 12px;
+      }
+
+      .divider::before,
+      .divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #e8e8e8;
+      }
+
+      /* ─── SOCIAL LOGIN ─── */
+      .social-login {
+        display: flex;
         gap: 12px;
       }
 
-      .auth-container h2 {
-        text-align: center;
-        margin-bottom: 10px;
-        color: #2874f0;
-      }
-
-      .auth-container input {
+      .social-btn {
+        flex: 1;
         padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        outline: none;
-        font-size: 14px;
-      }
-
-      .auth-container input:focus {
-        border-color: #2874f0;
-      }
-
-      .auth-container button {
-        padding: 10px;
-        background: #2874f0;
-        color: white;
-        border: none;
-        border-radius: 6px;
+        border: 1.5px solid #e0e0e0;
+        border-radius: 4px;
+        background: #fff;
         cursor: pointer;
-        font-size: 15px;
-        transition: 0.3s;
-      }
-
-      .auth-container button:hover {
-        background: #0b5ed7;
-      }
-
-      .auth-container p {
-        text-align: center;
         font-size: 13px;
-        margin-top: 8px;
+        font-weight: 500;
+        color: #444;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
       }
 
-      .auth-container a {
+      .social-btn:hover {
+        border-color: #2874f0;
+        box-shadow: 0 2px 8px rgba(40, 116, 240, 0.12);
+      }
+
+      .social-btn i.fa-google {
+        color: #ea4335;
+      }
+      .social-btn i.fa-facebook-f {
+        color: #1877f2;
+      }
+
+      /* ─── TERMS ─── */
+      .terms-text {
+        font-size: 12px;
+        color: #878787;
+        text-align: center;
+        line-height: 1.6;
+        margin-top: auto;
+      }
+
+      .terms-text a {
         color: #2874f0;
         text-decoration: none;
-        font-weight: 500;
       }
 
-      .auth-container a:hover {
+      .terms-text a:hover {
         text-decoration: underline;
+      }
+
+      /* ─── SUCCESS STATE ─── */
+      .success-msg {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        flex: 1;
+        text-align: center;
+      }
+
+      .success-msg.show {
+        display: flex;
+      }
+
+      .success-msg i {
+        font-size: 52px;
+        color: #388e3c;
+      }
+
+      .success-msg h3 {
+        font-size: 18px;
+        color: #212121;
+      }
+
+      .success-msg p {
+        font-size: 13px;
+        color: #666;
+      }
+
+      .success-msg a {
+        color: #2874f0;
+        font-weight: 500;
+        text-decoration: none;
+      }
+
+      /* ─── RESPONSIVE ─── */
+      @media (max-width: 600px) {
+        .auth-left {
+          display: none;
+        }
+        .auth-right {
+          padding: 30px 24px;
+        }
+        .auth-wrapper {
+          max-width: 380px;
+        }
       }
     </style>
   </head>
 
   <body>
-    <div class="auth-container">
-      <h2>Create Account</h2>
+    <div class="auth-wrapper">
+      <!-- LEFT PANEL -->
+      <div class="auth-left">
+        <div>
+          <a href="index.html" class="brand">
+            <h2>Flipkart</h2>
+          </a>
+          <h3>Looks like you're new here!</h3>
+          <p>
+            Sign up with your email to get started and enjoy the best deals.
+          </p>
+        </div>
+        <div class="illustration">
+          <i class="fa-solid fa-bag-shopping"></i>
+        </div>
+      </div>
 
-      <input type="text" placeholder="Full Name" />
-      <input type="email" placeholder="Email" />
-      <input type="password" placeholder="Password" />
+      <!-- RIGHT PANEL -->
+      <div class="auth-right">
+        <!-- TABS -->
+        <div class="auth-tabs">
+          <button class="tab-btn active" onclick="switchTab('login')">
+            Login
+          </button>
+          <button class="tab-btn" onclick="switchTab('signup')">Sign Up</button>
+        </div>
 
-      <button>Sign Up</button>
+        <!-- LOGIN FORM -->
+        <form
+          class="auth-form active"
+          id="loginForm"
+          onsubmit="handleLogin(event)"
+          novalidate
+        >
+          <div class="input-group">
+            <input
+              type="email"
+              id="loginEmail"
+              placeholder="Email address"
+              autocomplete="email"
+            />
+            <i class="fa-regular fa-envelope"></i>
+          </div>
+          <span class="error-msg" id="loginEmailErr"
+            >Please enter a valid email.</span
+          >
 
-      <p>
-        Already have an account?
-        <a href="index.html">Login</a>
-      </p>
+          <div class="input-group">
+            <input
+              type="password"
+              id="loginPassword"
+              placeholder="Password"
+              autocomplete="current-password"
+            />
+            <i class="fa-solid fa-lock"></i>
+          </div>
+          <span class="error-msg" id="loginPassErr"
+            >Password must be at least 6 characters.</span
+          >
+
+          <button type="submit" class="submit-btn">Login</button>
+
+          <div class="divider">or</div>
+          <div class="social-login">
+            <button type="button" class="social-btn">
+              <i class="fab fa-google"></i> Google
+            </button>
+            <button type="button" class="social-btn">
+              <i class="fab fa-facebook-f"></i> Facebook
+            </button>
+          </div>
+
+          <p class="terms-text">
+            By continuing, you agree to Flipkart's
+            <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.
+          </p>
+        </form>
+
+        <!-- SIGNUP FORM -->
+        <form
+          class="auth-form"
+          id="signupForm"
+          onsubmit="handleSignup(event)"
+          novalidate
+        >
+          <div class="input-group">
+            <input
+              type="text"
+              id="signupName"
+              placeholder="Full Name"
+              autocomplete="name"
+            />
+            <i class="fa-regular fa-user"></i>
+          </div>
+          <span class="error-msg" id="signupNameErr"
+            >Please enter your full name.</span
+          >
+
+          <div class="input-group">
+            <input
+              type="email"
+              id="signupEmail"
+              placeholder="Email address"
+              autocomplete="email"
+            />
+            <i class="fa-regular fa-envelope"></i>
+          </div>
+          <span class="error-msg" id="signupEmailErr"
+            >Please enter a valid email.</span
+          >
+
+          <div class="input-group">
+            <input
+              type="password"
+              id="signupPassword"
+              placeholder="Password (min. 6 characters)"
+              autocomplete="new-password"
+            />
+            <i class="fa-solid fa-lock"></i>
+          </div>
+          <span class="error-msg" id="signupPassErr"
+            >Password must be at least 6 characters.</span
+          >
+
+          <button type="submit" class="submit-btn">Create Account</button>
+
+          <p class="terms-text">
+            By continuing, you agree to Flipkart's
+            <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.
+          </p>
+        </form>
+
+        <!-- SUCCESS STATE -->
+        <div class="success-msg" id="successMsg">
+          <i class="fa-solid fa-circle-check"></i>
+          <h3>Account Created!</h3>
+          <p>Welcome to Flipkart. You're all set to shop.</p>
+          <a href="index.html">Go to Homepage &rarr;</a>
+        </div>
+      </div>
     </div>
+
+    <script>
+      // ─── TAB SWITCH ───
+      function switchTab(tab) {
+        const tabs = document.querySelectorAll(".tab-btn");
+        const loginForm = document.getElementById("loginForm");
+        const signupForm = document.getElementById("signupForm");
+
+        tabs.forEach((t) => t.classList.remove("active"));
+
+        if (tab === "login") {
+          tabs[0].classList.add("active");
+          loginForm.classList.add("active");
+          signupForm.classList.remove("active");
+        } else {
+          tabs[1].classList.add("active");
+          signupForm.classList.add("active");
+          loginForm.classList.remove("active");
+        }
+        clearErrors();
+      }
+
+      // ─── VALIDATION HELPERS ───
+      function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      }
+
+      function showError(id, show) {
+        document.getElementById(id).classList.toggle("show", show);
+      }
+
+      function clearErrors() {
+        document
+          .querySelectorAll(".error-msg")
+          .forEach((e) => e.classList.remove("show"));
+      }
+
+      // ─── LOGIN HANDLER ───
+      function handleLogin(e) {
+        e.preventDefault();
+        clearErrors();
+        const email = document.getElementById("loginEmail").value.trim();
+        const pass = document.getElementById("loginPassword").value;
+        let valid = true;
+
+        if (!isValidEmail(email)) {
+          showError("loginEmailErr", true);
+          valid = false;
+        }
+        if (pass.length < 6) {
+          showError("loginPassErr", true);
+          valid = false;
+        }
+
+        if (valid) {
+          // Redirect to homepage on success
+          window.location.href = "index.html";
+        }
+      }
+
+      // ─── SIGNUP HANDLER ───
+      function handleSignup(e) {
+        e.preventDefault();
+        clearErrors();
+        const name = document.getElementById("signupName").value.trim();
+        const email = document.getElementById("signupEmail").value.trim();
+        const pass = document.getElementById("signupPassword").value;
+        let valid = true;
+
+        if (!name) {
+          showError("signupNameErr", true);
+          valid = false;
+        }
+        if (!isValidEmail(email)) {
+          showError("signupEmailErr", true);
+          valid = false;
+        }
+        if (pass.length < 6) {
+          showError("signupPassErr", true);
+          valid = false;
+        }
+
+        if (valid) {
+          document.getElementById("signupForm").classList.remove("active");
+          document.getElementById("successMsg").classList.add("show");
+        }
+      }
+    </script>
   </body>
 </html>

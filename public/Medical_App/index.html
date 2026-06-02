@@ -4,11 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedConsult Dashboard</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/darkmode.css">
     <link rel="stylesheet" href="css/toast.css">
+
+
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-wrapper">
+                <div class="logo-icon"></div>
+                <div class="logo-text">
+                    <h1>MedConsult</h1>
+                    <p>Dashboard</p>
+                </div>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle Sidebar">
+                <i class="ph ph-list"></i>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="index.html" class="nav-item active" data-page="dashboard">
+                        <i class="ph ph-squares-four"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="remedies.html" class="nav-item" data-page="remedies">
+                        <i class="ph ph-leaf"></i>
+                        <span>Home Remedies</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="feedback.html" class="nav-item" data-page="feedback">
+                        <i class="ph ph-chat-circle-text"></i>
+                        <span>Feedback</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
+
+    <link rel="stylesheet" href="css/animations.css">
+
     <link rel="stylesheet" href="css/animation.css">
+
     <link rel="stylesheet" href="css/hero.css">
     <link rel="stylesheet" href="assets/css/auth.css">
 </head>
@@ -60,9 +114,25 @@
             </a>
 
             <button class="btn-icon theme-toggle" id="themeToggleBtn" aria-label="Toggle Theme">
+
                 <i class="ph ph-moon"></i>
+                <span>Dark Mode</span>
             </button>
         </div>
+
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Navigation Bar -->
+        <nav class="top-navbar">
+            <div class="navbar-left">
+                <button class="sidebar-trigger" id="sidebarTrigger" aria-label="Toggle Sidebar">
+                    <i class="ph ph-list"></i>
+                </button>
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">Dashboard</span>
+
     </div>
 </header>
 
@@ -77,68 +147,97 @@
                     <span class="availability available" aria-label="Status: Available Today">
                         <span class="status-dot green"></span> Available Today
                     </span>
-                </div>
-                
-                <div class="doctor-profile">
-                    <div class="doctor-avatar">
-                        <img src="assets/doctors/sarah.png" alt="Dr Sarah">
-                    </div>
-                    <div class="doctor-identity">
-                        <h3>Dr. Sarah Jenkins</h3>
-                        <span class="specialty-badge">Cardiologist</span>
-                    </div>
-                </div>
-                
-                <div class="doctor-meta">
-                    <div class="experience">💼 12 Years Experience</div>
-                    <div class="rating" aria-label="Doctor rating 4.9 out of 5">⭐ 4.9 Rating</div>
-                </div>
-                
-                <button class="primary-btn book-btn" data-doctor="Dr. Sarah Jenkins" data-specialty="Cardiologist">Book Appointment</button>
-            </div>
 
-            <!-- Card 2: Dr. James Smith -->
-            <div class="doctor-card">
-                <div class="card-status-header">
-                    <span class="availability limited" aria-label="Status: Limited Slots Available">
-                        <span class="status-dot yellow"></span> Limited Slots
-                    </span>
                 </div>
-                
-                <div class="doctor-profile">
-                    <div class="doctor-avatar">
-                        <img src="assets/doctors/james.png" alt="Dr James">
-                    </div>
-                    <div class="doctor-identity">
-                        <h3>Dr. James Smith</h3>
-                        <span class="specialty-badge">Neurologist</span>
-                    </div>
-                </div>
-                
-                <div class="doctor-meta">
-                    <div class="experience">💼 15 Years Experience</div>
-                    <div class="rating" aria-label="Doctor rating 4.8 out of 5">⭐ 4.8 Rating</div>
-                </div>
-                
-                <button class="primary-btn book-btn" data-doctor="Dr. James Smith" data-specialty="Neurologist">Book Appointment</button>
             </div>
-
-            <!-- Card 3: Dr. Emily Watson -->
-            <div class="doctor-card">
-                <div class="card-status-header">
-                    <span class="availability available" aria-label="Status: Available Today">
-                        <span class="status-dot green"></span> Available Today
-                    </span>
+            <div class="navbar-right">
+                <div class="search-bar">
+                    <i class="ph ph-magnifying-glass"></i>
+                    <input type="text" placeholder="Search doctors, appointments..." id="globalSearch">
                 </div>
-                
-                <div class="doctor-profile">
-                    <div class="doctor-avatar">
-                        <img src="assets/doctors/emily.png" alt="Dr Emily">
+                <div class="navbar-actions">
+                    <button class="notification-btn" aria-label="Notifications">
+                        <i class="ph ph-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <button class="profile-btn" aria-label="Profile">
+                        <div class="avatar">PA</div>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Page Content -->
+        <div class="page-container">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1>Welcome to MedConsult</h1>
+                        <p>Connect with expert specialists for your healthcare needs</p>
                     </div>
-                    <div class="doctor-identity">
-                        <h3>Dr. Emily Watson</h3>
-                        <span class="specialty-badge">Pediatrician</span>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">500+</div>
+                            <div class="stat-label">Specialists</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">10K+</div>
+                            <div class="stat-label">Consultations</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">4.9</div>
+                            <div class="stat-label">Average Rating</div>
+                        </div>
                     </div>
+                </div>
+            </section>
+
+            <!-- Quick Stats Cards -->
+            <section class="stats-section">
+                <h2>Quick Overview</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-icon primary">
+                            <i class="ph ph-user-md"></i>
+                        </div>
+                        <div class="stat-card-content">
+                            <h3>Available Doctors</h3>
+                            <p class="stat-value">24</p>
+                            <span class="stat-label">Ready for consultation</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon success">
+                            <i class="ph ph-calendar-check"></i>
+                        </div>
+                        <div class="stat-card-content">
+                            <h3>Upcoming Appointments</h3>
+                            <p class="stat-value">3</p>
+                            <span class="stat-label">Next 7 days</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-card-icon info">
+                            <i class="ph ph-heart"></i>
+                        </div>
+                        <div class="stat-card-content">
+                            <h3>Health Score</h3>
+                            <p class="stat-value">92%</p>
+                            <span class="stat-label">Excellent condition</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon warning">
+                            <i class="ph ph-warning"></i>
+                        </div>
+                        <div class="stat-card-content">
+                            <h3>Alerts</h3>
+                            <p class="stat-value">1</p>
+                            <span class="stat-label">Requires attention</span>
+                        </div>
+
                 </div>
                 
                 <div class="doctor-meta">
@@ -162,181 +261,329 @@
                 <div class="card-header">
                     <div class="icon-wrapper primary">
                         <i class="ph ph-stethoscope"></i>
+
                     </div>
-                    <h2>Request Consultation</h2>
                 </div>
-
-                <form id="requestForm" class="medical-form" novalidate>
-
-                    <div class="input-group">
-                        <label for="patientName">Patient Full Name</label>
-                        <div class="input-icon-wrapper">
-                            <i class="ph ph-user"></i>
-                            <input
-                                type="text"
-                                id="patientName"
-                                name="patientName"
-                                placeholder="e.g. Jane Doe"
-                                required
-                            >
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="doctorName">Referring Doctor</label>
-                        <div class="input-icon-wrapper">
-                            <i class="ph ph-user-md"></i>
-                            <input
-                                type="text"
-                                id="doctorName"
-                                name="doctorName"
-                                placeholder="e.g. Dr. Smith"
-                                required
-                            >
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="patientCondition">Patient Condition / Symptoms</label>
-                        <div class="input-icon-wrapper textarea-wrapper">
-                            <i class="ph ph-clipboard-text"></i>
-                            <textarea
-                                id="patientCondition"
-                                name="patientCondition"
-                                placeholder="Describe the condition briefly..."
-                                required
-                            ></textarea>
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="specialistSearch">Required Specialist</label>
-                        <div class="input-icon-wrapper">
-                            <i class="ph ph-magnifying-glass"></i>
-                            <input
-                                type="text"
-                                id="specialistSearch"
-                                placeholder="Search specialist types (e.g. Cardiologist)"
-                            >
-                        </div>
-
-                        <select id="specialistType" name="specialistType" class="mt-2" required>
-                        </select>
-                    </div>
-
-                    <button type="button" class="btn-text advanced-toggle" id="toggleAdvancedBtn">
-                        <i class="ph ph-caret-down"></i>
-                        Show Advanced Details
-                    </button>
-
-                    <div id="advancedFields" class="advanced-fields-container hidden">
-
-                        <div class="grid-2-cols">
-                            <div class="input-group">
-                                <label for="patientAge">Patient Age</label>
-                                <div class="input-icon-wrapper">
-                                    <i class="ph ph-calendar-blank"></i>
-                                    <input
-                                        type="number"
-                                        id="patientAge"
-                                        name="patientAge"
-                                        placeholder="e.g. 45"
-                                        min="0"
-                                        max="120"
-                                    >
-                                </div>
-                            </div>
-
-                            <div class="input-group">
-                                <label for="patientGender">Patient Gender</label>
-                                <div class="input-icon-wrapper">
-                                    <i class="ph ph-gender-intersex"></i>
-                                    <select id="patientGender" name="patientGender">
-                                        <option value="">Select Gender</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Other">Other</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="grid-2-cols">
-                            <div class="input-group">
-                                <label for="contactInfo">Contact Phone / Email</label>
-                                <div class="input-icon-wrapper">
-                                    <i class="ph ph-address-book"></i>
-                                    <input
-                                        type="text"
-                                        id="contactInfo"
-                                        name="contactInfo"
-                                        placeholder="For follow-ups"
-                                    >
-                                </div>
-                            </div>
-
-                            <div class="input-group">
-                                <label for="priorityLevel">Consultation Priority</label>
-                                <div class="input-icon-wrapper">
-                                    <i class="ph ph-warning"></i>
-                                    <select id="priorityLevel" name="priorityLevel">
-                                        <option value="Normal">Normal</option>
-                                        <option value="Urgent">Urgent</option>
-                                        <option value="Emergency">Emergency</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="input-group">
-                            <label for="appointmentDate">Preferred Appointment Date & Time</label>
-                            <div class="input-icon-wrapper">
-                                <i class="ph ph-calendar-plus"></i>
-                                <input
-                                    type="datetime-local"
-                                    id="appointmentDate"
-                                    name="appointmentDate"
-                                >
-                            </div>
-                        </div>
-
-                        <div class="input-group">
-                            <label for="medicalFiles">Attach Medical Reports (Optional)</label>
-                            <div class="file-upload-wrapper">
-                                <input
-                                    type="file"
-                                    id="medicalFiles"
-                                    name="medicalFiles"
-                                    multiple
-                                    class="file-input"
-                                >
-
-                                <div class="file-upload-ui">
-                                    <i class="ph ph-upload-simple"></i>
-                                    <span>Choose files or drag & drop</span>
-                                    <small>PDF, JPG, PNG up to 10MB</small>
-                                </div>
-
-                                <div id="fileList" class="file-list"></div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-neutral" id="resetRequestBtn">
-                            <i class="ph ph-arrow-counter-clockwise"></i>
-                            Clear
-                        </button>
-
-                        <button type="submit" class="btn btn-primary" id="submitRequestBtn">
-                            <i class="ph ph-paper-plane-right"></i>
-                            Submit Request
-                        </button>
-                    </div>
-
-                </form>
             </section>
+
+            <!-- Available Doctors Section -->
+            <section class="doctors-section">
+                <div class="section-header">
+                    <h2>Available Doctors</h2>
+                    <div class="search-filter">
+                        <input type="text" id="doctorSearch" class="search-input" placeholder="Search by name or specialty...">
+                    </div>
+                </div>
+                
+                <div class="doctors-grid">
+                    <!-- Doctor Card 1 -->
+                    <div class="doctor-card">
+                        <div class="doctor-card-header">
+                            <div class="doctor-avatar">
+                                <img src="assets/doctors/sarah.png" alt="Dr Sarah Jenkins">
+                                <span class="status-badge available">
+                                    <i class="ph ph-dot-fill"></i>
+                                    Available
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="doctor-card-body">
+                            <h3 class="doctor-name">Dr. Sarah Jenkins</h3>
+                            <p class="doctor-specialty">Cardiologist</p>
+                            
+                            <div class="doctor-info">
+                                <div class="info-item">
+                                    <i class="ph ph-briefcase"></i>
+                                    <span>12 Years Experience</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="ph ph-star-fill"></i>
+                                    <span>4.9 Rating (324 reviews)</span>
+                                </div>
+                            </div>
+                            
+                            <div class="doctor-services">
+                                <span class="service-badge">Video Call</span>
+                                <span class="service-badge">Chat</span>
+                            </div>
+                        </div>
+                        
+                        <div class="doctor-card-footer">
+                            <button class="btn btn-secondary book-btn" data-doctor="Dr. Sarah Jenkins" data-specialty="Cardiologist">
+                                <i class="ph ph-calendar"></i>
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Doctor Card 2 -->
+                    <div class="doctor-card">
+                        <div class="doctor-card-header">
+                            <div class="doctor-avatar">
+                                <img src="assets/doctors/james.png" alt="Dr James Smith">
+                                <span class="status-badge limited">
+                                    <i class="ph ph-dot-fill"></i>
+                                    Limited Slots
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="doctor-card-body">
+                            <h3 class="doctor-name">Dr. James Smith</h3>
+                            <p class="doctor-specialty">Neurologist</p>
+                            
+                            <div class="doctor-info">
+                                <div class="info-item">
+                                    <i class="ph ph-briefcase"></i>
+                                    <span>15 Years Experience</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="ph ph-star-fill"></i>
+                                    <span>4.8 Rating (412 reviews)</span>
+                                </div>
+                            </div>
+                            
+                            <div class="doctor-services">
+                                <span class="service-badge">Video Call</span>
+                                <span class="service-badge">In-Person</span>
+                            </div>
+                        </div>
+                        
+                        <div class="doctor-card-footer">
+                            <button class="btn btn-secondary book-btn" data-doctor="Dr. James Smith" data-specialty="Neurologist">
+                                <i class="ph ph-calendar"></i>
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Doctor Card 3 -->
+                    <div class="doctor-card">
+                        <div class="doctor-card-header">
+                            <div class="doctor-avatar">
+                                <img src="assets/doctors/emily.png" alt="Dr Emily Watson">
+                                <span class="status-badge available">
+                                    <i class="ph ph-dot-fill"></i>
+                                    Available
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="doctor-card-body">
+                            <h3 class="doctor-name">Dr. Emily Watson</h3>
+                            <p class="doctor-specialty">Pediatrician</p>
+                            
+                            <div class="doctor-info">
+                                <div class="info-item">
+                                    <i class="ph ph-briefcase"></i>
+                                    <span>8 Years Experience</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="ph ph-star-fill"></i>
+                                    <span>5.0 Rating (289 reviews)</span>
+                                </div>
+                            </div>
+                            
+                            <div class="doctor-services">
+                                <span class="service-badge">Video Call</span>
+                                <span class="service-badge">Chat</span>
+                            </div>
+                        </div>
+                        
+                        <div class="doctor-card-footer">
+                            <button class="btn btn-secondary book-btn" data-doctor="Dr. Emily Watson" data-specialty="Pediatrician">
+                                <i class="ph ph-calendar"></i>
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Main Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Left Column -->
+                <div class="dashboard-column left-column">
+                    <!-- Request Consultation Form -->
+                    <section class="card">
+                        <div class="card-header">
+                            <div class="card-icon primary">
+                                <i class="ph ph-stethoscope"></i>
+                            </div>
+                            <h2>Request Consultation</h2>
+                        </div>
+
+                        <form id="requestForm" class="modern-form" novalidate>
+                            <div class="form-group">
+                                <div class="form-field">
+                                    <label for="patientName">Patient Full Name</label>
+                                    <div class="input-wrapper">
+                                        <i class="ph ph-user"></i>
+                                        <input type="text" id="patientName" name="patientName" placeholder="Enter your full name" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-field">
+                                    <label for="doctorName">Referring Doctor</label>
+                                    <div class="input-wrapper">
+                                        <i class="ph ph-user-md"></i>
+                                        <input type="text" id="doctorName" name="doctorName" placeholder="Doctor's name" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-field">
+                                    <label for="patientCondition">Patient Condition / Symptoms</label>
+                                    <div class="input-wrapper">
+                                        <i class="ph ph-clipboard-text"></i>
+                                        <textarea id="patientCondition" name="patientCondition" placeholder="Describe the condition briefly..." rows="3" required></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-field">
+                                    <label for="specialistSearch">Required Specialist</label>
+                                    <div class="input-wrapper">
+                                        <i class="ph ph-magnifying-glass"></i>
+                                        <input type="text" id="specialistSearch" placeholder="Search specialist...">
+                                    </div>
+                                    <select id="specialistType" name="specialistType" required class="mt-2">
+                                        <option value="">Select a specialist...</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn-text advanced-toggle" id="toggleAdvancedBtn">
+                                <i class="ph ph-caret-down"></i>
+                                Show Advanced Details
+                            </button>
+
+                            <div id="advancedFields" class="advanced-fields hidden">
+                                <div class="form-group">
+                                    <div class="form-row-2">
+                                        <div class="form-field">
+                                            <label for="patientAge">Patient Age</label>
+                                            <div class="input-wrapper">
+                                                <i class="ph ph-calendar-blank"></i>
+                                                <input type="number" id="patientAge" name="patientAge" min="0" max="120" placeholder="Age">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-field">
+                                            <label for="patientGender">Patient Gender</label>
+                                            <div class="input-wrapper">
+                                                <i class="ph ph-gender-intersex"></i>
+                                                <select id="patientGender" name="patientGender">
+                                                    <option value="">Select Gender</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                    <option value="Other">Other</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row-2">
+                                        <div class="form-field">
+                                            <label for="contactInfo">Contact Phone / Email</label>
+                                            <div class="input-wrapper">
+                                                <i class="ph ph-address-book"></i>
+                                                <input type="text" id="contactInfo" name="contactInfo" placeholder="For follow-ups">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-field">
+                                            <label for="priorityLevel">Consultation Priority</label>
+                                            <div class="input-wrapper">
+                                                <i class="ph ph-warning"></i>
+                                                <select id="priorityLevel" name="priorityLevel">
+                                                    <option value="Normal">Normal</option>
+                                                    <option value="Urgent">Urgent</option>
+                                                    <option value="Emergency">Emergency</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-field">
+                                        <label for="appointmentDate">Preferred Appointment Date & Time</label>
+                                        <div class="input-wrapper">
+                                            <i class="ph ph-calendar-plus"></i>
+                                            <input type="datetime-local" id="appointmentDate" name="appointmentDate">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-field">
+                                        <label for="medicalFiles">Attach Medical Reports (Optional)</label>
+                                        <div class="file-upload">
+                                            <input type="file" id="medicalFiles" name="medicalFiles" multiple class="file-input">
+                                            <div class="file-upload-ui">
+                                                <i class="ph ph-upload-simple"></i>
+                                                <span>Choose files or drag & drop</span>
+                                                <small>PDF, JPG, PNG up to 10MB</small>
+                                            </div>
+                                            <div id="fileList" class="file-list"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-outline" id="resetRequestBtn">
+                                    <i class="ph ph-arrow-counter-clockwise"></i>
+                                    Clear
+                                </button>
+                                <button type="submit" class="btn btn-primary" id="submitRequestBtn">
+                                    <i class="ph ph-paper-plane-right"></i>
+                                    Submit Request
+                                </button>
+                            </div>
+                        </form>
+                    </section>
+
+                  
+
+                <!-- Right Column -->
+                <div class="dashboard-column right-column">
+                    <!-- Live Progress Status -->
+                    <section class="card">
+                        <div class="card-header">
+                            <div class="card-icon info">
+                                <i class="ph ph-activity"></i>
+                            </div>
+                            <h2>Live Progress Status</h2>
+                        </div>
+
+                        <div class="status-content">
+                            <div id="statusMessage" class="empty-status">
+                                <i class="ph ph-smiley"></i>
+                                <p>No active operations</p>
+                            </div>
+
+                            <div id="progressStepper" class="progress-stepper hidden">
+                                <div class="step active" id="step1">
+                                    <div class="step-indicator">
+                                        <i class="ph ph-paper-plane-right"></i>
+                                    </div>
+                                    <div class="step-content">
+                                        <h4>Request Submitted</h4>
+                                        <p>System received your data</p>
+                                    </div>
+                                </div>
+
+                                <div class="step-line"></div>
+
+                                <div class="step" id="step2">
+                                    <div class="step-indicator">
+                                        <i class="ph ph-user-md"></i>
+                                    </div>
+                                    <div class="step-content">
+                                        <h4>Specialist Assigned</h4>
+                                        <p id="assignedSpecialistName">Pending assignment</p>
+                                    </div>
+                                </div>
+
+
+                                <div class="step-line"></div>
 
             <!-- Specialist Response -->
             <section id="specialist-response" class="card form-card is-role-hidden" data-role="doctor">
@@ -347,44 +594,61 @@
                     <h2>Provide Suggestion</h2>
                 </div>
 
-                <form id="responseForm" class="medical-form" novalidate>
 
-                    <div class="input-group">
-                        <label for="consultationId">Consultation ID</label>
-                        <div class="input-icon-wrapper">
-                            <i class="ph ph-identification-card"></i>
-                            <input
-                                type="text"
-                                id="consultationId"
-                                name="consultationId"
-                                required
-                            >
+                                <div class="step" id="step3">
+                                    <div class="step-indicator">
+                                        <i class="ph ph-calendar-check"></i>
+                                    </div>
+                                    <div class="step-content">
+                                        <h4>Appointment Scheduled</h4>
+                                        <p>Awaiting confirmation</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </section>
 
-                    <div class="input-group">
-                        <label for="suggestion">Medical Suggestion / Next Steps</label>
-                        <div class="input-icon-wrapper textarea-wrapper">
-                            <i class="ph ph-file-text"></i>
-                            <textarea
-                                id="suggestion"
-                                name="suggestion"
-                                required
-                            ></textarea>
+                    <!-- Health Monitoring Card -->
+                    <section class="card">
+                        <div class="card-header">
+                            <div class="card-icon warning">
+                                <i class="ph ph-heart"></i>
+                            </div>
+                            <h2>Health Monitoring</h2>
                         </div>
-                    </div>
 
-                    <button type="submit" class="btn btn-accent">
-                        Submit Suggestion
-                    </button>
+                        <div class="health-stats">
+                            <div class="health-item">
+                                <div class="health-label">
+                                    <i class="ph ph-heart"></i>
+                                    Heart Rate
+                                </div>
+                                <div class="health-value">
+                                    <span id="heartRate">72</span> bpm
+                                </div>
+                                <div class="health-status">Normal</div>
+                            </div>
 
-                </form>
-            </section>
+                            <div class="health-item">
+                                <div class="health-label">
+                                    <i class="ph ph-wind"></i>
+                                    Blood Pressure
+                                </div>
+                                <div class="health-value">120/80</div>
+                                <div class="health-status">Normal</div>
+                            </div>
 
-        </div>
 
-        <!-- Right Section -->
-        <div class="dashboard-right">
+                            <div class="health-item">
+                                <div class="health-label">
+                                    <i class="ph ph-thermometer"></i>
+                                    Temperature
+                                </div>
+                                <div class="health-value">98.6�F</div>
+                                <div class="health-status">Normal</div>
+                            </div>
+                        </div>
+                    </section>
 
             <!-- Live Progress Status -->
             <section id="consultation-status" class="card status-card">
@@ -395,42 +659,96 @@
                     <h2>Live Progress Status</h2>
                 </div>
 
-                <div class="status-content">
-                    <div id="statusMessage" class="empty-status">
-                        No active operations
-                    </div>
 
-                    <div id="progressStepper" class="stepper-container hidden">
-
-                        <div class="step" id="step1">
-                            <div class="step-icon">
-                                <i class="ph ph-paper-plane-right"></i>
+                    <!-- Daily Health Tips -->
+                    <section class="card">
+                        <div class="card-header">
+                            <div class="card-icon success">
+                                <i class="ph ph-lightbulb"></i>
                             </div>
-                            <div class="step-content">
-                                <h4>Request Submitted</h4>
-                                <p>System received your data</p>
-                            </div>
+                            <h2>Daily Health Tip</h2>
                         </div>
 
-                        <div class="step" id="step2">
-                            <div class="step-icon">
-                                <i class="ph ph-user-md"></i>
+                        <div id="healthTip" class="health-tip-content">
+                            <p>Loading health tip...</p>
+                        </div>
+                    </section>
+
+                    <!-- Emergency Help -->
+                    <section class="card emergency-card">
+                        <div class="card-header">
+                            <div class="card-icon danger">
+                                <i class="ph ph-warning"></i>
                             </div>
-                            <div class="step-content">
-                                <h4>Specialist Assigned</h4>
-                                <p id="assignedSpecialistName">Pending assignment</p>
-                            </div>
+                            <h2>Emergency Services</h2>
                         </div>
 
-                        <div class="step" id="step3">
-                            <div class="step-icon">
-                                <i class="ph ph-calendar-check"></i>
-                            </div>
-                            <div class="step-content">
-                                <h4>Appointment Scheduled</h4>
-                                <p>Awaiting confirmation</p>
-                            </div>
+                        <div class="emergency-buttons">
+                            <button class="emergency-btn ambulance-btn">
+                                <div class="emergency-icon"></div>
+                                <span>Ambulance</span>
+                            </button>
+                            <button class="emergency-btn hospital-btn">
+                                <div class="emergency-icon"></div>
+                                <span>Nearby Hospital</span>
+                            </button>
+                            <button class="emergency-btn doctor-btn">
+                                <div class="emergency-icon"></div>
+                                <span>Emergency Doctor</span>
+                            </button>
                         </div>
+                    </section>
+
+                    <!-- Quick Actions -->
+                    <section class="card">
+                        <div class="card-header">
+                            <div class="card-icon primary">
+                                <i class="ph ph-lightning-bolt"></i>
+                            </div>
+                            <h2>Quick Actions</h2>
+                        </div>
+
+
+                        <div class="quick-actions">
+                            <a href="feedback.html" class="quick-action-btn">
+                                <i class="ph ph-chat-circle-text"></i>
+                                <span>Give Feedback</span>
+                            </a>
+                            <button class="quick-action-btn">
+                                <i class="ph ph-download"></i>
+                                <span>Download Records</span>
+                            </button>
+                            <button class="quick-action-btn">
+                                <i class="ph ph-calendar"></i>
+                                <span>Reschedule</span>
+                            </button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2026 MedConsult Dashboard. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/script.js"></script>
+    <script src="js/darkmode.js"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/emergency.js"></script>
+    <script src="js/appointments.js"></script>
+    <script src="js/reschedule.js"></script>
 
                     </div>
                 </div>

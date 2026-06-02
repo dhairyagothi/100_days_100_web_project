@@ -1,6 +1,8 @@
 let selectedImageAnswer = "";
-const typeButtons = document.querySelectorAll(".type-btn");
-let selectedType = "text";
+// FIX 1: Defined the dropdown element
+const captchaTypeSelect = document.getElementById('captchaTypeSelect');
+let selectedType = "text"; 
+
 const captchaContainer = document.getElementById('captchaContainer');
 const textInput = document.getElementById('captchaInput');
 const refreshButton = document.querySelector('.refresh');
@@ -155,7 +157,9 @@ const generateCaptcha = () => {
     resultMessage.textContent = '';
     resultMessage.className = 'result';
 
-    const type = captchaTypeSelect.value;
+    // FIX 2: Updated to use the globally tracked selectedType
+    const type = selectedType;
+
     if (type === 'audio') {
         voiceField.classList.remove('hidden');
     } else {
@@ -220,14 +224,10 @@ const generateCaptcha = () => {
     }
 };
 
-//math captcha numeric input validation
+// Math captcha numeric input validation
 textInput.addEventListener("input", () => {
-
-    // Restrict only for Math CAPTCHA
     if (selectedType === "math") {
-
-        textInput.value =
-        textInput.value.replace(/[^0-9-]/g, "");
+        textInput.value = textInput.value.replace(/[^0-9-]/g, "");
     }
 });
 
@@ -262,6 +262,7 @@ const verifyCaptcha = () => {
   selectedType == "image"
   ? selectedImageAnswer.toLowerCase()
   : textInput.value.trim().toLowerCase();
+  
   const isCorrect = userInput === currentCaptcha.toString().toLowerCase();
   
   if (isCorrect) {
@@ -287,16 +288,15 @@ const verifyCaptcha = () => {
   }
 };
 
-typeButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        typeButtons.forEach(btn => btn.classList.remove("active"));
-        button.classList.add("active");
-        selectedType = button.dataset.type;
+// FIX 3: Event Listener for the dropdown menu (replaced the old button listener)
+if (captchaTypeSelect) {
+    captchaTypeSelect.addEventListener("change", (event) => {
+        selectedType = event.target.value; 
         textInput.value = "";
         selectedImageAnswer = "";
-        generateCaptcha();
+        generateCaptcha(); 
     });
-});
+}
 
 refreshButton.addEventListener("click", () => {
     if (Date.now() >= lockoutEndTime) {
@@ -306,5 +306,9 @@ refreshButton.addEventListener("click", () => {
 
 submitButton.addEventListener("click", verifyCaptcha);
 
+// Initialize everything on load
 addDifficultySelector();
+if (captchaTypeSelect) {
+    selectedType = captchaTypeSelect.value; // Ensure initial state matches the dropdown
+}
 generateCaptcha();

@@ -2367,17 +2367,17 @@ body.light-mode .footer.homepage-footer .social-btn {
 #themeToggleNav {
   background: transparent;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  min-width: 32px;
-  height: 36px;
-  color: var(--text-muted);
-  font-size: 0.9rem;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-family:inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.25rem 0.6rem;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
   transition: var(--t);
 }
 
