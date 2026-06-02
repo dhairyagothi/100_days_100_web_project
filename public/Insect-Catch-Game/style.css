@@ -395,34 +395,142 @@ h1 {
   margin-top: 30px;
 }
 
-.corner-design {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  border: 2px solid rgba(0, 255, 255, 0.25);
-  z-index: 0;
+.timer-options {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
 }
 
-.top-left {
-  top: -100px;
-  left: -100px;
-  border-radius: 0 0 100% 0;
+.timer-btn {
+  width: 220px;
+  height: 120px;
+
+  border: 3px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(8px);
+
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.35s ease;
+
+  box-shadow: 0 0 20px rgba(0,229,255,0.4);
 }
 
-.top-right {
-  top: -100px;
-  right: -100px;
-  border-radius: 0 0 0 100%;
+.timer-btn:nth-child(1) {
+  border-color: #ff4fd8;
+  box-shadow: 0 0 25px #ff4fd8;
 }
 
-.bottom-left {
-  bottom: -100px;
-  left: -100px;
-  border-radius: 0 100% 0 0;
+.timer-btn:nth-child(2) {
+  border-color: #4de9ff;
+  box-shadow: 0 0 25px #4de9ff;
 }
 
-.bottom-right {
-  bottom: -100px;
-  right: -100px;
-  border-radius: 100% 0 0 0;
+.timer-btn:nth-child(3) {
+  border-color: #c86bff;
+  box-shadow: 0 0 25px #c86bff;
+}
+
+.timer-btn:nth-child(4) {
+  border-color: #ffb84d;
+  box-shadow: 0 0 25px #ffb84d;
+}
+
+.timer-btn:hover {
+  transform: scale(1.08);
+  box-shadow:
+    0 0 20px rgba(255,255,255,0.5),
+    0 0 40px currentColor;
+}
+
+.timer-btn:active {
+  transform: scale(0.96);
+}
+
+/* Mobile view adjustments */
+@media (max-width: 768px) {
+
+  h1 {
+    font-size: 1.5rem;
+    padding: 0 15px;
+  }
+
+  .insects-list {
+    gap: 10px;
+  }
+
+  .choose-insect-btn {
+    width: 120px;
+    height: 120px;
+  }
+
+  .choose-insect-btn img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .choose-insect-btn p {
+    font-size: 0.7rem;
+  }
+
+  .timer-options {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 70%;
+  }
+
+  .timer-btn {
+    width: 85%;
+    max-width: 280px;
+    height: 80px;
+    font-size: 0.9rem;
+  }
+
+  .time,
+  .score {
+    font-size: 0.7rem;
+  }
+
+  .time {
+    left: 10px;
+  }
+
+  .score {
+    right: 10px;
+  }
+
+  .message {
+    font-size: 0.7rem;
+    width: 95%;
+    padding: 15px;
+  }
+
+  .game-over-box,
+  .final-result-box {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .game-over-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn {
+    padding: 10px 15px;
+    font-size: 0.7rem;
+  }
+
+  .end-btn {
+    font-size: 0.6rem;
+    padding: 8px 10px;
+  }
 }
