@@ -1,4 +1,5 @@
  from flask import Flask, render_template, redirect, url_for, request, flash, session
+ flask import Flask, render_template, redirect, url_for, request, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
@@ -11,7 +12,7 @@ db = SQLAlchemy(app)
 
 
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Colufrommn(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
 
@@ -197,6 +198,10 @@ def dashboard():
         contacts = Contact.query.filter_by(user_id=user_id).order_by(
             Contact.name.asc()
         ).all()
+if sort_order == "desc":
+    contacts = Contact.query.filter_by(user_id=user_id).order_by(Contact.name.desc()).all()
+else:
+    contacts = Contact.query.filter_by(user_id=user_id).order_by(Contact.name.asc()).all()
 
     contact_count = len(contacts)
 
@@ -205,6 +210,13 @@ def dashboard():
         contacts=contacts,
         contact_count=contact_count
     contacts = Contact.query.filter_by(user_id=user_id).order_by(Contact.name).all()
+
+    contact_count = len(contacts)
+
+    return render_template(
+        "dashboard.html",
+        contacts=contacts,
+        contact_count=contact_count
     duplicates = scan_all_duplicates(user_id)
     duplicate_count = len(duplicates)
     return render_template(
