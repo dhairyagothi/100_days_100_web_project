@@ -309,7 +309,6 @@ body > header {
    NAVBAR & RESPONSIVE DRAWER ARCHITECTURE
    ============================================================ */
 .navbar {
-  isolation: isolate;
   position: fixed;
   top: 0;
   left: 0;
@@ -325,7 +324,7 @@ body > header {
   align-items: center;
   justify-content: space-between;
   transition: var(--t);
-  isolation: isolate;
+  overflow: visible; /* <-- Ye add karo taaki menu cut na ho */
 }
 
 #navbar-container {
@@ -799,55 +798,47 @@ body.light-mode .navbar,
 
 }
 
-/* ============================================================
-   THEME DROPDOWN
-   ============================================================ */
+/* Navbar ke andar ka position fix karo */
 .theme-dropdown-container {
-  position: relative;
-  display: inline-block;
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 100%;
-  right: 0;
-  margin-top: 0.5rem;
-  min-width: 140px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(12px);
-  z-index: 1000;
-  overflow: hidden;
-  animation: fadeInDown 0.2s ease-out;
+.navbar .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 55px; 
+    right: -40px; 
+
+    background: var(--bg-elevated, #0f0f1a); 
+    border: 1px solid var(--border, #333);
+    
+    border-radius: 12px;
+    padding: 8px 0;
+    min-width: 150px;
+    z-index: 9999999 !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-.dropdown-menu.show {
-  display: block;
+.navbar .dropdown-menu.show {
+    display: block;
 }
 
 .dropdown-item {
-  width: 100%;
-  padding: 0.65rem 1rem;
-  text-align: left;
-  background: transparent;
-  border: none;
-  color: var(--text-secondary);
-  font-family: 'Inter Tight', sans-serif;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: var(--t);
+    /* Text color bhi variable kar do */
+    color: var(--text-primary, #fff); 
+    padding: 10px 16px;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
 }
 
-.dropdown-item:hover, .dropdown-item:focus {
-  background: var(--bg-surface);
-  color: var(--text-primary);
+.dropdown-item:hover {
+    /* Hover color ko bhi theme ke hisaab se set karo */
+    background: var(--bg-hover, #252540);
 }
 
 .dropdown-item.active {
@@ -3102,4 +3093,93 @@ body > header {
 * {
   cursor: none !important;
 }
+}
+
+@keyframes projectCardEntry {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Card Animation Base Class */
+.project-card {
+  opacity: 0; /* Default hidden */
+  animation: projectCardEntry 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Accessibility: No animation for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .project-card {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* --- Navbar Dropdown Fix --- */
+.theme-dropdown-container {
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none; /* Default mein chhupa hua */
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--bg-elevated, #fff);
+  border: 1px solid var(--border, #ccc);
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
+  min-width: 150px;
+}
+
+.dropdown-menu.show {
+  display: block; /* Click karne par dikhega */
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: var(--text-primary);
+}
+
+.dropdown-item:hover {
+  background: var(--bg-surface, #f0f0f0);
+}
+
+.project-card {
+    opacity: 0;
+    transform: translateY(30px);
+    will-change: transform, opacity; /* Browser ko advance mein batana */
+}
+
+.project-card.visible {
+    animation: cardSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Smooth keyframes */
+@keyframes cardSlideUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .project-card {
+        animation: none;
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

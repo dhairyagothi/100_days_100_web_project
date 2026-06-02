@@ -669,50 +669,34 @@ function renderGrid() {
     updateClearFiltersBtnVisibility();
   }
 
-  const filtered = PROJECTS.filter(
-    ([day, name, url, tags, difficulty = ""]) => {
-      // Category filter
-      const category = getCategoryFromTags(tags, name);
-      const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || "all";
-      const matchesFilter =
-        activeFilter === "all" || category === targetCategory;
+  // --- Filtering Logic ---
+  const filtered = PROJECTS.filter(([day, name, url, tags, difficulty = ""]) => {
+    const category = getCategoryFromTags(tags, name);
+    const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || "all";
+    const matchesFilter = activeFilter === "all" || category === targetCategory;
 
-      // Search filter
-      const q = searchQuery.toLowerCase().trim();
-      const matchesSearch =
-        !q ||
-        q
-          .split(/\s+/)
-          .every(
-            (term) =>
-              name.toLowerCase().includes(term) ||
-              day.toLowerCase().includes(term) ||
-              (Array.isArray(tags) ? tags.join(" ") : tags || "")
-                .toLowerCase()
-                .includes(term),
-          );
+    const q = searchQuery.toLowerCase().trim();
+    const matchesSearch = !q || q.split(/\s+/).every((term) =>
+      name.toLowerCase().includes(term) ||
+      day.toLowerCase().includes(term) ||
+      (Array.isArray(tags) ? tags.join(" ") : tags || "").toLowerCase().includes(term)
+    );
 
-      // Tech stack dropdown filter
-      let matchesTech = true;
-      if (techStackFilter && techStackFilter !== "all") {
-        const tagStr = (
-          Array.isArray(tags) ? tags.join(" ") : tags || ""
-        ).toLowerCase();
-        matchesTech = tagStr.includes(techStackFilter.toLowerCase());
-      }
+    let matchesTech = true;
+    if (techStackFilter && techStackFilter !== "all") {
+      const tagStr = (Array.isArray(tags) ? tags.join(" ") : tags || "").toLowerCase();
+      matchesTech = tagStr.includes(techStackFilter.toLowerCase());
+    }
 
-      // Difficulty filter
-      let matchesDifficulty = true;
-      if (difficultyFilter && difficultyFilter !== "all") {
-        matchesDifficulty =
-          (difficulty || "").toLowerCase() === difficultyFilter.toLowerCase();
-      }
+    let matchesDifficulty = true;
+    if (difficultyFilter && difficultyFilter !== "all") {
+      matchesDifficulty = (difficulty || "").toLowerCase() === difficultyFilter.toLowerCase();
+    }
 
-      return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
-    },
-  );
+    return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
+  });
 
-  // Apply sorting
+  // --- Sorting Logic ---
   if (sortOption === "az") {
     filtered.sort((a, b) => a[1].localeCompare(b[1]));
   } else if (sortOption === "latest") {
@@ -752,33 +736,37 @@ function renderGrid() {
   const pageItems = filtered.slice(startIndex, endIndex);
   const fragment = document.createDocumentFragment();
 
-  pageItems.forEach(([day, name, url, tags]) => {
+  // --- Card Creation ---
+  pageItems.forEach(([day, name, url, tags], index) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement("div");
+    
     const isBookmarked = bookmarkedProjects.some(
       (item) => normalizeProjectEntry(item).day === day,
     );
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
-      day,
-      name,
-      url,
-      tags,
-      category,
-      isBookmarked,
-      showDescription: true,
+      day, name, url, tags, category, isBookmarked, showDescription: true,
     });
 
-    card.className = sourceOnly
-      ? "project-card source-only visible"
-      : "project-card visible";
+    card.className = sourceOnly ? "project-card source-only" : "project-card";
     card.innerHTML = html;
     attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
     fragment.appendChild(card);
   });
-  grid.appendChild(fragment);
-  renderPagination(filtered.length, totalPages);
 
+  grid.appendChild(fragment);
+
+  // --- Trigger Staggered Animation ---
+  const cards = grid.querySelectorAll('.project-card');
+  cards.forEach((card, index) => {
+    card.style.animationDelay = `${index * 0.1}s`;
+    setTimeout(() => {
+      card.classList.add('visible'); 
+    }, 10);
+  });
+
+  renderPagination(filtered.length, totalPages);
   syncStateToURL();
 }
 
@@ -2224,4 +2212,20 @@ document.addEventListener('DOMContentLoaded', function () {
       outer.style.height = '36px';
     }
   });
+});
+
+document.addEventListener('click', (e) => {
+    // Check agar kisi theme item par click hua hai
+    if (e.target.classList.contains('dropdown-item')) {
+        const selectedTheme = e.target.getAttribute('data-theme-value');
+        
+        // 1. Theme apply karo
+        document.documentElement.setAttribute('data-theme', selectedTheme);
+        
+        // 2. LocalStorage mein save karo taaki refresh ke baad bhi rahe
+        localStorage.setItem('user-theme', selectedTheme);
+        
+        // 3. Dropdown ko band kar do
+        document.querySelector('.dropdown-menu').classList.remove('show');
+    }
 });
