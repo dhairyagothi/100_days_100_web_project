@@ -289,7 +289,7 @@ function buildProjectCardHTML({
                     ${primaryLink}
                     ${codeLink}
                 </div>
-                <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${day}">
+                <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${day}" aria-label="${isBookmarked ? "Remove bookmark for" : "Bookmark"} ${name}">
                     <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark"></i>
                 </button>
             </div>
