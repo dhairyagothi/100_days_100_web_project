@@ -2299,9 +2299,24 @@
   },
   {
     "projectNo": 186,
-    "projectName": "Multi-Track Video and Audio Editor",
+    "projectName": "Image Compressor Web App",
     "projectType": "Tool",
-    "projectDesc": "A browser-native media sequencer featuring multi-track composition, real-time clip trimming, transform controls, and high-performance canvas rendering.",
+    "projectDesc": "Modern utility app to compress and optimize images directly in the browser with beautiful glassmorphism UI.",
+    "techStack": [
+      "tool",
+      "html",
+      "css",
+      "javascript",
+      "ui"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/ImageCompressor/index.html"
+  },
+  {
+    "projectNo": 187,
+    "projectName": "Leetcode Streak Visualizer",
+    "projectType": "Tool",
+    "projectDesc": "A web based tool to compare between 2 leetcode users. Uses Battery Like UI to compare and show stats.",
     "techStack": [
       "tool",
       "html",
@@ -2309,28 +2324,10 @@
       "javascript"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/canvas_multitrack_sequencer/index.html"
+    "projectPath": "./public/Streak-Visualizer/index.html"
   },
   {
-      "projectNo": 187,
-      "projectName": "Image Compressor Web App",
-      "projectType": "Tool",
-      "projectDesc": "Modern utility app to compress and optimize images directly in the browser with beautiful glassmorphism UI.",
-      "techStack": ["tool", "html", "css", "javascript", "ui"],
-      "difficulty": "intermediate",
-      "projectPath": "./public/ImageCompressor/index.html"
-    },
-    {
-      "projectNo": 188,
-      "projectName": "Leetcode Streak Visualizer",
-      "projectType": "Tool",
-      "projectDesc": "A web based tool to compare between 2 leetcode users. Uses Battery Like UI to compare and show stats.",
-      "techStack": ["tool", "html", "css", "javascript"],
-      "difficulty": "advanced",
-      "projectPath": "./public/Streak-Visualizer/index.html"
-    },
-     {
-    "projectNo": 189,
+    "projectNo": 188,
     "projectName": "PeerRTC Video Chat",
     "projectType": "Tool",
     "projectDesc": "Advanced Peer-to-Peer video conferencing app using WebRTC and PeerJS with screen sharing and media controls.",
@@ -2345,7 +2342,7 @@
     "projectPath": "./public/webrtc-video-chat/index.html"
   },
   {
-    "projectNo": 190,
+    "projectNo": 189,
     "projectName": "Endless train game",
     "projectType": "game",
     "projectDesc": "A game with train moving on rails and switching tails and earning coins.",
@@ -2358,7 +2355,7 @@
     "projectPath": "./public/endless_train_game/index.html"
   },
   {
-    "projectNo": 191,
+    "projectNo": 190,
     "projectName": "Saturn Particle Gesture",
     "projectType": "Animation",
     "projectDesc": "Interactive space visualization rendering a Saturn-like planet using 3000+ dynamic particles, controlled via real-time hand gesture recognition using webcam and MediaPipe.",
@@ -2373,9 +2370,8 @@
     "difficulty": "advanced",
     "projectPath": "./public/Planet_gesture_formation/index.html"
   },
-   
   {
-    "projectNo": 192,
+    "projectNo": 191,
     "projectName": "Interactive Story Player",
     "projectType": "UI / Animation",
     "projectDesc": "A dynamic, choice-driven storytelling application where users shape their own narrative paths.",
@@ -2389,20 +2385,20 @@
     "projectPath": "./public/story/main.html"
   },
   {
-    "projectNo": 193,
+    "projectNo": 192,
     "projectName": "Escape Room",
     "projectType": "Game",
     "projectDesc": "A thrilling escape room experience in your browser.",
-     "techStack": [
+    "techStack": [
       "html",
       "css",
       "javascript"
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/Escape_Room/index.html"
-   },
+  },
   {
-    "projectNo": 194,
+    "projectNo": 193,
     "projectName": "Lost & Found Portal",
     "projectType": "Website",
     "projectDesc": "A modern web application to report lost items, report found items, browse listings, and contact item owners.",
@@ -2415,7 +2411,7 @@
     "projectPath": "./public/Lost_And_Found_Portal/index.html"
   },
   {
-    "projectNo": 195,
+    "projectNo": 194,
     "projectName": "Complaint Management System",
     "projectType": "Web Application",
     "projectDesc": "A professional portal for submitting, tracking, and managing complaints efficiently with a premium modern UI.",
@@ -2427,8 +2423,8 @@
     "difficulty": "advanced",
     "projectPath": "./public/Complaint_Management_System/index.html"
   },
-{
-    "projectNo": 196,
+  {
+    "projectNo": 195,
     "projectName": "AirCast",
     "projectType": "Tool",
     "projectDesc": "Weather forecasting application with real-time weather updates and Air Quality Index (AQI) monitoring.",
@@ -2443,7 +2439,7 @@
     "projectPath": "./public/Weather App with AQI/index.html"
   },
   {
-"projectNo": 196,
+    "projectNo": 196,
     "projectName": "Flipkart Clone",
     "projectType": "E-Commerce",
     "projectDesc": "A responsive Flipkart-inspired e-commerce website featuring a modern navbar, product categories, hero carousel, brand spotlight section, promotional banners, home decor showcase, and a fully designed footer.",
@@ -2495,20 +2491,23 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/Movie-Matcher/index.html"
-  
-},
-
-    {
+  },
+  {
     "projectNo": 200,
     "projectName": "Number Guesser Game",
     "projectType": "Game",
     "projectDesc": "A simple and interactive Number Guessing Game built using HTML, CSS, and JavaScript. The player must guess a randomly generated number between 1 and 100 within 10 attempts.",
-    "techStack": ["game", "html", "css", "javascript"],
+    "techStack": [
+      "game",
+      "html",
+      "css",
+      "javascript"
+    ],
     "difficulty": "advanced",
     "projectPath": "./public/NumberGuessGame/index.html"
-},
+  },
   {
-    "projectNo": 202,
+    "projectNo": 201,
     "projectName": "Traffic signal game",
     "projectType": "Game",
     "projectDesc": "A traffic game with red , green , yellow light.",
@@ -2519,5 +2518,20 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/traffic_signal/index.html"
+  },
+  {
+    "projectNo": 202,
+    "projectName": "3D Terrain Generator",
+    "projectType": "Web Application",
+    "projectDesc": "A stunning, interactive 3D terrain generator built with Three.js and Perlin Noise. Features dynamic lighting, wireframe toggles, adjustable flight speed, and multiple visual themes.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "three.js",
+      "canvas"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/3DTerrainGenerator/index.html"
   }
 ]
