@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Dice Roller</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <a
+      href="/"
+      class="project-back-button"
+      style="
+        position: fixed;
+        left: 18px;
+        top: 18px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: white;
+        text-decoration: none;
+        z-index: 9999;
+        font-weight: 700;
+        font-family: Inter, system-ui, sans-serif;
+        box-shadow: 0 8px 20px rgba(0, 0, 0);
+      "
+    >
+      ← Back to Home
+    </a>
+
+    <!-- Fixed page-level toggle (top-right of screen) -->
+    <button class="theme-toggle" id="themeToggle" title="Toggle dark/light mode">
+      🌙
+    </button>
+
+    <div class="container">
+      <!-- Header: dice icon + rainbow title side by side -->
+      <div class="header">
+        <svg class="header-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <rect
+            x="4"
+            y="4"
+            width="56"
+            height="56"
+            rx="12"
+            ry="12"
+            fill="white"
+            stroke="#222"
+            stroke-width="3"
+          />
+          <circle cx="20" cy="20" r="5" fill="#111" />
+          <circle cx="44" cy="20" r="5" fill="#111" />
+          <circle cx="32" cy="32" r="5" fill="#111" />
+          <circle cx="20" cy="44" r="5" fill="#111" />
+          <circle cx="44" cy="44" r="5" fill="#111" />
+        </svg>
+        <div class="header-text">
+          <h1>Dice Roller</h1>
+          <p>Roll, track, and enjoy your lucky numbers</p>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <div class="control-group">
+          <label for="diceCount">Number of Dice</label>
+          <input type="number" id="diceCount" min="1" max="10" value="1" />
+          <div id="diceError" class="error"></div>
+        </div>
+        <div class="control-group">
+          <label>Dice Color</label>
+          <div class="color-picker">
+            <div
+              class="color-option selected"
+              data-color="#FFB3BA"
+              style="background: #ffb3ba"
+              title="Pastel Pink"
+            ></div>
+            <div
+              class="color-option"
+              data-color="#FFDBB5"
+              style="background: #ffdbb5"
+              title="Pastel Peach"
+            ></div>
+            <div
+              class="color-option"
+              data-color="#FFFFBA"
+              style="background: #ffffba"
+              title="Pastel Yellow"
+            ></div>
+            <div
+              class="color-option"
+              data-color="#BAFFC9"
+              style="background: #baffc9"
+              title="Pastel Green"
+            ></div>
+            <div
+              class="color-option"
+              data-color="#BAE1FF"
+              style="background: #bae1ff"
+              title="Pastel Blue"
+            ></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="button-group">
+        <button class="btn-roll" id="rollBtn">Roll Dice</button>
+        <button class="btn-sound" id="soundToggle" title="Toggle sound">🔊</button>
+        <button class="btn-reset" id="resetBtn">Reset Stats</button>
+      </div>
+
+      <!-- Dice faces -->
+      <div class="dice-display" id="diceDisplay"></div>
+
+      <!-- Result -->
+      <div class="result-message" id="resultMessage"></div>
+
+      <!-- Statistics -->
+      <div class="stats-section">
+        <div class="stats-title">Statistics</div>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-label">Total Rolls</div>
+            <div class="stat-value" id="totalRolls">0</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Average</div>
+            <div class="stat-value" id="avgRoll">0</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Min Roll</div>
+            <div class="stat-value" id="minRoll">—</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Max Roll</div>
+            <div class="stat-value" id="maxRoll">—</div>
+          </div>
+        </div>
+        <div class="stats-title">Distribution</div>
+        <div class="distribution" id="distribution"></div>
+      </div>
+    </div>
+
+    <audio id="soundSingle" src="dice-single.mp3" preload="auto" />
+    <audio id="soundMulti" src="dice-multi.mp3" preload="auto" />
+
+    <script src="script.js"></script>
+  </body>
+</html>

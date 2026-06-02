@@ -1,68 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PassX-Personal Password Manager</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PassX-Pass</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-    <nav>
-        <div class="logo">PassX</div>
-        <ul>
-            <li>Home</li>
-            <li>About</li>
-            <li>Contact</li>
 
-
-        </ul>
-    </nav>
-    <div class="container">
-        <h1>Password Manager</h1>
-        <p>We're thrilled to have you here, and we're committed to making your online security a top priority. Your
-            digital world is full of passwords and sensitive information, and we're here to help you keep it safe and
-            organized.</p>
-        <h2>Your Password <span id="alert">(Copied)</span></h2>
-        <p>Your password has been copied</p>
-        <table>
-            <tr>
-                <th>Website</th>
-                <th>Username</th>
-                <th>Password</th>
-                <th>Delete</th>
-            </tr>
-
-
-        </table>
-
-        <h2>Add a password</h2>
-        <form action="/submit" method="post">
-            <!-- Text input for Website -->
-            <label for="Website">Website:</label>
-            <input type="text" id="Website" name="Website" required>
-            <br><br>
-            <!-- Text input for username -->
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-            <br><br>
-
-            <!-- Password input -->
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <br>
-
-
-            <!-- Submit button -->
-            <button class="btn" type="submit">Submit</button>
-           
-              
-        </form>
+  <!-- ── Master Password Gate ─────────────────────────────────────────── -->
+  <div id="gate-overlay" class="gate-overlay">
+    <div class="gate-card">
+      <div class="gate-icon">🔐</div>
+      <h1 class="gate-title">Vault Lock</h1>
+      <p class="gate-sub" id="gate-sub">Enter your master password to unlock the vault.</p>
+      <input
+        type="password"
+        id="master-input"
+        class="gate-input"
+        placeholder="Master password…"
+        autocomplete="current-password"
+      />
+      <p class="gate-error" id="gate-error"></p>
+      <button class="gate-btn" id="gate-btn" onclick="unlockVault()">Unlock →</button>
+      <p class="gate-hint" id="gate-hint"></p>
     </div>
-    
+  </div>
 
-    <script src="script.js"></script>
+  <!-- ── Main App ──────────────────────────────────────────────────────── -->
+  <div id="app" class="app hidden">
+
+    <header class="header">
+      <div class="header-left">
+        <span class="header-logo">🔐</span>
+        <span class="header-title">Vault</span>
+      </div>
+      <button class="lock-btn" onclick="lockVault()" title="Lock vault">
+        <span>Lock</span>
+        <span class="lock-icon">⎋</span>
+      </button>
+    </header>
+
+    <main class="main">
+
+      <!-- Add entry form -->
+      <section class="form-section">
+        <h2 class="section-title">Add New Entry</h2>
+        <div class="form-grid">
+          <div class="field">
+            <label class="label">Website / App</label>
+            <input type="text" id="site" class="input" placeholder="github.com" />
+          </div>
+          <div class="field">
+            <label class="label">Username / Email</label>
+            <input type="text" id="username" class="input" placeholder="you@example.com" autocomplete="off" />
+          </div>
+          <div class="field full-width">
+            <label class="label">Password</label>
+            <div class="pw-input-wrap">
+              <input type="password" id="password" class="input" placeholder="Enter or generate…"
+                oninput="onPasswordInput(this.value)" autocomplete="new-password" />
+              <button class="icon-btn" onclick="togglePwVisibility()" title="Show/hide">👁</button>
+              <button class="icon-btn" onclick="generatePassword()" title="Generate">⚡</button>
+            </div>
+
+            <!-- Strength meter -->
+            <div class="strength-wrap" id="strength-wrap">
+              <div class="strength-bar">
+                <div class="strength-seg" id="s0"></div>
+                <div class="strength-seg" id="s1"></div>
+                <div class="strength-seg" id="s2"></div>
+                <div class="strength-seg" id="s3"></div>
+                <div class="strength-seg" id="s4"></div>
+              </div>
+              <span class="strength-label" id="strength-label">—</span>
+            </div>
+
+            <!-- Breach warning -->
+            <div class="breach-warn hidden" id="breach-warn">
+              ⚠️ <span id="breach-msg">This password has appeared in known data breaches. Use a different one.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="add-btn" onclick="addEntry()">+ Save to Vault</button>
+        </div>
+
+        <p class="form-error hidden" id="form-error"></p>
+      </section>
+
+      <!-- Entries list -->
+      <section class="list-section">
+        <div class="list-header">
+          <h2 class="section-title">Saved Entries <span class="count-badge" id="count-badge">0</span></h2>
+          <input type="text" class="search-input" id="search" placeholder="Search…" oninput="renderList()" />
+        </div>
+        <div id="entry-list" class="entry-list">
+          <p class="empty-state">No entries yet. Add one above.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
 </body>
-
 </html>

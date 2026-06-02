@@ -135,3 +135,93 @@
       padding: 0 1rem;
     }
   }
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+/* Navbar */
+body.dark-mode nav {
+    background-color: #1e1e1e;
+}
+
+/* Cards / Sections */
+body.dark-mode .card,
+body.dark-mode .container,
+body.dark-mode .box {
+    background-color: #1e1e1e;
+    color: #ffffff;
+}
+
+/* Buttons */
+body.dark-mode button {
+    background-color: #333;
+    color: white;
+}
+
+/* Links */
+body.dark-mode a {
+    color: #ff4d4d;
+}
+
+/* APP SECTION DARK MODE */
+body.dark-mode .app-section {
+    background-color: #1e1e1e;
+}
+
+/* Text inside app section */
+body.dark-mode .phone-title {
+    color: white;
+}
+
+body.dark-mode .app-description {
+    color: #ccc;
+}
+
+/* Input */
+body.dark-mode .email-input .email {
+    background-color: #2a2a2a;
+    color: white;
+    border: 1px solid #555;
+}
+
+/* Button */
+body.dark-mode .email-input .btn {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+/* Caption */
+body.dark-mode .caption {
+    color: #aaa;
+}
+
+/* ================= FINAL LIGHT MODE (WORKING) ================= */
+
+
+
+/* Restore app section soft color */
+body:not(.dark-mode) .app-section {
+    background-color: rgb(255, 251, 247) !important;
+}
+
+/* Buttons */
+body:not(.dark-mode) button {
+    background-color: #f0f0f0 !important;
+    color: black !important;
+}
+
+/* Input */
+body:not(.dark-mode) input {
+    background-color: white !important;
+    color: black !important;
+    border: 1px solid #ccc !important;
+}
+
+#darkModeToggle {
+    position: relative;
+    z-index: 1000;
+    cursor: pointer;
+}
