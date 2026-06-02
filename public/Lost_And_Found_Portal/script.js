@@ -45,6 +45,18 @@ class LostAndFoundApp {
         // Setup file upload previews
         this.setupImageUpload('lost');
         this.setupImageUpload('found');
+
+        // FIX: Set max date to today for lost and found date fields
+        this.setMaxDates();
+    }
+
+    // FIX: New method to restrict future dates
+    setMaxDates() {
+        const today = new Date().toISOString().split('T')[0];
+        const lostDate = document.getElementById('lost-date');
+        const foundDate = document.getElementById('found-date');
+        if (lostDate) lostDate.setAttribute('max', today);
+        if (foundDate) foundDate.setAttribute('max', today);
     }
 
     cacheDOM() {
@@ -79,7 +91,7 @@ class LostAndFoundApp {
             btn.addEventListener('click', (e) => {
                 const view = e.target.getAttribute('data-view');
                 if (view) this.switchView(view);
-                this.mobileMenu.classList.add('hidden'); // Close mobile menu on click
+                this.mobileMenu.classList.add('hidden');
             });
         });
 
@@ -133,7 +145,6 @@ class LostAndFoundApp {
     }
 
     switchView(viewId) {
-        // Update active class on views
         this.views.forEach(view => {
             view.classList.add('hidden');
             view.classList.remove('active');
@@ -142,12 +153,10 @@ class LostAndFoundApp {
         const targetView = document.getElementById(`view-${viewId}`);
         if (targetView) {
             targetView.classList.remove('hidden');
-            // Trigger reflow to restart animation
             void targetView.offsetWidth; 
             targetView.classList.add('active');
         }
 
-        // Update active class on nav buttons
         this.navBtns.forEach(btn => {
             if (btn.getAttribute('data-view') === viewId) {
                 btn.classList.add('active');
@@ -158,7 +167,6 @@ class LostAndFoundApp {
 
         this.currentView = viewId;
 
-        // View specific logic
         if (viewId === 'home') {
             this.updateStats();
             this.renderRecentListings();
@@ -246,11 +254,20 @@ class LostAndFoundApp {
 
     handleReportSubmit(e, type) {
         e.preventDefault();
+
+        // FIX: Validate that date is not in the future
+        const dateInput = document.getElementById(`${type}-date`);
+        const selectedDate = new Date(dateInput.value);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (selectedDate > today) {
+            this.showToast('Invalid Date', 'The date lost cannot be in the future.');
+            return;
+        }
         
         const previewImg = document.getElementById(`${type}-preview-img`);
         const imageSrc = previewImg.src && !previewImg.src.includes(window.location.host) ? previewImg.src : null;
         
-        // Generate placeholder if no image
         const defaultImage = '';
 
         const newItem = {
@@ -266,13 +283,11 @@ class LostAndFoundApp {
             reportedAt: new Date().toISOString()
         };
 
-        this.items.unshift(newItem); // Add to beginning
+        this.items.unshift(newItem);
         this.saveItems();
 
-        // Reset form
         e.target.reset();
         
-        // Reset image preview
         const fileInput = document.getElementById(`${type}-image`);
         const previewContainer = document.getElementById(`${type}-image-preview`);
         const dropArea = document.getElementById(`${type}-drop-area`);
@@ -282,7 +297,9 @@ class LostAndFoundApp {
         if(previewContainer) previewContainer.classList.add('hidden');
         if(dropArea) dropArea.classList.remove('hidden');
 
-        // Show success and redirect
+        // FIX: Reset max date after form reset
+        this.setMaxDates();
+
         this.showToast('Success', `Your ${type} item report has been submitted.`);
         this.switchView('browse');
     }
@@ -322,7 +339,6 @@ class LostAndFoundApp {
         if (!this.homeRecentGrid) return;
         
         this.homeRecentGrid.innerHTML = '';
-        // Show max 3 recent items
         const recentItems = this.items.slice(0, 3);
         
         recentItems.forEach(item => {
