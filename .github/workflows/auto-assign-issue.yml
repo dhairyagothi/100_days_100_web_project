@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Check for duplicate issues
         id: duplicate-check
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const newTitle = context.payload.issue.title.toLowerCase().trim();
@@ -63,7 +63,7 @@ jobs:
 
     steps:
       - name: Label as duplicate
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const originalIssue = '${{ needs.check-duplicate.outputs.original_issue }}';
@@ -106,7 +106,7 @@ jobs:
 
     steps:
       - name: Assign issue to creator
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             await github.rest.issues.addAssignees({
@@ -117,7 +117,7 @@ jobs:
             });
 
       - name: Add gssoc labels
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const labels = ["gssoc", "Gssoc'26"];

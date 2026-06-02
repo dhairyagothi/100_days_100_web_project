@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cute Calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+ 
+<div class="calculator">
+  <button class="history-btn" onclick="toggleHistory()" title="History">🕐</button>
+ 
+  <div class="display-wrapper">
+    <div class="expression" id="expression"></div>
+    <input type="text" id="display" placeholder="0" autocomplete="off" spellcheck="false">
+  </div>
+ 
+  <div class="history-panel" id="historyPanel">
+    <div class="history-empty" id="historyEmpty">No history yet ✨</div>
+  </div>
+ 
+  <div class="buttons">
+    <!-- Row 1 -->
+    <button class="btn-action" onclick="clearDisplay()">C</button>
+    <button class="btn-special" onclick="appendValue('(')">(</button>
+    <button class="btn-special" onclick="appendValue(')')">)</button>
+    <button class="btn-action" onclick="deleteLast()">⌫</button>
+ 
+    <!-- Row 2 -->
+    <button class="btn-special" onclick="appendValue('%')">%</button>
+    <button class="btn-op" onclick="appendValue('/')">÷</button>
+    <button class="btn-op" onclick="appendValue('*')">×</button>
+    <button class="btn-op" onclick="appendValue('-')">−</button>
+ 
+    <!-- Row 3 -->
+    <button class="btn-num" onclick="appendValue('7')">7</button>
+    <button class="btn-num" onclick="appendValue('8')">8</button>
+    <button class="btn-num" onclick="appendValue('9')">9</button>
+    <!-- Equals spans rows 3 & 4 -->
+    <button class="btn-equals" onclick="calculate()" id="equalsBtn">=</button>
+ 
+    <!-- Row 4 -->
+    <button class="btn-num" onclick="appendValue('4')">4</button>
+    <button class="btn-num" onclick="appendValue('5')">5</button>
+    <button class="btn-num" onclick="appendValue('6')">6</button>
+ 
+    <!-- Row 5 -->
+    <button class="btn-num" onclick="appendValue('1')">1</button>
+    <button class="btn-num" onclick="appendValue('2')">2</button>
+    <button class="btn-num" onclick="appendValue('3')">3</button>
+    <button class="btn-op" onclick="appendValue('+')">+</button>
+ 
+    <!-- Row 6 -->
+    <button class="btn-num zero" onclick="appendValue('0')">0</button>
+    <button class="btn-num" onclick="appendValue('.')">.</button>
+  </div>
+</div>
+ 
+<script src="script.js"></script>
+</body>
+</html>

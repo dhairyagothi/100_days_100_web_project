@@ -1,0 +1,213 @@
+{
+  "html": [
+    {
+      "question": "What does HTML stand for?",
+      "options": ["Hyper Text Markup Language", "Hyper Transfer Markup Language", "Home Tool Markup Language", "High Text Machine Language"],
+      "answer": 0
+    },
+    {
+      "question": "Which tag creates a hyperlink?",
+      "options": ["<a>", "<link>", "<href>", "<url>"],
+      "answer": 0
+    },
+    {
+      "question": "Which tag is used to display an image?",
+      "options": ["<img>", "<image>", "<picture>", "<src>"],
+      "answer": 0
+    },
+    {
+      "question": "Which tag defines a paragraph?",
+      "options": ["<p>", "<para>", "<paragraph>", "<text>"],
+      "answer": 0
+    },
+    {
+      "question": "Which heading tag is the largest?",
+      "options": ["<h1>", "<h6>", "<head>", "<title>"],
+      "answer": 0
+    },
+    {
+      "question": "Which tag creates a table row?",
+      "options": ["<tr>", "<td>", "<th>", "<table>"],
+      "answer": 0
+    },
+    {
+      "question": "Which attribute specifies a link destination?",
+      "options": ["src", "href", "alt", "target"],
+      "answer": 1
+    },
+    {
+      "question": "Which tag is used for user input forms?",
+      "options": ["<form>", "<input>", "<fieldset>", "<label>"],
+      "answer": 0
+    },
+    {
+      "question": "What does the alt attribute provide?",
+      "options": ["Image style", "Alternative text", "Image size", "Image position"],
+      "answer": 1
+    },
+    {
+      "question": "Which HTML element is semantic?",
+      "options": ["<div>", "<span>", "<section>", "<font>"],
+      "answer": 2
+    }
+  ],
+
+  "css": [
+    {
+      "question": "Which property changes text color?",
+      "options": ["font-color", "text-color", "color", "foreground"],
+      "answer": 2
+    },
+    {
+      "question": "Which property changes background color?",
+      "options": ["bg-color", "background-color", "background", "color"],
+      "answer": 1
+    },
+    {
+      "question": "Which selector targets an element by ID?",
+      "options": [".id", "#id", "*id", "@id"],
+      "answer": 1
+    },
+    {
+      "question": "Which selector targets a class?",
+      "options": [".class", "#class", "*class", "@class"],
+      "answer": 0
+    },
+    {
+      "question": "Which CSS model includes margin, border, padding and content?",
+      "options": ["Grid", "Flexbox", "Box Model", "Layout Model"],
+      "answer": 2
+    },
+    {
+      "question": "Which layout system is one-dimensional?",
+      "options": ["Grid", "Flexbox", "Table", "Float"],
+      "answer": 1
+    },
+    {
+      "question": "Which layout system is two-dimensional?",
+      "options": ["Grid", "Flexbox", "Float", "Inline"],
+      "answer": 0
+    },
+    {
+      "question": "Which property creates spacing inside an element?",
+      "options": ["margin", "padding", "gap", "spacing"],
+      "answer": 1
+    },
+    {
+      "question": "Which CSS feature is used for responsiveness?",
+      "options": ["Animations", "Media Queries", "Transforms", "Filters"],
+      "answer": 1
+    },
+    {
+      "question": "Which property is used for animations?",
+      "options": ["animation", "effect", "transitioning", "motion"],
+      "answer": 0
+    }
+  ],
+
+  "javascript": [
+    {
+      "question": "Which keyword declares a variable?",
+      "options": ["let", "var", "const", "All of these"],
+      "answer": 3
+    },
+    {
+      "question": "Which method prints to console?",
+      "options": ["console.print()", "console.log()", "print()", "log()"],
+      "answer": 1
+    },
+    {
+      "question": "Which data type stores true or false?",
+      "options": ["String", "Number", "Boolean", "Object"],
+      "answer": 2
+    },
+    {
+      "question": "Which symbol is used for strict equality?",
+      "options": ["=", "==", "===", "!=="],
+      "answer": 2
+    },
+    {
+      "question": "Which keyword creates a function?",
+      "options": ["func", "function", "define", "method"],
+      "answer": 1
+    },
+    {
+      "question": "Which array method adds an item to the end?",
+      "options": ["push()", "pop()", "shift()", "slice()"],
+      "answer": 0
+    },
+    {
+      "question": "Which loop repeats while a condition is true?",
+      "options": ["for", "while", "switch", "foreach"],
+      "answer": 1
+    },
+    {
+      "question": "What does DOM stand for?",
+      "options": ["Document Object Model", "Data Object Model", "Document Order Method", "Display Object Model"],
+      "answer": 0
+    },
+    {
+      "question": "Which method selects an element by ID?",
+      "options": ["querySelector()", "getElementById()", "getElements()", "findElement()"],
+      "answer": 1
+    },
+    {
+      "question": "Which event occurs when a button is clicked?",
+      "options": ["hover", "load", "click", "change"],
+      "answer": 2
+    }
+  ],
+
+  "react": [
+    {
+      "question": "React is mainly used for?",
+      "options": ["Database", "Backend", "UI Development", "Networking"],
+      "answer": 2
+    },
+    {
+      "question": "What does JSX stand for?",
+      "options": ["Java Syntax XML", "JavaScript XML", "JSON XML", "Java Extended XML"],
+      "answer": 1
+    },
+    {
+      "question": "Which function creates state in React?",
+      "options": ["useRef", "useState", "useMemo", "useContext"],
+      "answer": 1
+    },
+    {
+      "question": "Props are used to?",
+      "options": ["Store state", "Pass data", "Handle routing", "Create hooks"],
+      "answer": 1
+    },
+    {
+      "question": "Which hook handles side effects?",
+      "options": ["useState", "useEffect", "useRef", "useReducer"],
+      "answer": 1
+    },
+    {
+      "question": "React components should start with?",
+      "options": ["Lowercase", "Uppercase", "Number", "Symbol"],
+      "answer": 1
+    },
+    {
+      "question": "Which keyword is used to render lists efficiently?",
+      "options": ["index", "id", "key", "value"],
+      "answer": 2
+    },
+    {
+      "question": "Which hook stores component state?",
+      "options": ["useEffect", "useState", "useMemo", "useCallback"],
+      "answer": 1
+    },
+    {
+      "question": "What is React based on?",
+      "options": ["Virtual DOM", "Real DOM", "Shadow DOM", "XML DOM"],
+      "answer": 0
+    },
+    {
+      "question": "React applications are built from?",
+      "options": ["Modules", "Components", "Pages", "Templates"],
+      "answer": 1
+    }
+  ]
+}

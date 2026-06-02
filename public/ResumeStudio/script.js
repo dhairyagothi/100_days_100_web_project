@@ -1,131 +1,272 @@
+// ==========================
+// Resume Studio
+// ==========================
+
 document.addEventListener("DOMContentLoaded", () => {
-    const themeSwitcher = document.getElementById("themeSwitcher");
+
+    // FORM INPUTS
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const phoneInput = document.getElementById("phone");
+    const educationInput = document.getElementById("education");
+    const summaryInput = document.getElementById("summary");
+    const projectsInput = document.getElementById("projects");
+    const skillsInput = document.getElementById("skills");
+    const experienceInput = document.getElementById("experience");
+
+    // BUTTONS
+    const previewBtn = document.getElementById("previewBtn");
+    const downloadBtn = document.getElementById("downloadBtn");
+    const modernBtn = document.getElementById("modernBtn");
+const classicBtn = document.getElementById("classicBtn");
+const minimalBtn = document.getElementById("minimalBtn");
+
+let currentTemplate = "modern";
+    const themeBtn = document.getElementById("themeSwitcher");
+
+    // PREVIEW
     const resumePreview = document.getElementById("resumePreview");
-    const previewBtn    = document.getElementById("previewBtn");
-    const downloadBtn   = document.getElementById("downloadBtn");
-    const errorMsg      = document.getElementById("errorMsg");
 
-    // Default template
-    let currentTemplate = "modern";
-    resumePreview.classList.add("modern");
+    // ATS SCORE
+    const atsScore = document.getElementById("atsScore");
 
-    // Template switcher
-    document.querySelectorAll(".tpl-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-            document.querySelectorAll(".tpl-btn").forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-            currentTemplate = btn.dataset.template;
-            resumePreview.className = currentTemplate;
-            if (resumePreview.querySelector(".placeholder") === null) {
-                resumePreview.innerHTML = buildPreview();
-            }
-        });
-    });
+    // ==========================
+    // ATS SCORE
+    // ==========================
 
-    // Theme switcher
-    themeSwitcher.addEventListener("click", () => {
-        document.body.classList.toggle("dark");
-        const isDark = document.body.classList.contains("dark");
-        document.getElementById("themeIcon").innerHTML = isDark ? "&#9728;" : "&#9790;";
-        themeSwitcher.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
-    });
+    function updateATS() {
 
-    // Char counters
-    function attachCharCounter(inputId, countId) {
-        const input = document.getElementById(inputId);
-        const counter = document.getElementById(countId);
-        input.addEventListener("input", () => {
-            counter.textContent = `${input.value.length}/${input.maxLength}`;
-            counter.style.color = input.value.length >= input.maxLength ? "red" : "";
-        });
-    }
-    attachCharCounter("name", "nameCount");
-    attachCharCounter("email", "emailCount");
-    attachCharCounter("phone", "phoneCount");
-    attachCharCounter("education", "educationCount");
-    attachCharCounter("summary", "summaryCount");
-    attachCharCounter("projects", "projectsCount");
-    attachCharCounter("skills", "skillsCount");
-    attachCharCounter("experience", "experienceCount");
+        let score = 0;
 
-    // Validation
-    function validateFields() {
-        const fields = ["name", "email", "phone", "education", "summary", "projects", "skills", "experience"];
-        return fields.every(id => document.getElementById(id).value.trim());
+        if (nameInput.value.trim()) score += 10;
+        if (emailInput.value.trim()) score += 10;
+        if (phoneInput.value.trim()) score += 10;
+        if (educationInput.value.trim()) score += 15;
+
+        if (summaryInput.value.trim().length > 50) score += 15;
+        if (projectsInput.value.trim().length > 30) score += 15;
+        if (experienceInput.value.trim().length > 30) score += 15;
+
+        const skills = skillsInput.value
+            .split(",")
+            .filter(skill => skill.trim() !== "");
+
+        if (skills.length >= 5) score += 10;
+
+        score = Math.min(score, 100);
+
+        atsScore.textContent = `${score}%`;
     }
 
-    // Build preview HTML
-    function buildPreview() {
-        const name       = document.getElementById("name").value;
-        const email      = document.getElementById("email").value;
-        const phone      = document.getElementById("phone").value;
-        const education  = document.getElementById("education").value;
-        const summary    = document.getElementById("summary").value;
-        const projects   = document.getElementById("projects").value;
-        const skills     = document.getElementById("skills").value;
-        const experience = document.getElementById("experience").value;
-        return `
-            <h3>${name}</h3>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Phone:</strong> ${phone}</p>
-            <h4>Education</h4><p>${education}</p>
-            <h4>Summary</h4><p>${summary}</p>
-            <h4>Projects</h4><p>${projects}</p>
-            <h4>Skills</h4>
-            <ul>${skills.split(",").map(s => `<li>${s.trim()}</li>`).join("")}</ul>
-            <h4>Experience</h4><p>${experience}</p>
+    // ==========================
+    // LIVE PREVIEW
+    // ==========================
+
+    function updatePreview() {
+        let templateClass = "";
+
+if(currentTemplate === "modern"){
+    templateClass = "modern-template";
+}
+else if(currentTemplate === "classic"){
+    templateClass = "classic-template";
+}
+else{
+    templateClass = "minimal-template";
+}
+        resumePreview.className = `resume-sheet ${templateClass}`;
+        console.log(resumePreview.className);
+
+        resumePreview.innerHTML = `
+            <div class="resume-header">
+                <h1>${nameInput.value || "John Doe"}</h1>
+
+                <p>
+                    ${emailInput.value || "john@example.com"} |
+                    ${phoneInput.value || "+91 9876543210"}
+                </p>
+            </div>
+
+            <div class="resume-section">
+                <h3>Summary</h3>
+                <p>
+                    ${summaryInput.value || "Professional summary will appear here."}
+                </p>
+            </div>
+
+            <div class="resume-section">
+                <h3>Projects</h3>
+                <p>
+                    ${projectsInput.value || "Your projects will appear here."}
+                </p>
+            </div>
+
+            <div class="resume-section">
+                <h3>Skills</h3>
+                <p>
+                    ${skillsInput.value || "Your skills will appear here."}
+                </p>
+            </div>
+
+            <div class="resume-section">
+                <h3>Experience</h3>
+                <p>
+                    ${experienceInput.value || "Your experience will appear here."}
+                </p>
+            </div>
+
+            <div class="resume-section">
+                <h3>Education</h3>
+                <p>
+                    ${educationInput.value || "Your education will appear here."}
+                </p>
+            </div>
         `;
+
+        updateATS();
     }
 
-    // Live Preview
-    previewBtn.addEventListener("click", () => {
-        if (!validateFields()) {
-            errorMsg.style.display = "block";
-            setTimeout(() => errorMsg.style.display = "none", 3000);
-            return;
-        }
-        errorMsg.style.display = "none";
-        resumePreview.className = currentTemplate;
-        resumePreview.innerHTML = buildPreview();
+    // ==========================
+    // INPUT LISTENERS
+    // ==========================
+
+    const inputs = [
+        nameInput,
+        emailInput,
+        phoneInput,
+        educationInput,
+        summaryInput,
+        projectsInput,
+        skillsInput,
+        experienceInput
+    ];
+
+    inputs.forEach(input => {
+        input.addEventListener("input", updatePreview);
     });
 
-    // Download PDF
-    downloadBtn.addEventListener("click", async () => {
-        if (!validateFields()) {
-            errorMsg.style.display = "block";
-            setTimeout(() => errorMsg.style.display = "none", 3000);
-            return;
-        }
-        errorMsg.style.display = "none";
-        resumePreview.className = currentTemplate;
-        resumePreview.innerHTML = buildPreview();
+    // ==========================
+    // PREVIEW BUTTON
+    // ==========================
 
-        downloadBtn.textContent = "Generating...";
-        downloadBtn.disabled = true;
+    previewBtn.addEventListener("click", () => {
+
+        updatePreview();
+
+        resumePreview.scrollIntoView({
+            behavior: "smooth"
+        });
+    });
+
+    // ==========================
+    // THEME TOGGLE
+    // ==========================
+
+    themeBtn.addEventListener("click", () => {
+
+        document.body.classList.toggle("light-mode");
+
+        if (document.body.classList.contains("light-mode")) {
+            themeBtn.textContent = "☀️ Light Mode";
+        } else {
+            themeBtn.textContent = "🌙 Dark Mode";
+        }
+    });
+
+    // ==========================
+    // PDF DOWNLOAD
+    // ==========================
+
+    downloadBtn.addEventListener("click", async () => {
 
         try {
-            const canvas = await html2canvas(resumePreview, { scale: 2, useCORS: true });
-            const imgData = canvas.toDataURL("image/png");
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF("p", "mm", "a4");
-            const pageWidth = pdf.internal.pageSize.getWidth();
-            const pageHeight = pdf.internal.pageSize.getHeight();
-            const imgHeight = (canvas.height * pageWidth) / canvas.width;
-            let position = 0;
-            let remaining = imgHeight;
-            while (remaining > 0) {
-                pdf.addImage(imgData, "PNG", 0, position, pageWidth, imgHeight);
-                remaining -= pageHeight;
-                position -= pageHeight;
-                if (remaining > 0) pdf.addPage();
-            }
-            const name = document.getElementById("name").value.trim().replace(/\s+/g, "_");
-            pdf.save(`${name}_resume.pdf`);
-        } catch (err) {
-            alert("PDF generation failed. Please try again.");
-        }
 
-        downloadBtn.textContent = "⬇ Download PDF";
-        downloadBtn.disabled = false;
+            const canvas = await html2canvas(resumePreview, {
+                scale: 2
+            });
+
+            const imgData = canvas.toDataURL("image/png");
+
+            const { jsPDF } = window.jspdf;
+
+            const pdf = new jsPDF("p", "mm", "a4");
+
+            const pageWidth = pdf.internal.pageSize.getWidth();
+
+            const imgWidth = pageWidth;
+
+            const imgHeight =
+                (canvas.height * imgWidth) / canvas.width;
+
+            pdf.addImage(
+                imgData,
+                "PNG",
+                0,
+                0,
+                imgWidth,
+                imgHeight
+            );
+
+            const filename =
+                (nameInput.value || "resume")
+                    .toLowerCase()
+                    .replace(/\s+/g, "_");
+
+            pdf.save(`${filename}.pdf`);
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert("Failed to generate PDF.");
+        }
     });
+
+    modernBtn.addEventListener("click", () => {
+
+    currentTemplate = "modern";
+
+    modernBtn.classList.add("active");
+    classicBtn.classList.remove("active");
+    minimalBtn.classList.remove("active");
+
+    updatePreview();
+});
+
+classicBtn.addEventListener("click", () => {
+
+    currentTemplate = "classic";
+
+    classicBtn.classList.add("active");
+    modernBtn.classList.remove("active");
+    minimalBtn.classList.remove("active");
+
+    updatePreview();
+});
+
+minimalBtn.addEventListener("click", () => {
+
+    currentTemplate = "minimal";
+
+    minimalBtn.classList.add("active");
+    modernBtn.classList.remove("active");
+    classicBtn.classList.remove("active");
+
+    updatePreview();
+});
+
+modernBtn.addEventListener("click", () => {
+    console.log("MODERN CLICKED");
+});
+
+classicBtn.addEventListener("click", () => {
+    console.log("CLASSIC CLICKED");
+});
+
+minimalBtn.addEventListener("click", () => {
+    console.log("MINIMAL CLICKED");
+});
+
+    // INITIAL LOAD
+    updatePreview();
 });
