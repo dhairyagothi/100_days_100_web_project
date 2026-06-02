@@ -1605,10 +1605,18 @@ function initScrollBtn() {
   if (!btn) return;
 
   const circumference = 2 * Math.PI * 22;
+  
+  let docHeight = 0;
+  let windowHeight = 0;
+  let ticking = false;
+
+  const updateMeasurements = () => {
+    windowHeight = window.innerHeight;
+    docHeight = document.documentElement.scrollHeight - windowHeight;
+  };
+
   const updateScrollProgress = () => {
     const scrollTop = window.scrollY;
-    const docHeight =
-      document.documentElement.scrollHeight - window.innerHeight;
     const progress = docHeight > 0 ? scrollTop / docHeight : 0;
 
     btn.classList.toggle("show", scrollTop > 400);
@@ -1622,23 +1630,28 @@ function initScrollBtn() {
     const footer = document.querySelector(".footer");
     if (footer) {
       const footerRect = footer.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
 
       if (footerRect.top < windowHeight) {
         const overlap = windowHeight - footerRect.top;
-        // Cap the upward movement to a maximum of 120px.
-        // This ensures it dodges the important bottom footer links but
-        // doesn't fly completely off the top of the screen when the footer is huge.
         const maxOverlap = Math.min(overlap, 120);
         btn.style.bottom = `calc(2rem + ${maxOverlap}px)`;
       } else {
         btn.style.bottom = "2rem";
       }
     }
+    ticking = false;
   };
 
+  updateMeasurements();
   updateScrollProgress();
-  window.addEventListener("scroll", updateScrollProgress, { passive: true });
+
+  window.addEventListener("resize", updateMeasurements, { passive: true });
+  window.addEventListener("scroll", () => {
+    if (!ticking) {
+      window.requestAnimationFrame(updateScrollProgress);
+      ticking = true;
+    }
+  }, { passive: true });
 
   btn.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
