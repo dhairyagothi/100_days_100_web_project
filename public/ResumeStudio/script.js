@@ -1,10 +1,21 @@
-function initResumeStudio() {
-    // =========================
-    // ELEMENTS
-    // =========================
-    const resumePreview = document.getElementById("resumePreview");
-    const themeSwitcher = document.getElementById("themeSwitcher");
+// ==========================
+// Resume Studio
+// ==========================
 
+document.addEventListener("DOMContentLoaded", () => {
+
+    // FORM INPUTS
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const phoneInput = document.getElementById("phone");
+    const educationInput = document.getElementById("education");
+    const summaryInput = document.getElementById("summary");
+    const projectsInput = document.getElementById("projects");
+    const skillsInput = document.getElementById("skills");
+    const experienceInput = document.getElementById("experience");
+
+    // BUTTONS
+    const previewBtn = document.getElementById("previewBtn");
     const downloadBtn = document.getElementById("downloadBtn");
     const printBtn = document.getElementById("printBtn");
     const fillDemoBtn = document.getElementById("fillDemoBtn");

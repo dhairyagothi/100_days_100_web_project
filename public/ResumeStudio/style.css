@@ -514,3 +514,161 @@ textarea:focus {
         page-break-inside: avoid;
     }
 }
+
+@media (max-width: 768px){
+
+    .app{
+        grid-template-columns:1fr;
+    }
+
+    .sidebar{
+        border-right:none;
+        border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .form-row{
+        grid-template-columns:1fr;
+    }
+
+    .top-bar{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:20px;
+    }
+
+    .template-buttons{
+        flex-wrap:wrap;
+    }
+
+    .buttons{
+        flex-direction:column;
+    }
+
+    .resume-sheet{
+        padding:24px;
+    }
+}
+
+/* =========================
+   LIGHT MODE
+========================= */
+
+body.light-mode {
+    background: #f4f7fb !important;
+    color: #111827;
+}
+
+body.light-mode .animated-bg,
+body.light-mode .bg-glow {
+    display: none;
+}
+
+body.light-mode .sidebar,
+body.light-mode .form-card {
+    background: #ffffff;
+}
+
+body.light-mode .glass {
+    background: rgba(255,255,255,0.95);
+    border: 1px solid #e5e7eb;
+}
+
+body.light-mode input,
+body.light-mode textarea {
+    background: #ffffff;
+    color: #111827;
+    border: 1px solid #d1d5db;
+}
+
+body.light-mode label,
+body.light-mode .logo h2,
+body.light-mode .top-bar h1 {
+    color: #111827;
+}
+
+body.light-mode .logo p,
+body.light-mode .top-bar p {
+    color: #6b7280;
+}
+
+body.light-mode .preview {
+    background: #f3f4f6;
+}
+
+body.light-mode .theme-btn,
+body.light-mode .template,
+body.light-mode .secondary-btn {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+/* =========================
+   MODERN TEMPLATE
+========================= */
+
+.modern-template{
+    border-top:8px solid #3b82f6;
+}
+
+.modern-template .resume-header h1{
+    color:#2563eb;
+}
+
+.modern-template .resume-section h3{
+    color:#2563eb;
+}
+
+/* =========================
+   CLASSIC TEMPLATE
+========================= */
+
+.classic-template{
+    border:2px solid #1f2937;
+    border-radius:0;
+    box-shadow:none;
+}
+
+.classic-template .resume-header{
+    border-bottom:2px solid #1f2937;
+    padding-bottom:20px;
+}
+
+.classic-template .resume-header h1{
+    font-family: Georgia, serif;
+    color:#111827;
+}
+
+.classic-template .resume-section h3{
+    text-transform:uppercase;
+    letter-spacing:1px;
+    font-size:16px;
+}
+
+/* =========================
+   MINIMAL TEMPLATE
+========================= */
+
+.minimal-template{
+    box-shadow:none;
+    border-radius:0;
+    border-left:6px solid #10b981;
+}
+
+.minimal-template .resume-header{
+    text-align:left;
+}
+
+.minimal-template .resume-header h1{
+    font-size:34px;
+    color:#111827;
+}
+
+.minimal-template .resume-section h3{
+    border-bottom:none;
+    color:#10b981;
+    font-size:18px;
+}
+
+.minimal-template .resume-section{
+    margin-bottom:22px;
+}

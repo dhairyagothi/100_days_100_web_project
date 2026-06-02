@@ -13,16 +13,26 @@ try {
   }
 
   projects.forEach((project, index) => {
-    const requiredKeys = ['day', 'title', 'tags', 'difficulty', 'link'];
+    const requiredKeys = ['projectNo', 'projectName', 'projectType', 'projectDesc', 'techStack', 'difficulty', 'projectPath'];
     requiredKeys.forEach(key => {
-      if (!project[key]) {
+      if (project[key] === undefined || project[key] === null || project[key] === '') {
         console.error(`Validation Error at index ${index}: Missing key "${key}"`);
         process.exit(1);
       }
     });
 
-    if (typeof project.day !== 'number') {
-      console.error(`Validation Error at index ${index}: "day" must be a number`);
+    if (typeof project.projectNo !== 'number') {
+      console.error(`Validation Error at index ${index}: "projectNo" must be a number`);
+      process.exit(1);
+    }
+
+    if (!Array.isArray(project.techStack)) {
+      console.error(`Validation Error at index ${index}: "techStack" must be an array`);
+      process.exit(1);
+    }
+
+    if (typeof project.difficulty !== 'string') {
+      console.error(`Validation Error at index ${index}: "difficulty" must be a string`);
       process.exit(1);
     }
   });
