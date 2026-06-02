@@ -1,0 +1,27 @@
+{
+  "name": "100 Days · 100 Web Projects",
+  "short_name": "100 Days",
+  "description": "A curated archive of frontend experiments — UI systems, motion studies, creative coding, and interactive concepts built with HTML, CSS, and JavaScript.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a1a",
+  "theme_color": "#0a0a1a",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/fav.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/public/favv.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/public/favv.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
