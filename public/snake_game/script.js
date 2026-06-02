@@ -1,13 +1,17 @@
 const canvas = document.getElementById('gameCanvas');
-const ctx    = canvas.getContext('2d');
+const ctx = canvas.getContext('2d');
 
 const COLS = 24;
 const ROWS = 24;
 const CELL = 20;
-canvas.width  = COLS * CELL;
+canvas.width = COLS * CELL;
 canvas.height = ROWS * CELL;
+// Target audio tags loaded from HTML
+const eatSound = document.getElementById('eatSound');
+const gameOverSound = document.getElementById('gameOverSound');
 
 let snake, dir, nextDir, food, score, level, speed, running, paused;
+let lastTickTime = 0; // For smooth modern frame accumulation tracking
 
 let highScore = 0;
 let isGameOver = false;
@@ -73,24 +77,25 @@ function soundDie() {
     setTimeout(() => playTone(f, 'sawtooth', 0.12, 0.20), i * 70)
   );
 }
-// ──────────────────────────────────────────────────────────────────────────
 
 function initGame() {
   const startX = Math.floor(COLS / 2);
   const startY = Math.floor(ROWS / 2);
   snake = [
-    { x: startX,     y: startY },
+    { x: startX, y: startY },
     { x: startX - 1, y: startY },
     { x: startX - 2, y: startY },
   ];
-  dir        = { x: 1, y: 0 };
-  nextDir    = { x: 1, y: 0 };
-  score      = 0;
-  level      = 1;
-  speed      = 160; // ms per logic tick
-  running    = false;
-  paused     = false;
-  accumulator = 0;
+
+
+  dir = { x: 1, y: 0 };
+  nextDir = { x: 1, y: 0 };
+  score = 0;
+  level = 1;
+  speed = 160;
+  running = false;
+  paused = false;
+
   placeFood();
   updateHUD();
 }
@@ -108,12 +113,12 @@ function placeFood() {
 
 function updateHUD(bumped) {
   const scoreEl = document.getElementById('score');
-  const hsEl    = document.getElementById('highscore');
-  const lvlEl   = document.getElementById('level');
+  const hsEl = document.getElementById('highscore');
+  const lvlEl = document.getElementById('level');
 
   scoreEl.textContent = score;
-  hsEl.textContent    = highScore;
-  lvlEl.textContent   = level;
+  hsEl.textContent = highScore;
+  lvlEl.textContent = level;
 
   if (bumped) {
     [scoreEl, hsEl, lvlEl].forEach(el => {
@@ -138,35 +143,35 @@ function draw() {
     }
   }
 
-  // Food — pulsing glow
-  const fx    = food.x * CELL + CELL / 2;
-  const fy    = food.y * CELL + CELL / 2;
+  const fx = food.x * CELL + CELL / 2;
+  const fy = food.y * CELL + CELL / 2;
   const pulse = 0.6 + 0.4 * Math.abs(Math.sin(Date.now() / 300));
 
   ctx.save();
   ctx.shadowColor = '#ff0000';
-  ctx.shadowBlur  = 15 * pulse;
-  ctx.fillStyle   = `hsl(0, 100%, ${45 + 15 * pulse}%)`;
+  ctx.shadowBlur = 15 * pulse;
+  ctx.fillStyle = `hsl(0, 100%, ${45 + 15 * pulse}%)`;
   ctx.beginPath();
   ctx.arc(fx, fy, (CELL / 2 - 3) * pulse * 0.9 + 1, 0, Math.PI * 2);
   ctx.fill();
   ctx.restore();
-
-  // Snake
+// Snake
   snake.forEach((seg, i) => {
     const isHead = i === 0;
-    const t      = i / (snake.length - 1 || 1);
-    const g      = Math.round(255 * (1 - t * 0.65));
-    const color  = isHead ? '#39ff14' : `rgb(0, ${g}, 0)`;
+    const t = i / (snake.length - 1 || 1);
+
+    const g = Math.round(255 * (1 - t * 0.65));
+    const color = isHead ? '#39ff14' : `rgb(0, ${g}, 0)`;
+
     const padding = isHead ? 1 : Math.min(3, 1 + t * 2);
-    const x       = seg.x * CELL + padding;
-    const y       = seg.y * CELL + padding;
-    const size    = CELL - padding * 2;
+    const x = seg.x * CELL + padding;
+    const y = seg.y * CELL + padding;
+    const size = CELL - padding * 2;
 
     ctx.save();
     if (isHead) {
       ctx.shadowColor = '#39ff14';
-      ctx.shadowBlur  = 12;
+      ctx.shadowBlur = 12;
     }
     ctx.fillStyle = color;
     ctx.fillRect(x, y, size, size);
@@ -177,10 +182,10 @@ function draw() {
       ctx.fillStyle = '#050a05';
       const eyeSize = 3;
       let e1, e2;
-      if      (dir.x ===  1) { e1 = [x + size - 5, y + 3];         e2 = [x + size - 5, y + size - 6]; }
-      else if (dir.x === -1) { e1 = [x + 2,         y + 3];         e2 = [x + 2,         y + size - 6]; }
-      else if (dir.y === -1) { e1 = [x + 3,         y + 2];         e2 = [x + size - 6,  y + 2]; }
-      else                   { e1 = [x + 3,         y + size - 5];  e2 = [x + size - 6,  y + size - 5]; }
+      if (dir.x === 1) { e1 = [x + size - 5, y + 3]; e2 = [x + size - 5, y + size - 6]; }
+      else if (dir.x === -1) { e1 = [x + 2, y + 3]; e2 = [x + 2, y + size - 6]; }
+      else if (dir.y === -1) { e1 = [x + 3, y + 2]; e2 = [x + size - 6, y + 2]; }
+      else { e1 = [x + 3, y + size - 5]; e2 = [x + size - 6, y + size - 5]; }
       ctx.fillRect(e1[0], e1[1], eyeSize, eyeSize);
       ctx.fillRect(e2[0], e2[1], eyeSize, eyeSize);
     }
@@ -209,14 +214,19 @@ function tick() {
   }
 
   snake.unshift(head);
-
   // Food eaten
   if (head.x === food.x && head.y === food.y) {
     score += level * 10;
     if (score > highScore) highScore = score;
 
+    // Play EAT Sound Effect smoothly
+    if (eatSound) {
+      eatSound.currentTime = 0;
+      eatSound.play().catch(err => console.log("Audio play blocked by browser config", err));
+    }
+
     const foodsEaten = snake.length - 3;
-    const newLevel   = Math.floor(foodsEaten / 5) + 1;
+    const newLevel = Math.floor(foodsEaten / 5) + 1;
     if (newLevel !== level) {
       level = newLevel;
       speed = Math.max(60, 150 - (level - 1) * 15);
@@ -233,39 +243,26 @@ function tick() {
   }
 }
 
-// ─── Main RAF loop — smooth rendering, time-stepped logic ─────────────────
-function gameLoop(timestamp) {
-  if (!running || paused) {
-    // Redraw each frame even when paused so food pulse still animates
-    if (!isGameOver) draw();
-    rafId = requestAnimationFrame(gameLoop);
-    return;
+// Single Game Loop Engine using high precision requestAnimationFrame (Fixes choppy lag)
+function gameEngine(timestamp) {
+  if (!lastTickTime) lastTickTime = timestamp;
+
+  if (running && !paused) {
+    const elapsed = timestamp - lastTickTime;
+    if (elapsed >= speed) {
+      tick();
+      lastTickTime = timestamp;
+    }
+  } else {
+    lastTickTime = timestamp; // Keep synced while resting
   }
 
-  const delta = timestamp - lastTickTime;
-  lastTickTime = timestamp;
-
-  // Guard against huge deltas (tab was backgrounded, etc.)
-  accumulator += Math.min(delta, 200);
-
-  // Run logic ticks for however many intervals have elapsed
-  while (accumulator >= speed) {
-    accumulator -= speed;
-    if (running && !isGameOver) tick();
-    if (!running || isGameOver) break; // tick() may have called endGame()
-  }
-
+  // Draw continuously for buttery smooth animations
   if (!isGameOver) {
     draw();
-    rafId = requestAnimationFrame(gameLoop);
   }
-}
 
-function startLoop() {
-  if (rafId) cancelAnimationFrame(rafId);
-  lastTickTime = performance.now();
-  accumulator  = 0;
-  rafId = requestAnimationFrame(gameLoop);
+  requestAnimationFrame(gameEngine);
 }
 
 function stopLoop() {
@@ -280,70 +277,60 @@ function startGame() {
   document.getElementById('gameOverOverlay').classList.add('hidden');
 
   isGameOver = false;
+  initGame();
+  running = true;
+  lastTickTime = 0;
 
   document.removeEventListener('keydown', handleKeyDown);
   document.addEventListener('keydown', handleKeyDown);
-
-  initGame();
-  running = true;
-  draw();
-  startLoop();
 }
 
 // ─── Game-over flash — uses RAF, not a competing setInterval ──────────────
 function endGame() {
   finalScore = score;
-  running    = false;
+  running = false;
   isGameOver = true;
-  stopLoop();
 
   document.removeEventListener('keydown', handleKeyDown);
 
-  soundDie();
-
-  // Capture the final snake frame once
-  draw();
-
-  let flashes   = 0;
-  const FLASHES = 6;
-
-  function flashFrame() {
-    if (flashes < FLASHES) {
-      // Alternate: red overlay / fully transparent (just redraw base)
-      if (flashes % 2 === 0) {
-        ctx.fillStyle = 'rgba(255, 0, 0, 0.20)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-      } else {
-        draw(); // clean frame between flashes
-      }
-      flashes++;
-      setTimeout(flashFrame, 80); // 80 ms between each flash step
-    } else {
-      // Done flashing — show final state and overlay
-      draw();
-      document.getElementById('finalScore').textContent =
-        `SCORE: ${finalScore}  |  BEST: ${highScore}`;
-      document.getElementById('gameOverOverlay').classList.remove('hidden');
-    }
+  // Play GAME OVER sound asset
+  if (gameOverSound) {
+    gameOverSound.currentTime = 0;
+    gameOverSound.play().catch(err => console.log("Audio play blocked", err));
   }
 
-  flashFrame();
+  let flashes = 0;
+  const flashInterval = setInterval(() => {
+    flashes++;
+    if (flashes % 2 === 1) {
+      ctx.fillStyle = 'rgba(255, 0, 0, 0.4)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    } else {
+      draw();
+    }
+
+    if (flashes >= 6) {
+      clearInterval(flashInterval);
+      draw();
+      document.getElementById('finalScore').textContent = `SCORE: ${finalScore}  |  BEST: ${highScore}`;
+      document.getElementById('gameOverOverlay').classList.remove('hidden');
+    }
+  }, 120); // Steady interval rate clears excessive flickering
 }
-// ──────────────────────────────────────────────────────────────────────────
 
 const KEY_MAP = {
-  ArrowUp:    { x:  0, y: -1 },
-  ArrowDown:  { x:  0, y:  1 },
-  ArrowLeft:  { x: -1, y:  0 },
-  ArrowRight: { x:  1, y:  0 },
-  w: { x:  0, y: -1 },
-  s: { x:  0, y:  1 },
-  a: { x: -1, y:  0 },
-  d: { x:  1, y:  0 },
-  W: { x:  0, y: -1 },
-  S: { x:  0, y:  1 },
-  A: { x: -1, y:  0 },
-  D: { x:  1, y:  0 },
+  ArrowUp: { x: 0, y: -1 },
+  ArrowDown: { x: 0, y: 1 },
+  ArrowLeft: { x: -1, y: 0 },
+  ArrowRight: { x: 1, y: 0 },
+  w: { x: 0, y: -1 },
+  s: { x: 0, y: 1 },
+  a: { x: -1, y: 0 },
+  d: { x: 1, y: 0 },
+  W: { x: 0, y: -1 },
+  S: { x: 0, y: 1 },
+  A: { x: -1, y: 0 },
+  D: { x: 1, y: 0 },
 };
 
 function handleKeyDown(e) {
@@ -389,12 +376,12 @@ function animateIdle() {
 }
 
 initGame();
-animateIdle();
+requestAnimationFrame(gameEngine);
 
 // ========== MOBILE TOUCH CONTROLS ==========
-(function() {
+(function () {
   const mobileCanvas = document.getElementById('gameCanvas');
-  const controls     = document.getElementById('mobileControls');
+  const controls = document.getElementById('mobileControls');
 
   if (!controls) return;
 
@@ -409,17 +396,19 @@ animateIdle();
     lastTouch = now;
 
     const dirMap = {
-      up:    { x:  0, y: -1 },
-      down:  { x:  0, y:  1 },
-      left:  { x: -1, y:  0 },
-      right: { x:  1, y:  0 },
+      up: { x: 0, y: -1 },
+      down: { x: 0, y: 1 },
+      left: { x: -1, y: 0 },
+      right: { x: 1, y: 0 }
     };
 
     const newDir = dirMap[direction];
     if (!newDir) return;
 
     if (typeof running !== 'undefined' && !running) {
-      if (typeof startGame === 'function') startGame();
+      if (typeof startGame === 'function') {
+        startGame();
+      }
       if (typeof nextDir !== 'undefined' && typeof dir !== 'undefined') {
         if (newDir.x !== -dir.x || newDir.y !== -dir.y) nextDir = newDir;
       }
@@ -451,24 +440,31 @@ animateIdle();
       startY = e.touches[0].clientY;
     }, { passive: false });
 
-    mobileCanvas.addEventListener('touchend', e => {
+    mobileCanvas.addEventListener('touchend', (e) => {
       e.preventDefault();
       const dx = e.changedTouches[0].clientX - startX;
       const dy = e.changedTouches[0].clientY - startY;
+
       if (Math.abs(dx) < 30 && Math.abs(dy) < 30) return;
-      setDir(Math.abs(dx) > Math.abs(dy)
+
+      const swipe = Math.abs(dx) > Math.abs(dy)
         ? (dx > 0 ? 'right' : 'left')
-        : (dy > 0 ? 'down'  : 'up'));
+        : (dy > 0 ? 'down' : 'up');
+
+      setDir(swipe);
     });
 
-    mobileCanvas.addEventListener('contextmenu', e => e.preventDefault());
+    mobileCanvas.addEventListener('contextmenu', (e) => e.preventDefault());
   }
 
-  // Auto show/hide
   const isMobile = () => window.innerWidth <= 768 || 'ontouchstart' in window;
-  const toggle   = () => { controls.style.display = isMobile() ? 'flex' : 'none'; };
+  const toggle = () => {
+    if (controls) {
+      controls.style.display = isMobile() ? 'flex' : 'none';
+    }
+  };
+
   toggle();
   window.addEventListener('resize', toggle);
-
-  console.log(' Mobile touch controls loaded');
+  console.log('✅ Mobile touch controls loaded');
 })();

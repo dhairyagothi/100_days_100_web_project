@@ -7,30 +7,48 @@
     <link rel="stylesheet" href="captcha.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="icon" href="../favv.png" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
     <div class="container">
-        <header>CAPTCHA</header>
-        <p>Select CAPTCHA type:</p>
-        <div class="captcha-types">
-            <button class="type-btn active" data-type="text">Text</button>
-            <button class="type-btn active" data-type="image">Image</button>
-            <button class="type-btn active" data-type="audio">Audio</button>
-            <button class="type-btn active" data-type="math">Math</button>
+        <div class="hero">
+            <span class="eyebrow">Interactive Security Check</span>
+            <header>CAPTCHA Challenge</header>
+            <p class="intro">Choose a CAPTCHA mode, solve the challenge, and submit to verify you're human.</p>
         </div>
-        <div id="captchaContainer"></div>
-        <div class="captcha-input-group">
-            <div class="textcaptcha">
-                <input type="text" placeholder="Enter CAPTCHA">
-            </div>
-            <button class="refresh">↻</button>
+
+        <div class="field">
+            <label for="captchaType">Select CAPTCHA type</label>
+            <select id="captchaType">
+                <option value="text">Text</option>
+                <option value="image">Image</option>
+                <option value="audio">Audio</option>
+                <option value="math">Math</option>
+            </select>
         </div>
-        <p class="result"></p>
-        <div class="button">
-            <button>Submit CAPTCHA</button>
+
+        <div class="field voice-field hidden" id="voiceField">
+            <label for="voiceSelect">Select voice</label>
+            <select id="voiceSelect"></select>
         </div>
+
+        <div id="captchaContainer" aria-live="polite"></div>
+
+        <div class="field textcaptcha">
+            <label for="captchaInput">Your answer</label>
+            <input id="captchaInput" type="text" placeholder="Enter CAPTCHA">
+        </div>
+
+        <div class="actions">
+            <button class="refresh" aria-label="Refresh CAPTCHA">↻</button>
+            <button class="submit" type="button">Submit CAPTCHA</button>
+        </div>
+
+        <p class="result" aria-live="assertive"></p>
     </div>
     <script src="captcha.js"></script>
 </body> 

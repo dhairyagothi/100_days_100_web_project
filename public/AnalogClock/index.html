@@ -1,8 +1,5 @@
-<!doctype html>
-<html lang="en" data-theme="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!DOCTYPE html>
+<html lang="en">
 
     <title>Chronos+ Premium Dashboard</title>
 
@@ -154,10 +151,40 @@
             </section>
         </main>
 
+        <!-- World Timezone Map -->
+        <section class="neumorphic-plate timezone-map-section" aria-label="Interactive Timezone Map">
+            <div class="map-header">
+                <h2>Interactive World Timezone Map</h2>
+                <p class="subtitle">Hover over zones to view offsets, click to pin analog clocks dynamically</p>
+            </div>
+            
+            <div class="map-container">
+                <div class="map-scroll-container">
+                    <div id="timezone-map-wrapper">
+                        <!-- SVG map loaded dynamically -->
+                    </div>
+                </div>
+                
+                <!-- Premium Glassmorphic Tooltip -->
+                <div id="map-tooltip" class="map-tooltip" style="display: none;">
+                    <div class="tooltip-header">
+                        <h4 id="tooltip-city">City Name</h4>
+                        <span id="tooltip-offset" class="tooltip-offset">UTC+0</span>
+                    </div>
+                    <div id="tooltip-timezone" class="tooltip-tz-id">Timezone ID</div>
+                    <div class="tooltip-time-row">
+                        <span id="tooltip-time" class="tooltip-time">00:00:00</span>
+                        <span id="tooltip-date" class="tooltip-date">Thu, May 28</span>
+                    </div>
+                    <button id="tooltip-pin-btn" class="btn btn-primary tooltip-btn">Pin to Dashboard</button>
+                </div>
+            </div>
+        </section>
+
         <!-- World Clocks Row -->
         <section class="world-clocks-section" aria-label="World Location Clocks">
             <h2>World Clocks</h2>
-            <div class="world-clocks-grid">
+            <div id="worldClocksGrid" class="world-clocks-grid">
                 
                 <!-- New York Clock Card with NYC skyline banner -->
                 <div class="neumorphic-plate world-clock-card">
@@ -245,14 +272,4 @@
     <!-- AUDIO -->
     <audio id="timerSound" src="timer.mp3" preload="auto"></audio>
 
-    <!-- LIBRARIES -->
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- MAIN JS -->
-    <script src="index.js"></script>
-  </body>
 </html>
