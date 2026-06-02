@@ -2584,7 +2584,6 @@
   "techStack": ["javascript", "css", "html", "electron"],
   "difficulty": "intermediate"
   },
-
 {
     "projectNo": 204,
     "projectName": "Movie Search App",
@@ -2598,7 +2597,7 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/movie-search-app/index.html"
-  },
+},
   {
   "projectNo": 205,
   "projectName": "Escape the Matrix Game",
