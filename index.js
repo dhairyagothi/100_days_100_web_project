@@ -367,6 +367,7 @@ function removeTechFilter(tech) {
   techStackFilters = techStackFilters.filter((t) => t !== tech);
   updateTechFilterDisplay();
   renderGrid();
+  
 }
 
 /**
@@ -613,6 +614,97 @@ let sortOption = "default";
 let techStackFilter = "all";
 let difficultyFilter = "all";
 
+const RECENT_PROJECTS_KEY = 'recentlyViewedProjects';
+const RECENT_PROJECTS_LIMIT = 6;
+
+function getRecentlyViewedProjects() {
+  return JSON.parse(localStorage.getItem(RECENT_PROJECTS_KEY)) || [];
+}
+
+function saveRecentlyViewedProjects(projects) {
+  localStorage.setItem(RECENT_PROJECTS_KEY, JSON.stringify(projects));
+}
+
+function addRecentlyViewed(project) {
+  const [day] = project;
+
+  let recentProjects = getRecentlyViewedProjects();
+
+  // Remove duplicates
+  recentProjects = recentProjects.filter(
+    (item) => item[0] !== day
+  );
+
+  // Add latest project at top
+  recentProjects.unshift(project);
+
+  // Limit recent items
+  recentProjects = recentProjects.slice(0, RECENT_PROJECTS_LIMIT);
+
+  saveRecentlyViewedProjects(recentProjects);
+
+  renderRecentlyViewedProjects();
+}
+
+function clearRecentlyViewedProjects() {
+  localStorage.removeItem(RECENT_PROJECTS_KEY);
+  renderRecentlyViewedProjects();
+}
+
+function renderRecentlyViewedProjects() {
+  const recentGrid = document.getElementById('recentGrid');
+  const recentSection = recentGrid?.closest('.projects-section');
+
+  if (!recentGrid || !recentSection) return;
+
+  const recentProjects = getRecentlyViewedProjects();
+
+  if (recentProjects.length === 0) {
+    recentSection.style.display = 'none';
+    return;
+  }
+
+  recentSection.style.display = 'block';
+  recentGrid.innerHTML = '';
+
+  recentProjects.forEach(([day, name, url, tags]) => {
+    const category = getCategoryFromTags(tags, name);
+    const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter(Boolean) : tags;
+    const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
+    const sourceUrl = getSourceUrl(url);
+
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    card.style.cursor = 'pointer';
+    card.onclick = () => window.open(url.trim(), '_blank');
+
+    card.innerHTML = `
+      <div class="card-meta">
+        <span class="card-day">${day}</span>
+        <span class="card-category">${category}</span>
+      </div>
+      <div class="card-name">${name}</div>
+      <div class="card-tags">${tagsHTML}</div>
+      <div class="card-footer">
+        <div class="card-actions-left">
+          <a href="${url.trim()}" target="_blank" class="card-link" rel="noopener noreferrer" onclick="event.stopPropagation();">
+            Demo <i class="fas fa-arrow-right"></i>
+          </a>
+          <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation();">
+            <i class="fab fa-github"></i> Code
+          </a>
+        </div>
+      </div>
+    `;
+
+    recentGrid.appendChild(card);
+  });
+}
+
+function renderGrid() {
+  const grid = document.getElementById('projectGrid');
+  const noResults = document.getElementById('noResults');
+  if (!grid) return;
 function syncStateToURL() {
   const url = new URL(window.location);
 
@@ -754,6 +846,19 @@ function renderGrid() {
 
   pageItems.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
+    const card = document.createElement('div');
+
+    // FIX PART 1: Add a pointer cursor so users know it's clickable
+    card.className = 'project-card';
+    card.style.cursor = 'pointer';
+
+    // FIX PART 2: Make the whole card clickable to open the demo in a new tab
+    card.onclick = () => {
+      addRecentlyViewed([day, name, url, tags]);
+      window.open(url.trim(), '_blank');
+    };
+
+    const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const card = document.createElement("div");
     const isBookmarked = bookmarkedProjects.some(
       (item) => normalizeProjectEntry(item).day === day,
@@ -768,6 +873,35 @@ function renderGrid() {
       showDescription: true,
     });
 
+    // FIX PART 3: Add onclick="event.stopPropagation()" to the Demo, Code, and Bookmark buttons
+    // This stops the click from "bubbling up" to the main card, preventing double-opening!
+    card.innerHTML = `
+            <div class="card-meta">
+                <span class="card-day">${day}</span>
+                <span class="card-category">${category}</span>
+            </div>
+            <div class="card-name">${name}</div>
+            <div class="card-tags">${tagsHTML}</div>
+            <div class="card-footer">
+                <div class="card-actions-left">
+                     <a href="${url.trim()}" 
+                          target="_blank" 
+                          class="card-link open-project" 
+                          data-id="${day}" 
+                          rel="noopener noreferrer"
+                          onclick="event.stopPropagation(); addRecentlyViewed(['${day}', '${name}', '${url}', ${JSON.stringify(tags).replace(/"/g, '&quot;')}]);">
+                          Demo <i class="fas fa-arrow-right"></i>
+                      </a>
+                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
+                        <i class="fab fa-github"></i> Code
+                    </a>
+                </div>
+                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
+                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+                </button>
+            </div>
+        `;
+    card.className = sourceOnly ? 'project-card source-only' : 'project-card';
     card.className = sourceOnly
       ? "project-card source-only visible"
       : "project-card visible";
@@ -1681,6 +1815,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     syncProjectCounts();
 
+  if (hasProjectGrid()) {
+    renderGrid();
+    renderRecentlyViewedProjects();
+    renderBookmarks();
     if (hasProjectGrid()) {
       loadBookmarksFromURL();
 
