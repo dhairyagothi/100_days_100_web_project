@@ -525,6 +525,14 @@ const CATEGORY_LABEL = {
 /* ============================================================
    GITHUB REPO STATS
    ============================================================ */
+// sessionStorage key and TTL for the GitHub stats cache.
+// Stats are cached for 5 minutes per session so page refreshes and
+// navigation between sub-pages do not consume two additional API calls
+// each time. GitHub's unauthenticated rate limit is 60 req/hr/IP;
+// without a cache every page load burns two of those credits.
+const STATS_CACHE_KEY = "repoStatsCache";
+const STATS_CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
 async function fetchRepoStats() {
   const set = (id, val) => {
     const el = document.getElementById(id);
@@ -537,6 +545,23 @@ async function fetchRepoStats() {
     set("issueCount", "N/A");
     set("prCount", "N/A");
   };
+
+  // Serve from cache if the stored stats are still within the TTL.
+  try {
+    const cached = sessionStorage.getItem(STATS_CACHE_KEY);
+    if (cached) {
+      const { ts, stats } = JSON.parse(cached);
+      if (Date.now() - ts < STATS_CACHE_TTL_MS) {
+        set("starCount", stats.starCount);
+        set("forkCount", stats.forkCount);
+        set("issueCount", stats.issueCount);
+        set("prCount", stats.prCount);
+        return;
+      }
+    }
+  } catch (_) {
+    // Ignore corrupt or unavailable sessionStorage; fall through to fetch.
+  }
 
   try {
     // Optional loading state
@@ -561,13 +586,30 @@ async function fetchRepoStats() {
     const repo = await repoRes.json();
     const prs = await prRes.json();
 
-    set("starCount", repo.stargazers_count.toLocaleString());
-    set("forkCount", repo.forks_count.toLocaleString());
-    set(
-      "issueCount",
-      (repo.open_issues_count - prs.total_count).toLocaleString(),
-    );
-    set("prCount", prs.total_count.toLocaleString());
+    const stats = {
+      starCount: repo.stargazers_count.toLocaleString(),
+      forkCount: repo.forks_count.toLocaleString(),
+      issueCount: Math.max(
+        0,
+        repo.open_issues_count - prs.total_count,
+      ).toLocaleString(),
+      prCount: prs.total_count.toLocaleString(),
+    };
+
+    set("starCount", stats.starCount);
+    set("forkCount", stats.forkCount);
+    set("issueCount", stats.issueCount);
+    set("prCount", stats.prCount);
+
+    // Persist to sessionStorage for subsequent loads within this session.
+    try {
+      sessionStorage.setItem(
+        STATS_CACHE_KEY,
+        JSON.stringify({ ts: Date.now(), stats }),
+      );
+    } catch (_) {
+      // Quota exceeded or private browsing — cache miss on next load is fine.
+    }
   } catch (e) {
     console.warn("GitHub stats unavailable:", e.message);
 
