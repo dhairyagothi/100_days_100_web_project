@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -7,8 +8,12 @@
   <title>SNAKE</title>
   <link rel="stylesheet" href="./style.css">
 </head>
+
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+  <!-- Cleaned up home button link styling -->
+  <a href="/" class="project-back-button"
+    style="position:fixed; left:18px; top:18px; padding:8px 12px; border-radius:8px; background:white; color:#000000; text-decoration:none; z-index:9999; font-weight:700; font-family:Inter, system-ui, sans-serif; box-shadow:0 8px 20px rgba(0, 0, 0, 0.3);">←
+    Back to Home</a>
 
   <div class="title">SNAKE</div>
 
@@ -49,7 +54,7 @@
       <div class="game-over-score" id="finalScore"></div>
       <button class="btn" id="restartBtn"><span>PLAY AGAIN</span></button>
     </div>
-  </div> 
+  </div>
 
   <!-- ========== MOBILE TOUCH CONTROLS with Accessibility ========== -->
   <div class="mobile-controls" id="mobileControls">
@@ -65,7 +70,13 @@
     </div>
   </div>
 
+  <!-- ========== AUDIO ASSETS ========== -->
+  <!-- Added audio elements so your JavaScript code can find and play them -->
+  <audio id="eatSound" src="./assets/eat.mp3" preload="auto"></audio>
+  <audio id="gameOverSound" src="./assets/gameover.mp3" preload="auto"></audio>
+
   <!-- ONLY ONE script tag at the bottom -->
   <script src="./script.js"></script>
 </body>
+
 </html>
