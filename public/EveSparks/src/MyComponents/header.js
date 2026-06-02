@@ -16,7 +16,7 @@ function Header({ toggleTheme, theme }) {
         <>
             <header>
 
-                <div class="header-top">
+                <div className="header-top">
 
                     <div class="container">
 
