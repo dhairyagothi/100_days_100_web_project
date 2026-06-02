@@ -720,7 +720,7 @@ function readStateFromURL() {
   matchesDifficulty &&
   matchesTechStack(tags)
 );
-  })
+  
 function renderGrid() {
   const grid = document.getElementById("projectGrid");
   const noResults = document.getElementById("noResults");

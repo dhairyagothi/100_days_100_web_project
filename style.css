@@ -3343,8 +3343,7 @@ body.custom-cursor-active .cursor-ring {
     display: block;
     padding: 0.5rem 0;
   }
-  }
-}
+  
 .card-thumbnail {
   width: 100%;
   height: 130px; /* reduced from 180px */
