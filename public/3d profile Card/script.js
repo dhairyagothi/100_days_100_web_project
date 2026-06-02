@@ -1,247 +1,458 @@
+const STORAGE_KEY = 'profile-card-generator-state';
 
-        let btn = document.querySelector(".darkmode");
-        let lightbtn = document.querySelector(".lightmode");
-        let currmode = "light";
-        function changeMode() {
-            if (currmode == "light") {
-                currmode = "dark";
-                //    document.querySelector(".lightmode").style.display="block";
-                document.querySelector(".container1").style.backgroundColor = "grey";
-                document.querySelector(".container2").style.backgroundColor = "black";
-                document.querySelector(".image").style.backgroundColor = "grey";
-                if (window.matchMedia("(max-width:1098px)").matches) {
-                    document.querySelector(".image").style.background = "linear-gradient(#222,#000)";
-                }
-                document.querySelector(".heading").style.color = "white";
-                document.querySelector(".info").style.color = "white";
-                document.querySelector(".btn").style.color = "black";
-                document.querySelector(".git").style.filter = "invert(1)";
-                document.querySelector(".leet").style.filter = "invert(1)";
-                btn.style.display = "none";
-                lightbtn.style.display = "block";
+const defaults = {
+  name: 'Krishna Bhati',
+  role: 'UI/UX Designer',
+  bio: 'Hardworking and reliable UI/UX designer focused on going above and beyond to support teams and serve customers.',
+  image: 'logo/Adobe Express - file.png',
+};
 
-            } else {
-                currmode = "light";
-                lightbtn.style.display = "none";
-                btn.style.display = "block";
-                // document.querySelector(".lightmode").style.display="none";
-                document.querySelector(".container1").style.backgroundColor = "#f2d5ed";
-                document.querySelector(".container2").style.backgroundColor = "#f5e0f2";
-                document.querySelector(".image").style.backgroundColor = "#f2d5ed";
-                if (window.matchMedia("(max-width:1098px)").matches) {
-                    document.querySelector(".image").style.background = "linear-gradient(#9ad7ff 0%, #fecfef 99%, #fecfef 100%)";
-                }
-                document.querySelector(".heading").style.color = "black";
-                document.querySelector(".info").style.color = "black";
-                document.querySelector(".btn").style.color = "white";
-                document.querySelector(".git").style.filter = "invert(0)";
-                document.querySelector(".leet").style.filter = "invert(0)";
+const initialFormState = {
+  name: '',
+  role: '',
+  bio: '',
+  image: '',
+  imageUrl: '',
+  github: '',
+  linkedin: '',
+  twitter: '',
+  instagram: '',
+  theme: '#2f80c9',
+  darkMode: true,
+  layout: 'classic',
+  uploadedImage: '',
+};
 
+const elements = {
+  form: document.querySelector('#profileForm'),
+  name: document.querySelector('#nameInput'),
+  role: document.querySelector('#roleInput'),
+  bio: document.querySelector('#bioInput'),
+  imageUrl: document.querySelector('#imageUrlInput'),
+  imageFile: document.querySelector('#imageFileInput'),
+  github: document.querySelector('#githubInput'),
+  linkedin: document.querySelector('#linkedinInput'),
+  twitter: document.querySelector('#twitterInput'),
+  instagram: document.querySelector('#instagramInput'),
+  theme: document.querySelector('#themeInput'),
+  darkMode: document.querySelector('#darkModeInput'),
+  modeToggle: document.querySelector('#modeToggle'),
+  modeToggleText: document.querySelector('#modeToggleText'),
+  reset: document.querySelector('#resetButton'),
+  download: document.querySelector('#downloadButton'),
+  validation: document.querySelector('#validationMessage'),
+  card: document.querySelector('#profileCard'),
+  previewName: document.querySelector('#previewName'),
+  previewRole: document.querySelector('#previewRole'),
+  previewBio: document.querySelector('#previewBio'),
+  previewImage: document.querySelector('#previewImage'),
+  socialLinks: document.querySelector('#socialLinks'),
+};
 
-            }
-        }
-        btn.addEventListener("click", changeMode);
-        lightbtn.addEventListener("click", changeMode);
+let state = loadState() || { ...defaults };
 
+function loadState() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    return { ...initialFormState, ...saved };
+  } catch (error) {
+    return { ...initialFormState };
+  }
+}
 
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (error) {
+    elements.validation.textContent = 'This image is too large to save locally, but the live preview still works.';
+  }
+}
 
-// dark/light mode
+function hydrateForm() {
+  elements.name.value = state.name;
+  elements.role.value = state.role;
+  elements.bio.value = state.bio;
+  elements.imageUrl.value = state.imageUrl;
+  elements.github.value = state.github;
+  elements.linkedin.value = state.linkedin;
+  elements.twitter.value = state.twitter;
+  elements.instagram.value = state.instagram;
+  elements.theme.value = state.theme;
+  elements.darkMode.checked = state.darkMode;
+  const selectedLayout = document.querySelector(`input[name="layout"][value="${state.layout}"]`);
+  (selectedLayout || document.querySelector('input[name="layout"][value="classic"]')).checked = true;
+}
 
-// SELECT BUTTON
-const modeBtn = document.querySelector(".mode-btn");
-// TRACK MODE
-let darkMode = false;
-// CLICK EVENT
-modeBtn.addEventListener("click", () => {
-    darkMode = !darkMode;
-    // DARK MODE
-    if(darkMode){
-        document.body.style.background = "#111827";
-        document.querySelector(".navbar").style.background = "#1f2937";
-        document.querySelector(".navbar").style.borderBottom =
-        "1px solid #374151";
-        document.querySelector(".logo h2").style.color = "#ffffff";
-        document.querySelector(".logo p").style.color = "#d1d5db";
-        document.querySelector(".theme-section span").style.color =
-        "#ffffff";
-        modeBtn.style.background = "#374151";
-        modeBtn.style.color = "#ffffff";
-        modeBtn.innerHTML = "☀";
+function getDisplayValue(value, fallback) {
+  return value.trim() || fallback;
+}
+
+function setText(element, value, fallback) {
+  element.textContent = getDisplayValue(value, fallback);
+}
+
+const SOCIAL_PLATFORMS = {
+  github: { base: 'https://github.com/', domain: 'github.com' },
+  linkedin: { base: 'https://linkedin.com/in/', domain: 'linkedin.com' },
+  twitter: { base: 'https://x.com/', domain: 'x.com' },
+  instagram: { base: 'https://instagram.com/', domain: 'instagram.com' },
+};
+
+function getAbsoluteSocialUrl(platform, value) {
+  const cleaned = value.trim();
+  if (!cleaned) return '';
+  
+  if (/^https?:\/\//i.test(cleaned)) {
+    return cleaned;
+  }
+  
+  const info = SOCIAL_PLATFORMS[platform];
+  if (!info) return cleaned;
+  
+  if (cleaned.toLowerCase().includes(info.domain)) {
+    return `https://${cleaned.replace(/^www\./i, '')}`;
+  }
+  
+  const username = cleaned.replace(/^@/, '');
+  
+  if (platform === 'linkedin' && username.startsWith('in/')) {
+    return `https://linkedin.com/${username}`;
+  }
+  
+  return `${info.base}${username}`;
+}
+
+function isValidUrl(value) {
+  if (!value.trim()) {
+    return true;
+  }
+
+  try {
+    const url = new URL(value);
+    return url.protocol === 'http:' || url.protocol === 'https:';
+  } catch (error) {
+    return false;
+  }
+}
+
+function updateSocialLinks() {
+  elements.socialLinks.querySelectorAll('a').forEach((link) => {
+    const platform = link.dataset.platform;
+    const inputValue = state[platform];
+    const absoluteUrl = getAbsoluteSocialUrl(platform, inputValue);
+    const isActive = absoluteUrl && isValidUrl(absoluteUrl);
+
+    link.classList.toggle('is-hidden', !isActive);
+    link.href = isActive ? absoluteUrl : '#';
+    link.target = isActive ? '_blank' : '';
+    link.rel = isActive ? 'noopener noreferrer' : '';
+  });
+}
+
+function updateValidation() {
+  const invalidFields = [];
+  
+  if (elements.imageUrl.value.trim() && !isValidUrl(elements.imageUrl.value)) {
+    invalidFields.push(elements.imageUrl);
+  }
+  
+  const socialPlatforms = ['github', 'linkedin', 'twitter', 'instagram'];
+  socialPlatforms.forEach((platform) => {
+    const field = elements[platform];
+    if (field.value.trim()) {
+      const absoluteUrl = getAbsoluteSocialUrl(platform, field.value);
+      if (!isValidUrl(absoluteUrl)) {
+        invalidFields.push(field);
+      }
     }
-    // LIGHT MODE
-    else{
-        document.body.style.background = "#f8f5fb";
-        document.querySelector(".navbar").style.background = "#ffffff";
-        document.querySelector(".navbar").style.borderBottom =
-        "1px solid #ececec";
-        document.querySelector(".logo h2").style.color = "#111827";
-        document.querySelector(".logo p").style.color = "#6b7280";
-        document.querySelector(".theme-section span").style.color =
-        "#374151";
-        modeBtn.style.background = "#f3f4f6";
-        modeBtn.style.color = "#000000";
-    modeBtn.innerHTML = "☾";
+  });
+
+  const urlFields = [
+    elements.imageUrl,
+    elements.github,
+    elements.linkedin,
+    elements.twitter,
+    elements.instagram,
+  ];
+  
+  urlFields.forEach((field) => {
+    field.classList.toggle('invalid', invalidFields.includes(field));
+  });
+
+  elements.validation.textContent = invalidFields.length
+    ? 'Please use complete links or valid usernames/handles.'
+    : '';
+}
+
+function updateThemeColor() {
+  const theme = state.theme || defaults.theme;
+  const soft = mixColors(theme, '#ffffff', 0.18);
+  const muted = mixColors(theme, '#ffffff', 0.28);
+  const darkTheme = mixColors(theme, '#111522', 0.3);
+  const darkCard = mixColors(theme, '#111522', 0.2);
+  const rgb = hexToRgb(theme);
+
+  // Compute high contrast theme color for card text elements
+  const contrastTheme = getContrastColor(theme, state.darkMode);
+
+  document.documentElement.style.setProperty('--theme', theme);
+  document.documentElement.style.setProperty('--theme-text', contrastTheme);
+  document.documentElement.style.setProperty('--theme-soft', soft);
+  document.documentElement.style.setProperty('--theme-muted', muted);
+  document.documentElement.style.setProperty('--dark-theme-bg', darkTheme);
+  document.documentElement.style.setProperty('--dark-card-bg', darkCard);
+  document.documentElement.style.setProperty(
+    '--theme-focus',
+    `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.18)`,
+  );
+  document.documentElement.style.setProperty(
+    '--theme-shadow',
+    `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.34)`,
+  );
+}
+
+function hexToRgb(hex) {
+  const normalized = hex.replace('#', '');
+  const value =
+    normalized.length === 3
+      ? normalized
+          .split('')
+          .map((character) => character + character)
+          .join('')
+      : normalized;
+
+  const number = Number.parseInt(value, 16);
+  return {
+    r: (number >> 16) & 255,
+    g: (number >> 8) & 255,
+    b: number & 255,
+  };
+}
+
+function mixColors(color, base, amount) {
+  const foreground = hexToRgb(color);
+  const background = hexToRgb(base);
+  const channel = (key) =>
+    Math.round(foreground[key] * amount + background[key] * (1 - amount));
+
+  return `rgb(${channel('r')}, ${channel('g')}, ${channel('b')})`;
+}
+
+function getColorBrightness(hex) {
+  const rgb = hexToRgb(hex);
+  return (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
+}
+
+function getContrastColor(themeHex, isDarkMode) {
+  const brightness = getColorBrightness(themeHex);
+  
+  if (isDarkMode) {
+    if (brightness < 120) {
+      return mixColors(themeHex, '#ffffff', 0.65);
     }
-});
+  } else {
+    if (brightness > 160) {
+      return mixColors(themeHex, '#10131e', 0.65);
+    }
+  }
+  return themeHex;
+}
 
+function render() {
+  setText(elements.previewName, state.name, defaults.name);
+  setText(elements.previewRole, state.role, defaults.role);
+  setText(elements.previewBio, state.bio, defaults.bio);
+  elements.previewImage.src = state.image || defaults.image;
+  elements.previewImage.alt = `${getDisplayValue(state.name, defaults.name)} profile picture`;
 
-// feedback section
+  elements.card.className = `card layout-${state.layout}`;
+  document.body.classList.toggle('is-dark', state.darkMode);
+  elements.darkMode.checked = state.darkMode;
+  const modeAction = state.darkMode ? 'Switch to light mode' : 'Switch to dark mode';
+  elements.modeToggle.title = modeAction;
+  elements.modeToggle.setAttribute('aria-label', modeAction);
+  elements.modeToggleText.textContent = modeAction;
+  updateThemeColor();
+  updateSocialLinks();
+  updateValidation();
+  saveState();
+}
 
-const stars = document.querySelectorAll(".star");
-const textarea = document.querySelector("textarea");
-const submitBtn = document.querySelector(".submit-feedback-btn");
-let rating = 0;
-stars.forEach((star) => {
- star.addEventListener("click", () => {
-        
-        rating = star.dataset.value;
-        stars.forEach((s) => {
-            s.classList.remove("active");
-        });
+function syncStateFromInputs() {
+  state = {
+    ...state,
+    name: elements.name.value,
+    role: elements.role.value,
+    bio: elements.bio.value,
+    imageUrl: elements.imageUrl.value,
+    github: elements.github.value,
+    linkedin: elements.linkedin.value,
+    twitter: elements.twitter.value,
+    instagram: elements.instagram.value,
+    theme: elements.theme.value,
+    darkMode: elements.darkMode.checked,
+    layout: document.querySelector('input[name="layout"]:checked').value,
+  };
 
-        // ADD ACTIVE CLASS
-        for(let i = 0; i < rating; i++){
-            stars[i].classList.add("active");
+  if (state.imageUrl.trim() && isValidUrl(state.imageUrl)) {
+    state.image = state.imageUrl.trim();
+  } else {
+    state.image = state.uploadedImage || defaults.image;
+  }
+
+  render();
+}
+
+function compressAndLoadImage(file, callback) {
+  const reader = new FileReader();
+  reader.addEventListener('load', (e) => {
+    const img = new Image();
+    img.addEventListener('load', () => {
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+      
+      const maxDim = 400;
+      if (width > height) {
+        if (width > maxDim) {
+          height = Math.round((height * maxDim) / width);
+          width = maxDim;
         }
+      } else {
+        if (height > maxDim) {
+          width = Math.round((width * maxDim) / height);
+          height = maxDim;
+        }
+      }
+      
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      
+      // Compress to JPEG with 0.82 quality
+      const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+      callback(compressedDataUrl);
     });
-});
+    img.src = e.target.result;
+  });
+  reader.readAsDataURL(file);
+}
 
-// SUBMIT BUTTON
-submitBtn.addEventListener("click", () => {
-    if(rating == 0){
-        alert("Please select rating");
-        return;
-    }
-    // GET FEEDBACK
-    const feedback = textarea.value;
-    console.log("Rating:", rating);
-    console.log("Feedback:", feedback);
-  alert("Feedback Submitted ✨");
+function handleImageUpload(event) {
+  const file = event.target.files[0];
 
-    rating = 0;
-    textarea.value = "";
+  if (!file) {
+    return;
+  }
 
-    stars.forEach((star) => {
-        star.classList.remove("active");
+  compressAndLoadImage(file, (compressedDataUrl) => {
+    state.uploadedImage = compressedDataUrl;
+    state.image = compressedDataUrl;
+    state.imageUrl = '';
+    elements.imageUrl.value = '';
+    render();
+  });
+}
+
+async function downloadCard() {
+  if (typeof html2canvas !== 'function') {
+    elements.validation.textContent = 'Download is unavailable until the export library finishes loading.';
+    return;
+  }
+
+  elements.download.disabled = true;
+  elements.download.textContent = 'Preparing...';
+  document.body.classList.add('is-exporting');
+  elements.card.classList.add('is-exporting');
+
+  try {
+    await waitForImages(elements.card);
+    await nextFrame();
+
+    const canvas = await html2canvas(elements.card, {
+      backgroundColor: null,
+      scale: 2,
+      useCORS: true,
+      scrollX: 0,
+      scrollY: 0,
+      onclone: (clonedDocument) => {
+        clonedDocument.body.classList.add('is-exporting');
+        clonedDocument.querySelector('#profileCard')?.classList.add('is-exporting');
+      },
     });
+    const link = document.createElement('a');
+    link.download = `${getDisplayValue(state.name, 'profile').toLowerCase().replace(/\s+/g, '-')}-card.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  } catch (error) {
+    elements.validation.textContent = 'Unable to export this image. Try an uploaded image or a CORS-enabled image URL.';
+  } finally {
+    document.body.classList.remove('is-exporting');
+    elements.card.classList.remove('is-exporting');
+    elements.download.disabled = false;
+    elements.download.textContent = 'Download card';
+  }
+}
 
-});
-const colors = document.querySelectorAll(".color,.theme");
-const container1 = document.querySelector(".container1");
-const container2 = document.querySelector(".container2");
-const button = document.querySelector(".btn");
-colors.forEach((color) => {
+function nextFrame() {
+  return new Promise((resolve) => requestAnimationFrame(() => resolve()));
+}
 
-    color.addEventListener("click", () => {
+function waitForImages(container) {
+  const images = [...container.querySelectorAll('img')];
+  const pendingImages = images
+    .filter((image) => !image.complete)
+    .map(
+      (image) =>
+        new Promise((resolve) => {
+          image.addEventListener('load', resolve, { once: true });
+          image.addEventListener('error', resolve, { once: true });
+        }),
+    );
 
-        // PINK
-        if (color.classList.contains("pink")) {
-            container1.style.background = "#f2d5ed";
-            container2.style.background = "#f5e0f2";
-            button.style.background = "#BB8DB7";
-        }
+  return Promise.all(pendingImages);
+}
 
-        // BLUE
-        else if (color.classList.contains("blue")) {
-            container1.style.background = "#dbeafe";
-            container2.style.background = "#bfdbfe";
-            button.style.background = "#3b82f6";
-        }
+function handleCardTilt(event) {
+  if (document.body.classList.contains('is-exporting')) {
+    return;
+  }
 
-        // PURPLE
-        else if (color.classList.contains("purple")) {
-            container1.style.background = "#ede9fe";
-            container2.style.background = "#ddd6fe";
-            button.style.background = "#8b5cf6";
-        }
+  const rect = elements.card.getBoundingClientRect();
+  const x = (event.clientX - rect.left) / rect.width;
+  const y = (event.clientY - rect.top) / rect.height;
+  const rotateY = (x - 0.5) * 16;
+  const rotateX = (0.5 - y) * 14;
 
-        // GREEN
-        else if (color.classList.contains("green")) {
-            container1.style.background = "#d1fae5";
-            container2.style.background = "#a7f3d0";
-            button.style.background = "#10b981";
-        }
+  elements.card.style.setProperty('--rotate-x', `${rotateX.toFixed(2)}deg`);
+  elements.card.style.setProperty('--rotate-y', `${rotateY.toFixed(2)}deg`);
+  elements.card.classList.add('is-tilting');
+}
 
-        // ORANGE
-        else if (color.classList.contains("orange")) {
-            container1.style.background = "#ffedd5";
-            container2.style.background = "#fed7aa";
-            button.style.background = "#f97316";
-        }
-    });
+function resetCardTilt() {
+  elements.card.style.setProperty('--rotate-x', '0deg');
+  elements.card.style.setProperty('--rotate-y', '0deg');
+  elements.card.classList.remove('is-tilting');
+}
 
-});
+function resetBuilder() {
+  state = { ...initialFormState };
+  elements.imageFile.value = '';
+  hydrateForm();
+  render();
+}
 
+elements.form.addEventListener('input', syncStateFromInputs);
+elements.form.addEventListener('change', syncStateFromInputs);
+elements.imageFile.addEventListener('change', handleImageUpload);
+elements.download.addEventListener('click', downloadCard);
+elements.reset.addEventListener('click', resetBuilder);
 
-// SELECT INPUTS
-const nameInput = document.getElementById("name-input");
-const roleInput = document.getElementById("role-input");
-const bioInput = document.getElementById("bio-input");
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  elements.card.addEventListener('pointermove', handleCardTilt);
+  elements.card.addEventListener('pointerleave', resetCardTilt);
+}
 
-// SELECT CARD TEXT
-const cardName = document.getElementById("card-name");
-const cardRole = document.getElementById("card-role");
-const cardBio = document.getElementById("card-bio");
-const saveBtn = document.getElementById("save-btn");
-
-
-saveBtn.addEventListener("click", () => {
-cardName.textContent =
-nameInput.value || "Krishna Bhati";
-cardRole.textContent =
-roleInput.value || "Ui/Ux Designer";
-cardBio.textContent =
-bioInput.value ||
-"Hardworking and reliable UI/UX designer.";
-    alert("Changes saved and updated successfully! ✨");
-
-});
- 
-
-// RESET BUTTON
-const resetBtn = document.querySelector(".reset-btn");
-
-resetBtn.addEventListener("click", () => {
-
-    // RESET INPUT FIELDS
-    nameInput.value = "";
-    roleInput.value = "";
-    bioInput.value = "";
-
-    // RESET CARD CONTENT
-    cardName.innerText = "Krishna Bhati";
-    cardRole.innerText = "Ui/Ux Designer";
-
-    cardBio.innerText =
-    "Hardworking and reliable UI/UX designer focused on going above and beyond to support teams and serve customers.";
-
-    // RESET CARD COLORS
-    container1.style.background = "#f2d5ed";
-    container2.style.background = "#f5e0f2";
-    button.style.background = "#BB8DB7";
-
-    alert("Profile Reset Successfully ✨");
-
-});
-
-// IMAGE 
-const uploadBtn = document.getElementById("upload-btn");
-const imageInput = document.getElementById("image-input");
-const previewImage = document.getElementById("preview-image");
-const cardImage = document.querySelector(".image");
-// OPEN FILE PICKER
-uploadBtn.addEventListener("click", () => {
-    imageInput.click();
-});
-// CHANGE IMAGE
-imageInput.addEventListener("change", () => {
-    const file = imageInput.files[0];
-    if(file){
-        const imageURL = URL.createObjectURL(file);
-        // SIDEBAR IMAGE
-        previewImage.src = imageURL;
-        // CARD IMAGE
-        cardImage.src = imageURL;
-    }
-
-});
+hydrateForm();
+render();

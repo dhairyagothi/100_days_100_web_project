@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
     // DOM Elements
     const fetchBtn = document.getElementById('fetch-btn');
@@ -14,17 +15,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const participants = document.getElementById('participants').value;
         const budget = document.getElementById('budget').value;
 
-        let url = 'https://bored.api.lewagon.com/api/activity?';
+        // FIX: Use URL and URLSearchParams to construct the query string safely.
+        const apiUrl = new URL('https://bored.api.lewagon.com/api/activity');
 
-        if (category) url += `type=${category}&`;
-        if (participants) url += `participants=${participants}&`;
+        if (category) apiUrl.searchParams.append('type', category);
+        if (participants) apiUrl.searchParams.append('participants', participants);
 
         if (budget === 'free') {
-            url += 'price=0.0&';
+            apiUrl.searchParams.append('price', '0');
         } else if (budget === 'cheap') {
-            url += 'minprice=0.1&maxprice=0.4&';
+            apiUrl.searchParams.append('minprice', '0.1');
+            apiUrl.searchParams.append('maxprice', '0.4');
         } else if (budget === 'expensive') {
-            url += 'minprice=0.5&maxprice=1.0&';
+            apiUrl.searchParams.append('minprice', '0.5');
+            apiUrl.searchParams.append('maxprice', '1.0');
         }
 
         fetchBtn.textContent = 'Seeking...';
@@ -32,7 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
         resultContainer.classList.remove('hidden');
 
         try {
-            const response = await fetch(url);
+            // Fetch using the safely constructed URL
+            const response = await fetch(apiUrl.toString());
             
             if (!response.ok) throw new Error('Network response was not ok');
             

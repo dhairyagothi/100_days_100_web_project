@@ -2,229 +2,201 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profile Card</title>
+
+    <title>3D Profile Card Generator</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
-    rel="stylesheet"
-  />
 
-<body>
+  <body class="is-dark">
+    <a
+      href="/"
+      class="project-back-button"
+      style="
+        position: fixed;
+        left: 18px;
+        top: 18px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: white;
+        text-decoration: none;
+        z-index: 9999;
+        font-weight: 700;
+        font-family: Inter, system-ui, sans-serif;
+        box-shadow: 0 8px 20px rgba(0, 0, 0);
+      "
+    >
+      ← Back to Home
+    </a>
 
-<nav class="navbar">
-    <div class="logo">
-        <h2>3D Profile Card Generator ✨</h2>
-        <p>Customize your profile, preview in real-time and download</p>
-    </div>
-
-    <div class="nav-right">
-        <div class="theme-section">
-            <span>Theme</span>
-
-            <div class="theme pink"></div>
-            <div class="theme dark"></div>
-            <div class="theme blue"></div>
-            <div class="theme purple"></div>
-            <div class="theme green"></div>
+    <main class="app-shell">
+      <section class="editor-panel" aria-labelledby="editor-title">
+        <div class="panel-header">
+          <p class="eyebrow">Live profile builder</p>
+          <h1 id="editor-title">Create your 3D profile card</h1>
         </div>
 
-        <button class="mode-btn">☾</button>
-    </div>
-</nav>
+        <form class="profile-form" id="profileForm" novalidate>
+          <div class="form-grid">
+            <label class="field">
+              <span>Name</span>
+              <input type="text" id="nameInput" maxlength="40" placeholder="Krishna Bhati" />
+            </label>
 
-<div class="main-layout">
-<!-- card -->
- <div class="left-section">
-    <div class="card">
-        <div class="container1">
-            <img src="logo/Adobe Express - file.png" alt="" class="image">
-        </div>
-        <div class="container2">
-            <h1 class="heading" id="card-name">Krishna Bhati</h1>
-            <p class="subhead" id="card-role">Ui/Ux Designer</p>
-            <p class="info" id="card-bio">Hardworking and reliable UI/UXdesigner focused on going above and beyond to support teams
-                and serve customers. Currently undergoing a self-taught process to enable me offer top-notch abilities.
-                Motivated to continue to learn and grow as a product design professional.</p>
-            <div class="profile">
-                <a href="#"><img src="logo/facebook-logo.svg" class="logo"></a>
-                <a href="#"><img src="logo/linkedin-svgrepo-com (1).svg" alt="" class="logo"></a>
-                <a href="#"><img src="logo/github-142-svgrepo-com.svg" alt="" class="logo git"></a>
-                <a href="#"><img src="logo/twitter-svgrepo-com.svg" alt="" class="logo"></a>
-                <a href="#"><img src="logo/leetcode-svgrepo-com.svg" alt="" class="logo leet"></a>
-                <a href="#"><img src="logo/instagram-svgrepo-com.svg" alt="" class="logo"></a>
-                <a href="#"><img src="logo/night-mode-svgrepo-com.svg" class="logo darkmode"></a>
-                <a href="#"><img src="logo/sun-svgrepo-com.svg" class="logo lightmode"></a>
+            <label class="field">
+              <span>Profession</span>
+              <input type="text" id="roleInput" maxlength="44" placeholder="UI/UX Designer" />
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Short bio</span>
+            <textarea
+              id="bioInput"
+              maxlength="220"
+              rows="4"
+              placeholder="Hardworking and reliable designer focused on thoughtful product experiences."
+            ></textarea>
+          </label>
+
+          <div class="form-grid">
+            <label class="field">
+              <span>Image URL</span>
+              <input type="url" id="imageUrlInput" placeholder="https://example.com/profile.jpg" />
+            </label>
+
+            <label class="field file-field">
+              <span>Upload image</span>
+              <input type="file" id="imageFileInput" accept="image/*" />
+            </label>
+          </div>
+
+          <div class="form-grid">
+            <label class="field">
+              <span>GitHub</span>
+              <input type="url" id="githubInput" placeholder="https://github.com/username" />
+            </label>
+
+            <label class="field">
+              <span>LinkedIn</span>
+              <input type="url" id="linkedinInput" placeholder="https://linkedin.com/in/username" />
+            </label>
+          </div>
+
+          <div class="form-grid">
+            <label class="field">
+              <span>Twitter / X</span>
+              <input type="url" id="twitterInput" placeholder="https://x.com/username" />
+            </label>
+
+            <label class="field">
+              <span>Instagram</span>
+              <input type="url" id="instagramInput" placeholder="https://instagram.com/username" />
+            </label>
+          </div>
+
+          <div class="control-row">
+            <label class="color-picker">
+              <span>Theme</span>
+              <input type="color" id="themeInput" value="#2f80c9" />
+            </label>
+
+            <fieldset class="segmented-control" aria-label="Card layout">
+              <label>
+                <input type="radio" name="layout" value="classic" checked />
+                <span>Classic</span>
+              </label>
+
+              <label>
+                <input type="radio" name="layout" value="compact" />
+                <span>Compact</span>
+              </label>
+
+              <label>
+                <input type="radio" name="layout" value="poster" />
+                <span>Poster</span>
+              </label>
+            </fieldset>
+
+            <label class="mode-toggle" id="modeToggle" title="Switch to light mode">
+              <input type="checkbox" id="darkModeInput" checked />
+              <span class="toggle-face" aria-hidden="true"></span>
+              <span class="sr-only" id="modeToggleText"> Switch to light mode </span>
+            </label>
+          </div>
+
+          <p class="validation-message" id="validationMessage" aria-live="polite"></p>
+
+          <div class="action-row">
+            <button type="button" class="secondary-btn" id="resetButton">Reset</button>
+
+            <button type="button" class="primary-btn" id="downloadButton">Download card</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="preview-panel" aria-label="Generated profile card preview">
+        <article class="card layout-classic" id="profileCard">
+          <div class="container1">
+            <img
+              src="logo/Adobe Express - file.png"
+              alt="Profile picture"
+              class="image"
+              id="previewImage"
+            />
+          </div>
+
+          <div class="container2">
+            <p class="card-label">Digital profile</p>
+
+            <h2 class="heading" id="previewName">Krishna Bhati</h2>
+
+            <p class="subhead" id="previewRole">UI/UX Designer</p>
+
+            <p class="info" id="previewBio">
+              Hardworking and reliable UI/UX designer focused on going above and beyond to support
+              teams and serve customers.
+            </p>
+
+            <div class="profile" id="socialLinks">
+              <a href="#" data-platform="github" aria-label="GitHub profile">
+                <img src="logo/github-142-svgrepo-com.svg" alt="" class="logo monochrome" />
+              </a>
+
+              <a href="#" data-platform="linkedin" aria-label="LinkedIn profile">
+                <img src="logo/linkedin-svgrepo-com (1).svg" alt="" class="logo" />
+              </a>
+
+              <a href="#" data-platform="twitter" aria-label="Twitter profile">
+                <img src="logo/twitter-svgrepo-com.svg" alt="" class="logo" />
+              </a>
+
+              <a href="#" data-platform="instagram" aria-label="Instagram profile">
+                <img src="logo/instagram-svgrepo-com.svg" alt="" class="logo" />
+              </a>
             </div>
-            <button class="btn">Lets Connect!!</button>
-        </div>
-    </div>
+          </div>
+        </article>
+      </section>
+    </main>
 
-        
-<!-- FEATURES SECTION -->
-<section class="features-section">
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
 
-    <div class="feature-card">
-        <div class="feature-icon">🎨</div>
-
-        <h3>Theme Customization</h3>
-
-        <p>
-            Switch between beautiful themes and
-            personalize your profile card colors instantly.
-        </p>
-    </div>
-
-    <div class="feature-card">
-        <div class="feature-icon">⚡</div>
-
-        <h3>Live Preview</h3>
-
-        <p>
-            See profile updates in real-time while editing
-            your information from the sidebar.
-        </p>
-    </div>
-
-    <div class="feature-card">
-        <div class="feature-icon">📱</div>
-
-        <h3>Responsive Design</h3>
-
-        <p>
-            Fully optimized for desktop, tablet and mobile
-            devices with smooth layouts.
-        </p>
-    </div>
-
-    <div class="feature-card">
-        <div class="feature-icon">💾</div>
-
-        <h3>Save Preferences</h3>
-
-        <p>
-            Store themes and profile details using
-            localStorage for a seamless experience.
-        </p>
-    </div>
-
-    <div class="feature-card">
-        <div class="feature-icon">🖼️</div>
-
-        <h3>Download Card</h3>
-
-        <p>
-            Export your beautiful profile card as an image
-            and share it anywhere easily.
-        </p>
-    </div>
-
-    <div class="feature-card">
-        <div class="feature-icon">🚀</div>
-
-        <h3>Modern UI</h3>
-
-        <p>
-            Clean glassmorphism inspired design with
-            modern animations and effects.
-        </p>
-    </div>
-
-</section>
-</div>
-
-<!-- SIDEBAR -->
-<div class="sidebar">
- <h2>Customize Profile</h2>
-  <!-- NAME -->
-<div class="input-box">
-    <label>Full Name</label>
-    <input type="text" id="name-input" placeholder="Enter your name">
-</div>
-
-<!-- ROLE -->
-<div class="input-box">
-    <label>Role / Title</label>
-    <input type="text" id="role-input" placeholder="Frontend Developer">
-</div>
-
-<!-- BIO -->
-<div class="input-box">
-    <label>Bio</label>
-    <textarea id="bio-input"
-    placeholder="Write something about yourself"></textarea>
-</div>
-
-    <!-- IMAGE -->
-  <div class="input-box">
-    <label>Profile Image</label>
- <div class="upload-section">
- <!-- SIDEBAR IMAGE -->
-        <img src="https://i.pravatar.cc/100"
-        alt="profile"
-        id="preview-image">
-
-        <!-- BUTTON -->
-        <button id="upload-btn">
-            Upload Image
-        </button>
-
-        <!-- HIDDEN FILE INPUT -->
-        <input type="file"
-        id="image-input"
-        accept="image/*"
-        hidden>
-
-    </div>
-</div>
-
-    <!-- SOCIAL LINKS -->
-    <div class="input-box">
-        <label>Social Links</label>
-
-        <input type="text" placeholder="GitHub Link">
-        <input type="text" placeholder="LinkedIn Link">
-        <input type="text" placeholder="Instagram Link">
-    </div>
-
-    <!-- COLORS -->
-    <div class="input-box">
-        <label>Theme Color</label>
-        <div class="theme-colors">
-            <span class="color pink"></span>
-            <span class="color blue"></span>
-            <span class="color purple"></span>
-            <span class="color green"></span>
-            <span class="color orange"></span>
-        </div>
-    </div>
-
-    <!-- BUTTONS -->
-    <div class="sidebar-buttons">
-        <button class="reset-btn">Reset</button>
-        <button class="save-btn" id="save-btn">Save Changes</button>
-    </div>
-
-    <div class="feedback-section">
-    <h3>Rate this Generator</h3>
-    <div class="stars">
-        <span class="star" data-value="1">★</span>
-        <span class="star" data-value="2">★</span>
-        <span class="star" data-value="3">★</span>
-        <span class="star" data-value="4">★</span>
-        <span class="star" data-value="5">★</span>
-    </div>
-    <textarea placeholder="Leave a quick feedback..."></textarea>
-    <button class="submit-feedback-btn">Submit Feedback</button>
-</div>
-</div>
-</div>
-
-      <script src="script.js"></script>
-  
+    <script src="script.js"></script>
   </body>
-
 </html>

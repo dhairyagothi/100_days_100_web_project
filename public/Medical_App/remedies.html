@@ -4,8 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Basic Remedies | MedConsult</title>
-
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="/public/Medical_App/styles.css" />
+    <link rel="stylesheet" href="css/toast.css" />
+    <link rel="stylesheet" href="assets/css/auth.css" />
 
     <style>
         *{
@@ -137,15 +138,31 @@
 </head>
 
 <body>
-
-    <header class="site-header">
+<div id="appShell">
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+    <header class="site-header" data-role="patient">
         <h1>🏥 Basic Remedies</h1>
         <p>
             Simple first-aid and self-care guidance while waiting for professional consultation
         </p>
     </header>
 
-    <main class="app-shell">
+    <div class="auth-page-actions" style="margin: 30px auto 0; width: 90%; max-width: 1200px;">
+        <div id="userBadge" class="user-badge compact hidden" aria-live="polite">
+            <span id="userAvatar" class="user-avatar" aria-hidden="true">👤</span>
+            <div class="user-meta">
+                <span id="userBadgeName">Guest</span>
+                <span id="userBadgeRole">Role: --</span>
+            </div>
+        </div>
+        <button id="logoutBtn" class="auth-btn secondary is-role-hidden" type="button">Logout</button>
+    </div>
+
+    <div class="role-note is-role-hidden" data-role-fallback="patient" style="margin: 30px auto; width: 90%; max-width: 1200px;">
+        Home remedies are available for patient accounts only.
+    </div>
+
+    <main class="app-shell" data-role="patient">
 
         <section class="warning-panel">
             <h2>⚠ Emergency Warning</h2>
@@ -253,11 +270,95 @@
 
         </section>
 
-        <a href="index.html" class="page-link">
+        <a href="/public/Medical_App/index.html" class="page-link">
             ← Back to Consultation
         </a>
 
     </main>
+
+</div>
+
+<div id="authOverlay" class="auth-overlay" aria-hidden="true">
+    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+        <div class="auth-brand">
+            <img src="assets/logo.png" alt="MedConsult logo">
+            <div>
+                <h2 id="authTitle">MedConsult Access</h2>
+                <p id="authSubtitle">Sign in to continue</p>
+            </div>
+        </div>
+
+        <section class="auth-panel" data-auth-panel="login">
+            <form id="loginForm">
+                <div class="auth-field">
+                    <label for="loginEmail">Email</label>
+                    <input id="loginEmail" class="auth-input" type="email" autocomplete="email" required>
+                </div>
+                <div class="auth-field">
+                    <label for="loginPassword">Password</label>
+                    <input id="loginPassword" class="auth-input" type="password" autocomplete="current-password" required>
+                </div>
+                <div class="auth-row">
+                    <label class="auth-remember">
+                        <input id="rememberMe" type="checkbox">
+                        Remember Me
+                    </label>
+                </div>
+                <p id="loginError" class="auth-error"></p>
+                <button type="submit" class="auth-submit">Login</button>
+                <div class="auth-footer">
+                    <span>Don't have an account?</span>
+                    <button type="button" data-auth-switch="signup">Sign Up</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="auth-panel is-hidden" data-auth-panel="signup">
+            <form id="signupForm">
+                <div class="auth-field">
+                    <label for="signupName">Full Name</label>
+                    <input id="signupName" class="auth-input" type="text" autocomplete="name" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupEmail">Email</label>
+                    <input id="signupEmail" class="auth-input" type="email" autocomplete="email" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupPassword">Password</label>
+                    <input id="signupPassword" class="auth-input" type="password" autocomplete="new-password" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupConfirm">Confirm Password</label>
+                    <input id="signupConfirm" class="auth-input" type="password" autocomplete="new-password" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupRole">Role</label>
+                    <select id="signupRole" class="auth-select" required>
+                        <option value="">Select role</option>
+                        <option value="patient">Patient</option>
+                        <option value="doctor">Doctor</option>
+                    </select>
+                </div>
+                <p id="signupError" class="auth-error"></p>
+                <button type="submit" class="auth-submit">Create Account</button>
+                <div class="auth-footer">
+                    <span>Already have an account?</span>
+                    <button type="button" data-auth-switch="login">Login</button>
+                </div>
+                <p class="auth-note">
+                    Demo only: passwords are encoded for storage. Real apps require server-side hashing (e.g., bcrypt).
+                </p>
+            </form>
+        </section>
+    </div>
+</div>
+
+<div id="toast-container" class="toast-container"></div>
+
+<script src="assets/js/session.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/roleManager.js"></script>
+<script src="js/toast.js"></script>
 
 </body>
 </html>
