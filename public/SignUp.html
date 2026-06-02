@@ -261,26 +261,66 @@
     </section>
 
     <script>
-      /* ─── helpers ─── */
-      const $ = id => document.getElementById(id);
-      const emailRx    = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      const passwordRx = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/;
+      // Toast System
+      function showToast(message, type = 'info') {
+        let container = document.querySelector('.toast-container');
+        if (!container) {
+          container = document.createElement('div');
+          container.className = 'toast-container';
+          container.style.cssText = 'position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 999999; display: flex; flex-direction: column; gap: 12px; max-width: 380px; width: calc(100% - 48px); pointer-events: none;';
+          document.body.appendChild(container);
+        }
 
-      function setField(grpId, errId, msg) {
-        const grp = $(grpId), err = $(errId);
-        err.textContent = msg;
-        grp.classList.toggle('error',   !!msg);
-        grp.classList.toggle('success', !msg && grp.querySelector('input').value.trim() !== '');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+
+        const iconMap = {
+          success: '<i class="fa-solid fa-circle-check"></i>',
+          error: '<i class="fa-solid fa-circle-exclamation"></i>',
+          warning: '<i class="fa-solid fa-triangle-exclamation"></i>',
+          info: '<i class="fa-solid fa-circle-info"></i>'
+        };
+
+        toast.innerHTML = `
+          <div class="toast-icon">${iconMap[type] || iconMap.info}</div>
+          <div class="toast-message">${message}</div>
+          <button class="toast-close" aria-label="Close message">&times;</button>
+        `;
+
+        container.appendChild(toast);
+
+        // Close on button click
+        toast.querySelector('.toast-close').addEventListener('click', () => {
+          removeToast(toast);
+        });
+
+        // Auto remove
+        const autoRemoveTimeout = setTimeout(() => {
+          removeToast(toast);
+        }, 4000);
+
+        function removeToast(el) {
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(-10px) scale(0.95)';
+          setTimeout(() => {
+            el.remove();
+            if (container.childNodes.length === 0) {
+              container.remove();
+            }
+          }, 300);
+          clearTimeout(autoRemoveTimeout);
+        }
       }
 
-      function showStatus(message, type) {
-        const el = $('statusMsg');
-        el.textContent = message;
-        el.style.display = 'block';
-        if (type === 'error') {
-          el.style.background = 'rgba(248,113,113,0.15)';
-          el.style.color = '#f87171';
-          el.style.border = '1px solid rgba(248,113,113,0.3)';
+      // Show password toggle
+      function togglePassword() {
+        const passwordInput = document.getElementById("password");
+        const toggleIcon = document.querySelector(".toggle-password");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            toggleIcon.classList.add("active");
+            // toggleIcon.textContent = "..";
         } else {
           el.style.background = 'rgba(52,211,153,0.15)';
           el.style.color = '#34d399';
@@ -354,11 +394,10 @@
       $('signupForm').addEventListener('submit', e => {
         e.preventDefault();
 
-        const name     = $('name').value.trim();
-        const username = $('username').value.trim();
-        const email    = $('email').value.trim();
-        const password = $('password').value;
-        const confirmPassword = $('confirm-password').value;
+          if (existingUser) {
+            showToast("Username already exists.", "error");
+            return;
+          }
 
         let ok = true;
 
@@ -386,7 +425,13 @@
           ok = false;
         }
 
-        if (!ok) return;
+          if (!passwordRegex.test(password)) {
+            showToast(
+              "Password must contain:<br>• 1 uppercase letter<br>• 1 number<br>• 1 special character<br>• Minimum 6 characters",
+              "error"
+            );
+            return;
+          }
 
         if (localStorage.getItem(username)) {
           setField('grp-username', 'err-username', 'Username already taken');
@@ -396,13 +441,13 @@
         // Store user data (keyed by username — matches Login.html lookup)
         localStorage.setItem(username, JSON.stringify({ name, email, password }));
 
-        showStatus('Account created successfully! Redirecting to login…', 'success');
-        $('signupBtn').disabled = true;
+          showToast("Signup successful!", "success");
 
-        setTimeout(() => {
-          window.location.href = 'Login.html';
-        }, 1200);
-      });
+          // Delay redirect slightly for premium toast visibility
+          setTimeout(() => {
+            window.location.href = "Login.html";
+          }, 1200);
+        });
     </script>
   </body>
 </html>
