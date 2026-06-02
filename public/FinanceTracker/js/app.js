@@ -232,24 +232,27 @@ function renderGoals(){
         const row =
             document.createElement('tr');
 
-        row.innerHTML = `
+        const nameTd = document.createElement('td');
+nameTd.textContent = goal.name;
 
-            <td>${goal.name}</td>
+const amountTd = document.createElement('td');
+amountTd.textContent = `$${goal.amount}`;
 
-            <td>$${goal.amount}</td>
+const actionTd = document.createElement('td');
 
-            <td>
+const deleteBtn = document.createElement('button');
+deleteBtn.className = 'delete-btn';
+deleteBtn.textContent = 'Delete';
 
-                <button
-                    class="delete-btn"
-                    onclick="removeGoal(${index})"
-                >
-                    Delete
-                </button>
+deleteBtn.addEventListener('click', () => {
+    removeGoal(index);
+});
 
-            </td>
+actionTd.appendChild(deleteBtn);
 
-        `;
+row.appendChild(nameTd);
+row.appendChild(amountTd);
+row.appendChild(actionTd);
 
         goalList.appendChild(row);
 
