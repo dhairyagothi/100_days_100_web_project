@@ -702,10 +702,11 @@ body.dark-mode .nav-links a{
     color: white;
 }
 
-/* Search Inputs */
+/* Search and Comment Inputs */
 body.dark-mode .nav-search,
 body.dark-mode .sidebar-search,
 body.dark-mode .newsletter-input,
+body.dark-mode #username,
 body.dark-mode textarea{
     background: #374151;
     color: white;
@@ -789,7 +790,13 @@ body.dark-mode .search-btn{
 
 /* Main Background Section */
 body.dark-mode .bg-gray-50{
-    background: #111827 !important;
+    background-color: #111827 !important;
+    background-image: none !important;
+}
+
+/* Hero Section Dark Mode */
+body.dark-mode #home {
+    background-image: linear-gradient(to bottom right, #064e3b, #111827) !important;
 }
 
 /* Sidebar White Background */

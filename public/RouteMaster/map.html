@@ -206,6 +206,11 @@
   }
   .coord-val { color: rgba(96,165,250,0.8); }
 
+  .nav-links a i{
+    margin-right:5px;
+    font-size:0.75rem;
+  }
+
   /* ── ANIMATIONS ── */
   @keyframes pulse-ring { 0% { r: 14; opacity: 0.8; } 100% { r: 30; opacity: 0; } }
   @keyframes dash-flow {
@@ -233,10 +238,22 @@
   </a>
   <div class="nav-sep"></div>
   <div class="nav-links">
-    <a href="homepage.html"><i class="fas fa-house" style="margin-right:5px;font-size:0.75rem;"></i>Home</a>
-    <a href="map.html" class="active"><i class="fas fa-map" style="margin-right:5px;font-size:0.75rem;"></i>Map</a>
-    <a href="#"><i class="fas fa-compass" style="margin-right:5px;font-size:0.75rem;"></i>Explore</a>
-    <a href="#"><i class="fas fa-circle-question" style="margin-right:5px;font-size:0.75rem;"></i>Help</a>
+    <a href="index.html">
+      <i class="fas fa-house"></i>
+      Home
+    </a>
+    <a href="map.html" class="active">
+      <i class="fas fa-map"></i>
+      Map
+    </a>
+    <a href="#">
+      <i class="fas fa-compass"></i>
+      Explore
+    </a>
+    <a href="#">
+      <i class="fas fa-circle-question"></i>
+      Help
+    </a>
   </div>
   <div class="nav-right">
     <div class="route-pill" onclick="window.location.href='navigation.html'">

@@ -2,10 +2,13 @@ let selectedImageAnswer = "";
 const typeButtons = document.querySelectorAll(".type-btn");
 let selectedType = "text";
 const captchaContainer = document.getElementById('captchaContainer');
-const textInput = document.querySelector(".textcaptcha input");
-const refreshButton = document.querySelector(".refresh");
-const resultMessage = document.querySelector(".result");
-const submitButton = document.querySelector(".button button");
+const textInput = document.getElementById('captchaInput');
+const refreshButton = document.querySelector('.refresh');
+const resultMessage = document.querySelector('.result');
+const submitButton = document.querySelector('.submit');
+const voiceField = document.getElementById('voiceField');
+const voiceSelect = document.getElementById('voiceSelect');
+
 let currentCaptcha = null;
 let attempts = 0;
 const maxAttempts = 3;
@@ -64,15 +67,15 @@ const generateTextCaptcha = () => {
 
 const generateImageCaptcha = () => {
     const images = [
-        { emoji: '🐶', name: 'dog' },
-        { emoji: '🐱', name: 'cat' },
-        { emoji: '🐭', name: 'mouse' },
-        { emoji: '🐹', name: 'hamster' },
-        { emoji: '🐰', name: 'rabbit' },
-        { emoji: '🦊', name: 'fox' },
-        { emoji: '🐻', name: 'bear' },
-        { emoji: '🐼', name: 'panda' },
-        { emoji: '🐨', name: 'koala' }
+        { emoji: '<i class="fas fa-dog fa-2x" style="color: #8b5a2b;"></i>', name: 'dog' },
+        { emoji: '<i class="fas fa-cat fa-2x" style="color: #f59e0b;"></i>', name: 'cat' },
+        { emoji: '<i class="fas fa-dove fa-2x" style="color: #60a5fa;"></i>', name: 'bird' },
+        { emoji: '<i class="fas fa-spider fa-2x" style="color: #111827;"></i>', name: 'spider' },
+        { emoji: '<i class="fas fa-frog fa-2x" style="color: #10b981;"></i>', name: 'frog' },
+        { emoji: '<i class="fas fa-horse fa-2x" style="color: #b45309;"></i>', name: 'horse' },
+        { emoji: '<i class="fas fa-fish fa-2x" style="color: #06b6d4;"></i>', name: 'fish' },
+        { emoji: '<i class="fas fa-dragon fa-2x" style="color: #ef4444;"></i>', name: 'dragon' },
+        { emoji: '<i class="fas fa-locomotive fa-2x" style="color: #6b7280;"></i>', name: 'train' }
     ];
     const correctIndex = Math.floor(Math.random() * images.length);
     const shuffled = images.sort(() => 0.5 - Math.random()).slice(0, 6);
@@ -115,38 +118,65 @@ const generateMathCaptcha = () => {
 };
 
 const speakCaptcha = (text, repeat = 2, speed = 0.5) => {
-    return new Promise((resolve) => {
-        const utterance = new SpeechSynthesisUtterance();
-        utterance.text = Array(repeat).fill(text.split('').join(' ')).join('. . . ');
-        utterance.rate = speed;
-        utterance.onend = resolve;
-        speechSynthesis.speak(utterance);
-    });
+  return new Promise((resolve) => {
+      const utterance = new SpeechSynthesisUtterance();
+      utterance.text = Array(repeat).fill(text.split('').join(' ')).join('. . . ');
+      const selectedVoice = voiceSelect.value;
+      if (selectedVoice) {
+          const voice = speechSynthesis.getVoices().find(v => v.name === selectedVoice);
+          if (voice) utterance.voice = voice;
+      }
+      utterance.rate = speed;
+      utterance.onend = resolve;
+      speechSynthesis.speak(utterance);
+  });
 };
 
+const populateVoiceList = () => {
+  const voices = speechSynthesis.getVoices();
+  if (!voices.length) {
+      voiceSelect.innerHTML = '<option value="">No voices available</option>';
+      return;
+  }
+  const previousValue = voiceSelect.value;
+  voiceSelect.innerHTML = voices
+      .map(voice => `<option value="${voice.name}">${voice.name} (${voice.lang})${voice.default ? ' — default' : ''}</option>`)
+      .join('');
+  if (previousValue) {
+      voiceSelect.value = previousValue;
+  }
+};
+
+speechSynthesis.addEventListener('voiceschanged', populateVoiceList);
+populateVoiceList();
+
 const generateCaptcha = () => {
-    const type = selectedType;
+    textInput.value = '';
+    resultMessage.textContent = '';
+    resultMessage.className = 'result';
+
+    const type = captchaTypeSelect.value;
+    if (type === 'audio') {
+        voiceField.classList.remove('hidden');
+    } else {
+        voiceField.classList.add('hidden');
+    }
+
     switch (type) {
-        case 'text':
+        case 'text': {
             currentCaptcha = generateTextCaptcha();
-            document.querySelector(".textcaptcha").style.display = "block";
-            const fontSize = selectedDifficulty === 'hard' ? '18px' : '24px';
-            const filter = selectedDifficulty === 'hard' ? 'blur(0.5px)' : 'none';
-            captchaContainer.innerHTML = `
-                <span style="font-size: ${fontSize}; letter-spacing: 5px; filter: ${filter}; font-style: italic;">
-                    ${currentCaptcha}
-                </span>
-                <p style="font-size:12px; color:#888;">Difficulty: ${selectedDifficulty}</p>
-            `;
+            textInput.placeholder = 'Type the text above';
+            captchaContainer.innerHTML = `<span style="font-size: 24px; letter-spacing: 5px;">${currentCaptcha}</span>`;
             break;
-        case 'image':
+        }
+        case 'image': {
             const { images, correct } = generateImageCaptcha();
             currentCaptcha = correct.name;
-            document.querySelector(".textcaptcha").style.display = "none";
+            textInput.placeholder = `Select the ${correct.name}`;
             captchaContainer.innerHTML = `
                 <p>Select the ${correct.name}</p>
                 <div class="image-grid">
-                    ${images.map(img => `<div class="image-option">${img.emoji}</div>`).join('')}
+                    ${images.map(img => `<button type="button" class="image-option">${img.emoji}</button>`).join('')}
                 </div>
             `;
             captchaContainer.querySelectorAll('.image-option').forEach(option => {
@@ -154,15 +184,16 @@ const generateCaptcha = () => {
                     captchaContainer.querySelectorAll(".image-option")
                         .forEach(img => img.classList.remove("selected"));
                     option.classList.add("selected");
-                    selectedImageAnswer = images.find(img => img.emoji === option.textContent).name;
+                    selectedImageAnswer = images.find(img => option.innerHTML.includes(img.emoji)).name;
                 });
             });
             break;
-        case 'audio':
+        }
+        case 'audio': {
             currentCaptcha = generateTextCaptcha();
-            document.querySelector(".textcaptcha").style.display = "block";
+            textInput.placeholder = 'Enter the spoken characters';
             captchaContainer.innerHTML = `
-                <p>Click play and enter the spoken characters:</p>
+                <p>Click play and enter the audio.</p>
                 <button id="playAudio">Play Audio</button>
             `;
             const playButton = document.getElementById('playAudio');
@@ -178,15 +209,14 @@ const generateCaptcha = () => {
                 }
             });
             break;
-        case 'math':
+        }
+        case 'math': {
             const { question, answer } = generateMathCaptcha();
             currentCaptcha = answer.toString();
-            document.querySelector(".textcaptcha").style.display = "block";
-            captchaContainer.innerHTML = `
-                <span style="font-size: 24px;">${question} = ?</span>
-                <p style="font-size:12px; color:#888;">Difficulty: ${selectedDifficulty}</p>
-            `;
+            textInput.placeholder = 'Enter the numeric answer';
+            captchaContainer.innerHTML = `<span style="font-size: 24px;">${question} = ?</span>`;
             break;
+        }
     }
 };
 
@@ -224,34 +254,37 @@ const updateLockoutUI = () => {
 };
 
 const verifyCaptcha = () => {
-    if (Date.now() < lockoutEndTime) {
-        return;
-    }
+  if (Date.now() < lockoutEndTime) {
+      return;
+  }
 
-    const userInput =
-        selectedType == "image"
-            ? selectedImageAnswer.toLowerCase()
-            : textInput.value.trim().toLowerCase();
-    const isCorrect = userInput === currentCaptcha.toString().toLowerCase();
-
-    if (isCorrect) {
-        resultMessage.textContent = "Correct! CAPTCHA solved.";
-        resultMessage.style.color = "green";
-        attempts = 0;
-        setTimeout(() => {
-            textInput.value = "";
-            resultMessage.textContent = "";
-            generateCaptcha();
-        }, 1500);
-    } else {
-        attempts++;
-        if (attempts >= maxAttempts) {
-            lockoutUser();
-        } else {
-            resultMessage.textContent = `Incorrect. Please try again. \n(Attempt ${attempts}/${maxAttempts})`;
-            resultMessage.style.color = "#d01100";
-        }
-    }
+  const userInput = 
+  selectedType == "image"
+  ? selectedImageAnswer.toLowerCase()
+  : textInput.value.trim().toLowerCase();
+  const isCorrect = userInput === currentCaptcha.toString().toLowerCase();
+  
+  if (isCorrect) {
+      resultMessage.textContent = "Very Good! You passed the Test.";
+      resultMessage.classList.add('success');
+      resultMessage.classList.remove('error');
+      attempts = 0;
+      setTimeout(() => {
+          textInput.value = "";
+          resultMessage.textContent = "";
+          resultMessage.className = 'result';
+          generateCaptcha();
+      }, 1500);
+  } else {
+      attempts++;
+      if (attempts >= maxAttempts) {
+          lockoutUser();
+      } else {
+          resultMessage.textContent = `Sorry, your input is incorrect. Please try again. (Attempt ${attempts}/${maxAttempts})`;
+          resultMessage.classList.add('error');
+          resultMessage.classList.remove('success');
+      }
+  }
 };
 
 typeButtons.forEach(button => {

@@ -485,6 +485,12 @@ document.getElementById("confirmAddBtn")?.addEventListener("click", () => {
 
   habits.push(newHabit);
 
+  // ── FIX: Request notification permission when user sets a reminder ──
+  if (newHabit.reminderTime && Notification.permission === "default") {
+    Notification.requestPermission();
+  }
+  // ──────────────────────────────────────────────────────────────────
+
   saveHabits();
   renderAll();
 
@@ -615,7 +621,40 @@ if (deleteModal) {
   });
 }
 
+/* =========================================================
+   REMINDERS — FIX: check every 60s, fire Notification API
+   Added to resolve: reminder time saved but never fired
+========================================================= */
+
+function checkReminders() {
+  const currentTime = new Date().toTimeString().slice(0, 5); // "HH:MM"
+
+  habits.forEach(habit => {
+    if (!habit.reminderTime || habit.reminderTime !== currentTime) return;
+
+    if (Notification.permission === "granted") {
+      new Notification("Habit Tracker", {
+        body: `Time for your habit: "${habit.name}"`,
+        icon: "/favicon.ico"
+      });
+    } else if (Notification.permission !== "denied") {
+      Notification.requestPermission().then(permission => {
+        if (permission === "granted") {
+          new Notification("Habit Tracker", {
+            body: `Time for your habit: "${habit.name}"`,
+            icon: "/favicon.ico"
+          });
+        }
+      });
+    }
+  });
+}
+
 /* INITIAL RENDER & DAILY CHECK */
 
 updateHabitsDailyStatus();
 renderAll();
+
+// Start reminder polling after initial render
+checkReminders();
+setInterval(checkReminders, 60000);

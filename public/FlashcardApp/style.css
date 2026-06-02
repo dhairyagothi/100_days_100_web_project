@@ -1,0 +1,124 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f7fb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.game-container {
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+}
+
+.score-board {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 3D Context Requirements */
+.flashcard-wrapper {
+  perspective: 1000px; /* Gives depth to the 3D rotation */
+  width: 100%;
+  height: 280px;
+  margin-bottom: 30px;
+}
+
+.flashcard {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d; /* Tells elements to stay in 3D space */
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+/* This class triggers the 3D rotation */
+.flashcard.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden; /* Hides the back side when front is visible */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  padding: 24px;
+  box-sizing: border-box;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+}
+
+.card-front {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+}
+
+.card-back {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: white;
+  transform: rotateY(180deg); /* Starts already turned around */
+}
+
+.hint {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-top: 20px;
+}
+
+.example {
+  font-style: italic;
+  opacity: 0.9;
+  margin: 15px 0;
+}
+
+#audio-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid white;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#audio-btn:hover {
+  background: white;
+  color: #27ae60;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+  transition: opacity 0.2s;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.success { background-color: #2ecc71; }
+.danger { background-color: #e74c3c; }
