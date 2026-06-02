@@ -1,0 +1,121 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: #f0f2f5;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.controls {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#newGame {
+  background: #27ae60;
+  color: white;
+}
+#reset {
+  background: #e67e22;
+  color: white;
+}
+#check {
+  background: #3498db;
+  color: white;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.game {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.grid {
+  display: grid;
+  gap: 2px;
+  background: #34495e;
+  padding: 2px;
+  border-radius: 8px;
+}
+
+.cell {
+  width: 45px;
+  height: 45px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+  border: 1px solid #ddd;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.cell.black {
+  background: #2c3e50;
+  cursor: default;
+}
+
+.cell.highlight {
+  background: #fffacd;
+}
+
+.clues {
+  min-width: 350px;
+}
+
+.clues h2 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+ol {
+  line-height: 1.8;
+}
+
+#status {
+  margin-left: 15px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.correct {
+  color: #27ae60;
+}
+.wrong {
+  color: #e74c3c;
+}
