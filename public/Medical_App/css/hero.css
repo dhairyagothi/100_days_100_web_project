@@ -1,0 +1,61 @@
+.hero {
+    background:
+    linear-gradient(
+        rgba(37,99,235,0.85),
+        rgba(14,165,233,0.85)
+    ),
+    url("../assets/bg/hospital.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    color: white;
+    text-align: center;
+
+    padding: 90px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background: rgba(255,255,255,0.05);
+
+    backdrop-filter: blur(1px);
+}
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 15px;
+
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+.hero p {
+    font-size: 1.1rem;
+    opacity: 0.95;
+}
+
+@media (max-width:768px) {
+
+    .hero {
+        padding: 70px 15px;
+    }
+
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+}

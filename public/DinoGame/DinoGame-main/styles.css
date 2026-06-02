@@ -75,12 +75,13 @@ h1 {
 }
 
 .game-info {
-    display: grid;
-    grid-template-columns: repeat(7, minmax(0, 1fr)) 1.2fr;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centers the stats perfectly across the horizontal axis */
     align-items: center;
-    gap: 12px;
+    gap: 16px 28px;          /* Balanced horizontal spacing between metrics */
     margin-bottom: 14px;
-    padding: 12px 14px;
+    padding: 16px;
     border-radius: 12px;
     background: #1d1d1d;
     color: #f8f4ee;
@@ -90,7 +91,9 @@ h1 {
 .stat {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;    /* Centers the structural flex blocks horizontally */
+    justify-content: center; /* Aligns them along the vertical axis */
+    text-align: center;     /* Forces inline character arrays to render centered */
     gap: 2px;
 }
 
@@ -117,9 +120,13 @@ h1 {
 }
 
 .hint {
-    text-align: right;
+    flex-basis: 100%;
+    text-align: center;
     font-size: 13px;
     color: #f6d7a7;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 10px;
+    margin-top: 8px;
 }
 
 body.night .hint {
@@ -733,4 +740,9 @@ body.night .mission-track {
 
 .combo-glow {
     box-shadow: 0 0 20px rgba(255, 208, 89, 0.6), inset 0 0 18px rgba(255, 255, 255, 0.35);
+}
+
+#gameCanvas.is-paused .layer,
+#gameCanvas.is-paused::before {
+    animation-play-state: paused !important;
 }
