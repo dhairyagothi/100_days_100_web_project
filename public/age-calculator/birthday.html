@@ -1,0 +1,101 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Birthday Card Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="birthday">
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">LifePulse</div>
+        <nav class="desktop-nav">
+          <a href="index.html" class="nav-link">Calculator</a>
+          <a href="difference.html" class="nav-link">Difference</a>
+          <a href="birthday.html" class="nav-link active">Birthday Card</a>
+          <a href="about.html" class="nav-link">About</a>
+        </nav>
+        <div class="topbar-actions">
+          <button id="theme-toggle" class="icon-button" aria-label="Toggle dark mode">🌙</button>
+          <button id="menu-toggle" class="icon-button menu-button" aria-label="Open navigation" aria-expanded="false">
+            <svg class="menu-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+      </header>
+      <div id="mobile-menu" class="mobile-menu">
+        <nav class="mobile-nav">
+          <a href="index.html" class="mobile-link">Calculator</a>
+          <a href="difference.html" class="mobile-link">Difference</a>
+          <a href="birthday.html" class="mobile-link active">Birthday Card</a>
+          <a href="about.html" class="mobile-link">About</a>
+        </nav>
+      </div>
+      <main class="page-content">
+        <section class="hero-panel compact-panel">
+          <div>
+            <p class="eyebrow">Birthday Card</p>
+            <h1>Create a magical greeting card.</h1>
+            <p class="hero-copy">Personalize a birthday card with text, date, and theme options.</p>
+          </div>
+        </section>
+        <section class="grid-section two-column">
+          <div class="panel glass-panel input-panel">
+            <div class="panel-header">
+              <p class="eyebrow">Create your card</p>
+              <h2>Personalize every detail</h2>
+            </div>
+            <div class="field-group">
+              <label for="recipient-name">Recipient Name</label>
+              <input type="text" id="recipient-name" class="field-input" placeholder="Enter name" />
+            </div>
+            <div class="field-group">
+              <label for="recipient-date">Birthday Date</label>
+              <input type="date" id="recipient-date" class="field-input" />
+            </div>
+            <div class="field-group">
+              <label for="custom-message">Custom Message</label>
+              <textarea id="custom-message" class="field-input textarea-input" rows="4" placeholder="Wishing you a joyful day..."></textarea>
+            </div>
+            <div class="panel-subheading">Theme selection</div>
+            <div class="theme-grid" id="theme-options">
+              <button data-theme="balloons" class="theme-card active">🎈<span>Balloons</span></button>
+              <button data-theme="confetti" class="theme-card">🎉<span>Confetti</span></button>
+              <button data-theme="cake" class="theme-card">🎂<span>Cake</span></button>
+              <button data-theme="gift" class="theme-card">🎁<span>Gift</span></button>
+              <button data-theme="flowers" class="theme-card">🌸<span>Flowers</span></button>
+              <button data-theme="minimal" class="theme-card">✨<span>Minimal</span></button>
+            </div>
+            <div class="action-row">
+              <button id="download-card" class="primary-button">Download Card</button>
+              <button id="share-card" class="secondary-button">Share Card</button>
+            </div>
+          </div>
+          <div class="panel glass-panel birthday-preview-panel">
+            <div class="panel-header">
+              <p class="eyebrow">Live preview</p>
+              <h2>Your birthday card</h2>
+            </div>
+            <div class="birthday-card-preview" id="birthday-preview" data-theme="balloons">
+              <div class="confetti-layer"></div>
+              <div class="birthday-card-content">
+                <p class="card-eyebrow">Happy Birthday</p>
+                <h2 class="card-name" id="preview-name">Friend</h2>
+                <p class="card-message" id="preview-message">Wishing you a day filled with happiness and a year filled with joy!</p>
+                <p class="card-date" id="preview-date">Celebrating on --</p>
+              </div>
+            </div>
+            <p class="caption">Download a premium card with custom text and theme.</p>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNa5mC7WlG3OYDcM7gxgz1n8gQkZ8Un2KZx+X+5XEyJub+QmPA0W+o//Ipa0+sT9YvBpE+UjXfmCOc7h+nej3A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

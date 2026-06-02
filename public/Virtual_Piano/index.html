@@ -18,7 +18,20 @@
     <h1>Virtual Piano</h1>
     <h2>Use your mouse to click on the keys or use your keyboard</h2>
     <em>* Key starts from the C note</em>
+    <!-- Recording Controls -->
+<div class="controls">
+    <button id="btn-record">⏺ Record</button>
+    <button id="btn-stop" disabled>⏹ Stop</button>
+    <button id="btn-play" disabled>▶ Play</button>
+    <button id="btn-clear" disabled>🗑 Clear</button>
+    <button id="btn-export" disabled>⬇ Export</button>
+</div>
 
+<div class="controls-secondary">
+    <label for="speed-slider">Playback Speed</label>
+    <input type="range" id="speed-slider" min="0.25" max="2" step="0.25" value="1" disabled />
+    <span id="speed-label">1×</span>
+</div>
     <div class="piano">
         <div class="keys">
 

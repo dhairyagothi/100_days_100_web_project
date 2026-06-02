@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Code Execution Visualizer | Signature Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-theme="dark">
+    <div id="loading-screen" class="loading-screen">
+      <div class="loader-core"></div>
+      <h1>Initializing Signature Learning HUD</h1>
+      <p>Preparing visual execution, memory maps, and call frames...</p>
+    </div>
+
+    <canvas id="particle-canvas"></canvas>
+    <div id="toast-container" class="toast-container"></div>
+
+    <div class="app" id="app-root">
+      <aside class="sidebar glass floating">
+        <div class="brand">
+          <p class="brand-tag">EDU HUD</p>
+          <h1>Code Visualizer</h1>
+        </div>
+
+        <label class="label" for="preset-select">Preset Programs</label>
+        <select id="preset-select">
+          <option value="variables">1. Variables</option>
+          <option value="loops">2. Loops</option>
+          <option value="arrays">3. Arrays</option>
+          <option value="bubbleSort">4. Bubble Sort</option>
+          <option value="binarySearch">5. Binary Search</option>
+          <option value="recursion">6. Recursion</option>
+        </select>
+        <button id="load-preset-btn" class="btn secondary" data-tooltip="Load selected preset">Load Preset</button>
+
+        <nav class="nav-links">
+          <button data-target="editor-panel">Editor</button>
+          <button data-target="steps-panel">Steps</button>
+          <button data-target="what-panel">What Happened</button>
+          <button data-target="memory-panel">Memory</button>
+          <button data-target="stack-panel">Call Stack</button>
+          <button data-target="recursion-panel">Recursion Tree</button>
+          <button data-target="sort-panel">Sorting</button>
+          <button data-target="complexity-panel">Complexity</button>
+        </nav>
+      </aside>
+
+      <section class="workspace">
+        <header class="topbar glass floating">
+          <div class="topbar-title">
+            <p class="brand-tag">VS Code x LeetCode x HUD</p>
+            <h2>Execution Dashboard</h2>
+          </div>
+          <div class="header-metrics">
+            <div class="metric"><span>Status</span><strong id="run-status">Idle</strong></div>
+            <div class="metric"><span>Current Line</span><strong id="current-line">-</strong></div>
+            <div class="metric"><span>Step</span><strong id="step-count">0</strong></div>
+          </div>
+          <div class="quick-actions">
+            <button id="theme-toggle" class="btn ghost" data-tooltip="Toggle dark or light">Theme</button>
+            <button id="focus-mode-btn" class="btn ghost" data-tooltip="Focus workspace only">Focus Mode</button>
+            <button id="fullscreen-btn" class="btn ghost" data-tooltip="Browser fullscreen">Fullscreen</button>
+          </div>
+        </header>
+
+        <main class="dashboard-grid">
+          <section id="editor-panel" class="panel glass floating active-panel">
+            <div class="panel-head"><h3>Code Editor</h3><button class="collapse-btn" data-collapse>Collapse</button></div>
+            <div class="panel-body">
+              <div class="editor-wrap" id="editor-wrap">
+                <div id="line-numbers" class="line-numbers"></div>
+                <div class="code-layer">
+                  <pre id="syntax-view" class="syntax-view"></pre>
+                  <textarea id="code-input" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"></textarea>
+                  <div id="execution-line" class="execution-line"></div>
+                </div>
+              </div>
+              <div id="line-highlight" class="line-highlight">Waiting for execution...</div>
+            </div>
+          </section>
+
+          <section class="panel glass floating control-panel">
+            <div class="panel-head"><h3>Controls</h3><button class="collapse-btn" data-collapse>Collapse</button></div>
+            <div class="panel-body">
+              <div class="controls">
+                <button id="run-btn" class="btn primary" data-tooltip="Space">Run</button>
+                <button id="pause-btn" class="btn secondary" data-tooltip="Space">Pause</button>
+                <button id="next-btn" class="btn secondary" data-tooltip="N">Next</button>
+                <button id="reset-btn" class="btn danger" data-tooltip="R">Reset</button>
+              </div>
+              <label class="slider-wrap" for="speed-slider">
+                Playback Speed
+                <input id="speed-slider" type="range" min="1" max="10" value="5" />
+                <span id="speed-value">5x</span>
+              </label>
+              <div id="execution-log" class="console"></div>
+            </div>
+          </section>
+
+          <section id="steps-panel" class="panel glass floating">
+            <div class="panel-head"><h3>Execution Steps</h3><button class="collapse-btn" data-collapse>Collapse</button></div>
+            <div class="panel-body"><ul id="step-list" class="step-list"></ul></div>
+          </section>
+
+          <section id="what-panel" class="panel glass floating">
+            <div class="panel-head"><h3>What Happened?</h3><button class="collapse-btn" data-collapse>Collapse</button></div>
+            <div class="panel-body"><div id="what-happened" class="what-happened"></div></div>
+          </section>
+
+          <section id="memory-panel" class="panel glass floating">
+            <div class="panel-head"><h3>Variable Memory</h3><button class="collapse-btn" data-collapse>Collapse</button></div>
+            <div class="panel-body"><div id="memory-view" class="memory-grid"></div></div>
+          </section>
+
+          <section id="stack-panel" class="panel glass floating">
+            <div class="panel-head"><h3>Call Stack</h3><button class="collapse-btn" data-collapse>Collapse</button></div>
+            <div class="panel-body"><div id="stack-view" class="stack-view"></div></div>
+          </section>
+
+          <section class="panel glass floating">
+            <div class="panel-head"><h3>Loop Timeline</h3><button class="collapse-btn" data-collapse>Collapse</button></div>
+            <div class="panel-body"><div id="loop-timeline" class="timeline"></div></div>
+          </section>
+
+          <section class="panel glass floating">
+            <div class="panel-head"><h3>Array Visualization</h3><button class="collapse-btn" data-collapse>Collapse</button></div>
+            <div class="panel-body"><div id="array-view" class="array-view"></div></div>
+          </section>
+
+          <section id="sort-panel" class="panel glass floating">
+            <div class="panel-head"><h3>Sorting Animation</h3><button class="collapse-btn" data-collapse>Collapse</button></div>
+            <div class="panel-body"><div id="sort-bars" class="sort-bars"></div></div>
+          </section>
+
+          <section id="recursion-panel" class="panel glass floating">
+            <div class="panel-head"><h3>Recursion Tree</h3><button class="collapse-btn" data-collapse>Collapse</button></div>
+            <div class="panel-body"><div id="recursion-tree" class="recursion-tree"></div></div>
+          </section>
+
+          <section id="complexity-panel" class="panel glass floating">
+            <div class="panel-head"><h3>Complexity Estimator</h3><button class="collapse-btn" data-collapse>Collapse</button></div>
+            <div class="panel-body"><div id="complexity-view" class="complexity-view"></div></div>
+          </section>
+        </main>
+      </section>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

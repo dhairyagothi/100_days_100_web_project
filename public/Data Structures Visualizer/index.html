@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Structures Visualizer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
+    <div class="background-glow"></div>
+    
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h1 class="hero-title">What would you like to visualize today?</h1>
+            <p class="hero-subtitle">Learn data structures through interactive visualization and animation</p>
+        </section>
+
+        <!-- Structure Selector -->
+        <section class="selector-section">
+            <div class="selector-buttons">
+                <button class="selector-btn active" data-structure="array">
+                    <span class="btn-label">Array</span>
+                </button>
+                <button class="selector-btn" data-structure="stack">
+                    <span class="btn-label">Stack</span>
+                </button>
+                <button class="selector-btn" data-structure="queue">
+                    <span class="btn-label">Queue</span>
+                </button>
+                <button class="selector-btn" data-structure="linkedlist">
+                    <span class="btn-label">Linked List</span>
+                </button>
+            </div>
+            <div id="comingSoonToast" class="toast"></div>
+        </section>
+
+        <!-- Array Visualizer -->
+        <div class="visualizer-sticky-parent">
+            <section class="visualizer-section active" data-structure="array">
+                <!-- Header and Size Control -->
+                <div class="visualizer-header">
+                    <h2>Array Visualization</h2>
+                    <p class="structure-summary array-definition-panel" id="arrayDefinitionText"></p>
+                    <div class="size-control">
+                        <label for="sizeInput">Size:</label>
+                        <input type="number" id="sizeInput" min="1" max="8" value="5" class="size-input">
+                    </div>
+                    <div id="sizeError" class="size-error"></div>
+                </div>
+
+                <!-- Array Boxes -->
+                <div class="array-container" aria-label="Sticky array visualization">
+                    <div class="array-visualization" id="arrayVisualization"></div>
+                </div>
+
+                <!-- Array Input Section -->
+                <div class="input-section">
+                    <h3>Set Array Values</h3>
+                    <div class="inputs-grid" id="inputsGrid"></div>
+                    <div id="inputError" class="error-message"></div>
+                </div>
+
+                <!-- Operations Section -->
+                <div class="operations-section">
+                    <h3>Operations</h3>
+                    <div class="operations-buttons">
+                        <button class="operation-btn" id="traverseBtn">
+                            <span>Traverse</span>
+                        </button>
+                        <button class="operation-btn" id="searchBtn">
+                            <span>Search</span>
+                        </button>
+                        <button class="operation-btn" id="sortBtn">
+                            <span>Sort</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Search Input -->
+                <div class="search-section hidden" id="searchSection">
+                    <div class="search-input-group">
+                        <input type="number" id="searchInput" placeholder="Enter value to search..." class="search-input">
+                        <button class="search-action-btn" id="searchActionBtn">Search</button>
+                    </div>
+                </div>
+
+                <!-- Status Display -->
+                <div id="statusDisplay" class="status-display hidden"></div>
+
+                <!-- Educational Info Panel -->
+                <div class="info-section">
+                    <h3>Learn</h3>
+                    <div class="info-buttons">
+                        <button class="info-btn" data-info="array">Array</button>
+                        <button class="info-btn" data-info="traversal">Traversal</button>
+                        <button class="info-btn" data-info="search">Searching</button>
+                        <button class="info-btn" data-info="sort">Sorting</button>
+                    </div>
+                    <div id="infoPanel" class="info-panel hidden"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Stack Visualizer -->
+        <section class="visualizer-section stack-visualizer-section" data-structure="stack">
+            <div class="stack-layout">
+                <div class="stack-controls-panel">
+                    <div class="visualizer-header">
+                        <h2>Stack Visualization</h2>
+                        <p class="structure-summary stack-definition-panel" id="stackDefinitionText"></p>
+                    </div>
+
+                    <div class="stack-operation-card">
+                        <h3>Push Element</h3>
+                        <div class="stack-input-group">
+                            <input type="number" id="stackInput" placeholder="Enter integer..." class="stack-input">
+                            <button class="operation-btn" id="pushBtn">
+                                <span>Push</span>
+                            </button>
+                        </div>
+                        <div id="stackError" class="error-message"></div>
+                    </div>
+
+                    <div class="stack-secondary-actions">
+                        <div class="stack-operation-card">
+                            <h3>Pop Element</h3>
+                            <button class="operation-btn" id="popBtn">
+                                <span>Pop</span>
+                            </button>
+                        </div>
+
+                        <div class="stack-operation-card">
+                            <h3>Peek Element</h3>
+                            <button class="operation-btn" id="peekBtn">
+                                <span>Peek</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="stackStatus" class="status-display hidden"></div>
+
+                    <div class="info-section">
+                        <h3>Learn Stack</h3>
+                        <div class="info-buttons stack-learn-buttons">
+                            <button class="info-btn stack-learn-btn" data-stack-learn="push">Push</button>
+                            <button class="info-btn stack-learn-btn" data-stack-learn="pop">Pop</button>
+                            <button class="info-btn stack-learn-btn" data-stack-learn="peek">Peek</button>
+                            <button class="info-btn stack-learn-btn" data-stack-learn="overflow">Overflow</button>
+                            <button class="info-btn stack-learn-btn" data-stack-learn="underflow">Underflow</button>
+                            <button class="info-btn stack-learn-btn" data-stack-learn="lifo">LIFO Principle</button>
+                            <button class="info-btn stack-learn-btn" data-stack-learn="top">Stack Top</button>
+                        </div>
+                        <div class="info-panel hidden" id="stackLearnPanel"></div>
+                    </div>
+                </div>
+
+                <div class="stack-visualization-panel" aria-label="Sticky stack visualization">
+                    <div class="stack-meta">
+                        <span class="stack-meta-label">Stack Capacity</span>
+                        <span class="stack-meta-value" id="stackSizeDisplay">0 / 7</span>
+                    </div>
+                    <div class="stack-warning-label hidden" id="stackWarningLabel"></div>
+                    <div class="stack-stage">
+                        <div class="stack-motion-layer" id="stackMotionLayer"></div>
+                        <div class="stack-shell">
+                            <div class="stack-ambient-glow"></div>
+                            <div class="stack-top-label">TOP</div>
+                            <div class="stack-items" id="stackItems"></div>
+                            <div class="stack-empty-state" id="stackEmptyState">Empty Stack</div>
+                        </div>
+                        <div class="stack-base">0 elements</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="visualizer-section" data-structure="queue">
+            <div class="visualizer-header queue-header">
+                <h2>Queue Visualization</h2>
+                <p class="structure-summary queue-definition-panel" id="queueDefinitionText"></p>
+            </div>
+
+            <div class="queue-visualization-panel" aria-label="Sticky queue visualization">
+                <div class="queue-capacity">
+                    <span>Queue Capacity</span>
+                    <strong id="queueSizeDisplay">0 / 7</strong>
+                </div>
+                <div class="queue-warning-label hidden" id="queueWarningLabel"></div>
+                <div class="queue-stage">
+                    <div class="queue-motion-layer" id="queueMotionLayer"></div>
+                    <div class="queue-end-label queue-front-label">FRONT</div>
+                    <div class="queue-end-label queue-rear-label">REAR</div>
+                    <div class="queue-chamber">
+                        <div class="queue-items" id="queueItems"></div>
+                        <div class="queue-empty-state" id="queueEmptyState">Empty Queue</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="queue-main-actions">
+                <div class="queue-operation-card">
+                    <div class="queue-card-heading">
+                        <h3>Insert an Element</h3>
+                    </div>
+                    <div class="queue-input-group">
+                        <input type="number" id="queueInput" placeholder="Enter integer..." class="queue-input">
+                        <button class="operation-btn" id="enqueueBtn">
+                            <span>Insert</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="queue-operation-card">
+                    <h3>Delete an Element</h3>
+                    <button class="operation-btn" id="dequeueBtn">
+                        <span>Delete</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="queue-view-actions">
+                <div class="queue-operation-card">
+                    <h3>Front</h3>
+                    <button class="operation-btn" id="frontBtn">
+                        <span>Front</span>
+                    </button>
+                </div>
+
+                <div class="queue-operation-card">
+                    <h3>Rear</h3>
+                    <button class="operation-btn" id="rearBtn">
+                        <span>Rear</span>
+                    </button>
+                </div>
+
+                <div class="queue-operation-card">
+                    <h3>Peek</h3>
+                    <button class="operation-btn" id="queuePeekBtn">
+                        <span>Peek</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="queueStatus" class="status-display hidden"></div>
+
+            <div class="info-section">
+                <h3>Learn Queue</h3>
+                <div class="info-buttons queue-learn-buttons">
+                    <button class="info-btn queue-learn-btn" data-queue-learn="queue">Queue</button>
+                    <button class="info-btn queue-learn-btn" data-queue-learn="insert">Insert</button>
+                    <button class="info-btn queue-learn-btn" data-queue-learn="delete">Delete</button>
+                    <button class="info-btn queue-learn-btn" data-queue-learn="front">Front</button>
+                    <button class="info-btn queue-learn-btn" data-queue-learn="rear">Rear</button>
+                    <button class="info-btn queue-learn-btn" data-queue-learn="peek">Peek</button>
+                    <button class="info-btn queue-learn-btn" data-queue-learn="fifo">FIFO</button>
+                    <button class="info-btn queue-learn-btn" data-queue-learn="overflow">Overflow</button>
+                    <button class="info-btn queue-learn-btn" data-queue-learn="underflow">Underflow</button>
+                    <button class="info-btn queue-learn-btn" data-queue-learn="isFull">isFull</button>
+                    <button class="info-btn queue-learn-btn" data-queue-learn="isEmpty">isEmpty</button>
+                </div>
+                <div class="info-panel hidden" id="queueLearnPanel"></div>
+            </div>
+        </section>
+
+        <!-- Linked List Visualizer -->
+        <section class="visualizer-section" data-structure="linkedlist">
+
+            <!-- Header -->
+            <div class="visualizer-header ll-header">
+                <h2>Linked List Visualization</h2>
+                <p class="structure-summary ll-definition-panel" id="llDefinitionText"></p>
+            </div>
+
+            <!-- Sticky Visualization Panel -->
+            <div class="ll-visualization-panel">
+                <div class="ll-node-meta">
+                    <span class="ll-meta-label">Node Count</span>
+                    <span class="ll-meta-value" id="llNodeCount">0 / 7</span>
+                </div>
+                <div class="ll-head-tail-display" id="llHeadTailDisplay">
+                    <div class="ll-ht-item">
+                        <span class="ll-ht-name">Head</span>
+                        <span class="ll-ht-arrow">&rarr;</span>
+                        <span class="ll-ht-value ll-ht-null">null</span>
+                    </div>
+                    <div class="ll-ht-sep">&middot;</div>
+                    <div class="ll-ht-item">
+                        <span class="ll-ht-name">Tail</span>
+                        <span class="ll-ht-arrow">&rarr;</span>
+                        <span class="ll-ht-value ll-ht-null">null</span>
+                    </div>
+                </div>
+                <div class="ll-stage">
+                    <div class="ll-node-list" id="llNodeList"></div>
+                    <div class="ll-empty-state" id="llEmptyState">
+                        <div class="ll-empty-display">
+                            <span class="ll-pointer-badge">Head &rarr; null</span>
+                            <span class="ll-pointer-separator">&middot;</span>
+                            <span class="ll-pointer-badge">Tail &rarr; null</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Operations -->
+            <div class="ll-operations-grid">
+
+                <!-- Insert at Head -->
+                <div class="ll-operation-card">
+                    <h3>Insert at Head</h3>
+                    <div class="ll-input-group">
+                        <input type="number" id="llHeadInput" placeholder="Enter value..." class="ll-input" aria-label="Value for head insertion">
+                        <button class="operation-btn" id="llInsertHeadBtn"><span>Insert Head</span></button>
+                    </div>
+                    <div id="llHeadError" class="error-message"></div>
+                </div>
+
+                <!-- Insert at Tail -->
+                <div class="ll-operation-card">
+                    <h3>Insert at Tail</h3>
+                    <div class="ll-input-group">
+                        <input type="number" id="llTailInput" placeholder="Enter value..." class="ll-input" aria-label="Value for tail insertion">
+                        <button class="operation-btn" id="llInsertTailBtn"><span>Insert Tail</span></button>
+                    </div>
+                    <div id="llTailError" class="error-message"></div>
+                </div>
+
+                <!-- Insert at Index -->
+                <div class="ll-operation-card">
+                    <h3>Insert at Index</h3>
+                    <div class="ll-input-row">
+                        <input type="number" id="llIndexInput" placeholder="Index" class="ll-input ll-input-small" aria-label="Index position" min="0">
+                        <input type="number" id="llIndexValueInput" placeholder="Value" class="ll-input" aria-label="Value for index insertion">
+                        <button class="operation-btn" id="llInsertIndexBtn"><span>Insert</span></button>
+                    </div>
+                    <div id="llIndexError" class="error-message"></div>
+                </div>
+
+                <!-- Delete at Head -->
+                <div class="ll-operation-card">
+                    <h3>Delete at Head</h3>
+                    <div class="ll-input-group">
+                        <button class="operation-btn ll-delete-btn" id="llDeleteHeadBtn"><span>Delete Head</span></button>
+                    </div>
+                    <div id="llDeleteHeadError" class="error-message"></div>
+                </div>
+
+                <!-- Delete at Tail -->
+                <div class="ll-operation-card">
+                    <h3>Delete at Tail</h3>
+                    <div class="ll-input-group">
+                        <button class="operation-btn ll-delete-btn" id="llDeleteTailBtn"><span>Delete Tail</span></button>
+                    </div>
+                    <div id="llDeleteTailError" class="error-message"></div>
+                </div>
+
+                <!-- Delete at Index -->
+                <div class="ll-operation-card">
+                    <h3>Delete at Index</h3>
+                    <div class="ll-input-row">
+                        <input type="number" id="llDeleteIndexInput" placeholder="Index" class="ll-input ll-input-small" aria-label="Index position for deletion" min="0">
+                        <button class="operation-btn ll-delete-btn" id="llDeleteIndexBtn"><span>Delete</span></button>
+                    </div>
+                    <div id="llDeleteIndexError" class="error-message"></div>
+                </div>
+
+            </div>
+
+            <!-- Status Display -->
+            <div id="llStatus" class="status-display hidden"></div>
+
+            <!-- Learn Section -->
+            <div class="info-section">
+                <h3>Learn Linked List</h3>
+                <div class="info-buttons ll-learn-buttons">
+                    <button class="info-btn ll-learn-btn" data-ll-learn="linkedlist">Linked List</button>
+                    <button class="info-btn ll-learn-btn" data-ll-learn="node">Node</button>
+                    <button class="info-btn ll-learn-btn" data-ll-learn="head">Head</button>
+                    <button class="info-btn ll-learn-btn" data-ll-learn="tail">Tail</button>
+                    <button class="info-btn ll-learn-btn" data-ll-learn="insertHead">Insert Head</button>
+                    <button class="info-btn ll-learn-btn" data-ll-learn="insertTail">Insert Tail</button>
+                    <button class="info-btn ll-learn-btn" data-ll-learn="insertIndex">Insert at Index</button>
+                    <button class="info-btn ll-learn-btn" data-ll-learn="deleteHead">Delete Head</button>
+                    <button class="info-btn ll-learn-btn" data-ll-learn="deleteTail">Delete Tail</button>
+                    <button class="info-btn ll-learn-btn" data-ll-learn="deleteIndex">Delete at Index</button>
+                    <button class="info-btn ll-learn-btn" data-ll-learn="pointer">Pointer</button>
+                </div>
+                <div class="info-panel hidden" id="llLearnPanel"></div>
+            </div>
+
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
