@@ -1,24 +1,8 @@
-name: Validate Projects JSON Schema
-
-on:
-  push:
-    paths:
-      - 'project.json'  # Changed from projects.json to match your file exactly
-  pull_request:
-    paths:
-      - 'project.json'  # Changed from projects.json
-
-jobs:
-  validate:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Run Schema Validator
-        run: node scripts/validate-metadata.js
+[
+  {
+    "day": 4,  
+    "name": "Dropdown navigation",
+    "github_url": "https://github.com/aadhyasharma270207-lang/100_days_100_web_project",
+    "live_url": ""
+  }
+]
