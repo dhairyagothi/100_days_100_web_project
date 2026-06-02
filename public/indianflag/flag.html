@@ -8,6 +8,7 @@
 
     <link href="../indianflag/flag.css" rel="stylesheet" />
     <link rel="icon" href="../favv.png" type="image/x-icon" />
+    <link rel="stylesheet" href="flag-history.css">
   </head>
 
   <body>
@@ -67,7 +68,17 @@
         <source src="vande_mataram.mp3" type="audio/mpeg">
       </audio>
     </div>
-
+    <section id="flag-history">
+      <h2>Evolution of the Indian Flag</h2>
+      <p class = "subtitle">From 1906 to Independence — the journey of our Tiranga</p>
+      <div class="timeline-track" id="timelineTrack"></div>
+      <div id="flagCards"></div>
+      <div class="timeline-nav">
+        <button id="btnPrev">&#8592; Previous</button>
+        <button id="btnNext">Next &#8594;</button>
+      </div>
+    </section>
+    <script src="flag-history.js"></script>
     <script>
       // Quotes data
       const quotes = [
