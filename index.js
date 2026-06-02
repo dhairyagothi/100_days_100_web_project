@@ -1796,79 +1796,67 @@ function initTheme() {
 
 // Initialize the theme engine
 initTheme();
-// Custom cursor
+// Custom cursor with accessibility, interactivity & fail-safe upgrades
 (function () {
   const outerCursor = document.querySelector(".cursor-ring--outer");
   const innerCursor = document.querySelector(".cursor-ring--inner");
   if (!outerCursor || !innerCursor) return;
 
-  const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
-  const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  ).matches;
-  if (coarsePointer || prefersReducedMotion) {
-    outerCursor.style.display = "none";
-    innerCursor.style.display = "none";
-    return;
-  }
+  let isKeyboardNavigating = false;
+
+  const getActivationState = () => {
+    let cursorEnabled = true;
+    try {
+      cursorEnabled = localStorage.getItem("customCursorEnabled") !== "false";
+    } catch (_) {
+      // Default to true if localStorage is blocked in sandboxed iframe
+    }
+    const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    return cursorEnabled && !coarsePointer && !prefersReducedMotion;
+  };
+
+  const updateCursorActivationState = () => {
+    if (getActivationState() && !isKeyboardNavigating) {
+      document.body.classList.add("custom-cursor-active");
+    } else {
+      document.body.classList.remove("custom-cursor-active");
+      // Reset styles if cursor is deactivated
+      outerCursor.classList.remove("is-visible");
+      innerCursor.classList.remove("is-visible");
+    }
+  };
+
+  // Expose function to global scope so it can be called from navbar.js when settings toggles
+  window.updateCustomCursorState = updateCursorActivationState;
 
   const target = { x: 0, y: 0 };
   const current = { x: 0, y: 0 };
   const speed = 0.18;
-  const settleThreshold = 0.1;
-  let cursorVisible = false;
-  let cursorFrameId = null;
-
-  const renderCursor = () => {
-    outerCursor.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%)`;
-    innerCursor.style.transform = `translate3d(${target.x}px, ${target.y}px, 0) translate(-50%, -50%)`;
-  };
-
-  const stopCursorLoop = () => {
-    if (cursorFrameId !== null) {
-      cancelAnimationFrame(cursorFrameId);
-      cursorFrameId = null;
-    }
-  };
 
   const update = () => {
-    current.x += (target.x - current.x) * speed;
-    current.y += (target.y - current.y) * speed;
-    renderCursor();
+    if (getActivationState() && !isKeyboardNavigating) {
+      current.x += (target.x - current.x) * speed;
+      current.y += (target.y - current.y) * speed;
 
-    const isSettled =
-      Math.abs(target.x - current.x) < settleThreshold &&
-      Math.abs(target.y - current.y) < settleThreshold;
-
-    if (!cursorVisible || isSettled) {
-      current.x = target.x;
-      current.y = target.y;
-      renderCursor();
-      cursorFrameId = null;
-      return;
+      outerCursor.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%)`;
+      innerCursor.style.transform = `translate3d(${target.x}px, ${target.y}px, 0) translate(-50%, -50%)`;
     }
-
-    cursorFrameId = requestAnimationFrame(update);
-  };
-
-  const startCursorLoop = () => {
-    if (cursorFrameId === null) {
-      cursorFrameId = requestAnimationFrame(update);
-    }
+    requestAnimationFrame(update);
   };
 
   const showCursor = () => {
-    cursorVisible = true;
-    outerCursor.classList.add("is-visible");
-    innerCursor.classList.add("is-visible");
-    startCursorLoop();
+    if (getActivationState() && !isKeyboardNavigating) {
+      outerCursor.classList.add("is-visible");
+      innerCursor.classList.add("is-visible");
+    }
   };
 
   const hideCursor = () => {
-    cursorVisible = false;
     outerCursor.classList.remove("is-visible");
     innerCursor.classList.remove("is-visible");
-    stopCursorLoop();
   };
 
   window.addEventListener(
@@ -1876,6 +1864,10 @@ initTheme();
     (event) => {
       target.x = event.clientX;
       target.y = event.clientY;
+      if (isKeyboardNavigating) {
+        isKeyboardNavigating = false;
+        updateCursorActivationState();
+      }
       showCursor();
     },
     { passive: true },
@@ -1883,6 +1875,61 @@ initTheme();
 
   window.addEventListener("mouseleave", hideCursor);
   window.addEventListener("mouseenter", showCursor);
+
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Tab") {
+      isKeyboardNavigating = true;
+      updateCursorActivationState();
+    }
+  });
+
+  // Watch for system accessibility media query changes
+  const reducedMotionQuery = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  );
+  const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
+
+  const handleQueryChange = () => {
+    updateCursorActivationState();
+  };
+
+  if (typeof reducedMotionQuery.addEventListener === "function") {
+    reducedMotionQuery.addEventListener("change", handleQueryChange);
+    coarsePointerQuery.addEventListener("change", handleQueryChange);
+  } else if (typeof reducedMotionQuery.addListener === "function") {
+    reducedMotionQuery.addListener(handleQueryChange);
+    coarsePointerQuery.addListener(handleQueryChange);
+  }
+
+  // Hover target animations (interactive micro-animations)
+  const hoverTargets =
+    'a, button, [role="button"], input, select, .chip, .project-card, .bookmark-btn';
+
+  document.addEventListener("mouseover", (e) => {
+    if (!getActivationState() || isKeyboardNavigating) return;
+    const item = e.target.closest(hoverTargets);
+    if (item) {
+      outerCursor.style.borderColor = "rgba(59, 130, 246, 1)";
+      outerCursor.style.boxShadow = "0 0 18px rgba(59, 130, 246, 0.6)";
+      outerCursor.style.width = "52px";
+      outerCursor.style.height = "52px";
+    }
+  });
+
+  document.addEventListener("mouseout", (e) => {
+    if (!getActivationState() || isKeyboardNavigating) return;
+    const item = e.target.closest(hoverTargets);
+    if (item) {
+      outerCursor.style.borderColor = "rgba(59, 130, 246, 0.7)";
+      outerCursor.style.boxShadow = "0 0 12px rgba(59, 130, 246, 0.35)";
+      outerCursor.style.width = "36px";
+      outerCursor.style.height = "36px";
+    }
+  });
+
+  // Initialize activation state
+  updateCursorActivationState();
+  requestAnimationFrame(update);
 })();
 
 // Particle Network Background
@@ -2168,60 +2215,4 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
   window.addEventListener("popstate", () => restoreStateFromURL());
-});
-
-// ── Custom Animated Cursor ─────────────────────────────────
-document.addEventListener('DOMContentLoaded', function () {
-  if (!window.matchMedia('(pointer: fine)').matches) return;
-
-  const outer = document.querySelector('.cursor-ring--outer');
-  const inner = document.querySelector('.cursor-ring--inner');
-  if (!outer || !inner) return;
-
-  let mouseX = 0, mouseY = 0;
-  let outerX = 0, outerY = 0;
-
-  document.documentElement.style.cursor = 'none';
-  document.body.style.cursor = 'none';
-
-  document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    inner.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
-    outer.style.opacity = '1';
-    inner.style.opacity = '1';
-  });
-
-  document.addEventListener('mouseleave', () => {
-    outer.classList.remove('is-visible');
-    inner.classList.remove('is-visible');
-  });
-
-  function animateOuter() {
-    outerX += (mouseX - outerX) * 0.12;
-    outerY += (mouseY - outerY) * 0.12;
-    outer.style.transform = `translate3d(${outerX}px, ${outerY}px, 0) translate(-50%, -50%)`;
-    requestAnimationFrame(animateOuter);
-  }
-  animateOuter();
-
-  const hoverTargets = 'a, button, [role="button"], input, select, .chip, .project-card, .bookmark-btn';
-
-  document.addEventListener('mouseover', (e) => {
-    if (e.target.closest(hoverTargets)) {
-      outer.style.borderColor = 'rgba(59, 130, 246, 1)';
-      outer.style.boxShadow = '0 0 18px rgba(59, 130, 246, 0.6)';
-      outer.style.width = '52px';
-      outer.style.height = '52px';
-    }
-  });
-
-  document.addEventListener('mouseout', (e) => {
-    if (e.target.closest(hoverTargets)) {
-      outer.style.borderColor = 'rgba(59, 130, 246, 0.7)';
-      outer.style.boxShadow = '0 0 12px rgba(59, 130, 246, 0.35)';
-      outer.style.width = '36px';
-      outer.style.height = '36px';
-    }
-  });
 });

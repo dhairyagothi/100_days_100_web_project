@@ -46,8 +46,8 @@ function getHabits() {
  *     — Works for existing data, becomes accurate after script.js update.
  */
 function getHistory(habit) {
-  if (Array.isArray(habit.completionHistory) && habit.completionHistory.length > 0) {
-    return habit.completionHistory;
+  if (Array.isArray(habit.completionDates) && habit.completionDates.length > 0) {
+    return habit.completionDates;
   }
   // Fallback: approximate N consecutive days ending at lastCompleted
   if (!habit.lastCompleted || !(habit.streak > 0)) return [];
