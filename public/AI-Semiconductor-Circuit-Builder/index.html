@@ -447,8 +447,16 @@ function renderDesignOutput() {
   `;
 
   document.getElementById('welcome').style.display = 'none';
+
   const outNode = document.getElementById('designResults');
-  outNode.innerHTML = html;
+outNode.replaceChildren();
+
+const wrapper = document.createElement("div");
+wrapper.innerHTML = html; // static template only
+outNode.appendChild(wrapper);
+
+outNode.classList.remove('hidden');
+
   outNode.classList.remove('hidden');
 }
 
@@ -645,7 +653,41 @@ function renderSavedProjectsList() {
     return;
   }
 
-  container.innerHTML = projects.map(p => `
+  
+
+  container.innerHTML = "";
+
+projects.forEach(p => {
+  const card = document.createElement("div");
+
+  card.className =
+    "bg-gray-800/40 hover:bg-gray-800 border border-gray-800 hover:border-gray-700 p-2.5 rounded-xl cursor-pointer flex justify-between items-center transition group";
+
+  card.onclick = () => loadSavedProject(p.id);
+
+  const left = document.createElement("div");
+  left.className = "truncate mr-2";
+
+  const title = document.createElement("div");
+  title.className =
+    "font-mono font-bold text-gray-200 text-xs truncate";
+  title.textContent = p.name;
+
+  const meta = document.createElement("div");
+  meta.className =
+    "text-[10px] text-gray-400 truncate";
+  meta.textContent =
+    `${p.architecture} • ${p.node}nm • ${p.cores} Cores`;
+
+  left.appendChild(title);
+  left.appendChild(meta);
+
+  card.appendChild(left);
+
+  container.appendChild(card);
+});
+
+
 <div onclick="loadSavedProject('${escapeHTML(p.id)}')" class="bg-gray-800/40 hover:bg-gray-800 border border-gray-800 hover:border-gray-700 p-2.5 rounded-xl cursor-pointer flex justify-between items-center transition group">
   <div class="truncate mr-2">
     <div class="font-mono font-bold text-gray-200 text-xs truncate">
@@ -676,23 +718,33 @@ function renderComparisonTable() {
   }
 
 
-  tbody.innerHTML = list.map(c => `
-  <tr class="hover:bg-gray-900/40 border-b border-gray-900 transition">
-    <td class="p-3 font-sans font-semibold text-white">
-      ${escapeHTML(c.name)}
-      <span class="text-[10px] font-mono text-gray-500 block">
-        ${escapeHTML(c.architecture)} Base
-      </span>
-    </td>
-    <td class="p-3 text-blue-400">${escapeHTML(c.node)}nm</td>
-    <td class="p-3 text-gray-400">${c.frequency ? c.frequency.toFixed(2) : '2.50'} GHz</td>
-    <td class="p-3 font-bold text-cyan-400">${c.metrics.power} W</td>
-    <td class="p-3 text-amber-400">${c.metrics.area} mm²</td>
-    <td class="p-3 text-purple-400">${c.metrics.tops} TOPS</td>
-    <td class="p-3 text-emerald-400">${c.metrics.efficiency} <span class="text-[9px] text-gray-500">T/W</span></td>
-  </tr>
-`).join('');
+  
+  tbody.innerHTML = "";
 
+list.forEach(c => {
+  const row = document.createElement("tr");
+  row.className = "hover:bg-gray-900/40 border-b border-gray-900 transition";
+
+  row.innerHTML = `
+    <td class="p-3 font-sans font-semibold text-white"></td>
+    <td class="p-3 text-blue-400"></td>
+    <td class="p-3 text-gray-400"></td>
+    <td class="p-3 font-bold text-cyan-400"></td>
+    <td class="p-3 text-amber-400"></td>
+    <td class="p-3 text-purple-400"></td>
+    <td class="p-3 text-emerald-400"></td>
+  `;
+
+  row.children[0].textContent = c.name;
+  row.children[1].textContent = `${c.node}nm`;
+  row.children[2].textContent = c.frequency ? `${c.frequency.toFixed(2)} GHz` : "2.50 GHz";
+  row.children[3].textContent = `${c.metrics.power} W`;
+  row.children[4].textContent = `${c.metrics.area} mm²`;
+  row.children[5].textContent = `${c.metrics.tops} TOPS`;
+  row.children[6].textContent = `${c.metrics.efficiency} T/W`;
+
+  tbody.appendChild(row);
+});
 
 }
 
