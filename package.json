@@ -5,6 +5,7 @@
   "description": "A curated open-source collection of 100+ frontend web projects",
   "scripts": {
     "dev": "npx -y serve . -p 3000",
+    "validate:projects": "node scripts/validate-projects.js",
     "lint": "npx -y htmlhint index.html contributors/contributor.html",
     "lint:all": "npx -y htmlhint '**/*.html' --ignore 'node_modules/**,**/node_modules/**'",
     "docker:build": "docker build -t 100days-web .",
