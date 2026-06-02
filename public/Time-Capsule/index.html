@@ -1,49 +1,62 @@
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Time Capsule</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
+
     <div class="container">
-        <h1>Time Capsule</h1>
-        <form id="capsuleForm">
-            <textarea id="message" placeholder="Write a letter to your future self..." required></textarea>
-            <label>Reveal in</label>
-            <div class="time-row">
-                <div class="time-unit">
-                    <input type="number" id="hrs" min="0" max="999" value="0">
-                    <span class="time-label">Hours</span>
-                </div>
-            <div class="time-sep">:</div>
-            <div class="time-unit">
-                <input type="number" id="mins" min="0" max="59" value="0">
-                <span class="time-label">Minutes</span>
-            </div>
-             <div class="time-sep">:</div>
-            <div class="time-unit">
-                <input type="number" id="secs" min="0" max="59" value="30">
-                <span class="time-label">Seconds</span>
-            </div>
-        </div>
-    <div class="time-preview" id="preview">Reveals in 30 seconds</div>
-    <p class="error" id="err"></p>
-            <button type="submit">Seal the Capsule</button>
-        </form>
+      <h1>My Time Capsule</h1>
+      <form id="capsuleForm">
+        <textarea id="message" placeholder="Write a letter to your future self..." aria-label="Letter to your future self" required></textarea>
         
-        <div id="capsuleReveal" class="hidden">
-            <h2>🔒 Capsule Sealed</h2>
-            <p id="revealTime"></p>
-        </div>
-        <div id="messageReveal" class="hidden">
-            <h2>📩 Message from the Past</h2>
-            <p id="revealedMessage" style="color: red;"></p>
-        </div>
+        <p class="time-heading">Reveal in</p>
+        
+        <div class="time-row">
+          <div class="time-unit">
+            <input type="number" id="hrs" min="0" max="999" value="0" aria-label="Hours to wait" />
+            <span class="time-label" aria-hidden="true">Hours</span>
+          </div>
+          
+          <div class="time-sep" aria-hidden="true">:</div>
+          
+          <div class="time-unit">
+            <input type="number" id="mins" min="0" max="59" value="0" aria-label="Minutes to wait" />
+            <span class="time-label" aria-hidden="true">Minutes</span>
+          </div>
+          
+          <div class="time-sep" aria-hidden="true">:</div>
+          
+          <div class="time-unit">
+            <input type="number" id="secs" min="0" max="59" value="30" aria-label="Seconds to wait" />
+            <span class="time-label" aria-hidden="true">Seconds</span>
+          </div>
+        </div> <div class="time-preview" id="preview" aria-live="polite">Reveals in 30 seconds</div>
+        <p class="error" id="err" role="alert"></p>
+        <button type="submit">Seal the Capsule</button>
+      </form>
+
+      <div id="capsuleReveal" class="hidden" aria-live="assertive">
+        <h2>🔒 Capsule Sealed</h2>
+        <p id="revealTime"></p>
+      </div>
+      
+      <div id="messageReveal" class="hidden" aria-live="assertive">
+        <h2>📩 Message from the Past</h2>
+        <p id="revealedMessage" style="color: red;"></p>
+      </div>
     </div>
     <script src="script.js"></script>
-</body>
+  </body>
 </html>

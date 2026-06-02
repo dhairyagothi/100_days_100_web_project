@@ -21,7 +21,19 @@
         <!-- Calculator -->
         <div class="calculator">
 
-            <input type="text" placeholder="0" id="inputBox">
+          <div class="display-wrapper">
+
+    <input type="text" placeholder="0" id="inputBox">
+
+    <button
+        id="copyResult"
+        aria-label="Copy result"
+        title="Copy Result"
+    >
+        📋
+    </button>
+
+</div>
 
             <div>
                 <button class="calculator-button">^</button>
@@ -84,7 +96,7 @@
         <!-- History Panel -->
         <div class="history-panel">
 
-            <h2>History</h2>
+           <h2 id="historyTitle">History (0)</h2>
 
             <div id="historyList"></div>
 
