@@ -266,6 +266,7 @@ The website features:
 | 193 | Escape Room | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Escape_Room/index.html) |
 | 194 | Lost & Found Portal | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Lost_And_Found_Portal/index.html) |
 | 195 | Complaint Management System | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Complaint_Management_System/index.html) |
+<<<<<<< HEAD
 | 196 | Flipkart Clone | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Flipkart-Clone/index.html) |
 | 197 | Theme-Toggler | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Theme-toggler/src/App.jsx) |
 | 198 | Pac-Man | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/pacman/index.html) |
@@ -402,6 +403,8 @@ The website features:
 | 126 | Temperature Converter | JavaScript | 🌡️ Tool | [View Demo](https://100-days-100-web-project.vercel.app/public/TemperatureConverter/index.html) |
 | 127 | Particle Wave Animation | CSS, JavaScript | 🎨 Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/Particle%20Wave%20Animation/index.html) |
 | 128 | Reaction Time Test | HTML, CSS, JS | ⚙️ Simulator  | [View Demo](https://100-days-100-web-project.vercel.app/public/reaction-time-tester/main.html) |
+=======
+>>>>>>> upstream/Main
 | 129 | YouTube Clone | HTML, CSS | 🎬 Clone | [View Demo](https://100-days-100-web-project.vercel.app/public/youtube%20clone/index.html) |
 | 130 | Dino Game | JavaScript | 🦖 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/DinoGame/DinoGame-main/index.html) |
 | 131 | Retro Highway Racer | JavaScript | 🏎️ Game | [View Demo](https://100-days-100-web-project.vercel.app/public/RetroHighwayRacer/index.html) |
@@ -469,12 +472,22 @@ The website features:
 | 193 | Escape Room | HTML, CSS, JS | 🎮 Games | [View Demo](https://100-days-100-web-project.vercel.app/public/Escape_Room/index.html) |
 | 194 | Lost & Found Portal | HTML, CSS, JS | ❤️ Social Impact | [View Demo](https://100-days-100-web-project.vercel.app/public/Lost_And_Found_Portal/index.html) |
 | 195 | Complaint Management System | HTML, CSS, JS | 📋 Management | [View Demo](https://100-days-100-web-project.vercel.app/public/Complaint_Management_System/index.html) |
+<<<<<<< HEAD
 | 196 | AirCast | HTML, CSS, JavaScript | 🌐 APIs | [View Demo](https://100-days-100-web-project.vercel.app/public/Weather%20App%20with%20AQI/index.html) |
 | 197 | Theme-Toggler | React, TailwindCSS, JS | 🎨 UI / Animation | [View Demo](https://100-days-100-web-project.vercel.app/public/Theme-toggler/src/App.jsx) |
 | 198 | Pac-Man | HTML, CSS, JS, jQuery | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/pacman/index.html) |
 | 199 | Number Guesser Game | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/NumberGuessGame/index.html) |
 | 200 | Cricket Ultra Pro X | HTML, CSS, JS | 🏏 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Cricket-Ultra-Pro-X/cricket.html) |
+=======
+ 
+>>>>>>> upstream/Main
 
+> The full project list is large and maintained in `projects.json` and on the live website. To keep this README concise and avoid duplicated tables, please view the complete, up-to-date list at:
+
+ - Live website with demos: https://100-days-100-web-project.vercel.app/
+ - Static data file: [projects.json](projects.json)
+
+You can still browse the projects on the website where each entry links to a working demo.
 
 ### 📊 Project Categories:
 - 🎮 **Games**: 25+ interactive games and puzzles
