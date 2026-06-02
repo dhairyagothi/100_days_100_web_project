@@ -299,6 +299,73 @@ function buildProjectCardHTML({
   };
 }
 
+// Global IntersectionObserver to reveal project cards with staggered delays
+const revealObserver = new IntersectionObserver(
+  (entries) => {
+    let delay = 0;
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const card = entry.target;
+        card.style.transitionDelay = `${delay}ms`;
+        card.classList.add("visible");
+        revealObserver.unobserve(card);
+        delay += 60; // Stagger adjacent cards entering the viewport
+
+        // Clean up transition delay once animation completes so it doesn't affect hovers/interactions
+        setTimeout(() => {
+          card.style.transitionDelay = "";
+        }, delay + 600);
+      }
+    });
+  },
+  {
+    rootMargin: "0px 0px -50px 0px", // Trigger slightly before the card enters fully
+    threshold: 0.05,
+  }
+);
+
+function initProjectCardTilt(card) {
+  // Support prefers-reduced-motion bypass
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  let rafId = null;
+
+  card.addEventListener("mousemove", (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left; // cursor x relative to card
+    const y = e.clientY - rect.top;  // cursor y relative to card
+
+    // Set dynamic custom properties for spotlight glow tracking in CSS
+    card.style.setProperty("--mouse-x", `${x}px`);
+    card.style.setProperty("--mouse-y", `${y}px`);
+
+    // Calculate rotation angles for 3D perspective tilt
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((centerY - y) / centerY) * 8; // gentle max tilt of 8 degrees
+    const rotateY = ((x - centerX) / centerX) * 8;
+
+    // Throttle tilt transform using requestAnimationFrame to protect performance
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(() => {
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.015, 1.015, 1.015)`;
+      // Dynamic 3D depth shadow casting in opposite direction of tilt coordinates
+      const shadowX = -rotateY * 2.5;
+      const shadowY = rotateX * 2.5;
+      card.style.boxShadow = `${shadowX}px ${shadowY}px 35px rgba(0, 0, 0, 0.3), 0 20px 50px rgba(59, 130, 246, 0.08)`;
+    });
+  });
+
+  card.addEventListener("mouseleave", () => {
+    if (rafId) cancelAnimationFrame(rafId);
+    // Smoothly reset tilt, scale and dynamic shadow when leaving card
+    rafId = requestAnimationFrame(() => {
+      card.style.transform = "";
+      card.style.boxShadow = "";
+    });
+  });
+}
+
 function attachProjectCardInteraction(card, demoUrl, projectData = null) {
   card.style.cursor = "pointer";
   card.onclick = (e) => {
@@ -311,6 +378,12 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
 
     window.open(demoUrl, "_blank", "noopener");
   };
+
+  // Register card for scroll-based fade reveal
+  revealObserver.observe(card);
+
+  // Initialize premium 3D interactive tilt
+  initProjectCardTilt(card);
 }
 
 /* ============================================================
@@ -769,8 +842,8 @@ function renderGrid() {
     });
 
     card.className = sourceOnly
-      ? "project-card source-only visible"
-      : "project-card visible";
+      ? "project-card source-only"
+      : "project-card";
     card.innerHTML = html;
     attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
@@ -1146,8 +1219,8 @@ function renderBookmarks() {
     });
 
     card.className = sourceOnly
-      ? "project-card source-only visible"
-      : "project-card visible";
+      ? "project-card source-only"
+      : "project-card";
     card.innerHTML = html;
     attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
@@ -1203,8 +1276,8 @@ function renderRecentProjects() {
     });
 
     card.className = sourceOnly
-      ? "project-card source-only visible"
-      : "project-card visible";
+      ? "project-card source-only"
+      : "project-card";
     card.innerHTML = html;
     attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
 
