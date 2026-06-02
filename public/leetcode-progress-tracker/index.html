@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>LeetCode Progress Tracker</title>
+
+  <link rel="stylesheet" href="/public/leetcode-progress-tracker/style.css"/>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+    rel="stylesheet"
+  />
+</head>
+
+<body>
+
+  <!-- THEME TOGGLE -->
+
+  <button id="themeToggle" class="theme-toggle">
+    <i class="ri-moon-line"></i>
+  </button>
+
+  <div class="container">
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+      <div class="hero-content">
+
+        <span class="badge">
+          DSA Analytics Dashboard
+        </span>
+
+        <h1>
+          LeetCode Progress Tracker
+        </h1>
+
+        <p>
+          Track your coding journey, monitor streaks,
+          analyze problem difficulty and stay consistent
+          with interview preparation.
+        </p>
+
+      </div>
+
+    </section>
+
+    <!-- STATS -->
+
+    <section class="stats-grid">
+
+      <div class="stat-card">
+        <h3>Total Solved</h3>
+        <p id="totalSolved">0</p>
+      </div>
+
+      <div class="stat-card easy">
+        <h3>Easy</h3>
+        <p id="easySolved">0</p>
+      </div>
+
+      <div class="stat-card medium">
+        <h3>Medium</h3>
+        <p id="mediumSolved">0</p>
+      </div>
+
+      <div class="stat-card hard">
+        <h3>Hard</h3>
+        <p id="hardSolved">0</p>
+      </div>
+
+      <div class="stat-card streak">
+        <h3>Current Streak</h3>
+        <p id="streakCount">0</p>
+      </div>
+
+    </section>
+
+    <!-- ADD PROBLEM -->
+
+    <section class="form-section">
+
+      <h2>Add Solved Problem</h2>
+
+      <form id="problemForm">
+
+        <input
+          type="text"
+          id="problemName"
+          placeholder="Enter problem name"
+          required
+        />
+
+        <select id="difficulty">
+
+          <option value="Easy">Easy</option>
+          <option value="Medium">Medium</option>
+          <option value="Hard">Hard</option>
+
+        </select>
+
+        <button type="submit">
+          Add Problem
+        </button>
+
+      </form>
+
+    </section>
+
+    <!-- CHARTS -->
+
+    <section class="charts-grid">
+
+      <div class="chart-card">
+
+        <h2>Difficulty Breakdown</h2>
+
+        <canvas id="difficultyChart"></canvas>
+
+      </div>
+
+      <div class="chart-card">
+
+        <h2>Weekly Progress</h2>
+
+        <canvas id="progressChart"></canvas>
+
+      </div>
+
+    </section>
+
+    <!-- RECENT -->
+
+    <section class="recent-section">
+
+      <div class="recent-header">
+
+        <h2>Recent Problems</h2>
+
+      </div>
+
+      <div id="problemList" class="problem-list">
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <script src="/public/leetcode-progress-tracker/script.js"></script>
+
+</body>
+</html>

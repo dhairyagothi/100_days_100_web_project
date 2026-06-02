@@ -44,10 +44,19 @@ function page({ category }) {
               <img
                 src={meal.strMealThumb}
                 alt={meal.strMeal}
-                className="w-72 md:w-96 h-auto"
+                className="w-full h-64 object-cover group-hover:scale-105 transition duration-500"
               />
             </figure>
-            <div className="card-body">
+            <div  className="
+                bg-white
+                rounded-2xl
+                overflow-hidden
+                shadow-lg
+                hover:shadow-2xl
+                hover:-translate-y-2
+                transition-all
+                duration-300
+                ">
               <h2 className="card-title text-lg md:text-xl text-accent flex items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

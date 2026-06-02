@@ -1,16 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
 * {
   box-sizing: border-box;
 }
 
 body {
   background:
-    radial-gradient(circle at top, rgba(0,255,255,0.15), transparent 40%),
-    radial-gradient(circle at bottom, rgba(255,0,255,0.12), transparent 40%),
+    radial-gradient(circle at top, rgba(0, 255, 255, 0.15), transparent 40%),
+    radial-gradient(circle at bottom, rgba(255, 0, 255, 0.12), transparent 40%),
     linear-gradient(135deg, #03131d, #071d2b, #021018);
   background-color: #021018;
   color: white;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   height: 100vh;
   overflow: hidden;
   margin: 0;
@@ -18,16 +18,24 @@ body {
   position: relative;
 }
 body::before {
-  content: '';
+  content: "";
 
   position: absolute;
 
   inset: 0;
 
   background:
-    radial-gradient(circle at 20% 20%, rgba(0,255,255,0.08), transparent 25%),
-    radial-gradient(circle at 80% 30%, rgba(255,0,255,0.08), transparent 25%),
-    radial-gradient(circle at 50% 80%, rgba(0,255,255,0.06), transparent 25%);
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(0, 255, 255, 0.08),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 80% 30%,
+      rgba(255, 0, 255, 0.08),
+      transparent 25%
+    ),
+    radial-gradient(circle at 50% 80%, rgba(0, 255, 255, 0.06), transparent 25%);
 
   pointer-events: none;
 
@@ -44,9 +52,9 @@ h1 {
   text-transform: uppercase;
   line-height: 1.3;
   text-shadow:
-    0 0 10px rgba(0,255,255,0.7),
-    0 0 20px rgba(0,255,255,0.5),
-    0 0 40px rgba(0,255,255,0.3);
+    0 0 10px rgba(0, 255, 255, 0.7),
+    0 0 20px rgba(0, 255, 255, 0.5),
+    0 0 40px rgba(0, 255, 255, 0.3);
   margin-bottom: 50px;
 }
 
@@ -67,17 +75,16 @@ h1 {
   cursor: pointer;
   font-family: inherit;
   box-shadow:
-    0 0 15px rgba(0,229,255,0.7),
-    0 0 35px rgba(255,0,212,0.5);
+    0 0 15px rgba(0, 229, 255, 0.7),
+    0 0 35px rgba(255, 0, 212, 0.5);
   transition: 0.35s ease;
 }
 .btn:hover {
   transform: scale(1.08);
   box-shadow:
-    0 0 25px rgba(0,229,255,0.9),
-    0 0 45px rgba(255,0,212,0.8);
+    0 0 25px rgba(0, 229, 255, 0.9),
+    0 0 45px rgba(255, 0, 212, 0.8);
 }
-
 
 .btn:focus {
   outline: none;
@@ -113,9 +120,9 @@ h1 {
   height: 220px;
 
   border-radius: 50%;
-  border: 4px solid rgba(255,255,255,0.3);
+  border: 4px solid rgba(255, 255, 255, 0.3);
 
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
 
   backdrop-filter: blur(6px);
 
@@ -160,12 +167,11 @@ h1 {
   color: white;
 }
 
-
 .choose-insect-btn img {
   width: 120px;
   height: 120px;
   object-fit: contain;
-  filter: drop-shadow(0 0 15px rgba(255,255,255,0.5));
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.5));
 }
 
 .game-container {
@@ -191,9 +197,9 @@ h1 {
 
 .message {
   line-height: 1.8;
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   width: 420px;
   padding: 25px;
   border-radius: 20px;
@@ -205,7 +211,7 @@ h1 {
   left: 50%;
   transform: translate(-50%, -200%);
   transition: all 0.5s ease;
-  box-shadow: 0 0 30px rgba(0,247,255,0.2);
+  box-shadow: 0 0 30px rgba(0, 247, 255, 0.2);
 }
 
 .message.visible {
@@ -223,8 +229,8 @@ h1 {
   position: absolute;
   transform: translate(-50%, -50%) scale(1);
   transition:
-  transform 0.3s ease,
-  opacity 0.3s ease;
+    transform 0.3s ease,
+    opacity 0.3s ease;
   animation: float 2s infinite ease-in-out;
 }
 .insect.caught {
@@ -235,8 +241,58 @@ h1 {
 .insect img {
   width: 120px;
   height: 120px;
-  filter: drop-shadow(0 0 12px rgba(255,140,0,0.8));
 }
+
+.insect:hover,
+.insect:active {
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+.sound-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 100;
+}
+
+#mute-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid #fff;
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+#mute-btn:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+#volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100px;
+  height: 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.4);
+  outline: none;
+  cursor: pointer;
+}
+
+#volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+}
+
 @keyframes float {
   0% {
     transform: translate(-50%, -50%) translateY(0px);
@@ -253,8 +309,7 @@ h1 {
 
 /* RESPONSIVE */
 
-@media(max-width: 768px) {
-
+@media (max-width: 768px) {
   h1 {
     font-size: 2rem;
   }
@@ -282,34 +337,200 @@ h1 {
   .score {
     font-size: 0.8rem;
   }
-}.corner-design {
+}
+
+.corner-design {
   position: absolute;
-  width: 200px;
-  height: 200px;
-  border: 2px solid rgba(0,255,255,0.25);
-  z-index: 0;
+  bottom: 20px;
+  right: 20px;
+  background-color: #fff;
+  color: #516dff;
+  border: none;
+  padding: 10px 15px;
+  font-family: "Press Start 2P", sans-serif;
+  font-size: 10px;
+  cursor: pointer;
+  transition: 0.2s ease;
 }
 
-.top-left {
-  top: -100px;
-  left: -100px;
-  border-radius: 0 0 100% 0;
+.end-btn:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
 }
 
-.top-right {
-  top: -100px;
-  right: -100px;
-  border-radius: 0 0 0 100%;
+.game-over-box,
+.final-result-box {
+  background: #fff;
+  color: #516dff;
+  padding: 40px;
+  border-radius: 15px;
+  text-align: center;
+  width: 500px;
+  max-width: 90%;
 }
 
-.bottom-left {
-  bottom: -100px;
-  left: -100px;
-  border-radius: 0 100% 0 0;
+.game-over-box h2,
+.final-result-box h1 {
+  line-height: 1.6;
 }
 
-.bottom-right {
-  bottom: -100px;
-  right: -100px;
-  border-radius: 100% 0 0 0;
+.game-over-container,
+.final-result-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.game-over-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.timer-options {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.timer-btn {
+  width: 220px;
+  height: 120px;
+
+  border: 3px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(8px);
+
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.35s ease;
+
+  box-shadow: 0 0 20px rgba(0,229,255,0.4);
+}
+
+.timer-btn:nth-child(1) {
+  border-color: #ff4fd8;
+  box-shadow: 0 0 25px #ff4fd8;
+}
+
+.timer-btn:nth-child(2) {
+  border-color: #4de9ff;
+  box-shadow: 0 0 25px #4de9ff;
+}
+
+.timer-btn:nth-child(3) {
+  border-color: #c86bff;
+  box-shadow: 0 0 25px #c86bff;
+}
+
+.timer-btn:nth-child(4) {
+  border-color: #ffb84d;
+  box-shadow: 0 0 25px #ffb84d;
+}
+
+.timer-btn:hover {
+  transform: scale(1.08);
+  box-shadow:
+    0 0 20px rgba(255,255,255,0.5),
+    0 0 40px currentColor;
+}
+
+.timer-btn:active {
+  transform: scale(0.96);
+}
+
+/* Mobile view adjustments */
+@media (max-width: 768px) {
+
+  h1 {
+    font-size: 1.5rem;
+    padding: 0 15px;
+  }
+
+  .insects-list {
+    gap: 10px;
+  }
+
+  .choose-insect-btn {
+    width: 120px;
+    height: 120px;
+  }
+
+  .choose-insect-btn img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .choose-insect-btn p {
+    font-size: 0.7rem;
+  }
+
+  .timer-options {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 70%;
+  }
+
+  .timer-btn {
+    width: 85%;
+    max-width: 280px;
+    height: 80px;
+    font-size: 0.9rem;
+  }
+
+  .time,
+  .score {
+    font-size: 0.7rem;
+  }
+
+  .time {
+    left: 10px;
+  }
+
+  .score {
+    right: 10px;
+  }
+
+  .message {
+    font-size: 0.7rem;
+    width: 95%;
+    padding: 15px;
+  }
+
+  .game-over-box,
+  .final-result-box {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .game-over-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn {
+    padding: 10px 15px;
+    font-size: 0.7rem;
+  }
+
+  .end-btn {
+    font-size: 0.6rem;
+    padding: 8px 10px;
+  }
 }
