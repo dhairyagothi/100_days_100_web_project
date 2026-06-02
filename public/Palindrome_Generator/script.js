@@ -18,86 +18,59 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // Action on Button Click
-  checkBtn.addEventListener(
-    "click",
-    () => {
-      const val = input.value.trim();
+  checkBtn.addEventListener("click", () => {
+    const val = input.value.trim();
 
-      if (!val) {
-        alert("Please enter some text first!");
-        return;
-      }
+    if (!val) {
+      alert("Please enter some text first!");
+      return;
+    }
 
-      // ✅ FIX: If input is already a palindrome, show feedback and stop
-      if (isPalindrome(val)) {
-        resultBox.className = "result-container mt-4 text-center success-bg";
-        resultIcon.innerText = "✅";
-        resultText.innerText = `"${val}" is already a palindrome! No need to generate.`;
-        return;
-      }
+    // ✅ FIX: If input is already a palindrome, show feedback and stop
+    if (isPalindrome(val)) {
+      resultBox.className = "result-container mt-4 text-center success-bg";
+      resultIcon.innerText = "✅";
+      resultText.innerText = `"${val}" is already a palindrome! No need to generate.`;
+      return;
+    }
 
-      // Function to find the shortest palindrome addition
-      const makeShortestPalindrome = (str) => {
-        const isPalin = (s) => s === s.split("").reverse().join("");
+    // Function to find the shortest palindrome addition
+    const makeShortestPalindrome = (str) => {
+      const isPalin = (s) => s === s.split("").reverse().join("");
 
-        for (let i = 0; i < str.length; i++) {
-          const suffix = str.slice(i);
-          if (isPalin(suffix)) {
-            const prefix = str.slice(0, i);
-            const neededAddition = prefix.split("").reverse().join("");
-            return str + neededAddition;
-          }
+      for (let i = 0; i < str.length; i++) {
+        const suffix = str.slice(i);
+
+        if (isPalin(suffix)) {
+          const prefix = str.slice(0, i);
+          const neededAddition = prefix.split("").reverse().join("");
+          return str + neededAddition;
         }
-        return str;
-      };
+      }
 
-      comparisons++;
+      return str;
+    };
 
-      charBoxes[left].classList.add("active");
-      charBoxes[right].classList.add("active");
+    const palindromeResult = makeShortestPalindrome(val);
 
-      setTimeout(
-        () => {
-          if (cleanedText[left] === cleanedText[right]) {
-            charBoxes[left].classList.add("match");
-            charBoxes[right].classList.add("match");
-          } else {
-            charBoxes[left].classList.add("mismatch");
-            charBoxes[right].classList.add("mismatch");
-          }
+    // Update UI
+    resultBox.className = "result-container mt-4 text-center success-bg";
+    resultText.innerText = `Result: ${palindromeResult}`;
+    resultIcon.innerText = "🎯";
 
-          charBoxes[left].classList.remove("active");
-          charBoxes[right].classList.remove("active");
-
-          left++;
-          right--;
-
-          comparisonCount.innerText = `Comparisons: ${comparisons}`;
-        },
-        educationalMode ? 500 : 0,
-      );
-    },
-    educationalMode ? 800 : 0,
-  );
-
-  // Update UI
-  resultBox.className = "result-container mt-4 text-center success-bg";
-  resultText.innerText = `Result: ${palindromeResult} (${inputType})`;
-  resultIcon.innerText = "🎯";
-
-  confetti({
-    particleCount: 150,
-    spread: 70,
-    origin: { y: 0.6 },
+    if (typeof confetti === "function") {
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+    }
   });
-});
 
-clearBtn.addEventListener("click", () => {
-  input.value = "";
-  resultBox.className = "result-container mt-4 text-center";
-  resultText.innerText = "Waiting for you to click generate...";
-  resultIcon.innerText = "⌨️";
-  characterContainer.innerHTML = "";
-  processedText.innerHTML = "";
-  comparisonCount.innerText = "Comparisons: 0";
+  clearBtn.addEventListener("click", () => {
+    input.value = "";
+    resultBox.className = "result-container mt-4 text-center";
+    resultText.innerText = "Waiting for you to click generate...";
+    resultIcon.innerText = "⌨️";
+  });
 });

@@ -19,6 +19,7 @@ pageloader/
 ## ✨ Features
 
 ### 1. 🔄 Preloader / Loading Screen
+
 - A full-screen loading overlay appears **before** the page content is shown
 - Contains an animated **spinner** and a sliding **progress bar**
 - Automatically hides once the browser has finished loading all assets (`window load` event)
@@ -26,11 +27,13 @@ pageloader/
 - Built with pure CSS animations — no JavaScript animation libraries needed
 
 ### 2. ⏱️ Real Load Time Measurement
+
 - The app measures the **actual page load time** using the browser's `performance.now()` API
 - The real load time (in milliseconds) is displayed live on the **Home** section stats
 - This makes the "99ms Load Time" stat dynamic and accurate — not hardcoded
 
 ### 3. 🧭 Single Page Navigation (Hash Routing)
+
 - Navbar has three links — **Home**, **About**, and **Contact**
 - Clicking a link does **not reload the page** — only the active section switches
 - Routing is handled via URL hash (`#home`, `#about`, `#contact`)
@@ -38,6 +41,7 @@ pageloader/
 - Uses `hashchange` and `DOMContentLoaded` events to manage routing
 
 ### 4. 📬 Contact Form with Validation
+
 - Form includes **Name**, **Email**, and **Message** fields
 - Clicking **Send Message** triggers:
   - ⚠️ Validation check — all fields must be filled
@@ -47,12 +51,14 @@ pageloader/
   - Success/error message auto-hides after 4 seconds
 
 ### 5. 🎨 Responsive Design
+
 - Layout adapts to all screen sizes — mobile, tablet, and desktop
 - Navbar stacks vertically on small screens
 - Feature grid and form rows collapse to single column on mobile
 - Fully usable on any device
 
 ### 6. ♿ Accessibility Support
+
 - Preloader uses `aria-hidden="true"` so screen readers skip it
 - Success message uses `aria-live="polite"` to announce form feedback
 - Supports `prefers-reduced-motion` — all animations are disabled for users who prefer no motion
@@ -67,6 +73,7 @@ No installation or server required.
 Double-click `pageloader.html` in your file explorer. It opens directly in your browser.
 
 **Option 2 — VS Code Live Server:**
+
 1. Open the `pageloader` folder in VS Code
 2. Right-click `pageloader.html` → **Open with Live Server**
 3. App runs at `http://127.0.0.1:5500/pageloader.html`
@@ -75,14 +82,14 @@ Double-click `pageloader.html` in your file explorer. It opens directly in your 
 
 ## 🛠️ Technologies Used
 
-| Technology | Purpose |
-|------------|---------|
-| HTML5 | Page structure and semantics |
-| CSS3 | Styling, animations, responsive layout |
-| Vanilla JavaScript | Preloader logic, routing, form handling |
-| Google Fonts (Syne + DM Sans) | Typography |
-| CSS Custom Properties | Design tokens / theming |
-| `performance.now()` | Real load time measurement |
+| Technology                    | Purpose                                 |
+| ----------------------------- | --------------------------------------- |
+| HTML5                         | Page structure and semantics            |
+| CSS3                          | Styling, animations, responsive layout  |
+| Vanilla JavaScript            | Preloader logic, routing, form handling |
+| Google Fonts (Syne + DM Sans) | Typography                              |
+| CSS Custom Properties         | Design tokens / theming                 |
+| `performance.now()`           | Real load time measurement              |
 
 ---
 
