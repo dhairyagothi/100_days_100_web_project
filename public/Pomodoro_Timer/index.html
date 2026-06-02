@@ -1,96 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" id="themeColorMeta" content="#ba4949">
     <title>Pomodoro Timer</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-    <div class="theme-toggle">
-        <button id="themeBtn" aria-label="Toggle light/dark theme">🌙</button>
-    </div>
-
-    <div class="title">
-        POMODORO TIMER
-    </div>
-
-    <div class="container">
-
-        <div class="top-section">
-
-            <input
-                type="text"
-                id="taskInput"
-                placeholder="What are you working on?"
-                aria-label="Enter your current task"
-            >
-
-            <div class="task-display">
-                <input type="checkbox" id="taskCheck" aria-label="Mark task as complete">
-                <span id="currentTask">No current task</span>
-            </div>
-
+<!-- Settings Modal -->
+<div class="modal-overlay" id="settingsOverlay" role="dialog" aria-modal="true" aria-label="Settings">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>⚙️ Settings</h3>
+            <button class="modal-close" id="closeSettings" aria-label="Close settings">✕</button>
         </div>
-
-        <div class="center-section">
-
-            <div class="mode">
-                <button id="workBtn" class="active" aria-label="Switch to Work mode">Work</button>
-                <button id="breakBtn" aria-label="Switch to Break mode">Break</button>
-            </div>
-
-            <button id="focusModeBtn" aria-label="Toggle Focus Mode">Focus Mode</button>
-            <div class="custom-time">
-    <input
-        type="number"
-        id="customInput"
-        placeholder="Custom mins"
-        min="1"
-        max="120"
-        aria-label="Set custom timer in minutes"
-    >
-    <button id="setTimeBtn" aria-label="Set custom time">Set</button>
+        <div class="modal-body">
+            <label>Pomodoro (min)
+                <input type="number" id="setPomo" min="1" max="60" value="25">
+            </label>
+            <label>Short Break (min)
+                <input type="number" id="setShort" min="1" max="30" value="5">
+            </label>
+            <label>Long Break (min)
+                <input type="number" id="setLong" min="1" max="60" value="15">
+            </label>
+            <label>Long break after
+                <input type="number" id="setLongAfter" min="1" max="10" value="4">
+                <span class="input-hint">pomodoros</span>
+            </label>
+            <label class="toggle-label">
+                <span>Auto-start breaks</span>
+                <div class="toggle" id="autoBreakToggle" data-active="true"><div class="toggle-knob"></div></div>
+            </label>
+            <label class="toggle-label">
+                <span>Auto-start pomodoros</span>
+                <div class="toggle" id="autoPomoToggle" data-active="false"><div class="toggle-knob"></div></div>
+            </label>
+            <label class="toggle-label">
+                <span>Tick sound</span>
+                <div class="toggle" id="tickToggle" data-active="true"><div class="toggle-knob"></div></div>
+            </label>
+            <label class="toggle-label strict-row">
+                <span>🔒 Strict mode <small class="input-hint">— no pause or skip during focus</small></span>
+                <div class="toggle" id="strictToggle" data-active="false"><div class="toggle-knob"></div></div>
+            </label>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-save" id="saveSettings">Save</button>
+        </div>
+    </div>
 </div>
-            <div class="circle">
 
-                <svg aria-hidden="true">
-                    <circle class="bg" cx="160" cy="160" r="100"></circle>
-                    <circle class="progress" id="progressCircle" cx="160" cy="160" r="100"></circle>
-                </svg>
-
-                <div
-                    id="timer"
-                    role="timer"
-                    aria-live="polite"
-                    aria-atomic="true"
-                    aria-label="Countdown timer"
-                >25:00</div>
-
-            </div>
-
-            <div class="buttons">
-                <button id="start" aria-label="Start the timer">Start</button>
-                <button id="pause" aria-label="Pause the timer" disabled>Pause</button>
-                <button id="reset" aria-label="Reset the timer">Reset</button>
-            </div>
-
+<!-- Add Task Modal -->
+<div class="modal-overlay" id="addTaskOverlay" role="dialog" aria-modal="true" aria-label="New Task">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>📝 New Task</h3>
+            <button class="modal-close" id="closeAddTask" aria-label="Close task dialog">✕</button>
         </div>
+        <div class="modal-body">
+            <label>Task Name
+                <input type="text" id="taskNameInput" placeholder="What are you working on?" maxlength="60">
+            </label>
+            <label>Estimated Pomodoros
+                <input type="number" id="taskPomoInput" min="1" max="20" value="1">
+            </label>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" id="cancelAddTask">Cancel</button>
+            <button class="btn-save" id="confirmAddTask">Add Task</button>
+        </div>
+    </div>
+</div>
 
+<!-- Music Dropdown -->
+<div class="music-dropdown" id="musicDropdown" role="dialog" aria-label="Focus Music">
+    <div class="music-dropdown-header">
+        <span>🎧 Focus Music</span>
+        <div class="music-vol-row">
+            <span>🔉</span>
+            <input type="range" id="musicVol" min="0" max="1" step="0.05" value="0.4" aria-label="Music volume">
+        </div>
     </div>
 
-    <div class="quote-banner">
-      <marquee id="quoteText" scrollamount="3">Stay focused and never give up</marquee>
-    </div> 
+    <div class="music-category">
+        <div class="music-cat-label">Focus Music</div>
+        <div class="music-grid" id="focusMusicGrid"></div>
+    </div>
 
-    <audio id="tickSound" loop>
-        <source src="https://www.soundjay.com/clock/sounds/clock-ticking-2.mp3" type="audio/mpeg">
-    </audio>
+    <div class="music-category">
+        <div class="music-cat-label">Science-Backed</div>
+        <div class="music-grid" id="scienceMusicGrid"></div>
+    </div>
 
-    <script src="script.js"></script>
+    <button class="music-off-btn" id="musicOffBtn">⏹ Stop Music</button>
+</div>
 
+<!-- Toast -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<div class="app-container">
+
+    <!-- Header -->
+    <div class="app-header">
+        <span class="app-title">🍅 Pomodoro</span>
+        <div class="header-actions">
+            <span class="strict-badge" id="strictBadge" style="display:none">🔒 STRICT</span>
+            <button class="icon-btn music-header-btn" id="musicHeaderBtn" title="Focus Music" aria-label="Toggle focus music">🎧</button>
+            <button class="icon-btn" id="muteBtn" title="Mute tick" aria-label="Mute tick sound">🔊</button>
+            <button class="icon-btn" id="settingsBtn" title="Settings" aria-label="Open settings">⚙️</button>
+        </div>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <span class="stat-label">Today</span>
+            <span class="stat-value" id="statsToday">0</span> 🍅
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <span class="stat-label">Streak</span>
+            <span class="stat-value" id="statsStreak">0</span> 🔥
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <span class="stat-label">All time</span>
+            <span class="stat-value" id="statsTotal">0</span> 🍅
+        </div>
+    </div>
+
+    <!-- Weekly bar chart -->
+    <div class="weekly-chart" id="weeklyChart"></div>
+
+    <!-- Timer Card -->
+    <div class="timer-card" id="timerCard">
+        <div class="modes">
+            <button id="pomodoroBtn" class="mode-btn active">Pomodoro</button>
+            <button id="shortBreakBtn" class="mode-btn">Short Break</button>
+            <button id="longBreakBtn" class="mode-btn">Long Break</button>
+        </div>
+
+        <div class="progress-ring-wrapper">
+            <svg class="progress-ring" viewBox="0 0 220 220" aria-hidden="true">
+                <circle class="progress-ring-bg" cx="110" cy="110" r="100"/>
+                <circle class="progress-ring-fill" id="progressRing" cx="110" cy="110" r="100"
+                    stroke-dasharray="628.3" stroke-dashoffset="0"/>
+            </svg>
+            <div class="time-display" id="timer" role="timer" aria-live="off">25:00</div>
+        </div>
+
+        <div class="session-dots" id="sessionDots" aria-label="Session progress"></div>
+
+        <!-- Now-playing strip inside timer card -->
+        <div class="now-playing" id="nowPlaying" style="display:none" aria-live="polite">
+            <span class="np-dot"></span>
+            <span id="nowPlayingLabel">-</span>
+        </div>
+
+        <div class="controls">
+            <button class="ctrl-btn" id="resetBtn" title="Reset (R)" aria-label="Reset timer">↺</button>
+            <button id="startBtn" aria-label="Start or pause timer">START</button>
+            <button class="ctrl-btn" id="skipBtn" title="Skip (S)" aria-label="Skip session">⏭</button>
+        </div>
+    </div>
+
+    <!-- Task info -->
+    <div class="task-info">
+        <div class="task-number" id="sessionLabel">Session #1</div>
+        <div class="task-current" id="currentTaskDisplay">No task selected</div>
+    </div>
+
+    <!-- Task Section -->
+    <div class="task-section">
+        <div class="task-header">
+            <h2>Tasks</h2>
+            <button class="options-btn" id="clearDoneBtn" title="Clear completed" aria-label="Clear completed tasks">🗑</button>
+        </div>
+        <div class="task-list" id="taskList"></div>
+        <button class="add-task-btn" id="addTaskBtn" aria-label="Add new task">
+            <span class="icon">+</span> Add Task
+        </button>
+    </div>
+
+    <!-- Keyboard shortcuts hint -->
+    <div class="shortcut-hint" id="shortcutHint"></div>
+
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>

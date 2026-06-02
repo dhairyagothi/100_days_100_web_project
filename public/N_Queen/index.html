@@ -1,33 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-  // This is the main HTML file for the N-Queens Game. It sets up the structure of the webpage, including the title, input for board size, buttons to start and reset the game, a message area for feedback, and a container for the game board. The CSS file is linked for styling, and the JavaScript file is included to handle the game logic and interactions.
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>N-Queens Game</title>
+  <title>N-Queens Interactive Game</title>
   <link rel="stylesheet" href="./style.css">
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
+  <a href="/" class="project-back-button">← Back to Home</a>
+
   <div class="container">
-
     <h1>N-Queens Game</h1>
+    <p class="subtitle">Place N queens safely without them attacking each other!</p>
 
-    <div class="borad-details">
+    <div class="board-details">
         <div class="board-size">
-            <label for="boardSize">Choose Board Size (N):</label>
-            <input type="number" id="boardSize" min="4" value="4">
+            <label for="boardSize">Choose Board Size (N)</label>
+            <input type="number" id="boardSize" min="4" max="12" value="4">
         </div>
         <div class="start-reset-button">
             <button id="startGame">Start Game</button>
+            <button id="resetGame" class="reset-button" style="display: none;">Reset Game</button>
         </div>
     </div>
    
-    <button id="resetGame" class="reset-button" style="display: none;">Reset Game</button>
     <p id="message"></p>
     <div id="gameBoard"></div>
-    
-  </div>  
+  </div>   
   <script src="./script.js"></script>
 </body>
 </html>
