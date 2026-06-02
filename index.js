@@ -1087,8 +1087,6 @@ function trackRecentProject(project) {
   renderRecentProjects();
 }
 
-const bookmarkGrid = document.getElementById("bookmarkGrid");
-
 function normalizeProjectEntry(project) {
   if (Array.isArray(project)) {
     return {
@@ -1108,16 +1106,22 @@ function normalizeProjectEntry(project) {
 }
 
 function renderBookmarks() {
+  const bookmarkGrid = document.getElementById('bookmarkGrid');
   if (!bookmarkGrid) return;
 
-  bookmarkGrid.innerHTML = "";
+  // Show/hide the entire section
+  const bookmarkSection = bookmarkGrid.closest('.projects-section');
+
+  bookmarkGrid.innerHTML = '';
 
   if (bookmarkedProjects.length === 0) {
-    bookmarkGrid.innerHTML = `<p class="empty-state">No bookmarked projects yet.</p>`;
+    if (bookmarkSection) bookmarkSection.style.display = 'none';
     return;
   }
 
-  const bookmarkToggleBtn = document.getElementById("bookmarkToggleBtn");
+  if (bookmarkSection) bookmarkSection.style.display = '';
+
+  const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
   if (bookmarkToggleBtn) {
     bookmarkToggleBtn.style.display =
       bookmarkedProjects.length <= INITIAL_VISIBLE_ITEMS
@@ -1145,30 +1149,58 @@ function renderBookmarks() {
       showDescription: true,
     });
 
-    card.className = sourceOnly
-      ? "project-card source-only visible"
-      : "project-card visible";
-    card.innerHTML = html;
-    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
+  visibleBookmarks.forEach(([day, name, url, tags, cat]) => {
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter(t => t) : tags;
+    const tagsHTML = tagsArray.map((tag) => `<span class="tag">${tag}</span>`).join('');
+    const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
+    const sourceUrl = getSourceUrl(url);
+
+    card.innerHTML = `
+            <div class="card-meta">
+                <span class="card-day">${day}</span>
+                <span class="card-category ${cat}">${CATEGORY_LABEL[cat] || cat}</span>
+            </div>
+            <div class="card-name">${name}</div>
+            <div class="card-tags">${tagsHTML}</div>
+            <div class="card-footer">
+                <div class="card-actions-left">
+                    <a href="${url.trim()}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
+                        Demo <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
+                        <i class="fab fa-github"></i> Code
+                    </a>
+                </div>
+                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
+                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+                </button>
+            </div>
+        `;
 
     bookmarkGrid.appendChild(card);
   });
 }
 
-const recentGrid = document.getElementById("recentGrid");
-
 function renderRecentProjects() {
+  const recentGrid = document.getElementById('recentGrid');
   if (!recentGrid) return;
 
-  recentGrid.innerHTML = "";
+  // Show/hide the entire section
+  const recentSection = recentGrid.closest('.projects-section');
+  
+  recentGrid.innerHTML = '';
 
   // Filter projects within the 1-hour window
   const validRecent = getRecentProjectsWithinWindow();
 
   if (validRecent.length === 0) {
-    recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects within the last hour.</p>`;
+    if (recentSection) recentSection.style.display = 'none';
     return;
   }
+
+  if (recentSection) recentSection.style.display = '';
 
   const recentToggleBtn = document.getElementById("recentToggleBtn");
   if (recentToggleBtn) {
