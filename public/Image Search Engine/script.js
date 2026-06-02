@@ -1,46 +1,71 @@
-const searchform = document.getElementById("searchaform");
+const searchform = document.getElementById("searchform");
 const searchBox = document.getElementById("search-box");
 const searchResult = document.getElementById("search-result");
-const showMoreBtn = document.getElementById("show-more-btn");
+const showMoreButton = document.getElementById("show-more-button");
 
-
-let keyword="";
+let keyword = "";
 let page = 1;
 
-async function searchImages(){
-    keyword = searchBox.value;
-    const url = https://api.unsplash.com/search/photos?page=1&query=office%3E&client_id=wAj8QISZk2cxBAnO3v0hIMMdWnjEbk5Lf4f61S8q7PE
-    {keyword}&client_id=${accesKey}&per_page=12;
-
-    const response = await fetch(url);
-    const data = await response.json();
-
-    if(page === 1){
-        searchResult.innerHTML = "";
+async function searchImages() {
+    keyword = searchBox.value.trim().toLowerCase();
+    if (!keyword) {
+        alert("Please enter a keyword to search!");
+        return;
     }
 
-    const results = data.results
+    showMoreButton.innerText = "Loading...";
+    showMoreButton.style.display = "block";
+    
+    try {
+        if (page === 1) {
+            searchResult.innerHTML = "";
+        }
 
-    results.map((result) =>{
-        const image = document.createElement("img");
-        image.src = result.urls.small;
-        const imageLink = document.createElement("a");
-        imageLink.href = result.links.html;
-        imageLink.target = "_blank";
+        const itemsPerPage = 12;
+        
+        for (let i = 0; i < itemsPerPage; i++) {
+            // Uses a zero-key open API that strictly matches the keyword entered
+            const accurateImageUrl = `https://loremflickr.com/500/400/${encodeURIComponent(keyword)}?random=${i + (page * itemsPerPage)}`;
 
-        imageLink.appendChild(image);
-        searchResult.appendChild(imageLink);
-    })
-    showMoreBtn.style.display = "block"
+            const image = document.createElement("img");
+            image.src = accurateImageUrl;
+            image.alt = `${keyword} search result`;
+            image.loading = "lazy"; 
+            image.style.background = "#1e293b"; 
+
+            const imageLink = document.createElement("a");
+            imageLink.href = accurateImageUrl;
+            imageLink.target = "_blank";
+            imageLink.rel = "noopener noreferrer"; 
+            
+            imageLink.appendChild(image);
+            searchResult.appendChild(imageLink);
+        }
+
+        if (page < 5) {
+            showMoreButton.style.display = "block";
+        } else {
+            showMoreButton.style.display = "none";
+        }
+        
+    } catch (error) {
+        console.error("Search failed:", error);
+        if (page === 1) {
+            searchResult.innerHTML = `<p class="error-msg">Something went wrong. Please try again.</p>`;
+        }
+        showMoreButton.style.display = "none";
+    } finally {
+        showMoreButton.innerText = "Show more";
+    }
 }
 
 searchform.addEventListener("submit", (e) => {
     e.preventDefault();
     page = 1;
     searchImages();
-})
+});
 
-showMoreBtn.addEventListener("click", () =>{
+showMoreButton.addEventListener("click", () => {
     page++;
     searchImages();
-})
+});
