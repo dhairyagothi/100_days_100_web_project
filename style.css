@@ -2800,8 +2800,6 @@ body.light-mode .noise-layer {
 }
 
 
-} /* end @media (max-width: 768px) */
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -3103,4 +3101,5 @@ body > header {
 
 * {
   cursor: none !important;
+}
 }
