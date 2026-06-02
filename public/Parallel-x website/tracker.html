@@ -7,27 +7,45 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #f4f6f3;
-            --surface: #ffffff;
-            --surface-2: #f9faf8;
-            --border: #e4e8e1;
-            --border-focus: #4a7c59;
-            --text: #1a2318;
-            --text-muted: #6b7c66;
-            --text-placeholder: #9aaa94;
-            --green: #3d6b4f;
-            --green-mid: #4a7c59;
-            --green-light: #eaf2ec;
-            --green-accent: #5a9a6e;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-            --shadow: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
-            --shadow-lg: 0 20px 60px rgba(0,0,0,0.14), 0 8px 20px rgba(0,0,0,0.08);
-            --radius: 10px;
-            --radius-sm: 6px;
-            --transition: 0.2s ease;
+            --bg-primary: #f0f7f4;
+            --bg-card: #ffffff;
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --emerald: #10b981;
+            --emerald-light: #d1fae5;
+            --emerald-dark: #065f46;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --radius: 12px;
+            --transition: all 0.3s ease;
         }
 
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        /* theme toggle button styling */
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid rgba(0,0,0,0.08);
+            color: var(--text-main);
+            padding: 6px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        /* Dark theme overrides (applied when html[data-theme="dark"]) */
+        :root[data-theme="dark"], [data-theme="dark"] {
+            --bg-primary: #071412;
+            --bg-card: #0b1d16;
+            --text-main: #e6f6ef;
+            --text-muted: #9fbfb0;
+            --emerald: #06b07a;
+            --emerald-light: #063c2d;
+            --emerald-dark: #0a532f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             font-family: 'DM Sans', sans-serif;
@@ -230,15 +248,13 @@
         .habit-item:hover { background: var(--surface-2); }
         .habit-item.is-done { background: #fafcfa; }
 
-        .habit-meta { flex: 1; min-width: 0; }
-        .habit-meta h3 {
-            font-size: 0.93rem;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 2px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        @media (max-width: 700px) {
+            .habit-item { flex-direction: column; align-items:flex-start; gap:10px; }
+        }
+
+        .habit-item:hover {
+            border-color: var(--emerald);
+            background-color: #fcfdfd;
         }
         .habit-item.is-done .habit-meta h3 {
             color: var(--text-muted);
@@ -281,11 +297,13 @@
             transition: border-color var(--transition), background var(--transition);
             color: transparent;
         }
-        .btn-toggle:hover { border-color: var(--green-mid); }
-        .habit-item.is-done .btn-toggle {
-            border-color: var(--green);
-            background: var(--green);
-            color: #fff;
+
+        .action-btn { min-width: 84px; text-align:center; box-shadow: 0 6px 18px rgba(16,185,129,0.06); }
+        .action-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(16,185,129,0.12); }
+
+        .action-btn.completed {
+            background-color: var(--emerald);
+            color: white;
         }
         .btn-toggle svg { width: 14px; height: 14px; }
 
@@ -565,48 +583,132 @@
             margin-top: 5px;
             display: none;
         }
-        .form-error.show { display: block; }
+
+        /* Back to Home Button */
+        .back-home-btn {
+            position: fixed;
+            left: 24px;
+            top: 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 22px;
+            border-radius: 30px;
+            background-color: var(--bg-card);
+            color: var(--emerald-dark);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(6, 95, 70, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            z-index: 999;
+            transition: var(--transition);
+        }
+
+        .back-home-btn:hover {
+            background-color: var(--emerald);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.25);
+            border-color: transparent;
+        }
+
+        .back-home-btn .back-icon {
+            width: 16px;
+            height: 16px;
+            transition: var(--transition);
+        }
+
+        .back-home-btn:hover .back-icon {
+            transform: translateX(-3px);
+        }
+
+        /* Responsive configuration for Back to Home on small screens */
+        @media (max-width: 600px) {
+            .back-home-btn {
+                position: static;
+                margin-top: 10px;
+                margin-bottom: 20px;
+                display: inline-flex;
+                box-shadow: var(--shadow);
+            }
+        }
     </style>
 </head>
 <body>
-
-<a href="parallal.html" class="project-back-button">
-    ← Back to Home
+<a href="parallal.html" class="back-home-btn">
+    <svg class="back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+    <span>Back to Home</span>
 </a>
 
-<div class="app-shell">
 
-    <!-- Header -->
-    <header class="app-header">
-        <div class="app-header-inner">
-            <div>
-                <h1>Eco Habit <span>Tracker</span></h1>
-                <p>Small daily actions build a sustainable future.</p>
+    <div class="container">
+        <header>
+            <h1>Eco Habit Tracker</h1>
+            <p>Small daily shifts build a sustainable future</p>
+            <div style="margin-top:8px;">
+                <button class="theme-toggle" aria-label="Toggle theme">🌙</button>
+            </div>
+        </header>
+
+        <div class="dashboard-grid">
+            
+            <!-- Impact Scoreboard Section -->
+            <div class="impact-panel">
+                <div class="stat-box">
+                    <div class="value" id="stat-score">0</div>
+                    <div class="label">Eco Score</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="stat-co2">0g</div>
+                    <div class="label">CO₂ Offset</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="stat-water">0L</div>
+                    <div class="label">Water Saved</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="stat-plastic">0</div>
+                    <div class="label">Plastics Avoided</div>
+                </div>
+                <!-- Weekly chart removed to reduce page length per user request -->
             </div>
 
             <div id="date-display"></div>
         </div>
     </header>
 
-    <!-- Stats -->
-    <div class="stats-row">
-        <div class="stat-card">
-            <div class="stat-val" id="stat-score">0</div>
-            <div class="stat-label">Eco Score</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-val" id="stat-co2">0g</div>
-            <div class="stat-label">CO&#8322; Offset</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-val" id="stat-water">0L</div>
-            <div class="stat-label">Water Saved</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-val" id="stat-plastic">0</div>
-            <div class="stat-label">Plastics Avoided</div>
-        </div>
-    </div>
+            <!-- Accomplishments Panel -->
+            <aside class="card">
+                <div class="card-title">Milestones</div>
+                <div style="margin-bottom:12px;">
+                    <div id="streak-count" style="font-size:14px;font-weight:700;color:var(--emerald-dark);margin-bottom:8px;">Current streak: 0 days</div>
+                    <div id="weekly-summary" style="font-size:13px;color:var(--text-muted);">Weekly progress: —</div>
+                </div>
+                <div class="badge-grid" id="badge-container">
+                    <!-- Dynamic rendering via JavaScript -->
+                </div>
+            </aside>
+
+            <!-- History Section -->
+            <section class="card history-section">
+                <div class="card-title">Completed Logs</div>
+                <div class="history-table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Action Taken</th>
+                                <th>Environmental Impact Saved</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-log-rows">
+                            <!-- Dynamic rendering via JavaScript -->
+                        </tbody>
+                    </table>
+                    <div id="history-empty" class="empty-state">No historical entries recorded yet. Complete an action to log history!</div>
+                </div>
+            </section>
 
     <!-- Main grid -->
     <div class="main-grid">
@@ -632,111 +734,51 @@
         <h2>Milestones</h2>
     </div>
 
-    <div class="card-body">
-        <div class="milestone-list" id="badge-container"></div>
-    </div>
-</div>
+    <script src="theme-toggle.js"></script>
+    <script>
+        // Default Habit Dataset with impact weight configurations (persisted and editable)
+        const defaultHabits = [
+            { id: 'water', title: 'Bring a Reusable Bottle', desc: 'Avoid single-use plastic production cycles.', category: 'Waste Reduction', points: 10, co2: 80, water: 3, plastic: 1 },
+            { id: 'meat', title: 'Plant-Based Meals Only', desc: 'Significantly reduce dietary carbon footprint.', category: 'Eco-Friendly Lifestyle', points: 25, co2: 1200, water: 540, plastic: 0 },
+            { id: 'commute', title: 'Active or Public Transit', desc: 'Walk, cycle, or take a bus instead of driving.', category: 'Sustainable Transport', points: 20, co2: 900, water: 0, plastic: 0 },
+            { id: 'bags', title: 'Utilize Reusable Bags', desc: 'Keep microplastics out of ocean environments.', category: 'Waste Reduction', points: 10, co2: 30, water: 1, plastic: 2 },
+            { id: 'energy', title: 'Unplug Standby Electronics', desc: 'Curtail subtle vampire power consumption.', category: 'Energy Saving', points: 15, co2: 150, water: 0, plastic: 0 }
+        ];
 
-        <!-- History -->
-        <div class="card history-card">
-            <div class="card-header"><h2>Completed Log</h2></div>
-            <div class="card-body">
-                <table class="history-table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Habit</th>
-                            <th>Impact</th>
-                        </tr>
-                    </thead>
-                    <tbody id="history-log-rows"></tbody>
-                </table>
-                <div id="history-empty" class="history-empty">No entries yet. Complete a habit to begin logging.</div>
-            </div>
-        </div>
+        // Load habit list from storage or fallback to defaults
+        let habitList = JSON.parse(localStorage.getItem('eco_habits')) || defaultHabits.slice();
 
-    </div>
-</div>
+        // Helpers to persist habits
+        function saveHabits() {
+            localStorage.setItem('eco_habits', JSON.stringify(habitList));
+        }
 
-<!-- ── ADD HABIT MODAL ── -->
-<div class="modal-overlay" id="modal-overlay">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        // Bind add habit form (attach immediately if DOM is ready)
+        (function bindAddForm(){
+            function attach(){
+                const addForm = document.getElementById('add-habit-form');
+                if (!addForm) return;
+                addForm.addEventListener('submit', function(e){
+                    e.preventDefault();
+                    const title = document.getElementById('new-title').value.trim();
+                    if (!title) return;
+                    const desc = document.getElementById('new-desc').value.trim();
+                    const category = document.getElementById('new-category').value;
+                    const points = parseInt(document.getElementById('new-points').value,10) || 10;
+                    const id = title.toLowerCase().replace(/[^a-z0-9]+/g,'-') + '-' + Date.now().toString().slice(-4);
+                    const habit = { id, title, desc, category, points, co2: 0, water: 0, plastic: 0 };
+                    habitList.unshift(habit);
+                    saveHabits();
+                    renderHabits();
+                    // reset small fields
+                    addForm.reset();
+                });
+            }
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', attach);
+            else attach();
+        })();
 
-        <div class="modal-top">
-            <div>
-                <h2 id="modal-title">Log a New Habit</h2>
-                <p>Define the action and its environmental impact.</p>
-            </div>
-            <button class="modal-close" id="close-modal-btn" aria-label="Close">
-                <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                    <line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/>
-                </svg>
-            </button>
-        </div>
-
-        <div class="modal-body">
-
-            <!-- Habit name -->
-            <div class="form-row">
-                <label for="new-habit-title">Habit Title</label>
-                <input type="text" id="new-habit-title" placeholder="e.g. Bring a reusable bottle" maxlength="60" autocomplete="off">
-                <span class="form-error" id="err-title">Please enter a habit title.</span>
-            </div>
-
-            <!-- Description -->
-            <div class="form-row">
-                <label for="new-habit-desc">Description <span class="field-hint">Optional</span></label>
-                <input type="text" id="new-habit-desc" placeholder="e.g. Avoid single-use plastic production" maxlength="120" autocomplete="off">
-            </div>
-
-            <!-- Points -->
-            <div class="form-row">
-                <label for="new-habit-points">Eco Points</label>
-                <input type="number" id="new-habit-points" placeholder="e.g. 10" value="10" min="1" max="500">
-                <span class="form-error" id="err-points">Enter a valid point value (1–500).</span>
-            </div>
-
-            <div class="modal-divider"></div>
-
-            <!-- Impact metrics -->
-            <div class="form-row">
-                <label>Environmental Impact <span class="field-hint">Estimated values per completion</span></label>
-                <div class="impact-grid">
-                    <div class="impact-field">
-                        <label for="new-habit-co2">CO&#8322; Offset <span class="impact-badge">g</span></label>
-                        <input type="number" id="new-habit-co2" placeholder="80" value="80" min="0">
-                    </div>
-                    <div class="impact-field">
-                        <label for="new-habit-water">Water Saved <span class="impact-badge">L</span></label>
-                        <input type="number" id="new-habit-water" placeholder="3" value="3" min="0">
-                    </div>
-                    <div class="impact-field">
-                        <label for="new-habit-plastic">Plastics <span class="impact-badge">units</span></label>
-                        <input type="number" id="new-habit-plastic" placeholder="1" value="1" min="0">
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="modal-footer">
-            <button class="btn-cancel" id="cancel-modal-btn">Cancel</button>
-            <button class="btn-submit" id="submit-habit-btn">Save Habit</button>
-        </div>
-
-    </div>
-</div>
-
-<script>
-    // ── Data ──
-    let habitTemplate = JSON.parse(localStorage.getItem('user_habits')) || [
-        { id: 'water',   title: 'Bring a Reusable Bottle',      desc: 'Avoid single-use plastic production cycles.',    points: 10, co2: 80,   water: 3,   plastic: 1 },
-        { id: 'meat',    title: 'Plant-Based Meals Only',        desc: 'Reduce dietary carbon footprint significantly.', points: 25, co2: 1200, water: 540, plastic: 0 },
-        { id: 'commute', title: 'Active or Public Transit',      desc: 'Walk, cycle, or take a bus instead of driving.', points: 20, co2: 900,  water: 0,   plastic: 0 },
-        { id: 'bags',    title: 'Utilize Reusable Bags',         desc: 'Keep microplastics out of ocean environments.',  points: 10, co2: 30,   water: 1,   plastic: 2 },
-        { id: 'energy',  title: 'Unplug Standby Electronics',    desc: 'Curtail vampire power consumption.',             points: 15, co2: 150,  water: 0,   plastic: 0 }
-    ];
-    // Milestone configuration targets based on Cumulative Eco Score
+        // Milestone configuration targets based on Cumulative Eco Score
         const milestoneBadges = [
             { id: 'b1', title: 'Green Seedling', desc: 'Earn 15 Eco Points', target: 15, icon: '🌱' },
             { id: 'b2', title: 'Wave Maker', desc: 'Save 10L of Water', target: 10, type: 'water', icon: '💧' },
@@ -812,93 +854,149 @@
             points, co2, water, plastic
         };
 
-        habitTemplate.push(newHabit);
-        localStorage.setItem('user_habits', JSON.stringify(habitTemplate));
+        // UI Element Direct References
+        const habitContainer = document.getElementById('habit-list-container');
+        const badgeContainer = document.getElementById('badge-container');
+        const historyRows = document.getElementById('history-log-rows');
+        const historyEmptyState = document.getElementById('history-empty');
+        const dateDisplay = document.getElementById('date-display');
 
-        // Reset form
-        ['new-habit-title','new-habit-desc'].forEach(id => document.getElementById(id).value = '');
-        document.getElementById('new-habit-points').value = '10';
-        document.getElementById('new-habit-co2').value    = '80';
-        document.getElementById('new-habit-water').value  = '3';
-        document.getElementById('new-habit-plastic').value = '1';
+        // Dynamic metrics interface updater
+        function updateDashboardMetrics() {
+            document.getElementById('stat-score').innerText = appState.totals.score;
+            document.getElementById('stat-co2').innerText = `${appState.totals.co2}g`;
+            document.getElementById('stat-water').innerText = `${appState.totals.water}L`;
+            document.getElementById('stat-plastic').innerText = appState.totals.plastic;
+            
+            localStorage.setItem('eco_totals', JSON.stringify(appState.totals));
+            evaluateMilestones();
+            computeWeeklySummary();
+            computeStreak();
+        }
 
-        closeModal();
-        renderHabits();
-    }
+        // Daily structural reset validation checking calendar cross-over
+        function checkDailyReset() {
+            const todayStr = new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+            dateDisplay.innerText = todayStr;
 
-    // ── Core logic ──
-    function checkDailyReset() {
-        const todayStr = new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-        dateDisplay.innerText = todayStr;
-        if (appState.lastSavedDate !== todayStr) {
-            appState.completedToday = [];
-            appState.lastSavedDate = todayStr;
+            if (appState.lastSavedDate !== todayStr) {
+                appState.completedToday = [];
+                appState.lastSavedDate = todayStr;
+                localStorage.setItem('eco_completed_today', JSON.stringify(appState.completedToday));
+                localStorage.setItem('eco_last_date', todayStr);
+            }
+        }
+
+        // Execution of completion toggle toggling system state array strings
+        function toggleHabit(habitId) {
+            const targetHabit = habitList.find(h => h.id === habitId);
+            if (!targetHabit) return;
+
+            const index = appState.completedToday.indexOf(habitId);
+            const isAdding = index === -1;
+
+            if (isAdding) {
+                // Add to daily list
+                appState.completedToday.push(habitId);
+                
+                // Update metrics
+                appState.totals.score += targetHabit.points;
+                appState.totals.co2 += targetHabit.co2;
+                appState.totals.water += targetHabit.water;
+                appState.totals.plastic += targetHabit.plastic;
+
+                // Push an entry to history with ISO date for analytics
+                const iso = new Date().toISOString().slice(0,10); // YYYY-MM-DD
+                const logEntry = {
+                    iso: iso,
+                    date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                    title: targetHabit.title,
+                    impact: `+${targetHabit.points} Pts, -${targetHabit.co2 || 0}g CO₂`
+                };
+                appState.historyLog.unshift(logEntry); // Top entry insertion 
+            } else {
+                // Subtract execution logic
+                appState.completedToday.splice(index, 1);
+                
+                appState.totals.score = Math.max(0, appState.totals.score - targetHabit.points);
+                appState.totals.co2 = Math.max(0, appState.totals.co2 - targetHabit.co2);
+                appState.totals.water = Math.max(0, appState.totals.water - targetHabit.water);
+                appState.totals.plastic = Math.max(0, appState.totals.plastic - targetHabit.plastic);
+
+                // Remove the most recent matching history entry for this habit (if any)
+                const logIndex = appState.historyLog.findIndex(entry => entry.title === targetHabit.title && entry.iso === new Date().toISOString().slice(0,10));
+                if (logIndex !== -1) appState.historyLog.splice(logIndex, 1);
+            }
+
+            // Sync structural arrays out onto LocalStorage strings
             localStorage.setItem('eco_completed_today', JSON.stringify(appState.completedToday));
-            localStorage.setItem('eco_last_date', todayStr);
-        }
-    }
+            localStorage.setItem('eco_history_log', JSON.stringify(appState.historyLog));
+            saveHabits();
 
-    function toggleHabit(habitId) {
-        const habit = habitTemplate.find(h => h.id === habitId);
-        if (!habit) return;
-        const idx = appState.completedToday.indexOf(habitId);
-        const adding = idx === -1;
-
-        if (adding) {
-            appState.completedToday.push(habitId);
-            appState.totals.score   += habit.points;
-            appState.totals.co2     += habit.co2;
-            appState.totals.water   += habit.water;
-            appState.totals.plastic += habit.plastic;
-            appState.historyLog.unshift({
-                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-                title: habit.title,
-                impact: `+${habit.points} pts  /  -${habit.co2}g CO\u2082`
-            });
-        } else {
-            appState.completedToday.splice(idx, 1);
-            appState.totals.score   = Math.max(0, appState.totals.score   - habit.points);
-            appState.totals.co2     = Math.max(0, appState.totals.co2     - habit.co2);
-            appState.totals.water   = Math.max(0, appState.totals.water   - habit.water);
-            appState.totals.plastic = Math.max(0, appState.totals.plastic - habit.plastic);
-            const li = appState.historyLog.findIndex(e => e.title === habit.title);
-            if (li !== -1) appState.historyLog.splice(li, 1);
+            updateDashboardMetrics();
+            renderHabits();
+            renderHistory();
         }
 
-        localStorage.setItem('eco_completed_today', JSON.stringify(appState.completedToday));
-        localStorage.setItem('eco_history_log',     JSON.stringify(appState.historyLog));
-        updateStats();
-        renderHabits();
-        renderHistory();
-    }
-
-    function updateStats() {
-        document.getElementById('stat-score').innerText   = appState.totals.score;
-        document.getElementById('stat-co2').innerText     = `${appState.totals.co2}g`;
-        document.getElementById('stat-water').innerText   = `${appState.totals.water}L`;
-        document.getElementById('stat-plastic').innerText = appState.totals.plastic;
-        localStorage.setItem('eco_totals', JSON.stringify(appState.totals));
-        renderMilestones();
-    }
-
-    // ── Render ──
-    function renderHabits() {
-        if (habitTemplate.length === 0) {
-            habitContainer.innerHTML = '<div class="empty-habits">No habits added yet. Click "Add Habit" to get started.</div>';
-            return;
+        // Render functions constructing raw component string structures
+        function renderHabits() {
+            if (!habitList || !Array.isArray(habitList)) habitList = defaultHabits.slice();
+            habitContainer.innerHTML = habitList.map(habit => {
+                const isDone = appState.completedToday.includes(habit.id);
+                return `
+                    <div class="habit-item">
+                        <div class="habit-details">
+                            <h3>${habit.title}</h3>
+                            <p style="margin:6px 0 0 0;">${habit.desc || ''}</p>
+                            <div style="font-size:12px;color:#718096;margin-top:6px;">${habit.category || 'General'}</div>
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:center;">
+                            <button class="action-btn ${isDone ? 'completed' : ''}" onclick="toggleHabit('${habit.id}')">
+                                ${isDone ? '✓ Logged' : ('+ ' + habit.points + ' pts')}
+                            </button>
+                            <button class="action-btn" style="border-color:#cbd5e1;color:#475569;" onclick="editHabit('${habit.id}')">Edit</button>
+                            <button class="action-btn" style="border-color:#fca5a5;color:#b91c1c;" onclick="deleteHabit('${habit.id}')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
-        habitContainer.innerHTML = habitTemplate.map(habit => {
-            const done = appState.completedToday.includes(habit.id);
-            return `
-                <div class="habit-item ${done ? 'is-done' : ''}">
-                    <button class="btn-toggle" onclick="toggleHabit('${habit.id}')" title="${done ? 'Mark incomplete' : 'Mark complete'}">
-                        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="2,7 5.5,10.5 12,3.5"/>
-                        </svg>
-                    </button>
-                    <div class="habit-meta">
-                        <h3>${escHtml(habit.title)}</h3>
-                        <p>${escHtml(habit.desc)}</p>
+
+        // Edit/Delete helpers
+        function editHabit(id) {
+            const h = habitList.find(x => x.id === id);
+            if (!h) return alert('Habit not found');
+            const newTitle = prompt('Edit habit title', h.title);
+            if (newTitle === null) return; // cancelled
+            h.title = newTitle.trim() || h.title;
+            const newDesc = prompt('Edit description', h.desc || '');
+            if (newDesc !== null) h.desc = newDesc.trim();
+            saveHabits(); renderHabits();
+        }
+
+        function deleteHabit(id) {
+            if (!confirm('Delete this habit?')) return;
+            habitList = habitList.filter(h => h.id !== id);
+            // remove completions related to habit
+            appState.completedToday = appState.completedToday.filter(x => x !== id);
+            saveHabits();
+            localStorage.setItem('eco_completed_today', JSON.stringify(appState.completedToday));
+            renderHabits();
+            renderHistory();
+        }
+
+        function evaluateMilestones() {
+            badgeContainer.innerHTML = milestoneBadges.map(badge => {
+                let currentVal = appState.totals.score; // Default evaluation property setup
+                if (badge.type === 'water') currentVal = appState.totals.water;
+                if (badge.type === 'co2') currentVal = appState.totals.co2;
+
+                const isUnlocked = currentVal >= badge.target;
+                return `
+                    <div class="badge-item ${isUnlocked ? 'unlocked' : ''}">
+                        <span class="badge-icon">${badge.icon}</span>
+                        <h4>${badge.title}</h4>
+                        <p>${badge.desc}</p>
                     </div>
                     <span class="habit-pts">${done ? 'Logged' : '+' + habit.points + ' pts'}</span>
                 </div>`;
@@ -925,10 +1023,54 @@
                     <span style="font-size:16px;">${b.icon}</span>
                 </div>
 
-                <div class="milestone-text">
-                    <h4>${b.title}</h4>
-                    <p>${b.desc}</p>
-                </div>
+        // Compute simple weekly summary (last 7 days) and update sidebar
+        function computeWeeklySummary() {
+            const rows = appState.historyLog || [];
+            const today = new Date();
+            const last7 = {};
+            for (let i=6;i>=0;i--) {
+                const d = new Date(today);
+                d.setDate(today.getDate() - i);
+                last7[d.toISOString().slice(0,10)] = 0;
+            }
+            rows.forEach(r => {
+                const iso = r.iso || (new Date(r.date).toISOString().slice(0,10));
+                if (iso in last7) last7[iso]++;
+            });
+            const total = Object.values(last7).reduce((a,b)=>a+b,0);
+            const summaryText = `${total} actions in last 7 days`;
+            const weeklyEl = document.getElementById('weekly-summary');
+            if (weeklyEl) weeklyEl.innerText = summaryText;
+            return last7;
+        }
+
+        // Compute consecutive-day streak based on historyLog dates (ISO)
+        function computeStreak() {
+            const rows = (appState.historyLog || []).map(r => r.iso || new Date(r.date).toISOString().slice(0,10));
+            const unique = Array.from(new Set(rows)).sort().reverse();
+            let streak = 0;
+            const todayIso = new Date().toISOString().slice(0,10);
+            let cursor = new Date();
+            // Walk back day-by-day until a day is missing
+            while (true) {
+                const iso = cursor.toISOString().slice(0,10);
+                if (unique.includes(iso)) {
+                    streak++;
+                    cursor.setDate(cursor.getDate() - 1);
+                } else break;
+            }
+            const streakEl = document.getElementById('streak-count');
+            if (streakEl) streakEl.innerText = `Current streak: ${streak} day${streak!==1?'s':''}`;
+            return streak;
+        }
+
+        // Application Lifecyle initializer execution
+        function initApp() {
+            checkDailyReset();
+            updateDashboardMetrics();
+            renderHabits();
+            renderHistory();
+        }
 
                 <div class="milestone-check">${checkSvg}</div>
             </div>`;

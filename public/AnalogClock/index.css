@@ -578,11 +578,19 @@ body.dark-theme .clock-frame {
   padding-left: 16px;
 }
 
-.form-control:focus,
-.form-select:focus {
-  border: none;
+#countdownDisplay {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.02em;
+    text-shadow: 0px 2px 4px rgba(0,0,0,0.02);
+}
 
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+.timer-controls {
+    display: flex;
+    gap: 15px;
+    width: 100%;
 }
 
 /* =========================
@@ -829,35 +837,405 @@ body.focus-mode .stopwatch-section {
   }
 }
 
-@media (max-width: 576px) {
-  .hero-banner {
-    padding: 2rem 1rem !important;
-  }
+.world-clock-card .digital-readout {
+    font-size: 1.15rem;
+    padding: 6px 14px;
+    border-radius: 8px;
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-  .main-clock-section .clock-frame {
-    width: 180px;
-    height: 180px;
-  }
+.focus-btn {
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 600;
+  transition: var(--transition);
+}
 
-  .world-clock-card .clock-frame {
-    width: 120px;
-    height: 120px;
-  }
+.focus-btn:hover {
+  transform: translateY(-2px);
+}
 
-  .digital-readout {
-    font-size: 1rem;
-  }
-
-  .stopwatch-display h1,
-  #countdownDisplay {
-    font-size: 1.2rem;
-  }
-
-  .btn {
+/* ----------------------------------------------------
+   7. Interactive World Timezone Map
+   ---------------------------------------------------- */
+.timezone-map-section {
     width: 100%;
-  }
+    padding: 30px;
+    margin-top: 10px;
+}
 
-  .world-clock-card {
-    min-height: auto;
-  }
+.map-header {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.map-header h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.map-header .subtitle {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.map-container {
+    position: relative;
+    width: 100%;
+    background-color: var(--clock-face-bg);
+    border-radius: 20px;
+    box-shadow: var(--shadow-inner);
+    border: 1px solid var(--card-border);
+    padding: 15px;
+    overflow: visible; /* Needed for floating tooltip */
+}
+
+.map-scroll-container {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) transparent;
+}
+
+.map-scroll-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.map-scroll-container::-webkit-scrollbar-thumb {
+    background-color: var(--accent-color);
+    border-radius: 10px;
+}
+
+#timezone-map-wrapper {
+    position: relative;
+    width: 100%;
+    min-width: 784px; /* Ensure map maintains base scale for math mapping */
+    margin: 0 auto;
+}
+
+#world-map {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: radial-gradient(circle at center, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 16px;
+    transition: background 0.4s ease;
+}
+
+body.dark-theme #world-map {
+    background: radial-gradient(circle at center, #0f172a 0%, #030712 100%);
+}
+
+/* Map Country Outlines */
+#world-map path {
+    fill: #f1f5f9;
+    stroke: #cbd5e1;
+    stroke-width: 0.5px;
+    transition: fill 0.4s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.dark-theme #world-map path {
+    fill: #0b0f19;
+    stroke: #1e293b;
+}
+
+#world-map path:hover {
+    fill: rgba(79, 70, 229, 0.12) !important;
+    stroke: var(--accent-color) !important;
+}
+
+body.dark-theme #world-map path:hover {
+    fill: rgba(99, 102, 241, 0.25) !important;
+    stroke: var(--accent-color) !important;
+}
+
+/* Aviation Grid Lines */
+.map-grid-line {
+    stroke: rgba(79, 70, 229, 0.08);
+    stroke-width: 0.8px;
+    stroke-dasharray: 4 4;
+}
+
+body.dark-theme .map-grid-line {
+    stroke: rgba(99, 102, 241, 0.16);
+}
+
+/* Timezone Bands */
+.timezone-sector {
+    fill: transparent;
+    cursor: pointer;
+    transition: fill 0.3s ease;
+}
+
+.timezone-sector:hover {
+    fill: rgba(79, 70, 229, 0.06); /* Indigo glow */
+}
+
+body.dark-theme .timezone-sector:hover {
+    fill: rgba(99, 102, 241, 0.12); /* Vibrant Indigo glow in dark */
+}
+
+/* Glowing active band border */
+.timezone-sector.active-sector {
+    fill: rgba(79, 70, 229, 0.08);
+}
+
+body.dark-theme .timezone-sector.active-sector {
+    fill: rgba(99, 102, 241, 0.16);
+}
+
+/* Pulse City Markers */
+.city-marker {
+    cursor: pointer;
+}
+
+.city-marker .pulse-ring {
+    fill: var(--accent-color);
+    opacity: 0;
+    animation: pulseMarker 2s infinite ease-out;
+}
+
+.city-marker .center-dot {
+    fill: var(--hand-second);
+    stroke: #ffffff;
+    stroke-width: 1.5px;
+    transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
+body.dark-theme .city-marker .center-dot {
+    stroke: #0f172a;
+}
+
+.city-marker:hover .center-dot {
+    fill: var(--accent-color);
+}
+
+@keyframes pulseMarker {
+    0% {
+        r: 3px;
+        opacity: 0.8;
+    }
+    100% {
+        r: 16px;
+        opacity: 0;
+    }
+}
+
+/* Premium Floating Glassmorphic Tooltip */
+.map-tooltip {
+    position: absolute;
+    z-index: 100;
+    width: 250px;
+    padding: 16px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 10px 30px rgba(17, 24, 39, 0.15), 0 1px 3px rgba(17, 24, 39, 0.05);
+    color: #111827;
+    pointer-events: auto; /* Allow buttons clicks inside the tooltip */
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    animation: tooltipFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+body.dark-theme .map-tooltip {
+    background: rgba(15, 23, 42, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.2);
+    color: #f9fafb;
+}
+
+@keyframes tooltipFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.tooltip-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tooltip-header h4 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.tooltip-offset {
+    font-size: 0.75rem;
+    font-weight: 700;
+    background-color: var(--accent-color);
+    color: #ffffff;
+    padding: 2px 8px;
+    border-radius: 20px;
+    box-shadow: 0 2px 6px var(--accent-glow);
+}
+
+.tooltip-tz-id {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.tooltip-time-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-top: 4px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    padding-bottom: 8px;
+}
+
+body.dark-theme .tooltip-time-row {
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.tooltip-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.tooltip-date {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.tooltip-btn {
+    height: 38px !important;
+    font-size: 0.85rem !important;
+    border-radius: 10px !important;
+}
+
+/* Close/Unpin button for World Clock Cards */
+.world-clock-card {
+    position: relative; /* Guarantee target anchor */
+}
+
+.remove-clock-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    cursor: pointer;
+    color: var(--text-secondary);
+    z-index: 10;
+    box-shadow: var(--shadow-btn);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.remove-clock-btn:hover {
+    background-color: #ef4444;
+    color: #ffffff;
+    border-color: #ef4444;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+    transform: scale(1.1) rotate(90deg);
+}
+
+.remove-clock-btn:active {
+    transform: scale(0.9);
+}
+
+/* Animations for card insertion and deletion */
+@keyframes cardInsert {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.world-clock-card {
+    animation: cardInsert 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Pinned City Map Pinpoint Glowing state */
+.city-marker.pinned-marker .center-dot {
+    fill: #10b981 !important; /* Emerald green in light theme */
+}
+
+body.dark-theme .city-marker.pinned-marker .center-dot {
+    fill: #06b6d4 !important; /* Electric cyan in dark theme */
+}
+
+.city-marker.pinned-marker .pulse-ring {
+    fill: #10b981 !important;
+}
+
+body.dark-theme .city-marker.pinned-marker .pulse-ring {
+    fill: #06b6d4 !important;
+}
+
+/* Beautiful dynamic card pinning elastic highlight pulse */
+@keyframes cardHighlightPulse {
+    0% {
+        box-shadow: var(--shadow-outer);
+        border-color: var(--card-border);
+        transform: scale(1);
+    }
+    30% {
+        box-shadow: 0 0 35px var(--accent-glow);
+        border-color: var(--accent-color);
+        transform: scale(1.06);
+    }
+    100% {
+        box-shadow: var(--shadow-outer);
+        border-color: var(--card-border);
+        transform: scale(1);
+    }
+}
+
+.card-highlight-active {
+    animation: cardHighlightPulse 2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    z-index: 20 !important;
+}
+
+/* Toggleable Tooltip Remove state styling */
+.tooltip-btn.tooltip-remove-btn {
+    background-color: rgba(239, 68, 68, 0.1) !important;
+    border: 1px solid rgba(239, 68, 68, 0.2) !important;
+    color: #ef4444 !important;
+    box-shadow: none !important;
+}
+
+.tooltip-btn.tooltip-remove-btn:hover {
+    background-color: #ef4444 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3) !important;
+    transform: translateY(-2px);
 }

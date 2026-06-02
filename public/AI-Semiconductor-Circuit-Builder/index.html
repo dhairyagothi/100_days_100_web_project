@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeuralForge - AI Chip Design Assistant</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .bar { transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+    /* Custom track styling for range inputs */
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #3b82f6;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+
+<div class="max-w-7xl mx-auto p-6">
+
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10 pb-6 border-b border-gray-800">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center text-2xl shadow-lg shadow-blue-500/20">
+        🤖
+      </div>
+      <div>
+        <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+          NeuralForge
+        </h1>
+        <p class="text-xs text-gray-500 uppercase tracking-widest mt-0.5">Silicon Engine Suite</p>
+      </div>
+    </div>
+    <div class="text-right">
+      <p class="text-gray-400 font-medium">AI-Powered Semiconductor Design Assistant</p>
+      <p class="text-xs text-emerald-400 font-mono" id="storageStatus">LocalStorage Synced</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <div class="lg:col-span-4 space-y-6">
+
+      <div class="bg-gray-900 rounded-3xl p-6 border border-gray-800 shadow-xl">
+        <h2 class="text-xl font-semibold mb-5 flex items-center gap-2 text-blue-400">
+          <i class="fas fa-sliders-h"></i> Design Parameters
+        </h2>
+
+        <div class="space-y-5">
+          <div>
+            <label class="block text-sm text-gray-400 mb-1 font-medium">Project Name</label>
+            <input type="text" id="projectName" value="Alpha_Core_V1" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-4 py-3 focus:outline-none focus:border-blue-500 font-mono text-sm">
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-400 mb-1 font-medium">Design Goal</label>
+            <select id="goal" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-4 py-3 focus:outline-none focus:border-blue-500 text-sm">
+              <option value="performance">High Performance Computing (HPC)</option>
+              <option value="power">Ultra Low Power (ULP)</option>
+              <option value="balanced">Balanced Performance & Efficiency</option>
+              <option value="ai">AI/ML Heavy Training Acceleration</option>
+              <option value="mobile">Mobile / Edge Smart AI</option>
+              <option value="cost">Cost Optimized / High Yield</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-400 mb-1 font-medium">Process Node</label>
+            <select id="node" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-4 py-3 focus:outline-none focus:border-blue-500 font-mono text-sm">
+              <option value="3">3nm (TSMC N3B / GAAFET)</option>
+              <option value="5" selected>5nm (TSMC N5 / FinFET)</option>
+              <option value="7">7nm (TSMC N7 / DUV)</option>
+              <option value="10">10nm (Legacy FinFET)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-400 mb-2 font-medium">Target Architecture</label>
+            <div class="grid grid-cols-2 gap-3 text-xs font-bold tracking-wider">
+              <button onclick="selectArch(this)" data-arch="cpu" class="arch-btn bg-gray-800 hover:bg-gray-700 rounded-2xl py-3.5 text-center transition border border-gray-700/50">CPU</button>
+              <button onclick="selectArch(this)" data-arch="npu" class="arch-btn bg-blue-600 text-white rounded-2xl py-3.5 text-center transition border border-blue-500">NPU</button>
+              <button onclick="selectArch(this)" data-arch="gpu" class="arch-btn bg-gray-800 hover:bg-gray-700 rounded-2xl py-3.5 text-center transition border border-gray-700/50">GPU</button>
+              <button onclick="selectArch(this)" data-arch="asic" class="arch-btn bg-gray-800 hover:bg-gray-700 rounded-2xl py-3.5 text-center transition border border-gray-700/50">ASIC</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between items-center mb-1">
+              <label class="block text-sm text-gray-400 font-medium">Compute Core Count</label>
+              <span id="coreValue" class="font-mono text-xs bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-md border border-blue-500/20">16 Cores</span>
+            </div>
+            <input type="range" id="cores" min="1" max="128" value="16" class="w-full accent-blue-500 bg-gray-800 h-2 rounded-lg cursor-pointer" oninput="document.getElementById('coreValue').innerText = this.value + ' Cores'">
+            <div class="flex justify-between text-[10px] text-gray-500 font-mono mt-1">
+              <span>1 Core</span>
+              <span>64</span>
+              <span>128 Cores</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between items-center mb-1">
+              <label class="block text-sm text-gray-400 font-medium">Target Frequency (Clock)</label>
+              <span id="freqValue" class="font-mono text-xs bg-purple-500/10 text-purple-400 px-2 py-0.5 rounded-md border border-purple-500/20">2.50 GHz</span>
+            </div>
+            <input type="range" id="frequency" min="0.5" max="5.0" step="0.1" value="2.5" class="w-full accent-purple-500 bg-gray-800 h-2 rounded-lg cursor-pointer" oninput="document.getElementById('freqValue').innerText = parseFloat(this.value).toFixed(2) + ' GHz'">
+            <div class="flex justify-between text-[10px] text-gray-500 font-mono mt-1">
+              <span>0.5 GHz</span>
+              <span>2.7 GHz</span>
+              <span>5.0 GHz</span>
+            </div>
+          </div>
+
+          <button onclick="generateDesign()" 
+                  class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 py-4 rounded-2xl font-semibold text-base transition-all shadow-lg shadow-purple-900/20 active:scale-[0.98] mt-2 flex items-center justify-center gap-2">
+            <i class="fas fa-microchip text-sm"></i> Synthesize & Compute PPA
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-gray-900 rounded-3xl p-6 border border-gray-800 shadow-xl">
+        <h3 class="font-semibold text-sm text-gray-400 uppercase tracking-wider mb-3 flex items-center justify-between">
+          <span><i class="fas fa-archive mr-1.5 text-purple-400"></i> Project Storage Ledger</span>
+          <span id="savedCount" class="text-xs font-mono bg-gray-800 text-gray-300 px-2 py-0.5 rounded-full border border-gray-700">0</span>
+        </h3>
+        <div id="savedProjectsList" class="space-y-2 max-h-48 overflow-y-auto pr-1 text-xs">
+          <p class="text-gray-500 italic text-center py-4">No chips saved in vault yet.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="lg:col-span-8 space-y-6">
+      
+      <div id="outputContainer" class="bg-gray-900 rounded-3xl border border-gray-800 min-h-[500px] p-6 lg:p-8 flex flex-col justify-between shadow-xl">
+        
+        <div id="welcome" class="flex flex-col items-center justify-center my-auto text-center py-16 text-gray-500">
+          <div class="w-20 h-20 bg-gray-800/50 border border-gray-700/60 rounded-3xl flex items-center justify-center text-4xl mb-6 shadow-inner animate-pulse">⚡</div>
+          <h3 class="text-2xl font-semibold text-white mb-2">Awaiting Architecture Synthesis</h3>
+          <p class="max-w-md text-sm text-gray-400 leading-relaxed">Configure design nodes, clock constraints, and operational floor-planning parameters on the left to activate physical cell mapping and power modeling routines.</p>
+        </div>
+
+        <div id="designResults" class="hidden space-y-8">
+          </div>
+
+      </div>
+
+      <div class="bg-gray-900 rounded-3xl p-6 border border-gray-800 shadow-xl">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="font-semibold text-base flex items-center gap-2 text-amber-400">
+            <i class="fas fa-columns"></i> Design Comparison Workspace
+          </h3>
+          <button onclick="clearComparison()" class="text-xs font-medium text-red-400 hover:underline bg-red-500/10 border border-red-500/20 px-2.5 py-1 rounded-xl transition">
+            Clear Matrix
+          </button>
+        </div>
+        
+        <div class="overflow-x-auto rounded-xl border border-gray-800 bg-gray-950/40">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-gray-800/60 text-gray-400 font-mono border-b border-gray-800 uppercase tracking-wider">
+                <th class="p-3">Project Design Specs</th>
+                <th class="p-3">Process Node</th>
+                <th class="p-3">Frequency</th>
+                <th class="p-3 text-cyan-400">Total Power (W)</th>
+                <th class="p-3 text-amber-400">Die Area (mm²)</th>
+                <th class="p-3 text-purple-400">Perf (TOPS)</th>
+                <th class="p-3 text-emerald-400">Efficiency</th>
+              </tr>
+            </thead>
+            <tbody id="comparisonBody" class="divide-y divide-gray-800/50 text-gray-300 font-mono">
+              <tr>
+                <td colspan="7" class="p-4 text-center text-gray-500 italic font-sans">No variants staged for comparison matrix yet. Click Save Design below to append configurations.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+
+function escapeHTML(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+// Architectural Variable State Tracker
+let selectedArch = "npu";
+let activeDesignData = null;
+
+// Initialize Workspace Assets on Document Mounting
+document.addEventListener("DOMContentLoaded", () => {
+  renderSavedProjectsList();
+  renderComparisonTable();
+});
+
+function selectArch(btn) {
+  document.querySelectorAll('.arch-btn').forEach(b => {
+    b.classList.remove('bg-blue-600', 'text-white', 'border-blue-500');
+    b.classList.add('bg-gray-800', 'border-gray-700/50');
+  });
+  btn.classList.remove('bg-gray-800', 'border-gray-700/50');
+  btn.classList.add('bg-blue-600', 'text-white', 'border-blue-500');
+  selectedArch = btn.dataset.arch;
+}
+
+/**
+ * Advanced Power/Area Analytical Estimator Engine
+ * Formulates real physical parameters based on traditional semiconductor scaling profiles
+ */
+function calculatePPA(goal, nodeValue, cores, freq) {
+  const n = parseFloat(nodeValue); // e.g., 3, 5, 7, 10
+  
+  // Base Transistor parameters reference normalized to a single generic processing block
+  // Vdd operating voltage voltage scaling profile per node selection rules
+  let vdd = 0.75; 
+  if (n === 10) vdd = 0.95;
+  else if (n === 7) vdd = 0.85;
+  else if (n === 5) vdd = 0.75;
+  else if (n === 3) vdd = 0.68;
+
+  // Standard architectural adjustments
+  let baseCapacitanceFactor = 0.045; // Farads proxy per core scalar
+  let activityFactor = 0.25; // Alpha parameter tracking active gate toggles
+  
+  if (goal === "performance" || goal === "ai") activityFactor = 0.40;
+  if (goal === "power") activityFactor = 0.12;
+
+  // 1. Dynamic Switching Power Formula: P = Alpha * C * V^2 * f
+  let dynamicPowerPerCore = activityFactor * baseCapacitanceFactor * Math.pow(vdd, 2) * freq;
+  let dynamicPowerTotal = dynamicPowerPerCore * cores;
+
+  // 2. Leakage (Static) Power calculation with respect to thermal/process factors
+  let baseLeakagePerCore = 0.025; // Watts baseline
+  // Older process nodes leak more absolute current; smaller sub-5nm nodes suffer channel leakage phenomena
+  let leakageFactor = (12 - n) * 0.45;
+  let staticPowerTotal = baseLeakagePerCore * leakageFactor * cores;
+  
+  if (goal === "power") staticPowerTotal *= 0.5; // Power gated configuration profile
+
+  let totalPower = dynamicPowerTotal + staticPowerTotal;
+
+  // 3. Physical Silicon Die Area Formulation (Base technology unit mapped to mm^2 layout frames)
+  // Scaling rules map quadratically following traditional node shrink metrics
+  let areaFactorPerCore = 1.15; // normalized area constant
+  if (selectedArch === "gpu") areaFactorPerCore = 1.85;
+  if (selectedArch === "asic") areaFactorPerCore = 0.65;
+
+  // Scaling Factor approximation formula relative to 10nm baseline floor
+  let scalingFactorNode = Math.pow((n / 10), 2);
+  let coreAreaTotal = cores * areaFactorPerCore * scalingFactorNode;
+  
+  // Un-core/Peripheral baseline infrastructure addition (Memory Controllers, Crossbar Bus, NOC Area)
+  let uncoreArea = 22.5 * scalingFactorNode;
+  let totalArea = coreAreaTotal + uncoreArea;
+
+  // 4. TOPS Performance Score metrics mapped out mathematically
+  let topsPerGHzPerCore = 0.5;
+  if (selectedArch === "npu") topsPerGHzPerCore = 2.5; // Highly optimized MAC matrix array dense configuration
+  if (selectedArch === "gpu") topsPerGHzPerCore = 1.2;
+  
+  let totalTops = cores * freq * topsPerGHzPerCore;
+  if (goal === "power") totalTops *= 0.85; // Under-volted pipeline logic tracking adjustments
+
+  // Calculate efficiency coefficient profiles
+  let topsPerWatt = totalTops / totalPower;
+
+  return {
+    power: totalPower.toFixed(2),
+    dynamicPower: dynamicPowerTotal.toFixed(2),
+    staticPower: staticPowerTotal.toFixed(2),
+    area: totalArea.toFixed(2),
+    uncoreArea: uncoreArea.toFixed(2),
+    coreArea: coreAreaTotal.toFixed(2),
+    tops: totalTops.toFixed(1),
+    efficiency: topsPerWatt.toFixed(2),
+    vdd: vdd
+  };
+}
+
+function generateDesign() {
+  
+    const name = escapeHTML(
+  document.getElementById('projectName').value.trim() || 'Unnamed_Design'
+);
+
+
+  const goal = document.getElementById('goal').value;
+  const node = document.getElementById('node').value;
+  const cores = parseInt(document.getElementById('cores').value);
+  const freq = parseFloat(document.getElementById('frequency').value);
+
+  const ppa = calculatePPA(goal, node, cores, freq);
+
+  let title = "";
+  let description = "";
+
+  switch(goal) {
+    case "performance":
+      title = "High-Performance Compute Accelerator";
+      description = `Max-throughput microarchitecture implementation targeting extreme workloads on an advanced ${node}nm layout stack.`;
+      break;
+    case "power":
+      title = "Ultra-Low Power Edge Silicon";
+      description = `Aggressively power-gated, sub-watt runtime tracking logic targeting long-endurance remote deployments.`;
+      break;
+    case "ai":
+      title = "Dense Systolic Tensor Network Array";
+      description = `Massively parallel matrix processing engine optimized for multi-billion parameter model evaluation parameters.`;
+      break;
+    case "mobile":
+      title = "Heterogeneous Mobile Core SoC";
+      description = `Balanced efficiency floorplan featuring asymmetrical power domains for smart device profiles.`;
+      break;
+    default:
+      title = "Balanced General-Purpose AI Processor";
+      description = `Adaptable, uniform compute matrix balance profile suited for assorted inference execution runtimes.`;
+  }
+
+  activeDesignData = {
+    id: 'proj_' + Date.now(),
+    name: name,
+    title: title,
+    description: description,
+    goal: goal,
+    node: node,
+    cores: cores,
+    frequency: freq,
+    architecture: selectedArch.toUpperCase(),
+    metrics: ppa
+  };
+
+  renderDesignOutput();
+  setTimeout(() => drawCircuitDiagram(cores, selectedArch), 50);
+}
+
+function renderDesignOutput() {
+  if (!activeDesignData) return;
+
+  const d = activeDesignData;
+  const m = d.metrics;
+
+  // Normalized scoring profiles for GUI progress bar representations
+  let perfScore = Math.min(100, Math.round(m.tops / 4));
+  let powerScore = Math.min(100, Math.round(100 - (m.power * 1.5)));
+  if (powerScore < 5) powerScore = 12; // visual lower bounds constraint
+  let areaScore = Math.min(100, Math.round(100 - (m.area / 3)));
+  if (areaScore < 5) areaScore = 19;
+
+  const html = `
+    <div class="space-y-6">
+      <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-xs uppercase tracking-wider bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-md font-mono border border-blue-500/20">${d.architecture} Block Variant</span>
+            <span class="text-xs uppercase tracking-wider bg-purple-500/10 text-purple-400 px-2 py-0.5 rounded-md font-mono border border-purple-500/20">${d.frequency.toFixed(2)} GHz</span>
+          </div>
+          <h2 class="text-2xl lg:text-3xl font-bold text-white tracking-tight">${d.title} <span class="text-gray-500 font-mono text-lg font-normal">(${d.name})</span></h2>
+          <p class="text-gray-400 text-sm mt-1 max-w-2xl">${d.description}</p>
+        </div>
+        <div class="bg-gray-800/80 border border-gray-700 rounded-2xl p-3 text-center min-w-[100px] shadow-inner font-mono">
+          <div class="text-[10px] text-gray-500 uppercase tracking-wider">Process Node</div>
+          <div class="text-xl font-bold text-blue-400">${d.node}nm</div>
+          <div class="text-[9px] text-gray-400 mt-0.5">${m.vdd}V Core Vdd</div>
+        </div>
+      </div>
+
+      <div class="bg-gray-950 border border-gray-800 rounded-2xl p-4 flex flex-col items-center">
+        <div class="w-full flex justify-between items-center text-xs text-gray-500 font-mono mb-2 px-1">
+          <span><i class="fas fa-project-diagram mr-1"></i> Dynamically Generated Floorplan Layout Blueprint</span>
+          <span class="text-blue-400">${d.cores} Core Modules mapped</span>
+        </div>
+        <canvas id="circuitCanvas" width="600" height="240" class="w-full bg-gray-950 rounded-xl border border-gray-900/60 shadow-inner"></canvas>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono">
+        <div class="bg-gray-800/30 border border-gray-800/80 rounded-2xl p-4 relative overflow-hidden group hover:border-gray-700 transition">
+          <div class="text-xs text-gray-400 uppercase tracking-wider mb-1">Calculated Power (TDP)</div>
+          <div class="text-3xl font-bold text-cyan-400">${m.power}<span class="text-xs text-gray-500 font-normal ml-0.5">W</span></div>
+          <div class="text-[10px] text-gray-500 mt-2 space-y-0.5">
+            <div>Dyn: ${m.dynamicPower}W <span class="text-[9px] text-gray-600">(&alpha;&middot;C&middot;V²&middot;f)</span></div>
+            <div>Stat: ${m.staticPower}W <span class="text-[9px] text-gray-600">(Leakage Factor)</span></div>
+          </div>
+        </div>
+        <div class="bg-gray-800/30 border border-gray-800/80 rounded-2xl p-4 relative overflow-hidden group hover:border-gray-700 transition">
+          <div class="text-xs text-gray-400 uppercase tracking-wider mb-1">Estimated Die Area</div>
+          <div class="text-3xl font-bold text-amber-400">${m.area}<span class="text-xs text-gray-500 font-normal ml-0.5">mm²</span></div>
+          <div class="text-[10px] text-gray-500 mt-2 space-y-0.5">
+            <div>Cores: ${m.coreArea}mm² <span class="text-[9px] text-gray-600">(Gate Footprint)</span></div>
+            <div>Uncore: ${m.uncoreArea}mm² <span class="text-[9px] text-gray-600">(NOC + Interconnect)</span></div>
+          </div>
+        </div>
+        <div class="bg-gray-800/30 border border-gray-800/80 rounded-2xl p-4 relative overflow-hidden group hover:border-gray-700 transition">
+          <div class="text-xs text-gray-400 uppercase tracking-wider mb-1">Synthesized Throughput</div>
+          <div class="text-3xl font-bold text-purple-400">${m.tops}<span class="text-xs text-gray-500 font-normal ml-0.5">TOPS</span></div>
+          <div class="text-[10px] text-gray-500 mt-2 space-y-0.5">
+            <div class="text-emerald-400 font-bold">Efficiency: ${m.efficiency} TOPS/W</div>
+            <div class="text-[9px] text-gray-600">Density Scaled Inference Engine</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-800/20 border border-gray-800 p-4 rounded-2xl">
+        <div>
+          <div class="flex justify-between text-xs font-medium mb-1.5"><span class="text-gray-400">Compute Index</span><span class="text-gray-200 font-mono">${perfScore}/100</span></div>
+          <div class="h-1.5 bg-gray-800 rounded-full overflow-hidden">
+            <div class="bar h-full bg-gradient-to-r from-blue-500 to-purple-500" style="width: ${perfScore}%"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between text-xs font-medium mb-1.5"><span class="text-gray-400">Thermal Safety Buffer</span><span class="text-gray-200 font-mono">${powerScore}/100</span></div>
+          <div class="h-1.5 bg-gray-800 rounded-full overflow-hidden">
+            <div class="bar h-full bg-gradient-to-r from-emerald-400 to-cyan-500" style="width: ${powerScore}%"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between text-xs font-medium mb-1.5"><span class="text-gray-400">Wafer Allocation Score</span><span class="text-gray-200 font-mono">${areaScore}/100</span></div>
+          <div class="h-1.5 bg-gray-800 rounded-full overflow-hidden">
+            <div class="bar h-full bg-gradient-to-r from-amber-400 to-orange-500" style="width: ${areaScore}%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3 pt-2">
+        <button onclick="exportDesignToJSON()" class="flex-1 bg-gray-800 hover:bg-gray-700 text-gray-200 font-medium py-3.5 px-4 rounded-xl transition border border-gray-700 text-sm flex items-center justify-center gap-2">
+          <i class="fas fa-file-code"></i> Export Design JSON
+        </button>
+        <button onclick="saveActiveProject()" class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold py-3.5 px-4 rounded-xl transition shadow-md shadow-pink-900/10 text-sm flex items-center justify-center gap-2">
+          <i class="fas fa-cloud-upload-alt"></i> Commit to Local Project Vault
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('welcome').style.display = 'none';
+
+  const outNode = document.getElementById('designResults');
+outNode.replaceChildren();
+
+const wrapper = document.createElement("div");
+wrapper.innerHTML = html; // static template only
+outNode.appendChild(wrapper);
+
+outNode.classList.remove('hidden');
+
+  outNode.classList.remove('hidden');
+}
+
+/**
+ * Procedural Dynamic Circuit / Silicon Floorplan Modeler
+ */
+function drawCircuitDiagram(cores, architecture) {
+  const canvas = document.getElementById('circuitCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  
+  // Clean canvas area
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  // Set structural context parameters
+  const w = canvas.width;
+  const h = canvas.height;
+  
+  // Draw Background Grid
+  ctx.strokeStyle = '#111827';
+  ctx.lineWidth = 1;
+  const gridSize = 20;
+  for(let x=0; x<w; x+=gridSize) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+  }
+  for(let y=0; y<h; y+=gridSize) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+  }
+
+  // Draw Shared L3 Cache / NOC Bus Ring Border Box
+  ctx.strokeStyle = '#1f2937';
+  ctx.lineWidth = 2;
+  ctx.fillStyle = '#030712';
+  ctx.fillRect(40, 30, w - 80, h - 60);
+  ctx.strokeRect(40, 30, w - 80, h - 60);
+
+  // Core drawing optimization boundary
+  // Max out visible representations inside bounds nicely grid mapped
+  let drawCores = Math.min(cores, 32); 
+  let cols = 8;
+  let rows = Math.ceil(drawCores / cols);
+  
+  let paddingX = 15;
+  let paddingY = 12;
+  let startX = 60;
+  let startY = 45;
+  let availableWidth = w - 120 - (cols - 1) * paddingX;
+  let availableHeight = h - 110 - (rows - 1) * paddingY;
+  
+  let coreW = Math.max(30, availableWidth / cols);
+  let coreH = Math.max(22, availableHeight / rows);
+
+  // Core Matrix Rendering Loop
+  for (let i = 0; i < drawCores; i++) {
+    let r = Math.floor(i / cols);
+    let c = i % cols;
+    let cx = startX + c * (coreW + paddingX);
+    let cy = startY + r * (coreH + paddingY);
+
+    // Accent variations per structural specification selections
+    let coreColor = '#2563eb'; // NPU Royal Blue
+    if (architecture === "cpu") coreColor = '#3b82f6';
+    if (architecture === "gpu") coreColor = '#9333ea';
+    if (architecture === "asic") coreColor = '#db2777';
+
+    // Core body render
+    ctx.fillStyle = 'rgba(17, 24, 39, 0.85)';
+    ctx.strokeStyle = coreColor;
+    ctx.lineWidth = 1.5;
+    ctx.fillRect(cx, cy, coreW, coreH);
+    ctx.strokeRect(cx, cy, coreW, coreH);
+
+    // Internal execution line visualization
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.beginPath();
+    ctx.moveTo(cx + coreW*0.3, cy); ctx.lineTo(cx + coreW*0.3, cy + coreH);
+    ctx.moveTo(cx + coreW*0.6, cy); ctx.lineTo(cx + coreW*0.6, cy + coreH);
+    ctx.stroke();
+
+    // Signal Core label
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+    ctx.font = '8px monospace';
+    ctx.fillText(`C${i}`, cx + 4, cy + 12);
+  }
+
+  // Draw Shared L3 System Cache Block Strip at the Bottom base
+  ctx.fillStyle = 'rgba(31, 41, 55, 0.5)';
+  ctx.strokeStyle = '#eab308';
+  ctx.lineWidth = 1.5;
+  ctx.fillRect(60, h - 55, w - 120, 16);
+  ctx.strokeRect(60, h - 55, w - 120, 16);
+  
+  ctx.fillStyle = '#eab308';
+  ctx.font = '9px monospace';
+  ctx.fillText("UNIFIED INTERCONNECT BUS & SHARED HIGH-SPEED L3 CACHE SYSTEM", 140, h - 44);
+
+  // Trace Ring Bus Peripheral Channels (Data Routing Overlay Paths)
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.3)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  // Outer peripheral line tracks
+  ctx.strokeRect(48, 36, w - 96, h - 72);
+  ctx.stroke();
+
+  if(cores > 32) {
+    ctx.fillStyle = 'rgba(168, 85, 247, 0.9)';
+    ctx.font = '10px sans-serif';
+    ctx.fillText(`+ ${cores - 32} Additional Core Modules Clusterized Off-Screen Layer`, 130, h - 68);
+  }
+}
+
+/**
+ * Storage Vault & Structural Comparison Manager Routines
+ */
+function getStoredProjects() {
+  const data = localStorage.getItem('neuralforge_projects');
+  return data ? JSON.parse(data) : [];
+}
+
+function getComparisonList() {
+  const data = localStorage.getItem('neuralforge_comparison');
+  return data ? JSON.parse(data) : [];
+}
+
+function saveActiveProject() {
+  if (!activeDesignData) return;
+
+  // Save to Project History Vault
+  let projects = getStoredProjects();
+  // Avoid duplicating names inside the storage array
+  projects = projects.filter(p => p.name !== activeDesignData.name);
+  projects.unshift(activeDesignData);
+  localStorage.setItem('neuralforge_projects', JSON.stringify(projects));
+
+  // Auto-append tracking dataset variant to visual Comparison workspace list array
+  let compareList = getComparisonList();
+  compareList = compareList.filter(c => c.name !== activeDesignData.name);
+  compareList.push(activeDesignData);
+  localStorage.setItem('neuralforge_comparison', JSON.stringify(compareList));
+
+  // Trigger UI Flash Confirmation Sync Updates
+  renderSavedProjectsList();
+  renderComparisonTable();
+
+  const status = document.getElementById('storageStatus');
+  status.innerText = "Project Saved Successfully!";
+  status.className = "text-xs text-purple-400 font-mono animate-bounce";
+  setTimeout(() => {
+    status.innerText = "LocalStorage Synced";
+    status.className = "text-xs text-emerald-400 font-mono";
+  }, 2500);
+}
+
+function deleteProject(id, event) {
+  if(event) event.stopPropagation();
+  let projects = getStoredProjects();
+  projects = projects.filter(p => p.id !== id);
+  localStorage.setItem('neuralforge_projects', JSON.stringify(projects));
+  renderSavedProjectsList();
+}
+
+function loadSavedProject(id) {
+  const projects = getStoredProjects();
+  const found = projects.find(p => p.id === id);
+  if (found) {
+    // Rehydrate control UI states parameter configurations
+    document.getElementById('projectName').value = found.name;
+    document.getElementById('goal').value = found.goal;
+    document.getElementById('node').value = found.node;
+    document.getElementById('cores').value = found.cores;
+    document.getElementById('coreValue').innerText = found.cores + " Cores";
+    if(found.frequency) {
+        document.getElementById('frequency').value = found.frequency;
+        document.getElementById('freqValue').innerText = found.frequency.toFixed(2) + " GHz";
+    }
+
+    // Restore chosen architecture selection styles
+    const targetBtn = document.querySelector(`[data-arch="${found.architecture.toLowerCase()}"]`);
+    if(targetBtn) selectArch(targetBtn);
+
+    activeDesignData = found;
+    renderDesignOutput();
+    setTimeout(() => drawCircuitDiagram(found.cores, found.architecture.toLowerCase()), 50);
+  }
+}
+
+function renderSavedProjectsList() {
+  const projects = getStoredProjects();
+  const container = document.getElementById('savedProjectsList');
+  document.getElementById('savedCount').innerText = projects.length;
+
+  if (projects.length === 0) {
+    container.innerHTML = `<p class="text-gray-500 italic text-center py-4">No chips saved in vault yet.</p>`;
+    return;
+  }
+
+  
+
+  container.innerHTML = "";
+
+projects.forEach(p => {
+  const card = document.createElement("div");
+
+  card.className =
+    "bg-gray-800/40 hover:bg-gray-800 border border-gray-800 hover:border-gray-700 p-2.5 rounded-xl cursor-pointer flex justify-between items-center transition group";
+
+  card.onclick = () => loadSavedProject(p.id);
+
+  const left = document.createElement("div");
+  left.className = "truncate mr-2";
+
+  const title = document.createElement("div");
+  title.className =
+    "font-mono font-bold text-gray-200 text-xs truncate";
+  title.textContent = p.name;
+
+  const meta = document.createElement("div");
+  meta.className =
+    "text-[10px] text-gray-400 truncate";
+  meta.textContent =
+    `${p.architecture} • ${p.node}nm • ${p.cores} Cores`;
+
+  left.appendChild(title);
+  left.appendChild(meta);
+
+  card.appendChild(left);
+
+  container.appendChild(card);
+});
+
+
+<div onclick="loadSavedProject('${escapeHTML(p.id)}')" class="bg-gray-800/40 hover:bg-gray-800 border border-gray-800 hover:border-gray-700 p-2.5 rounded-xl cursor-pointer flex justify-between items-center transition group">
+  <div class="truncate mr-2">
+    <div class="font-mono font-bold text-gray-200 text-xs truncate">
+      ${escapeHTML(p.name)}
+    </div>
+    <div class="text-[10px] text-gray-400 truncate">
+      ${escapeHTML(p.architecture)} &bull; ${escapeHTML(p.node)}nm &bull; ${escapeHTML(p.cores)} Cores
+    </div>
+  </div>
+  <button onclick="deleteProject('${escapeHTML(p.id)}', event)" class="text-gray-500 hover:text-red-400 p-1 rounded opacity-0 group-hover:opacity-100 transition duration-150">
+    <i class="fas fa-trash-alt"></i>
+  </button>
+</div>
+
+  `).join('');
+}
+
+function renderComparisonTable() {
+  const list = getComparisonList();
+  const tbody = document.getElementById('comparisonBody');
+
+  if (list.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="7" class="p-4 text-center text-gray-500 italic font-sans">No variants staged for comparison matrix yet. Click Save Design below to append configurations.</td>
+      </tr>`;
+    return;
+  }
+
+
+  
+  tbody.innerHTML = "";
+
+list.forEach(c => {
+  const row = document.createElement("tr");
+  row.className = "hover:bg-gray-900/40 border-b border-gray-900 transition";
+
+  row.innerHTML = `
+    <td class="p-3 font-sans font-semibold text-white"></td>
+    <td class="p-3 text-blue-400"></td>
+    <td class="p-3 text-gray-400"></td>
+    <td class="p-3 font-bold text-cyan-400"></td>
+    <td class="p-3 text-amber-400"></td>
+    <td class="p-3 text-purple-400"></td>
+    <td class="p-3 text-emerald-400"></td>
+  `;
+
+  row.children[0].textContent = c.name;
+  row.children[1].textContent = `${c.node}nm`;
+  row.children[2].textContent = c.frequency ? `${c.frequency.toFixed(2)} GHz` : "2.50 GHz";
+  row.children[3].textContent = `${c.metrics.power} W`;
+  row.children[4].textContent = `${c.metrics.area} mm²`;
+  row.children[5].textContent = `${c.metrics.tops} TOPS`;
+  row.children[6].textContent = `${c.metrics.efficiency} T/W`;
+
+  tbody.appendChild(row);
+});
+
+}
+
+function clearComparison() {
+  localStorage.setItem('neuralforge_comparison', JSON.stringify([]));
+  renderComparisonTable();
+}
+
+function exportDesignToJSON() {
+  if (!activeDesignData) return;
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(activeDesignData, null, 2));
+  const downloadAnchor = document.createElement('a');
+  downloadAnchor.setAttribute("href", dataStr);
+  downloadAnchor.setAttribute("download", `${activeDesignData.name}_neuralforge_manifest.json`);
+  document.body.appendChild(downloadAnchor);
+  downloadAnchor.click();
+  downloadAnchor.remove();
+}
+</script>
+
+</body>
+</html>

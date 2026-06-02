@@ -1,178 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Go Green — Live Sustainably</title>
-  <link rel="stylesheet" href="parallal.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GO-GREEN – Home</title>
+<link rel="stylesheet" href="parallal.css">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 </head>
-
 <body>
-<a href="/"
-   class="project-back-button"
-   style="position:fixed;
-          left:18px;
-          top:18px;
-          padding:8px 12px;
-          border-radius:8px;
-          text-decoration:none;
-          z-index:9999;
-          font-weight:700;
-          font-family:Inter, system-ui, sans-serif;
-          box-shadow:0 8px 20px rgba(0,0,0,0.15);">
-   ← Back to Home
-</a>
+    <header id="header">
+        <div class="name">GO-GREEN</div>
+        <nav>
+                        <nav>
+                        <ul>
+                <li><a href="parallal.html" class="active">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="service.html">Service</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            </nav>
+    </header>
 
-  <header>
-      <div class="name"></div>
+    <section class="parallal" id="hero" aria-label="Hero parallax landscape">
+        <img src="hill1.png" id="hill1" alt="Layered mountain range silhouette in the background">
+        <img src="hill2.png" id="hill2" alt="Mid-distance rocky hillside silhouette">
+        <img src="hill3.png" id="hill3" alt="Foreground jungle hill with tropical trees">
+        <img src="tree.png"  id="tree"  alt="Single palm tree silhouette">
+        <img src="hill4.png" id="hill4" alt="Left-side forested hill silhouette">
+        <img src="hill5.png" id="hill5" alt="Right-side hill with palm trees silhouette">
+        <div class="text"    id="text1">GO-GREEN</div>
+        <img src="plant.png" id="plant" alt="Ground-level fern and plant silhouettes">
+        <img src="leaf.png"  id="leaf"  alt="Large decorative fern leaf in the foreground">
+    </section>
 
-      <nav>
-          <ul>
-              <li><a href="#home">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#service">Service</a></li>
-              <li><a href="#contact">Contact</a></li>
-          </ul>
-      </nav>
-  </header>
+    <section class="content" aria-labelledby="mission-heading">
+        <div id="mission-heading">Our Mission</div>
 
-  <section id="home" class="parallal">
-      <img src="hill1.png" id="hill1" alt="">
-      <img src="hill2.png" id="hill2" alt="">
-      <img src="hill3.png" id="hill3" alt="">
-      <img src="tree.png" id="tree" alt="">
-      <img src="hill4.png" id="hill4" alt="">
-      <img src="hill5.png" id="hill5" alt="">
+        <p class="intro-lead">Going green is a fundamental reimagining of how we interact with our planet. Every small action contributes to a larger global movement aimed at preserving nature for generations to follow.</p>
 
-      <div class="text" id="text1">GO-GREEN</div>
+        <div class="card-grid">
+            <div class="card">
+                <span class="material-symbols-outlined" style="font-size:2.4rem; color:#ffffff; display:block; margin-bottom: 16px;">
+                    potted_plant
+                </span>
+                <h3>Reduce</h3>
+                <p>Cut down on single-use plastics, lower energy consumption, and make mindful purchasing decisions that shrink your daily footprint.</p>
+            </div>
+            <div class="card">
+                <span class="material-symbols-outlined" style="font-size:2.4rem; color:#ffffff; display:block; margin-bottom: 16px;">
+                    recycling
+                </span>
+                <h3>Reuse</h3>
+                <p>Give products a second life. Embrace repair culture, thrift, and circular systems that keep resources in use for as long as possible.</p>
+            </div>
+            <div class="card">
+                <span class="material-symbols-outlined" style="font-size:2.4rem; color:#ffffff; display:block; margin-bottom: 16px;">
+                    globe
+                </span>
+                <h3>Recycle</h3>
+                <p>Close the loop on materials. Proper recycling diverts waste from landfills and feeds raw resources back into manufacturing.</p>
+            </div>
+        </div>
 
-      <img src="plant.png" id="plant" alt="">
-      <img src="leaf.png" id="leaf" alt="">
-  </section>
+        <div class="cta-block">
+            <p>Ready to learn how we can help your community go green?</p>
+            <a href="service.html" class="cta-btn">Explore Our Services →</a>
+        </div>
+    </section>
 
-<section id="about" class="content">
+    <footer class="footer" aria-label="Site footer">
+        <p>© 2026 GO-GREEN. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="parallal.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="service.html">Service</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </footer>
 
-  <p class="section-label">SUSTAINABLE FUTURE</p>
-
-  <h2 class="section-heading">
-    Building a greener world,
-    <span>one habit at a time.</span>
-  </h2>
-
-  <div class="content-grid">
-
-    <div>
-      <p>
-        Going green is a fundamental reimagining of how we interact
-        with our planet. Every conscious choice contributes toward
-        protecting Earth’s delicate ecosystems.
-      </p>
-
-      <p>
-        Sustainability begins at home through mindful resource
-        management, reduced waste, and smarter energy consumption.
-      </p>
-    </div>
-
-    <div>
-      <p>
-        Eco-friendly living also means supporting long-lasting
-        products, local communities, and responsible innovation.
-      </p>
-
-      <p>
-        Together, small individual actions can evolve into meaningful
-        global environmental progress.
-      </p>
-    </div>
-
-  </div>
-
-  <div class="tracker-cta">
-    <p class="sub">
-      Small habits create lasting impact. Track your sustainability
-      journey and build a better tomorrow.
-    </p>
-
-    <a href="tracker.html" class="cta-btn">
-      Open Eco Tracker
-      <span class="arrow">→</span>
-    </a>
-  </div>
-
-</section>
-
-<!-- SERVICE SECTION WITH PARALLAX -->
-<section id="service" class="service-parallax">
-  <div class="service-content">
-    <p class="section-label">OUR SERVICES</p>
-    <h2 class="section-heading">
-      Sustainable Solutions for a 
-      <span>Better Tomorrow</span>
-    </h2>
-
-    <div class="services-grid">
-      <div class="service-card">
-        <div class="service-icon">🌱</div>
-        <h3>Eco Education</h3>
-        <p>Learn sustainable practices through interactive guides and expert resources to transform your lifestyle.</p>
-        <div class="service-tag">Learning</div>
-      </div>
-
-      <div class="service-card">
-        <div class="service-icon">♻️</div>
-        <h3>Carbon Tracking</h3>
-        <p>Monitor your environmental impact with precision analytics and get personalized recommendations.</p>
-        <div class="service-tag">Analytics</div>
-      </div>
-
-      <div class="service-card">
-        <div class="service-icon">🌍</div>
-        <h3>Community Connect</h3>
-        <p>Join a global movement of eco-conscious individuals and contribute to collective environmental goals.</p>
-        <div class="service-tag">Community</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-  <section id="contact" class="contact-section">
-
-      <h2>Contact Us</h2>
-
-      <p>Have questions or suggestions? Reach out to us.</p>
-
-      <form class="contact-form">
-
-          <input type="text" placeholder="Your Name" required>
-
-          <input type="email" placeholder="Your Email" required>
-
-          <textarea
-              placeholder="Your Message"
-              rows="6"
-              required>
-          </textarea>
-
-          <button type="submit">Send Message</button>
-
-      </form>
-
-  </section>
-
-  <footer class="footer">
-
-      <p>© 2026 Parallel-x. All rights reserved.</p>
-
-      <div class="footer-links">
-          <a href="#home">Home</a>
-          <a href="#about">About</a>
-          <a href="#">Projects</a>
-      </div>
-
-  </footer>
-
-  <script src="parallal.js"></script>
-
+    <script src="parallal.js"></script>
 </body>
 </html>
