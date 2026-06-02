@@ -1,10 +1,7 @@
 ---
 name: Custom issue template
-about: Describe this issue template's purpose here.
-title: ''
-labels: ''
+about: Use for repository maintenance, workflow, or other structured tasks.
+title: '[Maintenance]: '
+labels: ['maintenance']
 assignees: ''
-
 ---
-
-

@@ -17,7 +17,9 @@ const checkAdminRole = async(userID) => {
 router.post('/',jwtAuthMiddleware,async(req,res)=> {
     try{
         if(!await checkAdminRole(req.user.id)) 
-            return res.status(403).json({message: 'User does not have admin role' })
+            return res.status(403).json({
+             message: 'User does not have admin role'
+        });
         
         const data = req.body //assuming the request body conatins the candidate data
 
@@ -35,11 +37,78 @@ router.post('/',jwtAuthMiddleware,async(req,res)=> {
 })
 
 
+
+router.get('/dashboard', jwtAuthMiddleware, async (req, res) => {
+    try {
+        // Admin check
+        if (!await checkAdminRole(req.user.id)) {
+            return res.status(403).json({
+                message: 'User does not have admin role'
+            });
+        }
+
+        // Total voters (excluding admins)
+        const totalVoters = await User.countDocuments({
+            role: 'voter'
+        });
+
+        // Votes cast
+        const votesCast = await User.countDocuments({
+            role: 'voter',
+            isVoted: true
+        });
+
+        // Total candidates
+        const totalCandidates = await Candidate.countDocuments();
+
+        // Rankings
+        const candidates = await Candidate.find()
+            .sort({ voteCount: -1 });
+
+        const rankings = candidates.map((candidate, index) => ({
+            rank: index + 1,
+            name: candidate.name,
+            party: candidate.party,
+            votes: candidate.voteCount
+        }));
+
+        // Leading candidate
+        const leadingCandidate =
+            candidates.length > 0
+                ? candidates[0].name
+                : null;
+
+        // Turnout %
+        const turnoutPercentage =
+            totalVoters > 0
+                ? Number(
+                    ((votesCast / totalVoters) * 100)
+                        .toFixed(2)
+                  )
+                : 0;
+
+        res.status(200).json({
+            totalVoters,
+            votesCast,
+            turnoutPercentage,
+            leadingCandidate,
+            totalCandidates,
+            rankings
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            error: 'Internal Server Error'
+        });
+    }
+});
+
 //update the profile
 router.put('/:candidateID', jwtAuthMiddleware, async(req,res)=> {
     try {
         if(!await checkAdminRole(req.user.id))
-            return res.status(404).json({message: 'user has not admin role'});
+            return res.status(403).json({message: 'user does not  has not admin role'});
         const candidateID = req.params.candidateID //extract id from the url parameter
         const updatedCandidateData = req.body; //updated data from the candidate
 
@@ -107,7 +176,7 @@ router.post('/vote/:candidateID', jwtAuthMiddleware, async(req, res) => {
             return res.status(400).json({message: 'You have already voted'})
         }
 
-        if(user.role == 'admin') {
+        if(user.role === 'admin') {
             return res.status(403).json({message: 'admin is not allowed'})
         }
 
