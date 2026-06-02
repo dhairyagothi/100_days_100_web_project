@@ -75,25 +75,32 @@ function generateGallery() {
     card.style.setProperty('--i', index);
 
     card.innerHTML = `
-      <div class="image-wrapper">
-        <img 
-          src="${dog.image}" 
-          alt="${dog.name}"
-          onerror="
-            this.style.display='none';
-            this.nextElementSibling.style.display='flex';
-          "
-        />
+  <div class="image-wrapper">
+    <img 
+      src="${dog.image}" 
+      alt="3D gallery image of ${dog.name}"
+      loading="lazy"
+      onerror="
+        this.style.display='none';
+        this.nextElementSibling.style.display='flex';
+      "
+    />
 
-        <div class="fallback-card">
-          <div class="fallback-icon">🐶</div>
-          <p>Image Unavailable</p>
-        </div>
+    <div 
+      class="fallback-card"
+      role="img"
+      aria-label="Fallback placeholder image for ${dog.name}"
+    >
+      <div class="fallback-icon" aria-hidden="true">
+        🐶
       </div>
 
-      <h2>${dog.name}</h2>
-    `;
+      <p>Image Unavailable</p>
+    </div>
+  </div>
 
+  <h2>${dog.name}</h2>
+`;
     slider.appendChild(card);
   });
 }

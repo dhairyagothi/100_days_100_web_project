@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Previewer</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="toolbar no-print">
+    <div class="toolbar-brand">
+      <span class="logo-mark" aria-hidden="true">◆</span>
+      <h1>Resume Previewer</h1>
+    </div>
+    <div class="toolbar-actions">
+      <div class="template-group" role="group" aria-label="Resume templates">
+        <span class="toolbar-label">Templates</span>
+        <button type="button" class="btn btn-ghost" data-template="software-engineer">Software Engineer</button>
+        <button type="button" class="btn btn-ghost" data-template="data-analyst">Data Analyst</button>
+      </div>
+      <button type="button" id="btn-clear" class="btn btn-ghost">Clear</button>
+      <button type="button" id="btn-print" class="btn btn-primary">
+        <span aria-hidden="true">⎙</span> Export PDF
+      </button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <section class="pane pane-editor no-print" aria-label="Markdown editor">
+      <div class="pane-header">
+        <h2>Markdown</h2>
+        <span id="save-status" class="save-status" aria-live="polite">Ready</span>
+      </div>
+      <textarea
+        id="editor"
+        class="editor"
+        spellcheck="false"
+        placeholder="# Your Name&#10;**Role Title** | city@email.com | (555) 123-4567&#10;&#10;## Summary&#10;Brief professional summary here.&#10;&#10;## Experience&#10;- **Company** — Role (2022 – Present)&#10;  - Achievement with measurable impact&#10;&#10;## Skills&#10;- JavaScript, Python, SQL"
+      ></textarea>
+    </section>
+
+    <div class="pane-divider no-print" aria-hidden="true"></div>
+
+    <section class="pane pane-preview" aria-label="Resume preview">
+      <div class="pane-header no-print">
+        <h2>Preview</h2>
+      </div>
+      <article id="resume" class="resume" aria-live="polite">
+        <p class="resume-placeholder">Start typing markdown to build your resume…</p>
+      </article>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
