@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic 8 Ball - Fortune Teller</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='100'>🎱</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            background: linear-gradient(135deg, #1e90ff, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 20px rgba(30, 144, 255, 0.5);
+        }
+
+        .subtitle {
+    font-size: 14px;
+    color: #b0b0b0;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+        .ball-container {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            margin: 0 auto 3rem;
+        }
+
+        .ball {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #1a1a2e 0%, #0f0f1e 50%, #000 100%);
+            box-shadow: 
+                inset -20px -20px 40px rgba(0, 0, 0, 0.8), 
+                0 0 40px rgba(30, 144, 255, 0.4),
+                0 20px 60px rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+
+        .ball:hover {
+            transform: scale(1.02);
+            box-shadow: 
+                inset -20px -20px 40px rgba(0, 0, 0, 0.8), 
+                0 0 60px rgba(30, 144, 255, 0.6),
+                0 20px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        .ball.shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: scale(1.02) rotate(0deg); }
+            25% { transform: scale(1.02) rotate(-8deg); }
+            50% { transform: scale(1.02) rotate(8deg); }
+            75% { transform: scale(1.02) rotate(-8deg); }
+        }
+
+        .window {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, rgba(30, 144, 255, 0.3) 0%, rgba(30, 144, 255, 0.1) 30%, rgba(0, 0, 0, 0.9) 100%);
+            border: 3px solid rgba(30, 144, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 
+                inset 0 0 30px rgba(30, 144, 255, 0.2),
+                0 0 20px rgba(30, 144, 255, 0.3);
+        }
+
+        .answer-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e90ff;
+            text-align: center;
+            line-height: 1.4;
+            max-width: 100px;
+            text-shadow: 0 0 10px rgba(30, 144, 255, 0.8);
+            opacity: 0;
+            animation: fadeIn 0.8s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 40px solid transparent;
+            border-right: 40px solid transparent;
+            border-bottom: 70px solid rgba(30, 144, 255, 0.2);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.3;
+        }
+
+        .instructions {
+            font-size: 14px;
+            color: #b0b0b0;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+
+        .question-input {
+            padding: 12px 16px;
+            border: 1px solid rgba(30, 144, 255, 0.3);
+            border-radius: 8px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .question-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .question-input:focus {
+            outline: none;
+            border-color: #1e90ff;
+            background: rgba(30, 144, 255, 0.1);
+            box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.2);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        button {
+            padding: 10px 24px;
+            border: 1px solid rgba(30, 144, 255, 0.5);
+            border-radius: 8px;
+            background: rgba(30, 144, 255, 0.1);
+            color: #1e90ff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        button:hover {
+            background: rgba(30, 144, 255, 0.2);
+            border-color: #1e90ff;
+            box-shadow: 0 0 20px rgba(30, 144, 255, 0.3);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .sound-toggle {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .sound-toggle.on {
+            background: rgba(30, 144, 255, 0.2);
+            border-color: #1e90ff;
+        }
+
+        .answer-history {
+            font-size: 12px;
+            color: #b0b0b0;
+            margin-top: 2rem;
+            text-align: center;
+            max-width: 300px;
+            line-height: 1.6;
+        }
+
+        .answer-history span {
+            color: #1e90ff;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
+    <div class="container">
+        <h1 class="title">✨ Magic 8 Ball ✨</h1>
+
+<p class="subtitle">ask a yes/no question and reveal your fortune</p>
+
+
+        <div class="ball-container">
+            <div class="ball" id="ball">
+                <div class="window">
+                    <div class="triangle"></div>
+                    <div class="answer-text" id="answer"></div>
+                </div>
+            </div>
+        </div>
+
+<p class="subtitle" style="margin-bottom: 1.3rem;">
+    (either type your question or tap the magicball)
+</p>
+
+        <div class="input-group">
+            <input type="text" class="question-input" id="question" placeholder="What is your question?" />
+            <div class="button-group">
+                <button class="ask" id="askBtn">Ask 8Ball</button>
+                <button class="sound-toggle" id="soundToggle" title="Toggle sound">🔊</button>
+                <button class="ask" id="resetBtn">Clear Choices</button>
+            </div>
+        </div>
+
+        <div class="answer-history" id="history"></div>
+    </div>
+
+    <script>
+        const answers = [
+    // Affirmative
+    'it is certain',
+    'it is decidedly so',
+    'without a doubt',
+    'yes definitely',
+    'you may rely on it',
+    'as I see it, yes',
+    'most likely',
+    'outlook good',
+    'yes',
+    'signs point to yes',
+
+    // Non-committal
+    'reply hazy, try again',
+    'ask again later',
+    'better not tell you now',
+    'cannot predict now',
+    'concentrate and ask again',
+
+    // Negative
+    'don\'t count on it',
+    'my reply is no',
+    'my sources say no',
+    'outlook not so good',
+    'very doubtful'
+];
+
+        let soundEnabled = true;
+        let lastAnswers = [];
+
+        const ball = document.getElementById('ball');
+        const answerText = document.getElementById('answer');
+        const questionInput = document.getElementById('question');
+        const askBtn = document.getElementById('askBtn');
+        const soundToggle = document.getElementById('soundToggle');
+        const resetBtn = document.getElementById('resetBtn');
+        const history = document.getElementById('history');
+
+        soundToggle.classList.add('on');
+
+        function resetBall() {
+            ball.classList.remove('shake');
+            answerText.textContent = '';
+            questionInput.value = '';
+            lastAnswers = [];
+            updateHistory();
+        }
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+                if (type === 'shake') {
+                    // Suspenseful rising tone
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+                    osc.frequency.setValueAtTime(100, audioContext.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.4);
+                    osc.type = 'sine';
+                    gain.gain.setValueAtTime(0.15, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.05, audioContext.currentTime + 0.4);
+                    osc.start();
+                    osc.stop(audioContext.currentTime + 0.4);
+                } else if (type === 'reveal') {
+                    // Dramatic reveal sound - ascending notes with cymbal-like shimmer
+                    const now = audioContext.currentTime;
+                    
+                    // Main melodic notes (ascending)
+                    const notes = [300, 450, 600];
+                    notes.forEach((freq, i) => {
+                        const osc = audioContext.createOscillator();
+                        const gain = audioContext.createGain();
+                        osc.connect(gain);
+                        gain.connect(audioContext.destination);
+                        osc.frequency.value = freq;
+                        osc.type = 'sine';
+                        gain.gain.setValueAtTime(0.12, now + i * 0.15);
+                        gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.15 + 0.35);
+                        osc.start(now + i * 0.15);
+                        osc.stop(now + i * 0.15 + 0.35);
+                    });
+
+                    // High shimmer effect (like a cymbal crash)
+                    for (let j = 0; j < 3; j++) {
+                        const shimmerOsc = audioContext.createOscillator();
+                        const shimmerGain = audioContext.createGain();
+                        shimmerOsc.connect(shimmerGain);
+                        shimmerGain.connect(audioContext.destination);
+                        shimmerOsc.frequency.value = 1000 + Math.random() * 2000;
+                        shimmerOsc.type = 'square';
+                        shimmerGain.gain.setValueAtTime(0.08, now + 0.2 + j * 0.1);
+                        shimmerGain.gain.exponentialRampToValueAtTime(0.001, now + 0.2 + j * 0.1 + 0.4);
+                        shimmerOsc.start(now + 0.2 + j * 0.1);
+                        shimmerOsc.stop(now + 0.2 + j * 0.1 + 0.4);
+                    }
+                }
+            } catch (e) {
+                console.log('Audio context not available');
+            }
+        }
+
+        function getRandomAnswer() {
+            return answers[Math.floor(Math.random() * answers.length)];
+        }
+
+        function shake() {
+            ball.classList.remove('shake');
+            void ball.offsetWidth;
+            ball.classList.add('shake');
+            answerText.style.opacity = '0';
+
+            playSound('shake');
+
+            setTimeout(() => {
+                const answer = getRandomAnswer();
+                answerText.textContent = answer;
+                answerText.style.opacity = '1';
+                playSound('reveal');
+
+                lastAnswers.unshift(answer);
+                if (lastAnswers.length > 5) lastAnswers.pop();
+                updateHistory();
+            }, 500);
+        }
+
+        function updateHistory() {
+            if (lastAnswers.length === 0) {
+                history.textContent = '';
+            } else {
+                history.innerHTML = 'Recent answers: <span>' + lastAnswers.join(' • ') + '</span>';
+            }
+        }
+
+        ball.addEventListener('click', shake);
+        askBtn.addEventListener('click', () => {
+            if (questionInput.value.trim()) {
+                shake();
+                questionInput.value = '';
+            }
+        });
+
+        questionInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && questionInput.value.trim()) {
+                shake();
+                questionInput.value = '';
+            }
+        });
+
+        soundToggle.addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            soundToggle.classList.toggle('on');
+            soundToggle.textContent = soundEnabled ? '🔊' : '🔇';
+        });
+
+        resetBtn.addEventListener('click', resetBall);
+    </script>
+</body>
+</html>
