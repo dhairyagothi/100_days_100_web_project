@@ -8,90 +8,107 @@ const fileName =
   document.getElementById("fileName");
 
 const downloadReportBtn =
-  document.getElementById(
-    "downloadReportBtn"
-  );
+  document.getElementById("downloadReportBtn");
 const dropZone =
   document.getElementById("dropZone");
 
 const dragText =
   document.querySelector(".drag-text");
-  
+
+// Grab metadata DOM elements
+const statName = document.getElementById("statName");
+const statType = document.getElementById("statType");
+const statSize = document.getElementById("statSize");
+const statModified = document.getElementById("statModified");
+const statReadingTime = document.getElementById("statReadingTime");
 
 uploadBtn.addEventListener("click", () => {
-
   resumeInput.click();
-
 });
 
 resumeInput.addEventListener("change", () => {
-
   if (resumeInput.files.length > 0) {
-
-    fileName.textContent =
-      resumeInput.files[0].name;
-
+    const file = resumeInput.files[0];
+    fileName.textContent = file.name;
+    updateFileStatistics(file); // Compute metadata stats
     generateAnalysis();
   }
 });
 
 ["dragenter", "dragover"].forEach(eventName => {
-
   dropZone.addEventListener(
     eventName,
     e => {
-
       e.preventDefault();
-
-      dropZone.classList.add(
-        "drag-over"
-      );
-
-      dragText.textContent =
-        "Drop your resume here";
+      dropZone.classList.add("drag-over");
+      dragText.textContent = "Drop your resume here";
     }
   );
-
 });
 
 ["dragleave", "drop"].forEach(eventName => {
-
   dropZone.addEventListener(
     eventName,
     e => {
-
       e.preventDefault();
-
-      dropZone.classList.remove(
-        "drag-over"
-      );
-
-      dragText.textContent =
-        "or drag & drop your resume here";
+      dropZone.classList.remove("drag-over");
+      dragText.textContent = "or drag & drop your resume here";
     }
   );
-
 });
 
 dropZone.addEventListener(
   "drop",
   e => {
-
-    const files =
-      e.dataTransfer.files;
-
+    const files = e.dataTransfer.files;
     if (files.length > 0) {
-
       resumeInput.files = files;
-      
-      fileName.textContent =
-        files[0].name;
-
+      const file = files[0];
+      fileName.textContent = file.name;
+      updateFileStatistics(file); // Compute metadata stats
       generateAnalysis();
     }
   }
 );
 
+// ==================== NEW METADATA PARSING ENGINE ====================
+function updateFileStatistics(file) {
+  if (!file) return;
+
+  // 1. File Name
+  statName.textContent = file.name;
+
+  // 2. File Type Extraction
+  let extension = file.name.split('.').pop().toUpperCase();
+  if (!extension || extension === file.name) {
+    extension = file.type ? file.type.split('/').pop().toUpperCase() : "UNKNOWN";
+  }
+  statType.textContent = extension;
+
+  // 3. Readable File Size Calculation (Bytes to KB/MB conversion)
+  const sizeInBytes = file.size;
+  if (sizeInBytes >= 1024 * 1024) {
+    statSize.textContent = (sizeInBytes / (1024 * 1024)).toFixed(2) + " MB";
+  } else {
+    statSize.textContent = (sizeInBytes / 1024).toFixed(1) + " KB";
+  }
+
+  // 4. Last Modified Date Formatting
+  const modifiedTimestamp = file.lastModified || Date.now();
+  const dateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
+  statModified.textContent = new Date(modifiedTimestamp).toLocaleDateString(undefined, dateOptions);
+
+  // 5. Estimated Reading Time Engine
+  // Maps file size volume to standard text densities (average ~2.5 mins per resume)
+  let baseMinutes = 2;
+  if (sizeInBytes > 500 * 1024) {
+    baseMinutes = 4; // Longer documents/portfolios
+  } else if (sizeInBytes < 100 * 1024) {
+    baseMinutes = 1; // Short one-pagers
+  }
+  statReadingTime.textContent = `~${baseMinutes} min read`;
+}
+// ======================================================================
 
 const progressCircle =
   document.getElementById("progressCircle");
@@ -100,82 +117,49 @@ const meterScore =
   document.getElementById("meterScore");
 
 const radius = 85;
+const circumference = 2 * Math.PI * radius;
 
-const circumference =
-  2 * Math.PI * radius;
-
-progressCircle.style.strokeDasharray =
-  circumference;
-
-progressCircle.style.strokeDashoffset =
-  circumference;
+progressCircle.style.strokeDasharray = circumference;
+progressCircle.style.strokeDashoffset = circumference;
 
 let currentATSScore = 0;
 
 function generateAnalysis() {
-
-   currentATSScore =
-    Math.floor(Math.random() * 21) + 70;
-
-
-  const atsScore =
-   currentATSScore;
-
+  currentATSScore = Math.floor(Math.random() * 21) + 70;
+  const atsScore = currentATSScore;
   animateMeter(atsScore);
-
   generateChart(atsScore);
 }
 
 function animateMeter(score) {
-
-  const offset =
-    circumference -
-    (score / 100) * circumference;
-
+  const offset = circumference - (score / 100) * circumference;
   setTimeout(() => {
-
-    progressCircle.style.strokeDashoffset =
-      offset;
-
+    progressCircle.style.strokeDashoffset = offset;
   }, 300);
 
-  meterScore.textContent =
-    `${score}%`;
+  meterScore.textContent = `${score}%`;
 
   if (score >= 85) {
-
-    progressCircle.style.stroke =
-      "#22c55e";
-
+    progressCircle.style.stroke = "#22c55e";
   } else if (score >= 70) {
-
-    progressCircle.style.stroke =
-      "#eab308";
-
+    progressCircle.style.stroke = "#eab308";
   } else {
-
-    progressCircle.style.stroke =
-      "#ef4444";
+    progressCircle.style.stroke = "#ef4444";
   }
 }
 
 let chart;
 
 function generateChart(score) {
-
-  const ctx =
-    document.getElementById("skillsChart");
+  const ctx = document.getElementById("skillsChart");
 
   if (chart) {
     chart.destroy();
   }
 
   chart = new Chart(ctx, {
-
     type: "radar",
-
     data: {
-
       labels: [
         "Technical Skills",
         "Projects",
@@ -183,11 +167,8 @@ function generateChart(score) {
         "Communication",
         "Experience"
       ],
-
       datasets: [{
-
         label: "Resume Strength",
-
         data: [
           score - 5,
           score - 8,
@@ -195,69 +176,39 @@ function generateChart(score) {
           score - 12,
           score - 15
         ],
-
         fill: true,
-
         borderWidth: 3,
-
         pointRadius: 5
       }]
     },
-
     options: {
-
       responsive: true,
-
       plugins: {
-
         legend: {
-
-          labels: {
-            color: "#f8fafc"
-          }
+          labels: { color: "#f8fafc" }
         }
       },
-
       scales: {
-
         r: {
-
           suggestedMin: 0,
-
           suggestedMax: 100,
-
           ticks: {
-
             color: "#cbd5e1",
-
-            backdropColor:
-              "transparent"
+            backdropColor: "transparent"
           },
-
           pointLabels: {
-
             color: "#f8fafc",
-
-            font: {
-              size: 14
-            }
+            font: { size: 14 }
           },
-
-          grid: {
-            color:
-              "rgba(255,255,255,0.1)"
-          },
-
-          angleLines: {
-            color:
-              "rgba(255,255,255,0.1)"
-          }
+          grid: { color: "rgba(255,255,255,0.1)" },
+          angleLines: { color: "rgba(255,255,255,0.1)" }
         }
       }
     }
   });
 }
 
+// Default initial run setup
 generateAnalysis();
 
 const themeToggle =
@@ -267,35 +218,21 @@ const savedTheme =
   localStorage.getItem("resumeTheme");
 
 if (savedTheme === "light") {
-
   document.body.classList.add("light-mode");
-  
   themeToggle.textContent = "☀️";
 } else {
   themeToggle.textContent = "🌙";
 }
 
 themeToggle.addEventListener("click", () => {
-
   document.body.classList.toggle("light-mode");
-
-  const isLight =
-    document.body.classList.contains("light-mode");
-
-  localStorage.setItem(
-    "resumeTheme",
-    isLight ? "light" : "dark"
-  );
-
-  themeToggle.textContent =
-    isLight ? "☀️" : "🌙";
+  const isLight = document.body.classList.contains("light-mode");
+  localStorage.setItem("resumeTheme", isLight ? "light" : "dark");
+  themeToggle.textContent = isLight ? "☀️" : "🌙";
 });
 
-downloadReportBtn.addEventListener(
-"click",
-() => {
-
-const report = `
+downloadReportBtn.addEventListener("click", () => {
+  const report = `
 AI Resume Analyzer Report
 =========================
 
@@ -316,25 +253,11 @@ AI Suggestions
 • Add GitHub and portfolio links.
 `;
 
-const blob =
-  new Blob(
-    [report],
-    { type: "text/plain" }
-  );
-
-const url =
-  URL.createObjectURL(blob);
-
-const a =
-  document.createElement("a");
-
-a.href = url;
-
-a.download =
-  "resume-analysis-report.txt";
-
-a.click();
-
-URL.revokeObjectURL(url);
-}
-);
+  const blob = new Blob([report], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "resume-analysis-report.txt";
+  a.click();
+  URL.revokeObjectURL(url);
+});

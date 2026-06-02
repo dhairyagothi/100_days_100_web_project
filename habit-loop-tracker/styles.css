@@ -1,0 +1,258 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+body {
+  background-color: #0b0f19;
+  color: #f1f5f9;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+.app-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.app-header h1 {
+  font-size: 2.2rem;
+  color: #fff;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.app-header h1 i {
+  color: #6366f1;
+}
+
+.app-header p {
+  color: #94a3b8;
+  margin-top: 8px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+@media (min-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: 450px 1fr;
+  }
+}
+
+/* CARD LAYOUT PATTERNS */
+.form-container,
+.chart-panel,
+.history-panel {
+  background: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+h2 {
+  font-size: 1.3rem;
+  color: #fff;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+/* FORM STYLING PARAMETERS */
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  margin-bottom: 8px;
+}
+
+input[type="text"],
+select {
+  width: 100%;
+  padding: 12px 16px;
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+
+input[type="text"]:focus,
+select:focus {
+  outline: none;
+  border-color: #6366f1;
+}
+
+.loop-box {
+  margin-bottom: 20px;
+  padding: 16px;
+  border-radius: 10px;
+  border-left: 4px solid #6366f1;
+}
+
+.loop-box.cue {
+  background: rgba(234, 179, 8, 0.04);
+  border-left-color: #eab308;
+}
+.loop-box.routine {
+  background: rgba(59, 130, 246, 0.04);
+  border-left-color: #3b82f6;
+}
+.loop-box.reward {
+  background: rgba(16, 185, 129, 0.04);
+  border-left-color: #10b981;
+}
+
+.loop-box label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.loop-box small {
+  display: block;
+  color: #94a3b8;
+  font-size: 0.8rem;
+  margin: 4px 0 10px 0;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 14px;
+  background: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s;
+}
+
+.btn-submit:hover {
+  background: #4f46e5;
+}
+
+/* TRACK ANALYTICS STYLING */
+.analytics-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.chart-wrapper {
+  position: relative;
+  height: 240px;
+  width: 100%;
+}
+
+.log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.habit-card {
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.card-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #fff;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge.success {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+.badge.fail {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.card-details {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+@media (min-width: 600px) {
+  .card-details {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.detail-segment {
+  background: #111827;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.detail-segment strong {
+  display: block;
+  color: #94a3b8;
+  margin-bottom: 2px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.btn-delete {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 4px;
+}
+
+.btn-delete:hover {
+  color: #ef4444;
+}
