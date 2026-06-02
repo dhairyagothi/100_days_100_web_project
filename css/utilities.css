@@ -1,0 +1,178 @@
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gridDrift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 12px, 0);
+  }
+}
+
+@keyframes ambientFloat {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(0, -8px, 0) scale(1.03);
+  }
+}
+
+@keyframes noiseShift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-2%, 1%, 0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tagSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scrollBtnPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  }
+}
+
+/* ============================================================
+   THEME TRANSITION REPAINT GUARD
+   ============================================================ */
+[data-theme-transitioning],
+[data-theme-transitioning] * {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transition-duration: 0.2s !important;
+}
+
+[data-theme-transitioning],
+[data-theme-transitioning] * {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transition: none !important;
+}
+
+/* ============================================================
+   LIGHT-MODE OVERRIDES
+   ============================================================ */
+:root[data-theme="light"] .hero-terminal {
+    filter: invert(1) hue-rotate(180deg) brightness(1.05) contrast(0.9);
+    opacity: 0.6;
+    mix-blend-mode: multiply;
+    background: transparent;
+}
+
+:root[data-theme="light"] body::before,
+:root[data-theme="light"] body::after,
+:root[data-theme="light"] body .ambient-left::before,
+:root[data-theme="light"] body .ambient-right::before,
+:root[data-theme="light"] body .noise-layer {
+    mix-blend-mode: multiply;
+    opacity: 0.15;
+}
+
+body.light-mode .hero-terminal {
+  filter: invert(1) hue-rotate(180deg) brightness(1.05) contrast(0.9);
+  opacity: 0.6;
+  mix-blend-mode: multiply;
+  background: transparent;
+}
+
+body.light-mode::before,
+body.light-mode::after,
+body.light-mode .ambient-left::before,
+body.light-mode .ambient-right::before,
+body.light-mode .noise-layer {
+  mix-blend-mode: multiply;
+  opacity: 0.15;
+}
+
+[data-theme="light"] .hero-terminal {
+    filter: invert(1) hue-rotate(180deg) brightness(1.05) contrast(0.9);
+    opacity: 0.15;
+    mix-blend-mode: multiply;
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  body::before,
+  body::after,
+  .ambient::before,
+  .noise-layer,
+  .hero-overline,
+  .hero-headline,
+  .hero-sub,
+  .hero-extra,
+  .hero-actions,
+  .stats-strip {
+    animation: none !important;
+  }
+
+  .hero-terminal {
+    opacity: 0.35;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
