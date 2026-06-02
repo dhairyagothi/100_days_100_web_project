@@ -2427,7 +2427,7 @@
     "difficulty": "advanced",
     "projectPath": "./public/Complaint_Management_System/index.html"
   },
-{
+ {
     "projectNo": 196,
     "projectName": "AirCast",
     "projectType": "Tool",
@@ -2443,7 +2443,7 @@
     "projectPath": "./public/Weather App with AQI/index.html"
   },
   {
-"projectNo": 196,
+    "projectNo": 197,
     "projectName": "Flipkart Clone",
     "projectType": "E-Commerce",
     "projectDesc": "A responsive Flipkart-inspired e-commerce website featuring a modern navbar, product categories, hero carousel, brand spotlight section, promotional banners, home decor showcase, and a fully designed footer.",
@@ -2456,7 +2456,7 @@
     "projectPath": "./public/Flipkart-Clone/index.html"
   },
   {
-    "projectNo": 197,
+    "projectNo": 198,
     "projectName": "Theme-Toggler",
     "projectType": "UI / Animation",
     "projectDesc": "A responsive theme toggler that switches between light and dark modes and saves the user's preference using localStorage.",
@@ -2469,7 +2469,7 @@
     "projectPath": "./public/Theme-toggler/src/App.jsx"
   },
   {
-    "projectNo": 198,
+    "projectNo": 199,
     "projectName": "Pac-Man",
     "projectType": "Game",
     "projectDesc": "A classic Pac-Man game built with HTML5 Canvas and JavaScript. Features all 4 ghosts, touch and keyboard controls, score tracking, sound toggle, and is fully responsive for all devices.",
@@ -2484,7 +2484,7 @@
     "projectPath": "./public/pacman/index.html"
   },
   {
-    "projectNo": 199,
+    "projectNo": 200,
     "projectName": "Dual-Genre Movie Matcher",
     "projectType": "Web Application",
     "projectDesc": "A web app to search the perfect movie. Comes with dark and light theme toggle.",
@@ -2497,9 +2497,8 @@
     "projectPath": "./public/Movie-Matcher/index.html"
   
 },
-
-    {
-    "projectNo": 200,
+{
+    "projectNo": 201,
     "projectName": "Number Guesser Game",
     "projectType": "Game",
     "projectDesc": "A simple and interactive Number Guessing Game built using HTML, CSS, and JavaScript. The player must guess a randomly generated number between 1 and 100 within 10 attempts.",
@@ -2519,5 +2518,41 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/traffic_signal/index.html"
-  }
+  },
+   {
+  "projectNo": 203,
+  "projectName": "Pomodoro With Miu",
+  "projectType": "Tool",
+  "projectDesc": "A cute cat-themed Pomodoro timer built with Electron.js. Features 25/5 focus-break cycles, animated cat GIFs, meow sound notifications, and encouraging messages. Originally a desktop app — browser preview included.",
+  "projectPath": "./public/Pomodoro_With_Miu-Electronjs/index.html",
+  "techStack": ["javascript", "css", "html", "electron"],
+  "difficulty": "intermediate"
+  },
+{
+    "projectNo": 204,
+    "projectName": "Movie Search App",
+    "projectType": "Web Application",
+    "projectDesc": "A responsive movie search application powered by the OMDb API that allows users to search movies and view detailed information including posters, ratings, genres, cast, runtime, and plot.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "api"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/movie-search-app/index.html"
+},
+  {
+  "projectNo": 205,
+  "projectName": "Escape the Matrix Game",
+  "projectType": "Web Application",
+  "projectDesc": "An immersive, interactive web-based survival and puzzle game challenging players to hack their way out of a simulated reality.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript"
+  ],
+  "difficulty": "advanced",
+  "projectPath": "./public/Escape The Matrix/index.html"
+}
 ]

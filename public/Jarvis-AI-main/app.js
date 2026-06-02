@@ -1,6 +1,8 @@
 
 
 
+
+
 const btn = document.querySelector(".talk");
 const content = document.querySelector(".content");
 const statusText = document.querySelector(".status-text");
@@ -982,6 +984,7 @@ particlesJS("particles-js", {
     },
     retina_detect: true
 });
+
 
 
 

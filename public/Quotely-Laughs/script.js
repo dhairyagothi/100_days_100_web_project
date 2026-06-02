@@ -16,6 +16,25 @@ async function generateContent() {
   updateShareLinks(quote, joke);
 }
 
+const themeToggle = document.getElementById("theme-toggle");
+
+if (localStorage.getItem("theme") === "light") {
+  document.body.classList.add("light-theme");
+  themeToggle.textContent = "☀️";
+}
+
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("light-theme");
+
+  if (document.body.classList.contains("light-theme")) {
+    localStorage.setItem("theme", "light");
+    themeToggle.textContent = "☀️";
+  } else {
+    localStorage.setItem("theme", "dark");
+    themeToggle.textContent = "🌙";
+  }
+});
+
 function showLoading() {
   document.getElementById("loading").classList.remove("hidden");
 }

@@ -107,7 +107,7 @@ app.post('/', function (req, res) {
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.error(error);
-      return res.send('Email failed');
+      return res.status(500).send('Email failed');
     }
 
     console.log('Email sent:', info.response);
