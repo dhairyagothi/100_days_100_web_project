@@ -2,6 +2,30 @@
   const container = document.getElementById("navbar-container");
   if (!container) return;
 
+  const safeStorage = {
+    getItem(key) {
+      try {
+        return localStorage.getItem(key);
+      } catch (_) {
+        return null;
+      }
+    },
+    setItem(key, value) {
+      try {
+        localStorage.setItem(key, value);
+      } catch (_) {
+        // Ignored
+      }
+    },
+    removeItem(key) {
+      try {
+        localStorage.removeItem(key);
+      } catch (_) {
+        // Ignored
+      }
+    },
+  };
+
   const path = window.location.pathname;
   const isSubfolder =
     path.includes("/learning/") ||
@@ -14,14 +38,13 @@
   const isLearn = path.includes("/learning/");
   const isContributors = path.includes("/contributors/");
 
-  const username = window.username || localStorage.getItem('loggedInUser') || null;
+  const username =
+    window.username || safeStorage.getItem("loggedInUser") || null;
 
   window.ThemeManager?.init?.();
   const isLight = window.ThemeManager?.currentTheme?.() === "light";
-  const themeIcon = isLight ? "fa-sun" : "fa-moon";
+  const themeIcon = isLight ? "☀" : "☾";
 
-  // FIX: Avoid appending "index.html" on web servers to prevent 308 Redirect lag.
-  // We only append it if we detect the file:// protocol (for local double-click testing).
   const isLocalFile = window.location.protocol === "file:";
   const homeHref = isLocalFile ? `${base}index.html` : base;
   const learnHref = `${base}learning/learning.html`;
@@ -30,62 +53,117 @@
   const themeBtn = `
     <div class="theme-dropdown-container">
       <button class="btn btn-ghost btn-sm dropdown-toggle" id="themeToggleNav" aria-label="Select theme" aria-haspopup="true" aria-expanded="false">
-        <i class="fas ${themeIcon}"></i> Theme
+        <span aria-hidden="true">${themeIcon}</span> Theme
       </button>
       <div class="dropdown-menu">
-        <button class="dropdown-item" data-theme-value="light"><i class="fas fa-sun"></i> Light</button>
-        <button class="dropdown-item" data-theme-value="dark"><i class="fas fa-moon"></i> Dark</button>
-        <button class="dropdown-item" data-theme-value="sepia"><i class="fas fa-coffee"></i> Sepia</button>
-        <button class="dropdown-item" data-theme-value="cyberpunk"><i class="fas fa-bolt"></i> Cyberpunk</button>
-        <button class="dropdown-item" data-theme-value="nord"><i class="fas fa-snowflake"></i> Nord</button>
+        <button class="dropdown-item" data-theme-value="light">☀ Light</button>
+        <button class="dropdown-item" data-theme-value="dark">☾ Dark</button>
+        <button class="dropdown-item" data-theme-value="sepia">☕ Sepia</button>
+        <button class="dropdown-item" data-theme-value="cyberpunk">⚡ Cyberpunk</button>
+        <button class="dropdown-item" data-theme-value="nord">❄ Nord</button>
       </div>
     </div>
   `;
-  const homeBtn = `<a class="btn ${isHome ? "btn-primary active" : "btn-ghost"} btn-sm" href="${homeHref}"><i class="fas fa-home"></i> Home</a>`;
-  const learnBtn = `<a class="btn ${isLearn ? "btn-primary active" : "btn-ghost"} btn-sm" href="${learnHref}"><i class="fas fa-graduation-cap"></i> Learn</a>`;
-  const contributorsBtn = `<a class="btn ${isContributors ? "btn-primary active" : "btn-ghost"} btn-sm" href="${contributorsHref}">Contributors</a>`;
-  const githubBtn = `<a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank"><i class="fab fa-github"></i> GitHub</a>`;
-  const readmeBtn = `<a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>`;
+
+  const homeBtn = `
+  <a class="btn ${isHome ? "btn-primary active" : "btn-ghost"} btn-sm" href="${homeHref}">
+    <span class="mobile-nav-icon"><i class="fas fa-home"></i></span>
+    Home
+  </a>`;
+
+  const learnBtn = `
+  <a class="btn ${isLearn ? "btn-primary active" : "btn-ghost"} btn-sm" href="${learnHref}">
+    <span class="mobile-nav-icon"><i class="fas fa-graduation-cap"></i></span>
+    Learn
+  </a>`;
+
+  const contributorsBtn = `
+  <a class="btn ${isContributors ? "btn-primary active" : "btn-ghost"} btn-sm" href="${contributorsHref}">
+    <span class="mobile-nav-icon"><i class="fas fa-users"></i></span>
+    Contributors
+  </a>`;
+
+  const githubBtn = `
+  <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
+    GitHub
+  </a>`;
+
+  const readmeBtn = `
+  <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">
+    Generate README
+  </a>`;
+
+  const customCursorEnabled =
+    safeStorage.getItem("customCursorEnabled") !== "false";
+  const cursorBtn = `
+    <button class="btn btn-ghost btn-sm" id="cursorToggleNav" aria-label="Toggle custom cursor (currently ${customCursorEnabled ? "Custom" : "Default"})">
+      <span class="mobile-nav-icon"><i class="fas ${customCursorEnabled ? "fa-circle-notch" : "fa-mouse-pointer"}"></i></span>
+      Cursor: ${customCursorEnabled ? "Custom" : "Default"}
+    </button>
+  `;
 
   let navButtonsHTML = "";
   if (username) {
     const userSection = `
-      <span class="welcome-text">Hi, ${username}</span>
+      <div class="mobile-user-strip">
+        <div class="mobile-user-avatar">${username.slice(0, 2).toUpperCase()}</div>
+        <div class="mobile-user-info">
+          <p class="mobile-user-name">Hi, ${username}</p>
+          <p class="mobile-user-role">Contributor</p>
+        </div>
+      </div>
       <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
     `;
-    navButtonsHTML = `${themeBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${userSection}`;
+    navButtonsHTML = `${themeBtn} ${cursorBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${userSection}`;
   } else {
-    const signinBtn = `<a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign in</a>`;
-    navButtonsHTML = `${themeBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${signinBtn}`;
+    const signinBtn = `<a class="btn btn-primary btn-sm" id="navSignInCta" href="${base}public/Login.html">Sign in</a>`;
+    navButtonsHTML = `${themeBtn} ${cursorBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${signinBtn}`;
   }
 
   container.innerHTML = `
-      <header>
-          <nav class="navbar" id="navbar" aria-label="Main Navigation">
-              <a class="navbar-brand" href="${homeHref}" style="text-decoration:none;">
-                  <span class="brand-mark" aria-label="100 Days logo">100</span>
-                  <span class="brand-copy">
-                      <span class="brand-kicker">Open Source Archive</span>
-                      <strong>100 Days · 100 Web Projects</strong>
-                  </span>
-              </a>
+    <nav class="navbar" id="navbar" aria-label="Main Navigation">
+      <a class="navbar-brand" href="${homeHref}" style="text-decoration:none;">
+        <span class="brand-mark" aria-label="100 Days logo">100</span>
+        <span class="brand-copy">
+          <span class="brand-kicker">Open Source Archive</span>
+          <strong>100 Days · 100 Web Projects</strong>
+        </span>
+      </a>
 
-              <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation menu" aria-controls="navButtons" aria-expanded="false">
-                  <i class="fas fa-bars" aria-hidden="true"></i>
-              </button>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation menu" aria-controls="navButtons" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
-              <div class="nav-buttons mobile-drawer-layer" id="navButtons">
-                  ${navButtonsHTML}
-              </div>
-          </nav>
-      </header>
+      <div class="nav-buttons mobile-drawer-layer" id="navButtons">
+        <div class="mobile-menu-header">
+          <span class="mobile-menu-title">MENU</span>
+          <button class="mobile-menu-close" id="mobileMenuClose" type="button">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        ${navButtonsHTML}
+      </div>
+    </nav>
   `;
 
-  window.ThemeManager?.applyTheme?.(window.ThemeManager.currentTheme(), { persist: false });
+  window.ThemeManager?.applyTheme?.(window.ThemeManager.currentTheme(), {
+    persist: false,
+  });
 
-  // Mobile Menu Logic
+  // Mobile drawer state triggers
   const menuToggle = document.getElementById("menuToggle");
   const navButtonsDiv = document.getElementById("navButtons");
+  const closeBtn = document.getElementById("mobileMenuClose");
+
+  let overlay = document.querySelector(".mobile-overlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.className = "mobile-overlay";
+    document.body.appendChild(overlay);
+  }
+
   if (menuToggle && navButtonsDiv) {
     if (menuToggle.dataset.mobileNavBound === "true") return;
     menuToggle.dataset.mobileNavBound = "true";
@@ -93,16 +171,21 @@
     const closeMenu = () => {
       menuToggle.classList.remove("active");
       navButtonsDiv.classList.remove("active");
+      overlay.classList.remove("active");
       menuToggle.setAttribute("aria-expanded", "false");
     };
 
     const openMenu = () => {
       menuToggle.classList.add("active");
       navButtonsDiv.classList.add("active");
+      overlay.classList.add("active");
       menuToggle.setAttribute("aria-expanded", "true");
       const firstLink = navButtonsDiv.querySelector("a, button");
       firstLink?.focus({ preventScroll: true });
     };
+
+    overlay.addEventListener("click", closeMenu);
+    closeBtn?.addEventListener("click", closeMenu);
 
     menuToggle.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -126,53 +209,82 @@
       }
     });
 
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 768) {
+        closeMenu();
+      }
+    });
+
     navButtonsDiv.addEventListener("click", (e) => {
       if (
-        e.target.closest(".btn") ||
+        e.target.closest(".btn:not(.dropdown-toggle)") ||
         e.target.closest("a") ||
-        e.target.closest("button")
+        e.target.closest(".dropdown-item")
       ) {
         closeMenu();
       }
     });
   }
 
-  // Logout Logic
-  const logoutBtn = document.getElementById("logoutBtn");
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-      window.username = null;
-      localStorage.removeItem('loggedInUser');
-      location.reload();
-    });
-  }
-
-  // Dropdown Logic
+  // Desktop drop menu engines
   const dropdownToggle = document.getElementById("themeToggleNav");
   const dropdownMenu = dropdownToggle?.nextElementSibling;
-  
+
   if (dropdownToggle && dropdownMenu) {
     dropdownToggle.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
-      const isExpanded = dropdownToggle.getAttribute("aria-expanded") === "true";
+      const isExpanded =
+        dropdownToggle.getAttribute("aria-expanded") === "true";
       dropdownToggle.setAttribute("aria-expanded", !isExpanded);
       dropdownMenu.classList.toggle("show");
     });
 
     document.addEventListener("click", (e) => {
-      if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
-        dropdownToggle.setAttribute("aria-expanded", "false");
-        dropdownMenu.classList.remove("show");
-      }
-    });
-    
-    // Close dropdown on item click
-    dropdownMenu.addEventListener("click", (e) => {
-      if (e.target.closest(".dropdown-item")) {
+      if (
+        !dropdownToggle.contains(e.target) &&
+        !dropdownMenu.contains(e.target)
+      ) {
         dropdownToggle.setAttribute("aria-expanded", "false");
         dropdownMenu.classList.remove("show");
       }
     });
   }
+
+  const logoutBtn = document.getElementById("logoutBtn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      window.username = null;
+      safeStorage.removeItem("loggedInUser");
+      location.reload();
+    });
+  }
+
+  // Cursor Toggle Logic
+  document.addEventListener("click", (event) => {
+    const toggle = event.target.closest("#cursorToggleNav");
+    if (!toggle) return;
+    event.preventDefault();
+    const currentlyEnabled =
+      safeStorage.getItem("customCursorEnabled") !== "false";
+    const nextState = !currentlyEnabled;
+    safeStorage.setItem("customCursorEnabled", String(nextState));
+
+    // Update all cursor toggle buttons on the page (both standard and mobile drawer might have it)
+    document.querySelectorAll("#cursorToggleNav").forEach((btn) => {
+      btn.innerHTML = `
+        <span class="mobile-nav-icon"><i class="fas ${nextState ? "fa-circle-notch" : "fa-mouse-pointer"}"></i></span>
+        Cursor: ${nextState ? "Custom" : "Default"}
+      `;
+      btn.setAttribute(
+        "aria-label",
+        `Toggle custom cursor (currently ${nextState ? "Custom" : "Default"})`,
+      );
+    });
+
+    // Call the custom cursor update function if it exists (on the landing page)
+    if (typeof window.updateCustomCursorState === "function") {
+      window.updateCustomCursorState();
+    }
+  });
 })();
