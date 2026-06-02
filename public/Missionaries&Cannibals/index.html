@@ -9,50 +9,37 @@
 </head>
 
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
-
     <div class="top-bar">
-        <h1>MISSIONARIES AND CANNIBALS</h1>
-
-        <button id="instructions-btn" class="instructions-btn">
-            Instructions
-        </button>
+        <h1>Missionaries and Cannibals</h1>
+        <button id="instructions-btn" class="instructions-btn">How to Play</button>
     </div>
 
-
     <div class="game-container">
-        <!-- Left Bank -->
-        <div class="bank" id="left-bank">
+        <div class="bank" id="left-bank" data-bank="left">
             <h2>Left Bank</h2>
-            <div class="people" id="left-people">
-                <!-- Missionaries and Cannibals -->
+            <div class="people" id="left-people"></div>
+        </div>
+
+        <div class="boat-zone" id="boat-zone">
+            <div class="boat" id="boat" data-bank="boat">
+                <h2>Boat</h2>
+                <div class="people" id="boat-people"></div>
             </div>
         </div>
 
-        <!-- Boat -->
-        <div class="boat" id="boat">
-            <h2>Boat</h2>
-            <div class="people" id="boat-people">
-                <!-- Boat People -->
-            </div>
-        </div>
-
-        <!-- Right Bank -->
-        <div class="bank" id="right-bank">
+        <div class="bank" id="right-bank" data-bank="right">
             <h2>Right Bank</h2>
-            <div class="people" id="right-people">
-                <!-- Missionaries and Cannibals -->
-            </div>
+            <div class="people" id="right-people"></div>
         </div>
     </div>
 
     <div class="controls">
         <button id="start-reset">Start Game</button>
         <button id="move-boat">Move Boat</button>
-        <button id="hint-btn" class="hint-btn">Hint (3 left)</button>
+        <button id="hint-btn" class="hint-btn">Get Hint (3 left)</button>
     </div>
 
-    <p id="hint-text" class="hint-display-text"></p>
+    <p id="hint-text" class="hint-display-text" style="display: none;"></p>
     <div id="message"></div>
 
     <div class="stats-container">
@@ -60,7 +47,7 @@
     </div>
 
     <div id="guidance" class="guidance-text">
-        Welcome! Move all Sheep and Tigers safely to the right bank.
+        Welcome! Move all Missionaries and Cannibals safely to the right bank.
     </div>
 
     <!-- Instructions/Welcome Modal -->
@@ -70,7 +57,7 @@
 
             <div class="modal-header">
                 <h2>The River Crossing Challenge</h2>
-                <p class="story-text">Three <strong>Sheep (Missionaries)</strong> and three <strong>Tigers (Cannibals)</strong> must cross a dangerous river. Help them reach the other side safely!</p>
+                <p class="story-text">Three <strong>Missionaries</strong> and three <strong>Cannibals</strong> must cross a dangerous river. Help them reach the other side safely!</p>
             </div>
 
             <div class="modal-section">
@@ -82,15 +69,15 @@
                 <div class="modal-section">
                     <h3><i class="icon">🎮</i> Characters</h3>
                     <ul>
-                        <li><span class="emoji-legend">🐑</span> <strong>Sheep:</strong> Peaceful travelers.</li>
-                        <li><span class="emoji-legend">🐯</span> <strong>Tigers:</strong> Hungry predators.</li>
+                        <li><span class="emoji-legend">M</span> <strong>Missionaries:</strong> Peaceful travelers.</li>
+                        <li><span class="emoji-legend">C</span> <strong>Cannibals:</strong> Dangerous travelers.</li>
                     </ul>
                 </div>
 
                 <div class="modal-section">
                     <h3><i class="icon">⚠️</i> Survival Rules</h3>
                     <ul>
-                        <li><strong>Safety:</strong> Never leave <strong>Sheep outnumbered</strong> by Tigers on either bank (unless no sheep are present).</li>
+                        <li><strong>Safety:</strong> Never leave <strong>Missionaries outnumbered</strong> by Cannibals on either bank (unless no missionaries are present).</li>
                         <li><strong>Capacity:</strong> Max 2 people in the boat.</li>
                     </ul>
                 </div>

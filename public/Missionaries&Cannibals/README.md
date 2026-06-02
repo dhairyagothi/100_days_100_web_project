@@ -1,36 +1,36 @@
-# 🐑🐯 Missionaries and Cannibals — River Crossing Puzzle
+# Missionaries and Cannibals — River Crossing Puzzle
  
-A browser-based implementation of the classic **Missionaries and Cannibals** logic puzzle, reimagined as a **Sheep vs Tigers** river crossing challenge. Move all travelers safely from the Left Bank to the Right Bank without letting the Tigers outnumber the Sheep!
- 
----
- 
-## 📖 Description
- 
-This is an interactive puzzle game built with vanilla HTML, CSS, and JavaScript. Three Sheep (Missionaries) and three Tigers (Cannibals) must cross a river using a boat that holds at most 2 passengers. The player must ensure that Tigers never outnumber Sheep on either bank — or it's game over. The game includes a hint system, move counter, drag-and-drop support, win/loss modals, and a guided instructions panel.
+A browser-based implementation of the classic **Missionaries and Cannibals** logic puzzle, reimagined as a river crossing challenge. Move all travelers safely from the Left Bank to the Right Bank without letting the Cannibals outnumber the Missionaries!
  
 ---
  
-## ✨ Features
+## Description
  
-- 🎮 **Interactive Gameplay** — Click or drag-and-drop characters onto the boat to move them
-- ⛵ **Boat Movement** — Move the boat between banks with the "Move Boat" button (requires at least 1 passenger)
-- 🏆 **Win/Loss Modals** — Animated result screens showing victory or defeat with total move count
-- 💡 **Hint System** — Up to 3 progressive hints to guide stuck players
-- 📊 **Move Counter** — Tracks the number of boat crossings made
-- 📜 **Instructions Modal** — A story-styled welcome screen with rules and character descriptions
-- 🔄 **Start / Reset** — Restart the game at any time
-- 📱 **Fully Responsive** — Adapts to mobile, tablet, and desktop screens
-- ♿ **Guidance Text** — Dynamic in-game messages tell players what to do next
+This is an interactive puzzle game built with vanilla HTML, CSS, and JavaScript. Three Missionaries and three Cannibals must cross a river using a boat that holds at most 2 passengers. The player must ensure that Cannibals never outnumber Missionaries on either bank — or it's game over. The game includes a hint system, move counter, drag-and-drop support, win/loss modals, and a guided instructions panel.
+ 
 ---
  
-## 🛠️ Technologies Used
+## Features
+ 
+- **Interactive Gameplay** — Click or drag-and-drop characters onto the boat to move them
+- **Boat Movement** — Move the boat between banks with the "Move Boat" button (requires at least 1 passenger)
+- **Win/Loss Modals** — Animated result screens showing victory or defeat with total move count
+- **Hint System** — Up to 3 progressive hints to guide stuck players
+- **Move Counter** — Tracks the number of boat crossings made
+- **Instructions Modal** — A story-styled welcome screen with rules and character descriptions
+- **Start / Reset** — Restart the game at any time
+- **Fully Responsive** — Adapts to mobile, tablet, and desktop screens
+- **Guidance Text** — Dynamic in-game messages tell players what to do next
+---
+ 
+## Technologies Used
  
 - **HTML5** — Semantic structure and modal overlays
 - **CSS3** — CSS custom properties, Grid layout, Flexbox, animations, and responsive media queries
 - **JavaScript (ES6+)** — DOM manipulation, event handling, game state management, drag-and-drop API
 ---
  
-## 📁 Project Structure
+## Project Structure
  
 ```
 missionaries-and-cannibals/
@@ -42,7 +42,7 @@ missionaries-and-cannibals/
  
 ---
  
-## 💻 How to Run Locally
+## How to Run Locally
 
 1. Clone the main repository.
 2. Navigate to `public/Missionaries&Cannibals/`.
@@ -51,18 +51,18 @@ missionaries-and-cannibals/
 
 ---
  
-## 🎮 Usage / How to Play
+## Usage / How to Play
  
-1. **Launch the game** — The Instructions modal appears automatically on load.
+1. **Launch the game** — Read the instructions at the top of screen 
 2. **Read the rules** and click **"Begin Journey"** to start.
-3. **Click on a character** (🐑 Sheep or 🐯 Tiger) on the same bank as the boat to board them.
+3. **Click on a character** (Missionary or Cannibal) on the same bank as the boat to board them.
 4. **Move the Boat** — Click "Move Boat" once you've loaded 1–2 passengers.
 5. **Unload passengers** — Click characters on the boat to move them to the current bank.
 6. **Repeat** until all 6 characters reach the Right Bank.
 7. **Use Hints** — Up to 3 hints available if you get stuck.
 8. **Win** by safely moving everyone across; **Lose** if Tigers ever outnumber Sheep on any bank.
 
-### ⚠️ Rules Summary
+### Rules Summary
  
 | Rule | Detail |
 |------|--------|
@@ -72,17 +72,17 @@ missionaries-and-cannibals/
  
 ---
  
-## 📸 Screenshots
+## Screenshots
  
-![Home Page](Screenshots/home.png)
-![Instructions](Screenshots/instruction.png)
-![Game over](Screenshots/over.png)
+![Instructions Modal](screenshots/instructions_modal.png)
+![Victory Screen](screenshots/victory_screen.png)
+![Game over](screenshots/loss_screen.png)
  
 
  
 ---
  
-## 🤝 Contributing
+## Contributing
  
 Contributions are welcome! If you'd like to improve this project:
  
@@ -95,17 +95,16 @@ Please make sure your code follows the existing style and does not break any exi
  
 ---
  
-## 📄 License
+## License
  
 MIT License 
 
  
 ---
  
-## 👨‍💻 README Author
+## README Author
 
-- **Saubhagya Srivastava**
-- GitHub: [Saubhagya1621](https://github.com/Saubhagya1621)
-- LinkedIn: [Saubhagya Srivastava](https://www.linkedin.com/in/saubhagyasri/)🚀
+- **Mayookh**
+- GitHub: [Man1ac-1773](https://github.com/Man1ac-1773)
 ---
  
