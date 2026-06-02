@@ -11,6 +11,7 @@
   <meta name="author" content="Dhairya Gothi and Contributors" />
   <meta name="theme-color" content="#0a0a1a" />
   <script src="theme.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
@@ -608,6 +609,10 @@
       </button>
 
       <div class="nav-buttons mobile-drawer-layer" id="navButtons">
+        <a href="index.html" class="btn btn-ghost btn-sm" aria-label="Back to Home">
+          <i class="fas fa-home" aria-hidden="true"></i>
+          Home
+        </a>
         <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme" type="button">
           <i class="fas fa-moon" aria-hidden="true"></i> Theme
         </button>
@@ -795,7 +800,7 @@
           <button type="button" class="reason-chip" data-reason="Other">Other</button>
         </div>
 
-        <form id="contactForm" novalidate>
+        <form id="contactForm" novalidate data-endpoint="">
           <!-- Hidden reason field populated by chip selection -->
           <input type="hidden" id="reasonField" value="General Question" />
 
@@ -853,7 +858,7 @@
           </div>
           <div class="form-banner banner-error-global" id="errorBanner" role="alert" aria-live="assertive">
             <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
-            Something went wrong. Please try again or reach out on GitHub.
+            <span id="errorBannerText">Something went wrong. Please try again or reach out on GitHub.</span>
           </div>
         </form>
       </section>
@@ -1032,11 +1037,13 @@
       counter.classList.toggle('warn', len > 900);
     });
 
-    /* ── Form validation & (demo) submission ─────────────── */
+    /* ── Form validation & submission ─────────────────────── */
     const form        = document.getElementById('contactForm');
     const submitBtn   = document.getElementById('submitBtn');
     const successBanner = document.getElementById('successBanner');
     const errorBanner   = document.getElementById('errorBanner');
+    const errorBannerText = document.getElementById('errorBannerText');
+    const defaultErrorMessage = 'Something went wrong. Please try again or reach out on GitHub.';
 
     function setError(inputId, errorId, show) {
       const input = document.getElementById(inputId);
@@ -1069,6 +1076,48 @@
       return valid;
     }
 
+    function setSubmitLoading(isLoading) {
+      submitBtn.classList.toggle('loading', isLoading);
+      submitBtn.disabled = isLoading;
+    }
+
+    function resetContactForm() {
+      form.reset();
+      counter.textContent = '0 / 1000';
+      document.querySelectorAll('.reason-chip').forEach((c, i) => c.classList.toggle('active', i === 0));
+      document.getElementById('reasonField').value = 'General Question';
+    }
+
+    async function submitContactForm() {
+      const endpoint = form.dataset.endpoint?.trim();
+
+      if (!endpoint) {
+        throw new Error('The contact form is not configured yet. Please reach out on GitHub or use the email link on this page.');
+      }
+
+      const payload = {
+        name: document.getElementById('contactName').value.trim(),
+        email: document.getElementById('contactEmail').value.trim(),
+        subject: document.getElementById('contactSubject').value.trim(),
+        github: document.getElementById('contactGithub').value.trim(),
+        reason: document.getElementById('reasonField').value,
+        message: document.getElementById('contactMessage').value.trim()
+      };
+
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) {
+        throw new Error(defaultErrorMessage);
+      }
+    }
+
     /* Clear error on input */
     ['contactName', 'contactEmail', 'contactSubject', 'contactMessage'].forEach(id => {
       document.getElementById(id).addEventListener('input', () => {
@@ -1089,44 +1138,19 @@
 
       if (!validateForm()) return;
 
-      /* ── Simulated async submission ──────────────────────
-         Replace this block with your real fetch() / EmailJS /
-         Formspree / Netlify Forms call.
-      ────────────────────────────────────────────────────── */
-      submitBtn.classList.add('loading');
-      submitBtn.disabled = true;
+      setSubmitLoading(true);
 
       try {
-        await new Promise(resolve => setTimeout(resolve, 1600)); // demo delay
-
-        /* Swap to real endpoint:
-        const res = await fetch('https://formspree.io/f/YOUR_ID', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({
-            name:    document.getElementById('contactName').value,
-            email:   document.getElementById('contactEmail').value,
-            subject: document.getElementById('contactSubject').value,
-            github:  document.getElementById('contactGithub').value,
-            reason:  document.getElementById('reasonField').value,
-            message: document.getElementById('contactMessage').value,
-          })
-        });
-        if (!res.ok) throw new Error('Network error');
-        */
-
-        form.reset();
-        counter.textContent = '0 / 1000';
-        document.querySelectorAll('.reason-chip').forEach((c, i) => c.classList.toggle('active', i === 0));
-        document.getElementById('reasonField').value = 'General Question';
+        await submitContactForm();
+        resetContactForm();
         successBanner.classList.add('visible');
         successBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-      } catch (_) {
+      } catch (error) {
+        errorBannerText.textContent = error.message || defaultErrorMessage;
         errorBanner.classList.add('visible');
       } finally {
-        submitBtn.classList.remove('loading');
-        submitBtn.disabled = false;
+        setSubmitLoading(false);
       }
     });
 
