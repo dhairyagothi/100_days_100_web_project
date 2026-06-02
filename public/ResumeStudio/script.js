@@ -55,15 +55,94 @@ let currentTemplate = "modern";
 
         score = Math.min(score, 100);
 
-        atsScore.textContent = `${score}%`;
+    // =========================
+    // INPUT LISTENERS
+    // =========================
+
+    function debounce(fn, delay = 300) {
+    let timeout;
+    return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => fn(...args), delay);
+    };
     }
 
-    // ==========================
-    // LIVE PREVIEW
-    // ==========================
+    inputs.forEach(id => {
+        const inputEl = document.getElementById(id);
+        const counterEl = document.getElementById(`${id}Count`);
+
+    if (!inputEl) return;
+        
+        if (inputEl) {
+            // Listen on input to run preview update & ATS scores in real-time
+            inputEl.addEventListener("input", debounce(() => {
+                if (counterEl) {
+                    counterEl.textContent = `${inputEl.value.length}/${inputEl.maxLength}`;
+                    counterEl.style.color = inputEl.value.length >= inputEl.maxLength ? "red" : "";
+                }
+                updatePreview();
+                runResumeAnalysis();
+                saveToLocalStorage();
+            }, 250));
+        }
+    });
+
+    // =========================
+    // ROLE CHANGE
+    // =========================
+    targetRole.addEventListener("change", () => {
+        if (targetRole.value === "custom") {
+            customKeywordsGroup.style.display = "block";
+        } else {
+            customKeywordsGroup.style.display = "none";
+        }
+
+        updateKeywordsSuggestions();
+        runResumeAnalysis();
+    });
+
+    customKeywords.addEventListener("input", () => {
+        updateKeywordsSuggestions();
+        runResumeAnalysis();
+    });
+
+    // =========================
+    // PARSE BULLETS
+    // =========================
+    function parseBulletPoints(text) {
+        if (!text.trim()) return "";
+
+        const lines = text.split("\n");
+
+        let html = "";
+        let inList = false;
+
+        lines.forEach(line => {
+            const clean = line.trim();
+
+            if (
+                clean.startsWith("-") ||
+                clean.startsWith("*")
+            ) {
+                if (!inList) {
+                    html += "<ul>";
+                    inList = true;
+                }
+
+                html += `<li>${clean.substring(1)}</li>`;
+            } else {
+                if (inList) {
+                    html += "</ul>";
+                    inList = false;
+                }
+
+                html += `<p>${clean}</p>`;
+            }
+        });
 
     function updatePreview() {
-        let templateClass = "";
+        const values = {};
+        const v=values;
 
 if(currentTemplate === "modern"){
     templateClass = "modern-template";
@@ -244,29 +323,14 @@ classicBtn.addEventListener("click", () => {
     updatePreview();
 });
 
-minimalBtn.addEventListener("click", () => {
-
-    currentTemplate = "minimal";
-
-    minimalBtn.classList.add("active");
-    modernBtn.classList.remove("active");
-    classicBtn.classList.remove("active");
-
-    updatePreview();
-});
-
-modernBtn.addEventListener("click", () => {
-    console.log("MODERN CLICKED");
-});
-
-classicBtn.addEventListener("click", () => {
-    console.log("CLASSIC CLICKED");
-});
+let resumeStudioInitialized = false;
 
 minimalBtn.addEventListener("click", () => {
     console.log("MINIMAL CLICKED");
 });
 
-    // INITIAL LOAD
-    updatePreview();
-});
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", safeInit);
+} else {
+    safeInit();
+}}

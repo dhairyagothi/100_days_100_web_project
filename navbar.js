@@ -59,11 +59,16 @@
         <button class="dropdown-item" data-theme-value="light">☀ Light</button>
         <button class="dropdown-item" data-theme-value="dark">☾ Dark</button>
         <button class="dropdown-item" data-theme-value="sepia">☕ Sepia</button>
-        <button class="dropdown-item" data-theme-value="cyberpunk">⚡ Cyberpunk</button>
+        <button class="dropdown-item" data-theme-value="cyberpunk">⚡Cyberpunk</button>
         <button class="dropdown-item" data-theme-value="nord">❄ Nord</button>
       </div>
     </div>
   `;
+  const homeBtn = `<a class="btn ${isHome ? "btn-primary active" : "btn-ghost"} btn-sm" href="${homeHref}">Home</a>`;
+  const learnBtn = `<a class="btn ${isLearn ? "btn-primary active" : "btn-ghost"} btn-sm" href="${learnHref}">Learn</a>`;
+  const contributorsBtn = `<a class="btn ${isContributors ? "btn-primary active" : "btn-ghost"} btn-sm" href="${contributorsHref}">Contributors</a>`;
+  const githubBtn = `<a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">GitHub</a>`;
+  const readmeBtn = `<a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>`;
 
   const homeBtn = `
   <a class="btn ${isHome ? "btn-primary active" : "btn-ghost"} btn-sm" href="${homeHref}">
