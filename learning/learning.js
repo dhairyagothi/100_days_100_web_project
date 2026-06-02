@@ -4,7 +4,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   let activeTopic = null;
   let allTopics = [];
   let quizData = {};
+  const STORAGE_KEY = 'learningProgress';
 
+  let learningProgress = {
+    lastTopic: null,
+    completedTopics: [],
+  };
   const sidebarTree = document.getElementById('sidebarTree');
   const contentViewport = document.getElementById('contentViewport');
   const prevTopicBtn = document.getElementById('prevTopic');
@@ -130,6 +135,50 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (error) {
       console.error('Failed to load quiz data:', error);
     }
+  }
+
+  function loadProgress() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    if (saved) {
+      learningProgress = JSON.parse(saved);
+    }
+  }
+
+  function saveProgress() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(learningProgress));
+  }
+
+  function markTopicCompleted(topicId) {
+    if (!learningProgress.completedTopics.includes(topicId)) {
+      learningProgress.completedTopics.push(topicId);
+      saveProgress();
+    }
+
+    updateProgressUI();
+  }
+
+  function updateProgressUI() {
+    const total = allTopics.filter((t) => t.id !== 'quiz').length;
+
+    const completed = learningProgress.completedTopics.length;
+
+    const percentage = total ? Math.round((completed / total) * 100) : 0;
+
+    const fill = document.getElementById('overallProgressFill');
+
+    const text = document.getElementById('overallProgressText');
+
+    if (fill) fill.style.width = percentage + '%';
+    if (text) text.textContent = percentage + '%';
+
+    document.querySelectorAll('.topic-item').forEach((item) => {
+      const id = item.id.replace('item-', '');
+
+      if (learningProgress.completedTopics.includes(id)) {
+        item.classList.add('completed');
+      }
+    });
   }
 
   async function loadRegistry() {
@@ -307,6 +356,9 @@ document.addEventListener('DOMContentLoaded', async () => {
      ============================================================ */
   async function loadTopic(topic) {
     activeTopic = topic;
+    learningProgress.lastTopic = `${topic.categoryId}/${topic.id}`;
+
+    saveProgress();
     if (topic.id === 'quiz') {
       launchQuiz(topic.categoryId, topic.title);
       return;
@@ -516,6 +568,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       // Update next/prev footer cards
       updateNavigationFooter();
+      markTopicCompleted(`${topic.categoryId}-${topic.id}`);
     } catch (err) {
       console.error(err);
       if (contentViewport) {
@@ -887,6 +940,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         .addEventListener('click', () => launchQuiz(categoryId, quizTitle));
     }
   }
+
+  loadProgress();
+
+  document
+    .getElementById('continueLearningBtn')
+    ?.addEventListener('click', () => {
+      if (learningProgress.lastTopic) {
+        window.location.hash = '#' + learningProgress.lastTopic;
+      }
+    });
+
   await loadQuizData();
   await loadRegistry();
+
+  updateProgressUI();
+
+  if (learningProgress.lastTopic && !window.location.hash) {
+    window.location.hash = '#' + learningProgress.lastTopic;
+  }
+  
 });
