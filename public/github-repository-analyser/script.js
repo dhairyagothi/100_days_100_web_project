@@ -203,23 +203,42 @@ document.addEventListener('DOMContentLoaded', () => {
         initTilt();
     };
 
+    const createMiniStat = (iconClass, textClass, value) => {
+        const stat = document.createElement('span');
+        const icon = document.createElement('i');
+
+        icon.className = `${iconClass} ${textClass}`;
+        stat.appendChild(icon);
+        stat.appendChild(document.createTextNode(` ${value}`));
+
+        return stat;
+    };
+
     const renderUserRepos = (repos, username) => {
         reposList.innerHTML = '';
         if (repos.length === 0) {
             reposList.innerHTML = '<p style="grid-column: 1/-1; color: var(--text-secondary);">This user has no public repositories.</p>';
         } else {
             repos.forEach(repo => {
+                const description = repo.description
+                    ? repo.description.substring(0, 80) + (repo.description.length > 80 ? '...' : '')
+                    : 'No description';
                 const card = document.createElement('div');
+                const title = document.createElement('h3');
+                const descriptionText = document.createElement('p');
+                const stats = document.createElement('div');
+
                 card.className = 'repo-card-mini';
-                card.innerHTML = `
-                    <h3>${repo.name}</h3>
-                    <p>${repo.description ? repo.description.substring(0, 80) + (repo.description.length > 80 ? '...' : '') : 'No description'}</p>
-                    <div class="mini-stats">
-                        <span><i class="fas fa-star text-yellow"></i> ${repo.stargazers_count}</span>
-                        <span><i class="fas fa-code-branch text-blue"></i> ${repo.forks_count}</span>
-                        <span><i class="fas fa-circle text-purple"></i> ${repo.language || 'N/A'}</span>
-                    </div>
-                `;
+                title.textContent = repo.name;
+                descriptionText.textContent = description;
+                stats.className = 'mini-stats';
+                stats.appendChild(createMiniStat('fas fa-star', 'text-yellow', repo.stargazers_count));
+                stats.appendChild(createMiniStat('fas fa-code-branch', 'text-blue', repo.forks_count));
+                stats.appendChild(createMiniStat('fas fa-circle', 'text-purple', repo.language || 'N/A'));
+
+                card.appendChild(title);
+                card.appendChild(descriptionText);
+                card.appendChild(stats);
                 card.onclick = () => {
                     searchInput.value = `${username}/${repo.name}`;
                     handleSearch(`${username}/${repo.name}`);

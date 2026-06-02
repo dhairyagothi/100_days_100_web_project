@@ -1,11 +1,14 @@
 /**
  * service-worker.js — minimal app-shell cache.
  *
- * Strategy: cache-first for own-origin app shell, network-first for everything else.
- * Bump CACHE_VERSION on each release to invalidate old caches.
+ * Strategy:
+ * - Cache-first for same-origin app shell resources
+ * - Network-first for cross-origin resources
+ * - Offline fallback for navigation requests
  */
 
-const CACHE_VERSION = 'pg-v1';
+const CACHE_VERSION = 'pg-v2';
+
 const APP_SHELL = [
     './',
     'index.html',
@@ -25,48 +28,114 @@ const APP_SHELL = [
 
 self.addEventListener('install', (event) => {
     event.waitUntil(
-        caches.open(CACHE_VERSION).then(cache => cache.addAll(APP_SHELL)).then(() => self.skipWaiting())
+        (async () => {
+            const cache = await caches.open(CACHE_VERSION);
+
+            for (const asset of APP_SHELL) {
+                try {
+                    await cache.add(asset);
+                } catch (err) {
+                    console.error(`Failed to cache: ${asset}`, err);
+                }
+            }
+
+            await self.skipWaiting();
+        })()
     );
 });
 
 self.addEventListener('activate', (event) => {
     event.waitUntil(
-        caches.keys().then(keys => Promise.all(
-            keys.filter(k => k !== CACHE_VERSION).map(k => caches.delete(k))
-        )).then(() => self.clients.claim())
+        caches
+            .keys()
+            .then((keys) =>
+                Promise.all(
+                    keys
+                        .filter((key) => key !== CACHE_VERSION)
+                        .map((key) => caches.delete(key))
+                )
+            )
+            .then(() => self.clients.claim())
     );
 });
 
 self.addEventListener('fetch', (event) => {
     const { request } = event;
-    if (request.method !== 'GET') return;
-    const url = new URL(request.url);
 
-    // Same-origin app shell: cache-first
-    if (url.origin === self.location.origin) {
-        event.respondWith(
-            caches.match(request).then(cached => {
-                if (cached) return cached;
-                return fetch(request).then(res => {
-                    if (res.ok) {
-                        const clone = res.clone();
-                        caches.open(CACHE_VERSION).then(c => c.put(request, clone));
-                    }
-                    return res;
-                }).catch(() => cached);
-            })
-        );
+    if (request.method !== 'GET') {
         return;
     }
 
-    // Cross-origin (Google Fonts): network-first with cache fallback
+    const url = new URL(request.url);
+
+    // Same-origin resources: cache-first
+    if (url.origin === self.location.origin) {
+        event.respondWith(
+            caches.match(request).then(async (cached) => {
+                if (cached) {
+                    return cached;
+                }
+
+                try {
+                    const response = await fetch(request);
+
+                    if (response && response.ok) {
+                        const cache = await caches.open(CACHE_VERSION);
+                        cache.put(request, response.clone());
+                    }
+
+                    return response;
+                } catch (error) {
+                    console.error('Fetch failed:', error);
+
+                    if (request.mode === 'navigate') {
+                        return (
+                            (await caches.match('index.html')) ||
+                            new Response('Offline', {
+                                status: 503,
+                                statusText: 'Service Unavailable',
+                            })
+                        );
+                    }
+
+                    return (
+                        cached ||
+                        new Response('Offline', {
+                            status: 503,
+                            statusText: 'Service Unavailable',
+                        })
+                    );
+                }
+            })
+        );
+
+        return;
+    }
+
+    // Cross-origin resources: network-first
     event.respondWith(
-        fetch(request).then(res => {
-            if (res.ok) {
-                const clone = res.clone();
-                caches.open(CACHE_VERSION).then(c => c.put(request, clone));
-            }
-            return res;
-        }).catch(() => caches.match(request))
+        fetch(request)
+            .then(async (response) => {
+                if (response && response.ok) {
+                    const cache = await caches.open(CACHE_VERSION);
+                    cache.put(request, response.clone());
+                }
+
+                return response;
+            })
+            .catch(async (error) => {
+                console.error('Network request failed:', error);
+
+                const cached = await caches.match(request);
+
+                if (cached) {
+                    return cached;
+                }
+
+                return new Response('Offline', {
+                    status: 503,
+                    statusText: 'Service Unavailable',
+                });
+            })
     );
 });
