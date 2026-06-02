@@ -1,0 +1,301 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #ffd9e6 0%, #f7f7f7 100%);
+  overflow-x: hidden;
+  padding: 40px 20px;
+  position: relative;
+}
+
+/* Background Glow */
+
+.bg-circle {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.5;
+  z-index: -1;
+}
+
+.one {
+  width: 300px;
+  height: 300px;
+  background: #ff9ecb;
+  top: 50px;
+  left: 50px;
+}
+
+.two {
+  width: 280px;
+  height: 280px;
+  background: #c4a1ff;
+  bottom: 80px;
+  right: 50px;
+}
+
+.three {
+  width: 250px;
+  height: 250px;
+  background: #8fe3ff;
+  top: 300px;
+  right: 300px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  text-align: center;
+  animation: fadeIn 1s ease;
+}
+
+h3 {
+  font-size: 32px;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-size: 72px;
+  color: #222;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  font-size: 32px;
+  margin-bottom: 50px;
+  color: #333;
+}
+
+.subtitle span {
+  color: #ff4d94;
+  font-weight: bold;
+}
+
+#totalEntries {
+  display: block;
+  margin-top: 10px;
+  color: #777;
+  font-size: 18px;
+}
+
+.dashboard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+  flex-wrap: wrap;
+}
+
+/* Jar */
+
+.jar-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.jar {
+  width: 350px;
+  height: 450px;
+  position: relative;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(15px);
+  box-shadow:
+    inset 0 0 20px rgba(255, 255, 255, 0.7),
+    0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.jar::before {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 45px;
+  background: linear-gradient(to right, #999, #eee, #999);
+  border-radius: 20px;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Mood Balls */
+
+.mood-ball {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  animation: float 3s ease-in-out infinite;
+}
+
+.happy {
+  background: #ffb347;
+  left: 80px;
+  bottom: 20px;
+}
+
+.neutral {
+  background: #6edcff;
+  left: 170px;
+  bottom: 20px;
+}
+
+/* Stats */
+
+.stats {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.stat {
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 25px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: 0.3s;
+}
+
+.stat:hover {
+  transform: translateY(-6px) scale(1.02);
+}
+
+.stat span {
+  font-size: 45px;
+}
+
+.stat h2 {
+  font-size: 38px;
+  color: #222;
+}
+
+.stat p {
+  font-size: 20px;
+  color: #666;
+}
+
+/* Buttons */
+
+.buttons {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.buttons button {
+  padding: 15px 28px;
+  border: none;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #ff5fa2, #ff7eb3);
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 5px 15px rgba(255, 95, 162, 0.3);
+}
+
+.buttons button:hover {
+  transform: translateY(-4px) scale(1.05);
+}
+
+/* Chart */
+
+.chart {
+  margin-top: 70px;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(12px);
+  border-radius: 30px;
+  padding: 40px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.chart h2 {
+  font-size: 36px;
+  margin-bottom: 30px;
+  color: #222;
+}
+
+#chartData {
+  min-height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: 36px;
+}
+
+/* Animations */
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+
+  h1 {
+    font-size: 48px;
+  }
+
+  .subtitle {
+    font-size: 24px;
+  }
+
+  .dashboard {
+    flex-direction: column;
+    gap: 50px;
+  }
+
+  .jar {
+    width: 280px;
+    height: 380px;
+  }
+
+  .buttons button {
+    width: 100%;
+  }
+}

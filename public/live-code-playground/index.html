@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A browser-based HTML, CSS, and JavaScript playground with live preview, console output, local persistence, and ZIP export."
+    />
+    <title>Live Code Playground</title>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.49.0/min/vs/editor/editor.main.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-shell" id="app-shell">
+      <header class="topbar">
+        <a class="skip-link" href="#editors-grid">Skip to editors</a>
+        <div class="brand" aria-label="Live Code Playground">
+          <span class="brand-mark" aria-hidden="true">&lt;/&gt;</span>
+          <div>
+            <h1>Live Code Playground</h1>
+            <p>Write, run, inspect, and export front-end experiments.</p>
+          </div>
+        </div>
+
+        <nav class="toolbar" aria-label="Playground actions">
+          <label class="switch" for="auto-run-toggle">
+            <input id="auto-run-toggle" type="checkbox" checked />
+            <span>Auto run</span>
+          </label>
+          <button class="btn btn-primary" id="run-btn" type="button" title="Run code (Ctrl+S)">
+            Run
+          </button>
+          <button class="btn" id="reset-btn" type="button" title="Reset code (Ctrl+R)">
+            Reset
+          </button>
+          <button class="btn" id="download-btn" type="button">Download ZIP</button>
+          <button class="icon-btn" id="theme-toggle" type="button" aria-label="Switch to light theme">
+            <span aria-hidden="true">☾</span>
+          </button>
+        </nav>
+      </header>
+
+      <main class="workspace">
+        <section class="editor-area" aria-labelledby="editors-heading">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Editors</p>
+              <h2 id="editors-heading">Source files</h2>
+            </div>
+            <select id="template-select" class="template-select" aria-label="Choose starter template">
+              <option value="landing">Landing Card</option>
+              <option value="counter">Counter Widget</option>
+              <option value="todo">Mini Todo</option>
+            </select>
+          </div>
+
+          <div class="editors-grid" id="editors-grid">
+            <article class="editor-panel" data-panel="html">
+              <div class="panel-bar">
+                <h3>index.html</h3>
+                <div class="panel-actions">
+                  <button class="text-btn" type="button" data-copy="html">Copy</button>
+                  <button class="text-btn" type="button" data-collapse="html" aria-expanded="true">
+                    Collapse
+                  </button>
+                </div>
+              </div>
+              <div class="editor-host" id="html-editor" role="region" aria-label="HTML editor"></div>
+            </article>
+
+            <article class="editor-panel" data-panel="css">
+              <div class="panel-bar">
+                <h3>style.css</h3>
+                <div class="panel-actions">
+                  <button class="text-btn" type="button" data-copy="css">Copy</button>
+                  <button class="text-btn" type="button" data-collapse="css" aria-expanded="true">
+                    Collapse
+                  </button>
+                </div>
+              </div>
+              <div class="editor-host" id="css-editor" role="region" aria-label="CSS editor"></div>
+            </article>
+
+            <article class="editor-panel" data-panel="js">
+              <div class="panel-bar">
+                <h3>script.js</h3>
+                <div class="panel-actions">
+                  <button class="text-btn" type="button" data-copy="js">Copy</button>
+                  <button class="text-btn" type="button" data-collapse="js" aria-expanded="true">
+                    Collapse
+                  </button>
+                </div>
+              </div>
+              <div class="editor-host" id="js-editor" role="region" aria-label="JavaScript editor"></div>
+            </article>
+          </div>
+        </section>
+
+        <aside class="preview-column" aria-label="Preview and console">
+          <section class="preview-panel">
+            <div class="panel-bar">
+              <h2>Preview</h2>
+              <div class="panel-actions">
+                <span class="status-pill" id="run-status" aria-live="polite">Ready</span>
+                <button class="text-btn" id="fullscreen-btn" type="button">Fullscreen</button>
+              </div>
+            </div>
+            <iframe
+              id="preview-frame"
+              title="Sandboxed live preview"
+              sandbox="allow-scripts allow-forms allow-modals"
+              referrerpolicy="no-referrer"
+            ></iframe>
+          </section>
+
+          <section class="console-panel" aria-labelledby="console-heading">
+            <div class="panel-bar">
+              <h2 id="console-heading">Console</h2>
+              <button class="text-btn" id="clear-console-btn" type="button">Clear</button>
+            </div>
+            <div class="console-output" id="console-output" role="log" aria-live="polite">
+              <p class="console-line info">Console output will appear here.</p>
+            </div>
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <div class="toast-region" id="toast-region" aria-live="assertive" aria-label="Notifications"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.49.0/min/vs/loader.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

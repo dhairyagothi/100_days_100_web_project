@@ -1,201 +1,302 @@
-
-// 1. DOM Element References (match HTML ids/classes)
+// 1. DOM Element References
 const taskInput = document.getElementById("task");
 const taskTypeSelect = document.getElementById("task-category");
+const taskPrioritySelect = document.getElementById("task-priority");
 const taskList = document.getElementById("notes-container");
 const emptyState = document.getElementById("emptyState");
-const documentsList = document.querySelector('.documents-list');
+const statusTabsContainer = document.getElementById("statusTabs");
+const documentsList = document.querySelector(".documents-list");
 
-// Progress / stats elements present in HTML
+// Progress / Stats Elements
 const progressFill = document.getElementById("progressFill");
 const progressText = document.getElementById("progressText");
 
 // Data State
 let tasks = [];
-let currentFilter = "all";
+let savedDocs = [];
+let currentStatusFilter = "all";
 
-// 2. Core Task CRUD & Operations
+// 2. Local Storage Persistence
+function saveTasks() {
+  try {
+    localStorage.setItem("todo-tasks", JSON.stringify(tasks));
+  } catch (e) {
+    console.error("Error saving tasks:", e);
+  }
+}
+
+function saveDocuments() {
+  try {
+    // Don't persist blob URLs — they are revoked on page close.
+    // Save metadata only; stale docs will show a warning in the UI.
+    const metaOnly = savedDocs.map(({ url, ...rest }) => rest);
+    localStorage.setItem("todo-documents", JSON.stringify(metaOnly));
+  } catch (e) {
+    console.error("Error saving documents:", e);
+  }
+}
+
+// 3. Core Task Operations
 function addTask() {
   const text = taskInput.value.trim();
   const category = taskTypeSelect.value;
-  
+  const priority = taskPrioritySelect.value;
+
   if (!text) {
     showToast("⚠️ Please enter a task description!");
     return;
   }
 
-  // Find category color from the dropdown configuration (fallback)
-  const selectedOption = taskTypeSelect.options[taskTypeSelect.selectedIndex];
-  const color = (selectedOption && selectedOption.getAttribute && selectedOption.getAttribute("data-color")) || "#ffb86b";
+  // Accent Colors
+  const selectedCatOption =
+      taskTypeSelect.options[taskTypeSelect.selectedIndex];
+  const catColor =
+      (selectedCatOption && selectedCatOption.getAttribute("data-color")) ||
+      "#7c63ff";
 
-  // Create local task object
+  const selectedPriOption =
+      taskPrioritySelect.options[taskPrioritySelect.selectedIndex];
+  const priColor =
+      (selectedPriOption && selectedPriOption.getAttribute("data-color")) ||
+      "#3b82f6";
+
   const newTask = {
     id: Date.now(),
     text: text,
-    category: category || "Misc",
-    color: color,
-    completed: false
+    category: category || "General",
+    categoryColor: catColor,
+    priority: priority || "Normal",
+    priorityColor: priColor,
+    status: "pending", // pending | inprogress | completed
+    completed: false,
   };
 
   tasks.push(newTask);
+
+  // Reset Form Inputs
   taskInput.value = "";
-  taskTypeSelect.value = ""; // Reset dropdown
-  
+  taskTypeSelect.value = "";
+  taskPrioritySelect.value = "";
+
+  saveTasks();
   renderTasks();
-  showToast("✅ Task added successfully!");
+  showToast("🚀 Task created successfully!");
 }
 
-function toggleTask(id) {
-  tasks = tasks.map(task => {
-    if (task.id === id) return { ...task, completed: !task.completed };
+function toggleComplete(id) {
+  tasks = tasks.map((task) => {
+    if (task.id === id) {
+      const isCompleted = task.status !== "completed";
+      return {
+        ...task,
+        completed: isCompleted,
+        status: isCompleted ? "completed" : "pending",
+      };
+    }
     return task;
   });
+  saveTasks();
   renderTasks();
+  const task = tasks.find((t) => t.id === id);
+  if (task.status === "completed") {
+    showToast("✅ Task marked as Completed!");
+  } else {
+    showToast("📋 Task marked as Pending!");
+  }
+}
+
+function toggleInProgress(id) {
+  tasks = tasks.map((task) => {
+    if (task.id === id) {
+      const isInProgress = task.status !== "inprogress";
+      return {
+        ...task,
+        completed: false,
+        status: isInProgress ? "inprogress" : "pending",
+      };
+    }
+    return task;
+  });
+  saveTasks();
+  renderTasks();
+  const task = tasks.find((t) => t.id === id);
+  if (task.status === "inprogress") {
+    showToast("⚡ Task marked as In Progress!");
+  } else {
+    showToast("📋 Task marked as Pending!");
+  }
 }
 
 function deleteTask(id) {
-  // Triggers exit animation before layout re-render
   const card = document.querySelector(`[data-id="${id}"]`);
   if (card) {
-    card.style.animation = "fadeOut 0.25s ease forwards";
+    card.style.animation = "fadeOut 0.2s ease forwards";
     setTimeout(() => {
-      tasks = tasks.filter(task => task.id !== id);
+      tasks = tasks.filter((task) => task.id !== id);
+      saveTasks();
       renderTasks();
-    }, 250);
+      showToast("🧹 Task deleted successfully!");
+    }, 200);
   }
 }
 
-function clearDone() {
-  const previousLength = tasks.length;
-  tasks = tasks.filter(task => !task.completed);
-  if (tasks.length === previousLength) {
-    showToast("ℹ️ No completed tasks to clear.");
-  } else {
-    renderTasks();
-    showToast("🧹 Cleared all finished tasks!");
-  }
+function updateTaskText(id, newText) {
+  tasks = tasks.map((task) => {
+    if (task.id === id) {
+      return { ...task, text: newText.trim() || "Untitled Task" };
+    }
+    return task;
+  });
+  saveTasks();
 }
 
-// 3. Filtering & Rendering UI
-function filterTasks(buttonElement, filterValue) {
-  // Update active states on filter row
-  document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
-  buttonElement.classList.add("active");
-  
-  currentFilter = filterValue;
+// 4. Status Filtering
+function filterByStatus(status) {
+  currentStatusFilter = status;
+
+  // Toggle Active Classes on Tab Buttons
+  document.querySelectorAll(".status-tab").forEach((tab) => {
+    if (tab.getAttribute("data-status") === status) {
+      tab.classList.add("active");
+    } else {
+      tab.classList.remove("active");
+    }
+  });
+
   renderTasks();
 }
 
+// 5. Render Tasks Grid & Statistics
 function renderTasks() {
-  // Filter core task pool
-  const filteredTasks = tasks.filter(task => {
-    if (currentFilter === "all") return true;
-    if (currentFilter === "pending") return !task.completed;
-    if (currentFilter === "done") return task.completed;
-    return task.category === currentFilter; // Matches Category Strings
-  });
+  taskList.innerHTML = "";
 
-  // Toggle Visibility of Empty State Element
-  if (filteredTasks.length === 0) {
-    taskList.innerHTML = "";
-    if (emptyState) {
-      taskList.appendChild(emptyState);
-      emptyState.style.display = "flex";
-    }
+  if (tasks.length === 0) {
+    currentStatusFilter = "all";
+    emptyState.style.display = "flex";
+    statusTabsContainer.style.display = "none";
+    taskList.style.display = "none";
   } else {
-    if (emptyState) emptyState.style.display = "none";
-    taskList.innerHTML = "";
+    emptyState.style.display = "none";
+    statusTabsContainer.style.display = "flex";
+    taskList.style.display = "grid";
 
-    filteredTasks.forEach((task, idx) => {
-      const card = document.createElement("div");
-      card.className = `notes` + (task.completed ? " completed" : "");
-      card.setAttribute("data-id", task.id);
-      card.style.setProperty("--i", idx);
+    // Filter Tasks dynamically
+    const filteredTasks = tasks.filter((task) => {
+      if (currentStatusFilter === "all") return true;
+      return task.status === currentStatusFilter;
+    });
 
-      card.innerHTML = `
-        <div class="note-row">
-          <textarea class="note-text" onchange="updateTaskText(${task.id}, this.value)">${task.text}</textarea>
-          <div class="note-actions">
-            <div class="category-badge">${task.category}</div>
-            <div>
-              <button class="note-check" onclick="toggleTask(${task.id})">${task.completed ? '✓' : '✔'}</button>
-              <button class="note-delete" onclick="deleteTask(${task.id})">Delete</button>
-            </div>
-          </div>
+    if (filteredTasks.length === 0) {
+      taskList.innerHTML = `
+        <div class="empty-state" style="grid-column: 1 / -1; padding: 40px 0;">
+          <div class="empty-icon">📂</div>
+          <p class="empty-title">No tasks in this view</p>
+          <p class="empty-desc">Switch tabs or add a task to get started!</p>
         </div>
       `;
-      taskList.appendChild(card);
-    });
+    } else {
+      filteredTasks.forEach((task, idx) => {
+        const card = document.createElement("li");
+        card.className =
+            "notes" + (task.status === "completed" ? " completed" : "");
+        card.setAttribute("data-id", task.id);
+        card.style.setProperty("--i", idx);
+
+        const isCompleted = task.status === "completed";
+        const isInProgress = task.status === "inprogress";
+
+        card.innerHTML = `
+          <div class="note-row">
+            <textarea class="note-text" oninput="updateTaskText(${task.id}, this.value)" onblur="updateTaskText(${task.id}, this.value)" placeholder="Edit task..." aria-label="Task description">${task.text}</textarea>
+            <div class="note-badges">
+              <span class="category-badge" style="border-color: ${task.categoryColor}; color: ${task.categoryColor}; background: ${task.categoryColor}12">
+                📂 ${task.category}
+              </span>
+              <span class="priority-badge" style="border-color: ${task.priorityColor}; color: ${task.priorityColor}; background: ${task.priorityColor}12">
+                ⚡ ${task.priority}
+              </span>
+            </div>
+            <div class="note-actions">
+              <button type="button" class="note-check state-btn ${isInProgress ? "active" : ""}" onclick="toggleInProgress(${task.id})" title="Toggle In Progress" aria-label="Mark as In Progress" style="background: ${isInProgress ? "rgba(79, 141, 255, 0.2)" : ""}; color: ${isInProgress ? "#2563eb" : ""}">
+                ⚡
+              </button>
+              <button type="button" class="note-check state-btn ${isCompleted ? "active" : ""}" onclick="toggleComplete(${task.id})" title="Toggle Complete" aria-label="${isCompleted ? "Mark as Pending" : "Mark as Complete"}" style="background: ${isCompleted ? "rgba(20, 184, 166, 0.2)" : ""}; color: ${isCompleted ? "#0d9488" : ""}">
+                ${isCompleted ? "↩️" : "✓"}
+              </button>
+              <button type="button" class="note-delete" onclick="deleteTask(${task.id})" title="Delete Task" aria-label="Delete task">🗑️</button>
+            </div>
+          </div>
+        `;
+        taskList.appendChild(card);
+      });
+    }
   }
 
   updateMetrics();
 }
 
-function updateTaskText(id, newText) {
-  tasks = tasks.map(task => {
-    if (task.id === id) return { ...task, text: newText.trim() || "Untitled Task" };
-    return task;
-  });
-}
-
 function updateMetrics() {
   const total = tasks.length;
-  const done = tasks.filter(t => t.completed).length;
+  const done = tasks.filter((t) => t.status === "completed").length;
   const pct = total === 0 ? 0 : Math.round((done / total) * 100);
 
-  // Update progress UI (matches HTML)
+  // Update progress bar
   if (progressFill) progressFill.style.width = `${pct}%`;
-  if (progressText) progressText.innerText = `${done} / ${total} done`;
+  if (progressText) progressText.value = `${done} / ${total} done`;
+
+  // Update status tabs counts
+  const pendingCount = tasks.filter(
+      (t) => t.status === "pending" || !t.status,
+  ).length;
+  const inProgressCount = tasks.filter((t) => t.status === "inprogress").length;
+  const completedCount = tasks.filter((t) => t.status === "completed").length;
+
+  document.getElementById("count-all").innerText = total;
+  document.getElementById("count-pending").innerText = pendingCount;
+  document.getElementById("count-inprogress").innerText = inProgressCount;
+  document.getElementById("count-completed").innerText = completedCount;
 }
 
-// 4. Tab Navigation System
+// 6. Tab switching (Home vs Documents)
 function showHome() {
-  document.getElementById("btn-home").classList.add("active");
-  document.getElementById("btn-docs").classList.remove("active");
+  document.getElementById("nav-home").classList.add("active");
+  document.getElementById("nav-documents").classList.remove("active");
   document.getElementById("home-tab").style.display = "block";
   document.getElementById("documents-tab").style.display = "none";
 }
 
 function showDocuments() {
-  document.getElementById("btn-home").classList.remove("active");
-  document.getElementById("btn-docs").classList.add("active");
+  document.getElementById("nav-home").classList.remove("active");
+  document.getElementById("nav-documents").classList.add("active");
   document.getElementById("home-tab").style.display = "none";
   document.getElementById("documents-tab").style.display = "block";
+  renderSavedDocuments();
 }
 
-// 5. Theme Customization System
+// 7. Theme Customization System
 function applyTheme(themeName) {
-  document.body.classList.remove(
-    "theme1",
-    "theme2",
-    "theme3",
-    "theme4",
-    "theme5"
-  );
-
+  document.body.className = ""; // Reset body theme classes
   document.body.classList.add(themeName);
 
-  document.querySelectorAll(".theme-btn")
-    .forEach(btn => btn.classList.remove("active"));
+  document
+      .querySelectorAll(".theme-btn")
+      .forEach((btn) => btn.classList.remove("active"));
+  const activeBtn = document.querySelector(`[data-theme="${themeName}"]`);
+  if (activeBtn) activeBtn.classList.add("active");
 
-  const activeBtn = document.querySelector(
-    `[data-theme="${themeName}"]`
-  );
-
-  if (activeBtn) {
-    activeBtn.classList.add("active");
-  }
-  try { localStorage.setItem('todo-theme', themeName); } catch (e) {}
+  try {
+    localStorage.setItem("todo-theme", themeName);
+  } catch (e) {}
 }
-document.querySelectorAll(".theme-btn").forEach(button => {
+
+document.querySelectorAll(".theme-btn").forEach((button) => {
   button.addEventListener("click", () => {
     const theme = button.dataset.theme;
-    if (!theme) return;
-    applyTheme(theme);
+    if (theme) applyTheme(theme);
   });
 });
 
-// 6. PDF System using jsPDF Global Library
+// 8. PDF Exporter &Snapshots History
 function saveAsPDF() {
   if (tasks.length === 0) {
     showToast("❌ Cannot export empty list!");
@@ -208,95 +309,143 @@ function saveAsPDF() {
   doc.setFont("Helvetica", "bold");
   doc.setFontSize(22);
   doc.text("TaskFlow Agenda Report", 20, 24);
-  
+
   doc.setFont("Helvetica", "normal");
   doc.setFontSize(10);
   doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, 32);
-  doc.line(20, 36, 190, 36);
 
-  let verticalCursor = 46;
+  const completedCount = tasks.filter((t) => t.status === "completed").length;
+  doc.text(
+      `Tasks: ${tasks.length} total  |  ${completedCount} completed  |  ${tasks.length - completedCount} pending/in progress`,
+      20,
+      38,
+  );
+  doc.line(20, 42, 190, 42);
+
+  let verticalCursor = 52;
   doc.setFontSize(12);
 
   tasks.forEach((task, index) => {
-    const status = task.completed ? "[DONE]" : "[PENDING]";
-    const printLine = `${index + 1}. ${status} (${task.category}) — ${task.text}`;
-    
-    doc.text(20, verticalCursor, printLine);
+    if (verticalCursor > 270) {
+      doc.addPage();
+      verticalCursor = 20;
+    }
+    const status = task.status.toUpperCase();
+    const printLine = `${index + 1}. [${status}] (${task.priority} Priority) [${task.category}] - ${task.text}`;
+    doc.text(printLine, 20, verticalCursor);
     verticalCursor += 10;
   });
 
   const fileName = `TaskFlow_${Date.now()}.pdf`;
-  const fileURL = URL.createObjectURL(doc.output("blob"));
-  
-  appendDocumentToList(fileName, fileURL);
-  showToast("📥 Exported list to Documents Tab!");
+  const pdfOutput = doc.output("blob");
+  const fileURL = URL.createObjectURL(pdfOutput);
+
+  const docItem = {
+    id: Date.now(),
+    name: fileName,
+    url: fileURL,
+    total: tasks.length,
+    completed: completedCount,
+    time: new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
+    date: new Date().toLocaleDateString(),
+  };
+
+  savedDocs.unshift(docItem);
+  saveDocuments();
+  showToast(`📥 PDF exported! Go to Documents to download.`);
 }
 
-function appendDocumentToList(fileName, fileURL) {
-  // Clear out documents page empty layout placeholder if present
-  const docEmptyState = documentsList.querySelector(".empty-state");
-  if (docEmptyState) docEmptyState.remove();
+function renderSavedDocuments() {
+  const docEmptyState = document.getElementById("emptyDocsState");
+  if (!documentsList) return;
 
-  const docItem = document.createElement("div");
-  docItem.className = "doc-item";
-  docItem.innerHTML = `
-    <div class="doc-icon">📄</div>
-    <div class="doc-name">${fileName}</div>
-    <div class="doc-date">${new Date().toLocaleDateString()}</div>
-    <div class="doc-actions">
-      <button class="doc-btn" onclick="window.open('${fileURL}', '_blank')">View</button>
-      <a class="doc-btn" href="${fileURL}" download="${fileName}" style="text-decoration:none; display:inline-block; text-align:center;">Download</a>
-      <button class="doc-btn del" onclick="removeDocumentItem(this)">Delete</button>
-    </div>
-  `;
-  documentsList.appendChild(docItem);
-}
+  documentsList.innerHTML = "";
 
-function removeDocumentItem(button) {
-  button.closest(".doc-item").remove();
-  if (documentsList.children.length === 0) {
-    documentsList.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">🗂️</div>
-        <p>No documents saved yet. Export your tasks!</p>
-      </div>`;
+  if (savedDocs.length === 0) {
+    if (docEmptyState) docEmptyState.style.display = "flex";
+  } else {
+    if (docEmptyState) docEmptyState.style.display = "none";
+    savedDocs.forEach((doc) => {
+      const docItem = document.createElement("li");
+      docItem.className = "doc-item";
+      const hasUrl = !!doc.url;
+      docItem.innerHTML = `
+        <div class="doc-icon">📄</div>
+        <div class="doc-info">
+          <div class="doc-name">${doc.name}</div>
+          <div class="doc-meta">
+            <span class="doc-date">${doc.date} ${doc.time}</span>
+            <span class="doc-task-count">${doc.total} tasks · ${doc.completed} completed</span>
+          </div>
+          ${!hasUrl ? '<div class="doc-stale">⚠️ File unavailable after page reload — re-export to download again.</div>' : ''}
+        </div>
+        <div class="doc-actions">
+          ${hasUrl ? `<button class="doc-btn" onclick="window.open('${doc.url}', '_blank')">View</button>` : ''}
+          ${hasUrl ? `<a class="doc-btn" href="${doc.url}" download="${doc.name}" style="text-decoration:none;display:inline-block;text-align:center;line-height:42px;padding:0 18px;">Download</a>` : ''}
+          <button class="doc-btn del" onclick="deleteDocument('${doc.id}')">Delete</button>
+        </div>
+      `;
+      documentsList.appendChild(docItem);
+    });
   }
 }
 
-// 7. Toast Alerts Notification System
+function deleteDocument(id) {
+  savedDocs = savedDocs.filter((doc) => String(doc.id) !== String(id));
+  saveDocuments();
+  renderSavedDocuments();
+  showToast("🧹 Snapshot record cleared!");
+}
+
+// 9. Toast Notifications
 function showToast(message) {
   const toast = document.getElementById("toast");
-  if (!toast) {
-    // Fallback for standalone page: simple console/log
-    console.log('Toast:', message);
-    return;
-  }
+  if (!toast) return;
+
   toast.innerText = message;
-  toast.classList.add("show");
+  const activeTheme = localStorage.getItem("todo-theme") || "theme1";
+  toast.className = `pdf-message show ${activeTheme}`;
+
   setTimeout(() => {
     toast.classList.remove("show");
   }, 3000);
 }
 
-// Listen for enter key in the input element
-// Form submit handler + Enter key
-const taskForm = document.getElementById('task-form');
+// 10. Forms & Actions Initialisation
+const taskForm = document.getElementById("task-form");
 if (taskForm) {
-  taskForm.addEventListener('submit', (e) => {
+  taskForm.addEventListener("submit", (e) => {
     e.preventDefault();
     addTask();
   });
 }
 
-taskInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    addTask();
-  }
-});
+const savePdfBtn = document.getElementById("savepdf");
+if (savePdfBtn) {
+  savePdfBtn.addEventListener("click", () => saveAsPDF());
+}
 
-// Load saved theme if present
+// Initial Loading Routines
+showHome();
+
 try {
-  const saved = localStorage.getItem('todo-theme');
-  if (saved) applyTheme(saved);
-} catch (e) {}
+  const savedTasks = localStorage.getItem("todo-tasks");
+  if (savedTasks) {
+    tasks = JSON.parse(savedTasks);
+  }
+
+  const savedDocsData = localStorage.getItem("todo-documents");
+  if (savedDocsData) {
+    savedDocs = JSON.parse(savedDocsData);
+  }
+
+  const savedTheme = localStorage.getItem("todo-theme");
+  applyTheme(savedTheme || "theme1");
+} catch (e) {
+  applyTheme("theme1");
+}
+
+renderTasks();

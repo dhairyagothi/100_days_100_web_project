@@ -1,876 +1,362 @@
 import React from "react";
-import css from "./complete.css";
+import "./complete.css";
 import { IoMdSearch } from "react-icons/io";
 import { FaStarHalf } from "react-icons/fa6";
 import { FaStar } from "react-icons/fa6";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 function Product() {
+  const settings = {
+  dots: true,
+  infinite: true,
+  autoplay: true,
+  autoplaySpeed: 6500,
+  speed: 900,
+  pauseOnHover: true,
+  arrows: false,
+  fade: true
+};
+  const heroSlides = [
+    {
+      video: "../image/wedding-evesparks.mp4",
+      poster: "../image/b1.jpg",
+      eyebrow: "Wedding stories",
+      title: "Your once-in-a-lifetime day, planned beautifully",
+      text:
+        "From mandap styling and guest flow to catering, photography and final send-off, EveSparks brings every wedding detail into one calm plan.",
+      primary: "Plan My Wedding",
+      secondary: "See Packages",
+      meta: ["Decor", "Catering", "Photography"]
+    },
+    {
+      video: "../image/birthday-evesparks.mp4",
+      poster: "../image/birthday.jpg",
+      eyebrow: "Birthday moments",
+      title: "Turn a birthday into a scene they remember",
+      text:
+        "Theme decor, cake table styling, food, games and photo corners arranged around your budget, age group and celebration style.",
+      primary: "Design Birthday",
+      secondary: "Browse Ideas",
+      meta: ["Themes", "Cake Table", "Family Events"]
+    },
+    {
+      video: "../image/concert-evesparks.mp4",
+      poster: "../image/concert.jpg",
+      eyebrow: "Concert nights",
+      title: "Stage the energy before the first beat drops",
+      text:
+        "Book production-ready teams for sound, lights, artist flow, entry management and crowd-ready event operations.",
+      primary: "Book Concert Team",
+      secondary: "View Vendors",
+      meta: ["Stage", "Lighting", "Sound"]
+    }
+  ];
+  const eventpacks = [
+  {
+    img: "../image/b3.png",
+    name: "Wedding Signature",
+    desc: "Decor, catering, photography and planning",
+    tag: "Most booked",
+    price: "From Rs. 79k",
+    includes:
+      "A complete wedding experience with venue styling, hospitality support, photo coverage, timeline planning and vendor coordination."
+  },
+
+  {
+    img: "../image/birthday.jpg",
+    name: "Birthday Spark",
+    desc: "Theme decor, cake table, food and moments",
+    tag: "Family favorite",
+    price: "From Rs. 18k",
+    includes:
+      "Bright theme setups for kids, teens and milestone birthdays with decoration, catering options and photo-friendly corners."
+  },
+
+  {
+    img: "../image/concert.jpg",
+    name: "Concert Nights",
+    desc: "Stage, lighting, artist flow and crowd support",
+    tag: "Live ready",
+    price: "From Rs. 1.2L",
+    includes:
+      "Production-ready planning for performances, college fests and private shows with stage design, sound, lighting and operations."
+  },
+
+  {
+    img: "../image/corporate.jpg",
+    name: "Corporate Suite",
+    desc: "Meetings, launches, seminars and brand events",
+    tag: "Business",
+    price: "From Rs. 45k",
+    includes:
+      "Professional event support for conferences, launches and team gatherings with branding, AV, guest flow and documentation."
+  },
+
+  {
+    img: "../image/festival.jpeg",
+    name: "Festival Glow",
+    desc: "Community, cultural and seasonal celebrations",
+    tag: "Cultural",
+    price: "From Rs. 35k",
+    includes:
+      "Festive decor, local vendor coordination, food counters, performance planning and venue readiness for large gatherings."
+  },
+
+  {
+    img: "../image/customized.jpg",
+    name: "Build Your Own",
+    desc: "Pick services around your budget and taste",
+    tag: "Flexible",
+    price: "Custom quote",
+    includes:
+      "Create a package from decor, catering, photography, music, planning and guest services without paying for extras you do not need."
+  }
+];
+  const featuredVendors = [
+    {
+      name: "Evoke Event Management",
+      area: "E-3/114, Arera Colony, Bhopal",
+      action: "Contact Now",
+      rating: 4.5
+    },
+    {
+      name: "Soni Decorators",
+      area: "Shop No.9-10, Bittan Market, Bhopal",
+      action: "Contact Now",
+      rating: 4
+    },
+    {
+      name: "Benchmark Events & Weddings",
+      area: "Shivaji Nagar, Bhopal",
+      action: "Contact Now",
+      rating: 4.5
+    }
+  ];
+
+  const topRated = [
+    {
+      name: "The Wedding Rituals",
+      area: "Zone-II, Maharana Pratap Nagar, Bhopal",
+      action: "Package Details",
+      rating: 5
+    },
+    {
+      name: "AMG Event & Entertainment",
+      area: "Near Axis Bank, Zone-I, Bhopal",
+      action: "Package Details",
+      rating: 4.5
+    },
+    {
+      name: "Luxury Event Management",
+      area: "M.P Nagar, Bhopal",
+      action: "Package Details",
+      rating: 4.5
+    },
+    {
+      name: "Dream World Events",
+      area: "Maharana Pratap Nagar, Bhopal",
+      action: "Package Details",
+      rating: 4.5
+    }
+  ];
+
+  const renderStars = (rating) => {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
+
     return (
-        <>
-            <div>
+      <>
+        {Array.from({ length: fullStars }).map((_, index) => (
+          <FaStar key={`full-${index}`} />
+        ))}
+        {hasHalfStar && <FaStarHalf />}
+      </>
+    );
+  };
 
-                <div class="banner">
+  return (
+    <div className="products-page-container">
+      <section className="landing-hero">
+        <Slider {...settings}>
+          {heroSlides.map((slide) => (
+            <div className="slider-item video-hero-slide" key={slide.title}>
+              <video
+                className="banner-video"
+                src={slide.video}
+                poster={slide.poster}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+              />
 
-                    <div class="container">
+              <div className="banner-content">
+                <p className="banner-subtitle">{slide.eyebrow}</p>
+                <h1 className="banner-title">{slide.title}</h1>
+                <p className="banner-text">{slide.text}</p>
 
-                        <div class="slider-container has-scrollbar">
-
-                            <div class="slider-item">
-
-                                <img src="../image/b1.jpg" alt="banner" class="banner-img" />
-
-                                <div class="banner-content">
-
-                                    <p class="banner-subtitle">Trending Offers</p>
-
-                                    <h2 class="banner-title">Wedding Season sale</h2>
-
-                                    <p class="banner-text">
-                                        <b>Extra 20% off </b> On <b>complete Wedding package</b>
-                                    </p>
-
-                                    <a href="#" class="banner-btn">Get Quote now</a>
-
-                                </div>
-
-                            </div>
-
-                            <div class="slider-item">
-
-                                <img src="../image/b2.jpg" alt="banner" class="banner-img" />
-
-                                <div class="banner-content">
-
-                                    <p class="banner-subtitle">Trending Offers</p>
-
-                                    <h2 class="banner-title">Concerts</h2>
-
-                                    <p class="banner-text">
-                                        Get extra <b>10% off</b>on <br /><b>Concerts Event</b>
-                                    </p>
-
-                                    <a href="#" class="banner-btn">Book now</a>
-
-                                </div>
-
-                            </div>
-
-                            <div class="slider-item">
-
-                                <img src="../image/b3.png" alt="banner" class="banner-img" />
-
-                                <div class="banner-content">
-
-                                    <p class="banner-subtitle">Organise your event in your Budget</p>
-
-                                    <h2 class="banner-title">Customized Event Planner</h2>
-
-                                    <p class="banner-text">
-                                        Customized event pack <br /> according to your budget
-                                    </p>
-
-                                    <a href="#" class="banner-btn">Contact now</a>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
+                <div className="hero-actions">
+                  <button type="button" className="banner-btn">{slide.primary}</button>
+                  <button type="button" className="ghost-btn">{slide.secondary}</button>
                 </div>
 
-
+                <div className="hero-metadata" aria-label={`${slide.eyebrow} services`}>
+                  {slide.meta.map((item) => (
+                    <span key={item}>{item}</span>
+                  ))}
+                </div>
+              </div>
             </div>
-
-
-
-
-
-
-
-            {/* <!--
-      - PRODUCT
-    --> */}
-
-
-
-
-            <div class="product-minimal">
-
-                <div class="product-showcase">
-
-                    <h3 class="title"><b><br />Event Packs</b></h3>
-
-                    <div class="showcase-wrapper has-scrollbar">
-
-                        <div class="showcase-container">
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                    <img src="../image/b3.png" alt="wedding" width="70" class="showcase-img" />
-                                </a>
-
-                                <div class="showcase-content">
-
-                                    <a href="#">
-                                        <h4 class="showcase-title">Wedding Event Packs</h4>
-                                    </a>
-
-                                    <b> <a href="#" class="showcase-category">Complete Weeding pack</a></b>
-                                    includes :
-                                    Wedding Decor
-                                    Wedding Catering
-                                    Wedding Photography
-                                    Wedding Event Planner
-                                    And many more...
-                                    <br />
-                                    <div class="price-box">
-                                        <p class="price"><br />Find best Price</p>
-
-                                        <a href="#" class="banner-btn"><br />Get Quote now</a>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                   <img src="../image/birthday.jpg" alt="birthday" class="showcase-img" width="70" />
-                                </a>
-
-                                <div class="showcase-content">
-
-                                    <a href="#">
-                                        <h4 class="showcase-title">Birthday Event Packs</h4>
-                                    </a>
-
-                                    <b> <a href="#" class="showcase-category">Complete Birthday pack</a></b>
-                                    includes :
-                                    Birthday Decor
-                                    Birthday Catering
-                                    Birthday Photography
-                                    Birthday Event Planner
-                                    And many more...
-                                    <br />
-                                    <div class="price-box">
-                                        <p class="price"><br />Find best Price</p>
-
-                                        <a href="#" class="banner-btn"><br />Get Quote now</a>
-
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                   <img src="../image/concert.jpg" alt="concert" class="showcase-img"
-                                        width="70" /> 
-                                </a>
-
-                                <div class="showcase-content">
-
-                                    <a href="#">
-                                        <h4 class="showcase-title">Concert Packs</h4>
-                                    </a>
-
-                                    <b> <a href="#" class="showcase-category">Complete Concert pack</a></b>
-                                    includes :
-                                    Concert Decor
-                                    Concert Catering
-                                    Concert Photography
-                                    Concert Event Planner
-                                    And many more...
-                                    <br />
-                                    <div class="price-box">
-                                        <p class="price"><br />Find best Price</p>
-
-                                        <a href="#" class="banner-btn"><br />Get Quote now</a>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                <img src="../image/corporate.jpg" alt="corporate" class="showcase-img"
-                                         width="70" /> 
-
-                                </a>
-
-                                <div class="showcase-content">
-
-                                    <a href="#">
-                                        <h4 class="showcase-title">Corporate Event Packs</h4>
-                                    </a>
-
-                                    <b> <a href="#" class="showcase-category">Complete Corporate Event pack</a></b>
-                                    includes :
-                                    Corporate Event Decor
-                                    Corporate Event Photography
-                                    Corporate Event Planner
-                                    And many more...
-                                    <br />
-                                    <div class="price-box">
-                                        <p class="price"><br />Find best Price</p>
-
-                                        <a href="#" class="banner-btn"><br />Get Quote now</a>
-
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <div class="showcase-container">
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                    <img src="../image/festival.jpeg" alt="festival" class="showcase-img" 
-                                     width="70" /> 
-                                </a>
-
-                                <div class="showcase-content">
-
-                                    <a href="#">
-                                        <h4 class="showcase-title"> Festival Event Packs</h4>
-                                    </a>
-
-                                    <b> <a href="#" class="showcase-category">Complete Festival pack</a></b>
-                                    includes :
-                                    Festival Decor
-                                    Festival Food Catering
-                                    Festival Photography
-                                    Festival Event Planner
-                                    And many more...
-                                    <br />
-                                    <div class="price-box">
-                                        <p class="price"><br />Find best Price</p>
-
-                                        <a href="#" class="banner-btn"><br />Get Quote now</a>
-
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                    <img src="../image/meetings.jpg" alt="meetings" class="showcase-img"
-                                     width="70" />
-                                </a>
-
-                                <div class="showcase-content">
-
-                                    <a href="#">
-                                        <h4 class="showcase-title">Meetings</h4>
-                                    </a>
-
-                                    <b> <a href="#" class="showcase-category">Complete Corporate meeting pack</a></b>
-                                    includes :
-                                    Corporate Meeting ancors
-                                    Corporate Meeting Decor
-                                    Corporate Meeting Photography
-                                    Corporate Meeting Event Planner
-                                    And many more...
-                                    <br />
-                                    <div class="price-box">
-                                        <p class="price"><br />Find best Price</p>
-
-                                        <a href="#" class="banner-btn"><br />Get Quote now</a>
-
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                    <img src="../image/customized.jpg" alt="customized" class="showcase-img"
-                                         width="70" /> 
-                                </a>
-
-                                <div class="showcase-content">
-
-                                    <a href="#">
-                                        <h4 class="showcase-title">Customized Event Packs</h4>
-                                    </a>
-
-                                    <b> <a href="#" class="showcase-category">Customize your pack</a></b>
-                                    Make your own pack according to your budget
-                                    <br />
-                                    <div class="price-box">
-                                        <p class="price"><br /> Customize your pack at best price </p>
-
-                                        <a href="#" class="banner-btn"><br />Get Customized pack now</a>
-
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                    <img src="../image/evesparks.png" alt="evesparks" class="showcase-img"
-                                     width="70" /> 
-                                </a>
-
-                                <div class="showcase-content">
-                                    <a href="#">
-                                        <h4 class="showcase-title">Evespark's Packs</h4>
-                                    </a>
-
-                                    <b> <a href="#" class="showcase-category">Evespark's Special pack</a></b>
-                                    includes :
-                                    Decor
-                                    Catering
-                                    Photography
-                                    Event Planner
-                                    And many more...
-                                    <br />
-                                    <div class="price-box">
-                                        <p class="price"><br />Find best Price</p>
-
-                                        <a href="#" class="banner-btn"><br />Get Quote now</a>
-
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
+          ))}
+        </Slider>
+
+        <div className="hero-panel">
+          <div>
+            <span>250+</span>
+            <p>vendors listed</p>
+          </div>
+          <div>
+            <span>4.8/5</span>
+            <p>average rating</p>
+          </div>
+          <div>
+            <span>24 hr</span>
+            <p>quote support</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="event-types-strip" aria-label="Popular event types">
+        <span>Wedding</span>
+        <span>Birthday</span>
+        <span>Corporate</span>
+        <span>Concert</span>
+        <span>Festival</span>
+        <span>Custom</span>
+      </section>
+
+      <section className="events-section">
+        <div className="section-header">
+          <span className="section-kicker">Curated packages</span>
+          <h2>Choose a package, then make it yours</h2>
+          <p>Clean bundles with transparent starting points, flexible add-ons and vendors matched to your event type.</p>
+        </div>
+
+        <div className="horizontal-card-grid">
+          {eventpacks.map((item, index) => (
+            <article className="modern-event-card" key={index}>
+              <div className="modern-event-image">
+                <img src={item.img} alt={item.name} />
+                <span className="card-badge">{item.tag}</span>
+              </div>
+
+              <div className="modern-event-content">
+                <div className="card-title-row">
+                  <h3>{item.name}</h3>
+                  <span className="package-price">{item.price}</span>
                 </div>
 
-                <div class="product-showcase">
+                <p className="event-subtitle">{item.desc}</p>
+                <p className="event-description">{item.includes}</p>
 
-                    <h2 class="title"><b>Search Near Your location</b></h2>
-                    <br />
-                    <input type="text" class="search-location" placeholder="  Enter your location..." />
-                    
-                
-                    
-                    <br />
-
-                    <h5 className="location">  Showing results for Bhopal</h5>
-                    <div class="showcase-wrapper  has-scrollbar">
-
-                        <div class="showcase-container">
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                    {/* <img src="./assets/images/products/sports-1.jpg" alt="running & trekking shoes - white" class="showcase-img"
-                                        // width="70" /> */}
-                                </a>
-
-                                <div class="showcase-content">
-
-                                    <a href="#">
-                                        <h4 class="showcase-title">Evoke Event Managment </h4>
-                                    </a>
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStarHalf />
-                                    <a href="#" class="showcase-category">E-3/114, Arera Colony, Bhopal, Madhya Pradesh </a>
-
-                                    <div class="price-box">
-                                    <a href="#" class="banner-btn"><br />contact now</a>
-                                        
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                    {/* <img src="./assets/images/products/sports-2.jpg" alt="trekking & running shoes - black" class="showcase-img" */}
-                                    {/* // width="70" /> */}
-                                </a>
-
-                                <div class="showcase-content">
-
-                                <a href="#">
-                                        <h4 class="showcase-title">Soni Decorators </h4>
-                                    </a>
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    
-                                    <a href="#" class="showcase-category"> Shop No.9-10, Bittan Market, Behind Habibganj Police Station, E-5, Arera Colony, Bhopal, Madhya Pradesh </a>
-
-                                    <div class="price-box">
-                                    <a href="#" class="banner-btn"><br />contact now</a>
-                                        
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                    {/* <img src="./assets/images/products/party-wear-1.jpg" alt="womens party wear shoes" class="showcase-img"
-                                        // width="70" /> */}
-                                </a>
-
-                                <div class="showcase-content">
-
-                                <a href="#">
-                                        <h4 class="showcase-title">Benchmark Events & weddings </h4>
-                                    </a>
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStarHalf />
-                                    
-                                    <a href="#" class="showcase-category"> Ayyappa Temple, 5 No. Bus Stop, L.I.G 16, RSS Market, Shivaji Nagar, Bhopal, Madhya Pradesh </a>
-
-                                    <div class="price-box">
-                                    <a href="#" class="banner-btn"><br />contact now</a>
-                                        
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                    {/* <img src="./assets/images/products/sports-3.jpg" alt="sports claw women's shoes" class="showcase-img"
-                                        // width="70" /> */}
-                                </a>
-
-                                <div class="showcase-content">
-
-                                   
-                                <a href="#">
-                                        <h4 class="showcase-title">Beyond Events Management And Entertainment </h4>
-                                    </a>
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    
-                                    <FaStarHalf />
-                                    
-                                    <a href="#" class="showcase-category"> near Hotel Rajhans, Near Sargam Cinema, Zone-II, Maharana Pratap Nagar, Bhopal, Madhya Pradesh </a>
-
-                                    <div class="price-box">
-                                    <a href="#" class="banner-btn"><br />contact now</a>
-                                        
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <div class="showcase-container">
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                    {/* <img src="./assets/images/products/sports-6.jpg" alt="air tekking shoes - white" class="showcase-img"
-                                        // width="70" /> */}
-                                </a>
-
-                                <div class="showcase-content">
-
-                                <a href="#">
-                                        <h4 class="showcase-title">Flower Decoration Bhopal  RAJ EVENT  </h4>
-                                    </a>
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStarHalf />
-                                    
-                                    <a href="#" class="showcase-category"> Zone-I, Maharana Pratap Nagar, Bhopal, Madhya Pradesh </a>
-
-                                    <div class="price-box">
-                                    <a href="#" class="banner-btn"><br />contact now</a>
-                                        
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                   {/* <img src="./assets/images/products/jewellery-2.jpg" alt="platinum zircon classic ring" class="showcase-img"
-                                        // width="70" /> */}
-                                </a>
-
-                                <div class="showcase-content">
-
-                                <a href="#">
-                                        <h4 class="showcase-title">Sajawat Tent House </h4>
-                                    </a>
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    
-                                    
-                                    <a href="#" class="showcase-category"> Zone-I,  Bhopal, Madhya Pradesh </a>
-
-                                    <div class="price-box">
-                                    <a href="#" class="banner-btn"><br />contact now</a>
-                                        
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                    {/* <img src="./assets/images/products/shoe-1.jpg" alt="men's leather formal wear shoes" class="showcase-img"
-                                        // width="70" /> */}
-                                </a>
-
-                                <div class="showcase-content">
-
-                                <a href="#">
-                                        <h4 class="showcase-title">AMG EVENT & ENTERTAINMENT </h4>
-                                    </a>
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStarHalf />
-                                    
-                                    <a href="#" class="showcase-category">  Z-8, Near Axis Bank, Zone-I, Maharana Pratap Nagar, Bhopal, Madhya Pradesh </a>
-
-                                    <div class="price-box">
-                                    <a href="#" class="banner-btn"><br />contact now</a>
-                                        
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                 {/* <img src="./assets/images/products/jewellery-2.jpg" alt="platinum zircon classic ring" class="showcase-img"
-                                        // width="70" /> */}
-                                </a>
-
-                                <div class="showcase-content">
-                                
-                                <a href="#">
-                                        <h4 class="showcase-title">The Wedding Rituals </h4>
-                                    </a>
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    
-                                    <a href="#" class="showcase-category">  21, R-WORKSQUARE , 2ND FLOOR, Zone-II, Maharana Pratap Nagar, Bhopal </a>
-
-                                    <div class="price-box">
-                                    <a href="#" class="banner-btn"><br />contact now</a>
-                                        
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
+                <div className="event-card-footer">
+                  <span className="price-text">Free consultation</span>
+                  <button type="button" className="modern-btn">Get Quote</button>
                 </div>
-
-                <div class="product-showcase">
-
-                    <h2 class="title">Top Rated Organisers and Their Package</h2>
-                    <br />
-                    <h5 className="location"> Best Event Package of organisers in Bhopal</h5>
-                    <div class="showcase-wrapper  has-scrollbar">
-
-                        <div class="showcase-container">
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                    {/* <img src="./assets/images/products/watch-3.jpg" alt="pocket watch leather pouch" class="showcase-img"
-                                        // width="70" /> */}
-                                </a>
-
-                                <div class="showcase-content">
-
-                                <a href="#">
-                                        <h4 class="showcase-title">The Wedding Rituals </h4>
-                                    </a>
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    
-                                    <a href="#" class="showcase-category">  21, R-WORKSQUARE , 2ND FLOOR, Zone-II, Maharana Pratap Nagar, Bhopal </a>
-
-                                    <div class="price-box">
-                                    <a href="#" class="banner-btn"><br />Package Details</a>
-                                        
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                    {/* <img src="./assets/images/products/jewellery-3.jpg" alt="silver deer heart necklace" class="showcase-img"
-                                        // width="70" /> */}
-                                </a>
-
-                                <div class="showcase-content">
-
-                                <a href="#">
-                                        <h4 class="showcase-title">AMG EVENT & ENTERTAINMENT </h4>
-                                    </a>
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStarHalf />
-                                    
-                                    <a href="#" class="showcase-category">  Z-8, Near Axis Bank, Zone-I, Maharana Pratap Nagar, Bhopal, Madhya Pradesh </a>
-
-                                    <div class="price-box">
-                                    <a href="#" class="banner-btn"><br />Package Details</a>
-                                        
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                    {/* <img src="./assets/images/products/perfume.jpg" alt="titan 100 ml womens perfume" class="showcase-img"
-                                        // width="70" /> */}
-                                </a>
-
-                                <div class="showcase-content">
-
-                                <a href="#">
-                                        <h4 class="showcase-title">Luxury Event Management  </h4>
-                                    </a>
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStarHalf />
-                                    
-                                    <a href="#" class="showcase-category">  284, Radhika Heights, in front of INDIAN bank 462011, Zone-II, M.P Nagar, Bhopal, Madhya Pradesh </a>
-
-                                    <div class="price-box">
-                                    <a href="#" class="banner-btn"><br />Package Details</a>
-                                        
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                    {/* <img src="./assets/images/products/belt.jpg" alt="men's leather reversible belt" class="showcase-img"
-                                        // width="70" /> */}
-                                </a>
-
-                                <div class="showcase-content">
-
-                                <a href="#">
-                                        <h4 class="showcase-title">Dream World Events </h4>
-                                    </a>
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStarHalf />
-                                    
-                                    <a href="#" class="showcase-category">  Maharana Pratap Nagar, Bhopal, Madhya Pradesh </a>
-
-                                    <div class="price-box">
-                                    <a href="#" class="banner-btn"><br />Package Details</a>
-                                        
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <div class="showcase-container">
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                    {/* <img src="./assets/images/products/jewellery-2.jpg" alt="platinum zircon classic ring" class="showcase-img"
-                                        // width="70" /> */}
-                                </a>
-
-                                <div class="showcase-content">
-                                <a href="#">
-                                        <h4 class="showcase-title">Sunmoon Events & Experience </h4>
-                                    </a>
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStarHalf />
-                                    
-                                    <a href="#" class="showcase-category"> 202 , Radha, Krishna Apartment, Narmadapuram Rd, Near Chetak Bridge, Chetak Bridge, Housing Board Colony, Bhopal, Madhya Pradesh</a>
-
-                                    <div class="price-box">
-                                    <a href="#" class="banner-btn"><br />Package Details</a>
-                                        
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                    {/* <img src="./assets/images/products/jewellery-2.jpg" alt="platinum zircon classic ring" class="showcase-img"
-                                        // width="70" /> */}
-                                </a>
-
-                                <div class="showcase-content">
-
-                                <a href="#">
-                                        <h4 class="showcase-title">Jashnn: Wedding </h4>
-                                    </a>
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    
-                                    <a href="#" class="showcase-category">  1st Floor Zone, Plot No. 34, Qubicals, Walking Distance from Manohar Dairy, 1, Maharana Pratap Nagar, Madhya Pradesh </a>
-
-                                    <div class="price-box">
-                                    <a href="#" class="banner-btn"><br />Package Details</a>
-                                        
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                    {/* <img src="./assets/images/products/shampoo.jpg" alt="shampoo conditioner packs" class="showcase-img"
-                                        // width="70" /> */}
-                                </a>
-
-                                <div class="showcase-content">
-
-                                <a href="#">
-                                        <h4 class="showcase-title">KINGLY EVENTS </h4>
-                                    </a>
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStarHalf />
-                                    
-                                    <a href="#" class="showcase-category">  MIG 100 2b T-1, Saket Nagar, Habib Ganj, Bhopal, Madhya Pradesh </a>
-
-                                    <div class="price-box">
-                                    <a href="#" class="banner-btn"><br />Package Details</a>
-                                        
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="showcase">
-
-                                <a href="#" class="showcase-img-box">
-                                    {/* <img src="./assets/images/products/jewellery-1.jpg" alt="rose gold peacock earrings" class="showcase-img"
-                                        // width="70" /> */}
-                                </a>
-
-                                <div class="showcase-content">
-
-                                <a href="#">
-                                        <h4 class="showcase-title">Evoke Event Management </h4>
-                                    </a>
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    <FaStar />
-                                    
-                                    <a href="#" class="showcase-category">  10 Number, E-3/114, Arera Colony, Bhopal, Madhya Pradesh </a>
-
-                                    <div class="price-box">
-                                    <a href="#" class="banner-btn"><br />Package Details</a>
-                                        
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-
-
-        </>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="planning-steps">
+        <div className="section-header compact">
+          <span className="section-kicker">How it works</span>
+          <h2>From idea to event day in three steps</h2>
+        </div>
+        <div className="steps-grid">
+          <div className="step-card">
+            <span>01</span>
+            <h3>Share your brief</h3>
+            <p>Tell us the event type, date, guest count and budget.</p>
+          </div>
+          <div className="step-card">
+            <span>02</span>
+            <h3>Compare options</h3>
+            <p>Review matched packages, vendors and add-ons in one place.</p>
+          </div>
+          <div className="step-card">
+            <span>03</span>
+            <h3>Confirm and celebrate</h3>
+            <p>Lock your team and track the details until event day.</p>
+          </div>
+        </div>
+      </section>
+<section className="search-section">
+
+  <div className="section-header">
+    <span className="section-kicker">Local partners</span>
+    <h2>Search near your location</h2>
+    <p>Showing trusted results for Bhopal</p>
+  </div>
+
+  <div className="modern-search-bar">
+    <input
+      type="text"
+      placeholder="Enter your location..."
+    />
+
+    <button type="button">
+      <IoMdSearch />
+    </button>
+  </div>
+
+  <div className="horizontal-list">
+    {featuredVendors.map((vendor) => (
+      <article className="horizontal-info-card" key={vendor.name}>
+        <div className="info-content">
+          <span className="vendor-label">Verified organiser</span>
+          <h3>{vendor.name}</h3>
+          <div className="rating-row">{renderStars(vendor.rating)}</div>
+          <p>{vendor.area}</p>
+        </div>
+        <button type="button" className="modern-btn">{vendor.action}</button>
+      </article>
+    ))}
+
+  </div>
+
+</section>
+<section className="top-rated-section">
+
+  <div className="section-header">
+    <span className="section-kicker">Top rated</span>
+    <h2>Organisers with packages worth comparing</h2>
+    <p>Highly rated teams around Bhopal for premium celebrations and practical budgets.</p>
+  </div>
+
+  <div className="horizontal-list">
+    {topRated.map((vendor) => (
+      <article className="horizontal-info-card" key={vendor.name}>
+        <div className="info-content">
+          <span className="vendor-label">Popular package</span>
+          <h3>{vendor.name}</h3>
+          <div className="rating-row">{renderStars(vendor.rating)}</div>
+          <p>{vendor.area}</p>
+        </div>
+        <button type="button" className="modern-btn">{vendor.action}</button>
+      </article>
+    ))}
+
+  </div>
+
+</section>
+
+
+        </div>
     );
 }
 
 export default Product;
-
