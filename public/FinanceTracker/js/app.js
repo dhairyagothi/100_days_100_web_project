@@ -116,26 +116,39 @@ function renderTransactions(){
         const row =
             document.createElement('tr');
 
-        row.innerHTML = `
+        const descTd = document.createElement('td');
+descTd.textContent = transaction.description;
 
-            <td>${transaction.description}</td>
-            <td>$${transaction.amount}</td>
-            <td>${transaction.type}</td>
-            <td>${transaction.category}</td>
-            <td>${transaction.date}</td>
+const amountTd = document.createElement('td');
+amountTd.textContent = `$${transaction.amount}`;
 
-            <td>
+const typeTd = document.createElement('td');
+typeTd.textContent = transaction.type;
 
-                <button
-                    class="delete-btn"
-                    onclick="removeTransaction(${index})"
-                >
-                    Delete
-                </button>
+const categoryTd = document.createElement('td');
+categoryTd.textContent = transaction.category;
 
-            </td>
+const dateTd = document.createElement('td');
+dateTd.textContent = transaction.date;
 
-        `;
+const actionTd = document.createElement('td');
+
+const deleteBtn = document.createElement('button');
+deleteBtn.className = 'delete-btn';
+deleteBtn.textContent = 'Delete';
+
+deleteBtn.addEventListener('click', () => {
+    removeTransaction(index);
+});
+
+actionTd.appendChild(deleteBtn);
+
+row.appendChild(descTd);
+row.appendChild(amountTd);
+row.appendChild(typeTd);
+row.appendChild(categoryTd);
+row.appendChild(dateTd);
+row.appendChild(actionTd);
 
         transactionList.appendChild(row);
 
