@@ -3,10 +3,10 @@ name: Validate Projects JSON Schema
 on:
   push:
     paths:
-      - 'projects.json'
+      - 'project.json'  # Changed from projects.json to match your file exactly
   pull_request:
     paths:
-      - 'projects.json'
+      - 'project.json'  # Changed from projects.json
 
 jobs:
   validate:
