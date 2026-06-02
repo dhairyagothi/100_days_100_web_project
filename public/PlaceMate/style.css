@@ -347,10 +347,11 @@ body {
 
   background: rgba(255,255,255,0.08);
 
-  color: white;
+  color: var(--text-color);
 
   outline: none;
 }
+
 
 #updateBtn {
   padding: 14px 24px;
@@ -477,4 +478,64 @@ body.light-mode .theme-toggle {
   background: #111827;
 
   color: white;
+}
+
+/* login */
+.auth-container{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.auth-card{
+  width:380px;
+  padding:30px;
+  border-radius:20px;
+  background:var(--card-bg);
+  border:1px solid var(--border-color);
+  backdrop-filter:blur(12px);
+}
+
+.auth-card h2{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.auth-card input{
+  width:100%;
+  padding:12px;
+  margin-bottom:15px;
+  border-radius:10px;
+  border:none;
+  outline:none;
+}
+
+.auth-card button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+#toggleAuth{
+  text-align:center;
+  margin-top:15px;
+  cursor:pointer;
+}
+
+#toggleAuth span{
+  color:#60a5fa;
+}
+
+.hero-buttons{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+#logoutBtn{
+  background:#ef4444;
 }

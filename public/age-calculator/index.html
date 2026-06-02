@@ -1,110 +1,180 @@
-<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Age Calculator</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="container">
-        <h1>📅 Age Calculator</h1>
-        <p class="subtitle">Calculate your exact age in years, months, and days</p>
-
-        <div class="input-group">
-            <label for="dob">Date of Birth:</label>
-            <input type="date" id="dob" class="date-input">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Age Calculator — LifePulse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="calculator">
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">LifePulse</div>
+        <nav class="desktop-nav">
+          <a href="index.html" class="nav-link active">Calculator</a>
+          <a href="difference.html" class="nav-link">Difference</a>
+          <a href="birthday.html" class="nav-link">Birthday Card</a>
+          <a href="about.html" class="nav-link">About</a>
+        </nav>
+        <div class="topbar-actions">
+          <button id="theme-toggle" class="icon-button" aria-label="Toggle dark mode">🌙</button>
+          <button id="menu-toggle" class="icon-button menu-button" aria-label="Open navigation" aria-expanded="false">
+            <svg class="menu-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
         </div>
-
-        <button id="calculate-btn" class="calculate-btn">Calculate Age</button>
-
-        <div class="result" id="result" style="display: none;">
-            <h2>Your Age</h2>
-            <div class="age-details">
-                <div class="age-card">
-                    <span class="age-number" id="years">0</span>
-                    <span class="age-label">Years</span>
-                </div>
-                <div class="age-card">
-                    <span class="age-number" id="months">0</span>
-                    <span class="age-label">Months</span>
-                </div>
-                <div class="age-card">
-                    <span class="age-number" id="days">0</span>
-                    <span class="age-label">Days</span>
-                </div>
+      </header>
+      <div id="mobile-menu" class="mobile-menu">
+        <nav class="mobile-nav">
+          <a href="index.html" class="mobile-link active">Calculator</a>
+          <a href="difference.html" class="mobile-link">Difference</a>
+          <a href="birthday.html" class="mobile-link">Birthday Card</a>
+          <a href="about.html" class="mobile-link">About</a>
+        </nav>
+      </div>
+      <main class="page-content">
+        <section class="hero-panel">
+          <div class="hero-copy-block">
+            <p class="eyebrow">Age Calculator</p>
+            <h1>Calculate your exact age with premium accuracy.</h1>
+            <p class="hero-copy">A polished, responsive age tool with birthday insights, planetary ages, and smart comparison utilities.</p>
+          </div>
+        </section>
+        <section class="grid-section one-column">
+          <div class="panel glass-panel input-panel">
+            <div class="panel-header">
+              <p class="eyebrow">Get started</p>
+              <h2>Enter your birthday</h2>
             </div>
-            
-            <div class="extra-info">
-                <div class="info-item">
-                    <span class="info-label">Next Birthday:</span>
-                    <span id="next-birthday">-</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Days Until Birthday:</span>
-                    <span id="days-until">-</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Zodiac Sign:</span>
-                    <span id="zodiac">-</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Total Weeks:</span>
-                    <span id="weeks">-</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Total Hours:</span>
-                    <span id="hours">-</span>
-                </div>
+            <div class="field-group">
+              <label for="dob">Date of Birth</label>
+              <input type="date" id="dob" class="field-input" />
             </div>
-
-            <!-- Chinese Zodiac Section -->
-            <div class="zodiac-section">
-                <h3>🇨🇳 Chinese Zodiac Animal</h3>
-                <div class="zodiac-card">
-                    <span id="chinese-zodiac-sign" class="zodiac-emoji">—</span>
-                    <span id="chinese-zodiac-name" class="zodiac-name">—</span>
-                </div>
+            <button id="calculate-btn" class="primary-button full-width">Calculate Age</button>
+          </div>
+        </section>
+        <section class="panel glass-panel stats-wrapper hidden" id="age-results">
+          <div class="panel-header">
+            <p class="eyebrow">Your age summary</p>
+            <h2>Here's what your birthday reveals</h2>
+          </div>
+          <div class="age-grid">
+            <div class="stat-card purple-card">
+              <p class="stat-label">Years</p>
+              <span class="stat-number" id="years">0</span>
             </div>
-
-            <!-- Cosmic Age Section -->
-            <div class="cosmic-section">
-                <h3>🌌 Your Cosmic Age (Other Planets)</h3>
-                <div class="cosmic-grid">
-                    <div class="cosmic-card mercury">
-                        <span class="planet-icon">☿</span>
-                        <span class="planet-name">Mercury</span>
-                        <span class="planet-age" id="age-mercury">—</span>
-                        <span class="planet-sub">Years Old</span>
-                    </div>
-                    <div class="cosmic-card venus">
-                        <span class="planet-icon">♀</span>
-                        <span class="planet-name">Venus</span>
-                        <span class="planet-age" id="age-venus">—</span>
-                        <span class="planet-sub">Years Old</span>
-                    </div>
-                    <div class="cosmic-card mars">
-                        <span class="planet-icon">♂</span>
-                        <span class="planet-name">Mars</span>
-                        <span class="planet-age" id="age-mars">—</span>
-                        <span class="planet-sub">Years Old</span>
-                    </div>
-                    <div class="cosmic-card jupiter">
-                        <span class="planet-icon">♃</span>
-                        <span class="planet-name">Jupiter</span>
-                        <span class="planet-age" id="age-jupiter">—</span>
-                        <span class="planet-sub">Years Old</span>
-                    </div>
-                    <div class="cosmic-card saturn">
-                        <span class="planet-icon">♄</span>
-                        <span class="planet-name">Saturn</span>
-                        <span class="planet-age" id="age-saturn">—</span>
-                        <span class="planet-sub">Years Old</span>
-                    </div>
-                </div>
+            <div class="stat-card violet-card">
+              <p class="stat-label">Months</p>
+              <span class="stat-number" id="months">0</span>
             </div>
-        </div>
+            <div class="stat-card indigo-card">
+              <p class="stat-label">Days</p>
+              <span class="stat-number" id="days">0</span>
+            </div>
+          </div>
+          <div class="info-grid highlight-grid">
+            <div class="info-card">
+              <p class="info-title">Next Birthday</p>
+              <strong id="next-birthday">--</strong>
+            </div>
+            <div class="info-card">
+              <p class="info-title">Days Until Birthday</p>
+              <strong id="days-until">--</strong>
+            </div>
+            <div class="info-card">
+              <p class="info-title">Zodiac Sign</p>
+              <strong id="zodiac">--</strong>
+            </div>
+            <div class="info-card">
+              <p class="info-title">Chinese Zodiac</p>
+              <strong id="chinese-zodiac-name">--</strong>
+            </div>
+          </div>
+          <div class="panel-subheading">Detailed breakdown</div>
+          <div class="detail-grid">
+            <div class="detail-card">
+              <span>Total Weeks</span>
+              <strong id="weeks">0</strong>
+            </div>
+            <div class="detail-card">
+              <span>Total Days</span>
+              <strong id="total-days">0</strong>
+            </div>
+            <div class="detail-card">
+              <span>Total Hours</span>
+              <strong id="total-hours">0</strong>
+            </div>
+            <div class="detail-card">
+              <span>Total Minutes</span>
+              <strong id="total-minutes">0</strong>
+            </div>
+            <div class="detail-card">
+              <span>Total Seconds</span>
+              <strong id="total-seconds">0</strong>
+            </div>
+            <div class="detail-card">
+              <span>Total Milliseconds</span>
+              <strong id="total-milliseconds">0</strong>
+            </div>
+          </div>
+          <div class="story-card facts-card">
+            <div>
+              <p class="eyebrow">Interesting Facts</p>
+              <h3>Life moments in perspective</h3>
+            </div>
+            <ul class="facts-list">
+              <li id="fact-one">You are older than 0% of people.</li>
+              <li id="fact-two">You have lived 0 days.</li>
+              <li id="fact-three">You spent approximately 0 years sleeping.</li>
+              <li id="fact-four">Your heart has beaten approximately 0 times.</li>
+            </ul>
+          </div>
+          <div class="planet-section">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">Planetary Ages</p>
+                <h3>How old are you on other worlds?</h3>
+              </div>
+            </div>
+            <div class="planet-grid">
+              <div class="planet-card mercury">
+                <span class="planet-icon">☿</span>
+                <p>Mercury years</p>
+                <strong id="age-mercury">0</strong>
+              </div>
+              <div class="planet-card venus">
+                <span class="planet-icon">♀</span>
+                <p>Venus years</p>
+                <strong id="age-venus">0</strong>
+              </div>
+              <div class="planet-card mars">
+                <span class="planet-icon">♂</span>
+                <p>Mars years</p>
+                <strong id="age-mars">0</strong>
+              </div>
+              <div class="planet-card jupiter">
+                <span class="planet-icon">♃</span>
+                <p>Jupiter years</p>
+                <strong id="age-jupiter">0</strong>
+              </div>
+              <div class="planet-card saturn">
+                <span class="planet-icon">♄</span>
+                <p>Saturn years</p>
+                <strong id="age-saturn">0</strong>
+              </div>
+            </div>
+          </div>
+          <div class="action-row result-actions">
+            <button id="share-btn" class="secondary-button">Share Age</button>
+            <button id="download-btn" class="primary-button">Download Report</button>
+          </div>
+        </section>
+      </main>
     </div>
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
