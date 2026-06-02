@@ -275,7 +275,7 @@ function buildProjectCardHTML({
                   ${sourceOnlyBadge}
                 </span>
             </div>
-            <div class="card-name">${name}</div>
+            <h3 class="card-name">${name}</h3>
             ${
               showDescription
                 ? `<div class="card-description">
@@ -1815,25 +1815,60 @@ initTheme();
   const target = { x: 0, y: 0 };
   const current = { x: 0, y: 0 };
   const speed = 0.18;
+  const settleThreshold = 0.1;
+  let cursorVisible = false;
+  let cursorFrameId = null;
+
+  const renderCursor = () => {
+    outerCursor.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%)`;
+    innerCursor.style.transform = `translate3d(${target.x}px, ${target.y}px, 0) translate(-50%, -50%)`;
+  };
+
+  const stopCursorLoop = () => {
+    if (cursorFrameId !== null) {
+      cancelAnimationFrame(cursorFrameId);
+      cursorFrameId = null;
+    }
+  };
 
   const update = () => {
     current.x += (target.x - current.x) * speed;
     current.y += (target.y - current.y) * speed;
+    renderCursor();
 
-    outerCursor.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%)`;
-    innerCursor.style.transform = `translate3d(${target.x}px, ${target.y}px, 0) translate(-50%, -50%)`;
+    const isSettled =
+      Math.abs(target.x - current.x) < settleThreshold &&
+      Math.abs(target.y - current.y) < settleThreshold;
 
-    requestAnimationFrame(update);
+    if (!cursorVisible || isSettled) {
+      current.x = target.x;
+      current.y = target.y;
+      renderCursor();
+      cursorFrameId = null;
+      return;
+    }
+
+    cursorFrameId = requestAnimationFrame(update);
+  };
+
+  const startCursorLoop = () => {
+    if (cursorFrameId === null) {
+      cursorFrameId = requestAnimationFrame(update);
+    }
   };
 
   const showCursor = () => {
+    cursorVisible = true;
     outerCursor.classList.add("is-visible");
     innerCursor.classList.add("is-visible");
+    startCursorLoop();
   };
 
   const hideCursor = () => {
+    cursorVisible = false;
     outerCursor.classList.remove("is-visible");
     innerCursor.classList.remove("is-visible");
+    stopCursorLoop();
   };
 
   window.addEventListener(
@@ -1848,8 +1883,6 @@ initTheme();
 
   window.addEventListener("mouseleave", hideCursor);
   window.addEventListener("mouseenter", showCursor);
-
-  requestAnimationFrame(update);
 })();
 
 // Particle Network Background
@@ -2135,4 +2168,60 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
   window.addEventListener("popstate", () => restoreStateFromURL());
+});
+
+// ── Custom Animated Cursor ─────────────────────────────────
+document.addEventListener('DOMContentLoaded', function () {
+  if (!window.matchMedia('(pointer: fine)').matches) return;
+
+  const outer = document.querySelector('.cursor-ring--outer');
+  const inner = document.querySelector('.cursor-ring--inner');
+  if (!outer || !inner) return;
+
+  let mouseX = 0, mouseY = 0;
+  let outerX = 0, outerY = 0;
+
+  document.documentElement.style.cursor = 'none';
+  document.body.style.cursor = 'none';
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    inner.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+    outer.style.opacity = '1';
+    inner.style.opacity = '1';
+  });
+
+  document.addEventListener('mouseleave', () => {
+    outer.classList.remove('is-visible');
+    inner.classList.remove('is-visible');
+  });
+
+  function animateOuter() {
+    outerX += (mouseX - outerX) * 0.12;
+    outerY += (mouseY - outerY) * 0.12;
+    outer.style.transform = `translate3d(${outerX}px, ${outerY}px, 0) translate(-50%, -50%)`;
+    requestAnimationFrame(animateOuter);
+  }
+  animateOuter();
+
+  const hoverTargets = 'a, button, [role="button"], input, select, .chip, .project-card, .bookmark-btn';
+
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest(hoverTargets)) {
+      outer.style.borderColor = 'rgba(59, 130, 246, 1)';
+      outer.style.boxShadow = '0 0 18px rgba(59, 130, 246, 0.6)';
+      outer.style.width = '52px';
+      outer.style.height = '52px';
+    }
+  });
+
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest(hoverTargets)) {
+      outer.style.borderColor = 'rgba(59, 130, 246, 0.7)';
+      outer.style.boxShadow = '0 0 12px rgba(59, 130, 246, 0.35)';
+      outer.style.width = '36px';
+      outer.style.height = '36px';
+    }
+  });
 });

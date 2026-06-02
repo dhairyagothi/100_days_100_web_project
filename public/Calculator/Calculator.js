@@ -41,7 +41,21 @@ function showConfirmToast(message, onYes, onNo) {
         if (onNo) onNo();
     });
 }
+function showToast(message) {
+    const container = document.querySelector('.toast-container');
 
+    const toast = document.createElement('div');
+
+    toast.classList.add('toast');
+
+    toast.textContent = message;
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.remove();
+    }, 2000);
+}
 function sin(value) {
     return Math.sin(Math.PI / 180 * Number(value));
 }
@@ -165,26 +179,67 @@ function isSavableResult(result) {
     return true;
 }
 
-function createHistoryItem(entry) {
+function createHistoryItem(entry, index) {
     const div = document.createElement('div');
     div.classList.add('history-item');
-    div.textContent = `${entry.expression} = ${entry.result}`;
 
-    div.addEventListener('click', () => {
+    const content = document.createElement('div');
+    content.classList.add('history-content');
+    content.textContent = `${entry.expression} = ${entry.result}`;
+
+    content.addEventListener('click', () => {
         string = entry.expression;
         input.value = entry.expression;
         calculated = false;
     });
 
+    const deleteBtn = document.createElement('button');
+    deleteBtn.classList.add('history-delete');
+    deleteBtn.innerHTML = '✕';
+    deleteBtn.setAttribute('aria-label', 'Delete history entry');
+
+    deleteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+
+        history.splice(index, 1);
+
+        saveHistory();
+        renderHistory();
+    });
+
+    div.appendChild(content);
+    div.appendChild(deleteBtn);
+
     return div;
 }
-
+function updateHistoryTitle() {
+    const historyTitle = document.getElementById('historyTitle');
+    historyTitle.textContent = `History (${history.length})`;
+}
 function renderHistory() {
+    updateHistoryTitle();
     const historyList = document.getElementById('historyList');
     historyList.innerHTML = '';
 
-    history.forEach(entry => {
-        historyList.appendChild(createHistoryItem(entry));
+    if (history.length === 0) {
+        const emptyState = document.createElement('div');
+
+        emptyState.classList.add('history-empty');
+
+        emptyState.innerHTML = `
+            <h3>No calculations yet</h3>
+            <p>Your recent calculations will appear here.</p>
+        `;
+
+        historyList.appendChild(emptyState);
+
+        return;
+    }
+
+    history.forEach((entry, index) => {
+        historyList.appendChild(
+            createHistoryItem(entry, index)
+        );
     });
 }
 
@@ -249,7 +304,24 @@ arr.forEach(button => {
         input.value = string;
     });
 });
+document
+    .getElementById('copyResult')
+    .addEventListener('click', async () => {
 
+        const value = input.value.trim();
+
+        if (!value || value === 'Error') {
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(value);
+
+            showToast('Copied to clipboard');
+        } catch {
+            showToast('Failed to copy');
+        }
+    });
 document.getElementById('clearHistory').addEventListener('click', () => {
     showConfirmToast(
         "Are you sure you want to clear history?",

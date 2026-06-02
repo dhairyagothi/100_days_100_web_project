@@ -5,6 +5,9 @@ const soundToggle = document.getElementById("soundToggle");
 const pageCounter = document.getElementById("pageCounter");
 const downloadPDF = document.getElementById("downloadPDF");
 const copyBtn = document.getElementById("copyBtn");
+const pasteBtn = document.getElementById("pasteBtn");
+const importTxtBtn = document.getElementById("importTxtBtn");
+const txtFileInput = document.getElementById("txtFileInput");
 const wordCountEl = document.getElementById("wordCount");
 const charCountEl = document.getElementById("charCount");
 let audioCtx;
@@ -206,6 +209,23 @@ function flashKey(char) {
 
 /* ---------- Keyboard ---------- */
 document.addEventListener("keydown", (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "v") {
+    e.preventDefault();
+
+    navigator.clipboard.readText().then((text) => {
+      if (!text.trim()) return;
+
+      paperContent += "\n" + text;
+      getCurrentText().textContent = paperContent;
+
+      updateCopyButtonState();
+      updateCounters();
+
+      showPdfToast("Text pasted successfully!");
+    });
+
+    return;
+  }
   if (e.key === "Backspace") {
     e.preventDefault();
     deleteCharFromPaper();
@@ -723,3 +743,55 @@ document.addEventListener("DOMContentLoaded", () => {
   updateCopyButtonState();
   updateCounters();
 });
+
+// Paste Text Feature
+if (pasteBtn) {
+  pasteBtn.addEventListener("click", async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+
+      if (!text.trim()) {
+        alert("Clipboard is empty!");
+        return;
+      }
+
+      paperContent += text;
+      getCurrentText().textContent = paperContent;
+
+      updateCopyButtonState();
+      updateCounters();
+
+      showPdfToast("Text pasted successfully!");
+    } catch (err) {
+      console.error(err);
+      alert("Unable to access clipboard.");
+    }
+  });
+}
+
+// Import TXT Feature
+if (importTxtBtn && txtFileInput) {
+  importTxtBtn.addEventListener("click", () => {
+    txtFileInput.click();
+  });
+
+  txtFileInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      paperContent += event.target.result;
+      getCurrentText().textContent = paperContent;
+
+      updateCopyButtonState();
+      updateCounters();
+
+      showPdfToast("Text file imported successfully!");
+    };
+
+    reader.readAsText(file);
+  });
+}
