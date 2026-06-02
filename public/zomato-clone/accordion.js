@@ -86,4 +86,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+   // ================== DARK MODE ==================
+  const darkModeBtn = document.getElementById("darkModeToggle");
+
+  // Apply saved theme on load
+  if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark-mode");
+    darkModeBtn.innerText = "☀️ Light Mode";
+  } else {    
+    darkModeBtn.innerText = "🌙 Dark Mode";
+  }
+
+  // Toggle theme
+  darkModeBtn.addEventListener("click", () => {
+
+    if (document.body.classList.contains("dark-mode")) {
+      document.body.classList.remove("dark-mode");
+      darkModeBtn.innerText = "🌙 Dark Mode";
+      localStorage.setItem("theme", "light");
+
+    } else {
+      document.body.classList.add("dark-mode");
+      darkModeBtn.innerText = "☀️ Light Mode";
+      localStorage.setItem("theme", "dark");
+    }
+
+  });
+
+
 });

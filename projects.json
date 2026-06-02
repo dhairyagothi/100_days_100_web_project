@@ -2507,5 +2507,17 @@
     "difficulty": "advanced",
     "projectPath": "./public/NumberGuessGame/index.html"
 },
-  
+  {
+    "projectNo": 202,
+    "projectName": "Traffic signal game",
+    "projectType": "Game",
+    "projectDesc": "A traffic game with red , green , yellow light.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/traffic_signal/index.html"
+  }
 ]
