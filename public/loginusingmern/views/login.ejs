@@ -11,12 +11,41 @@
 </head>
 
 <body>
+    <div class="image"><iframe
+            src="https://lottie.host/embed/e9326b10-fe9a-446e-bc8d-56640e47e816/TeItgXRxNd.json"></iframe></div>
+    <form>
+        <!-- Headings for the form -->
+        <div class="headingsContainer">
+            <h3>Log In
+            </h3>
+        </div>
 
         <!-- The Wrapper contains all the inputs -->
         <div class="mainContainer">
             <!-- Username -->
             <div class="input-group">
                 <label for="username">Username</label>
+
+                <input type="text" placeholder="Enter Your Username Here" name="username" id="username"
+                    autocomplete="username" required>
+                <div class="error"></div>
+            </div>
+
+            <br><br>
+
+            <div class="password-field">
+                <div class="input-group">
+                    <label for="password">Password</label>
+
+                    <div class="input-wrapper">
+                        <input type="password" placeholder="Enter Your Password Here" name="password" id="password"
+                            required autocomplete="current-password">
+
+                        <span id="togglePassword">👁️</span>
+                    </div>
+                    <div class="error"></div>
+                </div>
+            </div>
 
                 <input type="text" placeholder="Enter Your Username Here" name="username" id="username"
                     autocomplete="username" required>
@@ -62,6 +91,21 @@
           <input type="text" id="username" name="username" placeholder="Enter your username" autocomplete="username"
             required>
         </div>
+
+    </form>
+</body>
+<script>
+    async function postRequest(data) {
+        try {
+            const res = await fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const text = await res.text();
+
+            showMessage(text, !res.ok);
 
     </form>
 </body>
@@ -170,6 +214,21 @@
             password: password.value
         });
     }
+    function togglePassword(id, element) {
+
+    const input = document.getElementById(id);
+    const icon = element.querySelector("i");
+
+    if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+    } else {
+        input.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    }
+}
 
     document.addEventListener("DOMContentLoaded", () => {
 

@@ -4,42 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedConsult Dashboard</title>
-    <link rel="stylesheet" href="/public/Medical_App/styles.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/darkmode.css">
+    <link rel="stylesheet" href="css/toast.css">
+    <link rel="stylesheet" href="css/animation.css">
+    <link rel="stylesheet" href="css/hero.css">
+    <link rel="stylesheet" href="assets/css/auth.css">
 </head>
-
 <body>
+<div id="appShell">
+<nav class="navbar">
+    <div class="logo">
+        <img src="assets/logo.png" alt="logo">
+        <span>MedConsult</span>
+    </div>
+
+    <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li data-role="patient"><a href="remedies.html">Remedies</a></li>
+        <li data-role="patient"><a href="feedback.html">Feedback</a></li>
+    </ul>
+
+    <div class="user-area">
+        <div id="userBadge" class="user-badge hidden" aria-live="polite">
+            <span id="userAvatar" class="user-avatar" aria-hidden="true">👤</span>
+            <div class="user-meta">
+                <span id="userBadgeName">Guest</span>
+                <span id="userBadgeRole">Role: --</span>
+            </div>
+        </div>
+        <button id="loginTrigger" class="auth-btn" type="button">Login</button>
+        <button id="logoutBtn" class="auth-btn secondary is-role-hidden" type="button">Logout</button>
+    </div>
+</nav>
 
 <header class="hero">
+    <button id="themeToggle" class="theme-btn">🌙</button>
     <div class="hero-content">
-        <h1>🏥 MedConsult Dashboard</h1>
-        <p>Connecting Local Doctors with Specialists</p>
+        <div class="hero-text-group">
+            <h1>🏥 MedConsult Dashboard</h1>
+            <p>Connecting Local Doctors with Specialists</p>
+            <p id="welcomeMessage" class="welcome-message">Welcome to MedConsult</p>
+        </div>
+
+        <div class="hero-nav-links">
+            <a href="index.html" class="active">
+                <i class="ph ph-squares-four"></i> Dashboard
+            </a>
+            <a href="remedies.html" data-role="patient">
+                <i class="ph ph-prescription"></i> Home Remedies
+            </a>
+            <a href="feedback.html" data-role="patient">
+                <i class="ph ph-chat-circle-text"></i> Feedback
+            </a>
+
+            <button class="btn-icon theme-toggle" id="themeToggleBtn" aria-label="Toggle Theme">
+                <i class="ph ph-moon"></i>
+            </button>
+        </div>
     </div>
 </header>
-    <main>
-        <section id="consultation-form">
-            <h2 >Request a Consultation</h2>
-            <form id="requestForm">
-                <label for="patientName">Patient's Name:</label>
-                <input type="text" id="patientName" name="patientName" required placeholder="Patient's Name">
-                <label for="doctorName">Doctor's Name:</label>
-                <input type="text" id="doctorName" name="doctorName" required placeholder="Doctor's Name">
 
-                <label for="patientCondition">Patient's Condition:</label>
-                <textarea id="patientCondition" name="patientCondition"  placeholder="Condition" required></textarea>
-
-                <label for="specialistType">Specialist Needed:</label>
-                <input type="text" id="specialistSearch" placeholder="Search Specialist...">
-                <select id="specialistType" name="specialistType" required></select>
-
-            <button type="submit" class="primary-btn">
-                Submit Consultation
-            </button>
-
-        </form>
-    </section>
-
-    <section class="card">
+    <!-- Doctors Section -->
+    <section class="card doctors-section">
         <h2>👨‍⚕️ Available Doctors</h2>
+        <input type="text" id="doctorSearch" class="doctor-search-input" placeholder="Search Doctors...">
         <div class="doctors-grid">
             <!-- Card 1: Dr. Sarah Jenkins -->
             <div class="doctor-card">
@@ -50,7 +80,9 @@
                 </div>
                 
                 <div class="doctor-profile">
-                    <div class="doctor-avatar">👩‍⚕️</div>
+                    <div class="doctor-avatar">
+                        <img src="assets/doctors/sarah.png" alt="Dr Sarah">
+                    </div>
                     <div class="doctor-identity">
                         <h3>Dr. Sarah Jenkins</h3>
                         <span class="specialty-badge">Cardiologist</span>
@@ -74,7 +106,9 @@
                 </div>
                 
                 <div class="doctor-profile">
-                    <div class="doctor-avatar">👨‍⚕️</div>
+                    <div class="doctor-avatar">
+                        <img src="assets/doctors/james.png" alt="Dr James">
+                    </div>
                     <div class="doctor-identity">
                         <h3>Dr. James Smith</h3>
                         <span class="specialty-badge">Neurologist</span>
@@ -98,7 +132,9 @@
                 </div>
                 
                 <div class="doctor-profile">
-                    <div class="doctor-avatar">👩‍⚕️</div>
+                    <div class="doctor-avatar">
+                        <img src="assets/doctors/emily.png" alt="Dr Emily">
+                    </div>
                     <div class="doctor-identity">
                         <h3>Dr. Emily Watson</h3>
                         <span class="specialty-badge">Pediatrician</span>
@@ -115,121 +151,603 @@
         </div>
     </section>
 
-    <section class="card">
-        <h2>📊 Health Monitoring</h2>
+    <!-- Main Dashboard -->
+    <main class="dashboard-container">
 
-        <div class="stats-grid">
+        <!-- Left Section -->
+        <div class="dashboard-left">
 
-            <div class="stat-box">
-                <h3>❤️ Heart Rate</h3>
-                <p id="heartRate">78 BPM</p>
+            <!-- Consultation Request -->
+            <section class="card form-card" data-role="patient">
+                <div class="card-header">
+                    <div class="icon-wrapper primary">
+                        <i class="ph ph-stethoscope"></i>
+                    </div>
+                    <h2>Request Consultation</h2>
+                </div>
+
+                <form id="requestForm" class="medical-form" novalidate>
+
+                    <div class="input-group">
+                        <label for="patientName">Patient Full Name</label>
+                        <div class="input-icon-wrapper">
+                            <i class="ph ph-user"></i>
+                            <input
+                                type="text"
+                                id="patientName"
+                                name="patientName"
+                                placeholder="e.g. Jane Doe"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="doctorName">Referring Doctor</label>
+                        <div class="input-icon-wrapper">
+                            <i class="ph ph-user-md"></i>
+                            <input
+                                type="text"
+                                id="doctorName"
+                                name="doctorName"
+                                placeholder="e.g. Dr. Smith"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="patientCondition">Patient Condition / Symptoms</label>
+                        <div class="input-icon-wrapper textarea-wrapper">
+                            <i class="ph ph-clipboard-text"></i>
+                            <textarea
+                                id="patientCondition"
+                                name="patientCondition"
+                                placeholder="Describe the condition briefly..."
+                                required
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="specialistSearch">Required Specialist</label>
+                        <div class="input-icon-wrapper">
+                            <i class="ph ph-magnifying-glass"></i>
+                            <input
+                                type="text"
+                                id="specialistSearch"
+                                placeholder="Search specialist types (e.g. Cardiologist)"
+                            >
+                        </div>
+
+                        <select id="specialistType" name="specialistType" class="mt-2" required>
+                        </select>
+                    </div>
+
+                    <button type="button" class="btn-text advanced-toggle" id="toggleAdvancedBtn">
+                        <i class="ph ph-caret-down"></i>
+                        Show Advanced Details
+                    </button>
+
+                    <div id="advancedFields" class="advanced-fields-container hidden">
+
+                        <div class="grid-2-cols">
+                            <div class="input-group">
+                                <label for="patientAge">Patient Age</label>
+                                <div class="input-icon-wrapper">
+                                    <i class="ph ph-calendar-blank"></i>
+                                    <input
+                                        type="number"
+                                        id="patientAge"
+                                        name="patientAge"
+                                        placeholder="e.g. 45"
+                                        min="0"
+                                        max="120"
+                                    >
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="patientGender">Patient Gender</label>
+                                <div class="input-icon-wrapper">
+                                    <i class="ph ph-gender-intersex"></i>
+                                    <select id="patientGender" name="patientGender">
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid-2-cols">
+                            <div class="input-group">
+                                <label for="contactInfo">Contact Phone / Email</label>
+                                <div class="input-icon-wrapper">
+                                    <i class="ph ph-address-book"></i>
+                                    <input
+                                        type="text"
+                                        id="contactInfo"
+                                        name="contactInfo"
+                                        placeholder="For follow-ups"
+                                    >
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="priorityLevel">Consultation Priority</label>
+                                <div class="input-icon-wrapper">
+                                    <i class="ph ph-warning"></i>
+                                    <select id="priorityLevel" name="priorityLevel">
+                                        <option value="Normal">Normal</option>
+                                        <option value="Urgent">Urgent</option>
+                                        <option value="Emergency">Emergency</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="appointmentDate">Preferred Appointment Date & Time</label>
+                            <div class="input-icon-wrapper">
+                                <i class="ph ph-calendar-plus"></i>
+                                <input
+                                    type="datetime-local"
+                                    id="appointmentDate"
+                                    name="appointmentDate"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="medicalFiles">Attach Medical Reports (Optional)</label>
+                            <div class="file-upload-wrapper">
+                                <input
+                                    type="file"
+                                    id="medicalFiles"
+                                    name="medicalFiles"
+                                    multiple
+                                    class="file-input"
+                                >
+
+                                <div class="file-upload-ui">
+                                    <i class="ph ph-upload-simple"></i>
+                                    <span>Choose files or drag & drop</span>
+                                    <small>PDF, JPG, PNG up to 10MB</small>
+                                </div>
+
+                                <div id="fileList" class="file-list"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-neutral" id="resetRequestBtn">
+                            <i class="ph ph-arrow-counter-clockwise"></i>
+                            Clear
+                        </button>
+
+                        <button type="submit" class="btn btn-primary" id="submitRequestBtn">
+                            <i class="ph ph-paper-plane-right"></i>
+                            Submit Request
+                        </button>
+                    </div>
+
+                </form>
+            </section>
+
+            <!-- Specialist Response -->
+            <section id="specialist-response" class="card form-card is-role-hidden" data-role="doctor">
+                <div class="card-header">
+                    <div class="icon-wrapper accent">
+                        <i class="ph ph-lightbulb"></i>
+                    </div>
+                    <h2>Provide Suggestion</h2>
+                </div>
+
+                <form id="responseForm" class="medical-form" novalidate>
+
+                    <div class="input-group">
+                        <label for="consultationId">Consultation ID</label>
+                        <div class="input-icon-wrapper">
+                            <i class="ph ph-identification-card"></i>
+                            <input
+                                type="text"
+                                id="consultationId"
+                                name="consultationId"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="suggestion">Medical Suggestion / Next Steps</label>
+                        <div class="input-icon-wrapper textarea-wrapper">
+                            <i class="ph ph-file-text"></i>
+                            <textarea
+                                id="suggestion"
+                                name="suggestion"
+                                required
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-accent">
+                        Submit Suggestion
+                    </button>
+
+                </form>
+            </section>
+
+        </div>
+
+        <!-- Right Section -->
+        <div class="dashboard-right">
+
+            <!-- Live Progress Status -->
+            <section id="consultation-status" class="card status-card">
+                <div class="card-header">
+                    <div class="icon-wrapper success">
+                        <i class="ph ph-activity"></i>
+                    </div>
+                    <h2>Live Progress Status</h2>
+                </div>
+
+                <div class="status-content">
+                    <div id="statusMessage" class="empty-status">
+                        No active operations
+                    </div>
+
+                    <div id="progressStepper" class="stepper-container hidden">
+
+                        <div class="step" id="step1">
+                            <div class="step-icon">
+                                <i class="ph ph-paper-plane-right"></i>
+                            </div>
+                            <div class="step-content">
+                                <h4>Request Submitted</h4>
+                                <p>System received your data</p>
+                            </div>
+                        </div>
+
+                        <div class="step" id="step2">
+                            <div class="step-icon">
+                                <i class="ph ph-user-md"></i>
+                            </div>
+                            <div class="step-content">
+                                <h4>Specialist Assigned</h4>
+                                <p id="assignedSpecialistName">Pending assignment</p>
+                            </div>
+                        </div>
+
+                        <div class="step" id="step3">
+                            <div class="step-icon">
+                                <i class="ph ph-calendar-check"></i>
+                            </div>
+                            <div class="step-content">
+                                <h4>Appointment Scheduled</h4>
+                                <p>Awaiting confirmation</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Health Monitoring -->
+            <section class="card">
+                <h2>📊 Health Monitoring</h2>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <h3>Heart Rate</h3>
+                        <p id="heartRate">--</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>BP</h3>
+                        <p>120/80</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>SpO2</h3>
+                        <p>98%</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Daily Health Tips -->
+            <section class="card">
+                <h2>🧠 Daily Health Tips</h2>
+                <div id="healthTip"></div>
+            </section>
+
+            <!-- Emergency Help -->
+            <section class="card emergency-card">
+                <h2>🚑 Emergency Help</h2>
+                <div class="emergency-grid">
+                    <button>📞 Ambulance</button>
+                    <button>🏥 Nearby Hospital</button>
+                    <button>🧑‍⚕️ Emergency Doctor</button>
+                </div>
+            </section>
+
+            <!-- Feedback Link -->
+            <div data-role="patient">
+                <a href="feedback.html">
+                    <button class="primary-btn feedback-btn">Give Feedback</button>
+                </a>
             </div>
 
-            <div class="stat-box">
-                <h3>🩸 Blood Pressure</h3>
-                <p>120 / 80</p>
-            </div>
+            <section class="card doctor-controls is-role-hidden" data-role="doctor">
+                <h2>🩺 Doctor Controls</h2>
+                <p class="role-note">Manage your availability for incoming consultations.</p>
+                <div class="form-actions" style="margin-top: 1rem;">
+                    <button type="button" id="availabilityToggle" class="btn btn-primary">
+                        Set Available
+                    </button>
+                </div>
+                <p id="availabilityStatus" class="disclaimer">Currently: Offline</p>
+            </section>
 
-            <div class="stat-box">
-                <h3>🌡️ Temperature</h3>
-                <p>98.4°F</p>
-            </div>
+        </div>
 
-            <div class="stat-box">
-                <h3>🫁 Oxygen</h3>
-                <p>98%</p>
-            </div>
+    </main>
 
+    <section class="faq-section card">
+        <div class="faq-header">
+            <h2>Frequently Asked Questions</h2>
+            <p>Got questions about your care? Find quick answers regarding our medical network and data protocols below.</p>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+                <span>How long does it take to get matched with a specialized physician?</span>
+                <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    <p>Urgent consultation requests are typically reviewed by our triage team within 15 minutes. For non-emergency specialized care, assignments are completed within 2 to 4 hours based on physician availability and clinical priority.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+                <span>Are the home remedies and wellness articles peer-reviewed?</span>
+                <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    <p>Yes. All supportive home care remedies, dietary suggestions, and wellness resources are curated and rigorously peer-reviewed by our Board of Medical Advisors. However, these materials are strictly informational and should never supersede direct instructions from your primary care provider.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+                <span>How is my health data protected under privacy regulations?</span>
+                <span class="faq-toggle">+</span>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    <p>Your privacy is our core priority. The MedConsult platform architecture is fully HIPAA and GDPR compliant. Your protected health information (PHI) is encrypted both in transit and at rest using AES-256 bit encryption, and access is restricted solely to your authorized healthcare team.</p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section class="card">
-        <h2>💊 Safe Medicine Recommendations</h2>
+    <footer class="footer">
+        <div class="footer-container">
 
-        <select id="symptomSelect">
-            <option value="">Select Symptom</option>
-            <option value="cold">Cold</option>
-            <option value="headache">Headache</option>
-            <option value="fever">Fever</option>
-            <option value="fatigue">Fatigue</option>
-        </select>
+            <div class="footer-section footer-brand">
+                <div class="brand-row">
+                    <img src="assets/logo.png" alt="MedConsult Logo" class="footer-logo">
+                    <h3>MedConsult</h3>
+                </div>
+                <p>
+                    Connecting patients with qualified doctors and specialists for faster, smarter healthcare support.
+                </p>
+            </div>
 
-        <div id="recommendationBox"></div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Dashboard</a></li>
+                    <li><a href="remedies.html">Home Remedies</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                </ul>
+            </div>
 
-        <p class="disclaimer">
-            ⚠️ Informational only. Consult a medical professional for diagnosis.
-        </p>
-    </section>
+            <div class="footer-section">
+                <h3>Emergency Help</h3>
+                <ul>
+                    <li><a href="tel:108">🚑 Ambulance (108)</a></li>
+                    <li><a href="#">🏥 Nearby Hospitals</a></li>
+                    <li><a href="#">🧑‍⚕️ Emergency Doctor</a></li>
+                </ul>
+            </div>
 
-    <section class="card">
-        <h2>🕒 Consultation History</h2>
-
-        <ul id="historyList"></ul>
-    </section>
-
-    <section class="card feedback-card">
-        <h2>⭐ Feedback</h2>
-
-        <a href="feedback.html">
-            <button class="primary-btn">Give Feedback</button>
-        </a>
-    </section>
-
-</main>
-
-<!-- Appointment Booking Modal -->
-<div id="bookingModal" class="booking-modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="booking-modal-content">
-        <button id="closeModalBtn" class="close-btn" aria-label="Close modal">&times;</button>
-        <h2 id="modalTitle">Book Appointment</h2>
-        <p id="modalSubtitle"></p>
-        
-        <div id="modalSuccess" class="success-message hidden">
-            <span class="success-text"></span>
-            <button type="button" id="closeSuccessBtn" class="primary-btn success-close-btn">Close</button>
         </div>
-        
-        <form id="bookingForm">
-            <div class="form-group">
-                <label for="patientName">Patient Name</label>
-                <input type="text" id="patientName" placeholder="Enter patient name" required>
-                <span id="nameError" class="error-message"></span>
+
+        <div class="footer-bottom">
+            <p>© 2026 MedConsult Dashboard • All Rights Reserved</p>
+        </div>
+    </footer>
+</div>
+
+<div id="authOverlay" class="auth-overlay" aria-hidden="true">
+    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+        <div class="auth-brand">
+            <img src="assets/logo.png" alt="MedConsult logo">
+            <div>
+                <h2 id="authTitle">MedConsult Access</h2>
+                <p id="authSubtitle">Sign in to continue</p>
             </div>
-            
-            <div class="form-group">
-                <label for="patientPhone">Phone Number</label>
-                <input type="tel" id="patientPhone" placeholder="Enter 10-digit phone number" maxlength="10" required>
-                <span id="phoneError" class="error-message"></span>
-            </div>
-            
-            <div class="form-group">
-                <label for="appointmentDate">Preferred Date</label>
-                <input type="date" id="appointmentDate" required>
-                <span id="dateError" class="error-message"></span>
-            </div>
-            
-            <div class="form-group">
-                <label for="appointmentTime">Preferred Time Slot</label>
-                <select id="appointmentTime" required>
-                    <option value="">Select a time slot</option>
-                    <option value="09:00 AM - 10:00 AM">09:00 AM - 10:00 AM</option>
-                    <option value="10:00 AM - 11:00 AM">10:00 AM - 11:00 AM</option>
-                    <option value="11:00 AM - 12:00 PM">11:00 AM - 12:00 PM</option>
-                    <option value="02:00 PM - 03:00 PM">02:00 PM - 03:00 PM</option>
-                    <option value="03:00 PM - 04:00 PM">03:00 PM - 04:00 PM</option>
-                </select>
-                <span id="timeError" class="error-message"></span>
-            </div>
-            
-            <div class="modal-footer">
-                <button type="submit" class="primary-btn">Confirm Booking</button>
-                <button type="button" id="cancelModalBtn" class="cancel-btn">Cancel</button>
-            </div>
-        </form>
+        </div>
+
+        <section class="auth-panel" data-auth-panel="login">
+            <form id="loginForm">
+                <div class="auth-field">
+                    <label for="loginEmail">Email</label>
+                    <input id="loginEmail" class="auth-input" type="email" autocomplete="email" required>
+                </div>
+                <div class="auth-field">
+                    <label for="loginPassword">Password</label>
+                    <input id="loginPassword" class="auth-input" type="password" autocomplete="current-password" required>
+                </div>
+                <div class="auth-row">
+                    <label class="auth-remember">
+                        <input id="rememberMe" type="checkbox">
+                        Remember Me
+                    </label>
+                </div>
+                <p id="loginError" class="auth-error"></p>
+                <button type="submit" class="auth-submit">Login</button>
+                <div class="auth-footer">
+                    <span>Don't have an account?</span>
+                    <button type="button" data-auth-switch="signup">Sign Up</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="auth-panel is-hidden" data-auth-panel="signup">
+            <form id="signupForm">
+                <div class="auth-field">
+                    <label for="signupName">Full Name</label>
+                    <input id="signupName" class="auth-input" type="text" autocomplete="name" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupEmail">Email</label>
+                    <input id="signupEmail" class="auth-input" type="email" autocomplete="email" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupPassword">Password</label>
+                    <input id="signupPassword" class="auth-input" type="password" autocomplete="new-password" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupConfirm">Confirm Password</label>
+                    <input id="signupConfirm" class="auth-input" type="password" autocomplete="new-password" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupRole">Role</label>
+                    <select id="signupRole" class="auth-select" required>
+                        <option value="">Select role</option>
+                        <option value="patient">Patient</option>
+                        <option value="doctor">Doctor</option>
+                    </select>
+                </div>
+                <p id="signupError" class="auth-error"></p>
+                <button type="submit" class="auth-submit">Create Account</button>
+                <div class="auth-footer">
+                    <span>Already have an account?</span>
+                    <button type="button" data-auth-switch="login">Login</button>
+                </div>
+                <p class="auth-note">
+                    Demo only: passwords are encoded for storage. Real apps require server-side hashing (e.g., bcrypt).
+                </p>
+            </form>
+        </section>
     </div>
 </div>
 
-<script src="/public/Medical_App/script.js"></script>
+<div id="toast-container" class="toast-container"></div>
+
+
+<section class="faq-section card">
+    <div class="faq-header">
+        <h2>Frequently Asked Questions</h2>
+        <p>Got questions about your care? Find quick answers regarding our medical network and data protocols below.</p>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+            <span>How long does it take to get matched with a specialized physician?</span>
+            <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+            <div class="faq-answer-content">
+                <p>Urgent consultation requests are typically reviewed by our triage team within 15 minutes. For non-emergency specialized care, assignments are completed within 2 to 4 hours based on physician availability and clinical priority.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+            <span>Are the home remedies and wellness articles peer-reviewed?</span>
+            <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+            <div class="faq-answer-content">
+                <p>Yes. All supportive home care remedies, dietary suggestions, and wellness resources are curated and rigorously peer-reviewed by our Board of Medical Advisors. However, these materials are strictly informational and should never supersede direct instructions from your primary care provider.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+            <span>How is my health data protected under privacy regulations?</span>
+            <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+            <div class="faq-answer-content">
+                <p>Your privacy is our core priority. The MedConsult platform architecture is fully HIPAA and GDPR compliant. Your protected health information (PHI) is encrypted both in transit and at rest using AES-256 bit encryption, and access is restricted solely to your authorized healthcare team.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="assets/js/session.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/roleManager.js"></script>
+<script src="js/script.js"></script>
+<script src="js/darkmode.js"></script>
+<script src="js/toast.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/emergency.js"></script>
+<script src="js/appointments.js"></script>
+<script src="js/reschedule.js"></script>
+
+<footer class="footer">
+    <div class="footer-container">
+
+        <!-- About -->
+        <div class="footer-section footer-brand">
+    <div class="brand-row">
+        <img src="assets/logo.png" alt="MedConsult Logo" class="footer-logo">
+        <h3>MedConsult</h3>
+    </div>
+    <p>
+        Connecting patients with qualified doctors and specialists for faster, smarter healthcare support.
+    </p>
+</div>
+
+        <!-- Quick Links -->
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="remedies.html">Home Remedies</a></li>
+                <li><a href="feedback.html">Feedback</a></li>
+            </ul>
+        </div>
+
+        <!-- Emergency -->
+        <div class="footer-section">
+            <h3>Emergency Help</h3>
+            <ul>
+                <li><a href="tel:108">🚑 Ambulance (108)</a></li>
+                <li><a href="#">🏥 Nearby Hospitals</a></li>
+                <li><a href="#">🧑‍⚕️ Emergency Doctor</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 MedConsult Dashboard • All Rights Reserved</p>
+    </div>
+</footer>
+
 
 </body>
 </html>
