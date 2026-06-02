@@ -180,7 +180,7 @@ a:hover {
     position: sticky;
     top: 1rem;
     margin: 0 auto;
-    width: calc(100% - 2rem);
+    width: calc(75% - 2rem);
     max-width: 1200px;
     display: flex;
     justify-content: space-between;
@@ -198,11 +198,13 @@ a:hover {
     font-weight: 700;
     color: var(--primary);
     cursor: pointer;
+    
 }
 
 .nav-brand i {
     font-size: 1.8rem;
     background: linear-gradient(135deg, var(--primary), var(--accent));
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -544,6 +546,7 @@ a:hover {
     font-size: 1.25rem;
     margin-bottom: 0.75rem;
     display: -webkit-box;
+    line-clamp: 2;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
