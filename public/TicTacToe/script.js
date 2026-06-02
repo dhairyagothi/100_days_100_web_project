@@ -1,647 +1,573 @@
-const board = document.getElementById("board");
+(function () {
+  'use strict';
 
-const statusText = document.getElementById("statusText");
-const turnChip = document.getElementById("turnChip");
+  var WIN_LINES = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
 
-const scoreX = document.getElementById("scoreX");
-const scoreO = document.getElementById("scoreO");
-const scoreD = document.getElementById("scoreD");
+  var CELL_LABELS = [
+    'top-left',
+    'top-middle',
+    'top-right',
+    'middle-left',
+    'center',
+    'middle-right',
+    'bottom-left',
+    'bottom-middle',
+    'bottom-right',
+  ];
 
-const newRoundBtn = document.getElementById("newRoundBtn");
-const resetAllBtn = document.getElementById("resetAllBtn");
+  var board = Array(9).fill(null);
+  var currentPlayer = 'X';
+  var gameOver = false;
+  var sessionStarted = false;
+  var scores = { X: 0, O: 0, D: 0 };
+  var moveLog = [];
+  var stateStack = [];
+  var roundStartedAt = null;
+  var elapsedTimer = null;
+  var botTimer = null;
+  var lastMovePlayer = null;
 
-const winnerModal = document.getElementById("winnerModal");
-const winnerTitle = document.getElementById("winnerTitle");
-const winnerSubtitle = document.getElementById("winnerSubtitle");
+  var boardEl = document.getElementById('board');
+  var gameEl = document.getElementById('game');
+  var statusEl = document.getElementById('statusText');
+  var turnChip = document.getElementById('turnChip');
+  var timerChip = document.getElementById('turnTimer');
+  var scoreX = document.getElementById('scoreX');
+  var scoreO = document.getElementById('scoreO');
+  var scoreD = document.getElementById('scoreD');
+  var historyList = document.getElementById('historyList');
+  var overlay = document.getElementById('winnerModal');
+  var winText = document.getElementById('winnerTitle');
+  var winSub = document.getElementById('winnerSubtitle');
+  var startModal = document.getElementById('startModal');
+  var startBtn = document.getElementById('startGameBtn');
+  var modeSelect = document.getElementById('modeSelect');
+  var themeSelect = document.getElementById('themeSelect');
+  var hintBtn = document.getElementById('hintBtn');
+  var undoBtn = document.getElementById('undoBtn');
+  var newRoundBtn = document.getElementById('newRoundBtn');
+  var resetAllBtn = document.getElementById('resetAllBtn');
+  var nextRoundBtn = document.getElementById('winnerNext');
+  var closeBtn = document.getElementById('winnerClose');
 
-const winnerNext = document.getElementById("winnerNext");
-const winnerClose = document.getElementById("winnerClose");
+  var gameMode = modeSelect.value;
+  var botMark = 'O';
+  var humanMark = 'X';
 
-const modeSelect = document.getElementById("modeSelect");
-const themeSelect = document.getElementById("themeSelect");
+  function cloneBoard(value) {
+    return value.slice();
+  }
 
-const hintBtn = document.getElementById("hintBtn");
-const undoBtn = document.getElementById("undoBtn");
+  function cloneLog(value) {
+    return value.map(function (entry) {
+      return { player: entry.player, index: entry.index };
+    });
+  }
 
-const historyList = document.getElementById("historyList");
+  function saveState() {
+    stateStack.push({
+      board: cloneBoard(board),
+      currentPlayer: currentPlayer,
+      gameOver: gameOver,
+      moveLog: cloneLog(moveLog),
+      lastMovePlayer: lastMovePlayer,
+      sessionStarted: sessionStarted,
+    });
+  }
 
-let gameBoard = Array(9).fill("");
-let currentPlayer = "X";
-let gameOver = false;
+  function clearPendingBotMove() {
+    if (botTimer) {
+      clearTimeout(botTimer);
+      botTimer = null;
+    }
+    boardEl.classList.remove('thinking');
+  }
 
-let moveHistory = [];
+  function startTimer() {
+    roundStartedAt = Date.now();
+    updateTimer();
+    if (elapsedTimer) clearInterval(elapsedTimer);
+    elapsedTimer = setInterval(updateTimer, 1000);
+  }
 
-let scores = {
-X: 0,
-O: 0,
-D: 0
-};
+  function stopTimer() {
+    if (elapsedTimer) {
+      clearInterval(elapsedTimer);
+      elapsedTimer = null;
+    }
+  }
 
-const WIN_LINES = [
-[0,1,2],
-[3,4,5],
-[6,7,8],
-[0,3,6],
-[1,4,7],
-[2,5,8],
-[0,4,8],
-[2,4,6]
-];
+  function updateTimer() {
+    var elapsed = roundStartedAt ? Math.floor((Date.now() - roundStartedAt) / 1000) : 0;
+    timerChip.textContent = 'Time: ' + elapsed + 's';
+  }
 
-function renderBoard() {
+  function applyTheme() {
+    document.body.setAttribute('data-theme', themeSelect.value);
+  }
 
+  function setMode() {
+    gameMode = modeSelect.value;
+    botMark = 'O';
+    humanMark = 'X';
+  }
 
-board.innerHTML = "";
+  function isBotTurn() {
+    return gameMode !== 'pvp' && currentPlayer === botMark;
+  }
 
-gameBoard.forEach((value,index) => {
+  function winnerLabel(mark) {
+    return gameMode !== 'pvp' && mark === botMark ? 'Bot' : 'Player ' + mark;
+  }
 
-    const cell = document.createElement("button");
+  function updateScores() {
+    scoreX.textContent = scores.X;
+    scoreO.textContent = scores.O;
+    scoreD.textContent = scores.D;
+  }
 
-    cell.className = "cell";
-
-    if(value === "X") {
-        cell.classList.add("mark-x");
+  function updateStatus() {
+    if (!sessionStarted) {
+      statusEl.textContent = 'Ready to play';
+      turnChip.textContent = 'Turn: X';
+      return;
     }
 
-    if(value === "O") {
-        cell.classList.add("mark-o");
+    if (gameOver) {
+      statusEl.textContent = 'Round complete';
+      return;
     }
 
-    cell.textContent = value;
-
-    cell.addEventListener("click", () => {
-        handleMove(index);
-    });
-
-    board.appendChild(cell);
-});
-
-
-}
-
-function handleMove(index){
-
-
-if(gameOver) return;
-
-if(gameBoard[index] !== "") return;
-
-gameBoard[index] = currentPlayer;
-
-moveHistory.push({
-    player: currentPlayer,
-    cell: index + 1
-});
-
-updateHistory();
-
-const winLine = getWinner();
-
-if(winLine){
-
-    highlightWin(winLine);
-
-    scores[currentPlayer]++;
-
-    updateScores();
-
-    gameOver = true;
-
-    showWinner(currentPlayer);
-
-    return;
-}
-
-if(gameBoard.every(cell => cell !== "")){
-
-    scores.D++;
-
-    updateScores();
-
-    gameOver = true;
-
-    showDraw();
-
-    return;
-}
-
-currentPlayer =
-    currentPlayer === "X" ? "O" : "X";
-
-updateStatus();
-
-renderBoard();
-
-const mode = modeSelect.value;
-
-if(
-    mode !== "pvp" &&
-    currentPlayer === "O" &&
-    !gameOver
-){
-    setTimeout(cpuMove,400);
-}
-
-
-}
-
-function cpuMove() {
-
-    if (gameOver) return;
-
-    const available = [];
-
-    gameBoard.forEach((cell, index) => {
-        if (cell === "") {
-            available.push(index);
-        }
-    });
-
-    if (!available.length) return;
-
-    let move;
-
-    const mode = modeSelect.value;
-
-if (mode === "cpu-easy") {
-
-    move = available[
-        Math.floor(Math.random() * available.length)
-    ];
-
-} else if (mode === "cpu-medium") {
-
-    if (Math.random() < 0.7) {
-
-        move = getBestMove();
-
+    if (isBotTurn()) {
+      statusEl.textContent = 'Bot is thinking';
+      turnChip.textContent = 'Turn: Bot';
     } else {
-
-        move = available[
-            Math.floor(Math.random() * available.length)
-        ];
+      statusEl.textContent = 'Player ' + currentPlayer + "'s turn";
+      turnChip.textContent = 'Turn: ' + currentPlayer;
     }
+  }
 
-} else {
-
-    move = getBestMoveMinimax();
-
-    if (move === undefined) {
-        move = getBestMove();
-    }
-}
-
-gameBoard[move] = "O";
-
-    moveHistory.push({
-        player: "O",
-        cell: move + 1
+  function updateHistory() {
+    historyList.innerHTML = '';
+    moveLog.slice(-10).forEach(function (entry, index) {
+      var item = document.createElement('li');
+      item.textContent =
+        moveLog.length -
+        Math.min(10, moveLog.length) +
+        index +
+        1 +
+        '. ' +
+        entry.player +
+        ' on ' +
+        CELL_LABELS[entry.index];
+      historyList.appendChild(item);
     });
-
-    updateHistory();
-
-    const winLine = getWinner();
-
-    if (winLine) {
-
-        highlightWin(winLine);
-
-        scores.O++;
-
-        updateScores();
-
-        gameOver = true;
-
-        showWinner("O");
-
-        return;
-    }
-
-    if (gameBoard.every(cell => cell !== "")) {
-
-        scores.D++;
-
-        updateScores();
-
-        gameOver = true;
-
-        showDraw();
-
-        return;
-    }
-
-    currentPlayer = "X";
-
-    updateStatus();
-
-    renderBoard();
-}
-
-function getBestMove(){
-
-
-for(const line of WIN_LINES){
-
-    const [a,b,c] = line;
-
-    const cells = [
-        gameBoard[a],
-        gameBoard[b],
-        gameBoard[c]
-    ];
-
-    if(
-        cells.filter(v => v === "O").length === 2 &&
-        cells.includes("")
-    ){
-        return line[
-            cells.indexOf("")
-        ];
-    }
-}
-
-for(const line of WIN_LINES){
-
-    const [a,b,c] = line;
-
-    const cells = [
-        gameBoard[a],
-        gameBoard[b],
-        gameBoard[c]
-    ];
-
-    if(
-        cells.filter(v => v === "X").length === 2 &&
-        cells.includes("")
-    ){
-        return line[
-            cells.indexOf("")
-        ];
-    }
-}
-
-if(gameBoard[4] === ""){
-    return 4;
-}
-
-const free = [];
-
-gameBoard.forEach((cell,index)=>{
-    if(cell === "") {
-        free.push(index);
-    }
-});
-
-return free[
-    Math.floor(Math.random()*free.length)
-];
-
-
-}
-
-function getBestMoveMinimax() {
-
-    let bestScore = -Infinity;
-    let bestMove = 0;
-
-    for (let i = 0; i < 9; i++) {
-
-        if (gameBoard[i] === "") {
-
-            gameBoard[i] = "O";
-
-            let score = minimax(gameBoard, 0, false);
-
-            gameBoard[i] = "";
-
-            if (score > bestScore) {
-
-                bestScore = score;
-
-                bestMove = i;
-            }
-        }
-    }
-
-    return bestMove;
-}
-
-function minimax(boardState, depth, isMaximizing) {
-
-    const winner = evaluateBoard(boardState);
-
-    if (winner !== null) {
-
-        if (winner === "O") return 10 - depth;
-        if (winner === "X") return depth - 10;
-
-        return 0;
-    }
-
-    if (isMaximizing) {
-
-        let bestScore = -Infinity;
-
-        for (let i = 0; i < 9; i++) {
-
-            if (boardState[i] === "") {
-
-                boardState[i] = "O";
-
-                let score =
-                    minimax(boardState, depth + 1, false);
-
-                boardState[i] = "";
-
-                bestScore = Math.max(score, bestScore);
-            }
-        }
-
-        return bestScore;
-
-    } else {
-
-        let bestScore = Infinity;
-
-        for (let i = 0; i < 9; i++) {
-
-            if (boardState[i] === "") {
-
-                boardState[i] = "X";
-
-                let score =
-                    minimax(boardState, depth + 1, true);
-
-                boardState[i] = "";
-
-                bestScore = Math.min(score, bestScore);
-            }
-        }
-
-        return bestScore;
-    }
-}
-
-function evaluateBoard(boardState) {
-
-    for (const line of WIN_LINES) {
-
-        const [a, b, c] = line;
-
-        if (
-            boardState[a] &&
-            boardState[a] === boardState[b] &&
-            boardState[a] === boardState[c]
-        ) {
-            return boardState[a];
-        }
-    }
-
-    if (boardState.every(cell => cell !== "")) {
-        return "draw";
+  }
+
+  function renderBoard() {
+    boardEl.innerHTML = '';
+
+    board.forEach(function (value, index) {
+      var cell = document.createElement('button');
+      cell.type = 'button';
+      cell.className = 'cell';
+
+      if (value) {
+        cell.classList.add('taken', value === 'X' ? 'x-mark' : 'o-mark');
+        cell.textContent = value;
+        cell.disabled = true;
+      } else {
+        cell.setAttribute('aria-label', 'Empty cell, ' + CELL_LABELS[index]);
+      }
+
+      cell.addEventListener('click', function () {
+        handleCellClick(index);
+      });
+
+      boardEl.appendChild(cell);
+    });
+  }
+
+  function checkWinner(valueBoard) {
+    var lines = WIN_LINES;
+    var selectedBoard = valueBoard || board;
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      var a = selectedBoard[line[0]];
+      var b = selectedBoard[line[1]];
+      var c = selectedBoard[line[2]];
+
+      if (a && a === b && a === c) {
+        return { mark: a, line: line };
+      }
     }
 
     return null;
-}
-
-function getWinner(){
-
-
-for(const line of WIN_LINES){
-
-    const [a,b,c] = line;
-
-    if(
-        gameBoard[a] &&
-        gameBoard[a] === gameBoard[b] &&
-        gameBoard[a] === gameBoard[c]
-    ){
-        return line;
-    }
-}
-
-return null;
-
-
-}
-
-function highlightWin(line){
-
-
-renderBoard();
-
-line.forEach(index => {
-
-    board.children[index]
-        .classList.add("win-cell");
-});
-
-
-}
-
-function updateStatus(){
-
-
-statusText.textContent =
-    currentPlayer + "'s Turn";
-
-turnChip.textContent =
-    "Turn: " + currentPlayer;
-
-
-}
-
-function updateScores(){
-
-scoreX.textContent = scores.X;
-scoreO.textContent = scores.O;
-scoreD.textContent = scores.D;
-
-}
-
-function updateHistory(){
-
-
-historyList.innerHTML = "";
-
-moveHistory.slice(-10).forEach(move => {
-
-    const li =
-        document.createElement("li");
-
-    li.textContent =
-        move.player +
-        " → Cell " +
-        move.cell;
-
-    historyList.appendChild(li);
-});
-
-
-}
-
-function showWinner(player){
-
-
-winnerTitle.textContent =
-    "Player " + player + " Wins!";
-
-winnerSubtitle.textContent =
-    "Ready for the next round?";
-
-winnerModal.classList.add("show");
-
-
-}
-
-function showDraw(){
-
-
-winnerTitle.textContent =
-    "Draw!";
-
-winnerSubtitle.textContent =
-    "Nobody wins this round.";
-
-winnerModal.classList.add("show");
-
-
-}
-
-function newRound(){
-
-
-gameBoard = Array(9).fill("");
-
-currentPlayer = "X";
-
-gameOver = false;
-
-moveHistory = [];
-
-updateHistory();
-
-updateStatus();
-
-winnerModal.classList.remove("show");
-
-renderBoard();
-
-
-}
-
-function resetScores(){
-
-
-scores = {
-    X:0,
-    O:0,
-    D:0
-};
-
-updateScores();
-
-newRound();
-
-
-}
-
-function undoMove(){
-
-    if(!moveHistory.length) return;
-
-    const mode = modeSelect.value;
-
-    if(mode !== "pvp" && moveHistory.length >= 2){
-
-        const cpuMove = moveHistory.pop();
-        gameBoard[cpuMove.cell - 1] = "";
-
-        const playerMove = moveHistory.pop();
-        gameBoard[playerMove.cell - 1] = "";
-
-        currentPlayer = "X";
-
+  }
+
+  function highlightWin(line) {
+    var cells = boardEl.querySelectorAll('.cell');
+    line.forEach(function (index) {
+      if (cells[index]) {
+        cells[index].classList.add('win-cell');
+      }
+    });
+  }
+
+  function showResult(mark) {
+    overlay.classList.add('show');
+    overlay.setAttribute('aria-hidden', 'false');
+    winText.textContent = winnerLabel(mark) + ' wins!';
+    winSub.textContent = 'Great moves. Ready for the next round?';
+  }
+
+  function showDrawResult() {
+    overlay.classList.add('show');
+    overlay.setAttribute('aria-hidden', 'false');
+    winText.textContent = "It's a draw!";
+    winSub.textContent = 'Nobody wins this round.';
+  }
+
+  function hideResultModal() {
+    overlay.classList.remove('show');
+    overlay.setAttribute('aria-hidden', 'true');
+  }
+
+  function endRound(result) {
+    gameOver = true;
+    stopTimer();
+    clearPendingBotMove();
+    renderBoard();
+
+    if (result.mark) {
+      scores[result.mark] += 1;
+      updateScores();
+      highlightWin(result.line);
+      setTimeout(function () {
+        showResult(result.mark);
+      }, 200);
     } else {
-
-        const last = moveHistory.pop();
-
-        gameBoard[last.cell - 1] = "";
-
-        currentPlayer = last.player;
+      scores.D += 1;
+      updateScores();
+      setTimeout(function () {
+        showDrawResult();
+      }, 200);
     }
-
-    gameOver = false;
-
-    updateHistory();
 
     updateStatus();
+  }
 
+  function pushMove(player, index) {
+    saveState();
+    board[index] = player;
+    moveLog.push({ player: player, index: index });
+    lastMovePlayer = player;
     renderBoard();
-}
+    updateHistory();
 
-function showHint(){
+    var result = checkWinner(board);
+    if (result) {
+      endRound(result);
+      return;
+    }
 
+    if (
+      board.every(function (cell) {
+        return cell !== null;
+      })
+    ) {
+      endRound({ mark: null, line: null });
+      return;
+    }
 
-const move = getBestMoveMinimax();
+    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+    updateStatus();
 
-renderBoard();
+    if (isBotTurn()) {
+      scheduleBotMove();
+    }
+  }
 
-if(board.children[move]){
+  function handleCellClick(index) {
+    if (!sessionStarted || gameOver || board[index]) return;
+    if (isBotTurn()) return;
+    pushMove(currentPlayer, index);
+  }
 
-    board.children[move]
-        .classList.add("hint-cell");
-}
+  function availableMoves(valueBoard) {
+    var selectedBoard = valueBoard || board;
+    var moves = [];
 
+    selectedBoard.forEach(function (cell, index) {
+      if (!cell) moves.push(index);
+    });
 
-}
+    return moves;
+  }
 
-themeSelect.addEventListener(
-"change",
-function(){
+  function bestMoveFor(mark, valueBoard) {
+    var selectedBoard = valueBoard ? cloneBoard(valueBoard) : cloneBoard(board);
+    var opponent = mark === 'X' ? 'O' : 'X';
+    var bestScore = mark === 'O' ? -Infinity : Infinity;
+    var move = -1;
 
+    availableMoves(selectedBoard).forEach(function (index) {
+      selectedBoard[index] = mark;
+      var score = minimax(selectedBoard, 0, false, mark, opponent);
+      selectedBoard[index] = null;
 
-    document.body.setAttribute(
-        "data-theme",
-        this.value
-    );
-}
+      // sourcery skip: merge-else-if
+      if (mark === 'O') {
+        if (score > bestScore) {
+          bestScore = score;
+          move = index;
+        }
+      } else {
+        if (score < bestScore) {
+          bestScore = score;
+          move = index;
+        }
+      }
+    });
 
+    return move;
+  }
 
-);
+  function minimax(valueBoard, depth, isBotMaximizing, botPlayer, humanPlayer) {
+    var result = checkWinner(valueBoard);
+    if (result) {
+      if (result.mark === botPlayer) return 10 - depth;
+      if (result.mark === humanPlayer) return depth - 10;
+    }
 
-newRoundBtn.addEventListener(
-"click",
-newRound
-);
+    if (
+      valueBoard.every(function (cell) {
+        return cell !== null;
+      })
+    ) {
+      return 0;
+    }
 
-resetAllBtn.addEventListener(
-"click",
-resetScores
-);
+    if (isBotMaximizing) {
+      var best = -Infinity;
+      availableMoves(valueBoard).forEach(function (index) {
+        valueBoard[index] = botPlayer;
+        best = Math.max(best, minimax(valueBoard, depth + 1, false, botPlayer, humanPlayer));
+        valueBoard[index] = null;
+      });
+      return best;
+    }
 
-undoBtn.addEventListener(
-"click",
-undoMove
-);
+    var worst = Infinity;
+    availableMoves(valueBoard).forEach(function (index) {
+      valueBoard[index] = humanPlayer;
+      worst = Math.min(worst, minimax(valueBoard, depth + 1, true, botPlayer, humanPlayer));
+      valueBoard[index] = null;
+    });
+    return worst;
+  }
 
-hintBtn.addEventListener(
-"click",
-showHint
-);
+  function openMovesFor(mark) {
+    var moves = availableMoves();
+    if (!moves.length) return -1;
 
-winnerNext.addEventListener(
-"click",
-newRound
-);
+    var winningMove = -1;
+    for (var i = 0; i < moves.length; i++) {
+      var index = moves[i];
+      board[index] = mark;
+      if (checkWinner(board)) {
+        winningMove = index;
+        board[index] = null;
+        break;
+      }
+      board[index] = null;
+    }
+    return winningMove;
+  }
 
-winnerClose.addEventListener(
-"click",
-()=>{
-winnerModal.classList.remove("show");
-}
-);
+  function chooseBotMove() {
+    var empty = availableMoves();
+    if (!empty.length) return -1;
 
-updateStatus();
-updateScores();
-renderBoard();
+    var mode = gameMode;
+    var move;
+
+    if (mode === 'cpu-easy') {
+      move = empty[Math.floor(Math.random() * empty.length)];
+    } else if (mode === 'cpu-medium') {
+      move = openMovesFor(botMark);
+      if (move === -1) {
+        move = openMovesFor(humanMark);
+      }
+      if (move === -1 || Math.random() < 0.35) {
+        move = empty[Math.floor(Math.random() * empty.length)];
+      }
+    } else {
+      move = openMovesFor(botMark);
+      if (move === -1) {
+        move = openMovesFor(humanMark);
+      }
+      if (move === -1) {
+        move = bestMoveFor(botMark);
+      }
+    }
+
+    return move;
+  }
+
+  function scheduleBotMove() {
+    clearPendingBotMove();
+    if (!sessionStarted || gameOver || !isBotTurn()) return;
+
+    boardEl.classList.add('thinking');
+    botTimer = setTimeout(function () {
+      boardEl.classList.remove('thinking');
+      botTimer = null;
+      if (!gameOver && isBotTurn()) {
+        var move = chooseBotMove();
+        if (move !== -1) {
+          pushMove(botMark, move);
+        }
+      }
+    }, 420);
+  }
+
+  function beginRound() {
+    clearPendingBotMove();
+    board = Array(9).fill(null);
+    currentPlayer = 'X';
+    gameOver = false;
+    moveLog = [];
+    stateStack = [];
+    lastMovePlayer = null;
+    roundStartedAt = Date.now();
+    sessionStarted = true;
+
+    hideResultModal();
+    renderBoard();
+    updateHistory();
+    updateStatus();
+    startTimer();
+
+    if (isBotTurn()) {
+      scheduleBotMove();
+    }
+  }
+
+  function undoMove() {
+    clearPendingBotMove();
+
+    var steps = gameMode !== 'pvp' && lastMovePlayer === botMark && stateStack.length >= 2 ? 2 : 1;
+    if (!stateStack.length) return;
+
+    while (steps > 0 && stateStack.length) {
+      var snapshot = stateStack.pop();
+      board = cloneBoard(snapshot.board);
+      currentPlayer = snapshot.currentPlayer;
+      gameOver = snapshot.gameOver;
+      moveLog = cloneLog(snapshot.moveLog);
+      lastMovePlayer = snapshot.lastMovePlayer;
+      sessionStarted = snapshot.sessionStarted;
+      steps -= 1;
+    }
+
+    hideResultModal();
+    renderBoard();
+    updateHistory();
+    updateStatus();
+
+    if (!gameOver) {
+      startTimer();
+      if (isBotTurn()) {
+        scheduleBotMove();
+      }
+    }
+  }
+
+  function resetScores() {
+    scores = { X: 0, O: 0, D: 0 };
+    updateScores();
+    beginRound();
+  }
+
+  function showHint() {
+    if (!sessionStarted || gameOver) return;
+
+    var cells = boardEl.querySelectorAll('.cell');
+    cells.forEach(function (cell) {
+      cell.classList.remove('hint-cell');
+    });
+
+    var hintIndex = gameMode === 'pvp' ? bestMoveFor(currentPlayer) : chooseBotMove();
+    if (hintIndex < 0) return;
+
+    cells[hintIndex].classList.add('hint-cell');
+    window.setTimeout(function () {
+      if (cells[hintIndex]) {
+        cells[hintIndex].classList.remove('hint-cell');
+      }
+    }, 1200);
+  }
+
+  function bindEvents() {
+    startBtn.addEventListener('click', function () {
+      startModal.classList.remove('show');
+      startModal.setAttribute('aria-hidden', 'true');
+      beginRound();
+    });
+
+    modeSelect.addEventListener('change', function () {
+      setMode();
+      if (sessionStarted && !gameOver) {
+        updateStatus();
+        if (isBotTurn()) {
+          scheduleBotMove();
+        } else {
+          clearPendingBotMove();
+          boardEl.classList.remove('thinking');
+        }
+      }
+    });
+
+    themeSelect.addEventListener('change', applyTheme);
+
+    hintBtn.addEventListener('click', showHint);
+    undoBtn.addEventListener('click', undoMove);
+    newRoundBtn.addEventListener('click', beginRound);
+    resetAllBtn.addEventListener('click', resetScores);
+    nextRoundBtn.addEventListener('click', function () {
+      hideResultModal();
+      beginRound();
+    });
+    closeBtn.addEventListener('click', function () {
+      hideResultModal();
+    });
+
+    window.addEventListener('resize', function () {
+      updateTimer();
+    });
+  }
+
+  function init() {
+    applyTheme();
+    setMode();
+    updateScores();
+    renderBoard();
+    updateHistory();
+    updateStatus();
+    updateTimer();
+    bindEvents();
+  }
+
+  init();
+})();

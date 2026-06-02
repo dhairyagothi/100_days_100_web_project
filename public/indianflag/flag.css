@@ -38,11 +38,16 @@ body {
 .background-video::after {
   content: "";
   position: absolute;
+<<<<<<< HEAD
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+=======
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.22);
+>>>>>>> upstream/Main
 }
 
 /* ================= MAIN LAYOUT ================= */
@@ -51,19 +56,32 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+<<<<<<< HEAD
+  min-height: 100dvh;
+  padding: 40px;
+  gap: 60px;
+=======
   padding: 40px 60px;
   gap: 90px;
+>>>>>>> upstream/Main
   box-sizing: border-box;
+  flex-wrap: wrap;
 }
 
 .flag-assembly {
   position: relative;
+<<<<<<< HEAD
+  width: min(480px, 100%);
+  height: 480px;
+  display: block;
+=======
   width: 500px;
   height: 500px;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   margin-top: 10px;
+>>>>>>> upstream/Main
 }
 
 /* ================= FLAG POLE ================= */
@@ -78,6 +96,8 @@ body {
   z-index: 2;
 }
 
+<<<<<<< HEAD
+=======
 .bar::before {
   content: "";
   position: absolute;
@@ -95,6 +115,7 @@ body {
   pointer-events: none;
 }
 
+>>>>>>> upstream/Main
 .bar div {
   background: linear-gradient(to right, #111, #333, #111);
   height: 20px;
@@ -134,7 +155,12 @@ body {
   box-shadow: 0 10px 25px rgba(0,0,0,0.35),
               0 0 18px rgba(255, 255, 255, 0.08);
   transform-origin: left center;
+<<<<<<< HEAD
+  animation: wave 3.5s infinite ease-in-out;
+  will-change: transform;
+=======
   animation: wave 2.8s infinite ease-in-out;
+>>>>>>> upstream/Main
   z-index: 1;
 }
 
@@ -158,6 +184,8 @@ body {
   100% {
     transform: perspective(1000px) rotateY(0deg);
   }
+<<<<<<< HEAD
+=======
 }
 
 .flag::before {
@@ -173,6 +201,7 @@ body {
     );
   mix-blend-mode: soft-light;
   pointer-events: none;
+>>>>>>> upstream/Main
 }
 
 .flag::after {
@@ -235,7 +264,13 @@ body {
     0 8px 20px rgba(0, 0, 0, 0.16),
     0 0 8px rgba(255, 255, 255, 0.05);
   text-align: center;
+<<<<<<< HEAD
+  width: min(400px, 100%);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(5px);
+=======
   width: min(400px, 90vw);
+>>>>>>> upstream/Main
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -248,7 +283,11 @@ body {
   height: 140px;
   border-radius: 50%;
   overflow: hidden;
+<<<<<<< HEAD
+  border: 3px solid #ff671f;
+=======
   border: 3px solid #ff7f43;
+>>>>>>> upstream/Main
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   background: #eee;
 }
@@ -275,8 +314,13 @@ body {
 }
 
 .author {
+<<<<<<< HEAD
+  font-size: 1.1em;
+  color: #046a38;
+=======
   font-size: 1.05em;
   color: #f8fdde;
+>>>>>>> upstream/Main
   font-weight: 600;
   text-shadow: 0 2px 6px rgba(0,0,0,0.2);
   animation: fadeSlide 0.7s ease;
@@ -292,23 +336,40 @@ transition: all 0.4s ease;
 }
 
 .quote-nav button {
+<<<<<<< HEAD
+  background-color: #ff671f;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+=======
   background-color: #092c5d;
   color: #fff;
   border: none;
   padding: 8px 16px;
+>>>>>>> upstream/Main
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
-  transition: background 0.2s;
+  transition:
+    background 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .quote-nav button:hover {
+<<<<<<< HEAD
+  background-color: #e05310;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+=======
   background-color: #13b69d;
   transform: translateY(-3px) scale(1.04);
   box-shadow:
     0 6px 16px rgba(0,0,0,0.22),
     0 0 10px rgba(255,103,31,0.22);
  }
+>>>>>>> upstream/Main
 
 .quote-nav button:active {
   transform: scale(0.96);
@@ -320,9 +381,15 @@ transition: all 0.4s ease;
   position: fixed;
   bottom: 20px;
   right: 20px;
+<<<<<<< HEAD
+  width: min(90vw, 320px);
+  background: rgba(255, 255, 255, 0.2);
+  padding: 10px;
+=======
   padding: 10px 14px;
   background: rgba(255,255,255,0.12);
   border: 1px solid rgba(255,255,255,0.16);
+>>>>>>> upstream/Main
   border-radius: 30px;
   overflow:hidden;
   backdrop-filter: blur(9px);
@@ -334,6 +401,29 @@ transition: all 0.4s ease;
 }
 
 .music-controls audio {
+<<<<<<< HEAD
+  width: 100%;
+}
+
+/* ================= BACK BUTTON ================= */
+
+.project-back-button {
+  position: fixed;
+  left: 18px;
+  top: 18px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  text-decoration: none;
+  z-index: 9999;
+  font-weight: 700;
+  font-family: Inter, system-ui, sans-serif;
+  color: #111;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.25s ease;
+}
+
+=======
   width: 280px;
   height: 50px;
   border-radius: 14px;
@@ -433,6 +523,7 @@ transition: all 0.4s ease;
   transition: all 0.25s ease;
 }
 
+>>>>>>> upstream/Main
 .project-back-button:hover {
   transform: translateY(-2px);
   background: white;

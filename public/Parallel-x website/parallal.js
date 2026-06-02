@@ -22,7 +22,97 @@ if (text1 && leaf && hill5 && hill1 && plant && hill4) {
             plant.style.marginTop = value * 0.5  + 'px';
         }
 
+<<<<<<< HEAD
+    text1.style.marginTop = v * 1.5 + 'px';
+
+    leaf.style.left = v * 2 + 'px';
+
+    hill1.style.top = v * 0.25 + 'px';
+
+    hill5.style.left = v * 1 + 'px';
+
+    hill4.style.left = v * -0.75 + 'px';
+
+    plant.style.marginTop = v * 0.5 + 'px';
+  }
+
+  // Mobile Fix
+  else {
+
+    text1.style.marginTop = v * 0.8 + 'px';
+
+    leaf.style.left = v * 0.5 + 'px';
+
+    hill1.style.top = v * 0.1 + 'px';
+
+    hill5.style.left = v * 0.3 + 'px';
+
+    hill4.style.left = v * -0.2 + 'px';
+
+    plant.style.marginTop = v * 0.1 + 'px';
+  }
+});
+
+<<<<<<< HEAD
+console.log(window.innerWidth)
+=======
+
+>>>>>>> upstream/Main
+// ── Scroll reveal ──
+const revealEls = document.querySelectorAll('.reveal');
+
+const observer = new IntersectionObserver(entries => {
+
+  entries.forEach((entry, i) => {
+
+    if (entry.isIntersecting) {
+
+      const siblings = [
+        ...entry.target.parentElement.querySelectorAll('.reveal')
+      ];
+
+      const idx = siblings.indexOf(entry.target);
+
+      setTimeout(() => {
+        entry.target.classList.add('visible');
+      }, idx * 100);
+
+      observer.unobserve(entry.target);
+    }
+  });
+
+}, { threshold: 0.15 });
+
+revealEls.forEach(el => observer.observe(el));
+
+
+// ── Animated stat counters ──
+function animateCount(el) {
+
+  const target = +el.dataset.target;
+
+  const duration = 1800;
+
+  const step = target / (duration / 16);
+
+  let current = 0;
+
+  const timer = setInterval(() => {
+
+    current += step;
+
+    if (current >= target) {
+
+      el.textContent = target;
+
+      clearInterval(timer);
+
+    } else {
+
+      el.textContent = Math.floor(current);
+=======
         ticking = false;
+>>>>>>> upstream/main
     }
 
     window.addEventListener('scroll', () => {

@@ -955,6 +955,12 @@
     const menuToggle = document.getElementById('menuToggle');
     const navButtons = document.getElementById('navButtons');
     if (menuToggle && navButtons) {
+<<<<<<< HEAD
+      menuToggle.addEventListener('click', () => {
+        const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
+        menuToggle.setAttribute('aria-expanded', String(!expanded));
+        navButtons.classList.toggle('active');
+=======
       menuToggle.dataset.mobileNavBound = 'true';
 
       const closeMenu = () => {
@@ -997,6 +1003,7 @@
         if (event.target.closest('a, button')) {
           closeMenu();
         }
+>>>>>>> upstream/Main
       });
     }
 
