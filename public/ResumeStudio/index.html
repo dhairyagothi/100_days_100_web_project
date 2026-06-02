@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Resume Studio</title>
+    <meta name="description" content="Resume Studio — Build professional, ATS-optimized resumes with live preview, multiple templates, and instant PDF download." />
+    <title>Resume Studio — ATS Resume Builder</title>
 
     <link rel="stylesheet" href="style.css"/>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
 <body>
 
 <div class="bg-glow"></div>
+
 <!-- Animated Background -->
 <div class="animated-bg">
     <span></span>
@@ -29,9 +29,10 @@
     <span></span>
     <span></span>
 </div>
+
 <div class="app">
 
-    <!-- SIDEBAR -->
+    <!-- ========== SIDEBAR ========== -->
 
     <aside class="sidebar">
 
@@ -46,20 +47,22 @@
         <div class="ats-card glass">
             <h3>ATS Score</h3>
 
-            <div class="score-circle">
-                <span id="atsScore">82%</span>
+            <div class="score-circle" data-level="low">
+                <span id="atsScoreValue">0</span>
             </div>
 
-            <p>Good Resume Structure</p>
+            <p>Resume Strength</p>
+
+            <ul id="atsSuggestionsList"></ul>
         </div>
 
         <button id="themeSwitcher" class="theme-btn">
-            🌙 Dark Mode
+            ☀️ Light Mode
         </button>
 
     </aside>
 
-    <!-- FORM SECTION -->
+    <!-- ========== FORM EDITOR ========== -->
 
     <section class="editor">
 
@@ -68,104 +71,139 @@
             <div class="top-bar">
                 <div>
                     <h1>Build Your Resume</h1>
-                    <p>Create a professional ATS-ready resume</p>
+                    <p>Create a professional, ATS-ready resume in minutes</p>
                 </div>
 
                 <div class="template-buttons">
-                    <button class="template active">Modern</button>
-                    <button class="template">Classic</button>
-                    <button class="template">Minimal</button>
+                    <button class="tpl-btn active" data-template="modern" id="tplModern">
+                        Modern
+                    </button>
+                    <button class="tpl-btn" data-template="classic" id="tplClassic">
+                        Classic
+                    </button>
+                    <button class="tpl-btn" data-template="minimal" id="tplMinimal">
+                        Minimal
+                    </button>
                 </div>
             </div>
 
             <form id="resumeForm">
 
-                <div class="form-row">
-
-                    <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" id="name" placeholder="John Doe">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" id="email" placeholder="john@example.com">
-                    </div>
-
-                </div>
+                <!-- Personal Info -->
+                <div class="section-divider"><span>Personal Info</span></div>
 
                 <div class="form-row">
-
                     <div class="form-group">
-                        <label>Phone Number</label>
-                        <input type="text" id="phone" placeholder="+91 9876543210">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="e.g. Alex Morgan">
                     </div>
-
                     <div class="form-group">
-                        <label>Education</label>
-                        <input type="text" id="education" placeholder="B.Tech in AI & DS">
+                        <label for="title">Professional Title</label>
+                        <input type="text" id="title" placeholder="e.g. Fullstack Developer">
                     </div>
+                </div>
 
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="e.g. alex@gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="text" id="phone" placeholder="e.g. +1 (512) 987-6543">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" placeholder="e.g. Austin, Texas">
+                    </div>
+                    <div class="form-group">
+                        <label for="website">Website</label>
+                        <input type="text" id="website" placeholder="e.g. https://alexmorgan.dev">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="linkedin">LinkedIn</label>
+                        <input type="text" id="linkedin" placeholder="e.g. linkedin.com/in/alexmorgan">
+                    </div>
+                    <div class="form-group">
+                        <label for="github">GitHub</label>
+                        <input type="text" id="github" placeholder="e.g. github.com/alexmorgan">
+                    </div>
+                </div>
+
+                <!-- Content Sections -->
+                <div class="section-divider"><span>Content</span></div>
+
+                <div class="form-group">
+                    <label for="summary">Professional Summary</label>
+                    <textarea id="summary" rows="3" placeholder="Write a compelling 2–3 sentence professional summary..."></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label>Professional Summary</label>
-
-                    <textarea
-                        id="summary"
-                        rows="5"
-                        placeholder="Write a short professional summary..."
-                    ></textarea>
+                    <label for="experience">Experience</label>
+                    <textarea id="experience" rows="5" placeholder="Use bullet points with '-' or '*' for each item, e.g.&#10;- Senior Developer at TechCorp (2022–Present)&#10;- Built React dashboards for 50K+ users"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label>Projects</label>
-
-                    <textarea
-                        id="projects"
-                        rows="5"
-                        placeholder="Describe your projects..."
-                    ></textarea>
+                    <label for="projects">Projects</label>
+                    <textarea id="projects" rows="4" placeholder="List notable projects, e.g.&#10;- Resume Studio — ATS resume builder with PDF export&#10;- CloudChat — Real-time messaging app"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label>Skills</label>
-
-                    <textarea
-                        id="skills"
-                        rows="4"
-                        placeholder="HTML, CSS, JavaScript, React..."
-                    ></textarea>
+                    <label for="education">Education</label>
+                    <textarea id="education" rows="3" placeholder="e.g. B.S. Computer Science — MIT (2020)&#10;- GPA: 3.8/4.0"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label>Experience</label>
-
-                    <textarea
-                        id="experience"
-                        rows="5"
-                        placeholder="Describe your work experience..."
-                    ></textarea>
+                    <label for="skills">Skills</label>
+                    <textarea id="skills" rows="2" placeholder="Comma-separated, e.g. React, Node.js, TypeScript, MongoDB, AWS"></textarea>
                 </div>
+
+                <!-- ATS Optimizer -->
+                <div class="section-divider"><span>ATS Optimizer</span></div>
+
+                <div class="form-group">
+                    <label for="targetRole">Target Role</label>
+                    <select id="targetRole">
+                        <option value="frontend">Frontend Developer</option>
+                        <option value="backend">Backend Developer</option>
+                        <option value="fullstack">Fullstack Developer</option>
+                        <option value="datascience">Data Scientist</option>
+                        <option value="pm">Product Manager</option>
+                        <option value="custom">Custom Keywords</option>
+                    </select>
+                </div>
+
+                <div id="customKeywordsGroup" style="display:none;">
+                    <div class="form-group">
+                        <label for="customKeywords">Custom Keywords</label>
+                        <textarea id="customKeywords" rows="2" placeholder="Enter comma-separated keywords, e.g. react, node, mongodb"></textarea>
+                    </div>
+                </div>
+
+                <div id="recommendedKeywordsList"></div>
+
+                <!-- Actions -->
+                <div class="section-divider"><span>Actions</span></div>
 
                 <div class="buttons">
-
-                    <button
-                        type="button"
-                        id="previewBtn"
-                        class="primary-btn"
-                    >
-                        Live Preview
+                    <button type="button" id="fillDemoBtn" class="primary-btn">
+                        ✨ Fill Demo
                     </button>
-
-                    <button
-                        type="button"
-                        id="downloadBtn"
-                        class="secondary-btn"
-                    >
-                        Download PDF
+                    <button type="button" id="clearFormBtn" class="secondary-btn">
+                        🗑️ Clear
                     </button>
-
+                    <button type="button" id="printBtn" class="secondary-btn">
+                        🖨️ Print
+                    </button>
+                    <button type="button" id="downloadBtn" class="primary-btn">
+                        📄 Download PDF
+                    </button>
                 </div>
 
             </form>
@@ -174,68 +212,48 @@
 
     </section>
 
-    <!-- PREVIEW -->
+    <!-- ========== LIVE PREVIEW ========== -->
 
     <section class="preview">
 
         <div class="preview-header">
-            <h2>Live Resume Preview</h2>
+            <h2>Live Preview</h2>
         </div>
 
-        <div id="resumePreview" class="resume-sheet">
+        <div id="resumePreview" class="resume-sheet template-modern">
 
-            <div class="resume-header">
-
-                <h1>John Doe</h1>
-
-                <p>
-                    john@example.com |
-                    +91 9876543210
-                </p>
-
+            <div class="resume-header modern-header">
+                <h1>Your Name</h1>
+                <p class="resume-title">Professional Title</p>
+                <div class="contact-row">
+                    <span class="contact-item">📧 email@example.com</span>
+                    <span class="contact-item">📱 +1 234 567 890</span>
+                </div>
             </div>
 
             <div class="resume-section">
-                <h3>Summary</h3>
-
-                <p>
-                    Passionate frontend developer with
-                    experience in building responsive and
-                    modern web applications.
-                </p>
-            </div>
-
-            <div class="resume-section">
-                <h3>Projects</h3>
-
-                <p>
-                    Resume Studio - Built a modern ATS
-                    resume builder with PDF export.
-                </p>
-            </div>
-
-            <div class="resume-section">
-                <h3>Skills</h3>
-
-                <p>
-                    HTML, CSS, JavaScript, React
-                </p>
+                <h3>Professional Summary</h3>
+                <p>Start typing in the form to see your resume come to life here...</p>
             </div>
 
             <div class="resume-section">
                 <h3>Experience</h3>
+                <p>Your work experience will appear here.</p>
+            </div>
 
-                <p>
-                    Frontend Developer Intern at XYZ Company
-                </p>
+            <div class="resume-section">
+                <h3>Projects</h3>
+                <p>Your projects will be listed here.</p>
             </div>
 
             <div class="resume-section">
                 <h3>Education</h3>
+                <p>Your education details will show here.</p>
+            </div>
 
-                <p>
-                    B.Tech in AI & Data Science
-                </p>
+            <div class="resume-section">
+                <h3>Skills</h3>
+                <p>Your skills will appear here.</p>
             </div>
 
         </div>
@@ -243,6 +261,11 @@
     </section>
 
 </div>
+
+<!-- Mobile Preview Toggle -->
+<button id="previewToggleBtn" class="preview-toggle-btn">
+    👁️ Preview Resume
+</button>
 
 <script src="script.js"></script>
 
