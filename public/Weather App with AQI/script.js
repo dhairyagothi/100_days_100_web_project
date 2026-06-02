@@ -1,7 +1,7 @@
 // ─── API Configuration ──────────────────────────────────────────────────────
 // Replace the placeholder below with your OpenWeatherMap API key.
 // Get a free key at: https://home.openweathermap.org/api_keys
-const API_KEY = "Your API Key";
+// const API_KEY = "Your API Key";
 
 // ─── State ──────────────────────────────────────────────────────────────────
 let lastAQI = null;
