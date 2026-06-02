@@ -239,7 +239,8 @@ const PROJECT_DATA = [
   ['Day 172', 'PlaceMate', './public/PlaceMate/index.html', ['tool', 'javascript', 'html', 'css'], 'advanced'],
   ['Day 173', 'AI-Resume-Analyzer', './public/AI-Resume-Analyzer/index.html', ['tool', 'javascript', 'html', 'css'], 'advanced'],
   ['Day 174', 'Unit Kitchen', './public/Unit-Kitchen/index.html', ['html', 'css', 'javascript','game'], 'intermediate'],
-   ['Day 175', 'Fruit Slice game', './public/fruitslice/index.html', ['html', 'css', 'javascript','game'], 'intermediate'],
+  ['Day 175', 'Fruit Slice game', './public/fruitslice/index.html', ['html', 'css', 'javascript','game'], 'intermediate'],
+  ['Day 176', 'Daily Water Intake Tracker', './public/Daily-Water-Intake-Tracker/index.html', ['tool', 'javascript', 'health'], 'intermediate'],
 
 ];
 const PROJECTS = PROJECT_DATA;
@@ -706,6 +707,9 @@ const PROJECT_DESCRIPTIONS = {
 
 "FocusRoom":
 "Productivity environment designed to support concentration and task completion. Combines timers and ambience.",
+
+"Daily Water Intake Tracker":
+"Track hydration goals and log water intake with a responsive dashboard, animated progress bar, and persistent daily storage.",
 
 "Hangman Game":
 "Advanced Hangman implementation using React and TypeScript architecture. Strengthens component-based thinking.",
