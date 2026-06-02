@@ -272,7 +272,7 @@ Best Practices
 - ${finalPractices.join('\n- ')}
 `;
 
-    outputCode.innerHTML = outputHTML.trim();
+    outputCode.textContent = outputHTML.trim();
 }
 
 // Copy to Clipboard
