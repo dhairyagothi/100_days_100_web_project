@@ -14,35 +14,31 @@
 /* =========================================
    Design tokens — Warm Clinical
    ========================================= */
+
+  /* =========================================
+   VARIABLES
+========================================= */
+
 :root {
-  --paper: #f5f2ec;
-  --surface: #faf8f4;
-  --card: #fffffe;
-  --ink: #1c1a17;
-  --ink-2: #6b6560;
-  --ink-3: #b0aa9f;
-  --rule: #dedad2;
-  --rule-strong: #c5bfb4;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
 
-  --blue: #2563b0;
-  --green: #2d7a3a;
-  --amber: #b45309;
-  --red1: #b91c1c;
-  --red2: #7f1d1d;
-  --red3: #450a0a;
+  --success: #16a34a;
+  --danger: #dc2626;
 
-  --blue-tint: #eff4fc;
-  --green-tint: #edf6ef;
-  --amber-tint: #fef3e2;
-  --red-tint: #fef2f2;
+  --bg: #f4f7fb;
+  --card-bg: #ffffff;
 
-  --f-mono: "DM Mono", "Courier New", monospace;
-  --f-serif: "Instrument Serif", Georgia, serif;
+  --text: #1f2937;
+  --text-light: #6b7280;
 
-  --r-sm: 4px;
-  --r-md: 6px;
-  --r-lg: 10px;
-}
+  --radius: 16px;
+
+  --shadow:
+    0 10px 25px rgba(0,0,0,0.08);
+
+  --transition: 0.3s ease;
+}}
 
 body.dark {
   --paper: #111008;
@@ -64,18 +60,25 @@ body.dark {
    Base
    ========================================= */
 body {
-  font-family: var(--f-mono);
-  background: var(--paper);
-  color: var(--ink);
+  body {
+  margin: 0;
   min-height: 100vh;
-  padding: 56px 24px;
+
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  -webkit-font-smoothing: antialiased;
-  transition:
-    background 0.25s,
-    color 0.25s;
+  align-items: center;
+
+  background: var(--bg);
+
+  font-family:
+    Inter,
+    Segoe UI,
+    sans-serif;
+
+  color: var(--text);
+
+  padding: 20px;
+}
 }
 
 .page {
@@ -1280,3 +1283,176 @@ body.dark .goal-metric:hover {
   }
 }
 
+.container {
+  width: 100%;
+  max-width: 450px;
+
+  background: var(--card-bg);
+
+  border-radius: var(--radius);
+
+  padding: 32px;
+
+  box-shadow: var(--shadow);
+
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+input {
+  width: 100%;
+
+  padding: 14px;
+
+  margin-top: 8px;
+  margin-bottom: 18px;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 10px;
+
+  font-size: 1rem;
+
+  box-sizing: border-box;
+
+  transition: var(--transition);
+}
+
+input:focus {
+  outline: none;
+
+  border-color: var(--primary);
+
+  box-shadow:
+    0 0 0 3px rgba(37,99,235,.15);
+}input {
+  width: 100%;
+
+  padding: 14px;
+
+  margin-top: 8px;
+  margin-bottom: 18px;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 10px;
+
+  font-size: 1rem;
+
+  box-sizing: border-box;
+
+  transition: var(--transition);
+}
+
+input:focus {
+  outline: none;
+
+  border-color: var(--primary);
+
+  box-shadow:
+    0 0 0 3px rgba(37,99,235,.15);
+}
+
+button {
+  width: 100%;
+
+  padding: 14px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: var(--primary);
+
+  color: white;
+
+  font-size: 1rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: var(--transition);
+}
+
+button:hover {
+  background: var(--primary-hover);
+
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+.result {
+  margin-top: 24px;
+
+  padding: 18px;
+
+  border-radius: 12px;
+
+  background: #f8fafc;
+
+  font-weight: 600;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid rgba(37,99,235,.4);
+  outline-offset: 2px;
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+  .container {
+    padding: 24px;
+  }
+
+  h1 {
+    font-size: 1.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .container {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  button,
+  input {
+    font-size: 0.95rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+
+  :root {
+    --bg: #111827;
+    --card-bg: #1f2937;
+    --text: #f9fafb;
+    --text-light: #d1d5db;
+  }
+
+  input {
+    background: #374151;
+    color: white;
+    border-color: #4b5563;
+  }
+
+  .result {
+    background: #374151;
+  }
+}
