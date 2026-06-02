@@ -14,6 +14,7 @@
 
   <body>
     <nav class="navbar">
+      <a href="/" class="project-back-button"> ← Back to Home </a>
       <div class="logo">
         <img src="images/indoor-plants_5451442.png" alt="Planto logo" />
       </div>
@@ -67,6 +68,9 @@
             as one of two kingdoms including all living things that were not
             animals, and all algae and fungi were treated as plants.
           </p>
+          <button id="quiz-cta" class="cta-button" style="margin-top: 20px">
+            Find Your Perfect Plant
+          </button>
         </div>
         <div class="block1-img">
           <div>
@@ -136,12 +140,12 @@
           </p>
         </div>
         <div class="footer-col">
-          <h3>Quick Links</h3>
+          <h3>Resources</h3>
           <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#more">Plant Type</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms & Conditions</a></li>
+            <li><a href="#">Support</a></li>
+            <li><a href="#">Careers</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -169,6 +173,106 @@
         </p>
       </div>
     </footer>
+
+    <!-- Plant Matchmaker Modal -->
+    <div id="quiz-modal" class="modal-overlay hidden">
+      <div class="modal-content glass-effect">
+        <button id="close-quiz" class="close-btn">&times;</button>
+
+        <div id="quiz-screen-start" class="quiz-screen active">
+          <h2>Find Your Perfect Plant</h2>
+          <p>Take our quick quiz to match with your ideal leafy companion.</p>
+          <button id="start-quiz-btn" class="quiz-btn">Start Quiz</button>
+        </div>
+
+        <div id="quiz-screen-1" class="quiz-screen hidden">
+          <h2>How much sunlight does your space get?</h2>
+          <div class="quiz-options">
+            <button
+              class="quiz-option"
+              data-question="sunlight"
+              data-value="low"
+            >
+              Low Light
+            </button>
+            <button
+              class="quiz-option"
+              data-question="sunlight"
+              data-value="medium"
+            >
+              Medium Light
+            </button>
+            <button
+              class="quiz-option"
+              data-question="sunlight"
+              data-value="bright"
+            >
+              Bright Direct Light
+            </button>
+          </div>
+        </div>
+
+        <div id="quiz-screen-2" class="quiz-screen hidden">
+          <h2>Do you have pets?</h2>
+          <div class="quiz-options">
+            <button
+              class="quiz-option"
+              data-question="petFriendly"
+              data-value="true"
+            >
+              Yes, plant needs to be safe!
+            </button>
+            <button
+              class="quiz-option"
+              data-question="petFriendly"
+              data-value="false"
+            >
+              No pets
+            </button>
+          </div>
+        </div>
+
+        <div id="quiz-screen-3" class="quiz-screen hidden">
+          <h2>How experienced are you with plants?</h2>
+          <div class="quiz-options">
+            <button
+              class="quiz-option"
+              data-question="careLevel"
+              data-value="easy"
+            >
+              I kill everything (Easy)
+            </button>
+            <button
+              class="quiz-option"
+              data-question="careLevel"
+              data-value="medium"
+            >
+              I can keep them alive (Medium)
+            </button>
+            <button
+              class="quiz-option"
+              data-question="careLevel"
+              data-value="hard"
+            >
+              I'm a pro (Hard)
+            </button>
+          </div>
+        </div>
+
+        <div id="quiz-screen-results" class="quiz-screen hidden">
+          <h2>Your Perfect Match</h2>
+          <div id="quiz-results-container"></div>
+          <button
+            id="restart-quiz-btn"
+            class="quiz-btn outline"
+            style="margin-top: 20px"
+          >
+            Retake Quiz
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script src="script.js"></script>
 
     <script>

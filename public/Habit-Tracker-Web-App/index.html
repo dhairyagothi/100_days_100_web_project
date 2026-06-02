@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Premium Habit Dashboard</title>
-  <script>
-    if (!window.location.pathname.endsWith('/') && !window.location.pathname.endsWith('.html')) {
-      window.location.replace(window.location.pathname + '/' + window.location.search + window.location.hash);
-    }
-  </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=3" />
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <title>Habit Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Work+Sans:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="analytics-nav.css" />
+
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
 
   <div class="dashboard-layout">
 
@@ -28,185 +28,186 @@
         <button id="closeMenuBtn" class="close-sidebar-btn" aria-label="Close menu">
           <i data-lucide="x"></i>
         </button>
+  <div class="app-shell">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Consistency Engine</p>
+        <h1>Habit Tracker</h1>
+        <p class="subhead">
+          Build rhythms that stick. Track streaks, goals, and wins with clarity.
+        </p>
+     
+
+      <div class="tooltip-container">
+        <button id="theme-toggle">🌙 Dark Mode</button>
+        <span class="tooltip-text">Switch Theme</span>
       </div>
+    </header>
 
-      <nav class="sidebar-nav" id="sidebarNav">
-        <div class="nav-group">
-          <p class="nav-section-title">Views</p>
-          <a href="#" class="nav-item active" data-filter="all">
-            <i data-lucide="layout-grid"></i> Dashboard
-          </a>
-          <a href="#" class="nav-item" data-filter="today">
-            <i data-lucide="calendar"></i> Today
-          </a>
-          <a href="#" class="nav-item" data-filter="completed">
-            <i data-lucide="check-circle-2"></i> Completed
-          </a>
-          <a href="#" class="nav-item" data-filter="missed">
-            <i data-lucide="x-circle"></i> Missed
-          </a>
-        </div>
+  <button id="analytics-btn" type="button" title="View analytics">
+    📊 Analytics
+  </button>
 
-        <div class="nav-group">
-          <p class="nav-section-title">Categories</p>
-          <a href="#" class="nav-item category-item" data-category="Health">
-            <span class="category-dot health"></span> Health
-          </a>
-          <a href="#" class="nav-item category-item" data-category="Work">
-            <span class="category-dot work"></span> Work
-          </a>
-          <a href="#" class="nav-item category-item" data-category="Personal">
-            <span class="category-dot personal"></span> Personal
-          </a>
-        </div>
-      </nav>
 
-      <div class="theme-switch-wrapper">
-        <button id="theme-toggle">
-          <i data-lucide="moon" class="theme-icon"></i>
-          <span id="theme-text">Dark Mode</span>
-        </button>
-      </div>
-    </aside>
+  <div class="container">
+    <h1>Habit Tracker</h1>
+    <main class="container">
+      <section class="card hero-card">
+        <h2>Create a habit</h2>
 
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
-      <header class="main-header">
-        <div class="header-title-wrapper">
-          <button id="mobileMenuBtn" class="hamburger-btn" aria-label="Open menu">
-            <i data-lucide="menu"></i>
-          </button>
-          <div>
-            <h1 id="viewTitle">Dashboard</h1>
-            <p class="subtitle" id="motivationalBanner">Ready to crush your goals today?</p>
+        <div class="input-section">
+          <div class="field-group">
+            <label for="habitInput">Habit name</label>
+            <input type="text" id="habitInput" placeholder="Morning walk" />
           </div>
-        </div>
-        <div class="header-actions">
-          <div class="search-wrapper">
-            <i data-lucide="search" class="search-icon"></i>
-            <input type="text" id="searchInput" placeholder="Search habits..." />
-          </div>
-        </div>
-      </header>
 
-      <!-- KPI HERO SECTION -->
-      <section class="kpi-hero">
-        <div class="kpi-card progress-card">
-          <div class="circular-progress">
-            <svg viewBox="0 0 36 36" class="circular-chart">
-              <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-              <path class="circle" id="progressRing" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-              <text x="18" y="20.5" class="percentage" id="progressText">0%</text>
-            </svg>
-          </div>
-          <div class="kpi-info">
-            <span class="kpi-label">Today's Progress</span>
-            <span class="kpi-value" id="kpiCompletedRatio">0/0 Habits</span>
+          <div class="field-group">
+            <label for="habitTags">Tags</label>
+            <input type="text" id="habitTags" placeholder="Health, Focus" />
           </div>
         </div>
 
-        <div class="kpi-card">
-          <div class="kpi-icon-wrap"><i data-lucide="flame"></i></div>
-          <div class="kpi-info">
-            <span class="kpi-label">Current Streak</span>
-            <span class="kpi-value" id="kpiCurrentStreak">0 Days</span>
+        <div class="input-section">
+          <div class="field-group">
+            <label for="habitGoal">Daily goal</label>
+            <input type="text" id="habitGoal" placeholder="20 minutes" />
+          </div>
+
+          <div class="field-group">
+            <label for="habitReminder">Reminder time</label>
+            <input type="time" id="habitReminder" />
           </div>
         </div>
 
-        <div class="kpi-card">
-          <div class="kpi-icon-wrap"><i data-lucide="target"></i></div>
-          <div class="kpi-info">
-            <span class="kpi-label">Best Streak</span>
-            <span class="kpi-value" id="kpiBestStreak">0 Days</span>
+        <div class="field-group">
+          <label for="habitNotes">Notes</label>
+          <textarea id="habitNotes" rows="3" placeholder="Why this habit matters"></textarea>
+        </div>
+
+        <div class="field-group">
+          <span class="label">Schedule</span>
+          <div class="schedule-grid" id="scheduleGrid">
+            <label class="schedule-item">
+              <input type="checkbox" class="schedule-day" value="1" checked /> Mon
+            </label>
+            <label class="schedule-item">
+              <input type="checkbox" class="schedule-day" value="2" checked /> Tue
+            </label>
+            <label class="schedule-item">
+              <input type="checkbox" class="schedule-day" value="3" checked /> Wed
+            </label>
+            <label class="schedule-item">
+              <input type="checkbox" class="schedule-day" value="4" checked /> Thu
+            </label>
+            <label class="schedule-item">
+              <input type="checkbox" class="schedule-day" value="5" checked /> Fri
+            </label>
+            <label class="schedule-item">
+              <input type="checkbox" class="schedule-day" value="6" checked /> Sat
+            </label>
+            <label class="schedule-item">
+              <input type="checkbox" class="schedule-day" value="0" checked /> Sun
+            </label>
           </div>
         </div>
 
-        <div class="kpi-card">
-          <div class="kpi-icon-wrap"><i data-lucide="activity"></i></div>
-          <div class="kpi-info">
-            <span class="kpi-label">Completion Rate</span>
-            <span class="kpi-value" id="kpiCompletionRate">0%</span>
-          </div>
+        <div class="cta-row">
+          <button id="addHabitBtn">Add Habit</button>
+          <p class="helper-text">Tip: keep the goal small and repeatable.</p>
         </div>
       </section>
 
-      <!-- QUICK FILTERS -->
-      <div class="quick-filters">
-        <button class="filter-chip active" data-qf="all">All</button>
-        <button class="filter-chip" data-qf="today">Today</button>
-        <button class="filter-chip" data-qf="high-priority">High Priority</button>
-        <button class="filter-chip" data-qf="Health">Health</button>
-        <button class="filter-chip" data-qf="Work">Work</button>
-      </div>
+      <section class="stats-grid">
+        <div class="stat-card">
+          <p>Total habits</p>
+          <h3 id="totalHabits">0</h3>
+        </div>
+        <div class="stat-card">
+          <p>Scheduled today</p>
+          <h3 id="scheduledToday">0</h3>
+        </div>
+        <div class="stat-card">
+          <p>Completed today</p>
+          <h3 id="completedHabits">0</h3>
+        </div>
+        <div class="stat-card">
+          <p>Weekly completion</p>
+          <h3 id="weeklyRate">0%</h3>
+        </div>
+      </section>
 
-      <!-- HABIT LIST -->
-      <div class="habits-container">
-        <div id="emptyState" class="empty-state hidden">
-          <i data-lucide="inbox" class="empty-icon"></i>
-          <h3>No habits found</h3>
-          <p>Get started by creating a new habit.</p>
-          <button class="btn-primary" onclick="openAddModal()">Create Habit</button>
+      <section class="card habits-card">
+        <div class="card-header">
+          <h2>Today's habits</h2>
+          <p class="subhead">Stay on track with what matters most today.</p>
         </div>
         <ul id="habitList"></ul>
-      </div>
+      </section>
+
+      <section class="card progress-section">
+        <div class="card-header">
+          <h2>Progress charts</h2>
+          <p class="subhead">Weekly momentum for every habit.</p>
+        </div>
+        <div id="progressList" class="progress-list"></div>
+      </section>
+
+      <section id="achievements-section" class="card-section card">
+        <div class="card-header">
+          <h2>🏆 Achievements</h2>
+          <p class="subhead">Celebrate the streaks that are becoming part of you.</p>
+        </div>
+
+        <div class="achievements-grid">
+          <div class="achievement-wrapper">
+            <div class="achievement-badge locked" id="badge-3">
+              <span class="badge-icon">🥉</span>
+              <div class="badge-info">
+                <span class="badge-name">3-Day Streak</span>
+                <span class="badge-desc">
+                  Complete a habit for 3 consecutive days
+                </span>
+              </div>
+            </div>
+            <span class="achievement-tooltip">
+              Unlock by maintaining any habit for 3 days continuously
+            </span>
+          </div>
+        </div>
+
+          <div class="achievement-wrapper">
+            <div class="achievement-badge locked" id="badge-7">
+              <span class="badge-icon">🥈</span>
+              <div class="badge-info">
+                <span class="badge-name">7-Day Streak</span>
+                <span class="badge-desc">
+                  Complete a habit for 7 consecutive days
+                </span>
+              </div>
+            </div>
+            <span class="achievement-tooltip">
+              Unlock by maintaining any habit for 7 days continuously
+            </span>
+          </div>
+
+          <div class="achievement-wrapper">
+            <div class="achievement-badge locked" id="badge-30">
+              <span class="badge-icon">🥇</span>
+              <div class="badge-info">
+                <span class="badge-name">30-Day Streak</span>
+                <span class="badge-desc">
+                  Complete a habit for 30 consecutive days
+                </span>
+              </div>
+            </div>
+            <span class="achievement-tooltip">
+              Unlock by maintaining any habit for 30 days continuously
+            </span>
+          </div>
+        </div>
+      </section>
     </main>
-
-    <!-- RIGHT PANEL (Contextual) -->
-    <aside class="right-panel">
-
-      <!-- DEFAULT OVERVIEW STATE -->
-      <div id="overviewContext" class="context-panel">
-        <div class="glass-card context-card">
-          <h3>Achievements</h3>
-          <div class="achievements-grid" id="achievementsGrid">
-            <!-- Rendered by JS -->
-          </div>
-        </div>
-
-        <div class="glass-card context-card">
-          <h3>Weekly Trend</h3>
-          <div class="chart-container" id="weeklyChart">
-            <!-- Rendered by JS -->
-          </div>
-        </div>
-
-        <div class="glass-card context-card">
-          <h3>Consistency Heatmap</h3>
-          <div class="heatmap-container" id="heatmapGrid">
-            <!-- Rendered by JS -->
-          </div>
-        </div>
-      </div>
-      <!-- MONTHLY CALENDAR -->
-      <div class="glass-card context-card">
-        <div class="calendar-header">
-          <h3>Habit Calendar</h3>
-
-          <div class="calendar-nav">
-            <button id="prevMonthBtn" class="icon-btn">
-              <i data-lucide="chevron-left"></i>
-            </button>
-
-            <span id="calendarMonthLabel"></span>
-
-            <button id="nextMonthBtn" class="icon-btn">
-              <i data-lucide="chevron-right"></i>
-            </button>
-          </div>
-        </div>
-
-        <div class="calendar-weekdays">
-          <span>Sun</span>
-          <span>Mon</span>
-          <span>Tue</span>
-          <span>Wed</span>
-          <span>Thu</span>
-          <span>Fri</span>
-          <span>Sat</span>
-        </div>
-
-        <div class="calendar-grid" id="calendarGrid"></div>
-      </div>
+  </div>
 
       <!-- SELECTED DATE DETAILS -->
       <div class="glass-card context-card">
@@ -237,22 +238,13 @@
 
     </aside>
 
-  </div><!-- /.dashboard-layout -->
-
-  <div id="sidebarOverlay" class="sidebar-overlay hidden"></div>
-
-  <!-- FLOATING ACTION BUTTON -->
-  <button class="fab" id="fabAdd" title="Create new habit">
-    <i data-lucide="plus"></i>
-  </button>
-
-  <!-- ADD HABIT MODAL -->
-  <div class="modal-overlay hidden" id="addModal">
-    <div class="modal-content glass-card">
-      <h3>Create New Habit</h3>
-      <div class="input-group">
-        <label>Habit Name</label>
-        <input type="text" id="addHabitInput" placeholder="e.g. Read 20 pages" />
+      <div class="modal-content">
+        <div class="modal-badge-icon">🎉</div>
+        <h2>Milestone Unlocked!</h2>
+        <p id="milestone-message">
+          You achieved a 3-Day streak on "Reading"!
+        </p>
+        <button id="milestone-btn">Awesome!</button>
       </div>
       <div class="input-row">
         <div class="input-group">
@@ -349,7 +341,31 @@
     </div>
   </div>
 
-  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <div id="delete-modal" class="modal-overlay">
+    <div class="modal-card">
+      <span class="modal-close" id="delete-close-btn">&times;</span>
+      <div class="modal-content">
+        <div class="modal-badge-icon">🧹</div>
+        <h2>Delete habit?</h2>
+        <p id="delete-message">This action cannot be undone.</p>
+        <div class="modal-actions">
+          <button id="delete-cancel-btn" class="ghost-btn">No, keep it</button>
+          <button id="delete-confirm-btn" class="danger-btn">Yes, delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const btn = document.getElementById('analytics-btn');
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        window.location.href = 'analytics.html';
+      });
+    })();
+  </script>
   <script src="script.js"></script>
 </body>
 </html>
+

@@ -2,11 +2,17 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>3D Profile Card Generator</title>
+
     <link rel="stylesheet" href="style.css" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
+
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500&display=swap"
       rel="stylesheet"
@@ -14,6 +20,26 @@
   </head>
 
   <body class="is-dark">
+    <a
+      href="/"
+      class="project-back-button"
+      style="
+        position: fixed;
+        left: 18px;
+        top: 18px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: white;
+        text-decoration: none;
+        z-index: 9999;
+        font-weight: 700;
+        font-family: Inter, system-ui, sans-serif;
+        box-shadow: 0 8px 20px rgba(0, 0, 0);
+      "
+    >
+      ← Back to Home
+    </a>
+
     <main class="app-shell">
       <section class="editor-panel" aria-labelledby="editor-title">
         <div class="panel-header">
@@ -25,22 +51,12 @@
           <div class="form-grid">
             <label class="field">
               <span>Name</span>
-              <input
-                type="text"
-                id="nameInput"
-                maxlength="40"
-                placeholder="Krishna Bhati"
-              />
+              <input type="text" id="nameInput" maxlength="40" placeholder="Krishna Bhati" />
             </label>
 
             <label class="field">
               <span>Profession</span>
-              <input
-                type="text"
-                id="roleInput"
-                maxlength="44"
-                placeholder="UI/UX Designer"
-              />
+              <input type="text" id="roleInput" maxlength="44" placeholder="UI/UX Designer" />
             </label>
           </div>
 
@@ -57,11 +73,7 @@
           <div class="form-grid">
             <label class="field">
               <span>Image URL</span>
-              <input
-                type="url"
-                id="imageUrlInput"
-                placeholder="https://example.com/profile.jpg"
-              />
+              <input type="url" id="imageUrlInput" placeholder="https://example.com/profile.jpg" />
             </label>
 
             <label class="field file-field">
@@ -73,40 +85,24 @@
           <div class="form-grid">
             <label class="field">
               <span>GitHub</span>
-              <input
-                type="url"
-                id="githubInput"
-                placeholder="https://github.com/username"
-              />
+              <input type="url" id="githubInput" placeholder="https://github.com/username" />
             </label>
 
             <label class="field">
               <span>LinkedIn</span>
-              <input
-                type="url"
-                id="linkedinInput"
-                placeholder="https://linkedin.com/in/username"
-              />
+              <input type="url" id="linkedinInput" placeholder="https://linkedin.com/in/username" />
             </label>
           </div>
 
           <div class="form-grid">
             <label class="field">
               <span>Twitter / X</span>
-              <input
-                type="url"
-                id="twitterInput"
-                placeholder="https://x.com/username"
-              />
+              <input type="url" id="twitterInput" placeholder="https://x.com/username" />
             </label>
 
             <label class="field">
               <span>Instagram</span>
-              <input
-                type="url"
-                id="instagramInput"
-                placeholder="https://instagram.com/username"
-              />
+              <input type="url" id="instagramInput" placeholder="https://instagram.com/username" />
             </label>
           </div>
 
@@ -121,10 +117,12 @@
                 <input type="radio" name="layout" value="classic" checked />
                 <span>Classic</span>
               </label>
+
               <label>
                 <input type="radio" name="layout" value="compact" />
                 <span>Compact</span>
               </label>
+
               <label>
                 <input type="radio" name="layout" value="poster" />
                 <span>Poster</span>
@@ -134,19 +132,16 @@
             <label class="mode-toggle" id="modeToggle" title="Switch to light mode">
               <input type="checkbox" id="darkModeInput" checked />
               <span class="toggle-face" aria-hidden="true"></span>
-              <span class="sr-only" id="modeToggleText">Switch to light mode</span>
+              <span class="sr-only" id="modeToggleText"> Switch to light mode </span>
             </label>
           </div>
 
           <p class="validation-message" id="validationMessage" aria-live="polite"></p>
 
           <div class="action-row">
-            <button type="button" class="secondary-btn" id="resetButton">
-              Reset
-            </button>
-            <button type="button" class="primary-btn" id="downloadButton">
-              Download card
-            </button>
+            <button type="button" class="secondary-btn" id="resetButton">Reset</button>
+
+            <button type="button" class="primary-btn" id="downloadButton">Download card</button>
           </div>
         </form>
       </section>
@@ -161,33 +156,32 @@
               id="previewImage"
             />
           </div>
+
           <div class="container2">
             <p class="card-label">Digital profile</p>
+
             <h2 class="heading" id="previewName">Krishna Bhati</h2>
+
             <p class="subhead" id="previewRole">UI/UX Designer</p>
+
             <p class="info" id="previewBio">
-              Hardworking and reliable UI/UX designer focused on going above and
-              beyond to support teams and serve customers.
+              Hardworking and reliable UI/UX designer focused on going above and beyond to support
+              teams and serve customers.
             </p>
 
             <div class="profile" id="socialLinks">
               <a href="#" data-platform="github" aria-label="GitHub profile">
-                <img
-                  src="logo/github-142-svgrepo-com.svg"
-                  alt=""
-                  class="logo monochrome"
-                />
+                <img src="logo/github-142-svgrepo-com.svg" alt="" class="logo monochrome" />
               </a>
+
               <a href="#" data-platform="linkedin" aria-label="LinkedIn profile">
-                <img
-                  src="logo/linkedin-svgrepo-com (1).svg"
-                  alt=""
-                  class="logo"
-                />
+                <img src="logo/linkedin-svgrepo-com (1).svg" alt="" class="logo" />
               </a>
+
               <a href="#" data-platform="twitter" aria-label="Twitter profile">
                 <img src="logo/twitter-svgrepo-com.svg" alt="" class="logo" />
               </a>
+
               <a href="#" data-platform="instagram" aria-label="Instagram profile">
                 <img src="logo/instagram-svgrepo-com.svg" alt="" class="logo" />
               </a>
@@ -197,8 +191,12 @@
       </section>
     </main>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
     <script src="script.js"></script>
   </body>
-
 </html>
