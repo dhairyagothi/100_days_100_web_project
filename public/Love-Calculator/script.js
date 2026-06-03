@@ -1,7 +1,24 @@
 
+let isCalculating = false;
+
 window.onload = function () {
     const button = document.getElementById("calculate");
     button.addEventListener("click", calculateLove);
+
+    const toggle = document.getElementById("theme-toggle");
+    if (toggle) {
+        toggle.addEventListener("click", () => {
+            document.body.classList.toggle("dark");
+            localStorage.setItem(
+                "theme",
+                document.body.classList.contains("dark")
+            );
+        });
+    }
+
+    if (localStorage.getItem("theme") === "true") {
+        document.body.classList.add("dark");
+    }
 };
 /* Enter key support */
 
@@ -18,6 +35,7 @@ document.addEventListener("keydown", function(event) {
 /* Main Love Calculator Function */
 
 function calculateLove() {
+    if (isCalculating) return;
 
     // Get input values
     const yourName = document.getElementById("fname").value.trim();
@@ -53,6 +71,8 @@ function calculateLove() {
 
         return;
     }
+
+    isCalculating = true;
 
     // Show loading animation
     loading.classList.remove("hidden");
@@ -170,21 +190,7 @@ function calculateLove() {
         footer.classList.add("show-result");
 
         // Toggle buttons
+        isCalculating = false;
         
     }, 1800);
-
-    const toggle = document.getElementById("theme-toggle");
-
-toggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
-
-    localStorage.setItem(
-        "theme",
-        document.body.classList.contains("dark")
-    );
-});
-
-if(localStorage.getItem("theme") === "true"){
-    document.body.classList.add("dark");
-}
 }

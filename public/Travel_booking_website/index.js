@@ -172,8 +172,11 @@ async function sendMessage() {
 
   chatMessages.scrollTop = chatMessages.scrollHeight;
 
+  const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+  const chatEndpoint = isLocalhost ? "http://localhost:5000/api/chat" : "/api/chat";
+
   try {
-    const response = await fetch("http://localhost:5000/api/chat", {
+    const response = await fetch(chatEndpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

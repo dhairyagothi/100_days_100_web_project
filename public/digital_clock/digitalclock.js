@@ -595,18 +595,7 @@ function renderHistoryLogs() {
     .join("");
 }
 
-function toggleDarkMode() {
-  const isLight = document.body.classList.toggle("light-mode");
-  document.querySelector(".dark-mode-btn").textContent = isLight
-    ? "🌙 Dark Mode"
-    : "☀️ Light Mode";
-  localStorage.setItem("lightMode", isLight);
-}
-
-if (localStorage.getItem("lightMode") === "true") {
-  document.body.classList.add("light-mode");
-  document.querySelector(".dark-mode-btn").textContent = "🌙 Dark Mode";
-}
+// Cleaned up duplicate toggleDarkMode and lightMode localStorage logic
 function clearAlarm() {
   localStorage.removeItem("alarmTime");
 
@@ -780,8 +769,13 @@ function escapeHtml(text) {
 function applyDarkMode(enabled) {
   isDarkMode = enabled;
   document.body.classList.toggle("dark-mode", enabled);
-  const btn = document.getElementById("dark-mode-toggle");
-  if (btn) btn.textContent = enabled ? "☀️" : "🌙";
+  document.querySelectorAll(".dark-mode-btn").forEach(btn => {
+    if (btn.id === "dark-mode-toggle") {
+      btn.textContent = enabled ? "☀️" : "🌙";
+    } else {
+      btn.textContent = enabled ? "☀️ Light Mode" : "🌙 Dark Mode";
+    }
+  });
   localStorage.setItem("clockDarkMode", enabled);
 }
 
