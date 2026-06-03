@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material 3 Expressive UI Showcase</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+</head>
+
+<body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
+    <header class="top-app-bar">
+        <div class="header-content">
+            <h1 class="logo"><span class="material-symbols-outlined">palette</span> M3 Expressive</h1>
+
+            <div class="search-bar">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input type="text" id="searchInput" placeholder="Search components (e.g., 'button', 'card')...">
+            </div>
+
+            <button id="themeToggle" class="icon-btn" aria-label="Toggle Dark Mode">
+                <span class="material-symbols-outlined" id="themeIcon">dark_mode</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="showcase-container" id="showcase">
+
+        <div class="component-card" data-tags="button primary filled click action">
+            <h3>Filled Button</h3>
+            <button class="m3-btn m3-btn-filled">Get Started</button>
+        </div>
+
+        <div class="component-card" data-tags="button tonal secondary action">
+            <h3>Tonal Button</h3>
+            <button class="m3-btn m3-btn-tonal">Save Draft</button>
+        </div>
+
+        <div class="component-card" data-tags="button outlined secondary border">
+            <h3>Outlined Button</h3>
+            <button class="m3-btn m3-btn-outlined">Cancel</button>
+        </div>
+
+        <div class="component-card" data-tags="button text flat transparent">
+            <h3>Text Button</h3>
+            <button class="m3-btn m3-btn-text">Learn More</button>
+        </div>
+
+        <div class="component-card" data-tags="button fab floating action icon">
+            <h3>Floating Action Button (FAB)</h3>
+            <button class="m3-fab"><span class="material-symbols-outlined">add</span></button>
+        </div>
+
+        <div class="component-card" data-tags="button fab extended floating action text">
+            <h3>Extended FAB</h3>
+            <button class="m3-fab-extended">
+                <span class="material-symbols-outlined">edit</span> Create New
+            </button>
+        </div>
+
+        <div class="component-card" data-tags="input text field outlined form">
+            <h3>Outlined Text Field</h3>
+            <div class="m3-input-container">
+                <input type="text" class="m3-input" placeholder=" ">
+                <label class="m3-label">Email Address</label>
+            </div>
+        </div>
+
+        <div class="component-card" data-tags="input text field filled form background">
+            <h3>Filled Text Field</h3>
+            <div class="m3-input-container m3-filled-input">
+                <input type="text" class="m3-input" placeholder=" ">
+                <label class="m3-label">Username</label>
+            </div>
+        </div>
+
+        <div class="component-card" data-tags="card elevated shadow container">
+            <h3>Elevated Card</h3>
+            <div class="m3-card m3-card-elevated">
+                <h2>Expressive Design</h2>
+                <p>Cards contain content and actions about a single subject.</p>
+                <div class="card-actions">
+                    <button class="m3-btn m3-btn-filled">Explore</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="component-card" data-tags="card filled background container color">
+            <h3>Filled Card</h3>
+            <div class="m3-card m3-card-filled">
+                <h2>Playful Shapes</h2>
+                <p>Filled cards provide a subtle separation from the background.</p>
+                <div class="card-actions">
+                    <button class="m3-btn m3-btn-tonal">Details</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="component-card" data-tags="card outlined border container">
+            <h3>Outlined Card</h3>
+            <div class="m3-card m3-card-outlined">
+                <h2>Clean Layouts</h2>
+                <p>Outlined cards offer a clean, lightweight look for dense content.</p>
+                <div class="card-actions">
+                    <button class="m3-btn m3-btn-outlined">View</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="component-card" data-tags="chip filter tag selection">
+            <h3>Filter Chips</h3>
+            <div class="chip-group">
+                <button class="m3-chip active">All</button>
+                <button class="m3-chip">Design</button>
+                <button class="m3-chip">Development</button>
+            </div>
+        </div>
+
+        <div class="component-card" data-tags="chip input tag deletable icon">
+            <h3>Input Chips</h3>
+            <div class="chip-group">
+                <div class="m3-chip input-chip">
+                    <span class="material-symbols-outlined chip-icon">person</span>
+                    Jane Doe
+                    <span class="material-symbols-outlined chip-close">close</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="component-card" data-tags="switch toggle control settings">
+            <h3>Switch (Toggle)</h3>
+            <label class="m3-switch">
+                <input type="checkbox" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="component-card" data-tags="navigation bottom bar menu tab">
+            <h3>Bottom Navigation Menu</h3>
+            <div class="m3-bottom-nav">
+                <div class="nav-item active">
+                    <div class="nav-icon-container"><span class="material-symbols-outlined">home</span></div>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item">
+                    <div class="nav-icon-container"><span class="material-symbols-outlined">search</span></div>
+                    <span>Search</span>
+                </div>
+                <div class="nav-item">
+                    <div class="nav-icon-container"><span class="material-symbols-outlined">settings</span></div>
+                    <span>Settings</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="component-card" data-tags="dialog modal popup alert warning">
+            <h3>Basic Dialog</h3>
+            <button class="m3-btn m3-btn-filled" onclick="alert('This is a simulated M3 Dialog action!')">Show
+                Dialog</button>
+        </div>
+
+
+    </main>
+
+    <div id="noResults" class="no-results hidden">
+        <span class="material-symbols-outlined">search_off</span>
+        <h2>No components found</h2>
+        <p>Try adjusting your search terms.</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

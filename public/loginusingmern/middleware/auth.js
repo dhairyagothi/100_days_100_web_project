@@ -1,25 +1,18 @@
 const jwt = require('jsonwebtoken');
 
 const authMiddleware = (req, res, next) => {
-    try {
+  try {
+    const token = req.cookies.token;
 
-        const token = req.cookies.token;
+    if (!token) return res.redirect('/');
 
-        if (!token) {
-            return res.redirect('/');
-        }
+    const verified = jwt.verify(token, process.env.JWT_SECRET || 'secretkey');
+    req.user = verified;
 
-        const verified = jwt.verify(token, process.env.JWT_SECRET || "secretkey");
-
-        req.user = verified;
-
-        next();
-
-    } catch (error) {
-
-        return res.redirect('/');
-
-    }
+    next();
+  } catch (err) {
+    return res.redirect('/');
+  }
 };
 
 module.exports = authMiddleware;

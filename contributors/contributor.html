@@ -13,6 +13,8 @@
     <meta content="/" property="og:url" />
     <meta content="https://i.imgur.com/3cztaa9.png" property="og:image" />
     <meta content="#0b0d0f" data-react-helmet="true" name="theme-color" />
+    <script src="../theme.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -30,47 +32,30 @@
   </head>
 
   <body>
-<<<<<<< HEAD
-    <div class="ambient ambient-left" aria-hidden="true"></div>
-    <div class="ambient ambient-right" aria-hidden="true"></div>
-    <div class="noise-layer" aria-hidden="true"></div>
 
-    <nav class="navbar" id="navbar">
-        <a class="navbar-brand" href="../index.html" style="text-decoration:none;">
-            <span class="brand-mark" aria-hidden="true">100</span>
-            <span class="brand-copy">
-                <span class="brand-kicker">Open Source Archive</span>
-                <strong>100 Days · 100 Web Projects</strong>
-            </span>
-        </a>
-        <div class="nav-buttons">
-            <a class="btn btn-ghost btn-sm" href="../index.html"><i class="fas fa-home"></i> Home</a>
-            <a class="btn btn-primary btn-sm" href="https://www.github-readme.tech" target="_blank"><i class="fas fa-rocket"></i> Generate README</a>
-            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-            <button class="btn btn-ghost btn-sm" id="themeToggle" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
-=======
+    <div class="ambient ambient-left" aria-hidden="true"></div>
+<div class="ambient ambient-right" aria-hidden="true"></div>
+<div class="noise-layer" aria-hidden="true"></div>
+
+<!-- ── NAVBAR PLACEHOLDER (Matches Homepage Structure) ── -->
+<div id="navbar-container"></div>
+<nav class="navbar" id="navbar">
+    <a class="navbar-brand" href="../index.html" style="text-decoration:none;">
+        <span class="brand-mark" aria-hidden="true">100</span>
+        <span class="brand-copy">
+            <span class="brand-kicker">Open Source Archive</span>
+            <strong>100 Days · 100 Web Projects</strong>
+        </span>
+    </a>
+    <div class="nav-buttons">
+        <a class="btn btn-ghost btn-sm" href="../index.html"><i class="fas fa-home"></i> Home</a>
+        <a class="btn btn-primary btn-sm" href="https://www.github-readme.tech" target="_blank"><i class="fas fa-rocket"></i> Generate README</a>
+        <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+        <button class="btn btn-ghost btn-sm" id="themeToggle" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
+    </div>
+</nav>
     
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="navbar-brand">
-            <img src="https://i.pinimg.com/736x/1c/54/f7/1c54f7b06d7723c21afc5035bf88a5ef.jpg" alt="Logo">
-            <span>100 DAYS 100 WEB PROJECTS</span>
-        </div>
-        <div class="buttons">
-            <a class="button" href="../index.html">
-              Home
-            </a>
-            <a href="https://www.github-readme.tech" target="_blank" rel="noopener noreferrer" class="button featured-btn">
-                <i class="fas fa-rocket"></i>
-                <span>Generate README</span>
-            </a>
-            <a class="button" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer">
-              GitHub
-            </a>
-            <button id="themeToggle" title="Toggle Theme">
-                <i class="fas fa-moon"></i>
-            </button>
->>>>>>> eb4d25517c07edfcfe9e2502013c2b43ac24352f
+
         </div>
     </nav>
 
@@ -118,7 +103,6 @@
 
         <select id="sortContributors">
           <option value="desc">Highest Commits</option>
-
           <option value="asc">Lowest Commits</option>
         </select>
       </div>
@@ -127,7 +111,6 @@
 
       <div id="contributorsError" class="hidden api-error">
         <p id="contributorsErrorMessage">Failed to load contributors.</p>
-
         <button id="retryContributors">Retry</button>
       </div>
 
@@ -143,7 +126,6 @@
       </div>
       <div id="stargazersError" class="hidden api-error">
         <p id="stargazersErrorMessage">Failed to load stargazers.</p>
-
         <button id="retryStargazers">Retry</button>
       </div>
 
@@ -155,52 +137,51 @@
     </div>
 
     <footer class="footer">
-<<<<<<< HEAD
-      <div class="footer-content">
-        <div>
-          <h3>About</h3>
-          <p>
+
+     <div class="footer-content">
+    <div>
+        <h3>About</h3>
+        <p>
             This repository contains a growing collection of web projects from
             basic to intermediate using HTML, CSS, and JS.
-          </p>
-          <p>
-            <strong>&copy; 2024 100 Days, 100 Projects</strong> by Dhairya and
-            Contributors.
-          </p>
-=======
-        <div class="footer-content">
-            <div>
-                <h3>About</h3>
-              <p>This repository contains a growing collection of web projects from basic to intermediate using HTML, CSS, and JS.</p>
-                <p><strong>&copy; 2024 100 Days, 100 Projects</strong> by Dhairya and Contributors.</p>
-            </div>
-            <div>
-                <h3>Connect With Us</h3>
-                <div class="social-links">
-                    <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" rel="noopener noreferrer" class="social-btn">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer" class="social-btn">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" rel="noopener noreferrer" class="social-btn">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                </div>
-                <nav class="footer-nav">
-                    <a href="../index.html" class="footer-link">Home</a>
-                    <a href="contributor.html" class="footer-link">Contributors</a>
-                    <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub Repo</a>
-                </nav>
-            </div>
-            <div>
-                <h3>Featured Project</h3>
-                <p>Generate free, stunning GitHub README profiles in minutes.</p>
-                <a href="https://www.github-readme.tech" target="_blank" rel="noopener noreferrer" class="button featured-btn" style="margin-top: 2rem; display: inline-flex; border-radius: 14px;">
-                    <i class="fas fa-magic"></i> Try README Generator
-                </a>
-            </div>
->>>>>>> eb4d25517c07edfcfe9e2502013c2b43ac24352f
+        </p>
+        <p>
+            <strong>&copy; <span data-current-year></span> 100 Days, 100 Projects</strong>
+            by Dhairya and Contributors.
+        </p>
+    </div>
+
+    <div>
+        <h3>Connect With Us</h3>
+        <div class="social-links">
+            <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" rel="noopener noreferrer" class="social-btn">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer" class="social-btn">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" rel="noopener noreferrer" class="social-btn">
+                <i class="fab fa-linkedin"></i>
+            </a>
+        </div>
+        <nav class="footer-nav">
+            <a href="../index.html" class="footer-link">Home</a>
+            <a href="contributor.html" class="footer-link">Contributors</a>
+            <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub Repo</a>
+        </nav>
+    </div>
+
+    <div>
+        <h3>Featured Project</h3>
+        <p>Generate free, stunning GitHub README profiles in minutes.</p>
+        <a href="https://www.github-readme.tech" target="_blank" rel="noopener noreferrer"
+           class="button featured-btn"
+           style="margin-top: 2rem; display: inline-flex; border-radius: 14px;">
+            <i class="fas fa-magic"></i> Try README Generator
+        </a>
+    </div>
+</div>
+
         </div>
         <div>
           <h3>Connect With Us</h3>
@@ -242,20 +223,21 @@
         </div>
       </div>
     </footer>
+
     <div id="profileModal" class="modal-overlay">
       <div class="modal-content">
         <button id="closeModal">&times;</button>
-
         <div id="modalBody">Loading...</div>
       </div>
     </div>
+
     <div id="certificateModal" class="modal-overlay">
       <div class="modal-content">
         <button id="closeCertificate">&times;</button>
-
         <div id="certificateBody">Loading Certificate...</div>
       </div>
     </div>
+
     <button id="scrollBtn" aria-label="Back to top">
         <svg class="progress-ring" viewBox="0 0 48 48">
             <circle class="ring-track" cx="24" cy="24" r="22"/>
@@ -267,9 +249,11 @@
     <div class="toast" id="toast"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="
-https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="../index.js"></script>
+
+    <!-- ── LOAD NAVBAR INJECTION SCRIPT LAST ── -->
+    <script src="../navbar.js" defer></script>
     <script src="contributor.js"></script>
   </body>
 </html>

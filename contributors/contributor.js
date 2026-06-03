@@ -128,137 +128,90 @@ function loadCache(key, maxAge = 1000 * 60 * 10) {
   }
 }
 
-async function openProfile(username, commits) {
-  modal.style.display = 'flex';
+async function openProfile(username){
 
-  modalBody.innerHTML = `
-        <p>Loading profile...</p>
-    `;
+    modal.style.display = "flex";
+    modal.style.position = "fixed";
 
-  try {
-    const response = await fetch(`https://api.github.com/users/${username}`);
+    modal.style.top = "0";
 
-    const user = await response.json();
+    modal.style.left = "0";
 
-    modalBody.innerHTML = `
+    modal.style.zIndex = "999999999";
 
-            <img
-            src="${user.avatar_url}"
-            >
+    modal.style.justifyContent = "center";
 
-            <h2>
-            ${user.name || user.login}
-            </h2>
+    modal.style.alignItems = "center";
 
-            <p>
-            ${user.bio || 'This contributor has not added a bio yet.'}
-            </p>
+    modalBody.innerHTML =
+    "<p>Loading...</p>";
 
-            <p>
-            Followers:
-            ${user.followers}
-            </p>
+    try{
 
-            <p>
-            Public Repos:
-            ${user.public_repos}
-            </p>
-
-            <p>
-            Location:
-            ${user.location || 'Not available'}
-            </p>
-
-            <p>
-            Joined:
-            ${new Date(user.created_at).toLocaleDateString()}
-            </p>
-
-<<<<<<< HEAD
-           <div class="popup-btn-container">
-=======
-            <div class="popup-btn-container">
-
-                <a
-                href="${user.html_url}"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="github-btn"
-                >
-
-                View GitHub
-
-                </a>
-
-            </div>
-
-        `;
-
-    }
-
-    catch(error){
-
-        modalBody.innerHTML =
-        "<p>Failed to load profile</p>";
-
-        console.error(error);
-
-    }
-
-}
-// Use global REPO_OWNER and REPO_NAME defined in index.js
-
-async function fetchContributors() {
-    const contributorsContainer = document.getElementById("contributors");
-    const contributorCountSpan = document.getElementById("contributorCount");
-
-    try {
-        const response = await fetch(
-            `https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}/contributors?per_page=100`
+        const response =
+        await fetch(
+        `https://api.github.com/users/${username}`
         );
 
-        if (!response.ok) throw new Error("Failed to fetch contributors");
+        if(!response.ok){
 
-        const contributors = await response.json();
-        contributorCountSpan.textContent = contributors.length;
+            modalBody.innerHTML = `
+            <h2>${username}</h2>
 
-        // Calculate total commits
-        const totalCommits = contributors.reduce((sum, c) => sum + c.contributions, 0);
-        const totalCommitsEl = document.getElementById('totalCommits');
-        if (totalCommitsEl) totalCommitsEl.textContent = totalCommits.toLocaleString();
+            <p>
+            Profile unavailable
+            </p>
+            `;
 
-        contributorsContainer.innerHTML = ""; 
+            return;
+        }
 
-        contributors.forEach((contributor) => {
-            const card = document.createElement("div");
-            card.className = "contributor-card";
+        const user =
+        await response.json();
 
-            card.innerHTML = `
-                <img src="${contributor.avatar_url}" alt="${contributor.login}">
-                <h3>${contributor.login}</h3>
-                <div class="contributor-stats">
-                    <div class="stat">
-                        <span class="value">${contributor.contributions}</span>
-                        <span class="label">Commits</span>
-                    </div>
-                </div>
-               <div class="contributor-links">
 
-    <button
-    class="details-btn"
-    data-user="${contributor.login}"
-    >
+        modalBody.innerHTML = `
 
-    View Details
+        <img
+        src="${user.avatar_url}"
+        style="
+        width:120px;
+        height:120px;
+        border-radius:50%;
+        ">
 
-    </button>
+        <h2>
+        ${user.name || username}
+        </h2>
 
->>>>>>> eb4d25517c07edfcfe9e2502013c2b43ac24352f
+        <p>
+        ${user.bio || "No bio available"}
+        </p>
+
+        <p>
+        Followers:
+        ${user.followers}
+        </p>
+
+        <p>
+        Repositories:
+        ${user.public_repos}
+        </p>
+
+        <p>
+        Location:
+        ${user.location || "Unknown"}
+        </p>
+
+        ${
+        user.html_url
+        ?
+
+           <div class="popup-btn-container">
 
     <a
     href="${user.html_url}"
     target="_blank"
-    rel="noopener noreferrer"
     class="github-btn"
     >
 
@@ -664,11 +617,7 @@ alt="${contributor.login}">
         'click',
 
         () => {
-          openProfile(
-            contributor.login,
-
-            contributor.contributions
-          );
+    openProfile(contributor.login);
         }
       );
     }
