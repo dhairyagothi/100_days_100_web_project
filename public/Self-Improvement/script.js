@@ -73,14 +73,19 @@ const App = (() => {
     return State.firstVisit ? daysBetween(State.firstVisit, new Date()) : 0;
   }
 
-  // SECURITY: Escape all user-provided text before inserting into HTML
+  // SECURITY FIX (CodeQL #1 & #3): Replace innerHTML-based escaper with a
+  // pure string-replace lookup table. This avoids any round-trip through the
+  // DOM parser and eliminates the "DOM text reinterpreted as HTML" finding.
   function esc(str) {
-    const div = document.createElement('div');
-    div.textContent = String(str ?? '');
-    return div.innerHTML;
+    return String(str ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#x27;');
   }
 
-  // SECURITY: Safe DOM helper — sets text content, never innerHTML
+  // Safe DOM helper — sets text content, never innerHTML
   function setText(id, val) {
     const el = document.getElementById(id);
     if (el) el.textContent = String(val ?? '');
@@ -116,15 +121,25 @@ const App = (() => {
   // SECURITY: Allowlist of valid view names — prevents unvalidated dynamic dispatch
   const ALLOWED_VIEWS = new Set(['dashboard', 'goals', 'habits', 'analytics', 'achievements', 'learning']);
 
-  const viewRenderers = {
-    dashboard: renderDashboard, goals: renderGoals, habits: renderHabits,
-    analytics: renderAnalytics, achievements: renderAchievements, learning: renderLearningPaths
-  };
+  // SECURITY FIX (CodeQL #2): Replace dynamic property dispatch `viewRenderers[viewName]()`
+  // with an explicit switch statement so CodeQL can statically verify every
+  // possible call target and there is no user-controlled method lookup.
+  function dispatchView(viewName) {
+    switch (viewName) {
+      case 'dashboard':    return renderDashboard();
+      case 'goals':        return renderGoals();
+      case 'habits':       return renderHabits();
+      case 'analytics':    return renderAnalytics();
+      case 'achievements': return renderAchievements();
+      case 'learning':     return renderLearningPaths();
+      default:             return renderDashboard();
+    }
+  }
 
   let currentView = 'dashboard';
 
   function navigate(viewName) {
-    // SECURITY: Validate against allowlist before any dynamic dispatch
+    // SECURITY: Validate against allowlist before dispatch
     if (!ALLOWED_VIEWS.has(viewName)) viewName = 'dashboard';
 
     currentView = viewName;
@@ -133,7 +148,8 @@ const App = (() => {
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.querySelector(`.nav-item[data-view="${viewName}"]`)?.classList.add('active');
     setText('page-title', PAGE_TITLES[viewName] || 'Dashboard');
-    viewRenderers[viewName]();
+    // SECURITY FIX (CodeQL #2): use explicit dispatch instead of dynamic lookup
+    dispatchView(viewName);
     window.location.hash = viewName;
     document.querySelector('.sidebar')?.classList.remove('open');
   }
@@ -187,24 +203,40 @@ const App = (() => {
           <span style="font-size:.75rem;color:var(--text-muted)">${g.progress||0}% · ${g.deadline ? formatDate(g.deadline) : 'No deadline'}</span>
         </div>`).join(''));
 
-    // Today's habits widget
+    // Today's habits widget — SECURITY FIX (CodeQL #3): build DOM nodes directly
+    // instead of innerHTML with esc()-wrapped strings, eliminating the remaining
+    // "DOM text reinterpreted as HTML" finding in renderHabits area.
     const today = todayStr();
     const dailyHabits = State.habits.filter(h => h.frequency === 'daily' || h.frequency === 'weekly');
     const habitsEl = document.getElementById('dashboard-habits-list');
     if (habitsEl) {
+      habitsEl.innerHTML = '';
       if (dailyHabits.length === 0) {
         habitsEl.innerHTML = '<div class="empty-state"><span class="empty-icon">🔥</span><p>No habits tracked yet.</p></div>';
       } else {
-        habitsEl.innerHTML = dailyHabits.map(h => {
+        dailyHabits.forEach(h => {
           const done = h.completions?.[today];
-          return `<div class="dash-habit-row ${done?'completed':''}" style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border-subtle)">
-            <button class="habit-checkbox ${done?'checked':''}" data-habit-id="${esc(h.id)}" aria-label="Toggle habit">${done?'✓':''}</button>
-            <span style="flex:1;font-size:.9rem;${done?'text-decoration:line-through;opacity:.6':''}">${esc(h.name)}</span>
-            <span style="font-size:.75rem;color:var(--amber)">🔥 ${calculateStreak(h)}</span>
-          </div>`;
-        }).join('');
-        habitsEl.querySelectorAll('.habit-checkbox').forEach(btn => {
-          btn.addEventListener('click', () => { toggleHabitCompletion(btn.dataset.habitId); renderDashboard(); });
+          const row = document.createElement('div');
+          row.className = 'dash-habit-row' + (done ? ' completed' : '');
+          row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border-subtle)';
+
+          const btn = document.createElement('button');
+          btn.className = 'habit-checkbox' + (done ? ' checked' : '');
+          btn.dataset.habitId = h.id;
+          btn.setAttribute('aria-label', 'Toggle habit');
+          btn.textContent = done ? '✓' : '';
+          btn.addEventListener('click', () => { toggleHabitCompletion(h.id); renderDashboard(); });
+
+          const nameSpan = document.createElement('span');
+          nameSpan.style.cssText = 'flex:1;font-size:.9rem;' + (done ? 'text-decoration:line-through;opacity:.6' : '');
+          nameSpan.textContent = h.name;
+
+          const streakSpan = document.createElement('span');
+          streakSpan.style.cssText = 'font-size:.75rem;color:var(--amber)';
+          streakSpan.textContent = `🔥 ${calculateStreak(h)}`;
+
+          row.append(btn, nameSpan, streakSpan);
+          habitsEl.appendChild(row);
         });
       }
     }
@@ -466,29 +498,77 @@ const App = (() => {
       list.innerHTML = `<div class="empty-state full-empty"><span class="empty-icon large">🔥</span><h3>No habits yet</h3><p>Start building positive habits today!</p><button class="btn btn-primary" id="add-habit-empty-btn">+ Create Habit</button></div>`;
       document.getElementById('add-habit-empty-btn')?.addEventListener('click', () => openHabitModal());
     } else {
+      // SECURITY FIX (CodeQL #3): Build habit rows using DOM API instead of
+      // innerHTML template strings with esc()-wrapped user data. This removes
+      // the "DOM text reinterpreted as HTML" finding entirely.
       const today = todayStr();
-      list.innerHTML = habits.map(h => {
+      list.innerHTML = '';
+
+      habits.forEach(h => {
         const done = h.completions?.[today];
         const s = calculateStreak(h);
-        return `<div class="habit-item ${done?'completed':''}" data-id="${esc(h.id)}">
-          <button class="habit-checkbox ${done?'checked':''}" data-habit-id="${esc(h.id)}" aria-label="Toggle">${done?'✓':''}</button>
-          <div style="flex:1;min-width:0">
-            <div class="habit-name">${esc(h.name)}</div>
-            ${s > 0 ? `<div class="habit-streak">🔥 ${s} day${s>1?'s':''}</div>` : ''}
-          </div>
-          <span class="habit-frequency">${esc(h.frequency)}</span>
-          <div class="habit-actions">
-            <button class="habit-edit-btn" data-id="${esc(h.id)}" title="Edit">✏️</button>
-            <button class="habit-delete-btn" data-id="${esc(h.id)}" title="Delete">🗑️</button>
-          </div>
-        </div>`;
-      }).join('');
 
-      list.querySelectorAll('.habit-checkbox').forEach(b => b.addEventListener('click', () => { toggleHabitCompletion(b.dataset.habitId); renderHabits(); }));
-      list.querySelectorAll('.habit-edit-btn').forEach(b => b.addEventListener('click', () => openHabitModal(b.dataset.id)));
-      list.querySelectorAll('.habit-delete-btn').forEach(b => b.addEventListener('click', () => {
-        if (confirm('Delete this habit?')) { State.habits = State.habits.filter(h => h.id !== b.dataset.id); saveState(); showNotification('Habit deleted.', 'info'); renderHabits(); }
-      }));
+        const item = document.createElement('div');
+        item.className = 'habit-item' + (done ? ' completed' : '');
+        item.dataset.id = h.id;
+
+        // Checkbox button
+        const checkbox = document.createElement('button');
+        checkbox.className = 'habit-checkbox' + (done ? ' checked' : '');
+        checkbox.dataset.habitId = h.id;
+        checkbox.setAttribute('aria-label', 'Toggle');
+        checkbox.textContent = done ? '✓' : '';
+        checkbox.addEventListener('click', () => { toggleHabitCompletion(h.id); renderHabits(); });
+
+        // Name + streak wrapper
+        const infoDiv = document.createElement('div');
+        infoDiv.style.cssText = 'flex:1;min-width:0';
+
+        const nameDiv = document.createElement('div');
+        nameDiv.className = 'habit-name';
+        nameDiv.textContent = h.name;
+
+        infoDiv.appendChild(nameDiv);
+
+        if (s > 0) {
+          const streakDiv = document.createElement('div');
+          streakDiv.className = 'habit-streak';
+          streakDiv.textContent = `🔥 ${s} day${s > 1 ? 's' : ''}`;
+          infoDiv.appendChild(streakDiv);
+        }
+
+        // Frequency badge
+        const freqSpan = document.createElement('span');
+        freqSpan.className = 'habit-frequency';
+        freqSpan.textContent = h.frequency;
+
+        // Action buttons
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'habit-actions';
+
+        const editBtn = document.createElement('button');
+        editBtn.className = 'habit-edit-btn';
+        editBtn.dataset.id = h.id;
+        editBtn.title = 'Edit';
+        editBtn.textContent = '✏️';
+        editBtn.addEventListener('click', () => openHabitModal(h.id));
+
+        const delBtn = document.createElement('button');
+        delBtn.className = 'habit-delete-btn';
+        delBtn.dataset.id = h.id;
+        delBtn.title = 'Delete';
+        delBtn.textContent = '🗑️';
+        delBtn.addEventListener('click', () => {
+          if (confirm('Delete this habit?')) {
+            State.habits = State.habits.filter(hh => hh.id !== h.id);
+            saveState(); showNotification('Habit deleted.', 'info'); renderHabits();
+          }
+        });
+
+        actionsDiv.append(editBtn, delBtn);
+        item.append(checkbox, infoDiv, freqSpan, actionsDiv);
+        list.appendChild(item);
+      });
     }
 
     document.getElementById('add-habit-btn')?.addEventListener('click', () => openHabitModal());
