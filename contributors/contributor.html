@@ -14,7 +14,7 @@
     <meta content="https://i.imgur.com/3cztaa9.png" property="og:image" />
     <meta content="#0b0d0f" data-react-helmet="true" name="theme-color" />
     <script src="../theme.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -36,24 +36,8 @@
     <div class="ambient ambient-right" aria-hidden="true"></div>
     <div class="noise-layer" aria-hidden="true"></div>
 
-    <nav class="navbar" id="navbar">
-        <a class="navbar-brand" href="../index.html" style="text-decoration:none;">
-            <span class="brand-mark" aria-hidden="true">100</span>
-            <span class="brand-copy">
-                <span class="brand-kicker">Open Source Archive</span>
-                <strong>100 Days · 100 Web Projects</strong>
-            </span>
-        </a>
-        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation menu" aria-controls="navButtons" aria-expanded="false">
-            <i class="fas fa-bars"></i>
-        </button>
-        <div class="nav-buttons mobile-drawer-layer" id="navButtons">
-            <a class="btn btn-ghost btn-sm" href="../index.html"><i class="fas fa-home"></i> Home</a>
-            <a class="btn btn-primary btn-sm" href="https://www.github-readme.tech" target="_blank"><i class="fas fa-rocket"></i> Generate README</a>
-            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-          <button class="btn btn-ghost btn-sm" id="themeToggle" aria-label="Toggle theme"><i class="fas fa-moon"></i> Theme</button>
-        </div>
-    </nav>
+    <!-- ── NAVBAR PLACEHOLDER (Matches Homepage Structure) ── -->
+    <div id="navbar-container"></div>
 
     <div class="container">
       <div class="contributor-header">
@@ -99,7 +83,6 @@
 
         <select id="sortContributors">
           <option value="desc">Highest Commits</option>
-
           <option value="asc">Lowest Commits</option>
         </select>
       </div>
@@ -108,7 +91,6 @@
 
       <div id="contributorsError" class="hidden api-error">
         <p id="contributorsErrorMessage">Failed to load contributors.</p>
-
         <button id="retryContributors">Retry</button>
       </div>
 
@@ -124,7 +106,6 @@
       </div>
       <div id="stargazersError" class="hidden api-error">
         <p id="stargazersErrorMessage">Failed to load stargazers.</p>
-
         <button id="retryStargazers">Retry</button>
       </div>
 
@@ -188,20 +169,21 @@
         </div>
       </div>
     </footer>
+
     <div id="profileModal" class="modal-overlay">
       <div class="modal-content">
         <button id="closeModal">&times;</button>
-
         <div id="modalBody">Loading...</div>
       </div>
     </div>
+
     <div id="certificateModal" class="modal-overlay">
       <div class="modal-content">
         <button id="closeCertificate">&times;</button>
-
         <div id="certificateBody">Loading Certificate...</div>
       </div>
     </div>
+
     <button id="scrollBtn" aria-label="Back to top">
         <svg class="progress-ring" viewBox="0 0 48 48">
             <circle class="ring-track" cx="24" cy="24" r="22"/>
@@ -213,9 +195,11 @@
     <div class="toast" id="toast"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="
-https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="../index.js"></script>
+
+    <!-- ── LOAD NAVBAR INJECTION SCRIPT LAST ── -->
+    <script src="../navbar.js" defer></script>
     <script src="contributor.js"></script>
   </body>
 </html>
