@@ -1,74 +1,37 @@
 // js/transactionManager.js
 
 import {
-  saveTransactions,
-} from "./storage.js";
+    saveData,
+    loadData
+} from './storage.js';
 
-import {
-  showNotification,
-} from "./notificationManager.js";
+let transactions =
+    loadData('transactions');
 
-export const renderTransactions = (
-  transactions
-) => {
+export function addTransaction(transaction){
 
-  const tbody =
-    document.getElementById(
-      "tbody"
+    transactions.push(transaction);
+
+    saveData(
+        'transactions',
+        transactions
     );
 
-  tbody.innerHTML = "";
+}
 
-  transactions
-    .slice()
-    .reverse()
-    .forEach((transaction) => {
+export function getTransactions(){
 
-      const row =
-        document.createElement("tr");
+    return transactions;
 
-      row.innerHTML = `
-        <td>${transaction.description}</td>
-        <td>$${transaction.amount}</td>
-        <td>${transaction.type}</td>
-        <td>${transaction.category}</td>
-        <td>${transaction.date}</td>
-      `;
+}
 
-      tbody.appendChild(row);
-    });
-};
+export function deleteTransaction(index){
 
-export const addTransaction = (
-  transactions,
-  transaction
-) => {
+    transactions.splice(index,1);
 
-  transactions.push(transaction);
+    saveData(
+        'transactions',
+        transactions
+    );
 
-  saveTransactions(
-    transactions
-  );
-
-  showNotification(
-    "Transaction Added Successfully"
-  );
-
-  return transactions;
-};
-
-export const filterTransactions = (
-  transactions,
-  keyword
-) => {
-
-  return transactions.filter(
-    (transaction) =>
-
-      transaction.description
-        .toLowerCase()
-        .includes(
-          keyword.toLowerCase()
-        )
-  );
-};
+}

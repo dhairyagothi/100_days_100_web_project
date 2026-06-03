@@ -1,0 +1,132 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Age Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="about">
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">LifePulse</div>
+        <nav class="desktop-nav">
+          <a href="index.html" class="nav-link">Calculator</a>
+          <a href="difference.html" class="nav-link">Difference</a>
+          <a href="birthday.html" class="nav-link">Birthday Card</a>
+          <a href="about.html" class="nav-link active">About</a>
+        </nav>
+        <div class="topbar-actions">
+          <button id="theme-toggle" class="icon-button" aria-label="Toggle dark mode">🌙</button>
+          <button id="menu-toggle" class="icon-button menu-button" aria-label="Open navigation" aria-expanded="false">
+            <svg class="menu-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+      </header>
+      <div id="mobile-menu" class="mobile-menu">
+        <nav class="mobile-nav">
+          <a href="index.html" class="mobile-link">Calculator</a>
+          <a href="difference.html" class="mobile-link">Difference</a>
+          <a href="birthday.html" class="mobile-link">Birthday Card</a>
+          <a href="about.html" class="mobile-link active">About</a>
+        </nav>
+      </div>
+      <main class="page-content">
+        <section class="hero-panel compact-panel about-hero">
+          <div>
+            <p class="eyebrow">About Age Calculator</p>
+            <h1>Helping you celebrate every milestone</h1>
+            <p class="hero-copy">A premium age tool for calculating birthdays, comparing dates, and creating celebration cards with confidence.</p>
+          </div>
+        </section>
+        <section class="grid-section two-column">
+          <div class="panel glass-panel feature-panel">
+            <div class="panel-header">
+              <p class="eyebrow">Why it matters</p>
+              <h2>Accurate, friendly, and designed for people.</h2>
+            </div>
+            <div class="feature-grid">
+              <div class="feature-card">
+                <div class="feature-icon">📅</div>
+                <div>
+                  <h3>Accurate Calculations</h3>
+                  <p>Precise results across multiple time units so you always know your age details.</p>
+                </div>
+              </div>
+              <div class="feature-card">
+                <div class="feature-icon">👨</div>
+                <div>
+                  <h3>User Friendly</h3>
+                  <p>Simple navigation, clean layouts, and responsive experiences on every device.</p>
+                </div>
+              </div>
+              <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <div>
+                  <h3>Privacy Focused</h3>
+                  <p>Your dates are only used locally in your browser and never stored remotely.</p>
+                </div>
+              </div>
+              <div class="feature-card">
+                <div class="feature-icon">💜</div>
+                <div>
+                  <h3>Free Forever</h3>
+                  <p>All features are accessible without subscriptions or hidden paywalls.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel glass-panel stats-panel">
+            <div class="panel-header">
+              <p class="eyebrow">Trusted by thousands</p>
+              <h2>Milestones our users love</h2>
+            </div>
+            <div class="stats-grid">
+              <div class="stat-box"><span>1M+</span><p>Users</p></div>
+              <div class="stat-box"><span>10+</span><p>Features</p></div>
+              <div class="stat-box"><span>100%</span><p>Free</p></div>
+            </div>
+            <div class="mission-panel">
+              <p class="eyebrow">Our mission</p>
+              <h3>Our mission is to help people calculate age, compare birthdays, and celebrate life moments.</h3>
+            </div>
+          </div>
+        </section>
+        <section class="panel glass-panel faq-panel">
+          <div class="panel-header">
+            <p class="eyebrow">FAQ</p>
+            <h2>Common questions</h2>
+          </div>
+          <div class="accordion" id="faq-list">
+            <button class="accordion-item active">
+              <span>Is my birth data stored anywhere?</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-content">No — everything is calculated locally in your browser for complete privacy.</div>
+            <button class="accordion-item">
+              <span>Can I download birthday cards?</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-content">Yes, the birthday generator includes a download button for your custom card.</div>
+            <button class="accordion-item">
+              <span>Does it work on mobile?</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-content">Absolutely — the app is built mobile-first with touch-friendly controls.</div>
+            <button class="accordion-item">
+              <span>Can I compare two people's ages?</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-content">Yes, the Age Difference page is designed exactly for that use case.</div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
