@@ -1763,17 +1763,16 @@ input:focus,
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(135deg, rgba(59, 130, 246, 0.16), transparent 40%),
-    radial-gradient(
-      circle at top right,
-      rgba(139, 92, 246, 0.08),
-      transparent 34%
-    );
+  background: radial-gradient(
+    400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(59, 130, 246, 0.15),
+    transparent 50%
+  );
   opacity: 0;
-  transition: opacity 0.22s ease;
+  transition: opacity 0.3s ease;
   mix-blend-mode: screen;
   pointer-events: none;
+  z-index: 1;
 }
 
 .project-card:hover {
@@ -3240,15 +3239,34 @@ body > header {
 
 .project-card {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(25px) scale(0.96);
+  will-change: transform, opacity;
   transition:
-    opacity 0.4s ease,
-    transform 0.4s ease;
+    opacity 0.6s cubic-bezier(0.215, 0.61, 0.355, 1),
+    transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1),
+    box-shadow 0.3s ease,
+    background-color 0.3s ease;
 }
 
 .project-card.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    will-change: auto !important;
+  }
+  .project-card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  .project-card::after {
+    display: none !important;
+  }
 }
 
 body.custom-cursor-active,
