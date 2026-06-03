@@ -31,6 +31,13 @@
 <form method="GET" action="{{ url_for('dashboard') }}" class="mb-4">
     <select name="sort" onchange="this.form.submit()"
         class="border border-gray-300 rounded p-2">
+    <option value="asc" {% if request.args.get('sort', 'asc') == 'asc' %}selected{% endif %}>
+        Sort A-Z
+    </option>
+    <option value="desc" {% if request.args.get('sort') == 'desc' %}selected{% endif %}>
+        Sort Z-A
+    </option>
+</select>
         <option value="asc">Sort A-Z</option>
         <option value="desc">Sort Z-A</option>
     </select>
@@ -47,6 +54,9 @@
                 <p class="font-bold contact-name">{{ contact.name }}</p>
                 <p class="contact-email">{{ contact.email }}</p>
                 <p class="contact-phone">{{ contact.phone }}</p>
+                <p class="text-sm text-gray-500">
+    Added on: {{ contact.created_at.strftime('%d/%m/%Y') }}
+</p>
             </div>
             <div class="space-x-2">
                 <a href="{{ url_for('edit_contact', id=contact.id) }}" class="bg-yellow-400 text-white px-4 py-2 rounded">Edit</a>
