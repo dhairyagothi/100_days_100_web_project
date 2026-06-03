@@ -248,15 +248,43 @@ async function fetchQuestionsFromGroq() {
     }
 }
 
+function clearElement(element) {
+    element.textContent = '';
+}
+
+function createMetricCard(titleText, valueText) {
+    const card = document.createElement('div');
+    const title = document.createElement('h4');
+    const value = document.createElement('p');
+
+    card.className = 'metric-card';
+    title.textContent = titleText;
+    value.className = 'metric-val';
+    value.textContent = valueText;
+
+    card.append(title, value);
+    return card;
+}
+
+function appendPrefixedText(parent, prefixText, valueText) {
+    const prefix = document.createElement('strong');
+
+    prefix.textContent = prefixText;
+    parent.append(prefix, ` ${valueText}`);
+}
+
 function displayQuestion() {
     stopRecording();
     const currentQuestion = state.questions[state.currentQuestionIndex];
-    
-    UI.chatContainer.innerHTML = `
-        <div class="chat-message bot-message entry-animation">
-            <p>${currentQuestion}</p>
-        </div>
-    `;
+    const message = document.createElement('div');
+    const questionText = document.createElement('p');
+
+    message.className = 'chat-message bot-message entry-animation';
+    questionText.textContent = currentQuestion;
+    message.appendChild(questionText);
+
+    clearElement(UI.chatContainer);
+    UI.chatContainer.appendChild(message);
     
     UI.answerInput.value = state.answers[state.currentQuestionIndex] || '';
     updateCharacterCount();
@@ -375,12 +403,18 @@ async function completeInterview() {
 
     // Trigger modal immediately with a skeleton loading state
     if (UI.summaryContent) {
-        UI.summaryContent.innerHTML = `
-            <div style="text-align: center; padding: 40px 0;">
-                <i class="fa-solid fa-spinner fa-spin" style="font-size: 2.5rem; color: #7c63ff; margin-bottom: 16px;"></i>
-                <p>Analyzing candidate performance metrics and structuring evaluation responses via Groq AI...</p>
-            </div>
-        `;
+        const loadingState = document.createElement('div');
+        const loadingIcon = document.createElement('i');
+        const loadingText = document.createElement('p');
+
+        loadingState.style.cssText = 'text-align: center; padding: 40px 0;';
+        loadingIcon.className = 'fa-solid fa-spinner fa-spin';
+        loadingIcon.style.cssText = 'font-size: 2.5rem; color: #7c63ff; margin-bottom: 16px;';
+        loadingText.textContent = 'Analyzing candidate performance metrics and structuring evaluation responses via Groq AI...';
+
+        loadingState.append(loadingIcon, loadingText);
+        clearElement(UI.summaryContent);
+        UI.summaryContent.appendChild(loadingState);
     }
     openModal();
 
@@ -427,40 +461,46 @@ async function completeInterview() {
         console.error("Failed executing dynamic remote assessment analytics:", e);
     }
 
-    // Render fully synchronized objective results to UI
-    let summaryHtml = `
-        <div class="metric-grid">
-            <div class="metric-card">
-                <h4>Composure Baseline</h4>
-                <p class="metric-val">${100 - state.stressValue}%</p>
-            </div>
-            <div class="metric-card">
-                <h4>Confidence Metric</h4>
-                <p class="metric-val">${confidenceScore}%</p>
-            </div>
-        </div>
-        <div class="analysis-box">
-            <h4>Evaluation Assessment</h4>
-            <p>${descriptiveMetrics}</p>
-        </div>
-        <div class="review-list">
-            <h4>Responses Diagnostic Breakdown</h4>
-    `;
-
-    state.questions.forEach((q, index) => {
-        const ans = state.answers[index] || "No input recorded inside the temporal limits.";
-        summaryHtml += `
-            <div class="review-item">
-                <p class="review-q"><strong>Q${index + 1}:</strong> ${q}</p>
-                <p class="review-a"><strong>Your Answer:</strong> ${ans}</p>
-            </div>
-        `;
-    });
-
-    summaryHtml += `</div>`;
-    
     if (UI.summaryContent) {
-        UI.summaryContent.innerHTML = summaryHtml;
+        const metricGrid = document.createElement('div');
+        const analysisBox = document.createElement('div');
+        const analysisTitle = document.createElement('h4');
+        const analysisText = document.createElement('p');
+        const reviewList = document.createElement('div');
+        const reviewTitle = document.createElement('h4');
+
+        metricGrid.className = 'metric-grid';
+        metricGrid.append(
+            createMetricCard('Composure Baseline', `${100 - state.stressValue}%`),
+            createMetricCard('Confidence Metric', `${confidenceScore}%`)
+        );
+
+        analysisBox.className = 'analysis-box';
+        analysisTitle.textContent = 'Evaluation Assessment';
+        analysisText.textContent = descriptiveMetrics;
+        analysisBox.append(analysisTitle, analysisText);
+
+        reviewList.className = 'review-list';
+        reviewTitle.textContent = 'Responses Diagnostic Breakdown';
+        reviewList.appendChild(reviewTitle);
+
+        state.questions.forEach((question, index) => {
+            const answer = state.answers[index] || "No input recorded inside the temporal limits.";
+            const reviewItem = document.createElement('div');
+            const questionText = document.createElement('p');
+            const answerText = document.createElement('p');
+
+            reviewItem.className = 'review-item';
+            questionText.className = 'review-q';
+            answerText.className = 'review-a';
+            appendPrefixedText(questionText, `Q${index + 1}:`, question);
+            appendPrefixedText(answerText, 'Your Answer:', answer);
+            reviewItem.append(questionText, answerText);
+            reviewList.appendChild(reviewItem);
+        });
+
+        clearElement(UI.summaryContent);
+        UI.summaryContent.append(metricGrid, analysisBox, reviewList);
     }
 }
 

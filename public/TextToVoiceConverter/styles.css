@@ -109,5 +109,150 @@ button:disabled {
 
     .btn-group {
         flex-direction: column;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:linear-gradient(
+        135deg,
+        #1e3c72,
+        #2a5298
+    );
+    min-height:100vh;
+    padding:30px;
+    transition:.3s;
+}
+
+body.dark{
+    background:linear-gradient(
+        135deg,
+        #111827,
+        #1f2937
+    );
+}
+
+.theme-btn{
+    position:fixed;
+    top:20px;
+    right:20px;
+    border:none;
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:20px;
+}
+
+.wrapper{
+    display:flex;
+    gap:25px;
+    justify-content:center;
+    align-items:stretch;
+    flex-wrap:wrap;
+}
+
+.container{
+    background:white;
+    width:500px;
+    max-width:100%;
+    padding:30px;
+    border-radius:16px;
+    box-shadow:
+    0 10px 25px rgba(0,0,0,.25);
+    transition:.3s;
+}
+
+.container:hover{
+    transform:translateY(-5px);
+}
+
+h1{
+    text-align:center;
+    color:#1352c7;
+    margin-bottom:25px;
+}
+
+label{
+    display:block;
+    margin-bottom:10px;
+    font-weight:bold;
+}
+
+select,
+textarea{
+    width:100%;
+    padding:12px;
+    margin-bottom:20px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    font-size:16px;
+}
+
+textarea{
+    min-height:180px;
+    resize:vertical;
+}
+
+.btn-group{
+    display:flex;
+    gap:12px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+}
+
+button{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    font-size:15px;
+    cursor:pointer;
+    transition:.3s;
+    color:white;
+    background:#2f8f9d;
+}
+
+button:hover{
+    opacity:.9;
+}
+
+.stop-btn{
+    background:#e74c3c;
+}
+
+button:disabled{
+    background:#bdbdbd;
+    cursor:not-allowed;
+}
+
+#char-count{
+    margin-bottom:15px;
+    color:#666;
+}
+
+#speaking-status,
+#listening-status{
+    margin-top:10px;
+    font-weight:bold;
+    color:#1352c7;
+}
+
+@media(max-width:768px){
+
+    .wrapper{
+        flex-direction:column;
+        align-items:center;
+    }
+
+    .container{
+        width:100%;
+    }
+
+    .btn-group{
+        flex-direction:column;
     }
 }
