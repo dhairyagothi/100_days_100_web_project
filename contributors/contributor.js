@@ -18,9 +18,10 @@ const MAX_RETRIES = 3;
 
 closeModal?.addEventListener(
   'click',
-
   () => {
-    modal.style.display = 'none';
+    if (modal) {
+      modal.style.display = 'none';
+    }
   }
 );
 
@@ -88,9 +89,8 @@ async function githubFetch(url, options = {}, retries = MAX_RETRIES) {
 
 window.addEventListener(
   'click',
-
   (e) => {
-    if (e.target === modal) {
+    if (modal && e.target === modal) {
       modal.style.display = 'none';
     }
   }
@@ -129,6 +129,11 @@ function loadCache(key, maxAge = 1000 * 60 * 10) {
 }
 
 async function openProfile(username) {
+
+  if (!modal || !modalBody) {
+    console.error('Modal elements not found');
+    return;
+  }
 
   modal.style.display = "flex";
   modal.style.position = "fixed";

@@ -9,32 +9,23 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
 <body>
 
 <div class="bg-glow"></div>
-<!-- Animated Background -->
 <div class="animated-bg">
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
+    <span></span><span></span><span></span>
+    <span></span><span></span><span></span>
 </div>
+
 <div class="app">
 
-    <!-- SIDEBAR -->
-
     <aside class="sidebar">
-
         <div class="logo">
             <div class="logo-box">RS</div>
             <div>
@@ -45,26 +36,19 @@
 
         <div class="ats-card glass">
             <h3>ATS Score</h3>
-
             <div class="score-circle">
-                <span id="atsScore">82%</span>
+                <span id="atsScoreValue">82</span><span>%</span>
             </div>
-
             <p>Good Resume Structure</p>
         </div>
 
         <button id="themeSwitcher" class="theme-btn">
             🌙 Dark Mode
         </button>
-
     </aside>
 
-    <!-- FORM SECTION -->
-
     <section class="editor">
-
         <div class="form-card glass">
-
             <div class="top-bar">
                 <div>
                     <h1>Build Your Resume</h1>
@@ -72,180 +56,110 @@
                 </div>
 
                 <div class="template-buttons">
-                    <button id="modernBtn" class="template active">
-                        Modern
-                    </button>
-                    <button id="classicBtn" class="template">
-                        Classic
-                    </button>
-                    <button id="minimalBtn" class="template">
-                        Minimal
-                    </button>
+                    <button class="template active" data-template="modern">Modern</button>
+                    <button class="template" data-template="classic">Classic</button>
+                    <button class="template" data-template="minimal">Minimal</button>
                 </div>
             </div>
 
             <form id="resumeForm">
-
+                
                 <div class="form-row">
-
                     <div class="form-group">
                         <label>Full Name</label>
                         <input type="text" id="name" placeholder="John Doe">
                     </div>
+                    <div class="form-group">
+                        <label>Professional Title</label>
+                        <input type="text" id="title" placeholder="Frontend Developer">
+                    </div>
+                </div>
 
+                <div class="form-row">
                     <div class="form-group">
                         <label>Email Address</label>
                         <input type="email" id="email" placeholder="john@example.com">
                     </div>
-
-                </div>
-
-                <div class="form-row">
-
                     <div class="form-group">
                         <label>Phone Number</label>
                         <input type="text" id="phone" placeholder="+91 9876543210">
                     </div>
+                </div>
 
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" id="location" placeholder="Mumbai, India">
+                    </div>
                     <div class="form-group">
                         <label>Education</label>
                         <input type="text" id="education" placeholder="B.Tech in AI & DS">
                     </div>
+                </div>
 
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>LinkedIn (URL)</label>
+                        <input type="text" id="linkedin" placeholder="linkedin.com/in/johndoe">
+                    </div>
+                    <div class="form-group">
+                        <label>GitHub (URL)</label>
+                        <input type="text" id="github" placeholder="github.com/johndoe">
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label>Professional Summary</label>
-
-                    <textarea
-                        id="summary"
-                        rows="5"
-                        placeholder="Write a short professional summary..."
-                    ></textarea>
+                    <textarea id="summary" rows="3" placeholder="Write a short professional summary..."></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label>Projects</label>
-
-                    <textarea
-                        id="projects"
-                        rows="5"
-                        placeholder="Describe your projects..."
-                    ></textarea>
+                    <label>Skills (Comma separated)</label>
+                    <textarea id="skills" rows="2" placeholder="HTML, CSS, JavaScript, React..."></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label>Skills</label>
-
-                    <textarea
-                        id="skills"
-                        rows="4"
-                        placeholder="HTML, CSS, JavaScript, React..."
-                    ></textarea>
+                    <label>Experience (Use dashes '-' for bullet points)</label>
+                    <textarea id="experience" rows="4" placeholder="- Frontend Developer Intern at XYZ Company&#10;- Built responsive web apps"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label>Experience</label>
-
-                    <textarea
-                        id="experience"
-                        rows="5"
-                        placeholder="Describe your work experience..."
-                    ></textarea>
+                    <label>Projects (Use dashes '-' for bullet points)</label>
+                    <textarea id="projects" rows="4" placeholder="- Resume Studio Web App&#10;- E-commerce Clone"></textarea>
                 </div>
 
                 <div class="buttons">
-
-                    <button
-                        type="button"
-                        id="previewBtn"
-                        class="primary-btn"
-                    >
-                        Live Preview
+                    <button type="button" id="fillDemoBtn" class="secondary-btn">
+                        Fill Demo Data
                     </button>
-
-                    <button
-                        type="button"
-                        id="downloadBtn"
-                        class="secondary-btn"
-                    >
-                        Download PDF
+                    <button type="button" id="clearFormBtn" class="secondary-btn" style="background: rgba(255,50,50,0.1);">
+                        Clear Form
                     </button>
-
+                </div>
+                
+                <div class="buttons">
+                    <button type="button" id="printBtn" class="primary-btn">
+                        Print / Save as PDF
+                    </button>
+                    <button type="button" id="downloadBtn" class="secondary-btn">
+                        Download Image PDF
+                    </button>
                 </div>
 
             </form>
-
         </div>
-
     </section>
 
-    <!-- PREVIEW -->
-
     <section class="preview">
-
         <div class="preview-header">
             <h2>Live Resume Preview</h2>
         </div>
-
+        
         <div id="resumePreview" class="resume-sheet">
-
-            <div class="resume-header">
-
-                <h1>John Doe</h1>
-
-                <p>
-                    john@example.com |
-                    +91 9876543210
-                </p>
-
+            <div style="text-align: center; margin-top: 50px; color: #666;">
+                Start typing to generate your live preview...
             </div>
-
-            <div class="resume-section">
-                <h3>Summary</h3>
-
-                <p>
-                    Passionate frontend developer with
-                    experience in building responsive and
-                    modern web applications.
-                </p>
-            </div>
-
-            <div class="resume-section">
-                <h3>Projects</h3>
-
-                <p>
-                    Resume Studio - Built a modern ATS
-                    resume builder with PDF export.
-                </p>
-            </div>
-
-            <div class="resume-section">
-                <h3>Skills</h3>
-
-                <p>
-                    HTML, CSS, JavaScript, React
-                </p>
-            </div>
-
-            <div class="resume-section">
-                <h3>Experience</h3>
-
-                <p>
-                    Frontend Developer Intern at XYZ Company
-                </p>
-            </div>
-
-            <div class="resume-section">
-                <h3>Education</h3>
-
-                <p>
-                    B.Tech in AI & Data Science
-                </p>
-            </div>
-
         </div>
-
     </section>
 
 </div>
