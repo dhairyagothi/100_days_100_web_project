@@ -2554,5 +2554,14 @@
   ],
   "difficulty": "advanced",
   "projectPath": "./public/Escape The Matrix/index.html"
+},
+    {
+    "projectNo": 206,
+    "projectName": "Zodiac Finder",
+    "projectType": "Game",
+    "projectDesc": "A sleek web app that lets users discover their zodiac sign by entering their name and date of birth, featuring a cosmic-themed UI, smooth UX, and instant results.",
+    "techStack": ["html", "css", "javascript"],
+    "difficulty": "advanced",
+    "projectPath": "./public/Zodiac-Finder/index.html"
 }
 ]
