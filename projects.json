@@ -2427,7 +2427,7 @@
     "difficulty": "advanced",
     "projectPath": "./public/Complaint_Management_System/index.html"
   },
-{
+ {
     "projectNo": 196,
     "projectName": "AirCast",
     "projectType": "Tool",
@@ -2443,7 +2443,7 @@
     "projectPath": "./public/Weather App with AQI/index.html"
   },
   {
-"projectNo": 197,
+    "projectNo": 197,
     "projectName": "Flipkart Clone",
     "projectType": "E-Commerce",
     "projectDesc": "A responsive Flipkart-inspired e-commerce website featuring a modern navbar, product categories, hero carousel, brand spotlight section, promotional banners, home decor showcase, and a fully designed footer.",
@@ -2497,8 +2497,7 @@
     "projectPath": "./public/Movie-Matcher/index.html"
   
 },
-
-    {
+{
     "projectNo": 201,
     "projectName": "Number Guesser Game",
     "projectType": "Game",
@@ -2520,7 +2519,7 @@
     "difficulty": "intermediate",
     "projectPath": "./public/traffic_signal/index.html"
   },
-  {
+   {
   "projectNo": 203,
   "projectName": "Pomodoro With Miu",
   "projectType": "Tool",
@@ -2529,8 +2528,22 @@
   "techStack": ["javascript", "css", "html", "electron"],
   "difficulty": "intermediate"
   },
+{
+    "projectNo": 204,
+    "projectName": "Movie Search App",
+    "projectType": "Web Application",
+    "projectDesc": "A responsive movie search application powered by the OMDb API that allows users to search movies and view detailed information including posters, ratings, genres, cast, runtime, and plot.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "api"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/movie-search-app/index.html"
+},
   {
-  "projectNo": 204,
+  "projectNo": 205,
   "projectName": "Escape the Matrix Game",
   "projectType": "Web Application",
   "projectDesc": "An immersive, interactive web-based survival and puzzle game challenging players to hack their way out of a simulated reality.",

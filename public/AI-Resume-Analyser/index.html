@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="style.css"/>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
   <style>
     .header-icon {
       width: 32px;
@@ -128,6 +130,16 @@
           <div class="stat-item">
             <span>Reading Time</span>
             <strong id="statReadTime">-</strong>
+          </div>
+
+          <div class="stat-item">
+            <span>Word Count</span>
+            <strong id="statWords">-</strong>
+          </div>
+
+          <div class="stat-item">
+            <span>Characters</span>
+            <strong id="statCharacters">-</strong>
           </div>
 
         </div>

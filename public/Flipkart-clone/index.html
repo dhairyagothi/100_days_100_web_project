@@ -6,7 +6,7 @@
     <title>Flipkart</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link
@@ -17,26 +17,26 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <!-- ─── NAVBAR ─── -->
     <nav class="navbar">
       <div class="nav-left">
-        <div class="logo-section">
-          <img src="logo.png" alt="logo" />
-          <h2>Flipkart</h2>
-        </div>
-
-        <!-- MENU -->
+        <a href="index.html" class="logo-section">
+          <img src="logo.png" alt="Flipkart logo" />
+          <div>
+            <h2>Flipkart</h2>
+            <span>Explore <em>Plus</em> ✦</span>
+          </div>
+        </a>
 
         <div class="menu">
           <div class="menu-item">
             <i class="fa-solid fa-bolt"></i>
             Minutes
           </div>
-
           <div class="menu-item">
             <i class="fa-solid fa-plane"></i>
             Travel
           </div>
-
           <div class="menu-item">
             <i class="fa-solid fa-basket-shopping"></i>
             Grocery
@@ -57,17 +57,17 @@
       <div class="nav-right">
         <a href="signup.html" class="right-item login">
           <i class="fa-regular fa-user"></i>
-          Login
+          <span>Login</span>
         </a>
 
         <div class="right-item">
           <i class="fa-solid fa-cart-shopping"></i>
-          Cart
+          <span>Cart</span>
         </div>
 
         <div class="right-item">
           <i class="fa-solid fa-store"></i>
-          Become a Seller
+          <span>Become a Seller</span>
         </div>
 
         <div class="right-item">
@@ -76,52 +76,44 @@
       </div>
     </nav>
 
+    <!-- ─── CATEGORIES ─── -->
     <div class="categories-container">
       <div class="category-item">
         <i class="fa-solid fa-user"></i>
         <span>For You</span>
       </div>
-
       <div class="category-item">
         <i class="fa-solid fa-shirt"></i>
         <span>Fashion</span>
       </div>
-
       <div class="category-item">
         <i class="fa-solid fa-mobile-screen"></i>
         <span>Mobiles</span>
       </div>
-
       <div class="category-item">
         <i class="fa-solid fa-heart"></i>
         <span>Beauty</span>
       </div>
-
       <div class="category-item">
         <i class="fa-solid fa-laptop"></i>
         <span>Electronics</span>
       </div>
-
       <div class="category-item">
         <i class="fa-solid fa-couch"></i>
         <span>Home</span>
       </div>
-
       <div class="category-item">
         <i class="fa-solid fa-tv"></i>
         <span>Appliances</span>
       </div>
-
       <div class="category-item">
         <i class="fa-solid fa-plane"></i>
         <span>Travel</span>
       </div>
-
       <div class="category-item">
-        <i class="fa-solid fa-couch"></i>
+        <i class="fa-solid fa-chair"></i>
         <span>Furniture</span>
       </div>
-
       <div class="category-item">
         <i class="fa-solid fa-volleyball"></i>
         <span>Sports</span>
@@ -136,7 +128,7 @@
       </div>
       <div class="category-item">
         <i class="fa-solid fa-apple-whole"></i>
-        <span>Food & Health</span>
+        <span>Food &amp; Health</span>
       </div>
       <div class="category-item">
         <i class="fa-solid fa-book"></i>
@@ -144,7 +136,7 @@
       </div>
     </div>
 
-    <!-- herosection -->
+    <!-- ─── HERO SLIDER ─── -->
     <div class="hero-section">
       <div class="section-track">
         <div class="section-item"><img src="hero1.png" alt="Offer 1" /></div>
@@ -154,8 +146,20 @@
         <div class="section-item"><img src="hero5.png" alt="Offer 5" /></div>
       </div>
 
-      <button class="section-control prev" onclick="moveSlide(-1)">&#10094;</button>
-      <button class="section-control next" onclick="moveSlide(1)">&#10095;</button>
+      <button
+        class="section-control prev"
+        onclick="moveSlide(-1)"
+        aria-label="Previous slide"
+      >
+        &#10094;
+      </button>
+      <button
+        class="section-control next"
+        onclick="moveSlide(1)"
+        aria-label="Next slide"
+      >
+        &#10095;
+      </button>
 
       <div class="section-indicators">
         <span class="dot active" onclick="currentSlide(0)"></span>
@@ -168,9 +172,9 @@
 
     <script src="script.js"></script>
 
+    <!-- ─── BRANDS IN SPOTLIGHT ─── -->
     <section class="brands-section">
       <h2 class="section-title">Brands in Spotlight</h2>
-
       <div class="brands-grid">
         <div class="brand-card">
           <div class="image-container">
@@ -190,7 +194,7 @@
           </div>
           <div class="card-details">
             <span class="promo-tag yellow-tag">Min. 75% Off</span>
-            <p class="promo-text">Sturdy & stylish</p>
+            <p class="promo-text">Sturdy &amp; stylish</p>
           </div>
         </div>
 
@@ -231,8 +235,13 @@
       </div>
     </section>
 
+    <!-- ─── SALE BANNER ─── -->
     <section class="sale-banner-section">
-      <a href="#" class="banner-link" aria-label="Get Ready For The Hottest Sale">
+      <a
+        href="#"
+        class="banner-link"
+        aria-label="Get Ready For The Hottest Sale"
+      >
         <img
           src="grwm.png"
           alt="GRWM Sale - Starts 29th May. Get Ready For The Hottest Sale"
@@ -241,12 +250,11 @@
       </a>
     </section>
 
-    <!-- 
-decor -->
+    <!-- ─── HOME DECOR ─── -->
     <section class="decor-section">
       <div class="section-header">
-        <h2>Home Decor & Furnishing</h2>
-        <a href="#" class="view-all-btn">❯</a>
+        <h2>Home Decor &amp; Furnishing</h2>
+        <a href="#" class="view-all-btn" aria-label="View all">&#10095;</a>
       </div>
 
       <div class="decor-grid">
@@ -304,11 +312,11 @@ decor -->
       </div>
     </section>
 
-    <!-- footer -->
+    <!-- ─── FOOTER ─── -->
     <footer class="main-footer">
       <div class="footer-links-container">
         <div class="footer-column">
-          <h3>ABOUT</h3>
+          <h3>About</h3>
           <ul>
             <li><a href="#">Contact Us</a></li>
             <li><a href="#">About Us</a></li>
@@ -320,7 +328,7 @@ decor -->
         </div>
 
         <div class="footer-column">
-          <h3>GROUP COMPANIES</h3>
+          <h3>Group Companies</h3>
           <ul>
             <li><a href="#">Myntra</a></li>
             <li><a href="#">Cleartrip</a></li>
@@ -329,19 +337,19 @@ decor -->
         </div>
 
         <div class="footer-column">
-          <h3>HELP</h3>
+          <h3>Help</h3>
           <ul>
             <li><a href="#">Payments</a></li>
             <li><a href="#">Shipping</a></li>
-            <li><a href="#">Cancellation & Returns</a></li>
+            <li><a href="#">Cancellation &amp; Returns</a></li>
             <li><a href="#">FAQ</a></li>
           </ul>
         </div>
 
         <div class="footer-column">
-          <h3>CONSUMER POLICY</h3>
+          <h3>Consumer Policy</h3>
           <ul>
-            <li><a href="#">Cancellation & Returns</a></li>
+            <li><a href="#">Cancellation &amp; Returns</a></li>
             <li><a href="#">Terms Of Use</a></li>
             <li><a href="#">Security</a></li>
             <li><a href="#">Privacy</a></li>
@@ -357,20 +365,27 @@ decor -->
           <h3>Mail Us:</h3>
           <p>
             Flipkart Internet Private Limited,<br />
-            Buildings Alyssa, Begonia &<br />
+            Buildings Alyssa, Begonia &amp;<br />
             Clove Embassy Tech Village,<br />
             Outer Ring Road, Devarabeesanahalli Village,<br />
             Bengaluru, 560103,<br />
             Karnataka, India
           </p>
-
           <div class="social-links">
             <h3>Social:</h3>
             <div class="social-icons">
-              <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-              <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-              <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-              <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+              <a href="#" aria-label="Facebook"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="#" aria-label="Twitter"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a href="#" aria-label="YouTube"
+                ><i class="fab fa-youtube"></i
+              ></a>
+              <a href="#" aria-label="Instagram"
+                ><i class="fab fa-instagram"></i
+              ></a>
             </div>
           </div>
         </div>
@@ -379,7 +394,7 @@ decor -->
           <h3>Registered Office Address:</h3>
           <p>
             Flipkart Internet Private Limited,<br />
-            Buildings Alyssa, Begonia &<br />
+            Buildings Alyssa, Begonia &amp;<br />
             Clove Embassy Tech Village,<br />
             Outer Ring Road, Devarabeesanahalli Village,<br />
             Bengaluru, 560103,<br />

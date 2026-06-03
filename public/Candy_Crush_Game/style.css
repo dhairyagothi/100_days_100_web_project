@@ -108,7 +108,6 @@ li:hover{
     height: 100%;
     object-fit: contain;
     user-select: none;
-    -webkit-user-drag: none;
 }
 
 #board img.candy-hint {
