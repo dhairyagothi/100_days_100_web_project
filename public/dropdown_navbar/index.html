@@ -43,6 +43,330 @@
 
     <link rel="stylesheet" href="input.css" />
     <link rel="icon" href="../favv.png" type="image/x-icon" />
+
+  </head>
+
+  <body class="bg-gradient-to-b from-gray-950 to-slate-900 min-h-screen">
+    <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+
+    <nav
+      class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-lg border-b border-gray-700 w-screen sticky top-0 z-50"
+    >
+      <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+        <div class="relative flex items-center justify-between h-16">
+          <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+            <button
+              type="button"
+              class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              aria-expanded="false"
+              aria-haspopup="false"
+              id="mobile-menu"
+            >
+              <svg
+                class="block h-6 w-6 transition-transform duration-300 hover:scale-110"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <div
+            class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start"
+          >
+            <div class="flex-shrink-0 flex items-center">
+              <svg
+                class="block h-8 w-auto transition-transform duration-300 hover:scale-110"
+                fill="#55bbdd"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                xml:space="preserve"
+                stroke="#55bbdd"
+              >
+                <g id="SVGRepo_iconCarrier">
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M12 6.036c-2.667 0-4.333 1.325-5 3.976 1-1.325 2.167-1.822 3.5-1.491.761.189 1.305.738 1.906 1.345C13.387 10.855 14.522 12 17 12c2.667 0 4.333-1.325 5-3.976-1 1.325-2.166 1.822-3.5 1.491-.761-.189-1.305-.738-1.907-1.345-.98-.99-2.114-2.134-4.593-2.134zM7 12c-2.667 0-4.333 1.325-5 3.976 1-1.326 2.167-1.822 3.5-1.491.761.189 1.305.738 1.907 1.345.98.989 2.115 2.134 4.594 2.134 2.667 0 4.333-1.325 5-3.976-1 1.325-2.167 1.822-3.5 1.491-.761-.189-1.305-.738-1.906-1.345C10.613 13.145 9.478 12 7 12z"
+                  ></path>
+                </g>
+              </svg>
+            </div>
+            <div class="hidden sm:block sm:ml-6">
+              <div class="flex space-x-6">
+                <div class="relative">
+                  <button
+                  id="grocery"
+                  class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                  Grocery
+                </button>
+                <div 
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="grocery"
+                  tabindex="-1"
+                  id="grocery-dd"
+                  class="hidden opacity-0 scale-95 pointer-events-none transition-all duration-200 absolute top-full left-0 mt-1 bg-gray-800 text-white shadow-2xl ring-1 ring-gray-700 rounded-xl z-50 overflow-hidden min-w-[220px]"
+                  >
+                  <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Fruits & Vegetables
+                    </div>
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Dairy Products
+                    </div>
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Rice & Grains
+                    </div>
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Snacks
+                    </div>
+                    <div
+                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                    >
+                      Others
+                    </div>
+                </div>
+              </div>
+              
+              <div class="relative">
+                <button
+                id="mobile"
+                class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                Mobile
+              </button>
+              <div
+              role="menu"
+              aria-orientation="vertical"
+              aria-labelledby="mobile"
+              tabindex="-1"
+              id="mobile-dd"
+              class="hidden opacity-0 scale-95 pointer-events-none transition-all duration-200 absolute top-full left-0 mt-1 bg-gray-800 text-white shadow-2xl ring-1 ring-gray-700 rounded-xl z-50 overflow-hidden min-w-[220px]"
+              >
+              <div
+                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                  >
+                    Android Phones
+                  </div>
+
+                  <div
+                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                  >
+                    iPhones
+                  </div>
+
+                  <div
+                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                  >
+                    5G Phones
+                  </div>
+
+                  <div
+                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                  >
+                    Phone Cases
+                  </div>
+
+                  <div
+                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                  >
+                    Others
+                  </div>
+              </div>
+            </div>
+
+              <div class="relative">
+                <button
+                  id="appliances"
+                  class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Appliances
+                </button>
+
+                <div
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="appliances"
+                  tabindex="-1"
+                  id="appliances-dd"
+                  class="hidden opacity-0 scale-95 pointer-events-none transition-all duration-200 absolute top-full left-0 mt-1 bg-gray-800 text-white shadow-2xl ring-1 ring-gray-700 rounded-xl z-50 overflow-hidden min-w-[220px]"
+                >
+                  <div
+                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                  >
+                    Refrigerator
+                  </div>
+
+                  <div
+                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                  >
+                    Air Conditioner
+                  </div>
+
+                  <div
+                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                  >
+                    Washing Machine
+                  </div>
+
+                  <div
+                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                  >
+                    Television
+                  </div>
+
+                  <div
+                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                  >
+                    Others
+                  </div>
+                </div>
+              </div>
+
+              <div class="relative">
+                <button
+                id="vehicle"
+                class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                Vehicle
+              </button>
+                <div
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="vehicle"
+                tabindex="-1"
+                id="vehicle-dd"
+                class="hidden opacity-0 scale-95 pointer-events-none transition-all duration-200 absolute top-full left-0 mt-1 bg-gray-800 text-white shadow-2xl ring-1 ring-gray-700 rounded-xl z-50 overflow-hidden min-w-[220px]"
+                >
+                <div
+                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                  >
+                    Cars
+                  </div>
+
+                  <div
+                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                  >
+                    Bikes
+                  </div>
+
+                  <div
+                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                  >
+                    Scooters
+                  </div>
+
+                  <div
+                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                  >
+                    Electric Vehicles
+                  </div>
+
+                  <div
+                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                  >
+                    Others
+                  </div>
+                </div>
+            </div>
+
+               <div class="relative">
+                 <button
+                 id="travel"
+                 class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
+                 >
+                 Travel
+                </button>
+                <div
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="travel"
+                tabindex="-1"
+                id="travel-dd"
+                class="hidden opacity-0 scale-95 pointer-events-none transition-all duration-200 absolute top-full left-0 mt-1 bg-gray-800 text-white shadow-2xl ring-1 ring-gray-700 rounded-xl z-50 overflow-hidden min-w-[220px]"
+                >
+                <div
+                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                  >
+                    Flight
+                  </div>
+
+                  <div
+                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                  >
+                    Hotel
+                  </div>
+
+                  <div
+                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                  >
+                    Bus
+                  </div>
+
+                  <div
+                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                  >
+                    Train
+                  </div>
+
+                  <div
+                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
+                  >
+                    Others
+                  </div>
+                </div>
+              </div>
+
+              <div class="relative">
+                <button
+                  id="fashion"
+                  class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Fashion
+                </button>
+
+                <div
+                  role="menu"
+                  id="fashion-dd"
+                  class="hidden opacity-0 scale-95 pointer-events-none transition-all duration-200 absolute left-1/2 transform -translate-x-1/2 top-full mt-1 bg-gray-800 text-white shadow-2xl ring-1 ring-gray-700 rounded-xl z-50 overflow-hidden min-w-[220px]"
+                >
+                  <div
+                    class="block px-4 py-3 whitespace-nowrap rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105"
+                  >
+                    Men's Fashion
+                  </div>
+
+                  <div
+                    class="block px-4 py-3 whitespace-nowrap rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105"
+                  >
+                    Women's Fashion
+                  </div>
+
+                  <div
+                    class="block px-4 py-3 whitespace-nowrap rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105"
+                  >
+                    Kid's Fashion
+                  </div>
+                </div>
+
     
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
@@ -84,7 +408,7 @@
         border-radius: 2px;
       }
 
-      /* Smooth animations */
+    
       @keyframes slideInUp {
         from {
           opacity: 0;
@@ -375,6 +699,7 @@
             <a href="#travel" class="group relative overflow-hidden rounded-2xl bg-white/5 p-6 text-center transition-all hover:bg-brand-500/10 border border-white/5 hover:border-brand-500/30">
               <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-500/20 text-cyan-400 transition-all group-hover:scale-110 group-hover:rotate-6">
                  <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
+
               </div>
               <h3 class="font-bold text-white">Travel</h3>
               <p class="mt-1 text-xs text-slate-500">120 Dest.</p>
@@ -399,6 +724,191 @@
             <h2 class="text-3xl font-bold text-white sm:text-5xl">Featured Products</h2>
             <p class="mt-4 text-slate-400 max-w-2xl mx-auto">Handpicked best sellers and top-rated gadgets just for you.</p>
           </div>
+        </div>
+
+
+        <div
+          id="auth-container"
+          class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 space-x-3"
+        >
+          <button
+            id="notification-btn"
+            class="bg-gray-800 p-2 rounded-full text-gray-400 hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+          >
+            <svg
+              class="h-6 w-6 transition-transform duration-300 hover:scale-110"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+              />
+            </svg>
+          </button>
+
+          <div id="profile-wrapper" class="relative ml-3">
+            <button
+              type="button"
+              class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+              id="user-menu-button"
+              aria-expanded="false"
+              aria-haspopup="true"
+            >
+              <img
+                class="h-9 w-9 rounded-full border-2 border-cyan-400"
+                src="./img/pic.jpg"
+                alt="User Profile"
+              />
+            </button>
+
+            <div
+              class="hidden opacity-0 scale-95 pointer-events-none transition-all duration-200 origin-top-right absolute right-0 top-full mt-1 w-52 rounded-xl shadow-2xl py-2 bg-gray-800 ring-1 ring-gray-700 focus:outline-none z-50"
+              role="menu"
+              aria-orientation="vertical"
+              aria-labelledby="user-menu-button"
+              tabindex="-1"
+              id="user-menu"
+            >
+              <a
+                href="#"
+                class="block px-4 py-3 text-sm text-gray-200 cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105"
+              >
+                Your Profile
+              </a>
+
+              <a
+                href="#"
+                class="block px-4 py-3 text-sm text-gray-200 cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105"
+              >
+                Settings
+              </a>
+
+              <a
+                href="#"
+                id="sign-out-btn"
+                class="block px-4 py-3 text-sm text-red-400 font-semibold cursor-pointer hover:bg-gray-700 hover:text-red-300 transition-all duration-200 hover:scale-105"
+              >
+                Sign out
+              </a>
+            </div>
+          </div>
+
+          <button
+            id="inline-login-btn"
+            class="hidden bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-cyan-400 hover:to-blue-400 transition-all duration-200 shadow-md hover:scale-105"
+          >
+            Log In
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sm:hidden">
+      <div
+        class="px-2 pt-2 pb-3 space-y-2 hidden bg-gray-900 border-t border-gray-700"
+        role="menu"
+        aria-orientation="vertical"
+        aria-labelledby="mobile-menu"
+        tabindex="-1"
+        id="mobile-menu-dd"
+      >
+        <div>
+          <button
+            id="mobile-grocery-btn"
+            class="w-full text-left hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 text-white block px-3 py-2 rounded-md text-base font-medium"
+          >
+            Grocery
+          </button>
+          <div id="mobile-grocery-dd" class="hidden pl-4 space-y-1">
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Fruits & Vegetables</div>
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Dairy Products</div>
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Rice & Grains</div>
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Snacks</div>
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Others</div>
+          </div>
+        </div>
+
+        <div>
+          <button
+            id="mobile-mobile-btn"
+            class="w-full text-left hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 text-white block px-3 py-2 rounded-md text-base font-medium"
+          >
+            Mobile
+          </button>
+          <div id="mobile-mobile-dd" class="hidden pl-4 space-y-1">
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Android Phones</div>
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">iPhones</div>
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">5G Phones</div>
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Phone Cases</div>
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Others</div>
+          </div>
+        </div>
+
+        <div>
+          <button
+            id="mobile-appliances-btn"
+            class="w-full text-left hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 text-white block px-3 py-2 rounded-md text-base font-medium"
+          >
+            Appliances
+          </button>
+          <div id="mobile-appliances-dd" class="hidden pl-4 space-y-1">
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Refrigerator</div>
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Air Conditioner</div>
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Washing Machine</div>
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Television</div>
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Others</div>
+          </div>
+        </div>
+
+        <div>
+          <button
+            id="mobile-vehicle-btn"
+            class="w-full text-left hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 text-white block px-3 py-2 rounded-md text-base font-medium"
+          >
+            Vehicle
+          </button>
+          <div id="mobile-vehicle-dd" class="hidden pl-4 space-y-1">
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Cars</div>
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Bikes</div>
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Scooters</div>
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Electric Vehicles</div>
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Others</div>
+          </div>
+        </div>
+
+        <div>
+          <button
+            id="mobile-travel-btn"
+            class="w-full text-left hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 text-white block px-3 py-2 rounded-md text-base font-medium"
+          >
+            Travel
+          </button>
+          <div id="mobile-travel-dd" class="hidden pl-4 space-y-1">
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Flight</div>
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Hotel</div>
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Bus</div>
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Train</div>
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Others</div>
+          </div>
+        </div>
+
+        <div>
+          <button
+            id="mobile-fashion-btn"
+            class="w-full text-left hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 text-white block px-3 py-2 rounded-md text-base font-medium"
+          >
+            Fashion
+          </button>
+          <div id="mobile-fashion-dd" class="hidden pl-4 space-y-1">
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Men's Fashion</div>
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Women's Fashion</div>
+            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Kid's Fashion</div>
 
           <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             <!-- Product 1 -->
@@ -850,6 +1360,7 @@
               <li><a href="#" class="hover:text-brand-400 transition-colors">Returns & Refunds</a></li>
               <li><a href="#" class="hover:text-brand-400 transition-colors">Privacy Policy</a></li>
             </ul>
+
           </div>
         </div>
         <div class="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
@@ -857,6 +1368,54 @@
            <p class="text-slate-500 text-xs flex items-center gap-1">Crafted with ❤️ by <span class="text-brand-400 font-bold">Antigravity AI</span></p>
         </div>
       </div>
+
+    </div>
+  </nav>
+
+  <div class="flex flex-col justify-center items-center text-center min-h-[80vh] px-4">
+    <div id="welcome-text" class="text-gray-200 text-2xl md:text-4xl font-semibold tracking-wide max-w-5xl leading-relaxed bg-slate-900/50 p-8 rounded-2xl border border-slate-800/80 shadow-xl backdrop-blur-sm">
+      Dropdown Menus Available Under Grocery, Mobile, Appliances, Vehicle, Travel, Fashion & Profile Tabs
+    </div>
+  </div>
+
+  <footer class="fixed bottom-0 left-0 w-full py-3 text-center text-gray-400 text-sm bg-gray-950/40 backdrop-blur-xs">
+    Crafted with ❤️ by <b class="text-cyan-400">Vansh Kashyap</b>
+  </footer>
+
+  <script>
+    const dropdowns = [
+      { button: "grocery", menu: "grocery-dd" },        
+      { button: "mobile", menu: "mobile-dd" },        
+      { button: "appliances", menu: "appliances-dd" },
+      { button: "vehicle", menu: "vehicle-dd" },        
+      { button: "travel", menu: "travel-dd" },        
+      { button: "fashion", menu: "fashion-dd" },
+      { button: "user-menu-button", menu: "user-menu" },
+    ];
+
+    function closeAllDropdowns() {
+      dropdowns.forEach(({ menu, button }) => {
+        const dropdown = document.getElementById(menu);
+        const btn = document.getElementById(button);
+
+        if (dropdown) {
+          dropdown.classList.add("hidden", "opacity-0", "scale-95", "pointer-events-none");
+        }
+        if (btn) {
+          btn.classList.remove("bg-gray-700");
+          btn.setAttribute("aria-expanded", "false");
+        }
+      });
+    }
+
+    dropdowns.forEach(({ button, menu }) => {
+      const btn = document.getElementById(button);
+      const dropdown = document.getElementById(menu);
+
+      if (btn && dropdown) {
+        dropdown.addEventListener("click", function (e) {
+          e.stopPropagation();
+        });
     </footer>
 
     <script>
@@ -864,9 +1423,7 @@
       
         
 
-        
-        
-
+   
 
       // Reusable Smooth Scroll
       function smoothScrollTo(element, offset = 80) {
@@ -875,6 +1432,107 @@
         const elementRect = element.getBoundingClientRect().top;
         const elementPosition = elementRect - bodyRect;
         const offsetPosition = elementPosition - offset;
+
+
+          const isHidden = dropdown.classList.contains("hidden");
+          closeAllDropdowns();
+
+          if (isHidden) {
+            dropdown.classList.remove("hidden");
+            setTimeout(() => {
+              dropdown.classList.remove("opacity-0", "scale-95", "pointer-events-none");
+            }, 10);
+            btn.classList.add("bg-gray-700");
+            btn.setAttribute("aria-expanded", "true");
+          }
+        });
+      }
+    });
+
+    // Dynamic Outside Click Listener for ALL active dropdowns
+    document.addEventListener("click", function (e) {
+      const dropdownIds = dropdowns.map(d => `#${d.menu}`).join(", ");
+      const buttonIds = dropdowns.map(d => `#${d.button}`).join(", ");
+
+      const clickedInsideDropdown = e.target.closest(dropdownIds);
+      const clickedButton = e.target.closest(buttonIds);
+
+      if (!clickedInsideDropdown && !clickedButton) {
+        closeAllDropdowns();
+      }
+    });
+
+    // Interactive Log-out / Log-in State Manager
+    const signOutBtn = document.getElementById("sign-out-btn");
+    const loginBtn = document.getElementById("inline-login-btn");
+    const profileWrapper = document.getElementById("profile-wrapper");
+    const notificationBtn = document.getElementById("notification-btn");
+    const welcomeText = document.getElementById("welcome-text");
+
+    if (signOutBtn) {
+      signOutBtn.addEventListener("click", function(e) {
+        e.preventDefault();
+        closeAllDropdowns();
+        
+        // Toggle Nav elements to Logged Out State
+        profileWrapper.classList.add("hidden");
+        notificationBtn.classList.add("hidden");
+        loginBtn.classList.remove("hidden");
+        
+        if (welcomeText) {
+          welcomeText.innerHTML = `
+            <span class="text-red-400 block mb-2 font-bold text-3xl">Logged Out Successfully!</span>
+            <span class="text-base text-gray-400">The application is no longer locked into a single user. You can log back in efficiently using the button in the top right.</span>
+          `;
+        }
+      });
+    }
+
+    if (loginBtn) {
+      loginBtn.addEventListener("click", function(e) {
+        e.preventDefault();
+        
+        // Toggle Nav elements to Logged In State
+        profileWrapper.classList.remove("hidden");
+        notificationBtn.classList.remove("hidden");
+        loginBtn.classList.add("hidden");
+        
+        if (welcomeText) {
+          welcomeText.innerHTML = `
+            <span class="text-cyan-400 block mb-2 font-bold text-3xl">Logged In Successfully!</span>
+            <span class="text-base text-gray-400">Dropdown Menus Available Under Grocery, Mobile, Appliances, Vehicle, Travel, Fashion & Profile Tabs</span>
+          `;
+        }
+      });
+    }
+
+    // Mobile Menu Toggles
+    document.getElementById("mobile-menu").addEventListener("click", function (e) {
+      e.stopPropagation();
+      document.getElementById("mobile-menu-dd").classList.toggle("hidden");
+    });
+
+    const mobileButtons = [
+      { btn: "mobile-grocery-btn", dd: "mobile-grocery-dd" },
+      { btn: "mobile-mobile-btn", dd: "mobile-mobile-dd" },
+      { btn: "mobile-appliances-btn", dd: "mobile-appliances-dd" },
+      { btn: "mobile-vehicle-btn", dd: "mobile-vehicle-dd" },
+      { btn: "mobile-travel-btn", dd: "mobile-travel-dd" },
+      { btn: "mobile-fashion-btn", dd: "mobile-fashion-dd" }
+    ];
+
+    mobileButtons.forEach(({ btn, dd }) => {
+      const targetBtn = document.getElementById(btn);
+      if (targetBtn) {
+        targetBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          document.getElementById(dd).classList.toggle("hidden");
+        });
+      }
+    });
+  </script>
+</body>
+</html>
 
         window.scrollTo({
           top: offsetPosition,
@@ -1220,3 +1878,4 @@
     </script>
   </body>
 </html>
+
