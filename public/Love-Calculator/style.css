@@ -1,40 +1,25 @@
-/* Romantic aesthetic fonts */
-
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Pacifico&display=swap');
+/* ==================== GLOBAL LAYOUT RESETS ==================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
-/* Updated body styling with animated gradient background */
-
-/* Animated gradient background */
-
 body {
+    min-height: 100vh;
+    width: 100%;
+    /* Beautiful romantic neon background mesh gradient */
+    background: linear-gradient(135deg, #f472b6, #db2777, #4c1d95);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-
-    overflow: hidden;
-
-   /* Darker consistent pink gradient */
-
-background: linear-gradient(
-    -45deg,
-    #ff4e9b,
-    #f54291,
-    #ec4899,
-    #db2777
-);
-
-    background-size: 400% 400%;
-
-    animation: gradientBG 12s ease infinite;
+    overflow-x: hidden;
+    padding: 20px;
 }
-/* Smooth animated gradient movement */
 
 @keyframes gradientBG {
     0% {
@@ -50,594 +35,336 @@ background: linear-gradient(
     }
 }
 
-/* Modern glassmorphism card UI */
-
-/* Glassmorphism card design */
-
-.contentbox {
-    /* Keeps calculator above floating hearts */
-    position: relative;
-    z-index: 2;
-    text-align: center;
-
-    width: 90%;
-    max-width: 420px;
-
-    min-height: 620px;
-
-    padding: 35px;
-
-    border-radius: 30px;
-
-    /* Stronger glass effect */
-    background: rgba(255, 255, 255, 0.15);
-
-    backdrop-filter: blur(18px);
-
-    border: 1px solid rgba(255, 255, 255, 0.25);
-
-    /* Better shadow */
-    box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.18),
-        0 0 20px rgba(255, 255, 255, 0.08);
-
-    color: white;
-
-    animation: floatCard 4s ease-in-out infinite;
+/* ==================== SCREEN CENTERING CONTROL WRAPPER ==================== */
+.main-wrapper {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    margin: auto;
 }
-/* Floating card animation */
 
-@keyframes floatCard {
-    0%, 100% {
-        transform: translateY(0px);
+/* Glassmorphic Main App Card Box */
+.contentbox {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 24px;
+    padding: 40px 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contentbox:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
+}
+
+/* ==================== CARD HEADER ELEMENTS ==================== */
+.card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+/* Clean corner heart scaling override to prevent layout bleeding */
+.corner-heart {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+    animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
     }
 
     50% {
-        transform: translateY(-10px);
+        transform: scale(1.12);
     }
 }
-/* Improved heading color */
-
-/* Main heading */
-
-/* Love themed heading */
 
 .contentbox h1 {
-
-    font-family: 'Pacifico', cursive;
-
-    font-size: 3.2rem;
-
-    margin-bottom: 20px;
-
-    font-weight: normal;
-
-    color: white;
-
-    letter-spacing: 1px;
-
-    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
-
-
 
 .contentbox h1 span {
-
-    font-family: 'Pacifico', cursive;
-
-    color: #fff0f6;
-}
-/* Softer romantic description text */
-
-.contentbox p {
-
-    font-size: 1.05rem;
-
-    line-height: 1.6;
-
-    color: rgba(255, 255, 255, 0.92);
-
-    margin-bottom: 25px;
-}
-/* Modern calculate button */
-
-#calculate {
-    letter-spacing: 0.5px;
-    margin-top: 2rem;
-
-    width: 100%;
-
-    height: 60px;
-
-    border: none;
-
-    border-radius: 18px;
-
-    background: white;
-
-    color: #ff4e9b;
-
-    font-size: 24px;
-
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition: 0.3s ease;
-
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-}
-/* Button hover effect */
-
-#calculate:hover {
-    transform: translateY(-3px) scale(1.02);
-
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-}
-@keyframes pulsate{
-    0%{
-        transform: scale(1);
-        opacity: 1;
-    }
-    50%{
-        transform: scale(1.1);
-        opacity: 0.8;
-    }
-    100%{
-        transform: scale(1);
-        opacity: 1;
-    }
+    color: #ffe4e6;
+    text-shadow: 0 0 10px rgba(255, 228, 230, 0.6);
 }
 
-
-.gap {
-    margin-bottom: 0.5rem;
+.description {
+    font-size: 0.95rem;
+    color: #fce7f3;
+    line-height: 1.5;
+    margin-bottom: 35px;
 }
 
-.footer {
-    margin-top: 2rem;
-}
-/* Romantic result styling */
-
-.footer h2 {
-
-    font-family: 'Pacifico', cursive;
-
-    font-size: 3rem;
-
-    color: white;
-
-    margin-bottom: 12px;
-
-    font-weight: normal;
-
-    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.hidden {
-    display: none;
-}
-
+/* ==================== MATERIAL FLOATING INPUT FIELDS ==================== */
 .input-group {
     position: relative;
-    margin: 40px 0 20px;
-}
-
-/* Improved modern input fields */
-
-/* Modern input styling */
-
-input {
+    margin-bottom: 30px;
     width: 100%;
+}
 
-    padding: 16px;
-
+.input-group input {
+    font-size: 1.1rem;
+    padding: 12px 10px 10px 5px;
+    display: block;
+    width: 100%;
     border: none;
-
-    border-radius: 15px;
-
-    background: rgba(255, 255, 255, 0.22);
-
-    color: white;
-
-    font-size: 18px;
-
-    backdrop-filter: blur(6px);
-
-    transition: 0.3s ease;
-
-    border: 1px solid transparent;
-}
-/* Placeholder color */
-
-input::placeholder {
-    color: rgba(255, 255, 255, 0.7);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+    background: transparent;
+    color: #ffffff;
+    transition: border-color 0.3s ease;
 }
 
-/* Input focus effect */
-
-/* Input focus animation */
-
-input:focus {
+.input-group input:focus {
     outline: none;
-
-    background: rgba(255, 255, 255, 0.3);
-
-    border: 1px solid rgba(255, 255, 255, 0.6);
-
-    transform: scale(1.02);
+    border-bottom-color: #ffe4e6;
 }
 
-label {
-    color: #999;
-    font-size: 18px;
+.input-group label {
+    color: #fce7f3;
+    font-size: 1rem;
     font-weight: normal;
     position: absolute;
     pointer-events: none;
     left: 5px;
-    top: 10px;
+    top: 12px;
     transition: 0.2s ease all;
-    -moz-transition: 0.2s ease all;
-    -webkit-transition: 0.2s ease all;
 }
 
-input:focus~label,
-input:valid~label {
-    top: -20px;
-    font-size: 14px;
-    color: #ec4899;
+/* Animate standard placeholder positions when active or filled */
+.input-group input:focus~label,
+.input-group input:valid~label {
+    top: -14px;
+    font-size: 0.85rem;
+    color: #ffe4e6;
+    font-weight: 600;
 }
 
-.bar {
-    position: relative;
-    display: block;
-    width: 315px;
+/* ==================== INTERACTION ACTION BAR ==================== */
+.action-wrapper {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.bar:before,
-.bar:after {
-    content: '';
-    height: 2px;
-    width: 0;
-    bottom: 1px;
-    position: absolute;
-    background: #ec4899;
-    transition: 0.2s ease all;
-    -moz-transition: 0.2s ease all;
-    -webkit-transition: 0.2s ease all;
-}
-
-.bar:before {
-    left: 50%;
-}
-
-.bar:after {
-    right: 50%;
-}
-
-input:focus~.bar:before,
-input:focus~.bar:after {
-    width: 50%;
-}
-
-.highlight {
-    position: absolute;
-    height: 60%;
-    width: 100px;
-    top: 25%;
-    left: 0;
-    pointer-events: none;
-    opacity: 0.5;
-}
-
-input:focus~.highlight {
-    -webkit-animation: inputHighlighter 0.3s ease;
-    -moz-animation: inputHighlighter 0.3s ease;
-    animation: inputHighlighter 0.3s ease;
-}
-
-
-/* animations */
-
-@-webkit-keyframes inputHighlighter {
-    from {
-        background: #ec4899;
-    }
-    to {
-        width: 0;
-        background: #ec4899;
-    }
-}
-
-@-moz-keyframes inputHighlighter {
-    from {
-        background: #ec4899;
-    }
-    to {
-        width: 0;
-        background: transparent;
-    }
-}
-
-@keyframes inputHighlighter {
-    from {
-        background: #ec4899;
-    }
-    to {
-        width: 0;
-        background: transparent;
-    }
-}
-
-/* Result percentage styling */
-
-.footer h2 {
-    font-size: 40px;
-
-    color: white;
-
-    margin-bottom: 10px;
-
-    font-weight: 700;
-}
-
-/* Result message styling */
-
-.footer p {
-    font-size: 18px;
-
-    color: rgba(255, 255, 255, 0.9);
-
-    margin-top: 6px;
-}
-#calculate.hidden {
-    display: none;
-}
-
-
-#reset {
-    margin-top: 1rem;
-    width: 150px;
-    height: 50px;
-    color: white;
-    font-size: 18px;
-    border: none;
-    border-radius: 10px;
-    background: #ec4899;
-    cursor: pointer;
-}
 #calculate {
-
-    letter-spacing: 1px;
-
-    font-family: 'Pacifico', cursive;
-
-    font-size: 1.5rem;
-
-    font-weight: normal;
-
-    margin-top: 2rem;
-
     width: 100%;
-
-    height: 60px;
-
+    padding: 14px;
     border: none;
-
-    border-radius: 18px;
-
-    background: white;
-
-    color: #ff4e9b;
-
+    border-radius: 14px;
+    background: #ffffff;
+    color: #be185d;
+    font-size: 1.1rem;
+    font-weight: 700;
     cursor: pointer;
-
-    transition: 0.3s ease;
-
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-/* Responsive design for mobile devices */
 
-@media screen and (max-width: 480px) {
+#calculate:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.25);
+    background: #fff1f2;
+}
 
-    .contentbox {
-        padding: 20px;
-    }
+#calculate:active {
+    transform: translateY(1px);
+}
 
-    .contentbox h1 {
-        font-size: 2rem;
-    }
+#loading {
+    margin-top: 15px;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: #ffe4e6;
+    letter-spacing: 0.05em;
+}
 
-   #calculate {
+.hidden {
+    display: none !important;
+}
 
-    letter-spacing: 1px;
+/* ==================== INTERACTIVE RESULTS OVERLAY ==================== */
+.footer {
+    max-height: 0;
+    opacity: 0;
+    transform: scale(0.95);
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
-    font-family: 'Pacifico', cursive;
+.footer.show-result {
+    max-height: 180px;
+    opacity: 1;
+    transform: scale(1);
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
 
+#result-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 1.5rem;
-
-    font-weight: normal;
-
-    margin-top: 2rem;
-
-    width: 100%;
-
-    height: 60px;
-
-    border: none;
-
-    border-radius: 18px;
-
-    background: white;
-
-    color: #ff4e9b;
-
-    cursor: pointer;
-
-    transition: 0.3s ease;
-
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    margin-bottom: 8px;
 }
 
-    .footer h2 {
-        font-size: 30px;
-    }
-
-    .footer p {
-        font-size: 16px;
-    }
+#result-percentage {
+    font-size: 1rem;
+    color: #fce7f3;
+    font-weight: 500;
+    line-height: 1.4;
 }
-/* Floating hearts container */
 
+/* ==================== DYNAMIC FLOATING HEARTS BACKDROP ==================== */
 .hearts {
     position: fixed;
-
-    width: 100%;
-    height: 100%;
-
     top: 0;
     left: 0;
-
+    width: 100%;
+    height: 100%;
     overflow: hidden;
-
+    z-index: 1;
     pointer-events: none;
-
-    z-index: 0;
 }
-
-/* Individual floating hearts */
 
 .hearts span {
     position: absolute;
-
+    display: block;
+    list-style: none;
+    color: rgba(255, 255, 255, 0.2);
+    font-size: 1.5rem;
     bottom: -50px;
-
-    color: rgba(255, 255, 255, 0.7);
-
-    font-size: 22px;
-
-    animation: floatUp linear infinite;
+    animation: floatUp 12s linear infinite;
 }
 
-/* Different positions + speeds */
-
+/* Stagger dynamic backdrop particles uniformly across screen quadrants */
 .hearts span:nth-child(1) {
     left: 10%;
-    animation-duration: 8s;
-}
-
-.hearts span:nth-child(2) {
-    left: 20%;
-    animation-duration: 12s;
-    font-size: 18px;
-}
-
-.hearts span:nth-child(3) {
-    left: 30%;
+    animation-delay: 0s;
     animation-duration: 10s;
 }
 
-.hearts span:nth-child(4) {
-    left: 40%;
-    animation-duration: 14s;
-    font-size: 26px;
+.hearts span:nth-child(2) {
+    left: 25%;
+    animation-delay: 2s;
+    animation-duration: 12s;
+    font-size: 2rem;
 }
 
-.hearts span:nth-child(5) {
-    left: 50%;
+.hearts span:nth-child(3) {
+    left: 40%;
+    animation-delay: 4s;
     animation-duration: 9s;
 }
 
+.hearts span:nth-child(4) {
+    left: 55%;
+    animation-delay: 1s;
+    animation-duration: 14s;
+    font-size: 1.2rem;
+}
+
+.hearts span:nth-child(5) {
+    left: 70%;
+    animation-delay: 5s;
+    animation-duration: 11s;
+}
+
 .hearts span:nth-child(6) {
-    left: 60%;
+    left: 85%;
+    animation-delay: 3s;
     animation-duration: 13s;
+    font-size: 2.2rem;
 }
 
 .hearts span:nth-child(7) {
-    left: 70%;
-    animation-duration: 11s;
-    font-size: 20px;
+    left: 15%;
+    animation-delay: 7s;
+    animation-duration: 10s;
 }
 
 .hearts span:nth-child(8) {
-    left: 80%;
+    left: 50%;
+    animation-delay: 9s;
     animation-duration: 15s;
 }
 
 .hearts span:nth-child(9) {
-    left: 90%;
-    animation-duration: 10s;
+    left: 65%;
+    animation-delay: 2s;
+    animation-duration: 8s;
+    font-size: 1rem;
 }
 
 .hearts span:nth-child(10) {
-    left: 95%;
-    animation-duration: 7s;
+    left: 90%;
+    animation-delay: 6s;
+    animation-duration: 12s;
 }
 
-/* Floating animation */
-
 @keyframes floatUp {
-
     0% {
-        transform: translateY(0) scale(0.8);
+        transform: translateY(0) rotate(0deg);
         opacity: 0;
     }
 
     10% {
-        opacity: 1;
+        opacity: 0.6;
+    }
+
+    90% {
+        opacity: 0.4;
     }
 
     100% {
-        transform: translateY(-120vh) scale(1.4);
+        transform: translateY(-105vh) rotate(360deg);
         opacity: 0;
     }
 }
-/* Smooth result reveal animation */
 
-.footer {
-    margin-top: 2rem;
-
-    opacity: 0;
-
-    transform: translateY(20px);
-
-    transition: all 0.5s ease;
-}
-
-/* Active result animation */
-
-.footer.show-result {
-    opacity: 1;
-
-    transform: translateY(0);
-}
-/* Loading animation styling */
-
-#loading {
-
-    margin-top: 20px;
-
-    font-size: 18px;
-
-    color: white;
-
-    animation: pulseText 1s infinite;
-}
-
-/* Pulsing effect */
-
-@keyframes pulseText {
-
-    0% {
-        opacity: 0.5;
+/* ==================== DEVICE RESPONSIVENESS OVERRIDES ==================== */
+@media (max-width: 480px) {
+    body {
+        padding: 15px;
     }
 
-    50% {
-        opacity: 1;
+    .contentbox {
+        padding: 30px 20px;
+        border-radius: 20px;
     }
 
-    100% {
-        opacity: 0.5;
+    .contentbox h1 {
+        font-size: 2.1rem;
+    }
+
+    #result-message {
+        font-size: 1.25rem;
     }
 }
