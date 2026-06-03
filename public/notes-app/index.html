@@ -1,77 +1,193 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
-  <meta charset="utf-8">  
-  <title>Notes App</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+  <meta name="description" content="A responsive notes app with local storage, tags, search, favorites, trash, and JSON backup support.">
+  <title>Notes App</title>
+  <link rel="icon" href="NotesApp-Logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="app-shell">
-    <section class="app-header">
-      <div>
-        <p class="eyebrow">Private workspace</p>
-        <h1>Notes App</h1>
-      </div>
-      <div class="header-actions">
-        <div class="search-bar">
-          <i class="uil uil-search"></i>
-          <input type="text" id="search-input" placeholder="Search notes, tags, ideas...">
+  <a href="../../index.html" class="back-link" aria-label="Back to project gallery">Back</a>
+
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Notes navigation">
+      <div class="brand">
+        <img src="NotesApp-Logo.png" alt="" class="brand-logo">
+        <div>
+          <span class="eyebrow">Local workspace</span>
+          <h1>Notes App</h1>
         </div>
-        <button class="clear-notes" type="button" aria-label="Delete all saved notes">
-          <i class="uil uil-trash-alt"></i>
-          <span>Clear notes</span>
+      </div>
+
+      <button class="primary-action" id="newNoteSidebar" type="button">New Note</button>
+
+      <nav class="nav-list" aria-label="Note filters">
+        <button class="nav-item active" type="button" data-filter="all">
+          <span>All notes</span>
+          <strong id="allCount">0</strong>
         </button>
+        <button class="nav-item" type="button" data-filter="favorites">
+          <span>Favorites</span>
+          <strong id="favoriteCount">0</strong>
+        </button>
+        <button class="nav-item" type="button" data-filter="archived">
+          <span>Archived</span>
+          <strong id="archivedCount">0</strong>
+        </button>
+        <button class="nav-item" type="button" data-filter="trash">
+          <span>Trash</span>
+          <strong id="trashCount">0</strong>
+        </button>
+      </nav>
+
+      <div class="tag-panel">
+        <div class="panel-title">Tags</div>
+        <div class="tag-list" id="tagList"></div>
+      </div>
+
+      <div class="sidebar-actions">
+        <button class="ghost-action" id="exportBtn" type="button">Export JSON</button>
+        <label class="ghost-action file-action" for="importInput">Import JSON</label>
+        <input id="importInput" type="file" accept="application/json,.json">
+      </div>
+    </aside>
+
+    <main class="workspace">
+      <header class="topbar">
+        <div>
+          <span class="eyebrow" id="todayLabel">Today</span>
+          <h2 id="viewTitle">All notes</h2>
+          <p id="summaryText">Your notes are saved in this browser.</p>
+        </div>
+
+        <div class="topbar-actions">
+          <label class="search-box" for="searchInput">
+            <span aria-hidden="true">Search</span>
+            <input id="searchInput" type="search" placeholder="Search title, note, or tag">
+          </label>
+          <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">Light</button>
+          <button class="primary-action compact" id="newNoteTop" type="button">New</button>
+        </div>
+      </header>
+
+      <section class="quick-stats" aria-label="Note statistics">
+        <article>
+          <span>Total</span>
+          <strong id="statTotal">0</strong>
+        </article>
+        <article>
+          <span>Favorites</span>
+          <strong id="statFavorites">0</strong>
+        </article>
+        <article>
+          <span>Last edited</span>
+          <strong id="statEdited">None</strong>
+        </article>
+      </section>
+
+      <section class="notes-grid" id="notesGrid" aria-live="polite"></section>
+    </main>
+  </div>
+
+  <!-- Note Editor Modal -->
+  <div class="modal-overlay" id="modalOverlay" hidden>
+    <section class="note-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <form id="noteForm">
+        <div class="modal-header">
+          <div>
+            <span class="eyebrow">Note editor</span>
+            <h2 id="modalTitle">Create note</h2>
+          </div>
+          <button class="icon-button" id="closeModal" type="button" aria-label="Close editor">x</button>
+        </div>
+
+        <label for="titleInput">Title</label>
+        <input id="titleInput" type="text" maxlength="80" placeholder="Project ideas" required>
+
+        <label for="contentInput">Note</label>
+        <textarea id="contentInput" rows="8" maxlength="1200" placeholder="Write the details here..." required></textarea>
+
+        <div class="form-row">
+          <div>
+            <label for="tagInput">Tag</label>
+            <select id="tagInput">
+              <option value="Work">Work</option>
+              <option value="Study">Study</option>
+              <option value="Personal">Personal</option>
+              <option value="Ideas">Ideas</option>
+            </select>
+          </div>
+          <div>
+            <label for="colorInput">Color</label>
+            <select id="colorInput">
+              <option value="teal">Teal</option>
+              <option value="violet">Violet</option>
+              <option value="amber">Amber</option>
+              <option value="rose">Rose</option>
+              <option value="blue">Blue</option>
+              <option value="green">Green</option>
+              <option value="purple">Purple</option>
+              <option value="orange">Orange</option>
+              <option value="pink">Pink</option>
+              <option value="yellow">Yellow</option>
+              <option value="indigo">Indigo</option>
+              <option value="red">Red</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="checkbox-row">
+          <label>
+            <input id="favoriteInput" type="checkbox">
+            Mark as favorite
+          </label>
+          <label>
+            <input id="archivedInput" type="checkbox">
+            Archive note
+          </label>
+          <label>
+            <input id="lockedInput" type="checkbox">
+            Lock with password
+          </label>
+        </div>
+
+        <!-- Password field shown only when lock is checked -->
+        <div id="passwordField" class="password-field" hidden>
+          <label for="passwordInput">Set Password</label>
+          <input id="passwordInput" type="password" placeholder="Enter a password for this note" maxlength="50">
+        </div>
+
+        <div class="modal-actions">
+          <button class="secondary-action" id="resetForm" type="button">Reset</button>
+          <button class="primary-action" type="submit">Save note</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <!-- Password Unlock Modal -->
+  <div class="modal-overlay" id="unlockOverlay" hidden>
+    <section class="note-modal unlock-modal" role="dialog" aria-modal="true" aria-labelledby="unlockTitle">
+      <div class="unlock-body">
+        <div class="lock-icon-big">🔒</div>
+        <h2 id="unlockTitle">Note is Locked</h2>
+        <p>Enter password to view this note.</p>
+        <input id="unlockInput" type="password" placeholder="Enter password" maxlength="50">
+        <div class="unlock-actions">
+          <button class="secondary-action" id="cancelUnlock" type="button">Cancel</button>
+          <button class="primary-action" id="confirmUnlock" type="button">Unlock</button>
+        </div>
+        <p class="unlock-error" id="unlockError"></p>
       </div>
     </section>
-  
-    <div class="popup-box">
-      <div class="popup">
-        <div class="content">
-          <header>
-            <p></p>
-            <i class="uil uil-times"></i>
-          </header>
-          <form action="#">
-            <div class="row title">
-              <label>Title</label>
-              <input type="text" spellcheck="false">
-            </div>
-            <div class="row description">
-              <label>Description</label>
-              <textarea spellcheck="false"></textarea>
-            </div>
-            <div class="row tags">
-              <label>Tags</label>
-              <input type="text" spellcheck="false" placeholder="Enter tags separated by commas">
-            </div>
-            <div class="row font">
-              <label>Note font</label>
-              <select>
-                <option value="Poppins">Poppins</option>
-                <option value="Inter">Inter</option>
-                <option value="Georgia">Georgia</option>
-                <option value="Courier New">Courier New</option>
-                <option value="Trebuchet MS">Trebuchet MS</option>
-              </select>
-            </div>
-            <div class="row password">
-              <label>Password</label>
-              <input type="password" spellcheck="false">
-            </div>
-            <button></button>
-          </form>
-        </div>
-      </div>
-    </div>
-    <ul class="wrapper">
-      <li class="add-box">
-        <div class="icon"><i class="uil uil-plus"></i></div>
-        <p>Add new note</p>
-      </li>
-    </ul>
-  </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="script.js"></script>
 </body>

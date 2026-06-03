@@ -78,7 +78,20 @@ const Search = ({
 
   return (
     <div id="searchBar" className="flex flex-col relative">
-      <label className="input input-bordered flex items-center gap-2">
+      <label className="
+        input
+        input-bordered
+        flex
+        items-center
+        gap-2
+        rounded-full
+        shadow-md
+        px-5
+        py-3
+        w-full
+        md:w-[400px]
+        bg-white
+        ">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 16 16"
@@ -125,7 +138,23 @@ const Search = ({
       {showResults && input && (
         <div
           ref={resultsRef}
-          className="w-80 max-h-80 overflow-y-scroll no-scrollbar bg-neutral p-2 rounded-xl flex flex-col gap-2 absolute top-12 md:top-20 md:right-0 z-10"
+         className="
+            w-full
+            max-w-xl
+            max-h-96
+            overflow-y-auto
+            bg-white
+            shadow-2xl
+            rounded-2xl
+            p-3
+            flex
+            flex-col
+            gap-2
+            absolute
+            top-14
+            z-50
+            border
+            "
         >
           {input &&
             meals &&
@@ -134,7 +163,7 @@ const Search = ({
                 <div
                   className={`${
                     index === activeIndex ? "bg-base-100" : ""
-                  } p-1 rounded-xl flex items-center justify-start gap-3`}
+                  } p-3 rounded-xl flex items-center justify-start gap-3 hover:bg-orange-50 transition-all duration-200 cursor-pointer`}
                   onMouseEnter={() => setActiveIndex(index)}
                   onMouseDown={(e) => {
                     e.preventDefault();
@@ -144,7 +173,7 @@ const Search = ({
                   <img
                     src={meal.strMealThumb}
                     alt={meal.strMeal}
-                    className="w-10 h-10 rounded-full"
+                    className="w-12 h-12 rounded-full object-cover"
                   />
                   <span>{meal.strMeal}</span>
                 </div>
