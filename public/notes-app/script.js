@@ -98,15 +98,15 @@ function loadNotes() {
 function normalizeNote(note) {
   return {
     id: note.id || crypto.randomUUID(),
-    title: String(note.title || "Untitled note"),
-    content: String(note.content || ""),
-    tag: String(note.tag || "Personal"),
+    title: escapeHtml(String(note.title || "Untitled note")),
+    content: escapeHtml(String(note.content || "")),
+    tag: escapeHtml(String(note.tag || "Personal")),
     color: VALID_COLORS.includes(note.color) ? note.color : "teal",
     favorite: Boolean(note.favorite),
     archived: Boolean(note.archived),
     trashed: Boolean(note.trashed || note.trash),
     locked: Boolean(note.locked),
-    password: String(note.password || ""),
+    password: escapeHtml(String(note.password || "")),
     createdAt: note.createdAt || new Date().toISOString(),
     updatedAt: note.updatedAt || note.createdAt || new Date().toISOString(),
   };
