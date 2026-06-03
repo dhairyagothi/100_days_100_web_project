@@ -10,10 +10,9 @@ const defaultFolders = [
   { id: 'ideas', name: 'Ideas', icon: '💡' }
 ];
 
-// Initialize default folders if not present
-if (folders.length === 0) {
-  folders = [...defaultFolders];
-  localStorage.setItem('echo_folders', JSON.stringify(folders));
+  canRedo() {
+    return this.historyIndex < this.history.length - 1;
+  }
 }
 
 let activeFolderId = 'all';
@@ -26,66 +25,45 @@ let trashedNotes = JSON.parse(localStorage.getItem('echo_trash') || '[]');
 let versionHistory = JSON.parse(localStorage.getItem('echo_versions') || '{}');
 const MAX_VERSIONS = 10;
 
-// ==========================================================================
-// INITIALIZATION
-// ==========================================================================
-applyTheme(isDark);
-renderFoldersList();
-renderNotesList();
+/* ============================================
+   UTILITY FUNCTIONS
+   ============================================ */
 
-// Set default mobile view attributes
-document.body.setAttribute('data-mobile-view', 'list');
-
-// ==========================================================================
-// THEME MANAGEMENT
-// ==========================================================================
-function applyTheme(dark) {
-  isDark = dark;
-  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-  document.getElementById('themeIcon').textContent = dark ? '☀️' : '🌙';
-  document.getElementById('themeText').textContent = dark ? 'Light Theme' : 'Dark Theme';
-  localStorage.setItem('echo_theme', dark ? 'dark' : 'light');
-  
-  // Re-apply theme classes on body
-  document.body.classList.remove('theme-dark', 'theme-light');
-  document.body.classList.add(dark ? 'theme-dark' : 'theme-light');
+function updateCharAndWordCount() {
+  const text = noteContent.innerText || "";
+  charCount.textContent = text.length;
+  const words = text.trim().split(/\s+/).filter(word => word.length > 0).length;
+  wordCount.textContent = words || 0;
 }
 
-document.getElementById('themeBtn').onclick = () => applyTheme(!isDark);
+function updateHistoryButtons() {
+  undoBtn.style.opacity = undoRedoManager.canUndo() ? "1" : "0.5";
+  redoBtn.style.opacity = undoRedoManager.canRedo() ? "1" : "0.5";
+}
 
-// ==========================================================================
-// FOLDER OPERATIONS
-// ==========================================================================
-function renderFoldersList() {
-  const list = document.getElementById('foldersList');
-  if (!list) return;
+function updateUndoRedoHistory() {
+  undoRedoManager.save(noteContent.innerHTML);
+  updateHistoryButtons();
+  updateCharAndWordCount();
+  saveNoteToLocal();
+}
 
-  const allCount = notes.length;
+function showToast(message, type = "success") {
+  toast.textContent = message;
+  toast.className = `toast show ${type}`;
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2000);
+}
 
-  let html = `
-    <div class="folder-item ${activeFolderId === 'favorites' ? 'active' : ''}" onclick="selectFolder('favorites')">
-      <div class="folder-item-left">
-        <span class="folder-item-icon">⭐</span>
-        <span class="folder-item-name">Favorites</span>
-      </div>
-      <span class="folder-count">${notes.filter(n => n.isFavorite).length}</span>
-    </div>
-    <div class="folder-item ${activeFolderId === 'pinned' ? 'active' : ''}" onclick="selectFolder('pinned')">
-      <div class="folder-item-left">
-        <span class="folder-item-icon">📌</span>
-        <span class="folder-item-name">Pinned</span>
-      </div>
-      <span class="folder-count">${notes.filter(n => n.isPinned).length}</span>
-    </div>
-    <div class="folder-item ${activeFolderId === 'all' ? 'active' : ''}" onclick="selectFolder('all')">
-      <div class="folder-item-left">
-        <span class="folder-item-icon">📁</span>
-        <span class="folder-item-name">All Notes</span>
-      </div>
-      <span class="folder-count">${allCount}</span>
-    </div>
-  `;
+function markAsUnsaved() {
+  savedIndicator.textContent = "● Unsaved changes";
+  savedIndicator.classList.add("unsaved");
+}
 
+function markAsSaved() {
+  savedIndicator.textContent = "✓ Saved";
+  savedIndicator.classList.remove("unsaved");
   html += folders.map(f => {
     const count = notes.filter(n => n.folderId === f.id).length;
     const isDefault = f.id === 'personal' || f.id === 'work' || f.id === 'ideas';
@@ -143,12 +121,47 @@ function selectFolder(folderId) {
   }
 }
 
-function showFolderInput() {
-  const list = document.getElementById('foldersList');
-  if (!list) return;
+function getCaretCoordinates() {
+  const selection = window.getSelection();
+  if (selection.rangeCount === 0) return { x: 0, y: 0 };
 
-  if (document.getElementById('newFolderInput')) {
-    document.getElementById('newFolderInput').focus();
+  const range = selection.getRangeAt(0);
+  const span = document.createElement("span");
+  range.insertNode(span);
+  const { top, left } = span.getBoundingClientRect();
+  span.parentNode.removeChild(span);
+
+  return { x: left, y: top };
+}
+
+function positionDropdown(dropdown, trigger) {
+  const rect = trigger.getBoundingClientRect();
+  dropdown.style.left = rect.left + "px";
+  dropdown.style.top = rect.bottom + 10 + "px";
+}
+
+function hideAllDropdowns() {
+  colorDropdown.classList.remove("visible");
+  highlightDropdown.classList.remove("visible");
+  sizeDropdown.classList.remove("visible");
+  shapesDropdown.classList.remove("visible");
+  shapeColorDropdown.classList.remove("visible");
+}
+
+/* ============================================
+   FORMATTING FUNCTIONS
+   ============================================ */
+
+function applyFormat(command, value = null) {
+  document.execCommand(command, false, value);
+  noteContent.focus();
+  updateUndoRedoHistory();
+}
+
+function formatSelectedText(tag, styles = {}) {
+  const selection = window.getSelection();
+  if (selection.rangeCount === 0) {
+    showToast("Select text first!", "warning");
     return;
   }
 
@@ -310,12 +323,8 @@ function removeTag(tag) {
   }
 }
 
-function renderTags() {
-  const list = document.getElementById('tagsList');
-  if (!list) return;
-  const note = notes.find(n => n.id === activeId);
-  if (!note || !note.tags) {
-    list.innerHTML = '';
+  if (!selectedText) {
+    showToast("Please select text to highlight", "warning");
     return;
   }
   
@@ -337,61 +346,23 @@ function createNewNote() {
     folderId = folders[0] ? folders[0].id : null;
   }
 
-  const note = {
-    id: Date.now().toString(),
-    title: '',
-    content: '',
-    color: isDark ? '#f5f5f7' : '#1c1c1a',
-    size: '16',
-    folderId: folderId,
-    created: new Date().toISOString(),
-    updated: new Date().toISOString()
-  };
-
-  notes.unshift(note);
-  saveAll();
-  openNote(note.id);
-
-  setTimeout(() => {
-    const titleInput = document.getElementById('noteTitleInput');
-    if (titleInput) titleInput.focus();
-  }, 50);
-}
-
-function openNote(id) {
-  activeId = id;
-  const note = notes.find(n => n.id === id);
-  if (!note) return;
-
-  document.getElementById('welcomeScreen').style.display = 'none';
-
-  const ew = document.getElementById('editorWrapper');
-  ew.style.display = 'flex';
-
-  document.getElementById('noteTitleInput').value = note.title || '';
-  
-  populateFolderSelect(note.folderId);
-  updatePinFavoriteButtons();
-  renderTags();
-  
-  const editor = document.getElementById('note-content');
-  editor.innerHTML = convertPlainToHtml(note.content || '');
-  
-  // Apply formatting preferences (global text color and font size)
-  editor.style.color = note.color || (isDark ? '#f5f5f7' : '#1c1c1a');
-  editor.style.fontSize = (note.size || '16') + 'px';
-  document.getElementById('textColorInput').value = note.color || (isDark ? '#f5f5f7' : '#1c1c1a');
-  document.getElementById('fontSizeSelect').value = note.size || '16';
-
-  updateWordCount();
-  markSaved();
-  renderNotesList();
-
-  if (window.innerWidth > 768) {
-    document.getElementById('noteTitleInput').focus();
+  if (highlight === "none") {
+    const span = document.createElement("span");
+    span.textContent = selectedText;
+    range.deleteContents();
+    range.insertNode(span);
   } else {
-    setMobileView('editor');
+    const mark = document.createElement("mark");
+    mark.style.backgroundColor = e.target.style.backgroundColor;
+    mark.textContent = selectedText;
+    range.deleteContents();
+    range.insertNode(mark);
   }
+
+  updateUndoRedoHistory();
+  hideAllDropdowns();
+  showToast("Highlight applied");
+});
 }
 
 // ==========================================================================
@@ -455,48 +426,37 @@ function deleteNote(id, e) {
     notes = notes.filter(n => n.id !== id);
     saveAll();
 
-    if (activeId === id) {
-      activeId = null;
-      document.getElementById('welcomeScreen').style.display = 'flex';
-      document.getElementById('editorWrapper').style.display = 'none';
-      if (window.innerWidth <= 768) {
-        setMobileView('list');
-      }
-    }
+/* ============================================
+   TEXT SIZE
+   ============================================ */
 
-    renderNotesList();
-    renderFoldersList();
-    showToast('🗑️', 'Note deleted', '');
-  });
-}
+changeSizeBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  hideAllDropdowns();
+  positionDropdown(sizeDropdown, changeSizeBtn);
+  sizeDropdown.classList.toggle("visible");
+});
 
-function confirmClear() {
-  openModal('Clear Note', 'This will erase all content in the current editor. Continue?', () => {
-    document.getElementById('note-content').innerHTML = '';
-    document.getElementById('noteTitleInput').value = '';
-    updateWordCount();
-    triggerAutosave();
-  });
-}
+sizeDropdown.addEventListener("click", (e) => {
+  if (e.target.tagName !== "BUTTON") return;
 
-function saveAll() {
-  localStorage.setItem('echo_notes', JSON.stringify(notes));
-}
+  const size = e.target.dataset.size;
+  formatSelectedText("span", { fontSize: size });
+  hideAllDropdowns();
+  showToast(`Size: ${size}`);
+});
 
-// ==========================================================================
-// RENDER NOTE LISTS & SEARCH
-// ==========================================================================
-function renderNotesList(filter = '') {
-  const list = document.getElementById('notesList');
-  const stats = document.getElementById('sidebarStats');
-  if (!list || !stats) return;
+/* ============================================
+   UNDO/REDO
+   ============================================ */
 
-  // 0. Sort by pinned first, then recently edited
-  let sortedNotes = [...notes].sort((a, b) => {
-    if (a.isPinned !== b.isPinned) return a.isPinned ? -1 : 1;
-    return new Date(b.updated) - new Date(a.updated);
-  });
-
+undoBtn.addEventListener("click", () => {
+  const previousContent = undoRedoManager.undo();
+  if (previousContent !== null) {
+    noteContent.innerHTML = previousContent;
+    updateCharAndWordCount();
+    updateHistoryButtons();
+    showToast("Undo");
   // 1. Filter by Folder
   let filtered = sortedNotes;
   if (activeFolderId === 'trash') {
@@ -524,16 +484,17 @@ function renderNotesList(filter = '') {
   } else if (activeFolderId !== 'all') {
     filtered = sortedNotes.filter(n => n.folderId === activeFolderId);
   }
+});
 
-  // 2. Filter by Search Query (Realtime Title & Content match)
-  const q = (filter || document.getElementById('searchInput').value).toLowerCase().trim();
-  if (q) {
-    filtered = filtered.filter(n => {
-      const plainText = stripHtml(n.content || '').toLowerCase();
-      const titleText = (n.title || '').toLowerCase();
-      return titleText.includes(q) || plainText.includes(q);
-    });
+redoBtn.addEventListener("click", () => {
+  const nextContent = undoRedoManager.redo();
+  if (nextContent !== null) {
+    noteContent.innerHTML = nextContent;
+    updateCharAndWordCount();
+    updateHistoryButtons();
+    showToast("Redo");
   }
+});
   // Advanced filters
 if (activeFilters.has('favorites')) filtered = filtered.filter(n => n.isFavorite);
 if (activeFilters.has('pinned')) filtered = filtered.filter(n => n.isPinned);
@@ -545,17 +506,23 @@ if (q.startsWith('#')) {
   filtered = filtered.filter(n => n.tags && n.tags.some(t => t.toLowerCase().includes(tag)));
 }
 
-  stats.textContent = `${filtered.length} note${filtered.length !== 1 ? 's' : ''}`;
+/* ============================================
+   SAVE AS PDF
+   ============================================ */
 
-  if (filtered.length === 0) {
-    list.innerHTML = `
-      <div class="empty-notes">
-        <div class="empty-icon">${q ? '🔍' : '🗒️'}</div>
-        <p>${q ? 'No notes match your search.' : 'No notes yet. Click <strong>+ New Note</strong> to start!'}</p>
-      </div>`;
+saveNoteBtn.addEventListener("click", async () => {
+  if (!noteTitle.value && !noteContent.innerText) {
+    showToast("No content to save!", "error");
     return;
   }
 
+  try {
+    saveNoteBtn.style.opacity = "0.5";
+    const noteSection = document.querySelector(".note-paper");
+    const canvas = await html2canvas(noteSection, {
+      scale: 2,
+      backgroundColor: "#ffffff",
+    });
   list.innerHTML = filtered.map(n => {
     const preview = stripHtml(n.content || '');
     return `
@@ -602,164 +569,82 @@ function applyTextColor(c) {
   triggerAutosave();
 }
 
-// Function to apply selected font size to the editor content
-function applyFontSize(s) {
-  document.getElementById('note-content').style.fontSize = s + 'px';
-  triggerAutosave();
-}
+    const imgData = canvas.toDataURL("image/png");
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("p", "pt", "a4");
 
-// ==========================================================================
-// PDF EXPORT
-// ==========================================================================
-function exportPDF() {
-  if (!activeId) return;
-  const title = document.getElementById('noteTitleInput').value || 'Untitled Note';
-  const content = document.getElementById('note-content').innerText;
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
 
-  if (!content.trim()) {
-    showToast('⚠️', 'Note is empty!', 'error');
-    return;
-  }
+    const imgWidth = pageWidth - 40;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-  const marginL = 20, marginR = 20, marginT = 24;
-  const pageW = doc.internal.pageSize.getWidth();
-  const contentW = pageW - marginL - marginR;
+    pdf.addImage(imgData, "PNG", 20, 20, imgWidth, imgHeight);
 
-  // Header band
-  doc.setFillColor(194, 89, 37); // Terracotta Accent Color
-  doc.rect(0, 0, pageW, 18, 'F');
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(13);
-  doc.setFont('helvetica', 'bold');
-  doc.text('Echo Notes', marginL, 12);
+    const fileName = noteTitle.value
+      ? `${noteTitle.value}.pdf`
+      : "MyNote.pdf";
+    pdf.save(fileName);
 
-  // Note title
-  doc.setTextColor(28, 28, 26);
-  doc.setFontSize(18);
-  doc.setFont('helvetica', 'bold');
-  doc.text(title, marginL, marginT + 10);
-
-  // Export metadata
-  doc.setFontSize(9);
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(139, 139, 137);
-  doc.text('Exported: ' + new Date().toLocaleString('en-IN'), marginL, marginT + 17);
-
-  // Decorative Divider Line
-  doc.setDrawColor(228, 228, 227);
-  doc.line(marginL, marginT + 20, pageW - marginR, marginT + 20);
-
-  // Render content
-  doc.setFontSize(11);
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(28, 28, 26);
-
-  const lines = doc.splitTextToSize(content, contentW);
-  let y = marginT + 28;
-  const lineH = 6;
-  const pageH = doc.internal.pageSize.getHeight();
-
-  lines.forEach(line => {
-    if (y + lineH > pageH - 16) {
-      doc.addPage();
-      y = 20;
-    }
-    doc.text(line, marginL, y);
-    y += lineH;
-  });
-
-  doc.save((title.replace(/[^a-z0-9]/gi, '_') || 'note') + '.pdf');
-  showToast('📄', 'PDF exported!', 'success');
-}
-
-function exportTXT() {
-  if (!activeId) return;
-  const note = notes.find(n => n.id === activeId);
-  if (!note) return;
-  
-  const title = document.getElementById('noteTitleInput').value || 'Untitled Note';
-  const content = document.getElementById('note-content').innerText;
-  
-  if (!content.trim()) {
-    showToast('⚠️', 'Note is empty!', 'error');
-    return;
-  }
-  
-  const blob = new Blob([`${title}\n\n${content}`], { type: 'text/plain' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = (title.replace(/[^a-z0-9]/gi, '_') || 'note') + '.txt';
-  a.click();
-  URL.revokeObjectURL(url);
-  showToast('📝', 'TXT exported!', 'success');
-}
-
-// ==========================================================================
-// MOBILE RESPONSIBILITY & PANEL TOGGLES
-// ==========================================================================
-function setMobileView(view) {
-  currentMobileView = view;
-  document.body.setAttribute('data-mobile-view', view);
-}
-
-function toggleMobileSidebar() {
-  setMobileView('sidebar');
-}
-
-function backToNotesList() {
-  setMobileView('list');
-}
-
-// Dismiss mobile sidebar drawer on tap outside
-document.body.addEventListener('click', (e) => {
-  if (document.body.getAttribute('data-mobile-view') === 'sidebar') {
-    const sidebar = document.getElementById('sidebar');
-    const toggleBtn = document.querySelector('.mobile-menu-btn');
-    if (sidebar && !sidebar.contains(e.target) && (!toggleBtn || !toggleBtn.contains(e.target))) {
-      setMobileView('list');
-    }
+    showToast("PDF saved successfully!");
+  } catch (error) {
+    showToast("Failed to save PDF", "error");
+    console.error(error);
+  } finally {
+    saveNoteBtn.style.opacity = "1";
   }
 });
 
-// Distraction Free Writing Mode (Desktop Pane Collapse)
-function toggleSidebar() {
-  document.getElementById('appContainer').classList.toggle('distraction-free');
+/* ============================================
+   CLEAR NOTE
+   ============================================ */
+
+clearNoteBtn.addEventListener("click", () => {
+  if (confirm("🤔 Are you sure? This action cannot be undone.")) {
+    noteTitle.value = "";
+    noteContent.innerHTML = "";
+    localStorage.removeItem("myNote");
+    undoRedoManager.history = [];
+    undoRedoManager.historyIndex = -1;
+    updateCharAndWordCount();
+    updateHistoryButtons();
+    showToast("Note cleared");
+  }
+});
+
+/* ============================================
+   LOCAL STORAGE
+   ============================================ */
+
+let autoSaveTimeout;
+
+function saveNoteToLocal() {
+  markAsUnsaved();
+  clearTimeout(autoSaveTimeout);
+
+  autoSaveTimeout = setTimeout(() => {
+    const noteData = {
+      title: noteTitle.value,
+      content: noteContent.innerHTML,
+    };
+    localStorage.setItem("myNote", JSON.stringify(noteData));
+    markAsSaved();
+  }, 1000);
 }
 
-function toggleDistractionFree() {
-  document.getElementById('appContainer').classList.add('distraction-free');
-}
-
-function exitDistractionFree() {
-  document.getElementById('appContainer').classList.remove('distraction-free');
-}
-
-// ==========================================================================
-// HELPERS
-// ==========================================================================
-function escHtml(s) {
-  if (!s) return '';
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-}
-
-function stripHtml(html) {
-  if (!html) return '';
-  const tmp = document.createElement('div');
-  tmp.innerHTML = html;
-  return tmp.textContent || tmp.innerText || '';
-}
-
-function convertPlainToHtml(text) {
-  if (!text) return '';
-  // If text does not contain HTML tags, convert newlines to linebreaks
-  if (!/<[a-z][\s\S]*>/i.test(text)) {
-    return text.replace(/\n/g, '<br>');
+function loadNoteFromLocal() {
+  const saved = localStorage.getItem("myNote");
+  if (saved) {
+    try {
+      const noteData = JSON.parse(saved);
+      noteTitle.value = noteData.title || "";
+      noteContent.innerHTML = noteData.content || "";
+      undoRedoManager.save(noteContent.innerHTML);
+      updateCharAndWordCount();
+      markAsSaved();
+    } catch (error) {
+      console.error("Error loading note:", error);
+    }
   }
   return text;
 }
