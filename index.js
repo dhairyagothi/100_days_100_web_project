@@ -208,11 +208,9 @@ function buildProjectCardHTML({
         .split(/\s+/)
         .filter((t) => t && t !== SOURCE_ONLY_TAG);
   const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
-  const project =
-PROJECTS.find(p => p[1] === name);
+  const project = PROJECTS.find(p => p[1] === name);
 
-const description =
-getProjectDescription(project);
+  const description = getProjectDescription(project);
   const sourceOnlyBadge = sourceOnly
     ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
     : '';
@@ -229,8 +227,21 @@ getProjectDescription(project);
                         <i class="fab fa-github"></i> Code
                     </a>`;
 
+  // PERFORMANCE OPTIMIZATION: Dynamic clean paths for project thumbnails inside lazy loader
+  const projectFolder = sourceUrl.substring(sourceUrl.lastIndexOf('/') + 1);
+  const thumbnailUrl = `public/${projectFolder}/thumbnail.png`;
+
   return {
     html: `
+            <div class="card-thumbnail-wrapper" style="background: #15152e; min-height: 140px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 6px; margin-bottom: 12px;">
+                <img 
+                    src="${thumbnailUrl}" 
+                    alt="${name} snapshot" 
+                    loading="lazy" 
+                    style="width: 100%; height: 140px; object-fit: cover; display: block;"
+                    onerror="this.style.display='none';" 
+                />
+            </div>
             <div class="card-meta">
                 <span class="card-day">${day}</span>
                 <span class="card-category-wrap">
@@ -261,21 +272,6 @@ getProjectDescription(project);
     sourceOnly,
   };
 }
-
-function attachProjectCardInteraction(card, demoUrl, projectData = null) {
-  card.style.cursor = 'pointer';
-  card.onclick = (e) => {
-    if (e.target.closest('a, button')) return;
-    
-    // Track the project visit if projectData is provided
-    if (projectData) {
-      trackRecentProject(projectData);
-    }
-    
-    window.open(demoUrl, '_blank', 'noopener');
-  };
-}
-
 
 /* ============================================================
    TECHNOLOGY STACK FILTERING FUNCTIONS
@@ -670,25 +666,26 @@ function renderGrid() {
     });
   }
 
-  grid.innerHTML = '';
+  // PERFORMANCE OPTIMIZATION: Only reset entire grid markup on page reset/filters trigger
+  if (currentPage === 1) {
+    grid.innerHTML = '';
+    // Purane layout container elements remove karne ke liye safe cleanup
+    const oldContainer = document.getElementById('paginationContainer');
+    if (oldContainer) oldContainer.remove();
+  }
 
   if (filtered.length === 0) {
     grid.style.display = 'none';
     if (noResults) noResults.style.display = 'block';
-    const container = document.getElementById('paginationContainer');
-    if (container) container.remove();
     return;
   }
 
   grid.style.display = 'grid';
   if (noResults) noResults.style.display = 'none';
 
-  const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
-  if (currentPage > totalPages) currentPage = totalPages;
-  if (currentPage < 1) currentPage = 1;
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
+  const itemsPerChunk = 20; // 20 projects package chunk per scroll trigger
+  const startIndex = (currentPage - 1) * itemsPerChunk;
+  const endIndex = startIndex + itemsPerChunk;
   const pageItems = filtered.slice(startIndex, endIndex);
   const fragment = document.createDocumentFragment();
 
@@ -712,57 +709,39 @@ function renderGrid() {
 
     fragment.appendChild(card);
   });
-  grid.appendChild(fragment);
-  renderPagination(filtered.length, totalPages);
   
+  grid.appendChild(fragment);
+
+  // Initialize unified automated Intersection Observer setup
+  setupInfiniteScrollObserver(filtered.length, itemsPerChunk);
   syncStateToURL();
 }
 
-function renderPagination(totalItems, totalPages) {
-  const grid = document.getElementById('projectGrid');
-  if (!grid) return;
+// PERFORMANCE OPTIMIZATION: Setup Vanilla JavaScript IntersectionObserver API (#6034)
+function setupInfiniteScrollObserver(totalItems, itemsPerChunk) {
+  const sentinel = document.getElementById('scroll-sentinel');
+  if (!sentinel) return;
 
-  let container = document.getElementById('paginationContainer');
-  if (!container) {
-    container = document.createElement('div');
-    container.id = 'paginationContainer';
-    container.className = 'pagination-container';
+  // Pehle se chal rahe active layout observer context ko clean up karo
+  if (window.activeProjectObserver) {
+    window.activeProjectObserver.disconnect();
   }
 
-  container.innerHTML = '';
-
-  // If there is only 1 page of results, hide and detach the pagination block
-  if (totalPages <= 1) {
-    if (container.parentElement === grid) {
-      grid.removeChild(container);
-    }
-    return;
-  }
-
-  // Render showing info range (e.g. "Showing 1 to 9 of 100")
-  const infoDiv = document.createElement('div');
-  infoDiv.className = 'pagination-info';
-  const startItem = (currentPage - 1) * itemsPerPage + 1;
-  const endItem = Math.min(currentPage * itemsPerPage, totalItems);
-  infoDiv.innerHTML = `Showing <strong>${startItem}</strong> to <strong>${endItem}</strong> of <strong>${totalItems}</strong> projects`;
-  container.appendChild(infoDiv);
-
-  const controlsDiv = document.createElement('div');
-  controlsDiv.className = 'pagination-controls';
-
-  const firstBtn = document.createElement('button');
-  firstBtn.className = 'first-btn';
-  firstBtn.innerHTML = '⏮ First';
-  firstBtn.disabled = currentPage === 1;
-
-  firstBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (currentPage !== 1) {
-      currentPage = 1;
-      renderGrid();
-      setTimeout(() => scrollToProjectSection(), 50);
-    }
+  window.activeProjectObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const maxPages = Math.ceil(totalItems / itemsPerChunk);
+      if (entry.isIntersecting && currentPage < maxPages) {
+        currentPage++;
+        renderGrid();
+      }
+    });
+  }, {
+    rootMargin: '250px' // Fetch subsequent chunks smoothly 250px ahead of target
   });
+
+  window.activeProjectObserver.observe(sentinel);
+}
+  
 
   controlsDiv.appendChild(firstBtn);
 
