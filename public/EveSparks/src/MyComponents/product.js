@@ -69,6 +69,8 @@ function Product() {
                 <a href="#" className="banner-btn">Get Quote Now</a>
               </div>
             </div>
+          ))}
+        </Slider>
 
             <div className="slider-item">
               <img src="../image/b2.jpg" alt="banner" className="banner-img" />
