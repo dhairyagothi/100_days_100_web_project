@@ -74,14 +74,14 @@ let PROJECTS = [];
 let projectsPromise = null;
 
 function hydrateProjects(data) {
-  PROJECTS = data.map((project) => [
-    `Day ${project.projectNo}`,
-    project.projectName,
-    project.projectPath,
-    project.techStack,
-    project.difficulty,
-    project.projectDesc,
-  ]);
+  PROJECTS = data.map((project) => ({
+    day: `Day ${project.projectNo}`,
+    projectName: project.projectName,
+    projectPath: project.projectPath,
+    techStack: project.techStack,
+    difficulty: project.difficulty,
+    projectDesc: project.projectDesc,
+  }));
 }
 
 function getPreloadedProjectsData() {
@@ -211,7 +211,7 @@ function resolveProjectUrls(day, name, url, tags) {
 
 function getProjectDescription(project) {
   return (
-    (project && project[5]) ||
+    (project && project.projectDesc) ||
     "Explore this project to discover interactive functionality."
   );
 }
@@ -239,7 +239,7 @@ function buildProjectCardHTML({
   const tagsHTML = tagsArray
     .map((t) => `<span class="tag">${t}</span>`)
     .join("");
-  const project = PROJECTS.find((p) => p[1] === name);
+  const project = PROJECTS.find((p) => p.projectName === name);
 
   const description = getProjectDescription(project);
   const sourceOnlyBadge = sourceOnly
@@ -421,7 +421,8 @@ function updateTechFilterDisplay() {
 function getAllTechnologies() {
   const techSet = new Set();
 
-  PROJECTS.forEach(([, , , tags]) => {
+  PROJECTS.forEach((project) => {
+    const tags = project.techStack;
     if (tags) {
       const tagArray =
         typeof tags === "string" ? tags.split(/\s+/).filter((t) => t) : tags;
@@ -576,7 +577,11 @@ function generateReadme() {
     );
     lines.push("");
     lines.push("## Projects");
-    PROJECTS.forEach(([day, name, url, tags]) => {
+    PROJECTS.forEach((project) => {
+      const day = project.day;
+      const name = project.projectName;
+      const url = project.projectPath;
+      const tags = project.techStack;
       const { demoUrl } = resolveProjectUrls(day, name, url, tags);
       const category = getCategoryFromTags(tags, name);
       lines.push(`- **${day} — ${name}** — ${demoUrl} — _${category}_`);
@@ -661,63 +666,67 @@ function renderGrid() {
     updateClearFiltersBtnVisibility();
   }
 
-  const filtered = PROJECTS.filter(
-    ([day, name, url, tags, difficulty = ""]) => {
-      // Category filter
-      const category = getCategoryFromTags(tags, name);
-      const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || "all";
-      const matchesFilter =
-        activeFilter === "all" || category === targetCategory;
+  const filtered = PROJECTS.filter((project) => {
+    const day = project.day;
+    const name = project.projectName;
+    const url = project.projectPath;
+    const tags = project.techStack;
+    const difficulty = project.difficulty || "";
 
-      // Search filter
-      const q = searchQuery.toLowerCase().trim();
-      const matchesSearch =
-        !q ||
-        q
-          .split(/\s+/)
-          .every(
-            (term) =>
-              name.toLowerCase().includes(term) ||
-              day.toLowerCase().includes(term) ||
-              (Array.isArray(tags) ? tags.join(" ") : tags || "")
-                .toLowerCase()
-                .includes(term),
-          );
+    // Category filter
+    const category = getCategoryFromTags(tags, name);
+    const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || "all";
+    const matchesFilter =
+      activeFilter === "all" || category === targetCategory;
 
-      // Tech stack dropdown filter
-      let matchesTech = true;
-      if (techStackFilter && techStackFilter !== "all") {
-        const tagStr = (
-          Array.isArray(tags) ? tags.join(" ") : tags || ""
-        ).toLowerCase();
-        matchesTech = tagStr.includes(techStackFilter.toLowerCase());
-      }
+    // Search filter
+    const q = searchQuery.toLowerCase().trim();
+    const matchesSearch =
+      !q ||
+      q
+        .split(/\s+/)
+        .every(
+          (term) =>
+            name.toLowerCase().includes(term) ||
+            day.toLowerCase().includes(term) ||
+            (Array.isArray(tags) ? tags.join(" ") : tags || "")
+              .toLowerCase()
+              .includes(term),
+        );
 
-      // Difficulty filter
-      let matchesDifficulty = true;
-      if (difficultyFilter && difficultyFilter !== "all") {
-        matchesDifficulty =
-          (difficulty || "").toLowerCase() === difficultyFilter.toLowerCase();
-      }
+    // Tech stack dropdown filter
+    let matchesTech = true;
+    if (techStackFilter && techStackFilter !== "all") {
+      const tagStr = (
+        Array.isArray(tags) ? tags.join(" ") : tags || ""
+      ).toLowerCase();
+      matchesTech = tagStr.includes(techStackFilter.toLowerCase());
+    }
 
-      return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
-    },
-  );
+    // Difficulty filter
+    let matchesDifficulty = true;
+    if (difficultyFilter && difficultyFilter !== "all") {
+      matchesDifficulty =
+        (difficulty || "").toLowerCase() === difficultyFilter.toLowerCase();
+    }
+
+    return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
+  });
 
   // Apply sorting
   if (sortOption === "az") {
-    filtered.sort((a, b) => a[1].localeCompare(b[1]));
+    filtered.sort((a, b) => a.projectName.localeCompare(b.projectName));
   } else if (sortOption === "latest") {
     filtered.sort((a, b) => {
-      const dayA = parseInt(a[0].replace("Day ", ""));
-      const dayB = parseInt(b[0].replace("Day ", ""));
+      const dayA = parseInt(a.day.replace("Day ", ""));
+      const dayB = parseInt(b.day.replace("Day ", ""));
       return dayB - dayA;
     });
   } else if (sortOption === "difficulty") {
     const difficultyOrder = { beginner: 1, intermediate: 2, advanced: 3 };
     filtered.sort((a, b) => {
-      const diffA = a[4] ? difficultyOrder[a[4].toLowerCase()] || 0 : 0;
-      const diffB = b[4] ? difficultyOrder[b[4].toLowerCase()] || 0 : 0;
+      const diffA = a.difficulty ? difficultyOrder[a.difficulty.toLowerCase()] || 0 : 0;
+      const diffB = b.difficulty ? difficultyOrder[b.difficulty.toLowerCase()] || 0 : 0;
       return diffA - diffB;
     });
   }
@@ -744,7 +753,11 @@ function renderGrid() {
   const pageItems = filtered.slice(startIndex, endIndex);
   const fragment = document.createDocumentFragment();
 
-  pageItems.forEach(([day, name, url, tags]) => {
+  pageItems.forEach((project) => {
+    const day = project.day;
+    const name = project.projectName;
+    const url = project.projectPath;
+    const tags = project.techStack;
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement("div");
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
@@ -975,7 +988,7 @@ function scrollToProjectSection() {
 
 function toggleBookmark(project) {
   const exists = bookmarkedProjects.find(
-    (item) => normalizeProjectEntry(item).day === project[0],
+    (item) => normalizeProjectEntry(item).day === project.day,
   );
 
   if (exists) {
@@ -1030,7 +1043,7 @@ function loadBookmarksFromURL() {
   const bookmarkIds = bookmarkParam.split(",").map((id) => id.trim());
 
   bookmarkedProjects = PROJECTS.filter((project) =>
-    bookmarkIds.includes(project[0]),
+    bookmarkIds.includes(project.day),
   );
 
   localStorage.setItem(
@@ -1132,7 +1145,7 @@ function renderBookmarks() {
 
     card.className = sourceOnly ? "project-card source-only" : "project-card";
     card.innerHTML = html;
-    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
+    attachProjectCardInteraction(card, demoUrl, project);
 
     bookmarkGrid.appendChild(card);
   });
@@ -1166,9 +1179,9 @@ function renderRecentProjects() {
   visibleRecent.forEach((projectObj) => {
     // Handle both old array format and new object format
     const day = projectObj.day || projectObj[0];
-    const name = projectObj.name || projectObj[1];
-    const url = projectObj.url || projectObj[2];
-    const tags = projectObj.tags || projectObj[3];
+    const name = projectObj.projectName || projectObj.name || projectObj[1];
+    const url = projectObj.projectPath || projectObj.url || projectObj[2];
+    const tags = projectObj.techStack || projectObj.tags || projectObj[3];
 
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement("div");
@@ -1185,7 +1198,7 @@ function renderRecentProjects() {
 
     card.className = sourceOnly ? "project-card source-only" : "project-card";
     card.innerHTML = html;
-    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
+    attachProjectCardInteraction(card, demoUrl, projectObj);
 
     recentGrid.appendChild(card);
   });
@@ -1261,7 +1274,7 @@ document.addEventListener("click", (e) => {
   if (!projectLink) return;
 
   const projectDay = projectLink.dataset.id;
-  const project = PROJECTS.find((item) => item[0] === projectDay);
+  const project = PROJECTS.find((item) => item.day === projectDay);
   if (!project) return;
 
   trackRecentProject(project);
@@ -1476,7 +1489,9 @@ function updateCategoryCounts() {
     }
   }
 
-  PROJECTS.forEach(([day, name, url, tags]) => {
+  PROJECTS.forEach((project) => {
+    const name = project.projectName;
+    const tags = project.techStack;
     const category = getCategoryFromTags(tags, name);
     const filterKey = Object.keys(FILTER_CATEGORY_MAP).find(
       (key) => FILTER_CATEGORY_MAP[key] === category,
@@ -1507,9 +1522,9 @@ function syncProjectCounts() {
   // Apply search filter
   if (searchQuery) {
     filtered = filtered.filter(
-      ([day, name]) =>
-        name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        day.toLowerCase().includes(searchQuery.toLowerCase()),
+      (project) =>
+        project.projectName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        project.day.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   }
 
