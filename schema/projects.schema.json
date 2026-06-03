@@ -1,0 +1,37 @@
+{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "projectNo",
+      "projectName",
+      "projectPath",
+      "techStack",
+      "difficulty",
+      "projectDesc"
+    ],
+    "properties": {
+      "projectNo": {
+        "type": "number"
+      },
+      "projectName": {
+        "type": "string"
+      },
+      "projectPath": {
+        "type": "string"
+      },
+      "techStack": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "difficulty": {
+        "type": "string"
+      },
+      "projectDesc": {
+        "type": "string"
+      }
+    }
+  }
+}
