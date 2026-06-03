@@ -1,0 +1,218 @@
+:root {
+  --bg-dark: #070a13;
+  --panel-bg: #0f1424;
+  --text-light: #f8fafc;
+  --text-muted: #64748b;
+  --accent-glow: #38bdf8;
+  --accent-glow-rgb: 56, 189, 248;
+  --ui-border: rgba(255, 255, 255, 0.04);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+.app-workspace {
+  width: 100%;
+  max-width: 680px;
+  background-color: var(--panel-bg);
+  border: 1px solid var(--ui-border);
+  border-radius: 1.25rem;
+  padding: 2.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.app-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(to right, #38bdf8, #818cf8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.app-header p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+
+/* Visualization Canvas Area */
+.visualizer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 3.5rem;
+}
+
+.breathing-node-wrapper {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.breathing-svg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.pulse-ring {
+  fill: transparent;
+  stroke: var(--accent-glow);
+  stroke-linecap: round;
+  transform-origin: center;
+  transition:
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.5s ease;
+}
+
+.ring-outer {
+  stroke-width: 1;
+  opacity: 0.15;
+}
+
+.ring-mid {
+  stroke-width: 1.5;
+  opacity: 0.3;
+}
+
+.ring-core {
+  fill: rgba(56, 189, 248, 0.03);
+  stroke-width: 3;
+  opacity: 0.8;
+}
+
+/* Operational Ring Expansion States */
+.breathing-node-wrapper.inhale .pulse-ring {
+  transform: scale(1.2);
+}
+
+.breathing-node-wrapper.hold .pulse-ring {
+  transform: scale(1.2);
+  stroke: #818cf8;
+  box-shadow: 0 0 20px rgba(129, 140, 248, 0.2);
+}
+
+.breathing-node-wrapper.exhale .pulse-ring {
+  transform: scale(0.85);
+}
+
+.status-overlay {
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  z-index: 10;
+  transition: color 0.3s ease;
+}
+
+.cycle-counter {
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  background: rgba(0, 0, 0, 0.15);
+  padding: 0.4rem 1rem;
+  border-radius: 1rem;
+  border: 1px solid var(--ui-border);
+}
+
+#cycleCount {
+  color: var(--text-light);
+  font-weight: 700;
+}
+
+/* User Controls Panel Layout */
+.controls-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.preset-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+@media (max-width: 540px) {
+  .preset-selector {
+    grid-template-columns: 1fr;
+  }
+}
+
+.preset-btn {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--ui-border);
+  color: var(--text-muted);
+  padding: 0.65rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.preset-btn:hover {
+  color: var(--text-light);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.preset-btn.active {
+  background: rgba(56, 189, 248, 0.08);
+  border-color: rgba(56, 189, 248, 0.3);
+  color: var(--accent-glow);
+}
+
+.action-row {
+  display: flex;
+  justify-content: center;
+}
+
+.action-btn-primary {
+  background-color: #0284c7;
+  color: #ffffff;
+  border: none;
+  padding: 0.8rem 2.25rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.action-btn-primary:hover {
+  background-color: #0369a1;
+}
+
+.action-btn-primary.active {
+  background-color: #ef4444;
+}

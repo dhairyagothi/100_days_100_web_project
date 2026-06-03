@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dual-Genre Movie Matcher</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <button id="themeToggle" class="theme-toggle" aria-label="Toggle Dark Mode">🌙</button>
+
+  <main class="movie-matcher">
+    <header class="movie-matcher__header">
+      <h1 class="movie-matcher__title">The Midnight Matcher</h1>
+      <p class="movie-matcher__description">Cross-reference two contrasting genres to find the perfect movie.</p>
+    </header>
+
+    <section class="movie-matcher__controls">
+      <div class="movie-matcher__select-group">
+        <label for="genre1">Primary Genre</label>
+        <select id="genre1" class="movie-matcher__select">
+          <option value="27">Horror</option>
+          <option value="878">Sci-Fi</option>
+          <option value="28">Action</option> 
+        </select>
+      </div>
+      
+      <div class="movie-matcher__select-group">
+        <label for="genre2">Secondary Genre</label>
+        <select id="genre2" class="movie-matcher__select">
+          <option value="35">Comedy</option>
+          <option value="10749">Romance</option>
+          <option value="18">Drama</option>
+        </select>
+      </div>
+
+      <button id="matchBtn" class="movie-matcher__btn">Find Matches</button>
+    </section>
+
+    <section id="results" class="movie-matcher__results" aria-live="polite">
+      </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

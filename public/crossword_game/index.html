@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Crossword</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>🧩 Dynamic Crossword</h1>
+      <div class="controls">
+        <button id="newGame">New Game</button>
+        <button id="reset">Reset Puzzle</button>
+        <button id="check">Check Answers</button>
+        <span id="status"></span>
+      </div>
+
+      <div class="game">
+        <div id="grid" class="grid"></div>
+
+        <div class="clues">
+          <div>
+            <h2>Across</h2>
+            <ol id="across-clues"></ol>
+          </div>
+          <div>
+            <h2>Down</h2>
+            <ol id="down-clues"></ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
