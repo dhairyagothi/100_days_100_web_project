@@ -3,21 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recipe Genie</title>
+    <title>Recipezzz</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
     <nav>
-        <h2 style="margin-right: 10px;">Recipezzz</h2>
+        <h2 class="logo">Recipezzz</h2>
+       <div class="navlink"> <a href="main.html" class="active">Home</a>
+        <a href="rec.html">Recipes</a></div>
     </nav>
     <h1>Recipes Selector</h1>
     
     <div class="data">
         
     <h3>Select your recipe</h3>
-    <select id="difficulty" aria-placeholder="Select your test type">
+    <select id="difficulty" aria-label="Select a recipe">
         <option value="Grilled Cheese Sandwich">Grilled Cheese Sandwich</option>
         <option value="Banana Smoothie">Banana Smoothie</option>
         <option value="Lemonade">Lemonade</option>
@@ -39,14 +41,7 @@
     </select>
     <br>
     <button id="start">Get Recipe</button>
-        <!-- <h2>
-            Typing Text below
-        </h2>
-        <h4>
-            Text
-        </h4>
-        <input type="text" placeholder="Text..."> -->
-    </div>
+        </div>
 </body>
 <script>
     document.getElementById('start').addEventListener('click', function() {

@@ -63,29 +63,40 @@
         </button>
       </div>
 
-      <div class="voice-activity-hud hidden" id="mic-status">
+      <div class="hidden voice-activity-hud" id="mic-status">
         <div class="audio-wave-anim">
           <span></span><span></span><span></span>
         </div>
         <span class="hud-text">Listening... Click here to complete entry manually.</span>
       </div>
+      <div class="history-section" id="history-section">
+  <div class="history-header">
+    <div class="history-title-wrap">
+  <h3>Recent Searches</h3>
+  <span id="history-count" class="history-count">0</span>
+</div>
+    <button id="clear-history-btn">Clear History</button>
+  </div>
+
+  <div id="search-history" class="history-list"></div>
+</div>
     </section>
 
     <div class="state-hud-wrapper">
-      <div class="loading-hud-state hidden" id="loading">
+      <div class="hidden loading-hud-state" id="loading">
         <div class="orbiting-loader">
           <div class="orbit-dot"></div>
         </div>
         <p>Parsing dataset matrices...</p>
       </div>
 
-      <div class="error-hud-state hidden" id="error-state">
+      <div class="hidden error-hud-state" id="error-state">
         <div class="error-shield">!</div>
         <p id="error-msg">Term unresolvable within existing corpus definitions.</p>
       </div>
     </div>
 
-    <div class="luxury-result-card hidden" id="result">
+    <div class="hidden luxury-result-card" id="result">
       <div class="result-header-frame">
         <div class="header-left-meta">
           <div class="lexical-badge-strip">
@@ -106,7 +117,7 @@
       <div class="luxury-content-section">
         <h3 class="section-meta-label">Core Semantic Definition</h3>
         <p class="lexical-definition-text" id="result-def"></p>
-        <p class="lexical-context-example hidden" id="result-example"></p>
+        <p class="hidden lexical-context-example" id="result-example"></p>
       </div>
 
       <div class="luxury-content-section evaluation-row" id=\"syn-section\">
@@ -119,7 +130,7 @@
         <div class="luxury-chip-cloud" id="antonyms"></div>
       </div>
 
-      <div class="luxury-pagination-dock hidden" id="result-nav">
+      <div class="hidden luxury-pagination-dock" id="result-nav">
         <button class="dock-nav-btn" id="prev-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
           Previous Entry
