@@ -1,3 +1,0 @@
-# CSS Quiz
-
-Loading CSS Quiz...

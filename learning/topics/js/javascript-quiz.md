@@ -1,3 +1,0 @@
-# JavaScript Quiz
-
-Loading JavaScript Quiz...

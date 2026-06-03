@@ -1,3 +1,0 @@
-# React Quiz
-
-Loading React Quiz...

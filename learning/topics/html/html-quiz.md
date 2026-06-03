@@ -1,3 +1,0 @@
-# HTML Quiz
-
-Loading HTML Quiz...

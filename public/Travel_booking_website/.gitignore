@@ -1,3 +1,0 @@
-# Security: Ignore environment files containing secrets
-.env
-node_modules/
