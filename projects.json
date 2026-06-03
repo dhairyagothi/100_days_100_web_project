@@ -1857,14 +1857,27 @@
     "techStack": ["html", "css", "javascript", "api"],
     "difficulty": "intermediate",
     "projectPath": "./public/movie-search-app/index.html"
-  },
+},
   {
-    "projectNo": 205,
-    "projectName": "Escape the Matrix Game",
-    "projectType": "Web Application",
-    "projectDesc": "An immersive, interactive web-based survival and puzzle game challenging players to hack their way out of a simulated reality.",
+  "projectNo": 205,
+  "projectName": "Escape the Matrix Game",
+  "projectType": "Web Application",
+  "projectDesc": "An immersive, interactive web-based survival and puzzle game challenging players to hack their way out of a simulated reality.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript"
+  ],
+  "difficulty": "advanced",
+  "projectPath": "./public/Escape The Matrix/index.html"
+},
+    {
+    "projectNo": 206,
+    "projectName": "Zodiac Finder",
+    "projectType": "Game",
+    "projectDesc": "A sleek web app that lets users discover their zodiac sign by entering their name and date of birth, featuring a cosmic-themed UI, smooth UX, and instant results.",
     "techStack": ["html", "css", "javascript"],
     "difficulty": "advanced",
-    "projectPath": "./public/Escape The Matrix/index.html"
-  }
+    "projectPath": "./public/Zodiac_Finder/index.html"
+}
 ]

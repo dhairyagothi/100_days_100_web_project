@@ -270,6 +270,7 @@ The website features:
 | 198 | Pac-Man | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/pacman/index.html) |
 | 199 | Dual-Genre Movie Matcher | HTML, CSS, JS | 🎬 Web App | [View Demo](https://100-days-100-web-project.vercel.app/public/Movie-Matcher/index.html) |
 | 200 | Number Guesser Game | HTML, CSS, JS | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/NumberGuessGame/index.html) |
+| 201 | Zodiac Finder | HTML, CSS, JavaScript | 🎮 Game | [View Demo](https://100-days-100-web-project.vercel.app/public/Zodiac_Finder/index.html) |
 
 ### 📊 Project Categories:
 - 🎮 **Games**: 50+ interactive games and puzzles
@@ -3416,6 +3417,15 @@ Thanks to all these amazing people who have contributed to this project:
                     <img src="https://avatars.githubusercontent.com/u/199523103?v=4" width="96;" alt="Anotherlearner2005"/>
                     <br />
                     <sub><b>Anotherlearner2005</b></sub>
+                </a>
+            </td>
+		</tr>
+		<tr>
+            <td align="center">
+                <a href="https://github.com/zuni-developer">
+                    <img src="https://avatars.githubusercontent.com/u/168223158?v=4" width="96;" alt="Zumi-developer"/>
+                    <br />
+                    <sub><b>Zunaira</b></sub>
                 </a>
             </td>
 		</tr>
