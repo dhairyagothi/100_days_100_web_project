@@ -3420,6 +3420,15 @@ Thanks to all these amazing people who have contributed to this project:
                 </a>
             </td>
 		</tr>
+		<tr>
+            <td align="center">
+                <a href="https://github.com/zuni-developer">
+                    <img src="https://avatars.githubusercontent.com/u/168223158?v=4" width="96;" alt="Zumi-developer"/>
+                    <br />
+                    <sub><b>Zunaira</b></sub>
+                </a>
+            </td>
+		</tr>
 	<tbody>
 </table>
 <!-- readme: contributors -end -->
