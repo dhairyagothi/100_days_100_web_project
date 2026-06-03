@@ -2,7 +2,6 @@
 // Dark mode state
 let isDarkMode = localStorage.getItem("clockDarkMode") === "true";
 if (isDarkMode) document.body.classList.add("dark-mode");
-let activeTheme = localStorage.getItem("clockTheme") || "classic";
 let primaryTimezone = localStorage.getItem("primaryTimezone") || "local";
 let alarms = JSON.parse(localStorage.getItem("clock_alarms")) || [];
 let worldClocks = JSON.parse(localStorage.getItem("clock_worldClocks")) || [];
@@ -129,7 +128,15 @@ function setAccentColor(accent) {
   activeAccent = accent;
   localStorage.setItem("clockAccent", accent);
 
-  document.body.className = `${theme}-theme${isDarkMode ? " dark-mode" : ""}`;
+  // Remove only manual accent classes, keep time-based theme class
+  document.body.classList.remove(
+    "classic-theme",
+    "modern-theme",
+    "futuristic-theme",
+    "nebula-theme",
+  );
+  // Add the selected manual accent class
+  document.body.classList.add(`${accent}-theme`);
 
   document.querySelectorAll(".theme-swatch").forEach((swatch) => {
     swatch.classList.toggle("active", swatch.dataset.theme === accent);
@@ -774,5 +781,5 @@ function applyDarkMode(enabled) {
 }
 
 function toggleDarkMode() {
-applyDarkMode(!isDarkMode);
+  applyDarkMode(!isDarkMode);
 }
