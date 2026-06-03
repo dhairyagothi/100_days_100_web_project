@@ -1,0 +1,59 @@
+name: 🛡️ Pull Request Quality Guard
+
+on:
+  pull_request:
+    types: [opened, edited, synchronized]
+    branches: [Main]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  check-pr-quality:
+    name: 🔍 Verify PR Template Compliance
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+
+      - name: Validate PR Body and Checklist
+        shell: bash
+        run: |
+          echo "🏁 Starting PR Quality and Template Compliance checks..."
+          
+          # Fetch PR body content
+          PR_BODY="${{ github.event.pull_request.body }}"
+          
+          if [ -z "$PR_BODY" ]; then
+            echo "❌ Error: Pull request body is completely empty! Please fill out the PR template."
+            exit 1
+          fi
+
+          echo "📝 Analyzing PR Body length..."
+          BODY_LENGTH=${#PR_BODY}
+          echo "Body length is $BODY_LENGTH characters."
+          
+          if [ $BODY_LENGTH -lt 30 ]; then
+            echo "❌ Error: Pull Request description is too short ($BODY_LENGTH characters). Please provide a meaningful explanation of your changes."
+            exit 1
+          fi
+
+          echo "✅ Description length check passed!"
+
+          echo "📋 Checking for uncompleted template items..."
+          
+          # Search for empty checkboxes [ ] in the PR template
+          # Excluding headers or optional lines that aren't checkbox tasks
+          UNCOMPLETED_ITEMS=$(echo "$PR_BODY" | grep -E "^- \[[ ]\]" || true)
+          
+          if [ ! -z "$UNCOMPLETED_ITEMS" ]; then
+            echo "❌ Error: You have uncompleted items in your checklist!"
+            echo "Please ensure you have read, executed, and ticked all boxes before submitting."
+            echo "Uncompleted items list:"
+            echo "$UNCOMPLETED_ITEMS"
+            exit 1
+          fi
+
+          echo "✅ Checklist completeness check passed!"
+          echo "🎉 Pull Request successfully verified! High-quality contribution headers and checked benchmarks are in order."

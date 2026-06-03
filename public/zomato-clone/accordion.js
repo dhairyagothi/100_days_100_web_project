@@ -9,21 +9,6 @@ accordion_containers.forEach((accordion_container) => {
   });
 });
 
-// const locationBox = document.querySelector(".location");
-// const dropdown = document.querySelector(".location-dropdown");
-// const locationInput = document.querySelector(".location-input");
-// const dropdownItems = document.querySelectorAll(".dropdown-item");
-
-// locationBox.addEventListener("click", () => {
-//   dropdown.classList.toggle("hidden");
-// });
-
-// dropdownItems.forEach((item) => {
-//   item.addEventListener("click", () => {
-//     locationInput.value = item.textContent;
-//     dropdown.classList.add("hidden");
-//   });
-// });
 document.addEventListener("DOMContentLoaded", () => {
 
   const states = [
@@ -100,5 +85,33 @@ document.addEventListener("DOMContentLoaded", () => {
       dropdown.classList.add("hidden");
     }
   });
+
+   // ================== DARK MODE ==================
+  const darkModeBtn = document.getElementById("darkModeToggle");
+const icon = document.getElementById("icon");
+
+// Load saved theme
+if (localStorage.getItem("theme") === "dark") {
+  document.body.classList.add("dark-mode");
+  icon.textContent = "light_mode";
+} else {
+  icon.textContent = "dark_mode";
+}
+
+// Toggle
+darkModeBtn.addEventListener("click", () => {
+
+  document.body.classList.toggle("dark-mode");
+
+  if (document.body.classList.contains("dark-mode")) {
+    icon.textContent = "light_mode";
+    localStorage.setItem("theme", "dark");
+  } else {
+    icon.textContent = "dark_mode";
+    localStorage.setItem("theme", "light");
+  }
+
+});
+
 
 });

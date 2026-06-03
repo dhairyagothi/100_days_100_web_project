@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Checkers Game</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Checkers Game</h1>
+
+      <div class="controls">
+        <button onclick="startGame('pvp')">Player vs Player</button>
+        <button onclick="startGame('bot')">Player vs Bot</button>
+        <button onclick="resetGame()">Reset</button>
+      </div>
+
+      <div id="status">Select a mode to start</div>
+
+      <div id="board"></div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
