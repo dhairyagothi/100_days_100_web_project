@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(session({
-  secret: process.env.JWT_SECRET || 'secretkey',
+  secret: process.env.JWT_SECRET,
   resave: false,
   saveUninitialized: false,
 }));
@@ -96,7 +96,7 @@ app.get('/auth/google/callback',
   (req, res) => {
     const token = jwt.sign(
       { id: req.user._id, username: req.user.username },
-      process.env.JWT_SECRET || 'secretkey',
+      process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );
 
@@ -160,7 +160,7 @@ app.post('/login', async (req, res) => {
 
     const token = jwt.sign(
       { id: user._id, username: user.username },
-      process.env.JWT_SECRET || 'secretkey',
+      process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );
 
@@ -177,6 +177,12 @@ app.post('/login', async (req, res) => {
     return res.status(500).send('Server error');
   }
 });
+
+// ─── Env guard ─────────────────────────────────────────────────
+if (!process.env.JWT_SECRET) {
+  console.error('\x1b[31m[FATAL] JWT_SECRET environment variable is required.\x1b[0m');
+  process.exit(1);
+}
 
 // ─── Start ─────────────────────────────────────────────────────
 app.listen(port, () => {
