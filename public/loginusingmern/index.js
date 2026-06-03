@@ -11,8 +11,18 @@ const session = require('express-session');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
+const rateLimit = require('express-rate-limit');
+
 const collection = require('./mongo.js');
 const authMiddleware = require('./middleware/auth');
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { error: 'Too many attempts. Try again in 15 minutes.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 const port = process.env.PORT || 3000;
 
@@ -27,7 +37,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(session({
-  secret: process.env.JWT_SECRET || 'secretkey',
+  secret: process.env.JWT_SECRET,
   resave: false,
   saveUninitialized: false,
 }));
@@ -96,7 +106,7 @@ app.get('/auth/google/callback',
   (req, res) => {
     const token = jwt.sign(
       { id: req.user._id, username: req.user.username },
-      process.env.JWT_SECRET || 'secretkey',
+      process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );
 
@@ -112,7 +122,7 @@ app.get('/auth/google/callback',
 );
 
 // ─── POST /signup ──────────────────────────────────────────────
-app.post('/signup', async (req, res) => {
+app.post('/signup', authLimiter, async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
@@ -140,7 +150,7 @@ app.post('/signup', async (req, res) => {
 });
 
 // ─── POST /login ───────────────────────────────────────────────
-app.post('/login', async (req, res) => {
+app.post('/login', authLimiter, async (req, res) => {
   try {
     const { username, password } = req.body;
 
@@ -160,7 +170,7 @@ app.post('/login', async (req, res) => {
 
     const token = jwt.sign(
       { id: user._id, username: user.username },
-      process.env.JWT_SECRET || 'secretkey',
+      process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );
 
@@ -177,6 +187,15 @@ app.post('/login', async (req, res) => {
     return res.status(500).send('Server error');
   }
 });
+
+// ─── Env guard ─────────────────────────────────────────────────
+if (!process.env.JWT_SECRET) {
+  console.error('\x1b[31m[FATAL] JWT_SECRET environment variable is required.\x1b[0m');
+  process.exit(1);
+}
+if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+  console.error('\x1b[33m[WARN] GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET not set — Google OAuth disabled.\x1b[0m');
+}
 
 // ─── Start ─────────────────────────────────────────────────────
 app.listen(port, () => {

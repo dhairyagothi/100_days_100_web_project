@@ -732,20 +732,45 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       // Draw links
       if (!coarsePointer.matches && !reducedMotion.matches) {
-        for (let i = 0; i < particleCount; i++) {
-          for (let j = i + 1; j < particleCount; j++) {
-            const dx = particles[i].x - particles[j].x;
-            const dy = particles[i].y - particles[j].y;
-            const distSq = dx * dx + dy * dy;
+        const cellSize = maxDistance;
+        const cols = Math.ceil(W / cellSize) || 1;
+        const grid = new Map();
 
-            if (distSq < maxDistanceSq) {
-              const dist = Math.sqrt(distSq);
-              ctx.beginPath();
-              ctx.moveTo(particles[i].x, particles[i].y);
-              ctx.lineTo(particles[j].x, particles[j].y);
-              ctx.strokeStyle = `rgba(59, 130, 246, ${(1 - dist / maxDistance) * 0.18})`;
-              ctx.lineWidth = 1;
-              ctx.stroke();
+        for (let i = 0; i < particleCount; i++) {
+          const cx = Math.floor(particles[i].x / cellSize);
+          const cy = Math.floor(particles[i].y / cellSize);
+          const key = cx + ',' + cy;
+          if (!grid.has(key)) grid.set(key, []);
+          grid.get(key).push(i);
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+          const cx = Math.floor(particles[i].x / cellSize);
+          const cy = Math.floor(particles[i].y / cellSize);
+
+          for (let dx = -1; dx <= 1; dx++) {
+            for (let dy = -1; dy <= 1; dy++) {
+              const neighbors = grid.get((cx + dx) + ',' + (cy + dy));
+              if (!neighbors) continue;
+
+              for (let k = 0; k < neighbors.length; k++) {
+                const j = neighbors[k];
+                if (j <= i) continue;
+
+                const dxp = particles[i].x - particles[j].x;
+                const dyp = particles[i].y - particles[j].y;
+                const distSq = dxp * dxp + dyp * dyp;
+
+                if (distSq < maxDistanceSq) {
+                  const dist = Math.sqrt(distSq);
+                  ctx.beginPath();
+                  ctx.moveTo(particles[i].x, particles[i].y);
+                  ctx.lineTo(particles[j].x, particles[j].y);
+                  ctx.strokeStyle = `rgba(59, 130, 246, ${(1 - dist / maxDistance) * 0.18})`;
+                  ctx.lineWidth = 1;
+                  ctx.stroke();
+                }
+              }
             }
           }
         }

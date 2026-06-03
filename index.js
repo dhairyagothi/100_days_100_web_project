@@ -2170,21 +2170,46 @@ initTheme();
     stepParticles();
 
     if (profile.showLinks) {
+      const cellSize = linkDistance;
+      const cols = Math.ceil(W / cellSize) || 1;
+      const grid = new Map();
+
       for (let i = 0; i < particleCount; i += 1) {
-        for (let j = i + 1; j < particleCount; j += 1) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const distanceSq = dx * dx + dy * dy;
+        const cx = Math.floor(particles[i].x / cellSize);
+        const cy = Math.floor(particles[i].y / cellSize);
+        const key = cx + ',' + cy;
+        if (!grid.has(key)) grid.set(key, []);
+        grid.get(key).push(i);
+      }
 
-          if (distanceSq >= maxDistanceSq) continue;
+      for (let i = 0; i < particleCount; i += 1) {
+        const cx = Math.floor(particles[i].x / cellSize);
+        const cy = Math.floor(particles[i].y / cellSize);
 
-          const distance = Math.sqrt(distanceSq);
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(59,130,246,${(1 - distance / linkDistance) * 0.22})`;
-          ctx.lineWidth = 1;
-          ctx.stroke();
+        for (let dx = -1; dx <= 1; dx += 1) {
+          for (let dy = -1; dy <= 1; dy += 1) {
+            const neighbors = grid.get((cx + dx) + ',' + (cy + dy));
+            if (!neighbors) continue;
+
+            for (let k = 0; k < neighbors.length; k += 1) {
+              const j = neighbors[k];
+              if (j <= i) continue;
+
+              const dxp = particles[i].x - particles[j].x;
+              const dyp = particles[i].y - particles[j].y;
+              const distanceSq = dxp * dxp + dyp * dyp;
+
+              if (distanceSq >= maxDistanceSq) continue;
+
+              const distance = Math.sqrt(distanceSq);
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(59,130,246,${(1 - distance / linkDistance) * 0.22})`;
+              ctx.lineWidth = 1;
+              ctx.stroke();
+            }
+          }
         }
       }
     }
