@@ -143,7 +143,7 @@ loadProjects().catch((err) => {
         grid.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-color, #333);">
             <h2><i class="fas fa-exclamation-triangle"></i> Failed to Load Projects</h2>
             <p>Please check your connection or try again later.</p>
-            <p style="font-family: monospace; color: red;">${err.message}</p>
+            <p style="font-family: monospace; color: red;">${escapeHTML(err.message)}</p>
         </div>`;
     }
 });
@@ -234,6 +234,14 @@ function getProjectDescription(project) {
   );
 }
 
+/**
+ * Escape a plain string so it is safe to inject into HTML text content
+ * or attribute values (when quoted with double quotes).
+ *
+ * SECURITY: This is the primary XSS defence for every piece of
+ * contributor-supplied data that ends up inside innerHTML / template
+ * literals.  Call it on EVERY untrusted value before inserting into HTML.
+ */
 function escapeHTML(value) {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -241,6 +249,45 @@ function escapeHTML(value) {
     .replace(/>/g, "&gt;")
     .replace(/\"/g, "&quot;")
     .replace(/'/g, "&#39;");
+}
+
+/**
+ * Sanitize a URL so it can be used safely in an href attribute.
+ *
+ * SECURITY: Blocks javascript:, data:, vbscript: and any other
+ * non-http(s)/relative protocol that could execute code when a user
+ * clicks a link.  Falls back to "#" so the link is inert rather than
+ * omitted, which keeps the UI layout intact.
+ *
+ * Allowed schemes:
+ *   - https://   (absolute external links, GitHub, live demos)
+ *   - http://    (legacy / local dev)
+ *   - ./  ../    (relative paths to local demo index.html files)
+ *   - #          (in-page anchors)
+ *
+ * Everything else — including javascript:, data:, vbscript:,
+ * blob: and protocol-relative // URLs — is replaced with "#".
+ *
+ * @param {string} url - Raw URL from project data or localStorage.
+ * @returns {string} A URL that is safe to place in an href attribute.
+ */
+function sanitizeUrl(url) {
+  const raw = String(url || "").trim();
+
+  // Allow empty / anchor-only values as-is
+  if (!raw || raw === "#") return raw || "#";
+
+  // Relative paths used for local demo files are safe
+  if (raw.startsWith("./") || raw.startsWith("../") || raw.startsWith("/")) {
+    return raw;
+  }
+
+  // Allow standard web protocols only
+  if (/^https?:\/\//i.test(raw)) return raw;
+
+  // Block everything else (javascript:, data:, vbscript:, blob:, etc.)
+  console.warn("[XSS] Blocked unsafe URL scheme:", raw);
+  return "#";
 }
 
 function buildProjectCardHTML({
@@ -258,33 +305,53 @@ function buildProjectCardHTML({
     url,
     tags,
   );
+
+  // ── SECURITY: sanitize URLs before placing them in href attributes ──
+  // resolveProjectUrls may return a contributor-supplied string or a path
+  // derived from one.  sanitizeUrl() blocks javascript:, data:, vbscript:
+  // and any other executable protocol while leaving valid http(s) / relative
+  // paths untouched.
+  const safeDemoUrl   = sanitizeUrl(demoUrl);
+  const safeSourceUrl = sanitizeUrl(sourceUrl);
+
   const tagsArray = Array.isArray(tags)
     ? tags.filter((t) => t !== SOURCE_ONLY_TAG)
     : String(tags || "")
         .split(/\s+/)
         .filter((t) => t && t !== SOURCE_ONLY_TAG);
+
+  // SECURITY: escapeHTML on every tag token prevents <script> / event-handler
+  // injection via the techStack field in projects.json.
   const tagsHTML = tagsArray
     .map((t) => `<span class="tag">${escapeHTML(t)}</span>`)
     .join("");
+
   const project = PROJECTS.find((p) => p.projectName === name);
 
-  const description = escapeHTML(getProjectDescription(project));
-  const safeDay = escapeHTML(day);
-  const safeName = escapeHTML(name);
+  // SECURITY: description, day, name and category are all escaped before
+  // being written into innerHTML.
+  const description  = escapeHTML(getProjectDescription(project));
+  const safeDay      = escapeHTML(day);
+  const safeName     = escapeHTML(name);
   const safeCategory = escapeHTML(category);
+
   const sourceOnlyBadge = sourceOnly
     ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
     : "";
+
+  // SECURITY: href values come from sanitizeUrl() — not raw contributor data.
+  // data-id uses escapeHTML so it cannot break out of the attribute.
   const primaryLink = sourceOnly
-    ? `<a href="${sourceUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()">
+    ? `<a href="${safeSourceUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()">
                         <i class="fab fa-github"></i> Source
                     </a>`
-    : `<a href="${demoUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()">
+    : `<a href="${safeDemoUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()">
                         Demo <i class="fas fa-arrow-right"></i>
                     </a>`;
+
   const codeLink = sourceOnly
     ? ""
-    : `<a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()">
+    : `<a href="${safeSourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()">
                         <i class="fab fa-github"></i> Code
                     </a>`;
 
@@ -311,12 +378,12 @@ function buildProjectCardHTML({
                     ${primaryLink}
                     ${codeLink}
                 </div>
-                <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${day}">
+                <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${safeDay}">
                     <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark"></i>
                 </button>
             </div>
         `,
-    demoUrl,
+    demoUrl: safeDemoUrl,
     sourceOnly,
   };
 }
@@ -331,7 +398,10 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
       trackRecentProject(projectData);
     }
 
-    window.open(demoUrl, "_blank", "noopener");
+    // SECURITY: sanitizeUrl() is called on the stored demoUrl before
+    // window.open() so a javascript: payload stored in localStorage cannot
+    // execute even after a page reload.
+    window.open(sanitizeUrl(demoUrl), "_blank", "noopener");
   };
 }
 
@@ -406,12 +476,26 @@ function clearAllTechFilters() {
 }
 
 /**
- * Update the visual display of active tech filters
+ * Update the visual display of active tech filters.
+ *
+ * SECURITY: Previously this function built filter-tag markup by splicing
+ * the raw tech string directly into an onclick attribute:
+ *
+ *   `onclick="removeTechFilter('${tech}')"`
+ *
+ * That allowed a crafted tag value such as
+ *   '); alert(1); ('
+ * to break out of the string literal and execute arbitrary JS.
+ *
+ * The fix uses DOM methods exclusively — no innerHTML, no inline handlers.
+ * Each tag element is built with createElement / textContent and a proper
+ * addEventListener, so no contributor-supplied string ever lands in an
+ * executable context.
  */
 function updateTechFilterDisplay() {
-  const container = document.getElementById("activeTechFilters");
+  const container    = document.getElementById("activeTechFilters");
   const tagsContainer = document.getElementById("techFilterTags");
-  const clearBtn = document.getElementById("clearTechFilter");
+  const clearBtn     = document.getElementById("clearTechFilter");
 
   if (!container || !tagsContainer) return;
 
@@ -428,19 +512,32 @@ function updateTechFilterDisplay() {
 
   container.style.display = "flex";
 
-  // Render filter tags with remove buttons
-  tagsContainer.innerHTML = techStackFilters
-    .map(
-      (tech) => `
-    <span class="tech-filter-tag">
-      ${tech}
-      <button onclick="removeTechFilter('${tech}')" aria-label="Remove ${tech} filter">
-        <i class="fas fa-times"></i>
-      </button>
-    </span>
-  `,
-    )
-    .join("");
+  // SECURITY: Build each filter tag with DOM APIs, not innerHTML.
+  // This eliminates the inline-handler injection vector entirely.
+  tagsContainer.textContent = ""; // clear previous children safely
+
+  techStackFilters.forEach((tech) => {
+    const span = document.createElement("span");
+    span.className = "tech-filter-tag";
+
+    // textContent sets the visible label without any HTML parsing.
+    const label = document.createTextNode(tech);
+    span.appendChild(label);
+
+    const btn = document.createElement("button");
+    btn.setAttribute("aria-label", `Remove ${tech} filter`);
+
+    const icon = document.createElement("i");
+    icon.className = "fas fa-times";
+    btn.appendChild(icon);
+
+    // addEventListener keeps the handler in JS — the tech value never
+    // touches HTML or an eval context.
+    btn.addEventListener("click", () => removeTechFilter(tech));
+
+    span.appendChild(btn);
+    tagsContainer.appendChild(span);
+  });
 }
 
 /**

@@ -1,34 +1,24 @@
-// ==========================
-// Resume Studio
-// ==========================
+(function () {
 
-document.addEventListener("DOMContentLoaded", () => {
+    // =========================
+    // ELEMENTS
+    // =========================
+    const resumePreview   = document.getElementById("resumePreview");
+    const themeSwitcher   = document.getElementById("themeSwitcher");
+    const downloadBtn     = document.getElementById("downloadBtn");
+    const previewBtn      = document.getElementById("previewBtn");
+    const templateBtns    = document.querySelectorAll(".template");
+    const atsScoreEl      = document.getElementById("atsScore");
 
-    // FORM INPUTS
-    const nameInput = document.getElementById("name");
-    const emailInput = document.getElementById("email");
-    const phoneInput = document.getElementById("phone");
-    const educationInput = document.getElementById("education");
-    const summaryInput = document.getElementById("summary");
-    const projectsInput = document.getElementById("projects");
-    const skillsInput = document.getElementById("skills");
-    const experienceInput = document.getElementById("experience");
+    const nameEl       = document.getElementById("name");
+    const emailEl      = document.getElementById("email");
+    const phoneEl      = document.getElementById("phone");
+    const educationEl  = document.getElementById("education");
+    const summaryEl    = document.getElementById("summary");
+    const projectsEl   = document.getElementById("projects");
+    const skillsEl     = document.getElementById("skills");
+    const experienceEl = document.getElementById("experience");
 
-    // BUTTONS
-    const previewBtn = document.getElementById("previewBtn");
-    const downloadBtn = document.getElementById("downloadBtn");
-    const printBtn = document.getElementById("printBtn");
-    const fillDemoBtn = document.getElementById("fillDemoBtn");
-    const clearFormBtn = document.getElementById("clearFormBtn");
-    const atsScoreValue = document.getElementById("atsScoreValue");
-
-    // Must match the IDs in your HTML
-    const inputs = [
-        "name", "title", "email", "phone", "location", "linkedin", "github", 
-        "summary", "experience", "projects", "education", "skills"
-    ];
-
-  
     let currentTemplate = "modern";
 
     // =========================
@@ -337,6 +327,66 @@ document.addEventListener("DOMContentLoaded", () => {
     // =========================
     function updateATSScore() {
         let score = 0;
+        const summary    = val(summaryEl);
+        const skills     = val(skillsEl);
+        const experience = val(experienceEl);
+        const name       = val(nameEl);
+        const email      = val(emailEl);
+
+        if (name)                          score += 10;
+        if (email)                         score += 10;
+        if (summary.length > 80)           score += 25;
+        if (skills.split(",").length >= 4) score += 25;
+        if (experience.length > 80)        score += 30;
+
+        if (score > 100) score = 100;
+
+        if (atsScoreEl) atsScoreEl.textContent = score + "%";
+    }
+
+    // =========================
+    // DOWNLOAD PDF
+    // =========================
+    downloadBtn.addEventListener("click", async () => {
+        downloadBtn.textContent = "Generating...";
+        downloadBtn.disabled = true;
+
+        try {
+            const canvas = await html2canvas(resumePreview, { scale: 2, useCORS: true });
+            const imgData = canvas.toDataURL("image/png");
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF("p", "mm", "a4");
+            const pageWidth  = pdf.internal.pageSize.getWidth();
+            const pageHeight = pdf.internal.pageSize.getHeight();
+            const imgHeight  = (canvas.height * pageWidth) / canvas.width;
+            let heightLeft = imgHeight;
+            let position   = 0;
+
+            pdf.addImage(imgData, "PNG", 0, position, pageWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft > 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, "PNG", 0, position, pageWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+
+            const fileName = (val(nameEl) || "resume").toLowerCase().replace(/\s+/g, "_");
+            pdf.save(`${fileName}_resume.pdf`);
+        } catch (err) {
+            console.error(err);
+            alert("PDF generation failed. Try the browser Print option (Ctrl+P) as an alternative.");
+        } finally {
+            downloadBtn.textContent = "Download PDF";
+            downloadBtn.disabled = false;
+        }
+    });
+
+    // =========================
+    // INIT
+    // =========================
+    updateATSScore();
 
         const summary = document.getElementById("summary")?.value || "";
         const skills = document.getElementById("skills")?.value || "";

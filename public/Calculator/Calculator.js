@@ -449,13 +449,56 @@ document
         }
     });
 document.getElementById('clearHistory').addEventListener('click', () => {
+
+    if (history.length === 0) {
+        showToast('History is already empty');
+        return;
+    }
+
     showConfirmToast(
         "Are you sure you want to clear history?",
         () => {
-            // YES action
             history = [];
             localStorage.removeItem(STORAGE_KEY);
             renderHistory();
         }
     );
+});
+document.addEventListener('keydown', (e) => {
+
+    const activeElement = document.activeElement;
+
+    if (
+        activeElement &&
+        activeElement.tagName === 'INPUT'
+    ) {
+        return;
+    }
+
+    if (e.key === 'Enter') {
+
+        e.preventDefault();
+
+        document
+            .querySelector('.equalTo')
+            .click();
+    }
+
+    if (e.key === 'Escape') {
+
+        document
+            .querySelector('.Clear')
+            .click();
+    }
+
+    if (e.key === 'Backspace') {
+
+        e.preventDefault();
+
+        const deleteButton = Array
+            .from(buttons)
+            .find(btn => btn.textContent === 'DEL');
+
+        deleteButton?.click();
+    }
 });
