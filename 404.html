@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>404 — Page Not Found | 100 Days 100 Web Projects</title>
     <link rel="icon" href="./public/favv.png" type="image/x-icon"/>
+    <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="theme.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         * {
             margin: 0;
@@ -153,6 +156,8 @@
 </head>
 <body>
 
+    <div id="navbar-container"></div>
+
     <!-- Starry background -->
     <div class="stars" id="stars"></div>
 
@@ -200,5 +205,6 @@
             starsContainer.appendChild(star);
         }
     </script>
+    <script src="navbar.js" defer></script>
 </body>
 </html>
