@@ -28,7 +28,14 @@ const statModified =
 
 const statReadTime =
   document.getElementById("statReadTime");
-  
+
+const statWords =
+  document.getElementById("statWords");
+
+const statCharacters =
+  document.getElementById("statCharacters");
+
+
 
 uploadBtn.addEventListener("click", () => {
 
@@ -47,6 +54,7 @@ resumeInput.addEventListener("change", () => {
       file.name;
 
     updateStats(file);
+    extractResumeContent(file);
     generateAnalysis();
   }
 });
@@ -295,6 +303,148 @@ function updateStats(file){
 
   statReadTime.textContent =
     `${estimatedMinutes} min`;
+}
+async function extractResumeContent(file) {
+
+  const extension =
+    file.name
+      .split(".")
+      .pop()
+      .toLowerCase();
+
+  try {
+
+    if (extension === "pdf") {
+
+      const text =
+        await extractPDFText(file);
+
+      updateContentStats(text);
+
+    } else if (extension === "docx") {
+
+      const text =
+        await extractDOCXText(file);
+
+      updateContentStats(text);
+
+    } else if (extension === "txt") {
+
+      const text =
+        await extractTXTText(file);
+
+      updateContentStats(text);
+
+    } else {
+
+      statWords.textContent =
+        "Unsupported";
+
+      statCharacters.textContent =
+        "Unsupported";
+
+      
+    }
+
+  } catch (error) {
+
+    console.error(error);
+
+    statWords.textContent = "Error";
+    statCharacters.textContent = "Error";
+    
+  }
+}
+function extractTXTText(file) {
+
+  return new Promise((resolve) => {
+
+    const reader =
+      new FileReader();
+
+    reader.onload = () =>
+      resolve(reader.result);
+
+    reader.readAsText(file);
+
+  });
+
+}
+async function extractDOCXText(file) {
+
+  const arrayBuffer =
+    await file.arrayBuffer();
+
+  const result =
+    await mammoth.extractRawText({
+      arrayBuffer
+    });
+
+  return result.value;
+}
+async function extractPDFText(file) {
+
+  const arrayBuffer =
+    await file.arrayBuffer();
+
+  const pdf =
+    await pdfjsLib
+      .getDocument({
+        data: arrayBuffer
+      })
+      .promise;
+
+  let text = "";
+
+  for (
+    let pageNum = 1;
+    pageNum <= pdf.numPages;
+    pageNum++
+  ) {
+
+    const page =
+      await pdf.getPage(pageNum);
+
+    const content =
+      await page.getTextContent();
+
+    text += content.items
+      .map(item => item.str)
+      .join(" ");
+
+    text += " ";
+  }
+
+  return text;
+}
+function updateContentStats(text) {
+
+  const cleanText =
+    text.trim();
+
+  const words =
+    cleanText
+      ? cleanText
+          .split(/\s+/)
+          .length
+      : 0;
+
+  const characters =
+    cleanText.length;
+
+  const readingTime =
+    Math.max(
+      1,
+      Math.ceil(words / 200)
+    );
+
+  statWords.textContent =
+    words.toLocaleString();
+
+  statCharacters.textContent =
+    characters.toLocaleString();
+
+  
 }
 
 generateAnalysis();
