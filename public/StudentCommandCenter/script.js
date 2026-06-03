@@ -144,6 +144,20 @@ updateTimerDisplay();
 // BUTTONS
 const startBtn = document.getElementById("startTimer");
 const resetBtn = document.getElementById("resetTimer");
+const pauseBtn = document.getElementById("pauseTimer");
 
 startBtn.addEventListener("click", startTimer);
 resetBtn.addEventListener("click", resetTimer);
+let isPaused = false;
+
+pauseBtn.addEventListener("click", () => {
+    if (!isPaused) {
+        clearInterval(timer);
+        pauseBtn.textContent = "Resume";
+        isPaused = true;
+    } else {
+        startTimer();
+        pauseBtn.textContent = "Pause";
+        isPaused = false;
+    }
+});

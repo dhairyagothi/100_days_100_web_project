@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="mt-10">
+    <h1 class="text-2xl font-bold mb-2">Dashboard</h1>
+
+<p class="text-gray-600 mb-4">
+    Total Contacts: {{ contact_count }}
+</p>
     {% if duplicate_count and duplicate_count > 0 %}
     <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 rounded shadow flex justify-between items-center">
         <div class="flex items-center space-x-3">
@@ -19,8 +24,29 @@
     {% endif %}
 
     <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
-    <input type="text" id="search" placeholder="Search contacts..." class="w-full p-2 mb-4 border border-gray-300 rounded">
-    <a href="{{ url_for('add_contact') }}" class="bg-blue-600 text-white px-4 py-2 rounded">Add Contact</a>
+
+<input type="text" id="search" placeholder="Search contacts..."
+       class="w-full p-2 mb-4 border border-gray-300 rounded">
+
+<form method="GET" action="{{ url_for('dashboard') }}" class="mb-4">
+    <select name="sort" onchange="this.form.submit()"
+        class="border border-gray-300 rounded p-2">
+    <option value="asc" {% if request.args.get('sort', 'asc') == 'asc' %}selected{% endif %}>
+        Sort A-Z
+    </option>
+    <option value="desc" {% if request.args.get('sort') == 'desc' %}selected{% endif %}>
+        Sort Z-A
+    </option>
+</select>
+        <option value="asc">Sort A-Z</option>
+        <option value="desc">Sort Z-A</option>
+    </select>
+</form>
+
+<a href="{{ url_for('add_contact') }}"
+   class="bg-blue-600 text-white px-4 py-2 rounded">
+   Add Contact
+</a>
     <ul id="contactList" class="mt-4 space-y-2">
         {% for contact in contacts %}
         <li class="bg-white p-4 rounded shadow flex justify-between items-center contact-item">
@@ -28,6 +54,9 @@
                 <p class="font-bold contact-name">{{ contact.name }}</p>
                 <p class="contact-email">{{ contact.email }}</p>
                 <p class="contact-phone">{{ contact.phone }}</p>
+                <p class="text-sm text-gray-500">
+    Added on: {{ contact.created_at.strftime('%d/%m/%Y') }}
+</p>
             </div>
             <div class="space-x-2">
                 <a href="{{ url_for('edit_contact', id=contact.id) }}" class="bg-yellow-400 text-white px-4 py-2 rounded">Edit</a>

@@ -139,13 +139,8 @@
 /* Dark Mode Styles */
 body.dark-mode {
     background-color: #121212;
-    color: #ffffff;
 }
 
-/* Navbar */
-body.dark-mode nav {
-    background-color: #1e1e1e;
-}
 
 /* Cards / Sections */
 body.dark-mode .card,
@@ -161,10 +156,6 @@ body.dark-mode button {
     color: white;
 }
 
-/* Links */
-body.dark-mode a {
-    color: #ff4d4d;
-}
 
 /* APP SECTION DARK MODE */
 body.dark-mode .app-section {
@@ -217,11 +208,30 @@ body:not(.dark-mode) button {
 body:not(.dark-mode) input {
     background-color: white !important;
     color: black !important;
-    border: 1px solid #ccc !important;
 }
 
 #darkModeToggle {
     position: relative;
     z-index: 1000;
     cursor: pointer;
+}
+
+#darkModeToggle {
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;          /* circle */
+   border: 2px solid #ff4d4d;     /* red outline */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent;     /* no background */
+  cursor: pointer;
+
+  font-size: 22px;             /* icon size */
+   border: 2px solid #ff4d4d;                  /* icon color */
+
+  transition: 0.3s ease;
 }

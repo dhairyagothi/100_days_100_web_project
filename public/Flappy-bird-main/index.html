@@ -7,16 +7,31 @@
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
     <meta name="theme-color" content="#0d1117" />
-    <title>Flappy Bird</title>
+    <title>Flappy Bird - Difficulty Levels</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <a href="../../index.html" class="back-home">
-  ← Back to Home
-</a>
+      ← Back to Home
+    </a>
 
-    <canvas id="gameCanvas"></canvas>
+    <!-- Added explicit width/height for better rendering -->
+    <canvas id="gameCanvas" width="400" height="600"></canvas>
+    
     <p class="hint">SPACE &nbsp;·&nbsp; Tap to flap &nbsp;·&nbsp; P to pause</p>
+
+    <!-- Semantic sections for better structure -->
+    <section class="difficulty-panel">
+      <button class="difficulty-btn easy" onclick="setDifficulty('easy')">Easy 🟢</button>
+      <button class="difficulty-btn medium active" onclick="setDifficulty('medium')">Medium 🟠</button>
+      <button class="difficulty-btn hard" onclick="setDifficulty('hard')">Hard 🔴</button>
+    </section>
+    
+    <section class="stats">
+      <span>Score: <span id="scoreDisplay">0</span></span>
+      <span>Mode: <span id="modeDisplay">Medium</span></span>
+    </section>
+
     <script src="/public/Flappy-bird-main/script.js"></script>
   </body>
 </html>

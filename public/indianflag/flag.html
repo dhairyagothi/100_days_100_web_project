@@ -8,6 +8,7 @@
 
     <link href="../indianflag/flag.css" rel="stylesheet" />
     <link rel="icon" href="../favv.png" type="image/x-icon" />
+    <link rel="stylesheet" href="flag-history.css">
   </head>
 
   <body>
@@ -76,123 +77,17 @@
         <source src="vande_mataram.mp3" type="audio/mpeg" />
       </audio>
     </div>
- <section class="know-more-section">
-  <h2>Know More About Indian Flag</h2>
-
-  <div class="info-container">
-
-    <div class="info-card saffron">
-      <h3>Saffron</h3>
-      <p>
-        The saffron color represents courage, sacrifice, and the spirit of strength.
-      </p>
-    </div>
-
-    <div class="info-card white">
-      <h3>White</h3>
-      <p>
-        The white stripe symbolizes peace, truth, and honesty.
-      </p>
-    </div>
-
-    <div class="info-card green">
-      <h3>Green</h3>
-      <p>
-        The green color represents growth, prosperity, and harmony with nature.
-      </p>
-    </div>
-
-    <div class="info-card chakra">
-      <h3>Ashoka Chakra</h3>
-      <p>
-        The Ashoka Chakra stands for progress, dharma, and continuous movement in life.
-      </p>
-    </div>
-
-  </div>
-</section>
-
-    <!-- CHATBOT UI START -->
-    <div class="chat-btn" id="chatBtn" onclick="toggleChat()">💬</div>
-
-    <div class="chat-window" id="chatWindow">
-      <div class="chat-header">
-        🇮🇳 Tiranga Talks — Ask anything!
-        <span onclick="toggleChat()" style="cursor:pointer; float:right;">✖</span>
+    <section id="flag-history">
+      <h2>Evolution of the Indian Flag</h2>
+      <p class = "subtitle">From 1906 to Independence — the journey of our Tiranga</p>
+      <div class="timeline-track" id="timelineTrack"></div>
+      <div id="flagCards"></div>
+      <div class="timeline-nav">
+        <button id="btnPrev">&#8592; Previous</button>
+        <button id="btnNext">Next &#8594;</button>
       </div>
-      <div class="chat-messages" id="chatMessages"></div>
-      <div class="chat-input-area">
-        <input 
-          type="text" 
-          id="chatInput" 
-          placeholder="Ask me about India..." 
-          onkeydown="if(event.key==='Enter') sendMessage()"
-        />
-        <button onclick="sendMessage()">Send</button>
-      </div>
-    </div>
-    <!-- CHATBOT UI END -->
-
-    <!-- ==========================================
-         JAVASCRIPT LOGIC
-    =========================================== -->
-    
-    <!-- 1. Fireworks & Flag Interaction Script -->
-    <script>
-      // Let's add a fun Easter egg: click the flag to see fireworks!
-      const flagElement = document.getElementById("interactive-flag");
-      
-      // Make it look clickable
-      flagElement.style.cursor = "pointer";
-      
-      flagElement.addEventListener("click", (event) => {
-        // Launch 40 little particles when the flag is clicked
-        for(let i = 0; i < 40; i++) {
-          createFireworkParticle(event.clientX, event.clientY);
-        }
-      });
-
-      function createFireworkParticle(x, y) {
-        const particle = document.createElement("div");
-        
-        // Setup basic particle styles
-        particle.style.position = "fixed";
-        particle.style.left = x + "px";
-        particle.style.top = y + "px";
-        particle.style.width = "8px";
-        particle.style.height = "8px";
-        particle.style.borderRadius = "50%";
-        particle.style.pointerEvents = "none"; // So they don't block clicks
-        particle.style.zIndex = "9999";
-        
-        // Pick a random patriotic color! (Saffron, White, Green, or Navy Blue)
-        const patrioticColors = ["#FF9933", "#FFFFFF", "#138808", "#000080"];
-        particle.style.backgroundColor = patrioticColors[Math.floor(Math.random() * patrioticColors.length)];
-        
-        document.body.appendChild(particle);
-        
-        // Calculate a random explosion trajectory
-        const angle = Math.random() * Math.PI * 2; // Random direction
-        const velocity = 50 + Math.random() * 150; // Random speed
-        const translateX = Math.cos(angle) * velocity;
-        const translateY = Math.sin(angle) * velocity;
-        
-        // Animate the particle using the Web Animations API
-        const animation = particle.animate([
-          { transform: "translate(0, 0) scale(1)", opacity: 1 },
-          { transform: `translate(${translateX}px, ${translateY}px) scale(0)`, opacity: 0 }
-        ], {
-          duration: 800 + Math.random() * 500, // 0.8s to 1.3s
-          easing: "cubic-bezier(0, .9, .57, 1)" // Pop and slow down effect
-        });
-        
-        // Clean up the DOM once the animation finishes
-        animation.onfinish = () => particle.remove();
-      }
-    </script>
-
-    <!-- 2. Quotes & Music Script -->
- </section>
+    </section>
+    <script src="flag-history.js"></script>
     <script>
       const quotes = [
         { text: '"Give me blood and I will give you freedom."', author: "- Subhas Chandra Bose", image: "./img/subhas_bose.png" },
