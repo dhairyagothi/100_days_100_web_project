@@ -54,7 +54,6 @@ let monthlyBudget = 0;
 
 /* =========================================================
    INJECT SHAKE KEYFRAME
-   (drives the budget-exceeded warning animation)
 ========================================================= */
 
 (function injectShakeKeyframe() {
