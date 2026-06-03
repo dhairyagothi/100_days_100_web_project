@@ -231,3 +231,11 @@ body {
   .result-header-frame, .luxury-content-section, .luxury-pagination-dock { padding: 16px 20px; }
   .lexical-display-word { font-size: 34px; }
 }
+
+.history-section {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+/* rest of history CSS */
