@@ -7,212 +7,361 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-          rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
   />
   <link rel="stylesheet" href="todolist.css" />
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
-    integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA=="
+    integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnxS09ydFYWWNSfcEqDTTHgtNA=="
     crossorigin="anonymous"
     referrerpolicy="no-referrer"
   ></script>
 </head>
 <body>
-<a
-  href="/"
-  class="project-back-button"
-  style="
-    position: fixed;
-    left: 18px;
-    top: 18px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    background: linear-gradient(
-      90deg,
-      rgba(124, 99, 255, 0.14),
-      rgba(79, 141, 255, 0.1)
-    );
-    color: #fff;
-    text-decoration: none;
-    z-index: 9999;
-    font-weight: 700;
-    font-family: Inter, system-ui, sans-serif;
-    box-shadow: 0 8px 20px rgba(12, 18, 40, 0.35);
-  "
->← Back to Home</a>
+<!-- App Container -->
+<div class="app-container">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2 class="sidebar-title">
+        <span class="sidebar-logo">📋</span>
+        TO-DO LIST
+      </h2>
+    </div>
 
-<!-- Floating decorative shapes -->
-<div class="floating-shapes" aria-hidden="true">
-  <div class="shape shape-1"></div>
-  <div class="shape shape-2"></div>
-  <div class="shape shape-3"></div>
-  <div class="shape shape-4"></div>
-</div>
+    <nav class="sidebar-nav">
+      <a href="#" id="nav-home" class="sidebar-nav-item active" onclick="showSection('home'); return false;">
+        <span class="nav-icon">🏠</span>
+        Home
+      </a>
+      <a href="#" id="nav-documents" class="sidebar-nav-item" onclick="showSection('documents'); return false;">
+        <span class="nav-icon">📄</span>
+        Documents
+      </a>
+      <a href="#" id="nav-dashboard" class="sidebar-nav-item" onclick="showSection('dashboard'); return false;">
+        <span class="nav-icon">📊</span>
+        Dashboard
+      </a>
+      <a href="#" id="nav-achievements" class="sidebar-nav-item" onclick="showSection('achievements'); return false;">
+        <span class="nav-icon">🏅</span>
+        Achievements
+      </a>
+      <a href="#" id="nav-calendar" class="sidebar-nav-item" onclick="showSection('calendar'); return false;">
+        <span class="nav-icon">📅</span>
+        Calendar
+      </a>
+      <a href="#" id="nav-statistics" class="sidebar-nav-item" onclick="showSection('statistics'); return false;">
+        <span class="nav-icon">📈</span>
+        Statistics
+      </a>
+    </nav>
 
-<!-- Header with Navigation -->
-<header>
-  <nav class="navbar-container" aria-label="Main Navigation">
-    <ul class="navbar">
-      <li class="nav-left">
-        <ul>
-          <li>
-            <a
-              href="#"
-              id="nav-home"
-              onclick="showHome(); return false;"
-              aria-current="page"
-            >🏠 Home</a>
-          </li>
-          <li>
-            <a
-              href="#"
-              id="nav-documents"
-              onclick="showDocuments(); return false;"
-            >📄 Documents</a>
-          </li>
-        </ul>
-      </li>
-      <li class="nav-right">
-        <span class="theme-label">Theme</span>
-        <ul>
-          <li>
-            <button id="colour1" class="theme-btn" data-theme="theme1" aria-label="Sunset Theme"></button>
-          </li>
-          <li>
-            <button id="colour2" class="theme-btn" data-theme="theme2" aria-label="Ocean Theme"></button>
-          </li>
-          <li>
-            <button id="colour3" class="theme-btn" data-theme="theme3" aria-label="Forest Theme"></button>
-          </li>
-          <li>
-            <button id="colour4" class="theme-btn" data-theme="theme4" aria-label="Midnight Theme"></button>
-          </li>
-          <li>
-            <button id="colour5" class="theme-btn" data-theme="theme5" aria-label="Aurora Theme"></button>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
-</header>
+    <div class="sidebar-footer">
+      <a href="/" class="sidebar-back-btn">
+        <span class="nav-icon">🏠</span>
+        Back to Home
+      </a>
+      <button id="savepdf" class="sidebar-pdf-btn" onclick="saveAsPDF()">
+        <span class="nav-icon">📥</span>
+        Save as PDF
+      </button>
+    </div>
+  </aside>
 
-<!-- Main Content -->
-<main>
-  <!-- Home Section -->
-  <section id="home-tab" aria-label="Home tab">
-    <div class="hero">
-      <div class="hero-badge">🚀 Stay Productive</div>
-      <h1 class="heading home-heading">JUST DO IT.</h1>
-      <p class="hero-subtitle">Organise your day, conquer your goals.</p>
-      <!-- Progress bar -->
-      <div class="progress-wrapper" id="progressWrapper">
-        <div class="progress-bar-track">
-          <div class="progress-bar-fill" id="progressFill"></div>
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Home Section -->
+    <section id="home-tab" aria-label="Home tab" class="active-section">
+      <!-- Productivity Dashboard -->
+      <div class="productivity-dashboard">
+        <!-- Progress Card -->
+        <div class="dashboard-card progress-card">
+          <div class="card-label">PROGRESS</div>
+          <div class="card-progress-wrapper">
+            <svg class="card-progress-ring" width="100" height="100">
+              <defs>
+                <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#7c63ff;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#4f8dff;stop-opacity:1" />
+                </linearGradient>
+              </defs>
+              <circle class="card-progress-bg" cx="50" cy="50" r="40"></circle>
+              <circle class="card-progress-fill" cx="50" cy="50" r="40"></circle>
+            </svg>
+            <div class="card-progress-text">
+              <div class="progress-percent" id="progressPercent">0%</div>
+              <div class="progress-details" id="progressTextSmall">0 / 0 tasks</div>
+            </div>
+          </div>
         </div>
-        <output class="progress-text" id="progressText">0 / 0 done</output>
+
+        <!-- Streak Card -->
+        <div class="dashboard-card streak-card">
+          <div class="card-label">STREAK</div>
+          <div class="streak-stats">
+            <div class="streak-value">
+              <span class="streak-icon">🔥</span>
+              <span class="streak-number" id="currentStreak">0</span>
+            </div>
+            <div class="streak-sub">Days</div>
+            <div class="streak-best">Best: <span id="longestStreak">0</span></div>
+          </div>
+        </div>
+
+        <!-- Achievements Card -->
+        <div class="dashboard-card achievements-card">
+          <div class="card-label">ACHIEVEMENTS</div>
+          <div class="achievements-stats">
+            <span class="achievements-icon">🏅</span>
+            <span class="achievements-count"><span id="unlockedBadges">0</span> / 5</span>
+          </div>
+          <div class="achievements-label">Unlocked</div>
+        </div>
+
+        <!-- Tasks Total Card -->
+        <div class="dashboard-card tasks-card">
+          <div class="card-label">TASKS</div>
+          <div class="tasks-stats">
+            <span class="tasks-icon">📋</span>
+            <span class="tasks-number" id="totalTasks">0</span>
+          </div>
+          <div class="tasks-label">Total</div>
+        </div>
       </div>
-    </div>
 
-    <!-- Input Area -->
-    <form class="input-panel" id="task-form" novalidate>
-      <div class="input-group">
-        <label for="task-category" class="sr-only">Choose task category</label>
-        <select id="task-category" aria-label="Choose task category">
-          <option value="" disabled selected>📂 Category</option>
-          <option value="Work" data-color="#7c63ff">💼 Work</option>
-          <option value="Personal" data-color="#4f8dff">🧑 Personal</option>
-          <option value="Study" data-color="#ffb86b">📚 Study</option>
-          <option value="Health" data-color="#14b8a6">🍏 Health</option>
-          <option value="Others" data-color="#8e8e9c">📌 Others</option>
-        </select>
-
-        <label for="task-priority" class="sr-only">Choose task priority</label>
-        <select id="task-priority" aria-label="Choose task priority">
-          <option value="" disabled selected>⭐ Priority</option>
-          <option value="High" data-color="#ef4444">🔥 High</option>
-          <option value="Medium" data-color="#f59e0b">⭐ Medium</option>
-          <option value="Low" data-color="#3b82f6">🟢 Low</option>
-        </select>
-
-        <label for="task" class="sr-only">Task description</label>
-        <input
-          type="text"
-          id="task"
-          placeholder="What do you need to do?"
-          autocomplete="off"
-        />
-        <button type="submit" id="submittask">➕ Add Task</button>
+      <!-- Hero Banner -->
+      <div class="hero-banner">
+        <div class="hero-content">
+          <div class="hero-badge">🚀 STAY PRODUCTIVE</div>
+          <h1 class="hero-title">JUST DO IT.</h1>
+          <p class="hero-subtitle">Organise your day, conquer your goals.</p>
+          <div class="hero-progress">
+            <div class="hero-progress-bar">
+              <div class="hero-progress-fill" id="heroProgressFill"></div>
+            </div>
+            <div class="hero-progress-text" id="progressText">0 / 0 done</div>
+          </div>
+        </div>
+        <div class="hero-illustration">
+          <div class="illustration-clipboard">
+            <div class="clipboard-paper">
+              <div class="clipboard-check"></div>
+              <div class="clipboard-check"></div>
+              <div class="clipboard-check"></div>
+            </div>
+          </div>
+          <div class="illustration-plant"></div>
+        </div>
       </div>
-      <div class="input-actions">
-        <button type="button" id="savepdf">📥 Save as PDF</button>
+
+      <!-- Input Panel -->
+      <form class="input-panel" id="task-form" novalidate>
+        <div class="input-row">
+          <div class="input-select-wrapper">
+            <label for="task-category" class="sr-only">Category</label>
+            <select id="task-category" class="input-select" aria-label="Category">
+              <option value="" disabled selected>📂 Category</option>
+              <option value="Work" data-color="#7c63ff">💼 Work</option>
+              <option value="Personal" data-color="#4f8dff">🧑 Personal</option>
+              <option value="Study" data-color="#ffb86b">📚 Study</option>
+              <option value="Health" data-color="#14b8a6">🍎 Health</option>
+              <option value="Others" data-color="#8e8e9c">📌 Others</option>
+            </select>
+          </div>
+
+          <div class="input-select-wrapper">
+            <label for="task-priority" class="sr-only">Priority</label>
+            <select id="task-priority" class="input-select" aria-label="Priority">
+              <option value="" disabled selected>⭐ Priority</option>
+              <option value="High" data-color="#ef4444">🔥 High</option>
+              <option value="Medium" data-color="#f59e0b">⭐ Medium</option>
+              <option value="Low" data-color="#3b82f6">🟢 Low</option>
+            </select>
+          </div>
+
+          <label for="task" class="sr-only">Task</label>
+          <input type="text" id="task" class="task-input" placeholder="What do you need to do?" />
+          <button type="submit" class="add-task-btn">➕ Add Task</button>
+        </div>
+      </form>
+
+      <!-- Status Tabs -->
+      <div class="status-tabs-container">
+        <div class="status-tabs" id="statusTabs" style="display: none">
+          <button
+            class="status-tab active"
+            data-status="all"
+            onclick="filterByStatus('all')"
+          >
+            <span class="status-icon">🌐</span>
+            All
+            <span class="tab-count" id="count-all">0</span>
+          </button>
+          <button
+            class="status-tab"
+            data-status="pending"
+            onclick="filterByStatus('pending')"
+          >
+            <span class="status-icon">📋</span>
+            Pending
+            <span class="tab-count" id="count-pending">0</span>
+          </button>
+          <button
+            class="status-tab"
+            data-status="inprogress"
+            onclick="filterByStatus('inprogress')"
+          >
+            <span class="status-icon">⚡</span>
+            In Progress
+            <span class="tab-count" id="count-inprogress">0</span>
+          </button>
+          <button
+            class="status-tab"
+            data-status="completed"
+            onclick="filterByStatus('completed')"
+          >
+            <span class="status-icon">✅</span>
+            Completed
+            <span class="tab-count" id="count-completed">0</span>
+          </button>
+        </div>
       </div>
-    </form>
 
-    <!-- Empty State -->
-    <div class="empty-state" id="emptyState" role="status">
-      <div class="empty-icon" aria-hidden="true">📋</div>
-      <p class="empty-title">No tasks yet</p>
-      <p class="empty-desc">
-        Add your first task above and organize your day!
-      </p>
-    </div>
+      <!-- Empty State -->
+      <div class="empty-state" id="emptyState" role="status">
+        <div class="empty-icon" aria-hidden="true">📋</div>
+        <p class="empty-title">No tasks yet</p>
+        <p class="empty-desc">Add your first task above and organize your day!</p>
+      </div>
 
-    <!-- Status Filtering Tabs -->
-    <div class="status-tabs" id="statusTabs" style="display: none">
-      <button
-        class="status-tab active"
-        data-status="all"
-        onclick="filterByStatus('all')"
-      >
-        🌐 All <span class="tab-count" id="count-all">0</span>
-      </button>
-      <button
-        class="status-tab"
-        data-status="pending"
-        onclick="filterByStatus('pending')"
-      >
-        📋 Pending <span class="tab-count" id="count-pending">0</span>
-      </button>
-      <button
-        class="status-tab"
-        data-status="inprogress"
-        onclick="filterByStatus('inprogress')"
-      >
-        ⚡ In Progress
-        <span class="tab-count" id="count-inprogress">0</span>
-      </button>
-      <button
-        class="status-tab"
-        data-status="completed"
-        onclick="filterByStatus('completed')"
-      >
-        ✅ Completed <span class="tab-count" id="count-completed">0</span>
-      </button>
-    </div>
+      <!-- Task Cards Grid -->
+      <ul id="notes-container" class="task-grid" aria-label="Task list"></ul>
+    </section>
 
-    <!-- Task Cards Grid -->
-    <ul id="notes-container" class="task-grid" aria-label="Task list"></ul>
-  </section>
+    <!-- Documents Section -->
+    <section id="documents-tab" aria-label="Documents tab" class="inactive-section">
+      <div class="documents-header">
+        <h2 class="heading">📂 Saved Documents</h2>
+      </div>
+      <div class="empty-state" id="emptyDocsState" role="status">
+        <div class="empty-icon" aria-hidden="true">📄</div>
+        <p class="empty-title">No saved documents</p>
+        <p class="empty-desc">Save your to-do list as a PDF to see it here.</p>
+      </div>
+      <ul class="documents-list" aria-label="Saved documents"></ul>
+    </section>
 
-  <!-- Documents Section -->
-  <section id="documents-tab" aria-label="Documents tab" hidden>
-    <div class="documents-header">
-      <h2 class="heading">📂 Saved Documents</h2>
-    </div>
-    <div class="empty-state" id="emptyDocsState" role="status">
-      <div class="empty-icon" aria-hidden="true">📄</div>
-      <p class="empty-title">No saved documents</p>
-      <p class="empty-desc">
-        Save your to-do list as a PDF to see it here.
-      </p>
-    </div>
-    <ul class="documents-list" aria-label="Saved documents"></ul>
-  </section>
-</main>
+    <!-- Dashboard Section -->
+    <section id="dashboard-tab" aria-label="Dashboard tab" class="inactive-section">
+      <div class="dashboard-page-header">
+        <h2 class="heading">📊 Productivity Dashboard</h2>
+      </div>
+      <div class="productivity-dashboard" style="margin-bottom: 24px;">
+        <div class="dashboard-card progress-card" style="grid-column: span 2;">
+          <div class="card-label">PROGRESS</div>
+          <div class="card-progress-wrapper">
+            <svg class="card-progress-ring" width="120" height="120">
+              <defs>
+                <linearGradient id="progressGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#7c63ff;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#4f8dff;stop-opacity:1" />
+                </linearGradient>
+              </defs>
+              <circle class="card-progress-bg" cx="60" cy="60" r="50" stroke-width="10"></circle>
+              <circle class="card-progress-fill dashboard-progress-fill" cx="60" cy="60" r="50" stroke-width="10"></circle>
+            </svg>
+            <div class="card-progress-text">
+              <div class="progress-percent" id="dashboardProgressPercent">0%</div>
+              <div class="progress-details" id="dashboardProgressText">0 / 0 tasks completed</div>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-card streak-card">
+          <div class="card-label">STREAK</div>
+          <div class="streak-stats">
+            <div class="streak-value">
+              <span class="streak-icon">🔥</span>
+              <span class="streak-number" id="dashboardCurrentStreak">0</span>
+            </div>
+            <div class="streak-sub">Current Streak</div>
+          </div>
+        </div>
+        <div class="dashboard-card streak-card">
+          <div class="card-label">LONGEST STREAK</div>
+          <div class="streak-stats">
+            <div class="streak-value">
+              <span class="streak-icon">🏆</span>
+              <span class="streak-number" id="dashboardLongestStreak">0</span>
+            </div>
+            <div class="streak-sub">Best Streak</div>
+          </div>
+        </div>
+      </div>
+      <div class="stats-grid">
+        <div class="dashboard-card">
+          <div class="card-label">TOTAL TASKS CREATED</div>
+          <div class="stats-value" id="dashboardTotalCreated">0</div>
+        </div>
+        <div class="dashboard-card">
+          <div class="card-label">TOTAL TASKS COMPLETED</div>
+          <div class="stats-value" id="dashboardTotalCompleted">0</div>
+        </div>
+        <div class="dashboard-card">
+          <div class="card-label">PENDING TASKS</div>
+          <div class="stats-value" id="dashboardPending">0</div>
+        </div>
+        <div class="dashboard-card">
+          <div class="card-label">IN PROGRESS</div>
+          <div class="stats-value" id="dashboardInProgress">0</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Achievements Section -->
+    <section id="achievements-tab" aria-label="Achievements tab" class="inactive-section">
+      <div class="achievements-header">
+        <h2 class="heading">🏅 Achievements</h2>
+      </div>
+      <div class="achievements-grid" id="achievementsGrid"></div>
+    </section>
+
+    <!-- Calendar Section -->
+    <section id="calendar-tab" aria-label="Calendar tab" class="inactive-section">
+      <div class="calendar-header">
+        <h2 class="heading">📅 Calendar View</h2>
+      </div>
+      <div class="calendar-container" id="calendarContainer"></div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section id="statistics-tab" aria-label="Statistics tab" class="inactive-section">
+      <div class="statistics-header">
+        <h2 class="heading">📈 Statistics</h2>
+      </div>
+      <div class="statistics-grid">
+        <div class="dashboard-card">
+          <div class="card-label">COMPLETION RATE</div>
+          <div class="stats-value" id="statisticsCompletion">0%</div>
+        </div>
+        <div class="dashboard-card">
+          <div class="card-label">MOST USED CATEGORY</div>
+          <div class="stats-value" id="statisticsCategory">-</div>
+        </div>
+        <div class="dashboard-card">
+          <div class="card-label">MOST USED PRIORITY</div>
+          <div class="stats-value" id="statisticsPriority">-</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
 
 <!-- Notification Toast -->
 <div id="toast" class="pdf-message" role="alert" aria-live="polite"></div>
+<!-- New Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
 
 <script src="todolist.js"></script>
 </body>

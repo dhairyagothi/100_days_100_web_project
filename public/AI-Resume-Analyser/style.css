@@ -257,6 +257,9 @@ body {
 
 .insight-card h3 {
   margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .progress-bar {
