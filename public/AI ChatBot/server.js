@@ -23,12 +23,16 @@ app.get('/api/room/create', (req, res) => {
 
 // Socket.io Realtime Logic
 io.on('connection', (socket) => {
-  console.log(`User connected: ${socket.id}`);
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`User connected: ${socket.id}`);
+  }
 
   // 1. User requests to join a specific collaborative session
   socket.on('join_room', (roomId) => {
     socket.join(roomId);
-    console.log(`User ${socket.id} joined room: ${roomId}`);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`User ${socket.id} joined room: ${roomId}`);
+    }
 
     // Notify others in the room that someone joined
     socket.to(roomId).emit('user_joined', { userId: socket.id });
@@ -55,7 +59,9 @@ io.on('connection', (socket) => {
 
   // 3. Handle user disconnection
   socket.on('disconnect', () => {
-    console.log(`User disconnected: ${socket.id}`);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`User disconnected: ${socket.id}`);
+    }
   });
 });
 
