@@ -248,6 +248,14 @@
         dropdownMenu.classList.remove("show");
       }
     });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && dropdownMenu.classList.contains("show")) {
+        dropdownToggle.setAttribute("aria-expanded", "false");
+        dropdownMenu.classList.remove("show");
+        dropdownToggle.focus();
+      }
+    });
   }
 
   const logoutBtn = document.getElementById("logoutBtn");
