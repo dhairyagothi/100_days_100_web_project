@@ -239,7 +239,8 @@ const PROJECT_DATA = [
   ['Day 172', 'PlaceMate', './public/PlaceMate/index.html', ['tool', 'javascript', 'html', 'css'], 'advanced'],
   ['Day 173', 'AI-Resume-Analyzer', './public/AI-Resume-Analyzer/index.html', ['tool', 'javascript', 'html', 'css'], 'advanced'],
   ['Day 174', 'Unit Kitchen', './public/Unit-Kitchen/index.html', ['html', 'css', 'javascript','game'], 'intermediate'],
-   ['Day 175', 'Fruit Slice game', './public/fruitslice/index.html', ['html', 'css', 'javascript','game'], 'intermediate'],
+  ['Day 175', 'Fruit Slice game', './public/fruitslice/index.html', ['html', 'css', 'javascript','game'], 'intermediate'],
+  ['Day 176', 'Flashcard Learning App', './public/Flashcard-Learning-App/index.html', ['tool', 'html', 'css', 'javascript', 'study', 'learning'], 'intermediate'],
 
 ];
 const PROJECTS = PROJECT_DATA;
@@ -253,6 +254,9 @@ const PROJECT_DESCRIPTIONS = {
 
 "Indian Flag":
 "CSS recreation of the Indian national flag using shapes and positioning. Demonstrates layout precision and styling fundamentals.",
+
+"Flashcard Learning App":
+"Interactive flashcard learning tool for creating, editing, and studying custom decks. Includes study mode, card flipping, and localStorage persistence.",
 
 "Dropdown Nav Bar":
 "Responsive navigation bar with expandable dropdown interactions. Useful for understanding hover states and menu structures.",

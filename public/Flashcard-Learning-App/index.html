@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flashcard Learning App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div>
+        <h1>Flashcard Learning App</h1>
+        <p>Create, edit, and study custom flashcards with quick review sessions.</p>
+      </div>
+      <a class="home-link" href="../../index.html">← Back to 100 Days Projects</a>
+    </header>
+
+    <main>
+      <section class="top-panel">
+        <div class="card-summary">
+          <span id="cardCount">0 cards</span>
+          <span id="studyStatus">Ready to study</span>
+        </div>
+        <button id="themeToggle" type="button">Toggle Theme</button>
+      </section>
+
+      <section class="editor-panel">
+        <div class="editor">
+          <h2>Build a deck</h2>
+          <label for="cardFront">Front</label>
+          <textarea id="cardFront" placeholder="Question, term or prompt"></textarea>
+
+          <label for="cardBack">Back</label>
+          <textarea id="cardBack" placeholder="Answer, explanation or detail"></textarea>
+
+          <div class="editor-actions">
+            <button id="saveCardButton" type="button">Add Card</button>
+            <button id="clearFormButton" type="button" class="secondary">Clear</button>
+          </div>
+        </div>
+
+        <div class="deck-preview">
+          <h2>Your deck</h2>
+          <div id="flashcardList" class="flashcard-list"></div>
+        </div>
+      </section>
+
+      <section class="study-panel">
+        <div class="study-header">
+          <h2>Study mode</h2>
+          <div class="study-controls">
+            <button id="prevCardButton" type="button">Previous</button>
+            <button id="flipCardButton" type="button">Flip</button>
+            <button id="nextCardButton" type="button">Next</button>
+          </div>
+        </div>
+        <div id="studyCard" class="study-card">
+          <div id="studyCardText" class="study-card-text">Add a card to begin studying.</div>
+        </div>
+        <div class="study-footer">
+          <button id="randomCardButton" type="button" class="secondary">Random Card</button>
+          <button id="resetDeckButton" type="button" class="secondary">Reset Deck</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

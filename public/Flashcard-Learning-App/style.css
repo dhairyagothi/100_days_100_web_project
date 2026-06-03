@@ -1,0 +1,224 @@
+:root {
+  --bg: #0d1117;
+  --panel: rgba(255, 255, 255, 0.07);
+  --panel-strong: rgba(255, 255, 255, 0.13);
+  --text: #f5f7fb;
+  --muted: #8a95a1;
+  --accent: #64d2ff;
+  --accent-strong: #3ab0ff;
+  --border: rgba(255, 255, 255, 0.12);
+}
+
+:root[data-theme="light"] {
+  --bg: #f6f8fb;
+  --panel: rgba(255, 255, 255, 0.9);
+  --panel-strong: rgba(255, 255, 255, 0.96);
+  --text: #111827;
+  --muted: #4b5563;
+  --accent: #2563eb;
+  --accent-strong: #1d4ed8;
+  --border: rgba(15, 23, 42, 0.12);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--text);
+  background: radial-gradient(circle at top, rgba(100, 210, 255, 0.12), transparent 26%),
+              radial-gradient(circle at bottom right, rgba(109, 70, 255, 0.12), transparent 24%),
+              linear-gradient(180deg, var(--bg) 0%, #111827 35%, var(--bg) 100%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+textarea {
+  font: inherit;
+}
+
+.app-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.app-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.app-header h1 {
+  margin: 0 0 10px;
+  font-size: clamp(2rem, 3vw, 3rem);
+}
+
+.app-header p {
+  margin: 0;
+  color: var(--muted);
+  max-width: 620px;
+}
+
+.home-link {
+  align-self: center;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.top-panel {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.card-summary,
+.study-footer {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  color: var(--muted);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 14px;
+  padding: 12px 18px;
+  background: linear-gradient(135deg, rgba(100, 210, 255, 0.18), rgba(58, 128, 255, 0.22));
+  color: var(--text);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, rgba(100, 210, 255, 0.28), rgba(58, 128, 255, 0.32));
+}
+
+button.secondary {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.editor-panel {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.editor,
+.deck-preview,
+.study-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 24px;
+  backdrop-filter: blur(20px);
+}
+
+.editor h2,
+.deck-preview h2,
+.study-header h2 {
+  margin: 0 0 18px;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+textarea {
+  width: 100%;
+  min-height: 96px;
+  resize: vertical;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  padding: 16px;
+}
+
+.editor-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.flashcard-list {
+  display: grid;
+  gap: 14px;
+}
+
+.flashcard-item {
+  padding: 18px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.flashcard-item p {
+  margin: 0 0 8px;
+  color: var(--text);
+}
+
+.flashcard-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.study-panel {
+  display: grid;
+  gap: 16px;
+}
+
+.study-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.study-controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.study-card {
+  min-height: 180px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.study-card-text {
+  font-size: 1.15rem;
+  line-height: 1.7;
+}
+
+@media (max-width: 900px) {
+  .editor-panel {
+    grid-template-columns: 1fr;
+  }
+}
