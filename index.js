@@ -301,16 +301,27 @@ function buildProjectCardHTML({
 
 function attachProjectCardInteraction(card, demoUrl, projectData = null) {
   card.style.cursor = "pointer";
-  card.onclick = (e) => {
-    if (e.target.closest("a, button")) return;
-
+  card.setAttribute("tabindex", "0");
+  
+  const triggerNavigation = () => {
     // Track the project visit if projectData is provided
     if (projectData) {
       trackRecentProject(projectData);
     }
-
     window.open(demoUrl, "_blank", "noopener");
   };
+
+  card.onclick = (e) => {
+    if (e.target.closest("a, button")) return;
+    triggerNavigation();
+  };
+
+  card.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      if (e.target.closest("a, button")) return;
+      triggerNavigation();
+    }
+  });
 }
 
 /* ============================================================
