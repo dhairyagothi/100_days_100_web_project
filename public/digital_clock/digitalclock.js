@@ -16,6 +16,9 @@ let weatherCache = {};
 let currentTimeTheme = "";
 let is24HourFormat = localStorage.getItem("is24HourFormat") === "true";
 
+let activeAccent =
+  localStorage.getItem("clockAccent") || "classic";
+
 // DOM Selectors
 const hoursEl = document.getElementById("hours");
 const minutesEl = document.getElementById("minutes");
@@ -31,7 +34,6 @@ const popupAlarmTitle = document.getElementById("popup-alarm-title");
 const popupAlarmTime = document.getElementById("popup-alarm-time");
 const popupAlarmLabel = document.getElementById("popup-alarm-label");
 const alarmSound = document.getElementById("alarm-sound");
-const historyHeader = document.getElementById("history-header");
 const historyChevron = document.getElementById("history-chevron");
 const formatToggleBtn = document.getElementById("format-toggle");
 
@@ -90,9 +92,12 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btn) btn.textContent = isDarkMode ? "☀️" : "🌙";
  applyDarkMode(isDarkMode);
 
-if (typeof setTheme === "function") {
-  setTheme(activeTheme);
-}
+const savedAccent =
+  localStorage.getItem("clockAccent") || "classic";
+
+setAccentColor(savedAccent);
+
+
 
 formatToggleBtn.textContent = is24HourFormat ? "12H" : "24H";
 
@@ -782,4 +787,22 @@ function applyDarkMode(enabled) {
 
 function toggleDarkMode() {
   applyDarkMode(!isDarkMode);
+}
+
+
+
+function toggleHistoryLogs() {
+  const logs = document.getElementById("history-logs");
+  const chevron = document.getElementById("history-chevron");
+
+  if (!logs) return;
+
+  logs.classList.toggle("hidden");
+
+  if (chevron) {
+    chevron.style.transform =
+      logs.classList.contains("hidden")
+        ? "rotate(0deg)"
+        : "rotate(180deg)";
+  }
 }
