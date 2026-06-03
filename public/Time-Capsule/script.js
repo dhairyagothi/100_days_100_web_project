@@ -69,12 +69,28 @@ document.addEventListener('DOMContentLoaded', () => {
     );
 
     if (dueCapsules.length > 0) {
-      revealedMessage.innerHTML = dueCapsules
-        .map(
-          (capsule, index) =>
-            `<strong>Message ${index + 1}:</strong><br>${capsule.message}`
-        )
-        .join('<hr>');
+      revealedMessage.innerHTML = '';
+
+      dueCapsules.forEach((capsule, index) => {
+        const wrapper = document.createElement('div');
+
+        const title = document.createElement('strong');
+        title.textContent = `Message ${index + 1}:`;
+
+        const lineBreak = document.createElement('br');
+
+        const messageText = document.createTextNode(capsule.message);
+
+        wrapper.appendChild(title);
+        wrapper.appendChild(lineBreak);
+        wrapper.appendChild(messageText);
+
+        revealedMessage.appendChild(wrapper);
+
+        if (index < dueCapsules.length - 1) {
+          revealedMessage.appendChild(document.createElement('hr'));
+        }
+      });
 
       messageReveal.classList.remove('hidden');
       capsuleReveal.classList.add('hidden');
