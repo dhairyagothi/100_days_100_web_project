@@ -1,18 +1,18 @@
 /* ─── Lexicon Dictionary App ─── */
 
 const API_BASE = 'https://api.dictionaryapi.dev/api/v2/entries/en/';
-let input = document.querySelector('#input');
-let searchBtn = document.querySelector('#search');
-let startSpeakBtn = document.querySelector('#start-btn');
-let stopSpeakBtn = document.querySelector('#stop-btn');
-let apiKey = 'put API key Here';
-let notFound = document.querySelector('.not__found');
-let defBox = document.querySelector('.def');
-let audioBox = document.querySelector('.audio');
-let loading = document.querySelector('.loading');
-let wordBox = document.querySelector('.words_and_meaning');
-let i = 0;
-let oldLength = 0;
+// let input = document.querySelector('#input');
+// let searchBtn = document.querySelector('#search');
+// let startSpeakBtn = document.querySelector('#start-btn');
+// let stopSpeakBtn = document.querySelector('#stop-btn');
+// let apiKey = 'put API key Here';
+// let notFound = document.querySelector('.not__found');
+// let defBox = document.querySelector('.def');
+// let audioBox = document.querySelector('.audio');
+// let loading = document.querySelector('.loading');
+// let wordBox = document.querySelector('.words_and_meaning');
+// let i = 0;
+// let oldLength = 0;
 
 // DOM refs
 const input        = document.getElementById('input');
