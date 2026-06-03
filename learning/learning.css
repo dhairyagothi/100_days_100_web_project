@@ -173,11 +173,9 @@ body.light-mode .learning-sidebar {
   list-style: none;
   margin-top: 0.25rem;
   padding-left: 1.75rem;
-  max-height: 500px;
+  max-height: 2000px; /* ✅ Increased threshold to allow full lists to show */
   overflow: hidden;
-  transition:
-    max-height 0.3s ease-in-out,
-    opacity 0.2s ease;
+  transition: max-height 0.4s ease-in-out, opacity 0.2s ease;
   opacity: 1;
 }
 

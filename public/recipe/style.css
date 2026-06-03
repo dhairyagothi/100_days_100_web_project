@@ -13,35 +13,52 @@ body{
     background-color: rgba(0, 0, 0, 0.573);
     padding: 20px;
     border-radius: 20px;
-    width: 60vh;
+    width: 90%;
+    max-width: 500px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: auto;
+    margin: 20px auto;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-
+}
+.logo{
+    margin-right:10px;
 }
 nav{
-    
-    flex-direction: row;
-    background-color: rgba(255, 255, 255, 0.509);
-    margin-top: 0;
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:10px;
+    background-color: rgba(255,255,255,0.509);
     border-radius: 0 0 20px 20px;
-    color: black;
+    color:black;
+    padding:10px;
+}
+.navlink{display: flex; }
+nav a{ display:inline-block;
+     text-decoration:none; 
+     color:#514f43;
+      padding:8px 14px;
+       margin:10px; border-radius:8px; 
+       font-size:20px;
+        font-family:'Franklin Gothic Medium','Arial Narrow',Arial,sans-serif;
+         transition:all 0.3s ease; }
 
+nav a:hover{
+    background:#514f43;
+    color:white;
+    transform:translateY(-3px);
 }
-nav a{
-    text-decoration: none;
-    color: black;
-    gap: 10px;
-    padding: 10px;
-    margin: 10px;
-    font-size: 20px;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+nav a.active{
+ background:#514f43;
+    color:white;
+    font-weight:600;
 }
+
 nav h2{
     font-size: 30px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -49,14 +66,18 @@ nav h2{
 button{
     background-color: yellow;
     color: black;
-    padding: 10px;
+    padding: 10px 20px;
     border: none;
     border-radius: 20px;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 button:hover{
     background-color: white;
     color: black;
+      transform:scale(1.06, 1.06);
+      font-weight: 600;
+
 }
 #dropdown,#difficulty{
     background-color: black;
@@ -69,14 +90,13 @@ button:hover{
     background-color: rgba(0, 0, 0, 0.573);
     padding: 20px;
     border-radius: 20px;
-    width: 60vh;
+    width: 90%;
+    max-width: 700px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: auto;
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin: 50px auto;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 #text-display{  
@@ -90,4 +110,47 @@ button:hover{
 #timer{
     font-size: 30px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+@media (max-width: 768px){
+
+    nav{
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    nav h2{
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    nav a{
+        width: 100%;
+        text-align: center;
+        margin: 5px 0;
+        font-size: 18px;
+    }
+
+    .data,
+    .test{
+        width: 95%;
+        padding: 15px;
+    }
+
+    h1{
+        font-size: 2rem;
+        padding: 0 10px;
+    }
+
+    #text-display,
+    #text-input,
+    #timer{
+        font-size: 22px;
+    }
+
+    button,
+    select{
+        width: 100%;
+        max-width: 300px;
+    }
 }

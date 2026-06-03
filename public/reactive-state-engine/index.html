@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Advanced Reactive System Engine</title>
+</head>
+<body>
+    <h2>Advanced Architectural State Store Engine</h2>
+    
+    <div>
+        <h3>Live Render Frame: Active Score = <span id="score-view">0</span></h3>
+    </div>
+
+    <div>
+        <button id="add-points-btn">Dispatch (+10 Points Action)</button>
+        <button id="undo-btn">⏪ Time Travel: Undo</button>
+        <button id="redo-btn">⏩ Time Travel: Redo</button>
+    </div>
+
+    <h4>Global State Object Ledger Dump:</h4>
+    <pre id="terminal-view" style="background: #232323; color: #a6e22e; padding: 1rem; border-radius: 6px;">Initializing state matrix...</pre>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>

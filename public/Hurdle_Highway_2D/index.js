@@ -1,21 +1,23 @@
-const intro2 = document.getElementById('intro2');
-const playbutton = document.getElementById('playbtn');
-const mainMenu = document.getElementById('mainMenu');
-const gametimer = document.getElementById('gametimer');
-const gametimercont = document.getElementById('gametimercont');
-const timeraud = document.getElementById('timeraud');
-const carmoveaud = document.getElementById('carmoveaud');
-const hornaud = document.getElementById('hornaud');
-const crashaud = document.getElementById('crashaud');
-const mainMenubtn = document.getElementById('mainMenubtn');
-const playagain = document.getElementById('playagain');
-const scoreb = document.getElementById('scorepara1');
-const speedb = document.getElementById('scorepara2');
-const scoreg = document.getElementById('scorepara');
-const gameover = document.getElementById('gameover');
-const car = document.getElementById('car');
-const stage = document.getElementById('gameStage');
-const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+const intro2 = document.getElementById("intro2");
+const playbutton = document.getElementById("playbtn");
+const mainMenu = document.getElementById("mainMenu");
+const gametimer = document.getElementById("gametimer");
+const gametimercont = document.getElementById("gametimercont");
+const timeraud = document.getElementById("timeraud");
+const carmoveaud = document.getElementById("carmoveaud");
+const hornaud = document.getElementById("hornaud");
+const crashaud = document.getElementById("crashaud");
+const mainMenubtn = document.getElementById("mainMenubtn");
+const playagain = document.getElementById("playagain");
+const scoreb = document.getElementById("scorepara1");
+const speedb = document.getElementById("scorepara2");
+const scoreg = document.getElementById("scorepara");
+const highscoreg = document.getElementById("highscorepara");
+const highscoreb = document.getElementById("scorepara3");
+const gameover = document.getElementById("gameover");
+const car = document.getElementById("car");
+const stage = document.getElementById("gameStage");
+const difficultyButtons = document.querySelectorAll(".difficulty-btn");
 
 const BASE_WIDTH = 1200;
 const BASE_HEIGHT = 700;
@@ -47,7 +49,7 @@ const difficultySettings = {
   },
 };
 
-let currentDifficulty = 'medium';
+let currentDifficulty = "medium";
 let baseSpeed = difficultySettings[currentDifficulty].baseSpeed;
 let speedOffsetMin = difficultySettings[currentDifficulty].speedOffsetMin;
 let speedOffsetMax = difficultySettings[currentDifficulty].speedOffsetMax;
@@ -65,43 +67,50 @@ let scoreTimer = 0;
 let speedTimer = 0;
 let spawnCursor = -200;
 
+// ─── High Score ───────────────────────────────────────────────────────────────
+let highScore = parseInt(localStorage.getItem("hh2d_highscore") || "0", 10);
+
+function updateHighScoreDisplay() {
+  highscoreb.textContent = `BEST - ${highScore}`;
+}
+
+function checkAndSaveHighScore() {
+  const current = Math.floor(score);
+  if (current > highScore) {
+    highScore = current;
+    localStorage.setItem("hh2d_highscore", highScore);
+  }
+  highscoreg.textContent = `BEST SCORE - ${highScore}`;
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 // ─── Touch / Swipe Support ───────────────────────────────────────────────────
 let touchStartX = 0;
 let touchStartY = 0;
 const SWIPE_THRESHOLD = 30;
 
-stage.addEventListener(
-  'touchstart',
-  (e) => {
-    const touch = e.changedTouches[0];
-    touchStartX = touch.clientX;
-    touchStartY = touch.clientY;
-  },
-  { passive: true }
-);
+stage.addEventListener("touchstart", (e) => {
+  const touch = e.changedTouches[0];
+  touchStartX = touch.clientX;
+  touchStartY = touch.clientY;
+}, { passive: true });
 
-stage.addEventListener(
-  'touchend',
-  (e) => {
-    if (!gameStarted) {
-      return;
-    }
-    const touch = e.changedTouches[0];
-    const dx = touch.clientX - touchStartX;
-    const dy = touch.clientY - touchStartY;
+stage.addEventListener("touchend", (e) => {
+  if (!gameStarted) return;
+  const touch = e.changedTouches[0];
+  const dx = touch.clientX - touchStartX;
+  const dy = touch.clientY - touchStartY;
 
-    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > SWIPE_THRESHOLD) {
-      if (dx < 0) {
-        carState.targetLane = Math.max(0, carState.targetLane - 1);
-        carState.moveCooldown = moveCooldown;
-      } else {
-        carState.targetLane = Math.min(LANE_COUNT - 1, carState.targetLane + 1);
-        carState.moveCooldown = moveCooldown;
-      }
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > SWIPE_THRESHOLD) {
+    if (dx < 0) {
+      carState.targetLane = Math.max(0, carState.targetLane - 1);
+      carState.moveCooldown = moveCooldown;
+    } else {
+      carState.targetLane = Math.min(LANE_COUNT - 1, carState.targetLane + 1);
+      carState.moveCooldown = moveCooldown;
     }
-  },
-  { passive: true }
-);
+  }
+}, { passive: true });
 // ─────────────────────────────────────────────────────────────────────────────
 
 const keys = { left: false, right: false };
@@ -115,57 +124,61 @@ const carState = {
   moveCooldown: 0,
 };
 
-const obstacles = Array.from(document.querySelectorAll('.obstacle')).map((el) => ({
-  el,
-  width: 0,
-  height: 0,
-  lane: 0,
-  y: 0,
-  speed: baseSpeed,
-  active: true,
-}));
+const obstacles = Array.from(document.querySelectorAll(".obstacle")).map(
+  (el) => ({
+    el,
+    width: 0,
+    height: 0,
+    lane: 0,
+    y: 0,
+    speed: baseSpeed,
+    active: true,
+  })
+);
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   intro2.play();
+  updateHighScoreDisplay();
 });
 
-window.addEventListener('load', () => {
-  stage.style.setProperty('--stage-width', `${BASE_WIDTH}px`);
-  stage.style.setProperty('--stage-height', `${BASE_HEIGHT}px`);
+window.addEventListener("load", () => {
+  stage.style.setProperty("--stage-width", `${BASE_WIDTH}px`);
+  stage.style.setProperty("--stage-height", `${BASE_HEIGHT}px`);
   updateScale();
   computeLanes();
   measureSprites();
   applyDifficulty(currentDifficulty);
   resetAllObstacles();
   placeCarInstant();
+  updateHighScoreDisplay();
   requestAnimationFrame(gameLoop);
 });
 
-window.addEventListener('resize', () => {
+window.addEventListener("resize", () => {
   updateScale();
 });
 
-playbutton.addEventListener('click', () => {
+playbutton.addEventListener("click", () => {
   if (countdownRunning) {
     return;
   }
   countdownRunning = true;
-  mainMenu.style.visibility = 'hidden';
+  mainMenu.style.visibility = "hidden";
   intro2.pause();
   applyDifficulty(currentDifficulty);
   startCountdown();
 });
 
-mainMenubtn.addEventListener('click', () => {
+mainMenubtn.addEventListener("click", () => {
   location.reload();
 });
 
-playagain.addEventListener('click', () => {
+playagain.addEventListener("click", () => {
   location.reload();
 });
 
 difficultyButtons.forEach((button) => {
-  button.addEventListener('click', () => {
+  button.addEventListener("click", () => {
     const level = button.dataset.difficulty;
     if (!difficultySettings[level]) {
       return;
@@ -175,30 +188,33 @@ difficultyButtons.forEach((button) => {
   });
 });
 
-document.addEventListener('keydown', (e) => {
-  if (e.code === 'KeyH') {
+document.addEventListener("keydown", (e) => {
+  if (e.code === "KeyH") {
     hornaud.play();
   }
-  if (e.code === 'ArrowLeft') {
+  if (e.code === "ArrowLeft") {
     keys.left = true;
   }
-  if (e.code === 'ArrowRight') {
+  if (e.code === "ArrowRight") {
     keys.right = true;
   }
 });
 
-document.addEventListener('keyup', (e) => {
-  if (e.code === 'ArrowLeft') {
+document.addEventListener("keyup", (e) => {
+  if (e.code === "ArrowLeft") {
     keys.left = false;
   }
-  if (e.code === 'ArrowRight') {
+  if (e.code === "ArrowRight") {
     keys.right = false;
   }
 });
 
 function updateScale() {
-  const scale = Math.min(window.innerWidth / BASE_WIDTH, window.innerHeight / BASE_HEIGHT);
-  stage.style.setProperty('--game-scale', scale.toFixed(3));
+  const scale = Math.min(
+    window.innerWidth / BASE_WIDTH,
+    window.innerHeight / BASE_HEIGHT
+  );
+  stage.style.setProperty("--game-scale", scale.toFixed(3));
 }
 
 function computeLanes() {
@@ -232,21 +248,21 @@ function startCountdown() {
   timecount = 3;
   timeraud.play();
   gametimer.textContent = timecount;
-  gametimercont.style.visibility = 'visible';
-  gametimercont.style.backgroundColor = '#E53935';
+  gametimercont.style.visibility = "visible";
+  gametimercont.style.backgroundColor = "#E53935";
 
   const countdownInterval = setInterval(() => {
     timecount -= 1;
     gametimer.textContent = timecount;
     if (timecount === 2) {
-      gametimercont.style.backgroundColor = '#FBC02D';
+      gametimercont.style.backgroundColor = "#FBC02D";
     }
     if (timecount === 1) {
-      gametimercont.style.backgroundColor = '#43A047';
+      gametimercont.style.backgroundColor = "#43A047";
     }
     if (timecount === 0) {
       clearInterval(countdownInterval);
-      gametimercont.style.visibility = 'hidden';
+      gametimercont.style.visibility = "hidden";
       beginGame();
     }
   }, 1000);
@@ -255,13 +271,13 @@ function startCountdown() {
 function beginGame() {
   countdownRunning = false;
   gameStarted = true;
-  gameover.style.visibility = 'hidden';
+  gameover.style.visibility = "hidden";
   keys.left = false;
   keys.right = false;
   score = 0;
   scoreTimer = 0;
   speedTimer = 0;
-  scoreb.textContent = 'SCORE - 0';
+  scoreb.textContent = "SCORE - 0";
   carmoveaud.currentTime = 0;
   carmoveaud.play();
   resetAllObstacles();
@@ -273,7 +289,7 @@ function resetAllObstacles() {
   let lastLane = carState.lane;
   obstacles.forEach((obs, index) => {
     obs.active = index < maxActiveObstacles;
-    obs.el.style.visibility = obs.active ? 'visible' : 'hidden';
+    obs.el.style.visibility = obs.active ? "visible" : "hidden";
     if (!obs.active) {
       return;
     }
@@ -366,7 +382,10 @@ function applyDifficulty(level) {
   moveCooldown = settings.moveCooldown;
 
   difficultyButtons.forEach((button) => {
-    button.classList.toggle('active', button.dataset.difficulty === level);
+    button.classList.toggle(
+      "active",
+      button.dataset.difficulty === level
+    );
   });
 }
 
@@ -415,7 +434,12 @@ function checkCollisions() {
 }
 
 function rectsOverlap(a, b) {
-  return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+  return (
+    a.x < b.x + b.w &&
+    a.x + a.w > b.x &&
+    a.y < b.y + b.h &&
+    a.y + a.h > b.y
+  );
 }
 
 function triggerCrash() {
@@ -426,6 +450,7 @@ function triggerCrash() {
   carmoveaud.pause();
   crashaud.currentTime = 0;
   crashaud.play();
-  gameover.style.visibility = 'visible';
+  checkAndSaveHighScore();
+  gameover.style.visibility = "visible";
   scoreg.textContent = `YOUR SCORE - ${Math.floor(score)}`;
 }
