@@ -79,16 +79,32 @@ let timeLeft = 60;
 let confettiFrameId = null;
 let confettiParticles = [];
 
-let stats = { best: 0, games: 0, wins: 0, bestTile: 2, earned: [] };
+// Cache reduced-motion preference instead of querying every frame
+let reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', e => {
+  reducedMotion = e.matches;
+});
+
+const MODES = ['classic', 'timed', 'zen'];
+function blankModeStats () { return { best: 0, games: 0, wins: 0, bestTile: 2 }; }
+let stats = { classic: blankModeStats(), timed: blankModeStats(), zen: blankModeStats(), earned: [] };
 
 /* =========================================================
    Persistence
    ========================================================= */
 
-function loadStats() {
+function loadStats () {
   try {
     const s = localStorage.getItem('2048stats');
-    if (s) stats = JSON.parse(s);
+    if (!s) return;
+    const d = JSON.parse(s);
+    // Migrate old flat format
+    if (d.classic || d.timed || d.zen) {
+      stats = d;
+    } else {
+      stats.classic = { best: d.best || 0, games: d.games || 0, wins: d.wins || 0, bestTile: d.bestTile || 2 };
+      stats.earned  = d.earned || [];
+    }
   } catch (_) {}
 }
 
@@ -258,10 +274,7 @@ function applyGridDimensions() {
   GAP = parseInt(styles.getPropertyValue('--tile-gap'));
   PAD = parseInt(styles.getPropertyValue('--board-pad'));
 
-  const bd = document.getElementById('bd');
-
-  bd.style.gridTemplateColumns = `repeat(${N}, ${TS}px)`;
-  bd.style.gridTemplateRows = `repeat(${N}, ${TS}px)`;
+  // grid columns/rows applied in renderBoard after dimensions are set
 }
 
 /* =========================================================
@@ -306,7 +319,7 @@ function doMove(dir) {
   prevBoard = copyBoard(board);
   prevScore = score;
 
-  const rotTurns = { left: 0, down: 1, right: 2, up: 3 };
+  const rotTurns = { left: 0, up: 3, right: 2, down: 1 };
   let tmp = rotateBoard(board, rotTurns[dir]);
   let pts = 0;
   let moved = false;
@@ -341,7 +354,7 @@ function doMove(dir) {
   if (score > best) {
     best = score;
     saveBest();
-    stats.best = Math.max(stats.best, best);
+    stats[mode].best = Math.max(stats[mode].best, best);
     document.getElementById('bc').classList.add('gold-flash');
     setTimeout(() => document.getElementById('bc').classList.remove('gold-flash'), 800);
   }
@@ -356,30 +369,23 @@ function doMove(dir) {
   const mt = maxTile();
   if (mt >= 2048 && !won) {
     won = true;
-    stats.wins++;
-    stats.games++;
-    stats.best = Math.max(stats.best, score);
-    stats.bestTile = Math.max(stats.bestTile, mt);
+    stats[mode].wins++;
+    stats[mode].games++;
+    stats[mode].best = Math.max(stats[mode].best, score);
+    stats[mode].bestTile = Math.max(stats[mode].bestTile, mt);
     saveStats();
     clearSavedGame();
-    if (mode === 'timed') clearInterval(timerInterval);
-    setTimeout(() => {
-      showOverlay('win');
-      launchConfetti();
-    }, 300);
+    if (mode === 'timed') cancelAnimationFrame(timerInterval);
+    setTimeout(() => { showOverlay('win'); launchConfetti(); }, 300);
     return;
   }
 
   if (isLost()) {
     over = true;
-    undoLocked = true;
-
-    showToast('Game Over');
-    if (mode === 'timed') clearInterval(timerInterval);
-    stats.games++;
-    stats.best = Math.max(stats.best, score);
-    stats.bestTile = Math.max(stats.bestTile, mt);
-    logGameScore(score);
+    if (mode === 'timed') cancelAnimationFrame(timerInterval);
+    stats[mode].games++;
+    stats[mode].best = Math.max(stats[mode].best, score);
+    stats[mode].bestTile = Math.max(stats[mode].bestTile, mt);
     saveStats();
     clearSavedGame();
     setTimeout(() => showOverlay('lose'), 350);
@@ -426,7 +432,7 @@ function init(resume = false) {
     prevBoard = null;
   }
 
-  clearInterval(timerInterval);
+  cancelAnimationFrame(timerInterval);
   timeLeft = 60;
   document.getElementById('tbar').style.display = mode === 'timed' ? 'block' : 'none';
   if (mode === 'timed') startTimer();
@@ -444,32 +450,28 @@ function init(resume = false) {
    Timer (timed mode)
    ========================================================= */
 
-function startTimer() {
-  clearInterval(timerInterval);
+function startTimer () {
+  const duration = 60000; // ms
+  const startTs  = performance.now();
 
-  updateTimerBar();
+  function frame (now) {
+    const elapsed = now - startTs;
+    const remaining = Math.max(0, duration - elapsed);
+    timeLeft = remaining / 1000;
 
-  timerInterval = setInterval(() => {
-    if (paused || over) return;
+    const fill = document.getElementById('tfill');
+    fill.style.width = (remaining / duration * 100) + '%';
+    fill.className = 'timer-fill' + (timeLeft <= 15 ? ' danger' : '');
 
-    timeLeft--;
-
-    updateTimerBar();
-
-    if (timeLeft <= 0) {
-      clearInterval(timerInterval);
-
+    if (remaining <= 0) {
       over = true;
 
       setTimeout(() => showOverlay('lose'), 200);
+      return;
     }
-  }, 1000);
-}
-
-function updateTimerBar() {
-  const fill = document.getElementById('tfill');
-  fill.style.width = (timeLeft / 60) * 100 + '%';
-  fill.className = 'timer-fill' + (timeLeft <= 15 ? ' danger' : '');
+    timerInterval = requestAnimationFrame(frame);
+  }
+  timerInterval = requestAnimationFrame(frame);
 }
 
 /* =========================================================
@@ -479,8 +481,15 @@ function renderBoard() {
   const bd = document.getElementById('bd');
   bd.innerHTML = '';
   const size = PAD * 2 + N * TS + (N - 1) * GAP;
-  bd.style.width = size + 'px';
-  bd.style.height = size + 'px';
+
+  // JS is the single source of truth for all board sizing
+  bd.style.width                = size + 'px';
+  bd.style.height               = size + 'px';
+  bd.style.padding              = PAD  + 'px';
+  bd.style.gap                  = GAP  + 'px';
+  bd.style.gridTemplateColumns  = `repeat(${N}, ${TS}px)`;
+  bd.style.gridTemplateRows     = `repeat(${N}, ${TS}px)`;
+
   const tl = document.getElementById('tl');
   tl.style.width = size + 'px';
   tl.style.height = size + 'px';
@@ -509,25 +518,28 @@ function renderTiles(newCell, pts, merges) {
       const style = TILE_STYLES[v] || { fontSize: '16px' };
       const dataAttr = TILE_STYLES[v] ? String(v) : 'big';
 
-      const el = document.createElement('div');
-      el.className = 'tile' + (isNew ? ' new' : isMerge ? ' merged' : '');
-      el.dataset.val = dataAttr;
-      el.style.top = top + 'px';
-      el.style.left = left + 'px';
-      el.style.width = TS + 'px';
-      el.style.height = TS + 'px';
-      el.style.fontSize = style.fontSize;
-      el.textContent = v;
-      tl.appendChild(el);
+    const el = document.createElement('div');
+    el.className   = 'tile' + (isNew ? ' new' : isMerge ? ' merged' : '');
+    el.dataset.val = dataAttr;
+    el.style.top      = top  + 'px';
+    el.style.left     = left + 'px';
+    el.style.width    = TS   + 'px';
+    el.style.height   = TS   + 'px';
+    el.style.fontSize = style.fontSize;
+    el.textContent    = v;
+    tl.appendChild(el);
 
       if (isMerge) spawnParticles(left + TS / 2, top + TS / 2, tl);
     }
 
   if (pts > 0) {
+    const anchor = merges && merges[0]
+      ? tilePos(merges[0].r, merges[0].c)
+      : { top: PAD + 6, left: PAD + 4 };
     const fp = document.createElement('div');
     fp.className = 'score-float';
-    fp.style.top = PAD + 6 + 'px';
-    fp.style.left = PAD + 4 + 'px';
+    fp.style.top  = anchor.top  + 'px';
+    fp.style.left = anchor.left + 'px';
     fp.textContent = '+' + pts.toLocaleString();
     tl.appendChild(fp);
     setTimeout(() => fp.remove(), 750);
@@ -541,9 +553,8 @@ function renderTiles(newCell, pts, merges) {
   }
 }
 
-function spawnParticles(cx, cy, parent) {
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduced) return;
+function spawnParticles (cx, cy, parent) {
+  if (reducedMotion) return;
 
   for (let i = 0; i < 8; i++) {
     const angle = Math.random() * Math.PI * 2;
@@ -648,11 +659,21 @@ function triggerAchievement(label, desc) {
    Stats modal
    ========================================================= */
 
-function openStats() {
-  document.getElementById('st-best').textContent = stats.best.toLocaleString();
-  document.getElementById('st-games').textContent = stats.games;
-  document.getElementById('st-wins').textContent = stats.wins;
-  document.getElementById('st-tile').textContent = stats.bestTile;
+function openStats () {
+  renderStatsFor(mode);
+  // Highlight the active mode tab
+  document.querySelectorAll('.stats-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.mode === mode);
+  });
+  document.getElementById('stats-modal').classList.add('open');
+}
+
+function renderStatsFor (m) {
+  const ms = stats[m] || blankModeStats();
+  document.getElementById('st-best').textContent  = ms.best.toLocaleString();
+  document.getElementById('st-games').textContent = ms.games;
+  document.getElementById('st-wins').textContent  = ms.wins;
+  document.getElementById('st-tile').textContent  = ms.bestTile;
 
   const badges = document.getElementById('ach-badges');
   badges.innerHTML = '';
@@ -664,8 +685,6 @@ function openStats() {
     b.title = a.desc;
     badges.appendChild(b);
   });
-
-  document.getElementById('stats-modal').classList.add('open');
 }
 
 function closeStats() {
@@ -680,6 +699,7 @@ let audioCtx = null;
 
 function getAudioCtx() {
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
   return audioCtx;
 }
 
@@ -724,9 +744,8 @@ function playSound(type) {
    Confetti
    ========================================================= */
 
-function launchConfetti() {
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduced) return;
+function launchConfetti () {
+  if (reducedMotion) return;
 
   const cv = document.getElementById('confetti-canvas');
   const ctx = cv.getContext('2d');
@@ -744,16 +763,16 @@ function launchConfetti() {
     vrot: (Math.random() - 0.5) * 8,
   }));
 
-  function frame() {
+  let lastTs = null;
+  function frame (ts) {
+    if (!lastTs) lastTs = ts;
+    const dt = Math.min(ts - lastTs, 50) / 16.67; // normalised to 60 fps
+    lastTs = ts;
+
     ctx.clearRect(0, 0, cv.width, cv.height);
-    confettiParticles.forEach((p) => {
-      p.x += p.vx;
-      p.y += p.vy;
-      p.rot += p.vrot;
-      if (p.y > cv.height) {
-        p.y = -10;
-        p.x = Math.random() * cv.width;
-      }
+    confettiParticles.forEach(p => {
+      p.x += p.vx * dt; p.y += p.vy * dt; p.rot += p.vrot * dt;
+      if (p.y > cv.height) { p.y = -10; p.x = Math.random() * cv.width; }
       ctx.save();
       ctx.translate(p.x, p.y);
       ctx.rotate((p.rot * Math.PI) / 180);
@@ -763,7 +782,7 @@ function launchConfetti() {
     });
     confettiFrameId = requestAnimationFrame(frame);
   }
-  frame();
+  confettiFrameId = requestAnimationFrame(frame);
   setTimeout(stopConfetti, 5000);
 }
 
@@ -820,6 +839,14 @@ document.getElementById('tb').addEventListener('click', () => {
 document.getElementById('stbtn').addEventListener('click', openStats);
 document.getElementById('close-stats').addEventListener('click', closeStats);
 
+document.querySelectorAll('.stats-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.stats-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    renderStatsFor(tab.dataset.mode);
+  });
+});
+
 document.getElementById('sdbtn').addEventListener('click', () => {
   soundOn = !soundOn;
   document.getElementById('sdbtn').textContent = soundOn ? '🔊' : '🔇';
@@ -867,41 +894,27 @@ document.getElementById('wr').addEventListener(
   { passive: true }
 );
 
-document.getElementById('wr').addEventListener(
-  'touchend',
-  (e) => {
-    const dx = e.changedTouches[0].clientX - touchStart.x;
-    const dy = e.changedTouches[0].clientY - touchStart.y;
-    if (Math.max(Math.abs(dx), Math.abs(dy)) < 28) return;
-    doMove(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : dy > 0 ? 'down' : 'up');
-  },
-  { passive: true }
-);
+document.getElementById('wr').addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStart.x;
+  const dy = e.changedTouches[0].clientY - touchStart.y;
+  if (Math.max(Math.abs(dx), Math.abs(dy)) < 28) return;
+  doMove(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up'));
+}, { passive: true });
 
-/* =========================================================
-   Auto Pause On Tab Switch
-   ========================================================= */
+/* Mouse drag (PC swipe) */
+let mouseStart = null;
 
-document.addEventListener('visibilitychange', () => {
-  if (mode !== 'timed' || over) return;
+document.getElementById('wr').addEventListener('mousedown', e => {
+  mouseStart = { x: e.clientX, y: e.clientY };
+});
 
-  if (document.hidden) {
-    paused = true;
-    clearInterval(timerInterval);
-
-    document.getElementById('tfill').classList.add('paused');
-
-    showToast('Timer paused');
-  } else {
-    if (paused) {
-      paused = false;
-      startTimer();
-
-      document.getElementById('tfill').classList.remove('pgit aused');
-
-      showToast('Timer resumed');
-    }
-  }
+document.addEventListener('mouseup', e => {
+  if (!mouseStart) return;
+  const dx = e.clientX - mouseStart.x;
+  const dy = e.clientY - mouseStart.y;
+  mouseStart = null;
+  if (Math.max(Math.abs(dx), Math.abs(dy)) < 28) return;
+  doMove(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up'));
 });
 
 /* =========================================================
