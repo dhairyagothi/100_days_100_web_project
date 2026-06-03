@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Stats — 100 Days 100 Web Projects</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+  :root{
+    --bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--border:rgba(255,255,255,.07);
+    --accent:#0ff2c8;--accent2:#7c3aed;--accent3:#f59e0b;--text:#e2e8f0;--muted:#64748b;
+    --font-head:'Orbitron',sans-serif;--font-body:'Exo 2',sans-serif;--radius:16px;
+    --glow:0 0 32px rgba(15,242,200,.18);
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;overflow-x:hidden}
+  .navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:64px;background:rgba(10,10,15,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+  .navbar-brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+  .navbar-brand span{font-family:var(--font-head);font-size:.75rem;letter-spacing:.12em;color:var(--accent);text-shadow:0 0 12px var(--accent)}
+  .nav-actions{display:flex;gap:10px;align-items:center}
+  .nav-btn{display:flex;align-items:center;gap:8px;padding:7px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:.82rem;cursor:pointer;text-decoration:none;transition:all .2s}
+  .nav-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .nav-btn.active{background:linear-gradient(135deg,rgba(15,242,200,.15),rgba(124,58,237,.15));border-color:var(--accent);color:var(--accent)}
+  .hero{position:relative;z-index:1;text-align:center;padding:64px 2rem 40px}
+  .hero-eyebrow{font-size:.72rem;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+  .hero h1{font-family:var(--font-head);font-size:clamp(1.8rem,4vw,3rem);font-weight:900;background:linear-gradient(135deg,#fff 30%,var(--accent) 70%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px}
+  .hero p{color:var(--muted);font-size:1rem;max-width:560px;margin:0 auto 28px}
+  .filter-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+  .pill{padding:7px 20px;border-radius:999px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .25s;user-select:none}
+  .pill:hover{border-color:var(--accent);color:var(--accent)}
+  .pill.active{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:#000;box-shadow:0 4px 20px rgba(15,242,200,.35)}
+  .main{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:32px 20px 80px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;transition:transform .3s,box-shadow .3s;animation:fadeUp .6s ease both}
+  .card:hover{transform:translateY(-4px);box-shadow:var(--glow)}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+  .metric-card{display:flex;flex-direction:column;gap:8px}
+  .metric-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:4px}
+  .metric-card .value{font-family:var(--font-head);font-size:2.4rem;font-weight:900;line-height:1;transition:color .3s}
+  .metric-card .label{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .metric-card .sub{font-size:.8rem;color:var(--muted);margin-top:2px}
+  .m1 .metric-icon{background:rgba(15,242,200,.12);color:var(--accent)}.m1 .value{color:var(--accent);text-shadow:0 0 20px rgba(15,242,200,.4)}
+  .m2 .metric-icon{background:rgba(124,58,237,.15);color:#a78bfa}.m2 .value{color:#a78bfa;text-shadow:0 0 20px rgba(167,139,250,.4)}
+  .m3 .metric-icon{background:rgba(245,158,11,.12);color:var(--accent3)}.m3 .value{color:var(--accent3);text-shadow:0 0 20px rgba(245,158,11,.35)}
+  .m4 .metric-icon{background:rgba(239,68,68,.12);color:#f87171}.m4 .value{color:#f87171;text-shadow:0 0 20px rgba(248,113,113,.35)}
+  .chart-card{grid-column:span 2}.chart-card.wide{grid-column:span 4}
+  .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+  .card-title{font-family:var(--font-head);font-size:.82rem;letter-spacing:.1em;color:var(--accent)}
+  .card-badge{font-size:.7rem;padding:3px 10px;border-radius:999px;background:var(--surface2);color:var(--muted);border:1px solid var(--border)}
+  .chart-wrap{position:relative;height:260px}
+  .live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#22c55e;margin-right:6px;animation:pulse 1.8s infinite;vertical-align:middle}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+  .value.flash{animation:flash .6s ease}
+  @keyframes flash{0%{filter:brightness(2)}100%{filter:brightness(1)}}
+  @media (max-width:1024px){.main{grid-template-columns:repeat(2,1fr)}.chart-card.wide{grid-column:span 2}}
+  @media (max-width:640px){.main{grid-template-columns:1fr}.chart-card,.chart-card.wide{grid-column:span 1}}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="navbar-brand" href="./index.html">
+    <span>100 DAYS · 100 PROJECTS</span>
+  </a>
+  <div class="nav-actions">
+    <a class="nav-btn" href="./index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a class="nav-btn active" href="./stats.html"><i class="fa-solid fa-chart-line"></i> Stats</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow"><span class="live-dot"></span>Live Dashboard</div>
+  <h1>Project Stats</h1>
+  <p>Real-time breakdown of <strong id="heroCount">…</strong> web projects — categories, technologies and difficulty curve. Auto-refreshes every 10s.</p>
+  <div class="filter-row" id="filterRow">
+    <div class="pill active" data-filter="all">All Projects</div>
+  </div>
+</section>
+
+<main class="main">
+  <div class="card metric-card m1">
+    <div class="metric-icon"><i class="fa-solid fa-layer-group"></i></div>
+    <div class="value" id="mTotal">0</div>
+    <div class="label">Total Projects</div>
+    <div class="sub" id="mTotalSub">—</div>
+  </div>
+  <div class="card metric-card m2">
+    <div class="metric-icon"><i class="fa-solid fa-gamepad"></i></div>
+    <div class="value" id="mGames">0</div>
+    <div class="label">Games</div>
+    <div class="sub" id="mGamesSub">—</div>
+  </div>
+  <div class="card metric-card m3">
+    <div class="metric-icon"><i class="fa-solid fa-globe"></i></div>
+    <div class="value" id="mSites">0</div>
+    <div class="label">Clones / Sites</div>
+    <div class="sub" id="mSitesSub">—</div>
+  </div>
+  <div class="card metric-card m4">
+    <div class="metric-icon"><i class="fa-solid fa-server"></i></div>
+    <div class="value" id="mBackend">0</div>
+    <div class="label">Backend / API / AI</div>
+    <div class="sub" id="mBackendSub">—</div>
+  </div>
+
+  <div class="card chart-card">
+    <div class="card-header">
+      <div class="card-title">Category Breakdown</div>
+      <div class="card-badge" id="catBadge">0 categories</div>
+    </div>
+    <div class="chart-wrap"><canvas id="catChart"></canvas></div>
+  </div>
+
+  <div class="card chart-card">
+    <div class="card-header">
+      <div class="card-title">Technology Stack</div>
+      <div class="card-badge">by project count</div>
+    </div>
+    <div class="chart-wrap"><canvas id="techChart"></canvas></div>
+  </div>
+
+  <div class="card chart-card wide">
+    <div class="card-header">
+      <div class="card-title">Difficulty Progression</div>
+      <div class="card-badge" id="diffBadge">Day 1 → N</div>
+    </div>
+    <div class="chart-wrap"><canvas id="diffChart"></canvas></div>
+  </div>
+</main>
+
+<script>
+/* ---------- Config ---------- */
+const JSON_URL = './projects.json';
+const REFRESH_MS = 10000;
+const PALETTE = ['#0ff2c8','#7c3aed','#f59e0b','#f87171','#22c55e','#3b82f6','#ec4899','#eab308','#14b8a6','#a78bfa','#fb923c','#38bdf8'];
+
+/* ---------- Helpers ---------- */
+const $ = id => document.getElementById(id);
+const norm = s => (s||'').toString().trim();
+const normLower = s => norm(s).toLowerCase();
+
+function classify(type){
+  const t = normLower(type);
+  if (t.includes('game')) return 'Game';
+  if (t.includes('clone') || t.includes('website') || t.includes('web application')) return 'Site/Clone';
+  if (t.includes('api') || t.includes('backend') || t.includes('ai') || t.includes('auth')) return 'Backend';
+  if (t.includes('ui') || t.includes('animation')) return 'UI';
+  return 'Tool';
+}
+
+function setMetric(el, val){
+  if (el.textContent !== String(val)){
+    el.textContent = val;
+    el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+  }
+}
+
+/* ---------- Charts ---------- */
+Chart.defaults.color = '#94a3b8';
+Chart.defaults.font.family = "'Exo 2', sans-serif";
+Chart.defaults.borderColor = 'rgba(255,255,255,.06)';
+
+const catChart = new Chart($('catChart'), {
+  type:'doughnut',
+  data:{labels:[],datasets:[{data:[],backgroundColor:PALETTE,borderWidth:0}]},
+  options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:12,font:{size:11}}}},cutout:'62%',responsive:true,maintainAspectRatio:false,animation:{duration:600}}
+});
+
+const techChart = new Chart($('techChart'), {
+  type:'bar',
+  data:{labels:[],datasets:[{label:'Projects',data:[],backgroundColor:'#0ff2c8',borderRadius:6}]},
+  options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,.04)'}},y:{grid:{display:false}}},responsive:true,maintainAspectRatio:false,animation:{duration:600}}
+});
+
+const diffChart = new Chart($('diffChart'), {
+  type:'line',
+  data:{labels:[],datasets:[
+    {label:'Beginner',data:[],borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.15)',tension:.35,fill:true,pointRadius:0,borderWidth:2},
+    {label:'Intermediate',data:[],borderColor:'#0ff2c8',backgroundColor:'rgba(15,242,200,.12)',tension:.35,fill:true,pointRadius:0,borderWidth:2},
+    {label:'Advanced',data:[],borderColor:'#f87171',backgroundColor:'rgba(248,113,113,.12)',tension:.35,fill:true,pointRadius:0,borderWidth:2}
+  ]},
+  options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:12,font:{size:11}}}},scales:{x:{grid:{color:'rgba(255,255,255,.04)'},title:{display:true,text:'Project No.'}},y:{grid:{color:'rgba(255,255,255,.04)'},beginAtZero:true,title:{display:true,text:'Cumulative count'}}},responsive:true,maintainAspectRatio:false,animation:{duration:600}}
+});
+
+/* ---------- State ---------- */
+let currentFilter = 'all';
+let lastData = [];
+
+/* ---------- Render ---------- */
+function render(data){
+  const filtered = currentFilter === 'all'
+    ? data
+    : data.filter(p => classify(p.projectType) === currentFilter);
+
+  const total = filtered.length;
+  $('heroCount').textContent = data.length;
+
+  // Metrics
+  const games   = filtered.filter(p => classify(p.projectType)==='Game').length;
+  const sites   = filtered.filter(p => classify(p.projectType)==='Site/Clone').length;
+  const backend = filtered.filter(p => classify(p.projectType)==='Backend').length;
+
+  setMetric($('mTotal'), total);
+  setMetric($('mGames'), games);
+  setMetric($('mSites'), sites);
+  setMetric($('mBackend'), backend);
+
+  const pct = n => total ? Math.round(n/total*100)+'% of total' : '—';
+  $('mTotalSub').textContent   = `${data.length} in dataset`;
+  $('mGamesSub').textContent   = pct(games);
+  $('mSitesSub').textContent   = pct(sites);
+  $('mBackendSub').textContent = pct(backend);
+
+  // Category breakdown (raw types, grouped lightly)
+  const catCount = {};
+  filtered.forEach(p => {
+    const k = norm(p.projectType) || 'Other';
+    const key = k.charAt(0).toUpperCase() + k.slice(1).toLowerCase();
+    catCount[key] = (catCount[key]||0) + 1;
+  });
+  const catEntries = Object.entries(catCount).sort((a,b)=>b[1]-a[1]);
+  catChart.data.labels = catEntries.map(e=>e[0]);
+  catChart.data.datasets[0].data = catEntries.map(e=>e[1]);
+  catChart.update();
+  $('catBadge').textContent = `${catEntries.length} categories`;
+
+  // Tech stack (top 10)
+  const techCount = {};
+  filtered.forEach(p => (p.techStack||[]).forEach(t => {
+    const k = normLower(t); if (!k) return;
+    techCount[k] = (techCount[k]||0) + 1;
+  }));
+  const techEntries = Object.entries(techCount).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  techChart.data.labels = techEntries.map(e=>e[0]);
+  techChart.data.datasets[0].data = techEntries.map(e=>e[1]);
+  techChart.data.datasets[0].backgroundColor = techEntries.map((_,i)=>PALETTE[i%PALETTE.length]);
+  techChart.update();
+
+  // Difficulty progression — cumulative over projectNo
+  const sorted = [...filtered].sort((a,b)=>(a.projectNo||0)-(b.projectNo||0));
+  const labels = sorted.map(p=>p.projectNo);
+  let b=0,i=0,a=0;
+  const bArr=[],iArr=[],aArr=[];
+  sorted.forEach(p=>{
+    const d=normLower(p.difficulty);
+    if (d==='beginner') b++;
+    else if (d==='advanced') a++;
+    else i++;
+    bArr.push(b); iArr.push(i); aArr.push(a);
+  });
+  diffChart.data.labels = labels;
+  diffChart.data.datasets[0].data = bArr;
+  diffChart.data.datasets[1].data = iArr;
+  diffChart.data.datasets[2].data = aArr;
+  diffChart.update();
+  $('diffBadge').textContent = `Day 1 → ${labels[labels.length-1] || 0}`;
+}
+
+/* ---------- Filters ---------- */
+function buildFilters(data){
+  const cats = Array.from(new Set(data.map(p=>classify(p.projectType)))).sort();
+  const row = $('filterRow');
+  row.innerHTML = '';
+  ['all', ...cats].forEach(c=>{
+    const el = document.createElement('div');
+    el.className = 'pill' + (c===currentFilter ? ' active' : '');
+    el.dataset.filter = c;
+    el.textContent = c === 'all' ? 'All Projects' : c;
+    el.onclick = () => {
+      currentFilter = c;
+      document.querySelectorAll('.pill').forEach(p=>p.classList.toggle('active', p.dataset.filter===c));
+      render(lastData);
+    };
+    row.appendChild(el);
+  });
+}
+
+/* ---------- Fetch loop ---------- */
+async function load(){
+  try{
+    const res = await fetch(JSON_URL + '?_=' + Date.now(), {cache:'no-store'});
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    if (!Array.isArray(data)) throw new Error('Invalid JSON shape');
+    const changed = JSON.stringify(data) !== JSON.stringify(lastData);
+    if (changed){
+      lastData = data;
+      buildFilters(data);
+      render(data);
+    }
+  }catch(err){
+    console.error('Stats load failed:', err);
+  }
+}
+
+load();
+setInterval(load, REFRESH_MS);
+</script>
+</body>
+</html>

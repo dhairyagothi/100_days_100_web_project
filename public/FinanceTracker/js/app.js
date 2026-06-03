@@ -1,326 +1,298 @@
-// js/app.js
+import {
+    addTransaction,
+    getTransactions,
+    deleteTransaction
+} from './transactionManager.js';
 
 import {
-  getTransactions,
-  saveTransactions,
-  getGoals,
-  saveGoals,
-} from "./storage.js";
+    addGoal,
+    getGoals,
+    deleteGoal
+} from './savingsManager.js';
 
 import {
-  calculateAnalytics,
-} from "./analyticsEngine.js";
-
-import {
-  calculateFinancialScore,
-} from "./financialScore.js";
-
-import {
-  generateInsights,
-} from "./aiInsights.js";
-
-import {
-  renderInsights,
-} from "./financialInsights.js";
-
-import {
-  renderChart,
-} from "./chartManager.js";
-
-import {
-  renderTransactions,
-  addTransaction,
-  filterTransactions,
-} from "./transactionManager.js";
-
-import {
-  renderGoals,
-  addGoal,
-} from "./savingsManager.js";
-
-import {
-  autoCategorize,
-} from "./smartCategorizer.js";
-
-import {
-  showNotification,
-} from "./notificationManager.js";
+    generateInsights
+} from './financialInsights.js';
 
 
-let transactions =
-  getTransactions();
+const form =
+    document.getElementById('transaction-form');
 
-let goals =
-  getGoals();
+const transactionList =
+    document.getElementById('transaction-list');
 
+const balanceEl =
+    document.getElementById('balance');
 
-// DASHBOARD UPDATE
+const incomeEl =
+    document.getElementById('income');
 
-const updateDashboard = () => {
+const expenseEl =
+    document.getElementById('expense');
 
-  const analytics =
-    calculateAnalytics(
-      transactions
-    );
+const totalTransactionsEl =
+    document.getElementById('total-transactions');
 
-  document.getElementById(
-    "balance"
-  ).innerText =
-    `$${analytics.balance.toFixed(2)}`;
+const insightsBox =
+    document.getElementById('insights-box');
 
-  document.getElementById(
-    "income"
-  ).innerText =
-    `$${analytics.income.toFixed(2)}`;
+const goalForm =
+    document.getElementById('goal-form');
 
-  document.getElementById(
-    "expense"
-  ).innerText =
-    `$${analytics.expense.toFixed(2)}`;
-
-  document.getElementById(
-    "count"
-  ).innerText =
-    analytics.transactionCount;
-
-  document.getElementById(
-    "highestExpense"
-  ).innerText =
-    `$${analytics.highestExpense}`;
-
-  document.getElementById(
-    "highestIncome"
-  ).innerText =
-    `$${analytics.highestIncome}`;
-
-  document.getElementById(
-    "savingRate"
-  ).innerText =
-    `${analytics.savingsRate}%`;
-
-  // FINANCIAL SCORE
-
-  const score =
-    calculateFinancialScore(
-      analytics
-    );
-
-  document.getElementById(
-    "financialScore"
-  ).innerText = score;
-
-  // AI INSIGHTS
-
-  generateInsights(
-  transactions,
-  analytics
-).then((insights) => {
-
-  renderInsights(
-    insights
-  );
-
-});
-
-  // CHART
-
-  renderChart(transactions);
-};
+const goalList =
+    document.getElementById('goal-list');
 
 
-// INITIAL RENDER
+// ADD TRANSACTION
+form.addEventListener('submit',(e)=>{
 
-renderTransactions(
-  transactions
-);
-
-renderGoals(goals);
-
-updateDashboard();
-
-
-// TRANSACTION FORM
-
-const transactionForm =
-  document.getElementById(
-    "transactionForm"
-  );
-
-transactionForm.addEventListener(
-  "submit",
-  (event) => {
-
-    event.preventDefault();
+    e.preventDefault();
 
     const description =
-      document.getElementById(
-        "desc"
-      ).value;
+        document.getElementById('description').value;
 
     const amount =
-      Number(
-        document.getElementById(
-          "amount"
-        ).value
-      );
+        parseFloat(
+            document.getElementById('amount').value
+        );
 
     const type =
-      document.getElementById(
-        "type"
-      ).value;
+        document.getElementById('type').value;
 
-    let category =
-      document.getElementById(
-        "category"
-      ).value;
+    const category =
+        document.getElementById('category').value;
 
-    // SMART AUTO CATEGORY
+    if(!description || isNaN(amount)){
 
-    if (
-      !category ||
-      category === "auto"
-    ) {
+        alert('Enter valid details');
 
-      category =
-        autoCategorize(
-          description
-        );
+        return;
+
     }
 
     const transaction = {
 
-      description,
+        description,
+        amount,
+        type,
+        category,
+        date:new Date().toLocaleDateString()
 
-      amount,
-
-      type,
-
-      category,
-
-      date:
-        new Date()
-          .toLocaleDateString(),
     };
 
-    transactions =
-      addTransaction(
-        transactions,
-        transaction
-      );
+    addTransaction(transaction);
 
-    saveTransactions(
-      transactions
-    );
+    form.reset();
 
-    renderTransactions(
-      transactions
-    );
+    renderTransactions();
 
-    updateDashboard();
-
-    transactionForm.reset();
-  }
-);
+});
 
 
-// SEARCH
+// RENDER TRANSACTIONS
+function renderTransactions(){
 
-const searchInput =
-  document.getElementById(
-    "search"
-  );
+    transactionList.innerHTML = '';
 
-searchInput.addEventListener(
-  "input",
-  (event) => {
+    const transactions =
+        getTransactions();
 
-    const filtered =
-      filterTransactions(
-        transactions,
-        event.target.value
-      );
+    let income = 0;
+    let expense = 0;
 
-    renderTransactions(
-      filtered
-    );
-  }
-);
+    transactions.forEach((transaction,index)=>{
+
+        if(transaction.type === "Income"){
+
+            income += transaction.amount;
+
+        }
+        else{
+
+            expense += transaction.amount;
+
+        }
+
+        const row =
+            document.createElement('tr');
+
+        const descTd = document.createElement('td');
+descTd.textContent = transaction.description;
+
+const amountTd = document.createElement('td');
+amountTd.textContent = `$${transaction.amount}`;
+
+const typeTd = document.createElement('td');
+typeTd.textContent = transaction.type;
+
+const categoryTd = document.createElement('td');
+categoryTd.textContent = transaction.category;
+
+const dateTd = document.createElement('td');
+dateTd.textContent = transaction.date;
+
+const actionTd = document.createElement('td');
+
+const deleteBtn = document.createElement('button');
+deleteBtn.className = 'delete-btn';
+deleteBtn.textContent = 'Delete';
+
+deleteBtn.addEventListener('click', () => {
+    removeTransaction(index);
+});
+
+actionTd.appendChild(deleteBtn);
+
+row.appendChild(descTd);
+row.appendChild(amountTd);
+row.appendChild(typeTd);
+row.appendChild(categoryTd);
+row.appendChild(dateTd);
+row.appendChild(actionTd);
+
+        transactionList.appendChild(row);
+
+    });
+
+    balanceEl.textContent =
+        `$${income - expense}`;
+
+    incomeEl.textContent =
+        `$${income}`;
+
+    expenseEl.textContent =
+        `$${expense}`;
+
+    totalTransactionsEl.textContent =
+        transactions.length;
+
+    insightsBox.textContent =
+        generateInsights(transactions);
+
+}
 
 
-// GOALS
+// DELETE TRANSACTION
+window.removeTransaction = function(index){
 
-window.addGoal = () => {
+    deleteTransaction(index);
 
-  const name =
-    document.getElementById(
-      "goalName"
-    ).value;
+    renderTransactions();
 
-  const target =
-    Number(
-      document.getElementById(
-        "goalAmount"
-      ).value
-    );
+}
 
-  if (
-    !name ||
-    !target
-  ) {
 
-    showNotification(
-      "Please enter valid goal details"
-    );
+// ADD GOAL
+goalForm.addEventListener('submit',(e)=>{
 
-    return;
-  }
+    e.preventDefault();
 
-  const goal = {
+    const goalName =
+        document.getElementById('goal-name').value;
 
-    name,
+    const goalAmount =
+        parseFloat(
+            document.getElementById('goal-amount').value
+        );
 
-    target,
+    if(!goalName || isNaN(goalAmount)){
 
-    saved: 0,
-  };
+        alert('Enter valid goal');
 
-  goals =
-    addGoal(
-      goals,
-      goal
-    );
+        return;
 
-  saveGoals(goals);
+    }
 
-  renderGoals(goals);
+    const goal = {
 
-  showNotification(
-    "Savings Goal Added"
-  );
+        name:goalName,
+        amount:goalAmount
 
-  document.getElementById(
-    "goalName"
-  ).value = "";
+    };
 
-  document.getElementById(
-    "goalAmount"
-  ).value = "";
-};
+    addGoal(goal);
+
+    goalForm.reset();
+
+    renderGoals();
+
+});
+
+
+// RENDER GOALS
+function renderGoals(){
+
+    goalList.innerHTML = '';
+
+    const goals =
+        getGoals();
+
+    goals.forEach((goal,index)=>{
+
+        const row =
+            document.createElement('tr');
+
+        const nameTd = document.createElement('td');
+nameTd.textContent = goal.name;
+
+const amountTd = document.createElement('td');
+amountTd.textContent = `$${goal.amount}`;
+
+const actionTd = document.createElement('td');
+
+const deleteBtn = document.createElement('button');
+deleteBtn.className = 'delete-btn';
+deleteBtn.textContent = 'Delete';
+
+deleteBtn.addEventListener('click', () => {
+    removeGoal(index);
+});
+
+actionTd.appendChild(deleteBtn);
+
+row.appendChild(nameTd);
+row.appendChild(amountTd);
+row.appendChild(actionTd);
+
+        goalList.appendChild(row);
+
+    });
+
+}
+
+
+// DELETE GOAL
+window.removeGoal = function(index){
+
+    deleteGoal(index);
+
+    renderGoals();
+
+}
 
 
 // THEME TOGGLE
-
 const themeToggle =
-  document.getElementById(
-    "theme-toggle"
-  );
+    document.getElementById('theme-toggle');
 
-themeToggle.addEventListener(
-  "click",
-  () => {
+themeToggle.addEventListener('click',()=>{
 
-    document.body.classList.toggle(
-      "light-mode"
-    );
-  }
-);
+    document.body.classList.toggle('light-mode');
+
+    if(document.body.classList.contains('light-mode')){
+
+        themeToggle.textContent = '☀️';
+
+    }
+    else{
+
+        themeToggle.textContent = '🌙';
+
+    }
+
+});
+
+
+// INITIAL RENDER
+renderTransactions();
+renderGoals();

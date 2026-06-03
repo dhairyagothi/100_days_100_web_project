@@ -103,17 +103,18 @@ color: var(--text-primary);
 
 .horizontal-info-card {
   background: var(--bg-card);
-
   border-radius: 18px;
-
   padding: 24px;
-
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
   gap: 20px;
-
   border: 1px solid rgba(255,255,255,0.06);
+  height: 100%;
+}
+.horizontal-info-card .modern-btn {
+  margin-top: auto;
+  align-self: flex-start;
 }
 
 .horizontal-info-card .modern-btn {
