@@ -1,53 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Habit Tracker</title>
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Habit Tracker Pro</title>
+<link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-  <div class="app">
-    <header>
-      <h1>🌱 Habit Tracker</h1>
-      <div class="actions">
-        <button id="addHabitBtn">+ Add Habit</button>
-        <div class="theme-toggle-container">
-          <span id="themeLabel">☀️ Light</span>
-          <label class="theme-toggle">
-            <input type="checkbox" id="themeToggle">
-            <span class="slider"></span>
-          </label>
-        </div>
-      </div>
-    </header>
 
-    <section id="habitsSection">
-      <h2>Your Habits</h2>
-      <div id="habitList"></div>
-    </section>
+<div class="container">
 
-    <section id="calendarSection">
-      <div class="month-nav">
-        <button id="prevMonth">◀</button>
-        <span id="monthLabel"></span>
-        <button id="nextMonth">▶</button>
-      </div>
-      <div id="calendar"></div>
-    </section>
-  </div>
+<header>
 
-  <!-- Modal -->
-  <div class="modal" id="habitModal">
-    <div class="modal-content">
-      <h3>Add a new Habit</h3>
-      <input type="text" id="habitName" placeholder="Habit name (e.g. Read 📚)">
-      <input type="color" id="habitColor" value="#4caf50">
-      <button id="saveHabitBtn">Save</button>
-      <button id="closeModal">Cancel</button>
-    </div>
-  </div>
+<h1>🌱 Habit Tracker Pro</h1>
 
-  <script src="script.js"></script>
+<div class="header-actions">
+
+<input
+type="text"
+id="searchHabit"
+placeholder="Search habit..."
+>
+
+<button id="addHabitBtn">
++ Add Habit
+</button>
+
+<button id="themeBtn">
+🌙
+</button>
+
+</div>
+
+</header>
+
+<div class="stats">
+
+<div class="card">
+<h3>Total Habits</h3>
+<p id="totalHabits">0</p>
+</div>
+
+<div class="card">
+<h3>Completed Today</h3>
+<p id="completedToday">0</p>
+</div>
+
+<div class="card">
+<h3>Best Streak</h3>
+<p id="bestStreak">0</p>
+</div>
+
+</div>
+
+<div class="quote-box">
+<p id="quote"></p>
+</div>
+
+<div id="habitList"></div>
+
+</div>
+
+<div class="modal" id="habitModal">
+
+<div class="modal-content">
+
+<h2>Add Habit</h2>
+
+<input
+type="text"
+id="habitName"
+placeholder="Habit Name"
+>
+
+<select id="habitCategory">
+<option>Health</option>
+<option>Study</option>
+<option>Fitness</option>
+<option>Personal</option>
+<option>Work</option>
+</select>
+
+<input
+type="color"
+id="habitColor"
+value="#22c55e"
+>
+
+<textarea
+id="habitNotes"
+placeholder="Notes..."
+></textarea>
+
+<button id="saveHabitBtn">
+Save Habit
+</button>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
 </body>
 </html>
