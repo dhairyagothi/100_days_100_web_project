@@ -564,9 +564,14 @@ async function fetchRepoStats() {
 
     set("starCount", repo.stargazers_count.toLocaleString());
     set("forkCount", repo.forks_count.toLocaleString());
+    // GitHub's open_issues_count includes pull requests. Subtracting the PR
+    // count gives a closer approximation of open issues. The search API can
+    // return a total_count higher than the number accounted for in
+    // open_issues_count due to index lag or repository forks, which would
+    // produce a negative result without the clamp.
     set(
       "issueCount",
-      (repo.open_issues_count - prs.total_count).toLocaleString(),
+      Math.max(0, repo.open_issues_count - prs.total_count).toLocaleString(),
     );
     set("prCount", prs.total_count.toLocaleString());
   } catch (e) {
