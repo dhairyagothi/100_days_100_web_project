@@ -18,9 +18,10 @@ const MAX_RETRIES = 3;
 
 closeModal?.addEventListener(
   'click',
-
   () => {
-    modal.style.display = 'none';
+    if (modal) {
+      modal.style.display = 'none';
+    }
   }
 );
 
@@ -88,9 +89,8 @@ async function githubFetch(url, options = {}, retries = MAX_RETRIES) {
 
 window.addEventListener(
   'click',
-
   (e) => {
-    if (e.target === modal) {
+    if (modal && e.target === modal) {
       modal.style.display = 'none';
     }
   }
@@ -128,50 +128,118 @@ function loadCache(key, maxAge = 1000 * 60 * 10) {
   }
 }
 
-async function openProfile(username){
+async function openProfile(username) {
 
-    modal.style.display = "flex";
-    modal.style.position = "fixed";
+  if (!modal || !modalBody) {
+    console.error('Modal elements not found');
+    return;
+  }
 
-    modal.style.top = "0";
+  modal.style.display = "flex";
+  modal.style.position = "fixed";
 
-    modal.style.left = "0";
+  modal.style.top = "0";
 
-    modal.style.zIndex = "999999999";
+  modal.style.left = "0";
 
-    modal.style.justifyContent = "center";
+  modal.style.zIndex = "999999999";
 
-    modal.style.alignItems = "center";
+  modal.style.justifyContent = "center";
 
-    modalBody.innerHTML =
+  modal.style.alignItems = "center";
+
+  modalBody.innerHTML =
     "<p>Loading...</p>";
 
-    try{
+  try {
 
-        const response =
-        await fetch(
+    const response =
+      await fetch(
         `https://api.github.com/users/${username}`
-        );
+      );
 
-        if(!response.ok){
+    if (!response.ok) {
 
-            modalBody.innerHTML = `
-            <h2>${username}</h2>
+      modalBody.textContent = '';
 
-            <p>
-            Profile unavailable
-            </p>
-            `;
+      const heading = document.createElement('h2');
+      heading.textContent = username;
 
-            return;
-        }
+      const message = document.createElement('p');
+      message.textContent = 'Profile unavailable';
 
-        const user =
-        await response.json();
+      modalBody.appendChild(heading);
+      modalBody.appendChild(message);
+
+      return;
+    }
+
+    const user =
+      await response.json();
 
 
-        modalBody.innerHTML = `
+    modalBody.textContent = '';
 
+    // Avatar
+    const avatar = document.createElement('img');
+    avatar.src = user.avatar_url;
+    avatar.alt = user.name || username;
+    avatar.style.width = '120px';
+    avatar.style.height = '120px';
+    avatar.style.borderRadius = '50%';
+
+    // Name
+    const name = document.createElement('h2');
+    name.textContent = user.name || username;
+
+    // Bio
+    const bio = document.createElement('p');
+    bio.textContent = user.bio || 'No bio available';
+
+    // Followers
+    const followers = document.createElement('p');
+    followers.textContent = `Followers: ${user.followers}`;
+
+    // Repositories
+    const repos = document.createElement('p');
+    repos.textContent = `Repositories: ${user.public_repos}`;
+
+    // Location
+    const location = document.createElement('p');
+    location.textContent = `Location: ${user.location || 'Unknown'}`;
+
+    // Append elements
+    modalBody.appendChild(avatar);
+    modalBody.appendChild(name);
+    modalBody.appendChild(bio);
+    modalBody.appendChild(followers);
+    modalBody.appendChild(repos);
+    modalBody.appendChild(location);
+
+    // GitHub Profile Link
+    if (user.html_url) {
+      const profileLink = document.createElement('a');
+
+      profileLink.href = user.html_url;
+      profileLink.target = '_blank';
+      profileLink.rel = 'noopener noreferrer';
+      profileLink.className = 'github-btn';
+      profileLink.textContent = 'GitHub Profile';
+
+      modalBody.appendChild(profileLink);
+    }
+
+  }
+
+  catch (err) {
+
+    modalBody.innerHTML =
+      "<p>Failed to load profile</p>";
+
+    console.log(err);
+  }
+
+}
         <img
         src="${user.avatar_url}"
         style="
@@ -233,232 +301,23 @@ async function openProfile(username){
 
         `;
 
-    const certificateBtn = document.getElementById('downloadCertificate');
+    
+    
 
-    closeCertificate?.addEventListener(
-      'click',
-
-      () => {
-        certificateModal.style.display = 'none';
-      }
-    );
-
-    certificateBtn?.addEventListener(
-      'click',
-
-      () => {
-        certificateModal.style.display = 'flex';
-
-        certificateBody.innerHTML = `
-
-<div style="
-position:relative;
-width:100%;
-">
-
-<img
-src="assets/template.png"
-style="
-width:100%;
-display:block;
-border-radius:12px;
-">
-
-
-<!-- NAME -->
-
-<div style="
-position:absolute;
-top:35%;
-left:50%;
-transform:translateX(-50%);
-font-family:'Cinzel',serif;
-
-font-size:24px;
-
-font-weight:700;
-
-background:
-linear-gradient(
-90deg,
-#b8860b,
-#f4d03f,
-#8b5a00
-);
-
--webkit-background-clip:text;
-
--webkit-text-fill-color:
-transparent;
-
-white-space:nowrap;
-
-text-shadow:
-0 2px 4px rgba(
-0,
-0,
-0,
-0.12
-);
-">
-
-${user.name || user.login}
-
-</div>
-
-
-
-<!-- COMMITS -->
-
-<div style="
-position:absolute;
-top:82%;
-left:30%;
-transform:translateX(-50%);
-font-size:5px;
-color:#5b21b6;
-">
-
-${commits}
-
-</div>
-
-
-
-<!-- USERNAME -->
-
-<div style="
-position:absolute;
-top:82%;
-left:50%;
-transform:translateX(-50%);
-font-size:5px;
-color:#5b21b6;
-">
-
-@${user.login}
-
-</div>
-
-
-
-<!-- DATE -->
-
-<div style="
-position:absolute;
-top:82%;
-left:69%;
-transform:translateX(-50%);
-font-size:5px;
-color:#5b21b6;
-">
-
-${new Date().toLocaleDateString('en-GB')}
-
-</div>
-
-</div>
-
-
-<div style="
-text-align:center;
-margin-top:20px;
-">
-
-<button
-id="downloadPdfBtn"
-style="
-background:#16a34a;
-padding:14px 30px;
-color:white;
-border:none;
-border-radius:10px;
-cursor:pointer;
-">
-
-Download PDF
-
-</button>
-
-</div>
-
-`;
-        const downloadBtn = document.getElementById('downloadPdfBtn');
-
-        downloadBtn?.addEventListener(
-          'click',
-
-          async () => {
-            const certificate = certificateBody.querySelector('div');
-
-            const canvas = await html2canvas(
-              certificate,
-
-              {
-                scale: 3,
-
-                useCORS: true,
-              }
-            );
-
-            const image = canvas.toDataURL('image/png');
-
-            const { jsPDF } = window.jspdf;
-
-            const pdf = new jsPDF(
-              'landscape',
-
-              'px',
-
-              [canvas.width, canvas.height]
-            );
-
-            pdf.addImage(
-              image,
-
-              'PNG',
-
-              0,
-
-              0,
-
-              canvas.width,
-
-              canvas.height
-            );
-
-            pdf.save(`${user.login}-certificate.pdf`);
-          }
-        );
-      }
-    );
-  } catch (error) {
-    modalBody.innerHTML = '<p>Failed to load profile</p>';
-
-    console.error(error);
-  }
-}
-
-// Use global REPO_OWNER and REPO_NAME defined in index.js
+         // Use global REPO_OWNER and REPO_NAME defined in index.js
 
 let allContributors = [];
 let filteredContributors = [];
 
 async function fetchContributors() {
   const contributorsContainer = document.getElementById('contributors');
-
   const contributorCountSpan = document.getElementById('contributorCount');
-
   const errorBox = document.getElementById('contributorsError');
-
   const errorMessage = document.getElementById('contributorsErrorMessage');
-
   const loading = document.getElementById('contributorsLoading');
 
   loading.classList.remove('hidden');
-
   errorBox.classList.add('hidden');
-
   contributorsContainer.innerHTML = '';
 
   try {
@@ -466,15 +325,11 @@ async function fetchContributors() {
 
     if (cached) {
       allContributors = cached;
-
       filteredContributors = [...cached];
-
       contributorCountSpan.textContent = cached.length;
 
       renderContributors(filteredContributors);
-
       loading.classList.add('hidden');
-
       return;
     }
 
@@ -498,20 +353,17 @@ async function fetchContributors() {
     }
 
     allContributors = contributors;
-
     filteredContributors = [...contributors];
 
     renderContributors(filteredContributors);
+
   } catch (error) {
     errorBox.classList.remove('hidden');
-
     errorMessage.textContent = error.message;
-
     contributorsContainer.innerHTML = '';
   } finally {
     loading.classList.add('hidden');
   }
-}
 
 function renderContributors(data) {
   const contributorsContainer = document.getElementById('contributors');
@@ -550,77 +402,79 @@ function renderContributors(data) {
 
     card.className = 'contributor-card';
 
-    card.innerHTML = `
+    // Badge
+    if (badge) {
+      const badgeImg = document.createElement('img');
+      badgeImg.className = 'rank-badge';
+      badgeImg.src = badge;
+      badgeImg.alt = 'Rank badge';
+      card.appendChild(badgeImg);
+    }
 
-${
-  badge
-    ? `<img
-src="${badge}"
-class="rank-badge"
->`
-    : ''
-}
+    // Avatar
+    const avatar = document.createElement('img');
+    avatar.src = contributor.avatar_url;
+    avatar.alt = contributor.login;
+    card.appendChild(avatar);
 
-<img
-src="${contributor.avatar_url}"
+    // Name
+    const name = document.createElement('h3');
+    name.textContent = contributor.login;
+    card.appendChild(name);
 
-alt="${contributor.login}">
+    // Stats
+    const stats = document.createElement('div');
+    stats.className = 'contributor-stats';
 
-            <h3>${contributor.login}</h3>
+    const stat = document.createElement('div');
+    stat.className = 'stat';
 
-            <div class="contributor-stats">
+    const value = document.createElement('span');
+    value.className = 'value';
+    value.textContent = contributor.contributions;
 
-                <div class="stat">
+    const label = document.createElement('span');
+    label.className = 'label';
+    label.textContent = 'Commits';
 
-                    <span class="value">
-                        ${contributor.contributions}
-                    </span>
+    stat.appendChild(value);
+    stat.appendChild(label);
+    stats.appendChild(stat);
+    card.appendChild(stats);
 
-                    <span class="label">
-                        Commits
-                    </span>
+    // Links container
+    const links = document.createElement('div');
+    links.className = 'contributor-links';
 
-                </div>
+    // Details button
+    const detailsBtn = document.createElement('button');
+    detailsBtn.className = 'details-btn';
+    detailsBtn.dataset.user = contributor.login;
+    detailsBtn.textContent = 'View Details';
 
-            </div>
+    detailsBtn.addEventListener('click', () => {
+      openProfile(contributor.login);
+    });
 
-           <div class="contributor-links">
+    // GitHub profile link
+    const profileLink = document.createElement('a');
+    profileLink.href = contributor.html_url;
+    profileLink.target = '_blank';
+    profileLink.rel = 'noopener noreferrer';
+    profileLink.className = 'github-btn';
 
-    <button
-        class="details-btn"
-        data-user="${contributor.login}"
-    >
+    const icon = document.createElement('i');
+    icon.className = 'fab fa-github';
 
-        View Details
+    profileLink.appendChild(icon);
+    profileLink.append(' Profile');
 
-    </button>
+    links.appendChild(detailsBtn);
+    links.appendChild(profileLink);
 
-    <a
-        href="${contributor.html_url}"
-        target="_blank"
-        class="github-btn"
-    >
-
-        <i class="fab fa-github"></i>
-        Profile
-
-    </a>
-
-</div>
-        `;
+    card.appendChild(links);
 
     fragment.appendChild(card);
-    const detailsButton = card.querySelector('.details-btn');
-
-    if (detailsButton) {
-      detailsButton.addEventListener(
-        'click',
-
-        () => {
-    openProfile(contributor.login);
-        }
-      );
-    }
   });
 
   contributorsContainer.appendChild(fragment);
@@ -642,12 +496,11 @@ function renderStargazers(stargazers) {
 
     starItem.title = stargazer.login;
 
-    starItem.innerHTML = `
-      <img
-        src="${stargazer.avatar_url}"
-        alt="${stargazer.login}"
-      >
-    `;
+    const img = document.createElement('img');
+    img.src = stargazer.avatar_url;
+    img.alt = stargazer.login;
+
+    starItem.appendChild(img);
 
     stargazersContainer.appendChild(starItem);
   });
@@ -655,18 +508,12 @@ function renderStargazers(stargazers) {
 
 async function fetchStargazers() {
   const stargazersContainer = document.getElementById('stargazers');
-
   const errorBox = document.getElementById('stargazersError');
-
   const errorMessage = document.getElementById('stargazersErrorMessage');
-
   const loading = document.getElementById('stargazersLoading');
 
-<<<<<<< HEAD
   loading.classList.remove('hidden');
-
   errorBox.classList.add('hidden');
-
   stargazersContainer.innerHTML = '';
 
   try {
@@ -674,24 +521,8 @@ async function fetchStargazers() {
 
     if (cached) {
       renderStargazers(cached);
-
       loading.classList.add('hidden');
-
       return;
-=======
-        stargazers.forEach((stargazer) => {
-            const starItem = document.createElement("a");
-            starItem.href = stargazer.html_url;
-            starItem.target = "_blank";
-            starItem.rel = "noopener noreferrer";
-            starItem.className = "stargazer-item";
-            starItem.title = stargazer.login;
-            starItem.innerHTML = `<img src="${stargazer.avatar_url}" alt="${stargazer.login}">`;
-            if (stargazersContainer) stargazersContainer.appendChild(starItem);
-        });
-    } catch (error) {
-        console.error("Error fetching stargazers:", error);
->>>>>>> eb4d25517c07edfcfe9e2502013c2b43ac24352f
     }
 
     const stargazers = await githubFetch(
@@ -701,9 +532,9 @@ async function fetchStargazers() {
     saveCache('stargazers-cache', stargazers);
 
     renderStargazers(stargazers);
+
   } catch (error) {
     errorBox.classList.remove('hidden');
-
     errorMessage.textContent = error.message;
   } finally {
     loading.classList.add('hidden');
@@ -714,7 +545,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Repo stats are now handled by index.js
   fetchContributors();
   fetchStargazers();
-  
+
   document
     .getElementById('retryContributors')
     ?.addEventListener('click', fetchContributors);

@@ -12,36 +12,35 @@
   />
   <link rel="stylesheet" href="todolist.css" />
   <script
-          src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
-          integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA=="
-          crossorigin="anonymous"
-          referrerpolicy="no-referrer"
+    src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+    integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
   ></script>
 </head>
 <body>
 <a
-        href="/"
-        class="project-back-button"
-        style="
-        position: fixed;
-        left: 18px;
-        top: 18px;
-        padding: 8px 12px;
-        border-radius: 8px;
-        background: linear-gradient(
-          90deg,
-          rgba(124, 99, 255, 0.14),
-          rgba(79, 141, 255, 0.1)
-        );
-        color: #fff;
-        text-decoration: none;
-        z-index: 9999;
-        font-weight: 700;
-        font-family: Inter, system-ui, sans-serif;
-        box-shadow: 0 8px 20px rgba(12, 18, 40, 0.35);
-      "
->← Back to Home</a
->
+  href="/"
+  class="project-back-button"
+  style="
+    position: fixed;
+    left: 18px;
+    top: 18px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: linear-gradient(
+      90deg,
+      rgba(124, 99, 255, 0.14),
+      rgba(79, 141, 255, 0.1)
+    );
+    color: #fff;
+    text-decoration: none;
+    z-index: 9999;
+    font-weight: 700;
+    font-family: Inter, system-ui, sans-serif;
+    box-shadow: 0 8px 20px rgba(12, 18, 40, 0.35);
+  "
+>← Back to Home</a>
 
 <!-- Floating decorative shapes -->
 <div class="floating-shapes" aria-hidden="true">
@@ -59,26 +58,18 @@
         <ul>
           <li>
             <a
-                    href="#"
-                    id="nav-home"
-                    onclick="
-                    showHome();
-                    return false;
-                  "
-                    aria-current="page"
-            >🏠 Home</a
-            >
+              href="#"
+              id="nav-home"
+              onclick="showHome(); return false;"
+              aria-current="page"
+            >🏠 Home</a>
           </li>
           <li>
             <a
-                    href="#"
-                    id="nav-documents"
-                    onclick="
-                    showDocuments();
-                    return false;
-                  "
-            >📄 Documents</a
-            >
+              href="#"
+              id="nav-documents"
+              onclick="showDocuments(); return false;"
+            >📄 Documents</a>
           </li>
         </ul>
       </li>
@@ -86,44 +77,19 @@
         <span class="theme-label">Theme</span>
         <ul>
           <li>
-            <button
-                    id="colour1"
-                    class="theme-btn"
-                    data-theme="theme1"
-                    aria-label="Sunset Theme"
-            ></button>
+            <button id="colour1" class="theme-btn" data-theme="theme1" aria-label="Sunset Theme"></button>
           </li>
           <li>
-            <button
-                    id="colour2"
-                    class="theme-btn"
-                    data-theme="theme2"
-                    aria-label="Ocean Theme"
-            ></button>
+            <button id="colour2" class="theme-btn" data-theme="theme2" aria-label="Ocean Theme"></button>
           </li>
           <li>
-            <button
-                    id="colour3"
-                    class="theme-btn"
-                    data-theme="theme3"
-                    aria-label="Forest Theme"
-            ></button>
+            <button id="colour3" class="theme-btn" data-theme="theme3" aria-label="Forest Theme"></button>
           </li>
           <li>
-            <button
-                    id="colour4"
-                    class="theme-btn"
-                    data-theme="theme4"
-                    aria-label="Midnight Theme"
-            ></button>
+            <button id="colour4" class="theme-btn" data-theme="theme4" aria-label="Midnight Theme"></button>
           </li>
           <li>
-            <button
-                    id="colour5"
-                    class="theme-btn"
-                    data-theme="theme5"
-                    aria-label="Aurora Theme"
-            ></button>
+            <button id="colour5" class="theme-btn" data-theme="theme5" aria-label="Aurora Theme"></button>
           </li>
         </ul>
       </li>
@@ -151,9 +117,7 @@
     <!-- Input Area -->
     <form class="input-panel" id="task-form" novalidate>
       <div class="input-group">
-        <label for="task-category" class="sr-only"
-        >Choose task category</label
-        >
+        <label for="task-category" class="sr-only">Choose task category</label>
         <select id="task-category" aria-label="Choose task category">
           <option value="" disabled selected>📂 Category</option>
           <option value="Work" data-color="#7c63ff">💼 Work</option>
@@ -163,9 +127,7 @@
           <option value="Others" data-color="#8e8e9c">📌 Others</option>
         </select>
 
-        <label for="task-priority" class="sr-only"
-        >Choose task priority</label
-        >
+        <label for="task-priority" class="sr-only">Choose task priority</label>
         <select id="task-priority" aria-label="Choose task priority">
           <option value="" disabled selected>⭐ Priority</option>
           <option value="High" data-color="#ef4444">🔥 High</option>
@@ -175,10 +137,10 @@
 
         <label for="task" class="sr-only">Task description</label>
         <input
-                type="text"
-                id="task"
-                placeholder="What do you need to do?"
-                autocomplete="off"
+          type="text"
+          id="task"
+          placeholder="What do you need to do?"
+          autocomplete="off"
         />
         <button type="submit" id="submittask">➕ Add Task</button>
       </div>
@@ -199,31 +161,31 @@
     <!-- Status Filtering Tabs -->
     <div class="status-tabs" id="statusTabs" style="display: none">
       <button
-              class="status-tab active"
-              data-status="all"
-              onclick="filterByStatus('all')"
+        class="status-tab active"
+        data-status="all"
+        onclick="filterByStatus('all')"
       >
         🌐 All <span class="tab-count" id="count-all">0</span>
       </button>
       <button
-              class="status-tab"
-              data-status="pending"
-              onclick="filterByStatus('pending')"
+        class="status-tab"
+        data-status="pending"
+        onclick="filterByStatus('pending')"
       >
         📋 Pending <span class="tab-count" id="count-pending">0</span>
       </button>
       <button
-              class="status-tab"
-              data-status="inprogress"
-              onclick="filterByStatus('inprogress')"
+        class="status-tab"
+        data-status="inprogress"
+        onclick="filterByStatus('inprogress')"
       >
         ⚡ In Progress
         <span class="tab-count" id="count-inprogress">0</span>
       </button>
       <button
-              class="status-tab"
-              data-status="completed"
-              onclick="filterByStatus('completed')"
+        class="status-tab"
+        data-status="completed"
+        onclick="filterByStatus('completed')"
       >
         ✅ Completed <span class="tab-count" id="count-completed">0</span>
       </button>
