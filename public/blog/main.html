@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Blog</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="../favv.png" type="image/x-icon" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <a href="/" class="project-back-button">← Back to Home</a>
+
+    <!-- Header -->
+    <header id="main-header" class="header1">
+        <nav>
+            <div class="logo">
+                <i class="fas fa-blog"></i> DevBlog
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#blog"><i class="fas fa-book-open"></i> Blog</a></li>
+                <li><a href="#about"><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button id="darkModeToggle" class="icon-btn" title="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                    <i class="fas fa-sun"></i>
+                </button>
+                <button id="createPostBtn" class="btn-primary">
+                    <i class="fas fa-plus"></i> Create Post
+                </button>
+            </div>
+            <button id="mobileMenuBtn" class="icon-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <main>
+        <section id="home">
+            <div class="hero-overlay">
+                <div class="video-background">
+                    <video autoplay muted loop id="myVideo">
+                        <source src="./assets/61695-499594106_medium.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="intro-text">
+                    <h1>Welcome to DevBlog</h1>
+                    <p>Your go-to resource for cutting-edge development insights and tutorials.</p>
+                    <button id="heroCreateBtn" class="btn-primary btn-large">
+                        <i class="fas fa-pen-fancy"></i> Start Writing
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <div class="content-wrapper">
+            <!-- Main Content -->
+            <section id="blog" class="main-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-fire"></i> Latest Posts</h2>
+                    <div class="search-container">
+                        <input type="text" id="searchInput" placeholder="Search posts by title, category, or author...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+                <div id="blogPosts" class="posts-grid"></div>
+                <button id="morePosts" class="btn-secondary">Load More Posts</button>
+            </section>
+
+            <!-- Sidebar -->
+            <aside id="sidebar" class="sidebar">
+                <!-- Trending Posts -->
+                <div class="widget" id="trendingPosts">
+                    <h3><i class="fas fa-chart-line"></i> Trending Posts</h3>
+                    <div id="trendingPostsList"></div>
+                </div>
+
+                <!-- Categories -->
+                <div class="widget" id="categories">
+                    <h3><i class="fas fa-tags"></i> Categories</h3>
+                    <div id="categoriesList"></div>
+                </div>
+
+                <!-- Bookmarked Posts -->
+                <div class="widget" id="bookmarkedPosts">
+                    <h3><i class="fas fa-bookmark"></i> Bookmarked</h3>
+                    <div id="bookmarkedPostsList"></div>
+                </div>
+
+                <!-- Top Authors -->
+                <div class="widget" id="authors">
+                    <h3><i class="fas fa-users"></i> Top Authors</h3>
+                    <div id="authorsList"></div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- About & Contact Section -->
+        <section id="about-contact">
+            <div class="about-contact-wrapper">
+                <div class="about-us" id="about">
+                    <h2>About Us</h2>
+                    <div class="about-content">
+                        <img src="./assets/writer_6543533.png" alt="Ayush Carpenter" class="about-photo">
+                        <div class="about-text">
+                            <h3>Ayush Carpenter</h3>
+                            <p>Hi, I'm Ayush Carpenter, the creator of DevBlog. I'm passionate about web development and sharing knowledge with the community. With years of experience in the field, I aim to provide valuable insights and tutorials to help developers of all levels grow their skills.</p>
+                        </div>
+                    </div>
+                    <div class="social-icons">
+                        <a href="https://linkedin.com/in/ayushcarpenter" target="_blank"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/Ayushswirlon" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://twitter.com/carpenterAyush" target="_blank"><i class="fab fa-discord"></i></a>
+                    </div>
+                </div>
+                <div class="contact-us" id="contact">
+                    <h2>Contact Us</h2>
+                    <form id="contactForm">
+                        <input type="text" placeholder="Name" required>
+                        <input type="email" placeholder="Email" required>
+                        <textarea placeholder="Message" required></textarea>
+                        <button type="submit" class="btn-primary">Send Message</button>
+                    </form>
+                    <div class="subscribe">
+                        <h3>Subscribe to Our Blog</h3>
+                        <form id="subscribeForm">
+                            <input type="email" placeholder="Enter your email" required>
+                            <button type="submit" class="btn-primary">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About DevBlog</h4>
+                <p>DevBlog is your source for the latest in web development, programming tips, and tech insights.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="quick-links" type="none">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Connect With Us</h4>
+                <div class="social-icons">
+                    <a href="https://linkedin.com/in/ayushcarpenter" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/Ayushswirlon" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+                <p>Email at</p>
+                <span>devblogs.info@gmail.com</span>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 DevBlog. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Create Post Modal -->
+    <div id="createPostModal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close">&times;</span>
+            <h2><i class="fas fa-pen-fancy"></i> Create New Post</h2>
+            <form id="createPostForm">
+                <div class="form-group">
+                    <label for="postTitle">Title</label>
+                    <input type="text" id="postTitle" placeholder="Enter post title" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="postAuthor">Author</label>
+                        <input type="text" id="postAuthor" placeholder="Enter author name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="postCategory">Category</label>
+                        <select id="postCategory" required>
+                            <option value="">Select a category</option>
+                            <option value="JavaScript">JavaScript</option>
+                            <option value="CSS">CSS</option>
+                            <option value="HTML">HTML</option>
+                            <option value="React">React</option>
+                            <option value="Python">Python</option>
+                            <option value="Data Science">Data Science</option>
+                            <option value="Web Design">Web Design</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="postImage">Image URL (optional)</label>
+                    <input type="url" id="postImage" placeholder="https://example.com/image.jpg">
+                </div>
+                <div class="form-group">
+                    <label for="postContent">Content</label>
+                    <textarea id="postContent" placeholder="Write your post content here..." rows="8" required></textarea>
+                </div>
+                <button type="submit" class="btn-primary btn-large">
+                    <i class="fas fa-paper-plane"></i> Publish Post
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Post Detail Modal -->
+    <div id="postDetailModal" class="modal">
+        <div class="modal-content modal-xl">
+            <span class="close">&times;</span>
+            <div id="postDetailContent"></div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <button id="backToTop" title="Back to Top"><i class="fas fa-arrow-up"></i></button>
+
+    <script src="script.js"></script>
+</body>
+</html>

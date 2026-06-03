@@ -1,0 +1,200 @@
+/* ── Flag History Timeline ────────────────────────── */
+
+#flag-history {
+  background: rgba(0, 0, 0, 0.82);
+  color: #fff;
+  padding: 60px 20px;
+  text-align: center;
+  font-family: 'Georgia', serif;
+}
+
+#flag-history h2 {
+  font-size: 2rem;
+  color: #FF9933;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+#flag-history .subtitle {
+  color: #ccc;
+  font-size: 1rem;
+  margin-bottom: 40px;
+}
+
+/* ── Timeline Track ───────────────────────────────── */
+
+.timeline-track {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.timeline-track::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  right: 10%;
+  height: 3px;
+  background: linear-gradient(to right, #FF9933, #fff, #138808);
+  z-index: 0;
+}
+
+.timeline-dot {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  margin: 0 18px;
+  transition: transform 0.2s;
+}
+
+.timeline-dot:hover {
+  transform: scale(1.1);
+}
+
+.dot-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #333;
+  border: 3px solid #FF9933;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.7rem;
+  color: #FF9933;
+  transition: background 0.3s, border-color 0.3s;
+  line-height: 1.1;
+}
+
+.timeline-dot.active .dot-circle {
+  background: #FF9933;
+  color: #000;
+  border-color: #fff;
+}
+
+.dot-year {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #ccc;
+}
+
+.timeline-dot.active .dot-year {
+  color: #FF9933;
+  font-weight: bold;
+}
+
+/* ── Card ─────────────────────────────────────────── */
+
+.flag-card {
+  display: none;
+  max-width: 700px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 153, 51, 0.3);
+  border-radius: 16px;
+  padding: 32px;
+  animation: fadeIn 0.4s ease;
+}
+
+.flag-card.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.flag-card h3 {
+  font-size: 1.5rem;
+  color: #FF9933;
+  margin-bottom: 6px;
+}
+
+.flag-card .flag-year-badge {
+  display: inline-block;
+  background: #138808;
+  color: #fff;
+  border-radius: 20px;
+  padding: 3px 14px;
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+}
+
+/* SVG flag representation */
+.flag-visual {
+  width: 100%;
+  max-width: 300px;
+  height: 180px;
+  margin: 0 auto 20px;
+  display: block;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.flag-card p {
+  color: #ddd;
+  line-height: 1.7;
+  font-size: 0.97rem;
+  text-align: left;
+}
+
+.flag-card .significance {
+  margin-top: 14px;
+  padding: 12px 16px;
+  background: rgba(255, 153, 51, 0.1);
+  border-left: 3px solid #FF9933;
+  border-radius: 4px;
+  color: #ffd9a0;
+  font-size: 0.9rem;
+}
+
+/* ── Navigation Buttons ───────────────────────────── */
+
+.timeline-nav {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.timeline-nav button {
+  background: transparent;
+  border: 2px solid #FF9933;
+  color: #FF9933;
+  padding: 8px 28px;
+  border-radius: 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.timeline-nav button:hover {
+  background: #FF9933;
+  color: #000;
+}
+
+.timeline-nav button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* ── Responsive ───────────────────────────────────── */
+
+@media (max-width: 600px) {
+  .timeline-track::before { display: none; }
+  .timeline-dot { margin: 8px 10px; }
+  .dot-circle { width: 38px; height: 38px; font-size: 0.6rem; }
+  #flag-history h2 { font-size: 1.4rem; }
+  .flag-card { padding: 20px; }
+}
