@@ -56,6 +56,7 @@ self.addEventListener('activate', (event) => {
                 )
             )
             .then(() => self.clients.claim())
+            .catch((err) => console.error('Activation failed:', err))
     );
 });
 
@@ -106,6 +107,12 @@ self.addEventListener('fetch', (event) => {
                         })
                     );
                 }
+            }).catch((error) => {
+                console.error('Cache match failed:', error);
+                return new Response('Offline', {
+                    status: 503,
+                    statusText: 'Service Unavailable',
+                });
             })
         );
 

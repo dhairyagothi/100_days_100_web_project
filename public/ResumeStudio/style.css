@@ -34,20 +34,22 @@ body {
 }
 
 /* GLASS EFFECT */
-.glass {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(20px);
-    border-radius: 24px;
+
+.glass{
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+    backdrop-filter:blur(20px);
+    border-radius:24px;
 }
 
 /* SIDEBAR */
-.sidebar {
-    padding: 24px;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+
+.sidebar{
+    padding:24px;
+    border-right:1px solid rgba(255,255,255,0.08);
+    display:flex;
+    flex-direction:column;
+    gap:24px;
 }
 
 .logo {
@@ -56,16 +58,16 @@ body {
     gap: 14px;
 }
 
-.logo-box {
-    width: 52px;
-    height: 52px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, #06b6d4, #3b82f6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 18px;
+.logo-box{
+    width:52px;
+    height:52px;
+    border-radius:16px;
+    background:linear-gradient(135deg,#06b6d4,#3b82f6);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    font-size:18px;
 }
 
 .logo h2 {
@@ -88,18 +90,18 @@ body {
     margin-bottom: 24px;
 }
 
-.score-circle {
-    width: 120px;
-    height: 120px;
-    margin: auto;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #06b6d4, #3b82f6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 20px;
+.score-circle{
+    width:120px;
+    height:120px;
+    margin:auto;
+    border-radius:50%;
+    background:linear-gradient(135deg,#06b6d4,#3b82f6);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    font-weight:700;
+    margin-bottom:20px;
 }
 
 .ats-card p {
@@ -107,15 +109,16 @@ body {
 }
 
 /* THEME BUTTON */
-.theme-btn {
-    margin-top: auto;
-    padding: 14px;
-    border: none;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.05);
-    color: white;
-    cursor: pointer;
-    transition: 0.3s;
+
+.theme-btn{
+    margin-top:auto;
+    padding:14px;
+    border:none;
+    border-radius:16px;
+    background:rgba(255,255,255,0.05);
+    color:white;
+    cursor:pointer;
+    transition:0.3s;
 }
 
 .theme-btn:hover {
@@ -136,11 +139,12 @@ body {
 }
 
 /* TOP BAR */
-.top-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 32px;
+
+.top-bar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:32px;
 }
 
 .top-bar h1 {
@@ -158,17 +162,17 @@ body {
     gap: 12px;
 }
 
-.template {
-    padding: 12px 18px;
-    border: none;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.05);
-    color: white;
-    cursor: pointer;
+.template{
+    padding:12px 18px;
+    border:none;
+    border-radius:12px;
+    background:rgba(255,255,255,0.05);
+    color:white;
+    cursor:pointer;
 }
 
-.template.active {
-    background: linear-gradient(135deg, #06b6d4, #3b82f6);
+.template.active{
+    background:linear-gradient(135deg,#06b6d4,#3b82f6);
 }
 
 /* FORM */
@@ -189,25 +193,25 @@ form {
     flex-direction: column;
 }
 
-label {
-    margin-bottom: 10px;
-    color: #cbd5e1;
-    font-size: 14px;
-    font-weight: 600;
+label{
+    margin-bottom:10px;
+    color:#cbd5e1;
+    font-size:14px;
+    font-weight:600;
 }
 
 /* INPUTS */
 input,
-textarea {
-    width: 100%;
-    padding: 15px 18px;
-    border: none;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.05);
-    color: white;
-    font-size: 15px;
-    outline: none;
-    transition: 0.3s;
+textarea{
+    width:100%;
+    padding:15px 18px;
+    border:none;
+    border-radius:16px;
+    background:rgba(255,255,255,0.05);
+    color:white;
+    font-size:15px;
+    outline:none;
+    transition:0.3s;
 }
 
 textarea {
@@ -215,6 +219,36 @@ textarea {
 }
 
 input:focus,
+=textarea:focus{
+    box-shadow:0 0 0 3px rgba(6,182,212,0.25);
+}
+
+/* BUTTONS */
+
+.buttons{
+    display:flex;
+    gap:18px;
+    margin-top:10px;
+}
+
+.primary-btn,
+.secondary-btn{
+    padding:16px 24px;
+    border:none;
+    border-radius:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.primary-btn{
+    background:linear-gradient(135deg,#06b6d4,#3b82f6);
+    color:white;
+}
+
+.secondary-btn{
+    background:rgba(255,255,255,0.08);
+    color:white;
 textarea:focus {
     box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.25);
 }
@@ -340,9 +374,17 @@ textarea:focus {
     }
 }
 
-/* =========================================
-   ANIMATED BACKGROUND
-========================================= */
+.resume-sheet{
+    width:210mm;
+    min-height:297mm;
+    margin:auto;
+    background:white;
+    color:black;
+    border-radius:20px;
+    padding:48px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.45);
+
+   
 .animated-bg {
     position: fixed;
     inset: 0;
@@ -376,9 +418,8 @@ textarea:focus {
     100% { transform: translateY(-120vh) rotate(720deg); opacity: 0; }
 }
 
-/* =========================================
-   RESUME PREVIEW INJECTED STYLES
-========================================= */
+
+   /*RESUME PREVIEW INJECTED STYLES*/
 
 .modern-header {
     display: flex;
@@ -430,6 +471,11 @@ textarea:focus {
     padding-bottom: 5px;
 }
 
+.resume-section h3{
+    font-size:20px;
+    margin-bottom:10px;
+    border-bottom:2px solid #ddd;
+    padding-bottom:8px;
 .modern-section-content p, 
 .modern-section-content li {
     font-size: 0.95rem;
@@ -472,6 +518,12 @@ textarea:focus {
         display: none !important;
     }
 
+@media(max-width:1400px){
+    .app{
+        grid-template-columns:220px 1fr;
+    }
+    .preview{
+        display:none;
     /* Reset the body and app layout for printing */
     body {
         background: white !important;
@@ -503,6 +555,10 @@ textarea:focus {
         border-radius: 0 !important;
     }
 
+@media(max-width:900px){
+    body{
+        overflow:auto;
+    }
     /* Set standard A4 printing margins */
     @page {
         size: A4;
@@ -520,16 +576,13 @@ textarea:focus {
     .app{
         grid-template-columns:1fr;
     }
-
     .sidebar{
         border-right:none;
         border-bottom:1px solid rgba(255,255,255,0.08);
     }
-
     .form-row{
         grid-template-columns:1fr;
     }
-
     .top-bar{
         flex-direction:column;
         align-items:flex-start;
@@ -553,6 +606,96 @@ textarea:focus {
    LIGHT MODE
 ========================= */
 
+
+body.dark{
+    background:#f1f5f9;
+    color:#0f172a;
+}
+
+body.dark .animated-bg{
+    background:linear-gradient(135deg,#e2e8f0,#f1f5f9,#cbd5e1);
+}
+
+body.dark .animated-bg span{
+    opacity:0.06;
+}
+
+body.dark .bg-glow{
+    background:
+        radial-gradient(circle at top left,rgba(6,182,212,0.06),transparent 30%),
+        radial-gradient(circle at bottom right,rgba(59,130,246,0.06),transparent 30%);
+}
+
+body.dark .sidebar{
+    border-right:1px solid rgba(0,0,0,0.08);
+}
+
+body.dark .glass{
+    background:rgba(255,255,255,0.75);
+    border:1px solid rgba(0,0,0,0.1);
+}
+
+body.dark .logo h2{
+    color:#0f172a;
+}
+
+body.dark .logo p{
+    color:#64748b;
+}
+
+body.dark .ats-card p{
+    color:#64748b;
+}
+
+body.dark .theme-btn{
+    background:rgba(0,0,0,0.07);
+    color:#0f172a;
+}
+
+body.dark .theme-btn:hover{
+    background:rgba(0,0,0,0.13);
+}
+
+body.dark .top-bar h1{
+    color:#0f172a;
+}
+
+body.dark .top-bar p{
+    color:#64748b;
+}
+
+body.dark label{
+    color:#334155;
+}
+
+body.dark input,
+body.dark textarea{
+    background:rgba(0,0,0,0.05);
+    color:#0f172a;
+    border:1px solid rgba(0,0,0,0.1);
+}
+
+body.dark input::placeholder,
+body.dark textarea::placeholder{
+    color:#94a3b8;
+}
+
+body.dark .template{
+    background:rgba(0,0,0,0.06);
+    color:#0f172a;
+}
+
+body.dark .secondary-btn{
+    background:rgba(0,0,0,0.08);
+    color:#0f172a;
+}
+
+body.dark .preview{
+    background:#e2e8f0;
+}
+
+body.dark .preview-header h2{
+    color:#0f172a;
 body.light-mode {
     background: #f4f7fb !important;
     color: #111827;
@@ -604,7 +747,6 @@ body.light-mode .secondary-btn {
 
 /* =========================
    MODERN TEMPLATE
-========================= */
 
 .modern-template{
     border-top:8px solid #3b82f6;
@@ -620,7 +762,6 @@ body.light-mode .secondary-btn {
 
 /* =========================
    CLASSIC TEMPLATE
-========================= */
 
 .classic-template{
     border:2px solid #1f2937;
@@ -646,7 +787,6 @@ body.light-mode .secondary-btn {
 
 /* =========================
    MINIMAL TEMPLATE
-========================= */
 
 .minimal-template{
     box-shadow:none;
