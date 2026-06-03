@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btn) btn.textContent = isDarkMode ? "☀️" : "🌙";
  applyDarkMode(isDarkMode);
 
-if (typeof setTheme === "function") {
+if (typeof setTheme === "function" && typeof activeTheme !== "undefined") {
   setTheme(activeTheme);
 }
 
