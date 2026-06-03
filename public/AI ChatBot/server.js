@@ -7,11 +7,15 @@ const path = require('path');
 const app = express();
 const server = http.createServer(app);
 
-// Initialize Socket.io and allow connections from your frontend development server
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'http://localhost:5000,http://localhost:3000')
+  .split(',')
+  .map(s => s.trim());
+
 const io = new Server(server, {
   cors: {
-    origin: "*", // Adjust this in production to match your frontend URL
-    methods: ["GET", "POST"]
+    origin: ALLOWED_ORIGINS,
+    methods: ["GET", "POST"],
+    credentials: true
   }
 });
 
