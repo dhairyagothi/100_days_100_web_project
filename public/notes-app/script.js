@@ -113,7 +113,16 @@ function normalizeNote(note) {
 }
 
 function saveNotes() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state.notes));
+  const compactedNotes = state.notes.map(note => {
+    const compacted = { ...note };
+    if (!compacted.password) delete compacted.password;
+    if (compacted.locked === false) delete compacted.locked;
+    if (compacted.favorite === false) delete compacted.favorite;
+    if (compacted.archived === false) delete compacted.archived;
+    if (compacted.trashed === false) delete compacted.trashed;
+    return compacted;
+  });
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(compactedNotes));
 }
 
 function formatDate(value, options = { month: "short", day: "numeric" }) {
