@@ -2,8 +2,8 @@ const slider = document.getElementById('slider');
 const directionBtn = document.getElementById('directionBtn');
 const pauseBtn = document.getElementById('pauseBtn');
 const themeBtn = document.getElementById('themeBtn');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');   // optional – not in HTML
+const nextBtn = document.getElementById('nextBtn');   // optional – not in HTML
 
 let isPaused = false;
 let isReversed = false;
@@ -75,25 +75,32 @@ function generateGallery() {
     card.style.setProperty('--i', index);
 
     card.innerHTML = `
-      <div class="image-wrapper">
-        <img 
-          src="${dog.image}" 
-          alt="${dog.name}"
-          onerror="
-            this.style.display='none';
-            this.nextElementSibling.style.display='flex';
-          "
-        />
+  <div class="image-wrapper">
+    <img 
+      src="${dog.image}" 
+      alt="3D gallery image of ${dog.name}"
+      loading="lazy"
+      onerror="
+        this.style.display='none';
+        this.nextElementSibling.style.display='flex';
+      "
+    />
 
-        <div class="fallback-card">
-          <div class="fallback-icon">🐶</div>
-          <p>Image Unavailable</p>
-        </div>
+    <div 
+      class="fallback-card"
+      role="img"
+      aria-label="Fallback placeholder image for ${dog.name}"
+    >
+      <div class="fallback-icon" aria-hidden="true">
+        🐶
       </div>
 
-      <h2>${dog.name}</h2>
-    `;
+      <p>Image Unavailable</p>
+    </div>
+  </div>
 
+  <h2>${dog.name}</h2>
+`;
     slider.appendChild(card);
   });
 }
@@ -252,8 +259,8 @@ function stepCarousel(direction) {
   velocity = 0;
 }
 
-prevBtn.addEventListener('click', () => stepCarousel(1));
-nextBtn.addEventListener('click', () => stepCarousel(-1));
+if (prevBtn) prevBtn.addEventListener('click', () => stepCarousel(1));
+if (nextBtn) nextBtn.addEventListener('click', () => stepCarousel(-1));
 
 /* =========================
    PLAY / PAUSE BUTTON
@@ -296,6 +303,7 @@ themeBtn.addEventListener('click', () => {
   document.body.classList.toggle('light-theme');
   const isLight = document.body.classList.contains('light-theme');
   themeBtn.querySelector('.btn-label').textContent = isLight ? 'Dark Mode' : 'Light Mode';
+  localStorage.setItem('gallery-theme', isLight ? 'light' : 'dark');
 });
 
 /* =========================
