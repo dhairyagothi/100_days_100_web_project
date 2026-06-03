@@ -24,7 +24,7 @@ const loginLimiter = rateLimit({
 const redirectLimiter = rateLimit({
   windowMs: 60 * 1000,
   max: 50,
-  msg: "Too many requests, slow down"
+  message: "Too many requests, slow down"
 });
 
 const verifyLimiter = rateLimit({
