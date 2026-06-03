@@ -1,153 +1,290 @@
-const state = {
-  habits: JSON.parse(localStorage.getItem('habits')) || [],
-  view: new Date(),
-};
+const habits =
+JSON.parse(localStorage.getItem("habits")) || [];
 
-const $ = (s) => document.querySelector(s);
+const quotes = [
+"Small habits create big results.",
+"Progress beats perfection.",
+"Stay consistent.",
+"You become what you repeat.",
+"Success is built daily."
+];
 
-// ---- Render Functions ----
-function renderHabits() {
-  const list = $('#habitList');
-  list.innerHTML = '';
-  state.habits.forEach((h) => {
-    const div = document.createElement('div');
-    div.className = 'habit-item';
-    div.innerHTML = `
-      <div class="habit-info">
-        <strong>${h.name}</strong> 
-        <div class="habit-progress"><span style="width:${h.progress || 0}%"></span></div>
-      </div>
-      <button class="delete-btn" data-id="${h.id}">🗑</button>
-    `;
-    list.appendChild(div);
-  });
+document.getElementById("quote").textContent =
+quotes[Math.floor(Math.random()*quotes.length)];
 
-  document.querySelectorAll('.delete-btn').forEach((btn) =>
-    btn.addEventListener('click', (e) => {
-      const id = e.target.dataset.id;
-      state.habits = state.habits.filter((h) => h.id != id);
-      save();
-      renderHabits();
-    })
-  );
+const habitList =
+document.getElementById("habitList");
+
+function saveHabits(){
+localStorage.setItem(
+"habits",
+JSON.stringify(habits)
+);
 }
 
-function renderCalendar() {
-  const cal = $('#calendar');
-  cal.innerHTML = '';
-  const y = state.view.getFullYear();
-  const m = state.view.getMonth();
-  const days = new Date(y, m + 1, 0).getDate();
+function renderStats(){
 
-  $('#monthLabel').textContent = state.view.toLocaleString('default', {
-    month: 'long',
-    year: 'numeric',
-  });
+document.getElementById(
+"totalHabits"
+).textContent = habits.length;
 
-  for (let d = 1; d <= days; d++) {
-    const day = document.createElement('div');
-    day.className = 'day';
-    day.textContent = d;
-    
-    const monthKey = `${y}-${m}`;
+let completed = 0;
+let bestStreak = 0;
 
-    const savedDays =
-      JSON.parse(localStorage.getItem(monthKey)) || [];
+habits.forEach(h=>{
 
-    if (savedDays.includes(String(d))) {
-      day.classList.add('checked');
-    }
+if(h.completedToday)
+completed++;
 
-    day.onclick = () => {
-      day.classList.toggle('checked');
+if(h.streak > bestStreak)
+bestStreak = h.streak;
 
-      const checkedDays = [
-        ...document.querySelectorAll('.day.checked')
-      ].map((d) => d.textContent);
+});
 
-      localStorage.setItem(
-        monthKey,
-        JSON.stringify(checkedDays)
-      );
+document.getElementById(
+"completedToday"
+).textContent = completed;
 
-      updateProgress();
-    };
-    cal.appendChild(day);
-  }
+document.getElementById(
+"bestStreak"
+).textContent = bestStreak;
+
 }
 
-function updateProgress() {
-  const totalDays = document.querySelectorAll('.day').length;
-  const checkedDays = document.querySelectorAll('.day.checked').length;
-  const progress = Math.round((checkedDays / totalDays) * 100);
+function renderHabits(){
 
-  state.habits.forEach((h) => (h.progress = progress));
-  save();
-  renderHabits();
+habitList.innerHTML = "";
+
+const search =
+document.getElementById("searchHabit")
+.value
+.toLowerCase();
+
+habits
+.filter(h =>
+h.name.toLowerCase().includes(search)
+)
+.forEach(habit=>{
+
+const div =
+document.createElement("div");
+
+div.className = "habit-card";
+
+div.innerHTML = `
+<div class="habit-top">
+
+<div>
+<h3>${habit.name}</h3>
+<p>${habit.category}</p>
+</div>
+
+<div class="streak">
+🔥 ${habit.streak}
+</div>
+
+</div>
+
+<div class="notes">
+${habit.notes}
+</div>
+
+<div class="actions">
+
+<button
+class="completeBtn"
+data-id="${habit.id}"
+>
+${habit.completedToday ? "✅ Done" : "Mark Done"}
+</button>
+
+<button
+class="deleteBtn"
+data-id="${habit.id}"
+>
+Delete
+</button>
+
+</div>
+`;
+
+habitList.appendChild(div);
+
+});
+
+attachEvents();
+renderStats();
 }
 
-function save() {
-  localStorage.setItem('habits', JSON.stringify(state.habits));
+function attachEvents(){
+
+document.querySelectorAll(".deleteBtn")
+.forEach(btn=>{
+
+btn.onclick = ()=>{
+
+const id = Number(btn.dataset.id);
+
+const index =
+habits.findIndex(
+h=>h.id===id
+);
+
+habits.splice(index,1);
+
+saveHabits();
+renderHabits();
+
+};
+
+});
+
+document.querySelectorAll(".completeBtn")
+.forEach(btn=>{
+
+btn.onclick = ()=>{
+
+const id =
+Number(btn.dataset.id);
+
+const habit =
+habits.find(
+h=>h.id===id
+);
+
+if(!habit.completedToday){
+
+habit.completedToday = true;
+
+habit.streak += 1;
+
+saveHabits();
+
+confetti();
+
+renderHabits();
+
 }
 
-
-// ---- Theme Toggle ----
-$('#themeToggle').onchange = (e) => {
-  const isDark = e.target.checked;
-
-  document.documentElement.setAttribute(
-    'data-theme',
-    isDark ? 'dark' : ''
-  );
-
-  $('#themeLabel').textContent =
-    isDark ? '🌙 Dark' : '☀️ Light';
-
-  localStorage.setItem(
-    'theme',
-    isDark ? 'dark' : 'light'
-  );
 };
 
-// ---- Modal ----
-$('#addHabitBtn').onclick = () => $('#habitModal').classList.add('show');
-$('#closeModal').onclick = () => $('#habitModal').classList.remove('show');
-$('#saveHabitBtn').onclick = () => {
-  const name = $('#habitName').value.trim();
-  const color = $('#habitColor').value;
-  if (!name) return alert('Please enter a habit name!');
-  state.habits.push({ id: Date.now(), name, color, progress: 0 });
-  save();
-  renderHabits();
-  $('#habitModal').classList.remove('show');
-  $('#habitName').value = '';
+});
+
+}
+
+document
+.getElementById("addHabitBtn")
+.onclick = ()=>{
+
+document
+.getElementById("habitModal")
+.style.display = "flex";
+
 };
 
-// ---- Month Navigation ----
-$('#prevMonth').onclick = () => {
-  state.view.setMonth(state.view.getMonth() - 1);
-  renderCalendar();
+document
+.getElementById("saveHabitBtn")
+.onclick = ()=>{
+
+const name =
+document
+.getElementById("habitName")
+.value;
+
+if(!name)
+return;
+
+habits.push({
+
+id:Date.now(),
+
+name,
+
+category:
+document.getElementById(
+"habitCategory"
+).value,
+
+color:
+document.getElementById(
+"habitColor"
+).value,
+
+notes:
+document.getElementById(
+"habitNotes"
+).value,
+
+streak:0,
+
+completedToday:false
+
+});
+
+saveHabits();
+
+renderHabits();
+
+document
+.getElementById("habitModal")
+.style.display = "none";
+
 };
-$('#nextMonth').onclick = () => {
-  state.view.setMonth(state.view.getMonth() + 1);
-  renderCalendar();
+
+document
+.getElementById("searchHabit")
+.addEventListener(
+"input",
+renderHabits
+);
+
+const themeBtn =
+document.getElementById(
+"themeBtn"
+);
+
+themeBtn.onclick = ()=>{
+
+document.body.classList.toggle(
+"dark"
+);
+
+localStorage.setItem(
+"theme",
+document.body.classList.contains("dark")
+);
+
 };
 
-// ---- Init ----
+if(
+localStorage.getItem("theme")
+==="true"
+){
+document.body.classList.add(
+"dark"
+);
+}
 
-const savedTheme = localStorage.getItem('theme');
+function confetti(){
 
-if (savedTheme === 'dark') {
-  document.documentElement.setAttribute(
-    'data-theme',
-    'dark'
-  );
+for(let i=0;i<40;i++){
 
-  $('#themeToggle').checked = true;
+const conf =
+document.createElement("div");
 
-  $('#themeLabel').textContent =
-    '🌙 Dark';
+conf.className="confetti";
+
+conf.style.left=
+Math.random()*100+"vw";
+
+document.body.appendChild(conf);
+
+setTimeout(()=>{
+conf.remove();
+},2000);
+
+}
+
 }
 
 renderHabits();
-renderCalendar();

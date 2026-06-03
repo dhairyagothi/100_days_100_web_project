@@ -5,6 +5,7 @@ var recordStart  = null;
 var recording    = [];
 var playbackTimers = [];
 var keysHeld     = {};
+var supportedKeys = ["a", "w", "s", "e", "d", "f", "t", "g", "y", "h", "u", "j", "k", "o", "l", "p", ";"];
 
 // Load saved recording from localStorage on startup
 var saved = localStorage.getItem("pianoRecording");
@@ -17,6 +18,10 @@ if (saved) {
 
 var numOfKeys = $(".key").length;
 function handleKey(note) {
+    if (!note) return;
+    var key = note.toLowerCase();
+    if (!supportedKeys.includes(key)) return;
+
     playNote(note);
     pressAnimation(note);
 
@@ -35,12 +40,16 @@ for(var i=0; i<numOfKeys; i++) {
 }
 
 $(document).keydown(function(event) {
+    var key = event.key.toLowerCase();
+    if (!supportedKeys.includes(key)) return;
     if (keysHeld[event.key]) return; 
     keysHeld[event.key] = true;
     handleKey(event.key);
 });
 
 $(document).keyup(function(event) {
+    var key = event.key.toLowerCase();
+    if (!supportedKeys.includes(key)) return;
     delete keysHeld[event.key];
 });
 

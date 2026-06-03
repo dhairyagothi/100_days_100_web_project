@@ -1,33 +1,90 @@
-/* Analytics navigation button styling for Habit Tracker */
+/* Shared top navigation for Habit Tracker pages */
+
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 22px;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.project-back-button,
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 9px 13px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--border, #e2dfda);
+  color: var(--ink, var(--text, #0b1f2a));
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 8px 18px rgba(21, 24, 30, 0.06);
+}
+
+#analytics-btn,
+#theme-toggle,
+.theme-btn {
+  min-height: 40px;
+  padding: 9px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1px solid transparent;
+  box-shadow: none;
+}
 
 #analytics-btn {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  padding: 12px 18px;
-  border-radius: 12px;
-  font-size: 15px;
-  font-weight: bold;
-  background: #2962ff;
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.1s ease;
+  position: static;
+  background: var(--accent, #1f9d55);
+  color: #ffffff;
 }
 
-#analytics-btn:hover {
-  background: #448aff;
+#theme-toggle,
+.theme-btn {
+  background: #121212;
+  color: #ffffff;
 }
 
-#analytics-btn:active {
-  transform: translateY(1px);
+body.dark-mode .project-back-button,
+body.dark-mode .back-btn {
+  background: #171a1d;
+  color: #f7f4ef;
+  border-color: #2a2d31;
 }
 
-@media (max-width: 500px) {
-  #analytics-btn {
-    position: static;
+body.dark-mode #theme-toggle,
+body.dark-mode .theme-btn {
+  background: #f7f4ef;
+  color: #111418;
+}
+
+@media (max-width: 640px) {
+  .top-nav {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .top-actions {
     width: 100%;
-    margin-bottom: 20px;
+  }
+
+  .project-back-button,
+  .back-btn,
+  #analytics-btn,
+  #theme-toggle,
+  .theme-btn {
+    justify-content: center;
+    flex: 1;
   }
 }
-

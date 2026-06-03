@@ -2,7 +2,6 @@
 // Dark mode state
 let isDarkMode = localStorage.getItem("clockDarkMode") === "true";
 if (isDarkMode) document.body.classList.add("dark-mode");
-let activeTheme = localStorage.getItem("clockTheme") || "classic";
 let primaryTimezone = localStorage.getItem("primaryTimezone") || "local";
 let alarms = JSON.parse(localStorage.getItem("clock_alarms")) || [];
 let worldClocks = JSON.parse(localStorage.getItem("clock_worldClocks")) || [];
@@ -16,6 +15,9 @@ let triggeredAlarms = new Set();
 let weatherCache = {};
 let currentTimeTheme = "";
 let is24HourFormat = localStorage.getItem("is24HourFormat") === "true";
+
+let activeAccent =
+  localStorage.getItem("clockAccent") || "classic";
 
 // DOM Selectors
 const hoursEl = document.getElementById("hours");
@@ -32,7 +34,6 @@ const popupAlarmTitle = document.getElementById("popup-alarm-title");
 const popupAlarmTime = document.getElementById("popup-alarm-time");
 const popupAlarmLabel = document.getElementById("popup-alarm-label");
 const alarmSound = document.getElementById("alarm-sound");
-const historyHeader = document.getElementById("history-header");
 const historyChevron = document.getElementById("history-chevron");
 const formatToggleBtn = document.getElementById("format-toggle");
 
@@ -89,10 +90,16 @@ function applyTimeBasedTheme() {
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("dark-mode-toggle");
   if (btn) btn.textContent = isDarkMode ? "☀️" : "🌙";
-  applyDarkMode(isDarkMode);
-  setTheme(activeTheme);
+ applyDarkMode(isDarkMode);
 
-  formatToggleBtn.textContent = is24HourFormat ? "12H" : "24H";
+const savedAccent =
+  localStorage.getItem("clockAccent") || "classic";
+
+setAccentColor(savedAccent);
+
+
+
+formatToggleBtn.textContent = is24HourFormat ? "12H" : "24H";
 
   populateTimezoneDropdown();
   renderAlarmsList();
@@ -126,7 +133,15 @@ function setAccentColor(accent) {
   activeAccent = accent;
   localStorage.setItem("clockAccent", accent);
 
-  document.body.className = `${theme}-theme${isDarkMode ? " dark-mode" : ""}`;
+  // Remove only manual accent classes, keep time-based theme class
+  document.body.classList.remove(
+    "classic-theme",
+    "modern-theme",
+    "futuristic-theme",
+    "nebula-theme",
+  );
+  // Add the selected manual accent class
+  document.body.classList.add(`${accent}-theme`);
 
   document.querySelectorAll(".theme-swatch").forEach((swatch) => {
     swatch.classList.toggle("active", swatch.dataset.theme === accent);
@@ -580,18 +595,7 @@ function renderHistoryLogs() {
     .join("");
 }
 
-function toggleDarkMode() {
-  const isLight = document.body.classList.toggle("light-mode");
-  document.querySelector(".dark-mode-btn").textContent = isLight
-    ? "🌙 Dark Mode"
-    : "☀️ Light Mode";
-  localStorage.setItem("lightMode", isLight);
-}
-
-if (localStorage.getItem("lightMode") === "true") {
-  document.body.classList.add("light-mode");
-  document.querySelector(".dark-mode-btn").textContent = "🌙 Dark Mode";
-}
+// Cleaned up duplicate toggleDarkMode and lightMode localStorage logic
 function clearAlarm() {
   localStorage.removeItem("alarmTime");
 
@@ -627,13 +631,14 @@ function selectPrimaryTimezone(id, name) {
   updateClock();
 }
 
-function toggleTimezoneDropdown(e) {
+window.toggleTimezoneDropdown = function (e) {
   e.stopPropagation();
   const container = document.getElementById("tz-options-container");
   const wrapper = document.getElementById("primary-timezone-wrapper");
+
   container.classList.toggle("hidden");
   wrapper.classList.toggle("open", !container.classList.contains("hidden"));
-}
+};
 
 function filterTimezones() {
   const input = document.getElementById("tz-search-input").value.toLowerCase();
@@ -764,8 +769,13 @@ function escapeHtml(text) {
 function applyDarkMode(enabled) {
   isDarkMode = enabled;
   document.body.classList.toggle("dark-mode", enabled);
-  const btn = document.getElementById("dark-mode-toggle");
-  if (btn) btn.textContent = enabled ? "☀️" : "🌙";
+  document.querySelectorAll(".dark-mode-btn").forEach(btn => {
+    if (btn.id === "dark-mode-toggle") {
+      btn.textContent = enabled ? "☀️" : "🌙";
+    } else {
+      btn.textContent = enabled ? "☀️ Light Mode" : "🌙 Dark Mode";
+    }
+  });
   localStorage.setItem("clockDarkMode", enabled);
 }
 
@@ -773,53 +783,20 @@ function toggleDarkMode() {
   applyDarkMode(!isDarkMode);
 }
 
-let pomodoroTime = 25 * 60;
-let pomodoroInterval = null;
 
-function updatePomodoroDisplay() {
-  const minutes = Math.floor(pomodoroTime / 60);
-  const seconds = pomodoroTime % 60;
 
-  document.getElementById("pomodoro-time").textContent =
-    `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+function toggleHistoryLogs() {
+  const logs = document.getElementById("history-logs");
+  const chevron = document.getElementById("history-chevron");
+
+  if (!logs) return;
+
+  logs.classList.toggle("hidden");
+
+  if (chevron) {
+    chevron.style.transform =
+      logs.classList.contains("hidden")
+        ? "rotate(0deg)"
+        : "rotate(180deg)";
+  }
 }
-
-function startPomodoro() {
-  if (pomodoroInterval) return;
-
-  pomodoroInterval = setInterval(() => {
-    if (pomodoroTime > 0) {
-      pomodoroTime--;
-      updatePomodoroDisplay();
-    } else {
-      clearInterval(pomodoroInterval);
-      pomodoroInterval = null;
-      alert("Focus session completed!");
-    }
-  }, 1000);
-}
-
-function pausePomodoro() {
-  clearInterval(pomodoroInterval);
-  pomodoroInterval = null;
-}
-
-function resetPomodoro() {
-  pausePomodoro();
-  pomodoroTime = 25 * 60;
-  updatePomodoroDisplay();
-}
-
-document
-  .getElementById("start-pomodoro")
-  .addEventListener("click", startPomodoro);
-
-document
-  .getElementById("pause-pomodoro")
-  .addEventListener("click", pausePomodoro);
-
-document
-  .getElementById("reset-pomodoro")
-  .addEventListener("click", resetPomodoro);
-
-updatePomodoroDisplay();

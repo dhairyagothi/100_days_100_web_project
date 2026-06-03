@@ -1,26 +1,64 @@
-name: "Git Branch Prefix Validator"
+name: "Branch Name Convention Validator"
 
 on:
   pull_request:
-    types: [opened, edited, synchronized]
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
 
 jobs:
-  validate-branch-prefix:
+  validate-branch-name:
+    name: Validate Branch Naming Convention
     runs-on: ubuntu-latest
     steps:
-      - name: Verify Branch Prefix Conventions
+      - name: Check Branch Prefix & Post Feedback
         uses: actions/github-script@v7
         with:
           script: |
             const pr = context.payload.pull_request;
             const branchName = pr.head.ref;
-            
-            // Standard prefix naming prefixes
-            const allowedPrefixes = ['feat/', 'fix/', 'docs/', 'refactor/', 'perf/', 'accessibility/', 'ci/', 'enhancement/', 'bugfix/'];
-            const isValid = allowedPrefixes.some(prefix => branchName.startsWith(prefix));
-            
+
+            const allowedPrefixes = [
+              'feat/', 'fix/', 'docs/', 'refactor/',
+              'perf/', 'accessibility/', 'ci/',
+              'enhancement/', 'bugfix/', 'chore/', 'test/',
+              'hotfix/', 'release/'
+            ];
+
+            const isValid = allowedPrefixes.some(p => branchName.startsWith(p));
+
             if (!isValid) {
-              core.setFailed(`Branch name "${branchName}" violates repository conventions. Source branches must be prefixed with one of the following prefixes: ${allowedPrefixes.join(', ')}`);
+              // Post a helpful comment on the PR explaining the violation
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: [
+                  '## ❌ Branch Name Convention Violation',
+                  '',
+                  `Your branch \`${branchName}\` does not follow this repository's naming conventions.`,
+                  '',
+                  '### ✅ Allowed Prefixes',
+                  allowedPrefixes.map(p => `- \`${p}\``).join('\n'),
+                  '',
+                  '### 🛠️ How to Fix',
+                  '```bash',
+                  `# Rename your branch locally`,
+                  `git branch -m ${branchName} feat/your-feature-name`,
+                  `git push origin -u feat/your-feature-name`,
+                  `git push origin --delete ${branchName}`,
+                  '```',
+                  '',
+                  'Please rename your branch and reopen the PR. Thank you! 🙏'
+                ].join('\n')
+              });
+
+              core.setFailed(
+                `Branch "${branchName}" violates naming conventions. ` +
+                `Must start with one of: ${allowedPrefixes.join(', ')}`
+              );
             } else {
-              console.log(`Branch name "${branchName}" is fully compliant with conventions!`);
+              console.log(`✅ Branch "${branchName}" follows naming conventions.`);
             }

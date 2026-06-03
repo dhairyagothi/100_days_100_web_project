@@ -375,6 +375,26 @@ body {
 #updateBtn:hover {
   transform: translateY(-3px);
 }
+.action-buttons{
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+#downloadReportBtn{
+  padding:14px 24px;
+  border:none;
+  border-radius:14px;
+  background:linear-gradient(135deg,#16a34a,#22c55e);
+  color:white;
+  cursor:pointer;
+  font-size:16px;
+  transition:0.3s ease;
+}
+
+#downloadReportBtn:hover{
+  transform:translateY(-3px);
+}
 
 @media (max-width: 900px) {
 
