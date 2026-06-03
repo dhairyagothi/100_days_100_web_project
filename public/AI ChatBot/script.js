@@ -165,6 +165,11 @@ function toggleObKey() {
   inp.type = inp.type === "password" ? "text" : "password";
 }
 
+function toggleObHfKey() {
+  const inp = $("ob-hf-input");
+  inp.type = inp.type === "password" ? "text" : "password";
+}
+
 function finishOnboarding() {
   const val = $("ob-api-input").value.trim();
   const errEl = $("ob-key-error");
