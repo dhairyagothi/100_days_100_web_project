@@ -23,7 +23,8 @@ jobs:
             const allowedPrefixes = [
               'feat/', 'fix/', 'docs/', 'refactor/',
               'perf/', 'accessibility/', 'ci/',
-              'enhancement/', 'bugfix/', 'chore/', 'test/'
+              'enhancement/', 'bugfix/', 'chore/', 'test/',
+              'hotfix/', 'release/'
             ];
 
             const isValid = allowedPrefixes.some(p => branchName.startsWith(p));
