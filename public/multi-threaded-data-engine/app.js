@@ -34,13 +34,18 @@ dataWorker.onmessage = function (e) {
     if (status === 'QUERY_COMPLETE') {
         // Clear previous visual items
         resultsView.innerHTML = '';
+        
+        if (results.length === 0) {
+            resultsView.textContent = "No concurrent match vectors located in background memory structures.";
+            threadDiagnostics.textContent = `[Search Evaluation Finished] 0 records matched. UI remains fully operational.`;
+            return;
+        }
 
-        // Splice and draw the top 10 dynamic records safely
+        // Splice and draw the top 10 dynamic records safely as plain text elements
         const displayLimit = results.slice(0, 10);
         displayLimit.forEach(item => {
             const rowElement = document.createElement('div');
-            rowElement.style.padding = '6px';
-            rowElement.style.borderBottom = '1px dashed #ccc';
+            rowElement.style.padding = '4px 0';
             rowElement.textContent = `[Match Found] ${item.company} ➔ ${item.role}`;
             resultsView.appendChild(rowElement);
         });
@@ -53,7 +58,7 @@ dataWorker.onmessage = function (e) {
 searchInput.addEventListener('input', (e) => {
     const query = e.target.value.trim();
     threadDiagnostics.textContent = "[Main Thread] Forwarding evaluation query block to background worker context...";
-
+    
     // Command the worker to crunch calculations asynchronously
     dataWorker.postMessage({ command: 'EXECUTE_QUERY', payload: { searchTerm: query } });
 });
