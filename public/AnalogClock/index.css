@@ -693,8 +693,9 @@ body.dark-theme .clock-frame {
   backdrop-filter: blur(18px);
 }
 
-.modal-body {
-  padding: 2rem;
+/* Shorter banner for smaller world clock cards */
+.world-clock-card .clock-banner {
+    display: none; /* Hide banners on world clock cards for cleaner look */
 }
 
 /* =========================
@@ -1090,12 +1091,18 @@ body.dark-theme .map-tooltip {
     box-shadow: 0 2px 6px var(--accent-glow);
 }
 
+.world-clocks-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+
 .tooltip-tz-id {
     font-size: 0.75rem;
     color: var(--text-secondary);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+
 }
 
 .tooltip-time-row {
@@ -1133,7 +1140,27 @@ body.dark-theme .tooltip-time-row {
 
 /* Close/Unpin button for World Clock Cards */
 .world-clock-card {
-    position: relative; /* Guarantee target anchor */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+    padding: 20px 24px;
+}
+
+.world-clock-card .clock-header {
+    text-align: left;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.world-clock-card .clock-frame {
+    flex-shrink: 0;
+}
+
+.world-clock-card .digital-readout,
+.world-clock-card .clock-date {
+    text-align: left;
+    align-self: flex-start;
 }
 
 .remove-clock-btn {

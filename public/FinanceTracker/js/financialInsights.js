@@ -1,37 +1,37 @@
 // js/financialInsights.js
 
-export const renderInsights =
-  (insights) => {
+export function generateInsights(transactions){
 
-    const container =
-      document.getElementById(
-        "aiInsights"
-      );
+    if(transactions.length === 0){
 
-    if (!container) return;
+        return "Add transactions to receive AI insights.";
 
-    container.innerHTML = "";
+    }
 
-    insights.forEach(
-      (insight) => {
+    let income = 0;
+    let expense = 0;
 
-        const card =
-          document.createElement(
-            "div"
-          );
+    transactions.forEach((transaction)=>{
 
-        card.className =
-          "insight-card";
+        if(transaction.type === "Income"){
 
-        card.innerHTML = `
+            income += transaction.amount;
 
-          <p>${insight}</p>
+        }
+        else{
 
-        `;
+            expense += transaction.amount;
 
-        container.appendChild(
-          card
-        );
-      }
-    );
-};
+        }
+
+    });
+
+    if(expense > income){
+
+        return "Your expenses are higher than your income. Try reducing unnecessary spending.";
+
+    }
+
+    return "Great job! Your financial health looks stable.";
+
+}

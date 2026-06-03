@@ -330,6 +330,35 @@ body {
 .download-btn:hover {
   transform: translateY(-3px);
 }
+.stats-card{
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 35px;
+}
+
+.stats-grid{
+  display:grid;
+  grid-template-columns:
+    repeat(auto-fit,minmax(180px,1fr));
+  gap:20px;
+}
+
+.stat-item{
+  text-align:center;
+}
+
+.stat-item span{
+  display:block;
+  color:var(--subtitle);
+  margin-bottom:8px;
+}
+
+.stat-item strong{
+  font-size:18px;
+}
 
 @media (max-width: 900px) {
   .dashboard-grid {
