@@ -26,6 +26,22 @@
     },
   };
 
+  // --- PERSISTENT SYSTEM & USER-PREFERENCE THEME ENGINE PRE-FLIGHT ---
+  let savedTheme = safeStorage.getItem("theme");
+
+  // If no manual preference exists, detect system hardware mode directly
+  if (!savedTheme) {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    savedTheme = prefersDark ? "dark" : "light";
+  }
+
+  // Inject chosen theme configurations straight into document elements to prevent FOWT layout flashes
+  if (window.ThemeManager && typeof window.ThemeManager.applyTheme === "function") {
+    window.ThemeManager.applyTheme(savedTheme, { persist: true });
+  } else {
+    document.documentElement.setAttribute("data-theme", savedTheme);
+  }
+
   const path = window.location.pathname;
   const isSubfolder =
     path.includes("/learning/") ||
@@ -41,8 +57,8 @@
   const username =
     window.username || safeStorage.getItem("loggedInUser") || null;
 
-  window.ThemeManager?.init?.();
-  const isLight = window.ThemeManager?.currentTheme?.() === "light";
+  const currentActiveTheme = window.ThemeManager?.currentTheme?.() || savedTheme;
+  const isLight = currentActiveTheme === "light";
   const themeIcon = isLight ? "☀" : "☾";
 
   const isLocalFile = window.location.protocol === "file:";
@@ -53,17 +69,18 @@
   const themeBtn = `
     <div class="theme-dropdown-container">
       <button class="btn btn-ghost btn-sm dropdown-toggle" id="themeToggleNav" aria-label="Select theme" aria-haspopup="true" aria-expanded="false">
-        <span aria-hidden="true">${themeIcon}</span> Theme
+        <span id="navThemeIcon" aria-hidden="true">${themeIcon}</span> Theme
       </button>
-      <div class="dropdown-menu">
+      <div class="dropdown-menu" id="themeDropdownMenu">
         <button class="dropdown-item" data-theme-value="light">☀ Light</button>
         <button class="dropdown-item" data-theme-value="dark">☾ Dark</button>
         <button class="dropdown-item" data-theme-value="sepia">☕ Sepia</button>
-        <button class="dropdown-item" data-theme-value="cyberpunk">⚡Cyberpunk</button>
+        <button class="dropdown-item" data-theme-value="cyberpunk">⚡ Cyberpunk</button>
         <button class="dropdown-item" data-theme-value="nord">❄ Nord</button>
       </div>
     </div>
   `;
+
   const homeBtn = `
   <a class="btn ${isHome ? "btn-primary active" : "btn-ghost"} btn-sm" href="${homeHref}">
     <span class="mobile-nav-icon"><i class="fas fa-home"></i></span>
@@ -147,9 +164,53 @@
     </nav>
   `;
 
-  window.ThemeManager?.applyTheme?.(window.ThemeManager.currentTheme(), {
-    persist: false,
-  });
+  // --- DYNAMIC INTERACTION THEME DROPDOWN LOGIC ---
+  const dropdownToggle = document.getElementById("themeToggleNav");
+  const dropdownMenu = document.getElementById("themeDropdownMenu");
+
+  if (dropdownToggle && dropdownMenu) {
+    dropdownToggle.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const isExpanded = dropdownToggle.getAttribute("aria-expanded") === "true";
+      dropdownToggle.setAttribute("aria-expanded", !isExpanded);
+      dropdownMenu.classList.toggle("show");
+    });
+
+    // Wire click events directly to dropdown options to change and save the theme state
+    dropdownMenu.querySelectorAll(".dropdown-item").forEach((item) => {
+      item.addEventListener("click", (e) => {
+        const selectedTheme = e.target.getAttribute("data-theme-value");
+
+        if (selectedTheme) {
+          // Set persistent browser key values
+          safeStorage.setItem("theme", selectedTheme);
+
+          if (window.ThemeManager && typeof window.ThemeManager.applyTheme === "function") {
+            window.ThemeManager.applyTheme(selectedTheme, { persist: true });
+          } else {
+            document.documentElement.setAttribute("data-theme", selectedTheme);
+          }
+
+          // Dynamically adjust nav button label tracking structures on runtime action
+          const iconSpan = document.getElementById("navThemeIcon");
+          if (iconSpan) {
+            iconSpan.textContent = selectedTheme === "light" ? "☀" : "☾";
+          }
+        }
+
+        dropdownToggle.setAttribute("aria-expanded", "false");
+        dropdownMenu.classList.remove("show");
+      });
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+        dropdownToggle.setAttribute("aria-expanded", "false");
+        dropdownMenu.classList.remove("show");
+      }
+    });
+  }
 
   // Mobile drawer state triggers
   const menuToggle = document.getElementById("menuToggle");
@@ -173,6 +234,7 @@
       overlay.classList.remove("active");
       menuToggle.setAttribute("aria-expanded", "false");
     };
+add
 
     const openMenu = () => {
       menuToggle.classList.add("active");
@@ -225,37 +287,14 @@
     });
   }
 
-  // Desktop drop menu engines
-  const dropdownToggle = document.getElementById("themeToggleNav");
-  const dropdownMenu = dropdownToggle?.nextElementSibling;
-
-  if (dropdownToggle && dropdownMenu) {
-    dropdownToggle.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const isExpanded =
-        dropdownToggle.getAttribute("aria-expanded") === "true";
-      dropdownToggle.setAttribute("aria-expanded", !isExpanded);
-      dropdownMenu.classList.toggle("show");
-    });
-
-    document.addEventListener("click", (e) => {
-      if (
-        !dropdownToggle.contains(e.target) &&
-        !dropdownMenu.contains(e.target)
-      ) {
-        dropdownToggle.setAttribute("aria-expanded", "false");
-        dropdownMenu.classList.remove("show");
-      }
-    });
-  }
-
   const logoutBtn = document.getElementById("logoutBtn");
   if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-      window.username = null;
-      safeStorage.removeItem("loggedInUser");
-      location.reload();
+    navButtonsDiv.addEventListener("click", (e) => {
+      if (e.target.closest("#logoutBtn")) {
+        window.username = null;
+        safeStorage.removeItem("loggedInUser");
+        location.reload();
+      }
     });
   }
 
@@ -269,7 +308,6 @@
     const nextState = !currentlyEnabled;
     safeStorage.setItem("customCursorEnabled", String(nextState));
 
-    // Update all cursor toggle buttons on the page (both standard and mobile drawer might have it)
     document.querySelectorAll("#cursorToggleNav").forEach((btn) => {
       btn.innerHTML = `
         <span class="mobile-nav-icon"><i class="fas ${nextState ? "fa-circle-notch" : "fa-mouse-pointer"}"></i></span>
@@ -281,7 +319,6 @@
       );
     });
 
-    // Call the custom cursor update function if it exists (on the landing page)
     if (typeof window.updateCustomCursorState === "function") {
       window.updateCustomCursorState();
     }
