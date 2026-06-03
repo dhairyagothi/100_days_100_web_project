@@ -4,32 +4,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="icon" href="../../favv.png" type="image/x-icon" />
+    <title>Flask Auth App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
-<body class="h-screen bg-gray-100">
-    <div class="container mx-auto py-8">
-        <h1 class="text-4xl font-bold text-center mb-8">Welcome to Your App</h1>
-        {% if current_user %}
-        <div class="text-center flex flex-col items-center gap-5">
-            <p class="text-3xl">Logged in as {{ current_user.name }}</p>
-            <a href="/protected"
-               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-2xl">Go to Protected Page</a>
-            <form action="/logout" method="post">
-                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-2xl">Sign Out</button>
-            </form>
-        </div>
-        {% else %}
-        <div class="text-center flex flex-col items-center gap-5">
-            <a href="/signup"
-               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-2xl">Sign Up</a>
-            <a href="/login"
-               class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-2xl">Log In</a>
-        </div>
-        {% endif %}
-    </div>
+<body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
+    <main class="auth-shell">
+        <section class="auth-card auth-grid">
+            <div class="hero-panel">
+                <span class="eyebrow">Flask Authentication App</span>
+                <h1>Modern auth, built with Python.</h1>
+                <p>
+                    This demo uses Flask, SQLite, hashed passwords, and JWT cookies to manage sign up, login,
+                    protected content, and logout in a compact backend app.
+                </p>
+
+                <ul class="feature-list">
+                    <li>
+                        <span class="feature-dot" aria-hidden="true"></span>
+                        <div class="feature-copy">
+                            <strong>Secure login flow</strong>
+                            <span>Passwords are hashed before storage and validated on login.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="feature-dot" aria-hidden="true"></span>
+                        <div class="feature-copy">
+                            <strong>JWT session cookie</strong>
+                            <span>The app stores an HTTP-only token to keep the user signed in.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="feature-dot" aria-hidden="true"></span>
+                        <div class="feature-copy">
+                            <strong>SQLite-backed users</strong>
+                            <span>All users live in a local database created automatically on startup.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="form-panel">
+                <div class="form-card">
+                    <span class="pill">Welcome</span>
+                    <h2>{% if current_user %}Hello, {{ current_user.name }}{% else %}Get started{% endif %}</h2>
+                    <p class="subtitle">
+                        {% if current_user %}
+                        You are signed in. Open the protected page or sign out from this session.
+                        {% else %}
+                        Choose an action below to create an account or log in to the app.
+                        {% endif %}
+                    </p>
+
+                    {% if current_user %}
+                    <div class="stack">
+                        <div class="status-bar">
+                            Logged in as <strong>{{ current_user.name }}</strong>.
+                        </div>
+                        <div class="btn-row">
+                            <a href="/protected" class="btn btn-primary">Go to Protected Page</a>
+                            <form action="/logout" method="post">
+                                <button type="submit" class="btn btn-danger">Sign Out</button>
+                            </form>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="btn-row">
+                        <a href="/signup" class="btn btn-primary">Sign Up</a>
+                        <a href="/login" class="btn btn-secondary">Log In</a>
+                    </div>
+                    {% endif %}
+
+                    <div class="footer-links">
+                        <a href="/protected">Protected page</a>
+                        <a href="https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/flask_auth_app" target="_blank" rel="noopener noreferrer">Project code</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 </body>
 
 </html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Habit Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Work+Sans:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="analytics-nav.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <nav class="top-nav" aria-label="Habit Tracker navigation">
+        <a href="/" class="project-back-button">&larr; Back to Home</a>
+        <div class="top-actions">
+          <button id="analytics-btn" type="button">Analytics</button>
+          <button id="theme-toggle" type="button">Dark Mode</button>
+        </div>
+      </nav>
+
+      <div class="page-heading">
+        <p class="eyebrow">Consistency Engine</p>
+        <h1>Habit Tracker</h1>
+        <p class="subhead">
+          Build rhythms that stick. Track streaks, goals, and wins with clarity.
+        </p>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="card hero-card">
+        <h2>Create a habit</h2>
+
+        <div class="input-section">
+          <div class="field-group">
+            <label for="habitInput">Habit name</label>
+            <input type="text" id="habitInput" placeholder="Morning walk" autocomplete="off" />
+          </div>
+
+          <div class="field-group">
+            <label for="habitTags">Tags</label>
+            <input type="text" id="habitTags" placeholder="Health, Focus" />
+          </div>
+        </div>
+
+        <div class="input-section">
+          <div class="field-group">
+            <label for="habitGoal">Daily goal</label>
+            <input type="number" id="habitGoal" placeholder="20" min="1" step="1" inputmode="numeric" />
+          </div>
+
+          <div class="field-group">
+            <label for="habitReminder">Reminder time</label>
+            <input type="time" id="habitReminder" />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="habitNotes">Notes</label>
+          <textarea id="habitNotes" rows="3" placeholder="Why this habit matters"></textarea>
+        </div>
+
+        <div class="field-group">
+          <span class="label">Schedule</span>
+          <div class="schedule-grid" id="scheduleGrid">
+            <label class="schedule-item"><input type="checkbox" class="schedule-day" value="1" checked /> Mon</label>
+            <label class="schedule-item"><input type="checkbox" class="schedule-day" value="2" checked /> Tue</label>
+            <label class="schedule-item"><input type="checkbox" class="schedule-day" value="3" checked /> Wed</label>
+            <label class="schedule-item"><input type="checkbox" class="schedule-day" value="4" checked /> Thu</label>
+            <label class="schedule-item"><input type="checkbox" class="schedule-day" value="5" checked /> Fri</label>
+            <label class="schedule-item"><input type="checkbox" class="schedule-day" value="6" checked /> Sat</label>
+            <label class="schedule-item"><input type="checkbox" class="schedule-day" value="0" checked /> Sun</label>
+          </div>
+        </div>
+
+        <div class="cta-row">
+          <button id="addHabitBtn" type="button">Add Habit</button>
+          <p class="helper-text">Tip: keep the goal small and repeatable.</p>
+        </div>
+      </section>
+
+      <section class="stats-grid" aria-label="Habit summary">
+        <div class="stat-card">
+          <p>Total habits</p>
+          <h3 id="totalHabits">0</h3>
+        </div>
+        <div class="stat-card">
+          <p>Scheduled today</p>
+          <h3 id="scheduledToday">0</h3>
+        </div>
+        <div class="stat-card">
+          <p>Completed today</p>
+          <h3 id="completedHabits">0</h3>
+        </div>
+        <div class="stat-card">
+          <p>Weekly completion</p>
+          <h3 id="weeklyRate">0%</h3>
+        </div>
+      </section>
+
+      <section class="card habits-card">
+        <div class="card-header">
+          <h2>Today's habits</h2>
+          <p class="subhead">Stay on track with what matters most today.</p>
+        </div>
+        <ul id="habitList"></ul>
+      </section>
+
+      <section class="card progress-section">
+        <div class="card-header">
+          <h2>Progress charts</h2>
+          <p class="subhead">Weekly momentum for every habit.</p>
+        </div>
+        <div id="progressList" class="progress-list"></div>
+      </section>
+
+      <section id="achievements-section" class="card-section card">
+        <div class="card-header">
+          <h2>Achievements</h2>
+          <p class="subhead">Celebrate the streaks that are becoming part of you.</p>
+        </div>
+
+        <div class="achievements-grid">
+          <div class="achievement-wrapper">
+            <div class="achievement-badge locked" id="badge-3">
+              <div class="badge-info">
+                <span class="badge-name">3-Day Streak</span>
+                <span class="badge-desc">Complete a habit for 3 consecutive days</span>
+              </div>
+            </div>
+            <span class="achievement-tooltip">Unlock by maintaining any habit for 3 days continuously</span>
+          </div>
+
+          <div class="achievement-wrapper">
+            <div class="achievement-badge locked" id="badge-7">
+              <div class="badge-info">
+                <span class="badge-name">7-Day Streak</span>
+                <span class="badge-desc">Complete a habit for 7 consecutive days</span>
+              </div>
+            </div>
+            <span class="achievement-tooltip">Unlock by maintaining any habit for 7 days continuously</span>
+          </div>
+
+          <div class="achievement-wrapper">
+            <div class="achievement-badge locked" id="badge-30">
+              <div class="badge-info">
+                <span class="badge-name">30-Day Streak</span>
+                <span class="badge-desc">Complete a habit for 30 consecutive days</span>
+              </div>
+            </div>
+            <span class="achievement-tooltip">Unlock by maintaining any habit for 30 days continuously</span>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="milestone-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <button class="modal-close" id="close-modal-btn" type="button" aria-label="Close milestone modal">&times;</button>
+      <h2>Milestone Unlocked!</h2>
+      <p id="milestone-message">You achieved a streak milestone.</p>
+      <button id="milestone-btn" class="btn-primary" type="button">Awesome!</button>
+    </div>
+  </div>
+
+  <div id="delete-modal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close" id="delete-close-btn" type="button" aria-label="Close delete modal">&times;</button>
+      <h2>Delete habit?</h2>
+      <p id="delete-message">This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button id="delete-cancel-btn" class="ghost-btn" type="button">No, keep it</button>
+        <button id="delete-confirm-btn" class="danger-btn" type="button">Yes, delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const btn = document.getElementById('analytics-btn');
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        window.location.href = 'analytics.html';
+      });
+    })();
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>

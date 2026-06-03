@@ -81,15 +81,45 @@ if(savedTasks) {
 // NOTES
 const notesArea = document.getElementById("notesArea");
 const saveNotesBtn = document.getElementById("saveNotesBtn");
+const notesList = document.getElementById("notesList");
 
-notesArea.value = localStorage.getItem("notes") || "";
+// Load notes
+let notes = JSON.parse(localStorage.getItem("notes")) || [];
 
+// Render notes
+function renderNotes() {
+    notesList.innerHTML = "";
+
+    notes.forEach((note, index) => {
+        const li = document.createElement("li");
+
+        li.innerHTML = `${note}`;
+
+        notesList.appendChild(li);
+    });
+}
+
+// Save note
 saveNotesBtn.addEventListener("click", () => {
 
-    localStorage.setItem("notes", notesArea.value);
+    const note = notesArea.value.trim();
 
-    alert("Notes saved successfully");
+    if (!note) {
+        alert("Please enter a note");
+        return;
+    }
+
+    notes.push(note);
+
+    localStorage.setItem("notes", JSON.stringify(notes));
+
+    notesArea.value = "";
+
+    renderNotes();
 });
+
+// Initial render
+renderNotes();
 
 // POMODORO TIMER
 let minutes = 25;
@@ -144,6 +174,20 @@ updateTimerDisplay();
 // BUTTONS
 const startBtn = document.getElementById("startTimer");
 const resetBtn = document.getElementById("resetTimer");
+const pauseBtn = document.getElementById("pauseTimer");
 
 startBtn.addEventListener("click", startTimer);
 resetBtn.addEventListener("click", resetTimer);
+let isPaused = false;
+
+pauseBtn.addEventListener("click", () => {
+    if (!isPaused) {
+        clearInterval(timer);
+        pauseBtn.textContent = "Resume";
+        isPaused = true;
+    } else {
+        startTimer();
+        pauseBtn.textContent = "Pause";
+        isPaused = false;
+    }
+});

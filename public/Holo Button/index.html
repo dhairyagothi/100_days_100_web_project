@@ -4,17 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <script defer type="module" src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
     <script defer type="module" src="main.js"></script>
     <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <title>Document</title>
+    <title>Hologram Button</title>
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
     <div id='container'>
         <div class="animated-image-bg"></div>
 
         <canvas id="canvas3d"></canvas>
-      
+
+        <main class="holo-interface" aria-labelledby="holo-title">
+            <section class="status-panel" aria-live="polite">
+                <p class="eyebrow">Interactive UI Component</p>
+                <h1 id="holo-title">Hologram Button</h1>
+                <p id="statusText">Standby mode. Choose a theme or activate the assistant.</p>
+            </section>
+
+            <button
+                class="holo-button"
+                id="holoButton"
+                type="button"
+                data-action="activate-assistant"
+                aria-describedby="statusText"
+            >
+                <span class="button-ring"></span>
+                <span class="button-core">
+                    <span class="button-label">Activate AI</span>
+                    <span class="button-subtext">Ready</span>
+                </span>
+            </button>
+
+            <section class="controls" aria-label="Hologram button controls">
+                <div class="theme-switcher" role="group" aria-label="Theme color">
+                    <button type="button" class="theme-option is-active" data-theme="cyan" aria-label="Use cyan theme"></button>
+                    <button type="button" class="theme-option" data-theme="violet" aria-label="Use violet theme"></button>
+                    <button type="button" class="theme-option" data-theme="amber" aria-label="Use amber theme"></button>
+                </div>
+
+                <button type="button" class="utility-button" id="demoAction">Run Demo Action</button>
+                <button type="button" class="utility-button" id="navigationDemo">Navigation Demo</button>
+            </section>
+        </main>
+
+        <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true">
+            <span class="toast-icon" aria-hidden="true"></span>
+            <span id="toastMessage">Action complete.</span>
+        </div>
       </div>
       
       
