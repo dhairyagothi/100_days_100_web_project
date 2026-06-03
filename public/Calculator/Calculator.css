@@ -397,3 +397,8 @@ input::placeholder {
 #copyResult:hover {
     background: rgba(110,222,10,0.15);
 }
+#toggleFunctions.active {
+    background: rgba(110, 222, 10, 0.18);
+    color: var(--accent-strong);
+    box-shadow: 0 0 18px rgba(110, 222, 10, 0.25);
+}

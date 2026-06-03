@@ -40,8 +40,20 @@ io.on('connection', (socket) => {
 
   // 2. Listen for chat messages sent from a user in a room
   socket.on('send_message', (data) => {
-    // FIX: Use socket.to() instead of io.to() so it broadcasts to EVERYONE ELSE 
-    // in the room, without bouncing it back to the original sender.
+    // Validate payload
+    if (
+      !data ||
+      typeof data.room !== 'string' ||
+      data.room.trim() === ''
+    ) {
+      return;
+    }
+
+    // Ensure sender belongs to the target room
+    if (!socket.rooms.has(data.room)) {
+      return;
+    }
+
     socket.to(data.room).emit('receive_message', data);
   });
 
