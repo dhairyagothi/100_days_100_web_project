@@ -1,3 +1,5 @@
+window.onerror = function(msg, url, line) { console.error('Global Error: ', msg); };
+window.addEventListener('unhandledrejection', function(event) { console.error('Unhandled Promise Rejection: ', event.reason); });
 /* ============================================================
    CONFIGURATION
    ============================================================ */
