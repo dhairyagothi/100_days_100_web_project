@@ -28,9 +28,27 @@ document.addEventListener("DOMContentLoaded", () => {
         "summary", "experience", "projects", "education", "skills"
     ];
 
+  
     let currentTemplate = "modern";
 
     // =========================
+    // DARK MODE
+    // =========================
+    themeSwitcher.addEventListener("click", () => {
+        document.body.classList.toggle("dark");
+        themeSwitcher.textContent = document.body.classList.contains("dark")
+            ? "☀️ Light Mode"
+            : "🌙 Dark Mode";
+    });
+
+    // =========================
+    // TEMPLATE BUTTONS
+    // =========================
+    templateBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            templateBtns.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            currentTemplate = btn.textContent.trim().toLowerCase();
     // INIT
     // =========================
     loadFromLocalStorage();
@@ -53,8 +71,51 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // =========================
-    // THEME SWITCHER
+    // LIVE PREVIEW BUTTON
     // =========================
+    previewBtn.addEventListener("click", () => {
+        updatePreview();
+    });
+
+    // =========================
+    // AUTO-UPDATE ON INPUT
+    // =========================
+    [nameEl, emailEl, phoneEl, educationEl, summaryEl, projectsEl, skillsEl, experienceEl].forEach(el => {
+        if (el) {
+            el.addEventListener("input", () => {
+                updatePreview();
+                updateATSScore();
+            });
+        }
+    });
+
+    // =========================
+    // HELPERS
+    // =========================
+    function val(el) {
+        return el ? el.value.trim() : "";
+    }
+
+    function escapeHTML(str) {
+        return str
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function parseBullets(text) {
+        if (!text.trim()) return "";
+        return text.split("\n").map(line => {
+            const clean = line.trim();
+            if (!clean) return "";
+            if (clean.startsWith("-") || clean.startsWith("*")) {
+                return `<li>${escapeHTML(clean.substring(1).trim())}</li>`;
+            }
+            return `<p>${escapeHTML(clean)}</p>`;
+        }).join("");
+    }
     if (themeSwitcher) {
         themeSwitcher.addEventListener("click", (e) => {
             e.preventDefault();
@@ -91,130 +152,190 @@ document.addEventListener("DOMContentLoaded", () => {
     function parseBulletPoints(text) {
         if (!text || !text.trim()) return "";
 
+    function wrapBullets(text) {
+        if (!text.trim()) return "";
         const lines = text.split("\n");
         let html = "";
         let inList = false;
-
         lines.forEach(line => {
             const clean = line.trim();
-
-            // Check if line starts with a dash or asterisk
+            if (!clean) return;
             if (clean.startsWith("-") || clean.startsWith("*")) {
-                if (!inList) {
-                    html += "<ul>";
-                    inList = true;
-                }
-                // Remove the dash/asterisk and trim
-                html += `<li>${clean.substring(1).trim()}</li>`;
+                if (!inList) { html += "<ul>"; inList = true; }
+                html += `<li>${escapeHTML(clean.substring(1).trim())}</li>`;
             } else {
-                if (inList) {
-                    html += "</ul>";
-                    inList = false;
-                }
-                if (clean) html += `<p>${clean}</p>`;
+                if (inList) { html += "</ul>"; inList = false; }
+                html += `<p>${escapeHTML(clean)}</p>`;
             }
         });
-
-        if (inList) {
-            html += "</ul>";
-        }
-
+        if (inList) html += "</ul>";
         return html;
     }
 
-    function escapeHTML(str) {
-        if (!str) return "";
-        return str
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-    }
-    
-    // ==========================================
-    // RENDER PREVIEW LAYOUT
-    // ==========================================
+    // =========================
+    // UPDATE PREVIEW
+    // =========================
     function updatePreview() {
-        if (!resumePreview) return;
+        const v = {
+            name:       val(nameEl),
+            email:      val(emailEl),
+            phone:      val(phoneEl),
+            education:  val(educationEl),
+            summary:    val(summaryEl),
+            projects:   val(projectsEl),
+            skills:     val(skillsEl),
+            experience: val(experienceEl),
+        };
 
-        const values = {};
-        inputs.forEach(id => {
-            values[id] = document.getElementById(id)?.value || "";
-        });
+        if (currentTemplate === "modern") {
+            renderModern(v);
+        } else if (currentTemplate === "classic") {
+            renderClassic(v);
+        } else if (currentTemplate === "minimal") {
+            renderMinimal(v);
+        }
 
-        const skillsArr = values.skills
-            ? values.skills.split(",").map(s => s.trim()).filter(Boolean)
-            : [];
+        updateATSScore();
+    }
 
-        // FIX: Ensure 'resume-sheet' class stays so the white background renders!
-        resumePreview.className = "resume-sheet " + currentTemplate;
-
-        // Inject the generated HTML
+    // =========================
+    // MODERN TEMPLATE
+    // =========================
+    function renderModern(v) {
+        resumePreview.className = "resume-sheet modern-tpl";
         resumePreview.innerHTML = `
-            <div class="modern-header">
-                <div class="modern-header-title">
-                    <h1>${escapeHTML(values.name) || "Your Name"}</h1>
-                    <p>${escapeHTML(values.title) || "Professional Role / Title"}</p>
-                </div>
-                <div class="modern-contact-info">
-                    ${values.email ? `<span>${escapeHTML(values.email)}</span>` : ""}
-                    ${values.phone ? `<span>${escapeHTML(values.phone)}</span>` : ""}
-                    ${values.location ? `<span>${escapeHTML(values.location)}</span>` : ""}
-                    ${values.linkedin ? `<span>${escapeHTML(values.linkedin.replace(/^https?:\/\/(www\.)?/, ""))}</span>` : ""}
-                    ${values.github ? `<span>${escapeHTML(values.github.replace(/^https?:\/\/(www\.)?/, ""))}</span>` : ""}
-                </div>
+            <div class="resume-header" style="background:#1e293b;color:#fff;padding:24px 28px;border-radius:8px 8px 0 0;">
+                <h1 style="margin:0;font-size:1.8rem;font-weight:700;">${escapeHTML(v.name || "Your Name")}</h1>
+                <p style="margin:6px 0 0;opacity:0.85;font-size:0.95rem;">
+                    ${[v.email, v.phone].filter(Boolean).map(escapeHTML).join(" | ")}
+                </p>
             </div>
-            
-            <div class="modern-layout">
-                <div class="modern-main-col">
-                    ${values.summary ? `
-                        <div class="modern-section">
-                            <h3>Profile Summary</h3>
-                            <div class="modern-section-content"><p>${escapeHTML(values.summary)}</p></div>
-                        </div>
-                    ` : ""}
-                    
-                    ${values.experience ? `
-                        <div class="modern-section">
-                            <h3>Professional History</h3>
-                            <div class="modern-section-content">${parseBulletPoints(values.experience)}</div>
-                        </div>
-                    ` : ""}
-                    
-                    ${values.projects ? `
-                        <div class="modern-section">
-                            <h3>Key Projects</h3>
-                            <div class="modern-section-content">${parseBulletPoints(values.projects)}</div>
-                        </div>
-                    ` : ""}
+            <div style="display:flex;gap:0;">
+                <div style="flex:2;padding:20px 24px;border-right:1px solid #e2e8f0;">
+                    ${v.summary ? `
+                        <div class="resume-section">
+                            <h3>Summary</h3>
+                            <p>${escapeHTML(v.summary)}</p>
+                        </div>` : ""}
+                    ${v.experience ? `
+                        <div class="resume-section">
+                            <h3>Experience</h3>
+                            ${wrapBullets(v.experience)}
+                        </div>` : ""}
+                    ${v.projects ? `
+                        <div class="resume-section">
+                            <h3>Projects</h3>
+                            ${wrapBullets(v.projects)}
+                        </div>` : ""}
                 </div>
-                
-                <div class="modern-sidebar-col">
-                    ${values.education ? `
-                        <div class="modern-section">
+                <div style="flex:1;padding:20px 18px;background:#f8fafc;">
+                    ${v.education ? `
+                        <div class="resume-section">
                             <h3>Education</h3>
-                            <div class="modern-section-content">${parseBulletPoints(values.education)}</div>
-                        </div>
-                    ` : ""}
-                    
-                    ${skillsArr.length > 0 ? `
-                        <div class="modern-section">
-                            <h3>Key Skills</h3>
-                            <ul class="modern-skills-list">
-                                ${skillsArr.map(s => `<li>${escapeHTML(s)}</li>`).join("")}
-                            </ul>
-                        </div>
-                    ` : ""}
+                            <p>${escapeHTML(v.education)}</p>
+                        </div>` : ""}
+                    ${v.skills ? `
+                        <div class="resume-section">
+                            <h3>Skills</h3>
+                            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">
+                                ${v.skills.split(",").map(s => s.trim()).filter(Boolean).map(s =>
+                                    `<span style="background:#1e293b;color:#fff;padding:3px 10px;border-radius:12px;font-size:0.78rem;">${escapeHTML(s)}</span>`
+                                ).join("")}
+                            </div>
+                        </div>` : ""}
                 </div>
             </div>
         `;
     }
 
     // =========================
-    // ATS ANALYSIS (Simplified)
+    // CLASSIC TEMPLATE
     // =========================
-    function runResumeAnalysis() {
+    function renderClassic(v) {
+        resumePreview.className = "resume-sheet classic-tpl";
+        resumePreview.innerHTML = `
+            <div class="resume-header" style="text-align:center;border-bottom:2px solid #1e293b;padding-bottom:14px;margin-bottom:14px;">
+                <h1 style="margin:0;font-size:1.7rem;letter-spacing:1px;text-transform:uppercase;">${escapeHTML(v.name || "Your Name")}</h1>
+                <p style="margin:6px 0 0;font-size:0.88rem;color:#555;">
+                    ${[v.email, v.phone].filter(Boolean).map(escapeHTML).join("  •  ")}
+                </p>
+            </div>
+            ${v.summary ? `
+                <div class="resume-section">
+                    <h3 style="text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid #cbd5e1;padding-bottom:4px;">Summary</h3>
+                    <p>${escapeHTML(v.summary)}</p>
+                </div>` : ""}
+            ${v.experience ? `
+                <div class="resume-section">
+                    <h3 style="text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid #cbd5e1;padding-bottom:4px;">Experience</h3>
+                    ${wrapBullets(v.experience)}
+                </div>` : ""}
+            ${v.projects ? `
+                <div class="resume-section">
+                    <h3 style="text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid #cbd5e1;padding-bottom:4px;">Projects</h3>
+                    ${wrapBullets(v.projects)}
+                </div>` : ""}
+            ${v.education ? `
+                <div class="resume-section">
+                    <h3 style="text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid #cbd5e1;padding-bottom:4px;">Education</h3>
+                    <p>${escapeHTML(v.education)}</p>
+                </div>` : ""}
+            ${v.skills ? `
+                <div class="resume-section">
+                    <h3 style="text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid #cbd5e1;padding-bottom:4px;">Skills</h3>
+                    <p>${escapeHTML(v.skills)}</p>
+                </div>` : ""}
+        `;
+    }
+
+    // =========================
+    // MINIMAL TEMPLATE
+    // =========================
+    function renderMinimal(v) {
+        resumePreview.className = "resume-sheet minimal-tpl";
+        resumePreview.innerHTML = `
+            <div class="resume-header" style="padding-bottom:12px;margin-bottom:12px;">
+                <h1 style="margin:0;font-size:1.6rem;font-weight:600;">${escapeHTML(v.name || "Your Name")}</h1>
+                <p style="margin:4px 0 0;font-size:0.85rem;color:#64748b;">
+                    ${[v.email, v.phone].filter(Boolean).map(escapeHTML).join(" · ")}
+                </p>
+            </div>
+            ${v.summary ? `
+                <div class="resume-section">
+                    <h3 style="font-size:0.7rem;text-transform:uppercase;letter-spacing:2px;color:#94a3b8;margin-bottom:4px;">About</h3>
+                    <p>${escapeHTML(v.summary)}</p>
+                </div>` : ""}
+            ${v.experience ? `
+                <div class="resume-section">
+                    <h3 style="font-size:0.7rem;text-transform:uppercase;letter-spacing:2px;color:#94a3b8;margin-bottom:4px;">Experience</h3>
+                    ${wrapBullets(v.experience)}
+                </div>` : ""}
+            ${v.projects ? `
+                <div class="resume-section">
+                    <h3 style="font-size:0.7rem;text-transform:uppercase;letter-spacing:2px;color:#94a3b8;margin-bottom:4px;">Projects</h3>
+                    ${wrapBullets(v.projects)}
+                </div>` : ""}
+            ${v.education ? `
+                <div class="resume-section">
+                    <h3 style="font-size:0.7rem;text-transform:uppercase;letter-spacing:2px;color:#94a3b8;margin-bottom:4px;">Education</h3>
+                    <p>${escapeHTML(v.education)}</p>
+                </div>` : ""}
+            ${v.skills ? `
+                <div class="resume-section">
+                    <h3 style="font-size:0.7rem;text-transform:uppercase;letter-spacing:2px;color:#94a3b8;margin-bottom:4px;">Skills</h3>
+                    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;">
+                        ${v.skills.split(",").map(s => s.trim()).filter(Boolean).map(s =>
+                            `<span style="border:1px solid #cbd5e1;padding:2px 10px;border-radius:20px;font-size:0.78rem;color:#475569;">${escapeHTML(s)}</span>`
+                        ).join("")}
+                    </div>
+                </div>` : ""}
+        `;
+    }
+
+    // =========================
+    // ATS SCORE
+    // =========================
+    function updateATSScore() {
         let score = 0;
 
         const summary = document.getElementById("summary")?.value || "";
@@ -379,8 +500,4 @@ function safeInit() {
     initResumeStudio();
 }
 
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", safeInit);
-} else {
-    safeInit();
-}
+})();

@@ -136,7 +136,17 @@ function loadProjects() {
 }
 
 // Start fetching immediately
-loadProjects();
+loadProjects().catch((err) => {
+    console.error('Critical initialization error:', err);
+    const grid = document.getElementById('projectGrid');
+    if (grid) {
+        grid.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-color, #333);">
+            <h2><i class="fas fa-exclamation-triangle"></i> Failed to Load Projects</h2>
+            <p>Please check your connection or try again later.</p>
+            <p style="font-family: monospace; color: red;">${err.message}</p>
+        </div>`;
+    }
+});
 
 /* ============================================================
    PROJECT LINK RESOLUTION (demo vs source / source-only)
@@ -224,6 +234,15 @@ function getProjectDescription(project) {
   );
 }
 
+function escapeHTML(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function buildProjectCardHTML({
   day,
   name,
@@ -245,19 +264,22 @@ function buildProjectCardHTML({
         .split(/\s+/)
         .filter((t) => t && t !== SOURCE_ONLY_TAG);
   const tagsHTML = tagsArray
-    .map((t) => `<span class="tag">${t}</span>`)
+    .map((t) => `<span class="tag">${escapeHTML(t)}</span>`)
     .join("");
   const project = PROJECTS.find((p) => p.projectName === name);
 
-  const description = getProjectDescription(project);
+  const description = escapeHTML(getProjectDescription(project));
+  const safeDay = escapeHTML(day);
+  const safeName = escapeHTML(name);
+  const safeCategory = escapeHTML(category);
   const sourceOnlyBadge = sourceOnly
     ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
     : "";
   const primaryLink = sourceOnly
-    ? `<a href="${sourceUrl}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer" onclick="event.stopPropagation()">
+    ? `<a href="${sourceUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()">
                         <i class="fab fa-github"></i> Source
                     </a>`
-    : `<a href="${demoUrl}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer" onclick="event.stopPropagation()">
+    : `<a href="${demoUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()">
                         Demo <i class="fas fa-arrow-right"></i>
                     </a>`;
   const codeLink = sourceOnly
@@ -269,13 +291,13 @@ function buildProjectCardHTML({
   return {
     html: `
             <div class="card-meta">
-                <span class="card-day">${day}</span>
+                <span class="card-day">${safeDay}</span>
                 <span class="card-category-wrap">
-                  <span class="card-category">${category}</span>
+                  <span class="card-category">${safeCategory}</span>
                   ${sourceOnlyBadge}
                 </span>
             </div>
-            <h3 class="card-name">${name}</h3>
+            <h3 class="card-name">${safeName}</h3>
             ${
               showDescription
                 ? `<div class="card-description">
