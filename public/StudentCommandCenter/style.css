@@ -200,6 +200,10 @@ body {
     resize: none;
 }
 
+.notes-section h3{
+    margin:10px 0;
+}
+
 /* TIMER */
 .timer-box {
     font-size: 4rem;
