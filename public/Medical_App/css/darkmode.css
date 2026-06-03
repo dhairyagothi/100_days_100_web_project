@@ -1,4 +1,34 @@
-/* Dark Mode – overrides using .dark-mode class toggled by JS */
+
+body[data-theme="dark"] {
+    /* All color variables are already handled by the CSS variable system */
+}
+
+/* Ensure proper contrast in dark mode for specific elements */
+body[data-theme="dark"] .search-bar {
+    background-color: var(--surface);
+    border-color: var(--border);
+}
+
+body[data-theme="dark"] .search-bar input::placeholder {
+    color: var(--text-tertiary);
+}
+
+body[data-theme="dark"] .input-wrapper {
+    background-color: var(--background);
+}
+
+/* Ensure buttons work well in dark mode */
+body[data-theme="dark"] .btn-outline {
+    color: var(--text-primary);
+    border-color: var(--border);
+}
+
+body[data-theme="dark"] .btn-outline:hover:not(:disabled) {
+    background-color: var(--surface-hover);
+    color: var(--primary);
+}
+
+
 .dark-mode {
     --clr-bg: #0f172a;
     --clr-surface: #1e293b;
@@ -54,3 +84,4 @@
 .theme-btn:hover {
     background: rgba(255,255,255,0.3);
 }
+
