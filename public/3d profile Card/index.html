@@ -141,7 +141,28 @@
           <div class="action-row">
             <button type="button" class="secondary-btn" id="resetButton">Reset</button>
 
-            <button type="button" class="primary-btn" id="downloadButton">Download card</button>
+            <div class="download-wrapper" id="downloadWrapper">
+              <button type="button" class="primary-btn" id="downloadButton">
+                Download card
+                <svg class="chevron-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <div class="download-dropdown" id="downloadDropdown" role="menu" aria-label="Download format options">
+                <button class="dropdown-item" data-format="png" role="menuitem">
+                  <span class="format-badge">PNG</span>
+                  <span class="format-desc">Transparent background</span>
+                </button>
+                <button class="dropdown-item" data-format="jpg" role="menuitem">
+                  <span class="format-badge">JPG</span>
+                  <span class="format-desc">Smaller file size</span>
+                </button>
+                <button class="dropdown-item" data-format="pdf" role="menuitem">
+                  <span class="format-badge">PDF</span>
+                  <span class="format-desc">Print-ready document</span>
+                </button>
+              </div>
+            </div>
           </div>
         </form>
       </section>
@@ -190,6 +211,8 @@
         </article>
       </section>
     </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"

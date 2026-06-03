@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,8 +8,11 @@
     <link rel="stylesheet" href="style.css" />
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+    <a href="/" class="project-back-button"
+        style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">←
+        Back to Home</a>
 
 
     <div class="container">
@@ -20,7 +24,7 @@
             <ul>
                 <li class="active">Dashboard</li>
                 <li><a href="tasks.html">Tasks</a></li>
-                <li>Notes</li>
+                <li><a href="notes.html">Notes</a></li>
                 <li>Focus Mode</li>
                 <li>Settings</li>
             </ul>
@@ -84,6 +88,8 @@
                 <textarea id="notesArea" placeholder="Write notes here..."></textarea>
 
                 <button id="saveNotesBtn">Save Notes</button>
+                <h3>Saved Notes</h3>
+                <ul id="notesList"></ul>
             </section>
 
             <!-- FOCUS TIMER -->
@@ -99,6 +105,7 @@
                 <div class="timer-buttons">
                     <button id="startTimer">Start</button>
                     <button id="resetTimer">Reset</button>
+                    <button id="pauseTimer">Pause</button>
                 </div>
             </section>
 
@@ -108,4 +115,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>

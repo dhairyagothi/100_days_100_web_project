@@ -254,3 +254,14 @@
 
   window.medAuth.openAuth = openAuth;
 })();
+
+function togglePassword(inputId, btn) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  const isHidden = input.type === "password";
+  input.type = isHidden ? "text" : "password";
+  const eyeOpen = btn.querySelector(".eye-open");
+  const eyeClosed = btn.querySelector(".eye-closed");
+  if (eyeOpen) eyeOpen.style.display = isHidden ? "" : "none";
+  if (eyeClosed) eyeClosed.style.display = isHidden ? "none" : "";
+}
