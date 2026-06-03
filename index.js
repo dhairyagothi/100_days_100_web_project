@@ -136,7 +136,17 @@ function loadProjects() {
 }
 
 // Start fetching immediately
-loadProjects();
+loadProjects().catch((err) => {
+    console.error('Critical initialization error:', err);
+    const grid = document.getElementById('projectGrid');
+    if (grid) {
+        grid.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-color, #333);">
+            <h2><i class="fas fa-exclamation-triangle"></i> Failed to Load Projects</h2>
+            <p>Please check your connection or try again later.</p>
+            <p style="font-family: monospace; color: red;">${err.message}</p>
+        </div>`;
+    }
+});
 
 /* ============================================================
    PROJECT LINK RESOLUTION (demo vs source / source-only)

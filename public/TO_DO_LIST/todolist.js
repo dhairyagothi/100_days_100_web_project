@@ -547,29 +547,13 @@ function showSection(section) {
     el.classList.add('inactive-section');
   });
 
-  // Update sidebar active state
-  document.querySelectorAll('.sidebar-nav-item').forEach(item => {
-    item.classList.remove('active');
-    if (item.id === `nav-${section}`) {
-      item.classList.add('active');
-    }
-  });
+  // Update progress bar
+  if (progressFill) progressFill.style.width = `${pct}%`;
+  if (progressText) progressText.innerText = `${done} / ${total} done`;
 
-  // Show active section
-  const targetId = section === 'home' ? 'home-tab' : `${section}-tab`;
-  const target = document.getElementById(targetId);
-  if (target) {
-    target.classList.remove('inactive-section');
-    target.classList.add('active-section');
-  }
-
-  if (section === 'achievements') {
-    renderAchievementsPage();
-  } else if (section === 'calendar') {
-    renderCalendar();
-  } else if (section === 'dashboard') {
-    updateProgress();
-  }
+  // Show ‘Clear Done’ button only when at least one task is completed
+  const clearDoneBtn = document.getElementById('cleardone');
+  if (clearDoneBtn) clearDoneBtn.hidden = done === 0;
 }
 
 function showHome() {
@@ -765,23 +749,41 @@ function showToast(message) {
   }, 3000);
 }
 
-// Initialization
-function init() {
-  loadFromStorage();
-  updateStreak();
-  renderTasks();
-  renderStreak();
-  renderBadges();
-  updateProgress();
-  showHome();
+// 10. Forms & Actions Initialisation
+const taskForm = document.getElementById("task-form");
+if (taskForm) {
+  taskForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    addTask();
+  });
+}
 
-  // Task Form Submission
-  const taskForm = document.getElementById('task-form');
-  if (taskForm) {
-    taskForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      addTask();
-    });
+const savePdfBtn = document.getElementById("savepdf");
+if (savePdfBtn) {
+  savePdfBtn.addEventListener("click", () => saveAsPDF());
+}
+
+// Wire up Clear Done button click listener
+const clearDoneBtn = document.getElementById('cleardone');
+if (clearDoneBtn) {
+  clearDoneBtn.addEventListener('click', clearDone);
+}
+
+// Wire up filter bar buttons
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterTasks(btn, btn.dataset.filter);
+  });
+});
+
+// --- Page Initialisation ---
+// Set Home tab as active and apply default/saved theme on load
+showHome();
+
+try {
+  const savedTasks = localStorage.getItem("todo-tasks");
+  if (savedTasks) {
+    tasks = JSON.parse(savedTasks);
   }
 
   // Save PDF Button
