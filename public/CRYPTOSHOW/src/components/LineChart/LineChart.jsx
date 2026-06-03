@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import './LineChart.css'
-import Chart from 'react-google-charts'
+import { Chart } from 'react-google-charts'
 
 const LineChart = ({historicalData}) => {
 
-    const [data, setData] = useState(['Data', 'Prices'])
+    const [data, setData] = useState([['Data', 'Prices']])
 
     useEffect(() => {
         let dataCopy = [["Data","Prices"]]
@@ -19,7 +19,7 @@ const LineChart = ({historicalData}) => {
     <Chart  
         chartType='LineChart'
         data={data}
-        height="100%"
+        height="400px"
         legendToggle
     />      
   )

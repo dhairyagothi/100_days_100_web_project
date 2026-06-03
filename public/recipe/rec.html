@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Recipezzz - Recipe Details</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
-    <nav>
-        <h2 style="margin-right: 10px;">Recipezzz</h2>
-        <a href="#">Home</a>
-        <a href="#">Recipes</a>
-        <a href="#">About us</a>
-    </nav>
+   
     
-    </nav>
-    <div class="test">
+  <nav aria-label="Main Navigation">
+    <h2 class="logo">Recipezzz</h2>
+<div class="navlink">    <a href="main.html">Home</a>
+    <a href="rec.html" class="active">Recipes</a></div>
+</nav>
+
+    <div class="test" role="main">
         
         <p id="text-display"></p>
         
@@ -54,7 +54,10 @@
             `;
         } catch (err) {
             console.error('Error fetching JSON:', err);
-            document.getElementById('text-display').textContent = 'Error loading recipe!';
+            document.getElementById('text-display').innerHTML = `
+    <h2>Recipe Not Available</h2>
+    <p>Unable to load recipe information.</p>
+`;
         }
     
         document.getElementById('restart').addEventListener('click', function () {

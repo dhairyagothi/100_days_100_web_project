@@ -49,7 +49,10 @@ const els = {
 function init() {
   loadData();
   setupEventListeners();
-  renderAll();
+   renderAll();
+
+  requestNotificationPermission();
+  checkRenewalNotifications();
 }
 
 function loadData() {
@@ -123,11 +126,22 @@ function getInitials(name) {
   return name.substring(0, 2).toUpperCase();
 }
 
+function convertCurrency(amount) {
+  const rates = {
+    "INR": 1,
+    "USD": 0.012
+  }
+
+  return amount * rates[currentCurrency];
+}
+
 function formatCurrency(amount) {
-  const num = parseFloat(amount) || 0;
+  let num = parseFloat(amount) || 0;
+  num = convertCurrency(num);
   if (currentCurrency === 'INR') {
     return num.toLocaleString('en-IN', { style: 'currency', currency: 'INR' });
   }
+  
   return num.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 }
 
@@ -166,6 +180,43 @@ function getFilteredAndSorted() {
   return filtered;
 }
 
+function requestNotificationPermission() {
+  if("Notification" in window) {
+    Notification.requestPermission();
+  }
+}
+
+function checkRenewalNotifications() {
+
+  if(Notification.permission !== "granted"){
+    return;
+  }
+
+  subscriptions.forEach(sub => {
+
+    const nextRenewal = calculateNextRenewal(sub.date, sub.cycle);
+    const daysUntil = getDaysUntil(nextRenewal);
+
+    if(daysUntil === 7) {
+      new Notification(`Upcoming Renewal: ${sub.name}`, {
+        body: `Your subscription will renew in 7 days on ${formatDate(nextRenewal)}.`
+      });
+    }
+
+      if(daysUntil === 3) {
+        new Notification(`Upcoming Renewal: ${sub.name}`, {
+          body: `Your subscription will renew in 3 days on ${formatDate(nextRenewal)}.`
+        });
+      }
+
+      if(daysUntil === 1) {
+        new Notification(`Upcoming Renewal: ${sub.name}`, {
+          body: `Your subscription will renew tomorrow on ${formatDate(nextRenewal)}.`
+        });
+      }
+  })
+}
+
 function renderSubscriptions() {
   const filtered = getFilteredAndSorted();
   
@@ -187,12 +238,16 @@ function renderSubscriptions() {
     if (sub.cycle === 'Yearly' && daysUntil <= 30) {
       statusClass = 'badge-danger';
       statusText = 'Needs Renewal';
-    } else if (sub.cycle === 'Monthly' && daysUntil <= 7) {
+    } else if (daysUntil <= 1) {
       statusClass = 'badge-danger';
-      statusText = 'Needs Renewal';
-    } else if (daysUntil <= 3) {
-      statusClass = 'badge-danger';
-      statusText = 'Needs Renewal';
+      statusText = 'Renews Tomorrow';
+    }else if (daysUntil <= 3) {
+      statusClass = 'badge-warning';
+      statusText = 'Renews Soon';
+    }
+    else if (daysUntil <= 7) {
+      statusClass = 'badge-warning';
+      statusText = 'Renews in a Week';
     }
     
     return `
@@ -358,7 +413,8 @@ function openModal(id = null) {
   
   if (id) {
     els.modalTitle.innerText = 'Edit Subscription';
-    const sub = subscriptions.find(s => s.id === id);
+    let sub = subscriptions.find(s => s.id === id);
+    
     if (sub) {
       els.inName.value = sub.name;
       els.inCost.value = sub.cost;
