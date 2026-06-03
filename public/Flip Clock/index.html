@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flip Clock</title>
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<h1 class="app-title">Flip Clock</h1>
+    <div class="clock-widget">
+
+        <div class="time-row">
+
+            <div class="flip-card">
+                <div id="hour">00</div>
+            </div>
+
+            <div class="flip-card">
+                <div id="minute">00</div>
+            </div>
+
+            <div class="flip-card">
+                <div id="second">00</div>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            <span id="date"></span>
+            <span id="day"></span>
+        </div>
+
+    </div>
+
+    <div class="color-section">
+
+        <h3 class="color-title">Change Clock Color</h3>
+
+        <div class="theme-picker">
+
+            <button class="color mint active" onclick="changeTheme('mint', this)">
+            </button>
+
+            <button class="color lavender" onclick="changeTheme('lavender', this)">
+            </button>
+
+            <button class="color peach" onclick="changeTheme('peach', this)">
+            </button>
+
+            <button class="color sky" onclick="changeTheme('sky', this)">
+            </button>
+
+            <button class="color sakura" onclick="changeTheme('sakura', this)">
+            </button>
+
+            <button class="color butter" onclick="changeTheme('butter', this)">
+            </button>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

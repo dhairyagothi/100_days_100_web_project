@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zomato - Discover the best food & drinks</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Okra:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+      <div class="nav-container">
+        <a href="#" class="nav-logo">
+          <img
+            src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png"
+            alt="Zomato"
+            class="logo-img"
+          />
+        </a>
+
+        <div class="nav-location">
+          <i class="fa-solid fa-location-dot location-icon"></i>
+          <span class="location-text">Indore</span>
+          <i class="fa-solid fa-chevron-down chevron-icon"></i>
+        </div>
+
+        <div class="nav-search">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input
+            type="text"
+            placeholder="Search for restaurant, cuisine or a dish"
+            class="nav-search-input"
+          />
+        </div>
+
+        <div class="nav-actions">
+          <a href="#" class="nav-link">
+            <i class="fa-solid fa-briefcase"></i>
+            <span>Add restaurant</span>
+          </a>
+          <a href="#" class="nav-link">
+            <i class="fa-solid fa-user"></i>
+            <span>Log in</span>
+          </a>
+          <a href="#" class="nav-link nav-signup">Sign up</a>
+        </div>
+
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+      <!-- Mobile menu -->
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="#" class="mobile-link">Add restaurant</a>
+        <a href="#" class="mobile-link">Log in</a>
+        <a href="#" class="mobile-link mobile-link--cta">Sign up</a>
+      </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <img
+          src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png"
+          alt="Zomato"
+          class="hero-logo"
+        />
+        <h1 class="hero-title">
+          Discover the best food &amp; drinks in <span class="hero-city">Indore</span>
+        </h1>
+
+        <div class="hero-search-bar">
+          <div class="hero-location-picker">
+            <i class="fa-solid fa-location-dot"></i>
+            <input type="text" placeholder="Indore, Madhya Pradesh" class="location-input" />
+            <span class="divider-bar"></span>
+          </div>
+          <div class="hero-search-input-wrap">
+            <i class="fa-solid fa-magnifying-glass search-red"></i>
+            <input
+              type="text"
+              placeholder="Search for restaurant, cuisine or a dish"
+              class="hero-search-input"
+            />
+          </div>
+          <button class="hero-search-btn" aria-label="Search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- ORDER ONLINE / DINING SECTION -->
+      <section class="order-section container">
+        <h2 class="section-title">Order food online</h2>
+        <div class="order-cards">
+          <a href="#" class="order-card">
+            <img
+              src="https://b.zmtcdn.com/data/pictures/chains/3/19408903/4ef209700919f4e2cba0bb438af9f95f.jpg?fit=around|200:200&crop=200:200;*,*"
+              alt="Order Online"
+              class="order-card-img"
+            />
+            <span class="order-card-label">Order Online</span>
+          </a>
+          <a href="#" class="order-card">
+            <img
+              src="https://b.zmtcdn.com/data/pictures/chains/3/19408903/4ef209700919f4e2cba0bb438af9f95f.jpg?fit=around|200:200&crop=200:200;*,*"
+              alt="Dining"
+              class="order-card-img"
+            />
+            <span class="order-card-label">Dining</span>
+          </a>
+          <a href="#" class="order-card">
+            <img
+              src="https://b.zmtcdn.com/data/pictures/chains/3/19408903/4ef209700919f4e2cba0bb438af9f95f.jpg?fit=around|200:200&crop=200:200;*,*"
+              alt="Nightlife &amp; Clubs"
+              class="order-card-img"
+            />
+            <span class="order-card-label">Nightlife &amp; Clubs</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- COLLECTIONS SECTION -->
+      <section class="collections-section container">
+        <div class="collections-header">
+          <div>
+            <h2 class="section-title">Collections</h2>
+            <p class="section-subtitle">
+              Explore curated lists of the best restaurants in Indore
+            </p>
+          </div>
+          <a href="#" class="see-all-link">All collections in Indore <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+
+        <div class="collections-grid">
+          <a href="#" class="collection-card">
+            <div class="collection-img-wrap">
+              <img
+                src="https://b.zmtcdn.com/data/collections/a5a906f72ab0784706cb7fe10f5afa32_1571135035.jpg"
+                alt="Trending this week"
+                class="collection-img"
+              />
+              <div class="collection-overlay">
+                <span class="collection-name">Trending this week</span>
+                <span class="collection-count">9 Places</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="collection-card">
+            <div class="collection-img-wrap">
+              <img
+                src="https://b.zmtcdn.com/data/collections/55dd0c7c77c4e88a55b22cc89cc42791_1571139401.jpg"
+                alt="Best Biryani in Town"
+                class="collection-img"
+              />
+              <div class="collection-overlay">
+                <span class="collection-name">Best Biryani in Town</span>
+                <span class="collection-count">5 Places</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="collection-card">
+            <div class="collection-img-wrap">
+              <img
+                src="https://b.zmtcdn.com/data/collections/e456cd36f5c29819c1b73d9ce2b1a4c3_1571215229.jpg"
+                alt="Top Rated Restaurants"
+                class="collection-img"
+              />
+              <div class="collection-overlay">
+                <span class="collection-name">Top Rated Restaurants</span>
+                <span class="collection-count">12 Places</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="collection-card">
+            <div class="collection-img-wrap">
+              <img
+                src="https://b.zmtcdn.com/data/collections/e73cd3c4a165e5b2e4f6b5c8b6f8e1e3_1571215229.jpg"
+                alt="Pocket Friendly"
+                class="collection-img"
+              />
+              <div class="collection-overlay">
+                <span class="collection-name">Pocket Friendly</span>
+                <span class="collection-count">8 Places</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- POPULAR LOCALITIES -->
+      <section class="localities-section container">
+        <div class="localities-header">
+          <div>
+            <h2 class="section-title">Popular localities in and around Indore</h2>
+          </div>
+          <a href="#" class="see-all-link">See all <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+
+        <div class="localities-grid">
+          <a href="#" class="locality-card">
+            <div class="locality-info">
+              <i class="fa-solid fa-location-dot locality-icon"></i>
+              <div>
+                <span class="locality-name">Vijay Nagar</span>
+                <span class="locality-count">230+ restaurants</span>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right locality-arrow"></i>
+          </a>
+
+          <a href="#" class="locality-card">
+            <div class="locality-info">
+              <i class="fa-solid fa-location-dot locality-icon"></i>
+              <div>
+                <span class="locality-name">South Tukoganj</span>
+                <span class="locality-count">185+ restaurants</span>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right locality-arrow"></i>
+          </a>
+
+          <a href="#" class="locality-card">
+            <div class="locality-info">
+              <i class="fa-solid fa-location-dot locality-icon"></i>
+              <div>
+                <span class="locality-name">Palasia</span>
+                <span class="locality-count">140+ restaurants</span>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right locality-arrow"></i>
+          </a>
+
+          <a href="#" class="locality-card">
+            <div class="locality-info">
+              <i class="fa-solid fa-location-dot locality-icon"></i>
+              <div>
+                <span class="locality-name">AB Road</span>
+                <span class="locality-count">120+ restaurants</span>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right locality-arrow"></i>
+          </a>
+
+          <a href="#" class="locality-card">
+            <div class="locality-info">
+              <i class="fa-solid fa-location-dot locality-icon"></i>
+              <div>
+                <span class="locality-name">Sapna Sangeeta</span>
+                <span class="locality-count">95+ restaurants</span>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right locality-arrow"></i>
+          </a>
+
+          <a href="#" class="locality-card">
+            <div class="locality-info">
+              <i class="fa-solid fa-location-dot locality-icon"></i>
+              <div>
+                <span class="locality-name">Regal Square</span>
+                <span class="locality-count">80+ restaurants</span>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right locality-arrow"></i>
+          </a>
+        </div>
+      </section>
+
+      <!-- APP DOWNLOAD BANNER -->
+      <section class="app-section container">
+        <div class="app-content">
+          <div class="app-text">
+            <h2 class="app-title">Get the Zomato app</h2>
+            <p class="app-desc">
+              We will send you a link, open it on your phone to download the app
+            </p>
+            <div class="app-input-group">
+              <div class="app-country-select">
+                <span>🇮🇳</span>
+                <span>+91</span>
+              </div>
+              <input type="tel" placeholder="Enter phone number" class="app-phone-input" />
+              <button class="app-send-btn">Send SMS</button>
+            </div>
+            <div class="app-store-links">
+              <span class="app-store-divider">or</span>
+              <a href="#" class="app-store-btn">
+                <i class="fa-brands fa-google-play"></i> Google Play
+              </a>
+              <a href="#" class="app-store-btn">
+                <i class="fa-brands fa-apple"></i> App Store
+              </a>
+            </div>
+          </div>
+          <div class="app-phones">
+            <img
+              src="https://b.zmtcdn.com/data/o2_assets/0f47bb0b8035e1b37df69d738d82baec1740475472.png"
+              alt="Zomato App"
+              class="app-phone-img"
+            />
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <img
+              src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png"
+              alt="Zomato"
+              class="footer-logo"
+            />
+            <p class="footer-tagline">
+              © 2024 Zomato™ Ltd. All rights reserved.
+            </p>
+            <div class="footer-social">
+              <a href="#" class="social-link" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+              <a href="#" class="social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+              <a href="#" class="social-link" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+              <a href="#" class="social-link" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+              <a href="#" class="social-link" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            </div>
+          </div>
+
+          <div class="footer-links">
+            <div class="footer-col">
+              <h3 class="footer-col-title">About Zomato</h3>
+              <ul>
+                <li><a href="#">Who We Are</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Work With Us</a></li>
+                <li><a href="#">Investor Relations</a></li>
+                <li><a href="#">Report Fraud</a></li>
+                <li><a href="#">Press Kit</a></li>
+                <li><a href="#">Contact Us</a></li>
+              </ul>
+            </div>
+
+            <div class="footer-col">
+              <h3 class="footer-col-title">Zomaverse</h3>
+              <ul>
+                <li><a href="#">Zomato</a></li>
+                <li><a href="#">Blinkit</a></li>
+                <li><a href="#">District</a></li>
+                <li><a href="#">Hyperpure</a></li>
+                <li><a href="#">Zomaland</a></li>
+                <li><a href="#">Feeds</a></li>
+              </ul>
+            </div>
+
+            <div class="footer-col">
+              <h3 class="footer-col-title">For Restaurants</h3>
+              <ul>
+                <li><a href="#">Partner With Us</a></li>
+                <li><a href="#">Apps For You</a></li>
+              </ul>
+              <h3 class="footer-col-title" style="margin-top: 24px;">Learn More</h3>
+              <ul>
+                <li><a href="#">Privacy</a></li>
+                <li><a href="#">Security</a></li>
+                <li><a href="#">Terms</a></li>
+              </ul>
+            </div>
+
+            <div class="footer-col">
+              <h3 class="footer-col-title">Social Links</h3>
+              <ul>
+                <li><a href="#"><i class="fa-brands fa-linkedin-in"></i> LinkedIn</a></li>
+                <li><a href="#"><i class="fa-brands fa-instagram"></i> Instagram</a></li>
+                <li><a href="#"><i class="fa-brands fa-x-twitter"></i> Twitter</a></li>
+                <li><a href="#"><i class="fa-brands fa-youtube"></i> YouTube</a></li>
+                <li><a href="#"><i class="fa-brands fa-facebook-f"></i> Facebook</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

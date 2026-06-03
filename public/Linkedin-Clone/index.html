@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -15,7 +15,24 @@
     />
   </head>
   <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+    <a
+      href="/"
+      class="project-back-button"
+      style="
+        position: fixed;
+        left: 18px;
+        top: 18px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: white;
+        text-decoration: none;
+        z-index: 9999;
+        font-weight: 700;
+        font-family: Inter, system-ui, sans-serif;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      "
+      >&#8592; Back to Home</a
+    >
 
     <nav class="navbar">
       <div class="navbar-inner">
@@ -24,9 +41,28 @@
             <img src="images/logo.png" alt="LinkedIn Logo" />
           </a>
           <div class="search-box" role="search">
-            <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d="M11 4a7 7 0 1 1 0 14 7 7 0 0 1 0-14z" fill="none" stroke="#666" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M21 21l-4.35-4.35" fill="none" stroke="#666" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <svg
+              class="search-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M11 4a7 7 0 1 1 0 14 7 7 0 0 1 0-14z"
+                fill="none"
+                stroke="#666"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M21 21l-4.35-4.35"
+                fill="none"
+                stroke="#666"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
             <input type="search" aria-label="Search" placeholder="Search" />
           </div>
@@ -34,32 +70,32 @@
         <div class="navbar-center">
           <ul>
             <li>
-              <a href="#" class="active-link">
-                <i class="fa-solid fa-house"></i>
+              <a href="#" class="active-link" data-section="home">
+                <i class="fa-solid fa-house" aria-hidden="true"></i>
                 <span>Home</span>
               </a>
             </li>
             <li>
-              <a href="#">
-                <i class="fa-solid fa-user"></i>
+              <a href="#" data-section="mynetwork">
+                <i class="fa-solid fa-user" aria-hidden="true"></i>
                 <span>My Network</span>
               </a>
             </li>
             <li>
-              <a href="#">
-                <i class="fa-solid fa-briefcase"></i>
+              <a href="#" data-section="jobs">
+                <i class="fa-solid fa-briefcase" aria-hidden="true"></i>
                 <span>Jobs</span>
               </a>
             </li>
             <li class="message-link">
-              <a href="#">
-                <i class="fa-solid fa-comment-dots"></i>
+              <a href="#" data-section="messaging">
+                <i class="fa-solid fa-comment-dots" aria-hidden="true"></i>
                 <span>Messaging</span>
               </a>
             </li>
             <li>
-              <a href="#">
-                <i class="fa-solid fa-bell"></i>
+              <a href="#" data-section="notifications">
+                <i class="fa-solid fa-bell" aria-hidden="true"></i>
                 <span>Notifications</span>
               </a>
             </li>
@@ -67,7 +103,11 @@
         </div>
         <div class="navbar-right">
           <a href="#">
-            <img src="images/user-2.png" alt="User Profile" class="profile-pic" />
+            <img
+              src="images/user-2.png"
+              alt="User Profile"
+              class="profile-pic"
+            />
             <span>Me</span>
           </a>
         </div>
@@ -75,22 +115,20 @@
     </nav>
 
     <div class="container">
-
       <div class="left-sidebar">
-        <!-- Profile Card -->
         <aside class="profile-card card">
-          <div class="cover"><img src="images/cover-pic.png" alt="Cover" /></div>
+          <div class="cover">
+            <img src="images/cover-pic.png" alt="Cover" />
+          </div>
           <div class="profile-overlap">
             <img src="images/user-2.png" alt="Profile" />
           </div>
           <div class="profile-body">
             <h2>Jane Smith</h2>
             <p class="title">Software Engineer at Google</p>
-            
           </div>
         </aside>
 
-        <!-- Premium Card -->
         <aside class="premium-card card">
           <div class="premium-content">
             <img src="images/premium.png" alt="Premium" />
@@ -101,20 +139,34 @@
           </div>
         </aside>
 
-        <!-- Stats Card -->
         <aside class="stats-card card">
           <ul>
             <li><span class="label">Profile views</span> <span>50</span></li>
-            <li><span class="label">Post impressions</span> <span>150</span></li>
+            <li>
+              <span class="label">Post impressions</span> <span>150</span>
+            </li>
           </ul>
         </aside>
 
-        <!-- Shortcuts Card -->
         <aside class="shortcuts-card card">
           <ul>
-            <li><img src="images/items.png" alt="Saved" /><span class="label">Saved items</span></li>
-            <li><img src="images/recent.png" alt="Newsletter" /><span class="label">Newsletters</span></li>
-            <li><img src="images/event.png" alt="Events" /><span class="label">Events</span></li>
+            <li>
+              <img src="images/items.png" alt="Saved items" /><span
+                class="label"
+                >Saved items</span
+              >
+            </li>
+            <li>
+              <img src="images/recent.png" alt="Newsletters" /><span
+                class="label"
+                >Newsletters</span
+              >
+            </li>
+            <li>
+              <img src="images/event.png" alt="Events" /><span class="label"
+                >Events</span
+              >
+            </li>
           </ul>
         </aside>
 
@@ -122,300 +174,451 @@
       </div>
 
       <div class="content-area">
-      <div class="main-content">
-        <div class="create-post" id="createPost">
-          <div class="create-post-input">
-            <img src="images/user-2.png" />
-            <div class="start-post" id="startPost" tabindex="0" role="button">Start a post</div>
-            <textarea id="postContent" rows="2" placeholder="Write Something"></textarea>
-          </div>
-          <div class="create-post-links">
-            <li data-action="photo"><img src="images/photo.png" />Photo</li>
-            <li data-action="video"><img src="images/video.png" />Video</li>
-            <li data-action="article"><img src="images/items.png" />Write article</li>
-            <button id="postButton" class="post-btn hidden">Post</button>
-          </div>
-        </div>
-        <div class="sort-by">
-          <hr />
-          <p>
-            Sort by : <span>top <img src="images/down-arrow.png" /></span>
-          </p>
-        </div>
-        <div class="post">
-          <div class="post-author">
-            <img src="images/user-5.png" />
-            <div>
-              <h1>Oliver Brown</h1>
-              <small>CTO at TechCorp | Innovator</small>
-              <small>1 hour ago </small>
+        <div class="main-content">
+          <!-- HOME SECTION -->
+          <div id="section-home">
+            <div class="create-post" id="createPost">
+              <div class="create-post-input">
+                <img src="images/user-2.png" alt="User" />
+                <div
+                  class="start-post"
+                  id="startPost"
+                  tabindex="0"
+                  role="button"
+                >
+                  Start a post
+                </div>
+                <textarea
+                  id="postContent"
+                  rows="2"
+                  placeholder="Write Something"
+                ></textarea>
+              </div>
+              <div class="create-post-links">
+                <button
+                  type="button"
+                  class="create-post-action"
+                  data-action="photo"
+                >
+                  <img src="images/photo.png" alt="Photo" />Photo
+                </button>
+                <button
+                  type="button"
+                  class="create-post-action"
+                  data-action="video"
+                >
+                  <img src="images/video.png" alt="Video" />Video
+                </button>
+                <button
+                  type="button"
+                  class="create-post-action"
+                  data-action="article"
+                >
+                  <img src="images/items.png" alt="Write article" />Write
+                  article
+                </button>
+                <button id="postButton" class="post-btn hidden" type="button">
+                  Post
+                </button>
+              </div>
             </div>
-          </div>
-          <p>
-            Exploring the future of quantum computing and its applications in
-            various industries.
-          </p>
-          <img src="images/post-image-3.png" width="100%" />
-          <div class="post-stats">
-            <div>
-              <img src="images/thumbsup.png" />
-              <img src="images/love.png" />
-              <img src="images/clap.png" />
-              <span class="liked-users">Sarah Lee and 45 others</span>
+
+            <div class="sort-by">
+              <hr />
+              <p>
+                Sort by :
+                <span>top <img src="images/down-arrow.png" alt="sort" /></span>
+              </p>
             </div>
-            <div>
-              <span>15 comments &middot; 30 shares</span>
-            </div>
-          </div>
-          <div class="post-activity">
-            <div>
-              <img src="images/user-2.png" class="post-activity-user-icon" />
+
+            <div class="post">
+              <div class="post-author">
+                <img src="images/user-5.png" alt="Oliver Brown" />
+                <div>
+                  <h2>Oliver Brown</h2>
+                  <small>CTO at TechCorp | Innovator</small>
+                  <small>1 hour ago</small>
+                </div>
+              </div>
+              <p>
+                Exploring the future of quantum computing and its applications
+                in various industries.
+              </p>
               <img
-                src="images/down-arrow.png"
-                class="post-activity-arrow-icon"
+                src="images/post-image-3.png"
+                alt="Post image"
+                width="100%"
               />
+              <div class="post-stats">
+                <div>
+                  <img src="images/thumbsup.png" alt="Like" />
+                  <img src="images/love.png" alt="Love" />
+                  <img src="images/clap.png" alt="Clap" />
+                  <span class="liked-users">Sarah Lee and 45 others</span>
+                </div>
+                <div><span>15 comments &middot; 30 shares</span></div>
+              </div>
+              <div class="post-activity">
+                <div>
+                  <img
+                    src="images/user-2.png"
+                    alt="User"
+                    class="post-activity-user-icon"
+                  />
+                  <img
+                    src="images/down-arrow.png"
+                    alt="More"
+                    class="post-activity-arrow-icon"
+                  />
+                </div>
+                <div class="post-activity-link">
+                  <img src="images/like.png" alt="Like" /><span>Like</span>
+                </div>
+                <div class="post-activity-link">
+                  <img src="images/comment.png" alt="Comment" /><span
+                    >Comment</span
+                  >
+                </div>
+                <div class="post-activity-link">
+                  <img src="images/share.png" alt="Share" /><span>Share</span>
+                </div>
+                <div class="post-activity-link">
+                  <img src="images/send.png" alt="Send" /><span>Send</span>
+                </div>
+              </div>
             </div>
-            <div class="post-activity-link">
-              <img src="images/like.png" />
-              <span>Like</span>
+
+            <div class="post">
+              <div class="post-author">
+                <img src="images/user-5.png" alt="Emma Williams" />
+                <div>
+                  <h2>Emma Williams</h2>
+                  <small>Senior Developer at CodeWorks</small>
+                  <small>3 hours ago</small>
+                </div>
+              </div>
+              <p>
+                New tech blog coming up about the role of AI in modern web
+                development.
+              </p>
+              <img
+                src="images/post-image-4.png"
+                alt="Post image"
+                width="100%"
+              />
+              <div class="post-stats">
+                <div>
+                  <img src="images/thumbsup.png" alt="Like" />
+                  <img src="images/love.png" alt="Love" />
+                  <img src="images/clap.png" alt="Clap" />
+                  <span class="liked-users">John Doe and 65 others</span>
+                </div>
+                <div><span>18 comments &middot; 50 shares</span></div>
+              </div>
+              <div class="post-activity">
+                <div>
+                  <img
+                    src="images/user-2.png"
+                    alt="User"
+                    class="post-activity-user-icon"
+                  />
+                  <img
+                    src="images/down-arrow.png"
+                    alt="More"
+                    class="post-activity-arrow-icon"
+                  />
+                </div>
+                <div class="post-activity-link">
+                  <img src="images/like.png" alt="Like" /><span>Like</span>
+                </div>
+                <div class="post-activity-link">
+                  <img src="images/comment.png" alt="Comment" /><span
+                    >Comment</span
+                  >
+                </div>
+                <div class="post-activity-link">
+                  <img src="images/share.png" alt="Share" /><span>Share</span>
+                </div>
+                <div class="post-activity-link">
+                  <img src="images/send.png" alt="Send" /><span>Send</span>
+                </div>
+              </div>
             </div>
-            <div class="post-activity-link">
-              <img src="images/comment.png" />
-              <span>Comment</span>
+
+            <div class="post">
+              <div class="post-author">
+                <img src="images/user-3.png" alt="Benjamin Leo" />
+                <div>
+                  <h2>Benjamin Leo</h2>
+                  <small>Founder and CEO at Giva | Angel Investor</small>
+                  <small>2 hours ago</small>
+                </div>
+              </div>
+              <p>
+                The success of every website depends on Search engine
+                optimisation and digital marketing strategy. If you are not in
+                the first page of all major search engines then you are ahead
+                among your competitors.
+              </p>
+              <img
+                src="images/post-image-3.png"
+                alt="Post image"
+                width="100%"
+              />
+              <div class="post-stats">
+                <div>
+                  <img src="images/thumbsup.png" alt="Like" />
+                  <img src="images/love.png" alt="Love" />
+                  <img src="images/clap.png" alt="Clap" />
+                  <span class="liked-users">Adam Doe and 89 others</span>
+                </div>
+                <div><span>22 comments &middot; 40 shares</span></div>
+              </div>
+              <div class="post-activity">
+                <div>
+                  <img
+                    src="images/user-1.png"
+                    alt="User"
+                    class="post-activity-user-icon"
+                  />
+                  <img
+                    src="images/down-arrow.png"
+                    alt="More"
+                    class="post-activity-arrow-icon"
+                  />
+                </div>
+                <div class="post-activity-link">
+                  <img src="images/like.png" alt="Like" /><span>Like</span>
+                </div>
+                <div class="post-activity-link">
+                  <img src="images/comment.png" alt="Comment" /><span
+                    >Comment</span
+                  >
+                </div>
+                <div class="post-activity-link">
+                  <img src="images/share.png" alt="Share" /><span>Share</span>
+                </div>
+                <div class="post-activity-link">
+                  <img src="images/send.png" alt="Send" /><span>Send</span>
+                </div>
+              </div>
             </div>
-            <div class="post-activity-link">
-              <img src="images/share.png" />
-              <span>Share</span>
+
+            <div class="post">
+              <div class="post-author">
+                <img src="images/user-3.png" alt="Benjamin Leo" />
+                <div>
+                  <h2>Benjamin Leo</h2>
+                  <small>Founder and CEO at Giva | Angel Investor</small>
+                  <small>2 hours ago</small>
+                </div>
+              </div>
+              <p>
+                The success of every website depends on Search engine
+                optimisation and digital marketing strategy. If you are not in
+                the first page of all major search engines then you are ahead
+                among your competitors.
+              </p>
+              <img
+                src="images/post-image-4.png"
+                alt="Post image"
+                width="100%"
+              />
+              <div class="post-stats">
+                <div>
+                  <img src="images/thumbsup.png" alt="Like" />
+                  <img src="images/love.png" alt="Love" />
+                  <img src="images/clap.png" alt="Clap" />
+                  <span class="liked-users">Adam Doe and 89 others</span>
+                </div>
+                <div><span>22 comments &middot; 40 shares</span></div>
+              </div>
+              <div class="post-activity">
+                <div>
+                  <img
+                    src="images/user-1.png"
+                    alt="User"
+                    class="post-activity-user-icon"
+                  />
+                  <img
+                    src="images/down-arrow.png"
+                    alt="More"
+                    class="post-activity-arrow-icon"
+                  />
+                </div>
+                <div class="post-activity-link">
+                  <img src="images/like.png" alt="Like" /><span>Like</span>
+                </div>
+                <div class="post-activity-link">
+                  <img src="images/comment.png" alt="Comment" /><span
+                    >Comment</span
+                  >
+                </div>
+                <div class="post-activity-link">
+                  <img src="images/share.png" alt="Share" /><span>Share</span>
+                </div>
+                <div class="post-activity-link">
+                  <img src="images/send.png" alt="Send" /><span>Send</span>
+                </div>
+              </div>
             </div>
-            <div class="post-activity-link">
-              <img src="images/send.png" />
-              <span>Send</span>
+          </div>
+          <!-- END HOME SECTION -->
+
+          <!-- MY NETWORK SECTION -->
+          <div id="section-mynetwork" class="nav-section hidden">
+            <div class="section-placeholder">
+              <i class="fa-solid fa-user-group" aria-hidden="true"></i>
+              <h2>My Network</h2>
+              <p>
+                Grow your professional network. Connect with colleagues,
+                classmates, and industry leaders.
+              </p>
+            </div>
+          </div>
+
+          <!-- JOBS SECTION -->
+          <div id="section-jobs" class="nav-section hidden">
+            <div class="section-placeholder">
+              <i class="fa-solid fa-briefcase" aria-hidden="true"></i>
+              <h2>Jobs</h2>
+              <p>
+                Explore job opportunities tailored to your skills and
+                experience.
+              </p>
+            </div>
+          </div>
+
+          <!-- MESSAGING SECTION -->
+          <div id="section-messaging" class="nav-section hidden">
+            <div class="section-placeholder">
+              <i class="fa-solid fa-comment-dots" aria-hidden="true"></i>
+              <h2>Messaging</h2>
+              <p>
+                Connect and communicate with your network through direct
+                messages.
+              </p>
+            </div>
+          </div>
+
+          <!-- NOTIFICATIONS SECTION -->
+          <div id="section-notifications" class="nav-section hidden">
+            <div class="section-placeholder">
+              <i class="fa-solid fa-bell" aria-hidden="true"></i>
+              <h2>Notifications</h2>
+              <p>
+                Stay up to date with your latest notifications and activity.
+              </p>
             </div>
           </div>
         </div>
 
-        <div class="post">
-          <div class="post-author">
-            <img src="images/user-5.png" />
-            <div>
-              <h1>Emma Williams</h1>
-              <small>Senior Developer at CodeWorks</small>
-              <small>3 hours ago </small>
-            </div>
+        <div class="right-sidebar">
+          <div class="sidebar-news">
+            <img src="images/more.png" alt="More info" class="info-icon" />
+            <h3>LinkedIn News</h3>
+            <a href="#">High Demand for Skilled Employees</a>
+            <span>1d ago &middot; 10,934 readers</span>
+            <a href="#">Inflation in Canada Affects the Workforce</a>
+            <span>2d ago &middot; 7,043 readers</span>
+            <a href="#">Mass Recruiters fire Employees</a>
+            <span>4d ago &middot; 17,789 readers</span>
+            <a href="#">Crypto predicted to Boom this year</a>
+            <span>9d ago &middot; 2,436 readers</span>
+            <a href="#" class="read-more-link">Read More</a>
           </div>
-          <p>
-            New tech blog coming up about the role of AI in modern web
-            development.
-          </p>
-          <img src="images/post-image-4.png" width="100%" />
-          <div class="post-stats">
-            <div>
-              <img src="images/thumbsup.png" />
-              <img src="images/love.png" />
-              <img src="images/clap.png" />
-              <span class="liked-users">John Doe and 65 others</span>
-            </div>
-            <div>
-              <span>18 comments &middot; 50 shares</span>
-            </div>
-          </div>
-          <div class="post-activity">
-            <div>
-              <img src="images/user-2.png" class="post-activity-user-icon" />
-              <img
-                src="images/down-arrow.png"
-                class="post-activity-arrow-icon"
-              />
-            </div>
-            <div class="post-activity-link">
-              <img src="images/like.png" />
-              <span>Like</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/comment.png" />
-              <span>Comment</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/share.png" />
-              <span>Share</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/send.png" />
-              <span>Send</span>
-            </div>
-          </div>
-        </div>
 
-        <div class="post">
-          <div class="post-author">
-            <img src="images/user-3.png" />
+          <div class="sidebar-ad">
+            <small>Ad &middot; &middot; &middot;</small>
+            <p>Master Web Development</p>
             <div>
-              <h1>Bejamin Leo</h1>
-              <small>Founder and CEO at Giva | Angel Investor</small>
-              <small>2 hours ago </small>
+              <img src="images/user-1.png" alt="User" />
+              <img src="images/mi-logo.png" alt="Xiaomi" />
             </div>
+            <b>Brand and Demand in Xiaomi</b>
+            <a href="#" class="ad-link">Learn More</a>
           </div>
-          <p>
-            The sucess of every website depends on Search engine optimisation
-            and digital marketing strategy. If you are not in the first page of
-            all major search engines then you are ahead among your competitors.
-          </p>
-          <img src="images/post-image-3.png" width="100%" />
 
-          <div class="post-stats">
-            <div>
-              <img src="images/thumbsup.png" />
-              <img src="images/love.png" />
-              <img src="images/clap.png" />
-              <span class="liked-users">Adam Doe and 89 others</span>
-            </div>
-            <div>
-              <span>22 comments &middot; 40 shares</span>
-            </div>
-          </div>
-          <div class="post-activity">
-            <div>
-              <img src="images/user-1.png" class="post-activity-user-icon" />
-              <img
-                src="images/down-arrow.png"
-                class="post-activity-arrow-icon"
-              />
-            </div>
-            <div class="post-activity-link">
-              <img src="images/like.png" />
-              <span>Like</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/comment.png" />
-              <span>Comment</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/share.png" />
-              <span>Share</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/send.png" />
-              <span>Send</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="post">
-          <div class="post-author">
-            <img src="images/user-3.png" />
-            <div>
-              <h1>Bejamin Leo</h1>
-              <small>Founder and CEO at Giva | Angel Investor</small>
-              <small>2 hours ago </small>
-            </div>
-          </div>
-          <p>
-            The sucess of every website depends on Search engine optimisation
-            and digital marketing strategy. If you are not in the first page of
-            all major search engines then you are ahead among your competitors.
-          </p>
-          <img src="images/post-image-4.png" width="100%" />
-
-          <div class="post-stats">
-            <div>
-              <img src="images/thumbsup.png" />
-              <img src="images/love.png" />
-              <img src="images/clap.png" />
-              <span class="liked-users">Adam Doe and 89 others</span>
-            </div>
-            <div>
-              <span>22 comments &middot; 40 shares</span>
-            </div>
-          </div>
-          <div class="post-activity">
-            <div>
-              <img src="images/user-1.png" class="post-activity-user-icon" />
-              <img
-                src="images/down-arrow.png"
-                class="post-activity-arrow-icon"
-              />
-            </div>
-            <div class="post-activity-link">
-              <img src="images/like.png" />
-              <span>Like</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/comment.png" />
-              <span>Comment</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/share.png" />
-              <span>Share</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/send.png" />
-              <span>Send</span>
+          <div class="sidebar-useful-links">
+            <a href="#">About</a>
+            <a href="#">Accessibility</a>
+            <a href="#">Help Center</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Advertising</a>
+            <a href="#">Get the App</a>
+            <a href="#">More</a>
+            <div class="copyright-msg">
+              <img src="images/logo.png" alt="LinkedIn" />
+              <p>Linkedin &#169; 2022. All Rights Reserved</p>
             </div>
           </div>
         </div>
       </div>
-
-      <div class="right-sidebar">
-        <div class="sidebar-news">
-          <img src="images/more.png" class="info-icon" />
-          <h3>LinkedIn News</h3>
-
-          <a href="#">High Demand for Skilled Employees</a>
-          <span>1d ago &middot; 10,934 readers</span>
-
-          <a href="#">Inflation in Canada Affects the Workforce</a>
-          <span>2d ago &middot; 7,043 readers</span>
-
-          <a href="#">Mass Recruiters fire Employees</a>
-          <span>4d ago &middot; 17,789 readers</span>
-
-          <a href="#">Crypto predicted to Boom this year</a>
-          <span>9d ago &middot; 2, 436 readers</span>
-
-          <a href="#" class="read-more-link">Read More</a>
-        </div>
-
-        <div class="sidebar-ad">
-          <small>Ad &middot; &middot; &middot;</small>
-          <p>Master Web Development</p>
-          <div>
-            <img src="images/user-1.png" />
-            <img src="images/mi-logo.png" />
-          </div>
-          <b>Brand and Demand in Xiaomi</b>
-          <a href="#" class="ad-link">Learn More</a>
-        </div>
-
-        <div class="sidebar-useful-links">
-          <a href="#">About</a>
-          <a href="#">Accessibility</a>
-          <a href="#">Help Center</a>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Advertising</a>
-          <a href="#">Get the App</a>
-          <a href="#">More</a>
-
-          <div class="copyright-msg">
-            <img src="images/logo.png" />
-            <p>Linkedin &#169; 2022. All Rights Reserved</p>
-          </div>
-        </div>
-      </div>
-      </div>
-      
     </div>
 
     <script>
-      let profileMenu = document.getElementById("profileMenu");
+      // ── Navbar Navigation ──────────────────────────────────────────
+      var navLinks = document.querySelectorAll(
+        ".navbar-center a[data-section]",
+      );
+      var mobileNavLinks = document.querySelectorAll(
+        ".mobile-bottom-nav a[data-section]",
+      );
 
-      function toggleMenu() {
-        profileMenu.classList.toggle("open-menu");
+      function switchSection(sectionId) {
+        document.getElementById("section-home").classList.add("hidden");
+        document.querySelectorAll(".nav-section").forEach(function (sec) {
+          sec.classList.add("hidden");
+        });
+
+        var target = document.getElementById("section-" + sectionId);
+        if (target) {
+          target.classList.remove("hidden");
+        }
+
+        navLinks.forEach(function (link) {
+          link.classList.remove("active-link");
+          if (link.getAttribute("data-section") === sectionId) {
+            link.classList.add("active-link");
+          }
+        });
+
+        mobileNavLinks.forEach(function (link) {
+          link.classList.remove("active-link");
+          if (link.getAttribute("data-section") === sectionId) {
+            link.classList.add("active-link");
+          }
+        });
       }
 
-      let sideActivity = document.getElementById("sidebarActivity");
-      let moreLink = document.getElementById("showMoreLink");
+      navLinks.forEach(function (link) {
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+          switchSection(this.getAttribute("data-section"));
+        });
+      });
 
+      mobileNavLinks.forEach(function (link) {
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+          switchSection(this.getAttribute("data-section"));
+        });
+      });
+      // ──────────────────────────────────────────────────────────────
+
+      var profileMenu = document.getElementById("profileMenu");
+      function toggleMenu() {
+        if (profileMenu) {
+          profileMenu.classList.toggle("open-menu");
+        }
+      }
+
+      var sideActivity = document.getElementById("sidebarActivity");
+      var moreLink = document.getElementById("showMoreLink");
       function toggleActivity() {
+        if (!sideActivity) {
+          return;
+        }
         sideActivity.classList.toggle("open-activity");
         if (sideActivity.classList.contains("open-activity")) {
           moreLink.innerHTML = "Show less <b>-</b>";
@@ -425,127 +628,139 @@
       }
 
       // Create Post functionality
-      const postBtn = document.getElementById('postButton');
-      const postTextarea = document.getElementById('postContent');
-      const startPostBtn = document.getElementById('startPost');
-      const createPostWrapper = document.getElementById('createPost');
+      var postBtn = document.getElementById("postButton");
+      var postTextarea = document.getElementById("postContent");
+      var startPostBtn = document.getElementById("startPost");
+      var createPostWrapper = document.getElementById("createPost");
 
       function expandCreate() {
-        createPostWrapper.classList.add('expanded');
-        postTextarea.style.display = 'block';
-        postBtn.classList.remove('hidden');
+        createPostWrapper.classList.add("expanded");
+        postTextarea.style.display = "block";
+        postBtn.classList.remove("hidden");
         postTextarea.focus();
-        // slide main content and right sidebar together
-        const contentArea = document.querySelector('.content-area');
+        var contentArea = document.querySelector(".content-area");
         if (contentArea) {
-          const leftSidebar = document.querySelector('.left-sidebar');
-          const mainContent = document.querySelector('.main-content');
-          const defaultGap = 24;
-          const gap = mainContent ? parseInt(getComputedStyle(mainContent).marginLeft) || defaultGap : defaultGap;
-          const leftWidth = leftSidebar ? leftSidebar.offsetWidth : 216;
-          const offset = leftWidth + gap;
-          contentArea.style.setProperty('--slide-x', offset + 'px');
-          contentArea.classList.add('shifted');
+          var leftSidebar = document.querySelector(".left-sidebar");
+          var mainContent = document.querySelector(".main-content");
+          var defaultGap = 24;
+          var gap = mainContent
+            ? parseInt(getComputedStyle(mainContent).marginLeft) || defaultGap
+            : defaultGap;
+          var leftWidth = leftSidebar ? leftSidebar.offsetWidth : 216;
+          var offset = leftWidth + gap;
+          contentArea.style.setProperty("--slide-x", offset + "px");
+          contentArea.classList.add("shifted");
         }
       }
 
-      startPostBtn && startPostBtn.addEventListener('click', expandCreate);
-      startPostBtn && startPostBtn.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); expandCreate(); }
-      });
+      if (startPostBtn) {
+        startPostBtn.addEventListener("click", expandCreate);
+        startPostBtn.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            expandCreate();
+          }
+        });
+      }
+
+      function escapeHtml(str) {
+        return str
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
 
       function createPost() {
-        const content = postTextarea.value.trim();
-        if (!content) return;
+        var content = postTextarea.value.trim();
+        if (!content) {
+          return;
+        }
 
-        const authorName = document.querySelector('.sidebar-profile-info h1')?.textContent || 'You';
-        const authorTitle = document.querySelector('.sidebar-profile-info h3')?.textContent || '';
-        const authorImg = document.querySelector('.sidebar-profile-info img')?.getAttribute('src') || 'images/user-2.png';
+        var postHtml =
+          '<div class="post">' +
+          '<div class="post-author">' +
+          '<img src="images/user-2.png" alt="Jane Smith" />' +
+          "<div>" +
+          "<h2>Jane Smith</h2>" +
+          "<small>Software Engineer at Google</small>" +
+          "<small>Just now</small>" +
+          "</div>" +
+          "</div>" +
+          "<p>" +
+          escapeHtml(content) +
+          "</p>" +
+          '<div class="post-stats">' +
+          "<div>" +
+          '<img src="images/thumbsup.png" alt="Like" />' +
+          '<img src="images/love.png" alt="Love" />' +
+          '<img src="images/clap.png" alt="Clap" />' +
+          '<span class="liked-users">You</span>' +
+          "</div>" +
+          "<div><span>0 comments &middot; 0 shares</span></div>" +
+          "</div>" +
+          '<div class="post-activity">' +
+          "<div>" +
+          '<img src="images/user-2.png" alt="User" class="post-activity-user-icon" />' +
+          '<img src="images/down-arrow.png" alt="More" class="post-activity-arrow-icon" />' +
+          "</div>" +
+          '<div class="post-activity-link"><img src="images/like.png" alt="Like" /><span>Like</span></div>' +
+          '<div class="post-activity-link"><img src="images/comment.png" alt="Comment" /><span>Comment</span></div>' +
+          '<div class="post-activity-link"><img src="images/share.png" alt="Share" /><span>Share</span></div>' +
+          '<div class="post-activity-link"><img src="images/send.png" alt="Send" /><span>Send</span></div>' +
+          "</div>" +
+          "</div>";
 
-        const postHtml = `
-        <div class="post">
-          <div class="post-author">
-            <img src="${authorImg}" />
-            <div>
-              <h1>${authorName}</h1>
-              <small>${authorTitle}</small>
-              <small>Just now</small>
-            </div>
-          </div>
-          <p>${escapeHtml(content)}</p>
-          <div class="post-stats">
-            <div>
-              <img src="images/thumbsup.png" />
-              <img src="images/love.png" />
-              <img src="images/clap.png" />
-              <span class="liked-users">You</span>
-            </div>
-            <div>
-              <span>0 comments &middot; 0 shares</span>
-            </div>
-          </div>
-          <div class="post-activity">
-            <div>
-              <img src="images/user-2.png" class="post-activity-user-icon" />
-              <img src="images/down-arrow.png" class="post-activity-arrow-icon" />
-            </div>
-            <div class="post-activity-link">
-              <img src="images/like.png" />
-              <span>Like</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/comment.png" />
-              <span>Comment</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/share.png" />
-              <span>Share</span>
-            </div>
-            <div class="post-activity-link">
-              <img src="images/send.png" />
-              <span>Send</span>
-            </div>
-          </div>
-        </div>
-        `;
-
-        const createPostEl = document.querySelector('.create-post');
-        createPostEl.insertAdjacentHTML('afterend', postHtml);
-        postTextarea.value = '';
+        var createPostEl = document.querySelector(".create-post");
+        createPostEl.insertAdjacentHTML("afterend", postHtml);
+        postTextarea.value = "";
         postTextarea.focus();
-        // collapse create UI
-        createPostWrapper.classList.remove('expanded');
-        postTextarea.style.display = 'none';
-        postBtn.classList.add('hidden');
-        // remove slide
-        const contentArea = document.querySelector('.content-area');
+        createPostWrapper.classList.remove("expanded");
+        postTextarea.style.display = "none";
+        postBtn.classList.add("hidden");
+        var contentArea = document.querySelector(".content-area");
         if (contentArea) {
-          contentArea.classList.remove('shifted');
-          contentArea.style.removeProperty('--slide-x');
+          contentArea.classList.remove("shifted");
+          contentArea.style.removeProperty("--slide-x");
         }
       }
 
-      // Simple HTML escape to avoid injecting raw HTML
-      function escapeHtml(str) {
-        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+      if (postBtn) {
+        postBtn.addEventListener("click", createPost);
       }
-
-      postBtn && postBtn.addEventListener('click', createPost);
-      postTextarea && postTextarea.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-          e.preventDefault();
-          createPost();
-        }
-      });
+      if (postTextarea) {
+        postTextarea.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+            e.preventDefault();
+            createPost();
+          }
+        });
+      }
     </script>
-    
+
     <!-- Mobile bottom navigation -->
-    <div class="mobile-bottom-nav" role="navigation" aria-label="Mobile navigation">
-      <a href="#" class="mb-home"><i class="fa-solid fa-house"></i><span>Home</span></a>
-      <a href="#" class="mb-network"><i class="fa-solid fa-user"></i><span>My Network</span></a>
-      <a href="#" class="mb-post"><i class="fa-solid fa-plus-circle"></i><span>Post</span></a>
-      <a href="#" class="mb-notif"><i class="fa-solid fa-bell"></i><span>Notifications</span></a>
-      <a href="#" class="mb-jobs"><i class="fa-solid fa-briefcase"></i><span>Jobs</span></a>
-    </div>
+    <nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+      <a href="#" data-section="home" class="active-link"
+        ><i class="fa-solid fa-house" aria-hidden="true"></i
+        ><span>Home</span></a
+      >
+      <a href="#" data-section="mynetwork"
+        ><i class="fa-solid fa-user" aria-hidden="true"></i
+        ><span>My Network</span></a
+      >
+      <a href="#" data-section="home"
+        ><i class="fa-solid fa-plus-circle" aria-hidden="true"></i
+        ><span>Post</span></a
+      >
+      <a href="#" data-section="notifications"
+        ><i class="fa-solid fa-bell" aria-hidden="true"></i
+        ><span>Notifications</span></a
+      >
+      <a href="#" data-section="jobs"
+        ><i class="fa-solid fa-briefcase" aria-hidden="true"></i
+        ><span>Jobs</span></a
+      >
+    </nav>
   </body>
 </html>
