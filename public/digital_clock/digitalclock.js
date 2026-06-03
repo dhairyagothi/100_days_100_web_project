@@ -775,8 +775,13 @@ function escapeHtml(text) {
 function applyDarkMode(enabled) {
   isDarkMode = enabled;
   document.body.classList.toggle("dark-mode", enabled);
-  const btn = document.getElementById("dark-mode-toggle");
-  if (btn) btn.textContent = enabled ? "☀️" : "🌙";
+  document.querySelectorAll(".dark-mode-btn").forEach(btn => {
+    if (btn.id === "dark-mode-toggle") {
+      btn.textContent = enabled ? "☀️" : "🌙";
+    } else {
+      btn.textContent = enabled ? "☀️ Light Mode" : "🌙 Dark Mode";
+    }
+  });
   localStorage.setItem("clockDarkMode", enabled);
 }
 
