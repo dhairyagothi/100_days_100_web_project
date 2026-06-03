@@ -1,15 +1,14 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>To-Do List | 100 Days 100 Projects</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="todolist.css" />
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
@@ -18,6 +17,7 @@
     referrerpolicy="no-referrer"
   ></script>
 </head>
+
 <body>
 <!-- App Container -->
 <div class="app-container">
@@ -30,42 +30,93 @@
       </h2>
     </div>
 
-    <nav class="sidebar-nav">
-      <a href="#" id="nav-home" class="sidebar-nav-item active" onclick="showSection('home'); return false;">
-        <span class="nav-icon">🏠</span>
-        Home
-      </a>
-      <a href="#" id="nav-documents" class="sidebar-nav-item" onclick="showSection('documents'); return false;">
-        <span class="nav-icon">📄</span>
-        Documents
-      </a>
-      <a href="#" id="nav-dashboard" class="sidebar-nav-item" onclick="showSection('dashboard'); return false;">
-        <span class="nav-icon">📊</span>
-        Dashboard
-      </a>
-      <a href="#" id="nav-achievements" class="sidebar-nav-item" onclick="showSection('achievements'); return false;">
-        <span class="nav-icon">🏅</span>
-        Achievements
-      </a>
-      <a href="#" id="nav-calendar" class="sidebar-nav-item" onclick="showSection('calendar'); return false;">
-        <span class="nav-icon">📅</span>
-        Calendar
-      </a>
-      <a href="#" id="nav-statistics" class="sidebar-nav-item" onclick="showSection('statistics'); return false;">
-        <span class="nav-icon">📈</span>
-        Statistics
-      </a>
-    </nav>
+<!-- Header with Navigation -->
+<header>
+  <nav class="navbar-container" aria-label="Main Navigation">
+    <ul class="navbar">
+      <li class="nav-left">
+        <ul>
+          <li>
+            <a
+              href="#"
+              id="nav-home"
+              onclick="showHome(); return false;"
+              aria-current="page"
+            >🏠 Home</a>
+          </li>
+          <li>
+            <a
+              href="#"
+              id="nav-documents"
+              onclick="showDocuments(); return false;"
+            >📄 Documents</a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-right">
+        <span class="theme-label">Theme</span>
+        <ul>
+          <li>
+            <button id="colour1" class="theme-btn" data-theme="theme1" aria-label="Sunset Theme"></button>
+          </li>
+          <li>
+            <button id="colour2" class="theme-btn" data-theme="theme2" aria-label="Ocean Theme"></button>
+          </li>
+          <li>
+            <button id="colour3" class="theme-btn" data-theme="theme3" aria-label="Forest Theme"></button>
+          </li>
+          <li>
+            <button id="colour4" class="theme-btn" data-theme="theme4" aria-label="Midnight Theme"></button>
+          </li>
+          <li>
+            <button id="colour5" class="theme-btn" data-theme="theme5" aria-label="Aurora Theme"></button>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</header>
 
-    <div class="sidebar-footer">
-      <a href="/" class="sidebar-back-btn">
-        <span class="nav-icon">🏠</span>
-        Back to Home
-      </a>
-      <button id="savepdf" class="sidebar-pdf-btn" onclick="saveAsPDF()">
-        <span class="nav-icon">📥</span>
-        Save as PDF
-      </button>
+      <!-- Input Area -->
+      <form class="input-panel" id="task-form" novalidate>
+        <div class="input-group">
+          <label for="task-category" class="sr-only">Choose task category</label>
+          <select id="task-category" aria-label="Choose task category">
+            <option value="" disabled selected>📂 Category</option>
+            <option value="Work">💼 Work</option>
+            <option value="Personal">🧑 Personal</option>
+            <option value="Urgent">⚡ Urgent</option>
+            <option value="Fitness">💪 Fitness</option>
+            <option value="Miscellaneous">📌 Miscellaneous</option>
+          </select>
+          <label for="task" class="sr-only">Task description</label>
+          <input type="text" id="task" placeholder="What do you need to do?" autocomplete="off" />
+          <button type="submit" id="submittask">➕ Add Task</button>
+        </div>
+        <div class="input-actions">
+          <button type="button" id="savepdf">📥 Save as PDF</button>
+          <button type="button" id="cleardone" hidden>🧹 Clear Done</button>
+        </div>
+      </form>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar" id="filter-bar" role="group" aria-label="Filter tasks">
+        <button class="filter-btn active" data-filter="all" id="filter-all">All</button>
+        <button class="filter-btn" data-filter="pending" id="filter-pending">⏳ Pending</button>
+        <button class="filter-btn" data-filter="done" id="filter-done">✅ Done</button>
+        <button class="filter-btn" data-filter="Work" id="filter-work">💼 Work</button>
+        <button class="filter-btn" data-filter="Personal" id="filter-personal">🧑 Personal</button>
+        <button class="filter-btn" data-filter="Urgent" id="filter-urgent">⚡ Urgent</button>
+        <button class="filter-btn" data-filter="Fitness" id="filter-fitness">💪 Fitness</button>
+        <button class="filter-btn" data-filter="Miscellaneous" id="filter-misc">📌 Misc</button>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" id="emptyState" role="status">
+        <div class="empty-icon" aria-hidden="true">📋</div>
+        <p class="empty-title">No tasks yet</p>
+        <p class="empty-desc">Add your first task above and get things done!</p>
+      </div>
     </div>
   </aside>
 
@@ -365,4 +416,5 @@
 
 <script src="todolist.js"></script>
 </body>
+
 </html>
