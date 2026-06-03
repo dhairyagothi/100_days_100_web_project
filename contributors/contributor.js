@@ -18,9 +18,10 @@ const MAX_RETRIES = 3;
 
 closeModal?.addEventListener(
   'click',
-
   () => {
-    modal.style.display = 'none';
+    if (modal) {
+      modal.style.display = 'none';
+    }
   }
 );
 
@@ -88,9 +89,8 @@ async function githubFetch(url, options = {}, retries = MAX_RETRIES) {
 
 window.addEventListener(
   'click',
-
   (e) => {
-    if (e.target === modal) {
+    if (modal && e.target === modal) {
       modal.style.display = 'none';
     }
   }
@@ -128,110 +128,116 @@ function loadCache(key, maxAge = 1000 * 60 * 10) {
   }
 }
 
-async function openProfile(username){
+async function openProfile(username) {
 
-    modal.style.display = "flex";
-    modal.style.position = "fixed";
+  if (!modal || !modalBody) {
+    console.error('Modal elements not found');
+    return;
+  }
 
-    modal.style.top = "0";
+  modal.style.display = "flex";
+  modal.style.position = "fixed";
 
-    modal.style.left = "0";
+  modal.style.top = "0";
 
-    modal.style.zIndex = "999999999";
+  modal.style.left = "0";
 
-    modal.style.justifyContent = "center";
+  modal.style.zIndex = "999999999";
 
-    modal.style.alignItems = "center";
+  modal.style.justifyContent = "center";
 
-    modalBody.innerHTML =
+  modal.style.alignItems = "center";
+
+  modalBody.innerHTML =
     "<p>Loading...</p>";
 
-    try{
+  try {
 
-        const response =
-        await fetch(
+    const response =
+      await fetch(
         `https://api.github.com/users/${username}`
-        );
+      );
 
-        if(!response.ok){
+    if (!response.ok) {
 
-            modalBody.innerHTML = `
-            <h2>${username}</h2>
+      modalBody.textContent = '';
 
-            <p>
-            Profile unavailable
-            </p>
-            `;
+      const heading = document.createElement('h2');
+      heading.textContent = username;
 
-            return;
-        }
+      const message = document.createElement('p');
+      message.textContent = 'Profile unavailable';
 
-        const user =
-        await response.json();
+      modalBody.appendChild(heading);
+      modalBody.appendChild(message);
 
-
-        modalBody.innerHTML = `
-
-        <img
-        src="${user.avatar_url}"
-        style="
-        width:120px;
-        height:120px;
-        border-radius:50%;
-        ">
-
-        <h2>
-        ${user.name || username}
-        </h2>
-
-        <p>
-        ${user.bio || "No bio available"}
-        </p>
-
-        <p>
-        Followers:
-        ${user.followers}
-        </p>
-
-        <p>
-        Repositories:
-        ${user.public_repos}
-        </p>
-
-        <p>
-        Location:
-        ${user.location || "Unknown"}
-        </p>
-
-        ${
-        user.html_url
-        ?
-
-        `<a
-        href="${user.html_url}"
-        target="_blank"
-        class="github-btn">
-
-        GitHub Profile
-
-        </a>`
-
-        :
-
-        ""
-        }
-
-        `;
-
+      return;
     }
 
-    catch(err){
+    const user =
+      await response.json();
 
-        modalBody.innerHTML =
-        "<p>Failed to load profile</p>";
 
-        console.log(err);
+    modalBody.textContent = '';
+
+    // Avatar
+    const avatar = document.createElement('img');
+    avatar.src = user.avatar_url;
+    avatar.alt = user.name || username;
+    avatar.style.width = '120px';
+    avatar.style.height = '120px';
+    avatar.style.borderRadius = '50%';
+
+    // Name
+    const name = document.createElement('h2');
+    name.textContent = user.name || username;
+
+    // Bio
+    const bio = document.createElement('p');
+    bio.textContent = user.bio || 'No bio available';
+
+    // Followers
+    const followers = document.createElement('p');
+    followers.textContent = `Followers: ${user.followers}`;
+
+    // Repositories
+    const repos = document.createElement('p');
+    repos.textContent = `Repositories: ${user.public_repos}`;
+
+    // Location
+    const location = document.createElement('p');
+    location.textContent = `Location: ${user.location || 'Unknown'}`;
+
+    // Append elements
+    modalBody.appendChild(avatar);
+    modalBody.appendChild(name);
+    modalBody.appendChild(bio);
+    modalBody.appendChild(followers);
+    modalBody.appendChild(repos);
+    modalBody.appendChild(location);
+
+    // GitHub Profile Link
+    if (user.html_url) {
+      const profileLink = document.createElement('a');
+
+      profileLink.href = user.html_url;
+      profileLink.target = '_blank';
+      profileLink.rel = 'noopener noreferrer';
+      profileLink.className = 'github-btn';
+      profileLink.textContent = 'GitHub Profile';
+
+      modalBody.appendChild(profileLink);
     }
+
+  }
+
+  catch (err) {
+
+    modalBody.innerHTML =
+      "<p>Failed to load profile</p>";
+
+    console.log(err);
+  }
 
 }
 // Use global REPO_OWNER and REPO_NAME defined in index.js
@@ -345,77 +351,79 @@ function renderContributors(data) {
 
     card.className = 'contributor-card';
 
-    card.innerHTML = `
+    // Badge
+    if (badge) {
+      const badgeImg = document.createElement('img');
+      badgeImg.className = 'rank-badge';
+      badgeImg.src = badge;
+      badgeImg.alt = 'Rank badge';
+      card.appendChild(badgeImg);
+    }
 
-${
-  badge
-    ? `<img
-src="${badge}"
-class="rank-badge"
->`
-    : ''
-}
+    // Avatar
+    const avatar = document.createElement('img');
+    avatar.src = contributor.avatar_url;
+    avatar.alt = contributor.login;
+    card.appendChild(avatar);
 
-<img
-src="${contributor.avatar_url}"
+    // Name
+    const name = document.createElement('h3');
+    name.textContent = contributor.login;
+    card.appendChild(name);
 
-alt="${contributor.login}">
+    // Stats
+    const stats = document.createElement('div');
+    stats.className = 'contributor-stats';
 
-            <h3>${contributor.login}</h3>
+    const stat = document.createElement('div');
+    stat.className = 'stat';
 
-            <div class="contributor-stats">
+    const value = document.createElement('span');
+    value.className = 'value';
+    value.textContent = contributor.contributions;
 
-                <div class="stat">
+    const label = document.createElement('span');
+    label.className = 'label';
+    label.textContent = 'Commits';
 
-                    <span class="value">
-                        ${contributor.contributions}
-                    </span>
+    stat.appendChild(value);
+    stat.appendChild(label);
+    stats.appendChild(stat);
+    card.appendChild(stats);
 
-                    <span class="label">
-                        Commits
-                    </span>
+    // Links container
+    const links = document.createElement('div');
+    links.className = 'contributor-links';
 
-                </div>
+    // Details button
+    const detailsBtn = document.createElement('button');
+    detailsBtn.className = 'details-btn';
+    detailsBtn.dataset.user = contributor.login;
+    detailsBtn.textContent = 'View Details';
 
-            </div>
+    detailsBtn.addEventListener('click', () => {
+      openProfile(contributor.login);
+    });
 
-           <div class="contributor-links">
+    // GitHub profile link
+    const profileLink = document.createElement('a');
+    profileLink.href = contributor.html_url;
+    profileLink.target = '_blank';
+    profileLink.rel = 'noopener noreferrer';
+    profileLink.className = 'github-btn';
 
-    <button
-        class="details-btn"
-        data-user="${contributor.login}"
-    >
+    const icon = document.createElement('i');
+    icon.className = 'fab fa-github';
 
-        View Details
+    profileLink.appendChild(icon);
+    profileLink.append(' Profile');
 
-    </button>
+    links.appendChild(detailsBtn);
+    links.appendChild(profileLink);
 
-    <a
-        href="${contributor.html_url}"
-        target="_blank"
-        class="github-btn"
-    >
-
-        <i class="fab fa-github"></i>
-        Profile
-
-    </a>
-
-</div>
-        `;
+    card.appendChild(links);
 
     fragment.appendChild(card);
-    const detailsButton = card.querySelector('.details-btn');
-
-    if (detailsButton) {
-      detailsButton.addEventListener(
-        'click',
-
-        () => {
-    openProfile(contributor.login);
-        }
-      );
-    }
   });
 
   contributorsContainer.appendChild(fragment);
@@ -437,12 +445,11 @@ function renderStargazers(stargazers) {
 
     starItem.title = stargazer.login;
 
-    starItem.innerHTML = `
-      <img
-        src="${stargazer.avatar_url}"
-        alt="${stargazer.login}"
-      >
-    `;
+    const img = document.createElement('img');
+    img.src = stargazer.avatar_url;
+    img.alt = stargazer.login;
+
+    starItem.appendChild(img);
 
     stargazersContainer.appendChild(starItem);
   });
@@ -494,7 +501,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Repo stats are now handled by index.js
   fetchContributors();
   fetchStargazers();
-  
+
   document
     .getElementById('retryContributors')
     ?.addEventListener('click', fetchContributors);

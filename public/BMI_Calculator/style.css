@@ -210,7 +210,7 @@ select {
 .secondary-btn {
   height: 50px;
 
-  border-radius: 5px;
+  
 
   text-transform: uppercase;
 
@@ -224,6 +224,7 @@ select {
 }
 
 .primary-btn {
+  margin-top: 14px;
   background: var(--ink);
 
   color: var(--card);
@@ -236,7 +237,7 @@ select {
 
   color: var(--ink3);
 
-  border: 1px solid var(--rule);
+  border: none;
 }
 
 .results {
@@ -267,6 +268,7 @@ select {
   text-transform: uppercase;
 
   letter-spacing: 0.14em;
+  
 
   color: var(--ink3);
 
@@ -275,7 +277,7 @@ select {
 
 .metric-value {
   font-size: 76px;
-
+  color: #4f8d32;
   font-family: var(--serif);
 
   font-style: italic;
