@@ -34,8 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
     semesterFilter.addEventListener("change", filterBooks);
 
 
-    // --- 2. DYNAMIC FORM SUBMISSION WITH PRICE (SECURE VERSION) ---
-    // Using strict document.createElement to comply with GitHub CodeQL Quality Guard (Prevents XSS)
+    // --- 2. DYNAMIC FORM SUBMISSION WITH PRICE (100% SECURE VERSION) ---
+    // Zero innerHTML usage to strictly bypass CodeQL Quality Guard alerts
     addBookForm.addEventListener("submit", (e) => {
         e.preventDefault();
 
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const priceDisplay = parseInt(priceVal) === 0 ? "FREE Giveaway" : `Price: ₹${priceVal}`;
 
-        // Creating the main card element safely
+        // Creating the main card element
         const newCard = document.createElement("div");
         newCard.classList.add("book-card");
         newCard.setAttribute("data-semester", semester);
@@ -84,19 +84,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const hr = document.createElement("hr");
 
-        // Owner element safely setting plain text node
+        // Secure Owner Section (No innerHTML)
         const pOwner = document.createElement("p");
         pOwner.classList.add("owner");
-        pOwner.innerHTML = `<i class="fa-solid fa-user"></i> Owner: `;
-        const ownerTextNode = document.createTextNode(ownerVal);
-        pOwner.appendChild(ownerTextNode);
+        
+        const ownerIcon = document.createElement("i");
+        ownerIcon.className = "fa-solid fa-user";
+        
+        pOwner.appendChild(ownerIcon);
+        pOwner.appendChild(document.createTextNode(` Owner: ${ownerVal}`));
 
-        // Contact element safely setting plain text node
+        // Secure Contact Section (No innerHTML)
         const pContact = document.createElement("p");
         pContact.classList.add("contact");
-        pContact.innerHTML = `<i class="fa-solid fa-envelope"></i> `;
-        const emailTextNode = document.createTextNode(emailVal);
-        pContact.appendChild(emailTextNode);
+        
+        const contactIcon = document.createElement("i");
+        contactIcon.className = "fa-solid fa-envelope";
+        
+        pContact.appendChild(contactIcon);
+        pContact.appendChild(document.createTextNode(` ${emailVal}`));
 
         // Dynamic action button
         const btn = document.createElement("button");
@@ -105,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.setAttribute("data-email", emailVal);
         btn.textContent = "Buy / Negotiate";
 
-        // Structured appending to safely build the component tree
+        // Structured appending to safely build component tree
         infoDiv.appendChild(h3);
         infoDiv.appendChild(pAuthor);
         infoDiv.appendChild(pSubject);
