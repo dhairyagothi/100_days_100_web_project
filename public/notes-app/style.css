@@ -1,3 +1,6 @@
+/* =====================
+   CSS VARIABLES
+   ===================== */
 :root {
   color-scheme: dark;
   --bg: #10131a;
@@ -28,6 +31,9 @@ body.light {
   --shadow: 0 22px 60px rgba(53, 70, 94, 0.15);
 }
 
+/* =====================
+   RESET & BASE
+   ===================== */
 * {
   box-sizing: border-box;
 }
@@ -35,6 +41,7 @@ body.light {
 body {
   margin: 0;
   min-height: 100vh;
+  overflow-x: hidden;
   background:
     radial-gradient(
       circle at 10% 0%,
@@ -70,6 +77,24 @@ label.file-action {
   cursor: pointer;
 }
 
+/* =====================
+   UTILITIES
+   ===================== */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* =====================
+   BACK LINK
+   ===================== */
 .back-link {
   position: fixed;
   top: 1rem;
@@ -87,12 +112,19 @@ label.file-action {
   box-shadow: var(--shadow);
 }
 
+/* =====================
+   APP SHELL (sidebar + workspace grid)
+   ===================== */
 .app-shell {
   display: grid;
   grid-template-columns: 18rem minmax(0, 1fr);
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
+/* =====================
+   SIDEBAR
+   ===================== */
 .sidebar {
   position: sticky;
   top: 0;
@@ -104,6 +136,7 @@ label.file-action {
   border-right: 1px solid var(--line);
   background: color-mix(in srgb, var(--panel) 80%, transparent);
   backdrop-filter: blur(20px);
+  overflow-y: auto;
 }
 
 .brand {
@@ -117,6 +150,7 @@ label.file-action {
   height: 3.2rem;
   border-radius: 0.8rem;
   object-fit: cover;
+  flex-shrink: 0;
   box-shadow: 0 12px 30px rgba(45, 212, 191, 0.18);
 }
 
@@ -141,6 +175,9 @@ label.file-action {
   font-size: 1.35rem;
 }
 
+/* =====================
+   BUTTONS (shared)
+   ===================== */
 .primary-action,
 .secondary-action,
 .ghost-action,
@@ -179,6 +216,9 @@ body.light .primary-action {
   display: none;
 }
 
+/* =====================
+   SIDEBAR NAV
+   ===================== */
 .nav-list {
   display: grid;
   gap: 0.55rem;
@@ -216,6 +256,9 @@ body.light .primary-action {
   text-align: center;
 }
 
+/* =====================
+   TAGS
+   ===================== */
 .tag-panel {
   padding-top: 0.25rem;
 }
@@ -248,10 +291,14 @@ body.light .primary-action {
   color: var(--primary);
 }
 
+/* =====================
+   SIDEBAR ACTIONS
+   ===================== */
 .sidebar-actions {
   display: grid;
   gap: 0.55rem;
   margin-top: auto;
+  padding-top: 0.5rem;
 }
 
 #importInput {
@@ -262,22 +309,29 @@ body.light .primary-action {
   pointer-events: none;
 }
 
+/* =====================
+   WORKSPACE
+   ===================== */
 .workspace {
   min-width: 0;
   padding: 2rem;
 }
 
+/* =====================
+   TOPBAR
+   ===================== */
 .topbar {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 1.25rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .topbar h2 {
-  font-size: clamp(2rem, 4vw, 3.8rem);
-  line-height: 1;
+  font-size: clamp(1.75rem, 3.5vw, 3.8rem);
+  line-height: 1.1;
+  word-break: break-word;
 }
 
 .topbar p {
@@ -289,8 +343,12 @@ body.light .primary-action {
   display: flex;
   align-items: center;
   gap: 0.7rem;
+  flex-shrink: 0;
 }
 
+/* =====================
+   SEARCH BOX
+   ===================== */
 .search-box {
   display: grid;
   gap: 0.25rem;
@@ -316,6 +374,9 @@ body.light .primary-action {
   text-transform: none;
 }
 
+/* =====================
+   SECONDARY / THEME BUTTONS
+   ===================== */
 .theme-toggle,
 .secondary-action,
 .icon-button,
@@ -327,13 +388,17 @@ body.light .primary-action {
 
 .theme-toggle {
   padding: 0 0.9rem;
+  white-space: nowrap;
 }
 
+/* =====================
+   QUICK STATS
+   ===================== */
 .quick-stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.8rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .quick-stats article {
@@ -361,12 +426,18 @@ body.light .primary-action {
   white-space: nowrap;
 }
 
+/* =====================
+   NOTES GRID
+   ===================== */
 .notes-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
   gap: 1rem;
 }
 
+/* =====================
+   NOTE CARD
+   ===================== */
 .note-card,
 .empty-state {
   min-height: 17rem;
@@ -451,28 +522,32 @@ body.light .primary-action {
   display: flex;
   flex-direction: column;
   position: relative;
-}
-
-.card-meta,
-.card-actions {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem;
-  width: 100%;
+  min-height: 0;
 }
 
 .card-meta {
+  display: flex;
   justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
   margin-top: 0.35rem;
   color: var(--muted);
   font-size: 0.78rem;
   font-weight: 700;
 }
 
+.card-meta span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .note-card h3 {
-  margin: 1rem 0 0.7rem;
+  margin: 0.75rem 0 0.5rem;
   font-size: 1.2rem;
   letter-spacing: 0;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .note-card p {
@@ -482,15 +557,23 @@ body.light .primary-action {
   margin: 0;
   color: color-mix(in srgb, var(--text) 82%, var(--muted));
   line-height: 1.6;
+  word-break: break-word;
+  overflow-wrap: anywhere;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 6;
 }
 
+/* =====================
+   NOTE CARD FOOTER
+   ===================== */
 .note-card footer {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
   align-items: center;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line);
 }
 
 .badge {
@@ -504,11 +587,27 @@ body.light .primary-action {
   font-weight: 800;
   text-overflow: ellipsis;
   white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* =====================
+   CARD ACTIONS
+   ===================== */
+.card-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
 }
 
 .card-button {
   width: 100%;
   justify-content: center;
+  font-size: 0.82rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .card-button.active {
@@ -520,6 +619,9 @@ body.light .primary-action {
   color: var(--danger);
 }
 
+/* =====================
+   EMPTY STATE
+   ===================== */
 .empty-state {
   grid-column: 1 / -1;
   display: grid;
@@ -615,7 +717,7 @@ body.light .primary-action {
 .note-modal form {
   display: grid;
   gap: 0.8rem;
-  padding: 1.2rem;
+  padding: 1.5rem;
 }
 
 .modal-header,
@@ -635,6 +737,7 @@ body.light .primary-action {
 .icon-button {
   width: 2.5rem;
   padding: 0;
+  flex-shrink: 0;
 }
 
 .note-modal label {
@@ -676,6 +779,7 @@ body.light .primary-action {
 
 .form-row > div {
   flex: 1;
+  min-width: 0;
 }
 
 .checkbox-row {
@@ -692,6 +796,9 @@ body.light .primary-action {
   border-radius: 0.5rem;
   background: var(--bg-soft);
   color: var(--text);
+  white-space: nowrap;
+  flex: 1 1 auto;
+  min-width: max-content;
 }
 
 .secondary-action {
@@ -796,7 +903,7 @@ body.light .primary-action {
 }
 
 /* =====================
-   RESPONSIVE
+   RESPONSIVE — TABLET (≤980px)
    ===================== */
 @media (max-width: 980px) {
   .app-shell {
@@ -807,16 +914,21 @@ body.light .primary-action {
     position: static;
     height: auto;
     padding: 4.5rem 1rem 1rem;
+    overflow-y: visible;
   }
 
   .workspace {
-    padding: 1rem;
+    padding: 1.25rem;
   }
 
-  .topbar,
-  .topbar-actions {
-    align-items: stretch;
+  .topbar {
     flex-direction: column;
+    align-items: stretch;
+  }
+
+  .topbar-actions {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .search-box {
@@ -828,21 +940,76 @@ body.light .primary-action {
     align-items: center;
     justify-content: center;
   }
+
+  .topbar h2 {
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+  }
+
+  .notes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  }
 }
 
+/* =====================
+   RESPONSIVE — SMALL TABLET (≤768px)
+   ===================== */
+@media (max-width: 768px) {
+  .quick-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.6rem;
+  }
+
+  .quick-stats article {
+    min-height: 4.5rem;
+    padding: 0.75rem;
+  }
+
+  .quick-stats strong {
+    font-size: 1.2rem;
+  }
+
+  .notes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 0.8rem;
+  }
+
+  .note-card {
+    min-height: 14rem;
+  }
+
+  .card-actions {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.4rem;
+  }
+
+  .card-button {
+    min-height: 2.3rem;
+    font-size: 0.78rem;
+  }
+}
+
+/* =====================
+   RESPONSIVE — MOBILE (≤640px)
+   ===================== */
 @media (max-width: 640px) {
-  .quick-stats,
-  .form-row {
-    grid-template-columns: 1fr;
+  .workspace {
+    padding: 1rem;
   }
 
   .quick-stats {
-    display: grid;
+    grid-template-columns: 1fr;
   }
 
-  .form-row,
+  .form-row {
+    flex-direction: column;
+  }
+
   .modal-actions {
     flex-direction: column;
+  }
+
+  .modal-actions button {
+    width: 100%;
   }
 
   .notes-grid {
@@ -850,6 +1017,45 @@ body.light .primary-action {
   }
 
   .note-card {
-    min-height: 15rem;
+    min-height: auto;
+  }
+
+  .note-card footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .card-actions {
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+  }
+
+  .checkbox-row {
+    flex-direction: column;
+  }
+
+  .checkbox-row label {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .note-modal form {
+    padding: 1rem;
+  }
+
+  .topbar h2 {
+    font-size: 1.5rem;
+  }
+
+  .sidebar {
+    padding: 4rem 0.75rem 0.75rem;
+  }
+
+  .back-link {
+    top: 0.5rem;
+    left: 0.5rem;
+    min-height: 2.2rem;
+    padding: 0 0.7rem;
+    font-size: 0.88rem;
   }
 }

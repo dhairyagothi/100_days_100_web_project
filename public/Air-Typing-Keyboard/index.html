@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AirType AI — Type in mid-air using hand gestures. A futuristic gesture-controlled virtual keyboard powered by MediaPipe and WebRTC." />
+  <title>AirType AI — Gesture-Controlled Virtual Keyboard</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════
+       ONBOARDING OVERLAY
+       ═══════════════════════════════════════════════════════ -->
+  <div id="onboarding-overlay" class="onboarding-overlay">
+    <div class="onboarding-container">
+      <!-- Step indicators -->
+      <div class="onboarding-steps">
+        <span class="step-dot active" data-step="0"></span>
+        <span class="step-dot" data-step="1"></span>
+        <span class="step-dot" data-step="2"></span>
+        <span class="step-dot" data-step="3"></span>
+      </div>
+
+      <!-- Step 0: Welcome -->
+      <div class="onboarding-step active" id="onboard-step-0">
+        <div class="onboard-icon">✋</div>
+        <h1>Welcome to <span class="brand-gradient">AirType AI</span></h1>
+        <p class="onboard-subtitle">Type in mid-air using hand gestures. No keyboard needed.</p>
+        <p class="onboard-desc">Powered by advanced computer vision and AI-driven predictions, AirType transforms your webcam into a futuristic typing interface.</p>
+        <button class="btn-primary" id="onboard-next-0">Get Started</button>
+      </div>
+
+      <!-- Step 1: Camera Permission -->
+      <div class="onboarding-step" id="onboard-step-1">
+        <div class="onboard-icon">📷</div>
+        <h1>Camera Access</h1>
+        <p class="onboard-subtitle">We need your camera to track hand movements.</p>
+        <div class="permission-guide">
+          <div class="guide-item">
+            <span class="guide-number">1</span>
+            <span>Click <strong>"Allow"</strong> when your browser asks for camera permission</span>
+          </div>
+          <div class="guide-item">
+            <span class="guide-number">2</span>
+            <span>Ensure your hands are visible and well-lit</span>
+          </div>
+          <div class="guide-item">
+            <span class="guide-number">3</span>
+            <span>Keep about arm's length from the camera</span>
+          </div>
+        </div>
+        <button class="btn-primary" id="onboard-enable-camera">Enable Camera</button>
+        <p class="onboard-privacy">🔒 Video is processed locally. Nothing is sent to any server.</p>
+      </div>
+
+      <!-- Step 2: Gesture Tutorial -->
+      <div class="onboarding-step" id="onboard-step-2">
+        <div class="onboard-icon">🤌</div>
+        <h1>Learn the Gestures</h1>
+        <p class="onboard-subtitle">Master these gestures to type at the speed of thought.</p>
+        <div class="gesture-tutorial-grid">
+          <div class="gesture-card">
+            <div class="gesture-emoji">🤏</div>
+            <h3>Pinch</h3>
+            <p>Press a key</p>
+          </div>
+          <div class="gesture-card">
+            <div class="gesture-emoji">🤏🤏</div>
+            <h3>Double Pinch</h3>
+            <p>Press Enter</p>
+          </div>
+          <div class="gesture-card">
+            <div class="gesture-emoji">👈</div>
+            <h3>Swipe Left</h3>
+            <p>Delete character</p>
+          </div>
+          <div class="gesture-card">
+            <div class="gesture-emoji">👉</div>
+            <h3>Swipe Right</h3>
+            <p>Insert space</p>
+          </div>
+          <div class="gesture-card">
+            <div class="gesture-emoji">✊</div>
+            <h3>Hold Pinch</h3>
+            <p>Temporary Shift</p>
+          </div>
+          <div class="gesture-card">
+            <div class="gesture-emoji">🫳</div>
+            <h3>Long Pinch</h3>
+            <p>Toggle Caps Lock</p>
+          </div>
+        </div>
+        <button class="btn-primary" id="onboard-next-2">Got It</button>
+      </div>
+
+      <!-- Step 3: Ready -->
+      <div class="onboarding-step" id="onboard-step-3">
+        <div class="onboard-icon">🚀</div>
+        <h1>You're All Set!</h1>
+        <p class="onboard-subtitle">Raise your hand and start typing in the air.</p>
+        <div class="ready-tips">
+          <p>💡 <strong>Pro tip:</strong> Use the prediction bar above the keyboard for faster typing.</p>
+          <p>📊 Track your progress in the analytics panel.</p>
+          <p>⚙️ Adjust sensitivity and keyboard size in settings.</p>
+        </div>
+        <button class="btn-primary" id="onboard-start">Start Typing</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       ERROR MODAL
+       ═══════════════════════════════════════════════════════ -->
+  <div id="error-modal" class="error-modal hidden">
+    <div class="error-modal-content">
+      <div class="error-icon">⚠️</div>
+      <h2 id="error-title">Something went wrong</h2>
+      <p id="error-message">An unexpected error occurred.</p>
+      <button class="btn-primary" id="error-dismiss">Dismiss</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       TOP NAVIGATION BAR
+       ═══════════════════════════════════════════════════════ -->
+  <nav id="top-nav" class="top-nav">
+    <div class="nav-left">
+      <div class="logo" id="logo">
+        <span class="logo-icon">✋</span>
+        <span class="logo-text">AirType <span class="logo-ai">AI</span></span>
+      </div>
+    </div>
+    <div class="nav-center">
+      <div class="status-group">
+        <div class="status-pill" id="camera-status">
+          <span class="status-dot offline"></span>
+          <span class="status-label">Camera Off</span>
+        </div>
+        <div class="status-pill" id="hand-status">
+          <span class="status-dot offline"></span>
+          <span class="status-label">No Hand</span>
+        </div>
+        <div class="status-pill" id="fps-counter">
+          <span class="fps-value">0</span>
+          <span class="status-label">FPS</span>
+        </div>
+      </div>
+    </div>
+    <div class="nav-right">
+      <button class="nav-btn" id="btn-mode-toggle" title="Toggle Air Mouse Mode">
+        <span class="nav-btn-icon">🖱️</span>
+        <span class="nav-btn-label">Mouse</span>
+      </button>
+      <button class="nav-btn" id="btn-heatmap" title="Toggle Heatmap">
+        <span class="nav-btn-icon">🔥</span>
+        <span class="nav-btn-label">Heatmap</span>
+      </button>
+      <button class="nav-btn" id="btn-gesture-train" title="Gesture Training">
+        <span class="nav-btn-icon">🎯</span>
+        <span class="nav-btn-label">Train</span>
+      </button>
+      <button class="nav-btn" id="btn-settings" title="Settings">
+        <span class="nav-btn-icon">⚙️</span>
+        <span class="nav-btn-label">Settings</span>
+      </button>
+      <button class="nav-btn" id="btn-theme" title="Toggle Theme">
+        <span class="nav-btn-icon">🌙</span>
+        <span class="nav-btn-label">Theme</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SETTINGS PANEL (Slide-in)
+       ═══════════════════════════════════════════════════════ -->
+  <aside id="settings-panel" class="settings-panel hidden">
+    <div class="settings-header">
+      <h2>Settings</h2>
+      <button class="settings-close" id="settings-close">✕</button>
+    </div>
+    <div class="settings-body">
+      <div class="setting-group">
+        <label class="setting-label">Gesture Sensitivity</label>
+        <input type="range" id="sensitivity-slider" min="20" max="80" value="40" class="setting-range" />
+        <span class="setting-value" id="sensitivity-value">40</span>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">Keyboard Size</label>
+        <input type="range" id="kb-size-slider" min="60" max="120" value="100" class="setting-range" />
+        <span class="setting-value" id="kb-size-value">100%</span>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">Sound Effects</label>
+        <label class="toggle-switch">
+          <input type="checkbox" id="sound-toggle" checked />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">High Contrast Mode</label>
+        <label class="toggle-switch">
+          <input type="checkbox" id="contrast-toggle" />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">Audio Guidance</label>
+        <label class="toggle-switch">
+          <input type="checkbox" id="audio-guidance-toggle" />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">Show Predictions</label>
+        <label class="toggle-switch">
+          <input type="checkbox" id="predictions-toggle" checked />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════════════════════
+       GESTURE TRAINING MODAL
+       ═══════════════════════════════════════════════════════ -->
+  <div id="gesture-training-modal" class="gesture-training-modal hidden">
+    <div class="gesture-training-content">
+      <div class="gesture-training-header">
+        <h2>Gesture Training</h2>
+        <button class="settings-close" id="gesture-training-close">✕</button>
+      </div>
+      <div class="gesture-training-body">
+        <div class="training-gesture-display">
+          <div class="training-gesture-icon" id="training-gesture-icon">🤏</div>
+          <h3 id="training-gesture-name">Pinch to Click</h3>
+          <p id="training-gesture-desc">Bring your thumb and index finger together</p>
+        </div>
+        <div class="confidence-meter">
+          <div class="confidence-label">Gesture Confidence</div>
+          <div class="confidence-bar-bg">
+            <div class="confidence-bar-fill" id="confidence-bar-fill" style="width: 0%"></div>
+          </div>
+          <span class="confidence-value" id="confidence-value">0%</span>
+        </div>
+        <div class="training-controls">
+          <button class="btn-secondary" id="training-prev">← Previous</button>
+          <button class="btn-primary" id="training-next">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       MAIN APPLICATION LAYOUT
+       ═══════════════════════════════════════════════════════ -->
+  <main id="app-main" class="app-main">
+
+    <!-- Left Panel: Webcam + Hand Overlay -->
+    <section class="panel panel-webcam" id="panel-webcam">
+      <div class="panel-header">
+        <h2>📹 Camera Feed</h2>
+        <span class="badge" id="tracking-badge">Tracking</span>
+      </div>
+      <div class="webcam-container" id="webcam-container">
+        <video id="webcam-video" autoplay playsinline muted></video>
+        <canvas id="hand-canvas" class="hand-canvas"></canvas>
+        <canvas id="heatmap-canvas" class="heatmap-canvas hidden"></canvas>
+        <canvas id="vfx-canvas" class="vfx-canvas"></canvas>
+        <!-- Finger cursor overlay -->
+        <div id="finger-cursor" class="finger-cursor hidden">
+          <div class="finger-cursor-inner"></div>
+          <div class="finger-cursor-ring"></div>
+        </div>
+        <!-- No hand detected overlay -->
+        <div id="no-hand-overlay" class="no-hand-overlay hidden">
+          <div class="no-hand-content">
+            <span class="no-hand-icon">🤚</span>
+            <p>Raise your hand in front of the camera</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Panel: Text Editor + Predictions + Analytics -->
+    <section class="panel panel-editor" id="panel-editor">
+      <!-- Typed Text Editor -->
+      <div class="editor-container" id="editor-container">
+        <div class="panel-header">
+          <h2>📝 Text Editor</h2>
+          <div class="editor-actions">
+            <button class="editor-btn" id="btn-copy" title="Copy text">📋</button>
+            <button class="editor-btn" id="btn-clear" title="Clear text">🗑️</button>
+          </div>
+        </div>
+        <div class="editor-body">
+          <div class="typed-text" id="typed-text">
+            <span class="cursor-blink">|</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prediction Panel -->
+      <div class="prediction-panel" id="prediction-panel">
+        <div class="prediction-bar" id="prediction-bar">
+          <span class="prediction-label">Suggestions:</span>
+          <div class="prediction-chips" id="prediction-chips">
+            <!-- Chips rendered by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Typing Analytics -->
+      <div class="analytics-panel" id="analytics-panel">
+        <div class="panel-header">
+          <h2>📊 Analytics</h2>
+        </div>
+        <div class="analytics-grid">
+          <div class="stat-card" id="stat-wpm">
+            <div class="stat-value">0</div>
+            <div class="stat-label">WPM</div>
+          </div>
+          <div class="stat-card" id="stat-accuracy">
+            <div class="stat-value">100%</div>
+            <div class="stat-label">Accuracy</div>
+          </div>
+          <div class="stat-card" id="stat-chars">
+            <div class="stat-value">0</div>
+            <div class="stat-label">Characters</div>
+          </div>
+          <div class="stat-card" id="stat-duration">
+            <div class="stat-value">0:00</div>
+            <div class="stat-label">Duration</div>
+          </div>
+          <div class="stat-card" id="stat-gestures">
+            <div class="stat-value">0%</div>
+            <div class="stat-label">Gesture Success</div>
+          </div>
+          <div class="stat-card" id="stat-words">
+            <div class="stat-value">0</div>
+            <div class="stat-label">Words</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════
+       VIRTUAL KEYBOARD
+       ═══════════════════════════════════════════════════════ -->
+  <section class="keyboard-section" id="keyboard-section">
+    <div class="keyboard-container" id="keyboard-container">
+      <!-- Keyboard rows rendered by keyboard.js -->
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SCRIPTS (ES6 Modules)
+       ═══════════════════════════════════════════════════════ -->
+  <script type="module" src="js/app.js"></script>
+
+</body>
+</html>
