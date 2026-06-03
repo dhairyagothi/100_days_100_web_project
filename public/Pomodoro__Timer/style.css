@@ -1,0 +1,335 @@
+/* ===== CSS Variables ===== */
+:root {
+  --focus-color: #ff4d4d;
+  --short-color: #00c897;
+  --long-color: #4d9fff;
+  --active-color: var(--focus-color);
+  --bg: #0f0f0f;
+  --card: #1a1a1a;
+  --text: #f0f0f0;
+  --muted: #888;
+  --ring-size: 220px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Space Mono', monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ===== Background Circles ===== */
+.bg-circles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-circles span {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.12;
+}
+
+.bg-circles span:nth-child(1) {
+  width: 400px; height: 400px;
+  background: var(--focus-color);
+  top: -100px; left: -100px;
+  animation: drift 8s ease-in-out infinite alternate;
+}
+
+.bg-circles span:nth-child(2) {
+  width: 300px; height: 300px;
+  background: var(--short-color);
+  bottom: -80px; right: -80px;
+  animation: drift 10s ease-in-out infinite alternate-reverse;
+}
+
+.bg-circles span:nth-child(3) {
+  width: 250px; height: 250px;
+  background: var(--long-color);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: drift 12s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(30px, 20px); }
+}
+
+/* ===== Back Button ===== */
+.back-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  color: var(--muted);
+  text-decoration: none;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  border: 1px solid #333;
+  padding: 8px 14px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.back-btn:hover {
+  color: var(--text);
+  border-color: var(--active-color);
+}
+
+/* ===== Container ===== */
+.container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding: 40px 30px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 24px;
+  backdrop-filter: blur(10px);
+  width: 90%;
+  max-width: 420px;
+}
+
+/* ===== Title ===== */
+.title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3rem;
+  letter-spacing: 8px;
+  color: var(--active-color);
+  transition: color 0.4s;
+  line-height: 1;
+}
+
+.subtitle {
+  font-size: 0.7rem;
+  color: var(--muted);
+  letter-spacing: 2px;
+  margin-top: -20px;
+  text-align: center;
+}
+
+/* ===== Tabs ===== */
+.tabs {
+  display: flex;
+  gap: 8px;
+  background: rgba(255,255,255,0.05);
+  padding: 5px;
+  border-radius: 12px;
+}
+
+.tab {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s;
+  text-transform: uppercase;
+}
+
+.tab:hover {
+  color: var(--text);
+}
+
+.tab.active {
+  background: var(--active-color);
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ===== Timer Circle ===== */
+.timer-wrapper {
+  position: relative;
+  width: var(--ring-size);
+  height: var(--ring-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-ring {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  transform: rotate(-90deg);
+}
+
+.ring-bg {
+  fill: none;
+  stroke: rgba(255,255,255,0.06);
+  stroke-width: 8;
+}
+
+.ring-fill {
+  fill: none;
+  stroke: var(--active-color);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 597;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1s linear, stroke 0.4s;
+  filter: drop-shadow(0 0 8px var(--active-color));
+}
+
+.timer-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+#timeDisplay {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 4rem;
+  letter-spacing: 4px;
+  color: var(--text);
+  line-height: 1;
+}
+
+.mode-label {
+  font-size: 0.6rem;
+  letter-spacing: 4px;
+  color: var(--active-color);
+  transition: color 0.4s;
+}
+
+/* ===== Sessions ===== */
+.sessions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.sessions > div,
+.sessions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.session-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: 2px solid rgba(255,255,255,0.15);
+  transition: all 0.3s;
+  display: inline-block;
+}
+
+.session-dot.active {
+  background: var(--active-color);
+  border-color: var(--active-color);
+  box-shadow: 0 0 8px var(--active-color);
+}
+
+.session-dot.done {
+  background: rgba(255,255,255,0.25);
+  border-color: rgba(255,255,255,0.3);
+}
+
+.session-text {
+  font-size: 0.65rem;
+  color: var(--muted);
+  letter-spacing: 2px;
+  margin-top: 4px;
+}
+
+/* ===== Controls ===== */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.btn-main {
+  background: var(--active-color);
+  color: #fff;
+  border: none;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 4px;
+  padding: 14px 48px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.btn-main:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  filter: brightness(1.1);
+}
+
+.btn-main:active {
+  transform: translateY(0);
+}
+
+.btn-icon {
+  background: rgba(255,255,255,0.05);
+  color: var(--muted);
+  border: 1px solid rgba(255,255,255,0.1);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon:hover {
+  color: var(--text);
+  border-color: var(--active-color);
+  background: rgba(255,255,255,0.1);
+}
+
+/* ===== Pulse animation when running ===== */
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(255,77,77,0.3); }
+  70%  { box-shadow: 0 0 0 12px rgba(255,77,77,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,77,77,0); }
+}
+
+.timer-wrapper.running {
+  animation: pulse-ring 2s infinite;
+  border-radius: 50%;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 480px) {
+  .title { font-size: 2.2rem; }
+  #timeDisplay { font-size: 3rem; }
+  :root { --ring-size: 180px; }
+  .btn-main { padding: 12px 36px; font-size: 1.2rem; }
+  .container { padding: 30px 20px; gap: 22px; }
+}
