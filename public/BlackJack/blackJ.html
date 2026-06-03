@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <meta name="theme-color" content="#1a472a" />
 
   <link rel="stylesheet" href="./blackJ.css" />
   <link rel="icon" href="../favv.png" type="image/x-icon" />
@@ -78,30 +79,34 @@
     </div>
 
     <!-- Scoreboard -->
-    <section class="scoreboard" aria-label="Scoreboard">
-      <h3 class="scoreboard-title">Scoreboard</h3>
-      <div class="score-grid">
-        <div class="score-cell wins">
-          <span class="score-num" id="wins">0</span>
-          <span class="score-lbl">Wins</span>
-        </div>
-        <div class="score-cell losses">
-          <span class="score-num" id="losses">0</span>
-          <span class="score-lbl">Losses</span>
-        </div>
-        <div class="score-cell draws">
-          <span class="score-num" id="draws">0</span>
-          <span class="score-lbl">Draws</span>
-        </div>
-      </div>
-      <div class="score-actions">
-        <button class="btn btn-play-again" id="play-again">Play Again</button>
-        <button class="btn btn-reset"      id="reset-score">Reset Score</button>
-      </div>
-    </section>
+    <section class="scoreboard" aria-label="Scoreboard" aria-live="polite">
+  <h3 class="scoreboard-title">Scoreboard</h3>
+  <div class="score-grid">
+    <div class="score-cell wins" role="status" aria-label="Wins">
+      <span class="score-num" id="wins">0</span>
+      <span class="score-lbl">Wins</span>
+    </div>
+    <div class="score-cell losses" role="status" aria-label="Losses">
+      <span class="score-num" id="losses">0</span>
+      <span class="score-lbl">Losses</span>
+    </div>
+    <div class="score-cell draws" role="status" aria-label="Draws">
+      <span class="score-num" id="draws">0</span>
+      <span class="score-lbl">Draws</span>
+    </div>
+  </div>
+  <div class="score-actions">
+    <button class="btn btn-play-again" id="play-again" aria-label="Play Again">Play Again</button>
+    <button class="btn btn-reset" id="reset-score" aria-label="Reset Score">Reset Score</button>
+  </div>
+</section>
 
   </main>
 
   <script src="./blackJ.js"></script>
+
+<footer class="site-footer" role="contentinfo">
+  <p>BlackJack &copy; 100 Days 100 Web Projects</p>
+</footer>
 </body>
 </html>
