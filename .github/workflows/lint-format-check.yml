@@ -20,13 +20,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Install Dependencies
         run: |
           if [ -f package-lock.json ]; then
-            npm ci
+            npm ci --prefer-offline
           else
-            npm install
+            npm install --prefer-offline
           fi
 
       - name: Collect changed lint targets
