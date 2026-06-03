@@ -414,6 +414,31 @@ function showToast(message) {
   }, 3000);
 }
 
+// ---------- Theme Toggle ----------
+const toggleBtn = document.getElementById("theme-toggle");
+const body = document.body;
+
+// Load saved theme from localStorage
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme) {
+  body.classList.add(savedTheme);
+} else {
+  body.classList.add("theme-light"); // default theme
+}
+
+toggleBtn.addEventListener("click", () => {
+  if (body.classList.contains("theme-light")) {
+    body.classList.remove("theme-light");
+    body.classList.add("theme-dark");
+    localStorage.setItem("theme", "theme-dark");
+  } else {
+    body.classList.remove("theme-dark");
+    body.classList.add("theme-light");
+    localStorage.setItem("theme", "theme-light");
+  }
+});
+
+
 // 10. Forms & Actions Initialisation
 const taskForm = document.getElementById("task-form");
 if (taskForm) {
