@@ -17,6 +17,7 @@ const clearHistoryBtn = document.getElementById('clear-history-btn');
 
 const HISTORY_KEY = 'dictionary_search_history';
 const HISTORY_LIMIT = 15;
+const historyCount = document.getElementById('history-count');
 
 // Result fields
 const posBadge = document.getElementById('pos-badge');
@@ -158,7 +159,7 @@ function saveToHistory(word) {
 
 function renderHistory() {
   const history = getHistory();
-
+  historyCount.textContent = history.length;
   historyContainer.innerHTML = '';
 
   if (!history.length) {
@@ -167,12 +168,14 @@ function renderHistory() {
     return;
   }
 
-  history.forEach((word) => {
+  history.forEach((word, index) => {
     const chip = document.createElement('button');
 
     chip.className = 'history-chip';
     chip.textContent = word;
-
+    chip.style.opacity = '0';
+    chip.style.animation = 'fadeUp .35s ease forwards';
+    chip.style.animationDelay = `${index * 40}ms`;
     chip.addEventListener('click', () => {
       input.value = word;
       fetchWord(word);
