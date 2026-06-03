@@ -7,6 +7,15 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const nodemailer = require('nodemailer');
 
+function escapeHtml(text) {
+  return String(text || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 const port = 5500;
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -62,7 +71,7 @@ app.post('/', function (req, res) {
             <tr>
               <td style="padding:35px 30px;color:#333333;">
                 <h2 style="margin-top:0;">
-                  Hi ${req.body.name},
+                  Hi ${escapeHtml(req.body.name)},
                 </h2>
 
                 <p style="font-size:16px;line-height:1.7;">
