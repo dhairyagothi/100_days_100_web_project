@@ -2516,3 +2516,7 @@ body::after {
 
     margin-top:16px;
 }
+
+/* A11Y focus */
+*:focus-visible { outline: 3px solid #005fcc; outline-offset: 2px; }
+
