@@ -1598,3 +1598,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   window.addEventListener('popstate', () => restoreStateFromURL());
 });
+
+// Performance: Lazy load any images that are added
+document.addEventListener('DOMContentLoaded', () => { document.querySelectorAll('img').forEach(img => img.setAttribute('loading', 'lazy')); });
+
