@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Bill Splitter</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .calculator-container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        input {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: #3498db;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .results-box {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px dashed #eee;
+            display: none; 
+        }
+
+        .results-box p {
+            display: flex;
+            justify-content: space-between;
+            color: #555;
+            margin: 10px 0;
+            font-size: 15px;
+        }
+
+        .results-box span {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .per-person-display {
+            text-align: center;
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .per-person-display h4 {
+            margin: 0;
+            color: #2980b9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 13px;
+        }
+
+        .amount {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2980b9;
+            margin: 5px 0 0 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator-container">
+        <h2>💸 Simple Bill Splitter</h2>
+        
+        <form id="splitter-form">
+            <div class="input-group">
+                <label for="total-bill">Total Bill ($)</label>
+                <input type="number" id="total-bill" min="0.01" step="0.01" placeholder="0.00" required>
+            </div>
+
+            <div class="input-group">
+                <label for="num-people">Number of People</label>
+                <input type="number" id="num-people" min="1" value="2" required>
+            </div>
+
+            <button type="submit">Calculate Split</button>
+        </form>
+
+        <div class="results-box" id="results">
+            <h3>Settlement Breakdown</h3>
+            <p>Total Bill Amount: <span id="final-total-amount">$0.00</span></p>
+            <hr style="border: 0; border-top: 1px solid #eee;">
+            <div class="per-person-display">
+                <h4>Each Person Owes</h4>
+                <p class="amount" id="per-person-amount">$0.00</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('splitter-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const totalBill = parseFloat(document.getElementById('total-bill').value);
+            const numPeople = parseInt(document.getElementById('num-people').value);
+            const amountPerPerson = totalBill / numPeople;
+            document.getElementById('final-total-amount').innerText = `$${totalBill.toFixed(2)}`;
+            document.getElementById('per-person-amount').innerText = `$${amountPerPerson.toFixed(2)}`;
+            document.getElementById('results').style.display = 'block';
+        });
+    </script>
+</body>
+</html>

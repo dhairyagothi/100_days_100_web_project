@@ -2,7 +2,6 @@
 // Dark mode state
 let isDarkMode = localStorage.getItem("clockDarkMode") === "true";
 if (isDarkMode) document.body.classList.add("dark-mode");
-let activeTheme = localStorage.getItem("clockTheme") || "classic";
 let primaryTimezone = localStorage.getItem("primaryTimezone") || "local";
 let alarms = JSON.parse(localStorage.getItem("clock_alarms")) || [];
 let worldClocks = JSON.parse(localStorage.getItem("clock_worldClocks")) || [];
@@ -16,6 +15,9 @@ let triggeredAlarms = new Set();
 let weatherCache = {};
 let currentTimeTheme = "";
 let is24HourFormat = localStorage.getItem("is24HourFormat") === "true";
+
+let activeAccent =
+  localStorage.getItem("clockAccent") || "classic";
 
 // DOM Selectors
 const hoursEl = document.getElementById("hours");
@@ -32,7 +34,6 @@ const popupAlarmTitle = document.getElementById("popup-alarm-title");
 const popupAlarmTime = document.getElementById("popup-alarm-time");
 const popupAlarmLabel = document.getElementById("popup-alarm-label");
 const alarmSound = document.getElementById("alarm-sound");
-const historyHeader = document.getElementById("history-header");
 const historyChevron = document.getElementById("history-chevron");
 const formatToggleBtn = document.getElementById("format-toggle");
 
@@ -91,9 +92,12 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btn) btn.textContent = isDarkMode ? "☀️" : "🌙";
  applyDarkMode(isDarkMode);
 
-if (typeof setTheme === "function") {
-  setTheme(activeTheme);
-}
+const savedAccent =
+  localStorage.getItem("clockAccent") || "classic";
+
+setAccentColor(savedAccent);
+
+
 
 formatToggleBtn.textContent = is24HourFormat ? "12H" : "24H";
 
@@ -129,7 +133,15 @@ function setAccentColor(accent) {
   activeAccent = accent;
   localStorage.setItem("clockAccent", accent);
 
-  document.body.className = `${theme}-theme${isDarkMode ? " dark-mode" : ""}`;
+  // Remove only manual accent classes, keep time-based theme class
+  document.body.classList.remove(
+    "classic-theme",
+    "modern-theme",
+    "futuristic-theme",
+    "nebula-theme",
+  );
+  // Add the selected manual accent class
+  document.body.classList.add(`${accent}-theme`);
 
   document.querySelectorAll(".theme-swatch").forEach((swatch) => {
     swatch.classList.toggle("active", swatch.dataset.theme === accent);
@@ -774,5 +786,23 @@ function applyDarkMode(enabled) {
 }
 
 function toggleDarkMode() {
-applyDarkMode(!isDarkMode);
+  applyDarkMode(!isDarkMode);
+}
+
+
+
+function toggleHistoryLogs() {
+  const logs = document.getElementById("history-logs");
+  const chevron = document.getElementById("history-chevron");
+
+  if (!logs) return;
+
+  logs.classList.toggle("hidden");
+
+  if (chevron) {
+    chevron.style.transform =
+      logs.classList.contains("hidden")
+        ? "rotate(0deg)"
+        : "rotate(180deg)";
+  }
 }

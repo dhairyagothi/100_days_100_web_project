@@ -1,0 +1,137 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Age Difference Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="difference">
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">LifePulse</div>
+        <nav class="desktop-nav">
+          <a href="index.html" class="nav-link">Calculator</a>
+          <a href="difference.html" class="nav-link active">Difference</a>
+          <a href="birthday.html" class="nav-link">Birthday Card</a>
+          <a href="about.html" class="nav-link">About</a>
+        </nav>
+        <div class="topbar-actions">
+          <button id="theme-toggle" class="icon-button" aria-label="Toggle dark mode">🌙</button>
+          <button id="menu-toggle" class="icon-button menu-button" aria-label="Open navigation" aria-expanded="false">
+            <svg class="menu-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+      </header>
+      <div id="mobile-menu" class="mobile-menu">
+        <nav class="mobile-nav">
+          <a href="index.html" class="mobile-link">Calculator</a>
+          <a href="difference.html" class="mobile-link active">Difference</a>
+          <a href="birthday.html" class="mobile-link">Birthday Card</a>
+          <a href="about.html" class="mobile-link">About</a>
+        </nav>
+      </div>
+      <main class="page-content">
+        <section class="hero-panel compact-panel">
+          <div>
+            <p class="eyebrow">Age Difference</p>
+            <h1>Compare the age gap between two people.</h1>
+            <p class="hero-copy">A simple, modern calculator for birthdays and age differences.</p>
+          </div>
+        </section>
+        <section class="grid-section two-column">
+          <div class="panel glass-panel input-panel">
+            <div class="panel-header">
+              <p class="eyebrow">Compare birthdays</p>
+              <h2>Enter both dates</h2>
+            </div>
+            <div class="field-group">
+              <label for="dob1">Person 1 Date of Birth</label>
+              <input type="date" id="dob1" class="field-input" />
+            </div>
+            <div class="field-group swap-group">
+              <button id="swap-btn" class="swap-button" type="button">↔ Swap Dates</button>
+            </div>
+            <div class="field-group">
+              <label for="dob2">Person 2 Date of Birth</label>
+              <input type="date" id="dob2" class="field-input" />
+            </div>
+            <button id="calculate-difference" class="primary-button full-width">Calculate Difference</button>
+          </div>
+          <div class="panel glass-panel result-panel" id="difference-result">
+            <div class="panel-header">
+              <p class="eyebrow">Difference</p>
+              <h2>Age gap result</h2>
+            </div>
+            <div class="age-grid" id="difference-cards">
+              <div class="stats-card purple-card">
+                <span class="stat-number" id="diff-years">0</span>
+                <span class="stat-label">Years</span>
+              </div>
+              <div class="stats-card violet-card">
+                <span class="stat-number" id="diff-months">0</span>
+                <span class="stat-label">Months</span>
+              </div>
+              <div class="stats-card indigo-card">
+                <span class="stat-number" id="diff-days">0</span>
+                <span class="stat-label">Days</span>
+              </div>
+            </div>
+            <div class="story-card">
+              <p class="eyebrow">Relationship Insight</p>
+              <h3 id="relationship-message">Add dates to see the difference.</h3>
+              <div class="detail-grid">
+                <div class="detail-card">
+                  <span>Total days</span>
+                  <strong id="diff-total-days">0</strong>
+                </div>
+                <div class="detail-card">
+                  <span>Total hours</span>
+                  <strong id="diff-total-hours">0</strong>
+                </div>
+                <div class="detail-card">
+                  <span>Total minutes</span>
+                  <strong id="diff-total-minutes">0</strong>
+                </div>
+                <div class="detail-card">
+                  <span>Total seconds</span>
+                  <strong id="diff-total-seconds">0</strong>
+                </div>
+              </div>
+            </div>
+            <div class="timeline-card">
+              <p class="eyebrow">Timeline</p>
+              <div class="timeline-line"></div>
+              <div class="timeline-item">
+                <div class="timeline-icon">1</div>
+                <div>
+                  <p class="timeline-title" id="timeline-person1-date">--</p>
+                  <p class="timeline-subtitle">Person 1 birthday</p>
+                </div>
+              </div>
+              <div class="timeline-item centered">
+                <div class="timeline-icon">⇅</div>
+                <div>
+                  <p class="timeline-title" id="timeline-diff-text">No difference yet</p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-icon">2</div>
+                <div>
+                  <p class="timeline-title" id="timeline-person2-date">--</p>
+                  <p class="timeline-subtitle">Person 2 birthday</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
