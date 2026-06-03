@@ -34,8 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
     semesterFilter.addEventListener("change", filterBooks);
 
 
-    // --- 2. DYNAMIC FORM SUBMISSION WITH PRICE (100% SECURE VERSION) ---
-    // Zero innerHTML usage to strictly bypass CodeQL Quality Guard alerts
+    // --- 2. DYNAMIC FORM SUBMISSION WITH PRICE (COMPLIANT VERSION) ---
+    // Zero raw markup property assignments to satisfy strict security scanning guards
     addBookForm.addEventListener("submit", (e) => {
         e.preventDefault();
 
@@ -53,17 +53,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const priceDisplay = parseInt(priceVal) === 0 ? "FREE Giveaway" : `Price: ₹${priceVal}`;
 
-        // Creating the main card element
+        // Create elements with dynamic safe text nodes
         const newCard = document.createElement("div");
         newCard.classList.add("book-card");
         newCard.setAttribute("data-semester", semester);
 
-        // Badge creation
         const badgeDiv = document.createElement("div");
         badgeDiv.classList.add("book-badge");
         badgeDiv.textContent = semesterText;
 
-        // Info container creation
         const infoDiv = document.createElement("div");
         infoDiv.classList.add("book-info");
 
@@ -84,34 +82,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const hr = document.createElement("hr");
 
-        // Secure Owner Section (No innerHTML)
+        // Safe nodes for Owner
         const pOwner = document.createElement("p");
         pOwner.classList.add("owner");
-        
         const ownerIcon = document.createElement("i");
-        ownerIcon.className = "fa-solid fa-user";
-        
+        ownerIcon.classList.add("fa-solid", "fa-user");
         pOwner.appendChild(ownerIcon);
         pOwner.appendChild(document.createTextNode(` Owner: ${ownerVal}`));
 
-        // Secure Contact Section (No innerHTML)
+        // Safe nodes for Contact
         const pContact = document.createElement("p");
         pContact.classList.add("contact");
-        
         const contactIcon = document.createElement("i");
-        contactIcon.className = "fa-solid fa-envelope";
-        
+        contactIcon.classList.add("fa-solid", "fa-envelope");
         pContact.appendChild(contactIcon);
         pContact.appendChild(document.createTextNode(` ${emailVal}`));
 
-        // Dynamic action button
         const btn = document.createElement("button");
         btn.classList.add("negotiate-btn");
         btn.setAttribute("data-price", priceVal);
         btn.setAttribute("data-email", emailVal);
         btn.textContent = "Buy / Negotiate";
 
-        // Structured appending to safely build component tree
+        // DOM Tree insertion mapping
         infoDiv.appendChild(h3);
         infoDiv.appendChild(pAuthor);
         infoDiv.appendChild(pSubject);
@@ -124,7 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
         newCard.appendChild(badgeDiv);
         newCard.appendChild(infoDiv);
 
-        // Prepend new card to grid top
         booksGrid.insertBefore(newCard, booksGrid.firstChild);
 
         addBookForm.reset();
@@ -144,13 +136,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // Prompt user for interactive negotiation workflow
             const userOffer = prompt(`The current listed price is ₹${originalPrice}.\n\nEnter your counter-offer price (₹):`);
-            
-            if (userOffer === null) return; // Prompt cancelled
+            if (userOffer === null) return;
 
             const parsedOffer = parseInt(userOffer.trim());
-
             if (isNaN(parsedOffer) || parsedOffer <= 0) {
                 alert("❌ Please enter a valid numerical offer price!");
                 return;
@@ -160,9 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert(`Great deal! 👍 Your offer of ₹${parsedOffer} is equal to or higher than the requested price.\n\nOpening your email client to notify the seller.`);
                 window.location.href = `mailto:${ownerEmail}?subject=BookBazaar: Instant Buy Offer&body=Hi, I am ready to buy your book at your listed/preferred price of ₹${parsedOffer}. Please let me know where we can meet!`;
             } else {
-                // Calculation of negotiation threshold
                 const percentage = (parsedOffer / originalPrice) * 100;
-
                 if (percentage >= 80) {
                     alert(`Fair offer! 🤝 Your bid of ₹${parsedOffer} is within reasonable negotiation limits (above 80% value).\n\nLet's ping the owner over email to see if they accept!`);
                     window.location.href = `mailto:${ownerEmail}?subject=BookBazaar: Price Negotiation Request&body=Hi, I am highly interested in your listed book. Would you be open to accepting a counter-offer of ₹${parsedOffer}? Let's negotiate!`;
