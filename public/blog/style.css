@@ -360,7 +360,7 @@ body.light-mode #darkModeToggle .fa-sun {
 /* ===== Posts Grid ===== */
 .posts-grid {
     display: grid;
-    gap: 1.5rem;
+    gap: 2.5rem;
 }
 
 .post {
@@ -500,17 +500,24 @@ body.light-mode #darkModeToggle .fa-sun {
     align-items: center;
     gap: 6px;
     transition: gap var(--transition-fast);
+    font-size:1rem;
 }
 
 .read-more-btn:hover {
     gap: 12px;
 }
 
+#morePosts{
+    margin: 20px auto 10px;
+    font-size: 0.7rem;
+}
+
 /* ===== Sidebar ===== */
 .sidebar {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 2rem;
+    margin-top:83px;
 }
 
 .widget {
@@ -531,10 +538,10 @@ body.light-mode #darkModeToggle .fa-sun {
 }
 
 /* Categories */
-.category-list {
+#categoriesList {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 10px 10px;
 }
 
 .category-btn {
@@ -1085,7 +1092,9 @@ footer {
     display: flex;
     align-items: center;
     gap: 1rem;
-    min-width: 300px;
+    min-width:unset;
+    width:90%;
+    max-width: 300px;
     box-shadow: 0 10px 40px var(--shadow-color);
     animation: toastSlideIn var(--transition-base);
 }
@@ -1159,7 +1168,7 @@ footer {
     display: none;
     position: fixed;
     bottom: 2rem;
-    left: 2rem;
+    right: 2rem;
     z-index: 1000;
     width: 55px;
     height: 55px;
@@ -1251,16 +1260,11 @@ footer {
     .intro-text p {
         font-size: 1rem;
     }
-    
+
     .sidebar {
         grid-template-columns: 1fr;
     }
-    
-    .section-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
+
     .search-container {
         max-width: 100%;
         width: 100%;
@@ -1286,6 +1290,14 @@ footer {
     .toast {
         min-width: auto;
     }
+
+    #backToTop {
+        bottom: 1rem;
+        right: 1rem;
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1300,4 +1312,18 @@ footer {
         gap: 1rem;
         align-items: flex-start;
     }
+
+    .sidebar {
+        margin-top: 20px;
+        margin-bottom:0px;
+    }
+
+    #backToTop {
+        bottom: 1rem;
+        right: 1rem;
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
+    }
+
 }
