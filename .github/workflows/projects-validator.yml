@@ -1,0 +1,34 @@
+name: 🔍 Projects Registry Validator
+
+on:
+  push:
+    branches: [Main]
+    paths:
+      - "projects.json"
+      - ".github/workflows/projects-validator.yml"
+      - ".github/scripts/validate-projects.js"
+  pull_request:
+    branches: [Main]
+    paths:
+      - "projects.json"
+      - ".github/workflows/projects-validator.yml"
+      - ".github/scripts/validate-projects.js"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-registry:
+    name: 🛡️ Validate Registry Integrity
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run Integrity Validation Script
+        run: node .github/scripts/validate-projects.js

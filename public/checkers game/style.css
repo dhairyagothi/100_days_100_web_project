@@ -1,0 +1,72 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #1e1e1e;
+  color: white;
+  text-align: center;
+}
+
+.container {
+  margin-top: 20px;
+}
+
+.controls button {
+  margin: 5px;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  background: #444;
+  color: white;
+  border-radius: 6px;
+}
+
+.controls button:hover {
+  background: #666;
+}
+
+#board {
+  width: 480px;
+  height: 480px;
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  border: 3px solid #fff;
+}
+
+.square {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dark {
+  background: #769656;
+}
+
+.light {
+  background: #eeeed2;
+}
+
+.piece {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.red {
+  background: red;
+}
+
+.black {
+  background: black;
+}
+
+.king {
+  border: 3px solid gold;
+}
+
+.selected {
+  outline: 3px solid yellow;
+}

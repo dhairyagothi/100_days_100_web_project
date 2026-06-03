@@ -1,0 +1,417 @@
+/* ============================================
+   profile.css — Profile Page Styles
+   LinkedIn Clone | Fix: Issue #5195
+   ============================================ */
+
+/* Profile Main Layout */
+.profile-main {
+  max-width: 860px;
+  margin: 72px auto 40px;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Back to Feed button in navbar-right */
+.back-feed-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: #045be6 !important;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border: 1.5px solid #045be6;
+  border-radius: 20px;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+.back-feed-btn:hover {
+  background: #eff6ff;
+  color: #045be6 !important;
+}
+
+/* ---- Profile Header Card ---- */
+.profile-header-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.profile-cover {
+  height: 160px;
+  background: linear-gradient(135deg, #045be6 0%, #00a0dc 60%, #56c1e8 100%);
+}
+
+.profile-header-body {
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: -52px;
+}
+
+.profile-avatar-large {
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  border: 4px solid #fff;
+  object-fit: cover;
+  background: #045be6;
+  display: block;
+}
+
+.profile-header-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 72px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn-connect {
+  background: #045be6;
+  color: #fff;
+  border: none;
+  padding: 6px 20px;
+  border-radius: 20px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-connect:hover {
+  background: #0044cc;
+}
+.btn-connect.btn-pending {
+  background: #fff;
+  color: #045be6;
+  border: 1.5px solid #045be6;
+}
+
+.btn-message {
+  background: #fff;
+  color: #045be6;
+  border: 1.5px solid #045be6;
+  padding: 6px 20px;
+  border-radius: 20px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-message:hover {
+  background: #eff6ff;
+}
+
+.btn-more {
+  background: #fff;
+  color: rgba(0, 0, 0, 0.6);
+  border: 1.5px solid rgba(0, 0, 0, 0.4);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 2px;
+}
+
+.profile-header-info {
+  padding: 12px 24px 20px;
+}
+
+.profile-name {
+  font-size: 24px;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.9);
+  margin-bottom: 4px;
+}
+
+.profile-headline {
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.7);
+  margin-bottom: 4px;
+}
+
+.profile-location {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.5);
+  margin-bottom: 6px;
+}
+.profile-location i {
+  margin-right: 4px;
+}
+
+.profile-connections {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 8px;
+}
+.connections-count {
+  color: #045be6;
+  font-weight: 600;
+}
+
+.profile-company-education {
+  display: flex;
+  gap: 20px;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.6);
+}
+.profile-company-education i {
+  margin-right: 4px;
+  color: #045be6;
+}
+
+/* ---- Shared Section Card ---- */
+.profile-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+/* ---- About ---- */
+.about-text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(0, 0, 0, 0.75);
+  margin-bottom: 10px;
+}
+
+.about-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.about-tag {
+  background: rgba(4, 91, 230, 0.08);
+  color: #045be6;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(4, 91, 230, 0.15);
+}
+
+/* ---- Experience & Education ---- */
+.exp-item {
+  display: flex;
+  gap: 16px;
+  padding: 4px 0;
+}
+
+.exp-logo {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+}
+
+.exp-logo-fallback {
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+  background: #045be6;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.exp-details h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  margin-bottom: 3px;
+}
+
+.exp-company {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.75);
+  margin-bottom: 2px;
+}
+
+.exp-date,
+.exp-location {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.5);
+  margin-bottom: 2px;
+}
+
+.exp-bullets {
+  margin-top: 8px;
+  padding-left: 18px;
+}
+.exp-bullets li {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.7);
+  line-height: 1.6;
+  margin-bottom: 4px;
+}
+
+.exp-divider {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  margin: 16px 0;
+}
+
+/* ---- Skills ---- */
+.skills-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.skill-item {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+.skill-item:last-child {
+  border-bottom: none;
+}
+
+.skill-info {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.skill-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.skill-endorsements {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.skill-context {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+  margin-top: 2px;
+}
+
+/* ---- Recommendations ---- */
+.rec-subtitle {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.5);
+  margin-top: -10px;
+  margin-bottom: 16px;
+}
+
+.rec-item {
+  display: flex;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+.rec-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.rec-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.rec-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 2px;
+}
+
+.rec-header strong {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.rec-relation {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.rec-date {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+  margin-bottom: 6px;
+}
+
+.rec-text {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.7);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 640px) {
+  .profile-main {
+    margin-top: 62px;
+    padding: 12px;
+  }
+  .profile-cover {
+    height: 110px;
+  }
+  .profile-avatar-large {
+    width: 90px;
+    height: 90px;
+  }
+  .profile-header-body {
+    margin-top: -40px;
+    padding: 0 14px;
+  }
+  .profile-header-actions {
+    margin-top: 50px;
+    gap: 6px;
+  }
+  .btn-connect,
+  .btn-message {
+    padding: 5px 14px;
+    font-size: 13px;
+  }
+  .profile-header-info {
+    padding: 10px 14px 16px;
+  }
+  .profile-name {
+    font-size: 20px;
+  }
+  .profile-section {
+    padding: 16px;
+  }
+  .exp-item {
+    gap: 12px;
+  }
+  .profile-company-education {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .back-feed-btn span {
+    display: none;
+  }
+}
