@@ -1,5 +1,5 @@
 /* ============================================================
-   CONFIGURATION
+   CONFIGURATION & BASE HOOKS
    ============================================================ */
 if (typeof REPO_OWNER === "undefined") {
   window.REPO_OWNER = "dhairyagothi";
@@ -9,7 +9,6 @@ window.REPO_OWNER = window.REPO_OWNER || "dhairyagothi";
 window.REPO_NAME = window.REPO_NAME || "100_days_100_web_project";
 
 let currentPage = 1;
-//for the number of visible projects in one page.
 let itemsPerPage = 9;
 let projectData = [];
 let filteredProjectData = [];
@@ -20,8 +19,6 @@ let filteredProjectData = [];
 let techStackFilters = []; // Array of active tech filters
 let techSearchQuery = ""; // Current tech search input
 
-// Technology normalization map (handles common variations)
-// Maps user input → actual tags in dataset
 const TECH_ALIASES = {
   js: "javascript",
   react: "javascript",
@@ -33,7 +30,6 @@ const TECH_ALIASES = {
   games: "game",
 };
 
-/* Maps data-filter values on chip buttons to display category names */
 const FILTER_CATEGORY_MAP = {
   all: "all",
   game: "Games",
@@ -43,10 +39,6 @@ const FILTER_CATEGORY_MAP = {
   api: "APIs",
 };
 
-/**
- * Derive a display category from a project's tags and name.
- * Uses the existing tag structure so no new data field is needed.
- */
 function getCategoryFromTags(tags, name) {
   const tagStr = (
     Array.isArray(tags) ? tags.join(" ") : tags || ""
@@ -149,11 +141,10 @@ loadProjects().catch((err) => {
 });
 
 /* ============================================================
-   PROJECT LINK RESOLUTION (demo vs source / source-only)
+   PROJECT LINK RESOLUTION
    ============================================================ */
 const SOURCE_ONLY_TAG = "source-only";
 
-/** Live demos hosted outside the repo — Code links point to in-repo source folders */
 const EXTERNAL_DEMO_SOURCE_FOLDERS = {
   "Day 20": "public/EveSparks",
   "Day 115": "public/event-registration-system",
@@ -223,7 +214,6 @@ function resolveProjectUrls(day, name, url, tags) {
       }
     } catch (error) {}
   }
-
   return { demoUrl, sourceUrl, sourceOnly };
 }
 
@@ -336,37 +326,17 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
 }
 
 /* ============================================================
-   TECHNOLOGY STACK FILTERING FUNCTIONS
+   TECH FILTER CORE STRATEGIES
    ============================================================ */
-
-/**
- * Normalize technology name for consistent matching
- * SIMPLIFIED: Just lowercase, no complex aliases needed
- * @param {string} tech - Technology name to normalize
- * @returns {string} Normalized technology name
- */
 function normalizeTech(tech) {
   const lower = tech.toLowerCase().trim();
-  // Only handle common variations
   return TECH_ALIASES[lower] || lower;
 }
 
-/**
- * Check if project matches the active tech stack filters.
- * Each filter must match a complete tag token, not a substring of another tag.
- * Example: searching "java" must not return projects tagged "javascript".
- * @param {string|array} projectTags - Project tags (space-separated string or array)
- * @returns {boolean} True if project matches all active filters
- */
 function matchesTechStack(projectTags) {
-  // No filters = show all projects
   if (techStackFilters.length === 0) return true;
-
-  // Handle empty or missing tags
   if (!projectTags) return false;
 
-  // Normalize to a set of individual lowercase tokens for whole-word matching.
-  // Using a Set avoids repeated linear scans for each filter.
   const tagSet = new Set(
     (Array.isArray(projectTags)
       ? projectTags
@@ -376,8 +346,6 @@ function matchesTechStack(projectTags) {
       .filter(Boolean),
   );
 
-  // Every active filter must match an exact token in the tag set (AND logic).
-  // This prevents "java" from matching "javascript", "css" from matching "canvas", etc.
   return techStackFilters.every((filter) => tagSet.has(filter.toLowerCase()));
 }
 
@@ -391,9 +359,6 @@ function removeTechFilter(tech) {
   renderGrid();
 }
 
-/**
- * Clear all technology filters
- */
 function clearAllTechFilters() {
   techStackFilters = [];
   techSearchQuery = "";
@@ -405,9 +370,6 @@ function clearAllTechFilters() {
   renderGrid();
 }
 
-/**
- * Update the visual display of active tech filters
- */
 function updateTechFilterDisplay() {
   const container = document.getElementById("activeTechFilters");
   const tagsContainer = document.getElementById("techFilterTags");
@@ -415,12 +377,10 @@ function updateTechFilterDisplay() {
 
   if (!container || !tagsContainer) return;
 
-  // Show/hide clear button in search input
   if (clearBtn) {
     clearBtn.style.display = techStackFilters.length > 0 ? "block" : "none";
   }
 
-  // Show/hide active filters container
   if (techStackFilters.length === 0) {
     container.style.display = "none";
     return;
@@ -434,7 +394,7 @@ function updateTechFilterDisplay() {
       (tech) => `
     <span class="tech-filter-tag">
       ${tech}
-      <button onclick="removeTechFilter('${tech}')" aria-label="Remove ${tech} filter">
+      <button onclick="event.stopPropagation(); removeTechFilter('${tech}')" aria-label="Remove ${tech} filter">
         <i class="fas fa-times"></i>
       </button>
     </span>
@@ -443,11 +403,6 @@ function updateTechFilterDisplay() {
     .join("");
 }
 
-/**
- * Get all unique technologies from projects (optional utility)
- * EFFICIENT: Uses Set for O(1) lookups
- * @returns {array} Sorted array of unique technologies
- */
 function getAllTechnologies() {
   const techSet = new Set();
 
@@ -462,14 +417,12 @@ function getAllTechnologies() {
       });
     }
   });
-
   return Array.from(techSet).sort();
 }
 
 /* ============================================================
    BOOKMARK + RECENT SYSTEM
 ============================================================ */
-
 let bookmarkedProjects = [];
 let recentProjects = [];
 
@@ -486,14 +439,9 @@ try {
 
 let showAllBookmarks = false;
 let showAllRecent = false;
-
 const INITIAL_VISIBLE_ITEMS = 3;
-const ONE_HOUR_MS = 60 * 60 * 1000; // 1 hour in milliseconds
+const ONE_HOUR_MS = 60 * 60 * 1000;
 
-/**
- * Migrates old recent projects format (array) to new format (object with timestamp)
- * If stored format doesn't have timestamps, it's likely the old format
- */
 function migrateRecentProjects() {
   if (recentProjects.length === 0) return;
 
@@ -518,14 +466,8 @@ function migrateRecentProjects() {
 
   localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
 }
-
-// Migrate on load
 migrateRecentProjects();
 
-/**
- * Cleans up recent projects older than 1 hour
- * Called periodically and on page load
- */
 function cleanupExpiredRecentProjects() {
   const initialLength = recentProjects.length;
   recentProjects = getRecentProjectsWithinWindow();
@@ -546,14 +488,13 @@ const CATEGORY_LABEL = {
 };
 
 /* ============================================================
-   GITHUB REPO STATS
+   GITHUB STATISTICS SUITE
    ============================================================ */
 async function fetchRepoStats() {
   const set = (id, val) => {
     const el = document.getElementById(id);
     if (el) el.textContent = val;
   };
-
   const setFallback = () => {
     set("starCount", "N/A");
     set("forkCount", "N/A");
@@ -577,10 +518,7 @@ async function fetchRepoStats() {
       ),
     ]);
 
-    if (!repoRes.ok || !prRes.ok) {
-      throw new Error("GitHub API request failed");
-    }
-
+    if (!repoRes.ok || !prRes.ok) throw new Error("GitHub API request failed");
     const repo = await repoRes.json();
     const prs = await prRes.json();
 
@@ -598,11 +536,10 @@ async function fetchRepoStats() {
     set("prCount", prs.total_count.toLocaleString());
   } catch (e) {
     console.warn("GitHub stats unavailable:", e.message);
-
-    // Show fallback text instead of permanent dashes
     setFallback();
   }
 }
+
 function generateReadme() {
   try {
     const lines = [];
@@ -627,8 +564,7 @@ function generateReadme() {
     a.href = URL.createObjectURL(blob);
     a.download = "README.md";
     document.body.appendChild(a);
-    a.click();
-    a.remove();
+    a.click(); a.remove();
     URL.revokeObjectURL(a.href);
   } catch (e) {
     console.error("Failed to generate README:", e);
@@ -637,7 +573,7 @@ function generateReadme() {
 }
 
 /* ============================================================
-   RENDER PROJECT GRID
+   GRID COMPONENT DRAW LIFECYCLE
    ============================================================ */
 let activeFilter = "all";
 let searchQuery = "";
@@ -645,7 +581,7 @@ let sortOption = "default";
 let techStackFilter = "all";
 let difficultyFilter = "all";
 
-function syncStateToURL() {
+function updateURL(search = searchQuery, category = activeFilter) {
   const url = new URL(window.location);
 
   if (searchQuery) {
@@ -669,6 +605,10 @@ function syncStateToURL() {
   window.history.replaceState({}, "", url);
 }
 
+function syncStateToURL() {
+  updateURL(searchQuery, activeFilter);
+}
+
 function readStateFromURL() {
   const urlParams = new URLSearchParams(window.location.search);
 
@@ -690,6 +630,10 @@ function readStateFromURL() {
       currentPage = page;
     }
   }
+}
+
+function hasProjectGrid() {
+  return document.getElementById('projectGrid') !== null;
 }
 
 function renderGrid() {
@@ -783,9 +727,7 @@ function renderGrid() {
   if (currentPage > totalPages) currentPage = totalPages;
   if (currentPage < 1) currentPage = 1;
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const pageItems = filtered.slice(startIndex, endIndex);
+  const pageItems = filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
   const fragment = document.createDocumentFragment();
 
   pageItems.forEach((project) => {
@@ -799,13 +741,7 @@ function renderGrid() {
       (item) => normalizeProjectEntry(item).day === day,
     );
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
-      day,
-      name,
-      url,
-      tags,
-      category,
-      isBookmarked,
-      showDescription: true,
+      day, name, url, tags, category, isBookmarked, showDescription: true
     });
 
     card.className = sourceOnly
@@ -816,6 +752,7 @@ function renderGrid() {
 
     fragment.appendChild(card);
   });
+  
   grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
 
@@ -835,11 +772,8 @@ function renderPagination(totalItems, totalPages) {
 
   container.innerHTML = "";
 
-  // If there is only 1 page of results, hide and detach the pagination block
   if (totalPages <= 1) {
-    if (container.parentElement === grid) {
-      grid.removeChild(container);
-    }
+    if (container.parentElement === grid) grid.removeChild(container);
     return;
   }
 
@@ -862,12 +796,9 @@ function renderPagination(totalItems, totalPages) {
   firstBtn.addEventListener("click", (e) => {
     e.preventDefault();
     if (currentPage !== 1) {
-      currentPage = 1;
-      renderGrid();
-      setTimeout(() => scrollToProjectSection(), 50);
+      currentPage = 1; renderGrid(); setTimeout(() => scrollToProjectSection(), 50);
     }
   });
-
   controlsDiv.appendChild(firstBtn);
 
   const prevBtn = document.createElement("button");
@@ -877,34 +808,15 @@ function renderPagination(totalItems, totalPages) {
   prevBtn.setAttribute("aria-label", "Previous Page");
   prevBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    if (currentPage > 1) {
-      currentPage--;
-      renderGrid();
-      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
-      setTimeout(() => {
-        scrollToProjectSection();
-      }, 50);
-    }
+    if (currentPage > 1) { currentPage--; renderGrid(); setTimeout(() => scrollToProjectSection(), 50); }
   });
   controlsDiv.appendChild(prevBtn);
 
-  // Initialize bounds for numeric pagination window (displays maximum of 4 page buttons)
-  let startPage = 1;
-  let endPage = totalPages;
-  const maxVisible = 4;
-
-  // Sliding window pagination logic centering the active page
+  let startPage = 1, endPage = totalPages, maxVisible = 4;
   if (totalPages > maxVisible) {
-    if (currentPage <= 2) {
-      startPage = 1;
-      endPage = 4;
-    } else if (currentPage >= totalPages - 1) {
-      startPage = totalPages - 3;
-      endPage = totalPages;
-    } else {
-      startPage = currentPage - 1;
-      endPage = currentPage + 2;
-    }
+    if (currentPage <= 2) { startPage = 1; endPage = 4; }
+    else if (currentPage >= totalPages - 1) { startPage = totalPages - 3; endPage = totalPages; }
+    else { startPage = currentPage - 1; endPage = currentPage + 2; }
   }
 
   for (let i = startPage; i <= endPage; i++) {
@@ -931,14 +843,7 @@ function renderPagination(totalItems, totalPages) {
   nextBtn.setAttribute("aria-label", "Next Page");
   nextBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    if (currentPage < totalPages) {
-      currentPage++;
-      renderGrid();
-      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
-      setTimeout(() => {
-        scrollToProjectSection();
-      }, 50);
-    }
+    if (currentPage < totalPages) { currentPage++; renderGrid(); setTimeout(() => scrollToProjectSection(), 50); }
   });
   controlsDiv.appendChild(nextBtn);
   const lastBtn = document.createElement("button");
@@ -949,17 +854,12 @@ function renderPagination(totalItems, totalPages) {
   lastBtn.addEventListener("click", (e) => {
     e.preventDefault();
     if (currentPage !== totalPages) {
-      currentPage = totalPages;
-      renderGrid();
-      setTimeout(() => scrollToProjectSection(), 50);
+      currentPage = totalPages; renderGrid(); setTimeout(() => scrollToProjectSection(), 50);
     }
   });
-
   controlsDiv.appendChild(lastBtn);
 
   container.appendChild(controlsDiv);
-
-  // Append container dynamically inside the projectGrid element to keep it attached
   grid.appendChild(container);
 }
 
@@ -967,8 +867,6 @@ function scrollToProjectSection() {
   const header = document.querySelector(".projects-header");
   if (!header) return;
 
-  // Only scroll if the projects section is fully below the viewport.
-  // If the user is already within or past the project grid, don't move them.
   if (header.getBoundingClientRect().top < window.innerHeight) return;
 
   const navbar = document.querySelector(".navbar");
@@ -998,15 +896,9 @@ function scrollToProjectSection() {
       requestAnimationFrame(animation);
     }
   }
-
-  // Mathematical Quadratic Ease-In-Out formula for momentum-like deceleration
   function easeInOutQuad(t, b, c, d) {
-    t /= d / 2;
-    if (t < 1) return (c / 2) * t * t + b;
-    t--;
-    return (-c / 2) * (t * (t - 2) - 1) + b;
+    t /= d / 2; if (t < 1) return (c / 2) * t * t + b; t--; return (-c / 2) * (t * (t - 2) - 1) + b;
   }
-
   requestAnimationFrame(animation);
 }
 
@@ -1075,19 +967,9 @@ function loadBookmarksFromURL() {
 
 function getRecentProjectsWithinWindow() {
   const now = Date.now();
-
-  return recentProjects.filter((item) => {
-    const timestamp = item.timestamp || Date.now();
-    const age = now - timestamp;
-
-    return age <= ONE_HOUR_MS;
-  });
+  return recentProjects.filter((item) => (now - (item.timestamp || Date.now())) <= ONE_HOUR_MS);
 }
 
-/**
- * Tracks a recently viewed project with a timestamp
- * @param {array} project - Project data [day, name, url, tags]
- */
 function trackRecentProject(project) {
   // Convert old format to new format if needed
   let projectObj;
@@ -1112,7 +994,6 @@ function trackRecentProject(project) {
   // Add to front
   recentProjects.unshift(projectObj);
 
-  // Keep only the 20 most recent entries (not filtered by time yet)
   if (recentProjects.length > 20) {
     recentProjects.pop();
   }
@@ -1204,7 +1085,6 @@ function renderRecentProjects() {
 
   // Filter projects within the 1-hour window
   const validRecent = getRecentProjectsWithinWindow();
-
   if (validRecent.length === 0) {
     recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects within the last hour.</p>`;
     return;
@@ -1233,13 +1113,7 @@ function renderRecentProjects() {
       (item) => normalizeProjectEntry(item).day === day,
     );
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
-      day,
-      name,
-      url,
-      tags,
-      category,
-      isBookmarked,
-      showDescription: true,
+      day, name, url, tags, category, isBookmarked, showDescription: true,
     });
 
     card.className = sourceOnly
@@ -1398,7 +1272,6 @@ function resetAllFilters() {
     updateURL("", "all");
   }
 
-  // 7. Refresh grid and pagination
   currentPage = 1;
   renderGrid();
   syncProjectCounts();
@@ -1414,8 +1287,55 @@ function initClearAllFilters() {
 }
 
 /* ============================================================
-   FILTER CHIPS
+   INTERFACE LOGIC ACTIONS & CENTRAL EVENT DELEGATION
    ============================================================ */
+const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
+const recentToggleBtn = document.getElementById('recentToggleBtn');
+const copyBookmarksBtn = document.getElementById('copyBookmarksBtn');
+
+if (bookmarkToggleBtn) {
+  bookmarkToggleBtn.addEventListener('click', () => {
+    showAllBookmarks = !showAllBookmarks; bookmarkToggleBtn.textContent = showAllBookmarks ? 'Show Less' : 'View All'; renderBookmarks();
+  });
+}
+
+if (copyBookmarksBtn) {
+  copyBookmarksBtn.addEventListener('click', async () => {
+    if (bookmarkedProjects.length === 0) { showToast('No bookmarks to copy!'); return; }
+    const textToCopy = bookmarkedProjects.map(p => `${p[1]} - ${p[2].startsWith('http') ? p[2] : new URL(p[2], window.location.href).href}`).join('\n');
+    try { await navigator.clipboard.writeText(textToCopy); showToast('Bookmarks copied to clipboard!'); } catch (err) { showToast('Failed to copy.'); }
+  });
+}
+
+if (recentToggleBtn) {
+  recentToggleBtn.addEventListener('click', () => {
+    showAllRecent = !showAllRecent; recentToggleBtn.textContent = showAllRecent ? 'Show Less' : 'View All'; renderRecentProjects();
+  });
+}
+
+function showToast(message) {
+  const toast = document.getElementById('toast'); if (!toast) return;
+  toast.textContent = message; toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ATOMIC DELEGATION SYSTEM: Sealing dynamic loop memory leaks
+document.addEventListener('click', (e) => {
+  const bookmarkBtn = e.target.closest('.bookmark-btn');
+  if (bookmarkBtn) {
+    const projectDay = bookmarkBtn.dataset.id;
+    const project = PROJECTS.find((item) => item[0] === projectDay);
+    if (project) toggleBookmark(project);
+    return;
+  }
+  const projectLink = e.target.closest('.open-project');
+  if (projectLink) {
+    const projectDay = projectLink.dataset.id;
+    const project = PROJECTS.find((item) => item[0] === projectDay);
+    if (project) trackRecentProject(project);
+  }
+});
+
 function initFilterChips() {
   const chips = document.querySelectorAll(".chip[data-filter]");
   chips.forEach((chip) => {
@@ -1428,25 +1348,16 @@ function initFilterChips() {
       chips.forEach((c) => c.classList.remove("active"));
       chip.classList.add("active");
       activeFilter = chip.dataset.filter;
-      currentPage = 1;
-      renderGrid();
+      
+      const searchInput = document.getElementById('searchInput');
+      updateURL(searchInput ? searchInput.value.trim() : '', activeFilter);
+      currentPage = 1; renderGrid();
     });
   });
 }
 
-/* ============================================================
-   LIVE SEARCH & TECH STACK FILTER
-   ============================================================ */
 function debounce(fn, delay = 300) {
-  let timeout;
-
-  return (...args) => {
-    clearTimeout(timeout);
-
-    timeout = setTimeout(() => {
-      fn(...args);
-    }, delay);
-  };
+  let timeout; return (...args) => { clearTimeout(timeout); timeout = setTimeout(() => fn(...args), delay); };
 }
 
 function initSearch() {
@@ -1494,9 +1405,6 @@ function initSorting() {
   });
 }
 
-/* ============================================================
-   TECH STACK SEARCH INITIALIZATION
-   ============================================================ */
 function initTechStackSearch() {
   const input = document.getElementById("techStackSearch");
   const clearBtn = document.getElementById("clearTechFilter");
@@ -1536,7 +1444,7 @@ function initTechStackSearch() {
 }
 
 /* ============================================================
-   SEARCH CONTROLS
+   AGGREGATE RECOGNITION SYSTEMS
    ============================================================ */
 const searchInput = document.getElementById("searchInput");
 const clearSearchBtn = document.getElementById("clearSearch");
@@ -1578,8 +1486,6 @@ function updateCategoryCounts() {
 
 function syncProjectCounts() {
   let filtered = [...PROJECTS];
-
-  // Apply search filter
   if (searchQuery) {
     filtered = filtered.filter(
       (project) =>
@@ -1587,7 +1493,6 @@ function syncProjectCounts() {
         project.day.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   }
-
   const total = filtered.length.toLocaleString();
   const countNodes = [
     document.getElementById("projectCount"),
@@ -1605,38 +1510,98 @@ function syncProjectCounts() {
   updateCategoryCounts();
 }
 
-// Clear button functionality
-if (searchInput && clearSearchBtn) {
-  clearSearchBtn.addEventListener("click", () => {
-    searchInput.value = "";
-    searchInput.dispatchEvent(new Event("input"));
-    searchInput.focus();
-  });
-
-  searchInput.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      searchInput.value = "";
-      searchInput.dispatchEvent(new Event("input"));
-      searchInput.focus();
-    }
-  });
+const clearSearchBtn = document.getElementById('clearSearch');
+const searchInputEl = document.getElementById('searchInput');
+if (searchInputEl && clearSearchBtn) {
+  clearSearchBtn.addEventListener("click", () => { searchInputEl.value = ""; searchInputEl.dispatchEvent(new Event("input")); searchInputEl.focus(); });
 }
 
-// Initialize
-syncProjectCounts();
-
-/* ============================================================
-   NAVBAR — dynamic based on login state
-   ============================================================ */
 function updateNavbar() {
-  // The navbar is now managed by navbar.js which creates the dropdowns properly.
-  // This function is kept empty to prevent legacy calls from breaking.
+  const container = document.getElementById('navButtons');
+  if (!container) return;
+  const username = window.username || localStorage.getItem('loggedInUser') || null; 
+  const isRoot = !window.location.pathname.includes('/contributors/');
+  const base = isRoot ? '' : '../';
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  const themeButton = `
+        <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
+          <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i> Theme
+        </button>
+        `;
+  const otherLink = isRoot
+    ? `<a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>
+       <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>`
+    : `<a class="btn btn-ghost btn-sm" href="${base}index.html"><i class="fas fa-home"></i> Home</a>
+       <a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>`;
+
+  if (username) {
+    container.innerHTML = `
+        ${themeButton}
+        <span class="welcome-text">Hi, ${username}</span>
+        <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
+        <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
+        <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
+          <i class="fab fa-github"></i> GitHub
+        </a>
+        ${otherLink}
+    `;
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      window.username = null;
+      localStorage.removeItem('loggedInUser'); 
+      updateNavbar();
+    });
+  } else {
+    container.innerHTML = `
+        ${themeButton}
+        ${otherLink}
+        <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
+            <i class="fab fa-github"></i> GitHub
+        </a>
+        <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
+        <div class="auth-buttons">
+          <a class="btn btn-ghost btn-sm" href="${base}public/Login.html">Sign Up</a>
+          <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign In</a>
+        </div>
+    `;
+  }
 }
 
 /* ============================================================
-   THEME TOGGLE
+   THEME TOGGLE & CORE ENGINE
    ============================================================ */
-// Implemented by the shared ThemeManager in theme.js.
+function initTheme() {
+  const root = document.documentElement;
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  let transitionTimer = null;
+
+  const applyTheme = (theme) => {
+    root.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+
+    const iconClass = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+    document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach((icon) => {
+      icon.className = iconClass;
+    });
+  };
+
+  const toggleTheme = () => {
+    const currentTheme = root.getAttribute('data-theme') || 'dark';
+    const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
+    applyTheme(nextTheme);
+
+    root.setAttribute('data-theme-transitioning', 'true');
+    if (transitionTimer) clearTimeout(transitionTimer);
+    transitionTimer = setTimeout(() => {
+      root.removeAttribute('data-theme-transitioning');
+    }, 400);
+  };
+
+  document.querySelectorAll('#themeToggle, #themeToggleNav').forEach((button) => {
+    button.addEventListener('click', toggleTheme);
+  });
+
+  applyTheme(savedTheme === 'light' ? 'light' : 'dark');
+}
 
 /* ============================================================
    SCROLL TO TOP
@@ -1696,7 +1661,7 @@ function initCurrentYear() {
 }
 
 /* ============================================================
-   INIT
+   GLOBAL INITIALIZER SETUP & DOM LIFECYCLE
    ============================================================ */
 function hasProjectGrid() {
   return Boolean(document.getElementById("projectGrid"));
@@ -1704,12 +1669,10 @@ function hasProjectGrid() {
 
 document.addEventListener("DOMContentLoaded", async () => {
   readStateFromURL();
-
   initTheme();
   updateNavbar();
   initScrollBtn();
   fetchRepoStats();
-
   initCurrentYear();
   initFilterChips();
   initSearch();
@@ -1718,9 +1681,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   initClearAllFilters();
 
   try {
-    // Await the projects to be fetched
     await loadProjects();
-
     syncProjectCounts();
 
     if (hasProjectGrid()) {
@@ -1822,10 +1783,6 @@ window.addEventListener(
   }, 180),
 );
 
-/* ============================================================
-   EXPOSE FUNCTIONS TO GLOBAL SCOPE
-   (Required for HTML onclick handlers)
-   ============================================================ */
 window.removeTechFilter = removeTechFilter;
 window.clearAllTechFilters = clearAllTechFilters;
 
@@ -1974,7 +1931,7 @@ initTheme();
   requestAnimationFrame(update);
 })();
 
-// Particle Network Background
+// Background Canvas Module
 (function () {
   const canvas = document.getElementById("particleCanvas");
   if (!canvas) return;
@@ -1997,7 +1954,6 @@ initTheme();
   let maxDistanceSq = 0;
   let frameInterval = 1000 / DEFAULT_PARTICLE_FPS;
   let animationFrame = 0;
-  let resizeFrame = 0;
   let lastFrameTime = 0;
 
   const getProfile = () => {
@@ -2020,16 +1976,10 @@ initTheme();
   };
 
   let profile = getProfile();
-
   function resize() {
-    profile = getProfile();
-    W = window.innerWidth;
-    H = window.innerHeight;
+    profile = getProfile(); W = window.innerWidth; H = window.innerHeight;
     dpr = Math.min(window.devicePixelRatio || 1, profile.showLinks ? 1.5 : 1);
-    canvas.width = Math.round(W * dpr);
-    canvas.height = Math.round(H * dpr);
-    canvas.style.width = `${W}px`;
-    canvas.style.height = `${H}px`;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     particleCount = Math.min(
       profile.maxParticles,
@@ -2045,88 +1995,42 @@ initTheme();
 
   function init() {
     particles = Array.from({ length: particleCount }, () => ({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      vx: (Math.random() - 0.5) * profile.velocity,
-      vy: (Math.random() - 0.5) * profile.velocity,
-      r: Math.random() * profile.radius + 0.8,
-      hue: palette[Math.floor(Math.random() * palette.length)],
-      alpha: Math.random() * 0.45 + 0.18,
+      x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * profile.velocity, vy: (Math.random() - 0.5) * profile.velocity,
+      r: Math.random() * profile.radius + 0.8, hue: palette[Math.floor(Math.random() * palette.length)], alpha: Math.random() * 0.45 + 0.18,
     }));
-  }
-
-  function stepParticles() {
-    particles.forEach((particle) => {
-      particle.x += particle.vx;
-      particle.y += particle.vy;
-
-      if (particle.x < 0) particle.x = W;
-      else if (particle.x > W) particle.x = 0;
-
-      if (particle.y < 0) particle.y = H;
-      else if (particle.y > H) particle.y = 0;
-    });
   }
 
   function drawFrame() {
     ctx.clearRect(0, 0, W, H);
-    stepParticles();
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; else if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; else if (p.y > H) p.y = 0;
+    });
 
     if (profile.showLinks) {
-      for (let i = 0; i < particleCount; i += 1) {
-        for (let j = i + 1; j < particleCount; j += 1) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const distanceSq = dx * dx + dy * dy;
-
-          if (distanceSq >= maxDistanceSq) continue;
-
-          const distance = Math.sqrt(distanceSq);
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(59,130,246,${(1 - distance / linkDistance) * 0.22})`;
-          ctx.lineWidth = 1;
-          ctx.stroke();
+      for (let i = 0; i < particleCount; i++) {
+        for (let j = i + 1; j < particleCount; j++) {
+          const dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y, distSq = dx * dx + dy * dy;
+          if (distSq >= maxDistanceSq) continue;
+          ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(59,130,246,${(1 - Math.sqrt(distSq) / linkDistance) * 0.22})`; ctx.lineWidth = 1; ctx.stroke();
         }
       }
     }
-
-    particles.forEach((particle) => {
-      ctx.beginPath();
-      ctx.arc(particle.x, particle.y, particle.r, 0, Math.PI * 2);
-      ctx.fillStyle = `hsla(${particle.hue}, 80%, 72%, ${particle.alpha})`;
-      ctx.fill();
+    particles.forEach((p) => {
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fillStyle = `hsla(${p.hue}, 80%, 72%, ${p.alpha})`; ctx.fill();
     });
   }
 
   function draw(now = 0) {
     animationFrame = requestAnimationFrame(draw);
-
-    if (document.hidden || now - lastFrameTime < frameInterval) {
-      return;
-    }
-
-    lastFrameTime = now;
-    drawFrame();
-  }
-
-  function stopAnimation() {
-    if (animationFrame) {
-      cancelAnimationFrame(animationFrame);
-      animationFrame = 0;
-    }
-  }
-
-  function startAnimation() {
-    if (!animationFrame) {
-      animationFrame = requestAnimationFrame(draw);
-    }
+    if (document.hidden || now - lastFrameTime < frameInterval) return;
+    lastFrameTime = now; drawFrame();
   }
 
   const rebuild = () => {
     resize();
-
     if (profile.disableAnimation) {
       stopAnimation();
       ctx.clearRect(0, 0, W, H);
@@ -2160,6 +2064,7 @@ initTheme();
     if (typeof query.addListener === "function") {
       query.addListener(handler);
     }
+    canvas.style.display = ''; init(); if (!animationFrame) animationFrame = requestAnimationFrame(draw);
   };
 
   window.addEventListener("resize", handleResize, { passive: true });
