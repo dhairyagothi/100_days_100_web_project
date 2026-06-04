@@ -114,7 +114,8 @@ make lint    # Run HTML linter
 ```
 100_days_100_web_project/
 ├── index.html              # Main showcase website
-├── index.js               # Project list and functionality
+├── index.js               # Project list functionality
+├── projects.json          # Project list data and configurations
 ├── style.css              # Main website styles
 ├── public/                # All individual projects
 │   ├── ProjectName/       # Each project in its own folder
@@ -212,11 +213,18 @@ Your Name
 ```
 
 ### Step 3: Update Main Project List
-Add your project to the main website by editing `index.js`:
+Add your project to the main website by adding a new entry to `projects.json`:
 
-```javascript
-// Find the data array and add your project
-["Day X", "Your Project Name", "/public/YourProjectName/index.html"],
+```json
+{
+  "projectNo": 101,
+  "projectName": "Your Project Name",
+  "projectType": "Tool",
+  "projectDesc": "Brief description of the project.",
+  "techStack": ["html", "css", "javascript"],
+  "difficulty": "beginner",
+  "projectPath": "./public/YourProjectName/index.html"
+}
 ```
 
 ### Step 4: Add .gitignore (If needed)
@@ -491,60 +499,8 @@ Please be respectful and inclusive in all interactions. We strive to create a we
 
 </div>
 
-We love pull requests! If you have a fix or a new feature, please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b my-feature`).
-3. Make your changes.
-4. Test your changes.
-5. Commit your changes (`git commit -am 'Add new feature'`).
-6. Push to the branch (`git push origin my-feature`).
-7. Open a pull request.
-
-Please ensure your pull request adheres to the following guidelines:
-
-- Describe the purpose of the pull request and the changes made.
-- Reference any related issues or pull requests.
-- Ensure your code follows the project's style guides.
-- Include tests for new features or bug fixes.
-- Update documentation as needed.
-
-
-## Contribution Guidelines
-
-Thank you for considering contributing to our project! To ensure smooth collaboration and effective contribution management, please adhere to the following guidelines:
-
-### Issue Creation
-
-1. **Limit on Issues:**
-   - Each contributor is allowed to create a maximum of **4 issues per day**. This helps us manage and address issues efficiently.
-
-### Contribution Levels
-
-2. **Basic Contributions:**
-   - This project is primarily focused on documentation. Most of the setup has been completed, so contributors will generally need to work on basic code tasks, such as writing tests.
-   - For these tasks, issues will be assigned the **Easy** label.
-
-3. **Acknowledging Hard Work:**
-   - If a contributor puts in significant effort on a task, the issue will be upgraded to **Medium**. This is our way of recognizing and appreciating extra effort.
-
-4. **Feature Additions and Component Work:**
-   - Contributors working on new features or components using JSX/TSX will be assigned a level based on the complexity and quality of their work.
-   - The more complex and valuable the contribution, the higher the level assigned.
-
-### Level Definitions
-
-- **Easy:**
-  - Tasks are straightforward, such as fixing minor bugs, writing tests, or making simple documentation updates.
-- **Medium:**
-  - Tasks require more effort, such as addressing complex bugs, improving existing features, or making substantial documentation improvements.
-- **Hard:**
-  - Tasks are highly complex and involve significant new feature development, major refactoring, or extensive contributions to the project’s core components.
-
-We look forward to your contributions and appreciate your effort in helping us improve the project!
-
-## License 
+## 📄 License 
 
 By contributing, you agree that your contributions will be licensed under the same license as the project.
 
-Thank you for contributing to 100 Days 100 Web Projects!
+Thank you for contributing to 100 Days 100 Web Projects! Happy coding! 🚀
