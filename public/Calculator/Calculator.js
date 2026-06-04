@@ -249,3 +249,69 @@ document.getElementById('clearHistory').addEventListener('click', () => {
         }
     );
 });
+
+// Keyboard input — mirrors the button click logic so the display and
+// internal `string` / `calculated` state stay in sync at all times.
+document.addEventListener('keydown', (e) => {
+    // Don't intercept if user is typing inside an input field
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+    const key = e.key;
+
+    if (key === 'Enter' || key === '=') {
+        e.preventDefault();
+        // same as clicking '='
+        try {
+            const expression = string;
+            const normalized = normalizeExpression(expression);
+            const result = eval(normalized);
+
+            if (!isSavableResult(result)) {
+                throw new Error('Invalid calculation result');
+            }
+
+            const resultString = result.toString();
+            addHistoryEntry(expression, resultString);
+
+            string = resultString;
+            input.value = string;
+            calculated = true;
+        } catch {
+            input.value = 'Error';
+            string = '';
+            calculated = false;
+        }
+        return;
+    }
+
+    if (key === 'Backspace' || key === 'Delete') {
+        e.preventDefault();
+        string = string.substring(0, string.length - 1);
+        input.value = string;
+        return;
+    }
+
+    if (key === 'Escape') {
+        e.preventDefault();
+        string = '';
+        input.value = string;
+        calculated = false;
+        return;
+    }
+
+    // Allow digits, operators, decimal, and ^ for power
+    const allowed = /^[0-9+\-*/.%^()]$/;
+    if (allowed.test(key)) {
+        if (calculated) {
+            if (['+', '-', '*', '/', '%', '^'].includes(key)) {
+                string += key;
+            } else {
+                string = key;
+            }
+            calculated = false;
+        } else {
+            string += key;
+        }
+        input.value = string;
+    }
+});
