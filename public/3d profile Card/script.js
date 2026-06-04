@@ -192,7 +192,6 @@ function updateThemeColor() {
   const darkCard = mixColors(theme, '#111522', 0.2);
   const rgb = hexToRgb(theme);
 
-  // Compute high contrast theme color for card text elements
   const contrastTheme = getContrastColor(theme, state.darkMode);
 
   document.documentElement.style.setProperty('--theme', theme);
@@ -330,7 +329,6 @@ function compressAndLoadImage(file, callback) {
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, width, height);
       
-      // Compress to JPEG with 0.82 quality
       const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
       callback(compressedDataUrl);
     });
@@ -355,46 +353,150 @@ function handleImageUpload(event) {
   });
 }
 
-async function downloadCard() {
-  if (typeof html2canvas !== 'function') {
-    elements.validation.textContent = 'Download is unavailable until the export library finishes loading.';
+// ===== DOWNLOAD FUNCTIONALITY - FIXED =====
+const downloadWrapper = document.querySelector('#downloadWrapper');
+const downloadDropdown = document.querySelector('#downloadDropdown');
+
+function toggleDropdown(open) {
+  const isOpen = open !== undefined ? open : !downloadDropdown.classList.contains('is-open');
+  downloadDropdown.classList.toggle('is-open', isOpen);
+  elements.download.setAttribute('aria-expanded', String(isOpen));
+}
+
+// Main download button - just opens the dropdown
+elements.download.addEventListener('click', (e) => {
+  e.stopPropagation();
+  e.preventDefault();
+  toggleDropdown(true);
+});
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+  if (!downloadWrapper.contains(e.target)) {
+    toggleDropdown(false);
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') toggleDropdown(false);
+});
+
+// Format selection buttons - THIS IS WHERE DOWNLOAD HAPPENS
+const formatButtons = downloadDropdown.querySelectorAll('[data-format]');
+formatButtons.forEach((btn) => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const fmt = btn.dataset.format;
+    
+    // Close dropdown first
+    toggleDropdown(false);
+    
+    // Add visual feedback
+    btn.style.opacity = '0.6';
+    
+    // Small delay for smooth UX, then download
+    setTimeout(() => {
+      downloadCard(fmt);
+      // Restore button opacity
+      setTimeout(() => { btn.style.opacity = '1'; }, 500);
+    }, 100);
+  });
+});
+
+async function downloadCard(format = 'png') {
+  if (!format) format = 'png';
+  elements.validation.textContent = '';
+
+  // Check if html2canvas is loaded
+  if (typeof html2canvas === 'undefined' || typeof html2canvas !== 'function') {
+    elements.validation.textContent = 'Export library not loaded yet — please wait and try again.';
+    console.error('html2canvas is not loaded');
     return;
   }
 
+  const originalHTML = elements.download.innerHTML;
   elements.download.disabled = true;
-  elements.download.textContent = 'Preparing...';
+  elements.download.innerHTML = 'Preparing…';
   document.body.classList.add('is-exporting');
   elements.card.classList.add('is-exporting');
 
+  let canvas;
   try {
     await waitForImages(elements.card);
     await nextFrame();
-
-    const canvas = await html2canvas(elements.card, {
-      backgroundColor: null,
+    
+    canvas = await html2canvas(elements.card, {
+      backgroundColor: format === 'jpg' ? '#ffffff' : null,
       scale: 2,
       useCORS: true,
+      allowTaint: true,
       scrollX: 0,
       scrollY: 0,
-      onclone: (clonedDocument) => {
-        clonedDocument.body.classList.add('is-exporting');
-        clonedDocument.querySelector('#profileCard')?.classList.add('is-exporting');
+      logging: false,
+      onclone: (clonedDoc) => {
+        clonedDoc.body.classList.add('is-exporting');
+        const c = clonedDoc.querySelector('#profileCard');
+        if (c) c.classList.add('is-exporting');
       },
     });
-    const link = document.createElement('a');
-    link.download = `${getDisplayValue(state.name, 'profile').toLowerCase().replace(/\s+/g, '-')}-card.png`;
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-  } catch (error) {
-    elements.validation.textContent = 'Unable to export this image. Try an uploaded image or a CORS-enabled image URL.';
+
+    const slug = getDisplayValue(state.name, 'profile').toLowerCase().replace(/\s+/g, '-');
+
+    if (format === 'pdf') {
+      // PDF download
+      const jsPDFClass = window.jspdf?.jsPDF || window.jsPDF;
+      
+      if (!jsPDFClass) {
+        throw new Error('PDF library not loaded. Try PNG or JPG instead.');
+      }
+      
+      const imgData = canvas.toDataURL('image/png');
+      const toMm = (px) => Math.round(px * 0.264583 * 10) / 10;
+      const w = toMm(canvas.width);
+      const h = toMm(canvas.height);
+      
+      const doc = new jsPDFClass({
+        orientation: w > h ? 'landscape' : 'portrait',
+        unit: 'mm',
+        format: [w, h],
+        compress: true,
+      });
+      
+      doc.addImage(imgData, 'PNG', 0, 0, w, h, undefined, 'FAST');
+      doc.save(slug + '-card.pdf');
+      
+    } else {
+      // PNG or JPG download
+      const mimeType = format === 'jpg' ? 'image/jpeg' : 'image/png';
+      const dataUrl = canvas.toDataURL(mimeType, 0.92);
+      
+      const link = document.createElement('a');
+      link.download = slug + '-card.' + format;
+      link.href = dataUrl;
+      document.body.appendChild(link);
+      link.click();
+      
+      // Clean up
+      setTimeout(() => {
+        if (link.parentNode) {
+          link.parentNode.removeChild(link);
+        }
+      }, 200);
+    }
+    
+  } catch (err) {
+    console.error('Download error:', err);
+    elements.validation.textContent = 'Download failed: ' + (err.message || String(err));
   } finally {
     document.body.classList.remove('is-exporting');
     elements.card.classList.remove('is-exporting');
     elements.download.disabled = false;
-    elements.download.textContent = 'Download card';
+    elements.download.innerHTML = originalHTML;
   }
 }
 
+// ===== UTILITY FUNCTIONS =====
 function nextFrame() {
   return new Promise((resolve) => requestAnimationFrame(() => resolve()));
 }
@@ -443,16 +545,18 @@ function resetBuilder() {
   render();
 }
 
+// Event listeners
 elements.form.addEventListener('input', syncStateFromInputs);
 elements.form.addEventListener('change', syncStateFromInputs);
 elements.imageFile.addEventListener('change', handleImageUpload);
-elements.download.addEventListener('click', downloadCard);
 elements.reset.addEventListener('click', resetBuilder);
 
+// Card tilt effect (only on devices with hover)
 if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
   elements.card.addEventListener('pointermove', handleCardTilt);
   elements.card.addEventListener('pointerleave', resetCardTilt);
 }
 
+// Initialize
 hydrateForm();
 render();

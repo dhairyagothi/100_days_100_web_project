@@ -51,7 +51,7 @@
 
 
 
-    <div class="flex flex-col md:flex-row justify-center gap-10 md:gap-20 p-6 bg-gray-50 min-h-screen">
+    <div class="flex flex-col md:flex-row justify-center gap-6 md:gap-10 p-3 md:p-6 bg-gray-50 min-h-screen overflow-x-hidden" style="max-width:100%;box-sizing:border-box;">
       
 <div class="blog-container" id="blogCards">
 
@@ -73,6 +73,8 @@
             <h2 class="blog-title">
                 Organic Farming
             </h2>
+
+            <p class="blog-read-time" data-article="of.html"></p>
 
             <p class="blog-description">
                 Learn how organic farming improves soil fertility
@@ -108,6 +110,8 @@
                 Future of AI
             </h2>
 
+            <p class="blog-read-time" data-article="ai.html"></p>
+
             <p class="blog-description">
                 Explore how Artificial Intelligence is transforming
                 industries, education, and daily life.
@@ -141,6 +145,8 @@
             <h2 class="blog-title">
                 Healthy Lifestyle
             </h2>
+
+            <p class="blog-read-time" data-article="hl.html"></p>
 
             <p class="blog-description">
                 Simple habits and routines that can improve your
@@ -176,6 +182,8 @@
                 Web Development
             </h2>
 
+            <p class="blog-read-time" data-article="wd.html"></p>
+
             <p class="blog-description">
                 Discover modern frontend technologies, responsive
                 design, and full-stack development trends.
@@ -210,6 +218,8 @@
                 Top 10 Travel Destinations
             </h2>
 
+            <p class="blog-read-time" data-article="top-travel-destinations.html"></p>
+
             <p class="blog-description">
                 Explore breathtaking places around the world and
                 plan your next unforgettable adventure.
@@ -232,7 +242,7 @@
 
 
         <!-- Sidebar Section -->
-        <div class="flex flex-col justify-start w-full md:w-[320px] bg-white p-5 rounded-2xl shadow-md h-fit">
+        <div class="flex flex-col justify-start w-full md:w-[320px] bg-white p-4 md:p-5 rounded-2xl shadow-md h-fit" style="box-sizing:border-box;min-width:0;">
             <div class="flex flex-row gap-10 justify-center items-center h-20 text-gray-600">
                 <p class="cursor-pointer hidden" id="liked">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -439,6 +449,51 @@
     <p>created by palak verma</p>
   </div>
 </footer>
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
 
+    const cards = document.querySelectorAll(".blog-read-time");
+
+    for (const card of cards) {
+
+        const articleFile = card.dataset.article;
+
+        try {
+            const response = await fetch(articleFile);
+            const html = await response.text();
+
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, "text/html");
+
+            const article =
+                doc.querySelector("#article-content") ||
+                doc.querySelector(".blog-content") ||
+                doc.querySelector(".blog-page");
+
+            if (!article) continue;
+
+            const text = article.innerText || article.textContent;
+
+            const wordCount = text
+                .trim()
+                .split(/\s+/)
+                .filter(word => word.length > 0).length;
+
+            const readingTime = Math.max(
+                1,
+                Math.ceil(wordCount / 200)
+            );
+
+            card.textContent = `📖 ${readingTime} min read`;
+
+        } catch (error) {
+            console.error(
+                `Error reading ${articleFile}:`,
+                error
+            );
+        }
+    }
+});
+</script>
 </body>
 </html>

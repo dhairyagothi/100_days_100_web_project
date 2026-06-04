@@ -55,7 +55,7 @@ body.dark {
   width: 100%;
   border-radius: 22px;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   transition: background 0.4s;
 }
 
@@ -884,6 +884,11 @@ body.dark .stats-modal {
   letter-spacing: 0.4px;
 }
 
+/* ---------- Zen 5×5 mode: widen container to fit board ---------- */
+#g.zen-mode {
+  max-width: 560px;
+}
+
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   .tile,
@@ -900,7 +905,6 @@ body.dark .stats-modal {
 }
 
 /* ---------- Responsive ---------- */
-/* ---------- Responsive ---------- */
 @media (max-width: 480px) {
   html,
   body {
@@ -914,12 +918,11 @@ body.dark .stats-modal {
     width: 100%;
     max-width: 100vw;
     padding: 10px 6px 16px;
-    overflow: hidden;
+    overflow: visible;
     box-sizing: border-box;
   }
 
   /* HEADER */
-
   .hdr {
     margin-bottom: 10px;
     align-items: center;
@@ -991,18 +994,17 @@ body.dark .stats-modal {
   }
 
   /* BOARD */
-
   .wrap {
     width: 100%;
     display: flex;
     justify-content: center;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .board {
     position: relative;
     margin: 0 auto;
-    overflow: hidden;
+    overflow: visible;
     grid-template-columns: repeat(4, var(--tile-size));
     gap: var(--tile-gap);
     padding: var(--board-pad);
@@ -1024,7 +1026,6 @@ body.dark .stats-modal {
   }
 
   /* TILE FONT SIZES */
-
   .tile[data-val='2'],
   .tile[data-val='4'],
   .tile[data-val='8'],
@@ -1044,142 +1045,66 @@ body.dark .stats-modal {
   .tile[data-val='2048'] {
     font-size: 16px;
   }
-  @media (max-width: 768px) {
+}
+
+@media (max-width: 445px) {
+  :root {
+    --tile-size: 62px;
+    --tile-gap: 6px;
+    --board-pad: 6px;
   }
 
-  @media (max-width: 445px) {
-    :root {
-      --tile-size: 62px;
-      --tile-gap: 7px;
-      --board-pad: 6px;
-    }
-
-    .tile[data-val='2'],
-    .tile[data-val='4'],
-    .tile[data-val='8'],
-    .tile[data-val='16'],
-    .tile[data-val='32'],
-    .tile[data-val='64'] {
-      font-size: 22px;
-    }
-
-    .tile[data-val='128'],
-    .tile[data-val='256'],
-    .tile[data-val='512'] {
-      font-size: 18px;
-    }
-
-    .tile[data-val='1024'],
-    .tile[data-val='2048'] {
-      font-size: 14px;
-    }
-
-    .tile {
-      width: calc(var(--tile-size) + 14px) !important;
-      height: calc(var(--tile-size) + 14px) !important;
-    }
+  .tile {
+    width: var(--tile-size) !important;
+    height: var(--tile-size) !important;
   }
 
-  @media (max-width: 418px) {
-    :root {
-      --tile-size: 58px;
-      --tile-gap: 5.5px;
-      --board-pad: 4px;
-    }
+  .tiles-layer {
+    inset: var(--board-pad);
+  }
+}
 
-    .tile {
-      width: calc(var(--tile-size) + 10px) !important;
-      height: calc(var(--tile-size) + 10px) !important;
-    }
+@media (max-width: 415px) {
+  :root {
+    --tile-size: 56px;
+    --tile-gap: 5px;
+    --board-pad: 5px;
   }
 
-  @media (max-width: 415px) {
-    :root {
-      --tile-size: 64px; /* slightly bigger like you asked */
-      --tile-gap: 4px; /* enough breathing room */
-      --board-pad: 4px;
-    }
-
-    /* keep board stable — DO NOT distort */
-    .board {
-      gap: var(--tile-gap);
-      padding: var(--board-pad);
-      box-sizing: border-box;
-    }
-
-    .cell {
-      width: var(--tile-size);
-      height: var(--tile-size);
-    }
-
-    /* IMPORTANT: no calc, no scaling tricks */
-    .tile {
-      width: var(--tile-size) !important;
-      height: var(--tile-size) !important;
-    }
-
-    /* FIX: ensure tiles don’t sit on border */
-    .tiles-layer {
-      inset: var(--board-pad);
-    }
+  .board {
+    gap: var(--tile-gap);
+    padding: var(--board-pad);
+    box-sizing: border-box;
   }
 
-  @media (max-width: 406px) {
-    :root {
-      --tile-size: 62px; /* keep tiles BIG (your request) */
-      --tile-gap: 2px; /* minimal gap */
-      --board-pad: 2px; /* minimal padding */
-    }
+  .cell {
+    width: var(--tile-size);
+    height: var(--tile-size);
+  }
 
-    /* 🔥 HARD COMPRESS BOARD CONTAINER */
-    .wrap {
-      transform: scale(0.92);
-      transform-origin: center;
-    }
+  .tile {
+    width: var(--tile-size) !important;
+    height: var(--tile-size) !important;
+  }
 
-    .board {
-      gap: var(--tile-gap);
-      padding: var(--board-pad);
-      box-sizing: border-box;
-    }
+  .tiles-layer {
+    inset: var(--board-pad);
+  }
+}
 
-    /* ensure alignment stays inside board */
-    .cell {
-      width: var(--tile-size);
-      height: var(--tile-size);
-    }
+@media (max-width: 380px) {
+  :root {
+    --tile-size: 50px;
+    --tile-gap: 4px;
+    --board-pad: 4px;
+  }
 
-    .tile {
-      width: var(--tile-size) !important;
-      height: var(--tile-size) !important;
-    }
+  .tile {
+    width: var(--tile-size) !important;
+    height: var(--tile-size) !important;
+  }
 
-    .tiles-layer {
-      inset: var(--board-pad);
-    }
-
-    .blobs {
-      inset: 0;
-      overflow: hidden;
-    }
-
-    .blob {
-      opacity: 0.08; /* reduce distraction */
-    }
-
-    /* OPTIONAL: push blobs behind everything safely */
-    .blobs {
-      z-index: 0;
-    }
-
-    #inner {
-      position: relative;
-      z-index: 2;
-    }
-
-    .wrap {
-      position: relative;
-      z-index: 3;
-    }
+  .tiles-layer {
+    inset: var(--board-pad);
   }
 }

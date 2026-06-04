@@ -187,7 +187,7 @@ function buildProjectCardHTML({ day, name, url, tags, category }) {
   const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter(t => t) : [];
   const tagsHTML = tagsArray.map(t => `<span class="tag">${t}</span>`).join('');
 
-  return {
+return {
     html: `
         <div class="card-meta">
             <span class="card-day">${day}</span>
