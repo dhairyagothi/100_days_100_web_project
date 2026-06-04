@@ -28,6 +28,40 @@ const statModified =
 
 const statReadTime =
   document.getElementById("statReadTime");
+const techBar =
+  document.getElementById("techBar");
+
+const projectsBar =
+  document.getElementById("projectsBar");
+
+const communicationBar =
+  document.getElementById(
+    "communicationBar"
+  );
+
+const experienceBar =
+  document.getElementById(
+    "experienceBar"
+  );
+
+const techScore =
+  document.getElementById("techScore");
+
+const projectsScore =
+  document.getElementById(
+    "projectsScore"
+  );
+
+const communicationScore =
+  document.getElementById(
+    "communicationScore"
+  );
+
+const experienceScore =
+  document.getElementById(
+    "experienceScore"
+  );
+  
 
 const statWords =
   document.getElementById("statWords");
@@ -146,6 +180,8 @@ function generateAnalysis() {
    currentATSScore;
 
   animateMeter(atsScore);
+  
+  updateBreakdown(atsScore);
 
   generateChart(atsScore);
 }
@@ -181,6 +217,45 @@ function animateMeter(score) {
     progressCircle.style.stroke =
       "#ef4444";
   }
+}
+
+function updateBreakdown(score) {
+
+  const technical =
+    Math.min(100, score + 5);
+
+  const projects =
+    Math.min(100, score - 2);
+
+  const communication =
+    Math.max(0, score - 10);
+
+  const experience =
+    Math.max(0, score - 6);
+
+  techBar.style.width =
+    `${technical}%`;
+
+  projectsBar.style.width =
+    `${projects}%`;
+
+  communicationBar.style.width =
+    `${communication}%`;
+
+  experienceBar.style.width =
+    `${experience}%`;
+
+  techScore.textContent =
+    `${technical}%`;
+
+  projectsScore.textContent =
+    `${projects}%`;
+
+  communicationScore.textContent =
+    `${communication}%`;
+
+  experienceScore.textContent =
+    `${experience}%`;
 }
 
 let chart;

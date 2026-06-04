@@ -4,9 +4,18 @@ const STORAGE_KEY = 'calcHistory';
 const MAX_HISTORY_ENTRIES = 50;
 let string = "";
 let calculated = false;
+let alternateMode = false;
 let history = loadHistory();
 
 const pi = Math.PI;
+const scientificButtons = {
+    sin: null,
+    cos: null,
+    tan: null,
+    sqrt: null,
+    ln: null,
+    log: null
+};
 
 function showConfirmToast(message, onYes, onNo) {
     const container = document.querySelector('.toast-container');
@@ -79,9 +88,74 @@ function ln(value) {
 function log(value) {
     return Math.log10(Number(value));
 }
+function asin(value) {
+    return Math.asin(Number(value)) * 180 / Math.PI;
+}
+
+function acos(value) {
+    return Math.acos(Number(value)) * 180 / Math.PI;
+}
+
+function atan(value) {
+    return Math.atan(Number(value)) * 180 / Math.PI;
+}
+function square(value) {
+    return Math.pow(Number(value), 2);
+}
+
+function exp(value) {
+    return Math.exp(Number(value));
+}
+
+function tenPower(value) {
+    return Math.pow(10, Number(value));
+}
 
 function abs(value) {
     return Math.abs(Number(value));
+}
+function updateScientificLabels() {
+
+    const labels = alternateMode
+        ? {
+            sin: 'sin⁻¹',
+            cos: 'cos⁻¹',
+            tan: 'tan⁻¹',
+            sqrt: 'x²',
+            ln: 'eˣ',
+            log: '10ˣ'
+        }
+        : {
+            sin: 'sin',
+            cos: 'cos',
+            tan: 'tan',
+            sqrt: 'sqrt',
+            ln: 'ln',
+            log: 'log'
+        };
+
+    buttons.forEach(btn => {
+
+        const text = btn.textContent;
+
+        if (labels.sin && (text === 'sin' || text === 'sin⁻¹'))
+            btn.textContent = labels.sin;
+
+        if (labels.cos && (text === 'cos' || text === 'cos⁻¹'))
+            btn.textContent = labels.cos;
+
+        if (labels.tan && (text === 'tan' || text === 'tan⁻¹'))
+            btn.textContent = labels.tan;
+
+        if (labels.sqrt && (text === 'sqrt' || text === 'x²'))
+            btn.textContent = labels.sqrt;
+
+        if (labels.ln && (text === 'ln' || text === 'eˣ'))
+            btn.textContent = labels.ln;
+
+        if (labels.log && (text === 'log' || text === '10ˣ'))
+            btn.textContent = labels.log;
+    });
 }
 
 function loadHistory() {
@@ -245,11 +319,63 @@ function renderHistory() {
 
 renderHistory();
 
+const toggleButton = document.getElementById('toggleFunctions');
+
+toggleButton.addEventListener('click', () => {
+
+    alternateMode = !alternateMode;
+
+    toggleButton.classList.toggle('active');
+
+    updateScientificLabels();
+});
+
 const arr = Array.from(buttons);
 
 arr.forEach(button => {
     button.addEventListener('click', e => {
         const value = e.target.innerHTML;
+        if (alternateMode) {
+
+    if (value === 'sin⁻¹') {
+        string += 'asin(';
+        input.value = string;
+        return;
+    }
+
+    if (value === 'cos⁻¹') {
+        string += 'acos(';
+        input.value = string;
+        return;
+    }
+
+    if (value === 'tan⁻¹') {
+        string += 'atan(';
+        input.value = string;
+        return;
+    }
+
+    if (value === 'eˣ') {
+        string += 'exp(';
+        input.value = string;
+        return;
+    }
+
+    if (value === '10ˣ') {
+        string += 'tenPower(';
+        input.value = string;
+        return;
+    }
+
+    if (value === 'x²') {
+        string += '^2';
+        input.value = string;
+        return;
+    }
+}
+        if (value === '↔') {
+    return;
+}
 
         if (value === '=') {
             try {
@@ -323,13 +449,56 @@ document
         }
     });
 document.getElementById('clearHistory').addEventListener('click', () => {
+
+    if (history.length === 0) {
+        showToast('History is already empty');
+        return;
+    }
+
     showConfirmToast(
         "Are you sure you want to clear history?",
         () => {
-            // YES action
             history = [];
             localStorage.removeItem(STORAGE_KEY);
             renderHistory();
         }
     );
+});
+document.addEventListener('keydown', (e) => {
+
+    const activeElement = document.activeElement;
+
+    if (
+        activeElement &&
+        activeElement.tagName === 'INPUT'
+    ) {
+        return;
+    }
+
+    if (e.key === 'Enter') {
+
+        e.preventDefault();
+
+        document
+            .querySelector('.equalTo')
+            .click();
+    }
+
+    if (e.key === 'Escape') {
+
+        document
+            .querySelector('.Clear')
+            .click();
+    }
+
+    if (e.key === 'Backspace') {
+
+        e.preventDefault();
+
+        const deleteButton = Array
+            .from(buttons)
+            .find(btn => btn.textContent === 'DEL');
+
+        deleteButton?.click();
+    }
 });

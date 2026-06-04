@@ -11,7 +11,6 @@ const eatSound = document.getElementById('eatSound');
 const gameOverSound = document.getElementById('gameOverSound');
 
 let snake, dir, nextDir, food, score, level, speed, running, paused;
-let lastTickTime = 0; // For smooth modern frame accumulation tracking
 
 let highScore = 0;
 let isGameOver = false;
@@ -21,6 +20,27 @@ let finalScore = 0;
 let rafId        = null;   // requestAnimationFrame handle (main loop)
 let lastTickTime = 0;      // timestamp of last logic tick
 let accumulator  = 0;      // ms accumulated since last tick
+// ──────────────────────────────────────────────────────────────────────────
+
+// ─── Page Visibility API — pause/resume on tab switch ─────────────────────
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    // Tab went to background: pause the game silently
+    if (running && !paused) {
+      paused = true;
+      paused_by_visibility = true; // remember we auto-paused
+    }
+  } else {
+    // Tab came back: resume only if WE auto-paused it
+    if (paused_by_visibility) {
+      paused = false;
+      paused_by_visibility = false;
+      lastTickTime = performance.now(); // reset tick time so no catch-up
+      accumulator  = 0;
+    }
+  }
+});
+let paused_by_visibility = false; // tracks auto-pause vs user-pause
 // ──────────────────────────────────────────────────────────────────────────
 
 // ─── Web Audio sound engine ────────────────────────────────────────────────
@@ -249,7 +269,12 @@ function gameEngine(timestamp) {
 
   if (running && !paused) {
     const elapsed = timestamp - lastTickTime;
-    if (elapsed >= speed) {
+
+    // Guard: if the tab was hidden and visibility API didn't fire (edge case),
+    // a huge elapsed value would cause multiple rapid ticks. Cap it to one tick worth.
+    if (elapsed > speed * 3) {
+      lastTickTime = timestamp;
+    } else if (elapsed >= speed) {
       tick();
       lastTickTime = timestamp;
     }

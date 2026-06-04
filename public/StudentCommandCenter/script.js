@@ -79,17 +79,68 @@ if(savedTasks) {
 }
 
 // NOTES
-const notesArea = document.getElementById("notesArea");
 const saveNotesBtn = document.getElementById("saveNotesBtn");
+const notesArea = document.getElementById("notesArea");
+const notesList = document.getElementById("notesList");
 
-notesArea.value = localStorage.getItem("notes") || "";
+let notes = [];
+
+try {
+    notes = JSON.parse(localStorage.getItem("notes")) || [];
+} catch (error) {
+    console.error("Invalid notes data in localStorage:", error);
+    localStorage.removeItem("notes");
+    notes = [];
+}
+
+function renderNotes() {
+
+    if (!notesList) return;
+
+    notesList.innerHTML = "";
+
+    notes.forEach((note, index) => {
+
+        const li = document.createElement("li");
+
+        li.innerHTML = `
+            ${note}
+            <button class="deleteBtn" onclick="deleteNote(${index})">Delete</button>
+        `;
+
+        notesList.appendChild(li);
+    });
+}
 
 saveNotesBtn.addEventListener("click", () => {
 
-    localStorage.setItem("notes", notesArea.value);
+    const note = notesArea.value.trim();
 
-    alert("Notes saved successfully");
+    if (note === "") {
+        alert("Enter a note");
+        return;
+    }
+
+    notes.push(note);
+
+    notesArea.value = "";
+
+    renderNotes();
+
+    localStorage.setItem("notes", JSON.stringify(notes));
 });
+
+function deleteNote(index) {
+
+    notes.splice(index, 1);
+
+    renderNotes();
+
+    localStorage.setItem("notes", JSON.stringify(notes));
+}
+
+// LOAD NOTES
+renderNotes();
 
 // POMODORO TIMER
 let minutes = 25;
