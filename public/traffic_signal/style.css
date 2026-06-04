@@ -247,6 +247,7 @@ canvas {
   box-shadow: 0 0 30px var(--accent);
 }
 
+#diff-badge {
   position: absolute;
   top: 12px;
   left: 50%;
