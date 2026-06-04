@@ -432,3 +432,335 @@ body.light-mode .action-btn{
     font-size:2.8rem;
   }
 }
+
+/* ===== NEW FEATURES STYLES ===== */
+
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 380px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.stats-section,
+.achievements-section,
+.history-section {
+  width: 100%;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(18px);
+  border-radius: 28px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.stat-card {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.07);
+  padding: 20px 16px;
+  border-radius: 16px;
+  transition: 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 900;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.achievement-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  padding: 16px 12px;
+  border-radius: 16px;
+  border: 2px solid transparent;
+  transition: 0.3s ease;
+}
+
+.achievement-badge.locked {
+  opacity: 0.5;
+  filter: grayscale(1);
+}
+
+.achievement-badge.unlocked {
+  border-color: rgba(124, 58, 237, 0.6);
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.25);
+  animation: achievementUnlock 0.6s ease;
+}
+
+@keyframes achievementUnlock {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.achievement-icon {
+  font-size: 2rem;
+}
+
+.achievement-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.achievements-progress {
+  margin-bottom: 16px;
+}
+
+.achievements-progress p {
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.progress-bar-container {
+  height: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--primary-gradient);
+  border-radius: 999px;
+  transition: width 0.5s ease;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  transition: 0.3s ease;
+}
+
+.history-item:hover {
+  transform: translateX(4px);
+}
+
+.history-time {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.history-rating {
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+.history-timestamp {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.benchmark-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 2000;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  backdrop-filter: blur(8px);
+}
+
+.benchmark-modal.active {
+  display: flex;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.benchmark-content {
+  background: var(--bg-secondary);
+  border: 1px solid var(--glass-border);
+  border-radius: 32px;
+  padding: 40px 35px;
+  text-align: center;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: var(--shadow);
+  animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.benchmark-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.benchmark-time {
+  font-size: 4rem;
+  font-weight: 900;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 16px;
+}
+
+.benchmark-rating {
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin-bottom: 24px;
+}
+
+.benchmark-compare {
+  display: grid;
+  gap: 10px;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.benchmark-compare-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.benchmark-compare-label {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.benchmark-close {
+  width: 100%;
+  border: none;
+  background: var(--primary-gradient);
+  color: white;
+  padding: 14px;
+  border-radius: 18px;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.benchmark-close:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+
+.toast-container {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 3000;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.toast {
+  background: var(--bg-secondary);
+  border: 1px solid var(--glass-border);
+  padding: 16px 22px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: var(--shadow);
+  animation: toastSlideIn 0.35s ease;
+}
+
+@keyframes toastSlideIn {
+  from { transform: translateX(-100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.toast.fade-out {
+  animation: toastSlideOut 0.3s ease forwards;
+}
+
+@keyframes toastSlideOut {
+  to { transform: translateX(-100%); opacity: 0; }
+}
+
+.toast-icon {
+  font-size: 2rem;
+}
+
+.toast-text strong {
+  display: block;
+  font-weight: 800;
+}
+
+.toast-text span {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Make right panel responsive */
+@media (max-width: 950px) {
+  .right-panel {
+    width: 100%;
+    max-width: 450px;
+  }
+}
+
+/* Rating colors */
+.rating-beginner { color: #ff6b6b; }
+.rating-average { color: #ffd93d; }
+.rating-fast { color: #6bcb77; }
+.rating-elite { color: #7c3aed; }
+
