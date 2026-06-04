@@ -1,0 +1,125 @@
+:root {
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --danger: #ef4444;
+    --secondary: #6b7280;
+    --background: #f3f4f6;
+    --card-bg: #ffffff;
+    --text: #1f2937;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.counter-container {
+    background: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 350px;
+}
+
+h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+#counter-value {
+    font-size: 4rem;
+    font-weight: bold;
+    margin: 1rem 0;
+    transition: transform 0.1s ease;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    flex: 1;
+    transition: background 0.2s;
+}
+
+#increment-btn {
+    background-color: var(--primary);
+    color: white;
+}
+
+#increment-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+#decrement-btn {
+    background-color: var(--danger);
+    color: white;
+}
+
+#decrement-btn:hover {
+    background-color: #dc2626;
+}
+
+.btn.secondary {
+    background-color: var(--secondary);
+    color: white;
+}
+
+.btn.secondary:hover {
+    background-color: #4b5563;
+}
+
+.btn.save {
+    width: 100%;
+    background-color: #10b981;
+    color: white;
+    margin-bottom: 1.5rem;
+}
+
+.btn.save:hover {
+    background-color: #059669;
+}
+
+.history-section {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 1rem;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.history-section h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: #4b5563;
+}
+
+#history-log {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#history-log li {
+    padding: 0.4rem;
+    background: #f9fafb;
+    margin-bottom: 4px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    border-left: 4px solid var(--primary);
+}
