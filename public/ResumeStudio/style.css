@@ -219,7 +219,7 @@ textarea {
 }
 
 input:focus,
-=textarea:focus{
+textarea:focus{
     box-shadow:0 0 0 3px rgba(6,182,212,0.25);
 }
 
@@ -507,7 +507,6 @@ textarea:focus {
 
 /* =========================================
    Print to PDF Styles (Added for GSSoC Fix)
-========================================= */
 @media print {
     /* Hide all UI elements, backgrounds, and the editor */
     .sidebar, 
@@ -606,6 +605,96 @@ textarea:focus {
    LIGHT MODE
 ========================= */
 
+
+body.dark{
+    background:#f1f5f9;
+    color:#0f172a;
+}
+
+body.dark .animated-bg{
+    background:linear-gradient(135deg,#e2e8f0,#f1f5f9,#cbd5e1);
+}
+
+body.dark .animated-bg span{
+    opacity:0.06;
+}
+
+body.dark .bg-glow{
+    background:
+        radial-gradient(circle at top left,rgba(6,182,212,0.06),transparent 30%),
+        radial-gradient(circle at bottom right,rgba(59,130,246,0.06),transparent 30%);
+}
+
+body.dark .sidebar{
+    border-right:1px solid rgba(0,0,0,0.08);
+}
+
+body.dark .glass{
+    background:rgba(255,255,255,0.75);
+    border:1px solid rgba(0,0,0,0.1);
+}
+
+body.dark .logo h2{
+    color:#0f172a;
+}
+
+body.dark .logo p{
+    color:#64748b;
+}
+
+body.dark .ats-card p{
+    color:#64748b;
+}
+
+body.dark .theme-btn{
+    background:rgba(0,0,0,0.07);
+    color:#0f172a;
+}
+
+body.dark .theme-btn:hover{
+    background:rgba(0,0,0,0.13);
+}
+
+body.dark .top-bar h1{
+    color:#0f172a;
+}
+
+body.dark .top-bar p{
+    color:#64748b;
+}
+
+body.dark label{
+    color:#334155;
+}
+
+body.dark input,
+body.dark textarea{
+    background:rgba(0,0,0,0.05);
+    color:#0f172a;
+    border:1px solid rgba(0,0,0,0.1);
+}
+
+body.dark input::placeholder,
+body.dark textarea::placeholder{
+    color:#94a3b8;
+}
+
+body.dark .template{
+    background:rgba(0,0,0,0.06);
+    color:#0f172a;
+}
+
+body.dark .secondary-btn{
+    background:rgba(0,0,0,0.08);
+    color:#0f172a;
+}
+
+body.dark .preview{
+    background:#e2e8f0;
+}
+
+body.dark .preview-header h2{
+    color:#0f172a;
 
 body.dark{
     background:#f1f5f9;

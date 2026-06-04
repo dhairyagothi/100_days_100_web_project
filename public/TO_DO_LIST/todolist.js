@@ -670,7 +670,8 @@ function saveAsPDF() {
       doc.addPage();
       verticalCursor = 20;
     }
-    const status = task.status.toUpperCase();
+    const rawStatus = task.status || 'pending';
+    const status = rawStatus === 'inprogress' ? 'IN PROGRESS' : rawStatus.toUpperCase();
     const printLine = `${index + 1}. [${status}] (${task.priority} Priority) [${task.category}] - ${task.text}`;
     doc.text(printLine, 20, verticalCursor);
     verticalCursor += 10;
