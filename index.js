@@ -159,6 +159,46 @@ const EXTERNAL_DEMO_SOURCE_FOLDERS = {
   "Day 115": "public/event-registration-system",
 };
 
+/**
+ * Convert a string to kebab-case for consistent directory naming.
+ * Examples:
+ *   "To-Do List"         → "to-do-list"
+ *   "BMI_Calculator"     → "bmi-calculator"
+ *   "AI ChatBot"         → "ai-chat-bot"
+ *   "Candy_Crush_Game"   → "candy-crush-game"
+ *   "3d profile Card"    → "3d-profile-card"
+ */
+function toKebabCase(str) {
+  return String(str || "")
+    .trim()
+    .replace(/[\s_]+/g, "-")
+    .replace(/[^a-zA-Z0-9-]/g, "")
+    .replace(/-+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .toLowerCase();
+}
+
+/**
+ * Resolve the project folder name from a project entry.
+ * Uses the projectPath from projects.json which already points
+ * to the correct directory, falling back to kebab-case of the project name.
+ */
+function getProjectFolderName(url, name) {
+  if (url && url.startsWith("./public/")) {
+    const segments = url.split("/");
+    if (segments.length >= 3) {
+      return decodeURIComponent(segments[2]);
+    }
+  }
+  if (url && url.startsWith("./")) {
+    const segments = url.split("/");
+    if (segments.length >= 2) {
+      return decodeURIComponent(segments[1]);
+    }
+  }
+  return toKebabCase(name);
+}
+
 function isGithubTreeUrl(url) {
   return /^https:\/\/github\.com\/[^/]+\/[^/]+\/tree\/[^/]+\//i.test(
     String(url || "").trim(),
@@ -380,7 +420,7 @@ return {
             </div>
 
             <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
-                <img src="./${url && url.startsWith('./') ? url.split('/')[2] : name.replace(/\s+/g, '_')}/preview.png" alt="${name} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
+                <img src="./${getProjectFolderName(url, name)}/preview.png" alt="${name} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
 
             <h3 class="card-name">${safeName}</h3>

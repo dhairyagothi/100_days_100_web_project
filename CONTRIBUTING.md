@@ -118,7 +118,7 @@ npm run validate:projects # Runs projects registry JSON validation checks
 ├── index.js               # Project list and functionality
 ├── style.css              # Main website styles
 ├── public/                # All individual projects
-│   ├── ProjectName/       # Each project in its own folder
+│   ├── project-name/      # Each project in its own folder (kebab-case)
 │   │   ├── index.html    # Project entry point
 │   │   ├── style.css     # Project styles
 │   │   ├── script.js     # Project functionality
@@ -136,10 +136,12 @@ npm run validate:projects # Runs projects registry JSON validation checks
 ## ➕ Adding New Projects
 
 ### Step 1: Create Project Folder
+Use **kebab-case** for directory names (all lowercase, hyphens instead of spaces/underscores).
+
 ```bash
 # Create a new folder in the public directory
-mkdir public/YourProjectName
-cd public/YourProjectName
+mkdir public/your-project-name
+cd public/your-project-name
 ```
 
 ### Step 2: Project Files
@@ -238,7 +240,7 @@ Each project is stored as a single line inside the `PROJECTS` array in `index.js
 Here's a real example of a valid entry:
 
 ```javascript
-["Day 113", "Drawing Canvas", "./public/DrawingCanvas/index.html", ["javascript", "canvas"], "Beginner"]
+["Day 113", "Drawing Canvas", "./public/drawing-canvas/index.html", ["javascript", "canvas"], "Beginner"]
 ```
 
 ---
@@ -249,7 +251,7 @@ Here's a real example of a valid entry:
 |----------|-------|---------|-------------|
 | 1st | Day Number | `"Day 113"` | The day this project is assigned. Follow the existing numbering in the file. |
 | 2nd | Project Name | `"Drawing Canvas"` | The display name of your project. Use title case. Must match the key used in `PROJECT_DESCRIPTIONS` if you add a description. |
-| 3rd | File Path | `"./public/DrawingCanvas/index.html"` | The relative path to your project's `index.html`. Must start with `./public/`. |
+| 3rd | File Path | `"./public/drawing-canvas/index.html"` | The relative path to your project's `index.html`. Must start with `./public/`. Use kebab-case for the folder name. |
 | 4th | Tags | `["javascript", "canvas"]` | An array of lowercase technology or category tags describing your project. |
 | 5th | Difficulty | `"Beginner"` | How challenging the project is. Must be one of the three allowed values (see below). |
 
@@ -273,21 +275,32 @@ The path in the third field **must be a relative path** starting with `./public/
 
 **Always use:**
 ```javascript
-"./public/YourProjectFolder/index.html"
+"./public/your-project-folder/index.html"
 ```
 
 ---
 
-### 📁 Folder Names Must Match Exactly
+### 📁 Folder Names Must Match Exactly — Use kebab-case
 
-The folder name in your path must **exactly match** the folder you created inside `public/`. This includes matching the capitalization.
+All project directories in `public/` should use **kebab-case**: lowercase letters with hyphens for word separators.
 
-For example, if your folder is named `DrawingCanvas`, your path must be:
+| ❌ Avoid | ✅ Use |
+|----------|--------|
+| `DrawingCanvas` | `drawing-canvas` |
+| `BMI_Calculator` | `bmi-calculator` |
+| `Animated Searchbar` | `animated-searchbar` |
+| `My New Project` | `my-new-project` |
+
+The folder name in your path must **exactly match** the folder you created inside `public/`.
+
+For example, if your folder is named `drawing-canvas`, your path must be:
 ```javascript
-"./public/DrawingCanvas/index.html"
+"./public/drawing-canvas/index.html"
 ```
 
-Writing `"./public/drawingcanvas/index.html"` or `"./public/Drawing_Canvas/index.html"` will result in a broken link — the project card will appear on the site but clicking it will show a 404 error.
+Writing `"./public/DrawingCanvas/index.html"` or `"./public/drawing_canvas/index.html"` will result in a broken link — the project card will appear on the site but clicking it will show a 404 error.
+
+> **Why kebab-case?** Consistent naming avoids URL encoding issues (spaces → `%20`), simplifies automated tooling, and is the standard convention for web project directories. A `normalizeProjectPath()` utility in `index.js` handles legacy names at runtime.
 
 ---
 
@@ -311,10 +324,10 @@ Always write tags in lowercase:
 
 **✅ Correct entry:**
 ```javascript
-["Day 113", "Drawing Canvas", "./public/DrawingCanvas/index.html", ["javascript", "canvas"], "Beginner"]
+["Day 113", "Drawing Canvas", "./public/drawing-canvas/index.html", ["javascript", "canvas"], "Beginner"]
 ```
 - Day number is formatted correctly
-- Path uses `./public/` and matches the actual folder name
+- Path uses `./public/` with kebab-case and matches the actual folder name
 - Tags are lowercase
 - Difficulty is one of the three allowed values
 
@@ -322,7 +335,7 @@ Always write tags in lowercase:
 
 **❌ Incorrect — wrong difficulty value:**
 ```javascript
-["Day 113", "Drawing Canvas", "./public/DrawingCanvas/index.html", ["javascript", "canvas"], "Easy"]
+["Day 113", "Drawing Canvas", "./public/drawing-canvas/index.html", ["javascript", "canvas"], "Easy"]
 ```
 `"Easy"` is not an accepted value. Use `"Beginner"` instead.
 
@@ -330,17 +343,17 @@ Always write tags in lowercase:
 
 **❌ Incorrect — uppercase tags:**
 ```javascript
-["Day 113", "Drawing Canvas", "./public/DrawingCanvas/index.html", ["JavaScript", "Canvas"], "Beginner"]
+["Day 113", "Drawing Canvas", "./public/drawing-canvas/index.html", ["JavaScript", "Canvas"], "Beginner"]
 ```
 Tags must be all lowercase: `["javascript", "canvas"]`.
 
 ---
 
-**❌ Incorrect — path doesn't match the folder name:**
+**❌ Incorrect — path uses PascalCase instead of kebab-case:**
 ```javascript
-["Day 113", "Drawing Canvas", "./public/drawing-canvas/index.html", ["javascript", "canvas"], "Beginner"]
+["Day 113", "Drawing Canvas", "./public/DrawingCanvas/index.html", ["javascript", "canvas"], "Beginner"]
 ```
-If the actual folder is named `DrawingCanvas`, the path must be `./public/DrawingCanvas/index.html`.
+If the actual folder is named `drawing-canvas`, the path must be `./public/drawing-canvas/index.html`.
 
 ---
 
