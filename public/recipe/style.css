@@ -1,93 +1,437 @@
-body{
+* {
+    box-sizing: border-box;
+}
+
+body {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: center;
     text-align: center;
     flex-direction: column;
-    background:linear-gradient(rgba(16, 1, 1, 0.5),rgba(0,0,0,0.5)),
-    url(image.jpg) center/cover no-repeat fixed;
-    color:aliceblue;
+    background: linear-gradient(rgba(8, 2, 2, 0.7), rgba(0, 0, 0, 0.85)),
+                url(image.jpg) center/cover no-repeat fixed;
+    color: #f3f4f6;
     margin: 0;
     padding: 0;
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    animation: fadeInBackground 1.2s cubic-bezier(0.25, 1, 0.5, 1) both;
 }
-.data{
-    background-color: rgba(0, 0, 0, 0.573);
-    padding: 20px;
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(10, 10, 10, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
-    width: 60vh;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+.project-back-button {
+    position: fixed;
+    left: 24px;
+    top: 24px;
+    padding: 10px 20px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.04);
+    color: #ffffff;
+    text-decoration: none;
+    z-index: 9999;
+    font-weight: 600;
+    font-size: 14px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, background-color, box-shadow;
+}
+
+.project-back-button:hover {
+    background: #ffffff;
+    color: #000000;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(255, 255, 255, 0.25);
+}
+
+nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0 0 24px 24px;
+    color: #ffffff;
+    padding: 15px 50px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    animation: slideDownNav 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    will-change: transform, opacity;
+}
+
+.logo {
+    margin: 0;
+    font-size: clamp(22px, 3.5vw, 25px);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #ffffff 30%, #a3a3a3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.navlink {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+nav a {
+    display: inline-block;
+    text-decoration: none;
+    color: #a3a3a3;
+    padding: 10px 22px;
+    border-radius: 20px;
+    font-size: clamp(14px, 2.2vw, 16px);
+    font-weight: 500;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, color, background-color;
+}
+
+nav a:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-1px);
+}
+
+nav a.active {
+    background: #ffffff;
+    color: #000000;
+    font-weight: 600;
+    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15);
+}
+
+h1 {
+    font-size: clamp(2.4rem, 7vw, 3.8rem);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    background: linear-gradient(180deg, #ffffff 10%, #c7c7c7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 80px auto 20px auto;
+    padding: 0 20px;
+    width: 100%;
+    max-width: 800px;
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+    will-change: transform, opacity;
+}
+
+.data, .test {
+    background: rgba(13, 13, 13, 0.45);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: clamp(30px, 6vw, 50px);
+    border-radius: 32px;
+    width: 92%;
+    margin: 20px auto 40px auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: auto;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.55), 
+                inset 0 1px 1px rgba(255, 255, 255, 0.08);
+    animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+    will-change: transform, opacity;
 }
-nav{
-    
-    flex-direction: row;
-    background-color: rgba(255, 255, 255, 0.509);
+
+.data {
+    max-width: 540px;
+}
+
+.test {
+    max-width: 760px;
+}
+
+.data h3 {
+    font-size: clamp(16px, 2.5vw, 19px);
+    color: #9ca3af;
+    font-weight: 400;
     margin-top: 0;
-    border-radius: 0 0 20px 20px;
-    color: black;
+    margin-bottom: 5px;
+}
 
+.test h2 {
+    font-size: clamp(28px, 4.5vw, 40px);
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    margin-top: 0;
+    margin-bottom: 25px;
+    background: linear-gradient(135deg, #ffffff 0%, #e5e7eb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
-nav a{
-    text-decoration: none;
-    color: black;
-    gap: 10px;
-    padding: 10px;
-    margin: 10px;
-    font-size: 20px;
-    margin-bottom: 10px;
+
+.test h3 {
+    color: #9ca3af;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     padding-bottom: 10px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-align: left;
 }
-nav h2{
-    font-size: 30px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+.test ul {
+    text-align: left;
+    width: 100%;
+    max-width: 580px;
+    margin: 15px auto 25px auto;
+    padding-left: 24px;
+    list-style-type: square;
 }
-button{
-    background-color: yellow;
-    color: black;
-    padding: 10px;
+
+.test li {
+    margin-bottom: 12px;
+    font-size: clamp(15px, 2.2vw, 18px);
+    color: #d1d5db;
+    line-height: 1.6;
+    transition: all 0.25s ease;
+}
+
+.test li:hover {
+    color: #ffffff;
+    transform: translateX(4px);
+}
+
+#text-display, #text-input, #timer {
+    width: 100%;
+    word-wrap: break-word;
+    line-height: 1.75;
+}
+
+#text-display p {
+    text-align: left;
+    font-size: clamp(15px, 2.2vw, 18px);
+    color: #d1d5db;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.form-group {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#dropdown, #difficulty {
+    background: rgba(10, 10, 10, 0.6);
+    color: #ffffff;
+    border-radius: 16px;
+    margin: 25px 0;
+    padding: 18px;
+    width: 100%;
+    max-width: 100%;
+    font-size: 16px;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+    background-repeat: no-repeat;
+    background-position: right 18px center;
+    background-size: 16px;
+    padding-right: 50px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.05);
+}
+
+#dropdown option, #difficulty option {
+    background-color: #121212;
+    color: #ffffff;
+    padding: 14px;
+    font-size: 15px;
+}
+
+#dropdown:hover, #difficulty:hover {
+    border-color: rgba(255, 255, 255, 0.25);
+    background-color: rgba(20, 20, 20, 0.7);
+}
+
+#dropdown:focus, #difficulty:focus {
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.04);
+}
+
+button {
+    background-color: #ffffff;
+    color: #000000;
+    padding: 16px 36px;
     border: none;
-    border-radius: 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.1px;
+    width: 100%;
+    max-width: 280px;
+    margin-top: 15px;
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.12);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, background-color, box-shadow;
+}
+
+button:hover {
+    background-color: #f3f4f6;
+    transform: translateY(-3px) scale(1.015);
+    box-shadow: 0 20px 40px rgba(255, 255, 255, 0.25);
+}
+
+button:active {
+    transform: translateY(-1px) scale(0.985);
+}
+
+button:disabled {
+    background: #262626;
+    color: #737373;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+@keyframes fadeInBackground {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideDownNav {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        padding: 20px;
+        border-radius: 0;
+        gap: 12px;
+    }
+
+    .navlink {
+        width: 100%;
+        gap: 4px;
+    }
+
+    nav a {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    h1 {
+        margin-top: 110px;
+    }
+
+    .project-back-button {
+        top: 16px;
+        left: 16px;
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        margin-top: 120px;
+    }
+    
+    .data, .test {
+        width: 94%;
+        padding: 30px 20px;
+        border-radius: 24px;
+    }
+    
+    button {
+        max-width: 100%;
+    }
+
+    #dropdown, #difficulty {
+        padding: 14px 40px 14px 14px;
+        font-size: 15px;
+        margin: 15px 0;
+    }
+}
+
+@media (min-width: 1400px) {
+    body {
+        padding-top: 24px;
+    }
+    
+    nav {
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+}
+
+/* Hides the background arrow icon ONLY while the menu is expanded to prevent text overlap */
+#difficulty:focus, #dropdown:focus {
+    background-image: none;
+    padding-right: 16px; /* Balance padding since arrow is gone */
+}
+
+/* Restores smooth, uniform spacing for the scrollable option elements */
+#difficulty option, #dropdown option {
+    padding: 12px 16px;
     cursor: pointer;
 }
-button:hover{
-    background-color: white;
-    color: black;
-}
-#dropdown,#difficulty{
-    background-color: black;
-    color: white;
-    border-radius: 10px;
-    margin: 10px;
-    padding: 10px;
-}
-.test{
-    background-color: rgba(0, 0, 0, 0.573);
-    padding: 20px;
-    border-radius: 20px;
-    width: 60vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
-    margin-top: 50px;
-    margin-bottom: 50px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-}
-#text-display{  
-    font-size: 30px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-}
-#text-input{
-    font-size: 30px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-}
-#timer{
-    font-size: 30px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+/* Gives a clean color accent when moving through items using keyboard arrows */
+#difficulty option:checked, #dropdown option:checked {
+    background-color: #ffffff !important;
+    color: #000000 !important;
 }

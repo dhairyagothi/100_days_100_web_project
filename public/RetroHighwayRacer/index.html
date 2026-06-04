@@ -9,7 +9,6 @@
 </head>
 <body>
 <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
-
     <div class="game-container" id="game-container">
         <div class="game-arena">
             <div class="grass grass-left" id="grass-left"></div>
@@ -20,14 +19,11 @@
             
             <div class="grass grass-right" id="grass-right"></div>
         </div>
-
         <button class="pause-btn" id="pause-btn" style="display: none;">||</button>
-
         <div class="mobile-controls">
             <button class="ctrl-btn" id="left-btn">◀</button>
             <button class="ctrl-btn" id="right-btn">▶</button>
         </div>
-
         <div class="ui-panel">
             <div class="distance-board">Distance: <span id="distance-val">0</span> m</div>
             <div class="score-board">Score: <span id="score-val">0</span></div>
@@ -43,6 +39,7 @@
             </div>
         </div>
 
+        <!-- START SCREEN -->
         <div class="overlay" id="start-screen">
             <h1 id="game-title">Retro Simulator</h1>
             <div class="rules-box">
@@ -53,9 +50,21 @@
                     <li>The longer you drive, the faster it gets.</li>
                 </ul>
             </div>
+
+            <!-- Difficulty selector added below rules box -->
+            <div class="difficulty-selector">
+                <p class="difficulty-label">Select Difficulty</p>
+                <div class="difficulty-buttons">
+                    <button class="difficulty-btn" data-difficulty="easy">🟢 Easy</button>
+                    <button class="difficulty-btn active" data-difficulty="medium">🟡 Medium</button>
+                    <button class="difficulty-btn" data-difficulty="hard">🔴 Hard</button>
+                </div>
+            </div>
+
             <button class="start-btn" id="start-btn">Start Race</button>
         </div>
 
+        <!-- CRASH SCREEN -->
         <div class="overlay" id="crash-screen" style="display: none;">
             <h1 class="crash-title">CRASHED!</h1>
             <div class="final-stats">
@@ -68,8 +77,9 @@
             </div>
         </div>
 
+        <!-- PAUSE SCREEN -->
         <div class="overlay" id="pause-screen" style="display: none;">
-            <h1 id="game-title">PAUSED</h1>
+            <h1 id="pause-title">PAUSED</h1>
             <div class="button-group">
                 <button class="start-btn" id="resume-btn">Resume</button>
                 <button class="start-btn" id="pause-restart-btn">Restart Race</button>
@@ -77,7 +87,6 @@
             </div>
         </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>

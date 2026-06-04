@@ -645,3 +645,54 @@ winnerModal.classList.remove("show");
 updateStatus();
 updateScores();
 renderBoard();
+
+
+// ============================================================
+// ACCESSIBILITY INTERFACE: KEYBOARD NAVIGATION & ARIA INJECTION (#6033)
+// ============================================================
+
+/**
+ * Automates focus indicators and screen reader attributes over dynamic cells
+ */
+function applyGridAccessibility() {
+    const board = document.getElementById('board');
+    if (!board) return;
+
+    // Monitor structural mutations inside the board wrapper
+    const observer = new MutationObserver(() => {
+        const cells = board.querySelectorAll('.cell, [data-cell], .box');
+        
+        cells.forEach((cell, index) => {
+            // Assign sequential keyboard tracking context benchmarks
+            if (!cell.hasAttribute('tabindex')) {
+                cell.setAttribute('tabindex', '0');
+                cell.setAttribute('role', 'button');
+                cell.setAttribute('aria-label', `Grid square ${index + 1}, empty`);
+            }
+
+            // Keyboard navigation execution payload mapping
+            if (!cell.dataset.keyboardBound) {
+                cell.dataset.keyboardBound = "true";
+                cell.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault(); // Capture baseline shift constraints
+                        cell.click();       // Fallback directly onto runtime click mechanics
+                        
+                        // Update dynamic announcements for state changes
+                        const currentTurn = document.getElementById('statusText')?.textContent || '';
+                        cell.setAttribute('aria-label', `Grid square ${index + 1}, marked ${cell.textContent || 'occupied'}`);
+                    }
+                });
+            }
+        });
+    });
+
+    observer.observe(board, { childList: true, subtree: true });
+}
+
+// Fire runtime validation layers safely on context evaluation
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyGridAccessibility);
+} else {
+    applyGridAccessibility();
+}
