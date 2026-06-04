@@ -138,6 +138,9 @@ class MemoryMatchGame {
     bindEvents() {
         document.getElementById("restartBtn").addEventListener("click", () => this.newGame());
         document.getElementById("playAgainBtn").addEventListener("click", () => this.newGame());
+        document.getElementById("homeBtn").addEventListener("click", () => {
+    window.location.href = "/";
+});
 
         const modal = document.getElementById("howToPlayModal");
         document.getElementById("howToPlayBtn").addEventListener("click", () => {

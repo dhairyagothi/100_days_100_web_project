@@ -1,53 +1,420 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Advanced Form Builder</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FormForge — Advanced Form Builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
 
-<header>
-  <h1>Advanced Form Builder</h1>
-</header>
+      <!-- Top Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <div class="logo">
+            <div class="logo-mark">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <rect x="2" y="2" width="7" height="7" rx="1.5" fill="currentColor"/>
+                <rect x="11" y="2" width="7" height="7" rx="1.5" fill="currentColor" opacity=".5"/>
+                <rect x="2" y="11" width="7" height="7" rx="1.5" fill="currentColor" opacity=".5"/>
+                <rect x="11" y="11" width="7" height="7" rx="1.5" fill="currentColor"/>
+              </svg>
+            </div>
+            <span class="logo-text">FormForge</span>
+          </div>
+          <div class="topbar-divider"></div>
+          <div class="form-meta-inputs">
+            <input type="text" id="formTitle" placeholder="Untitled Form" class="meta-input title-input" />
+            <input type="text" id="formDesc" placeholder="Add a description…" class="meta-input desc-input" />
+          </div>
+        </div>
+        <div class="topbar-right">
+          <div class="device-tabs">
+            <button class="device-tab active" data-device="desktop" title="Desktop">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            </button>
+            <button class="device-tab" data-device="tablet" title="Tablet">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><circle cx="12" cy="18" r="1"/></svg>
+            </button>
+            <button class="device-tab" data-device="mobile" title="Mobile">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="18" r="1"/></svg>
+            </button>
+          </div>
 
-<div class="container">
+          <div class="topbar-actions">
+            <button class="btn-action" id="importBtn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Import
+            </button>
+            <button class="btn-action" id="exportBtn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Export
+            </button>
+            <button class="btn-action" id="generateBtn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              HTML
+            </button>
+            <button class="btn-action" id="savedFormsBtn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/></svg>
+              Saved
+            </button>
+            <button class="btn-primary" id="saveBtn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              Save
+            </button>
+          </div>
+          <div class="autosave-badge" id="autosaveBadge">
+            <span class="autosave-dot"></span>
+            Saved
+          </div>
+        </div>
+      </header>
 
-  <!-- Builder Panel -->
-  <div class="builder">
-    <h2>Add Field</h2>
+      <div class="workspace">
 
-    <input type="text" id="labelInput" placeholder="Field Label">
+        <!-- Left: Field Builder -->
+        <aside class="panel panel-builder" id="builderPanel">
+          <div class="panel-header">
+            <div class="panel-tabs">
+              <button class="ptab active" data-tab="field">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                Add Field
+              </button>
+              <button class="ptab" data-tab="settings">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                Settings
+              </button>
+            </div>
+          </div>
 
-    <select id="typeInput">
-      <option value="text">Text</option>
-      <option value="email">Email</option>
-      <option value="number">Number</option>
-      <option value="select">Select</option>
-      <option value="checkbox">Checkbox</option>
-    </select>
+          <!-- Field Tab -->
+          <div class="panel-body" id="fieldTab">
 
-    <input type="text" id="optionsInput" placeholder="Options (comma separated for select)">
+            <div class="field-group">
+              <label class="field-label">Label <span class="required-star">*</span></label>
+              <input type="text" id="labelInput" placeholder="e.g. Full Name" class="f-input" />
+            </div>
 
-    <button id="addField">Add Field</button>
-  </div>
+            <div class="field-group">
+              <label class="field-label">Field Type</label>
+              <div class="type-grid">
+                <button class="type-btn active" data-type="text"><span class="type-icon">Aa</span><span>Text</span></button>
+                <button class="type-btn" data-type="email"><span class="type-icon">@</span><span>Email</span></button>
+                <button class="type-btn" data-type="number"><span class="type-icon">123</span><span>Number</span></button>
+                <button class="type-btn" data-type="tel"><span class="type-icon">☎</span><span>Phone</span></button>
+                <button class="type-btn" data-type="textarea"><span class="type-icon">¶</span><span>Textarea</span></button>
+                <button class="type-btn" data-type="select"><span class="type-icon">▾</span><span>Select</span></button>
+                <button class="type-btn" data-type="checkbox"><span class="type-icon">☑</span><span>Checkbox</span></button>
+                <button class="type-btn" data-type="radio"><span class="type-icon">◉</span><span>Radio</span></button>
+                <button class="type-btn" data-type="date"><span class="type-icon">📅</span><span>Date</span></button>
+                <button class="type-btn" data-type="file"><span class="type-icon">📎</span><span>File</span></button>
+              </div>
+            </div>
 
-  <!-- Live Preview -->
-  <div class="preview">
-    <h2>Live Form Preview</h2>
-    <form id="formPreview"></form>
-    <button id="generateCode">Generate HTML</button>
-  </div>
+            <div class="field-group" id="optionsGroup" style="display:none">
+              <label class="field-label">Options <span class="hint">one per line</span></label>
+              <textarea id="optionsInput" placeholder="Option 1&#10;Option 2&#10;Option 3" class="f-input f-textarea" rows="4"></textarea>
+            </div>
 
-</div>
+            <div class="field-group">
+              <label class="field-label">Placeholder</label>
+              <input type="text" id="placeholderInput" placeholder="Placeholder text…" class="f-input" />
+            </div>
 
-<!-- Output -->
-<div class="output">
-  <h2>Generated HTML</h2>
-  <textarea id="codeOutput" readonly></textarea>
-</div>
+            <div class="field-group">
+              <label class="field-label">Default Value</label>
+              <input type="text" id="defaultInput" placeholder="Default value…" class="f-input" />
+            </div>
 
-<script src="script.js"></script>
-</body>
+            <div class="field-group">
+              <label class="field-label">Help Text</label>
+              <input type="text" id="helpInput" placeholder="Description shown below field…" class="f-input" />
+            </div>
+
+            <div class="field-group">
+              <label class="toggle-switch">
+                <input type="checkbox" id="requiredInput" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                <span class="toggle-label">Mark as required</span>
+              </label>
+            </div>
+
+            <div class="section-divider"><span>Validation</span></div>
+
+            <div class="two-col">
+              <div class="field-group" id="minLenGroup">
+                <label class="field-label">Min Length</label>
+                <input type="number" id="minLenInput" placeholder="e.g. 5" class="f-input" min="0" />
+              </div>
+              <div class="field-group" id="maxLenGroup">
+                <label class="field-label">Max Length</label>
+                <input type="number" id="maxLenInput" placeholder="e.g. 100" class="f-input" min="0" />
+              </div>
+            </div>
+
+            <div class="two-col">
+              <div class="field-group" id="minNumGroup" style="display:none">
+                <label class="field-label">Min Value</label>
+                <input type="number" id="minNumInput" placeholder="0" class="f-input" />
+              </div>
+              <div class="field-group" id="maxNumGroup" style="display:none">
+                <label class="field-label">Max Value</label>
+                <input type="number" id="maxNumInput" placeholder="999" class="f-input" />
+              </div>
+            </div>
+
+            <div class="field-group" id="regexGroup">
+              <label class="field-label">Regex Pattern</label>
+              <input type="text" id="regexInput" placeholder="e.g. ^[a-zA-Z]+$" class="f-input f-mono" />
+            </div>
+
+            <div class="field-group" id="regexMsgGroup">
+              <label class="field-label">Regex Error Message</label>
+              <input type="text" id="regexMsgInput" placeholder="Invalid format" class="f-input" />
+            </div>
+
+            <button class="btn-add" id="addFieldBtn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Field
+            </button>
+          </div>
+
+          <!-- Settings Tab -->
+          <div class="hidden panel-body" id="settingsTab">
+            <div class="field-group">
+              <label class="field-label">Submit Button Text</label>
+              <input type="text" id="btnTextInput" placeholder="Submit" class="f-input" value="Submit" />
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Theme</label>
+              <div class="theme-grid">
+                <button class="theme-btn active" data-theme="dark" style="--tc:#0f172a;--ta:#6366f1"><span class="theme-swatch"></span>Dark</button>
+                <button class="theme-btn" data-theme="light" style="--tc:#ffffff;--ta:#6366f1"><span class="theme-swatch"></span>Light</button>
+                <button class="theme-btn" data-theme="ocean" style="--tc:#0c1b33;--ta:#00b4d8"><span class="theme-swatch"></span>Ocean</button>
+                <button class="theme-btn" data-theme="forest" style="--tc:#1a2e1a;--ta:#4ade80"><span class="theme-swatch"></span>Forest</button>
+                <button class="theme-btn" data-theme="warm" style="--tc:#fdf6ec;--ta:#f97316"><span class="theme-swatch"></span>Warm</button>
+                <button class="theme-btn" data-theme="mono" style="--tc:#1a1a1a;--ta:#e5e5e5"><span class="theme-swatch"></span>Mono</button>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Primary Color</label>
+              <div class="color-row">
+                <input type="color" id="primaryColor" value="#6366f1" class="color-picker" />
+                <input type="text" id="primaryColorText" value="#6366f1" class="f-input f-mono" maxlength="7" />
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Border Radius <span class="range-value-inline" id="borderRadiusVal">8px</span></label>
+              <input type="range" id="borderRadius" min="0" max="24" value="8" class="range-input" />
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Font Size <span class="range-value-inline" id="fontSizeVal">15px</span></label>
+              <input type="range" id="fontSize" min="12" max="20" value="15" class="range-input" />
+            </div>
+          </div>
+        </aside>
+
+        <!-- Center: Preview -->
+        <main class="preview-area" id="previewArea">
+          <div class="preview-frame-wrap">
+            <div class="preview-frame" id="previewFrame" data-device="desktop">
+              <div class="preview-device-bar" id="previewDeviceBar">
+                <span class="device-bar-dot"></span>
+                <span class="device-bar-dot"></span>
+                <span class="device-bar-dot"></span>
+              </div>
+              <div class="preview-inner" id="previewInner">
+                <div class="preview-form-header">
+                  <h2 class="preview-form-title" id="pvTitle">Untitled Form</h2>
+                  <p class="preview-form-desc" id="pvDesc"></p>
+                </div>
+                <form id="formPreview" novalidate></form>
+                <div class="empty-state" id="emptyState">
+                  <div class="empty-icon">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".3">
+                      <rect x="8" y="8" width="32" height="32" rx="4"/>
+                      <line x1="16" y1="20" x2="32" y2="20"/>
+                      <line x1="16" y1="26" x2="32" y2="26"/>
+                      <line x1="16" y1="32" x2="24" y2="32"/>
+                    </svg>
+                  </div>
+                  <p>Add your first field using the builder panel</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <!-- Right: Fields List -->
+        <aside class="panel panel-fields" id="fieldsPanel">
+          <div class="panel-header">
+            <div class="panel-header-left">
+              <span class="panel-title">Fields</span>
+              <span class="field-count" id="fieldCount">0</span>
+            </div>
+            <button class="icon-btn danger" id="clearAllBtn" title="Clear all fields">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+              Clear
+            </button>
+          </div>
+          <div class="panel-body no-pad" id="fieldsList">
+            <div class="fields-empty" id="fieldsEmptyMsg">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".25"><rect x="4" y="4" width="24" height="24" rx="3"/><line x1="10" y1="13" x2="22" y2="13"/><line x1="10" y1="18" x2="22" y2="18"/></svg>
+              <span>No fields yet</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Edit Modal -->
+      <div class="hidden modal-overlay" id="editModal">
+        <div class="modal">
+          <div class="modal-header">
+            <div class="modal-title-group">
+              <div class="modal-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              </div>
+              <h3>Edit Field</h3>
+            </div>
+            <button class="icon-btn" id="closeModal">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="two-col">
+              <div class="field-group">
+                <label class="field-label">Label</label>
+                <input type="text" id="editLabel" class="f-input" />
+              </div>
+              <div class="field-group">
+                <label class="field-label">Placeholder</label>
+                <input type="text" id="editPlaceholder" class="f-input" />
+              </div>
+            </div>
+            <div class="two-col">
+              <div class="field-group">
+                <label class="field-label">Default Value</label>
+                <input type="text" id="editDefault" class="f-input" />
+              </div>
+              <div class="field-group">
+                <label class="field-label">Help Text</label>
+                <input type="text" id="editHelp" class="f-input" />
+              </div>
+            </div>
+            <div class="field-group" id="editOptionsGroup">
+              <label class="field-label">Options <span class="hint">one per line</span></label>
+              <textarea id="editOptions" class="f-input f-textarea" rows="4"></textarea>
+            </div>
+            <div class="field-group">
+              <label class="toggle-switch">
+                <input type="checkbox" id="editRequired" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                <span class="toggle-label">Required field</span>
+              </label>
+            </div>
+            <div class="section-divider"><span>Validation</span></div>
+            <div class="two-col">
+              <div class="field-group">
+                <label class="field-label">Min Length</label>
+                <input type="number" id="editMinLen" class="f-input" min="0" />
+              </div>
+              <div class="field-group">
+                <label class="field-label">Max Length</label>
+                <input type="number" id="editMaxLen" class="f-input" min="0" />
+              </div>
+            </div>
+            <div class="two-col" id="editNumGroup">
+              <div class="field-group">
+                <label class="field-label">Min Number</label>
+                <input type="number" id="editMinNum" class="f-input" />
+              </div>
+              <div class="field-group">
+                <label class="field-label">Max Number</label>
+                <input type="number" id="editMaxNum" class="f-input" />
+              </div>
+            </div>
+            <div class="two-col">
+              <div class="field-group">
+                <label class="field-label">Regex Pattern</label>
+                <input type="text" id="editRegex" class="f-input f-mono" />
+              </div>
+              <div class="field-group">
+                <label class="field-label">Error Message</label>
+                <input type="text" id="editRegexMsg" class="f-input" />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-ghost" id="cancelEdit">Cancel</button>
+            <button class="btn-primary" id="saveEdit">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- HTML Output Modal -->
+      <div class="hidden modal-overlay" id="htmlModal">
+        <div class="modal modal-wide">
+          <div class="modal-header">
+            <div class="modal-title-group">
+              <div class="modal-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              </div>
+              <h3>Generated HTML</h3>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <button class="btn-action" id="copyHtml">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Copy
+              </button>
+              <button class="icon-btn" id="closeHtmlModal">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="modal-body">
+            <textarea id="htmlOutput" class="f-input f-mono html-output" readonly spellcheck="false"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Saved Forms Modal -->
+      <div class="hidden modal-overlay" id="savedFormsModal">
+        <div class="modal saved-forms-modal">
+          <div class="modal-header">
+            <div class="modal-title-group">
+              <div class="modal-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/></svg>
+              </div>
+              <h3>Saved Forms</h3>
+            </div>
+            <button class="icon-btn" id="closeSavedForms">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="search-wrap">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="savedFormsSearch" class="f-input search-input" placeholder="Search saved forms…" />
+            </div>
+            <div id="savedFormsList"></div>
+          </div>
+        </div>
+      </div>
+
+      <input type="file" id="importFile" accept=".json" style="display:none" />
+    </div>
+
+    <script src="script.js"></script>
+  </body>
 </html>

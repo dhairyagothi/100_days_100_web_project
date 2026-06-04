@@ -1,0 +1,167 @@
+:root {
+  --clr-bg: #1f2632;
+  --clr-card: #313a48;
+  --clr-text-quote: #cee3e9;
+  --clr-accent-green: #52ffa8;
+  --clr-accent-blue: #1d9bf0;
+  --clr-label: #52ffa8;
+  --transition-speed: 0.25s;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  background-color: var(--clr-bg);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+/* Centered Layout Component Structure */
+.advice-card {
+  background-color: var(--clr-card);
+  width: 100%;
+  max-width: 500px;
+  border-radius: 1rem;
+  padding: 2.5rem 2.5rem 3.5rem 2.5rem;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+.advice-header {
+  color: var(--clr-label);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.advice-quote {
+  color: var(--clr-text-quote);
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.4;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Graphic Presentation Lines divider styles */
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0 1rem 0;
+  opacity: 0.4;
+}
+
+.line {
+  flex: 1;
+  height: 1px;
+  background-color: var(--clr-text-quote);
+}
+
+.pause-icon {
+  color: var(--clr-text-quote);
+  font-size: 0.85rem;
+  letter-spacing: -1px;
+  font-weight: 700;
+}
+
+/* Control Elements Floating Layer Base */
+.action-bar {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  display: flex;
+  gap: 1rem;
+}
+
+.action-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition:
+    background-color var(--transition-speed) ease,
+    box-shadow var(--transition-speed) ease,
+    transform var(--transition-speed) cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-decoration: none;
+}
+
+/* Control Trigger Color Adaptations */
+.dice-btn {
+  background-color: var(--clr-accent-green);
+  color: var(--clr-bg);
+}
+
+.dice-btn:hover {
+  box-shadow: 0 0 24px var(--clr-accent-green);
+  transform: scale(1.05);
+}
+
+.tweet-btn {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tweet-btn:hover {
+  background-color: var(--clr-accent-blue);
+  border-color: var(--clr-accent-blue);
+  transform: scale(1.05);
+}
+
+.icon-svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
+
+/* Loading status animation styles */
+.loading .advice-quote {
+  opacity: 0.5;
+}
+
+.loading .dice-icon {
+  animation: rotateDice 0.6s linear infinite;
+}
+
+@keyframes rotateDice {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Media Responsive Viewport Adaptations */
+@media (max-width: 440px) {
+  .advice-card {
+    padding: 2rem 1.5rem 3rem 1.5rem;
+  }
+  .advice-quote {
+    font-size: 1.35rem;
+  }
+}
