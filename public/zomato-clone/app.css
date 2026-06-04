@@ -140,7 +140,9 @@
 body.dark-mode {
     background-color: #121212;
 }
-
+.accordion-title{
+  color: white;
+}
 
 /* Cards / Sections */
 body.dark-mode .card,
