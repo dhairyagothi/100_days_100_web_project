@@ -151,7 +151,9 @@ body.dark-mode .box {
     background-color: #1e1e1e;
     color: #ffffff;
 }
-
+.heading-2{
+  color: white;
+}
 /* Buttons */
 body.dark-mode button {
     color: white;
