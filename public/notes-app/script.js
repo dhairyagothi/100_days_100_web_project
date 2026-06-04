@@ -7,9 +7,20 @@ const VALID_COLORS = [
   "pink", "yellow", "indigo", "red"
 ];
 
+function generateUUID() {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
 const defaultNotes = [
   {
-    id: crypto.randomUUID(),
+    id: generateUUID(),
     title: "Welcome to Notes App",
     content: "Create notes, mark favorites, archive finished ideas, and export a JSON backup. Everything is stored locally in this browser.",
     tag: "Ideas",
@@ -97,7 +108,7 @@ function loadNotes() {
 
 function normalizeNote(note) {
   return {
-    id: note.id || crypto.randomUUID(),
+    id: note.id || generateUUID(),
     title: String(note.title || "Untitled note"),
     content: String(note.content || ""),
     tag: String(note.tag || "Personal"),
@@ -324,7 +335,7 @@ function handleSubmit(event) {
     showToast("Note updated.");
   } else {
     state.notes.unshift({
-      id: crypto.randomUUID(),
+      id: generateUUID(),
       ...formNote,
       trashed: false,
       createdAt: new Date().toISOString(),
