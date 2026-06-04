@@ -138,9 +138,10 @@ async function openProfile(username) {
     const avatar = document.createElement("img");
     avatar.src = user.avatar_url;
     avatar.alt = user.name || username;
-    avatar.style.width = "120px";
-    avatar.style.height = "120px";
-    avatar.style.borderRadius = "50%;";
+    avatar.loading = 'lazy';
+    avatar.style.width = '120px';
+    avatar.style.height = '120px';
+    avatar.style.borderRadius = '50%';
 
     // Name Enforces Native Context Escaping Natively
     const name = document.createElement("h2");
@@ -281,6 +282,7 @@ function renderContributors(data) {
     const avatar = document.createElement("img");
     avatar.src = contributor.avatar_url;
     avatar.alt = contributor.login;
+    avatar.loading = 'lazy';
     card.appendChild(avatar);
 
     const name = document.createElement("h3");
@@ -353,6 +355,7 @@ function renderStargazers(stargazers) {
     const img = document.createElement("img");
     img.src = stargazer.avatar_url;
     img.alt = stargazer.login;
+    img.loading = 'lazy';
 
     starItem.appendChild(img);
     stargazersContainer.appendChild(starItem);

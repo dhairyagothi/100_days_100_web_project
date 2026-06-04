@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let leftBank = document.getElementById("left-people");
     let rightBank = document.getElementById("right-people");
+    let boatContainer = document.getElementById("boat");
     let boat = document.getElementById("boat-people");
     let message = document.getElementById("message");
     let guidance = document.getElementById("guidance");
@@ -202,8 +203,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         clearSelectedStyles();
 
-        boat.classList.remove('boat-left', 'boat-right');
-        boat.classList.add(`boat-${state.boatPosition}`);
+        boatContainer.classList.remove('boat-left', 'boat-right');
+        boatContainer.classList.add(`boat-${state.boatPosition}`);
 
         updateGuidance();
         checkGameState();
