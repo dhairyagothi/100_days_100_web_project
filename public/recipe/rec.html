@@ -5,67 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipezzz - Recipe Details</title>
     <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+    <a href="main.html" class="project-back-button">← Back to Home</a>
 
-   
-    
-  <nav aria-label="Main Navigation">
-    <h2 class="logo">Recipezzz</h2>
-<div class="navlink">    <a href="main.html">Home</a>
-    <a href="rec.html" class="active">Recipes</a></div>
-</nav>
+    <nav aria-label="Main Navigation">
+        <h2 class="logo">Recipezzz</h2>
+        <div class="navlink">
+            <a href="main.html">Home</a>
+            <a href="rec.html" class="active">Recipes</a>
+        </div>
+    </nav>
 
-    <div class="test" role="main">
-        
-        <p id="text-display"></p>
-        
-        <button id="restart">Restart</button>
-    </div>
+    <main class="test">
+        <article id="text-display" aria-live="polite">
+            <h2>Loading Recipe...</h2>
+        </article>
+        <button id="restart" type="button">Restart</button>
+    </main>
 </body>
-<script>
-    document.addEventListener('DOMContentLoaded', async function () {
-        const difficulty = sessionStorage.getItem('difficulty') || 'Grilled Cheese Sandwich';
-    
-        try {
-            const response = await fetch('text.json');
-    
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-    
-            const data = await response.json();
-            
-            const recipe = data.recipes.find(item => item.name === difficulty);
-    
-            if (!recipe) {
-                throw new Error(`Recipe not found for: ${difficulty}`);
-            }
-    
-            document.getElementById('text-display').innerHTML = `
-                <h2>${recipe.name}</h2>
-                <h3>Ingredients:</h3>
-                <ul>
-                    ${recipe.ingredients.map(ingredient => `<li>${ingredient}</li>`).join('')}
-                </ul>
-                <h3>Instructions:</h3>
-                <p>${recipe.instructions}</p>
-            `;
-        } catch (err) {
-            console.error('Error fetching JSON:', err);
-            document.getElementById('text-display').innerHTML = `
-    <h2>Recipe Not Available</h2>
-    <p>Unable to load recipe information.</p>
-`;
-        }
-    
-        document.getElementById('restart').addEventListener('click', function () {
-            window.location.href = 'main.html';
-        });
-    });
-    
-    
-</script>
-
 </html>

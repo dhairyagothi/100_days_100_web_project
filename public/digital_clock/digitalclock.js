@@ -92,12 +92,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btn) btn.textContent = isDarkMode ? "☀️" : "🌙";
  applyDarkMode(isDarkMode);
 
-const savedAccent =
-  localStorage.getItem("clockAccent") || "classic";
-
+const savedAccent = localStorage.getItem("clockAccent") || "classic";
 setAccentColor(savedAccent);
-
-
 
 formatToggleBtn.textContent = is24HourFormat ? "12H" : "24H";
 

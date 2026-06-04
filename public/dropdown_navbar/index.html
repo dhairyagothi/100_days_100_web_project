@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Modern Hub | Premium E-Commerce Dashboard</title>
 
-    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -13,392 +12,64 @@
           extend: {
             colors: {
               brand: {
-                50: '#f0f9ff',
-                100: '#e0f2fe',
-                200: '#bae6fd',
-                300: '#7dd3fc',
-                400: '#38bdf8',
-                500: '#0ea5e9',
-                600: '#0284c7',
-                700: '#0369a1',
-                800: '#075985',
-                900: '#0c4a6e',
-                950: '#082f49',
-              }
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+                950: "#082f49",
+              },
             },
             animation: {
-              'float': 'float 6s ease-in-out infinite',
-              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              float: "float 6s ease-in-out infinite",
+              "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
             },
             keyframes: {
               float: {
-                '0%, 100%': { transform: 'translateY(0)' },
-                '50%': { transform: 'translateY(-20px)' },
-              }
-            }
-          }
-        }
-      }
+                "0%, 100%": { transform: "translateY(0)" },
+                "50%": { transform: "translateY(-20px)" },
+              },
+            },
+          },
+        },
+      };
     </script>
 
-    <link rel="stylesheet" href="input.css" />
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-
-  </head>
-
-  <body class="bg-gradient-to-b from-gray-950 to-slate-900 min-h-screen">
-    <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
-
-    <nav
-      class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-lg border-b border-gray-700 w-screen sticky top-0 z-50"
-    >
-      <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-        <div class="relative flex items-center justify-between h-16">
-          <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
-            <button
-              type="button"
-              class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-              aria-expanded="false"
-              aria-haspopup="false"
-              id="mobile-menu"
-            >
-              <svg
-                class="block h-6 w-6 transition-transform duration-300 hover:scale-110"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-          </div>
-
-          <div
-            class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start"
-          >
-            <div class="flex-shrink-0 flex items-center">
-              <svg
-                class="block h-8 w-auto transition-transform duration-300 hover:scale-110"
-                fill="#55bbdd"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-                xml:space="preserve"
-                stroke="#55bbdd"
-              >
-                <g id="SVGRepo_iconCarrier">
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M12 6.036c-2.667 0-4.333 1.325-5 3.976 1-1.325 2.167-1.822 3.5-1.491.761.189 1.305.738 1.906 1.345C13.387 10.855 14.522 12 17 12c2.667 0 4.333-1.325 5-3.976-1 1.325-2.166 1.822-3.5 1.491-.761-.189-1.305-.738-1.907-1.345-.98-.99-2.114-2.134-4.593-2.134zM7 12c-2.667 0-4.333 1.325-5 3.976 1-1.326 2.167-1.822 3.5-1.491.761.189 1.305.738 1.907 1.345.98.989 2.115 2.134 4.594 2.134 2.667 0 4.333-1.325 5-3.976-1 1.325-2.167 1.822-3.5 1.491-.761-.189-1.305-.738-1.906-1.345C10.613 13.145 9.478 12 7 12z"
-                  ></path>
-                </g>
-              </svg>
-            </div>
-            <div class="hidden sm:block sm:ml-6">
-              <div class="flex space-x-6">
-                <div class="relative">
-                  <button
-                  id="grocery"
-                  class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
-                  >
-                  Grocery
-                </button>
-                <div 
-                  role="menu"
-                  aria-orientation="vertical"
-                  aria-labelledby="grocery"
-                  tabindex="-1"
-                  id="grocery-dd"
-                  class="hidden opacity-0 scale-95 pointer-events-none transition-all duration-200 absolute top-full left-0 mt-1 bg-gray-800 text-white shadow-2xl ring-1 ring-gray-700 rounded-xl z-50 overflow-hidden min-w-[220px]"
-                  >
-                  <div
-                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                    >
-                      Fruits & Vegetables
-                    </div>
-                    <div
-                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                    >
-                      Dairy Products
-                    </div>
-                    <div
-                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                    >
-                      Rice & Grains
-                    </div>
-                    <div
-                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                    >
-                      Snacks
-                    </div>
-                    <div
-                      class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                    >
-                      Others
-                    </div>
-                </div>
-              </div>
-              
-              <div class="relative">
-                <button
-                id="mobile"
-                class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                Mobile
-              </button>
-              <div
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="mobile"
-              tabindex="-1"
-              id="mobile-dd"
-              class="hidden opacity-0 scale-95 pointer-events-none transition-all duration-200 absolute top-full left-0 mt-1 bg-gray-800 text-white shadow-2xl ring-1 ring-gray-700 rounded-xl z-50 overflow-hidden min-w-[220px]"
-              >
-              <div
-                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                  >
-                    Android Phones
-                  </div>
-
-                  <div
-                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                  >
-                    iPhones
-                  </div>
-
-                  <div
-                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                  >
-                    5G Phones
-                  </div>
-
-                  <div
-                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                  >
-                    Phone Cases
-                  </div>
-
-                  <div
-                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                  >
-                    Others
-                  </div>
-              </div>
-            </div>
-
-              <div class="relative">
-                <button
-                  id="appliances"
-                  class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Appliances
-                </button>
-
-                <div
-                  role="menu"
-                  aria-orientation="vertical"
-                  aria-labelledby="appliances"
-                  tabindex="-1"
-                  id="appliances-dd"
-                  class="hidden opacity-0 scale-95 pointer-events-none transition-all duration-200 absolute top-full left-0 mt-1 bg-gray-800 text-white shadow-2xl ring-1 ring-gray-700 rounded-xl z-50 overflow-hidden min-w-[220px]"
-                >
-                  <div
-                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                  >
-                    Refrigerator
-                  </div>
-
-                  <div
-                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                  >
-                    Air Conditioner
-                  </div>
-
-                  <div
-                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                  >
-                    Washing Machine
-                  </div>
-
-                  <div
-                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                  >
-                    Television
-                  </div>
-
-                  <div
-                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                  >
-                    Others
-                  </div>
-                </div>
-              </div>
-
-              <div class="relative">
-                <button
-                id="vehicle"
-                class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                Vehicle
-              </button>
-                <div
-                role="menu"
-                aria-orientation="vertical"
-                aria-labelledby="vehicle"
-                tabindex="-1"
-                id="vehicle-dd"
-                class="hidden opacity-0 scale-95 pointer-events-none transition-all duration-200 absolute top-full left-0 mt-1 bg-gray-800 text-white shadow-2xl ring-1 ring-gray-700 rounded-xl z-50 overflow-hidden min-w-[220px]"
-                >
-                <div
-                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                  >
-                    Cars
-                  </div>
-
-                  <div
-                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                  >
-                    Bikes
-                  </div>
-
-                  <div
-                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                  >
-                    Scooters
-                  </div>
-
-                  <div
-                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                  >
-                    Electric Vehicles
-                  </div>
-
-                  <div
-                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                  >
-                    Others
-                  </div>
-                </div>
-            </div>
-
-               <div class="relative">
-                 <button
-                 id="travel"
-                 class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
-                 >
-                 Travel
-                </button>
-                <div
-                role="menu"
-                aria-orientation="vertical"
-                aria-labelledby="travel"
-                tabindex="-1"
-                id="travel-dd"
-                class="hidden opacity-0 scale-95 pointer-events-none transition-all duration-200 absolute top-full left-0 mt-1 bg-gray-800 text-white shadow-2xl ring-1 ring-gray-700 rounded-xl z-50 overflow-hidden min-w-[220px]"
-                >
-                <div
-                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                  >
-                    Flight
-                  </div>
-
-                  <div
-                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                  >
-                    Hotel
-                  </div>
-
-                  <div
-                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                  >
-                    Bus
-                  </div>
-
-                  <div
-                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                  >
-                    Train
-                  </div>
-
-                  <div
-                    class="block px-4 py-3 rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200"
-                  >
-                    Others
-                  </div>
-                </div>
-              </div>
-
-              <div class="relative">
-                <button
-                  id="fashion"
-                  class="text-white hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Fashion
-                </button>
-
-                <div
-                  role="menu"
-                  id="fashion-dd"
-                  class="hidden opacity-0 scale-95 pointer-events-none transition-all duration-200 absolute left-1/2 transform -translate-x-1/2 top-full mt-1 bg-gray-800 text-white shadow-2xl ring-1 ring-gray-700 rounded-xl z-50 overflow-hidden min-w-[220px]"
-                >
-                  <div
-                    class="block px-4 py-3 whitespace-nowrap rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105"
-                  >
-                    Men's Fashion
-                  </div>
-
-                  <div
-                    class="block px-4 py-3 whitespace-nowrap rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105"
-                  >
-                    Women's Fashion
-                  </div>
-
-                  <div
-                    class="block px-4 py-3 whitespace-nowrap rounded-md text-base font-medium cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105"
-                  >
-                    Kid's Fashion
-                  </div>
-                </div>
-
-    
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
-      
-      body {
-        font-family: 'Plus Jakarta Sans', sans-serif;
-      }
+      @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap");
 
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+      }
       .glass {
         background: rgba(15, 23, 42, 0.8);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.1);
       }
-
       .glass-light {
         background: rgba(255, 255, 255, 0.03);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
         border: 1px solid rgba(255, 255, 255, 0.05);
       }
-
       .hero-gradient {
-        background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.15) 0%, rgba(15, 23, 42, 0) 70%);
+        background: radial-gradient(
+          circle at 50% 50%,
+          rgba(14, 165, 233, 0.15) 0%,
+          rgba(15, 23, 42, 0) 70%
+        );
       }
-
       .nav-link-active {
         color: #38bdf8;
       }
-      
       .nav-link-active::after {
-        content: '';
+        content: "";
         position: absolute;
         bottom: -2px;
         left: 0;
@@ -407,8 +78,6 @@
         background: #38bdf8;
         border-radius: 2px;
       }
-
-    
       @keyframes slideInUp {
         from {
           opacity: 0;
@@ -419,13 +88,10 @@
           transform: translateY(0);
         }
       }
-
       .animate-in {
         animation: slideInUp 0.5s ease-out forwards;
         opacity: 0;
       }
-
-      /* Custom scrollbar */
       ::-webkit-scrollbar {
         width: 8px;
       }
@@ -442,1440 +108,789 @@
     </style>
   </head>
 
-  <body class="bg-slate-950 text-slate-200 selection:bg-brand-500/30 selection:text-brand-200">
-    <!-- Back Button -->
-    <a href="/" class="fixed left-6 top-6 z-[100] flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-white/20 hover:scale-105 glass border border-white/20">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+  <body
+    class="bg-slate-950 text-slate-200 selection:bg-brand-500/30 selection:text-brand-200 min-h-screen"
+  >
+    <a
+      href="/"
+      class="fixed left-6 top-6 z-[100] flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-white/20 hover:scale-105 glass border border-white/20"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="m15 18-6-6 6-6" />
+      </svg>
       Back to Home
     </a>
 
-    <!-- Navbar -->
-    <nav id="navbar" class="fixed top-0 z-50 w-full glass border-b border-white/5 transition-all duration-300">
+    <nav
+      id="navbar"
+      class="fixed top-0 z-50 w-full glass border-b border-white/5 transition-all duration-300"
+    >
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-20 items-center justify-between">
-          <!-- Logo -->
           <div class="flex flex-shrink-0 items-center gap-2">
-            <div class="h-10 w-10 rounded-xl bg-brand-500 flex items-center justify-center shadow-lg shadow-brand-500/20">
-              <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            <div
+              class="h-10 w-10 rounded-xl bg-brand-500 flex items-center justify-center shadow-lg shadow-brand-500/20"
+            >
+              <svg
+                class="h-6 w-6 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
               </svg>
             </div>
-            <span class="text-xl font-bold tracking-tight text-white">ModernHub</span>
+            <span class="text-xl font-bold tracking-tight text-white"
+              >ModernHub</span
+            >
           </div>
 
-          <!-- Desktop Navigation -->
           <div class="hidden md:block">
             <div class="flex items-center space-x-1">
-              <a href="#home" class="nav-link relative px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:text-white">Home</a>
-              
-              <!-- Grocery Dropdown -->
-              <div class="group relative px-2">
-                <button class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all group-hover:bg-white/5 group-hover:text-white">
+              <a
+                href="#home"
+                class="nav-link relative px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:text-white"
+                >Home</a
+              >
+
+              <div class="relative px-2">
+                <button
+                  id="grocery"
+                  class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all hover:bg-white/5 hover:text-white"
+                >
                   Grocery
-                  <svg class="h-4 w-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                  <svg
+                    class="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
                 </button>
-                <div class="invisible absolute left-0 top-full pt-2 opacity-0 transition-all group-hover:visible group-hover:opacity-100">
-                  <div class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl">
-                    <a href="#grocery" class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400">Fresh Produce</a>
-                    <a href="#grocery-daily-eggs" class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400">Dairy & Eggs</a>
-                    <a href="#grocery-beverages" class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400">Beverages</a>
-                    <div class="my-1 h-px bg-white/5"></div>
-                    <a href="#grocery" class="block rounded-lg px-4 py-2.5 text-sm font-semibold text-brand-400 hover:bg-brand-500/10">Shop All Grocery</a>
+                <div
+                  id="grocery-dd"
+                  class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50"
+                >
+                  <div
+                    class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl"
+                  >
+                    <a
+                      href="#grocery"
+                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
+                      >Fresh Produce</a
+                    >
+                    <a
+                      href="#grocery-daily-eggs"
+                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
+                      >Dairy & Eggs</a
+                    >
+                    <a
+                      href="#grocery-beverages"
+                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
+                      >Beverages</a
+                    >
                   </div>
                 </div>
               </div>
 
-              <!-- Mobile Dropdown -->
-              <div class="group relative px-2">
-                <button class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all group-hover:bg-white/5 group-hover:text-white">
+              <div class="relative px-2">
+                <button
+                  id="mobile"
+                  class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all hover:bg-white/5 hover:text-white"
+                >
                   Mobiles
-                  <svg class="h-4 w-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                  <svg
+                    class="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
                 </button>
-                <div class="invisible absolute left-0 top-full pt-2 opacity-0 transition-all group-hover:visible group-hover:opacity-100">
-                  <div class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl">
-                    <a href="#mobile" class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400">Smartphones</a>
-                    <a href="#mobile-accessories" class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400">Accessories</a>
-                    <a href="#mobile-tablets" class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400">Tablets</a>
+                <div
+                  id="mobile-dd"
+                  class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50"
+                >
+                  <div
+                    class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl"
+                  >
+                    <a
+                      href="#mobile"
+                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
+                      >Smartphones</a
+                    >
+                    <a
+                      href="#mobile-accessories"
+                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
+                      >Accessories</a
+                    >
+                    <a
+                      href="#mobile-tablets"
+                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
+                      >Tablets</a
+                    >
                   </div>
                 </div>
               </div>
 
-              <!-- More Dropdown -->
-              <div class="group relative px-2">
-                <button class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all group-hover:bg-white/5 group-hover:text-white">
-                  More
-                  <svg class="h-4 w-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+              <div class="relative px-2">
+                <button
+                  id="appliances"
+                  class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all hover:bg-white/5 hover:text-white"
+                >
+                  Appliances
+                  <svg
+                    class="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
                 </button>
-                <div class="invisible absolute right-0 top-full pt-2 opacity-0 transition-all group-hover:visible group-hover:opacity-100">
-                  <div class="grid w-80 grid-cols-2 gap-2 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl">
-                    <a href="#appliances" class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm transition-all hover:bg-white/5 group/item">
-                      <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-500/10 text-orange-500 transition-colors group-hover/item:bg-orange-500 group-hover/item:text-white">
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" /></svg>
-                      </div>
-                      <span>Appliances</span>
-                    </a>
-                    <a href="#fashion" class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm transition-all hover:bg-white/5 group/item">
-                      <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-pink-500/10 text-pink-500 transition-colors group-hover/item:bg-pink-500 group-hover/item:text-white">
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12H3m12-9l-3 3-3-3M9 21l3-3 3 3" /></svg>
-                      </div>
-                      <span>Fashion</span>
-                    </a>
-                    <a href="#travel" class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm transition-all hover:bg-white/5 group/item">
-                      <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-500 transition-colors group-hover/item:bg-emerald-500 group-hover/item:text-white">
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 002 2h.5A2.5 2.5 0 0018 9.5V4a2 2 0 00-2-2H8a2 2 0 00-2 2v1.935" /></svg>
-                      </div>
-                      <span>Travel</span>
-                    </a>
-                    <a href="#vehicle" class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm transition-all hover:bg-white/5 group/item">
-                      <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-red-500/10 text-red-500 transition-colors group-hover/item:bg-red-500 group-hover/item:text-white">
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
-                      </div>
-                      <span>Vehicle</span>
-                    </a>
+                <div
+                  id="appliances-dd"
+                  class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50"
+                >
+                  <div
+                    class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl"
+                  >
+                    <a
+                      href="#appliances-kitchen"
+                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
+                      >Kitchen Tech</a
+                    >
+                    <a
+                      href="#appliances-home"
+                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
+                      >Home Comfort</a
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="relative px-2">
+                <button
+                  id="vehicle"
+                  class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all hover:bg-white/5 hover:text-white"
+                >
+                  Vehicle
+                  <svg
+                    class="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+                <div
+                  id="vehicle-dd"
+                  class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50"
+                >
+                  <div
+                    class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl"
+                  >
+                    <a
+                      href="#vehicle-ev"
+                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
+                      >Luxury EVs</a
+                    >
+                    <a
+                      href="#vehicle-scooter"
+                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
+                      >Urban Scooters</a
+                    >
+                    <a
+                      href="#vehicle-bike"
+                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
+                      >Smart Bikes</a
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="relative px-2">
+                <button
+                  id="travel"
+                  class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all hover:bg-white/5 hover:text-white"
+                >
+                  Travel
+                  <svg
+                    class="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+                <div
+                  id="travel-dd"
+                  class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50"
+                >
+                  <div
+                    class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl"
+                  >
+                    <a
+                      href="#travel-beach"
+                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
+                      >Beach Escapes</a
+                    >
+                    <a
+                      href="#travel-mountain"
+                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
+                      >Mountain Retreats</a
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="relative px-2">
+                <button
+                  id="fashion"
+                  class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all hover:bg-white/5 hover:text-white"
+                >
+                  Fashion
+                  <svg
+                    class="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+                <div
+                  id="fashion-dd"
+                  class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50"
+                >
+                  <div
+                    class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl"
+                  >
+                    <a
+                      href="#fashion-men"
+                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
+                      >Men's Apparel</a
+                    >
+                    <a
+                      href="#fashion-women"
+                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
+                      >Women's Apparel</a
+                    >
+                    <a
+                      href="#fashion-kids"
+                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
+                      >Kids' Wear</a
+                    >
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Icons & CTAs -->
           <div class="flex items-center gap-4">
-             <button class="relative rounded-full p-2 text-slate-400 transition-all hover:bg-white/5 hover:text-white">
-              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-            </button>
-            <button class="relative rounded-full p-2 text-slate-400 transition-all hover:bg-white/5 hover:text-white">
-              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
-              <span class="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-brand-500 text-[10px] font-bold text-white">3</span>
+            <button
+              id="notification-btn"
+              class="relative rounded-full p-2 text-slate-400 transition-all hover:bg-white/5 hover:text-white"
+            >
+              <svg
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                />
+              </svg>
+              <span
+                class="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-brand-500 text-[10px] font-bold text-white"
+                >3</span
+              >
             </button>
             <div class="h-8 w-px bg-white/10 hidden sm:block"></div>
-            <button id="user-btn" class="flex items-center gap-2 rounded-full bg-white/5 p-1 px-3 transition-all hover:bg-white/10 border border-white/10 group">
-              <img src="./img/pic.jpg" class="h-8 w-8 rounded-full border border-white/20 group-hover:border-brand-400 transition-colors" alt="User">
-              <span class="text-sm font-medium hidden sm:inline">Vansh</span>
+
+            <div class="relative">
+              <button
+                id="user-btn"
+                class="flex items-center gap-2 rounded-full bg-white/5 p-1 px-3 transition-all hover:bg-white/10 border border-white/10 group"
+              >
+                <div
+                  class="h-8 w-8 rounded-full bg-brand-500 flex items-center justify-center text-sm font-bold text-white"
+                >
+                  V
+                </div>
+                <span class="text-sm font-medium hidden sm:inline">Vansh</span>
+              </button>
+              <div
+                id="user-menu"
+                class="hidden invisible absolute right-0 top-full mt-2 w-52 rounded-xl shadow-2xl py-2 bg-gray-800 ring-1 ring-gray-700 z-50"
+              >
+                <a
+                  href="#"
+                  class="block px-4 py-3 text-sm text-gray-200 hover:bg-gray-700 hover:text-cyan-400"
+                  >Your Profile</a
+                >
+                <a
+                  href="#"
+                  class="block px-4 py-3 text-sm text-gray-200 hover:bg-gray-700 hover:text-cyan-400"
+                  >Settings</a
+                >
+                <div class="my-1 h-px bg-white/5"></div>
+                <a
+                  href="#"
+                  id="sign-out-btn"
+                  class="block px-4 py-3 text-sm text-red-400 font-semibold hover:bg-gray-700"
+                  >Sign out</a
+                >
+              </div>
+            </div>
+
+            <button
+              id="inline-login-btn"
+              class="hidden bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-cyan-400 hover:to-blue-400 transition-all duration-200 shadow-md"
+            >
+              Log In
             </button>
           </div>
 
-          <!-- Mobile Hamburger -->
           <div class="flex md:hidden">
-            <button id="mobile-menu-toggle" class="rounded-lg p-2 text-slate-400 hover:bg-white/5 hover:text-white">
-              <svg id="menu-icon" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+            <button
+              id="mobile-menu-toggle"
+              class="rounded-lg p-2 text-slate-400 hover:bg-white/5 hover:text-white"
+            >
+              <svg
+                id="menu-icon"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16m-7 6h7"
+                />
+              </svg>
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Mobile Menu Content -->
-      <div id="mobile-menu-content" class="hidden border-t border-white/5 bg-slate-950/95 backdrop-blur-xl md:hidden">
+      <div
+        id="mobile-menu-content"
+        class="hidden border-t border-white/5 bg-slate-950/95 backdrop-blur-xl md:hidden"
+      >
         <div class="space-y-1 px-4 py-6">
-          <a href="#home" class="block rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 hover:text-brand-400">Home</a>
-          <a href="#grocery" class="block rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 hover:text-brand-400">Grocery</a>
-          <a href="#mobile" class="block rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 hover:text-brand-400">Mobiles</a>
-          <a href="#appliances" class="block rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 hover:text-brand-400">Appliances</a>
-          <a href="#fashion" class="block rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 hover:text-brand-400">Fashion</a>
-          <a href="#travel" class="block rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 hover:text-brand-400">Travel</a>
-          <a href="#vehicle" class="block rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 hover:text-brand-400">Vehicle</a>
+          <a
+            href="#home"
+            class="block rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 hover:text-brand-400"
+            >Home</a
+          >
+
+          <div>
+            <button
+              id="mobile-grocery-btn"
+              class="w-full text-left rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 flex justify-between items-center"
+            >
+              <span>Grocery</span>
+              <svg
+                class="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+            <div
+              id="mobile-grocery-dd"
+              class="hidden pl-6 space-y-1 bg-slate-900/50 rounded-lg py-2"
+            >
+              <a
+                href="#grocery"
+                class="block py-2 text-sm text-slate-400 hover:text-white"
+                >Fresh Produce</a
+              >
+              <a
+                href="#grocery-daily-eggs"
+                class="block py-2 text-sm text-slate-400 hover:text-white"
+                >Dairy & Eggs</a
+              >
+              <a
+                href="#grocery-beverages"
+                class="block py-2 text-sm text-slate-400 hover:text-white"
+                >Beverages</a
+              >
+            </div>
+          </div>
+
+          <div>
+            <button
+              id="mobile-mobile-btn"
+              class="w-full text-left rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 flex justify-between items-center"
+            >
+              <span>Mobiles</span>
+              <svg
+                class="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+            <div
+              id="mobile-mobile-dd"
+              class="hidden pl-6 space-y-1 bg-slate-900/50 rounded-lg py-2"
+            >
+              <a
+                href="#mobile"
+                class="block py-2 text-sm text-slate-400 hover:text-white"
+                >Smartphones</a
+              >
+              <a
+                href="#mobile-accessories"
+                class="block py-2 text-sm text-slate-400 hover:text-white"
+                >Accessories</a
+              >
+              <a
+                href="#mobile-tablets"
+                class="block py-2 text-sm text-slate-400 hover:text-white"
+                >Tablets</a
+              >
+            </div>
+          </div>
+
+          <div>
+            <button
+              id="mobile-appliances-btn"
+              class="w-full text-left rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 flex justify-between items-center"
+            >
+              <span>Appliances</span>
+              <svg
+                class="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+            <div
+              id="mobile-appliances-dd"
+              class="hidden pl-6 space-y-1 bg-slate-900/50 rounded-lg py-2"
+            >
+              <a
+                href="#appliances-kitchen"
+                class="block py-2 text-sm text-slate-400 hover:text-white"
+                >Kitchen Tech</a
+              >
+              <a
+                href="#appliances-home"
+                class="block py-2 text-sm text-slate-400 hover:text-white"
+                >Home Comfort</a
+              >
+            </div>
+          </div>
         </div>
       </div>
     </nav>
 
-    <!-- Main Content -->
     <main class="relative pt-20">
-      
-      <!-- Hero Section -->
       <section id="home" class="relative overflow-hidden py-24 lg:py-32">
-        <div class="hero-gradient pointer-events-none absolute inset-0 -z-10"></div>
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div
+          class="hero-gradient pointer-events-none absolute inset-0 -z-10"
+        ></div>
+        <div
+          class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center lg:text-left"
+        >
           <div class="grid items-center gap-12 lg:grid-cols-2">
             <div class="space-y-8">
-              <div class="inline-flex items-center gap-2 rounded-full bg-brand-500/10 px-4 py-1.5 text-sm font-semibold text-brand-400 ring-1 ring-inset ring-brand-500/20">
-                <span class="flex h-2 w-2 rounded-full bg-brand-400 animate-pulse"></span>
+              <div
+                class="inline-flex items-center gap-2 rounded-full bg-brand-500/10 px-4 py-1.5 text-sm font-semibold text-brand-400 ring-1 ring-brand-500/20"
+              >
+                <span
+                  class="flex h-2 w-2 rounded-full bg-brand-400 animate-pulse"
+                ></span>
                 Special Summer Offer - Up to 40% Off
               </div>
-              <h1 class="text-5xl font-extrabold tracking-tight text-white sm:text-7xl">
-                Experience the <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-emerald-400">Next Gen</span> of Shopping
+              <h1
+                class="text-5xl font-extrabold tracking-tight text-white sm:text-7xl"
+              >
+                Experience the
+                <span
+                  class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-emerald-400"
+                  >Next Gen</span
+                >
+                of Shopping
               </h1>
-              <p class="max-w-xl text-lg leading-relaxed text-slate-400">
-                Discover a curated collection of premium products across fashion, electronics, and daily essentials. Designed for the modern lifestyle with seamless navigation and lightning-fast delivery.
+              <p
+                class="max-w-xl text-lg leading-relaxed text-slate-400 mx-auto lg:mx-0"
+              >
+                Discover a curated collection of premium products across
+                fashion, electronics, and daily essentials.
               </p>
-              <div class="flex flex-wrap gap-4 pt-4">
-                <a href="#featured" class="group relative flex items-center justify-center rounded-xl bg-brand-500 px-8 py-4 text-sm font-bold text-white transition-all hover:bg-brand-600 hover:scale-105 shadow-xl shadow-brand-500/20">
-                  Explore Now
-                  <svg class="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-                </a>
-                <a href="#categories" class="flex items-center justify-center rounded-xl bg-white/5 px-8 py-4 text-sm font-bold text-white transition-all hover:bg-white/10 border border-white/10 glass">
-                  View Categories
-                </a>
-              </div>
-              <div class="flex items-center gap-8 pt-8">
-                <div>
-                  <p class="text-2xl font-bold text-white">50k+</p>
-                  <p class="text-sm text-slate-500">Active Users</p>
-                </div>
-                <div class="h-8 w-px bg-white/10"></div>
-                <div>
-                  <p class="text-2xl font-bold text-white">99.9%</p>
-                  <p class="text-sm text-slate-500">Satisfaction</p>
-                </div>
-                <div class="h-8 w-px bg-white/10"></div>
-                <div>
-                  <p class="text-2xl font-bold text-white">24/7</p>
-                  <p class="text-sm text-slate-500">Expert Support</p>
-                </div>
-              </div>
-            </div>
-            <div class="relative hidden lg:block">
-              <div class="absolute -inset-4 bg-brand-500/20 blur-3xl"></div>
-              <div class="relative animate-float">
-                <img src="./img/hero.png" alt="Hero Banner" class="rounded-3xl shadow-2xl border border-white/10">
-                <!-- Floating elements -->
-                <div class="absolute -right-8 top-1/4 rounded-2xl glass p-4 shadow-2xl border border-white/10 animate-bounce group cursor-default">
-                  <div class="flex items-center gap-3">
-                    <div class="h-10 w-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400">
-                      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                    </div>
-                    <div>
-                      <p class="text-xs text-slate-400">Order Status</p>
-                      <p class="text-sm font-bold text-white">Delivered Today</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Category Section -->
-      <section id="categories" class="py-24 relative">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div class="mb-12 flex items-end justify-between">
-            <div class="space-y-2">
-              <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Browse by Category</h2>
-              <p class="text-slate-400">Find exactly what you're looking for curated by our experts.</p>
-            </div>
-            <a href="#" class="text-brand-400 font-semibold hover:text-brand-300 flex items-center gap-2 group">
-              View All 
-              <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
-            </a>
-          </div>
-
-          <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 lg:gap-6">
-            <!-- Grocery -->
-            <a href="#grocery" class="group relative overflow-hidden rounded-2xl bg-white/5 p-6 text-center transition-all hover:bg-brand-500/10 border border-white/5 hover:border-brand-500/30">
-              <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/20 text-emerald-400 transition-all group-hover:scale-110 group-hover:rotate-6">
-                 <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-              </div>
-              <h3 class="font-bold text-white">Grocery</h3>
-              <p class="mt-1 text-xs text-slate-500">1.2k+ Items</p>
-            </a>
-
-            <!-- Mobile -->
-            <a href="#mobile" class="group relative overflow-hidden rounded-2xl bg-white/5 p-6 text-center transition-all hover:bg-brand-500/10 border border-white/5 hover:border-brand-500/30">
-              <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-500/20 text-brand-400 transition-all group-hover:scale-110 group-hover:rotate-6">
-                 <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
-              </div>
-              <h3 class="font-bold text-white">Mobile</h3>
-              <p class="mt-1 text-xs text-slate-500">450+ Items</p>
-            </a>
-
-            <!-- Appliances -->
-            <a href="#appliances" class="group relative overflow-hidden rounded-2xl bg-white/5 p-6 text-center transition-all hover:bg-brand-500/10 border border-white/5 hover:border-brand-500/30">
-              <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-orange-500/20 text-orange-400 transition-all group-hover:scale-110 group-hover:rotate-6">
-                 <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-              </div>
-              <h3 class="font-bold text-white">Appliances</h3>
-              <p class="mt-1 text-xs text-slate-500">800+ Items</p>
-            </a>
-
-            <!-- Fashion -->
-            <a href="#fashion" class="group relative overflow-hidden rounded-2xl bg-white/5 p-6 text-center transition-all hover:bg-brand-500/10 border border-white/5 hover:border-brand-500/30">
-              <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-pink-500/20 text-pink-400 transition-all group-hover:scale-110 group-hover:rotate-6">
-                 <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-              </div>
-              <h3 class="font-bold text-white">Fashion</h3>
-              <p class="mt-1 text-xs text-slate-500">2.5k+ Items</p>
-            </a>
-
-            <!-- Travel -->
-            <a href="#travel" class="group relative overflow-hidden rounded-2xl bg-white/5 p-6 text-center transition-all hover:bg-brand-500/10 border border-white/5 hover:border-brand-500/30">
-              <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-500/20 text-cyan-400 transition-all group-hover:scale-110 group-hover:rotate-6">
-                 <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
-
-              </div>
-              <h3 class="font-bold text-white">Travel</h3>
-              <p class="mt-1 text-xs text-slate-500">120 Dest.</p>
-            </a>
-
-            <!-- Vehicle -->
-            <a href="#vehicle" class="group relative overflow-hidden rounded-2xl bg-white/5 p-6 text-center transition-all hover:bg-brand-500/10 border border-white/5 hover:border-brand-500/30">
-              <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-red-500/20 text-red-400 transition-all group-hover:scale-110 group-hover:rotate-6">
-                 <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
-              </div>
-              <h3 class="font-bold text-white">Vehicle</h3>
-              <p class="mt-1 text-xs text-slate-500">50+ Options</p>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <!-- Featured Products -->
-      <section id="featured" class="py-24 bg-white/2">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div class="text-center mb-16">
-            <h2 class="text-3xl font-bold text-white sm:text-5xl">Featured Products</h2>
-            <p class="mt-4 text-slate-400 max-w-2xl mx-auto">Handpicked best sellers and top-rated gadgets just for you.</p>
-          </div>
-        </div>
-
-
+      <div
+        class="flex flex-col justify-center items-center text-center min-h-[40vh] px-4"
+      >
         <div
-          id="auth-container"
-          class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 space-x-3"
+          id="welcome-text"
+          class="text-gray-200 text-xl md:text-2xl font-semibold tracking-wide max-w-4xl leading-relaxed bg-slate-900/50 p-8 rounded-2xl border border-slate-800/80 shadow-xl backdrop-blur-sm"
         >
-          <button
-            id="notification-btn"
-            class="bg-gray-800 p-2 rounded-full text-gray-400 hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-          >
-            <svg
-              class="h-6 w-6 transition-transform duration-300 hover:scale-110"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-              />
-            </svg>
-          </button>
-
-          <div id="profile-wrapper" class="relative ml-3">
-            <button
-              type="button"
-              class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-              id="user-menu-button"
-              aria-expanded="false"
-              aria-haspopup="true"
-            >
-              <img
-                class="h-9 w-9 rounded-full border-2 border-cyan-400"
-                src="./img/pic.jpg"
-                alt="User Profile"
-              />
-            </button>
-
-            <div
-              class="hidden opacity-0 scale-95 pointer-events-none transition-all duration-200 origin-top-right absolute right-0 top-full mt-1 w-52 rounded-xl shadow-2xl py-2 bg-gray-800 ring-1 ring-gray-700 focus:outline-none z-50"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="user-menu-button"
-              tabindex="-1"
-              id="user-menu"
-            >
-              <a
-                href="#"
-                class="block px-4 py-3 text-sm text-gray-200 cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105"
-              >
-                Your Profile
-              </a>
-
-              <a
-                href="#"
-                class="block px-4 py-3 text-sm text-gray-200 cursor-pointer hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 hover:scale-105"
-              >
-                Settings
-              </a>
-
-              <a
-                href="#"
-                id="sign-out-btn"
-                class="block px-4 py-3 text-sm text-red-400 font-semibold cursor-pointer hover:bg-gray-700 hover:text-red-300 transition-all duration-200 hover:scale-105"
-              >
-                Sign out
-              </a>
-            </div>
-          </div>
-
-          <button
-            id="inline-login-btn"
-            class="hidden bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-cyan-400 hover:to-blue-400 transition-all duration-200 shadow-md hover:scale-105"
-          >
-            Log In
-          </button>
+          Dropdown Menus Available Under Grocery, Mobile, Appliances, Vehicle,
+          Travel, Fashion & Profile Tabs
         </div>
       </div>
-    </div>
 
-    <div class="sm:hidden">
-      <div
-        class="px-2 pt-2 pb-3 space-y-2 hidden bg-gray-900 border-t border-gray-700"
-        role="menu"
-        aria-orientation="vertical"
-        aria-labelledby="mobile-menu"
-        tabindex="-1"
-        id="mobile-menu-dd"
-      >
-        <div>
-          <button
-            id="mobile-grocery-btn"
-            class="w-full text-left hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Grocery
-          </button>
-          <div id="mobile-grocery-dd" class="hidden pl-4 space-y-1">
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Fruits & Vegetables</div>
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Dairy Products</div>
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Rice & Grains</div>
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Snacks</div>
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Others</div>
-          </div>
-        </div>
-
-        <div>
-          <button
-            id="mobile-mobile-btn"
-            class="w-full text-left hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Mobile
-          </button>
-          <div id="mobile-mobile-dd" class="hidden pl-4 space-y-1">
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Android Phones</div>
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">iPhones</div>
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">5G Phones</div>
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Phone Cases</div>
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Others</div>
-          </div>
-        </div>
-
-        <div>
-          <button
-            id="mobile-appliances-btn"
-            class="w-full text-left hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Appliances
-          </button>
-          <div id="mobile-appliances-dd" class="hidden pl-4 space-y-1">
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Refrigerator</div>
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Air Conditioner</div>
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Washing Machine</div>
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Television</div>
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Others</div>
-          </div>
-        </div>
-
-        <div>
-          <button
-            id="mobile-vehicle-btn"
-            class="w-full text-left hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Vehicle
-          </button>
-          <div id="mobile-vehicle-dd" class="hidden pl-4 space-y-1">
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Cars</div>
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Bikes</div>
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Scooters</div>
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Electric Vehicles</div>
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Others</div>
-          </div>
-        </div>
-
-        <div>
-          <button
-            id="mobile-travel-btn"
-            class="w-full text-left hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Travel
-          </button>
-          <div id="mobile-travel-dd" class="hidden pl-4 space-y-1">
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Flight</div>
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Hotel</div>
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Bus</div>
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Train</div>
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Others</div>
-          </div>
-        </div>
-
-        <div>
-          <button
-            id="mobile-fashion-btn"
-            class="w-full text-left hover:bg-gray-700 hover:text-cyan-400 transition-all duration-200 text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Fashion
-          </button>
-          <div id="mobile-fashion-dd" class="hidden pl-4 space-y-1">
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Men's Fashion</div>
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Women's Fashion</div>
-            <div class="text-gray-300 py-2 px-2 rounded-md cursor-pointer hover:text-cyan-400 hover:bg-gray-700 transition-all duration-200 hover:scale-105">Kid's Fashion</div>
-
-          <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            <!-- Product 1 -->
-            <div class="group relative flex flex-col rounded-3xl bg-white/5 border border-white/10 hover:border-brand-500/50 transition-all overflow-hidden glass hover:-translate-y-2 shadow-2xl">
-              <div class="aspect-square w-full overflow-hidden relative">
-                <img src="./img/mobile.png" alt="Smartphone" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110">
-                <div class="absolute top-4 right-4 rounded-full bg-brand-500 px-3 py-1 text-xs font-bold text-white shadow-lg">New Arrival</div>
-              </div>
-              <div class="p-8">
-                <div class="flex items-center justify-between mb-2">
-                  <span class="text-xs font-bold uppercase tracking-widest text-brand-400">Technology</span>
-                  <div class="flex items-center gap-1 text-yellow-500">
-                    <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-                    <span class="text-xs font-bold text-slate-300">4.9</span>
-                  </div>
-                </div>
-                <h3 class="text-xl font-bold text-white mb-2">Quantum Pro Smartphone</h3>
-                <p class="text-slate-400 text-sm mb-6 line-clamp-2">The ultimate flagship experience with a revolutionary 200MP camera and hyper-fast processing.</p>
-                <div class="flex items-center justify-between pt-4 border-t border-white/5">
-                  <span class="text-2xl font-black text-white">$999.00</span>
-                  <button class="rounded-xl bg-brand-500 px-6 py-2.5 text-sm font-bold text-white hover:bg-brand-400 transition-colors">Add to Cart</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Product 2 -->
-            <div class="group relative flex flex-col rounded-3xl bg-white/5 border border-white/10 hover:border-emerald-500/50 transition-all overflow-hidden glass hover:-translate-y-2 shadow-2xl">
-              <div class="aspect-square w-full overflow-hidden relative">
-                <!-- Using another generated image or standard path if needed, but I'll use the fashion for variety -->
-                <img src="./img/fashion.png" alt="Fashion" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110">
-                <div class="absolute top-4 right-4 rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold text-white shadow-lg">Trending</div>
-              </div>
-              <div class="p-8">
-                <div class="flex items-center justify-between mb-2">
-                  <span class="text-xs font-bold uppercase tracking-widest text-emerald-400">Style</span>
-                  <div class="flex items-center gap-1 text-yellow-500">
-                    <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-                    <span class="text-xs font-bold text-slate-300">5.0</span>
-                  </div>
-                </div>
-                <h3 class="text-xl font-bold text-white mb-2">Alpine Heritage Collection</h3>
-                <p class="text-slate-400 text-sm mb-6 line-clamp-2">Limited edition breathable apparel designed for peak performance and urban aesthetics.</p>
-                <div class="flex items-center justify-between pt-4 border-t border-white/5">
-                  <span class="text-2xl font-black text-white">$149.00</span>
-                  <button class="rounded-xl bg-brand-500 px-6 py-2.5 text-sm font-bold text-white hover:bg-brand-400 transition-colors">Add to Cart</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Product 3 -->
-            <div class="group relative flex flex-col rounded-3xl bg-white/5 border border-white/10 hover:border-pink-500/50 transition-all overflow-hidden glass hover:-translate-y-2 shadow-2xl">
-              <div class="aspect-square w-full overflow-hidden relative">
-                <img src="./img/travel.png" alt="Travel" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110">
-                <div class="absolute top-4 right-4 rounded-full bg-pink-500 px-3 py-1 text-xs font-bold text-white shadow-lg">-30% OFF</div>
-              </div>
-              <div class="p-8">
-                <div class="flex items-center justify-between mb-2">
-                  <span class="text-xs font-bold uppercase tracking-widest text-pink-400">Adventure</span>
-                  <div class="flex items-center gap-1 text-yellow-500">
-                    <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-                    <span class="text-xs font-bold text-slate-300">4.7</span>
-                  </div>
-                </div>
-                <h3 class="text-xl font-bold text-white mb-2">Azure Islands Getaway</h3>
-                <p class="text-slate-400 text-sm mb-6 line-clamp-2">Exclusive all-inclusive travel package to hidden gems in the tropical archipelago.</p>
-                <div class="flex items-center justify-between pt-4 border-t border-white/5">
-                  <span class="text-2xl font-black text-white">$1,299</span>
-                  <button class="rounded-xl bg-brand-500 px-6 py-2.5 text-sm font-bold text-white hover:bg-brand-400 transition-colors">Book Now</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <section id="grocery" class="py-12 max-w-7xl mx-auto px-4">
+        <div
+          id="grocery-product-grid"
+          class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        ></div>
       </section>
-
-      
-      <section id="grocery" class="py-24 border-t border-white/5 relative">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-           <div class="flex flex-col md:flex-row gap-12 items-center">
-             <div class="w-full md:w-1/2">
-                <img src="./img/grocery.png" class="rounded-3xl shadow-2xl border border-white/10 hover:scale-[1.02] transition-transform duration-500" alt="Grocery">
-             </div>
-             <div class="w-full md:w-1/2 space-y-6">
-                <h2 class="text-4xl font-extrabold text-white">Fresh & Organic Grocery</h2>
-                <p class="text-slate-400 text-lg">Direct from local farms to your doorstep. We ensure the highest quality standards for everything you put on your table.</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div id="grocery-daily-eggs" class="subcategory-card cursor-pointer glass p-6 rounded-2xl border border-white/5 hover:border-emerald-500/50 transition-all duration-300" data-category="grocery-daily-eggs" data-parent="grocery">
-                    <div class="h-10 w-10 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400 mb-3">
-                       <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    </div>
-                    <p class="font-bold text-white sub-title">Dairy & Eggs</p>
-                    <p class="text-xs text-slate-500 mt-1">Farm-fresh milk, organic eggs, and artisanal cheeses delivered daily.</p>
-                  </div>
-                  <div id="grocery-beverages" class="subcategory-card cursor-pointer glass p-6 rounded-2xl border border-white/5 hover:border-brand-500/50 transition-all duration-300" data-category="grocery-beverages" data-parent="grocery">
-                    <div class="h-10 w-10 rounded-full bg-brand-500/10 flex items-center justify-center text-brand-400 mb-3">
-                       <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
-                    </div>
-                    <p class="font-bold text-white sub-title">Beverages</p>
-                    <p class="text-xs text-slate-500 mt-1">From cold-pressed juices to premium coffee blends and craft sodas.</p>
-                  </div>
-                </div>
-                <button class="bg-brand-500 hover:bg-brand-600 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg shadow-brand-500/20 category-reset" data-category="grocery">Browse All Grocery</button>
-             </div>
-           </div>
-
-           <!-- Dynamic Product Display Area -->
-           <div class="mt-16 pt-8 border-t border-white/5">
-             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-               <h3 class="text-2xl font-bold text-white flex items-center gap-2">
-                 <span class="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                 <span class="section-display-title">Grocery Products</span>
-               </h3>
-               <!-- Pill Tabs -->
-               <div class="flex flex-wrap gap-2">
-                 <button class="tab-pill px-4 py-1.5 rounded-full text-xs font-semibold glass border border-white/10 hover:bg-white/10 text-slate-300 transition-all active" data-category="grocery" data-parent="grocery">Fresh Produce</button>
-                 <button class="tab-pill px-4 py-1.5 rounded-full text-xs font-semibold glass border border-white/10 hover:bg-white/10 text-slate-300 transition-all" data-category="grocery-daily-eggs" data-parent="grocery">Dairy & Eggs</button>
-                 <button class="tab-pill px-4 py-1.5 rounded-full text-xs font-semibold glass border border-white/10 hover:bg-white/10 text-slate-300 transition-all" data-category="grocery-beverages" data-parent="grocery">Beverages</button>
-               </div>
-             </div>
-             <div id="grocery-product-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 transition-all duration-300 opacity-100">
-               <!-- Injected dynamically -->
-             </div>
-           </div>
-        </div>
+      <section id="mobile" class="py-12 max-w-7xl mx-auto px-4">
+        <div
+          id="mobile-product-grid"
+          class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        ></div>
       </section>
-
-      <!-- Mobile Section -->
-      <section id="mobile" class="py-24 border-t border-white/5 bg-slate-900/30 text-slate-200 relative">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-           <div class="flex flex-col md:flex-row-reverse gap-12 items-center">
-             <div class="w-full md:w-1/2">
-                <img src="./img/mobile.png" class="rounded-3xl shadow-2xl border border-white/10 hover:scale-[1.02] transition-transform duration-500" alt="Mobiles">
-             </div>
-             <div class="w-full md:w-1/2 space-y-6">
-                <h2 class="text-4xl font-extrabold text-white">Latest in Mobile Tech</h2>
-                <p class="text-slate-400 text-lg">Stay ahead with the latest 5G smartphones, power accessories, and innovative gadgets from top brands world-wide.</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div id="mobile-accessories" class="subcategory-card cursor-pointer glass p-6 rounded-2xl border border-white/5 hover:border-orange-500/50 transition-all duration-300" data-category="mobile-accessories" data-parent="mobile">
-                    <h4 class="font-bold text-white flex items-center gap-2 mb-2 sub-title">
-                       <span class="h-2 w-2 rounded-full bg-orange-500"></span>
-                       Accessories
-                    </h4>
-                    <p class="text-xs text-slate-500">Fast chargers, wireless buds, and durable cases for every model.</p>
-                  </div>
-                  <div id="mobile-tablets" class="subcategory-card cursor-pointer glass p-6 rounded-2xl border border-white/5 hover:border-cyan-500/50 transition-all duration-300" data-category="mobile-tablets" data-parent="mobile">
-                    <h4 class="font-bold text-white flex items-center gap-2 mb-2 sub-title">
-                       <span class="h-2 w-2 rounded-full bg-cyan-500"></span>
-                       Tablets
-                    </h4>
-                    <p class="text-xs text-slate-500">Unleash creativity with our range of high-performance tablets.</p>
-                  </div>
-                </div>
-                <button class="bg-brand-500 hover:bg-brand-600 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg shadow-brand-500/20 category-reset" data-category="mobile">Browse All Tech</button>
-             </div>
-           </div>
-
-           <!-- Dynamic Product Display Area -->
-           <div class="mt-16 pt-8 border-t border-white/5">
-             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-               <h3 class="text-2xl font-bold text-white flex items-center gap-2">
-                 <span class="h-2.5 w-2.5 rounded-full bg-brand-500 animate-pulse"></span>
-                 <span class="section-display-title">Technology Devices</span>
-               </h3>
-               <!-- Pill Tabs -->
-               <div class="flex flex-wrap gap-2">
-                 <button class="tab-pill px-4 py-1.5 rounded-full text-xs font-semibold glass border border-white/10 hover:bg-white/10 text-slate-300 transition-all active" data-category="mobile" data-parent="mobile">Smartphones</button>
-                 <button class="tab-pill px-4 py-1.5 rounded-full text-xs font-semibold glass border border-white/10 hover:bg-white/10 text-slate-300 transition-all" data-category="mobile-accessories" data-parent="mobile">Accessories</button>
-                 <button class="tab-pill px-4 py-1.5 rounded-full text-xs font-semibold glass border border-white/10 hover:bg-white/10 text-slate-300 transition-all" data-category="mobile-tablets" data-parent="mobile">Tablets</button>
-               </div>
-             </div>
-             <div id="mobile-product-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 transition-all duration-300 opacity-100">
-               <!-- Injected dynamically -->
-             </div>
-           </div>
-        </div>
+      <section id="appliances" class="py-12 max-w-7xl mx-auto px-4">
+        <div
+          id="appliances-product-grid"
+          class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        ></div>
       </section>
-
-      <!-- New Appliances Section -->
-      <section id="appliances" class="py-24 border-t border-white/5 relative overflow-hidden">
-        <div class="absolute top-0 left-0 h-96 w-96 bg-orange-500/10 blur-[120px] -z-10"></div>
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-           <div class="flex flex-col md:flex-row gap-12 items-center">
-             <div class="w-full md:w-1/2">
-                <img src="./img/hero.png" class="rounded-3xl shadow-2xl border border-white/10 hover:scale-[1.02] transition-transform duration-500" alt="Appliances">
-             </div>
-             <div class="w-full md:w-1/2 space-y-6">
-                <div class="inline-flex items-center gap-2 rounded-full bg-orange-500/10 px-4 py-1.5 text-sm font-semibold text-orange-400 border border-orange-500/20">Home & Kitchen</div>
-                <h2 class="text-4xl font-extrabold text-white">Smart Home Appliances</h2>
-                <p class="text-slate-400 text-lg">Elevate your daily living with intelligent appliances designed for efficiency, durability, and modern styles.</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div id="appliances-kitchen" class="subcategory-card cursor-pointer glass p-6 rounded-2xl border border-white/5 hover:border-orange-500/50 transition-all duration-300" data-category="appliances-kitchen" data-parent="appliances">
-                    <p class="font-bold text-white flex items-center gap-2 sub-title">
-                       <span class="h-2 w-2 rounded-full bg-orange-500"></span>
-                       Kitchen Tech
-                    </p>
-                    <p class="text-xs text-slate-500 mt-1">Wifi air fryers, high-performance stand mixers, and coffee makers.</p>
-                  </div>
-                  <div id="appliances-home" class="subcategory-card cursor-pointer glass p-6 rounded-2xl border border-white/5 hover:border-amber-500/50 transition-all duration-300" data-category="appliances-home" data-parent="appliances">
-                    <p class="font-bold text-white flex items-center gap-2 sub-title">
-                       <span class="h-2 w-2 rounded-full bg-amber-500"></span>
-                       Home Comfort
-                    </p>
-                    <p class="text-xs text-slate-500 mt-1">Robotic vacuums, air purifiers, and climate control devices.</p>
-                  </div>
-                </div>
-                <button class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg shadow-orange-500/20 category-reset" data-category="appliances">Browse All Appliances</button>
-             </div>
-           </div>
-
-           <!-- Dynamic Product Display Area -->
-           <div class="mt-16 pt-8 border-t border-white/5">
-             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-               <h3 class="text-2xl font-bold text-white flex items-center gap-2">
-                 <span class="h-2.5 w-2.5 rounded-full bg-orange-500 animate-pulse"></span>
-                 <span class="section-display-title">Smart Appliances</span>
-               </h3>
-               <!-- Pill Tabs -->
-               <div class="flex flex-wrap gap-2">
-                 <button class="tab-pill px-4 py-1.5 rounded-full text-xs font-semibold glass border border-white/10 hover:bg-white/10 text-slate-300 transition-all active" data-category="appliances" data-parent="appliances">All Appliances</button>
-                 <button class="tab-pill px-4 py-1.5 rounded-full text-xs font-semibold glass border border-white/10 hover:bg-white/10 text-slate-300 transition-all" data-category="appliances-kitchen" data-parent="appliances">Kitchen Tech</button>
-                 <button class="tab-pill px-4 py-1.5 rounded-full text-xs font-semibold glass border border-white/10 hover:bg-white/10 text-slate-300 transition-all" data-category="appliances-home" data-parent="appliances">Home Comfort</button>
-               </div>
-             </div>
-             <div id="appliances-product-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 transition-all duration-300 opacity-100">
-               <!-- Injected dynamically -->
-             </div>
-           </div>
-        </div>
-      </section>
-
-      <!-- Travel Section -->
-      <section id="travel" class="py-24 border-t border-white/5 relative overflow-hidden">
-        <div class="absolute top-0 right-0 h-96 w-96 bg-cyan-500/10 blur-[120px] -z-10"></div>
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-           <div class="flex flex-col md:flex-row gap-12 items-center">
-             <div class="w-full md:w-1/2">
-                <img src="./img/travel.png" class="rounded-3xl shadow-2xl border border-white/10" alt="Travel">
-             </div>
-             <div class="w-full md:w-1/2 space-y-6">
-                <div class="inline-flex items-center gap-2 rounded-full bg-cyan-500/10 px-4 py-1.5 text-xs font-bold text-cyan-400 border border-cyan-500/20">Wanderlust Collection</div>
-                <h2 class="text-4xl font-extrabold text-white">Your Next Adventure Awaits</h2>
-                <p class="text-slate-400 text-lg">From serene beaches to rugged mountain peaks, we offer curated travel packages that define luxury and adventure.</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div id="travel-beach" class="subcategory-card cursor-pointer glass p-6 rounded-2xl border border-white/5 hover:border-cyan-500/50 transition-all duration-300" data-category="travel-beach" data-parent="travel">
-                    <h4 class="font-bold text-white flex items-center gap-2 mb-2 sub-title">
-                       <span class="h-2 w-2 rounded-full bg-cyan-500"></span>
-                       Beach Escapes
-                    </h4>
-                    <p class="text-xs text-slate-500">Private villas, tropical islands, and sun-kissed horizons.</p>
-                  </div>
-                  <div id="travel-mountain" class="subcategory-card cursor-pointer glass p-6 rounded-2xl border border-white/5 hover:border-emerald-500/50 transition-all duration-300" data-category="travel-mountain" data-parent="travel">
-                    <h4 class="font-bold text-white flex items-center gap-2 mb-2 sub-title">
-                       <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
-                       Mountain Retreats
-                    </h4>
-                    <p class="text-xs text-slate-500">Alpine ski resorts, scenic trekking, and fresh heights.</p>
-                  </div>
-                </div>
-                <button class="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg shadow-cyan-600/20 category-reset" data-category="travel">Browse All Travel</button>
-             </div>
-           </div>
-
-           <!-- Dynamic Product Display Area -->
-           <div class="mt-16 pt-8 border-t border-white/5">
-             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-               <h3 class="text-2xl font-bold text-white flex items-center gap-2">
-                 <span class="h-2.5 w-2.5 rounded-full bg-cyan-500 animate-pulse"></span>
-                 <span class="section-display-title">Curated Getaways</span>
-               </h3>
-               <!-- Pill Tabs -->
-               <div class="flex flex-wrap gap-2">
-                 <button class="tab-pill px-4 py-1.5 rounded-full text-xs font-semibold glass border border-white/10 hover:bg-white/10 text-slate-300 transition-all active" data-category="travel" data-parent="travel">All Packages</button>
-                 <button class="tab-pill px-4 py-1.5 rounded-full text-xs font-semibold glass border border-white/10 hover:bg-white/10 text-slate-300 transition-all" data-category="travel-beach" data-parent="travel">Beach Escapes</button>
-                 <button class="tab-pill px-4 py-1.5 rounded-full text-xs font-semibold glass border border-white/10 hover:bg-white/10 text-slate-300 transition-all" data-category="travel-mountain" data-parent="travel">Mountain Retreats</button>
-               </div>
-             </div>
-             <div id="travel-product-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 transition-all duration-300 opacity-100">
-               <!-- Injected dynamically -->
-             </div>
-           </div>
-        </div>
-      </section>
-
-      <!-- Vehicle Section -->
-      <section id="vehicle" class="py-24 border-t border-white/5 bg-slate-900/40 relative">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-           <div class="text-center mb-12">
-             <h2 class="text-4xl font-extrabold text-white mb-4">Modern Mobility</h2>
-             <p class="text-slate-400 text-lg max-w-2xl mx-auto mb-6">Discover our range of eco-friendly vehicles, from agile electric scooters to powerful electric long-range SUVs.</p>
-           </div>
-           
-           <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-              <div id="vehicle-ev" class="subcategory-card cursor-pointer glass p-8 rounded-3xl border border-white/5 hover:border-red-500/50 transition-all duration-300 group" data-category="vehicle-ev" data-parent="vehicle">
-                 <div class="h-16 w-16 bg-red-500/20 text-red-400 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                    <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
-                 </div>
-                 <h4 class="text-xl font-bold text-white mb-2 text-center sub-title">Luxury EVs</h4>
-                 <p class="text-sm text-slate-500 text-center">Premium electric driving experience with 500+ mile range.</p>
-              </div>
-              <div id="vehicle-scooter" class="subcategory-card cursor-pointer glass p-8 rounded-3xl border border-white/5 hover:border-brand-500/50 transition-all duration-300 group" data-category="vehicle-scooter" data-parent="vehicle">
-                 <div class="h-16 w-16 bg-brand-500/20 text-brand-400 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                    <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                 </div>
-                 <h4 class="text-xl font-bold text-white mb-2 text-center sub-title">Urban Scooters</h4>
-                 <p class="text-sm text-slate-500 text-center">Perfect for the city commute. Fast charging, foldable design.</p>
-              </div>
-              <div id="vehicle-bike" class="subcategory-card cursor-pointer glass p-8 rounded-3xl border border-white/5 hover:border-emerald-500/50 transition-all duration-300 group" data-category="vehicle-bike" data-parent="vehicle">
-                 <div class="h-16 w-16 bg-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                    <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                 </div>
-                 <h4 class="text-xl font-bold text-white mb-2 text-center sub-title">Smart Bikes</h4>
-                 <p class="text-sm text-slate-500 text-center">Pedal assist technology for your daily adventures.</p>
-              </div>
-           </div>
-
-           <!-- Dynamic Product Display Area -->
-           <div class="pt-8 border-t border-white/5">
-             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-               <h3 class="text-2xl font-bold text-white flex items-center gap-2">
-                 <span class="h-2.5 w-2.5 rounded-full bg-red-500 animate-pulse"></span>
-                 <span class="section-display-title">Eco Mobility</span>
-               </h3>
-               <!-- Pill Tabs -->
-               <div class="flex flex-wrap gap-2">
-                 <button class="tab-pill px-4 py-1.5 rounded-full text-xs font-semibold glass border border-white/10 hover:bg-white/10 text-slate-300 transition-all active" data-category="vehicle" data-parent="vehicle">All Vehicles</button>
-                 <button class="tab-pill px-4 py-1.5 rounded-full text-xs font-semibold glass border border-white/10 hover:bg-white/10 text-slate-300 transition-all" data-category="vehicle-ev" data-parent="vehicle">EVs</button>
-                 <button class="tab-pill px-4 py-1.5 rounded-full text-xs font-semibold glass border border-white/10 hover:bg-white/10 text-slate-300 transition-all" data-category="vehicle-scooter" data-parent="vehicle">Scooters</button>
-                 <button class="tab-pill px-4 py-1.5 rounded-full text-xs font-semibold glass border border-white/10 hover:bg-white/10 text-slate-300 transition-all" data-category="vehicle-bike" data-parent="vehicle">Bikes</button>
-               </div>
-             </div>
-             <div id="vehicle-product-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 transition-all duration-300 opacity-100">
-               <!-- Injected dynamically -->
-             </div>
-           </div>
-        </div>
-      </section>
-
-      <!-- Fashion Section -->
-      <section id="fashion" class="py-24 border-t border-white/5 relative">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-           <div class="flex flex-col md:flex-row gap-12 items-center">
-             <div class="w-full md:w-1/2 relative">
-                <img src="./img/fashion.png" class="rounded-3xl shadow-2xl border border-white/10" alt="Fashion">
-                <div class="absolute -bottom-6 -right-6 glass p-6 rounded-2xl border border-white/10 hidden lg:block">
-                  <p class="text-sm font-bold text-pink-400">Designer Choice</p>
-                  <p class="text-xl font-bold text-white">Summer '24</p>
-                </div>
-             </div>
-             <div class="w-full md:w-1/2 space-y-6">
-                <h2 class="text-4xl font-extrabold text-white">Trendsetting Fashion</h2>
-                <p class="text-slate-400 text-lg">Define your style with our exclusive range of apparel. From street wear to formal elegance, we have it all.</p>
-                
-                <div class="flex flex-wrap gap-4">
-                  <div id="fashion-men" class="subcategory-card cursor-pointer glass px-6 py-3 rounded-2xl border border-white/5 hover:border-pink-500/50 transition-all duration-300" data-category="fashion-men" data-parent="fashion">
-                    <p class="font-bold text-white sub-title">Men's Apparel</p>
-                    <p class="text-xs text-slate-500 mt-1">Jackets, shirts, and urban casuals.</p>
-                  </div>
-                  <div id="fashion-women" class="subcategory-card cursor-pointer glass px-6 py-3 rounded-2xl border border-white/5 hover:border-pink-500/50 transition-all duration-300" data-category="fashion-women" data-parent="fashion">
-                    <p class="font-bold text-white sub-title">Women's Apparel</p>
-                    <p class="text-xs text-slate-500 mt-1">Dresses, premium boots, and accessories.</p>
-                  </div>
-                  <div id="fashion-kids" class="subcategory-card cursor-pointer glass px-6 py-3 rounded-2xl border border-white/5 hover:border-pink-500/50 transition-all duration-300" data-category="fashion-kids" data-parent="fashion">
-                    <p class="font-bold text-white sub-title">Kids' Wear</p>
-                    <p class="text-xs text-slate-500 mt-1">Playful dungarees, cozy pullovers, and colors.</p>
-                  </div>
-                </div>
-                
-                <button class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg shadow-pink-600/20 category-reset" data-category="fashion">Browse All Fashion</button>
-             </div>
-           </div>
-
-           <!-- Dynamic Product Display Area -->
-           <div class="mt-16 pt-8 border-t border-white/5">
-             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-               <h3 class="text-2xl font-bold text-white flex items-center gap-2">
-                 <span class="h-2.5 w-2.5 rounded-full bg-pink-500 animate-pulse"></span>
-                 <span class="section-display-title">Fashion Trends</span>
-               </h3>
-               <!-- Pill Tabs -->
-               <div class="flex flex-wrap gap-2">
-                 <button class="tab-pill px-4 py-1.5 rounded-full text-xs font-semibold glass border border-white/10 hover:bg-white/10 text-slate-300 transition-all active" data-category="fashion" data-parent="fashion">All Styles</button>
-                 <button class="tab-pill px-4 py-1.5 rounded-full text-xs font-semibold glass border border-white/10 hover:bg-white/10 text-slate-300 transition-all" data-category="fashion-men" data-parent="fashion">Men</button>
-                 <button class="tab-pill px-4 py-1.5 rounded-full text-xs font-semibold glass border border-white/10 hover:bg-white/10 text-slate-300 transition-all" data-category="fashion-women" data-parent="fashion">Women</button>
-                 <button class="tab-pill px-4 py-1.5 rounded-full text-xs font-semibold glass border border-white/10 hover:bg-white/10 text-slate-300 transition-all" data-category="fashion-kids" data-parent="fashion">Kids</button>
-               </div>
-             </div>
-             <div id="fashion-product-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 transition-all duration-300 opacity-100">
-               <!-- Injected dynamically -->
-             </div>
-           </div>
-        </div>
-      </section>
-
-      <!-- Quick Shortcuts Section -->
-       <section class="py-24 bg-brand-900/10">
-         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-           <div class="rounded-3xl glass p-8 lg:p-12 border border-white/10 flex flex-col lg:flex-row items-center justify-between gap-8">
-             <div>
-               <h3 class="text-3xl font-bold text-white mb-2">Ready to explore more?</h3>
-               <p class="text-slate-400">Join our newsletter and get 15% off your first purchase.</p>
-             </div>
-             <div class="w-full lg:w-auto flex flex-col sm:flex-row gap-4">
-                <input type="email" placeholder="Enter your email" class="bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-brand-500 lg:w-80">
-                <button class="bg-white text-slate-900 font-bold px-8 py-4 rounded-xl hover:bg-slate-200 transition-colors">Subscribe Now</button>
-             </div>
-           </div>
-         </div>
-       </section>
-
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-slate-950 border-t border-white/5 pt-20 pb-10">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="grid gap-12 lg:grid-cols-4">
-          <div class="col-span-2">
-            <div class="flex items-center gap-2 mb-6">
-              <div class="h-8 w-8 rounded-lg bg-brand-500 flex items-center justify-center">
-                <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-              </div>
-              <span class="text-xl font-bold text-white">ModernHub</span>
-            </div>
-            <p class="text-slate-400 max-w-md mb-8">
-              The world's first decentralized shopping hub bringing you the best products at the best prices with unmatched speed and reliability.
-            </p>
-            <div class="flex gap-4">
-              <a href="#" class="h-10 w-10 rounded-full glass border border-white/10 flex items-center justify-center text-slate-400 hover:text-brand-400 transition-colors">
-                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
-              </a>
-              <a href="#" class="h-10 w-10 rounded-full glass border border-white/10 flex items-center justify-center text-slate-400 hover:text-brand-400 transition-colors">
-                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.058-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-              </a>
-            </div>
-          </div>
-          <div>
-            <h4 class="text-white font-bold mb-6">Quick Links</h4>
-            <ul class="space-y-4 text-slate-400 text-sm">
-              <li><a href="#home" class="hover:text-brand-400 transition-colors">Home</a></li>
-              <li><a href="#categories" class="hover:text-brand-400 transition-colors">Categories</a></li>
-              <li><a href="#featured" class="hover:text-brand-400 transition-colors">Featured Products</a></li>
-              <li><a href="#" class="hover:text-brand-400 transition-colors">Offers & Deals</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="text-white font-bold mb-6">Support</h4>
-            <ul class="space-y-4 text-slate-400 text-sm">
-              <li><a href="#" class="hover:text-brand-400 transition-colors">Customer Service</a></li>
-              <li><a href="#" class="hover:text-brand-400 transition-colors">Order Tracking</a></li>
-              <li><a href="#" class="hover:text-brand-400 transition-colors">Returns & Refunds</a></li>
-              <li><a href="#" class="hover:text-brand-400 transition-colors">Privacy Policy</a></li>
-            </ul>
-
-          </div>
-        </div>
-        <div class="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-           <p class="text-slate-500 text-xs">© 2024 ModernHub Inc. All rights reserved.</p>
-           <p class="text-slate-500 text-xs flex items-center gap-1">Crafted with ❤️ by <span class="text-brand-400 font-bold">Antigravity AI</span></p>
-        </div>
-      </div>
-
-    </div>
-  </nav>
-
-  <div class="flex flex-col justify-center items-center text-center min-h-[80vh] px-4">
-    <div id="welcome-text" class="text-gray-200 text-2xl md:text-4xl font-semibold tracking-wide max-w-5xl leading-relaxed bg-slate-900/50 p-8 rounded-2xl border border-slate-800/80 shadow-xl backdrop-blur-sm">
-      Dropdown Menus Available Under Grocery, Mobile, Appliances, Vehicle, Travel, Fashion & Profile Tabs
-    </div>
-  </div>
-
-  <footer class="fixed bottom-0 left-0 w-full py-3 text-center text-gray-400 text-sm bg-gray-950/40 backdrop-blur-xs">
-    Crafted with ❤️ by <b class="text-cyan-400">Vansh Kashyap</b>
-  </footer>
-
-  <script>
-    const dropdowns = [
-      { button: "grocery", menu: "grocery-dd" },        
-      { button: "mobile", menu: "mobile-dd" },        
-      { button: "appliances", menu: "appliances-dd" },
-      { button: "vehicle", menu: "vehicle-dd" },        
-      { button: "travel", menu: "travel-dd" },        
-      { button: "fashion", menu: "fashion-dd" },
-      { button: "user-menu-button", menu: "user-menu" },
-    ];
-
-    function closeAllDropdowns() {
-      dropdowns.forEach(({ menu, button }) => {
-        const dropdown = document.getElementById(menu);
-        const btn = document.getElementById(button);
-
-        if (dropdown) {
-          dropdown.classList.add("hidden", "opacity-0", "scale-95", "pointer-events-none");
-        }
-        if (btn) {
-          btn.classList.remove("bg-gray-700");
-          btn.setAttribute("aria-expanded", "false");
-        }
-      });
-    }
-
-    dropdowns.forEach(({ button, menu }) => {
-      const btn = document.getElementById(button);
-      const dropdown = document.getElementById(menu);
-
-      if (btn && dropdown) {
-        dropdown.addEventListener("click", function (e) {
-          e.stopPropagation();
-        });
+    <footer
+      class="bg-slate-950 border-t border-white/5 pt-12 pb-12 text-center text-slate-500 text-xs"
+    >
+      <p>© 2026 ModernHub Inc. All rights reserved.</p>
+      <p class="mt-2">
+        Crafted with ❤️ by <b class="text-cyan-400">Vansh Kashyap</b>
+      </p>
     </footer>
 
     <script>
-     
-      
-        
+      // Mock Data Definition Setup
+      const categoryProducts = {
+        grocery: [
+          {
+            name: "Organic Strawberries",
+            price: "$4.99",
+            rating: 5,
+            desc: "Fresh, juicy farm-picked organic strawberries.",
+            img: "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&w=600&q=80",
+          },
+        ],
+        mobile: [
+          {
+            name: "Quantum Pro 5G",
+            price: "$999.00",
+            rating: 5,
+            desc: "Revolutionary processing and display arrays.",
+            img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80",
+          },
+        ],
+        appliances: [
+          {
+            name: "Smart Air Fryer",
+            price: "$129.00",
+            rating: 4,
+            desc: "WiFi-connected multi-mode kitchen cooker.",
+            img: "https://images.unsplash.com/photo-1621972750749-0fbb1abb7736?auto=format&fit=crop&w=600&q=80",
+          },
+        ],
+      };
 
-   
+      const dropdowns = [
+        { button: "grocery", menu: "grocery-dd" },
+        { button: "mobile", menu: "mobile-dd" },
+        { button: "appliances", menu: "appliances-dd" },
+        { button: "vehicle", menu: "vehicle-dd" },
+        { button: "travel", menu: "travel-dd" },
+        { button: "fashion", menu: "fashion-dd" },
+        { button: "user-btn", menu: "user-menu" },
+      ];
 
-      // Reusable Smooth Scroll
-      function smoothScrollTo(element, offset = 80) {
-        if (!element) return;
-        const bodyRect = document.body.getBoundingClientRect().top;
-        const elementRect = element.getBoundingClientRect().top;
-        const elementPosition = elementRect - bodyRect;
-        const offsetPosition = elementPosition - offset;
-
-
-          const isHidden = dropdown.classList.contains("hidden");
-          closeAllDropdowns();
-
-          if (isHidden) {
-            dropdown.classList.remove("hidden");
-            setTimeout(() => {
-              dropdown.classList.remove("opacity-0", "scale-95", "pointer-events-none");
-            }, 10);
-            btn.classList.add("bg-gray-700");
-            btn.setAttribute("aria-expanded", "true");
+      function closeAllDropdowns() {
+        dropdowns.forEach(({ menu, button }) => {
+          const dropdown = document.getElementById(menu);
+          const btn = document.getElementById(button);
+          if (dropdown) {
+            dropdown.classList.add(
+              "hidden",
+              "invisible",
+              "opacity-0",
+              "scale-95",
+              "pointer-events-none",
+            );
           }
+          if (btn) btn.classList.remove("bg-white/5", "text-white");
         });
       }
-    });
 
-    // Dynamic Outside Click Listener for ALL active dropdowns
-    document.addEventListener("click", function (e) {
-      const dropdownIds = dropdowns.map(d => `#${d.menu}`).join(", ");
-      const buttonIds = dropdowns.map(d => `#${d.button}`).join(", ");
+      dropdowns.forEach(({ button, menu }) => {
+        const btn = document.getElementById(button);
+        const dropdown = document.getElementById(menu);
 
-      const clickedInsideDropdown = e.target.closest(dropdownIds);
-      const clickedButton = e.target.closest(buttonIds);
+        if (btn && dropdown) {
+          btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const isHidden = dropdown.classList.contains("hidden");
+            closeAllDropdowns();
 
-      if (!clickedInsideDropdown && !clickedButton) {
-        closeAllDropdowns();
-      }
-    });
-
-    // Interactive Log-out / Log-in State Manager
-    const signOutBtn = document.getElementById("sign-out-btn");
-    const loginBtn = document.getElementById("inline-login-btn");
-    const profileWrapper = document.getElementById("profile-wrapper");
-    const notificationBtn = document.getElementById("notification-btn");
-    const welcomeText = document.getElementById("welcome-text");
-
-    if (signOutBtn) {
-      signOutBtn.addEventListener("click", function(e) {
-        e.preventDefault();
-        closeAllDropdowns();
-        
-        // Toggle Nav elements to Logged Out State
-        profileWrapper.classList.add("hidden");
-        notificationBtn.classList.add("hidden");
-        loginBtn.classList.remove("hidden");
-        
-        if (welcomeText) {
-          welcomeText.innerHTML = `
-            <span class="text-red-400 block mb-2 font-bold text-3xl">Logged Out Successfully!</span>
-            <span class="text-base text-gray-400">The application is no longer locked into a single user. You can log back in efficiently using the button in the top right.</span>
-          `;
+            if (isHidden) {
+              dropdown.classList.remove(
+                "hidden",
+                "invisible",
+                "opacity-0",
+                "scale-95",
+                "pointer-events-none",
+              );
+              btn.classList.add("bg-white/5", "text-white");
+            }
+          });
         }
       });
-    }
 
-    if (loginBtn) {
-      loginBtn.addEventListener("click", function(e) {
-        e.preventDefault();
-        
-        // Toggle Nav elements to Logged In State
-        profileWrapper.classList.remove("hidden");
-        notificationBtn.classList.remove("hidden");
-        loginBtn.classList.add("hidden");
-        
-        if (welcomeText) {
-          welcomeText.innerHTML = `
-            <span class="text-cyan-400 block mb-2 font-bold text-3xl">Logged In Successfully!</span>
-            <span class="text-base text-gray-400">Dropdown Menus Available Under Grocery, Mobile, Appliances, Vehicle, Travel, Fashion & Profile Tabs</span>
-          `;
+      document.addEventListener("click", () => closeAllDropdowns());
+
+      // Mobile Menu Actions
+      const mobileBtn = document.getElementById("mobile-menu-toggle");
+      const mobileMenu = document.getElementById("mobile-menu-content");
+
+      if (mobileBtn && mobileMenu) {
+        mobileBtn.addEventListener("click", () => {
+          mobileMenu.classList.toggle("hidden");
+        });
+      }
+
+      // Mobile Dropdown Expand/Collapse Logic
+      const mobileSubmenus = [
+        { btn: "mobile-grocery-btn", dd: "mobile-grocery-dd" },
+        { btn: "mobile-mobile-btn", dd: "mobile-mobile-dd" },
+        { btn: "mobile-appliances-btn", dd: "mobile-appliances-dd" },
+      ];
+
+      mobileSubmenus.forEach(({ btn, dd }) => {
+        const targetBtn = document.getElementById(btn);
+        const targetMenu = document.getElementById(dd);
+        if (targetBtn && targetMenu) {
+          targetBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            targetMenu.classList.toggle("hidden");
+          });
         }
       });
-    }
 
-    // Mobile Menu Toggles
-    document.getElementById("mobile-menu").addEventListener("click", function (e) {
-      e.stopPropagation();
-      document.getElementById("mobile-menu-dd").classList.toggle("hidden");
-    });
-
-    const mobileButtons = [
-      { btn: "mobile-grocery-btn", dd: "mobile-grocery-dd" },
-      { btn: "mobile-mobile-btn", dd: "mobile-mobile-dd" },
-      { btn: "mobile-appliances-btn", dd: "mobile-appliances-dd" },
-      { btn: "mobile-vehicle-btn", dd: "mobile-vehicle-dd" },
-      { btn: "mobile-travel-btn", dd: "mobile-travel-dd" },
-      { btn: "mobile-fashion-btn", dd: "mobile-fashion-dd" }
-    ];
-
-    mobileButtons.forEach(({ btn, dd }) => {
-      const targetBtn = document.getElementById(btn);
-      if (targetBtn) {
-        targetBtn.addEventListener("click", function (e) {
-          e.stopPropagation();
-          document.getElementById(dd).classList.toggle("hidden");
-        });
-      }
-    });
-  </script>
-</body>
-</html>
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-      }
-
-      // Add to Cart Micro-interaction Handler
-      function handleAddToCart(btn) {
-        const originalText = btn.innerHTML;
-        btn.disabled = true;
-        btn.classList.remove('bg-brand-500', 'hover:bg-brand-400', 'bg-cyan-600', 'hover:bg-cyan-700', 'bg-pink-600', 'hover:bg-pink-700', 'bg-orange-500', 'hover:bg-orange-600');
-        btn.classList.add('bg-emerald-600', 'text-white');
-        btn.innerHTML = `
-          <svg class="h-4 w-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
-          </svg>
-          Added!
-        `;
-        
-        setTimeout(() => {
-          btn.innerHTML = originalText;
-          btn.disabled = false;
-          btn.classList.remove('bg-emerald-600');
-          // Re-add original theme class
-          if (btn.closest('#travel')) {
-            btn.classList.add('bg-cyan-600', 'hover:bg-cyan-700');
-          } else if (btn.closest('#fashion')) {
-            btn.classList.add('bg-pink-600', 'hover:bg-pink-700');
-          } else if (btn.closest('#appliances')) {
-            btn.classList.add('bg-orange-500', 'hover:bg-orange-600');
-          } else {
-            btn.classList.add('bg-brand-500', 'hover:bg-brand-400');
-          }
-        }, 1200);
-      }
-
-      // Render Dynamic Product Cards
+      // Product Card Injection Engine
       function renderProducts(categoryId, parentId) {
         const grid = document.getElementById(`${parentId}-product-grid`);
         if (!grid) return;
 
-        const products = categoryProducts[categoryId] || categoryProducts[parentId];
+        const products =
+          categoryProducts[categoryId] || categoryProducts[parentId];
         if (!products) return;
 
-        // Apply transition fade-out state
-        grid.style.opacity = '0';
-        grid.style.transform = 'translateY(10px)';
-
-        setTimeout(() => {
-          grid.innerHTML = '';
-          
-          products.forEach((p, index) => {
-            let btnClass = 'bg-brand-500 hover:bg-brand-400';
-            let tagClass = 'text-brand-400';
-            let actionText = 'Add to Cart';
-
-            if (parentId === 'travel') {
-              btnClass = 'bg-cyan-600 hover:bg-cyan-700 shadow-cyan-600/20';
-              tagClass = 'text-cyan-400';
-              actionText = 'Book Trip';
-            } else if (parentId === 'fashion') {
-              btnClass = 'bg-pink-600 hover:bg-pink-700 shadow-pink-600/20';
-              tagClass = 'text-pink-400';
-            } else if (parentId === 'appliances') {
-              btnClass = 'bg-orange-500 hover:bg-orange-600 shadow-orange-500/20';
-              tagClass = 'text-orange-400';
-            }
-
-            const fullStars = Math.floor(p.rating);
-            let starsHTML = '';
-            for (let i = 0; i < 5; i++) {
-              starsHTML += `
-                <svg class="h-4 w-4 ${i < fullStars ? 'text-yellow-500 fill-current' : 'text-slate-600'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-                </svg>
-              `;
-            }
-
-            const card = document.createElement('div');
-            card.className = 'group relative flex flex-col rounded-3xl bg-white/5 border border-white/10 hover:border-white/20 transition-all duration-300 overflow-hidden glass hover:-translate-y-2 shadow-2xl animate-in fade-in slide-in-from-bottom-4';
-            card.style.animationDelay = `${index * 50}ms`;
-            card.innerHTML = `
-              <div class="aspect-[4/3] w-full overflow-hidden relative bg-slate-900/50">
-                <img src="${p.img}" alt="${p.name}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110">
-                <div class="absolute top-4 right-4 rounded-full bg-white/10 backdrop-blur-md px-3 py-1 text-[10px] font-bold text-white shadow-lg border border-white/10 uppercase tracking-widest">${categoryId.replace('-', ' ')}</div>
-              </div>
-              <div class="p-6 flex flex-col flex-1">
-                <div class="flex items-center justify-between mb-2">
-                  <span class="text-xs font-bold uppercase tracking-widest ${tagClass}">${parentId}</span>
-                  <div class="flex items-center gap-0.5">${starsHTML}</div>
-                </div>
-                <h3 class="text-lg font-bold text-white mb-2 group-hover:text-brand-400 transition-colors line-clamp-2">${p.name}</h3>
-                <p class="text-slate-400 text-xs mb-6 flex-1 line-clamp-2">${p.desc}</p>
-                <div class="flex items-center justify-between pt-4 border-t border-white/5 mt-auto">
-                  <span class="text-xl font-black text-white">${p.price}</span>
-                  <button class="rounded-xl px-5 py-2.5 text-xs font-bold text-white transition-all duration-300 ${btnClass} flex items-center gap-2 cursor-pointer add-to-cart-btn">
-                    ${actionText}
-                  </button>
-                </div>
-              </div>
-            `;
-            
-            const cartBtn = card.querySelector('.add-to-cart-btn');
-            cartBtn.addEventListener('click', (e) => {
-              e.stopPropagation();
-              handleAddToCart(cartBtn);
-            });
-
-            grid.appendChild(card);
-          });
-
-          grid.style.transition = 'opacity 400ms ease, transform 400ms ease';
-          grid.style.opacity = '1';
-          grid.style.transform = 'translateY(0)';
-        }, 150);
-      }
-
-      // Sync active states on Navbar, Subcategory Cards, and Pill Tabs
-      function syncState(categoryId, parentId) {
-        const tabPills = document.querySelectorAll(`section#${parentId} .tab-pill`);
-        tabPills.forEach(tab => {
-          if (tab.getAttribute('data-category') === categoryId) {
-            tab.classList.add('active', 'bg-white/10', 'text-white');
-            tab.classList.remove('text-slate-300');
-          } else {
-            tab.classList.remove('active', 'bg-white/10', 'text-white');
-            tab.classList.add('text-slate-300');
-          }
-        });
-
-        const subCards = document.querySelectorAll(`section#${parentId} .subcategory-card`);
-        subCards.forEach(card => {
-          let activeBorder = 'border-brand-500/50';
-          if (parentId === 'grocery') activeBorder = 'border-emerald-500/50';
-          else if (parentId === 'travel') activeBorder = 'border-cyan-500/50';
-          else if (parentId === 'fashion') activeBorder = 'border-pink-500/50';
-          else if (parentId === 'appliances') activeBorder = 'border-orange-500/50';
-
-          if (card.getAttribute('data-category') === categoryId) {
-            card.classList.add(activeBorder);
-            card.classList.remove('border-white/5');
-            card.querySelector('.sub-title').classList.add('text-brand-400');
-          } else {
-            card.classList.remove(activeBorder);
-            card.classList.add('border-white/5');
-            card.querySelector('.sub-title').classList.remove('text-brand-400');
-          }
-        });
-
-        const headerTitle = document.querySelector(`section#${parentId} .section-display-title`);
-        if (headerTitle) {
-          
-          const categoryLabelMap = {
-            'grocery': 'Grocery Products',
-            'grocery-daily-eggs': 'Grocery & Dairy & Eggs',
-            'grocery-beverages': 'Grocery & Beverages',
-            'mobile': 'Technology Devices',
-            'mobile-accessories': 'Technology & Accessories',
-            'mobile-tablets': 'Technology & Tablets',
-            'appliances': 'Smart Appliances',
-            'appliances-kitchen': 'Appliances & Kitchen Tech',
-            'appliances-home': 'Appliances & Home Comfort',
-            'travel': 'Curated Getaways',
-            'travel-beach': 'Travel & Beach Escapes',
-            'travel-mountain': 'Travel & Mountain Retreats',
-            'vehicle': 'Eco Mobility',
-            'vehicle-ev': 'Vehicle & Luxury EVs',
-            'vehicle-scooter': 'Vehicle & Urban Scooters',
-            'vehicle-bike': 'Vehicle & Smart Bikes',
-            'fashion': 'Fashion Trends',
-            'fashion-men': 'Fashion & Men\'s Apparel',
-            'fashion-women': 'Fashion & Women\'s Apparel',
-            'fashion-kids': 'Fashion & Kids\' Wear'
-          };
-          
-          const label = categoryLabelMap[categoryId] || 
-                       categoryLabelMap[parentId] || 
-                       categoryId.replace('-', ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') + ' Catalog';
-          
-          headerTitle.textContent = label;
-        }
-
-        document.querySelectorAll('a[href^="#"]').forEach(link => {
-          const href = link.getAttribute('href');
-          if (href === `#${categoryId}` || href === `#${parentId}`) {
-            link.classList.add('text-brand-400', 'font-semibold');
-          } else {
-            link.classList.remove('text-brand-400', 'font-semibold');
-          }
+        grid.innerHTML = "";
+        products.forEach((p) => {
+          const card = document.createElement("div");
+          card.className =
+            "group relative flex flex-col rounded-3xl bg-white/5 border border-white/10 p-6 glass animate-in";
+          card.innerHTML = `
+            <div class="aspect-[4/3] w-full overflow-hidden relative rounded-2xl bg-slate-900/50 mb-4">
+              <img src="${p.img}" alt="${p.name}" class="h-full w-full object-cover">
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">${p.name}</h3>
+            <p class="text-slate-400 text-xs mb-4 flex-1">${p.desc}</p>
+            <div class="flex items-center justify-between pt-4 border-t border-white/5">
+              <span class="text-xl font-black text-white">${p.price}</span>
+              <button class="rounded-xl px-5 py-2.5 text-xs font-bold text-white bg-brand-500 hover:bg-brand-400 transition-all">Add to Cart</button>
+            </div>
+          `;
+          grid.appendChild(card);
         });
       }
 
-      
-      const navbar = document.getElementById('navbar');
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 20) {
-          navbar.classList.add('py-0');
-          navbar.classList.add('bg-slate-950/90');
-        } else {
-          navbar.classList.remove('py-0');
-          navbar.classList.remove('bg-slate-950/90');
-        }
-      });
-
-      
-      const mobileBtn = document.getElementById('mobile-menu-toggle');
-      const mobileMenu = document.getElementById('mobile-menu-content');
-      const menuIcon = document.getElementById('menu-icon');
-
-      mobileBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-        if (mobileMenu.classList.contains('hidden')) {
-           menuIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />';
-        } else {
-           menuIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />';
-        }
-      });
-
-     
-      const sections = document.querySelectorAll('section');
-      const navLinks = document.querySelectorAll('.nav-link');
-
-      window.addEventListener('scroll', () => {
-        let current = '';
-        sections.forEach(section => {
-          const sectionTop = section.offsetTop;
-          const sectionHeight = section.clientHeight;
-          if (window.pageYOffset >= sectionTop - 150) {
-            current = section.getAttribute('id');
-          }
-        });
-
-        navLinks.forEach(link => {
-          link.classList.remove('nav-link-active');
-          if (link.getAttribute('href').includes(current)) {
-            link.classList.add('nav-link-active');
-          }
-        });
-      });
-
-      // Close mobile menu on link click
-      const mobileLinks = mobileMenu.querySelectorAll('a');
-      mobileLinks.forEach(link => {
-        link.addEventListener('click', () => {
-          mobileMenu.classList.add('hidden');
-          menuIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />';
-        });
-      });
-
-      // Initialize click listeners across UI elements
-      document.addEventListener('DOMContentLoaded', () => {
-        // Initial Products Rendering
-        renderProducts('grocery', 'grocery');
-        renderProducts('mobile', 'mobile');
-        renderProducts('appliances', 'appliances');
-        renderProducts('travel', 'travel');
-        renderProducts('vehicle', 'vehicle');
-        renderProducts('fashion', 'fashion');
-
-        // Bind Subcategory Card click listeners
-        document.querySelectorAll('.subcategory-card').forEach(card => {
-          card.addEventListener('click', () => {
-            const categoryId = card.getAttribute('data-category');
-            const parentId = card.getAttribute('data-parent');
-            renderProducts(categoryId, parentId);
-            syncState(categoryId, parentId);
-            
-            // Scroll dynamically to the product grid below
-            const gridContainer = document.getElementById(`${parentId}-product-grid`);
-            smoothScrollTo(gridContainer, 150);
-          });
-        });
-
-        // Bind Pill Tab click listeners
-        document.querySelectorAll('.tab-pill').forEach(pill => {
-          pill.addEventListener('click', () => {
-            const categoryId = pill.getAttribute('data-category');
-            const parentId = pill.getAttribute('data-parent');
-            renderProducts(categoryId, parentId);
-            syncState(categoryId, parentId);
-          });
-        });
-
-        // Bind Category Reset button click listeners
-        document.querySelectorAll('.category-reset').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const parentId = btn.getAttribute('data-category');
-            renderProducts(parentId, parentId);
-            syncState(parentId, parentId);
-            
-            const gridContainer = document.getElementById(`${parentId}-product-grid`);
-            smoothScrollTo(gridContainer, 150);
-          });
-        });
-
-        // Bind Anchor/Navbar clicks to trigger dynamic changes alongside scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-          anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            
-            // Extract categories
-            let categoryId = targetId.substring(1);
-            let parentId = categoryId;
-
-            // Resolve parent section logic
-            if (categoryId.startsWith('grocery-')) {
-              parentId = 'grocery';
-            } else if (categoryId.startsWith('mobile-')) {
-              parentId = 'mobile';
-            } else if (categoryId.startsWith('appliances-')) {
-              parentId = 'appliances';
-            } else if (categoryId.startsWith('travel-')) {
-              parentId = 'travel';
-            } else if (categoryId.startsWith('vehicle-')) {
-              parentId = 'vehicle';
-            } else if (categoryId.startsWith('fashion-')) {
-              parentId = 'fashion';
-            }
-
-            // Sync rendering and layout active selectors
-            if (categoryProducts[categoryId]) {
-              renderProducts(categoryId, parentId);
-              syncState(categoryId, parentId);
-            } else if (categoryProducts[parentId]) {
-              renderProducts(parentId, parentId);
-              syncState(parentId, parentId);
-            }
-
-            // Scroll smoothly to target element
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-              smoothScrollTo(targetElement, 100);
-            } else {
-              // Fallback to section parent if subcategory element doesn't exist directly
-              const parentSection = document.getElementById(parentId);
-              smoothScrollTo(parentSection, 100);
-            }
-          });
-        });
+      document.addEventListener("DOMContentLoaded", () => {
+        ["grocery", "mobile", "appliances"].forEach((id) =>
+          renderProducts(id, id),
+        );
       });
     </script>
   </body>
 </html>
-
