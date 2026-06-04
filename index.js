@@ -715,18 +715,35 @@ function renderGrid() {
   // Apply sorting
   if (sortOption === "az") {
     filtered.sort((a, b) => a[1].localeCompare(b[1]));
+  } else if (sortOption === "za") {
+    filtered.sort((a, b) => b[1].localeCompare(a[1]));
   } else if (sortOption === "latest") {
     filtered.sort((a, b) => {
       const dayA = parseInt(a[0].replace("Day ", ""));
       const dayB = parseInt(b[0].replace("Day ", ""));
       return dayB - dayA;
     });
-  } else if (sortOption === "difficulty") {
+  } else if (sortOption === "oldest") {
+    filtered.sort((a, b) => {
+      const dayA = parseInt(a[0].replace("Day ", ""));
+      const dayB = parseInt(b[0].replace("Day ", ""));
+      return dayA - dayB;
+    });
+  } else if (sortOption === "difficulty-asc") {
     const difficultyOrder = { beginner: 1, intermediate: 2, advanced: 3 };
     filtered.sort((a, b) => {
       const diffA = a[4] ? difficultyOrder[a[4].toLowerCase()] || 0 : 0;
       const diffB = b[4] ? difficultyOrder[b[4].toLowerCase()] || 0 : 0;
-      return diffA - diffB;
+      if (diffA !== diffB) return diffA - diffB;
+      return parseInt(a[0].replace("Day ", "")) - parseInt(b[0].replace("Day ", ""));
+    });
+  } else if (sortOption === "difficulty-desc") {
+    const difficultyOrder = { beginner: 1, intermediate: 2, advanced: 3 };
+    filtered.sort((a, b) => {
+      const diffA = a[4] ? difficultyOrder[a[4].toLowerCase()] || 0 : 0;
+      const diffB = b[4] ? difficultyOrder[b[4].toLowerCase()] || 0 : 0;
+      if (diffA !== diffB) return diffB - diffA;
+      return parseInt(a[0].replace("Day ", "")) - parseInt(b[0].replace("Day ", ""));
     });
   }
 
