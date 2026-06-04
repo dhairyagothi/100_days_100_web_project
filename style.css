@@ -285,9 +285,11 @@ body
   z-index: 1;
 }
 
+#navbar-container,
+#navbar-container > header,
 body > header {
   position: relative;
-  z-index: 10;
+  z-index: 999999;
 }
 
 .cursor-ring {
