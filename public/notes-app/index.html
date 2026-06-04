@@ -94,6 +94,7 @@
     </main>
   </div>
 
+  <!-- Note Editor Modal -->
   <div class="modal-overlay" id="modalOverlay" hidden>
     <section class="note-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <form id="noteForm">
@@ -128,6 +129,14 @@
               <option value="violet">Violet</option>
               <option value="amber">Amber</option>
               <option value="rose">Rose</option>
+              <option value="blue">Blue</option>
+              <option value="green">Green</option>
+              <option value="purple">Purple</option>
+              <option value="orange">Orange</option>
+              <option value="pink">Pink</option>
+              <option value="yellow">Yellow</option>
+              <option value="indigo">Indigo</option>
+              <option value="red">Red</option>
             </select>
           </div>
         </div>
@@ -141,6 +150,16 @@
             <input id="archivedInput" type="checkbox">
             Archive note
           </label>
+          <label>
+            <input id="lockedInput" type="checkbox">
+            Lock with password
+          </label>
+        </div>
+
+        <!-- Password field shown only when lock is checked -->
+        <div id="passwordField" class="password-field" hidden>
+          <label for="passwordInput">Set Password</label>
+          <input id="passwordInput" type="password" placeholder="Enter a password for this note" maxlength="50">
         </div>
 
         <div class="modal-actions">
@@ -151,10 +170,25 @@
     </section>
   </div>
 
+  <!-- Password Unlock Modal -->
+  <div class="modal-overlay" id="unlockOverlay" hidden>
+    <section class="note-modal unlock-modal" role="dialog" aria-modal="true" aria-labelledby="unlockTitle">
+      <div class="unlock-body">
+        <div class="lock-icon-big">🔒</div>
+        <h2 id="unlockTitle">Note is Locked</h2>
+        <p>Enter password to view this note.</p>
+        <input id="unlockInput" type="password" placeholder="Enter password" maxlength="50">
+        <div class="unlock-actions">
+          <button class="secondary-action" id="cancelUnlock" type="button">Cancel</button>
+          <button class="primary-action" id="confirmUnlock" type="button">Unlock</button>
+        </div>
+        <p class="unlock-error" id="unlockError"></p>
+      </div>
+    </section>
+  </div>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <div class="toast" id="toast">✔ Note added successfully!</div>
   <script src="script.js"></script>
 </body>
-
 </html>

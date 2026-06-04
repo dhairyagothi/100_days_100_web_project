@@ -1,0 +1,233 @@
+:root {
+  --bg-deep: #080c14;
+  --bg-surface: #101624;
+  --bg-card: #192239;
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --accent-glow: #38bdf8;
+  --accent-hover: #0284c7;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 620px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 1.25rem;
+  padding: 2.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.app-header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(to right, #38bdf8, #818cf8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.app-header p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+  line-height: 1.4;
+}
+
+/* Search Console Control Field */
+.search-box-panel {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.search-box-panel input {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.5rem;
+  padding: 0.8rem 1rem;
+  color: var(--text-primary);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.search-box-panel input:focus {
+  border-color: var(--accent-glow);
+}
+
+.search-box-panel button {
+  background-color: var(--accent-glow);
+  color: #080c14;
+  border: none;
+  padding: 0.8rem 1.75rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.search-box-panel button:hover {
+  background-color: var(--accent-hover);
+  color: white;
+}
+
+/* Results Structure Area */
+.results-layout {
+  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.word-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 1.25rem;
+}
+
+.word-heading h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.word-heading span {
+  display: block;
+  color: var(--accent-glow);
+  font-size: 1rem;
+  font-family: monospace;
+  margin-top: 0.2rem;
+}
+
+.audio-trigger-btn {
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.audio-trigger-btn:hover {
+  background: var(--accent-glow);
+  transform: scale(1.05);
+}
+
+.speaker-icon {
+  width: 24px;
+  height: 24px;
+  fill: var(--accent-glow);
+  transition: fill 0.2s ease;
+}
+
+.audio-trigger-btn:hover .speaker-icon {
+  fill: #080c14;
+}
+
+/* Definition Output Cards */
+.lexical-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  position: relative;
+}
+
+.part-of-speech-tag {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.25rem 0.6rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.meaning-group h3,
+.example-group h3 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.meaning-group {
+  margin-bottom: 1.5rem;
+}
+
+.meaning-group p {
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.italic-context {
+  font-style: italic;
+  color: #cbd5e1;
+  border-left: 3px solid var(--accent-glow);
+  padding-left: 0.75rem;
+  line-height: 1.4;
+}
+
+/* State Modifiers Utilities */
+.status-message {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  padding: 1rem 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

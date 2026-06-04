@@ -26,7 +26,13 @@ const CoinContextProvider = (props) => {
       options
     )
       .then((response) => response.json())
-      .then((response) => setAllCoins(response))
+      .then((response) => {
+        if (Array.isArray(response)) {
+          setAllCoins(response);
+        } else {
+          console.error("CoinGecko API error:", response);
+        }
+      })
       .catch((err) => console.error(err));
   };
 

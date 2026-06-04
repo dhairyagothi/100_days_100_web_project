@@ -1,6 +1,12 @@
 const STORAGE_KEY = "responsive-notes-app:v2";
 const THEME_KEY = "responsive-notes-app:theme";
 
+const VALID_COLORS = [
+  "teal", "violet", "amber", "rose",
+  "blue", "green", "purple", "orange",
+  "pink", "yellow", "indigo", "red"
+];
+
 const defaultNotes = [
   {
     id: crypto.randomUUID(),
@@ -11,6 +17,8 @@ const defaultNotes = [
     favorite: true,
     archived: false,
     trashed: false,
+    locked: false,
+    password: "",
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
@@ -22,6 +30,7 @@ const state = {
   tag: "all",
   query: "",
   editingId: null,
+  unlockingId: null,
 };
 
 const elements = {
@@ -45,6 +54,9 @@ const elements = {
   colorInput: document.getElementById("colorInput"),
   favoriteInput: document.getElementById("favoriteInput"),
   archivedInput: document.getElementById("archivedInput"),
+  lockedInput: document.getElementById("lockedInput"),
+  passwordField: document.getElementById("passwordField"),
+  passwordInput: document.getElementById("passwordInput"),
   resetForm: document.getElementById("resetForm"),
   exportBtn: document.getElementById("exportBtn"),
   importInput: document.getElementById("importInput"),
@@ -56,7 +68,20 @@ const elements = {
   statTotal: document.getElementById("statTotal"),
   statFavorites: document.getElementById("statFavorites"),
   statEdited: document.getElementById("statEdited"),
+  unlockOverlay: document.getElementById("unlockOverlay"),
+  unlockInput: document.getElementById("unlockInput"),
+  confirmUnlock: document.getElementById("confirmUnlock"),
+  cancelUnlock: document.getElementById("cancelUnlock"),
+  unlockError: document.getElementById("unlockError"),
 };
+
+// Show/hide password field based on lock checkbox
+elements.lockedInput.addEventListener("change", () => {
+  elements.passwordField.hidden = !elements.lockedInput.checked;
+  if (!elements.lockedInput.checked) {
+    elements.passwordInput.value = "";
+  }
+});
 
 function loadNotes() {
   try {
@@ -67,27 +92,37 @@ function loadNotes() {
   } catch (error) {
     console.warn("Unable to load notes", error);
   }
-
   return defaultNotes;
 }
 
 function normalizeNote(note) {
   return {
     id: note.id || crypto.randomUUID(),
-    title: String(note.title || "Untitled note"),
-    content: String(note.content || ""),
-    tag: String(note.tag || "Personal"),
-    color: ["teal", "violet", "amber", "rose"].includes(note.color) ? note.color : "teal",
+    title: escapeHtml(String(note.title || "Untitled note")),
+    content: escapeHtml(String(note.content || "")),
+    tag: escapeHtml(String(note.tag || "Personal")),
+    color: VALID_COLORS.includes(note.color) ? note.color : "teal",
     favorite: Boolean(note.favorite),
     archived: Boolean(note.archived),
     trashed: Boolean(note.trashed || note.trash),
+    locked: Boolean(note.locked),
+    password: escapeHtml(String(note.password || "")),
     createdAt: note.createdAt || new Date().toISOString(),
     updatedAt: note.updatedAt || note.createdAt || new Date().toISOString(),
   };
 }
 
 function saveNotes() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state.notes));
+  const compactedNotes = state.notes.map(note => {
+    const compacted = { ...note };
+    if (!compacted.password) delete compacted.password;
+    if (compacted.locked === false) delete compacted.locked;
+    if (compacted.favorite === false) delete compacted.favorite;
+    if (compacted.archived === false) delete compacted.archived;
+    if (compacted.trashed === false) delete compacted.trashed;
+    return compacted;
+  });
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(compactedNotes));
 }
 
 function formatDate(value, options = { month: "short", day: "numeric" }) {
@@ -182,6 +217,23 @@ function renderNotes() {
 }
 
 function createNoteCard(note) {
+  const isLocked = note.locked && note.password;
+
+  const lockedContent = `
+    <div class="locked-overlay">
+      <div class="locked-message">
+        <span class="lock-icon-big">🔒</span>
+        <p>This note is password protected.</p>
+        <button class="primary-action unlock-btn" type="button" data-action="unlock" data-id="${note.id}">Unlock</button>
+      </div>
+    </div>
+  `;
+
+  const noteContent = `
+    <h3>${escapeHtml(note.title)}</h3>
+    <p>${escapeHtml(note.content)}</p>
+  `;
+
   const actionButtons = note.trashed
     ? `
       <button class="card-button" type="button" data-action="restore" data-id="${note.id}">Restore</button>
@@ -195,13 +247,15 @@ function createNoteCard(note) {
     `;
 
   return `
-    <article class="note-card" data-color="${escapeAttribute(note.color)}">
+    <article class="note-card ${isLocked ? "is-locked" : ""}" data-color="${escapeAttribute(note.color)}">
+      ${isLocked ? '<span class="lock-badge" aria-label="Locked note">🔒</span>' : ""}
       <div class="card-meta">
         <span>${escapeHtml(formatDate(note.updatedAt))}</span>
         <span>${note.archived ? "Archived" : "Active"}</span>
       </div>
-      <h3>${escapeHtml(note.title)}</h3>
-      <p>${escapeHtml(note.content)}</p>
+      <div class="card-body">
+        ${isLocked ? lockedContent : noteContent}
+      </div>
       <footer>
         <span class="badge">${escapeHtml(note.tag)}</span>
         <div class="card-actions">${actionButtons}</div>
@@ -219,6 +273,9 @@ function openEditor(note = null) {
   elements.colorInput.value = note?.color || "teal";
   elements.favoriteInput.checked = Boolean(note?.favorite);
   elements.archivedInput.checked = Boolean(note?.archived);
+  elements.lockedInput.checked = Boolean(note?.locked);
+  elements.passwordInput.value = note?.password || "";
+  elements.passwordField.hidden = !note?.locked;
   elements.modalOverlay.hidden = false;
   elements.titleInput.focus();
 }
@@ -226,6 +283,7 @@ function openEditor(note = null) {
 function closeEditor() {
   elements.modalOverlay.hidden = true;
   elements.noteForm.reset();
+  elements.passwordField.hidden = true;
   state.editingId = null;
 }
 
@@ -234,12 +292,22 @@ function resetEditor() {
     openEditor(state.notes.find((note) => note.id === state.editingId));
   } else {
     elements.noteForm.reset();
+    elements.passwordField.hidden = true;
     elements.titleInput.focus();
   }
 }
 
 function handleSubmit(event) {
   event.preventDefault();
+
+  const isLocked = elements.lockedInput.checked;
+  const password = elements.passwordInput.value.trim();
+
+  if (isLocked && !password) {
+    showToast("Please set a password for the locked note.");
+    return;
+  }
+
   const formNote = {
     title: elements.titleInput.value.trim(),
     content: elements.contentInput.value.trim(),
@@ -247,6 +315,8 @@ function handleSubmit(event) {
     color: elements.colorInput.value,
     favorite: elements.favoriteInput.checked,
     archived: elements.archivedInput.checked,
+    locked: isLocked,
+    password: isLocked ? password : "",
   };
 
   if (!formNote.title || !formNote.content) {
@@ -286,6 +356,35 @@ function updateNote(id, updater, message) {
   showToast(message);
 }
 
+function openUnlockModal(id) {
+  state.unlockingId = id;
+  elements.unlockInput.value = "";
+  elements.unlockError.textContent = "";
+  elements.unlockOverlay.hidden = false;
+  elements.unlockInput.focus();
+}
+
+function closeUnlockModal() {
+  elements.unlockOverlay.hidden = true;
+  elements.unlockInput.value = "";
+  elements.unlockError.textContent = "";
+  state.unlockingId = null;
+}
+
+function handleUnlock() {
+  const note = state.notes.find((n) => n.id === state.unlockingId);
+  if (!note) return;
+
+  if (elements.unlockInput.value === note.password) {
+    closeUnlockModal();
+    openEditor(note);
+  } else {
+    elements.unlockError.textContent = "Incorrect password. Please try again.";
+    elements.unlockInput.value = "";
+    elements.unlockInput.focus();
+  }
+}
+
 function handleCardAction(event) {
   const button = event.target.closest("[data-action]");
   if (!button) return;
@@ -294,7 +393,18 @@ function handleCardAction(event) {
   const note = state.notes.find((item) => item.id === id);
   if (!note) return;
 
-  if (action === "edit") openEditor(note);
+  if (action === "unlock") {
+    openUnlockModal(id);
+    return;
+  }
+  if (action === "edit") {
+    if (note.locked && note.password) {
+      openUnlockModal(id);
+    } else {
+      openEditor(note);
+    }
+    return;
+  }
   if (action === "favorite") updateNote(id, (item) => ({ ...item, favorite: !item.favorite }), "Favorite updated.");
   if (action === "archive") updateNote(id, (item) => ({ ...item, archived: !item.archived }), "Archive updated.");
   if (action === "trash") updateNote(id, (item) => ({ ...item, trashed: true }), "Moved to trash.");
@@ -368,6 +478,7 @@ function escapeAttribute(value) {
   return escapeHtml(value).replace(/`/g, "&#096;");
 }
 
+// Event Listeners
 document.querySelectorAll(".nav-item").forEach((button) => {
   button.addEventListener("click", () => {
     state.filter = button.dataset.filter;
@@ -400,6 +511,16 @@ elements.modalOverlay.addEventListener("click", (event) => {
   if (event.target === elements.modalOverlay) closeEditor();
 });
 
+// Unlock modal events
+elements.confirmUnlock.addEventListener("click", handleUnlock);
+elements.cancelUnlock.addEventListener("click", closeUnlockModal);
+elements.unlockOverlay.addEventListener("click", (event) => {
+  if (event.target === elements.unlockOverlay) closeUnlockModal();
+});
+elements.unlockInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") handleUnlock();
+});
+
 elements.themeToggle.addEventListener("click", () => {
   setTheme(elements.body.classList.contains("light") ? "dark" : "light");
 });
@@ -414,8 +535,9 @@ document.addEventListener("keydown", (event) => {
     event.preventDefault();
     elements.searchInput.focus();
   }
-  if (event.key === "Escape" && !elements.modalOverlay.hidden) {
-    closeEditor();
+  if (event.key === "Escape") {
+    if (!elements.modalOverlay.hidden) closeEditor();
+    if (!elements.unlockOverlay.hidden) closeUnlockModal();
   }
 });
 
