@@ -1,4 +1,4 @@
-﻿const themeToggle = document.getElementById('theme-toggle');
+const themeToggle = document.getElementById('theme-toggle');
 const menuToggle = document.getElementById('menu-toggle');
 const mobileMenu = document.getElementById('mobile-menu');
 
@@ -263,7 +263,13 @@ function initDifference() {
     document.getElementById('diff-total-seconds').textContent = totalSeconds.toLocaleString();
     document.getElementById('timeline-person1-date').textContent = dob1.value;
     document.getElementById('timeline-person2-date').textContent = dob2.value;
-    document.getElementById('relationship-message').textContent = date1 < date2 ? 'Person 1 is older than Person 2.' : 'Person 2 is older than Person 1.';
+    let relationMsg = "";
+    if (date1.getTime() === date2.getTime()) {
+      relationMsg = "Both persons are of the exact same age.";
+    } else {
+      relationMsg = date1 < date2 ? 'Person 1 is older than Person 2.' : 'Person 2 is older than Person 1.';
+    }
+    document.getElementById('relationship-message').textContent = relationMsg;
     document.getElementById('timeline-diff-text').textContent = `${diff.years} Years, ${diff.months} Months, ${diff.days} Days`;
     document.getElementById('difference-result').classList.add('active');
     window.scrollTo({ top: document.getElementById('difference-result').offsetTop - 20, behavior: 'smooth' });

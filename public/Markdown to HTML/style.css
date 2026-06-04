@@ -1,0 +1,290 @@
+:root {
+    --bg-primary: #0f172a;
+    --bg-surface: rgba(30, 41, 59, 0.7);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent: #38bdf8;
+    --accent-hover: #0ea5e9;
+    --border: rgba(255, 255, 255, 0.1);
+    --glass: blur(12px);
+    --danger: #ef4444;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --pane-bg: #1e293b;
+}
+
+[data-theme="light"] {
+    --bg-primary: #f1f5f9;
+    --bg-surface: rgba(255, 255, 255, 0.8);
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --accent: #0284c7;
+    --border: rgba(0, 0, 0, 0.1);
+    --pane-bg: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    height: 100vh;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* --- Header Styling --- */
+.glass-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background: var(--bg-surface);
+    backdrop-filter: var(--glass);
+    -webkit-backdrop-filter: var(--glass);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.logo i {
+    font-size: 1.75rem;
+    color: var(--accent);
+}
+
+.logo h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.logo h1 span {
+    color: var(--accent);
+}
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-icon {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 0.6rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--accent);
+}
+
+.btn-icon.danger:hover {
+    color: var(--danger);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.divider {
+    width: 1px;
+    height: 20px;
+    background: var(--border);
+    margin: 0 0.5rem;
+}
+
+/* --- Main Content Split --- */
+.split-screen {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.editor-pane, .preview-pane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--pane-bg);
+    overflow: hidden;
+}
+
+.pane-header {
+    padding: 0.5rem 1.5rem;
+    background: rgba(0, 0, 0, 0.05);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    letter-spacing: 0.1em;
+    border-bottom: 1px solid var(--border);
+}
+
+#markdownEditor {
+    flex: 1;
+    width: 100%;
+    padding: 1.5rem;
+    background: transparent;
+    border: none;
+    resize: none;
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    outline: none;
+}
+
+#htmlPreview {
+    flex: 1;
+    padding: 1.5rem;
+    overflow-y: auto;
+    line-height: 1.6;
+}
+
+.resizer {
+    width: 1px;
+    background: var(--border);
+    cursor: col-resize;
+    transition: background 0.2s;
+}
+
+.resizer:hover {
+    background: var(--accent);
+    width: 2px;
+}
+
+/* --- Footer --- */
+.glass-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 1.5rem;
+    background: var(--bg-surface);
+    backdrop-filter: var(--glass);
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.stats {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.dot {
+    width: 4px;
+    height: 4px;
+    background: var(--text-secondary);
+    border-radius: 50%;
+    opacity: 0.5;
+}
+
+/* --- Markdown Body Styling --- */
+.markdown-body h1, .markdown-body h2, .markdown-body h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+.markdown-body p { margin-bottom: 1rem; }
+.markdown-body ul, .markdown-body ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+.markdown-body blockquote {
+    border-left: 4px solid var(--accent);
+    padding-left: 1rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    margin-bottom: 1rem;
+}
+.markdown-body code {
+    background: rgba(0, 0, 0, 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85em;
+}
+.markdown-body pre {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+}
+.markdown-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+.markdown-body th, .markdown-body td {
+    border: 1px solid var(--border);
+    padding: 0.5rem;
+}
+.markdown-body img {
+    max-width: 100%;
+    border-radius: 8px;
+}
+
+/* --- Toast Notification --- */
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--accent);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: translateY(150%);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 1000;
+    font-weight: 500;
+}
+
+.toast.show {
+    transform: translateY(0);
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .split-screen {
+        flex-direction: column;
+    }
+    .resizer {
+        height: 1px;
+        width: 100%;
+        cursor: row-resize;
+    }
+    .editor-pane {
+        height: 50%;
+    }
+    .logo h1 { display: none; }
+    .toolbar { gap: 0.25rem; }
+    .btn-icon { padding: 0.5rem; }
+}
+
+/* Transitions */
+.app-container * {
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+#htmlPreview * {
+    transition: none; /* Prevent lag during re-render */
+}

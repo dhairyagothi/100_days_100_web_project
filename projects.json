@@ -370,7 +370,7 @@
   },
   {
     "projectNo": 42,
-    "projectName": "Amazon App",
+    "projectName": "Amazon Clone",
     "projectType": "Clone",
     "projectDesc": "Frontend clone inspired by Amazon layouts and shopping interfaces.",
     "techStack": ["clone", "javascript"],
@@ -1485,12 +1485,12 @@
   },
   {
     "projectNo": 165,
-    "projectName": "Amazon Clone",
+    "projectName": "Amazon App",
     "projectType": "Clone",
     "projectDesc": "Frontend clone inspired by Amazon with shopping UI and responsive layouts.",
     "techStack": ["tool", "Amazon", "Clone", "HTML", "CSS", "JavaScript"],
     "difficulty": "beginner",
-    "projectPath": "./public/New-AmazonClone/index.html"
+    "projectPath": "./public/Amazon-App/index.html"
   },
   {
     "projectNo": 166,
@@ -1793,7 +1793,7 @@
     "projectDesc": "A responsive Flipkart-inspired e-commerce website featuring a modern navbar, product categories, hero carousel, brand spotlight section, promotional banners, home decor showcase, and a fully designed footer.",
     "techStack": ["html", "css", "javascript"],
     "difficulty": "intermediate",
-    "projectPath": "./public/Flipkart-Clone/index.html"
+    "projectPath": "./public/Flipkart-clone/index.html"
   },
   {
     "projectNo": 198,
@@ -1802,7 +1802,7 @@
     "projectDesc": "A responsive theme toggler that switches between light and dark modes and saves the user's preference using localStorage.",
     "techStack": ["react", "tailwindcss", "javascript"],
     "difficulty": "advanced",
-    "projectPath": "./public/Theme-toggler/src/App.jsx"
+    "projectPath": "./public/Theme-Toggler/src/App.jsx"
   },
   {
     "projectNo": 199,
@@ -1856,15 +1856,51 @@
     "projectDesc": "A responsive movie search application powered by the OMDb API that allows users to search movies and view detailed information including posters, ratings, genres, cast, runtime, and plot.",
     "techStack": ["html", "css", "javascript", "api"],
     "difficulty": "intermediate",
-    "projectPath": "./public/movie-search-app/index.html"
+    "projectPath": "./public/Movie-Search-App/index.html"
+},
+  {
+  "projectNo": 205,
+  "projectName": "Escape the Matrix Game",
+  "projectType": "Web Application",
+  "projectDesc": "An immersive, interactive web-based survival and puzzle game challenging players to hack their way out of a simulated reality.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript"
+  ],
+  "difficulty": "advanced",
+  "projectPath": "./public/Escape The Matrix/index.html"
+},
+{
+    "projectNo": 206,
+    "projectName": "Gravity Well",
+    "projectType": "Animation",
+    "projectDesc": "Interactive physics-based gravity simulation allowing users to create gravitational wells.",
+    "techStack": [
+      "HTML",
+      "canvas",
+      "javascript",
+      "css"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/gravity-well/index.html"
   },
   {
-    "projectNo": 205,
-    "projectName": "Escape the Matrix Game",
+    "projectNo": 207,
+    "projectName": "AI Semiconductor Circuit Builder",
     "projectType": "Web Application",
     "projectDesc": "An immersive, interactive web-based survival and puzzle game challenging players to hack their way out of a simulated reality.",
     "techStack": ["html", "css", "javascript"],
-    "difficulty": "advanced",
-    "projectPath": "./public/Escape The Matrix/index.html"
+    "difficulty": "intermediate",
+    "projectPath": "./public/AI-Semiconductor-Circuit-Builder/index.html"
+  },
+  {
+    "projectNo": 208,
+    "projectName": "Rock_Paper_Scissors",
+    "projectType": "Game",
+    "projectDesc": "A classic Rock Paper Scissors game built with HTML, CSS, and JavaScript.",
+    "techStack": ["ui","game","html","css","js"],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Rock_Paper_Scissors/index.html"
   }
 ]
