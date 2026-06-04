@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="transition-all duration-300">
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
 <!-- ---navbar-- -->
 <!-- Navbar -->
@@ -22,16 +23,16 @@
  <!-- Navigation Links -->
     <ul class="nav-links">
    <li>
-            <a href="#">Home</a>
+            <a href="#home">Home</a>
         </li>
         <li>
-            <a href="#categories">Categories</a>
+            <a href="#">Categories</a>
         </li>
         <li>
-            <a href="#blogs">Blogs</a>
+            <a href="#">Blogs</a>
         </li>
         <li>
-            <a href="#about">About</a>
+            <a href="#">About</a>
         </li>
     </ul>
     <!-- Right Side -->
@@ -48,8 +49,21 @@
 </button>
     </div>
 </nav>
+<!-- Home -->
 
+<section class="relative min-h-[98vh] flex items-center justify-center bg-gradient-to-br from-green-50 to-green-100" id="home">
 
+  <!-- Glow Blobs -->
+  <div class="absolute w-[300px] h-[300px] bg-green-500/40 blur-[120px] rounded-full top-10 left-10 float"></div>
+  <div class="absolute w-[300px] h-[300px] bg-green-500/40 blur-[120px] rounded-full bottom-10 right-10 float"></div>
+
+  <!-- Content -->
+  <div class="text-center max-w-3xl z-10 animate-[fadeUp_1s_ease-out]">
+
+    <!-- Badge -->
+    <div class="inline-block mb-5 px-4 py-2 rounded-full text-sm border border-green-400/30 bg-green-400/10 text-green-600">
+      ✨ New ideas everyday
+    </div>
 
     <div class="flex flex-col md:flex-row justify-center gap-6 md:gap-10 p-3 md:p-6 bg-gray-50 min-h-screen overflow-x-hidden" style="max-width:100%;box-sizing:border-box;">
       
@@ -363,9 +377,9 @@
             </div>
         </div>
     </div>
-
+    </div>
     <script src="script.js"></script>
-
+</section>
 <!--About Section -->
 <section id="about" class="about-section">
     <h2>About GreenBlog</h2>
