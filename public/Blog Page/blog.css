@@ -60,6 +60,17 @@ body {
 }
 
 /* =========================
+   BLOG READING TIME
+========================= */
+
+.blog-reading-time {
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 16px;
+}
+
+/* =========================
    AUTHOR + DATE
 ========================= */
 

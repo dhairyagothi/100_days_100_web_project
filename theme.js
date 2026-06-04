@@ -24,20 +24,19 @@
 
   const normalizeTheme = (theme) => (THEMES.has(theme) ? theme : "dark");
 
-  const getStoredTheme = () => normalizeTheme(safeStorage.get());
+ const getSystemTheme = () =>
+  window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 
+const getStoredTheme = () => {
+  const saved = safeStorage.get();
+  return saved ? normalizeTheme(saved) : getSystemTheme();
+};
   const syncBodyClass = (theme) => {
     if (!document.body) return;
     document.body.classList.toggle("light-mode", theme === "light");
   };
 
   const syncToggleIcons = (theme) => {
-    // Update simple toggle buttons (if any remain)
-    const fallbackIconClass = theme === "light" ? "fas fa-sun" : "fas fa-moon";
-    document.querySelectorAll("#themeToggle i").forEach((icon) => {
-      icon.className = fallbackIconClass;
-    });
-
     // Update active state in dropdown menus
     document.querySelectorAll(".theme-dropdown-container .dropdown-item").forEach(item => {
       if (item.dataset.themeValue === theme) {
@@ -47,17 +46,16 @@
       }
     });
 
-    // Update the main dropdown toggle icon
-    const themeIcons = {
-      light: "fa-sun",
-      dark: "fa-moon",
-      sepia: "fa-coffee",
-      cyberpunk: "fa-bolt",
-      nord: "fa-snowflake"
+    const themeSymbols = {
+      light: "☀",
+      dark: "☾",
+      sepia: "☕",
+      cyberpunk: "⚡",
+      nord: "❄"
     };
-    const currentIcon = themeIcons[theme] || "fa-palette";
-    document.querySelectorAll("#themeToggleNav i").forEach((icon) => {
-      icon.className = `fas ${currentIcon}`;
+    const currentSymbol = themeSymbols[theme] || "◌";
+    document.querySelectorAll("#themeToggleNav span[aria-hidden='true']").forEach((icon) => {
+      icon.textContent = currentSymbol;
     });
   };
 
@@ -107,7 +105,19 @@
 
     if (initialized) return;
     initialized = true;
+// Cross-tab theme sync
+window.addEventListener('storage', (e) => {
+  if (e.key === 'theme' && e.newValue) {
+    applyTheme(e.newValue, { persist: false });
+  }
+});
 
+// Respect system theme changes (only if user hasn't manually set a theme)
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+  if (!safeStorage.get()) {
+    applyTheme(e.matches ? 'dark' : 'light', { persist: false });
+  }
+});
     document.addEventListener("click", (event) => {
       const toggle = event.target.closest("#themeToggle");
       if (toggle) {

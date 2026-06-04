@@ -21,6 +21,7 @@
     "mongoose": "^8.6.3",
     "nodemon": "^3.1.7",
     "passport": "^0.7.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "express-rate-limit": "^7.4.0"
   }
 }

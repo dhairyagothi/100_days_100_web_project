@@ -1,46 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('jobFilterForm');
-    
-    // Add event listeners to form elements
-    form.title.addEventListener('input', filterJobs);
-    form.location.addEventListener('input', filterJobs);
-    form.datePosted.addEventListener('change', filterJobs);
-    form.salary.addEventListener('change', filterJobs);
-    form.jobType.addEventListener('change', filterJobs);
-    form.education.addEventListener('change', filterJobs);
-    form.shift.addEventListener('change', filterJobs);
-    form.sortBy.addEventListener('change', filterJobs);
 
-    // Add event listener to reset button
-    document.getElementById('resetButton').addEventListener('click', () => {
-        form.reset();
-        filterJobs(); // Reapply filter with default values
-    });
-
-    // Add event listeners to View details buttons
-    document.querySelectorAll('.btn').forEach(button => {
-        button.addEventListener('click', (event) => {
-            document.querySelectorAll('.save-btn').forEach(button => {
-    button.addEventListener('click', () => {
-        button.classList.toggle('far');
-        button.classList.toggle('fas');
-
-        if (button.classList.contains('fas')) {
-            alert('Job saved successfully!');
-        } else {
-            alert('Job removed from saved!');
-        }
-    });
-});
-            // Perform any custom action here if needed
-            // For example, you can check if the URL is valid before navigating
-            const href = button.getAttribute('href');
-            if (href && href !== '#') {
-                window.location.href = href;
-            } else {
-                alert('Invalid URL!');
     if (form) {
-        // Add event listeners to form elements
         form.title.addEventListener('input', filterJobs);
         form.location.addEventListener('input', filterJobs);
         form.datePosted.addEventListener('change', filterJobs);
@@ -48,24 +9,24 @@ document.addEventListener('DOMContentLoaded', () => {
         form.jobType.addEventListener('change', filterJobs);
         form.education.addEventListener('change', filterJobs);
         form.shift.addEventListener('change', filterJobs);
+        form.sortBy.addEventListener('change', filterJobs);
 
-        // Add event listener to reset button
         const resetButton = document.getElementById('resetButton');
         if (resetButton) {
             resetButton.addEventListener('click', () => {
                 form.reset();
-                filterJobs(); // Reapply filter with default values
+                filterJobs();
             });
         }
     }
 
-    // Event delegation for Dashboard Job Container (handles view details links and heart icons)
+    // Event delegation for job container (handles view details + heart icons)
     const jobContainer = document.querySelector('.job-container');
     if (jobContainer) {
         jobContainer.addEventListener('click', (event) => {
             const target = event.target;
 
-            // Handle Save Job (Heart Button) on Dashboard
+            // Handle Save Job (Heart Button)
             const heartButton = target.closest('.fa-heart');
             if (heartButton) {
                 event.preventDefault();
@@ -82,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Handle View Details button click validation
+            // Handle View Details button
             const viewDetailsBtn = target.closest('a.btn');
             if (viewDetailsBtn) {
                 const href = viewDetailsBtn.getAttribute('href');
@@ -94,10 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Handle button actions (Apply Now, Save Job) on Details Pages
+    // Handle Apply Now / Save Job on detail pages
     const detailsSection = document.querySelector('.job-details');
     if (detailsSection) {
-        // Prevent form submission reloads
         const detailsForm = detailsSection.querySelector('form');
         if (detailsForm) {
             detailsForm.addEventListener('submit', (event) => {
@@ -105,7 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Handle Apply Now button click
         const applyBtn = detailsSection.querySelector('input[name="apply"]');
         if (applyBtn) {
             applyBtn.addEventListener('click', (event) => {
@@ -114,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Handle Save Job button click
         const saveBtn = detailsSection.querySelector('.save');
         if (saveBtn) {
             saveBtn.addEventListener('click', (event) => {
@@ -143,11 +101,13 @@ document.addEventListener('DOMContentLoaded', () => {
 function selectDropdown(element) {
     let input = element.parentElement.previousElementSibling;
     input.value = element.innerText;
-    filterJobs(); // Call filterJobs whenever a dropdown is selected
+    filterJobs();
 }
 
 function filterJobs() {
     const form = document.getElementById('jobFilterForm');
+    if (!form) return;
+
     const title = form.title.value.trim().toLowerCase();
     const location = form.location.value.trim().toLowerCase();
     const datePosted = form.datePosted.value.toLowerCase();
@@ -158,31 +118,33 @@ function filterJobs() {
     const sortBy = form.sortBy.value.toLowerCase();
 
     const jobs = [
-        {company: 'IT Infosy co.', title: 'Senior Web Developer', location: 'mumbai, india', datePosted: '2 days ago', salary: '10k - 20k', jobType: 'part-time', education: 'bachelor\'s degree', shift: 'day shift', image: './image/html.webp', link: 'ITinfosy.html'},
-        {company: 'All Media Ltd.', title: 'Qualified Developer', location: 'mumbai, india', datePosted: '2 days ago', salary: '9000', jobType: 'full-time', education: 'master\'s degree', shift: 'flexible shift', image: './image/css3-logo-png-transparent.png', link: 'AllmediaLts.html'},
-        {company: 'Software Solution', title: 'Javascript Developer', location: 'mumbai, india', datePosted: 'posted today', salary: '10k - 20k', jobType: 'internship', education: 'bachelor\'s degree', shift: 'night shift', image: './image/java.jpg', link: 'softwareSolution.html'},
-        {company: 'IT World', title: 'Junior Front-End', location: 'mumbai, india', datePosted: '19 days ago', salary: '40k - 50k', jobType: 'contract', education: 'diploma', shift: 'fixed shift', image: 'https://static.vecteezy.com/system/resources/previews/001/198/090/non_2x/world-png.png', link: 'ITWorlds.html'},
-        {company: 'Info Statics', title: 'Junior Assistant', location: 'mumbai, india', datePosted: '2 days ago', salary: '5000', jobType: 'temporary', education: '10th pass', shift: 'flexible shift', image: 'https://th.bing.com/th/id/OIP.iJbuiX_YdBeTqI7wYawlwwHaHa?rs=1&pid=ImgDetMain', link: 'InfoStatics.html'},
-        {company: 'Mass Idea', title: 'PHP Developer', location: 'mumbai, india', datePosted: '2 days ago', salary: '50k - 1 lakh', jobType: 'fresher', education: 'bachelor\'s degree', shift: 'day shift', image: './image/php.jpg', link: 'massIdea.html'}
+        { company: 'IT Infosy co.', title: 'Senior Web Developer', location: 'mumbai, india', datePosted: '2 days ago', salary: '10k - 20k', jobType: 'part-time', education: "bachelor's degree", shift: 'day shift', image: './image/html.webp', link: 'ITinfosy.html' },
+        { company: 'All Media Ltd.', title: 'Qualified Developer', location: 'mumbai, india', datePosted: '2 days ago', salary: '9000', jobType: 'full-time', education: "master's degree", shift: 'flexible shift', image: './image/css3-logo-png-transparent.png', link: 'AllmediaLts.html' },
+        { company: 'Software Solution', title: 'Javascript Developer', location: 'mumbai, india', datePosted: 'posted today', salary: '10k - 20k', jobType: 'internship', education: "bachelor's degree", shift: 'night shift', image: './image/java.jpg', link: 'softwareSolution.html' },
+        { company: 'IT World', title: 'Junior Front-End', location: 'mumbai, india', datePosted: '19 days ago', salary: '40k - 50k', jobType: 'contract', education: 'diploma', shift: 'fixed shift', image: 'https://static.vecteezy.com/system/resources/previews/001/198/090/non_2x/world-png.png', link: 'ITWorlds.html' },
+        { company: 'Info Statics', title: 'Junior Assistant', location: 'mumbai, india', datePosted: '2 days ago', salary: '5000', jobType: 'temporary', education: '10th pass', shift: 'flexible shift', image: 'https://th.bing.com/th/id/OIP.iJbuiX_YdBeTqI7wYawlwwHaHa?rs=1&pid=ImgDetMain', link: 'InfoStatics.html' },
+        { company: 'Mass Idea', title: 'PHP Developer', location: 'mumbai, india', datePosted: '2 days ago', salary: '50k - 1 lakh', jobType: 'fresher', education: "bachelor's degree", shift: 'day shift', image: './image/php.jpg', link: 'massIdea.html' }
     ];
 
-    const filteredJobs = jobs.filter(job => 
+    const filteredJobs = jobs.filter(job =>
         job.title.toLowerCase().includes(title) &&
         (location === '' || job.location.toLowerCase().includes(location)) &&
         filterByDatePosted(job.datePosted, datePosted) &&
         filterBySalary(job.salary, salary) &&
-        job.jobType.toLowerCase().includes(jobType) &&
+        (jobType === '' || job.jobType.toLowerCase().includes(jobType)) &&
         (education === '' || job.education.toLowerCase().includes(education)) &&
-        job.shift.toLowerCase().includes(shift)
+        (shift === '' || job.shift.toLowerCase().includes(shift))
     );
 
     sortJobs(filteredJobs, sortBy);
-displayFilteredJobs(filteredJobs);
+    displayFilteredJobs(filteredJobs);
 
-    return false; 
+    return false;
 }
 
 function filterByDatePosted(jobDate, filterDate) {
+    if (!filterDate) return true;
+
     const dateMapping = {
         'today': 0,
         '3 days ago': 3,
@@ -191,12 +153,14 @@ function filterByDatePosted(jobDate, filterDate) {
         '30 days ago': 30
     };
 
-    if (!filterDate) return true;
-
     const daysAgo = dateMapping[filterDate];
     if (daysAgo === undefined) return true;
 
-    const jobDaysAgo = parseInt(jobDate.match(/\d+/));
+    if (jobDate === 'posted today') return daysAgo >= 0;
+
+    const match = jobDate.match(/\d+/);
+    if (!match) return true;
+    const jobDaysAgo = parseInt(match[0]);
     return jobDaysAgo <= daysAgo;
 }
 
@@ -219,26 +183,30 @@ function filterBySalary(jobSalary, filterSalary) {
         '50 lakh - 1 crore': [5000000, 10000000]
     };
 
-    const [minSalary, maxSalary] = salaryMapping[filterSalary] || [0, Infinity];
+    const range = salaryMapping[filterSalary];
+    const [minSalary, maxSalary] = range || [0, Infinity];
 
     const parseSalary = (salary) => {
-        const [min, max] = salary.split(' - ').map(s => parseInt(s.replace(/[^\d]/g, '')));
-        return { min: min || 0, max: max || min || 0 };
+        const parts = salary.split(' - ').map(s => parseInt(s.replace(/[^\d]/g, '')));
+        const min = parts[0] || 0;
+        const max = parts[1] || min;
+        return { min, max };
     };
 
     const { min: jobMinSalary, max: jobMaxSalary } = parseSalary(jobSalary);
-
-    if (filterSalary.includes('-')) {
-        const [filterMin, filterMax] = filterSalary.split('-').map(s => parseInt(s.trim().replace(/[^\d]/g, '')));
-        return jobMaxSalary >= filterMin && jobMinSalary <= filterMax;
-    } else {
-        return jobMaxSalary >= minSalary && jobMinSalary <= maxSalary;
-    }
+    return jobMaxSalary >= minSalary && jobMinSalary <= maxSalary;
 }
 
 function displayFilteredJobs(jobs) {
     const jobContainer = document.querySelector('.job-container .box-container');
+    if (!jobContainer) return;
+
     jobContainer.innerHTML = '';
+
+    if (jobs.length === 0) {
+        jobContainer.innerHTML = '<p class="no-jobs">No jobs found matching your criteria.</p>';
+        return;
+    }
 
     jobs.forEach(job => {
         const jobBox = document.createElement('div');
@@ -266,119 +234,61 @@ function displayFilteredJobs(jobs) {
         `;
         jobContainer.appendChild(jobBox);
     });
-    
-  // Add event listeners to the new View details buttons after they are created
-document.querySelectorAll('.btn').forEach(button => {
-    button.addEventListener('click', (event) => {
-        handleButtonClick(event, button);
-    });
-});
+}
 
-function handleButtonClick(event, button) {
-    const href = button.getAttribute('href');
-    if (href && href !== '#') {
-        window.location.href = href;
-    } else {
-        alert('Invalid URL!');
-    }
-}
-}
 function getSalaryValue(salary) {
-
     const numbers = salary.match(/\d+/g);
-
     if (!numbers) return 0;
-
     return parseInt(numbers[0]) * 1000;
 }
 
 function sortJobs(jobs, sortBy) {
-
     if (sortBy === 'salary low to high') {
-
-        jobs.sort((a, b) =>
-            getSalaryValue(a.salary) - getSalaryValue(b.salary)
-        );
-    }
-
-    else if (sortBy === 'salary high to low') {
-
-        jobs.sort((a, b) =>
-            getSalaryValue(b.salary) - getSalaryValue(a.salary)
-        );
-    }
-
-    else if (sortBy === 'title a-z') {
-
-        jobs.sort((a, b) =>
-            a.title.localeCompare(b.title)
-        );
-    }
-
-    else if (sortBy === 'newest first') {
-
+        jobs.sort((a, b) => getSalaryValue(a.salary) - getSalaryValue(b.salary));
+    } else if (sortBy === 'salary high to low') {
+        jobs.sort((a, b) => getSalaryValue(b.salary) - getSalaryValue(a.salary));
+    } else if (sortBy === 'title a-z') {
+        jobs.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (sortBy === 'newest first') {
         jobs.sort((a, b) => {
-
-            const aDays = parseInt(a.datePosted.match(/\d+/)) || 0;
-            const bDays = parseInt(b.datePosted.match(/\d+/)) || 0;
-
+            const aDays = a.datePosted === 'posted today' ? 0 : (parseInt(a.datePosted.match(/\d+/)) || 0);
+            const bDays = b.datePosted === 'posted today' ? 0 : (parseInt(b.datePosted.match(/\d+/)) || 0);
             return aDays - bDays;
         });
     }
 }
 
 function loadSavedJobs() {
-
-    const savedContainer =
-        document.getElementById('savedJobsContainer');
-
+    const savedContainer = document.getElementById('savedJobsContainer');
     if (!savedContainer) return;
 
-    const savedJobs =
-        JSON.parse(localStorage.getItem('savedJobs')) || [];
-
-    const allJobs =
-        document.querySelectorAll('.job-container .box');
+    const savedJobs = JSON.parse(localStorage.getItem('savedJobs')) || [];
+    const allJobs = document.querySelectorAll('.job-container .box');
 
     savedContainer.innerHTML = '';
-
     let found = false;
 
     allJobs.forEach(job => {
-
         const jobId = job.dataset.id;
-
         if (savedJobs.includes(jobId)) {
-
             const clone = job.cloneNode(true);
-
             savedContainer.appendChild(clone);
-
             found = true;
         }
     });
 
     if (!found) {
-
-        savedContainer.innerHTML =
-        '<p class="no-saved">No saved jobs yet.</p>';
+        savedContainer.innerHTML = '<p class="no-saved">No saved jobs yet.</p>';
     }
 }
 
 window.addEventListener('load', () => {
+    const savedJobs = JSON.parse(localStorage.getItem('savedJobs')) || [];
 
-    const savedJobs =
-        JSON.parse(localStorage.getItem('savedJobs')) || [];
-
-    document.querySelectorAll('.job-container .box')
-    .forEach(job => {
-
+    document.querySelectorAll('.job-container .box').forEach(job => {
         const jobId = job.dataset.id;
-
         const heart = job.querySelector('.fa-heart');
-
-        if (savedJobs.includes(jobId)) {
-
+        if (heart && savedJobs.includes(jobId)) {
             heart.classList.remove('far');
             heart.classList.add('fas');
         }
@@ -386,4 +296,3 @@ window.addEventListener('load', () => {
 
     loadSavedJobs();
 });
-}
