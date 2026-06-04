@@ -38,9 +38,9 @@
         <!-- STATUS -->
         <div class="status-row">
 
-            <div class="status" id="statusText">
-                X's Turn
-            </div>
+           <div class="status" id="statusText" aria-live="polite" aria-atomic="true">
+    X's Turn
+</div>
 
             <div class="turn-chip" id="turnChip">
                 Turn: X
@@ -183,6 +183,9 @@
 <div
     class="winner-modal"
     id="winnerModal"
+    role="dialog"
+    aria-labelledby="winnerTitle"
+    aria-describedby="winnerSubtitle"
     aria-hidden="true">
 
     <div class="winner-card">

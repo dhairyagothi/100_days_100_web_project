@@ -69,19 +69,26 @@ body[data-theme="dark"] .btn-outline:hover:not(:disabled) {
     background: #450a0a;
 }
 
-.theme-btn{
-    position:absolute;
-    right:20px;
-    top:20px;
-    border:none;
-    padding:10px 14px;
-    border-radius:10px;
-    cursor:pointer;
-    background: rgba(255,255,255,0.15);
+.theme-btn {
+    /* REMOVE: position: absolute; */
+    /* REMOVE: right: 20px; */
+    /* REMOVE: top: 20px; */
+    
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.15);
     color: white;
     font-size: 1.1rem;
+    display: inline-flex; /* Ensures content centers nicely if needed */
+    align-items: center;
 }
+
 .theme-btn:hover {
     background: rgba(255,255,255,0.3);
 }
 
+.dark-mode .navbar {
+    background: #1e293b;
+}

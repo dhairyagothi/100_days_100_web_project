@@ -370,7 +370,7 @@
   },
   {
     "projectNo": 42,
-    "projectName": "Amazon App",
+    "projectName": "Amazon Clone",
     "projectType": "Clone",
     "projectDesc": "Frontend clone inspired by Amazon layouts and shopping interfaces.",
     "techStack": ["clone", "javascript"],
@@ -1485,12 +1485,12 @@
   },
   {
     "projectNo": 165,
-    "projectName": "Amazon Clone",
+    "projectName": "Amazon App",
     "projectType": "Clone",
     "projectDesc": "Frontend clone inspired by Amazon with shopping UI and responsive layouts.",
     "techStack": ["tool", "Amazon", "Clone", "HTML", "CSS", "JavaScript"],
     "difficulty": "beginner",
-    "projectPath": "./public/New-AmazonClone/index.html"
+    "projectPath": "./public/Amazon-App/index.html"
   },
   {
     "projectNo": 166,
@@ -1857,14 +1857,41 @@
     "techStack": ["html", "css", "javascript", "api"],
     "difficulty": "intermediate",
     "projectPath": "./public/movie-search-app/index.html"
+},
+  {
+  "projectNo": 205,
+  "projectName": "Escape the Matrix Game",
+  "projectType": "Web Application",
+  "projectDesc": "An immersive, interactive web-based survival and puzzle game challenging players to hack their way out of a simulated reality.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript"
+  ],
+  "difficulty": "advanced",
+  "projectPath": "./public/Escape The Matrix/index.html"
+},
+{
+    "projectNo": 206,
+    "projectName": "Gravity Well",
+    "projectType": "Animation",
+    "projectDesc": "Interactive physics-based gravity simulation allowing users to create gravitational wells.",
+    "techStack": [
+      "HTML",
+      "canvas",
+      "javascript",
+      "css"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/gravity-well/index.html"
   },
   {
-    "projectNo": 205,
-    "projectName": "Escape the Matrix Game",
+    "projectNo": 207,
+    "projectName": "AI Semiconductor Circuit Builder",
     "projectType": "Web Application",
     "projectDesc": "An immersive, interactive web-based survival and puzzle game challenging players to hack their way out of a simulated reality.",
     "techStack": ["html", "css", "javascript"],
-    "difficulty": "advanced",
-    "projectPath": "./public/Escape The Matrix/index.html"
+    "difficulty": "intermediate",
+    "projectPath": "./public/AI-Semiconductor-Circuit-Builder/index.html"
   }
 ]
