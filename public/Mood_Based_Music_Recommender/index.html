@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoodMusic - Your Spotify for Moods</title>
+    <!-- Google Fonts: Circular substitute (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/public/Mood_Based_Music_Recommender/style.css">
+</head>
+<body data-theme="default">
+
+    <!-- Floating Background Notes -->
+    <div class="floating-notes-container" id="floatingNotes"></div>
+    <div class="background-gradient"></div>
+
+    <!-- Main Application Wrapper -->
+    <div class="app-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-music"></i>
+                <span>MoodMusic</span>
+            </div>
+            
+            <nav class="nav-links">
+                <button class="nav-btn active" data-target="home">
+                    <i class="fa-solid fa-house"></i> Home
+                </button>
+                <button class="nav-btn" data-target="favorites">
+                    <i class="fa-solid fa-heart"></i> Favorites
+                </button>
+                <button class="nav-btn" data-target="history">
+                    <i class="fa-solid fa-clock-rotate-left"></i> History
+                </button>
+            </nav>
+
+            <div class="sidebar-extra">
+                <button class="btn btn-outline" id="randomMoodBtn">
+                    <i class="fa-solid fa-dice"></i> Random Mood
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            
+            <!-- Home Section -->
+            <section id="section-home" class="view-section active-section">
+                <!-- Hero Section -->
+                <header class="hero">
+                    <h1 class="hero-title">How are you feeling today?</h1>
+                    <p class="hero-subtitle">Select a mood and let us curate the perfect playlist for you.</p>
+                </header>
+
+                <!-- Mood Selection Grid -->
+                <div class="mood-grid" id="moodGrid">
+                    <!-- Cards will be dynamically generated here -->
+                </div>
+
+                <!-- Recommendation Engine Display (Initially Hidden) -->
+                <div class="recommendations-container hidden" id="recommendationsContainer">
+                    <div class="rec-header">
+                        <div>
+                            <h2 class="rec-title">Recommended for <span id="currentMoodDisplay" class="highlight-mood">Happy</span></h2>
+                            <p class="rec-subtitle">Curated tracks based on your vibe.</p>
+                        </div>
+                        <div class="rec-actions">
+                            <button class="btn btn-icon tooltip" id="refreshRecsBtn" data-tooltip="Refresh Mix">
+                                <i class="fa-solid fa-rotate-right"></i>
+                            </button>
+                            <button class="btn btn-icon tooltip" id="sharePlaylistBtn" data-tooltip="Copy Link">
+                                <i class="fa-solid fa-share-nodes"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="tracks-list" id="tracksList">
+                        <!-- Recommended tracks go here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Favorites Section -->
+            <section id="section-favorites" class="view-section hidden">
+                <header class="section-header">
+                    <h1 class="section-title">Your Favorites</h1>
+                    <p class="section-subtitle">Songs you loved.</p>
+                </header>
+                <div class="tracks-list" id="favoritesList">
+                    <!-- Favorite tracks go here -->
+                </div>
+            </section>
+
+            <!-- History Section -->
+            <section id="section-history" class="view-section hidden">
+                <header class="section-header">
+                    <h1 class="section-title">Mood History</h1>
+                    <p class="section-subtitle">Your recent emotional journeys.</p>
+                </header>
+                <div class="history-list" id="historyList">
+                    <!-- Mood history items go here -->
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast-notification" id="toast">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toastMsg">Link copied to clipboard!</span>
+    </div>
+
+    <script src="/public/Mood_Based_Music_Recommender/script.js"></script>
+</body>
+</html>
