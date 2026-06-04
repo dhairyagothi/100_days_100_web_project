@@ -1,4 +1,7 @@
-const NASA_API_KEY = ""; //add your api key. Get it from NASA APOD API(Its free!)
+const NASA_API_KEY =
+  window.NASA_API_KEY ||
+  (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_NASA_API_KEY) ||
+  'DEMO_KEY';
 const NASA_APOD_URL = `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}`;
 
 let currentApodDate = "";

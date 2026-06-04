@@ -1,4 +1,7 @@
-const API_KEY = "d1503a5";
+const API_KEY =
+  window.OMDB_API_KEY ||
+  (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_OMDB_API_KEY) ||
+  '';
 
 const movieInput = document.getElementById("movieInput");
 const searchBtn = document.getElementById("searchBtn");
