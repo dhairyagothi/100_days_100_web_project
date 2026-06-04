@@ -3265,3 +3265,231 @@ body.custom-cursor-active .cursor-ring {
 body.custom-cursor-active .cursor-ring.is-visible {
   opacity: 1;
 }
+
+/* ============================================================
+   PWA - INSTALL BUTTON & BANNER STYLES
+   ============================================================ */
+
+.btn-install {
+  background: linear-gradient(135deg, var(--accent), #8b5cf6);
+  color: #fff;
+  border-color: var(--accent);
+  display: none;
+  z-index: 1003;
+  margin-left: 0.5rem;
+  animation: slideInLeft 0.4s var(--ease);
+}
+
+.btn-install:hover {
+  background: linear-gradient(135deg, var(--accent-hover), #a78bfa);
+  border-color: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* PWA Install Banner */
+.install-banner {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, 
+    rgba(15, 23, 42, 0.95),
+    rgba(88, 28, 135, 0.15));
+  border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 9999;
+  padding: 0;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  animation: slideDown 0.3s var(--ease);
+  box-shadow: 0 10px 40px rgba(59, 130, 246, 0.15);
+}
+
+.install-banner-content {
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  gap: 2rem;
+}
+
+.install-banner-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.install-banner-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.install-banner-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.install-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  white-space: nowrap;
+}
+
+.btn-primary-small {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  padding: 0.55rem 1.2rem;
+  font-size: 0.85rem;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--t);
+  font-weight: 600;
+}
+
+.btn-primary-small:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
+}
+
+.btn-ghost-small {
+  background: transparent;
+  color: var(--text-secondary);
+  border-color: var(--border);
+  padding: 0.55rem 0.75rem;
+  font-size: 1.1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: var(--t);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  line-height: 1;
+}
+
+.btn-ghost-small:hover {
+  background: var(--bg-surface);
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile responsive install banner */
+@media (max-width: 768px) {
+  .install-banner-content {
+    padding: 0.85rem 1.25rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .install-banner-title {
+    font-size: 0.95rem;
+  }
+
+  .install-banner-desc {
+    font-size: 0.85rem;
+  }
+
+  .install-banner-actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .btn-primary-small,
+  .btn-ghost-small {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .btn-install {
+    display: none !important;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .install-banner {
+    top: auto;
+    bottom: auto;
+    position: fixed;
+  }
+
+  .install-banner-content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .install-banner-text {
+    gap: 0.15rem;
+  }
+
+  .install-banner-title {
+    font-size: 0.9rem;
+  }
+
+  .install-banner-desc {
+    font-size: 0.8rem;
+  }
+
+  .install-banner-actions {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .btn-primary-small,
+  .btn-ghost-small {
+    flex: 1;
+    width: 100%;
+  }
+}
+
+/* Ensure navbar adjusts for install banner on some devices */
+@media (max-width: 1024px) {
+  .navbar {
+    flex-wrap: nowrap;
+  }
+
+  .btn-install {
+    margin-left: 0.25rem;
+    padding: 0.45rem 0.9rem !important;
+    font-size: 0.75rem !important;
+  }
+}
