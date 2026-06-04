@@ -1904,15 +1904,12 @@
     "projectPath": "./public/Rock_Paper_Scissors/index.html"
   },
   {
-  "projectNo": 209,
-  "projectName": "Kanban Board",
-  "projectPath": "./public/Kanban_Board/index.html",
-  "techStack": [
-    "html",
-    "css",
-    "javascript"
-  ],
-  "difficulty": "intermediate",
-  "projectDesc": "A responsive Kanban Board application featuring drag-and-drop task management, task creation, editing, deletion, local storage persistence, and dark/light theme support."
-},
+    "projectNo": 209,
+    "projectName": "Reminder-App",
+    "projectType": "Tool",
+    "projectDesc": "A sleek neon-themed reminder app with priority labels, deadline alerts, browser notifications, and localStorage persistence. Built with vanilla HTML, CSS, and JavaScript — no dependencies required.",
+    "techStack": ["tool", "javascript", "html", "css"],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Reminder-App/index.html"
+  }
 ]
