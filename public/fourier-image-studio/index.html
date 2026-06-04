@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Fourier Image-Denoising Studio</title>
+    <style>
+        :root {
+            --bg-lab: #05070a;
+            --panel-dark: #0e121a;
+            --neon-cyan: #00ffcc;
+            --neon-blue: #0088ff;
+            --border-glow: #1a2332;
+            --text-light: #f0f4f8;
+            --text-gray: #627288;
+        }
+
+        body {
+            background-color: var(--bg-lab);
+            color: var(--text-light);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .studio-frame {
+            width: 100%;
+            max-width: 1300px;
+        }
+
+        header h2 {
+            margin: 0 0 20px 0;
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-blue));
+            -webkit-text-fill-color: transparent;
+        }
+
+        .workspace-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 950px) {
+            .workspace-grid {
+                grid-template-columns: 8fr 4fr;
+            }
+        }
+
+        .panel-card {
+            background: var(--panel-dark);
+            border: 1px solid var(--border-glow);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .panel-header::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--neon-cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--neon-cyan);
+        }
+
+        .canvas-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        @media (min-width: 600px) {
+            .canvas-row {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .canvas-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .canvas-wrapper span {
+            font-size: 0.8rem;
+            color: var(--text-gray);
+            margin-top: 6px;
+            text-transform: uppercase;
+        }
+
+        canvas {
+            background-color: #010204;
+            border: 1px solid var(--border-glow);
+            border-radius: 6px;
+            width: 100%;
+            max-width: 320px;
+            height: auto;
+            aspect-ratio: 1 / 1;
+        }
+
+        .btn-lab {
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+            border: none;
+            color: #000;
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            transition: box-shadow 0.2s, transform 0.1s;
+            margin-bottom: 12px;
+        }
+
+        .btn-lab:hover {
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .telemetry-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 9px 0;
+            border-bottom: 1px solid var(--border-glow);
+            font-size: 0.9rem;
+        }
+
+        .telemetry-row:last-child {
+            border-bottom: none;
+        }
+
+        .telemetry-val {
+            font-family: monospace;
+            font-weight: bold;
+            color: var(--neon-cyan);
+        }
+
+        #log-terminal {
+            background: #020305;
+            border: 1px solid var(--border-glow);
+            color: #8da1b9;
+            font-family: monospace;
+            font-size: 0.75rem;
+            padding: 12px;
+            border-radius: 6px;
+            height: 110px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="studio-frame">
+        <header>
+            <h2>Advanced Spatial Frequency Fourier Denoising Lab</h2>
+        </header>
+
+        <div class="workspace-grid">
+            <div class="panel-card">
+                <div class="panel-header">DSP Signal Visualizers</div>
+                <div class="canvas-row">
+                    <div class="canvas-wrapper">
+                        <canvas id="canvas-spatial" width="128" height="128"></canvas>
+                        <span>Spatial Pixel View (Input)</span>
+                    </div>
+                    <div class="canvas-wrapper">
+                        <canvas id="canvas-freq" width="128" height="128"></canvas>
+                        <span>2D Fourier Frequency Spectrum (Paint to Mask)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-card">
+                <div class="panel-header">Transformation Command Matrix</div>
+                
+                <button id="transform-btn" class="btn-lab">Forward Fourier Matrix Analysis</button>
+                <button id="inverse-btn" class="btn-lab" style="background: linear-gradient(135deg, #0088ff, #7f00ff); color: white;">Compute Inverse Reconstruction</button>
+
+                <div class="panel-header" style="margin-top: 15px; margin-bottom: 8px;">Matrix Metrics</div>
+                <div class="telemetry-row">
+                    <span>Signal Sample Array:</span>
+                    <span class="telemetry-val">128 x 128 Complex Nodes</span>
+                </div>
+                <div class="telemetry-row">
+                    <span>Forward Processing Latency:</span>
+                    <span id="tel-forward-time" class="telemetry-val">0.00 ms</span>
+                </div>
+                <div class="telemetry-row">
+                    <span>Inverse Synthesis Latency:</span>
+                    <span id="tel-inverse-time" class="telemetry-val" style="color: #0088ff;">0.00 ms</span>
+                </div>
+
+                <pre id="log-terminal">DSP Console Initialized. Synthesizing scanning target profiles...</pre>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
