@@ -8,6 +8,7 @@ let lives = 3;
 let strictMode = false;
 let flashSpeed = 600; // speed scales
 let clickable = true;
+let sequenceTimer = null; // tracks active playSequence interval
 
 const h2 = document.querySelector("h2");
 const highScoreText = document.getElementById("highscore");
@@ -44,6 +45,11 @@ function startGame() {
 }
 
 function levelUp() {
+  // Cancel any stale sequence interval from the previous turn
+  if (sequenceTimer !== null) {
+    clearInterval(sequenceTimer);
+    sequenceTimer = null;
+  }
   userSeq = [];
   level++;
   flashSpeed = Math.max(250, 600 - level * 30);
@@ -61,13 +67,14 @@ function levelUp() {
 
 function playSequence() {
   let i = 0;
-  const interval = setInterval(() => {
+  sequenceTimer = setInterval(() => {
     const color = gameSeq[i];
     const btn = document.getElementById(color);
     gameFlash(btn);
     i++;
     if (i >= gameSeq.length) {
-      clearInterval(interval);
+      clearInterval(sequenceTimer);
+      sequenceTimer = null;
       clickable = true;
     }
   }, flashSpeed);
@@ -127,6 +134,11 @@ function btnPress() {
 }
 
 function resetGame() {
+  // Cancel any running sequence interval so stale flashes stop immediately
+  if (sequenceTimer !== null) {
+    clearInterval(sequenceTimer);
+    sequenceTimer = null;
+  }
   started = false;
   gameSeq = [];
   userSeq = [];
