@@ -134,7 +134,7 @@ const UI = (() => {
     else if (typeof val === 'number')  { span.className = 'tree-number'; span.textContent = String(val); }
     else {
       span.className = 'tree-string';
-      span.textContent = `"${String(val).replace(/"/g, '\\"')}"`;
+      span.textContent = `"${String(val).replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
     }
     container.appendChild(span);
   }
