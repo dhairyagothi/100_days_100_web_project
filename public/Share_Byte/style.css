@@ -1,0 +1,192 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f7f6;
+    color: #333;
+    padding-bottom: 30px;
+}
+
+/* Header */
+.app-header {
+    background: linear-gradient(135deg, #1e7e34, #28a745);
+    color: white;
+    text-align: center;
+    padding: 25px 15px;
+    margin-bottom: 20px;
+}
+
+.app-header h1 span {
+    color: #ffc107;
+}
+
+/* Layout Container */
+.main-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 15px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+/* Responsive Grid for Desktop (Screens bigger than 768px) */
+@media (min-width: 768px) {
+    .main-container {
+        grid-template-columns: 4fr 6fr;
+    }
+}
+
+/* Card Styling */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.card h2 {
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+    color: #2c3e50;
+    border-bottom: 2px solid #eef2f3;
+    padding-bottom: 8px;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+/* Buttons */
+.btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+
+.btn-primary {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #218838;
+}
+
+.btn-secondary {
+    background-color: #17a2b8;
+    color: white;
+}
+
+#locationStatus {
+    display: block;
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+/* Dashboard Food Cards */
+.food-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+.food-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    background: #fff;
+    position: relative;
+    border-left: 5px solid #28a745;
+}
+
+/* Badges based on urgency */
+.badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: white;
+}
+
+.badge-fresh { background-color: #28a745; }
+.badge-urgent { background-color: #dc3545; animation: blink 1.5s infinite; }
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.food-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    padding-right: 80px; /* Space for badge */
+}
+
+.food-card p {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.action-links {
+    margin-top: 12px;
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    flex: 1;
+    text-align: center;
+    padding: 8px;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #333;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.action-btn:hover {
+    background: #e2e6ea;
+}
+
+.no-data {
+    text-align: center;
+    color: #888;
+    padding: 40px 0;
+}

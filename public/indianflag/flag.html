@@ -8,9 +8,14 @@
 
     <link href="../indianflag/flag.css" rel="stylesheet" />
     <link rel="icon" href="../favv.png" type="image/x-icon" />
+    <link rel="stylesheet" href="flag-history.css">
   </head>
 
   <body>
+    <!-- Background Video Section -->
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+
     <div class="background-video">
       <video autoplay muted loop id="bg-video">
         <source
@@ -22,7 +27,7 @@
     </div>
 
     <div class="wrapper">
-
+      <!-- The Interactive Flag -->
       <div class="flag-assembly">
         <div class="bar">
           <div class="bar-1"></div>
@@ -30,98 +35,71 @@
           <div class="bar-3"></div>
         </div>
 
-        <div class="flag">
+        <!-- We will make this flag clickable in the JS below! -->
+        <div class="flag" id="interactive-flag" title="Click me for magic!">
           <div class="top"></div>
-
           <div class="middle">
             <img
               src="../indianflag/img/ashokchakr.gif"
               alt="Ashoka Chakra"
             />
           </div>
-
           <div class="bottom"></div>
         </div>
       </div>
 
+      <!-- Quotes Section -->
       <div class="quote-container">
         <div class="image-wrapper">
-          <img id="patriot-image" src="" alt="Patriot Image" />
+          <img id="patriot-image" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Patriot Image" />
         </div>
-
         <div class="quote">
           "Give me blood and I will give you freedom."
         </div>
-
         <div class="author">- Subhas Chandra Bose</div>
-
+        
         <div class="quote-nav">
-          <button id="prev-quote">&#8592;</button>
-          <button id="next-quote">&#8594;</button>
+          <button id="prev-quote" title="Previous Quote">&#8592;</button>
+          
+          <!-- NEW: Text to Speech Listen Button -->
+          <button id="speak-quote" style="margin: 0 10px; padding: 5px 15px; border-radius: 20px; font-weight: bold; background: #FF9933; color: white; border: none; cursor: pointer; transition: 0.3s;" onmouseover="this.style.background='#138808'" onmouseout="this.style.background='#FF9933'">
+            🔊 Listen
+          </button>
+
+          <button id="next-quote" title="Next Quote">&#8594;</button>
         </div>
       </div>
     </div>
 
+    <!-- Background Music -->
     <div class="music-controls">
       <audio id="bgMusic" controls autoplay loop>
-        <source src="vande_mataram.mp3" type="audio/mpeg">
+        <source src="vande_mataram.mp3" type="audio/mpeg" />
       </audio>
     </div>
-
+    <section id="flag-history">
+      <h2>Evolution of the Indian Flag</h2>
+      <p class = "subtitle">From 1906 to Independence — the journey of our Tiranga</p>
+      <div class="timeline-track" id="timelineTrack"></div>
+      <div id="flagCards"></div>
+      <div class="timeline-nav">
+        <button id="btnPrev">&#8592; Previous</button>
+        <button id="btnNext">Next &#8594;</button>
+      </div>
+    </section>
+    <script src="flag-history.js"></script>
     <script>
-      // Quotes data
       const quotes = [
-        {
-          text: '"Give me blood and I will give you freedom."',
-          author: "- Subhas Chandra Bose",
-          image: "./img/subhas_bose.png",
-        },
-        {
-          text: '"Swaraj is my birthright and I shall have it."',
-          author: "- Bal Gangadhar Tilak",
-          image: "./img/bal_tilak.png",
-        },
-        {
-          text: '"Inquilab Zindabad."',
-          author: "- Bhagat Singh",
-          image: "./img/bhagat_singh.jpg",
-        },
-        {
-          text: '"Jai Jawan Jai Kisan."',
-          author: "- Lal Bahadur Shastri",
-          image: "./img/lal_bahadur.png",
-        },
-        {
-          text: '"Jai Hind!"',
-          author: "- Netaji Subhas Chandra Bose",
-          image: "./img/subhas_bose.png",
-        },
-        {
-          text: '"Sarfaroshi ki tamanna ab hamare dil mein hai."',
-          author: "- Ram Prasad Bismil",
-          image: "./img/ram_prasad.png",
-        },
-        {
-          text:
-            '"Dushman ki goliyon ka hum samna karenge, Azad hee rahein hain, azad hee rahenge."',
-          author: "- Chandrashekhar Azad",
-          image: "./img/azad.png",
-        },
-        {
-          text: '"Satyameva Jayate."',
-          author: "- Pandit Madan Mohan Malaviya",
-          image: "./img/pandit_madan_mohan.webp",
-        },
-        {
-          text: '"Sarvodaya, Samaj Sudharak, Samaj Sevak."',
-          author: "- Mahatma Gandhi",
-          image: "./img/gandhi.png",
-        },
-        {
-          text: '"Karo ya maro."',
-          author: "- Mahatma Gandhi",
-          image: "./img/gandhi.png",
-        },
+        { text: '"Give me blood and I will give you freedom."', author: "- Subhas Chandra Bose", image: "./img/subhas_bose.png" },
+        { text: '"Swaraj is my birthright and I shall have it."', author: "- Bal Gangadhar Tilak", image: "./img/bal_tilak.png" },
+        { text: '"Inquilab Zindabad."', author: "- Bhagat Singh", image: "./img/bhagat_singh.jpg" },
+        { text: '"Jai Jawan Jai Kisan."', author: "- Lal Bahadur Shastri", image: "./img/lal_bahadur.png" },
+        { text: '"Jai Hind!"', author: "- Netaji Subhas Chandra Bose", image: "./img/subhas_bose.png" },
+        { text: '"Sarfaroshi ki tamanna ab hamare dil mein hai."', author: "- Ram Prasad Bismil", image: "./img/ram_prasad.png" },
+        { text: '"Dushman ki goliyon ka hum samna karenge, Azad hee rahein hain, azad hee rahenge."', author: "- Chandrashekhar Azad", image: "./img/azad.png" },
+        { text: '"Satyameva Jayate."', author: "- Pandit Madan Mohan Malaviya", image: "./img/pandit_madan_mohan.webp" },
+        { text: '"Sarvodaya, Samaj Sudharak, Samaj Sevak."', author: "- Mahatma Gandhi", image: "./img/gandhi.png" },
+        { text: '"Karo ya maro."', author: "- Mahatma Gandhi", image: "./img/gandhi.png" }
       ];
 
       let currentQuoteIndex = 0;
@@ -131,48 +109,402 @@
       const patriotImage = document.getElementById("patriot-image");
 
       function displayQuote() {
-  const currentQuote = quotes[currentQuoteIndex];
+        const currentQuote = quotes[currentQuoteIndex];
 
-  // Preload image first
-  const img = new Image();
+        // Preload image first for a smooth transition
+        const img = new Image();
+        img.onload = () => {
+          patriotImage.src = currentQuote.image;
+          patriotImage.alt = currentQuote.author;
+          quoteText.textContent = currentQuote.text;
+          quoteAuthor.textContent = currentQuote.author;
+        };
+        img.src = currentQuote.image;
+        
+        // Stop any ongoing speech if the quote changes naturally
+        if(window.speechSynthesis.speaking) {
+           window.speechSynthesis.cancel();
+        }
+      }
 
-  img.onload = () => {
-    patriotImage.src = currentQuote.image;
-    patriotImage.alt = currentQuote.author;
-
-    quoteText.textContent = currentQuote.text;
-    quoteAuthor.textContent = currentQuote.author;
-  };
-
-  img.src = currentQuote.image;
-}
-
+      // Initial load
       displayQuote();
 
+      // Auto-rotate quotes every 5 seconds
       setInterval(() => {
         currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
         displayQuote();
       }, 5000);
 
+      // Manual navigation
       document.getElementById("prev-quote").addEventListener("click", () => {
-        currentQuoteIndex =
-          (currentQuoteIndex - 1 + quotes.length) % quotes.length;
+        currentQuoteIndex = (currentQuoteIndex - 1 + quotes.length) % quotes.length;
         displayQuote();
       });
 
       document.getElementById("next-quote").addEventListener("click", () => {
-        currentQuoteIndex =
-          (currentQuoteIndex + 1) % quotes.length;
+        currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
         displayQuote();
       });
 
-      const music = document.getElementById("bgMusic");
+      // --- NEW: Text to Speech Functionality ---
+      document.getElementById("speak-quote").addEventListener("click", () => {
+        // Cancel any currently playing speech to avoid overlapping audio
+        window.speechSynthesis.cancel();
 
+        const currentQuote = quotes[currentQuoteIndex];
+        // Clean up the author name (remove the dash) for smoother reading
+        const cleanAuthorName = currentQuote.author.replace("-", "").trim();
+        const textToRead = `${currentQuote.text} ... by ${cleanAuthorName}`;
+
+        const utterance = new SpeechSynthesisUtterance(textToRead);
+        utterance.lang = 'en-IN'; // Set to Indian English accent if available
+        utterance.rate = 0.9;     // Slightly slower for dramatic effect
+
+        window.speechSynthesis.speak(utterance);
+      });
+
+      // Background Music Autoplay handler
+      const music = document.getElementById("bgMusic");
       window.addEventListener("load", () => {
         music.play().catch(() => {
-          console.log("Autoplay blocked by browser");
+          console.log("Autoplay blocked by browser. User must interact first.");
         });
       });
+    </script>
+
+    <!-- 3. Chatbot & Quiz Script -->
+    <script>
+      /* ---------- Quiz Data ---------- */
+      const quizQuestions = [
+        { question: "When is Republic Day celebrated?", options: ["15th August", "26th January", "2nd October"], answer: "26th January" },
+        { question: "Who designed the Indian flag?", options: ["Pingali Venkayya", "Mahatma Gandhi", "Rabindranath Tagore"], answer: "Pingali Venkayya" },
+        { question: "When is Independence Day celebrated?", options: ["26th January", "15th August", "2nd October"], answer: "15th August" },
+        { question: "What does saffron in the flag represent?", options: ["Courage & sacrifice", "Peace", "Growth"], answer: "Courage & sacrifice" },
+        { question: "What does green in the flag represent?", options: ["Faith & fertility", "Courage", "Unity"], answer: "Faith & fertility" },
+        { question: "What does white in the flag represent?", options: ["Peace & truth", "Sacrifice", "Prosperity"], answer: "Peace & truth" },
+        { question: "How many spokes are in the Ashoka Chakra?", options: ["12", "24", "36"], answer: "24" },
+        { question: "Who gave the slogan 'Inquilab Zindabad'?", options: ["Bhagat Singh", "Subhash Chandra Bose", "Mahatma Gandhi"], answer: "Bhagat Singh" },
+        { question: "Who said 'Give me blood and I will give you freedom'?", options: ["Jawaharlal Nehru", "Subhash Chandra Bose", "Sardar Patel"], answer: "Subhash Chandra Bose" },
+        { question: "Who was the first Prime Minister of India?", options: ["Jawaharlal Nehru", "Mahatma Gandhi", "Dr. Rajendra Prasad"], answer: "Jawaharlal Nehru" },
+        { question: "Who was the first President of India?", options: ["Dr. Rajendra Prasad", "Sarvepalli Radhakrishnan", "Jawaharlal Nehru"], answer: "Dr. Rajendra Prasad" },
+        { question: "Which movement did Mahatma Gandhi lead in 1942?", options: ["Quit India Movement", "Non-Cooperation Movement", "Civil Disobedience"], answer: "Quit India Movement" },
+        { question: "Who wrote 'Jana Gana Mana'?", options: ["Rabindranath Tagore", "Bankim Chandra Chatterjee", "Sarojini Naidu"], answer: "Rabindranath Tagore" },
+        { question: "Who wrote 'Vande Mataram'?", options: ["Bankim Chandra Chatterjee", "Rabindranath Tagore", "Mahatma Gandhi"], answer: "Bankim Chandra Chatterjee" },
+        { question: "Which year did India gain independence?", options: ["1945", "1947", "1950"], answer: "1947" },
+        { question: "Which year did India become a Republic?", options: ["1947", "1950", "1952"], answer: "1950" },
+        { question: "Who was known as the Iron Man of India?", options: ["Sardar Vallabhbhai Patel", "Bhagat Singh", "Subhash Chandra Bose"], answer: "Sardar Vallabhbhai Patel" },
+        { question: "Which leader is called 'Father of the Nation'?", options: ["Mahatma Gandhi", "Jawaharlal Nehru", "Subhash Chandra Bose"], answer: "Mahatma Gandhi" },
+        { question: "Which day is celebrated as Gandhi Jayanti?", options: ["15th August", "2nd October", "26th January"], answer: "2nd October" },
+        { question: "Which city is known as the 'Manchester of India'?", options: ["Mumbai", "Ahmedabad", "Kolkata"], answer: "Ahmedabad" }
+      ];
+
+      let currentQuizIndex = 0;
+      let score = 0;
+      let shuffledQuestions = [];
+      let quizStarted = false;
+      let waitingForAnswer = false; 
+
+      /* ---------- Chatbot Helpers ---------- */
+      function toggleChat() {
+        const win = document.getElementById("chatWindow");
+        win.classList.toggle("open");
+        const messages = document.getElementById("chatMessages");
+        
+        // If opening for the first time, greet the user and suggest features!
+        if (win.classList.contains("open") && messages.children.length === 0) {
+          addBotMessage("Jai Hind! 🇮🇳 I'm Bharat Bot. Ask me anything about India, our freedom fighters, or the flag!");
+          
+          // Add a slight delay for the feature suggestion to feel natural
+          setTimeout(() => {
+            addBotMessage("💡 <strong>Fun Feature:</strong> Try clicking the big Indian flag on your screen to see some magical fireworks! 🎇<br><br>You can also type <b>'quiz'</b> to start the India Quiz!");
+          }, 1200);
+        }
+      }
+
+      function addBotMessage(text) {
+        const div = document.createElement("div");
+        div.className = "chat-msg bot";
+        div.innerHTML = text; 
+        document.getElementById("chatMessages").appendChild(div);
+        scrollToBottom();
+      }
+
+      function addUserMessage(text) {
+        const div = document.createElement("div");
+        div.className = "chat-msg user";
+        div.textContent = text;
+        document.getElementById("chatMessages").appendChild(div);
+        scrollToBottom();
+      }
+
+      function scrollToBottom() {
+        const messages = document.getElementById("chatMessages");
+        messages.scrollTop = messages.scrollHeight;
+      }
+
+      function sendMessage() {
+        const input = document.getElementById("chatInput");
+        const msg = input.value.trim();
+        if (!msg) return;
+
+        addUserMessage(msg);
+        input.value = ""; // Clear input immediately
+
+        // Simulate a brief "typing" delay
+        setTimeout(() => {
+          const reply = getBotReply(msg.toLowerCase());
+          if (reply) addBotMessage(reply); 
+        }, 400);
+      }
+
+      /* ---------- Chatbot Brain (Reply Logic) ---------- */
+      function getBotReply(msg) {
+        // Stop Quiz Logic
+        if (msg === "stop" || msg === "quit" || msg === "exit" || msg.includes("stop quiz") || msg.includes("end quiz")) {
+          if (quizStarted) {
+            const allBtns = document.querySelectorAll(".quiz-btn, .quiz-stop-btn");
+            allBtns.forEach(b => {
+              b.disabled = true;
+              b.style.cursor = "default";
+              b.style.opacity = "0.7";
+            });
+            
+            quizStarted = false;
+            waitingForAnswer = false;
+            shuffledQuestions = [];
+            return `🛑 Quiz stopped! You scored <strong>${score}</strong> before stopping.<br><br>Type <b>quiz</b> to start over, or ask me anything else about India!`;
+          } else {
+            return "There's no quiz running right now! Type <b>quiz</b> to start one.";
+          }
+        }
+
+        // Start Quiz Logic
+        if (msg.includes("quiz") || msg.includes("start quiz") || msg.includes("play quiz")) {
+          if (waitingForAnswer) return "😄 Answer the current question first, or type 'stop' to end the quiz!";
+          setTimeout(() => startQuiz(), 500);
+          return "🎉 Starting India Quiz...";
+        }
+        
+        // Greetings
+        if (msg.includes("hello") || msg.includes("hi") || msg.includes("hey") || msg.includes("namaste")) return "Namaste! Ek dum sahi jagah aaye ho! Ask me anything about India!";
+        if (msg.includes("who are you") || msg.includes("your name") || msg.includes("kaun ho")) return "Main hoon Tiranga Talks! Your desi buddy for everything about India!";
+        
+        // Flag Specifics
+        if (msg.includes("designed") || msg.includes("pingali") || msg.includes("who made the flag")) return "The Indian National Flag was designed by **Pingali Venkayya**, a freedom fighter and agriculturist from Andhra Pradesh! He originally designed it with two colours, and Mahatma Gandhi later suggested adding the white band and the spinning wheel (which became the Ashoka Chakra).";
+        if (msg.includes("saffron") || msg.includes("kesari")) return "The **Saffron (Kesari)** colour at the top of our flag stands for courage, sacrifice, and the spirit of renunciation. It represents the bravery of our freedom fighters who gave everything for our independence!";
+        if (msg.includes("white")) return "The **White** colour in the middle of our flag stands for truth, peace, and purity. It guides our nation's path toward honesty and harmony!";
+        if (msg.includes("green")) return "The **Green** colour at the bottom of our flag stands for faith, fertility, and prosperity. It represents our deep connection to the soil and nature!";
+        if (msg.includes("flag") || msg.includes("tiranga") || msg.includes("tricolour") || msg.includes("colour of")) return "Our beautiful Tiranga — Saffron for courage, White for truth and peace, Green for prosperity. The Ashoka Chakra in the middle has 24 spokes!";
+        if (msg.includes("ashoka") || msg.includes("chakra") || msg.includes("spokes")) return "The Ashoka Chakra has 24 spokes representing 24 hours of the day — always keep moving forward! It comes from the Lion Capital of Ashoka at Sarnath.";
+        
+        // Freedom Movement Trivia
+        if (msg.includes("1857") || msg.includes("first war") || msg.includes("mangal pandey")) return "The **Revolt of 1857** is famously known as India's First War of Independence! Heroes like Mangal Pandey, Rani Lakshmibai, and Bahadur Shah Zafar sparked the initial flame of freedom that eventually led to our independence 90 years later.";
+        if (msg.includes("quit india") || msg.includes("1942")) return "The **Quit India Movement** was launched by Mahatma Gandhi on 8th August 1942 at the Gowalia Tank Maidan in Mumbai. This is where he gave the famous 'Do or Die' (Karo ya Maro) speech, demanding an immediate end to British rule!";
+        if (msg.includes("iron man") || msg.includes("patel") || msg.includes("statue of unity")) return "**Sardar Vallabhbhai Patel** is known as the 'Iron Man of India'. After independence, he successfully united over 560 princely states to form the modern Republic of India. The giant Statue of Unity in Gujarat is dedicated entirely to him!";
+        if (msg.includes("jallianwala") || msg.includes("amritsar massacre")) return "The **Jallianwala Bagh massacre** happened on 13th April 1919 in Amritsar. General Dyer ordered troops to fire on a peaceful gathering, a deeply tragic event that united the entire nation against British rule and fueled the freedom struggle.";
+        if (msg.includes("ina") || msg.includes("azad hind") || msg.includes("national army")) return "The **Indian National Army (Azad Hind Fauj)** was revived by Netaji Subhas Chandra Bose in 1943. He rallied prisoners of war and civilians in Southeast Asia to fight for India's freedom with the powerful war cry 'Dilli Chalo!'";
+
+        // People & Leaders
+        if (msg.includes("father of the nation") || msg.includes("bapu") || msg.includes("mahatma") || msg.includes("gandhi")) return "Bapu — Father of the Nation. Mahatma Gandhi believed in non-violence and truth above everything. His 'Karo ya Maro' still echoes today!";
+        if (msg.includes("independence") || msg.includes("15 august") || msg.includes("independent") || msg.includes("freedom")) return "India got independence on 15th August 1947. After nearly 200 years of British rule, our brave freedom fighters made it happen. Jai Hind!";
+        if (msg.includes("bhagat") || msg.includes("bhagat singh")) return "Bhagat Singh was only 23 when he was hanged, yet his bravery shook the British Empire! 'Inquilab Zindabad!' — Long Live the Revolution!";
+        if (msg.includes("bose") || msg.includes("netaji") || msg.includes("subhas")) return "Netaji Subhas Chandra Bose — what a legend! He said 'Give me blood and I will give you freedom!' and formed the INA. Jai Hind!";
+        if (msg.includes("dandi") || msg.includes("salt march")) return "The Dandi March in 1930 was led by Mahatma Gandhi — he walked 241 miles to make salt and defy British tax laws. A turning point in our freedom struggle!";
+        if (msg.includes("tilak") || msg.includes("bal gangadhar") || msg.includes("swaraj")) return "Bal Gangadhar Tilak roared — 'Swaraj is my birthright and I shall have it!' He was one of the first strong voices for Indian independence!";
+        if (msg.includes("azad") || msg.includes("chandrashekhar")) return "Chandrashekhar Azad was so fierce that he shot himself rather than surrender to the British! 'Azad hee rahein hain, azad hee rahenge!'";
+        if (msg.includes("bismil") || msg.includes("ram prasad") || msg.includes("sarfaroshi")) return "'Sarfaroshi ki tamanna ab hamare dil mein hai' — Ram Prasad Bismil's words still give us goosebumps. A true revolutionary poet!";
+        if (msg.includes("shastri") || msg.includes("lal bahadur") || msg.includes("jai jawan")) return "Lal Bahadur Shastri gave us 'Jai Jawan Jai Kisan!' He was a humble but incredibly strong Prime Minister of India!";
+        
+        // Symbols & Culture
+        if (msg.includes("national animal") || msg.includes("tiger")) return "The Bengal Tiger is India's national animal — powerful, majestic, and absolutely stunning. Project Tiger was launched to protect them!";
+        if (msg.includes("national bird") || msg.includes("peacock")) return "The Peacock is India's national bird — beautiful, graceful, and truly desi! It is protected under the Wildlife Protection Act.";
+        if (msg.includes("national anthem") || msg.includes("jana gana")) return "Jana Gana Mana was written by Rabindranath Tagore. It became our National Anthem in 1950. Fun fact — it takes exactly 52 seconds to sing!";
+        if (msg.includes("vande mataram")) return "Vande Mataram was written by Bankim Chandra Chatterjee. It means 'I bow to thee, Mother India' and was the anthem of our independence movement!";
+        if (msg.includes("republic") || msg.includes("26 january")) return "Republic Day is on 26th January 1950. That is when India's Constitution came into force. The parade at Kartavya Path in Delhi is absolutely spectacular!";
+        
+        // India Facts
+        if (msg.includes("taj mahal") || msg.includes("agra")) return "The Taj Mahal in Agra is one of the Seven Wonders of the World! Built by Shah Jahan for his beloved Mumtaz Mahal — a symbol of eternal love!";
+        if (msg.includes("red fort") || msg.includes("lal qila")) return "The Red Fort in Delhi is where our Prime Minister hoists the flag every Independence Day! Built by Mughal Emperor Shah Jahan in 1648.";
+        if (msg.includes("gateway") || msg.includes("mumbai")) return "The Gateway of India in Mumbai was built in 1924 to welcome King George V. Today it welcomes millions of tourists from all over the world!";
+        if (msg.includes("golden temple") || msg.includes("amritsar") || msg.includes("gurudwara")) return "The Golden Temple in Amritsar is the holiest shrine of Sikhism — breathtakingly beautiful and open to people of ALL religions. The langar feeds thousands daily!";
+        if (msg.includes("population") || msg.includes("people")) return "India is the most populous country in the world with over 1.4 billion people — 22 plus languages, hundreds of cultures, one nation!";
+        if (msg.includes("language") || msg.includes("hindi") || msg.includes("speak")) return "India has 22 official languages including Hindi, Bengali, Tamil, Telugu, Marathi and more! Hindi and English are used for official communication.";
+        if (msg.includes("currency") || msg.includes("rupee") || msg.includes("money")) return "India's currency is the Indian Rupee. The symbol was designed by D. Udaya Kumar and adopted in 2010. Inspired by the Devanagari letter Ra!";
+        if (msg.includes("yoga")) return "Yoga was born in India thousands of years ago! The word comes from Sanskrit meaning union. Today 21st June is celebrated as International Yoga Day worldwide!";
+        if (msg.includes("diwali") || msg.includes("deepawali")) return "Diwali — the Festival of Lights! Celebrated to mark Lord Ram's return to Ayodhya. Lights, sweets, fireworks, and family — the most magical time of year!";
+        if (msg.includes("holi")) return "Holi — the Festival of Colors! Celebrated in spring to welcome new beginnings. Everyone throws colors, dances, and eats gujiya. Pure joy!";
+        if (msg.includes("national sport") || msg.includes("hockey")) return "Field Hockey is considered India's national sport. India won 8 Olympic gold medals in hockey — a golden era of Indian sports!";
+        if (msg.includes("sachin") || msg.includes("tendulkar") || msg.includes("master blaster")) return "Sachin Tendulkar — the God of Cricket! 100 international centuries, 34,000 plus runs — a record nobody has broken yet. Bharat Ratna awardee and India's pride!";
+        if (msg.includes("cricket") || msg.includes("ipl") || msg.includes("virat")) return "Cricket is basically a religion in India! From Sachin Tendulkar to Virat Kohli — we have given the world some absolute legends of the game!";
+        if (msg.includes("bollywood") || msg.includes("movies") || msg.includes("film")) return "Bollywood is India's Hindi film industry based in Mumbai — the largest film industry in the world by number of films! Songs, drama, dance — full paisa vasool!";
+        if (msg.includes("capital") || msg.includes("delhi")) return "New Delhi is the capital of India — one of the most historically rich and vibrant cities in the world!";
+        if (msg.includes("chandrayaan") || msg.includes("moon") || msg.includes("isro") || msg.includes("space")) return "ISRO's Chandrayaan-3 successfully landed on the Moon's south pole in August 2023 — a historic first for the entire world! India is a space superpower now!";
+        if (msg.includes("upi") || msg.includes("payment") || msg.includes("digital india") || msg.includes("technology")) return "India's UPI payment system is the largest in the world! Over 10 billion transactions per month — the whole world is learning from India's digital revolution!";
+        if (msg.includes("startup") || msg.includes("unicorn") || msg.includes("business")) return "India has the 3rd largest startup ecosystem in the world with 100 plus unicorns! From Bengaluru to Mumbai — Indian entrepreneurs are taking over the world!";
+        
+        // Pleasantries
+        if (msg.includes("thank") || msg.includes("shukriya") || msg.includes("dhanyawad")) return "Jai Hind! Bahut bahut shukriya! Come back anytime to talk about our incredible India!";
+        if (msg.includes("bye") || msg.includes("alvida") || msg.includes("goodbye")) return "Alvida! Jai Hind, Jai Bharat! Come back soon — India ka koi topic chhoot na jaaye!";
+        if (msg.includes("good") || msg.includes("great") || msg.includes("awesome")) return "Bahut accha! Glad you liked it! Ask me more about India — there is so much to explore!";
+        if (msg.includes("how are you") || msg.includes("kaisa") || msg.includes("kaise ho")) return "Ekdum mast hoon! Always happy when someone wants to talk about India. What would you like to know?";
+        if (msg.includes("what can you do") || msg.includes("help")) return "I can tell you about India's history, freedom fighters, national symbols, famous places, festivals, sports and culture! Type 'quiz' to test your knowledge!";
+        
+        // Fallback/Catch-all
+        return "Arre yaar, thoda aur seedha poochho! Try asking about Gandhi, the Flag, the 1857 Revolt, Taj Mahal, or Independence Day!\n\nOr type <b>quiz</b> to play the India Quiz! 🇮🇳";
+      }
+
+      /* ---------- Quiz Engine ---------- */
+      function startQuiz() {
+        quizStarted = true;
+        waitingForAnswer = false;
+        currentQuizIndex = 0;
+        score = 0;
+        
+        // Shuffle questions so it's fun every time
+        shuffledQuestions = [...quizQuestions].sort(() => Math.random() - 0.5);
+
+        addBotMessage("🎉 Chalo shuru karte hain India Quiz! All 20 questions coming up...");
+        setTimeout(showQuestion, 800);
+      }
+
+      function showQuestion() {
+        // Did we finish all questions?
+        if (currentQuizIndex >= shuffledQuestions.length) {
+          endQuiz();
+          return;
+        }
+
+        const q = shuffledQuestions[currentQuizIndex];
+        waitingForAnswer = true;
+
+        // Render the multiple choice buttons
+        const optionsHtml = q.options.map(opt =>
+          `<button class="quiz-btn"
+             style="display:block;width:100%;margin:5px 0;padding:8px 12px;background:#fff;border:2px solid #046A38;border-radius:8px;cursor:pointer;font-size:0.85em;text-align:left;transition:background 0.2s;"
+             onmouseover="this.style.background='#e8f5e9'"
+             onmouseout="this.style.background='#fff'"
+             onclick="checkQuizAnswer(this, '${escapeAttr(opt)}', '${escapeAttr(q.answer)}')"
+           >${opt}</button>`
+        ).join("");
+
+        // A convenient stop button for the user
+        const stopBtnHtml = `<button class="quiz-stop-btn"
+             style="display:block;width:100%;margin:10px 0 5px 0;padding:8px 12px;background:#fff5f5;border:1px solid #ffcdd2;border-radius:8px;cursor:pointer;font-size:0.85em;color:#c62828;text-align:center;transition:background 0.2s;"
+             onmouseover="this.style.background='#ffebee'"
+             onmouseout="this.style.background='#fff5f5'"
+             onclick="forceStopQuiz()"
+           >🛑 Stop Quiz</button>`;
+
+        const div = document.createElement("div");
+        div.className = "chat-msg bot";
+        div.innerHTML = `
+          🎯 <strong>Question ${currentQuizIndex + 1}/${shuffledQuestions.length}</strong><br><br>
+          ${q.question}
+          <br><br>${optionsHtml}
+          ${stopBtnHtml}
+        `;
+        document.getElementById("chatMessages").appendChild(div);
+        scrollToBottom();
+      }
+
+      function checkQuizAnswer(btnEl, selected, correct) {
+        if (!waitingForAnswer) return;
+        waitingForAnswer = false;
+
+        // Lock all buttons so user can't double-click
+        const allBtns = document.querySelectorAll(".quiz-btn, .quiz-stop-btn");
+        allBtns.forEach(b => {
+          b.disabled = true;
+          b.style.cursor = "default";
+          b.style.opacity = "0.7";
+        });
+
+        // Visually show right/wrong on the clicked button
+        if (selected === correct) {
+          btnEl.style.background = "#c8f5c8";
+          btnEl.style.borderColor = "#2e7d32";
+        } else {
+          btnEl.style.background = "#ffd5d5";
+          btnEl.style.borderColor = "#c62828";
+        }
+
+        const isCorrect = selected === correct;
+        if (isCorrect) score++;
+
+        // Add some desi flair to the replies!
+        const correctReplies = ["✅ Bilkul sahi! 🇮🇳", "🔥 Wahh! Correct!", "👏 Excellent!", "🎉 Sahi jawaab!"];
+        const wrongReplies  = [
+          `❌ Oops! Correct answer: <strong>${correct}</strong>`,
+          `😅 Galat! Right answer: <strong>${correct}</strong>`,
+          `🙈 Nahi yaar! Correct: <strong>${correct}</strong>`
+        ];
+
+        const feedback = isCorrect
+          ? correctReplies[Math.floor(Math.random() * correctReplies.length)]
+          : wrongReplies[Math.floor(Math.random() * wrongReplies.length)];
+
+        addBotMessage(feedback);
+        currentQuizIndex++;
+
+        // Move to next question after a tiny delay
+        setTimeout(() => {
+          if (currentQuizIndex < shuffledQuestions.length && quizStarted) {
+            const nextTexts = ["😄 Next one!", "🔥 Ready for next question?", "🇮🇳 Agla sawaal...", "🎯 Chaliye continue karte hain!"];
+            addBotMessage(nextTexts[Math.floor(Math.random() * nextTexts.length)]);
+            setTimeout(showQuestion, 700);
+          } else if (quizStarted) {
+            endQuiz();
+          }
+        }, 1200);
+      }
+
+      function endQuiz() {
+        let finalMsg = "";
+        const total = shuffledQuestions.length;
+
+        // Calculate a nice summary message based on their score
+        if (score >= 15) {
+          finalMsg = `🏆 Wahhh! Amazing! You scored <strong>${score}/${total}</strong>.<br><br>🇮🇳 Aap toh asli Bharat Expert nikle!`;
+        } else if (score >= 8) {
+          finalMsg = `👏 Good job! You scored <strong>${score}/${total}</strong>.<br><br>Thoda aur practice aur aap champion ban jaoge!`;
+        } else {
+          finalMsg = `😊 You scored <strong>${score}/${total}</strong>.<br><br>Koi baat nahi! Type <b>quiz</b> to try again — Jai Hind! 🇮🇳`;
+        }
+
+        finalMsg += `<br><br><button
+          style="margin-top:8px;padding:8px 16px;background:#FF671F;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:bold;"
+          onclick="startQuiz()">🔄 Play Again</button>`;
+
+        addBotMessage(finalMsg);
+
+        // Reset the state gracefully
+        quizStarted = false;
+        waitingForAnswer = false;
+        shuffledQuestions = [];
+      }
+
+      function forceStopQuiz() {
+        if (!quizStarted) return;
+        
+        const allBtns = document.querySelectorAll(".quiz-btn, .quiz-stop-btn");
+        allBtns.forEach(b => {
+          b.disabled = true;
+          b.style.cursor = "default";
+          b.style.opacity = "0.7";
+        });
+
+        quizStarted = false;
+        waitingForAnswer = false;
+        shuffledQuestions = [];
+
+        addBotMessage(`🛑 You stopped the quiz. Your score so far was <strong>${score}</strong>.<br><br>Type <b>quiz</b> to play again anytime!`);
+      }
+
+      // Safe attribute escape helper
+      function escapeAttr(str) {
+        return str.replace(/'/g, "\\'");
+      }
     </script>
   </body>
 </html>

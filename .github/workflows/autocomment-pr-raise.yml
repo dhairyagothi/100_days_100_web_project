@@ -23,13 +23,35 @@ jobs:
         )
         RESPONSE=$(curl -s -o response.json -w "%{http_code}" \
           -X POST \
-          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Authorization: token $GITHUB_TOKEN" \
           -H "Accept: application/vnd.github.v3+json" \
           https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments \
           -d "$COMMENT")
-        cat response.json
         if [ "$RESPONSE" -ne 201 ]; then
-          echo "Failed to add comment"
+          cat response.json
+          echo "Failed to add comment (HTTP $RESPONSE)"
+          exit 1
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Assign PR Creator
+      run: |
+        ASSIGNEE="${{ github.event.pull_request.user.login }}"
+        export ASSIGNEE
+        PAYLOAD=$(python3 -c 'import json, os; print(json.dumps({"assignees": [os.environ["ASSIGNEE"]]}))') || {
+          echo "Failed to construct assignment payload"
+          exit 1
+        }
+        RESPONSE=$(curl -s -o response.json -w "%{http_code}" \
+          -X PATCH \
+          -H "Authorization: token $GITHUB_TOKEN" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }} \
+          -d "$PAYLOAD")
+        if [ "$RESPONSE" -ne 200 ]; then
+          cat response.json
+          echo "Failed to assign PR creator (HTTP $RESPONSE)"
           exit 1
         fi
       env:
