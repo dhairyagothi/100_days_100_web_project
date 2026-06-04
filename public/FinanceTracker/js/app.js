@@ -203,15 +203,15 @@ function loadDashboard() {
   } else {
   tbody.innerHTML = recent.map(t => `
     <tr>
-      <td>${formatDate(t.date)}</td>
+      <td>${escapeHTML(formatDate(t.date))}</td>
       <td>${escapeHTML(t.description)}</td>
-      <td class="${t.type === 'Income' ? 'text-income' : 'text-expense'}" style="color:${t.type === 'Income' ? 'var(--income-color)' : 'var(--expense-color)'}">
-      ${t.type === 'Income' ? '+' : '-'}${formatCurrency(t.amount)}
-    </td>
-    <td><span class="badge badge-${t.type.toLowerCase()}">${escapeHTML(t.type)}</span></td>
-    <td>${escapeHTML(t.category)}</td>
+      <td class="${escapeHTML(t.type === 'Income' ? 'text-income' : 'text-expense')}" style="color:${escapeHTML(t.type === 'Income' ? 'var(--income-color)' : 'var(--expense-color)')}">
+        ${t.type === 'Income' ? '+' : '-'}${escapeHTML(formatCurrency(t.amount))}
+      </td>
+      <td><span class="badge badge-${escapeHTML(t.type.toLowerCase())}">${escapeHTML(t.type)}</span></td>
+      <td>${escapeHTML(t.category)}</td>
     </tr>
-`).join('');
+  `).join('');
   }
 }
 
@@ -248,20 +248,20 @@ function renderTransactions() {
   }
 
 tbody.innerHTML = transactions.map(t => `
-  <tr>
-    <td>${formatDate(t.date)}</td>
-    <td>${escapeHTML(t.description)}</td>
-    <td style="color:${t.type === 'Income' ? 'var(--income-color)' : 'var(--expense-color)'}">
-      ${t.type === 'Income' ? '+' : '-'}${formatCurrency(t.amount)}
-    </td>
-    <td><span class="badge badge-${t.type.toLowerCase()}">${escapeHTML(t.type)}</span></td>
-    <td>${escapeHTML(t.category)}</td>
-    <td>
-      <button class="btn-icon edit" onclick="window.editTxn(${t.id})" title="Edit">📝</button>
-      <button class="btn-icon danger" onclick="window.deleteTxn(${t.id})" title="Delete">🗑️</button>
-    </td>
-  </tr>
-`).join('');
+    <tr>
+      <td>${escapeHTML(formatDate(t.date))}</td>
+      <td>${escapeHTML(t.description)}</td>
+      <td style="color:${escapeHTML(t.type === 'Income' ? 'var(--income-color)' : 'var(--expense-color)')}">
+        ${t.type === 'Income' ? '+' : '-'}${escapeHTML(formatCurrency(t.amount))}
+      </td>
+      <td><span class="badge badge-${escapeHTML(t.type.toLowerCase())}">${escapeHTML(t.type)}</span></td>
+      <td>${escapeHTML(t.category)}</td>
+      <td>
+        <button class="btn-icon edit" onclick="window.editTxn(${escapeHTML(t.id)})" title="Edit">📝</button>
+        <button class="btn-icon danger" onclick="window.deleteTxn(${escapeHTML(t.id)})" title="Delete">🗑️</button>
+      </td>
+    </tr>
+  `).join('');
 }
 
 function openTransactionModal(id = null) {
@@ -586,7 +586,7 @@ function renderBudgets() {
     return;
   }
 
-  container.innerHTML = budgets.map(b => {
+ container.innerHTML = budgets.map(b => {
     const statusClass = b.percentage >= 90 ? 'danger' : b.percentage >= 70 ? 'warning' : '';
     const statusColor = b.percentage >= 90 ? 'var(--expense-color)' : b.percentage >= 70 ? 'var(--warning-color)' : '';
   
@@ -594,21 +594,21 @@ function renderBudgets() {
       <div class="budget-card">
         <div class="budget-header">
           <span class="budget-category">${escapeHTML(b.category)}</span>
-          <button class="btn-icon danger" onclick="window.deleteBdg(${b.id})" title="Delete">🗑️</button>
+          <button class="btn-icon danger" onclick="window.deleteBdg(${escapeHTML(b.id)})" title="Delete">🗑️</button>
         </div>
         <div class="budget-amounts">
-          <span>Spent: ${formatCurrency(b.spent)}</span>
-          <span>Limit: ${formatCurrency(b.monthly_limit)}</span>
+          <span>Spent: ${escapeHTML(formatCurrency(b.spent))}</span>
+          <span>Limit: ${escapeHTML(formatCurrency(b.monthly_limit))}</span>
         </div>
         <div class="progress-bar">
-          <div class="progress-fill ${statusClass}" style="width:${b.percentage}%"></div>
+          <div class="progress-fill ${escapeHTML(statusClass)}" style="width:${escapeHTML(b.percentage)}%"></div>
         </div>
-        <div class="budget-percentage" style="color:${statusColor}">
-          ${b.percentage}% used · ${formatCurrency(b.monthly_limit - b.spent)} remaining
+        <div class="budget-percentage" style="color:${escapeHTML(statusColor)}">
+          ${escapeHTML(b.percentage)}% used · ${escapeHTML(formatCurrency(b.monthly_limit - b.spent))} remaining
         </div>
       </div>
-  `;
-}).join('');
+    `;
+  }).join('');
 }
 
 
