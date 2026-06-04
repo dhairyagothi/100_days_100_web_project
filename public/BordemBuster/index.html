@@ -1,66 +1,111 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boredom Buster</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boredom Buster — Find Your Next Adventure</title>
+  <meta name="description" content="Beat boredom instantly. Discover fun activities tailored to your group size, budget, and mood." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-    <div class="background-animation"></div>
-    
-    <main class="glass-panel">
-        <header class="header">
-            <h1>✨ Boredom Buster</h1>
-            <p>Beat the block. Find your next adventure.</p>
-        </header>
+  <!-- Animated background orbs -->
+  <div class="bg-orb" aria-hidden="true"></div>
+  <div class="bg-orb" aria-hidden="true"></div>
+  <div class="bg-orb" aria-hidden="true"></div>
 
-        <section class="controls">
-            <div class="input-wrapper">
-                <label for="category">Category</label>
-                <select id="category" class="glass-input">
-                    <option value="">Surprise Me</option>
-                    <option value="education">Education</option>
-                    <option value="recreational">Recreational</option>
-                    <option value="social">Social</option>
-                    <option value="diy">DIY</option>
-                    <option value="charity">Charity</option>
-                    <option value="cooking">Cooking</option>
-                    <option value="relaxation">Relaxation</option>
-                    <option value="music">Music</option>
-                    <option value="busywork">Busywork</option>
-                </select>
-            </div>
+  <!-- Back to Home -->
+  <a href="/" class="back-btn">← Back to Home</a>
 
-            <div class="input-wrapper">
-                <label for="participants">Group Size</label>
-                <input type="number" id="participants" class="glass-input" min="1" max="10" placeholder="e.g., 1 for solo">
-            </div>
+  <!-- Theme Toggle -->
+  <button id="themeBtn" class="theme-btn" aria-label="Toggle theme">🌙</button>
 
-            <div class="input-wrapper">
-                <label for="budget">Vibe / Cost</label>
-                <select id="budget" class="glass-input">
-                    <option value="">Any</option>
-                    <option value="free">Completely Free</option>
-                    <option value="cheap">Spare Change</option>
-                    <option value="expensive">Treat Yo' Self</option>
-                </select>
-            </div>
+  <div class="page-wrap">
+    <main class="card">
 
-            <button id="fetch-btn" class="glow-on-hover">Find Activity</button>
-        </section>
+      <!-- Header -->
+      <header class="app-header">
+        <h1 class="app-title">✨ Boredom Buster</h1>
+        <p class="app-tagline">Beat the block. Find your next adventure.</p>
+      </header>
 
-        <section id="result-container" class="result-box hidden">
-            <h2 id="activity-name">Awaiting your command...</h2>
-            <div class="pill-container">
-                <span id="activity-type" class="pill">Type: -</span>
-                <span id="activity-participants" class="pill">Peeps: -</span>
-                <span id="activity-price" class="pill">Cost: -</span>
-            </div>
-            <p id="error-message" class="error-msg hidden"></p>
-        </section>
+      <!-- Filters -->
+      <section class="filters">
+        <div class="field">
+          <label for="category">Category</label>
+          <select id="category" class="glass-input">
+            <option value="">🎲 Surprise Me</option>
+            <option value="education">📚 Education</option>
+            <option value="recreational">🏃 Recreational</option>
+            <option value="social">🤝 Social</option>
+            <option value="diy">🔧 DIY</option>
+            <option value="charity">❤️ Charity</option>
+            <option value="cooking">🍳 Cooking</option>
+            <option value="relaxation">🧘 Relaxation</option>
+            <option value="music">🎵 Music</option>
+            <option value="busywork">📋 Busywork</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="participants">Participants</label>
+          <input type="number" id="participants" class="glass-input" min="1" max="20" placeholder="e.g. 1 for solo" />
+        </div>
+
+        <div class="field">
+          <label for="budget">Budget</label>
+          <select id="budget" class="glass-input">
+            <option value="">💰 Any Budget</option>
+            <option value="free">🆓 Completely Free</option>
+            <option value="cheap">💸 Spare Change</option>
+            <option value="expensive">🤑 Treat Yo' Self</option>
+          </select>
+        </div>
+
+        <button id="fetchBtn" class="primary-btn">Find Activity</button>
+      </section>
+
+      <!-- Result Box -->
+      <div id="resultBox" class="result-box" hidden>
+        <p id="sourceBadge" class="source-badge"></p>
+        <h2 id="activityName" class="activity-name"></h2>
+        <div class="pills">
+          <span id="pillType"  class="pill"></span>
+          <span id="pillPeeps" class="pill"></span>
+          <span id="pillCost"  class="pill"></span>
+        </div>
+        <div class="result-actions">
+          <button id="favBtn"   class="icon-btn" title="Favourite">🤍</button>
+          <button id="shareBtn" class="icon-btn" title="Copy">📋 Copy</button>
+          <button id="againBtn" class="icon-btn secondary" title="Shuffle">🔀 Shuffle</button>
+        </div>
+      </div>
+
+      <!-- Tabbed History / Favourites -->
+      <div id="extraCard" class="extra-card" hidden>
+        <div class="tabs" role="tablist">
+          <button class="tab active" data-tab="history"    role="tab">🕓 History</button>
+          <button class="tab"        data-tab="favourites" role="tab">🧡 Favourites</button>
+        </div>
+        <div id="tab-history"    class="tab-panel active">
+          <ul id="historyList"   class="item-list"></ul>
+        </div>
+        <div id="tab-favourites" class="tab-panel">
+          <ul id="favList"       class="item-list"></ul>
+        </div>
+      </div>
+
     </main>
+  </div>
 
-    <script src="script.js"></script>
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
 </body>
+
 </html>

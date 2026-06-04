@@ -641,3 +641,121 @@ input:focus~.highlight {
         opacity: 0.5;
     }
 }
+
+.glass-card {
+    width: 90%;
+    max-width: 500px;
+
+    padding: 2rem;
+
+    border-radius: 20px;
+
+    backdrop-filter: blur(10px);
+
+    background: rgba(255,255,255,0.15);
+
+    border: 1px solid rgba(255,255,255,0.2);
+
+    box-shadow:
+    0 8px 32px rgba(0,0,0,0.2);
+}
+
+input {
+    width: 100%;
+    padding: 14px 18px;
+
+    border: none;
+    border-radius: 12px;
+
+    margin-top: 10px;
+
+    font-size: 1rem;
+
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+    0 0 0 3px rgba(255,255,255,0.4);
+}
+
+button {
+    width: 100%;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #ff4f81;
+
+    color: white;
+
+    font-size: 1rem;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+    0 10px 20px rgba(0,0,0,0.2);
+}
+
+#result {
+    margin-top: 25px;
+
+    text-align: center;
+
+    padding: 20px;
+
+    border-radius: 15px;
+
+    background: rgba(255,255,255,0.15);
+
+    animation: fadeIn 0.5s ease;
+}
+.score {
+    font-size: 3rem;
+
+    font-weight: bold;
+
+    color: white;
+
+    animation: pop 0.6s ease;
+}
+@keyframes pop {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .glass-card {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .score {
+        font-size: 2.5rem;
+    }
+}
