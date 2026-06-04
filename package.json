@@ -4,7 +4,9 @@
   "private": true,
   "description": "A curated open-source collection of 100+ frontend web projects",
   "scripts": {
+    "generate-previews": "node scripts/generate-previews.js",
     "dev": "npx -y serve . -p 3000",
+    "validate:projects": "node scripts/validate-projects.js",
     "lint": "npx -y htmlhint index.html contributors/contributor.html",
     "lint:all": "npx -y htmlhint '**/*.html' --ignore 'node_modules/**,**/node_modules/**'",
     "docker:build": "docker build -t 100days-web .",
@@ -30,12 +32,18 @@
     "dotenv": "^17.4.2"
   },
   "devDependencies": {
+
+    "puppeteer": "^25.1.0",
     "serve": "^14.2.6",
+
     "husky": "^9.0.11",
-    "lint-staged": "^15.2.2"
+    "lint-staged": "^15.2.2",
+    "stylelint": "^17.12.0",
+    "stylelint-config-standard": "^40.0.0"
   },
   "lint-staged": {
     "projects.json": "node scripts/validateProjects.js",
     "*.html": "npx htmlhint"
+
   }
 }

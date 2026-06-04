@@ -263,6 +263,12 @@
       .summary   { grid-template-columns: 1fr; }
       .card-value { font-size: 1.5rem; }
     }
+    @media (max-width: 480px) {
+      .donut-row { flex-direction: column; align-items: center; gap: 1rem; }
+      .donut-legend { width: 100%; }
+      .chart-bars { gap: 0.2rem; }
+      .bar { min-height: 2px; }
+    }
   </style>
 </head>
 <body>
@@ -320,17 +326,17 @@
         </div>
 
         <div class="form-group">
-          <label>Description</label>
+          <label for="descInput">Description</label>
           <input type="text" id="descInput" placeholder="e.g. Salary, Groceries…" maxlength="40"/>
         </div>
 
         <div class="row">
           <div class="form-group">
-            <label>Amount (₹)</label>
+            <label for="amountInput">Amount (₹)</label>
             <input type="number" id="amountInput" placeholder="0.00" min="0" step="0.01"/>
           </div>
           <div class="form-group">
-            <label>Category</label>
+            <label for="catInput">Category</label>
             <select id="catInput">
               <option value="salary">💼 Salary</option>
               <option value="food">🍔 Food</option>
@@ -344,7 +350,7 @@
         </div>
 
         <div class="form-group">
-          <label>Date</label>
+          <label for="dateInput">Date</label>
           <input type="date" id="dateInput"/>
         </div>
 
@@ -543,7 +549,7 @@
           <div class="tx-meta">${t.cat} · ${fmtDate(t.date)}</div>
         </div>
         <div class="tx-amount ${t.type}">${t.type==='income'?'+':'−'}${fmt(t.amount)}</div>
-        <button class="tx-del" onclick="deleteTransaction(${t.id})" title="Delete">✕</button>
+        <button class="tx-del" onclick="deleteTransaction(${t.id})" title="Delete" aria-label="Delete transaction: ${esc(t.desc)}">✕</button>
       </div>
     `).join('');
   }
