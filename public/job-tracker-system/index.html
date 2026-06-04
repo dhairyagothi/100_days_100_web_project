@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Advanced Kanban Pipeline Systems Engine</title>
+</head>
+
+<body>
+    <h2>Advanced Job Tracking & Analytical Workspace Engine</h2>
+
+    <div>
+        <strong>Total Active Leads: </strong><span id="stat-total">0</span> |
+        <strong>Interview Conversion Rate: </strong><span id="stat-rate">0%</span>
+    </div>
+
+    <div style="display: flex; gap: 20px; margin-top: 20px;">
+        <div class="kanban-column" data-stage="Applied"
+            style="border: 1px solid #aaa; padding: 10px; width: 200px; min-height: 200px;">
+            <h3>Applied Column</h3>
+            <div class="job-card" draggable="true" data-id="job_001"
+                style="border: 1px solid blue; padding: 5px; margin: 5px; cursor: move;">
+                <h4>Google - Frontend Engineer</h4>
+            </div>
+        </div>
+
+        <div class="kanban-column" data-stage="Interviewing"
+            style="border: 1px solid #aaa; padding: 10px; width: 200px; min-height: 200px;">
+            <h3>Interviewing Column</h3>
+        </div>
+    </div>
+
+    <h4>Global System Diagnostics Streams:</h4>
+    <pre id="system-log" style="background: #222; color: #00ff00; padding: 10px;">Pipeline Interface Ready...</pre>
+
+    <script type="module" src="main.js"></script>
+</body>
+
+</html>

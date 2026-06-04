@@ -403,20 +403,96 @@ function evaluateBoard(boardState) {
 
     return null;
 }
-
-function getWinner(){
-
-
-for(const line of WIN_LINES){
-
-    const [a,b,c] = line;
-
-    if(
-        gameBoard[a] &&
-        gameBoard[a] === gameBoard[b] &&
-        gameBoard[a] === gameBoard[c]
-    ){
-        return line;
+  /* ── Scan for winner (returns mark or null) ── */
+  function scanWinner(b) {
+    for (var i = 0; i < WIN_LINES.length; i++) {
+      var l = WIN_LINES[i];
+      if (b[l[0]] && b[l[0]] === b[l[1]] && b[l[0]] === b[l[2]]) {
+        return b[l[0]];
+      }
+    }
+    return null;
+  }
+  /* ── Check win (uses scanWinner) ─────── */
+  function checkWin() {
+    return scanWinner(board) ? WIN_LINES.find(function (l) {
+      return board[l[0]] && board[l[0]] === board[l[1]] && board[l[0]] === board[l[2]];
+    }) : null;
+  }
+  /* ── Highlight winning cells ──────────── */
+  function highlightWin(line) {
+    var cells = boardEl.querySelectorAll(".cell");
+    line.forEach(function (i) { cells[i].classList.add("win-cell"); });
+  }
+  /* ── Update turn UI + background ─────── */
+  function setUI(player) {
+    var label = (vsBot && player === botMark) ? "Bot" : "Player " + player;
+    turnChip.textContent = "Turn: " + (player ? label : "");
+    statusEl.textContent = player ? label + "'s turn!" : "";
+  }
+  /* ── Update scoreboard ────────────────── */
+  function updateScores() {
+    scoreX.textContent = scores.X;
+    scoreO.textContent = scores.O;
+    scoreD.textContent = scores.D;
+  }
+  /* ── Win overlay ──────────────────────── */
+  function showWinOverlay(player) {
+    var label = (vsBot && player === botMark) ? "Bot" : "Player " + player;
+    winText.textContent = label + " wins the round!";
+    winSub.textContent  = "Great moves. Ready for the next round?";
+    overlay.classList.add("show");
+    overlay.setAttribute("aria-hidden", "false");
+    launchConfetti(player);
+  }
+  /* ── Draw overlay ─────────────────────── */
+  function showDrawOverlay() {
+    winText.textContent = "It's a draw!";
+    winSub.textContent  = "Nobody wins this round.";
+    overlay.classList.add("show");
+    overlay.setAttribute("aria-hidden", "false");
+  }
+  /* ── Next round ───────────────────────── */
+  function nextRound() {
+    board    = Array(9).fill(null);
+    current  = "X";
+    gameOver = false;
+    buildBoard();
+    setUI("X");
+    overlay.classList.remove("show");
+    overlay.setAttribute("aria-hidden", "true");
+    stopConfetti();
+    if (vsBot && current === botMark) {
+      var avail = board.map(function (v, i) { return v ? null : i; }).filter(function (v) { return v !== null; });
+      if (avail.length) setTimeout(function () {
+        var cells = boardEl.querySelectorAll('.cell');
+        if (cells[avail[0]]) cells[avail[0]].click();
+      }, 480);
+    }
+  }
+  /* ── Reset all ────────────────────────── */
+  function resetAll() {
+    scores = { X: 0, O: 0, D: 0 };
+    updateScores();
+    nextRound();
+  }
+  /* ── Launch confetti ─────────────────── */
+  function launchConfetti(player) {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+    particles = [];
+    var color = player === "X" ? "#ff7d7d" : "#40f5d2";
+    for (var i = 0; i < 100; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        r: Math.random() * 6 + 3,
+        d: Math.random() * 2 + 1,
+        color: Math.random() > 0.5 ? color : "#ffffff",
+        tilt: Math.random() * 10 - 5
+      });
+    }
+  }
     }
 }
 
@@ -645,3 +721,54 @@ winnerModal.classList.remove("show");
 updateStatus();
 updateScores();
 renderBoard();
+
+
+// ============================================================
+// ACCESSIBILITY INTERFACE: KEYBOARD NAVIGATION & ARIA INJECTION (#6033)
+// ============================================================
+
+/**
+ * Automates focus indicators and screen reader attributes over dynamic cells
+ */
+function applyGridAccessibility() {
+    const board = document.getElementById('board');
+    if (!board) return;
+
+    // Monitor structural mutations inside the board wrapper
+    const observer = new MutationObserver(() => {
+        const cells = board.querySelectorAll('.cell, [data-cell], .box');
+        
+        cells.forEach((cell, index) => {
+            // Assign sequential keyboard tracking context benchmarks
+            if (!cell.hasAttribute('tabindex')) {
+                cell.setAttribute('tabindex', '0');
+                cell.setAttribute('role', 'button');
+                cell.setAttribute('aria-label', `Grid square ${index + 1}, empty`);
+            }
+
+            // Keyboard navigation execution payload mapping
+            if (!cell.dataset.keyboardBound) {
+                cell.dataset.keyboardBound = "true";
+                cell.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault(); // Capture baseline shift constraints
+                        cell.click();       // Fallback directly onto runtime click mechanics
+                        
+                        // Update dynamic announcements for state changes
+                        const currentTurn = document.getElementById('statusText')?.textContent || '';
+                        cell.setAttribute('aria-label', `Grid square ${index + 1}, marked ${cell.textContent || 'occupied'}`);
+                    }
+                });
+            }
+        });
+    });
+
+    observer.observe(board, { childList: true, subtree: true });
+}
+
+// Fire runtime validation layers safely on context evaluation
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyGridAccessibility);
+} else {
+    applyGridAccessibility();
+}
