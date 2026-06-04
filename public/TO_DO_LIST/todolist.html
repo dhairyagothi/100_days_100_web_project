@@ -1,131 +1,158 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>To-Do List | Modern Productivity App</title>
+    <title>To-Do List | Modern Productivity App</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-    rel="stylesheet"
-  />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
 
-  <link rel="stylesheet" href="todolist.css" />
+    <link rel="stylesheet" href="todolist.css" />
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-</head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  </head>
 
-<body>
+  <body>
+    <a
+      href="/"
+      class="project-back-button"
+      style="
+        position: fixed;
+        left: 18px;
+        top: 18px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        background: white;
+        color: #111827;
+        text-decoration: none;
+        z-index: 9999;
+        font-weight: 700;
+        font-family: Inter, sans-serif;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      "
+    >
+      ← Back to Home
+    </a>
 
-  <a
-    href="/"
-    class="project-back-button"
-    style="
-      position:fixed;
-      left:18px;
-      top:18px;
-      padding:10px 14px;
-      border-radius:10px;
-      background:white;
-      color:#111827;
-      text-decoration:none;
-      z-index:9999;
-      font-weight:700;
-      font-family:Inter,sans-serif;
-      box-shadow:0 8px 20px rgba(0,0,0,.2);
-    "
-  >
-    ← Back to Home
-  </a>
+    <div class="floating-shapes" aria-hidden="true">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+      <div class="shape shape-4"></div>
+    </div>
 
-  <div class="floating-shapes" aria-hidden="true">
-    <div class="shape shape-1"></div>
-    <div class="shape shape-2"></div>
-    <div class="shape shape-3"></div>
-    <div class="shape shape-4"></div>
-  </div>
+    <header>
+      <ul class="navbar">
+        <li class="nav-left">
+          <ul>
+            <li>
+              <a
+                href="#"
+                id="nav-home"
+                class="active"
+                onclick="
+                  showHome();
+                  return false;
+                "
+              >
+                🏠 Home
+              </a>
+            </li>
 
-  <header>
+            <li>
+              <a
+                href="#"
+                id="nav-documents"
+                onclick="
+                  showDocuments();
+                  return false;
+                "
+              >
+                📄 Documents
+              </a>
+            </li>
+          </ul>
+        </li>
 
-    <ul class="navbar">
+        <li class="nav-right">
+          <span class="theme-label">Theme</span>
 
-      <li class="nav-left">
+          <ul>
+            <li>
+              <button
+                id="colour1"
+                class="theme-btn active"
+                data-theme="theme1"
+              ></button>
+            </li>
+            <li>
+              <button
+                id="colour2"
+                class="theme-btn"
+                data-theme="theme2"
+              ></button>
+            </li>
+            <li>
+              <button
+                id="colour3"
+                class="theme-btn"
+                data-theme="theme3"
+              ></button>
+            </li>
+            <li>
+              <button
+                id="colour4"
+                class="theme-btn"
+                data-theme="theme4"
+              ></button>
+            </li>
+            <li>
+              <button
+                id="colour5"
+                class="theme-btn"
+                data-theme="theme5"
+              ></button>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </header>
 
-        <ul>
+    <main>
+      <section id="home-tab">
+        <div class="hero">
+          <div class="hero-badge">🚀 Stay Productive</div>
 
-          <li>
-            <a href="#" id="nav-home" class="active" onclick="showHome(); return false;">
-              🏠 Home
-            </a>
-          </li>
+          <h1 class="heading">JUST DO IT.</h1>
 
-          <li>
-            <a href="#" id="nav-documents" onclick="showDocuments(); return false;">
-              📄 Documents
-            </a>
-          </li>
+          <p class="hero-subtitle">
+            Organise your tasks and conquer your goals.
+          </p>
 
-        </ul>
+          <div class="progress-wrapper">
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" id="progressFill"></div>
+            </div>
 
-      </li>
-
-      <li class="nav-right">
-
-        <span class="theme-label">Theme</span>
-
-        <ul>
-
-          <li><button id="colour1" class="theme-btn active" data-theme="theme1"></button></li>
-          <li><button id="colour2" class="theme-btn" data-theme="theme2"></button></li>
-          <li><button id="colour3" class="theme-btn" data-theme="theme3"></button></li>
-          <li><button id="colour4" class="theme-btn" data-theme="theme4"></button></li>
-          <li><button id="colour5" class="theme-btn" data-theme="theme5"></button></li>
-
-        </ul>
-
-      </li>
-
-    </ul>
-
-  </header>
-
-  <main>
-
-    <section id="home-tab">
-
-      <div class="hero">
-
-        <div class="hero-badge">🚀 Stay Productive</div>
-
-        <h1 class="heading">JUST DO IT.</h1>
-
-        <p class="hero-subtitle">
-          Organise your tasks and conquer your goals.
-        </p>
-
-        <div class="progress-wrapper">
-
-          <div class="progress-bar-track">
-            <div class="progress-bar-fill" id="progressFill"></div>
+            <output class="progress-text" id="progressText">
+              0 / 0 done
+            </output>
           </div>
-
-          <output class="progress-text" id="progressText">
-            0 / 0 done
-          </output>
-
         </div>
 
-      </div>
+        <form class="input-panel" id="task-form">
+          <div class="input-group">
+            <label for="task-category" class="sr-only">
+              Choose task category
+            </label>
 
-      <form class="input-panel" id="task-form">
-
-        <div class="input-group">
-          <label for="task-category" class="sr-only">Choose task category</label>
-        <!-- Category -->
             <select id="task-category">
               <option value="" disabled selected>📂 Category</option>
               <option value="Work">💼 Work</option>
@@ -134,223 +161,153 @@
               <option value="Fitness">💪 Fitness</option>
               <option value="Miscellaneous">📌 Miscellaneous</option>
             </select>
-            
-            <!-- Task Name -->
-            <input type="text" id="task" placeholder="What do you need to do?" autocomplete="off">
-            
-            <!-- Priority -->
-            <select id="prioritySelect" class="priority-select" aria-label="Task priority">
+
+            <input
+              type="text"
+              id="task"
+              placeholder="What do you need to do?"
+              autocomplete="off"
+            />
+
+            <select
+              id="prioritySelect"
+              class="priority-select"
+              aria-label="Task priority"
+            >
               <option value="low">🟢 Low</option>
               <option value="medium" selected>🟡 Medium</option>
               <option value="high">🔴 High</option>
             </select>
 
-<!-- Add Task -->
             <button type="submit" id="submittask">➕ Add Task</button>
-          <select id="task-category" aria-label="Choose task category">
-            <option value="" disabled selected>📂 Category</option>
-            <option value="Work">💼 Work</option>
-            <option value="Personal">🧑 Personal</option>
-            <option value="Urgent">⚡ Urgent</option>
-            <option value="Fitness">💪 Fitness</option>
-            <option value="Miscellaneous">📌 Miscellaneous</option>
+          </div>
 
-          <select id="task-category">
-            <option value="" disabled selected>📂 Category</option>
-            <option value="Work">💼 Work</option>
-            <option value="Personal">🧑 Personal</option>
-            <option value="Urgent">⚡ Urgent</option>
-            <option value="Fitness">💪 Fitness</option>
-            <option value="Miscellaneous">📌 Miscellaneous</option>
-          </select>
+          <div class="input-actions">
+            <button type="button" id="savepdf">📥 Save as PDF</button>
+          </div>
+        </form>
 
-          <select id="eisenhower-select">
-            <option value="" disabled selected>Eisenhower Matrix</option>
-            <option value="urgent-important">🔥 Urgent & Important</option>
-            <option value="important-only">⭐ Important Only</option>
-            <option value="urgent-only">⚡ Urgent Only</option>
-            <option value="neither">🌱 Neither</option>
-          </select>
-
+        <!--  Search Bar Container -->
+        <div class="search-container">
+          <!--  Search Input Field -->
           <input
             type="text"
-            id="task"
-            placeholder="What do you need to do?"
-            autocomplete="off"
+            id="searchInput"
+            placeholder="🔍 Search tasks..."
           />
-
-          <button type="submit" id="submittask">
-            ➕ Add Task
-          </button>
-
         </div>
 
-        <div class="input-actions">
-          <button type="button" id="savepdf">
-            📥 Save as PDF
-          </button>
-        </div>
+        <!--Filter tasks by status -->
 
-      </form>
-
-      <!--  Search Bar Container -->
-      <div class="search-container">
-        <!--  Search Input Field -->
-        <input
-        type="text"
-        id="searchInput"
-        placeholder="🔍 Search tasks..." >
-      </div>
-
-      
-      <!--Filter tasks by status -->
-
-      <div class="filter-container">
+        <div class="filter-container">
           <button type="button" onclick="applyTaskFilter('all')">All</button>
-          <button type="button" onclick="applyTaskFilter('active')">Active</button>
-          <button type="button" onclick="applyTaskFilter('completed')">Done</button>
-      </div>
-
-<!-- Empty State -->
-      <div class="empty-state" id="emptyState" role="status">
-        <div class="empty-icon" aria-hidden="true">📋</div>
-        <p class="empty-title">No tasks yet</p>
-        <p class="empty-desc">Add your first task above and get things done!</p>
-      </div>
-
-      <!-- Task List Container -->
-      <ul id="notes-container"></ul>
-
-    <!-- DASHBOARD LAYOUT -->
-    <div class="dashboard-layout">
-      <!-- LEFT : DONUT -->
-      <div class="analytics-card">
-        <div class="analytics-header">
-          <h3>COMPLETION</h3>
-          <span id="statusBadge" class="status-badge">In Progress</span>
+          <button type="button" onclick="applyTaskFilter('active')">
+            Active
+          </button>
+          <button type="button" onclick="applyTaskFilter('completed')">
+            Done
+          </button>
         </div>
-        <div class="chart-wrapper">
-          <canvas id="taskChart"></canvas>
-          <div class="chart-center">
-            <h2 id="completionPercent">0%</h2>
-            <span>COMPLETE</span>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" role="status">
+          <div class="empty-icon" aria-hidden="true">📋</div>
+          <p class="empty-title">No tasks yet</p>
+          <p class="empty-desc">
+            Add your first task above and get things done!
+          </p>
+        </div>
+
+        <!-- Task List Container -->
+        <ul id="notes-container"></ul>
+
+        <!-- DASHBOARD LAYOUT -->
+        <div class="dashboard-layout">
+          <!-- LEFT : DONUT -->
+          <div class="analytics-card">
+            <div class="analytics-header">
+              <h3>COMPLETION</h3>
+              <span id="statusBadge" class="status-badge">In Progress</span>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="taskChart"></canvas>
+              <div class="chart-center">
+                <h2 id="completionPercent">0%</h2>
+                <span>COMPLETE</span>
+              </div>
+            </div>
+            <div class="analytics-footer">
+              <span>🔵 Done <strong id="doneCount">0</strong></span>
+              <span>🟡 Active <strong id="activeCount">0</strong></span>
+            </div>
+          </div>
+
+          <!-- TOTAL TASKS -->
+          <div class="overview-card total-card">
+            <div class="card-top">
+              <div class="overview-icon purple">📋</div>
+              <h2 id="totalTasks">0</h2>
+            </div>
+            <p>TOTAL TASKS</p>
+          </div>
+
+          <!-- IN PROGRESS -->
+          <div class="overview-card progress-card">
+            <div class="card-top">
+              <div class="overview-icon yellow">⚡</div>
+              <h2 id="inProgressTasks">0</h2>
+            </div>
+            <p>IN PROGRESS</p>
+          </div>
+
+          <!-- COMPLETED -->
+          <div class="overview-card completed-card">
+            <div class="card-top">
+              <div class="overview-icon green">✅</div>
+              <h2 id="completedTasks">0</h2>
+            </div>
+            <p>COMPLETED</p>
+          </div>
+
+          <!-- OVERDUE -->
+          <div class="overview-card overdue-card">
+            <div class="card-top">
+              <div class="overview-icon orange">⏰</div>
+              <h2 id="overdueTasks">0</h2>
+            </div>
+            <p>OVERDUE</p>
+          </div>
+
+          <!-- HIGH PRIORITY -->
+          <div class="high-priority-card">
+            <div class="card-top">
+              <div class="overview-icon orange">🔥</div>
+              <h2 id="highPriorityTasks">0</h2>
+            </div>
+            <p>HIGH PRIORITY TASKS</p>
           </div>
         </div>
-        <div class="analytics-footer">
-          <span>🔵 Done <strong id="doneCount">0</strong></span>
-          <span>🟡 Active <strong id="activeCount">0</strong></span>
-        </div>
-      </div>
-
-      <!-- TOTAL TASKS -->
-    <div class="overview-card total-card">
-      <div class="card-top">
-        <div class="overview-icon purple">📋</div>
-        <h2 id="totalTasks">0</h2>
-      </div>
-      <p>TOTAL TASKS</p>
-    </div>
-    
-    <!-- IN PROGRESS -->
-    <div class="overview-card progress-card">
-      <div class="card-top">
-        <div class="overview-icon yellow">⚡</div>
-        <h2 id="inProgressTasks">0</h2>
-      </div>
-      <p>IN PROGRESS</p>
-    </div>
-    
-    <!-- COMPLETED -->
-    <div class="overview-card completed-card">
-      <div class="card-top">
-        <div class="overview-icon green">✅</div>
-        <h2 id="completedTasks">0</h2>
-      </div>
-      <p>COMPLETED</p>
-    </div>
-    
-    <!-- OVERDUE -->
-    <div class="overview-card overdue-card">
-      <div class="card-top">
-        <div class="overview-icon orange">⏰</div>
-        <h2 id="overdueTasks">0</h2>
-      </div>
-      <p>OVERDUE</p>
-    </div>
-    
-    <!-- HIGH PRIORITY -->
-    <div class="high-priority-card">
-      <div class="card-top">
-        <div class="overview-icon orange">🔥</div>
-        <h2 id="highPriorityTasks">0</h2>
-      </div>
-      <p>HIGH PRIORITY TASKS</p>
-    </div>
-    </div>
-    <!-- End dashboard-layout -->
-      
-    </section>
-    <!-- Documents Section -->
-    <section id="documents-tab" aria-label="Documents tab" hidden>
-      <!-- EMPTY STATE -->
-      <div
-        class="empty-state"
-        id="emptyState"
-      >
-
-        <div class="empty-icon">
-          📋
+        <!-- End dashboard-layout -->
+      </section>
+      <!-- Documents Section -->
+      <section id="documents-tab" hidden>
+        <div class="documents-header">
+          <h2 class="heading">📄 Saved Documents</h2>
         </div>
 
-        <p class="empty-title">
-          No tasks yet
-        </p>
+        <div class="empty-state" id="emptyDocsState">
+          <div class="empty-icon">📂</div>
+          <p class="empty-title">No saved documents</p>
+          <p class="empty-desc">Export your tasks as PDF to see them here.</p>
+        </div>
 
-      <div class="empty-state" id="emptyState">
-        <div class="empty-icon">📋</div>
-        <p class="empty-title">No tasks yet</p>
-        <p class="empty-desc">
-          Add your first task above and start being productive!
-        </p>
-      </div>
-
-      <ul id="notes-container"></ul>
-
-    </section>
-
-    <section id="documents-tab" hidden>
-
-      <div class="documents-header">
-        <h2 class="heading">📄 Saved Documents</h2>
-      </div>
-
-      <div class="empty-state" id="emptyDocsState">
-        <div class="empty-icon">📂</div>
-        <p class="empty-title">No saved documents</p>
-        <p class="empty-desc">
-          Export your tasks as PDF to see them here.
-        </p>
-      </div>
-
-      <div class="documents-list"></div>
-
-    </section>
-
-  </main>
-
-  <div
-    id="pdfMessage"
-    class="pdf-message"
-    role="alert"
-    aria-live="polite"
-  ></div>
-  <!-- PDF Notification -->
-  <div id="toast" class="pdf-message" role="alert" aria-live="polite"></div>
-  <!--Required for Doughnut Chart-->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <div id="pdfMessage" class="pdf-message" role="alert" aria-live="polite"></div>
-
-  <script src="todolist.js"></script>
-
-</body>
+        <div class="documents-list"></div>
+      </section>
+    </main>
+    <!-- PDF Notification -->
+    <div id="toast" class="pdf-message" role="alert" aria-live="polite"></div>
+    <!--Required for Doughnut Chart-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="todolist.js"></script>
+  </body>
 </html>

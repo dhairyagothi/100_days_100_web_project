@@ -51,7 +51,7 @@ function addTask() {
   // Capture priority choice safely
   const priorityElement = document.getElementById("prioritySelect");
   const priorityValue = priorityElement ? priorityElement.value : "medium";
-  const eisenhower = eisenhowerSelect.value;
+  const eisenhower = eisenhowerSelect ? eisenhowerSelect.value : "";
 
   if (!text) {
     showToast("⚠️ Please enter a task description!");
@@ -59,11 +59,6 @@ function addTask() {
   }
 
   const selectedOption = taskTypeSelect.options[taskTypeSelect.selectedIndex];
-  const color = (selectedOption && selectedOption.getAttribute && selectedOption.getAttribute("data-color")) || "#ffb86b";
- let idx = tasks.length;
-  // Create local task object
-  const selectedOption =
-    taskTypeSelect.options[taskTypeSelect.selectedIndex];
 
   const color =
     (selectedOption &&
@@ -72,49 +67,41 @@ function addTask() {
     "#ffb86b";
 
   const newTask = {
-      id: Date.now(),
-      text: text,
-      category: category || "Misc",
-      color: color,
-      completed: false,
-      priority: priorityValue, // 📌 Saves priority data to item object
-      createdAt: new Date().toLocaleString("en-IN", {
-          dateStyle: "medium",
-          timeStyle: "short"
-      })
     id: Date.now(),
     text: text,
     category: category || "Miscellaneous",
     eisenhower: eisenhower || "",
     color: color,
     completed: false,
-    task_no: tasks.length+ 1
+    priority: priorityValue,
+    task_no: tasks.length + 1,
+    createdAt: new Date().toLocaleString("en-IN", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    }),
   };
 
   tasks.push(newTask);
   taskInput.value = "";
-  taskTypeSelect.value = "";
-  if(priorityElement) priorityElement.value = "medium"; // Reset back to default
-  
+  if (priorityElement) priorityElement.value = "medium"; // Reset back to default
+
   taskTypeSelect.value = ""; // Reset dropdown
-  eisenhowerSelect.value = ""; // Reset Eisenhower dropdown
+  if (eisenhowerSelect) {
+    eisenhowerSelect.value = "";
+  } // Reset Eisenhower dropdown
 
   saveTasks();
   renderTasks();
-
-  taskInput.value = "";
-  taskTypeSelect.value = "";
-  eisenhowerSelect.value = "";
 
   showToast("✅ Task added successfully!");
 }
 
 function toggleTask(id) {
-  tasks = tasks.map(task => {
+  tasks = tasks.map((task) => {
     if (task.id === id) {
       return {
         ...task,
-        completed: !task.completed
+        completed: !task.completed,
       };
     }
 
@@ -132,7 +119,7 @@ function deleteTask(id) {
     card.style.animation = "fadeOut 0.25s ease forwards";
 
     setTimeout(() => {
-      tasks = tasks.filter(task => task.id !== id);
+      tasks = tasks.filter((task) => task.id !== id);
       tasks.forEach((task, index) => {
         task.task_no = index + 1;
       });
@@ -148,7 +135,7 @@ function deleteTask(id) {
 function clearDone() {
   const previousLength = tasks.length;
 
-  tasks = tasks.filter(task => !task.completed);
+  tasks = tasks.filter((task) => !task.completed);
 
   if (tasks.length === previousLength) {
     showToast("ℹ️ No completed tasks found.");
@@ -165,11 +152,11 @@ function clearDone() {
 }
 
 function updateTaskText(id, newText) {
-  tasks = tasks.map(task => {
+  tasks = tasks.map((task) => {
     if (task.id === id) {
       return {
         ...task,
-        text: newText.trim() || "Untitled Task"
+        text: newText.trim() || "Untitled Task",
       };
     }
 
@@ -184,8 +171,9 @@ function updateTaskText(id, newText) {
 // ============================================
 
 function filterTasks(buttonElement, filterValue) {
-  document.querySelectorAll(".filter-btn")
-    .forEach(btn => btn.classList.remove("active"));
+  document
+    .querySelectorAll(".filter-btn")
+    .forEach((btn) => btn.classList.remove("active"));
 
   buttonElement.classList.add("active");
 
@@ -195,7 +183,7 @@ function filterTasks(buttonElement, filterValue) {
 }
 
 function renderTasks() {
-  const filteredTasks = tasks.filter(task => {
+  const filteredTasks = tasks.filter((task) => {
     // Apply main filter
     let passesFilter = false;
     if (currentFilter === "all") {
@@ -207,7 +195,7 @@ function renderTasks() {
     } else {
       passesFilter = task.category === currentFilter; // Matches Category Strings
     }
-    
+
     // Apply search filter (only search task text, not buttons/metadata)
     if (currentSearch.trim()) {
       const searchLower = currentSearch.toLowerCase();
@@ -215,19 +203,8 @@ function renderTasks() {
       const categoryMatch = task.category.toLowerCase().includes(searchLower);
       passesFilter = passesFilter && (taskTextMatch || categoryMatch);
     }
-    
+
     return passesFilter;
-    if (currentFilter === "all") return true;
-
-    if (currentFilter === "pending") {
-      return !task.completed;
-    }
-
-    if (currentFilter === "done") {
-      return task.completed;
-    }
-
-    return task.category === currentFilter;
   });
 
   if (filteredTasks.length === 0) {
@@ -247,8 +224,7 @@ function renderTasks() {
     filteredTasks.forEach((task, idx) => {
       const card = document.createElement("div");
 
-      card.className =
-        `notes ${task.completed ? "completed" : ""}`;
+      card.className = `notes ${task.completed ? "completed" : ""}`;
 
       card.setAttribute("data-id", task.id);
 
@@ -261,78 +237,44 @@ function renderTasks() {
           <div class="task-meta-row">
             <div class="category-badge">${task.category}</div>
             <div class="priority-badge ${task.priority}">
-              ${task.priority==="high"?"🔴 High":task.priority==="medium"?"🟡 Medium":"🟢 Low"}
+              ${task.priority === "high" ? "🔴 High" : task.priority === "medium" ? "🟡 Medium" : "🟢 Low"}
             </div>
-            <button class="note-check" onclick="toggleTask(${task.id})">${task.completed ? '✓' : '✔'}</button>
+            <button class="note-check" onclick="toggleTask(${task.id})">${task.completed ? "✓" : "✔"}</button>
             <button class="note-delete" onclick="deleteTask(${task.id})">Delete</button>
           </div>
-          <div class="note-actions">
-            ${task.eisenhower ? `<span class="priority-tag ${task.eisenhower}">${
-              {"urgent-important":"Urgent & Important","important-only":"Important Only","urgent-only":"Urgent Only","neither":"Neither"}[task.eisenhower]
-            }</span>` : ""}
-            <button class="note-check" onclick="toggleTask(${task.id})">${task.completed ? '✓' : '✔'}</button>
-            <button class="note-delete" onclick="deleteTask(${task.id})">Delete</button>
 
-          <textarea
-            class="note-text"
-            onchange="updateTaskText(${task.id}, this.value)"
-          >${task.text}</textarea>
 
           <div class="note-actions">
             <span class="task-number">${task.task_no}</span>
-
-            <div class="category-badge">
-              ${task.category}
-            </div>
-
             ${
               task.eisenhower
                 ? `
                   <span class="priority-tag ${task.eisenhower}">
                     ${
                       {
-                        "urgent-important":
-                          "🔥 Urgent & Important",
+                        "urgent-important": "🔥 Urgent & Important",
 
-                        "important-only":
-                          "⭐ Important Only",
+                        "important-only": "⭐ Important Only",
 
-                        "urgent-only":
-                          "⚡ Urgent Only",
+                        "urgent-only": "⚡ Urgent Only",
 
-                        "neither":
-                          "🌱 Neither"
+                        neither: "🌱 Neither",
                       }[task.eisenhower]
                     }
                   </span>
                 `
                 : ""
             }
-
-            <button
-              class="note-check"
-              onclick="toggleTask(${task.id})"
-            >
-              ${task.completed ? "✓" : "✔"}
-            </button>
-
-            <button
-              class="note-delete"
-              onclick="deleteTask(${task.id})"
-            >
-              Delete
-            </button>
-
           </div>
         </div>
       `;
 
       taskList.appendChild(card);
-              });
-            }
+    });
+  }
 
-updateMetrics();
-updateTaskChart();
+  updateMetrics();
+  updateTaskChart();
 }
 
 // ============================================
@@ -340,23 +282,23 @@ updateTaskChart();
 // ============================================
 
 // UPDATE DASHBOARD METRICS
-function updateMetrics(){
-  const totalTasks=tasks.length;
-  const completedTasks=tasks.filter(task=>task.completed).length;
-  const inProgressTasks=totalTasks-completedTasks;
-  const overdueTasks=0;
-  
-  // Scans list items that are flagged high priority
-  const highPriorityCount = tasks.filter(task => task.priority === "high").length;
+function updateMetrics() {
+  const totalTasks = tasks.length;
+  const completedTasks = tasks.filter((task) => task.completed).length;
+  const inProgressTasks = totalTasks - completedTasks;
+  const overdueTasks = 0;
 
-  document.getElementById("totalTasks").textContent=totalTasks;
-  document.getElementById("inProgressTasks").textContent=inProgressTasks;
-  document.getElementById("completedTasks").textContent=completedTasks;
-  document.getElementById("overdueTasks").textContent=overdueTasks;
+  // Scans list items that are flagged high priority
+  const highPriorityCount = tasks.filter(
+    (task) => task.priority === "high",
+  ).length;
+
+  document.getElementById("totalTasks").textContent = totalTasks;
+  document.getElementById("inProgressTasks").textContent = inProgressTasks;
+  document.getElementById("completedTasks").textContent = completedTasks;
+  document.getElementById("overdueTasks").textContent = overdueTasks;
   document.getElementById("highPriorityTasks").textContent = highPriorityCount;
 }
-
-
 
 // 4. Tab Navigation System
 // function showHome() {
@@ -372,79 +314,37 @@ function updateMetrics(){
 //   document.getElementById("home-tab").style.display = "none";
 //   document.getElementById("documents-tab").style.display = "block";
 // }
-function updateMetrics() {
-  const total = tasks.length;
-
-  const done = tasks.filter(task => task.completed).length;
-
-  const percentage =
-    total === 0
-      ? 0
-      : Math.round((done / total) * 100);
-
-  if (progressFill) {
-    progressFill.style.width = `${percentage}%`;
-  }
-
-  if (progressText) {
-    progressText.innerText = `${done} / ${total} done`;
-  }
-}
 
 // ============================================
 // TAB NAVIGATION
 // ============================================
 
 function showHome() {
-  document
-    .getElementById("nav-home")
-    .classList.add("active");
+  document.getElementById("nav-home").classList.add("active");
 
-  document
-    .getElementById("nav-documents")
-    .classList.remove("active");
+  document.getElementById("nav-documents").classList.remove("active");
 
-  document
-    .getElementById("home-tab")
-    .removeAttribute("hidden");
+  document.getElementById("home-tab").removeAttribute("hidden");
 
-  document
-    .getElementById("home-tab")
-    .style.display = "block";
+  document.getElementById("home-tab").style.display = "block";
 
-  document
-    .getElementById("documents-tab")
-    .setAttribute("hidden", "");
+  document.getElementById("documents-tab").setAttribute("hidden", "");
 
-  document
-    .getElementById("documents-tab")
-    .style.display = "none";
+  document.getElementById("documents-tab").style.display = "none";
 }
 
 function showDocuments() {
-  document
-    .getElementById("nav-home")
-    .classList.remove("active");
+  document.getElementById("nav-home").classList.remove("active");
 
-  document
-    .getElementById("nav-documents")
-    .classList.add("active");
+  document.getElementById("nav-documents").classList.add("active");
 
-  document
-    .getElementById("home-tab")
-    .setAttribute("hidden", "");
+  document.getElementById("home-tab").setAttribute("hidden", "");
 
-  document
-    .getElementById("home-tab")
-    .style.display = "none";
+  document.getElementById("home-tab").style.display = "none";
 
-  document
-    .getElementById("documents-tab")
-    .removeAttribute("hidden");
+  document.getElementById("documents-tab").removeAttribute("hidden");
 
-  document
-    .getElementById("documents-tab")
-    .style.display = "block";
+  document.getElementById("documents-tab").style.display = "block";
 }
 
 // ============================================
@@ -453,8 +353,7 @@ function showDocuments() {
 
 const navHome = document.getElementById("nav-home");
 
-const navDocuments =
-  document.getElementById("nav-documents");
+const navDocuments = document.getElementById("nav-documents");
 
 if (navHome) {
   navHome.addEventListener("click", (e) => {
@@ -480,18 +379,16 @@ function applyTheme(themeName) {
     "theme2",
     "theme3",
     "theme4",
-    "theme5"
+    "theme5",
   );
 
   document.body.classList.add(themeName);
 
   document
     .querySelectorAll(".theme-btn")
-    .forEach(btn => btn.classList.remove("active"));
+    .forEach((btn) => btn.classList.remove("active"));
 
-  const activeBtn = document.querySelector(
-    `[data-theme="${themeName}"]`
-  );
+  const activeBtn = document.querySelector(`[data-theme="${themeName}"]`);
 
   if (activeBtn) {
     activeBtn.classList.add("active");
@@ -500,17 +397,15 @@ function applyTheme(themeName) {
   localStorage.setItem("todo-theme", themeName);
 }
 
-document
-  .querySelectorAll(".theme-btn")
-  .forEach(button => {
-    button.addEventListener("click", () => {
-      const theme = button.dataset.theme;
+document.querySelectorAll(".theme-btn").forEach((button) => {
+  button.addEventListener("click", () => {
+    const theme = button.dataset.theme;
 
-      if (!theme) return;
+    if (!theme) return;
 
-      applyTheme(theme);
-    });
+    applyTheme(theme);
   });
+});
 
 // ============================================
 // PDF EXPORT SYSTEM
@@ -524,11 +419,9 @@ function saveAsPDF() {
 
   const snapshot = [...tasks];
 
-  const doneCount =
-    snapshot.filter(task => task.completed).length;
+  const doneCount = snapshot.filter((task) => task.completed).length;
 
-  const pendingCount =
-    snapshot.length - doneCount;
+  const pendingCount = snapshot.length - doneCount;
 
   const { jsPDF } = window.jspdf;
 
@@ -542,16 +435,12 @@ function saveAsPDF() {
   doc.setFont("Helvetica", "normal");
   doc.setFontSize(10);
 
-  doc.text(
-    `Generated on: ${new Date().toLocaleString()}`,
-    20,
-    32
-  );
+  doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, 32);
 
   doc.text(
     `Tasks: ${snapshot.length} total | ${doneCount} done | ${pendingCount} pending`,
     20,
-    38
+    38,
   );
 
   doc.line(20, 42, 190, 42);
@@ -566,40 +455,33 @@ function saveAsPDF() {
       verticalCursor = 20;
     }
 
-    const status =
-      task.completed ? "[DONE]" : "[PENDING]";
+    const status = task.completed ? "[DONE]" : "[PENDING]";
 
-    const line =
-      `${index + 1}. ${status} (${task.category}) — ${task.text}`;
+    const line = `${index + 1}. ${status} (${task.category}) — ${task.text}`;
 
     doc.text(line, 20, verticalCursor);
 
     verticalCursor += 10;
   });
 
-  const timeLabel =
-    new Date().toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit"
-    });
+  const timeLabel = new Date().toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
-  const fileName =
-    `TaskFlow_${Date.now()}.pdf`;
+  const fileName = `TaskFlow_${Date.now()}.pdf`;
 
-  const fileURL =
-    URL.createObjectURL(doc.output("blob"));
+  const fileURL = URL.createObjectURL(doc.output("blob"));
 
   appendDocumentToList(
     fileName,
     fileURL,
     snapshot.length,
     doneCount,
-    timeLabel
+    timeLabel,
   );
 
-  showToast(
-    `📥 Saved ${snapshot.length} tasks to Documents!`
-  );
+  showToast(`📥 Saved ${snapshot.length} tasks to Documents!`);
 
   showDocuments();
 }
@@ -609,10 +491,9 @@ function appendDocumentToList(
   fileURL,
   taskCount,
   doneCount,
-  timeLabel
+  timeLabel,
 ) {
-  const docEmptyState =
-    document.getElementById("emptyDocsState");
+  const docEmptyState = document.getElementById("emptyDocsState");
 
   if (docEmptyState) {
     docEmptyState.style.display = "none";
@@ -684,8 +565,7 @@ function removeDocumentItem(button) {
   button.closest(".doc-item").remove();
 
   if (documentsList.children.length === 0) {
-    const docEmptyState =
-      document.getElementById("emptyDocsState");
+    const docEmptyState = document.getElementById("emptyDocsState");
 
     if (docEmptyState) {
       docEmptyState.style.display = "flex";
@@ -734,8 +614,7 @@ taskInput.addEventListener("keydown", (e) => {
   }
 });
 
-const savePdfBtn =
-  document.getElementById("savepdf");
+const savePdfBtn = document.getElementById("savepdf");
 
 if (savePdfBtn) {
   savePdfBtn.addEventListener("click", () => {
@@ -754,76 +633,81 @@ loadTasks();
 renderTasks();
 
 try {
-  const savedTheme =
-    localStorage.getItem("todo-theme");
+  const savedTheme = localStorage.getItem("todo-theme");
 
   applyTheme(savedTheme || "theme1");
 } catch (e) {
-  applyTheme('theme1');
+  applyTheme("theme1");
 }
-
 
 // TASK SEARCH FUNCTIONALITY - Search tasks in real-time
 const searchInput = document.getElementById("searchInput");
-if(searchInput){
-    searchInput.addEventListener("input", (e) => {
-        currentSearch = e.target.value;
-        renderTasks();
-    });
+if (searchInput) {
+  searchInput.addEventListener("input", (e) => {
+    currentSearch = e.target.value;
+    renderTasks();
+  });
 }
 
 // TASK FILTER FUNCTIONALITY - Uses existing render system
-function applyTaskFilter(type){
-    if(type === "all"){
-        currentFilter = "all";
-    } else if(type === "active"){
-        currentFilter = "active";
-    } else if(type === "completed"){
-        currentFilter = "completed";
-    }
-    renderTasks();
+function applyTaskFilter(type) {
+  if (type === "all") {
+    currentFilter = "all";
+  } else if (type === "active") {
+    currentFilter = "active";
+  } else if (type === "completed") {
+    currentFilter = "completed";
+  }
+  renderTasks();
 }
 
 // TASK ANALYTICS DOUGHNUT CHART - Displays completed vs pending tasks
 const ctx = document.getElementById("taskChart");
 let taskChart = null;
 
-function updateTaskChart(){
-  if(!ctx)return;
-  const completedTasks=tasks.filter(task=>task.completed).length;
-  const pendingTasks=tasks.length-completedTasks;
-  const totalTasks=tasks.length;
-  const percentage=totalTasks===0?0:Math.round((completedTasks/totalTasks)*100);
-  document.getElementById("completionPercent").innerText=`${percentage}%`;
-  document.getElementById("doneCount").innerText=completedTasks;
-  document.getElementById("activeCount").innerText=pendingTasks;
-  const statusBadge=document.getElementById("statusBadge");
-  if(completedTasks === totalTasks &&totalTasks > 0){
-    statusBadge.textContent="All done ✨";
-  }else{
-    statusBadge.textContent="In Progress";
+function updateTaskChart() {
+  if (!ctx) return;
+  const completedTasks = tasks.filter((task) => task.completed).length;
+  const pendingTasks = tasks.length - completedTasks;
+  const totalTasks = tasks.length;
+  const percentage =
+    totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
+  document.getElementById("completionPercent").innerText = `${percentage}%`;
+  document.getElementById("doneCount").innerText = completedTasks;
+  document.getElementById("activeCount").innerText = pendingTasks;
+  const statusBadge = document.getElementById("statusBadge");
+  if (completedTasks === totalTasks && totalTasks > 0) {
+    statusBadge.textContent = "All done ✨";
+  } else {
+    statusBadge.textContent = "In Progress";
   }
-  if(taskChart){taskChart.destroy();}
-  taskChart=new Chart(ctx,{
-    type:"doughnut",
-    data:{
-      datasets:[{
-        data:[totalTasks === 0 ? 0 : completedTasks, totalTasks === 0 ? 1 : pendingTasks],
-        backgroundColor:["#62dbc9","#b06cff"],
-        borderWidth:0,
-        borderRadius:40
-      }]
+  if (taskChart) {
+    taskChart.destroy();
+  }
+  taskChart = new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      datasets: [
+        {
+          data: [
+            totalTasks === 0 ? 0 : completedTasks,
+            totalTasks === 0 ? 1 : pendingTasks,
+          ],
+          backgroundColor: ["#62dbc9", "#b06cff"],
+          borderWidth: 0,
+          borderRadius: 40,
+        },
+      ],
     },
-    options:{
-      responsive:true,
-      maintainAspectRatio:false,
-      cutout:"78%",
-      plugins:{legend:{display:false}}
-    }
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: "78%",
+      plugins: { legend: { display: false } },
+    },
   });
 }
 
 renderTasks();
 updateTaskChart();
-  applyTheme("theme1");
-}
+applyTheme("theme1");
