@@ -636,13 +636,28 @@ function renderInterviewHistory() {
         card.className =
             "history-card";
 
-        card.innerHTML = `
-            <h4>${session.role}</h4>
-            <p>${session.difficulty}</p>
-            <p>Confidence: ${session.confidenceScore}%</p>
-            <p>Stress: ${session.stressScore}%</p>
-            <small>${session.completedAt}</small>
-        `;
+        const title = document.createElement("h4");
+title.textContent = session.role;
+
+const difficulty = document.createElement("p");
+difficulty.textContent = session.difficulty;
+
+const confidence = document.createElement("p");
+confidence.textContent =
+  `Confidence: ${session.confidenceScore}%`;
+
+const stress = document.createElement("p");
+stress.textContent =
+  `Stress: ${session.stressScore}%`;
+
+const date = document.createElement("small");
+date.textContent = session.completedAt;
+
+card.appendChild(title);
+card.appendChild(difficulty);
+card.appendChild(confidence);
+card.appendChild(stress);
+card.appendChild(date);
 
         UI.historyContainer.appendChild(card);
 
