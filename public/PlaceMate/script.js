@@ -307,6 +307,34 @@ updateBtn.addEventListener("click", () => {
       document.getElementById("resumeInput").value
     );
 
+  const suggestions =
+    document.getElementById(
+      "resumeSuggestions"
+    );
+
+  if(resume >= 85){
+
+    suggestions.innerHTML = `
+      ✓ Excellent Resume<br>
+      ✓ Keep updating projects
+    `;
+
+  }else if(resume >= 70){
+
+    suggestions.innerHTML = `
+      ✓ Add measurable achievements<br>
+      ✓ Improve project descriptions
+    `;
+
+  }else{
+
+    suggestions.innerHTML = `
+      ✓ Add Projects<br>
+      ✓ Improve Keywords<br>
+      ✓ Add Quantified Achievements
+    `;
+  }
+
   const communication =
     parseInt(
       document.getElementById("communicationInput").value

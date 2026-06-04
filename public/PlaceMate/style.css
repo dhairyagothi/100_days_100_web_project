@@ -499,6 +499,16 @@ body.light-mode .theme-toggle {
 
   color: white;
 }
+.resume-section{
+  margin-bottom:40px;
+}
+
+.resume-card{
+  background:var(--card-bg);
+  border:1px solid var(--border-color);
+  border-radius:20px;
+  padding:25px;
+}
 
 /* login */
 .auth-container{
