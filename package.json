@@ -4,6 +4,7 @@
   "private": true,
   "description": "A curated open-source collection of 100+ frontend web projects",
   "scripts": {
+    "generate-previews": "node scripts/generate-previews.js",
     "dev": "npx -y serve . -p 3000",
     "validate:projects": "node scripts/validate-projects.js",
     "lint": "npx -y htmlhint index.html contributors/contributor.html",
@@ -31,6 +32,10 @@
     "dotenv": "^17.4.2"
   },
   "devDependencies": {
+
+    "puppeteer": "^25.1.0",
+    "serve": "^14.2.6"
+
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "serve": "^14.2.6",
@@ -40,5 +45,6 @@
   "lint-staged": {
     "projects.json": "node scripts/validateProjects.js",
     "*.html": "npx htmlhint"
+
   }
 }

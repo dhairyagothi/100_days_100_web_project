@@ -17,7 +17,6 @@
     <script src="theme.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-    <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="100 Days · 100 Web Projects" />
     <meta
@@ -32,7 +31,6 @@
       name="google-site-verification"
       content="FZFMJENRD-9I74GAks_nhLVOOiqqnlsPU-JDtRCYXpc"
     />
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="100 Days · 100 Web Projects" />
     <meta
@@ -54,6 +52,40 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     />
     <link rel="stylesheet" href="style.css" />
+
+    <style>
+      .btn-stats {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0.65rem 1.25rem;
+        border-radius: 8px;
+        border: 1px solid rgba(15, 242, 200, 0.4);
+        background: rgba(15, 242, 200, 0.07);
+        color: #0ff2c8;
+        font-family: inherit;
+        font-size: 0.875rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background 0.2s, box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+        white-space: nowrap;
+      }
+      .btn-stats:hover {
+        background: rgba(15, 242, 200, 0.15);
+        border-color: rgba(15, 242, 200, 0.75);
+        box-shadow: 0 0 18px rgba(15, 242, 200, 0.22), 0 2px 8px rgba(0,0,0,0.3);
+        transform: translateY(-1px);
+        color: #0ff2c8;
+      }
+      .btn-stats:active {
+        transform: translateY(0);
+      }
+      .btn-stats i {
+        font-size: 0.85rem;
+      }
+    </style>
   </head>
 
   <body>
@@ -62,11 +94,9 @@
     <div class="noise-layer" aria-hidden="true"></div>
     <div class="cursor-ring cursor-ring--outer" aria-hidden="true"></div>
     <div class="cursor-ring cursor-ring--inner" aria-hidden="true"></div>
+    <canvas id="particleCanvas" aria-hidden="true" style="position: fixed !important; inset: 0 !important; width: 100% !important; height: 100% !important; pointer-events: none !important; z-index: 0 !important; display: block !important;"></canvas>
 
-
-    <!-- ── NAVBAR ──────────────────────────────────────────── -->
     <div id="navbar-container"></div>
-    <!-- ── HERO ───────────────────────────────────────────── -->
     <section class="hero" id="hero">
       <div class="hero-terminal" id="heroTerminal" aria-hidden="true"></div>
       <div class="hero-inner">
@@ -91,14 +121,12 @@
           <a href="#projects" class="btn btn-primary" id="heroBrowseBtn">
             Browse Projects <i class="fas fa-arrow-down"></i>
           </a>
-          <a
-            href="https://github.com/dhairyagothi/100_days_100_web_project"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn btn-ghost"
-            id="heroGithubBtn"
-          >
+          <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer"
+            class="btn btn-ghost" id="heroGithubBtn">
             <i class="fab fa-github"></i> GitHub
+          </a>
+          <a href="stats.html" class="btn-stats" id="heroStatsBtn" title="View Project Stats Dashboard">
+            <i class="fas fa-chart-bar"></i> Stats
           </a>
         </div>
 
@@ -180,7 +208,6 @@
       </div>
     </section>
 
-    <!-- ── PROJECTS ───────────────────────────────────────── -->
     <section class="projects-section" id="projects">
       <div class="projects-inner">
         <div class="projects-intro">
@@ -189,7 +216,6 @@
         </div>
 
         <div class="projects-header">
-          <!-- Filter Chips -->
           <div
             class="filter-chips"
             id="filterChips"
@@ -281,7 +307,6 @@
           </div>
         </div>
 
-        <!-- Tech Stack Dropdown & Clear Filters -->
         <div class="filter-toolbar">
           <select id="techStackFilter" aria-label="Filter by tech stack">
             <option value="all">Filter by Tech Stack (All)</option>
@@ -293,15 +318,13 @@
             <option value="typescript">TypeScript</option>
             <option value="tailwindcss">Tailwind CSS</option>
           </select>
-          <button id="clearAllFiltersBtn" class="clear-filters-btn">
+          <button id="clearAllFiltersBtn" class="clear-filters-btn" aria-label="Clear all filters">
             <i class="fas fa-filter-circle-xmark"></i> Clear Filters
           </button>
         </div>
 
-        <!-- Project Grid -->
         <div class="project-grid" id="projectGrid"></div>
 
-        <!-- No Results -->
         <div class="no-results" id="noResults">
           <i class="fas fa-search"></i>
           <p>No projects match your search.</p>
@@ -309,11 +332,10 @@
       </div>
     </section>
 
-    <!-- ── FOOTER ─────────────────────────────────────────── -->
     <footer class="footer homepage-footer">
       <div class="homepage-footer-shell">
         <div class="homepage-footer-brand">
-          <p class="homepage-footer-kicker">100 Days · 100 Web Projects</p>
+    <p class="homepage-footer-kicker">100 Days · 100 Web Projects</p>
           <h2>
             Open-source builds for daily practice and creative frontend
             exploration.
@@ -436,7 +458,6 @@
       </div>
     </footer>
 
-    <!-- ── SCROLL TO TOP ──────────────────────────────────── -->
     <button id="scrollBtn" aria-label="Back to top">
       <svg class="progress-ring" viewBox="0 0 48 48">
         <circle class="ring-track" cx="24" cy="24" r="22" />

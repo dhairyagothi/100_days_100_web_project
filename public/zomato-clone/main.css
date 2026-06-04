@@ -353,5 +353,23 @@
 .hidden {
   display: none;
 }
+/* Fix: localities and brands overlap */
+main {
+    display: flex;
+    flex-direction: column;
+}
 
- 
+.popular-localities {
+    position: relative;
+    z-index: 2;
+    background: #f5f5f5;
+    padding: 40px 8% 80px 8%;
+}
+
+.brands-section {
+    position: relative;
+    z-index: 2;
+    background: white;
+    padding-top: 40px;
+    margin-top: 0;
+}
