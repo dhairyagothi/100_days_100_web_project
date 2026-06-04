@@ -448,3 +448,8 @@ themeCheckbox.addEventListener("change", () => {
     predictBtn.click();
   }
 });
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    predictBtn.click();
+  }
+});
