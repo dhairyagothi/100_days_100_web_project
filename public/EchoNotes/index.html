@@ -292,6 +292,20 @@
         </div>
 
         <div class="toolbar-group">
+          <span class="toolbar-label">Highlight</span>
+          <div style="display:flex; gap:4px; align-items:center;">
+            <button onclick="applyHighlight('#ffff99')" title="Yellow" style="width:18px;height:18px;border-radius:50%;background:rgba(255,255,100,0.5);border:1px solid #ccc;cursor:pointer;"></button>
+            <button onclick="applyHighlight('#99ffcc')" title="Green" style="width:18px;height:18px;border-radius:50%;background:rgba(100,255,180,0.5);border:1px solid #ccc;cursor:pointer;"></button>
+            <button onclick="applyHighlight('#99ccff')" title="Blue" style="width:18px;height:18px;border-radius:50%;background:rgba(100,180,255,0.5);border:1px solid #ccc;cursor:pointer;"></button>
+            <button onclick="applyHighlight('#ffb3de')" title="Pink" style="width:18px;height:18px;border-radius:50%;background:rgba(255,150,220,0.5);border:1px solid #ccc;cursor:pointer;"></button>
+            <button onclick="applyHighlight('#ffcc99')" title="Orange" style="width:18px;height:18px;border-radius:50%;background:rgba(255,180,100,0.5);border:1px solid #ccc;cursor:pointer;"></button>
+            <button onclick="applyHighlight('#cc99ff')" title="Purple" style="width:18px;height:18px;border-radius:50%;background:rgba(180,100,255,0.5);border:1px solid #ccc;cursor:pointer;"></button>
+            <button onclick="removeHighlight()" title="Remove highlight (Ctrl+Shift+H)" style="width:22px;height:18px;border-radius:4px;background:var(--bg-card);border:1px solid var(--border);cursor:pointer;font-size:10px;color:var(--text-secondary);">✕</button>
+            <button onclick="clearAllHighlights()" title="Clear all highlights (Ctrl+Shift+C)" style="width:22px;height:18px;border-radius:4px;background:var(--bg-card);border:1px solid var(--border);cursor:pointer;font-size:10px;color:var(--text-secondary);">🗑</button>
+          </div>
+        </div>
+
+        <div class="toolbar-group">
           <span class="toolbar-label">Size</span>
           <select class="size-select" id="fontSizeSelect" onchange="applyFontSize(this.value)" title="Global Font Size">
             <option value="13">Small</option>

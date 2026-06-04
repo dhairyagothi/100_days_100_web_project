@@ -258,6 +258,17 @@ function applyGridDimensions() {
   GAP = parseInt(styles.getPropertyValue('--tile-gap'));
   PAD = parseInt(styles.getPropertyValue('--board-pad'));
 
+  // For Zen 5×5, auto-shrink tile size so the board fits inside the container
+  if (mode === 'zen') {
+    const wrap = document.getElementById('wr');
+    const availableWidth = wrap.clientWidth || (window.innerWidth - 48);
+    // board total width = PAD*2 + N*TS + (N-1)*GAP  =>  solve for TS
+    const maxTS = Math.floor((availableWidth - PAD * 2 - (N - 1) * GAP) / N);
+    TS = Math.min(TS, maxTS);
+    // Clamp to reasonable min
+    TS = Math.max(TS, 44);
+  }
+
   const bd = document.getElementById('bd');
 
   bd.style.gridTemplateColumns = `repeat(${N}, ${TS}px)`;
@@ -831,6 +842,8 @@ document.querySelectorAll('.mode-btn').forEach((btn) => {
     document.querySelectorAll('.mode-btn').forEach((b) => b.classList.remove('active'));
     btn.classList.add('active');
     mode = btn.dataset.mode;
+    // Toggle zen-mode class on container for wider layout
+    document.getElementById('g').classList.toggle('zen-mode', mode === 'zen');
     clearSavedGame();
     init();
   });
@@ -911,3 +924,19 @@ document.addEventListener('visibilitychange', () => {
 loadStats();
 best = loadBest();
 init(true);
+// Restore zen-mode class if saved mode was zen
+if (mode === 'zen') {
+  document.getElementById('g').classList.add('zen-mode');
+  document.querySelectorAll('.mode-btn').forEach((b) => {
+    b.classList.toggle('active', b.dataset.mode === 'zen');
+  });
+}
+
+// Re-apply dimensions on resize (important for zen 5×5 responsiveness)
+window.addEventListener("resize", () => {
+  if (mode === "zen") {
+    applyGridDimensions();
+    renderBoard();
+    renderTiles(null, 0, null);
+  }
+});
