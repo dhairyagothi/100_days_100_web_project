@@ -1,51 +1,96 @@
-# Advanced Form Builder
+# FormForge — Advanced Form Builder
 
-## 📖 Description
+A powerful, browser-based form builder for designing, previewing, and exporting custom web forms — no installation, no backend, no dependencies.
 
-Advanced Form Builder is a browser-based tool for assembling custom form fields and previewing the resulting form layout.
+---
 
 ## ✨ Features
 
-- Add form fields through a builder panel
-- Preview generated form elements in the browser
-- Style and interact with fields using vanilla JavaScript
+### 🧱 Field Builder
+- 10 field types: Text, Email, Number, Phone, Textarea, Select, Checkbox, Radio, Date, File
+- Per-field: label, placeholder, default value, help text, required toggle
+- Edit any field after creation via a modal editor
+- Duplicate fields with one click
+- Drag & drop reordering via the fields panel
 
-## 🛠️ Technologies Used
+### 🔍 Validation Builder
+- Min / Max length (text-based fields)
+- Min / Max value (number fields)
+- Regex pattern with a custom error message
+
+### 🎨 Form Settings Panel
+- Form title and description
+- Submit button text
+- 6 built-in themes: Dark, Light, Ocean, Forest, Warm, Mono
+- Custom primary color picker
+- Border radius and font size sliders
+
+### 📱 Device Preview
+Switch between three live preview viewports:
+
+| Mode | Width |
+|------|-------|
+| 🖥 Desktop | 720px |
+| 📟 Tablet | 680px |
+| 📱 Mobile | 375px |
+
+### 💾 Save & Load
+- **Auto Save** — saves to LocalStorage automatically after every change
+- **Manual Save** — explicit save via the Save button
+- **Export JSON** — download the entire form schema as a `.json` file
+- **Import JSON** — reload any previously exported schema
+- **Generate HTML** — produces clean, semantic HTML with all validation attributes ready to copy
+
+---
+
+## 🛠️ Technologies
 
 - HTML5
-- CSS3
-- JavaScript
+- CSS3 (CSS variables, Grid, Flexbox)
+- Vanilla JavaScript (no frameworks, no build step)
+
+---
 
 ## 📂 Project Structure
 
 ```text
-AdvancedFormBuilder/
-├── index.html
-├── script.js
-└── style.css
+FormForge/
+├── index.html    # App shell, layout, modals
+├── style.css     # Design system, themes, responsive layout
+└── script.js     # State, rendering, drag & drop, save/load
 ```
+
+---
 
 ## 🚀 Getting Started
 
-### Installation
+No installation required.
 
-No installation is required.
+```bash
+# Just open the file in any modern browser
+open index.html
+```
 
-### Run
+Or serve it locally:
 
-Open `index.html` in a browser.
+```bash
+npx serve .
+# then visit http://localhost:3000
+```
 
-## 🎯 Learning Objectives
+---
 
-This project demonstrates DOM manipulation, dynamic form creation, UI state handling, and layout styling with vanilla web technologies.
+## 🧪 Usage
 
-## 🔮 Future Enhancements
+1. **Add a field** — fill in a label, choose a type, set options, and click **Add Field**
+2. **Reorder** — drag fields up or down using the handle in the right panel
+3. **Edit or duplicate** — hover a field in the right panel to reveal action buttons
+4. **Customize** — switch to the **Settings** tab to change the theme, color, and layout
+5. **Export** — click **HTML** to get copy-ready markup, or **Export** to save the schema as JSON
+6. **Save** — your work is auto-saved to LocalStorage; use **Import** to restore it later
 
-- Add drag-and-drop field reordering
-- Export generated forms as HTML
-- Add validation rule configuration
-- Save form templates locally
+---
 
 ## 🤝 Contributing
 
-Contributions are welcome. Feel free to fork the project and submit a pull request.
+Contributions are welcome. Fork the repo and open a pull request with your changes.

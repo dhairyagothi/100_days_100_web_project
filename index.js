@@ -355,7 +355,7 @@ function buildProjectCardHTML({
                         <i class="fab fa-github"></i> Code
                     </a>`;
 
-  return {
+return {
     html: `
             <div class="card-meta">
                 <span class="card-day">${safeDay}</span>
@@ -364,7 +364,14 @@ function buildProjectCardHTML({
                   ${sourceOnlyBadge}
                 </span>
             </div>
+
+            <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
+                <img src="./${url && url.startsWith('./') ? url.split('/')[2] : name.replace(/\s+/g, '_')}/preview.png" alt="${name} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div class="card-name">${name}</div>
+
             <h3 class="card-name">${safeName}</h3>
+
             ${
               showDescription
                 ? `<div class="card-description">
@@ -387,6 +394,7 @@ function buildProjectCardHTML({
     sourceOnly,
   };
 }
+
 
 function attachProjectCardInteraction(card, demoUrl, projectData = null) {
   card.style.cursor = "pointer";
