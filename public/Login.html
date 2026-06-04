@@ -49,7 +49,7 @@
 
           <form id="loginForm" class="auth-form">
             <div class="form-group">
-              <i class="fa-solid fa-user"></i>
+              <i aria-hidden="true" class="fa-solid fa-user"></i>
               <input
                 type="text"
                 id="username"
@@ -61,7 +61,7 @@
             </div>
 
             <div class="form-group">
-              <i class="fa-solid fa-lock"></i>
+              <i aria-hidden="true" class="fa-solid fa-lock"></i>
               <input
                 type="password"
                 id="password"
@@ -74,13 +74,13 @@
             </div>
 
             <button type="submit" class="button home-btn" id="loginBtn">
-              <i class="fa-solid fa-right-to-bracket"></i>
+              <i aria-hidden="true" class="fa-solid fa-right-to-bracket"></i>
               Login
             </button>
           </form>
 
           <button id="googleLogin" class="button home-btn">
-    <i class="fa-brands fa-google"></i>
+    <i aria-hidden="true" class="fa-brands fa-google"></i>
     Continue with Google
 </button>
 
@@ -110,10 +110,10 @@
         toast.className = `toast ${type}`;
 
         const iconMap = {
-          success: '<i class="fa-solid fa-circle-check"></i>',
-          error: '<i class="fa-solid fa-circle-exclamation"></i>',
-          warning: '<i class="fa-solid fa-triangle-exclamation"></i>',
-          info: '<i class="fa-solid fa-circle-info"></i>'
+          success: '<i aria-hidden="true" class="fa-solid fa-circle-check"></i>',
+          error: '<i aria-hidden="true" class="fa-solid fa-circle-exclamation"></i>',
+          warning: '<i aria-hidden="true" class="fa-solid fa-triangle-exclamation"></i>',
+          info: '<i aria-hidden="true" class="fa-solid fa-circle-info"></i>'
         };
 
         toast.innerHTML = `
