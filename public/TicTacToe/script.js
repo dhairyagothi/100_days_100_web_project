@@ -145,58 +145,96 @@ if(
 
 }
 
-function cpuMove(){
+function cpuMove() {
 
+    if (gameOver) return;
 
-const available = [];
+    const available = [];
 
-gameBoard.forEach((cell,index)=>{
-    if(cell === "") {
-        available.push(index);
-    }
-});
+    gameBoard.forEach((cell, index) => {
+        if (cell === "") {
+            available.push(index);
+        }
+    });
 
-if(!available.length) return;
+    if (!available.length) return;
 
-const mode = modeSelect.value;
+    let move;
 
-let move;
+    const mode = modeSelect.value;
 
-if(mode === "cpu-easy"){
+if (mode === "cpu-easy") {
 
-    move =
-        available[
-            Math.floor(
-                Math.random()*available.length
-            )
-        ];
-}
+    move = available[
+        Math.floor(Math.random() * available.length)
+    ];
 
-else if(mode === "cpu-medium"){
+} else if (mode === "cpu-medium") {
 
-    if(Math.random() < 0.6){
+    if (Math.random() < 0.7) {
 
         move = getBestMove();
 
     } else {
 
-        move =
-            available[
-                Math.floor(
-                    Math.random()*available.length
-                )
-            ];
+        move = available[
+            Math.floor(Math.random() * available.length)
+        ];
+    }
+
+} else {
+
+    move = getBestMoveMinimax();
+
+    if (move === undefined) {
+        move = getBestMove();
     }
 }
 
-else {
+gameBoard[move] = "O";
 
-    move = getBestMove();
-}
+    moveHistory.push({
+        player: "O",
+        cell: move + 1
+    });
 
-handleMove(move);
+    updateHistory();
 
+    const winLine = getWinner();
 
+    if (winLine) {
+
+        highlightWin(winLine);
+
+        scores.O++;
+
+        updateScores();
+
+        gameOver = true;
+
+        showWinner("O");
+
+        return;
+    }
+
+    if (gameBoard.every(cell => cell !== "")) {
+
+        scores.D++;
+
+        updateScores();
+
+        gameOver = true;
+
+        showDraw();
+
+        return;
+    }
+
+    currentPlayer = "X";
+
+    updateStatus();
+
+    renderBoard();
 }
 
 function getBestMove(){
@@ -261,19 +299,200 @@ return free[
 
 }
 
-function getWinner(){
+function getBestMoveMinimax() {
 
+    let bestScore = -Infinity;
+    let bestMove = 0;
 
-for(const line of WIN_LINES){
+    for (let i = 0; i < 9; i++) {
 
-    const [a,b,c] = line;
+        if (gameBoard[i] === "") {
 
-    if(
-        gameBoard[a] &&
-        gameBoard[a] === gameBoard[b] &&
-        gameBoard[a] === gameBoard[c]
-    ){
-        return line;
+            gameBoard[i] = "O";
+
+            let score = minimax(gameBoard, 0, false);
+
+            gameBoard[i] = "";
+
+            if (score > bestScore) {
+
+                bestScore = score;
+
+                bestMove = i;
+            }
+        }
+    }
+
+    return bestMove;
+}
+
+function minimax(boardState, depth, isMaximizing) {
+
+    const winner = evaluateBoard(boardState);
+
+    if (winner !== null) {
+
+        if (winner === "O") return 10 - depth;
+        if (winner === "X") return depth - 10;
+
+        return 0;
+    }
+
+    if (isMaximizing) {
+
+        let bestScore = -Infinity;
+
+        for (let i = 0; i < 9; i++) {
+
+            if (boardState[i] === "") {
+
+                boardState[i] = "O";
+
+                let score =
+                    minimax(boardState, depth + 1, false);
+
+                boardState[i] = "";
+
+                bestScore = Math.max(score, bestScore);
+            }
+        }
+
+        return bestScore;
+
+    } else {
+
+        let bestScore = Infinity;
+
+        for (let i = 0; i < 9; i++) {
+
+            if (boardState[i] === "") {
+
+                boardState[i] = "X";
+
+                let score =
+                    minimax(boardState, depth + 1, true);
+
+                boardState[i] = "";
+
+                bestScore = Math.min(score, bestScore);
+            }
+        }
+
+        return bestScore;
+    }
+}
+
+function evaluateBoard(boardState) {
+
+    for (const line of WIN_LINES) {
+
+        const [a, b, c] = line;
+
+        if (
+            boardState[a] &&
+            boardState[a] === boardState[b] &&
+            boardState[a] === boardState[c]
+        ) {
+            return boardState[a];
+        }
+    }
+
+    if (boardState.every(cell => cell !== "")) {
+        return "draw";
+    }
+
+    return null;
+}
+  /* ── Scan for winner (returns mark or null) ── */
+  function scanWinner(b) {
+    for (var i = 0; i < WIN_LINES.length; i++) {
+      var l = WIN_LINES[i];
+      if (b[l[0]] && b[l[0]] === b[l[1]] && b[l[0]] === b[l[2]]) {
+        return b[l[0]];
+      }
+    }
+    return null;
+  }
+  /* ── Check win (uses scanWinner) ─────── */
+  function checkWin() {
+    return scanWinner(board) ? WIN_LINES.find(function (l) {
+      return board[l[0]] && board[l[0]] === board[l[1]] && board[l[0]] === board[l[2]];
+    }) : null;
+  }
+  /* ── Highlight winning cells ──────────── */
+  function highlightWin(line) {
+    var cells = boardEl.querySelectorAll(".cell");
+    line.forEach(function (i) { cells[i].classList.add("win-cell"); });
+  }
+  /* ── Update turn UI + background ─────── */
+  function setUI(player) {
+    var label = (vsBot && player === botMark) ? "Bot" : "Player " + player;
+    turnChip.textContent = "Turn: " + (player ? label : "");
+    statusEl.textContent = player ? label + "'s turn!" : "";
+  }
+  /* ── Update scoreboard ────────────────── */
+  function updateScores() {
+    scoreX.textContent = scores.X;
+    scoreO.textContent = scores.O;
+    scoreD.textContent = scores.D;
+  }
+  /* ── Win overlay ──────────────────────── */
+  function showWinOverlay(player) {
+    var label = (vsBot && player === botMark) ? "Bot" : "Player " + player;
+    winText.textContent = label + " wins the round!";
+    winSub.textContent  = "Great moves. Ready for the next round?";
+    overlay.classList.add("show");
+    overlay.setAttribute("aria-hidden", "false");
+    launchConfetti(player);
+  }
+  /* ── Draw overlay ─────────────────────── */
+  function showDrawOverlay() {
+    winText.textContent = "It's a draw!";
+    winSub.textContent  = "Nobody wins this round.";
+    overlay.classList.add("show");
+    overlay.setAttribute("aria-hidden", "false");
+  }
+  /* ── Next round ───────────────────────── */
+  function nextRound() {
+    board    = Array(9).fill(null);
+    current  = "X";
+    gameOver = false;
+    buildBoard();
+    setUI("X");
+    overlay.classList.remove("show");
+    overlay.setAttribute("aria-hidden", "true");
+    stopConfetti();
+    if (vsBot && current === botMark) {
+      var avail = board.map(function (v, i) { return v ? null : i; }).filter(function (v) { return v !== null; });
+      if (avail.length) setTimeout(function () {
+        var cells = boardEl.querySelectorAll('.cell');
+        if (cells[avail[0]]) cells[avail[0]].click();
+      }, 480);
+    }
+  }
+  /* ── Reset all ────────────────────────── */
+  function resetAll() {
+    scores = { X: 0, O: 0, D: 0 };
+    updateScores();
+    nextRound();
+  }
+  /* ── Launch confetti ─────────────────── */
+  function launchConfetti(player) {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+    particles = [];
+    var color = player === "X" ? "#ff7d7d" : "#40f5d2";
+    for (var i = 0; i < 100; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        r: Math.random() * 6 + 3,
+        d: Math.random() * 2 + 1,
+        color: Math.random() > 0.5 ? color : "#ffffff",
+        tilt: Math.random() * 10 - 5
+      });
+    }
+  }
     }
 }
 
@@ -405,30 +624,42 @@ newRound();
 
 function undoMove(){
 
+    if(!moveHistory.length) return;
 
-if(!moveHistory.length) return;
+    const mode = modeSelect.value;
 
-const last = moveHistory.pop();
+    if(mode !== "pvp" && moveHistory.length >= 2){
 
-gameBoard[last.cell - 1] = "";
+        const cpuMove = moveHistory.pop();
+        gameBoard[cpuMove.cell - 1] = "";
 
-currentPlayer = last.player;
+        const playerMove = moveHistory.pop();
+        gameBoard[playerMove.cell - 1] = "";
 
-gameOver = false;
+        currentPlayer = "X";
 
-updateHistory();
+    } else {
 
-updateStatus();
+        const last = moveHistory.pop();
 
-renderBoard();
+        gameBoard[last.cell - 1] = "";
 
+        currentPlayer = last.player;
+    }
 
+    gameOver = false;
+
+    updateHistory();
+
+    updateStatus();
+
+    renderBoard();
 }
 
 function showHint(){
 
 
-const move = getBestMove();
+const move = getBestMoveMinimax();
 
 renderBoard();
 
@@ -490,3 +721,54 @@ winnerModal.classList.remove("show");
 updateStatus();
 updateScores();
 renderBoard();
+
+
+// ============================================================
+// ACCESSIBILITY INTERFACE: KEYBOARD NAVIGATION & ARIA INJECTION (#6033)
+// ============================================================
+
+/**
+ * Automates focus indicators and screen reader attributes over dynamic cells
+ */
+function applyGridAccessibility() {
+    const board = document.getElementById('board');
+    if (!board) return;
+
+    // Monitor structural mutations inside the board wrapper
+    const observer = new MutationObserver(() => {
+        const cells = board.querySelectorAll('.cell, [data-cell], .box');
+        
+        cells.forEach((cell, index) => {
+            // Assign sequential keyboard tracking context benchmarks
+            if (!cell.hasAttribute('tabindex')) {
+                cell.setAttribute('tabindex', '0');
+                cell.setAttribute('role', 'button');
+                cell.setAttribute('aria-label', `Grid square ${index + 1}, empty`);
+            }
+
+            // Keyboard navigation execution payload mapping
+            if (!cell.dataset.keyboardBound) {
+                cell.dataset.keyboardBound = "true";
+                cell.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault(); // Capture baseline shift constraints
+                        cell.click();       // Fallback directly onto runtime click mechanics
+                        
+                        // Update dynamic announcements for state changes
+                        const currentTurn = document.getElementById('statusText')?.textContent || '';
+                        cell.setAttribute('aria-label', `Grid square ${index + 1}, marked ${cell.textContent || 'occupied'}`);
+                    }
+                });
+            }
+        });
+    });
+
+    observer.observe(board, { childList: true, subtree: true });
+}
+
+// Fire runtime validation layers safely on context evaluation
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyGridAccessibility);
+} else {
+    applyGridAccessibility();
+}

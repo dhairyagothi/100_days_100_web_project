@@ -1,79 +1,37 @@
 // js/savingsManager.js
 
 import {
-  saveGoals,
-} from "./storage.js";
+    saveData,
+    loadData
+} from './storage.js';
 
-export const renderGoals = (
-  goals
-) => {
+let savingsGoals =
+    loadData('savingsGoals');
 
-  const container =
-    document.getElementById(
-      "goalsContainer"
+export function addGoal(goal){
+
+    savingsGoals.push(goal);
+
+    saveData(
+        'savingsGoals',
+        savingsGoals
     );
 
-  if (!container) return;
+}
 
-  container.innerHTML = "";
+export function getGoals(){
 
-  goals.forEach((goal) => {
+    return savingsGoals;
 
-    const percentage =
-      Math.min(
-        (
-          goal.saved
-          / goal.target
-        ) * 100,
-        100
-      );
+}
 
-    const card =
-      document.createElement("div");
+export function deleteGoal(index){
 
-    card.className =
-      "goal-card";
+    savingsGoals.splice(index,1);
 
-    card.innerHTML = `
+    saveData(
+        'savingsGoals',
+        savingsGoals
+    );
 
-      <h3>${goal.name}</h3>
-
-      <div class="goal-progress">
-
-        <div
-          class="goal-progress-fill"
-          style="width:${percentage}%"
-        ></div>
-
-      </div>
-
-      <div class="goal-meta">
-
-        <span>
-          Saved:
-          $${goal.saved}
-        </span>
-
-        <span>
-          Goal:
-          $${goal.target}
-        </span>
-
-      </div>
-    `;
-
-    container.appendChild(card);
-  });
-};
-
-export const addGoal = (
-  goals,
-  goal
-) => {
-
-  goals.push(goal);
-
-  saveGoals(goals);
-
-  return goals;
-};
+}
