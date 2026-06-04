@@ -88,3 +88,31 @@ function newGame(){
         playGame = true;
     })
 }
+
+const toggleBtn = document.getElementById("theme-toggle");
+
+const savedTheme = localStorage.getItem("theme");
+
+if (savedTheme === "dark") {
+    document.body.classList.add("dark");
+    toggleBtn.textContent = "☀️";
+}
+
+toggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+
+    if (document.body.classList.contains("dark")) {
+        localStorage.setItem("theme", "dark");
+        toggleBtn.textContent = "☀️";
+    } else {
+        localStorage.setItem("theme", "light");
+        toggleBtn.textContent = "🌙";
+    }
+});
+
+if (
+    !localStorage.getItem("theme") &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+) {
+    document.body.classList.add("dark");
+}
