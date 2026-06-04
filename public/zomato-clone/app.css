@@ -164,6 +164,9 @@ body.dark-mode button {
 body.dark-mode .app-section {
     background-color: #1e1e1e;
 }
+body.dark-mode .popular-localities .title {
+  color: white;
+}
 
 /* Text inside app section */
 body.dark-mode .phone-title {
