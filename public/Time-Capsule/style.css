@@ -133,3 +133,20 @@ p {
   margin-top: 4px;
   min-height: 16px;
 }
+
+#revealedMessage {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 15px;
+}
+
+#revealedMessage hr {
+  border: none;
+  height: 1px;
+  background: rgba(0,0,0,0.15);
+}
+
+#revealedMessage strong {
+  color: #5e60ce;
+}

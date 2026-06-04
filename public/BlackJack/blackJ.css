@@ -248,7 +248,26 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   font-size: 1rem;
   font-weight: 700;
   color: var(--gold-light);
-  transition: color var(--transition), background var(--transition);
+  transition: color var(--transition), background var(--transition);}
+#countdown-message {
+    font-family: 'Teko', sans-serif;
+    font-size: 2.5rem;
+    color: #8B0000;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.2rem;
+    min-height: 3rem;
+}
+
+table, th, td{
+    padding: .5rem;
+    border: solid 2px black;
+    font-size: 3rem;
+    font-family: 'Teko', sans-serif;
+    font-weight: 400;
+    padding-left: 3rem;
+    padding-right: 3rem;
 }
 
 /* Card row — horizontally scrollable on mobile */
@@ -266,7 +285,15 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   border-radius: var(--radius-sm);
   box-shadow: 3px 4px 10px rgba(0,0,0,0.5);
   animation: cardDeal 0.25s cubic-bezier(0.22,1,0.36,1);
-  flex-shrink: 0;
+  flex-shrink: 0;}
+#play-again {
+    display: none !important;
+}
+
+/* title container */
+
+.title-container{
+    position: relative;
 }
 
 /* Card deal entrance animation */

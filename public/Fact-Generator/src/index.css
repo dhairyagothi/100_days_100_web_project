@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: linear-gradient(
+    135deg,
+    #4F46E5,
+    #312E81,
+    #0F172A
+  );
+}

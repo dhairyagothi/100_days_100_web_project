@@ -25,6 +25,9 @@ out/
 .env.test.local
 .env.production.local
 .env.build
+package-lock.json
+# Local AI ChatBot default Gemini API key
+/public/AI ChatBot/default-config.js
 
 # IDE and editor files
 .vscode/
