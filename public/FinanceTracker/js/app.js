@@ -1,5 +1,13 @@
 // js/app.js — Main Application Controller
-
+function escapeHTML(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
 import { initDefaults, saveData, loadData, STORAGE_KEYS } from './storage.js';
 import {
   addTransaction,
@@ -65,9 +73,11 @@ function showToast(message, type = 'success') {
   toast.className = `toast ${type}`;
   const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
   toast.innerHTML = `
-    <span class="toast-icon">${icons[type] || icons.info}</span>
-    <span class="toast-message">${message}</span>
-  `;
+  <span class="toast-icon">${icons[type] || icons.info}</span>
+  <span class="toast-message"></span>
+`;
+
+  toast.querySelector('.toast-message').textContent = message;
   elements.toastContainer.appendChild(toast);
   setTimeout(() => {
     toast.classList.add('removing');
@@ -168,13 +178,15 @@ function loadDashboard() {
   const topEl = document.getElementById('top-category');
   if (summary.top_category) {
     topEl.innerHTML = `
-      <div style="display:flex; align-items:center; gap:12px;">
-        <div>
-          <div style="font-weight:600; font-size:1.1rem;">${summary.top_category.name}</div>
-          <div style="color:var(--text-secondary);">${formatCurrency(summary.top_category.amount)}</div>
-        </div>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <div>
+        <div class="top-cat-name" style="font-weight:600; font-size:1.1rem;"></div>
+        <div class="top-cat-amount" style="color:var(--text-secondary);"></div>
       </div>
-    `;
+    </div>
+`;
+    topEl.querySelector('.top-cat-name').textContent = summary.top_category.name;
+    topEl.querySelector('.top-cat-amount').textContent = formatCurrency(summary.top_category.amount);
   } else {
     topEl.innerHTML = '<p class="empty-text">No spending data available</p>';
   }
@@ -189,17 +201,17 @@ function loadDashboard() {
   if (recent.length === 0) {
     tbody.innerHTML = '<tr><td colspan="5" class="empty-cell">No recent transactions</td></tr>';
   } else {
-    tbody.innerHTML = recent.map(t => `
-      <tr>
-        <td>${formatDate(t.date)}</td>
-        <td>${t.description}</td>
-        <td class="${t.type === 'Income' ? 'text-income' : 'text-expense'}" style="color:${t.type === 'Income' ? 'var(--income-color)' : 'var(--expense-color)'}; font-weight:600;">
-          ${t.type === 'Income' ? '+' : '-'}${formatCurrency(t.amount)}
-        </td>
-        <td><span class="badge badge-${t.type.toLowerCase()}">${t.type}</span></td>
-        <td>${t.category}</td>
-      </tr>
-    `).join('');
+  tbody.innerHTML = recent.map(t => `
+    <tr>
+      <td>${formatDate(t.date)}</td>
+      <td>${escapeHTML(t.description)}</td>
+      <td class="${t.type === 'Income' ? 'text-income' : 'text-expense'}" style="color:${t.type === 'Income' ? 'var(--income-color)' : 'var(--expense-color)'}">
+      ${t.type === 'Income' ? '+' : '-'}${formatCurrency(t.amount)}
+    </td>
+    <td><span class="badge badge-${t.type.toLowerCase()}">${escapeHTML(t.type)}</span></td>
+    <td>${escapeHTML(t.category)}</td>
+    </tr>
+`).join('');
   }
 }
 
@@ -235,21 +247,21 @@ function renderTransactions() {
     return;
   }
 
-  tbody.innerHTML = transactions.map(t => `
-    <tr>
-      <td>${formatDate(t.date)}</td>
-      <td>${t.description}</td>
-      <td style="color:${t.type === 'Income' ? 'var(--income-color)' : 'var(--expense-color)'}; font-weight:600;">
-        ${t.type === 'Income' ? '+' : '-'}${formatCurrency(t.amount)}
-      </td>
-      <td><span class="badge badge-${t.type.toLowerCase()}">${t.type}</span></td>
-      <td>${t.category}</td>
-      <td>
-        <button class="btn-icon edit" onclick="window.editTxn(${t.id})" title="Edit">✏️</button>
-        <button class="btn-icon danger" onclick="window.deleteTxn(${t.id})" title="Delete">🗑️</button>
-      </td>
-    </tr>
-  `).join('');
+tbody.innerHTML = transactions.map(t => `
+  <tr>
+    <td>${formatDate(t.date)}</td>
+    <td>${escapeHTML(t.description)}</td>
+    <td style="color:${t.type === 'Income' ? 'var(--income-color)' : 'var(--expense-color)'}">
+      ${t.type === 'Income' ? '+' : '-'}${formatCurrency(t.amount)}
+    </td>
+    <td><span class="badge badge-${t.type.toLowerCase()}">${escapeHTML(t.type)}</span></td>
+    <td>${escapeHTML(t.category)}</td>
+    <td>
+      <button class="btn-icon edit" onclick="window.editTxn(${t.id})" title="Edit">📝</button>
+      <button class="btn-icon danger" onclick="window.deleteTxn(${t.id})" title="Delete">🗑️</button>
+    </td>
+  </tr>
+`).join('');
 }
 
 function openTransactionModal(id = null) {
@@ -576,11 +588,12 @@ function renderBudgets() {
 
   container.innerHTML = budgets.map(b => {
     const statusClass = b.percentage >= 90 ? 'danger' : b.percentage >= 70 ? 'warning' : '';
-    const statusColor = b.percentage >= 90 ? 'var(--expense-color)' : b.percentage >= 70 ? 'var(--count-color)' : 'var(--income-color)';
+    const statusColor = b.percentage >= 90 ? 'var(--expense-color)' : b.percentage >= 70 ? 'var(--warning-color)' : '';
+  
     return `
       <div class="budget-card">
         <div class="budget-header">
-          <span class="budget-category">${b.category}</span>
+          <span class="budget-category">${escapeHTML(b.category)}</span>
           <button class="btn-icon danger" onclick="window.deleteBdg(${b.id})" title="Delete">🗑️</button>
         </div>
         <div class="budget-amounts">
@@ -590,10 +603,12 @@ function renderBudgets() {
         <div class="progress-bar">
           <div class="progress-fill ${statusClass}" style="width:${b.percentage}%"></div>
         </div>
-        <div class="budget-percentage" style="color:${statusColor}">${b.percentage}% used · ${formatCurrency(b.remaining)} remaining</div>
+        <div class="budget-percentage" style="color:${statusColor}">
+          ${b.percentage}% used · ${formatCurrency(b.monthly_limit - b.spent)} remaining
+        </div>
       </div>
-    `;
-  }).join('');
+  `;
+}).join('');
 }
 
 
