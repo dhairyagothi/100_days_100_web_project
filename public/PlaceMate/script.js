@@ -307,6 +307,34 @@ updateBtn.addEventListener("click", () => {
       document.getElementById("resumeInput").value
     );
 
+  const suggestions =
+    document.getElementById(
+      "resumeSuggestions"
+    );
+
+  if(resume >= 85){
+
+    suggestions.innerHTML = `
+      ✓ Excellent Resume<br>
+      ✓ Keep updating projects
+    `;
+
+  }else if(resume >= 70){
+
+    suggestions.innerHTML = `
+      ✓ Add measurable achievements<br>
+      ✓ Improve project descriptions
+    `;
+
+  }else{
+
+    suggestions.innerHTML = `
+      ✓ Add Projects<br>
+      ✓ Improve Keywords<br>
+      ✓ Add Quantified Achievements
+    `;
+  }
+
   const communication =
     parseInt(
       document.getElementById("communicationInput").value
@@ -395,6 +423,46 @@ updateBtn.addEventListener("click", () => {
   development
   });
 
+  const badges = [];
+
+  if(dsa >= 300){
+    badges.push("🏅 DSA Master");
+  }
+
+  if(aptitude >= 90){
+    badges.push("🏅 Aptitude Expert");
+  }
+
+  if(readinessScore >= 80){
+    badges.push("🏅 Placement Ready");
+  }
+
+  if(mock >= 20){
+    badges.push("🏅 Consistency Champion");
+  }
+
+  const badgeContainer =
+    document.getElementById(
+      "badgeContainer"
+    );
+
+  if(badges.length){
+
+    badgeContainer.innerHTML =
+      badges
+        .map(
+          badge =>
+            `<div class="badge-card">${badge}</div>`
+        )
+        .join("");
+
+  }else{
+
+    badgeContainer.innerHTML =
+      `<div class="badge-card">
+        No badges earned yet
+      </div>`;
+  }
 
   const companyGrid =
     document.getElementById("companyGrid");

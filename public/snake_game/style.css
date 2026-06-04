@@ -413,3 +413,28 @@ canvas {
     padding-bottom: 75px;
   }
 }
+
+
+/* DEFAULT DARK THEME */
+:root {
+  --bg: #050a05;
+  --text: #39ff14;
+  --panel: #0d1f0d;
+}
+
+/* LIGHT THEME */
+body.light {
+  --bg: #f5f5f5;
+  --text: #111;
+  --panel: #ffffff;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* HUD / UI updates */
+.hud, .overlay, .canvas-wrapper {
+  color: var(--text);
+}

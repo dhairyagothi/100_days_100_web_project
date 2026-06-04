@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         canvas.width = rect.width * dpr;
         canvas.height = rect.height * dpr;
-
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.scale(dpr, dpr);
 
         canvas.style.width = `${rect.width}px`;
@@ -171,15 +171,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+
     function getEventCoordinates(e) {
-        const rect = canvas.getBoundingClientRect();
-        const touch = e.touches ? e.touches[0] : e;
-        return {
-            x: touch.clientX - rect.left,
-            y: touch.clientY - rect.top
+        if (e.touches) {
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            return {
+                x: touch.clientX - rect.left,
+                y: touch.clientY - rect.top
         };
     }
-
+    return {
+        x: e.offsetX,
+        y: e.offsetY
+    };
+}
     function startScratch(e) {
         // Initialize audio on the first user interaction
         if (!isAudioInitialized) {
@@ -314,8 +320,8 @@ document.addEventListener('DOMContentLoaded', () => {
         brushSizeValue.textContent = brushSize;
 
         // Optional: make cursor reflect brush size
-        customCursor.style.width = `${brushSize * 4}px`;
-        customCursor.style.height = `${brushSize * 4}px`;
+        customCursor.style.width = `${brushSize}px`;
+        customCursor.style.height = `${brushSize}px`;
     });
 
     // Initial setup
