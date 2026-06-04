@@ -118,6 +118,12 @@ PORT=5500
 
 EMAIL_USER=yourgmail@gmail.com
 EMAIL_PASS=your_gmail_app_password
+
+# Optional request controls
+REQUEST_BODY_LIMIT=8kb
+SUBSCRIBER_NAME_MAX_LENGTH=100
+MAIL_RATE_LIMIT_WINDOW_MS=60000
+MAIL_RATE_LIMIT_MAX_REQUESTS=5
 ```
 
 ---
