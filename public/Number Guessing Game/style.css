@@ -1,10 +1,26 @@
+:root {
+    --bg-color: #ffe4e1;
+    --container-color: #ffffff;
+    --text-color: #333333;
+    --button-color: #ff7f7f;
+    --button-text: #ffffff;
+}
+
+body.dark {
+    --bg-color: #121212;
+    --container-color: #1e1e1e;
+    --text-color: #f5f5f5;
+    --button-color: #444444;
+    --button-text: #ffffff;
+}
 *{
     margin: 0;
     padding: 0;
 }
 
 body {
-    background-color: linen;
+    background: var(--bg-color);
+    color: var(--text-color);
 }
 
 h1{
@@ -65,4 +81,28 @@ p{
 
 #guessField:hover{
     background-color: linen;
+}
+
+.container {
+    background: var(--container-color);
+}
+
+button {
+    background: var(--button-color);
+    color: var(--button-text);
+}
+
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 1.2rem;
+    padding: 10px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+body {
+    position: relative;
 }

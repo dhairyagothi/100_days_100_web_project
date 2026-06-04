@@ -72,10 +72,68 @@ function startTimer() {
   }, 1000);
 }
 
-function showModal(title, message, moves) {
+function fireWinConfetti() {
+  if (typeof confetti !== 'function') return; // guard if CDN fails to load
+ 
+  const neonColors = ['#60d4ff', '#8c6cff', '#4ef0b8', '#ff6b6b', '#ffda59', '#ffffff'];
+ 
+  confetti({
+    particleCount: 120,
+    spread: 100,
+    startVelocity: 55,
+    origin: { x: 0.5, y: 0.15 },
+    colors: neonColors,
+    ticks: 200,
+  });
+ 
+  setTimeout(() => {
+    confetti({
+      particleCount: 70,
+      angle: 60,
+      spread: 65,
+      origin: { x: 0, y: 0.55 },
+      colors: neonColors,
+      ticks: 180,
+    });
+    confetti({
+      particleCount: 70,
+      angle: 120,
+      spread: 65,
+      origin: { x: 1, y: 0.55 },
+      colors: neonColors,
+      ticks: 180,
+    });
+  }, 250);
+ 
+  setTimeout(() => {
+    confetti({
+      particleCount: 60,
+      spread: 120,
+      startVelocity: 20,
+      origin: { x: 0.5, y: 0 },
+      gravity: 0.6,
+      colors: neonColors,
+      ticks: 160,
+    });
+  }, 600);
+}
+
+function showModal(title, message, moves,difficulty) {
   document.getElementById('modalTitle').textContent = title;
   document.getElementById('modalText').textContent = message;
-  document.getElementById('moves').textContent = `Moves: ${moves}`;
+  document.getElementById('moves').textContent = `Moves: ${moves}  •  Time: ${formatTime(elapsedSeconds)}`;
+  
+  const badge = document.getElementById('modalDifficultyBadge');
+  if (badge) {
+    if (difficulty) {
+      badge.textContent = difficulty;
+      badge.className = `difficulty-badge difficulty-${difficulty.toLowerCase()}`;
+      badge.style.display = 'inline-block';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+  
   document.getElementById('Message-Container').classList.add('visible');
 }
 
@@ -488,8 +546,9 @@ function onMazeComplete(moves) {
   isGameActive = false;
   stopTimer();
   updateStatus('Maze completed! Ready for another run.');
-  showModal('Congratulations!', 'You escaped the maze.', moves);
-  showToast('Maze completed successfully 🎉', 'success');
+  fireWinConfetti();
+  showModal('Maze Completed! 🎉', 'You escaped the neon labyrinth.', moves, currentLevel);
+  showToast(`${currentLevel} maze cleared! 🏆`, 'success', 3500);
 }
 
 function cancelRenderLoop() {

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Counter App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="counter-container">
+        <h1>Interactive Counter</h1>
+        <div id="counter-value">0</div>
+
+        <div class="buttons">
+            <button id="decrement-btn" class="btn">-</button>
+            <button id="reset-btn" class="btn secondary">Reset</button>
+            <button id="increment-btn" class="btn">+</button>
+        </div>
+
+        <button id="save-btn" class="btn save">Save Count</button>
+
+        <div class="history-section">
+            <h3>History Log</h3>
+            <ul id="history-log">
+                <!-- Log entries will appear here -->
+            </ul>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
