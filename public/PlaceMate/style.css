@@ -559,3 +559,22 @@ body.light-mode .theme-toggle {
 #logoutBtn{
   background:#ef4444;
 }
+.badge-section{
+  margin-top:40px;
+}
+
+.badge-grid{
+  display:grid;
+  grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+
+.badge-card{
+  background:var(--card-bg);
+  border:1px solid var(--border-color);
+  padding:20px;
+  border-radius:16px;
+  text-align:center;
+  font-weight:bold;
+}

@@ -395,6 +395,46 @@ updateBtn.addEventListener("click", () => {
   development
   });
 
+  const badges = [];
+
+  if(dsa >= 300){
+    badges.push("🏅 DSA Master");
+  }
+
+  if(aptitude >= 90){
+    badges.push("🏅 Aptitude Expert");
+  }
+
+  if(readinessScore >= 80){
+    badges.push("🏅 Placement Ready");
+  }
+
+  if(mock >= 20){
+    badges.push("🏅 Consistency Champion");
+  }
+
+  const badgeContainer =
+    document.getElementById(
+      "badgeContainer"
+    );
+
+  if(badges.length){
+
+    badgeContainer.innerHTML =
+      badges
+        .map(
+          badge =>
+            `<div class="badge-card">${badge}</div>`
+        )
+        .join("");
+
+  }else{
+
+    badgeContainer.innerHTML =
+      `<div class="badge-card">
+        No badges earned yet
+      </div>`;
+  }
 
   const companyGrid =
     document.getElementById("companyGrid");
