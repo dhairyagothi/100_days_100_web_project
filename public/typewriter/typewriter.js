@@ -10,15 +10,38 @@ const charCountEl = document.getElementById("charCount");
 let audioCtx;
 let currentPage = 0;
 let paperContent = "";
+let cursorPosition = 0;
 let soundEnabled = true;
 let capsLockEnabled = false;
 let capsLockKey;
 let shiftEnabled = false; // tracks on-screen SHIFT state (one-shot)
 let shiftKeyEl; // reference to the on-screen SHIFT button
 
+function renderPaper() {
+  const before = paperContent.slice(0, cursorPosition);
+  const after = paperContent.slice(cursorPosition);
+
+  getCurrentText().innerHTML =
+    before +
+    '<span class="cursor-paper"></span>' +
+    after;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   capsLockKey = document.querySelector(".caps-lock");
   shiftKeyEl = document.querySelector(".shift-key");
+
+  pagesContainer.addEventListener("click", (e) => {
+  const pos = document.caretPositionFromPoint(
+    e.clientX,
+    e.clientY
+  );
+
+  if (!pos) return;
+
+  cursorPosition = pos.offset;
+  renderPaper();
+});
 
   /* ---------- Onscreen Keys ---------- */
   document.querySelectorAll(".key").forEach((key) => {
@@ -29,8 +52,14 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
       if (ch === "ENTER") {
-        paperContent += "\n";
-        getCurrentText().textContent = paperContent;
+        paperContent =
+        paperContent.slice(0, cursorPosition) +
+        "\n" +
+        paperContent.slice(cursorPosition);
+        
+        cursorPosition++;
+        
+        renderPaper();
         playReturn();
         updateCopyButtonState();
         updateCounters();
@@ -89,7 +118,6 @@ function createPage() {
   currentPage++;
   const page = document.createElement("div");
   page.className = "paper-sheet page";
-  page.innerHTML = `<span class="typewriterText"></span><span class="cursor-paper"></span>`;
   pagesContainer.appendChild(page);
   pageCounter.innerText = `Page ${currentPage + 1}`;
 }
@@ -145,8 +173,13 @@ function playBackspace() {
 /* ---------- Typing ---------- */
 
 function addCharToPaper(ch) {
-  paperContent += ch;
-  getCurrentText().textContent = paperContent;
+  paperContent =
+  paperContent.slice(0, cursorPosition) +
+  ch +
+  paperContent.slice(cursorPosition);
+  
+  cursorPosition += ch.length;
+  renderPaper();
   if (ch === " ") {
     playSpaceClick();
     flashKey("SPACE");
@@ -168,7 +201,7 @@ function addCharToPaper(ch) {
     createPage();
     /* continue typing on new page */
     paperContent = "";
-    getCurrentText().textContent = paperContent;
+    renderPaper();
   }
 
   updateCopyButtonState();
@@ -186,8 +219,14 @@ function resetShift() {
 
 function deleteCharFromPaper() {
   if (paperContent.length === 0) return;
-  paperContent = paperContent.slice(0, -1);
-  getCurrentText().textContent = paperContent;
+  if (cursorPosition === 0) return;
+  
+  paperContent =
+  paperContent.slice(0, cursorPosition - 1) +
+  paperContent.slice(cursorPosition);
+  
+  cursorPosition--;
+  renderPaper();
   playBackspace();
   updateCopyButtonState();
   updateCounters();
@@ -206,6 +245,21 @@ function flashKey(char) {
 
 /* ---------- Keyboard ---------- */
 document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowLeft") {
+    e.preventDefault();
+    cursorPosition = Math.max(0, cursorPosition - 1);
+    renderPaper();
+    return;
+  }
+  if (e.key === "ArrowRight") {
+    e.preventDefault();
+    cursorPosition = Math.min(
+      paperContent.length,
+      cursorPosition + 1
+    );
+    renderPaper();
+    return;
+  }
   if (e.key === "Backspace") {
     e.preventDefault();
     deleteCharFromPaper();
@@ -214,8 +268,14 @@ document.addEventListener("keydown", (e) => {
   }
   if (e.key === "Enter") {
     e.preventDefault();
-    paperContent += "\n";
-    getCurrentText().textContent = paperContent;
+    paperContent =
+    paperContent.slice(0, cursorPosition) +
+    "\n" +
+    paperContent.slice(cursorPosition);
+    
+    cursorPosition++;
+    
+    renderPaper();
     playReturn();
     flashKey("ENTER");
     updateCopyButtonState();
@@ -294,8 +354,7 @@ if (clearPaperBtn) {
     if (confirm("Are you sure you want to clear all typed paper pages?")) {
       pagesContainer.innerHTML = `
                 <div class="paper-sheet page active-page">
-                    <span class="typewriterText"></span>
-                    <span class="cursor-paper"></span>
+                    <span class="typewriterText" contenteditable="false"></span>
                 </div>
             `;
       currentPage = 0;
@@ -722,4 +781,5 @@ copyBtn.onclick = async () => {
 document.addEventListener("DOMContentLoaded", () => {
   updateCopyButtonState();
   updateCounters();
+  renderPaper();
 });
