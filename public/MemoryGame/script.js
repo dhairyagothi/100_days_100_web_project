@@ -14,6 +14,7 @@ let matched      = [];
 let moves        = 0;
 let seconds      = 0;
 let timerInterval = null;
+let previewInterval=null;
 let gameActive   = false;
 let lockBoard    = false;
 let hintUsed     = false;
@@ -29,6 +30,8 @@ const bestEl     = document.getElementById('bestVal');
 const progressEl = document.getElementById('progressBar');
 const winModal   = document.getElementById('winModal');
 const toastEl    = document.getElementById('toast');
+const startBtn   = document.getElementById('startBtn');
+const hintBtn    = document.getElementById('hintBtn');
 
 // ── Event Listeners ───────────────────────────────────────
 document.querySelectorAll('.diff-btn').forEach(btn => {
@@ -38,13 +41,18 @@ document.querySelectorAll('.diff-btn').forEach(btn => {
     difficulty = btn.dataset.diff;
     updateGridClass();
     updateBestDisplay();
-    startGame();
+    setupPreview();
   });
 });
 
-document.getElementById('startBtn').addEventListener('click', startGame);
-document.getElementById('hintBtn').addEventListener('click', useHint);
-document.getElementById('playAgainBtn').addEventListener('click', startGame);
+startBtn.addEventListener('click', startGame);
+hintBtn.addEventListener('click', useHint);
+
+document.getElementById('playAgainBtn').addEventListener('click', () => {
+  winModal.classList.remove('visible');
+  setupPreview();
+});
+document.getElementById('restartBtn').addEventListener('click', setupPreview);
 
 // ── Utility Helpers ───────────────────────────────────────
 
@@ -124,65 +132,121 @@ function stopTimer() {
   clearInterval(timerInterval);
 }
 
+// ── Preview Countdown ─────────────────────────────────────
+ 
+/**
+ * Count down from 3 seconds while cards are face-up, then auto-start.
+ * The Start button label reflects the countdown and acts as a skip.
+ */
+function startPreviewCountdown() {
+  let countdown = 3;
+  startBtn.textContent = `Skip Preview (${countdown})`;
+ 
+  previewInterval = setInterval(() => {
+    countdown--;
+ 
+    if (countdown > 0) {
+      startBtn.textContent = `Skip Preview (${countdown})`;
+    } else {
+      // Countdown finished — auto-start the game
+      clearInterval(previewInterval);
+      previewInterval = null;
+      startGame();
+    }
+  }, 1000);
+}
+
 // ── Game Start ────────────────────────────────────────────
 
-/**
- * Initialise and start a fresh game
- */
-function startGame() {
+function setupPreview() {
   const cfg = DIFFICULTIES[difficulty];
 
-  // Stop any running timer and hide modal
+  // Cancel any running preview countdown or game timer
+  if (previewInterval) {
+     clearInterval(previewInterval);
+     previewInterval = null;
+  }
+
   stopTimer();
   winModal.classList.remove('visible');
+
+  cards = [];
+  flipped = [];
+  matched = [];
+  moves = 0;
+  seconds = 0;
   hintUsed = false;
+const hintBtn = document.getElementById('hintBtn');
+hintBtn.disabled = false;
+hintBtn.textContent = 'Hint';
 
-  // Reset all state
-  cards     = [];
-  flipped   = [];
-  matched   = [];
-  moves     = 0;
   gameActive = false;
-  lockBoard  = false;
+  lockBoard = true;
 
-  // Reset UI
-  movesEl.textContent    = '0';
-  pairsEl.textContent    = `0/${cfg.pairs}`;
+  movesEl.textContent = '0';
+  timerEl.textContent = '0:00';
+  timerEl.className = 'stat-value';
+
+  pairsEl.textContent = `0/${cfg.pairs}`;
   progressEl.style.width = '0%';
-  timerEl.textContent    = '0:00';
-  timerEl.className      = 'stat-value';
+
+  hintBtn.disabled    = true;
+  hintBtn.textContent = 'Hint';
 
   updateGridClass();
   updateBestDisplay();
 
-  // Build and shuffle deck
   const pool = shuffle(EMOJIS).slice(0, cfg.pairs);
   const deck = shuffle([...pool, ...pool]);
 
-  // Render cards
   grid.innerHTML = '';
+
   deck.forEach((emoji, i) => {
     const card = document.createElement('div');
-    card.className      = 'card';
-    card.dataset.emoji  = emoji;
-    card.dataset.idx    = i;
-    card.innerHTML      = `
+
+    card.className = 'card flipped';
+
+    card.dataset.emoji = emoji;
+    card.dataset.idx = i;
+
+    card.innerHTML = `
       <div class="card-inner">
         <div class="card-face card-back"></div>
         <div class="card-face card-front">${emoji}</div>
-      </div>`;
+      </div>
+    `;
+
     card.addEventListener('click', () => onCardClick(card));
+
     grid.appendChild(card);
     cards.push(card);
   });
+  startPreviewCountdown();
+}
+/**
+ * Initialise and start a fresh game
+ */
+function startGame() {
 
-  // Brief peek — show all cards, then flip them back
-  cards.forEach(c => c.classList.add('flipped'));
-  setTimeout(() => {
-    cards.forEach(c => c.classList.remove('flipped'));
-    gameActive = true;
-    startTimer();
-  }, 900);
+  if (previewInterval) {
+    clearInterval(previewInterval);
+    previewInterval = null;
+  }
+
+  cards.forEach(card => {
+    card.classList.remove('flipped');
+  });
+
+  flipped = [];
+
+  gameActive = true;
+  lockBoard = false;
+
+  startBtn.textContent = 'New Game';
+  hintBtn.disabled     = false;
+  hintBtn.textContent  = 'Hint';
+
+  startTimer();
 }
 
 // ── Card Interaction ──────────────────────────────────────
@@ -252,11 +316,14 @@ function checkMatch() {
  * Briefly reveal a matching pair (one use per game)
  */
 function useHint() {
-  if (!gameActive || hintUsed) {
-    showToast('Hint already used!');
+ if (hintUsed) {
+    showToast('💡 Hint already used!');
     return;
   }
   hintUsed = true;
+const hintBtn = document.getElementById('hintBtn');
+hintBtn.disabled = true;
+hintBtn.textContent = 'Hint Used';
 
   // Collect unmatched, unflipped cards
   const unmatched = cards.filter(
@@ -271,20 +338,27 @@ function useHint() {
     if (!emojiMap[e]) emojiMap[e] = [];
     emojiMap[e].push(c);
   }
-  const pair = Object.values(emojiMap).find(g => g.length >= 2);
-  if (!pair) return;
-
-  // Briefly show the pair
-  pair[0].classList.add('flipped');
-  pair[1].classList.add('flipped');
+ 
+  if (!validRows.length) return;   // nothing left to reveal
+ 
+  // Pick one random valid row
+  const rowIdx   = validRows[Math.floor(Math.random() * validRows.length)];
+  const rowCards = cards
+    .slice(rowIdx * cols, (rowIdx + 1) * cols)
+    .filter(c => !c.classList.contains('matched') && !c.classList.contains('flipped'));
+ 
+  // Briefly flip the row face-up
+  rowCards.forEach(c => c.classList.add('flipped'));
   showToast('💡 Hint used!');
-
+ 
+  // Flip back after 1.5 seconds (skip already-matched cards)
   setTimeout(() => {
-    if (!pair[0].classList.contains('matched')) {
-      pair[0].classList.remove('flipped');
-      pair[1].classList.remove('flipped');
-    }
-  }, 1200);
+    rowCards.forEach(c => {
+      if (!c.classList.contains('matched')) {
+        c.classList.remove('flipped');
+      }
+    });
+  }, 1500);
 }
 
 // ── Win Condition ─────────────────────────────────────────
@@ -356,4 +430,5 @@ function launchConfetti() {
 
 // ── Initialise ────────────────────────────────────────────
 updateBestDisplay();
-startGame();
+updateGridClass();
+setupPreview();

@@ -27,6 +27,30 @@ Animated Cursor is a creative frontend project that replaces the default mouse p
    - `animated-cursor.js`
 4. Open `animated-cursor.html` in any modern web browser.
 
+## Browser Compatibility
+
+This project works best on:
+- Google Chrome
+- Microsoft Edge
+- Firefox
+
+For the best experience, use the latest browser version.
+
+## Project Structure
+
+Animated-cursor/
+├── animated-cursor.html
+├── animated-cursor.css
+├── animated-cursor.js
+└── README.md
+
+## Future Improvements
+
+- Add more cursor themes
+- Improve mobile responsiveness
+- Add dark/light mode toggle
+- Add customizable particle effects
+
 ## Usage
 Move your mouse around the page to see the animated cursor and glowing particle trail. Use the cursor design dropdown to switch between different cursor shapes. Use the theme dropdown to change the visual style of the background, cursor, stars, and particles. Click anywhere on the page to trigger the burst animation.
 
