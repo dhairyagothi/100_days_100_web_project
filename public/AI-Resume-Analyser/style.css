@@ -404,3 +404,27 @@ body.light-mode .home-btn {
   border: 1px solid rgba(0, 0, 0, 0.1);
   color: #0f172a;
 }
+.copy-btn{
+  margin-bottom:20px;
+  padding:10px 18px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:14px;
+  font-weight:600;
+  background:linear-gradient(
+    135deg,
+    var(--purple),
+    var(--blue)
+  );
+  color:white;
+  transition:.3s ease;
+}
+
+.copy-btn:hover{
+  transform:translateY(-2px);
+}
+
+.copy-btn.copied{
+  opacity:.85;
+}
