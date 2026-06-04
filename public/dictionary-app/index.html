@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dictionary App with Audio Pronunciation</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <header class="app-header">
+        <h1>Vocal Lexicon Dictionary</h1>
+        <p>
+          Explore instant definitions, example usages, and native audio
+          pronunciations
+        </p>
+      </header>
+
+      <section class="search-box-panel">
+        <input
+          type="text"
+          id="wordInput"
+          placeholder="Type a word to look up... (e.g., resonance)"
+        />
+        <button id="searchBtn">Search</button>
+      </section>
+
+      <main class="results-layout hidden" id="resultsArea">
+        <div class="word-meta-row">
+          <div class="word-heading">
+            <h2 id="targetWord">Word</h2>
+            <span id="phoneticText">/phonetic/</span>
+          </div>
+          <button
+            class="audio-trigger-btn"
+            id="audioBtn"
+            title="Play Pronunciation"
+          >
+            <svg viewBox="0 0 24 24" class="speaker-icon">
+              <path
+                d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div class="lexical-card">
+          <span class="part-of-speech-tag" id="partOfSpeech">noun</span>
+          <div class="meaning-group">
+            <h3>Definition</h3>
+            <p id="definitionText">The definition will populate here.</p>
+          </div>
+          <div class="example-group" id="exampleWrapper">
+            <h3>Example Context</h3>
+            <p id="exampleText" class="italic-context">
+              Example usage context will populate here.
+            </p>
+          </div>
+        </div>
+      </main>
+
+      <div class="status-message hidden" id="statusBox">
+        Loading information...
+      </div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
