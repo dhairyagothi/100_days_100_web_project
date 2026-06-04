@@ -1915,4 +1915,17 @@
   "difficulty": "intermediate",
   "projectDesc": "A responsive Kanban Board application featuring drag-and-drop task management, task creation, editing, deletion, local storage persistence, and dark/light theme support."
 },
+{
+  "projectNo": 210,
+  "projectName": "UnitVerse - Interactive Unit Converter Web App",
+  "projectType": "Web Application",
+  "projectDesc": "An interactive unit converter with real-time conversion, history tracking, favorites system, and a modern responsive UI.",
+  "techStack": [
+    "html", 
+    "css", 
+    "javascript"
+  ],
+  "difficulty": "intermediate",
+  "projectPath": "./public/UnitVerse/index.html"
+}
 ]
