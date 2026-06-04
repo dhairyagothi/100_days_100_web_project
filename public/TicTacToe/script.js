@@ -183,6 +183,17 @@
     return null;
   }
 
+  /* ── Scan for winner (returns mark or null) ── */
+  function scanWinner(b) {
+    for (var i = 0; i < WIN_LINES.length; i++) {
+      var l = WIN_LINES[i];
+      if (b[l[0]] && b[l[0]] === b[l[1]] && b[l[0]] === b[l[2]]) {
+        return b[l[0]];
+      }
+    }
+    return null;
+  }
+
   /* ── Check win (uses scanWinner) ─────── */
   function checkWin() {
     return scanWinner(board) ? WIN_LINES.find(function (l) {
@@ -238,7 +249,15 @@
     overlay.classList.remove("show");
     overlay.setAttribute("aria-hidden", "true");
     stopConfetti();
-    if (vsBot && current === botMark) setTimeout(doBotMove, 480);
+    if (vsBot && current === botMark) {
+      // Trigger bot via a click on any available cell so the nested
+      // doCpuMove path inside buildBoard() handles the move safely.
+      var avail = board.map(function (v, i) { return v ? null : i; }).filter(function (v) { return v !== null; });
+      if (avail.length) setTimeout(function () {
+        var cells = boardEl.querySelectorAll('.cell');
+        if (cells[avail[0]]) cells[avail[0]].click();
+      }, 480);
+    }
   }
 
   /* ── Reset all ────────────────────────── */
