@@ -2436,5 +2436,18 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/Complaint_Management_System/index.html"
+  },
+  {
+    "projectNo": 209,
+    "projectName": "Mood-Based Music Recommender",
+    "projectType": "Web Application",
+    "projectDesc": "A premium Spotify-inspired music discovery app that recommends tracks based on your current mood, featuring dynamic themes and favorites.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Mood_Based_Music_Recommender/index.html"
   }
 ]
