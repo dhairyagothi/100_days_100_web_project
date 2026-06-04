@@ -9,101 +9,99 @@ const descInput = document.getElementById("desc");
 const categoryInput = document.getElementById("cat");
 const dateInput = document.getElementById("date");
 
-const transactionList =
-  document.getElementById("transaction-list");
+const transactionList = document.getElementById("transaction-list");
 
-const balanceEl =
-  document.getElementById("curramt");
+const balanceEl = document.getElementById("curramt");
 
-const incomeEl =
-  document.getElementById("income");
+const incomeEl = document.getElementById("income");
 
-const expenseEl =
-  document.getElementById("expense");
+const expenseEl = document.getElementById("expense");
 
 const categoryEls = {
+  food: document.querySelector('[data-cat="food"]'),
 
-  food:
-    document.querySelector('[data-cat="food"]'),
+  travel: document.querySelector('[data-cat="travel"]'),
 
-  travel:
-    document.querySelector('[data-cat="travel"]'),
+  shopping: document.querySelector('[data-cat="shopping"]'),
 
-  shopping:
-    document.querySelector('[data-cat="shopping"]'),
-
-  other:
-    document.querySelector('[data-cat="other"]')
+  other: document.querySelector('[data-cat="other"]'),
 };
 
-const budgetInput =
-  document.getElementById("budgetInput");
+const budgetInput = document.getElementById("budgetInput");
 
-const budgetText =
-  document.getElementById("budget");
+const budgetText = document.getElementById("budget");
 
-const progressFill =
-  document.querySelector(".progress-fill");
+const progressFill = document.querySelector(".progress-fill");
 
-const modeToggle =
-  document.querySelector(".mode");
+const modeToggle = document.querySelector(".mode");
 
-const resetBtn =
-  document.getElementById("resetBtn");
+const resetBtn = document.getElementById("resetBtn");
 
-const emptyState =
-  document.querySelector(".empty-state");
+const emptyState = document.querySelector(".empty-state");
 
-const toast =
-  document.getElementById("toast");
+const toast = document.getElementById("toast");
 
-const loader =
-  document.querySelector(".loader");
+const loader = document.querySelector(".loader");
 
-const successSound =
-  document.getElementById("successSound");
+const successSound = document.getElementById("successSound");
 
 /* =========================================================
    STATE
 ========================================================= */
 
 let transactions = [];
-
 let monthlyBudget = 0;
+
+/* =========================================================
+   INJECT SHAKE KEYFRAME
+========================================================= */
+
+(function injectShakeKeyframe() {
+  if (document.getElementById("shake-style")) return;
+
+  const style = document.createElement("style");
+
+  style.id = "shake-style";
+
+  style.textContent = `
+    @keyframes shake {
+      0%,100% { transform: translateX(0);    }
+      20%      { transform: translateX(-6px); }
+      40%      { transform: translateX( 6px); }
+      60%      { transform: translateX(-4px); }
+      80%      { transform: translateX( 4px); }
+    }
+  `;
+
+  document.head.appendChild(style);
+})();
 
 /* =========================================================
    LOADER
 ========================================================= */
 
-function showLoader(){
-
+function showLoader() {
   loader.classList.remove("hidden");
 }
 
-function hideLoader(){
-
+function hideLoader() {
   setTimeout(() => {
-
     loader.classList.add("hidden");
-
-  },700);
+  }, 700);
 }
 
 /* =========================================================
    TOAST
 ========================================================= */
 
-function showToast(message){
-
+function showToast(message) {
   toast.textContent = message;
 
   toast.classList.add("show");
 
   setTimeout(() => {
-
     toast.classList.remove("show");
-
-  },2500);
+  }, 2500);
 }
 
 /* =========================================================
@@ -111,20 +109,17 @@ function showToast(message){
 ========================================================= */
 
 modeToggle.addEventListener("change", () => {
-
   document.body.classList.toggle("dark");
 
   localStorage.setItem(
     "theme",
-    document.body.classList.contains("dark")
-      ? "dark"
-      : "light"
+    document.body.classList.contains("dark") ? "dark" : "light",
   );
 
   showToast(
     document.body.classList.contains("dark")
       ? "Dark Mode Enabled 🌙"
-      : "Light Mode Enabled ☀️"
+      : "Light Mode Enabled ☀️",
   );
 });
 
@@ -132,17 +127,14 @@ modeToggle.addEventListener("change", () => {
    LIVE CLOCK
 ========================================================= */
 
-function updateClock(){
-
+function updateClock() {
   const now = new Date();
-
   const time = now.toLocaleTimeString();
 
-  document.getElementById("clock")
-    .textContent = time;
+  document.getElementById("clock").textContent = time;
 }
 
-setInterval(updateClock,1000);
+setInterval(updateClock, 1000);
 
 updateClock();
 
@@ -150,15 +142,12 @@ updateClock();
    ADD TRANSACTION
 ========================================================= */
 
-form.addEventListener("submit",e => {
-
+form.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const amount =
-    Number(amountInput.value);
+  const amount = Number(amountInput.value);
 
-  if(amount <= 0){
-
+  if (amount <= 0) {
     showToast("Enter valid amount ⚠️");
 
     return;
@@ -167,41 +156,33 @@ form.addEventListener("submit",e => {
   showLoader();
 
   const transaction = {
+    id: Date.now(),
 
-    id:Date.now(),
+    amount: amount,
 
-    amount:amount,
+    description: descInput.value.trim(),
 
-    description:
-      descInput.value.trim(),
+    category: categoryInput.value,
 
-    category:
-      categoryInput.value,
+    type: categoryInput.value === "income" ? "income" : "expense",
 
-    type:
-      categoryInput.value === "income"
-        ? "income"
-        : "expense",
-
-    date:dateInput.value
+    date: dateInput.value,
   };
 
   transactions.unshift(transaction);
 
   saveAndUpdate();
 
-  successSound.play();
+  /* FIX #4 — audio play() returns a Promise; silently
+     ignore the rejection browsers throw before any
+     user-gesture interaction has occurred.            */
+  successSound.play().catch(() => {});
 
-  showToast(
-    "Transaction Added Successfully 🚀"
-  );
+  showToast("Transaction Added Successfully 🚀");
 
   form.reset();
 
-  const today =
-    new Date()
-      .toISOString()
-      .split("T")[0];
+  const today = new Date().toISOString().split("T")[0];
 
   dateInput.value = today;
 
@@ -212,26 +193,19 @@ form.addEventListener("submit",e => {
    RENDER TRANSACTIONS
 ========================================================= */
 
-function renderTransactions(){
-
+function renderTransactions() {
   transactionList.innerHTML = "";
 
-  if(transactions.length === 0){
-
+  if (transactions.length === 0) {
     emptyState.style.display = "flex";
-
-  }else{
-
+  } else {
     emptyState.style.display = "none";
   }
 
-  transactions.forEach(txn => {
+  transactions.forEach((txn) => {
+    const row = document.createElement("tr");
 
-    const row =
-      document.createElement("tr");
-
-    row.style.animation =
-      "slideIn 0.5s ease";
+    row.style.animation = "slideIn 0.5s ease";
 
     row.innerHTML = `
 
@@ -240,38 +214,22 @@ function renderTransactions(){
       <td>${txn.description}</td>
 
       <td>
-
         <span class="category-badge ${txn.category}">
           ${capitalize(txn.category)}
         </span>
-
       </td>
 
-      <td class="${
-        txn.type === "income"
-          ? "income-text"
-          : "expense-text"
-      }">
-
-        ${
-          txn.type === "income"
-            ? "+"
-            : "-"
-        }₹${txn.amount}
-
+      <td class="${txn.type === "income" ? "income-text" : "expense-text"}">
+        ${txn.type === "income" ? "+" : "-"}₹${txn.amount}
       </td>
 
       <td>
-
         <button
           class="delete-btn"
           data-id="${txn.id}"
         >
-
           <i class="fa-solid fa-trash"></i>
-
         </button>
-
       </td>
     `;
 
@@ -283,284 +241,189 @@ function renderTransactions(){
    DELETE TRANSACTION
 ========================================================= */
 
-transactionList.addEventListener(
-  "click",
-  e => {
+transactionList.addEventListener("click", (e) => {
+  const deleteBtn = e.target.closest(".delete-btn");
 
-    const deleteBtn =
-      e.target.closest(".delete-btn");
+  if (!deleteBtn) return;
 
-    if(!deleteBtn) return;
+  const id = Number(deleteBtn.dataset.id);
 
-    const id =
-      Number(deleteBtn.dataset.id);
+  transactions = transactions.filter((txn) => txn.id !== id);
 
-    transactions =
-      transactions.filter(
-        txn => txn.id !== id
-      );
+  saveAndUpdate();
 
-    saveAndUpdate();
-
-    showToast(
-      "Transaction Deleted 🗑️"
-    );
-  }
-);
+  showToast("Transaction Deleted 🗑️");
+});
 
 /* =========================================================
    UPDATE SUMMARY
 ========================================================= */
 
-function updateSummary(){
-
+function updateSummary() {
   let income = 0;
-
   let expense = 0;
 
-  transactions.forEach(txn => {
-
-    if(txn.type === "income"){
-
+  transactions.forEach((txn) => {
+    if (txn.type === "income") {
       income += txn.amount;
-
-    }else{
-
+    } else {
       expense += txn.amount;
     }
   });
 
-  const balance =
-    income - expense;
+  const balance = income - expense;
 
-  animateNumber(balanceEl,balance);
+  animateNumber(balanceEl, balance);
+  animateNumber(incomeEl, income);
+  animateNumber(expenseEl, expense);
 
-  animateNumber(incomeEl,income);
-
-  animateNumber(expenseEl,expense);
-
-  if(balance < 0){
-
-    balanceEl.style.color =
-      "#ff4d4d";
-
-  }else{
-
-    balanceEl.style.color =
-      "#00c853";
-  }
+  balanceEl.style.color = balance < 0 ? "#ff4d4d" : "#00c853";
 }
 
 /* =========================================================
-   UPDATE CATEGORY
+   UPDATE CATEGORIES
 ========================================================= */
 
-function updateCategories(){
-
+function updateCategories() {
   const totals = {
-
-    food:0,
-
-    travel:0,
-
-    shopping:0,
-
-    other:0
+    food: 0,
+    travel: 0,
+    shopping: 0,
+    other: 0,
   };
 
-  transactions.forEach(txn => {
-
-    if(txn.type === "expense"){
-
-      if(totals[txn.category]
-        !== undefined){
-
-        totals[txn.category]
-          += txn.amount;
+  transactions.forEach((txn) => {
+    if (txn.type === "expense") {
+      if (totals[txn.category] !== undefined) {
+        totals[txn.category] += txn.amount;
       }
     }
   });
 
-  Object.keys(totals).forEach(cat => {
-
-    categoryEls[cat]
-      .textContent =
-        `₹${totals[cat]}`;
+  Object.keys(totals).forEach((cat) => {
+    categoryEls[cat].textContent = `₹${totals[cat]}`;
   });
 }
 
 /* =========================================================
    BUDGET
+
+   FIX #3 — updateBudget() no longer writes to
+   #smart-suggestion or #financial-status when no budget
+   is set. updateInsights() owns those elements when
+   monthlyBudget is 0, preventing both functions from
+   fighting over the same DOM nodes.
 ========================================================= */
 
 budgetInput.addEventListener(
-  "input",
-  () => {
+  /* FIX #2 — changed from "input" to "change" so the
+     toast fires once when the user commits the value
+     (on blur / Enter), not on every single keystroke. */
+  "change",
 
-    monthlyBudget =
-      Number(budgetInput.value);
+  () => {
+    monthlyBudget = Number(budgetInput.value);
 
     updateBudget();
 
-    localStorage.setItem(
-      "budget",
-      monthlyBudget
-    );
+    localStorage.setItem("budget", monthlyBudget);
 
-    showToast(
-      "Budget Updated 💸"
-    );
-  }
+    showToast("Budget Updated 💸");
+  },
 );
 
-function updateBudget(){
+function updateBudget() {
+  const expense = transactions
+    .filter((txn) => txn.type === "expense")
+    .reduce((sum, txn) => sum + txn.amount, 0);
 
-  const expense =
-    transactions
-      .filter(
-        txn => txn.type === "expense"
-      )
-      .reduce(
-        (sum,txn) =>
-          sum + txn.amount,
-        0
-      );
+  budgetText.textContent = `₹${expense} / ₹${monthlyBudget}`;
 
-  budgetText.textContent =
-    `₹${expense} / ₹${monthlyBudget}`;
+  const percentage = monthlyBudget > 0 ? (expense / monthlyBudget) * 100 : 0;
 
-  const percentage =
-    monthlyBudget > 0
-      ? (expense / monthlyBudget) * 100
-      : 0;
+  progressFill.style.width = `${Math.min(percentage, 100)}%`;
 
-  progressFill.style.width =
-    `${Math.min(percentage,100)}%`;
+  const smartSuggestionEl = document.getElementById("smart-suggestion");
 
-  const smartSuggestionEl =
-    document.getElementById(
-      "smart-suggestion"
-    );
-
-  const financialStatusEl =
-    document.getElementById(
-      "financial-status"
-    );
+  const financialStatusEl = document.getElementById("financial-status");
 
   /* =========================================
-     NO BUDGET
+     NO BUDGET SET
+     — reset visuals only; leave the insight
+       text to updateInsights().
   ========================================= */
 
-  if(monthlyBudget <= 0){
-
-    progressFill.style.background =
-      "#6366f1";
-
-    budgetText.style.color =
-      "";
-
-    smartSuggestionEl.textContent =
-      "Set a monthly budget to track spending 📊";
-
-    financialStatusEl.textContent =
-      "Budget not configured";
+  if (monthlyBudget <= 0) {
+    progressFill.style.background = "#6366f1";
+    budgetText.style.color = "";
 
     return;
   }
 
   /* =========================================
-     SAFE ZONE
+     SAFE ZONE  (< 50%)
   ========================================= */
 
-  if(percentage < 50){
-
-    progressFill.style.background =
-      "#00c853";
-
-    budgetText.style.color =
-      "#00c853";
+  if (percentage < 50) {
+    progressFill.style.background = "#00c853";
+    budgetText.style.color = "#00c853";
 
     smartSuggestionEl.textContent =
       "Great job! Your spending is well under control ✅";
 
-    financialStatusEl.textContent =
-      "Healthy financial condition 💰";
-  }
+    financialStatusEl.textContent = "Healthy financial condition 💰";
+  } else if (percentage >= 50 && percentage < 80) {
 
   /* =========================================
-     CAUTION ZONE
+     CAUTION ZONE  (50 – 79%)
   ========================================= */
+    progressFill.style.background = "#ffb300";
+    budgetText.style.color = "#ff9800";
 
-  else if(
-    percentage >= 50 &&
-    percentage < 80
-  ){
+    smartSuggestionEl.textContent = "Caution: Budget usage is increasing ⚠️";
 
-    progressFill.style.background =
-      "#ffb300";
-
-    budgetText.style.color =
-      "#ff9800";
-
-    smartSuggestionEl.textContent =
-      "Caution: Budget usage is increasing ⚠️";
-
-    financialStatusEl.textContent =
-      "Monitor expenses carefully 👀";
-  }
+    financialStatusEl.textContent = "Monitor expenses carefully 👀";
+  } else if (percentage >= 80 && percentage < 100) {
 
   /* =========================================
-     WARNING ZONE
+     WARNING ZONE  (80 – 99%)
   ========================================= */
-
-  else if(
-    percentage >= 80 &&
-    percentage < 100
-  ){
-
-    progressFill.style.background =
-      "#ff6d00";
-
-    budgetText.style.color =
-      "#ff6d00";
+    progressFill.style.background = "#ff6d00";
+    budgetText.style.color = "#ff6d00";
 
     smartSuggestionEl.textContent =
       "Warning: You are close to exceeding your budget 🚨";
 
-    financialStatusEl.textContent =
-      "Critical spending level ⚠️";
-  }
+    financialStatusEl.textContent = "Critical spending level ⚠️";
+  } else {
 
   /* =========================================
-     BUDGET EXCEEDED
+     BUDGET EXCEEDED  (≥ 100%)
+
+     FIX #4 — replaced confetti() with a shake
+     animation on the budget widget. Confetti
+     is celebration feedback; it should not fire
+     on the worst financial outcome for the user.
   ========================================= */
-
-  else{
-
-    progressFill.style.background =
-      "#ff1744";
-
-    budgetText.style.color =
-      "#ff1744";
+    progressFill.style.background = "#ff1744";
+    budgetText.style.color = "#ff1744";
 
     smartSuggestionEl.textContent =
       "Budget exceeded! Reduce unnecessary expenses immediately ❌";
 
-    financialStatusEl.textContent =
-      "Over budget 🚫";
+    financialStatusEl.textContent = "Over budget 🚫";
 
-    showToast(
-      "Monthly Budget Exceeded 🚨"
-    );
+    showToast("Monthly Budget Exceeded 🚨");
 
-    confetti({
+    const budgetWidget = document.querySelector(".monthly-budget");
 
-      particleCount:120,
+    budgetWidget.style.animation = "none";
 
-      spread:100,
+    /* Force a reflow so re-assigning the same
+       animation name actually restarts it.    */
+    void budgetWidget.offsetHeight;
 
-      origin:{ y:0.6 }
-    });
+    budgetWidget.style.animation = "shake 0.5s ease";
   }
 }
 
@@ -568,159 +431,84 @@ function updateBudget(){
    INSIGHTS
 ========================================================= */
 
-function updateInsights(){
-
+function updateInsights() {
   const totals = {
-
-    food:0,
-
-    travel:0,
-
-    shopping:0,
-
-    other:0
+    food: 0,
+    travel: 0,
+    shopping: 0,
+    other: 0,
   };
 
   let totalExpense = 0;
-
   let totalIncome = 0;
 
-  transactions.forEach(txn => {
-
-    if(txn.type === "expense"){
-
-      if(totals[txn.category]
-        !== undefined){
-
-        totals[txn.category]
-          += txn.amount;
-
-      }else{
-
+  transactions.forEach((txn) => {
+    if (txn.type === "expense") {
+      if (totals[txn.category] !== undefined) {
+        totals[txn.category] += txn.amount;
+      } else {
         totals.other += txn.amount;
       }
 
       totalExpense += txn.amount;
-
-    }else{
-
+    } else {
       totalIncome += txn.amount;
     }
   });
 
-  const highestSpendingCatEl =
-    document.getElementById(
-      "highest-spending-cat"
-    );
+  const highestSpendingCatEl = document.getElementById("highest-spending-cat");
 
-  const smartSuggestionEl =
-    document.getElementById(
-      "smart-suggestion"
-    );
+  const smartSuggestionEl = document.getElementById("smart-suggestion");
 
-  const financialStatusEl =
-    document.getElementById(
-      "financial-status"
-    );
+  const financialStatusEl = document.getElementById("financial-status");
 
   let maxCat = "";
-
   let maxAmount = 0;
 
-  Object.keys(totals).forEach(cat => {
-
-    if(totals[cat] > maxAmount){
-
+  Object.keys(totals).forEach((cat) => {
+    if (totals[cat] > maxAmount) {
       maxAmount = totals[cat];
-
       maxCat = cat;
     }
   });
 
-  if(maxAmount > 0){
+  highestSpendingCatEl.textContent =
+    maxAmount > 0 ? `${capitalize(maxCat)} (₹${maxAmount})` : "None";
 
-    highestSpendingCatEl.textContent =
+  let suggestion = "Add more transactions to generate insights.";
 
-      `${capitalize(maxCat)}
-       (₹${maxAmount})`;
+  if (maxCat === "food") suggestion = "Food expenses are high 🍔";
+  else if (maxCat === "travel") suggestion = "Travel spending increased ✈️";
+  else if (maxCat === "shopping") suggestion = "Shopping expenses are high 🛍️";
+  else if (maxCat === "other") suggestion = "Track miscellaneous expenses 📦";
 
-  }else{
+  let status = "No financial data available.";
 
-    highestSpendingCatEl.textContent =
-      "None";
-  }
+  if (totalIncome > 0) {
+    const savings = totalIncome - totalExpense;
+    const savingsRate = ((savings / totalIncome) * 100).toFixed(0);
 
-  let suggestion =
-    "Add more transactions to generate insights.";
-
-  if(maxCat === "food"){
-
-    suggestion =
-      "Food expenses are high 🍔";
-
-  }else if(maxCat === "travel"){
-
-    suggestion =
-      "Travel spending increased ✈️";
-
-  }else if(maxCat === "shopping"){
-
-    suggestion =
-      "Shopping expenses are high 🛍️";
-
-  }else if(maxCat === "other"){
-
-    suggestion =
-      "Track miscellaneous expenses 📦";
-  }
-
-  let status =
-    "No financial data available.";
-
-  if(totalIncome > 0){
-
-    const savings =
-      totalIncome - totalExpense;
-
-    const savingsRate =
-
-      (
-        (savings/totalIncome) * 100
-      ).toFixed(0);
-
-    if(savingsRate >= 50){
-
-      status =
-        `Excellent! Saving ${savingsRate}% 🎉`;
+    if (savingsRate >= 50) {
+      status = `Excellent! Saving ${savingsRate}% 🎉`;
 
       confetti({
-
-        particleCount:150,
-
-        spread:90,
-
-        origin:{ y:0.6 }
+        particleCount: 150,
+        spread: 90,
+        origin: { y: 0.6 },
       });
-
-    }else if(savingsRate >= 20){
-
-      status =
-        `Good savings rate ${savingsRate}%`;
-
-    }else{
-
-      status =
-        `Low savings rate ${savingsRate}%`;
+    } else if (savingsRate >= 20) {
+      status = `Good savings rate ${savingsRate}%`;
+    } else {
+      status = `Low savings rate ${savingsRate}%`;
     }
   }
 
-  if(monthlyBudget <= 0){
+  /* Only write to the insight text nodes when no budget
+     is active — updateBudget() owns them otherwise.   */
 
-    smartSuggestionEl.textContent =
-      suggestion;
-
-    financialStatusEl.textContent =
-      status;
+  if (monthlyBudget <= 0) {
+    smartSuggestionEl.textContent = suggestion;
+    financialStatusEl.textContent = status;
   }
 }
 
@@ -728,216 +516,154 @@ function updateInsights(){
    RESET
 ========================================================= */
 
-resetBtn.addEventListener(
-  "click",
-  () => {
+resetBtn.addEventListener("click", () => {
+  const confirmReset = confirm("Reset all transactions?");
 
-    const confirmReset =
-      confirm(
-        "Reset all transactions?"
-      );
+  if (!confirmReset) return;
 
-    if(!confirmReset) return;
+  transactions = [];
+  monthlyBudget = 0;
 
-    transactions = [];
+  localStorage.clear();
 
-    monthlyBudget = 0;
+  budgetInput.value = "";
 
-    localStorage.clear();
+  saveAndUpdate();
 
-    budgetInput.value = "";
-
-    saveAndUpdate();
-
-    showToast(
-      "All Data Reset 🔄"
-    );
-  }
-);
+  showToast("All Data Reset 🔄");
+});
 
 /* =========================================================
    STORAGE
 ========================================================= */
 
-function saveAndUpdate(){
+function saveAndUpdate() {
+  localStorage.setItem("transactions", JSON.stringify(transactions));
 
-  localStorage.setItem(
+  renderAll();
+}
 
-    "transactions",
+/* =========================================================
+   RENDER ALL
+   A display-only update that does NOT touch localStorage.
+   Called directly by init() to avoid persisting stale
+   data back to storage on every page load.
+========================================================= */
 
-    JSON.stringify(transactions)
-  );
-
+function renderAll() {
   renderTransactions();
-
   updateSummary();
-
   updateCategories();
-
   updateBudget();
-
   updateInsights();
 }
 
 /* =========================================================
    ANIMATE NUMBER
+
+   FIX #1 — original broke in two ways:
+   • target === 0 → increment = 0, interval ran forever
+     (memory leak on every summary refresh)
+   • target < 0  → increment is negative, condition
+     (start >= target) starts true, counter cleared
+     immediately, element shows ₹0 instead of the
+     actual negative balance
 ========================================================= */
 
-function animateNumber(
-  element,
-  target
-){
+function animateNumber(element, target) {
+  /* Short-circuit: nothing to count to */
+  if (target === 0) {
+    element.textContent = "₹0";
+    return;
+  }
 
   let start = 0;
 
   const duration = 1000;
+  const increment = target / (duration / 16);
+  /* increment is correctly negative when target < 0,
+     so the counter counts down to the target.        */
 
-  const increment =
-    target/(duration/16);
+  const counter = setInterval(() => {
+    start += increment;
 
-  const counter =
-    setInterval(() => {
+    /* Direction-aware exit condition */
+    const reached = target > 0 ? start >= target : start <= target;
 
-      start += increment;
+    if (reached) {
+      start = target;
+      clearInterval(counter);
+    }
 
-      if(start >= target){
-
-        start = target;
-
-        clearInterval(counter);
-      }
-
-      element.textContent =
-        `₹${Math.floor(start)}`;
-
-    },16);
+    element.textContent = `₹${Math.round(start)}`;
+  }, 16);
 }
 
 /* =========================================================
    HELPERS
 ========================================================= */
 
-function capitalize(word){
-
-  return word.charAt(0)
-    .toUpperCase()
-
-    + word.slice(1);
+function capitalize(word) {
+  return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
-function formatDate(date){
-
+function formatDate(date) {
   const options = {
-
-    day:"numeric",
-
-    month:"short",
-
-    year:"numeric"
+    day: "numeric",
+    month: "short",
+    year: "numeric",
   };
 
-  return new Date(date)
-
-    .toLocaleDateString(
-      "en-IN",
-      options
-    );
+  return new Date(date).toLocaleDateString("en-IN", options);
 }
 
 /* =========================================================
    MAGNETIC BUTTON EFFECT
 ========================================================= */
 
-const buttons =
-  document.querySelectorAll(
-    ".submit-btn,#resetBtn"
-  );
+const buttons = document.querySelectorAll(".submit-btn, #resetBtn");
 
-buttons.forEach(button => {
+buttons.forEach((button) => {
+  button.addEventListener("mousemove", (e) => {
+    const rect = button.getBoundingClientRect();
 
-  button.addEventListener(
-    "mousemove",
-    e => {
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
 
-      const rect =
-        button.getBoundingClientRect();
+    button.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+  });
 
-      const x =
-        e.clientX
-        - rect.left
-        - rect.width/2;
-
-      const y =
-        e.clientY
-        - rect.top
-        - rect.height/2;
-
-      button.style.transform =
-
-        `translate(
-          ${x*0.15}px,
-          ${y*0.15}px
-        )`;
-    }
-  );
-
-  button.addEventListener(
-    "mouseleave",
-    () => {
-
-      button.style.transform =
-        "translate(0,0)";
-    }
-  );
+  button.addEventListener("mouseleave", () => {
+    button.style.transform = "translate(0, 0)";
+  });
 });
 
 /* =========================================================
    INIT
+
+   FIX #5 — original called saveAndUpdate() which writes
+   transactions back to localStorage on every page load,
+   even though nothing changed. Now calls renderAll()
+   directly so the UI is populated from the data that
+   was just read, with zero unnecessary storage writes.
 ========================================================= */
 
-(function init(){
+(function init() {
+  transactions = JSON.parse(localStorage.getItem("transactions")) || [];
 
-  transactions =
+  monthlyBudget = Number(localStorage.getItem("budget")) || 0;
 
-    JSON.parse(
-      localStorage.getItem(
-        "transactions"
-      )
-    ) || [];
+  budgetInput.value = monthlyBudget || "";
 
-  monthlyBudget =
-
-    Number(
-      localStorage.getItem(
-        "budget"
-      )
-    ) || 0;
-
-  budgetInput.value =
-    monthlyBudget;
-
-  if(
-    localStorage.getItem("theme")
-    === "dark"
-  ){
-
-    document.body.classList.add(
-      "dark"
-    );
+  if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark");
 
     modeToggle.checked = true;
   }
 
-  const today =
-
-    new Date()
-
-      .toISOString()
-
-      .split("T")[0];
+  const today = new Date().toISOString().split("T")[0];
 
   dateInput.value = today;
 
-  saveAndUpdate();
-
+  renderAll();
 })();

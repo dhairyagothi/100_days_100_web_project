@@ -103,13 +103,164 @@
   </style>
 </head>
 <body>
-  <div class="min-h-screen flex flex-col justify-center items-center gap-10 p-4">
-    
-    <div class="text-center">
-      <h1 class="glitch-title font-bold text-5xl md:text-6xl mb-4">Theme Engine</h1>
-      <p class="text-xl md:text-2xl font-bold opacity-80">Select a theme to transform the UI</p>
+<style>
+[data-theme='dark'] {
+  --bg-color: #111827;
+  --text-color: #f9fafb;
+  --card-bg: #1f2937;
+  --card-text-color: #f9fafb;
+  --primary: #60a5fa;
+  --border-color: #374151;
+}
+
+[data-theme='cyberpunk'] {
+  --bg-color: #fce300;
+  --text-color: #000000;
+  --card-bg: #000000;
+  --card-text-color: #ffffff;
+  --primary: #00f0ff;
+  --border-color: #ff003c;
+}
+
+[data-theme='synthwave'] {
+  --bg-color: #2b213a;
+  --text-color: #ff007f;
+  --card-bg: #1a1525;
+  --card-text-color: #00e5ff;
+  --primary: #00e5ff;
+  --border-color: #ff007f;
+}
+
+[data-theme='dracula'] {
+  --bg-color: #282a36;
+  --text-color: #f8f8f2;
+  --card-bg: #44475a;
+  --card-text-color: #f8f8f2;
+  --primary: #ff79c6;
+  --border-color: #6272a4;
+}
+
+body {
+  font-family: 'JetBrains Mono', monospace;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: all 0.5s ease;
+  margin: 0;
+}
+
+.theme-card {
+  background-color: var(--card-bg);
+  color: var(--card-text-color);
+  border: 2px solid var(--border-color);
+  transition: all 0.5s ease;
+}
+
+.theme-btn {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border: 2px solid var(--border-color);
+}
+
+[data-theme='cyberpunk'] .theme-btn {
+  color: var(--card-text-color);
+}
+
+.theme-btn:hover,
+.theme-btn.active {
+  background-color: var(--primary);
+  color: var(--bg-color);
+  border-color: var(--primary);
+}
+
+[data-theme='cyberpunk'] .theme-btn.active,
+[data-theme='cyberpunk'] .theme-btn:hover {
+  color: #000000;
+}
+
+.accent-text {
+  color: var(--primary);
+}
+
+[data-theme='cyberpunk'] .glitch-title {
+  text-shadow: 2px 2px 0px var(--primary),
+               -2px -2px 0px var(--border-color);
+  letter-spacing: -2px;
+}
+</style>
+
+<div class="text-center">
+  <h1 class="glitch-title font-bold text-5xl md:text-6xl mb-4">
+    Theme Engine
+  </h1>
+  <p class="text-xl md:text-2xl font-bold opacity-80">
+    Select a theme to transform the UI
+  </p>
+</div>
+
+<!-- Theme Selection Buttons -->
+<div class="flex flex-wrap justify-center gap-4 z-10">
+  <button class="theme-btn active px-6 py-3 rounded-xl font-bold cursor-pointer transition-all duration-300" data-set-theme="light">
+    ☀ Light
+  </button>
+  <button class="theme-btn px-6 py-3 rounded-xl font-bold cursor-pointer transition-all duration-300" data-set-theme="dark">
+    🌙 Dark
+  </button>
+  <button class="theme-btn px-6 py-3 rounded-xl font-bold cursor-pointer transition-all duration-300" data-set-theme="cyberpunk">
+    🤖 Cyberpunk
+  </button>
+  <button class="theme-btn px-6 py-3 rounded-xl font-bold cursor-pointer transition-all duration-300" data-set-theme="synthwave">
+    🌆 Synthwave
+  </button>
+  <button class="theme-btn px-6 py-3 rounded-xl font-bold cursor-pointer transition-all duration-300" data-set-theme="dracula">
+    🧛 Dracula
+  </button>
+</div>
+
+<!-- UI Demo Area -->
+<div class="theme-card p-8 rounded-3xl w-full max-w-2xl shadow-2xl mt-8">
+  <div
+    class="flex justify-between items-center border-b-2 border-inherit pb-4 mb-6"
+    style="border-color: var(--border-color)"
+  >
+    <h2 class="text-3xl font-bold">Dashboard Console</h2>
+    <div class="flex gap-2">
+      <div class="w-4 h-4 rounded-full" style="background-color: var(--primary)"></div>
+      <div class="w-4 h-4 rounded-full" style="background-color: var(--border-color)"></div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="p-6 rounded-xl border-2" style="border-color: var(--border-color)">
+      <h3 class="font-bold text-xl mb-2 accent-text">Metrics</h3>
+      <p class="opacity-80 font-bold mb-1">
+        Connections: <span id="conn-count" class="text-xl">0</span>
+      </p>
+      <p class="opacity-80 font-bold">
+        Sync Rate: <span id="sync-rate" class="text-xl">0%</span>
+      </p>
     </div>
 
+    <div class="p-6 rounded-xl border-2" style="border-color: var(--border-color)">
+      <h3 class="font-bold text-xl mb-2 accent-text">Status Check</h3>
+      <p class="opacity-80 font-bold mb-1">
+        State: <span id="system-state">IDLE</span>
+      </p>
+      <p class="opacity-80 font-bold">
+        Latency: <span id="latency">--</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="mt-8">
+    <button
+      id="executeBtn"
+      class="w-full py-4 rounded-xl font-bold text-lg transition-all active:scale-95 cursor-pointer"
+      style="background-color: var(--primary); color: var(--bg-color)"
+    >
+      Run Diagnostic Ping
+    </button>
+  </div>
+</div>
     <!-- Theme Selection Buttons -->
     <div class="flex flex-wrap justify-center gap-4 z-10">
       <button class="theme-btn active px-6 py-3 rounded-xl font-bold cursor-pointer transition-all duration-300" data-set-theme="light">
