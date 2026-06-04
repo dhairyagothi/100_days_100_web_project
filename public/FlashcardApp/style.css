@@ -1,0 +1,171 @@
+:root{
+  --primary:#4f46e5;
+  --secondary:#06b6d4;
+  --success:#22c55e;
+  --danger:#ef4444;
+  --bg:#f4f7fb;
+  --card:#ffffff;
+  --text:#222;
+}
+
+.dark{
+  --bg:#111827;
+  --card:#1f2937;
+  --text:white;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:Segoe UI,sans-serif;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  transition:.3s;
+}
+
+.container{
+  width:95%;
+  max-width:700px;
+}
+
+.top-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+#theme-toggle{
+  padding:10px 15px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.stat{
+  background:var(--card);
+  padding:15px;
+  border-radius:15px;
+  text-align:center;
+  box-shadow:0 8px 20px rgba(0,0,0,.1);
+}
+
+.progress-container{
+  width:100%;
+  height:12px;
+  background:#ddd;
+  border-radius:10px;
+  overflow:hidden;
+  margin-bottom:10px;
+}
+
+#progress-bar{
+  width:0%;
+  height:100%;
+  background:linear-gradient(90deg,#4f46e5,#06b6d4);
+  transition:.4s;
+}
+
+.progress-text{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.flashcard-wrapper{
+  perspective:1000px;
+  height:350px;
+}
+
+.flashcard{
+  width:100%;
+  height:100%;
+  position:relative;
+  transform-style:preserve-3d;
+  transition:.7s;
+  cursor:pointer;
+}
+
+.flashcard.is-flipped{
+  transform:rotateY(180deg);
+}
+
+.card-face{
+  position:absolute;
+  width:100%;
+  height:100%;
+  backface-visibility:hidden;
+  border-radius:20px;
+  padding:30px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  box-shadow:0 15px 40px rgba(0,0,0,.15);
+}
+
+.card-front{
+  background:linear-gradient(135deg,#4f46e5,#06b6d4);
+  color:white;
+}
+
+.card-back{
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  color:white;
+  transform:rotateY(180deg);
+}
+
+#word-example{
+  margin:15px 0;
+  font-style:italic;
+}
+
+#audio-btn{
+  padding:10px 18px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.controls{
+  display:flex;
+  gap:10px;
+  margin-top:20px;
+}
+
+.controls button{
+  flex:1;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  color:white;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.success{
+  background:var(--success);
+}
+
+.danger{
+  background:var(--danger);
+}
+
+#prev-btn{
+  background:#6b7280;
+}

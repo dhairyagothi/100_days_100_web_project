@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeuralForge - AI Chip Design Assistant</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+
+<div class="max-w-7xl mx-auto p-6">
+
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10 pb-6 border-b border-gray-800">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center text-2xl shadow-lg shadow-blue-500/20">
+        🤖
+      </div>
+      <div>
+        <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+          NeuralForge
+        </h1>
+        <p class="text-xs text-gray-500 uppercase tracking-widest mt-0.5">Silicon Engine Suite</p>
+      </div>
+    </div>
+    <div class="text-right space-y-2">
+      <div class="flex items-center justify-end gap-3">
+        <p class="text-gray-400 font-medium">AI-Powered Semiconductor Design Assistant</p>
+        <button id="themeToggle" onclick="toggleTheme()" class="theme-toggle-btn p-2 rounded-lg hover:bg-gray-800 transition" title="Toggle dark/light theme">
+          <i class="fas fa-moon text-yellow-400"></i>
+        </button>
+      </div>
+      <p class="text-xs text-emerald-400 font-mono" id="storageStatus">LocalStorage Synced</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <div class="lg:col-span-4 space-y-6">
+
+      <div class="bg-gray-900 rounded-3xl p-6 border border-gray-800 shadow-xl">
+        <h2 class="text-xl font-semibold mb-5 flex items-center gap-2 text-blue-400">
+          <i class="fas fa-sliders-h"></i> Design Parameters
+        </h2>
+
+        <div class="space-y-5">
+          <div>
+            <label class="block text-sm text-gray-400 mb-1 font-medium">Project Name</label>
+            <input type="text" id="projectName" value="Alpha_Core_V1" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-4 py-3 focus:outline-none focus:border-blue-500 font-mono text-sm">
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-400 mb-1 font-medium">Design Goal</label>
+            <select id="goal" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-4 py-3 focus:outline-none focus:border-blue-500 text-sm">
+              <option value="performance">High Performance Computing (HPC)</option>
+              <option value="power">Ultra Low Power (ULP)</option>
+              <option value="balanced">Balanced Performance & Efficiency</option>
+              <option value="ai">AI/ML Heavy Training Acceleration</option>
+              <option value="mobile">Mobile / Edge Smart AI</option>
+              <option value="cost">Cost Optimized / High Yield</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-400 mb-1 font-medium">Process Node</label>
+            <select id="node" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-4 py-3 focus:outline-none focus:border-blue-500 font-mono text-sm">
+              <option value="3">3nm (TSMC N3B / GAAFET)</option>
+              <option value="5" selected>5nm (TSMC N5 / FinFET)</option>
+              <option value="7">7nm (TSMC N7 / DUV)</option>
+              <option value="10">10nm (Legacy FinFET)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-400 mb-2 font-medium">Target Architecture</label>
+            <div class="grid grid-cols-2 gap-3 text-xs font-bold tracking-wider">
+              <button onclick="selectArch(this)" data-arch="cpu" class="arch-btn bg-gray-800 hover:bg-gray-700 rounded-2xl py-3.5 text-center transition border border-gray-700/50">CPU</button>
+              <button onclick="selectArch(this)" data-arch="npu" class="arch-btn bg-blue-600 text-white rounded-2xl py-3.5 text-center transition border border-blue-500">NPU</button>
+              <button onclick="selectArch(this)" data-arch="gpu" class="arch-btn bg-gray-800 hover:bg-gray-700 rounded-2xl py-3.5 text-center transition border border-gray-700/50">GPU</button>
+              <button onclick="selectArch(this)" data-arch="asic" class="arch-btn bg-gray-800 hover:bg-gray-700 rounded-2xl py-3.5 text-center transition border border-gray-700/50">ASIC</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between items-center mb-1">
+              <label class="block text-sm text-gray-400 font-medium">Compute Core Count</label>
+              <span id="coreValue" class="font-mono text-xs bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-md border border-blue-500/20">16 Cores</span>
+            </div>
+            <input type="range" id="cores" min="1" max="128" value="16" class="w-full accent-blue-500 bg-gray-800 h-2 rounded-lg cursor-pointer" oninput="document.getElementById('coreValue').innerText = this.value + ' Cores'">
+            <div class="flex justify-between text-[10px] text-gray-500 font-mono mt-1">
+              <span>1 Core</span>
+              <span>64</span>
+              <span>128 Cores</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between items-center mb-1">
+              <label class="block text-sm text-gray-400 font-medium">Target Frequency (Clock)</label>
+              <span id="freqValue" class="font-mono text-xs bg-purple-500/10 text-purple-400 px-2 py-0.5 rounded-md border border-purple-500/20">2.50 GHz</span>
+            </div>
+            <input type="range" id="frequency" min="0.5" max="5.0" step="0.1" value="2.5" class="w-full accent-purple-500 bg-gray-800 h-2 rounded-lg cursor-pointer" oninput="document.getElementById('freqValue').innerText = parseFloat(this.value).toFixed(2) + ' GHz'">
+            <div class="flex justify-between text-[10px] text-gray-500 font-mono mt-1">
+              <span>0.5 GHz</span>
+              <span>2.7 GHz</span>
+              <span>5.0 GHz</span>
+            </div>
+          </div>
+
+          <button onclick="generateDesign()" 
+                  class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 py-4 rounded-2xl font-semibold text-base transition-all shadow-lg shadow-purple-900/20 active:scale-[0.98] mt-2 flex items-center justify-center gap-2">
+            <i class="fas fa-microchip text-sm"></i> Synthesize & Compute PPA
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-gray-900 rounded-3xl p-6 border border-gray-800 shadow-xl">
+        <h3 class="font-semibold text-sm text-gray-400 uppercase tracking-wider mb-3 flex items-center justify-between">
+          <span><i class="fas fa-archive mr-1.5 text-purple-400"></i> Project Storage Ledger</span>
+          <span id="savedCount" class="text-xs font-mono bg-gray-800 text-gray-300 px-2 py-0.5 rounded-full border border-gray-700">0</span>
+        </h3>
+        <div id="savedProjectsList" class="space-y-2 max-h-48 overflow-y-auto pr-1 text-xs">
+          <p class="text-gray-500 italic text-center py-4">No chips saved in vault yet.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="lg:col-span-8 space-y-6">
+      
+      <div id="outputContainer" class="bg-gray-900 rounded-3xl border border-gray-800 min-h-[500px] p-6 lg:p-8 flex flex-col justify-between shadow-xl">
+        
+        <div id="welcome" class="flex flex-col items-center justify-center my-auto text-center py-16 text-gray-500">
+          <div class="w-20 h-20 bg-gray-800/50 border border-gray-700/60 rounded-3xl flex items-center justify-center text-4xl mb-6 shadow-inner animate-pulse">⚡</div>
+          <h3 class="text-2xl font-semibold text-white mb-2">Awaiting Architecture Synthesis</h3>
+          <p class="max-w-md text-sm text-gray-400 leading-relaxed">Configure design nodes, clock constraints, and operational floor-planning parameters on the left to activate physical cell mapping and power modeling routines.</p>
+        </div>
+
+        <div id="designResults" class="hidden space-y-8">
+          </div>
+
+      </div>
+
+      <div class="bg-gray-900 rounded-3xl p-6 border border-gray-800 shadow-xl">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="font-semibold text-base flex items-center gap-2 text-amber-400">
+            <i class="fas fa-columns"></i> Design Comparison Workspace
+          </h3>
+          <button onclick="clearComparison()" class="text-xs font-medium text-red-400 hover:underline bg-red-500/10 border border-red-500/20 px-2.5 py-1 rounded-xl transition">
+            Clear Matrix
+          </button>
+        </div>
+        
+        <div class="overflow-x-auto rounded-xl border border-gray-800 bg-gray-950/40">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-gray-800/60 text-gray-400 font-mono border-b border-gray-800 uppercase tracking-wider">
+                <th class="p-3">Project Design Specs</th>
+                <th class="p-3">Process Node</th>
+                <th class="p-3">Frequency</th>
+                <th class="p-3 text-cyan-400">Total Power (W)</th>
+                <th class="p-3 text-amber-400">Die Area (mm²)</th>
+                <th class="p-3 text-purple-400">Perf (TOPS)</th>
+                <th class="p-3 text-emerald-400">Efficiency</th>
+              </tr>
+            </thead>
+            <tbody id="comparisonBody" class="divide-y divide-gray-800/50 text-gray-300 font-mono">
+              <tr>
+                <td colspan="7" class="p-4 text-center text-gray-500 italic font-sans">No variants staged for comparison matrix yet. Click Save Design below to append configurations.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</body>
+<script src="script.js"></script>
+</html>
