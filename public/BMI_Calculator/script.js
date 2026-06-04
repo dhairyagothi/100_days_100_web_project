@@ -310,6 +310,10 @@ btn.addEventListener('click', () => {
   bmiChart.data.datasets[0].data.push(bmiRounded);
   bmiChart.update();
 
+  // Save history to localStorage
+  localStorage.setItem(BMI_LABELS_KEY, JSON.stringify(bmiChart.data.labels));
+  localStorage.setItem(BMI_DATA_KEY, JSON.stringify(bmiChart.data.datasets[0].data));
+
   // ─── Body Fat % Estimate (Deurenberg formula) ───
   const age = parseFloat(document.getElementById('age').value);
   const gender = document.getElementById('gender').value;
