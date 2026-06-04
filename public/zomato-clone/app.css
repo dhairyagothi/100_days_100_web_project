@@ -140,7 +140,9 @@
 body.dark-mode {
     background-color: #121212;
 }
-
+.accordion-title{
+  color: white;
+}
 
 /* Cards / Sections */
 body.dark-mode .card,
@@ -149,16 +151,23 @@ body.dark-mode .box {
     background-color: #1e1e1e;
     color: #ffffff;
 }
-
+.heading-2{
+  color: white;
+}
 /* Buttons */
 body.dark-mode button {
     color: white;
 }
 
-
+body.dark-mode .collections .heading-6 {
+  color: #bbb;
+}
 /* APP SECTION DARK MODE */
 body.dark-mode .app-section {
     background-color: #1e1e1e;
+}
+body.dark-mode .popular-localities .title {
+  color: white;
 }
 
 /* Text inside app section */
