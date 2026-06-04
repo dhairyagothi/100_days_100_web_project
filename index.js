@@ -221,6 +221,13 @@ function resolveProjectUrls(day, name, url, tags) {
       if (demoUrl.startsWith("./")) {
         demoUrl = basePrefix + demoUrl.substring(2);
       }
+      // serve (vercel/serve) redirects foo/index.html → foo with a 308,
+      // which causes the browser to show a directory listing instead of the
+      // page.  Convert "public/foo/index.html" → "public/foo/" so the server
+      // serves the index directly without the redirect round-trip.
+      if (demoUrl.endsWith("/index.html")) {
+        demoUrl = demoUrl.slice(0, -"index.html".length);
+      }
     } catch (error) {}
   }
 

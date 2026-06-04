@@ -1902,5 +1902,14 @@
     "techStack": ["ui","game","html","css","js"],
     "difficulty": "intermediate",
     "projectPath": "./public/Rock_Paper_Scissors/index.html"
+  },
+  {
+    "projectNo": 209,
+    "projectName": "Reminder-App",
+    "projectType": "Tool",
+    "projectDesc": "A sleek neon-themed reminder app with priority labels, deadline alerts, browser notifications, and localStorage persistence. Built with vanilla HTML, CSS, and JavaScript — no dependencies required.",
+    "techStack": ["tool", "javascript", "html", "css"],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Reminder-App/index.html"
   }
 ]
