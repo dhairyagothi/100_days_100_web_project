@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Mapper & Constellation Guide</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="spaceCanvas"></canvas>
+
+    <header class="glass-panel header-panel">
+        <h1>ORIONIS</h1>
+        <p>Interactive Star Map</p>
+    </header>
+
+    <div class="glass-panel controls-panel">
+        <div class="slider-group">
+            <label for="pollutionSlider">Light Pollution (Sky Glow)</label>
+            <input type="range" id="pollutionSlider" min="10" max="800" value="400">
+            <span id="starCountDisplay">Stars: 400</span>
+        </div>
+    </div>
+
+    <div class="hover-tooltip hidden" id="hoverTooltip" aria-hidden="true">
+        <strong id="tooltipTitle">Constellation</strong>
+        <span id="tooltipRegion">Region</span>
+    </div>
+
+    <div class="modal hidden" id="mythModal" aria-hidden="true">
+        <div class="modal-content glass-panel">
+            <button class="close-btn" id="closeModal" aria-label="Close modal">&times;</button>
+            <h2 id="modalTitle">Constellation Name</h2>
+            <h3 id="modalZodiac">Zodiac Sign / Region</h3>
+            <p id="modalBody">Mythology lore goes here...</p>
+        </div>
+    </div>
+
+    <script src="constellations.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

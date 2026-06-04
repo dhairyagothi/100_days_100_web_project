@@ -155,6 +155,41 @@
       "question": "Which event occurs when a button is clicked?",
       "options": ["hover", "load", "click", "change"],
       "answer": 2
+    },
+      {
+        "question": "Which keyword is used for asynchronous code?",
+        "options": ["async", "await", "defer", "Both async and await"],
+        "answer": 3
+      },
+      {
+      "question": "What is the output of this code?\nconsole.log('A');\nsetTimeout(() => console.log('B'), 0);\nconsole.log('C');",
+      "options": ["A B C", "A C B", "B A C", "C A B"],
+      "answer": 1
+    },
+    {
+      "question": "Which method runs all promises at the same time and waits for ALL of them?",
+      "options": ["Promise.race()", "Promise.any()", "Promise.all()", "Promise.allSettled()"],
+      "answer": 2
+    },
+    {
+      "question": "What keyword makes a function always return a Promise?",
+      "options": ["await", "async", "promise", "return"],
+      "answer": 1
+    },
+    {
+      "question": "Where can you use the 'await' keyword?",
+      "options": [
+        "Anywhere in the code",
+        "Only inside async functions",
+        "Only inside Promises",
+        "Only in Node.js"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What does fetch() return?",
+      "options": ["The data directly", "A callback", "A Promise", "An async function"],
+      "answer": 2
     }
   ],
 

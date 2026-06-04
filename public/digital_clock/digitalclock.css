@@ -85,23 +85,7 @@ body.light-mode .info-box {
   color: #111827;
 }
 
-.dark-mode-btn {
-  margin-top: 2px;
-  padding: 20px 34px;
-  border-radius: 9px;
-  border: 2px solid var(--primary);
-  background: transparent;
-  color: var(--primary);
-  font-family: "Poppins", sans-serif;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-}
 
-.dark-mode-btn:hover {
-  background: var(--primary);
-  color: #000;
-}
 body {
   min-height: 100vh;
   font-family: var(--font-sans);
@@ -1468,3 +1452,14 @@ input:checked + .toggle-slider:before {
   text-align: center;
   margin-top: 12px;
 }
+
+
+
+.dashboard-grid {
+  align-items: start;
+}
+
+.card {
+  height: fit-content;
+}
+
