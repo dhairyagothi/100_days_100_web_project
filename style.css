@@ -285,9 +285,11 @@ body
   z-index: 1;
 }
 
+#navbar-container,
+#navbar-container > header,
 body > header {
   position: relative;
-  z-index: 10;
+  z-index: 999999;
 }
 
 .cursor-ring {
@@ -487,6 +489,88 @@ body.light-mode .navbar,
   padding: 0.35rem 0.75rem;
   font-size: 0.75rem;
 }
+
+/* ── Stats Dashboard Button ──────────────────────────────── */
+.btn-stats {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.25rem;
+  font-family: "Inter Tight", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-accent);
+  background: var(--accent-dim);
+  color: var(--accent);
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--t);
+  white-space: nowrap;
+}
+
+.btn-stats:hover {
+  background: rgba(59, 130, 246, 0.18);
+  border-color: var(--accent);
+  color: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 18px rgba(59, 130, 246, 0.18),
+    0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-stats:active {
+  transform: translateY(0);
+}
+
+.btn-stats i {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+/* Theme variant overrides */
+[data-theme="light"] .btn-stats,
+body.light-mode .btn-stats {
+  border-color: rgba(37, 99, 235, 0.35);
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--accent);
+}
+
+[data-theme="light"] .btn-stats:hover,
+body.light-mode .btn-stats:hover {
+  background: rgba(37, 99, 235, 0.15);
+  box-shadow:
+    0 0 18px rgba(37, 99, 235, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="cyberpunk"] .btn-stats {
+  border-color: rgba(255, 0, 60, 0.45);
+  background: rgba(255, 0, 60, 0.1);
+  color: var(--accent);
+}
+
+[data-theme="cyberpunk"] .btn-stats:hover {
+  background: rgba(255, 0, 60, 0.2);
+  box-shadow: 0 0 18px rgba(255, 0, 60, 0.3);
+}
+
+[data-theme="nord"] .btn-stats {
+  border-color: rgba(136, 192, 208, 0.4);
+  background: rgba(136, 192, 208, 0.1);
+  color: var(--accent-color);
+}
+
+/* Mobile: full-width inside drawer */
+@media (max-width: 768px) {
+  .btn-stats {
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+  }
+}
+/* ─────────────────────────────────────────────────────────── */
 
 .welcome-text {
   font-size: 0.8125rem;
@@ -2285,17 +2369,17 @@ body.light-mode .footer.homepage-footer .social-btn {
 #themeToggleNav {
   background: transparent;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  min-width: 32px;
-  height: 36px;
-  color: var(--text-muted);
-  font-size: 0.9rem;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-family:inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.25rem 0.6rem;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
   transition: var(--t);
 }
 

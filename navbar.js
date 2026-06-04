@@ -59,12 +59,11 @@
         <button class="dropdown-item" data-theme-value="light">☀ Light</button>
         <button class="dropdown-item" data-theme-value="dark">☾ Dark</button>
         <button class="dropdown-item" data-theme-value="sepia">☕ Sepia</button>
-        <button class="dropdown-item" data-theme-value="cyberpunk">⚡ Cyberpunk</button>
+        <button class="dropdown-item" data-theme-value="cyberpunk">⚡Cyberpunk</button>
         <button class="dropdown-item" data-theme-value="nord">❄ Nord</button>
       </div>
     </div>
   `;
-
   const homeBtn = `
   <a class="btn ${isHome ? "btn-primary active" : "btn-ghost"} btn-sm" href="${homeHref}">
     <span class="mobile-nav-icon"><i class="fas fa-home"></i></span>

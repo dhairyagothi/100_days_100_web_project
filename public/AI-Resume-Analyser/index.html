@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="style.css"/>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
   <style>
     .header-icon {
       width: 32px;
@@ -130,6 +132,16 @@
             <strong id="statReadTime">-</strong>
           </div>
 
+          <div class="stat-item">
+            <span>Word Count</span>
+            <strong id="statWords">-</strong>
+          </div>
+
+          <div class="stat-item">
+            <span>Characters</span>
+            <strong id="statCharacters">-</strong>
+          </div>
+
         </div>
       </div>
 
@@ -203,30 +215,58 @@
       <div class="insights-grid">
 
         <div class="insight-card">
-          <h3>Technical Skills</h3>
+          <h3>
+            Technical Skills
+            <span id="techScore">88%</span>
+          </h3>
+
           <div class="progress-bar">
-            <div class="progress-fill tech"></div>
+            <div
+              class="progress-fill tech"
+              id="techBar"
+            ></div>
           </div>
         </div>
 
         <div class="insight-card">
-          <h3>Projects</h3>
+          <h3>
+            Projects
+            <span id="projectsScore">82%</span>
+          </h3>
+
           <div class="progress-bar">
-            <div class="progress-fill projects"></div>
+            <div
+              class="progress-fill projects"
+              id="projectsBar"
+            ></div>
           </div>
         </div>
 
         <div class="insight-card">
-          <h3>Communication</h3>
+          <h3>
+            Communication
+            <span id="communicationScore">74%</span>
+          </h3>
+
           <div class="progress-bar">
-            <div class="progress-fill communication"></div>
+            <div
+              class="progress-fill communication"
+              id="communicationBar"
+            ></div>
           </div>
         </div>
 
         <div class="insight-card">
-          <h3>Experience</h3>
+          <h3>
+            Experience
+            <span id="experienceScore">68%</span>
+          </h3>
+
           <div class="progress-bar">
-            <div class="progress-fill experience"></div>
+            <div
+              class="progress-fill experience"
+              id="experienceBar"
+            ></div>
           </div>
         </div>
 

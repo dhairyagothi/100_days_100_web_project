@@ -448,3 +448,33 @@ table, th, td{
   .hand-area  { min-height: 10rem; }
   .card-row img { height: 7rem; }
 }
+
+@media (max-width: 768px) {
+  .site-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem 1rem 1.5rem;
+  }
+
+  .rules-btn {
+    position: static;
+    transform: none;
+    margin-top: 0.25rem;
+  }
+
+  .game-title {
+    font-size: clamp(2rem, 10vw, 3.5rem);
+    letter-spacing: 0.12em;
+    text-align: center;
+    line-height: 1.15;
+  }
+
+  .rules-box {
+    top: auto;
+    right: 50%;
+    transform: translateX(50%);
+    width: min(90vw, 22rem);
+  }
+}
