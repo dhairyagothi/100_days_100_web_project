@@ -89,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         crashScreen.style.display = 'none';
         pauseScreen.style.display = 'none';
         pauseBtn.style.display = 'flex';
+        document.getElementById('mute-btn').style.display = 'flex';
         
         // --- THIS IS THE FIX ---
         // We reset the position here to guarantee it's centered every single time
@@ -98,7 +99,13 @@ document.addEventListener('DOMContentLoaded', () => {
         
         clearInterval(gameLoopInterval);
         clearInterval(enemySpawnInterval);
-        
+
+        // Start BGM and engine loop on race start
+        stopSound(sounds.bgm);
+        stopSound(sounds.engine);
+        playSound(sounds.bgm);
+        playSound(sounds.engine);
+
         gameLoopInterval = setInterval(updateGame, 1000 / 60); 
         enemySpawnInterval = setInterval(spawnEnemy, diff.spawnRate); // ✅ dynamic spawn rate
     };
@@ -109,7 +116,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if(gameActive && !isPaused) { 
             // Only move if we are past the margin
             playerLeft = Math.max(roadMargin, playerLeft - 25); 
-            player.style.left = `${playerLeft}px`; 
+            player.style.left = `${playerLeft}px`;
+            playSound(sounds.whoosh); // Steering whoosh
         }
     };
 
@@ -117,7 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if(gameActive && !isPaused) { 
             // Only move if we are before the right margin
             playerLeft = Math.min(highway.clientWidth - 75, playerLeft + 25); 
-            player.style.left = `${playerLeft}px`; 
+            player.style.left = `${playerLeft}px`;
+            playSound(sounds.whoosh); // Steering whoosh
         }
     };
 
@@ -209,12 +218,24 @@ document.addEventListener('DOMContentLoaded', () => {
         let rotation = (realtimeSpeed / 50) * 180; 
         speedHand.style.transform = `rotate(${rotation}deg)`;
     }
+
+    // Map game speed to BGM + engine playback rate (pitch shift)
+    if (!isMuted) {
+        const rate = 0.8 + (baseEnemySpeed / MAX_SPEED) * 0.6; // 0.8x → 1.4x
+        sounds.bgm.playbackRate    = rate;
+        sounds.engine.playbackRate = rate;
+    }
 }
 
     const gameOver = () => {
         gameActive = false;
         clearInterval(gameLoopInterval);
         clearInterval(enemySpawnInterval);
+
+        // Stop BGM + engine, play crash SFX
+        stopSound(sounds.bgm);
+        stopSound(sounds.engine);
+        playSound(sounds.crash);
         finalScore.textContent = score;
         finalDistance.textContent = Math.floor(distance);
 
@@ -225,11 +246,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         crashScreen.style.display = 'flex';
         pauseBtn.style.display = 'none';
+        document.getElementById('mute-btn').style.display = 'none'; 
     };
 
     const togglePause = () => {
         if (!gameActive) return;
         isPaused = !isPaused;
+        playSound(sounds.uiClick); // UI snap on pause
+        if (isPaused) {
+            sounds.bgm.pause();    // Pause BGM on pause
+            sounds.engine.pause(); // Pause engine on pause
+        } else {
+            if (!isMuted) { sounds.bgm.play().catch(() => {}); sounds.engine.play().catch(() => {}); }
+        }
         pauseScreen.style.display = isPaused ? 'flex' : 'none';
         pauseBtn.style.display = isPaused ? 'none' : 'flex';
     };
@@ -242,11 +271,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Listeners
-    startBtn.addEventListener('click', startRace);
-    restartBtn.addEventListener('click', startRace);
+    startBtn.addEventListener('click', () => { playSound(sounds.uiClick); startRace(); });
+    restartBtn.addEventListener('click', () => { playSound(sounds.uiClick); startRace(); }); 
     pauseBtn.addEventListener('click', togglePause);
     resumeBtn.addEventListener('click', togglePause);
-    pauseRestartBtn.addEventListener('click', () => { isPaused = false; startRace(); });
+    pauseRestartBtn.addEventListener('click', () => { isPaused = false; playSound(sounds.uiClick); startRace(); }); 
 
     pauseMenuBtn.addEventListener('click', () => {
         gameActive = false;           // 1. Stop the game logic
@@ -254,6 +283,9 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(gameLoopInterval);   // 3. KILL the game clock!
         clearInterval(enemySpawnInterval); // 4. KILL the enemy spawner!
         document.querySelectorAll('.enemy').forEach(el => el.remove()); // 5. Clean up board
+        stopSound(sounds.bgm);    // Stop BGM on menu return
+        stopSound(sounds.engine); // Stop engine on menu return
+        playSound(sounds.uiClick); // UI snap
         
         pauseScreen.style.display = 'none';
         crashScreen.style.display = 'none'; // Ensure the crash screen doesn't show

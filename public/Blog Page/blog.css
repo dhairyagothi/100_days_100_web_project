@@ -10,9 +10,12 @@ body {
 
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 
     padding: 30px;
+    box-sizing: border-box;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 /* =========================
@@ -30,6 +33,7 @@ body {
     border-radius: 24px;
 
     box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    box-sizing: border-box;
 }
 
 /* =========================
@@ -52,11 +56,12 @@ body {
 ========================= */
 
 .blog-page h1 {
-    font-size: 48px;
+    font-size: clamp(26px, 5vw, 48px);
 
     color: #334155;
 
     margin-bottom: 10px;
+    word-break: break-word;
 }
 
 /* =========================
@@ -127,10 +132,40 @@ body {
     }
 
     .blog-page h1 {
-        font-size: 34px;
+        font-size: clamp(22px, 6vw, 34px);
     }
 
     .blog-content p {
         font-size: 17px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    body {
+        padding: 10px;
+    }
+
+    .blog-page {
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+    .blog-banner {
+        height: 180px;
+        border-radius: 12px;
+    }
+
+    .blog-page h1 {
+        font-size: clamp(20px, 6vw, 28px);
+    }
+
+    .blog-content p {
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .blog-author h3 {
+        font-size: 18px;
     }
 }

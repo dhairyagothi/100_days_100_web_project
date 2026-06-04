@@ -499,6 +499,16 @@ body.light-mode .theme-toggle {
 
   color: white;
 }
+.resume-section{
+  margin-bottom:40px;
+}
+
+.resume-card{
+  background:var(--card-bg);
+  border:1px solid var(--border-color);
+  border-radius:20px;
+  padding:25px;
+}
 
 /* login */
 .auth-container{
@@ -558,4 +568,47 @@ body.light-mode .theme-toggle {
 
 #logoutBtn{
   background:#ef4444;
+}
+.insights-section{
+  margin-bottom:40px;
+}
+
+.insights-card{
+  background:var(--card-bg);
+  border:1px solid var(--border-color);
+  backdrop-filter:blur(12px);
+  border-radius:20px;
+  padding:25px;
+}
+
+.insights-card h3{
+  margin-bottom:12px;
+  margin-top:15px;
+}
+
+.insights-card ul{
+  padding-left:20px;
+}
+
+.insights-card li{
+  margin-bottom:10px;
+  color:var(--subtitle-color);
+.badge-section{
+  margin-top:40px;
+}
+
+.badge-grid{
+  display:grid;
+  grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+
+.badge-card{
+  background:var(--card-bg);
+  border:1px solid var(--border-color);
+  padding:20px;
+  border-radius:16px;
+  text-align:center;
+  font-weight:bold;
 }
