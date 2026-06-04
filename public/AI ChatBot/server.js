@@ -1,11 +1,18 @@
 const express = require('express');
 const http = require('http');
+const fs = require('fs');
 const { Server } = require('socket.io');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
+const options = {
+  key: fs.readFileSync('path/to/private.key'),
+  cert: fs.readFileSync('path/to/certificate.crt')
+};
+
 const app = express();
-const server = http.createServer(app);
+const server = https.createServer(options, app);
+server.listen(443, () => console.log('Secure server running on port 443'));
 
 // Initialize Socket.io and allow connections from your frontend development server
 const io = new Server(server, {

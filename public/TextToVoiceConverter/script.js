@@ -1,4 +1,13 @@
 // TEXT TO SPEECH
+
+const textInput = document.getElementById("text-input");
+const convertBtn = document.getElementById("convert-btn");
+const stopBtnText = document.getElementById("stop-btn-text");
+const ttsLanguage = document.getElementById("tts-language");
+
+const speechSynthesisObj = window.speechSynthesis;
+const utterance = new SpeechSynthesisUtterance();
+
 // =========================================
 // ELEMENT SELECTORS
 // =========================================

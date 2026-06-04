@@ -2,6 +2,8 @@ let currMoleTile;
 let currPlantTile;
 let score = 0;
 let gameOver = false;
+let moleInterval = null;  // track mole interval to prevent duplicates
+let plantInterval = null; // track plant interval to prevent duplicates
 
 window.onload = function () {
     setGame();
@@ -20,8 +22,17 @@ function setGame() {
         document.getElementById("board").appendChild(tile);
     }
 
-    setInterval(setMole, 1000);
-    setInterval(setPlant, 2000);
+    // Clear any existing intervals before starting new ones to prevent
+    // concurrent loop accumulation if setGame() is ever called more than once
+    if (moleInterval !== null) {
+        clearInterval(moleInterval);
+    }
+    if (plantInterval !== null) {
+        clearInterval(plantInterval);
+    }
+
+    moleInterval = setInterval(setMole, 1000);
+    plantInterval = setInterval(setPlant, 2000);
 }
 
 function getRandomTile() {
@@ -99,6 +110,16 @@ function selectTile() {
 
         gameOver = true;
 
+        // Stop intervals immediately so moles/plants freeze on game over
+        if (moleInterval !== null) {
+            clearInterval(moleInterval);
+            moleInterval = null;
+        }
+        if (plantInterval !== null) {
+            clearInterval(plantInterval);
+            plantInterval = null;
+        }
+
         // show restart button
         document.getElementById("restart-btn").style.display =
             "inline-block";
@@ -134,4 +155,9 @@ function restartGame() {
 
     currMoleTile = null;
     currPlantTile = null;
+
+    // Restart intervals fresh — previous ones were cleared on game over
+    // so there is no risk of concurrent loop accumulation
+    moleInterval = setInterval(setMole, 1000);
+    plantInterval = setInterval(setPlant, 2000);
 }

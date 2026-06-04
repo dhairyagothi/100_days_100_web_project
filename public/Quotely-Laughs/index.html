@@ -60,6 +60,15 @@
     #theme-toggle:hover {
       background: #444;
     }
+    body.light-theme #keyword {
+      background: white;
+      color: #1a1a1a;
+      border: 1px solid #ccc;
+    }
+
+    body.light-theme #keyword::placeholder {
+      color: #666;
+    }
 
     main {
       flex: 1;
@@ -91,6 +100,21 @@
 
     #generate:active {
       transform: scale(0.98);
+    }
+
+    #keyword {
+      width: 100%;
+      max-width: 560px;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #333;
+      background: #272727;
+      color: white;
+      outline: none;
+    }
+
+    #keyword::placeholder {
+      color: #888;
     }
 
     #content {
@@ -268,6 +292,11 @@
   </header>
 
   <main>
+      <input
+        type="text"
+        id="keyword"
+        placeholder="Enter a topic (coding, college, exams...)"
+      />
     <button id="generate">Generate Quote and Joke</button>
 
     <div id="content">

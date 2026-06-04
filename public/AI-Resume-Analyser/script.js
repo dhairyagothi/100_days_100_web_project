@@ -69,6 +69,11 @@ const statWords =
 const statCharacters =
   document.getElementById("statCharacters");
 
+const copySuggestionsBtn =
+  document.getElementById(
+    "copySuggestionsBtn"
+  );
+
 
 
 uploadBtn.addEventListener("click", () => {
@@ -554,6 +559,44 @@ themeToggle.addEventListener("click", () => {
   themeToggle.textContent =
     isLight ? "☀️" : "🌙";
 });
+
+copySuggestionsBtn.addEventListener(
+  "click",
+  async () => {
+
+    const suggestions =
+      Array.from(
+        document.querySelectorAll(
+          ".suggestion-text"
+        )
+      )
+      .map(card => card.textContent.trim())
+      .join("\n");
+
+    await navigator.clipboard.writeText(
+      suggestions
+    );
+
+    copySuggestionsBtn.textContent =
+      "Copied!";
+
+    copySuggestionsBtn.classList.add(
+      "copied"
+    );
+
+    setTimeout(() => {
+
+      copySuggestionsBtn.textContent =
+        "Copy Suggestions";
+
+      copySuggestionsBtn.classList.remove(
+        "copied"
+      );
+
+    }, 2000);
+
+  }
+);
 
 downloadReportBtn.addEventListener(
 "click",

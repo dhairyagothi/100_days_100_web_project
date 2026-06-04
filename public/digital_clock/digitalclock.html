@@ -203,19 +203,30 @@
       Alarm Manager
     </h2>
   </header>
-
   <form
     class="alarm-form"
-    onsubmit="
-      event.preventDefault();
-      addNewAlarm();
-    "
+    onsubmit="event.preventDefault(); addNewAlarm();"
     novalidate
   >
     <div class="form-field">
       <label for="alarm-time">Time</label>
       <input type="time" id="alarm-time" required />
     </div>
+  </form>
+</section>
+
+<!-- Pomodoro Timer -->
+<section class="card" aria-labelledby="pomodoro-heading">
+  <header class="card-header">
+    <h2 class="card-title" id="pomodoro-heading">
+      <span class="card-title-dot" aria-hidden="true"></span>
+      Pomodoro Timer
+    </h2>
+  </header>
+  <div class="pomodoro-display">
+    <span id="pomodoro-time">25:00</span>
+  </div>
+</section>
 
     <div class="form-field">
       <label for="alarm-label">Label</label>
