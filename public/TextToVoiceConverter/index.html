@@ -59,6 +59,12 @@
             <button id="stop-btn-text" class="stop-btn" disabled>
                 Stop
             </button>
+
+        <div class="btn-group">
+            <button id="convert-btn">Convert to Speech</button>
+            <button id="stop-btn-text" class="stop-btn" disabled>
+                Stop
+            </button>
         <p id="char-count">
             Characters: 0
         </p>
@@ -91,6 +97,9 @@
 
         <label>Select Language</label>
 
+
+        <label>Select Language</label>
+
         <select id="stt-language">
             <option value="en-US">English</option>
             <option value="hi-IN">Hindi</option>
@@ -104,6 +113,11 @@
                 Stop
             </button>
         </div>
+
+        <textarea
+            id="output"
+            placeholder="Your speech will appear here..."
+        ></textarea>
 
         <textarea
             id="output"
