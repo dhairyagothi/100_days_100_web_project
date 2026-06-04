@@ -1,0 +1,244 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #0d0d0d;
+  --surface: #1a1a1a;
+  --surface2: #222;
+  --border: #2e2e2e;
+  --accent: #f97316;
+  --accent-css: #3b82f6;
+  --accent-js: #eab308;
+  --text: #e5e5e5;
+  --text-muted: #888;
+  --radius: 8px;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  overflow: hidden;
+}
+
+.app {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* HEADER */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 52px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.25rem;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.03em;
+}
+
+.header-right {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn {
+  padding: 0.35rem 0.85rem;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.btn:hover { opacity: 0.85; }
+
+.btn-download {
+  background: var(--accent);
+  color: #000;
+}
+
+.btn-clear {
+  background: #3f3f3f;
+  color: var(--text);
+}
+
+.btn-refresh {
+  background: #2e2e2e;
+  color: var(--text);
+  font-size: 0.75rem;
+  padding: 0.25rem 0.65rem;
+}
+
+/* LAYOUT */
+.editor-section {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: 100vh;
+  padding-top: 52px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  min-width: 200px;
+}
+
+.divider {
+  width: 5px;
+  height: 100vh;
+  background: var(--border);
+  cursor: col-resize;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.divider:hover, .divider.dragging {
+  background: var(--accent);
+}
+
+.preview-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100vh;
+  padding-top: 52px;
+  min-width: 150px;
+  background: #fff;
+}
+
+/* TABS */
+.tabs {
+  display: flex;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 0.5rem;
+  gap: 0.25rem;
+  padding-top: 0.4rem;
+}
+
+.tab {
+  padding: 0.45rem 1rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.tab.active {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+}
+
+.tab-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dot-html { background: var(--accent); }
+.dot-css  { background: var(--accent-css); }
+.dot-js   { background: var(--accent-js); }
+
+/* EDITORS */
+.editors {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.editor-pane {
+  display: none;
+  height: 100%;
+}
+
+.editor-pane.active {
+  display: block;
+}
+
+/* CodeMirror overrides */
+.CodeMirror {
+  height: 100%;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  background: #282a36;
+}
+
+.CodeMirror-scroll {
+  height: 100%;
+}
+
+/* PREVIEW */
+.preview-header {
+  height: 36px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.85rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+#preview {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: #fff;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .app {
+    flex-direction: column;
+  }
+
+  .editor-section {
+    width: 100%;
+    height: 50vh;
+    padding-top: 52px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .divider {
+    width: 100%;
+    height: 5px;
+    cursor: row-resize;
+  }
+
+  .preview-section {
+    height: 50vh;
+    padding-top: 0;
+  }
+}

@@ -1902,5 +1902,21 @@
     "techStack": ["ui","game","html","css","js"],
     "difficulty": "intermediate",
     "projectPath": "./public/Rock_Paper_Scissors/index.html"
-  }
+  },
+
+  {
+  "projectNo": 209,
+  "projectName": "Live Code Editor",
+  "projectType": "Tool",
+  "projectDesc": "A browser-based live code editor with split-pane layout. Write HTML, CSS, and JavaScript and see the rendered output update in real time.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript",
+    "tool"
+  ],
+  "difficulty": "advanced",
+  "projectPath": "./public/LiveCodeEditor/index.html"
+}
+
 ]

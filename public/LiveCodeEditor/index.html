@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Code Editor</title>
+
+  <!-- CodeMirror core -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css" />
+  <!-- Theme -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-left">
+        <span class="logo">&#9998; Live Code Editor</span>
+      </div>
+      <div class="header-right">
+        <button id="downloadBtn" class="btn btn-download">&#8659; Download HTML</button>
+        <button id="clearBtn" class="btn btn-clear">&#10005; Clear</button>
+      </div>
+    </header>
+
+    <!-- EDITOR SECTION -->
+    <div class="editor-section">
+
+      <!-- TABS -->
+      <div class="tabs">
+        <button class="tab active" data-tab="html">
+          <span class="tab-dot dot-html"></span> HTML
+        </button>
+        <button class="tab" data-tab="css">
+          <span class="tab-dot dot-css"></span> CSS
+        </button>
+        <button class="tab" data-tab="js">
+          <span class="tab-dot dot-js"></span> JS
+        </button>
+      </div>
+
+      <!-- EDITORS -->
+      <div class="editors">
+        <div id="htmlEditor" class="editor-pane active"></div>
+        <div id="cssEditor"  class="editor-pane"></div>
+        <div id="jsEditor"   class="editor-pane"></div>
+      </div>
+
+    </div>
+
+    <!-- DIVIDER -->
+    <div class="divider" id="divider"></div>
+
+    <!-- PREVIEW SECTION -->
+    <div class="preview-section">
+      <div class="preview-header">
+        <span>Preview</span>
+        <button id="refreshBtn" class="btn btn-refresh">&#8635; Refresh</button>
+      </div>
+      <iframe id="preview" sandbox="allow-scripts"></iframe>
+    </div>
+
+  </div>
+
+  <!-- CodeMirror core -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+  <!-- Modes -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+  <!-- Addons -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closetag.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+
+  <script src="script.js"></script>
+</body>
+</html>
