@@ -904,7 +904,7 @@ document.addEventListener('visibilitychange', () => {
       paused = false;
       startTimer();
 
-      document.getElementById('tfill').classList.remove('pgit aused');
+      document.getElementById('tfill').classList.remove('paused');
 
       showToast('Timer resumed');
     }
