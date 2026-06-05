@@ -4,7 +4,7 @@
 
 /* ---------------- APP STATE ---------------- */
 
-let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+let expenses = (function(){ try { return JSON.parse(localStorage.getItem("expenses")); } catch(e) { return null; } })() || [];
 let income = parseFloat(localStorage.getItem("income")) || 0;
 let monthlyBudget = parseFloat(localStorage.getItem("monthlyBudget")) || 0;
 
