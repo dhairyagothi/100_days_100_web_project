@@ -2143,7 +2143,6 @@ body.light .header {
   color: #2ed573;
 }
 @media (max-width: 640px) {
-  .trending-section {
   .main {
     padding: 0 16px 60px;
   }
@@ -2200,32 +2199,4 @@ body.light .header {
   .hero-stats {
     display: none;
   }
-}
-.product-actions{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-top:10px;
-}
-
-.wishlist-btn{
-  width:40px;
-  height:40px;
-  border:none;
-  border-radius:50%;
-  background:#ffe5ec;
-  color:#ff4d6d;
-  font-size:18px;
-  cursor:pointer;
-  transition:0.3s;
-}
-
-.wishlist-btn:hover{
-  background:#ff4d6d;
-  color:white;
-}
-
-.wishlist-btn.active{
-  background:#ff4d6d;
-  color:white;
 }
