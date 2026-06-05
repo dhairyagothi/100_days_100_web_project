@@ -89,6 +89,8 @@ body[data-theme="dark"] .btn-outline:hover:not(:disabled) {
     background: rgba(255,255,255,0.3);
 }
 
+
 .dark-mode .navbar {
     background: #1e293b;
 }
+

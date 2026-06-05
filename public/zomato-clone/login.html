@@ -1,203 +1,559 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Log in – Zomato</title>
-    <link rel="icon" type="image/png" href="images/favicon.ico">
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" type="image/png" href="images/favicon.ico" />
+    <link rel="stylesheet" href="index.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'ProximaNova', 'Okra', sans-serif; }
-        body { background: #f8f8f8; min-height: 100vh; display: flex; flex-direction: column; }
+      body {
+        background: var(--bg);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
 
-        /* Navbar */
-        .z-navbar {
-            background: #fff;
-            padding: 0 5%;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            position: sticky; top: 0; z-index: 100;
+      /* ── NAVBAR ── */
+      .z-navbar {
+        background: var(--bg-white);
+        padding: 0 5%;
+        height: 6.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: var(--shadow-sm);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        border-bottom: 1px solid var(--border);
+        transition: background var(--transition);
+      }
+      .z-navbar-logo {
+        height: 2.8rem;
+        cursor: pointer;
+        object-fit: contain;
+      }
+      .z-navbar-right {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .z-navbar-right a {
+        text-decoration: none;
+        font-size: 1.45rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+        padding: 0.65rem 1.6rem;
+        border-radius: var(--radius-sm);
+        transition:
+          background var(--transition),
+          color var(--transition);
+      }
+      .z-navbar-right a:hover {
+        background: var(--red-light);
+        color: var(--red);
+      }
+      .z-navbar-right a.active {
+        border: 1.5px solid var(--red);
+        color: var(--red);
+        background: var(--red-light);
+      }
+      .z-dm-btn {
+        background: var(--bg);
+        border: 1.5px solid var(--border-dark);
+        color: var(--text-primary);
+        font-size: 1.3rem;
+        padding: 0.55rem 1.1rem;
+        border-radius: 99px;
+        cursor: pointer;
+        font-family: "Outfit", sans-serif;
+        transition:
+          border-color var(--transition),
+          background var(--transition);
+      }
+      .z-dm-btn:hover {
+        border-color: var(--red);
+        background: var(--red-light);
+      }
+
+      /* ── MAIN ── */
+      .z-main {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 2rem;
+      }
+
+      /* ── CARD ── */
+      .z-card {
+        background: var(--bg-white);
+        border-radius: var(--radius-lg);
+        padding: 4rem 3.8rem 3.4rem;
+        width: 100%;
+        max-width: 44rem;
+        box-shadow: var(--shadow-lg);
+        border: 1px solid var(--border);
+        transition: background var(--transition);
+        animation: cardIn 0.45s cubic-bezier(0.4, 0, 0.2, 1) both;
+      }
+      @keyframes cardIn {
+        from {
+          opacity: 0;
+          transform: translateY(24px) scale(0.98);
         }
-        .z-navbar img { height: 28px; cursor: pointer; }
-        .z-navbar-right { display: flex; gap: 14px; align-items: center; }
-        .z-navbar-right a { text-decoration: none; font-size: 1.4rem; color: #696969; font-weight: 500; padding: 7px 16px; border-radius: 6px; transition: background 0.2s; }
-        .z-navbar-right a:hover { background: #f5f5f5; }
-        .z-navbar-right a.active { border: 1px solid #e23744; color: #e23744; }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
 
-        /* Main */
-        .z-main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 16px; }
+      .z-card h2 {
+        font-size: 2.6rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.02em;
+      }
+      .z-card .sub {
+        font-size: 1.4rem;
+        color: var(--text-muted);
+        margin-bottom: 2.8rem;
+      }
+      .z-card .sub a {
+        color: var(--red);
+        font-weight: 600;
+      }
 
-        /* Card */
+      /* Social buttons */
+      .z-social {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 2rem;
+      }
+      .z-social-btn {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 1rem 1.4rem;
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-sm);
+        background: var(--bg-white);
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        cursor: pointer;
+        font-family: "Outfit", sans-serif;
+        transition:
+          border-color var(--transition),
+          background var(--transition),
+          transform var(--transition);
+      }
+      .z-social-btn:hover {
+        border-color: var(--red);
+        background: var(--red-light);
+        transform: translateY(-2px);
+      }
+      .z-social-btn i {
+        font-size: 1.6rem;
+      }
+      .z-social-btn .fa-google {
+        color: #4285f4;
+      }
+      .z-social-btn .fa-facebook {
+        color: #3b5998;
+      }
+
+      /* Divider */
+      .z-divider {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--text-muted);
+        font-size: 1.2rem;
+        margin: 1.6rem 0;
+      }
+      .z-divider::before,
+      .z-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
+
+      /* Fields */
+      .z-field {
+        margin-bottom: 1.6rem;
+      }
+      .z-field label {
+        display: block;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        margin-bottom: 0.6rem;
+        letter-spacing: 0.01em;
+      }
+      .z-field input {
+        width: 100%;
+        padding: 1.2rem 1.4rem;
+        border: 1.5px solid var(--border-dark);
+        border-radius: var(--radius-sm);
+        font-size: 1.45rem;
+        font-family: "Outfit", sans-serif;
+        color: var(--text-primary);
+        background: var(--bg-white);
+        outline: none;
+        transition:
+          border-color var(--transition),
+          box-shadow var(--transition),
+          background var(--transition);
+      }
+      .z-field input:focus {
+        border-color: var(--red);
+        box-shadow: 0 0 0 3px rgba(226, 55, 68, 0.1);
+      }
+      .z-field input.err {
+        border-color: var(--red);
+      }
+      .z-field input::placeholder {
+        color: var(--text-muted);
+      }
+      .z-err {
+        font-size: 1.15rem;
+        color: var(--red);
+        margin-top: 5px;
+        min-height: 16px;
+        display: block;
+        font-weight: 400;
+      }
+
+      /* Password */
+      .pw-wrap {
+        position: relative;
+      }
+      .pw-wrap input {
+        padding-right: 6rem;
+      }
+      .pw-toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        font-size: 1.15rem;
+        font-weight: 700;
+        font-family: "Outfit", sans-serif;
+        cursor: pointer;
+        letter-spacing: 0.05em;
+        transition: color var(--transition);
+      }
+      .pw-toggle:hover {
+        color: var(--red);
+      }
+
+      /* Options row */
+      .z-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        font-size: 1.3rem;
+      }
+      .z-options label {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        color: var(--text-secondary);
+        cursor: pointer;
+      }
+      .z-options input[type="checkbox"] {
+        accent-color: var(--red);
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+      .z-options a {
+        color: var(--red);
+        font-weight: 600;
+      }
+      .z-options a:hover {
+        text-decoration: underline;
+      }
+
+      /* Submit */
+      .z-submit {
+        width: 100%;
+        padding: 1.4rem;
+        background: var(--red);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-sm);
+        font-size: 1.6rem;
+        font-weight: 700;
+        font-family: "Outfit", sans-serif;
+        cursor: pointer;
+        transition:
+          background var(--transition),
+          transform var(--transition),
+          box-shadow var(--transition);
+        box-shadow: 0 4px 16px rgba(226, 55, 68, 0.3);
+        letter-spacing: 0.01em;
+      }
+      .z-submit:hover {
+        background: var(--red-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(226, 55, 68, 0.35);
+      }
+      .z-submit:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      /* Success */
+      .z-success {
+        background: #f0fff4;
+        border: 1.5px solid #86efac;
+        color: #166534;
+        border-radius: var(--radius-sm);
+        padding: 1.1rem 1.4rem;
+        font-size: 1.3rem;
+        text-align: center;
+        margin-top: 1.4rem;
+        font-weight: 500;
+      }
+      body.dark-mode .z-success {
+        background: #0f2e1c;
+        border-color: #166534;
+        color: #86efac;
+      }
+
+      /* Switch */
+      .z-switch {
+        text-align: center;
+        font-size: 1.35rem;
+        color: var(--text-muted);
+        margin-top: 2.2rem;
+      }
+      .z-switch a {
+        color: var(--red);
+        font-weight: 700;
+      }
+      .z-switch a:hover {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 480px) {
         .z-card {
-            background: #fff;
-            border-radius: 16px;
-            padding: 40px 36px 32px;
-            width: 100%; max-width: 420px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+          padding: 3rem 2rem 2.6rem;
         }
-        .z-card h2 { font-size: 2.2rem; font-weight: 700; color: #1c1c1c; margin-bottom: 6px; }
-        .z-card .sub { font-size: 1.3rem; color: #696969; margin-bottom: 28px; }
-
-        /* Social */
-        .z-social { display: flex; gap: 10px; margin-bottom: 20px; }
-        .z-social-btn {
-            flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
-            padding: 10px 14px; border: 1.5px solid #e8e8e8; border-radius: 8px;
-            background: #fff; font-size: 1.3rem; font-weight: 600; color: #333;
-            cursor: pointer; transition: border-color 0.2s, background 0.2s;
+        .z-card h2 {
+          font-size: 2rem;
         }
-        .z-social-btn:hover { border-color: #e23744; background: #fff5f5; }
-        .z-social-btn i { font-size: 1.5rem; }
-        .z-social-btn .fa-google { color: #4285F4; }
-        .z-social-btn .fa-facebook { color: #3b5998; }
-
-        /* Divider */
-        .z-divider { display: flex; align-items: center; gap: 10px; color: #b0b0b0; font-size: 1.2rem; margin: 18px 0; }
-        .z-divider::before, .z-divider::after { content: ''; flex: 1; height: 1px; background: #ebebeb; }
-
-        /* Fields */
-        .z-field { margin-bottom: 16px; }
-        .z-field label { display: block; font-size: 1.2rem; font-weight: 600; color: #3d3d3d; margin-bottom: 6px; }
-        .z-field input {
-            width: 100%; padding: 12px 14px; border: 1.5px solid #ddd; border-radius: 8px;
-            font-size: 1.3rem; color: #1c1c1c; outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
+        .z-social {
+          flex-direction: column;
         }
-        .z-field input:focus { border-color: #e23744; box-shadow: 0 0 0 3px rgba(226,55,68,0.1); }
-        .z-field input.err { border-color: #e23744; }
-        .z-err { font-size: 1.1rem; color: #e23744; margin-top: 4px; min-height: 15px; display: block; }
-
-        /* Password wrap */
-        .pw-wrap { position: relative; }
-        .pw-wrap input { padding-right: 55px; }
-        .pw-toggle { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #696969; font-size: 1.1rem; font-weight: 700; cursor: pointer; letter-spacing: 0.5px; transition: color 0.2s; }
-        .pw-toggle:hover { color: #e23744; }
-
-        /* Options row */
-        .z-options { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 1.2rem; }
-        .z-options label { display: flex; align-items: center; gap: 6px; color: #555; cursor: pointer; }
-        .z-options input[type=checkbox] { accent-color: #e23744; }
-        .z-options a { color: #e23744; text-decoration: none; font-weight: 600; }
-        .z-options a:hover { text-decoration: underline; }
-
-        /* Submit */
-        .z-submit { width: 100%; padding: 13px; background: #e23744; color: #fff; border: none; border-radius: 8px; font-size: 1.5rem; font-weight: 700; cursor: pointer; transition: background 0.2s, transform 0.15s; margin-top: 4px; }
-        .z-submit:hover { background: #c72d39; transform: translateY(-1px); }
-        .z-submit:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
-
-        /* Success */
-        .z-success { background: #f0fff4; border: 1px solid #a3d9a5; color: #276749; border-radius: 8px; padding: 10px 14px; font-size: 1.2rem; text-align: center; margin-top: 14px; }
-
-        /* Switch */
-        .z-switch { text-align: center; font-size: 1.3rem; color: #696969; margin-top: 22px; }
-        .z-switch a { color: #e23744; font-weight: 700; text-decoration: none; }
-        .z-switch a:hover { text-decoration: underline; }
-
-        /* Responsive */
-        @media (max-width: 480px) {
-            .z-card { padding: 28px 18px 24px; }
-            .z-card h2 { font-size: 1.8rem; }
-            .z-social { flex-direction: column; }
-            .z-options { flex-direction: column; align-items: flex-start; gap: 8px; }
-            .z-navbar-right a { font-size: 1.2rem; padding: 6px 10px; }
+        .z-options {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
         }
+        .z-navbar-right a {
+          font-size: 1.3rem;
+          padding: 0.55rem 1rem;
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <!-- Navbar -->
     <nav class="z-navbar">
-        <a href="zomato.html">
-            <img src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png" alt="Zomato">
-        </a>
-        <div class="z-navbar-right">
-            <a href="login.html" class="active">Log in</a>
-            <a href="signup.html">Sign up</a>
-        </div>
+      <a href="zomato.html">
+        <img
+          class="z-navbar-logo"
+          src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png"
+          alt="Zomato"
+        />
+      </a>
+      <div class="z-navbar-right">
+        <a href="login.html" class="active">Log in</a>
+        <a href="signup.html">Sign up</a>
+        <button class="z-dm-btn" id="dmToggle">🌙</button>
+      </div>
     </nav>
 
     <main class="z-main">
-        <div class="z-card">
-            <h2>Log in</h2>
-            <p class="sub">or <a href="signup.html" style="color:#e23744;text-decoration:none;font-weight:600;">create an account</a></p>
+      <div class="z-card">
+        <h2>Welcome back 👋</h2>
+        <p class="sub">or <a href="signup.html">create a new account</a></p>
 
-            <div class="z-social">
-                <button class="z-social-btn" onclick="alert('Google login coming soon!')">
-                    <i class="fa fa-google"></i> Google
-                </button>
-                <button class="z-social-btn" onclick="alert('Facebook login coming soon!')">
-                    <i class="fa fa-facebook"></i> Facebook
-                </button>
-            </div>
-
-            <div class="z-divider"><span>or</span></div>
-
-            <form id="loginForm" novalidate>
-                <div class="z-field">
-                    <label for="loginEmail">Email</label>
-                    <input type="email" id="loginEmail" placeholder="Enter your email">
-                    <span class="z-err" id="emailErr"></span>
-                </div>
-                <div class="z-field">
-                    <label for="loginPw">Password</label>
-                    <div class="pw-wrap">
-                        <input type="password" id="loginPw" placeholder="Enter your password">
-                        <button type="button" class="pw-toggle" id="pwToggle" onclick="togglePw('loginPw','pwToggle')">SHOW</button>
-                    </div>
-                    <span class="z-err" id="pwErr"></span>
-                </div>
-                <div class="z-options">
-                    <label><input type="checkbox"> Remember me</label>
-                    <a href="#">Forgot password?</a>
-                </div>
-                <button type="submit" class="z-submit">Log in</button>
-                <div id="loginSuccess" class="z-success" style="display:none;"></div>
-            </form>
-
-            <p class="z-switch">New to Zomato? <a href="signup.html">Create account</a></p>
+        <div class="z-social">
+          <button class="z-social-btn" onclick="socialLogin('Google')">
+            <i class="fa fa-google"></i> Google
+          </button>
+          <button class="z-social-btn" onclick="socialLogin('Facebook')">
+            <i class="fa fa-facebook"></i> Facebook
+          </button>
         </div>
+
+        <div class="z-divider"><span>or continue with email</span></div>
+
+        <form id="loginForm" novalidate>
+          <div class="z-field">
+            <label for="loginEmail">Email address</label>
+            <input
+              type="email"
+              id="loginEmail"
+              placeholder="you@example.com"
+              autocomplete="email"
+            />
+            <span class="z-err" id="emailErr"></span>
+          </div>
+
+          <div class="z-field">
+            <label for="loginPw">Password</label>
+            <div class="pw-wrap">
+              <input
+                type="password"
+                id="loginPw"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+              />
+              <button
+                type="button"
+                class="pw-toggle"
+                id="pwToggle"
+                onclick="togglePw('loginPw', 'pwToggle')"
+              >
+                SHOW
+              </button>
+            </div>
+            <span class="z-err" id="pwErr"></span>
+          </div>
+
+          <div class="z-options">
+            <label><input type="checkbox" id="rememberMe" /> Remember me</label>
+            <a href="ForgotPassword.html">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="z-submit">Log in</button>
+          <div id="loginSuccess" class="z-success" style="display: none"></div>
+        </form>
+
+        <p class="z-switch">
+          New to Zomato? <a href="signup.html">Create account</a>
+        </p>
+      </div>
     </main>
 
     <script>
-        function togglePw(inputId, btnId) {
-            const input = document.getElementById(inputId);
-            const btn = document.getElementById(btnId);
-            if (input.type === 'password') { input.type = 'text'; btn.textContent = 'HIDE'; }
-            else { input.type = 'password'; btn.textContent = 'SHOW'; }
+      // Dark mode sync
+      (function () {
+        const dm = document.getElementById("dmToggle");
+        const apply = (dark) => {
+          document.body.classList.toggle("dark-mode", dark);
+          if (dm) dm.textContent = dark ? "☀️" : "🌙";
+        };
+        apply(localStorage.getItem("zomato-theme") === "dark");
+        if (dm)
+          dm.addEventListener("click", () => {
+            const isDark = document.body.classList.contains("dark-mode");
+            apply(!isDark);
+            localStorage.setItem("zomato-theme", isDark ? "light" : "dark");
+          });
+      })();
+
+      function togglePw(inputId, btnId) {
+        const input = document.getElementById(inputId);
+        const btn = document.getElementById(btnId);
+        if (input.type === "password") {
+          input.type = "text";
+          btn.textContent = "HIDE";
+        } else {
+          input.type = "password";
+          btn.textContent = "SHOW";
         }
+      }
 
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            let valid = true;
-            const email = document.getElementById('loginEmail').value.trim();
-            const pw = document.getElementById('loginPw').value;
-            document.getElementById('emailErr').textContent = '';
-            document.getElementById('pwErr').textContent = '';
+      function socialLogin(provider) {
+        showToast(`${provider} login coming soon!`);
+      }
 
-            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                document.getElementById('emailErr').textContent = 'Please enter a valid email address.';
-                document.getElementById('loginEmail').classList.add('err');
-                valid = false;
-            } else { document.getElementById('loginEmail').classList.remove('err'); }
+      function showToast(msg) {
+        const t = document.createElement("div");
+        t.textContent = msg;
+        Object.assign(t.style, {
+          position: "fixed",
+          bottom: "2.4rem",
+          left: "50%",
+          transform: "translateX(-50%)",
+          background: "#1c1c1c",
+          color: "#fff",
+          padding: "1.1rem 2rem",
+          borderRadius: "99px",
+          fontSize: "1.4rem",
+          fontFamily: "Outfit,sans-serif",
+          boxShadow: "0 8px 30px rgba(0,0,0,0.25)",
+          zIndex: "99999",
+          opacity: "0",
+          transition: "opacity 0.25s ease",
+        });
+        document.body.appendChild(t);
+        requestAnimationFrame(() => (t.style.opacity = "1"));
+        setTimeout(() => {
+          t.style.opacity = "0";
+          setTimeout(() => t.remove(), 300);
+        }, 2600);
+      }
 
-            if (!pw || pw.length < 4) {
-                document.getElementById('pwErr').textContent = 'Please enter a valid password.';
-                document.getElementById('loginPw').classList.add('err');
-                valid = false;
-            } else { document.getElementById('loginPw').classList.remove('err'); }
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          let valid = true;
+          const email = document.getElementById("loginEmail").value.trim();
+          const pw = document.getElementById("loginPw").value;
 
-            if (valid) {
-                const btn = this.querySelector('.z-submit');
-                btn.textContent = 'Logging in…'; btn.disabled = true;
-                setTimeout(() => {
-                    document.getElementById('loginSuccess').style.display = 'block';
-                    document.getElementById('loginSuccess').textContent = '✅ Logged in successfully! Redirecting…';
-                    setTimeout(() => window.location.href = 'zomato.html', 1800);
-                }, 1000);
-            }
+          document.getElementById("emailErr").textContent = "";
+          document.getElementById("pwErr").textContent = "";
+          document.getElementById("loginEmail").classList.remove("err");
+          document.getElementById("loginPw").classList.remove("err");
+
+          if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            document.getElementById("emailErr").textContent =
+              "Please enter a valid email address.";
+            document.getElementById("loginEmail").classList.add("err");
+            valid = false;
+          }
+
+          if (!pw || pw.length < 4) {
+            document.getElementById("pwErr").textContent =
+              "Please enter your password.";
+            document.getElementById("loginPw").classList.add("err");
+            valid = false;
+          }
+
+          if (valid) {
+            const btn = this.querySelector(".z-submit");
+            btn.textContent = "Logging in…";
+            btn.disabled = true;
+            setTimeout(() => {
+              const success = document.getElementById("loginSuccess");
+              success.style.display = "block";
+              success.textContent = "✅ Logged in successfully! Redirecting…";
+              setTimeout(() => (window.location.href = "zomato.html"), 1800);
+            }, 1000);
+          }
         });
     </script>
-</body>
+  </body>
 </html>

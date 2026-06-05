@@ -164,20 +164,19 @@ body::after {
 .back-btn {
   position: fixed;
   left: 18px; top: 18px;
-  padding: 8px 14px;
-  border-radius: 10px;
-  background: var(--surface);
-  color: var(--text);
-  border: 1px solid var(--border);
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #1e293b;
+  color: #3b82f6;
+  border: 1px solid #3b82f6;
   text-decoration: none;
   font-family: 'DM Sans', sans-serif;
   font-weight: 500;
   font-size: 0.85rem;
   z-index: 9999;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.2);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.2s ease;
 }
-.back-btn:hover { transform: translateX(-3px); box-shadow: 0 6px 22px rgba(0,0,0,0.28); }
+.back-btn:hover { background: #3b82f6; color: #fff; }
 
 /* ── Theme Button ── */
 .theme-btn {
