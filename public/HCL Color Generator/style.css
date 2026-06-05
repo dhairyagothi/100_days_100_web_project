@@ -120,7 +120,44 @@ span {
   font-family: monospace;
   margin: 4px 0;
 }
+/* Quick Color Palette */
+.palette-container {
+  margin: 24px 0 16px 0;
+  text-align: left;
+}
 
+.palette-title {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.palette-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.palette-swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+  padding: 0;
+}
+
+.palette-swatch:hover, .palette-swatch:focus-visible {
+  transform: scale(1.15);
+  border-color: #fff;
+}
+
+.palette-swatch:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
 
 #copyBtn {
   margin-top: 20px;

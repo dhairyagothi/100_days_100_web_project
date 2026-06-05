@@ -2,15 +2,20 @@ const bcrypt = require('bcrypt')
 const login_logs = require('../models/Login_data')
 const Login = require('../models/FormData')
 const jwt = require("jsonwebtoken");
+const { AppError } = require('../middlewares/errorHandler');
 
 exports.Login_post = async (req, res) => {
   let { email, password } = req.body;
+
+  if (!email || !password) {
+    throw new AppError("Email and password are required", 400);
+  }
 
       email = email.trim().toLowerCase();
 
   const Login_email = await Login.findOne({ email: email })
 
-  if (!Login_email) { return res.status(400).json({ msg: " Invalid Credentials , please Enter correct email and password" }) }
+  if (!Login_email) { throw new AppError(" Invalid Credentials , please Enter correct email and password", 400) }
 
   const matched = await bcrypt.compare(password, Login_email.password)
 
@@ -23,7 +28,7 @@ exports.Login_post = async (req, res) => {
     })
 
     await Failed_to_logedIn.save()
-    return res.status(400).json({ msg: "Login failed , Invalid credentials " })
+    throw new AppError("Login failed , Invalid credentials ", 400)
   }
 
 

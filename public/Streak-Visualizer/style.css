@@ -1,0 +1,205 @@
+:root {
+    --lc-bg: #1a1a1a;
+    --lc-card: #282828;
+    --lc-border: #3e3e3e;
+    --lc-text-main: #eff1f6;
+    --lc-text-muted: #8c8c8c;
+    --lc-orange: #ffa116;
+    --lc-green: #2cbb5d;
+    --lc-yellow: #ffc01e;
+    --lc-red: #ff375f;
+    --lc-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+body {
+    font-family: var(--lc-font);
+    background-color: var(--lc-bg);
+    color: var(--lc-text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+.lc-container {
+    background-color: var(--lc-card);
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid var(--lc-border);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    width: 100%;
+    max-width: 600px;
+    transition: max-width 0.3s ease;
+}
+
+.lc-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    justify-content: center;
+}
+
+.lc-header h1 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.vs-text {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: var(--lc-text-muted);
+}
+
+input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid var(--lc-border);
+    border-radius: 8px;
+    background-color: var(--lc-bg);
+    color: var(--lc-text-main);
+    font-size: 0.9rem;
+    outline: none;
+}
+
+input:focus { border-color: var(--lc-orange); }
+
+button {
+    padding: 12px;
+    background-color: var(--lc-bg);
+    color: var(--lc-orange);
+    border: 1px solid var(--lc-orange);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    width: 100%;
+    transition: all 0.2s;
+}
+
+button:hover {
+    background-color: var(--lc-orange);
+    color: var(--lc-bg);
+}
+
+.hidden { display: none !important; }
+
+#error-message {
+    color: var(--lc-red);
+    background-color: rgba(255, 55, 95, 0.1);
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+#loading {
+    text-align: center;
+    color: var(--lc-text-muted);
+    font-size: 0.9rem;
+    margin: 20px 0;
+}
+
+/* Flex layout for VS Mode */
+.stats-wrapper {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.user-card {
+    flex: 1;
+    min-width: 250px;
+    background-color: var(--lc-bg);
+    border-radius: 8px;
+    padding: 16px;
+    border: 1px solid transparent;
+}
+
+.winner-card {
+    border-color: var(--lc-yellow);
+    box-shadow: 0 0 10px rgba(255, 192, 30, 0.2);
+}
+
+.profile-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.profile-info h2 {
+    margin: 0 0 4px 0;
+    font-size: 1rem;
+}
+
+.rank-text {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--lc-text-muted);
+}
+
+.highlight-green { color: var(--lc-green); font-weight: 600;}
+.highlight-orange { color: var(--lc-orange); font-weight: 600;}
+
+/* Battery System */
+.streak-card { text-align: center; }
+.streak-title { margin: 0 0 16px 0; font-size: 0.95rem; }
+
+.battery-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.battery-body {
+    width: 140px;
+    height: 28px;
+    border: 2px solid var(--lc-border);
+    border-radius: 6px;
+    padding: 2px;
+    background: var(--lc-bg);
+}
+
+.battery-level {
+    height: 100%;
+    width: 0%;
+    background-color: var(--lc-green);
+    border-radius: 3px;
+    transition: width 1s ease-in-out, background-color 0.5s ease;
+}
+
+.battery-cap {
+    width: 5px;
+    height: 12px;
+    background-color: var(--lc-border);
+    border-radius: 0 3px 3px 0;
+    margin-left: 2px;
+}
+
+.battery-status { margin: 0; font-size: 0.8rem; color: var(--lc-text-muted); }

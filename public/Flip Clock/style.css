@@ -1,0 +1,176 @@
+:root {
+    --bg: #dff7ea;
+    --text: #5c9b7b;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Gaegu", sans-serif;
+}
+
+body {
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background:
+        radial-gradient(circle at top left, #ffffff80, transparent),
+        var(--bg);
+
+    transition: background .4s ease;
+}
+
+.app-title{
+    margin-bottom:25px;
+    font-size:2.5rem;
+    font-weight:800;
+    letter-spacing:2px;
+    color:#666;;
+    text-align:center;
+    text-shadow:
+    0 2px 8px rgba(255,255,255,.5);
+}
+/* CLOCK */
+
+.clock-widget {
+    width: 800px;
+    max-width: 90%;
+    padding: 35px;
+    border-radius: 35px;
+    background: rgba(255, 255, 255, .35);
+    backdrop-filter: blur(25px);
+    box-shadow:
+        0 15px 40px rgba(92, 155, 123, .15);
+}
+
+.time-row {
+    display: flex;
+    gap: 20px;
+}
+
+.flip-card {
+    flex: 1;
+    height: 230px;
+    background: #f8fffb;
+    border-radius: 25px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow:
+        inset 0 -2px 0 rgba(0, 0, 0, .04);
+}
+
+.flip-card::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: #d7e7dd;
+    top: 50%;
+    left: 0;
+}
+
+.flip-card div {
+    font-size: 8rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+    transition: .3s ease;
+}
+
+.footer {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-between;
+    color: var(--text);
+    font-size: 1.4rem;
+    transition: .3s ease;
+}
+
+/* COLOR SECTION */
+
+.color-section {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.color-title {
+    margin-bottom: 15px;
+    font-family: "Gaegu", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #666;
+    letter-spacing: 1px;
+}
+
+.theme-picker {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+}
+
+.color {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid rgba(0, 0, 0, .12);
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, .08);
+    transition: .25s;
+}
+
+.color:hover {
+    transform: scale(1.15);
+}
+
+.color.active {
+    border: 3px solid #333;
+    transform: scale(1.15);
+}
+
+/* Pastel Colors */
+
+.mint {
+    background: #dff7ea;
+}
+
+.lavender {
+    background: #e9defa;
+}
+
+.peach {
+    background: #ffe7dd;
+}
+
+.sky {
+    background: #dfefff;
+}
+
+.sakura {
+    background: #ffdfe8;
+}
+
+.butter {
+    background: #fff4c9;
+}
+
+@media(max-width:768px) {
+
+    .flip-card {
+        height: 140px;
+    }
+
+    .flip-card div {
+        font-size: 4rem;
+    }
+
+    .footer {
+        font-size: 1rem;
+    }
+}

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WayFinder – Navigation · Amity University</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="./css/navigation.css"/>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="top-bar">
+  <a class="nav-logo" href="homepage.html">
+    <div class="logo-icon"><i class="fas fa-location-crosshairs"></i></div>
+    <span>Way<span class="dot">Finder</span></span>
+  </a>
+  <div class="top-sep"></div>
+
+  <div class="route-headline">
+    <span class="route-from"><i class="fas fa-circle-dot" style="margin-right:7px;font-size:0.75rem;"></i>Central Library</span>
+    <div class="route-arrow">
+      <div class="route-line-deco"></div>
+      <i class="fas fa-arrow-right"></i>
+      <div class="route-line-deco"></div>
+    </div>
+    <span class="route-to"><i class="fas fa-location-dot" style="margin-right:7px;font-size:0.75rem;"></i>Block A, Room 101</span>
+  </div>
+
+  <div class="meta-pills">
+    <div class="meta-pill blue"><i class="fas fa-ruler-horizontal"></i> 350 m</div>
+    <div class="meta-pill green"><i class="fas fa-person-walking"></i> 4 min</div>
+    <div class="meta-pill purple"><i class="fas fa-shoe-prints"></i> 6 steps</div>
+  </div>
+
+  <div class="top-right">
+    <a href="map.html" class="icon-btn" title="Back to Map"><i class="fas fa-map"></i></a>
+    <button class="icon-btn" title="Share Route"><i class="fas fa-share-nodes"></i></button>
+    <button class="icon-btn" title="Settings"><i class="fas fa-sliders"></i></button>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+  <!-- LEFT PANEL: DIRECTIONS -->
+  <aside class="directions-panel">
+    <div class="dir-header">
+      <h2><i class="fas fa-list-ol" style="margin-right:6px;color:var(--accent2);"></i>Turn-by-Turn Directions</h2>
+      <div class="route-summary">
+        <div class="rs-icon"><i class="fas fa-route"></i></div>
+        <div class="rs-info">
+          <h3>Library → Block A, Room 101</h3>
+          <p>Optimal walking route · Amity University</p>
+        </div>
+        <div class="rs-eta">
+          <span class="time">4</span>
+          <span class="label">minutes</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Step 2 of 6</span><span>35% complete</span></div>
+      <div class="progress-bar"><div class="progress-fill"></div></div>
+    </div>
+
+    <div class="steps-list">
+
+      <!-- Step 1 — Done -->
+      <div class="step-item done">
+        <div class="step-timeline">
+          <div class="step-dot done"><i class="fas fa-check"></i></div>
+          <div class="step-connector filled"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-top">
+            <span class="step-instruction">Exit Central Library through main entrance</span>
+            <span class="step-dist-badge">Start</span>
+          </div>
+          <p class="step-desc">Head out from the ground floor main door facing the central road.</p>
+          <div class="step-landmark"><i class="fas fa-book-open"></i> Central Library, Ground Floor</div>
+        </div>
+      </div>
+
+      <!-- Step 2 — Active -->
+      <div class="step-item active">
+        <div class="step-timeline">
+          <div class="step-dot active"><i class="fas fa-arrow-up"></i></div>
+          <div class="step-connector filled"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-top">
+            <span class="step-instruction">Walk straight ahead on Central Avenue</span>
+            <span class="step-dist-badge active-badge">80 m</span>
+          </div>
+          <p class="step-desc">Continue north on the main campus walkway. Pass the central fountain on your right.</p>
+          <div class="step-landmark"><i class="fas fa-location-dot"></i> You are here — Central Avenue</div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step-item">
+        <div class="step-timeline">
+          <div class="step-dot pending"><i class="fas fa-turn-left"></i></div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-top">
+            <span class="step-instruction">Turn left at the Administrative Office</span>
+            <span class="step-dist-badge">50 m</span>
+          </div>
+          <p class="step-desc">At the main roundabout near Admin Office, take the left fork towards the engineering blocks.</p>
+          <div class="step-landmark"><i class="fas fa-building-columns"></i> Landmark: Administrative Office (on right)</div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step-item">
+        <div class="step-timeline">
+          <div class="step-dot pending"><i class="fas fa-arrow-up"></i></div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-top">
+            <span class="step-instruction">Continue straight past the Central Ground</span>
+            <span class="step-dist-badge">120 m</span>
+          </div>
+          <p class="step-desc">Walk along the tree-lined pathway past the open ground. Block A will be visible ahead on the left.</p>
+          <div class="step-landmark"><i class="fas fa-tree"></i> Central Ground (on your right)</div>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="step-item">
+        <div class="step-timeline">
+          <div class="step-dot pending"><i class="fas fa-turn-right"></i></div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-top">
+            <span class="step-instruction">Turn right at Block A main gate</span>
+            <span class="step-dist-badge">60 m</span>
+          </div>
+          <p class="step-desc">Enter through the main gate of Block A. Security checkpoint at the entrance—carry your ID card.</p>
+          <div class="step-landmark"><i class="fas fa-shield-halved"></i> Security Checkpoint — ID Required</div>
+        </div>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="step-item">
+        <div class="step-timeline">
+          <div class="step-dot pending"><i class="fas fa-stairs"></i></div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-top">
+            <span class="step-instruction">Take elevator/stairs to Floor 1</span>
+            <span class="step-dist-badge">20 m</span>
+          </div>
+          <p class="step-desc">Elevator is on the right side of the entrance lobby. Take it to Floor 1 (Ground = 0).</p>
+          <div class="step-landmark"><i class="fas fa-elevator"></i> Elevator: Near Reception Desk</div>
+        </div>
+      </div>
+
+      <!-- Step 7 — Destination -->
+      <div class="step-item" style="margin-bottom:16px;">
+        <div class="step-timeline">
+          <div class="step-dot pending" style="background:rgba(139,92,246,0.15);border-color:rgba(167,139,250,0.4);color:#A78BFA;"><i class="fas fa-flag-checkered"></i></div>
+          <div></div>
+        </div>
+        <div class="step-body" style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);">
+          <div class="step-top">
+            <span class="step-instruction" style="color:#C4B5FD;">Arrive at Room 101, Block A</span>
+            <span class="step-dist-badge" style="background:rgba(139,92,246,0.15);color:#A78BFA;">Destination</span>
+          </div>
+          <p class="step-desc">Room 101 is the first classroom on your left after exiting the elevator on Floor 1.</p>
+          <div class="step-landmark" style="border-color:rgba(139,92,246,0.2);"><i class="fas fa-chalkboard-user" style="color:#A78BFA;"></i> Block A · Floor 1 · Room 101</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- RIGHT PANEL: LIVE MAP -->
+  <div class="map-panel">
+    <svg viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="mapBg2" cx="50%" cy="50%" r="70%">
+          <stop offset="0%" stop-color="#0E1E3D"/>
+          <stop offset="100%" stop-color="#070F1F"/>
+        </radialGradient>
+        <pattern id="grid3" width="45" height="45" patternUnits="userSpaceOnUse">
+          <path d="M 45 0 L 0 0 0 45" fill="none" stroke="rgba(255,255,255,0.022)" stroke-width="1"/>
+        </pattern>
+        <linearGradient id="routeGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#2563EB"/>
+          <stop offset="40%" stop-color="#6366F1"/>
+          <stop offset="100%" stop-color="#8B5CF6"/>
+        </linearGradient>
+        <filter id="pinGlow2" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="6" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="routeGlow2" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="6" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <marker id="chevron" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+          <circle cx="4" cy="4" r="3" fill="rgba(96,165,250,0.9)"/>
+        </marker>
+      </defs>
+
+      <!-- Background -->
+      <rect width="900" height="700" fill="url(#mapBg2)"/>
+      <rect width="900" height="700" fill="url(#grid3)"/>
+
+      <!-- Campus boundary -->
+      <rect x="50" y="40" width="800" height="620" rx="20" fill="none" stroke="rgba(37,99,235,0.1)" stroke-width="1.5" stroke-dasharray="10 8"/>
+
+      <!-- Roads -->
+      <rect x="50" y="330" width="800" height="28" rx="3" fill="rgba(255,255,255,0.035)"/>
+      <line x1="50" y1="344" x2="850" y2="344" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="20 10"/>
+      <rect x="440" y="40" width="28" height="620" rx="3" fill="rgba(255,255,255,0.035)"/>
+      <line x1="454" y1="40" x2="454" y2="660" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="20 10"/>
+      <!-- Secondary roads -->
+      <line x1="50" y1="160" x2="850" y2="160" stroke="rgba(255,255,255,0.025)" stroke-width="16"/>
+      <line x1="50" y1="520" x2="850" y2="520" stroke="rgba(255,255,255,0.02)" stroke-width="14"/>
+      <line x1="230" y1="40" x2="230" y2="660" stroke="rgba(255,255,255,0.025)" stroke-width="14"/>
+      <line x1="670" y1="40" x2="670" y2="660" stroke="rgba(255,255,255,0.025)" stroke-width="14"/>
+
+      <!-- Green zone -->
+      <ellipse cx="454" cy="344" rx="90" ry="60" fill="rgba(16,185,129,0.06)" stroke="rgba(16,185,129,0.1)" stroke-width="1"/>
+      <text x="454" y="348" text-anchor="middle" fill="rgba(52,211,153,0.3)" font-size="9" font-family="Poppins">Central Ground</text>
+
+      <!-- ===== BUILDINGS ===== -->
+      <!-- Block A (destination) - highlighted -->
+      <rect x="60" y="65" width="155" height="90" rx="9" fill="rgba(37,99,235,0.22)" stroke="rgba(59,130,246,0.7)" stroke-width="2"/>
+      <rect x="60" y="65" width="155" height="16" rx="9" fill="rgba(37,99,235,0.4)"/>
+      <text x="137" y="78" text-anchor="middle" fill="#BFDBFE" font-size="8.5" font-family="Poppins" font-weight="700">BLOCK A — DESTINATION</text>
+      <text x="137" y="103" text-anchor="middle" fill="rgba(191,219,254,0.75)" font-size="9" font-family="Poppins">Engineering &amp; Technology</text>
+      <text x="137" y="118" text-anchor="middle" fill="rgba(191,219,254,0.5)" font-size="8" font-family="Poppins">→ Room 101 · Floor 1</text>
+
+      <!-- Destination star marker inside block -->
+      <circle cx="137" cy="130" r="8" fill="rgba(139,92,246,0.8)" stroke="white" stroke-width="1.5"/>
+      <text x="137" y="133" text-anchor="middle" fill="white" font-size="9" font-family="Poppins">★</text>
+
+      <!-- Block B -->
+      <rect x="700" y="65" width="145" height="80" rx="9" fill="rgba(139,92,246,0.12)" stroke="rgba(167,139,250,0.35)" stroke-width="1.5"/>
+      <text x="772" y="95" text-anchor="middle" fill="#C4B5FD" font-size="9" font-family="Poppins" font-weight="600">Block B</text>
+      <text x="772" y="110" text-anchor="middle" fill="rgba(196,181,253,0.45)" font-size="7.5" font-family="Poppins">Management & Law</text>
+
+      <!-- Block C -->
+      <rect x="60" y="415" width="145" height="85" rx="9" fill="rgba(6,182,212,0.1)" stroke="rgba(34,211,238,0.3)" stroke-width="1.5"/>
+      <text x="132" y="448" text-anchor="middle" fill="#67E8F9" font-size="9" font-family="Poppins" font-weight="600">Block C</text>
+      <text x="132" y="463" text-anchor="middle" fill="rgba(103,232,249,0.45)" font-size="7.5" font-family="Poppins">Science & Allied</text>
+
+      <!-- Central Library (origin) -->
+      <rect x="530" y="415" width="175" height="120" rx="9" fill="rgba(16,185,129,0.15)" stroke="rgba(52,211,153,0.55)" stroke-width="2"/>
+      <rect x="530" y="415" width="175" height="16" rx="9" fill="rgba(16,185,129,0.25)"/>
+      <text x="617" y="428" text-anchor="middle" fill="#6EE7B7" font-size="8.5" font-family="Poppins" font-weight="700">CENTRAL LIBRARY</text>
+      <text x="617" y="455" text-anchor="middle" fill="rgba(110,231,183,0.65)" font-size="9" font-family="Poppins">Origin: Start Point</text>
+      <text x="617" y="470" text-anchor="middle" fill="rgba(110,231,183,0.45)" font-size="8" font-family="Poppins">4 Floors · Open Now</text>
+      <rect x="565" y="480" width="104" height="22" rx="6" fill="rgba(52,211,153,0.18)" stroke="rgba(52,211,153,0.35)" stroke-width="1"/>
+      <text x="617" y="495" text-anchor="middle" fill="#34D399" font-size="8" font-family="Poppins" font-weight="600">● OPEN · 8AM–10PM</text>
+
+      <!-- Admin -->
+      <rect x="300" y="68" width="180" height="65" rx="9" fill="rgba(245,158,11,0.10)" stroke="rgba(252,211,77,0.3)" stroke-width="1.5"/>
+      <text x="390" y="95" text-anchor="middle" fill="#FCD34D" font-size="9" font-family="Poppins" font-weight="600">Administrative Office</text>
+      <text x="390" y="110" text-anchor="middle" fill="rgba(252,211,77,0.45)" font-size="7.5" font-family="Poppins">Registrar · Finance · Admissions</text>
+
+      <!-- Cafeteria -->
+      <rect x="340" y="398" width="110" height="75" rx="9" fill="rgba(239,68,68,0.1)" stroke="rgba(248,113,113,0.3)" stroke-width="1.5"/>
+      <text x="395" y="432" text-anchor="middle" fill="#FCA5A5" font-size="9" font-family="Poppins" font-weight="600">Cafeteria</text>
+      <text x="395" y="447" text-anchor="middle" fill="rgba(252,165,165,0.45)" font-size="7.5" font-family="Poppins">Main Canteen · Open</text>
+
+      <!-- Boys Hostel -->
+      <rect x="60" y="555" width="140" height="90" rx="9" fill="rgba(168,85,247,0.10)" stroke="rgba(196,181,253,0.3)" stroke-width="1.5"/>
+      <text x="130" y="595" text-anchor="middle" fill="#DDD6FE" font-size="9" font-family="Poppins" font-weight="600">Boys Hostel</text>
+      <text x="130" y="610" text-anchor="middle" fill="rgba(221,214,254,0.45)" font-size="7.5" font-family="Poppins">H1–H4 Blocks</text>
+
+      <!-- ===== HIGHLIGHTED ROUTE PATH ===== -->
+      <!-- Route shadow -->
+      <path d="M 617 535 Q 617 480 550 440 Q 490 410 454 390 Q 420 370 390 340 Q 360 310 310 260 Q 260 210 230 200 Q 200 190 180 175 Q 165 165 145 155"
+            stroke="rgba(37,99,235,0.15)" stroke-width="14" fill="none" stroke-linecap="round" filter="url(#routeGlow2)"/>
+      <!-- Main glowing route -->
+      <path d="M 617 535 Q 617 480 550 440 Q 490 410 454 390 Q 420 370 390 340 Q 360 310 310 260 Q 260 210 230 200 Q 200 190 180 175 Q 165 165 145 155"
+            stroke="url(#routeGrad2)" stroke-width="5" fill="none" stroke-linecap="round" class="path-glow" marker-mid="url(#chevron)"/>
+      <!-- Animated dash overlay -->
+      <path d="M 617 535 Q 617 480 550 440 Q 490 410 454 390 Q 420 370 390 340 Q 360 310 310 260 Q 260 210 230 200 Q 200 190 180 175 Q 165 165 145 155"
+            stroke="rgba(255,255,255,0.75)" stroke-width="2.5" fill="none" stroke-linecap="round"
+            stroke-dasharray="10 30" class="path-animated" opacity="0.8"/>
+
+      <!-- Route waypoints (intermediate) -->
+      <circle cx="454" cy="390" r="6" fill="rgba(99,102,241,0.7)" stroke="white" stroke-width="1.5" opacity="0.9"/>
+      <circle cx="310" cy="260" r="5" fill="rgba(99,102,241,0.7)" stroke="white" stroke-width="1.5" opacity="0.8"/>
+      <circle cx="230" cy="200" r="5" fill="rgba(59,130,246,0.7)" stroke="white" stroke-width="1.5" opacity="0.7"/>
+
+      <!-- ===== PINS ===== -->
+
+      <!-- Library Pin (origin) -->
+      <g class="pin-float" filter="url(#pinGlow2)" style="cursor:pointer;">
+        <circle cx="617" cy="535" r="28" fill="rgba(16,185,129,0.18)" class="you-pulse"/>
+        <circle cx="617" cy="535" r="17" fill="rgba(16,185,129,0.25)" stroke="rgba(52,211,153,0.5)" stroke-width="2"/>
+        <circle cx="617" cy="535" r="11" fill="#059669" stroke="white" stroke-width="2.5"/>
+        <text x="617" y="539" text-anchor="middle" fill="white" font-size="9">A</text>
+      </g>
+      <rect x="567" y="558" width="100" height="20" rx="6" fill="rgba(5,150,105,0.85)" stroke="rgba(52,211,153,0.5)" stroke-width="1"/>
+      <text x="617" y="572" text-anchor="middle" fill="white" font-size="8.5" font-family="Poppins" font-weight="700">📍 Library (Start)</text>
+
+      <!-- Block A Pin (destination) -->
+      <g class="pin-float" filter="url(#pinGlow2)" style="cursor:pointer;transform-origin:145px 155px;">
+        <circle cx="145" cy="155" r="26" fill="rgba(139,92,246,0.2)" class="you-pulse"/>
+        <circle cx="145" cy="155" r="16" fill="rgba(139,92,246,0.3)" stroke="rgba(167,139,250,0.6)" stroke-width="2"/>
+        <circle cx="145" cy="155" r="11" fill="#7C3AED" stroke="white" stroke-width="2.5"/>
+        <text x="145" y="159" text-anchor="middle" fill="white" font-size="9">B</text>
+      </g>
+      <rect x="95" y="176" width="100" height="20" rx="6" fill="rgba(109,40,217,0.9)" stroke="rgba(167,139,250,0.5)" stroke-width="1"/>
+      <text x="145" y="190" text-anchor="middle" fill="white" font-size="8.5" font-family="Poppins" font-weight="700">🏁 Room 101 (Dest)</text>
+
+      <!-- You are here -->
+      <g filter="url(#pinGlow2)">
+        <circle cx="390" cy="340" r="16" fill="rgba(59,130,246,0.2)" class="you-pulse"/>
+        <circle cx="390" cy="340" r="10" fill="rgba(59,130,246,0.3)" stroke="rgba(96,165,250,0.5)" stroke-width="1.5"/>
+        <circle cx="390" cy="340" r="7" fill="#3B82F6" stroke="white" stroke-width="2.5"/>
+      </g>
+      <rect x="344" y="356" width="92" height="20" rx="6" fill="rgba(37,99,235,0.9)" stroke="rgba(96,165,250,0.5)" stroke-width="1"/>
+      <text x="390" y="370" text-anchor="middle" fill="white" font-size="8.5" font-family="Poppins" font-weight="700">📍 You are here</text>
+
+      <!-- Step marker (next turn) -->
+      <g filter="url(#pinGlow2)">
+        <circle cx="310" cy="260" r="14" fill="rgba(245,158,11,0.2)"/>
+        <circle cx="310" cy="260" r="9" fill="rgba(245,158,11,0.25)" stroke="rgba(252,211,77,0.5)" stroke-width="1.5"/>
+        <circle cx="310" cy="260" r="6" fill="#D97706" stroke="white" stroke-width="2"/>
+        <text x="310" y="263" text-anchor="middle" fill="white" font-size="8" font-family="Poppins">←</text>
+      </g>
+      <rect x="264" y="275" width="92" height="18" rx="5" fill="rgba(10,20,50,0.85)" stroke="rgba(245,158,11,0.35)" stroke-width="1"/>
+      <text x="310" y="288" text-anchor="middle" fill="#FCD34D" font-size="8" font-family="Poppins" font-weight="600">Turn Left Here</text>
+
+      <!-- Admin marker -->
+      <circle cx="390" cy="100" r="7" fill="rgba(245,158,11,0.5)" stroke="rgba(252,211,77,0.6)" stroke-width="1.5"/>
+      <text x="390" y="103" text-anchor="middle" fill="white" font-size="8">🏛</text>
+
+      <!-- Compass -->
+      <g transform="translate(840,80)">
+        <circle cx="0" cy="0" r="26" fill="rgba(5,10,25,0.8)" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+        <polygon points="0,-18 3,-5 0,-2 -3,-5" fill="white" opacity="0.95"/>
+        <polygon points="0,18 3,5 0,2 -3,5" fill="rgba(255,255,255,0.3)"/>
+        <polygon points="-18,0 -5,-3 -2,0 -5,3" fill="rgba(255,255,255,0.3)"/>
+        <polygon points="18,0 5,-3 2,0 5,3" fill="rgba(255,255,255,0.3)"/>
+        <text x="0" y="-20" text-anchor="middle" fill="white" font-size="9" font-family="Poppins" font-weight="700">N</text>
+        <circle cx="0" cy="0" r="3.5" fill="#06B6D4"/>
+      </g>
+
+      <!-- Distance markers along route -->
+      <text x="490" y="430" fill="rgba(96,165,250,0.5)" font-size="8" font-family="Space Mono" transform="rotate(-30,490,430)">80m</text>
+      <text x="370" y="325" fill="rgba(96,165,250,0.5)" font-size="8" font-family="Space Mono" transform="rotate(-45,370,325)">120m</text>
+      <text x="190" y="205" fill="rgba(96,165,250,0.5)" font-size="8" font-family="Space Mono" transform="rotate(-15,190,205)">60m</text>
+
+      <!-- Distance info box -->
+      <rect x="690" y="560" width="155" height="80" rx="10" fill="rgba(8,16,40,0.85)" stroke="rgba(37,99,235,0.3)" stroke-width="1.5"/>
+      <text x="767" y="582" text-anchor="middle" fill="rgba(240,246,255,0.5)" font-size="8.5" font-family="Poppins">Route Summary</text>
+      <line x1="705" y1="588" x2="829" y2="588" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+      <text x="707" y="605" fill="var(--muted)" font-size="8" font-family="Poppins">Distance:</text>
+      <text x="829" y="605" text-anchor="end" fill="#60A5FA" font-size="9" font-family="Space Mono" font-weight="700">350 m</text>
+      <text x="707" y="620" fill="var(--muted)" font-size="8" font-family="Poppins">Est. time:</text>
+      <text x="829" y="620" text-anchor="end" fill="#34D399" font-size="9" font-family="Space Mono" font-weight="700">~4 min</text>
+      <text x="707" y="635" fill="var(--muted)" font-size="8" font-family="Poppins">Steps:</text>
+      <text x="829" y="635" text-anchor="end" fill="#A78BFA" font-size="9" font-family="Space Mono" font-weight="700">6 turns</text>
+    </svg>
+  </div>
+</div>
+
+<!-- BOTTOM ACTION PANEL -->
+<footer class="bottom-panel">
+  <div class="alt-route"><i class="fas fa-arrows-alt-h"></i> Alternate Route</div>
+  <div class="alt-route"><i class="fas fa-map"></i> View Full Map</div>
+  <div class="alt-route" onclick="window.location.href='map.html'"><i class="fas fa-layer-group"></i> Layers</div>
+  <div class="spacer"></div>
+  <div class="step-counter">Step <span id="stepNum">2</span> of <span>6</span></div>
+  <div class="nav-actions">
+    <button class="btn-secondary" id="prevBtn"><i class="fas fa-chevron-left" style="margin-right:6px;"></i>Prev</button>
+    <button class="btn-secondary" id="nextBtn">Next<i class="fas fa-chevron-right" style="margin-left:6px;"></i></button>
+    <button class="btn-start" id="startBtn">
+      <i class="fas fa-location-arrow"></i>
+      <span id="startLabel">Start Navigation</span>
+    </button>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
