@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sudoku Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Sudoku Generator</h1>
+
+    <div class="controls">
+        <select id="difficulty">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select>
+
+        <button onclick="newGame()">New Game</button>
+        <button onclick="checkSolution()">Check</button>
+        <button onclick="getHint()">Hint</button>
+        <button onclick="solvePuzzle()">Auto Solve</button>
+        <button onclick="toggleTheme()">Dark/Light</button>
+    </div>
+
+    <div class="info">
+        <span id="timer">Time: 0s</span>
+        <span id="status"></span>
+    </div>
+
+    <div id="sudoku-board"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

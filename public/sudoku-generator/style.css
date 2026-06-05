@@ -1,0 +1,160 @@
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Main Card */
+.container {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    border-radius: 18px;
+    padding: 25px;
+    width: fit-content;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 15px;
+    font-size: 28px;
+    letter-spacing: 1px;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.controls button,
+.controls select {
+    padding: 10px 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+/* Buttons */
+.controls button {
+    background: linear-gradient(135deg, #4f46e5, #3b82f6);
+    color: white;
+    box-shadow: 0 4px 15px rgba(59,130,246,0.3);
+}
+
+.controls button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(59,130,246,0.5);
+}
+
+/* Dropdown */
+.controls select {
+    background: #111827;
+    color: white;
+}
+
+/* Info */
+.info {
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.info span {
+    background: rgba(255,255,255,0.1);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+/* Sudoku Grid */
+#sudoku-board {
+    display: grid;
+    grid-template-columns: repeat(9, 45px);
+    justify-content: center;
+    margin-top: 15px;
+    border: 3px solid rgba(255,255,255,0.3);
+}
+
+/* Cells */
+.cell {
+    width: 45px;
+    height: 45px;
+    text-align: center;
+    font-size: 18px;
+    border: 1px solid rgba(255,255,255,0.2);
+    outline: none;
+    background: rgba(255,255,255,0.05);
+    color: white;
+    transition: 0.2s;
+}
+
+/* Focus */
+.cell:focus {
+    background: rgba(59,130,246,0.3);
+    transform: scale(1.05);
+}
+
+/* Fixed numbers */
+.fixed {
+    background: rgba(255,255,255,0.15);
+    font-weight: bold;
+}
+
+/* 3x3 box separators */
+.cell:nth-child(3n) {
+    border-right: 2px solid rgba(255,255,255,0.4);
+}
+
+.cell:nth-child(n+19):nth-child(-n+27),
+.cell:nth-child(n+46):nth-child(-n+54) {
+    border-bottom: 2px solid rgba(255,255,255,0.4);
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    transition: 0.3s ease;
+}
+
+/* LIGHT THEME */
+body.light {
+    background: linear-gradient(135deg, #e2e8f0, #f8fafc);
+    color: #0f172a;
+}
+
+body.light .container {
+    background: rgba(255, 255, 255, 0.8);
+    color: #0f172a;
+}
+
+body.light .cell {
+    background: rgba(0, 0, 0, 0.05);
+    color: #0f172a;
+    border: 1px solid rgba(0,0,0,0.2);
+}
+
+body.light .fixed {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+body.light .info span {
+    background: rgba(0,0,0,0.1);
+}
