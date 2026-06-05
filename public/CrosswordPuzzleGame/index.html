@@ -1,42 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An interactive crossword puzzle game with 10 levels of increasing difficulty">
     <title>Crossword Puzzle Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <h1>🧩 Crossword Puzzle Game</h1>
+    <header>
+        <div>
+            <h1>🧩 Crossword Puzzle Game</h1>
+        </div>
+        <!-- Dark/Light Theme Toggle -->
+        <button id="themeToggle" title="Toggle dark/light theme">🌙 Theme</button>
+    </header>
 
     <div class="container">
 
-        <div id="grid" class="grid"></div>
+        <!-- Timer & Score -->
+        <div class="status-bar">
+            <span id="timer" title="Current puzzle time">⏱ Time: 00:00</span>
+            <span id="score" title="Your current score">⭐ Score: 0</span>
+            <!-- Play/Pause Button -->
+            <button id="timerToggle" title="Play/Pause timer">▶️</button>
+        </div>
 
-        <div class="clues">
+        <!-- Crossword Grid -->
+        <div id="grid" class="grid" aria-label="Crossword puzzle grid"></div>
+
+        <!-- Clues Section -->
+        <aside class="clues">
             <h2>Clues</h2>
 
-            <h3>Across</h3>
-            <ul>
-                <li>1. Markup language for web pages</li>
-                <li>2. Programming language of the web</li>
-            </ul>
+            <section>
+                <h3>Across</h3>
+                <ul id="acrossClues">
+                    <li>1. Markup language for web pages</li>
+                    <li>2. Programming language of the web</li>
+                </ul>
+            </section>
 
-            <h3>Down</h3>
-            <ul>
-                <li>3. Styles web pages</li>
-            </ul>
+            <section>
+                <h3>Down</h3>
+                <ul id="downClues">
+                    <li>3. Styles web pages</li>
+                </ul>
+            </section>
 
-            <button id="checkBtn">Check Answers</button>
-            <button id="resetBtn">Reset</button>
+            <!-- Action Buttons -->
+            <div class="button-group">
+                <button id="checkBtn" class="btn-primary">✓ Check Answers</button>
+                <button id="resetBtn" class="btn-secondary">↻ Reset</button>
+            </div>
 
-            <p id="result"></p>
-        </div>
+            <div id="result" role="status" aria-live="polite" aria-atomic="true"></div>
+        </aside>
 
     </div>
 
     <script src="script.js"></script>
-
 </body>
+
 </html>
