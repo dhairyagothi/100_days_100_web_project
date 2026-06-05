@@ -224,8 +224,17 @@ shareButton.addEventListener("click", async () => {
             showToast("Link copied to clipboard!", "info");
         }
     } catch (error) {
-        // User cancelled the share dialog — no need to show an error
-        console.log(error);
+        // User intentionally closed the share dialog
+        if (error.name === "AbortError") {
+            return;
+        }
+
+        showToast(
+            "Unable to share or copy the link. Please try again.",
+            "error"
+        );
+
+        console.error("Share operation failed:", error);
     }
 });
 
@@ -511,7 +520,7 @@ renderComments();
 const searchBlogs = () => {
     const sidebarSearch = document.getElementById("sidebarSearch");
     const navSearch = document.querySelector(".nav-search");
-    
+
     // Determine the query and sync input values
     let query = "";
     if (sidebarSearch && document.activeElement === sidebarSearch) {

@@ -66,18 +66,18 @@ body.light-mode {
   --bg-surface: #eee8d5;
 
   --text-primary: #433422;
-  --text-secondary: rgba(67, 52, 34, 0.7);
-  --text-muted: rgba(67, 52, 34, 0.5);
+  --text-secondary: #5c4a37;                   /* darker for visibility */
+  --text-muted: rgba(67, 52, 34, 0.6);
   --accent-color: #cb4b16;
   --accent: #b58900;
-  --accent-dim: rgba(181, 137, 0, 0.1);
+  --accent-dim: rgba(181, 137, 0, 0.15);
   --accent-hover: #d33682;
-  --border: rgba(67, 52, 34, 0.15);
-  --border-hover: rgba(67, 52, 34, 0.25);
-  --border-accent: rgba(181, 137, 0, 0.35);
-  --accent-glow: rgba(203, 75, 22, 0.15);
-  --glass-bg: rgba(67, 52, 34, 0.03);
-  --glass-border: rgba(67, 52, 34, 0.08);
+  --border: rgba(67, 52, 34, 0.2);            /* Increased opacity */
+  --border-hover: rgba(67, 52, 34, 0.35);
+  --border-accent: rgba(181, 137, 0, 0.45);
+  --accent-glow: rgba(203, 75, 22, 0.2);
+  --glass-bg: rgba(253, 246, 227, 0.85);      /* High-contrast background for navbar */
+  --glass-border: rgba(67, 52, 34, 0.15);
   --gradient-1: linear-gradient(135deg, #cb4b16, #b58900);
 }
 
@@ -285,13 +285,15 @@ body
   z-index: 1;
 }
 
+#navbar-container,
+#navbar-container > header,
 body > header {
   position: relative;
-  z-index: 10;
+  z-index: 999999;
 }
 
 .cursor-ring {
-  display: block;          
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -318,7 +320,9 @@ body > header {
   width: 7px;
   height: 7px;
   background: rgba(59, 130, 246, 0.95);
-  box-shadow: 0 0 8px rgba(59, 130, 246, 0.8), 0 0 18px rgba(59, 130, 246, 0.4);
+  box-shadow:
+    0 0 8px rgba(59, 130, 246, 0.8),
+    0 0 18px rgba(59, 130, 246, 0.4);
 }
 
 @media (hover: none), (pointer: coarse) {
@@ -486,6 +490,88 @@ body.light-mode .navbar,
   font-size: 0.75rem;
 }
 
+/* ── Stats Dashboard Button ──────────────────────────────── */
+.btn-stats {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.25rem;
+  font-family: "Inter Tight", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-accent);
+  background: var(--accent-dim);
+  color: var(--accent);
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--t);
+  white-space: nowrap;
+}
+
+.btn-stats:hover {
+  background: rgba(59, 130, 246, 0.18);
+  border-color: var(--accent);
+  color: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 18px rgba(59, 130, 246, 0.18),
+    0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-stats:active {
+  transform: translateY(0);
+}
+
+.btn-stats i {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+/* Theme variant overrides */
+[data-theme="light"] .btn-stats,
+body.light-mode .btn-stats {
+  border-color: rgba(37, 99, 235, 0.35);
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--accent);
+}
+
+[data-theme="light"] .btn-stats:hover,
+body.light-mode .btn-stats:hover {
+  background: rgba(37, 99, 235, 0.15);
+  box-shadow:
+    0 0 18px rgba(37, 99, 235, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="cyberpunk"] .btn-stats {
+  border-color: rgba(255, 0, 60, 0.45);
+  background: rgba(255, 0, 60, 0.1);
+  color: var(--accent);
+}
+
+[data-theme="cyberpunk"] .btn-stats:hover {
+  background: rgba(255, 0, 60, 0.2);
+  box-shadow: 0 0 18px rgba(255, 0, 60, 0.3);
+}
+
+[data-theme="nord"] .btn-stats {
+  border-color: rgba(136, 192, 208, 0.4);
+  background: rgba(136, 192, 208, 0.1);
+  color: var(--accent-color);
+}
+
+/* Mobile: full-width inside drawer */
+@media (max-width: 768px) {
+  .btn-stats {
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+  }
+}
+/* ─────────────────────────────────────────────────────────── */
+
 .welcome-text {
   font-size: 0.8125rem;
   color: var(--text-muted);
@@ -500,7 +586,7 @@ body.light-mode .navbar,
   position: fixed;
   inset: 0;
 
-  background: rgba(0,0,0,0.22);
+  background: rgba(0, 0, 0, 0.22);
 
   /* BLUR ONLY WEBSITE */
   backdrop-filter: blur(10px);
@@ -554,8 +640,9 @@ body.light-mode .navbar,
     opacity: 0;
     visibility: hidden;
     pointer-events: none; /* Allows click-through and scrolling context */
-    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-                visibility 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transition:
+      opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .mobile-overlay.active {
@@ -586,8 +673,9 @@ body.light-mode .navbar,
     height: 2px;
     background: var(--text-primary);
     border-radius: 999px;
-    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transition:
+      transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   /* Transform Hamburger Icon into 'X' when menu opens */
@@ -614,20 +702,21 @@ body.light-mode .navbar,
     background: var(--bg-elevated) !important;
     border: 1px solid var(--border);
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-    
+
     display: flex !important;
     flex-direction: column;
     gap: 0.5rem;
     z-index: 999;
-    
+
     /* Elegant Scale Dropdown Motion profile */
     transform: translate3d(15px, -10px, 0) scale(0.95);
     opacity: 0;
     visibility: hidden;
     transform-origin: top right;
-    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-                visibility 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    transition:
+      transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .navbar .nav-buttons.mobile-drawer-layer.active {
@@ -697,7 +786,9 @@ body.light-mode .navbar,
 
   /* Anchor Elements Hover Enhancements */
   .nav-buttons.mobile-drawer-layer a.btn:hover,
-  .nav-buttons.mobile-drawer-layer .theme-dropdown-container .dropdown-toggle:hover {
+  .nav-buttons.mobile-drawer-layer
+    .theme-dropdown-container
+    .dropdown-toggle:hover {
     background: var(--bg-surface) !important;
     color: var(--text-primary) !important;
     border-color: var(--border) !important;
@@ -820,13 +911,11 @@ body.light-mode .navbar,
 ============================================================ */
 
 @media (min-width: 769px) {
-
   .mobile-menu-header,
   .mobile-menu-close,
   .mobile-menu-title {
     display: none !important;
   }
-
 }
 
 /* ============================================================
@@ -1785,11 +1874,8 @@ input:focus,
 }
 
 .card-name {
-.card-name {
-    margin: 0;
-    font-family: 'Inter Tight', sans-serif;
-    font-size: 1.02rem;
-}
+  margin: 0;
+  font-family: "Inter Tight", sans-serif;
   font-size: 1.02rem;
   font-weight: 700;
   color: var(--text-primary);
@@ -2283,17 +2369,17 @@ body.light-mode .footer.homepage-footer .social-btn {
 #themeToggleNav {
   background: transparent;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  min-width: 32px;
-  height: 36px;
-  color: var(--text-muted);
-  font-size: 0.9rem;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-family:inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.25rem 0.6rem;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
   transition: var(--t);
 }
 
@@ -3081,10 +3167,10 @@ a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 select:focus-visible {
-  outline: 3px solid #0FF26C;
+  outline: 3px solid #0ff26c;
   outline-offset: 3px;
   border-radius: 6px;
-
+}
 /* ==========================================================================
    Accessibility Fix: Low Color Contrast Ratio (#4358)
    ========================================================================== */
@@ -3304,20 +3390,124 @@ body > header {
   transform: translateY(0);
 }
 
-
+body.custom-cursor-active,
+body.custom-cursor-active * {
+  cursor: none !important;
+}
 
 @media (pointer: fine) {
   .cursor-ring {
     display: block !important;
     opacity: 0;
   }
+
   .cursor-ring.is-visible {
     opacity: 1 !important;
   }
 }
 
-* {
-  cursor: none !important;
+body.custom-cursor-active .cursor-ring {
+  z-index: 999999 !important;
+  pointer-events: none !important;
+  display: block;
 }
 }
 
+body.custom-cursor-active .cursor-ring.is-visible {
+  opacity: 1;
+}
+
+/* ============================================================
+   SEPIA CONTRAST PATCH 
+   ============================================================ */
+:root[data-theme="sepia"] body {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Fix Navbar background transparency */
+:root[data-theme="sepia"] .navbar {
+  background: rgba(244, 236, 216, 0.94) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+/*all link items, headers, and hero subtitles pop out */
+:root[data-theme="sepia"] .hero-sub,
+:root[data-theme="sepia"] .hero-extra,
+:root[data-theme="sepia"] .projects-section p,
+:root[data-theme="sepia"] .welcome-text {
+  color: var(--text-secondary) !important;
+}
+
+/* Fix navbar items text colors */
+:root[data-theme="sepia"] .navbar a,
+:root[data-theme="sepia"] .brand-copy strong,
+:root[data-theme="sepia"] .btn-ghost {
+  color: var(--text-primary) !important;
+}
+
+/* Brighten terminal card frames for readability */
+:root[data-theme="sepia"] .hero-terminal-shell {
+  background: var(--bg-elevated) !important;
+  border-color: var(--border) !important;
+}
+
+:root[data-theme="sepia"] .hero-terminal-text {
+  color: var(--text-primary) !important;
+}
+
+/* ============================================================
+   ADDITIONAL SEPIA FIXES (Stats Strip, Subheaders & Cards)
+   ============================================================ */
+:root[data-theme="sepia"] {
+  --text-muted-sepia: #73624e;
+}
+
+:root[data-theme="sepia"] .stats-strip {
+  background: #433422 !important;
+  border-color: #5c4a37 !important;
+  box-shadow: 0 12px 40px rgba(67, 52, 34, 0.15) !important;
+}
+
+:root[data-theme="sepia"] .stat-item,
+:root[data-theme="sepia"] .stat-item strong,
+:root[data-theme="sepia"] .stat-divider {
+  color: #fdf6e3 !important;
+}
+
+/* 2. Lighten the font color for "100 Days · 100 Web Projects" */
+:root[data-theme="sepia"] .hero-overline {
+  color: var(--text-muted-sepia) !important;
+  font-weight: 500;
+}
+
+/* 3. Make the Hero descriptions and paragraph text legible */
+:root[data-theme="sepia"] .hero-sub,
+:root[data-theme="sepia"] .hero-extra,
+:root[data-theme="sepia"] .projects-header p,
+:root[data-theme="sepia"] p {
+  color: #5c4a37 !important;
+}
+
+/* 4. Fix the lower section blocks */
+:root[data-theme="sepia"] h3,
+:root[data-theme="sepia"] .section-title,
+:root[data-theme="sepia"] .mobile-menu-title {
+  color: var(--text-primary) !important;
+}
+
+/* 5. Fix the bottom grid details & lists */
+:root[data-theme="sepia"] .nav-buttons.mobile-drawer-layer a.btn,
+:root[data-theme="sepia"] .explore-links a,
+:root[data-theme="sepia"] .connect-links,
+:root[data-theme="sepia"] .badge,
+:root[data-theme="sepia"] span {
+  color: #433422 !important;
+}
+
+/* 6. Footer adjustment */
+:root[data-theme="sepia"] footer,
+:root[data-theme="sepia"] footer text,
+:root[data-theme="sepia"] [class*="footer"] {
+  color: var(--text-muted-sepia) !important;
+}

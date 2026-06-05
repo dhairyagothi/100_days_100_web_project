@@ -181,7 +181,7 @@ h1 {
 .time,
 .score {
   position: absolute;
-  top: 20px;
+  top: 40px;
   font-size: 1.2rem;
   color: #6ef2ff;
   text-shadow: 0 0 10px #00f7ff;

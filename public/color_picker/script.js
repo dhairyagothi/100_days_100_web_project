@@ -26,11 +26,13 @@ const copyRgbBtn = document.getElementById("copyRgb");
 const copyHslBtn = document.getElementById("copyHsl");
 
 // Palette boxes
-const c1 = document.getElementById('color1');
-const c2 = document.getElementById('color2');
-const c3 = document.getElementById('color3');
-const c4 = document.getElementById('color4');
-const c5 = document.getElementById('color5');
+const paletteBoxes = [
+ document.getElementById("color1"),
+ document.getElementById("color2"),
+ document.getElementById("color3"),
+ document.getElementById("color4"),
+ document.getElementById("color5")
+];
 
 function rgbToHex(r, g, b) {
     return "#" + [r, g, b]
@@ -40,7 +42,8 @@ function rgbToHex(r, g, b) {
 
 function hexToRgb(hex) {
     hex = hex.replace('#', '');
-    if (hex.length !== 6) return null;
+   if (!/^([A-Fa-f0-9]{6})$/.test(hex))
+    return null;
 
     return {
         r: parseInt(hex.substring(0, 2), 16),
@@ -73,7 +76,11 @@ function rgbToHsl(r, g, b) {
         h /= 6;
     }
 
-    return { h, s, l };
+    return {
+      h: Math.round(h * 360),
+      s: Math.round(s * 100),
+      l: Math.round(l * 100)
+   };
 }
 
 // Convert HSL → RGB
@@ -154,7 +161,7 @@ function updateFromSliders() {
     // PALETTE UPDATE
     const palette = generatePalette(r, g, b);
 
-    [c1, c2, c3, c4, c5].forEach((box, i) => {
+    paletteBoxes.forEach((box, i) => {
         const col = palette[i];
         box.style.backgroundColor = `rgb(${col.r}, ${col.g}, ${col.b})`;
     });
@@ -186,13 +193,23 @@ function updateFromHex() {
 redSlider.addEventListener('input', updateFromSliders);
 greenSlider.addEventListener('input', updateFromSliders);
 blueSlider.addEventListener('input', updateFromSliders);
-hexInput.addEventListener('input', updateFromHex);
+let hexTimer;
+hexInput.addEventListener("input", () => {
+  clearTimeout(hexTimer);
 
+  hexTimer = setTimeout(() => {
+      updateFromHex();
+  }, 300);
+});
 updateFromSliders();
 
-function copyToClipboard(text) {
-    navigator.clipboard.writeText(text);
+async function copyToClipboard(text) {
+  try {
+    await navigator.clipboard.writeText(text);
     showToast(`Copied: ${text}`);
+  } catch {
+    showToast("Copy failed");
+  }
 }
 
 let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
