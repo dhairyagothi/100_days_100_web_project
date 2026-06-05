@@ -40,20 +40,21 @@ body{background:radial-gradient(circle at 20% 18%, rgba(126,230,255,0.08), trans
   display:inline-flex;
   align-items:center;
   white-space:nowrap;
-  padding:8px 12px;
+  padding:8px 16px;
   border-radius:8px;
-  background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));
-  color:#fff;
+  background:#1e293b;
+  color:#3b82f6;
+  border:1px solid #3b82f6;
   text-decoration:none;
   font-weight:700;
   font-family:Inter, system-ui, sans-serif;
-  box-shadow:0 8px 20px rgba(12,18,40,0.35);
-  transition:color .25s ease, background .25s ease, transform .25s ease;
+  box-shadow:0 8px 20px rgba(0, 0, 0);
+  transition:all 0.2s ease;
 }
 
 .project-back-button:hover{
-  color:var(--accent);
-  background:linear-gradient(90deg, rgba(124,99,255,0.2), rgba(79,141,255,0.16));
+  background:#3b82f6;
+  color:#fff;
   transform:translateY(-1px);
 }
 

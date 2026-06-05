@@ -1,7 +1,24 @@
 
+let isCalculating = false;
+
 window.onload = function () {
     const button = document.getElementById("calculate");
     button.addEventListener("click", calculateLove);
+
+    const toggle = document.getElementById("theme-toggle");
+    if (toggle) {
+        toggle.addEventListener("click", () => {
+            document.body.classList.toggle("dark");
+            localStorage.setItem(
+                "theme",
+                document.body.classList.contains("dark")
+            );
+        });
+    }
+
+    if (localStorage.getItem("theme") === "true") {
+        document.body.classList.add("dark");
+    }
 };
 /* Enter key support */
 
@@ -18,6 +35,7 @@ document.addEventListener("keydown", function(event) {
 /* Main Love Calculator Function */
 
 function calculateLove() {
+    if (isCalculating) return;
 
     // Get input values
     const yourName = document.getElementById("fname").value.trim();
@@ -53,6 +71,8 @@ function calculateLove() {
 
         return;
     }
+
+    isCalculating = true;
 
     // Show loading animation
     loading.classList.remove("hidden");
@@ -128,7 +148,7 @@ function calculateLove() {
         // Result categories
         if (loveIndex <= 30) {
 
-            emoji = "💔";
+            emoji = '<i class="fas fa-heart-broken fa-beat" style="color: #ef4444;"></i>';
 
             msg = lowMessages[
                 Math.floor(Math.random() * lowMessages.length)
@@ -136,7 +156,7 @@ function calculateLove() {
 
         } else if (loveIndex <= 60) {
 
-            emoji = "💛";
+            emoji = '<i class="fas fa-heart fa-bounce" style="color: #fbbf24;"></i>';
 
             msg = mediumMessages[
                 Math.floor(Math.random() * mediumMessages.length)
@@ -144,7 +164,7 @@ function calculateLove() {
 
         } else if (loveIndex <= 90) {
 
-            emoji = "💕";
+            emoji = '<i class="fas fa-heart fa-pulse" style="color: #ec4899;"></i>';
 
             msg = highMessages[
                 Math.floor(Math.random() * highMessages.length)
@@ -152,7 +172,7 @@ function calculateLove() {
 
         } else {
 
-            emoji = "❤️‍🔥";
+            emoji = '<i class="fas fa-fire fa-flashing" style="color: #f97316;"></i>';
 
             msg = soulmateMessages[
                 Math.floor(Math.random() * soulmateMessages.length)
@@ -160,8 +180,8 @@ function calculateLove() {
         }
 
         // Display result
-        document.getElementById("result-message").textContent =
-            `${emoji} ${loveIndex}% ${emoji}`;
+        const resultMsgEl = document.getElementById("result-message");
+        resultMsgEl.innerHTML = `${emoji} <span style="font-size: 3rem; margin: 0 15px;">${loveIndex}%</span> ${emoji}`;
 
         document.getElementById("result-percentage").textContent =
             `${yourName} & ${crushName} — ${msg}`;
@@ -170,6 +190,7 @@ function calculateLove() {
         footer.classList.add("show-result");
 
         // Toggle buttons
+        isCalculating = false;
         
     }, 1800);
 }

@@ -11,8 +11,17 @@ const session = require('express-session');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
+const rateLimit = require('express-rate-limit');
 const collection = require('./mongo.js');
 const authMiddleware = require('./middleware/auth');
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { error: 'Too many attempts. Try again in 15 minutes.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 const port = process.env.PORT || 3000;
 
@@ -26,8 +35,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+if (!process.env.JWT_SECRET) {
+  console.error('FATAL: JWT_SECRET environment variable is not set.');
+  process.exit(1);
+}
+
 app.use(session({
-  secret: process.env.JWT_SECRET || 'secretkey',
+  secret: process.env.JWT_SECRET,
   resave: false,
   saveUninitialized: false,
 }));
@@ -112,7 +126,7 @@ app.get('/auth/google/callback',
 );
 
 // ─── POST /signup ──────────────────────────────────────────────
-app.post('/signup', async (req, res) => {
+app.post('/signup', authLimiter, async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
@@ -140,7 +154,7 @@ app.post('/signup', async (req, res) => {
 });
 
 // ─── POST /login ───────────────────────────────────────────────
-app.post('/login', async (req, res) => {
+app.post('/login', authLimiter, async (req, res) => {
   try {
     const { username, password } = req.body;
 

@@ -307,43 +307,38 @@ function generateQRCode() {
 }
 
 /* =========================================================
-   LOGO OVERLAY
+   LOGO OVERLAY (Canvas & Image Synchronized)
 ========================================================= */
-
 function addLogoToQR() {
   const qrCanvas = qrcodeDiv.querySelector("canvas");
+  const qrImg = qrcodeDiv.querySelector("img");
 
   if (!qrCanvas) return;
 
   const ctx = qrCanvas.getContext("2d");
-
   const logo = new Image();
-
   logo.src = uploadedLogo;
 
   logo.onload = () => {
     const size = 52;
-
     const x = (qrCanvas.width - size) / 2;
-
     const y = (qrCanvas.height - size) / 2;
 
-    /* ===== WHITE BACKGROUND ===== */
-
+    /* ===== WHITE BACKGROUND RADIUS CUSHION ===== */
     ctx.fillStyle = "#ffffff";
-
     ctx.beginPath();
-
-    ctx.roundRect(x - 8, y - 8, size + 16, size + 16, 14);
-
+    ctx.roundRect(x - 6, y - 6, size + 12, size + 12, 10);
     ctx.fill();
 
-    /* ===== DRAW LOGO ===== */
-
+    /* ===== DRAW LOGO ON CANVAS ===== */
     ctx.drawImage(logo, x, y, size, size);
+
+    /* ===== FIX: FORCE UPDATED CANVAS DATA INTO THE DISPLAY IMAGE ===== */
+    if (qrImg) {
+      qrImg.src = qrCanvas.toDataURL("image/png");
+    }
   };
 }
-
 /* =========================================================
    ANIMATE QR
 ========================================================= */
@@ -838,3 +833,32 @@ setupLivePreview();
 updateColorText();
 
 setStatus("Ready to generate");
+
+/* =========================================================
+   LOGO FILE UPLOAD LISTENER & STATUS FEEDBACK
+========================================================= */
+const logoUploadInput = document.getElementById("logo-upload");
+const uploadBoxText = document.querySelector(".upload-box span");
+
+if (logoUploadInput) {
+  logoUploadInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    
+    if (file) {
+      if (uploadBoxText) {
+        uploadBoxText.textContent = `📄 ${file.name} selected!`;
+        uploadBoxText.style.color = "var(--primary)";
+      }
+      
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        uploadedLogo = event.target.result; // Using the project's existing variable safely
+        
+        if (typeof generateQRCode === 'function') {
+          generateQRCode();
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+}

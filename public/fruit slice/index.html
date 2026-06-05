@@ -298,9 +298,32 @@
     text-shadow: 0 0 60px #00ffaa;
     letter-spacing: 4px;
   }
+  .back-home {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 50;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #1e293b;
+  color: #3b82f6;
+  text-decoration: none;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  border: 1px solid #3b82f6;
+  transition: all 0.2s ease;
+}
+
+.back-home:hover {
+  background: #3b82f6;
+  color: #fff;
+}
 </style>
 </head>
 <body>
+  <a href="../../index.html" class="back-home">
+  ← Back to Home
+</a>
 
 <canvas id="bg-canvas"></canvas>
 <canvas id="game-canvas"></canvas>

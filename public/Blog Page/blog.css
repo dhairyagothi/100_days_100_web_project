@@ -90,3 +90,33 @@
         font-size: 15px;
     }
 }
+
+@media (max-width: 480px) {
+
+    body {
+        padding: 10px;
+    }
+
+    .blog-page {
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+    .blog-banner {
+        height: 180px;
+        border-radius: 12px;
+    }
+
+    .blog-page h1 {
+        font-size: clamp(20px, 6vw, 28px);
+    }
+
+    .blog-content p {
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .blog-author h3 {
+        font-size: 18px;
+    }
+}

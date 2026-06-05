@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -227,6 +227,51 @@
         <p>created by palak verma</p>
     </div>
 </footer>
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
 
+    const cards = document.querySelectorAll(".blog-read-time");
+
+    for (const card of cards) {
+
+        const articleFile = card.dataset.article;
+
+        try {
+            const response = await fetch(articleFile);
+            const html = await response.text();
+
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, "text/html");
+
+            const article =
+                doc.querySelector("#article-content") ||
+                doc.querySelector(".blog-content") ||
+                doc.querySelector(".blog-page");
+
+            if (!article) continue;
+
+            const text = article.innerText || article.textContent;
+
+            const wordCount = text
+                .trim()
+                .split(/\s+/)
+                .filter(word => word.length > 0).length;
+
+            const readingTime = Math.max(
+                1,
+                Math.ceil(wordCount / 200)
+            );
+
+            card.textContent = `📖 ${readingTime} min read`;
+
+        } catch (error) {
+            console.error(
+                `Error reading ${articleFile}:`,
+                error
+            );
+        }
+    }
+});
+</script>
 </body>
 </html>

@@ -1,3 +1,17 @@
+// ============================================================
+// GLOBAL XSS SANITIZATION UTILITY (Fixes Issue #4360)
+// ============================================================
+const sanitizeInput = (str) => {
+    if (!str) return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#x27;')
+        .replace(/\//g, '&#x2F;');
+};
+
 const themeToggle = document.getElementById("themeToggle");
 const themeIcon = document.getElementById("themeIcon");
 
@@ -170,6 +184,9 @@ const renderComments = () => {
     }
 
     comments.forEach((commentObj, index) => {
+        const safeAuthor = sanitizeInput(commentObj.author || "Anonymous");
+        const safeText = sanitizeInput(commentObj.text);
+
         const commentElement = document.createElement("div");
         commentElement.className = "bg-gray-100 dark:bg-gray-700 rounded-xl p-4 shadow-sm transition duration-300";
 
@@ -177,10 +194,10 @@ const renderComments = () => {
             <div class="flex justify-between items-start gap-2">
                 <div class="flex-1 min-w-0">
                     <p class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 mb-1">
-                        ${commentObj.author || "Anonymous"}
+                        ${safeAuthor}
                     </p>
                     <p class="text-gray-700 dark:text-gray-200 break-words" id="comment-text-${index}">
-                        ${commentObj.text}
+                        ${safeText}
                     </p>
                     <textarea
                         id="edit-input-${index}"
