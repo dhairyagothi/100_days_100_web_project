@@ -1508,16 +1508,15 @@ body.light-theme {
     align-items: center;
     justify-content: center;
 
-    height: 40px;
-    padding: 0 16px;
+    padding: 8px 16px;
 
-    border-radius: 999px;
-    border: 1px solid rgba(140, 120, 255, 0.35);
+    border-radius: 8px;
+    border: 1px solid #3b82f6;
 
-    background: rgba(14, 18, 45, 0.88);
+    background: #1e293b;
     backdrop-filter: blur(10px);
 
-    color: #dfe7ff;
+    color: #3b82f6;
     text-decoration: none;
 
     font-size: 14px;
@@ -1528,16 +1527,14 @@ body.light-theme {
         0 10px 25px rgba(0, 0, 0, 0.35),
         inset 0 1px 0 rgba(255,255,255,0.05);
 
-    transition:
-        transform 0.2s ease,
-        background 0.2s ease,
-        border-color 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .project-back-button:hover {
     transform: translateY(-2px);
-    background: rgba(26, 32, 74, 0.95);
-    border-color: rgba(68, 213, 238, 0.55);
+    background: #3b82f6;
+    color: #fff;
+    border-color: #3b82f6;
 }
 
 @media (max-width: 768px) {

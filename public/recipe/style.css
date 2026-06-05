@@ -45,27 +45,22 @@ body {
     position: fixed;
     left: 24px;
     top: 24px;
-    padding: 10px 20px;
-    border-radius: 30px;
-    background: rgba(255, 255, 255, 0.04);
-    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: #1e293b;
+    color: #3b82f6;
     text-decoration: none;
     z-index: 9999;
     font-weight: 600;
     font-size: 14px;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: transform, background-color, box-shadow;
+    border: 1px solid #3b82f6;
+    transition: all 0.2s ease;
 }
 
 .project-back-button:hover {
-    background: #ffffff;
-    color: #000000;
+    background: #3b82f6;
+    color: #fff;
     transform: translateY(-2px);
-    box-shadow: 0 12px 30px rgba(255, 255, 255, 0.25);
 }
 
 nav {

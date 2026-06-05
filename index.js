@@ -260,10 +260,10 @@ function escapeHTML(value) {
  * omitted, which keeps the UI layout intact.
  *
  * Allowed schemes:
- *   - https://   (absolute external links, GitHub, live demos)
- *   - http://    (legacy / local dev)
- *   - ./  ../    (relative paths to local demo index.html files)
- *   - #          (in-page anchors)
+ * - https://    (absolute external links, GitHub, live demos)
+ * - http://     (legacy / local dev)
+ * - ./  ../     (relative paths to local demo index.html files)
+ * - #           (in-page anchors)
  *
  * Everything else — including javascript:, data:, vbscript:,
  * blob: and protocol-relative // URLs — is replaced with "#".
@@ -408,11 +408,11 @@ return {
   };
 }
 
-
 function attachProjectCardInteraction(card, demoUrl, projectData = null) {
   card.style.cursor = "pointer";
   card.onclick = (e) => {
     if (e.target.closest("a, button")) return;
+    if (!demoUrl) return;
 
     // Track the project visit if projectData is provided
     if (projectData) {
@@ -502,10 +502,10 @@ function clearAllTechFilters() {
  * SECURITY: Previously this function built filter-tag markup by splicing
  * the raw tech string directly into an onclick attribute:
  *
- *   `onclick="removeTechFilter('${tech}')"`
+ * `onclick="removeTechFilter('${tech}')"`
  *
  * That allowed a crafted tag value such as
- *   '); alert(1); ('
+ * '); alert(1); ('
  * to break out of the string literal and execute arbitrary JS.
  *
  * The fix uses DOM methods exclusively — no innerHTML, no inline handlers.
@@ -634,7 +634,11 @@ function migrateRecentProjects() {
     return project;
   });
 
-  localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+  try {
+    localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+  } catch (error) {
+    console.warn("Could not save recent projects to localStorage:", error.message);
+  }
 }
 
 // Migrate on load
@@ -649,7 +653,11 @@ function cleanupExpiredRecentProjects() {
   recentProjects = getRecentProjectsWithinWindow();
 
   if (recentProjects.length !== initialLength) {
-    localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+    try {
+      localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+    } catch (error) {
+      console.warn("Could not save recent projects to localStorage:", error.message);
+    }
     renderRecentProjects();
   }
 }
@@ -906,41 +914,38 @@ function renderGrid() {
   const pageItems = filtered.slice(startIndex, endIndex);
   const fragment = document.createDocumentFragment();
 
-pageItems.forEach((project) => {
-  const day = project.day;
-  const name = project.projectName;
-  const url = project.projectPath;
-  const tags = project.techStack;
+  pageItems.forEach((project) => {
+    const day = project.day;
+    const name = project.projectName;
+    const url = project.projectPath;
+    const tags = project.techStack;
 
-  const category = getCategoryFromTags(tags, name);
-  const card = document.createElement("div");
+    const category = getCategoryFromTags(tags, name);
+    const card = document.createElement("div");
 
-  const isBookmarked = bookmarkedProjects.some(
-    (item) => normalizeProjectEntry(item).day === day,
-  );
+    const isBookmarked = bookmarkedProjects.some(
+      (item) => normalizeProjectEntry(item).day === day,
+    );
 
-  const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
-    day,
-    name,
-    url,
-    tags,
-    category,
-    isBookmarked,
-    showDescription: true,
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked,
+      showDescription: true,
+    });
+
+    card.className = sourceOnly
+      ? "project-card source-only visible"
+      : "project-card visible";
+
+    card.innerHTML = html;
+    attachProjectCardInteraction(card, demoUrl, project);
+
+    fragment.appendChild(card);
   });
-
-  card.className = sourceOnly
-    ? "project-card source-only visible"
-    : "project-card visible";
-
-  card.innerHTML = html;
-  attachProjectCardInteraction(card, demoUrl, project);
-
-  fragment.appendChild(card);
-});
-
-
-
 
   grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
@@ -1300,7 +1305,8 @@ function renderBookmarks() {
     if (!day || !name) return;
 
     const category = getCategoryFromTags(tags, name);
-    const card = document.createElement("div");
+    
+    // Updated to use the secure HTML-string approach
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
       name,
@@ -1311,10 +1317,12 @@ function renderBookmarks() {
       showDescription: true,
     });
 
+    const card = document.createElement("div");
     card.className = sourceOnly
       ? "project-card source-only visible"
       : "project-card visible";
     card.innerHTML = html;
+
     attachProjectCardInteraction(card, demoUrl, project);
 
     bookmarkGrid.appendChild(card);
@@ -1354,10 +1362,11 @@ function renderRecentProjects() {
     const tags = projectObj.techStack || projectObj.tags || projectObj[3];
 
     const category = getCategoryFromTags(tags, name);
-    const card = document.createElement("div");
     const isBookmarked = bookmarkedProjects.some(
       (item) => normalizeProjectEntry(item).day === day,
     );
+    
+    // Updated to use the secure HTML-string approach
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
       name,
@@ -1368,10 +1377,12 @@ function renderRecentProjects() {
       showDescription: true,
     });
 
+    const card = document.createElement("div");
     card.className = sourceOnly
       ? "project-card source-only visible"
       : "project-card visible";
     card.innerHTML = html;
+
     attachProjectCardInteraction(card, demoUrl, projectObj);
 
     recentGrid.appendChild(card);
