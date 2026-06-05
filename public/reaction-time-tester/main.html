@@ -51,12 +51,68 @@
         </div>
       </div>
     </div>
-    <!-- Leaderboard -->
-    <div class="leaderboard-section">
-      <div class="leaderboard-title">🏆 Leaderboard</div>
-      <div class="leaderboard-list" id="leaderboard"></div>
+    <!-- Leaderboard & New Features -->
+    <div class="right-panel">
+      <!-- Statistics Dashboard -->
+      <div class="stats-section">
+        <div class="section-title">📊 Statistics</div>
+        <div class="stats-grid" id="statsGrid">
+          <div class="stat-card">
+            <div class="stat-value" id="totalTests">0</div>
+            <div class="stat-label">Total Tests</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="bestTime">-</div>
+            <div class="stat-label">Best Time</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="avgTime">-</div>
+            <div class="stat-label">Average Time</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="excellentCount">0</div>
+            <div class="stat-label">Excellent (&lt;200ms)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Achievements -->
+      <div class="achievements-section">
+        <div class="section-title">🏅 Achievements</div>
+        <div class="achievements-progress">
+          <p><span id="unlockedAchievements">0</span>/5 Unlocked</p>
+          <div class="progress-bar-container">
+            <div class="progress-bar" id="achievementProgress" style="width:0%"></div>
+          </div>
+        </div>
+        <div class="achievements-grid" id="achievementsGrid"></div>
+      </div>
+
+      <!-- Test History -->
+      <div class="history-section">
+        <div class="section-title">📜 Last 10 Tests</div>
+        <div class="history-list" id="historyList"></div>
+      </div>
+
+      <!-- Leaderboard -->
+      <div class="leaderboard-section">
+        <div class="leaderboard-title">🏆 Leaderboard</div>
+        <div class="leaderboard-list" id="leaderboard"></div>
+      </div>
     </div>
   </div>
+  <!-- Benchmark Rating Overlay (shown after test) -->
+  <div class="benchmark-modal" id="benchmarkModal">
+    <div class="benchmark-content">
+      <div class="benchmark-title">Your Reaction Time</div>
+      <div class="benchmark-time" id="benchmarkTime">- ms</div>
+      <div class="benchmark-rating" id="benchmarkRating">-</div>
+      <div class="benchmark-compare" id="benchmarkCompare"></div>
+      <button class="benchmark-close" id="benchmarkClose">Continue</button>
+    </div>
+  </div>
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
   <script src="script.js"></script>
 </body>
 </html>

@@ -91,7 +91,7 @@ h1 {
 /* Enhanced Game Container */
 .game-container {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(180px, 0.75fr) minmax(180px, 0.75fr) minmax(0, 1fr);
     max-width: 1200px;
     width: 100%;
     perspective: 1000px;
@@ -143,6 +143,22 @@ h1 {
     background: var(--gradient-boat);
     position: relative;
     transition: all 0.4s ease;
+}
+
+.boat-left {
+    grid-column: 2;
+}
+
+.boat-right {
+    grid-column: 3;
+}
+
+#left-bank {
+    grid-column: 1;
+}
+
+#right-bank {
+    grid-column: 4;
 }
 
 .boat::before {
@@ -692,6 +708,29 @@ button:disabled {
     .game-container {
         grid-template-columns: 1fr;
         gap: var(--space-lg);
+    }
+
+    #left-bank,
+    #right-bank,
+    .boat-left,
+    .boat-right {
+        grid-column: auto;
+    }
+
+    #left-bank {
+        order: 1;
+    }
+
+    .boat-left {
+        order: 2;
+    }
+
+    #right-bank {
+        order: 3;
+    }
+
+    .boat-right {
+        order: 4;
     }
 
     .bank,
