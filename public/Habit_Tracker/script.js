@@ -1,5 +1,5 @@
 const habits =
-JSON.parse(localStorage.getItem("habits")) || [];
+(function(){ try { return JSON.parse(localStorage.getItem("habits")); } catch(e) { return null; } })() || [];
 
 const quotes = [
 "Small habits create big results.",
