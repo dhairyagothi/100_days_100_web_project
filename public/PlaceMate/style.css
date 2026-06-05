@@ -569,6 +569,30 @@ body.light-mode .theme-toggle {
 #logoutBtn{
   background:#ef4444;
 }
+.insights-section{
+  margin-bottom:40px;
+}
+
+.insights-card{
+  background:var(--card-bg);
+  border:1px solid var(--border-color);
+  backdrop-filter:blur(12px);
+  border-radius:20px;
+  padding:25px;
+}
+
+.insights-card h3{
+  margin-bottom:12px;
+  margin-top:15px;
+}
+
+.insights-card ul{
+  padding-left:20px;
+}
+
+.insights-card li{
+  margin-bottom:10px;
+  color:var(--subtitle-color);
 .badge-section{
   margin-top:40px;
 }

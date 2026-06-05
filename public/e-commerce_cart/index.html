@@ -44,36 +44,6 @@
           </svg>
         </a>
 
-  <!-- Navbar -->
-  <header class="site-header">
-    <div class="navbar">
-      <div class="website_title">Aero<span>Stride</span></div>
-      <div class="button-container">
-        <button class="button">
-          <img src="images_used/home_icon.png" width="17px"/>
-        </button>
-        <button class="button">
-          <img src="images_used/search_icon.png" width="17px"/>
-        </button>
-        <button class="button">
-          <img src="images_used/profile_icon.png" width="19px"/>
-        </button>
-        <div class="box" id="wishlist-box">
-  <div class="cart-count" id="wishlist-count">0</div>
-  <span style="color:white;font-size:20px;">❤</span>
-</div>
-
-<div class="box">
-  <div class="cart-count">0</div>
-  <img src="images_used/cart_icon.png" name="cart" id="cart-icon"/>
-</div>
-        <button class="button"><img src="images_used/home_icon.png"/></button>
-        <button class="button"><img src="images_used/search_icon.png"/></button>
-        <button class="button"><img src="images_used/profile_icon.png"/></button>
-        <div class="box" id="open-cart">
-          <div class="cart-count">0</div>
-          <img src="images_used/cart_icon.png" id="cart-icon"/>
-        </div>
         <div class="nav-end">
           <button class="nav-icon" id="search-btn" aria-label="Search">
             <svg
@@ -240,26 +210,6 @@
       </div>
     </aside>
 
-<button id="dark-mode-btn" class="button">
-  🌙
-</button>
-
-<div class="box">
-  <div class="cart-count">0</div>
-  <img src="images_used/cart_icon.png" name="cart" id="cart-icon"/>
-</div>
-        <button class="button"><img src="images_used/home_icon.png"/></button>
-        <button class="button"><img src="images_used/search_icon.png"/></button>
-        <button class="button"><img src="images_used/profile_icon.png"/></button>
-        <div class="box" id="open-cart">
-          <div class="cart-count">0</div>
-          <img src="images_used/cart_icon.png" id="cart-icon"/>
-        </div>
-        <button id="dark-mode-btn" class="button" type="button" aria-label="Toggle dark mode">🌙</button>
-
-        <button class="cart-pill" id="open-cart" type="button" aria-label="Open cart">
-          <img src="images_used/cart_icon.png" alt="" aria-hidden="true">
-          <span class="cart-pill-count" aria-label="Cart item count">0</span>
     <!-- ===== CHECKOUT MODAL ===== -->
     <div class="modal-overlay" id="checkout-overlay"></div>
     <div class="checkout-modal" id="checkout-modal">
@@ -355,66 +305,6 @@
       </div>
     </div>
 
-    <div class="nav">
-      <div class="cart">
-        <div class="cart-title">Cart Items</div>
-        <div class="cart-content">
-          <!-- Cart items will be dynamically inserted here -->
-        </div>
-        <div class="total">
-          <div class="total-title">Total</div>
-          <div class="total-price">Rs.0</div>
-        </div>
-        <button class="btn-buy">Place Order</button>
-        <div class="cart-footer">
-
-  <button class="btn-buy">
-    Place Order
-  </button>
-
-  <button class="clear-cart-btn">
-    Clear Cart
-  </button>
-
-</div>
-        <div class="checkout-modal">
-  <div class="checkout-content">
-
-    <span class="close-checkout">&times;</span>
-
-    <h2>Checkout</h2>
-
-    <input type="text" id="full-name" placeholder="Full Name">
-
-    <input type="text" id="address" placeholder="Address">
-
-    <input type="text" id="phone" placeholder="Phone Number">
-
-    <select id="payment-method">
-      <option value="">Select Payment Method</option>
-      <option>UPI</option>
-      <option>Cash on Delivery</option>
-      <option>Card</option>
-    </select>
-
-    <button id="submit-order">Submit Order</button>
-
-  </div>
-</div>
-        <img src="images_used/cross.png" name="close" id="cart-close"/>
-  <!-- Overlay (dims page when cart is open) -->
-  <div class="cart-overlay" id="cart-overlay"></div>
-
-  <!-- Cart panel — lives outside header so z-index stacking is clean -->
-  <div class="cart-panel" id="cart-panel">
-    <div class="cart-header">
-      <div class="cart-header-left">
-        <span class="cart-title">Your Cart</span>
-        <span class="cart-badge" id="cart-badge">0</span>
-      </div>
-      <button id="cart-close" class="cart-close-btn" type="button" aria-label="Close cart">
-        <img src="images_used/cross.png" alt="" aria-hidden="true">
-      </button>
     <!-- ===== ORDER SUCCESS TOAST ===== -->
     <div class="toast" id="toast">
       <svg
@@ -496,159 +386,73 @@
         </div>
         <div class="ptab-content" id="login-tab">
           <div class="field-group">
-            <label>Email</label
-            ><input type="email" placeholder="you@example.com" />
+            <label>Email</label>
+            <input type="email" placeholder="you@example.com" />
           </div>
           <div class="field-group">
-            <label>Password</label
-            ><input type="password" placeholder="••••••••" />
+            <label>Password</label>
+            <input type="password" placeholder="••••••••" />
           </div>
           <button class="btn-profile-action">Login</button>
         </div>
         <div class="ptab-content hidden" id="signup-tab">
           <div class="field-group">
-            <label>Full Name</label
-            ><input type="text" placeholder="Your Name" />
+            <label>Full Name</label>
+            <input type="text" placeholder="Your Name" />
           </div>
           <div class="field-group">
-            <label>Email</label
-            ><input type="email" placeholder="you@example.com" />
+            <label>Email</label>
+            <input type="email" placeholder="you@example.com" />
           </div>
           <div class="field-group">
-            <label>Password</label
-            ><input type="password" placeholder="••••••••" />
+            <label>Password</label>
+            <input type="password" placeholder="••••••••" />
           </div>
           <button class="btn-profile-action">Create Account</button>
         </div>
       </div>
     </div>
 
-  <!-- Hero -->
-  <div class="hero" id="hero">
-    <div class="hero-content">
-      <div class="hero-text">
-        <div class="hero-eyebrow">Exclusive Collection 2024</div>
-        <h1>Step Into <span>Legend</span></h1>
-        <p>Footwear designed for those who move with purpose. High-performance silhouettes built for every occasion.</p>
-        <a class="button1" href="#trending-section">
-          Shop Now
-          <img src="images_used/cart_icon.png"/>
-        </a>
-      </div>
-      <div class="hero-image">
-        <img src="images_used/hero_shoe.png" alt="AeroStride Hero Shoe">
-      </div>
-    </div>
-  </div>
-
-  <!-- Trending -->
-  <div class="trending-section" id="trending-section">
-    <div class="trending-line"></div>
-    <div class="trending-text">Trending Right Now</div>
-    <div class="trending-line"></div>
-</div>
-<div class="search-container">
-  <input type="text" id="search-input" placeholder="Search shoes...">
-</div>
-
-<p id="no-products-message" style="display:none; text-align:center; margin-top:20px;">
-  No products found
-</p>
-  </div>
-
-  <!-- Shoe Grid -->
-  <div class="container">
-    <div class="shop-content">
-
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/messi shoes 0.png" class="shoe-img"></div>
-        <div class="shoe-info"><h2 class="shoe-title">GOAT</h2><span class="shoe-price">Rs.5000</span></div>
-        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
-      </div>
-
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/cristiano ronal 1.png" class="shoe-img"></div>
-        <h2 class="shoe-title">CR7</h2>
-        <span class="shoe-price">Rs.3000</span>
-        <div class="product-actions">
-  <button class="wishlist-btn">❤</button>
-
-  <img src="images_used/cart_icon.png"
-       name="cart"
-       class="add-cart">
-</div>
-
-<img src="images_used/cross.png"
-     width="0px"
-     name="cart"
-     class="remove_icon"/>
-        <div class="shoe-info"><h2 class="shoe-title">CR7</h2><span class="shoe-price">Rs.3000</span></div>
-        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
-      </div>
-
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/giannis antetok 1.png" class="shoe-img"></div>
-        <h2 class="shoe-title">The Greek Freak</h2>
-        <span class="shoe-price">Rs.2500</span>
-        <div class="product-actions">
-  <button class="wishlist-btn">❤</button>
-
-  <img src="images_used/cart_icon.png"
-       name="cart"
-       class="add-cart">
-</div>
-
-<img src="images_used/cross.png"
-     width="0px"
-     name="cart"
-     class="remove_icon"/>
-        <div class="shoe-info"><h2 class="shoe-title">The Greek Freak</h2><span class="shoe-price">Rs.2500</span></div>
-        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
-      </div>
-
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/ishowspeed shoe 1.png" class="shoe-img"></div>
-        <h2 class="shoe-title">Sewy</h2>
-        <span class="shoe-price">Rs.1500</span>
-      <div class="product-actions">
-  <button class="wishlist-btn">❤</button>
-
-  <img src="images_used/cart_icon.png"
-       name="cart"
-       class="add-cart">
-</div>
-
-<img src="images_used/cross.png"
-     width="0px"
-     name="cart"
-     class="remove_icon"/>
-        <div class="shoe-info"><h2 class="shoe-title">Sewy</h2><span class="shoe-price">Rs.1500</span></div>
-        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
-  <main>
-    <!-- ===== HERO ===== -->
-    <section class="hero" id="hero">
-      <div class="hero-bg">
-        <div class="hero-blob b1"></div>
-        <div class="hero-blob b2"></div>
-        <div class="hero-grain"></div>
-      </div>
-      <div class="hero-inner">
-        <div class="hero-content">
-          <div class="hero-eyebrow">
-            <span class="eyebrow-dot"></span>
-            <span>Exclusive Collection 2024</span>
+    <!-- ===== QUICK VIEW MODAL ===== -->
+    <div class="modal-overlay" id="qv-overlay"></div>
+    <div class="quick-view-modal" id="qv-modal">
+      <button class="modal-close qv-close" id="qv-close">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+        >
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+      <div class="qv-content">
+        <div class="qv-img-wrap">
+          <img id="qv-img" src="" alt="" />
+        </div>
+        <div class="qv-details">
+          <span class="qv-brand">AeroStride</span>
+          <h2 id="qv-name"></h2>
+          <div class="qv-rating">
+            <span class="stars">★★★★★</span>
+            <span class="review-count">(Premium Collection)</span>
           </div>
-          <h1 class="hero-heading">
-            <span class="line1">STEP INTO</span>
-            <span class="line2">GREATNESS</span>
-          </h1>
-          <p class="hero-sub">
-            Footwear designed for those who move with purpose. High-performance
-            silhouettes built for every occasion.
+          <div class="qv-price" id="qv-price"></div>
+          <p class="qv-desc">
+            Experience unmatched comfort and style. Crafted for champions,
+            designed for everyday greatness. Premium materials meet cutting-edge
+            athletic technology.
           </p>
-          <div class="hero-actions">
-            <a class="btn-hero" href="#shop">
-              <span>Shop Now</span>
+          <div class="qv-actions">
+            <div class="qty-stepper">
+              <button class="qty-btn" id="qv-minus">–</button>
+              <span id="qv-qty">1</span>
+              <button class="qty-btn" id="qv-plus">+</button>
+            </div>
+            <button class="btn-add-qv" id="qv-add-btn">
               <svg
                 width="16"
                 height="16"
@@ -657,68 +461,16 @@
                 stroke="currentColor"
                 stroke-width="2.5"
               >
-                <path d="M5 12h14M12 5l7 7-7 7" />
+                <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <path d="M16 10a4 4 0 01-8 0" />
               </svg>
-            </a>
-            <div class="hero-stats">
-              <div class="stat">
-                <span class="stat-num">16+</span
-                ><span class="stat-label">Styles</span>
-              </div>
-              <div class="stat-divider"></div>
-              <div class="stat">
-                <span class="stat-num">4.9</span
-                ><span class="stat-label">Rating</span>
-              </div>
-            </div>
+              Add to Cart
+            </button>
           </div>
-        </div>
-        <div class="hero-visual" id="slider">
-          <div class="slide active">
-            <img src="images_used/hero_shoe.png" alt="Hero Shoe" />
-          </div>
-          <div class="slide">
-            <img src="images_used/shoe2.png" alt="Shoe 2" />
-          </div>
-          <div class="slide">
-            <img src="images_used/shoe3.png" alt="Shoe 3" />
-          </div>
-          <div class="slide">
-            <img src="images_used/shoe4.png" alt="Shoe 4" />
-          </div>
-          <div class="slide">
-            <img src="images_used/shoe5.png" alt="Shoe 5" />
-          </div>
-          <div class="slider-ring r1"></div>
-          <div class="slider-ring r2"></div>
-          <div class="slide-shadow"></div>
-          <div class="slider-dots" id="slider-dots"></div>
-          <button class="slider-arrow prev" id="slider-prev">
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-            >
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </button>
-          <button class="slider-arrow next" id="slider-next">
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-            >
-              <path d="M9 18l6-6-6-6" />
-            </svg>
-          </button>
         </div>
       </div>
+
     </section>
 
   <!-- Trending -->
@@ -770,1449 +522,691 @@
           <option value="name-asc">Name: A–Z</option>
         </select>
       </div>
+
     </div>
 
-    <!-- ===== PRODUCT GRID ===== -->
-    <main class="main">
-      <div class="grid" id="grid">
-        <!-- 1 GOAT -->
-        <div
-          class="card"
-          data-category="football"
-          data-price="5000"
-          data-name="GOAT"
-        >
-          <div class="card-badge">Bestseller</div>
-          <figure class="card-figure">
-            <img
-              src="images_used/messi shoes 0.png"
-              class="card-img"
-              alt="GOAT"
-              loading="lazy"
-            />
-            <div class="card-overlay">
-              <button
-                class="btn-quick-view"
-                data-name="GOAT"
-                data-price="5000"
-                data-img="images_used/messi shoes 0.png"
-              >
-                Quick View
-              </button>
+    <main>
+      <!-- ===== HERO ===== -->
+      <section class="hero" id="hero">
+        <div class="hero-bg">
+          <div class="hero-blob b1"></div>
+          <div class="hero-blob b2"></div>
+          <div class="hero-grain"></div>
+        </div>
+        <div class="hero-inner">
+          <div class="hero-content">
+            <div class="hero-eyebrow">
+              <span class="eyebrow-dot"></span>
+              <span>Exclusive Collection 2024</span>
             </div>
-          </figure>
-          <div class="card-body">
-            <span class="card-brand-tag">AeroStride</span>
-            <h3 class="card-title">GOAT</h3>
-            <div class="card-rating">
-              <span class="stars">★★★★★</span>
-              <span class="review-count">(128)</span>
-            </div>
-            <div class="card-footer">
-              <div class="card-price-wrap">
-                <span class="card-price">Rs.5,000</span>
-              </div>
-              <button
-                class="card-add"
-                data-title="GOAT"
-                data-price="5000"
-                data-img="images_used/messi shoes 0.png"
-                aria-label="Add GOAT to cart"
-              >
+            <h1 class="hero-heading">
+              <span class="line1">STEP INTO</span>
+              <span class="line2">GREATNESS</span>
+            </h1>
+            <p class="hero-sub">
+              Footwear designed for those who move with purpose. High-performance
+              silhouettes built for every occasion.
+            </p>
+            <div class="hero-actions">
+              <a class="btn-hero" href="#shop">
+                <span>Shop Now</span>
                 <svg
-                  width="17"
-                  height="17"
+                  width="16"
+                  height="16"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
                   stroke-width="2.5"
                 >
-                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <path d="M16 10a4 4 0 01-8 0" />
+                  <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 2 CR7 -->
-        <div
-          class="card"
-          data-category="football"
-          data-price="3000"
-          data-name="CR7"
-        >
-          <figure class="card-figure">
-            <img
-              src="images_used/cristiano ronal 1.png"
-              class="card-img"
-              alt="CR7"
-              loading="lazy"
-            />
-            <div class="card-overlay">
-              <button
-                class="btn-quick-view"
-                data-name="CR7"
-                data-price="3000"
-                data-img="images_used/cristiano ronal 1.png"
-              >
-                Quick View
-              </button>
-            </div>
-          </figure>
-          <div class="card-body">
-            <span class="card-brand-tag">AeroStride</span>
-            <h3 class="card-title">CR7</h3>
-            <div class="card-rating">
-              <span class="stars">★★★★★</span>
-              <span class="review-count">(241)</span>
-            </div>
-            <div class="card-footer">
-              <div class="card-price-wrap">
-                <span class="card-price">Rs.3,000</span>
+              </a>
+              <div class="hero-stats">
+                <div class="stat">
+                  <span class="stat-num">16+</span>
+                  <span class="stat-label">Styles</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                  <span class="stat-num">4.9</span>
+                  <span class="stat-label">Rating</span>
+                </div>
               </div>
-              <button
-                class="card-add"
-                data-title="CR7"
-                data-price="3000"
-                data-img="images_used/cristiano ronal 1.png"
-                aria-label="Add CR7 to cart"
-              >
-                <svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <path d="M16 10a4 4 0 01-8 0" />
-                </svg>
-              </button>
             </div>
           </div>
-        </div>
-
-        <!-- 3 The Greek Freak -->
-        <div
-          class="card"
-          data-category="basketball"
-          data-price="2500"
-          data-name="The Greek Freak"
-        >
-          <figure class="card-figure">
-            <img
-              src="images_used/giannis antetok 1.png"
-              class="card-img"
-              alt="The Greek Freak"
-              loading="lazy"
-            />
-            <div class="card-overlay">
-              <button
-                class="btn-quick-view"
-                data-name="The Greek Freak"
-                data-price="2500"
-                data-img="images_used/giannis antetok 1.png"
-              >
-                Quick View
-              </button>
+          <div class="hero-visual" id="slider">
+            <div class="slide active">
+              <img src="images_used/hero_shoe.png" alt="Hero Shoe" />
             </div>
-          </figure>
-          <div class="card-body">
-            <span class="card-brand-tag">AeroStride</span>
-            <h3 class="card-title">The Greek Freak</h3>
-            <div class="card-rating">
-              <span class="stars">★★★★★</span>
-              <span class="review-count">(87)</span>
+            <div class="slide">
+              <img src="images_used/shoe2.png" alt="Shoe 2" />
             </div>
-            <div class="card-footer">
-              <div class="card-price-wrap">
-                <span class="card-price">Rs.2,500</span>
-              </div>
-              <button
-                class="card-add"
-                data-title="The Greek Freak"
-                data-price="2500"
-                data-img="images_used/giannis antetok 1.png"
-                aria-label="Add The Greek Freak to cart"
-              >
-                <svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <path d="M16 10a4 4 0 01-8 0" />
-                </svg>
-              </button>
+            <div class="slide">
+              <img src="images_used/shoe3.png" alt="Shoe 3" />
             </div>
-          </div>
-        </div>
-
-        <!-- 4 Sewy -->
-        <div
-          class="card"
-          data-category="running"
-          data-price="1500"
-          data-name="Sewy"
-        >
-          <div class="card-badge new-badge">New</div>
-          <figure class="card-figure">
-            <img
-              src="images_used/ishowspeed shoe 1.png"
-              class="card-img"
-              alt="Sewy"
-              loading="lazy"
-            />
-            <div class="card-overlay">
-              <button
-                class="btn-quick-view"
-                data-name="Sewy"
-                data-price="1500"
-                data-img="images_used/ishowspeed shoe 1.png"
-              >
-                Quick View
-              </button>
+            <div class="slide">
+              <img src="images_used/shoe4.png" alt="Shoe 4" />
             </div>
-          </figure>
-          <div class="card-body">
-            <span class="card-brand-tag">AeroStride</span>
-            <h3 class="card-title">Sewy</h3>
-            <div class="card-rating">
-              <span class="stars">★★★★★</span>
-              <span class="review-count">(312)</span>
+            <div class="slide">
+              <img src="images_used/shoe5.png" alt="Shoe 5" />
             </div>
-            <div class="card-footer">
-              <div class="card-price-wrap">
-                <span class="card-price">Rs.1,500</span>
-              </div>
-              <button
-                class="card-add"
-                data-title="Sewy"
-                data-price="1500"
-                data-img="images_used/ishowspeed shoe 1.png"
-                aria-label="Add Sewy to cart"
-              >
-                <svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <path d="M16 10a4 4 0 01-8 0" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/cristiano ronal 1.png" class="shoe-img"></div>
-        <h2 class="shoe-title">CR7</h2>
-        <span class="shoe-price">Rs.3000</span>
-        <div class="product-actions">
-  <button class="wishlist-btn">❤</button>
-
-  <img src="images_used/cart_icon.png"
-       name="cart"
-       class="add-cart">
-</div>
-
-<img src="images_used/cross.png"
-     width="0px"
-     name="cart"
-     class="remove_icon"/>
-        <div class="shoe-info"><h2 class="shoe-title">CR7</h2><span class="shoe-price">Rs.3000</span></div>
-        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
-      </div>
-
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/giannis antetok 1.png" class="shoe-img"></div>
-        <h2 class="shoe-title">The Greek Freak</h2>
-        <span class="shoe-price">Rs.2500</span>
-        <div class="product-actions">
-  <button class="wishlist-btn">❤</button>
-
-  <img src="images_used/cart_icon.png"
-       name="cart"
-       class="add-cart">
-</div>
-
-<img src="images_used/cross.png"
-     width="0px"
-     name="cart"
-     class="remove_icon"/>
-        <div class="shoe-info"><h2 class="shoe-title">The Greek Freak</h2><span class="shoe-price">Rs.2500</span></div>
-        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
-      </div>
-
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/ishowspeed shoe 1.png" class="shoe-img"></div>
-        <h2 class="shoe-title">Sewy</h2>
-        <span class="shoe-price">Rs.1500</span>
-      <div class="product-actions">
-  <button class="wishlist-btn">❤</button>
-
-  <img src="images_used/cart_icon.png"
-       name="cart"
-       class="add-cart">
-</div>
-
-<img src="images_used/cross.png"
-     width="0px"
-     name="cart"
-     class="remove_icon"/>
-        <div class="shoe-info"><h2 class="shoe-title">Sewy</h2><span class="shoe-price">Rs.1500</span></div>
-        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
-      </div>
-
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/kobe bryant sho 0.png" class="shoe-img"></div>
-        <h2 class="shoe-title">Black Mamba</h2>
-        <span class="shoe-price">Rs.3000</span>
-        <div class="product-actions">
-  <button class="wishlist-btn">❤</button>
-
-  <img src="images_used/cart_icon.png"
-       name="cart"
-       class="add-cart">
-</div>
-
-<img src="images_used/cross.png"
-     width="0px"
-     name="cart"
-     class="remove_icon"/>
-        <div class="shoe-info"><h2 class="shoe-title">Black Mamba</h2><span class="shoe-price">Rs.3000</span></div>
-        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
-      </div>
-
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/nike jordans 0.png" class="shoe-img"></div>
-        <h2 class="shoe-title">Jordan X</h2>
-        <span class="shoe-price">Rs.2500</span>
-        <div class="product-actions">
-  <button class="wishlist-btn">❤</button>
-
-  <img src="images_used/cart_icon.png"
-       name="cart"
-       class="add-cart">
-</div>
-
-<img src="images_used/cross.png"
-     width="0px"
-     name="cart"
-     class="remove_icon"/>
-        <div class="shoe-info"><h2 class="shoe-title">Jordan X</h2><span class="shoe-price">Rs.2500</span></div>
-        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
-      </div>
-
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/virat_kohli.png" class="shoe-img"></div>
-        <h2 class="shoe-title">KING</h2>
-        <span class="shoe-price">Rs.5000</span>
-        <div class="product-actions">
-  <button class="wishlist-btn">❤</button>
-
-  <img src="images_used/cart_icon.png"
-       name="cart"
-       class="add-cart">
-</div>
-
-<img src="images_used/cross.png"
-     width="0px"
-     name="cart"
-     class="remove_icon"/>
-        <div class="shoe-info"><h2 class="shoe-title">KING</h2><span class="shoe-price">Rs.5000</span></div>
-        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
-      </div>
-
-      <div class="shoe-box">
-        <div class="pic"><img src="images_used/abd.png" class="shoe-img"></div>
-        <h2 class="shoe-title">Mr.360</h2>
-        <span class="shoe-price">Rs.5000</span>
-        <div class="product-actions">
-  <button class="wishlist-btn">❤</button>
-
-  <img src="images_used/cart_icon.png"
-       name="cart"
-       class="add-cart">
-</div>
-
-<img src="images_used/cross.png"
-     width="0px"
-     name="cart"
-     class="remove_icon"/>
-        <div class="shoe-info"><h2 class="shoe-title">Mr.360</h2><span class="shoe-price">Rs.5000</span></div>
-        <button class="add-cart"><img src="images_used/cart_icon.png"></button>
-        <article class="shoe-box" data-price="3000">
-          <div class="pic">
-            <img src="images_used/cristiano ronal 1.png" class="shoe-img" alt="CR7" loading="lazy">
-            <button class="wishlist-btn wishlist-fab" type="button" aria-label="Add CR7 to wishlist">❤</button>
-          </div>
-          <div class="shoe-info">
-            <h2 class="shoe-title">CR7</h2>
-            <div class="shoe-price">Rs.3000</div>
-          </div>
-          <div class="product-actions">
-            <button class="add-cart" type="button" aria-label="Add CR7 to cart">
-              <img src="images_used/cart_icon.png" class="action-icon" alt="" aria-hidden="true">
-              <span>Add to Cart</span>
-            </button>
-        <!-- 5 Black Mamba -->
-        <div
-          class="card"
-          data-category="basketball"
-          data-price="3000"
-          data-name="Black Mamba"
-        >
-          <figure class="card-figure">
-            <img
-              src="images_used/kobe bryant sho 0.png"
-              class="card-img"
-              alt="Black Mamba"
-              loading="lazy"
-            />
-            <div class="card-overlay">
-              <button
-                class="btn-quick-view"
-                data-name="Black Mamba"
-                data-price="3000"
-                data-img="images_used/kobe bryant sho 0.png"
-              >
-                Quick View
-              </button>
-            </div>
-          </figure>
-          <div class="card-body">
-            <span class="card-brand-tag">AeroStride</span>
-            <h3 class="card-title">Black Mamba</h3>
-            <div class="card-rating">
-              <span class="stars">★★★★★</span>
-              <span class="review-count">(196)</span>
-            </div>
-            <div class="card-footer">
-              <div class="card-price-wrap">
-                <span class="card-price">Rs.3,000</span>
-              </div>
-              <button
-                class="card-add"
-                data-title="Black Mamba"
-                data-price="3000"
-                data-img="images_used/kobe bryant sho 0.png"
-                aria-label="Add Black Mamba to cart"
-              >
-                <svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <path d="M16 10a4 4 0 01-8 0" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 6 Jordan X -->
-        <div
-          class="card"
-          data-category="basketball"
-          data-price="2500"
-          data-name="Jordan X"
-        >
-          <div class="card-badge">Popular</div>
-          <figure class="card-figure">
-            <img
-              src="images_used/nike jordans 0.png"
-              class="card-img"
-              alt="Jordan X"
-              loading="lazy"
-            />
-            <div class="card-overlay">
-              <button
-                class="btn-quick-view"
-                data-name="Jordan X"
-                data-price="2500"
-                data-img="images_used/nike jordans 0.png"
-              >
-                Quick View
-              </button>
-            </div>
-          </figure>
-          <div class="card-body">
-            <span class="card-brand-tag">AeroStride</span>
-            <h3 class="card-title">Jordan X</h3>
-            <div class="card-rating">
-              <span class="stars">★★★★★</span>
-              <span class="review-count">(445)</span>
-            </div>
-            <div class="card-footer">
-              <div class="card-price-wrap">
-                <span class="card-price">Rs.2,500</span>
-              </div>
-              <button
-                class="card-add"
-                data-title="Jordan X"
-                data-price="2500"
-                data-img="images_used/nike jordans 0.png"
-                aria-label="Add Jordan X to cart"
-              >
-                <svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <path d="M16 10a4 4 0 01-8 0" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 7 KING -->
-        <div
-          class="card"
-          data-category="cricket"
-          data-price="5000"
-          data-name="KING"
-        >
-          <figure class="card-figure">
-            <img
-              src="images_used/virat_kohli.png"
-              class="card-img"
-              alt="KING"
-              loading="lazy"
-            />
-            <div class="card-overlay">
-              <button
-                class="btn-quick-view"
-                data-name="KING"
-                data-price="5000"
-                data-img="images_used/virat_kohli.png"
-              >
-                Quick View
-              </button>
-            </div>
-          </figure>
-          <div class="card-body">
-            <span class="card-brand-tag">AeroStride</span>
-            <h3 class="card-title">KING</h3>
-            <div class="card-rating">
-              <span class="stars">★★★★★</span>
-              <span class="review-count">(301)</span>
-            </div>
-            <div class="card-footer">
-              <div class="card-price-wrap">
-                <span class="card-price">Rs.5,000</span>
-              </div>
-              <button
-                class="card-add"
-                data-title="KING"
-                data-price="5000"
-                data-img="images_used/virat_kohli.png"
-                aria-label="Add KING to cart"
-              >
-                <svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <path d="M16 10a4 4 0 01-8 0" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 8 Mr.360 -->
-        <div
-          class="card"
-          data-category="cricket"
-          data-price="5000"
-          data-name="Mr.360"
-        >
-          <figure class="card-figure">
-            <img
-              src="images_used/abd.png"
-              class="card-img"
-              alt="Mr.360"
-              loading="lazy"
-            />
-            <div class="card-overlay">
-              <button
-                class="btn-quick-view"
-                data-name="Mr.360"
-                data-price="5000"
-                data-img="images_used/abd.png"
-              >
-                Quick View
-              </button>
-            </div>
-          </figure>
-          <div class="card-body">
-            <span class="card-brand-tag">AeroStride</span>
-            <h3 class="card-title">Mr.360</h3>
-            <div class="card-rating">
-              <span class="stars">★★★★★</span>
-              <span class="review-count">(78)</span>
-            </div>
-            <div class="card-footer">
-              <div class="card-price-wrap">
-                <span class="card-price">Rs.5,000</span>
-              </div>
-              <button
-                class="card-add"
-                data-title="Mr.360"
-                data-price="5000"
-                data-img="images_used/abd.png"
-                aria-label="Add Mr.360 to cart"
-              >
-                <svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <path d="M16 10a4 4 0 01-8 0" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 9 Curry Splash -->
-        <div
-          class="card"
-          data-category="basketball"
-          data-price="4000"
-          data-name="Curry Splash"
-        >
-          <figure class="card-figure">
-            <img
-              src="images_used/giannis antetok 1.png"
-              class="card-img"
-              alt="Curry Splash"
-              loading="lazy"
-            />
-            <div class="card-overlay">
-              <button
-                class="btn-quick-view"
-                data-name="Curry Splash"
-                data-price="4000"
-                data-img="images_used/giannis antetok 1.png"
-              >
-                Quick View
-              </button>
-            </div>
-          </figure>
-          <div class="card-body">
-            <span class="card-brand-tag">AeroStride</span>
-            <h3 class="card-title">Curry Splash</h3>
-            <div class="card-rating">
-              <span class="stars">★★★★★</span>
-              <span class="review-count">(154)</span>
-            </div>
-            <div class="card-footer">
-              <div class="card-price-wrap">
-                <span class="card-price">Rs.4,000</span>
-              </div>
-              <button
-                class="card-add"
-                data-title="Curry Splash"
-                data-price="4000"
-                data-img="images_used/giannis antetok 1.png"
-                aria-label="Add Curry Splash to cart"
-              >
-                <svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <path d="M16 10a4 4 0 01-8 0" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 10 Pele Magic -->
-        <div
-          class="card"
-          data-category="football"
-          data-price="4500"
-          data-name="Pele Magic"
-        >
-          <figure class="card-figure">
-            <img
-              src="images_used/cristiano ronal 1.png"
-              class="card-img"
-              alt="Pele Magic"
-              loading="lazy"
-            />
-            <div class="card-overlay">
-              <button
-                class="btn-quick-view"
-                data-name="Pele Magic"
-                data-price="4500"
-                data-img="images_used/cristiano ronal 1.png"
-              >
-                Quick View
-              </button>
-            </div>
-          </figure>
-          <div class="card-body">
-            <span class="card-brand-tag">AeroStride</span>
-            <h3 class="card-title">Pele Magic</h3>
-            <div class="card-rating">
-              <span class="stars">★★★★★</span>
-              <span class="review-count">(203)</span>
-            </div>
-            <div class="card-footer">
-              <div class="card-price-wrap">
-                <span class="card-price">Rs.4,500</span>
-              </div>
-              <button
-                class="card-add"
-                data-title="Pele Magic"
-                data-price="4500"
-                data-img="images_used/cristiano ronal 1.png"
-                aria-label="Add Pele Magic to cart"
-              >
-                <svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <path d="M16 10a4 4 0 01-8 0" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 11 Bolt Speed -->
-        <div
-          class="card"
-          data-category="running"
-          data-price="2000"
-          data-name="Bolt Speed"
-        >
-          <figure class="card-figure">
-            <img
-              src="images_used/ishowspeed shoe 1.png"
-              class="card-img"
-              alt="Bolt Speed"
-              loading="lazy"
-            />
-            <div class="card-overlay">
-              <button
-                class="btn-quick-view"
-                data-name="Bolt Speed"
-                data-price="2000"
-                data-img="images_used/ishowspeed shoe 1.png"
-              >
-                Quick View
-              </button>
-            </div>
-          </figure>
-          <div class="card-body">
-            <span class="card-brand-tag">AeroStride</span>
-            <h3 class="card-title">Bolt Speed</h3>
-            <div class="card-rating">
-              <span class="stars">★★★★★</span>
-              <span class="review-count">(89)</span>
-            </div>
-            <div class="card-footer">
-              <div class="card-price-wrap">
-                <span class="card-price">Rs.2,000</span>
-              </div>
-              <button
-                class="card-add"
-                data-title="Bolt Speed"
-                data-price="2000"
-                data-img="images_used/ishowspeed shoe 1.png"
-                aria-label="Add Bolt Speed to cart"
-              >
-                <svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <path d="M16 10a4 4 0 01-8 0" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 12 Serena Ace -->
-        <div
-          class="card"
-          data-category="running"
-          data-price="3500"
-          data-name="Serena Ace"
-        >
-          <figure class="card-figure">
-            <img
-              src="images_used/nike jordans 0.png"
-              class="card-img"
-              alt="Serena Ace"
-              loading="lazy"
-            />
-            <div class="card-overlay">
-              <button
-                class="btn-quick-view"
-                data-name="Serena Ace"
-                data-price="3500"
-                data-img="images_used/nike jordans 0.png"
-              >
-                Quick View
-              </button>
-            </div>
-          </figure>
-          <div class="card-body">
-            <span class="card-brand-tag">AeroStride</span>
-            <h3 class="card-title">Serena Ace</h3>
-            <div class="card-rating">
-              <span class="stars">★★★★★</span>
-              <span class="review-count">(167)</span>
-            </div>
-            <div class="card-footer">
-              <div class="card-price-wrap">
-                <span class="card-price">Rs.3,500</span>
-              </div>
-              <button
-                class="card-add"
-                data-title="Serena Ace"
-                data-price="3500"
-                data-img="images_used/nike jordans 0.png"
-                aria-label="Add Serena Ace to cart"
-              >
-                <svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <path d="M16 10a4 4 0 01-8 0" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 13 Air Icon -->
-        <div
-          class="card"
-          data-category="running"
-          data-price="4800"
-          data-name="Air Icon"
-        >
-          <div class="card-badge">Top Pick</div>
-          <figure class="card-figure">
-            <img
-              src="images_used/hero_shoe.png"
-              class="card-img"
-              alt="Air Icon"
-              loading="lazy"
-            />
-            <div class="card-overlay">
-              <button
-                class="btn-quick-view"
-                data-name="Air Icon"
-                data-price="4800"
-                data-img="images_used/hero_shoe.png"
-              >
-                Quick View
-              </button>
-            </div>
-          </figure>
-          <div class="card-body">
-            <span class="card-brand-tag">AeroStride</span>
-            <h3 class="card-title">Air Icon</h3>
-            <div class="card-rating">
-              <span class="stars">★★★★★</span>
-              <span class="review-count">(512)</span>
-            </div>
-            <div class="card-footer">
-              <div class="card-price-wrap">
-                <span class="card-price">Rs.4,800</span>
-              </div>
-              <button
-                class="card-add"
-                data-title="Air Icon"
-                data-price="4800"
-                data-img="images_used/hero_shoe.png"
-                aria-label="Add Air Icon to cart"
-              >
-                <svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <path d="M16 10a4 4 0 01-8 0" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 14 Torch Runner -->
-        <div
-          class="card"
-          data-category="football"
-          data-price="3200"
-          data-name="Torch Runner"
-        >
-          <figure class="card-figure">
-            <img
-              src="images_used/messi shoes 0.png"
-              class="card-img"
-              alt="Torch Runner"
-              loading="lazy"
-            />
-            <div class="card-overlay">
-              <button
-                class="btn-quick-view"
-                data-name="Torch Runner"
-                data-price="3200"
-                data-img="images_used/messi shoes 0.png"
-              >
-                Quick View
-              </button>
-            </div>
-          </figure>
-          <div class="card-body">
-            <span class="card-brand-tag">AeroStride</span>
-            <h3 class="card-title">Torch Runner</h3>
-            <div class="card-rating">
-              <span class="stars">★★★★★</span>
-              <span class="review-count">(94)</span>
-            </div>
-            <div class="card-footer">
-              <div class="card-price-wrap">
-                <span class="card-price">Rs.3,200</span>
-              </div>
-              <button
-                class="card-add"
-                data-title="Torch Runner"
-                data-price="3200"
-                data-img="images_used/messi shoes 0.png"
-                aria-label="Add Torch Runner to cart"
-              >
-                <svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <path d="M16 10a4 4 0 01-8 0" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 15 Phantom Stride -->
-        <div
-          class="card"
-          data-category="basketball"
-          data-price="2800"
-          data-name="Phantom Stride"
-        >
-          <figure class="card-figure">
-            <img
-              src="images_used/kobe bryant sho 0.png"
-              class="card-img"
-              alt="Phantom Stride"
-              loading="lazy"
-            />
-            <div class="card-overlay">
-              <button
-                class="btn-quick-view"
-                data-name="Phantom Stride"
-                data-price="2800"
-                data-img="images_used/kobe bryant sho 0.png"
-              >
-                Quick View
-              </button>
-            </div>
-          </figure>
-          <div class="card-body">
-            <span class="card-brand-tag">AeroStride</span>
-            <h3 class="card-title">Phantom Stride</h3>
-            <div class="card-rating">
-              <span class="stars">★★★★★</span>
-              <span class="review-count">(139)</span>
-            </div>
-            <div class="card-footer">
-              <div class="card-price-wrap">
-                <span class="card-price">Rs.2,800</span>
-              </div>
-              <button
-                class="card-add"
-                data-title="Phantom Stride"
-                data-price="2800"
-                data-img="images_used/kobe bryant sho 0.png"
-                aria-label="Add Phantom Stride to cart"
-              >
-                <svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <path d="M16 10a4 4 0 01-8 0" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 16 Nova Dash -->
-        <div
-          class="card"
-          data-category="running"
-          data-price="2200"
-          data-name="Nova Dash"
-        >
-          <div class="card-badge new-badge">New</div>
-          <figure class="card-figure">
-            <img
-              src="images_used/ishowspeed shoe 1.png"
-              class="card-img"
-              alt="Nova Dash"
-              loading="lazy"
-            />
-            <div class="card-overlay">
-              <button
-                class="btn-quick-view"
-                data-name="Nova Dash"
-                data-price="2200"
-                data-img="images_used/ishowspeed shoe 1.png"
-              >
-                Quick View
-              </button>
-            </div>
-          </figure>
-          <div class="card-body">
-            <span class="card-brand-tag">AeroStride</span>
-            <h3 class="card-title">Nova Dash</h3>
-            <div class="card-rating">
-              <span class="stars">★★★★★</span>
-              <span class="review-count">(58)</span>
-            </div>
-            <div class="card-footer">
-              <div class="card-price-wrap">
-                <span class="card-price">Rs.2,200</span>
-              </div>
-              <button
-                class="card-add"
-                data-title="Nova Dash"
-                data-price="2200"
-                data-img="images_used/ishowspeed shoe 1.png"
-                aria-label="Add Nova Dash to cart"
-              >
-                <svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                >
-                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <path d="M16 10a4 4 0 01-8 0" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- No results message -->
-      <div class="no-results" id="no-results" style="display: none">
-        <p>No shoes found in this category.</p>
-      </div>
-    </main>
-
-  
-
-  <script src="js/script.js"></script>
-  <!-- Quick View Modal -->
-
-<div class="quick-view-modal">
-
-  <div class="quick-view-content">
-
-    <span class="close-quick-view">&times;</span>
-
-    <img id="quick-view-img" src="" alt="Product Image">
-
-    <h2 id="quick-view-title"></h2>
-
-    <p id="quick-view-price"></p>
-
-    <button id="quick-view-cart-btn">
-      Add To Cart
-    </button>
-
-  </div>
-
-</div>
-  <script>
-    /* ── Elements ── */
-    const cartPanel   = document.getElementById('cart-panel');
-    const cartOverlay = document.getElementById('cart-overlay');
-    const cartBody    = document.getElementById('cart-body');
-    const cartEmpty   = document.getElementById('cart-empty');
-    const cartBadge   = document.getElementById('cart-badge');
-    const cartCount   = document.querySelector('.cart-count');
-    const totalPrice  = document.getElementById('total-price');
-
-    /* ── Open / Close ── */
-    function openCart()  { cartPanel.classList.add('active'); cartOverlay.classList.add('active'); }
-    function closeCart() { cartPanel.classList.remove('active'); cartOverlay.classList.remove('active'); }
-
-    document.getElementById('open-cart').addEventListener('click', openCart);
-    document.getElementById('cart-close').addEventListener('click', closeCart);
-    cartOverlay.addEventListener('click', closeCart);
-
-    /* ── State ── */
-    let itemList = [];
-
-    /* ── Add to cart ── */
-    document.querySelectorAll('.add-cart').forEach(btn => {
-      btn.addEventListener('click', function() {
-        const box   = this.closest('.shoe-box');
-        const title = box.querySelector('.shoe-title').textContent;
-        const price = box.querySelector('.shoe-price').textContent;
-        const img   = box.querySelector('.shoe-img').src;
-
-        if (itemList.find(i => i.title === title)) {
-          alert('Already in cart!');
-          return;
-        }
-
-        itemList.push({ title, price, img });
-
-        const row = document.createElement('div');
-        row.className = 'cart-box';
-        row.dataset.title = title;
-        row.innerHTML = cartRowHTML(title, price, img);
-        cartBody.appendChild(row);
-
-        bindRow(row);
-        updateUI();
-        openCart();
-      });
-    });
-
-    /* ── Row template ── */
-    function cartRowHTML(title, price, img) {
-      return `
-        <img src="${img}" class="cart-img">
-        <div class="detail-box">
-          <div class="cart-shoe-title">${title}</div>
-          <div class="price-box">
-            <span class="cart-price">${price}</span>
-            <span class="cart-amt">${price}</span>
-          </div>
-          <div class="qty-stepper">
-            <button class="qty-btn qty-down">−</button>
-            <input type="number" class="cart-quantity" value="1" min="1">
-            <button class="qty-btn qty-up">+</button>
-          </div>
-        </div>
-        <button class="cart-remove" title="Remove">
-          <svg viewBox="0 0 24 24">
-            <polyline points="3 6 5 6 21 6"/>
-            <path d="M19 6l-1 14H6L5 6"/>
-            <path d="M10 11v6M14 11v6"/>
-            <path d="M9 6V4h6v2"/>
-          </svg>
-        </button>`;
-    }
-
-    /* ── Bind events on a row ── */
-    function bindRow(row) {
-      const qtyInput = row.querySelector('.cart-quantity');
-
-      row.querySelector('.qty-down').addEventListener('click', () => {
-        let v = parseInt(qtyInput.value) || 1;
-        if (v > 1) { qtyInput.value = v - 1; updateUI(); }
-      });
-
-      row.querySelector('.qty-up').addEventListener('click', () => {
-        qtyInput.value = (parseInt(qtyInput.value) || 1) + 1;
-        updateUI();
-      });
-
-      qtyInput.addEventListener('change', () => {
-        if (!qtyInput.value || qtyInput.value < 1) qtyInput.value = 1;
-        updateUI();
-      });
-
-      row.querySelector('.cart-remove').addEventListener('click', () => {
-        const title = row.dataset.title;
-        itemList = itemList.filter(i => i.title !== title);
-        row.remove();
-        updateUI();
-      });
-    }
-
-    /* ── Recalculate totals & badges ── */
-    function updateUI() {
-      let total = 0;
-      document.querySelectorAll('.cart-box').forEach(row => {
-        const priceStr = row.querySelector('.cart-price').textContent.replace('Rs.', '');
-        const price    = parseFloat(priceStr);
-        const qty      = parseInt(row.querySelector('.cart-quantity').value) || 1;
-        const sub      = price * qty;
-        row.querySelector('.cart-amt').textContent = 'Rs.' + sub;
-        total += sub;
-      });
-  <!-- Modals -->
-  <div class="checkout-modal">
-    <div class="checkout-content">
-      <span class="close-checkout">&times;</span>
-      <h2>Checkout</h2>
-      <input type="text" id="full-name" placeholder="Full Name">
-      <input type="text" id="address" placeholder="Address">
-      <input type="text" id="phone" placeholder="Phone Number">
-      <select id="payment-method">
-        <option value="">Select Payment Method</option>
-        <option>UPI</option>
-        <option>Cash on Delivery</option>
-        <option>Card</option>
-      </select>
-      <button id="submit-order" type="button">Submit Order</button>
-    <!-- ===== QUICK VIEW MODAL ===== -->
-    <div class="modal-overlay" id="qv-overlay"></div>
-    <div class="quick-view-modal" id="qv-modal">
-      <button class="modal-close qv-close" id="qv-close">
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.5"
-        >
-          <line x1="18" y1="6" x2="6" y2="18" />
-          <line x1="6" y1="6" x2="18" y2="18" />
-        </svg>
-      </button>
-      <div class="qv-content">
-        <div class="qv-img-wrap">
-          <img id="qv-img" src="" alt="" />
-        </div>
-        <div class="qv-details">
-          <span class="qv-brand">AeroStride</span>
-          <h2 id="qv-name"></h2>
-          <div class="qv-rating">
-            <span class="stars">★★★★★</span
-            ><span class="review-count">(Premium Collection)</span>
-          </div>
-          <div class="qv-price" id="qv-price"></div>
-          <p class="qv-desc">
-            Experience unmatched comfort and style. Crafted for champions,
-            designed for everyday greatness. Premium materials meet cutting-edge
-            athletic technology.
-          </p>
-          <div class="qv-actions">
-            <div class="qty-stepper">
-              <button class="qty-btn" id="qv-minus">–</button>
-              <span id="qv-qty">1</span>
-              <button class="qty-btn" id="qv-plus">+</button>
-            </div>
-            <button class="btn-add-qv" id="qv-add-btn">
+            <div class="slider-ring r1"></div>
+            <div class="slider-ring r2"></div>
+            <div class="slide-shadow"></div>
+            <div class="slider-dots" id="slider-dots"></div>
+            <button class="slider-arrow prev" id="slider-prev">
               <svg
-                width="16"
-                height="16"
+                width="18"
+                height="18"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2.5"
               >
-                <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <path d="M16 10a4 4 0 01-8 0" />
+                <path d="M15 18l-6-6 6-6" />
               </svg>
-              Add to Cart
+            </button>
+            <button class="slider-arrow next" id="slider-next">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="M9 18l6-6-6-6" />
+              </svg>
             </button>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <!-- ===== FOOTER ===== -->
-    <footer class="footer">
-      <div class="footer-inner">
-        <div class="footer-brand">
-          <svg viewBox="0 0 220 36" height="28" class="logo-svg">
-            <defs>
-              <linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#ff4500" />
-                <stop offset="100%" stop-color="#ff8c00" />
-              </linearGradient>
-            </defs>
-            <path d="M4 26 Q14 4 34 2 Q20 12 10 24 Z" fill="url(#lg2)" />
-            <path
-              d="M2 30 Q14 8 38 4 Q22 14 12 30 Z"
-              fill="url(#lg2)"
-              opacity="0.45"
-            />
-            <text
-              x="44"
-              y="27"
-              fill="#ffffff"
-              font-family="'Bebas Neue',sans-serif"
-              font-size="24"
-              letter-spacing="6"
-            >
-              AEROSTRIDE
-            </text>
-          </svg>
-          <p class="footer-tagline">Step into greatness, every single day.</p>
-          <div class="footer-social">
-            <a href="#" class="social-link" aria-label="Instagram">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <rect x="2" y="2" width="20" height="20" rx="5" />
-                <circle cx="12" cy="12" r="4" />
-                <circle
-                  cx="17.5"
-                  cy="6.5"
-                  r="1"
-                  fill="currentColor"
-                  stroke="none"
-                />
-              </svg>
-            </a>
-            <a href="#" class="social-link" aria-label="Twitter">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"
-                />
-              </svg>
-            </a>
+      <!-- ===== SECTION DIVIDER ===== -->
+      <div class="section-divider" id="shop">
+        <span class="divider-tag">TRENDING RIGHT NOW</span>
+      </div>
+
+      <!-- ===== FILTER BAR ===== -->
+      <div class="filter-bar">
+        <div class="filter-inner">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="football">Football</button>
+          <button class="filter-btn" data-filter="basketball">Basketball</button>
+          <button class="filter-btn" data-filter="running">Running</button>
+          <button class="filter-btn" data-filter="cricket">Cricket</button>
+        </div>
+        <div class="sort-wrap">
+          <select id="sort-select">
+            <option value="default">Sort: Featured</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="name-asc">Name: A–Z</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ===== PRODUCT GRID ===== -->
+      <section class="main">
+        <div class="grid" id="grid">
+
+          <!-- 1 GOAT -->
+          <div class="card" data-category="football" data-price="5000" data-name="GOAT">
+            <div class="card-badge">Bestseller</div>
+            <figure class="card-figure">
+              <img src="images_used/messi shoes 0.png" class="card-img" alt="GOAT" loading="lazy" />
+              <div class="card-overlay">
+                <button class="btn-quick-view" data-name="GOAT" data-price="5000" data-img="images_used/messi shoes 0.png">Quick View</button>
+              </div>
+            </figure>
+            <div class="card-body">
+              <span class="card-brand-tag">AeroStride</span>
+              <h3 class="card-title">GOAT</h3>
+              <div class="card-rating">
+                <span class="stars">★★★★★</span>
+                <span class="review-count">(128)</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-price-wrap">
+                  <span class="card-price">Rs.5,000</span>
+                </div>
+                <button class="card-add" data-title="GOAT" data-price="5000" data-img="images_used/messi shoes 0.png" aria-label="Add GOAT to cart">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 01-8 0" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2 CR7 -->
+          <div class="card" data-category="football" data-price="3000" data-name="CR7">
+            <figure class="card-figure">
+              <img src="images_used/cristiano ronal 1.png" class="card-img" alt="CR7" loading="lazy" />
+              <div class="card-overlay">
+                <button class="btn-quick-view" data-name="CR7" data-price="3000" data-img="images_used/cristiano ronal 1.png">Quick View</button>
+              </div>
+            </figure>
+            <div class="card-body">
+              <span class="card-brand-tag">AeroStride</span>
+              <h3 class="card-title">CR7</h3>
+              <div class="card-rating">
+                <span class="stars">★★★★★</span>
+                <span class="review-count">(241)</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-price-wrap">
+                  <span class="card-price">Rs.3,000</span>
+                </div>
+                <button class="card-add" data-title="CR7" data-price="3000" data-img="images_used/cristiano ronal 1.png" aria-label="Add CR7 to cart">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 01-8 0" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3 The Greek Freak -->
+          <div class="card" data-category="basketball" data-price="2500" data-name="The Greek Freak">
+            <figure class="card-figure">
+              <img src="images_used/giannis antetok 1.png" class="card-img" alt="The Greek Freak" loading="lazy" />
+              <div class="card-overlay">
+                <button class="btn-quick-view" data-name="The Greek Freak" data-price="2500" data-img="images_used/giannis antetok 1.png">Quick View</button>
+              </div>
+            </figure>
+            <div class="card-body">
+              <span class="card-brand-tag">AeroStride</span>
+              <h3 class="card-title">The Greek Freak</h3>
+              <div class="card-rating">
+                <span class="stars">★★★★★</span>
+                <span class="review-count">(87)</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-price-wrap">
+                  <span class="card-price">Rs.2,500</span>
+                </div>
+                <button class="card-add" data-title="The Greek Freak" data-price="2500" data-img="images_used/giannis antetok 1.png" aria-label="Add The Greek Freak to cart">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 01-8 0" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 Sewy -->
+          <div class="card" data-category="running" data-price="1500" data-name="Sewy">
+            <div class="card-badge new-badge">New</div>
+            <figure class="card-figure">
+              <img src="images_used/ishowspeed shoe 1.png" class="card-img" alt="Sewy" loading="lazy" />
+              <div class="card-overlay">
+                <button class="btn-quick-view" data-name="Sewy" data-price="1500" data-img="images_used/ishowspeed shoe 1.png">Quick View</button>
+              </div>
+            </figure>
+            <div class="card-body">
+              <span class="card-brand-tag">AeroStride</span>
+              <h3 class="card-title">Sewy</h3>
+              <div class="card-rating">
+                <span class="stars">★★★★★</span>
+                <span class="review-count">(312)</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-price-wrap">
+                  <span class="card-price">Rs.1,500</span>
+                </div>
+                <button class="card-add" data-title="Sewy" data-price="1500" data-img="images_used/ishowspeed shoe 1.png" aria-label="Add Sewy to cart">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 01-8 0" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5 Black Mamba -->
+          <div class="card" data-category="basketball" data-price="3000" data-name="Black Mamba">
+            <figure class="card-figure">
+              <img src="images_used/kobe bryant sho 0.png" class="card-img" alt="Black Mamba" loading="lazy" />
+              <div class="card-overlay">
+                <button class="btn-quick-view" data-name="Black Mamba" data-price="3000" data-img="images_used/kobe bryant sho 0.png">Quick View</button>
+              </div>
+            </figure>
+            <div class="card-body">
+              <span class="card-brand-tag">AeroStride</span>
+              <h3 class="card-title">Black Mamba</h3>
+              <div class="card-rating">
+                <span class="stars">★★★★★</span>
+                <span class="review-count">(196)</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-price-wrap">
+                  <span class="card-price">Rs.3,000</span>
+                </div>
+                <button class="card-add" data-title="Black Mamba" data-price="3000" data-img="images_used/kobe bryant sho 0.png" aria-label="Add Black Mamba to cart">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 01-8 0" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6 Jordan X -->
+          <div class="card" data-category="basketball" data-price="2500" data-name="Jordan X">
+            <div class="card-badge">Popular</div>
+            <figure class="card-figure">
+              <img src="images_used/nike jordans 0.png" class="card-img" alt="Jordan X" loading="lazy" />
+              <div class="card-overlay">
+                <button class="btn-quick-view" data-name="Jordan X" data-price="2500" data-img="images_used/nike jordans 0.png">Quick View</button>
+              </div>
+            </figure>
+            <div class="card-body">
+              <span class="card-brand-tag">AeroStride</span>
+              <h3 class="card-title">Jordan X</h3>
+              <div class="card-rating">
+                <span class="stars">★★★★★</span>
+                <span class="review-count">(445)</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-price-wrap">
+                  <span class="card-price">Rs.2,500</span>
+                </div>
+                <button class="card-add" data-title="Jordan X" data-price="2500" data-img="images_used/nike jordans 0.png" aria-label="Add Jordan X to cart">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 01-8 0" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 7 KING -->
+          <div class="card" data-category="cricket" data-price="5000" data-name="KING">
+            <figure class="card-figure">
+              <img src="images_used/virat_kohli.png" class="card-img" alt="KING" loading="lazy" />
+              <div class="card-overlay">
+                <button class="btn-quick-view" data-name="KING" data-price="5000" data-img="images_used/virat_kohli.png">Quick View</button>
+              </div>
+            </figure>
+            <div class="card-body">
+              <span class="card-brand-tag">AeroStride</span>
+              <h3 class="card-title">KING</h3>
+              <div class="card-rating">
+                <span class="stars">★★★★★</span>
+                <span class="review-count">(301)</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-price-wrap">
+                  <span class="card-price">Rs.5,000</span>
+                </div>
+                <button class="card-add" data-title="KING" data-price="5000" data-img="images_used/virat_kohli.png" aria-label="Add KING to cart">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 01-8 0" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 8 Mr.360 -->
+          <div class="card" data-category="cricket" data-price="5000" data-name="Mr.360">
+            <figure class="card-figure">
+              <img src="images_used/abd.png" class="card-img" alt="Mr.360" loading="lazy" />
+              <div class="card-overlay">
+                <button class="btn-quick-view" data-name="Mr.360" data-price="5000" data-img="images_used/abd.png">Quick View</button>
+              </div>
+            </figure>
+            <div class="card-body">
+              <span class="card-brand-tag">AeroStride</span>
+              <h3 class="card-title">Mr.360</h3>
+              <div class="card-rating">
+                <span class="stars">★★★★★</span>
+                <span class="review-count">(78)</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-price-wrap">
+                  <span class="card-price">Rs.5,000</span>
+                </div>
+                <button class="card-add" data-title="Mr.360" data-price="5000" data-img="images_used/abd.png" aria-label="Add Mr.360 to cart">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 01-8 0" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 9 Curry Splash -->
+          <div class="card" data-category="basketball" data-price="4000" data-name="Curry Splash">
+            <figure class="card-figure">
+              <img src="images_used/giannis antetok 1.png" class="card-img" alt="Curry Splash" loading="lazy" />
+              <div class="card-overlay">
+                <button class="btn-quick-view" data-name="Curry Splash" data-price="4000" data-img="images_used/giannis antetok 1.png">Quick View</button>
+              </div>
+            </figure>
+            <div class="card-body">
+              <span class="card-brand-tag">AeroStride</span>
+              <h3 class="card-title">Curry Splash</h3>
+              <div class="card-rating">
+                <span class="stars">★★★★★</span>
+                <span class="review-count">(154)</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-price-wrap">
+                  <span class="card-price">Rs.4,000</span>
+                </div>
+                <button class="card-add" data-title="Curry Splash" data-price="4000" data-img="images_used/giannis antetok 1.png" aria-label="Add Curry Splash to cart">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 01-8 0" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 10 Pele Magic -->
+          <div class="card" data-category="football" data-price="4500" data-name="Pele Magic">
+            <figure class="card-figure">
+              <img src="images_used/cristiano ronal 1.png" class="card-img" alt="Pele Magic" loading="lazy" />
+              <div class="card-overlay">
+                <button class="btn-quick-view" data-name="Pele Magic" data-price="4500" data-img="images_used/cristiano ronal 1.png">Quick View</button>
+              </div>
+            </figure>
+            <div class="card-body">
+              <span class="card-brand-tag">AeroStride</span>
+              <h3 class="card-title">Pele Magic</h3>
+              <div class="card-rating">
+                <span class="stars">★★★★★</span>
+                <span class="review-count">(203)</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-price-wrap">
+                  <span class="card-price">Rs.4,500</span>
+                </div>
+                <button class="card-add" data-title="Pele Magic" data-price="4500" data-img="images_used/cristiano ronal 1.png" aria-label="Add Pele Magic to cart">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 01-8 0" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 11 Bolt Speed -->
+          <div class="card" data-category="running" data-price="2000" data-name="Bolt Speed">
+            <figure class="card-figure">
+              <img src="images_used/ishowspeed shoe 1.png" class="card-img" alt="Bolt Speed" loading="lazy" />
+              <div class="card-overlay">
+                <button class="btn-quick-view" data-name="Bolt Speed" data-price="2000" data-img="images_used/ishowspeed shoe 1.png">Quick View</button>
+              </div>
+            </figure>
+            <div class="card-body">
+              <span class="card-brand-tag">AeroStride</span>
+              <h3 class="card-title">Bolt Speed</h3>
+              <div class="card-rating">
+                <span class="stars">★★★★★</span>
+                <span class="review-count">(89)</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-price-wrap">
+                  <span class="card-price">Rs.2,000</span>
+                </div>
+                <button class="card-add" data-title="Bolt Speed" data-price="2000" data-img="images_used/ishowspeed shoe 1.png" aria-label="Add Bolt Speed to cart">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 01-8 0" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 12 Serena Ace -->
+          <div class="card" data-category="running" data-price="3500" data-name="Serena Ace">
+            <figure class="card-figure">
+              <img src="images_used/nike jordans 0.png" class="card-img" alt="Serena Ace" loading="lazy" />
+              <div class="card-overlay">
+                <button class="btn-quick-view" data-name="Serena Ace" data-price="3500" data-img="images_used/nike jordans 0.png">Quick View</button>
+              </div>
+            </figure>
+            <div class="card-body">
+              <span class="card-brand-tag">AeroStride</span>
+              <h3 class="card-title">Serena Ace</h3>
+              <div class="card-rating">
+                <span class="stars">★★★★★</span>
+                <span class="review-count">(167)</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-price-wrap">
+                  <span class="card-price">Rs.3,500</span>
+                </div>
+                <button class="card-add" data-title="Serena Ace" data-price="3500" data-img="images_used/nike jordans 0.png" aria-label="Add Serena Ace to cart">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 01-8 0" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 13 Air Icon -->
+          <div class="card" data-category="running" data-price="4800" data-name="Air Icon">
+            <div class="card-badge">Top Pick</div>
+            <figure class="card-figure">
+              <img src="images_used/hero_shoe.png" class="card-img" alt="Air Icon" loading="lazy" />
+              <div class="card-overlay">
+                <button class="btn-quick-view" data-name="Air Icon" data-price="4800" data-img="images_used/hero_shoe.png">Quick View</button>
+              </div>
+            </figure>
+            <div class="card-body">
+              <span class="card-brand-tag">AeroStride</span>
+              <h3 class="card-title">Air Icon</h3>
+              <div class="card-rating">
+                <span class="stars">★★★★★</span>
+                <span class="review-count">(512)</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-price-wrap">
+                  <span class="card-price">Rs.4,800</span>
+                </div>
+                <button class="card-add" data-title="Air Icon" data-price="4800" data-img="images_used/hero_shoe.png" aria-label="Add Air Icon to cart">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 01-8 0" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 14 Torch Runner -->
+          <div class="card" data-category="football" data-price="3200" data-name="Torch Runner">
+            <figure class="card-figure">
+              <img src="images_used/messi shoes 0.png" class="card-img" alt="Torch Runner" loading="lazy" />
+              <div class="card-overlay">
+                <button class="btn-quick-view" data-name="Torch Runner" data-price="3200" data-img="images_used/messi shoes 0.png">Quick View</button>
+              </div>
+            </figure>
+            <div class="card-body">
+              <span class="card-brand-tag">AeroStride</span>
+              <h3 class="card-title">Torch Runner</h3>
+              <div class="card-rating">
+                <span class="stars">★★★★★</span>
+                <span class="review-count">(94)</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-price-wrap">
+                  <span class="card-price">Rs.3,200</span>
+                </div>
+                <button class="card-add" data-title="Torch Runner" data-price="3200" data-img="images_used/messi shoes 0.png" aria-label="Add Torch Runner to cart">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 01-8 0" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 15 Phantom Stride -->
+          <div class="card" data-category="basketball" data-price="2800" data-name="Phantom Stride">
+            <figure class="card-figure">
+              <img src="images_used/kobe bryant sho 0.png" class="card-img" alt="Phantom Stride" loading="lazy" />
+              <div class="card-overlay">
+                <button class="btn-quick-view" data-name="Phantom Stride" data-price="2800" data-img="images_used/kobe bryant sho 0.png">Quick View</button>
+              </div>
+            </figure>
+            <div class="card-body">
+              <span class="card-brand-tag">AeroStride</span>
+              <h3 class="card-title">Phantom Stride</h3>
+              <div class="card-rating">
+                <span class="stars">★★★★★</span>
+                <span class="review-count">(139)</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-price-wrap">
+                  <span class="card-price">Rs.2,800</span>
+                </div>
+                <button class="card-add" data-title="Phantom Stride" data-price="2800" data-img="images_used/kobe bryant sho 0.png" aria-label="Add Phantom Stride to cart">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 01-8 0" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 16 Nova Dash -->
+          <div class="card" data-category="running" data-price="2200" data-name="Nova Dash">
+            <div class="card-badge new-badge">New</div>
+            <figure class="card-figure">
+              <img src="images_used/ishowspeed shoe 1.png" class="card-img" alt="Nova Dash" loading="lazy" />
+              <div class="card-overlay">
+                <button class="btn-quick-view" data-name="Nova Dash" data-price="2200" data-img="images_used/ishowspeed shoe 1.png">Quick View</button>
+              </div>
+            </figure>
+            <div class="card-body">
+              <span class="card-brand-tag">AeroStride</span>
+              <h3 class="card-title">Nova Dash</h3>
+              <div class="card-rating">
+                <span class="stars">★★★★★</span>
+                <span class="review-count">(58)</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-price-wrap">
+                  <span class="card-price">Rs.2,200</span>
+                </div>
+                <button class="card-add" data-title="Nova Dash" data-price="2200" data-img="images_used/ishowspeed shoe 1.png" aria-label="Add Nova Dash to cart">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 01-8 0" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- No results message -->
+        <div class="no-results" id="no-results" style="display: none">
+          <p>No shoes found in this category.</p>
+        </div>
+      </section>
+
+      <!-- ===== FOOTER ===== -->
+      <footer class="footer">
+        <div class="footer-inner">
+          <div class="footer-brand">
+            <svg viewBox="0 0 220 36" height="28" class="logo-svg">
+              <defs>
+                <linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#ff4500" />
+                  <stop offset="100%" stop-color="#ff8c00" />
+                </linearGradient>
+              </defs>
+              <path d="M4 26 Q14 4 34 2 Q20 12 10 24 Z" fill="url(#lg2)" />
+              <path d="M2 30 Q14 8 38 4 Q22 14 12 30 Z" fill="url(#lg2)" opacity="0.45" />
+              <text x="44" y="27" fill="#ffffff" font-family="'Bebas Neue',sans-serif" font-size="24" letter-spacing="6">AEROSTRIDE</text>
+            </svg>
+            <p class="footer-tagline">Step into greatness, every single day.</p>
+            <div class="footer-social">
+              <a href="#" class="social-link" aria-label="Instagram">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="2" width="20" height="20" rx="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                </svg>
+              </a>
+              <a href="#" class="social-link" aria-label="Twitter">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="#hero">Home</a></li>
+              <li><a href="#shop">Shop All</a></li>
+              <li><a href="#shop">New Arrivals</a></li>
+              <li><a href="#shop">Best Sellers</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">Size Guide</a></li>
+              <li><a href="#">Returns</a></li>
+              <li><a href="#">FAQ</a></li>
+              <li><a href="#">Track Order</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Contact</h4>
+            <ul>
+              <li><a href="mailto:info@aerostride.com">info@aerostride.com</a></li>
+              <li><a href="tel:+1234567890">+123 456 7890</a></li>
+              <li><span style="opacity:0.5;font-size:0.8rem">Mon–Sat: 9am–6pm IST</span></li>
+            </ul>
           </div>
         </div>
-        <div class="footer-col">
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="#hero">Home</a></li>
-            <li><a href="#shop">Shop All</a></li>
-            <li><a href="#shop">New Arrivals</a></li>
-            <li><a href="#shop">Best Sellers</a></li>
-          </ul>
+        <div class="footer-bottom">
+          <span>&copy; 2024 AeroStride. All rights reserved.</span>
+          <span>Made with ❤️ for champions</span>
         </div>
-        <div class="footer-col">
-          <h4>Support</h4>
-          <ul>
-            <li><a href="#">Size Guide</a></li>
-            <li><a href="#">Returns</a></li>
-            <li><a href="#">FAQ</a></li>
-            <li><a href="#">Track Order</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Contact</h4>
-          <ul>
-            <li>
-              <a href="mailto:info@aerostride.com">info@aerostride.com</a>
-            </li>
-            <li><a href="tel:+1234567890">+123 456 7890</a></li>
-            <li>
-              <span style="opacity: 0.5; font-size: 0.8rem"
-                >Mon–Sat: 9am–6pm IST</span
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <span>&copy; 2024 AeroStride. All rights reserved.</span>
-        <span>Made with ❤️ for champions</span>
-      </div>
-    </footer>
+      </footer>
+    </main>
 
     <script src="index.js"></script>
   </body>

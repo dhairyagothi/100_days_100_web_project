@@ -20,26 +20,26 @@
 
 <body>
 
-    <div class="app-container">
-        
-        <!-- Header Banner & Theme Toggle -->
-        <header>
-            <div class="brand-section">
-    <h1>Chronos</h1>
-    <p>Premium Local &amp; World Clock Dashboard</p>
-</div>
+<header>
+    <div class="brand-section">
+        <h1>Chronos</h1>
+        <p>Premium Local &amp; World Clock Dashboard</p>
+    </div>
 
-<div class="header-actions">
-    <button
-        id="focusModeBtn"
-        class="btn btn-primary focus-btn"
-        aria-label="Toggle Focus Mode"
-    >
-        Focus Mode
-    </button>
-   <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle visual theme">
-                <!-- Sun Icon (Dark Mode Active: click to go Light) -->
-                <svg id="sunIcon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+    <div class="header-actions">
+        <button
+            id="focusModeBtn"
+            class="btn btn-primary focus-btn"
+            aria-label="Toggle Focus Mode"
+        >
+            Focus Mode
+        </button>
+        
+        <!-- Updated Theme Toggle Button - Matching Focus Mode Style -->
+        <button id="themeToggleBtn" class="btn btn-primary theme-toggle-btn" aria-label="Cycle through light, dark, and auto theme modes">
+            <span class="theme-toggle-content">
+                <!-- Sun Icon (Light Mode Active) -->
+                <svg id="sunIcon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="theme-icon">
                     <circle cx="12" cy="12" r="5" />
                     <line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     <line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -50,16 +50,18 @@
                     <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 </svg>
-                <!-- Moon Icon (Light Mode Active: click to go Dark) -->
-                <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                
+                <!-- Moon Icon (Dark Mode Active) -->
+                <svg id="moonIcon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="theme-icon">
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                 </svg>
-            </button>
-
-</div>            
-            <!-- Sleek Neumorphic Theme Switcher -->
-                   </header>
-
+                
+                <!-- Auto Mode Label -->
+                <span id="autoModeLabel" style="display: none;" class="mode-label">🔄 Auto</span>
+            </span>
+        </button>
+    </div>
+</header>
         <!-- Main Workspace: Large Local Clock + Countdown Timer -->
         <main class="main-dashboard">
             
@@ -272,6 +274,11 @@
     <!-- AUDIO -->
     <audio id="timerSound" src="timer.mp3" preload="auto"></audio>
 
+
     <script src="index.js"></script>
 
+    
+    <script src="theme-system.js"></script>
+    <script src="index.js"></script>
+</body>
 </html>

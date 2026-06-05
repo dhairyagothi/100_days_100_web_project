@@ -126,7 +126,6 @@
             <span>Last Modified</span>
             <strong id="statModified">-</strong>
           </div>
-
           <div class="stat-item">
             <span>Reading Time</span>
             <strong id="statReadTime">-</strong>
@@ -141,13 +140,32 @@
             <span>Characters</span>
             <strong id="statCharacters">-</strong>
           </div>
-
         </div>
       </div>
 
     </section>
+    <section
 
-    <section class="dashboard-grid">
+      id="loadingSection"
+      class="loading-section"
+      style="display:none;"
+      
+    >
+      <div class="loading-card">
+
+        <div class="loader"></div>
+
+        <h2>Analyzing Resume...</h2>
+
+        <p>
+          Evaluating ATS compatibility,
+          skills, projects, and keywords.
+        </p>
+
+      </div>
+    </section>
+
+    <section class="dashboard-grid" id="resultsSection">
 
       <div class="score-card">
 
