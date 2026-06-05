@@ -181,17 +181,38 @@ function loadDashboard() {
   // Top category
   const topEl = document.getElementById('top-category');
   if (summary.top_category) {
-    topEl.innerHTML = `
-      <div style="display:flex; align-items:center; gap:12px;">
-        <div>
-          <div style="font-weight:600; font-size:1.1rem;">${escapeHTML(summary.top_category.name)}</div>
-          <div style="color:var(--text-secondary);">${formatCurrency(summary.top_category.amount)}</div>
-        </div>
-      </div>
-    `;
-  } else {
-    topEl.innerHTML = '<p class="empty-text">No spending data available</p>';
-  }
+    topEl.replaceChildren();
+
+const wrapper = document.createElement('div');
+wrapper.style.display = 'flex';
+wrapper.style.alignItems = 'center';
+wrapper.style.gap = '12px';
+
+const inner = document.createElement('div');
+
+const nameDiv = document.createElement('div');
+nameDiv.style.fontWeight = '600';
+nameDiv.style.fontSize = '1.1rem';
+nameDiv.textContent = summary.top_category.name;
+
+const amountDiv = document.createElement('div');
+amountDiv.style.color = 'var(--text-secondary)';
+amountDiv.textContent = formatCurrency(summary.top_category.amount);
+
+inner.appendChild(nameDiv);
+inner.appendChild(amountDiv);
+wrapper.appendChild(inner);
+topEl.appendChild(wrapper);
+
+} else {
+  topEl.replaceChildren();
+
+  const p = document.createElement('p');
+  p.className = 'empty-text';
+  p.textContent = 'No spending data available';
+
+  topEl.appendChild(p);
+}
 
   // AI Insights
   document.getElementById('insights-box').textContent = generateInsights();
@@ -644,38 +665,89 @@ function populateBudgetCategories() {
     select.innerHTML += `<option value="${escapeHTML(c.name)}">${escapeHTML(c.name)}</option>`;
   });
 }
-
 function renderBudgets() {
   const budgets = getBudgets();
   const container = document.getElementById('budgets-list');
 
+  container.replaceChildren();
+
   if (budgets.length === 0) {
-    container.innerHTML = '<div class="card"><p class="empty-text">No budgets set yet. Add one to start tracking!</p></div>';
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    const p = document.createElement('p');
+    p.className = 'empty-text';
+    p.textContent = 'No budgets set yet. Add one to start tracking!';
+
+    card.appendChild(p);
+    container.appendChild(card);
     return;
   }
 
-  container.innerHTML = budgets.map(b => {
-    const statusClass = b.percentage >= 90 ? 'danger' : b.percentage >= 70 ? 'warning' : '';
-    const statusColor = b.percentage >= 90 ? 'var(--expense-color)' : b.percentage >= 70 ? 'var(--count-color)' : 'var(--income-color)';
-    return `
-      <div class="budget-card">
-        <div class="budget-header">
-          <span class="budget-category">${escapeHTML(b.category)}</span>
-          <button class="btn-icon danger" onclick="window.deleteBdg(${b.id})" title="Delete">🗑️</button>
-        </div>
-        <div class="budget-amounts">
-          <span>Spent: ${formatCurrency(b.spent)}</span>
-          <span>Limit: ${formatCurrency(b.monthly_limit)}</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill ${statusClass}" style="width:${b.percentage}%"></div>
-        </div>
-        <div class="budget-percentage" style="color:${statusColor}">${b.percentage}% used · ${formatCurrency(b.remaining)} remaining</div>
-      </div>
-    `;
-  }).join('');
-}
+  budgets.forEach(b => {
+    const statusClass =
+      b.percentage >= 90 ? 'danger' :
+      b.percentage >= 70 ? 'warning' : '';
 
+    const statusColor =
+      b.percentage >= 90 ? 'var(--expense-color)' :
+      b.percentage >= 70 ? 'var(--count-color)' :
+      'var(--income-color)';
+
+    const card = document.createElement('div');
+    card.className = 'budget-card';
+
+    const header = document.createElement('div');
+    header.className = 'budget-header';
+
+    const category = document.createElement('span');
+    category.className = 'budget-category';
+    category.textContent = b.category;
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'btn-icon danger';
+    deleteBtn.title = 'Delete';
+    deleteBtn.textContent = '🗑️';
+    deleteBtn.addEventListener('click', () => window.deleteBdg(b.id));
+
+    header.appendChild(category);
+    header.appendChild(deleteBtn);
+
+    const amounts = document.createElement('div');
+    amounts.className = 'budget-amounts';
+
+    const spent = document.createElement('span');
+    spent.textContent = `Spent: ${formatCurrency(b.spent)}`;
+
+    const limit = document.createElement('span');
+    limit.textContent = `Limit: ${formatCurrency(b.monthly_limit)}`;
+
+    amounts.appendChild(spent);
+    amounts.appendChild(limit);
+
+    const progressBar = document.createElement('div');
+    progressBar.className = 'progress-bar';
+
+    const progressFill = document.createElement('div');
+    progressFill.className = `progress-fill ${statusClass}`;
+    progressFill.style.width = `${b.percentage}%`;
+
+    progressBar.appendChild(progressFill);
+
+    const percentage = document.createElement('div');
+    percentage.className = 'budget-percentage';
+    percentage.style.color = statusColor;
+    percentage.textContent =
+      `${b.percentage}% used · ${formatCurrency(b.remaining)} remaining`;
+
+    card.appendChild(header);
+    card.appendChild(amounts);
+    card.appendChild(progressBar);
+    card.appendChild(percentage);
+
+    container.appendChild(card);
+  });
+}
 
 //   SECTION 7: SETTINGS  
 
