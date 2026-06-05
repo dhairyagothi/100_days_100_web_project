@@ -1910,5 +1910,14 @@
   "techStack": ["html", "css", "javascript"],
   "difficulty": "intermediate",
   "projectDesc": "A responsive Kanban Board application featuring drag-and-drop task management, task creation, editing, deletion, local storage persistence, and dark/light theme support."
+  },
+  {
+  "projectNo": 210,
+  "projectName": "Image Steganography Tool",
+  "projectType": "Tool",
+  "projectDesc": "A web-based tool that hides and extracts secret messages inside images using steganography techniques.",
+  "techStack": ["tool", "html", "css", "js"],
+  "difficulty": "intermediate",
+  "projectPath": "./public/ImageSteganographyTool/index.html"
 }
 ]
