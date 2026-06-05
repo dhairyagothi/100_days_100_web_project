@@ -362,7 +362,10 @@ const phaseNames = [
     "Waning Crescent"
 ];
 
-const NASA_API_KEY = "DEMO_KEY";
+const NASA_API_KEY =
+  window.NASA_API_KEY ||
+  (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_NASA_API_KEY) ||
+  'DEMO_KEY';
 const NASA_APOD_BASE = "https://api.nasa.gov/planetary/apod";
 const OPENTDB_FACT_URL = "https://opentdb.com/api.php?amount=1&category=29&type=multiple";
 const NASA_NEO_FEED_BASE = "https://api.nasa.gov/neo/rest/v1/feed";

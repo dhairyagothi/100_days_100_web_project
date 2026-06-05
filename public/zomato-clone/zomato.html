@@ -22,7 +22,7 @@
 </head>
 
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
   <header>
     <nav>
@@ -201,7 +201,7 @@ onkeypress="handleLocation(event)" />
           </div>
         </section>
       </div>
-
+ </div>
       <section class="popular-localities">
         <div class="title">
           Popular localities in and around
@@ -707,37 +707,4 @@ function handleLocation(event) {
 </script>
 </body>
 
-        <hr />
-        <section class="end">
-          By continuing past this page, you agree to our Terms of Service,
-          Cookie Policy, Privacy Policy and Content Policies. All trademarks are
-          properties of their respective owners. 2008-2023 © Zomato™ Ltd. All
-          rights reserved.
-        </section>
-        <section class="end">Made by: Kratik Khatri</section>
-      </div>
-    </footer>
 
-    <script src="https://unpkg.com/feather-icons"></script>
-    <script>
-      feather.replace();
-    </script>
-   
-    <script src="accordion.js"></script>
-    <script>
-      function toggleMobileNav() {
-        const nav = document.getElementById('mobileNav');
-        const btn = document.getElementById('hamburgerBtn');
-        nav.classList.toggle('mobile-open');
-        btn.classList.toggle('active');
-      }
-      // Close mobile nav on link click
-      document.querySelectorAll('#mobileNav .nav-item a').forEach(function(link) {
-        link.addEventListener('click', function() {
-          document.getElementById('mobileNav').classList.remove('mobile-open');
-          document.getElementById('hamburgerBtn').classList.remove('active');
-        });
-      });
-    </script>
-  </body>
-</html>

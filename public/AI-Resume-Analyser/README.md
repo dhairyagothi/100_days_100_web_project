@@ -8,15 +8,24 @@ improvement suggestions — no backend or login required.
 🔗 **Live Demo:** [Click here](https://100-days-100-web-project.vercel.app/public/AI-Resume-Analyser/index.html
 
 ## Features
-- 📄 Upload resume in PDF format
+- 📄 Upload resume in PDF, DOCX, and TXT formats
 - 📊 ATS compatibility score with circular progress indicator
-- 🕸️ Radar chart breakdown across Technical Skills, Projects, 
-  Communication, Experience and ATS Keywords
-- 📈 Category-wise insight progress bars
+- 🕸️ Radar chart breakdown across Technical Skills, Projects,
+  Communication, Experience, and ATS Keywords
+- 📈 Dynamic category-wise insight progress bars with percentage scores
 - 💡 AI-powered suggestions to improve your resume
-- 📋 Resume statistics — file type, size, last modified, reading time
+- 📋 Resume statistics:
+  - File type
+  - File size
+  - Last modified date
+  - Reading time
+  - Word count
+  - Character count
+- 📋 Copy AI Suggestions to clipboard with one click
+- ⏳ Resume analysis loading animation for improved user experience
 - 📥 Download analysis report
 - 🌗 Light / Dark mode toggle
+- 🖱️ Drag-and-drop resume upload support
 
 ## Technologies Used
 - HTML5
@@ -37,11 +46,13 @@ improvement suggestions — no backend or login required.
 
 ## Usage
 1. Open the app in your browser
-2. Upload your resume as a PDF file
-3. View your ATS score and radar chart analysis
-4. Check Resume Insights for category-wise breakdown
-5. Read AI Suggestions to improve your resume
-6. Click **Download Report** to save your analysis
+2. Upload a PDF, DOCX, or TXT resume
+3. Wait while the analyzer processes your resume
+4. Review ATS score and radar chart analysis
+5. Check category-wise insight breakdowns
+6. View resume statistics including word and character counts
+7. Copy AI suggestions using the Copy Suggestions button
+8. Download the generated analysis report
 
 ## Contributing
 Contributions are welcome! Please read the 

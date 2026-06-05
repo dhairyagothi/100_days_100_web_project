@@ -74,7 +74,7 @@ html {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 100;
+  z-index: 999;
 }
 
 /* logo name */
@@ -104,6 +104,8 @@ html {
   color: var(--wight);
 }
 
+/* hamburger button */
+.hamburger {
 .header .navbar ul li a:hover {
  box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.3);
   letter-spacing: 0.1rem;
@@ -118,6 +120,40 @@ html {
   cursor: pointer;
   font-size: 3rem;
   display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 3rem;
+  height: 2.4rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+  padding: 0;
+  z-index: 1000;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.hamburger .bar {
+  display: block;
+  width: 100%;
+  height: 0.3rem;
+  background-color: var(--wight);
+  border-radius: 0.3rem;
+  transition: transform 0.35s ease, opacity 0.35s ease, width 0.35s ease;
+  transform-origin: left center;
+}
+
+/* animated X when open */
+.hamburger.open .bar:nth-child(1) {
+  transform: rotate(42deg) translateY(-0.15rem);
+}
+.hamburger.open .bar:nth-child(2) {
+  opacity: 0;
+  width: 0;
+}
+.hamburger.open .bar:nth-child(3) {
+  transform: rotate(-42deg) translateY(0.15rem);
 }
 
 /* header section end  */
@@ -525,42 +561,81 @@ textarea {
     font-size: 50%;
   }
 
-  .header .fa-bars {
-    display: block;
+  /* reduce header padding on mobile so hamburger is visible */
+  .header {
+    padding: 1.8rem 2rem;
+  }
+
+  .hamburger {
+    display: flex;
   }
 
   .header .navbar {
     position: fixed;
-    top: -120%;
+    top: 0;
     left: 0;
-    height: auto;
-    width: 100%;
-    background-color: var(--wight);
-    z-index: 1000;
-    border-top: 0.1rem solid rgba(0, 0, 0, 0.3);
+    height: 100vh;
+    width: 75vw;
+    max-width: 32rem;
+    background: linear-gradient(160deg, #1a3d12 0%, #2d6b1f 60%, #3e8c2a 100%);
+    z-index: 700;
+    border-right: 0.2rem solid rgba(101, 183, 65, 0.4);
+    box-shadow: 0.6rem 0 2rem rgba(0, 0, 0, 0.4);
+    transform: translateX(-110%);
+    transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+    padding-top: 8rem;
+  }
+
+  .header .navbar.nav-toggle {
+    transform: translateX(0);
   }
 
   .header .navbar ul {
     height: 100%;
     width: 100%;
     flex-flow: column;
+    align-items: flex-start;
+    padding: 0 2.5rem;
+    gap: 0.5rem;
   }
 
   .header .navbar ul li {
-    margin: 1rem 0;
+    margin: 0;
+    width: 100%;
   }
 
   .header .navbar ul li a {
-    font-size: 2.5rem;
-    color: var(--black);
+    display: flex;
+    align-items: center;
+    font-size: 1.8rem;
+    color: #e8f5e2;
+    padding: 1.2rem 1.5rem;
+    border-radius: 0.8rem;
+    letter-spacing: 0.05rem;
+    transition: background 0.2s ease, color 0.2s ease, padding-left 0.2s ease;
   }
 
-  .header .fa-time {
-    transform: rotate(180deg);
+  .header .navbar ul li a:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    padding-left: 2.2rem;
   }
 
-  .header .nav-toggle {
-    top: 5.8rem;
+  /* overlay — sits above page content but below header/hamburger */
+  .nav-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(3px);
+    z-index: 500;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+
+  .nav-overlay.active {
+    display: block;
+    opacity: 1;
   }
 
   /* home media query  */
@@ -702,43 +777,47 @@ textarea {
   right: 24px;
   z-index: 9999;
 
-  padding: 10px 20px;
+  padding: 8px 16px;
 
-  border-radius: 50px;
+  border-radius: 8px;
 
-  background: linear-gradient(135deg, #00c853, #64dd17);
+  background: #1e293b;
 
-  color: white;
+  color: #3b82f6;
   text-decoration: none;
 
   font-size: 0.9rem;
   font-weight: bold;
   font-family: Arial, Helvetica, sans-serif;
 
-  border: 2px solid white;
+  border: 1px solid #3b82f6;
 
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
 
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .project-back-button:hover {
   transform: translateY(-3px) scale(1.05);
-
-  background: linear-gradient(135deg, #64dd17, #00e676);
-
+  background: #3b82f6;
+  color: #fff;
   box-shadow: 0 14px 30px rgba(100, 221, 23, 0.4);
 }
 
 /* MOBILE */
 @media (max-width: 768px) {
   .project-back-button {
-    top: 18px;
-    right: 18px;
-
-    padding: 8px 16px;
-
+    top: auto;
+    bottom: 20px;
+    right: 50%;
+    transform: translateX(50%);
+    padding: 8px 20px;
     font-size: 0.75rem;
+    z-index: 9999;
+  }
+
+  .project-back-button:hover {
+    transform: translateX(50%) translateY(-3px) scale(1.05);
   }
 }
 
