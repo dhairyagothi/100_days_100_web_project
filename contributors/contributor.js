@@ -189,53 +189,49 @@ let allContributors = [];
 let filteredContributors = [];
 
 async function fetchContributors() {
-  const contributorsContainer = document.getElementById("contributors");
-  const contributorCountSpan = document.getElementById("contributorCount");
-  const errorBox = document.getElementById("contributorsError");
-  const errorMessage = document.getElementById("contributorsErrorMessage");
-  const loading = document.getElementById("contributorsLoading");
+    const contributorsContainer = document.getElementById("contributors");
+    const contributorCountSpan = document.getElementById("contributorCount");
+    const errorBox = document.getElementById("contributorsError");
+    const loading = document.getElementById("contributorsLoading");
 
-  loading.classList.remove("hidden");
-  errorBox.classList.add("hidden");
-  contributorsContainer.innerHTML = "";
+    loading?.classList.remove("hidden");
+    errorBox?.classList.add("hidden");
 
-  try {
-    const cached = loadCache("contributors-cache");
-    if (cached) {
-      allContributors = cached;
-      filteredContributors = [...cached];
-      contributorCountSpan.textContent = cached.length;
-      renderContributors(filteredContributors);
-      loading.classList.add("hidden");
-      return;
+    try {
+        let page = 1;
+        allContributors = []; // uses global, no `let`
+
+        while (true) {
+            const response = await fetch(
+                `https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}/contributors?per_page=100&page=${page}`
+            );
+
+            if (!response.ok) throw new Error("Failed to fetch contributors");
+
+            const data = await response.json();
+            if (!data.length) break;
+
+            allContributors = [...allContributors, ...data];
+            page++;
+        }
+
+        filteredContributors = [...allContributors];
+
+        if (contributorCountSpan) contributorCountSpan.textContent = allContributors.length;
+
+        const totalCommits = allContributors.reduce((sum, c) => sum + c.contributions, 0);
+        const totalCommitsEl = document.getElementById('totalCommits');
+        if (totalCommitsEl) totalCommitsEl.textContent = totalCommits.toLocaleString();
+
+        renderContributors(filteredContributors);
+
+    } catch (error) {
+        console.error("Error fetching contributors:", error);
+        errorBox?.classList.remove("hidden");
+        if (contributorsContainer) contributorsContainer.innerHTML = "<p style='color: #ff4444;'>Failed to load contributors.</p>";
+    } finally {
+        loading?.classList.add("hidden");
     }
-
-    const contributors = await githubFetch(
-      `${GITHUB_API_BASE}/repos/${window.REPO_OWNER}/${window.REPO_NAME}/contributors?per_page=100`,
-    );
-
-    saveCache("contributors-cache", contributors);
-    contributorCountSpan.textContent = contributors.length;
-
-    const totalCommits = contributors.reduce(
-      (sum, c) => sum + c.contributions,
-      0,
-    );
-    const totalCommitsEl = document.getElementById("totalCommits");
-    if (totalCommitsEl) {
-      totalCommitsEl.textContent = totalCommits.toLocaleString();
-    }
-
-    allContributors = contributors;
-    filteredContributors = [...contributors];
-    renderContributors(filteredContributors);
-  } catch (error) {
-    errorBox.classList.remove("hidden");
-    errorMessage.textContent = error.message;
-    contributorsContainer.innerHTML = "";
-  } finally {
-    loading.classList.add("hidden");
-  }
 }
 
 function renderContributors(data) {
@@ -407,9 +403,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   searchInput.addEventListener("input", (e) => {
     const value = e.target.value.toLowerCase();
-    filteredContributors = allContributors.filter((c) =>
-      c.login.toLowerCase().includes(value),
-    );
+    if (!value) {
+      filteredContributors = [...allContributors];
+    } else {
+      filteredContributors = allContributors.filter((c) =>
+        c.login && c.login.toLowerCase().includes(value)
+      );
+    }
     renderContributors(filteredContributors);
   });
 
