@@ -14,7 +14,7 @@ body {
 	height: 100vh;
 	background: linear-gradient(to bottom, #87ceeb, #ffffff); /* sky background */
 	overflow: hidden;
-	background: url("bg-forest.jpg");
+	background: url("./assets/bg-forest.jpg");
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center center;
@@ -35,7 +35,7 @@ body {
 	left: 0;
 	width: 100%;
 	height: 400px;
-	background: url("trees-1.png")
+	background: url("./assets/trees-1.png")
 		no-repeat;
 	background-size: cover;
 	background-position: bottom right;
@@ -71,19 +71,19 @@ body {
 
 /* Idle state */
 #hero.idle-right {
-	background-image: url("idle-back.png");
+	background-image: url("./assets/idle-back.png");
 	background-position: 0 0;
 }
 
 /* Idle state */
 #hero.idle-left {
-	background-image: url("idle.png");
+	background-image: url("./assets/idle.png");
 	background-position: 0 0;
 }
 
 /* Running right */
 #hero.running-right {
-	background-image: url("running-back.png");
+	background-image: url("./assets/running-back.png");
 	animation: runRight 1s steps(6) infinite;
 }
 
@@ -98,7 +98,7 @@ body {
 
 /* Running left */
 #hero.running-left {
-	background-image: url("running.png");
+	background-image: url("./assets/running.png");
 	animation: runLeft 1s steps(6) infinite;
 }
 
@@ -174,7 +174,7 @@ body {
 	position: absolute;
 	width: 50px;
 	height: 50px;
-	background-image: url("bird.png");
+	background-image: url("./assets/bird.png");
 	background-size: cover;
 }
 
@@ -203,7 +203,7 @@ body {
 	width: 100px;
 	height: 100%;
 	animation: MoveUpDown 2s cubic-bezier(0.95, 0.05, 0.795, 0.035) infinite;
-	background: url("pillar.png")
+	background: url("./assets/pillar.png")
 		repeat-y;
 	z-index: 0;
 	bottom: 0;
@@ -245,7 +245,7 @@ body {
 	left: 0;
 	width: 100%;
 	height: 40px;
-	background: url("Grass.png")
+	background: url("./assets/Grass.png")
 		repeat-x;
 }
 
@@ -264,7 +264,7 @@ body {
 	background-color: #bbb;
 	border-radius: 50%;
 	top: calc(50% + 300px);
-	background: url("saw.png");
+	background: url("./assets/saw.png");
 	background-size: cover;
 	z-index: 0;
 }
@@ -311,13 +311,13 @@ body {
 }
 
 .bush {
-	background: url("bush.png");
+	background: url("./assets/bush.png");
 	background-position: top center;
 	margin-top: -20px;
 }
 
 .monster {
-	background: url("bush-monster.png");
+	background: url("./assets/bush-monster.png");
 	margin-top: -120px;
 }
 
@@ -393,7 +393,7 @@ body {
 	top: calc(50% - 0px);
 	left: 10000px;
 	margin-left: -140px;
-	background-image: url("house.png");
+	background-image: url("./assets/house.png");
 	background-size: cover;
 	background-repeat: no-repeat;
 	animation: lights 3s infinite;

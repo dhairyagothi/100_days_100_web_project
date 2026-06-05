@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro With Miu - Electronjs</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+  <body>
+    <div class="app-wrapper">
+
+      <div class="title-bar">
+        <div class="title-left">
+          <img class="app-logo" src="assets/icon.png" alt="Logo">
+          <span class="app-title">Pomodoro with Miu</span>
+        </div>
+        <div class="window-buttons">
+          <img id="min-btn" src="assets/min.png" alt="Minimize">
+          <img id="exit-btn" src="assets/exit.png" alt="Close">
+        </div>
+      </div>
+
+      <div class="main-body">
+        <div class="image-body">
+          <img id="cat" src="" alt="Animated Cat">
+        </div>
+        <div class="content-container">
+          <div class="home-controls">
+            <button class="image-button">Work</button>
+            <button class="image-button">Break</button>
+          </div>
+          <p id="encouragement-text">You can do it!</p>
+          <h1 class="timer">25:00</h1>
+          <button class="image-button" id="start-btn">Start</button>
+        </div>
+      </div>
+
+      <audio id="meow-sound" src="assets/meow.mp3" preload="auto"></audio>
+
+      <div class="electron-note">
+        <p>🖥️ This is a browser preview. The full desktop app is built with
+        <strong>Electron.js</strong> —
+        <a href="https://github.com/aayushirajesh/Pomodoro-With-Miu" target="_blank">
+          download it here
+        </a></p>
+
+        <details class="electron-build-info">
+          <summary>⚡ Want to build your own Electron app?</summary>
+          <ol>
+            <li>Install Node.js, then run <code>npm init</code> in your project folder</li>
+            <li>Install Electron: <code>npm install electron --save-dev</code></li>
+            <li>Create a <code>main.js</code> that opens a BrowserWindow loading your HTML</li>
+            <li>Add <code>"start": "electron ."</code> to your <code>package.json</code> scripts</li>
+            <li>Run <code>npm start</code> to launch your desktop app!</li>
+            <li>To package it as an installer, use
+              <a href="https://www.electronforge.io" target="_blank">Electron Forge</a>:
+              <code>npm install @electron-forge/cli --save-dev</code>
+            </li>
+          </ol>
+          <p>📚 Learn more at
+            <a href="https://www.electronjs.org" target="_blank">electronjs.org</a> ·
+            <a href="https://www.electronforge.io" target="_blank">electronforge.io</a>
+          </p>
+        </details>
+      </div>
+
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

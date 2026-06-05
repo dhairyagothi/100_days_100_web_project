@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Random Advice Generator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="advice-card">
+      <h1 class="advice-header">Advice #<span id="adviceId">000</span></h1>
+
+      <p class="advice-quote">"Loading inspiration..."</p>
+
+      <div class="divider">
+        <span class="line"></span>
+        <span class="pause-icon">||</span>
+        <span class="line"></span>
+      </div>
+
+      <footer class="action-bar">
+        <a
+          id="tweetBtn"
+          class="action-btn tweet-btn"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Share this on X"
+        >
+          <svg viewBox="0 0 24 24" class="icon-svg">
+            <path
+              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+            />
+          </svg>
+        </a>
+
+        <button
+          id="diceBtn"
+          class="action-btn dice-btn"
+          title="Roll for new advice"
+        >
+          <svg viewBox="0 0 24 24" class="icon-svg dice-icon">
+            <rect
+              x="3"
+              y="3"
+              width="18"
+              height="18"
+              rx="3"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+            <circle cx="8" cy="8" r="1.5" fill="currentColor" />
+            <circle cx="16" cy="16" r="1.5" fill="currentColor" />
+            <circle cx="8" cy="16" r="1.5" fill="currentColor" />
+            <circle cx="16" cy="8" r="1.5" fill="currentColor" />
+            <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+          </svg>
+        </button>
+      </footer>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
