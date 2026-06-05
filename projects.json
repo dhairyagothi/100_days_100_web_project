@@ -1896,23 +1896,19 @@
   },
   {
     "projectNo": 208,
-    "projectName": "Rock_Paper_Scissors",
+    "projectName": "crossword puzzle game",
     "projectType": "Game",
-    "projectDesc": "A classic Rock Paper Scissors game built with HTML, CSS, and JavaScript.",
+    "projectDesc": "A classic crossword puzzle game built with HTML, CSS, and JavaScript.",
     "techStack": ["ui","game","html","css","js"],
     "difficulty": "intermediate",
-    "projectPath": "./public/Rock_Paper_Scissors/index.html"
+    "projectPath": "./public/CrosswordPuzzleGame/index.html"
   },
   {
   "projectNo": 209,
   "projectName": "Kanban Board",
   "projectPath": "./public/Kanban_Board/index.html",
-  "techStack": [
-    "html",
-    "css",
-    "javascript"
-  ],
+  "techStack": ["html", "css", "javascript"],
   "difficulty": "intermediate",
   "projectDesc": "A responsive Kanban Board application featuring drag-and-drop task management, task creation, editing, deletion, local storage persistence, and dark/light theme support."
-},
+}
 ]

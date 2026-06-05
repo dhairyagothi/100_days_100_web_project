@@ -1,6 +1,278 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Image to Text Converter</title>
+
+  <link rel="icon" href="../favv.png" type="image/x-icon" />
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- OCR -->
+  <script src="https://unpkg.com/tesseract.js@4.0.1/dist/tesseract.min.js"></script>
+
+  <!-- PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+    }
+
+    .glass {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .glow {
+        box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(50px);
+      opacity: 0.5;
+      z-index: -1;
+      animation: float 18s ease-in-out infinite;
+    }
+
+    .blob1 {
+      width: 260px;
+      height: 260px;
+      background: #3b82f6;
+      top: -50px;
+      left: -80px;
+    }
+
+    .blob2 {
+      width: 300px;
+      height: 300px;
+      background: #10b981;
+      bottom: -80px;
+      right: -100px;
+      animation-delay: 2s;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 999px;
+    }
+    html,
+    body {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    }
+    * {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+    will-change: scroll-position;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-emerald-900 flex items-center justify-center p-5 relative overflow-x-hidden overflow-y-auto">
+
+
+  <!-- Main Container -->
+  <div class="glass glow w-full max-w-6xl rounded-3xl p-6 md:p-10 text-white shadow-2xl">
+
+    <!-- Header -->
+    <div class="text-center mb-10">
+
+      <h1 class="text-5xl font-extrabold mb-4">
+        Image to Text Converter
+      </h1>
+
+      <p class="text-slate-200 max-w-2xl mx-auto">
+        Extract text instantly from images and PDF documents using AI-powered OCR technology.
+      </p>
+
+    </div>
+
+    <!-- Upload Section -->
+    <div id="dropArea"
+      class="border-2 border-dashed border-white/30 rounded-3xl p-10 text-center hover:bg-white/10 transition duration-300 cursor-pointer">
+
+      <div class="text-6xl mb-4">
+        📄
+      </div>
+
+      <h2 class="text-2xl font-bold mb-2">
+        Drag & Drop Files
+      </h2>
+
+      <p class="text-slate-300 mb-6">
+        Supports JPG, PNG, WEBP & PDF
+      </p>
+
+      <input type="file" id="fileInput" accept="image/*,.pdf" class="hidden">
+
+      <button id="browseBtn"
+        class="bg-blue-500 hover:bg-blue-700 px-8 py-3 rounded-xl font-semibold transition duration-300 shadow-lg">
+        Browse File
+      </button>
+
+      <p id="fileName" class="mt-4 text-emerald-300 font-medium"></p>
+
+    </div>
+
+    <!-- Controls -->
+    <div class="grid md:grid-cols-3 gap-4 mt-8">
+
+      <div class="md:col-span-2">
+
+        <label class="font-semibold block mb-2">
+          OCR Language
+        </label>
+
+        <select id="languageSelect"
+          class="w-full p-4 rounded-xl bg-white/20 border border-white/20 outline-none text-white">
+
+          <option value="eng" class="text-black">English</option>
+          <option value="hin" class="text-black">Hindi</option>
+          <option value="ben" class="text-black">Bengali</option>
+          <option value="spa" class="text-black">Spanish</option>
+          <option value="fra" class="text-black">French</option>
+          <option value="deu" class="text-black">German</option>
+
+        </select>
+
+      </div>
+
+      <div class="flex items-end">
+
+        <button onclick="convertFile()"
+          class="w-full bg-emerald-500 hover:bg-emerald-700 py-4 rounded-xl font-bold transition duration-300 shadow-lg">
+          Extract Text
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- Progress -->
+    <div class="mt-6 hidden" id="progressContainer">
+
+      <div class="flex justify-between mb-2">
+        <span>OCR Progress</span>
+        <span id="progressText">0%</span>
+      </div>
+
+      <div class="w-full bg-white/10 rounded-full h-3 overflow-hidden">
+        <div id="progressBar"
+          class="bg-emerald-400 h-full w-0 transition-all duration-300 rounded-full"></div>
+      </div>
+
+    </div>
+
+    <!-- Loader -->
+    <div id="loader" class="hidden text-center mt-6 text-lg font-semibold text-emerald-300">
+      Processing your file...
+    </div>
+
+    <!-- Output -->
+    <div class="grid lg:grid-cols-2 gap-6 mt-10">
+
+      <!-- Extracted Text -->
+      <div class="glass rounded-2xl p-5">
+
+        <div class="flex justify-between items-center mb-4">
+
+          <h2 class="text-2xl font-bold">
+            Extracted Text
+          </h2>
+
+          <div class="flex gap-2">
+
+            <button id="copyBtn"
+              class="bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm font-medium">
+              Copy
+            </button>
+
+            <button id="clearBtn"
+              class="bg-red-500 hover:bg-red-700 px-4 py-2 rounded-lg text-sm font-medium">
+              Clear
+            </button>
+
+          </div>
+
+        </div>
+
+        <div id="output"
+          class="bg-black/20 rounded-xl p-4 h-96 overflow-auto whitespace-pre-wrap text-slate-100 border border-white/10">
+          Upload a file to begin OCR...
+        </div>
+
+        <button id="downloadBtn"
+          class="hidden mt-4 w-full bg-emerald-500 hover:bg-emerald-700 py-3 rounded-xl font-semibold">
+          Download Text
+        </button>
+
+      </div>
+
+      <!-- Preview -->
+      <div class="glass rounded-2xl p-5">
+
+        <h2 class="text-2xl font-bold mb-4">
+          File Preview
+        </h2>
+
+        <div
+          class="bg-black/20 rounded-xl border border-white/10 min-h-[400px] flex items-center justify-center overflow-hidden">
+
+          <img id="imagePreview"
+            class="hidden rounded-xl max-h-96 w-full object-contain p-4"
+            src="#"
+            alt="Preview">
+
+          <canvas id="pdfCanvas"
+            class="hidden w-full rounded-xl">
+          </canvas>
+
+          <p id="previewPlaceholder" class="text-slate-300">
+            Preview will appear here
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OCR Studio - Extract, Listen & Download</title>

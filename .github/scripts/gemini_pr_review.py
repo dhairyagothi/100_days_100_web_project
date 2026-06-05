@@ -10,7 +10,10 @@ GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")
 EVENT_PATH = os.environ.get("GITHUB_EVENT_PATH")
 
 if not GEMINI_API_KEY:
+
+
     print("Notice: GEMINI_API_KEY environment variable is not set. Skipping AI review (this is expected for PRs from forks).")
+
     sys.exit(0)
 
 if not GITHUB_TOKEN:

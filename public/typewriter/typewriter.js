@@ -930,3 +930,49 @@ if (importTxtBtn && txtFileInput) {
     reader.readAsText(file);
   });
 }
+/* ---------- Add Text Feature Implementation Fix ---------- */
+document.addEventListener("DOMContentLoaded", () => {
+  const addTextBtn = document.getElementById("addTextBtn");
+  const userInput = document.getElementById("userInput");
+
+  if (addTextBtn && userInput) {
+    addTextBtn.addEventListener("click", () => {
+      const textToAppend = userInput.value;
+
+      if (textToAppend.trim() !== "") {
+        // Append input value to the primary document paper layout string
+        paperContent += textToAppend;
+
+        // Reset cursor back to the end of the text stream
+        cursorPos = 0;
+
+        // Re-render paper document sheet with cursor placement alignment
+        renderPaperWithCursor();
+
+        // Update dashboard words metrics and copy options visibility state
+        updateCopyButtonState();
+        updateCounters();
+
+        // Play click feedback sound indicator
+        playReturn();
+
+        // Clear out the input target grid value and focus back
+        userInput.value = "";
+        userInput.focus();
+
+        showPdfToast("Text appended to paper successfully!");
+      } else {
+        showPdfToast("Please enter some text first!", false);
+      }
+    });
+
+    // Also support pressing the "Enter" key inside the input box to trigger the add text feature
+    userInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        e.stopPropagation();
+        addTextBtn.click();
+      }
+    });
+  }
+});
