@@ -1,5 +1,5 @@
 // Localized State Management Initialization Loop
-let tasks = JSON.parse(localStorage.getItem("eisenhower-tasks")) || [];
+let tasks = (function(){ try { return JSON.parse(localStorage.getItem("eisenhower-tasks")); } catch(e) { return null; } })() || [];
 
 // Target Selection Handles
 const taskInput = document.getElementById("taskInput");
