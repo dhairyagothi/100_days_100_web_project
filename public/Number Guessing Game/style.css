@@ -38,7 +38,7 @@ h1{
 }
 
 p{
-    margin-top: 15px;
+    margin-top: 25px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     text-align: center;
 }
@@ -63,7 +63,7 @@ p{
     color: lightcoral;
     font-size: 30px;
     text-align: center;
-    margin-top: 20px;
+    margin-top: 25px;
     border-style: none;
     border: 5px solid coral;
 }
