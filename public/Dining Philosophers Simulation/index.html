@@ -8,7 +8,7 @@
 
 <h1>Dining Philosophers Simulation</h1>
 <div class="main-container">
-    <div class="controls">        <button onclick="startSim()">Start Simulation</button>        <button onclick="window.location.reload()">Reset</button>        <br><br>        <input type="checkbox" id="deadlockMode"> <b>Force Deadlock Mode</b>        <p id="alert" class="deadlock-alert">⚠ DEADLOCK DETECTED! Everyone is waiting forever.</p>    </div>
+    <div class="controls">        <button type="button" onclick="startSim()">Start Simulation</button>        <button onclick="window.location.reload()">Reset</button>        <br><br>        <input type="checkbox" id="deadlockMode"> <b>Force Deadlock Mode</b>        <p id="alert" class="deadlock-alert">⚠ DEADLOCK DETECTED! Everyone is waiting forever.</p>    </div>
 
     <div class="table" id="table">
         <!-- 5 Philosophers -->        <div id="p0" class="phil thinking">P0<br>Think</div>        <div id="p1" class="phil thinking">P1<br>Think</div>        <div id="p2" class="phil thinking">P2<br>Think</div>        <div id="p3" class="phil thinking">P3<br>Think</div>        <div id="p4" class="phil thinking">P4<br>Think</div>
