@@ -849,6 +849,18 @@ document.querySelectorAll('.mode-btn').forEach((btn) => {
   });
 });
 
+document.querySelectorAll('.theme-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.theme-btn').forEach((b) => b.classList.remove('active'));
+    btn.classList.add('active');
+    const theme = btn.dataset.theme;
+    document.body.dataset.theme = theme;
+    try {
+      localStorage.setItem('2048theme', theme);
+    } catch (_) {}
+  });
+});
+
 /* Keyboard */
 const KEY_MAP = {
   ArrowLeft: 'left',
@@ -924,6 +936,16 @@ document.addEventListener('visibilitychange', () => {
 loadStats();
 best = loadBest();
 init(true);
+
+// Restore saved theme
+try {
+  const savedTheme = localStorage.getItem('2048theme') || 'classic';
+  document.body.dataset.theme = savedTheme;
+  document.querySelectorAll('.theme-btn').forEach((b) => {
+    b.classList.toggle('active', b.dataset.theme === savedTheme);
+  });
+} catch (_) {}
+
 // Restore zen-mode class if saved mode was zen
 if (mode === 'zen') {
   document.getElementById('g').classList.add('zen-mode');
