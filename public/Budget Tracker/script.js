@@ -649,7 +649,7 @@ buttons.forEach((button) => {
 ========================================================= */
 
 (function init() {
-  transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+  transactions = (function(){ try { return JSON.parse(localStorage.getItem("transactions")); } catch(e) { return null; } })() || [];
 
   monthlyBudget = Number(localStorage.getItem("budget")) || 0;
 
