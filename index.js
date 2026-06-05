@@ -409,12 +409,30 @@ function getAllTechnologies() {
 let bookmarkedProjects = [];
 let recentProjects = [];
 
-try {
-  bookmarkedProjects = JSON.parse(localStorage.getItem('bookmarkedProjects')) || [];
-  recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
-} catch (error) {
-  console.warn('localStorage is not available or access is denied:', error.message);
+function getStoredArray(key) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key));
+    return Array.isArray(value) ? value : [];
+  } catch {
+    try {
+      localStorage.removeItem(key);
+    } catch {
+      // ignore removal failures
+    }
+    return [];
+  }
 }
+
+function safeSetLocalStorage(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.warn(`Could not save ${key} due to localStorage restrictions`, error.message);
+  }
+}
+
+bookmarkedProjects = getStoredArray('bookmarkedProjects');
+recentProjects = getStoredArray('recentProjects');
 
 let showAllBookmarks = false;
 let showAllRecent = false;
@@ -448,7 +466,7 @@ function migrateRecentProjects() {
     return project;
   });
   
-  localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+  safeSetLocalStorage('recentProjects', recentProjects);
 }
 
 // Migrate on load
@@ -463,7 +481,7 @@ function cleanupExpiredRecentProjects() {
   recentProjects = getRecentProjectsWithinWindow();
   
   if (recentProjects.length !== initialLength) {
-    localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+    safeSetLocalStorage('recentProjects', recentProjects);
     renderRecentProjects();
   }
 }
@@ -911,15 +929,8 @@ function toggleBookmark(project) {
     showToast('Project bookmarked');
   }
 
-  localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
-
+  safeSetLocalStorage('bookmarkedProjects', bookmarkedProjects);
   updateBookmarkURL();
-
-  try {
-    localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
-  } catch (error) {
-    console.warn('Could not save bookmark due to localStorage restrictions');
-  }
   renderBookmarks();
   renderGrid();
   renderRecentProjects();
@@ -952,10 +963,7 @@ function loadBookmarksFromURL() {
     bookmarkIds.includes(project[0])
   );
 
-  localStorage.setItem(
-    'bookmarkedProjects',
-    JSON.stringify(bookmarkedProjects)
-  );
+  safeSetLocalStorage('bookmarkedProjects', bookmarkedProjects);
 }
 
 function getRecentProjectsWithinWindow() {
