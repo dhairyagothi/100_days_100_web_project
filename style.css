@@ -490,6 +490,92 @@ body.light-mode .navbar,
   font-size: 0.75rem;
 }
 
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+#random-challenge {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.25rem;
+  margin: 2rem auto;
+}
+
+#random-challenge .projects-inner {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.challenge-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  background: var(--bg-primary);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 24px 54px rgba(0, 0, 0, 0.16);
+}
+
+.challenge-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.challenge-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.challenge-status {
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.challenge-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.challenge-title {
+  font-size: clamp(1.3rem, 2vw, 1.75rem);
+  margin: 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: rgba(59, 130, 246, 0.12);
+  text-transform: capitalize;
+}
+
+.badge.secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+}
+
 /* ── Stats Dashboard Button ──────────────────────────────── */
 .btn-stats {
   display: inline-flex;

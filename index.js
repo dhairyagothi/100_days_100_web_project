@@ -78,6 +78,7 @@ function hydrateProjects(data) {
     day: `Day ${project.projectNo}`,
     projectName: project.projectName,
     projectPath: project.projectPath,
+    projectType: project.projectType,
     techStack: project.techStack,
     difficulty: project.difficulty,
     projectDesc: project.projectDesc,
@@ -1885,6 +1886,107 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 });
+
+// --- Random Project Challenge ---
+function getRandomChallengeProject(projects, excludeIndex = -1) {
+  if (!Array.isArray(projects) || !projects.length) return null;
+  if (projects.length === 1) return { project: projects[0], index: 0 };
+
+  let index = excludeIndex;
+  while (index === excludeIndex) {
+    index = Math.floor(Math.random() * projects.length);
+  }
+
+  return { project: projects[index], index };
+}
+
+function getChallengeCategory(project) {
+  if (!project) return "";
+  if (project.projectType) return project.projectType;
+  if (Array.isArray(project.techStack) && project.techStack.length)
+    return project.techStack[0];
+  if (typeof project.techStack === "string") return project.techStack;
+  return "";
+}
+
+function updateRandomChallengeCard(project) {
+  const nameNode = document.getElementById("challenge-name");
+  const difficultyNode = document.getElementById("challenge-difficulty");
+  const categoryNode = document.getElementById("challenge-category");
+  const linkNode = document.getElementById("challenge-link");
+
+  if (!nameNode || !difficultyNode || !categoryNode || !linkNode) return;
+
+  nameNode.textContent =
+    project.projectName || project.name || project.title || "Random Project";
+  difficultyNode.textContent = project.difficulty || "Unknown";
+
+  const category = getChallengeCategory(project);
+  if (category) {
+    categoryNode.textContent = category;
+    categoryNode.classList.remove("hidden");
+  } else {
+    categoryNode.classList.add("hidden");
+  }
+
+  const { demoUrl } = resolveProjectUrls(
+    project.day,
+    project.projectName,
+    project.projectPath || project.demo || project.link || project.path,
+    project.techStack,
+  );
+
+  linkNode.href = demoUrl || "#";
+  linkNode.target = "_blank";
+  linkNode.rel = "noopener noreferrer";
+}
+
+function initRandomProjectChallenge() {
+  const randomBtn = document.getElementById("random-challenge-btn");
+  const tryAnotherBtn = document.getElementById("try-another-btn");
+  const challengeContent = document.getElementById("challenge-content");
+  if (!randomBtn || !challengeContent) return;
+
+  let lastIndex = -1;
+
+  const chooseRandom = (projects) => {
+    if (!Array.isArray(projects) || !projects.length) return;
+    const result = getRandomChallengeProject(projects, lastIndex);
+    if (!result) return;
+
+    lastIndex = result.index;
+    updateRandomChallengeCard(result.project);
+    challengeContent.classList.remove("hidden");
+    randomBtn.classList.add("hidden");
+  };
+
+  const pickProject = async () => {
+    const projects = Array.isArray(PROJECTS) && PROJECTS.length
+      ? PROJECTS
+      : await loadProjects();
+    chooseRandom(projects);
+  };
+
+  randomBtn.addEventListener("click", async () => {
+    try {
+      await pickProject();
+    } catch (error) {
+      console.error("Random challenge failed:", error);
+    }
+  });
+
+  if (tryAnotherBtn) {
+    tryAnotherBtn.addEventListener("click", async () => {
+      try {
+        await pickProject();
+      } catch (error) {
+        console.error("Try another challenge failed:", error);
+      }
+    });
+  }
+}
+
+document.addEventListener("DOMContentLoaded", initRandomProjectChallenge);
 
 (() => {
   const initDirectMobileMenu = () => {
