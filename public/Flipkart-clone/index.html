@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flipkart</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="nav.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- ─── NAVBAR ─── -->
+    <nav class="navbar">
+      <div class="nav-left">
+        <a href="index.html" class="logo-section">
+          <img src="logo.png" alt="Flipkart logo" />
+          <div>
+            <h2>Flipkart</h2>
+            <span>Explore <em>Plus</em> ✦</span>
+          </div>
+        </a>
+
+        <div class="menu">
+          <div class="menu-item">
+            <i class="fa-solid fa-bolt"></i>
+            Minutes
+          </div>
+          <div class="menu-item">
+            <i class="fa-solid fa-plane"></i>
+            Travel
+          </div>
+          <div class="menu-item">
+            <i class="fa-solid fa-basket-shopping"></i>
+            Grocery
+          </div>
+        </div>
+      </div>
+
+      <!-- SEARCH -->
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input
+          type="text"
+          placeholder="Search for Products, Brands and More"
+          aria-label="Search products"
+        />
+      </div>
+
+      <div class="nav-right">
+        <a href="signup.html" class="right-item login">
+          <i class="fa-regular fa-user"></i>
+          <span>Login</span>
+        </a>
+
+        <div class="right-item">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span>Cart</span>
+        </div>
+
+        <div class="right-item">
+          <i class="fa-solid fa-store"></i>
+          <span>Become a Seller</span>
+        </div>
+
+        <div class="right-item">
+          <i class="fa-solid fa-ellipsis-vertical"></i>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ─── CATEGORIES ─── -->
+    <div class="categories-container">
+      <div class="category-item">
+        <i class="fa-solid fa-user"></i>
+        <span>For You</span>
+      </div>
+      <div class="category-item">
+        <i class="fa-solid fa-shirt"></i>
+        <span>Fashion</span>
+      </div>
+      <div class="category-item">
+        <i class="fa-solid fa-mobile-screen"></i>
+        <span>Mobiles</span>
+      </div>
+      <div class="category-item">
+        <i class="fa-solid fa-heart"></i>
+        <span>Beauty</span>
+      </div>
+      <div class="category-item">
+        <i class="fa-solid fa-laptop"></i>
+        <span>Electronics</span>
+      </div>
+      <div class="category-item">
+        <i class="fa-solid fa-couch"></i>
+        <span>Home</span>
+      </div>
+      <div class="category-item">
+        <i class="fa-solid fa-tv"></i>
+        <span>Appliances</span>
+      </div>
+      <div class="category-item">
+        <i class="fa-solid fa-plane"></i>
+        <span>Travel</span>
+      </div>
+      <div class="category-item">
+        <i class="fa-solid fa-chair"></i>
+        <span>Furniture</span>
+      </div>
+      <div class="category-item">
+        <i class="fa-solid fa-volleyball"></i>
+        <span>Sports</span>
+      </div>
+      <div class="category-item">
+        <i class="fa-solid fa-plug"></i>
+        <span>Appliances</span>
+      </div>
+      <div class="category-item">
+        <i class="fa-solid fa-puzzle-piece"></i>
+        <span>Toys</span>
+      </div>
+      <div class="category-item">
+        <i class="fa-solid fa-apple-whole"></i>
+        <span>Food &amp; Health</span>
+      </div>
+      <div class="category-item">
+        <i class="fa-solid fa-book"></i>
+        <span>Books</span>
+      </div>
+    </div>
+
+    <!-- ─── HERO SLIDER ─── -->
+    <div class="hero-section">
+      <div class="section-track">
+        <div class="section-item"><img src="hero1.png" alt="Offer 1" /></div>
+        <div class="section-item"><img src="hero2.png" alt="Offer 2" /></div>
+        <div class="section-item"><img src="hero3.png" alt="Offer 3" /></div>
+        <div class="section-item"><img src="hero4.png" alt="Offer 4" /></div>
+        <div class="section-item"><img src="hero5.png" alt="Offer 5" /></div>
+      </div>
+
+      <button
+        class="section-control prev"
+        onclick="moveSlide(-1)"
+        aria-label="Previous slide"
+      >
+        &#10094;
+      </button>
+      <button
+        class="section-control next"
+        onclick="moveSlide(1)"
+        aria-label="Next slide"
+      >
+        &#10095;
+      </button>
+
+      <div class="section-indicators">
+        <span class="dot active" onclick="currentSlide(0)"></span>
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+        <span class="dot" onclick="currentSlide(4)"></span>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <!-- ─── BRANDS IN SPOTLIGHT ─── -->
+    <section class="brands-section">
+      <h2 class="section-title">Brands in Spotlight</h2>
+      <div class="brands-grid">
+        <div class="brand-card">
+          <div class="image-container">
+            <img src="image1.png" alt="Bata" />
+            <span class="ad-badge">AD</span>
+          </div>
+          <div class="card-details">
+            <span class="promo-tag yellow-tag">Shop now</span>
+            <p class="promo-text">Never before price</p>
+          </div>
+        </div>
+
+        <div class="brand-card">
+          <div class="image-container">
+            <img src="image2.png" alt="Kamiliant" />
+            <span class="ad-badge">AD</span>
+          </div>
+          <div class="card-details">
+            <span class="promo-tag yellow-tag">Min. 75% Off</span>
+            <p class="promo-text">Sturdy &amp; stylish</p>
+          </div>
+        </div>
+
+        <div class="brand-card">
+          <div class="image-container">
+            <img src="image3.png" alt="Abros" />
+            <span class="ad-badge">AD</span>
+          </div>
+          <div class="card-details">
+            <span class="promo-tag yellow-tag">Min. 65% Off</span>
+            <p class="promo-text">Men's Abros shoes</p>
+          </div>
+        </div>
+
+        <div class="brand-card">
+          <div class="image-container">
+            <img src="image4.png" alt="Fire-Boltt" />
+            <span class="ad-badge">AD</span>
+          </div>
+          <div class="card-details"></div>
+        </div>
+
+        <div class="brand-card">
+          <div class="image-container">
+            <img src="image5.png" alt="boAt Smartwatch" />
+            <span class="ad-badge">AD</span>
+          </div>
+          <div class="card-details"></div>
+        </div>
+
+        <div class="brand-card">
+          <div class="image-container">
+            <img src="image6.png" alt="boAt Airdopes" />
+            <span class="ad-badge">AD</span>
+          </div>
+          <div class="card-details"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── SALE BANNER ─── -->
+    <section class="sale-banner-section">
+      <a
+        href="#"
+        class="banner-link"
+        aria-label="Get Ready For The Hottest Sale"
+      >
+        <img
+          src="grwm.png"
+          alt="GRWM Sale - Starts 29th May. Get Ready For The Hottest Sale"
+          class="banner-image"
+        />
+      </a>
+    </section>
+
+    <!-- ─── HOME DECOR ─── -->
+    <section class="decor-section">
+      <div class="section-header">
+        <h2>Home Decor &amp; Furnishing</h2>
+        <a href="#" class="view-all-btn" aria-label="View all">&#10095;</a>
+      </div>
+
+      <div class="decor-grid">
+        <div class="decor-card">
+          <div class="image-wrapper">
+            <img
+              src="https://images.unsplash.com/photo-1544816155-12df9643f363?w=300"
+              alt="Mosquito Nets"
+            />
+          </div>
+          <div class="card-info">
+            <span class="item-title">Mosquito Nets</span>
+            <span class="item-offer">Grab Now</span>
+          </div>
+        </div>
+
+        <div class="decor-card">
+          <div class="image-wrapper">
+            <img
+              src="https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=300"
+              alt="Wall Clocks"
+            />
+          </div>
+          <div class="card-info">
+            <span class="item-title">Wall Clocks</span>
+            <span class="item-offer font-green">Min. 50% Off</span>
+          </div>
+        </div>
+
+        <div class="decor-card">
+          <div class="image-wrapper">
+            <img
+              src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=300"
+              alt="Appliance Covers"
+            />
+          </div>
+          <div class="card-info">
+            <span class="item-title">Appliance Covers</span>
+            <span class="item-offer">Don't Miss</span>
+          </div>
+        </div>
+
+        <div class="decor-card">
+          <div class="image-wrapper">
+            <img
+              src="https://images.unsplash.com/photo-1532372320572-cda25653a26d?w=300"
+              alt="Key Holders"
+            />
+          </div>
+          <div class="card-info">
+            <span class="item-title">Key Holders</span>
+            <span class="item-offer font-green">Popular Picks</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── FOOTER ─── -->
+    <footer class="main-footer">
+      <div class="footer-links-container">
+        <div class="footer-column">
+          <h3>About</h3>
+          <ul>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Flipkart Stories</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a href="#">Corporate Information</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h3>Group Companies</h3>
+          <ul>
+            <li><a href="#">Myntra</a></li>
+            <li><a href="#">Cleartrip</a></li>
+            <li><a href="#">Shopsy</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h3>Help</h3>
+          <ul>
+            <li><a href="#">Payments</a></li>
+            <li><a href="#">Shipping</a></li>
+            <li><a href="#">Cancellation &amp; Returns</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h3>Consumer Policy</h3>
+          <ul>
+            <li><a href="#">Cancellation &amp; Returns</a></li>
+            <li><a href="#">Terms Of Use</a></li>
+            <li><a href="#">Security</a></li>
+            <li><a href="#">Privacy</a></li>
+            <li><a href="#">Sitemap</a></li>
+            <li><a href="#">Grievance Redressal</a></li>
+            <li><a href="#">EPR Compliance</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-divider"></div>
+
+        <div class="footer-column address-column">
+          <h3>Mail Us:</h3>
+          <p>
+            Flipkart Internet Private Limited,<br />
+            Buildings Alyssa, Begonia &amp;<br />
+            Clove Embassy Tech Village,<br />
+            Outer Ring Road, Devarabeesanahalli Village,<br />
+            Bengaluru, 560103,<br />
+            Karnataka, India
+          </p>
+          <div class="social-links">
+            <h3>Social:</h3>
+            <div class="social-icons">
+              <a href="#" aria-label="Facebook"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="#" aria-label="Twitter"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a href="#" aria-label="YouTube"
+                ><i class="fab fa-youtube"></i
+              ></a>
+              <a href="#" aria-label="Instagram"
+                ><i class="fab fa-instagram"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-column address-column">
+          <h3>Registered Office Address:</h3>
+          <p>
+            Flipkart Internet Private Limited,<br />
+            Buildings Alyssa, Begonia &amp;<br />
+            Clove Embassy Tech Village,<br />
+            Outer Ring Road, Devarabeesanahalli Village,<br />
+            Bengaluru, 560103,<br />
+            Karnataka, India<br />
+            CIN : U51109KA2012PTC066107<br />
+            Telephone: <a href="tel:044-45614700">044-45614700</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div class="bottom-bar-links">
+          <a href="#"><i class="fas fa-store"></i> Become a Seller</a>
+          <a href="#"><i class="fas fa-ad"></i> Advertise</a>
+          <a href="#"><i class="fas fa-gift"></i> Gift Cards</a>
+          <a href="#"><i class="fas fa-question-circle"></i> Help Center</a>
+        </div>
+        <div class="copyright">&copy; 2007-2026 Flipkart.com</div>
+        <div class="payment-methods">
+          <span class="payment-label">Payment Methods Secure</span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
