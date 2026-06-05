@@ -469,6 +469,7 @@ body {
   font-weight: 800;
   margin-bottom: 16px;
   background: var(--heading-grad);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -1175,4 +1176,4 @@ select option {
   .brand {
     justify-content: center;
   }
-}
+
