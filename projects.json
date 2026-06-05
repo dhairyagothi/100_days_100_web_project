@@ -1832,6 +1832,15 @@
     "projectPath": "./public/NumberGuessGame/index.html"
   },
   {
+    "projectNo": 201,
+    "projectName": "Dev Environment Generator",
+    "projectType": "Tool",
+    "projectDesc": "A frontend utility to instantly generate development setup recommendations, folder structures, and terminal commands based on preferred tech stacks.",
+    "techStack": ["tool", "html", "css", "javascript"],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Dev_Environment_Generator/index.html"
+  },
+  {
     "projectNo": 202,
     "projectName": "Traffic signal game",
     "projectType": "Game",
