@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Environment Generator</title>
+    <meta name="description" content="Build your perfect development setup instantly.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+    <div class="bg-shape shape-3"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="glass-panel header">
+            <div class="logo-container">
+                <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="16 18 22 12 16 6"></polyline>
+                    <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+                <div class="header-text">
+                    <h1>DevEnv <span class="highlight">Gen</span></h1>
+                    <p>Build your perfect development setup instantly.</p>
+                </div>
+            </div>
+            <div class="header-controls">
+                <div class="stats-badge" title="Generated Setups">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                    <span id="statsCounter">0</span>
+                </div>
+                <button id="themeToggle" class="icon-btn" aria-label="Toggle Theme">
+                    <!-- Sun Icon (for Dark Mode to switch to Light) -->
+                    <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <!-- Moon Icon (for Light Mode to switch to Dark) -->
+                    <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon hidden"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <!-- Input Section -->
+            <section class="glass-panel form-section">
+                <form id="generatorForm">
+                    <div class="form-group">
+                        <label for="projectType">Project Type</label>
+                        <div class="custom-select-wrapper">
+                            <select id="projectType" name="projectType">
+                                <option value="frontend" selected>Frontend</option>
+                                <option value="backend">Backend</option>
+                                <option value="fullstack">Full Stack</option>
+                                <option value="mobile">Mobile</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="language">Language</label>
+                        <div class="custom-select-wrapper">
+                            <select id="language" name="language">
+                                <option value="javascript" selected>JavaScript</option>
+                                <option value="typescript">TypeScript</option>
+                                <option value="python">Python</option>
+                                <option value="java">Java</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="framework">Framework</label>
+                        <div class="custom-select-wrapper">
+                            <select id="framework" name="framework">
+                                <!-- Options will be dynamically populated by JS -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Optional Tools</label>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="tools" value="eslint">
+                                <span class="checkmark"></span>
+                                ESLint
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="tools" value="prettier">
+                                <span class="checkmark"></span>
+                                Prettier
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="tools" value="git" checked>
+                                <span class="checkmark"></span>
+                                Git
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="tools" value="docker">
+                                <span class="checkmark"></span>
+                                Docker
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="tools" value="tailwindcss">
+                                <span class="checkmark"></span>
+                                Tailwind CSS
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="tools" value="testing">
+                                <span class="checkmark"></span>
+                                Testing Setup
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary glow-effect">
+                        <span class="btn-text">Generate Environment</span>
+                        <div class="spinner hidden" id="loadingSpinner"></div>
+                    </button>
+                </form>
+            </section>
+
+            <!-- Output Section -->
+            <section class="glass-panel output-section">
+                <!-- Empty State -->
+                <div id="emptyState" class="empty-state">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="empty-icon"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                    <h3>No environment generated yet</h3>
+                    <p>Select your preferences and click generate.</p>
+                </div>
+
+                <!-- Result Container -->
+                <div id="resultContainer" class="result-container hidden">
+                    <div class="result-header">
+                        <h3>Recommended Environment</h3>
+                        <div class="result-actions">
+                            <button id="copyBtn" class="icon-btn tooltip" data-tooltip="Copy Setup">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            </button>
+                            <button id="downloadBtn" class="icon-btn tooltip" data-tooltip="Download Setup">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="terminal-window">
+                        <div class="terminal-header">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <pre class="terminal-body"><code id="outputCode"></code></pre>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <span>Copied Successfully</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
