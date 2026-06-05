@@ -843,6 +843,18 @@ document.querySelectorAll('.mode-btn').forEach((btn) => {
   });
 });
 
+document.querySelectorAll('.theme-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.theme-btn').forEach((b) => b.classList.remove('active'));
+    btn.classList.add('active');
+    const theme = btn.dataset.theme;
+    document.body.dataset.theme = theme;
+    try {
+      localStorage.setItem('2048theme', theme);
+    } catch (_) {}
+  });
+});
+
 /* Keyboard */
 const KEY_MAP = {
   ArrowLeft: 'left',
@@ -892,11 +904,12 @@ document.getElementById('wr').addEventListener(
 document.addEventListener('visibilitychange', () => {
   if (mode !== 'timed' || over) return;
 
+  const tfill = document.getElementById('tfill');
   if (document.hidden) {
     paused = true;
     clearInterval(timerInterval);
 
-    document.getElementById('tfill').classList.add('paused');
+    if (tfill) tfill.classList.add('paused');
 
     showToast('Timer paused');
   } else {
@@ -904,7 +917,7 @@ document.addEventListener('visibilitychange', () => {
       paused = false;
       startTimer();
 
-      document.getElementById('tfill').classList.remove('pgit aused');
+      if (tfill) tfill.classList.remove('paused');
 
       showToast('Timer resumed');
     }
@@ -918,6 +931,16 @@ document.addEventListener('visibilitychange', () => {
 loadStats();
 best = loadBest();
 init(true);
+
+// Restore saved theme
+try {
+  const savedTheme = localStorage.getItem('2048theme') || 'classic';
+  document.body.dataset.theme = savedTheme;
+  document.querySelectorAll('.theme-btn').forEach((b) => {
+    b.classList.toggle('active', b.dataset.theme === savedTheme);
+  });
+} catch (_) {}
+
 // Restore zen-mode class if saved mode was zen
 if (mode === 'zen') {
   document.getElementById('g').classList.add('zen-mode');
