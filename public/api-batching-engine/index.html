@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>High-Throughput Request Batching Engine</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -20,6 +21,65 @@
 
     <h4>Resolved Output Streams (Unpacked Pipeline):</h4>
     <div id="network-results" style="border: 2px dashed #444; padding: 10px; width: 454px; min-height: 150px;">
+    </div>
+
+    <div class="hero-tag">
+        ● SYSTEM ONLINE
+    </div>
+    
+    <div class="metrics">
+        <div class="metric">
+            <div class="metric-value">18K</div>
+            <div class="metric-label">Requests/sec</div>
+        </div>
+    
+        <div class="metric">
+            <div class="metric-value">2.1ms</div>
+            <div class="metric-label">Latency</div>
+        </div>
+    
+        <div class="metric">
+            <div class="metric-value">843</div>
+            <div class="metric-label">Queue Depth</div>
+        </div>
+    
+        <div class="metric">
+            <div class="metric-value">99.99%</div>
+            <div class="metric-label">Availability</div>
+        </div>
+    </div>
+    
+    <div class="analytics">
+    
+        <div class="card">
+            <div class="card-title">
+                Request Throughput Analytics
+            </div>
+    
+            <div class="chart"></div>
+        </div>
+    
+        <div class="card">
+            <div class="card-title">
+                Activity Feed
+            </div>
+    
+            <div class="activity-item">
+                <span class="status-dot"></span>
+                Batch Queue Initialized
+            </div>
+    
+            <div class="activity-item">
+                <span class="status-dot"></span>
+                Worker Pool Ready
+            </div>
+    
+            <div class="activity-item">
+                <span class="status-dot"></span>
+                Traffic Simulation Available
+            </div>
+        </div>
+    
     </div>
 
     <script type="module" src="app.js"></script>

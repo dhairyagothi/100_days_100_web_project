@@ -1316,6 +1316,7 @@ body.focus-mode .main-dashboard {
   }
 }
 
+
 @media (max-width: 640px) {
   header {
     padding: 14px 18px;
@@ -1333,4 +1334,308 @@ body.focus-mode .main-dashboard {
   .world-clocks-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+.tooltip-time-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-top: 4px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    padding-bottom: 8px;
+}
+
+body.dark-theme .tooltip-time-row {
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.tooltip-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.tooltip-date {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.tooltip-btn {
+    height: 38px !important;
+    font-size: 0.85rem !important;
+    border-radius: 10px !important;
+}
+
+/* Close/Unpin button for World Clock Cards */
+.world-clock-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+    padding: 20px 24px;
+}
+
+.world-clock-card .clock-header {
+    text-align: left;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.world-clock-card .clock-frame {
+    flex-shrink: 0;
+}
+
+.world-clock-card .digital-readout,
+.world-clock-card .clock-date {
+    text-align: left;
+    align-self: flex-start;
+}
+
+.remove-clock-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    cursor: pointer;
+    color: var(--text-secondary);
+    z-index: 10;
+    box-shadow: var(--shadow-btn);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.remove-clock-btn:hover {
+    background-color: #ef4444;
+    color: #ffffff;
+    border-color: #ef4444;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+    transform: scale(1.1) rotate(90deg);
+}
+
+.remove-clock-btn:active {
+    transform: scale(0.9);
+}
+
+/* Animations for card insertion and deletion */
+@keyframes cardInsert {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.world-clock-card {
+    animation: cardInsert 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Pinned City Map Pinpoint Glowing state */
+.city-marker.pinned-marker .center-dot {
+    fill: #10b981 !important; /* Emerald green in light theme */
+}
+
+body.dark-theme .city-marker.pinned-marker .center-dot {
+    fill: #06b6d4 !important; /* Electric cyan in dark theme */
+}
+
+.city-marker.pinned-marker .pulse-ring {
+    fill: #10b981 !important;
+}
+
+body.dark-theme .city-marker.pinned-marker .pulse-ring {
+    fill: #06b6d4 !important;
+}
+
+/* Beautiful dynamic card pinning elastic highlight pulse */
+@keyframes cardHighlightPulse {
+    0% {
+        box-shadow: var(--shadow-outer);
+        border-color: var(--card-border);
+        transform: scale(1);
+    }
+    30% {
+        box-shadow: 0 0 35px var(--accent-glow);
+        border-color: var(--accent-color);
+        transform: scale(1.06);
+    }
+    100% {
+        box-shadow: var(--shadow-outer);
+        border-color: var(--card-border);
+        transform: scale(1);
+    }
+}
+
+.card-highlight-active {
+    animation: cardHighlightPulse 2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    z-index: 20 !important;
+}
+
+/* Toggleable Tooltip Remove state styling */
+.tooltip-btn.tooltip-remove-btn {
+    background-color: rgba(239, 68, 68, 0.1) !important;
+    border: 1px solid rgba(239, 68, 68, 0.2) !important;
+    color: #ef4444 !important;
+    box-shadow: none !important;
+}
+
+.tooltip-btn.tooltip-remove-btn:hover {
+    background-color: #ef4444 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3) !important;
+    transform: translateY(-2px);
+}
+
+/* ============================================================
+  CHRONOS+ THEME TOGGLE BUTTON MATCHING FOCUS-MODE STYLE
+   ============================================================ */
+
+/* Match the Focus Mode button styling exactly */
+.theme-toggle-btn {
+  border-radius: 12px !important;
+  padding: 10px 20px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  transition: var(--transition) !important;
+  background: var(--accent-color) !important;
+  border: none !important;
+  color: white !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  min-width: 140px !important;
+  height: 44px !important;
+  cursor: pointer;
+  position: relative;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--accent-hover) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3) !important;
+}
+
+.theme-toggle-btn:active {
+  transform: translateY(0) !important;
+}
+
+.theme-toggle-btn:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* Theme Toggle Content Container */
+.theme-toggle-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 100%;
+}
+
+/* Theme Icon SVG */
+.theme-icon {
+  width: 18px;
+  height: 18px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: themeIconFadeIn 0.3s ease-out forwards;
+  flex-shrink: 0;
+}
+
+@keyframes themeIconFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7) rotate(-20deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* Auto Mode Label */
+.mode-label {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  animation: autoLabelPulse 2s ease-in-out infinite;
+}
+
+@keyframes autoLabelPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Dark Theme Adjustments */
+body.dark-theme .theme-toggle-btn {
+  background: var(--accent-color) !important;
+}
+
+body.dark-theme .theme-toggle-btn:hover {
+  background: var(--accent-hover) !important;
+}
+
+/* Header Actions Container */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .theme-toggle-btn {
+    padding: 8px 16px !important;
+    font-size: 12px !important;
+    min-width: 120px !important;
+    height: 40px !important;
+  }
+
+  .theme-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .mode-label {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .theme-toggle-btn {
+    padding: 8px 12px !important;
+    font-size: 11px !important;
+    min-width: 100px !important;
+    height: 38px !important;
+  }
+
+  .theme-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .mode-label {
+    font-size: 10px;
+  }
+}
 }

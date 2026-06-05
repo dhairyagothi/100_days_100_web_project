@@ -21,15 +21,22 @@
   display: inline-flex;
   align-items: center;
   min-height: 40px;
-  padding: 9px 13px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.72);
-  border: 1px solid var(--border, #e2dfda);
-  color: var(--ink, var(--text, #0b1f2a));
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #1e293b;
+  border: 1px solid #3b82f6;
+  color: #3b82f6;
   text-decoration: none;
   font-size: 13px;
   font-weight: 700;
   box-shadow: 0 8px 18px rgba(21, 24, 30, 0.06);
+  transition: all 0.2s ease;
+}
+
+.project-back-button:hover,
+.back-btn:hover {
+  background: #3b82f6;
+  color: #fff;
 }
 
 #analytics-btn,
@@ -58,9 +65,9 @@
 
 body.dark-mode .project-back-button,
 body.dark-mode .back-btn {
-  background: #171a1d;
-  color: #f7f4ef;
-  border-color: #2a2d31;
+  background: #1e293b;
+  color: #3b82f6;
+  border-color: #3b82f6;
 }
 
 body.dark-mode #theme-toggle,
