@@ -598,6 +598,7 @@ function showCompletion(emoji, title, msg) {
 function closeCompletion() {
   els.completionOverlay.classList.add('hidden');
   state.status = 'idle';
+  lockInputs(false);
   updateStartPauseBtn();
 }
 
