@@ -406,3 +406,92 @@ html, body {
   .entry-card { flex-wrap: wrap; }
   .entry-pw-wrap { display: none; } /* hidden on mobile — tap Copy instead */
 }
+.card,
+.password-item{
+    animation:fadeUp .4s ease;
+}
+
+@keyframes fadeUp{
+
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.search-box{
+    width:100%;
+    padding:12px;
+    border-radius:12px;
+    border:none;
+}
+
+@media(max-width:768px){
+
+    .container{
+        width:95%;
+        padding:15px;
+    }
+
+    table{
+        display:block;
+        overflow-x:auto;
+    }
+
+    input{
+        width:100%;
+    }
+}
+
+.strength-container{
+    width:100%;
+    height:10px;
+    background:#ddd;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+#strengthBar{
+    height:100%;
+    width:0;
+    transition:.3s;
+}
+
+button{
+    border:none;
+    border-radius:12px;
+    padding:12px 20px;
+    cursor:pointer;
+    transition:all .3s ease;
+}
+
+button:hover{
+    transform:translateY(-3px);
+}
+
+button:active{
+    transform:scale(.96);
+}
+
+body{
+    min-height:100vh;
+    background: linear-gradient(
+        135deg,
+        #667eea,
+        #764ba2
+    );
+}
+
+.glass-container{
+    backdrop-filter: blur(20px);
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}

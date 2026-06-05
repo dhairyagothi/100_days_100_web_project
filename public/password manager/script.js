@@ -448,3 +448,34 @@ function escapeHtml(str) {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
 }
+
+const themeToggle = document.getElementById("themeToggle");
+
+themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+
+    if(document.body.classList.contains("dark-mode")){
+        themeToggle.innerHTML = "☀️";
+    } else {
+        themeToggle.innerHTML = "🌙";
+    }
+});
+
+passwordInput.addEventListener("input", () => {
+
+    const value = passwordInput.value;
+    const strengthBar = document.getElementById("strengthBar");
+
+    if(value.length < 6){
+        strengthBar.style.width = "30%";
+        strengthBar.style.background = "red";
+    }
+    else if(value.length < 10){
+        strengthBar.style.width = "60%";
+        strengthBar.style.background = "orange";
+    }
+    else{
+        strengthBar.style.width = "100%";
+        strengthBar.style.background = "green";
+    }
+});

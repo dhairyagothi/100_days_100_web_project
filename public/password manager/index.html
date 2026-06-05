@@ -12,6 +12,20 @@
 
   <!-- ── Master Password Gate ─────────────────────────────────────────── -->
   <div id="gate-overlay" class="gate-overlay">
+
+    <div class="empty-state">
+    <img src="assets/empty.svg">
+    <h3>No passwords saved</h3>
+    <p>Add your first password to get started.</p>
+
+    <div class="strength-container">
+    <div id="strengthBar"></div>
+</div>
+
+<p id="strengthText"></p>
+</div>
+
+    <div class="container glass-container"></div>
     <div class="gate-card">
       <div class="gate-icon">🔐</div>
       <h1 class="gate-title">Vault Lock</h1>
@@ -105,6 +119,10 @@
 
     </main>
   </div>
+
+  <button id="themeToggle" class="theme-toggle">
+    🌙
+</button>
 
   <script src="script.js"></script>
 </body>

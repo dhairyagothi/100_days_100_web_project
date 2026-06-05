@@ -165,7 +165,7 @@ body.dark .b4 {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 40;
+  z-index: -1;
   border-radius: var(--radius-board);
   width: 100%;
   height: 100%;
