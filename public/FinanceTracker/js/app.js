@@ -200,20 +200,47 @@ function loadDashboard() {
   const recent = getTransactions({ sort: 'date', order: 'desc' }).slice(0, 10);
   const tbody = document.getElementById('recent-transactions-body');
 
+  tbody.textContent = '';
   if (recent.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" class="empty-cell">No recent transactions</td></tr>';
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = 5;
+    td.className = 'empty-cell';
+    td.textContent = 'No recent transactions';
+    tr.appendChild(td);
+    tbody.appendChild(tr);
   } else {
-    tbody.innerHTML = recent.map(t => `
-      <tr>
-        <td>${formatDate(t.date)}</td>
-        <td>${escapeHTML(t.description)}</td>
-        <td class="${t.type === 'Income' ? 'text-income' : 'text-expense'}" style="color:${t.type === 'Income' ? 'var(--income-color)' : 'var(--expense-color)'}; font-weight:600;">
-          ${t.type === 'Income' ? '+' : '-'}${formatCurrency(t.amount)}
-        </td>
-        <td><span class="badge badge-${escapeHTML(t.type.toLowerCase())}">${escapeHTML(t.type)}</span></td>
-        <td>${escapeHTML(t.category)}</td>
-      </tr>
-    `).join('');
+    recent.forEach(t => {
+      const tr = document.createElement('tr');
+
+      const tdDate = document.createElement('td');
+      tdDate.textContent = formatDate(t.date);
+      tr.appendChild(tdDate);
+
+      const tdDesc = document.createElement('td');
+      tdDesc.textContent = t.description;
+      tr.appendChild(tdDesc);
+
+      const tdAmount = document.createElement('td');
+      tdAmount.className = t.type === 'Income' ? 'text-income' : 'text-expense';
+      tdAmount.style.color = t.type === 'Income' ? 'var(--income-color)' : 'var(--expense-color)';
+      tdAmount.style.fontWeight = '600';
+      tdAmount.textContent = (t.type === 'Income' ? '+' : '-') + formatCurrency(t.amount);
+      tr.appendChild(tdAmount);
+
+      const tdType = document.createElement('td');
+      const badge = document.createElement('span');
+      badge.className = 'badge badge-' + (t.type === 'Income' ? 'income' : 'expense');
+      badge.textContent = t.type;
+      tdType.appendChild(badge);
+      tr.appendChild(tdType);
+
+      const tdCat = document.createElement('td');
+      tdCat.textContent = t.category;
+      tr.appendChild(tdCat);
+
+      tbody.appendChild(tr);
+    });
   }
 }
 
@@ -244,26 +271,65 @@ function renderTransactions() {
   const transactions = getTransactions({ search, type, category, sort, order });
   const tbody = document.getElementById('transactions-body');
 
+  tbody.textContent = '';
+
   if (transactions.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" class="empty-cell">No transactions found</td></tr>';
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = 6;
+    td.className = 'empty-cell';
+    td.textContent = 'No transactions found';
+    tr.appendChild(td);
+    tbody.appendChild(tr);
     return;
   }
 
-  tbody.innerHTML = transactions.map(t => `
-    <tr>
-      <td>${formatDate(t.date)}</td>
-      <td>${escapeHTML(t.description)}</td>
-      <td style="color:${t.type === 'Income' ? 'var(--income-color)' : 'var(--expense-color)'}; font-weight:600;">
-        ${t.type === 'Income' ? '+' : '-'}${formatCurrency(t.amount)}
-      </td>
-      <td><span class="badge badge-${escapeHTML(t.type.toLowerCase())}">${escapeHTML(t.type)}</span></td>
-      <td>${escapeHTML(t.category)}</td>
-      <td>
-        <button class="btn-icon edit" onclick="window.editTxn(${t.id})" title="Edit">✏️</button>
-        <button class="btn-icon danger" onclick="window.deleteTxn(${t.id})" title="Delete">🗑️</button>
-      </td>
-    </tr>
-  `).join('');
+  transactions.forEach(t => {
+    const tr = document.createElement('tr');
+
+    const tdDate = document.createElement('td');
+    tdDate.textContent = formatDate(t.date);
+    tr.appendChild(tdDate);
+
+    const tdDesc = document.createElement('td');
+    tdDesc.textContent = t.description;
+    tr.appendChild(tdDesc);
+
+    const tdAmount = document.createElement('td');
+    tdAmount.style.color = t.type === 'Income' ? 'var(--income-color)' : 'var(--expense-color)';
+    tdAmount.style.fontWeight = '600';
+    tdAmount.textContent = (t.type === 'Income' ? '+' : '-') + formatCurrency(t.amount);
+    tr.appendChild(tdAmount);
+
+    const tdType = document.createElement('td');
+    const badge = document.createElement('span');
+    badge.className = 'badge badge-' + (t.type === 'Income' ? 'income' : 'expense');
+    badge.textContent = t.type;
+    tdType.appendChild(badge);
+    tr.appendChild(tdType);
+
+    const tdCat = document.createElement('td');
+    tdCat.textContent = t.category;
+    tr.appendChild(tdCat);
+
+    const tdActions = document.createElement('td');
+    const editBtn = document.createElement('button');
+    editBtn.className = 'btn-icon edit';
+    editBtn.title = 'Edit';
+    editBtn.textContent = '✏️';
+    editBtn.addEventListener('click', () => window.editTxn(t.id));
+    tdActions.appendChild(editBtn);
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'btn-icon danger';
+    deleteBtn.title = 'Delete';
+    deleteBtn.textContent = '🗑️';
+    deleteBtn.addEventListener('click', () => window.deleteTxn(t.id));
+    tdActions.appendChild(deleteBtn);
+
+    tr.appendChild(tdActions);
+    tbody.appendChild(tr);
+  });
 }
 
 function openTransactionModal(id = null) {
