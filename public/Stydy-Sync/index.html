@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
+
 <body>
     <header>
         <nav>
@@ -17,27 +19,35 @@
             <ul>
                 <li><a href="#Home">Home</a></li>
                 <li><a href="#Features">Features</a></li>
-                <li><a href="#Prising">Prising</a></li>
+                <li><a href="#Pricing">Pricing</a></li>
                 <li><a href="#Blogs">Blogs</a></li>
                 <li><a href="#Contact">Contact</a></li>
             </ul>
             <div class="button">
-                <a href="#button" class="contact">
+                <a href="#Contact" class="contact">
                     Contact Us
                 </a>
             </div>
+
+            <div>
+                <button id="darkBtn">
+                    🌙
+                </button>
+            </div>
+
             <div class="menu">
                 <img src="Screenshot 2025-06-12 132135.png">
             </div>
         </nav>
     </header>
+
     <main>
-        <div class="content">
+        <div class="content" id="Home">
             <div class="text">
                 <p id="p1">Very proud to introduce</p>
                 <p id="p2">Seamless Learning for Brighter Futures</p>
                 <p id="p3">
-                    Our inovative platform offers an effortless and seamless approach to 
+                    Our inovative platform offers an effortless and seamless approach to
                     Learning, empowering students of all ages to achieve Brighter Futures.
                     Join us on a transformative journey to simply education and unlock
                     your full potential.
@@ -57,7 +67,35 @@
                 </div>
             </div>
         </div>
+
+
         <div class="subcontent">
+            <div class="stats">
+
+                <div class="stat">
+                    <h2 class="counter" data-target="5000">
+                        0
+                    </h2>
+                    <p>Students</p>
+                </div>
+
+                <div class="stat">
+                    <h2 class="counter" data-target="300">
+                        0
+                    </h2>
+                    <p>Courses</p>
+                </div>
+
+                <div class="stat">
+                    <h2 class="counter" data-target="150">
+                        0
+                    </h2>
+                    <p>Teachers</p>
+                </div>
+
+            </div>
+
+
             <h2>Trusted by the Best</h2>
             <div class="icons">
                 <div class="icon"><i class="fab fa-linkedin-in"></i>LinkedIn</div>
@@ -66,7 +104,7 @@
                 <div class="icon"><i class="fas fa-envelope"></i>E-Mail</div>
             </div>
         </div>
-        <div class="foot">
+        <div class="foot" id="Features">
             <div class="card-section">
                 <div class="head">
                     <h3>Our Competitive Advantage</h3>
@@ -76,6 +114,11 @@
                         or otherwise generated.
                     </p>
                 </div>
+
+                <div class="search-box">
+                    <input type="text" id="search" placeholder="Search Features...">
+                </div>
+
                 <div class="cards">
                     <div class="card" id="c1">
                         <div class="af">
@@ -83,7 +126,7 @@
                         </div>
                         <h4>Personalized Learning</h4>
                         <p class="p9">
-                            Offer tailored learning experience through AI and machine learning 
+                            Offer tailored learning experience through AI and machine learning
                             to cater to individual student needs.
                         </p>
                     </div>
@@ -103,8 +146,8 @@
                         </div>
                         <h4>Industry Partnership</h4>
                         <p class="p9">
-                            Collaborate with well-known companies and institutions to offer 
-                            accredited courses and certifications, adding credibility to your 
+                            Collaborate with well-known companies and institutions to offer
+                            accredited courses and certifications, adding credibility to your
                             offerings.
                         </p>
                     </div>
@@ -124,7 +167,7 @@
                         </div>
                         <h4>Responsive Support</h4>
                         <p class="p9">
-                            Provide exceptional customer support and assistance to students and 
+                            Provide exceptional customer support and assistance to students and
                             educators.
                         </p>
                     </div>
@@ -134,13 +177,13 @@
                         </div>
                         <h4>Analytics and Insights</h4>
                         <p class="p9">
-                            Offer detailed progress tracking and analytics help students and 
+                            Offer detailed progress tracking and analytics help students and
                             teachers monitor performance and make data-driven decisions.
                         </p>
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
         <div class="review-section">
             <div class="test">
                 <div class="h">
@@ -164,7 +207,7 @@
                     </div>
                     <div class="review">
                         <p>
-                            "StudySync transformed our family's learning journey. Safe, interactive, 
+                            "StudySync transformed our family's learning journey. Safe, interactive,
                             and progress tracking features are invaluable for parents."
                         </p>
                         <p class="pic">
@@ -179,13 +222,13 @@
                     </div>
                     <div class="review">
                         <p>
-                            "StudySync, a true game-changer! Flexible content, tailored assessments, 
+                            "StudySync, a true game-changer! Flexible content, tailored assessments,
                             and excellent support. Integral to our school district's success."
                         </p>
                         <p class="pic">
                             <i class="fa fa-user-circle" aria-hidden="true"></i>
                         </p>
-                        <p class="name"> 
+                        <p class="name">
                             Dr. James Carter
                         </p>
                         <p>
@@ -193,9 +236,65 @@
                         </p>
                     </div>
                 </div>
-            </div> 
+            </div>
         </div>
-        <div class="news">
+
+        <section id="Pricing" class="pricing-section">
+
+            <div class="pricing-header">
+                <h2>Our Pricing Plans</h2>
+                <p>Choose the plan that fits your learning needs.</p>
+            </div>
+
+            <div class="pricing-cards">
+
+                <div class="price-card">
+                    <h3>Basic</h3>
+                    <h1>₹0</h1>
+                    <p>Free Access</p>
+
+                    <ul>
+                        <li>5 Courses</li>
+                        <li>Community Support</li>
+                        <li>Basic Certificates</li>
+                    </ul>
+
+                    <button>Get Started</button>
+                </div>
+
+                <div class="price-card featured">
+                    <h3>Pro</h3>
+                    <h1>₹499</h1>
+                    <p>Per Month</p>
+
+                    <ul>
+                        <li>Unlimited Courses</li>
+                        <li>Premium Support</li>
+                        <li>Verified Certificates</li>
+                    </ul>
+
+                    <button>Buy Now</button>
+                </div>
+
+                <div class="price-card">
+                    <h3>Enterprise</h3>
+                    <h1>₹999</h1>
+                    <p>Per Month</p>
+
+                    <ul>
+                        <li>All Pro Features</li>
+                        <li>Team Management</li>
+                        <li>Analytics Dashboard</li>
+                    </ul>
+
+                    <button>Contact Us</button>
+                </div>
+
+            </div>
+
+        </section>
+
+        <div class="news" id="Blogs">
             <div class="newsletter">
                 <div class="newsimg">
                     <img src="Screenshot 2025-06-14 001833.png">
@@ -209,7 +308,7 @@
                             <button type="submit">Submit</button>
                         </form>
                         <p>
-                            By signing up to our newsletter you agree to our 
+                            By signing up to our newsletter you agree to our
                             <a href="#">Terms of Service</a> and <a href="#">Privacy Policy.</a>
                         </p>
                     </div>
@@ -218,7 +317,7 @@
         </div>
     </main>
     <footer>
-        <div class="footer-section">
+        <div class="footer-section" id="Contact">
             <div class="top">
                 <div class="handles">
                     <div class="logo">
@@ -226,7 +325,9 @@
                         <h1>StudySync</h1>
                     </div>
                     <div class="icon-holder">
-                        <div class="side"><p id="p8">Seamless learning for Brighter Future</p></div>
+                        <div class="side">
+                            <p id="p8">Seamless learning for Brighter Future</p>
+                        </div>
                         <div id="ic-tab">
                             <div class="ic"><i class="fab fa-linkedin-in"></i></div>
                             <div class="ic"><i class="fab fa-facebook-f"></i></div>
@@ -282,4 +383,7 @@
         </div>
     </footer>
 </body>
+
+<script src="script.js"></script>
+
 </html>
