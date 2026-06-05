@@ -258,6 +258,13 @@ const verifyCaptcha = () => {
       return;
   }
 
+  if (selectedType === "image" && !selectedImageAnswer) {
+      resultMessage.textContent = "Please select an image before submitting.";
+      resultMessage.classList.add('error');
+      resultMessage.classList.remove('success');
+      return;
+  }
+  
   const userInput = 
   selectedType == "image"
   ? selectedImageAnswer.toLowerCase()
