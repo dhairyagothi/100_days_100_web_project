@@ -288,8 +288,11 @@ clearBtn.addEventListener('click', () => {
 audioBtn.addEventListener('click', () => {
   if (!audioObj) return;
   audioObj.currentTime = 0;
-  audioObj.play();
   audioBtn.classList.add('playing');
+  audioObj.play().catch(err => {
+    console.warn('Audio playback failed:', err);
+    audioBtn.classList.remove('playing');
+  });
 });
 
 prevBtn.addEventListener('click', () => {
