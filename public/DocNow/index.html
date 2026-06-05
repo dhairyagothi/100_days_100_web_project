@@ -89,7 +89,7 @@
           <div class="category">${card.category}</div>
           <h3>${card.title}</h3>
           <p>${card.content}</p>
-          ${card.url ? `<a href="${card.url}" target="_blank">${card.url}</a>` : ""}
+          ${card.url ? `<a href="${card.url}" target="_blank" rel="noopener noreferrer">${card.url}</a>` : ""}
           <div class="card-footer">
             <span>${formatDate(card.createdAt)}</span>
             <div style="display:flex; gap:6px">
