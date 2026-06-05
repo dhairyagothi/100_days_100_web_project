@@ -1919,5 +1919,14 @@
   "techStack": ["html", "css"],
   "difficulty": "intermediate",
   "projectPath": "./public/Photo Studio/Project.html"
+},
+{
+  "projectNo": 211,
+  "projectName": "Runway Calculator",
+  "projectType": "Web Application",
+  "projectDesc": "A responsive runway calculator that helps startups estimate their financial runway based on available cash and monthly burn rate, providing quick insights into business sustainability.",
+  "techStack": ["html", "css", "javascript"],
+  "difficulty": "intermediate",
+  "projectPath": "./public/Runway-Calculator/index.html"
 }
 ]
