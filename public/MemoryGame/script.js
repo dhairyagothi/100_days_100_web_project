@@ -316,20 +316,16 @@ function checkMatch() {
  * Briefly reveal a matching pair (one use per game)
  */
 function useHint() {
- if (hintUsed) {
+  if (hintUsed) {
     showToast('💡 Hint already used!');
     return;
   }
-  hintUsed = true;
-const hintBtn = document.getElementById('hintBtn');
-hintBtn.disabled = true;
-hintBtn.textContent = 'Hint Used';
 
   // Collect unmatched, unflipped cards
   const unmatched = cards.filter(
     c => !c.classList.contains('matched') && !c.classList.contains('flipped')
   );
-  if (!unmatched.length) return;
+  if (unmatched.length < 2) return;
 
   // Group by emoji to find a valid pair
   const emojiMap = {};
@@ -338,22 +334,24 @@ hintBtn.textContent = 'Hint Used';
     if (!emojiMap[e]) emojiMap[e] = [];
     emojiMap[e].push(c);
   }
- 
-  if (!validRows.length) return;   // nothing left to reveal
- 
-  // Pick one random valid row
-  const rowIdx   = validRows[Math.floor(Math.random() * validRows.length)];
-  const rowCards = cards
-    .slice(rowIdx * cols, (rowIdx + 1) * cols)
-    .filter(c => !c.classList.contains('matched') && !c.classList.contains('flipped'));
- 
-  // Briefly flip the row face-up
-  rowCards.forEach(c => c.classList.add('flipped'));
+
+  const pairs = Object.values(emojiMap).filter(arr => arr.length >= 2);
+  if (!pairs.length) return;
+
+  hintUsed = true;
+  const hintBtn = document.getElementById('hintBtn');
+  hintBtn.disabled = true;
+  hintBtn.textContent = 'Hint Used';
+
+  const pairToReveal = pairs[Math.floor(Math.random() * pairs.length)];
+
+  // Briefly flip the pair face-up
+  pairToReveal.forEach(c => c.classList.add('flipped'));
   showToast('💡 Hint used!');
- 
-  // Flip back after 1.5 seconds (skip already-matched cards)
+
+  // Flip back after 1.5 seconds
   setTimeout(() => {
-    rowCards.forEach(c => {
+    pairToReveal.forEach(c => {
       if (!c.classList.contains('matched')) {
         c.classList.remove('flipped');
       }
