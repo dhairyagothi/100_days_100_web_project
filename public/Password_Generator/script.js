@@ -34,7 +34,7 @@ let passwordLength = 10;
 let checkCount = 0;
 let hideTimeout;
 let countdownInterval;
-let passwordsHistory = [];
+let passwordsHistory = JSON.parse(localStorage.getItem('pgHistory') || '[]');
 
 init();
 
@@ -209,6 +209,7 @@ function updateHistory(newPassword) {
         passwordsHistory.pop();
     }
 
+    localStorage.setItem('pgHistory', JSON.stringify(passwordsHistory));
     renderHistory();
 }
 
@@ -232,6 +233,7 @@ function renderHistory() {
 
 clearHistoryBtn.addEventListener("click", () => {
     passwordsHistory = [];
+    localStorage.removeItem('pgHistory');
     renderHistory();
 });
 
