@@ -1,4 +1,4 @@
-let data = JSON.parse(localStorage.getItem('att_v5')) || { subjects: [], logs: [] };
+let data = (function(){ try { return JSON.parse(localStorage.getItem('att_v5')); } catch(e) { return null; } })() || { subjects: [], logs: [] };
 
 function render() {
     const body = document.getElementById('attendance-body');
