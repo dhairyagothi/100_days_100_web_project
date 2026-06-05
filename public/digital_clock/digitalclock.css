@@ -1463,3 +1463,31 @@ input:checked + .toggle-slider:before {
   height: fit-content;
 }
 
+.pomodoro-display {
+  text-align: center;
+  margin: 20px 0;
+}
+
+#pomodoro-time {
+  font-size: 3rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--accent);
+}
+
+#pomodoro-status {
+  text-align: center;
+  margin-top: 12px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.pomodoro-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.pomodoro-controls .btn {
+  flex: 1;
+  padding: 12px;
+}

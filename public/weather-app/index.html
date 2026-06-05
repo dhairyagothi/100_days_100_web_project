@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Weather Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-weather-theme="default" id="appBody">
+    <div class="glass-container">
+      <header class="search-header">
+        <div class="input-wrapper">
+          <input
+            type="text"
+            id="cityInput"
+            placeholder="Enter city name... (e.g., Paris)"
+          />
+          <button id="searchBtn">Search</button>
+        </div>
+        <button id="geoBtn" class="geo-btn" title="Use Current Location">
+          <svg viewBox="0 0 24 24" class="geo-svg">
+            <path
+              d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+            />
+          </svg>
+        </button>
+      </header>
+
+      <div id="statusMessage" class="status-indicator hidden">
+        Gathering climate reports...
+      </div>
+
+      <main id="weatherDisplay" class="weather-body hidden">
+        <div class="location-box">
+          <h1 id="cityName">City, Country</h1>
+          <p id="weatherCondition">Clear Skies</p>
+        </div>
+
+        <div class="primary-reading">
+          <span id="tempDisplay" class="temp-val">0°C</span>
+          <img
+            id="weatherIcon"
+            src=""
+            alt="Weather Status Visualizer"
+            class="weather-icon"
+          />
+        </div>
+
+        <footer class="detailed-metrics">
+          <div class="metric-block">
+            <span class="metric-label">Humidity</span>
+            <span id="humidityValue" class="metric-number">0%</span>
+          </div>
+          <div class="metric-block">
+            <span class="metric-label">Wind Velocity</span>
+            <span id="windValue" class="metric-number">0 m/s</span>
+          </div>
+        </footer>
+      </main>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -36,20 +36,11 @@
     <header class="header">
       <a href="index.html" class="logo"><i class="fas fa-tree"></i>TREE.</a>
 
-      <button
-        class="fas fa-bars"
-        id="menu-btn"
-        aria-label="Toggle navigation"
-        style="
-          background: none;
-          border: none;
-          font-size: 2.5rem;
-          color: var(--green);
-          cursor: pointer;
-          display: none;
-        "
-      >
-        <!-- The display:none should be handled in your CSS for responsive states -->
+      <!-- hamburger button -->
+      <button class="hamburger" id="hamburger-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
       </button>
 
       <nav class="navbar">
@@ -64,6 +55,8 @@
         </ul>
       </nav>
     </header>
+    <!-- mobile nav overlay -->
+    <div class="nav-overlay" id="nav-overlay"></div>
 
     <main id="content">
       <section class="blog-hero">
@@ -238,6 +231,41 @@
       </div>
     </section>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+      $(document).ready(function(){
+        var $hamburger = $('#hamburger-btn');
+        var $navbar    = $('.navbar');
+        var $overlay   = $('#nav-overlay');
+
+        function openMenu() {
+          $hamburger.addClass('open').attr('aria-expanded', 'true');
+          $navbar.addClass('nav-toggle');
+          $overlay.addClass('active');
+          $('body').css('overflow', 'hidden');
+        }
+        function closeMenu() {
+          $hamburger.removeClass('open').attr('aria-expanded', 'false');
+          $navbar.removeClass('nav-toggle');
+          $overlay.removeClass('active');
+          $('body').css('overflow', '');
+        }
+
+        $hamburger.on('click', function(){
+          $navbar.hasClass('nav-toggle') ? closeMenu() : openMenu();
+        });
+        $overlay.on('click', closeMenu);
+        $('.navbar ul li a').on('click', closeMenu);
+
+        $(window).on('load scroll', function(){
+          if($(window).scrollTop() > 30){
+            $('.header').css({'background':'#65b741','box-shadow':'0 .3rem .5rem rgba(0,0,0,.3)'});
+          } else {
+            $('.header').css({'background':'none','box-shadow':'none'});
+          }
+        });
+      });
+    </script>
     <script src="./blog.js"></script>
   </body>
 </html>

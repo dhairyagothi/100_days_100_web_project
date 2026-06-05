@@ -66,18 +66,18 @@ body.light-mode {
   --bg-surface: #eee8d5;
 
   --text-primary: #433422;
-  --text-secondary: rgba(67, 52, 34, 0.7);
-  --text-muted: rgba(67, 52, 34, 0.5);
+  --text-secondary: #5c4a37;                   /* darker for visibility */
+  --text-muted: rgba(67, 52, 34, 0.6);
   --accent-color: #cb4b16;
   --accent: #b58900;
-  --accent-dim: rgba(181, 137, 0, 0.1);
+  --accent-dim: rgba(181, 137, 0, 0.15);
   --accent-hover: #d33682;
-  --border: rgba(67, 52, 34, 0.15);
-  --border-hover: rgba(67, 52, 34, 0.25);
-  --border-accent: rgba(181, 137, 0, 0.35);
-  --accent-glow: rgba(203, 75, 22, 0.15);
-  --glass-bg: rgba(67, 52, 34, 0.03);
-  --glass-border: rgba(67, 52, 34, 0.08);
+  --border: rgba(67, 52, 34, 0.2);            /* Increased opacity */
+  --border-hover: rgba(67, 52, 34, 0.35);
+  --border-accent: rgba(181, 137, 0, 0.45);
+  --accent-glow: rgba(203, 75, 22, 0.2);
+  --glass-bg: rgba(253, 246, 227, 0.85);      /* High-contrast background for navbar */
+  --glass-border: rgba(67, 52, 34, 0.15);
   --gradient-1: linear-gradient(135deg, #cb4b16, #b58900);
 }
 
