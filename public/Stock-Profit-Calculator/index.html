@@ -8,18 +8,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <!-- Dark Mode Toggle -->
-    <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle Dark Mode">🌙</button>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
     <div class="container">
-        <!-- Summary Cards -->
-        <section class="summary-cards" id="summaryCards">
-            <div class="card" id="cardInvestment"><strong>Total Investment:</strong> <span id="totalInvestment">0</span></div>
-            <div class="card" id="cardNetSale"><strong>Net Sale Value:</strong> <span id="netSaleValue">0</span></div>
-            <div class="card" id="cardProfit"><strong>Profit/Loss:</strong> <span id="profitLoss">0</span></div>
-            <div class="card" id="cardROI"><strong>ROI (%):</strong> <span id="roiPercent">0</span></div>
-        </section>
         <div class="calculator">
             <h1>Stock Profit Calculator</h1>
             
@@ -33,40 +24,19 @@
                 </select>
             </div>
 
-            <div class="input-group">
-                <label for="shares">Number of Shares</label>
-                <input type="number" id="shares" min="1" step="1" required />
-                <small id="sharesError" class="error-message"></small>
-            </div>
-            <!-- Break-Even Price -->
-            <div class="input-group" id="breakEvenGroup">
-                <label for="breakEven">Break‑Even Price (per share)</label>
-                <output id="breakEven">0</output>
-            </div>
-            <!-- Dividend Income -->
-            <div class="input-group" id="dividendGroup">
-                <label for="dividendPerShare">Dividend Per Share</label>
-                <input type="number" id="dividendPerShare" min="0" step="0.01" />
-                <label for="dividendShares" style="margin-top:8px;">Number of Shares (for dividend)</label>
-                <input type="number" id="dividendShares" min="0" step="1" />
-                <output id="dividendIncome">0</output>
-            </div>
-            <!-- Tax Estimation -->
-            <div class="input-group" id="taxGroup">
-                <label for="holdingPeriod">Holding Period (days)</label>
-                <input type="number" id="holdingPeriod" min="1" step="1" />
-                <output id="taxAmount">0</output>
-                <output id="netAfterTax">0</output>
-            </div>
-            <!-- What‑If Simulator -->
-            <div class="input-group" id="whatIfGroup">
-                <label for="targetPrice">Target Price (per share)</label>
-                <input type="number" id="targetPrice" min="0" step="0.01" />
-                <output id="expectedProfit">0</output>
-                <output id="expectedROI">0</output>
-                <output id="estimatedTax">0</output>
-                <output id="expectedNetAfterTax">0</output>
-            </div>
+           <div class="input-group">
+    <label for="shares">Number of Shares</label>
+
+    <input
+        type="number"
+        id="shares"
+        min="1"
+        step="1"
+        required
+    >
+
+    <small id="sharesError" class="error-message"></small>
+</div>
 
             <div class="input-group">
                 <label for="purchasePrice">Purchase Price</label>
@@ -88,7 +58,10 @@
                 <input type="number" id="sellCommission" min="0" step="0.01">
             </div>
 
-
+            <div class="input-group">
+                <label for="holdingPeriod">Holding Period (in days)</label>
+                <input type="number" id="holdingPeriod" min="1" step="1">
+            </div>
 
             <button onclick="calculateProfit()">Calculate</button>
         </div>
@@ -101,24 +74,9 @@
                 <p>Profit Amount: <span id="profitAmount">0</span> <span id="currencySymbol3">INR</span></p>
                 <p>ROI: <span id="roi">0</span>%</p>
                 <p>Annualized Return: <span id="annualizedReturn">0</span>%</p>
-                <p>Break‑Even Price: <span id="breakEven">0</span></p>
-                <p>Dividend Income: <span id="dividendIncome">0</span></p>
-                <p>Tax Amount: <span id="taxAmount">0</span></p>
-                <p>Net After Tax: <span id="netAfterTax">0</span></p>
             </div>
             <canvas id="profitChart"></canvas>
         </div>
-        <!-- History Section -->
-        <section class="history" id="historySection">
-            <h2>Calculation History</h2>
-            <ul id="historyList"></ul>
-            <button id="clearHistoryBtn" type="button">Clear All History</button>
-        </section>
-        <!-- Export Buttons -->
-        <section class="export" id="exportSection">
-            <button id="exportCsvBtn">Export CSV</button>
-            <button id="exportPdfBtn">Export PDF</button>
-        </section>
     </div>
     <script src="./script.js"></script>
 </body>

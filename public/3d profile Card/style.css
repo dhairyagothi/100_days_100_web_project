@@ -105,19 +105,21 @@ h1, h2, p { margin-top: 0; }
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 14px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.82);
-  color: #111827;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #1e293b;
+  color: #3b82f6;
   text-decoration: none;
   font-weight: 800;
   box-shadow: 0 14px 34px rgba(15, 23, 42, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  border: 1px solid #3b82f6;
   backdrop-filter: blur(16px);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .project-back-button:hover {
+  background: #3b82f6;
+  color: #fff;
   transform: translateY(-2px);
   box-shadow: 0 18px 42px rgba(15, 23, 42, 0.18);
 }
