@@ -1,82 +1,199 @@
+/* ===== BRANDS SECTION ===== */
 .brands-section {
-    padding: 70px 8%;
-    text-align: center;
+  padding: 7rem 8%;
+  text-align: center;
+  background: var(--bg);
+  transition: background var(--transition);
+}
+
+.brands-header {
+  margin-bottom: 5rem;
 }
 
 .brands-header h2 {
-    font-size: 70px;
-    font-weight: 800;
-    color: #1c1c1c;
-    margin-bottom: 8px;
+  font-size: 7rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.04em;
+  line-height: 1;
 }
 
-.brands-header p {
-    font-size: 18px;
-    color: #6f6f6f;
-    letter-spacing: 2px;
-    margin-bottom: 50px;
+.headerpbox {
+  display: inline-block;
+  margin-top: 1rem;
 }
-  
 
+.headerpbox p {
+  font-size: 1.3rem;
+  color: var(--text-muted);
+  letter-spacing: 0.28em;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* Brand cards grid */
 .brand-cards {
-    display: flex;
-    justify-content: center;
-    gap: 24px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
 }
 
 .brand-card {
-    width: 250px;
-    padding: 35px 42px;
-    border-radius: 22px;
-    transition: 0.3s ease;
-    min-height: 380px;
+  width: 24rem;
+  padding: 3.2rem 2.8rem;
+  border-radius: var(--radius-lg);
+  transition:
+    transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.28s ease;
+  min-height: 36rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.brand-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.6) 0%,
+    transparent 100%
+  );
+}
+
+.brand-card:hover::before {
+  opacity: 1;
 }
 
 .brand-card:hover {
-    transform: translateY(-8px);
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.14);
 }
 
 .brand-card img {
-    width: 140px;
-    border-radius: 24px;
+  width: 9rem;
+  height: 9rem;
+  border-radius: 2rem;
+  object-fit: contain;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.brand-card:hover img {
+  transform: scale(1.06) rotate(2deg);
 }
 
 .brand-card h3 {
-    margin-top: 18px;
-    font-size: 28px;
-    color: #1c1c1c;
+  margin-top: 1.8rem;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
 }
 
 .brand-card p {
-    font-size: 14px;
-    color: #696969;
-    line-height: 1.5;
-    margin: 14px 0;
+  font-size: 1.4rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 1.2rem 0 1.8rem;
+  font-weight: 300;
+  flex: 1;
 }
 
 .brand-card a {
-    text-decoration: none;
-    color: #ef4f5f;
-    font-weight: 600;
+  text-decoration: none;
+  color: var(--red);
+  font-weight: 600;
+  font-size: 1.4rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.6rem 1.4rem;
+  border-radius: 99px;
+  background: rgba(226, 55, 68, 0.08);
+  transition:
+    background var(--transition),
+    gap var(--transition);
 }
 
+.brand-card a:hover {
+  background: rgba(226, 55, 68, 0.16);
+  gap: 8px;
+}
+
+/* Card colors */
 .zomato-card {
-    background: #fff1f2;
-    border:2px solid rgb(239, 79, 95,0.2);
+  background: #fff2f3;
+  border-color: rgba(226, 55, 68, 0.15);
 }
-
 .blinkit-card {
-    background: #fff9db;
-    border:2px solid rgba(236, 239, 79, 0.2);
+  background: #fffde7;
+  border-color: rgba(255, 214, 0, 0.25);
 }
-
 .district-card {
-    background: #f2ecff;
-    border:2px solid rgba(106, 13, 132, 0.2);
+  background: #f3ecff;
+  border-color: rgba(106, 13, 132, 0.12);
+}
+.hyperpure-card {
+  background: #f0fff4;
+  border-color: rgba(39, 174, 96, 0.15);
 }
 
-.hyperpure-card {
-    background: #fff1f3;
-    border:2px solid rgb(239, 79, 95,0.2);
+/* Dark mode */
+body.dark-mode .zomato-card {
+  background: #2a1a1b;
+  border-color: rgba(226, 55, 68, 0.2);
+}
+body.dark-mode .blinkit-card {
+  background: #252008;
+  border-color: rgba(255, 214, 0, 0.15);
+}
+body.dark-mode .district-card {
+  background: #1e1525;
+  border-color: rgba(150, 50, 200, 0.2);
+}
+body.dark-mode .hyperpure-card {
+  background: #0d2018;
+  border-color: rgba(39, 174, 96, 0.2);
+}
+body.dark-mode .brand-card h3 {
+  color: #f0f0f0;
+}
+body.dark-mode .brand-card p {
+  color: #999;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 800px) {
+  .brands-section {
+    padding: 5rem 5%;
+  }
+  .brands-header h2 {
+    font-size: 5rem;
+  }
+  .brand-card {
+    width: 46%;
+    min-width: 16rem;
+    min-height: auto;
+    padding: 2.4rem 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .brands-header h2 {
+    font-size: 3.6rem;
+  }
+  .brand-card {
+    width: 100%;
+  }
 }

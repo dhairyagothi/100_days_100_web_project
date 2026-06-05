@@ -1,0 +1,224 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  transition:
+    background-image 0.7s ease-in-out,
+    color 0.3s ease;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Theme Variant Visual Map Injection Rule Sets */
+body[data-weather-theme="default"] {
+  background-image: linear-gradient(135deg, #1e293b, #0f172a);
+  color: #f8fafc;
+}
+
+body[data-weather-theme="sunny"] {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.25)),
+    url("https://images.unsplash.com/photo-1504386106283-793a54d63b21?q=80&w=1600&auto=format&fit=crop");
+  color: #ffffff;
+}
+
+body[data-weather-theme="rainy"] {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)),
+    url("https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?q=80&w=1600&auto=format&fit=crop");
+  color: #f1f5f9;
+}
+
+body[data-weather-theme="snowy"] {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.1)),
+    url("https://images.unsplash.com/photo-1491002052546-bf38f186af56?q=80&w=1600&auto=format&fit=crop");
+  color: #1e293b;
+}
+
+body[data-weather-theme="night"] {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
+    url("https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?q=80&w=1600&auto=format&fit=crop");
+  color: #f9fafb;
+}
+
+/* Glassmorphism Presentation Panel */
+.glass-container {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.25rem;
+  padding: 2rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+body[data-weather-theme="snowy"] .glass-container {
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Input Fields Alignment Group */
+.search-header {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.input-wrapper {
+  flex: 1;
+  display: flex;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+body[data-weather-theme="snowy"] .input-wrapper {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.input-wrapper input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 0.7rem 1rem;
+  color: inherit;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.input-wrapper input::placeholder {
+  color: currentColor;
+  opacity: 0.6;
+}
+
+.input-wrapper button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  padding: 0 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.geo-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 40px;
+  height: 40px;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: inherit;
+  cursor: pointer;
+}
+
+body[data-weather-theme="snowy"] .geo-btn {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.geo-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.geo-svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+/* Metrics Elements Layouts */
+.location-box h1 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.location-box p {
+  font-size: 1rem;
+  opacity: 0.8;
+  text-transform: capitalize;
+  margin-top: 0.15rem;
+}
+
+.primary-reading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2rem 0;
+}
+
+.temp-val {
+  font-size: 4rem;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+}
+
+.weather-icon {
+  width: 76px;
+  height: 76px;
+}
+
+/* Footer Metrics Breakdowns */
+.detailed-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1.25rem;
+}
+
+body[data-weather-theme="snowy"] .detailed-metrics {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.metric-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+}
+
+.metric-number {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-top: 0.15rem;
+}
+
+.status-indicator {
+  text-align: center;
+  padding: 1.5rem 0;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.hidden {
+  display: none !important;
+}

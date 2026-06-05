@@ -70,22 +70,23 @@ body {
   position: fixed;
   left: 18px;
   top: 18px;
-  padding: 10px 16px;
-  border-radius: var(--radius-md);
-  background: var(--glass-bg);
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #1e293b;
   backdrop-filter: blur(10px);
-  border: 1px solid var(--glass-border);
+  border: 1px solid #3b82f6;
   text-decoration: none;
   z-index: 10000;
   font-weight: 700;
   font-family: "Poppins", sans-serif;
-  color: var(--text-color);
-  transition: all var(--transition-fast);
+  color: #3b82f6;
+  transition: all 0.2s ease;
   box-shadow: 0 4px 20px var(--shadow-color);
 }
 
 .project-back-button:hover {
-  background: var(--primary-color);
+  background: #3b82f6;
+  color: #fff;
   transform: translateY(-2px);
 }
 

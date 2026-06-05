@@ -260,10 +260,10 @@ function escapeHTML(value) {
  * omitted, which keeps the UI layout intact.
  *
  * Allowed schemes:
- *   - https://   (absolute external links, GitHub, live demos)
- *   - http://    (legacy / local dev)
- *   - ./  ../    (relative paths to local demo index.html files)
- *   - #          (in-page anchors)
+ * - https://    (absolute external links, GitHub, live demos)
+ * - http://     (legacy / local dev)
+ * - ./  ../     (relative paths to local demo index.html files)
+ * - #           (in-page anchors)
  *
  * Everything else — including javascript:, data:, vbscript:,
  * blob: and protocol-relative // URLs — is replaced with "#".
@@ -274,18 +274,32 @@ function escapeHTML(value) {
 function sanitizeUrl(url) {
   const raw = String(url || "").trim();
 
-  // Allow empty / anchor-only values as-is
+  // Allow empty / anchor-only values
   if (!raw || raw === "#") return raw || "#";
 
-  // Relative paths used for local demo files are safe
-  if (raw.startsWith("./") || raw.startsWith("../") || raw.startsWith("/")) {
+  // Allow relative paths used by project demos
+  if (
+    raw.startsWith("./") ||
+    raw.startsWith("../") ||
+    raw.startsWith("/")
+  ) {
+    return raw;
+  }
+  if (
+    !raw.includes(":") &&
+    (raw.includes(".html") ||
+      raw.startsWith("public/") ||
+      raw.startsWith("projects/"))
+  ) {
     return raw;
   }
 
-  // Allow standard web protocols only
-  if (/^https?:\/\//i.test(raw)) return raw;
+  // Allow http/https links
+  if (/^https?:\/\//i.test(raw)) {
+    return raw;
+  }
 
-  // Block everything else (javascript:, data:, vbscript:, blob:, etc.)
+  // Block unsafe schemes
   console.warn("[XSS] Blocked unsafe URL scheme:", raw);
   return "#";
 }
@@ -362,11 +376,15 @@ function buildProjectCardHTML({
                         <i class="fab fa-github"></i> Code
                     </a>`;
 
+
   // PERFORMANCE OPTIMIZATION: Dynamic clean paths for project thumbnails inside lazy loader
   const projectFolder = sourceUrl.substring(sourceUrl.lastIndexOf('/') + 1);
   const thumbnailUrl = `public/${projectFolder}/thumbnail.png`;
 
   return {
+
+return {
+
     html: `
             <div class="card-thumbnail-wrapper" style="background: #15152e; min-height: 140px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 6px; margin-bottom: 12px;">
                 <img 
@@ -384,7 +402,13 @@ function buildProjectCardHTML({
                   ${sourceOnlyBadge}
                 </span>
             </div>
+
+            <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
+                <img src="./${url && url.startsWith('./') ? url.split('/')[2] : name.replace(/\s+/g, '_')}/preview.png" alt="${name} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+
             <h3 class="card-name">${safeName}</h3>
+
             ${
               showDescription
                 ? `<div class="card-description">
@@ -414,6 +438,7 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
   card.style.cursor = "pointer";
   card.onclick = (e) => {
     if (e.target.closest("a, button")) return;
+    if (!demoUrl) return;
 
     // Track the project visit if projectData is provided
     if (projectData) {
@@ -503,10 +528,10 @@ function clearAllTechFilters() {
  * SECURITY: Previously this function built filter-tag markup by splicing
  * the raw tech string directly into an onclick attribute:
  *
- *   `onclick="removeTechFilter('${tech}')"`
+ * `onclick="removeTechFilter('${tech}')"`
  *
  * That allowed a crafted tag value such as
- *   '); alert(1); ('
+ * '); alert(1); ('
  * to break out of the string literal and execute arbitrary JS.
  *
  * The fix uses DOM methods exclusively — no innerHTML, no inline handlers.
@@ -635,7 +660,11 @@ function migrateRecentProjects() {
     return project;
   });
 
-  localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+  try {
+    localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+  } catch (error) {
+    console.warn("Could not save recent projects to localStorage:", error.message);
+  }
 }
 
 // Migrate on load
@@ -650,7 +679,11 @@ function cleanupExpiredRecentProjects() {
   recentProjects = getRecentProjectsWithinWindow();
 
   if (recentProjects.length !== initialLength) {
-    localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+    try {
+      localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+    } catch (error) {
+      console.warn("Could not save recent projects to localStorage:", error.message);
+    }
     renderRecentProjects();
   }
 }
@@ -923,11 +956,14 @@ function renderGrid() {
     const name = project.projectName;
     const url = project.projectPath;
     const tags = project.techStack;
+
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement("div");
+
     const isBookmarked = bookmarkedProjects.some(
       (item) => normalizeProjectEntry(item).day === day,
     );
+
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
       name,
@@ -941,11 +977,13 @@ function renderGrid() {
     card.className = sourceOnly
       ? "project-card source-only visible"
       : "project-card visible";
+
     card.innerHTML = html;
     attachProjectCardInteraction(card, demoUrl, project);
 
     fragment.appendChild(card);
   });
+
 
   
   grid.appendChild(fragment);
@@ -959,6 +997,7 @@ function renderGrid() {
 function setupInfiniteScrollObserver(totalItems, itemsPerChunk) {
   const sentinel = document.getElementById('scroll-sentinel');
   if (!sentinel) return;
+
 
   grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
@@ -1333,7 +1372,8 @@ function renderBookmarks() {
     if (!day || !name) return;
 
     const category = getCategoryFromTags(tags, name);
-    const card = document.createElement("div");
+    
+    // Updated to use the secure HTML-string approach
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
       name,
@@ -1344,10 +1384,12 @@ function renderBookmarks() {
       showDescription: true,
     });
 
+    const card = document.createElement("div");
     card.className = sourceOnly
       ? "project-card source-only visible"
       : "project-card visible";
     card.innerHTML = html;
+
     attachProjectCardInteraction(card, demoUrl, project);
 
     bookmarkGrid.appendChild(card);
@@ -1387,10 +1429,11 @@ function renderRecentProjects() {
     const tags = projectObj.techStack || projectObj.tags || projectObj[3];
 
     const category = getCategoryFromTags(tags, name);
-    const card = document.createElement("div");
     const isBookmarked = bookmarkedProjects.some(
       (item) => normalizeProjectEntry(item).day === day,
     );
+    
+    // Updated to use the secure HTML-string approach
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
       name,
@@ -1401,10 +1444,12 @@ function renderRecentProjects() {
       showDescription: true,
     });
 
+    const card = document.createElement("div");
     card.className = sourceOnly
       ? "project-card source-only visible"
       : "project-card visible";
     card.innerHTML = html;
+
     attachProjectCardInteraction(card, demoUrl, projectObj);
 
     recentGrid.appendChild(card);
