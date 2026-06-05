@@ -1,181 +1,431 @@
-const REPO_OWNER = "dhairyagothi";
-const REPO_NAME = "100_days_100_web_project";
-const GITHUB_TOKEN = ""; // Optional: Add GitHub personal access token
+const modal = document.getElementById("profileModal");
+const modalBody = document.getElementById("modalBody");
+const closeModal = document.getElementById("closeModal");
+const certificateModal = document.getElementById("certificateModal");
+const certificateBody = document.getElementById("certificateBody");
+const closeCertificate = document.getElementById("closeCertificate");
 
-async function fetchContributors() {
-  const contributorsContainer = document.getElementById("contributors");
+const GITHUB_API_BASE = "https://api.github.com";
+const REQUEST_TIMEOUT = 10000;
+const MAX_RETRIES = 3;
+
+closeModal?.addEventListener("click", () => {
+  if (modal) {
+    modal.style.display = "none";
+  }
+});
+
+async function githubFetch(url, options = {}, retries = MAX_RETRIES) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => {
+    controller.abort();
+  }, REQUEST_TIMEOUT);
 
   try {
-    const response = await fetch(
-      `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contributors?per_page=100`,
-      {
-        headers: GITHUB_TOKEN ? { Authorization: `token ${GITHUB_TOKEN}` } : {},
-      }
-    );
-
-    if (!response.ok) throw new Error("Failed to fetch contributors");
-
-    const contributors = await response.json();
-
-    contributors.forEach((contributor) => {
-      const card = document.createElement("div");
-      card.className = "contributor-card";
-
-      const img = document.createElement("img");
-      img.src = contributor.avatar_url;
-      img.alt = contributor.login;
-
-      const name = document.createElement("h3");
-      name.textContent = contributor.login;
-
-      const githubLink = document.createElement("a");
-      githubLink.href = contributor.html_url;
-      githubLink.target = "_blank";
-      githubLink.textContent = "GitHub Profile";
-
-      const button = document.createElement("button");
-      button.textContent = "Certificate";
-      button.addEventListener("click", () => {
-        openCertificatePage(contributor.login, contributor.avatar_url);
-      });
-
-      card.appendChild(img);
-      card.appendChild(name);
-      card.appendChild(githubLink);
-      card.appendChild(button);
-      contributorsContainer.appendChild(card);
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+      headers: {
+        Accept: "application/vnd.github+json",
+      },
     });
+
+    clearTimeout(timeoutId);
+
+    if (response.status === 403) {
+      const resetTime = response.headers.get("X-RateLimit-Reset");
+      let message = "GitHub API rate limit exceeded.";
+      if (resetTime) {
+        const resetDate = new Date(resetTime * 1000);
+        message += ` Try again after ${resetDate.toLocaleTimeString()}`;
+      }
+      throw new Error(message);
+    }
+
+    if (!response.ok) {
+      throw new Error(`GitHub API Error (${response.status})`);
+    }
+
+    const data = await response.json();
+    if (!data) {
+      throw new Error("Empty response received");
+    }
+    return data;
   } catch (error) {
-    console.error("Error fetching contributors:", error);
-    contributorsContainer.innerHTML =
-      "<p style='color: red;'>Failed to load contributors.</p>";
+    clearTimeout(timeoutId);
+    if (retries > 0) {
+      return githubFetch(url, options, retries - 1);
+    }
+    if (error.name === "AbortError") {
+      throw new Error("Request timeout. Please try again.");
+    }
+    if (error instanceof TypeError) {
+      throw new Error("Network error. Check your internet connection.");
+    }
+    throw error;
   }
 }
 
-function openCertificatePage(username, avatarUrl) {
-  const certWindow = window.open("", "_blank");
+window.addEventListener("click", (e) => {
+  if (modal && e.target === modal) {
+    modal.style.display = "none";
+  }
+});
 
-  certWindow.document.write(`
-    <html>
-      <head>
-        <title>Certificate of Contribution</title>
-        <style>
-          body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-            padding: 20px;
-          }
-          h1 {
-            color: #5a4637;
-          }
-          img {
-            border: 10px solid #d4af37;
-            border-radius: 12px;
-            margin-top: 20px;
-            max-width: 100%;
-            height: auto;
-          }
-          .download-btn {
-            margin-top: 30px;
-            padding: 15px 30px;
-            background-color: #f2c94c;
-            color: white;
-            font-size: 18px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-          }
-          .download-btn:hover {
-            background-color: #d4af37;
-          }
-        </style>
-      </head>
-      <body>
-        <h1>Certificate of Contribution</h1>
-        <canvas id="certificateCanvas" width="1600" height="1000"></canvas>
-        <br />
-        <button class="download-btn" onclick="downloadCertificate()">Download Certificate</button>
-        <script>
-          function generateCertificate() {
-            const canvas = document.getElementById("certificateCanvas");
-            const ctx = canvas.getContext("2d");
-
-            // Background gradient
-            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            gradient.addColorStop(0, "#f7e8a1");
-            gradient.addColorStop(1, "#f2c94c");
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Decorative border
-            ctx.strokeStyle = "#d4af37";
-            ctx.lineWidth = 20;
-            ctx.strokeRect(50, 50, canvas.width - 100, canvas.height - 100);
-
-            // Title
-            ctx.fillStyle = "#5a4637";
-            ctx.font = "bold 80px Georgia";
-            ctx.textAlign = "center";
-            ctx.fillText("Certificate of Contribution", canvas.width / 2, 150);
-
-            // GitHub image
-            const image = new Image();
-            image.crossOrigin = "Anonymous";
-            image.src = "${avatarUrl}";
-            image.onload = () => {
-              const imageSize = 200;
-              ctx.save();
-              ctx.beginPath();
-              ctx.arc(canvas.width / 2, 300, imageSize / 2, 0, Math.PI * 2);
-              ctx.clip();
-              ctx.drawImage(image, canvas.width / 2 - imageSize / 2, 200, imageSize, imageSize);
-              ctx.restore();
-
-              // Username
-              ctx.font = "bold 50px Arial";
-              ctx.fillStyle = "#5a4637";
-              ctx.fillText("${username}", canvas.width / 2, 500);
-
-              // Certificate details
-              ctx.font = "35px Arial";
-              ctx.fillText("This certificate is proudly presented to", canvas.width / 2, 580);
-              ctx.fillText("${username} for his/her valuable", canvas.width / 2, 630);
-              ctx.fillText("contribution to 100_DAYS_100_WEB_PROJECTS.", canvas.width / 2, 680);
-              ctx.fillText("Keep contributing. Best wishes", canvas.width / 2, 730);
-              ctx.fillText("for your future endeavors.", canvas.width / 2, 780);
-
-              // Signature
-              ctx.font = "italic 30px Georgia";
-              ctx.fillText("Dhairya Gothi", canvas.width / 1.5, 850);
-              ctx.strokeStyle = "#5a4637";
-              ctx.lineWidth = 2;
-              ctx.beginPath();
-              ctx.moveTo(canvas.width / 1.5 - 150, 860);
-              ctx.lineTo(canvas.width / 1.5 + 150, 860);
-              ctx.stroke();
-
-              // Date
-              const date = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString();
-              ctx.font = "25px Arial";
-              ctx.fillText("Generated on: " + date, canvas.width / 5, 900);
-            };
-          }
-
-          function downloadCertificate() {
-            const canvas = document.getElementById("certificateCanvas");
-            const link = document.createElement("a");
-            link.download = "${username}_certificate.png";
-            link.href = canvas.toDataURL("image/png");
-            link.click();
-          }
-
-          generateCertificate();
-        </script>
-      </body>
-    </html>
-  `);
+function saveCache(key, data) {
+  localStorage.setItem(
+    key,
+    JSON.stringify({
+      timestamp: Date.now(),
+      data,
+    }),
+  );
 }
 
-// Fetch contributors when the page loads
-fetchContributors();
+function loadCache(key, maxAge = 1000 * 60 * 10) {
+  const cached = localStorage.getItem(key);
+  if (!cached) return null;
+
+  try {
+    const parsed = JSON.parse(cached);
+    const isExpired = Date.now() - parsed.timestamp > maxAge;
+    if (isExpired) {
+      localStorage.removeItem(key);
+      return null;
+    }
+    return parsed.data;
+  } catch {
+    return null;
+  }
+}
+
+async function openProfile(username) {
+  if (!modal || !modalBody) {
+    console.error("Modal elements not found");
+    return;
+  }
+
+  modal.style.display = "flex";
+  modal.style.position = "fixed";
+  modal.style.top = "0";
+  modal.style.left = "0";
+  modal.style.zIndex = "999999999";
+  modal.style.justifyContent = "center";
+  modal.style.alignItems = "center";
+
+  modalBody.innerHTML = "<p>Loading...</p>";
+
+  try {
+    const response = await fetch(`https://api.github.com/users/${username}`);
+
+    if (!response.ok) {
+      modalBody.textContent = "";
+      const heading = document.createElement("h2");
+      heading.textContent = username;
+
+      const message = document.createElement("p");
+      message.textContent = "Profile unavailable";
+
+      modalBody.appendChild(heading);
+      modalBody.appendChild(message);
+      return;
+    }
+
+    const user = await response.json();
+    modalBody.textContent = "";
+
+    // Avatar
+    const avatar = document.createElement("img");
+    avatar.src = user.avatar_url;
+    avatar.alt = user.name || username;
+    avatar.loading = 'lazy';
+    avatar.style.width = '120px';
+    avatar.style.height = '120px';
+    avatar.style.borderRadius = '50%';
+
+    // Name Enforces Native Context Escaping Natively
+    const name = document.createElement("h2");
+    name.textContent = user.name || username;
+
+    // Bio
+    const bio = document.createElement("p");
+    bio.textContent = user.bio || "No bio available";
+
+    // Followers
+    const followers = document.createElement("p");
+    followers.textContent = `Followers: ${user.followers}`;
+
+    // Repositories
+    const repos = document.createElement("p");
+    repos.textContent = `Repositories: ${user.public_repos}`;
+
+    // Location
+    const location = document.createElement("p");
+    location.textContent = `Location: ${user.location || "Unknown"}`;
+
+    // Append structural tree elements cleanly to canvas layout
+    modalBody.appendChild(avatar);
+    modalBody.appendChild(name);
+    modalBody.appendChild(bio);
+    modalBody.appendChild(followers);
+    modalBody.appendChild(repos);
+    modalBody.appendChild(location);
+
+    if (user.html_url) {
+      const profileLink = document.createElement("a");
+      profileLink.href = user.html_url;
+      profileLink.target = "_blank";
+      profileLink.rel = "noopener noreferrer";
+      profileLink.className = "github-btn";
+      profileLink.textContent = "GitHub Profile";
+      modalBody.appendChild(profileLink);
+    }
+  } catch (err) {
+    modalBody.innerHTML = "<p>Failed to load profile</p>";
+    console.log(err);
+  }
+}
+
+let allContributors = [];
+let filteredContributors = [];
+
+async function fetchContributors() {
+  const contributorsContainer = document.getElementById("contributors");
+  const contributorCountSpan = document.getElementById("contributorCount");
+  const errorBox = document.getElementById("contributorsError");
+  const errorMessage = document.getElementById("contributorsErrorMessage");
+  const loading = document.getElementById("contributorsLoading");
+
+  loading.classList.remove("hidden");
+  errorBox.classList.add("hidden");
+  contributorsContainer.innerHTML = "";
+
+  try {
+    const cached = loadCache("contributors-cache");
+    if (cached) {
+      allContributors = cached;
+      filteredContributors = [...cached];
+      contributorCountSpan.textContent = cached.length;
+      renderContributors(filteredContributors);
+      loading.classList.add("hidden");
+      return;
+    }
+
+    const contributors = await githubFetch(
+      `${GITHUB_API_BASE}/repos/${window.REPO_OWNER}/${window.REPO_NAME}/contributors?per_page=100`,
+    );
+
+    saveCache("contributors-cache", contributors);
+    contributorCountSpan.textContent = contributors.length;
+
+    const totalCommits = contributors.reduce(
+      (sum, c) => sum + c.contributions,
+      0,
+    );
+    const totalCommitsEl = document.getElementById("totalCommits");
+    if (totalCommitsEl) {
+      totalCommitsEl.textContent = totalCommits.toLocaleString();
+    }
+
+    allContributors = contributors;
+    filteredContributors = [...contributors];
+    renderContributors(filteredContributors);
+  } catch (error) {
+    errorBox.classList.remove("hidden");
+    errorMessage.textContent = error.message;
+    contributorsContainer.innerHTML = "";
+  } finally {
+    loading.classList.add("hidden");
+  }
+}
+
+function renderContributors(data) {
+  const contributorsContainer = document.getElementById("contributors");
+  const emptyState = document.getElementById("emptyState");
+
+  contributorsContainer.innerHTML = "";
+
+  if (data.length === 0) {
+    emptyState.style.display = "block";
+    return;
+  }
+
+  emptyState.style.display = "none";
+  const fragment = document.createDocumentFragment();
+
+  data.forEach((contributor) => {
+    const card = document.createElement("div");
+    card.className = "contributor-card";
+
+    const globalRank =
+      allContributors.findIndex((c) => c.login === contributor.login) + 1;
+    let badge = "";
+
+    if (globalRank === 1) {
+      badge = "assets/badges/diamond.png";
+    } else if (globalRank >= 2 && globalRank <= 3) {
+      badge = "assets/badges/gold.png";
+    } else if (globalRank >= 4 && globalRank <= 6) {
+      badge = "assets/badges/silver.png";
+    } else if (globalRank >= 7 && globalRank <= 10) {
+      badge = "assets/badges/bronze.png";
+    }
+
+    if (badge) {
+      const badgeImg = document.createElement("img");
+      badgeImg.className = "rank-badge";
+      badgeImg.src = badge;
+      badgeImg.alt = "Rank badge";
+      card.appendChild(badgeImg);
+    }
+
+    const avatar = document.createElement("img");
+    avatar.src = contributor.avatar_url;
+    avatar.alt = contributor.login;
+    avatar.loading = 'lazy';
+    card.appendChild(avatar);
+
+    const name = document.createElement("h3");
+    name.textContent = contributor.login;
+    card.appendChild(name);
+
+    const stats = document.createElement("div");
+    stats.className = "contributor-stats";
+
+    const stat = document.createElement("div");
+    stat.className = "stat";
+
+    const value = document.createElement("span");
+    value.className = "value";
+    value.textContent = contributor.contributions;
+
+    const label = document.createElement("span");
+    label.className = "label";
+    label.textContent = "Commits";
+
+    stat.appendChild(value);
+    stat.appendChild(label);
+    stats.appendChild(stat);
+    card.appendChild(stats);
+
+    const links = document.createElement("div");
+    links.className = "contributor-links";
+
+    const detailsBtn = document.createElement("button");
+    detailsBtn.className = "details-btn";
+    detailsBtn.dataset.user = contributor.login;
+    detailsBtn.textContent = "View Details";
+    detailsBtn.addEventListener("click", () => {
+      openProfile(contributor.login);
+    });
+
+    const profileLink = document.createElement("a");
+    profileLink.href = contributor.html_url;
+    profileLink.target = "_blank";
+    profileLink.rel = "noopener noreferrer";
+    profileLink.className = "github-btn";
+
+    const icon = document.createElement("i");
+    icon.className = "fab fa-github";
+
+    profileLink.appendChild(icon);
+    profileLink.append(" Profile");
+
+    links.appendChild(detailsBtn);
+    links.appendChild(profileLink);
+    card.appendChild(links);
+
+    fragment.appendChild(card);
+  });
+
+  contributorsContainer.appendChild(fragment);
+}
+
+function renderStargazers(stargazers) {
+  const stargazersContainer = document.getElementById("stargazers");
+  stargazersContainer.innerHTML = "";
+
+  stargazers.forEach((stargazer) => {
+    const starItem = document.createElement("a");
+    starItem.href = stargazer.html_url;
+    starItem.target = "_blank";
+    starItem.className = "stargazer-item";
+    starItem.title = stargazer.login;
+
+    const img = document.createElement("img");
+    img.src = stargazer.avatar_url;
+    img.alt = stargazer.login;
+    img.loading = 'lazy';
+
+    starItem.appendChild(img);
+    stargazersContainer.appendChild(starItem);
+  });
+}
+
+async function fetchStargazers() {
+  const stargazersContainer = document.getElementById("stargazers");
+  const errorBox = document.getElementById("stargazersError");
+  const errorMessage = document.getElementById("stargazersErrorMessage");
+  const loading = document.getElementById("stargazersLoading");
+
+  loading.classList.remove("hidden");
+  errorBox.classList.add("hidden");
+  stargazersContainer.innerHTML = "";
+
+  try {
+    const cached = loadCache("stargazers-cache");
+    if (cached) {
+      renderStargazers(cached);
+      loading.classList.add("hidden");
+      return;
+    }
+
+    const stargazers = await githubFetch(
+      `${GITHUB_API_BASE}/repos/${window.REPO_OWNER}/${window.REPO_NAME}/stargazers?per_page=100`,
+    );
+
+    saveCache("stargazers-cache", stargazers);
+    renderStargazers(stargazers);
+  } catch (error) {
+    errorBox.classList.remove("hidden");
+    errorMessage.textContent = error.message;
+  } finally {
+    loading.classList.add("hidden");
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  fetchContributors();
+  fetchStargazers();
+
+  document
+    .getElementById("retryContributors")
+    ?.addEventListener("click", fetchContributors);
+  document
+    .getElementById("retryStargazers")
+    ?.addEventListener("click", fetchStargazers);
+
+  const searchInput = document.getElementById("contributorSearch");
+  const sortSelect = document.getElementById("sortContributors");
+
+  searchInput.addEventListener("input", (e) => {
+    const value = e.target.value.toLowerCase();
+    filteredContributors = allContributors.filter((c) =>
+      c.login.toLowerCase().includes(value),
+    );
+    renderContributors(filteredContributors);
+  });
+
+  sortSelect.addEventListener("change", (e) => {
+    const order = e.target.value;
+    filteredContributors.sort((a, b) => {
+      return order === "asc"
+        ? a.contributions - b.contributions
+        : b.contributions - a.contributions;
+    });
+    renderContributors(filteredContributors);
+  });
+});
+
+window.removeTechFilter = () => {};
+window.clearAllTechFilters = () => {};

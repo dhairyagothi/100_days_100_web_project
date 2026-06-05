@@ -1,0 +1,34 @@
+:root { --primary: #2563eb; --bg: #f8fafc; --card: #ffffff; --danger: #dc2626; --success: #16a34a; --warning: #f59e0b; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 20px; color: #1e293b; }
+.container { max-width: 1200px; margin: auto; display: grid; grid-template-columns: 3fr 1.2fr; gap: 20px; }
+.header { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; }
+.card { background: var(--card); padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 12px; border-bottom: 1px solid #e2e8f0; }
+.btn { cursor: pointer; border: none; padding: 8px 12px; border-radius: 6px; font-weight: 600; }
+.btn-add { background: var(--primary); color: white; }
+.counter-group { display: flex; align-items: center; gap: 5px; }
+.btn-inc { background: #dcfce7; color: var(--success); width: 25px; height: 25px; padding: 0; display: flex; align-items: center; justify-content: center;}
+.btn-dec { background: #fee2e2; color: var(--danger); width: 25px; height: 25px; padding: 0; display: flex; align-items: center; justify-content: center;}
+.history-list { font-size: 0.85rem; max-height: 400px; overflow-y: auto; }
+.history-item { padding: 8px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; }
+
+.modal-overlay {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5); align-items: center; justify-content: center; z-index: 100;
+}
+.modal-box {
+    background: var(--card); padding: 25px; border-radius: 12px;
+    width: 90%; max-width: 400px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+}
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.modal-header h2 { margin: 0; font-size: 1.25rem; }
+.close-btn { font-size: 1.5rem; cursor: pointer; color: #94a3b8; border: none; background: none; }
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 5px; font-size: 0.9rem; font-weight: 600; }
+.form-group input {
+    width: 100%; padding: 10px; border: 1px solid #cbd5e1;
+    border-radius: 6px; box-sizing: border-box; font-family: inherit;
+}
+
+@media (max-width: 1000px) { .container { grid-template-columns: 1fr; } }

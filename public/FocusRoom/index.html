@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="FocusForge — Pomodoro Focus Timer for peak productivity" />
+  <title>FocusForge — Pomodoro Focus Timer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
+
+  <!-- Ambient background blobs -->
+  <div class="bg-blob blob-1" aria-hidden="true"></div>
+  <div class="bg-blob blob-2" aria-hidden="true"></div>
+  <div class="bg-blob blob-3" aria-hidden="true"></div>
+
+  <div class="app-wrapper">
+
+    <!-- ── Header ── -->
+    <header class="app-header">
+      <div class="logo">
+        <span class="logo-icon" aria-hidden="true">&#9889;</span>
+        <span class="logo-text">FocusForge</span>
+      </div>
+      <div class="header-actions">
+        <div class="session-badge" title="Completed focus sessions" aria-label="Sessions completed">
+          <span aria-hidden="true">&#127919;</span>
+          <span class="session-label">Sessions</span>
+          <span class="session-count" id="sessionCount" aria-live="polite" aria-atomic="true">0</span>
+        </div>
+        <button class="icon-btn" id="themeToggle" aria-label="Toggle light/dark theme" title="Toggle theme">
+          <span id="themeIcon" aria-hidden="true">&#9728;&#65039;</span>
+        </button>
+        <button class="icon-btn" id="settingsToggle" aria-label="Open settings" title="Settings (Ctrl+,)">
+          <span aria-hidden="true">&#9881;&#65039;</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ── Mode Tabs ── -->
+    <div class="mode-tabs" role="tablist" aria-label="Timer mode">
+      <button
+        class="mode-tab active"
+        id="focusTab"
+        role="tab"
+        aria-selected="true"
+        aria-controls="timerPanel"
+        data-mode="focus"
+      >Focus</button>
+      <button
+        class="mode-tab"
+        id="breakTab"
+        role="tab"
+        aria-selected="false"
+        aria-controls="timerPanel"
+        data-mode="break"
+      >Short Break</button>
+    </div>
+
+    <!-- ── Main Timer Card ── -->
+    <main>
+      <section class="timer-card glass" id="timerPanel" role="tabpanel" aria-label="Timer panel">
+
+        <!-- Mode indicator -->
+        <div class="mode-indicator">
+          <span class="mode-dot" id="modeDot" aria-hidden="true"></span>
+          <span class="mode-label" id="modeLabel" aria-live="polite">Focus Time</span>
+        </div>
+
+        <!-- SVG Progress Ring + countdown display -->
+        <div class="timer-container" aria-label="Countdown timer" role="timer">
+          <svg class="progress-ring" viewBox="0 0 220 220" aria-hidden="true">
+            <circle class="progress-ring__track" cx="110" cy="110" r="96" />
+            <circle class="progress-ring__fill" id="progressRing" cx="110" cy="110" r="96" />
+          </svg>
+          <div class="timer-display">
+            <span
+              class="timer-time"
+              id="timerTime"
+              aria-atomic="true"
+              tabindex="0"
+              title="Click to edit time"
+              role="button"
+              aria-label="Timer display — click to edit"
+            >25:00</span>
+            <span class="timer-edit-hint" aria-hidden="true">&#9998; click to edit</span>
+          </div>
+        </div>
+
+        <!-- Quick time adjust -->
+        <div class="time-adjust" role="group" aria-label="Adjust timer duration">
+          <button class="adjust-btn" id="decreaseTime" aria-label="Decrease time by 5 minutes" title="−5 min">
+            <span aria-hidden="true">&#8722;</span>5 min
+          </button>
+          <button class="adjust-btn" id="increaseTime" aria-label="Increase time by 5 minutes" title="+5 min">
+            <span aria-hidden="true">&#43;</span>5 min
+          </button>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls" role="group" aria-label="Timer controls">
+          <button class="ctrl-btn reset-btn" id="resetBtn" aria-label="Reset timer" title="Reset (R)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="1 4 1 10 7 10"></polyline>
+              <path d="M3.51 15a9 9 0 1 0 .49-3.46"></path>
+            </svg>
+          </button>
+
+          <button class="ctrl-btn start-btn" id="startBtn" aria-label="Start timer" title="Start / Pause (Space)">
+            <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <svg class="pause-icon hidden" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <rect x="6" y="4" width="4" height="16"></rect>
+              <rect x="14" y="4" width="4" height="16"></rect>
+            </svg>
+          </button>
+
+          <button class="ctrl-btn skip-btn" id="skipBtn" aria-label="Skip to next mode" title="Skip (S)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="5 4 15 12 5 20 5 4"></polygon>
+              <line x1="19" y1="5" x2="19" y2="19"></line>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Motivational quote -->
+        <div class="quote-section" id="quoteSection" aria-live="polite">
+          <p class="quote-text" id="quoteText">"The secret of getting ahead is getting started."</p>
+          <span class="quote-author" id="quoteAuthor">&#8212; Mark Twain</span>
+        </div>
+
+      </section>
+    </main>
+
+    <!-- ── Settings Panel ── -->
+    <aside
+      class="settings-panel glass"
+      id="settingsPanel"
+      aria-label="Timer settings"
+      hidden
+    >
+      <div class="settings-header">
+        <h2 class="settings-title">Settings</h2>
+        <button class="icon-btn" id="settingsClose" aria-label="Close settings">&#10005;</button>
+      </div>
+      <div class="settings-body">
+
+        <div class="setting-group">
+          <label class="setting-label" for="focusDuration">Focus Duration (minutes)</label>
+          <div class="setting-input-row">
+            <button class="stepper-btn" data-target="focusDuration" data-action="dec" aria-label="Decrease focus duration">&#8722;</button>
+            <input class="setting-input" type="number" id="focusDuration" min="1" max="99" value="25" />
+            <button class="stepper-btn" data-target="focusDuration" data-action="inc" aria-label="Increase focus duration">&#43;</button>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <label class="setting-label" for="breakDuration">Break Duration (minutes)</label>
+          <div class="setting-input-row">
+            <button class="stepper-btn" data-target="breakDuration" data-action="dec" aria-label="Decrease break duration">&#8722;</button>
+            <input class="setting-input" type="number" id="breakDuration" min="1" max="99" value="5" />
+            <button class="stepper-btn" data-target="breakDuration" data-action="inc" aria-label="Increase break duration">&#43;</button>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <label class="setting-label setting-checkbox">
+            <input type="checkbox" id="autoSwitch" checked />
+            <span class="checkmark"></span>
+            Auto-switch modes after completion
+          </label>
+        </div>
+
+        <div class="setting-group">
+          <label class="setting-label setting-checkbox">
+            <input type="checkbox" id="soundEnabled" checked />
+            <span class="checkmark"></span>
+            Sound notifications
+          </label>
+        </div>
+
+        <div class="setting-group">
+          <label class="setting-label setting-checkbox">
+            <input type="checkbox" id="browserNotif" />
+            <span class="checkmark"></span>
+            Browser notifications
+          </label>
+        </div>
+
+        <button class="apply-btn" id="applySettings">Apply Settings</button>
+        <button class="reset-sessions-btn" id="resetSessions">Reset Session Count</button>
+
+      </div>
+    </aside>
+
+  </div><!-- /.app-wrapper -->
+
+  <!-- ── Completion Popup ── -->
+  <div
+    class="popup-overlay"
+    id="popupOverlay"
+    hidden
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="popupTitle"
+    aria-describedby="popupMessage"
+  >
+    <div class="popup glass">
+      <div class="popup-icon" id="popupIcon" aria-hidden="true">&#127881;</div>
+      <h3 class="popup-title" id="popupTitle">Session Complete!</h3>
+      <p class="popup-message" id="popupMessage">Amazing work! Time for a break.</p>
+      <blockquote class="popup-quote" id="popupQuote"></blockquote>
+      <button class="popup-btn" id="popupClose">Continue</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
