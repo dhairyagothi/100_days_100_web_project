@@ -499,6 +499,15 @@ function resetApp() {
   lastGeneratedData = "";
 
   uploadedLogo = null;
+  const uploadBoxText = document.querySelector(".upload-box span");
+  if (uploadBoxText) {
+    uploadBoxText.textContent = "Upload Logo (optional)";
+    uploadBoxText.style.color = "";
+  }
+  const logoUploadInput = document.getElementById("logo-upload");
+  if (logoUploadInput) {
+    logoUploadInput.value = "";
+  }
 
   setStatus("Reset complete");
 
@@ -692,29 +701,7 @@ function debounce(callback, delay) {
    LOGO UPLOAD
 ========================================================= */
 
-logoUpload.addEventListener(
-  "change",
 
-  (event) => {
-    const file = event.target.files[0];
-
-    if (!file) return;
-
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      uploadedLogo = e.target.result;
-
-      setStatus("Logo uploaded");
-
-      if (lastGeneratedData) {
-        generateQRCode();
-      }
-    };
-
-    reader.readAsDataURL(file);
-  },
-);
 
 /* =========================================================
    EVENT LISTENERS
@@ -852,9 +839,8 @@ if (logoUploadInput) {
       
       const reader = new FileReader();
       reader.onload = (event) => {
-        uploadedLogo = event.target.result; // Using the project's existing variable safely
-        
-        if (typeof generateQRCode === 'function') {
+        uploadedLogo = event.target.result;
+        if (lastGeneratedData) {
           generateQRCode();
         }
       };
