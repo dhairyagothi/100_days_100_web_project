@@ -6,7 +6,7 @@
   "scripts": {
     "generate-previews": "node scripts/generate-previews.js",
     "dev": "npx -y serve . -p 3000",
-    "validate:projects": "node scripts/validate-projects.js",
+    "validate:projects": "node scripts/validateProjects.js",
     "lint": "npx -y htmlhint index.html contributors/contributor.html",
     "lint:all": "npx -y htmlhint '**/*.html' --ignore 'node_modules/**,**/node_modules/**'",
     "docker:build": "docker build -t 100days-web .",
