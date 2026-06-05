@@ -493,3 +493,25 @@ requestAnimationFrame(gameEngine);
   window.addEventListener('resize', toggle);
   console.log('✅ Mobile touch controls loaded');
 })();
+
+const themeToggle = document.getElementById("themeToggle");
+
+let isLight = localStorage.getItem("theme") === "light";
+
+function applyTheme() {
+  if (isLight) {
+    document.body.classList.add("light");
+    themeToggle.textContent = "☀️ Light Mode";
+  } else {
+    document.body.classList.remove("light");
+    themeToggle.textContent = "🌙 Dark Mode";
+  }
+}
+
+applyTheme();
+
+themeToggle.addEventListener("click", () => {
+  isLight = !isLight;
+  localStorage.setItem("theme", isLight ? "light" : "dark");
+  applyTheme();
+});
