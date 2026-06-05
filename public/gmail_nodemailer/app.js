@@ -7,10 +7,86 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const nodemailer = require('nodemailer');
 
-const port = 5500;
+const port = process.env.PORT || 5500;
+const REQUEST_BODY_LIMIT = process.env.REQUEST_BODY_LIMIT || '8kb';
+const requestBuckets = new Map();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
+function readPositiveInteger(name, fallback) {
+  const parsed = Number.parseInt(process.env[name] || '', 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+const MAX_NAME_LENGTH = readPositiveInteger('SUBSCRIBER_NAME_MAX_LENGTH', 100);
+const RATE_LIMIT_WINDOW_MS = readPositiveInteger('MAIL_RATE_LIMIT_WINDOW_MS', 60000);
+const RATE_LIMIT_MAX_REQUESTS = readPositiveInteger('MAIL_RATE_LIMIT_MAX_REQUESTS', 5);
+
+function rateLimitMailRequests(req, res, next) {
+  const now = Date.now();
+  const clientId = req.ip || req.socket.remoteAddress || 'unknown';
+
+  for (const [bucketClientId, bucket] of requestBuckets) {
+    if (now > bucket.resetAt) {
+      requestBuckets.delete(bucketClientId);
+    }
+  }
+
+  const bucket = requestBuckets.get(clientId);
+
+  if (!bucket || now > bucket.resetAt) {
+    requestBuckets.set(clientId, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return next();
+  }
+
+  if (bucket.count >= RATE_LIMIT_MAX_REQUESTS) {
+    const retryAfterSeconds = Math.ceil((bucket.resetAt - now) / 1000);
+    res.set('Retry-After', String(retryAfterSeconds));
+    return res.status(429).send('Too many email requests. Please try again later.');
+  }
+
+  bucket.count += 1;
+  return next();
+}
+
+function validateSubscriber(body) {
+  const name = typeof body.name === 'string' ? body.name.trim() : '';
+  const email = typeof body.emailid === 'string' ? body.emailid.trim() : '';
+  const localPart = email.split('@')[0];
+  const emailPattern =
+    /^[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?(?:\.[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?)+$/i;
+
+  if (!name || name.length > MAX_NAME_LENGTH || /[\u0000-\u001F\u007F]/.test(name)) {
+    return { error: `Name must be between 1 and ${MAX_NAME_LENGTH} characters.` };
+  }
+
+  if (
+    !email ||
+    email.length > 254 ||
+    localPart.length > 64 ||
+    localPart.startsWith('.') ||
+    localPart.endsWith('.') ||
+    localPart.includes('..') ||
+    !emailPattern.test(email)
+  ) {
+    return { error: 'Enter one valid email address.' };
+  }
+
+  return { name, email };
+}
+
+function escapeHtml(value) {
+  const htmlEntities = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  };
+
+  return value.replace(/[&<>"']/g, (character) => htmlEntities[character]);
+}
+
+app.use(bodyParser.urlencoded({ extended: false, limit: REQUEST_BODY_LIMIT }));
+app.use(express.json({ limit: REQUEST_BODY_LIMIT }));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -18,7 +94,14 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'public', 'mail.html'));
 });
 
-app.post('/', function (req, res) {
+app.post('/', rateLimitMailRequests, function (req, res) {
+  const subscriber = validateSubscriber(req.body || {});
+
+  if (subscriber.error) {
+    return res.status(400).send(subscriber.error);
+  }
+
+  const safeName = escapeHtml(subscriber.name);
   const transporter = nodemailer.createTransport({
     service: 'Gmail',
     host: 'smtp.gmail.com',
@@ -33,7 +116,7 @@ app.post('/', function (req, res) {
 
   const mailOptions = {
     from: process.env.EMAIL_USER,
-    to: req.body.emailid,
+    to: subscriber.email,
     subject: 'Welcome to Our Newsletter 🎉',
 
     html: `
@@ -62,7 +145,7 @@ app.post('/', function (req, res) {
             <tr>
               <td style="padding:35px 30px;color:#333333;">
                 <h2 style="margin-top:0;">
-                  Hi ${req.body.name},
+                  Hi ${safeName},
                 </h2>
 
                 <p style="font-size:16px;line-height:1.7;">
@@ -116,6 +199,30 @@ app.post('/', function (req, res) {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+function handleRequestErrors(error, req, res, next) {
+  if (error.type === 'entity.too.large') {
+    return res.status(413).send('Request body is too large.');
+  }
+
+  if (error instanceof SyntaxError && 'body' in error) {
+    return res.status(400).send('Invalid JSON request body.');
+  }
+
+  return next(error);
+}
+
+app.use(handleRequestErrors);
+
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`);
+  });
+}
+
+module.exports = {
+  app,
+  escapeHtml,
+  handleRequestErrors,
+  rateLimitMailRequests,
+  validateSubscriber,
+};

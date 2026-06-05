@@ -2416,21 +2416,21 @@ body.light .project-back-button:hover {
   align-items: center;
   gap: 8px;
   width: 100%;
-  padding: 8px 12px;
-  border-radius: var(--radius-sm);
+  padding: 8px 16px;
+  border-radius: 8px;
   font-size: 0.82rem;
-  color: var(--text-secondary);
+  color: #3b82f6;
   white-space: nowrap;
   text-decoration: none;
-  transition: all var(--transition);
-  border-bottom: 1px solid var(--border-subtle);
+  transition: all 0.2s ease;
+  background: #1e293b;
+  border: 1px solid #3b82f6;
   margin-bottom: 4px;
-  padding-bottom: 12px;
 }
 
 .sidebar-back-btn:hover {
-  background: var(--surface-2);
-  color: var(--text-primary);
+  background: #3b82f6;
+  color: #fff;
 }
 
 /* Compact mode: icon-only, same as footer-btn */
