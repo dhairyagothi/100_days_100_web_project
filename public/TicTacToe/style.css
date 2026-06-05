@@ -1,6 +1,7 @@
+css
 /* --- Sophisticated Glass Panels --- */
 .panel, .score-card, .settings-box, .history, .winner-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.05); /* Light glass tint */
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -8,10 +9,12 @@
 }
 
 :root{
+    /* Gaming Interface Typography */
     --font-heading: 'Orbitron', sans-serif;
     --font-ui: 'Rajdhani', sans-serif;
     --font-body: 'Inter', sans-serif;
-
+    
+    /* Global scaling */
     --fs-h1: 3.5rem;
     --fs-btn: 1.1rem;
 
@@ -30,10 +33,14 @@ body[data-theme="pastel"]{
     --bg:#f5eef9;
     --panel:#ffffff;
     --panel2:#efe8ff;
+
     --acc:#d946ef;
     --acc2:#6366f1;
+
     --txt:#1f2937;
     --muted:#6b7280;
+
+    
 }
 
 body[data-theme="pastel"] .cell{
@@ -65,8 +72,10 @@ body[data-theme="mono"]{
     --bg:#111827;
     --panel:#1f2937;
     --panel2:#374151;
+
     --acc:#e5e7eb;
     --acc2:#9ca3af;
+
     --txt:#ffffff;
     --muted:#d1d5db;
 }
@@ -76,11 +85,15 @@ body{
     font-family: var(--font-body);
     background:var(--bg);
     color:var(--txt);
+
     min-height:100vh;
+
     padding:30px 15px;
+
     display:flex;
     flex-direction:column;
     align-items:center;
+
     transition:.3s;
 }
 
@@ -88,13 +101,25 @@ body{
     position:fixed;
     top:20px;
     left:20px;
-    background:var(--panel);
-    color:var(--txt);
-    padding:10px 14px;
-    border-radius:10px;
+
+    background:#1e293b;
+    color:#3b82f6;
+
+    padding:8px 16px;
+
+    border-radius:8px;
+    border:1px solid #3b82f6;
+
     text-decoration:none;
+
     font-weight:700;
+
     z-index:999;
+    transition:all 0.2s ease;
+}
+.project-back-button:hover{
+    background:#3b82f6;
+    color:#fff;
 }
 
 .hero{
@@ -118,67 +143,6 @@ body{
     color:var(--muted);
 }
 
-/* =============================================
-   THEME BAR — prominent placement in header
-   ============================================= */
-.theme-bar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 20px;
-    flex-wrap: wrap;
-}
-
-.theme-label {
-    font-family: var(--font-ui);
-    font-weight: 700;
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--muted);
-    white-space: nowrap;
-}
-
-.theme-toggle-group {
-    display: flex;
-    background: var(--panel);
-    border-radius: 50px;
-    padding: 4px;
-    gap: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
-}
-
-.theme-btn {
-    background: transparent;
-    border: none;
-    color: var(--muted);
-    font-family: var(--font-ui);
-    font-weight: 700;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    padding: 8px 20px;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    white-space: nowrap;
-}
-
-.theme-btn:hover {
-    color: var(--txt);
-    background: rgba(255,255,255,0.07);
-}
-
-.theme-btn.active {
-    background: var(--acc);
-    color: #000;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.25);
-}
-
-/* ============================================= */
-
 .container{
     width:100%;
     max-width:850px;
@@ -186,10 +150,14 @@ body{
 
 .panel{
     background:var(--panel);
+
     border-radius:22px;
+
     padding:24px;
+
     display:flex;
     flex-direction:column;
+
     gap:22px;
 }
 
@@ -212,8 +180,11 @@ body{
     text-transform: uppercase;
     letter-spacing: 0.1em;
     font-size: 0.9rem;
+
     padding:8px 14px;
+
     border-radius:999px;
+
     font-weight:700;
 }
 
@@ -224,20 +195,30 @@ body{
 
 .board{
     display:grid;
-    grid-template-columns: repeat(3,110px);
+
+    grid-template-columns:
+        repeat(3,110px);
+
     gap:14px;
 }
 
 .cell{
     width:110px;
     height:110px;
+
     border:none;
+
     border-radius:18px;
+
     background:rgba(255,255,255,.08);
+
     color:var(--txt);
+
     font-size:3.5rem;
     font-weight:700;
+
     cursor:pointer;
+
     transition:.2s;
 }
 
@@ -254,7 +235,7 @@ body{
 }
 
 .win-cell{
-    background: var(--acc);
+    background: var(--acc); /* Uses active theme accent */
     opacity: 0.4;
     box-shadow: 0 0 25px var(--acc);
 }
@@ -281,11 +262,11 @@ body{
     letter-spacing: 0.1em;
     cursor: pointer;
     position: relative;
-    overflow: hidden;
+    overflow: hidden; /* For the shine effect */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 15px rgba(64, 245, 210, 0.3);
-}
+    box-shadow: 0 4px 15px rgba(64, 245, 210, 0.3);}
 
+/* Shine Effect for Buttons */
 .btn-primary::before {
     content: '';
     position: absolute;
@@ -299,33 +280,32 @@ body{
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(64, 245, 210, 0.5); }
 
 .btn-ghost{
-    background: rgba(255, 255, 255, 0.03);
-    border: 2px solid transparent;
-    background-image: linear-gradient(var(--panel), var(--panel)),
+    background: rgba(255, 255, 255, 0.03); /* Slight tint for glass feel */
+    border: 2px solid transparent; /* Prepare for gradient border */
+    background-image: linear-gradient(var(--panel), var(--panel)), 
                       linear-gradient(to bottom right, var(--acc), transparent);
     background-origin: border-box;
     background-clip: padding-box, border-box;
+    
     color: var(--txt);
-    padding: 16px 32px;
+    padding: 16px 32px; /* Increased padding for impact */
     border-radius: 12px;
     font-family: var(--font-ui);
-    font-size: 1.1rem;
+    font-size: 1.1rem; /* Larger, more readable font */
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.15em; /* Wider spacing for a "luxury" feel */
     backdrop-filter: blur(8px);
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-
 .btn-ghost:hover {
-    background-image: linear-gradient(var(--acc), var(--acc)),
+    background-image: linear-gradient(var(--acc), var(--acc)), 
                       linear-gradient(to bottom right, var(--acc), transparent);
     color: #000;
-    box-shadow: 0 0 20px rgba(64, 245, 210, 0.3);
+    box-shadow: 0 0 20px rgba(64, 245, 210, 0.3); /* Subtle glow on hover */
     transform: translateY(-3px) scale(1.02);
 }
-
 .scoreboard{
     display:grid;
     grid-template-columns:repeat(3,1fr);
@@ -334,8 +314,11 @@ body{
 
 .score-card{
     background:var(--panel2);
+
     padding:16px;
+
     border-radius:16px;
+
     text-align:center;
 }
 
@@ -352,7 +335,9 @@ body{
 .settings-box,
 .history{
     background:var(--panel2);
+
     border-radius:16px;
+
     padding:14px;
 }
 
@@ -364,7 +349,9 @@ body{
 
 .toolbar{
     margin-top:15px;
+
     display:grid;
+
     gap:14px;
 }
 
@@ -376,9 +363,13 @@ body{
 
 .field select{
     padding:10px;
+
     border-radius:10px;
+
     border:none;
+
     background:var(--bg);
+
     color:var(--txt);
 }
 
@@ -389,6 +380,7 @@ body{
 
 #historyList{
     margin-top:15px;
+
     padding-left:20px;
 }
 
@@ -398,11 +390,16 @@ body{
 
 .winner-modal{
     position:fixed;
+
     inset:0;
+
     background:rgba(0,0,0,.75);
+
     display:none;
+
     justify-content:center;
     align-items:center;
+
     z-index:9999;
 }
 
@@ -412,38 +409,49 @@ body{
 
 .winner-card{
     background:var(--panel);
+
     padding:30px;
+
     border-radius:22px;
+
     min-width:320px;
+
     text-align:center;
 }
 
 .winner-actions{
     margin-top:20px;
+
     display:flex;
     justify-content:center;
+
     gap:10px;
 }
 
 .footer{
     margin-top:30px;
+
     color:var(--muted);
 }
 
 #confetti{
     position:fixed;
     inset:0;
+
     pointer-events:none;
 }
 
 @media(max-width:600px){
+
     .board{
-        grid-template-columns: repeat(3,90px);
+        grid-template-columns:
+            repeat(3,90px);
     }
 
     .cell{
         width:90px;
         height:90px;
+
         font-size:2.4rem;
     }
 
@@ -454,15 +462,5 @@ body{
 
     .scoreboard{
         grid-template-columns:1fr;
-    }
-
-    .theme-bar {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .theme-btn {
-        padding: 7px 14px;
-        font-size: 0.82rem;
     }
 }

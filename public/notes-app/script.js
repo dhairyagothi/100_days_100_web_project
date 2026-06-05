@@ -16,12 +16,24 @@ const VALID_COLORS = [
   "red",
 ];
 
+function generateUUID() {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
 const defaultNotes = [
   {
+
     id: crypto.randomUUID(),
     title: "Welcome to Premium Notes",
     content:
-      "Create notes, organize ideas, use tags, lock private notes, archive content, and export backups locally.",
+
     tag: "Ideas",
     color: "teal",
     favorite: true,
@@ -126,8 +138,7 @@ function loadNotes() {
 
 function normalizeNote(note) {
   return {
-    id: note.id || crypto.randomUUID(),
-
+id: note.id || crypto.randomUUID(),
     title: escapeHtml(String(note.title || "Untitled note")),
 
     content: escapeHtml(String(note.content || "")),
@@ -637,8 +648,7 @@ function handleSubmit(event) {
     showToast("Note updated.");
   } else {
     state.notes.unshift({
-      id: crypto.randomUUID(),
-
+id: crypto.randomUUID(),
       ...formNote,
 
       trashed: false,

@@ -2143,7 +2143,6 @@ body.light .header {
   color: #2ed573;
 }
 @media (max-width: 640px) {
-  .trending-section {
   .main {
     padding: 0 16px 60px;
   }
@@ -2267,4 +2266,42 @@ body.light .header {
   font-size:24px;
   cursor:pointer;
   text-align:right;
+}
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #222;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.4s ease;
+  z-index: 9999;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.toast{
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #222;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.4s ease;
+  z-index: 9999;
+}
+
+.toast.show{
+  opacity: 1;
+  transform: translateY(0);
 }

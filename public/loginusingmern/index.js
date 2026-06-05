@@ -35,8 +35,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+if (!process.env.JWT_SECRET) {
+  console.error('FATAL: JWT_SECRET environment variable is not set.');
+  process.exit(1);
+}
+
 app.use(session({
-  secret: process.env.JWT_SECRET || 'secretkey',
+  secret: process.env.JWT_SECRET,
   resave: false,
   saveUninitialized: false,
 }));

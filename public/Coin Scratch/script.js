@@ -9,12 +9,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const recommendationCard = document.querySelector('.recommendation-card');
     const brushSizeSlider = document.getElementById('brush-size');
     const brushSizeValue = document.getElementById('brush-size-value');
+    const rewardText = rewardContent.querySelector('.reward-text');
+    const scratchProgressValue = document.getElementById('scratch-progress-value');
+
+    const rewards = [
+        '₹10',
+        '₹50',
+        '₹100',
+        '₹500',
+        '🎁 Free Gift',
+        '❤️ You Did It',
+        '😔 Better Luck Next Time'
+    ];
+    const revealThreshold = 70;
 
     let brushSize = 6;
 
     let isDrawing = false;
     let hasScratched = false;
     let rewardState = 0; // 0: hidden, 1: heart visible, 2: full reward
+    let scratchProgress = 0;
     let lastX = 0;
     let lastY = 0;
     let lastTime = 0;
@@ -123,7 +137,22 @@ document.addEventListener('DOMContentLoaded', () => {
         return getComputedStyle(document.documentElement).getPropertyValue(prop).trim();
     }
 
-    function setupCanvas() {
+    function selectRandomReward() {
+        rewardText.textContent = rewards[Math.floor(Math.random() * rewards.length)];
+    }
+
+    function updateScratchProgress(percentage) {
+        scratchProgress = Math.min(100, Math.max(0, percentage));
+        scratchProgressValue.textContent = `${Math.round(scratchProgress)}%`;
+    }
+
+    function setupCanvas(shouldSelectReward = false) {
+        clearTimeout(checkTimeout);
+
+        if (shouldSelectReward) {
+            selectRandomReward();
+        }
+
         const dpr = window.devicePixelRatio || 1;
         const rect = coinWrapper.getBoundingClientRect();
 
@@ -140,6 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Reset states
         hasScratched = false;
         rewardState = 0;
+        updateScratchProgress(0);
         instructionText.classList.remove('fade-out');
         rewardContent.style.opacity = '0';
         rewardContent.classList.remove('stage-1', 'stage-2');
@@ -272,11 +302,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const totalPixels = data.length / 4;
             const percentage = (transparentPixels / totalPixels) * 100;
+            updateScratchProgress(percentage);
 
             // --- STAGE 2 REVEAL ---
-            if (percentage > 65 && rewardState === 1) {
+            if (percentage >= revealThreshold && rewardState === 1) {
                 rewardState = 2;
                 rewardContent.classList.add('stage-2');
+                updateScratchProgress(100);
+
+                ctx.save();
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.restore();
 
                 // Fade out the canvas completely
                 canvas.style.opacity = '0';
@@ -294,7 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event Listeners
     window.addEventListener('resize', setupCanvas);
-    resetButton.addEventListener('click', setupCanvas);
+    resetButton.addEventListener('click', () => setupCanvas(true));
 
     // Mouse events
     canvas.addEventListener('mousedown', startScratch);
@@ -325,7 +362,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Initial setup
-    setupCanvas();
+    setupCanvas(true);
 
     // Handle recommendation card auto-dismiss on mobile/tablet
     if (window.matchMedia("(max-width: 768px)").matches && recommendationCard) {

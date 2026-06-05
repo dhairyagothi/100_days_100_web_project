@@ -42,7 +42,7 @@
     "stylelint-config-standard": "^40.0.0"
   },
   "lint-staged": {
-    "projects.json": "node scripts/validateProjects.js",
+    "projects.json": "node scripts/validate-metadata.js",
     "*.html": "npx htmlhint"
 
   }
