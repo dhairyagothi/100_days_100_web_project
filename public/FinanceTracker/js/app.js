@@ -60,6 +60,20 @@ const elements = {
 
 //   UTILITY FUNCTIONS  
 
+/**
+ * Escape HTML meta-characters to prevent XSS when inserting
+ * user-supplied text into innerHTML templates.
+ */
+function escapeHTML(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g,  '&amp;')
+    .replace(/</g,  '&lt;')
+    .replace(/>/g,  '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g,  '&#39;');
+}
+
 function showToast(message, type = 'success') {
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
@@ -170,7 +184,7 @@ function loadDashboard() {
     topEl.innerHTML = `
       <div style="display:flex; align-items:center; gap:12px;">
         <div>
-          <div style="font-weight:600; font-size:1.1rem;">${summary.top_category.name}</div>
+          <div style="font-weight:600; font-size:1.1rem;">${escapeHTML(summary.top_category.name)}</div>
           <div style="color:var(--text-secondary);">${formatCurrency(summary.top_category.amount)}</div>
         </div>
       </div>
@@ -192,12 +206,12 @@ function loadDashboard() {
     tbody.innerHTML = recent.map(t => `
       <tr>
         <td>${formatDate(t.date)}</td>
-        <td>${t.description}</td>
+        <td>${escapeHTML(t.description)}</td>
         <td class="${t.type === 'Income' ? 'text-income' : 'text-expense'}" style="color:${t.type === 'Income' ? 'var(--income-color)' : 'var(--expense-color)'}; font-weight:600;">
           ${t.type === 'Income' ? '+' : '-'}${formatCurrency(t.amount)}
         </td>
-        <td><span class="badge badge-${t.type.toLowerCase()}">${t.type}</span></td>
-        <td>${t.category}</td>
+        <td><span class="badge badge-${escapeHTML(t.type.toLowerCase())}">${escapeHTML(t.type)}</span></td>
+        <td>${escapeHTML(t.category)}</td>
       </tr>
     `).join('');
   }
@@ -216,7 +230,7 @@ function populateCategoryFilter() {
   const categories = getCategories();
   filterSelect.innerHTML = '<option value="">All Categories</option>';
   categories.forEach(c => {
-    filterSelect.innerHTML += `<option value="${c.name}">${c.name} (${c.type})</option>`;
+    filterSelect.innerHTML += `<option value="${escapeHTML(c.name)}">${escapeHTML(c.name)} (${escapeHTML(c.type)})</option>`;
   });
 }
 
@@ -238,12 +252,12 @@ function renderTransactions() {
   tbody.innerHTML = transactions.map(t => `
     <tr>
       <td>${formatDate(t.date)}</td>
-      <td>${t.description}</td>
+      <td>${escapeHTML(t.description)}</td>
       <td style="color:${t.type === 'Income' ? 'var(--income-color)' : 'var(--expense-color)'}; font-weight:600;">
         ${t.type === 'Income' ? '+' : '-'}${formatCurrency(t.amount)}
       </td>
-      <td><span class="badge badge-${t.type.toLowerCase()}">${t.type}</span></td>
-      <td>${t.category}</td>
+      <td><span class="badge badge-${escapeHTML(t.type.toLowerCase())}">${escapeHTML(t.type)}</span></td>
+      <td>${escapeHTML(t.category)}</td>
       <td>
         <button class="btn-icon edit" onclick="window.editTxn(${t.id})" title="Edit">✏️</button>
         <button class="btn-icon danger" onclick="window.deleteTxn(${t.id})" title="Delete">🗑️</button>
@@ -263,7 +277,7 @@ function openTransactionModal(id = null) {
   const categories = getCategories();
   catSelect.innerHTML = '<option value="">Select Category</option>';
   categories.forEach(c => {
-    catSelect.innerHTML += `<option value="${c.name}">${c.name} (${c.type})</option>`;
+    catSelect.innerHTML += `<option value="${escapeHTML(c.name)}">${escapeHTML(c.name)} (${escapeHTML(c.type)})</option>`;
   });
 
   if (id) {
@@ -561,7 +575,7 @@ function populateBudgetCategories() {
   const categories = getCategoriesByType('Expense');
   select.innerHTML = '<option value="">Select Category</option>';
   categories.forEach(c => {
-    select.innerHTML += `<option value="${c.name}">${c.name}</option>`;
+    select.innerHTML += `<option value="${escapeHTML(c.name)}">${escapeHTML(c.name)}</option>`;
   });
 }
 
@@ -580,7 +594,7 @@ function renderBudgets() {
     return `
       <div class="budget-card">
         <div class="budget-header">
-          <span class="budget-category">${b.category}</span>
+          <span class="budget-category">${escapeHTML(b.category)}</span>
           <button class="btn-icon danger" onclick="window.deleteBdg(${b.id})" title="Delete">🗑️</button>
         </div>
         <div class="budget-amounts">
@@ -628,8 +642,8 @@ function renderCategoryList() {
       <div class="cat-group-title">${title}</div>
       ${cats.map(c => `
         <div class="category-row" id="cat-row-${c.id}">
-          <span class="cat-name">${c.name}</span>
-          <span class="badge ${badgeClass}" style="font-size:0.7rem;">${c.type}</span>
+          <span class="cat-name">${escapeHTML(c.name)}</span>
+          <span class="badge ${badgeClass}" style="font-size:0.7rem;">${escapeHTML(c.type)}</span>
           <div style="margin-left:auto; display:flex; gap:6px;">
             <button class="btn-icon edit" onclick="window.editCat(${c.id})" title="Rename">✏️</button>
             <button class="btn-icon danger" onclick="window.deleteCatById(${c.id})" title="Delete">🗑️</button>
@@ -647,7 +661,7 @@ window.editCat = (id) => {
   if (!cat) return;
   const row = document.getElementById(`cat-row-${id}`);
   row.innerHTML = `
-    <input type="text" class="form-input" id="edit-cat-name-${id}" value="${cat.name}"
+    <input type="text" class="form-input" id="edit-cat-name-${id}" value="${escapeHTML(cat.name)}"
       style="flex:1; padding:8px 12px; margin-right:6px;">
     <select class="form-select" id="edit-cat-type-${id}"
       style="width:130px; padding:8px 12px; margin-right:6px;">
