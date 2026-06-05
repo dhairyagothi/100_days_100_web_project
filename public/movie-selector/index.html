@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>"What to Watch" Random Movie Selector</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <header class="app-header">
+        <h1>"What to Watch"</h1>
+        <p>
+          Can't decide on a film? Pick your favorite genre and let us choose a
+          highly-rated movie for you!
+        </p>
+      </header>
+
+      <section class="control-panel">
+        <div class="select-wrapper">
+          <select id="genreSelect">
+            <option value="" disabled selected>Choose a genre...</option>
+            <option value="28">Action</option>
+            <option value="12">Adventure</option>
+            <option value="16">Animation</option>
+            <option value="35">Comedy</option>
+            <option value="80">Crime</option>
+            <option value="99">Documentary</option>
+            <option value="18">Drama</option>
+            <option value="14">Fantasy</option>
+            <option value="27">Horror</option>
+            <option value="9648">Mystery</option>
+            <option value="878">Sci-Fi</option>
+            <option value="53">Thriller</option>
+          </select>
+        </div>
+        <button id="findMovieBtn">Find Movie</button>
+      </section>
+
+      <main class="display-deck">
+        <div id="loadingState" class="spinner-box hidden">
+          <div class="spinner"></div>
+          <p>Scanning the cinematic vaults...</p>
+        </div>
+
+        <div id="welcomeState" class="placeholder-card">
+          <div class="placeholder-icon">🎬</div>
+          <h3>Your Next Movie Awaits</h3>
+          <p>
+            Select a genre above and click the selector button to pull a
+            top-tier random recommendation card.
+          </p>
+        </div>
+
+        <article id="movieCard" class="movie-card hidden">
+          <div class="poster-frame">
+            <img id="moviePoster" src="" alt="Movie Poster Graphic" />
+          </div>
+          <div class="movie-details">
+            <div class="meta-row">
+              <span id="movieRating" class="rating-badge">0.0</span>
+              <span id="movieReleaseDate" class="release-tag"
+                >Release Year</span
+              >
+            </div>
+            <h2 id="movieTitle">Movie Title</h2>
+            <p id="movieOverview" class="synopsis-text">
+              Movie short summary overview will render here inside this
+              paragraph component layer.
+            </p>
+          </div>
+        </article>
+      </main>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
