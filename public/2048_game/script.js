@@ -892,11 +892,12 @@ document.getElementById('wr').addEventListener(
 document.addEventListener('visibilitychange', () => {
   if (mode !== 'timed' || over) return;
 
+  const tfill = document.getElementById('tfill');
   if (document.hidden) {
     paused = true;
     clearInterval(timerInterval);
 
-    document.getElementById('tfill').classList.add('paused');
+    if (tfill) tfill.classList.add('paused');
 
     showToast('Timer paused');
   } else {
@@ -904,7 +905,7 @@ document.addEventListener('visibilitychange', () => {
       paused = false;
       startTimer();
 
-      document.getElementById('tfill').classList.remove('pgit aused');
+      if (tfill) tfill.classList.remove('paused');
 
       showToast('Timer resumed');
     }
