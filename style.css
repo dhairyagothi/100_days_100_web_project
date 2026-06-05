@@ -66,18 +66,18 @@ body.light-mode {
   --bg-surface: #eee8d5;
 
   --text-primary: #433422;
-  --text-secondary: rgba(67, 52, 34, 0.7);
-  --text-muted: rgba(67, 52, 34, 0.5);
+  --text-secondary: #5c4a37;                   /* darker for visibility */
+  --text-muted: rgba(67, 52, 34, 0.6);
   --accent-color: #cb4b16;
   --accent: #b58900;
-  --accent-dim: rgba(181, 137, 0, 0.1);
+  --accent-dim: rgba(181, 137, 0, 0.15);
   --accent-hover: #d33682;
-  --border: rgba(67, 52, 34, 0.15);
-  --border-hover: rgba(67, 52, 34, 0.25);
-  --border-accent: rgba(181, 137, 0, 0.35);
-  --accent-glow: rgba(203, 75, 22, 0.15);
-  --glass-bg: rgba(67, 52, 34, 0.03);
-  --glass-border: rgba(67, 52, 34, 0.08);
+  --border: rgba(67, 52, 34, 0.2);            /* Increased opacity */
+  --border-hover: rgba(67, 52, 34, 0.35);
+  --border-accent: rgba(181, 137, 0, 0.45);
+  --accent-glow: rgba(203, 75, 22, 0.2);
+  --glass-bg: rgba(253, 246, 227, 0.85);      /* High-contrast background for navbar */
+  --glass-border: rgba(67, 52, 34, 0.15);
   --gradient-1: linear-gradient(135deg, #cb4b16, #b58900);
 }
 
@@ -285,9 +285,11 @@ body
   z-index: 1;
 }
 
+#navbar-container,
+#navbar-container > header,
 body > header {
   position: relative;
-  z-index: 10;
+  z-index: 999999;
 }
 
 .cursor-ring {
@@ -2402,84 +2404,6 @@ body.light-mode .footer.homepage-footer .social-btn {
   color: var(--accent-color);
 }
 
-@media (max-width: 768px) {
-  .navbar {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 60px !important;
-    padding: 0 1.5rem !important;
-    z-index: 99999 !important;
-  }
-
-  .menu-toggle {
-    display: block !important;
-    z-index: 100000 !important;
-  }
-
-  .menu-toggle.active i::before {
-    content: "\f00d" !important;
-  }
-
-  .nav-buttons {
-    display: none !important;
-  }
-
-  .nav-buttons.mobile-drawer-layer {
-    display: flex !important;
-    position: fixed !important;
-    top: 60px !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: calc(100vh - 60px) !important;
-    background-color: #0b0d0f !important;
-    padding: 3rem 2rem !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    gap: 1.5rem !important;
-    z-index: 99998 !important;
-    box-sizing: border-box !important;
-    overflow-y: auto !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-    transform: translateY(-8px) !important;
-    transition:
-      opacity 0.2s var(--ease),
-      transform 0.2s var(--ease),
-      visibility 0.2s var(--ease) !important;
-  }
-
-  [data-theme="light"] .nav-buttons.mobile-drawer-layer {
-    background-color: #f4f6f9 !important;
-  }
-
-  .nav-buttons.mobile-drawer-layer.active {
-    display: flex !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transform: translateY(0) !important;
-  }
-
-  .nav-buttons.mobile-drawer-layer .btn {
-    width: 100% !important;
-    max-width: 280px !important;
-    justify-content: center !important;
-    text-align: center !important;
-    padding: 0.8rem 1rem !important;
-  }
-
-  .nav-buttons.mobile-drawer-layer .welcome-text {
-    width: 100% !important;
-    text-align: center !important;
-    color: var(--text-primary) !important;
-    margin-bottom: 0.5rem !important;
-  }
-}
-
 /* ============================================================
    SCROLL TO TOP
    ============================================================ */
@@ -3335,9 +3259,102 @@ body.custom-cursor-active * {
 }
 
 body.custom-cursor-active .cursor-ring {
+  z-index: 999999 !important;
+  pointer-events: none !important;
   display: block;
 }
 
 body.custom-cursor-active .cursor-ring.is-visible {
   opacity: 1;
+}
+/* ============================================================
+   SEPIA CONTRAST PATCH 
+   ============================================================ */
+:root[data-theme="sepia"] body {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Fix Navbar background transparency */
+:root[data-theme="sepia"] .navbar {
+  background: rgba(244, 236, 216, 0.94) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+/*all link items, headers, and hero subtitles pop out */
+:root[data-theme="sepia"] .hero-sub,
+:root[data-theme="sepia"] .hero-extra,
+:root[data-theme="sepia"] .projects-section p,
+:root[data-theme="sepia"] .welcome-text {
+  color: var(--text-secondary) !important;
+}
+
+/* Fix navbar items text colors */
+:root[data-theme="sepia"] .navbar a,
+:root[data-theme="sepia"] .brand-copy strong,
+:root[data-theme="sepia"] .btn-ghost {
+  color: var(--text-primary) !important;
+}
+
+/* Brighten terminal card frames for readability */
+:root[data-theme="sepia"] .hero-terminal-shell {
+  background: var(--bg-elevated) !important;
+  border-color: var(--border) !important;
+}
+:root[data-theme="sepia"] .hero-terminal-text {
+  color: var(--text-primary) !important;
+}
+/* ============================================================
+   ADDITIONAL SEPIA FIXES (Stats Strip, Subheaders & Cards)
+   ============================================================ */
+:root[data-theme="sepia"] {
+  --text-muted-sepia: #73624e; 
+}
+:root[data-theme="sepia"] .stats-strip {
+  background: #433422 !important;       /* sepia brown */
+  border-color: #5c4a37 !important;     /* lighter brown border */
+  box-shadow: 0 12px 40px rgba(67, 52, 34, 0.15) !important;
+}
+
+:root[data-theme="sepia"] .stat-item,
+:root[data-theme="sepia"] .stat-item strong,
+:root[data-theme="sepia"] .stat-divider {
+  color: #fdf6e3 !important;           
+}
+
+/* 2. Lighten the font color for  "100 Days · 100 Web Projects" */
+:root[data-theme="sepia"] .hero-overline {
+  color: var(--text-muted-sepia) !important;
+  font-weight: 500;
+}
+
+/* 3. Make the Hero descriptions and paragraph text legible */
+:root[data-theme="sepia"] .hero-sub,
+:root[data-theme="sepia"] .hero-extra,
+:root[data-theme="sepia"] .projects-header p,
+:root[data-theme="sepia"] p {
+  color: #5c4a37 !important; 
+}
+
+/* 4. Fix the lower section blocks  */
+:root[data-theme="sepia"] h3,
+:root[data-theme="sepia"] .section-title,
+:root[data-theme="sepia"] .mobile-menu-title {
+  color: var(--text-primary) !important;
+}
+
+/* 5. Fix the bottom grid details & lists (Browse all projects, Meet contributors, tags) */
+:root[data-theme="sepia"] .nav-buttons.mobile-drawer-layer a.btn,
+:root[data-theme="sepia"] .explore-links a,
+:root[data-theme="sepia"] .connect-links,
+:root[data-theme="sepia"] .badge,
+:root[data-theme="sepia"] span {
+  color: #433422 !important;
+}
+
+/* 6. Footer adjustment */
+:root[data-theme="sepia"] footer,
+:root[data-theme="sepia"] footer text,
+:root[data-theme="sepia"] [class*="footer"] {
+  color: var(--text-muted-sepia) !important;
 }

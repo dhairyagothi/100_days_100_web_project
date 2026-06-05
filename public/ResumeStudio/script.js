@@ -1,10 +1,9 @@
-// ==========================
+﻿// ==========================
 // Resume Studio
 // ==========================
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    // FORM INPUTS
     const nameInput = document.getElementById("name");
     const emailInput = document.getElementById("email");
     const phoneInput = document.getElementById("phone");
@@ -14,323 +13,126 @@ document.addEventListener("DOMContentLoaded", () => {
     const skillsInput = document.getElementById("skills");
     const experienceInput = document.getElementById("experience");
 
-    // BUTTONS
     const previewBtn = document.getElementById("previewBtn");
     const downloadBtn = document.getElementById("downloadBtn");
     const modernBtn = document.getElementById("modernBtn");
-const classicBtn = document.getElementById("classicBtn");
-const minimalBtn = document.getElementById("minimalBtn");
-
-let currentTemplate = "modern";
+    const classicBtn = document.getElementById("classicBtn");
+    const minimalBtn = document.getElementById("minimalBtn");
     const themeBtn = document.getElementById("themeSwitcher");
 
-    // PREVIEW
     const resumePreview = document.getElementById("resumePreview");
-
-    // ATS SCORE
     const atsScore = document.getElementById("atsScore");
 
-    // ==========================
-    // ATS SCORE
-    // ==========================
+    let currentTemplate = "modern";
+
+    function createSection(title, content) {
+        const section = document.createElement("div");
+        section.className = "resume-section";
+        const h3 = document.createElement("h3");
+        h3.textContent = title;
+        const p = document.createElement("p");
+        p.textContent = content;
+        section.appendChild(h3);
+        section.appendChild(p);
+        return section;
+    }
 
     function updateATS() {
-
         let score = 0;
-
         if (nameInput.value.trim()) score += 10;
         if (emailInput.value.trim()) score += 10;
         if (phoneInput.value.trim()) score += 10;
         if (educationInput.value.trim()) score += 15;
-
         if (summaryInput.value.trim().length > 50) score += 15;
         if (projectsInput.value.trim().length > 30) score += 15;
         if (experienceInput.value.trim().length > 30) score += 15;
-
-        const skills = skillsInput.value
-            .split(",")
-            .filter(skill => skill.trim() !== "");
-
+        const skills = skillsInput.value.split(",").filter(s => s.trim() !== "");
         if (skills.length >= 5) score += 10;
-
-        score = Math.min(score, 100);
-
-    // =========================
-    // INPUT LISTENERS
-    // =========================
-
-    function debounce(fn, delay = 300) {
-    let timeout;
-    return (...args) => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => fn(...args), delay);
-    };
+        atsScore.textContent = Math.min(score, 100) + "%";
     }
 
-    inputs.forEach(id => {
-        const inputEl = document.getElementById(id);
-        const counterEl = document.getElementById(`${id}Count`);
-
-    if (!inputEl) return;
-        
-        if (inputEl) {
-            // Listen on input to run preview update & ATS scores in real-time
-            inputEl.addEventListener("input", debounce(() => {
-                if (counterEl) {
-                    counterEl.textContent = `${inputEl.value.length}/${inputEl.maxLength}`;
-                    counterEl.style.color = inputEl.value.length >= inputEl.maxLength ? "red" : "";
-                }
-                updatePreview();
-                runResumeAnalysis();
-                saveToLocalStorage();
-            }, 250));
-        }
-    });
-
-    // =========================
-    // ROLE CHANGE
-    // =========================
-    targetRole.addEventListener("change", () => {
-        if (targetRole.value === "custom") {
-            customKeywordsGroup.style.display = "block";
-        } else {
-            customKeywordsGroup.style.display = "none";
-        }
-
-        updateKeywordsSuggestions();
-        runResumeAnalysis();
-    });
-
-    customKeywords.addEventListener("input", () => {
-        updateKeywordsSuggestions();
-        runResumeAnalysis();
-    });
-
-    // =========================
-    // PARSE BULLETS
-    // =========================
-    function parseBulletPoints(text) {
-        if (!text.trim()) return "";
-
-        const lines = text.split("\n");
-
-        let html = "";
-        let inList = false;
-
-        lines.forEach(line => {
-            const clean = line.trim();
-
-            if (
-                clean.startsWith("-") ||
-                clean.startsWith("*")
-            ) {
-                if (!inList) {
-                    html += "<ul>";
-                    inList = true;
-                }
-
-                html += `<li>${clean.substring(1)}</li>`;
-            } else {
-                if (inList) {
-                    html += "</ul>";
-                    inList = false;
-                }
-
-                html += `<p>${clean}</p>`;
-            }
-        });
-
     function updatePreview() {
-        const values = {};
-        const v=values;
+        let templateClass = "modern-template";
+        if (currentTemplate === "classic") templateClass = "classic-template";
+        else if (currentTemplate === "minimal") templateClass = "minimal-template";
+        resumePreview.className = "resume-sheet " + templateClass;
 
-if(currentTemplate === "modern"){
-    templateClass = "modern-template";
-}
-else if(currentTemplate === "classic"){
-    templateClass = "classic-template";
-}
-else{
-    templateClass = "minimal-template";
-}
-        resumePreview.className = `resume-sheet ${templateClass}`;
-        console.log(resumePreview.className);
+        while (resumePreview.firstChild) {
+            resumePreview.removeChild(resumePreview.firstChild);
+        }
 
-        resumePreview.innerHTML = `
-            <div class="resume-header">
-                <h1>${nameInput.value || "John Doe"}</h1>
+        const header = document.createElement("div");
+        header.className = "resume-header";
+        const nameEl = document.createElement("h1");
+        nameEl.textContent = nameInput.value || "John Doe";
+        const contactEl = document.createElement("p");
+        contactEl.textContent = (emailInput.value || "john@example.com") + " | " + (phoneInput.value || "+91 9876543210");
+        header.appendChild(nameEl);
+        header.appendChild(contactEl);
+        resumePreview.appendChild(header);
 
-                <p>
-                    ${emailInput.value || "john@example.com"} |
-                    ${phoneInput.value || "+91 9876543210"}
-                </p>
-            </div>
-
-            <div class="resume-section">
-                <h3>Summary</h3>
-                <p>
-                    ${summaryInput.value || "Professional summary will appear here."}
-                </p>
-            </div>
-
-            <div class="resume-section">
-                <h3>Projects</h3>
-                <p>
-                    ${projectsInput.value || "Your projects will appear here."}
-                </p>
-            </div>
-
-            <div class="resume-section">
-                <h3>Skills</h3>
-                <p>
-                    ${skillsInput.value || "Your skills will appear here."}
-                </p>
-            </div>
-
-            <div class="resume-section">
-                <h3>Experience</h3>
-                <p>
-                    ${experienceInput.value || "Your experience will appear here."}
-                </p>
-            </div>
-
-            <div class="resume-section">
-                <h3>Education</h3>
-                <p>
-                    ${educationInput.value || "Your education will appear here."}
-                </p>
-            </div>
-        `;
+        resumePreview.appendChild(createSection("Summary", summaryInput.value || "Professional summary will appear here."));
+        resumePreview.appendChild(createSection("Projects", projectsInput.value || "Your projects will appear here."));
+        resumePreview.appendChild(createSection("Skills", skillsInput.value || "Your skills will appear here."));
+        resumePreview.appendChild(createSection("Experience", experienceInput.value || "Your experience will appear here."));
+        resumePreview.appendChild(createSection("Education", educationInput.value || "Your education will appear here."));
 
         updateATS();
     }
 
-    // ==========================
-    // INPUT LISTENERS
-    // ==========================
-
-    const inputs = [
-        nameInput,
-        emailInput,
-        phoneInput,
-        educationInput,
-        summaryInput,
-        projectsInput,
-        skillsInput,
-        experienceInput
-    ];
-
-    inputs.forEach(input => {
+    [nameInput, emailInput, phoneInput, educationInput, summaryInput, projectsInput, skillsInput, experienceInput].forEach(input => {
         input.addEventListener("input", updatePreview);
     });
 
-    // ==========================
-    // PREVIEW BUTTON
-    // ==========================
+    modernBtn.addEventListener("click", () => {
+        currentTemplate = "modern";
+        modernBtn.classList.add("active");
+        classicBtn.classList.remove("active");
+        minimalBtn.classList.remove("active");
+        updatePreview();
+    });
+
+    classicBtn.addEventListener("click", () => {
+        currentTemplate = "classic";
+        classicBtn.classList.add("active");
+        modernBtn.classList.remove("active");
+        minimalBtn.classList.remove("active");
+        updatePreview();
+    });
+
+    minimalBtn.addEventListener("click", () => {
+        currentTemplate = "minimal";
+        minimalBtn.classList.add("active");
+        modernBtn.classList.remove("active");
+        classicBtn.classList.remove("active");
+        updatePreview();
+    });
 
     previewBtn.addEventListener("click", () => {
-
         updatePreview();
-
-        resumePreview.scrollIntoView({
-            behavior: "smooth"
-        });
+        resumePreview.scrollIntoView({ behavior: "smooth" });
     });
-
-    // ==========================
-    // THEME TOGGLE
-    // ==========================
 
     themeBtn.addEventListener("click", () => {
-
         document.body.classList.toggle("light-mode");
-
-        if (document.body.classList.contains("light-mode")) {
-            themeBtn.textContent = "☀️ Light Mode";
-        } else {
-            themeBtn.textContent = "🌙 Dark Mode";
-        }
+        themeBtn.textContent = document.body.classList.contains("light-mode") ? "☀️ Light Mode" : "🌙 Dark Mode";
     });
 
-    // ==========================
-    // PDF DOWNLOAD
-    // ==========================
-
     downloadBtn.addEventListener("click", async () => {
-
         try {
-
-            const canvas = await html2canvas(resumePreview, {
-                scale: 2
-            });
-
+            const canvas = await html2canvas(resumePreview, { scale: 2 });
             const imgData = canvas.toDataURL("image/png");
-
             const { jsPDF } = window.jspdf;
-
             const pdf = new jsPDF("p", "mm", "a4");
-
             const pageWidth = pdf.internal.pageSize.getWidth();
-
-            const imgWidth = pageWidth;
-
-            const imgHeight =
-                (canvas.height * imgWidth) / canvas.width;
-
-            pdf.addImage(
-                imgData,
-                "PNG",
-                0,
-                0,
-                imgWidth,
-                imgHeight
-            );
-
-            const filename =
-                (nameInput.value || "resume")
-                    .toLowerCase()
-                    .replace(/\s+/g, "_");
-
-            pdf.save(`${filename}.pdf`);
-
+            const imgHeight = (canvas.height * pageWidth) / canvas.width;
+            pdf.addImage(imgData, "PNG", 0, 0, pageWidth, imgHeight);
+            pdf.save((nameInput.value || "resume").toLowerCase().replace(/\s+/g, "_") + ".pdf");
         } catch (error) {
-
             console.error(error);
-
             alert("Failed to generate PDF.");
         }
     });
 
-    modernBtn.addEventListener("click", () => {
-
-    currentTemplate = "modern";
-
-    modernBtn.classList.add("active");
-    classicBtn.classList.remove("active");
-    minimalBtn.classList.remove("active");
-
     updatePreview();
 });
-
-classicBtn.addEventListener("click", () => {
-
-    currentTemplate = "classic";
-
-    classicBtn.classList.add("active");
-    modernBtn.classList.remove("active");
-    minimalBtn.classList.remove("active");
-
-    updatePreview();
-});
-
-let resumeStudioInitialized = false;
-
-minimalBtn.addEventListener("click", () => {
-    console.log("MINIMAL CLICKED");
-});
-
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", safeInit);
-} else {
-    safeInit();
-}}

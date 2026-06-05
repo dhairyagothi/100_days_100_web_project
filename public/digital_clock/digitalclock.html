@@ -18,19 +18,7 @@
     <a
       href="/"
       class="project-back-button"
-      style="
-        position: fixed;
-        left: 18px;
-        top: 18px;
-        padding: 8px 12px;
-        border-radius: 8px;
-        background: white;
-        text-decoration: none;
-        z-index: 9999;
-        font-weight: 700;
-        font-family: Inter, system-ui, sans-serif;
-        box-shadow: 0 8px 20px rgba(0, 0, 0);
-      "
+      style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'"
       >← Back to Home</a
     >
 
@@ -195,222 +183,154 @@
       </div>
     </div>
 
-    <div class="controls-container">
+<!-- Alarm Manager -->
+<section class="card" aria-labelledby="alarm-heading">
+  <header class="card-header">
+    <h2 class="card-title" id="alarm-heading">
+      <span class="card-title-dot" aria-hidden="true"></span>
+      Alarm Manager
+    </h2>
+  </header>
+  <form
+    class="alarm-form"
+    onsubmit="event.preventDefault(); addNewAlarm();"
+    novalidate
+  >
+    <div class="form-field">
+      <label for="alarm-time">Time</label>
+      <input type="time" id="alarm-time" required />
+    </div>
+  </form>
+</section>
 
-      <div class="theme-buttons">
-        <button class="dark-mode-btn" onclick="toggleDarkMode()">
-  ☀️ Light Mode
-</button>
+<!-- Pomodoro Timer -->
+<section class="card" aria-labelledby="pomodoro-heading">
+  <header class="card-header">
+    <h2 class="card-title" id="pomodoro-heading">
+      <span class="card-title-dot" aria-hidden="true"></span>
+      Pomodoro Timer
+    </h2>
+  </header>
+  <div class="pomodoro-display">
+    <span id="pomodoro-time">25:00</span>
+  </div>
+</section>
 
-      </div>
+    <div class="form-field">
+      <label for="alarm-label">Label</label>
+      <input
+        type="text"
+        id="alarm-label"
+        placeholder="e.g. Wake Up"
+      />
+    </div>
 
-      <div class="select-group">
+    <div class="form-field">
+      <label for="alarm-tone">Tone</label>
+      <select id="alarm-tone">
+        <option value="classic">Classic Beep</option>
+        <option value="cyber">Cyber Pulse</option>
+        <option value="retro">Retro Chiptune</option>
+        <option value="mp3">MP3 Tone</option>
+      </select>
+    </div>
 
-        <label>Select Timezone</label>
+    <div class="form-field">
+      <label for="alarm-snooze">Snooze</label>
+      <select id="alarm-snooze">
+        <option value="5">5 min</option>
+        <option value="10">10 min</option>
+        <option value="15">15 min</option>
+      </select>
+    </div>
 
-        <select id="timezone" onchange="updateClock()">
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">
+        Add Alarm
+      </button>
 
-          <option value="local">Local Time</option>
-          <option value="UTC">UTC</option>
-          <option value="America/New_York">New York</option>
-          <option value="Europe/London">London</option>
-          <option value="Asia/Kolkata">India</option>
+      <button
+        type="button"
+        onclick="clearAllAlarms()"
+        class="btn btn-danger"
+      >
+        Clear All
+      </button>
+    </div>
+  </form>
 
-        </select>
+  <section aria-label="Your alarms">
+    <h4
+      style="
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+      "
+    >
+      Your Alarms
+    </h4>
 
-      </div>
+    <div class="alarms-list" id="alarms-list" role="list">
+      <p class="empty-state" role="status">
+        No alarms set. Add one above!
+      </p>
+    </div>
+  </section>
 
-      <div class="alarm-section">
+  <div
+    class="history-header"
+    onclick="toggleHistoryLogs()"
+    role="button"
+    tabindex="0"
+  >
+    <span>History</span>
+    <span id="history-chevron">&#9660;</span>
+  </div>
 
-        <button class="alarm-toggle-btn" onclick="toggleAlarmSection()">
-          <b>Set Alarm</b>
-        </button>
+  <div
+    class="history-logs hidden"
+    id="history-logs"
+    role="log"
+    aria-label="Alarm history logs"
+  >
+    <div class="log-entry">
+      History is empty.
+    </div>
+  </div>
+</section>
 
-        <div class="alarm-controls hidden" id="alarm-controls">
+<!-- Pomodoro Timer -->
+<section class="card" aria-labelledby="pomodoro-heading">
+  <header class="card-header">
+    <h2 class="card-title" id="pomodoro-heading">
+      <span class="card-title-dot" aria-hidden="true"></span>
+      Pomodoro Timer
+    </h2>
+  </header>
 
-          <input type="time" id="alarm-time" />
+  <div class="pomodoro-display">
+    <span id="pomodoro-time">25:00</span>
+  </div>
 
-          <div class="alarm-actions">
+  <div class="pomodoro-controls">
+    <button id="start-pomodoro" class="btn btn-primary">
+      Start
+    </button>
 
-            <button class="theme-btn modern-btn" onclick="setTheme('modern')">
-              Modern
-            </button>
+    <button id="pause-pomodoro" class="btn btn-outline">
+      Pause
+    </button>
 
-            <button
-              class="theme-btn futuristic-btn"
-              onclick="setTheme('futuristic')"
-            >
-              Futuristic
-            </button>
-            <button class="dark-mode-btn" onclick="toggleDarkMode()">
-              ☀️ Light Mode
-            </button>
-          </div>
-        </div>
-        <div class="select-group">
-          <label>Select Timezone</label>
+    <button id="reset-pomodoro" class="btn btn-danger">
+      Reset
+    </button>
+  </div>
 
-          <select id="timezone" onchange="updateClock()">
-            <option value="local">Local Time</option>
-            <option value="UTC">UTC</option>
-            <option value="America/New_York">New York</option>
-            <option value="Europe/London">London</option>
-            <option value="Asia/Kolkata">India</option>
-          </select>
-        </div>
-        <section class="card" aria-labelledby="pomodoro-heading">
-          <header class="card-header">
-            <h2 class="card-title" id="pomodoro-heading">
-              <span class="card-title-dot"></span>
-              Pomodoro Timer
-            </h2>
-          </header>
-
-          <div class="pomodoro-display">
-            <span id="pomodoro-time">25:00</span>
-          </div>
-
-          <div class="pomodoro-controls">
-            <button id="start-pomodoro">Start</button>
-            <button id="pause-pomodoro">Pause</button>
-            <button id="reset-pomodoro">Reset</button>
-          </div>
-
-          <p id="pomodoro-status">Focus Session</p>
-        </section>
-
-        <div class="alarm-section">
-          <button class="alarm-toggle-btn" onclick="toggleAlarmSection()">
-            <b>Set Alarm</b>
-          </button>
-
-          <div class="alarm-controls hidden" id="alarm-controls">
-            <input type="time" id="alarm-time" />
-
-            <div class="alarm-actions">
-              <button onclick="setAlarm()" class="confirm-btn">Confirm</button>
-
-              <button onclick="clearAlarm()" class="clear-btn">Clear</button>
-
-              <div
-                class="alarm-controls hidden"
-                id="alarm-controls"
-                role="region"
-                aria-label="Alarm management controls"
-              >
-                <!-- Add Alarm Form -->
-                <form
-                  class="alarm-form"
-                  onsubmit="
-                    event.preventDefault();
-                    addNewAlarm();
-                  "
-                  novalidate
-                >
-                  <div class="form-field">
-                    <label for="alarm-time">Time</label>
-                    <input type="time" id="alarm-time" required />
-                  </div>
-                  <div class="form-field">
-                    <label for="alarm-label">Label</label>
-                    <input
-                      type="text"
-                      id="alarm-label"
-                      placeholder="e.g. Wake Up"
-                    />
-                  </div>
-                  <div class="form-field">
-                    <label for="alarm-tone">Tone</label>
-                    <select id="alarm-tone">
-                      <option value="classic">Classic Beep</option>
-                      <option value="cyber">Cyber Pulse</option>
-                      <option value="retro">Retro Chiptune</option>
-                      <option value="mp3">MP3 Tone</option>
-                    </select>
-                  </div>
-                  <div class="form-field">
-                    <label for="alarm-snooze">Snooze</label>
-                    <select id="alarm-snooze">
-                      <option value="5">5 min</option>
-                      <option value="10">10 min</option>
-                      <option value="15">15 min</option>
-                    </select>
-                  </div>
-                  <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">
-                      Add Alarm
-                    </button>
-                    <button
-                      type="button"
-                      onclick="clearAllAlarms()"
-                      class="btn btn-danger"
-                    >
-                      Clear All
-                    </button>
-                  </div>
-                </form>
-
-                <!-- Alarms List -->
-                <section aria-label="Your alarms">
-                  <h4
-                    style="
-                      font-size: 11px;
-                      font-weight: 600;
-                      color: var(--text-muted);
-                      text-transform: uppercase;
-                      letter-spacing: 0.5px;
-                      margin-bottom: 8px;
-                    "
-                  >
-                    Your Alarms
-                  </h4>
-                  <div class="alarms-list" id="alarms-list" role="list">
-                    <p class="empty-state" role="status">
-                      No alarms set. Add one above!
-                    </p>
-                  </div>
-                </section>
-
-                <!-- History -->
-                <div>
-                  <div
-                    class="history-header"
-                    onclick="toggleHistoryLogs()"
-                    aria-label="Toggle alarm history"
-                    role="button"
-                    tabindex="0"
-                  >
-                    <span
-                      style="
-                        font-size: 11px;
-                        font-weight: 600;
-                        color: var(--text-muted);
-                        text-transform: uppercase;
-                        letter-spacing: 0.5px;
-                      "
-                      >History</span
-                    >
-                    <span
-                      class="history-chevron"
-                      id="history-chevron"
-                      aria-hidden="true"
-                      >&#9660;</span
-                    >
-                  </div>
-                  <div
-                    class="history-logs hidden"
-                    id="history-logs"
-                    role="log"
-                    aria-label="Alarm history logs"
-                  >
-                    <div class="log-entry" style="justify-content: center">
-                      History is empty.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+  <p id="pomodoro-status">Focus Session</p>
+</section>
 
           <!-- World Clock Modal -->
           <div
