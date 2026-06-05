@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CHRONO ECHO</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="game-container">
+      <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+      <div class="hud">
+        <div class="info">
+          <span id="timeDisplay">Time: 0s</span>
+          <span id="rewindCount">Rewinds: 0/3</span>
+          <span id="levelDisplay">Level 1</span>
+        </div>
+        <div class="hud-buttons">
+          <button id="pauseBtn">PAUSE (P)</button>
+          <button id="restartBtn">RESTART (Shift+R)</button>
+          <button id="helpBtn">HELP (H)</button>
+        </div>
+      </div>
+
+      <!-- Pause Menu -->
+      <div id="pauseMenu" class="overlay">
+        <h2>PAUSED</h2>
+        <button onclick="resumeGame()">Resume Game</button>
+        <button onclick="restartLevel()">Restart Level</button>
+        <button onclick="showHelp()">How to Play</button>
+        <button onclick="quitToMenu()">Main Menu</button>
+      </div>
+
+      <!-- Help Panel -->
+      <div id="helpPanel" class="help-panel">
+        <h2>CHRONO ECHO</h2>
+
+        <div class="tabs">
+          <button class="tab-btn active" onclick="switchTab(0)">
+            Controls
+          </button>
+          <button class="tab-btn" onclick="switchTab(1)">How to Play</button>
+          <button class="tab-btn" onclick="switchTab(2)">Tips</button>
+        </div>
+
+        <div id="tabContent" class="help-content"></div>
+
+        <button id="closeHelp">Close</button>
+      </div>
+
+      <!-- Level Complete -->
+      <div id="levelComplete" class="overlay">
+        <h2>Level Complete!</h2>
+        <p>
+          Time: <span id="levelTime">0</span>s | Rewinds:
+          <span id="rewindsUsed">0</span>
+        </p>
+        <button onclick="nextLevel()">Next Level →</button>
+        <button onclick="restartLevel()">Play Again</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

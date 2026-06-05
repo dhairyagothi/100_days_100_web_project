@@ -11,7 +11,7 @@
     <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
     <header id="main-header" class="header1">
         <nav>
@@ -26,8 +26,8 @@
                 <li><a href="#" id="authBtn">Login/Signup</a></li>
             </ul>
             <button id="darkModeToggle">
-                <i class="fas fa-moon"></i>
-                <i class="fas fa-sun"></i>
+                <i aria-hidden="true" class="fas fa-moon"></i>
+                <i aria-hidden="true" class="fas fa-sun"></i>
             </button>
         </nav>
     </header>
@@ -105,10 +105,10 @@
             <div class="footer-section">
                 <h4>Connect With Us</h4>
                 <div class="social-icons">
-                    <a href="https://linkedin.com/in/ayushcarpenter" target="_blank"><img src="./assets/linkedin.png"></a>
-                    <a href="https://twitter.com/carpenterAyush" target="_blank"><img src="./assets/github.png"></i></a>
-                    <a href="https://github.com/Ayushswirlon" target="_blank"><img src="./assets/icons8-facebook-96.png"></a>
-                    <a href="https://github.com/Ayushswirlon" target="_blank"><img src="./assets/icons8-youtube-96.png"></a>
+                    <a href="https://linkedin.com/in/ayushcarpenter" target="_blank"><img alt="" src="./assets/linkedin.png"></a>
+                    <a href="https://twitter.com/carpenterAyush" target="_blank"><img alt="" src="./assets/github.png"></i></a>
+                    <a href="https://github.com/Ayushswirlon" target="_blank"><img alt="" src="./assets/icons8-facebook-96.png"></a>
+                    <a href="https://github.com/Ayushswirlon" target="_blank"><img alt="" src="./assets/icons8-youtube-96.png"></a>
                 </div>
                 
             </div>
@@ -142,7 +142,7 @@
         </div>
     </div>
 
-    <button id="backToTop" title="Back to Top"><img src="assets/arrow_6353601.png" style="height: 50px;width: 50px;"></button>
+    <button id="backToTop" title="Back to Top"><img alt="" src="assets/arrow_6353601.png" style="height: 50px;width: 50px;"></button>
 
     <script src="blog-script.js"></script>
 </body>

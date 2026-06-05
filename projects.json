@@ -1793,7 +1793,7 @@
     "projectDesc": "A responsive Flipkart-inspired e-commerce website featuring a modern navbar, product categories, hero carousel, brand spotlight section, promotional banners, home decor showcase, and a fully designed footer.",
     "techStack": ["html", "css", "javascript"],
     "difficulty": "intermediate",
-    "projectPath": "./public/Flipkart-Clone/index.html"
+    "projectPath": "./public/Flipkart-clone/index.html"
   },
   {
     "projectNo": 198,
@@ -1802,7 +1802,7 @@
     "projectDesc": "A responsive theme toggler that switches between light and dark modes and saves the user's preference using localStorage.",
     "techStack": ["react", "tailwindcss", "javascript"],
     "difficulty": "advanced",
-    "projectPath": "./public/Theme-toggler/src/App.jsx"
+    "projectPath": "./public/Theme-Toggler/src/App.jsx"
   },
   {
     "projectNo": 199,
@@ -1856,7 +1856,7 @@
     "projectDesc": "A responsive movie search application powered by the OMDb API that allows users to search movies and view detailed information including posters, ratings, genres, cast, runtime, and plot.",
     "techStack": ["html", "css", "javascript", "api"],
     "difficulty": "intermediate",
-    "projectPath": "./public/movie-search-app/index.html"
+    "projectPath": "./public/Movie-Search-App/index.html"
 },
   {
   "projectNo": 205,
@@ -1893,5 +1893,30 @@
     "techStack": ["html", "css", "javascript"],
     "difficulty": "intermediate",
     "projectPath": "./public/AI-Semiconductor-Circuit-Builder/index.html"
-  }
+  },
+  {
+    "projectNo": 208,
+    "projectName": "crossword puzzle game",
+    "projectType": "Game",
+    "projectDesc": "A classic crossword puzzle game built with HTML, CSS, and JavaScript.",
+    "techStack": ["ui","game","html","css","js"],
+    "difficulty": "intermediate",
+    "projectPath": "./public/CrosswordPuzzleGame/index.html"
+  },
+  {
+  "projectNo": 209,
+  "projectName": "Kanban Board",
+  "projectPath": "./public/Kanban_Board/index.html",
+  "techStack": ["html", "css", "javascript"],
+  "difficulty": "intermediate",
+  "projectDesc": "A responsive Kanban Board application featuring drag-and-drop task management, task creation, editing, deletion, local storage persistence, and dark/light theme support."
+},
+  {
+  "projectNo": 210,
+  "projectName": "Cricket Scorecard",
+  "projectPath": "./public/Cricket-Scorecard/index.html",
+  "techStack": ["html", "css", "javascript"],
+  "difficulty": "advanced",
+  "projectDesc": "A tool to view the schedule of upcoming matches and watch live scorecard."
+}
 ]
