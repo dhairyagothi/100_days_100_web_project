@@ -193,28 +193,41 @@ async function fetchContributors() {
     const contributorsContainer = document.getElementById("contributors");
     const contributorCountSpan = document.getElementById("contributorCount");
     const errorBox = document.getElementById("contributorsError");
+    const errorMessage = document.getElementById("contributorsErrorMessage");
     const loading = document.getElementById("contributorsLoading");
 
     loading?.classList.remove("hidden");
     errorBox?.classList.add("hidden");
+    contributorsContainer.innerHTML = "";
 
     try {
+        const cached = loadCache("contributors-cache");
+        if (cached) {
+            allContributors = cached;
+            filteredContributors = [...cached];
+            if (contributorCountSpan) contributorCountSpan.textContent = cached.length;
+            renderContributors(filteredContributors);
+            loading?.classList.add("hidden");
+            return;
+        }
+
         let page = 1;
-        allContributors = []; // uses global, no `let`
+        allContributors = [];
 
         while (true) {
-            const response = await fetch(
-                `https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}/contributors?per_page=100&page=${page}`
+            const data = await githubFetch(
+                `${GITHUB_API_BASE}/repos/${window.REPO_OWNER}/${window.REPO_NAME}/contributors?per_page=100&page=${page}`
             );
 
-            if (!response.ok) throw new Error("Failed to fetch contributors");
-
-            const data = await response.json();
             if (!data.length) break;
 
-            allContributors = [...allContributors, ...data];
+            // filter out anonymous contributors without login
+            const validData = data.filter(c => c.login);
+            allContributors.push(...validData);
             page++;
         }
+
+        saveCache("contributors-cache", allContributors);
 
         filteredContributors = [...allContributors];
 
@@ -229,7 +242,7 @@ async function fetchContributors() {
     } catch (error) {
         console.error("Error fetching contributors:", error);
         errorBox?.classList.remove("hidden");
-        if (contributorsContainer) contributorsContainer.innerHTML = "<p style='color: #ff4444;'>Failed to load contributors.</p>";
+        if (errorMessage) errorMessage.textContent = error.message;
     } finally {
         loading?.classList.add("hidden");
     }
