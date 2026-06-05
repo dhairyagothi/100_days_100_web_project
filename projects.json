@@ -1910,5 +1910,14 @@
   "techStack": ["html", "css", "javascript"],
   "difficulty": "intermediate",
   "projectDesc": "A responsive Kanban Board application featuring drag-and-drop task management, task creation, editing, deletion, local storage persistence, and dark/light theme support."
+},
+{
+  "projectNo": 210,
+  "projectName": "Photo Studio",
+  "projectType": "Web Application",
+  "projectDesc": "A responsive photography portfolio and gallery website showcasing images with a modern design, smooth navigation, and visually appealing layouts.",
+  "techStack": ["html", "css"],
+  "difficulty": "intermediate",
+  "projectPath": "./public/Photo Studio/Project.html"
 }
 ]
