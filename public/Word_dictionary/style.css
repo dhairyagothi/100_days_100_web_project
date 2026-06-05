@@ -87,21 +87,23 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 20px;
-  border-radius: var(--radius-pill);
-  background: rgba(15, 18, 28, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #1e293b;
+  border: 1px solid #3b82f6;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  color: #ffffff;
+  color: #3b82f6;
   text-decoration: none;
   font-size: 13px;
   font-weight: 600;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   z-index: 100;
-  transition: all 0.25s ease;
+  transition: all 0.2s ease;
 }
 .project-back-button:hover {
+  background: #3b82f6;
+  color: #fff;
   transform: translateX(-3px);
   border-color: var(--prime);
 }
