@@ -14,12 +14,19 @@ body {
 .back-btn {
     display: inline-block;
     margin-bottom: 30px;
-    padding: 10px 18px;
-    background: white;
-    color: #1e3c72;
+    padding: 8px 16px;
+    background: #1e293b;
+    color: #3b82f6;
     text-decoration: none;
-    border-radius: 10px;
+    border-radius: 8px;
     font-weight: bold;
+    border: 1px solid #3b82f6;
+    transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+    background: #3b82f6;
+    color: #fff;
 }
 
 .wrapper {

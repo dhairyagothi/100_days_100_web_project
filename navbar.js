@@ -66,19 +66,19 @@
   `;
   const homeBtn = `
   <a class="btn ${isHome ? "btn-primary active" : "btn-ghost"} btn-sm" href="${homeHref}">
-    <span class="mobile-nav-icon"><i class="fas fa-home"></i></span>
+    <span class="mobile-nav-icon"><i class="fas fa-home" aria-hidden="true"></i></span>
     Home
   </a>`;
 
   const learnBtn = `
   <a class="btn ${isLearn ? "btn-primary active" : "btn-ghost"} btn-sm" href="${learnHref}">
-    <span class="mobile-nav-icon"><i class="fas fa-graduation-cap"></i></span>
+    <span class="mobile-nav-icon"><i class="fas fa-graduation-cap" aria-hidden="true"></i></span>
     Learn
   </a>`;
 
   const contributorsBtn = `
   <a class="btn ${isContributors ? "btn-primary active" : "btn-ghost"} btn-sm" href="${contributorsHref}">
-    <span class="mobile-nav-icon"><i class="fas fa-users"></i></span>
+    <span class="mobile-nav-icon"><i class="fas fa-users" aria-hidden="true"></i></span>
     Contributors
   </a>`;
 
@@ -96,7 +96,7 @@
     safeStorage.getItem("customCursorEnabled") !== "false";
   const cursorBtn = `
     <button class="btn btn-ghost btn-sm" id="cursorToggleNav" aria-label="Toggle custom cursor (currently ${customCursorEnabled ? "Custom" : "Default"})">
-      <span class="mobile-nav-icon"><i class="fas ${customCursorEnabled ? "fa-circle-notch" : "fa-mouse-pointer"}"></i></span>
+      <span class="mobile-nav-icon"><i class="fas ${customCursorEnabled ? "fa-circle-notch" : "fa-mouse-pointer"}" aria-hidden="true"></i></span>
       Cursor: ${customCursorEnabled ? "Custom" : "Default"}
     </button>
   `;
@@ -139,7 +139,7 @@
         <div class="mobile-menu-header">
           <span class="mobile-menu-title">MENU</span>
           <button class="mobile-menu-close" id="mobileMenuClose" type="button">
-            <i class="fas fa-times"></i>
+            <i class="fas fa-times" aria-hidden="true"></i>
           </button>
         </div>
         ${navButtonsHTML}
@@ -248,6 +248,14 @@
         dropdownMenu.classList.remove("show");
       }
     });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && dropdownMenu.classList.contains("show")) {
+        dropdownToggle.setAttribute("aria-expanded", "false");
+        dropdownMenu.classList.remove("show");
+        dropdownToggle.focus();
+      }
+    });
   }
 
   const logoutBtn = document.getElementById("logoutBtn");
@@ -272,7 +280,7 @@
     // Update all cursor toggle buttons on the page (both standard and mobile drawer might have it)
     document.querySelectorAll("#cursorToggleNav").forEach((btn) => {
       btn.innerHTML = `
-        <span class="mobile-nav-icon"><i class="fas ${nextState ? "fa-circle-notch" : "fa-mouse-pointer"}"></i></span>
+        <span class="mobile-nav-icon"><i class="fas ${nextState ? "fa-circle-notch" : "fa-mouse-pointer"}" aria-hidden="true"></i></span>
         Cursor: ${nextState ? "Custom" : "Default"}
       `;
       btn.setAttribute(

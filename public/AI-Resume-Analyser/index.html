@@ -49,6 +49,24 @@
       display: flex;
       align-items: center;
     }
+    .home-btn {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      background: #1e293b;
+      color: #3b82f6;
+      border: 1px solid #3b82f6;
+      border-radius: 8px;
+      padding: 8px 16px;
+      transition: all 0.2s ease;
+      margin: 16px;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+    .home-btn:hover {
+      background: #3b82f6;
+      color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -126,7 +144,6 @@
             <span>Last Modified</span>
             <strong id="statModified">-</strong>
           </div>
-
           <div class="stat-item">
             <span>Reading Time</span>
             <strong id="statReadTime">-</strong>
@@ -141,13 +158,32 @@
             <span>Characters</span>
             <strong id="statCharacters">-</strong>
           </div>
-
         </div>
       </div>
 
     </section>
+    <section
 
-    <section class="dashboard-grid">
+      id="loadingSection"
+      class="loading-section"
+      style="display:none;"
+      
+    >
+      <div class="loading-card">
+
+        <div class="loader"></div>
+
+        <h2>Analyzing Resume...</h2>
+
+        <p>
+          Evaluating ATS compatibility,
+          skills, projects, and keywords.
+        </p>
+
+      </div>
+    </section>
+
+    <section class="dashboard-grid" id="resultsSection">
 
       <div class="score-card">
 

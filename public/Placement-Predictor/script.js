@@ -55,6 +55,19 @@ predictBtn.addEventListener("click", () => {
   } else {
     packageValue = 2 + (dsa * 0.2);
   }
+  let badge = "Needs Improvement";
+
+  if(score >= 80){
+    badge = "Excellent🫡";
+  }
+  else if(score >= 60){
+    badge = "Strong👌";
+  }
+  else if(score >= 40){
+    badge = "Average🙂";
+  }
+
+  document.getElementById("profileBadge").textContent = badge;
 
   if (stack === "AI / ML") {
     packageValue += 3;
@@ -434,6 +447,8 @@ if (savedTheme === "dark") {
 } else {
   themeCheckbox.checked = false;
 }
+document.getElementById("predictionTime").textContent =
+new Date().toLocaleString();
 
 themeCheckbox.addEventListener("change", () => {
   if (themeCheckbox.checked) {
@@ -445,6 +460,11 @@ themeCheckbox.addEventListener("change", () => {
   }
   
   if (document.getElementById("resultBox").style.display === "block") {
+    predictBtn.click();
+  }
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
     predictBtn.click();
   }
 });

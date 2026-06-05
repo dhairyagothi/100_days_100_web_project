@@ -312,6 +312,17 @@ main.experience-container {
     color: var(--button-text);
 }
 
+.scratch-progress {
+    color: var(--button-text);
+    font-size: 14px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 10px 18px;
+    border-radius: 40px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
 @keyframes heart-glow {
     0%, 100% {
         text-shadow: 
@@ -413,6 +424,7 @@ main.experience-container {
     transform: translate(-50%, -50%);
     z-index: 9999;
     transition: transform 0.1s ease-out;
+    
 }
 
 /* Responsive adjustments */
