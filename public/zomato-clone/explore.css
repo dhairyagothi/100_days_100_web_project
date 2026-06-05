@@ -1,93 +1,152 @@
+/* ===== EXPLORE OPTIONS ===== */
 .explore-options {
-    padding: 5rem 0;
-    width: 110rem;
-    margin: auto;
+  padding: 5rem 0 6rem;
+  width: 112rem;
+  max-width: calc(100% - 4rem);
+  margin: 0 auto;
+}
+
+.explore-options .heading {
+  margin: 0 0 2.4rem;
+  color: var(--text-primary);
+  font-size: 2.8rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.accordions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.accordion {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-md);
+  padding: 0;
+  border: 1.5px solid var(--border);
+  background: var(--bg-white);
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition);
+}
+
+.accordion:hover {
+  border-color: rgba(226, 55, 68, 0.3);
+  box-shadow: var(--shadow-sm);
+}
+
+.accordion-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  padding: 1.8rem 2.2rem;
+  transition: background var(--transition);
+}
+
+.accordion-container:hover {
+  background: rgba(226, 55, 68, 0.03);
+}
+
+.accordion-container i {
+  font-size: 1.4rem;
+  color: var(--text-muted);
+  transition:
+    transform 0.25s ease,
+    color var(--transition);
+  flex-shrink: 0;
+}
+
+.animate {
+  transform: rotate(180deg) !important;
+  color: var(--red) !important;
+}
+
+/* Accordion data panel */
+.accordion-data {
+  display: none;
+  padding: 0 2.2rem 2rem;
+  border-top: 1px solid var(--border);
+  animation: slideDown 0.22s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
   }
-  
-  .explore-options .heading {
-    margin: 0px 0px 2rem;
-    color: rgb(54, 54, 54);
-    font-size: 3rem;
-    line-height: 4rem;
-    font-weight: 500;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .accordions {
-    display: flex;
-    flex-direction: column;
+}
+
+.show {
+  display: block;
+}
+
+.accordion-data ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  align-items: center;
+  padding-top: 1.4rem;
+  gap: 0.2rem 0;
+}
+
+.accordion-data li {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 1.5rem;
+  line-height: 1.9;
+  margin-right: 0.8rem;
+  font-weight: 300;
+  cursor: pointer;
+  transition: color var(--transition);
+}
+
+.accordion-data li:hover {
+  color: var(--red);
+}
+
+.accordion-data .small-circle {
+  display: inline-block;
+  width: 3px;
+  height: 3px;
+  background: var(--border-dark);
+  border-radius: 50%;
+  margin-right: 0.8rem;
+  margin-bottom: 0.3rem;
+  vertical-align: middle;
+}
+
+/* Dark mode */
+body.dark-mode .accordion {
+  background: var(--bg-white);
+  border-color: var(--border);
+}
+body.dark-mode .accordion-container {
+  color: var(--text-primary);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 800px) {
+  .explore-options {
+    max-width: calc(100% - 4rem);
+    width: auto;
+    margin: 0 2rem;
   }
-  
-  .accordion {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 2rem;
-    border-radius: 0.8rem;
-    padding: 2rem 2.4rem;
-    border: 1px solid rgb(232, 232, 232);
-    cursor: pointer;
-  }
-  
   .accordion-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 20px;
-    font-weight: 200;
-  }
-  
-  .accordion-container i {
-    font-size: 15px;
-    transition: 0.2s;
-  }
-  
-  .accordion-data {
-    margin-top: 2rem;
-    display: none;
-  }
-  
-  .show {
-    display: block;
-  }
-  
-  .accordion-data ul {
-    display: flex;
-    flex-wrap: wrap;
-    max-width: 100%;
-    list-style: none;
-    align-items: center;
-  }
-  
-  .accordion-data li {
-    text-decoration: none;
-    color: rgb(130, 130, 130);
     font-size: 1.6rem;
-    line-height: 1.8;
-    margin-right: 1rem;
-    font-weight: 200;
+    padding: 1.5rem 1.8rem;
   }
-  
-  .accordion-data li:hover {
-    color: black;
+  .accordion-data li {
+    font-size: 1.4rem;
   }
-  
-  .accordion-data .small-circle {
-    display: inline-block;
-    width: 0.3rem;
-    height: 0.3rem;
-    background: rgb(130, 130, 130);
-    border-radius: 50%;
-    margin-right: 1rem;
-    margin-bottom: 0.35rem;
-  }
-  
-  .animate {
-    transform: rotate(180deg);
-  }
-  
-  @media (max-width: 800px) {
-    .explore-options {
-      margin: 0px 2.4rem;
-      max-width: 100vw;
-      width: auto;
-    }
-  }
+}
