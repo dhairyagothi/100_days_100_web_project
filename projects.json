@@ -1868,6 +1868,7 @@
   "projectPath": "./public/Escape The Matrix/index.html"
 },
 {
+
   "projectNo": 206,
   "projectName": "Gravity Well",
   "projectType": "Animation",
@@ -1903,3 +1904,45 @@
   "difficulty": "advanced",
   "projectPath": "./public/Mood_Based_Music_Recommender/index.html"
 }
+=======
+    "projectNo": 206,
+    "projectName": "Gravity Well",
+    "projectType": "Animation",
+    "projectDesc": "Interactive physics-based gravity simulation allowing users to create gravitational wells.",
+    "techStack": [
+      "HTML",
+      "canvas",
+      "javascript",
+      "css"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/gravity-well/index.html"
+  },
+  {
+    "projectNo": 207,
+    "projectName": "AI Semiconductor Circuit Builder",
+    "projectType": "Web Application",
+    "projectDesc": "An immersive, interactive web-based survival and puzzle game challenging players to hack their way out of a simulated reality.",
+    "techStack": ["html", "css", "javascript"],
+    "difficulty": "intermediate",
+    "projectPath": "./public/AI-Semiconductor-Circuit-Builder/index.html"
+  },
+  {
+    "projectNo": 208,
+    "projectName": "crossword puzzle game",
+    "projectType": "Game",
+    "projectDesc": "A classic crossword puzzle game built with HTML, CSS, and JavaScript.",
+    "techStack": ["ui","game","html","css","js"],
+    "difficulty": "intermediate",
+    "projectPath": "./public/CrosswordPuzzleGame/index.html"
+  },
+  {
+  "projectNo": 209,
+  "projectName": "Kanban Board",
+  "projectPath": "./public/Kanban_Board/index.html",
+  "techStack": ["html", "css", "javascript"],
+  "difficulty": "intermediate",
+  "projectDesc": "A responsive Kanban Board application featuring drag-and-drop task management, task creation, editing, deletion, local storage persistence, and dark/light theme support."
+}
+]
+

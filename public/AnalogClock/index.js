@@ -227,6 +227,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Call first rendering
     renderClockGrid();
 
+    // Set local timezone label
+    const localTzLabel = document.getElementById('local-tz-label');
+    if (localTzLabel) {
+        try {
+            localTzLabel.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        } catch(e) {
+            localTzLabel.textContent = 'Local Time';
+        }
+    }
+
     // Generate local clock ticks
     const localFace = document.querySelector('.main-clock-section .clock-face');
     generateTicksForFace(localFace);
@@ -340,20 +350,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-    if (clock.digital) {
-      clock.digital.textContent =
-        `${String(time.getHours()).padStart(2, "0")}:` +
-        `${String(time.getMinutes()).padStart(2, "0")}:` +
-        `${String(time.getSeconds()).padStart(2, "0")}`;
+        // Launch sweep loop
+        requestAnimationFrame(animateClocks);
     }
-
-    // Launch sweep loops
-    requestAnimationFrame(animateClocks);
-  }
 
     // ----------------------------------------------------
     // 5. Interactive Timezone Map Loader & Controller
     // ----------------------------------------------------
+    // Start the clock animation loop
+    requestAnimationFrame(animateClocks);
     const mapWrapper = document.getElementById('timezone-map-wrapper');
     const mapContainer = document.querySelector('.map-container');
     const tooltip = document.getElementById('map-tooltip');
@@ -734,23 +739,19 @@ document.addEventListener('DOMContentLoaded', () => {
             moonIcon.style.display = 'block';
         }
     }
-  }
 
-  function initTheme() {
-    const saved = localStorage.getItem("chronos-theme");
+    function applyTheme(theme) {
+        updateThemeUI(theme === 'dark');
+    }
 
-    if (saved) {
-      applyTheme(saved);
+    // Initialize theme on load
+    const savedTheme = localStorage.getItem("chronos-theme");
+    if (savedTheme) {
+      applyTheme(savedTheme);
     } else {
-      const prefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)",
-      ).matches;
-
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
       applyTheme(prefersDark ? "dark" : "light");
     }
-  }
-
-  initTheme();
 
   if (themeToggleBtn) {
     themeToggleBtn.addEventListener("click", () => {
@@ -1169,18 +1170,23 @@ if (focusModeBtn) {
     ========================================= */
 
   document.addEventListener("keydown", (e) => {
-    if (e.key.toLowerCase() === "t") {
+    // T key: toggle theme
+    if (e.key.toLowerCase() === "t" && !e.target.matches('input, textarea')) {
       themeToggleBtn.click();
     }
 
-    window.pauseCountdown = function() {
-        if (countdownTime <= 0) return;
-
+    // S key: toggle stopwatch
+    if (e.key.toLowerCase() === "s" && !e.target.matches('input, textarea')) {
       if (stopwatchRunning) {
-        pauseStopwatch();
+        window.pauseStopwatch();
       } else {
-        startStopwatch();
+        window.startStopwatch();
       }
+    }
+
+    // F key: toggle focus mode
+    if (e.key.toLowerCase() === "f" && !e.target.matches('input, textarea')) {
+      if (focusModeBtn) focusModeBtn.click();
     }
   });
 
