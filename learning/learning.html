@@ -39,6 +39,8 @@
     <!-- Ambient & Noise backgrounds -->
     <div class="ambient ambient-left" aria-hidden="true"></div>
     <div class="ambient ambient-right" aria-hidden="true"></div>
+    <div class="cursor-ring cursor-ring--outer" aria-hidden="true"></div>
+    <div class="cursor-ring cursor-ring--inner" aria-hidden="true"></div>
     <div class="noise-layer" aria-hidden="true"></div>
     <canvas
       id="particleCanvas"
@@ -90,12 +92,27 @@
         </button>
 
         <article class="content-viewport" id="contentViewport">
+          <div class="learning-progress-header">
+            <button id="continueLearningBtn" class="continue-learning-btn">
+              ▶ Continue Learning
+            </button>
+
+            <div class="overall-progress">
+              <div class="progress-label">
+                Overall Progress
+                <span id="overallProgressText">0%</span>
+              </div>
+
+              <div class="progress-bar">
+                <div id="overallProgressFill" class="progress-fill"></div>
+              </div>
+            </div>
+          </div>
           <div class="loading-article">
             <i class="fas fa-circle-notch fa-spin"></i>
             <p>Fetching tutorial content...</p>
           </div>
         </article>
-
 
         <!-- Topic Navigation Footer -->
         <nav
@@ -209,5 +226,6 @@
         new Date().getFullYear();
     </script>
     <script src="../navbar.js"></script>
+    <script src="../index.js" defer></script>
   </body>
 </html>

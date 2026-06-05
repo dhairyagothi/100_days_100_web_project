@@ -1,121 +1,50 @@
-# ⏰ Analog Clock & Countdown Timer
+# Premium Analog Clock 🕒
 
-## 🚀 Overview
-
-Analog Clock & Countdown Timer is a responsive web project built using **HTML, CSS, and JavaScript**.
-
-It displays a **real-time analog clock** with smooth hand movement and includes a **countdown timer feature** with audio alerts when the timer ends.
-
----
+A sleek, modern, and highly accurate interactive analog clock built using web technologies. This component features a smooth fluid design, polished UI animations, and dark-mode friendly aesthetics, making it a perfect addition to any modern web dashboard.
 
 ## ✨ Features
 
-✅ Real-time analog clock with smooth hand movement  
-✅ Countdown timer functionality  
-✅ Audio notification using `timer.mp3`  
-✅ Responsive design for desktop and mobile devices  
-✅ Attractive clock face using `clock.png`  
-✅ Simple and user-friendly interface
+* **Smooth Fluid Motion:** Realistic second-hand sweeping effect instead of rigid ticking.
+* **Responsive Layout:** Automatically scales beautifully across desktops, tablets, and mobile displays.
+* **Modern Aesthetic:** Features clean typography, subtle drop shadows, and a premium minimal user interface.
+* **Dynamic Time Sync:** Syncs perfectly with the user's local system time instantly upon loading.
 
----
+### 🎨 Theme System (Auto Mode)
 
-## 🛠️ Technologies Used
+This project now supports an enhanced theme system with three modes:
 
-- HTML5
-- CSS3
-- JavaScript (ES6)
+* ☀️ Light
+* 🌙 Dark
+* 🔄 Auto (sync with system)
 
----
+  🔄 Auto Mode Behavior
 
-## 📂 Project Structure
+   * Automatically matches your OS/browser theme using `prefers-color-scheme`
+   * Updates instantly when system theme changes (no page reload required)
+   * Saves preference in `localStorage` (`chronos-theme`)
 
-```text
-AnalogClock/
-│
-├── index.html        # Main HTML file
-├── index.css         # Styling for clock & timer UI
-├── index.js          # Clock & timer functionality
-├── clock.png         # Clock face image
-├── timer.mp3         # Timer alert sound
-└── README.md         # Project documentation
-```
+  ⌨️ Keyboard Shortcut
 
----
+   * Press **`T`** to cycle through:
+      Light → Dark → Auto
 
-## 🎮 Controls
+  🧠 Smart Behavior
 
-### Start Timer
-Begin the countdown timer.
+   * In **Auto mode** → follows system theme in real-time
+   * In **Light/Dark mode** → respects manual user choice
 
-### Pause Timer
-Pause or stop the active timer.
+This brings the app in line with modern UX standards seen in tools like Slack, Discord, and Figma.
 
-### Restart Timer
-Reset the timer back to its default value.
+## 🚀 Technologies Used
 
-### Automatic Clock Update
-Clock hands update automatically according to your system time.
+* **HTML5:** Semantic structure for the clock face and hands.
+* **CSS3:** Advanced styling, centering utilities, transitions, and custom animations.
+* **JavaScript (ES6):** Real-time DOM manipulation and mathematical rotation tracking for the clock hands.
 
----
+## 🛠️ Installation & Usage
 
-## 🌐 Demo & Repository
+To run this project locally, simply clone the repository and open the entry HTML file:
 
-🔗 Live Demo: [https://100-days-100-web-project.vercel.app/public/AnalogClock/index.html](https://100-days-100-web-project.vercel.app/public/AnalogClock/index.html)
-
-🔗 GitHub Repository: [https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/AnalogClock](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/AnalogClock)
-
-
-### Clone Repository
-
+1. Clone the repository:
 ```bash
-git clone https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/AnalogClock.git
-```
-
----
-
-## 📱 Responsive Design
-
-This project works smoothly across multiple devices:
-
-- 💻 Desktop
-- 🖥️ Laptop
-- 📱 Mobile
-- 📲 Tablet
-
----
-
-## ▶️ How to Run
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/AnalogClock.git
-```
-
-
-### 2. Navigate to Project Folder
-
-```bash
-cd AnalogClock
-```
-
-### 3. Open in Browser
-
-Open the `index.html` file in your browser.
-
-Enjoy using the Analog Clock & Countdown Timer ⏳
-
----
-
-## 📸 Screenshot
-
-<img src = "https://files.catbox.moe/orxkx8.jpeg"/>
-
----
-
-## 📄 License
-
-This project is created for **educational, learning, and portfolio purposes**.
-
-You are free to modify and use this project for personal development and practice.
-
+   git clone [https://github.com/your-username/100_days_100_web_project.git](https://github.com/your-username/100_days_100_web_project.git)

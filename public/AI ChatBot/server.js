@@ -1,11 +1,18 @@
 const express = require('express');
 const http = require('http');
+const fs = require('fs');
 const { Server } = require('socket.io');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
+const options = {
+  key: fs.readFileSync('path/to/private.key'),
+  cert: fs.readFileSync('path/to/certificate.crt')
+};
+
 const app = express();
-const server = http.createServer(app);
+const server = https.createServer(options, app);
+server.listen(443, () => console.log('Secure server running on port 443'));
 
 // Initialize Socket.io and allow connections from your frontend development server
 const io = new Server(server, {
@@ -23,34 +30,52 @@ app.get('/api/room/create', (req, res) => {
 
 // Socket.io Realtime Logic
 io.on('connection', (socket) => {
-  console.log(`User connected: ${socket.id}`);
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`User connected: ${socket.id}`);
+  }
 
   // 1. User requests to join a specific collaborative session
   socket.on('join_room', (roomId) => {
     socket.join(roomId);
-    console.log(`User ${socket.id} joined room: ${roomId}`);
-    
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`User ${socket.id} joined room: ${roomId}`);
+    }
+
     // Notify others in the room that someone joined
     socket.to(roomId).emit('user_joined', { userId: socket.id });
   });
 
   // 2. Listen for chat messages sent from a user in a room
   socket.on('send_message', (data) => {
-    // FIX: Use socket.to() instead of io.to() so it broadcasts to EVERYONE ELSE 
-    // in the room, without bouncing it back to the original sender.
+    // Validate payload
+    if (
+      !data ||
+      typeof data.room !== 'string' ||
+      data.room.trim() === ''
+    ) {
+      return;
+    }
+
+    // Ensure sender belongs to the target room
+    if (!socket.rooms.has(data.room)) {
+      return;
+    }
+
     socket.to(data.room).emit('receive_message', data);
   });
 
   // 3. Handle user disconnection
   socket.on('disconnect', () => {
-    console.log(`User disconnected: ${socket.id}`);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`User disconnected: ${socket.id}`);
+    }
   });
 });
 
 const PORT = process.env.PORT || 5000;
 app.use(express.static(__dirname));
 app.get('/chat/:id', (req, res) => {
-    res.sendFile(path.join(__dirname, 'chatbot.html'));
+  res.sendFile(path.join(__dirname, 'chatbot.html'));
 });
 
 server.listen(PORT, () => {
