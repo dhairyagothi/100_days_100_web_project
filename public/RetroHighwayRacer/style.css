@@ -390,3 +390,17 @@ body {
     color: #1a1a1a;
     border-color: #f1c40f;
 }
+ 
+.best-score-banner {
+    background: #2c3e50;
+    border: 1px solid #f1c40f;
+    color: #f1c40f;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 8px 20px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    box-shadow: 0 0 10px rgba(241, 196, 15, 0.15);
+}

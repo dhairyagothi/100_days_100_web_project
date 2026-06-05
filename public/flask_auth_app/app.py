@@ -14,7 +14,7 @@ import jwt
 from functools import wraps
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = os.getenv("FLASK_SECRET_KEY", "your_secret_key")
+app.config["SECRET_KEY"] = os.environ.get("FLASK_SECRET_KEY", os.urandom(24).hex())
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///Database.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
