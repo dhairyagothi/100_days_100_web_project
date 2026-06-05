@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FOG RUNNER</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Start Screen -->
+    <div class="overlay" id="startScreen">
+      <h1>FOG RUNNER</h1>
+      <p>Find your way through the unknown.<br />Memory is your only guide.</p>
+      <button onclick="startGame(1)">BEGINNER</button>
+      <button onclick="startGame(2)">INTERMEDIATE</button>
+      <button onclick="startGame(3)">EXPERT</button>
+    </div>
+
+    <!-- HUD - Left Side -->
+    <div class="hud" id="hud" style="display: none">
+      <div>LEVEL <span id="level">1</span></div>
+      <div>TIME <span id="timer">0</span>s</div>
+      <div class="help-icon" onclick="toggleHelp()">?</div>
+    </div>
+
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+    <!-- Help Screen -->
+    <div class="overlay" id="helpScreen" style="display: none">
+      <h2>HOW TO PLAY</h2>
+      <p><strong>WASD</strong> or <strong>Arrow Keys</strong> — Move</p>
+      <p><strong>F</strong> — Fullscreen</p>
+      <p><strong>P</strong> — Pause</p>
+      <p><strong>R</strong> — Restart Level</p>
+      <button onclick="toggleHelp()">CLOSE</button>
+    </div>
+
+    <!-- Pause Screen -->
+    <div class="overlay" id="pauseScreen" style="display: none">
+      <h2>PAUSED</h2>
+      <button onclick="togglePause()">RESUME</button>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div class="game-over" id="gameOverScreen" style="display: none">
+      <h2>YOU ESCAPED THE FOG</h2>
+      <p id="finalStats"></p>
+      <button onclick="returnToHome()">BACK TO MENU</button>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
