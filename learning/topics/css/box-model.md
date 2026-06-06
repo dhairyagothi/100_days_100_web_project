@@ -7,6 +7,7 @@ Every element is drawn as a box. The **box model** explains how CSS properties l
 ## 1. The four layers
 
 From the inside out:
+
 1. **Content** (where text and child elements appear)
 2. **Padding** (space between content and border)
 3. **Border** (the edge around the padding)
@@ -17,6 +18,7 @@ From the inside out:
 ## 2. A simple visual mental model
 
 If you set:
+
 - `padding: 16px`
 - `border: 2px solid ...`
 - `margin: 12px`
@@ -28,14 +30,18 @@ then the browser will allocate those spaces in that order.
 ## 3. `box-sizing`: content-box vs border-box
 
 Default: `content-box`
+
 - `width` controls only the content area.
 
 Common alternative: `border-box`
+
 - `width` controls the content + padding + border.
 
 ```css
 /* Usually helps make layouts more predictable */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 ```
@@ -65,6 +71,7 @@ Common alternative: `border-box`
 ### Task:
 
 Create CSS for `.box` with:
+
 - `width: 200px`
 - `padding: 20px`
 - `border: 4px solid #3b82f6`
@@ -80,4 +87,3 @@ Create CSS for `.box` with:
   box-sizing: border-box;
 }
 ```
-

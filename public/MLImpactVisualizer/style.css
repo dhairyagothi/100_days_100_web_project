@@ -21,7 +21,7 @@ h1 {
   padding: 25px;
   width: 350px;
   border-radius: 14px;
-  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
   text-align: left;
 }
 
@@ -34,7 +34,7 @@ label {
   display: block;
 }
 
-input[type=range] {
+input[type="range"] {
   width: 100%;
 }
 

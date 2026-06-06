@@ -1,6 +1,6 @@
 let currentIndex = 0;
-const track = document.querySelector('.section-track');
-const dots = document.querySelectorAll('.dot');
+const track = document.querySelector(".section-track");
+const dots = document.querySelectorAll(".dot");
 const totalSlides = dots.length;
 let slideInterval;
 
@@ -17,9 +17,9 @@ function showSlide(index) {
 
   dots.forEach((dot, i) => {
     if (i === currentIndex) {
-      dot.classList.add('active');
+      dot.classList.add("active");
     } else {
-      dot.classList.remove('active');
+      dot.classList.remove("active");
     }
   });
 }

@@ -7,6 +7,7 @@ CSS Grid is a 2D layout system. It lets you create rows and columns and place el
 ## 1. Grid container vs grid items
 
 You enable grid on a container:
+
 - `display: grid;`
 
 Then the children become grid items that you can position using grid lines or areas.
@@ -30,14 +31,19 @@ Example:
 ## 3. Placing items
 
 You can place items using:
+
 - `grid-column: ...`
 - `grid-row: ...`
 
 Example:
 
 ```css
-.sidebar { grid-column: 1; }
-.content { grid-column: 2; }
+.sidebar {
+  grid-column: 1;
+}
+.content {
+  grid-column: 2;
+}
 ```
 
 ---
@@ -64,11 +70,13 @@ Example:
 ### Task:
 
 Create a grid container that has:
+
 - 3 columns
 - 2 rows
 - `gap: 12px`
 
 Then assign:
+
 - `.item-a` to row 1, col 1
 - `.item-b` to row 1, col 2
 
@@ -82,7 +90,12 @@ Then assign:
   gap: 12px;
 }
 
-.item-a { grid-column: 1; grid-row: 1; }
-.item-b { grid-column: 2; grid-row: 1; }
+.item-a {
+  grid-column: 1;
+  grid-row: 1;
+}
+.item-b {
+  grid-column: 2;
+  grid-row: 1;
+}
 ```
-

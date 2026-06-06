@@ -1,12 +1,14 @@
 # ✈ Wanderlust — Destination Background Slider
 
 ## 🚀 Overview
+
 Wanderlust is a visually immersive travel destination slider built with **HTML, CSS, and JavaScript**.  
 It features a dynamic full-viewport hero section with glassmorphism UI, a dropdown to switch between stunning travel destinations, and a clean 3-column footer.
 
 ---
 
 ## ✨ Features
+
 ✅ Full-viewport hero with dynamic background image on destination select  
 ✅ **Destination Indicator Navigation** — Interactive dots for quick destination switching  
 ✅ **Glassmorphism design** — frosted-glass card, header, and footer with `backdrop-filter: blur()`  
@@ -17,19 +19,21 @@ It features a dynamic full-viewport hero section with glassmorphism UI, a dropdo
 ✅ **Keyboard accessible** — Full keyboard navigation support with visible focus states  
 ✅ **Responsive** layout for desktop, tablet, and mobile  
 ✅ **3-column footer** with Contact, About Us, and Services sections  
-✅ **ARIA attributes** for screen reader accessibility  
+✅ **ARIA attributes** for screen reader accessibility
 
 ---
 
 ## 🛠️ Technologies Used
-- HTML5  
-- CSS3 (Flexbox, Grid, Glassmorphism, Custom properties)  
-- JavaScript (ES6)  
-- Google Fonts — Inter  
+
+- HTML5
+- CSS3 (Flexbox, Grid, Glassmorphism, Custom properties)
+- JavaScript (ES6)
+- Google Fonts — Inter
 
 ---
 
 ## 📂 Project Structure
+
 ```text
 Background-Image-sider/
 │
@@ -49,15 +53,15 @@ Background-Image-sider/
 
 ## 🎮 How to Use
 
-1. Open `slider.html` in your browser.  
+1. Open `slider.html` in your browser.
 2. **Navigate between destinations** using any of these methods:
    - Click the **indicator dots** below the dropdown
    - Use the **dropdown selector** to choose a destination
    - Click **HOME** in the navigation to return to Iceland
    - Use **keyboard navigation** (Tab to indicators, press Enter or Space)
-3. The background image, title, description, and button text update dynamically.  
+3. The background image, title, description, and button text update dynamically.
 4. The **active indicator** highlights with a gradient glow and pulse animation.
-5. Click **"Book a Trip"** to simulate a CTA action.  
+5. Click **"Book a Trip"** to simulate a CTA action.
 6. Navigate via the header links to jump to the footer sections (Contact, About, Services).
 
 ### 🎯 Navigation Features
@@ -66,7 +70,7 @@ Background-Image-sider/
 - **Active State**: Currently selected destination is visually highlighted
 - **Synchronized Navigation**: All navigation methods stay in sync
 - **Keyboard Accessible**: Full keyboard support with visible focus states
-- **Touch Friendly**: Optimized for mobile touch interactions  
+- **Touch Friendly**: Optimized for mobile touch interactions
 
 ---
 
@@ -145,11 +149,11 @@ Indicators will automatically generate for all destinations!
 ### Styling Indicators
 
 Modify these CSS classes in `slider.css`:
+
 - `.destination-dot` — Base styling
 - `.destination-dot:hover` — Hover effects
 - `.destination-dot:focus` — Focus styles
 - `.destination-dot.active` — Active state with gradient
-
 
 ---
 

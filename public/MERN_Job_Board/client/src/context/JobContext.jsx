@@ -17,7 +17,9 @@ export const JobProvider = ({ children }) => {
       setJobs(res.data);
     } catch (e) {
       addToast(e.response?.data?.message || "Failed to load jobs", "error");
-    } finally { setLoading(false); }
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Real-time: new job posted by any employer appears instantly

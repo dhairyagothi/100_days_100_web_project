@@ -2,7 +2,6 @@ File Uploader 📁
 
 A simple and efficient file upload backend built with Node.js and Express.js. This project demonstrates how to handle file uploads using Express middleware with a clean and scalable backend structure.
 
-
 📌 Features
 
 Upload single or multiple files
@@ -14,19 +13,18 @@ REST API support
 Error handling and validation
 Easy integration with frontend applications
 
-
 🛠️ Tech Stack
 
-| Technology | Usage |
-|------------|-------|
-| Node.js    | Runtime Environment |
-| Express.js | Backend Framework |
+| Technology | Usage                  |
+| ---------- | ---------------------- |
+| Node.js    | Runtime Environment    |
+| Express.js | Backend Framework      |
 | Multer     | File Upload Middleware |
-| dotenv     | Environment Variables |
-| CORS       | Cross-Origin Requests |
-
+| dotenv     | Environment Variables  |
+| CORS       | Cross-Origin Requests  |
 
 📂 Project Structure
+
 ```text
 file-uploader/
 ├── node_modules/
@@ -49,7 +47,6 @@ file-uploader/
 ├── package-lock.json
 └── server.js
 ```
-
 
 ⚙️ Installation & Setup
 
@@ -80,10 +77,9 @@ http://localhost:5000
 
 📜 Package.json Scripts
 "scripts": {
-  "start": "node server.js",
-  "dev": "nodemon server.js"
+"start": "node server.js",
+"dev": "nodemon server.js"
 }
-
 
 🧠 Main Server Setup
 server.js
@@ -107,9 +103,8 @@ app.use("/api/upload", uploadRoutes);
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+console.log(`Server running on port ${PORT}`);
 });
-
 
 ⚙️ Upload Middleware
 
@@ -117,48 +112,47 @@ middleware/uploadMiddleware.js
 const multer = require("multer");
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
+destination: (req, file, cb) => {
+cb(null, "uploads/");
+},
 
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname);
-  },
+filename: (req, file, cb) => {
+cb(null, Date.now() + "-" + file.originalname);
+},
 });
 
 const upload = multer({ storage });
 
 module.exports = upload;
 
-
 📁 Upload Controller
 
 controllers/uploadController.js
 const uploadFile = async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({
-        success: false,
-        message: "No file uploaded",
-      });
-    }
+try {
+if (!req.file) {
+return res.status(400).json({
+success: false,
+message: "No file uploaded",
+});
+}
 
     res.status(200).json({
       success: true,
       message: "File uploaded successfully",
       file: req.file,
     });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "File upload failed",
-      error: error.message,
-    });
-  }
+
+} catch (error) {
+res.status(500).json({
+success: false,
+message: "File upload failed",
+error: error.message,
+});
+}
 };
 
 module.exports = { uploadFile };
-
 
 🛣️ Upload Routes
 
@@ -173,25 +167,24 @@ router.post("/", upload.single("file"), uploadFile);
 
 module.exports = router;
 
-
 📡 API Endpoint
 
 Upload File
 POST /api/upload
 
 📨 Form Data
-Key	Type
-file	File
+Key Type
+file File
 
 ✅ Success Response
 {
-  "success": true,
-  "message": "File uploaded successfully"
+"success": true,
+"message": "File uploaded successfully"
 }
 ❌ Error Response
 {
-  "success": false,
-  "message": "No file uploaded"
+"success": false,
+"message": "No file uploaded"
 }
 
 🌍 Access Uploaded Files
@@ -199,7 +192,6 @@ file	File
 Uploaded files can be accessed using:
 
 http://localhost:5000/uploads/filename.png
-
 
 🚀 Future Improvements
 
@@ -211,7 +203,6 @@ Drag and drop frontend
 Authentication support
 Progress tracking
 Image preview support
-
 
 🌐 Deployment
 
@@ -233,7 +224,6 @@ git commit -m "Add new feature"
 Push to GitHub
 git push origin feature/new-feature
 Open a Pull Request
-
 
 ⭐ Support
 

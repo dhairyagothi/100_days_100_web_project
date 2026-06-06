@@ -1,18 +1,18 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    background: #f3f4f6;
-    font-family: Arial, sans-serif;
+  background: #f3f4f6;
+  font-family: Arial, sans-serif;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    padding: 30px;
+  padding: 30px;
 }
 
 /* =========================
@@ -20,16 +20,16 @@ body {
 ========================= */
 
 .blog-page {
-    width: 100%;
-    max-width: 900px;
+  width: 100%;
+  max-width: 900px;
 
-    background: white;
+  background: white;
 
-    padding: 30px;
+  padding: 30px;
 
-    border-radius: 24px;
+  border-radius: 24px;
 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
 /* =========================
@@ -37,14 +37,14 @@ body {
 ========================= */
 
 .blog-banner {
-    width: 100%;
-    height: 320px;
+  width: 100%;
+  height: 320px;
 
-    object-fit: cover;
+  object-fit: cover;
 
-    border-radius: 18px;
+  border-radius: 18px;
 
-    margin-bottom: 25px;
+  margin-bottom: 25px;
 }
 
 /* =========================
@@ -52,11 +52,11 @@ body {
 ========================= */
 
 .blog-page h1 {
-    font-size: 48px;
+  font-size: 48px;
 
-    color: #334155;
+  color: #334155;
 
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 /* =========================
@@ -64,21 +64,21 @@ body {
 ========================= */
 
 .blog-author {
-    color: #475569;
+  color: #475569;
 
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 .blog-author h3 {
-    font-size: 22px;
+  font-size: 22px;
 
-    margin-bottom: 6px;
+  margin-bottom: 6px;
 }
 
 .blog-date {
-    font-size: 15px;
+  font-size: 15px;
 
-    color: #64748b;
+  color: #64748b;
 }
 
 /* =========================
@@ -86,15 +86,15 @@ body {
 ========================= */
 
 .blog-content p {
-    font-size: 20px;
+  font-size: 20px;
 
-    line-height: 1.9;
+  line-height: 1.9;
 
-    color: #1e293b;
+  color: #1e293b;
 
-    margin-bottom: 22px;
+  margin-bottom: 22px;
 
-    text-align: justify;
+  text-align: justify;
 }
 
 /* =========================
@@ -102,24 +102,23 @@ body {
 ========================= */
 
 @media (max-width: 768px) {
+  body {
+    padding: 15px;
+  }
 
-    body {
-        padding: 15px;
-    }
+  .blog-page {
+    padding: 20px;
+  }
 
-    .blog-page {
-        padding: 20px;
-    }
+  .blog-banner {
+    height: 220px;
+  }
 
-    .blog-banner {
-        height: 220px;
-    }
+  .blog-page h1 {
+    font-size: 34px;
+  }
 
-    .blog-page h1 {
-        font-size: 34px;
-    }
-
-    .blog-content p {
-        font-size: 17px;
-    }
+  .blog-content p {
+    font-size: 17px;
+  }
 }

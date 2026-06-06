@@ -53,7 +53,7 @@ async function initAI() {
       architecture: "MobileNetV1",
       outputStride: 16,
       multiplier: 0.75,
-      quantBytes: 2
+      quantBytes: 2,
     });
   } catch (err) {
     console.error("AI Initialization failed:", err);
@@ -112,7 +112,8 @@ function handleImageFile(file) {
 }
 
 function setupCanvas(img) {
-  const maxWidth = window.innerWidth > 900 ? window.innerWidth - 450 : window.innerWidth - 100;
+  const maxWidth =
+    window.innerWidth > 900 ? window.innerWidth - 450 : window.innerWidth - 100;
   const maxHeight = window.innerHeight - 250;
 
   let w = img.width;
@@ -141,10 +142,20 @@ function setupCanvas(img) {
 
 function enableControls(enable) {
   const tools = [
-    grayscaleBtn, edgeBtn, cartoonBtn, removeBgBtn, sepiaBtn, invertBtn, sharpenBtn,
-    resetBtn, downloadBtn, compareBtn, brightnessSlider, contrastSlider
+    grayscaleBtn,
+    edgeBtn,
+    cartoonBtn,
+    removeBgBtn,
+    sepiaBtn,
+    invertBtn,
+    sharpenBtn,
+    resetBtn,
+    downloadBtn,
+    compareBtn,
+    brightnessSlider,
+    contrastSlider,
   ];
-  tools.forEach(btn => btn.disabled = !enable);
+  tools.forEach((btn) => (btn.disabled = !enable));
   undoBtn.disabled = historyStack.length <= 1;
 }
 
@@ -223,121 +234,136 @@ async function applyFilter(filterFn) {
   }, 50);
 }
 
-grayscaleBtn.onclick = () => applyFilter(async () => {
-  const t = tf.browser.fromPixels(canvas);
-  const gray = t.mean(2).expandDims(2).tile([1, 1, 3]);
-  const normalized = gray.div(255);
-  await tf.browser.toPixels(normalized, canvas);
+grayscaleBtn.onclick = () =>
+  applyFilter(async () => {
+    const t = tf.browser.fromPixels(canvas);
+    const gray = t.mean(2).expandDims(2).tile([1, 1, 3]);
+    const normalized = gray.div(255);
+    await tf.browser.toPixels(normalized, canvas);
 
-  t.dispose();
-  gray.dispose();
-  normalized.dispose();
-});
-
-edgeBtn.onclick = () => applyFilter(async () => {
-  const t = tf.browser.fromPixels(canvas).mean(2).expandDims(2).expandDims(0);
-  const kernel = tf.tensor4d([-1, -1, -1, -1, 8, -1, -1, -1, -1], [3, 3, 1, 1]);
-
-  const edges = tf.conv2d(t.toFloat(), kernel, 1, "same")
-    .abs()
-    .clipByValue(0, 255)
-    .squeeze()
-    .expandDims(2)
-    .tile([1, 1, 3]);
-
-  const normalized = edges.div(255);
-  await tf.browser.toPixels(normalized, canvas);
-
-  t.dispose();
-  kernel.dispose();
-  edges.dispose();
-  normalized.dispose();
-});
-
-cartoonBtn.onclick = () => applyFilter(async () => {
-  const img = tf.browser.fromPixels(canvas).toFloat();
-  const cartoon = img.div(32).round().mul(32).clipByValue(0, 255);
-  const normalized = cartoon.div(255);
-  await tf.browser.toPixels(normalized, canvas);
-
-  img.dispose();
-  cartoon.dispose();
-  normalized.dispose();
-});
-
-sepiaBtn.onclick = () => applyFilter(async () => {
-  const t = tf.browser.fromPixels(canvas).toFloat();
-
-  // Sepia matrix
-  const sepiaMatrix = tf.tensor2d([
-    [0.393, 0.349, 0.272],
-    [0.769, 0.686, 0.534],
-    [0.189, 0.168, 0.131]
-  ]);
-
-  const reshaped = t.reshape([-1, 3]);
-  const sepia = tf.matMul(reshaped, sepiaMatrix)
-    .reshape(t.shape)
-    .clipByValue(0, 255);
-
-  const normalized = sepia.div(255);
-  await tf.browser.toPixels(normalized, canvas);
-
-  t.dispose();
-  sepiaMatrix.dispose();
-  reshaped.dispose();
-  sepia.dispose();
-  normalized.dispose();
-});
-
-invertBtn.onclick = () => applyFilter(async () => {
-  const t = tf.browser.fromPixels(canvas);
-  const inverted = tf.scalar(255).sub(t);
-  const normalized = inverted.div(255);
-  await tf.browser.toPixels(normalized, canvas);
-
-  t.dispose();
-  inverted.dispose();
-  normalized.dispose();
-});
-
-sharpenBtn.onclick = () => applyFilter(async () => {
-  const t = tf.browser.fromPixels(canvas).toFloat().expandDims(0);
-  const kernel = tf.tensor4d([0, -1, 0, -1, 5, -1, 0, -1, 0], [3, 3, 1, 1]).tile([1, 1, 3, 1]);
-
-  const sharpened = tf.depthwiseConv2d(t, kernel, 1, "same")
-    .clipByValue(0, 255)
-    .squeeze();
-
-  const normalized = sharpened.div(255);
-  await tf.browser.toPixels(normalized, canvas);
-
-  t.dispose();
-  kernel.dispose();
-  sharpened.dispose();
-  normalized.dispose();
-});
-
-removeBgBtn.onclick = () => applyFilter(async () => {
-  if (!bodyPixNet) {
-    alert("AI Model still loading. Please wait.");
-    return;
-  }
-
-  const seg = await bodyPixNet.segmentPerson(canvas, {
-    internalResolution: "high",
-    segmentationThreshold: 0.5
+    t.dispose();
+    gray.dispose();
+    normalized.dispose();
   });
 
-  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const d = imgData.data;
+edgeBtn.onclick = () =>
+  applyFilter(async () => {
+    const t = tf.browser.fromPixels(canvas).mean(2).expandDims(2).expandDims(0);
+    const kernel = tf.tensor4d(
+      [-1, -1, -1, -1, 8, -1, -1, -1, -1],
+      [3, 3, 1, 1],
+    );
 
-  for (let i = 0; i < d.length; i += 4) {
-    if (seg.data[i / 4] === 0) d[i + 3] = 0;
-  }
+    const edges = tf
+      .conv2d(t.toFloat(), kernel, 1, "same")
+      .abs()
+      .clipByValue(0, 255)
+      .squeeze()
+      .expandDims(2)
+      .tile([1, 1, 3]);
 
-  ctx.putImageData(imgData, 0, 0);
-});
+    const normalized = edges.div(255);
+    await tf.browser.toPixels(normalized, canvas);
+
+    t.dispose();
+    kernel.dispose();
+    edges.dispose();
+    normalized.dispose();
+  });
+
+cartoonBtn.onclick = () =>
+  applyFilter(async () => {
+    const img = tf.browser.fromPixels(canvas).toFloat();
+    const cartoon = img.div(32).round().mul(32).clipByValue(0, 255);
+    const normalized = cartoon.div(255);
+    await tf.browser.toPixels(normalized, canvas);
+
+    img.dispose();
+    cartoon.dispose();
+    normalized.dispose();
+  });
+
+sepiaBtn.onclick = () =>
+  applyFilter(async () => {
+    const t = tf.browser.fromPixels(canvas).toFloat();
+
+    // Sepia matrix
+    const sepiaMatrix = tf.tensor2d([
+      [0.393, 0.349, 0.272],
+      [0.769, 0.686, 0.534],
+      [0.189, 0.168, 0.131],
+    ]);
+
+    const reshaped = t.reshape([-1, 3]);
+    const sepia = tf
+      .matMul(reshaped, sepiaMatrix)
+      .reshape(t.shape)
+      .clipByValue(0, 255);
+
+    const normalized = sepia.div(255);
+    await tf.browser.toPixels(normalized, canvas);
+
+    t.dispose();
+    sepiaMatrix.dispose();
+    reshaped.dispose();
+    sepia.dispose();
+    normalized.dispose();
+  });
+
+invertBtn.onclick = () =>
+  applyFilter(async () => {
+    const t = tf.browser.fromPixels(canvas);
+    const inverted = tf.scalar(255).sub(t);
+    const normalized = inverted.div(255);
+    await tf.browser.toPixels(normalized, canvas);
+
+    t.dispose();
+    inverted.dispose();
+    normalized.dispose();
+  });
+
+sharpenBtn.onclick = () =>
+  applyFilter(async () => {
+    const t = tf.browser.fromPixels(canvas).toFloat().expandDims(0);
+    const kernel = tf
+      .tensor4d([0, -1, 0, -1, 5, -1, 0, -1, 0], [3, 3, 1, 1])
+      .tile([1, 1, 3, 1]);
+
+    const sharpened = tf
+      .depthwiseConv2d(t, kernel, 1, "same")
+      .clipByValue(0, 255)
+      .squeeze();
+
+    const normalized = sharpened.div(255);
+    await tf.browser.toPixels(normalized, canvas);
+
+    t.dispose();
+    kernel.dispose();
+    sharpened.dispose();
+    normalized.dispose();
+  });
+
+removeBgBtn.onclick = () =>
+  applyFilter(async () => {
+    if (!bodyPixNet) {
+      alert("AI Model still loading. Please wait.");
+      return;
+    }
+
+    const seg = await bodyPixNet.segmentPerson(canvas, {
+      internalResolution: "high",
+      segmentationThreshold: 0.5,
+    });
+
+    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const d = imgData.data;
+
+    for (let i = 0; i < d.length; i += 4) {
+      if (seg.data[i / 4] === 0) d[i + 3] = 0;
+    }
+
+    ctx.putImageData(imgData, 0, 0);
+  });
 
 /* =========================
    ADJUSTMENTS (SLIDERS)
@@ -353,8 +379,8 @@ async function applyAdjustment() {
   // But we use TF.js for the heavy lifting
 
   tf.tidy(() => {
-    const t = tf.browser.fromPixels(canvas); // Start from current state or original? 
-    // Usually adjustments are relative to the LAST state for interactive feel, 
+    const t = tf.browser.fromPixels(canvas); // Start from current state or original?
+    // Usually adjustments are relative to the LAST state for interactive feel,
     // but here let's apply to the current state.
 
     let processed = t.toFloat();
@@ -377,7 +403,7 @@ async function applyAdjustment() {
 
 // Debounce slider updates for smoother performance
 let sliderTimeout;
-[brightnessSlider, contrastSlider].forEach(slider => {
+[brightnessSlider, contrastSlider].forEach((slider) => {
   slider.addEventListener("input", () => {
     clearTimeout(sliderTimeout);
     sliderTimeout = setTimeout(applyAdjustment, 50);

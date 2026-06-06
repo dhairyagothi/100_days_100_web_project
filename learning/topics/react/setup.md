@@ -6,11 +6,11 @@ To build React applications on your computer, you need **Node.js** (which includ
 
 ## 1. Prerequisites
 
-| Tool | Purpose |
-| :--- | :--- |
-| **Node.js** (LTS) | Runs JavaScript tooling and dev server |
-| **npm** or **yarn** or **pnpm** | Installs packages |
-| **Code editor** | VS Code with ES7+ React snippets is popular |
+| Tool                            | Purpose                                     |
+| :------------------------------ | :------------------------------------------ |
+| **Node.js** (LTS)               | Runs JavaScript tooling and dev server      |
+| **npm** or **yarn** or **pnpm** | Installs packages                           |
+| **Code editor**                 | VS Code with ES7+ React snippets is popular |
 
 Verify installation in your terminal:
 
@@ -64,15 +64,15 @@ my-react-app/
 **main.jsx** connects React to the DOM:
 
 ```jsx
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import App from './App.jsx';
-import './index.css';
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App.jsx";
+import "./index.css";
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <StrictMode>
     <App />
-  </StrictMode>
+  </StrictMode>,
 );
 ```
 
@@ -98,6 +98,7 @@ createRoot(document.getElementById('root')).render(
 
     <rect x="470" y="35" width="90" height="50" rx="6" class="svg-node" style="stroke: #10b981;" />
     <text x="515" y="65" text-anchor="middle" class="svg-text" style="font-size: 9px;">Browser UI</text>
+
   </svg>
 </div>
 

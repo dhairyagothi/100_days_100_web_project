@@ -35,7 +35,7 @@ const Navbar = () => {
           symbol: "$",
         });
     }
-    
+
     // Close the menu after selecting an option
     setMenuOpen(false);
   };
@@ -55,9 +55,15 @@ const Navbar = () => {
       </Link>
 
       <ul className={`menu ${menuOpen ? "open" : ""}`}>
-        <li onClick={closeMenu}><Link to="/">Home</Link></li>
-        <li onClick={closeMenu}><Link to="/news">Blog</Link></li>
-        <li onClick={closeMenu}><Link to="/converter">Converter</Link></li>
+        <li onClick={closeMenu}>
+          <Link to="/">Home</Link>
+        </li>
+        <li onClick={closeMenu}>
+          <Link to="/news">Blog</Link>
+        </li>
+        <li onClick={closeMenu}>
+          <Link to="/converter">Converter</Link>
+        </li>
       </ul>
 
       <div className="nav-right">

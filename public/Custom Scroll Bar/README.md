@@ -13,12 +13,11 @@ Cross-browser compatible
 Easy customization
 Pure CSS implementation
 
-
 🛠️ Tech Stack
 
-| Technology | Usage |
-|------------|-------|
-| HTML5      | Structure |
+| Technology | Usage             |
+| ---------- | ----------------- |
+| HTML5      | Structure         |
 | CSS3       | Scrollbar Styling |
 
 📂 Project Structure
@@ -32,6 +31,7 @@ custom-scrollbar/
 ├── style.css
 └── README.md
 ```
+
 ⚙️ Installation & Setup
 1️⃣ Clone the Repository
 git clone https://github.com/your-username/custom-scrollbar.git
@@ -43,7 +43,6 @@ Open the index.html file directly in your browser.
 You can also run the project using a local development server such as:
 
 VS Code Live Server Extension
-
 
 🧠 HTML Structure
 
@@ -69,38 +68,33 @@ index.html
     <div class="scroll-box">
       <p>Lorem ipsum dolor sit amet...</p>
     </div>
+
   </div>
 
 </body>
 </html>
-
-
 
 🎨 CSS Styling
 
 style.css
 
 body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  background: #0f172a;
-  color: white;
+margin: 0;
+padding: 0;
+font-family: Arial, sans-serif;
+background: #0f172a;
+color: white;
 }
-
-
-
 
 🌟 How It Works
 
 The project customizes the browser scrollbar using CSS pseudo-elements:
 
-Selector	Purpose
-::-webkit-scrollbar	Controls scrollbar width
-::-webkit-scrollbar-track	Styles scrollbar track
-::-webkit-scrollbar-thumb	Styles draggable scrollbar
-::-webkit-scrollbar-thumb:hover	Hover effects
-
+Selector Purpose
+::-webkit-scrollbar Controls scrollbar width
+::-webkit-scrollbar-track Styles scrollbar track
+::-webkit-scrollbar-thumb Styles draggable scrollbar
+::-webkit-scrollbar-thumb:hover Hover effects
 
 📸 Preview
 
@@ -121,11 +115,11 @@ Smooth scrolling behavior
 
 🌐 Browser Support
 
-Browser	Supported
-Chrome	✅
-Edge	✅
-Safari	✅
-Firefox	Partial Support
+Browser Supported
+Chrome ✅
+Edge ✅
+Safari ✅
+Firefox Partial Support
 
 🚀 Future Improvements
 
@@ -135,7 +129,6 @@ Horizontal scrollbar customization
 Theme switcher integration
 Glassmorphism UI styling
 Tailwind CSS version
-
 
 🌐 Live Demo
 
@@ -161,7 +154,6 @@ Push to GitHub
 git push origin feature/new-feature
 Open a Pull Request
 
-
 ⭐ Support
 
 If you found this project useful:
@@ -169,5 +161,3 @@ If you found this project useful:
 Star the repository
 Fork the project
 Contribute to improve the project
-
-

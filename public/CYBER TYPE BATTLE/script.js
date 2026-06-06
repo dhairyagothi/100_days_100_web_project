@@ -38,31 +38,26 @@ const restartBtn = document.getElementById("restartBtn");
 const gameOverScreen = document.getElementById("gameOverScreen");
 const hud = document.querySelector(".ui");
 
-const difficultyButtons =
-  document.querySelectorAll(".difficulty");
+const difficultyButtons = document.querySelectorAll(".difficulty");
 
 let selectedMode = "easy";
 
-difficultyButtons.forEach(button => {
-
+difficultyButtons.forEach((button) => {
   button.addEventListener("click", () => {
-
-    difficultyButtons.forEach(btn => {
+    difficultyButtons.forEach((btn) => {
       btn.classList.remove("active");
     });
 
     button.classList.add("active");
 
     selectedMode = button.dataset.mode;
-
   });
-
 });
 
 const player = {
-  x:120,
-  y:canvas.height / 2,
-  radius:18
+  x: 120,
+  y: canvas.height / 2,
+  radius: 18,
 };
 
 let enemies = [];
@@ -80,8 +75,7 @@ let enemySpeed = 1.2;
 let enemySpawner = null;
 
 startBtn.addEventListener("click", () => {
-
-  [shootSound, hitSound, destroySound, gameOverSound].forEach(audio => {
+  [shootSound, hitSound, destroySound, gameOverSound].forEach((audio) => {
     audio.load();
   });
 
@@ -90,41 +84,33 @@ startBtn.addEventListener("click", () => {
   resetGame();
 
   startGame(selectedMode);
-
 });
 
 restartBtn.addEventListener("click", () => {
-
   gameOverScreen.style.display = "none";
 
   resetGame();
 
   startGame(selectedMode);
-
 });
 
 backBtn.addEventListener("click", () => {
-
-  if(gameRunning){
-
+  if (gameRunning) {
     returnToMenu();
 
     return;
   }
 
-  if(gameOverScreen.style.display === "flex"){
-
+  if (gameOverScreen.style.display === "flex") {
     returnToMenu();
 
     return;
   }
 
   window.location.href = "/";
-
 });
 
-function resetGame(){
-
+function resetGame() {
   enemies = [];
   bullets = [];
 
@@ -134,19 +120,16 @@ function resetGame(){
 
   document.getElementById("score").innerText = score;
 
-  document.getElementById("targetWord").innerText =
-    "None";
+  document.getElementById("targetWord").innerText = "None";
 
   clearInterval(enemySpawner);
 
-  if(hud){
+  if (hud) {
     hud.style.display = "none";
   }
-
 }
 
-function returnToMenu(){
-
+function returnToMenu() {
   gameRunning = false;
 
   clearInterval(enemySpawner);
@@ -157,41 +140,34 @@ function returnToMenu(){
   activeEnemy = null;
 
   gameOverScreen.style.display = "none";
-  if(hud){
+  if (hud) {
     hud.style.display = "none";
   }
 
   startScreen.style.display = "flex";
 
-  ctx.clearRect(
-    0,
-    0,
-    canvas.width,
-    canvas.height
-  );
-
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-function startGame(mode){
-
-  if(mode === "easy"){
+function startGame(mode) {
+  if (mode === "easy") {
     enemyCount = 1;
     enemySpeed = 1.2;
   }
 
-  if(mode === "medium"){
+  if (mode === "medium") {
     enemyCount = 2;
     enemySpeed = 1.2;
   }
 
-  if(mode === "hard"){
+  if (mode === "hard") {
     enemyCount = 3;
     enemySpeed = 1.7;
   }
 
   gameRunning = true;
 
-  if(hud){
+  if (hud) {
     hud.style.display = "block";
   }
 
@@ -200,59 +176,41 @@ function startGame(mode){
   requestAnimationFrame(gameLoop);
 }
 
-function randomWord(){
-
-  return words[
-    Math.floor(Math.random() * words.length)
-  ];
+function randomWord() {
+  return words[Math.floor(Math.random() * words.length)];
 }
 
-function createEnemies(){
-
+function createEnemies() {
   enemySpawner = setInterval(() => {
+    if (!gameRunning) return;
 
-    if(!gameRunning) return;
-
-    while(enemies.length < enemyCount){
-
+    while (enemies.length < enemyCount) {
       enemies.push({
-
         x: canvas.width + Math.random() * 300,
 
-        y:
-          100 +
-          Math.random() * (canvas.height - 200),
+        y: 100 + Math.random() * (canvas.height - 200),
 
-        radius:22,
+        radius: 22,
 
-        word:randomWord(),
+        word: randomWord(),
 
-        typed:"",
+        typed: "",
 
-        speed:enemySpeed,
+        speed: enemySpeed,
 
-        hit:false,
-        hitTime:0
+        hit: false,
+        hitTime: 0,
       });
-
     }
-
-  },1000);
+  }, 1000);
 }
 
-function drawPlayer(){
-
+function drawPlayer() {
   ctx.beginPath();
 
   ctx.fillStyle = "#00ffee";
 
-  ctx.arc(
-    player.x,
-    player.y,
-    player.radius,
-    0,
-    Math.PI * 2
-  );
+  ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
 
   ctx.fill();
 
@@ -261,13 +219,7 @@ function drawPlayer(){
 
   ctx.beginPath();
 
-  ctx.arc(
-    player.x,
-    player.y,
-    8,
-    0,
-    Math.PI * 2
-  );
+  ctx.arc(player.x, player.y, 8, 0, Math.PI * 2);
 
   ctx.fillStyle = "white";
 
@@ -276,27 +228,19 @@ function drawPlayer(){
   ctx.shadowBlur = 0;
 }
 
-function drawEnemies(){
-
-  enemies.forEach(enemy => {
-
+function drawEnemies() {
+  enemies.forEach((enemy) => {
     enemy.x -= enemy.speed;
 
     ctx.beginPath();
 
-    if(enemy.hit){
+    if (enemy.hit) {
       ctx.fillStyle = "red";
-    }else{
+    } else {
       ctx.fillStyle = "#ff7b00";
     }
 
-    ctx.arc(
-      enemy.x,
-      enemy.y,
-      enemy.radius,
-      0,
-      Math.PI * 2
-    );
+    ctx.arc(enemy.x, enemy.y, enemy.radius, 0, Math.PI * 2);
 
     ctx.fill();
 
@@ -304,71 +248,52 @@ function drawEnemies(){
 
     ctx.textAlign = "center";
 
-    const typed =
-      enemy.word.substring(0, enemy.typed.length);
+    const typed = enemy.word.substring(0, enemy.typed.length);
 
-    const left =
-      enemy.word.substring(enemy.typed.length);
+    const left = enemy.word.substring(enemy.typed.length);
 
     ctx.fillStyle = "#00ff99";
 
-    ctx.fillText(
-      typed,
-      enemy.x - 10,
-      enemy.y - 35
-    );
+    ctx.fillText(typed, enemy.x - 10, enemy.y - 35);
 
     ctx.fillStyle = "white";
 
-    ctx.fillText(
-      left,
-      enemy.x + 15,
-      enemy.y - 35
-    );
+    ctx.fillText(left, enemy.x + 15, enemy.y - 35);
 
-    if(Date.now() - enemy.hitTime > 100){
+    if (Date.now() - enemy.hitTime > 100) {
       enemy.hit = false;
     }
 
-    if(enemy.x < player.x + 20){
+    if (enemy.x < player.x + 20) {
       gameOver();
     }
-
   });
 }
 
-function createBullet(enemy){
-
+function createBullet(enemy) {
   playSound(shootSound);
 
   bullets.push({
+    x: player.x,
+    y: player.y,
 
-    x:player.x,
-    y:player.y,
-
-    enemy:enemy
+    enemy: enemy,
   });
 }
 
-function drawBullets(){
-
-  bullets.forEach((bullet,index) => {
-
-    if(!bullet.enemy){
-
-      bullets.splice(index,1);
+function drawBullets() {
+  bullets.forEach((bullet, index) => {
+    if (!bullet.enemy) {
+      bullets.splice(index, 1);
 
       return;
     }
 
-    const dx =
-      bullet.enemy.x - bullet.x;
+    const dx = bullet.enemy.x - bullet.x;
 
-    const dy =
-      bullet.enemy.y - bullet.y;
+    const dy = bullet.enemy.y - bullet.y;
 
-    const angle =
-      Math.atan2(dy,dx);
+    const angle = Math.atan2(dy, dx);
 
     bullet.x += Math.cos(angle) * 18;
     bullet.y += Math.sin(angle) * 18;
@@ -377,44 +302,30 @@ function drawBullets(){
 
     ctx.fillStyle = "white";
 
-    ctx.arc(
-      bullet.x,
-      bullet.y,
-      4,
-      0,
-      Math.PI * 2
-    );
+    ctx.arc(bullet.x, bullet.y, 4, 0, Math.PI * 2);
 
     ctx.fill();
 
     const dist = Math.hypot(
       bullet.enemy.x - bullet.x,
-      bullet.enemy.y - bullet.y
+      bullet.enemy.y - bullet.y,
     );
 
-    if(dist < 20){
-
+    if (dist < 20) {
       playSound(hitSound);
 
       bullet.enemy.hit = true;
       bullet.enemy.hitTime = Date.now();
 
-      bullets.splice(index,1);
+      bullets.splice(index, 1);
     }
-
   });
 }
 
-function gameLoop(){
+function gameLoop() {
+  if (!gameRunning) return;
 
-  if(!gameRunning) return;
-
-  ctx.clearRect(
-    0,
-    0,
-    canvas.width,
-    canvas.height
-  );
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   drawPlayer();
 
@@ -425,8 +336,7 @@ function gameLoop(){
   requestAnimationFrame(gameLoop);
 }
 
-function gameOver(){
-
+function gameOver() {
   playSound(gameOverSound);
 
   gameRunning = false;
@@ -434,20 +344,16 @@ function gameOver(){
   gameOverScreen.style.display = "flex";
 }
 
-document.addEventListener("keydown",(e) => {
-
-  if(!gameRunning) return;
+document.addEventListener("keydown", (e) => {
+  if (!gameRunning) return;
 
   const key = e.key.toLowerCase();
 
-  if(key.length !== 1) return;
+  if (key.length !== 1) return;
 
-  if(!activeEnemy){
-
-    for(let enemy of enemies){
-
-      if(enemy.word[0] === key){
-
+  if (!activeEnemy) {
+    for (let enemy of enemies) {
+      if (enemy.word[0] === key) {
         activeEnemy = enemy;
 
         break;
@@ -455,67 +361,48 @@ document.addEventListener("keydown",(e) => {
     }
   }
 
-  if(!activeEnemy) return;
+  if (!activeEnemy) return;
 
-  const nextLetter =
-    activeEnemy.word[
-      activeEnemy.typed.length
-    ];
+  const nextLetter = activeEnemy.word[activeEnemy.typed.length];
 
-  if(key === nextLetter){
-
+  if (key === nextLetter) {
     activeEnemy.typed += key;
 
     createBullet(activeEnemy);
 
-    document
-      .getElementById("targetWord")
-      .innerText = activeEnemy.word;
+    document.getElementById("targetWord").innerText = activeEnemy.word;
 
-    if(
-      activeEnemy.typed === activeEnemy.word
-    ){
-
+    if (activeEnemy.typed === activeEnemy.word) {
       playSound(destroySound);
 
-      enemies = enemies.filter(enemy => {
+      enemies = enemies.filter((enemy) => {
         return enemy !== activeEnemy;
       });
 
-      bullets = bullets.filter(bullet => {
+      bullets = bullets.filter((bullet) => {
         return bullet.enemy !== activeEnemy;
       });
 
       score += 10;
 
-      document
-        .getElementById("score")
-        .innerText = score;
+      document.getElementById("score").innerText = score;
 
       activeEnemy = null;
 
-      document
-        .getElementById("targetWord")
-        .innerText = "None";
+      document.getElementById("targetWord").innerText = "None";
     }
-
-  }else{
-
-    for(let enemy of enemies){
-
-      if(enemy.word[0] === key){
-
+  } else {
+    for (let enemy of enemies) {
+      if (enemy.word[0] === key) {
         activeEnemy = enemy;
 
         break;
       }
     }
   }
-
 });
 
-window.addEventListener("resize",() => {
-
+window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 

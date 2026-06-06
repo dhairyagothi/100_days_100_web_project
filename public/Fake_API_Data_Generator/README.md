@@ -25,7 +25,7 @@ A modern, fully responsive web application that generates realistic mock API and
 
 ## Screenshots
 
-*(Add screenshots here)*
+_(Add screenshots here)_
 
 ## Contribution
 

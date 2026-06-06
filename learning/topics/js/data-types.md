@@ -7,6 +7,7 @@ Data types describe what kind of value a variable holds. Operators let you compu
 ## 1. Common JavaScript primitive types
 
 Some widely used primitives:
+
 - `number`: 1, 3.14
 - `string`: "hello"
 - `boolean`: true / false
@@ -18,11 +19,11 @@ Some widely used primitives:
 ## 2. `typeof` is your quick check
 
 ```javascript
-typeof 123;       // "number"
-typeof "abc";    // "string"
-typeof true;     // "boolean"
-typeof undefined;// "undefined"
-typeof null;     // "object" (historical quirk)
+typeof 123; // "number"
+typeof "abc"; // "string"
+typeof true; // "boolean"
+typeof undefined; // "undefined"
+typeof null; // "object" (historical quirk)
 ```
 
 ---
@@ -35,6 +36,7 @@ typeof null;     // "object" (historical quirk)
 - Ternary: `condition ? a : b`
 
 Truthiness note:
+
 - values like `0`, `""`, `null`, and `undefined` are treated as falsy
 - most other values are truthy
 
@@ -63,13 +65,13 @@ console.log(isAdult("17")); // false
 ### Task:
 
 Write an expression that returns:
+
 - `"Allowed"` if `score` is at least `50`
 - otherwise `"Try again"`
 
 ##### Solution
 
 ```javascript
-const message = (score >= 50) ? "Allowed" : "Try again";
+const message = score >= 50 ? "Allowed" : "Try again";
 console.log(message);
 ```
-

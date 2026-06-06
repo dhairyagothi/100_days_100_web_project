@@ -2,7 +2,7 @@ name: Lighthouse Audit
 
 on:
   pull_request:
-    branches: [ Main ]
+    branches: [Main]
 
 permissions:
   contents: read

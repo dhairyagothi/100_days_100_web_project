@@ -7,6 +7,7 @@ Semantic HTML uses descriptive tags to convey meaning. It makes your pages easie
 ## 1. Why semantics matter
 
 When you use the right structure, assistive technologies can:
+
 - jump between landmarks (like `main` or `nav`)
 - understand page sections
 - read content in meaningful order
@@ -16,6 +17,7 @@ When you use the right structure, assistive technologies can:
 ## 2. Common semantic elements
 
 These are frequently used:
+
 - `header` for top-of-page or section headers
 - `nav` for navigation links
 - `main` for the unique content of the page
@@ -67,6 +69,7 @@ These are frequently used:
 ### Task:
 
 Create a snippet with:
+
 - `header` containing an `h1`
 - `main` containing one `section`
 - `section` containing an `h2` and a paragraph
@@ -90,4 +93,3 @@ Create a snippet with:
   <p>2026 Task Tracker</p>
 </footer>
 ```
-

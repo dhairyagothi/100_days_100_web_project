@@ -27,7 +27,7 @@
   --radius-card: 12px;
   --radius-board: 16px;
   --anim-tile: 0.11s ease;
-  --font: 'Nunito', sans-serif;
+  --font: "Nunito", sans-serif;
 }
 
 /* ---------- Body / App wrapper ---------- */
@@ -498,62 +498,62 @@ body.dark .cell {
 }
 
 /* ---------- Tile colours ---------- */
-.tile[data-val='2'] {
+.tile[data-val="2"] {
   background: linear-gradient(135deg, #f8f9fa, #e9ecef);
   color: #495057;
   font-size: 36px;
 }
-.tile[data-val='4'] {
+.tile[data-val="4"] {
   background: linear-gradient(135deg, #fff3e0, #ffe0b2);
   color: #e65100;
   font-size: 36px;
 }
-.tile[data-val='8'] {
+.tile[data-val="8"] {
   background: linear-gradient(135deg, #ff9800, #f44336);
   color: #fff;
   font-size: 36px;
 }
-.tile[data-val='16'] {
+.tile[data-val="16"] {
   background: linear-gradient(135deg, #f44336, #e91e63);
   color: #fff;
   font-size: 36px;
 }
-.tile[data-val='32'] {
+.tile[data-val="32"] {
   background: linear-gradient(135deg, #e91e63, #9c27b0);
   color: #fff;
   font-size: 36px;
 }
-.tile[data-val='64'] {
+.tile[data-val="64"] {
   background: linear-gradient(135deg, #9c27b0, #673ab7);
   color: #fff;
   font-size: 36px;
 }
-.tile[data-val='128'] {
+.tile[data-val="128"] {
   background: linear-gradient(135deg, #3f51b5, #2196f3);
   color: #fff;
   font-size: 28px;
 }
-.tile[data-val='256'] {
+.tile[data-val="256"] {
   background: linear-gradient(135deg, #2196f3, #00bcd4);
   color: #fff;
   font-size: 28px;
 }
-.tile[data-val='512'] {
+.tile[data-val="512"] {
   background: linear-gradient(135deg, #00bcd4, #4caf50);
   color: #fff;
   font-size: 28px;
 }
-.tile[data-val='1024'] {
+.tile[data-val="1024"] {
   background: linear-gradient(135deg, #4caf50, #cddc39);
   color: #fff;
   font-size: 22px;
 }
-.tile[data-val='2048'] {
+.tile[data-val="2048"] {
   background: linear-gradient(135deg, #ffd700, #ff9800, #ff5722);
   color: #fff;
   font-size: 22px;
 }
-.tile[data-val='big'] {
+.tile[data-val="big"] {
   background: linear-gradient(135deg, #212121, #424242);
   color: #fff;
   font-size: 16px;
@@ -1025,23 +1025,23 @@ body.dark .stats-modal {
 
   /* TILE FONT SIZES */
 
-  .tile[data-val='2'],
-  .tile[data-val='4'],
-  .tile[data-val='8'],
-  .tile[data-val='16'],
-  .tile[data-val='32'],
-  .tile[data-val='64'] {
+  .tile[data-val="2"],
+  .tile[data-val="4"],
+  .tile[data-val="8"],
+  .tile[data-val="16"],
+  .tile[data-val="32"],
+  .tile[data-val="64"] {
     font-size: 20px;
   }
 
-  .tile[data-val='128'],
-  .tile[data-val='256'],
-  .tile[data-val='512'] {
+  .tile[data-val="128"],
+  .tile[data-val="256"],
+  .tile[data-val="512"] {
     font-size: 16px;
   }
 
-  .tile[data-val='1024'],
-  .tile[data-val='2048'] {
+  .tile[data-val="1024"],
+  .tile[data-val="2048"] {
     font-size: 16px;
   }
   @media (max-width: 768px) {
@@ -1054,23 +1054,23 @@ body.dark .stats-modal {
       --board-pad: 6px;
     }
 
-    .tile[data-val='2'],
-    .tile[data-val='4'],
-    .tile[data-val='8'],
-    .tile[data-val='16'],
-    .tile[data-val='32'],
-    .tile[data-val='64'] {
+    .tile[data-val="2"],
+    .tile[data-val="4"],
+    .tile[data-val="8"],
+    .tile[data-val="16"],
+    .tile[data-val="32"],
+    .tile[data-val="64"] {
       font-size: 22px;
     }
 
-    .tile[data-val='128'],
-    .tile[data-val='256'],
-    .tile[data-val='512'] {
+    .tile[data-val="128"],
+    .tile[data-val="256"],
+    .tile[data-val="512"] {
       font-size: 18px;
     }
 
-    .tile[data-val='1024'],
-    .tile[data-val='2048'] {
+    .tile[data-val="1024"],
+    .tile[data-val="2048"] {
       font-size: 14px;
     }
 

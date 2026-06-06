@@ -1,11 +1,11 @@
-const express    = require("express");
-const http       = require("http");
+const express = require("express");
+const http = require("http");
 const { Server } = require("socket.io");
-const mongoose   = require("mongoose");
-const cors       = require("cors");
+const mongoose = require("mongoose");
+const cors = require("cors");
 require("dotenv").config();
 
-const app    = express();
+const app = express();
 const server = http.createServer(app);
 
 // Socket.io setup with CORS
@@ -30,7 +30,10 @@ app.use("/api/applications", require("./routes/applications"));
 
 // Health check
 app.get("/", (req, res) =>
-  res.json({ message: "MERN Job Board API running ✅", realtime: "Socket.io active ⚡" })
+  res.json({
+    message: "MERN Job Board API running ✅",
+    realtime: "Socket.io active ⚡",
+  }),
 );
 
 // Socket.io connection handler
@@ -58,7 +61,7 @@ mongoose
   .then(() => {
     console.log("✅ MongoDB connected");
     server.listen(PORT, () =>
-      console.log(`🚀 Server + Socket.io on http://localhost:${PORT}`)
+      console.log(`🚀 Server + Socket.io on http://localhost:${PORT}`),
     );
   })
   .catch((err) => {

@@ -70,6 +70,7 @@ Large UIs are trees of nested components:
 
     <rect x="280" y="215" width="120" height="35" rx="6" class="svg-node" style="stroke: #10b981;" />
     <text x="340" y="237" text-anchor="middle" class="svg-text">PostCard</text>
+
   </svg>
 </div>
 
@@ -98,10 +99,10 @@ function Main() {
 
 ## 3. Naming and File Conventions
 
-| Convention | Example |
-| :--- | :--- |
-| PascalCase component names | `UserProfile`, `NavBar` |
-| One component per file (common) | `UserProfile.jsx` |
+| Convention                        | Example                      |
+| :-------------------------------- | :--------------------------- |
+| PascalCase component names        | `UserProfile`, `NavBar`      |
+| One component per file (common)   | `UserProfile.jsx`            |
 | Default export for main component | `export default UserProfile` |
 
 > [!TIP]
@@ -164,11 +165,19 @@ Build `App`, `Header`, and `Footer` components. `App` should render Header, a `<
 
 ```jsx
 function Header() {
-  return <header><h1>My Site</h1></header>;
+  return (
+    <header>
+      <h1>My Site</h1>
+    </header>
+  );
 }
 
 function Footer() {
-  return <footer><p>&copy; 2026 My Site</p></footer>;
+  return (
+    <footer>
+      <p>&copy; 2026 My Site</p>
+    </footer>
+  );
 }
 
 function App() {

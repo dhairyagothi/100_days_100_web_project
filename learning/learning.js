@@ -1,27 +1,27 @@
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener("DOMContentLoaded", async () => {
   // Global states
   let registryData = null;
   let activeTopic = null;
   let allTopics = [];
   let quizData = {};
-  const STORAGE_KEY = 'learningProgress';
+  const STORAGE_KEY = "learningProgress";
 
   let learningProgress = {
     lastTopic: null,
     completedTopics: [],
   };
-  const sidebarTree = document.getElementById('sidebarTree');
-  const contentViewport = document.getElementById('contentViewport');
-  const prevTopicBtn = document.getElementById('prevTopic');
-  const nextTopicBtn = document.getElementById('nextTopic');
-  const prevTopicTitle = document.getElementById('prevTopicTitle');
-  const nextTopicTitle = document.getElementById('nextTopicTitle');
-  const topicSearch = document.getElementById('topicSearch');
-  const clearSearch = document.getElementById('clearSearch');
-  const menuToggle = document.getElementById('menuToggle');
-  const navButtons = document.getElementById('navButtons');
-  const sidebarToggle = document.getElementById('sidebarToggle');
-  const learningSidebar = document.getElementById('learningSidebar');
+  const sidebarTree = document.getElementById("sidebarTree");
+  const contentViewport = document.getElementById("contentViewport");
+  const prevTopicBtn = document.getElementById("prevTopic");
+  const nextTopicBtn = document.getElementById("nextTopic");
+  const prevTopicTitle = document.getElementById("prevTopicTitle");
+  const nextTopicTitle = document.getElementById("nextTopicTitle");
+  const topicSearch = document.getElementById("topicSearch");
+  const clearSearch = document.getElementById("clearSearch");
+  const menuToggle = document.getElementById("menuToggle");
+  const navButtons = document.getElementById("navButtons");
+  const sidebarToggle = document.getElementById("sidebarToggle");
+  const learningSidebar = document.getElementById("learningSidebar");
 
   /* ============================================================
      THEME STORAGE & SYNC
@@ -35,33 +35,33 @@ document.addEventListener('DOMContentLoaded', async () => {
      ============================================================ */
   function initMobileMenu() {
     if (menuToggle && navButtons) {
-      if (menuToggle.dataset.mobileNavBound !== 'true') {
-        menuToggle.dataset.mobileNavBound = 'true';
+      if (menuToggle.dataset.mobileNavBound !== "true") {
+        menuToggle.dataset.mobileNavBound = "true";
 
         const closeMenu = () => {
-          menuToggle.classList.remove('active');
-          navButtons.classList.remove('active');
-          menuToggle.setAttribute('aria-expanded', 'false');
+          menuToggle.classList.remove("active");
+          navButtons.classList.remove("active");
+          menuToggle.setAttribute("aria-expanded", "false");
         };
 
         const openMenu = () => {
-          menuToggle.classList.add('active');
-          navButtons.classList.add('active');
-          menuToggle.setAttribute('aria-expanded', 'true');
-          const firstLink = navButtons.querySelector('a, button');
+          menuToggle.classList.add("active");
+          navButtons.classList.add("active");
+          menuToggle.setAttribute("aria-expanded", "true");
+          const firstLink = navButtons.querySelector("a, button");
           firstLink?.focus({ preventScroll: true });
         };
 
-        menuToggle.addEventListener('click', (e) => {
+        menuToggle.addEventListener("click", (e) => {
           e.stopPropagation();
-          if (navButtons.classList.contains('active')) {
+          if (navButtons.classList.contains("active")) {
             closeMenu();
           } else {
             openMenu();
           }
         });
 
-        document.addEventListener('click', (e) => {
+        document.addEventListener("click", (e) => {
           if (
             !navButtons.contains(e.target) &&
             !menuToggle.contains(e.target)
@@ -70,18 +70,18 @@ document.addEventListener('DOMContentLoaded', async () => {
           }
         });
 
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' && navButtons.classList.contains('active')) {
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && navButtons.classList.contains("active")) {
             closeMenu();
             menuToggle.focus({ preventScroll: true });
           }
         });
 
-        navButtons.addEventListener('click', (e) => {
+        navButtons.addEventListener("click", (e) => {
           if (
-            e.target.closest('.btn') ||
-            e.target.closest('a') ||
-            e.target.closest('button')
+            e.target.closest(".btn") ||
+            e.target.closest("a") ||
+            e.target.closest("button")
           ) {
             closeMenu();
           }
@@ -90,31 +90,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     if (sidebarToggle && learningSidebar) {
-      sidebarToggle.addEventListener('click', (e) => {
+      sidebarToggle.addEventListener("click", (e) => {
         e.stopPropagation();
-        learningSidebar.classList.toggle('active');
-        const icon = sidebarToggle.querySelector('i');
+        learningSidebar.classList.toggle("active");
+        const icon = sidebarToggle.querySelector("i");
         if (icon) {
-          if (learningSidebar.classList.contains('active')) {
-            icon.className = 'fas fa-chevron-left';
-            sidebarToggle.style.left = '260px';
+          if (learningSidebar.classList.contains("active")) {
+            icon.className = "fas fa-chevron-left";
+            sidebarToggle.style.left = "260px";
           } else {
-            icon.className = 'fas fa-chevron-right';
-            sidebarToggle.style.left = '1.5rem';
+            icon.className = "fas fa-chevron-right";
+            sidebarToggle.style.left = "1.5rem";
           }
         }
       });
 
       // Close sidebar drawer when clicking outside it on mobile
-      document.addEventListener('click', (e) => {
+      document.addEventListener("click", (e) => {
         if (
           window.innerWidth <= 992 &&
           !learningSidebar.contains(e.target) &&
           !sidebarToggle.contains(e.target)
         ) {
-          learningSidebar.classList.remove('active');
-          const icon = sidebarToggle.querySelector('i');
-          if (icon) icon.className = 'fas fa-chevron-right';
+          learningSidebar.classList.remove("active");
+          const icon = sidebarToggle.querySelector("i");
+          if (icon) icon.className = "fas fa-chevron-right";
         }
       });
     }
@@ -125,15 +125,15 @@ document.addEventListener('DOMContentLoaded', async () => {
      ============================================================ */
   async function loadQuizData() {
     try {
-      const response = await fetch('quizzes.json');
+      const response = await fetch("quizzes.json");
 
       if (!response.ok) {
-        throw new Error('Quiz data not found');
+        throw new Error("Quiz data not found");
       }
 
       quizData = await response.json();
     } catch (error) {
-      console.error('Failed to load quiz data:', error);
+      console.error("Failed to load quiz data:", error);
     }
   }
 
@@ -159,32 +159,32 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function updateProgressUI() {
-    const total = allTopics.filter((t) => t.id !== 'quiz').length;
+    const total = allTopics.filter((t) => t.id !== "quiz").length;
 
     const completed = learningProgress.completedTopics.length;
 
     const percentage = total ? Math.round((completed / total) * 100) : 0;
 
-    const fill = document.getElementById('overallProgressFill');
+    const fill = document.getElementById("overallProgressFill");
 
-    const text = document.getElementById('overallProgressText');
+    const text = document.getElementById("overallProgressText");
 
-    if (fill) fill.style.width = percentage + '%';
-    if (text) text.textContent = percentage + '%';
+    if (fill) fill.style.width = percentage + "%";
+    if (text) text.textContent = percentage + "%";
 
-    document.querySelectorAll('.topic-item').forEach((item) => {
-      const id = item.id.replace('item-', '');
+    document.querySelectorAll(".topic-item").forEach((item) => {
+      const id = item.id.replace("item-", "");
 
       if (learningProgress.completedTopics.includes(id)) {
-        item.classList.add('completed');
+        item.classList.add("completed");
       }
     });
   }
 
   async function loadRegistry() {
     try {
-      const response = await fetch('registry.json');
-      if (!response.ok) throw new Error('Failed to load curriculum registry');
+      const response = await fetch("registry.json");
+      if (!response.ok) throw new Error("Failed to load curriculum registry");
       registryData = await response.json();
 
       // Flatten topics list for simple sequential traversal
@@ -215,43 +215,43 @@ document.addEventListener('DOMContentLoaded', async () => {
   function renderSidebar() {
     if (!sidebarTree || !registryData) return;
 
-    sidebarTree.innerHTML = '';
+    sidebarTree.innerHTML = "";
     const fragment = document.createDocumentFragment();
 
     registryData.categories.forEach((cat) => {
-      const catGroup = document.createElement('div');
-      catGroup.className = 'category-group';
+      const catGroup = document.createElement("div");
+      catGroup.className = "category-group";
       catGroup.id = `cat-${cat.id}`;
 
-      const header = document.createElement('button');
-      header.className = 'category-header';
-      header.setAttribute('aria-expanded', 'true');
+      const header = document.createElement("button");
+      header.className = "category-header";
+      header.setAttribute("aria-expanded", "true");
       header.innerHTML = `
         <span class="category-title">
-          <i class="${cat.icon || 'fa-solid fa-folder'}"></i>
+          <i class="${cat.icon || "fa-solid fa-folder"}"></i>
           <span>${cat.title}</span>
         </span>
         <i class="fas fa-chevron-down category-arrow"></i>
       `;
 
-      const list = document.createElement('ul');
-      list.className = 'topic-list';
+      const list = document.createElement("ul");
+      list.className = "topic-list";
 
       cat.topics.forEach((topic) => {
-        const item = document.createElement('li');
-        item.className = 'topic-item';
+        const item = document.createElement("li");
+        item.className = "topic-item";
         item.id = `item-${cat.id}-${topic.id}`;
 
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = `#${cat.id}/${topic.id}`;
         link.textContent = topic.title;
 
         // Mobile layout: dismiss sidebar drawer upon clicking a link
-        link.addEventListener('click', () => {
+        link.addEventListener("click", () => {
           if (window.innerWidth <= 992 && learningSidebar) {
-            learningSidebar.classList.remove('active');
-            const icon = sidebarToggle.querySelector('i');
-            if (icon) icon.className = 'fas fa-chevron-right';
+            learningSidebar.classList.remove("active");
+            const icon = sidebarToggle.querySelector("i");
+            if (icon) icon.className = "fas fa-chevron-right";
           }
         });
 
@@ -260,10 +260,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
 
       // Sidebar category accordion toggle collapse state
-      header.addEventListener('click', () => {
-        catGroup.classList.toggle('collapsed');
-        const isCollapsed = catGroup.classList.contains('collapsed');
-        header.setAttribute('aria-expanded', !isCollapsed);
+      header.addEventListener("click", () => {
+        catGroup.classList.toggle("collapsed");
+        const isCollapsed = catGroup.classList.contains("collapsed");
+        header.setAttribute("aria-expanded", !isCollapsed);
       });
 
       catGroup.appendChild(header);
@@ -278,49 +278,49 @@ document.addEventListener('DOMContentLoaded', async () => {
      REAL-TIME TOPICS FILTER / SEARCH
      ============================================================ */
   if (topicSearch) {
-    topicSearch.addEventListener('input', () => {
+    topicSearch.addEventListener("input", () => {
       const query = topicSearch.value.trim().toLowerCase();
       if (clearSearch) {
-        clearSearch.style.display = query ? 'block' : 'none';
+        clearSearch.style.display = query ? "block" : "none";
       }
 
-      const categories = document.querySelectorAll('.category-group');
+      const categories = document.querySelectorAll(".category-group");
 
       categories.forEach((catGroup) => {
-        const topics = catGroup.querySelectorAll('.topic-item');
+        const topics = catGroup.querySelectorAll(".topic-item");
         let visibleCount = 0;
 
         topics.forEach((item) => {
-          const title = item.querySelector('a').textContent.toLowerCase();
+          const title = item.querySelector("a").textContent.toLowerCase();
           if (title.includes(query)) {
-            item.style.display = '';
+            item.style.display = "";
             visibleCount++;
           } else {
-            item.style.display = 'none';
+            item.style.display = "none";
           }
         });
 
         // Expand categories containing matching items automatically, collapse otherwise
         if (query) {
           if (visibleCount > 0) {
-            catGroup.classList.remove('collapsed');
-            catGroup.style.display = '';
+            catGroup.classList.remove("collapsed");
+            catGroup.style.display = "";
           } else {
-            catGroup.classList.add('collapsed');
-            catGroup.style.display = 'none';
+            catGroup.classList.add("collapsed");
+            catGroup.style.display = "none";
           }
         } else {
-          catGroup.classList.remove('collapsed');
-          catGroup.style.display = '';
+          catGroup.classList.remove("collapsed");
+          catGroup.style.display = "";
         }
       });
     });
   }
 
   if (clearSearch) {
-    clearSearch.addEventListener('click', () => {
-      topicSearch.value = '';
-      topicSearch.dispatchEvent(new Event('input'));
+    clearSearch.addEventListener("click", () => {
+      topicSearch.value = "";
+      topicSearch.dispatchEvent(new Event("input"));
       topicSearch.focus();
     });
   }
@@ -336,9 +336,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
 
-    const [catId, topicId] = hash.split('/');
+    const [catId, topicId] = hash.split("/");
     const topic = allTopics.find(
-      (t) => t.categoryId === catId && t.id === topicId
+      (t) => t.categoryId === catId && t.id === topicId,
     );
 
     if (topic) {
@@ -349,7 +349,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  window.addEventListener('hashchange', handleRouting);
+  window.addEventListener("hashchange", handleRouting);
 
   /* ============================================================
      MARKDOWN PARSING & POST-PROCESSING
@@ -359,22 +359,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     learningProgress.lastTopic = `${topic.categoryId}/${topic.id}`;
 
     saveProgress();
-    if (topic.id === 'quiz') {
+    if (topic.id === "quiz") {
       launchQuiz(topic.categoryId, topic.title);
       return;
     }
     // Highlight selected item in sidebar list
     document
-      .querySelectorAll('.topic-item')
-      .forEach((item) => item.classList.remove('active'));
+      .querySelectorAll(".topic-item")
+      .forEach((item) => item.classList.remove("active"));
     const activeItem = document.getElementById(
-      `item-${topic.categoryId}-${topic.id}`
+      `item-${topic.categoryId}-${topic.id}`,
     );
     if (activeItem) {
-      activeItem.classList.add('active');
+      activeItem.classList.add("active");
       // Ensure category parent is expanded
-      const parentGroup = activeItem.closest('.category-group');
-      if (parentGroup) parentGroup.classList.remove('collapsed');
+      const parentGroup = activeItem.closest(".category-group");
+      if (parentGroup) parentGroup.classList.remove("collapsed");
     }
 
     if (contentViewport) {
@@ -388,7 +388,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
       const response = await fetch(topic.file);
-      if (!response.ok) throw new Error('Markdown file not found');
+      if (!response.ok) throw new Error("Markdown file not found");
       const markdownText = await response.text();
 
       // Configure marked parser option (gfm enabled)
@@ -400,42 +400,42 @@ document.addEventListener('DOMContentLoaded', async () => {
       let htmlContent = marked.parse(markdownText);
 
       // Post-process HTML for custom styles (Alerts, Code Wrappers, Copy buttons, solution collapsible details)
-      const parsedContainer = document.createElement('div');
-      parsedContainer.className = 'rendered-markdown';
+      const parsedContainer = document.createElement("div");
+      parsedContainer.className = "rendered-markdown";
       parsedContainer.innerHTML = htmlContent;
 
       // 1. Add Category Meta Badge & Title layout
-      const firstH1 = parsedContainer.querySelector('h1');
+      const firstH1 = parsedContainer.querySelector("h1");
       if (firstH1) {
-        const metaDiv = document.createElement('div');
-        metaDiv.className = 'topic-meta';
+        const metaDiv = document.createElement("div");
+        metaDiv.className = "topic-meta";
         metaDiv.innerHTML = `
           <span class="meta-badge">${topic.categoryTitle}</span>
           <span><i class="far fa-clock"></i> 5 min read</span>
           <span><i class="fas fa-graduation-cap"></i> Beginner Friendly</span>
         `;
-        firstH1.insertAdjacentElement('afterend', metaDiv);
+        firstH1.insertAdjacentElement("afterend", metaDiv);
       }
 
       // 2. Pre-code highlighting wrappers & Copy to clipboard buttons
-      const preElements = parsedContainer.querySelectorAll('pre');
+      const preElements = parsedContainer.querySelectorAll("pre");
       preElements.forEach((pre) => {
-        const codeElement = pre.querySelector('code');
+        const codeElement = pre.querySelector("code");
         if (!codeElement) return;
 
         // Get language class
         const langClass = Array.from(codeElement.classList).find((c) =>
-          c.startsWith('language-')
+          c.startsWith("language-"),
         );
         const langName = langClass
-          ? langClass.replace('language-', '')
-          : 'code';
+          ? langClass.replace("language-", "")
+          : "code";
 
-        const wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
+        const wrapper = document.createElement("div");
+        wrapper.className = "code-block-wrapper";
 
-        const header = document.createElement('div');
-        header.className = 'code-block-header';
+        const header = document.createElement("div");
+        header.className = "code-block-header";
         header.innerHTML = `
           <span class="code-lang-label">${langName}</span>
           <button class="copy-code-btn" aria-label="Copy code block">
@@ -449,8 +449,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         wrapper.appendChild(pre);
 
         // Wire copy button functionality
-        const copyBtn = header.querySelector('.copy-code-btn');
-        copyBtn.addEventListener('click', async () => {
+        const copyBtn = header.querySelector(".copy-code-btn");
+        copyBtn.addEventListener("click", async () => {
           const rawCode = codeElement.textContent;
           try {
             await navigator.clipboard.writeText(rawCode);
@@ -459,49 +459,49 @@ document.addEventListener('DOMContentLoaded', async () => {
               copyBtn.innerHTML = `<i class="far fa-copy"></i> Copy`;
             }, 2000);
           } catch (err) {
-            console.error('Failed to copy code', err);
+            console.error("Failed to copy code", err);
           }
         });
       });
 
       // 3. GitHub Alert box callouts parsing [!NOTE], [!TIP], [!WARNING], [!CAUTION], [!MISTAKE]
-      const blockquotes = parsedContainer.querySelectorAll('blockquote');
+      const blockquotes = parsedContainer.querySelectorAll("blockquote");
       blockquotes.forEach((bq) => {
-        const firstP = bq.querySelector('p');
+        const firstP = bq.querySelector("p");
         if (!firstP) return;
 
         const contentHTML = bq.innerHTML;
         const noteMatch = contentHTML.match(
-          /^\[!(NOTE|TIP|WARNING|CAUTION|MISTAKE)\]\s*(<br>)?/i
+          /^\[!(NOTE|TIP|WARNING|CAUTION|MISTAKE)\]\s*(<br>)?/i,
         );
 
         if (noteMatch) {
           const type = noteMatch[1].toUpperCase();
           const cleanHTML = contentHTML.replace(
             /^\[!(NOTE|TIP|WARNING|CAUTION|MISTAKE)\]\s*(<br>)?/i,
-            ''
+            "",
           );
 
-          let iconClass = 'fa-info-circle';
-          let customTypeClass = 'callout-note';
+          let iconClass = "fa-info-circle";
+          let customTypeClass = "callout-note";
 
-          if (type === 'TIP') {
-            iconClass = 'fa-lightbulb';
-            customTypeClass = 'callout-tip';
-          } else if (type === 'WARNING' || type === 'CAUTION') {
-            iconClass = 'fa-exclamation-triangle';
-            customTypeClass = 'callout-warning';
-          } else if (type === 'MISTAKE') {
-            iconClass = 'fa-times-circle';
-            customTypeClass = 'callout-mistake';
+          if (type === "TIP") {
+            iconClass = "fa-lightbulb";
+            customTypeClass = "callout-tip";
+          } else if (type === "WARNING" || type === "CAUTION") {
+            iconClass = "fa-exclamation-triangle";
+            customTypeClass = "callout-warning";
+          } else if (type === "MISTAKE") {
+            iconClass = "fa-times-circle";
+            customTypeClass = "callout-mistake";
           }
 
-          const callout = document.createElement('div');
+          const callout = document.createElement("div");
           callout.className = `callout ${customTypeClass}`;
           callout.innerHTML = `
             <div class="callout-icon"><i class="fas ${iconClass}"></i></div>
             <div class="callout-content">
-              <strong>${type === 'MISTAKE' ? 'Common Mistake' : type}</strong>
+              <strong>${type === "MISTAKE" ? "Common Mistake" : type}</strong>
               <div style="margin-top: 0.25rem;">${cleanHTML}</div>
             </div>
           `;
@@ -510,34 +510,34 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
 
       // 4. solution collapsible block parsing
-      const solutionHeaders = parsedContainer.querySelectorAll('h5');
+      const solutionHeaders = parsedContainer.querySelectorAll("h5");
       solutionHeaders.forEach((h5) => {
         if (
-          h5.textContent.toLowerCase().includes('solution') ||
-          h5.textContent.toLowerCase().includes('answer')
+          h5.textContent.toLowerCase().includes("solution") ||
+          h5.textContent.toLowerCase().includes("answer")
         ) {
-          const accordion = document.createElement('div');
-          accordion.className = 'collapsible-solution';
+          const accordion = document.createElement("div");
+          accordion.className = "collapsible-solution";
 
-          const trigger = document.createElement('button');
-          trigger.className = 'solution-trigger';
+          const trigger = document.createElement("button");
+          trigger.className = "solution-trigger";
           trigger.innerHTML = `
             <span><i class="fas fa-key"></i> View Solution & Explanation</span>
             <i class="fas fa-chevron-down"></i>
           `;
 
-          const content = document.createElement('div');
-          content.className = 'solution-content';
+          const content = document.createElement("div");
+          content.className = "solution-content";
 
           // Gather all siblings until next major heading/block is found
           let sibling = h5.nextElementSibling;
           const siblingsToMove = [];
           while (
             sibling &&
-            sibling.tagName !== 'H2' &&
-            sibling.tagName !== 'H3' &&
-            sibling.tagName !== 'H4' &&
-            sibling.tagName !== 'H5'
+            sibling.tagName !== "H2" &&
+            sibling.tagName !== "H3" &&
+            sibling.tagName !== "H4" &&
+            sibling.tagName !== "H5"
           ) {
             siblingsToMove.push(sibling);
             sibling = sibling.nextElementSibling;
@@ -548,8 +548,8 @@ document.addEventListener('DOMContentLoaded', async () => {
           accordion.appendChild(trigger);
           accordion.appendChild(content);
 
-          trigger.addEventListener('click', () => {
-            accordion.classList.toggle('open');
+          trigger.addEventListener("click", () => {
+            accordion.classList.toggle("open");
           });
 
           h5.parentNode.replaceChild(accordion, h5);
@@ -557,14 +557,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
 
       // Inject beautifully parsed content
-      contentViewport.innerHTML = '';
+      contentViewport.innerHTML = "";
       contentViewport.appendChild(parsedContainer);
 
       // Perform Prism.js highlighting
       Prism.highlightAllUnder(parsedContainer);
 
       // Reset viewport scroll to top snappily
-      window.scrollTo({ top: 0, behavior: 'instant' });
+      window.scrollTo({ top: 0, behavior: "instant" });
 
       // Update next/prev footer cards
       updateNavigationFooter();
@@ -589,29 +589,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!activeTopic || !prevTopicBtn || !nextTopicBtn) return;
 
     const currentIndex = allTopics.findIndex(
-      (t) => t.categoryId === activeTopic.categoryId && t.id === activeTopic.id
+      (t) => t.categoryId === activeTopic.categoryId && t.id === activeTopic.id,
     );
 
     // Set Previous button state
     if (currentIndex > 0) {
       const prevTopic = allTopics[currentIndex - 1];
       prevTopicBtn.href = `#${prevTopic.categoryId}/${prevTopic.id}`;
-      prevTopicBtn.classList.remove('disabled');
+      prevTopicBtn.classList.remove("disabled");
       if (prevTopicTitle) prevTopicTitle.textContent = prevTopic.title;
     } else {
-      prevTopicBtn.classList.add('disabled');
-      if (prevTopicTitle) prevTopicTitle.textContent = 'None';
+      prevTopicBtn.classList.add("disabled");
+      if (prevTopicTitle) prevTopicTitle.textContent = "None";
     }
 
     // Set Next button state
     if (currentIndex < allTopics.length - 1) {
       const nextTopic = allTopics[currentIndex + 1];
       nextTopicBtn.href = `#${nextTopic.categoryId}/${nextTopic.id}`;
-      nextTopicBtn.classList.remove('disabled');
+      nextTopicBtn.classList.remove("disabled");
       if (nextTopicTitle) nextTopicTitle.textContent = nextTopic.title;
     } else {
-      nextTopicBtn.classList.add('disabled');
-      if (nextTopicTitle) nextTopicTitle.textContent = 'End of Course';
+      nextTopicBtn.classList.add("disabled");
+      if (nextTopicTitle) nextTopicTitle.textContent = "End of Course";
     }
   }
 
@@ -619,11 +619,11 @@ document.addEventListener('DOMContentLoaded', async () => {
      READING PROGRESS BAR SCROLL MONITOR
      ============================================================ */
   function initReadingProgress() {
-    const readingProgress = document.getElementById('readingProgress');
+    const readingProgress = document.getElementById("readingProgress");
     if (!readingProgress) return;
 
     window.addEventListener(
-      'scroll',
+      "scroll",
       () => {
         const scrollTop = window.scrollY;
         // Scroll limit
@@ -633,7 +633,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
         readingProgress.style.width = `${progress}%`;
       },
-      { passive: true }
+      { passive: true },
     );
   }
 
@@ -641,8 +641,8 @@ document.addEventListener('DOMContentLoaded', async () => {
      SCROLL TO TOP BUTTON SYSTEM
      ============================================================ */
   function initScrollBtn() {
-    const btn = document.getElementById('scrollBtn');
-    const ring = document.getElementById('ringFill');
+    const btn = document.getElementById("scrollBtn");
+    const ring = document.getElementById("ringFill");
     if (!btn) return;
 
     const circumference = 2 * Math.PI * 22;
@@ -652,17 +652,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.documentElement.scrollHeight - window.innerHeight;
       const progress = docHeight > 0 ? scrollTop / docHeight : 0;
 
-      btn.classList.toggle('show', scrollTop > 400);
+      btn.classList.toggle("show", scrollTop > 400);
       if (ring) {
         ring.style.strokeDashoffset = circumference * (1 - progress);
       }
     };
 
     updateProgress();
-    window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener("scroll", updateProgress, { passive: true });
 
-    btn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    btn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
 
@@ -670,14 +670,14 @@ document.addEventListener('DOMContentLoaded', async () => {
      PARTICLE CANVAS BACKGROUND
      ============================================================ */
   function initParticles() {
-    const canvas = document.getElementById('particleCanvas');
+    const canvas = document.getElementById("particleCanvas");
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const coarsePointer = window.matchMedia('(pointer: coarse)');
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const coarsePointer = window.matchMedia("(pointer: coarse)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const palette = [220, 250, 280]; // Hue values (Blues & Cyans)
 
     let W = window.innerWidth;
@@ -762,7 +762,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       requestAnimationFrame(draw);
     }
 
-    window.addEventListener('resize', () => {
+    window.addEventListener("resize", () => {
       resize();
       createParticles();
     });
@@ -780,12 +780,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   initParticles();
 
   function escapeHtml(text) {
-    const div = document.createElement('div');
+    const div = document.createElement("div");
     div.textContent = text;
     return div.innerHTML;
   }
   function launchQuiz(categoryId, quizTitle) {
-    document.getElementById('topicNavigation').style.display = 'none';
+    document.getElementById("topicNavigation").style.display = "none";
     const questions = quizData[categoryId];
 
     if (!questions || questions.length === 0) {
@@ -835,9 +835,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   />
  <span>${escapeHtml(option)}</span>
 </label>
-              `
+              `,
             )
-            .join('')}
+            .join("")}
 
         </div>
 
@@ -851,21 +851,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     `;
 
       document
-        .querySelector('.submit-answer-btn')
-        .addEventListener('click', submitAnswer);
+        .querySelector(".submit-answer-btn")
+        .addEventListener("click", submitAnswer);
     }
 
     function submitAnswer() {
       const selected = document.querySelector('input[name="answer"]:checked');
 
       if (!selected) {
-        alert('Select an answer');
+        alert("Select an answer");
         return;
       }
 
       const selectedAnswer = Number(selected.value);
 
-      const feedback = document.getElementById('quizFeedback');
+      const feedback = document.getElementById("quizFeedback");
 
       if (selectedAnswer === questions[currentQuestion].answer) {
         score++;
@@ -898,7 +898,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function showResult() {
-      document.getElementById('topicNavigation').style.display = 'flex';
+      document.getElementById("topicNavigation").style.display = "flex";
       const percentage = Math.round((score / questions.length) * 100);
 
       contentViewport.innerHTML = `
@@ -936,18 +936,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     `;
 
       document
-        .getElementById('retakeQuiz')
-        .addEventListener('click', () => launchQuiz(categoryId, quizTitle));
+        .getElementById("retakeQuiz")
+        .addEventListener("click", () => launchQuiz(categoryId, quizTitle));
     }
   }
 
   loadProgress();
 
   document
-    .getElementById('continueLearningBtn')
-    ?.addEventListener('click', () => {
+    .getElementById("continueLearningBtn")
+    ?.addEventListener("click", () => {
       if (learningProgress.lastTopic) {
-        window.location.hash = '#' + learningProgress.lastTopic;
+        window.location.hash = "#" + learningProgress.lastTopic;
       }
     });
 
@@ -957,7 +957,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   updateProgressUI();
 
   if (learningProgress.lastTopic && !window.location.hash) {
-    window.location.hash = '#' + learningProgress.lastTopic;
+    window.location.hash = "#" + learningProgress.lastTopic;
   }
-  
 });

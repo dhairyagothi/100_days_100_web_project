@@ -11,12 +11,13 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col w-full bg-background font-sans">
-
       {/* Mobile-only top bar */}
       <div className="lg:hidden flex items-center justify-between px-4 py-3 border-b border-border/40 bg-card/80 backdrop-blur">
         <div className="flex items-center gap-2">
           <span className="flex h-2 w-2 rounded-full bg-primary"></span>
-          <span className="font-display font-bold text-primary text-sm">Zenith 2026</span>
+          <span className="font-display font-bold text-primary text-sm">
+            Zenith 2026
+          </span>
         </div>
         <Link href="/admin/login">
           <Button size="sm" variant="outline" data-testid="link-admin-mobile">
@@ -46,13 +47,14 @@ export default function Home() {
             </div>
             <div className="space-y-6">
               <h1 className="font-display text-5xl xl:text-6xl font-bold tracking-tight leading-tight max-w-2xl">
-                Welcome to <br/>
+                Welcome to <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-violet-400">
                   Zenith 2026
                 </span>
               </h1>
               <p className="text-lg xl:text-xl text-white/75 max-w-xl font-medium leading-relaxed">
-                Join students and professionals at the premier event. Secure your spot today.
+                Join students and professionals at the premier event. Secure
+                your spot today.
               </p>
             </div>
             <div className="rounded-3xl border border-white/10 bg-white/10 p-5 shadow-2xl shadow-black/10 backdrop-blur-xl max-w-xl">
@@ -68,12 +70,17 @@ export default function Home() {
                 data-testid="input-location-search"
               />
               <p className="mt-3 text-sm text-white/80">
-                Showing results for <span className="font-semibold text-white">{displayLocation}</span>
+                Showing results for{" "}
+                <span className="font-semibold text-white">
+                  {displayLocation}
+                </span>
               </p>
             </div>
           </div>
           <div className="relative z-10 text-sm flex justify-between items-center">
-            <p className="text-white/40">© 2026 Zenith Event. All rights reserved.</p>
+            <p className="text-white/40">
+              © 2026 Zenith Event. All rights reserved.
+            </p>
             <Link href="/admin/login">
               <Button
                 variant="outline"
@@ -92,8 +99,12 @@ export default function Home() {
         <div className="flex-1 flex flex-col items-center justify-center p-4 sm:p-8 md:p-12 bg-gradient-to-br from-background to-secondary/10">
           <div className="w-full max-w-xl animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className="mb-6 lg:hidden text-center">
-              <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-foreground">Secure your spot</h1>
-              <p className="text-muted-foreground mt-2 text-sm sm:text-base">Join the premier event of 2026.</p>
+              <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+                Secure your spot
+              </h1>
+              <p className="text-muted-foreground mt-2 text-sm sm:text-base">
+                Join the premier event of 2026.
+              </p>
             </div>
             <RegistrationForm />
           </div>

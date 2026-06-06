@@ -17,27 +17,27 @@ jobs:
           script: |
             const pr = context.payload.pull_request;
             const body = pr.body || "";
-            
+
             let issuesFound = false;
             let checklistFound = false;
             let descriptionValid = true;
-            
+
             // 1. Check for issue references (e.g. closes #12, resolve #4, #123)
             const issueRegex = /(closes|fixes|resolves|refs)?\s*#\d+/i;
             if (issueRegex.test(body)) {
               issuesFound = true;
             }
-            
+
             // 2. Check for PR Template Checklist items
             if (body.includes("[x]") || body.includes("[ ]")) {
               checklistFound = true;
             }
-            
+
             // 3. Verify PR is not empty
             if (body.trim().length < 20) {
               descriptionValid = false;
             }
-            
+
             if (!issuesFound || !checklistFound || !descriptionValid) {
               let feedback = `### ⚠️ Pull Request Structure Notice\n\n`;
               feedback += `Hi @${pr.user.login}! Thanks for submitting your contribution. To keep our repository clean and reviewable, please ensure your PR descriptions meet our repository standard guidelines:\n\n`;

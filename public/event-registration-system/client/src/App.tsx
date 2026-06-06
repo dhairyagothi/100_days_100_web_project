@@ -15,10 +15,10 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/success" component={Success} />
-      
+
       <Route path="/admin/login" component={Login} />
       <Route path="/admin/dashboard" component={Dashboard} />
-      
+
       <Route component={NotFound} />
     </Switch>
   );

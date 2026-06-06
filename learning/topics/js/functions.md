@@ -69,6 +69,7 @@ console.log(doubled); // [2, 4, 6]
 ### Task:
 
 Write a function `formatFullName(first, last)` that returns:
+
 - `first` and `last` separated by a single space
 - trims extra spaces around inputs
 
@@ -83,4 +84,3 @@ function formatFullName(first, last) {
 
 console.log(formatFullName("  Vasud ", "  Rao")); // "Vasud Rao"
 ```
-

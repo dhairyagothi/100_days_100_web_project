@@ -7,21 +7,21 @@ This project simulates a real command-line interface with interactive commands, 
 
 ## 🚀 Features
 
-* Interactive terminal commands
-* Neon cyberpunk UI
-* Real-time command responses
-* Fake hacking simulation
-* Linux-style commands
-* Smooth scrolling terminal
-* Responsive design
+- Interactive terminal commands
+- Neon cyberpunk UI
+- Real-time command responses
+- Fake hacking simulation
+- Linux-style commands
+- Smooth scrolling terminal
+- Responsive design
 
 ---
 
 ## 🛠️ Built With
 
-* HTML5
-* CSS3
-* JavaScript (Vanilla JS)
+- HTML5
+- CSS3
+- JavaScript (Vanilla JS)
 
 ---
 
@@ -75,13 +75,13 @@ Use **Live Server** in VS Code for a better experience.
 
 ## 🌌 Future Improvements
 
-* Matrix rain animation
-* Terminal boot sequence
-* Sound effects
-* More Linux commands
-* Fake password cracking animation
-* Themes and customization
-* Mobile optimization
+- Matrix rain animation
+- Terminal boot sequence
+- Sound effects
+- More Linux commands
+- Fake password cracking animation
+- Themes and customization
+- Mobile optimization
 
 ---
 
@@ -95,9 +95,9 @@ Cyberpunk-inspired fake terminal with glowing neon effects and interactive comma
 
 **Sapna Jha**
 
-* GitHub: https://github.com/sapnajha757
+- GitHub: https://github.com/sapnajha757
 
-* LinkedIn: https://in.linkedin.com/in/sapna-jha-672598387 
+- LinkedIn: https://in.linkedin.com/in/sapna-jha-672598387
 
 ---
 

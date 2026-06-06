@@ -3,7 +3,7 @@ const {
   getHealthStatus,
   getServerInfo,
   getUsers,
-  getUserById
+  getUserById,
 } = require("../controllers/apiController");
 
 const router = express.Router();
@@ -27,7 +27,7 @@ router.get("/info", getServerInfo);
 | Users Routes
 |--------------------------------------------------------------------------
 */
-router.get("/users",     getUsers);
+router.get("/users", getUsers);
 router.get("/users/:id", getUserById);
 
 module.exports = router;

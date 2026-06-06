@@ -6,15 +6,14 @@ export default function HistoryPage({ history }) {
 
   // Summary stats computed from history
   const total = history.length;
-  const avgSales = total > 0
-    ? Math.round(history.reduce((sum, h) => sum + h.sales, 0) / total)
-    : 0;
-  const highest = total > 0
-    ? Math.round(Math.max(...history.map((h) => h.sales)))
-    : 0;
-  const lowest = total > 0
-    ? Math.round(Math.min(...history.map((h) => h.sales)))
-    : 0;
+  const avgSales =
+    total > 0
+      ? Math.round(history.reduce((sum, h) => sum + h.sales, 0) / total)
+      : 0;
+  const highest =
+    total > 0 ? Math.round(Math.max(...history.map((h) => h.sales))) : 0;
+  const lowest =
+    total > 0 ? Math.round(Math.min(...history.map((h) => h.sales))) : 0;
 
   return (
     <>
@@ -60,8 +59,15 @@ export default function HistoryPage({ history }) {
       {total === 0 ? (
         <div className="empty-charts" style={{ marginTop: 24 }}>
           <span>🗂️</span>
-          <p>No predictions yet. Go to <strong>Predict</strong> and run your first one!</p>
-          <button className="btn-predict" style={{ marginTop: 8, width: "auto", padding: "10px 24px" }} onClick={() => navigate("/")}>
+          <p>
+            No predictions yet. Go to <strong>Predict</strong> and run your
+            first one!
+          </p>
+          <button
+            className="btn-predict"
+            style={{ marginTop: 8, width: "auto", padding: "10px 24px" }}
+            onClick={() => navigate("/")}
+          >
             Go to Predict →
           </button>
         </div>
@@ -92,7 +98,9 @@ export default function HistoryPage({ history }) {
                   <td>₹{h.mrp}</td>
                   <td>{h.itemType}</td>
                   <td>
-                    <span className={`badge ${h.fatContent === "Low Fat" ? "badge-green" : "badge-amber"}`}>
+                    <span
+                      className={`badge ${h.fatContent === "Low Fat" ? "badge-green" : "badge-amber"}`}
+                    >
                       {h.fatContent}
                     </span>
                   </td>

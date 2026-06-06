@@ -9,10 +9,10 @@ React forms are usually **controlled components**—form input values are driven
 The input `value` is tied to state; `onChange` updates state:
 
 ```jsx
-import { useState } from 'react';
+import { useState } from "react";
 
 function SignupForm() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
 
   return (
     <input
@@ -33,7 +33,7 @@ Group related fields in one state object or separate `useState` calls:
 
 ```jsx
 function ContactForm() {
-  const [form, setForm] = useState({ name: '', message: '' });
+  const [form, setForm] = useState({ name: "", message: "" });
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -55,8 +55,8 @@ function ContactForm() {
 
 ```jsx
 function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -67,7 +67,11 @@ function LoginForm() {
   return (
     <form onSubmit={handleSubmit}>
       <input value={email} onChange={(e) => setEmail(e.target.value)} />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
       <button type="submit">Log in</button>
     </form>
   );
@@ -80,21 +84,25 @@ function LoginForm() {
 
 ```jsx
 function Preferences() {
-  const [role, setRole] = useState('user');
+  const [role, setRole] = useState("user");
   const [agreed, setAgreed] = useState(false);
 
   return (
-  <>
-    <select value={role} onChange={(e) => setRole(e.target.value)}>
-      <option value="user">User</option>
-      <option value="admin">Admin</option>
-    </select>
+    <>
+      <select value={role} onChange={(e) => setRole(e.target.value)}>
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+      </select>
 
-    <label>
-      <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
-      I agree to terms
-    </label>
-  </>
+      <label>
+        <input
+          type="checkbox"
+          checked={agreed}
+          onChange={(e) => setAgreed(e.target.checked)}
+        />
+        I agree to terms
+      </label>
+    </>
   );
 }
 ```
@@ -138,11 +146,11 @@ Build a form with `username` and `password` fields that logs the values on submi
 ##### Solution
 
 ```jsx
-import { useState } from 'react';
+import { useState } from "react";
 
 function RegisterForm() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -151,8 +159,17 @@ function RegisterForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+      <input
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Username"
+      />
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
+      />
       <button type="submit">Register</button>
     </form>
   );

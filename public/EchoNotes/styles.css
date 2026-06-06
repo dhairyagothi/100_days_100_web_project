@@ -4,18 +4,19 @@
 
 :root {
   /* Fonts */
-  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-editor: 'DM Sans', sans-serif;
-  --font-title: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-ui:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-editor: "DM Sans", sans-serif;
+  --font-title: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
 
   /* Typography Sizes */
-  --fs-xs: 0.75rem;     /* 12px */
-  --fs-sm: 0.875rem;    /* 14px */
-  --fs-base: 1rem;      /* 16px */
-  --fs-lg: 1.125rem;    /* 18px */
-  --fs-xl: 1.25rem;     /* 20px */
-  --fs-2xl: 1.5rem;     /* 24px */
-  --fs-3xl: 2rem;       /* 32px */
+  --fs-xs: 0.75rem; /* 12px */
+  --fs-sm: 0.875rem; /* 14px */
+  --fs-base: 1rem; /* 16px */
+  --fs-lg: 1.125rem; /* 18px */
+  --fs-xl: 1.25rem; /* 20px */
+  --fs-2xl: 1.5rem; /* 24px */
+  --fs-3xl: 2rem; /* 32px */
 
   /* Global Radius & Transitions */
   --radius-xs: 6px;
@@ -26,71 +27,78 @@
   --transition-slow: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   /* Shared Light Colors */
-  --accent: #5B5BD6;
-  --accent-hover: #4B4BC6;
-  --accent-light: #EBEBFF;
-  --accent-light-border: #D6D6F5;
-  --green: #16A34A;
-  --red: #DC2626;
-  --yellow: #D97706;
-  --secondary-accent: #3B82F6;
+  --accent: #5b5bd6;
+  --accent-hover: #4b4bc6;
+  --accent-light: #ebebff;
+  --accent-light-border: #d6d6f5;
+  --green: #16a34a;
+  --red: #dc2626;
+  --yellow: #d97706;
+  --secondary-accent: #3b82f6;
 
   /* LIGHT THEME */
-  --bg-app: #F6F3EE;
-  --bg-sidebar: #F0EBE3;
-  --bg-list: #F6F3EE;
-  --bg-editor: #F6F3EE;
-  --bg-card: #FFFFFF;
-  --bg-card-hover: #FAF7F2;
-  --bg-card-active: #F0EBE3;
-  --border: #D6D3D1;
-  --border-focus: #5B5BD6;
+  --bg-app: #f6f3ee;
+  --bg-sidebar: #f0ebe3;
+  --bg-list: #f6f3ee;
+  --bg-editor: #f6f3ee;
+  --bg-card: #ffffff;
+  --bg-card-hover: #faf7f2;
+  --bg-card-active: #f0ebe3;
+  --border: #d6d3d1;
+  --border-focus: #5b5bd6;
 
-  --text-primary: #1F2937;
-  --text-secondary: #6B7280;
-  --text-tertiary: #9CA3AF;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
 
   --shadow-sm: 0 1px 2px rgba(31, 41, 55, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(31, 41, 55, 0.08), 0 2px 4px -1px rgba(31, 41, 55, 0.04);
-  --shadow-lg: 0 10px 15px -3px rgba(31, 41, 55, 0.1), 0 4px 6px -2px rgba(31, 41, 55, 0.05);
+  --shadow-md:
+    0 4px 6px -1px rgba(31, 41, 55, 0.08), 0 2px 4px -1px rgba(31, 41, 55, 0.04);
+  --shadow-lg:
+    0 10px 15px -3px rgba(31, 41, 55, 0.1),
+    0 4px 6px -2px rgba(31, 41, 55, 0.05);
 }
 
 [data-theme="dark"] {
   /* Shared Dark Colors */
-  --accent: #7C6CF6;
-  --accent-hover: #6B5BE5;
-  --accent-light: #2A2A4A;
-  --accent-light-border: #3A3A6A;
-  --green: #22C55E;
-  --red: #EF4444;
-  --yellow: #F59E0B;
-  --secondary-accent: #4C8DFF;
+  --accent: #7c6cf6;
+  --accent-hover: #6b5be5;
+  --accent-light: #2a2a4a;
+  --accent-light-border: #3a3a6a;
+  --green: #22c55e;
+  --red: #ef4444;
+  --yellow: #f59e0b;
+  --secondary-accent: #4c8dff;
 
   /* DARK THEME */
-  --bg-app: #15171C;
-  --bg-sidebar: #1B1F27;
-  --bg-list: #15171C;
-  --bg-editor: #15171C;
+  --bg-app: #15171c;
+  --bg-sidebar: #1b1f27;
+  --bg-list: #15171c;
+  --bg-editor: #15171c;
   --bg-card: #222833;
-  --bg-card-hover: #2A3140;
+  --bg-card-hover: #2a3140;
   --bg-card-active: #323844;
   --border: #323844;
-  --border-focus: #7C6CF6;
+  --border-focus: #7c6cf6;
 
-  --text-primary: #F3F4F6;
-  --text-secondary: #9CA3AF;
-  --text-tertiary: #6B7280;
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --text-tertiary: #6b7280;
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
 }
 
 /* ==========================================================================
    RESET & BASE STYLES
    ========================================================================== */
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -106,7 +114,9 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-button, input, select {
+button,
+input,
+select {
   font-family: inherit;
   font-size: inherit;
   color: inherit;
@@ -777,7 +787,8 @@ button, input, select {
   transition: var(--transition);
 }
 
-.folder-select:hover, .folder-select:focus {
+.folder-select:hover,
+.folder-select:focus {
   border-color: var(--accent);
   color: var(--text-primary);
 }
@@ -816,8 +827,13 @@ button, input, select {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
 }
 
 /* Action Buttons */
@@ -1097,9 +1113,9 @@ button, input, select {
 }
 
 /* HTML Styling Inside Contenteditable */
-#note-content h1, 
-#note-content h2, 
-#note-content h3, 
+#note-content h1,
+#note-content h2,
+#note-content h3,
 #note-content h4 {
   font-family: var(--font-title);
   color: var(--text-primary);
@@ -1109,14 +1125,18 @@ button, input, select {
   line-height: 1.3;
 }
 
-#note-content h3 { font-size: 1.4rem; } /* Custom Heading 1 */
-#note-content h4 { font-size: 1.15rem; } /* Custom Heading 2 */
+#note-content h3 {
+  font-size: 1.4rem;
+} /* Custom Heading 1 */
+#note-content h4 {
+  font-size: 1.15rem;
+} /* Custom Heading 2 */
 
 #note-content p {
   margin-bottom: 1em;
 }
 
-#note-content ul, 
+#note-content ul,
 #note-content ol {
   margin-left: 24px;
   margin-bottom: 1em;
@@ -1433,8 +1453,8 @@ button, input, select {
   }
 
   /* Hide all columns by default */
-  .sidebar, 
-  .notes-list-pane, 
+  .sidebar,
+  .notes-list-pane,
   .editor-area {
     display: none !important;
   }
@@ -1453,10 +1473,10 @@ button, input, select {
 
   /* Dim background mask overlay when sidebar is active */
   [data-mobile-view="sidebar"]::after {
-    content: '';
+    content: "";
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0, 0, 0, 0.4);
     z-index: 999;
     backdrop-filter: blur(1px);
   }
@@ -1491,6 +1511,10 @@ button, input, select {
 }
 
 @keyframes slideInLeft {
-  from { transform: translateX(-100%); }
-  to { transform: translateX(0); }
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }

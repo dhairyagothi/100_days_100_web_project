@@ -49,8 +49,16 @@ body::before {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 70% 55% at 15% 10%, rgba(56, 189, 248, 0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 85% 80%, rgba(94, 234, 212, 0.14) 0%, transparent 55%);
+    radial-gradient(
+      ellipse 70% 55% at 15% 10%,
+      rgba(56, 189, 248, 0.18) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 60% 50% at 85% 80%,
+      rgba(94, 234, 212, 0.14) 0%,
+      transparent 55%
+    );
   z-index: 0;
 }
 
@@ -65,7 +73,9 @@ body::before {
   place-items: center;
   background: rgba(8, 12, 20, 0.96);
   backdrop-filter: blur(6px);
-  transition: opacity 0.6s ease, visibility 0.6s ease;
+  transition:
+    opacity 0.6s ease,
+    visibility 0.6s ease;
 }
 
 #preloader.hidden {
@@ -126,7 +136,9 @@ body::before {
   gap: 48px;
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.8s ease 0.1s, transform 0.8s ease 0.1s;
+  transition:
+    opacity 0.8s ease 0.1s,
+    transform 0.8s ease 0.1s;
 }
 
 .page.visible {
@@ -174,7 +186,9 @@ body::before {
   font-size: 0.9rem;
   padding: 8px 16px;
   border-radius: var(--radius-pill);
-  transition: background var(--transition), color var(--transition);
+  transition:
+    background var(--transition),
+    color var(--transition);
 }
 
 .nav-link:hover,
@@ -269,7 +283,10 @@ h3 {
   border-radius: var(--radius-pill);
   border: none;
   cursor: pointer;
-  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    background var(--transition);
 }
 
 .cta.primary {
@@ -339,7 +356,9 @@ h3 {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   backdrop-filter: blur(12px);
-  transition: transform var(--transition), border-color var(--transition);
+  transition:
+    transform var(--transition),
+    border-color var(--transition);
 }
 
 .feature-card:hover {
@@ -390,7 +409,9 @@ h3 {
   font-family: var(--font-body);
   font-size: 0.92rem;
   outline: none;
-  transition: border-color var(--transition), box-shadow var(--transition);
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition);
   backdrop-filter: blur(8px);
 }
 
@@ -416,7 +437,9 @@ h3 {
   font-weight: 500;
   opacity: 0;
   transform: translateY(6px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
 
 .success-msg.show {
@@ -636,7 +659,9 @@ h3 {
   height: 48px;
   border-radius: 50%;
   border: 4px solid var(--accent);
-  box-shadow: 0 0 16px rgba(56, 189, 248, 0.6), inset 0 0 16px rgba(56, 189, 248, 0.6);
+  box-shadow:
+    0 0 16px rgba(56, 189, 248, 0.6),
+    inset 0 0 16px rgba(56, 189, 248, 0.6);
   animation: glow-pulse 1.5s ease-in-out infinite alternate;
 }
 
@@ -708,7 +733,6 @@ h3 {
 }
 
 @keyframes wave {
-
   0%,
   100% {
     transform: scaleY(0.4);
@@ -737,13 +761,17 @@ h3 {
 @keyframes glow-pulse {
   0% {
     transform: scale(0.9);
-    box-shadow: 0 0 8px rgba(56, 189, 248, 0.4), inset 0 0 8px rgba(56, 189, 248, 0.4);
+    box-shadow:
+      0 0 8px rgba(56, 189, 248, 0.4),
+      inset 0 0 8px rgba(56, 189, 248, 0.4);
     opacity: 0.7;
   }
 
   100% {
     transform: scale(1.1);
-    box-shadow: 0 0 24px rgba(94, 234, 212, 0.8), inset 0 0 24px rgba(94, 234, 212, 0.8);
+    box-shadow:
+      0 0 24px rgba(94, 234, 212, 0.8),
+      inset 0 0 24px rgba(94, 234, 212, 0.8);
     opacity: 1;
     border-color: var(--accent2);
   }
@@ -792,7 +820,6 @@ h3 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-
   *,
   *::before,
   *::after {

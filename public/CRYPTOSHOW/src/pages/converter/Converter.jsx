@@ -1,31 +1,35 @@
-import React, { useState } from 'react';
-import './Converter.css';
+import React, { useState } from "react";
+import "./Converter.css";
 
 const Convert = () => {
-  const [amount, setAmount] = useState('');
-  const [fromCurrency, setFromCurrency] = useState('USD');
-  const [toCurrency, setToCurrency] = useState('BTC');
-  const [result, setResult] = useState('');
+  const [amount, setAmount] = useState("");
+  const [fromCurrency, setFromCurrency] = useState("USD");
+  const [toCurrency, setToCurrency] = useState("BTC");
+  const [result, setResult] = useState("");
   // const apiKey = process.env.REACT_APP_API_KEY;
   const apiKey = import.meta.env.VITE_API_KEY;
 
   const handleConvert = () => {
     const apiUrl = `https://min-api.cryptocompare.com/data/price?fsym=${toCurrency}&tsyms=${fromCurrency}&api_key=${apiKey}`;
     fetch(apiUrl)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         const rate = data[fromCurrency];
         const conversionResult = amount / rate;
-        setResult(`${amount} ${fromCurrency} = ${conversionResult.toFixed(8)} ${toCurrency}`);
+        setResult(
+          `${amount} ${fromCurrency} = ${conversionResult.toFixed(8)} ${toCurrency}`,
+        );
       })
-      .catch(() => setResult('Error: Unable to fetch exchange rate.'));
+      .catch(() => setResult("Error: Unable to fetch exchange rate."));
   };
 
   return (
     <div className="converter-page">
       <div className="converter-card">
         <h2 className="converter-title">Crypto Converter</h2>
-        <p className="converter-subtitle">Convert fiat currency to cryptocurrency instantly.</p>
+        <p className="converter-subtitle">
+          Convert fiat currency to cryptocurrency instantly.
+        </p>
 
         <form onSubmit={(e) => e.preventDefault()}>
           <div className="input-group">
@@ -42,7 +46,10 @@ const Convert = () => {
           <div className="select-row">
             <div className="input-group">
               <label>From (Fiat)</label>
-              <select value={fromCurrency} onChange={(e) => setFromCurrency(e.target.value)}>
+              <select
+                value={fromCurrency}
+                onChange={(e) => setFromCurrency(e.target.value)}
+              >
                 <option value="USD">USD — US Dollar</option>
                 <option value="EUR">EUR — Euro</option>
                 <option value="GBP">GBP — British Pound</option>
@@ -67,7 +74,10 @@ const Convert = () => {
 
             <div className="input-group">
               <label>To (Crypto)</label>
-              <select value={toCurrency} onChange={(e) => setToCurrency(e.target.value)}>
+              <select
+                value={toCurrency}
+                onChange={(e) => setToCurrency(e.target.value)}
+              >
                 <option value="BTC">Bitcoin (BTC)</option>
                 <option value="ETH">Ethereum (ETH)</option>
                 <option value="USDT">Tether (USDT)</option>

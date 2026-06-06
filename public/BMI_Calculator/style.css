@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap");
 
 * {
   margin: 0;
@@ -22,8 +22,8 @@
   --amber: #c97317;
   --red: #c92d2d;
 
-  --mono: 'DM Mono', monospace;
-  --serif: 'Instrument Serif', serif;
+  --mono: "DM Mono", monospace;
+  --serif: "Instrument Serif", serif;
 }
 
 body.dark {
@@ -875,7 +875,7 @@ input:focus::placeholder {
 }
 
 .calc-btn::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(
@@ -937,7 +937,7 @@ input:focus::placeholder {
 }
 
 .hero-text h1::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   bottom: -8px;

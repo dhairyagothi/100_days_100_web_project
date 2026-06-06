@@ -8,13 +8,14 @@ In this comprehensive guide, you will learn the core concepts of HTML, how web p
 
 ## 1. How HTML Works
 
-HTML is not a programming language; it is a **markup language**. This means it uses predefined codes (markup) called **tags** to define how content is formatted and organized. 
+HTML is not a programming language; it is a **markup language**. This means it uses predefined codes (markup) called **tags** to define how content is formatted and organized.
 
 When you load a website, your browser fetches the HTML file from a server. The browser then acts as a translator, reading the HTML code, rendering the document, and displaying it on your screen.
 
 ### The Anatomy of an HTML Element
 
 An HTML element is usually made up of three parts:
+
 1. **An Opening Tag**: `<tagname>` — Marks where the element begins.
 2. **The Content**: The text or media you want to display.
 3. **A Closing Tag**: `</tagname>` — Marks where the element ends (notice the forward slash).
@@ -43,6 +44,7 @@ Here is a visual representation of how a standard HTML element is structured:
     <rect x="420" y="20" width="140" height="50" rx="6" class="svg-node" />
     <text x="490" y="50" text-anchor="middle" class="svg-text svg-text-heading">&lt;/p&gt;</text>
     <text x="490" y="65" text-anchor="middle" class="svg-text" style="fill: #ef4444;">Closing Tag</text>
+
   </svg>
 </div>
 
@@ -57,29 +59,29 @@ Here is the boilerplate structure:
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My First Web Page</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Welcome to Web Development!</h1>
     <p>This is my very first paragraph structured in HTML.</p>
-</body>
+  </body>
 </html>
 ```
 
 ### Breakdown of the Skeleton:
 
-| Tag | Purpose |
-| :--- | :--- |
-| `<!DOCTYPE html>` | Declares to the browser that this is a modern **HTML5** document. |
-| `<html lang="en">` | The root element containing the entire page. The `lang` attribute specifies the language (English). |
-| `<head>` | Contains "behind-the-scenes" metadata. This info is not visible on the web page itself. |
-| `<meta charset="UTF-8">` | Specifies the character encoding to support all symbols and characters. |
-| `<meta name="viewport" ...>` | Essential for mobile responsiveness. It scales the page to fit mobile device screens correctly. |
-| `<title>` | Specifies the text displayed on the browser tab or in search engine listings. |
-| `<body>` | Contains all visible content: text, links, images, forms, and headings. |
+| Tag                          | Purpose                                                                                             |
+| :--------------------------- | :-------------------------------------------------------------------------------------------------- |
+| `<!DOCTYPE html>`            | Declares to the browser that this is a modern **HTML5** document.                                   |
+| `<html lang="en">`           | The root element containing the entire page. The `lang` attribute specifies the language (English). |
+| `<head>`                     | Contains "behind-the-scenes" metadata. This info is not visible on the web page itself.             |
+| `<meta charset="UTF-8">`     | Specifies the character encoding to support all symbols and characters.                             |
+| `<meta name="viewport" ...>` | Essential for mobile responsiveness. It scales the page to fit mobile device screens correctly.     |
+| `<title>`                    | Specifies the text displayed on the browser tab or in search engine listings.                       |
+| `<body>`                     | Contains all visible content: text, links, images, forms, and headings.                             |
 
 ---
 
@@ -90,15 +92,15 @@ Let's look at how elements are nested inside one another. Nesting means placing 
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <title>Learning HTML</title>
-</head>
-<body>
+  </head>
+  <body>
     <div>
-        <h2>Understanding Nesting</h2>
-        <p>This paragraph is nested inside a <strong>div</strong> container!</p>
+      <h2>Understanding Nesting</h2>
+      <p>This paragraph is nested inside a <strong>div</strong> container!</p>
     </div>
-</body>
+  </body>
 </html>
 ```
 
@@ -148,9 +150,10 @@ To write high-quality, professional code, you should build excellent coding habi
 
 ## 5. Coding Exercise: Test Your Knowledge
 
-Let's practice what you've learned! 
+Let's practice what you've learned!
 
 ### Task:
+
 Create a complete boilerplate HTML template. Inside the `<body>` element, write an `<h1>` heading with the text "Hello Antigravity!" and a paragraph `<p>` that contains a nested `<em>` (emphasis/italics) tag wrapping the word "web development".
 
 ##### Solution
@@ -158,19 +161,20 @@ Create a complete boilerplate HTML template. Inside the `<body>` element, write 
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Practice Exercises</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Hello Antigravity!</h1>
     <p>I am learning <em>web development</em> today!</p>
-</body>
+  </body>
 </html>
 ```
 
-**Explanation**: 
+**Explanation**:
+
 - The `<em>` tag wraps around "web development", applying italics styles natively.
 - The `<h1>` provides a primary heading block structure.
 - The structure contains a valid head, body, and doctype declaration.

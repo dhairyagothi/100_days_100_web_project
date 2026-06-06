@@ -33,7 +33,6 @@ A powerful web application designed to help you manage your contacts effortlessl
    ```
 
 3. **Activate the virtual environment**:
-
    - On Windows:
 
      ```bash

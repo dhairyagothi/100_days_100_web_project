@@ -6,21 +6,17 @@
 
 ## 1. State vs Props
 
-| | Props | State |
-| :--- | :--- | :--- |
-| **Source** | Parent component | Component itself |
-| **Mutable by child?** | No | Yes (via setter) |
+|                         | Props                  | State                 |
+| :---------------------- | :--------------------- | :-------------------- |
+| **Source**              | Parent component       | Component itself      |
+| **Mutable by child?**   | No                     | Yes (via setter)      |
 | **Triggers re-render?** | When parent re-renders | When state is updated |
 
 ```jsx
 function Counter() {
   const [count, setCount] = useState(0);
 
-  return (
-    <button onClick={() => setCount(count + 1)}>
-      Count: {count}
-    </button>
-  );
+  return <button onClick={() => setCount(count + 1)}>Count: {count}</button>;
 }
 ```
 
@@ -31,16 +27,20 @@ function Counter() {
 Import and call `useState` with an initial value:
 
 ```jsx
-import { useState } from 'react';
+import { useState } from "react";
 
 function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <form>
       <input value={email} onChange={(e) => setEmail(e.target.value)} />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
     </form>
   );
 }
@@ -75,7 +75,7 @@ setCount((prev) => prev + 1); // Correct for double increment
 Never mutate state directly—create new copies:
 
 ```jsx
-const [user, setUser] = useState({ name: 'Sam', age: 25 });
+const [user, setUser] = useState({ name: "Sam", age: 25 });
 
 // Wrong
 user.age = 26;
@@ -85,10 +85,10 @@ setUser({ ...user, age: 26 });
 ```
 
 ```jsx
-const [items, setItems] = useState(['apple', 'banana']);
+const [items, setItems] = useState(["apple", "banana"]);
 
-setItems([...items, 'cherry']);           // add
-setItems(items.filter((i) => i !== 'apple')); // remove
+setItems([...items, "cherry"]); // add
+setItems(items.filter((i) => i !== "apple")); // remove
 ```
 
 ---
@@ -129,7 +129,7 @@ Create a component with a boolean `isVisible` state and a button that toggles a 
 ##### Solution
 
 ```jsx
-import { useState } from 'react';
+import { useState } from "react";
 
 function ToggleMessage() {
   const [isVisible, setIsVisible] = useState(false);
@@ -137,7 +137,7 @@ function ToggleMessage() {
   return (
     <div>
       <button onClick={() => setIsVisible(!isVisible)}>
-        {isVisible ? 'Hide' : 'Show'} Message
+        {isVisible ? "Hide" : "Show"} Message
       </button>
       {isVisible && <p>Hello! This message can be toggled.</p>}
     </div>

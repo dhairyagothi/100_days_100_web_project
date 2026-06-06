@@ -30,7 +30,10 @@
   width: clamp(8px, 2.4vw, 20px);
   border-radius: 0.35rem 0.35rem 0.1rem 0.1rem;
   background: #3b82f6;
-  transition: height 220ms ease, background-color 220ms ease, transform 220ms ease;
+  transition:
+    height 220ms ease,
+    background-color 220ms ease,
+    transform 220ms ease;
   transform-origin: bottom;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }

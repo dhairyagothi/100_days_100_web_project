@@ -1,16 +1,22 @@
 const mongoose = require("mongoose");
-const bcrypt   = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 
 const UserSchema = new mongoose.Schema(
   {
-    name:     { type: String, required: true, trim: true },
-    email:    { type: String, required: true, unique: true, lowercase: true, trim: true },
+    name: { type: String, required: true, trim: true },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
     password: { type: String, required: true, minlength: 6 },
-    role:     { type: String, enum: ["employer", "candidate"], required: true },
-    company:  { type: String, default: "" },  // For employer role
-    bio:      { type: String, default: "" },  // For candidate role
+    role: { type: String, enum: ["employer", "candidate"], required: true },
+    company: { type: String, default: "" }, // For employer role
+    bio: { type: String, default: "" }, // For candidate role
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 UserSchema.pre("save", async function (next) {

@@ -456,7 +456,7 @@ body.light-mode .rendered-markdown tr:nth-child(even) {
    ============================================================ */
 
 .rendered-markdown code {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.85em;
   background: rgba(255, 255, 255, 0.06);
   padding: 0.15rem 0.35rem;
@@ -489,7 +489,7 @@ body.light-mode .rendered-markdown code {
 }
 
 .code-lang-label {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   text-transform: uppercase;
   font-weight: 600;
   color: var(--text-secondary);
@@ -1074,7 +1074,7 @@ body.light-mode .vector-flowchart {
   font-size: 15px;
   font-weight: 500;
 }
-.quiz-option input[type='radio'] {
+.quiz-option input[type="radio"] {
   accent-color: var(--accent);
   flex-shrink: 0;
 }
@@ -1186,7 +1186,7 @@ body.light-mode .vector-flowchart {
 }
 
 .topic-item.completed a::after {
-  content: '✓';
+  content: "✓";
   float: right;
   font-weight: bold;
 }

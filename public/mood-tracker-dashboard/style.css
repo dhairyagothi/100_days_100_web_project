@@ -276,7 +276,6 @@ h1 {
 /* Responsive */
 
 @media (max-width: 768px) {
-
   h1 {
     font-size: 48px;
   }

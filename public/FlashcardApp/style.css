@@ -1,5 +1,5 @@
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f5f7fb;
   display: flex;
   justify-content: center;
@@ -57,7 +57,7 @@ body {
   border-radius: 12px;
   padding: 24px;
   box-sizing: border-box;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
 }
 
 .card-front {
@@ -120,5 +120,9 @@ body {
   opacity: 0.9;
 }
 
-.success { background-color: #2ecc71; }
-.danger { background-color: #e74c3c; }
+.success {
+  background-color: #2ecc71;
+}
+.danger {
+  background-color: #e74c3c;
+}

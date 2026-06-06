@@ -2,12 +2,12 @@
 // Renders dynamic, interactive 3D nodes projecting onto 2D canvas with mouse-responsive parallax.
 
 export function initBackground3D() {
-  const canvas = document.getElementById('bg-canvas-3d');
+  const canvas = document.getElementById("bg-canvas-3d");
   if (!canvas) return;
 
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext("2d");
   let animationFrameId = null;
-  
+
   // Settings
   const PARTICLE_COUNT = 70;
   const CONNECT_DISTANCE = 110;
@@ -15,8 +15,8 @@ export function initBackground3D() {
   const ROTATE_SPEED_Y = 0.0004;
   const FIELD_OF_VIEW = 250; // Focus depth
 
-  let width = canvas.width = window.innerWidth;
-  let height = canvas.height = window.innerHeight;
+  let width = (canvas.width = window.innerWidth);
+  let height = (canvas.height = window.innerHeight);
   let centerX = width / 2;
   let centerY = height / 2;
 
@@ -31,7 +31,7 @@ export function initBackground3D() {
     reset(initPhase = false) {
       // Sphere coordinate initialization
       const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos((Math.random() * 2) - 1);
+      const phi = Math.acos(Math.random() * 2 - 1);
       const distance = 100 + Math.random() * 200; // Radius range
 
       this.x = distance * Math.sin(phi) * Math.cos(theta);
@@ -39,12 +39,13 @@ export function initBackground3D() {
       this.z = distance * Math.cos(phi);
 
       // Random color variations (cyberpunk purple/neon cyan palette)
-      this.color = Math.random() > 0.4 ? 'rgba(139, 92, 246, ' : 'rgba(6, 182, 212, '; // HSL purple / cyan
+      this.color =
+        Math.random() > 0.4 ? "rgba(139, 92, 246, " : "rgba(6, 182, 212, "; // HSL purple / cyan
       this.radius = 1.2 + Math.random() * 1.8;
 
       if (initPhase) {
         // Distribute in time
-        this.z = (Math.random() * 400) - 200;
+        this.z = Math.random() * 400 - 200;
       } else {
         // Spawn at far back
         this.z = 200;
@@ -77,7 +78,7 @@ export function initBackground3D() {
       // Project 3D coordinate onto 2D Canvas space with perspective
       // Z distance ranges from -200 (close) to +200 (far). Shift to positive scale.
       const scale = FIELD_OF_VIEW / (FIELD_OF_VIEW + this.z);
-      
+
       // Calculate screen positions incorporating mouse parallax
       this.screenX = centerX + (this.x + parallaxX) * scale;
       this.screenY = centerY + (this.y + parallaxY) * scale;
@@ -89,10 +90,16 @@ export function initBackground3D() {
 
       const alpha = Math.min(1, Math.max(0, (1 - this.z / 200) * 0.8));
       ctx.beginPath();
-      ctx.arc(this.screenX, this.screenY, this.radius * this.scale, 0, Math.PI * 2);
-      ctx.fillStyle = this.color + alpha + ')';
+      ctx.arc(
+        this.screenX,
+        this.screenY,
+        this.radius * this.scale,
+        0,
+        Math.PI * 2,
+      );
+      ctx.fillStyle = this.color + alpha + ")";
       ctx.shadowBlur = 6 * this.scale;
-      ctx.shadowColor = this.color.includes('139') ? '#8b5cf6' : '#06b6d4';
+      ctx.shadowColor = this.color.includes("139") ? "#8b5cf6" : "#06b6d4";
       ctx.fill();
       ctx.shadowBlur = 0; // Reset shadow for lines
     }
@@ -104,7 +111,7 @@ export function initBackground3D() {
   }
 
   // Handle resizing
-  window.addEventListener('resize', () => {
+  window.addEventListener("resize", () => {
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
     centerX = width / 2;
@@ -112,7 +119,7 @@ export function initBackground3D() {
   });
 
   // Track mouse coordinates for Parallax
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener("mousemove", (e) => {
     mouse.active = true;
     // Normalize coordinates around screen center (ranges -50px to 50px)
     mouse.targetX = ((e.clientX - centerX) / centerX) * 45;
@@ -120,7 +127,7 @@ export function initBackground3D() {
   });
 
   // Reset target on mouse leave
-  window.addEventListener('mouseleave', () => {
+  window.addEventListener("mouseleave", () => {
     mouse.active = false;
     mouse.targetX = 0;
     mouse.targetY = 0;
@@ -134,9 +141,16 @@ export function initBackground3D() {
     ctx.clearRect(0, 0, width, height);
 
     // Dynamic grid glow background backing (extremely subtle dark gradient)
-    const gradient = ctx.createRadialGradient(centerX, centerY, 10, centerX, centerY, Math.max(width, height));
-    gradient.addColorStop(0, '#0d0b18'); // Very deep indigo purple
-    gradient.addColorStop(1, '#050409'); // Pitch black
+    const gradient = ctx.createRadialGradient(
+      centerX,
+      centerY,
+      10,
+      centerX,
+      centerY,
+      Math.max(width, height),
+    );
+    gradient.addColorStop(0, "#0d0b18"); // Very deep indigo purple
+    gradient.addColorStop(1, "#050409"); // Pitch black
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, height);
 
@@ -145,7 +159,7 @@ export function initBackground3D() {
     currentParallaxY += (mouse.targetY - currentParallaxY) * 0.08;
 
     // 1. Update positions
-    particles.forEach(p => p.update(currentParallaxX, currentParallaxY));
+    particles.forEach((p) => p.update(currentParallaxX, currentParallaxY));
 
     // 2. Draw connections
     ctx.lineWidth = 0.5;
@@ -162,15 +176,15 @@ export function initBackground3D() {
         if (dist < CONNECT_DISTANCE) {
           // Opacity based on distance and depth
           const depthAvg = (p1.z + p2.z) / 2;
-          const distFactor = (1 - dist / CONNECT_DISTANCE);
-          const depthFactor = Math.min(1, Math.max(0, (1 - depthAvg / 200)));
+          const distFactor = 1 - dist / CONNECT_DISTANCE;
+          const depthFactor = Math.min(1, Math.max(0, 1 - depthAvg / 200));
           const alpha = distFactor * depthFactor * 0.15;
 
           if (alpha > 0) {
             ctx.beginPath();
             ctx.moveTo(p1.screenX, p1.screenY);
             ctx.lineTo(p2.screenX, p2.screenY);
-            
+
             // Core line color blended between purple and cyan
             ctx.strokeStyle = `rgba(139, 92, 246, ${alpha})`;
             ctx.stroke();
@@ -180,7 +194,7 @@ export function initBackground3D() {
     }
 
     // 3. Draw particles
-    particles.forEach(p => p.draw());
+    particles.forEach((p) => p.draw());
 
     animationFrameId = requestAnimationFrame(renderLoop);
   }

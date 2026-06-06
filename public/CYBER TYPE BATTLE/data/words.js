@@ -1,5 +1,4 @@
 export const words = [
-
   "apple",
   "banana",
   "orange",
@@ -79,6 +78,5 @@ export const words = [
   "wave",
   "wind",
   "sky",
-  "bolt"
-
+  "bolt",
 ];

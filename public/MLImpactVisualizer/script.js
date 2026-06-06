@@ -2,7 +2,7 @@ const weights = {
   age: 0.02,
   income: 0.04,
   experience: 0.05,
-  credit: 0.03
+  credit: 0.03,
 };
 
 const bias = -10;
@@ -10,7 +10,7 @@ const bias = -10;
 const sliders = ["age", "income", "experience", "credit"];
 const ctx = document.getElementById("impactChart").getContext("2d");
 
-sliders.forEach(id => {
+sliders.forEach((id) => {
   const slider = document.getElementById(id);
   const span = document.getElementById(id + "Val");
 
@@ -22,14 +22,14 @@ sliders.forEach(id => {
 
 function updatePrediction() {
   const values = {};
-  sliders.forEach(id => {
+  sliders.forEach((id) => {
     values[id] = parseFloat(document.getElementById(id).value);
   });
 
   let prediction = bias;
   const contributions = {};
 
-  sliders.forEach(id => {
+  sliders.forEach((id) => {
     contributions[id] = values[id] * weights[id];
     prediction += contributions[id];
   });
@@ -45,7 +45,8 @@ function drawChart(contributions) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   const keys = Object.keys(contributions);
-  const maxVal = Math.max(...Object.values(contributions).map(v => Math.abs(v))) * 1.2;
+  const maxVal =
+    Math.max(...Object.values(contributions).map((v) => Math.abs(v))) * 1.2;
 
   const barWidth = 50;
   const spacing = 30;
@@ -56,12 +57,7 @@ function drawChart(contributions) {
     const barHeight = (value / maxVal) * 100;
 
     ctx.fillStyle = value >= 0 ? "#22c55e" : "#ef4444";
-    ctx.fillRect(
-      x,
-      canvas.height / 2 - barHeight,
-      barWidth,
-      barHeight
-    );
+    ctx.fillRect(x, canvas.height / 2 - barHeight, barWidth, barHeight);
 
     ctx.fillStyle = "#000";
     ctx.fillText(key, x + 5, canvas.height - 10);

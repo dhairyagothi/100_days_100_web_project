@@ -53,7 +53,9 @@
 
     &[type="checkbox"] {
       @if $enable-gradients {
-        background-image: escape-svg($form-check-input-checked-bg-image), var(--#{$variable-prefix}gradient);
+        background-image:
+          escape-svg($form-check-input-checked-bg-image),
+          var(--#{$variable-prefix}gradient);
       } @else {
         background-image: escape-svg($form-check-input-checked-bg-image);
       }
@@ -61,7 +63,9 @@
 
     &[type="radio"] {
       @if $enable-gradients {
-        background-image: escape-svg($form-check-radio-checked-bg-image), var(--#{$variable-prefix}gradient);
+        background-image:
+          escape-svg($form-check-radio-checked-bg-image),
+          var(--#{$variable-prefix}gradient);
       } @else {
         background-image: escape-svg($form-check-radio-checked-bg-image);
       }
@@ -73,7 +77,9 @@
     border-color: $form-check-input-indeterminate-border-color;
 
     @if $enable-gradients {
-      background-image: escape-svg($form-check-input-indeterminate-bg-image), var(--#{$variable-prefix}gradient);
+      background-image:
+        escape-svg($form-check-input-indeterminate-bg-image),
+        var(--#{$variable-prefix}gradient);
     } @else {
       background-image: escape-svg($form-check-input-indeterminate-bg-image);
     }
@@ -123,7 +129,9 @@
       background-position: $form-switch-checked-bg-position;
 
       @if $enable-gradients {
-        background-image: escape-svg($form-switch-checked-bg-image), var(--#{$variable-prefix}gradient);
+        background-image:
+          escape-svg($form-switch-checked-bg-image),
+          var(--#{$variable-prefix}gradient);
       } @else {
         background-image: escape-svg($form-switch-checked-bg-image);
       }

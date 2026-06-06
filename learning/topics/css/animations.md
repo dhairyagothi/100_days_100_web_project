@@ -1,6 +1,7 @@
 # Transitions & Animations
 
 CSS can animate changes smoothly. Use:
+
 - **transitions** for simple property changes (hover, focus)
 - **animations** for repeated or timeline-based motion
 
@@ -10,7 +11,9 @@ CSS can animate changes smoothly. Use:
 
 ```css
 .btn {
-  transition: transform 200ms ease, background-color 200ms ease;
+  transition:
+    transform 200ms ease,
+    background-color 200ms ease;
 }
 
 .btn:hover {
@@ -27,9 +30,15 @@ You define a sequence of styles with `@keyframes`.
 
 ```css
 @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.08); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .dot {
@@ -73,6 +82,7 @@ You define a sequence of styles with `@keyframes`.
 ### Task:
 
 Write CSS that:
+
 - creates a `.spinner` element that rotates forever
 - uses a keyframes rule
 
@@ -80,7 +90,9 @@ Write CSS that:
 
 ```css
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .spinner {
@@ -92,4 +104,3 @@ Write CSS that:
   animation: spin 0.9s linear infinite;
 }
 ```
-

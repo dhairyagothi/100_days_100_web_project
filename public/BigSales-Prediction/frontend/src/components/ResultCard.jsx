@@ -27,21 +27,24 @@ export default function ResultCard({ prediction, loading, error }) {
           <div className="result-success">
             <span className="result-label">Predicted Outlet Sales</span>
             <div className="result-amount">
-              ₹{prediction.toLocaleString("en-IN", { maximumFractionDigits: 0 })}
+              ₹
+              {prediction.toLocaleString("en-IN", { maximumFractionDigits: 0 })}
             </div>
             <div className="result-range">
               <div className="range-item">
                 <span className="range-dot low" />
-                <span>Low: ₹{Math.round(prediction * 0.85).toLocaleString("en-IN")}</span>
+                <span>
+                  Low: ₹{Math.round(prediction * 0.85).toLocaleString("en-IN")}
+                </span>
               </div>
               <div className="range-item">
                 <span className="range-dot high" />
-                <span>High: ₹{Math.round(prediction * 1.15).toLocaleString("en-IN")}</span>
+                <span>
+                  High: ₹{Math.round(prediction * 1.15).toLocaleString("en-IN")}
+                </span>
               </div>
             </div>
-            <p className="result-note">
-              ±15% estimated confidence interval
-            </p>
+            <p className="result-note">±15% estimated confidence interval</p>
           </div>
         )}
 
@@ -49,7 +52,10 @@ export default function ResultCard({ prediction, loading, error }) {
         {!loading && !error && prediction === null && (
           <div className="result-state empty-state">
             <span className="result-icon">📦</span>
-            <p>Fill in the form and hit <strong>Predict Sales</strong> to see the result here</p>
+            <p>
+              Fill in the form and hit <strong>Predict Sales</strong> to see the
+              result here
+            </p>
           </div>
         )}
       </div>

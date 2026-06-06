@@ -9,6 +9,7 @@ In this lesson, you will learn what elements and attributes are, common attribut
 ## 1. What is an HTML element?
 
 An HTML element is a building block in the document. Most elements have:
+
 - an opening tag (for example, `<a>`)
 - content (optional)
 - a closing tag (for example, `</a>`)
@@ -29,6 +30,7 @@ Some elements are self-contained (like `<img ... />`) and do not need a closing 
 **Attributes** provide extra information about an element. They are written inside the opening tag as `name="value"`.
 
 Common attribute examples:
+
 - `id` and `class` (for styling and linking)
 - `href` (for links)
 - `src` (for images)
@@ -40,15 +42,14 @@ Common attribute examples:
 ## 3. Global attributes (you will use a lot)
 
 Global attributes can appear on many different elements. Two of the most important are:
+
 - `id`: should be unique per page
 - `class`: can be reused across many elements
 
 Example:
 
 ```html
-<p id="intro" class="lead">
-  Welcome to my page.
-</p>
+<p id="intro" class="lead">Welcome to my page.</p>
 ```
 
 ---
@@ -79,6 +80,7 @@ Example:
 ### Task:
 
 Create a small snippet that contains:
+
 - An image using `src` and `alt`
 - A paragraph with a `class`
 - A link using `href` that goes to another section on the same page
@@ -88,12 +90,9 @@ Create a small snippet that contains:
 ```html
 <img src="avatar.png" alt="Profile avatar" width="80" height="80" />
 
-<p class="bio">
-  Hi, I am building things on the web.
-</p>
+<p class="bio">Hi, I am building things on the web.</p>
 
 <a href="#about">Read more about me</a>
 
 <h2 id="about">About</h2>
 ```
-

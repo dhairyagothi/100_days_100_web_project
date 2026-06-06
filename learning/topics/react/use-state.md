@@ -7,7 +7,7 @@ The **`useState`** hook is the primary way to add local state to function compon
 ## 1. Basic Syntax
 
 ```jsx
-import { useState } from 'react';
+import { useState } from "react";
 
 const [state, setState] = useState(initialValue);
 ```
@@ -35,7 +35,7 @@ If computing the initial state is expensive, pass a function:
 
 ```jsx
 const [items, setItems] = useState(() => {
-  const saved = localStorage.getItem('items');
+  const saved = localStorage.getItem("items");
   return saved ? JSON.parse(saved) : [];
 });
 ```
@@ -61,12 +61,12 @@ This avoids stale closure bugs when multiple updates happen in quick succession.
 
 ```jsx
 function ProfileEditor() {
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [age, setAge] = useState(0);
-  const [bio, setBio] = useState('');
+  const [bio, setBio] = useState("");
 
   // Or one object when fields always change together:
-  const [form, setForm] = useState({ name: '', age: 0, bio: '' });
+  const [form, setForm] = useState({ name: "", age: 0, bio: "" });
 }
 ```
 
@@ -98,6 +98,7 @@ Prefer **separate** `useState` calls when updates are independent; use an **obje
 
     <rect x="440" y="40" width="120" height="40" rx="6" class="svg-node" style="stroke: #10b981;" />
     <text x="500" y="65" text-anchor="middle" class="svg-text">Updated UI</text>
+
   </svg>
 </div>
 
@@ -136,7 +137,7 @@ Create state for `quantity` starting at 1. Add Increment and Decrement buttons (
 ##### Solution
 
 ```jsx
-import { useState } from 'react';
+import { useState } from "react";
 
 function QuantityPicker() {
   const [quantity, setQuantity] = useState(1);

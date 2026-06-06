@@ -7,9 +7,9 @@ let masterGainNode = null;
 
 // Track active audio synthesizers
 const activeSources = {
-  'white-noise': null,
-  'ocean': null,
-  'binaural': null
+  "white-noise": null,
+  ocean: null,
+  binaural: null,
 };
 
 // Lazy initialization of Audio Context
@@ -37,7 +37,7 @@ function initAudio() {
 function createNoiseBuffer() {
   const bufferSize = 2 * audioCtx.sampleRate; // 2 seconds of sound
   const noiseBuffer = audioCtx.createBuffer(2, bufferSize, audioCtx.sampleRate);
-  
+
   for (let channel = 0; channel < noiseBuffer.numberOfChannels; channel++) {
     const bufferData = noiseBuffer.getChannelData(channel);
     for (let i = 0; i < bufferSize; i++) {
@@ -51,7 +51,7 @@ function createNoiseBuffer() {
 // 1. WHITE NOISE SYNTHESIS
 // -------------------------------------------------------------
 function startWhiteNoise(volume) {
-  stopSound('white-noise');
+  stopSound("white-noise");
 
   // Source Buffer
   const source = audioCtx.createBufferSource();
@@ -60,7 +60,7 @@ function startWhiteNoise(volume) {
 
   // Filter out harsh highs for comfortable study
   const filter = audioCtx.createBiquadFilter();
-  filter.type = 'lowpass';
+  filter.type = "lowpass";
   filter.frequency.setValueAtTime(1000, audioCtx.currentTime);
 
   // Gain (Volume) node
@@ -74,14 +74,14 @@ function startWhiteNoise(volume) {
 
   source.start(0);
 
-  activeSources['white-noise'] = { source, gain, filter };
+  activeSources["white-noise"] = { source, gain, filter };
 }
 
 // -------------------------------------------------------------
 // 2. OCEAN WAVE SYNTHESIS (LFO Filter Modulated Noise)
 // -------------------------------------------------------------
 function startOceanWaves(volume) {
-  stopSound('ocean');
+  stopSound("ocean");
 
   // Noise source
   const source = audioCtx.createBufferSource();
@@ -90,13 +90,13 @@ function startOceanWaves(volume) {
 
   // Bandpass filter to isolate wave crash frequencies
   const filter = audioCtx.createBiquadFilter();
-  filter.type = 'bandpass';
+  filter.type = "bandpass";
   filter.Q.setValueAtTime(1.5, audioCtx.currentTime);
   filter.frequency.setValueAtTime(350, audioCtx.currentTime);
 
   // LFO (Low Frequency Oscillator) to modulate filter frequency (creates swelling effect)
   const lfo = audioCtx.createOscillator();
-  lfo.type = 'sine';
+  lfo.type = "sine";
   lfo.frequency.setValueAtTime(0.08, audioCtx.currentTime); // 12 seconds per wave swell cycle
 
   // LFO Depth gain
@@ -119,29 +119,33 @@ function startOceanWaves(volume) {
   source.start(0);
   lfo.start(0);
 
-  activeSources['ocean'] = { source, gain, filter, lfo };
+  activeSources["ocean"] = { source, gain, filter, lfo };
 }
 
 // -------------------------------------------------------------
 // 3. BINAURAL BEATS (200Hz Left / 210Hz Right -> 10Hz Alpha differential)
 // -------------------------------------------------------------
 function startBinauralBeats(volume) {
-  stopSound('binaural');
+  stopSound("binaural");
 
   // Left Oscillator (200 Hz carrier wave)
   const oscLeft = audioCtx.createOscillator();
-  oscLeft.type = 'sine';
+  oscLeft.type = "sine";
   oscLeft.frequency.setValueAtTime(200, audioCtx.currentTime);
 
   // Right Oscillator (210 Hz carrier wave)
   const oscRight = audioCtx.createOscillator();
-  oscRight.type = 'sine';
+  oscRight.type = "sine";
   oscRight.frequency.setValueAtTime(210, audioCtx.currentTime);
 
   // Stereo panners
-  const pannerLeft = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
-  const pannerRight = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
-  
+  const pannerLeft = audioCtx.createStereoPanner
+    ? audioCtx.createStereoPanner()
+    : null;
+  const pannerRight = audioCtx.createStereoPanner
+    ? audioCtx.createStereoPanner()
+    : null;
+
   // Gain Node
   const gain = audioCtx.createGain();
   gain.gain.setValueAtTime(volume * 0.7, audioCtx.currentTime); // Keep binaural slightly softer
@@ -166,7 +170,7 @@ function startBinauralBeats(volume) {
   oscLeft.start(0);
   oscRight.start(0);
 
-  activeSources['binaural'] = { oscLeft, oscRight, gain };
+  activeSources["binaural"] = { oscLeft, oscRight, gain };
 }
 
 // -------------------------------------------------------------
@@ -175,15 +179,15 @@ function startBinauralBeats(volume) {
 
 export function playSound(soundId, volume = 0.5) {
   initAudio();
-  if (audioCtx.state === 'suspended') {
+  if (audioCtx.state === "suspended") {
     audioCtx.resume();
   }
 
-  if (soundId === 'white-noise') {
+  if (soundId === "white-noise") {
     startWhiteNoise(volume);
-  } else if (soundId === 'ocean') {
+  } else if (soundId === "ocean") {
     startOceanWaves(volume);
-  } else if (soundId === 'binaural') {
+  } else if (soundId === "binaural") {
     startBinauralBeats(volume);
   }
 }
@@ -207,12 +211,15 @@ export function stopSound(soundId) {
 export function adjustVolume(soundId, volume) {
   const active = activeSources[soundId];
   if (active && active.gain) {
-    active.gain.gain.linearRampToValueAtTime(volume, audioCtx ? audioCtx.currentTime + 0.1 : 0);
+    active.gain.gain.linearRampToValueAtTime(
+      volume,
+      audioCtx ? audioCtx.currentTime + 0.1 : 0,
+    );
   }
 }
 
 export function stopAllSounds() {
-  Object.keys(activeSources).forEach(soundId => stopSound(soundId));
+  Object.keys(activeSources).forEach((soundId) => stopSound(soundId));
 }
 
 export function isSoundPlaying(soundId) {

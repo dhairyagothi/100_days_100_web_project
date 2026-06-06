@@ -34,12 +34,12 @@ npm start       # production
 
 ## API Endpoints
 
-| Method | Route          | Description              |
-|--------|----------------|--------------------------|
-| GET    | /              | Dashboard UI             |
-| GET    | /api/health    | Health check + uptime    |
-| GET    | /api/info      | Server info + env        |
-| GET    | /api/users     | All mock users           |
-| GET    | /api/users/:id | Single user by ID        |
+| Method | Route          | Description           |
+| ------ | -------------- | --------------------- |
+| GET    | /              | Dashboard UI          |
+| GET    | /api/health    | Health check + uptime |
+| GET    | /api/info      | Server info + env     |
+| GET    | /api/users     | All mock users        |
+| GET    | /api/users/:id | Single user by ID     |
 
 Any unknown route → beautiful 404 HTML page (or JSON if API/browser requests JSON).

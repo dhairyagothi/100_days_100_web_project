@@ -9,6 +9,7 @@ In this lesson: you will learn `let` vs `const`, and how **scope** determines wh
 ## 1. Declaring variables
 
 JavaScript provides:
+
 - `const`: variable cannot be reassigned
 - `let`: can be reassigned (recommended for most cases)
 - `var`: older style (avoid unless you know why)
@@ -23,6 +24,7 @@ let count = 0;
 ## 2. Scope (global, function, block)
 
 Scope controls where a variable exists.
+
 - **Global scope**: variables in the top-level script
 - **Function scope**: variables inside a function
 - **Block scope**: variables inside `{ ... }` blocks (like `if`, `for`, `while`)
@@ -39,6 +41,7 @@ if (true) {
 ## 3. Why this matters
 
 Scope bugs often appear when:
+
 - you expect a variable to persist, but it is inside a block
 - you accidentally redeclare a variable with `var`
 
@@ -72,6 +75,7 @@ next(); // 2
 ### Task:
 
 Write a small snippet that:
+
 - defines `let total = 0;`
 - loops from `0` to `2`
 - inside the loop, updates `total`
@@ -87,4 +91,3 @@ for (let i = 0; i < 3; i++) {
 
 console.log(total); // 3
 ```
-

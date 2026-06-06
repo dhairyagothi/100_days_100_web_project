@@ -9,7 +9,7 @@ React events feel like DOM events but use **camelCase** names and a **SyntheticE
 ```jsx
 function ClickButton() {
   function handleClick() {
-    alert('Button clicked!');
+    alert("Button clicked!");
   }
 
   return <button onClick={handleClick}>Click me</button>;
@@ -33,17 +33,17 @@ Pass a **function reference**, not a function call (unless you need arguments):
 
 ## 2. Common React Events
 
-| Event | Use Case |
-| :--- | :--- |
-| `onClick` | Buttons, clickable elements |
-| `onChange` | Inputs, selects, textareas |
-| `onSubmit` | Form submission |
-| `onKeyDown` | Keyboard shortcuts |
-| `onMouseEnter` / `onMouseLeave` | Hover effects |
+| Event                           | Use Case                    |
+| :------------------------------ | :-------------------------- |
+| `onClick`                       | Buttons, clickable elements |
+| `onChange`                      | Inputs, selects, textareas  |
+| `onSubmit`                      | Form submission             |
+| `onKeyDown`                     | Keyboard shortcuts          |
+| `onMouseEnter` / `onMouseLeave` | Hover effects               |
 
 ```jsx
 function SearchBox() {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
 
   return (
     <input
@@ -64,7 +64,7 @@ function LoginForm() {
   function handleSubmit(event) {
     event.preventDefault();
     // send data without full page reload
-    console.log('Form submitted');
+    console.log("Form submitted");
   }
 
   return (
@@ -92,8 +92,10 @@ function Toolbar({ onSave, onCancel }) {
 }
 
 function Editor() {
-  const handleSave = () => console.log('Saved!');
-  return <Toolbar onSave={handleSave} onCancel={() => console.log('Cancelled')} />;
+  const handleSave = () => console.log("Saved!");
+  return (
+    <Toolbar onSave={handleSave} onCancel={() => console.log("Cancelled")} />
+  );
 }
 ```
 
@@ -144,15 +146,13 @@ Build a `LikeButton` that shows a heart count and increments on each click.
 ##### Solution
 
 ```jsx
-import { useState } from 'react';
+import { useState } from "react";
 
 function LikeButton() {
   const [likes, setLikes] = useState(0);
 
   return (
-    <button onClick={() => setLikes((prev) => prev + 1)}>
-      ❤️ {likes}
-    </button>
+    <button onClick={() => setLikes((prev) => prev + 1)}>❤️ {likes}</button>
   );
 }
 ```

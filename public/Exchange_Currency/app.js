@@ -1,5 +1,6 @@
 let chartInstance = null;
-const BASE_URL = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies";
+const BASE_URL =
+  "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies";
 const FALLBACK_URL = "https://latest.currency-api.pages.dev/v1/currencies";
 
 const dropdowns = document.querySelectorAll(".dropdown select");
@@ -19,7 +20,7 @@ const showError = (message) => {
   errorDiv.innerText = message;
   errorDiv.style.display = "block";
   errorDiv.classList.remove("shake");
-  void errorDiv.offsetWidth; 
+  void errorDiv.offsetWidth;
   errorDiv.classList.add("shake");
 
   convertedAmountField.value = "";
@@ -82,7 +83,7 @@ const loadHistoricalChart = async () => {
     const historyURL = `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${fromTarget}.json`;
 
     const response = await fetch(historyURL);
-    
+
     if (!response.ok) {
       console.warn("Historical data not available for this pair.");
       if (chartInstance) chartInstance.destroy();
@@ -94,7 +95,7 @@ const loadHistoricalChart = async () => {
     // Since the standard fallback timeline data gives us the active rate snapshot,
     // we build a simulated 7-day trend array using fractional variations so Chart.js can draw instantly.
     const activeRate = data[fromTarget][toTarget];
-    
+
     const labels = [];
     const values = [];
 
@@ -102,9 +103,9 @@ const loadHistoricalChart = async () => {
       const d = new Date();
       d.setDate(today.getDate() - i);
       labels.push(d.toISOString().split("T")[0]);
-      
+
       // Adds a subtle realistic timeline variance around the base rate point
-      const variance = 1 + (Math.sin(i) * 0.002); 
+      const variance = 1 + Math.sin(i) * 0.002;
       values.push(activeRate * variance);
     }
 
@@ -116,36 +117,37 @@ const loadHistoricalChart = async () => {
       type: "line",
       data: {
         labels: labels,
-        datasets: [{
-          label: `${fromCurr.value.toUpperCase()} to ${toCurr.value.toUpperCase()} Trend`,
-          data: values,
-          borderColor: "#2563eb",
-          backgroundColor: "rgba(37, 99, 235, 0.05)",
-          borderWidth: 2,
-          tension: 0.4,
-          fill: true,
-          pointRadius: 2
-        }],
+        datasets: [
+          {
+            label: `${fromCurr.value.toUpperCase()} to ${toCurr.value.toUpperCase()} Trend`,
+            data: values,
+            borderColor: "#2563eb",
+            backgroundColor: "rgba(37, 99, 235, 0.05)",
+            borderWidth: 2,
+            tension: 0.4,
+            fill: true,
+            pointRadius: 2,
+          },
+        ],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { display: false }
+          legend: { display: false },
         },
         scales: {
-          x: { 
+          x: {
             grid: { display: false },
-            ticks: { maxTicksLimit: 4, font: { size: 10 } }
+            ticks: { maxTicksLimit: 4, font: { size: 10 } },
           },
-          y: { 
+          y: {
             grid: { color: "rgba(0,0,0,0.03)" },
-            ticks: { font: { size: 10 } }
-          }
-        }
+            ticks: { font: { size: 10 } },
+          },
+        },
       },
     });
-
   } catch (error) {
     console.error("Error loading chart layout:", error);
   }

@@ -1,69 +1,42 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Feedback | MedConsult</title>
 
-    <link
-        rel="stylesheet"
-        href="css/feedback.css"
-    >
+    <link rel="stylesheet" href="css/feedback.css" />
 
-    <link
-        rel="icon"
-        href="assets/logo.png"
-    >
-</head>
-<body>
-
+    <link rel="icon" href="assets/logo.png" />
+  </head>
+  <body>
     <div class="feedbackmain">
+      <h2>⭐ Feedback</h2>
 
-        <h2>⭐ Feedback</h2>
+      <p>Help us improve your healthcare experience.</p>
 
-        <p>
-            Help us improve your healthcare experience.
-        </p>
+      <form id="feedbackform">
+        <label for="feedbackMessage"> Your Feedback </label>
 
-        <form id="feedbackform">
+        <textarea
+          id="feedbackMessage"
+          name="feedbackMessage"
+          placeholder="Write your feedback here..."
+          required
+        ></textarea>
 
-            <label for="feedbackMessage">
-                Your Feedback
-            </label>
+        <button type="submit" class="submit-btn">Submit Feedback</button>
+      </form>
 
-            <textarea
-                id="feedbackMessage"
-                name="feedbackMessage"
-                placeholder="Write your feedback here..."
-                required
-            ></textarea>
-
-            <button
-                type="submit"
-                class="submit-btn"
-            >
-                Submit Feedback
-            </button>
-
-        </form>
-
-        <button
-            class="back"
-            onclick="window.location.href='index.html'"
-        >
-            ← Back To Dashboard
-        </button>
-
+      <button class="back" onclick="window.location.href = 'index.html'">
+        ← Back To Dashboard
+      </button>
     </div>
 
     <div id="toast-container"></div>
 
     <script src="js/feedback.js"></script>
-
-</body>
+  </body>
 </html>

@@ -13,7 +13,7 @@
  * to script.js (see CONTRIBUTING_CHANGES.md for the diff).
  */
 
-'use strict';
+"use strict";
 
 // ── Utilities ──────────────────────────────────────────────────────────────
 
@@ -21,7 +21,7 @@
 function formatDate(d) {
   const offset = d.getTimezoneOffset();
   const local = new Date(d.getTime() - offset * 60 * 1000);
-  return local.toISOString().split('T')[0];
+  return local.toISOString().split("T")[0];
 }
 
 function getTodayString() {
@@ -31,7 +31,7 @@ function getTodayString() {
 /** Safely load habits array from localStorage. */
 function getHabits() {
   try {
-    return JSON.parse(localStorage.getItem('habits')) || [];
+    return JSON.parse(localStorage.getItem("habits")) || [];
   } catch {
     return [];
   }
@@ -46,13 +46,16 @@ function getHabits() {
  *     — Works for existing data, becomes accurate after script.js update.
  */
 function getHistory(habit) {
-  if (Array.isArray(habit.completionHistory) && habit.completionHistory.length > 0) {
+  if (
+    Array.isArray(habit.completionHistory) &&
+    habit.completionHistory.length > 0
+  ) {
     return habit.completionHistory;
   }
   // Fallback: approximate N consecutive days ending at lastCompleted
   if (!habit.lastCompleted || !(habit.streak > 0)) return [];
   const history = [];
-  const anchor = new Date(habit.lastCompleted + 'T12:00:00');
+  const anchor = new Date(habit.lastCompleted + "T12:00:00");
   for (let i = 0; i < habit.streak; i++) {
     const d = new Date(anchor);
     d.setDate(d.getDate() - i);
@@ -79,11 +82,11 @@ function calcCompletionRate(habit) {
 
 // ── Heatmap colour tables ──────────────────────────────────────────────────
 
-const HEAT_DARK  = ['#161a2e', '#2d2a6a', '#4a44b0', '#7c6af7', '#a78bfa'];
-const HEAT_LIGHT = ['#e8eaf6', '#c5cae9', '#9fa8da', '#7986cb', '#5c6bc0'];
+const HEAT_DARK = ["#161a2e", "#2d2a6a", "#4a44b0", "#7c6af7", "#a78bfa"];
+const HEAT_LIGHT = ["#e8eaf6", "#c5cae9", "#9fa8da", "#7986cb", "#5c6bc0"];
 
 function getHeatColors() {
-  return document.body.classList.contains('light') ? HEAT_LIGHT : HEAT_DARK;
+  return document.body.classList.contains("light") ? HEAT_LIGHT : HEAT_DARK;
 }
 
 function heatColor(count, maxHabits, colors) {
@@ -95,7 +98,7 @@ function heatColor(count, maxHabits, colors) {
 
 // ── SVG helpers ────────────────────────────────────────────────────────────
 
-const SVG_NS = 'http://www.w3.org/2000/svg';
+const SVG_NS = "http://www.w3.org/2000/svg";
 
 function svgEl(tag, attrs = {}) {
   const el = document.createElementNS(SVG_NS, tag);
@@ -104,7 +107,7 @@ function svgEl(tag, attrs = {}) {
 }
 
 function svgText(content, attrs = {}) {
-  const el = svgEl('text', attrs);
+  const el = svgEl("text", attrs);
   el.textContent = content;
   return el;
 }
@@ -112,19 +115,20 @@ function svgText(content, attrs = {}) {
 // ── 1. Summary Cards ───────────────────────────────────────────────────────
 
 function renderSummaryCards(habits) {
-  document.getElementById('total-habits').textContent = habits.length;
+  document.getElementById("total-habits").textContent = habits.length;
 
   if (habits.length === 0) return;
 
   const rates = habits.map(calcCompletionRate);
   const avgRate = Math.round(rates.reduce((a, b) => a + b, 0) / rates.length);
-  document.getElementById('avg-rate').textContent = avgRate + '%';
+  document.getElementById("avg-rate").textContent = avgRate + "%";
 
-  const bestStreak = Math.max(...habits.map(h => h.maxStreak || 0));
-  document.getElementById('best-streak').textContent = bestStreak > 0 ? bestStreak + 'd' : '0d';
+  const bestStreak = Math.max(...habits.map((h) => h.maxStreak || 0));
+  document.getElementById("best-streak").textContent =
+    bestStreak > 0 ? bestStreak + "d" : "0d";
 
-  const active = habits.filter(h => (h.streak || 0) > 0).length;
-  document.getElementById('active-streaks').textContent = active;
+  const active = habits.filter((h) => (h.streak || 0) > 0).length;
+  document.getElementById("active-streaks").textContent = active;
 }
 
 // ── 2. 16-week Heatmap (all habits) ───────────────────────────────────────
@@ -132,8 +136,8 @@ function renderSummaryCards(habits) {
 /** Build date → completion count map across all habits. */
 function buildCompletionMap(habits) {
   const map = {};
-  habits.forEach(h => {
-    getHistory(h).forEach(date => {
+  habits.forEach((h) => {
+    getHistory(h).forEach((date) => {
       map[date] = (map[date] || 0) + 1;
     });
   });
@@ -154,14 +158,14 @@ function getHeatmapStartDate(weeksBack) {
 }
 
 function buildHeatmapSVG(habits, weeks, cellSize, cellGap, isMini = false) {
-  const LABEL_W  = isMini ? 0 : 26;
-  const MONTH_H  = isMini ? 0 : 16;
-  const MONO_FONT = 'JetBrains Mono, monospace';
+  const LABEL_W = isMini ? 0 : 26;
+  const MONTH_H = isMini ? 0 : 16;
+  const MONO_FONT = "JetBrains Mono, monospace";
 
   const svgW = LABEL_W + weeks * (cellSize + cellGap) - cellGap;
   const svgH = MONTH_H + 7 * (cellSize + cellGap) - cellGap;
 
-  const svg = svgEl('svg', {
+  const svg = svgEl("svg", {
     viewBox: `0 0 ${svgW} ${svgH}`,
     width: svgW,
     height: svgH,
@@ -177,16 +181,18 @@ function buildHeatmapSVG(habits, weeks, cellSize, cellGap, isMini = false) {
 
   // Day-of-week labels (full heatmap only)
   if (!isMini) {
-    const dayLabels = ['M', '', 'W', '', 'F', '', 'S'];
+    const dayLabels = ["M", "", "W", "", "F", "", "S"];
     dayLabels.forEach((label, i) => {
       if (!label) return;
-      svg.appendChild(svgText(label, {
-        x: 0,
-        y: MONTH_H + i * (cellSize + cellGap) + cellSize - 2,
-        'font-size': '9',
-        fill: '#64748b',
-        'font-family': MONO_FONT,
-      }));
+      svg.appendChild(
+        svgText(label, {
+          x: 0,
+          y: MONTH_H + i * (cellSize + cellGap) + cellSize - 2,
+          "font-size": "9",
+          fill: "#64748b",
+          "font-family": MONO_FONT,
+        }),
+      );
     });
   }
 
@@ -203,21 +209,38 @@ function buildHeatmapSVG(habits, weeks, cellSize, cellGap, isMini = false) {
       // Month label — full heatmap only
       if (!isMini && d === 0 && cellDate.getMonth() !== prevMonth) {
         prevMonth = cellDate.getMonth();
-        const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-        svg.appendChild(svgText(MONTHS[cellDate.getMonth()], {
-          x: LABEL_W + w * (cellSize + cellGap),
-          y: MONTH_H - 4,
-          'font-size': '9',
-          fill: '#64748b',
-          'font-family': MONO_FONT,
-        }));
+        const MONTHS = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+        svg.appendChild(
+          svgText(MONTHS[cellDate.getMonth()], {
+            x: LABEL_W + w * (cellSize + cellGap),
+            y: MONTH_H - 4,
+            "font-size": "9",
+            fill: "#64748b",
+            "font-family": MONO_FONT,
+          }),
+        );
       }
 
       const count = isMini
-        ? (historySet.has(dateStr) ? 1 : 0)
-        : (completionMap[dateStr] || 0);
+        ? historySet.has(dateStr)
+          ? 1
+          : 0
+        : completionMap[dateStr] || 0;
 
-      const rect = svgEl('rect', {
+      const rect = svgEl("rect", {
         x: LABEL_W + w * (cellSize + cellGap),
         y: MONTH_H + d * (cellSize + cellGap),
         width: cellSize,
@@ -228,15 +251,17 @@ function buildHeatmapSVG(habits, weeks, cellSize, cellGap, isMini = false) {
 
       // Highlight today
       if (!isMini && dateStr === todayStr) {
-        rect.setAttribute('stroke', '#818cf8');
-        rect.setAttribute('stroke-width', '1.5');
+        rect.setAttribute("stroke", "#818cf8");
+        rect.setAttribute("stroke-width", "1.5");
       }
 
       // Native SVG tooltip
       const habitsLabel = isMini
-        ? (count ? 'Completed' : 'Not completed')
-        : `${count} of ${maxHabits} habit${maxHabits !== 1 ? 's' : ''} completed`;
-      const tip = svgEl('title');
+        ? count
+          ? "Completed"
+          : "Not completed"
+        : `${count} of ${maxHabits} habit${maxHabits !== 1 ? "s" : ""} completed`;
+      const tip = svgEl("title");
       tip.textContent = `${dateStr}: ${habitsLabel}`;
       rect.appendChild(tip);
 
@@ -248,16 +273,16 @@ function buildHeatmapSVG(habits, weeks, cellSize, cellGap, isMini = false) {
 }
 
 function renderHeatmap(habits) {
-  const container = document.getElementById('heatmap-container');
-  container.innerHTML = '';
+  const container = document.getElementById("heatmap-container");
+  container.innerHTML = "";
   container.appendChild(buildHeatmapSVG(habits, 16, 13, 3));
 
   // Legend cells
-  const legendContainer = document.getElementById('legend-cells');
-  legendContainer.innerHTML = '';
-  getHeatColors().forEach(color => {
-    const cell = document.createElement('div');
-    cell.className = 'legend-cell';
+  const legendContainer = document.getElementById("legend-cells");
+  legendContainer.innerHTML = "";
+  getHeatColors().forEach((color) => {
+    const cell = document.createElement("div");
+    cell.className = "legend-cell";
     cell.style.background = color;
     legendContainer.appendChild(cell);
   });
@@ -266,7 +291,7 @@ function renderHeatmap(habits) {
 // ── 3. Completion Rate Bars ────────────────────────────────────────────────
 
 function renderCompletionRates(habits) {
-  const container = document.getElementById('completion-rates');
+  const container = document.getElementById("completion-rates");
 
   if (habits.length === 0) {
     container.innerHTML = '<p class="no-data">No habits tracked yet.</p>';
@@ -274,10 +299,12 @@ function renderCompletionRates(habits) {
   }
 
   const sorted = habits
-    .map(h => ({ name: h.name, rate: calcCompletionRate(h) }))
+    .map((h) => ({ name: h.name, rate: calcCompletionRate(h) }))
     .sort((a, b) => b.rate - a.rate);
 
-  container.innerHTML = sorted.map(h => `
+  container.innerHTML = sorted
+    .map(
+      (h) => `
     <div class="rate-row">
       <span class="rate-name" title="${h.name}">${h.name}</span>
       <div class="rate-track">
@@ -285,12 +312,14 @@ function renderCompletionRates(habits) {
       </div>
       <span class="rate-pct">${h.rate}%</span>
     </div>
-  `).join('');
+  `,
+    )
+    .join("");
 
   // Animate on next paint (width starts at 0 from CSS)
   requestAnimationFrame(() => {
-    container.querySelectorAll('.rate-fill').forEach(el => {
-      el.style.width = el.dataset.pct + '%';
+    container.querySelectorAll(".rate-fill").forEach((el) => {
+      el.style.width = el.dataset.pct + "%";
     });
   });
 }
@@ -298,22 +327,25 @@ function renderCompletionRates(habits) {
 // ── 4. Streak Comparison Chart ────────────────────────────────────────────
 
 function renderStreakChart(habits) {
-  const container = document.getElementById('streak-chart');
+  const container = document.getElementById("streak-chart");
 
   if (habits.length === 0) {
     container.innerHTML = '<p class="no-data">No habits tracked yet.</p>';
     return;
   }
 
-  const sorted = [...habits].sort((a, b) => (b.maxStreak || 0) - (a.maxStreak || 0));
-  const maxVal = Math.max(...sorted.map(h => h.maxStreak || 0), 1);
+  const sorted = [...habits].sort(
+    (a, b) => (b.maxStreak || 0) - (a.maxStreak || 0),
+  );
+  const maxVal = Math.max(...sorted.map((h) => h.maxStreak || 0), 1);
 
-  container.innerHTML = sorted.map(h => {
-    const current = h.streak || 0;
-    const best    = h.maxStreak || 0;
-    const currentPct = ((current / maxVal) * 100).toFixed(1);
-    const bestPct    = ((best    / maxVal) * 100).toFixed(1);
-    return `
+  container.innerHTML = sorted
+    .map((h) => {
+      const current = h.streak || 0;
+      const best = h.maxStreak || 0;
+      const currentPct = ((current / maxVal) * 100).toFixed(1);
+      const bestPct = ((best / maxVal) * 100).toFixed(1);
+      return `
       <div class="streak-row">
         <span class="streak-name">${h.name}</span>
         <div class="streak-bar-pair">
@@ -334,11 +366,12 @@ function renderStreakChart(habits) {
         </div>
       </div>
     `;
-  }).join('');
+    })
+    .join("");
 
   requestAnimationFrame(() => {
-    container.querySelectorAll('.streak-fill').forEach(el => {
-      el.style.width = el.dataset.pct + '%';
+    container.querySelectorAll(".streak-fill").forEach((el) => {
+      el.style.width = el.dataset.pct + "%";
     });
   });
 }
@@ -346,30 +379,30 @@ function renderStreakChart(habits) {
 // ── 5. Per-Habit Mini Heatmaps ────────────────────────────────────────────
 
 function renderPerHabitHeatmaps(habits) {
-  const container = document.getElementById('per-habit-heatmaps');
+  const container = document.getElementById("per-habit-heatmaps");
 
   if (habits.length === 0) {
     container.innerHTML = '<p class="no-data">No habits tracked yet.</p>';
     return;
   }
 
-  container.innerHTML = '';
+  container.innerHTML = "";
 
-  habits.forEach(habit => {
-    const item = document.createElement('div');
-    item.className = 'habit-heatmap-item';
+  habits.forEach((habit) => {
+    const item = document.createElement("div");
+    item.className = "habit-heatmap-item";
 
-    const nameRow = document.createElement('div');
-    nameRow.className = 'habit-heatmap-name';
+    const nameRow = document.createElement("div");
+    nameRow.className = "habit-heatmap-name";
     nameRow.innerHTML =
       habit.name +
       (habit.streak > 0
         ? ` <span class="habit-streak-badge">🔥 ${habit.streak}d streak</span>`
-        : '');
+        : "");
     item.appendChild(nameRow);
 
-    const scrollWrap = document.createElement('div');
-    scrollWrap.className = 'mini-heatmap-scroll';
+    const scrollWrap = document.createElement("div");
+    scrollWrap.className = "mini-heatmap-scroll";
     // Pass the single habit's history; buildHeatmapSVG reads it as historySet
     scrollWrap.appendChild(buildHeatmapSVG(habit, 12, 11, 2, true));
     item.appendChild(scrollWrap);
@@ -382,17 +415,19 @@ function renderPerHabitHeatmaps(habits) {
 
 function initTheme() {
   // Analytics is dark by default; respect the saved preference
-  const saved = localStorage.getItem('theme');
-  if (saved === 'light') document.body.classList.add('light');
+  const saved = localStorage.getItem("theme");
+  if (saved === "light") document.body.classList.add("light");
 
-  const btn = document.getElementById('theme-toggle');
-  btn.textContent = document.body.classList.contains('light') ? '🌙 Dark' : '☀️ Light';
+  const btn = document.getElementById("theme-toggle");
+  btn.textContent = document.body.classList.contains("light")
+    ? "🌙 Dark"
+    : "☀️ Light";
 
-  btn.addEventListener('click', () => {
-    document.body.classList.toggle('light');
-    const isLight = document.body.classList.contains('light');
-    btn.textContent = isLight ? '🌙 Dark' : '☀️ Light';
-    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  btn.addEventListener("click", () => {
+    document.body.classList.toggle("light");
+    const isLight = document.body.classList.contains("light");
+    btn.textContent = isLight ? "🌙 Dark" : "☀️ Light";
+    localStorage.setItem("theme", isLight ? "light" : "dark");
     // Re-render heatmaps so colours update
     const habits = getHabits();
     renderHeatmap(habits);
@@ -403,11 +438,11 @@ function initTheme() {
 // ── Empty State (no habits at all) ────────────────────────────────────────
 
 function renderEmptyState() {
-  document.querySelector('.summary-cards').remove();
-  document.querySelectorAll('.chart-section').forEach(s => s.remove());
+  document.querySelector(".summary-cards").remove();
+  document.querySelectorAll(".chart-section").forEach((s) => s.remove());
 
-  const empty = document.createElement('div');
-  empty.className = 'empty-state';
+  const empty = document.createElement("div");
+  empty.className = "empty-state";
   empty.innerHTML = `
     <div class="empty-icon">📊</div>
     <h2>No habit data yet</h2>
@@ -416,7 +451,7 @@ function renderEmptyState() {
       Your analytics will appear here as soon as you start logging.
     </p>
   `;
-  document.querySelector('.dashboard').appendChild(empty);
+  document.querySelector(".dashboard").appendChild(empty);
 }
 
 // ── Init ───────────────────────────────────────────────────────────────────

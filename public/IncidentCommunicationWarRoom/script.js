@@ -10,7 +10,7 @@ function createIncident() {
     title,
     severity,
     status: "Investigating",
-    updates: []
+    updates: [],
   };
 
   renderPublicStatus();
@@ -24,8 +24,7 @@ function renderPublicStatus() {
 
   const div = document.createElement("div");
   div.className = "status-card " + currentIncident.severity;
-  div.textContent =
-    `${currentIncident.title} - ${currentIncident.status} (${currentIncident.severity})`;
+  div.textContent = `${currentIncident.title} - ${currentIncident.status} (${currentIncident.severity})`;
 
   container.appendChild(div);
 }
@@ -40,7 +39,7 @@ function postUpdate() {
 
   currentIncident.updates.unshift({
     text,
-    time: timestamp
+    time: timestamp,
   });
 
   document.getElementById("updateText").value = "";
@@ -56,7 +55,7 @@ function renderTimeline() {
   const container = document.getElementById("timeline");
   container.innerHTML = "";
 
-  currentIncident.updates.forEach(update => {
+  currentIncident.updates.forEach((update) => {
     const div = document.createElement("div");
     div.className = "timeline-entry";
     div.innerHTML = `<strong>${update.time}</strong><br>${update.text}`;

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap");
 
 * {
   box-sizing: border-box;
@@ -7,7 +7,7 @@
 body {
   background-color: #516dff;
   color: #fff;
-  font-family: 'Press Start 2P', sans-serif;
+  font-family: "Press Start 2P", sans-serif;
   height: 100vh;
   overflow: hidden;
   margin: 0;

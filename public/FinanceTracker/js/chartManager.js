@@ -2,73 +2,44 @@
 
 let chartInstance = null;
 
-export const renderChart = (
-  transactions
-) => {
-
-  const expenses =
-    transactions.filter(
-      (t) => t.type === "expense"
-    );
+export const renderChart = (transactions) => {
+  const expenses = transactions.filter((t) => t.type === "expense");
 
   const categoryTotals = {};
 
   expenses.forEach((expense) => {
-
-    if (
-      categoryTotals[
-        expense.category
-      ]
-    ) {
-
-      categoryTotals[
-        expense.category
-      ] += expense.amount;
-
+    if (categoryTotals[expense.category]) {
+      categoryTotals[expense.category] += expense.amount;
     } else {
-
-      categoryTotals[
-        expense.category
-      ] = expense.amount;
+      categoryTotals[expense.category] = expense.amount;
     }
   });
 
-  const ctx =
-    document
-      .getElementById("chart")
-      .getContext("2d");
+  const ctx = document.getElementById("chart").getContext("2d");
 
   if (chartInstance) {
     chartInstance.destroy();
   }
 
-  chartInstance =
-    new Chart(ctx, {
+  chartInstance = new Chart(ctx, {
+    type: "doughnut",
 
-      type: "doughnut",
+    data: {
+      labels: Object.keys(categoryTotals),
 
-      data: {
+      datasets: [
+        {
+          data: Object.values(categoryTotals),
 
-        labels:
-          Object.keys(categoryTotals),
-
-        datasets: [
-          {
-
-            data:
-              Object.values(
-                categoryTotals
-              ),
-
-            backgroundColor: [
-              "#8b5cf6",
-              "#06b6d4",
-              "#10b981",
-              "#f59e0b",
-              "#ef4444",
-            ],
-          },
-        ],
-      },
-    });
+          backgroundColor: [
+            "#8b5cf6",
+            "#06b6d4",
+            "#10b981",
+            "#f59e0b",
+            "#ef4444",
+          ],
+        },
+      ],
+    },
+  });
 };

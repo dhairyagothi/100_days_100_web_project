@@ -19,7 +19,12 @@ function App() {
 You can pass any JavaScript value:
 
 ```jsx
-<Avatar imageUrl="/photo.jpg" size={48} isOnline={true} tags={["dev", "react"]} />
+<Avatar
+  imageUrl="/photo.jpg"
+  size={48}
+  isOnline={true}
+  tags={["dev", "react"]}
+/>
 ```
 
 ---
@@ -47,6 +52,7 @@ React's one-way data flow means data flows **down** via props:
 
     <rect x="460" y="25" width="80" height="50" rx="6" class="svg-node" style="opacity: 0.4;" />
     <text x="500" y="55" text-anchor="middle" class="svg-text" style="font-size: 9px;">blocked</text>
+
   </svg>
 </div>
 
@@ -76,11 +82,11 @@ function Button({ label = "Click me", variant = "primary" }) {
 ### PropTypes (optional documentation)
 
 ```jsx
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 Button.propTypes = {
   label: PropTypes.string.isRequired,
-  variant: PropTypes.oneOf(['primary', 'secondary']),
+  variant: PropTypes.oneOf(["primary", "secondary"]),
 };
 ```
 
@@ -106,7 +112,7 @@ function Panel({ title, children }) {
 <Panel title="Settings">
   <p>Adjust your preferences here.</p>
   <button>Save</button>
-</Panel>
+</Panel>;
 ```
 
 ---
@@ -155,9 +161,7 @@ function ProductCard({ name, price, inStock }) {
 }
 
 function App() {
-  return (
-    <ProductCard name="Wireless Mouse" price={29.99} inStock={true} />
-  );
+  return <ProductCard name="Wireless Mouse" price={29.99} inStock={true} />;
 }
 ```
 

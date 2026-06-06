@@ -1,9 +1,9 @@
-const wordDisplay = document.querySelector('.word-display');
-const guessesText = document.querySelector('.guesses-text b');
-const keyboardDiv = document.querySelector('.keyboard');
-const hangmanImage = document.querySelector('.hangman-box img');
-const gameModal = document.querySelector('.game-modal');
-const playAgainBtn = gameModal.querySelector('button');
+const wordDisplay = document.querySelector(".word-display");
+const guessesText = document.querySelector(".guesses-text b");
+const keyboardDiv = document.querySelector(".keyboard");
+const hangmanImage = document.querySelector(".hangman-box img");
+const gameModal = document.querySelector(".game-modal");
+const playAgainBtn = gameModal.querySelector("button");
 
 // variable bnaye hai game shuru krne ke
 let currentWord,
@@ -12,27 +12,28 @@ let currentWord,
   currentHints = [],
   hintLevel = 0;
 
-const hintCountText = document.querySelector('.hint-count b');
+const hintCountText = document.querySelector(".hint-count b");
 
 const maxGuesses = 6;
-const GEMINI_API_KEY = window.GEMINI_API_KEY || '';
+const GEMINI_API_KEY = window.GEMINI_API_KEY || "";
 const updateHint = () => {
-  document.querySelector('.hint-text b').innerText =
-    currentHints[hintLevel] || 'Loading AI hint...';
+  document.querySelector(".hint-text b").innerText =
+    currentHints[hintLevel] || "Loading AI hint...";
 
   const remaining = Math.max(currentHints.length - 1 - hintLevel, 0);
 
   hintCountText.innerText = remaining;
 
-  document.querySelector('.better-hint-btn').disabled = remaining === 0;
+  document.querySelector(".better-hint-btn").disabled = remaining === 0;
 };
 
 const fetchAIHints = async (word) => {
-  const fallbackHint = wordList.find((item) => item.word === word)?.hint || 'Think carefully';
+  const fallbackHint =
+    wordList.find((item) => item.word === word)?.hint || "Think carefully";
 
   try {
     if (!GEMINI_API_KEY) {
-      throw new Error('No Gemini Key');
+      throw new Error("No Gemini Key");
     }
 
     const prompt = `
@@ -61,9 +62,9 @@ Return ONLY JSON:
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           contents: [
@@ -76,7 +77,7 @@ Return ONLY JSON:
             },
           ],
         }),
-      }
+      },
     );
 
     const data = await response.json();
@@ -85,19 +86,19 @@ Return ONLY JSON:
 
     const parsed = JSON.parse(
       raw
-        .replace(/```json/g, '')
-        .replace(/```/g, '')
-        .trim()
+        .replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim(),
     );
 
     currentHints = parsed.hints;
   } catch (err) {
-    console.warn('Gemini unavailable', err);
+    console.warn("Gemini unavailable", err);
 
     currentHints = [
       fallbackHint,
 
-      `Category: ${fallbackHint.split('.')[0]}`,
+      `Category: ${fallbackHint.split(".")[0]}`,
 
       `Strong clue: ${fallbackHint}`,
     ];
@@ -111,14 +112,16 @@ Return ONLY JSON:
 const resetGame = () => {
   correctLetters = [];
   wrongGuessCount = 0;
-  hangmanImage.src = 'images/hangman-0.svg';
+  hangmanImage.src = "images/hangman-0.svg";
   guessesText.innerText = `${wrongGuessCount} / ${maxGuesses}`;
   wordDisplay.innerHTML = currentWord
-    .split('')
+    .split("")
     .map(() => `<li class="letter"></li>`)
-    .join('');
-  keyboardDiv.querySelectorAll('button').forEach((btn) => (btn.disabled = false));
-  gameModal.classList.remove('show');
+    .join("");
+  keyboardDiv
+    .querySelectorAll("button")
+    .forEach((btn) => (btn.disabled = false));
+  gameModal.classList.remove("show");
   document.activeElement.blur();
 };
 
@@ -129,7 +132,7 @@ const getRandomWord = () => {
 
   resetGame();
 
-  currentHints = ['Generating AI hint...'];
+  currentHints = ["Generating AI hint..."];
 
   hintLevel = 0;
 
@@ -139,11 +142,14 @@ const getRandomWord = () => {
 };
 
 const gameOver = (isVictory) => {
-  const modalText = isVictory ? `You found the word:` : 'The correct word was:';
-  gameModal.querySelector('img').src = `images/${isVictory ? 'victory' : 'lost'}.gif`;
-  gameModal.querySelector('h4').innerText = isVictory ? 'Congrats!' : 'Game Over!';
-  gameModal.querySelector('p').innerHTML = `${modalText} <b>${currentWord}</b>`;
-  gameModal.classList.add('show');
+  const modalText = isVictory ? `You found the word:` : "The correct word was:";
+  gameModal.querySelector("img").src =
+    `images/${isVictory ? "victory" : "lost"}.gif`;
+  gameModal.querySelector("h4").innerText = isVictory
+    ? "Congrats!"
+    : "Game Over!";
+  gameModal.querySelector("p").innerHTML = `${modalText} <b>${currentWord}</b>`;
+  gameModal.classList.add("show");
 };
 
 const initGame = (button, clickedLetter) => {
@@ -151,8 +157,8 @@ const initGame = (button, clickedLetter) => {
     [...currentWord].forEach((letter, index) => {
       if (letter === clickedLetter) {
         correctLetters.push(letter);
-        wordDisplay.querySelectorAll('li')[index].innerText = letter;
-        wordDisplay.querySelectorAll('li')[index].classList.add('guessed');
+        wordDisplay.querySelectorAll("li")[index].innerText = letter;
+        wordDisplay.querySelectorAll("li")[index].classList.add("guessed");
       }
     });
   } else {
@@ -172,32 +178,34 @@ const initGame = (button, clickedLetter) => {
 };
 
 for (let i = 97; i <= 122; i++) {
-  const button = document.createElement('button');
+  const button = document.createElement("button");
   button.innerText = String.fromCharCode(i);
   keyboardDiv.appendChild(button);
-  button.addEventListener('click', (e) => initGame(e.target, String.fromCharCode(i)));
+  button.addEventListener("click", (e) =>
+    initGame(e.target, String.fromCharCode(i)),
+  );
 }
 
-const rulesBtn = document.querySelector('.rules-btn');
+const rulesBtn = document.querySelector(".rules-btn");
 
-const rulesModal = document.querySelector('.rules-modal');
+const rulesModal = document.querySelector(".rules-modal");
 
-const closeRules = document.querySelector('.close-rules');
+const closeRules = document.querySelector(".close-rules");
 
-rulesBtn.addEventListener('click', () => {
-  rulesModal.classList.add('show');
+rulesBtn.addEventListener("click", () => {
+  rulesModal.classList.add("show");
 });
 
-closeRules.addEventListener('click', () => {
-  rulesModal.classList.remove('show');
+closeRules.addEventListener("click", () => {
+  rulesModal.classList.remove("show");
 });
 
-rulesModal.addEventListener('click', (e) => {
+rulesModal.addEventListener("click", (e) => {
   if (e.target === rulesModal) {
-    rulesModal.classList.remove('show');
+    rulesModal.classList.remove("show");
   }
 });
-document.querySelector('.better-hint-btn').addEventListener('click', () => {
+document.querySelector(".better-hint-btn").addEventListener("click", () => {
   if (hintLevel < currentHints.length - 1) {
     hintLevel++;
 
@@ -205,18 +213,20 @@ document.querySelector('.better-hint-btn').addEventListener('click', () => {
   }
 });
 getRandomWord();
-playAgainBtn.addEventListener('click', getRandomWord);
-document.addEventListener('keydown', (e) => {
+playAgainBtn.addEventListener("click", getRandomWord);
+document.addEventListener("keydown", (e) => {
   const key = e.key.toLowerCase();
 
   // allow only letters
   if (!/^[a-z]$/.test(key)) return;
 
   // stop input if modal open
-  if (gameModal.classList.contains('show')) return;
+  if (gameModal.classList.contains("show")) return;
 
   // directly click matching button
-  const targetBtn = [...keyboardDiv.children].find((btn) => btn.innerText.toLowerCase() === key);
+  const targetBtn = [...keyboardDiv.children].find(
+    (btn) => btn.innerText.toLowerCase() === key,
+  );
 
   if (targetBtn && !targetBtn.disabled) {
     targetBtn.click();

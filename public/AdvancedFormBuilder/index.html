@@ -1,53 +1,54 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Advanced Form Builder</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced Form Builder</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Advanced Form Builder</h1>
+    </header>
 
-<header>
-  <h1>Advanced Form Builder</h1>
-</header>
+    <div class="container">
+      <!-- Builder Panel -->
+      <div class="builder">
+        <h2>Add Field</h2>
 
-<div class="container">
+        <input type="text" id="labelInput" placeholder="Field Label" />
 
-  <!-- Builder Panel -->
-  <div class="builder">
-    <h2>Add Field</h2>
+        <select id="typeInput">
+          <option value="text">Text</option>
+          <option value="email">Email</option>
+          <option value="number">Number</option>
+          <option value="select">Select</option>
+          <option value="checkbox">Checkbox</option>
+        </select>
 
-    <input type="text" id="labelInput" placeholder="Field Label">
+        <input
+          type="text"
+          id="optionsInput"
+          placeholder="Options (comma separated for select)"
+        />
 
-    <select id="typeInput">
-      <option value="text">Text</option>
-      <option value="email">Email</option>
-      <option value="number">Number</option>
-      <option value="select">Select</option>
-      <option value="checkbox">Checkbox</option>
-    </select>
+        <button id="addField">Add Field</button>
+      </div>
 
-    <input type="text" id="optionsInput" placeholder="Options (comma separated for select)">
+      <!-- Live Preview -->
+      <div class="preview">
+        <h2>Live Form Preview</h2>
+        <form id="formPreview"></form>
+        <button id="generateCode">Generate HTML</button>
+      </div>
+    </div>
 
-    <button id="addField">Add Field</button>
-  </div>
+    <!-- Output -->
+    <div class="output">
+      <h2>Generated HTML</h2>
+      <textarea id="codeOutput" readonly></textarea>
+    </div>
 
-  <!-- Live Preview -->
-  <div class="preview">
-    <h2>Live Form Preview</h2>
-    <form id="formPreview"></form>
-    <button id="generateCode">Generate HTML</button>
-  </div>
-
-</div>
-
-<!-- Output -->
-<div class="output">
-  <h2>Generated HTML</h2>
-  <textarea id="codeOutput" readonly></textarea>
-</div>
-
-<script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>

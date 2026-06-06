@@ -2,17 +2,13 @@
 
 const historyContainer = document.getElementById("historyList");
 
-function updateAppointmentStats(){
+function updateAppointmentStats() {
+  const totalAppointments = document.querySelectorAll("#historyList li").length;
 
-    const totalAppointments =
-        document.querySelectorAll("#historyList li").length;
+  const statsBox = document.getElementById("appointmentStats");
 
-    const statsBox =
-        document.getElementById("appointmentStats");
-
-    if(statsBox){
-
-        statsBox.innerHTML = `
+  if (statsBox) {
+    statsBox.innerHTML = `
             <div class="appointment-stat-card">
 
                 <h3>📅 Total Appointments</h3>
@@ -21,27 +17,20 @@ function updateAppointmentStats(){
 
             </div>
         `;
-    }
+  }
 }
-
 
 // Run initially
 updateAppointmentStats();
 
-
 // Observe History Changes Automatically
 
 const observer = new MutationObserver(() => {
-
-    updateAppointmentStats();
-
+  updateAppointmentStats();
 });
 
-if(historyContainer){
-
-    observer.observe(historyContainer, {
-
-        childList:true
-    });
-
+if (historyContainer) {
+  observer.observe(historyContainer, {
+    childList: true,
+  });
 }

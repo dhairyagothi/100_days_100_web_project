@@ -2,7 +2,12 @@
   "html": [
     {
       "question": "What does HTML stand for?",
-      "options": ["Hyper Text Markup Language", "Hyper Transfer Markup Language", "Home Tool Markup Language", "High Text Machine Language"],
+      "options": [
+        "Hyper Text Markup Language",
+        "Hyper Transfer Markup Language",
+        "Home Tool Markup Language",
+        "High Text Machine Language"
+      ],
       "answer": 0
     },
     {
@@ -42,7 +47,12 @@
     },
     {
       "question": "What does the alt attribute provide?",
-      "options": ["Image style", "Alternative text", "Image size", "Image position"],
+      "options": [
+        "Image style",
+        "Alternative text",
+        "Image size",
+        "Image position"
+      ],
       "answer": 1
     },
     {
@@ -143,12 +153,22 @@
     },
     {
       "question": "What does DOM stand for?",
-      "options": ["Document Object Model", "Data Object Model", "Document Order Method", "Display Object Model"],
+      "options": [
+        "Document Object Model",
+        "Data Object Model",
+        "Document Order Method",
+        "Display Object Model"
+      ],
       "answer": 0
     },
     {
       "question": "Which method selects an element by ID?",
-      "options": ["querySelector()", "getElementById()", "getElements()", "findElement()"],
+      "options": [
+        "querySelector()",
+        "getElementById()",
+        "getElements()",
+        "findElement()"
+      ],
       "answer": 1
     },
     {
@@ -166,7 +186,12 @@
     },
     {
       "question": "What does JSX stand for?",
-      "options": ["Java Syntax XML", "JavaScript XML", "JSON XML", "Java Extended XML"],
+      "options": [
+        "Java Syntax XML",
+        "JavaScript XML",
+        "JSON XML",
+        "Java Extended XML"
+      ],
       "answer": 1
     },
     {

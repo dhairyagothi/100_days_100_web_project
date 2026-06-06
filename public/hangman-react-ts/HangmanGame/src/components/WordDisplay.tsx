@@ -10,15 +10,26 @@ function isLetter(ch: string) {
   return /^[a-zA-Z]$/.test(ch);
 }
 
-export default function WordDisplay({ word, guessedLetters, revealFirst = false }: Props) {
+export default function WordDisplay({
+  word,
+  guessedLetters,
+  revealFirst = false,
+}: Props) {
   const first = word[0]?.toLowerCase();
 
   return (
-    <div className="word-display" aria-live="polite" role="group" aria-label="Secret word">
+    <div
+      className="word-display"
+      aria-live="polite"
+      role="group"
+      aria-label="Secret word"
+    >
       {word.split("").map((ch, i) => {
         const lower = ch.toLowerCase();
         const isAlpha = isLetter(ch);
-        const revealed = isAlpha && (guessedLetters.includes(lower) || (revealFirst && lower === first));
+        const revealed =
+          isAlpha &&
+          (guessedLetters.includes(lower) || (revealFirst && lower === first));
         const displayChar = !isAlpha ? ch : revealed ? ch : " ";
 
         return (
@@ -41,4 +52,3 @@ export default function WordDisplay({ word, guessedLetters, revealFirst = false 
     </div>
   );
 }
-

@@ -3,6 +3,7 @@
 A classic arcade-style Breakout game built using HTML, CSS, and JavaScript where players control a paddle to bounce the ball and destroy bricks while aiming for the highest score.
 
 ## Features
+
 - Smooth paddle and ball movement
 - Brick collision detection
 - Score tracking system
@@ -18,18 +19,22 @@ A classic arcade-style Breakout game built using HTML, CSS, and JavaScript where
 4. The game resets when the ball falls below the paddle.
 
 ## Technologies Used
+
 - HTML
 - CSS
 - JavaScript
 
 ## How to Run
+
 1. Clone or download the project files
 2. Open the project folder
 3. Launch index.html in any modern web browser
 4. Use the keyboard controls to start playing
 
 ## Screenshots
+
 ![Breakout game](image.png)
 
 ## Author
+
 @Ayontikapal

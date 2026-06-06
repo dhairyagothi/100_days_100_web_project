@@ -69,6 +69,7 @@ Choose one style and stay consistent across the team.
 
     <rect x="420" y="80" width="120" height="35" rx="6" class="svg-node" />
     <text x="480" y="102" text-anchor="middle" class="svg-text">services/</text>
+
   </svg>
 </div>
 
@@ -78,9 +79,9 @@ Choose one style and stay consistent across the team.
 
 ```jsx
 // Button.jsx
-import './Button.css';
+import "./Button.css";
 
-export function Button({ children, onClick, variant = 'primary' }) {
+export function Button({ children, onClick, variant = "primary" }) {
   return (
     <button className={`btn btn-${variant}`} onClick={onClick}>
       {children}
@@ -89,35 +90,35 @@ export function Button({ children, onClick, variant = 'primary' }) {
 }
 ```
 
-| Pattern | When to use |
-| :--- | :--- |
-| **Named export** | Multiple exports per file, tree-shaking clarity |
+| Pattern            | When to use                                      |
+| :----------------- | :----------------------------------------------- |
+| **Named export**   | Multiple exports per file, tree-shaking clarity  |
 | **Default export** | Single main component per file (common in pages) |
-| **Colocated CSS** | Component-specific styles next to component |
-| **CSS Modules** | Scoped class names (`Button.module.css`) |
+| **Colocated CSS**  | Component-specific styles next to component      |
+| **CSS Modules**    | Scoped class names (`Button.module.css`)         |
 
 ---
 
 ## 4. Separating Concerns
 
-| Layer | Responsibility |
-| :--- | :--- |
-| **Components** | UI and user interaction |
-| **Hooks** | Reusable stateful logic |
-| **Services** | HTTP/API communication |
-| **Utils** | Formatting, validation helpers (no React imports) |
+| Layer          | Responsibility                                    |
+| :------------- | :------------------------------------------------ |
+| **Components** | UI and user interaction                           |
+| **Hooks**      | Reusable stateful logic                           |
+| **Services**   | HTTP/API communication                            |
+| **Utils**      | Formatting, validation helpers (no React imports) |
 
 ```jsx
 // services/userApi.js
 export async function fetchUser(id) {
   const res = await fetch(`/api/users/${id}`);
-  if (!res.ok) throw new Error('Failed to fetch user');
+  if (!res.ok) throw new Error("Failed to fetch user");
   return res.json();
 }
 
 // components/UserCard.jsx
-import { useEffect, useState } from 'react';
-import { fetchUser } from '../services/userApi';
+import { useEffect, useState } from "react";
+import { fetchUser } from "../services/userApi";
 ```
 
 ---

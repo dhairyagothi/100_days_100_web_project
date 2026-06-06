@@ -17,7 +17,10 @@ addFieldBtn.addEventListener("click", () => {
     id: Date.now(),
     label,
     type,
-    options: options.split(",").map(o => o.trim()).filter(Boolean)
+    options: options
+      .split(",")
+      .map((o) => o.trim())
+      .filter(Boolean),
   };
 
   fields.push(field);
@@ -31,7 +34,7 @@ addFieldBtn.addEventListener("click", () => {
 function renderForm() {
   formPreview.innerHTML = "";
 
-  fields.forEach(field => {
+  fields.forEach((field) => {
     const wrapper = document.createElement("div");
     wrapper.className = "form-field";
 
@@ -43,7 +46,7 @@ function renderForm() {
 
     if (field.type === "select") {
       input = document.createElement("select");
-      field.options.forEach(opt => {
+      field.options.forEach((opt) => {
         const option = document.createElement("option");
         option.textContent = opt;
         input.appendChild(option);
@@ -62,7 +65,7 @@ function renderForm() {
     del.textContent = "Delete";
     del.className = "delete-btn";
     del.onclick = () => {
-      fields = fields.filter(f => f.id !== field.id);
+      fields = fields.filter((f) => f.id !== field.id);
       renderForm();
     };
 
@@ -75,12 +78,12 @@ function renderForm() {
 generateBtn.addEventListener("click", () => {
   let html = "<form>\\n";
 
-  fields.forEach(field => {
+  fields.forEach((field) => {
     html += `  <label>${field.label}</label>\\n`;
 
     if (field.type === "select") {
       html += "  <select>\\n";
-      field.options.forEach(opt => {
+      field.options.forEach((opt) => {
         html += `    <option>${opt}</option>\\n`;
       });
       html += "  </select>\\n";

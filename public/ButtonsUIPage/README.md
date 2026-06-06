@@ -7,30 +7,35 @@ A comprehensive showcase of modern, interactive button styles and animations. Th
 ### Button Types
 
 #### 1. **Glow Buttons**
+
 - **Primary Glow** - Blue glowing button with smooth hover effect
 - **Success Glow** - Green glowing button for positive actions
 - **Danger Glow** - Red glowing button for destructive actions
 - **Neon Glow** - Neon green transparent button with inset glow effect
 
 #### 2. **Gradient Buttons**
+
 - **Sunrise** - Orange to red gradient with directional shift on hover
 - **Ocean** - Blue to cyan gradient transition
 - **Purple Dream** - Purple gradient with smooth color transition
 - **Animated** - Dynamic gradient animation that continuously shifts colors
 
 #### 3. **3D Buttons**
+
 - **3D Blue** - Blue button with realistic 3D shadow depth
 - **3D Green** - Green button with layered 3D effect
 - **3D Red** - Red button with 3D press animation
 - **Multi-Layer 3D** - Orange button with multiple shadow layers for enhanced depth
 
 #### 4. **Outline Buttons**
+
 - **Outline Primary** - Blue outlined button with fill on hover
 - **Outline Success** - Green outlined button
 - **Outline Danger** - Red outlined button
 - **Gradient Outline** - Gradient outlined button with animated text color
 
 #### 5. **Animation Buttons**
+
 - **Ripple Effect** - Classic ripple animation expanding from center
 - **Slide Right** - Background slides in from left on hover
 - **Bounce** - Button bounces on hover interaction
@@ -64,12 +69,14 @@ ButtonsUIPage/
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Any modern web browser (Chrome, Firefox, Safari, Edge)
 - No additional dependencies required
 
 ### Installation & Setup
 
 1. **Clone or Download the Repository**
+
    ```bash
    git clone <repository-url>
    cd 100_days_100_web_project/public/ButtonsUIPage
@@ -87,6 +94,7 @@ ButtonsUIPage/
 ## 💻 Usage
 
 ### Viewing the Collection
+
 Simply open `index.html` in your browser to see all button styles displayed in organized sections. Hover over buttons to see interactive effects.
 
 ### Integrating into Your Project
@@ -96,6 +104,7 @@ Simply open `index.html` in your browser to see all button styles displayed in o
    - Paste into your project's CSS file
 
 2. **HTML Implementation**
+
    ```html
    <!-- Example: Glow Button -->
    <button class="glow-primary">Click Me</button>
@@ -116,52 +125,67 @@ Simply open `index.html` in your browser to see all button styles displayed in o
 ## 🎯 Key CSS Techniques Demonstrated
 
 ### 1. **Box Shadow for Glow Effects**
+
 ```css
 box-shadow: 0 0 20px rgba(65, 88, 208, 0.5);
 ```
 
 ### 2. **Gradient Backgrounds**
+
 ```css
-background: linear-gradient(45deg, #FF512F, #F09819);
+background: linear-gradient(45deg, #ff512f, #f09819);
 ```
 
 ### 3. **CSS Animations**
+
 ```css
 @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 ```
 
 ### 4. **3D Effects using Box Shadow**
+
 ```css
-box-shadow: 0 2px #d68910, 0 4px #b77408, 0 6px #986000;
+box-shadow:
+  0 2px #d68910,
+  0 4px #b77408,
+  0 6px #986000;
 ```
 
 ### 5. **Pseudo-elements for Animation**
+
 ```css
 button::before {
-    content: '';
-    position: absolute;
-    /* Animation implementation */
+  content: "";
+  position: absolute;
+  /* Animation implementation */
 }
 ```
 
 ## 🎨 Color Palette
 
-| Color | Hex Code | Usage |
-|-------|----------|-------|
-| Primary Blue | `#4158D0` | Primary actions |
+| Color         | Hex Code  | Usage                    |
+| ------------- | --------- | ------------------------ |
+| Primary Blue  | `#4158D0` | Primary actions          |
 | Success Green | `#06D6A0` | Success/Positive actions |
-| Danger Red | `#EF476F` | Destructive actions |
-| Neon Green | `#00ff88` | Modern/Tech effects |
-| Orange/Warm | `#F09819` | Warm gradients |
-| Purple | `#8e44ad` | Accent effects |
+| Danger Red    | `#EF476F` | Destructive actions      |
+| Neon Green    | `#00ff88` | Modern/Tech effects      |
+| Orange/Warm   | `#F09819` | Warm gradients           |
+| Purple        | `#8e44ad` | Accent effects           |
 
 ## 📱 Responsiveness
 
 The button collection uses a responsive grid layout that adapts to different screen sizes:
+
 - **Desktop** - 4 buttons per row
 - **Tablet** - 2-3 buttons per row
 - **Mobile** - 1 button per row
@@ -181,23 +205,26 @@ We welcome contributions! Here's how you can help:
 ### Adding New Buttons
 
 1. **Fork the repository** and create a new branch
+
    ```bash
    git checkout -b feature/new-button-style
    ```
 
 2. **Add your button styles to `style.css`**
+
    ```css
    .your-new-button {
-       background: #your-color;
-       /* Your custom styles */
+     background: #your-color;
+     /* Your custom styles */
    }
    ```
 
 3. **Add corresponding HTML in `index.html`**
+
    ```html
    <div class="button-item">
-       <button class="your-new-button">Your Button</button>
-       <span class="button-label">Your Label</span>
+     <button class="your-new-button">Your Button</button>
+     <span class="button-label">Your Label</span>
    </div>
    ```
 
@@ -209,6 +236,7 @@ We welcome contributions! Here's how you can help:
    - Any browser compatibility notes
 
 ### Guidelines for Contributions
+
 - Follow the existing code style and naming conventions
 - Ensure all animations are smooth (use 0.3s - 0.6s transition times)
 - Test on multiple browsers
@@ -224,12 +252,14 @@ We welcome contributions! Here's how you can help:
 ## 🎓 Learning Resources
 
 ### CSS Concepts Used
+
 - [MDN: CSS Gradients](https://developer.mozilla.org/en-US/docs/Web/CSS/gradient)
 - [MDN: CSS Animations](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Animations)
 - [MDN: CSS Transforms](https://developer.mozilla.org/en-US/docs/Web/CSS/transform)
 - [MDN: Box-shadow](https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow)
 
 ### Design References
+
 - Explore modern button designs on [Dribbble](https://dribbble.com/)
 - Check UI/UX principles on [Nielsen Norman Group](https://www.nngroup.com/)
 
@@ -244,6 +274,7 @@ This Button UI Collection is a contribution to the 100 Days 100 Web Projects ini
 ## 📞 Questions & Support
 
 For questions, issues, or suggestions:
+
 1. Open an issue on the GitHub repository
 2. Check existing issues for similar problems
 3. Follow the CONTRIBUTING.md guidelines in the main repository

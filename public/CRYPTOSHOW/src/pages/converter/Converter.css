@@ -50,7 +50,7 @@
   text-transform: uppercase;
 }
 
-.converter-card input[type=text] {
+.converter-card input[type="text"] {
   width: 100%;
   padding: 12px 16px;
   background: var(--surface);
@@ -63,7 +63,7 @@
   transition: border-color 0.2s;
 }
 
-.converter-card input[type=text]:focus {
+.converter-card input[type="text"]:focus {
   border-color: var(--accent);
 }
 
@@ -145,7 +145,13 @@
 }
 
 @media (max-width: 480px) {
-  .converter-card { padding: 28px 20px; }
-  .select-row { grid-template-columns: 1fr; }
-  .select-divider { display: none; }
+  .converter-card {
+    padding: 28px 20px;
+  }
+  .select-row {
+    grid-template-columns: 1fr;
+  }
+  .select-divider {
+    display: none;
+  }
 }

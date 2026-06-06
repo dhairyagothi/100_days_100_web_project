@@ -81,7 +81,10 @@ body {
   padding: 0.5rem 0.75rem;
   border-radius: 999px;
   cursor: pointer;
-  transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease;
 }
 
 .tab:hover {
@@ -118,7 +121,11 @@ body {
 .panel {
   border: 1px solid var(--border);
   border-radius: 1rem;
-  background: linear-gradient(165deg, rgba(21, 33, 63, 0.94), rgba(12, 20, 39, 0.92));
+  background: linear-gradient(
+    165deg,
+    rgba(21, 33, 63, 0.94),
+    rgba(12, 20, 39, 0.92)
+  );
   box-shadow: 0 14px 30px var(--shadow);
 }
 
@@ -350,7 +357,9 @@ body {
 
 .btn.is-on {
   border-color: #67e8f9;
-  box-shadow: 0 0 0 1px rgba(103, 232, 249, 0.35), 0 10px 22px rgba(14, 165, 233, 0.35);
+  box-shadow:
+    0 0 0 1px rgba(103, 232, 249, 0.35),
+    0 10px 22px rgba(14, 165, 233, 0.35);
 }
 
 #play-btn.is-on {

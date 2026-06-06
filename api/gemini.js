@@ -109,8 +109,11 @@ module.exports = async (req, res) => {
 
     const data = await response.json().catch(() => null);
     if (!response.ok) {
-      const message = data?.error?.message || `Gemini API error (${response.status})`;
-      return res.status(response.status).json({ error: message, details: data });
+      const message =
+        data?.error?.message || `Gemini API error (${response.status})`;
+      return res
+        .status(response.status)
+        .json({ error: message, details: data });
     }
 
     return res.status(200).json(data);

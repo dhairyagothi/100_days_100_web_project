@@ -62,6 +62,7 @@ input.addEventListener("input", () => {
 ### Task:
 
 Create a script that:
+
 - selects `#counter` (a span)
 - selects `#incrementBtn` (a button)
 - increments the counter by 1 on each click
@@ -69,8 +70,7 @@ Create a script that:
 ##### Solution
 
 ```html
-<span id="counter">0</span>
-<button id="incrementBtn">Increment</button>
+<span id="counter">0</span> <button id="incrementBtn">Increment</button>
 ```
 
 ```javascript
@@ -84,4 +84,3 @@ incrementBtn.addEventListener("click", () => {
   counterSpan.textContent = String(count);
 });
 ```
-

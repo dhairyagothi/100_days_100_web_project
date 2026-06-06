@@ -1,8 +1,8 @@
-const htmlCode = document.getElementById('htmlCode');
-const cssCode = document.getElementById('cssCode');
-const jsCode = document.getElementById('jsCode');
-const runBtn = document.getElementById('runBtn');
-const previewFrame = document.getElementById('previewFrame');
+const htmlCode = document.getElementById("htmlCode");
+const cssCode = document.getElementById("cssCode");
+const jsCode = document.getElementById("jsCode");
+const runBtn = document.getElementById("runBtn");
+const previewFrame = document.getElementById("previewFrame");
 
 function run() {
   const code = `
@@ -17,12 +17,12 @@ function run() {
     </body>
     </html>
   `;
-  
-  const blob = new Blob([code], { type: 'text/html' });
+
+  const blob = new Blob([code], { type: "text/html" });
   previewFrame.src = URL.createObjectURL(blob);
 }
 
-runBtn.addEventListener('click', run);
+runBtn.addEventListener("click", run);
 
 // Initial live run on page load
-window.addEventListener('DOMContentLoaded', run);
+window.addEventListener("DOMContentLoaded", run);

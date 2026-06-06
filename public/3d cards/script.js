@@ -1,9 +1,9 @@
-const slider = document.getElementById('slider');
-const directionBtn = document.getElementById('directionBtn');
-const pauseBtn = document.getElementById('pauseBtn');
-const themeBtn = document.getElementById('themeBtn');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
+const slider = document.getElementById("slider");
+const directionBtn = document.getElementById("directionBtn");
+const pauseBtn = document.getElementById("pauseBtn");
+const themeBtn = document.getElementById("themeBtn");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
 
 let isPaused = false;
 let isReversed = false;
@@ -14,44 +14,44 @@ let isReversed = false;
 
 const dogs = [
   {
-    name: 'Buddy',
-    image: 'Images/img1.jpg',
-    color: 'rgba(235, 172, 60, 0.22)', // Warm Golden
+    name: "Buddy",
+    image: "Images/img1.jpg",
+    color: "rgba(235, 172, 60, 0.22)", // Warm Golden
   },
   {
-    name: 'Charlie',
-    image: 'Images/img2.jpg',
-    color: 'rgba(79, 141, 255, 0.22)', // Sky Blue
+    name: "Charlie",
+    image: "Images/img2.jpg",
+    color: "rgba(79, 141, 255, 0.22)", // Sky Blue
   },
   {
-    name: 'Rocky',
-    image: 'Images/img3.jpg',
-    color: 'rgba(46, 204, 113, 0.22)', // Emerald Green
+    name: "Rocky",
+    image: "Images/img3.jpg",
+    color: "rgba(46, 204, 113, 0.22)", // Emerald Green
   },
   {
-    name: 'Max',
-    image: 'Images/img4.jpg',
-    color: 'rgba(231, 76, 60, 0.22)', // Amber Red
+    name: "Max",
+    image: "Images/img4.jpg",
+    color: "rgba(231, 76, 60, 0.22)", // Amber Red
   },
   {
-    name: 'Leo',
-    image: 'Images/img5.jpg',
-    color: 'rgba(155, 89, 182, 0.22)', // Violet Purple
+    name: "Leo",
+    image: "Images/img5.jpg",
+    color: "rgba(155, 89, 182, 0.22)", // Violet Purple
   },
   {
-    name: 'Luna',
-    image: 'Images/img6.jpg',
-    color: 'rgba(255, 99, 132, 0.22)', // Coral Pink
+    name: "Luna",
+    image: "Images/img6.jpg",
+    color: "rgba(255, 99, 132, 0.22)", // Coral Pink
   },
   {
-    name: 'Daisy',
-    image: 'Images/img7.jpg',
-    color: 'rgba(241, 196, 15, 0.22)', // Golden Yellow
+    name: "Daisy",
+    image: "Images/img7.jpg",
+    color: "rgba(241, 196, 15, 0.22)", // Golden Yellow
   },
   {
-    name: 'Cooper',
-    image: 'Images/img8.jpg',
-    color: 'rgba(26, 188, 156, 0.22)', // Soft Teal
+    name: "Cooper",
+    image: "Images/img8.jpg",
+    color: "rgba(26, 188, 156, 0.22)", // Soft Teal
   },
 ];
 
@@ -60,19 +60,19 @@ const dogs = [
 ========================= */
 
 function generateGallery() {
-  slider.innerHTML = '';
+  slider.innerHTML = "";
 
   const totalCards = dogs.length;
   const angleStep = 360 / totalCards;
 
   // Let CSS know the dynamic angle step
-  slider.style.setProperty('--angle-step', `${angleStep}deg`);
+  slider.style.setProperty("--angle-step", `${angleStep}deg`);
 
   dogs.forEach((dog, index) => {
-    const card = document.createElement('span');
+    const card = document.createElement("span");
 
     // Set custom property index for CSS transform math
-    card.style.setProperty('--i', index);
+    card.style.setProperty("--i", index);
 
     card.innerHTML = `
   <div class="image-wrapper">
@@ -111,25 +111,25 @@ generateGallery();
    PHYSICS & INTERACTIVE ENGINE
 ========================= */
 
-let currentAngle = 0;      // Current absolute rotation of the carousel
-let targetAngle = 0;       // Easing target rotation
-let isDragging = false;    // Whether user is dragging
-let startX = 0;            // Drag start coordinate
-let startAngle = 0;        // Angle when drag started
-let velocity = 0;          // Momentum rotation velocity
-let lastX = 0;             // Last coordinate to calculate delta velocity
+let currentAngle = 0; // Current absolute rotation of the carousel
+let targetAngle = 0; // Easing target rotation
+let isDragging = false; // Whether user is dragging
+let startX = 0; // Drag start coordinate
+let startAngle = 0; // Angle when drag started
+let velocity = 0; // Momentum rotation velocity
+let lastX = 0; // Last coordinate to calculate delta velocity
 let lastTime = performance.now();
 let isTransitioning = false; // Stepping transition active
 const autoRotationSpeed = 18; // Degrees rotated per second (approx 20s per full spin)
 
 // Stop basic CSS rotate animation so JS engine has full controls
-slider.style.animation = 'none';
+slider.style.animation = "none";
 
 // Make sure mobile swiping does not trigger default scrolling behaviors on the scene
-const scene = document.querySelector('.scene');
+const scene = document.querySelector(".scene");
 if (scene) {
-  scene.style.touchAction = 'none';
-  scene.style.cursor = 'grab';
+  scene.style.touchAction = "none";
+  scene.style.cursor = "grab";
 }
 
 function updateGalleryStates() {
@@ -141,18 +141,21 @@ function updateGalleryStates() {
   const activeIndex = Math.round(normalizedAngle / angleStep) % totalCards;
 
   // 1. Mark the active facing card for the Cinema Focusing effect
-  const cards = slider.querySelectorAll('span');
+  const cards = slider.querySelectorAll("span");
   cards.forEach((card, index) => {
     if (index === activeIndex) {
-      card.classList.add('active-card');
+      card.classList.add("active-card");
     } else {
-      card.classList.remove('active-card');
+      card.classList.remove("active-card");
     }
   });
 
   // 2. Dynamically transition ambient light background glow to matching card color
   if (dogs[activeIndex]) {
-    document.documentElement.style.setProperty('--ambient-glow', dogs[activeIndex].color);
+    document.documentElement.style.setProperty(
+      "--ambient-glow",
+      dogs[activeIndex].color,
+    );
   }
 }
 
@@ -204,18 +207,18 @@ requestAnimationFrame(physicsLoop);
 ========================= */
 
 if (scene) {
-  scene.addEventListener('pointerdown', (e) => {
+  scene.addEventListener("pointerdown", (e) => {
     isDragging = true;
     isTransitioning = false;
     startX = e.clientX;
     startAngle = currentAngle;
     lastX = e.clientX;
     velocity = 0;
-    scene.style.cursor = 'grabbing';
+    scene.style.cursor = "grabbing";
     e.preventDefault();
   });
 
-  window.addEventListener('pointermove', (e) => {
+  window.addEventListener("pointermove", (e) => {
     if (!isDragging) return;
 
     const currentX = e.clientX;
@@ -234,11 +237,11 @@ if (scene) {
   const endDrag = () => {
     if (!isDragging) return;
     isDragging = false;
-    scene.style.cursor = 'grab';
+    scene.style.cursor = "grab";
   };
 
-  window.addEventListener('pointerup', endDrag);
-  window.addEventListener('pointercancel', endDrag);
+  window.addEventListener("pointerup", endDrag);
+  window.addEventListener("pointercancel", endDrag);
 }
 
 /* =========================
@@ -250,25 +253,27 @@ const angleStep = 360 / totalCards;
 
 function stepCarousel(direction) {
   isTransitioning = true;
-  
+
   // Snap target rotation strictly to nearest card division to prevent floating drift
   const nearestAngle = Math.round(targetAngle / angleStep) * angleStep;
-  
+
   // direction: -1 for next, 1 for prev
-  targetAngle = nearestAngle - (direction * angleStep);
+  targetAngle = nearestAngle - direction * angleStep;
   velocity = 0;
 }
 
-prevBtn.addEventListener('click', () => stepCarousel(1));
-nextBtn.addEventListener('click', () => stepCarousel(-1));
+prevBtn.addEventListener("click", () => stepCarousel(1));
+nextBtn.addEventListener("click", () => stepCarousel(-1));
 
 /* =========================
    PLAY / PAUSE BUTTON
 ========================= */
 
-pauseBtn.addEventListener('click', () => {
+pauseBtn.addEventListener("click", () => {
   isPaused = !isPaused;
-  pauseBtn.querySelector('.btn-label').textContent = isPaused ? 'Resume Rotation' : 'Pause Rotation';
+  pauseBtn.querySelector(".btn-label").textContent = isPaused
+    ? "Resume Rotation"
+    : "Pause Rotation";
   isTransitioning = false;
 });
 
@@ -276,9 +281,11 @@ pauseBtn.addEventListener('click', () => {
    DIRECTION BUTTON
 ========================= */
 
-directionBtn.addEventListener('click', () => {
+directionBtn.addEventListener("click", () => {
   isReversed = !isReversed;
-  directionBtn.querySelector('.btn-label').textContent = isReversed ? 'Normal Rotation' : 'Reverse Rotation';
+  directionBtn.querySelector(".btn-label").textContent = isReversed
+    ? "Normal Rotation"
+    : "Reverse Rotation";
 });
 
 /* =========================
@@ -286,31 +293,35 @@ directionBtn.addEventListener('click', () => {
 ========================= */
 
 function applyTheme(theme) {
-  const isLight = theme === 'light';
+  const isLight = theme === "light";
 
-  document.body.classList.toggle('light-theme', isLight);
+  document.body.classList.toggle("light-theme", isLight);
 
-  themeBtn.querySelector('.btn-label').textContent = isLight ? 'Dark Mode' : 'Light Mode';
+  themeBtn.querySelector(".btn-label").textContent = isLight
+    ? "Dark Mode"
+    : "Light Mode";
 }
 
 /* Load saved theme on page load */
-const savedTheme = localStorage.getItem('gallery-theme') || 'dark';
+const savedTheme = localStorage.getItem("gallery-theme") || "dark";
 
 applyTheme(savedTheme);
 
 /* Theme toggle button */
-themeBtn.addEventListener('click', () => {
-  document.body.classList.toggle('light-theme');
-  const isLight = document.body.classList.contains('light-theme');
-  themeBtn.querySelector('.btn-label').textContent = isLight ? 'Dark Mode' : 'Light Mode';
+themeBtn.addEventListener("click", () => {
+  document.body.classList.toggle("light-theme");
+  const isLight = document.body.classList.contains("light-theme");
+  themeBtn.querySelector(".btn-label").textContent = isLight
+    ? "Dark Mode"
+    : "Light Mode";
 });
 
 /* =========================
    BUTTON HOVER MAGNETIC EFFECT
 ========================= */
 
-document.querySelectorAll('.ctrl-btn').forEach((btn) => {
-  btn.addEventListener('mousemove', (e) => {
+document.querySelectorAll(".ctrl-btn").forEach((btn) => {
+  btn.addEventListener("mousemove", (e) => {
     const rect = btn.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
@@ -318,8 +329,8 @@ document.querySelectorAll('.ctrl-btn').forEach((btn) => {
     const dy = (e.clientY - cy) / (rect.height / 2);
     const pull = 6;
 
-    btn.style.setProperty('--mx', `${dx * pull}px`);
-    btn.style.setProperty('--my', `${dy * pull}px`);
+    btn.style.setProperty("--mx", `${dx * pull}px`);
+    btn.style.setProperty("--my", `${dy * pull}px`);
 
     btn.style.transform = `
       translateY(-5px)
@@ -328,7 +339,7 @@ document.querySelectorAll('.ctrl-btn').forEach((btn) => {
     `;
   });
 
-  btn.addEventListener('mouseleave', () => {
-    btn.style.transform = '';
+  btn.addEventListener("mouseleave", () => {
+    btn.style.transform = "";
   });
 });

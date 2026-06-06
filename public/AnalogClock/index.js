@@ -226,8 +226,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function finishTimer() {
     clearInterval(timerInterval);
     timerInterval = null;
-timerRemaining = 0;
-renderTimer();
+    timerRemaining = 0;
+    renderTimer();
     timerUpMsg.style.display = "flex";
 
     if (timerSound) {
@@ -244,20 +244,11 @@ renderTimer();
 
     stopTimerSound();
 
-    const h = Math.max(
-  0,
-  Math.min(23, parseInt(hoursInput.value) || 0)
-);
+    const h = Math.max(0, Math.min(23, parseInt(hoursInput.value) || 0));
 
-const m = Math.max(
-  0,
-  Math.min(59, parseInt(minutesInput.value) || 0)
-);
+    const m = Math.max(0, Math.min(59, parseInt(minutesInput.value) || 0));
 
-const s = Math.max(
-  0,
-  Math.min(59, parseInt(secondsInput.value) || 0)
-);
+    const s = Math.max(0, Math.min(59, parseInt(secondsInput.value) || 0));
 
     timerRemaining = h * 3600 + m * 60 + s;
 
@@ -267,46 +258,46 @@ const s = Math.max(
       return;
     }
 
-       timerPaused = false;
+    timerPaused = false;
 
-if (pauseBtn) {
-  pauseBtn.innerText = "Pause";
-}
+    if (pauseBtn) {
+      pauseBtn.innerText = "Pause";
+    }
 
-renderTimer();
-tickCountdown();
-  }
-function tickCountdown() {
-  clearInterval(timerInterval);
-
-  renderTimer();
-
-  timerInterval = setInterval(() => {
-    if (timerPaused) return;
-
-    timerRemaining = Math.max(0, timerRemaining - 1);
+    renderTimer();
+    tickCountdown();
+  };
+  function tickCountdown() {
+    clearInterval(timerInterval);
 
     renderTimer();
 
-    if (timerRemaining === 0) {
-      finishTimer();
-    }
-  }, 1000);
-}
+    timerInterval = setInterval(() => {
+      if (timerPaused) return;
+
+      timerRemaining = Math.max(0, timerRemaining - 1);
+
+      renderTimer();
+
+      if (timerRemaining === 0) {
+        finishTimer();
+      }
+    }, 1000);
+  }
 
   window.pauseCountdown = function () {
     if (timerRemaining <= 0) return;
 
     timerPaused = !timerPaused;
 
-    pauseBtn.textContent =   timerPaused ? "Resume" : "Pause";
+    pauseBtn.textContent = timerPaused ? "Resume" : "Pause";
   };
 
   window.restartCountdown = function () {
     clearInterval(timerInterval);
-timerInterval = null;
+    timerInterval = null;
 
-timerRemaining = 0;
+    timerRemaining = 0;
 
     timerPaused = false;
 
@@ -572,18 +563,17 @@ timerRemaining = 0;
        FOCUS MODE
     ========================================= */
 
- const focusModeBtn = document.getElementById("focusModeBtn");
+  const focusModeBtn = document.getElementById("focusModeBtn");
 
-if (focusModeBtn) {
-  focusModeBtn.addEventListener("click", () => {
-    document.body.classList.toggle("focus-mode");
+  if (focusModeBtn) {
+    focusModeBtn.addEventListener("click", () => {
+      document.body.classList.toggle("focus-mode");
 
-    focusModeBtn.textContent =
-      document.body.classList.contains("focus-mode")
+      focusModeBtn.textContent = document.body.classList.contains("focus-mode")
         ? "Exit Focus Mode"
         : "Focus Mode";
-  });
-}
+    });
+  }
   /* =========================================
        KEYBOARD SHORTCUTS
     ========================================= */

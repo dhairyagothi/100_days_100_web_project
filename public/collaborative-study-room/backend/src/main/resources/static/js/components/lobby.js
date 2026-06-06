@@ -1,57 +1,72 @@
 // Lobby & Dashboard UI Component Handler
-import { state, BADGES, executeCreateRoom, executeJoinRoomByCode, joinRoom, fetchRooms } from '../state.js';
+import {
+  state,
+  BADGES,
+  executeCreateRoom,
+  executeJoinRoomByCode,
+  joinRoom,
+  fetchRooms,
+} from "../state.js";
 
 export function initLobbyComponent() {
-  const btnOpenCreate = document.getElementById('btn-open-create-modal');
-  const btnCloseCreate = document.getElementById('btn-close-modal');
-  const modalCreate = document.getElementById('modal-create-room');
-  const formCreateRoom = document.getElementById('form-create-room');
-  const chkBackendMode = document.getElementById('chk-backend-mode');
-  const modeStatusText = document.getElementById('mode-status-text');
+  const btnOpenCreate = document.getElementById("btn-open-create-modal");
+  const btnCloseCreate = document.getElementById("btn-close-modal");
+  const modalCreate = document.getElementById("modal-create-room");
+  const formCreateRoom = document.getElementById("form-create-room");
+  const chkBackendMode = document.getElementById("chk-backend-mode");
+  const modeStatusText = document.getElementById("mode-status-text");
 
   // Load initial toggle state
   chkBackendMode.checked = state.backendMode;
   updateModeStatusUI(state.backendMode);
 
   // Toggle backend mode
-  chkBackendMode.addEventListener('change', async (e) => {
+  chkBackendMode.addEventListener("change", async (e) => {
     const active = e.target.checked;
     state.backendMode = active;
     updateModeStatusUI(active);
-    
+
     // Refresh rooms list
     await fetchRooms();
     renderRoomsList();
   });
 
   // Modal control
-  btnOpenCreate.addEventListener('click', () => {
-    modalCreate.classList.remove('hidden');
+  btnOpenCreate.addEventListener("click", () => {
+    modalCreate.classList.remove("hidden");
   });
 
-  btnCloseCreate.addEventListener('click', () => {
-    modalCreate.classList.add('hidden');
+  btnCloseCreate.addEventListener("click", () => {
+    modalCreate.classList.add("hidden");
   });
 
-  window.addEventListener('click', (e) => {
+  window.addEventListener("click", (e) => {
     if (e.target === modalCreate) {
-      modalCreate.classList.add('hidden');
+      modalCreate.classList.add("hidden");
     }
   });
 
   // Create room submit
-  formCreateRoom.addEventListener('submit', async (e) => {
+  formCreateRoom.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const name = document.getElementById('room-name').value.trim();
-    const category = document.getElementById('room-category').value;
-    const description = document.getElementById('room-description').value.trim();
-    const focusTime = parseInt(document.getElementById('room-focus-time').value) || 25;
+    const name = document.getElementById("room-name").value.trim();
+    const category = document.getElementById("room-category").value;
+    const description = document
+      .getElementById("room-description")
+      .value.trim();
+    const focusTime =
+      parseInt(document.getElementById("room-focus-time").value) || 25;
 
     try {
-      const room = await executeCreateRoom(name, category, description, focusTime);
-      modalCreate.classList.add('hidden');
+      const room = await executeCreateRoom(
+        name,
+        category,
+        description,
+        focusTime,
+      );
+      modalCreate.classList.add("hidden");
       formCreateRoom.reset();
-      
+
       // Auto-join the created room
       joinRoom(room);
     } catch (err) {
@@ -60,32 +75,35 @@ export function initLobbyComponent() {
   });
 
   // Join Room Modal Logic
-  const btnOpenJoin = document.getElementById('btn-open-join-modal');
-  const btnCloseJoin = document.getElementById('btn-close-join-modal');
-  const modalJoin = document.getElementById('modal-join-room');
-  const formJoinRoom = document.getElementById('form-join-room');
+  const btnOpenJoin = document.getElementById("btn-open-join-modal");
+  const btnCloseJoin = document.getElementById("btn-close-join-modal");
+  const modalJoin = document.getElementById("modal-join-room");
+  const formJoinRoom = document.getElementById("form-join-room");
 
   if (btnOpenJoin && btnCloseJoin && modalJoin && formJoinRoom) {
-    btnOpenJoin.addEventListener('click', () => {
-      modalJoin.classList.remove('hidden');
+    btnOpenJoin.addEventListener("click", () => {
+      modalJoin.classList.remove("hidden");
     });
 
-    btnCloseJoin.addEventListener('click', () => {
-      modalJoin.classList.add('hidden');
+    btnCloseJoin.addEventListener("click", () => {
+      modalJoin.classList.add("hidden");
     });
 
-    window.addEventListener('click', (e) => {
+    window.addEventListener("click", (e) => {
       if (e.target === modalJoin) {
-        modalJoin.classList.add('hidden');
+        modalJoin.classList.add("hidden");
       }
     });
 
-    formJoinRoom.addEventListener('submit', async (e) => {
+    formJoinRoom.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const code = document.getElementById('join-room-code').value.trim().toUpperCase();
+      const code = document
+        .getElementById("join-room-code")
+        .value.trim()
+        .toUpperCase();
       try {
         const room = await executeJoinRoomByCode(code);
-        modalJoin.classList.add('hidden');
+        modalJoin.classList.add("hidden");
         formJoinRoom.reset();
         joinRoom(room);
       } catch (err) {
@@ -96,7 +114,7 @@ export function initLobbyComponent() {
 }
 
 function updateModeStatusUI(isBackendActive) {
-  const modeStatusText = document.getElementById('mode-status-text');
+  const modeStatusText = document.getElementById("mode-status-text");
   if (!modeStatusText) return;
 
   if (isBackendActive) {
@@ -112,36 +130,40 @@ function updateModeStatusUI(isBackendActive) {
 // RENDER LOBBY SCREENS & WIDGETS
 // -------------------------------------------------------------
 export function renderLobbyView() {
-  const screenLobby = document.getElementById('screen-lobby');
+  const screenLobby = document.getElementById("screen-lobby");
   if (!screenLobby) return;
 
   if (state.user && !state.activeRoom) {
-    screenLobby.classList.remove('hidden');
+    screenLobby.classList.remove("hidden");
   } else {
-    screenLobby.classList.add('hidden');
+    screenLobby.classList.add("hidden");
     return;
   }
 
   // 1. Render User Header Profile
-  document.getElementById('lobby-username-span').textContent = state.user.username;
-  
+  document.getElementById("lobby-username-span").textContent =
+    state.user.username;
+
   // Rank calculations based on Level
   const rank = calculateRank(state.user.level);
-  document.getElementById('lobby-rank-badge').textContent = rank;
+  document.getElementById("lobby-rank-badge").textContent = rank;
 
   // Compute Total study hours (mock-added from total XP)
   const totalFocusMinutes = state.user.xp || 0;
-  document.getElementById('lobby-total-hours').textContent = `${totalFocusMinutes}m`;
+  document.getElementById("lobby-total-hours").textContent =
+    `${totalFocusMinutes}m`;
 
   // 2. Render Profile Stats Summary Card
-  document.getElementById('stat-total-time').textContent = totalFocusMinutes;
-  
+  document.getElementById("stat-total-time").textContent = totalFocusMinutes;
+
   // Calculate completed Pomodoros (e.g. 1 session per 25 XP)
   const completedSessionsCount = Math.floor(totalFocusMinutes / 25);
-  document.getElementById('stat-sessions-count').textContent = completedSessionsCount;
+  document.getElementById("stat-sessions-count").textContent =
+    completedSessionsCount;
 
   const unlockedCount = state.user.badgesUnlocked?.length || 0;
-  document.getElementById('stat-badges-count').textContent = `${unlockedCount} / ${BADGES.length}`;
+  document.getElementById("stat-badges-count").textContent =
+    `${unlockedCount} / ${BADGES.length}`;
 
   // 3. Render SVG Productivity Chart
   renderProductivityChart();
@@ -163,20 +185,20 @@ function calculateRank(level) {
 
 // Draw a beautiful glowing SVG charts programmatically
 function renderProductivityChart() {
-  const container = document.getElementById('lobby-chart-container');
+  const container = document.getElementById("lobby-chart-container");
   if (!container) return;
 
   // Let's create an SVG grid representation of study mins
   // Mock daily study records based on current user level and XP
   const baseMinutes = Math.min(60, state.user.xp || 15);
   const data = [
-    { day: 'Mon', mins: Math.floor(baseMinutes * 0.4) },
-    { day: 'Tue', mins: Math.floor(baseMinutes * 0.8) },
-    { day: 'Wed', mins: Math.floor(baseMinutes * 0.5) },
-    { day: 'Thu', mins: Math.floor(baseMinutes * 1.1) },
-    { day: 'Fri', mins: Math.floor(baseMinutes * 0.7) },
-    { day: 'Sat', mins: Math.floor(baseMinutes * 1.3) },
-    { day: 'Sun', mins: Math.floor(baseMinutes * 0.9) }
+    { day: "Mon", mins: Math.floor(baseMinutes * 0.4) },
+    { day: "Tue", mins: Math.floor(baseMinutes * 0.8) },
+    { day: "Wed", mins: Math.floor(baseMinutes * 0.5) },
+    { day: "Thu", mins: Math.floor(baseMinutes * 1.1) },
+    { day: "Fri", mins: Math.floor(baseMinutes * 0.7) },
+    { day: "Sat", mins: Math.floor(baseMinutes * 1.3) },
+    { day: "Sun", mins: Math.floor(baseMinutes * 0.9) },
   ];
 
   const svgWidth = 500;
@@ -190,19 +212,20 @@ function renderProductivityChart() {
   const chartHeight = svgHeight - paddingTop - paddingBottom;
 
   // Find max minutes to scale chart heights
-  const maxVal = Math.max(...data.map(d => d.mins), 30);
+  const maxVal = Math.max(...data.map((d) => d.mins), 30);
 
   // Compute point coordinates
   const points = data.map((d, index) => {
-    const x = paddingLeft + (index * (chartWidth / (data.length - 1)));
-    const y = paddingTop + chartHeight - ((d.mins / maxVal) * chartHeight);
+    const x = paddingLeft + index * (chartWidth / (data.length - 1));
+    const y = paddingTop + chartHeight - (d.mins / maxVal) * chartHeight;
     return { x, y, day: d.day, val: d.mins };
   });
 
-  const polylinePath = points.map(p => `${p.x},${p.y}`).join(' ');
-  const areaPath = `${points[0].x},${paddingTop + chartHeight} ` + 
-                   polylinePath + 
-                   ` ${points[points.length - 1].x},${paddingTop + chartHeight}`;
+  const polylinePath = points.map((p) => `${p.x},${p.y}`).join(" ");
+  const areaPath =
+    `${points[0].x},${paddingTop + chartHeight} ` +
+    polylinePath +
+    ` ${points[points.length - 1].x},${paddingTop + chartHeight}`;
 
   let svgHtml = `
     <svg width="100%" height="100%" viewBox="0 0 ${svgWidth} ${svgHeight}" class="productivity-svg">
@@ -225,12 +248,12 @@ function renderProductivityChart() {
       
       <!-- Horizontal Grid Lines -->
       <line x1="${paddingLeft}" y1="${paddingTop}" x2="${svgWidth - paddingRight}" y2="${paddingTop}" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
-      <line x1="${paddingLeft}" y1="${paddingTop + chartHeight/2}" x2="${svgWidth - paddingRight}" y2="${paddingTop + chartHeight/2}" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+      <line x1="${paddingLeft}" y1="${paddingTop + chartHeight / 2}" x2="${svgWidth - paddingRight}" y2="${paddingTop + chartHeight / 2}" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
       <line x1="${paddingLeft}" y1="${paddingTop + chartHeight}" x2="${svgWidth - paddingRight}" y2="${paddingTop + chartHeight}" stroke="rgba(255,255,255,0.15)" stroke-width="1" />
 
       <!-- Left Axis values -->
       <text x="${paddingLeft - 8}" y="${paddingTop + 4}" fill="rgba(255,255,255,0.4)" font-size="9" text-anchor="end">${maxVal}m</text>
-      <text x="${paddingLeft - 8}" y="${paddingTop + chartHeight/2 + 3}" fill="rgba(255,255,255,0.4)" font-size="9" text-anchor="end">${Math.floor(maxVal/2)}m</text>
+      <text x="${paddingLeft - 8}" y="${paddingTop + chartHeight / 2 + 3}" fill="rgba(255,255,255,0.4)" font-size="9" text-anchor="end">${Math.floor(maxVal / 2)}m</text>
       <text x="${paddingLeft - 8}" y="${paddingTop + chartHeight + 3}" fill="rgba(255,255,255,0.4)" font-size="9" text-anchor="end">0</text>
 
       <!-- Gradient Area Under Curve -->
@@ -245,7 +268,7 @@ function renderProductivityChart() {
       <!-- Point Circles and Day Text -->
   `;
 
-  points.forEach(p => {
+  points.forEach((p) => {
     svgHtml += `
       <!-- Intersect circles -->
       <circle cx="${p.x}" cy="${p.y}" r="4.5" fill="#13111C" stroke="#a78bfa" stroke-width="2" />
@@ -261,13 +284,13 @@ function renderProductivityChart() {
 }
 
 function renderBadgesGrid() {
-  const grid = document.getElementById('lobby-badges-grid');
+  const grid = document.getElementById("lobby-badges-grid");
   if (!grid) return;
 
   try {
     const unlockedSet = new Set(state.user.badgesUnlocked || []);
 
-    grid.innerHTML = BADGES.map(badge => {
+    grid.innerHTML = BADGES.map((badge) => {
       const isUnlocked = unlockedSet.has(badge.id);
       if (isUnlocked) {
         return `
@@ -297,7 +320,7 @@ function renderBadgesGrid() {
           </div>
         `;
       }
-    }).join('');
+    }).join("");
   } catch (err) {
     grid.innerHTML = `<div style="color:red; background:#222; padding:20px; font-size:16px;">Error in renderBadgesGrid: ${err.message}<br>${err.stack}</div>`;
     console.error(err);
@@ -305,7 +328,7 @@ function renderBadgesGrid() {
 }
 
 export function renderRoomsList() {
-  const container = document.getElementById('rooms-list-container');
+  const container = document.getElementById("rooms-list-container");
   if (!container) return;
 
   if (state.rooms.length === 0) {
@@ -317,28 +340,30 @@ export function renderRoomsList() {
     return;
   }
 
-  container.innerHTML = state.rooms.map(room => {
-    return `
+  container.innerHTML = state.rooms
+    .map((room) => {
+      return `
       <div class="room-card glass border-glow">
         <div class="room-card-header">
           <span class="room-category-tag">${room.category}</span>
-          <span class="room-creator-tag">By ${room.creator || 'Guest'}</span>
+          <span class="room-creator-tag">By ${room.creator || "Guest"}</span>
         </div>
         <h3>${room.name}</h3>
-        <p class="room-desc">${room.description || 'No description provided.'}</p>
+        <p class="room-desc">${room.description || "No description provided."}</p>
         <div class="room-stats-row">
           <span class="room-stat">⏱ ${room.focusTime} mins</span>
           <button class="btn btn-primary btn-join-room" data-room-id="${room.id}">Join Table</button>
         </div>
       </div>
     `;
-  }).join('');
+    })
+    .join("");
 
   // Attach join click listeners
-  container.querySelectorAll('.btn-join-room').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const roomId = parseInt(e.target.getAttribute('data-room-id'));
-      const room = state.rooms.find(r => r.id === roomId);
+  container.querySelectorAll(".btn-join-room").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const roomId = parseInt(e.target.getAttribute("data-room-id"));
+      const room = state.rooms.find((r) => r.id === roomId);
       if (room) {
         joinRoom(room);
       }

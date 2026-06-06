@@ -38,12 +38,12 @@ Prefer `children` and small composable pieces over giant prop lists.
 
 ## 2. State Management Guidelines
 
-| Guideline | Reason |
-| :--- | :--- |
-| Colocate state | Keep state as close to where it is used as possible |
-| Lift only when needed | Share state at lowest common ancestor |
-| Avoid redundant state | Derive values during render when possible |
-| Immutable updates | Ensures predictable re-renders |
+| Guideline             | Reason                                              |
+| :-------------------- | :-------------------------------------------------- |
+| Colocate state        | Keep state as close to where it is used as possible |
+| Lift only when needed | Share state at lowest common ancestor               |
+| Avoid redundant state | Derive values during render when possible           |
+| Immutable updates     | Ensures predictable re-renders                      |
 
 ```jsx
 // Derived — no extra state needed
@@ -58,20 +58,20 @@ You do not need premature optimization, but avoid obvious pitfalls:
 
 ```jsx
 // Expensive filter — memoize if list is huge
-import { useMemo } from 'react';
+import { useMemo } from "react";
 
 const visibleTodos = useMemo(
   () => todos.filter((t) => t.matchesFilter),
-  [todos, filter]
+  [todos, filter],
 );
 ```
 
-| Tool | Use when |
-| :--- | :--- |
-| `React.memo` | Child re-renders often with same props |
-| `useMemo` | Expensive calculations |
-| `useCallback` | Stable function refs for memoized children |
-| Code splitting | Large routes (`React.lazy`) |
+| Tool           | Use when                                   |
+| :------------- | :----------------------------------------- |
+| `React.memo`   | Child re-renders often with same props     |
+| `useMemo`      | Expensive calculations                     |
+| `useCallback`  | Stable function refs for memoized children |
+| Code splitting | Large routes (`React.lazy`)                |
 
 > [!NOTE]
 > Do not wrap everything in `memo`—measure first. Most apps are fast enough without heavy optimization.
@@ -98,11 +98,11 @@ const visibleTodos = useMemo(
 
 ## 5. Testing & Code Quality
 
-| Practice | Benefit |
-| :--- | :--- |
-| ESLint + React plugin | Catches hooks mistakes |
-| Prettier | Consistent formatting |
-| React Testing Library | Tests behavior users see |
+| Practice              | Benefit                        |
+| :-------------------- | :----------------------------- |
+| ESLint + React plugin | Catches hooks mistakes         |
+| Prettier              | Consistent formatting          |
+| React Testing Library | Tests behavior users see       |
 | TypeScript (optional) | Catches prop/type errors early |
 
 ```jsx

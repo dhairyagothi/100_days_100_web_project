@@ -1,17 +1,18 @@
 <div align="center">
   <img src="./logo.png" alt="GitHub Repo Analyzer Logo" width="150" height="150" style="border-radius: 20px; box-shadow: 0 0 20px rgba(47, 129, 247, 0.5);">
 
-  # GitHub Repo Analyzer 🚀
+# GitHub Repo Analyzer 🚀
 
-  A modern, highly interactive, and premium portfolio-level web application that utilizes the GitHub API to analyze repositories and user profiles. Featuring a visually striking dark glassmorphism design, robust data visualization, and a 3D interface, it's designed to impress.
+A modern, highly interactive, and premium portfolio-level web application that utilizes the GitHub API to analyze repositories and user profiles. Featuring a visually striking dark glassmorphism design, robust data visualization, and a 3D interface, it's designed to impress.
 
-  **[View Live Demo](https://git-hub-repo-analyzer-peach.vercel.app/)**
+**[View Live Demo](https://git-hub-repo-analyzer-peach.vercel.app/)**
 
-  [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
-  [![GitHub Pages](https://img.shields.io/badge/Deployed-Vercel-black?logo=vercel)](https://git-hub-repo-analyzer-peach.vercel.app/)
-  [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
-  [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
-  [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+[![GitHub Pages](https://img.shields.io/badge/Deployed-Vercel-black?logo=vercel)](https://git-hub-repo-analyzer-peach.vercel.app/)
+[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
+[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+
 </div>
 
 <br />
@@ -36,7 +37,7 @@
 
 ## 📖 Overview
 
-The **GitHub Repo Analyzer** is designed for developers, recruiters, and open-source enthusiasts who need a quick, beautiful, and comprehensive breakdown of any GitHub repository or user profile. Instead of navigating through standard GitHub pages, this tool extracts the most critical metrics and displays them in an immersive, futuristic dashboard. 
+The **GitHub Repo Analyzer** is designed for developers, recruiters, and open-source enthusiasts who need a quick, beautiful, and comprehensive breakdown of any GitHub repository or user profile. Instead of navigating through standard GitHub pages, this tool extracts the most critical metrics and displays them in an immersive, futuristic dashboard.
 
 The project was built with performance, aesthetics, and accessibility in mind, serving as a stellar example of what vanilla web technologies can achieve without the overhead of massive frameworks.
 
@@ -52,15 +53,18 @@ Experience the dynamic interface and 3D features yourself:
 ## ✨ Key Features
 
 ### 🔍 Intelligent Search & Routing
+
 - **Smart Input Parsing:** Paste a full GitHub URL (e.g., `https://github.com/facebook/react`), a repository slug (`facebook/react`), or just a username (`facebook`). The app automatically detects the intent.
 - **Deep Repository Analysis:** Instantly fetch and display stars, forks, open issues, contributor counts, primary languages, repository size, and exact licensing information.
 - **User Discovery:** Searching a username fetches their most recently updated public repositories, presented in interactive mini-cards for quick navigation.
 
 ### 💾 Local Storage Memory
+
 - **Search History:** The app remembers your last 5 successful queries, saving them locally in your browser.
 - **Quick Access Tags:** History is displayed as interactive pill tags directly below the search bar for one-click re-searching.
 
 ### 🛡️ Robust Error Handling
+
 - **Graceful Failures:** Replaces ugly native browser alerts with custom-designed, glass-frosted error cards.
 - **Rate Limit Detection:** Specifically catches and informs the user if the GitHub API rate limit has been exceeded.
 
@@ -80,11 +84,13 @@ This project goes beyond standard flat web design by implementing heavy 3D layer
 ## 🛠️ Technologies Used
 
 ### Core Stack
+
 - **HTML5:** Semantic document structure ensuring maximum accessibility and SEO compatibility.
 - **CSS3:** Advanced styling utilizing custom properties (variables), Flexbox/Grid layouts, CSS animations, and `backdrop-filter` for glassmorphism.
 - **Vanilla JavaScript (ES6+):** Complete logic handling including Async/Await patterns, DOM Manipulation, Event delegation, and Fetch API integrations.
 
 ### Third-Party Assets
+
 - **[GitHub REST API](https://docs.github.com/en/rest):** The primary data provider for all user and repository metrics.
 - **[FontAwesome 6](https://fontawesome.com/):** Scalable, high-quality vector icons used throughout the interface.
 - **[Google Fonts](https://fonts.google.com/):** Typography powered by `Inter` for extreme readability and `Outfit` for striking geometric headings.
@@ -110,17 +116,21 @@ github-repo-analyzer/
 Since this is a client-side application using vanilla web technologies, running it locally requires zero build tools, node modules, or bundlers.
 
 ### Prerequisites
+
 - A modern web browser (Google Chrome, Mozilla Firefox, Safari, Microsoft Edge).
 - (Optional) A code editor like VS Code for viewing or modifying the source code.
 
 ### Step-by-Step Guide
+
 1. **Clone the Repository:**
    Open your terminal and run:
+
    ```bash
    git clone https://github.com/your-username/github-repo-analyzer.git
    cd github-repo-analyzer
    ```
-   *(Alternatively, you can download the project as a ZIP file and extract it).*
+
+   _(Alternatively, you can download the project as a ZIP file and extract it)._
 
 2. **Launch the Application:**
    - **Direct File Access:** Simply double-click the `index.html` file to open it directly in your default browser via the `file://` protocol.
@@ -148,7 +158,7 @@ This project relies on the public, unauthenticated endpoints of the GitHub REST 
 - **Get User Repositories:** `GET https://api.github.com/users/{username}/repos?sort=updated`
 - **Get Contributors:** `GET https://api.github.com/repos/{owner}/{repo}/contributors`
 
-*Note: Unauthenticated requests are subject to GitHub's standard rate limiting (60 requests per hour per IP).*
+_Note: Unauthenticated requests are subject to GitHub's standard rate limiting (60 requests per hour per IP)._
 
 ---
 
@@ -157,6 +167,7 @@ This project relies on the public, unauthenticated endpoints of the GitHub REST 
 Contributions, issues, and feature requests are highly welcome! This project is great for open-source initiatives like **GirlScript Summer of Code (GSSoC)**.
 
 ### How to Contribute
+
 1. **Fork the Project:** Click the 'Fork' button at the top right of this page.
 2. **Clone your Fork:** `git clone https://github.com/your-username/github-repo-analyzer.git`
 3. **Create your Feature Branch:** `git checkout -b feature/AmazingFeature`
@@ -165,6 +176,7 @@ Contributions, issues, and feature requests are highly welcome! This project is 
 6. **Open a Pull Request:** Navigate back to the original repository and click 'Compare & pull request'.
 
 ### Future Roadmap / Ideas
+
 - [ ] Add a Light/Dark mode toggle switch.
 - [ ] Implement language-specific color coding (e.g., Yellow for JS, Blue for Python).
 - [ ] Add Chart.js integration to visually graph repository language breakdowns.

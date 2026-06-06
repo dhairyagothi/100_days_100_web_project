@@ -3,10 +3,10 @@ name: Validate Projects JSON Schema
 on:
   push:
     paths:
-      - 'projects.json'
+      - "projects.json"
   pull_request:
     paths:
-      - 'projects.json'
+      - "projects.json"
 
 jobs:
   validate:

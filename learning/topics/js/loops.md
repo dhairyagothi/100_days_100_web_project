@@ -81,4 +81,3 @@ function firstGreaterThan(arr, n) {
 
 console.log(firstGreaterThan([2, 5, 1, 9, 3], 4)); // 5
 ```
-

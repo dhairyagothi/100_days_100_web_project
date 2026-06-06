@@ -24,9 +24,13 @@ body {
   margin: 0;
   color: var(--text);
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(247, 247, 251, 0.9)),
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.88),
+      rgba(247, 247, 251, 0.9)
+    ),
     radial-gradient(circle at top left, var(--theme-soft), transparent 34rem);
-  font-family: 'Inter', Arial, sans-serif;
+  font-family: "Inter", Arial, sans-serif;
 }
 
 .project-back-button {
@@ -40,7 +44,7 @@ body {
   text-decoration: none;
   z-index: 9999;
   font-weight: 700;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
   transition:
     transform 0.2s ease,
@@ -81,13 +85,12 @@ textarea {
 }
 
 .project-back-button {
-    display: flex;
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 1000;
-  }
-
+  display: flex;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+}
 
 .editor-panel,
 .preview-panel {
@@ -107,16 +110,14 @@ textarea {
   display: flex;
   justify-content: center;
   margin-top: 28px;
-  
 }
 
 .eyebrow {
   color: var(--theme);
-  font-size: 2.80rem;
+  font-size: 2.8rem;
   font-weight: 800;
   letter-spacing: 0;
   text-transform: uppercase;
-  
 }
 .card-label {
   margin: 0 0 8px;
@@ -274,11 +275,11 @@ h1 {
 }
 
 .mode-toggle .toggle-face::before {
-  content: '☀';
+  content: "☀";
 }
 
 .mode-toggle input:checked + .toggle-face::before {
-  content: '☾';
+  content: "☾";
 }
 
 .validation-message {
@@ -361,7 +362,7 @@ h1 {
 }
 
 .card::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 1px;
   z-index: 5;
@@ -397,7 +398,9 @@ h1 {
   overflow: hidden;
   position: relative;
   z-index: 1;
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.3), transparent), var(--theme-muted);
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.3), transparent),
+    var(--theme-muted);
   transform: translateZ(24px);
 }
 
@@ -417,7 +420,9 @@ h1 {
   position: relative;
   z-index: 2;
   padding: clamp(28px, 5vw, 56px);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.6), transparent 42%), var(--theme-soft);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.6), transparent 42%),
+    var(--theme-soft);
   transform: translateZ(42px);
 }
 
@@ -454,7 +459,7 @@ h1 {
 .info {
   margin: 32px 0;
   color: var(--copy);
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   font-size: 0.96rem;
   line-height: 1.8;
 
@@ -544,7 +549,11 @@ h1 {
   justify-content: end;
   min-height: 650px;
   color: #ffffff;
-  background: linear-gradient(180deg, transparent 0%, rgba(9, 12, 20, 0.92) 72%);
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(9, 12, 20, 0.92) 72%
+  );
   transform: translateZ(52px);
 }
 
@@ -594,12 +603,15 @@ h1 {
 }
 
 .is-dark .container1 {
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), transparent), var(--dark-theme-bg);
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.08), transparent),
+    var(--dark-theme-bg);
 }
 
 .is-dark .container2 {
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.06), transparent 42%), var(--dark-card-bg);
+    linear-gradient(145deg, rgba(255, 255, 255, 0.06), transparent 42%),
+    var(--dark-card-bg);
 }
 
 .is-dark .profile a {
@@ -612,7 +624,11 @@ h1 {
 }
 
 .is-dark .layout-poster .container2 {
-  background: linear-gradient(180deg, transparent 0%, rgba(9, 12, 20, 0.92) 72%);
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(9, 12, 20, 0.92) 72%
+  );
 }
 
 @media (hover: none), (pointer: coarse) {
@@ -687,19 +703,19 @@ h1 {
     border-radius: 20px;
   }
 
- .container1 {
-  min-height: 300px;
-  width: 100%;
-  overflow: hidden;
-}
+  .container1 {
+    min-height: 300px;
+    width: 100%;
+    overflow: hidden;
+  }
 
-.image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-}
+  .image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
 
   .container2 {
     align-items: center;
@@ -723,17 +739,13 @@ h1 {
   }
 }
 
-
-
-
 @media (min-width: 761px) {
   .app-shell {
-    grid-template-columns: 1fr ;
+    grid-template-columns: 1fr;
     gap: 40px;
     align-items: center;
   }
 
- 
   .card {
     width: 100%;
     max-width: 1100px;

@@ -7,7 +7,7 @@ Rendering lists in React means mapping an array to a collection of JSX elements.
 ## 1. Rendering Lists with map()
 
 ```jsx
-const fruits = ['Apple', 'Banana', 'Cherry'];
+const fruits = ["Apple", "Banana", "Cherry"];
 
 function FruitList() {
   return (
@@ -24,8 +24,8 @@ For objects, use a unique id:
 
 ```jsx
 const users = [
-  { id: 1, name: 'Alex' },
-  { id: 2, name: 'Sam' },
+  { id: 1, name: "Alex" },
+  { id: 2, name: "Sam" },
 ];
 
 function UserList() {
@@ -62,6 +62,7 @@ Keys help React identify which items changed, were added, or removed:
     <text x="400" y="52" text-anchor="middle" class="svg-text">key: 2 B</text>
     <rect x="340" y="75" width="120" height="35" rx="6" class="svg-node" />
     <text x="400" y="97" text-anchor="middle" class="svg-text">key: 1 A</text>
+
   </svg>
 </div>
 
@@ -71,18 +72,22 @@ Without stable keys, React may re-create DOM nodes unnecessarily or mix up compo
 
 ## 3. Rules for Keys
 
-| Do | Don't |
-| :--- | :--- |
-| Use stable unique ids from data | Use array index as key when list can reorder |
-| Put `key` on the outermost element in the map | Put `key` inside a child deep in the tree |
-| Use `key` only in lists—not as a regular prop | Generate random keys on every render |
+| Do                                            | Don't                                        |
+| :-------------------------------------------- | :------------------------------------------- |
+| Use stable unique ids from data               | Use array index as key when list can reorder |
+| Put `key` on the outermost element in the map | Put `key` inside a child deep in the tree    |
+| Use `key` only in lists—not as a regular prop | Generate random keys on every render         |
 
 ```jsx
 // Risky when items can be inserted/deleted/reordered
-{items.map((item, index) => <Row key={index} data={item} />)}
+{
+  items.map((item, index) => <Row key={index} data={item} />);
+}
 
 // Better
-{items.map((item) => <Row key={item.id} data={item} />)}
+{
+  items.map((item) => <Row key={item.id} data={item} />);
+}
 ```
 
 ---
@@ -93,7 +98,11 @@ Without stable keys, React may re-create DOM nodes unnecessarily or mix up compo
 function TodoItem({ todo, onToggle }) {
   return (
     <li>
-      <input type="checkbox" checked={todo.done} onChange={() => onToggle(todo.id)} />
+      <input
+        type="checkbox"
+        checked={todo.done}
+        onChange={() => onToggle(todo.id)}
+      />
       {todo.text}
     </li>
   );
@@ -146,9 +155,9 @@ Given an array of products, render only those with `inStock: true`.
 
 ```jsx
 const products = [
-  { id: 1, name: 'Keyboard', inStock: true },
-  { id: 2, name: 'Monitor', inStock: false },
-  { id: 3, name: 'Mouse', inStock: true },
+  { id: 1, name: "Keyboard", inStock: true },
+  { id: 2, name: "Monitor", inStock: false },
+  { id: 3, name: "Mouse", inStock: true },
 ];
 
 function InStockProducts() {

@@ -14,7 +14,8 @@
   const isLearn = path.includes("/learning/");
   const isContributors = path.includes("/contributors/");
 
-  const username = window.username || localStorage.getItem('loggedInUser') || null;
+  const username =
+    window.username || localStorage.getItem("loggedInUser") || null;
 
   window.ThemeManager?.init?.();
   const isLight = window.ThemeManager?.currentTheme?.() === "light";
@@ -59,7 +60,7 @@
     navButtonsHTML = `${themeBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${signinBtn}`;
   }
 
-    container.innerHTML = `
+  container.innerHTML = `
       <nav class="navbar" id="navbar" aria-label="Main Navigation">
         <a class="navbar-brand" href="${homeHref}" style="text-decoration:none;">
           <span class="brand-mark" aria-label="100 Days logo">100</span>
@@ -79,7 +80,9 @@
       </nav>
     `;
 
-  window.ThemeManager?.applyTheme?.(window.ThemeManager.currentTheme(), { persist: false });
+  window.ThemeManager?.applyTheme?.(window.ThemeManager.currentTheme(), {
+    persist: false,
+  });
 
   // Mobile Menu Logic
   const menuToggle = document.getElementById("menuToggle");
@@ -140,7 +143,7 @@
   if (logoutBtn) {
     logoutBtn.addEventListener("click", () => {
       window.username = null;
-      localStorage.removeItem('loggedInUser');
+      localStorage.removeItem("loggedInUser");
       location.reload();
     });
   }
@@ -148,23 +151,27 @@
   // Dropdown Logic
   const dropdownToggle = document.getElementById("themeToggleNav");
   const dropdownMenu = dropdownToggle?.nextElementSibling;
-  
+
   if (dropdownToggle && dropdownMenu) {
     dropdownToggle.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
-      const isExpanded = dropdownToggle.getAttribute("aria-expanded") === "true";
+      const isExpanded =
+        dropdownToggle.getAttribute("aria-expanded") === "true";
       dropdownToggle.setAttribute("aria-expanded", !isExpanded);
       dropdownMenu.classList.toggle("show");
     });
 
     document.addEventListener("click", (e) => {
-      if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+      if (
+        !dropdownToggle.contains(e.target) &&
+        !dropdownMenu.contains(e.target)
+      ) {
         dropdownToggle.setAttribute("aria-expanded", "false");
         dropdownMenu.classList.remove("show");
       }
     });
-    
+
     // Close dropdown on item click
     dropdownMenu.addEventListener("click", (e) => {
       if (e.target.closest(".dropdown-item")) {

@@ -1,7 +1,13 @@
 const UI = {
-  form: document.getElementById("searchForm") || document.querySelector(".modern-search-form"),
-  input: document.getElementById("usernameInput") || document.querySelector(".search-input-container input"),
-  statusBox: document.getElementById("statusBox") || document.querySelector(".status-banner"),
+  form:
+    document.getElementById("searchForm") ||
+    document.querySelector(".modern-search-form"),
+  input:
+    document.getElementById("usernameInput") ||
+    document.querySelector(".search-input-container input"),
+  statusBox:
+    document.getElementById("statusBox") ||
+    document.querySelector(".status-banner"),
   profileCard: document.getElementById("profileCard"),
   metricsPanel: document.getElementById("metricsPanel"),
   reposSection: document.getElementById("reposSection"),
@@ -14,7 +20,7 @@ const UI = {
   compareA: document.getElementById("compareA"),
   compareB: document.getElementById("compareB"),
   comparisonPanel: document.getElementById("comparisonPanel"),
-  comparisonContainer: document.getElementById("comparisonContainer")
+  comparisonContainer: document.getElementById("comparisonContainer"),
 };
 
 const Nodes = {
@@ -30,7 +36,7 @@ const Nodes = {
   followers: document.getElementById("followers"),
   following: document.getElementById("following"),
   gists: document.getElementById("gists"),
-  profileLink: document.getElementById("profileLink")
+  profileLink: document.getElementById("profileLink"),
 };
 
 let searchResultsContainer = document.getElementById("searchResultsContainer");
@@ -46,7 +52,7 @@ if (!searchResultsContainer) {
     border: 1px solid var(--card-border);
     box-shadow: var(--shadow);
   `;
-  
+
   const targetWorkspace = document.querySelector(".search-workspace");
   if (targetWorkspace) {
     targetWorkspace.appendChild(searchResultsContainer);
@@ -67,7 +73,7 @@ class DataCacheEngine {
     try {
       const entry = localStorage.getItem(`gh_dash_${storageKey}`);
       if (!entry) return null;
-      
+
       const payload = JSON.parse(entry);
       if (Date.now() > payload.expiresAt) {
         localStorage.removeItem(`gh_dash_${storageKey}`);
@@ -83,7 +89,7 @@ class DataCacheEngine {
     try {
       const payload = {
         data: dataValue,
-        expiresAt: Date.now() + CACHE_DURATION
+        expiresAt: Date.now() + CACHE_DURATION,
       };
       localStorage.setItem(`gh_dash_${storageKey}`, JSON.stringify(payload));
     } catch (error) {
@@ -98,14 +104,24 @@ function syncNetworkStatus() {
     UI.offlineIndicator.classList.toggle("hidden", isOnline);
   }
   if (!isOnline && UI.statusBox) {
-    showStatus("Offline state detected. Serving data exclusively from client memory layers.", "offline");
-  } else if (isOnline && UI.statusBox && !UI.statusBox.classList.contains("hidden") && UI.statusBox.classList.contains("offline")) {
+    showStatus(
+      "Offline state detected. Serving data exclusively from client memory layers.",
+      "offline",
+    );
+  } else if (
+    isOnline &&
+    UI.statusBox &&
+    !UI.statusBox.classList.contains("hidden") &&
+    UI.statusBox.classList.contains("offline")
+  ) {
     hideStatus();
   }
 }
 
 function updateThemeIcon() {
-  const isDark = document.documentElement.getAttribute("data-theme") === "dark" || !document.documentElement.hasAttribute("data-theme");
+  const isDark =
+    document.documentElement.getAttribute("data-theme") === "dark" ||
+    !document.documentElement.hasAttribute("data-theme");
   if (UI.themeIcon) {
     UI.themeIcon.textContent = isDark ? "☀" : "☾";
   }
@@ -116,8 +132,13 @@ function initTheme() {
   if (savedTheme) {
     document.documentElement.setAttribute("data-theme", savedTheme);
   } else {
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    document.documentElement.setAttribute("data-theme", prefersDark ? "dark" : "light");
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
+    document.documentElement.setAttribute(
+      "data-theme",
+      prefersDark ? "dark" : "light",
+    );
   }
   updateThemeIcon();
 }
@@ -134,7 +155,10 @@ function hideStatus() {
 }
 
 function showLoading() {
-  showStatus("Syncing workspace records and evaluating analytics models...", "success");
+  showStatus(
+    "Syncing workspace records and evaluating analytics models...",
+    "success",
+  );
   document.body.classList.remove("compare-mode");
   if (UI.profileCard) UI.profileCard.classList.add("hidden");
   if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
@@ -182,16 +206,22 @@ async function fetchProfileData(username) {
     throw new Error(`Offline mode cannot fetch ${cleanName}.`);
   }
 
-  const userResponse = await fetch(`https://api.github.com/users/${encodeURIComponent(cleanName)}`);
+  const userResponse = await fetch(
+    `https://api.github.com/users/${encodeURIComponent(cleanName)}`,
+  );
   if (!userResponse.ok) {
     throw new Error(`GitHub user not found: ${cleanName}`);
   }
 
   const user = await userResponse.json();
-  const repoResponse = await fetch(`https://api.github.com/users/${encodeURIComponent(cleanName)}/repos?per_page=50&sort=updated`);
+  const repoResponse = await fetch(
+    `https://api.github.com/users/${encodeURIComponent(cleanName)}/repos?per_page=50&sort=updated`,
+  );
   const repos = await repoResponse.json();
   const verifiedRepos = Array.isArray(repos) ? repos : [];
-  const sortedRepos = verifiedRepos.sort((alpha, beta) => beta.stargazers_count - alpha.stargazers_count).slice(0, 6);
+  const sortedRepos = verifiedRepos
+    .sort((alpha, beta) => beta.stargazers_count - alpha.stargazers_count)
+    .slice(0, 6);
 
   DataCacheEngine.set(`profile_${cleanName}`, user);
   DataCacheEngine.set(`repos_${cleanName}`, sortedRepos);
@@ -206,7 +236,9 @@ function buildRepoListSmall(repos) {
 
   return `
     <div class="repo-mini-list">
-      ${repos.map((repo) => `
+      ${repos
+        .map(
+          (repo) => `
         <article class="repo-mini-card">
           <div class="repo-mini-title-row">
             <a class="repo-link" href="${repo.html_url}" target="_blank" rel="noreferrer">${repo.name}</a>
@@ -218,7 +250,9 @@ function buildRepoListSmall(repos) {
             <span class="badge-chip">Forks ${repo.forks_count}</span>
           </div>
         </article>
-      `).join("")}
+      `,
+        )
+        .join("")}
     </div>
   `;
 }
@@ -226,7 +260,11 @@ function buildRepoListSmall(repos) {
 function renderComparisonCard(profileData, compareType, peerData) {
   const leadFollowers = profileData.user.followers > peerData.user.followers;
   const leadRepos = profileData.user.public_repos > peerData.user.public_repos;
-  const primaryBadge = leadFollowers ? "Leader in followers" : leadRepos ? "Leader in repos" : "Balanced profile";
+  const primaryBadge = leadFollowers
+    ? "Leader in followers"
+    : leadRepos
+      ? "Leader in repos"
+      : "Balanced profile";
   return `
     <article class="compare-panel compare-panel-${compareType}">
       <div class="compare-panel-top">
@@ -288,7 +326,7 @@ function formatDate(dateString) {
   return new Date(dateString).toLocaleDateString(undefined, {
     year: "numeric",
     month: "short",
-    day: "numeric"
+    day: "numeric",
   });
 }
 
@@ -305,11 +343,11 @@ function animateCounter(element, targetValue) {
     element.textContent = "0";
     return;
   }
-  
+
   let start = 0;
   const duration = 1000;
   const startTime = performance.now();
-  
+
   function updateNumber(currentTime) {
     const elapsedTime = currentTime - startTime;
     if (elapsedTime >= duration) {
@@ -338,7 +376,9 @@ function renderProfile(user, repos = []) {
   Nodes.company.textContent = safeText(user.company, "—");
 
   if (user.blog) {
-    const blogUrl = user.blog.startsWith("http") ? user.blog : `https://${user.blog}`;
+    const blogUrl = user.blog.startsWith("http")
+      ? user.blog
+      : `https://${user.blog}`;
     Nodes.website.innerHTML = `<a href="${blogUrl}" target="_blank" rel="noreferrer" class="repo-link">${user.blog.replace(/^https?:\/\//, "")}</a>`;
   } else {
     Nodes.website.textContent = "—";
@@ -369,9 +409,10 @@ function renderRepos(repos) {
   repos.forEach((repo) => {
     const card = document.createElement("article");
     card.className = "repo-card";
-    
-    const operationalIndex = repo.stargazers_count + (repo.forks_count * 2);
-    const engineeringStatus = operationalIndex > 100 ? "Production System" : "Stable Archive";
+
+    const operationalIndex = repo.stargazers_count + repo.forks_count * 2;
+    const engineeringStatus =
+      operationalIndex > 100 ? "Production System" : "Stable Archive";
 
     card.innerHTML = `
       <div class="repo-top">
@@ -406,7 +447,8 @@ function renderSearchResults(users) {
 
   const heading = document.createElement("p");
   heading.textContent = `${users.length} unique indices discovered. Select terminal connection:`;
-  heading.style.cssText = "padding: 1rem; font-weight: 700; margin: 0; color: var(--muted); font-size: 0.9rem;";
+  heading.style.cssText =
+    "padding: 1rem; font-weight: 700; margin: 0; color: var(--muted); font-size: 0.9rem;";
   searchResultsContainer.appendChild(heading);
 
   users.forEach((user) => {
@@ -429,8 +471,11 @@ function renderSearchResults(users) {
       </div>
       <span class="badge" style="margin:0; font-size:0.65rem;">Connect</span>
     `;
-    item.addEventListener("mouseover", () => item.style.background = "var(--bg-secondary)");
-    item.addEventListener("mouseout", () => item.style.background = "");
+    item.addEventListener(
+      "mouseover",
+      () => (item.style.background = "var(--bg-secondary)"),
+    );
+    item.addEventListener("mouseout", () => (item.style.background = ""));
     item.addEventListener("click", () => {
       if (UI.input) UI.input.value = user.login;
       searchResultsContainer.style.display = "none";
@@ -457,7 +502,9 @@ async function executeTypeaheadLookup(queryString) {
   }
 
   try {
-    const response = await fetch(`https://api.github.com/search/users?q=${encodeURIComponent(query)}&per_page=5`);
+    const response = await fetch(
+      `https://api.github.com/search/users?q=${encodeURIComponent(query)}&per_page=5`,
+    );
     if (response.ok) {
       const searchData = await response.json();
       const outputItems = searchData.items || [];
@@ -473,7 +520,10 @@ async function fetchUser(username) {
   const cleanName = username.trim().replace(/^@/, "");
 
   if (!cleanName) {
-    showStatus("Operational exception parameter failure: target handle required.", "error");
+    showStatus(
+      "Operational exception parameter failure: target handle required.",
+      "error",
+    );
     return;
   }
 
@@ -495,21 +545,26 @@ async function fetchUser(username) {
     if (UI.profileCard) UI.profileCard.classList.add("hidden");
     if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
     if (UI.reposSection) UI.reposSection.classList.add("hidden");
-    showStatus("Identity registry mapping unavailable while completely disconnected from remote tracking cluster.", "error");
+    showStatus(
+      "Identity registry mapping unavailable while completely disconnected from remote tracking cluster.",
+      "error",
+    );
     return;
   }
 
   try {
-    const userResponse = await fetch(`https://api.github.com/users/${encodeURIComponent(cleanName)}`);
+    const userResponse = await fetch(
+      `https://api.github.com/users/${encodeURIComponent(cleanName)}`,
+    );
 
     if (userResponse.ok) {
       const user = await userResponse.json();
       const repoResponse = await fetch(
-        `https://api.github.com/users/${encodeURIComponent(cleanName)}/repos?per_page=50&sort=updated`
+        `https://api.github.com/users/${encodeURIComponent(cleanName)}/repos?per_page=50&sort=updated`,
       );
       const repos = await repoResponse.json();
       const verifiedRepos = Array.isArray(repos) ? repos : [];
-      
+
       const sortedRepos = verifiedRepos
         .sort((alpha, beta) => beta.stargazers_count - alpha.stargazers_count)
         .slice(0, 6);
@@ -522,11 +577,13 @@ async function fetchUser(username) {
       hideStatus();
     } else {
       const searchResponse = await fetch(
-        `https://api.github.com/search/users?q=${encodeURIComponent(cleanName)}&per_page=10`
+        `https://api.github.com/search/users?q=${encodeURIComponent(cleanName)}&per_page=10`,
       );
 
       if (!searchResponse.ok) {
-        throw new Error("Unable to parse identity coordinates over upstream paths.");
+        throw new Error(
+          "Unable to parse identity coordinates over upstream paths.",
+        );
       }
 
       const searchData = await searchResponse.json();
@@ -550,7 +607,10 @@ async function fetchUser(username) {
     if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
     if (UI.reposSection) UI.reposSection.classList.add("hidden");
     searchResultsContainer.style.display = "none";
-    showStatus(error.message || "An unexpected cluster mapping event occurred.", "error");
+    showStatus(
+      error.message || "An unexpected cluster mapping event occurred.",
+      "error",
+    );
   }
 }
 
@@ -583,23 +643,33 @@ document.querySelectorAll(".tag-btn").forEach((btn) => {
 });
 
 document.addEventListener("click", (event) => {
-  if (UI.form && !UI.form.contains(event.target) && !searchResultsContainer.contains(event.target)) {
+  if (
+    UI.form &&
+    !UI.form.contains(event.target) &&
+    !searchResultsContainer.contains(event.target)
+  ) {
     searchResultsContainer.style.display = "none";
   }
 });
 
-document.querySelectorAll(".workspace-tabs-nav .tab-nav-item").forEach(tabBtn => {
-  tabBtn.addEventListener("click", () => {
-    const activePaneId = tabBtn.getAttribute("data-pane");
-    
-    document.querySelectorAll(".workspace-tabs-nav .tab-nav-item").forEach(b => b.classList.remove("active"));
-    document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
-    
-    tabBtn.classList.add("active");
-    const targetPane = document.getElementById(activePaneId);
-    if (targetPane) targetPane.classList.add("active");
+document
+  .querySelectorAll(".workspace-tabs-nav .tab-nav-item")
+  .forEach((tabBtn) => {
+    tabBtn.addEventListener("click", () => {
+      const activePaneId = tabBtn.getAttribute("data-pane");
+
+      document
+        .querySelectorAll(".workspace-tabs-nav .tab-nav-item")
+        .forEach((b) => b.classList.remove("active"));
+      document
+        .querySelectorAll(".tab-pane")
+        .forEach((p) => p.classList.remove("active"));
+
+      tabBtn.classList.add("active");
+      const targetPane = document.getElementById(activePaneId);
+      if (targetPane) targetPane.classList.add("active");
+    });
   });
-});
 
 if (UI.compareForm) {
   UI.compareForm.addEventListener("submit", async (event) => {
@@ -619,7 +689,7 @@ if (UI.compareForm) {
     try {
       const [leftData, rightData] = await Promise.all([
         fetchProfileData(leftUsername),
-        fetchProfileData(rightUsername)
+        fetchProfileData(rightUsername),
       ]);
 
       renderComparison(leftData, rightData);
@@ -632,17 +702,24 @@ if (UI.compareForm) {
       if (UI.comparisonContainer) {
         UI.comparisonContainer.innerHTML = `<div class="status-banner error">${safeText(error.message, "Unable to compare profiles.")}</div>`;
       }
-      UI.comparisonPanel?.scrollIntoView({ behavior: "smooth", block: "start" });
+      UI.comparisonPanel?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     }
   });
 }
 
 document.querySelectorAll(".compare-tag-btn").forEach((button) => {
   button.addEventListener("click", () => {
-    const [leftUsername, rightUsername] = String(button.dataset.compare || "").split(",");
+    const [leftUsername, rightUsername] = String(
+      button.dataset.compare || "",
+    ).split(",");
     if (UI.compareA) UI.compareA.value = leftUsername || "";
     if (UI.compareB) UI.compareB.value = rightUsername || "";
-    UI.compareForm?.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+    UI.compareForm?.dispatchEvent(
+      new Event("submit", { bubbles: true, cancelable: true }),
+    );
   });
 });
 
