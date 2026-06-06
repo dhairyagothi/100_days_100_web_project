@@ -6,7 +6,11 @@ import { z } from "zod";
 import jwt from "jsonwebtoken";
 import { scryptSync, randomBytes, timingSafeEqual } from "crypto";
 
-const JWT_SECRET = process.env.SESSION_SECRET || 'fallback_secret_for_dev_only';
+const SESSION_SECRET = process.env.SESSION_SECRET;
+if (!SESSION_SECRET) {
+  throw new Error("SESSION_SECRET environment variable is required to sign authentication tokens");
+}
+const JWT_SECRET: string = SESSION_SECRET;
 
 // Password hashing helpers
 function hashPassword(password: string) {
@@ -42,14 +46,20 @@ export async function registerRoutes(
 ): Promise<Server> {
   // Seed admin user if it doesn't exist
   async function seedAdmin() {
+    const email = process.env.ADMIN_EMAIL;
+    const password = process.env.ADMIN_PASSWORD;
+    if (!email || !password) {
+      console.log('Admin seed skipped: set ADMIN_EMAIL and ADMIN_PASSWORD to create the initial admin user');
+      return;
+    }
     try {
-      const adminExists = await storage.getUserByEmail('adminzen@event.com');
+      const adminExists = await storage.getUserByEmail(email);
       if (!adminExists) {
         await storage.createUser({
-          email: 'adminzen@event.com',
-          password: hashPassword('admin123zen')
+          email,
+          password: hashPassword(password)
         });
-        console.log('Seed admin user created: adminzen@event.com / admin123zen');
+        console.log(`Seed admin user created for ${email}`);
       }
     } catch (err) {
       console.error('Failed to seed admin:', err);

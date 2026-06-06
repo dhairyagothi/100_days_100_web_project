@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Memory Match | Play Now</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%83%8F%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="confettiCanvas" aria-hidden="true"></canvas>
+
+    <main class="casino-app">
+        <section class="hero-panel">
+            <div>
+                <p class="eyebrow">Luxury Casino Table</p>
+                <h1>Royal Memory Match</h1>
+                <p class="subtitle">Flip the frosted cards, match every royal pair, and chase the table record.</p>
+            </div>
+
+            <div class="action-row">
+                <button id="homeBtn" class="ghost-btn" type="button"> Home</button>
+                <button id="howToPlayBtn" class="ghost-btn" type="button">How to Play</button>
+                <button id="restartBtn" class="gold-btn" type="button">New Game</button>
+            </div>
+        </section>
+
+        <section class="table-shell" aria-label="Royal Memory Match game table">
+            <div class="scoreboard" aria-label="Scoreboard">
+                <div class="stat-card">
+                    <span>Score</span>
+                    <strong id="score">0</strong>
+                </div>
+                <div class="stat-card">
+                    <span>Moves</span>
+                    <strong id="moves">0</strong>
+                </div>
+                <div class="stat-card">
+                    <span>Timer</span>
+                    <strong id="timer">00:00</strong>
+                </div>
+                <div class="stat-card">
+                    <span>Best</span>
+                    <strong id="highScore">0</strong>
+                </div>
+            </div>
+
+            <p id="statusText" class="status-text" role="status" aria-live="polite">Press Space or tap a card to begin.</p>
+            <div id="gameBoard" class="game-board" aria-label="Memory card board"></div>
+        </section>
+    </main>
+
+    <div id="howToPlayModal" class="modal" aria-hidden="true">
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <button id="closeModal" class="close-btn" type="button" aria-label="Close">×</button>
+            <p class="eyebrow">Dealer Rules</p>
+            <h2 id="modalTitle">How to Play</h2>
+            <ul>
+                <li>Flip two cards at a time and find matching royal pairs.</li>
+                <li>Matched cards stay open and add points to your score.</li>
+                <li>Wrong pairs flip back after a short pause.</li>
+                <li>Use <strong>Space</strong> to flip the next card and <strong>R</strong> to restart.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="winOverlay" class="win-overlay" aria-hidden="true">
+        <div class="win-card">
+            <p class="eyebrow">Jackpot</p>
+            <h2>Royal Table Cleared</h2>
+            <p id="winSummary">You matched every pair.</p>
+            <button id="playAgainBtn" class="gold-btn" type="button">Play Again</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

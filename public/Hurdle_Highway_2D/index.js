@@ -12,6 +12,8 @@ const playagain = document.getElementById("playagain");
 const scoreb = document.getElementById("scorepara1");
 const speedb = document.getElementById("scorepara2");
 const scoreg = document.getElementById("scorepara");
+const highscoreg = document.getElementById("highscorepara");
+const highscoreb = document.getElementById("scorepara3");
 const gameover = document.getElementById("gameover");
 const car = document.getElementById("car");
 const stage = document.getElementById("gameStage");
@@ -65,6 +67,52 @@ let scoreTimer = 0;
 let speedTimer = 0;
 let spawnCursor = -200;
 
+// ─── High Score ───────────────────────────────────────────────────────────────
+let highScore = parseInt(localStorage.getItem("hh2d_highscore") || "0", 10);
+
+function updateHighScoreDisplay() {
+  highscoreb.textContent = `BEST - ${highScore}`;
+}
+
+function checkAndSaveHighScore() {
+  const current = Math.floor(score);
+  if (current > highScore) {
+    highScore = current;
+    localStorage.setItem("hh2d_highscore", highScore);
+  }
+  highscoreg.textContent = `BEST SCORE - ${highScore}`;
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ─── Touch / Swipe Support ───────────────────────────────────────────────────
+let touchStartX = 0;
+let touchStartY = 0;
+const SWIPE_THRESHOLD = 30;
+
+stage.addEventListener("touchstart", (e) => {
+  const touch = e.changedTouches[0];
+  touchStartX = touch.clientX;
+  touchStartY = touch.clientY;
+}, { passive: true });
+
+stage.addEventListener("touchend", (e) => {
+  if (!gameStarted) return;
+  const touch = e.changedTouches[0];
+  const dx = touch.clientX - touchStartX;
+  const dy = touch.clientY - touchStartY;
+
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > SWIPE_THRESHOLD) {
+    if (dx < 0) {
+      carState.targetLane = Math.max(0, carState.targetLane - 1);
+      carState.moveCooldown = moveCooldown;
+    } else {
+      carState.targetLane = Math.min(LANE_COUNT - 1, carState.targetLane + 1);
+      carState.moveCooldown = moveCooldown;
+    }
+  }
+}, { passive: true });
+// ─────────────────────────────────────────────────────────────────────────────
+
 const keys = { left: false, right: false };
 const carState = {
   lane: 2,
@@ -90,6 +138,7 @@ const obstacles = Array.from(document.querySelectorAll(".obstacle")).map(
 
 document.addEventListener("DOMContentLoaded", () => {
   intro2.play();
+  updateHighScoreDisplay();
 });
 
 window.addEventListener("load", () => {
@@ -101,6 +150,7 @@ window.addEventListener("load", () => {
   applyDifficulty(currentDifficulty);
   resetAllObstacles();
   placeCarInstant();
+  updateHighScoreDisplay();
   requestAnimationFrame(gameLoop);
 });
 
@@ -400,6 +450,7 @@ function triggerCrash() {
   carmoveaud.pause();
   crashaud.currentTime = 0;
   crashaud.play();
+  checkAndSaveHighScore();
   gameover.style.visibility = "visible";
   scoreg.textContent = `YOUR SCORE - ${Math.floor(score)}`;
 }
