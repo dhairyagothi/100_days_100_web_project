@@ -894,3 +894,105 @@ body.dark-mode .achievement-tooltip::after {
     gap: 5px;
   }
 }
+/* Habit form validation and focused feedback */
+.hidden {
+  display: none !important;
+}
+
+input.is-invalid,
+textarea.is-invalid {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(210, 72, 58, 0.14);
+}
+
+.field-error {
+  color: var(--danger);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.form-feedback {
+  min-height: 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.form-feedback.error {
+  color: var(--danger);
+}
+
+.form-feedback.success {
+  color: var(--accent);
+}
+
+.empty-state-small {
+  list-style: none;
+  padding: 14px;
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.actions,
+.habit-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.habit-title.completed {
+  text-decoration: line-through;
+  opacity: 0.65;
+}
+
+@media (max-width: 560px) {
+  .habit-main,
+  .cta-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions,
+  .habit-actions,
+  #addHabitBtn {
+    width: 100%;
+  }
+
+  .actions button,
+  .habit-actions button {
+    flex: 1;
+  }
+}
+
+
+/* Focused layout cleanup for the Habit Tracker page */
+.app-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.page-heading {
+  max-width: 680px;
+}
+
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.achievement-badge {
+  min-height: 86px;
+}
+
+body.dark-mode .hero-card {
+  background: #171a1d;
+}
+
+body.dark-mode .project-back-button {
+  box-shadow: none;
+}

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipe Finder App by Ingredients</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-wrapper">
+      <header class="main-header">
+        <h1>Pantry Recipe Finder</h1>
+        <p>
+          Input ingredients you have available to discover step-by-step culinary
+          meal guides
+        </p>
+      </header>
+
+      <section class="search-console">
+        <input
+          type="text"
+          id="ingredientInput"
+          placeholder="Enter a main ingredient... (e.g., chicken, tomato, beef)"
+        />
+        <button id="searchBtn">Find Recipes</button>
+      </section>
+
+      <div id="statusAlert" class="status-box hidden">
+        Sifting through culinary archives...
+      </div>
+
+      <main class="recipe-grid" id="recipeDisplayGrid"></main>
+    </div>
+
+    <div class="modal-overlay hidden" id="recipeModal">
+      <div class="modal-card">
+        <button class="close-modal-btn" id="closeModalBtn">&times;</button>
+        <div class="modal-scroll-body" id="modalDetailsContent"></div>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
