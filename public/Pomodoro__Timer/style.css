@@ -76,21 +76,22 @@ body {
   position: fixed;
   top: 20px;
   left: 20px;
-  color: var(--muted);
+  color: #3b82f6;
   text-decoration: none;
   font-family: 'Space Mono', monospace;
   font-size: 0.75rem;
   letter-spacing: 1px;
-  border: 1px solid #333;
-  padding: 8px 14px;
-  border-radius: 6px;
-  transition: all 0.2s;
+  background: #1e293b;
+  border: 1px solid #3b82f6;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
   z-index: 10;
 }
 
 .back-btn:hover {
-  color: var(--text);
-  border-color: var(--active-color);
+  background: #3b82f6;
+  color: #fff;
 }
 
 /* ===== Container ===== */
