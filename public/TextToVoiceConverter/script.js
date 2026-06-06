@@ -3,6 +3,7 @@ const convertBtn = document.getElementById('convert-btn');
 const stopBtnText = document.getElementById('stop-btn-text');
 const stopBtnVoice = document.getElementById('stop-btn-voice');
 const langSelect = document.getElementById("language");
+const langSelectSTT = document.getElementById('language-stt');
 
 let speechSynthesis = window.speechSynthesis;
 let speechSynthesisUtterance = new SpeechSynthesisUtterance();
@@ -40,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     recognition.continuous = true;
     recognition.interimResults = true;
-    recognition.lang = langSelect.value;
+    recognition.lang = langSelectSTT.value;
 
     recognition.onresult = (event) => {
         let transcript = '';
@@ -62,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     stopBtnVoice.addEventListener('click', () => {
+    
     recognition.stop();
     startBtn.disabled = false;     
     stopBtnVoice.disabled = true;
