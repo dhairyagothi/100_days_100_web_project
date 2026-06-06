@@ -21,7 +21,7 @@
 
   --text-primary: #f0f4f8;
   --text-secondary: #8b97a8;
-  --text-muted: #4a5568;
+  --text-muted: #768496;
 
   --accent: #3b82f6;
   --accent-dim: rgba(59, 130, 246, 0.1);
@@ -46,7 +46,7 @@ body.light-mode {
 
   --text-primary: #0d1117;
   --text-secondary: rgba(13, 17, 23, 0.65);
-  --text-muted: rgba(13, 17, 23, 0.5);
+  --text-muted: rgba(13, 17, 23, 0.62);
   --accent-color: #008f4c; /* Darker neon green for clear text visibility on light backgrounds */
   --accent: #2563eb;
   --accent-dim: rgba(37, 99, 235, 0.1);
@@ -67,7 +67,7 @@ body.light-mode {
 
   --text-primary: #433422;
   --text-secondary: #5c4a37;                   /* darker for visibility */
-  --text-muted: rgba(67, 52, 34, 0.6);
+  --text-muted: rgba(67, 52, 34, 0.72);
   --accent-color: #cb4b16;
   --accent: #b58900;
   --accent-dim: rgba(181, 137, 0, 0.15);
@@ -109,7 +109,7 @@ body.light-mode {
 
   --text-primary: #eceff4;
   --text-secondary: #d8dee9;
-  --text-muted: #4c566a;
+  --text-muted: #95a4ba;
   --accent-color: #88c0d0;
   --accent: #81a1c1;
   --accent-dim: rgba(129, 161, 193, 0.15);
@@ -1452,11 +1452,30 @@ body.light-mode .hero-terminal-text {
 }
 button:focus,
 a:focus,
-input:focus,
-.project-card:focus {
+input:focus {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 6px;
+}
+
+.project-card:focus {
+  outline: none;
+}
+
+.project-card:focus-visible {
+  background: var(--bg-surface);
+  transform: translateY(-4px);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.26);
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
+}
+
+.project-card:focus-visible::before {
+  opacity: 1;
+}
+
+.project-card:focus-visible::after {
+  opacity: 1;
 }
 
 .clear-btn {

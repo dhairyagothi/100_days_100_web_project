@@ -1638,4 +1638,60 @@ body.dark-theme .theme-toggle-btn:hover {
     font-size: 10px;
   }
 }
+
+/* =====================================================
+  FOCUS MODE - PURE CSS IMMERSIVE LAYOUT
+   ===================================================== */
+
+/* 1. Lock the screen viewport and hide the default header/scrollbars */
+body.focus-mode {
+  overflow: hidden !important;
+  height: 100vh !important;
+  width: 100vw !important;
+}
+
+body.focus-mode header {
+  display: none !important;
+}
+
+/* 2. Hide all distracting lower sections */
+body.focus-mode .timezone-map-section,
+body.focus-mode .world-clocks-section,
+body.focus-mode .clock-banner,
+body.focus-mode .clock-header p {
+  display: none !important;
+}
+
+/* 3. Transform the 2-column grid into a perfectly centered vertical column */
+body.focus-mode .main-dashboard {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 30px !important;
+  
+  /* Fill the entire screen so it behaves like a brand-new page */
+  min-height: 100vh !important;
+  max-width: 550px !important;
+  margin: 0 auto !important;
+  padding: 20px !important;
+}
+
+/* 4. Force individual cards to stack uniformly without stretching */
+body.focus-mode .main-clock-section,
+body.focus-mode .timer-section {
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+/* 5. Reposition the Focus Mode button dynamically so it serves as the Exit button */
+body.focus-mode #focusModeBtn {
+  position: fixed !important;
+  top: 25px !important;
+  right: 25px !important;
+  z-index: 10000 !important;
+  
+  /* Optional visual styling to make it look like a sleek floating badge */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
 }

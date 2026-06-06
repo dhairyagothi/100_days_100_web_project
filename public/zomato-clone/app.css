@@ -64,7 +64,6 @@ body.dark-mode .app-section {
   line-height: 1.2;
   letter-spacing: -0.02em;
 }
-<<<<<<< fix/zomato-clone-app
 
 .app-section .app-description {
   margin: 0 0 2.8rem;
@@ -72,14 +71,12 @@ body.dark-mode .app-section {
   font-size: 1.65rem;
   font-weight: 300;
   line-height: 1.7;
-=======
 body.dark-mode .explore-options .heading {
   color: white;
 }
 /* Buttons */
 body.dark-mode button {
     color: white;
->>>>>>> Main
 }
 
 /* Radio selector */
@@ -239,6 +236,104 @@ body.dark-mode .app-section .caption {
   .app-section .option-selector {
     font-size: 1.5rem;
   }
+  
+  @media (max-width: 800px) {
+    .content {
+      margin-top: 7.5rem;
+      max-width: 42.4rem;
+      margin: 0px 2.4rem;
+    }
+  
+    .content .phone-image {
+      display: none;
+    }
+  
+    .app-section {
+      padding: 0 1rem;
+    }
+
+  }
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #121212;
+}
+
+
+/* Cards / Sections */
+body.dark-mode .card,
+body.dark-mode .container,
+body.dark-mode .box {
+    background-color: #f9f5f5;
+    color: #ffffff;
+}
+
+body.dark-mode .explore-options{ color: grey;}
+/* Buttons */
+body.dark-mode button {
+    background-color: #333;
+    color: white;
+}
+
+
+/* APP SECTION DARK MODE */
+body.dark-mode .app-section {
+    background-color: #1e1e1e;
+    color: rgb(152, 151, 151);
+}
+
+/* Text inside app section */
+body.dark-mode .phone-title {
+    color: white;
+}
+
+body.dark-mode .app-description {
+    color: #ccc;
+}
+
+/* Input */
+body.dark-mode .email-input .email {
+    background-color: #2a2a2a;
+    color: white;
+    border: 1px solid #555;
+}
+
+/* Button */
+body.dark-mode .email-input .btn {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+/* Caption */
+body.dark-mode .caption {
+    color: #aaa;
+}
+
+/* ================= FINAL LIGHT MODE (WORKING) ================= */
+
+
+
+/* Restore app section soft color */
+body:not(.dark-mode) .app-section {
+    background-color: rgb(255, 251, 247) !important;
+}
+
+/* Buttons */
+body:not(.dark-mode) button {
+    background-color: #f0f0f0 !important;
+    color: black !important;
+}
+
+/* Input */
+body:not(.dark-mode) input {
+    background-color: white !important;
+    color: black !important;
+}
+
+#darkModeToggle {
+    position: relative;
+    z-index: 1000;
+    cursor: pointer;
 }
 
 #darkModeToggle {
@@ -260,3 +355,4 @@ body.dark-mode .app-section .caption {
 
   transition: 0.3s ease;
 }
+

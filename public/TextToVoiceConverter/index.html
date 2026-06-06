@@ -1,77 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Text & Voice Converter</title>
-    <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Text & Voice Converter Pro</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <script src="script.js" defer></script>
 </head>
 
 <body>
 
-<a href="/" class="back-btn">← Back to Home</a>
+  <!-- BACK BUTTON -->
+  <a href="/" class="back-btn">← Back to Home</a>
 
-<button id="theme-toggle" class="theme-btn">🌙</button>
+  <!-- THEME TOGGLE -->
+  <button id="theme-toggle" class="theme-btn">🌙</button>
 
-<div class="wrapper">
+  <div class="wrapper">
 
-    <!-- TEXT TO SPEECH -->
+    <!-- ================= TEXT TO SPEECH ================= -->
     <div class="container">
-        <h1>🔊 Text to Voice Converter</h1>
 
-        <label>Select Language</label>
-        <select id="tts-language">
-            <option value="en-US">English</option>
-            <option value="hi-IN">Hindi</option>
-            <option value="es-ES">Spanish</option>
-        </select>
+      <h1>🔊 Text → Voice</h1>
 
-        <label>Select Voice</label>
-        <select id="voice-select"></select>
+      <!-- ✅ IMPROVED LANGUAGE SECTION -->
+      <label for="tts-language">Language</label>
+      <select id="tts-language">
+        <option value="" disabled selected>Select language</option>
+        <option value="en-US">🇺🇸 English (US)</option>
+        <option value="en-GB">🇬🇧 English (UK)</option>
+        <option value="en-IN">🇮🇳 English (India)</option>
+        <option value="hi-IN">🇮🇳 Hindi</option>
+        <option value="es-ES">🇪🇸 Spanish</option>
+        <option value="fr-FR">🇫🇷 French</option>
+        <option value="de-DE">🇩🇪 German</option>
+        <option value="ja-JP">🇯🇵 Japanese</option>
+      </select>
 
-        <textarea id="text-input" placeholder="Enter text here..."></textarea>
+      <label for="voice-select">Voice</label>
+      <select id="voice-select"></select><br><br>
 
-        <p id="char-count">Characters: 0</p>
+      <textarea id="text-input" placeholder="Enter text to convert into speech..."></textarea>
 
-        <div class="btn-group">
-            <button id="convert-btn">Convert to Speech</button>
-            <button id="stop-btn-text" class="stop-btn" disabled>Stop</button>
-            <button id="clear-text">Clear</button>
-        </div>
+      <p id="char-count">Characters: 0</p>
 
-        <div id="speaking-status"></div>
+      <div class="btn-group">
+        <button id="convert-btn">Convert</button>
+        <button id="stop-btn-text" class="stop-btn" disabled>Stop</button>
+        <button id="clear-text">Clear</button>
+      </div>
+
+      <div id="speaking-status"></div>
+
     </div>
 
-    <!-- VOICE TO TEXT -->
+    <!-- ================= VOICE TO TEXT ================= -->
     <div class="container">
-        <h1>🎤 Voice to Text Converter</h1>
 
-        <label>Select Language</label>
-        <select id="stt-language">
-            <option value="en-US">English</option>
-            <option value="hi-IN">Hindi</option>
-            <option value="es-ES">Spanish</option>
-        </select>
+      <h1>🎤 Voice → Text</h1>
 
-        <div class="btn-group">
-            <button id="start-btn">Speak</button>
-            <button id="stop-btn-voice" class="stop-btn" disabled>Stop</button>
-        </div>
+      <!-- ✅ IMPROVED LANGUAGE SECTION -->
+      <label for="stt-language">Language</label>
+      <select id="stt-language">
+        <option value="" disabled selected>Select language</option>
+        <option value="en-US">🇺🇸 English (US)</option>
+        <option value="en-GB">🇬🇧 English (UK)</option>
+        <option value="en-IN">🇮🇳 English (India)</option>
+        <option value="hi-IN">🇮🇳 Hindi</option>
+        <option value="es-ES">🇪🇸 Spanish</option>
+        <option value="fr-FR">🇫🇷 French</option>
+        <option value="de-DE">🇩🇪 German</option>
+        <option value="ja-JP">🇯🇵 Japanese</option>
+      </select>
 
-        <div id="listening-status"></div>
+      <div class="btn-group">
+        <button id="start-btn">Start Listening</button>
+        <button id="stop-btn-voice" class="stop-btn" disabled>Stop</button>
+      </div>
 
-        <textarea id="output" placeholder="Your speech will appear here..."></textarea>
+      <div id="listening-status"></div>
 
-        <div class="btn-group">
-            <button id="copy-btn">Copy</button>
-            <button id="download-btn">Download</button>
-            <button id="clear-output">Clear</button>
-        </div>
+      <textarea id="output" placeholder="Your speech will appear here..."></textarea>
+
+      <div class="btn-group">
+        <button id="copy-btn">Copy</button>
+        <button id="download-btn">Download</button>
+        <button id="clear-output">Clear</button>
+      </div>
+
     </div>
 
-</div>
-
-<script src="script.js"></script>
+  </div>
 
 </body>
 </html>
