@@ -102,18 +102,24 @@ body{
     top:20px;
     left:20px;
 
-    background:var(--panel);
-    color:var(--txt);
+    background:#1e293b;
+    color:#3b82f6;
 
-    padding:10px 14px;
+    padding:8px 16px;
 
-    border-radius:10px;
+    border-radius:8px;
+    border:1px solid #3b82f6;
 
     text-decoration:none;
 
     font-weight:700;
 
     z-index:999;
+    transition:all 0.2s ease;
+}
+.project-back-button:hover{
+    background:#3b82f6;
+    color:#fff;
 }
 
 .hero{
