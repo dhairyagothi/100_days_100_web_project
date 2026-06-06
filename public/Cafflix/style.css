@@ -1,0 +1,320 @@
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+
+        :root {
+            
+            --bg-cream: #FFF9F2;
+            --brand-blue: #3E5C76;
+            --brand-peach: #FFD3C4;
+            --brand-coral: #E88D83;
+            --text-dark: #2C3E50;
+            --white: #ffffff;
+            --radius: 24px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
+        html, body, * {
+            -ms-overflow-style: none; 
+            scrollbar-width: none; 
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background-color: var(--bg-cream);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: var(--brand-blue);
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-mark {
+            width: 30px;
+            height: 30px;
+            background: var(--brand-coral);
+            clip-path: polygon(0 0, 50% 60%, 100% 0, 100% 100%, 0 100%);
+            border-radius: 4px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--brand-blue);
+            font-weight: 700;
+            margin-left: 2rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--brand-coral);
+        }
+
+        .btn-order {
+            padding: 0.6rem 1.5rem;
+            background-color: var(--brand-blue);
+            color: var(--white) !important;
+            border-radius: 50px;
+        }
+
+        .btn-order:hover {
+            background-color: var(--brand-coral);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 20px;
+        }
+
+        .hero-text {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--brand-blue);
+        }
+
+        .hero-text h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: var(--brand-coral);
+            font-weight: 600;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 350px);
+            gap: 20px;
+        }
+
+        .card {
+            border-radius: var(--radius);
+            overflow: hidden;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(62, 92, 118, 0.1);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 20px 30px rgba(62, 92, 118, 0.2);
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            transition: transform 0.5s ease;
+        }
+        
+        .card:hover img {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+            color: white;
+            width: 100%;
+        }
+
+        .card-content h3 {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .card-1 {
+            grid-column: span 2;
+            background-color: var(--brand-peach);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-1 .about-us {
+            z-index: 2;
+            text-align: center;
+            color: var(--brand-blue);
+        }
+    
+        .card-2 {
+            grid-column: span 1;
+            grid-row: span 2;
+            background-color: var(--brand-coral);
+        }
+
+        .card-3 {
+            grid-column: span 2;
+            background-color: var(--brand-blue);
+        }
+
+        .card-4 {
+            grid-column: span 1;
+            background-color: var(--white);
+            border: 2px solid var(--brand-peach);
+        }
+
+        .card-5 {
+            grid-column: span 1;
+            background-color: var(--brand-peach);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .badge {
+            width: 150px;
+            height: 150px;
+            border: 2px dashed var(--brand-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: bold;
+            color: var(--brand-blue);
+            transform: rotate(-15deg);
+            z-index: 2;
+        }
+
+        @media (max-width: 768px) {
+            
+            nav {
+                flex-direction: column;
+                padding: 1rem;
+                align-items: center; 
+            }
+
+            .nav-links {
+                width: 100%; 
+                display: flex;
+                flex-direction: column; 
+                align-items: center;
+                gap: 10px; 
+                margin-top: 15px; 
+            }
+
+            .nav-links a {
+                margin: 0; 
+                padding: 10px 0; 
+                width: 70%; 
+                text-align: center;
+            }
+
+            .btn-order {
+                width: 70%; 
+                margin-top: 10px; 
+                background-color: var(--brand-blue); 
+                color: var(--white) !important; 
+            }
+        }
+
+        @media (max-width: 900px) {
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: auto;
+            }
+            .card-2 {
+                grid-column: span 2;
+                grid-row: span 1;
+                height: 350px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .bento-grid {
+                display: flex;
+                flex-direction: column;
+            }
+            .card {
+                height: 300px;
+            }
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .nav-links a {
+                margin: 0 10px;
+            }
+        }
+        
+        footer {
+            background-color: var(--brand-blue);
+            color: var(--white);
+            padding: 2rem 5%;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        .footer-links {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            margin: 0 1rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--brand-coral);
+        }
+
+        .footer-bottom {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .github-link {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+         .github-link:hover {
+            color: var(--brand-coral);
+            text-decoration: none;
+        }
+
+    

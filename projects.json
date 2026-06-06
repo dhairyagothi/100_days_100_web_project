@@ -1958,5 +1958,19 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/AI-Data-Analyst/"
-  }
+  },
+  {
+    "projectNo": 215,
+    "projectName": "Cafflix - Coffee Shop",
+    "projectPath": "./public/Cafflix/index.html",
+    "techStack": [
+        "html",
+        "css",
+        "bento-grid",
+        "landing-page"
+    ],
+    "difficulty": "intermediate",
+    "projectDesc": "A modern and clean coffee shop landing page inspired by the Bento Grid layout."
+}
+  
 ]
