@@ -1,0 +1,190 @@
+:root {
+    --bg-workspace: #0b0c10;
+    --bg-panel: #1f2833;
+    --border-color: #45a29e;
+    --text-bright: #66fcf1;
+    --text-muted: #c5c6c7;
+    --btn-success: #2ecc71;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Consolas', 'Fira Code', monospace;
+    background-color: var(--bg-workspace);
+    color: var(--text-muted);
+    height: 100vh;
+    overflow: hidden;
+}
+
+.app-container {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    height: 100vh;
+}
+
+/* Sidebar Signaling Management Controls */
+.network-panel {
+    background-color: var(--bg-panel);
+    border-right: 2px solid rgba(102, 252, 241, 0.2);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+}
+
+.network-panel h2 {
+    font-size: 1.1rem;
+    color: var(--text-bright);
+    margin-bottom: 5px;
+}
+
+.panel-desc {
+    font-size: 0.75rem;
+    color: #a4b0be;
+    line-height: 1.4;
+}
+
+.setup-box {
+    background: rgba(11, 12, 16, 0.5);
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.setup-box h3 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    color: #a4b0be;
+}
+
+textarea {
+    width: 100%;
+    background: #0b0c10;
+    border: 1px solid rgba(102, 252, 241, 0.3);
+    color: var(--text-muted);
+    padding: 8px;
+    font-size: 0.75rem;
+    border-radius: 4px;
+    resize: none;
+    height: 70px;
+    margin: 8px 0;
+    outline: none;
+}
+
+/* Button UI Components */
+.btn {
+    width: 100%;
+    padding: 8px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.primary-btn {
+    background: var(--border-color);
+    color: var(--bg-workspace);
+}
+
+.primary-btn:hover {
+    background: var(--text-bright);
+}
+
+.secondary-btn {
+    background: #34495e;
+    color: white;
+}
+
+.secondary-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.success-btn {
+    background: var(--btn-success);
+    color: white;
+}
+
+.connection-status {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    background: #e74c3c;
+    border-radius: 50%;
+}
+
+.status-dot.online {
+    background: var(--btn-success);
+    box-shadow: 0 0 8px var(--btn-success);
+}
+
+/* Code Editor Window Layout */
+.editor-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.editor-header {
+    background: #151a21;
+    padding: 10px 20px;
+    font-size: 0.85rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sync-tag {
+    font-size: 0.7rem;
+    background: rgba(102, 252, 241, 0.1);
+    color: var(--text-bright);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+
+.editor-workspace {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    flex-grow: 1;
+    background: var(--bg-workspace);
+}
+
+.line-numbers {
+    padding: 15px 10px;
+    background: #090a0f;
+    color: #4b6584;
+    text-align: right;
+    user-select: none;
+    font-size: 0.95rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.02);
+    min-width: 45px;
+}
+
+#code-textarea {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    color: #f1f2f6;
+    padding: 15px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    outline: none;
+    overflow-y: auto;
+}

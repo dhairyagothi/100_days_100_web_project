@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SyncScript - Real-Time P2P Code Editor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app-container">
+        <aside class="network-panel">
+            <div class="panel-section">
+                <h2>🔗 P2P Network Session</h2>
+                <p class="panel-desc">Establish a direct network link with your peer bypassing intermediate databases.
+                </p>
+            </div>
+
+            <div class="setup-box">
+                <h3>1. Initialize Session</h3>
+                <button id="btn-create-room" class="btn primary-btn">Generate Connection Key</button>
+                <textarea id="txt-local-signal" readonly
+                    placeholder="Your connection handshake token will appear here..."></textarea>
+                <button id="btn-copy-signal" class="btn secondary-btn" disabled>📋 Copy Token</button>
+            </div>
+
+            <div class="setup-box">
+                <h3>2. Connect to Peer</h3>
+                <textarea id="txt-remote-signal" placeholder="Paste your peer's connection token here..."></textarea>
+                <button id="btn-connect" class="btn success-btn">Link Handshake</button>
+            </div>
+
+            <div class="connection-status">
+                <span class="status-dot" id="net-status-dot"></span>
+                <span id="net-status-text">Network Offline</span>
+            </div>
+        </aside>
+
+        <main class="editor-container">
+            <header class="editor-header">
+                <div class="file-info">💼 main.js <span class="sync-tag">P2P Realtime</span></div>
+            </header>
+
+            <div class="editor-workspace">
+                <div class="line-numbers" id="line-track">
+                    <div>1</div>
+                </div>
+                <textarea id="code-textarea" spellcheck="false" autocomplete="off"
+                    placeholder="// Share your connection key and begin coding simultaneously...&#10;function init() {&#10;    console.log('Hello Peer!');&#10;}"></textarea>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
