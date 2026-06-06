@@ -372,7 +372,7 @@
       "game",
       "javascript"
     ],
-    "difficulty": "intermediate",
+    "difficulty": "advanced",
     "projectPath": "./public/Missionaries&Cannibals/index.html"
   },
   {
@@ -2312,24 +2312,35 @@
     "projectPath": "./public/canvas_multitrack_sequencer/index.html"
   },
   {
-      "projectNo": 187,
-      "projectName": "Image Compressor Web App",
-      "projectType": "Tool",
-      "projectDesc": "Modern utility app to compress and optimize images directly in the browser with beautiful glassmorphism UI.",
-      "techStack": ["tool", "html", "css", "javascript", "ui"],
-      "difficulty": "intermediate",
-      "projectPath": "./public/ImageCompressor/index.html"
-    },
-    {
-      "projectNo": 188,
-      "projectName": "Leetcode Streak Visualizer",
-      "projectType": "Tool",
-      "projectDesc": "A web based tool to compare between 2 leetcode users. Uses Battery Like UI to compare and show stats.",
-      "techStack": ["tool", "html", "css", "javascript"],
-      "difficulty": "advanced",
-      "projectPath": "./public/Streak-Visualizer/index.html"
-    },
-     {
+    "projectNo": 187,
+    "projectName": "Image Compressor Web App",
+    "projectType": "Tool",
+    "projectDesc": "Modern utility app to compress and optimize images directly in the browser with beautiful glassmorphism UI.",
+    "techStack": [
+      "tool",
+      "html",
+      "css",
+      "javascript",
+      "ui"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/ImageCompressor/index.html"
+  },
+  {
+    "projectNo": 188,
+    "projectName": "Leetcode Streak Visualizer",
+    "projectType": "Tool",
+    "projectDesc": "A web based tool to compare between 2 leetcode users. Uses Battery Like UI to compare and show stats.",
+    "techStack": [
+      "tool",
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Streak-Visualizer/index.html"
+  },
+  {
     "projectNo": 189,
     "projectName": "PeerRTC Video Chat",
     "projectType": "Tool",
@@ -2373,7 +2384,6 @@
     "difficulty": "advanced",
     "projectPath": "./public/Planet_gesture_formation/index.html"
   },
-   
   {
     "projectNo": 192,
     "projectName": "Interactive Story Player",
@@ -2393,14 +2403,14 @@
     "projectName": "Escape Room",
     "projectType": "Game",
     "projectDesc": "A thrilling escape room experience in your browser.",
-     "techStack": [
+    "techStack": [
       "html",
       "css",
       "javascript"
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/Escape_Room/index.html"
-   },
+  },
   {
     "projectNo": 194,
     "projectName": "Lost & Found Portal",
@@ -2427,7 +2437,7 @@
     "difficulty": "advanced",
     "projectPath": "./public/Complaint_Management_System/index.html"
   },
-{
+  {
     "projectNo": 196,
     "projectName": "AirCast",
     "projectType": "Tool",
@@ -2443,7 +2453,7 @@
     "projectPath": "./public/Weather App with AQI/index.html"
   },
   {
-"projectNo": 196,
+    "projectNo": 197,
     "projectName": "Flipkart Clone",
     "projectType": "E-Commerce",
     "projectDesc": "A responsive Flipkart-inspired e-commerce website featuring a modern navbar, product categories, hero carousel, brand spotlight section, promotional banners, home decor showcase, and a fully designed footer.",
@@ -2456,7 +2466,7 @@
     "projectPath": "./public/Flipkart-Clone/index.html"
   },
   {
-    "projectNo": 197,
+    "projectNo": 198,
     "projectName": "Theme-Toggler",
     "projectType": "UI / Animation",
     "projectDesc": "A responsive theme toggler that switches between light and dark modes and saves the user's preference using localStorage.",
@@ -2469,7 +2479,7 @@
     "projectPath": "./public/Theme-toggler/src/App.jsx"
   },
   {
-    "projectNo": 198,
+    "projectNo": 199,
     "projectName": "Pac-Man",
     "projectType": "Game",
     "projectDesc": "A classic Pac-Man game built with HTML5 Canvas and JavaScript. Features all 4 ghosts, touch and keyboard controls, score tracking, sound toggle, and is fully responsive for all devices.",
@@ -2484,7 +2494,7 @@
     "projectPath": "./public/pacman/index.html"
   },
   {
-    "projectNo": 199,
+    "projectNo": 200,
     "projectName": "Dual-Genre Movie Matcher",
     "projectType": "Web Application",
     "projectDesc": "A web app to search the perfect movie. Comes with dark and light theme toggle.",
@@ -2495,17 +2505,32 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/Movie-Matcher/index.html"
-  
-},
-
-    {
-    "projectNo": 200,
+  },
+  {
+    "projectNo": 201,
     "projectName": "Number Guesser Game",
     "projectType": "Game",
     "projectDesc": "A simple and interactive Number Guessing Game built using HTML, CSS, and JavaScript. The player must guess a randomly generated number between 1 and 100 within 10 attempts.",
-    "techStack": ["game", "html", "css", "javascript"],
+    "techStack": [
+      "game",
+      "html",
+      "css",
+      "javascript"
+    ],
     "difficulty": "advanced",
     "projectPath": "./public/NumberGuessGame/index.html"
-},
-  
+  },
+  {
+    "projectNo": 202,
+    "projectName": "Bioinformatics Genomic Alignment Engine & Matrix Visualizer",
+    "projectType": "Tool",
+    "projectDesc": "An advanced tool using the Needleman-Wunsch dynamic programming algorithm to calculate optimal global sequence alignments and map mutations visually inside a color-coded matrix heat map loop.",
+    "techStack": [
+      "html",
+      "css",
+      "vanilla-javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/DNA_Aligner/index.html"
+  }
 ]
