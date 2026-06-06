@@ -1,103 +1,92 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Search App</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div id="particles-js"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CineSearch — Discover Movies</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="bg-orb orb1"></div>
+    <div class="bg-orb orb2"></div>
+    <div class="bg-orb orb3"></div>
+
     <div class="container">
-        <h1>🎬 Movie Search App</h1>
+      <!-- Header -->
+      <header class="header">
+        <div class="logo">
+          <span class="logo-icon">▶</span>
+          <span class="logo-text">CineSearch</span>
+        </div>
+        <p class="tagline">Discover. Explore. Watch.</p>
+      </header>
 
+      <!-- Search -->
+      <div class="search-section">
         <div class="search-box">
-            <input
-                type="text"
-                id="movieInput"
-                placeholder="Search for a movie..."
-            >
-            <button id="searchBtn">Search</button>
+          <span class="search-icon">⌕</span>
+          <input
+            type="text"
+            id="movieInput"
+            placeholder="Search any movie title e.g. Interstellar, Avengers..."
+            autocomplete="off"
+          />
+          <button id="searchBtn">Search</button>
         </div>
 
-        <div id="movies"></div>
+        <!-- Filters -->
+        <div class="filters">
+          <!-- Genre dropdown — now shows our curated categories -->
+          <select id="genreFilter">
+            <option value="all">🎬 All Genres</option>
+            <option value="scifi">🚀 Sci-Fi &amp; Adventure</option>
+            <option value="action">🦸 Action &amp; Superheroes</option>
+            <option value="comedy">😄 Comedy &amp; Rom-Com</option>
+            <option value="horror">👻 Horror &amp; Thriller</option>
+            <option value="animation">🎨 Animation &amp; Family</option>
+            <option value="drama">🎭 Drama &amp; Classic</option>
+          </select>
+
+          <select id="yearFilter">
+            <option value="">All Years</option>
+          </select>
+
+          <button id="clearBtn" class="clear-btn">✕ Clear</button>
+        </div>
+      </div>
+
+      <!-- Results info -->
+      <div id="resultsInfo" class="results-info"></div>
+
+      <!-- Movies -->
+      <div id="movies" class="movies-home"></div>
+
+      <!-- Load more -->
+      <div
+        id="loadMoreWrapper"
+        style="display: none; text-align: center; margin-top: 40px"
+      >
+        <button id="loadMoreBtn" class="load-more-btn">Load More</button>
+      </div>
     </div>
 
-    <!-- Movie Details Modal -->
-    <div class="modal" id="movieModal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div id="movieDetails"></div>
-        </div>
+    <!-- Modal -->
+    <div class="modal" id="movieModal" role="dialog" aria-modal="true">
+      <div class="modal-backdrop"></div>
+      <div class="modal-content">
+        <button class="close-btn" id="closeModal" aria-label="Close">✕</button>
+        <div id="movieDetails"></div>
+      </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
     <script src="script.js"></script>
-    <script>
-particlesJS("particles-js", {
-    particles: {
-        number: {
-            value: 80
-        },
-
-        color: {
-            value: "#ffffff"
-        },
-
-        shape: {
-            type: "circle"
-        },
-
-        opacity: {
-            value: 0.4
-        },
-
-        size: {
-            value: 3
-        },
-
-        line_linked: {
-            enable: true,
-            distance: 150,
-            color: "#ffffff",
-            opacity: 0.15,
-            width: 1
-        },
-
-        move: {
-            enable: true,
-            speed: 2
-        }
-    },
-
-    interactivity: {
-        detect_on: "canvas",
-
-        events: {
-            onhover: {
-                enable: true,
-                mode: "repulse"
-            },
-
-            onclick: {
-                enable: true,
-                mode: "push"
-            }
-        },
-
-        modes: {
-            repulse: {
-                distance: 100
-            },
-
-            push: {
-                particles_nb: 4
-            }
-        }
-    },
-
-    retina_detect: true
-});
-</script>
-</body>
+  </body>
 </html>

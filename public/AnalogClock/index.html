@@ -41,6 +41,7 @@
             id="focusModeBtn"
             class="btn btn-primary focus-btn"
             aria-label="Toggle Focus Mode"
+            onclick="document.body.classList.toggle('focus-mode'); console.log('Body classes:', document.body.className);"
         >
             Focus Mode
         </button>
@@ -284,11 +285,19 @@
     <!-- AUDIO -->
     <audio id="timerSound" src="timer.mp3" preload="auto"></audio>
 
-
-    <script src="index.js"></script>
-
     
     <script src="theme-system.js"></script>
     <script src="index.js"></script>
+
+    <script>
+        window.addEventListener("keydown", (e) => {
+            // Check if 'F' is pressed and make sure the user isn't currently typing in an input box
+            if (e.key.toLowerCase() === "f" && !e.target.matches('input, textarea')) {
+                e.preventDefault();
+                document.body.classList.toggle('focus-mode');
+                console.log('Keyboard Focus Toggle. Classes:', document.body.className);
+            }
+        });
+    </script>
 </body>
 </html>
