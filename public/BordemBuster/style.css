@@ -486,12 +486,12 @@ body::after {
   font-size: 1.2rem;
   margin-top: 0;
   margin-bottom: 12px;
-  color: #fff;
+ color: var(--text);
 }
 
 .progress-stats p {
   font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text2);
   margin-bottom: 15px;
 }
 #completedCount {
@@ -520,7 +520,7 @@ body::after {
 /* State A: LOCKED (Desaturated & Translucent) */
 .badge.locked {
   background: rgba(255, 255, 255, 0.04);
-  color: rgba(255, 255, 255, 0.25);
+ color: var(--text3);
   border: 1px dashed rgba(255, 255, 255, 0.1);
   filter: grayscale(100%);
   cursor: not-allowed;
