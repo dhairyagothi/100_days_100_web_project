@@ -56,6 +56,7 @@
       </ul>
     </aside>
 
+<<<<<<< HEAD
     <!-- ── Main Game Area ── -->
     <main class="game-board" role="main">
       <!-- Status Message -->
@@ -74,6 +75,98 @@
             role="list"
             aria-label="Your cards"
           ></div>
+=======
+  <!-- ── Rules Popup ── -->
+  <aside id="rules-box" class="rules-box" role="dialog" aria-label="Game Rules" hidden>
+    <h3>How To Play</h3>
+    <ul>
+      <li><strong>Goal:</strong> Reach 21 without exceeding it</li>
+      <li><strong>Hit</strong> → Draw another card</li>
+      <li><strong>Stand</strong> → Stop drawing; dealer plays</li>
+      <li><strong>Dealer</strong> draws until score ≥ 17</li>
+      <li><strong>Closest to 21 wins</strong> — ties are a Draw</li>
+      <li><strong>Bust</strong> → Score &gt; 21 is an instant loss</li>
+    </ul>
+</div>
+    <div class="main">
+        <h2><span id="command">Let's Play</span></h2>
+        <div class="row1">
+            <div id="your-box">
+                <h2>You: <span id="yourscore">0</span></h2>
+            </div>
+            <div id="dealer-box">
+                <h2>Dealer: <span id="dealerscore">0</span></h2>
+            </div>
+        </div>
+        <div class="row2">
+            <div class="buttons">
+                <button class="btn-lg btn-primary" id="hit" onmouseover="tink.play()" > Hit </button> 
+                <button class="btn-lg btn-warning" id="stand" onmouseover="tink.play()">Stand</button>
+                <button class="btn-lg btn-danger" id="deal" onmouseover="tink.play()">Deal</button>
+            </div>
+        </div>
+        <div class="row3">
+            <div id="countdown-message" class="countdown-message"></div>
+            <h3>Scoreboard: </h3>
+            <table>
+                <tr>
+                    <th>Wins</th>
+                    <th>Losses</th>
+                    <th>Draws</th>
+                </tr>
+                <tr>
+                    <td><span id="wins">0</span></td>
+                    <td><span id="losses">0</span></td>
+                    <td><span id="draws">0</span></td>
+                </tr>
+            </table>
+            <div class="score-buttons">
+
+<button class="btn btn-success"
+id="play-again" style="display:none;">
+
+    <!-- Status Message -->
+    <p class="status-msg" id="command" aria-live="polite">Let's Play!</p>
+
+    <!-- Card Table -->
+    <section class="card-table" aria-label="Card Table">
+
+      <!-- Player Hand -->
+      <div class="hand-area" id="your-box" aria-label="Your hand">
+        <h2 class="hand-label">
+          You &nbsp;<span class="score-badge" id="yourscore">0</span>
+        </h2>
+        <div class="card-row" id="your-cards" role="list" aria-label="Your cards"></div>
+      </div>
+
+      <!-- Divider -->
+      <div class="table-divider" aria-hidden="true"></div>
+
+      <!-- Dealer Hand -->
+      <div class="hand-area" id="dealer-box" aria-label="Dealer hand">
+        <h2 class="hand-label">
+          Dealer &nbsp;<span class="score-badge" id="dealerscore">0</span>
+        </h2>
+        <div class="card-row" id="dealer-cards" role="list" aria-label="Dealer cards"></div>
+      </div>
+
+    </section>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons" role="group" aria-label="Game actions">
+      <button class="btn btn-hit"   id="hit"   aria-label="Hit — draw a card">Hit</button>
+      <button class="btn btn-stand" id="stand" aria-label="Stand — stop drawing">Stand</button>
+      <button class="btn btn-deal"  id="deal"  aria-label="Deal — start new round">Deal</button>
+    </div>
+
+    <!-- Scoreboard -->
+    <section class="scoreboard" aria-label="Scoreboard">
+      <h3 class="scoreboard-title">Scoreboard</h3>
+      <div class="score-grid">
+        <div class="score-cell wins">
+          <span class="score-num" id="wins">0</span>
+          <span class="score-lbl">Wins</span>
+>>>>>>> 36ee3a455b60a328b5c69b168da900508aced8eb
         </div>
 
         <!-- Divider -->

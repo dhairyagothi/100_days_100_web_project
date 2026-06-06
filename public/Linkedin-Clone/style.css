@@ -775,15 +775,6 @@ a:hover {
   display: block;
 }
 
-.post-btn {
-  background: #045be6;
-  color: #fff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-}
 .hidden {
   display: none;
 }
@@ -799,6 +790,70 @@ a:hover {
   margin-top: 10px;
   width: 100%;
 }
+
+/* Uniform button styling */
+.create-post-action {
+  list-style: none;
+  height: 44px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  padding: 8px 6px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: #666;
+  transition:
+    background 0.2s ease-in-out,
+    transform 0.2s ease-in-out,
+    color 0.2s ease-in-out;
+  flex: 1 1 0; /* share available space equally */
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+}
+
+.create-post-action:hover {
+  background: #e6f7ff;
+  color: #045be6;
+  transform: scale(1.05);
+}
+
+.create-post-action img {
+  width: 16px;
+  margin-right: 8px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.create-post-action:hover img {
+  transform: rotate(15deg);
+}
+
+/* Post button styling */
+.post-btn {
+  background: #045be6;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  cursor: pointer;
+  flex: 1 1 0;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.post-btn:hover {
+  background: #0044cc;
+}
+
+/* Fallback for list items if any */
 .create-post-links li {
   list-style: none;
   height: 44px;
@@ -814,21 +869,25 @@ a:hover {
   transition:
     background 0.2s ease-in-out,
     transform 0.2s ease-in-out;
-  flex: 1 1 0; /* share available space equally */
+  flex: 1 1 0;
 }
+
 .create-post-links li:hover {
   background: #e6f7ff;
   color: #045be6;
   transform: scale(1.05);
 }
+
 .create-post-links li img {
   width: 16px;
   margin-right: 8px;
   transition: transform 0.2s ease-in-out;
 }
+
 .create-post-links li:hover img {
   transform: rotate(15deg);
 }
+
 .create-post-links li:last-child {
   background: #045be6;
   color: #fff;
@@ -836,6 +895,7 @@ a:hover {
   border-right: 0;
   transition: background-color 0.3s ease-in-out;
 }
+
 .create-post-links li:last-child:hover {
   background: #0044cc;
 }

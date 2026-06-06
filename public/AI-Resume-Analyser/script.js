@@ -4,7 +4,16 @@ const resumeInput = document.getElementById("resumeInput");
 
 const fileName = document.getElementById("fileName");
 
+<<<<<<< HEAD
 const dropZone = document.getElementById("dropZone");
+=======
+const downloadReportBtn =
+  document.getElementById(
+    "downloadReportBtn"
+  );
+const dropZone =
+  document.getElementById("dropZone");
+>>>>>>> 36ee3a455b60a328b5c69b168da900508aced8eb
 
 const dragText = document.querySelector(".drag-text");
 
@@ -64,8 +73,20 @@ progressCircle.style.strokeDasharray = circumference;
 
 progressCircle.style.strokeDashoffset = circumference;
 
+let currentATSScore = 0;
+
 function generateAnalysis() {
+<<<<<<< HEAD
   const atsScore = Math.floor(Math.random() * 21) + 70;
+=======
+
+   currentATSScore =
+    Math.floor(Math.random() * 21) + 70;
+>>>>>>> 36ee3a455b60a328b5c69b168da900508aced8eb
+
+
+  const atsScore =
+   currentATSScore;
 
   animateMeter(atsScore);
 
@@ -191,5 +212,59 @@ themeToggle.addEventListener("click", () => {
 
   localStorage.setItem("resumeTheme", isLight ? "light" : "dark");
 
+<<<<<<< HEAD
   themeToggle.textContent = isLight ? "☀️" : "🌙";
 });
+=======
+  themeToggle.textContent =
+    isLight ? "☀️" : "🌙";
+});
+
+downloadReportBtn.addEventListener(
+"click",
+() => {
+
+const report = `
+AI Resume Analyzer Report
+=========================
+
+ATS Score: ${currentATSScore}%
+
+Resume Insights
+---------------
+Technical Skills: 88%
+Projects: 82%
+Communication: 74%
+Experience: 68%
+
+AI Suggestions
+--------------
+• Add more quantified project achievements.
+• Include keywords like React, APIs, and Node.js.
+• Improve resume summary section.
+• Add GitHub and portfolio links.
+`;
+
+const blob =
+  new Blob(
+    [report],
+    { type: "text/plain" }
+  );
+
+const url =
+  URL.createObjectURL(blob);
+
+const a =
+  document.createElement("a");
+
+a.href = url;
+
+a.download =
+  "resume-analysis-report.txt";
+
+a.click();
+
+URL.revokeObjectURL(url);
+}
+);
+>>>>>>> 36ee3a455b60a328b5c69b168da900508aced8eb

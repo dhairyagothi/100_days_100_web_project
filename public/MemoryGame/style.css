@@ -594,3 +594,8 @@ header {
     font-size: 0.68rem;
   }
 }
+.btn-outline:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}

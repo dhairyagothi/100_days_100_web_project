@@ -129,7 +129,21 @@ function normalizeExpression(expression) {
 }
 
 function addHistoryEntry(expression, result) {
+<<<<<<< HEAD
   history.unshift({ expression, result });
+=======
+    const latestEntry = history[0];
+
+    if (
+        latestEntry &&
+        latestEntry.expression === expression &&
+        latestEntry.result === result
+    ) {
+        return;
+    }
+
+    history.unshift({ expression, result });
+>>>>>>> 36ee3a455b60a328b5c69b168da900508aced8eb
 
   if (history.length > MAX_HISTORY_ENTRIES) {
     history = history.slice(0, MAX_HISTORY_ENTRIES);
@@ -160,11 +174,19 @@ function createHistoryItem(entry) {
   div.classList.add("history-item");
   div.textContent = `${entry.expression} = ${entry.result}`;
 
+<<<<<<< HEAD
   div.addEventListener("click", () => {
     string = entry.result;
     input.value = entry.result;
     calculated = true;
   });
+=======
+    div.addEventListener('click', () => {
+        string = entry.expression;
+        input.value = entry.expression;
+        calculated = false;
+    });
+>>>>>>> 36ee3a455b60a328b5c69b168da900508aced8eb
 
   return div;
 }
@@ -177,6 +199,8 @@ function renderHistory() {
     historyList.appendChild(createHistoryItem(entry));
   });
 }
+
+renderHistory();
 
 const arr = Array.from(buttons);
 
@@ -238,6 +262,7 @@ arr.forEach((button) => {
   });
 });
 
+<<<<<<< HEAD
 document.getElementById("clearHistory").addEventListener("click", () => {
   showConfirmToast("Are you sure you want to clear history?", () => {
     // YES action
@@ -245,4 +270,16 @@ document.getElementById("clearHistory").addEventListener("click", () => {
     localStorage.removeItem(STORAGE_KEY);
     renderHistory();
   });
+=======
+document.getElementById('clearHistory').addEventListener('click', () => {
+    showConfirmToast(
+        "Are you sure you want to clear history?",
+        () => {
+            // YES action
+            history = [];
+            localStorage.removeItem(STORAGE_KEY);
+            renderHistory();
+        }
+    );
+>>>>>>> 36ee3a455b60a328b5c69b168da900508aced8eb
 });

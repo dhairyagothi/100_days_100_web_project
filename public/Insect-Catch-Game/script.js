@@ -40,6 +40,7 @@ let selected_insect = {};
 let gameInterval; // Stores the time interval
 let isGamePaused = false; // Helps pausing timer when user clicks 'End Game' button
 
+<<<<<<< HEAD
 start_btn.addEventListener("click", () => {
   buttonClickSound.currentTime = 0;
   buttonClickSound.onended = null; // clear any previous onended
@@ -68,11 +69,61 @@ choose_insect_btns.forEach((btn) => {
       setTimeout(createInsect, 1000);
       startGame();
 
+=======
+function playButtonClickSound(onComplete) {
+  let completed = false;
+  let fallbackTimer;
+
+  const finish = () => {
+    if (completed) return;
+    completed = true;
+    clearTimeout(fallbackTimer);
+    buttonClickSound.removeEventListener("ended", finish);
+    onComplete();
+  };
+
+  buttonClickSound.addEventListener("ended", finish, { once: true });
+  fallbackTimer = setTimeout(finish, 700);
+
+  try {
+    buttonClickSound.currentTime = 0;
+    const playPromise = buttonClickSound.play();
+    if (playPromise && typeof playPromise.catch === "function") {
+      playPromise.catch(finish);
+    }
+  } catch (error) {
+    finish();
+  }
+}
+
+start_btn.addEventListener("click", () => {
+  playButtonClickSound(() => {
+    screens[0].classList.add("up");
+  });
+});
+
+choose_insect_btns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const img = btn.querySelector("img");
+    const src = img.getAttribute("src");
+    const alt = img.getAttribute("alt");
+    selected_insect = { src, alt };
+
+    playButtonClickSound(() => {
+      screens[1].classList.add("up");
+      setTimeout(createInsect, 1000);
+      startGame();
+
+>>>>>>> 36ee3a455b60a328b5c69b168da900508aced8eb
       // Start background music after screen slides
       setTimeout(() => {
         backgroundMusic.play();
       }, 500);
+<<<<<<< HEAD
     };
+=======
+    });
+>>>>>>> 36ee3a455b60a328b5c69b168da900508aced8eb
   });
 });
 
@@ -116,7 +167,12 @@ function catchInsect() {
 
   increaseScore();
   this.classList.add("caught");
+<<<<<<< HEAD
   setTimeout(() => this.remove(), 2000);
+=======
+  this.style.pointerEvents = "none";
+  setTimeout(() => this.remove(), 300);
+>>>>>>> 36ee3a455b60a328b5c69b168da900508aced8eb
   addInsects();
 }
 
@@ -139,16 +195,37 @@ endBtn.addEventListener("click", () => {
   clearInterval(gameInterval);
   isGamePaused = true;
 });
+<<<<<<< HEAD
+=======
+
+// --- Volume Slider ---
+volumeSlider.addEventListener("input", () => {
+  const volume = volumeSlider.value;
+  backgroundMusic.volume = volume;
+  catchSound.volume = volume;
+  buttonClickSound.volume = volume;
+});
+>>>>>>> 36ee3a455b60a328b5c69b168da900508aced8eb
 
 // Resume game
 noBtn.addEventListener("click", () => {
   gameOverPopup.style.display = "none";
+<<<<<<< HEAD
   if (isGamePaused) {
     gameInterval = setInterval(increaseTime, 1000);
     isGamePaused = false;
   }
 });
 
+=======
+
+  if (isGamePaused) {
+    gameInterval = setInterval(increaseTime, 1000);
+    isGamePaused = false;
+  }
+});
+
+>>>>>>> 36ee3a455b60a328b5c69b168da900508aced8eb
 // Ends the game
 yesBtn.addEventListener("click", endGame);
 
@@ -161,6 +238,7 @@ function endGame() {
 
   gameOverPopup.style.display = "none";
 
+<<<<<<< HEAD
   let m = Math.floor(seconds / 60);
   let s = seconds % 60;
 
@@ -170,5 +248,15 @@ function endGame() {
   finalScore.innerHTML = `Final Score: ${score}`;
   finalTime.innerHTML = `Time Taken: ${m}:${s}`;
 
+=======
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  const paddedMins = m < 10 ? `0${m}` : `${m}`;
+  const paddedSeconds = s < 10 ? `0${s}` : `${s}`;
+
+  finalScore.innerHTML = `Final Score: ${score}`;
+  finalTime.innerHTML = `Time Taken: ${paddedMins}:${paddedSeconds}`;
+
+>>>>>>> 36ee3a455b60a328b5c69b168da900508aced8eb
   finalResult.style.display = "flex";
 }

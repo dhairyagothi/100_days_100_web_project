@@ -14,12 +14,22 @@ body {
 
 /* Centering Logic */
 .main-container {
+<<<<<<< HEAD
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   min-height: 100vh;
   padding: 20px;
+=======
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    padding: 20px;
+>>>>>>> 36ee3a455b60a328b5c69b168da900508aced8eb
 }
 
 .glass-card {

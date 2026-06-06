@@ -301,9 +301,32 @@ button {
   font-size: 1rem;
   font-weight: 700;
   color: var(--gold-light);
+<<<<<<< HEAD
   transition:
     color var(--transition),
     background var(--transition);
+=======
+  transition: color var(--transition), background var(--transition);}
+#countdown-message {
+    font-family: 'Teko', sans-serif;
+    font-size: 2.5rem;
+    color: #8B0000;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.2rem;
+    min-height: 3rem;
+}
+
+table, th, td{
+    padding: .5rem;
+    border: solid 2px black;
+    font-size: 3rem;
+    font-family: 'Teko', sans-serif;
+    font-weight: 400;
+    padding-left: 3rem;
+    padding-right: 3rem;
+>>>>>>> 36ee3a455b60a328b5c69b168da900508aced8eb
 }
 
 /* Card row — horizontally scrollable on mobile */
@@ -319,9 +342,23 @@ button {
   height: 9rem;
   width: auto;
   border-radius: var(--radius-sm);
+<<<<<<< HEAD
   box-shadow: 3px 4px 10px rgba(0, 0, 0, 0.5);
   animation: cardDeal 0.25s cubic-bezier(0.22, 1, 0.36, 1);
   flex-shrink: 0;
+=======
+  box-shadow: 3px 4px 10px rgba(0,0,0,0.5);
+  animation: cardDeal 0.25s cubic-bezier(0.22,1,0.36,1);
+  flex-shrink: 0;}
+#play-again {
+    display: none !important;
+}
+
+/* title container */
+
+.title-container{
+    position: relative;
+>>>>>>> 36ee3a455b60a328b5c69b168da900508aced8eb
 }
 
 /* Card deal entrance animation */
