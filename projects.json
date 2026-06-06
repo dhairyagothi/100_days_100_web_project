@@ -1934,5 +1934,13 @@
     "techStack": ["html", "css", "javascript", "canvas"],
     "difficulty": "advanced",
     "projectDesc": "A responsive physics-inspired arcade game challenging users to stack moving horizontal blocks cleanly. Implements strict boundary checking, block-slicing logic, dynamic camera tracking, and interactive start/pause state controls."
+  },
+  {
+    "projectNo": 213,
+    "projectName": "CSS Animation Playground",
+    "projectPath": "./public/CSS-Animation-Playground/index.html",
+    "techStack": ["html", "css", "javascript"],
+    "difficulty": "intermediate",
+    "projectDesc": "An interactive visual CSS animation builder with live preview, keyframe timeline editor, 12+ preset animations, multiple preview shapes, code generation with syntax highlighting, and a stunning dark neon glassmorphism UI."
   }
 ]
