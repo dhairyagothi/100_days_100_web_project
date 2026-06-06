@@ -645,10 +645,17 @@
       const toastContainer = document.getElementById('toastContainer');
       const toast = document.createElement('div');
       toast.className = 'toast';
-      toast.innerHTML = `
-        <span class="toast-icon">✅</span>
-        <span class="toast-message">${message}</span>
-      `;
+      
+      const icon = document.createElement('span');
+      icon.className = 'toast-icon';
+      icon.textContent = '✅';
+      
+      const msg = document.createElement('span');
+      msg.className = 'toast-message';
+      msg.textContent = message;
+      
+      toast.appendChild(icon);
+      toast.appendChild(msg);
       toastContainer.appendChild(toast);
 
       // Remove after 4 seconds
