@@ -50,6 +50,7 @@
   padding: 0;
   box-sizing: border-box;
 }
+}
 
 /* ── Background Animations ── */
 @keyframes orbFloat1 {
@@ -81,7 +82,7 @@
 
 /* ── Body ── */
 body {
-  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;;
   font-weight: 400;
   background: var(--bg);
   color: var(--text);
