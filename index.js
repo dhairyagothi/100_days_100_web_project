@@ -593,9 +593,14 @@ let recentProjects = [];
 
 function getStoredArray(key) {
   try {
-    const value = JSON.parse(localStorage.getItem(key));
-    return Array.isArray(value) ? value : [];
-  } catch {
+    const data = localStorage.getItem(key);
+    if (data === null) return [];
+    const value = JSON.parse(data);
+    if (!Array.isArray(value)) {
+      throw new Error("Stored value is not an array");
+    }
+    return value;
+  } catch (error) {
     try {
       localStorage.removeItem(key);
     } catch {
@@ -630,23 +635,32 @@ function migrateRecentProjects() {
   if (recentProjects.length === 0) return;
 
   // Check if already in new format (has timestamp)
-  if (typeof recentProjects[0] === "object" && recentProjects[0].timestamp) {
+  if (recentProjects[0] && typeof recentProjects[0] === "object" && recentProjects[0].timestamp) {
     return; // Already migrated
   }
 
   // Migrate old format [day, name, url, tags] to new format {day, name, url, tags, timestamp}
-  recentProjects = recentProjects.map((project) => {
-    if (Array.isArray(project)) {
-      return {
-        day: project[0],
-        name: project[1],
-        url: project[2],
-        tags: project[3],
-        timestamp: Date.now() - ONE_HOUR_MS / 2, // Set to 30 mins ago to preserve them initially
-      };
-    }
-    return project;
-  });
+  recentProjects = recentProjects
+    .map((project) => {
+      if (!project) return null;
+      if (Array.isArray(project)) {
+        return {
+          day: project[0] || "",
+          name: project[1] || "",
+          url: project[2] || "",
+          tags: project[3] || [],
+          timestamp: Date.now() - ONE_HOUR_MS / 2, // Set to 30 mins ago to preserve them initially
+        };
+      }
+      if (typeof project === "object" && !project.timestamp) {
+        return {
+          ...project,
+          timestamp: Date.now() - ONE_HOUR_MS / 2,
+        };
+      }
+      return project;
+    })
+    .filter(Boolean);
   
   safeSetLocalStorage('recentProjects', recentProjects);
 }
@@ -1205,14 +1219,15 @@ function getRecentProjectsWithinWindow() {
  * @param {array} project - Project data [day, name, url, tags]
  */
 function trackRecentProject(project) {
+  if (!project) return;
   // Convert old format to new format if needed
   let projectObj;
   if (Array.isArray(project)) {
     projectObj = {
-      day: project[0],
-      name: project[1],
-      url: project[2],
-      tags: project[3],
+      day: project[0] || "",
+      name: project[1] || "",
+      url: project[2] || "",
+      tags: project[3] || [],
       timestamp: Date.now(),
     };
   } else {
@@ -1223,7 +1238,7 @@ function trackRecentProject(project) {
   }
 
   // Remove duplicate if exists
-  recentProjects = recentProjects.filter((item) => item.day !== projectObj.day);
+  recentProjects = recentProjects.filter((item) => item && item.day !== projectObj.day);
 
   // Add to front
   recentProjects.unshift(projectObj);
@@ -1233,33 +1248,30 @@ function trackRecentProject(project) {
     recentProjects.pop();
   }
 
-  try {
-    localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
-  } catch (error) {
-    console.warn(
-      "Could not save recent projects due to localStorage restrictions",
-    );
-  }
+  safeSetLocalStorage('recentProjects', recentProjects);
   renderRecentProjects();
 }
 
 const bookmarkGrid = document.getElementById("bookmarkGrid");
 
 function normalizeProjectEntry(project) {
+  if (!project) {
+    return { day: "", name: "", url: "", tags: [] };
+  }
   if (Array.isArray(project)) {
     return {
-      day: project[0],
-      name: project[1],
-      url: project[2],
-      tags: project[3],
+      day: project[0] || "",
+      name: project[1] || "",
+      url: project[2] || "",
+      tags: project[3] || [],
     };
   }
 
   return {
-    day: project.day,
-    name: project.projectName || project.name,
-    url: project.projectPath || project.url,
-    tags: project.techStack || project.tags,
+    day: project.day || "",
+    name: project.projectName || project.name || "",
+    url: project.projectPath || project.url || "",
+    tags: project.techStack || project.tags || [],
   };
 }
 
