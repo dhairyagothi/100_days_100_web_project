@@ -224,6 +224,34 @@ document.addEventListener("DOMContentLoaded", () => {
     }, duration);
   }
 
+   // ================== DARK MODE ==================
+  const darkModeBtn = document.getElementById("darkModeToggle");
+const icon = document.getElementById("icon");
+
+// Load saved theme
+if (localStorage.getItem("theme") === "dark") {
+  document.body.classList.add("dark-mode");
+  icon.textContent = "light_mode";
+} else {
+  icon.textContent = "dark_mode";
+}
+
+// Toggle
+darkModeBtn.addEventListener("click", () => {
+
+  document.body.classList.toggle("dark-mode");
+
+  if (document.body.classList.contains("dark-mode")) {
+    icon.textContent = "light_mode";
+    localStorage.setItem("theme", "dark");
+  } else {
+    icon.textContent = "dark_mode";
+    localStorage.setItem("theme", "light");
+  }
+
+});
+
+
   /* ────────────────────────────────────────────────
      7. STICKY NAVBAR on scroll
   ──────────────────────────────────────────────── */
