@@ -176,6 +176,7 @@ const generateCaptcha = () => {
         case 'image': {
             const { images, correct } = generateImageCaptcha();
             currentCaptcha = correct.name;
+            textInput.disabled=true
             textInput.placeholder = `Select the ${correct.name}`;
             captchaContainer.innerHTML = `
                 <p>Select the ${correct.name}</p>

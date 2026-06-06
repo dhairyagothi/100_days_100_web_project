@@ -88,7 +88,12 @@ let stats = { best: 0, games: 0, wins: 0, bestTile: 2, earned: [] };
 function loadStats() {
   try {
     const s = localStorage.getItem('2048stats');
-    if (s) stats = JSON.parse(s);
+    if (s) {
+      const parsed = JSON.parse(s);
+      stats = { ...stats, ...parsed };
+      if (!stats.earned) stats.earned = [];
+      if (!stats.scoreHistory) stats.scoreHistory = [];
+    }
   } catch (_) {}
 }
 
@@ -275,16 +280,12 @@ function applyGridDimensions() {
 
 function slideRow(row) {
   const arr = row.filter((x) => x);
-  let pts = 0,
-    didMerge = false;
+  let pts = 0;
   for (let i = 0; i < arr.length - 1; i++) {
-    if (arr[i] === arr[i + 1] && !didMerge) {
+    if (arr[i] === arr[i + 1]) {
       arr[i] *= 2;
       pts += arr[i];
       arr.splice(i + 1, 1);
-      didMerge = true;
-    } else {
-      didMerge = false;
     }
   }
   while (arr.length < N) arr.push(0);
@@ -292,7 +293,7 @@ function slideRow(row) {
 }
 
 function rotateBoard(b, turns) {
-  let out = b;
+  let out = b.map(row => [...row]); // ensure deep copy to prevent mutation
   for (let t = 0; t < turns; t++) {
     const tmp = Array.from({ length: N }, () => Array(N).fill(0));
     for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) tmp[c][N - 1 - r] = out[r][c];
@@ -917,7 +918,9 @@ document.addEventListener('visibilitychange', () => {
       paused = false;
       startTimer();
 
-      if (tfill) tfill.classList.remove('paused');
+
+      document.getElementById('tfill').classList.remove('paused');
+
 
       showToast('Timer resumed');
     }
