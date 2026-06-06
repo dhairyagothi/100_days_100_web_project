@@ -854,7 +854,7 @@ function renderGrid() {
     const matchesFilter =
       activeFilter === "all" || category === targetCategory;
 
-    // Search filter
+    // Search filter (matches name, description, day, and technology tags)
     const q = searchQuery.toLowerCase().trim();
     const matchesSearch =
       !q ||
@@ -863,6 +863,7 @@ function renderGrid() {
         .every(
           (term) =>
             name.toLowerCase().includes(term) ||
+            (project.projectDesc || "").toLowerCase().includes(term) ||
             day.toLowerCase().includes(term) ||
             (Array.isArray(tags) ? tags.join(" ") : tags || "")
               .toLowerCase()
@@ -1736,12 +1737,15 @@ function updateCategoryCounts() {
 function syncProjectCounts() {
   let filtered = [...PROJECTS];
 
-  // Apply search filter
+  // Apply search filter (matches name, description, day, and tags)
   if (searchQuery) {
+    const q = searchQuery.toLowerCase();
     filtered = filtered.filter(
       (project) =>
-        project.projectName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        project.day.toLowerCase().includes(searchQuery.toLowerCase()),
+        project.projectName.toLowerCase().includes(q) ||
+        (project.projectDesc || "").toLowerCase().includes(q) ||
+        project.day.toLowerCase().includes(q) ||
+        (Array.isArray(project.techStack) ? project.techStack.join(" ") : project.techStack || "").toLowerCase().includes(q),
     );
   }
 
