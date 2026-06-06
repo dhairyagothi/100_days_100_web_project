@@ -135,19 +135,54 @@ function updateScore(card, activePlayer) {
   }
 }
 
-/**
- * Renders the player's current score. Shows "BUST!" in red above 21.
- * @param {Object} activePlayer
- */
-function showScore(activePlayer) {
-  const el = $(activePlayer.scoreSpan);
-  if (activePlayer.score > 21) {
-    el.textContent = 'BUST!';
-    el.style.color = '#e05252';
-  } else {
-    el.textContent = activePlayer.score;
-    el.style.color = '';
-  }
+// Dealer's Logic (2nd player) OR Stand button
+document.querySelector('#stand').addEventListener('click', BJstand)
+
+function BJstand(){
+    if(You['score']===0){
+        alert('Please Hit Some Cards First!');
+    }
+    else{
+        while(Dealer['score']<16){
+            drawCard(Dealer);
+        }
+        setTimeout(function(){
+            showresults(findwinner());
+            scoreboard();
+            
+            // Show countdown message
+            const countdownEl = document.querySelector('#countdown-message');
+            let count = 3;
+            countdownEl.textContent = `Resetting in ${count}...`;
+            
+            // Countdown timer
+            const countdownInterval = setInterval(function() {
+                count--;
+                if (count > 0) {
+                    countdownEl.textContent = `Resetting in ${count}...`;
+                } else {
+                    countdownEl.textContent = '';
+                    clearInterval(countdownInterval);
+                }
+            }, 1000);
+            
+            // Auto-trigger Play Again after 3 seconds
+            setTimeout(function(){
+                BJdeal();
+            }, 3000);
+        }, 800); 
+    }
+}
+// Rules button
+
+document.querySelector('#rules-btn')
+.addEventListener('click', ()=>{
+
+let box =
+document.querySelector('#rules-box');
+
+if(box.style.display==="none"){
+box.style.display="block";
 }
 
 // ΓöÇΓöÇ Round resolution ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
@@ -261,14 +296,10 @@ function BJstand() {
  */
 function BJdeal() {
   if (gameActive) {
-    alert('Finish your current turn first ΓÇö Hit or Stand before dealing.');
+    alert('Finish the current round before dealing again.');
     return;
   }
-  if (You.score === 0 && Dealer.score === 0 &&
-      BJgame.wins === 0 && BJgame.losses === 0 && BJgame.draws === 0) {
-    alert('Hit some cards to start playing!');
-    return;
-  }
+
   startNewRound();
 }
 
@@ -291,7 +322,7 @@ function startNewRound() {
   });
 
   const commandEl = $('#command');
-  commandEl.textContent = "Let's Play!";
+  commandEl.textContent = "Round started! Click Hit to draw a card.";
   commandEl.style.color = '';
 
   enableGameButtons();
@@ -333,3 +364,4 @@ document.querySelector('.action-buttons').addEventListener('mouseover', e => {
 
 // Initialise with buttons disabled ΓÇö Deal opens the first round
 disableGameButtons();
+});

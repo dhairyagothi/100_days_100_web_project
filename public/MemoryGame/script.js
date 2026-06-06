@@ -32,6 +32,7 @@ const winModal   = document.getElementById('winModal');
 const toastEl    = document.getElementById('toast');
 const startBtn   = document.getElementById('startBtn');
 const hintBtn    = document.getElementById('hintBtn');
+const victorySound = document.getElementById('victorySound');
 
 // ── Event Listeners ───────────────────────────────────────
 document.querySelectorAll('.diff-btn').forEach(btn => {
@@ -49,6 +50,8 @@ startBtn.addEventListener('click', startGame);
 hintBtn.addEventListener('click', useHint);
 
 document.getElementById('playAgainBtn').addEventListener('click', () => {
+  victorySound.pause();
+  victorySound.currentTime = 0;
   winModal.classList.remove('visible');
   setupPreview();
 });
@@ -160,7 +163,8 @@ function startPreviewCountdown() {
 
 function setupPreview() {
   const cfg = DIFFICULTIES[difficulty];
-
+  victorySound.pause();
+  victorySound.currentTime = 0;
   // Cancel any running preview countdown or game timer
   if (previewInterval) {
      clearInterval(previewInterval);
@@ -176,6 +180,9 @@ function setupPreview() {
   moves = 0;
   seconds = 0;
   hintUsed = false;
+const hintBtn = document.getElementById('hintBtn');
+hintBtn.disabled = false;
+hintBtn.textContent = 'Hint';
 
   gameActive = false;
   lockBoard = true;
@@ -317,26 +324,23 @@ function useHint() {
     showToast('💡 Hint already used!');
     return;
   }
- 
-  // Guard: only works during an active game
-  if (!gameActive) return;
- 
-  // Consume the hint
-  hintUsed            = true;
-  hintBtn.disabled    = true;
-  hintBtn.textContent = 'Hint Used';
- 
-  const cols      = DIFFICULTIES[difficulty].cols;
-  const totalRows = Math.ceil(cards.length / cols);
- 
-  // Collect row indices that still contain unmatched, unflipped cards
-  const validRows = [];
-  for (let r = 0; r < totalRows; r++) {
-    const rowSlice     = cards.slice(r * cols, (r + 1) * cols);
-    const hasCandidate = rowSlice.some(
-      c => !c.classList.contains('matched') && !c.classList.contains('flipped')
-    );
-    if (hasCandidate) validRows.push(r);
+  hintUsed = true;
+const hintBtn = document.getElementById('hintBtn');
+hintBtn.disabled = true;
+hintBtn.textContent = 'Hint Used';
+
+  // Collect unmatched, unflipped cards
+  const unmatched = cards.filter(
+    c => !c.classList.contains('matched') && !c.classList.contains('flipped')
+  );
+  if (!unmatched.length) return;
+
+  // Group by emoji to find a valid pair
+  const emojiMap = {};
+  for (const c of unmatched) {
+    const e = c.dataset.emoji;
+    if (!emojiMap[e]) emojiMap[e] = [];
+    emojiMap[e].push(c);
   }
  
   if (!validRows.length) return;   // nothing left to reveal
@@ -392,6 +396,9 @@ function onWin() {
   document.getElementById('modalTime').textContent       = fmt(seconds);
   document.getElementById('newBest').style.display       = isNewBest ? 'block' : 'none';
 
+  victorySound.currentTime = 0;
+  victorySound.play();
+
   setTimeout(() => {
     winModal.classList.add('visible');
     launchConfetti();
@@ -404,23 +411,25 @@ function onWin() {
  * Spawn animated confetti particles on win
  */
 function launchConfetti() {
+  console.log("CONFETTI FIRED");
   const container = document.getElementById('confettiContainer');
   container.innerHTML = '';
 
   const colors = ['#7c3aed','#a855f7','#f59e0b','#10b981','#ef4444','#60a5fa','#f472b6'];
 
-  for (let i = 0; i < 70; i++) {
+  for (let i = 0; i < 180; i++) {
     const p = document.createElement('div');
     p.className  = 'confetti-particle';
     p.style.cssText = `
       left: ${Math.random() * 100}%;
       background: ${colors[Math.floor(Math.random() * colors.length)]};
-      width: ${4 + Math.random() * 8}px;
-      height: ${4 + Math.random() * 8}px;
+      width: ${10 + Math.random() * 12}px;
+      height: ${10 + Math.random() * 12}px;
       border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
       animation-duration: ${1.5 + Math.random() * 2}s;
       animation-delay: ${Math.random() * 0.8}s;
     `;
+    p.style.boxShadow = `0 0 10px ${colors[Math.floor(Math.random() * colors.length)]}`;
     container.appendChild(p);
   }
 

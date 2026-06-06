@@ -73,22 +73,20 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   top: 1rem;
   left: 1rem;
   z-index: 100;
-  padding: 0.45rem 1rem;
-  background: rgba(0,0,0,0.55);
-  color: var(--text-primary);
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: var(--radius-md);
+  padding: 8px 16px;
+  background: #1e293b;
+  color: #3b82f6;
+  border: 1px solid #3b82f6;
+  border-radius: 8px;
   font-size: 0.85rem;
   font-weight: 600;
   font-family: var(--font-ui);
   text-decoration: none;
-  transition: background var(--transition), border-color var(--transition);
-  backdrop-filter: blur(6px);
+  transition: all 0.2s ease;
 }
 .back-btn:hover {
-  background: rgba(0,0,0,0.75);
-  border-color: var(--gold);
-  color: var(--gold);
+  background: #3b82f6;
+  color: #fff;
 }
 
 /* ── Site Header ────────────────────────────────────────────── */
@@ -248,7 +246,26 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   font-size: 1rem;
   font-weight: 700;
   color: var(--gold-light);
-  transition: color var(--transition), background var(--transition);
+  transition: color var(--transition), background var(--transition);}
+#countdown-message {
+    font-family: 'Teko', sans-serif;
+    font-size: 2.5rem;
+    color: #8B0000;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.2rem;
+    min-height: 3rem;
+}
+
+table, th, td{
+    padding: .5rem;
+    border: solid 2px black;
+    font-size: 3rem;
+    font-family: 'Teko', sans-serif;
+    font-weight: 400;
+    padding-left: 3rem;
+    padding-right: 3rem;
 }
 
 /* Card row — horizontally scrollable on mobile */
@@ -266,7 +283,15 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   border-radius: var(--radius-sm);
   box-shadow: 3px 4px 10px rgba(0,0,0,0.5);
   animation: cardDeal 0.25s cubic-bezier(0.22,1,0.36,1);
-  flex-shrink: 0;
+  flex-shrink: 0;}
+#play-again {
+    display: none !important;
+}
+
+/* title container */
+
+.title-container{
+    position: relative;
 }
 
 /* Card deal entrance animation */
@@ -420,4 +445,34 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   .btn        { padding: 0.6rem 1.5rem; font-size: 0.95rem; }
   .hand-area  { min-height: 10rem; }
   .card-row img { height: 7rem; }
+}
+
+@media (max-width: 768px) {
+  .site-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem 1rem 1.5rem;
+  }
+
+  .rules-btn {
+    position: static;
+    transform: none;
+    margin-top: 0.25rem;
+  }
+
+  .game-title {
+    font-size: clamp(2rem, 10vw, 3.5rem);
+    letter-spacing: 0.12em;
+    text-align: center;
+    line-height: 1.15;
+  }
+
+  .rules-box {
+    top: auto;
+    right: 50%;
+    transform: translateX(50%);
+    width: min(90vw, 22rem);
+  }
 }

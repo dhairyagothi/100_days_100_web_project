@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pomodoro Timer Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <header class="dashboard-header">
+        <h1>Focus Dashboard</h1>
+        <p>
+          Optimize productivity using structured sessions and ambient sound
+          mixing
+        </p>
+      </header>
+
+      <div class="dashboard-layout">
+        <main class="timer-section">
+          <div class="mode-selectors">
+            <button class="mode-btn active" data-mode="work">Work (25m)</button>
+            <button class="mode-btn" data-mode="short">Short Break (5m)</button>
+            <button class="mode-btn" data-mode="long">Long Break (15m)</button>
+          </div>
+
+          <div class="clock-display">
+            <svg class="progress-ring" width="280" height="280">
+              <circle
+                class="progress-ring-bg"
+                cx="140"
+                cy="140"
+                r="130"
+              ></circle>
+              <circle
+                class="progress-ring-fill"
+                id="timerProgress"
+                cx="140"
+                cy="140"
+                r="130"
+              ></circle>
+            </svg>
+            <div class="time-readout" id="timeDisplay">25:00</div>
+          </div>
+
+          <div class="control-actions">
+            <button id="startStopBtn" class="btn-primary">Start Focus</button>
+            <button id="resetBtn" class="btn-secondary">Reset</button>
+          </div>
+        </main>
+
+        <aside class="sound-section">
+          <h2>Ambient Sound Mixer</h2>
+          <p class="section-desc">
+            Create custom background soundscapes to mask distractions
+          </p>
+
+          <div class="mixer-channels">
+            <div class="mixer-card">
+              <div class="card-meta">
+                <span class="sound-title">White Noise (Rain)</span>
+                <button class="sound-toggle-btn" data-sound="rain">Play</button>
+              </div>
+              <input
+                type="range"
+                class="volume-slider"
+                data-sound="rain"
+                min="0"
+                max="1"
+                step="0.05"
+                value="0.5"
+              />
+            </div>
+
+            <div class="mixer-card">
+              <div class="card-meta">
+                <span class="sound-title">Nature Woods</span>
+                <button class="sound-toggle-btn" data-sound="forest">
+                  Play
+                </button>
+              </div>
+              <input
+                type="range"
+                class="volume-slider"
+                data-sound="forest"
+                min="0"
+                max="1"
+                step="0.05"
+                value="0.5"
+              />
+            </div>
+
+            <div class="mixer-card">
+              <div class="card-meta">
+                <span class="sound-title">Ambient Cafe</span>
+                <button class="sound-toggle-btn" data-sound="cafe">Play</button>
+              </div>
+              <input
+                type="range"
+                class="volume-slider"
+                data-sound="cafe"
+                min="0"
+                max="1"
+                step="0.05"
+                value="0.5"
+              />
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
