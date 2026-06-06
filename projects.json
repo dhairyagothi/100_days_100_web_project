@@ -1936,20 +1936,27 @@
     "projectDesc": "A responsive physics-inspired arcade game challenging users to stack moving horizontal blocks cleanly. Implements strict boundary checking, block-slicing logic, dynamic camera tracking, and interactive start/pause state controls."
   },
   {
-    "projectNo": 213,
-    "projectName": "Photo Studio",
-    "projectPath": "./public/Photo Studio/Project.html",
-    "techStack": ["html", "css"],
-    "difficulty": "intermediate",
-    "projectDesc": "A responsive photography portfolio and gallery website designed to showcase visual content through structured layouts, image presentation sections, and modern styling. Features an engaging user interface optimized for desktop and mobile viewing."
+  "projectNo": 213,
+  "projectName": "Photo Studio",
+  "projectPath": "./public/Photo Studio/Project.html",
+  "techStack": ["html", "css"],
+  "difficulty": "intermediate",
+  "projectDesc": "A responsive photography portfolio and gallery website designed to showcase visual content through structured layouts, image presentation sections, and modern styling. Features an engaging user interface optimized for desktop and mobile viewing."
   },
   {
     "projectNo": 214,
-    "projectName": "CSS Animation Playground",
-    "projectPath": "./public/CSS-Animation-Playground/index.html",
-    "techStack": ["html", "css", "javascript"],
-    "difficulty": "intermediate",
-    "projectDesc": "An interactive visual CSS animation builder with live preview, keyframe timeline editor, 12+ preset animations, multiple preview shapes, code generation with syntax highlighting, and a stunning dark neon glassmorphism UI."
+    "projectName": "AI Data Analyst",
+    "projectType": "Tool",
+    "projectDesc": "Upload CSV datasets and receive AI-powered exploratory data analysis, visualizations, correlation heatmaps, machine learning recommendations, AI-generated insights, and interactive dataset Q&A.",
+    "techStack": [
+      "javascript",
+      "ai",
+      "machine-learning",
+      "data-analysis",
+      "charts",
+      "api"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/AI-Data-Analyst/"
   }
-
 ]
