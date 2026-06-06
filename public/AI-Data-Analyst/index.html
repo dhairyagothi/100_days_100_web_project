@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="icon" type="image/png" href="./assets/icons/favicon.png" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Data Analyst</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-matrix@2.0.1/dist/chartjs-chart-matrix.min.js"></script>
+  </head>
+
+  <body>
+    <div class="bg-glow glow-blue"></div>
+    <div class="bg-glow glow-purple"></div>
+    <div class="bg-noise"></div>
+
+    <main class="container">
+      <div class="dashboard-layout">
+        <!-- ========================= LEFT COLUMN ========================= -->
+        <div class="main-content">
+          <!-- HERO + UPLOAD COMBINED -->
+          <section class="hero-upload-card">
+            <div class="hero-top">
+              <div class="hero-logo">AI</div>
+              <div class="hero-text">
+                <h1>
+                  <span class="white-text">AI Data</span>
+                  <span class="gradient-text">Analyst</span>
+                </h1>
+                <p class="hero-description">
+                  Upload a CSV dataset and receive automated exploratory data
+                  analysis, AI-generated insights, visualizations, and machine
+                  learning recommendations.
+                </p>
+              </div>
+            </div>
+
+            <div class="upload-zone" id="uploadZone">
+              <div class="upload-cloud-icon">
+                <svg width="52" height="46" viewBox="0 0 52 46" fill="none">
+                  <path
+                    d="M26 14V36M26 14L20 20M26 14L32 20"
+                    stroke="url(#cloud-grad)"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M13 36H8C4.69 36 2 33.31 2 30C2 27.03 4.02 24.54 6.78 23.84C6.27 22.73 6 21.5 6 20.2C6 15.61 9.71 11.9 14.3 11.9C14.71 11.9 15.11 11.93 15.5 11.99C17.07 8.38 20.74 5.9 25 5.9C30.52 5.9 35 10.38 35 15.9C35 16.54 34.93 17.16 34.8 17.76C37.77 18.23 40 20.83 40 23.9C40 27.2 37.31 29.9 34 29.9H39C42.31 29.9 45 32.59 45 35.9C45 39.21 42.31 41.9 39 41.9H13"
+                    stroke="url(#cloud-grad2)"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                  <defs>
+                    <linearGradient
+                      id="cloud-grad"
+                      x1="20"
+                      y1="14"
+                      x2="32"
+                      y2="36"
+                    >
+                      <stop offset="0%" stop-color="#93c5fd" />
+                      <stop offset="100%" stop-color="#a78bfa" />
+                    </linearGradient>
+                    <linearGradient
+                      id="cloud-grad2"
+                      x1="2"
+                      y1="5.9"
+                      x2="45"
+                      y2="41.9"
+                    >
+                      <stop
+                        offset="0%"
+                        stop-color="#3b82f6"
+                        stop-opacity="0.8"
+                      />
+                      <stop
+                        offset="100%"
+                        stop-color="#8b5cf6"
+                        stop-opacity="0.8"
+                      />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+
+              <p class="upload-hint">
+                Drag &amp; drop your CSV file here<br />or click below to browse
+              </p>
+
+              <div class="upload-actions">
+                <label for="csvFile" class="upload-btn">
+                  <i data-lucide="upload"></i>
+                  Upload Dataset
+                </label>
+                <button class="sample-btn" id="sampleDataBtn">
+                  <i data-lucide="file-text"></i>
+                  Try Sample Dataset
+                </button>
+              </div>
+
+              <input type="file" id="csvFile" accept=".csv" hidden />
+
+              <div id="fileInfo" class="file-info">No dataset uploaded</div>
+            </div>
+          </section>
+
+          <!-- METRICS STRIP -->
+          <section class="metrics-strip">
+            <div class="metric-item">
+              <span class="metric-icon">
+                <i data-lucide="layout-grid"></i>
+              </span>
+              <span class="metric-label">Rows</span>
+              <strong id="rowsCount">0</strong>
+            </div>
+
+            <div class="metric-divider"></div>
+
+            <div class="metric-item">
+              <span class="metric-icon">
+                <i data-lucide="columns"></i>
+              </span>
+              <span class="metric-label">Columns</span>
+              <strong id="columnsCount">0</strong>
+            </div>
+
+            <div class="metric-divider"></div>
+
+            <div class="metric-item">
+              <span class="metric-icon">
+                <i data-lucide="bar-chart-2"></i>
+              </span>
+              <span class="metric-label">Missing Values</span>
+              <strong id="missingCount">0</strong>
+            </div>
+
+            <div class="metric-divider"></div>
+
+            <div class="metric-item">
+              <span class="metric-icon quality-icon">
+                <i data-lucide="shield-check"></i>
+              </span>
+              <span class="metric-label">Quality Score</span>
+              <strong id="qualityScore">--</strong>
+            </div>
+          </section>
+
+          <!-- EXECUTIVE SUMMARY -->
+          <section class="card executive-section">
+            <div class="section-header executive-header">
+              <div class="executive-badge">
+                <i data-lucide="sparkles"></i>
+              </div>
+
+              <h2>AI Executive Summary</h2>
+            </div>
+
+            <div class="executive-body">
+              <div class="executive-content">
+                <div id="executiveSummary" class="exec-text">
+                  Upload a dataset to generate an intelligent overview and
+                  discover key insights.
+                </div>
+              </div>
+
+              <div class="executive-visual">
+                <div class="orbit orbit-1"></div>
+                <div class="orbit orbit-2"></div>
+                <div class="report-card">
+                  <div class="report-header-bar"></div>
+                  <div class="report-line"></div>
+                  <div class="report-line short"></div>
+                  <div class="report-chart-bars">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- STATISTICAL ANALYSIS -->
+          <section class="card statistics-section">
+            <div class="section-header">
+              <span class="section-icon">
+                <i data-lucide="activity"></i>
+              </span>
+              <h2>Statistical Analysis</h2>
+              <span class="section-col-tag" id="statColTag"></span>
+            </div>
+
+            <div class="column-selector">
+              <label for="numericColumn">Selected Numeric Column</label>
+              <select id="numericColumn">
+                <option>Select Column</option>
+              </select>
+            </div>
+
+            <div class="stats-grid">
+              <div class="stat-card">
+                <h4>Mean</h4>
+                <span id="meanValue">--</span>
+              </div>
+              <div class="stat-card">
+                <h4>Median</h4>
+                <span id="medianValue">--</span>
+              </div>
+              <div class="stat-card">
+                <h4>Mode</h4>
+                <span id="modeValue">--</span>
+              </div>
+              <div class="stat-card">
+                <h4>Std Dev</h4>
+                <span id="stdValue">--</span>
+              </div>
+              <div class="stat-card">
+                <h4>Minimum</h4>
+                <span id="minValue">--</span>
+              </div>
+              <div class="stat-card">
+                <h4>Maximum</h4>
+                <span id="maxValue">--</span>
+              </div>
+              <div class="stat-card">
+                <h4>Q1</h4>
+                <span id="q1Value">--</span>
+              </div>
+              <div class="stat-card">
+                <h4>Q3</h4>
+                <span id="q3Value">--</span>
+              </div>
+            </div>
+
+            <div class="ai-note" id="aiNoteText">
+              <i data-lucide="cpu"></i>
+              <span
+                >AI Note: Upload a dataset to generate statistical
+                insights.</span
+              >
+            </div>
+          </section>
+
+          <!-- VISUALIZATIONS -->
+          <section class="card visualization-section">
+            <div class="section-header">
+              <span class="section-icon">
+                <i data-lucide="trending-up"></i>
+              </span>
+              <h2>Visualizations</h2>
+            </div>
+
+            <div class="chart-grid">
+              <div class="chart-card">
+                <h3>Revenue Distribution</h3>
+                <div class="chart-wrap">
+                  <canvas id="distributionChart"></canvas>
+                </div>
+              </div>
+              <div class="chart-card">
+                <h3>Category Breakdown</h3>
+                <div class="chart-wrap">
+                  <canvas id="categoryChart"></canvas>
+                </div>
+              </div>
+              <div class="chart-card">
+                <h3>Correlation Heatmap</h3>
+                <div class="chart-wrap">
+                  <canvas id="heatmapChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- DATASET SUMMARY / TABLE -->
+          <section class="card preview-section">
+            <div class="section-header">
+              <span class="section-icon">
+                <i data-lucide="table-2"></i>
+              </span>
+              <h2>Dataset Summary</h2>
+            </div>
+
+            <div class="table-wrapper">
+              <table id="datasetTable">
+                <thead></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- ASK YOUR DATASET -->
+          <section class="card ask-ai-section">
+            <div class="section-header">
+              <span class="section-icon">
+                <i data-lucide="message-square"></i>
+              </span>
+              <h2>Ask Your Dataset</h2>
+            </div>
+
+            <div class="ask-ai-controls">
+              <input
+                type="text"
+                id="datasetQuestion"
+                placeholder="Ask something about your dataset..."
+              />
+              <button id="askDatasetBtn" class="ask-btn">
+                <i data-lucide="send"></i>
+                Ask AI
+              </button>
+            </div>
+
+            <div id="datasetAnswer" class="answer-area">
+              <p>Ask a question to get AI-powered insights.</p>
+            </div>
+          </section>
+        </div>
+
+        <!-- ========================= RIGHT SIDEBAR ========================= -->
+        <aside class="sidebar">
+          <!-- API KEY -->
+          <section class="card api-section">
+            <div class="section-header">
+              <span class="section-icon">
+                <i data-lucide="key"></i>
+              </span>
+              <h2>Groq API</h2>
+            </div>
+            <div class="api-input-group">
+              <input
+                type="password"
+                id="groqApiKey"
+                placeholder="Enter Groq API Key (not stored)"
+              />
+              <button id="saveApiKeyBtn" class="primary-btn">
+                <i data-lucide="save"></i>
+                Save API Key
+              </button>
+            </div>
+          </section>
+
+          <!-- AI INSIGHTS -->
+          <section class="card insights-section">
+            <div class="section-header">
+              <span class="section-icon">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="url(#hdr-grad2)"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                  />
+                  <defs>
+                    <linearGradient
+                      id="hdr-grad2"
+                      x1="2"
+                      y1="2"
+                      x2="22"
+                      y2="22"
+                    >
+                      <stop offset="0%" stop-color="#60a5fa" />
+                      <stop offset="100%" stop-color="#a78bfa" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </span>
+              <h2>AI Insights</h2>
+            </div>
+
+            <div id="insightsContainer" class="insights-grid">
+              <!-- Correlation Insight -->
+              <div class="insight-card correlation-card">
+                <div class="insight-icon">
+                  <i data-lucide="trending-up"></i>
+                </div>
+
+                <div class="insight-content">
+                  <div class="insight-header">
+                    <h3>Correlation Insight</h3>
+
+                    <div id="correlationBadge" class="insight-badge">94%</div>
+                  </div>
+
+                  <p id="correlationInsightText">
+                    Revenue strongly correlates with marketing spend.
+                  </p>
+
+                  <span id="correlationConfidence" class="confidence-pill">
+                    High Confidence
+                  </span>
+                </div>
+              </div>
+
+              <!-- Data Quality Insight -->
+              <div class="insight-card quality-card">
+                <div class="insight-icon">
+                  <i data-lucide="shield-check"></i>
+                </div>
+
+                <div class="insight-content">
+                  <div class="insight-header">
+                    <h3>Data Quality Insight</h3>
+
+                    <div id="qualityBadge" class="insight-badge">98%</div>
+                  </div>
+
+                  <p id="qualityInsightText">
+                    Missing values are minimal and data quality is excellent.
+                  </p>
+
+                  <span id="qualityConfidence" class="confidence-pill">
+                    Very High Confidence
+                  </span>
+                </div>
+              </div>
+
+              <!-- ML Recommendation -->
+              <div class="insight-card recommendation-card-insight">
+                <div class="insight-icon">
+                  <i data-lucide="target"></i>
+                </div>
+
+                <div class="insight-content">
+                  <div class="insight-header">
+                    <h3>ML Recommendation</h3>
+
+                    <div id="recommendationBadge" class="insight-badge">
+                      92%
+                    </div>
+                  </div>
+
+                  <p id="recommendationInsightText">
+                    Dataset is highly suitable for predictive modeling.
+                  </p>
+
+                  <span id="recommendationConfidence" class="confidence-pill">
+                    High Confidence
+                  </span>
+                </div>
+              </div>
+
+              <!-- Trend Insight -->
+              <div class="insight-card trend-card">
+                <div class="insight-icon">
+                  <i data-lucide="arrow-up-right"></i>
+                </div>
+
+                <div class="insight-content">
+                  <div class="insight-header">
+                    <h3>Trend Insight</h3>
+
+                    <div id="trendBadge" class="insight-badge">89%</div>
+                  </div>
+
+                  <p id="trendInsightText">
+                    Customer age significantly impacts purchasing behavior.
+                  </p>
+
+                  <span id="trendConfidence" class="confidence-pill">
+                    High Confidence
+                  </span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ML RECOMMENDATIONS -->
+          <section class="card recommendation-section">
+            <div class="section-header">
+              <span class="section-icon">
+                <i data-lucide="brain"></i>
+              </span>
+              <h2>ML Recommendations</h2>
+            </div>
+
+            <div class="recommendation-card">
+              <div class="recommendation-item">
+                <span>Recommended Task</span>
+
+                <strong id="mlTask" class="accent-text">
+                  Waiting for analysis...
+                </strong>
+              </div>
+
+              <div class="recommendation-divider"></div>
+
+              <div class="recommendation-item">
+                <span>Target Column</span>
+
+                <strong id="targetColumn" class="accent-text">
+                  Waiting for analysis...
+                </strong>
+              </div>
+
+              <div class="recommendation-divider"></div>
+
+              <div class="recommendation-item">
+                <span>Top 3 Suggested Models</span>
+
+                <div id="modelTags" class="model-tags">
+                  <div class="model-tag tag-green">
+                    <i data-lucide="zap"></i>
+                    XGBoost
+                  </div>
+
+                  <div class="model-tag tag-purple">
+                    <i data-lucide="git-branch"></i>
+                    Random Forest
+                  </div>
+
+                  <div class="model-tag tag-blue">
+                    <i data-lucide="minus"></i>
+                    Linear Regression
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- EXPORT -->
+          <section class="card export-section">
+            <div class="section-header">
+              <span class="section-icon">
+                <i data-lucide="download"></i>
+              </span>
+              <h2>Export Results</h2>
+            </div>
+
+            <p class="export-desc">
+              Export your complete AI analysis report or download structured
+              insights.
+            </p>
+
+            <div class="export-btns">
+              <button id="exportReportBtn" class="primary-btn">
+                <i data-lucide="file-text"></i>
+                Export Report
+              </button>
+
+              <button id="downloadInsightsBtn" class="secondary-btn">
+                <i data-lucide="download-cloud"></i>
+                Download Insights
+              </button>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

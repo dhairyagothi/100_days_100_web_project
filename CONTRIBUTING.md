@@ -450,6 +450,7 @@ git merge upstream/main
 
 ### 2. Make Changes
 - Follow our coding standards
+- Format and lint your code using `npm run format` and `npm run lint`
 - Test your changes thoroughly
 - Add documentation if needed
 
@@ -495,6 +496,7 @@ Brief description of changes
 Add screenshots if applicable
 
 ## Checklist
+- [ ] Code is formatted and linted (`npm run format` and `npm run lint`)
 - [ ] Code follows style guidelines
 - [ ] Self-review completed
 - [ ] Documentation updated
@@ -539,6 +541,13 @@ Your information
 ```
 
 ## 🎨 Code Style Guidelines
+
+To maintain code quality and styling consistency across all projects, we use ESLint and Prettier.
+
+### Formatting & Linting
+Before raising a Pull Request, please run the following commands:
+- **Format code**: `npm run format` (runs Prettier to format all JS, HTML, and CSS files)
+- **Lint code**: `npm run lint` (runs ESLint to check for syntax and logical issues in JS and HTML files)
 
 ### HTML
 - Use semantic HTML elements
