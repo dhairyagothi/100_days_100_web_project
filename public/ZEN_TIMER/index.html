@@ -8,8 +8,20 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .keyboard-hints { position: fixed; bottom: 70px; right: 16px; z-index: 1400; font-family: 'Poppins', sans-serif; }
+        .hints-toggle { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 20px; user-select: none; }
+        .hints-toggle:hover { background: rgba(255,255,255,0.20); }
+        .hints-panel { position: absolute; bottom: 54px; right: 0; background: #2a221c; border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 14px 18px; min-width: 210px; box-shadow: 0 8px 24px rgba(0,0,0,0.5); color: #FAF7F2; }
+        .hints-panel h4 { margin: 0 0 10px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #c9bfb6; }
+        .hints-panel ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 7px; }
+        .hints-panel li { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+        .hints-panel kbd { display: inline-block; background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.22); border-radius: 5px; padding: 2px 8px; font-family: monospace; font-size: 12px; min-width: 40px; text-align: center; color: #FF8C42; }
+    </style>
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
     <div class="container">
         <header>
             <h1>Zen Timer</h1>
@@ -20,9 +32,9 @@
         </header>
 
         <div class="mode-selector">
-            <button class="mode-btn active" data-mode="work">Focus</button>
-            <button class="mode-btn" data-mode="short">Short Break</button>
-            <button class="mode-btn" data-mode="long">Long Break</button>
+            <button class="mode-btn active" data-mode="work" aria-keyshortcuts="1">Focus</button>
+            <button class="mode-btn" data-mode="short" aria-keyshortcuts="2">Short Break</button>
+            <button class="mode-btn" data-mode="long" aria-keyshortcuts="3">Long Break</button>
         </div>
 
         <div class="timer-display">
@@ -38,8 +50,8 @@
         </div>
 
         <div class="controls">
-            <button class="btn-primary" id="startBtn">Start</button>
-            <button class="btn-secondary" id="resetBtn">Reset</button>
+            <button class="btn-primary" id="startBtn" aria-keyshortcuts="Space">Start</button>
+            <button class="btn-secondary" id="resetBtn" aria-keyshortcuts="r">Reset</button>
         </div>
 
         <div class="stats-section">
@@ -132,7 +144,31 @@
 
     <button class="sidebar-toggle" id="sidebarToggle">📚 Sessions</button>
 
+    <div class="keyboard-hints" id="keyboardHints" aria-label="Keyboard shortcuts">
+        <div class="hints-toggle" id="hintsToggle" role="button" tabindex="0" title="Show keyboard shortcuts">⌨️</div>
+        <div class="hints-panel" id="hintsPanel" hidden>
+            <h4>Keyboard Shortcuts</h4>
+            <ul>
+                <li><kbd>Space</kbd> Start / Pause</li>
+                <li><kbd>R</kbd> Reset</li>
+                <li><kbd>1</kbd> Focus mode</li>
+                <li><kbd>2</kbd> Short Break</li>
+                <li><kbd>3</kbd> Long Break</li>
+            </ul>
+        </div>
+    </div>
+
     <audio id="alarmSound" src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2teleScAPZTW3oA3OTU+otPpcio2R2h6o9nZYzw5amWKuOPW6HY4L0Jph6/r5pBLPzxVgLbs5pI2U2yAuOPX6IovZ3qHsdvi6Ikvf4WCnJ6jnZqbop6bnKOempuim5qboZqZm6CYl5qtlpWVsJSUlbCRkZKvj4+PrY+Pj6yOjo+ri4uLqomIiKmHh4emh4aHpYaGhqSFhYWkhYWFpISFhKOEhISihISEooSEhKKDg4Oig4ODooKCgqKCgoKigoKCooKCgqKCgoKig"></audio>
     <script src="script.js"></script>
+    <script>
+        const hintsToggle = document.getElementById('hintsToggle');
+        const hintsPanel  = document.getElementById('hintsPanel');
+        hintsToggle.addEventListener('click', () => {
+            hintsPanel.hidden ? hintsPanel.removeAttribute('hidden') : hintsPanel.setAttribute('hidden', '');
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') hintsPanel.setAttribute('hidden', '');
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,454 @@
+:root {
+  --grid-bg: #07111f;
+  --grid-line-light: rgba(117, 194, 255, 0.09);
+  --grid-line-bold: rgba(117, 194, 255, 0.16);
+  --surface-panel: rgba(7, 18, 35, 0.92);
+  --surface-elevated: rgba(13, 28, 49, 0.96);
+  --surface-soft: rgba(15, 34, 59, 0.7);
+  --surface-strong: #0d1d33;
+  --surface-glass: rgba(10, 21, 38, 0.78);
+  --node-fill: #f5fbff;
+  --node-border: #84c8ff;
+  --node-shadow: rgba(2, 10, 20, 0.32);
+  --accent-blue: #5fc0ff;
+  --accent-blue-strong: #1f8fff;
+  --accent-cyan: #3fe0d0;
+  --accent-warning: #ff8f6b;
+  --text-primary: #ecf6ff;
+  --text-secondary: rgba(236, 246, 255, 0.76);
+  --text-muted: rgba(236, 246, 255, 0.56);
+  --border-subtle: rgba(132, 200, 255, 0.16);
+  --border-strong: rgba(132, 200, 255, 0.34);
+  --focus-ring: #ffe36e;
+  --shadow-ambient: 0 24px 60px rgba(1, 8, 17, 0.45);
+  --shadow-panel: 0 12px 30px rgba(2, 9, 20, 0.35);
+  --radius-lg: 24px;
+  --radius-md: 18px;
+  --radius-sm: 14px;
+  --space-page: clamp(1rem, 1.6vw, 1.5rem);
+  --space-panel: 1rem;
+  --sidebar-width: 22rem;
+  --topbar-height: 5rem;
+  --grid-size: 48px;
+  --grid-size-bold: 192px;
+  --transition-fast: 160ms ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--text-primary);
+  font-family: Inter, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(63, 224, 208, 0.16), transparent 30%),
+    radial-gradient(circle at top right, rgba(95, 192, 255, 0.18), transparent 28%),
+    linear-gradient(180deg, #05101e 0%, #091726 100%);
+}
+
+button,
+[draggable="true"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font: inherit;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: var(--space-page);
+  padding: var(--space-page);
+}
+
+.topbar {
+  min-height: var(--topbar-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, rgba(12, 26, 45, 0.94), rgba(8, 18, 33, 0.98));
+  box-shadow: var(--shadow-ambient);
+  backdrop-filter: blur(16px);
+}
+
+.topbar__brand {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.topbar__eyebrow,
+.sidebar__eyebrow {
+  margin: 0;
+  color: var(--accent-cyan);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.topbar__title,
+.sidebar__title {
+  margin: 0;
+  line-height: 1.05;
+}
+
+.topbar__title {
+  font-size: clamp(1.3rem, 2vw, 1.9rem);
+}
+
+.topbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.toolbar-button {
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  padding: 0.78rem 1rem;
+  color: var(--text-primary);
+  background: linear-gradient(180deg, rgba(20, 38, 64, 0.9), rgba(13, 28, 49, 0.9));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  transition: transform var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.toolbar-button:hover {
+  transform: translateY(-1px);
+  border-color: var(--border-strong);
+}
+
+.toolbar-button--danger {
+  border-color: rgba(255, 143, 107, 0.32);
+  background: linear-gradient(180deg, rgba(72, 32, 26, 0.94), rgba(51, 20, 18, 0.96));
+}
+
+.toolbar-button:focus-visible,
+.shape-card:focus-visible,
+.shape-card:focus-within {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.designer-layout {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(18rem, var(--sidebar-width)) minmax(0, 1fr);
+  gap: var(--space-page);
+}
+
+.sidebar {
+  min-width: 0;
+}
+
+.sidebar__panel {
+  height: 100%;
+  display: grid;
+  gap: 1rem;
+  padding: 1.1rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, rgba(12, 25, 43, 0.96), rgba(8, 18, 33, 0.98));
+  box-shadow: var(--shadow-panel);
+}
+
+.sidebar__heading {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.sidebar__title {
+  font-size: clamp(1.2rem, 1.8vw, 1.55rem);
+}
+
+.shape-tray {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.shape-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.95rem 1rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, rgba(17, 35, 58, 0.96), rgba(10, 23, 42, 0.96));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+  user-select: none;
+  cursor: grab;
+  transition: transform var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.shape-card:hover {
+  transform: translateY(-1px);
+  border-color: var(--border-strong);
+}
+
+.shape-card:active {
+  cursor: grabbing;
+}
+
+.shape-card__icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: inline-block;
+  background: linear-gradient(180deg, var(--node-fill), #dceffc);
+  border: 2px solid var(--node-border);
+  box-shadow: 0 10px 22px var(--node-shadow);
+}
+
+.shape-card__icon--rectangle {
+  border-radius: 12px;
+}
+
+.shape-card__icon--diamond {
+  transform: rotate(45deg);
+  border-radius: 8px;
+}
+
+.shape-card__icon--pill {
+  border-radius: 999px;
+}
+
+.shape-card__body {
+  min-width: 0;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.shape-card__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.shape-card__subtitle {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+}
+
+.workspace {
+  min-width: 0;
+}
+
+.workspace__viewport {
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - var(--topbar-height) - (var(--space-page) * 3));
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(180deg, rgba(8, 18, 33, 0.55), rgba(6, 14, 25, 0.75)),
+    radial-gradient(circle at center, rgba(95, 192, 255, 0.06), transparent 58%);
+  box-shadow: var(--shadow-ambient);
+}
+
+.workspace__viewport::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--grid-line-light) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line-light) 1px, transparent 1px),
+    linear-gradient(to right, var(--grid-line-bold) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line-bold) 1px, transparent 1px);
+  background-size:
+    var(--grid-size) var(--grid-size),
+    var(--grid-size) var(--grid-size),
+    var(--grid-size-bold) var(--grid-size-bold),
+    var(--grid-size-bold) var(--grid-size-bold);
+  background-position: 0 0;
+  animation: grid-drift 22s linear infinite;
+  pointer-events: none;
+  opacity: 0.95;
+}
+
+.workspace__viewport::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(63, 224, 208, 0.12), transparent 18%),
+    radial-gradient(circle at 80% 30%, rgba(31, 143, 255, 0.11), transparent 22%),
+    radial-gradient(circle at 55% 75%, rgba(255, 227, 110, 0.06), transparent 18%);
+  pointer-events: none;
+}
+
+.workspace__stage {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+}
+
+.workspace-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.workspace-svg,
+.workspace-svg * {
+  user-select: none;
+}
+
+@keyframes grid-drift {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: var(--grid-size) var(--grid-size);
+  }
+}
+
+@media (max-width: 1024px) {
+  .designer-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .workspace__viewport {
+    min-height: 32rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .app-shell {
+    padding: 0.75rem;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .topbar__actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .toolbar-button {
+    flex: 1 1 11rem;
+  }
+
+  .sidebar__panel {
+    padding: 0.9rem;
+  }
+}
+
+/* --- Connection Ports --- */
+.shape-port {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: var(--accent-blue-strong);
+  border: 2px solid white;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 10;
+  cursor: crosshair;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Show edge circles instantly when the box is selected */
+.shape-node.is-selected .shape-port {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.shape-port:hover {
+  transform: scale(1.35);
+  background: var(--accent-cyan);
+}
+
+/* Coordinate mapping for the four side anchors */
+.shape-port--n { top: -7px; left: calc(50% - 7px); }
+.shape-port--s { bottom: -7px; left: calc(50% - 7px); }
+.shape-port--e { right: -7px; top: calc(50% - 7px); }
+.shape-port--w { left: -7px; top: calc(50% - 7px); }
+
+/* Hide the user cursor smoothly when actively dragging an element card */
+.shape-node.is-dragging,
+.shape-node.is-dragging * {
+  cursor: none !important;
+}
+
+html[data-theme="light"] {
+  --grid-bg: #f8fafc;
+  --grid-line-light: rgba(15, 23, 42, 0.04);
+  --grid-line-bold: rgba(15, 23, 42, 0.08);
+  --surface-panel: rgba(255, 255, 255, 0.94);
+  --surface-elevated: rgba(241, 245, 249, 0.98);
+  --surface-soft: rgba(226, 232, 240, 0.8);
+  --surface-strong: #e2e8f0;
+  --surface-glass: rgba(255, 255, 255, 0.85);
+  --node-fill: #ffffff;
+  --node-border: #94a3b8;
+  --accent-blue: #0284c7;
+  --accent-blue-strong: #2563eb;
+  --accent-cyan: #0d9488;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --border-subtle: rgba(15, 23, 42, 0.08);
+  --border-strong: rgba(15, 23, 42, 0.16);
+  --shadow-ambient: 0 24px 60px rgba(15, 23, 42, 0.08);
+  --shadow-panel: 0 12px 30px rgba(15, 23, 42, 0.06);
+}
+
+/* Body gradient adjustment for Light Mode background glow */
+html[data-theme="light"] body {
+  background: radial-gradient(circle at top left, rgba(13, 148, 136, 0.06), transparent 30%),
+              radial-gradient(circle at top right, rgba(2, 132, 199, 0.08), transparent 28%),
+              linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+/* --- Light Mode UI Panel Overrides --- */
+html[data-theme="light"] .topbar,
+html[data-theme="light"] .sidebar__panel {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.95));
+}
+
+html[data-theme="light"] .toolbar-button {
+  background: linear-gradient(180deg, #ffffff, #f1f5f9);
+}
+
+html[data-theme="light"] .toolbar-button--danger {
+  background: linear-gradient(180deg, #fef2f2, #fee2e2);
+  border-color: #fca5a5;
+  color: #991b1b;
+}
+
+html[data-theme="light"] .shape-card {
+  background: linear-gradient(180deg, #ffffff, #f8fafc);
+}
+
+html[data-theme="light"] .workspace__viewport {
+  background: 
+    linear-gradient(180deg, rgba(248, 250, 252, 0.6), rgba(241, 245, 249, 0.8)),
+    radial-gradient(circle at center, rgba(2, 132, 199, 0.04), transparent 58%);
+}
