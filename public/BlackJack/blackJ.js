@@ -296,14 +296,10 @@ function BJstand() {
  */
 function BJdeal() {
   if (gameActive) {
-    alert('Finish your current turn first ΓÇö Hit or Stand before dealing.');
+    alert('Finish the current round before dealing again.');
     return;
   }
-  if (You.score === 0 && Dealer.score === 0 &&
-      BJgame.wins === 0 && BJgame.losses === 0 && BJgame.draws === 0) {
-    alert('Hit some cards to start playing!');
-    return;
-  }
+
   startNewRound();
 }
 
@@ -326,7 +322,7 @@ function startNewRound() {
   });
 
   const commandEl = $('#command');
-  commandEl.textContent = "Let's Play!";
+  commandEl.textContent = "Round started! Click Hit to draw a card.";
   commandEl.style.color = '';
 
   enableGameButtons();
