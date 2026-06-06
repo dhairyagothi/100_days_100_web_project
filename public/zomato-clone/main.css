@@ -20,6 +20,13 @@
   flex: 1;
   border-radius: var(--radius-md);
   overflow: hidden;
+  height: 24rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.option:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
   height: 25rem;
   cursor: pointer;
   transition:
@@ -142,6 +149,12 @@
   position: relative;
   flex: 1;
   height: 32rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.collection:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
   border-radius: var(--radius-md);
   overflow: hidden;
   cursor: pointer;
@@ -352,6 +365,7 @@
   .collection {
     max-width: 46%;
   }
+ 
   .popular-localities .title {
     font-size: 2rem;
     margin-bottom: 2rem;
@@ -359,4 +373,94 @@
   .locality {
     width: 100%;
   }
+}
+
+.location-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+.location-dropdown {
+  position: absolute;
+
+  top: 110%;
+  left: 0;
+  width: 100%;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  overflow: hidden;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.dropdown-item {
+  padding: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: #f5f5f5;
+}
+
+.hidden {
+  display: none;
+}
+
+/* ================= DARK MODE - POPULAR LOCALITIES ================= */
+
+body.dark-mode .popular-localities .title {
+  color: #ffffff;
+}
+
+body.dark-mode .popular-localities .city-name {
+  color: #ffffff;
+}
+
+body.dark-mode .locality {
+  background-color: #1e1e1e;
+  border: 1px solid #444;
+  box-shadow: rgba(255, 255, 255, 0.05) 0px 1px 4px;
+}
+
+body.dark-mode .locality-title {
+  color: #ffffff;
+}
+
+body.dark-mode .locality-description {
+  color: #cccccc;
+}
+
+body.dark-mode .locality i {
+  color: #ffffff;
+}
+
+body.dark-mode .locality:hover {
+  background-color: #2a2a2a;
+}
+
+ /* ================= DARK MODE - Cards ================= */
+ body.dark-mode .zomato-card {
+    background: #2a0f14;
+    border:2px solid rgb(239, 79, 95,0.2);
+}
+
+body.dark-mode .blinkit-card {
+    background: #342a0b;
+    border:2px solid rgba(236, 239, 79, 0.2);
+}
+
+body.dark-mode .district-card {
+    background: #251c36;
+    border:2px solid rgba(106, 13, 132, 0.2);
+}
+
+body.dark-mode .hyperpure-card {
+    background: #4c1e29;
+color: #fff1f3;
+    border:2px solid rgb(239, 79, 95,0.2);
+}
+
+body.dark-mode .brand-cards h3{
+  color: grey;
 }
