@@ -421,21 +421,23 @@ transition: all 0.4s ease;
   position: fixed;
   left: 18px;
   top: 18px;
-  padding: 10px 14px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.95);
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #1e293b;
+  border: 1px solid #3b82f6;
+  color: #3b82f6;
   text-decoration: none;
   z-index: 9999;
   font-weight: 700;
   font-family: Inter, system-ui, sans-serif;
-  color: #111;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  transition: all 0.25s ease;
+  transition: all 0.2s ease;
 }
 
 .project-back-button:hover {
+  background: #3b82f6;
+  color: #fff;
   transform: translateY(-2px);
-  background: white;
 }
 /* CHATBOT CODE  */
 

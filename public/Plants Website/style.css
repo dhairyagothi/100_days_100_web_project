@@ -777,31 +777,30 @@ textarea {
   right: 24px;
   z-index: 9999;
 
-  padding: 10px 20px;
+  padding: 8px 16px;
 
-  border-radius: 50px;
+  border-radius: 8px;
 
-  background: linear-gradient(135deg, #00c853, #64dd17);
+  background: #1e293b;
 
-  color: white;
+  color: #3b82f6;
   text-decoration: none;
 
   font-size: 0.9rem;
   font-weight: bold;
   font-family: Arial, Helvetica, sans-serif;
 
-  border: 2px solid white;
+  border: 1px solid #3b82f6;
 
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
 
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .project-back-button:hover {
   transform: translateY(-3px) scale(1.05);
-
-  background: linear-gradient(135deg, #64dd17, #00e676);
-
+  background: #3b82f6;
+  color: #fff;
   box-shadow: 0 14px 30px rgba(100, 221, 23, 0.4);
 }
 
