@@ -112,38 +112,116 @@
         </div>
 
         <div id="end-screen" class="screen hidden">
-            <div class="result-icon">
-                <i aria-hidden="true" class="fas fa-trophy"></i>
-            </div>
-            <h2>Quiz Completed!</h2>
-            <div class="category-result" id="category-result">Category: General Knowledge</div>
-            <div class="final-score-container">
-                <p>Your Score</p>
-                <div class="final-score" id="final-score">0</div>
-                <div class="max-score">out of <span id="max-possible">100</span></div>
-            </div>
-            <div class="result-stats">
-                <div class="stat-item">
-                    <i aria-hidden="true" class="fas fa-check"></i>
-                    Correct: <span id="correct-answers">0</span>
+            <div class="end-content-wrapper">
+                <!-- Main Result Card -->
+                <div class="main-result-section">
+                    <div class="result-card">
+                        <div class="result-icon">
+                            <i aria-hidden="true" class="fas fa-trophy"></i>
+                        </div>
+                        <h2>Quiz Completed!</h2>
+                        
+                        <!-- Achievement Badge -->
+                        <div class="achievement-badge" id="achievement-badge">
+                            <i aria-hidden="true" class="fas fa-star"></i>
+                            <div class="badge-text">
+                                <span class="achievement-title" id="achievement-title">Learner</span>
+                                <span class="achievement-desc" id="achievement-desc">Keep practicing!</span>
+                            </div>
+                        </div>
+                        
+                        <div class="category-result" id="category-result">Category: General Knowledge</div>
+                        <div class="final-score-container">
+                            <p>Your Score</p>
+                            <div class="final-score" id="final-score">0</div>
+                            <div class="max-score">out of <span id="max-possible">100</span></div>
+                        </div>
+                        <div class="result-stats">
+                            <div class="stat-item">
+                                <i aria-hidden="true" class="fas fa-check"></i>
+                                Correct: <span id="correct-answers">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <i aria-hidden="true" class="fas fa-times"></i>
+                                Wrong: <span id="wrong-answers">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <i aria-hidden="true" class="fas fa-clock"></i>
+                                Time Taken: <span id="time-taken">0</span>s
+                            </div>
+                        </div>
+                        <div class="result-message" id="result-message"></div>
+                        <div class="end-buttons">
+                            <button id="restart-btn" class="btn">
+                                <i aria-hidden="true" class="fas fa-redo"></i> Try Again
+                            </button>
+                            <button id="home-btn" class="btn btn-secondary">
+                                <i aria-hidden="true" class="fas fa-home"></i> Home
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <i aria-hidden="true" class="fas fa-times"></i>
-                    Wrong: <span id="wrong-answers">0</span>
+
+                <!-- Side Dashboard -->
+                <div class="side-dashboard">
+                    <!-- Performance Analytics Dashboard -->
+                    <div class="analytics-section">
+                        <h3 class="section-title">
+                            <i aria-hidden="true" class="fas fa-chart-line"></i> Performance Analytics
+                        </h3>
+                        <div class="analytics-grid">
+                            <div class="analytics-card">
+                                <i aria-hidden="true" class="fas fa-fire"></i>
+                                <span class="analytics-label">Best Score</span>
+                                <span class="analytics-value" id="analytics-best-score">0</span>
+                            </div>
+                            <div class="analytics-card">
+                                <i aria-hidden="true" class="fas fa-calculator"></i>
+                                <span class="analytics-label">Average Score</span>
+                                <span class="analytics-value" id="analytics-average-score">0</span>
+                            </div>
+                            <div class="analytics-card">
+                                <i aria-hidden="true" class="fas fa-tasks"></i>
+                                <span class="analytics-label">Total Quizzes</span>
+                                <span class="analytics-value" id="analytics-total-quizzes">0</span>
+                            </div>
+                            <div class="analytics-card">
+                                <i aria-hidden="true" class="fas fa-percentage"></i>
+                                <span class="analytics-label">Accuracy</span>
+                                <span class="analytics-value" id="analytics-accuracy">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Personal Best by Category -->
+                    <div class="personal-best-section">
+                        <h3 class="section-title">
+                            <i aria-hidden="true" class="fas fa-medal"></i> Personal Best by Category
+                        </h3>
+                        <div class="personal-best-grid" id="personal-best-grid">
+                            <div class="personal-best-card">
+                                <i aria-hidden="true" class="fas fa-globe"></i>
+                                <span class="pb-category">General Knowledge</span>
+                                <span class="pb-score" data-category="general">0</span>
+                            </div>
+                            <div class="personal-best-card">
+                                <i aria-hidden="true" class="fas fa-flask"></i>
+                                <span class="pb-category">Science</span>
+                                <span class="pb-score" data-category="science">0</span>
+                            </div>
+                            <div class="personal-best-card">
+                                <i aria-hidden="true" class="fas fa-landmark"></i>
+                                <span class="pb-category">History</span>
+                                <span class="pb-score" data-category="history">0</span>
+                            </div>
+                            <div class="personal-best-card">
+                                <i aria-hidden="true" class="fas fa-microchip"></i>
+                                <span class="pb-category">Technology</span>
+                                <span class="pb-score" data-category="tech">0</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <i aria-hidden="true" class="fas fa-clock"></i>
-                    Time Taken: <span id="time-taken">0</span>s
-                </div>
-            </div>
-            <div class="result-message" id="result-message"></div>
-            <div class="end-buttons">
-                <button id="restart-btn" class="btn">
-                    <i aria-hidden="true" class="fas fa-redo"></i> Try Again
-                </button>
-                <button id="home-btn" class="btn btn-secondary">
-                    <i aria-hidden="true" class="fas fa-home"></i> Home
-                </button>
             </div>
         </div>
     </div>
