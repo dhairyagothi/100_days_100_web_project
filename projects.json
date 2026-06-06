@@ -369,15 +369,6 @@
     "projectPath": "./public/Scroll%20Game%20Dark%20Run/index.html"
   },
   {
-    "projectNo": 42,
-    "projectName": "Amazon Clone",
-    "projectType": "Clone",
-    "projectDesc": "Frontend clone inspired by Amazon layouts and shopping interfaces.",
-    "techStack": ["clone", "javascript"],
-    "difficulty": "intermediate",
-    "projectPath": "./public/Amazon_Clone/index.html"
-  },
-  {
     "projectNo": 43,
     "projectName": "Password Generator",
     "projectType": "Tool",
@@ -1934,14 +1925,6 @@
     "techStack": ["html", "css", "javascript", "canvas"],
     "difficulty": "advanced",
     "projectDesc": "A responsive physics-inspired arcade game challenging users to stack moving horizontal blocks cleanly. Implements strict boundary checking, block-slicing logic, dynamic camera tracking, and interactive start/pause state controls."
-  },
-  {
-  "projectNo": 213,
-  "projectName": "Photo Studio",
-  "projectPath": "./public/Photo Studio/Project.html",
-  "techStack": ["html", "css"],
-  "difficulty": "intermediate",
-  "projectDesc": "A responsive photography portfolio and gallery website designed to showcase visual content through structured layouts, image presentation sections, and modern styling. Features an engaging user interface optimized for desktop and mobile viewing."
   },
   {
     "projectNo": 214,
