@@ -303,10 +303,8 @@ function startGame() {
 
   isGameOver = false;
   initGame();
-
   running = true;
-  paused = false;
-  lastTickTime = performance.now(); // 🔥 IMPORTANT FIX
+  lastTickTime = 0;
 
   document.removeEventListener('keydown', handleKeyDown);
   document.addEventListener('keydown', handleKeyDown);
@@ -391,24 +389,7 @@ function handleKeyDown(e) {
 
 document.addEventListener('keydown', handleKeyDown);
 
-window.addEventListener('load', () => {
-  const startBtn = document.getElementById('startBtn');
-  const restartBtn = document.getElementById('restartBtn');
-
-  if (startBtn) {
-    startBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      startGame();
-    });
-  }
-
-  if (restartBtn) {
-    restartBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      startGame();
-    });
-  }
-});
+document.getElementById('startBtn').addEventListener('click', startGame);
 document.getElementById('restartBtn').addEventListener('click', startGame);
 
 // Idle animation on start screen
@@ -419,10 +400,8 @@ function animateIdle() {
   }
 }
 
-window.addEventListener('load', () => {
-  initGame();
-  requestAnimationFrame(gameEngine);
-});
+initGame();
+requestAnimationFrame(gameEngine);
 
 // ========== MOBILE TOUCH CONTROLS ==========
 (function () {

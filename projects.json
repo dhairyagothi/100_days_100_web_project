@@ -1911,16 +1911,32 @@
   "difficulty": "intermediate",
   "projectDesc": "A responsive Kanban Board application featuring drag-and-drop task management, task creation, editing, deletion, local storage persistence, and dark/light theme support."
 },
-  {
+{
   "projectNo": 210,
-  "projectName": "Cricket Scorecard",
-  "projectPath": "./public/Cricket-Scorecard/index.html",
+  "projectName": "IP Address Tracker",
+  "projectPath": "./public/Ip_Address_tracker/index.html",
   "techStack": ["html", "css", "javascript"],
-  "difficulty": "advanced",
-  "projectDesc": "A tool to view the schedule of upcoming matches and watch live scorecard."
+  "difficulty": "intermediate",
+  "projectDesc": "A responsive IP Address Tracker application that allows users to search IP addresses, view location details, ISP information, timezone data, and visualize the location on an interactive map using Leaflet.js and IPAPI."
 },
+{
+    "projectNo": 211,
+    "projectName": "Cricket Scorecard",
+    "projectPath": "./public/Cricket-Scorecard/index.html",
+    "techStack": ["html", "css", "javascript"],
+    "difficulty": "advanced",
+    "projectDesc": "A tool to view the schedule of upcoming matches and watch live scorecard."
+  },
   {
-  "projectNo": 211,
+    "projectNo": 212,
+    "projectName": "Tower Blocks Stacker",
+    "projectPath": "./public/tower_stacker/index.html",
+    "techStack": ["html", "css", "javascript", "canvas"],
+    "difficulty": "advanced",
+    "projectDesc": "A responsive physics-inspired arcade game challenging users to stack moving horizontal blocks cleanly. Implements strict boundary checking, block-slicing logic, dynamic camera tracking, and interactive start/pause state controls."
+  },
+  {
+  "projectNo": 213,
   "projectName": "MD Preview",
   "projectType": "Tool",
   "projectDesc": "Markdown preview tool that renders and checks .md content in a clean live preview interface.",
