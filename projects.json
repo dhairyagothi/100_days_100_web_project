@@ -1902,5 +1902,14 @@
     "techStack": ["ui","game","html","css","js"],
     "difficulty": "intermediate",
     "projectPath": "./public/Rock_Paper_Scissors/index.html"
+  },
+   {
+    "projectNo": 209,
+    "projectName": "Spin-wheel-decision-maker",
+    "projectType": "Tool",
+    "projectDesc": "An interactive decision-making tool featuring a customizable spinning wheel.",
+    "techStack": ["ui","game","html","css","js"],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Spin-Wheel-Decision-Maker/index.html"
   }
 ]
