@@ -173,9 +173,6 @@ form.addEventListener("submit", (e) => {
 
   saveAndUpdate();
 
-  /* FIX #4 — audio play() returns a Promise; silently
-     ignore the rejection browsers throw before any
-     user-gesture interaction has occurred.            */
   successSound.play().catch(() => {});
 
   showToast("Transaction Added Successfully 🚀");
@@ -187,6 +184,9 @@ form.addEventListener("submit", (e) => {
   dateInput.value = today;
 
   hideLoader();
+
+  // Auto-update prediction when new transaction added
+  updateMonthPrediction();
 });
 
 /* =========================================================
@@ -253,6 +253,8 @@ transactionList.addEventListener("click", (e) => {
   saveAndUpdate();
 
   showToast("Transaction Deleted 🗑️");
+
+  updateMonthPrediction();
 });
 
 /* =========================================================
@@ -307,20 +309,10 @@ function updateCategories() {
 
 /* =========================================================
    BUDGET
-
-   FIX #3 — updateBudget() no longer writes to
-   #smart-suggestion or #financial-status when no budget
-   is set. updateInsights() owns those elements when
-   monthlyBudget is 0, preventing both functions from
-   fighting over the same DOM nodes.
 ========================================================= */
 
 budgetInput.addEventListener(
-  /* FIX #2 — changed from "input" to "change" so the
-     toast fires once when the user commits the value
-     (on blur / Enter), not on every single keystroke. */
   "change",
-
   () => {
     monthlyBudget = Number(budgetInput.value);
 
@@ -329,6 +321,8 @@ budgetInput.addEventListener(
     localStorage.setItem("budget", monthlyBudget);
 
     showToast("Budget Updated 💸");
+
+    updateMonthPrediction();
   },
 );
 
@@ -347,22 +341,12 @@ function updateBudget() {
 
   const financialStatusEl = document.getElementById("financial-status");
 
-  /* =========================================
-     NO BUDGET SET
-     — reset visuals only; leave the insight
-       text to updateInsights().
-  ========================================= */
-
   if (monthlyBudget <= 0) {
     progressFill.style.background = "#6366f1";
     budgetText.style.color = "";
 
     return;
   }
-
-  /* =========================================
-     SAFE ZONE  (< 50%)
-  ========================================= */
 
   if (percentage < 50) {
     progressFill.style.background = "#00c853";
@@ -373,10 +357,6 @@ function updateBudget() {
 
     financialStatusEl.textContent = "Healthy financial condition 💰";
   } else if (percentage >= 50 && percentage < 80) {
-
-  /* =========================================
-     CAUTION ZONE  (50 – 79%)
-  ========================================= */
     progressFill.style.background = "#ffb300";
     budgetText.style.color = "#ff9800";
 
@@ -384,10 +364,6 @@ function updateBudget() {
 
     financialStatusEl.textContent = "Monitor expenses carefully 👀";
   } else if (percentage >= 80 && percentage < 100) {
-
-  /* =========================================
-     WARNING ZONE  (80 – 99%)
-  ========================================= */
     progressFill.style.background = "#ff6d00";
     budgetText.style.color = "#ff6d00";
 
@@ -396,15 +372,6 @@ function updateBudget() {
 
     financialStatusEl.textContent = "Critical spending level ⚠️";
   } else {
-
-  /* =========================================
-     BUDGET EXCEEDED  (≥ 100%)
-
-     FIX #4 — replaced confetti() with a shake
-     animation on the budget widget. Confetti
-     is celebration feedback; it should not fire
-     on the worst financial outcome for the user.
-  ========================================= */
     progressFill.style.background = "#ff1744";
     budgetText.style.color = "#ff1744";
 
@@ -419,8 +386,6 @@ function updateBudget() {
 
     budgetWidget.style.animation = "none";
 
-    /* Force a reflow so re-assigning the same
-       animation name actually restarts it.    */
     void budgetWidget.offsetHeight;
 
     budgetWidget.style.animation = "shake 0.5s ease";
@@ -503,9 +468,6 @@ function updateInsights() {
     }
   }
 
-  /* Only write to the insight text nodes when no budget
-     is active — updateBudget() owns them otherwise.   */
-
   if (monthlyBudget <= 0) {
     smartSuggestionEl.textContent = suggestion;
     financialStatusEl.textContent = status;
@@ -531,6 +493,19 @@ resetBtn.addEventListener("click", () => {
   saveAndUpdate();
 
   showToast("All Data Reset 🔄");
+
+  // Reset AI cards
+  document.getElementById("aiSpendingText").textContent = "Add transactions and click Analyze.";
+  document.getElementById("aiBudgetText").textContent = "Enter your income below to get recommendations.";
+  document.getElementById("aiPredictionText").textContent = "No data yet.";
+
+  // Clear chat except welcome message
+  const chatMessages = document.getElementById("aiChatMessages");
+  chatMessages.innerHTML = `
+    <div class="ai-msg ai-msg--bot">
+      👋 Hi! I'm your AI financial advisor powered by Groq. Ask me anything about your spending!
+    </div>
+  `;
 });
 
 /* =========================================================
@@ -545,9 +520,6 @@ function saveAndUpdate() {
 
 /* =========================================================
    RENDER ALL
-   A display-only update that does NOT touch localStorage.
-   Called directly by init() to avoid persisting stale
-   data back to storage on every page load.
 ========================================================= */
 
 function renderAll() {
@@ -560,18 +532,9 @@ function renderAll() {
 
 /* =========================================================
    ANIMATE NUMBER
-
-   FIX #1 — original broke in two ways:
-   • target === 0 → increment = 0, interval ran forever
-     (memory leak on every summary refresh)
-   • target < 0  → increment is negative, condition
-     (start >= target) starts true, counter cleared
-     immediately, element shows ₹0 instead of the
-     actual negative balance
 ========================================================= */
 
 function animateNumber(element, target) {
-  /* Short-circuit: nothing to count to */
   if (target === 0) {
     element.textContent = "₹0";
     return;
@@ -581,13 +544,10 @@ function animateNumber(element, target) {
 
   const duration = 1000;
   const increment = target / (duration / 16);
-  /* increment is correctly negative when target < 0,
-     so the counter counts down to the target.        */
 
   const counter = setInterval(() => {
     start += increment;
 
-    /* Direction-aware exit condition */
     const reached = target > 0 ? start >= target : start <= target;
 
     if (reached) {
@@ -640,12 +600,6 @@ buttons.forEach((button) => {
 
 /* =========================================================
    INIT
-
-   FIX #5 — original called saveAndUpdate() which writes
-   transactions back to localStorage on every page load,
-   even though nothing changed. Now calls renderAll()
-   directly so the UI is populated from the data that
-   was just read, with zero unnecessary storage writes.
 ========================================================= */
 
 (function init() {
@@ -666,4 +620,264 @@ buttons.forEach((button) => {
   dateInput.value = today;
 
   renderAll();
+
+  // Load saved Groq key
+  const savedKey = localStorage.getItem("groqApiKey");
+  if (savedKey) {
+    document.getElementById("groqApiKey").value = savedKey;
+  }
+
+  // Run prediction on load
+  updateMonthPrediction();
 })();
+
+/* =========================================================
+   AI ENGINE — GROQ POWERED
+   Uses Groq API (free) with LLaMA3 model
+   Get your free API key at: console.groq.com
+========================================================= */
+
+const groqKeyInput   = document.getElementById("groqApiKey");
+const saveKeyBtn     = document.getElementById("saveKeyBtn");
+const analyzeBtn     = document.getElementById("analyzeBtn");
+const aiIncomeInput  = document.getElementById("aiIncomeInput");
+const aiChatInput    = document.getElementById("aiChatInput");
+const aiSendBtn      = document.getElementById("aiSendBtn");
+const aiChatMessages = document.getElementById("aiChatMessages");
+const aiToggleBtn    = document.getElementById("aiToggleBtn");
+const aiEngineBody   = document.getElementById("aiEngineBody");
+
+/* ----- Save API Key ----- */
+saveKeyBtn.addEventListener("click", () => {
+  const key = groqKeyInput.value.trim();
+  if (!key) {
+    showToast("Please enter a Groq API Key ⚠️");
+    return;
+  }
+  localStorage.setItem("groqApiKey", key);
+  showToast("Groq API Key Saved 🔑");
+});
+
+/* ----- Toggle Panel Visibility ----- */
+aiToggleBtn.addEventListener("click", () => {
+  const isHidden = aiEngineBody.style.display === "none";
+  aiEngineBody.style.display = isHidden ? "block" : "none";
+  aiToggleBtn.textContent = isHidden ? "Hide" : "Show";
+});
+
+/* ----- Build Expense Summary from current transactions ----- */
+function buildExpenseSummary() {
+  const totals = { food: 0, travel: 0, shopping: 0, other: 0 };
+  let totalIncome = 0;
+  let totalExpense = 0;
+
+  transactions.forEach((txn) => {
+    if (txn.type === "income") {
+      totalIncome += txn.amount;
+    } else {
+      if (totals[txn.category] !== undefined) {
+        totals[txn.category] += txn.amount;
+      } else {
+        totals.other += txn.amount;
+      }
+      totalExpense += txn.amount;
+    }
+  });
+
+  return { totals, totalIncome, totalExpense };
+}
+
+/* ----- Month-end Spending Prediction (no API needed) ----- */
+function updateMonthPrediction() {
+  const { totalExpense } = buildExpenseSummary();
+  const predictionEl = document.getElementById("aiPredictionText");
+
+  if (totalExpense === 0) {
+    predictionEl.textContent = "No data yet.";
+    return;
+  }
+
+  const today = new Date();
+  const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+  const daysPassed = today.getDate();
+
+  const predicted = Math.round((totalExpense / daysPassed) * daysInMonth);
+
+  let budgetStatus = "";
+  if (monthlyBudget > 0) {
+    if (predicted > monthlyBudget) {
+      budgetStatus = ` ⚠️ Projected to exceed budget by ₹${(predicted - monthlyBudget).toLocaleString("en-IN")}`;
+    } else {
+      budgetStatus = ` ✅ Within budget (₹${(monthlyBudget - predicted).toLocaleString("en-IN")} remaining)`;
+    }
+  }
+
+  predictionEl.textContent =
+    `Predicted month-end spend: ₹${predicted.toLocaleString("en-IN")}${budgetStatus}`;
+}
+
+/* ----- Call Groq API ----- */
+async function callGroq(prompt) {
+  const apiKey = localStorage.getItem("groqApiKey");
+
+  if (!apiKey) {
+    showToast("Enter & Save your Groq API Key first 🔑");
+    return null;
+  }
+
+  try {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "llama3-8b-8192",
+        messages: [
+          {
+            role: "system",
+            content: "You are a concise, friendly financial advisor. Give short, practical advice in 2-4 sentences. Use ₹ for currency.",
+          },
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
+        max_tokens: 300,
+        temperature: 0.7,
+      }),
+    });
+
+    if (!response.ok) {
+      const err = await response.json();
+      console.error("Groq API error:", err);
+      showToast("Groq API error. Check your API key ⚠️");
+      return null;
+    }
+
+    const data = await response.json();
+    return data.choices?.[0]?.message?.content?.trim() || "No response from AI.";
+
+  } catch (error) {
+    console.error("Fetch error:", error);
+    showToast("Network error. Please try again ⚠️");
+    return null;
+  }
+}
+
+/* ----- Analyze Button ----- */
+analyzeBtn.addEventListener("click", async () => {
+  if (transactions.length === 0) {
+    showToast("Add some transactions first ⚠️");
+    return;
+  }
+
+  const { totals, totalIncome, totalExpense } = buildExpenseSummary();
+  const income = Number(aiIncomeInput.value) || totalIncome;
+
+  // Disable button and show loading
+  analyzeBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Analyzing...';
+  analyzeBtn.disabled = true;
+
+  const expenseBreakdown = Object.entries(totals)
+    .filter(([, v]) => v > 0)
+    .map(([k, v]) => `${capitalize(k)}: ₹${v.toLocaleString("en-IN")}`)
+    .join(", ");
+
+  // Build prompts
+  const spendingPrompt = `My expense breakdown this month is: ${expenseBreakdown}. Total expenses: ₹${totalExpense.toLocaleString("en-IN")}. Monthly budget: ₹${monthlyBudget || "not set"}. Give me 2-3 specific, actionable tips to reduce my spending. Be concise.`;
+
+  const budgetPrompt = income > 0
+    ? `My monthly income is ₹${income.toLocaleString("en-IN")}. Apply the 50/30/20 budgeting rule and tell me exactly: how much for needs (50%), wants (30%), and savings (20%). Then compare these targets with my actual spending: ${expenseBreakdown}. Keep it very brief.`
+    : null;
+
+  // Run both API calls in parallel
+  const [spendingAdvice, budgetAdvice] = await Promise.all([
+    callGroq(spendingPrompt),
+    budgetPrompt
+      ? callGroq(budgetPrompt)
+      : Promise.resolve("Enter your monthly income above to get 50/30/20 budget recommendations."),
+  ]);
+
+  // Update cards
+  if (spendingAdvice) {
+    document.getElementById("aiSpendingText").textContent = spendingAdvice;
+  }
+  if (budgetAdvice) {
+    document.getElementById("aiBudgetText").textContent = budgetAdvice;
+  }
+
+  // Always update month prediction (no API)
+  updateMonthPrediction();
+
+  // Re-enable button
+  analyzeBtn.innerHTML = '<i class="fa-solid fa-brain"></i> Analyze';
+  analyzeBtn.disabled = false;
+
+  showToast("AI Analysis Complete 🤖");
+});
+
+/* ----- Chat: Send Message ----- */
+async function sendAiMessage() {
+  const userMsg = aiChatInput.value.trim();
+  if (!userMsg) return;
+
+  const { totals, totalIncome, totalExpense } = buildExpenseSummary();
+
+  const expenseBreakdown = Object.entries(totals)
+    .filter(([, v]) => v > 0)
+    .map(([k, v]) => `${capitalize(k)}: ₹${v.toLocaleString("en-IN")}`)
+    .join(", ") || "No expenses logged yet";
+
+  // Append user bubble
+  appendChatMessage(userMsg, "user");
+  aiChatInput.value = "";
+
+  // Append loading bubble
+  const loadingId = "loading-" + Date.now();
+  appendChatMessage("Thinking...", "loading", loadingId);
+  aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+
+  // Build context-aware prompt
+  const contextPrompt = `User's current financial data:
+- Total Income: ₹${totalIncome.toLocaleString("en-IN")}
+- Total Expenses: ₹${totalExpense.toLocaleString("en-IN")}
+- Expense Breakdown: ${expenseBreakdown}
+- Monthly Budget: ₹${monthlyBudget || "not set"}
+- Balance: ₹${(totalIncome - totalExpense).toLocaleString("en-IN")}
+
+User question: ${userMsg}
+
+Answer based on their actual data above. Be concise and friendly.`;
+
+  const reply = await callGroq(contextPrompt);
+
+  // Remove loading bubble
+  const loadingEl = document.getElementById(loadingId);
+  if (loadingEl) loadingEl.remove();
+
+  // Append bot reply
+  appendChatMessage(reply || "Sorry, I couldn't get a response. Please check your API key.", "bot");
+  aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+}
+
+/* ----- Helper: Append chat bubble ----- */
+function appendChatMessage(text, type, id = null) {
+  const div = document.createElement("div");
+  div.className = `ai-msg ai-msg--${type}`;
+  if (id) div.id = id;
+  div.textContent = text;
+  aiChatMessages.appendChild(div);
+  aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+}
+
+/* ----- Event Listeners for Chat ----- */
+aiSendBtn.addEventListener("click", sendAiMessage);
+
+aiChatInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendAiMessage();
+  }
+});

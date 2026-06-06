@@ -996,6 +996,220 @@ select:focus {
 
   .header {
 
+.nav-links{
+    display: flex;
+    list-style: none;
+    gap: 35px;
+}
+
+.nav-links a{
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 500;
+    transition: 0.3s;
+    position: relative;
+}
+
+.nav-links a:hover{
+    color: var(--primary);
+}
+
+.nav-links a::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 0%;
+    height: 2px;
+    background: var(--primary);
+    transition: 0.3s;
+}
+
+.nav-links a:hover::after{
+    width: 100%;
+}
+
+/* -------------------- */
+/* Main Container */
+/* -------------------- */
+
+.container{
+    width: 90%;
+    max-width: 1200px;
+    margin: 60px auto;
+}
+
+/* -------------------- */
+/* Hero Section */
+/* -------------------- */
+
+.hero{
+    text-align: center;
+    margin-bottom: 70px;
+}
+
+.hero h1{
+    font-size: 4rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.hero p{
+    color: var(--muted);
+    max-width: 700px;
+    margin: auto;
+    font-size: 1.15rem;
+    line-height: 1.8;
+}
+
+/* -------------------- */
+/* Sections */
+/* -------------------- */
+
+.password-section,
+.form-section{
+    background: rgba(30, 41, 59, 0.95);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 35px;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.section-title{
+    margin-bottom: 25px;
+}
+
+.section-title h2{
+    font-size: 2rem;
+}
+
+/* -------------------- */
+/* Table */
+/* -------------------- */
+
+.table-container{
+    overflow-x: auto;
+}
+
+table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead{
+    background: rgba(255,255,255,0.05);
+}
+
+th{
+    padding: 20px;
+    text-align: left;
+    color: var(--muted);
+    font-weight: 600;
+}
+
+td{
+    padding: 20px;
+    border-top: 1px solid var(--border);
+}
+
+tr{
+    transition: 0.3s;
+}
+
+tr:hover{
+    background: rgba(255,255,255,0.03);
+}
+
+/* -------------------- */
+/* Search Bar */
+/* -------------------- */
+
+#searchPassword{
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: #0f172a;
+    color: white;
+    font-size: 1rem;
+}
+
+#searchPassword:focus{
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(99,102,241,0.2);
+}
+
+/* -------------------- */
+/* Buttons */
+/* -------------------- */
+
+.action-btn{
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 10px 14px;
+    border-radius: 12px;
+    margin-right: 8px;
+    transition: 0.3s;
+}
+
+.action-btn:hover{
+    transform: translateY(-2px);
+}
+
+.view-btn{
+    background: #0ea5e9;
+}
+
+.view-btn:hover{
+    background: #0284c7;
+}
+
+.copy-btn{
+    background: var(--primary);
+}
+
+.copy-btn:hover{
+    background: var(--primary-hover);
+}
+
+.delete-btn{
+    background: var(--danger);
+}
+
+.delete-btn:hover{
+    opacity: 0.9;
+}
+
+/* -------------------- */
+/* Empty State */
+/* -------------------- */
+
+#emptyState{
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+}
+
+#emptyState i{
+    font-size: 4rem;
+    color: var(--primary);
+    margin-bottom: 20px;
+}
+
+#emptyState p{
+    font-size: 1.1rem;
+}
+
+/* -------------------- */
+/* Form */
+/* -------------------- */
+
+#passwordForm{
+    display: flex;
     flex-direction: column;
 
     gap: 16px;
@@ -1037,7 +1251,80 @@ select:focus {
 
 @keyframes popIn {
 
-  from {
+.password-wrapper{
+    position: relative;
+}
+
+.password-wrapper input{
+    padding-right: 55px;
+}
+
+#togglePassword{
+    position: absolute;
+    right: 18px;
+    top: 18%;
+    cursor: pointer;
+    color: var(--primary);
+    transition: 0.3s;
+}
+
+#togglePassword:hover{
+    color: white;
+}
+
+/* -------------------- */
+/* Password Requirements */
+/* -------------------- */
+
+#passwordStrength{
+    margin-top: 8px;
+    font-weight: 600;
+}
+
+#passwordRequirements{
+    display: none;
+    margin-top: 10px;
+}
+
+#passwordRequirements p{
+    margin: 4px 0;
+    font-size: 0.95rem;
+    color: var(--text);
+}
+
+/* -------------------- */
+/* Submit Button */
+/* -------------------- */
+
+.submit-btn{
+    border: none;
+    background: var(--primary);
+    color: white;
+    padding: 16px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.submit-btn:hover{
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+/* -------------------- */
+/* Toast */
+/* -------------------- */
+
+#toast{
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 500;
     opacity: 0;
     transform: scale(0.94);
   }
