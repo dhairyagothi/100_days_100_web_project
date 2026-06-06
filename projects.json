@@ -369,15 +369,6 @@
     "projectPath": "./public/Scroll%20Game%20Dark%20Run/index.html"
   },
   {
-    "projectNo": 42,
-    "projectName": "Amazon Clone",
-    "projectType": "Clone",
-    "projectDesc": "Frontend clone inspired by Amazon layouts and shopping interfaces.",
-    "techStack": ["clone", "javascript"],
-    "difficulty": "intermediate",
-    "projectPath": "./public/Amazon_Clone/index.html"
-  },
-  {
     "projectNo": 43,
     "projectName": "Password Generator",
     "projectType": "Tool",
@@ -1134,15 +1125,6 @@
     "projectPath": "./public/TemperatureConverter/index.html"
   },
   {
-    "projectNo": 127,
-    "projectName": "Particle Wave Animation",
-    "projectType": "UI",
-    "projectDesc": "Animated wave effects created through particle systems and motion.",
-    "techStack": ["css", "javascript"],
-    "difficulty": "intermediate",
-    "projectPath": "./public/Particle Wave Animation/index.html"
-  },
-  {
     "projectNo": 128,
     "projectName": "Reaction Time Test",
     "projectType": "Game",
@@ -1475,15 +1457,6 @@
     "projectPath": "./public/image-editor/index.html"
   },
   {
-    "projectNo": 164,
-    "projectName": "Code Visualizer Playground",
-    "projectType": "Tool",
-    "projectDesc": "Interactive environment for visualizing code execution and understanding logic flow.",
-    "techStack": ["tool", "javascript", "html", "css"],
-    "difficulty": "advanced",
-    "projectPath": "./public/code-visualizer-playground/index.html"
-  },
-  {
     "projectNo": 165,
     "projectName": "Amazon App",
     "projectType": "Clone",
@@ -1590,15 +1563,6 @@
     "techStack": ["tool", "javascript", "html", "css"],
     "difficulty": "advanced",
     "projectPath": "./public/story/main.html"
-  },
-  {
-    "projectNo": 177,
-    "projectName": "Interview Prep Hub",
-    "projectType": "Tool",
-    "projectDesc": "Centralized platform for interview preparation resources and practice tools.",
-    "techStack": ["tool", "javascript", "html", "css"],
-    "difficulty": "advanced",
-    "projectPath": "./public/InterviewSimulator/index.html"
   },
   {
     "projectNo": 178,
@@ -1741,15 +1705,6 @@
     "projectPath": "./public/Planet_gesture_formation/index.html"
   },
 
-  {
-    "projectNo": 192,
-    "projectName": "Interactive Story Player",
-    "projectType": "UI / Animation",
-    "projectDesc": "A dynamic, choice-driven storytelling application where users shape their own narrative paths.",
-    "techStack": ["ui", "html", "css", "javascript"],
-    "difficulty": "intermediate",
-    "projectPath": "./public/story/main.html"
-  },
   {
     "projectNo": 193,
     "projectName": "Escape Room",
@@ -1906,6 +1861,7 @@
   {
   "projectNo": 209,
   "projectName": "Kanban Board",
+  "projectType": "Tool",
   "projectPath": "./public/Kanban_Board/index.html",
   "techStack": ["html", "css", "javascript"],
   "difficulty": "intermediate",
@@ -1914,34 +1870,29 @@
 {
   "projectNo": 210,
   "projectName": "IP Address Tracker",
+  "projectType": "Tool",
   "projectPath": "./public/Ip_Address_tracker/index.html",
   "techStack": ["html", "css", "javascript"],
   "difficulty": "intermediate",
   "projectDesc": "A responsive IP Address Tracker application that allows users to search IP addresses, view location details, ISP information, timezone data, and visualize the location on an interactive map using Leaflet.js and IPAPI."
 },
 {
-    "projectNo": 211,
-    "projectName": "Cricket Scorecard",
-    "projectPath": "./public/Cricket-Scorecard/index.html",
-    "techStack": ["html", "css", "javascript"],
-    "difficulty": "advanced",
-    "projectDesc": "A tool to view the schedule of upcoming matches and watch live scorecard."
+  "projectNo": 211,
+  "projectName": "Cricket Scorecard",
+  "projectType": "Tool",
+  "projectPath": "./public/Cricket-Scorecard/index.html",
+  "techStack": ["html", "css", "javascript"],
+  "difficulty": "advanced",
+  "projectDesc": "A tool to view the schedule of upcoming matches and watch live scorecard."
   },
   {
     "projectNo": 212,
     "projectName": "Tower Blocks Stacker",
+    "projectType": "Game",
     "projectPath": "./public/tower_stacker/index.html",
     "techStack": ["html", "css", "javascript", "canvas"],
     "difficulty": "advanced",
     "projectDesc": "A responsive physics-inspired arcade game challenging users to stack moving horizontal blocks cleanly. Implements strict boundary checking, block-slicing logic, dynamic camera tracking, and interactive start/pause state controls."
-  },
-  {
-  "projectNo": 213,
-  "projectName": "Photo Studio",
-  "projectPath": "./public/Photo Studio/Project.html",
-  "techStack": ["html", "css"],
-  "difficulty": "intermediate",
-  "projectDesc": "A responsive photography portfolio and gallery website designed to showcase visual content through structured layouts, image presentation sections, and modern styling. Features an engaging user interface optimized for desktop and mobile viewing."
   },
   {
     "projectNo": 214,
