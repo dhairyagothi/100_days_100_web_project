@@ -1942,6 +1942,27 @@
   "techStack": ["html", "css"],
   "difficulty": "intermediate",
   "projectDesc": "A responsive photography portfolio and gallery website designed to showcase visual content through structured layouts, image presentation sections, and modern styling. Features an engaging user interface optimized for desktop and mobile viewing."
+}
+,
+{
+"projectNo":178,
+"projectName":"Cyber Type Battle",
+"projectType":"Game",
+"projectDesc":"Fast-paced cyber typing battle game with arcade-style gameplay.",
+"techStack":["game","html","css","javascript"],
+"difficulty":"intermediate",
+"projectPath":"./public/CYBER TYPE BATTLE/index.html"
+}
+,
+{
+"projectNo":179,
+"projectName":"Mood Tracker Dashboard",
+"projectType":"Web App",
+"projectDesc":"A dashboard to track daily moods with charts and insights.",
+"techStack":["html","css","javascript"],
+"difficulty":"advanced",
+"projectPath":"./public/mood-tracker-dashboard/index.html"
+}
   },
   {
     "projectNo": 214,
