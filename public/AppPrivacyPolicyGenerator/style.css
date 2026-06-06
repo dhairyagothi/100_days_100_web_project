@@ -7,6 +7,7 @@
     --text-muted: #64748b;
     --border: #e2e8f0;
     --radius: 12px;
+    --focus: #93c5fd;
 }
 
 * {
@@ -44,9 +45,37 @@ header p {
     gap: 2rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .grid {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .card {
+        padding: 1.25rem;
+    }
+
+    header {
+        margin-bottom: 2rem;
+    }
+
+    .output-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .tabs {
+        width: 100%;
+    }
+
+    .tab-btn {
+        flex: 1;
     }
 }
 
@@ -74,12 +103,31 @@ label {
 }
 
 input[type="text"],
-input[type="email"] {
+input[type="email"],
+input[type="url"],
+input[type="date"],
+textarea {
     width: 100%;
-    padding: 0.75rem;
+    padding: 0.9rem;
     border: 1px solid var(--border);
-    border-radius: 6px;
+    border-radius: 8px;
     font-family: inherit;
+    background: #fff;
+    color: var(--text);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #94a3b8;
+}
+
+input:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
 }
 
 .subsection-title {
@@ -97,7 +145,7 @@ input[type="email"] {
 .checkbox-group {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.85rem;
     margin-bottom: 2rem;
 }
 
@@ -105,8 +153,16 @@ input[type="email"] {
     font-weight: 400;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
     cursor: pointer;
+    line-height: 1.4;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary);
+    flex-shrink: 0;
 }
 
 button {
@@ -122,12 +178,17 @@ button {
     color: white;
     border: none;
     padding: 1rem;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 1rem;
 }
 
 .btn-primary:hover {
     background: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
 }
 
 .btn-secondary {
@@ -135,8 +196,8 @@ button {
     background: white;
     color: var(--text);
     border: 1px solid var(--border);
-    padding: 0.75rem;
-    border-radius: 6px;
+    padding: 0.85rem;
+    border-radius: 8px;
     margin-top: 1rem;
 }
 
@@ -154,6 +215,7 @@ button {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
+    gap: 1rem;
 }
 
 .tabs {
@@ -164,10 +226,15 @@ button {
 .tab-btn {
     background: transparent;
     border: 1px solid var(--border);
-    padding: 0.4rem 0.8rem;
-    border-radius: 4px;
+    padding: 0.45rem 0.85rem;
+    border-radius: 6px;
     font-size: 0.85rem;
     color: var(--text-muted);
+}
+
+.tab-btn:hover {
+    background: #f8fafc;
+    color: var(--text);
 }
 
 .tab-btn.active {
@@ -178,11 +245,15 @@ button {
 
 textarea {
     width: 100%;
-    height: 400px;
+    min-height: 420px;
+    max-height: 70vh;
     padding: 1rem;
     border: 1px solid var(--border);
-    border-radius: 6px;
+    border-radius: 8px;
     font-family: monospace;
     resize: vertical;
     background: var(--bg);
+    overflow: auto;
+    white-space: pre-wrap;
+    line-height: 1.5;
 }

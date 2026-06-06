@@ -94,7 +94,6 @@
     <div class="noise-layer" aria-hidden="true"></div>
     <div class="cursor-ring cursor-ring--outer" aria-hidden="true"></div>
     <div class="cursor-ring cursor-ring--inner" aria-hidden="true"></div>
-    <canvas id="particleCanvas" aria-hidden="true" style="position: fixed !important; inset: 0 !important; width: 100% !important; height: 100% !important; pointer-events: none !important; z-index: 0 !important; display: block !important;"></canvas>
 
     <div id="navbar-container"></div>
     <section class="hero" id="hero">
@@ -108,7 +107,7 @@
         </h1>
 
         <p class="hero-sub">
-          A comprehensive collection of 112+ web development projects ranging
+          A comprehensive collection of 200+ web development projects ranging
           from beginner to intermediate level, designed to help developers learn
           and practice through hands-on experience.
         </p>
@@ -119,14 +118,14 @@
 
         <div class="hero-actions">
           <a href="#projects" class="btn btn-primary" id="heroBrowseBtn">
-            Browse Projects <i class="fas fa-arrow-down"></i>
+            Browse Projects <i class="fas fa-arrow-down" aria-hidden="true"></i>
           </a>
           <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer"
-            class="btn btn-ghost" id="heroGithubBtn">
-            <i class="fab fa-github"></i> GitHub
+            class="btn btn-ghost" id="heroGithubBtn" aria-label="GitHub Repository (opens in a new tab)">
+            <i class="fab fa-github" aria-hidden="true"></i> GitHub
           </a>
-          <a href="stats.html" class="btn-stats" id="heroStatsBtn" title="View Project Stats Dashboard">
-            <i class="fas fa-chart-bar"></i> Stats
+          <a href="stats.html" class="btn-stats" id="heroStatsBtn" title="View Project Stats Dashboard" aria-label="View Project Stats Dashboard">
+            <i class="fas fa-chart-bar" aria-hidden="true"></i> Stats
           </a>
         </div>
 
@@ -191,7 +190,7 @@
                 title="Copy Bookmarks"
                 aria-label="Copy bookmarks"
               >
-                <i class="fas fa-copy"></i>
+                <i class="fas fa-copy" aria-hidden="true"></i>
               </button>
               <button
                 class="view-all-btn"
@@ -272,7 +271,7 @@
           </div>
 
           <div class="search-bar">
-            <i class="fas fa-search search-icon"></i>
+            <i class="fas fa-search search-icon" aria-hidden="true"></i>
             <input
               type="text"
               id="searchInput"
@@ -319,14 +318,14 @@
             <option value="tailwindcss">Tailwind CSS</option>
           </select>
           <button id="clearAllFiltersBtn" class="clear-filters-btn" aria-label="Clear all filters">
-            <i class="fas fa-filter-circle-xmark"></i> Clear Filters
+            <i class="fas fa-filter-circle-xmark" aria-hidden="true"></i> Clear Filters
           </button>
         </div>
 
         <div class="project-grid" id="projectGrid"></div>
 
         <div class="no-results" id="noResults">
-          <i class="fas fa-search"></i>
+          <i class="fas fa-search" aria-hidden="true"></i>
           <p>No projects match your search.</p>
         </div>
       </div>
@@ -368,6 +367,7 @@
                   href="https://github.com/dhairyagothi/100_days_100_web_project"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="View repository on GitHub (opens in a new tab)"
                   >View repository</a
                 >
               </li>
@@ -389,7 +389,7 @@
                 target="_blank"
                 rel="noopener noreferrer"
                 class="social-btn"
-                aria-label="Follow on Instagram"
+                aria-label="Follow on Instagram (opens in a new tab)"
               >
                 <i class="fab fa-instagram" aria-hidden="true"></i>
               </a>
@@ -398,7 +398,7 @@
                 target="_blank"
                 rel="noopener noreferrer"
                 class="social-btn"
-                aria-label="Open GitHub repository"
+                aria-label="Open GitHub repository (opens in a new tab)"
               >
                 <i class="fab fa-github" aria-hidden="true"></i>
               </a>
@@ -407,7 +407,7 @@
                 target="_blank"
                 rel="noopener noreferrer"
                 class="social-btn"
-                aria-label="Connect on LinkedIn"
+                aria-label="Connect on LinkedIn (opens in a new tab)"
               >
                 <i class="fab fa-linkedin" aria-hidden="true"></i>
               </a>
@@ -428,6 +428,7 @@
               target="_blank"
               rel="noopener noreferrer"
               class="featured-btn"
+              aria-label="Try README Generator (opens in a new tab)"
             >
               <i class="fas fa-magic" aria-hidden="true"></i> Try README
               Generator
@@ -451,6 +452,7 @@
               href="https://www.github-readme.tech"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="README Generator (opens in a new tab)"
               >README Generator</a
             >
           </div>
@@ -463,7 +465,7 @@
         <circle class="ring-track" cx="24" cy="24" r="22" />
         <circle class="ring-fill" id="ringFill" cx="24" cy="24" r="22" />
       </svg>
-      <i class="fas fa-arrow-up scroll-arrow"></i>
+      <i class="fas fa-arrow-up scroll-arrow" aria-hidden="true"></i>
       <span class="scroll-tooltip">Back to top</span>
     </button>
     <div class="toast" id="toast"></div>

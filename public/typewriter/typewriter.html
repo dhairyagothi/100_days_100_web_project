@@ -28,19 +28,7 @@
     <a
       href="/"
       class="project-back-button"
-      style="
-        position: fixed;
-        left: 18px;
-        top: 18px;
-        padding: 8px 12px;
-        border-radius: 8px;
-        background: white;
-        text-decoration: none;
-        z-index: 9999;
-        font-weight: 700;
-        font-family: Inter, system-ui, sans-serif;
-        box-shadow: 0 8px 20px rgba(0, 0, 0);
-      "
+      style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'"
       >← Back to Home</a
     >
     <div class="theme-toggle" id="themeToggle">🌙</div>
@@ -49,7 +37,7 @@
         <div class="carriage-knob knob-left"></div>
         <div class="carriage-controls">
           <div class="control-group">
-            <label for="pdfTheme"><i class="fas fa-palette"></i> Style</label>
+            <label for="pdfTheme"><i aria-hidden="true" class="fas fa-palette"></i> Style</label>
             <select id="pdfTheme">
               <option value="vintage">📜 Vintage</option>
               <option value="editorial">✍️ Editorial</option>
@@ -57,7 +45,7 @@
             </select>
           </div>
           <div class="control-group">
-            <label for="pdfTitle"><i class="fas fa-feather"></i> Title</label>
+            <label for="pdfTitle"><i aria-hidden="true" class="fas fa-feather"></i> Title</label>
             <input
               type="text"
               id="pdfTitle"
@@ -67,7 +55,7 @@
           </div>
           <div class="control-group">
             <label for="pdfAuthor"
-              ><i class="fas fa-signature"></i> Author</label
+              ><i aria-hidden="true" class="fas fa-signature"></i> Author</label
             >
             <input
               type="text"
@@ -82,14 +70,14 @@
               class="carriage-btn btn-red"
               title="Export to PDF"
             >
-              <i class="fas fa-file-pdf"></i> Export
+              <i aria-hidden="true" class="fas fa-file-pdf"></i> Export
             </button>
             <button
               id="clearPaperBtn"
               class="carriage-btn btn-silver"
               title="Reset Paper"
             >
-              <i class="fas fa-trash-alt"></i> Clear
+              <i aria-hidden="true" class="fas fa-trash-alt"></i> Clear
             </button>
           </div>
         </div>
@@ -99,17 +87,47 @@
       <div id="pagesContainer">
         <div class="paper-sheet page active-page">
           <span class="typewriterText"></span>
-          <span class="cursor-paper"></span>
         </div>
       </div>
 
       <div class="typewriter-body">
         <div class="input-area">
-          <input
-            type="text"
-            id="userInput"
-            placeholder="Type here or click the keys below…"
-          />
+          <div style="display: flex; width: 100%; gap: 10px; margin-bottom: 12px;">
+            <input
+              type="text"
+              id="userInput"
+              placeholder="Type here or click the keys below…"
+              style="flex: 1;"
+            />
+            <button 
+              id="addTextBtn" 
+              style="background: #ef4444; color: white; border: none; border-radius: 6px; padding: 0 16px; font-weight: bold; cursor: pointer; transition: background 0.2s;"
+              onmouseover="this.style.background='#dc2626'"
+              onmouseout="this.style.background='#ef4444'"
+            >
+              Add Text
+            </button>
+          </div>
+          <div class="controls">
+            <button id="soundToggle">🔊 Sound ON</button>
+            <button id="copyBtn">📋 Copy</button>
+            <button id="pasteBtn">📥 Paste Text</button>
+            <button id="importTxtBtn">📂 Import TXT</button>
+            <input
+              type="file"
+              id="txtFileInput"
+              accept=".txt"
+              style="display: none"
+            />
+            <button id="downloadPDF">📄 Download PDF</button>
+            <span id="pageCounter">Page 1</span>
+          </div>
+          <div class="counters">
+            <span id="wordCount">Words: 0</span>
+            <span class="counter-separator">|</span>
+            <span id="charCount">Characters: 0</span>
+          </div>
+        </div>
           <div class="controls">
             <button id="soundToggle">🔊 Sound ON</button>
             <button id="copyBtn">📋 Copy</button>

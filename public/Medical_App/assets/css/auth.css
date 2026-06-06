@@ -318,3 +318,44 @@ body[data-theme="dark"] .auth-note {
         padding: 22px;
     }
 }
+
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper .auth-input {
+    padding-right: 44px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--auth-text, #64748b);
+    opacity: 0.6;
+    transition: opacity 0.2s ease, color 0.2s ease;
+    line-height: 0;
+}
+
+.password-toggle:hover {
+    opacity: 1;
+    color: var(--auth-primary, #0ea5e9);
+}
+
+.password-toggle:focus {
+    outline: none;
+}
+
+.eye-icon {
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+}

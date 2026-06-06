@@ -287,19 +287,19 @@ h1 {
     position: absolute;
     top: 20px;
     left: 20px;
-    color: var(--pl-white);
+    color: #3b82f6;
     text-decoration: none;
     font-size: 1.1rem;
     font-weight: 600;
     padding: 8px 16px;
-    border: 1px solid var(--lt-violet2);
+    border: 1px solid #3b82f6;
     border-radius: 8px;
-    background-color: var(--dk-violet);
-    transition: color 0.2s ease;
+    background: #1e293b;
+    transition: all 0.2s ease;
 }
 
 .project-back-button:hover {
-    color: var(--vb-yellow);
-    border-color: var(--vb-yellow);
-    background-color: rgba(234, 179, 8, 0.1);
+    background: #3b82f6;
+    color: #fff;
+    border-color: #3b82f6;
 }
