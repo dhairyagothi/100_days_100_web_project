@@ -1,33 +1,56 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- SEO Optimization -->
-    <title>Chronos - Premium Analog Clock & World Time Dashboard</title>
-    <meta name="description" content="A premium, dynamic analog clock web application featuring a skeuomorphic-neumorphic hybrid design, continuous sweep motions, daylight-savings aware world clocks (New York, London, Tokyo), and a sleek countdown timer.">
-    
-    <link rel="stylesheet" href="index.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <script src="index.js" defer></script>
-</head>
+    <title>Chronos+ Premium Dashboard</title>
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="index.css" />
+  </head>
 
 <body>
+
     <div class="app-container">
         
         <!-- Header Banner & Theme Toggle -->
         <header>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <div class="brand-section">
-                <h1>Chronos</h1>
-                <p>Premium Local &amp; World Clock Dashboard</p>
-            </div>
-            
-            <!-- Sleek Neumorphic Theme Switcher -->
-            <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle visual theme">
-                <!-- Sun Icon (Dark Mode Active: click to go Light) -->
-                <svg id="sunIcon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+    <h1>Chronos</h1>
+    <p>Premium Local &amp; World Clock Dashboard</p>
+</div>
+<header>
+    <div class="brand-section">
+        <h1>Chronos</h1>
+        <p>Premium Local &amp; World Clock Dashboard</p>
+    </div>
+
+    <div class="header-actions">
+        <button
+            id="focusModeBtn"
+            class="btn btn-primary focus-btn"
+            aria-label="Toggle Focus Mode"
+            onclick="document.body.classList.toggle('focus-mode'); console.log('Body classes:', document.body.className);"
+        >
+            Focus Mode
+        </button>
+        
+        <!-- Updated Theme Toggle Button - Matching Focus Mode Style -->
+        <button id="themeToggleBtn" class="btn btn-primary theme-toggle-btn" aria-label="Cycle through light, dark, and auto theme modes">
+            <span class="theme-toggle-content">
+                <!-- Sun Icon (Light Mode Active) -->
+                <svg id="sunIcon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="theme-icon">
                     <circle cx="12" cy="12" r="5" />
                     <line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     <line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -38,13 +61,18 @@
                     <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 </svg>
-                <!-- Moon Icon (Light Mode Active: click to go Dark) -->
-                <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                
+                <!-- Moon Icon (Dark Mode Active) -->
+                <svg id="moonIcon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="theme-icon">
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                 </svg>
-            </button>
-        </header>
-
+                
+                <!-- Auto Mode Label -->
+                <span id="autoModeLabel" style="display: none;" class="mode-label">🔄 Auto</span>
+            </span>
+        </button>
+    </div>
+</header>
         <!-- Main Workspace: Large Local Clock + Countdown Timer -->
         <main class="main-dashboard">
             
@@ -136,10 +164,40 @@
             </section>
         </main>
 
+        <!-- World Timezone Map -->
+        <section class="neumorphic-plate timezone-map-section" aria-label="Interactive Timezone Map">
+            <div class="map-header">
+                <h2>Interactive World Timezone Map</h2>
+                <p class="subtitle">Hover over zones to view offsets, click to pin analog clocks dynamically</p>
+            </div>
+            
+            <div class="map-container">
+                <div class="map-scroll-container">
+                    <div id="timezone-map-wrapper">
+                        <!-- SVG map loaded dynamically -->
+                    </div>
+                </div>
+                
+                <!-- Premium Glassmorphic Tooltip -->
+                <div id="map-tooltip" class="map-tooltip" style="display: none;">
+                    <div class="tooltip-header">
+                        <h4 id="tooltip-city">City Name</h4>
+                        <span id="tooltip-offset" class="tooltip-offset">UTC+0</span>
+                    </div>
+                    <div id="tooltip-timezone" class="tooltip-tz-id">Timezone ID</div>
+                    <div class="tooltip-time-row">
+                        <span id="tooltip-time" class="tooltip-time">00:00:00</span>
+                        <span id="tooltip-date" class="tooltip-date">Thu, May 28</span>
+                    </div>
+                    <button id="tooltip-pin-btn" class="btn btn-primary tooltip-btn">Pin to Dashboard</button>
+                </div>
+            </div>
+        </section>
+
         <!-- World Clocks Row -->
         <section class="world-clocks-section" aria-label="World Location Clocks">
             <h2>World Clocks</h2>
-            <div class="world-clocks-grid">
+            <div id="worldClocksGrid" class="world-clocks-grid">
                 
                 <!-- New York Clock Card with NYC skyline banner -->
                 <div class="neumorphic-plate world-clock-card">
@@ -224,8 +282,22 @@
         
     </div>
 
-    <!-- Audio Element for Alarm Alert -->
+    <!-- AUDIO -->
     <audio id="timerSound" src="timer.mp3" preload="auto"></audio>
-</body>
 
+    
+    <script src="theme-system.js"></script>
+    <script src="index.js"></script>
+
+    <script>
+        window.addEventListener("keydown", (e) => {
+            // Check if 'F' is pressed and make sure the user isn't currently typing in an input box
+            if (e.key.toLowerCase() === "f" && !e.target.matches('input, textarea')) {
+                e.preventDefault();
+                document.body.classList.toggle('focus-mode');
+                console.log('Keyboard Focus Toggle. Classes:', document.body.className);
+            }
+        });
+    </script>
+</body>
 </html>

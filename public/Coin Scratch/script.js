@@ -7,10 +7,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetButton = document.getElementById('reset-btn');
     const customCursor = document.getElementById('custom-cursor');
     const recommendationCard = document.querySelector('.recommendation-card');
+    const brushSizeSlider = document.getElementById('brush-size');
+    const brushSizeValue = document.getElementById('brush-size-value');
+    const rewardText = rewardContent.querySelector('.reward-text');
+    const scratchProgressValue = document.getElementById('scratch-progress-value');
+
+    const rewards = [
+        '₹10',
+        '₹50',
+        '₹100',
+        '₹500',
+        '🎁 Free Gift',
+        '❤️ You Did It',
+        '😔 Better Luck Next Time'
+    ];
+    const revealThreshold = 70;
+
+    let brushSize = 6;
 
     let isDrawing = false;
     let hasScratched = false;
     let rewardState = 0; // 0: hidden, 1: heart visible, 2: full reward
+    let scratchProgress = 0;
     let lastX = 0;
     let lastY = 0;
     let lastTime = 0;
@@ -37,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const bufferSize = 2 * audioContext.sampleRate; // 2 seconds of distinct noise
             const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
             const outputChannel = noiseBuffer.getChannelData(0);
-            
+
             for (let i = 0; i < bufferSize; i++) {
                 outputChannel[i] = Math.random() * 2 - 1;
             }
@@ -83,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isAudioInitialized) return;
 
         // Clamp normal velocity bounds for mapping calculations
-        const maxVelocity = 2.5; 
+        const maxVelocity = 2.5;
         const normalizedVelocity = Math.min(velocity / maxVelocity, 1.0);
 
         const now = audioContext.currentTime;
@@ -91,9 +109,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (normalizedVelocity > 0.02) {
             // Volume Modulation (Friction scale)
             const targetGain = 0.01 + (normalizedVelocity * 0.12);
-            
+
             // Frequency Modulation (Texture profile adjustments)
-            const targetBandpassFreq = 1100 + (normalizedVelocity * 1400); 
+            const targetBandpassFreq = 1100 + (normalizedVelocity * 1400);
             const targetHighpassFreq = 1400 + (normalizedVelocity * 1100);
 
             // Apply parameter changes smoothly across time matrix to bypass audio pops
@@ -119,15 +137,30 @@ document.addEventListener('DOMContentLoaded', () => {
         return getComputedStyle(document.documentElement).getPropertyValue(prop).trim();
     }
 
-    function setupCanvas() {
+    function selectRandomReward() {
+        rewardText.textContent = rewards[Math.floor(Math.random() * rewards.length)];
+    }
+
+    function updateScratchProgress(percentage) {
+        scratchProgress = Math.min(100, Math.max(0, percentage));
+        scratchProgressValue.textContent = `${Math.round(scratchProgress)}%`;
+    }
+
+    function setupCanvas(shouldSelectReward = false) {
+        clearTimeout(checkTimeout);
+
+        if (shouldSelectReward) {
+            selectRandomReward();
+        }
+
         const dpr = window.devicePixelRatio || 1;
         const rect = coinWrapper.getBoundingClientRect();
-        
+
         canvas.width = rect.width * dpr;
         canvas.height = rect.height * dpr;
-        
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.scale(dpr, dpr);
-        
+
         canvas.style.width = `${rect.width}px`;
         canvas.style.height = `${rect.height}px`;
 
@@ -136,6 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Reset states
         hasScratched = false;
         rewardState = 0;
+        updateScratchProgress(0);
         instructionText.classList.remove('fade-out');
         rewardContent.style.opacity = '0';
         rewardContent.classList.remove('stage-1', 'stage-2');
@@ -146,14 +180,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function drawCoating(width, height) {
         ctx.globalCompositeOperation = 'source-over';
-        
+
         const coatingStart = getStylePropertyValue('--coating-start') || '#70291D';
         const coatingEnd = getStylePropertyValue('--coating-end') || '#3B1A14';
 
         const gradient = ctx.createRadialGradient(width / 2, height / 2, 0, width / 2, height / 2, width / 2);
         gradient.addColorStop(0, coatingStart);
         gradient.addColorStop(1, coatingEnd);
-        
+
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, width, height);
 
@@ -167,15 +201,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+
     function getEventCoordinates(e) {
-        const rect = canvas.getBoundingClientRect();
-        const touch = e.touches ? e.touches[0] : e;
-        return {
-            x: touch.clientX - rect.left,
-            y: touch.clientY - rect.top
+        if (e.touches) {
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            return {
+                x: touch.clientX - rect.left,
+                y: touch.clientY - rect.top
         };
     }
-
+    return {
+        x: e.offsetX,
+        y: e.offsetY
+    };
+}
     function startScratch(e) {
         // Initialize audio on the first user interaction
         if (!isAudioInitialized) {
@@ -212,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const { x, y } = getEventCoordinates(e);
         const currentTime = performance.now();
-        
+
         const dx = x - lastX;
         const dy = y - lastY;
         const deltaTime = Math.max(1, currentTime - lastTime); // Prevent divide by zero
@@ -228,10 +268,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // UI Drawing execution
         ctx.globalCompositeOperation = 'destination-out';
-        ctx.lineWidth = 6; // Slightly increased from 2
+        ctx.lineWidth = brushSize;
+        ctx.shadowBlur = brushSize / 2; 
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
-        
+
         ctx.beginPath();
         ctx.moveTo(lastX, lastY);
         ctx.lineTo(x, y);
@@ -261,12 +302,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const totalPixels = data.length / 4;
             const percentage = (transparentPixels / totalPixels) * 100;
+            updateScratchProgress(percentage);
 
             // --- STAGE 2 REVEAL ---
-            if (percentage > 65 && rewardState === 1) {
+            if (percentage >= revealThreshold && rewardState === 1) {
                 rewardState = 2;
                 rewardContent.classList.add('stage-2');
-                
+                updateScratchProgress(100);
+
+                ctx.save();
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.restore();
+
                 // Fade out the canvas completely
                 canvas.style.opacity = '0';
                 canvas.style.pointerEvents = 'none'; // Disable further scratching
@@ -283,13 +331,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event Listeners
     window.addEventListener('resize', setupCanvas);
-    resetButton.addEventListener('click', setupCanvas);
+    resetButton.addEventListener('click', () => setupCanvas(true));
 
     // Mouse events
     canvas.addEventListener('mousedown', startScratch);
     canvas.addEventListener('mousemove', scratch);
     window.addEventListener('mouseup', stopScratch);
-    
+
     // Touch events
     canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startScratch(e); }, { passive: false });
     canvas.addEventListener('touchmove', (e) => { e.preventDefault(); scratch(e); }, { passive: false });
@@ -303,9 +351,18 @@ document.addEventListener('DOMContentLoaded', () => {
         customCursor.style.display = 'none';
         stopScratch(); // Ensure sound stops if mouse leaves while scratching
     });
+    brushSizeSlider.addEventListener('input', () => {
+        brushSize = Number(brushSizeSlider.value);
+
+        brushSizeValue.textContent = brushSize;
+
+        // Optional: make cursor reflect brush size
+        customCursor.style.width = `${brushSize}px`;
+        customCursor.style.height = `${brushSize}px`;
+    });
 
     // Initial setup
-    setupCanvas();
+    setupCanvas(true);
 
     // Handle recommendation card auto-dismiss on mobile/tablet
     if (window.matchMedia("(max-width: 768px)").matches && recommendationCard) {

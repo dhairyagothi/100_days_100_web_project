@@ -200,9 +200,56 @@
       color: #333;
       border-top: 1px solid #1a1a1a;
     }
+
+.project-back-button{
+  position:fixed;
+  top:10px;
+  right:24px;
+  z-index:9999;
+
+  padding:8px 16px;
+
+  border-radius:8px;
+
+  background:#1e293b;
+
+  color:#3b82f6;
+  text-decoration:none;
+
+  font-size:0.85rem;
+  font-weight:600;
+  letter-spacing:.04em;
+
+  border:1px solid #3b82f6;
+
+  transition:all 0.2s ease;
+}
+
+.project-back-button:hover{
+  background:#3b82f6;
+  color:#fff;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+  .project-back-button{
+    top:18px;
+    right:18px;
+
+    padding:8px 15px;
+
+    font-size:.75rem;
+  }
+
+}
   </style>
 </head>
 <body>
+<a href="/" class="project-back-button">
+  ← Back To Home
+</a>
+
 
   <header>
     <span class="dot1"></span>

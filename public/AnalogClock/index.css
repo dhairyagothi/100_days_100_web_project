@@ -1,768 +1,1697 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+/* =====================================================
+   CHRONOS+ — PREMIUM DASHBOARD CSS
+   Complete rewrite: rich colors, clean sizing, no dupes
+   ===================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap");
+
+/* =====================================================
+   DESIGN TOKENS — LIGHT THEME
+   ===================================================== */
 
 :root {
-    /* Color Palette */
-    --bg-color: #f3f4f6; /* Cleaner, modern off-white */
-    --text-primary: #111827; /* Deepest ink gray */
-    --text-secondary: #4b5563; /* Medium slate gray */
-    
-    /* Neumorphic Shadows (Warm, Soft, & Feathery) */
-    --shadow-outer: 12px 12px 24px rgba(166, 180, 200, 0.3), -12px -12px 24px rgba(255, 255, 255, 0.95);
-    --shadow-outer-hover: 16px 16px 32px rgba(166, 180, 200, 0.4), -16px -16px 32px rgba(255, 255, 255, 1);
-    --shadow-inner: inset 6px 6px 12px rgba(166, 180, 200, 0.3), inset -6px -6px 12px rgba(255, 255, 255, 0.95);
-    
-    /* Button Shadows */
-    --shadow-btn: 6px 6px 12px rgba(166, 180, 200, 0.25), -6px -6px 12px rgba(255, 255, 255, 0.95);
-    --shadow-btn-hover: 8px 8px 16px rgba(166, 180, 200, 0.35), -8px -8px 16px rgba(255, 255, 255, 1);
-    --shadow-btn-active: inset 4px 4px 8px rgba(166, 180, 200, 0.3), inset -4px -4px 8px rgba(255, 255, 255, 0.95);
-    
-    /* Clock Components */
-    --clock-bezel: linear-gradient(135deg, #ffffff 0%, #e5e7eb 100%);
-    --clock-face-bg: #f3f4f6;
-    --clock-face-shadow: inset 10px 10px 20px rgba(166, 180, 200, 0.35), inset -10px -10px 20px rgba(255, 255, 255, 0.95);
-    --clock-tick: #9ca3af;
-    --clock-tick-major: #374151;
-    
-    /* Watch Hands & Shadows */
-    --hand-hour: #111827;
-    --hand-minute: #374151;
-    --hand-second: #f97316; /* Vibrant safety orange */
-    --hand-shadow: rgba(17, 24, 39, 0.12); /* Casts onto dial face */
-    
-    /* Center Cap (Brass/Gold cap) */
-    --pin-cap-bg: radial-gradient(circle at 30% 30%, #fbbf24 0%, #d97706 70%, #78350f 100%);
-    --pin-cap-border: #b45309;
-    
-    /* Extras */
-    --accent-color: #4f46e5; /* Deep Indigo */
-    --accent-color-hover: #4338ca;
-    --accent-glow: rgba(79, 70, 229, 0.15);
-    --card-bg: #f3f4f6;
-    --card-border: rgba(255, 255, 255, 0.6);
-    
-    /* Toggle Icon */
-    --toggle-sun-color: #d97706;
-    --toggle-moon-color: #4b5563;
+  /* Background */
+  --bg-color:       #eef0f7;
+  --bg-gradient:    linear-gradient(145deg, #e8eaf6 0%, #ede9f8 40%, #e0f2fe 100%);
+
+  /* Text */
+  --text-primary:   #0f172a;
+  --text-secondary: #64748b;
+  --text-muted:     #94a3b8;
+
+  /* Cards */
+  --card-bg:        rgba(255, 255, 255, 0.78);
+  --card-border:    rgba(255, 255, 255, 0.70);
+
+  /* Accents */
+  --accent:         #6366f1;          /* indigo */
+  --accent-2:       #8b5cf6;          /* violet */
+  --accent-3:       #06b6d4;          /* cyan */
+  --accent-hover:   #4f46e5;
+  --accent-glow:    rgba(99, 102, 241, 0.30);
+  --accent-grad:    linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+
+  /* Semantic */
+  --green:          #10b981;
+  --red:            #ef4444;
+  --amber:          #f59e0b;
+
+  /* Neumorphic shadows — light */
+  --shadow-out:
+    8px 8px 20px rgba(163, 177, 198, 0.40),
+    -6px -6px 16px rgba(255, 255, 255, 0.85);
+  --shadow-in:
+    inset 5px 5px 12px rgba(163, 177, 198, 0.35),
+    inset -5px -5px 12px rgba(255, 255, 255, 0.85);
+  --shadow-card:
+    0 4px 24px rgba(99, 102, 241, 0.08),
+    0 1px 4px rgba(0, 0, 0, 0.06);
+  --shadow-lift:
+    0 12px 40px rgba(99, 102, 241, 0.18),
+    0 4px 12px rgba(0, 0, 0, 0.08);
+
+  /* Clock face */
+  --clock-bg:         #ffffff;
+  --clock-ring:       linear-gradient(135deg, #ffffff, #dde3f0);
+  --clock-tick:       #cbd5e1;
+  --clock-tick-major: #334155;
+  --hour-hand:        #1e293b;
+  --minute-hand:      #475569;
+  --second-hand:      #ef4444;
+
+  /* Sizing */
+  --radius-xl:  32px;
+  --radius-lg:  24px;
+  --radius-md:  16px;
+  --radius-sm:  10px;
+
+  /* Motion */
+  --ease:  cubic-bezier(0.4, 0, 0.2, 1);
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur:   0.30s;
+  --transition: all var(--dur) var(--ease);
 }
+
+/* =====================================================
+   DARK THEME TOKENS
+   ===================================================== */
 
 body.dark-theme {
-    --bg-color: #080c14; /* Much deeper midnight black-blue */
-    --text-primary: #f9fafb;
-    --text-secondary: #9ca3af;
-    
-    /* Neumorphic Shadows (Dark, Tactile, Smooth transitions) */
-    --shadow-outer: 12px 12px 24px rgba(2, 3, 6, 0.7), -12px -12px 24px rgba(20, 32, 54, 0.35);
-    --shadow-outer-hover: 16px 16px 32px rgba(2, 3, 6, 0.8), -16px -16px 32px rgba(20, 32, 54, 0.45);
-    --shadow-inner: inset 6px 6px 12px rgba(2, 3, 6, 0.7), inset -6px -6px 12px rgba(20, 32, 54, 0.35);
-    
-    /* Button Shadows (Dark) */
-    --shadow-btn: 6px 6px 12px rgba(2, 3, 6, 0.6), -6px -6px 12px rgba(20, 32, 54, 0.3);
-    --shadow-btn-hover: 8px 8px 16px rgba(2, 3, 6, 0.7), -8px -8px 16px rgba(20, 32, 54, 0.4);
-    --shadow-btn-active: inset 4px 4px 8px rgba(2, 3, 6, 0.7), inset -4px -4px 8px rgba(20, 32, 54, 0.35);
-    
-    /* Clock Components (Dark) */
-    --clock-bezel: linear-gradient(135deg, #1f2937 0%, #0b0f17 100%);
-    --clock-face-bg: #0f172a;
-    --clock-face-shadow: inset 10px 10px 20px rgba(2, 3, 6, 0.8), inset -10px -10px 20px rgba(20, 32, 54, 0.35);
-    --clock-tick: #4b5563;
-    --clock-tick-major: #9ca3af;
-    
-    /* Watch Hands (Dark) */
-    --hand-hour: #ffffff;
-    --hand-minute: #e5e7eb;
-    --hand-second: #06b6d4; /* Electric Cyan */
-    --hand-shadow: rgba(0, 0, 0, 0.45);
-    
-    /* Center Cap (Silver/Steel cap) */
-    --pin-cap-bg: radial-gradient(circle at 30% 30%, #f9fafb 0%, #9ca3af 60%, #4b5563 100%);
-    --pin-cap-border: #4b5563;
-    
-    /* Extras (Dark) */
-    --accent-color: #6366f1;
-    --accent-color-hover: #4f46e5;
-    --accent-glow: rgba(99, 102, 241, 0.25);
-    --card-bg: #0f172a;
-    --card-border: rgba(255, 255, 255, 0.03);
+  --bg-color:     #06091a;
+  --bg-gradient:  linear-gradient(145deg, #06091a 0%, #0d1030 50%, #080d24 100%);
+
+  --text-primary:   #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted:     #475569;
+
+  --card-bg:      rgba(13, 18, 45, 0.82);
+  --card-border:  rgba(99, 102, 241, 0.14);
+
+  --accent:       #818cf8;
+  --accent-2:     #a78bfa;
+  --accent-3:     #22d3ee;
+  --accent-hover: #6366f1;
+  --accent-glow:  rgba(129, 140, 248, 0.35);
+  --accent-grad:  linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
+
+  --shadow-out:
+    8px 8px 24px rgba(0, 0, 0, 0.55),
+    -6px -6px 18px rgba(30, 40, 80, 0.25);
+  --shadow-in:
+    inset 5px 5px 14px rgba(0, 0, 0, 0.55),
+    inset -5px -5px 14px rgba(20, 30, 65, 0.25);
+  --shadow-card:
+    0 4px 28px rgba(0, 0, 0, 0.45),
+    0 1px 6px rgba(0, 0, 0, 0.3);
+  --shadow-lift:
+    0 12px 48px rgba(129, 140, 248, 0.22),
+    0 4px 16px rgba(0, 0, 0, 0.4);
+
+  --clock-bg:         #0b1229;
+  --clock-ring:       linear-gradient(135deg, #1a2450, #060c1e);
+  --clock-tick:       #2d3f6b;
+  --clock-tick-major: #e2e8f0;
+  --hour-hand:        #f1f5f9;
+  --minute-hand:      #94a3b8;
+  --second-hand:      #22d3ee;
 }
 
-/* Global Reset & Transition System */
+/* =====================================================
+   RESET
+   ===================================================== */
+
 *, *::before, *::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html, body {
-    width: 100%;
-    min-height: 100vh;
-    background-color: var(--bg-color);
-    color: var(--text-primary);
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    overflow-x: hidden;
-    transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-                color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* Dashboard Container */
+body {
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 16px;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+/* =====================================================
+   AMBIENT BACKGROUND ORBS
+   ===================================================== */
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: -1;
+}
+
+body::before {
+  width: 600px;
+  height: 600px;
+  top: -200px;
+  left: -150px;
+  background: radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 70%);
+  animation: floatOrb 20s infinite ease-in-out;
+}
+
+body::after {
+  width: 500px;
+  height: 500px;
+  bottom: -150px;
+  right: -120px;
+  background: radial-gradient(circle, rgba(6,182,212,0.15) 0%, transparent 70%);
+  animation: floatOrb 24s infinite ease-in-out reverse;
+}
+
+body.dark-theme::before {
+  background: radial-gradient(circle, rgba(129,140,248,0.22) 0%, transparent 70%);
+}
+
+body.dark-theme::after {
+  background: radial-gradient(circle, rgba(34,211,238,0.16) 0%, transparent 70%);
+}
+
+@keyframes floatOrb {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(40px, 30px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* =====================================================
+   APP SHELL
+   ===================================================== */
+
 .app-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 20px 28px 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
 }
 
-/* Header Section */
+/* =====================================================
+   HEADER
+   ===================================================== */
+
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--card-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 28px;
+  background: var(--card-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-card);
+  position: sticky;
+  top: 16px;
+  z-index: 100;
 }
 
 .brand-section h1 {
-    font-size: 2.2rem;
-    font-weight: 800;
-    letter-spacing: -0.05em;
-    background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-color) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 6px;
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  background: var(--accent-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .brand-section p {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    font-weight: 500;
-    letter-spacing: -0.01em;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  margin-top: 2px;
 }
 
-/* Theme Switch Button */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Theme toggle */
 .theme-toggle-btn {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background-color: var(--card-bg);
-    box-shadow: var(--shadow-btn);
-    border: 1px solid var(--card-border);
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    color: var(--text-primary);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-out);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: var(--transition);
+  flex-shrink: 0;
 }
 
 .theme-toggle-btn:hover {
-    box-shadow: var(--shadow-btn-hover);
-    transform: translateY(-2px);
-}
-
-.theme-toggle-btn:active {
-    box-shadow: var(--shadow-btn-active);
-    transform: translateY(0);
+  transform: rotate(22deg) scale(1.12);
+  color: var(--accent);
+  box-shadow: var(--shadow-lift);
 }
 
 .theme-toggle-btn svg {
-    width: 24px;
-    height: 24px;
-    fill: currentColor;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 18px;
+  height: 18px;
 }
 
-.theme-toggle-btn:hover svg {
-    transform: rotate(30deg);
+/* Focus mode button */
+.focus-btn {
+  padding: 9px 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border-radius: var(--radius-sm);
+  background: var(--accent-grad);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 14px var(--accent-glow);
 }
 
-/* Dashboard Core Layout */
-.main-dashboard {
-    display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 40px;
-    align-items: stretch;
+.focus-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--accent-glow);
+  filter: brightness(1.08);
 }
 
-@media (max-width: 968px) {
-    .main-dashboard {
-        grid-template-columns: 1fr;
-    }
-}
+/* =====================================================
+   NEUMORPHIC CARD BASE
+   ===================================================== */
 
-/* Neumorphic Plate Base */
 .neumorphic-plate {
-    position: relative;
-    overflow: hidden; /* Important for banner images rounded crop */
-    background-color: var(--card-bg);
-    border-radius: 24px;
-    box-shadow: var(--shadow-outer);
-    border: 1px solid var(--card-border);
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transition: box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-                transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-                background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-out);
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease);
 }
 
 .neumorphic-plate:hover {
-    box-shadow: var(--shadow-outer-hover);
-    transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lift);
 }
 
-/* CARD MONUMENT BANNERS */
-.clock-banner {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 180px; /* Taller for local clock */
-    background-size: cover;
-    background-position: center;
-    border-top-left-radius: 24px;
-    border-top-right-radius: 24px;
-    opacity: 0.85;
-    z-index: 1;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+/* Colored top-edge accent stripe */
+.neumorphic-plate::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent-grad);
+  opacity: 0.7;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
 }
 
-/* Top-down dark vignette to ensure text contrast on ANY image background */
-.clock-banner::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.42) 0%, rgba(0, 0, 0, 0.08) 50%, transparent 80%);
-    z-index: 1;
+/* =====================================================
+   MAIN DASHBOARD GRID
+   ===================================================== */
+
+.main-dashboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
 }
 
-/* Mask overlay to smoothly blend background into neumorphic background */
-.clock-banner::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 60%;
-    background: linear-gradient(to bottom, transparent, var(--card-bg));
-    transition: background 0.4s ease;
-    z-index: 2;
-}
+/* =====================================================
+   MAIN LOCAL CLOCK CARD
+   ===================================================== */
 
-/* Dark mode atmospheric dimming and high-contrast tuning */
-body.dark-theme .clock-banner {
-    filter: brightness(0.55) contrast(1.2) saturate(0.8);
-    opacity: 0.75;
-}
-
-/* Shorter banner for smaller world clock cards */
-.world-clock-card .clock-banner {
-    height: 120px;
-}
-
-/* Layered text positioning over banners */
-.clock-header {
-    position: relative;
-    z-index: 3; /* Positioned above all dark vignette & blending overlays */
-    text-align: center;
-    margin-bottom: 20px;
-    margin-top: 10px;
-}
-
-/* Ensure absolute contrast by utilizing white header typography in both themes */
-.clock-header .clock-label {
-    color: #ffffff !important;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
-}
-
-.clock-header .clock-sublabel {
-    color: rgba(255, 255, 255, 0.82) !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
-}
-
-/* MAIN CLOCK UNIT */
 .main-clock-section {
-    position: relative;
-    padding-top: 35px !important;
-    padding-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding-bottom: 28px;
 }
 
-/* Premium Skeuomorphic Clock Frame */
-.clock-frame {
-    position: relative;
-    width: 320px;
-    height: 320px;
-    border-radius: 50%;
-    background: var(--clock-bezel);
-    /* Layered bezel shadow to simulate structural depth */
-    box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.12),
-                0 5px 15px -5px rgba(0, 0, 0, 0.05),
-                var(--shadow-outer);
-    padding: 18px; /* Bezel size */
-    margin-bottom: 25px;
-    transition: all 0.4s ease;
-    z-index: 2;
+.main-clock-section .clock-frame {
+  width: 300px;
+  height: 300px;
+  margin-top: 20px;
 }
 
-.clock-face {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background-color: var(--clock-face-bg);
-    box-shadow: var(--clock-face-shadow);
-    overflow: hidden;
+/* =====================================================
+   CLOCK BANNER (monument image strip)
+   ===================================================== */
+
+.clock-banner {
+  width: 100%;
+  height: 160px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  overflow: hidden;
 }
 
-/* Curved Sapphire Glass reflection */
-.clock-glass {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.02) 40%, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.01) 60%, rgba(255, 255, 255, 0.05) 100%);
-    z-index: 15;
-    pointer-events: none;
+.clock-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.30) 0%,
+    rgba(0, 0, 0, 0.0) 60%,
+    var(--bg-color) 100%
+  );
 }
 
-/* Clock Dial Tick Marks */
-.tick {
-    position: absolute;
-    width: 2px;
-    height: 100%;
-    left: calc(50% - 1px);
-    top: 0;
-    transform-origin: center center;
+/* When no image is supplied, show a colored gradient */
+.clock-banner:not([style*="url"]) {
+  background: var(--accent-grad);
 }
 
-.tick::before {
-    content: '';
-    position: absolute;
-    top: 8px;
-    left: 0;
-    width: 100%;
-    height: 8px;
-    background-color: var(--clock-tick);
-    border-radius: 1px;
-    transition: background-color 0.4s ease;
+/* =====================================================
+   CLOCK HEADER TEXT
+   ===================================================== */
+
+.clock-header {
+  padding: 16px 20px 4px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
-.tick.major::before {
-    height: 14px;
-    width: 4px;
-    left: -1px;
-    top: 6px;
-    background-color: var(--clock-tick-major);
-}
-
-/* Beautiful Hands Styling */
-.hand {
-    position: absolute;
-    transform-origin: bottom center;
-    will-change: transform;
-}
-
-/* Hour hand - Sword/Tapered design */
-.hand.hour {
-    bottom: 50%;
-    left: calc(50% - 5px);
-    width: 10px;
-    height: 25%;
-    background-color: var(--hand-hour);
-    border-radius: 6px 6px 2px 2px;
-    clip-path: polygon(50% 0%, 100% 12%, 80% 100%, 20% 100%, 0% 12%);
-    /* Use drop-shadow filter to apply shadow to clipped shapes */
-    filter: drop-shadow(0 2px 4px var(--hand-shadow));
-    z-index: 10;
-    transition: background-color 0.4s ease;
-}
-
-/* Minute hand - Elegant longer sword */
-.hand.minute {
-    bottom: 50%;
-    left: calc(50% - 3.5px);
-    width: 7px;
-    height: 38%;
-    background-color: var(--hand-minute);
-    border-radius: 4px 4px 1.5px 1.5px;
-    clip-path: polygon(50% 0%, 100% 8%, 80% 100%, 20% 100%, 0% 8%);
-    filter: drop-shadow(0 3px 6px var(--hand-shadow));
-    z-index: 11;
-    transition: background-color 0.4s ease;
-}
-
-/* Second hand - Thin sweep with counterweight */
-.hand.second {
-    bottom: 35%; /* starts 15% below pivot */
-    left: calc(50% - 1px);
-    width: 2px;
-    height: 55%; /* total height */
-    background-color: var(--hand-second);
-    transform-origin: center 72.72%; /* (55% total, starts 15% below. 15/55 = 27.27% from bottom. origin 100-27.27 = 72.72%) */
-    z-index: 13;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
-}
-
-.hand.second::before {
-    content: '';
-    position: absolute;
-    bottom: 6px;
-    left: calc(50% - 4px);
-    width: 8px;
-    height: 8px;
-    background-color: var(--hand-second);
-    border-radius: 50%;
-}
-
-/* Metallic Center Cap Pin */
-.center-pin {
-    position: absolute;
-    top: calc(50% - 7px);
-    left: calc(50% - 7px);
-    width: 14px;
-    height: 14px;
-    background: var(--pin-cap-bg);
-    border: 1px solid var(--pin-cap-border);
-    border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    z-index: 14;
-    transition: background 0.4s ease, border-color 0.4s ease;
-}
-
-.center-pin::after {
-    content: '';
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 3.5px;
-    height: 3.5px;
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 50%;
-}
-
-/* Clock Labels & Digital readouts */
 .clock-label {
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: var(--text-primary);
-    margin-bottom: 4px;
-    letter-spacing: -0.03em;
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin: 0;
 }
 
 .clock-sublabel {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 3px 0 0;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
 }
 
+/* =====================================================
+   CLOCK FRAME (outer bezel)
+   ===================================================== */
+
+.clock-frame {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: var(--clock-ring);
+  padding: 14px;
+  box-shadow: var(--shadow-out),
+              0 0 0 1px var(--card-border);
+  margin: 16px auto;
+  position: relative;
+  flex-shrink: 0;
+  transition: box-shadow var(--dur) var(--ease);
+}
+
+.clock-frame:hover {
+  box-shadow: var(--shadow-lift),
+              0 0 0 2px var(--accent);
+}
+
+/* Clock face inner disc */
+.clock-face {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--clock-bg);
+  box-shadow: var(--shadow-in);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glass sheen */
+.clock-glass {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.18) 0%,
+    transparent 55%
+  );
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* =====================================================
+   TICK MARKS
+   ===================================================== */
+
+.tick {
+  position: absolute;
+  width: 2px;
+  height: 100%;
+  left: calc(50% - 1px);
+  top: 0;
+}
+
+.tick::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  width: 2px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--clock-tick);
+}
+
+.tick.major::before {
+  height: 14px;
+  width: 3px;
+  left: -0.5px;
+  background: var(--clock-tick-major);
+}
+
+/* =====================================================
+   CLOCK HANDS
+   ===================================================== */
+
+.hand {
+  position: absolute;
+  transform-origin: bottom center;
+  z-index: 12;
+  border-radius: 20px;
+}
+
+.hand.hour {
+  width: 8px;
+  height: 26%;
+  left: calc(50% - 4px);
+  bottom: 50%;
+  background: var(--hour-hand);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+.hand.minute {
+  width: 5px;
+  height: 37%;
+  left: calc(50% - 2.5px);
+  bottom: 50%;
+  background: var(--minute-hand);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.20);
+}
+
+.hand.second {
+  width: 2px;
+  height: 44%;
+  left: calc(50% - 1px);
+  bottom: 50%;
+  background: var(--second-hand);
+  border-radius: 2px;
+  z-index: 13;
+  box-shadow: 0 0 6px var(--second-hand);
+}
+
+/* Second hand tail counterweight */
+.hand.second::before {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--second-hand);
+  border-radius: 50%;
+  left: calc(50% - 4px);
+  bottom: -4px;
+  box-shadow: 0 0 8px var(--second-hand);
+}
+
+/* Center rivet pin */
+.center-pin {
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle at 35% 35%, #ffffff, var(--accent));
+  border-radius: 50%;
+  position: absolute;
+  top: calc(50% - 7px);
+  left: calc(50% - 7px);
+  z-index: 16;
+  box-shadow: 0 0 6px var(--accent-glow);
+}
+
+/* =====================================================
+   DIGITAL READOUT
+   ===================================================== */
+
 .digital-readout {
-    position: relative;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 1.6rem;
-    font-weight: 700;
-    background-color: var(--card-bg);
-    box-shadow: var(--shadow-inner);
-    border: 1px solid var(--card-border);
-    padding: 8px 20px;
-    border-radius: 12px;
-    color: var(--accent-color);
-    letter-spacing: -0.02em;
-    transition: all 0.4s ease;
-    z-index: 2;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 1.55rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  background: var(--card-bg);
+  border-radius: var(--radius-md);
+  padding: 10px 24px;
+  margin-top: 12px;
+  box-shadow: var(--shadow-in);
+  text-align: center;
+  position: relative;
+}
+
+/* Glowing underline accent */
+.digital-readout::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 20%; right: 20%;
+  height: 2px;
+  background: var(--accent-grad);
+  border-radius: 2px;
+  opacity: 0.6;
 }
 
 .clock-date {
-    position: relative;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    margin-top: 10px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    z-index: 2;
+  margin-top: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-align: center;
 }
 
-/* COUNTDOWN TIMER STYLING */
+/* =====================================================
+   TIMER SECTION
+   ===================================================== */
+
 .timer-section {
-    padding: 30px;
-    justify-content: flex-start;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
 .timer-section h2 {
-    font-size: 1.4rem;
-    font-weight: 700;
-    width: 100%;
-    text-align: left;
-    margin-bottom: 6px;
-    letter-spacing: -0.03em;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin: 0;
 }
 
 .timer-section .subtitle {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    font-weight: 500;
-    width: 100%;
-    text-align: left;
-    margin-bottom: 30px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-top: -10px;
 }
 
+/* Input row */
 .timer-inputs-wrapper {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    width: 100%;
-    margin-bottom: 25px;
+  display: flex;
+  gap: 10px;
 }
 
 .input-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
 }
 
 .input-group label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+  font-size: 0.70rem;
+  font-weight: 800;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
 }
 
 .timer-input {
-    width: 76px;
-    height: 60px;
-    border-radius: 16px;
-    border: 1px solid var(--card-border);
-    background-color: var(--input-bg);
-    box-shadow: var(--input-shadow);
-    color: var(--text-primary);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 1.5rem;
-    font-weight: 700;
-    text-align: center;
-    outline: none;
-    transition: all 0.3s ease;
+  width: 100%;
+  padding: 12px 8px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-align: center;
+  background: var(--card-bg);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-in);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease);
 }
 
 .timer-input:focus {
-    box-shadow: var(--input-shadow), 0 0 0 2px var(--accent-color);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow), var(--shadow-in);
 }
 
-/* Hide spin arrows */
-.timer-input::-webkit-outer-spin-button,
-.timer-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-.timer-input[type=number] {
-    -moz-appearance: textfield;
-}
-
+/* Countdown display */
 .timer-display-box {
-    width: 100%;
-    background-color: var(--card-bg);
-    box-shadow: var(--shadow-inner);
-    border: 1px solid var(--card-border);
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg,
+    rgba(99,102,241,0.08) 0%,
+    rgba(139,92,246,0.08) 100%
+  );
+  border: 1.5px solid rgba(99,102,241,0.18);
+  box-shadow: var(--shadow-in);
+  text-align: center;
+}
+
+body.dark-theme .timer-display-box {
+  background: linear-gradient(135deg,
+    rgba(129,140,248,0.10) 0%,
+    rgba(167,139,250,0.10) 100%
+  );
+  border-color: rgba(129,140,248,0.22);
 }
 
 #countdownDisplay {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    letter-spacing: 0.02em;
-    text-shadow: 0px 2px 4px rgba(0,0,0,0.02);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 2.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background: var(--accent-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-.btn:disabled::after { opacity: 0; }
 
+/* Button row */
 .timer-controls {
-    display: flex;
-    gap: 15px;
-    width: 100%;
+  display: flex;
+  gap: 10px;
+  width: 100%;
 }
+
+.timer-controls .btn {
+  flex: 1;
+}
+
+/* Timer-up alert */
+.timer-up-container {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1.5px solid rgba(239, 68, 68, 0.28);
+  border-radius: var(--radius-md);
+  color: var(--red);
+  font-weight: 700;
+  font-size: 0.88rem;
+  animation: pulseAlert 1s infinite ease-in-out alternate;
+}
+
+@keyframes pulseAlert {
+  from { opacity: 0.65; }
+  to   { opacity: 1.00; }
+}
+
+/* =====================================================
+   BUTTONS
+   ===================================================== */
 
 .btn {
-    flex: 1;
-    height: 52px;
-    border-radius: 16px;
-    border: none;
-    cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 700;
-    font-family: inherit;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 11px 18px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  border-radius: var(--radius-md) !important;
+  border: none;
+  cursor: pointer;
+  transition: transform var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease),
+              filter var(--dur) var(--ease);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.97);
 }
 
 .btn-primary {
-    background-color: var(--accent-color);
-    color: #ffffff;
-    box-shadow: 0 4px 14px var(--accent-glow);
+  background: var(--accent-grad);
+  color: #fff;
+  box-shadow: 0 4px 14px var(--accent-glow);
 }
 
 .btn-primary:hover {
-    background-color: var(--accent-color-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px var(--accent-glow);
-}
-
-.btn-primary:active {
-    transform: translateY(0);
+  box-shadow: 0 6px 20px var(--accent-glow);
+  filter: brightness(1.10);
+  color: #fff;
 }
 
 .btn-secondary {
-    background-color: var(--card-bg);
-    color: var(--text-primary);
-    box-shadow: var(--shadow-btn);
-    border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-out);
 }
 
 .btn-secondary:hover {
-    box-shadow: var(--shadow-btn-hover);
-    transform: translateY(-2px);
+  box-shadow: var(--shadow-lift);
+  color: var(--accent);
 }
 
-.btn-secondary:active {
-    box-shadow: var(--shadow-btn-active);
-    transform: translateY(0);
-}
+/* =====================================================
+   WORLD CLOCKS SECTION
+   ===================================================== */
 
-/* Pulsing red alarm state */
-.timer-up-container {
-    margin-top: 20px;
-    padding: 12px 24px;
-    border-radius: 12px;
-    background-color: rgba(239, 68, 68, 0.1);
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    color: #ef4444;
-    font-weight: 600;
-    display: none;
-    align-items: center;
-    gap: 8px;
-    animation: pulseAlarm 1.5s infinite;
-}
-
-@keyframes pulseAlarm {
-    0% { opacity: 0.7; }
-    50% { opacity: 1; transform: scale(1.02); }
-    100% { opacity: 0.7; }
-}
-
-/* WORLD CLOCKS SECTION */
 .world-clocks-section {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
-.world-clocks-section h2 {
-    font-size: 1.5rem;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    color: var(--text-primary);
+.world-clocks-section > h2 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: var(--accent-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
+/* World clock grid */
 .world-clocks-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 20px;
 }
 
-@media (max-width: 868px) {
-    .world-clocks-grid {
-        grid-template-columns: 1fr;
+/* World clock card — clean vertical layout, name above clock */
+.world-clock-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: 22px 20px 20px;
+  min-height: unset;
+  animation: cardInsert 0.4s var(--spring);
+}
+
+@keyframes cardInsert {
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Name + sublabel sit fully above the clock */
+.world-clock-card .clock-header {
+  text-align: center;
+  padding: 0 0 12px;
+  width: 100%;
+}
+
+.world-clock-card .clock-label {
+  font-size: 1.05rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Clock face is centred, sized to fill the card nicely */
+.world-clock-card .clock-frame {
+  width: 130px;
+  height: 130px;
+  padding: 10px;
+  flex-shrink: 0;
+  margin: 0 auto;
+}
+
+/* Digital time sits below the clock */
+.world-clock-card .digital-readout {
+  font-size: 1.05rem;
+  padding: 7px 18px;
+  margin-top: 12px;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  width: 100%;
+}
+
+.world-clock-card .clock-date {
+  font-size: 0.72rem;
+  margin-top: 6px;
+  text-align: center;
+}
+
+/* Hide banners on world-clock cards */
+.world-clock-card .clock-banner {
+  display: none;
+}
+
+/* Remove button */
+.remove-clock-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  cursor: pointer;
+  color: var(--text-muted);
+  z-index: 10;
+  box-shadow: var(--shadow-out);
+  transition: all 0.28s var(--spring);
+}
+
+.remove-clock-btn:hover {
+  background: var(--red);
+  color: #fff;
+  border-color: var(--red);
+  box-shadow: 0 4px 12px rgba(239,68,68,0.35);
+  transform: scale(1.12) rotate(90deg);
+}
+
+.remove-clock-btn:active {
+  transform: scale(0.92);
+}
+
+/* Card pin flash */
+@keyframes cardHighlightPulse {
+  0%   { box-shadow: var(--shadow-out); transform: scale(1); }
+  35%  { box-shadow: 0 0 36px var(--accent-glow); transform: scale(1.04); }
+  100% { box-shadow: var(--shadow-out); transform: scale(1); }
+}
+
+.card-highlight-active {
+  animation: cardHighlightPulse 1.8s var(--spring) !important;
+  z-index: 20 !important;
+}
+
+/* =====================================================
+   TIMEZONE MAP SECTION
+   ===================================================== */
+
+.timezone-map-section {
+  width: 100%;
+  padding: 28px 32px 32px;
+}
+
+.map-header {
+  margin-bottom: 20px;
+}
+
+.map-header h2 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: var(--accent-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 4px;
+}
+
+.map-header .subtitle {
+  font-size: 0.80rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.map-container {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(135deg,
+    rgba(99,102,241,0.04) 0%,
+    rgba(6,182,212,0.04) 100%
+  );
+  border-radius: var(--radius-lg);
+  border: 1.5px solid rgba(99,102,241,0.12);
+  padding: 14px;
+  overflow: visible;
+  box-shadow: var(--shadow-in);
+}
+
+body.dark-theme .map-container {
+  background: linear-gradient(135deg,
+    rgba(129,140,248,0.06) 0%,
+    rgba(34,211,238,0.05) 100%
+  );
+  border-color: rgba(129,140,248,0.16);
+}
+
+.map-scroll-container {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
+}
+
+.map-scroll-container::-webkit-scrollbar { height: 5px; }
+.map-scroll-container::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 10px;
+}
+
+#timezone-map-wrapper {
+  position: relative;
+  width: 100%;
+  min-width: 784px;
+  margin: 0 auto;
+}
+
+#world-map {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+  background: radial-gradient(ellipse at center, #f0f4ff 0%, #e2e8f0 100%);
+  transition: background 0.4s var(--ease);
+}
+
+body.dark-theme #world-map {
+  background: radial-gradient(ellipse at center, #0c1230 0%, #030a1a 100%);
+}
+
+#world-map path {
+  fill: #e8edf5;
+  stroke: #c7d2e0;
+  stroke-width: 0.5px;
+  transition: fill 0.3s var(--ease), stroke 0.3s var(--ease);
+}
+
+body.dark-theme #world-map path {
+  fill: #111c38;
+  stroke: #1e2f52;
+}
+
+#world-map path:hover {
+  fill: rgba(99, 102, 241, 0.16) !important;
+  stroke: var(--accent) !important;
+}
+
+.map-grid-line {
+  stroke: rgba(99, 102, 241, 0.09);
+  stroke-width: 0.8px;
+  stroke-dasharray: 4 4;
+}
+
+body.dark-theme .map-grid-line {
+  stroke: rgba(129, 140, 248, 0.18);
+}
+
+.timezone-sector {
+  fill: transparent;
+  cursor: pointer;
+  transition: fill 0.25s var(--ease);
+}
+
+.timezone-sector:hover        { fill: rgba(99,102,241,0.07); }
+.timezone-sector.active-sector { fill: rgba(99,102,241,0.10); }
+
+body.dark-theme .timezone-sector:hover         { fill: rgba(129,140,248,0.12); }
+body.dark-theme .timezone-sector.active-sector { fill: rgba(129,140,248,0.18); }
+
+/* City markers */
+.city-marker { cursor: pointer; }
+
+.city-marker .pulse-ring {
+  fill: var(--accent);
+  opacity: 0;
+  animation: pulseMarker 2.2s infinite ease-out;
+}
+
+.city-marker .center-dot {
+  fill: var(--second-hand);
+  stroke: #fff;
+  stroke-width: 1.5px;
+  transition: fill 0.25s var(--ease);
+}
+
+body.dark-theme .city-marker .center-dot { stroke: #06091a; }
+.city-marker:hover .center-dot { fill: var(--accent); }
+
+@keyframes pulseMarker {
+  0%   { r: 3px; opacity: 0.85; }
+  100% { r: 15px; opacity: 0; }
+}
+
+/* Pinned markers */
+.city-marker.pinned-marker .center-dot { fill: var(--green) !important; }
+.city-marker.pinned-marker .pulse-ring { fill: var(--green) !important; }
+
+body.dark-theme .city-marker.pinned-marker .center-dot { fill: var(--accent-3) !important; }
+body.dark-theme .city-marker.pinned-marker .pulse-ring { fill: var(--accent-3) !important; }
+
+/* =====================================================
+   MAP TOOLTIP
+   ===================================================== */
+
+.map-tooltip {
+  position: absolute;
+  z-index: 100;
+  width: 248px;
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.65);
+  box-shadow: 0 12px 40px rgba(17,24,39,0.14), 0 2px 6px rgba(17,24,39,0.06);
+  color: var(--text-primary);
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: tooltipIn 0.25s var(--spring);
+}
+
+body.dark-theme .map-tooltip {
+  background: rgba(10,15,40,0.88);
+  border-color: rgba(129,140,248,0.18);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.45);
+}
+
+@keyframes tooltipIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.tooltip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.tooltip-header h4 {
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.tooltip-offset {
+  font-size: 0.70rem;
+  font-weight: 800;
+  background: var(--accent-grad);
+  color: #fff;
+  padding: 2px 9px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.tooltip-tz-id {
+  font-size: 0.70rem;
+  color: var(--text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.tooltip-time-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  margin-bottom: 2px;
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+}
+
+body.dark-theme .tooltip-time-row {
+  border-bottom-color: rgba(255,255,255,0.07);
+}
+
+.tooltip-time {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 1.45rem;
+  font-weight: 700;
+  background: var(--accent-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.tooltip-date {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.tooltip-btn {
+  height: 36px !important;
+  font-size: 0.82rem !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+.tooltip-btn.tooltip-remove-btn {
+  background: rgba(239,68,68,0.09) !important;
+  border: 1.5px solid rgba(239,68,68,0.22) !important;
+  color: var(--red) !important;
+  box-shadow: none !important;
+}
+
+.tooltip-btn.tooltip-remove-btn:hover {
+  background: var(--red) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px rgba(239,68,68,0.30) !important;
+}
+
+/* =====================================================
+   LAP / ALARM LIST ITEMS
+   ===================================================== */
+
+.lap-container {
+  max-height: 130px;
+  overflow: auto;
+}
+
+.list-group-item {
+  background: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+  border: none !important;
+  margin-bottom: 8px;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-in);
+  padding: 10px 14px;
+  font-size: 0.875rem;
+}
+
+/* =====================================================
+   FORM INPUTS (Bootstrap overrides)
+   ===================================================== */
+
+.form-control,
+.form-select {
+  background: var(--card-bg) !important;
+  border: 1.5px solid transparent !important;
+  color: var(--text-primary) !important;
+  border-radius: var(--radius-md) !important;
+  min-height: 48px;
+  box-shadow: var(--shadow-in) !important;
+  padding-left: 14px;
+  transition: border-color var(--dur) var(--ease) !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px var(--accent-glow), var(--shadow-in) !important;
+}
+
+/* =====================================================
+   SCROLLBAR
+   ===================================================== */
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--accent), var(--accent-2));
+  border-radius: 20px;
+}
+
+/* =====================================================
+   FOCUS MODE
+   ===================================================== */
+
+body.focus-mode .world-clocks-section,
+body.focus-mode .alarm-section,
+body.focus-mode .stopwatch-section,
+body.focus-mode .timezone-map-section {
+  display: none;
+}
+
+body.focus-mode .main-dashboard {
+  grid-template-columns: 1fr;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* =====================================================
+   MODAL
+   ===================================================== */
+
+.modal-content {
+  border-radius: var(--radius-xl) !important;
+  border: 1px solid var(--card-border) !important;
+  background: var(--card-bg) !important;
+  backdrop-filter: blur(24px) !important;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.25) !important;
+}
+
+.large-clock {
+  width: 440px !important;
+  height: 440px !important;
+}
+
+/* =====================================================
+   STOPWATCH & STOPWATCH DISPLAY
+   ===================================================== */
+
+.stopwatch-display h1,
+#stopwatchDisplay {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 2rem;
+  font-weight: 700;
+  background: var(--accent-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* =====================================================
+   RESPONSIVE BREAKPOINTS
+   ===================================================== */
+
+@media (max-width: 1100px) {
+  .main-clock-section .clock-frame {
+    width: 260px;
+    height: 260px;
+  }
+}
+
+@media (max-width: 900px) {
+  .main-dashboard {
+    grid-template-columns: 1fr;
+  }
+  .app-container {
+    padding: 16px 16px 56px;
+    gap: 20px;
+  }
+  .main-clock-section .clock-frame {
+    width: 240px;
+    height: 240px;
+  }
+  .large-clock {
+    width: 340px !important;
+    height: 340px !important;
+  }
+}
+
+
+@media (max-width: 640px) {
+  header {
+    padding: 14px 18px;
+  }
+  .brand-section h1 { font-size: 1.5rem; }
+  .main-clock-section .clock-frame {
+    width: 210px;
+    height: 210px;
+  }
+  .world-clock-card .clock-frame {
+    width: 110px;
+    height: 110px;
+  }
+  #countdownDisplay { font-size: 2.1rem; }
+  .world-clocks-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+.tooltip-time-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-top: 4px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    padding-bottom: 8px;
+}
+
+body.dark-theme .tooltip-time-row {
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.tooltip-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.tooltip-date {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.tooltip-btn {
+    height: 38px !important;
+    font-size: 0.85rem !important;
+    border-radius: 10px !important;
+}
+
+/* Close/Unpin button for World Clock Cards */
+.world-clock-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+    padding: 20px 24px;
+}
+
+.world-clock-card .clock-header {
+    text-align: left;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.world-clock-card .clock-frame {
+    flex-shrink: 0;
+}
+
+.world-clock-card .digital-readout,
+.world-clock-card .clock-date {
+    text-align: left;
+    align-self: flex-start;
+}
+
+.remove-clock-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    cursor: pointer;
+    color: var(--text-secondary);
+    z-index: 10;
+    box-shadow: var(--shadow-btn);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.remove-clock-btn:hover {
+    background-color: #ef4444;
+    color: #ffffff;
+    border-color: #ef4444;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+    transform: scale(1.1) rotate(90deg);
+}
+
+.remove-clock-btn:active {
+    transform: scale(0.9);
+}
+
+/* Animations for card insertion and deletion */
+@keyframes cardInsert {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
     }
 }
 
 .world-clock-card {
-    padding-top: 25px !important;
-    padding-bottom: 24px;
+    animation: cardInsert 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.world-clock-card .clock-frame {
-    width: 160px;
-    height: 160px;
-    padding: 10px;
-    margin-bottom: 15px;
-    /* Scaled suspension shadow for smaller location clocks */
-    box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.12),
-                0 3px 8px -4px rgba(0, 0, 0, 0.05),
-                var(--shadow-outer);
+/* Pinned City Map Pinpoint Glowing state */
+.city-marker.pinned-marker .center-dot {
+    fill: #10b981 !important; /* Emerald green in light theme */
 }
 
-.world-clock-card .tick::before {
-    top: 4px;
-    height: 5px;
+body.dark-theme .city-marker.pinned-marker .center-dot {
+    fill: #06b6d4 !important; /* Electric cyan in dark theme */
 }
 
-.world-clock-card .tick.major::before {
-    height: 9px;
-    top: 3px;
+.city-marker.pinned-marker .pulse-ring {
+    fill: #10b981 !important;
 }
 
-/* Scale world clocks hands appropriately */
-.world-clock-card .hand.hour {
-    width: 5px;
-    left: calc(50% - 2.5px);
+body.dark-theme .city-marker.pinned-marker .pulse-ring {
+    fill: #06b6d4 !important;
 }
 
-.world-clock-card .hand.minute {
-    width: 3.5px;
-    left: calc(50% - 1.75px);
+/* Beautiful dynamic card pinning elastic highlight pulse */
+@keyframes cardHighlightPulse {
+    0% {
+        box-shadow: var(--shadow-outer);
+        border-color: var(--card-border);
+        transform: scale(1);
+    }
+    30% {
+        box-shadow: 0 0 35px var(--accent-glow);
+        border-color: var(--accent-color);
+        transform: scale(1.06);
+    }
+    100% {
+        box-shadow: var(--shadow-outer);
+        border-color: var(--card-border);
+        transform: scale(1);
+    }
 }
 
-.world-clock-card .hand.second {
-    width: 1px;
+.card-highlight-active {
+    animation: cardHighlightPulse 2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    z-index: 20 !important;
 }
 
-.world-clock-card .hand.second::before {
-    width: 5px;
-    height: 5px;
-    left: calc(50% - 2.5px);
-    bottom: 4px;
+/* Toggleable Tooltip Remove state styling */
+.tooltip-btn.tooltip-remove-btn {
+    background-color: rgba(239, 68, 68, 0.1) !important;
+    border: 1px solid rgba(239, 68, 68, 0.2) !important;
+    color: #ef4444 !important;
+    box-shadow: none !important;
 }
 
-.world-clock-card .center-pin {
-    width: 10px;
-    height: 10px;
-    top: calc(50% - 5px);
-    left: calc(50% - 5px);
+.tooltip-btn.tooltip-remove-btn:hover {
+    background-color: #ef4444 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3) !important;
+    transform: translateY(-2px);
 }
 
-.world-clock-card .center-pin::after {
-    width: 2px;
-    height: 2px;
+/* ============================================================
+  CHRONOS+ THEME TOGGLE BUTTON MATCHING FOCUS-MODE STYLE
+   ============================================================ */
+
+/* Match the Focus Mode button styling exactly */
+.theme-toggle-btn {
+  border-radius: 12px !important;
+  padding: 10px 20px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  transition: var(--transition) !important;
+  background: var(--accent-color) !important;
+  border: none !important;
+  color: white !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  min-width: 140px !important;
+  height: 44px !important;
+  cursor: pointer;
+  position: relative;
 }
 
-.world-clock-card .clock-label {
-    font-size: 1.15rem;
+.theme-toggle-btn:hover {
+  background: var(--accent-hover) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3) !important;
 }
 
-.world-clock-card .clock-sublabel {
-    font-size: 0.75rem;
-    margin-bottom: 8px;
+.theme-toggle-btn:active {
+  transform: translateY(0) !important;
 }
 
-.world-clock-card .digital-readout {
-    font-size: 1.15rem;
-    padding: 6px 14px;
-    border-radius: 8px;
+.theme-toggle-btn:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* Theme Toggle Content Container */
+.theme-toggle-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 100%;
+}
+
+/* Theme Icon SVG */
+.theme-icon {
+  width: 18px;
+  height: 18px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: themeIconFadeIn 0.3s ease-out forwards;
+  flex-shrink: 0;
+}
+
+@keyframes themeIconFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7) rotate(-20deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* Auto Mode Label */
+.mode-label {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  animation: autoLabelPulse 2s ease-in-out infinite;
+}
+
+@keyframes autoLabelPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Dark Theme Adjustments */
+body.dark-theme .theme-toggle-btn {
+  background: var(--accent-color) !important;
+}
+
+body.dark-theme .theme-toggle-btn:hover {
+  background: var(--accent-hover) !important;
+}
+
+/* Header Actions Container */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .theme-toggle-btn {
+    padding: 8px 16px !important;
+    font-size: 12px !important;
+    min-width: 120px !important;
+    height: 40px !important;
+  }
+
+  .theme-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .mode-label {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .theme-toggle-btn {
+    padding: 8px 12px !important;
+    font-size: 11px !important;
+    min-width: 100px !important;
+    height: 38px !important;
+  }
+
+  .theme-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .mode-label {
+    font-size: 10px;
+  }
+}
+
+/* =====================================================
+  FOCUS MODE - PURE CSS IMMERSIVE LAYOUT
+   ===================================================== */
+
+/* 1. Lock the screen viewport and hide the default header/scrollbars */
+body.focus-mode {
+  overflow: hidden !important;
+  height: 100vh !important;
+  width: 100vw !important;
+}
+
+body.focus-mode header {
+  display: none !important;
+}
+
+/* 2. Hide all distracting lower sections */
+body.focus-mode .timezone-map-section,
+body.focus-mode .world-clocks-section,
+body.focus-mode .clock-banner,
+body.focus-mode .clock-header p {
+  display: none !important;
+}
+
+/* 3. Transform the 2-column grid into a perfectly centered vertical column */
+body.focus-mode .main-dashboard {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 30px !important;
+  
+  /* Fill the entire screen so it behaves like a brand-new page */
+  min-height: 100vh !important;
+  max-width: 550px !important;
+  margin: 0 auto !important;
+  padding: 20px !important;
+}
+
+/* 4. Force individual cards to stack uniformly without stretching */
+body.focus-mode .main-clock-section,
+body.focus-mode .timer-section {
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+/* 5. Reposition the Focus Mode button dynamically so it serves as the Exit button */
+body.focus-mode #focusModeBtn {
+  position: fixed !important;
+  top: 25px !important;
+  right: 25px !important;
+  z-index: 10000 !important;
+  
+  /* Optional visual styling to make it look like a sleek floating badge */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
 }

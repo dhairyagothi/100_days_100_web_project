@@ -260,7 +260,7 @@ promptInput.addEventListener('input', () => {
 promptInput.addEventListener('keydown', e => {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
-    if (!sendBtn.disabled) handleSend();
+    processOutgoingMessage();
   }
 });
 
@@ -303,12 +303,23 @@ function handleSend() {
   promptInput.style.height = 'auto';
   clearImage();
   sendBtn.disabled = true;
-
-  getAIResponse();
+  clearAttachmentPreview();
+  
+  // Execute LLM parsing pipeline connection
+  fetchGeminiResponse(text, activeFileForAI);
 }
 
-async function getAIResponse() {
-  const typingRow = showTyping();
+// ----------------------------------------------------
+// GEMINI API INTEGRATION WITH MULTIMODAL CAPABILITY
+// ----------------------------------------------------
+async function fetchGeminiResponse(userPrompt, fileAttachment) {
+  const savedKey = localStorage.getItem('gemini_api_key');
+  if (!savedKey) {
+    appendMessageBubble("Missing API Key! Click 'Change API Key' in the sidebar to configure it.", "ai", "System Error", null);
+    return;
+  }
+
+  showTypingIndicator();
 
   try {
     const response = await fetch(`${API_URL}?key=${geminiApiKey}`, {
@@ -363,21 +374,9 @@ function renderMessage(role, text, image, save) {
     row.innerHTML = `
       <div class="ai-sender">
         <div class="ai-dot">
-          <svg width="10" height="10" viewBox="0 0 24 24">
-            <path d="M12 2L2 7l10 5 10-5-10-5z" fill="white"/>
-          </svg>
+          <svg width="12" height="12" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>
         </div>
-        Gemini
-      </div>
-      <div class="bubble"></div>
-      <div class="msg-actions">
-        <button class="msg-action-btn copy-response-btn">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="9" y="9" width="13" height="13" rx="2"/>
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-          </svg>
-          Copy
-        </button>
+        <span>${senderName}</span>
       </div>`;
 
     const bubble = row.querySelector('.bubble');
@@ -443,17 +442,12 @@ function showTyping() {
   const row = document.createElement('div');
   row.className = 'typing-row';
   row.innerHTML = `
-    <div class="ai-sender">
-      <div class="ai-dot">
-        <svg width="10" height="10" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z" fill="white"/></svg>
-      </div>
-      Gemini
-    </div>
     <div class="typing-bubble">
       <div class="typing-dot"></div>
       <div class="typing-dot"></div>
       <div class="typing-dot"></div>
-    </div>`;
+    </div>
+  `;
   messagesInner.appendChild(row);
   scrollToBottom();
   return row;
