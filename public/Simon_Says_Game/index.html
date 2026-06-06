@@ -10,18 +10,33 @@
 <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
 
-  <div class="theme-toggle-wrapper">
+<div class="theme-toggle-wrapper">
   <label class="theme-switch">
     <input type="checkbox" id="theme-toggle" />
     <span class="theme-icon">🌙</span>
   </label>
 </div>
-
-  <h1>🎮 Simon Says!</h1>
-  <h2>Press Start to play 🙌</h2>
-  <h3 id="highscore">🏆 High Score: 0</h3>
-
-  <div class="controls">
+<div class="screen">
+  <div class="heading">
+    <h1>🎮 Simon Says!</h1> 
+  </div>
+  <div class="instructions">
+    <h2>INSTRUCTIONS</h3>
+    <ul>
+      <li>Watch the color sequence.</li>
+      <li>Repeat it in the same order.</li> 
+      <li>Each round adds a new color.</li>
+      <li>Wrong sequence = mistake.</li>
+      <li>Strict Mode: One mistake = Game Over.</li>
+      <li>Beat your high score!</li>
+    </ul>
+  </div>
+  <button class="controls" id="play-btn">Play Game</button>
+</div>
+<div class="screen">
+<h2>Press Start to play 🙌</h2>
+<h3 id="highscore">🏆 High Score: 0</h3>
+<div class="controls">
 
   <button id="start-btn">▶ Start Game</button>
   <button id="pause-btn">⏸ Pause Game</button>
@@ -34,8 +49,8 @@
       <span class="slider"></span>
     </label>
   </div>
-
 </div>
+
 
   <div class="btn-container">
     <div class="line-one">
@@ -47,6 +62,7 @@
       <div class="btn purple" id="purple"></div>
     </div>
   </div>
+</div>  
 <script src="script.js"></script>
 </body>
 </html>
