@@ -1119,22 +1119,27 @@ body.dark-theme .map-tooltip {
 }
 
 .tooltip-offset {
-  font-size: 0.70rem;
-  font-weight: 800;
-  background: var(--accent-grad);
-  color: #fff;
-  padding: 2px 9px;
-  border-radius: 20px;
-  white-space: nowrap;
-  flex-shrink: 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background-color: var(--accent-color);
+    color: #ffffff;
+    padding: 2px 8px;
+    border-radius: 20px;
+    box-shadow: 0 2px 6px var(--accent-glow);
 }
 
+.world-clocks-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+
 .tooltip-tz-id {
-  font-size: 0.70rem;
-  color: var(--text-muted);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+
 }
 
 .tooltip-time-row {
@@ -1333,4 +1338,204 @@ body.focus-mode .main-dashboard {
   .world-clocks-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+/* ============================================================
+  CHRONOS+ THEME TOGGLE BUTTON MATCHING FOCUS-MODE STYLE
+   ============================================================ */
+
+/* Match the Focus Mode button styling exactly */
+.theme-toggle-btn {
+  border-radius: 12px !important;
+  padding: 10px 20px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  transition: var(--transition) !important;
+  background: var(--accent-color) !important;
+  border: none !important;
+  color: white !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  min-width: 140px !important;
+  height: 44px !important;
+  cursor: pointer;
+  position: relative;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--accent-hover) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3) !important;
+}
+
+.theme-toggle-btn:active {
+  transform: translateY(0) !important;
+}
+
+.theme-toggle-btn:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* Theme Toggle Content Container */
+.theme-toggle-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 100%;
+}
+
+/* Theme Icon SVG */
+.theme-icon {
+  width: 18px;
+  height: 18px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: themeIconFadeIn 0.3s ease-out forwards;
+  flex-shrink: 0;
+}
+
+@keyframes themeIconFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7) rotate(-20deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* Auto Mode Label */
+.mode-label {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  animation: autoLabelPulse 2s ease-in-out infinite;
+}
+
+@keyframes autoLabelPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Dark Theme Adjustments */
+body.dark-theme .theme-toggle-btn {
+  background: var(--accent-color) !important;
+}
+
+body.dark-theme .theme-toggle-btn:hover {
+  background: var(--accent-hover) !important;
+}
+
+/* Header Actions Container */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .theme-toggle-btn {
+    padding: 8px 16px !important;
+    font-size: 12px !important;
+    min-width: 120px !important;
+    height: 40px !important;
+  }
+
+  .theme-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .mode-label {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .theme-toggle-btn {
+    padding: 8px 12px !important;
+    font-size: 11px !important;
+    min-width: 100px !important;
+    height: 38px !important;
+  }
+
+  .theme-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .mode-label {
+    font-size: 10px;
+  }
+}
+
+/* =====================================================
+  FOCUS MODE - PURE CSS IMMERSIVE LAYOUT
+   ===================================================== */
+
+/* 1. Lock the screen viewport and hide the default header/scrollbars */
+body.focus-mode {
+  overflow: hidden !important;
+  height: 100vh !important;
+  width: 100vw !important;
+}
+
+body.focus-mode header {
+  display: none !important;
+}
+
+/* 2. Hide all distracting lower sections */
+body.focus-mode .timezone-map-section,
+body.focus-mode .world-clocks-section,
+body.focus-mode .clock-banner,
+body.focus-mode .clock-header p {
+  display: none !important;
+}
+
+/* 3. Transform the 2-column grid into a perfectly centered vertical column */
+body.focus-mode .main-dashboard {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 30px !important;
+  
+  /* Fill the entire screen so it behaves like a brand-new page */
+  min-height: 100vh !important;
+  max-width: 550px !important;
+  margin: 0 auto !important;
+  padding: 20px !important;
+}
+
+/* 4. Force individual cards to stack uniformly without stretching */
+body.focus-mode .main-clock-section,
+body.focus-mode .timer-section {
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+/* 5. Reposition the Focus Mode button dynamically so it serves as the Exit button */
+body.focus-mode #focusModeBtn {
+  position: fixed !important;
+  top: 25px !important;
+  right: 25px !important;
+  z-index: 10000 !important;
+  
+  /* Optional visual styling to make it look like a sleek floating badge */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
 }

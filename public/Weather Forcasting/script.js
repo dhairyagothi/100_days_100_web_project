@@ -588,15 +588,35 @@ async function loadCityWeather(city) {
       weatherData.current.weather_code
     );
 
+let location;
+      try {
+        location = await geocodeCity(city);
+      } catch (_geoErr) {
+        setRowMessage(row, '—');
+        return;
+      }
+      if (!location) {
+        setRowMessage(row, '—');
+        return;
+      }
+      let weatherData;
+      try {
+        weatherData = await fetchWeather(location.latitude, location.longitude);
+      } catch (_fetchErr) {
+        setRowMessage(row, '—');
+        return;
+      }
+      renderRowWeather(row, weatherData, cachedHeaders);
+    })
+  );
+}
+
     lastForecastData = weatherData;
-
     renderChart(weatherData);
-
     setStatus(
       `Showing weather for ${label}`,
       "success"
     );
-
   } catch (error) {
     if (requestId !== activeWeatherRequestId) {
       return;

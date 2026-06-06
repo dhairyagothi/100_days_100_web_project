@@ -1896,11 +1896,51 @@
   },
   {
     "projectNo": 208,
-    "projectName": "Rock_Paper_Scissors",
+    "projectName": "crossword puzzle game",
     "projectType": "Game",
-    "projectDesc": "A classic Rock Paper Scissors game built with HTML, CSS, and JavaScript.",
+    "projectDesc": "A classic crossword puzzle game built with HTML, CSS, and JavaScript.",
     "techStack": ["ui","game","html","css","js"],
     "difficulty": "intermediate",
-    "projectPath": "./public/Rock_Paper_Scissors/index.html"
-  }
+    "projectPath": "./public/CrosswordPuzzleGame/index.html"
+  },
+  {
+  "projectNo": 209,
+  "projectName": "Kanban Board",
+  "projectPath": "./public/Kanban_Board/index.html",
+  "techStack": ["html", "css", "javascript"],
+  "difficulty": "intermediate",
+  "projectDesc": "A responsive Kanban Board application featuring drag-and-drop task management, task creation, editing, deletion, local storage persistence, and dark/light theme support."
+},
+{
+  "projectNo": 210,
+  "projectName": "IP Address Tracker",
+  "projectPath": "./public/Ip_Address_tracker/index.html",
+  "techStack": ["html", "css", "javascript"],
+  "difficulty": "intermediate",
+  "projectDesc": "A responsive IP Address Tracker application that allows users to search IP addresses, view location details, ISP information, timezone data, and visualize the location on an interactive map using Leaflet.js and IPAPI."
+},
+{
+    "projectNo": 211,
+    "projectName": "Cricket Scorecard",
+    "projectPath": "./public/Cricket-Scorecard/index.html",
+    "techStack": ["html", "css", "javascript"],
+    "difficulty": "advanced",
+    "projectDesc": "A tool to view the schedule of upcoming matches and watch live scorecard."
+  },
+  {
+    "projectNo": 212,
+    "projectName": "Tower Blocks Stacker",
+    "projectPath": "./public/tower_stacker/index.html",
+    "techStack": ["html", "css", "javascript", "canvas"],
+    "difficulty": "advanced",
+    "projectDesc": "A responsive physics-inspired arcade game challenging users to stack moving horizontal blocks cleanly. Implements strict boundary checking, block-slicing logic, dynamic camera tracking, and interactive start/pause state controls."
+  },
+  {
+  "projectNo": 213,
+  "projectName": "Photo Studio",
+  "projectPath": "./public/Photo Studio/Project.html",
+  "techStack": ["html", "css"],
+  "difficulty": "intermediate",
+  "projectDesc": "A responsive photography portfolio and gallery website designed to showcase visual content through structured layouts, image presentation sections, and modern styling. Features an engaging user interface optimized for desktop and mobile viewing."
+}
 ]

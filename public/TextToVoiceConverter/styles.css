@@ -1,258 +1,299 @@
+/* =========================
+   RESET
+========================= */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
 }
 
+/* =========================
+   BACKGROUND (ENHANCED PREMIUM GLOW)
+========================= */
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-    min-height: 100vh;
-    padding: 30px;
+  min-height: 100vh;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  overflow-x: hidden;
+  transition: 0.4s ease;
+
+  position: relative;
 }
 
+/* DARK MODE */
+body.dark {
+  background: linear-gradient(135deg, #0b0f19, #111827, #0f172a);
+}
+
+/* SOFT ANIMATED ORBS (IMPROVED) */
+body::before,
+body::after {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.35;
+  z-index: -1;
+  animation: floatGlow 10s ease-in-out infinite alternate;
+}
+
+body::before {
+  background: radial-gradient(circle, rgba(0,255,255,0.35), transparent 70%);
+  top: 5%;
+  left: 5%;
+}
+
+body::after {
+  background: radial-gradient(circle, rgba(255,0,150,0.25), transparent 70%);
+  bottom: 5%;
+  right: 5%;
+  animation-delay: 2s;
+}
+
+@keyframes floatGlow {
+  0% { transform: translateY(0px) scale(1); }
+  100% { transform: translateY(20px) scale(1.05); }
+}
+
+/* =========================
+   BACK BUTTON (IMPROVED)
+========================= */
 .back-btn {
-    display: inline-block;
-    margin-bottom: 30px;
-    padding: 10px 18px;
-    background: white;
-    color: #1e3c72;
-    text-decoration: none;
-    border-radius: 10px;
-    font-weight: bold;
+  align-self: flex-start;
+  margin-bottom: 20px;
+
+  padding: 10px 16px;
+  border-radius: 12px;
+
+  text-decoration: none;
+  color: #ffffff;
+
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
+  transition: 0.3s ease;
 }
 
+.back-btn:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* =========================
+   THEME BUTTON (ENHANCED)
+========================= */
+.theme-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+
+  border: 1px solid rgba(255,255,255,0.2);
+  cursor: pointer;
+
+  font-size: 20px;
+
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+
+  color: white;
+
+  transition: 0.3s ease;
+}
+
+.theme-btn:hover {
+  transform: scale(1.12) rotate(8deg);
+}
+
+/* =========================
+   MAIN WRAPPER
+========================= */
 .wrapper {
-    display: flex;
-    gap: 25px;
-    justify-content: center;
-    align-items: stretch;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  width: 100%;
+  max-width: 1200px;
 }
 
+/* =========================
+   GLASS CARDS (IMPROVED DEPTH)
+========================= */
 .container {
-    background: white;
-    width: 500px;
-    max-width: 100%;
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  width: 420px;
+  max-width: 100%;
+
+  padding: 26px;
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+
+  transition: all 0.35s ease;
 }
 
+.container:hover {
+  transform: translateY(-8px);
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+/* =========================
+   HEADINGS
+========================= */
 h1 {
-    text-align: center;
-    color: #1352c7;
-    margin-bottom: 25px;
+  text-align: center;
+  margin-bottom: 18px;
+
+  font-size: 20px;
+  color: #ffffff;
+  letter-spacing: 0.5px;
 }
 
+/* =========================
+   LABELS
+========================= */
 label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
+  display: block;
+  margin: 12px 0 6px;
+
+  font-weight: 600;
+  color: #e5e7eb;
 }
 
+/* =========================
+   INPUTS (FIX + POLISH)
+========================= */
 select,
 textarea {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    font-size: 16px;
+  width: 100%;
+  padding: 12px;
+
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  outline: none;
+
+  background: rgba(255, 255, 255, 0.92);
+  color: #111;
+
+  font-size: 14px;
+
+  transition: 0.2s ease;
+}
+
+/* IMPORTANT UX FIX */
+select:focus,
+textarea:focus {
+  border: 1px solid #00c6ff;
+  box-shadow: 0 0 0 3px rgba(0,198,255,0.25);
+}
+
+/* dropdown fix */
+select option {
+  background: #111827;
+  color: #fff;
 }
 
 textarea {
-    min-height: 180px;
-    resize: vertical;
+  min-height: 150px;
+  resize: none;
 }
 
+/* =========================
+   BUTTONS (MODERN FEEL)
+========================= */
 .btn-group {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  flex-wrap: wrap;
 }
 
 button {
-    flex: 1;
-    padding: 12px;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s;
-    color: white;
-    background: #2f8f9d;
+  flex: 1;
+  padding: 11px;
+
+  border: none;
+  border-radius: 12px;
+
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  color: white;
+
+  transition: 0.25s ease;
+
+  box-shadow: 0 8px 18px rgba(0, 114, 255, 0.25);
 }
 
 button:hover {
-    opacity: 0.9;
+  transform: translateY(-2px) scale(1.03);
+  filter: brightness(1.1);
 }
 
+/* STOP BUTTON */
 .stop-btn {
-    background: #e74c3c;
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
 }
 
+/* DISABLED */
 button:disabled {
-    background: #bdbdbd;
-    cursor: not-allowed;
+  background: #555;
+  cursor: not-allowed;
+  transform: none;
+  opacity: 0.6;
 }
 
-@media (max-width: 768px) {
-    .wrapper {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .container {
-        width: 100%;
-    }
-
-    .btn-group {
-        flex-direction: column;
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    font-family:Arial,sans-serif;
-    background:linear-gradient(
-        135deg,
-        #1e3c72,
-        #2a5298
-    );
-    min-height:100vh;
-    padding:30px;
-    transition:.3s;
-}
-
-body.dark{
-    background:linear-gradient(
-        135deg,
-        #111827,
-        #1f2937
-    );
-}
-
-.theme-btn{
-    position:fixed;
-    top:20px;
-    right:20px;
-    border:none;
-    width:50px;
-    height:50px;
-    border-radius:50%;
-    cursor:pointer;
-    font-size:20px;
-}
-
-.wrapper{
-    display:flex;
-    gap:25px;
-    justify-content:center;
-    align-items:stretch;
-    flex-wrap:wrap;
-}
-
-.container{
-    background:white;
-    width:500px;
-    max-width:100%;
-    padding:30px;
-    border-radius:16px;
-    box-shadow:
-    0 10px 25px rgba(0,0,0,.25);
-    transition:.3s;
-}
-
-.container:hover{
-    transform:translateY(-5px);
-}
-
-h1{
-    text-align:center;
-    color:#1352c7;
-    margin-bottom:25px;
-}
-
-label{
-    display:block;
-    margin-bottom:10px;
-    font-weight:bold;
-}
-
-select,
-textarea{
-    width:100%;
-    padding:12px;
-    margin-bottom:20px;
-    border:1px solid #ccc;
-    border-radius:10px;
-    font-size:16px;
-}
-
-textarea{
-    min-height:180px;
-    resize:vertical;
-}
-
-.btn-group{
-    display:flex;
-    gap:12px;
-    margin-bottom:20px;
-    flex-wrap:wrap;
-}
-
-button{
-    flex:1;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    font-size:15px;
-    cursor:pointer;
-    transition:.3s;
-    color:white;
-    background:#2f8f9d;
-}
-
-button:hover{
-    opacity:.9;
-}
-
-.stop-btn{
-    background:#e74c3c;
-}
-
-button:disabled{
-    background:#bdbdbd;
-    cursor:not-allowed;
-}
-
-#char-count{
-    margin-bottom:15px;
-    color:#666;
-}
-
+/* =========================
+   INFO TEXT
+========================= */
+#char-count,
 #speaking-status,
-#listening-status{
-    margin-top:10px;
-    font-weight:bold;
-    color:#1352c7;
+#listening-status {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #cbd5e1;
+  transition: 0.3s ease;
 }
 
-@media(max-width:768px){
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
 
-    .wrapper{
-        flex-direction:column;
-        align-items:center;
-    }
+  .container {
+    width: 100%;
+  }
 
-    .container{
-        width:100%;
-    }
-
-    .btn-group{
-        flex-direction:column;
-    }
+  .btn-group {
+    flex-direction: column;
+  }
 }

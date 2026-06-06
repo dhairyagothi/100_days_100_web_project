@@ -176,6 +176,7 @@ const generateCaptcha = () => {
         case 'image': {
             const { images, correct } = generateImageCaptcha();
             currentCaptcha = correct.name;
+            textInput.disabled=true
             textInput.placeholder = `Select the ${correct.name}`;
             captchaContainer.innerHTML = `
                 <p>Select the ${correct.name}</p>
@@ -258,6 +259,13 @@ const verifyCaptcha = () => {
       return;
   }
 
+  if (selectedType === "image" && !selectedImageAnswer) {
+      resultMessage.textContent = "Please select an image before submitting.";
+      resultMessage.classList.add('error');
+      resultMessage.classList.remove('success');
+      return;
+  }
+  
   const userInput = 
   selectedType == "image"
   ? selectedImageAnswer.toLowerCase()
