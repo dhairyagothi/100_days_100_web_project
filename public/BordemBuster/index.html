@@ -138,6 +138,49 @@
             { activity: "Build a DIY structural project out of scraps", type: "diy", participants: 1, cost: "cheap" }
         ];
 
+        if (fetchBtn) {
+            fetchBtn.addEventListener('click', () => {
+                fetchBtn.textContent = "Seeking...";
+                
+                setTimeout(() => {
+                    // Grab current UI inputs
+                    const targetCategory = document.getElementById('category').value;
+                    const targetParticipants = document.getElementById('participants').value;
+                    const targetBudget = document.getElementById('budget').value;
+
+                    // Filter based strictly on what's selected
+                    const filteredActivities = localActivities.filter(act => {
+                        if (targetCategory && act.type !== targetCategory) return false;
+                        if (targetParticipants && act.participants !== parseInt(targetParticipants)) return false;
+                        if (targetBudget && act.cost !== targetBudget) return false;
+                        return true;
+                    });
+
+                    // Render match or give a friendly alert
+                    if (filteredActivities.length > 0) {
+                        const randomIndex = Math.floor(Math.random() * filteredActivities.length);
+                        const choice = filteredActivities[randomIndex];
+
+                        if (activityName) activityName.textContent = choice.activity;
+                        
+                        const t = document.getElementById('pillType');
+                        const p = document.getElementById('pillPeeps');
+                        const c = document.getElementById('pillCost');
+                        
+                        if (t) t.textContent = `Type: ${choice.type}`;
+                        if (p) p.textContent = `Peeps: ${choice.participants}`;
+                        if (c) c.textContent = `Cost: ${choice.cost.charAt(0).toUpperCase() + choice.cost.slice(1)}`;
+                    } else {
+                        if (activityName) activityName.textContent = "No activities found matching those filters! Try changing your values.";
+                        document.getElementById('pillType').textContent = "Type: None";
+                        document.getElementById('pillPeeps').textContent = "Peeps: -";
+                        document.getElementById('pillCost').textContent = "Cost: -";
+                    }
+
+                    fetchBtn.textContent = "Find Activity";
+                }, 200);
+            });
+        }
         // Centralized execution logic so both Find and Shuffle use the exact same functional filter
         function performFiltering() {
             const targetCategory = document.getElementById('category').value;
@@ -301,6 +344,39 @@
                 toast.classList.remove('show');
             }, 3000);
         }
+
+
+        // --- THEME TOGGLE ENGINE ---
+        const themeBtn = document.getElementById('themeBtn');
+
+        // Initialize theme setup from localStorage
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        if (themeBtn) {
+            themeBtn.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+        }
+
+        // Toggle action logic listener
+        if (themeBtn) {
+            themeBtn.addEventListener('click', () => {
+                const htmlElement = document.documentElement;
+                const currentTheme = htmlElement.getAttribute('data-theme');
+                let newTheme = 'dark';
+                
+                if (currentTheme === 'dark') {
+                    newTheme = 'light';
+                    themeBtn.textContent = '☀️';
+                    showToast("☀️ Switched to Light Mode!");
+                } else {
+                    themeBtn.textContent = '🌙';
+                    showToast("🌙 Switched to Dark Mode!");
+                }
+                
+                htmlElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+        }
+
 
         initProgress();
     });
