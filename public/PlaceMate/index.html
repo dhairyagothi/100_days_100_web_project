@@ -11,7 +11,46 @@
 </head>
 <body>
 
-  <div class="container">
+  <button id="themeToggle" class="theme-toggle">
+    ☀️
+  </button>
+
+  <div id="authContainer" class="auth-container">
+
+    <div class="auth-card">
+
+      <h2 id="authTitle">Login</h2>
+
+      <input
+        type="text"
+        id="username"
+        placeholder="Enter Username"
+      >
+
+      <input
+        type="password"
+        id="password"
+        placeholder="Enter Password"
+      >
+
+      <button id="authBtn">
+        Login
+      </button>
+
+      <p id="toggleAuth">
+        Don't have an account?
+        <span>Sign Up</span>
+      </p>
+
+    </div>
+
+  </div>
+
+  <div
+  class="container"
+  id="mainApp"
+  style="display:none;"
+>
 
     <header class="hero">
       <h1>🚀 PlaceMate</h1>
@@ -20,7 +59,18 @@
         Track your interview preparation journey and become placement ready
       </p>
 
-      <button>Start Preparing</button>
+      <div class="hero-buttons">
+
+        <button>
+          Start Preparing
+        </button>
+
+        <button id="logoutBtn">
+          Logout
+        </button>
+
+      </div>
+
     </header>
 
     <section class="input-section">
@@ -64,6 +114,11 @@
         <button id="updateBtn">
           Update Dashboard
         </button>
+        
+        <button id="downloadReportBtn">
+          Download Report
+        </button>
+
       </div>
   </section>
 
@@ -91,6 +146,23 @@
 
     </section>
 
+    <section class="resume-section">
+
+      <div class="resume-card">
+
+        <h2>
+          📄 Resume Suggestions
+        </h2>
+
+        <div id="resumeSuggestions">
+
+          Update dashboard to view suggestions
+
+        </div>
+
+      </div>
+
+    </section>
     <section class="dashboard-grid">
 
       <div class="meter-card">
@@ -194,6 +266,28 @@
 
     </section>
 
+    <section class="insights-section">
+
+      <h2>🤖 Personalized AI Insights</h2>
+
+      <div class="insights-card">
+
+        <h3>Your Weak Areas</h3>
+
+        <ul id="weakAreas">
+          <li>No analysis available</li>
+        </ul>
+
+        <h3>Recommended Actions</h3>
+
+        <ul id="recommendedActions">
+          <li>Update dashboard data</li>
+        </ul>
+
+      </div>
+
+    </section>
+
     <section class="company-section">
 
       <h2>🏢 Company Preparation</h2>
@@ -219,8 +313,25 @@
 
     </section>
 
+    <section class="badge-section">
+      <h2>🏅 Achievement Badges</h2>
+
+      <div
+        class="badge-grid"
+        id="badgeContainer"
+      >
+
+        <div class="badge-card">
+          No badges earned yet
+        </div>
+
+      </div>
+    </section>
+
   </div>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
   <script src="script.js"></script>
 
 </body>

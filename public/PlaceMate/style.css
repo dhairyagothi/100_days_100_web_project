@@ -11,6 +11,7 @@
   --border-color: rgba(255,255,255,0.1);
   --text-color: #f8fafc;
   --subtitle-color: #cbd5e1;
+  --container-bg: #111827;
   --accent: #3b82f6;
   --green: #22c55e;
   --yellow: #eab308;
@@ -202,7 +203,7 @@ body {
 
   border-radius: 50%;
 
-  background: #111827;
+  background: var(--container-bg, #111827);
 
   z-index: -1;
 }
@@ -346,10 +347,11 @@ body {
 
   background: rgba(255,255,255,0.08);
 
-  color: white;
+  color: var(--text-color);
 
   outline: none;
 }
+
 
 #updateBtn {
   padding: 14px 24px;
@@ -372,6 +374,26 @@ body {
 
 #updateBtn:hover {
   transform: translateY(-3px);
+}
+.action-buttons{
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+#downloadReportBtn{
+  padding:14px 24px;
+  border:none;
+  border-radius:14px;
+  background:linear-gradient(135deg,#16a34a,#22c55e);
+  color:white;
+  cursor:pointer;
+  font-size:16px;
+  transition:0.3s ease;
+}
+
+#downloadReportBtn:hover{
+  transform:translateY(-3px);
 }
 
 @media (max-width: 900px) {
@@ -406,4 +428,187 @@ body {
   .stat-card h2 {
     font-size: 30px;
   }
+}
+/* =========================
+   LIGHT MODE
+========================= */
+
+body.light-mode {
+
+  --bg-gradient:
+    linear-gradient(135deg, #eef2ff, #ffffff);
+
+  --card-bg:
+    rgba(255,255,255,0.92);
+
+  --border-color:
+    rgba(0,0,0,0.08);
+
+  --text-color:
+    #111827;
+
+  --subtitle-color:
+    #475569;
+
+  --container-bg: white;
+}
+
+/* =========================
+   THEME TOGGLE BUTTON
+========================= */
+
+.theme-toggle {
+
+  position: fixed;
+
+  top: 20px;
+  right: 20px;
+
+  width: 55px;
+  height: 55px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: white;
+
+  color: black;
+
+  font-size: 22px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 15px rgba(0,0,0,0.25);
+
+  z-index: 1000;
+
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+
+  transform:
+    scale(1.08) rotate(8deg);
+}
+
+body.light-mode .theme-toggle {
+
+  background: #111827;
+
+  color: white;
+}
+.resume-section{
+  margin-bottom:40px;
+}
+
+.resume-card{
+  background:var(--card-bg);
+  border:1px solid var(--border-color);
+  border-radius:20px;
+  padding:25px;
+}
+
+/* login */
+.auth-container{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.auth-card{
+  width:380px;
+  padding:30px;
+  border-radius:20px;
+  background:var(--card-bg);
+  border:1px solid var(--border-color);
+  backdrop-filter:blur(12px);
+}
+
+.auth-card h2{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.auth-card input{
+  width:100%;
+  padding:12px;
+  margin-bottom:15px;
+  border-radius:10px;
+  border:none;
+  outline:none;
+}
+
+.auth-card button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+#toggleAuth{
+  text-align:center;
+  margin-top:15px;
+  cursor:pointer;
+}
+
+#toggleAuth span{
+  color:#60a5fa;
+}
+
+.hero-buttons{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+#logoutBtn{
+  background:#ef4444;
+}
+.insights-section{
+  margin-bottom:40px;
+}
+
+.insights-card{
+  background:var(--card-bg);
+  border:1px solid var(--border-color);
+  backdrop-filter:blur(12px);
+  border-radius:20px;
+  padding:25px;
+}
+
+.insights-card h3{
+  margin-bottom:12px;
+  margin-top:15px;
+}
+
+.insights-card ul{
+  padding-left:20px;
+}
+
+.insights-card li{
+  margin-bottom:10px;
+  color:var(--subtitle-color);
+.badge-section{
+  margin-top:40px;
+}
+
+.badge-grid{
+  display:grid;
+  grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+
+.badge-card{
+  background:var(--card-bg);
+  border:1px solid var(--border-color);
+  padding:20px;
+  border-radius:16px;
+  text-align:center;
+  font-weight:bold;
 }

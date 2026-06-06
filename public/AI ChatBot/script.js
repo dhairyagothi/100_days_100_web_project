@@ -17,8 +17,13 @@ const MODEL_NAMES = {
   "gemini-2.0-flash": "Gemini 2.0 Flash",
 };
 
+// Optional local default config file.
+// Create public/AI ChatBot/default-config.js and set window.DEFAULT_GEMINI_API_KEY.
+const DEFAULT_GEMINI_API_KEY = window.DEFAULT_GEMINI_API_KEY?.trim() || "";
+const GEMINI_PROXY_ENDPOINT = "/api/gemini";
+
 /* STATE */
-let apiKey = localStorage.getItem(STORAGE.API_KEY) || "";
+let apiKey = localStorage.getItem(STORAGE.API_KEY) || DEFAULT_GEMINI_API_KEY || "";
 let hfKey = localStorage.getItem(STORAGE.HF_KEY) || "";
 let sessions = loadSessions();
 let activeSessionId = null;
@@ -157,6 +162,11 @@ function nextStep(n) {
 
 function toggleObKey() {
   const inp = $("ob-api-input");
+  inp.type = inp.type === "password" ? "text" : "password";
+}
+
+function toggleObHfKey() {
+  const inp = $("ob-hf-input");
   inp.type = inp.type === "password" ? "text" : "password";
 }
 
@@ -523,7 +533,7 @@ function exportAs(format) {
           const raw = window.marked
             ? marked.parse(m.text || "")
             : escapeHtml(m.text || "");
-          bodyContent = raw;
+          bodyContent = sanitizeHtml(raw);
         }
         return `<div class="msg ${cls}"><span class="role">${role}</span><div class="text">${bodyContent}</div></div>`;
       })
@@ -789,10 +799,6 @@ function togglePinnedView() {
 
 /* VOICE INPUT */
 function toggleVoice() {
-  if (!apiKey) {
-    openSettings();
-    return;
-  } // add this guard
   if (isListening) stopListening();
   else startListening();
 }
@@ -1098,11 +1104,6 @@ function handleSend() {
     return;
   }
 
-  if (!apiKey) {
-    openSettings();
-    return;
-  }
-
   // 🧠 LAZY SESSION CREATION
   let session = getCurrentSession();
 
@@ -1150,22 +1151,51 @@ async function getAIResponse() {
   if (sysProm) body.systemInstruction = { parts: [{ text: sysProm }] };
 
   try {
-    const res = await fetch(`${API_URL}?key=${apiKey}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
+    const useProxy = !apiKey;
+    const fetchOptions = useProxy
+      ? {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            model,
+            contents: chatHistory,
+            systemPrompt: sysProm,
+          }),
+        }
+      : {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        };
+
+    const requestUrl = useProxy ? GEMINI_PROXY_ENDPOINT : `${API_URL}?key=${apiKey}`;
+    const res = await fetch(requestUrl, fetchOptions);
 
     removeTyping(typingRow);
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
+      const message = err.error?.message || err.error || `HTTP ${res.status}`;
       throw new Error(
-        err.error?.message || `HTTP ${res.status} — Check your API key.`,
+        message || "Unable to connect to Gemini. Check your hosted proxy or API key.",
       );
     }
 
     const data = await res.json();
+
+    if (data.candidates && data.candidates[0]) {
+      const candidate = data.candidates[0];
+      if (candidate.finishReason && candidate.finishReason !== "STOP") {
+        if (candidate.finishReason === "SAFETY") {
+          throw new Error("Response was blocked by Gemini safety filters. Please try rephrasing your request.");
+        } else if (candidate.finishReason === "RECITATION") {
+          throw new Error("Response was blocked due to recitation/copyright constraints.");
+        } else {
+          throw new Error(`Response generation ended with reason: ${candidate.finishReason}`);
+        }
+      }
+    }
+
     const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!aiText) throw new Error("Empty response from Gemini.");
 
@@ -1281,7 +1311,8 @@ function renderMessage(
       });
       actionsEl.prepend(dlBtn);
     } else {
-      bubble.innerHTML = window.marked ? marked.parse(text) : text;
+      const htmlContent = window.marked ? marked.parse(text) : text;
+      bubble.innerHTML = sanitizeHtml(htmlContent);
 
       // code block copy buttons (already present, keep as-is)
       bubble.querySelectorAll("pre").forEach((pre) => {
@@ -1465,6 +1496,29 @@ function clearMessages() {
 
 function scrollToBottom() {
   viewport.scrollTo({ top: viewport.scrollHeight, behavior: "smooth" });
+}
+
+function sanitizeHtml(html) {
+  const temp = document.createElement("div");
+  temp.innerHTML = html;
+  
+  // Strip dangerous tags completely
+  const dangerousElements = temp.querySelectorAll("script, iframe, object, embed, link, meta, style");
+  dangerousElements.forEach(el => el.remove());
+  
+  // Sanitize all remaining elements
+  const allElements = temp.querySelectorAll("*");
+  allElements.forEach(el => {
+    const attributes = el.attributes;
+    for (let i = attributes.length - 1; i >= 0; i--) {
+      const attrName = attributes[i].name;
+      // Strip event handlers (onload, onerror, onclick, etc.) and javascript URI schemes
+      if (attrName.startsWith("on") || attributes[i].value.trim().toLowerCase().startsWith("javascript:")) {
+        el.removeAttribute(attrName);
+      }
+    }
+  });
+  return temp.innerHTML;
 }
 
 function escapeHtml(str) {

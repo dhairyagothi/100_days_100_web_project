@@ -1,0 +1,226 @@
+:root {
+    /* Base UI Colors */
+    --surface: #ffffff;
+    --surface-variant: #f3f4f6;
+    --on-surface: #1f2937;
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --border: #e5e7eb;
+    
+    /* Default Glass Properties (Overridden by JS) */
+    --glass-r: 255;
+    --glass-g: 255;
+    --glass-b: 255;
+    --glass-a: 0.2;
+    --glass-blur: 10px;
+    --glass-shadow: 0.3;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background-color: var(--surface-variant);
+    color: var(--on-surface);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1rem;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1000px;
+    background: var(--surface);
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+@media (min-width: 768px) {
+    .container {
+        flex-direction: row;
+        height: 600px;
+    }
+}
+
+/* --- Preview Section --- */
+.preview-section {
+    flex: 1;
+    position: relative;
+    background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    min-height: 300px;
+}
+
+/* Decorative background shapes to show off the blur */
+.background-shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+}
+
+.shape-1 {
+    width: 250px;
+    height: 250px;
+    background: #a18cd1;
+    top: -50px;
+    left: -50px;
+}
+
+.shape-2 {
+    width: 200px;
+    height: 200px;
+    background: #fbc2eb;
+    bottom: -20px;
+    right: -20px;
+}
+
+.glass-card {
+    position: relative;
+    z-index: 10;
+    padding: 2rem;
+    width: 80%;
+    max-width: 320px;
+    border-radius: 16px;
+    color: #333;
+    
+    /* Dynamic Glass Variables */
+    background: rgba(var(--glass-r), var(--glass-g), var(--glass-b), var(--glass-a));
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, var(--glass-shadow));
+    transition: all 0.1s ease;
+}
+
+.glass-card h2 {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/* --- Controls Section --- */
+.controls-section {
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    overflow-y: auto;
+}
+
+.controls-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.controls-header p {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.control-group label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.control-group span {
+    color: var(--primary);
+    font-variant-numeric: tabular-nums;
+}
+
+input[type="range"] {
+    width: 100%;
+    cursor: pointer;
+    accent-color: var(--primary);
+}
+
+input[type="color"] {
+    -webkit-appearance: none;
+    border: none;
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+    cursor: pointer;
+    background: transparent;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+/* --- Code Exporter --- */
+.code-exporter {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+#copy-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+#copy-btn:hover {
+    background: var(--primary-hover);
+}
+
+#copy-btn:active {
+    transform: scale(0.96);
+}
+
+#copy-btn.copied {
+    background: #10b981; /* Success green */
+}
+
+textarea {
+    width: 100%;
+    height: 120px;
+    padding: 1rem;
+    background: var(--surface-variant);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    resize: none;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.85rem;
+    color: var(--on-surface);
+}

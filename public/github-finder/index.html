@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub Profile Finder</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <header class="search-header">
+        <h1>GitHub Profile Finder</h1>
+        <form id="searchForm" class="search-box">
+          <input
+            type="text"
+            id="usernameInput"
+            placeholder="Enter a GitHub username..."
+            autocomplete="off"
+            required
+          />
+          <button type="submit">Search</button>
+        </form>
+      </header>
+
+      <main id="displayDeck">
+        <div id="welcomeState" class="info-card placeholder">
+          <div class="icon-avatar">🔍</div>
+          <h3>Discover Developers</h3>
+          <p>
+            Type any username into the search bar above to fetch real-time
+            profile metrics and public repository indexes directly from GitHub.
+          </p>
+        </div>
+
+        <div id="loadingState" class="info-card hidden">
+          <div class="spinner"></div>
+          <p>Querying GitHub API infrastructure...</p>
+        </div>
+
+        <div id="errorState" class="info-card error-card hidden">
+          <div class="icon-avatar">⚠️</div>
+          <h3>No User Found</h3>
+          <p>
+            We couldn't locate that specific profile. Check your spelling and
+            try searching again.
+          </p>
+        </div>
+
+        <article id="profileResultCard" class="profile-layout hidden">
+          <section class="user-profile-card">
+            <div class="profile-header">
+              <img id="userAvatar" src="" alt="User Avatar Graphic" />
+              <div class="user-meta">
+                <h2 id="userName">Developer Name</h2>
+                <a
+                  id="userLogin"
+                  href=""
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >@username</a
+                >
+                <p id="userBio" class="bio-text">
+                  This profile has no bio description text logged.
+                </p>
+              </div>
+            </div>
+
+            <div class="stats-row">
+              <div class="stat-box">
+                <span class="stat-val" id="repoCount">0</span>
+                <span class="stat-lbl">Repos</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-val" id="followerCount">0</span>
+                <span class="stat-lbl">Followers</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-val" id="followingCount">0</span>
+                <span class="stat-lbl">Following</span>
+              </div>
+            </div>
+
+            <div id="locationWrapper" class="location-tag">
+              <span class="pin-icon">📍</span>
+              <span id="userLocation">Unknown Location</span>
+            </div>
+          </section>
+
+          <section class="repos-section">
+            <h3>Top Public Repositories</h3>
+            <div id="reposGrid" class="repos-grid"></div>
+          </section>
+        </article>
+      </main>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

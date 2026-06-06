@@ -1,0 +1,137 @@
+:root {
+    --bg-color: #ffe4e1;
+    --container-color: #ffffff;
+    --text-color: #333333;
+    --accent-color: lightcoral;
+    --accent-text: linen;
+    --input-border: coral;
+    --input-text: lightcoral;
+    --input-bg: #ffffff;
+    --input-hover-bg: linen;
+    --guess-color: lightcoral;
+    --button-hover-bg: lightgreen;
+    --button-hover-text: darkgreen;
+    --h1-bg: lightcoral;
+    --toggle-bg: #ffffff;
+    --toggle-shadow: rgba(0,0,0,0.15);
+}
+
+body.dark {
+    --bg-color: #121212;
+    --container-color: #1e1e1e;
+    --text-color: #f5f5f5;
+   --accent-color: #c0605e;
+    --accent-text: #f5f5f5;
+    --input-border: #c0605e;
+    --input-text: #f5a0a0;
+    --input-bg: #2a2a2a;
+    --input-hover-bg: #333333;
+    --guess-color: #f5a0a0;
+    --button-hover-bg: #2d6a2d;
+    --button-hover-text: #a0f0a0;
+    --h1-bg: #7a2e2e;
+    --toggle-bg: #2a2a2a;
+    --toggle-shadow: rgba(255,255,255,0.08);
+}
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+    position: relative;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+h1{
+    text-align: center;
+    background-color: var(--h1-bg);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color:  var(--accent-text);
+     transition: background-color 0.3s ease;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+p{
+    margin-top: 25px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+}
+
+#subt{
+    margin: auto;
+    background-color: var(--accent-color);
+    color: var(--accent-text);
+    height: 50px;
+    width: 200px;
+    border-radius: 10px;
+    font-size: 20px;
+    margin-top: 10px;
+    border-style: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+#guessField{
+    margin: auto;
+    width: 250px;
+    height: 50px;
+    color: var(--input-text);
+    background-color: var(--input-bg);
+    font-size: 30px;
+    text-align: center;
+    margin-top: 25px;
+    border-style: none;
+    border: 5px solid var(--input-border);
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.guesses {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 40px;
+  color: var(--guess-color);
+}
+
+#subt:hover{
+    background-color:  var(--button-hover-bg);
+    color: var(--button-hover-text);
+}
+
+#guessField:hover{
+    background-color:  var(--container-color);
+}
+
+.container {
+    background: var(--container-color);
+}
+
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 1.2rem;
+    padding: 10px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    background: var(--toggle-bg);
+    box-shadow: 0 2px 8px var(--toggle-shadow);
+    transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.15s ease;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.12);
+}
+
+body {
+    position: relative;
+}
