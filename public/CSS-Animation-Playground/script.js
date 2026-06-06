@@ -444,10 +444,9 @@
 
     // For star shape, create an inline SVG
     if (state.previewShape === 'star') {
-      el.innerHTML = `<svg viewBox="0 0 100 100" width="80" height="80">
-        <polygon points="50,5 63,35 95,38 70,60 78,92 50,75 22,92 30,60 5,38 37,35" 
-          fill="${state.previewColor}" />
-      </svg>`;
+      el.innerHTML = '<svg viewBox="0 0 100 100" width="80" height="80"><polygon points="50,5 63,35 95,38 70,60 78,92 50,75 22,92 30,60 5,38 37,35" /></svg>';
+      const polygon = el.querySelector('polygon');
+      if (polygon) polygon.setAttribute('fill', state.previewColor);
     } else if (state.previewShape === 'text') {
       el.innerHTML = '<span class="preview-text">Animate</span>';
     } else {
