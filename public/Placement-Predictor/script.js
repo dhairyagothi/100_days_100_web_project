@@ -447,6 +447,8 @@ if (savedTheme === "dark") {
 } else {
   themeCheckbox.checked = false;
 }
+document.getElementById("predictionTime").textContent =
+new Date().toLocaleString();
 
 themeCheckbox.addEventListener("change", () => {
   if (themeCheckbox.checked) {

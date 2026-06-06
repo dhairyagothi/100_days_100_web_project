@@ -36,6 +36,18 @@ const statWords = document.getElementById('statWords');
 
 const statCharacters = document.getElementById('statCharacters');
 
+const loadingSection =
+  document.getElementById(
+    "loadingSection"
+  );
+
+const resultsSection =
+  document.getElementById(
+    "resultsSection"
+const copySuggestionsBtn =
+  document.getElementById(
+    "copySuggestionsBtn"
+  );
 uploadBtn.addEventListener('click', () => {
   resumeInput.click();
 });
@@ -78,6 +90,9 @@ dropZone.addEventListener('drop', (e) => {
   if (files.length > 0) {
     resumeInput.files = files;
 
+    updateStats(file);
+    extractResumeContent(file);
+    startAnalysis();
     fileName.textContent = files[0].name;
 
     updateStats(files[0]);
@@ -121,6 +136,10 @@ function calculateATSScore(text) {
 
   let score = 0;
 
+      startAnalysis();
+    }
+  }
+);
   const sections = {
     skills: 20,
     experience: 20,
@@ -173,6 +192,31 @@ function calculateATSScore(text) {
 
   if (wordCount > 250) score += sections.structure;
 
+function startAnalysis() {
+
+  resultsSection.style.display =
+    "none";
+
+  loadingSection.style.display =
+    "block";
+
+
+  setTimeout(() => {
+
+    loadingSection.style.display =
+      "none";
+
+    resultsSection.style.display =
+      "grid";
+
+
+    generateAnalysis();
+
+  }, 2500);
+
+}
+
+function animateMeter(score) {
   score = Math.min(100, score);
 
   return {
@@ -453,6 +497,9 @@ function updateContentStats(text) {
 
   statCharacters.textContent = characters.toLocaleString();
 }
+
+resultsSection.style.display =
+  "grid";
 
 generateAnalysis();
 
