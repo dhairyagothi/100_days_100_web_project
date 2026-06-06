@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Weather Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-theme="default">
+    <div class="backdrop-overlay"></div>
+
+    <div class="app-wrapper">
+      <header class="control-panel">
+        <form id="searchForm" class="search-bar">
+          <input
+            type="text"
+            id="cityInput"
+            placeholder="Search for a city..."
+            autocomplete="off"
+            required
+          />
+          <button type="submit" aria-label="Search city">🔍</button>
+        </form>
+        <button id="geoBtn" class="geo-button" title="Use current location">
+          <span class="geo-icon">📍</span> Use My Location
+        </button>
+      </header>
+
+      <main id="displayDeck">
+        <div id="welcomeState" class="status-card">
+          <span class="status-graphic">🌤️</span>
+          <h2>Explore Global Weather</h2>
+          <p>
+            Allow location access or search for any city to see real-time
+            atmospheric metrics and adaptive visual backgrounds.
+          </p>
+        </div>
+
+        <div id="loadingState" class="status-card hidden">
+          <div class="spinner"></div>
+          <p>
+            Retrieving real-time climate data from OpenWeatherMap servers...
+          </p>
+        </div>
+
+        <div id="errorState" class="status-card error-card hidden">
+          <span class="status-graphic">⚠️</span>
+          <h3 id="errorTitle">Location Not Found</h3>
+          <p id="errorMsg">
+            We couldn't parse that specific city name string. Double check your
+            spelling and try again.
+          </p>
+        </div>
+
+        <article id="weatherDisplayCard" class="weather-panel hidden">
+          <section class="main-weather-info">
+            <div class="location-meta">
+              <h1 id="cityName">City Name</h1>
+              <p id="weatherDesc">Scattered Clouds</p>
+            </div>
+            <div class="temperature-row">
+              <img id="weatherIcon" src="" alt="Weather Condition Graphic" />
+              <span id="tempValue" class="temp-readout">0°C</span>
+            </div>
+          </section>
+
+          <section class="metrics-grid">
+            <div class="metric-box">
+              <span class="metric-icon">🌡️</span>
+              <div class="metric-data">
+                <span class="metric-label">Feels Like</span>
+                <span id="feelsLikeValue" class="metric-value">0°C</span>
+              </div>
+            </div>
+            <div class="metric-box">
+              <span class="metric-icon">💧</span>
+              <div class="metric-data">
+                <span class="metric-label">Humidity</span>
+                <span id="humidityValue" class="metric-value">0%</span>
+              </div>
+            </div>
+            <div class="metric-box">
+              <span class="metric-icon">💨</span>
+              <div class="metric-data">
+                <span class="metric-label">Wind Speed</span>
+                <span id="windValue" class="metric-value">0 m/s</span>
+              </div>
+            </div>
+            <div class="metric-box">
+              <span class="metric-icon">📉</span>
+              <div class="metric-data">
+                <span class="metric-label">Atmospheric Pressure</span>
+                <span id="pressureValue" class="metric-value">0 hPa</span>
+              </div>
+            </div>
+          </section>
+        </article>
+      </main>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

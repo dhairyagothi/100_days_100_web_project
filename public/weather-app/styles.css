@@ -1,0 +1,327 @@
+/* Core Styling Layout Declarations */
+:root {
+  --text-main: #ffffff;
+  --text-muted: #f1f5f9;
+  --card-surface: rgba(15, 23, 42, 0.45);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --accent-glow: #38bdf8;
+  --transition-engine: cubic-bezier(0.4, 0, 0.2, 1) 0.4s;
+}
+
+/* Theme State Engine (Dynamic Background Styles) */
+body[data-theme="default"] {
+  background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+}
+body[data-theme="clear-day"] {
+  background: url("https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?q=80&w=1200")
+    no-repeat center center/cover;
+}
+body[data-theme="clear-night"] {
+  background: url("https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?q=80&w=1200")
+    no-repeat center center/cover;
+}
+body[data-theme="clouds"] {
+  background: url("https://images.unsplash.com/photo-1534088568595-a066f410bcda?q=80&w=1200")
+    no-repeat center center/cover;
+}
+body[data-theme="rain"] {
+  background: url("https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?q=80&w=1200")
+    no-repeat center center/cover;
+}
+body[data-theme="snow"] {
+  background: url("https://images.unsplash.com/photo-1491002052546-bf38f186af56?q=80&w=1200")
+    no-repeat center center/cover;
+}
+body[data-theme="thunderstorm"] {
+  background: url("https://images.unsplash.com/photo-1605721911519-3dfeb3be25e7?q=80&w=1200")
+    no-repeat center center/cover;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+  transition: var(--transition-engine);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Backdrop Overlay Layer ensuring layout text legibility */
+.backdrop-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+  z-index: 1;
+  transition: var(--transition-engine);
+}
+
+.app-wrapper {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 620px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Control Navigation Panels Layout */
+.control-panel {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.search-bar {
+  flex: 1;
+  display: flex;
+  background: var(--card-surface);
+  border: 1px solid var(--card-border);
+  border-radius: 0.75rem;
+  padding: 0.25rem;
+  backdrop-filter: blur(10px);
+}
+
+.search-bar input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-main);
+  font-size: 1rem;
+  padding: 0.6rem 1rem;
+}
+
+.search-bar input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.8;
+}
+
+.search-bar button {
+  background: transparent;
+  border: none;
+  padding: 0 1rem;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.geo-button {
+  background: var(--card-surface);
+  border: 1px solid var(--card-border);
+  color: var(--text-main);
+  padding: 0 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  backdrop-filter: blur(10px);
+  transition: background 0.2s ease;
+}
+
+.geo-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Shared Acrylic Status Card Bases */
+.status-card {
+  background: var(--card-surface);
+  border: 1px solid var(--card-border);
+  border-radius: 1.25rem;
+  padding: 3.5rem 2rem;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.4s ease-out;
+}
+
+.status-graphic {
+  font-size: 3.5rem;
+  display: block;
+  margin-bottom: 1.25rem;
+}
+
+.status-card h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.status-card p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.error-card h3 {
+  color: #ff8787;
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+/* CSS Load Spinner Component */
+.spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  border-top-color: var(--accent-glow);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 1.5rem auto;
+}
+
+/* Main Climate Presenter Card Panel Outputs */
+.weather-panel {
+  background: var(--card-surface);
+  border: 1px solid var(--card-border);
+  border-radius: 1.25rem;
+  padding: 2.25rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  animation: slideUp 0.4s ease-out;
+}
+
+.main-weather-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--card-border);
+  padding-bottom: 1.5rem;
+}
+
+.location-meta h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.location-meta p {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  text-transform: capitalize;
+  margin-top: 0.25rem;
+}
+
+.temperature-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#weatherIcon {
+  width: 80px;
+  height: 80px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.temp-readout {
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+/* Internal Metrics Layout Matrix */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.metric-box {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 0.85rem;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.metric-icon {
+  font-size: 1.5rem;
+}
+
+.metric-data {
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  opacity: 0.85;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.metric-value {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-top: 0.15rem;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Structural Fluid Viewport Breakpoints */
+@media (max-width: 540px) {
+  .control-panel {
+    flex-direction: column;
+  }
+  .geo-button {
+    padding: 0.75rem;
+    justify-content: center;
+  }
+  .main-weather-info {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
