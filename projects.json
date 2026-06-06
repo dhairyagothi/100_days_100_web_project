@@ -1942,5 +1942,13 @@
   "techStack": ["html", "css"],
   "difficulty": "intermediate",
   "projectDesc": "A responsive photography portfolio and gallery website designed to showcase visual content through structured layouts, image presentation sections, and modern styling. Features an engaging user interface optimized for desktop and mobile viewing."
+},
+{
+  "projectNo": 214,
+  "projectName": "Compiler Workflow Visualizer",
+  "projectPath": "./public/compiler_workflow_visualizer/index.html",
+  "techStack": ["html", "css", "javascript"],
+  "difficulty": "intermediate",
+  "projectDesc": "An interactive educational web application that visually demonstrates how source code is processed through different compiler phases, including lexical analysis, syntax analysis, semantic analysis, intermediate code generation, optimization, and target code generation. Features a modern responsive interface, real-time workflow visualization, and step-by-step compilation simulation for enhanced learning."
 }
 ]

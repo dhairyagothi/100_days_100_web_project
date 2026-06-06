@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compilens</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>Compilens</h1>
+    <p>Interactive Compiler Workflow Visualization Platform</p>
+</header>
+
+<div class="container">
+
+    <div class="editor-section">
+        <h2>Source Code</h2>
+
+        <textarea id="codeInput">
+int a = 5;
+int b = 10;
+int c = a + b;
+        </textarea>
+
+        <button id="runBtn">Visualize Compilation</button>
+    </div>
+
+    <div class="workflow">
+
+        <div class="stage" id="lexical">
+            Lexical Analysis
+        </div>
+
+        <div class="stage" id="syntax">
+            Syntax Analysis
+        </div>
+
+        <div class="stage" id="semantic">
+            Semantic Analysis
+        </div>
+
+        <div class="stage" id="intermediate">
+            Intermediate Code
+        </div>
+
+        <div class="stage" id="optimization">
+            Optimization
+        </div>
+
+        <div class="stage" id="target">
+            Target Code
+        </div>
+
+    </div>
+
+    <div class="output-section">
+        <h2 id="outputTitle">Compiler Output</h2>
+        <div id="output"></div>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
