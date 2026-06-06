@@ -1958,5 +1958,13 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/AI-Data-Analyst/"
+  },
+  {
+    "projectNo": 215,
+    "projectName": "Mandala Designer",
+    "projectPath": "./public/mandala_designer/index.html",
+    "techStack": ["html", "css", "javascript", "canvas"],
+    "difficulty": "advanced",
+    "projectDesc": "A highly interactive, responsive symmetric vector geometry studio allowing users to design intricate kaleidoscope artwork. Features a multi-axis rotation engine, razor-sharp edge physics, High-DPI display scaling, and lossless canvas history state stacks."
   }
 ]
