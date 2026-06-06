@@ -1,34 +1,27 @@
 const board = document.getElementById("board");
-
 const statusText = document.getElementById("statusText");
 const turnChip = document.getElementById("turnChip");
-
 const scoreX = document.getElementById("scoreX");
 const scoreO = document.getElementById("scoreO");
 const scoreD = document.getElementById("scoreD");
-
 const newRoundBtn = document.getElementById("newRoundBtn");
 const resetAllBtn = document.getElementById("resetAllBtn");
-
 const winnerModal = document.getElementById("winnerModal");
 const winnerTitle = document.getElementById("winnerTitle");
 const winnerSubtitle = document.getElementById("winnerSubtitle");
-
 const winnerNext = document.getElementById("winnerNext");
 const winnerClose = document.getElementById("winnerClose");
-
 const modeSelect = document.getElementById("modeSelect");
 const themeSelect = document.getElementById("themeSelect");
-
 const hintBtn = document.getElementById("hintBtn");
 const undoBtn = document.getElementById("undoBtn");
-
 const historyList = document.getElementById("historyList");
+const themeToggleGroup = document.getElementById("themeToggleGroup");
+const victorySound = new Audio("victory.mp3");
 
 let gameBoard = Array(9).fill("");
 let currentPlayer = "X";
 let gameOver = false;
-
 let moveHistory = [];
 
 let scores = {
@@ -46,6 +39,12 @@ const WIN_LINES = [
     [2,5,8],
     [0,4,8],
     [2,4,6]
+let scores = { X: 0, O: 0, D: 0 };
+
+const WIN_LINES = [
+    [0,1,2],[3,4,5],[6,7,8],
+    [0,3,6],[1,4,7],[2,5,8],
+    [0,4,8],[2,4,6]
 ];
 
 // --- RENDER FUNCTION (CLEAN & OPTIMIZED) ---
@@ -68,6 +67,13 @@ function renderBoard() {
         }
 
         cell.textContent = value;
+    gameBoard.forEach((value, index) => {
+        const cell = document.createElement("button");
+        cell.className = "cell";
+        if (value === "X") cell.classList.add("mark-x");
+        if (value === "O") cell.classList.add("mark-o");
+        cell.textContent = value;
+        cell.addEventListener("click", () => { handleMove(index); });
         board.appendChild(cell);
     });
 }
@@ -88,6 +94,13 @@ function handleMove(index) {
 
     const winLine = getWinner();
 
+function handleMove(index) {
+    if (gameOver) return;
+    if (gameBoard[index] !== "") return;
+    gameBoard[index] = currentPlayer;
+    moveHistory.push({ player: currentPlayer, cell: index + 1 });
+    updateHistory();
+    const winLine = getWinner();
     if (winLine) {
         highlightWin(winLine);
         scores[currentPlayer]++;
@@ -109,6 +122,9 @@ function handleMove(index) {
     updateStatus();
     renderBoard();
 
+    currentPlayer = currentPlayer === "X" ? "O" : "X";
+    updateStatus();
+    renderBoard();
     const mode = modeSelect.value;
     if (mode !== "pvp" && currentPlayer === "O" && !gameOver) {
         setTimeout(cpuMove, 400);
@@ -117,7 +133,6 @@ function handleMove(index) {
 
 function cpuMove() {
     if (gameOver) return;
-
     const available = [];
     gameBoard.forEach((cell, index) => {
         if (cell === "") {
@@ -125,8 +140,8 @@ function cpuMove() {
         }
     });
 
+    gameBoard.forEach((cell, index) => { if (cell === "") available.push(index); });
     if (!available.length) return;
-
     let move;
     const mode = modeSelect.value;
 
@@ -152,10 +167,12 @@ function cpuMove() {
         cell: move + 1
     });
 
+        if (move === undefined) move = getBestMove();
+    }
+    gameBoard[move] = "O";
+    moveHistory.push({ player: "O", cell: move + 1 });
     updateHistory();
-
     const winLine = getWinner();
-
     if (winLine) {
         highlightWin(winLine);
         scores.O++;
@@ -164,7 +181,6 @@ function cpuMove() {
         showWinner("O");
         return;
     }
-
     if (gameBoard.every(cell => cell !== "")) {
         scores.D++;
         updateScores();
@@ -172,7 +188,6 @@ function cpuMove() {
         showDraw();
         return;
     }
-
     currentPlayer = "X";
     updateStatus();
     renderBoard();
@@ -208,13 +223,28 @@ function getBestMove() {
         }
     });
 
+        const [a,b,c] = line;
+        const cells = [gameBoard[a], gameBoard[b], gameBoard[c]];
+        if (cells.filter(v => v === "O").length === 2 && cells.includes("")) {
+            return line[cells.indexOf("")];
+        }
+    }
+    for (const line of WIN_LINES) {
+        const [a,b,c] = line;
+        const cells = [gameBoard[a], gameBoard[b], gameBoard[c]];
+        if (cells.filter(v => v === "X").length === 2 && cells.includes("")) {
+            return line[cells.indexOf("")];
+        }
+    }
+    if (gameBoard[4] === "") return 4;
+    const free = [];
+    gameBoard.forEach((cell, index) => { if (cell === "") free.push(index); });
     return free[Math.floor(Math.random() * free.length)];
 }
 
 function getBestMoveMinimax() {
     let bestScore = -Infinity;
     let bestMove = 0;
-
     for (let i = 0; i < 9; i++) {
         if (gameBoard[i] === "") {
             gameBoard[i] = "O";
@@ -225,6 +255,7 @@ function getBestMoveMinimax() {
                 bestScore = score;
                 bestMove = i;
             }
+            if (score > bestScore) { bestScore = score; bestMove = i; }
         }
     }
     return bestMove;
@@ -232,13 +263,11 @@ function getBestMoveMinimax() {
 
 function minimax(boardState, depth, isMaximizing) {
     const winner = evaluateBoard(boardState);
-
     if (winner !== null) {
         if (winner === "O") return 10 - depth;
         if (winner === "X") return depth - 10;
         return 0;
     }
-
     if (isMaximizing) {
         let bestScore = -Infinity;
         for (let i = 0; i < 9; i++) {
@@ -275,12 +304,14 @@ function evaluateBoard(boardState) {
     if (boardState.every(cell => cell !== "")) {
         return "draw";
     }
+    if (boardState.every(cell => cell !== "")) return "draw";
     return null;
 }
 
 function getWinner() {
     for (const line of WIN_LINES) {
         const [a, b, c] = line;
+        const [a,b,c] = line;
         if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
             return line;
         }
@@ -308,6 +339,20 @@ function updateScores() {
     scoreD.textContent = scores.D;
 }
 
+    line.forEach(index => { board.children[index].classList.add("win-cell"); });
+}
+
+function updateStatus() {
+    statusText.textContent = currentPlayer + "'s Turn";
+    turnChip.textContent = "Turn: " + currentPlayer;
+}
+
+function updateScores() {
+    scoreX.textContent = scores.X;
+    scoreO.textContent = scores.O;
+    scoreD.textContent = scores.D;
+}
+
 function updateHistory() {
     historyList.innerHTML = "";
     moveHistory.slice(-10).forEach(move => {
@@ -320,6 +365,9 @@ function updateHistory() {
 function showWinner(player) {
     winnerTitle.textContent = "Player " + player + " Wins!";
     winnerSubtitle.textContent = "Ready for the next round?";
+    victorySound.currentTime = 0;
+    victorySound.play();
+    launchConfetti();
     winnerModal.classList.add("show");
 }
 
@@ -337,11 +385,15 @@ function newRound() {
     updateHistory();
     updateStatus();
     winnerModal.classList.remove("show");
+    victorySound.pause();
+    victorySound.currentTime = 0;
     renderBoard();
 }
 
 function resetScores() {
     scores = { X: 0, O: 0, D: 0 };
+    victorySound.pause();
+    victorySound.currentTime = 0;
     updateScores();
     newRound();
 }
@@ -358,13 +410,18 @@ function undoMove() {
         const playerMove = moveHistory.pop();
         gameBoard[playerMove.cell - 1] = "";
 
+    const mode = modeSelect.value;
+    if (mode !== "pvp" && moveHistory.length >= 2) {
+        const cpuMv = moveHistory.pop();
+        gameBoard[cpuMv.cell - 1] = "";
+        const playerMv = moveHistory.pop();
+        gameBoard[playerMv.cell - 1] = "";
         currentPlayer = "X";
     } else {
         const last = moveHistory.pop();
         gameBoard[last.cell - 1] = "";
         currentPlayer = last.player;
     }
-
     gameOver = false;
     updateHistory();
     updateStatus();
@@ -409,3 +466,71 @@ winnerClose.addEventListener("click", () => {
 updateStatus();
 updateScores();
 renderBoard();
+
+// Original themeSelect change listener — kept intact for compatibility
+themeSelect.addEventListener("change", function () {
+    document.body.setAttribute("data-theme", this.value);
+});
+
+// New theme toggle buttons — update body attribute AND sync hidden select
+themeToggleGroup.addEventListener("click", function (e) {
+    const btn = e.target.closest(".theme-btn");
+    if (!btn) return;
+    const theme = btn.getAttribute("data-theme");
+    document.body.setAttribute("data-theme", theme);
+    themeSelect.value = theme;
+    themeToggleGroup.querySelectorAll(".theme-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+});
+
+newRoundBtn.addEventListener("click", newRound);
+resetAllBtn.addEventListener("click", resetScores);
+undoBtn.addEventListener("click", undoMove);
+hintBtn.addEventListener("click", showHint);
+winnerNext.addEventListener("click", newRound);
+winnerClose.addEventListener("click", () => { winnerModal.classList.remove("show"); });
+
+updateStatus();
+updateScores();
+renderBoard();
+
+function launchConfetti() {
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles = [];
+
+    for (let i = 0; i < 100; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: -20,
+            size: Math.random() * 8 + 4,
+            speed: Math.random() * 4 + 2,
+            color: ["#40f5d2", "#ff7d7d", "#ffffff"][
+                Math.floor(Math.random() * 3)
+            ]
+        });
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach(p => {
+            p.y += p.speed;
+
+            ctx.fillStyle = p.color;
+            ctx.fillRect(p.x, p.y, p.size, p.size);
+        });
+
+        if (particles.some(p => p.y < canvas.height)) {
+            requestAnimationFrame(animate);
+        } else {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    }
+
+    animate();
+}

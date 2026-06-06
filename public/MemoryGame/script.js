@@ -32,6 +32,11 @@ const winModal = document.getElementById('winModal');
 const toastEl = document.getElementById('toast');
 const startBtn = document.getElementById('startBtn');
 const hintBtn = document.getElementById('hintBtn');
+const winModal   = document.getElementById('winModal');
+const toastEl    = document.getElementById('toast');
+const startBtn   = document.getElementById('startBtn');
+const hintBtn    = document.getElementById('hintBtn');
+const victorySound = document.getElementById('victorySound');
 
 // ── Event Listeners ───────────────────────────────────────
 document.querySelectorAll('.diff-btn').forEach(btn => {
@@ -49,6 +54,8 @@ startBtn.addEventListener('click', startGame);
 hintBtn.addEventListener('click', useHint);
 
 document.getElementById('playAgainBtn').addEventListener('click', () => {
+  victorySound.pause();
+  victorySound.currentTime = 0;
   winModal.classList.remove('visible');
   setupPreview();
 });
@@ -156,6 +163,9 @@ function startPreviewCountdown() {
 function setupPreview() {
   const cfg = DIFFICULTIES[difficulty];
 
+  victorySound.pause();
+  victorySound.currentTime = 0;
+  // Cancel any running preview countdown or game timer
   if (previewInterval) {
     clearInterval(previewInterval);
     previewInterval = null;
@@ -360,6 +370,9 @@ function onWin() {
   document.getElementById('modalTime').textContent = fmt(seconds);
   document.getElementById('newBest').style.display = isNewBest ? 'block' : 'none';
 
+  victorySound.currentTime = 0;
+  victorySound.play();
+
   setTimeout(() => {
     winModal.classList.add('visible');
     launchConfetti();
@@ -369,23 +382,25 @@ function onWin() {
 // ── Confetti Animation ────────────────────────────────────
 
 function launchConfetti() {
+  console.log("CONFETTI FIRED");
   const container = document.getElementById('confettiContainer');
   container.innerHTML = '';
 
   const colors = ['#7c3aed', '#a855f7', '#f59e0b', '#10b981', '#ef4444', '#60a5fa', '#f472b6'];
 
-  for (let i = 0; i < 70; i++) {
+  for (let i = 0; i < 180; i++) {
     const p = document.createElement('div');
     p.className = 'confetti-particle';
     p.style.cssText = `
       left: ${Math.random() * 100}%;
       background: ${colors[Math.floor(Math.random() * colors.length)]};
-      width: ${4 + Math.random() * 8}px;
-      height: ${4 + Math.random() * 8}px;
+      width: ${10 + Math.random() * 12}px;
+      height: ${10 + Math.random() * 12}px;
       border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
       animation-duration: ${1.5 + Math.random() * 2}s;
       animation-delay: ${Math.random() * 0.8}s;
     `;
+    p.style.boxShadow = `0 0 10px ${colors[Math.floor(Math.random() * colors.length)]}`;
     container.appendChild(p);
   }
 

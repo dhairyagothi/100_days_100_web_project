@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pomodoro Timer</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <a href="../../index.html" class="back-btn">&#8592; Back to Home</a>
+
+  <div class="bg-circles">
+    <span></span><span></span><span></span>
+  </div>
+
+  <div class="container">
+
+    <h1 class="title">POMODORO</h1>
+    <p class="subtitle">Stay focused. Rest well. Repeat.</p>
+
+    <!-- Mode Tabs -->
+    <div class="tabs">
+      <button class="tab active" data-mode="focus">Focus</button>
+      <button class="tab" data-mode="short">Short Break</button>
+      <button class="tab" data-mode="long">Long Break</button>
+    </div>
+
+    <!-- Circular Timer -->
+    <div class="timer-wrapper">
+      <svg class="progress-ring" viewBox="0 0 220 220">
+        <circle class="ring-bg" cx="110" cy="110" r="95"/>
+        <circle class="ring-fill" id="ringFill" cx="110" cy="110" r="95"/>
+      </svg>
+      <div class="timer-display">
+        <span id="timeDisplay">25:00</span>
+        <span class="mode-label" id="modeLabel">FOCUS</span>
+      </div>
+    </div>
+
+    <!-- Session Counter -->
+    <div class="sessions">
+      <span class="session-dot active" id="dot1"></span>
+      <span class="session-dot" id="dot2"></span>
+      <span class="session-dot" id="dot3"></span>
+      <span class="session-dot" id="dot4"></span>
+      <p class="session-text">Session <span id="sessionCount">1</span> of 4</p>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <button class="btn-icon" id="resetBtn" title="Reset">&#8635;</button>
+      <button class="btn-main" id="startBtn">START</button>
+      <button class="btn-icon" id="skipBtn" title="Skip">&#8614;</button>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

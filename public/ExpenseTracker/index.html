@@ -1,180 +1,523 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expense Tracker - Premium Dashboard</title>
-    <!-- Google Fonts - Inter & Outfit -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>SpendWise Pro - Expense Tracker</title>
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
+    <!-- Floating Gradient Blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
     <div class="app-container">
-        <!-- Sidebar Navigation & Quick Actions -->
+
+        <!-- ================= SIDEBAR ================= -->
+
         <aside class="sidebar">
+
+            <!-- Brand -->
             <div class="brand">
+
                 <div class="logo-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    💸
                 </div>
-                <h2>SpendWise</h2>
+
+                <div>
+                    <h2>SpendWise Pro</h2>
+                    <p>Smart Finance Tracker</p>
+                </div>
+
             </div>
 
-            <!-- Set/Update Income Card -->
-            <div class="income-panel glass-panel">
-                <h3>Set Monthly Income</h3>
+            <!-- Theme Toggle -->
+            <button id="theme-toggle" class="theme-toggle-btn">
+                🌙 Toggle Theme
+            </button>
+
+           
+
+            <!-- Income Form -->
+            <div class="glass-panel">
+
+                <h3>Monthly Income</h3>
+
                 <form id="income-form">
+
                     <div class="input-group">
+
                         <span class="currency-symbol">$</span>
-                        <input type="number" id="income-input" placeholder="Enter income amount" min="0" step="any" required>
+
+                        <input
+                            type="number"
+                            id="income-input"
+                            placeholder="Enter monthly income"
+                            min="0"
+                            step="any"
+                            required
+                        />
+
                     </div>
-                    <button type="submit" class="btn btn-secondary">Update Income</button>
+
+                    <button type="submit" class="btn btn-primary">
+                        Update Income
+                    </button>
+
                 </form>
+
             </div>
 
-            <!-- Add Expense Form Card -->
-            <div class="expense-form-panel glass-panel">
-                <h3>Add New Expense</h3>
-                <form id="expense-form">
-                    <div class="form-group">
-                        <label for="expense-name">Expense Name</label>
-                        <input type="text" id="expense-name" placeholder="What did you buy?" required>
+            <!-- Budget Form -->
+            <div class="glass-panel">
+
+                <h3>Monthly Budget</h3>
+
+                <form id="budget-form">
+
+                    <div class="input-group">
+
+                        <span class="currency-symbol">$</span>
+
+                        <input
+                            type="number"
+                            id="budget-input"
+                            placeholder="Set your budget"
+                            min="0"
+                            step="any"
+                            required
+                        />
+
                     </div>
-                    <div class="form-group">
-                        <label for="expense-amount">Amount</label>
-                        <div class="input-group">
-                            <span class="currency-symbol">$</span>
-                            <input type="number" id="expense-amount" placeholder="0.00" min="0.01" step="any" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="expense-category">Category</label>
-                        <select id="expense-category" required>
-                            <option value="" disabled selected>Select category</option>
-                            <option value="Food">Food</option>
-                            <option value="Travel">Travel</option>
-                            <option value="Shopping">Shopping</option>
-                            <option value="Bills">Bills</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        Add Expense
+
+                    <button type="submit" class="btn btn-secondary">
+                        Save Budget
                     </button>
+
                 </form>
+
             </div>
+
+            <!-- Expense Form -->
+            <div class="glass-panel">
+
+                <h3>Add Expense</h3>
+
+                <form id="expense-form">
+
+                    <!-- Expense Name -->
+                    <div class="form-group">
+
+                        <label for="expense-name">
+                            Expense Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="expense-name"
+                            placeholder="What did you buy?"
+                            required
+                        />
+
+                    </div>
+
+                    <!-- Amount -->
+                    <div class="form-group">
+
+                        <label for="expense-amount">
+                            Amount
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="currency-symbol">$</span>
+
+                            <input
+                                type="number"
+                                id="expense-amount"
+                                placeholder="0.00"
+                                min="0.01"
+                                step="any"
+                                required
+                            />
+
+                        </div>
+
+                    </div>
+
+                    <!-- Category -->
+                    <div class="form-group">
+
+                        <label for="expense-category">
+                            Category
+                        </label>
+
+                        <select id="expense-category" required>
+
+                            <option value="" disabled selected>
+                                Select Category
+                            </option>
+
+                            <option value="Food">
+                                Food
+                            </option>
+
+                            <option value="Travel">
+                                Travel
+                            </option>
+
+                            <option value="Shopping">
+                                Shopping
+                            </option>
+
+                            <option value="Bills">
+                                Bills
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <button type="submit" class="btn btn-gradient">
+
+                        ➕ Add Expense
+
+                    </button>
+
+                </form>
+
+            </div>
+
         </aside>
 
-        <!-- Main Content Area -->
+        <!-- ================= MAIN CONTENT ================= -->
+
         <main class="main-content">
-            <!-- Header section -->
+
+            <!-- Header -->
             <header class="main-header">
+
                 <div>
-                    <h1>Expense Tracker</h1>
-                    <p class="subtitle">Gain complete control over your finances</p>
+
+                    <h1>
+                        Expense Dashboard
+                    </h1>
+
+                    <p class="subtitle">
+                        Manage your money efficiently
+                    </p>
+
                 </div>
-                <div class="header-date" id="current-date">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                    <span id="date-text">Loading date...</span>
+
+                <div class="header-date">
+
+                    📅
+
+                    <span id="date-text">
+                        Loading...
+                    </span>
+
                 </div>
+
             </header>
 
-            <!-- Dashboard Statistics -->
+            <!-- Dashboard Cards -->
             <section class="dashboard-grid">
-                <div class="stat-card glass-panel income">
+
+                <!-- Income -->
+                <div class="stat-card income glass-panel">
+
                     <div class="stat-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                        💰
                     </div>
+
                     <div class="stat-details">
-                        <span class="stat-label">Total Income</span>
-                        <h2 class="stat-value" id="total-income">$0.00</h2>
+
+                        <span class="stat-label">
+                            Total Income
+                        </span>
+
+                        <h2 id="total-income">
+                            $0.00
+                        </h2>
+
                     </div>
+
                 </div>
 
-                <div class="stat-card glass-panel expenses">
+                <!-- Expenses -->
+                <div class="stat-card expenses glass-panel">
+
                     <div class="stat-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                        💳
                     </div>
+
                     <div class="stat-details">
-                        <span class="stat-label">Total Expenses</span>
-                        <h2 class="stat-value" id="total-expenses">$0.00</h2>
+
+                        <span class="stat-label">
+                            Total Expenses
+                        </span>
+
+                        <h2 id="total-expenses">
+                            $0.00
+                        </h2>
+
                     </div>
+
                 </div>
 
-                <div class="stat-card glass-panel balance">
+                <!-- Balance -->
+                <div class="stat-card balance glass-panel">
+
                     <div class="stat-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="12" y1="4" x2="12" y2="20"></line><line x1="2" y1="12" x2="22" y2="12"></line></svg>
+                        🏦
                     </div>
+
                     <div class="stat-details">
-                        <span class="stat-label">Net Balance</span>
-                        <h2 class="stat-value" id="net-balance">$0.00</h2>
+
+                        <span class="stat-label">
+                            Net Balance
+                        </span>
+
+                        <h2 id="net-balance">
+                            $0.00
+                        </h2>
+
                     </div>
+
                 </div>
+
+                <!-- Monthly Budget -->
+                <div class="stat-card budget glass-panel">
+
+                    <div class="stat-icon">
+                        🎯
+                    </div>
+
+                    <div class="stat-details">
+
+                        <span class="stat-label">
+                            Monthly Budget
+                        </span>
+
+                        <h2 id="monthly-budget">
+                            $0.00
+                        </h2>
+
+                    </div>
+
+                </div>
+
+                <!-- Budget Left -->
+                <div class="stat-card left glass-panel">
+
+                    <div class="stat-icon">
+                        📊
+                    </div>
+
+                    <div class="stat-details">
+
+                        <span class="stat-label">
+                            Budget Left
+                        </span>
+
+                        <h2 id="budget-left">
+                            $0.00
+                        </h2>
+
+                    </div>
+
+                </div>
+
             </section>
 
-            <!-- Middle Section: Breakdown & Filters -->
+            <!-- ================= TRANSACTIONS + ANALYTICS ================= -->
+
             <div class="tracker-layout">
-                <!-- Left: History & Filter -->
+
+                <!-- LEFT -->
                 <section class="history-section glass-panel">
+
                     <div class="section-header">
-                        <h3>Expense History</h3>
-                        <div class="filter-wrapper">
-                            <label for="category-filter" class="sr-only">Filter by Category</label>
-                            <div class="custom-select">
-                                <select id="category-filter">
-                                    <option value="All">All Categories</option>
-                                    <option value="Food">Food</option>
-                                    <option value="Travel">Travel</option>
-                                    <option value="Shopping">Shopping</option>
-                                    <option value="Bills">Bills</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </div>
-                        </div>
+
+                        <h3>
+                            Transaction History
+                        </h3>
+
+                    </div>
+
+                    <!-- Search -->
+                    <div class="search-wrapper">
+
+                        <input
+                            type="text"
+                            id="search-transaction"
+                            placeholder="Search transaction..."
+                        />
+
+                    </div>
+
+                    <!-- Filter -->
+                    <div class="filter-wrapper">
+
+                        <select id="category-filter">
+
+                            <option value="All">
+                                All Categories
+                            </option>
+
+                            <option value="Food">
+                                Food
+                            </option>
+
+                            <option value="Travel">
+                                Travel
+                            </option>
+
+                            <option value="Shopping">
+                                Shopping
+                            </option>
+
+                            <option value="Bills">
+                                Bills
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
                     </div>
 
                     <!-- Expense List -->
                     <div class="expense-list-container">
+
                         <div id="no-expenses" class="no-data-alert">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                            <p>No expenses found. Start by adding one in the sidebar!</p>
+
+                            <h4>
+                                No Expenses Yet
+                            </h4>
+
+                            <p>
+                                Start adding your expenses.
+                            </p>
+
                         </div>
+
                         <ul id="expense-list" class="expense-list">
-                            <!-- Populated dynamically via JS -->
+
+                            <!-- JS -->
+
                         </ul>
+
                     </div>
+
                 </section>
 
-                <!-- Right: Visual Insights -->
+                <!-- RIGHT -->
                 <section class="insights-section glass-panel">
-                    <h3>Category Breakdown</h3>
-                    
+
+                    <h3>
+                        Expense Analytics
+                    </h3>
+
                     <div class="insights-container">
-                        <!-- Chart visualization -->
+
+                        <!-- Donut Chart -->
                         <div class="chart-box">
-                            <svg class="donut-chart" viewBox="0 0 100 100">
-                                <circle class="donut-bg" cx="50" cy="50" r="40" fill="transparent" stroke-width="12"></circle>
-                                <circle class="donut-fill" id="chart-progress" cx="50" cy="50" r="40" fill="transparent" stroke-width="12" stroke-dasharray="251.2" stroke-dashoffset="251.2" transform="rotate(-90 50 50)"></circle>
+
+                            <svg
+                                class="donut-chart"
+                                viewBox="0 0 100 100"
+                            >
+
+                                <!-- Background -->
+                                <circle
+                                    class="donut-bg"
+                                    cx="50"
+                                    cy="50"
+                                    r="40"
+                                    fill="transparent"
+                                    stroke-width="12"
+                                >
+                                </circle>
+
+                                <!-- Progress -->
+                                <circle
+                                    class="donut-fill"
+                                    id="chart-progress"
+                                    cx="50"
+                                    cy="50"
+                                    r="40"
+                                    fill="transparent"
+                                    stroke-width="12"
+                                    stroke-dasharray="251.2"
+                                    stroke-dashoffset="251.2"
+                                    transform="rotate(-90 50 50)"
+                                >
+                                </circle>
+
                             </svg>
+
+                            <!-- Center Text -->
                             <div class="chart-text">
-                                <span class="chart-percentage" id="expense-ratio">0%</span>
-                                <span class="chart-label">of Income</span>
+
+                                <span
+                                    class="chart-percentage"
+                                    id="expense-ratio"
+                                >
+                                    0%
+                                </span>
+
+                                <span class="chart-label">
+                                    of Income
+                                </span>
+
                             </div>
+
                         </div>
 
-                        <!-- Legend with breakdown percentages -->
-                        <div class="legend" id="category-breakdown-legend">
-                            <!-- Generated dynamically via JS -->
-                            <div class="legend-placeholder">No data to display. Add expenses to view category breakdown.</div>
+                        <!-- Legend -->
+                        <div
+                            class="legend"
+                            id="category-breakdown-legend"
+                        >
+
+                            <div class="legend-placeholder">
+
+                                No analytics available yet.
+
+                            </div>
+
                         </div>
+
                     </div>
+
                 </section>
+
             </div>
+
         </main>
+
     </div>
-    
+
     <script src="script.js"></script>
+
 </body>
 </html>

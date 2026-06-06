@@ -300,28 +300,23 @@ body {
 
 .project-back-button {
   display: flex;
-
   align-items: center;
-
   gap: 10px;
-
   text-decoration: none;
-
-  padding: 12px 16px;
-
-  border-radius: 999px;
-
-  background: white;
-
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #1e293b;
+  color: #3b82f6;
+  border: 1px solid #3b82f6;
   box-shadow: 0 8px 20px rgba(0, 0, 0);
-
   font-weight: 600;
+  transition: all 0.2s ease;
 }
 
 .project-back-button:hover {
   transform: translateY(-2px);
-
-  background: #f5f5f5;
+  background: #3b82f6;
+  color: #fff;
 }
 
 /* =========================================================
@@ -474,6 +469,7 @@ body {
   font-weight: 800;
   margin-bottom: 16px;
   background: var(--heading-grad);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -1180,4 +1176,4 @@ select option {
   .brand {
     justify-content: center;
   }
-}
+
