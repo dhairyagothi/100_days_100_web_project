@@ -200,6 +200,17 @@
                   <option value="Low">🟢 Low</option>
                 </select>
               </div>
+<<<<<<< Updated upstream
+              <div class="input-select-wrapper">
+                <span class="data-label">Due Date</span>
+                <input
+                  type="date"
+                 id="task-date"
+                 class="input-select"
+                 >
+              </div>
+=======
+>>>>>>> Stashed changes
 
               <label for="task" class="sr-only">Task Description</label>
               <input
@@ -354,6 +365,19 @@
       const taskInput = document.getElementById("task");
       const categorySelect = document.getElementById("task-category");
       const prioritySelect = document.getElementById("task-priority");
+<<<<<<< Updated upstream
+      const dueDateInput = document.getElementById("task-date");
+      function renderKanban() {
+        // Clear lane contents safely before re-injecting fresh card nodes
+        document
+          .querySelectorAll(".kanban-column-drop-zone")
+          .forEach((zone) => (zone.innerHTML = ""));
+
+        tasks.forEach((task) => {
+          const laneDropTarget = document.getElementById(task.status);
+          if (!laneDropTarget) return;
+
+=======
 
       function renderKanban() {
         // Clear lane contents safely before re-injecting fresh card nodes
@@ -365,6 +389,7 @@
           const laneDropTarget = document.getElementById(task.status);
           if (!laneDropTarget) return;
 
+>>>>>>> Stashed changes
           const card = document.createElement("div");
           card.id = task.id;
           card.className = "kanban-task-card";
@@ -376,6 +401,16 @@
             <span style="font-size:0.65rem; font-weight:800; color:${task.priority === "High" ? "#ef4444" : task.priority === "Medium" ? "#f59e0b" : "#3b82f6"}">${task.priority || "Medium"}</span>
           </div>
           <p style="font-size:0.875rem; color:#fff; font-weight:500; line-height:1.4; word-break:break-word;">${task.title}</p>
+<<<<<<< Updated upstream
+          ${
+          task.dueDate
+          ? `<p style="font-size:0.75rem; color:#94a3b8; margin-top:6px;">
+         📅 ${task.dueDate}
+         </p>`
+         : ""
+         }
+=======
+>>>>>>> Stashed changes
           <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:10px; padding-top:8px; border-top:1px solid rgba(255,255,255,0.03);">
             <button onclick="deleteTaskNode('${task.id}')" style="background:transparent; border:none; color:#fca5a5; cursor:pointer; font-size:0.75rem; hover:text:#ef4444;">🗑️ Remove</button>
           </div>
@@ -441,6 +476,10 @@
           title: taskInput.value.trim(),
           category: categorySelect.value || "Others",
           priority: prioritySelect.value || "Medium",
+<<<<<<< Updated upstream
+          dueDate: dueDateInput.value,
+=======
+>>>>>>> Stashed changes
           status: "pending",
         };
 
@@ -451,6 +490,10 @@
         taskInput.value = "";
         categorySelect.selectedIndex = 0;
         prioritySelect.selectedIndex = 0;
+<<<<<<< Updated upstream
+        dueDateInput.value = "";
+=======
+>>>>>>> Stashed changes
       });
 
       // Remove item node card cleanly from array references mappings

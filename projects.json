@@ -1910,6 +1910,7 @@
   "techStack": ["html", "css", "javascript"],
   "difficulty": "intermediate",
   "projectDesc": "A responsive Kanban Board application featuring drag-and-drop task management, task creation, editing, deletion, local storage persistence, and dark/light theme support."
+<<<<<<< Updated upstream
 },
 {
   "projectNo": 210,
@@ -1942,10 +1943,25 @@
   "techStack": ["html", "css"],
   "difficulty": "intermediate",
   "projectDesc": "A responsive photography portfolio and gallery website designed to showcase visual content through structured layouts, image presentation sections, and modern styling. Features an engaging user interface optimized for desktop and mobile viewing."
-},
-
- {
-  "projectNo": 214,
+  },
+  {
+    "projectNo": 214,
+    "projectName": "AI Data Analyst",
+    "projectType": "Tool",
+    "projectDesc": "Upload CSV datasets and receive AI-powered exploratory data analysis, visualizations, correlation heatmaps, machine learning recommendations, AI-generated insights, and interactive dataset Q&A.",
+    "techStack": [
+      "javascript",
+      "ai",
+      "machine-learning",
+      "data-analysis",
+      "charts",
+      "api"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/AI-Data-Analyst/"
+  },
+  {
+  "projectNo": 215,
   "projectName": "Image Steganography Tool",
   "projectType": "Tool",
   "projectDesc": "A web-based tool that hides and extracts secret messages inside images using steganography techniques.",
@@ -1954,3 +1970,7 @@
   "projectPath": "./public/ImageSteganographyTool/index.html"
  }
 ]
+=======
+}
+]
+>>>>>>> Stashed changes
