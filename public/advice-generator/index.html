@@ -33,6 +33,26 @@
           </svg>
         </a>
 
+        <button id="copyBtn" class="action-btn utility-btn" title="Copy Advice">
+          📋
+        </button>
+
+        <button
+          id="favoriteBtn"
+          class="action-btn utility-btn"
+          title="Save Favorite"
+        >
+          ❤️
+        </button>
+
+        <button
+          id="viewFavoritesBtn"
+          class="action-btn utility-btn"
+          title="View Favorites"
+        >
+          ⭐
+        </button>
+
         <button
           id="diceBtn"
           class="action-btn dice-btn"
@@ -58,6 +78,12 @@
         </button>
       </footer>
     </main>
+    <div id="toast" class="toast"></div>
+
+    <section class="favorites-panel" id="favoritesPanel">
+      <h2>Saved Advice</h2>
+      <ul id="favoritesList"></ul>
+    </section>
     <script src="script.js"></script>
   </body>
 </html>
