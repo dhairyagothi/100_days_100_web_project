@@ -1,3 +1,464 @@
+// ===== CART =====
+const cartIcon = document.querySelector('#cart-icon');
+const cart = document.querySelector('#cart');
+const cartClose = document.querySelector('#cart-close');
+
+cartIcon.addEventListener('click', () => cart.classList.add('open'));
+cartClose.addEventListener('click', () => cart.classList.remove('open'));
+
+document.addEventListener('DOMContentLoaded', init);
+
+function init() {
+  bindCart();
+  animateCards();
+document.addEventListener('DOMContentLoaded',loadshoe);
+
+function loadshoe(){
+
+  itemList.forEach((product) => {
+
+    let newProductElement = createCartProduct(
+      product.title,
+      product.price,
+      product.imgSrc,
+      product.remove_shoe
+    );
+
+    let element = document.createElement('div');
+    element.innerHTML = newProductElement;
+
+    let cartBasket = document.querySelector('.cart-content');
+    cartBasket.append(element);
+  });
+
+  loadContent();
+}
+
+function loadContent(){
+  //Remove shoe Items From Cart
+  let btnRemove=document.querySelectorAll('.cart-remove');
+  btnRemove.forEach((btn)=>{
+    btn.addEventListener('click',removeItem);
+  });
+
+  //Product Item Change Event
+  let qtyElements=document.querySelectorAll('.cart-quantity');
+  qtyElements.forEach((input)=>{
+    input.addEventListener('change',changeQty);
+  });
+
+  // Product Cart
+let cartBtns = document.querySelectorAll('.add-cart');
+
+cartBtns.forEach((btn) => {
+  btn.addEventListener('click', addCart);
+});
+
+// Wishlist Buttons
+let wishlistBtns = document.querySelectorAll('.wishlist-btn');
+
+wishlistBtns.forEach((btn) => {
+  btn.addEventListener('click', toggleWishlist);
+});
+
+function bindCart() {
+  document.querySelectorAll('.cart-remove').forEach(b => b.addEventListener('click', removeItem));
+  document.querySelectorAll('.cart-quantity').forEach(i => i.addEventListener('change', changeQty));
+  document.querySelectorAll('.qty-minus').forEach(b => b.addEventListener('click', decQty));
+  document.querySelectorAll('.qty-plus').forEach(b => b.addEventListener('click', incQty));
+  document.querySelectorAll('.card-add').forEach(b => b.addEventListener('click', addCart));
+  updateTotal();
+}
+
+function removeItem() {
+  if (!confirm('Remove this item?')) return;
+  const title = this.parentElement.querySelector('.cart-shoe-title').textContent;
+  itemList = itemList.filter(el => el.title !== title);
+  this.parentElement.remove();
+  bindCart();
+}
+
+function changeQty() {
+  if (isNaN(this.value) || this.value < 1) this.value = 1;
+  bindCart();
+}
+
+let itemList=[];
+let wishlist = [];
+
+//Add Cart
+function toggleWishlist() {
+  const card = this.closest('.shoe-box');
+  const title = card.querySelector('.shoe-title').textContent;
+
+  if (wishlist.includes(title)) {
+    wishlist = wishlist.filter(item => item !== title);
+    this.classList.remove('active');
+  } else {
+    wishlist.push(title);
+    this.classList.add('active');
+  }
+
+  updateWishlistCount();
+}
+function updateWishlistCount() {
+  const count = document.querySelector('#wishlist-count');
+
+  count.textContent = wishlist.length;
+
+  if (wishlist.length === 0) {
+    count.style.display = 'none';
+  } else {
+    count.style.display = 'block';
+  }
+}
+function addCart(){
+  let shoe=this.parentElement;
+  let title=shoe.querySelector('.shoe-title').innerHTML;
+  let price=shoe.querySelector('.shoe-price').innerHTML;
+  let imgSrc=shoe.querySelector('.shoe-img').src;
+function decQty() {
+  const input = this.parentElement.querySelector('.cart-quantity');
+  const v = parseInt(input.value) || 1;
+  if (v > 1) input.value = v - 1;
+  bindCart();
+}
+
+function incQty() {
+  const input = this.parentElement.querySelector('.cart-quantity');
+  const v = parseInt(input.value) || 1;
+  input.value = v + 1;
+  bindCart();
+}
+
+let itemList = [];
+
+function addCart() {
+  const card = this.closest('.card');
+  const title = card.querySelector('.card-title').textContent;
+  const raw = card.querySelector('.card-price').textContent;
+  const price = raw.replace(/,/g, '');
+  const imgSrc = card.querySelector('.card-img').src;
+  const removeSrc = card.querySelector('.card-remove').src;
+
+  if (itemList.some(el => el.title === title)) {
+    alert('Already in cart');
+    return;
+updateTotal();
+}
+
+
+//Remove Item
+function removeItem(){
+  if(confirm('Are Your Sure to Remove')){
+    let title=this.parentElement.querySelector('.cart-shoe-title').innerHTML;
+    itemList=itemList.filter(el=>el.title!=title);
+    localStorage.setItem("cartItems", JSON.stringify(itemList));
+    this.parentElement.remove();
+    loadContent();
+  }
+}
+
+//Change Quantity
+function changeQty(){
+  if(isNaN(this.value) || this.value<1){
+    this.value=1;
+  }
+  localStorage.setItem("cartItems", JSON.stringify(itemList));
+  loadContent();
+}
+
+let itemList = JSON.parse(localStorage.getItem("cartItems")) || [];
+let wishlist = [];
+
+//Add Cart
+function toggleWishlist() {
+  const card = this.closest('.shoe-box');
+  const title = card.querySelector('.shoe-title').textContent;
+
+  if (wishlist.includes(title)) {
+    wishlist = wishlist.filter(item => item !== title);
+    this.classList.remove('active');
+  } else {
+    wishlist.push(title);
+    this.classList.add('active');
+  }
+
+  updateWishlistCount();
+}
+function updateWishlistCount() {
+  const count = document.querySelector('#wishlist-count');
+
+  count.textContent = wishlist.length;
+
+  if (wishlist.length === 0) {
+    count.style.display = 'none';
+  } else {
+    count.style.display = 'block';
+  }
+}
+function addCart(){
+  let shoe=this.parentElement;
+  let title=shoe.querySelector('.shoe-title').innerHTML;
+  let price=shoe.querySelector('.shoe-price').innerHTML;
+  let imgSrc=shoe.querySelector('.shoe-img').src;
+document.addEventListener('DOMContentLoaded', init);
+
+function init() {
+  bindCart();
+  animateCards();
+}
+
+function bindCart() {
+  document.querySelectorAll('.cart-remove').forEach(b => b.addEventListener('click', removeItem));
+  document.querySelectorAll('.cart-quantity').forEach(i => i.addEventListener('change', changeQty));
+  document.querySelectorAll('.qty-minus').forEach(b => b.addEventListener('click', decQty));
+  document.querySelectorAll('.qty-plus').forEach(b => b.addEventListener('click', incQty));
+  document.querySelectorAll('.card-add').forEach(b => b.addEventListener('click', addCart));
+  updateTotal();
+}
+
+function removeItem() {
+  if (!confirm('Remove this item?')) return;
+  const title = this.parentElement.querySelector('.cart-shoe-title').textContent;
+  itemList = itemList.filter(el => el.title !== title);
+  this.parentElement.remove();
+  bindCart();
+}
+
+function changeQty() {
+  if (isNaN(this.value) || this.value < 1) this.value = 1;
+  bindCart();
+}
+
+function decQty() {
+  const input = this.parentElement.querySelector('.cart-quantity');
+  const v = parseInt(input.value) || 1;
+  if (v > 1) input.value = v - 1;
+  bindCart();
+}
+
+function incQty() {
+  const input = this.parentElement.querySelector('.cart-quantity');
+  const v = parseInt(input.value) || 1;
+  input.value = v + 1;
+  bindCart();
+}
+
+let itemList = [];
+
+function addCart() {
+  const card = this.closest('.card');
+  const title = card.querySelector('.card-title').textContent;
+  const raw = card.querySelector('.card-price').textContent;
+  const price = raw.replace(/,/g, '');
+  const imgSrc = card.querySelector('.card-img').src;
+  const removeSrc = card.querySelector('.card-remove').src;
+
+ //Check Product already Exist in Cart
+  if(itemList.find((el)=>el.title==newProduct.title)){
+  alert("Product Already added in Cart");
+  return;
+  }else{
+  itemList.push(newProduct);
+  localStorage.setItem("cartItems", JSON.stringify(itemList));
+  if (itemList.some(el => el.title === title)) {
+    alert('Already in cart');
+    return;
+function showToast(message){
+
+  const toast = document.createElement('div');
+
+  toast.classList.add('toast');
+
+  toast.innerText = message;
+
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.classList.add('show');
+  }, 100);
+
+  setTimeout(() => {
+    toast.classList.remove('show');
+
+    setTimeout(() => {
+      toast.remove();
+    }, 400);
+
+  }, 3000);
+}
+
+
+//Remove Item
+function removeItem(){
+  if(confirm('Are Your Sure to Remove')){
+    let title=this.parentElement.querySelector('.cart-shoe-title').innerHTML;
+    itemList=itemList.filter(el=>el.title!=title);
+    localStorage.setItem("cartItems", JSON.stringify(itemList));
+    this.parentElement.remove();
+    showToast("Product removed from cart");
+    loadContent();
+  }
+}
+
+//Change Quantity
+function changeQty(){
+  if(isNaN(this.value) || this.value<1){
+    this.value=1;
+  }
+  localStorage.setItem("cartItems", JSON.stringify(itemList));
+  loadContent();
+}
+
+let itemList = JSON.parse(localStorage.getItem("cartItems")) || [];
+let wishlist = [];
+
+//Add Cart
+function toggleWishlist() {
+  const card = this.closest('.shoe-box');
+  const title = card.querySelector('.shoe-title').textContent;
+
+  if (wishlist.includes(title)) {
+    wishlist = wishlist.filter(item => item !== title);
+    this.classList.remove('active');
+    showToast("Removed from wishlist");
+  } else {
+    wishlist.push(title);
+    this.classList.add('active');
+    showToast("Added to wishlist");
+  }
+
+  updateWishlistCount();
+}
+function updateWishlistCount() {
+  const count = document.querySelector('#wishlist-count');
+
+  count.textContent = wishlist.length;
+
+  if (wishlist.length === 0) {
+    count.style.display = 'none';
+  } else {
+    count.style.display = 'block';
+  }
+}
+function addCart(){
+  let shoe=this.parentElement;
+  let title=shoe.querySelector('.shoe-title').innerHTML;
+  let price=shoe.querySelector('.shoe-price').innerHTML;
+  let imgSrc=shoe.querySelector('.shoe-img').src;
+document.addEventListener('DOMContentLoaded', init);
+
+function init() {
+  bindCart();
+  animateCards();
+}
+
+function bindCart() {
+  document.querySelectorAll('.cart-remove').forEach(b => b.addEventListener('click', removeItem));
+  document.querySelectorAll('.cart-quantity').forEach(i => i.addEventListener('change', changeQty));
+  document.querySelectorAll('.qty-minus').forEach(b => b.addEventListener('click', decQty));
+  document.querySelectorAll('.qty-plus').forEach(b => b.addEventListener('click', incQty));
+  document.querySelectorAll('.card-add').forEach(b => b.addEventListener('click', addCart));
+  updateTotal();
+}
+
+function removeItem() {
+  if (!confirm('Remove this item?')) return;
+  const title = this.parentElement.querySelector('.cart-shoe-title').textContent;
+  itemList = itemList.filter(el => el.title !== title);
+  this.parentElement.remove();
+  bindCart();
+}
+
+function changeQty() {
+  if (isNaN(this.value) || this.value < 1) this.value = 1;
+  bindCart();
+}
+
+function decQty() {
+  const input = this.parentElement.querySelector('.cart-quantity');
+  const v = parseInt(input.value) || 1;
+  if (v > 1) input.value = v - 1;
+  bindCart();
+}
+
+function incQty() {
+  const input = this.parentElement.querySelector('.cart-quantity');
+  const v = parseInt(input.value) || 1;
+  input.value = v + 1;
+  bindCart();
+}
+
+let itemList = [];
+
+function addCart() {
+  const card = this.closest('.card');
+  const title = card.querySelector('.card-title').textContent;
+  const raw = card.querySelector('.card-price').textContent;
+  const price = raw.replace(/,/g, '');
+  const imgSrc = card.querySelector('.card-img').src;
+  const removeSrc = card.querySelector('.card-remove').src;
+
+ //Check Product already Exist in Cart
+  if(itemList.find((el)=>el.title==newProduct.title)){
+  showToast("Product already added to cart");
+  return;
+  }else{
+  itemList.push(newProduct);
+  showToast("Product added to cart");
+  localStorage.setItem("cartItems", JSON.stringify(itemList));
+  if (itemList.some(el => el.title === title)) {
+    alert('Already in cart');
+    return;
+/* Consolidated cart + wishlist + search + UI script
+   - cart panel (add/remove/qty/total)
+   - wishlist toggle + count
+   - product search filter
+   - quick-view modal
+   - checkout modal (basic validation)
+   - clear cart button
+   - dark-mode toggle (persisted)
+*/
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Elements
+  const cartPanel = document.getElementById('cart-panel');
+  const cartOverlay = document.getElementById('cart-overlay');
+  const cartBody = document.getElementById('cart-body');
+  const cartEmpty = document.getElementById('cart-empty');
+  const cartBadge = document.getElementById('cart-badge');
+  const cartPillCount = document.querySelector('.cart-pill-count');
+  const wishlistCountEl = document.getElementById('wishlist-count');
+  const openCartBtn = document.getElementById('open-cart');
+  const cartCloseBtn = document.getElementById('cart-close');
+  const noProductsMessage = document.getElementById('no-products-message');
+
+  let itemList = [];
+  let wishlist = [];
+
+  function showToast(msg) {
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.textContent = msg;
+    Object.assign(t.style, {
+      position: 'fixed',
+      right: '20px',
+      bottom: '20px',
+      background: '#222',
+      color: '#fff',
+      padding: '10px 14px',
+      borderRadius: '8px',
+      zIndex: 99999,
+      opacity: 0,
+      transition: 'opacity .18s',
+    });
+    document.body.appendChild(t);
+    requestAnimationFrame(() => (t.style.opacity = '1'));
+    setTimeout(() => {
+      t.style.opacity = '0';
+      setTimeout(() => t.remove(), 200);
+    }, 2500);
 /* ===========================
    AEROSTRIDE — index.js
    Full E-Commerce Functionality

@@ -426,20 +426,22 @@ async function downloadCard(format = 'png') {
     await waitForImages(elements.card);
     await nextFrame();
     
-    canvas = await html2canvas(elements.card, {
-      backgroundColor: format === 'jpg' ? '#ffffff' : null,
-      scale: 2,
-      useCORS: true,
-      allowTaint: true,
-      scrollX: 0,
-      scrollY: 0,
-      logging: false,
-      onclone: (clonedDoc) => {
-        clonedDoc.body.classList.add('is-exporting');
-        const c = clonedDoc.querySelector('#profileCard');
-        if (c) c.classList.add('is-exporting');
-      },
-    });
+    const rawCanvas = await html2canvas(elements.card, {
+  backgroundColor: format === 'jpg' ? '#ffffff' : null,
+  scale: 2,
+  useCORS: true,
+  allowTaint: true,
+  scrollX: 0,
+  scrollY: 0,
+  logging: false,
+  onclone: (clonedDoc) => {
+    clonedDoc.body.classList.add('is-exporting');
+    const c = clonedDoc.querySelector('#profileCard');
+    if (c) c.classList.add('is-exporting');
+  },
+});
+
+canvas = roundCanvasCorners(rawCanvas, 72);
 
     const slug = getDisplayValue(state.name, 'profile').toLowerCase().replace(/\s+/g, '-');
 
@@ -514,6 +516,36 @@ function waitForImages(container) {
     );
 
   return Promise.all(pendingImages);
+}
+
+function roundCanvasCorners(sourceCanvas, radius = 36) {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+
+  canvas.width = sourceCanvas.width;
+  canvas.height = sourceCanvas.height;
+
+  ctx.beginPath();
+  ctx.moveTo(radius, 0);
+  ctx.lineTo(canvas.width - radius, 0);
+  ctx.quadraticCurveTo(canvas.width, 0, canvas.width, radius);
+  ctx.lineTo(canvas.width, canvas.height - radius);
+  ctx.quadraticCurveTo(
+    canvas.width,
+    canvas.height,
+    canvas.width - radius,
+    canvas.height
+  );
+  ctx.lineTo(radius, canvas.height);
+  ctx.quadraticCurveTo(0, canvas.height, 0, canvas.height - radius);
+  ctx.lineTo(0, radius);
+  ctx.quadraticCurveTo(0, 0, radius, 0);
+  ctx.closePath();
+
+  ctx.clip();
+  ctx.drawImage(sourceCanvas, 0, 0);
+
+  return canvas;
 }
 
 function handleCardTilt(event) {
