@@ -1,128 +1,299 @@
+/* =========================
+   RESET
+========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* =========================
+   BACKGROUND (ENHANCED PREMIUM GLOW)
+========================= */
 body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: rgba(37, 41, 88);
-    background-position: center; 
+  min-height: 100vh;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  overflow-x: hidden;
+  transition: 0.4s ease;
+
+  position: relative;
 }
 
+/* DARK MODE */
+body.dark {
+  background: linear-gradient(135deg, #0b0f19, #111827, #0f172a);
+}
+
+/* SOFT ANIMATED ORBS (IMPROVED) */
+body::before,
+body::after {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.35;
+  z-index: -1;
+  animation: floatGlow 10s ease-in-out infinite alternate;
+}
+
+body::before {
+  background: radial-gradient(circle, rgba(0,255,255,0.35), transparent 70%);
+  top: 5%;
+  left: 5%;
+}
+
+body::after {
+  background: radial-gradient(circle, rgba(255,0,150,0.25), transparent 70%);
+  bottom: 5%;
+  right: 5%;
+  animation-delay: 2s;
+}
+
+@keyframes floatGlow {
+  0% { transform: translateY(0px) scale(1); }
+  100% { transform: translateY(20px) scale(1.05); }
+}
+
+/* =========================
+   BACK BUTTON (IMPROVED)
+========================= */
+.back-btn {
+  align-self: flex-start;
+  margin-bottom: 20px;
+
+  padding: 10px 16px;
+  border-radius: 12px;
+
+  text-decoration: none;
+  color: #ffffff;
+
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
+  transition: 0.3s ease;
+}
+
+.back-btn:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* =========================
+   THEME BUTTON (ENHANCED)
+========================= */
+.theme-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+
+  border: 1px solid rgba(255,255,255,0.2);
+  cursor: pointer;
+
+  font-size: 20px;
+
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+
+  color: white;
+
+  transition: 0.3s ease;
+}
+
+.theme-btn:hover {
+  transform: scale(1.12) rotate(8deg);
+}
+
+/* =========================
+   MAIN WRAPPER
+========================= */
+.wrapper {
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* =========================
+   GLASS CARDS (IMPROVED DEPTH)
+========================= */
 .container {
-    text-align: center;
-    padding-right: 20px;
-    margin: 10px;
-    background-color:white;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); 
-    border-radius: 12px; 
-    max-width: 500px; 
-    width: 100%;
-    position:relative;
+  width: 420px;
+  max-width: 100%;
+
+  padding: 26px;
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+
+  transition: all 0.35s ease;
 }
 
-.title { 
-    font-size: 2.5em; 
-    margin-bottom: 20px;
-    color: #1352c7; 
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+.container:hover {
+  transform: translateY(-8px);
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255,255,255,0.08);
 }
-.textarea1{
-    width: 100%;
-    height: 150px;
-    margin-bottom: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.9);
-    resize: vertical;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
+/* =========================
+   HEADINGS
+========================= */
+h1 {
+  text-align: center;
+  margin-bottom: 18px;
+
+  font-size: 20px;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+/* =========================
+   LABELS
+========================= */
+label {
+  display: block;
+  margin: 12px 0 6px;
+
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+/* =========================
+   INPUTS (FIX + POLISH)
+========================= */
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  outline: none;
+
+  background: rgba(255, 255, 255, 0.92);
+  color: #111;
+
+  font-size: 14px;
+
+  transition: 0.2s ease;
+}
+
+/* IMPORTANT UX FIX */
+select:focus,
+textarea:focus {
+  border: 1px solid #00c6ff;
+  box-shadow: 0 0 0 3px rgba(0,198,255,0.25);
+}
+
+/* dropdown fix */
+select option {
+  background: #111827;
+  color: #fff;
+}
+
+textarea {
+  min-height: 150px;
+  resize: none;
+}
+
+/* =========================
+   BUTTONS (MODERN FEEL)
+========================= */
+.btn-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  flex-wrap: wrap;
 }
 
 button {
-    padding: 10px 20px;
-    font-size: 16px;
-    margin-top: 10px;
-    cursor: pointer;
-    background-color:rgba(51, 110, 123);
-    color: white;
-    border: none;
-    border-radius: 8px; 
-    transition: background-color 0.3s ease; 
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  flex: 1;
+  padding: 11px;
+
+  border: none;
+  border-radius: 12px;
+
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  color: white;
+
+  transition: 0.25s ease;
+
+  box-shadow: 0 8px 18px rgba(0, 114, 255, 0.25);
 }
 
 button:hover {
-    background-color: #21b029; 
+  transform: translateY(-2px) scale(1.03);
+  filter: brightness(1.1);
 }
 
+/* STOP BUTTON */
+.stop-btn {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+}
+
+/* DISABLED */
 button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+  background: #555;
+  cursor: not-allowed;
+  transform: none;
+  opacity: 0.6;
 }
 
-.whole{
-    display: flex;
-   align-content: center;
+/* =========================
+   INFO TEXT
+========================= */
+#char-count,
+#speaking-status,
+#listening-status {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #cbd5e1;
+  transition: 0.3s ease;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container {
     width: 100%;
-    background-color: rgba(11, 127, 171);
-}
-.container2 {
-    text-align: center;
-    background-color:white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    position:relative;
-    margin: 10px;
-    width:100%;
-}
+  }
 
-h1 {
-    margin-bottom: 20px;
-}
-
-button {
-    padding: 10px 20px;
-    margin: 10px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-#start-btn {
-    background-color:rgba(51, 110, 123);
-    color: white;
-}
-#start-btn:hover {
-    background-color: #21b029; 
-}
-
-#stop-btn-text, #stop-btn-voice {
-    background-color: #f44336;
-    color: white;
-}
-
-.textarea2 {
-    width: 100%;
-    height: 150px;
-    margin-top: 20px;   
-     font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: none;
-}
-
-textarea{
-    border-color: black;
-}
-
-#language {
-    margin-bottom: 10px;
-    padding: 8px;
-    font-size: 14px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    cursor: pointer;
+  .btn-group {
+    flex-direction: column;
+  }
 }

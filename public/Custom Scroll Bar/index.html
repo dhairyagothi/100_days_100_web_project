@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Custom Scroll Bar | 100 Days 100 Projects</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0f0f0f;
+      color: #f0f0f0;
+    }
+
+    /* ===== CUSTOM SCROLLBAR ===== */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #1a1a1a;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #6c63ff, #a78bfa);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #a78bfa, #6c63ff);
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      position: sticky;
+      top: 0;
+      background: #0f0f0f;
+      border-bottom: 1px solid #2a2a2a;
+      padding: 20px 40px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    header span {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    header .dot1 { background: #ff5f57; }
+    header .dot2 { background: #ffbd2e; }
+    header .dot3 { background: #28c840; }
+
+    header h1 {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #888;
+      margin-left: 10px;
+      letter-spacing: 0.05em;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: 80px 40px 60px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h2 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #6c63ff, #a78bfa, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: #888;
+      line-height: 1.8;
+      max-width: 560px;
+    }
+
+    /* ===== SCROLLBAR VARIANTS ===== */
+    .section {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 40px;
+    }
+
+    .section h3 {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #6c63ff;
+      margin-bottom: 24px;
+    }
+
+    .scroll-box {
+      height: 200px;
+      overflow-y: scroll;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+
+    .scroll-box p {
+      font-size: 0.95rem;
+      color: #aaa;
+      line-height: 1.9;
+    }
+
+    /* Variant 1 — Purple gradient (default page scrollbar) */
+    .box1::-webkit-scrollbar { width: 6px; }
+    .box1::-webkit-scrollbar-track { background: #111; border-radius: 10px; }
+    .box1::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #6c63ff, #a78bfa); border-radius: 10px; }
+    .box1::-webkit-scrollbar-thumb:hover { background: #a78bfa; }
+
+    /* Variant 2 — Cyan neon */
+    .box2::-webkit-scrollbar { width: 6px; }
+    .box2::-webkit-scrollbar-track { background: #111; border-radius: 10px; }
+    .box2::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #06b6d4, #22d3ee); border-radius: 10px; }
+    .box2::-webkit-scrollbar-thumb:hover { background: #22d3ee; }
+
+    /* Variant 3 — Pink rose */
+    .box3::-webkit-scrollbar { width: 6px; }
+    .box3::-webkit-scrollbar-track { background: #111; border-radius: 10px; }
+    .box3::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #ec4899, #f9a8d4); border-radius: 10px; }
+    .box3::-webkit-scrollbar-thumb:hover { background: #f9a8d4; }
+
+    /* Variant 4 — Amber gold */
+    .box4::-webkit-scrollbar { width: 6px; }
+    .box4::-webkit-scrollbar-track { background: #111; border-radius: 10px; }
+    .box4::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #f59e0b, #fcd34d); border-radius: 10px; }
+    .box4::-webkit-scrollbar-thumb:hover { background: #fcd34d; }
+
+    .label {
+      font-size: 0.8rem;
+      color: #555;
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    /* ===== CODE BLOCK ===== */
+    .code-section {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px 40px 80px;
+    }
+
+    .code-section h3 {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #6c63ff;
+      margin-bottom: 20px;
+    }
+
+    pre {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 24px;
+      font-size: 0.85rem;
+      color: #a78bfa;
+      overflow-x: auto;
+      line-height: 1.8;
+      font-family: 'Courier New', monospace;
+    }
+
+    .tag { color: #6c63ff; }
+    .value { color: #34d399; }
+    .comment { color: #555; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      text-align: center;
+      padding: 30px;
+      font-size: 0.8rem;
+      color: #333;
+      border-top: 1px solid #1a1a1a;
+    }
+
+.project-back-button{
+  position:fixed;
+  top:10px;
+  right:24px;
+  z-index:9999;
+
+  padding:8px 16px;
+
+  border-radius:8px;
+
+  background:#1e293b;
+
+  color:#3b82f6;
+  text-decoration:none;
+
+  font-size:0.85rem;
+  font-weight:600;
+  letter-spacing:.04em;
+
+  border:1px solid #3b82f6;
+
+  transition:all 0.2s ease;
+}
+
+.project-back-button:hover{
+  background:#3b82f6;
+  color:#fff;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+  .project-back-button{
+    top:18px;
+    right:18px;
+
+    padding:8px 15px;
+
+    font-size:.75rem;
+  }
+
+}
+  </style>
+</head>
+<body>
+<a href="/" class="project-back-button">
+  ← Back To Home
+</a>
+
+
+  <header>
+    <span class="dot1"></span>
+    <span class="dot2"></span>
+    <span class="dot3"></span>
+    <h1>Day 16 — Custom Scroll Bar</h1>
+  </header>
+
+  <div class="hero">
+    <h2>Custom CSS Scrollbars</h2>
+    <p>Four handcrafted scrollbar styles built with pure CSS. Scroll inside each box to preview the effect. No JavaScript required.</p>
+  </div>
+
+  <div class="section">
+    <h3>Scrollbar Variants</h3>
+    <div class="grid">
+
+      <div>
+        <p class="label">Purple Gradient</p>
+        <div class="scroll-box box1">
+          <p>Scrollbars can be fully customised using the webkit scrollbar CSS properties. This variant uses a purple to violet gradient giving it a modern and sleek look. Keep scrolling to see the thumb in full motion. The track stays dark while the thumb glides smoothly along the rail. This is one of the most popular scrollbar styles used in dark themed developer tools and portfolio websites.</p>
+        </div>
+      </div>
+
+      <div>
+        <p class="label">Cyan Neon</p>
+        <div class="scroll-box box2">
+          <p>This variant uses a cyan neon color scheme that works well with dark backgrounds. It gives a futuristic and tech focused appearance commonly seen in hacker themed UI designs. The scrollbar thumb has a soft glow feel when combined with a dark track. Scroll through this box to experience how the thumb transitions from a deep cyan to a bright aqua tone on hover.</p>
+        </div>
+      </div>
+
+      <div>
+        <p class="label">Pink Rose</p>
+        <div class="scroll-box box3">
+          <p>The pink rose variant brings a soft and elegant aesthetic to the scrollbar. This style is commonly used in creative portfolios, beauty or fashion themed websites, and any UI that targets a softer visual language. The gradient runs from a deep pink to a light blush making it feel warm and inviting. Scroll down inside this box to see the thumb travel along the dark track.</p>
+        </div>
+      </div>
+
+      <div>
+        <p class="label">Amber Gold</p>
+        <div class="scroll-box box4">
+          <p>Amber gold scrollbars add a premium and luxurious feel to any dark themed interface. This variant is well suited for finance dashboards, luxury brand websites, and editorial content platforms. The gradient moves from a warm amber to a bright golden yellow creating a rich and confident look. Scroll through this box to see the thumb animate from top to bottom.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="code-section">
+    <h3>How It Works</h3>
+    <pre>
+<span class="comment">/* Custom scrollbar using CSS only */</span>
+
+<span class="tag">::-webkit-scrollbar</span> {
+  <span class="tag">width</span>: <span class="value">6px</span>;
+}
+
+<span class="tag">::-webkit-scrollbar-track</span> {
+  <span class="tag">background</span>: <span class="value">#111</span>;
+  <span class="tag">border-radius</span>: <span class="value">10px</span>;
+}
+
+<span class="tag">::-webkit-scrollbar-thumb</span> {
+  <span class="tag">background</span>: <span class="value">linear-gradient(180deg, #6c63ff, #a78bfa)</span>;
+  <span class="tag">border-radius</span>: <span class="value">10px</span>;
+}
+
+<span class="tag">::-webkit-scrollbar-thumb:hover</span> {
+  <span class="tag">background</span>: <span class="value">#a78bfa</span>;
+}
+    </pre>
+  </div>
+
+  <footer>
+    100 Days 100 Web Projects — Day 16
+  </footer>
+
+</body>
+</html>
