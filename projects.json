@@ -1958,5 +1958,13 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/AI-Data-Analyst/"
+  },
+  {
+    "projectNo": 215,
+    "projectName": "CSS Animation Playground",
+    "projectPath": "./public/CSS-Animation-Playground/index.html",
+    "techStack": ["html", "css", "javascript"],
+    "difficulty": "intermediate",
+    "projectDesc": "An interactive visual CSS animation builder with live preview, keyframe timeline editor, 12+ preset animations, multiple preview shapes, code generation with syntax highlighting, and a stunning dark neon glassmorphism UI."
   }
 ]
