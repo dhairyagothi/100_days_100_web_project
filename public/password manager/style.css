@@ -189,6 +189,27 @@ tr:hover{
 }
 
 /* -------------------- */
+/* Search Bar */
+/* -------------------- */
+
+#searchPassword{
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: #0f172a;
+    color: white;
+    font-size: 1rem;
+}
+
+#searchPassword:focus{
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(99,102,241,0.2);
+}
+
+/* -------------------- */
 /* Buttons */
 /* -------------------- */
 
@@ -302,15 +323,34 @@ tr:hover{
 #togglePassword{
     position: absolute;
     right: 18px;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 18%;
     cursor: pointer;
-    color: var(--muted);
+    color: var(--primary);
     transition: 0.3s;
 }
 
 #togglePassword:hover{
     color: white;
+}
+
+/* -------------------- */
+/* Password Requirements */
+/* -------------------- */
+
+#passwordStrength{
+    margin-top: 8px;
+    font-weight: 600;
+}
+
+#passwordRequirements{
+    display: none;
+    margin-top: 10px;
+}
+
+#passwordRequirements p{
+    margin: 4px 0;
+    font-size: 0.95rem;
+    color: var(--text);
 }
 
 /* -------------------- */

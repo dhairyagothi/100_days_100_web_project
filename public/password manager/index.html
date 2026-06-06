@@ -82,6 +82,12 @@
             </div>
 
             <div class="table-container">
+                
+                <input
+                    type="text"
+                    id="searchPassword"
+                    placeholder="🔍 Search by website or username"
+                />
 
                 <table>
 
@@ -172,6 +178,27 @@
                             placeholder="Enter password"
                             required
                         />
+                        <div id="passwordStrength"></div>
+
+                        <div id="passwordRequirements">
+
+                        <p id="lengthReq">❌ At least 8 characters</p>
+
+                        <p id="upperReq">❌ One uppercase letter</p>
+
+                        <p id="numberReq">❌ One number</p>
+
+                        <p id="specialReq">❌ One special character</p>
+
+                    </div>
+                    
+                    <button
+                        type="button"
+                        id="generatePassword"
+                    >
+                        Generate Strong Password
+                    </button>
+                
 
                         <span id="togglePassword">
 
