@@ -3465,3 +3465,68 @@ Thanks to all these amazing people who have contributed to this project:
 [![Star History Chart](https://api.star-history.com/svg?repos=dhairyagothi/100_days_100_web_project&type=Date)](https://star-history.com/#dhairyagothi/100_days_100_web_project&Date)
 
 </div>
+
+# Open Weather Forecast App
+
+## Description
+
+Open Weather Forecast App is a responsive web application that provides real-time weather information for any city using the OpenWeather API.
+
+## Features
+
+* Search weather by city name
+* Display current temperature
+* Display feels-like temperature
+* Display humidity
+* Display wind speed
+* Show weather condition and description
+* Show weather icon
+* Error handling for invalid city names
+* Responsive user interface
+* Search using Enter key
+
+## Technologies Used
+
+* HTML5
+* CSS3
+* JavaScript
+* OpenWeather API
+
+## Project Structure
+
+OpenWeatherForecastApp/
+├── index.html
+├── style.css
+├── script.js
+└── README.md
+
+## How to Run
+
+1. Clone the repository.
+2. Navigate to the project folder.
+3. Open `script.js`.
+4. Replace:
+
+```javascript
+const API_KEY = "YOUR_API_KEY";
+```
+
+with your OpenWeather API key.
+
+5. Open `index.html` in a browser.
+
+## API Used
+
+OpenWeather API: https://openweathermap.org/api
+
+## Future Enhancements
+
+* 5-day weather forecast
+* Geolocation support
+* Dark mode
+* Weather charts
+* Recent search history
+
+## Author
+
+Shruti

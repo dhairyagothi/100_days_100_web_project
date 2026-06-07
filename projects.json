@@ -1958,5 +1958,20 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/AI-Data-Analyst/"
-  }
+  },
+{
+  "projectNo": 215,
+  "projectName": "Open Weather Forecast App",
+  "projectType": "Web App",
+  "projectDesc": "A responsive weather forecasting web application using the OpenWeather API. Users can search any city and view real-time weather information including temperature, feels-like temperature, humidity, wind speed, weather description, and weather icons.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript",
+    "api",
+    "openweather"
+  ],
+  "difficulty": "intermediate",
+  "projectPath": "./public/OpenWeatherForecastApp/"
+}
 ]
