@@ -1,5 +1,5 @@
 // ================================
-// rec.html logic — loads recipes from text.json
+// rec.html logic — loads recipe grid + search + filter + restart
 // ================================
 
 const searchInput = document.getElementById("searchInput");
@@ -7,6 +7,7 @@ const difficultySelect = document.getElementById("difficulty");
 const startBtn = document.getElementById("start");
 const randomBtn = document.getElementById("randomRecipe");
 const recipeGrid = document.getElementById("recipeGrid");
+const restartBtn = document.getElementById("restart");
 
 let allRecipes = [];
 
@@ -19,16 +20,16 @@ function loadRecipes() {
   fetch("text.json")
     .then((res) => res.json())
     .then((data) => {
-      // ✅ FIX: correctly read data.recipes array
-      allRecipes = data.recipes || (Array.isArray(data) ? data : Object.values(data));
+      allRecipes = Array.isArray(data) ? data : Object.values(data);
 
-      // Populate dropdown with recipe names
+      // Populate difficulty/category filter
       if (difficultySelect) {
+        const categories = [...new Set(allRecipes.flatMap(r => r.tags || []))];
         difficultySelect.innerHTML = '<option value="">All Recipes</option>';
-        allRecipes.forEach((recipe, index) => {
+        categories.forEach(cat => {
           const opt = document.createElement("option");
-          opt.value = index;
-          opt.textContent = recipe.name || `Recipe ${index + 1}`;
+          opt.value = cat;
+          opt.textContent = cat;
           difficultySelect.appendChild(opt);
         });
       }
@@ -53,11 +54,12 @@ function renderRecipes(recipes) {
   }
 
   recipeGrid.innerHTML = recipes.map((recipe, index) => `
-    <div class="recipe-card" onclick="showRecipe(${allRecipes.indexOf(recipe)})">
+    <div class="recipe-card" onclick="showRecipe(${index})">
       ${recipe.img ? `<img src="${recipe.img}" alt="${recipe.name}" onerror="this.style.display='none'">` : ''}
       <div class="recipe-card-body">
-        <h3>${recipe.name || "Recipe"}</h3>
-        <p>${(recipe.instructions || "").slice(0, 100)}...</p>
+        <h3>${recipe.name || recipe.title || "Recipe"}</h3>
+        <p>${(recipe.instructions || recipe.description || "").slice(0, 80)}...</p>
+        ${recipe.tags ? `<div class="tags">${recipe.tags.map(t => `<span class="tag">${t}</span>`).join("")}</div>` : ""}
         <button class="view-btn">View Recipe</button>
       </div>
     </div>
@@ -69,15 +71,18 @@ function showRecipe(index) {
   const recipe = allRecipes[index];
   if (!recipe || !recipeGrid) return;
 
+  const name = recipe.name || recipe.title || "Recipe";
   const ingredients = recipe.ingredients
     ? `<ul>${recipe.ingredients.map(i => `<li>${i}</li>`).join("")}</ul>`
     : "";
+  const instructions = recipe.instructions || recipe.description || "";
 
   recipeGrid.innerHTML = `
     <div class="recipe-detail">
-      <h2>${recipe.name || "Recipe"}</h2>
+      ${recipe.img ? `<img src="${recipe.img}" alt="${name}" style="width:100%;max-width:400px;border-radius:12px;margin-bottom:1rem">` : ""}
+      <h2>${name}</h2>
       ${ingredients ? `<h3>🧂 Ingredients</h3>${ingredients}` : ""}
-      ${recipe.instructions ? `<h3>📋 Instructions</h3><p>${recipe.instructions}</p>` : ""}
+      ${instructions ? `<h3>📋 Instructions</h3><p>${instructions}</p>` : ""}
       <button onclick="loadRecipes()" style="margin-top:1.5rem;padding:0.6rem 1.5rem;background:#4f8ef7;color:white;border:none;border-radius:8px;cursor:pointer;font-size:1rem;">
         ← Back to Recipes
       </button>
@@ -90,35 +95,34 @@ if (searchInput) {
   searchInput.addEventListener("input", filterRecipes);
 }
 
-// Dropdown filter
+// Difficulty/category filter
 if (difficultySelect) {
-  difficultySelect.addEventListener("change", () => {
-    const selectedIndex = difficultySelect.value;
-    if (selectedIndex === "") {
-      renderRecipes(allRecipes);
-    } else {
-      showRecipe(parseInt(selectedIndex));
-    }
-  });
+  difficultySelect.addEventListener("change", filterRecipes);
 }
 
 function filterRecipes() {
   const query = searchInput ? searchInput.value.toLowerCase() : "";
-  const filtered = allRecipes.filter(recipe =>
-    (recipe.name || "").toLowerCase().includes(query)
-  );
+  const category = difficultySelect ? difficultySelect.value : "";
+
+  const filtered = allRecipes.filter(recipe => {
+    const matchesSearch = !query || 
+      (recipe.name || recipe.title || "").toLowerCase().includes(query);
+    const matchesCategory = !category || 
+      (recipe.tags && recipe.tags.includes(category));
+    return matchesSearch && matchesCategory;
+  });
+
   renderRecipes(filtered);
 }
 
 // View Selected Recipe button
 if (startBtn) {
   startBtn.addEventListener("click", () => {
-    const selectedIndex = difficultySelect ? difficultySelect.value : "";
-    if (selectedIndex !== "") {
-      showRecipe(parseInt(selectedIndex));
-    } else {
-      renderRecipes(allRecipes);
-    }
+    const selected = difficultySelect ? difficultySelect.value : "";
+    const filtered = selected 
+      ? allRecipes.filter(r => r.tags && r.tags.includes(selected))
+      : allRecipes;
+    if (filtered.length > 0) showRecipe(allRecipes.indexOf(filtered[0]));
   });
 }
 
@@ -132,8 +136,7 @@ if (randomBtn) {
   });
 }
 
-// ✅ FIX: Restart button
-const restartBtn = document.getElementById("restart");
+// ✅ FIX: Restart button — reloads recipes / goes back to main
 if (restartBtn) {
   restartBtn.addEventListener("click", () => {
     window.location.href = "main.html";

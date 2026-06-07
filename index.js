@@ -977,6 +977,7 @@ function renderGrid() {
   renderPagination(filtered.length, totalPages);
 
   syncStateToURL();
+  syncProjectCounts();
 }
 
 function renderPagination(totalItems, totalPages) {
@@ -1708,7 +1709,7 @@ function initTechStackSearch() {
 const searchInput = document.getElementById("searchInput");
 const clearSearchBtn = document.getElementById("clearSearch");
 
-function updateCategoryCounts() {
+function updateCategoryCounts(projects = PROJECTS) {
   const counts = {};
   for (const key of Object.keys(FILTER_CATEGORY_MAP)) {
     if (key !== "all") {
@@ -1716,7 +1717,7 @@ function updateCategoryCounts() {
     }
   }
 
-  PROJECTS.forEach((project) => {
+  projects.forEach((project) => {
     const name = project.projectName;
     const tags = project.techStack;
     const category = getCategoryFromTags(tags, name);
@@ -1772,7 +1773,7 @@ function syncProjectCounts() {
     searchInput.placeholder = `Search ${PROJECTS.length.toLocaleString()} projects…`;
   }
 
-  updateCategoryCounts();
+  updateCategoryCounts(filtered);
 }
 
 // Clear button functionality

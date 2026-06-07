@@ -10,11 +10,9 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="todolist.css" />
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
-      integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnxS09ydFYWWNSfcEqDTTHgtNA=="
-      crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
   </head>
@@ -329,6 +327,19 @@
       </main>
     </div>
 
+    <!-- Clear Workspace Confirmation Modal -->
+    <div id="clearModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" style="display:none;">
+      <div class="modal-box">
+        <div class="modal-icon">🧹</div>
+        <h2 class="modal-title" id="modalTitle">Clear Workspace?</h2>
+        <p class="modal-desc">This will permanently remove all tasks from your board. This action cannot be undone.</p>
+        <div class="modal-actions">
+          <button id="modalCancelBtn" class="modal-btn modal-btn-cancel">Cancel</button>
+          <button id="modalConfirmBtn" class="modal-btn modal-btn-confirm">Yes, Clear All</button>
+        </div>
+      </div>
+    </div>
+
     <div id="toast" class="pdf-message" role="alert" aria-live="polite"></div>
     <div class="toast-container" id="toastContainer"></div>
 
@@ -358,13 +369,17 @@
         },
       ];
 
+      // Saved documents in memory (Blob URLs reset on reload, tracked with metadata)
+      let savedDocs = JSON.parse(localStorage.getItem("kanban-saved-docs-meta")) || [];
+
       const taskForm = document.getElementById("task-form");
       const taskInput = document.getElementById("task");
       const categorySelect = document.getElementById("task-category");
       const prioritySelect = document.getElementById("task-priority");
       const dueDateInput = document.getElementById("task-date");
+
+      // ─── Render Kanban Board ───────────────────────────────────────────────
       function renderKanban() {
-        // Clear lane contents safely before re-injecting fresh card nodes
         document
           .querySelectorAll(".kanban-column-drop-zone")
           .forEach((zone) => (zone.innerHTML = ""));
@@ -375,33 +390,53 @@
 
           const card = document.createElement("div");
           card.id = task.id;
-          card.className = "kanban-task-card";
+          card.className = "kanban-task-card" + (task.status === "completed" ? " card-completed" : task.status === "inprogress" ? " card-inprogress" : "");
           card.setAttribute("draggable", "true");
+          card.setAttribute("data-taskid", task.id);
+
+          const isCompleted = task.status === "completed";
+          const isInProgress = task.status === "inprogress";
 
           card.innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <span style="font-size:0.65rem; padding:2px 8px; border-radius:4px; background:rgba(255,255,255,0.06); color:rgba(240,240,245,0.7); font-weight:700;">${task.category || "General"}</span>
-            <span style="font-size:0.65rem; font-weight:800; color:${task.priority === "High" ? "#ef4444" : task.priority === "Medium" ? "#f59e0b" : "#3b82f6"}">${task.priority || "Medium"}</span>
-          </div>
-          <p style="font-size:0.875rem; color:#fff; font-weight:500; line-height:1.4; word-break:break-word;">${task.title}</p>
-          ${
-          task.dueDate
-          ? `<p style="font-size:0.75rem; color:#94a3b8; margin-top:6px;">
-         📅 ${task.dueDate}
-         </p>`
-         : ""
-         }
-          <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:10px; padding-top:8px; border-top:1px solid rgba(255,255,255,0.03);">
-            <button onclick="deleteTaskNode('${task.id}')" style="background:transparent; border:none; color:#fca5a5; cursor:pointer; font-size:0.75rem; hover:text:#ef4444;">🗑️ Remove</button>
-          </div>
-        `;
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <span style="font-size:0.65rem; padding:2px 8px; border-radius:4px; background:rgba(255,255,255,0.06); color:rgba(240,240,245,0.7); font-weight:700;">${task.category || "General"}</span>
+              <span style="font-size:0.65rem; font-weight:800; color:${task.priority === "High" ? "#ef4444" : task.priority === "Medium" ? "#f59e0b" : "#3b82f6"}">${task.priority || "Medium"}</span>
+            </div>
+            <p class="card-title-text" style="font-size:0.875rem; color:${isCompleted ? "rgba(255,255,255,0.45)" : "#fff"}; font-weight:500; line-height:1.4; word-break:break-word; ${isCompleted ? "text-decoration: line-through;" : ""}">${task.title}</p>
+            ${task.dueDate ? `<p style="font-size:0.75rem; color:#94a3b8; margin-top:6px;">📅 ${task.dueDate}</p>` : ""}
+            <div class="card-actions">
+              <button
+                class="card-action-btn btn-complete ${isCompleted ? "btn-active-complete" : ""}"
+                onclick="markTaskCompleted('${task.id}')"
+                title="${isCompleted ? 'Unmark Completed' : 'Mark as Completed'}"
+                aria-label="${isCompleted ? 'Unmark Completed' : 'Mark as Completed'}"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+              <button
+                class="card-action-btn btn-inprogress ${isInProgress ? "btn-active-inprogress" : ""}"
+                onclick="markTaskInProgress('${task.id}')"
+                title="${isInProgress ? 'Back to Pending' : 'Mark as In Progress'}"
+                aria-label="${isInProgress ? 'Back to Pending' : 'Mark as In Progress'}"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </button>
+              <button
+                class="card-action-btn btn-delete"
+                onclick="deleteTaskNode('${task.id}')"
+                title="Delete Task"
+                aria-label="Delete Task"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+              </button>
+            </div>
+          `;
 
-          // Card Element Drag Event Pipeline bindings
+          // Card drag events
           card.addEventListener("dragstart", (e) => {
             card.classList.add("dragging");
             e.dataTransfer.setData("text/plain", card.id);
           });
-
           card.addEventListener("dragend", () => {
             card.classList.remove("dragging");
           });
@@ -475,7 +510,44 @@
         tasks = tasks.filter((t) => t.id !== id);
         localStorage.setItem("kanban-board-tasks", JSON.stringify(tasks));
         renderKanban();
+        showKanbanToast("🗑️ Task removed!", "info");
       };
+
+      // Mark task as Completed (toggle)
+      window.markTaskCompleted = function (id) {
+        tasks = tasks.map((t) =>
+          t.id === id
+            ? { ...t, status: t.status === "completed" ? "pending" : "completed" }
+            : t
+        );
+        localStorage.setItem("kanban-board-tasks", JSON.stringify(tasks));
+        renderKanban();
+        const t = tasks.find((t) => t.id === id);
+        showKanbanToast(t && t.status === "completed" ? "✅ Marked as Completed!" : "🔄 Moved back to Pending!", "success");
+      };
+
+      // Mark task as In Progress (toggle)
+      window.markTaskInProgress = function (id) {
+        tasks = tasks.map((t) =>
+          t.id === id
+            ? { ...t, status: t.status === "inprogress" ? "pending" : "inprogress" }
+            : t
+        );
+        localStorage.setItem("kanban-board-tasks", JSON.stringify(tasks));
+        renderKanban();
+        const t = tasks.find((t) => t.id === id);
+        showKanbanToast(t && t.status === "inprogress" ? "⚡ Marked as In Progress!" : "🔄 Moved back to Pending!", "info");
+      };
+
+      // Lightweight toast for kanban actions
+      function showKanbanToast(message, type) {
+        const toast = document.getElementById("toast");
+        if (!toast) return;
+        toast.textContent = message;
+        toast.style.background = type === "success" ? "rgba(16,185,129,0.95)" : type === "info" ? "rgba(79,141,255,0.95)" : "rgba(20,184,166,0.95)";
+        toast.className = "pdf-message show";
+        setTimeout(() => toast.classList.remove("show"), 3000);
+      }
 
       // Connect Drop Pipeline Target Observers
       document.querySelectorAll(".kanban-column-drop-zone").forEach((zone) => {
@@ -503,7 +575,7 @@
         });
       });
 
-      // Simple Tab Section Navigation Toggles
+      // ─── Tab Navigation ────────────────────────────────────────────────────
       window.showHome = function () {
         document.getElementById("home-tab").className = "active-section";
         document.getElementById("documents-tab").className = "inactive-section";
@@ -516,7 +588,143 @@
         document.getElementById("documents-tab").className = "active-section";
         document.getElementById("nav-home").classList.remove("active");
         document.getElementById("nav-documents").classList.add("active");
+        renderSavedDocuments();
       };
+
+      // ─── Save as PDF ───────────────────────────────────────────────────────
+      function saveAsPDF() {
+        if (tasks.length === 0) {
+          showKanbanToast("❌ No tasks to export!", "info");
+          return;
+        }
+        if (!window.jspdf) {
+          showKanbanToast("⏳ PDF library loading, try again!", "info");
+          return;
+        }
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        doc.setFont("Helvetica", "bold");
+        doc.setFontSize(22);
+        doc.text("To-Do List Report", 20, 24);
+
+        doc.setFont("Helvetica", "normal");
+        doc.setFontSize(10);
+        doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, 32);
+
+        const completedCount = tasks.filter((t) => t.status === "completed").length;
+        const inProgressCount = tasks.filter((t) => t.status === "inprogress").length;
+        const pendingCount = tasks.filter((t) => t.status === "pending").length;
+        doc.text(
+          `Total: ${tasks.length}  |  Completed: ${completedCount}  |  In Progress: ${inProgressCount}  |  Pending: ${pendingCount}`,
+          20,
+          38
+        );
+        doc.line(20, 42, 190, 42);
+
+        let y = 52;
+        doc.setFontSize(12);
+        tasks.forEach((task, i) => {
+          if (y > 270) { doc.addPage(); y = 20; }
+          const rawStatus = task.status || "pending";
+          const status = rawStatus === "inprogress" ? "IN PROGRESS" : rawStatus.toUpperCase();
+          const line = `${i + 1}. [${status}] (${task.priority || "Medium"}) [${task.category || "General"}] - ${task.title}`;
+          doc.text(line, 20, y);
+          y += 10;
+        });
+
+        const fileName = `TodoList_${Date.now()}.pdf`;
+        const pdfBlob = doc.output("blob");
+        const fileURL = URL.createObjectURL(pdfBlob);
+
+        const docEntry = {
+          id: Date.now(),
+          name: fileName,
+          url: fileURL,
+          total: tasks.length,
+          completed: completedCount,
+          time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+          date: new Date().toLocaleDateString(),
+        };
+
+        savedDocs.unshift(docEntry);
+        // Persist metadata only (URLs reset on reload)
+        const meta = savedDocs.map(({ url, ...rest }) => rest);
+        localStorage.setItem("kanban-saved-docs-meta", JSON.stringify(meta));
+
+        showKanbanToast("📥 PDF saved! Go to Documents to download.", "success");
+        renderSavedDocuments();
+      }
+
+      // ─── Render Saved Documents ────────────────────────────────────────────
+      function renderSavedDocuments() {
+        const docEmptyState = document.getElementById("emptyDocsState");
+        const docsList = document.querySelector(".documents-list");
+        if (!docsList) return;
+
+        docsList.innerHTML = "";
+
+        if (savedDocs.length === 0) {
+          if (docEmptyState) docEmptyState.style.display = "flex";
+        } else {
+          if (docEmptyState) docEmptyState.style.display = "none";
+          savedDocs.forEach((docEntry) => {
+            const item = document.createElement("li");
+            item.className = "doc-item";
+            const hasUrl = !!docEntry.url;
+            item.innerHTML = `
+              <div class="doc-info">
+                <div class="doc-name">📄 ${docEntry.name}</div>
+                <div class="doc-meta">
+                  <span class="doc-date">${docEntry.date} ${docEntry.time}</span>
+                  <span class="doc-task-count">${docEntry.total} tasks · ${docEntry.completed} completed</span>
+                </div>
+                ${!hasUrl ? '<div class="doc-stale">⚠️ File unavailable after reload — re-export to download again.</div>' : ""}
+              </div>
+              <div class="doc-actions">
+                ${hasUrl ? `<button class="doc-btn" onclick="window.open('${docEntry.url}', '_blank')">View</button>` : ""}
+                ${hasUrl ? `<a class="doc-btn" href="${docEntry.url}" download="${docEntry.name}">Download</a>` : ""}
+                <button class="doc-btn doc-btn-del" onclick="deleteDocEntry('${docEntry.id}')">Delete</button>
+              </div>
+            `;
+            docsList.appendChild(item);
+          });
+        }
+      }
+
+      window.deleteDocEntry = function (id) {
+        savedDocs = savedDocs.filter((d) => String(d.id) !== String(id));
+        const meta = savedDocs.map(({ url, ...rest }) => rest);
+        localStorage.setItem("kanban-saved-docs-meta", JSON.stringify(meta));
+        renderSavedDocuments();
+        showKanbanToast("🗑️ Document removed!", "info");
+      };
+
+      // ─── Clear Workspace Modal ─────────────────────────────────────────────
+      document.getElementById("savepdf").addEventListener("click", saveAsPDF);
+
+      document.getElementById("cleardone").addEventListener("click", () => {
+        document.getElementById("clearModal").style.display = "flex";
+      });
+
+      document.getElementById("modalCancelBtn").addEventListener("click", () => {
+        document.getElementById("clearModal").style.display = "none";
+      });
+
+      document.getElementById("modalConfirmBtn").addEventListener("click", () => {
+        tasks = [];
+        localStorage.setItem("kanban-board-tasks", JSON.stringify(tasks));
+        renderKanban();
+        document.getElementById("clearModal").style.display = "none";
+        showKanbanToast("🧹 Workspace cleared!", "info");
+      });
+
+      // Close modal if clicking on backdrop
+      document.getElementById("clearModal").addEventListener("click", (e) => {
+        if (e.target === document.getElementById("clearModal")) {
+          document.getElementById("clearModal").style.display = "none";
+        }
+      });
 
       document.addEventListener("DOMContentLoaded", renderKanban);
     </script>
