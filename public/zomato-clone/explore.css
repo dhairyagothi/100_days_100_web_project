@@ -81,6 +81,13 @@
     opacity: 0;
     transform: translateY(-8px);
   }
+  
+  .explore-options .heading {
+    margin: 0px 0px 2rem;
+    color: rgb(117, 116, 114);
+    font-size: 3rem;
+    line-height: 4rem;
+    font-weight: 700;
   to {
     opacity: 1;
     transform: translateY(0);

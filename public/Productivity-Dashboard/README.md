@@ -26,4 +26,4 @@ A responsive productivity dashboard built using HTML, CSS, and JavaScript to hel
 ![alt text](<Screenshot 2026-06-02 203406.png>)
 
 ## Author
-Sanjana Kumari Sharma
+Sanjana Kumari Sharma.

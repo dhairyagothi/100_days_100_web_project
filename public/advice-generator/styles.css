@@ -165,3 +165,62 @@ body {
     font-size: 1.35rem;
   }
 }
+
+.utility-btn {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: white;
+}
+
+.utility-btn:hover {
+  transform: scale(1.05);
+}
+
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #52ffa8;
+  color: #1f2632;
+  padding: 10px 16px;
+  border-radius: 8px;
+  opacity: 0;
+  transition: 0.3s;
+  pointer-events: none;
+  font-weight: 600;
+}
+
+.toast.show {
+  opacity: 1;
+}
+
+.favorites-panel {
+  position: fixed;
+  right: 20px;
+  top: 80px;
+  width: 320px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: #313a48;
+  color: white;
+  padding: 1rem;
+  border-radius: 12px;
+  display: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.show-panel {
+  display: block;
+}
+
+.favorites-panel h2 {
+  margin-bottom: 1rem;
+}
+
+.favorites-panel ul {
+  list-style: none;
+}
+
+.favorites-panel li {
+  padding: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}

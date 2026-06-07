@@ -138,15 +138,22 @@ body::before {
   width: 150px;
   display: block;
   margin-bottom: 15px;
-  padding: 8px 12px;
+  padding: 8px 16px;
   border-radius: 8px;
-  background: linear-gradient(90deg, rgba(124, 99, 255, 0.14), rgba(79, 141, 255, 0.10));
-  color: #fff;
+  background: #1e293b;
+  border: 1px solid #3b82f6;
+  color: #3b82f6;
   text-decoration: none;
   z-index: 9999;
   font-weight: 700;
   font-family: Inter, system-ui, sans-serif;
   box-shadow: 0 8px 20px rgba(12, 18, 40, 0.35);
+  transition: all 0.2s ease;
+}
+
+.project-back-button:hover {
+  background: #3b82f6;
+  color: #fff;
 }
 
 @keyframes breathe {
