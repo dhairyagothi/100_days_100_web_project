@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Reminder App</title>
+    <!-- Modern Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Dashboard Header -->
+        <header class="app-header">
+            <h1>Neon<span>Reminders</span></h1>
+            <div class="stats-panel">
+                <div class="stat-box">
+                    <span class="stat-value" id="active-count">0</span>
+                    <span class="stat-label">Active</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value" id="completed-count">0</span>
+                    <span class="stat-label">Completed</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <!-- Form Section -->
+            <section class="reminder-form-section">
+                <form id="reminder-form" class="glass-panel">
+                    <div class="form-group">
+                        <label for="title">Task Title</label>
+                        <input type="text" id="title" placeholder="What do you need to remember?" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="datetime">Deadline</label>
+                            <input type="datetime-local" id="datetime" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="priority">Priority</label>
+                            <select id="priority">
+                                <option value="Low">Low</option>
+                                <option value="Medium" selected>Medium</option>
+                                <option value="High">High</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="neon-button">Add Reminder</button>
+                </form>
+            </section>
+
+            <!-- List Section -->
+            <section class="reminder-list-section">
+                <h2>Your Tasks</h2>
+                <div id="reminder-list" class="reminder-list">
+                    <!-- JavaScript will inject reminder cards here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

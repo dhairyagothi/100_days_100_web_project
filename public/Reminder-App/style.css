@@ -1,0 +1,457 @@
+:root {
+
+    --bg-color: #09090b;
+    --panel-bg: rgba(24, 24, 27, 0.65);
+    --panel-border: rgba(255, 255, 255, 0.08);
+    --text-main: #f4f4f5;
+    --text-muted: #a1a1aa;
+
+    --neon-primary: #0ea5e9;
+    --neon-primary-glow: rgba(14, 165, 233, 0.4);
+
+    --priority-low: #10b981;
+
+    --priority-medium: #f59e0b;
+
+    --priority-high: #ef4444;
+    /* Rose Red */
+
+    /* Utilities */
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   Reset & Base Styles
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 3rem 1rem;
+    /* Subtle background ambient gradients */
+    background-image:
+        radial-gradient(circle at 15% 50%, rgba(14, 165, 233, 0.08), transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(239, 68, 68, 0.05), transparent 25%);
+    background-attachment: fixed;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 540px;
+}
+
+/* ==========================================================================
+   Header & Analytics Dashboard
+   ========================================================================== */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+}
+
+.app-header h1 {
+    font-size: 2.25rem;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+.app-header h1 span {
+    color: var(--neon-primary);
+    text-shadow: 0 0 12px var(--neon-primary-glow);
+}
+
+.stats-panel {
+    display: flex;
+    gap: 1rem;
+}
+
+.stat-box {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    padding: 0.75rem 1.25rem;
+    border-radius: 12px;
+    text-align: center;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+    display: block;
+}
+
+/* ==========================================================================
+   Glassmorphism Form
+   ========================================================================== */
+.glass-panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: 16px;
+    padding: 1.75rem;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    margin-bottom: 2.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.25rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+
+label {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+}
+
+input,
+select {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--panel-border);
+    color: var(--text-main);
+    padding: 0.875rem 1rem;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: var(--transition);
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+input:focus,
+select:focus {
+    border-color: var(--neon-primary);
+    box-shadow: 0 0 15px var(--neon-primary-glow);
+    background: rgba(0, 0, 0, 0.6);
+}
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+    opacity: 0.6;
+    transition: var(--transition);
+}
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+
+select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+}
+
+select option {
+    background: var(--bg-color);
+    color: var(--text-main);
+}
+
+.neon-button {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--neon-primary);
+    color: var(--neon-primary);
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 0.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.neon-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: var(--transition);
+}
+
+.neon-button:hover::before {
+    left: 100%;
+}
+
+.neon-button:hover {
+    background: var(--neon-primary);
+    color: #fff;
+    box-shadow: 0 0 20px var(--neon-primary-glow);
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   Reminder List
+   ========================================================================== */
+.reminder-list-section h2 {
+    font-size: 1.125rem;
+    margin-bottom: 1.25rem;
+    color: var(--text-muted);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.reminder-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.reminder-card {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-left: 4px solid var(--text-muted);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: var(--transition);
+    animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    backdrop-filter: blur(8px);
+}
+
+.reminder-card:hover {
+    transform: translateX(6px);
+    background: rgba(39, 39, 42, 0.7);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Dynamic Priority Borders */
+.reminder-card.priority-Low {
+    border-left-color: var(--priority-low);
+}
+
+.reminder-card.priority-Medium {
+    border-left-color: var(--priority-medium);
+}
+
+.reminder-card.priority-High {
+    border-left-color: var(--priority-high);
+}
+
+.reminder-card.completed {
+    opacity: 0.4;
+    border-left-color: var(--text-muted);
+}
+
+.reminder-card.completed .reminder-info h3 {
+    text-decoration: line-through;
+}
+
+.reminder-info h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0.35rem;
+    font-weight: 400;
+    transition: var(--transition);
+}
+
+.reminder-meta {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.reminder-meta span.priority-badge {
+    padding: 0.15rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Priority Badge Texts */
+.priority-Low .priority-badge {
+    color: var(--priority-low);
+}
+
+.priority-Medium .priority-badge {
+    color: var(--priority-medium);
+}
+
+.priority-High .priority-badge {
+    color: var(--priority-high);
+}
+
+/* Card Actions */
+.reminder-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.action-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid transparent;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    color: var(--text-muted);
+}
+
+.action-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+}
+
+.btn-complete:hover {
+    color: var(--priority-low);
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.btn-delete:hover {
+    color: var(--priority-high);
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* ==========================================================================
+   Toast Notification System
+   ========================================================================== */
+.toast-container {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    z-index: 1000;
+}
+
+.toast {
+    background: rgba(24, 24, 27, 0.9);
+    border: 1px solid var(--neon-primary);
+    box-shadow: 0 8px 32px var(--neon-primary-glow);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: #fff;
+    padding: 1.25rem 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-width: 300px;
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.toast-content h4 {
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.toast-content p {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* ==========================================================================
+   Keyframes
+   ========================================================================== */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateX(120%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(120%);
+    }
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+@media (max-width: 480px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .app-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+
+    .toast-container {
+        bottom: 1rem;
+        right: 1rem;
+        left: 1rem;
+    }
+
+    .toast {
+        min-width: 100%;
+    }
+}
