@@ -19,11 +19,8 @@ const expenseEl = document.getElementById("expense");
 
 const categoryEls = {
   food: document.querySelector('[data-cat="food"]'),
-
   travel: document.querySelector('[data-cat="travel"]'),
-
   shopping: document.querySelector('[data-cat="shopping"]'),
-
   other: document.querySelector('[data-cat="other"]'),
 };
 
@@ -60,9 +57,7 @@ let monthlyBudget = 0;
   if (document.getElementById("shake-style")) return;
 
   const style = document.createElement("style");
-
   style.id = "shake-style";
-
   style.textContent = `
     @keyframes shake {
       0%,100% { transform: translateX(0);    }
@@ -96,9 +91,7 @@ function hideLoader() {
 
 function showToast(message) {
   toast.textContent = message;
-
   toast.classList.add("show");
-
   setTimeout(() => {
     toast.classList.remove("show");
   }, 2500);
@@ -130,12 +123,10 @@ modeToggle.addEventListener("change", () => {
 function updateClock() {
   const now = new Date();
   const time = now.toLocaleTimeString();
-
   document.getElementById("clock").textContent = time;
 }
 
 setInterval(updateClock, 1000);
-
 updateClock();
 
 /* =========================================================
@@ -145,27 +136,42 @@ updateClock();
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const amount = Number(amountInput.value);
+  // ── Input validation (fix for issue #6152) ──────────────────────────
+  // Guards: empty, non-numeric, non-finite, zero/negative, too large
+  const rawValue = amountInput.value.trim();
+  const amount   = Number(rawValue);
+  const errorEl  = document.getElementById("amt-error");
 
-  if (amount <= 0) {
-    showToast("Enter valid amount ⚠️");
-
+  if (rawValue === "" || isNaN(amount) || !isFinite(amount)) {
+    if (errorEl) errorEl.textContent = "Please enter a valid number ⚠️";
+    amountInput.focus();
     return;
   }
+
+  if (amount <= 0) {
+    if (errorEl) errorEl.textContent = "Amount must be greater than zero ⚠️";
+    amountInput.focus();
+    return;
+  }
+
+  if (amount > 1_000_000) {
+    if (errorEl) errorEl.textContent = "Amount cannot exceed ₹10,00,000 ⚠️";
+    amountInput.focus();
+    return;
+  }
+
+  // Clear previous error on successful validation
+  if (errorEl) errorEl.textContent = "";
+  // ─────────────────────────────────────────────────────────────────────
 
   showLoader();
 
   const transaction = {
     id: Date.now(),
-
     amount: amount,
-
     description: descInput.value.trim(),
-
     category: categoryInput.value,
-
     type: categoryInput.value === "income" ? "income" : "expense",
-
     date: dateInput.value,
   };
 
@@ -173,9 +179,6 @@ form.addEventListener("submit", (e) => {
 
   saveAndUpdate();
 
-  /* FIX #4 — audio play() returns a Promise; silently
-     ignore the rejection browsers throw before any
-     user-gesture interaction has occurred.            */
   successSound.play().catch(() => {});
 
   showToast("Transaction Added Successfully 🚀");
@@ -183,7 +186,6 @@ form.addEventListener("submit", (e) => {
   form.reset();
 
   const today = new Date().toISOString().split("T")[0];
-
   dateInput.value = today;
 
   hideLoader();
@@ -204,30 +206,21 @@ function renderTransactions() {
 
   transactions.forEach((txn) => {
     const row = document.createElement("tr");
-
     row.style.animation = "slideIn 0.5s ease";
 
     row.innerHTML = `
-
       <td>${formatDate(txn.date)}</td>
-
       <td>${txn.description}</td>
-
       <td>
         <span class="category-badge ${txn.category}">
           ${capitalize(txn.category)}
         </span>
       </td>
-
       <td class="${txn.type === "income" ? "income-text" : "expense-text"}">
         ${txn.type === "income" ? "+" : "-"}₹${txn.amount}
       </td>
-
       <td>
-        <button
-          class="delete-btn"
-          data-id="${txn.id}"
-        >
+        <button class="delete-btn" data-id="${txn.id}">
           <i class="fa-solid fa-trash"></i>
         </button>
       </td>
@@ -247,7 +240,6 @@ transactionList.addEventListener("click", (e) => {
   if (!deleteBtn) return;
 
   const id = Number(deleteBtn.dataset.id);
-
   transactions = transactions.filter((txn) => txn.id !== id);
 
   saveAndUpdate();
@@ -277,6 +269,7 @@ function updateSummary() {
   animateNumber(incomeEl, income);
   animateNumber(expenseEl, expense);
 
+  // fix #6152: negative balance shown in red, positive in green
   balanceEl.style.color = balance < 0 ? "#ff4d4d" : "#00c853";
 }
 
@@ -285,12 +278,7 @@ function updateSummary() {
 ========================================================= */
 
 function updateCategories() {
-  const totals = {
-    food: 0,
-    travel: 0,
-    shopping: 0,
-    other: 0,
-  };
+  const totals = { food: 0, travel: 0, shopping: 0, other: 0 };
 
   transactions.forEach((txn) => {
     if (txn.type === "expense") {
@@ -307,30 +295,14 @@ function updateCategories() {
 
 /* =========================================================
    BUDGET
-
-   FIX #3 — updateBudget() no longer writes to
-   #smart-suggestion or #financial-status when no budget
-   is set. updateInsights() owns those elements when
-   monthlyBudget is 0, preventing both functions from
-   fighting over the same DOM nodes.
 ========================================================= */
 
-budgetInput.addEventListener(
-  /* FIX #2 — changed from "input" to "change" so the
-     toast fires once when the user commits the value
-     (on blur / Enter), not on every single keystroke. */
-  "change",
-
-  () => {
-    monthlyBudget = Number(budgetInput.value);
-
-    updateBudget();
-
-    localStorage.setItem("budget", monthlyBudget);
-
-    showToast("Budget Updated 💸");
-  },
-);
+budgetInput.addEventListener("change", () => {
+  monthlyBudget = Number(budgetInput.value);
+  updateBudget();
+  localStorage.setItem("budget", monthlyBudget);
+  showToast("Budget Updated 💸");
+});
 
 function updateBudget() {
   const expense = transactions
@@ -344,85 +316,39 @@ function updateBudget() {
   progressFill.style.width = `${Math.min(percentage, 100)}%`;
 
   const smartSuggestionEl = document.getElementById("smart-suggestion");
-
   const financialStatusEl = document.getElementById("financial-status");
-
-  /* =========================================
-     NO BUDGET SET
-     — reset visuals only; leave the insight
-       text to updateInsights().
-  ========================================= */
 
   if (monthlyBudget <= 0) {
     progressFill.style.background = "#6366f1";
     budgetText.style.color = "";
-
     return;
   }
-
-  /* =========================================
-     SAFE ZONE  (< 50%)
-  ========================================= */
 
   if (percentage < 50) {
     progressFill.style.background = "#00c853";
     budgetText.style.color = "#00c853";
-
-    smartSuggestionEl.textContent =
-      "Great job! Your spending is well under control ✅";
-
+    smartSuggestionEl.textContent = "Great job! Your spending is well under control ✅";
     financialStatusEl.textContent = "Healthy financial condition 💰";
   } else if (percentage >= 50 && percentage < 80) {
-
-  /* =========================================
-     CAUTION ZONE  (50 – 79%)
-  ========================================= */
     progressFill.style.background = "#ffb300";
     budgetText.style.color = "#ff9800";
-
     smartSuggestionEl.textContent = "Caution: Budget usage is increasing ⚠️";
-
     financialStatusEl.textContent = "Monitor expenses carefully 👀";
   } else if (percentage >= 80 && percentage < 100) {
-
-  /* =========================================
-     WARNING ZONE  (80 – 99%)
-  ========================================= */
     progressFill.style.background = "#ff6d00";
     budgetText.style.color = "#ff6d00";
-
-    smartSuggestionEl.textContent =
-      "Warning: You are close to exceeding your budget 🚨";
-
+    smartSuggestionEl.textContent = "Warning: You are close to exceeding your budget 🚨";
     financialStatusEl.textContent = "Critical spending level ⚠️";
   } else {
-
-  /* =========================================
-     BUDGET EXCEEDED  (≥ 100%)
-
-     FIX #4 — replaced confetti() with a shake
-     animation on the budget widget. Confetti
-     is celebration feedback; it should not fire
-     on the worst financial outcome for the user.
-  ========================================= */
     progressFill.style.background = "#ff1744";
     budgetText.style.color = "#ff1744";
-
-    smartSuggestionEl.textContent =
-      "Budget exceeded! Reduce unnecessary expenses immediately ❌";
-
+    smartSuggestionEl.textContent = "Budget exceeded! Reduce unnecessary expenses immediately ❌";
     financialStatusEl.textContent = "Over budget 🚫";
-
     showToast("Monthly Budget Exceeded 🚨");
 
     const budgetWidget = document.querySelector(".monthly-budget");
-
     budgetWidget.style.animation = "none";
-
-    /* Force a reflow so re-assigning the same
-       animation name actually restarts it.    */
     void budgetWidget.offsetHeight;
-
     budgetWidget.style.animation = "shake 0.5s ease";
   }
 }
@@ -432,12 +358,7 @@ function updateBudget() {
 ========================================================= */
 
 function updateInsights() {
-  const totals = {
-    food: 0,
-    travel: 0,
-    shopping: 0,
-    other: 0,
-  };
+  const totals = { food: 0, travel: 0, shopping: 0, other: 0 };
 
   let totalExpense = 0;
   let totalIncome = 0;
@@ -449,7 +370,6 @@ function updateInsights() {
       } else {
         totals.other += txn.amount;
       }
-
       totalExpense += txn.amount;
     } else {
       totalIncome += txn.amount;
@@ -457,9 +377,7 @@ function updateInsights() {
   });
 
   const highestSpendingCatEl = document.getElementById("highest-spending-cat");
-
   const smartSuggestionEl = document.getElementById("smart-suggestion");
-
   const financialStatusEl = document.getElementById("financial-status");
 
   let maxCat = "";
@@ -476,7 +394,6 @@ function updateInsights() {
     maxAmount > 0 ? `${capitalize(maxCat)} (₹${maxAmount})` : "None";
 
   let suggestion = "Add more transactions to generate insights.";
-
   if (maxCat === "food") suggestion = "Food expenses are high 🍔";
   else if (maxCat === "travel") suggestion = "Travel spending increased ✈️";
   else if (maxCat === "shopping") suggestion = "Shopping expenses are high 🛍️";
@@ -490,21 +407,13 @@ function updateInsights() {
 
     if (savingsRate >= 50) {
       status = `Excellent! Saving ${savingsRate}% 🎉`;
-
-      confetti({
-        particleCount: 150,
-        spread: 90,
-        origin: { y: 0.6 },
-      });
+      confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
     } else if (savingsRate >= 20) {
       status = `Good savings rate ${savingsRate}%`;
     } else {
       status = `Low savings rate ${savingsRate}%`;
     }
   }
-
-  /* Only write to the insight text nodes when no budget
-     is active — updateBudget() owns them otherwise.   */
 
   if (monthlyBudget <= 0) {
     smartSuggestionEl.textContent = suggestion;
@@ -518,14 +427,11 @@ function updateInsights() {
 
 resetBtn.addEventListener("click", () => {
   const confirmReset = confirm("Reset all transactions?");
-
   if (!confirmReset) return;
 
   transactions = [];
   monthlyBudget = 0;
-
   localStorage.clear();
-
   budgetInput.value = "";
 
   saveAndUpdate();
@@ -539,15 +445,11 @@ resetBtn.addEventListener("click", () => {
 
 function saveAndUpdate() {
   localStorage.setItem("transactions", JSON.stringify(transactions));
-
   renderAll();
 }
 
 /* =========================================================
    RENDER ALL
-   A display-only update that does NOT touch localStorage.
-   Called directly by init() to avoid persisting stale
-   data back to storage on every page load.
 ========================================================= */
 
 function renderAll() {
@@ -560,34 +462,20 @@ function renderAll() {
 
 /* =========================================================
    ANIMATE NUMBER
-
-   FIX #1 — original broke in two ways:
-   • target === 0 → increment = 0, interval ran forever
-     (memory leak on every summary refresh)
-   • target < 0  → increment is negative, condition
-     (start >= target) starts true, counter cleared
-     immediately, element shows ₹0 instead of the
-     actual negative balance
 ========================================================= */
 
 function animateNumber(element, target) {
-  /* Short-circuit: nothing to count to */
   if (target === 0) {
     element.textContent = "₹0";
     return;
   }
 
   let start = 0;
-
   const duration = 1000;
   const increment = target / (duration / 16);
-  /* increment is correctly negative when target < 0,
-     so the counter counts down to the target.        */
 
   const counter = setInterval(() => {
     start += increment;
-
-    /* Direction-aware exit condition */
     const reached = target > 0 ? start >= target : start <= target;
 
     if (reached) {
@@ -608,12 +496,7 @@ function capitalize(word) {
 }
 
 function formatDate(date) {
-  const options = {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  };
-
+  const options = { day: "numeric", month: "short", year: "numeric" };
   return new Date(date).toLocaleDateString("en-IN", options);
 }
 
@@ -626,10 +509,8 @@ const buttons = document.querySelectorAll(".submit-btn, #resetBtn");
 buttons.forEach((button) => {
   button.addEventListener("mousemove", (e) => {
     const rect = button.getBoundingClientRect();
-
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
-
     button.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
   });
 
@@ -640,29 +521,19 @@ buttons.forEach((button) => {
 
 /* =========================================================
    INIT
-
-   FIX #5 — original called saveAndUpdate() which writes
-   transactions back to localStorage on every page load,
-   even though nothing changed. Now calls renderAll()
-   directly so the UI is populated from the data that
-   was just read, with zero unnecessary storage writes.
 ========================================================= */
 
 (function init() {
   transactions = JSON.parse(localStorage.getItem("transactions")) || [];
-
   monthlyBudget = Number(localStorage.getItem("budget")) || 0;
-
   budgetInput.value = monthlyBudget || "";
 
   if (localStorage.getItem("theme") === "dark") {
     document.body.classList.add("dark");
-
     modeToggle.checked = true;
   }
 
   const today = new Date().toISOString().split("T")[0];
-
   dateInput.value = today;
 
   renderAll();
