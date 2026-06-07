@@ -245,21 +245,22 @@ body {
   position: fixed;
   left: 18px;
   top: 18px;
-  padding: 8px 12px;
+  padding: 8px 16px;
   border-radius: 8px;
-  background: linear-gradient(90deg,
-      rgba(124, 99, 255, 0.14),
-      rgba(79, 141, 255, 0.1));
-  color: #fff;
+  background: #1e293b;
+  border: 1px solid #3b82f6;
+  color: #3b82f6;
   text-decoration: none;
   z-index: 9999;
   font-weight: 700;
   font-family: Inter, system-ui, sans-serif;
   box-shadow: 0 8px 20px rgba(12, 18, 40, 0.35);
-  transition: box-shadow 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .project-back-button:hover {
+  background: #3b82f6;
+  color: #fff;
   box-shadow: 0 0 15px rgba(124, 99, 255, 0.5);
 }
 
@@ -574,4 +575,435 @@ footer p {
     height: 34px;
     font-size: 14px;
   }
+}
+/* ───── FEATURE TOOLBAR ───── */
+.wl-feature-bar {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.feature-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 13px;
+  border-radius: 20px;
+  border: 0.5px solid var(--glass-border);
+  background: rgba(0,0,0,0.3);
+  color: rgba(255,255,255,0.65);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: all 0.22s;
+  white-space: nowrap;
+}
+.feature-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold-light);
+  background: rgba(201,168,76,0.1);
+  transform: translateY(-1px);
+}
+.feature-btn .fb-icon { font-size: 0.9rem; }
+
+#wishlistBtn {
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+#wishlistBtn.active {
+  border-color: #e05a7a;
+  background: rgba(224,90,122,0.15);
+  color: #e05a7a;
+}
+
+/* ───── WEATHER BADGE ───── */
+.weather-badge {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.05em;
+  padding: 3px 8px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.06);
+  border: 0.5px solid var(--glass-border);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.weather-badge:hover {
+  border-color: var(--gold);
+  color: var(--gold-light);
+}
+
+/* ───── STARS IN CARD ───── */
+.wl-stars-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  margin-bottom: 8px;
+}
+.star-input {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.2);
+  transition: color 0.15s;
+}
+.star-input.filled { color: var(--gold); }
+.review-preview {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.45);
+  font-style: italic;
+  margin-bottom: 10px;
+  display: none;
+}
+
+/* ───── PANEL OVERLAY ───── */
+#panelOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+#panelOverlay.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ───── FEATURE PANELS ───── */
+.feature-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -48%) scale(0.96);
+  width: min(480px, 92vw);
+  max-height: 80vh;
+  background: rgba(12, 9, 26, 0.97);
+  border: 0.5px solid var(--glass-border);
+  border-radius: 20px;
+  z-index: 300;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  display: flex;
+  flex-direction: column;
+}
+.feature-panel.open {
+  opacity: 1;
+  pointer-events: all;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px 14px;
+  border-bottom: 0.5px solid var(--glass-border);
+  flex-shrink: 0;
+}
+.panel-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  color: var(--gold-light);
+  font-weight: 700;
+}
+.panel-close {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.45);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 2px 6px;
+}
+.panel-close:hover { color: #fff; }
+
+.panel-body {
+  padding: 22px;
+  overflow-y: auto;
+  flex: 1;
+}
+.panel-body::-webkit-scrollbar { width: 4px; }
+.panel-body::-webkit-scrollbar-track { background: transparent; }
+.panel-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+
+/* ───── WEATHER PANEL ───── */
+.weather-body { text-align: center; }
+.weather-loading { color: rgba(255,255,255,0.5); padding: 30px 0; font-size: 0.9rem; }
+.weather-icon-big { font-size: 3.5rem; margin-bottom: 8px; }
+.weather-temp { font-family: 'Playfair Display', serif; font-size: 3rem; color: #fff; font-weight: 700; }
+.weather-label { color: rgba(255,255,255,0.55); font-size: 0.88rem; margin-bottom: 20px; }
+.weather-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+.weather-stat {
+  background: rgba(255,255,255,0.05);
+  border: 0.5px solid var(--glass-border);
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.weather-stat span { font-size: 0.75rem; color: rgba(255,255,255,0.45); }
+.weather-stat strong { font-size: 1rem; color: #fff; }
+.weather-note { font-size: 0.68rem; color: rgba(255,255,255,0.25); margin-top: 16px; }
+
+/* ───── RATING PANEL ───── */
+.rating-stars-row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.star-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: rgba(255,255,255,0.15);
+  cursor: pointer;
+  transition: all 0.15s;
+  padding: 2px;
+}
+.star-btn.lit { color: var(--gold); }
+.star-btn:hover { transform: scale(1.15); }
+
+#reviewText {
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border: 0.5px solid var(--glass-border);
+  border-radius: 10px;
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  padding: 12px;
+  resize: vertical;
+  outline: none;
+  min-height: 90px;
+  margin-bottom: 14px;
+  transition: border-color 0.2s;
+}
+#reviewText::placeholder { color: rgba(255,255,255,0.28); }
+#reviewText:focus { border-color: var(--gold); }
+
+#ratingSubmitBtn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, var(--gold) 0%, #a0611e 100%);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+#ratingSubmitBtn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+/* ───── WISHLIST PANEL ───── */
+.wishlist-items { display: flex; flex-direction: column; gap: 10px; }
+.wishlist-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.04);
+  border: 0.5px solid var(--glass-border);
+  border-radius: 12px;
+  transition: border-color 0.2s;
+}
+.wishlist-item:hover { border-color: rgba(201,168,76,0.3); }
+.wi-flag { font-size: 1.5rem; }
+.wi-info { flex: 1; }
+.wi-name { font-size: 0.9rem; font-weight: 500; color: #fff; }
+.wi-region { font-size: 0.72rem; color: rgba(255,255,255,0.4); margin-top: 2px; }
+.wi-actions { display: flex; gap: 6px; }
+.wi-go {
+  padding: 5px 10px;
+  background: rgba(201,168,76,0.15);
+  border: 0.5px solid var(--gold);
+  border-radius: 7px;
+  color: var(--gold-light);
+  font-size: 0.75rem;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s;
+}
+.wi-go:hover { background: rgba(201,168,76,0.3); }
+.wi-remove {
+  padding: 5px 8px;
+  background: rgba(255,255,255,0.06);
+  border: 0.5px solid var(--glass-border);
+  border-radius: 7px;
+  color: rgba(255,255,255,0.4);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.wi-remove:hover { color: #e05a7a; border-color: #e05a7a; }
+
+/* ───── TRIP PLANNER PANEL ───── */
+.trip-panel-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.trip-summary {
+  font-size: 0.75rem;
+  color: var(--gold);
+  letter-spacing: 0.07em;
+  margin-bottom: 14px;
+}
+.trip-add-btn {
+  padding: 8px 16px;
+  background: rgba(201,168,76,0.12);
+  border: 0.5px solid var(--gold);
+  color: var(--gold-light);
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 14px;
+  width: 100%;
+}
+.trip-add-btn:hover { background: rgba(201,168,76,0.22); transform: translateY(-1px); }
+.trip-clear-btn {
+  padding: 6px 12px;
+  background: rgba(255,255,255,0.04);
+  border: 0.5px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.35);
+  border-radius: 7px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  margin-bottom: 14px;
+  transition: all 0.2s;
+}
+.trip-clear-btn:hover { color: #e05a7a; border-color: #e05a7a; }
+.trip-list { display: flex; flex-direction: column; gap: 10px; }
+.trip-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  background: rgba(255,255,255,0.04);
+  border: 0.5px solid var(--glass-border);
+  border-radius: 12px;
+}
+.trip-order {
+  width: 22px;
+  height: 22px;
+  background: rgba(201,168,76,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.68rem;
+  color: var(--gold);
+  font-weight: 600;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.trip-flag { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
+.trip-info { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.trip-name { font-size: 0.88rem; font-weight: 500; color: #fff; }
+.trip-dates { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.trip-date-input {
+  padding: 5px 8px;
+  background: rgba(255,255,255,0.05);
+  border: 0.5px solid var(--glass-border);
+  border-radius: 6px;
+  color: rgba(255,255,255,0.7);
+  font-size: 0.72rem;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 130px;
+}
+.trip-date-input:focus { border-color: var(--gold); }
+.trip-date-input::-webkit-calendar-picker-indicator { filter: invert(1) opacity(0.4); }
+.trip-dates span { color: rgba(255,255,255,0.3); font-size: 0.8rem; }
+.trip-note-input {
+  padding: 5px 8px;
+  background: rgba(255,255,255,0.05);
+  border: 0.5px solid var(--glass-border);
+  border-radius: 6px;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.72rem;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.2s;
+}
+.trip-note-input::placeholder { color: rgba(255,255,255,0.2); }
+.trip-note-input:focus { border-color: var(--gold); }
+.trip-remove {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.25);
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 2px 5px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+.trip-remove:hover { color: #e05a7a; }
+
+/* ───── EMPTY STATE ───── */
+.empty-state {
+  text-align: center;
+  color: rgba(255,255,255,0.3);
+  font-size: 0.85rem;
+  padding: 30px 0;
+}
+
+/* ───── TOAST ───── */
+#wl-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(18, 14, 35, 0.95);
+  border: 0.5px solid var(--gold);
+  color: var(--gold-light);
+  padding: 10px 22px;
+  border-radius: 30px;
+  font-size: 0.82rem;
+  font-family: 'DM Sans', sans-serif;
+  z-index: 9999;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  white-space: nowrap;
+  pointer-events: none;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+#wl-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@media (max-width: 480px) {
+  .wl-feature-bar { gap: 5px; }
+  .feature-btn { font-size: 0.67rem; padding: 6px 10px; }
+  .weather-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .trip-date-input { width: 110px; }
 }

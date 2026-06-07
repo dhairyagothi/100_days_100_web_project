@@ -2,10 +2,20 @@ const display = document.getElementById("display");
 const expression = document.getElementById("expression");
 const historyPanel = document.getElementById("historyPanel");
 const historyEmpty = document.getElementById("historyEmpty");
+const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+const clearHistoryOverlay = document.getElementById("clearHistoryOverlay");
+const cancelClearHistory = document.getElementById("cancelClearHistory");
+const confirmClearHistory = document.getElementById("confirmClearHistory");
  
 let history = [];
 let justCalculated = false;
 let historyOpen = false;
+let clearDialogOpen = false;
+let clearDialogClosing = false;
+let previousFocus = null;
+
+const HISTORY_STORAGE_KEY = "cuteCalculatorHistory";
+const dialogFocusableSelector = "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])";
  
 /* ── Ripple effect on every button click ── */
 document.querySelectorAll("button").forEach(btn => {
@@ -19,6 +29,34 @@ document.querySelectorAll("button").forEach(btn => {
     setTimeout(() => ripple.remove(), 400);
   });
 });
+
+/* ── Saved history helpers ── */
+function loadHistory() {
+  try {
+    const savedHistory = JSON.parse(localStorage.getItem(HISTORY_STORAGE_KEY));
+    history = Array.isArray(savedHistory) ? savedHistory.slice(0, 10) : [];
+  } catch {
+    history = [];
+  }
+}
+
+function saveHistory() {
+  try {
+    localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(history));
+  } catch {
+    // History still works for the current session if storage is unavailable.
+  }
+}
+
+function clearStoredHistory() {
+  history = [];
+  try {
+    localStorage.removeItem(HISTORY_STORAGE_KEY);
+  } catch {
+    // Nothing else to clean up when storage is unavailable.
+  }
+  renderHistory();
+}
  
 /* ── Append a value to the display ── */
 function appendValue(value) {
@@ -74,6 +112,7 @@ function toggleHistory() {
 function addToHistory(expr, result) {
   history.unshift({ expr, result });
   if (history.length > 10) history.pop();
+  saveHistory();
   renderHistory();
 }
  
@@ -84,10 +123,12 @@ function renderHistory() {
  
   if (history.length === 0) {
     historyEmpty.style.display = "block";
+    clearHistoryBtn.disabled = true;
     return;
   }
  
   historyEmpty.style.display = "none";
+  clearHistoryBtn.disabled = false;
  
   history.forEach(h => {
     const el = document.createElement("div");
@@ -106,6 +147,70 @@ function renderHistory() {
     historyPanel.appendChild(el);
   });
 }
+
+/* ── Clear history confirmation ── */
+function openClearHistoryDialog() {
+  if (history.length === 0 || clearDialogOpen || clearDialogClosing) return;
+
+  previousFocus = document.activeElement;
+  clearDialogOpen = true;
+  clearHistoryOverlay.classList.remove("closing");
+  clearHistoryOverlay.classList.add("open");
+  clearHistoryOverlay.setAttribute("aria-hidden", "false");
+  confirmClearHistory.focus();
+}
+
+function closeClearHistoryDialog() {
+  if (!clearDialogOpen || clearDialogClosing) return;
+
+  clearDialogOpen = false;
+  clearDialogClosing = true;
+  clearHistoryOverlay.classList.remove("open");
+  clearHistoryOverlay.classList.add("closing");
+  clearHistoryOverlay.setAttribute("aria-hidden", "true");
+
+  setTimeout(() => {
+    clearHistoryOverlay.classList.remove("closing");
+    clearDialogClosing = false;
+
+    if (previousFocus && typeof previousFocus.focus === "function") {
+      previousFocus.focus();
+    }
+    previousFocus = null;
+  }, 150);
+}
+
+function confirmHistoryClear() {
+  clearStoredHistory();
+  closeClearHistoryDialog();
+}
+
+function trapClearDialogFocus(event) {
+  if (!clearDialogOpen || event.key !== "Tab") return;
+
+  const focusable = Array.from(clearHistoryOverlay.querySelectorAll(dialogFocusableSelector))
+    .filter(el => !el.disabled && el.offsetParent !== null);
+  if (focusable.length === 0) return;
+
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}
+
+clearHistoryBtn.addEventListener("click", openClearHistoryDialog);
+cancelClearHistory.addEventListener("click", closeClearHistoryDialog);
+confirmClearHistory.addEventListener("click", confirmHistoryClear);
+
+clearHistoryOverlay.addEventListener("click", event => {
+  if (event.target === clearHistoryOverlay) closeClearHistoryDialog();
+});
  
 /* ── Calculate the expression ── */
 function calculate() {
@@ -152,6 +257,17 @@ function calculate() {
  
 /* ── Keyboard support ── */
 document.addEventListener("keydown", e => {
+  if (clearDialogOpen) {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      closeClearHistoryDialog();
+      return;
+    }
+
+    trapClearDialogFocus(e);
+    return;
+  }
+
   if (e.key >= "0" && e.key <= "9")                   appendValue(e.key);
   else if (["+", "-", "*", "/", ".", "(", ")"].includes(e.key)) appendValue(e.key);
   else if (e.key === "%")                              appendValue("%");
@@ -159,3 +275,6 @@ document.addEventListener("keydown", e => {
   else if (e.key === "Backspace")                      deleteLast();
   else if (e.key === "Escape")                         clearDisplay();
 });
+
+loadHistory();
+renderHistory();
