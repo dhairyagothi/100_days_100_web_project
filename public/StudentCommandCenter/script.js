@@ -158,12 +158,15 @@ function updateTimerDisplay() {
 
 function startTimer() {
 
+    if (timer) return;
+
     timer = setInterval(() => {
 
         if(seconds === 0) {
 
             if(minutes === 0) {
                 clearInterval(timer);
+                timer = null;
                 alert("Focus Session Complete!");
                 return;
             }
@@ -183,6 +186,7 @@ function startTimer() {
 function resetTimer() {
 
     clearInterval(timer);
+    timer = null;
 
     minutes = 25;
     seconds = 0;
@@ -204,6 +208,7 @@ let isPaused = false;
 pauseBtn.addEventListener("click", () => {
     if (!isPaused) {
         clearInterval(timer);
+        timer = null;
         pauseBtn.textContent = "Resume";
         isPaused = true;
     } else {
