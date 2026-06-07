@@ -2750,6 +2750,15 @@
     ],
     "difficulty": "advanced",
     "projectPath": "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/SkillBridge"
-  }
+  },
+  {
+  "projectNo":219,
+  "projectName": "Study sync",
+  "projectType": "Website",
+  "projectDesc": "A StudySync delivers interactive, responsive learning resources with modern educational features.",
+  "techStack": ["html", "css", "javascript", "ai"],
+  "difficulty": "intermediate",
+  "projectPath": "./public/Study-Sync/index.html"
+}
 
 ]
