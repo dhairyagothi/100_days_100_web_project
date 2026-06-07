@@ -121,8 +121,11 @@ export async function registerRoutes(
         college: req.query.college as string,
         domain: req.query.domain as string
       };
+      const page = parseInt(req.query.page as string) || 1;
+      const pageSize = parseInt(req.query.pageSize as string) || 50;
+      const offset = (page - 1) * pageSize;
       
-      const registrations = await storage.getRegistrations(filters);
+      const registrations = await storage.getRegistrations(filters, { limit: pageSize, offset });
       res.status(200).json(registrations);
     } catch (err) {
       res.status(500).json({ message: 'Internal server error' });
@@ -132,7 +135,9 @@ export async function registerRoutes(
   // Get Analytics (Protected)
   app.get(api.analytics.get.path, authenticateToken, async (req, res) => {
     try {
-      const registrations = await storage.getRegistrations();
+      const startDate = req.query.startDate as string;
+      const endDate = req.query.endDate as string;
+      const registrations = await storage.getRegistrations({ startDate, endDate });
       
       const totalRegistrations = registrations.length;
       

@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Studio — Professional Photography Portfolio</title>
+  <meta name="description" content="Photo Studio — a professional photography portfolio and gallery showcasing stunning visual content across portrait, landscape, and event photography.">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      line-height: 1.7;
+    }
+    a {
+      text-decoration: none;
+    }
+    .project-back-button {
+      position: fixed;
+      left: 18px;
+      top: 18px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: #1e293b;
+      color: #f59e0b;
+      border: 1px solid #f59e0b;
+      text-decoration: none;
+      z-index: 9999;
+      font-weight: 700;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .project-back-button:hover {
+      background: #f59e0b;
+      color: #0a0a0a;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    header {
+      padding: 20px 0;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: 4px;
+      color: #f59e0b;
+    }
+    .logo span {
+      font-weight: 700;
+      color: #fff;
+    }
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+    }
+    .nav-links a {
+      color: #aaa;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover {
+      color: #f59e0b;
+    }
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .hero {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 50%, rgba(245, 158, 11, 0.08) 0%, transparent 60%),
+                  radial-gradient(circle at 70% 50%, rgba(245, 158, 11, 0.05) 0%, transparent 60%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    .hero-content h1 {
+      font-size: 72px;
+      font-weight: 200;
+      letter-spacing: 8px;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+    .hero-content h1 em {
+      font-style: normal;
+      color: #f59e0b;
+      font-weight: 600;
+    }
+    .hero-content p {
+      font-size: 18px;
+      color: #888;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 14px 40px;
+      border: 2px solid #f59e0b;
+      color: #f59e0b;
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #f59e0b;
+      color: #0a0a0a;
+    }
+    .btn-filled {
+      background: #f59e0b;
+      color: #0a0a0a;
+    }
+    .btn-filled:hover {
+      background: transparent;
+      color: #f59e0b;
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #666;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      animation: bounce 2s infinite;
+    }
+    .hero-scroll i {
+      display: block;
+      margin-top: 8px;
+      font-size: 18px;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    section {
+      padding: 100px 0;
+    }
+    .section-title {
+      font-size: 40px;
+      font-weight: 200;
+      letter-spacing: 4px;
+      text-align: center;
+      margin-bottom: 15px;
+      color: #fff;
+    }
+    .section-title span {
+      color: #f59e0b;
+      font-weight: 600;
+    }
+    .section-sub {
+      text-align: center;
+      color: #666;
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 60px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .about-image {
+      width: 100%;
+      height: 500px;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      color: rgba(245, 158, 11, 0.2);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+    .about-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(245, 158, 11, 0.1);
+      border-radius: 4px;
+    }
+    .about-text h3 {
+      font-size: 28px;
+      font-weight: 300;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+    .about-text p {
+      color: #999;
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 40px;
+    }
+    .stat {
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 36px;
+      font-weight: 700;
+      color: #f59e0b;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 5px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+    .service-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 40px 30px;
+      text-align: center;
+      transition: all 0.3s;
+      border-radius: 4px;
+    }
+    .service-card:hover {
+      background: rgba(245, 158, 11, 0.05);
+      border-color: rgba(245, 158, 11, 0.2);
+      transform: translateY(-5px);
+    }
+    .service-card i {
+      font-size: 40px;
+      color: #f59e0b;
+      margin-bottom: 20px;
+    }
+    .service-card h4 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #fff;
+    }
+    .service-card p {
+      color: #888;
+      font-size: 14px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+    .gallery-item {
+      height: 300px;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      color: rgba(245, 158, 11, 0.15);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .gallery-item:hover {
+      transform: scale(1.02);
+    }
+    .gallery-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .gallery-item:hover::before {
+      opacity: 1;
+    }
+    .gallery-item span {
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.3s;
+      color: #fff;
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .gallery-item:hover span {
+      opacity: 1;
+    }
+    .gallery-item.tall {
+      grid-row: span 2;
+      height: auto;
+    }
+    .gallery-item.wide {
+      grid-column: span 2;
+    }
+
+    .testimonials {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.03), transparent);
+    }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+    }
+    .testimonial-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 40px;
+      border-radius: 4px;
+    }
+    .testimonial-card .stars {
+      color: #f59e0b;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+    .testimonial-card p {
+      color: #aaa;
+      font-style: italic;
+      margin-bottom: 20px;
+      font-size: 15px;
+    }
+    .testimonial-card .client {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .testimonial-card .client-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(245, 158, 11, 0.3);
+    }
+    .testimonial-card .client-info h5 {
+      color: #fff;
+      font-size: 15px;
+    }
+    .testimonial-card .client-info span {
+      color: #666;
+      font-size: 12px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+    }
+    .contact-info h3 {
+      font-size: 28px;
+      font-weight: 300;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    .contact-info p {
+      color: #999;
+      margin-bottom: 30px;
+    }
+    .contact-detail {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .contact-detail i {
+      width: 20px;
+      color: #f59e0b;
+    }
+    .contact-detail span {
+      color: #ccc;
+      font-size: 15px;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 20px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-family: inherit;
+      font-size: 14px;
+      border-radius: 4px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: #f59e0b;
+    }
+    .contact-form textarea {
+      height: 120px;
+      resize: vertical;
+    }
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder {
+      color: #555;
+    }
+
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 40px 0;
+      text-align: center;
+    }
+    footer .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    footer .social-links a {
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      transition: all 0.3s;
+    }
+    footer .social-links a:hover {
+      color: #f59e0b;
+      border-color: #f59e0b;
+    }
+    footer p {
+      color: #555;
+      font-size: 13px;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 992px) {
+      .about-grid,
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .gallery-item.wide {
+        grid-column: span 1;
+      }
+      .gallery-item.tall {
+        grid-row: span 1;
+      }
+      .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: rgba(10, 10, 10, 0.98);
+        padding: 30px;
+        text-align: center;
+      }
+      .nav-links.open {
+        display: flex;
+      }
+      .menu-toggle {
+        display: block;
+      }
+      .hero-content h1 {
+        font-size: 36px;
+        letter-spacing: 4px;
+      }
+      .hero-content p {
+        font-size: 14px;
+      }
+      .section-title {
+        font-size: 28px;
+      }
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+      .about-stats {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+      .stat-number {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="/" class="project-back-button">← Back to Home</a>
+
+  <header>
+    <nav class="container">
+      <div class="logo"><span>Photo</span> Studio</div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1><em>Capture</em> the Moment</h1>
+      <p>Professional Photography &amp; Visual Storytelling</p>
+      <a href="#gallery" class="btn">View Portfolio</a>
+    </div>
+    <div class="hero-scroll">
+      Scroll
+      <i class="fas fa-chevron-down"></i>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="container">
+      <h2 class="section-title">About <span>Us</span></h2>
+      <p class="section-sub">The story behind the lens</p>
+      <div class="about-grid">
+        <div class="about-image">
+          <i class="fas fa-camera"></i>
+        </div>
+        <div class="about-text">
+          <h3>We Turn Moments Into Art</h3>
+          <p>
+            Founded with a passion for visual storytelling, Photo Studio is a collective of
+            award-winning photographers dedicated to capturing life's most precious moments.
+            From intimate portraits to grand events, we bring a unique artistic vision to every project.
+          </p>
+          <p>
+            Our approach combines technical excellence with a genuine connection to our subjects,
+            ensuring each photograph tells a story that resonates for generations. We believe that
+            the best photos are born from collaboration, trust, and a shared vision.
+          </p>
+          <div class="about-stats">
+            <div class="stat">
+              <div class="stat-number">500+</div>
+              <div class="stat-label">Projects</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number">12+</div>
+              <div class="stat-label">Years</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number">98%</div>
+              <div class="stat-label">Satisfaction</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="container">
+      <h2 class="section-title">Our <span>Services</span></h2>
+      <p class="section-sub">What we offer</p>
+      <div class="services-grid">
+        <div class="service-card">
+          <i class="fas fa-user"></i>
+          <h4>Portrait Photography</h4>
+          <p>Professional portrait sessions for individuals, families, and corporate headshots with a focus on natural light and authentic expressions.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-tree"></i>
+          <h4>Landscape &amp; Nature</h4>
+          <p>Breathtaking landscape photography capturing the beauty of natural environments, from sweeping vistas to intimate forest details.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-ring"></i>
+          <h4>Event Coverage</h4>
+          <p>Comprehensive event photography including weddings, corporate events, and celebrations with discreet and professional service.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-cube"></i>
+          <h4>Product Photography</h4>
+          <p>High-quality product imagery for e-commerce, catalogs, and advertising campaigns that showcase your products in the best light.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-video"></i>
+          <h4>Video &amp; Motion</h4>
+          <p>Cinematic videography services including short films, event highlights, and promotional content with professional editing.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-paint-brush"></i>
+          <h4>Photo Editing</h4>
+          <p>Professional post-processing, retouching, color grading, and restoration services to enhance and preserve your images.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <div class="container">
+      <h2 class="section-title">Our <span>Gallery</span></h2>
+      <p class="section-sub">A glimpse of our work</p>
+      <div class="gallery-grid">
+        <div class="gallery-item tall">
+          <i class="fas fa-mountain"></i>
+          <span>Nature</span>
+        </div>
+        <div class="gallery-item">
+          <i class="fas fa-smile"></i>
+          <span>Portraits</span>
+        </div>
+        <div class="gallery-item">
+          <i class="fas fa-city"></i>
+          <span>Urban</span>
+        </div>
+        <div class="gallery-item wide">
+          <i class="fas fa-sun"></i>
+          <span>Landscape</span>
+        </div>
+        <div class="gallery-item">
+          <i class="fas fa-heart"></i>
+          <span>Weddings</span>
+        </div>
+        <div class="gallery-item">
+          <i class="fas fa-tshirt"></i>
+          <span>Fashion</span>
+        </div>
+        <div class="gallery-item">
+          <i class="fas fa-water"></i>
+          <span>Underwater</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonials" class="testimonials">
+    <div class="container">
+      <h2 class="section-title">What <span>Clients Say</span></h2>
+      <p class="section-sub">Testimonials</p>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p>"Absolutely stunning work! The team at Photo Studio captured our wedding day perfectly. Every photo tells a story and brings back the emotions of that beautiful day."</p>
+          <div class="client">
+            <div class="client-avatar"><i class="fas fa-user"></i></div>
+            <div class="client-info">
+              <h5>Sarah &amp; Michael</h5>
+              <span>Wedding Photography</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p>"Professional, creative, and incredibly talented. Our corporate headshots have never looked better. The turnaround time was impressive and the quality exceeded our expectations."</p>
+          <div class="client">
+            <div class="client-avatar"><i class="fas fa-user"></i></div>
+            <div class="client-info">
+              <h5>David Chen</h5>
+              <span>CEO, TechVentures</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p>"The product photography transformed our online store. Sales have increased significantly since we updated our product images. Highly recommended for any e-commerce business."</p>
+          <div class="client">
+            <div class="client-avatar"><i class="fas fa-user"></i></div>
+            <div class="client-info">
+              <h5>Emily Rodriguez</h5>
+              <span>Shopify Store Owner</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p>"An incredible eye for detail. The landscape photos exceeded all expectations. You can feel the emotion and beauty in every shot. Truly world-class photography."</p>
+          <div class="client">
+            <div class="client-avatar"><i class="fas fa-user"></i></div>
+            <div class="client-info">
+              <h5>James Whitfield</h5>
+              <span>National Geographic Contributor</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <h2 class="section-title">Get In <span>Touch</span></h2>
+      <p class="section-sub">Let's create something beautiful</p>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h3>Let's Work Together</h3>
+          <p>Have a project in mind? We'd love to hear from you. Reach out and let's discuss how we can bring your vision to life through the art of photography.</p>
+          <div class="contact-detail">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>123 Creative Avenue, Suite 100, New York, NY 10001</span>
+          </div>
+          <div class="contact-detail">
+            <i class="fas fa-phone"></i>
+            <span>+1 (555) 123-4567</span>
+          </div>
+          <div class="contact-detail">
+            <i class="fas fa-envelope"></i>
+            <span>hello@photostudio.com</span>
+          </div>
+          <div class="contact-detail">
+            <i class="fas fa-clock"></i>
+            <span>Mon – Fri: 9:00 AM – 7:00 PM</span>
+          </div>
+        </div>
+        <form class="contact-form">
+          <input type="text" placeholder="Your Name" aria-label="Your Name">
+          <input type="email" placeholder="Your Email" aria-label="Your Email">
+          <input type="text" placeholder="Subject" aria-label="Subject">
+          <textarea placeholder="Your Message" aria-label="Your Message"></textarea>
+          <button type="submit" class="btn btn-filled">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="social-links">
+        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+      </div>
+      <p>&copy; 2026 Photo Studio. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('menuToggle').addEventListener('click', function () {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        document.getElementById('navLinks').classList.remove('open');
+      });
+    });
+
+    document.querySelector('.contact-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      alert('Thank you for your message! We will get back to you soon.');
+    });
+  </script>
+
+</body>
+</html>

@@ -1,149 +1,332 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevBlog - Blog</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
-    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevBlog - Blog</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="../favv.png" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
+  <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
-    <header id="main-header" class="header1">
-        <nav>
-            <div class="logo">
-                DevBlog
-            </div>
-            <ul>
-                <li><a href="main.html">Home</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="#" id="authBtn">Login/Signup</a></li>
-            </ul>
-            <button id="darkModeToggle">
-                <i aria-hidden="true" class="fas fa-moon"></i>
-                <i aria-hidden="true" class="fas fa-sun"></i>
-            </button>
-        </nav>
-    </header>
+  <!-- Ambient background -->
+  <div class="ambient-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grain"></div>
+  </div>
 
-    <main class="blog-content">
-        <div class="featured-posts-slider">
-            <!-- Featured posts slider will be populated by JavaScript -->
-        </div>
-        <div class="search-container">
-            <form id="search-form">
-                <input type="text" placeholder="Search by author, tag, or date..." id="search-input">
-                <button type="submit">Search</button>
-            </form>
-        </div>
-        <div class="two-column-layout">
-            <div class="main-content">
-                <div id="blogPosts">
-                    <!-- Blog posts will be populated by JavaScript -->
-                </div>
-                <div class="pagination">
-                    <button id="prevPage">Previous</button>
-                    <span id="currentPage">1</span>
-                    <button id="nextPage">Next</button>
-                </div>
-            </div>
-            <aside class="sidebar">
-                <div class="widget">
-                    <h3>Categories</h3>
-                    <div id="categories">
-                        <!-- Categories will be populated by JavaScript -->
-                    </div>
-                </div>
-                <div class="widget">
-                    <h3>Recent Posts</h3>
-                    <ul id="recentPosts">
-                        <!-- Recent posts will be populated by JavaScript -->
-                    </ul>
-                </div>
-                <div class="widget">
-                    <h3>Popular Posts</h3>
-                    <ul id="popularPosts">
-                        <!-- Popular posts will be populated by JavaScript -->
-                    </ul>
-                </div>
-            </aside>
-        </div>
-    </main>
+  <!-- Back button — original class preserved -->
+  <a href="/" class="project-back-button">← Back to Home</a>
 
-    <section id="subscribe">
-        <div class="container">
-            <h2>Subscribe to Our Blog</h2>
-            <p>Stay updated with our latest posts!</p>
-            <form id="subscribe-form">
-                <input type="email" placeholder="Enter your email" required>
-                <button type="submit">Subscribe</button>
-            </form>
-        </div>
-    </section>
+  <!-- Header — original id + class preserved -->
+  <header id="main-header" class="header1">
+    <nav>
+      <div class="logo">
+        <span class="logo-mark">D</span>
+        <span class="logo-text">DevBlog</span>
+      </div>
+      <ul>
+        <li><a href="main.html">Home</a></li>
+        <li><a href="blog.html" class="active">Blog</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#" id="authBtn">Login/Signup</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button id="darkModeToggle" class="icon-btn">
+          <!-- SVG icons (FA still works if kit loads) -->
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon-sun"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <!-- FA icons fallback -->
+          <i aria-hidden="true" class="fas fa-moon"></i>
+          <i aria-hidden="true" class="fas fa-sun"></i>
+        </button>
+        <button class="hamburger" id="mobileMenuBtn" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
 
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>About DevBlog</h4>
-                <p>DevBlog is your source for the latest in web development, programming tips, and tech insights.</p>
-            </div>
-            <div class="footer-section">
-                <h4>Quick Links</h4>
-                <ul class="quick-links" type="none">
-                    <li><a href="main.html">Home</a></li>
-                    <li><a href="blog.html">Blog</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Connect With Us</h4>
-                <div class="social-icons">
-                    <a href="https://linkedin.com/in/ayushcarpenter" target="_blank"><img alt="" src="./assets/linkedin.png"></a>
-                    <a href="https://twitter.com/carpenterAyush" target="_blank"><img alt="" src="./assets/github.png"></i></a>
-                    <a href="https://github.com/Ayushswirlon" target="_blank"><img alt="" src="./assets/icons8-facebook-96.png"></a>
-                    <a href="https://github.com/Ayushswirlon" target="_blank"><img alt="" src="./assets/icons8-youtube-96.png"></a>
-                </div>
-                
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 DevBlog. All rights reserved.</p>
-        </div>
-    </footer>
+  <!-- Page Hero (new) -->
+  <section class="page-hero">
+    <div class="hero-label">The Publication</div>
+    <h1 class="page-title">Engineering<br><em>Insights</em></h1>
+    <p class="page-subtitle">Deep dives, tutorials &amp; perspectives from the world of software development.</p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">128</span><span class="stat-label">Articles</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-num">42</span><span class="stat-label">Authors</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-num">18k</span><span class="stat-label">Readers</span></div>
+    </div>
+  </section>
 
-    <div id="authModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div class="auth-tabs">
-                <button class="auth-tab active" data-tab="login">Login</button>
-                <button class="auth-tab" data-tab="signup">Sign Up</button>
-            </div>
-            <form id="loginForm" class="auth-form active">
-                <h2>Login</h2>
-                <input type="email" placeholder="Email" required>
-                <input type="password" placeholder="Password" required>
-                <button type="submit">Login</button>
-            </form>
-            <form id="signupForm" class="auth-form">
-                <h2>Sign Up</h2>
-                <input type="text" placeholder="Full Name" required>
-                <input type="email" placeholder="Email" required>
-                <input type="password" placeholder="Password" required>
-                <input type="password" placeholder="Confirm Password" required>
-                <button type="submit">Sign Up</button>
-            </form>
-        </div>
+  <!-- Ticker (replaces featured-posts-slider visually; slider div kept below for JS) -->
+  <div class="ticker-wrap">
+    <div class="ticker-label">TRENDING</div>
+    <div class="ticker-track">
+      <div class="ticker-content" id="tickerContent"></div>
+    </div>
+  </div>
+
+  <!-- Main blog content — original class preserved -->
+  <main class="blog-content">
+
+    <!-- Featured posts slider — original div kept so JS still works -->
+    <div class="featured-posts-slider">
+      <!-- Featured posts slider populated by JavaScript -->
     </div>
 
-    <button id="backToTop" title="Back to Top"><img alt="" src="assets/arrow_6353601.png" style="height: 50px;width: 50px;"></button>
+    <!-- Search — original id/structure preserved -->
+    <div class="search-container">
+      <form id="search-form">
+        <input type="text" placeholder="Search by author, tag, or date..." id="search-input">
+        <button type="submit">Search</button>
+      </form>
+    </div>
 
-    <script src="blog-script.js"></script>
+    <!-- Two-column layout — original class preserved -->
+    <div class="two-column-layout">
+
+      <!-- Main content -->
+      <div class="main-content">
+        <div id="blogPosts">
+          <!-- Blog posts populated by JavaScript -->
+        </div>
+        <!-- Pagination — original ids preserved -->
+        <div class="pagination">
+          <button id="prevPage" class="page-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+            Previous
+          </button>
+          <span id="currentPage">1</span>
+          <button id="nextPage" class="page-btn">
+            Next
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Sidebar — original class + widget ids preserved -->
+      <aside class="sidebar">
+        <div class="widget">
+          <div class="widget-header">
+            <span class="widget-dot accent"></span>
+            <h3>Categories</h3>
+          </div>
+          <div id="categories">
+            <!-- Populated by JavaScript -->
+          </div>
+        </div>
+        <div class="widget">
+          <div class="widget-header">
+            <span class="widget-dot"></span>
+            <h3>Recent Posts</h3>
+          </div>
+          <ul id="recentPosts">
+            <!-- Populated by JavaScript -->
+          </ul>
+        </div>
+        <div class="widget">
+          <div class="widget-header">
+            <span class="widget-dot accent"></span>
+            <h3>Popular Posts</h3>
+          </div>
+          <ul id="popularPosts">
+            <!-- Populated by JavaScript -->
+          </ul>
+        </div>
+        <!-- Newsletter in sidebar -->
+        <div class="widget newsletter-widget">
+          <h3>Stay in the loop</h3>
+          <p>Get new articles straight to your inbox.</p>
+          <form class="inline-form" id="sidebar-subscribe-form">
+            <input type="email" placeholder="your@email.com" required>
+            <button type="submit">Subscribe</button>
+          </form>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <!-- Subscribe section — original id + structure preserved -->
+  <section id="subscribe">
+    <div class="container">
+      <h2>Subscribe to Our Blog</h2>
+      <p>Stay updated with our latest posts!</p>
+      <form id="subscribe-form">
+        <input type="email" placeholder="Enter your email" required>
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer — original structure preserved -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>About DevBlog</h4>
+        <p>DevBlog is your source for the latest in web development, programming tips, and tech insights.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul class="quick-links" type="none">
+          <li><a href="main.html">Home</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Connect With Us</h4>
+        <div class="social-icons">
+          <a href="https://linkedin.com/in/ayushcarpenter"   target="_blank"><img alt="LinkedIn" src="./assets/linkedin.png"></a>
+          <a href="https://twitter.com/carpenterAyush"       target="_blank"><img alt="GitHub"   src="./assets/github.png"></a>
+          <a href="https://github.com/Ayushswirlon"          target="_blank"><img alt="Facebook" src="./assets/icons8-facebook-96.png"></a>
+          <a href="https://github.com/Ayushswirlon"          target="_blank"><img alt="YouTube"  src="./assets/icons8-youtube-96.png"></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 DevBlog. All rights reserved.</p>
+      <span class="footer-mono">Built with ♥ in the open</span>
+    </div>
+  </footer>
+
+  <!-- Auth modal — original id + structure preserved -->
+  <div id="authModal" class="modal">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Login</button>
+        <button class="auth-tab" data-tab="signup">Sign Up</button>
+      </div>
+      <form id="loginForm" class="auth-form active">
+        <h2>Welcome back</h2>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" placeholder="you@example.com" required>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn-submit">Login →</button>
+      </form>
+      <form id="signupForm" class="auth-form">
+        <h2>Create account</h2>
+        <div class="field">
+          <label>Full Name</label>
+          <input type="text" placeholder="Jane Smith" required>
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" placeholder="you@example.com" required>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" placeholder="••••••••" required>
+        </div>
+        <div class="field">
+          <label>Confirm Password</label>
+          <input type="password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn-submit">Sign Up →</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Back to top — original id preserved -->
+  <button id="backToTop" title="Back to Top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
+
+  <!-- Original script -->
+  <script src="blog-script.js"></script>
+
+  <script>
+    // ─── Header scroll ───
+    const header = document.getElementById('main-header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 40);
+      header.classList.toggle('header-scrolled', window.scrollY > 40);
+    });
+
+    // ─── Dark mode ───
+    document.getElementById('darkModeToggle').addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+    });
+
+    // ─── Mobile menu ───
+    const hamburger = document.getElementById('mobileMenuBtn');
+    const navUl = document.querySelector('nav ul');
+    hamburger.addEventListener('click', () => {
+      navUl.classList.toggle('open');
+      hamburger.classList.toggle('active');
+    });
+
+    // ─── Auth modal ───
+    const authModal = document.getElementById('authModal');
+    document.getElementById('authBtn').addEventListener('click', e => {
+      e.preventDefault();
+      authModal.classList.add('show');
+    });
+    const closeModal = () => authModal.classList.remove('show');
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    document.getElementById('modalBackdrop').addEventListener('click', closeModal);
+
+    // Auth tabs
+    document.querySelectorAll('.auth-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab + 'Form').classList.add('active');
+      });
+    });
+
+    // ─── Back to top ───
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => btt.classList.toggle('show', window.scrollY > 400));
+    btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // ─── Trending ticker ───
+    const trendingItems = [
+      'Mastering TypeScript Generics →',
+      'React 19 — What\'s New →',
+      'Building with WebAssembly →',
+      'CSS Container Queries in 2024 →',
+      'Rust for JavaScript Developers →',
+      'AI-Assisted Code Review →',
+      'Node.js 22 Features Deep Dive →',
+      'The Future of Edge Computing →',
+    ];
+    const ticker = document.getElementById('tickerContent');
+    if (ticker) {
+      ticker.innerHTML = [...trendingItems, ...trendingItems]
+        .map(t => `<span>${t}</span>`).join('');
+    }
+
+    // ─── Subscribe forms ───
+    ['subscribe-form', 'sidebar-subscribe-form'].forEach(id => {
+      const form = document.getElementById(id);
+      if (!form) return;
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        const btn = form.querySelector('button[type="submit"]');
+        btn.textContent = 'Subscribed ✓';
+        btn.disabled = true;
+      });
+    });
+  </script>
 </body>
 </html>
