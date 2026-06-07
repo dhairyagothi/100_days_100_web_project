@@ -25,23 +25,23 @@ body {
   position: fixed;
   left: 24px;
   top: 24px;
-  padding: 10px 18px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #1e293b;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid #3b82f6;
   text-decoration: none;
   z-index: 9999;
   font-weight: 700;
-  color: #ffffff;
+  color: #3b82f6;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .project-back-button:hover {
-  background: #ffffff;
-  color: var(--bg-dark);
+  background: #3b82f6;
+  color: #fff;
   transform: translateY(-2px);
 }
 

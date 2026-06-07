@@ -14,6 +14,7 @@ let weatherChart = null;
 let activeMetric = "temperature";
 let lastForecastData = null;
 let isCelsius = true;
+let activeWeatherRequestId = 0;
 
 /* =========================
    DOM ELEMENTS
@@ -530,9 +531,11 @@ function bindChartTabs() {
 ========================= */
 
 async function loadCityWeather(city) {
+  const requestId = ++activeWeatherRequestId;
   const normalizedCity = normalizeCity(city);
 
   if (!normalizedCity) {
+    setLoading(false);
     setStatus(
       "Please enter a city name.",
       "error"
@@ -552,6 +555,10 @@ async function loadCityWeather(city) {
       normalizedCity
     );
 
+    if (requestId !== activeWeatherRequestId) {
+      return;
+    }
+
     if (!location) {
       throw new Error("City not found.");
     }
@@ -560,6 +567,10 @@ async function loadCityWeather(city) {
       location.latitude,
       location.longitude
     );
+
+    if (requestId !== activeWeatherRequestId) {
+      return;
+    }
 
     const summary = buildWeatherSummary(
       weatherData
@@ -577,16 +588,40 @@ async function loadCityWeather(city) {
       weatherData.current.weather_code
     );
 
+let location;
+      try {
+        location = await geocodeCity(city);
+      } catch (_geoErr) {
+        setRowMessage(row, '—');
+        return;
+      }
+      if (!location) {
+        setRowMessage(row, '—');
+        return;
+      }
+      let weatherData;
+      try {
+        weatherData = await fetchWeather(location.latitude, location.longitude);
+      } catch (_fetchErr) {
+        setRowMessage(row, '—');
+        return;
+      }
+      renderRowWeather(row, weatherData, cachedHeaders);
+    })
+  );
+}
+
     lastForecastData = weatherData;
-
     renderChart(weatherData);
-
     setStatus(
       `Showing weather for ${label}`,
       "success"
     );
-
   } catch (error) {
+    if (requestId !== activeWeatherRequestId) {
+      return;
+    }
+
     console.error(error);
 
     setStatus(
@@ -596,7 +631,9 @@ async function loadCityWeather(city) {
     );
 
   } finally {
-    setLoading(false);
+    if (requestId === activeWeatherRequestId) {
+      setLoading(false);
+    }
   }
 }
 

@@ -230,6 +230,8 @@ function handleTimerComplete() {
     timestamp: Date.now()
   };
   sessionHistory.unshift(session);
+  state.sessionCount++;
+  els.sessionLabel.textContent = `Session ${state.sessionCount}`;
   if (sessionHistory.length > 50) sessionHistory.pop();
   localStorage.setItem('ft_history', JSON.stringify(sessionHistory));
 

@@ -360,6 +360,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     saveProgress();
     if (topic.id === 'quiz') {
+      // ✅ highlight sidebar item first
+      document.querySelectorAll('.topic-item')
+        .forEach((item) => item.classList.remove('active'));
+
+      const activeItem = document.getElementById(
+        `item-${topic.categoryId}-${topic.id}`
+      );
+      if (activeItem) {
+        const parentGroup = activeItem.closest('.category-group');
+        if (parentGroup) parentGroup.classList.remove('collapsed');
+        activeItem.classList.add('active');
+        activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
       launchQuiz(topic.categoryId, topic.title);
       return;
     }
@@ -375,6 +389,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Ensure category parent is expanded
       const parentGroup = activeItem.closest('.category-group');
       if (parentGroup) parentGroup.classList.remove('collapsed');
+      activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
     if (contentViewport) {
@@ -407,11 +422,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       // 1. Add Category Meta Badge & Title layout
       const firstH1 = parsedContainer.querySelector('h1');
       if (firstH1) {
+        const wordCount = markdownText.trim().split(/\s+/).length;
+        const readTime = Math.ceil(wordCount / 200);
         const metaDiv = document.createElement('div');
         metaDiv.className = 'topic-meta';
         metaDiv.innerHTML = `
           <span class="meta-badge">${topic.categoryTitle}</span>
-          <span><i class="far fa-clock"></i> 5 min read</span>
+          <span><i class="far fa-clock"></i> ${readTime} min read</span>
           <span><i class="fas fa-graduation-cap"></i> Beginner Friendly</span>
         `;
         firstH1.insertAdjacentElement('afterend', metaDiv);

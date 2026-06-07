@@ -29,14 +29,16 @@
                 <section class="board-panel" aria-label="Chess board area">
                     <div class="player-strip top-player">
                         <span>Black</span>
-                        <strong>♚</strong>
+                        <strong aria-label="Black King" role="img"><span aria-hidden="true">♚</span></strong>
                     </div>
+                    
                     <div class="board-frame">
-                        <div id="board" class="board" role="grid" aria-label="Chess board"></div>
+                        <div id="board" class="board" role="region" aria-label="Chess board"></div>
                     </div>
+                    
                     <div class="player-strip bottom-player">
                         <span>White</span>
-                        <strong>♔</strong>
+                        <strong aria-label="White King" role="img"><span aria-hidden="true">♔</span></strong>
                     </div>
                 </section>
 
@@ -47,10 +49,7 @@
                     </div>
 
                     <div class="controls" aria-label="Game controls">
-                          <button id="backHome" type="button">
-        <span aria-hidden="true"></span> Home
-    </button>
-
+                        <button id="backHome" type="button"><span aria-hidden="true">⌂</span> Home</button>
                         <button id="newGame" type="button"><span aria-hidden="true">↻</span> New Game</button>
                         <button id="undoMove" type="button"><span aria-hidden="true">↶</span> Undo</button>
                         <button id="flipBoard" type="button"><span aria-hidden="true">⇅</span> Flip Board</button>
@@ -78,6 +77,18 @@
             </div>
         </section>
     </main>
+
+    <div id="promotionModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="promotionTitle">
+        <div class="modal-content">
+            <h2 id="promotionTitle">Promote Pawn</h2>
+            <div class="promotion-options">
+                <button type="button" data-piece="q" aria-label="Promote to Queen">♛</button>
+                <button type="button" data-piece="r" aria-label="Promote to Rook">♜</button>
+                <button type="button" data-piece="b" aria-label="Promote to Bishop">♝</button>
+                <button type="button" data-piece="n" aria-label="Promote to Knight">♞</button>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

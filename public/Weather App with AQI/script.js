@@ -1,4 +1,8 @@
-const API_KEY = "Insert Your API Key";
+const API_KEY =
+  window.WEATHER_API_KEY ||
+  (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_WEATHER_API_KEY) ||
+  localStorage.getItem('weather_api_key') ||
+  '';
 let lastAQI = null;
 
 const cityInput = document.getElementById("cityInput");

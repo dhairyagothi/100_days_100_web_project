@@ -11,6 +11,7 @@ let clickable = true;
 let paused = false;
 let sequenceInterval = null; // store Simon sequence interval
 
+const screens = document.querySelectorAll('.screen');
 const h2 = document.querySelector("h2");
 const highScoreText = document.getElementById("highscore");
 const strictToggle = document.getElementById("strict-toggle");
@@ -20,9 +21,12 @@ const stopBtn = document.getElementById("stop-btn");
 const board = document.getElementById("board");
 const allBtns = document.querySelectorAll(".btn");
 const pauseBtn = document.getElementById("pause-btn");
+const playBtn =document.getElementById("play-btn");
 
 let highScore = localStorage.getItem("highScore") || 0;
 highScoreText.innerText = `🏆 High Score: ${highScore}`;
+
+playBtn.addEventListener('click', () => screens[0].classList.add('up'));
 
 // ---------------- Flash functions ----------------
 function gameFlash(btn) {
