@@ -507,6 +507,31 @@
       <span class="scroll-tooltip">Back to top</span>
     </button>
     <div class="toast" id="toast"></div>
+    <div id="compareModal" class="compare-modal hidden">
+  <div class="compare-modal-content">
+    <button id="closeCompareModal" class="compare-close">
+      &times;
+    </button>
+
+    <h2>Compare Projects</h2>
+
+    <div class="compare-selectors">
+      <select id="compareProjectA">
+        <option value="">Select Project A</option>
+      </select>
+
+      <select id="compareProjectB">
+        <option value="">Select Project B</option>
+      </select>
+    </div>
+
+    <button id="runComparisonBtn" class="btn btn-primary">
+      Compare
+    </button>
+
+    <div id="comparisonResults"></div>
+  </div>
+</div>
     <script type="module" src="hero-terminal.js" defer></script>
     <script src="index.js?v=4" defer></script>
     <script src="navbar.js" defer></script>
