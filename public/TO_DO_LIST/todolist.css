@@ -481,6 +481,296 @@ body {
   right: 24px;
 }
 
+/* ---------- Card Action Buttons ---------- */
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.card-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(240, 240, 245, 0.5);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.card-action-btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Completed button */
+.btn-complete:hover {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #10b981;
+}
+
+.btn-active-complete {
+  background: rgba(16, 185, 129, 0.2) !important;
+  border-color: rgba(16, 185, 129, 0.5) !important;
+  color: #10b981 !important;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.2);
+}
+
+/* In Progress button */
+.btn-inprogress:hover {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+}
+
+.btn-active-inprogress {
+  background: rgba(56, 189, 248, 0.2) !important;
+  border-color: rgba(56, 189, 248, 0.5) !important;
+  color: #38bdf8 !important;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.2);
+}
+
+/* Delete button */
+.btn-delete:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #ef4444;
+}
+
+/* Card status variants */
+.kanban-task-card.card-completed {
+  border-color: rgba(16, 185, 129, 0.2);
+  background: rgba(16, 185, 129, 0.04);
+}
+
+.kanban-task-card.card-inprogress {
+  border-color: rgba(56, 189, 248, 0.2);
+  background: rgba(56, 189, 248, 0.04);
+}
+
+/* ---------- Drag state ---------- */
+.kanban-task-card.dragging {
+  opacity: 0.4;
+  transform: scale(0.97);
+}
+
+.kanban-column-drop-zone.drag-over {
+  background: rgba(124, 99, 255, 0.06);
+  border-radius: 10px;
+  outline: 2px dashed rgba(124, 99, 255, 0.3);
+}
+
+/* ---------- Clear Workspace Confirmation Modal ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 6, 18, 0.75);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50000;
+  animation: modalFadeIn 0.2s ease;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal-box {
+  background: linear-gradient(145deg, #12142e, #0f1123);
+  border: 1px solid rgba(124, 99, 255, 0.2);
+  border-radius: 20px;
+  padding: 40px 36px;
+  max-width: 420px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+  animation: modalSlideUp 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(24px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-icon {
+  font-size: 2.5rem;
+  margin-bottom: 4px;
+}
+
+.modal-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #f0f0f5;
+  text-align: center;
+}
+
+.modal-desc {
+  font-size: 0.875rem;
+  color: rgba(240, 240, 245, 0.55);
+  text-align: center;
+  line-height: 1.6;
+  max-width: 320px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+  width: 100%;
+}
+
+.modal-btn {
+  flex: 1;
+  height: 44px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.modal-btn-cancel {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(240, 240, 245, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-btn-cancel:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f0f0f5;
+}
+
+.modal-btn-confirm {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+}
+
+.modal-btn-confirm:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+}
+
+/* ---------- Documents Section Styles ---------- */
+.doc-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.doc-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #f0f0f5;
+}
+
+.doc-meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.doc-date {
+  font-size: 0.75rem;
+  color: rgba(240, 240, 245, 0.4);
+}
+
+.doc-task-count {
+  font-size: 0.75rem;
+  color: rgba(240, 240, 245, 0.4);
+}
+
+.doc-stale {
+  font-size: 0.72rem;
+  color: #f59e0b;
+  margin-top: 4px;
+}
+
+.doc-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.doc-btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid rgba(124, 99, 255, 0.3);
+  background: rgba(124, 99, 255, 0.1);
+  color: #c4b5ff;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.doc-btn:hover {
+  background: rgba(124, 99, 255, 0.2);
+  border-color: rgba(124, 99, 255, 0.5);
+}
+
+.doc-btn-del {
+  border-color: rgba(239, 68, 68, 0.25);
+  background: rgba(239, 68, 68, 0.08);
+  color: #fca5a5;
+}
+
+.doc-btn-del:hover {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.45);
+}
+
+/* Empty state */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 8px;
+}
+
+.empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 4px;
+  opacity: 0.5;
+}
+
+.empty-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: rgba(240, 240, 245, 0.6);
+}
+
+.empty-desc {
+  font-size: 0.85rem;
+  color: rgba(240, 240, 245, 0.35);
+  text-align: center;
+  max-width: 300px;
+  line-height: 1.5;
+}
+
 /* ---------- Responsive Design Adaptations ---------- */
 @media (max-width: 1200px) {
   .productivity-dashboard {

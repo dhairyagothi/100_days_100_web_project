@@ -473,9 +473,9 @@ body::after {
 
 /* ── Container Card for Progress Dashboard ── */
 #progressCard {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--surface2); /* Changed from hardcoded white opacity to use theme surface */
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border); /* Changed to use theme border */
   border-radius: 16px;
   padding: 20px;
   margin-top: 20px;
@@ -487,17 +487,17 @@ body::after {
   font-size: 1.2rem;
   margin-top: 0;
   margin-bottom: 12px;
-  color: #fff;
+  color: var(--text1); /* Fixed: Dynamically shifts between dark/light text */
 }
 
 .progress-stats p {
   font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text2); /* Fixed: Automatically uses theme-appropriate text color */
   margin-bottom: 15px;
 }
 #completedCount {
   font-weight: bold;
-  color: #6c5ce7;
+  color: #6c5ce7; /* Keep the distinct purple focus brand color */
   font-size: 1.1rem;
 }
 
@@ -508,44 +508,45 @@ body::after {
   gap: 10px;
   margin-top: 5px;
 }
+
 .badge {
-  padding: 8px 14px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   display: inline-flex;
   align-items: center;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 5px;
+  color: var(--text1); /* Fixed: Hooks directly into your existing main text variable */
+  transition: all 0.3s ease;
 }
 
-/* State A: LOCKED (Desaturated & Translucent) */
-.badge.locked {
-  background: rgba(255, 255, 255, 0.04);
-  color: rgba(255, 255, 255, 0.25);
-  border: 1px dashed rgba(255, 255, 255, 0.1);
-  filter: grayscale(100%);
-  cursor: not-allowed;
-}
-
-/* State B: UNLOCKED (Vibrant Popout Highlight Gradient) */
+/* Style for UNLOCKED badges (like your gradient one) */
 .badge.unlocked {
-  background: linear-gradient(135deg, rgba(108, 92, 231, 0.25), rgba(253, 121, 168, 0.25));
-  color: #fff;
-  border: 1px solid rgba(108, 92, 231, 0.5);
-  box-shadow: 0 4px 15px rgba(108, 92, 231, 0.2);
-  transform: translateY(-2px);
-  animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); 
+  color: #ffffff; /* Keep white explicitly so text pops nicely against the colorful background graphic */
+  box-shadow: 0 4px 15px rgba(142, 197, 252, 0.4);
+  opacity: 1;
+}
+
+/* Style for LOCKED badges (the ones fading into the background) */
+.badge.locked {
+  background: transparent;
+  border: 1px dashed var(--text3); /* Fixed: Maps flawlessly to your muted theme variable */
+  color: var(--text3); /* Fixed: Becomes readable gray in light mode, soft gray in dark mode */
+  opacity: 0.5;
 }
 
 /* ── Custom Scrollbar Layout ── */
 .item-list::-webkit-scrollbar { width: 4px; }
 .item-list::-webkit-scrollbar-track { background: transparent; }
 .item-list::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 4px; }
-
 /* ── Responsive Mobile Media Adjustments ── */
 @media (max-width: 480px) {
   body { padding: 72px 12px 50px; }
   .card { padding: 22px 16px; }
   .app-title { font-size: 1.65rem; }
-  .activity-name { font-size: 1.15rem; }
-}
+ .activity-name { font-size: 1.15rem; }
+
+} 
+

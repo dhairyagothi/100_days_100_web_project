@@ -34,7 +34,7 @@ let passwordLength = 10;
 let checkCount = 0;
 let hideTimeout;
 let countdownInterval;
-let passwordsHistory = [];
+let passwordHistory = [];
 
 init();
 
@@ -140,12 +140,13 @@ function generateUpperCase() {
     return String.fromCharCode(getRndInteger(65, 91));
 }
 
-  passwordOutput.value = password;
-
-  // Update strength indicator
-  const strength = getStrength(length, selectedTypes);
-  updateStrengthUI(strength);
+function generateSymbol() {
+    return symbols.charAt(getRndInteger(0, symbols.length));
 }
+
+
+
+
 
 function generateFromCustomWord(word) {
     const leetMap = {
@@ -287,10 +288,10 @@ function handleCheckBoxChange() {
 }
 
 function updateHistory(newPassword) {
-    passwordsHistory.unshift(newPassword);
+    passwordHistory.unshift(newPassword);
 
-    if (passwordsHistory.length > 3) {
-        passwordsHistory.pop();
+    if (passwordHistory.length > 3) {
+        passwordHistory.pop();
     }
 
     renderHistory();
@@ -299,14 +300,14 @@ function updateHistory(newPassword) {
 function renderHistory() {
     historyList.innerHTML = "";
 
-    if (passwordsHistory.length === 0) {
+    if (passwordHistory.length === 0) {
         historyContainer.style.display = "none";
         return;
     }
 
     historyContainer.style.display = "flex";
 
-    passwordsHistory.forEach((pw) => {
+    passwordHistory.forEach((pw) => {
         const div = document.createElement("div");
         div.classList.add("history-item");
         div.innerText = pw;
@@ -315,7 +316,7 @@ function renderHistory() {
 }
 
 clearHistoryBtn.addEventListener("click", () => {
-    passwordsHistory = [];
+    passwordHistory = [];
     renderHistory();
 });
 
