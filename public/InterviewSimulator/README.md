@@ -10,10 +10,11 @@ A vanilla JavaScript interview practice app with AI-generated questions, timed r
 - Voice input with the Web Speech API.
 - Timed response window with stress tracking.
 - Low-effort answer detection for empty, very short, repetitive, filler, or keyboard-mashing responses.
-- Local confidence scoring when Groq evaluation is unavailable.
-- AI evaluation with relevance and correctness checks when Groq is configured.
-- Final response breakdown with answer feedback.
-- Interview history stored in local storage.
+- **Comprehensive Detailed Report**: In-depth final performance evaluation featuring a dynamic score grid (Technical Knowledge, Communication, Problem Solving, Confidence, Stress).
+- **Question-by-Question Diagnostics**: Detailed semantic rating badges (Poor/Fair/Good/Excellent) along with Specific Strengths, Missing Concepts, How to Improve, and Sample Strong Answers for every question.
+- **Actionable AI Feedback**: Generates overall feedback, strengths, areas for improvement, and interactive pill-tagged Recommended Learning Topics.
+- **Advanced Local Evaluation Fallback**: Simulates detailed structural logic via effort, word count, relevance keyword, and temporal pattern analysis if Groq is unavailable.
+- Interview history with deep diagnostic data gracefully saved in local storage.
 - Responsive glassmorphism UI.
 
 ## Groq API Key Setup
@@ -28,9 +29,9 @@ For trial or local testing, create or update `config.js` in this folder:
 
 ```js
 const CONFIG = {
-    GROQ_API_KEY: "your_real_groq_key_here",
-    GROQ_API_URL: "https://api.groq.com/openai/v1/chat/completions",
-    MODEL: "llama-3.3-70b-versatile"
+  GROQ_API_KEY: "your_real_groq_key_here",
+  GROQ_API_URL: "https://api.groq.com/openai/v1/chat/completions",
+  MODEL: "llama-3.3-70b-versatile",
 };
 ```
 
@@ -46,17 +47,18 @@ If `config.js` is missing, still uses `YOUR_KEY`, or the Groq request fails, the
 
 ## How Evaluation Works
 
-When Groq is configured:
+**When Groq API is configured:**
 
-- Questions are generated according to selected role, difficulty, and interview type.
-- Final evaluation checks whether each answer actually addresses its question.
-- Groq returns relevance score, correctness score, answered-question status, and feedback.
+- Questions are dynamically generated strictly according to the selected role, difficulty, and interview type.
+- Final evaluation enforces a strict deterministic JSON schema.
+- Groq returns a holistic suite of precise metrics (0-100 scores for Technical Knowledge, Communication, Problem Solving, Confidence, and Stress).
+- Generates deep diagnostic arrays: `strengths`, `areasForImprovement`, `recommendedLearning`, and detailed per-answer evaluations (Rating, Missing Concepts, Sample Answers).
 
-When Groq is unavailable:
+**When Groq API is unavailable:**
 
-- The app uses fallback questions.
-- Local scoring checks answer length, low-effort patterns, unanswered questions, stress, and basic question-term relevance.
-- Local scoring does not verify factual correctness; it is only a fallback quality check.
+- The app instantly switches to contextual fallback questions.
+- **Advanced Local Engine**: Calculates the comprehensive structural metrics by processing answer length, low-effort warning frequency, response depth, specific prompt-term relevance, and measured temporal stress constraints.
+- Local scoring simulates the exact same detailed UI report but without validating strict factual correctness, acting as a robust structural quality check.
 
 ## Setup Instructions
 
@@ -113,7 +115,7 @@ http://localhost:3000
 - Submit an answer like `xyz`, `aaa`, or `test` and verify the low-effort warning appears.
 - Continue with a low-effort answer and verify stress increases.
 - Submit meaningful answers and verify confidence scoring improves.
-- Complete an interview and confirm the final modal shows confidence, evaluation assessment, response breakdown, and per-answer `Answer Check` feedback.
+- Complete an interview and confirm the final modal presents the dynamic 5-metric score grid, qualitative assessments (Key Strengths, Recommended Learning Topics), and detailed question cards (Rating Badge, Missing Concepts, Sample Strong Answer).
 - Test voice input on `localhost` and confirm the warning flow does not block active voice recording.
 
 ## Technologies Used
