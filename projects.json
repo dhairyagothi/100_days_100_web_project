@@ -493,7 +493,7 @@
       "CSS"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/AmazonClone/index.html"
+    "projectPath": "./public/New-AmazonClone/index.html"
   },
   {
     "projectNo": 43,
@@ -635,7 +635,7 @@
       "javascript"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/Budget%20Tracker/index.html"
+    "projectPath": "./public/Budget_Tracker/index.html"
   },
   {
     "projectNo": 55,
@@ -1405,7 +1405,7 @@
       "canvas"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/Particle Wave Animation/index.html"
+    "projectPath": "./public/image-particle-engine/index.html"
   },
   {
     "projectNo": 119,
@@ -2171,17 +2171,12 @@
   },
   {
     "projectNo": 177,
-    "projectName": "Interview Prep Hub",
+    "projectName": "Focus Timer",
     "projectType": "Tool",
-    "projectDesc": "Centralized platform for interview preparation resources and practice tools.",
-    "techStack": [
-      "tool",
-      "javascript",
-      "html",
-      "css"
-    ],
-    "difficulty": "advanced",
-    "projectPath": "./public/interview-prep-hub/index.html"
+    "projectDesc": "A minimal Pomodoro-style productivity timer to boost focus with custom work and break intervals.",
+    "techStack": ["react", "typescript", "tailwindcss", "productivity", "timer"],
+    "difficulty": "intermediate",
+    "projectPath": "./public/focustimer/index.html"
   },
   {
     "projectNo": 178,
@@ -2834,5 +2829,19 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/Bubble-Game/index.html"
+  },
+  {
+    "projectNo": 225,
+    "projectName": "Interview Simulator",
+    "projectType": "Tool",
+    "projectDesc": "Centralized platform for interview preparation resources and practice tools.",
+    "techStack": [
+      "tool",
+      "javascript",
+      "html",
+      "css"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/interview-prep-hub/index.html"
   }
 ]
