@@ -1219,7 +1219,10 @@ function loadBookmarksFromURL() {
 
   if (!bookmarkParam) return;
 
-  const bookmarkIds = bookmarkParam.split(",").map((id) => id.trim());
+  const bookmarkIds = bookmarkParam
+    .split(",")
+    .map((id) => id.trim())
+    .filter((id) => /^Day\s+\d+$/i.test(id));
 
   bookmarkedProjects = PROJECTS.filter((project) =>
     bookmarkIds.includes(project.day),
