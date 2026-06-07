@@ -1,368 +1,1475 @@
-    // ===== THEME TOGGLE =====
-    const themeToggle = document.getElementById("themeToggle");
-    const body = document.body;
+// =========================================
+// THEME TOGGLE
+// =========================================
 
-    // Check if dark mode was saved
-    if (localStorage.getItem("theme") === "light") {
-      body.classList.add("light-mode");
-      themeToggle.textContent = "☀️ Light Mode";
+const themeToggle =
+  document.getElementById("themeToggle");
+
+const body = document.body;
+
+if (
+  localStorage.getItem("theme") === "light"
+){
+  body.classList.add("light-mode");
+
+  themeToggle.textContent =
+    "☀️ Light Mode";
+}
+
+themeToggle.addEventListener(
+  "click",
+  () => {
+
+    body.classList.toggle(
+      "light-mode"
+    );
+
+    const isLight =
+      body.classList.contains(
+        "light-mode"
+      );
+
+    themeToggle.textContent =
+      isLight
+        ? "☀️ Light Mode"
+        : "🌙 Dark Mode";
+
+    localStorage.setItem(
+      "theme",
+      isLight
+        ? "light"
+        : "dark"
+    );
+  }
+);
+
+// =========================================
+// ELEMENTS
+// =========================================
+
+const modeButtons =
+  document.querySelectorAll(
+    ".mode-btn"
+  );
+
+const gameAreas =
+  document.querySelectorAll(
+    ".game-area"
+  );
+
+const gameTitle =
+  document.getElementById(
+    "gameTitle"
+  );
+
+const gameDescription =
+  document.getElementById(
+    "gameDescription"
+  );
+
+const difficultyBadge =
+  document.getElementById(
+    "difficultyBadge"
+  );
+
+// =========================================
+// CLASSIC GAME ELEMENTS
+// =========================================
+
+const actionBtn =
+  document.getElementById(
+    "actionBtn"
+  );
+
+const countdownText =
+  document.getElementById(
+    "countdownText"
+  );
+
+const redLight =
+  document.getElementById(
+    "redLight"
+  );
+
+const orangeLight =
+  document.getElementById(
+    "orangeLight"
+  );
+
+const greenLight =
+  document.getElementById(
+    "greenLight"
+  );
+
+// =========================================
+// COLOR MATCH ELEMENTS
+// =========================================
+
+const colorBox =
+  document.getElementById(
+    "colorBox"
+  );
+
+const colorInstruction =
+  document.getElementById(
+    "colorInstruction"
+  );
+
+const colorStartBtn =
+  document.getElementById(
+    "colorStartBtn"
+  );
+
+// =========================================
+// TARGET GAME ELEMENTS
+// =========================================
+
+const targetCircle =
+  document.getElementById(
+    "targetCircle"
+  );
+
+const targetBoard =
+  document.getElementById(
+    "targetBoard"
+  );
+
+const targetStartBtn =
+  document.getElementById(
+    "targetStartBtn"
+  );
+
+const targetScore =
+  document.getElementById(
+    "targetScore"
+  );
+
+// =========================================
+// MEMORY GAME ELEMENTS
+// =========================================
+
+const memoryCards =
+  document.querySelectorAll(
+    ".memory-card"
+  );
+
+const memoryStatus =
+  document.getElementById(
+    "memoryStatus"
+  );
+
+const memoryStartBtn =
+  document.getElementById(
+    "memoryStartBtn"
+  );
+
+// =========================================
+// SIDE PANEL
+// =========================================
+
+const leaderboard =
+  document.getElementById(
+    "leaderboard"
+  );
+
+const historyList =
+  document.getElementById(
+    "historyList"
+  );
+
+const achievementsGrid =
+  document.getElementById(
+    "achievementsGrid"
+  );
+
+const toastContainer =
+  document.getElementById(
+    "toastContainer"
+  );
+
+// =========================================
+// BENCHMARK MODAL
+// =========================================
+
+const benchmarkModal =
+  document.getElementById(
+    "benchmarkModal"
+  );
+
+const benchmarkClose =
+  document.getElementById(
+    "benchmarkClose"
+  );
+
+// =========================================
+// GAME DATA
+// =========================================
+
+let currentGame =
+  "classic";
+
+let gameActive =
+  false;
+
+let waitingForClick =
+  false;
+
+let gameStartTime =
+  0;
+
+let targetHits =
+  0;
+
+let targetRounds =
+  5;
+
+let targetTimes =
+  [];
+
+let memoryPattern =
+  [];
+
+let memoryPlayer =
+  [];
+
+let memoryStep =
+  0;
+
+// =========================================
+// STORAGE
+// =========================================
+
+const savedData = {
+
+  scores:
+    JSON.parse(
+      localStorage.getItem(
+        "reactionScores"
+      )
+    ) || [],
+
+  history:
+    JSON.parse(
+      localStorage.getItem(
+        "reactionHistory"
+      )
+    ) || [],
+
+  stats:
+    JSON.parse(
+      localStorage.getItem(
+        "reactionStats"
+      )
+    ) || {
+
+      totalTests:0,
+      bestTime:Infinity,
+      totalTime:0,
+      excellentCount:0
+    },
+
+  achievements:
+    JSON.parse(
+      localStorage.getItem(
+        "reactionAchievements"
+      )
+    ) || {}
+};
+
+// =========================================
+// ACHIEVEMENTS
+// =========================================
+
+const ACHIEVEMENTS = [
+
+  {
+    id:"first",
+    icon:"🎯",
+    name:"First Test"
+  },
+
+  {
+    id:"fast",
+    icon:"⚡",
+    name:"Under 300ms"
+  },
+
+  {
+    id:"elite",
+    icon:"🏎️",
+    name:"Under 200ms"
+  },
+
+  {
+    id:"consistent",
+    icon:"🔥",
+    name:"10 Games"
+  }
+];
+
+// =========================================
+// GAME SWITCHING
+// =========================================
+
+modeButtons.forEach(btn => {
+
+  btn.addEventListener(
+    "click",
+    () => {
+
+      modeButtons.forEach(
+        b => b.classList.remove(
+          "active"
+        )
+      );
+
+      btn.classList.add(
+        "active"
+      );
+
+      const mode =
+        btn.dataset.mode;
+
+      switchGame(mode);
+    }
+  );
+});
+
+function switchGame(mode){
+
+  currentGame = mode;
+
+  gameAreas.forEach(area => {
+
+    area.classList.add(
+      "hidden"
+    );
+  });
+
+  document
+    .getElementById(
+      mode + "Game"
+    )
+    .classList.remove(
+      "hidden"
+    );
+
+  if(mode === "classic"){
+
+    gameTitle.textContent =
+      "Classic F1 Reaction";
+
+    gameDescription.textContent =
+      "Wait for green light and click instantly.";
+
+    difficultyBadge.textContent =
+      "Medium";
+  }
+
+  else if(mode === "color"){
+
+    gameTitle.textContent =
+      "Color Match Challenge";
+
+    gameDescription.textContent =
+      "Click only when target color appears.";
+
+    difficultyBadge.textContent =
+      "Hard";
+  }
+
+  else if(mode === "target"){
+
+    gameTitle.textContent =
+      "Moving Target Challenge";
+
+    gameDescription.textContent =
+      "Hit targets as quickly as possible.";
+
+    difficultyBadge.textContent =
+      "Very Hard";
+  }
+
+  else if(mode === "memory"){
+
+    gameTitle.textContent =
+      "Memory Reflex";
+
+    gameDescription.textContent =
+      "Memorize and repeat the pattern.";
+
+    difficultyBadge.textContent =
+      "Expert";
+  }
+}
+
+// =========================================
+// TOAST
+// =========================================
+
+function showToast(
+  icon,
+  title,
+  message
+){
+
+  const toast =
+    document.createElement(
+      "div"
+    );
+
+  toast.className =
+    "toast";
+
+  toast.innerHTML = `
+    <span class="toast-icon">
+      ${icon}
+    </span>
+
+    <div class="toast-text">
+      <strong>${title}</strong>
+      <span>${message}</span>
+    </div>
+  `;
+
+  toastContainer.appendChild(
+    toast
+  );
+
+  setTimeout(() => {
+
+    toast.classList.add(
+      "fade-out"
+    );
+
+    setTimeout(() => {
+
+      toast.remove();
+
+    },300);
+
+  },3500);
+}
+
+// =========================================
+// CLASSIC GAME
+// =========================================
+
+function clearLights(){
+
+  redLight.classList.remove(
+    "red"
+  );
+
+  orangeLight.classList.remove(
+    "orange"
+  );
+
+  greenLight.classList.remove(
+    "green"
+  );
+}
+
+function startClassicGame(){
+
+  gameActive = true;
+
+  actionBtn.disabled = true;
+
+  clearLights();
+
+  let countdown = 3;
+
+  countdownText.textContent =
+    countdown;
+
+  const interval =
+    setInterval(() => {
+
+      if(countdown === 3){
+
+        redLight.classList.add(
+          "red"
+        );
+      }
+
+      else if(countdown === 2){
+
+        redLight.classList.remove(
+          "red"
+        );
+
+        orangeLight.classList.add(
+          "orange"
+        );
+      }
+
+      else if(countdown === 1){
+
+        orangeLight.classList.remove(
+          "orange"
+        );
+      }
+
+      countdown--;
+
+      if(countdown >= 0){
+
+        countdownText.textContent =
+          countdown || "GO!";
+      }
+
+      if(countdown < 0){
+
+        clearInterval(interval);
+
+        greenLight.classList.add(
+          "green"
+        );
+
+        actionBtn.disabled =
+          false;
+
+        actionBtn.classList.add(
+          "green-mode"
+        );
+
+        actionBtn.textContent =
+          "CLICK!";
+
+        gameStartTime =
+          Date.now();
+
+        waitingForClick =
+          true;
+      }
+
+    },1000);
+}
+
+actionBtn.addEventListener(
+  "click",
+  () => {
+
+    if(!gameActive){
+
+      startClassicGame();
     }
 
-    themeToggle.addEventListener("click", () => {
-      body.classList.toggle("light-mode");
-      const isLight = body.classList.contains("light-mode");
-      themeToggle.textContent = isLight ? "☀️ Light Mode" : "🌙 Dark Mode";
-      localStorage.setItem("theme", isLight ? "light" : "dark");
-    });
+    else if(waitingForClick){
 
-    // ===== NEW DATA =====
-    const ACHIEVEMENTS = [
-      { id: "firstTest", icon: "🎯", name: "First Test", desc: "Complete your first reaction test" },
-      { id: "fastReflexes", icon: "⚡", name: "Fast Reflexes", desc: "Get a time under 300ms" },
-      { id: "lightningReflexes", icon: "⚡", name: "Lightning Reflexes", desc: "Get a time under 250ms" },
-      { id: "f1Challenger", icon: "🏎️", name: "F1 Challenger", desc: "Get a time under 200ms" },
-      { id: "consistentPlayer", icon: "🔥", name: "Consistent Player", desc: "Complete 10 reaction tests" }
-    ];
+      const reactionTime =
+        Date.now() -
+        gameStartTime;
 
-    // Load all data from localStorage
-    let savedData = {
-      scores: JSON.parse(localStorage.getItem("reactionScores")) || [], // original scores (top 5)
-      stats: JSON.parse(localStorage.getItem("reactionStats")) || {
-        totalTests: 0,
-        bestTime: Infinity,
-        totalTime: 0,
-        excellentCount: 0
-      },
-      achievements: JSON.parse(localStorage.getItem("reactionAchievements")) || {},
-      testHistory: JSON.parse(localStorage.getItem("reactionHistory")) || []
-    };
+      finishGame(
+        reactionTime
+      );
 
-    // ===== GAME LOGIC =====
-    const actionBtn = document.getElementById("actionBtn");
-    const countdownText = document.getElementById("countdownText");
-    const redLight = document.getElementById("redLight");
-    const orangeLight = document.getElementById("orangeLight");
-    const greenLight = document.getElementById("greenLight");
-    const leaderboard = document.getElementById("leaderboard");
-    const benchmarkModal = document.getElementById("benchmarkModal");
-    const benchmarkClose = document.getElementById("benchmarkClose");
-    const toastContainer = document.getElementById("toastContainer");
-    const statsGrid = document.getElementById("statsGrid");
-    const achievementsGrid = document.getElementById("achievementsGrid");
-    const historyList = document.getElementById("historyList");
+      clearLights();
 
-    let gameActive = false;
-    let waitingForClick = false;
-    let gameStartTime = 0;
+      actionBtn.classList.remove(
+        "green-mode"
+      );
 
-    // ===== TOASTS =====
-    function showToast(icon, title, message) {
-      const toast = document.createElement('div');
-      toast.className = 'toast';
-      toast.innerHTML = `
-        <span class="toast-icon">${icon}</span>
-        <div class="toast-text">
-          <strong>${title}</strong>
-          <span>${message || ''}</span>
+      actionBtn.textContent =
+        "Start Again";
+
+      waitingForClick =
+        false;
+
+      gameActive =
+        false;
+    }
+  }
+);
+
+// =========================================
+// COLOR MATCH GAME
+// =========================================
+
+const COLORS = [
+
+  "RED",
+  "BLUE",
+  "GREEN",
+  "YELLOW"
+];
+
+const COLOR_VALUES = {
+
+  RED:"#ef4444",
+  BLUE:"#3b82f6",
+  GREEN:"#22c55e",
+  YELLOW:"#facc15"
+};
+
+let colorTarget = "";
+
+colorStartBtn.addEventListener(
+  "click",
+  startColorGame
+);
+
+function startColorGame(){
+
+  colorInstruction.textContent =
+    "Wait for GREEN";
+
+  colorBox.textContent =
+    "WAIT";
+
+  colorBox.style.background =
+    "#374151";
+
+  colorStartBtn.disabled =
+    true;
+
+  const delay =
+    Math.random() * 3000 + 2000;
+
+  setTimeout(() => {
+
+    colorTarget =
+      COLORS[
+        Math.floor(
+          Math.random() *
+          COLORS.length
+        )
+      ];
+
+    colorBox.textContent =
+      colorTarget;
+
+    colorBox.style.background =
+      COLOR_VALUES[
+        colorTarget
+      ];
+
+    gameStartTime =
+      Date.now();
+
+    colorInstruction.textContent =
+      `CLICK if ${colorTarget}`;
+
+    colorBox.onclick =
+      () => {
+
+        const reactionTime =
+          Date.now() -
+          gameStartTime;
+
+        finishGame(
+          reactionTime
+        );
+
+        colorStartBtn.disabled =
+          false;
+
+        colorBox.onclick =
+          null;
+      };
+
+  },delay);
+}
+
+// =========================================
+// TARGET GAME
+// =========================================
+
+targetStartBtn.addEventListener(
+  "click",
+  startTargetGame
+);
+
+function startTargetGame(){
+
+  targetHits = 0;
+
+  targetTimes = [];
+
+  targetScore.textContent =
+    "0 / 5";
+
+  targetStartBtn.disabled =
+    true;
+
+  spawnTarget();
+}
+
+function spawnTarget(){
+
+  const boardWidth =
+    targetBoard.clientWidth;
+
+  const boardHeight =
+    targetBoard.clientHeight;
+
+  const x =
+    Math.random() *
+    (boardWidth - 80);
+
+  const y =
+    Math.random() *
+    (boardHeight - 80);
+
+  targetCircle.style.left =
+    `${x}px`;
+
+  targetCircle.style.top =
+    `${y}px`;
+
+  targetCircle.style.display =
+    "block";
+
+  gameStartTime =
+    Date.now();
+}
+
+targetCircle.addEventListener(
+  "click",
+  () => {
+
+    const reactionTime =
+      Date.now() -
+      gameStartTime;
+
+    targetTimes.push(
+      reactionTime
+    );
+
+    targetHits++;
+
+    targetScore.textContent =
+      `${targetHits} / 5`;
+
+    if(
+      targetHits >=
+      targetRounds
+    ){
+
+      targetCircle.style.display =
+        "none";
+
+      const avg =
+        Math.round(
+          targetTimes.reduce(
+            (a,b)=>a+b,
+            0
+          ) /
+          targetTimes.length
+        );
+
+      finishGame(avg);
+
+      targetStartBtn.disabled =
+        false;
+
+      return;
+    }
+
+    spawnTarget();
+  }
+);
+
+// =========================================
+// MEMORY GAME
+// =========================================
+
+memoryStartBtn.addEventListener(
+  "click",
+  startMemoryGame
+);
+
+function startMemoryGame(){
+
+  memoryPattern = [];
+
+  memoryPlayer = [];
+
+  memoryStep = 0;
+
+  memoryStatus.textContent =
+    "Memorize the pattern";
+
+  generateMemoryPattern();
+
+  playPattern();
+}
+
+function generateMemoryPattern(){
+
+  for(let i=0;i<4;i++){
+
+    memoryPattern.push(
+      Math.floor(
+        Math.random() * 4
+      )
+    );
+  }
+}
+
+function playPattern(){
+
+  let i = 0;
+
+  const interval =
+    setInterval(() => {
+
+      if(i > 0){
+
+        memoryCards[
+          memoryPattern[i - 1]
+        ].classList.remove(
+          "active"
+        );
+      }
+
+      if(
+        i ===
+        memoryPattern.length
+      ){
+
+        clearInterval(
+          interval
+        );
+
+        memoryStatus.textContent =
+          "Repeat the pattern";
+
+        return;
+      }
+
+      memoryCards[
+        memoryPattern[i]
+      ].classList.add(
+        "active"
+      );
+
+      i++;
+
+    },700);
+}
+
+memoryCards.forEach(
+  (card,index) => {
+
+    card.addEventListener(
+      "click",
+      () => {
+
+        if(
+          memoryPattern.length === 0
+        ) return;
+
+        memoryPlayer.push(
+          index
+        );
+
+        card.classList.add(
+          "active"
+        );
+
+        setTimeout(() => {
+
+          card.classList.remove(
+            "active"
+          );
+
+        },200);
+
+        if(
+          memoryPlayer[
+            memoryStep
+          ] !==
+          memoryPattern[
+            memoryStep
+          ]
+        ){
+
+          memoryStatus.textContent =
+            "Wrong Pattern";
+
+          showToast(
+            "❌",
+            "Failed",
+            "Wrong sequence"
+          );
+
+          memoryPattern = [];
+
+          return;
+        }
+
+        memoryStep++;
+
+        if(
+          memoryStep ===
+          memoryPattern.length
+        ){
+
+          const score =
+            Math.floor(
+              Math.random() * 100
+            ) + 150;
+
+          finishGame(score);
+
+          memoryStatus.textContent =
+            "Perfect Memory!";
+
+          memoryPattern = [];
+        }
+      }
+    );
+  }
+);
+
+// =========================================
+// FINISH GAME
+// =========================================
+
+function finishGame(
+  reactionTime
+){
+
+  updateStats(
+    reactionTime
+  );
+
+  updateLeaderboard(
+    reactionTime
+  );
+
+  updateHistory(
+    reactionTime
+  );
+
+  checkAchievements(
+    reactionTime
+  );
+
+  renderStats();
+
+  renderHistory();
+
+  renderAchievements();
+
+  showBenchmarkModal(
+    reactionTime
+  );
+}
+
+// =========================================
+// BENCHMARK MODAL
+// =========================================
+
+function showBenchmarkModal(
+  reactionTime
+){
+
+  let rating =
+    "Beginner";
+
+  let className =
+    "rating-beginner";
+
+  if(
+    reactionTime < 200
+  ){
+
+    rating =
+      "Elite";
+
+    className =
+      "rating-elite";
+  }
+
+  else if(
+    reactionTime < 250
+  ){
+
+    rating =
+      "Fast";
+
+    className =
+      "rating-fast";
+  }
+
+  else if(
+    reactionTime < 300
+  ){
+
+    rating =
+      "Average";
+
+    className =
+      "rating-average";
+  }
+
+  document.getElementById(
+    "benchmarkTime"
+  ).textContent =
+    `${reactionTime} ms`;
+
+  const ratingEl =
+    document.getElementById(
+      "benchmarkRating"
+    );
+
+  ratingEl.textContent =
+    rating;
+
+  ratingEl.className =
+    `benchmark-rating ${className}`;
+
+  document.getElementById(
+    "benchmarkCompare"
+  ).innerHTML = `
+    <div class="benchmark-compare-item">
+      <span>👤 Average Human</span>
+      <strong>250ms</strong>
+    </div>
+
+    <div class="benchmark-compare-item">
+      <span>🎮 Pro Gamer</span>
+      <strong>200ms</strong>
+    </div>
+
+    <div class="benchmark-compare-item">
+      <span>🏎️ F1 Driver</span>
+      <strong>180ms</strong>
+    </div>
+  `;
+
+  benchmarkModal.classList.add(
+    "active"
+  );
+}
+
+benchmarkClose.addEventListener(
+  "click",
+  () => {
+
+    benchmarkModal.classList.remove(
+      "active"
+    );
+  }
+);
+
+// =========================================
+// STATS
+// =========================================
+
+function updateStats(
+  reactionTime
+){
+
+  savedData.stats.totalTests++;
+
+  savedData.stats.totalTime +=
+    reactionTime;
+
+  if(
+    reactionTime <
+    savedData.stats.bestTime
+  ){
+
+    savedData.stats.bestTime =
+      reactionTime;
+  }
+
+  if(
+    reactionTime < 200
+  ){
+
+    savedData.stats.excellentCount++;
+  }
+
+  localStorage.setItem(
+    "reactionStats",
+    JSON.stringify(
+      savedData.stats
+    )
+  );
+}
+
+function renderStats(){
+
+  document.getElementById(
+    "totalTests"
+  ).textContent =
+    savedData.stats.totalTests;
+
+  document.getElementById(
+    "bestTime"
+  ).textContent =
+    savedData.stats.bestTime ===
+    Infinity
+      ? "-"
+      : `${savedData.stats.bestTime} ms`;
+
+  const avg =
+    savedData.stats.totalTests > 0
+
+      ? Math.round(
+          savedData.stats.totalTime /
+          savedData.stats.totalTests
+        )
+
+      : "-";
+
+  document.getElementById(
+    "avgTime"
+  ).textContent =
+    avg === "-"
+      ? "-"
+      : `${avg} ms`;
+
+  document.getElementById(
+    "excellentCount"
+  ).textContent =
+    savedData.stats.excellentCount;
+}
+
+// =========================================
+// LEADERBOARD
+// =========================================
+
+function updateLeaderboard(
+  reactionTime
+){
+
+  savedData.scores.push(
+    reactionTime
+  );
+
+  savedData.scores.sort(
+    (a,b)=>a-b
+  );
+
+  savedData.scores =
+    savedData.scores.slice(
+      0,
+      5
+    );
+
+  localStorage.setItem(
+    "reactionScores",
+    JSON.stringify(
+      savedData.scores
+    )
+  );
+
+  renderLeaderboard();
+}
+
+function renderLeaderboard(){
+
+  leaderboard.innerHTML = "";
+
+  if(
+    savedData.scores.length === 0
+  ){
+
+    leaderboard.innerHTML = `
+      <div class="empty-slot">
+        No scores yet
+      </div>
+    `;
+
+    return;
+  }
+
+  savedData.scores.forEach(
+    (score,index) => {
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+      item.className =
+        "leaderboard-item";
+
+      item.innerHTML = `
+        <div class="rank">
+          #${index + 1}
+        </div>
+
+        <div class="score-value">
+          ${score} ms
         </div>
       `;
-      toastContainer.appendChild(toast);
-      setTimeout(() => {
-        toast.classList.add('fade-out');
-        setTimeout(() => toast.remove(), 300);
-      }, 3500);
-    }
 
-    // ===== BENCHMARK MODAL =====
-    function showBenchmarkModal(reactionTime) {
-      let rating, ratingClass;
-      if (reactionTime > 300) {
-        rating = "Beginner";
-        ratingClass = "rating-beginner";
-      } else if (reactionTime >= 250) {
-        rating = "Average";
-        ratingClass = "rating-average";
-      } else if (reactionTime >= 200) {
-        rating = "Fast";
-        ratingClass = "rating-fast";
-      } else {
+      leaderboard.appendChild(
+        item
+      );
+    }
+  );
+}
+
+// =========================================
+// HISTORY
+// =========================================
+
+function updateHistory(
+  reactionTime
+){
+
+  savedData.history.unshift({
+
+    time:reactionTime,
+
+    timestamp:
+      Date.now()
+  });
+
+  savedData.history =
+    savedData.history.slice(
+      0,
+      10
+    );
+
+  localStorage.setItem(
+    "reactionHistory",
+    JSON.stringify(
+      savedData.history
+    )
+  );
+}
+
+function renderHistory(){
+
+  historyList.innerHTML = "";
+
+  if(
+    savedData.history.length === 0
+  ){
+
+    historyList.innerHTML = `
+      <div class="empty-slot">
+        No tests yet
+      </div>
+    `;
+
+    return;
+  }
+
+  savedData.history.forEach(
+    item => {
+
+      let rating =
+        "Beginner";
+
+      let className =
+        "rating-beginner";
+
+      if(item.time < 200){
+
         rating = "Elite";
-        ratingClass = "rating-elite";
+
+        className =
+          "rating-elite";
       }
 
-      document.getElementById('benchmarkTime').textContent = `${reactionTime} ms`;
-      const ratingEl = document.getElementById('benchmarkRating');
-      ratingEl.textContent = rating;
-      ratingEl.className = "benchmark-rating " + ratingClass;
+      else if(
+        item.time < 250
+      ){
 
-      document.getElementById('benchmarkCompare').innerHTML = `
-        <div class="benchmark-compare-item"><span class="benchmark-compare-label">👤 Average Human</span><span class="benchmark-compare-value">250ms</span></div>
-        <div class="benchmark-compare-item"><span class="benchmark-compare-label">🎮 Professional Gamer</span><span class="benchmark-compare-value">200ms</span></div>
-        <div class="benchmark-compare-item"><span class="benchmark-compare-label">🏎️ F1 Driver</span><span class="benchmark-compare-value">180ms</span></div>
+        rating = "Fast";
+
+        className =
+          "rating-fast";
+      }
+
+      else if(
+        item.time < 300
+      ){
+
+        rating = "Average";
+
+        className =
+          "rating-average";
+      }
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+      div.className =
+        "history-item";
+
+      div.innerHTML = `
+        <div>
+          <div class="history-time">
+            ${item.time} ms
+          </div>
+
+          <div class="history-timestamp">
+            ${new Date(
+              item.timestamp
+            ).toLocaleTimeString()}
+          </div>
+        </div>
+
+        <div class="history-rating ${className}">
+          ${rating}
+        </div>
       `;
 
-      benchmarkModal.classList.add('active');
+      historyList.appendChild(
+        div
+      );
     }
+  );
+}
 
-    benchmarkClose.addEventListener('click', () => {
-      benchmarkModal.classList.remove('active');
-      setTimeout(() => {
-        actionBtn.disabled = false;
-        countdownText.textContent = "Ready?";
-      }, 0);
-    });
+// =========================================
+// ACHIEVEMENTS
+// =========================================
 
-    benchmarkModal.addEventListener('click', (e) => {
-      if (e.target === benchmarkModal) {
-        benchmarkModal.classList.remove('active');
-        setTimeout(() => {
-          actionBtn.disabled = false;
-          countdownText.textContent = "Ready?";
-        }, 0);
-      }
-    });
+function checkAchievements(
+  reactionTime
+){
 
-    // ===== RENDER STATS =====
-    function renderStats() {
-      const totalTests = savedData.stats.totalTests;
-      const bestTime = savedData.stats.bestTime === Infinity ? "-" : `${savedData.stats.bestTime} ms`;
-      const avgTime = totalTests > 0 ? Math.round(savedData.stats.totalTime / totalTests) + " ms" : "-";
-      const excellentCount = savedData.stats.excellentCount;
+  if(
+    !savedData.achievements.first
+  ){
 
-      document.getElementById('totalTests').textContent = totalTests;
-      document.getElementById('bestTime').textContent = bestTime;
-      document.getElementById('avgTime').textContent = avgTime;
-      document.getElementById('excellentCount').textContent = excellentCount;
+    savedData.achievements.first =
+      true;
+
+    showToast(
+      "🎯",
+      "Achievement",
+      "First Test"
+    );
+  }
+
+  if(
+    reactionTime < 300 &&
+    !savedData.achievements.fast
+  ){
+
+    savedData.achievements.fast =
+      true;
+
+    showToast(
+      "⚡",
+      "Achievement",
+      "Under 300ms"
+    );
+  }
+
+  if(
+    reactionTime < 200 &&
+    !savedData.achievements.elite
+  ){
+
+    savedData.achievements.elite =
+      true;
+
+    showToast(
+      "🏎️",
+      "Achievement",
+      "Elite Reflex"
+    );
+  }
+
+  if(
+    savedData.stats.totalTests >= 10 &&
+    !savedData.achievements.consistent
+  ){
+
+    savedData.achievements.consistent =
+      true;
+
+    showToast(
+      "🔥",
+      "Achievement",
+      "10 Games Completed"
+    );
+  }
+
+  localStorage.setItem(
+    "reactionAchievements",
+    JSON.stringify(
+      savedData.achievements
+    )
+  );
+}
+
+function renderAchievements(){
+
+  achievementsGrid.innerHTML =
+    "";
+
+  ACHIEVEMENTS.forEach(
+    ach => {
+
+      const unlocked =
+        savedData.achievements[
+          ach.id
+        ];
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+      div.className =
+        `achievement-badge ${
+          unlocked
+            ? "unlocked"
+            : ""
+        }`;
+
+      div.innerHTML = `
+        <div class="achievement-icon">
+          ${ach.icon}
+        </div>
+
+        <div class="achievement-name">
+          ${ach.name}
+        </div>
+      `;
+
+      achievementsGrid.appendChild(
+        div
+      );
     }
+  );
 
-    // ===== RENDER ACHIEVEMENTS =====
-    function renderAchievements() {
-      achievementsGrid.innerHTML = ACHIEVEMENTS.map(ach => {
-        const unlocked = savedData.achievements[ach.id];
-        return `
-          <div class="achievement-badge ${unlocked ? 'unlocked' : 'locked'}" data-id="${ach.id}">
-            <div class="achievement-icon">${ach.icon}</div>
-            <div class="achievement-name">${ach.name}</div>
-          </div>
-        `;
-      }).join("");
+  const unlockedCount =
+    Object.values(
+      savedData.achievements
+    ).filter(Boolean).length;
 
-      const unlockedCount = Object.values(savedData.achievements).filter(v => v).length;
-      document.getElementById('unlockedAchievements').textContent = unlockedCount;
-      const progress = (unlockedCount / ACHIEVEMENTS.length) * 100;
-      document.getElementById('achievementProgress').style.width = `${progress}%`;
-    }
+  document.getElementById(
+    "unlockedAchievements"
+  ).textContent =
+    unlockedCount;
 
-    // ===== RENDER HISTORY =====
-    function renderHistory() {
-      if (savedData.testHistory.length === 0) {
-        historyList.innerHTML = `<div class="empty-slot">No tests yet!</div>`;
-        return;
-      }
-      historyList.innerHTML = savedData.testHistory.slice(0, 10).map(test => {
-        let rating, ratingClass;
-        if (test.time > 300) {
-          rating = "Beginner";
-          ratingClass = "rating-beginner";
-        } else if (test.time >= 250) {
-          rating = "Average";
-          ratingClass = "rating-average";
-        } else if (test.time >= 200) {
-          rating = "Fast";
-          ratingClass = "rating-fast";
-        } else {
-          rating = "Elite";
-          ratingClass = "rating-elite";
-        }
-        const dateStr = new Date(test.timestamp).toLocaleTimeString();
-        return `
-          <div class="history-item">
-            <div>
-              <div class="history-time">${test.time} ms</div>
-              <div class="history-timestamp">${dateStr}</div>
-            </div>
-            <div class="history-rating ${ratingClass}">${rating}</div>
-          </div>
-        `;
-      }).join("");
-    }
+  document.getElementById(
+    "achievementProgress"
+  ).style.width =
+    `${
+      (unlockedCount /
+      ACHIEVEMENTS.length) *
+      100
+    }%`;
+}
 
-    // ===== CHECK ACHIEVEMENTS =====
-    function checkAchievements(reactionTime) {
-      let unlockedAny = false;
-      // First test
-      if (!savedData.achievements.firstTest && savedData.stats.totalTests >=1) {
-        savedData.achievements.firstTest = true;
-        showToast('🎯', 'Achievement Unlocked!', 'First Test');
-        unlockedAny = true;
-      }
-      // Fast reflexes <300ms
-      if (!savedData.achievements.fastReflexes && reactionTime < 300) {
-        savedData.achievements.fastReflexes = true;
-        showToast('⚡', 'Achievement Unlocked!', 'Fast Reflexes');
-        unlockedAny = true;
-      }
-      // Lightning <250ms
-      if (!savedData.achievements.lightningReflexes && reactionTime < 250) {
-        savedData.achievements.lightningReflexes = true;
-        showToast('⚡', 'Achievement Unlocked!', 'Lightning Reflexes');
-        unlockedAny = true;
-      }
-      // F1 <200ms
-      if (!savedData.achievements.f1Challenger && reactionTime < 200) {
-        savedData.achievements.f1Challenger = true;
-        showToast('🏎️', 'Achievement Unlocked!', 'F1 Challenger');
-        unlockedAny = true;
-      }
-      // Consistent player (10 tests)
-      if (!savedData.achievements.consistentPlayer && savedData.stats.totalTests >= 10) {
-        savedData.achievements.consistentPlayer = true;
-        showToast('🔥', 'Achievement Unlocked!', 'Consistent Player');
-        unlockedAny = true;
-      }
-      if (unlockedAny) {
-        localStorage.setItem('reactionAchievements', JSON.stringify(savedData.achievements));
-        renderAchievements();
-      }
-    }
+// =========================================
+// INIT
+// =========================================
 
-    // ===== CLEAR LIGHTS =====
-    function clearLights() {
-      redLight.classList.remove("red");
-      orangeLight.classList.remove("orange");
-      greenLight.classList.remove("green");
-      countdownText.textContent = "Ready?";
-    }
+renderLeaderboard();
 
-    function resetButton() {
-      actionBtn.classList.remove("green-mode");
-      actionBtn.textContent = "Click to Start";
-    }
+renderHistory();
 
-    function changeToGreenMode() {
-      actionBtn.classList.add("green-mode");
-      actionBtn.textContent = "Click!";
-    }
+renderStats();
 
-    // ===== START GAME =====
-    function startGame() {
-      gameActive = true;
-      actionBtn.disabled = true;
-      resetButton();
-      clearLights();
-
-      let countdown = 3;
-      const countdownInterval = setInterval(() => {
-        if (countdown > 0) {
-          countdownText.textContent = countdown;
-
-          if (countdown ===3) redLight.classList.add("red");
-          else if (countdown === 2) {
-            redLight.classList.remove("red");
-            orangeLight.classList.add("orange");
-          } else if (countdown === 1) {
-            orangeLight.classList.remove("orange");
-          }
-
-          countdown--;
-        } else {
-          clearInterval(countdownInterval);
-          greenLight.classList.add("green");
-          countdownText.textContent = "GO!";
-          gameStartTime = Date.now();
-          waitingForClick = true;
-          actionBtn.disabled = false;
-          changeToGreenMode();
-
-          setTimeout(() => {
-            if (waitingForClick) {
-              waitingForClick = false;
-              countdownText.textContent = "Missed!";
-              clearLights();
-              resetButton();
-              gameActive = false;
-              actionBtn.disabled = false;
-            }
-          }, 5000);
-        }
-      }, 1000);
-    }
-
-    // ===== HANDLE CLICK =====
-    actionBtn.addEventListener("click", () => {
-      if (!gameActive) {
-        startGame();
-      } else if (waitingForClick) {
-        recordScore();
-      }
-    });
-
-    // ===== RECORD SCORE =====
-    function recordScore() {
-      const reactionTime = Date.now() - gameStartTime;
-      waitingForClick = false;
-      gameActive = false;
-
-      countdownText.textContent = `⚡ ${reactionTime} ms!`;
-      clearLights();
-      resetButton();
-      actionBtn.disabled = true;
-
-      // Update original leaderboard data
-      savedData.scores.push(reactionTime);
-      savedData.scores.sort((a, b) => a - b);
-      savedData.scores = savedData.scores.slice(0, 5);
-      localStorage.setItem("reactionScores", JSON.stringify(savedData.scores));
-
-      // Update stats
-      savedData.stats.totalTests +=1;
-      if (reactionTime < savedData.stats.bestTime) savedData.stats.bestTime = reactionTime;
-      savedData.stats.totalTime += reactionTime;
-      if (reactionTime < 200) savedData.stats.excellentCount +=1;
-      localStorage.setItem('reactionStats', JSON.stringify(savedData.stats));
-
-      // Add to history
-      savedData.testHistory.unshift({
-        time: reactionTime,
-        timestamp: Date.now()
-      });
-      savedData.testHistory = savedData.testHistory.slice(0, 10);
-      localStorage.setItem('reactionHistory', JSON.stringify(savedData.testHistory));
-
-      // Render everything new!
-      renderStats();
-      renderHistory();
-      checkAchievements(reactionTime);
-      updateLeaderboard(reactionTime);
-
-      // Show benchmark modal
-      setTimeout(() => showBenchmarkModal(reactionTime), 800);
-    }
-
-    function updateLeaderboard(newScore) {
-      leaderboard.innerHTML = "";
-      if (savedData.scores.length === 0) {
-        leaderboard.innerHTML = '<div class="empty-slot">No scores yet. Start playing!</div>';
-        return;
-      }
-      savedData.scores.forEach((score, index) => {
-        const item = document.createElement("div");
-        item.className = "leaderboard-item";
-        if (score === newScore && index === savedData.scores.indexOf(newScore)) item.classList.add("new");
-        const rank = document.createElement("div");
-        rank.className = "rank";
-        rank.textContent = `#${index+1}`;
-        const value = document.createElement("div");
-        value.className = "score-value";
-        value.textContent = `${score} ms`;
-        item.appendChild(rank);
-        item.appendChild(value);
-        leaderboard.appendChild(item);
-      });
-    }
-
-    // Initialize on load
-    updateLeaderboard(null);
-    renderStats();
-    renderAchievements();
-    renderHistory();
+renderAchievements();
