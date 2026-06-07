@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#4f46e5" />
+
+    <title>IP Address Tracker</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      crossorigin=""
+    />
+  </head>
+
+  <body>
+    <header>
+      <h1>IP Address Tracker</h1>
+
+      <div class="search-box">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search by IP Address..."
+          autocomplete="off"
+        />
+
+        <button id="searchBtn">Search</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="info-card">
+        <div class="card">
+          <h3>IP ADDRESS</h3>
+          <p id="ip">Loading...</p>
+        </div>
+
+        <div class="card">
+          <h3>LOCATION</h3>
+          <p id="location">Loading...</p>
+        </div>
+
+        <div class="card">
+          <h3>TIMEZONE</h3>
+          <p id="timezone">Loading...</p>
+        </div>
+
+        <div class="card">
+          <h3>ISP</h3>
+          <p id="isp">Loading...</p>
+        </div>
+      </section>
+
+      <section>
+        <div id="map" aria-label="Location Map"></div>
+      </section>
+    </main>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      crossorigin=""
+    ></script>
+
+    <script src="script.js"></script>
+  </body>
+</html>
