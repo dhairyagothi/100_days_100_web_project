@@ -3,43 +3,39 @@
 <head>
 
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PassX-Pass</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .security-note {
+      margin-top: 1rem;
+      padding: 0.65rem 0.9rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 200, 60, 0.35);
+      background: rgba(255, 200, 60, 0.07);
+      color: #f0c44a;
+      font-size: 0.75rem;
+      line-height: 1.5;
+      text-align: left;
+    }
+    .security-note strong { font-weight: 700; }
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
-
-  <title>Vault Password Manager</title>
-
-  <!-- Fonts -->
-  <link
-    rel="preconnect"
-    href="https://fonts.googleapis.com"
-  />
-
-  <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
-  />
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  />
-
-  <!-- Icons -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-  />
-
-  <!-- CSS -->
-  <link
-    rel="stylesheet"
-    href="style.css"
-  />
-
+    .demo-banner {
+      margin: 2rem auto 0;
+      max-width: 640px;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 200, 60, 0.25);
+      background: rgba(255, 200, 60, 0.05);
+      color: #a0946a;
+      font-size: 0.72rem;
+      line-height: 1.55;
+      text-align: center;
+    }
+    .demo-banner strong { color: #f0c44a; font-weight: 700; }
+  </style>
 </head>
 
 <body>
@@ -77,6 +73,18 @@
         placeholder="Enter master password"
         autocomplete="current-password"
       />
+      <p class="gate-error" id="gate-error"></p>
+      <button class="gate-btn" id="gate-btn" onclick="unlockVault()">Unlock →</button>
+      <p class="gate-hint" id="gate-hint"></p>
+
+      <!-- Security disclaimer — fix for issue #6150 -->
+      <div class="security-note" role="note" aria-label="Security notice">
+        🔒 <strong>Client-side demo only.</strong> Passwords are encrypted with
+        AES-256-GCM before being saved to localStorage — they are never stored
+        as plain text. Your master password is never saved; it is used only to
+        derive the encryption key in-memory. Do not use this to store real
+        credentials on a shared or public device.
+      </div>
 
       <p
         class="gate-error"
@@ -505,158 +513,16 @@
 
         </div>
 
-<<<<<<< HEAD
-        <section class="password-section" id="features">
-
-            <div class="section-title">
-                <h2>Saved Passwords</h2>
-            </div>
-
-            <div class="table-container">
-                
-                <input
-                    type="text"
-                    id="searchPassword"
-                    placeholder="🔍 Search by website or username"
-                />
-
-                <table>
-
-                    <thead>
-
-                        <tr>
-                            <th>Website</th>
-                            <th>Username</th>
-                            <th>Password</th>
-                            <th>Actions</th>
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="passwordTable">
-
-                        <!-- Dynamic Data -->
-
-                    </tbody>
-
-                </table>
-
-                <!-- Empty State -->
-
-                <div id="emptyState">
-
-                    <i class="fa-solid fa-lock"></i>
-
-                    <p>No passwords saved yet</p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- Add Password -->
-
-        <section class="form-section">
-
-            <div class="section-title">
-                <h2>Add Password</h2>
-            </div>
-
-            <form id="passwordForm">
-
-                <!-- Website -->
-
-                <div class="input-group">
-
-                    <label for="website">Website</label>
-
-                    <input
-                        type="text"
-                        id="website"
-                        placeholder="Enter website"
-                        required
-                    />
-
-                </div>
-
-                <!-- Username -->
-
-                <div class="input-group">
-
-                    <label for="username">Username</label>
-
-                    <input
-                        type="text"
-                        id="username"
-                        placeholder="Enter username"
-                        required
-                    />
-
-                </div>
-
-                <!-- Password -->
-
-                <div class="input-group">
-
-                    <label for="password">Password</label>
-
-                    <div class="password-wrapper">
-
-                        <input
-                            type="password"
-                            id="password"
-                            placeholder="Enter password"
-                            required
-                        />
-                        <div id="passwordStrength"></div>
-
-                        <div id="passwordRequirements">
-
-                        <p id="lengthReq">❌ At least 8 characters</p>
-
-                        <p id="upperReq">❌ One uppercase letter</p>
-
-                        <p id="numberReq">❌ One number</p>
-
-                        <p id="specialReq">❌ One special character</p>
-
-                    </div>
-                    
-                    <button
-                        type="button"
-                        id="generatePassword"
-                    >
-                        Generate Strong Password
-                    </button>
-                
-
-                        <span id="togglePassword">
-
-                            <i class="fa-solid fa-eye"></i>
-
-                        </span>
-
-                    </div>
-
-                </div>
-
-                <!-- Submit Button -->
-
-                <button type="submit" class="submit-btn">
-
-                    <i class="fa-solid fa-plus"></i>
-
-                    Save Password
-
-                </button>
-
-            </form>
-
-        </section>
-=======
       </section>
->>>>>>> upstream/Main
+
+      <!-- Demo banner — fix for issue #6150 -->
+      <div class="demo-banner" role="note" aria-label="Demo project notice">
+        ⚠️ <strong>Learning Project:</strong> This is a client-side demo built
+        for educational purposes. Passwords are encrypted with AES-256-GCM via
+        the Web Crypto API and stored as encrypted blobs — never as plain text.
+        PBKDF2 (100,000 iterations) is used for key derivation. Not intended
+        for production use or storing real sensitive credentials.
+      </div>
 
     </main>
 

@@ -342,6 +342,48 @@ function useHint() {
     });
     lockBoard = false;
   }, 1200);
+  if (hintUsed) {
+    showToast('💡 Hint already used!');
+    return;
+  }
+  hintUsed = true;
+  const hintBtn = document.getElementById('hintBtn');
+  hintBtn.disabled = true;
+  hintBtn.textContent = 'Hint Used';
+
+  // Collect unmatched unflipped cards
+  const unmatched = cards.filter(
+    c => !c.classList.contains('matched') && !c.classList.contains('flipped')
+  );
+  if (!unmatched.length) return;
+
+  // Group by emoji to find a valid pair
+  const emojiMap = {};
+  for (const c of unmatched) {
+    const e = c.dataset.emoji;
+    if (!emojiMap[e]) emojiMap[e] = [];
+    emojiMap[e].push(c);
+  }
+
+  // Find a pair to reveal
+  const validPairs = Object.values(emojiMap).filter(group => group.length >= 2);
+  if (!validPairs.length) return;
+
+  // Pick one random pair
+  const pair = validPairs[Math.floor(Math.random() * validPairs.length)];
+  const cardA = pair[0];
+  const cardB = pair[1];
+
+  // Briefly flip the pair face-up
+  cardA.classList.add('flipped');
+  cardB.classList.add('flipped');
+  showToast('💡 Hint used!');
+
+  // Flip back after 1.5 seconds
+  setTimeout(() => {
+    if (!cardA.classList.contains('matched')) cardA.classList.remove('flipped');
+    if (!cardB.classList.contains('matched')) cardB.classList.remove('flipped');
+  }, 1500);
 }
 
 // ── Win Condition ─────────────────────────────────────────

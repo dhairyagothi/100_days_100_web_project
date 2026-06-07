@@ -330,20 +330,6 @@ textarea#input::placeholder {
   gap: 10px;
 }
 
-.arrow-wrap {
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.03);
-  box-shadow: var(--neo-shadow);
-  color: var(--text-dim);
-  font-size: 1rem;
-  flex-shrink: 0;
-}
 
 /* ── NEW: Swap button ──────────────────────────────────────────── */
 .swap-btn {
