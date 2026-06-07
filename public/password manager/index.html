@@ -505,7 +505,158 @@
 
         </div>
 
+<<<<<<< HEAD
+        <section class="password-section" id="features">
+
+            <div class="section-title">
+                <h2>Saved Passwords</h2>
+            </div>
+
+            <div class="table-container">
+                
+                <input
+                    type="text"
+                    id="searchPassword"
+                    placeholder="🔍 Search by website or username"
+                />
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Website</th>
+                            <th>Username</th>
+                            <th>Password</th>
+                            <th>Actions</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="passwordTable">
+
+                        <!-- Dynamic Data -->
+
+                    </tbody>
+
+                </table>
+
+                <!-- Empty State -->
+
+                <div id="emptyState">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    <p>No passwords saved yet</p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Add Password -->
+
+        <section class="form-section">
+
+            <div class="section-title">
+                <h2>Add Password</h2>
+            </div>
+
+            <form id="passwordForm">
+
+                <!-- Website -->
+
+                <div class="input-group">
+
+                    <label for="website">Website</label>
+
+                    <input
+                        type="text"
+                        id="website"
+                        placeholder="Enter website"
+                        required
+                    />
+
+                </div>
+
+                <!-- Username -->
+
+                <div class="input-group">
+
+                    <label for="username">Username</label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        placeholder="Enter username"
+                        required
+                    />
+
+                </div>
+
+                <!-- Password -->
+
+                <div class="input-group">
+
+                    <label for="password">Password</label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Enter password"
+                            required
+                        />
+                        <div id="passwordStrength"></div>
+
+                        <div id="passwordRequirements">
+
+                        <p id="lengthReq">❌ At least 8 characters</p>
+
+                        <p id="upperReq">❌ One uppercase letter</p>
+
+                        <p id="numberReq">❌ One number</p>
+
+                        <p id="specialReq">❌ One special character</p>
+
+                    </div>
+                    
+                    <button
+                        type="button"
+                        id="generatePassword"
+                    >
+                        Generate Strong Password
+                    </button>
+                
+
+                        <span id="togglePassword">
+
+                            <i class="fa-solid fa-eye"></i>
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!-- Submit Button -->
+
+                <button type="submit" class="submit-btn">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Save Password
+
+                </button>
+
+            </form>
+
+        </section>
+=======
       </section>
+>>>>>>> upstream/Main
 
     </main>
 
