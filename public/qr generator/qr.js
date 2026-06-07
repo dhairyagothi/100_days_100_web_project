@@ -255,15 +255,37 @@ function generateQRCode() {
        QR GENERATION
     ========================================= */
 
+// fix #6153: dynamically scale QR size based on input length
+  // so dense (long) inputs still produce scannable modules.
+  // Thresholds follow QR capacity guidelines per error-correction level.
+  const dataLength = result.data.length;
+  let qrSize = 240;
+
+  if (dataLength > 500) {
+    qrSize = 480;
+  } else if (dataLength > 200) {
+    qrSize = 380;
+  } else if (dataLength > 100) {
+    qrSize = 300;
+  }
+
+  // Warn the user when input is very long
+  if (dataLength > 800) {
+    setStatus(
+      "⚠️ Input is very long — try a shorter URL or the QR may not scan reliably.",
+      true
+    );
+  }
+
   qrCode = new QRCode(
     qrcodeDiv,
 
     {
       text: result.data,
 
-      width: 240,
+      width: qrSize,
 
-      height: 240,
+      height: qrSize,
 
       colorDark: qrColor.value,
 
