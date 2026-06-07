@@ -1,117 +1,38 @@
-# 🎯 Wordle Clone
+# Wordle Clone
 
-A browser-based clone of the popular **Wordle** game built using **HTML, CSS, and JavaScript**. Players have six attempts to guess a hidden five-letter word, with color-coded feedback provided after each guess.
+A sleek, fully-functional clone of the popular word-guessing game Wordle, built using plain HTML, CSS, and vanilla JavaScript. 
 
-## ✨ Features
+## Features
 
-* Daily random word selection
-* Interactive on-screen keyboard
-* Physical keyboard support
-* Word validation using predefined word lists
-* Color-coded feedback:
+- **Authentic Gameplay:** Guess the secret 5-letter word within 6 tries. Colors indicate how close you are (Green for correct position, Yellow for wrong position, Grey for not in the word).
+- **Responsive Design:** Playable on both desktop and mobile devices.
+- **Dark Mode & Light Mode:** Toggle seamlessly between beautiful, highly accurate Light and Dark themes that match the original game perfectly.
+- **Physical & Virtual Keyboard:** Type using your physical keyboard or click the interactive on-screen keys.
+- **Advanced Statistics:** Tracks your Games Played, Win Percentage, Current Streak, and Max Streak locally in your browser so you never lose your progress!
+- **Smooth Animations:** Includes the iconic cascading tile "flip" animation when a guess is submitted, as well as a "pop" animation when typing and a "shake" animation for invalid words.
 
-  * 🟩 Green: Correct letter in correct position
-  * 🟨 Yellow: Correct letter in wrong position
-  * ⬜ Grey: Letter not present in the word
-* Rules popup
-* Statistics popup
-* Reset game functionality
-* Responsive design
+## How to Play
 
----
+1. Open `index.html` in your web browser.
+2. Guess the **WORDLE** in 6 tries.
+3. Each guess must be a valid 5-letter word. Hit the `ENTER` button to submit.
+4. After each guess, the color of the tiles will change:
+   * **Green:** The letter is in the word and in the correct spot.
+   * **Yellow:** The letter is in the word but in the wrong spot.
+   * **Grey:** The letter is not in the word in any spot.
 
-## 📁 Project Structure
+## Technologies Used
 
-```text
-wordle/
-│
-├── index.html
-├── favicon_wordle.png
-│
-├── assets/
-│   ├── css/
-│   │   └── style.css
-│   │
-│   └── js/
-│       ├── script.js
-│       └── words.js
-│
-├── img/
-│   ├── information.png
-│   ├── statistics.png
-│   └── rules.png
-│
-└── README.md
-```
+- **HTML5:** Clean, semantic markup.
+- **CSS3:** Flexbox for layout, custom keyframe animations, and CSS variables for theming.
+- **Vanilla JavaScript (ES6+):** Complete game logic, event listeners, local storage management, and dynamic DOM manipulation without any external frameworks or libraries.
 
----
+## Setup & Installation
 
-## 🚀 Getting Started
-
-### 1. Clone the Repository
+No complex setup is required! Simply clone or download the repository, and double-click `index.html` to start playing locally.
 
 ```bash
-git clone https://github.com/dhairyagothi/100_days_100_web_project.git
-
+git clone https://github.com/Kazuma-Codes/100_days_100_web_project.git
+cd 100_days_100_web_project/public/WORDLE
 ```
-
-### 2. Navigate to the Project Folder
-
-```bash
-cd wordle
-```
-
-### 3. Open the Game
-
-Simply open `index.html` in your browser.
-
----
-
-## 🎮 How to Play
-
-1. Guess the hidden five-letter word.
-2. Enter your guess using either:
-
-   * The on-screen keyboard
-   * Your physical keyboard
-3. Press **ENTER** to submit.
-4. Tile colors indicate how close your guess is:
-
-| Color     | Meaning                        |
-| --------- | ------------------------------ |
-| 🟩 Green  | Correct letter and position    |
-| 🟨 Yellow | Correct letter, wrong position |
-| ⬜ Grey    | Letter not in the word         |
-
-5. You have **6 attempts** to find the correct word.
-
----
-
-## 🛠 Technologies Used
-
-* HTML5
-* CSS3
-* JavaScript (ES6)
-
----
-
-## 📌 Future Improvements
-
-* Local storage statistics tracking
-* Dark mode support
-* Animations and tile flip effects
-* Share results feature
-* Mobile optimizations
-* Multiple difficulty levels
-
----
-
-## 📄 License
-
-This project is created for educational and learning purposes. Feel free to modify and enhance it for personal use.
-
----
-
-## 👨‍💻 Author
-
-Developed as a Wordle-inspired web application using vanilla JavaScript.
+*Enjoy the game!*
