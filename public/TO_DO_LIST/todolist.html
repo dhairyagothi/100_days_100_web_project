@@ -387,10 +387,18 @@
         tasks.forEach((task) => {
           const laneDropTarget = document.getElementById(task.status);
           if (!laneDropTarget) return;
+          const today = new Date().toISOString().split("T")[0];
+
+         const isOverdue =
+         task.dueDate &&
+         task.dueDate < today &&
+         task.status !== "completed";
 
           const card = document.createElement("div");
           card.id = task.id;
-          card.className = "kanban-task-card" + (task.status === "completed" ? " card-completed" : task.status === "inprogress" ? " card-inprogress" : "");
+          card.className = isOverdue
+          ? "kanban-task-card overdue-task"
+          : "kanban-task-card";
           card.setAttribute("draggable", "true");
           card.setAttribute("data-taskid", task.id);
 
