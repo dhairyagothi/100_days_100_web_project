@@ -60,19 +60,15 @@
 
       <h1>🎤 Voice → Text</h1>
 
-      <!-- ✅ IMPROVED LANGUAGE SECTION -->
-      <label for="stt-language">Language</label>
-      <select id="stt-language">
-        <option value="" disabled selected>Select language</option>
-        <option value="en-US">🇺🇸 English (US)</option>
-        <option value="en-GB">🇬🇧 English (UK)</option>
-        <option value="en-IN">🇮🇳 English (India)</option>
-        <option value="hi-IN">🇮🇳 Hindi</option>
-        <option value="es-ES">🇪🇸 Spanish</option>
-        <option value="fr-FR">🇫🇷 French</option>
-        <option value="de-DE">🇩🇪 German</option>
-        <option value="ja-JP">🇯🇵 Japanese</option>
-      </select>
+        <!-- Added multilingual feature (3 languages for now)-->
+        <label>Select Language:</label>
+        <select id="language-stt">
+            <option value="en-US">English</option>
+            <option value="hi-IN">Hindi</option>
+            <option value="es-ES">Spanish</option>
+        </select>
+        
+        <button id="start-btn">Speak</button>
 
       <div class="btn-group">
         <button id="start-btn">Start Listening</button>

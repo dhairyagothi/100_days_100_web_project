@@ -620,6 +620,143 @@
 
     </section>
 
+    <!-- =========================================================
+         AI ENGINE PANEL
+    ========================================================= -->
+    <section class="ai-engine">
+
+      <div class="section-title">
+
+        <i aria-hidden="true" class="fa-solid fa-robot"></i>
+
+        <h3>AI Engine — Financial Advisor</h3>
+
+        <button id="aiToggleBtn" class="ai-toggle-btn">Hide</button>
+
+      </div>
+
+      <div id="aiEngineBody">
+
+        <!-- GROQ API KEY INPUT -->
+        <div class="ai-api-row">
+
+          <i aria-hidden="true" class="fa-solid fa-key"></i>
+
+          <input
+            type="password"
+            id="groqApiKey"
+            placeholder="Enter your Groq API Key (free at console.groq.com)"
+            autocomplete="off"
+          />
+
+          <button id="saveKeyBtn">Save Key</button>
+
+        </div>
+
+        <!-- AI INSIGHT CARDS -->
+        <div class="ai-cards" id="aiCards">
+
+          <!-- SPENDING ANALYSIS -->
+          <div class="ai-card">
+
+            <span class="ai-card-icon">
+              <i aria-hidden="true" class="fa-solid fa-fire"></i>
+            </span>
+
+            <div>
+              <p class="ai-card-label">Spending Analysis</p>
+              <p class="ai-card-value" id="aiSpendingText">
+                Add transactions and click Analyze.
+              </p>
+            </div>
+
+          </div>
+
+          <!-- BUDGET RECOMMENDATION -->
+          <div class="ai-card">
+
+            <span class="ai-card-icon">
+              <i aria-hidden="true" class="fa-solid fa-chart-pie"></i>
+            </span>
+
+            <div>
+              <p class="ai-card-label">Budget Recommendation (50/30/20)</p>
+              <p class="ai-card-value" id="aiBudgetText">
+                Enter your income below to get recommendations.
+              </p>
+            </div>
+
+          </div>
+
+          <!-- MONTH-END PREDICTION -->
+          <div class="ai-card">
+
+            <span class="ai-card-icon">
+              <i aria-hidden="true" class="fa-solid fa-calendar-days"></i>
+            </span>
+
+            <div>
+              <p class="ai-card-label">Month-end Prediction</p>
+              <p class="ai-card-value" id="aiPredictionText">
+                No data yet.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- INCOME INPUT + ANALYZE BUTTON -->
+        <div class="ai-income-row">
+
+          <i aria-hidden="true" class="fa-solid fa-indian-rupee-sign"></i>
+
+          <input
+            type="number"
+            id="aiIncomeInput"
+            placeholder="Enter monthly income for 50/30/20 advice"
+            min="0"
+            inputmode="numeric"
+          />
+
+          <button id="analyzeBtn">
+            <i aria-hidden="true" class="fa-solid fa-brain"></i> Analyze
+          </button>
+
+        </div>
+
+        <!-- CHAT PANEL -->
+        <div class="ai-chat">
+
+          <div class="ai-chat-messages" id="aiChatMessages">
+
+            <div class="ai-msg ai-msg--bot">
+              👋 Hi! I'm your AI financial advisor powered by Groq. Ask me anything about your spending!
+            </div>
+
+          </div>
+
+          <div class="ai-chat-input-row">
+
+            <input
+              type="text"
+              id="aiChatInput"
+              placeholder="Ask AI: Am I overspending? How can I save more?"
+              autocomplete="off"
+            />
+
+            <button id="aiSendBtn" aria-label="Send message">
+              <i aria-hidden="true" class="fa-solid fa-paper-plane"></i>
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
     <!-- FOOTER -->
     <footer class="footer">
 

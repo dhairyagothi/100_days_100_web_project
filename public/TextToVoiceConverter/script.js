@@ -1,65 +1,27 @@
-/* =========================
-   ELEMENTS
-========================= */
+const textInput = document.getElementById('text-input');
+const convertBtn = document.getElementById('convert-btn');
+const stopBtnText = document.getElementById('stop-btn-text');
+const stopBtnVoice = document.getElementById('stop-btn-voice');
+const langSelect = document.getElementById("language");
+const langSelectSTT = document.getElementById('language-stt');
 
-// TEXT TO SPEECH
-const textInput = document.getElementById("text-input");
-const convertBtn = document.getElementById("convert-btn");
-const stopBtnText = document.getElementById("stop-btn-text");
-const clearTextBtn = document.getElementById("clear-text");
+let speechSynthesis = window.speechSynthesis;
+let speechSynthesisUtterance = new SpeechSynthesisUtterance();
+speechSynthesisUtterance.onend = () => {
+    convertBtn.disabled = false;
+    stopBtnText.disabled = false;
+};
 
-const ttsLanguage = document.getElementById("tts-language");
-const voiceSelect = document.getElementById("voice-select");
+convertBtn.addEventListener('click', () => {
+    let text = textInput.value.trim();
+    if (text !== '') {
+        speechSynthesisUtterance.text = text;
+        speechSynthesisUtterance.lang = langSelect.value;
 
-const charCount = document.getElementById("char-count");
-const speakingStatus = document.getElementById("speaking-status");
-
-// VOICE TO TEXT
-const startBtn = document.getElementById("start-btn");
-const stopBtnVoice = document.getElementById("stop-btn-voice");
-const output = document.getElementById("output");
-const sttLanguage = document.getElementById("stt-language");
-
-const listeningStatus = document.getElementById("listening-status");
-
-// OTHER
-const copyBtn = document.getElementById("copy-btn");
-const downloadBtn = document.getElementById("download-btn");
-const clearOutputBtn = document.getElementById("clear-output");
-
-const themeToggle = document.getElementById("theme-toggle");
-
-/* =========================
-   SPEECH SYNTHESIS SETUP
-========================= */
-
-const synth = window.speechSynthesis;
-let voices = [];
-
-// Load voices (Chrome fix included)
-function loadVoices() {
-  voices = synth.getVoices();
-  voiceSelect.innerHTML = "";
-
-  voices.forEach((voice, index) => {
-    const option = document.createElement("option");
-    option.value = index;
-    option.textContent = `${voice.name} (${voice.lang})`;
-    voiceSelect.appendChild(option);
-  });
-}
-
-loadVoices();
-if (speechSynthesis.onvoiceschanged !== undefined) {
-  speechSynthesis.onvoiceschanged = loadVoices;
-}
-
-/* =========================
-   CHARACTER COUNT
-========================= */
-
-textInput.addEventListener("input", () => {
-  charCount.textContent = `Characters: ${textInput.value.length}`;
+        speechSynthesis.speak(speechSynthesisUtterance);
+        convertBtn.disabled = true;
+        stopBtnText.disabled = false;
+    }
 });
 
 /* =========================
@@ -111,55 +73,37 @@ stopBtnText.addEventListener("click", () => {
   stopBtnText.disabled = true;
 });
 
-/* =========================
-   CLEAR TEXT
-========================= */
+// speech to text
+document.addEventListener('DOMContentLoaded', () => {
+    const startBtn = document.getElementById('start-btn');
+    const stopBtn = document.getElementById('stop-btn-voice');
+    const output = document.getElementById('output');
+    
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = langSelectSTT.value;
 
-clearTextBtn.addEventListener("click", () => {
-  textInput.value = "";
-  charCount.textContent = "Characters: 0";
-  speakingStatus.textContent = "";
-});
+    recognition.onresult = (event) => {
+        let transcript = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+            transcript += event.results[i][0].transcript;
+        }
+        output.value = transcript;
+    };
 
-/* =========================
-   SPEECH → TEXT (RECOGNITION)
-========================= */
+    recognition.onerror = (event) => {
+        console.error('Speech recognition error', event.error);
+    };
 
-const SpeechRecognition =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
-
-let recognition;
-
-if (SpeechRecognition) {
-  recognition = new SpeechRecognition();
-  recognition.continuous = true;
-  recognition.interimResults = true;
-
-  recognition.onresult = (event) => {
-    let transcript = "";
-
-    for (let i = event.resultIndex; i < event.results.length; i++) {
-      transcript += event.results[i][0].transcript;
-    }
-
-    output.value = transcript;
-  };
-
-  recognition.onerror = (e) => {
-    console.error("Speech recognition error:", e.error);
-    listeningStatus.textContent = "❌ Error occurred";
-  };
-
-  startBtn.addEventListener("click", () => {
-    recognition.lang = sttLanguage.value;
+    startBtn.addEventListener('click', () => {
+    recognition.lang = langSelect.value; // dynamic language
     recognition.start();
 
-    listeningStatus.textContent = "🎤 Listening...";
-    startBtn.disabled = true;
-    stopBtnVoice.disabled = false;
-  });
-
-  stopBtnVoice.addEventListener("click", () => {
+    stopBtnVoice.addEventListener('click', () => {
+    
     recognition.stop();
 
     listeningStatus.textContent = "⛔ Stopped";

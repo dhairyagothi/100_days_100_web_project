@@ -1,11 +1,12 @@
-let currMoleTile;
-let currPlantTile;
+let currMoleTile = null;
+let currPlantTile = null;
 let score = 0;
 let gameOver = false;
 let moleInterval = null;  // track mole interval to prevent duplicates
 let plantInterval = null; // track plant interval to prevent duplicates
 
 // Global tracking references for intervals to prevent memory leaks
+// Global interval tracking to prevent memory leak accumulation
 let moleIntervalId = null;
 let plantIntervalId = null;
 
@@ -16,6 +17,7 @@ window.onload = function () {
 function setGame() {
     const board = document.getElementById("board");
     board.innerHTML = ""; // Ensure the container is empty before initializing
+    board.replaceChildren(); // Safe initialization clear
 
     // --- SETUP GRID TEMPLATE ---
     for (let i = 0; i < 9; i++) {
@@ -27,6 +29,7 @@ function setGame() {
     // --- CENTRALIZED EVENT DELEGATION ---
     board.addEventListener("click", function (e) {
         // Intercept target element ensuring it's an active grid tile div
+        // Intercept target element ensuring it's a grid tile inside the board
         const clickedTile = e.target.closest("#board > div");
         if (!clickedTile) return;
 
@@ -34,6 +37,7 @@ function setGame() {
     });
 
     // Start background loops
+    // Initialize game background loops
     startIntervals();
     // Clear any existing intervals before starting new ones to prevent
     // concurrent loop accumulation if setGame() is ever called more than once
@@ -50,6 +54,7 @@ function setGame() {
 
 function startIntervals() {
     // Clear any loose running loops first
+    // Clear any loose running loops first to keep memory clean
     clearInterval(moleIntervalId);
     clearInterval(plantIntervalId);
 
@@ -66,7 +71,7 @@ function setMole() {
     if (gameOver) return;
 
     if (currMoleTile) {
-        currMoleTile.innerHTML = "";
+        currMoleTile.replaceChildren(); // Safe alternative to innerHTML = ""
     }
 
     let mole = document.createElement("img");
@@ -89,7 +94,7 @@ function setPlant() {
     if (gameOver) return;
 
     if (currPlantTile) {
-        currPlantTile.innerHTML = "";
+        currPlantTile.replaceChildren(); // Safe alternative to innerHTML = ""
     }
 
     let plant = document.createElement("img");
@@ -118,6 +123,10 @@ function selectTile(tile) {
 
         // Clear immediately so user cannot double-click spam the same mole
         currMoleTile.innerHTML = "";
+        document.getElementById("score").textContent = score.toString(); // Safe text rendering
+
+        // Clear immediately so user cannot double-click spam the same mole frame
+        currMoleTile.replaceChildren();
         currMoleTile = null;
     }
     // Hit a plant — Game Over!
@@ -126,6 +135,10 @@ function selectTile(tile) {
         gameOver = true;
 
         // Clear active process background timers
+        document.getElementById("score").textContent = "GAME OVER: " + score.toString();
+        gameOver = true;
+
+        // Clear active engine intervals completely
         clearInterval(moleIntervalId);
         clearInterval(plantIntervalId);
         // Stop intervals immediately so moles/plants freeze on game over
@@ -143,6 +156,7 @@ function selectTile(tile) {
             "inline-block";
 
         // UI state displays
+        // UI state toggles
         document.getElementById("restart-btn").style.display = "inline-block";
         document.body.classList.add("game-over");
     }
@@ -160,11 +174,21 @@ function restartGame() {
     // Clear grid structures
     if (currMoleTile) currMoleTile.innerHTML = "";
     if (currPlantTile) currPlantTile.innerHTML = "";
+    document.getElementById("score").textContent = score.toString();
+
+    // Hide UI elements
+    document.getElementById("restart-btn").style.display = "none";
+    document.body.classList.remove("game-over");
+
+    // Clear tile nodes securely without parsing strings
+    if (currMoleTile) currMoleTile.replaceChildren();
+    if (currPlantTile) currPlantTile.replaceChildren();
 
     currMoleTile = null;
     currPlantTile = null;
 
     // Reactivate clean, non-accumulated engine intervals
+    // Reactivate game engine tracking loops safely
     startIntervals();
     // Restart intervals fresh — previous ones were cleared on game over
     // so there is no risk of concurrent loop accumulation
