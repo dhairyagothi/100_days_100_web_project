@@ -1,28 +1,147 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
     <title>High-Throughput Request Batching Engine</title>
-</head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<body>
-    <h2>Critical System Infrastructure: Network Request Batching & Throttling Engine</h2>
+  <body>
+    <h2>
+      Critical System Infrastructure: Network Request Batching & Throttling
+      Engine
+    </h2>
 
-    <pre id="network-log"
-        style="background: #111; color: #00ff66; padding: 12px; font-family: monospace;">Network Engine Stack Online...</pre>
+    <pre
+      id="network-log"
+      style="
+        background: #111;
+        color: #00ff66;
+        padding: 12px;
+        font-family: monospace;
+      "
+    >
+Network Engine Stack Online...</pre
+    >
 
-    <fieldset style="margin-bottom: 20px; padding: 10px; width: 450px;">
-        <legend>Simulate Rapid Multi-Component UI Inbound Spikes</legend>
-        <button id="trigger-btn" style="padding: 8px 16px; font-size: 1rem; cursor: pointer;">Fire Concurrently Spiked
-            Requests</button>
+    <fieldset style="margin-bottom: 20px; padding: 10px; width: 450px">
+      <legend>Simulate Rapid Multi-Component UI Inbound Spikes</legend>
+      <button
+        id="trigger-btn"
+        style="padding: 8px 16px; font-size: 1rem; cursor: pointer"
+      >
+        Fire Concurrently Spiked Requests
+      </button>
     </fieldset>
 
     <h4>Resolved Output Streams (Unpacked Pipeline):</h4>
-    <div id="network-results" style="border: 2px dashed #444; padding: 10px; width: 454px; min-height: 150px;">
+    <div
+      id="network-results"
+      style="
+        border: 2px dashed #444;
+        padding: 10px;
+        width: 454px;
+        min-height: 150px;
+      "
+    ></div>
+
+    <div class="hero-tag">● SYSTEM ONLINE</div>
+
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-value">18K</div>
+        <div class="metric-label">Requests/sec</div>
+      </div>
+
+      <div class="metric">
+        <div class="metric-value">2.1ms</div>
+        <div class="metric-label">Latency</div>
+      </div>
+
+      <div class="metric">
+        <div class="metric-value">843</div>
+        <div class="metric-label">Queue Depth</div>
+      </div>
+
+      <div class="metric">
+        <div class="metric-value">99.99%</div>
+        <div class="metric-label">Availability</div>
+      </div>
     </div>
 
-    <script type="module" src="app.js"></script>
-</body>
+    <div class="analytics">
+      <div class="card">
+        <div class="card-title">Request Throughput Analytics</div>
 
+        <div class="chart"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Activity Feed</div>
+
+        <div class="activity-item">
+          <span class="status-dot"></span>
+          Batch Queue Initialized
+        </div>
+
+        <div class="activity-item">
+          <span class="status-dot"></span>
+          Worker Pool Ready
+        </div>
+
+        <div class="activity-item">
+          <span class="status-dot"></span>
+          Traffic Simulation Available
+        </div>
+      </div>
+    </div>
+
+    <section class="analytics-dashboard">
+      <div class="analytics-header">
+        <h3>Batch Request Analytics Dashboard</h3>
+
+        <button id="resetAnalyticsBtn">Reset Analytics</button>
+      </div>
+
+      <div class="analytics-grid">
+        <div class="analytics-card">
+          <span>Total Requests</span>
+          <h2 id="totalRequests">0</h2>
+        </div>
+
+        <div class="analytics-card">
+          <span>Total Batches</span>
+          <h2 id="totalBatches">0</h2>
+        </div>
+
+        <div class="analytics-card">
+          <span>Average Batch Size</span>
+          <h2 id="avgBatchSize">0</h2>
+        </div>
+
+        <div class="analytics-card">
+          <span>Requests Saved</span>
+          <h2 id="savedRequests">0</h2>
+        </div>
+
+        <div class="analytics-card">
+          <span>Average Latency</span>
+          <h2 id="avgLatency">0 ms</h2>
+        </div>
+
+        <div class="analytics-card">
+          <span>Success Count</span>
+          <h2 id="successCount">0</h2>
+        </div>
+
+        <div class="analytics-card">
+          <span>Failure Count</span>
+          <h2 id="failureCount">0</h2>
+        </div>
+      </div>
+    </section>
+
+    <script type="module" src="app.js"></script>
+  </body>
 </html>
