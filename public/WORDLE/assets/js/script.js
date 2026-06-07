@@ -7,7 +7,9 @@ let inputWord = "";
 
 // Function to get a random word from the shuffledWords array
 function getRandomWord() {
-    const randomIndex = Math.floor(Math.random()* allowedWords.length);
+    const array = new Uint32Array(1);
+    window.crypto.getRandomValues(array);
+    const randomIndex = array[0] % allowedWords.length;
     return allowedWords[randomIndex].toUpperCase();
 }
 
