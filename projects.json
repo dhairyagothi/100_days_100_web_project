@@ -2579,7 +2579,12 @@
     "projectName": "Gravity Well",
     "projectType": "Animation",
     "projectDesc": "Interactive physics-based gravity simulation allowing users to create gravitational wells.",
-    "techStack": ["HTML", "canvas", "javascript", "css"],
+    "techStack": [
+      "HTML",
+      "canvas",
+      "javascript",
+      "css"
+    ],
     "difficulty": "intermediate",
     "projectPath": "./public/gravity-well/index.html"
   },
@@ -2612,7 +2617,6 @@
     "projectPath": "./public/CrosswordPuzzleGame/index.html"
   },
   {
-<<<<<<< Updated upstream
     "projectNo": 209,
     "projectName": "Kanban Board",
     "projectPath": "./public/Kanban_Board/index.html",
@@ -2637,7 +2641,6 @@
     "projectDesc": "A responsive IP Address Tracker application that allows users to search IP addresses, view location details, ISP information, timezone data, and visualize the location on an interactive map using Leaflet.js and IPAPI."
   },
   {
-=======
   "projectNo": 209,
   "projectName": "Kanban Board",
   "projectPath": "./public/Kanban_Board/index.html",
@@ -2654,7 +2657,6 @@
   "projectDesc": "A responsive IP Address Tracker application that allows users to search IP addresses, view location details, ISP information, timezone data, and visualize the location on an interactive map using Leaflet.js and IPAPI."
 },
 {
->>>>>>> Stashed changes
     "projectNo": 211,
     "projectName": "Cricket Scorecard",
     "projectPath": "./public/Cricket-Scorecard/index.html",
@@ -2724,17 +2726,29 @@
     "projectName": "Gemini Clone",
     "projectType": "AI",
     "projectDesc": "A modern clone of the Google Gemini AI chatbot interface, integrated with Google's GenAI API for generating dynamic responses.",
-    "techStack": ["react", "javascript", "html", "css", "api", "vite"],
+    "techStack": [
+      "react",
+      "javascript",
+      "html",
+      "css",
+      "api",
+      "vite"
+    ],
     "difficulty": "advanced",
     "projectPath": "./public/Gemini/index.html"
   },
   {
-  "projectNo": 217,
-  "projectName": "Image Steganography Tool",
-  "projectType": "Tool",
-  "projectDesc": "A web-based tool that hides and extracts secret messages inside images using steganography techniques.",
-  "techStack": ["tool", "html", "css", "js"],
-  "difficulty": "advanced",
-  "projectPath": "./public/ImageSteganographyTool/index.html"
- }
+    "projectNo": 217,
+    "projectName": "SkillBridge Career Roadmap Explorer",
+    "projectType": "Tool",
+    "projectDesc": "A Next.js career guidance platform that helps students explore technology career paths, required skills, structured learning roadmaps, recommended projects, and curated learning resources.",
+    "techStack": [
+      "nextjs",
+      "react",
+      "typescript",
+      "tailwindcss"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/SkillBridge"
+  }
 ]
