@@ -2641,22 +2641,6 @@
     "projectDesc": "A responsive IP Address Tracker application that allows users to search IP addresses, view location details, ISP information, timezone data, and visualize the location on an interactive map using Leaflet.js and IPAPI."
   },
   {
-  "projectNo": 209,
-  "projectName": "Kanban Board",
-  "projectPath": "./public/Kanban_Board/index.html",
-  "techStack": ["html", "css", "javascript"],
-  "difficulty": "intermediate",
-  "projectDesc": "A responsive Kanban Board application featuring drag-and-drop task management, task creation, editing, deletion, local storage persistence, and dark/light theme support."
-},
-{
-  "projectNo": 210,
-  "projectName": "IP Address Tracker",
-  "projectPath": "./public/Ip_Address_tracker/index.html",
-  "techStack": ["html", "css", "javascript"],
-  "difficulty": "intermediate",
-  "projectDesc": "A responsive IP Address Tracker application that allows users to search IP addresses, view location details, ISP information, timezone data, and visualize the location on an interactive map using Leaflet.js and IPAPI."
-},
-{
     "projectNo": 211,
     "projectName": "Cricket Scorecard",
     "projectPath": "./public/Cricket-Scorecard/index.html",
@@ -2750,7 +2734,8 @@
     ],
     "difficulty": "advanced",
     "projectPath": "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/SkillBridge"
-  },  {
+  },
+  {
   "projectNo": 218,
   "projectName": "Image Steganography Tool",
   "projectType": "Tool",
