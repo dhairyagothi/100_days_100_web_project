@@ -188,10 +188,10 @@
   <body>
     <nav class="navbar">
       <a href="../index.html" class="button home-btn">
-        <i class="fa-solid fa-house"></i> Home
+        <i aria-hidden="true" class="fa-solid fa-house"></i> Home
       </a>
       <a href="./Login.html" class="button home-btn" style="background:#334155;">
-        <i class="fa-solid fa-right-to-bracket"></i> Login
+        <i aria-hidden="true" class="fa-solid fa-right-to-bracket"></i> Login
       </a>
     </nav>
 
@@ -211,7 +211,7 @@
 
           <div class="field-wrap">
             <div class="form-group" id="grp-name">
-              <i class="fa-solid fa-id-card"></i>
+              <i aria-hidden="true" class="fa-solid fa-id-card"></i>
               <input type="text" id="name" placeholder="Full Name" class="form-input" autocomplete="name" />
             </div>
             <span class="error-msg" id="err-name"></span>
@@ -219,7 +219,7 @@
 
           <div class="field-wrap">
             <div class="form-group" id="grp-username">
-              <i class="fa-solid fa-user"></i>
+              <i aria-hidden="true" class="fa-solid fa-user"></i>
               <input type="text" id="username" placeholder="Username" class="form-input" autocomplete="username" />
             </div>
             <span class="error-msg" id="err-username"></span>
@@ -227,7 +227,7 @@
 
           <div class="field-wrap">
             <div class="form-group" id="grp-email">
-              <i class="fa-solid fa-envelope"></i>
+              <i aria-hidden="true" class="fa-solid fa-envelope"></i>
               <input type="email" id="email" placeholder="Email Address" class="form-input" autocomplete="email" />
             </div>
             <span class="error-msg" id="err-email"></span>
@@ -235,7 +235,7 @@
 
           <div class="field-wrap">
             <div class="form-group" id="grp-password">
-              <i class="fa-solid fa-lock"></i>
+              <i aria-hidden="true" class="fa-solid fa-lock"></i>
               <input type="password" id="password" placeholder="Password" class="form-input" autocomplete="new-password" />
             </div>
             <span class="error-msg" id="err-password"></span>
@@ -243,19 +243,19 @@
 
           <div class="field-wrap">
             <div class="form-group" id="grp-confirm-password">
-              <i class="fa-solid fa-lock-open"></i>
+              <i aria-hidden="true" class="fa-solid fa-lock-open"></i>
               <input type="password" id="confirm-password" placeholder="Confirm Password" class="form-input" autocomplete="new-password" />
             </div>
             <span class="error-msg" id="err-confirm-password"></span>
           </div>
 
           <button type="submit" class="button home-btn signup-btn" id="signupBtn">
-            Sign Up <i class="fa-solid fa-arrow-right"></i>
+            Sign Up <i aria-hidden="true" class="fa-solid fa-arrow-right"></i>
           </button>
         </form>
 
         <button id="googleLogin" class="button home-btn">
-    <i class="fa-brands fa-google"></i>
+    <i aria-hidden="true" class="fa-brands fa-google"></i>
     Continue with Google
 </button>
 
@@ -280,10 +280,10 @@
         toast.className = `toast ${type}`;
 
         const iconMap = {
-          success: '<i class="fa-solid fa-circle-check"></i>',
-          error: '<i class="fa-solid fa-circle-exclamation"></i>',
-          warning: '<i class="fa-solid fa-triangle-exclamation"></i>',
-          info: '<i class="fa-solid fa-circle-info"></i>'
+          success: '<i aria-hidden="true" class="fa-solid fa-circle-check"></i>',
+          error: '<i aria-hidden="true" class="fa-solid fa-circle-exclamation"></i>',
+          warning: '<i aria-hidden="true" class="fa-solid fa-triangle-exclamation"></i>',
+          info: '<i aria-hidden="true" class="fa-solid fa-circle-info"></i>'
         };
 
         toast.innerHTML = `

@@ -535,3 +535,8 @@ body.dark-mode .rec-link:hover {
   color: var(--subtitle-color);
   font-size: 14px;
 }
+/* Fix: dropdown options in dark mode */
+body.dark-mode select option {
+    background-color: #1a1a2e;
+    color: #ffffff;
+}

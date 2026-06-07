@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📖 Cozy BookNook - Personal Book Tracker & Library</title>
+  <meta name="description" content="Your aesthetic digital bookshelf. Log books, rate them, track reading goals, and share recommendations in a warm, cozy reading space.">
+  <link rel="stylesheet" href="style.css">
+  <!-- Google Font: Gaegu -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body class="theme-berry-much">
+  
+  <!-- Backdrop ambiance particles -->
+  <div class="ambient-glow"></div>
+
+  <!-- Main Container -->
+  <div class="app-container">
+    
+    <!-- HEADER -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo-wrapper">
+          <svg class="logo-svg" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+            <path d="M6 6h10" stroke-width="1.5" />
+            <path d="M6 10h10" stroke-width="1.5" />
+            <path d="M6 14h6" stroke-width="1.5" />
+          </svg>
+          <div class="logo-glow"></div>
+        </div>
+        <div class="logo-text">
+          <h1>Cozy BookNook</h1>
+          <p class="subtitle">Your cozy digital reading sanctuary</p>
+        </div>
+      </div>
+
+      <!-- Quick Stats Panel -->
+      <div class="quick-stats-bar">
+        <div class="stat-bubble" id="statTotalBooks">
+          <span class="stat-value">0</span>
+          <span class="stat-label">Shelved</span>
+        </div>
+        <div class="stat-bubble" id="statCompleted">
+          <span class="stat-value">0</span>
+          <span class="stat-label">Completed</span>
+        </div>
+        <div class="stat-bubble" id="statAvgRating">
+          <span class="stat-value">0.0</span>
+          <span class="stat-label">Avg Rating</span>
+        </div>
+        <div class="stat-bubble" id="statReadingGoal">
+          <span class="stat-value">0%</span>
+          <span class="stat-label">Year Goal</span>
+        </div>
+      </div>
+
+      <!-- Header Controls -->
+      <div class="header-controls">
+        <button id="btnThemeToggle" class="btn-circle" title="Toggle Theme" aria-label="Toggle Theme">
+          <svg id="themeIconSun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+          </svg>
+          <svg id="themeIconMoon" class="hidden" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+          </svg>
+          <svg id="themeIconBerry" class="hidden" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="2.5" />
+            <path d="M12 6.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5Z" />
+            <path d="M12 22.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5Z" />
+            <path d="M17.5 12a2.5 2.5 0 0 1 5 0 2.5 2.5 0 0 1-5 0Z" />
+            <path d="M1.5 12a2.5 2.5 0 0 1 5 0 2.5 2.5 0 0 1-5 0Z" />
+            <path d="M15.9 8.1a2.5 2.5 0 0 1 3.5-3.5 2.5 2.5 0 0 1-3.5 3.5Z" />
+            <path d="M4.6 19.4a2.5 2.5 0 0 1 3.5-3.5 2.5 2.5 0 0 1-3.5 3.5Z" />
+            <path d="M19.4 15.9a2.5 2.5 0 0 1-3.5 3.5 2.5 2.5 0 0 1 3.5-3.5Z" />
+            <path d="M8.1 4.6a2.5 2.5 0 0 1-3.5 3.5 2.5 2.5 0 0 1 3.5-3.5Z" />
+          </svg>
+        </button>
+        <button id="btnSoundToggle" class="btn-circle" title="Toggle Sound FX" aria-label="Toggle Sound Effects">
+          <svg id="soundIconOn" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14" />
+          </svg>
+          <svg id="soundIconOff" class="hidden" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 5 6 9 2 9 2 15 6 15 11 19 11 5M22 9l-6 6M16 9l6 6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button id="btnDimmer" class="btn-circle" title="Toggle Soft Ambient Lighting" aria-label="Ambient Dimmer">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .5 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+            <path d="M9 18h6M10 22h4" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- APP MAIN CONTENT GRID -->
+    <main class="app-main">
+      
+      <!-- LEFT SIDEBAR: Search, Filters, Stats visualizer -->
+      <aside class="sidebar-left">
+        <!-- Search & Filter Card -->
+        <div class="glass-card panel-search">
+          <h2 class="section-title">Explore Library</h2>
+          <div class="search-box">
+            <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+            <input type="text" id="inputSearch" placeholder="Search by title, author..." />
+          </div>
+
+          <!-- Shelf Filters -->
+          <div class="filter-group">
+            <label class="filter-label">Shelves</label>
+            <div class="shelf-buttons">
+              <button class="shelf-btn active" data-shelf="all">
+                <span class="shelf-dot" style="background-color: var(--primary-accent);"></span>
+                <span class="shelf-name">All Books</span>
+              </button>
+              <button class="shelf-btn" data-shelf="reading">
+                <span class="shelf-dot" style="background-color: var(--amber-glow);"></span>
+                <span class="shelf-name">Currently Reading</span>
+              </button>
+              <button class="shelf-btn" data-shelf="completed">
+                <span class="shelf-dot" style="background-color: var(--green-success);"></span>
+                <span class="shelf-name">Completed</span>
+              </button>
+              <button class="shelf-btn" data-shelf="want">
+                <span class="shelf-dot" style="background-color: var(--blue-sky);"></span>
+                <span class="shelf-name">Want to Read</span>
+              </button>
+              <button class="shelf-btn" data-shelf="favorites">
+                <span class="shelf-dot" style="background-color: var(--pink-rose);"></span>
+                <span class="shelf-name">Favorites</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Genre Filters -->
+          <div class="filter-group">
+            <label class="filter-label">Genre Filter</label>
+            <select id="selectGenreFilter" class="select-dropdown">
+              <option value="all">All Genres</option>
+              <option value="Fiction">Fiction</option>
+              <option value="Non-Fiction">Non-Fiction</option>
+              <option value="Mystery">Mystery & Thriller</option>
+              <option value="Fantasy">Fantasy & Sci-Fi</option>
+              <option value="Biography">Biography & History</option>
+              <option value="Rom-Com">Rom-Com</option>
+              <option value="Self-Help">Self-Help & Philosophy</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Goal & Analytics Card -->
+        <div class="glass-card panel-analytics">
+          <h2 class="section-title">Reading Insights</h2>
+          
+          <!-- Goal Widget -->
+          <div class="goal-widget">
+            <div class="goal-header">
+              <span>2026 Reading Goal</span>
+              <button id="btnSetGoal" class="btn-text-link">Edit Goal</button>
+            </div>
+            <div class="goal-progress-bar-container">
+              <div id="goalProgressBar" class="goal-progress-fill" style="width: 0%;"></div>
+            </div>
+            <div class="goal-footer">
+              <span id="goalTextValue">0 of 12 books read</span>
+              <span id="goalPercentValue">0%</span>
+            </div>
+          </div>
+
+          <!-- Custom SVG Donut Chart for Genre breakdown -->
+          <div class="chart-widget">
+            <div class="chart-header">
+              <span>Genre Distribution</span>
+            </div>
+            <div class="chart-container">
+              <svg id="genreChart" class="donut-chart" viewBox="0 0 100 100" width="130" height="130">
+                <!-- Empty State Circle -->
+                <circle cx="50" cy="50" r="35" fill="transparent" stroke="rgba(255,255,255,0.05)" stroke-width="12"></circle>
+                <!-- Dynamically populated circles will go here -->
+              </svg>
+              <!-- Center Text -->
+              <div class="chart-center-text">
+                <span id="chartCenterCount">0</span>
+                <span class="chart-center-label">Genres</span>
+              </div>
+            </div>
+            <!-- Dynamic Legend -->
+            <div id="chartLegend" class="chart-legend">
+              <p class="legend-empty-text">No data to display. Start shelving books!</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- CENTER CONTAINER: Main Book Grid -->
+      <section class="main-books-workspace">
+        <div class="workspace-header">
+          <div class="workspace-title-area">
+            <h2 id="currentShelfTitle">All Books</h2>
+            <span class="book-count-badge" id="shelfBookCount">0 books</span>
+          </div>
+          <button id="btnAddNewBook" class="btn-primary flex-center gap-2">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            <span>Log a Book</span>
+          </button>
+        </div>
+
+        <!-- Grid layout for Book cards -->
+        <div class="book-grid" id="bookGrid">
+          <!-- Dynamically populated or empty state placeholder -->
+        </div>
+      </section>
+
+      <!-- RIGHT SIDEBAR: Friends Corner & Recommendation Feed -->
+      <aside class="sidebar-right">
+        <!-- Friends Recommendation Circle -->
+        <div class="glass-card panel-friends">
+          <div class="friends-header">
+            <h2 class="section-title">Nook Book Circle</h2>
+            <button id="btnAddFriend" class="btn-icon-small" title="Invite Friend">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <line x1="19" y1="8" x2="19" y2="14" />
+                <line x1="22" y1="11" x2="16" y2="11" />
+              </svg>
+            </button>
+          </div>
+          
+          <div class="friends-summary-avatars" id="friendsAvatarsList">
+            <!-- Friend avatars inline list -->
+          </div>
+
+          <!-- Feed timeline -->
+          <div class="recommendation-feed" id="recommendationFeed">
+            <!-- Dynamically populated mock notifications & cards -->
+          </div>
+
+          <!-- Share Recommendation Quick Box -->
+          <div class="quick-recommend-box">
+            <h3>Recommend to Friend</h3>
+            <p>Send a personal book suggestion card to your friends list.</p>
+            <button id="btnQuickRecommend" class="btn-secondary btn-full flex-center gap-2">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m22 2-7 20-4-9-9-4Z" />
+                <path d="M22 2 11 13" />
+              </svg>
+              <span>Write Recommendation</span>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      <p>Cozy BookNook © 2026. Keep reading, keep dreaming.</p>
+    </footer>
+  </div>
+
+  <!-- Soft light dimming overlay -->
+  <div id="dimOverlay" class="dim-overlay"></div>
+
+  <!-- ADD / EDIT BOOK MODAL -->
+  <div id="bookModal" class="modal-overlay">
+    <div class="glass-card modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title" id="bookModalTitle">Log a New Book</h2>
+        <button id="btnBookModalClose" class="btn-icon" aria-label="Close modal">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+      <form id="bookForm" class="modal-form">
+        <!-- Hidden input for editing book index -->
+        <input type="hidden" id="editBookId" value="">
+
+        <!-- Basic details grid -->
+        <div class="form-row">
+          <div class="form-group flex-2">
+            <label for="bookTitle">Book Title *</label>
+            <input type="text" id="bookTitle" required placeholder="e.g. The Night Circus">
+          </div>
+          <div class="form-group flex-1">
+            <label for="bookGenre">Genre *</label>
+            <select id="bookGenre" required>
+              <option value="Fiction">Fiction</option>
+              <option value="Non-Fiction">Non-Fiction</option>
+              <option value="Mystery">Mystery & Thriller</option>
+              <option value="Fantasy">Fantasy & Sci-Fi</option>
+              <option value="Biography">Biography & History</option>
+              <option value="Rom-Com">Rom-Com</option>
+              <option value="Self-Help">Self-Help & Philosophy</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-2">
+            <label for="bookAuthor">Author(s) *</label>
+            <input type="text" id="bookAuthor" required placeholder="e.g. Erin Morgenstern">
+          </div>
+          <div class="form-group flex-1">
+            <label for="bookStatus">Reading Status *</label>
+            <select id="bookStatus" required>
+              <option value="want">Want to Read</option>
+              <option value="reading">Currently Reading</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Rating & Favorite row -->
+        <div class="form-row align-center">
+          <div class="form-group flex-1">
+            <label>Rating</label>
+            <div class="star-rating-input" id="starRatingInput">
+              <span class="modal-star" data-value="1">★</span>
+              <span class="modal-star" data-value="2">★</span>
+              <span class="modal-star" data-value="3">★</span>
+              <span class="modal-star" data-value="4">★</span>
+              <span class="modal-star" data-value="5">★</span>
+              <input type="hidden" id="bookRating" value="0">
+            </div>
+          </div>
+          <div class="form-group checkbox-group flex-1">
+            <label class="checkbox-container">
+              <input type="checkbox" id="bookFavorite">
+              <span class="checkmark"></span>
+              Add to Favorites ❤️
+            </label>
+          </div>
+        </div>
+
+        <!-- Cover art selector -->
+        <div class="form-group">
+          <label>Book Cover Art</label>
+          <div class="cover-type-selector">
+            <button type="button" class="btn-tab active" data-cover-mode="generate">Generate Cozy Cover 🎨</button>
+            <button type="button" class="btn-tab" data-cover-mode="url">Image URL 🌐</button>
+            <button type="button" class="btn-tab" data-cover-mode="upload">Upload File 📁</button>
+          </div>
+          <div class="cover-mode-inputs">
+            <!-- Generative cover options -->
+            <div class="cover-input-panel" id="coverPanelGenerate">
+              <div class="cover-palette-row">
+                <span class="palette-swatch active" style="background: linear-gradient(135deg, #7c3a2b, #4a1d13);" data-color="#7c3a2b,#4a1d13" title="Classic Mahogany"></span>
+                <span class="palette-swatch" style="background: linear-gradient(135deg, #1f3a52, #0f1c24);" data-color="#1f3a52,#0f1c24" title="Midnight Navy"></span>
+                <span class="palette-swatch" style="background: linear-gradient(135deg, #2b4c3f, #14241d);" data-color="#2b4c3f,#14241d" title="Forest Green"></span>
+                <span class="palette-swatch" style="background: linear-gradient(135deg, #4f2e5a, #27142d);" data-color="#4f2e5a,#27142d" title="Deep Purple"></span>
+                <span class="palette-swatch" style="background: linear-gradient(135deg, #a37b3f, #5b421a);" data-color="#a37b3f,#5b421a" title="Vintage Gold"></span>
+                <!-- Berry Much Pastels -->
+                <span class="palette-swatch" style="background: linear-gradient(135deg, #FFB4DA, #F5D1EF);" data-color="#FFB4DA,#F5D1EF" title="Strawberry & Lavender"></span>
+                <span class="palette-swatch" style="background: linear-gradient(135deg, #BCD3F9, #FFF4FD);" data-color="#BCD3F9,#FFF4FD" title="Dreamy Sky Blue"></span>
+                <span class="palette-swatch" style="background: linear-gradient(135deg, #FEF7C5, #FFCBBF);" data-color="#FEF7C5,#FFCBBF" title="Peach & Cream"></span>
+                <span class="palette-swatch" style="background: linear-gradient(135deg, #D5FFC9, #FEF7C5);" data-color="#D5FFC9,#FEF7C5" title="Mint & Buttercup"></span>
+              </div>
+              <p class="input-tip">A beautiful vintage-style SVG book cover will be dynamically synthesized using this palette.</p>
+              <input type="hidden" id="generativeCoverColors" value="#7c3a2b,#4a1d13">
+            </div>
+            <!-- Image URL cover option -->
+            <div class="cover-input-panel hidden" id="coverPanelUrl">
+              <input type="url" id="bookCoverUrl" placeholder="https://example.com/cover.jpg">
+            </div>
+            <!-- Local file upload cover option -->
+            <div class="cover-input-panel hidden" id="coverPanelUpload">
+              <input type="file" id="bookCoverFile" accept="image/*">
+            </div>
+          </div>
+        </div>
+
+        <!-- Dates & notes -->
+        <div class="form-row" id="datesRow">
+          <div class="form-group flex-1">
+            <label for="bookDateStarted">Date Started</label>
+            <input type="date" id="bookDateStarted">
+          </div>
+          <div class="form-group flex-1">
+            <label for="bookDateFinished">Date Finished</label>
+            <input type="date" id="bookDateFinished">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="bookReview">Reading Review & Notes</label>
+          <textarea id="bookReview" rows="3" placeholder="Write down your favorite quotes, initial thoughts, or a detailed review..."></textarea>
+        </div>
+
+        <!-- Buttons -->
+        <div class="form-actions">
+          <button type="button" id="btnDeleteBook" class="btn-danger hidden">Delete Book</button>
+          <div class="spacer"></div>
+          <button type="button" id="btnCancelBook" class="btn-secondary">Cancel</button>
+          <button type="submit" class="btn-primary">Save Book</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SHARE BOOK / RECOMMEND MODAL -->
+  <div id="shareModal" class="modal-overlay">
+    <div class="glass-card modal-card share-card">
+      <div class="modal-header">
+        <h2 class="modal-title">Recommend to Friend</h2>
+        <button id="btnShareModalClose" class="btn-icon" aria-label="Close modal">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+      <form id="shareForm" class="modal-form">
+        <div class="form-group">
+          <label for="shareSelectBook">Select Book from Shelf</label>
+          <select id="shareSelectBook" required>
+            <!-- Filled dynamically with user's books -->
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="shareSelectFriend">Select Recipient Friend</label>
+          <select id="shareSelectFriend" required>
+            <!-- Filled dynamically with friends list -->
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="shareMessage">Personal Recommendation Note</label>
+          <textarea id="shareMessage" rows="3" required placeholder="Tell your friend why you recommend this book specifically..."></textarea>
+        </div>
+
+        <!-- Aesthetic Card Preview -->
+        <div class="recommendation-preview-container">
+          <label>Letter Preview</label>
+          <div class="recommendation-card-preview" id="recommendationCardPreview">
+            <!-- Dynamic Preview card -->
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" id="btnCancelShare" class="btn-secondary">Close</button>
+          <button type="submit" class="btn-primary flex-center gap-2">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="m22 2-7 20-4-9-9-4Z" />
+              <path d="M22 2 11 13" />
+            </svg>
+            <span>Send Letter 💌</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ADD FRIEND MODAL -->
+  <div id="friendModal" class="modal-overlay">
+    <div class="glass-card modal-card friend-modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title">Invite to Reading Circle</h2>
+        <button id="btnFriendModalClose" class="btn-icon" aria-label="Close modal">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+      <form id="friendForm" class="modal-form">
+        <div class="form-group">
+          <label for="friendName">Friend's Name *</label>
+          <input type="text" id="friendName" required placeholder="e.g. Sanjana">
+        </div>
+        <div class="form-group">
+          <label for="friendColor">Avatar Accent Color</label>
+          <div class="cover-palette-row" id="friendColorSelector">
+            <span class="palette-swatch swatch-friend active" style="background-color: var(--pink-rose);" data-color="var(--pink-rose)"></span>
+            <span class="palette-swatch swatch-friend" style="background-color: var(--amber-glow);" data-color="var(--amber-glow)"></span>
+            <span class="palette-swatch swatch-friend" style="background-color: var(--blue-sky);" data-color="var(--blue-sky)"></span>
+            <span class="palette-swatch swatch-friend" style="background-color: var(--green-success);" data-color="var(--green-success)"></span>
+            <span class="palette-swatch swatch-friend" style="background-color: #8b5cf6;" data-color="#8b5cf6"></span>
+          </div>
+          <input type="hidden" id="friendAvatarColor" value="var(--pink-rose)">
+        </div>
+        <div class="form-actions">
+          <button type="button" id="btnCancelFriend" class="btn-secondary">Cancel</button>
+          <button type="submit" class="btn-primary">Add Friend</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- EDIT GOAL MODAL -->
+  <div id="goalModal" class="modal-overlay">
+    <div class="glass-card modal-card small-modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title">Edit Annual Goal</h2>
+        <button id="btnGoalModalClose" class="btn-icon" aria-label="Close modal">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+      <form id="goalForm" class="modal-form">
+        <div class="form-group">
+          <label for="inputGoalCount">How many books do you want to read in 2026?</label>
+          <input type="number" id="inputGoalCount" min="1" max="500" required value="12" class="text-center">
+        </div>
+        <div class="form-actions">
+          <button type="button" id="btnCancelGoal" class="btn-secondary">Cancel</button>
+          <button type="submit" class="btn-primary">Save Goal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION STACK -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Load script -->
+  <script src="script.js"></script>
+</body>
+</html>
