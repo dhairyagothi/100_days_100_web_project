@@ -10,23 +10,29 @@ const Coin = () => {
   const [historicalData, setHistoricalData] = useState();
   const { currency } = useContext(CoinContext);
 
-  const apiKey = process.env.REACT_APP_CG_API_KEY; // Access API key from environment variable
+  // const apiKey = process.env.REACT_APP_CG_API_KEY;
+  const apiKey = import.meta.env.VITE_CG_API_KEY;
 
   const fetchHistoricalData = async () => {
     const options = {
       method: "GET",
       headers: {
         accept: "application/json",
-        "x-cg-api-key": apiKey, // Use environment variable
+        "x-cg-api-key": apiKey,
       },
     };
-
     fetch(
       `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency.name}&days=10&interval=daily`,
       options
     )
-      .then((response) => response.json())
-      .then((response) => setHistoricalData(response))
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.prices) {
+          setHistoricalData(res);
+        } else {
+          console.error("Historical data API error:", res);
+        }
+      })
       .catch((err) => console.error(err));
   };
 
@@ -35,13 +41,18 @@ const Coin = () => {
       method: "GET",
       headers: {
         accept: "application/json",
-        "x-cg-api-key": apiKey, // Use environment variable
+        "x-cg-api-key": apiKey,
       },
     };
-
     fetch(`https://api.coingecko.com/api/v3/coins/${coinId}`, options)
-      .then((response) => response.json())
-      .then((response) => setCoinData(response))
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.market_data) {
+          setCoinData(res);
+        } else {
+          console.error("Coin data API error:", res);
+        }
+      })
       .catch((err) => console.error(err));
   };
 
@@ -54,21 +65,21 @@ const Coin = () => {
     return (
       <div className="coin">
         <div className="coin-name">
-          <img src={coinData.image.large} alt="" />
-          <p>
-            <b>
-              {coinData.name} ({coinData.symbol.toUpperCase()})
-            </b>
-          </p>
+          <img src={coinData.image.large} alt={coinData.name} />
+          <div className="coin-name-text">
+            <h2>{coinData.name}</h2>
+            <p>{coinData.symbol.toUpperCase()}</p>
+          </div>
+          <div className="coin-rank-badge">
+            Rank #{coinData.market_cap_rank}
+          </div>
         </div>
+
         <div className="coin-chart">
           <LineChart historicalData={historicalData} />
         </div>
+
         <div className="coin-info">
-          <ul>
-            <li>Crypto Market Rank</li>
-            <li>{coinData.market_cap_rank}</li>
-          </ul>
           <ul>
             <li>Current Price</li>
             <li>
@@ -77,25 +88,29 @@ const Coin = () => {
             </li>
           </ul>
           <ul>
-            <li>Market cap</li>
+            <li>Market Cap</li>
             <li>
               {currency.symbol}{" "}
               {coinData.market_data.market_cap[currency.name].toLocaleString()}
             </li>
           </ul>
           <ul>
-            <li>24 Hour High</li>
+            <li>24h High</li>
             <li>
               {currency.symbol}{" "}
               {coinData.market_data.high_24h[currency.name].toLocaleString()}
             </li>
           </ul>
           <ul>
-            <li>24 Hour Low</li>
+            <li>24h Low</li>
             <li>
               {currency.symbol}{" "}
               {coinData.market_data.low_24h[currency.name].toLocaleString()}
             </li>
+          </ul>
+          <ul>
+            <li>Market Cap Rank</li>
+            <li>#{coinData.market_cap_rank}</li>
           </ul>
         </div>
       </div>
@@ -103,7 +118,7 @@ const Coin = () => {
   } else {
     return (
       <div className="spinner">
-        <p className="spin"></p>
+        <div className="spin"></div>
       </div>
     );
   }

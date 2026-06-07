@@ -1,0 +1,294 @@
+{
+  "html": [
+    {
+      "question": "What does HTML stand for?",
+      "options": ["Hyper Text Markup Language", "Hyper Transfer Markup Language", "Home Tool Markup Language", "High Text Machine Language"],
+      "answer": 0,
+      "explanation": "HTML stands for Hyper Text Markup Language. It is the standard language used to create and structure pages on the web."
+    },
+    {
+      "question": "Which tag creates a hyperlink?",
+      "options": ["<a>", "<link>", "<href>", "<url>"],
+      "answer": 0,
+      "explanation": "The <a> (anchor) tag is used with its 'href' attribute to create hyperlinks connecting one page to another."
+    },
+    {
+      "question": "Which tag is used to display an image?",
+      "options": ["<img>", "<image>", "<picture>", "<src>"],
+      "answer": 0,
+      "explanation": "The <img> tag is an empty/self-closing element used to embed an image into an HTML page structure."
+    },
+    {
+      "question": "Which tag defines a paragraph?",
+      "options": ["<p>", "<para>", "<paragraph>", "<text>"],
+      "answer": 0,
+      "explanation": "The <p> tag is used to format blocks of textual layout content into separate structured paragraphs with built-in vertical margins."
+    },
+    {
+      "question": "Which heading tag is the largest?",
+      "options": ["<h1>", "<h6>", "<head>", "<title>"],
+      "answer": 0,
+      "explanation": "HTML heading sizes range from <h1> (the largest, main title) down to <h6> (the smallest sub-heading level)."
+    },
+    {
+      "question": "Which tag creates a table row?",
+      "options": ["<tr>", "<td>", "<th>", "<table>"],
+      "answer": 0,
+      "explanation": "The <tr> tag stands for 'Table Row' and acts as a container for individual table heading (<th>) or data (<td>) cells."
+    },
+    {
+      "question": "Which attribute specifies a link destination?",
+      "options": ["src", "href", "alt", "target"],
+      "answer": 1,
+      "explanation": "The 'href' (Hypertext Reference) attribute contains the actual URL path or local address destination for a hyperlink link target."
+    },
+    {
+      "question": "Which tag is used for user input forms?",
+      "options": ["<form>", "<input>", "<fieldset>", "<label>"],
+      "answer": 0,
+      "explanation": "The <form> tag defines an interactive context container area used to bundle input elements together to collect and transmit user data."
+    },
+    {
+      "question": "What does the alt attribute provide?",
+      "options": ["Image style", "Alternative text", "Image size", "Image position"],
+      "answer": 1,
+      "explanation": "The 'alt' attribute supplies alternative text explanations read by screen readers for accessibility, or displayed if an image fails to render load files."
+    },
+    {
+      "question": "Which HTML element is semantic?",
+      "options": ["<div>", "<span>", "<section>", "<font>"],
+      "answer": 2,
+      "explanation": "The <section> tag is a semantic element because it clearly describes its baseline meaningful structural context value to the browser and developer, unlike generic <div> tags."
+    }
+  ],
+
+  "css": [
+    {
+      "question": "Which property changes text color?",
+      "options": ["font-color", "text-color", "color", "foreground"],
+      "answer": 2,
+      "explanation": "The 'color' property explicitly manages the foreground typographic rendering color values for text properties in CSS formatting styles."
+    },
+    {
+      "question": "Which property changes background color?",
+      "options": ["bg-color", "background-color", "background", "color"],
+      "answer": 1,
+      "explanation": "While 'background' is a powerful shorthand property wrapper, 'background-color' is the specific property dedicated solely to modifying block container backgrounds."
+    },
+    {
+      "question": "Which selector targets an element by ID?",
+      "options": [".id", "#id", "*id", "@id"],
+      "answer": 1,
+      "explanation": "The '#' (hash/pound) symbol denotes an ID selector in CSS styles targeting specific singular element configurations."
+    },
+    {
+      "question": "Which selector targets a class?",
+      "options": [".class", "#class", "*class", "@class"],
+      "answer": 0,
+      "explanation": "The '.' (dot/period) character represents a reusable class selector target inside CSS rule structures."
+    },
+    {
+      "question": "Which CSS model includes margin, border, padding and content?",
+      "options": ["Grid", "Flexbox", "Box Model", "Layout Model"],
+      "answer": 2,
+      "explanation": "The CSS Box Model specifies how item properties wrap spacing blocks—enforcing explicit dimension constraints via margins, borders, paddings, and content spaces."
+    },
+    {
+      "question": "Which layout system is one-dimensional?",
+      "options": ["Grid", "Flexbox", "Table", "Float"],
+      "answer": 1,
+      "explanation": "Flexbox is inherently a one-dimensional system, meaning it calculates layouts along a single active directional coordinate vector axis at a time (rows OR columns)."
+    },
+    {
+      "question": "Which layout system is two-dimensional?",
+      "options": ["Grid", "Flexbox", "Float", "Inline"],
+      "answer": 0,
+      "explanation": "CSS Grid is a powerful two-dimensional layout architecture engine capable of monitoring rows and columns simultaneously across parent element trees."
+    },
+    {
+      "question": "Which property creates spacing inside an element?",
+      "options": ["margin", "padding", "gap", "spacing"],
+      "answer": 1,
+      "explanation": "Padding establishes inner clear buffer space inside an element relative to its outer bounding border limits, whereas margin affects space outside."
+    },
+    {
+      "question": "Which CSS feature is used for responsiveness?",
+      "options": ["Animations", "Media Queries", "Transforms", "Filters"],
+      "answer": 1,
+      "explanation": "Media Queries permit stylesheets to intelligently parse operational client hardware parameters (like device width breakpoints) to toggle alternate rendering styles."
+    },
+    {
+      "question": "Which property is used for animations?",
+      "options": ["animation", "effect", "transitioning", "motion"],
+      "answer": 0,
+      "explanation": "The 'animation' property connects a specific target timeline node element layout to a defined sequence of custom structural CSS `@keyframes` logic paths."
+    }
+  ],
+
+  "javascript": [
+    {
+      "question": "Which keyword declares a variable?",
+      "options": ["let", "var", "const", "All of these"],
+      "answer": 3,
+      "explanation": "All three keywords ('var', 'let', and 'const') are valid tokens used to register declared scoped variables in modern ECMAScript specifications."
+    },
+    {
+      "question": "Which method prints to console?",
+      "options": ["console.print()", "console.log()", "print()", "log()"],
+      "answer": 1,
+      "explanation": "The global standard runtime API function to pipe execution stream output messages straight to debugging windows is 'console.log()'."
+    },
+    {
+      "question": "Which data type stores true or false?",
+      "options": ["String", "Number", "Boolean", "Object"],
+      "answer": 2,
+      "explanation": "Booleans represent conditional binary tracking flags, evaluating explicitly to either a strict literal value of 'true' or 'false'."
+    },
+    {
+      "question": "Which symbol is used for strict equality?",
+      "options": ["=", "==", "===", "!=="],
+      "answer": 2,
+      "explanation": "The '===' operator executes strict structural evaluations by verifying that both the data value and data type match perfectly without type coercion."
+    },
+    {
+      "question": "Which keyword creates a function?",
+      "options": ["func", "function", "define", "method"],
+      "answer": 1,
+      "explanation": "The literal named token used to set up standard custom reusable algorithmic execution blocks in core JavaScript files is 'function'."
+    },
+    {
+      "question": "Which array method adds an item to the end?",
+      "options": ["push()", "pop()", "shift()", "slice()"],
+      "answer": 0,
+      "explanation": "The standard global internal vector allocation function 'push()' appends new target items to the end of an array, modifying its overall length."
+    },
+    {
+      "question": "Which loop repeats while a condition is true?",
+      "options": ["for", "while", "switch", "foreach"],
+      "answer": 1,
+      "explanation": "A 'while' statement sets up an evaluation block loop that continues running asynchronously in sequence as long as its condition expression checks out as truthy."
+    },
+    {
+      "question": "What does DOM stand for?",
+      "options": ["Document Object Model", "Data Object Model", "Document Order Method", "Display Object Model"],
+      "answer": 0,
+      "explanation": "DOM stands for Document Object Model. It provides an object-oriented, tree-like structure representation mapping HTML elements to script controllers."
+    },
+    {
+      "question": "Which method selects an element by ID?",
+      "options": ["querySelector()", "getElementById()", "getElements()", "findElement()"],
+      "answer": 1,
+      "explanation": "The most specific and highly optimized element retrieval lookups method on document nodes is 'getElementById()'."
+    },
+    {
+      "question": "Which event occurs when a button is clicked?",
+      "options": ["hover", "load", "click", "change"],
+      "answer": 2,
+      "explanation": "The 'click' event fires instantly inside browser listener tracking models when a pointer input triggers an item selection sequence."
+    },
+    {
+      "question": "Which keyword is used for asynchronous code?",
+      "options": ["async", "await", "defer", "Both async and await"],
+      "answer": 3,
+      "explanation": "Both 'async' and 'await' are used together to create non-blocking, asynchronous execution logic blocks that read like synchronized top-down code."
+    },
+    {
+      "question": "What is the output of this code?\nconsole.log('A');\nsetTimeout(() => console.log('B'), 0);\nconsole.log('C');",
+      "options": ["A B C", "A C B", "B A C", "C A B"],
+      "answer": 1,
+      "explanation": "'setTimeout' moves its task to the Macrotask Queue for the Event Loop, forcing execution to output 'A' and 'C' synchronously first, and then resolving 'B'."
+    },
+    {
+      "question": "Which method runs all promises at the same time and waits for ALL of them?",
+      "options": ["Promise.race()", "Promise.any()", "Promise.all()", "Promise.allSettled()"],
+      "answer": 2,
+      "explanation": "'Promise.all()' runs an array of concurrent asynchronous tasks and waits for all of them to resolve, rejecting immediately if any single promise fails."
+    },
+    {
+      "question": "What keyword makes a function always return a Promise?",
+      "options": ["await", "async", "promise", "return"],
+      "answer": 1,
+      "explanation": "Adding the 'async' modifier keyword before a function block wrapper ensures that its returned output parameter values automatically resolve wrapped in a native Promise tracking wrapper."
+    },
+    {
+      "question": "Where can you use the 'await' keyword?",
+      "options": [
+        "Anywhere in the code",
+        "Only inside async functions",
+        "Only inside Promises",
+        "Only in Node.js"
+      ],
+      "answer": 1,
+      "explanation": "By language specification constraints, the 'await' keyword can only be used directly inside outer parent blocks marked with the 'async' controller prefix token."
+    },
+    {
+      "question": "What does fetch() return?",
+      "options": ["The data directly", "A callback", "A Promise", "An async function"],
+      "answer": 2,
+      "explanation": "The browser network subsystem method 'fetch()' initializes a thread pipeline and instantly hands back a placeholder 'Promise' tracking resource status logs."
+    }
+  ],
+
+  "react": [
+    {
+      "question": "React is mainly used for?",
+      "options": ["Database", "Backend", "UI Development", "Networking"],
+      "answer": 2,
+      "explanation": "React is a dedicated client-side library built specifically for rendering and coordinating components in declarative User Interface (UI) web applications."
+    },
+    {
+      "question": "What does JSX stand for?",
+      "options": ["Java Syntax XML", "JavaScript XML", "JSON XML", "Java Extended XML"],
+      "answer": 1,
+      "explanation": "JSX stands for JavaScript XML. It is a syntax extension that lets developers write clean, expressive HTML-like element tags directly inside component logic script trees."
+    },
+    {
+      "question": "Which function creates state in React?",
+      "options": ["useRef", "useState", "useMemo", "useContext"],
+      "answer": 1,
+      "explanation": "The 'useState' hook tells React to allocate local data memory for a component and returns a state tracking value and its paired updater function."
+    },
+    {
+      "question": "Props are used to?",
+      "options": ["Store state", "Pass data", "Handle routing", "Create hooks"],
+      "answer": 1,
+      "explanation": "Props act as uniform, read-only configuration attributes utilized to safely pass structured data properties downwards from parent to child components."
+    },
+    {
+      "question": "Which hook handles side effects?",
+      "options": ["useState", "useEffect", "useRef", "useReducer"],
+      "answer": 1,
+      "explanation": "The 'useEffect' hook is designed precisely to handle asynchronous web operations or side effects like data fetching, manual DOM manipulations, or API integration steps."
+    },
+    {
+      "question": "React components should start with?",
+      "options": ["Lowercase", "Uppercase", "Number", "Symbol"],
+      "answer": 1,
+      "explanation": "React components must start with an UpperCase title token so that the JSX compilation step can differentiate custom functional components from built-in standard HTML tags."
+    },
+    {
+      "question": "Which keyword is used to render lists efficiently?",
+      "options": ["index", "id", "key", "value"],
+      "answer": 2,
+      "explanation": "The 'key' attribute provides structural item identification tracking arrays, allowing React's Virtual DOM algorithm to target precisely which node items to add, update, or remove."
+    },
+    {
+      "question": "Which hook stores component state?",
+      "options": ["useEffect", "useState", "useMemo", "useCallback"],
+      "answer": 1,
+      "explanation": "The 'useState' Hook registers and preserves internal reactive component values across individual life-cycle re-rendering execution ticks."
+    },
+    {
+      "question": "What is React based on?",
+      "options": ["Virtual DOM", "Real DOM", "Shadow DOM", "XML DOM"],
+      "answer": 0,
+      "explanation": "React maintains a lightweight structural in-memory blueprint layout mapping tracking system called the Virtual DOM, syncing adjustments to the browser window via an optimized diff reconciliation step."
+    },
+    {
+      "question": "React applications are built from?",
+      "options": ["Modules", "Components", "Pages", "Templates"],
+      "answer": 1,
+      "explanation": "The foundational building blocks of all React architectures are reusable, isolated 'Components' that manage their own rendering states and layouts."
+    }
+  ]
+}

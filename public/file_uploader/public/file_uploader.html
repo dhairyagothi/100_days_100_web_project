@@ -1,97 +1,776 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset= "UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FILE-UPLOADER</title>
-<link rel="stylesheet" href="file_uploader.css">
-<link rel="icon" href="../../favv.png" type="image/x-icon" />
-<style>
-  *{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-body{
-    display : flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    width: auto;
-    background-color: black;
-}
-.myform{
-  height: auto;
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    color: #000;
-    font-size: larger;
-    display: grid;
-    gap: 25px;
-    justify-items: center;
-    width: auto;
-}
-input{
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #000;
-    width: auto;
 
-}
-.form-field{
-    font-size: larger;
-    font-weight: bold;
-    text-align: center;
-}
-input[type="submit"]{
-    background-color: #000;
-    color: #fff;
-    cursor: pointer;
-    width: auto;
-    padding: 10px;
-    font-size: medium;
-    height: 40px;
-    border-radius: 5px;
-}
-</style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FILE-UPLOADER</title>
+  <link rel="stylesheet" href="file_uploader.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ── INLINE FALLBACK — works even without static middleware ── */
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #0b0c0f;
+      font-family: 'Syne', 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+
+    /* Animated dot grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
+      background-size: 28px 28px;
+      animation: bgDrift 30s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Glowing blobs */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 600px 400px at 70% 30%, rgba(99,255,180,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 500px 300px at 20% 80%, rgba(120,160,255,0.06) 0%, transparent 55%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes bgDrift {
+      0%   { transform: translateY(0) translateX(0); }
+      50%  { transform: translateY(-14px) translateX(6px); }
+      100% { transform: translateY(0) translateX(0); }
+    }
+
+    /* ── Container ── */
+    .container {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    /* ── Card ── */
+    .myform {
+      background: rgba(14, 16, 21, 0.96);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px;
+      padding: 48px 44px 40px;
+      width: 460px;
+      max-width: 96vw;
+      display: grid;
+      gap: 20px;
+      justify-items: stretch;
+      box-shadow:
+        0 0 0 1px rgba(99,255,180,0.04),
+        0 40px 100px rgba(0,0,0,0.75),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+      animation: cardIn 0.65s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    @keyframes cardIn {
+      from { opacity:0; transform: translateY(36px) scale(0.96); }
+      to   { opacity:1; transform: translateY(0) scale(1); }
+    }
+
+    /* ── Header ── */
+    .form-header {
+      text-align: center;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      margin-bottom: 6px;
+    }
+
+    .form-header .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .form-header .logo-icon {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, #63ffb4 0%, #3be8a0 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 16px rgba(99,255,180,0.3);
+    }
+
+    .form-header h1 {
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .form-header h1 span { color: #63ffb4; }
+
+    .form-header p {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.03em;
+      margin-top: 6px;
+    }
+
+    /* ── Field wrapper ── */
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      width: 100%;
+    }
+
+    .form-field label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* ── Text inputs ── */
+    input[type="text"] {
+      width: 100%;
+      padding: 13px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.09);
+      background: rgba(255,255,255,0.04);
+      color: #fff;
+      font-size: 0.93rem;
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+      outline: none;
+    }
+
+    input[type="text"]::placeholder { color: rgba(255,255,255,0.18); }
+
+    input[type="text"]:focus {
+      border-color: rgba(99,255,180,0.45);
+      background: rgba(99,255,180,0.03);
+      box-shadow: 0 0 0 3px rgba(99,255,180,0.1);
+    }
+
+    /* ── Drop zone ── */
+    .file-drop-zone {
+      position: relative;
+      width: 100%;
+      border: 1.5px dashed rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 30px 20px 26px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      background: rgba(255,255,255,0.02);
+      overflow: hidden;
+    }
+
+    .file-drop-zone::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(99,255,180,0.08) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .file-drop-zone:hover,
+    .file-drop-zone.dragover {
+      border-color: rgba(99,255,180,0.45);
+      background: rgba(99,255,180,0.03);
+    }
+
+    .file-drop-zone:hover::before,
+    .file-drop-zone.dragover::before { opacity: 1; }
+
+    .drop-icon {
+      font-size: 2.2rem;
+      display: block;
+      margin-bottom: 10px;
+      transition: transform 0.25s ease;
+    }
+
+    .file-drop-zone:hover .drop-icon { transform: translateY(-4px) scale(1.1); }
+
+    .drop-text { font-size: 0.85rem; color: rgba(255,255,255,0.38); line-height: 1.6; }
+    .drop-text strong {
+      display: block;
+      color: #63ffb4;
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    /* Hidden file input stretched over drop zone */
+    input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+    }
+
+    /* ── File chips ── */
+    #file-preview {
+      width: 100%;
+      display: none;
+      flex-direction: column;
+      gap: 7px;
+      max-height: 130px;
+      overflow-y: auto;
+    }
+
+    #file-preview::-webkit-scrollbar { width: 3px; }
+    #file-preview::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 2px; }
+
+    .file-chip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 13px;
+      background: rgba(99,255,180,0.05);
+      border: 1px solid rgba(99,255,180,0.13);
+      border-radius: 8px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.7);
+      animation: chipSlide 0.22s ease both;
+    }
+
+    @keyframes chipSlide {
+      from { opacity:0; transform: translateX(-10px); }
+      to   { opacity:1; transform: translateX(0); }
+    }
+
+    .chip-icon { font-size: 1rem; flex-shrink: 0; }
+    .chip-name { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .chip-size { color: rgba(255,255,255,0.28); flex-shrink:0; font-size:0.72rem; }
+
+    /* ── Divider ── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: rgba(255,255,255,0.05);
+    }
+
+    /* ── Submit button ── */
+    input[type="submit"] {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #63ffb4 0%, #3be8a0 100%);
+      color: #000;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 20px rgba(99,255,180,0.2);
+    }
+
+    input[type="submit"]:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(99,255,180,0.35);
+      background: linear-gradient(135deg, #7fffca 0%, #63ffb4 100%);
+    }
+
+    input[type="submit"]:active { transform: translateY(0); }
+
+    /* --- NEW: Panels Styles --- */
+    .main-content {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .stats-panel, .history-panel {
+      width: 360px;
+      max-width: 96vw;
+      background: rgba(14, 16, 21, 0.96);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow:
+        0 0 0 1px rgba(99,255,180,0.04),
+        0 30px 70px rgba(0,0,0,0.7),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+      animation: cardIn 0.65s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .panel-title {
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .stat-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 16px 12px;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    .stat-card:hover {
+      border-color: rgba(99,255,180,0.3);
+      background: rgba(99,255,180,0.03);
+      transform: translateY(-2px);
+    }
+
+    .stat-value {
+      font-size: 1.7rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #63ffb4 0%, #3be8a0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.4);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .history-list::-webkit-scrollbar { width: 4px; }
+    .history-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 2px; }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      transition: all 0.2s ease;
+      animation: chipSlide 0.22s ease both;
+    }
+
+    .history-item:hover {
+      border-color: rgba(99,255,180,0.3);
+      transform: translateX(4px);
+    }
+
+    .history-name {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.85);
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 220px;
+    }
+
+    .history-size {
+      color: rgba(99,255,180,0.8);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .empty-history {
+      color: rgba(255,255,255,0.3);
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 20px;
+    }
+
+    /* --- Toast Notifications --- */
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .toast {
+      background: rgba(14, 16, 21, 0.96);
+      border: 1px solid rgba(99,255,180,0.3);
+      padding: 14px 20px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow:
+        0 0 0 1px rgba(99,255,180,0.04),
+        0 20px 40px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+      animation: toastSlideIn 0.35s ease both;
+    }
+
+    @keyframes toastSlideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .toast.fade-out {
+      animation: toastSlideOut 0.3s ease forwards;
+    }
+
+    @keyframes toastSlideOut {
+      to { transform: translateX(100%); opacity: 0; }
+    }
+
+    .toast-icon { font-size: 1.3rem; }
+    .toast-message {
+      color: rgba(255,255,255,0.85);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    /* --- Responsive Layout --- */
+    @media (max-width: 950px) {
+      .main-content {
+        flex-direction: column;
+        align-items: center;
+      }
+      .container {
+        flex-direction: column;
+        height: auto;
+        padding: 90px 20px 30px;
+      }
+      body {
+        overflow-y: auto;
+      }
+      .stats-panel, .history-panel {
+        width: 460px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container">
-    
-    <form
-      action = "/upload"
-      enctype = "multipart/form-data"
-      method = "post"
-      class = "myform"
-    >
-      <div class = "form-field">
-        <label>FirstName</label>
-        <input
-          type = "text"
-          id = "firstName"
-          name = "firstName"
-          placeholder = "Enter your firstname"
-        />
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
+
+  <div class="container">
+    <div class="main-content">
+      <form
+        class="myform"
+        onsubmit="return false;"
+      >
+        <div class="form-header">
+          <div class="logo">
+            <div class="logo-icon">⬆</div>
+            <h1>File<span>Drop</span></h1>
+          </div>
+          <p>Upload your files securely &amp; instantly</p>
+        </div>
+
+        <div class="form-field">
+          <label>FirstName</label>
+          <input
+            type="text"
+            id="firstName"
+            name="firstName"
+            placeholder="Enter your firstname"
+            required
+          />
+        </div>
+
+        <div class="form-field">
+          <label>LastName</label>
+          <input
+            type="text"
+            id="lastName"
+            name="lastName"
+            placeholder="Enter your lastname"
+            required
+          />
+        </div>
+
+        <div class="form-field">
+          <label>Upload file here</label>
+          <div class="file-drop-zone" id="dropZone">
+            <span class="drop-icon">📂</span>
+            <div class="drop-text">
+              <strong>Click to browse or drag &amp; drop</strong>
+              Supported formats: .jpg, .jpeg, .png, .webp (Max 2MB per file)
+            </div>
+            <input
+              type="file"
+              id="myFile"
+              name="myFile"
+              multiple="true"
+              accept=".jpg, .jpeg, .png, .webp"
+              onchange="showPreview(this)"
+            />
+          </div>
+          <div id="file-preview"></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="form-field">
+          <input type="submit" value="Upload Files →" />
+        </div>
+      </form>
+
+      <!-- NEW: Right Panel (Desktop Only) -->
+      <div class="right-panel">
+        <!-- Statistics Panel -->
+        <div class="stats-panel">
+          <h2 class="panel-title">📊 Upload Statistics</h2>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-value" id="statTotalFiles">0</div>
+              <div class="stat-label">Total Files</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="statTotalSize">0 B</div>
+              <div class="stat-label">Total Size</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="statLargestFile">0 B</div>
+              <div class="stat-label">Largest File</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="statImageCount">0</div>
+              <div class="stat-label">Image Files</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Uploads Panel -->
+        <div class="history-panel">
+          <h2 class="panel-title">📜 Recent Uploads</h2>
+          <div id="historyList" class="history-list"></div>
+        </div>
       </div>
-      <div class = "form-field">
-        <label>LastName</label>
-        <input
-          type = "text"
-          id = "lastName"
-          name = "lastName"
-          placeholder = "Enter your lastname"
-        />
-      </div>
-      <div class = "form-field">
-        <label>Upload file here</label>
-        <input type = "file" id = "myFile" name = "myFile" multiple = "true" />
-      </div>
-      <div class = "form-field">
-        <input type = "submit" />
-      </div>
-    </form>
+    </div>
   </div>
-     
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('myFile');
+    const form = document.querySelector('.myform');
+
+    // --- Data handling ---
+    let uploadData = {
+      stats: JSON.parse(localStorage.getItem('fileUploadStats')) || {
+        totalFiles: 0,
+        totalSizeBytes: 0,
+        largestFileBytes: 0,
+        imageCount: 0
+      },
+      history: JSON.parse(localStorage.getItem('fileUploadHistory')) || []
+    };
+
+    function saveData() {
+      localStorage.setItem('fileUploadStats', JSON.stringify(uploadData.stats));
+      localStorage.setItem('fileUploadHistory', JSON.stringify(uploadData.history));
+    }
+
+    function formatSize(bytes) {
+      const kb = bytes / 1024;
+      if (bytes < 1024) return bytes + ' B';
+      if (kb < 1024) return kb.toFixed(1) + ' KB';
+      return (kb / 1024).toFixed(1) + ' MB';
+    }
+
+    function renderStats() {
+      document.getElementById('statTotalFiles').textContent = uploadData.stats.totalFiles;
+      document.getElementById('statTotalSize').textContent = formatSize(uploadData.stats.totalSizeBytes);
+      document.getElementById('statLargestFile').textContent = formatSize(uploadData.stats.largestFileBytes);
+      document.getElementById('statImageCount').textContent = uploadData.stats.imageCount;
+    }
+
+    function renderHistory() {
+      const historyList = document.getElementById('historyList');
+      if (!uploadData.history.length) {
+        historyList.innerHTML = '<div class="empty-history">No uploads yet</div>';
+        return;
+      }
+      historyList.innerHTML = uploadData.history.slice(0, 5).map(entry => `
+        <div class="history-item">
+          <div class="history-name">${entry.name}</div>
+          <div class="history-size">${formatSize(entry.size)}</div>
+        </div>
+      `).join('');
+    }
+
+    // --- Toast Notifications ---
+    function showToast(message) {
+      const toastContainer = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      
+      const icon = document.createElement('span');
+      icon.className = 'toast-icon';
+      icon.textContent = '✅';
+      
+      const msg = document.createElement('span');
+      msg.className = 'toast-message';
+      msg.textContent = message;
+      
+      toast.appendChild(icon);
+      toast.appendChild(msg);
+      toastContainer.appendChild(toast);
+
+      // Remove after 4 seconds
+      setTimeout(() => {
+        toast.classList.add('fade-out');
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', () => dropZone.classList.remove('dragover'));
+
+    function showPreview(input) {
+      const preview = document.getElementById('file-preview');
+      preview.innerHTML = '';
+
+      if (!input.files.length) { preview.style.display = 'none'; return; }
+
+      // Restrict validation variables locally
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+      const maxSizeInBytes = 2 * 1024 * 1024;
+
+      // Loop through and instantly validate every selected element
+      for (let file of input.files) {
+        if (!allowedTypes.includes(file.type)) {
+          alert(`Unsupported file structure! "${file.name}" is not a valid image format.`);
+          input.value = '';
+          preview.style.display = 'none';
+          resetDropZoneText();
+          return;
+        }
+        if (file.size > maxSizeInBytes) {
+          alert(`File too large! "${file.name}" exceeds the strict 2MB limit.`);
+          input.value = '';
+          preview.style.display = 'none';
+          resetDropZoneText();
+          return;
+        }
+      }
+
+      preview.style.display = 'flex';
+
+      Array.from(input.files).forEach((file, i) => {
+        const kb = file.size / 1024;
+        const size = kb < 1 ? file.size + ' B' : kb < 1024 ? kb.toFixed(1) + ' KB' : (kb/1024).toFixed(1) + ' MB';
+        const chip = document.createElement('div');
+        chip.className = 'file-chip';
+        chip.style.animationDelay = (i * 0.06) + 's';
+        chip.innerHTML = `<span class="chip-icon">🖼️</span><span class="chip-name">${file.name}</span><span class="chip-size">${size}</span>`;
+        preview.appendChild(chip);
+      });
+
+      dropZone.querySelector('.drop-text').innerHTML = `
+        <strong>✓ ${input.files.length} image${input.files.length > 1 ? 's' : ''} ready</strong>
+        Click to change selection
+      `;
+    }
+
+    function resetDropZoneText() {
+      dropZone.querySelector('.drop-text').innerHTML = `
+        <strong>Click to browse or drag &amp; drop</strong>
+        Supported formats: .jpg, .jpeg, .png, .webp (Max 2MB per file)
+      `;
+    }
+
+    // --- Handle form submit ---
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      if (!fileInput.files || fileInput.files.length === 0) {
+        alert('Please select at least one image file to upload.');
+        return;
+      }
+
+      let uploadedFiles = [];
+      Array.from(fileInput.files).forEach(file => {
+        // Update stats
+        uploadData.stats.totalFiles += 1;
+        uploadData.stats.totalSizeBytes += file.size;
+        uploadData.stats.imageCount += 1;
+        if (file.size > uploadData.stats.largestFileBytes) {
+          uploadData.stats.largestFileBytes = file.size;
+        }
+        // Add to history
+        uploadData.history.unshift({
+          name: file.name,
+          size: file.size,
+          timestamp: Date.now()
+        });
+        uploadedFiles.push(file.name);
+      });
+      uploadData.history = uploadData.history.slice(0, 10); // Keep history but show only 5 in UI
+
+      saveData();
+      renderStats();
+      renderHistory();
+
+      // Show toast notifications
+      uploadedFiles.forEach(fileName => {
+        showToast(`${fileName} uploaded successfully`);
+      });
+
+      // Reset form for next upload
+      setTimeout(() => {
+        fileInput.value = '';
+        document.getElementById('file-preview').innerHTML = '';
+        document.getElementById('file-preview').style.display = 'none';
+        resetDropZoneText();
+      }, 500);
+    });
+
+    // Initialize on load
+    renderStats();
+    renderHistory();
+  </script>
 </body>
 </html>
