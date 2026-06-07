@@ -1,0 +1,314 @@
+:root {
+  --bg-dark-kitchen: #0b0f19;
+  --bg-panel: #141b2d;
+  --bg-card: #1f2942;
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --text-gold: #fbbf24;
+  --text-light: #f8fafc;
+  --text-muted: #94a3b8;
+  --accent-orange: #f97316;
+  --accent-hover: #ea580c;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  background-color: var(--bg-dark-kitchen);
+  color: var(--text-light);
+  min-height: 100vh;
+  padding: 2.5rem 1rem;
+}
+
+.app-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Header Text Alignments */
+.main-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.main-header h1 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(to right, var(--accent-orange), var(--text-gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.main-header p {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-top: 0.4rem;
+}
+
+/* Console Control Form */
+.search-console {
+  display: flex;
+  max-width: 600px;
+  margin: 0 auto 3rem auto;
+  gap: 0.75rem;
+}
+
+.search-console input {
+  flex: 1;
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.5rem;
+  padding: 0.85rem 1.25rem;
+  color: var(--text-light);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.search-console input:focus {
+  border-color: var(--accent-orange);
+}
+
+.search-console button {
+  background-color: var(--accent-orange);
+  color: white;
+  border: none;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.85rem 1.75rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.search-console button:hover {
+  background-color: var(--accent-hover);
+}
+
+/* Fluid Responsive Card Layout Grid */
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+/* Interactive Meal Cards */
+.meal-card {
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: 1rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease;
+}
+
+.meal-card:hover {
+  transform: translateY(-4px);
+}
+
+.card-img-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 75%; /* 4:3 Aspect Ratio */
+}
+
+.card-img-wrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+}
+
+.card-meta-tags {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.tag-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  color: var(--text-muted);
+}
+
+.meal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 1.25rem;
+}
+
+.view-instructions-btn {
+  margin-top: auto;
+  background-color: transparent;
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  color: var(--accent-orange);
+  padding: 0.65rem 0;
+  text-align: center;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.view-instructions-btn:hover {
+  background-color: var(--accent-orange);
+  color: white;
+  border-color: var(--accent-orange);
+}
+
+/* Modal Overlay Framework Architecture */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(7, 10, 19, 0.85);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-card {
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: 1.25rem;
+  width: 100%;
+  max-width: 700px;
+  max-height: 85vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  animation: zoomIn 0.2s ease-out;
+}
+
+.close-modal-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.close-modal-btn:hover {
+  color: white;
+}
+
+.modal-scroll-body {
+  overflow-y: auto;
+  padding: 2.5rem;
+}
+
+/* Internal Details Styling */
+.modal-header img {
+  width: 100%;
+  max-height: 280px;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.modal-header h2 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.ingredients-panel {
+  background-color: var(--bg-card);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+}
+
+.ingredients-panel h3,
+.directions-panel h3 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-gold);
+  margin-bottom: 0.75rem;
+}
+
+.ingredients-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.5rem;
+  list-style: none;
+}
+
+.ingredients-list li {
+  font-size: 0.95rem;
+  color: var(--text-light);
+}
+
+.ingredients-list li::before {
+  content: "• ";
+  color: var(--accent-orange);
+  font-weight: bold;
+}
+
+.directions-panel p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+  white-space: pre-line;
+}
+
+/* Utilities States */
+.status-box {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  padding: 3rem 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.96);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SplitWise Pro — Bill Splitter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+  <div class="noise-overlay"></div>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">÷</span>
+        <span class="logo-text">SplitWise<em>Pro</em></span>
+      </div>
+      <div class="header-actions">
+        <button class="btn-icon" id="historyToggle" title="History">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </button>
+        <button class="btn-icon" id="darkModeToggle" title="Toggle dark mode">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Layout -->
+  <main class="app-main">
+
+    <!-- Tabs -->
+    <div class="tab-bar">
+      <button class="tab active" data-tab="equal">⚖️ Equal Split</button>
+      <button class="tab" data-tab="unequal">🎯 Custom Split</button>
+      <button class="tab" data-tab="items">🧾 By Items</button>
+    </div>
+
+    <!-- ===== EQUAL SPLIT TAB ===== -->
+    <section class="tab-content active" id="tab-equal">
+      <div class="card">
+        <h2 class="card-title">Bill Details</h2>
+        <div class="field-row">
+          <div class="field">
+            <label>Total Bill</label>
+            <div class="input-prefix">
+              <span>₹</span>
+              <input type="number" id="eq-bill" min="0.01" step="0.01" placeholder="0.00" />
+            </div>
+          </div>
+          <div class="field">
+            <label>Tip %</label>
+            <input type="number" id="eq-tip" min="0" max="100" placeholder="0" value="0" />
+          </div>
+        </div>
+
+        <div class="tip-presets">
+          <button class="tip-btn" data-tip="5">5%</button>
+          <button class="tip-btn" data-tip="10">10%</button>
+          <button class="tip-btn" data-tip="15">15%</button>
+          <button class="tip-btn" data-tip="18">18%</button>
+          <button class="tip-btn" data-tip="20">20%</button>
+          <button class="tip-btn" data-tip="25">25%</button>
+        </div>
+
+        <div class="field">
+          <label>Participants</label>
+          <div class="participants-list" id="eq-participants">
+            <div class="participant-tag"><input type="text" placeholder="Name" value="You" /><button class="remove-p">×</button></div>
+            <div class="participant-tag"><input type="text" placeholder="Name" value="Friend" /><button class="remove-p">×</button></div>
+          </div>
+          <button class="btn-add-p" id="eq-add-p">+ Add Person</button>
+        </div>
+
+        <button class="btn-primary" id="eq-calc">Calculate Split</button>
+      </div>
+
+      <div class="results-card" id="eq-results" style="display:none">
+        <div class="results-summary">
+          <div class="summary-item">
+            <span class="summary-label">Subtotal</span>
+            <span class="summary-value" id="eq-subtotal">₹0</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Tip</span>
+            <span class="summary-value" id="eq-tip-amt">₹0</span>
+          </div>
+          <div class="summary-item total">
+            <span class="summary-label">Grand Total</span>
+            <span class="summary-value" id="eq-total">₹0</span>
+          </div>
+        </div>
+        <div class="per-person-hero">
+          <div class="per-label">Each Person Pays</div>
+          <div class="per-amount" id="eq-per-person">₹0.00</div>
+        </div>
+        <div class="breakdown-list" id="eq-breakdown"></div>
+        <div class="result-actions">
+          <button class="btn-action" id="eq-pdf">📄 Export PDF</button>
+          <button class="btn-action" id="eq-qr">📲 QR Share</button>
+          <button class="btn-action" id="eq-save">💾 Save</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== UNEQUAL SPLIT TAB ===== -->
+    <section class="tab-content" id="tab-unequal">
+      <div class="card">
+        <h2 class="card-title">Custom Split</h2>
+        <div class="field-row">
+          <div class="field">
+            <label>Total Bill</label>
+            <div class="input-prefix"><span>₹</span>
+              <input type="number" id="uq-bill" min="0.01" step="0.01" placeholder="0.00" />
+            </div>
+          </div>
+          <div class="field">
+            <label>Tip %</label>
+            <input type="number" id="uq-tip" min="0" max="100" placeholder="0" value="0" />
+          </div>
+        </div>
+
+        <div class="tip-presets">
+          <button class="tip-btn" data-tip="5">5%</button>
+          <button class="tip-btn" data-tip="10">10%</button>
+          <button class="tip-btn" data-tip="15">15%</button>
+          <button class="tip-btn" data-tip="18">18%</button>
+          <button class="tip-btn" data-tip="20">20%</button>
+          <button class="tip-btn" data-tip="25">25%</button>
+        </div>
+
+        <div class="field">
+          <label>Participants & Amounts</label>
+          <div class="participants-list" id="uq-participants">
+            <div class="participant-row">
+              <input type="text" placeholder="Name" value="You" class="p-name" />
+              <div class="input-prefix sm"><span>₹</span><input type="number" placeholder="0.00" class="p-amount" min="0" step="0.01" /></div>
+              <button class="remove-p">×</button>
+            </div>
+            <div class="participant-row">
+              <input type="text" placeholder="Name" value="Friend" class="p-name" />
+              <div class="input-prefix sm"><span>₹</span><input type="number" placeholder="0.00" class="p-amount" min="0" step="0.01" /></div>
+              <button class="remove-p">×</button>
+            </div>
+          </div>
+          <button class="btn-add-p" id="uq-add-p">+ Add Person</button>
+        </div>
+
+        <div class="settle-info" id="uq-settle-info" style="display:none">
+          <span id="uq-remain-label"></span>
+        </div>
+        <button class="btn-primary" id="uq-calc">Calculate & Settle</button>
+      </div>
+
+      <div class="results-card" id="uq-results" style="display:none">
+        <h3 class="section-title">💸 Settlement — Who Owes Whom</h3>
+        <div class="settlement-list" id="uq-settlement"></div>
+        <div class="result-actions">
+          <button class="btn-action" id="uq-pdf">📄 Export PDF</button>
+          <button class="btn-action" id="uq-qr">📲 QR Share</button>
+          <button class="btn-action" id="uq-save">💾 Save</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ITEMS TAB ===== -->
+    <section class="tab-content" id="tab-items">
+      <div class="card">
+        <h2 class="card-title">Split by Items</h2>
+
+        <div class="field">
+          <label>Participants</label>
+          <div class="participants-list" id="it-participants">
+            <div class="participant-tag"><input type="text" placeholder="Name" value="You" /><button class="remove-p">×</button></div>
+            <div class="participant-tag"><input type="text" placeholder="Name" value="Friend" /><button class="remove-p">×</button></div>
+          </div>
+          <button class="btn-add-p" id="it-add-p">+ Add Person</button>
+        </div>
+
+        <div class="field">
+          <label>Tip %</label>
+          <input type="number" id="it-tip" min="0" max="100" placeholder="0" value="0" />
+        </div>
+        <div class="tip-presets">
+          <button class="tip-btn" data-tip="5">5%</button>
+          <button class="tip-btn" data-tip="10">10%</button>
+          <button class="tip-btn" data-tip="15">15%</button>
+          <button class="tip-btn" data-tip="18">18%</button>
+          <button class="tip-btn" data-tip="20">20%</button>
+          <button class="tip-btn" data-tip="25">25%</button>
+        </div>
+
+        <div class="field">
+          <label>Items</label>
+          <div class="items-list" id="it-items">
+            <!-- items added dynamically -->
+          </div>
+          <button class="btn-add-p" id="it-add-item">+ Add Item</button>
+        </div>
+
+        <button class="btn-primary" id="it-calc">Calculate by Items</button>
+      </div>
+
+      <div class="results-card" id="it-results" style="display:none">
+        <h3 class="section-title">🧾 Per Person Breakdown</h3>
+        <div class="per-person-items" id="it-breakdown"></div>
+        <div class="settlement-list" id="it-settlement"></div>
+        <div class="result-actions">
+          <button class="btn-action" id="it-pdf">📄 Export PDF</button>
+          <button class="btn-action" id="it-qr">📲 QR Share</button>
+          <button class="btn-action" id="it-save">💾 Save</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- History Drawer -->
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <aside class="history-drawer" id="historyDrawer">
+    <div class="drawer-header">
+      <h3>Split History</h3>
+      <button class="btn-icon" id="closeDrawer">×</button>
+    </div>
+    <div class="history-list" id="historyList"></div>
+    <button class="btn-danger" id="clearHistory">🗑 Clear All History</button>
+  </aside>
+
+  <!-- QR Modal -->
+  <div class="modal-overlay" id="qrModalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>📲 Share via QR</h3>
+        <button class="btn-icon" id="closeQr">×</button>
+      </div>
+      <p class="modal-sub">Scan to view the split summary</p>
+      <div id="qrcode"></div>
+      <p class="qr-url" id="qr-url-text"></p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

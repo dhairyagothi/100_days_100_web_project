@@ -13,15 +13,41 @@ const charCountEl = document.getElementById("charCount");
 let audioCtx;
 let currentPage = 0;
 let paperContent = "";
+let cursorPosition = 0;
 let soundEnabled = true;
 let capsLockEnabled = false;
 let capsLockKey;
 let shiftEnabled = false; // tracks on-screen SHIFT state (one-shot)
 let shiftKeyEl; // reference to the on-screen SHIFT button
+let cursorPos = 0; // cursor position within paperContent (0 = end)
+let enterDebounceTimer = null;
+const ENTER_DEBOUNCE_MS = 50; // minimum ms between Enter key actions
+
+function renderPaper() {
+  const before = paperContent.slice(0, cursorPosition);
+  const after = paperContent.slice(cursorPosition);
+
+  getCurrentText().innerHTML =
+    before +
+    '<span class="cursor-paper"></span>' +
+    after;
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   capsLockKey = document.querySelector(".caps-lock");
   shiftKeyEl = document.querySelector(".shift-key");
+
+  pagesContainer.addEventListener("click", (e) => {
+  const pos = document.caretPositionFromPoint(
+    e.clientX,
+    e.clientY
+  );
+
+  if (!pos) return;
+
+  cursorPosition = pos.offset;
+  renderPaper();
+});
 
   /* ---------- Onscreen Keys ---------- */
   document.querySelectorAll(".key").forEach((key) => {
@@ -32,8 +58,14 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
       if (ch === "ENTER") {
-        paperContent += "\n";
-        getCurrentText().textContent = paperContent;
+        paperContent =
+        paperContent.slice(0, cursorPosition) +
+        "\n" +
+        paperContent.slice(cursorPosition);
+        
+        cursorPosition++;
+        
+        renderPaper();
         playReturn();
         updateCopyButtonState();
         updateCounters();
@@ -79,6 +111,22 @@ document.addEventListener("DOMContentLoaded", () => {
       resetShift();
     };
   });
+
+  /* ---------- Cursor Navigation Buttons ---------- */
+  const leftCursorBtn = document.getElementById("leftCursor");
+  const rightCursorBtn = document.getElementById("rightCursor");
+
+  if (leftCursorBtn) {
+    leftCursorBtn.addEventListener("click", () => {
+      moveCursor(-1);
+    });
+  }
+
+  if (rightCursorBtn) {
+    rightCursorBtn.addEventListener("click", () => {
+      moveCursor(1);
+    });
+  }
 });
 
 /* ---------- Pages ---------- */
@@ -89,12 +137,70 @@ function getCurrentText() {
 
 function createPage() {
   paperContent = "";
+  cursorPos = 0;
   currentPage++;
   const page = document.createElement("div");
   page.className = "paper-sheet page";
-  page.innerHTML = `<span class="typewriterText"></span><span class="cursor-paper"></span>`;
   pagesContainer.appendChild(page);
   pageCounter.innerText = `Page ${currentPage + 1}`;
+}
+
+/* ---------- Enter Key Handler (debounced, overflow-safe) ---------- */
+
+function handleEnterKey() {
+  if (enterDebounceTimer) return; // debounce: ignore rapid repeat
+  enterDebounceTimer = setTimeout(() => {
+    enterDebounceTimer = null;
+  }, ENTER_DEBOUNCE_MS);
+
+  addCharToPaper("\n");
+  playReturn();
+  flashKey("ENTER");
+}
+
+/* ---------- Cursor Navigation ---------- */
+
+function moveCursor(direction) {
+  // cursorPos is offset from the end: 0 = at the end, 1 = one char before end, etc.
+  const newPos = cursorPos - direction;
+  if (newPos < 0 || newPos > paperContent.length) return;
+  cursorPos = newPos;
+  renderPaperWithCursor();
+  playKeyClick();
+}
+
+function renderPaperWithCursor() {
+  const textEl = getCurrentText();
+  const cursorEl = textEl.nextElementSibling; // .cursor-paper
+  if (!textEl) return;
+
+  if (cursorPos === 0) {
+    // Cursor at end — default behaviour
+    textEl.textContent = paperContent;
+    if (cursorEl) {
+      cursorEl.style.display = "";
+      // Remove any after-cursor text node
+      while (cursorEl.nextSibling) {
+        cursorEl.parentNode.removeChild(cursorEl.nextSibling);
+      }
+    }
+  } else {
+    // Cursor in the middle: split text around cursor position
+    const insertionPoint = paperContent.length - cursorPos;
+    const before = paperContent.substring(0, insertionPoint);
+    const after = paperContent.substring(insertionPoint);
+    textEl.textContent = before;
+    if (cursorEl) {
+      cursorEl.style.display = "";
+      // Remove old after-text nodes
+      while (cursorEl.nextSibling) {
+        cursorEl.parentNode.removeChild(cursorEl.nextSibling);
+      }
+      // Add after-text as a text node after the cursor
+      const afterNode = document.createTextNode(after);
+      cursorEl.parentNode.appendChild(afterNode);
+    }
+  }
 }
 
 /* ---------- AUDIO ---------- */
@@ -148,30 +254,35 @@ function playBackspace() {
 /* ---------- Typing ---------- */
 
 function addCharToPaper(ch) {
-  paperContent += ch;
-  getCurrentText().textContent = paperContent;
+  paperContent =
+  paperContent.slice(0, cursorPosition) +
+  ch +
+  paperContent.slice(cursorPosition);
+  
+  cursorPosition += ch.length;
+  renderPaper();
   if (ch === " ") {
     playSpaceClick();
     flashKey("SPACE");
+  } else if (ch === "\n") {
+    // newline — sound is handled by handleEnterKey caller
   } else {
     playKeyClick();
-    if (ch !== "\n") {
-      if (ch === "    ") {
-        flashKey("TAB");
-      } else {
-        flashKey(ch.toUpperCase());
-      }
+    if (ch === "    ") {
+      flashKey("TAB");
+    } else {
+      flashKey(ch.toUpperCase());
     }
   }
 
   /* check actual page overflow */
   let page = document.querySelectorAll(".paper-sheet")[currentPage];
-  if (page.scrollHeight > page.clientHeight) {
+  if (page && page.scrollHeight > page.clientHeight) {
     /* create new page */
     createPage();
     /* continue typing on new page */
     paperContent = "";
-    getCurrentText().textContent = paperContent;
+    renderPaper();
   }
 
   updateCopyButtonState();
@@ -189,8 +300,14 @@ function resetShift() {
 
 function deleteCharFromPaper() {
   if (paperContent.length === 0) return;
-  paperContent = paperContent.slice(0, -1);
-  getCurrentText().textContent = paperContent;
+  if (cursorPosition === 0) return;
+  
+  paperContent =
+  paperContent.slice(0, cursorPosition - 1) +
+  paperContent.slice(cursorPosition);
+  
+  cursorPosition--;
+  renderPaper();
   playBackspace();
   updateCopyButtonState();
   updateCounters();
@@ -209,21 +326,19 @@ function flashKey(char) {
 
 /* ---------- Keyboard ---------- */
 document.addEventListener("keydown", (e) => {
-  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "v") {
+  if (e.key === "ArrowLeft") {
     e.preventDefault();
-
-    navigator.clipboard.readText().then((text) => {
-      if (!text.trim()) return;
-
-      paperContent += "\n" + text;
-      getCurrentText().textContent = paperContent;
-
-      updateCopyButtonState();
-      updateCounters();
-
-      showPdfToast("Text pasted successfully!");
-    });
-
+    cursorPosition = Math.max(0, cursorPosition - 1);
+    renderPaper();
+    return;
+  }
+  if (e.key === "ArrowRight") {
+    e.preventDefault();
+    cursorPosition = Math.min(
+      paperContent.length,
+      cursorPosition + 1
+    );
+    renderPaper();
     return;
   }
   if (e.key === "Backspace") {
@@ -234,8 +349,14 @@ document.addEventListener("keydown", (e) => {
   }
   if (e.key === "Enter") {
     e.preventDefault();
-    paperContent += "\n";
-    getCurrentText().textContent = paperContent;
+    paperContent =
+    paperContent.slice(0, cursorPosition) +
+    "\n" +
+    paperContent.slice(cursorPosition);
+    
+    cursorPosition++;
+    
+    renderPaper();
     playReturn();
     flashKey("ENTER");
     updateCopyButtonState();
@@ -260,6 +381,17 @@ document.addEventListener("keydown", (e) => {
     e.preventDefault();
     addCharToPaper("    "); // 4 spaces = one tab stop
     flashKey("TAB");
+    return;
+  }
+  // Arrow keys for cursor navigation
+  if (e.key === "ArrowLeft") {
+    e.preventDefault();
+    moveCursor(-1);
+    return;
+  }
+  if (e.key === "ArrowRight") {
+    e.preventDefault();
+    moveCursor(1);
     return;
   }
 
@@ -314,12 +446,12 @@ if (clearPaperBtn) {
     if (confirm("Are you sure you want to clear all typed paper pages?")) {
       pagesContainer.innerHTML = `
                 <div class="paper-sheet page active-page">
-                    <span class="typewriterText"></span>
-                    <span class="cursor-paper"></span>
+                    <span class="typewriterText" contenteditable="false"></span>
                 </div>
             `;
       currentPage = 0;
       paperContent = "";
+      cursorPos = 0;
       userInput.value = "";
       pageCounter.innerText = "Page 1";
       updateCopyButtonState();
@@ -742,6 +874,7 @@ copyBtn.onclick = async () => {
 document.addEventListener("DOMContentLoaded", () => {
   updateCopyButtonState();
   updateCounters();
+  renderPaper();
 });
 
 // Paste Text Feature
@@ -756,7 +889,8 @@ if (pasteBtn) {
       }
 
       paperContent += text;
-      getCurrentText().textContent = paperContent;
+      cursorPos = 0;
+      renderPaperWithCursor();
 
       updateCopyButtonState();
       updateCounters();
@@ -784,7 +918,8 @@ if (importTxtBtn && txtFileInput) {
 
     reader.onload = (event) => {
       paperContent += event.target.result;
-      getCurrentText().textContent = paperContent;
+      cursorPos = 0;
+      renderPaperWithCursor();
 
       updateCopyButtonState();
       updateCounters();
@@ -795,3 +930,49 @@ if (importTxtBtn && txtFileInput) {
     reader.readAsText(file);
   });
 }
+/* ---------- Add Text Feature Implementation Fix ---------- */
+document.addEventListener("DOMContentLoaded", () => {
+  const addTextBtn = document.getElementById("addTextBtn");
+  const userInput = document.getElementById("userInput");
+
+  if (addTextBtn && userInput) {
+    addTextBtn.addEventListener("click", () => {
+      const textToAppend = userInput.value;
+
+      if (textToAppend.trim() !== "") {
+        // Append input value to the primary document paper layout string
+        paperContent += textToAppend;
+
+        // Reset cursor back to the end of the text stream
+        cursorPos = 0;
+
+        // Re-render paper document sheet with cursor placement alignment
+        renderPaperWithCursor();
+
+        // Update dashboard words metrics and copy options visibility state
+        updateCopyButtonState();
+        updateCounters();
+
+        // Play click feedback sound indicator
+        playReturn();
+
+        // Clear out the input target grid value and focus back
+        userInput.value = "";
+        userInput.focus();
+
+        showPdfToast("Text appended to paper successfully!");
+      } else {
+        showPdfToast("Please enter some text first!", false);
+      }
+    });
+
+    // Also support pressing the "Enter" key inside the input box to trigger the add text feature
+    userInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        e.stopPropagation();
+        addTextBtn.click();
+      }
+    });
+  }
+});

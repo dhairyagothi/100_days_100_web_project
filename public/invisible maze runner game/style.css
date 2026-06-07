@@ -1,0 +1,90 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #050505;
+  color: #00ffcc;
+  font-family: "Courier New", monospace;
+  overflow: hidden;
+}
+
+/* HUD */
+.hud {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 15px 22px;
+  border: 2px solid #00ffcc;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 1.2rem;
+  z-index: 100;
+  box-shadow: 0 0 25px rgba(0, 255, 204, 0.5);
+}
+
+.help-icon {
+  position: absolute;
+  bottom: 25px;
+  left: 25px;
+  font-size: 1.9rem;
+  cursor: pointer;
+  width: 42px;
+  height: 42px;
+  border: 2px solid #00ffcc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 110;
+}
+
+.help-icon:hover {
+  background: #00ffcc;
+  color: #000;
+  transform: scale(1.1);
+}
+
+canvas {
+  border: 5px solid #00ffcc;
+  box-shadow: 0 0 60px rgba(0, 255, 204, 0.8);
+  display: block;
+  margin: 20px auto;
+}
+
+.overlay,
+.game-over {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(5, 5, 15, 0.97);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+  gap: 25px;
+}
+
+button {
+  padding: 14px 40px;
+  background: transparent;
+  color: #00ffcc;
+  border: 2px solid #00ffcc;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+button:hover {
+  background: #00ffcc;
+  color: #000;
+}
