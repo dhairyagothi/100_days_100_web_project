@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Algorithmic Canvas & Memory-Profile Analytics</title>
+    <style>
+        :root {
+            --bg-base: #0a0e17;
+            --bg-panel: #121824;
+            --border-glow: #1f293d;
+            --accent-neon: #00ffcc;
+            --accent-pink: #ff007f;
+            --text-bright: #ffffff;
+            --text-dim: #707e94;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-bright);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .dashboard-header {
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-glow);
+            padding-bottom: 15px;
+        }
+
+        .dashboard-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, var(--accent-neon), var(--accent-pink));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        @media (min-width: 900px) {
+            .grid-container {
+                grid-template-columns: 7fr 5fr;
+            }
+        }
+
+        .panel-card {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-dim);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-title::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent-neon);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-neon);
+        }
+
+        canvas {
+            background-color: #05070b;
+            border: 1px solid var(--border-glow);
+            border-radius: 6px;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9;
+        }
+
+        .control-fieldset {
+            border: 1px dashed var(--border-glow);
+            border-radius: 6px;
+            margin-top: 15px;
+            padding: 12px;
+        }
+
+        legend {
+            color: var(--accent-neon);
+            font-size: 0.8rem;
+            padding: 0 6px;
+            text-transform: uppercase;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00b3ff, #00ffcc);
+            border: none;
+            color: #000;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            transition: transform 0.1s transform, box-shadow 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 0 12px rgba(0, 255, 204, 0.4);
+        }
+
+        .telemetry-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-glow);
+            font-size: 0.95rem;
+        }
+
+        .telemetry-row:last-child {
+            border-bottom: none;
+        }
+
+        .telemetry-label {
+            color: var(--text-dim);
+        }
+
+        .telemetry-value {
+            font-family: monospace;
+            font-weight: bold;
+            color: var(--accent-pink);
+        }
+
+        .neon-text-cyan {
+            color: var(--accent-neon) !important;
+        }
+
+        #terminal-log {
+            background-color: #05070b;
+            border: 1px solid var(--border-glow);
+            color: #a4b1cd;
+            font-family: monospace;
+            font-size: 0.8rem;
+            padding: 12px;
+            border-radius: 6px;
+            height: 120px;
+            overflow-y: auto;
+            margin-top: 15px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard-header">
+        <h2>System Diagnostic Matrix Dashboard</h2>
+    </div>
+
+    <div class="grid-container">
+        <div class="panel-card">
+            <div class="panel-title">Real-Time Data Vector Canvas</div>
+            <canvas id="algo-canvas" width="800" height="450"></canvas>
+
+            <fieldset class="control-fieldset">
+                <legend>Simulation Control Array</legend>
+                <button id="trigger-sort-btn" class="btn-primary">Initialize Core Sorotation Sequence</button>
+            </fieldset>
+        </div>
+
+        <div class="panel-card">
+            <div class="panel-title">High-Fidelity Telemetry Metrics</div>
+
+            <div class="telemetry-row">
+                <span class="telemetry-label">Active Array Volume Allocation:</span>
+                <span id="metric-size" class="telemetry-value">0 entries</span>
+            </div>
+            <div class="telemetry-row">
+                <span class="telemetry-label">Array Transposition Passes:</span>
+                <span id="metric-passes" class="telemetry-value">0 operations</span>
+            </div>
+            <div class="telemetry-row">
+                <span class="telemetry-label">Total Execution Engine Latency:</span>
+                <span id="metric-time" class="telemetry-value">0.0000 ms</span>
+            </div>
+            <div class="telemetry-row">
+                <span class="telemetry-label">Virtual Canvas Frame Rendering Time:</span>
+                <span id="metric-fps-time" class="telemetry-value neon-text-cyan">0.00 ms</span>
+            </div>
+
+            <div class="panel-title" style="margin-top: 25px; margin-bottom: 5px;">Active Log Output Stream</div>
+            <pre id="terminal-log">System Diagnostic Monitors Status: Standing by...</pre>
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+
+</html>
