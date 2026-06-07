@@ -3,69 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recipezzz - Recipe Details</title>
+    <title>Recipezzz - Explore Recipes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
-   
-    
-  <nav aria-label="Main Navigation">
+<a href="main.html" class="project-back-button">← Back </a>
+
+<nav>
     <h2 class="logo">Recipezzz</h2>
-<div class="navlink">    <a href="main.html">Home</a>
-    <a href="rec.html" class="active">Recipes</a></div>
+    <div class="navlink">
+        <a href="main.html">Home</a>
+        <a href="rec.html" class="active">Recipes</a>
+    </div>
 </nav>
 
-    <div class="test" role="main">
-        
-        <p id="text-display"></p>
-        
-        <button id="restart">Restart</button>
-    </div>
-</body>
-<script>
-    document.addEventListener('DOMContentLoaded', async function () {
-        const difficulty = sessionStorage.getItem('difficulty') || 'Grilled Cheese Sandwich';
-    
-        try {
-            const response = await fetch('text.json');
-    
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-    
-            const data = await response.json();
-            
-            const recipe = data.recipes.find(item => item.name === difficulty);
-    
-            if (!recipe) {
-                throw new Error(`Recipe not found for: ${difficulty}`);
-            }
-    
-            document.getElementById('text-display').innerHTML = `
-                <h2>${recipe.name}</h2>
-                <h3>Ingredients:</h3>
-                <ul>
-                    ${recipe.ingredients.map(ingredient => `<li>${ingredient}</li>`).join('')}
-                </ul>
-                <h3>Instructions:</h3>
-                <p>${recipe.instructions}</p>
-            `;
-        } catch (err) {
-            console.error('Error fetching JSON:', err);
-            document.getElementById('text-display').innerHTML = `
-    <h2>Recipe Not Available</h2>
-    <p>Unable to load recipe information.</p>
-`;
-        }
-    
-        document.getElementById('restart').addEventListener('click', function () {
-            window.location.href = 'main.html';
-        });
-    });
-    
-    
-</script>
+<div class="explore-container">
 
+    <div class="explore-header">
+        <h1>Explore Recipes</h1>
+        <p>Discover your next favorite meal</p>
+    </div>
+
+    <div class="search-section">
+        <input type="text" id="searchInput" placeholder="🔍 Search recipes...">
+        <select id="difficulty">
+            <option value="">All Recipes</option>
+        </select>
+        <div class="action-buttons">
+            <button id="start">View Selected Recipe</button>
+            <button id="randomRecipe">🎲 Random Recipe</button>
+        </div>
+    </div>
+
+    <div id="recipeGrid" class="recipe-grid">
+        <div class="loading">Loading recipes...</div>
+    </div>
+
+</div>
+
+</body>
 </html>

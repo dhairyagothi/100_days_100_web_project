@@ -94,6 +94,11 @@ class Calculator {
       }
       // Round to avoid floating point noise
       result = parseFloat(result.toPrecision(12));
+      
+      // ========== HISTORY ==========
+      addToHistory(this.expression, result);
+      // ================================================
+      
       this.latestAnswer = result;
       this.expression = result.toString();
       this.currentOperand = this.expression;
@@ -215,6 +220,21 @@ class Calculator {
     }
 
     result = parseFloat(result.toPrecision(12));
+    
+    // ========== HISTORY ==========
+    let historyExpr;
+    switch (func) {
+      case 'sqrt': historyExpr = `√(${raw})`; break;
+      case 'percent': historyExpr = `${raw}%`; break;
+      case 'pi': historyExpr = 'π'; break;
+      case 'e': historyExpr = 'e'; break;
+      case 'factorial': historyExpr = `${raw}!`; break;
+      case 'exp': historyExpr = `e^(${raw})`; break;
+      default: historyExpr = `${func}(${raw})`;
+    }
+    addToHistory(historyExpr, result);
+    // ================================================
+    
     this.latestAnswer = result;
     this.expression = result.toString();
     this.currentOperand = this.expression;
@@ -450,3 +470,83 @@ function addRipple(btn) {
 
 // Init deg/rad button states for scientific calculator
 scientificCalculator.updateDegRadButtons();
+
+// ========== HISTORY FUNCTIONS (ADDED AT THE BOTTOM - NOTHING ELSE CHANGED) ==========
+let calculationHistory = [];
+
+function addToHistory(expression, result) {
+  let displayResult = typeof result === 'number' ? 
+    (Number.isInteger(result) ? result.toString() : parseFloat(result.toPrecision(12)).toString()) : 
+    result.toString();
+  
+  calculationHistory.unshift({ expression: expression, result: displayResult });
+  
+  if (calculationHistory.length > 20) calculationHistory.pop();
+  
+  localStorage.setItem('calculatorHistory', JSON.stringify(calculationHistory));
+  renderHistory();
+}
+
+function renderHistory() {
+  const historyList = document.getElementById('history-list');
+  if (!historyList) return;
+  
+  if (calculationHistory.length === 0) {
+    historyList.innerHTML = '<div class="history-empty">No calculations yet<br>Click "=" to see history here</div>';
+    return;
+  }
+  
+  let html = '';
+  for (let i = 0; i < calculationHistory.length; i++) {
+    html += `<div class="history-item" data-index="${i}">${escapeHtml(calculationHistory[i].expression)} = ${escapeHtml(calculationHistory[i].result)}</div>`;
+  }
+  historyList.innerHTML = html;
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function clearHistory() {
+  calculationHistory = [];
+  localStorage.removeItem('calculatorHistory');
+  renderHistory();
+}
+
+function loadHistoryFromStorage() {
+  try {
+    const saved = localStorage.getItem('calculatorHistory');
+    if (saved) calculationHistory = JSON.parse(saved);
+    renderHistory();
+  } catch(e) { calculationHistory = []; }
+}
+
+// Setup history click
+const historyListEl = document.getElementById('history-list');
+if (historyListEl) {
+  historyListEl.onclick = function(e) {
+    const item = e.target.closest('.history-item');
+    if (item) {
+      const idx = parseInt(item.dataset.index);
+      if (!isNaN(idx) && calculationHistory[idx]) {
+        const calc = activeCalculator();
+        if (calc.expression === 'Error') calc.clear();
+        calc.expression = calculationHistory[idx].result;
+        calc.currentOperand = calculationHistory[idx].result;
+        calc.updateDisplay();
+      }
+    }
+  };
+}
+
+// Setup clear button
+const clearHistoryBtn = document.getElementById('clear-history');
+if (clearHistoryBtn) {
+  clearHistoryBtn.onclick = function() { clearHistory(); };
+}
+
+// Load history on page load
+loadHistoryFromStorage();
+// ========== END HISTORY FUNCTIONS ==========
