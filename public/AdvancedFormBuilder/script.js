@@ -598,10 +598,10 @@ function renderFormPreview() {
 
 // ─── Theme & Color ────────────────────────────────────────────────────
 function applyTheme() {
-  // Remove existing theme attributes
-  previewInner.removeAttribute('data-theme');
-  document.querySelector('.preview-frame').removeAttribute('data-theme');
-  previewInner.setAttribute('data-theme', formSettings.theme);
+  previewFrame.setAttribute(
+    'data-theme',
+    formSettings.theme
+  );
 }
 
 function applyPrimaryColor() {

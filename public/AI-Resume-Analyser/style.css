@@ -404,6 +404,43 @@ body.light-mode .home-btn {
   border: 1px solid rgba(0, 0, 0, 0.1);
   color: #0f172a;
 }
+
+.loading-section{
+  margin-bottom:40px;
+}
+
+.loading-card{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  backdrop-filter:blur(12px);
+  border-radius:20px;
+  padding:40px;
+  text-align:center;
+}
+
+.loader{
+  width:60px;
+  height:60px;
+  margin:0 auto 20px;
+
+  border:6px solid
+    rgba(255,255,255,.15);
+
+  border-top:6px solid
+    var(--blue);
+
+  border-radius:50%;
+
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+  from{
+    transform:rotate(0deg);
+  }
+  to{
+    transform:rotate(360deg);
+  }
 .copy-btn{
   margin-bottom:20px;
   padding:10px 18px;

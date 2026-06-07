@@ -27,51 +27,53 @@
     />
   </head>
   <body>
-  <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:100;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+  <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
     <header>
       <div class="header-content">
         <div class="left">
           <div class="logo">
-            <img src="./img/Nykaa_Logo.jpg" alt="Nykaa Fashion Logo"/>
+            <a href="#"><img src="./img/Nykaa_Logo.jpg" alt="Nykaa Fashion Logo"/></a>
           </div>
 
           <nav class="nav">
             <ul>
-              <li>Women</li>
-              <li>Men</li>
-              <li>Kids</li>
-              <li>Home</li>
-              <li>Tech</li>
-              <li>All Brands</li>
-              <li>More</li>
+              <li><a href="#">Women</a></li>
+              <li><a href="#">Men</a></li>
+              <li><a href="#">Kids</a></li>
+              <li><a href="#">Home</a></li>
+              <li><a href="#">Tech</a></li>
+              <li><a href="#">All Brands</a></li>
+              <li><a href="#">More</a></li>
             </ul>
           </nav>
         </div>
 
         <div class="right">
           <div class="inputSearch">
-            <i class="fa-solid fa-search"></i>
-            <input
-              type="text"
-              placeholder="Search for product, styles, brands"
-            />
-          </div>
+  <i aria-hidden="true" class="fa-solid fa-search"></i>
+  <input
+    type="text"
+    placeholder="Search for product, styles, brands"
+    id="searchInput"
+  />
+</div>
+<div class="search-dropdown" id="searchDropdown"></div>
 
-          <div class="accountLink">
-            <i class="fa-regular fa-user"></i>
+          <a href="#" class="accountLink">
+            <i aria-hidden="true" class="fa-regular fa-user"></i>
             <p>Account</p>
-          </div>
+          </a>
 
-          <div class="accountLink">
-            <i class="fa-regular fa-heart"></i>
+          <a href="#" class="accountLink">
+            <i aria-hidden="true" class="fa-regular fa-heart"></i>
             <p>Wishlist</p>
-          </div>
+          </a>
 
-          <div class="accountLink">
-            <i class="fa-solid fa-bag-shopping"></i>
+          <a href="#" class="accountLink">
+            <i aria-hidden="true" class="fa-solid fa-bag-shopping"></i>
             <p>Cart</p>
-          </div>
+          </a>
         </div>
       </div>
 
@@ -79,7 +81,7 @@
         <ul>
             <li>
                 <span>What's New</span>
-                <i class="fa-solid fa-angle-down"></i>
+                <i aria-hidden="true" class="fa-solid fa-angle-down"></i>
 
                 <div class="sub-navigatin-nav">
                     <div>
@@ -158,7 +160,7 @@
 
             <li>
                 <span>Sale</span>
-                <i class="fa-solid fa-angle-down"></i>
+                <i aria-hidden="true" class="fa-solid fa-angle-down"></i>
 
                 <div class="sub-navigatin-nav">
                     <div class="col">
@@ -183,59 +185,29 @@
         </ul>
 
         <ul>
-            <li>
-                <span>Indian Wear</span>
-                <i class="fa-solid fa-angle-down"></i>
-            </li>
-            <li>
-                <span>Western Wear</span>
-                <i class="fa-solid fa-angle-down"></i>
-            </li>
-            <li>
-                <span>Bags</span>
-                <i class="fa-solid fa-angle-down"></i>
-            </li>
-            <li>
-                <span>Jewellery</span>
-                <i class="fa-solid fa-angle-down"></i>
-            </li>
-            <li>
-                <span>Footwear</span>
-                <i class="fa-solid fa-angle-down"></i>
-            </li>
-            <li>
-                <span>Active & Sports</span>
-                <i class="fa-solid fa-angle-down"></i>
-            </li>
-            <li>
-                <span>Sleep & Lounge</span>
-                <i class="fa-solid fa-angle-down"></i>
-            </li>
-            <li>
-                <span>Top Wear</span>
-                <i class="fa-solid fa-angle-down"></i>
-            </li>
-            <li>
-                <span>Bottom Wear</span>
-                <i class="fa-solid fa-angle-down"></i>
-            </li>
-            <li>
-                <span>Ethnic Wear</span>
-                <i class="fa-solid fa-angle-down"></i>
-            </li>
+            <li><a href="#"><span>Indian Wear</span><i aria-hidden="true" class="fa-solid fa-angle-down"></i></a></li>
+            <li><a href="#"><span>Western Wear</span><i aria-hidden="true" class="fa-solid fa-angle-down"></i></a></li>
+            <li><a href="#"><span>Bags</span><i aria-hidden="true" class="fa-solid fa-angle-down"></i></a></li>
+            <li><a href="#"><span>Jewellery</span><i aria-hidden="true" class="fa-solid fa-angle-down"></i></a></li>
+            <li><a href="#"><span>Footwear</span><i aria-hidden="true" class="fa-solid fa-angle-down"></i></a></li>
+            <li><a href="#"><span>Active & Sports</span><i aria-hidden="true" class="fa-solid fa-angle-down"></i></a></li>
+            <li><a href="#"><span>Sleep & Lounge</span><i aria-hidden="true" class="fa-solid fa-angle-down"></i></a></li>
+            <li><a href="#"><span>Top Wear</span><i aria-hidden="true" class="fa-solid fa-angle-down"></i></a></li>
+            <li><a href="#"><span>Bottom Wear</span><i aria-hidden="true" class="fa-solid fa-angle-down"></i></a></li>
+            <li><a href="#"><span>Ethnic Wear</span><i aria-hidden="true" class="fa-solid fa-angle-down"></i></a></li>
         </ul>
       </div>
     </header>
 
     <div class="categorySection">
-        <img src="https://images-static.nykaa.com/uploads/79f66ebc-b12b-4a7f-a5bc-8fbb65b10e80.jpg?tr=w-150,cm-pad_resize" alt="Cat 1"/>
-        <img src="https://images-static.nykaa.com/uploads/26b2b833-834f-4a4b-893a-59463256ea9d.jpg?tr=w-150,cm-pad_resize" alt="Cat 2"/>
-        <img src="https://images-static.nykaa.com/uploads/157bea6c-9cad-420d-92c8-b08d1e689302.jpg?tr=w-150,cm-pad_resize" alt="Cat 3"/>
-        <img src="https://images-static.nykaa.com/uploads/5e18b875-60ba-4e57-b362-c7cb1d8a5914.jpg?tr=w-150,cm-pad_resize" alt="Cat 4"/>
-        <img src="https://images-static.nykaa.com/uploads/609e6b8b-56a7-4f20-83c1-93f610721764.jpg?tr=w-150,cm-pad_resize" alt="Cat 5"/>
-        <img src="https://images-static.nykaa.com/uploads/57e4ce9e-93f0-4032-bf9b-29f153a2ffa5.jpg?tr=w-150,cm-pad_resize" alt="Cat 6"/>
-        <img src="https://images-static.nykaa.com/uploads/3f606f97-58c2-4544-9466-488e6b9b6a11.jpg?tr=w-150,cm-pad_resize" alt="Cat 7"/>
-        <img src="https://images-static.nykaa.com/uploads/97fcdf62-27f8-47af-8e0c-019000f51b91.jpg?tr=w-150,cm-pad_resize" alt="Cat 8"/>
+        <a href="#"><img src="https://images-static.nykaa.com/uploads/79f66ebc-b12b-4a7f-a5bc-8fbb65b10e80.jpg?tr=w-150,cm-pad_resize" alt="Cat 1"/></a>
+        <a href="#"><img src="https://images-static.nykaa.com/uploads/26b2b833-834f-4a4b-893a-59463256ea9d.jpg?tr=w-150,cm-pad_resize" alt="Cat 2"/></a>
+        <a href="#"><img src="https://images-static.nykaa.com/uploads/157bea6c-9cad-420d-92c8-b08d1e689302.jpg?tr=w-150,cm-pad_resize" alt="Cat 3"/></a>
+        <a href="#"><img src="https://images-static.nykaa.com/uploads/5e18b875-60ba-4e57-b362-c7cb1d8a5914.jpg?tr=w-150,cm-pad_resize" alt="Cat 4"/></a>
+        <a href="#"><img src="https://images-static.nykaa.com/uploads/609e6b8b-56a7-4f20-83c1-93f610721764.jpg?tr=w-150,cm-pad_resize" alt="Cat 5"/></a>
+        <a href="#"><img src="https://images-static.nykaa.com/uploads/57e4ce9e-93f0-4032-bf9b-29f153a2ffa5.jpg?tr=w-150,cm-pad_resize" alt="Cat 6"/></a>
+        <a href="#"><img src="https://images-static.nykaa.com/uploads/3f606f97-58c2-4544-9466-488e6b9b6a11.jpg?tr=w-150,cm-pad_resize" alt="Cat 7"/></a>
+        <a href="#"><img src="https://images-static.nykaa.com/uploads/97fcdf62-27f8-47af-8e0c-019000f51b91.jpg?tr=w-150,cm-pad_resize" alt="Cat 8"/></a>
     </div>
 
     <section class="imageFull">
@@ -244,8 +216,8 @@
 
     <section class="slideCategory bgpink">
       <div class="btn_container">
-            <button class="btn-container-prev"><i class="fa-solid fa-angle-left"></i></button>
-            <button class="btn-container-next"><i class="fa-solid fa-angle-right"></i></button>
+            <button class="btn-container-prev"><i aria-hidden="true" class="fa-solid fa-angle-left"></i></button>
+            <button class="btn-container-next"><i aria-hidden="true" class="fa-solid fa-angle-right"></i></button>
       </div>
       <div class="slideCategory-Image" id="imageSlideContainer">
             <a href="#"><img src="https://images-static.nykaa.com/uploads/5b46a58d-afc4-4ef1-bd3c-9a516363dad4.jpg?tr=w-171.42857142857142,cm-pad_resize" alt="Slide 1"/></a>
@@ -269,7 +241,7 @@
 
     <section class="listofProduct_contaienr">
         <div class="listofProduct">
-            </div>
+        </div>
     </section>
 
     <section class="autoCenter">
@@ -282,34 +254,25 @@
 
     <section class="brandTop_container">
         <div class="brandTopproduct">
-            <!--display the list of brand product with javascript-->
         </div>
     </section>
 
-
-    <section class="hardtoresistDeals ">
+    <section class="hardtoresistDeals">
     <div class="autoCenter">
-        <img src="https://images-static.nykaa.com/uploads/5d9eefb9-accf-45a4-b6b0-547e10f93386.jpg?tr=w-1200,cm-pad_resize"/>
+        <img alt="" src="https://images-static.nykaa.com/uploads/5d9eefb9-accf-45a4-b6b0-547e10f93386.jpg?tr=w-1200,cm-pad_resize"/>
     </div>
     <div class="hardtoresistDeals_container">
         <div class="hardToResistDeals_image">
-            <!--display the list of product with javascript-->
         </div>
     </div>
     </section>
 
     <footer>
-
-    <!-- TOP FOOTER -->
-
     <div class="footpannell0">
-
         <div class="footerBox">
-            <i class="fa-regular fa-envelope"></i>
-
+            <i aria-hidden="true" class="fa-regular fa-envelope"></i>
             <div class="footerText">
                 <p>GET SPECIAL DISCOUNT ON YOUR INBOX</p>
-
                 <div class="footerInput">
                     <input type="email" placeholder="Your Email" />
                     <button>SEND</button>
@@ -318,11 +281,9 @@
         </div>
 
         <div class="footerBox">
-            <i class="fa-solid fa-mobile-screen-button"></i>
-
+            <i aria-hidden="true" class="fa-solid fa-mobile-screen-button"></i>
             <div class="footerText">
                 <p>EXPERIENCE THE NYKAA MOBILE APP</p>
-
                 <div class="appLinks">
                     <img src="./img/play_store.png" alt="Google Play">
                     <img src="./img/app_store.png" alt="App Store">
@@ -331,24 +292,16 @@
         </div>
 
         <div class="footerBox">
-            <i class="fa-solid fa-phone"></i>
-
+            <i aria-hidden="true" class="fa-solid fa-phone"></i>
             <div class="footerText">
                 <p>FOR ANY HELP, YOU MAY CALL US AT</p>
-
                 <h4>1800-267-4444</h4>
-
                 <span>(All days, 8 AM to 10 PM)</span>
             </div>
         </div>
-
     </div>
 
-
-    <!-- MIDDLE FOOTER -->
-
     <div class="foot-pannell1">
-
         <div class="footerColumn">
             <a href="#">Careers</a>
             <a href="#">Authenticity</a>
@@ -358,10 +311,8 @@
             <a href="#">Sustainability</a>
         </div>
 
-
         <div class="footerColumn">
             <h3>Help</h3>
-
             <a href="#">Contact Us</a>
             <a href="#">FAQs</a>
             <a href="#">Store Locator</a>
@@ -369,43 +320,30 @@
             <a href="#">Shipping & Delivery</a>
         </div>
 
-
         <div class="footerColumn">
             <h3>Inspire Me</h3>
-
             <a href="#">Beauty Book</a>
             <a href="#">Buying Guides</a>
             <a href="#">Nykaa Fashion</a>
             <a href="#">Nykaa Man</a>
         </div>
 
-
         <div class="footerColumn">
             <h3>Quick Links</h3>
-
             <a href="#">Makeup</a>
             <a href="#">Skin</a>
             <a href="#">Hair</a>
             <a href="#">Bath & Body</a>
             <a href="#">Luxury</a>
         </div>
-
     </div>
-
-
-    <!-- COPYRIGHT -->
 
     <div class="foot-pannell2">
         © 2026 NYKAA E-RETAIL LIMITED All Rights Reserved.
     </div>
 
-
-    <!-- POPULAR LINKS -->
-
     <div class="foot-pannell3">
-
         <p>Popular Links</p>
-
         <div class="popularLinks">
             <a href="#">lipstick</a> |
             <a href="#">highlighter</a> |
@@ -422,9 +360,7 @@
             <a href="#">serum</a> |
             <a href="#">makeup pouch</a>
         </div>
-
     </div>
-
 </footer>
 
     <script src="script.js" type="module"></script>
