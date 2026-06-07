@@ -61,6 +61,17 @@ function calculateLove() {
         return;
     }
 
+    // Name length validation (prevent overflow)
+    if (yourName.length > 50 || crushName.length > 50) {
+
+        document.getElementById("result-message").textContent =
+            "Names must be 50 characters or less!";
+
+        footer.classList.add("show-result");
+
+        return;
+    }
+
     // Invalid character validation
     if (!namePattern.test(yourName) || !namePattern.test(crushName)) {
 
