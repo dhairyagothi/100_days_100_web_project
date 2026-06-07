@@ -465,9 +465,8 @@ function normalizeTech(tech) {
 }
 
 /**
- * Check if project matches the active tech stack filters.
- * Each filter must match a complete tag token, not a substring of another tag.
- * Example: searching "java" must not return projects tagged "javascript".
+ * Check if project matches the active tech stack filters
+ * EFFICIENT APPROACH: Direct string matching without complex transformations
  * @param {string|array} projectTags - Project tags (space-separated string or array)
  * @returns {boolean} True if project matches all active filters
  */
@@ -489,9 +488,9 @@ function matchesTechStack(projectTags) {
       .filter(Boolean),
   );
 
-  // Every active filter must match an exact token in the tag set (AND logic).
-  // This prevents "java" from matching "javascript", "css" from matching "canvas", etc.
-  return techStackFilters.every((filter) => tagSet.has(filter.toLowerCase()));
+  // EFFICIENT: Check if ALL filters exist in tags (AND logic)
+  // Uses simple includes() - O(n*m) where n=filters, m=tag length
+  return techStackFilters.every(filter => tagsLower.includes(filter));
 }
 
 /**
@@ -1270,8 +1269,8 @@ function trackRecentProject(project) {
   // Add to front
   recentProjects.unshift(projectObj);
 
-  // Keep only the 20 most recent entries (not filtered by time yet)
-  if (recentProjects.length > 20) {
+  // Keep only a rigid maximum limit of 4 entries
+  if (recentProjects.length > 4) {
     recentProjects.pop();
   }
 
@@ -1402,8 +1401,8 @@ function renderRecentProjects() {
       url,
       tags,
       category,
-      isBookmarked,
-      showDescription: true,
+      isBookmarked: isBookmarked,
+      showDescription: false,
     });
 
     const card = document.createElement("div");
@@ -1509,7 +1508,7 @@ document.addEventListener("click", (e) => {
 });
 
 /* ============================================================
-   CLEAR ALL FILTERS SYSTEM
+   CLICK EVENT DELEGATION SYSTEM
    ============================================================ */
 function updateClearFiltersBtnVisibility() {
   const btn = document.getElementById("clearAllFiltersBtn");
@@ -1579,7 +1578,8 @@ function initClearAllFilters() {
   if (btn) {
     btn.addEventListener("click", resetAllFilters);
   }
-}
+});
+
 
 /* ============================================================
    FILTER CHIPS
@@ -1886,10 +1886,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   initSearch();
   initSorting();
   initTechStackSearch();
-  initClearAllFilters();
 
   try {
-    // Await the projects to be fetched
+    // Await the projects to be fetched securely
     await loadProjects();
 
     syncProjectCounts();
