@@ -40,19 +40,62 @@
             </label>
           </li>
 
-          <!-- Search -->
           <li>
-            <img src="images/search.svg" alt="Search icon" />
+            <button
+              class="header-action"
+              id="care-tips-button"
+              type="button"
+              aria-label="Open plant care tips"
+              aria-haspopup="dialog"
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M20.8 3.2C13.6 3.5 7.6 6 5.1 10.5c-1.4 2.5-.9 5.1.7 6.8-1.3 1.2-2.3 2.5-2.8 3.7l1.8.8c.5-1.1 1.4-2.3 2.7-3.4 1.6.8 3.6.8 5.5-.2 4.6-2.4 7.1-8.1 7.8-15ZM8.9 16.5c2.1-1.7 4.8-3.5 8-5.2-2.7 2.1-5 4.2-6.7 6.1-.5 0-.9-.1-1.3-.3v-.6Z"/>
+              </svg>
+            </button>
           </li>
 
-          <!-- Cart -->
-          <li>
-            <img src="images/cart.svg" alt="Shopping cart icon" />
+          <li class="category-menu">
+            <button
+              class="header-action"
+              id="categories-button"
+              type="button"
+              aria-label="Browse plant categories"
+              aria-haspopup="menu"
+              aria-expanded="false"
+              aria-controls="categories-dropdown"
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M4 4h6v6H4V4Zm10 0h6v6h-6V4ZM4 14h6v6H4v-6Zm10 0h6v6h-6v-6Z"/>
+              </svg>
+            </button>
+            <div
+              id="categories-dropdown"
+              class="categories-dropdown"
+              role="menu"
+              aria-label="Plant categories"
+              hidden
+            >
+              <p>Explore categories</p>
+              <button type="button" role="menuitem" data-category="Indoor Plants">Indoor Plants</button>
+              <button type="button" role="menuitem" data-category="Outdoor Plants">Outdoor Plants</button>
+              <button type="button" role="menuitem" data-category="Succulents">Succulents</button>
+              <button type="button" role="menuitem" data-category="Air Purifying Plants">Air Purifying Plants</button>
+              <button type="button" role="menuitem" data-category="Decorative Plants">Decorative Plants</button>
+            </div>
           </li>
 
-          <!-- More -->
           <li>
-            <img src="images/ellipsis-v.svg" alt="More options menu icon" />
+            <button
+              class="header-action"
+              id="featured-plant-button"
+              type="button"
+              aria-label="Open featured plant of the day"
+              aria-haspopup="dialog"
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="m12 2.8 2.8 5.7 6.3.9-4.5 4.4 1.1 6.2-5.7-3-5.7 3 1.1-6.2-4.5-4.4 6.3-.9L12 2.8Z"/>
+              </svg>
+            </button>
           </li>
         </ul>
       </div>
@@ -173,6 +216,44 @@
         </p>
       </div>
     </footer>
+
+    <div id="care-tips-modal" class="modal-overlay hidden" aria-hidden="true">
+      <div
+        class="modal-content glass-effect feature-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="care-tips-title"
+      >
+        <button class="close-btn feature-close" type="button" aria-label="Close plant care tips">&times;</button>
+        <div class="feature-heading-icon" aria-hidden="true">i</div>
+        <h2 id="care-tips-title">Plant Care Tips</h2>
+        <p class="feature-intro">Five simple habits for happier, healthier plants.</p>
+        <ul class="care-tips-list">
+          <li>Water regularly but avoid overwatering.</li>
+          <li>Ensure adequate sunlight.</li>
+          <li>Use well-draining soil.</li>
+          <li>Remove dead leaves periodically.</li>
+          <li>Fertilize during the growing season.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="featured-plant-modal" class="modal-overlay hidden" aria-hidden="true">
+      <div
+        class="modal-content glass-effect feature-modal featured-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="featured-plant-title"
+      >
+        <button class="close-btn feature-close" type="button" aria-label="Close featured plant">&times;</button>
+        <span class="featured-eyebrow">Featured plant of the day</span>
+        <img id="featured-plant-image" src="" alt="" />
+        <h2 id="featured-plant-title"></h2>
+        <p id="featured-plant-description"></p>
+        <strong id="featured-plant-price"></strong>
+        <button id="featured-view-details" class="quiz-btn" type="button">View Details</button>
+      </div>
+    </div>
 
     <!-- Plant Matchmaker Modal -->
     <div id="quiz-modal" class="modal-overlay hidden">

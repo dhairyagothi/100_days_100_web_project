@@ -1,0 +1,154 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.8;
+    color: #1c1b1f;
+    background-color: #f4f5f0;
+}
+
+.progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background-color: transparent;
+    z-index: 1000;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: #006874;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    transition: width 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+main {
+    max-width: 840px;
+    margin: 5rem auto 4rem;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.material-card {
+    background-color: #ffffff;
+    border-radius: 28px;
+    padding: 4rem;
+    box-shadow: 0 4px 8px 3px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.material-card:hover {
+    box-shadow: 0 6px 12px 4px rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.input-section {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 1rem;
+    border: 1px solid #c4c7c5;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 1rem;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+textarea:focus {
+    border-color: #006874;
+}
+
+button {
+    align-self: flex-end;
+    background-color: #006874;
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+button:hover {
+    background-color: #004f58;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+h1 {
+    font-size: 2.75rem;
+    font-weight: 800;
+    margin-bottom: 2.5rem;
+    color: #1a1c1e;
+    letter-spacing: -0.02em;
+}
+
+p {
+    font-size: 1.1875rem;
+    margin-bottom: 2rem;
+    color: #44474e;
+}
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+::selection {
+    background-color: #cce8e4;
+}
+
+.highlight {
+    background-color: #fce29f;
+    border-radius: 6px;
+    padding: 2px 6px;
+    margin: 0 -2px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.highlight:hover {
+    background-color: #fadd84;
+    transform: scale(1.02);
+}
+
+@media (max-width: 768px) {
+    main {
+        margin: 4rem auto 2rem;
+    }
+
+    .material-card {
+        padding: 2rem;
+        border-radius: 20px;
+    }
+
+    h1 {
+        font-size: 2.25rem;
+    }
+}
+
+.title {
+    margin: 0;
+}

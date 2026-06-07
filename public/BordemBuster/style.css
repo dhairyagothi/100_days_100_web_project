@@ -4,8 +4,6 @@
    Theming via CSS custom properties
 ═══════════════════════════════════════════ */
 
-/* ── Google Fonts are loaded via <link> in HTML ── */
-
 /* ── Dark Theme (default) ── */
 :root {
   --bg:           #0f0f18;
@@ -48,8 +46,10 @@
 
 /* ── Reset ── */
 *, *::before, *::after {
-  margin: 0; padding: 0;
+  margin: 0; 
+  padding: 0;
   box-sizing: border-box;
+}
 }
 
 /* ── Background Animations ── */
@@ -75,16 +75,14 @@
   50%  { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
-@keyframes particleDrift {
-  0%   { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
-  10%  { opacity: 1; }
-  90%  { opacity: 1; }
-  100% { transform: translateY(-100vh) translateX(30px) rotate(360deg); opacity: 0; }
+@keyframes popIn {
+  0% { transform: scale(0.8) translateY(0); }
+  100% { transform: scale(1) translateY(-2px); }
 }
 
 /* ── Body ── */
 body {
-  font-family: sans-serif,Inter, system-ui;
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;;
   font-weight: 400;
   background: var(--bg);
   color: var(--text);
@@ -128,7 +126,7 @@ body::after {
   animation: orbFloat1 18s ease-in-out infinite;
 }
 
-/* ── Floating orb elements (injected by JS) ── */
+/* ── Floating orb elements ── */
 .bg-orb {
   position: fixed;
   border-radius: 50%;
@@ -156,7 +154,6 @@ body::after {
   animation: orbFloat3 16s ease-in-out infinite;
 }
 
-/* Lighter in light mode */
 [data-theme="light"] .bg-orb  { opacity: 0.28; }
 [data-theme="light"] body::after { opacity: 0.45; }
 
@@ -164,20 +161,19 @@ body::after {
 .back-btn {
   position: fixed;
   left: 18px; top: 18px;
-  padding: 8px 14px;
-  border-radius: 10px;
-  background: var(--surface);
-  color: var(--text);
-  border: 1px solid var(--border);
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #1e293b;
+  color: #3b82f6;
+  border: 1px solid #3b82f6;
   text-decoration: none;
   font-family: 'DM Sans', sans-serif;
   font-weight: 500;
   font-size: 0.85rem;
   z-index: 9999;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.2);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.2s ease;
 }
-.back-btn:hover { transform: translateX(-3px); box-shadow: 0 6px 22px rgba(0,0,0,0.28); }
+.back-btn:hover { background: #3b82f6; color: #fff; }
 
 /* ── Theme Button ── */
 .theme-btn {
@@ -238,13 +234,11 @@ body::after {
   flex-direction: column;
   gap: 16px;
 }
-
 .field {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
-
 .field label {
   font-size: 0.75rem;
   font-weight: 500;
@@ -330,9 +324,8 @@ body::after {
   text-transform: uppercase;
   color: var(--text3);
 }
-
 .activity-name {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1.35rem;
   font-weight: 800;
   color: var(--text);
@@ -346,7 +339,6 @@ body::after {
   justify-content: center;
   gap: 8px;
 }
-
 .pill {
   padding: 5px 13px;
   border-radius: 30px;
@@ -356,8 +348,6 @@ body::after {
   border: 1px solid var(--pill-border);
   color: var(--text2);
 }
-
-/* Category-colored pill variants */
 .pill.free   { background: rgba(74,219,162,0.13); border-color: rgba(74,219,162,0.3); color: var(--success); }
 .pill.pricey { background: rgba(255,140,66,0.13);  border-color: rgba(255,140,66,0.3);  color: var(--fav); }
 
@@ -368,7 +358,6 @@ body::after {
   gap: 10px;
   flex-wrap: wrap;
 }
-
 .icon-btn {
   padding: 8px 18px;
   border-radius: 30px;
@@ -384,7 +373,7 @@ body::after {
 .icon-btn:hover { background: var(--surface2); transform: translateY(-1px); }
 .icon-btn.secondary { color: var(--text2); }
 
-/* ── Extra Card (Tabs) ── */
+/* ── Extra Card (History / Favourites Tabs) ── */
 .extra-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -399,7 +388,6 @@ body::after {
   display: flex;
   border-bottom: 1px solid var(--border);
 }
-
 .tab {
   flex: 1;
   padding: 12px;
@@ -421,7 +409,7 @@ body::after {
 .tab-panel { display: none; padding: 16px; }
 .tab-panel.active { display: block; }
 
-/* ── Item Lists (History / Favs) ── */
+/* ── Item Lists ── */
 .item-list {
   list-style: none;
   display: flex;
@@ -430,7 +418,6 @@ body::after {
   max-height: 260px;
   overflow-y: auto;
 }
-
 .item-list li {
   background: var(--surface2);
   border-radius: 10px;
@@ -443,7 +430,6 @@ body::after {
   gap: 10px;
   line-height: 1.4;
 }
-
 .item-list li span { flex: 1; }
 
 .remove-btn {
@@ -465,40 +451,102 @@ body::after {
   padding: 12px 0;
 }
 
-/* ── Toast ── */
+/* ── Toast System ── */
 .toast {
   position: fixed;
-  bottom: 28px;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  background: var(--surface);
-  color: var(--text);
-  border: 1px solid var(--border-hover);
-  border-radius: 30px;
-  padding: 10px 24px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  box-shadow: 0 8px 28px rgba(0,0,0,0.28);
-  opacity: 0;
-  transition: opacity 0.3s, transform 0.3s;
-  pointer-events: none;
-  z-index: 9999;
+  bottom: 20px;
+  right: -350px; /* Hidden clean off-screen by default */
+  background: rgba(20, 20, 30, 0.9);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 12px;
+  border-left: 4px solid #6c5ce7;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 10000;
   white-space: nowrap;
 }
 .toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  right: 20px; /* Slides smoothly into the window viewport view */
 }
 
-/* ── Scrollbar (item-list) ── */
+/* ── Container Card for Progress Dashboard ── */
+#progressCard {
+  background: var(--surface2); /* Changed from hardcoded white opacity to use theme surface */
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border); /* Changed to use theme border */
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 20px;
+  display: flex; /* Forces layout tracking component block display override */
+  flex-direction: column;
+}
+#progressCard h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.2rem;
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: var(--text1); /* Fixed: Dynamically shifts between dark/light text */
+}
+
+.progress-stats p {
+  font-size: 0.95rem;
+  color: var(--text2); /* Fixed: Automatically uses theme-appropriate text color */
+  margin-bottom: 15px;
+}
+#completedCount {
+  font-weight: bold;
+  color: #6c5ce7; /* Keep the distinct purple focus brand color */
+  font-size: 1.1rem;
+}
+
+/* ── Badge Layout Grid ── */
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 5px;
+  color: var(--text1); /* Fixed: Hooks directly into your existing main text variable */
+  transition: all 0.3s ease;
+}
+
+/* Style for UNLOCKED badges (like your gradient one) */
+.badge.unlocked {
+  background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); 
+  color: #ffffff; /* Keep white explicitly so text pops nicely against the colorful background graphic */
+  box-shadow: 0 4px 15px rgba(142, 197, 252, 0.4);
+  opacity: 1;
+}
+
+/* Style for LOCKED badges (the ones fading into the background) */
+.badge.locked {
+  background: transparent;
+  border: 1px dashed var(--text3); /* Fixed: Maps flawlessly to your muted theme variable */
+  color: var(--text3); /* Fixed: Becomes readable gray in light mode, soft gray in dark mode */
+  opacity: 0.5;
+}
+
+/* ── Custom Scrollbar Layout ── */
 .item-list::-webkit-scrollbar { width: 4px; }
 .item-list::-webkit-scrollbar-track { background: transparent; }
 .item-list::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 4px; }
-
-/* ── Responsive ── */
+/* ── Responsive Mobile Media Adjustments ── */
 @media (max-width: 480px) {
   body { padding: 72px 12px 50px; }
   .card { padding: 22px 16px; }
   .app-title { font-size: 1.65rem; }
-  .activity-name { font-size: 1.15rem; }
-}
+ .activity-name { font-size: 1.15rem; }
+
+} 
+

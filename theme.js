@@ -24,8 +24,13 @@
 
   const normalizeTheme = (theme) => (THEMES.has(theme) ? theme : "dark");
 
-  const getStoredTheme = () => normalizeTheme(safeStorage.get());
+ const getSystemTheme = () =>
+  window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 
+const getStoredTheme = () => {
+  const saved = safeStorage.get();
+  return saved ? normalizeTheme(saved) : getSystemTheme();
+};
   const syncBodyClass = (theme) => {
     if (!document.body) return;
     document.body.classList.toggle("light-mode", theme === "light");
@@ -100,7 +105,19 @@
 
     if (initialized) return;
     initialized = true;
+// Cross-tab theme sync
+window.addEventListener('storage', (e) => {
+  if (e.key === 'theme' && e.newValue) {
+    applyTheme(e.newValue, { persist: false });
+  }
+});
 
+// Respect system theme changes (only if user hasn't manually set a theme)
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+  if (!safeStorage.get()) {
+    applyTheme(e.matches ? 'dark' : 'light', { persist: false });
+  }
+});
     document.addEventListener("click", (event) => {
       const toggle = event.target.closest("#themeToggle");
       if (toggle) {

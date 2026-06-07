@@ -51,6 +51,7 @@ function startGame() {
                 (r >= 2 && board[r - 1][c].src.includes(candy) && board[r - 2][c].src.includes(candy))
             );
             let tile = document.createElement("img");
+            tile.draggable = true;
             tile.id = r + "-" + c;
             tile.src = "./images/" + candy + ".png";
 
