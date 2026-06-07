@@ -101,35 +101,27 @@ function parseProjectsData(payload) {
 function loadProjects() {
   if (!projectsPromise) {
     projectsPromise = (async () => {
-      const preloadedData = getPreloadedProjectsData();
-      if (preloadedData) {
-        hydrateProjects(preloadedData);
-        return PROJECTS;
-      }
-
       const isRoot = !window.location.pathname.includes("/contributors/");
       const base = isRoot ? "" : "../";
       const projectsUrl = new URL(
         `${base}projects.json`,
         window.location.href,
       ).toString();
-      try {
-        const response = await fetch(projectsUrl);
-        if (!response.ok) {
-          throw new Error(`Failed to load projects: ${response.statusText}`);
-        }
-        const payload = await response.text();
-        const data = parseProjectsData(payload);
-        hydrateProjects(data);
-        return PROJECTS;
-      } catch (error) {
-        const fallbackData = getPreloadedProjectsData();
-        if (fallbackData) {
-          hydrateProjects(fallbackData);
-          return PROJECTS;
-        }
-        throw error;
+      const response = await fetch(projectsUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to load projects: ${response.statusText}`);
       }
+      const payload = await response.text();
+      const data = parseProjectsData(payload);
+
+      PROJECTS = data.map((project) => [
+        `Day ${project.projectNo}`,
+        project.projectName,
+        project.projectPath,
+        project.techStack,
+        project.difficulty,
+        project.projectDesc,
+      ]);
     })();
   }
   return projectsPromise;
@@ -419,6 +411,10 @@ return {
 
 function attachProjectCardInteraction(card, demoUrl, projectData = null) {
   card.style.cursor = "pointer";
+  card.addEventListener("click", (e) => {
+    if (e.target.closest(".bookmark-btn")) {
+      e.stopPropagation();
+      return;
   
   const activateCard = (e) => {
     if (e.target.closest("a, button")) return;
@@ -429,6 +425,10 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
       trackRecentProject(projectData);
     }
 
+    if (e.target.closest("a")) {
+      return;
+    }
+  });
     // SECURITY: sanitizeUrl() is called on the stored demoUrl before
     // window.open() so a javascript: payload stored in localStorage cannot
     // execute even after a page reload.
@@ -943,6 +943,47 @@ function renderGrid() {
     const name = project.projectName;
     const url = project.projectPath;
     const tags = project.techStack;
+    const category = getCategoryFromTags(tags, name);
+    const card = document.createElement("div");
+    const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked,
+      showDescription: true,
+    });
+
+    card.className = sourceOnly ? "project-card source-only" : "project-card";
+    card.innerHTML = html;
+    const bookmarkBtn = card.querySelector(".bookmark-btn");
+
+    if (bookmarkBtn) {
+      bookmarkBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+
+        const project = PROJECTS.find(
+          (item) => item[0] === bookmarkBtn.dataset.id,
+        );
+
+        if (!project) return;
+
+        toggleBookmark(project);
+      });
+    }
+    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
+
+  const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+    day,
+    name,
+    url,
+    tags,
+    category,
+    isBookmarked,
+    showDescription: true,
+  });
 
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement("div");
@@ -1175,13 +1216,18 @@ function toggleBookmark(project) {
 
   if (exists) {
     bookmarkedProjects = bookmarkedProjects.filter(
-      (item) => normalizeProjectEntry(item).day !== project.day,
+      (item) => item[0] !== project[0],
     );
     showToast("Bookmark removed");
   } else {
     bookmarkedProjects.push(project);
     showToast("Project bookmarked");
   }
+
+  localStorage.setItem(
+    "bookmarkedProjects",
+    JSON.stringify(bookmarkedProjects),
+  );
 
   updateBookmarkURL();
 
@@ -1202,9 +1248,7 @@ function updateBookmarkURL() {
   const url = new URL(window.location);
 
   if (bookmarkedProjects.length > 0) {
-    const bookmarkIds = bookmarkedProjects.map(
-      (project) => normalizeProjectEntry(project).day,
-    );
+    const bookmarkIds = bookmarkedProjects.map((project) => project[0]);
     url.searchParams.set("bookmarks", bookmarkIds.join(","));
   } else {
     url.searchParams.delete("bookmarks");
@@ -1287,24 +1331,6 @@ function trackRecentProject(project) {
 
 const bookmarkGrid = document.getElementById("bookmarkGrid");
 
-function normalizeProjectEntry(project) {
-  if (Array.isArray(project)) {
-    return {
-      day: project[0],
-      name: project[1],
-      url: project[2],
-      tags: project[3],
-    };
-  }
-
-  return {
-    day: project.day,
-    name: project.projectName || project.name,
-    url: project.projectPath || project.url,
-    tags: project.techStack || project.tags,
-  };
-}
-
 function renderBookmarks() {
   if (!bookmarkGrid) return;
 
@@ -1327,10 +1353,7 @@ function renderBookmarks() {
     ? bookmarkedProjects
     : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleBookmarks.forEach((project) => {
-    const { day, name, url, tags } = normalizeProjectEntry(project);
-    if (!day || !name) return;
-
+  visibleBookmarks.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
     
     // Updated to use the secure HTML-string approach
@@ -1447,12 +1470,12 @@ if (copyBookmarksBtn) {
     }
     const textToCopy = bookmarkedProjects
       .map((p) => {
-        const { day, name, url, tags } = normalizeProjectEntry(p);
-        const { demoUrl } = resolveProjectUrls(day, name, url, tags);
+        const projectName = p[1];
+        const { demoUrl } = resolveProjectUrls(p[0], p[1], p[2], p[3]);
         const projectLink = demoUrl.startsWith("http")
           ? demoUrl
           : new URL(demoUrl, window.location.href).href;
-        return `${name} - ${projectLink}`;
+        return `${projectName} - ${projectLink}`;
       })
       .join("\n");
 
@@ -1484,18 +1507,6 @@ function showToast(message) {
     toast.classList.remove("show");
   }, 3000);
 }
-
-document.addEventListener("click", (e) => {
-  const bookmarkBtn = e.target.closest(".bookmark-btn");
-  if (!bookmarkBtn) return;
-
-  e.preventDefault();
-  const projectDay = bookmarkBtn.dataset.id;
-  const project = PROJECTS.find((item) => item.day === projectDay);
-  if (!project) return;
-
-  toggleBookmark(project);
-});
 
 document.addEventListener("click", (e) => {
   const projectLink = e.target.closest(".open-project");
