@@ -77,4 +77,4 @@ jobs:
 
       - name: Run ESLint Check
         if: steps.changed-files.outputs.has_js_targets == 'true'
-        run: xargs -0 -a js-targets.txt npx eslint --allow-empty-files || echo "No JS files or ESLint not fully configured yet"
+        run: xargs -0 -a js-targets.txt npx eslint --allow-empty-files

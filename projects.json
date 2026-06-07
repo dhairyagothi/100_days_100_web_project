@@ -492,7 +492,7 @@
       "javascript"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/Amazon_Clone/index.html"
+    "projectPath": "./public/Amazon-App/index.html"
   },
   {
     "projectNo": 43,
@@ -2473,6 +2473,8 @@
     "techStack": [
       "html",
       "css",
+      "react",
+      "tailwindcss",
       "javascript"
     ],
     "difficulty": "advanced",
@@ -2674,7 +2676,8 @@
       "css"
     ],
     "difficulty": "intermediate",
-    "projectDesc": "A responsive photography portfolio and gallery website designed to showcase visual content through structured layouts, image presentation sections, and modern styling. Features an engaging user interface optimized for desktop and mobile viewing."
+    "projectDesc": "A responsive photography portfolio and gallery website designed to showcase visual content through structured layouts, image presentation sections, and modern styling. Features an engaging user interface optimized for desktop and mobile viewing.",
+    "projectType": "Website"
   },
   {
     "projectNo": 214,
@@ -2705,8 +2708,68 @@
     "difficulty": "advanced",
     "projectPath": "./public/Mood_Based_Music_Recommender/"
   },
+  
+
+{
+  "projectNo": 216,
+  "projectName": "Runway Calculator",
+  "projectType": "Tool",
+  "projectDesc": "A web-based aviation utility that helps users calculate and determine runway numbers from runway headings. Features an intuitive interface, instant calculations, and responsive design for aviation enthusiasts, students, and professionals.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript"
+  ],
+  "difficulty": "intermediate",
+  "projectPath": "./public/Runway-Calculator/index.html"
+},
+
+  {
+    "projectNo": 217,
+    "projectName": "Gemini Clone",
+    "projectType": "AI",
+    "projectDesc": "A modern clone of the Google Gemini AI chatbot interface, integrated with Google's GenAI API for generating dynamic responses.",
+    "techStack": [
+      "react",
+      "javascript",
+      "html",
+      "css",
+      "api",
+      "vite"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Gemini/index.html"
+  },
+  {
+    "projectNo": 218,
+    "projectName": "SkillBridge Career Roadmap Explorer",
+    "projectType": "Tool",
+    "projectDesc": "A Next.js career guidance platform that helps students explore technology career paths, required skills, structured learning roadmaps, recommended projects, and curated learning resources.",
+    "techStack": [
+      "nextjs",
+      "react",
+      "typescript",
+      "tailwindcss"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/SkillBridge"
+  },
+  {
+    "projectNo": 218,
+    "projectName": "The Cube - 3D Rubik's Cube Simulator",
+    "projectType": "Web Application",
+    "projectDesc": "An interactive 3D Rubik's Cube simulator built with Three.js that allows users to solve, scramble, customize, and track performance across multiple cube sizes with smooth animations and touch support.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "threejs"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/the_cube/index.html"
+  },
       {
-    "projectNo": 216,
+    "projectNo": 219,
     "projectName": "Spin-wheel-decision-maker",
     "projectType": "Tool",
     "projectDesc": "An interactive decision-making tool featuring a customizable spinning wheel.",
@@ -2715,4 +2778,6 @@
     "projectPath": "./public/Spin-Wheel-Decision-Maker/index.html"
     "projectPath": "./public/CrosswordPuzzleGame/index.html"
   }
+
+
 ]
