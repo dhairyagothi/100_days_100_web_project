@@ -428,6 +428,7 @@ document.addEventListener("DOMContentLoaded", () => {
   el("ref-toggle-btn").addEventListener("click", toggleRef);
   el("encode-btn").addEventListener("click", () => setMode("encode"));
   el("decode-btn").addEventListener("click", () => setMode("decode"));
+  el("swap-btn").addEventListener("click", swapPanels);
 
   // ── Keyboard shortcuts ──────────────────────────────────────────
   // When inside textarea: only Escape (clear) and Ctrl+Enter (play)

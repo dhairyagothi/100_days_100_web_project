@@ -19,7 +19,7 @@ const movieDetails = document.getElementById("movieDetails");
 const closeModalBtn = document.getElementById("closeModal");
 const genreFilter = document.getElementById("genreFilter");
 const yearFilter = document.getElementById("yearFilter");
-const clearBtn = document.getElementById("clearBtn");
+const resetBtn = document.getElementById("resetBtn");
 const resultsInfo = document.getElementById("resultsInfo");
 const loadMoreWrapper = document.getElementById("loadMoreWrapper");
 const loadMoreBtn = document.getElementById("loadMoreBtn");
@@ -170,7 +170,7 @@ yearFilter.addEventListener("change", () => {
   }
 });
 
-clearBtn.addEventListener("click", () => {
+resetBtn.addEventListener("click", () => {
   movieInput.value = "";
   genreFilter.value = "all";
   yearFilter.value = "";
@@ -178,7 +178,7 @@ clearBtn.addEventListener("click", () => {
   allMovies = [];
   loadMoreWrapper.style.display = "none";
   loadHomePage();
-  showToast("Showing all genres 🎬");
+  showToast("Filters reset successfully 🎬");
 });
 
 loadMoreBtn.addEventListener("click", () => {
