@@ -815,6 +815,15 @@ function syncStateToURL() {
     url.searchParams.delete("page");
   }
 
+  if (bookmarkedProjects.length > 0) {
+    const bookmarkIds = bookmarkedProjects.map(
+      (project) => normalizeProjectEntry(project).day,
+    );
+    url.searchParams.set("bookmarks", bookmarkIds.join(","));
+  } else {
+    url.searchParams.delete("bookmarks");
+  }
+
   window.history.replaceState({}, "", url);
 }
 
@@ -1199,18 +1208,7 @@ function toggleBookmark(project) {
 }
 
 function updateBookmarkURL() {
-  const url = new URL(window.location);
-
-  if (bookmarkedProjects.length > 0) {
-    const bookmarkIds = bookmarkedProjects.map(
-      (project) => normalizeProjectEntry(project).day,
-    );
-    url.searchParams.set("bookmarks", bookmarkIds.join(","));
-  } else {
-    url.searchParams.delete("bookmarks");
-  }
-
-  window.history.replaceState({}, "", url);
+  syncStateToURL();
 }
 
 function loadBookmarksFromURL() {
@@ -2358,13 +2356,9 @@ function getQueryParams() {
 }
 
 function updateURL(search, category) {
-  const params = new URLSearchParams();
-  if (search) params.set("search", search);
-  if (category && category !== "all") params.set("category", category);
-  const newURL = params.toString()
-    ? `${window.location.pathname}?${params.toString()}`
-    : window.location.pathname;
-  history.pushState({ search, category }, "", newURL);
+  searchQuery = search || "";
+  activeFilter = category || "all";
+  syncStateToURL();
 }
 
 function restoreStateFromURL() {
