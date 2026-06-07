@@ -337,6 +337,20 @@
           <button id="modalCancelBtn" class="modal-btn modal-btn-cancel">Cancel</button>
           <button id="modalConfirmBtn" class="modal-btn modal-btn-confirm">Yes, Clear All</button>
         </div>
+
+      </form>
+
+        <!-- TASKS -->
+        <div id="notes-container"></div>
+
+        <!-- PDF -->
+        <button id="savepdf" onclick="saveAsPDF()" aria-label="Save tasks as PDF">Save PDF</button>
+
+      <!-- Empty State -->
+      <div class="empty-state" id="emptyState" role="status">
+        <div class="empty-icon" aria-hidden="true">📋</div>
+        <p class="empty-title">No tasks yet</p>
+        <p class="empty-desc">Add your first task above and get things done!</p>
       </div>
     </div>
 
