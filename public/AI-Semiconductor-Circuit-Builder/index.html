@@ -28,7 +28,7 @@
       <div class="flex items-center justify-end gap-3">
         <p class="text-gray-400 font-medium">AI-Powered Semiconductor Design Assistant</p>
         <button id="themeToggle" onclick="toggleTheme()" class="theme-toggle-btn p-2 rounded-lg hover:bg-gray-800 transition" title="Toggle dark/light theme">
-          <i class="fas fa-moon text-yellow-400"></i>
+          <i aria-hidden="true" class="fas fa-moon text-yellow-400"></i>
         </button>
       </div>
       <p class="text-xs text-emerald-400 font-mono" id="storageStatus">LocalStorage Synced</p>
@@ -41,7 +41,7 @@
 
       <div class="bg-gray-900 rounded-3xl p-6 border border-gray-800 shadow-xl">
         <h2 class="text-xl font-semibold mb-5 flex items-center gap-2 text-blue-400">
-          <i class="fas fa-sliders-h"></i> Design Parameters
+          <i aria-hidden="true" class="fas fa-sliders-h"></i> Design Parameters
         </h2>
 
         <div class="space-y-5">
@@ -110,14 +110,14 @@
 
           <button onclick="generateDesign()" 
                   class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 py-4 rounded-2xl font-semibold text-base transition-all shadow-lg shadow-purple-900/20 active:scale-[0.98] mt-2 flex items-center justify-center gap-2">
-            <i class="fas fa-microchip text-sm"></i> Synthesize & Compute PPA
+            <i aria-hidden="true" class="fas fa-microchip text-sm"></i> Synthesize & Compute PPA
           </button>
         </div>
       </div>
 
       <div class="bg-gray-900 rounded-3xl p-6 border border-gray-800 shadow-xl">
         <h3 class="font-semibold text-sm text-gray-400 uppercase tracking-wider mb-3 flex items-center justify-between">
-          <span><i class="fas fa-archive mr-1.5 text-purple-400"></i> Project Storage Ledger</span>
+          <span><i aria-hidden="true" class="fas fa-archive mr-1.5 text-purple-400"></i> Project Storage Ledger</span>
           <span id="savedCount" class="text-xs font-mono bg-gray-800 text-gray-300 px-2 py-0.5 rounded-full border border-gray-700">0</span>
         </h3>
         <div id="savedProjectsList" class="space-y-2 max-h-48 overflow-y-auto pr-1 text-xs">
@@ -144,7 +144,7 @@
       <div class="bg-gray-900 rounded-3xl p-6 border border-gray-800 shadow-xl">
         <div class="flex justify-between items-center mb-4">
           <h3 class="font-semibold text-base flex items-center gap-2 text-amber-400">
-            <i class="fas fa-columns"></i> Design Comparison Workspace
+            <i aria-hidden="true" class="fas fa-columns"></i> Design Comparison Workspace
           </h3>
           <button onclick="clearComparison()" class="text-xs font-medium text-red-400 hover:underline bg-red-500/10 border border-red-500/20 px-2.5 py-1 rounded-xl transition">
             Clear Matrix

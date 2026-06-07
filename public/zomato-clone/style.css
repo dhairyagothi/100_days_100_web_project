@@ -1,0 +1,654 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+
+body {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+}
+
+.main {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    background-image: url("Images/96ee551279c55efe9f0ff247d369ec97.jpg");
+    background-size: cover;
+}
+
+.container {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 4%;
+    
+
+}
+
+.c1 {
+    height: 55%;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.6rem;
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: "Lexend", sans-serif;
+    color: rgba(18, 1, 1, 0.959);
+    font-size: 2rem;
+    font-weight: 800;
+
+}
+
+.c2 {
+    width: 70%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+.google {
+    height: 100%;
+    width: 40%;
+    background-color: rgb(196, 54, 54);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: row;
+    font-family: "Lexend", sans-serif;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    padding: 1%;
+    border-radius: 0.5rem;
+    border: 1px white solid;
+    transition: 0.3s;
+    gap: 1.5rem;
+}
+
+
+.logo {
+    width: 10%;
+    height: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    font-size: 1.5rem;
+}
+
+.text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.google:hover {
+    transform: scale(1.15);
+    cursor: pointer;
+}
+
+.app {
+    height: 100%;
+    width: 40%;
+    background-color: rgb(196, 54, 54);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: row;
+    font-family: "Lexend", sans-serif;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    padding: 1%;
+    border-radius: 0.5rem;
+    border: 1px white solid;
+    transition: 0.3s;
+    gap: 1.5rem;
+}
+
+.app:hover {
+    transform: scale(1.15);
+    cursor: pointer;
+}
+
+.c3 {
+    width: 20%;
+    height: 10%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    font-family: "Lexend", sans-serif;
+    animation: scroll 1s infinite;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+}
+
+.main2 {
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    background-color: rgb(255, 255, 255);
+}
+
+.burger {
+    height: 35%;
+    width: 15%;
+    background-image: url("https://b.zmtcdn.com/data/o2_assets/110a09a9d81f0e5305041c1b507d0f391743058910.png");
+    background-size: cover;
+    position: absolute;
+    top: 50%;
+    left: 20%;
+    transform: translate(-50%, -50%);
+    animation: float 3s ease-in-out infinite;
+}
+
+.momo {
+    height: 35%;
+    width: 15%;
+    background-image: url("https://b.zmtcdn.com/data/o2_assets/b4f62434088b0ddfa9b370991f58ca601743060218.png");
+    background-size: cover;
+    position: absolute;
+    top: 25%;
+    left: 80%;
+    transform: translate(-50%, -50%);
+    animation: float 3s ease-in-out infinite;
+
+}
+
+@keyframes float {
+    0% {
+        transform: translate(-50%, -50%) translateY(0);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) translateY(-20px);
+    }
+}
+
+.pizza {
+    height: 35%;
+    width: 15%;
+    background-image: url("https://b.zmtcdn.com/data/o2_assets/316495f4ba2a9c9d9aa97fed9fe61cf71743059024.png");
+    background-size: cover;
+    position: absolute;
+    top: 75%;
+    left: 80%;
+    transform: translate(-50%, -50%);
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translate(-50%, -50%) translateY(0);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) translateY(-20px);
+    }
+}
+
+.better {
+    height: 45%;
+    width: 35%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.food {
+    font-family: "Lexend", sans-serif;
+    color: rgb(239, 79, 95);
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+.decade {
+    font-family: "Lexend", sans-serif;
+    color: rgb(103, 101, 101);
+    font-size: 1.02rem;
+    font-weight: 300;
+}
+
+
+.city {
+    height: 15%;
+    width: 45%;
+    left: 50%;
+    top: 88%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    gap: 0.5rem;
+    padding: 0.5rem;
+
+    box-sizing: border-box;
+}
+
+.restaurants {
+    height: 100%;
+    width: 35%;
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    font-family: "Lexend", "sans-serif";
+    font-size: 0.8rem;
+    color: rgb(118, 124, 143);
+    gap: 5.5rem;
+
+}
+
+.cities {
+    height: 100%;
+    width: 25%;
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    font-family: "Lexend", "sans-serif";
+    font-size: 0.8rem;
+    color: rgb(118, 124, 143);
+    gap: 2.6rem;
+}
+
+.delivered {
+    height: 100%;
+    width: 35%;
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    font-family: "Lexend", "sans-serif";
+    font-size: 0.8rem;
+    color: rgb(118, 124, 143);
+}
+
+.res {
+    height: 100%;
+    width: 30%;
+    padding: 1rem;
+    box-sizing: border-box;
+    font-family: "Lexend", "sans-serif";
+    font-size: 0.8rem;
+    color: rgb(118, 124, 143);
+    display: flex;
+    align-items: start;
+    text-align: center;
+    flex-direction: column;
+}
+
+.logo2 {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.res2 {
+    height: 100%;
+    width: 60rem;
+    padding: 1rem;
+    box-sizing: border-box;
+    font-family: "Lexend", "sans-serif";
+    font-size: 0.8rem;
+    color: rgb(118, 124, 143);
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+}
+
+.main3 {
+    height: 180vh;
+    width: 96.5vw;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 0.5rem;
+}
+
+.data {
+    height: 33%;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem;
+    box-sizing: border-box;
+
+}
+
+
+.eternal {
+    width: 100%;
+    height: 35%;
+    font-family: "Lexend", sans-serif;
+    color: rgb(0, 0, 0);
+    font-size: 2rem;
+    font-weight: 800;
+    display: flex;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+.power {
+    width: 100%;
+    height: 55%;
+    font-family: "Lexend", sans-serif;
+    color: rgb(118, 124, 143);
+    font-size: 2rem;
+    font-weight: 800;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 400;
+
+}
+
+
+.cards {
+    height: 40%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 2.5rem;
+    padding: 0.5rem;
+
+}
+
+.zomato-card {
+    height: 100%;
+    width: 20%;
+    background-color: rgb(254, 226, 226);
+    border: 2px solid rgb(227, 136, 136);
+    border-radius: 2rem;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    box-sizing: border-box;
+    align-items: center;
+    border-radius: 2rem;
+    gap: 1.2rem;
+    transition: 0.3s;
+}
+
+.zomato-card:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.blinkit {
+    background-color: rgb(250, 236, 189);
+    border: 2px solid rgb(235, 213, 139);
+
+}
+
+.district {
+    background-color: rgb(223, 207, 255);
+    border: 2px solid rgb(201, 139, 235);
+
+}
+
+.hyperpure {
+    background-color: rgb(254 226 226);
+    border: 2px solid rgb(235, 139, 139);
+
+}
+
+
+.card {
+    height: 40%;
+    width: 70%;
+    background-color: aliceblue;
+    border-radius: 1rem;
+
+}
+
+.ca1 {
+    background-image: url("https://b.zmtcdn.com/data/o2_assets/d1eee2be61cf47e2332cb7c49475c0981739777714.png");
+    background-size: cover;
+}
+
+.ca2 {
+    background-image: url("https://b.zmtcdn.com/data/o2_assets/071cb96db84f20eea3a39804e113bdee1739777655.png");
+    background-size: cover;
+
+}
+
+.ca3 {
+    background-image: url("https://b.zmtcdn.com/data/o2_assets/b750e7c0113f10cc6b3cec658c7229d71770799109.png");
+    background-size: cover;
+
+}
+
+.ca4 {
+    background-image: url("https://b.zmtcdn.com/data/o2_assets/9207cd0fc68c4ac55cfd3bfa00c02a351739777699.png");
+    background-size: cover;
+
+}
+
+.t1 {
+    height: 10%;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Lexend", sans-serif;
+    color: rgb(0, 0, 0);
+    font-size: 1.2rem;
+}
+
+.t2 {
+    height: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: rgb(0, 0, 0);
+    font-family: "Lexend", sans-serif;
+    font-size: 0.83rem;
+}
+
+.t4 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: "Lexend", sans-serif;
+    font-size: 0.8rem;
+    color: black;
+}
+
+
+.main4 {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    box-sizing: border-box;
+    color: white;
+    background-color: black;
+}
+
+.end {
+    width: 90%;
+    height: 95%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.heading {
+    width: 100%;
+    height: 15%;
+    box-sizing: border-box;
+    font-family: "Lexend", sans-serif;
+    display: flex;
+    text-align: start;
+    align-items: center;
+    font-size: 3.5rem;
+    font-style: italic;
+    font-weight: 800;
+}
+
+.element {
+    width: 100%;
+    height: 60%;
+    display: flex;
+    flex-direction: row;
+    text-align: start;
+    justify-content: center;
+    gap: 2rem;
+    line-height: 2rem;
+    font-size: 1.1rem;
+    font-family: "Lexend", sans-serif;
+    color: rgb(56, 57, 57)
+}
+
+.e1 span:hover {
+    color: white;
+    cursor: pointer;
+}
+
+.e1 {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    height: 100%;
+    gap: 1rem;
+}
+
+
+.social {
+    width: 100%;
+    height: 10%;
+}
+
+.logos {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    gap: 0.2rem;
+    padding-left: 0.3rem;
+    padding-right: 2rem;
+
+}
+
+.l1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15%;
+    height: 100%;
+    background-color: white;
+    border-radius: 2rem;
+    font-size: 0.7rem;
+    color: black;
+}
+
+
+.google2 {
+    width: 80%;
+    background-color: rgb(196, 54, 54);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: row;
+    font-family: "Lexend", sans-serif;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    padding: 1.5%;
+    border-radius: 0.5rem;
+    border: 1px white solid;
+    transition: 0.3s;
+    gap: 1rem;
+}
+
+.app2 {
+    width: 80%;
+    background-color: rgb(196, 54, 54);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: row;
+    font-family: "Lexend", sans-serif;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    padding: 1.5%;
+    border-radius: 0.5rem;
+    border: 1px white solid;
+    transition: 0.3s;
+    gap: 1.5rem;
+}
+
+.google2:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+.app2:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+.text9 {
+    display: flex;
+    flex-direction: column;
+}
+
+hr {
+    width: 100%;
+    background-color: rgb(56, 57, 57)
+}
+
+.footer {
+    width: 100%;
+    height: 30%;
+    font-size: 0.9rem;
+    display: flex;
+    text-align: start;
+    flex-direction: column;
+    color: rgb(56, 57, 57)
+}

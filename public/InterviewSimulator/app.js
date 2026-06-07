@@ -610,18 +610,30 @@ function evaluateLocalConfidence() {
   const answerEvaluations = state.questions.map((question, index) =>
     evaluateLocalAnswerRelevance(question, answers[index], index)
   );
-  
   const wordCounts = answers.map(getWordCount);
-  const unansweredCount = answers.filter((answer) => answer.trim().length === 0).length;
-  const lowEffortCount = answers.filter((answer) => answer.trim() && isLowEffortAnswer(answer)).length;
-  const averageRelevanceScore = answerEvaluations.reduce((sum, eval) => sum + eval.relevanceScore, 0) / totalQuestions;
-  const meaningfulCount = Math.max(totalQuestions - unansweredCount - lowEffortCount, 0);
-  const averageWordCount = wordCounts.reduce((sum, count) => sum + count, 0) / totalQuestions;
-  
+  const unansweredCount = answers.filter(
+    (answer) => answer.trim().length === 0
+  ).length;
+  const lowEffortCount = answers.filter(
+    (answer) => answer.trim() && isLowEffortAnswer(answer)
+  ).length;
+  const averageRelevanceScore =
+    answerEvaluations.reduce(
+      (sum, evaluation) => sum + evaluation.relevanceScore,
+      0
+    ) / totalQuestions;
+  const meaningfulCount = Math.max(
+    totalQuestions - unansweredCount - lowEffortCount,
+    0
+  );
+  const averageWordCount =
+    wordCounts.reduce((sum, count) => sum + count, 0) / totalQuestions;
   const lowEffortPercent = lowEffortCount / totalQuestions;
   const unansweredPercent = unansweredCount / totalQuestions;
   const meaningfulPercent = meaningfulCount / totalQuestions;
 
+  // Local fallback scoring blends answer depth, answer quality, stress, and
+  // unanswered questions so confidence is never derived from stress alone.
   const lengthScore = Math.min(averageWordCount * 2, 45);
   const qualityScore = meaningfulPercent * 20;
   const relevanceScore = averageRelevanceScore * 0.25;
@@ -669,6 +681,11 @@ function evaluateLocalAnswerRelevance(question, answer, index) {
       improvementSuggestions: ["Ensure you provide at least a basic answer rather than leaving it blank."],
       sampleStrongAnswer: "A strong answer would directly address the question with technical depth and practical examples.",
       relevanceScore: 0
+      relevanceScore: 0,
+      correctnessScore: 0,
+      answeredQuestion: false,
+      feedback:
+        'No answer was recorded, so this question could not be evaluated.',
     };
   }
 
@@ -681,6 +698,11 @@ function evaluateLocalAnswerRelevance(question, answer, index) {
       improvementSuggestions: ["Avoid very short or low-effort answers. Elaborate on your points."],
       sampleStrongAnswer: "A strong answer would directly address the question with technical depth and practical examples.",
       relevanceScore: 0
+      relevanceScore: 0,
+      correctnessScore: 0,
+      answeredQuestion: false,
+      feedback:
+        'The response looks too short or repetitive to answer the question.',
     };
   }
 
