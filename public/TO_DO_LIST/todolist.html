@@ -380,9 +380,8 @@
 
       // ─── Render Kanban Board ───────────────────────────────────────────────
       function renderKanban() {
-        document
-          .querySelectorAll(".kanban-column-drop-zone")
-          .forEach((zone) => (zone.innerHTML = ""));
+        const zones = document.querySelectorAll(".kanban-column-drop-zone");
+        zones.forEach((zone) => (zone.innerHTML = ""));
 
         tasks.forEach((task) => {
           const laneDropTarget = document.getElementById(task.status);
@@ -442,6 +441,17 @@
           });
 
           laneDropTarget.appendChild(card);
+        });
+
+        // Add visual empty state placeholders if lanes contain no elements
+        zones.forEach((zone) => {
+          if (zone.children.length === 0) {
+            const emptyCard = document.createElement("div");
+            emptyCard.className = "kanban-empty-lane-placeholder";
+            emptyCard.style.cssText = "text-align: center; padding: 24px 12px; border: 2px dashed rgba(255,255,255,0.06); border-radius: 8px; color: rgba(255,255,255,0.25); font-size: 0.8rem; pointer-events: none; margin: 8px 0;";
+            emptyCard.innerHTML = `<p>✨ Lane is empty</p>`;
+            zone.appendChild(emptyCard);
+          }
         });
 
         calculateSystemCounters();
