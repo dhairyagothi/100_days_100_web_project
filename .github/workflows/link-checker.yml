@@ -1,0 +1,28 @@
+name: Link Checker
+
+on:
+  push:
+    branches:
+      - Main
+  pull_request:
+    branches:
+      - Main
+  schedule:
+    - cron: "0 0 * * 0" # Runs every Sunday at midnight
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run Link Checker
+        run: node scripts/check-links.js
+        env:
+          NODE_ENV: test
