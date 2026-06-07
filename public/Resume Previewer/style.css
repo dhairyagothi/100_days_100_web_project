@@ -1,0 +1,393 @@
+/* ── Design tokens ───────────────────────────────────────────── */
+:root {
+  --bg-app: #0f1419;
+  --bg-pane: #1a222d;
+  --bg-editor: #121820;
+  --border: #2a3544;
+  --text: #e8edf4;
+  --text-muted: #8b9cb3;
+  --accent: #3d9cf5;
+  --accent-hover: #5aadff;
+  --resume-bg: #ffffff;
+  --resume-text: #1a1f26;
+  --resume-muted: #4a5568;
+  --resume-accent: #1e4d7b;
+  --font-ui: "DM Sans", system-ui, sans-serif;
+  --font-resume: "Source Serif 4", Georgia, serif;
+  --toolbar-h: 56px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-ui);
+  background: var(--bg-app);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Toolbar ─────────────────────────────────────────────────── */
+.toolbar {
+  flex: 0 0 var(--toolbar-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-pane);
+  gap: 1rem;
+}
+
+.toolbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toolbar-brand h1 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.logo-mark {
+  color: var(--accent);
+  font-size: 0.75rem;
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.template-group {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding-right: 0.5rem;
+  border-right: 1px solid var(--border);
+  margin-right: 0.25rem;
+}
+
+.toolbar-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-right: 0.25rem;
+}
+
+.btn {
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+  border-color: var(--border);
+}
+
+.btn-ghost:hover {
+  background: var(--bg-editor);
+  color: var(--text);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+/* ── Split workspace ─────────────────────────────────────────── */
+.workspace {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 4px 1fr;
+  min-height: 0;
+}
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+
+.pane-editor {
+  background: var(--bg-editor);
+}
+
+.pane-preview {
+  background: #2a3544;
+  overflow: auto;
+}
+
+.pane-divider {
+  background: var(--border);
+}
+
+.pane-header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.pane-header h2 {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.save-status {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.save-status.is-saving {
+  color: var(--accent);
+}
+
+.save-status.is-saved {
+  color: #5cb87a;
+}
+
+/* ── Editor ──────────────────────────────────────────────────── */
+.editor {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  padding: 1rem 1.25rem;
+  border: none;
+  resize: none;
+  background: transparent;
+  color: var(--text);
+  font-family: "Consolas", "Cascadia Code", "SF Mono", monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  outline: none;
+}
+
+.editor::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+/* ── Resume preview ──────────────────────────────────────────── */
+.resume {
+  font-family: var(--font-resume);
+  font-size: 10.5pt;
+  line-height: 1.45;
+  color: var(--resume-text);
+  background: var(--resume-bg);
+  max-width: 8.5in;
+  margin: 1.5rem auto;
+  padding: 0.65in 0.75in;
+  min-height: 11in;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+.resume-placeholder {
+  color: var(--resume-muted);
+  font-style: italic;
+  text-align: center;
+  margin: 3rem 0;
+}
+
+.resume h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 0.15rem;
+  letter-spacing: -0.02em;
+  color: var(--resume-accent);
+  line-height: 1.2;
+}
+
+.resume h2 {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--resume-accent);
+  margin: 1.1rem 0 0.4rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 1.5px solid var(--resume-accent);
+}
+
+.resume h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0.6rem 0 0.2rem;
+}
+
+.resume p {
+  margin: 0.35rem 0;
+  color: var(--resume-text);
+}
+
+.resume strong {
+  font-weight: 600;
+}
+
+.resume a {
+  color: var(--resume-accent);
+  text-decoration: none;
+}
+
+.resume a:hover {
+  text-decoration: underline;
+}
+
+.resume ul {
+  margin: 0.25rem 0 0.5rem;
+  padding-left: 1.15rem;
+}
+
+.resume li {
+  margin-bottom: 0.2rem;
+}
+
+.resume li::marker {
+  color: var(--resume-accent);
+}
+
+.resume .contact-line {
+  font-size: 0.9rem;
+  color: var(--resume-muted);
+  margin-bottom: 0.5rem;
+}
+
+.resume .contact-line strong {
+  color: var(--resume-text);
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  body {
+    overflow: auto;
+  }
+
+  .workspace {
+    grid-template-columns: 1fr;
+    grid-template-rows: 45vh 4px 1fr;
+  }
+
+  .pane-divider {
+    height: 4px;
+    width: 100%;
+  }
+
+  .resume {
+    margin: 1rem;
+    min-height: auto;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  }
+}
+
+/* ── Print / PDF export ──────────────────────────────────────── */
+@page {
+  size: letter;
+  margin: 0.5in 0.6in;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  html,
+  body {
+    height: auto;
+    overflow: visible;
+    background: #fff;
+  }
+
+  .workspace {
+    display: block;
+  }
+
+  .pane-preview {
+    background: #fff;
+    overflow: visible;
+  }
+
+  .resume {
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+    max-width: none;
+    min-height: auto;
+    width: 100%;
+    font-size: 10pt;
+    page-break-inside: avoid;
+  }
+
+  .resume h1 {
+    font-size: 22pt;
+    page-break-after: avoid;
+  }
+
+  .resume h2 {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  .resume h3 {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  .resume ul,
+  .resume p {
+    orphans: 3;
+    widows: 3;
+  }
+
+  .resume li {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .resume a {
+    color: var(--resume-text);
+  }
+
+  .resume a::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: var(--resume-muted);
+  }
+}

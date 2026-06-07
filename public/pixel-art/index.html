@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Art Maker</title>
+    <style>
+        :root {
+            --bg-color: #f0f2f5;
+            --panel-color: #ffffff;
+            --border-color: #cccccc;
+            --grid-border: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            background-color: var(--panel-color);
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        input[type="number"] {
+            width: 60px;
+            padding: 6px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        input[type="color"] {
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button.rubber-btn {
+            background-color: #6c757d;
+        }
+
+        button.rubber-btn:hover {
+            background-color: #5a6268;
+        }
+
+        button.rubber-btn.active {
+            background-color: #e67e22;
+            transform: scale(0.95);
+            box-shadow: inset 0 3px 5px rgba(0,0,0,0.2);
+        }
+
+        button.clear-btn {
+            background-color: #dc3545;
+        }
+
+        button.clear-btn:hover {
+            background-color: #bd2130;
+        }
+
+        .canvas-container {
+            background-color: var(--panel-color);
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            max-width: 90vw;
+            max-height: 70vh;
+            overflow: auto;
+        }
+
+        #pixel-grid {
+            display: grid;
+            background-color: #fff;
+            user-select: none;
+        }
+
+        .cell {
+            border-bottom: 1px solid var(--grid-border);
+            border-right: 1px solid var(--grid-border);
+            box-sizing: border-box;
+            background-color: transparent;
+        }
+
+        #pixel-grid {
+            border-top: 1px solid var(--grid-border);
+            border-left: 1px solid var(--grid-border);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Pixel Art Maker</h1>
+
+    <div class="controls">
+        <div class="control-group">
+            <label for="width-input">Width:</label>
+            <input type="number" id="width-input" value="16" min="1" max="64">
+        </div>
+        <div class="control-group">
+            <label for="height-input">Height:</label>
+            <input type="number" id="height-input" value="16" min="1" max="64">
+        </div>
+        <div class="control-group">
+            <button id="size-btn">Regenerate Grid</button>
+        </div>
+        <div class="control-group">
+            <label for="color-picker">Color:</label>
+            <input type="color" id="color-picker" value="#000000">
+        </div>
+        <div class="control-group">
+            <button id="rubber-btn" class="rubber-btn">Rubber</button>
+        </div>
+        <div class="control-group">
+            <button id="clear-btn" class="clear-btn">Clear Canvas</button>
+        </div>
+    </div>
+
+    <div class="canvas-container">
+        <div id="pixel-grid"></div>
+    </div>
+
+    <script>
+        const grid = document.getElementById('pixel-grid');
+        const widthInput = document.getElementById('width-input');
+        const heightInput = document.getElementById('height-input');
+        const sizeBtn = document.getElementById('size-btn');
+        const colorPicker = document.getElementById('color-picker');
+        const rubberBtn = document.getElementById('rubber-btn');
+        const clearBtn = document.getElementById('clear-btn');
+
+        let isDrawing = false;
+        let isRubberMode = false;
+        const CELL_SIZE = 25;
+
+        function makeGrid() {
+            grid.innerHTML = '';
+            
+            const width = parseInt(widthInput.value) || 16;
+            const height = parseInt(heightInput.value) || 16;
+
+            grid.style.gridTemplateColumns = `repeat(${width}, ${CELL_SIZE}px)`;
+            grid.style.gridTemplateRows = `repeat(${height}, ${CELL_SIZE}px)`;
+
+            for (let i = 0; i < width * height; i++) {
+                const cell = document.createElement('div');
+                cell.classList.add('cell');
+                
+                cell.addEventListener('mousedown', (e) => {
+                    e.preventDefault();
+                    isDrawing = true;
+                    colorize(cell);
+                });
+
+                cell.addEventListener('mouseenter', () => {
+                    if (isDrawing) {
+                        colorize(cell);
+                    }
+                });
+
+                grid.appendChild(cell);
+            }
+        }
+
+        function colorize(element) {
+            if (isRubberMode) {
+                element.style.backgroundColor = 'transparent';
+            } else {
+                element.style.backgroundColor = colorPicker.value;
+            }
+        }
+
+        function clearGrid() {
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => cell.style.backgroundColor = 'transparent');
+        }
+
+        window.addEventListener('mouseup', () => {
+            isDrawing = false;
+        });
+
+        rubberBtn.addEventListener('click', () => {
+            isRubberMode = !isRubberMode;
+            rubberBtn.classList.toggle('active', isRubberMode);
+        });
+
+        colorPicker.addEventListener('input', () => {
+            isRubberMode = false;
+            rubberBtn.classList.remove('active');
+        });
+
+        sizeBtn.addEventListener('click', makeGrid);
+        clearBtn.addEventListener('click', clearGrid);
+
+        makeGrid();
+    </script>
+</body>
+</html>

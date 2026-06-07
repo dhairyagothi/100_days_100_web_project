@@ -1,22 +1,55 @@
-# Boredom Buster
+# ✨ Boredom Buster
 
-Beat the block and find your next adventure! Boredom Buster is a sleek, responsive web app that suggests activities based on your current vibe. Whether you want to learn something new, socialize with friends, or just find a free way to pass the time, this tool has you covered.
+> Beat the block. Discover your next adventure — instantly.
+
+A zero-dependency, single-page web app that suggests activities to cure boredom, with smart API fallback, persistent favourites, session history, and full dark/light mode.
+
+---
 
 ## Features
-- **Dynamic Activity Generation:** Fetches real world activity ideas instantly.
-- **Custom Filters:** Narrow down suggestions by Category, Group Size (Participants), and Budget.
-- **Modern UI/UX:** Features a stunning, fully responsive Glassmorphism design with an animated gradient background.
-- **Robust Error Handling:** Gracefully handles API mismatches and network disconnections.
 
-## Technologies Used
-- HTML
-- CSS
-- JavaScript
+- 🌙☀️ **Dark / Light Mode** — toggle anytime, preference persists via CSS variables
+- 🔍 **Smart 3-Stage API Fallback** — tries full filters → category only → random before giving up
+- 📚 **Local Activity Library** — 30 hand-curated activities across all 9 categories, used when the API is unavailable or returns no match
+- 🧡 **Favourites** — save activities and re-visit them; stored in `localStorage` so they survive page refresh
+- 🕓 **History** — tracks the last 20 activities found in the current session
+- 📋 **Copy to Clipboard** — one-click copy of the activity text
+- 🔔 **Toast Notifications** — non-intrusive slide-up messages for user feedback
+- 🔀 **Shuffle** — find another activity with the same filters instantly
+
+---
 
 ## How to Run
-1. Navigate to the `/public/BoredomBuster/` directory.
-2. Open `index.html` in a web browser.
-3. Enjoy the project!
 
-## Author
-@madhavcodes25
+No build step, no dependencies, no server needed.
+
+1. Clone or download the repository.
+2. Open `public/BordemBuster/index.html` directly in any modern browser.
+3. That's it — everything works offline thanks to the local activity library.
+
+---
+
+## File Structure
+
+```
+BordemBuster/
+├── index.html   — App markup, semantic HTML5
+├── style.css    — All styles, CSS variables for theming
+├── script.js    — App logic, API calls, state management
+└── README.md    — This file
+```
+
+---
+
+## API Credit
+
+Activities are sourced from the **[Bored API by Le Wagon](https://bored.api.lewagon.com)** — a free, open API for finding random activities.
+
+- Base URL: `https://bored.api.lewagon.com/api/activity`
+- Supports filters: `type`, `participants`, `price`, `minprice`, `maxprice`
+
+---
+
+## License
+
+MIT — free to use, modify, and distribute.

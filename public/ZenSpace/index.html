@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="cozy">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenSpace – Focus Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="noise"></div>
+    <div class="dashboard-container">
+
+        <main class="main-content">
+            <header class="brand">
+                <span class="brand-dot"></span>
+                <span class="brand-name">ZenSpace</span>
+                <div class="theme-toggle" id="theme-toggle" title="Toggle theme">
+                    <span>🌑</span><span>☀️</span>
+                </div>
+            </header>
+
+            <section class="timer-section">
+                <div class="timer-display">
+                    <svg class="progress-ring" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+                        <circle class="ring-bg" cx="110" cy="110" r="96" />
+                        <circle class="ring-fg" cx="110" cy="110" r="96" />
+                    </svg>
+                    <div class="timer-inner">
+                        <div id="countdown-text">25:00</div>
+                        <div class="timer-label">FOCUS</div>
+                    </div>
+                </div>
+                <div class="timer-controls">
+                    <button id="btn-start" class="btn btn-primary">▶ Start</button>
+                    <button id="btn-pause" class="btn">⏸ Pause</button>
+                    <button id="btn-reset" class="btn">↺ Reset</button>
+                </div>
+                <div class="session-picker">
+                    <button class="pill active" data-mins="25">Focus 25</button>
+                    <button class="pill" data-mins="5">Break 5</button>
+                    <button class="pill" data-mins="15">Long 15</button>
+                </div>
+            </section>
+
+            <section class="mixer-section">
+                <h2 class="section-title">Ambient Mixer</h2>
+                <div class="mixer-tracks">
+                    <div class="track-control">
+                        <span class="track-icon">🌧️</span>
+                        <div class="track-info">
+                            <span class="track-name">Rain</span>
+                            <input type="range" id="vol-rain" min="0" max="1" step="0.05" value="0">
+                        </div>
+                        <audio id="audio-rain" src="https://assets.mixkit.co/active_storage/sfx/2433/2433-84.wav" loop></audio>
+                    </div>
+                    <div class="track-control">
+                        <span class="track-icon">☕</span>
+                        <div class="track-info">
+                            <span class="track-name">Café</span>
+                            <input type="range" id="vol-cafe" min="0" max="1" step="0.05" value="0">
+                        </div>
+                        <audio id="audio-cafe" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" loop></audio>
+                    </div>
+                    <div class="track-control">
+                        <span class="track-icon">🌊</span>
+                        <div class="track-info">
+                            <span class="track-name">Ocean</span>
+                            <input type="range" id="vol-ocean" min="0" max="1" step="0.05" value="0">
+                        </div>
+                        <audio id="audio-ocean" src="https://assets.mixkit.co/active_storage/sfx/1246/1246-84.wav" loop></audio>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>Quick Notes</h3>
+                <span id="save-status" class="save-badge">●&nbsp;Saved</span>
+            </div>
+            <textarea id="notes-area" placeholder="Capture your thoughts, tasks, snippets…"></textarea>
+            <div class="sidebar-footer">
+                <button class="btn-clear" id="btn-clear-notes">Clear</button>
+                <span id="char-count">0 chars</span>
+            </div>
+        </aside>
+    </div>
+
+    <div class="toast" id="toast">🍅 Session complete! Time for a break.</div>
+    <script src="app.js"></script>
+</body>
+</html>

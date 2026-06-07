@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Water Intake Tracker</title>
+  <meta
+    name="description"
+    content="Track your daily water intake with goal setting, quick add buttons, progress visualization, and persistent storage."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <p class="eyebrow">Hydration Habit</p>
+      <h1>Daily Water Intake Tracker</h1>
+      <p class="intro">
+        Set a daily goal, log water quickly, and watch your progress animate across the day.
+        Your intake persists automatically in your browser.
+      </p>
+    </header>
+
+    <main>
+      <section class="tracker-card" aria-labelledby="tracker-heading">
+        <div class="card-header">
+          <div>
+            <p class="eyebrow">Daily goal</p>
+            <h2 id="tracker-heading">Water intake dashboard</h2>
+            <p class="card-copy">
+              Manage hydration with clear metrics, smart logging and a progress bar that moves as you drink.
+            </p>
+          </div>
+          <button type="button" id="resetBtn" class="ghost-btn">
+            Reset Daily Progress
+          </button>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-label">Goal</span>
+            <strong id="goalValue">0 ml</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Current Intake</span>
+            <strong id="intakeValue">0 ml</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Remaining</span>
+            <strong id="remainingValue">0 ml</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Completion</span>
+            <strong id="completionValue">0%</strong>
+          </div>
+        </div>
+
+        <div class="progress-panel">
+          <div class="progress-meta">
+            <p class="progress-label">Daily hydration progress</p>
+            <span id="percentageLabel">0%</span>
+          </div>
+          <div
+            class="progress-bar"
+            role="progressbar"
+            aria-labelledby="percentageLabel"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+            id="progressBar"
+          >
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <p class="completion-message" id="completionMessage" aria-live="polite"></p>
+        </div>
+
+        <div class="controls-grid">
+          <section class="control-panel" aria-labelledby="goal-form-heading">
+            <h3 id="goal-form-heading">Set daily goal</h3>
+            <form id="goalForm" class="goal-form">
+              <label for="goalInput">Goal in milliliters</label>
+              <input
+                type="number"
+                id="goalInput"
+                name="goalInput"
+                min="100"
+                step="100"
+                placeholder="e.g. 2000"
+                aria-describedby="goalHelp"
+              />
+              <small id="goalHelp">Choose a goal that matches your daily hydration plan.</small>
+              <button type="submit" class="primary-btn">Save goal</button>
+            </form>
+          </section>
+
+          <section class="control-panel" aria-labelledby="quick-add-heading">
+            <h3 id="quick-add-heading">Quick add water</h3>
+            <div class="button-group" role="group" aria-label="Quick water intake options">
+              <button type="button" class="water-button" data-amount="250">+250ml</button>
+              <button type="button" class="water-button" data-amount="500">+500ml</button>
+              <button type="button" class="water-button" data-amount="1000">+1000ml</button>
+            </div>
+          </section>
+
+          <section class="control-panel" aria-labelledby="custom-add-heading">
+            <h3 id="custom-add-heading">Add custom intake</h3>
+            <form id="customForm" class="custom-form">
+              <label for="customInput">Custom amount</label>
+              <div class="custom-input-group">
+                <input
+                  type="number"
+                  id="customInput"
+                  name="customInput"
+                  min="1"
+                  step="50"
+                  placeholder="100 ml"
+                />
+                <button type="submit" class="secondary-btn">Add</button>
+              </div>
+              <p class="hint-text">Add any amount not covered by quick buttons.</p>
+            </form>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
