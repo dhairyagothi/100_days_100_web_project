@@ -733,6 +733,197 @@ textarea:focus {
   padding-left: 14px;
 }
 
+/* Detailed Report Styles */
+.score-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.feedback-section {
+  margin-bottom: 32px;
+}
+
+.feedback-section h4 {
+  font-size: 1.25rem;
+  margin-bottom: 12px;
+  color: #fff;
+}
+
+
+.feedback-section p {
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.feedback-lists {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.feedback-lists h5, .learning-list h5 {
+  font-size: 1.05rem;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.strengths-list h5 { color: var(--success-color); }
+.improvements-list h5 { color: var(--warning-color); }
+.learning-list h5 { color: #3b82f6; }
+
+.feedback-lists ul {
+  list-style: none;
+  padding: 0;
+}
+
+.feedback-lists ul li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 8px;
+  color: var(--text-main);
+  line-height: 1.5;
+}
+
+.feedback-lists ul li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--text-muted);
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.learning-tag {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.detailed-review-card {
+  margin-bottom: 24px;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.q-number {
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #7c63ff;
+}
+
+.rating-badge {
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.rating-excellent { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+.rating-good { background: rgba(59, 130, 246, 0.15); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3); }
+.rating-fair { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
+.rating-poor { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+.review-q-text, .review-a-text {
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.review-a-text {
+  color: var(--text-muted);
+  border-left: 3px solid var(--border-color);
+  padding-left: 16px;
+}
+
+.review-eval-details {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+
+.detail-group {
+  margin-bottom: 16px;
+}
+
+.detail-group:last-child {
+  margin-bottom: 0;
+}
+
+.detail-group strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.detail-group.positive strong { color: var(--success-color); }
+.detail-group.negative strong { color: var(--danger-color); }
+.detail-group.info strong { color: var(--warning-color); }
+
+.detail-group ul {
+  list-style: none;
+  padding-left: 24px;
+}
+
+.detail-group ul li {
+  position: relative;
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+  color: var(--text-main);
+}
+
+.detail-group ul li::before {
+  content: '-';
+  position: absolute;
+  left: -14px;
+  color: var(--text-muted);
+}
+
+.sample-answer {
+  background: rgba(124, 99, 255, 0.1);
+  border: 1px solid rgba(124, 99, 255, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.sample-answer strong {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #7c63ff;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.sample-answer p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-main);
+}
+
 .hidden {
   display: none !important;
 }
@@ -800,6 +991,9 @@ button:disabled {
   .stats {
     grid-template-columns: repeat(2, 1fr);
     width: 100%;
+  }
+  .feedback-lists {
+    grid-template-columns: 1fr;
   }
   .interviewer {
     flex-direction: column;

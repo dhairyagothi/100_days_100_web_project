@@ -1,313 +1,233 @@
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Arial, Helvetica, sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-body{
-  overflow:hidden;
-  background:#04131f;
+body {
+  overflow: hidden;
+  background: #04131f;
+  height: 100vh;
+  width: 100vw;
 }
 
-/* BACK BUTTON */
-
-.back-btn{
-  position:absolute;
-
-  top:20px;
-  left:20px;
-
-  z-index:500;
-
-  width:52px;
-  height:52px;
-
-  display:flex;
-  justify-content:center;
-  align-items:center;
-
-  border:none;
-  border-radius:50%;
-
-  cursor:pointer;
-
-  font-size:34px;
-  font-weight:bold;
-
-  color:#3b82f6;
-
-  background:#1e293b;
-
-  border:1px solid #3b82f6;
-
-  transition:all 0.2s ease;
+.back-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 500;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 34px;
+  font-weight: bold;
+  color: #3b82f6;
+  background: #1e293b;
+  border: 1px solid #3b82f6;
+  border-radius: 50%;
+  transition: all 0.2s ease;
 }
 
-.back-btn:hover{
-  background:#3b82f6;
-  color:#fff;
-  transform:scale(1.08);
+.back-btn:hover {
+  background: #3b82f6;
+  color: #fff;
+  transform: scale(1.08);
 }
 
-/* GITHUB BUTTON */
-
-.github-link{
-  position:absolute;
-
-  top:20px;
-  right:20px;
-
-  z-index:500;
-
-  width:56px;
-  height:56px;
-
-  display:flex;
-  justify-content:center;
-  align-items:center;
-
-  border-radius:50%;
-
-  text-decoration:none;
-
-  color:white;
-
-  background:
-    rgba(0,0,0,0.25);
-
-  border:1px solid #00d9ff;
-
-  backdrop-filter:blur(8px);
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+.github-link {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 500;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  text-decoration: none;
+  color: white;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid #00d9ff;
+  backdrop-filter: blur(8px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.github-link:hover{
-  transform:scale(1.08);
-
-  box-shadow:
-    0 0 18px rgba(0,217,255,0.6);
+.github-link:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 18px rgba(0, 217, 255, 0.6);
 }
 
-.github-link svg{
-  width:28px;
-  height:28px;
-  fill:white;
+.github-link svg {
+  width: 28px;
+  height: 28px;
+  fill: white;
 }
 
-/* START SCREEN */
-
-.start-screen{
-  position:absolute;
-  inset:0;
-
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-
-  z-index:100;
-
-  color:white;
-
-  background:
-    radial-gradient(circle at center, #15344c 0%, #050d16 80%);
+.start-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  color: white;
+  background: radial-gradient(circle at center, #15344c 0%, #050d16 80%);
 }
 
-.start-screen h1{
-  font-size:90px;
-
-  margin-bottom:50px;
-
-  letter-spacing:4px;
-
-  text-shadow:
-    0 0 20px rgba(255,255,255,0.2);
+.start-screen h1 {
+  font-size: 90px;
+  margin-bottom: 50px;
+  letter-spacing: 4px;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
 }
 
-.difficulty-box{
-  display:flex;
-  gap:25px;
-
-  margin-bottom:50px;
+.difficulty-box {
+  display: flex;
+  gap: 25px;
+  margin-bottom: 50px;
 }
 
-.difficulty{
-  padding:18px 42px;
-
-  border-radius:14px;
-
-  border:2px solid #00d9ff;
-
-  background:#0b1f30;
-
-  color:white;
-
-  cursor:pointer;
-
-  font-size:20px;
-  font-weight:bold;
-
-  transition:
-    transform 0.2s ease,
-    background 0.2s ease;
+.difficulty {
+  padding: 18px 42px;
+  border-radius: 14px;
+  border: 2px solid #00d9ff;
+  background: #0b1f30;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  transition: transform 0.2s ease, background 0.2s ease;
 }
 
-.difficulty:hover{
-  transform:translateY(-2px);
+.difficulty:hover {
+  transform: translateY(-2px);
 }
 
-.difficulty.active{
-  background:#17c6e8;
-  color:black;
+.difficulty.active {
+  background: #17c6e8;
+  color: black;
 }
 
-.start-btn{
-  padding:22px 65px;
-
-  border:none;
-  border-radius:16px;
-
-  cursor:pointer;
-
-  font-size:24px;
-  font-weight:bold;
-
-  background:#00f59d;
-  color:black;
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+.start-btn {
+  padding: 22px 65px;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: bold;
+  background: #00f59d;
+  color: black;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.start-btn:hover{
-  transform:translateY(-2px);
-
-  box-shadow:
-    0 0 25px rgba(0,245,157,0.5);
+.start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(0, 245, 157, 0.5);
 }
 
-/* CANVAS */
-
-canvas{
-  display:block;
-
-  background:
-    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),
-    radial-gradient(circle at center, #17384f 0%, #07121d 70%);
-
-  background-size:
-    40px 40px,
-    40px 40px,
-    100% 100%;
+canvas {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+              radial-gradient(circle at center, #17384f 0%, #07121d 70%);
+  background-size: 40px 40px, 40px 40px, 100% 100%;
 }
 
-/* GAME UI */
-
-.ui{
-  position:absolute;
-
-  display:none;
-
-  top:20px;
-  left:110px;
-
-  z-index:100;
-
-  color:white;
-
-  font-size:28px;
-  line-height:1.5;
-
-  text-shadow:
-    0 0 12px rgba(255,255,255,0.15);
+.ui {
+  position: absolute;
+  display: none;
+  flex-direction: column;
+  top: 20px;
+  left: 110px;
+  z-index: 100;
+  color: white;
+  font-size: 28px;
+  line-height: 1.5;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
 }
 
-/* GAME OVER */
-
-.gameover{
-  position:absolute;
-  inset:0;
-
-  display:none;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-
-  background:rgba(0,0,0,0.82);
-
-  z-index:300;
-
-  color:white;
+#targetWord {
+  color: #00d9ff;
+  font-weight: bold;
 }
 
-.gameover h1{
-  font-size:110px;
-
-  margin-bottom:30px;
-
-  letter-spacing:4px;
+#score {
+  color: #00f59d;
+  font-weight: bold;
 }
 
-.gameover button{
-  padding:18px 55px;
-
-  border:none;
-  border-radius:14px;
-
-  cursor:pointer;
-
-  font-size:22px;
-  font-weight:bold;
-
-  background:#17c6e8;
-  color:black;
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+.gameover {
+  position: absolute;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.82);
+  z-index: 300;
+  color: white;
 }
 
-.gameover button:hover{
-  transform:translateY(-2px);
-
-  box-shadow:
-    0 0 25px rgba(23,198,232,0.5);
+.gameover h1 {
+  font-size: 110px;
+  margin-bottom: 30px;
+  letter-spacing: 4px;
 }
 
-/* RESPONSIVE */
+.gameover button {
+  padding: 18px 55px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  font-size: 22px;
+  font-weight: bold;
+  background: #17c6e8;
+  color: black;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
-@media(max-width:900px){
+.gameover button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(23, 198, 232, 0.5);
+}
 
-  .start-screen h1{
-    font-size:52px;
-    text-align:center;
-    padding:0 20px;
+@media (max-width: 900px) {
+  .start-screen h1 {
+    font-size: 52px;
+    text-align: center;
+    padding: 0 20px;
   }
 
-  .difficulty-box{
-    flex-direction:column;
+  .difficulty-box {
+    flex-direction: column;
   }
 
-  .difficulty{
-    width:220px;
+  .difficulty {
+    width: 220px;
   }
 
-  .start-btn{
-    width:240px;
+  .start-btn {
+    width: 240px;
   }
 
-  .ui{
-    left:85px;
-    font-size:22px;
+  .ui {
+    left: 85px;
+    font-size: 22px;
   }
 
-  .gameover h1{
-    font-size:60px;
+  .gameover h1 {
+    font-size: 60px;
   }
 }

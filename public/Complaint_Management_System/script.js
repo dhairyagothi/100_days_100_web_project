@@ -132,15 +132,18 @@ class ComplaintApp {
     }
 
     toggleTheme() {
-        const current = document.body.getAttribute('data-theme');
-        if (current === 'dark') {
-            document.body.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
-        } else {
-            document.body.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-        }
+    const current = document.body.getAttribute('data-theme');
+    const btn = document.getElementById('theme-toggle');
+    if (current === 'dark') {
+        document.body.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+        if (btn) btn.innerHTML = '<i class="ph ph-sun"></i> Dark Mode';
+    } else {
+        document.body.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+        if (btn) btn.innerHTML = '<i class="ph ph-moon"></i> Light Mode';
     }
+}
 
     showToast(title, message, type = 'success') {
         this.toastTitle.textContent = title;
