@@ -1,0 +1,352 @@
+@import url("https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@700;900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #0a0a0f;
+  font-family: "Nunito", sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  user-select: none;
+}
+
+#bg-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+#game-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  cursor: crosshair;
+}
+
+/* HUD */
+#hud {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+#score-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#score-label {
+  font-family: "Bangers", cursive;
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: #ffcc00;
+  text-shadow: 0 0 10px #ffcc0088;
+}
+
+#score {
+  font-family: "Bangers", cursive;
+  font-size: 52px;
+  color: #fff;
+  text-shadow:
+    0 0 20px #ffcc00aa,
+    2px 2px 0 #000;
+  line-height: 1;
+  transition: transform 0.1s;
+}
+
+#score.pop {
+  transform: scale(1.3);
+}
+
+#lives-box {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.life-icon {
+  font-size: 26px;
+  filter: drop-shadow(0 0 6px #ff4444);
+  transition: all 0.3s;
+}
+
+.life-icon.lost {
+  filter: grayscale(1) opacity(0.3);
+  transform: scale(0.8);
+}
+
+#level-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#level-label {
+  font-family: "Bangers", cursive;
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: #00ffaa;
+  text-shadow: 0 0 10px #00ffaa88;
+}
+
+#level {
+  font-family: "Bangers", cursive;
+  font-size: 52px;
+  color: #fff;
+  text-shadow:
+    0 0 20px #00ffaaaa,
+    2px 2px 0 #000;
+  line-height: 1;
+}
+
+/* Pause Button */
+#pause-btn {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 20px;
+  color: #fff;
+  cursor: pointer;
+  pointer-events: all;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s;
+  display: none;
+}
+
+#pause-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: #ffcc00;
+  transform: translateX(-50%) scale(1.1);
+}
+
+/* Overlay Screens */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(10, 10, 20, 0.92) 0%,
+    rgba(0, 0, 0, 0.97) 100%
+  );
+  backdrop-filter: blur(4px);
+}
+
+.overlay-title {
+  font-family: "Bangers", cursive;
+  font-size: clamp(56px, 10vw, 100px);
+  letter-spacing: 4px;
+  background: linear-gradient(135deg, #ffcc00, #ff6600, #ff0044);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  margin-bottom: 8px;
+  animation: titleFloat 3s ease-in-out infinite;
+  padding: 0 20px;
+}
+
+@keyframes titleFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+
+  50% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+}
+
+.overlay-sub {
+  font-size: 17px;
+  color: #aaa;
+  margin-bottom: 40px;
+  letter-spacing: 1px;
+}
+
+.fruits-deco {
+  font-size: 48px;
+  margin-bottom: 20px;
+  animation: spin 8s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.btn {
+  font-family: "Bangers", cursive;
+  font-size: 26px;
+  letter-spacing: 3px;
+  padding: 14px 48px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #ffcc00, #ff6600);
+  color: #000;
+  box-shadow: 0 6px 30px #ff660066;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 40px #ff660099;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+#final-score {
+  font-family: "Bangers", cursive;
+  font-size: 80px;
+  color: #ffcc00;
+  text-shadow: 0 0 40px #ffcc0099;
+  line-height: 1;
+  margin: 10px 0;
+}
+
+#high-score-label {
+  font-size: 16px;
+  color: #00ffaa;
+  margin-bottom: 30px;
+  letter-spacing: 2px;
+}
+
+/* Pause overlay */
+#pause-overlay .overlay-title {
+  font-size: clamp(60px, 12vw, 120px);
+  background: linear-gradient(135deg, #00ffaa, #00ccff);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Combo display */
+#combo-display {
+  position: fixed;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  font-family: "Bangers", cursive;
+  font-size: 26px;
+  color: #ffcc00;
+  text-shadow:
+    0 0 10px #ffcc00,
+    1px 1px 0 #000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  white-space: nowrap;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 2px 14px;
+  border-radius: 20px;
+}
+
+/* Instructions */
+#instructions {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 1px;
+  z-index: 10;
+  pointer-events: none;
+  text-align: center;
+}
+
+/* Level up flash */
+#level-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+}
+
+#level-flash-text {
+  font-family: "Bangers", cursive;
+  font-size: 90px;
+  color: #00ffaa;
+  text-shadow: 0 0 60px #00ffaa;
+  letter-spacing: 4px;
+}
+
+.back-home {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 50;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #1e293b;
+  color: #3b82f6;
+  text-decoration: none;
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
+  border: 1px solid #3b82f6;
+  transition: all 0.2s ease;
+}
+
+.back-home:hover {
+  background: #3b82f6;
+  color: #fff;
+}
