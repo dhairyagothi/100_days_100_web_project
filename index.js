@@ -338,6 +338,7 @@ function buildProjectCardHTML({
         .split(/\s+/)
         .filter((t) => t && t !== SOURCE_ONLY_TAG);
 
+ 
   // SECURITY: escapeHTML on every tag token prevents <script> / event-handler
   // injection via the techStack field in projects.json.
   const tagsHTML = tagsArray
@@ -368,21 +369,38 @@ function buildProjectCardHTML({
   // SECURITY: href values come from sanitizeUrl() — not raw contributor data.
   // data-id uses escapeHTML so it cannot break out of the attribute.
   const primaryLink = sourceOnly
-    ? `<a href="${safeSourceUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source of ${safeName} (opens in a new tab)">
-                        <i class="fab fa-github" aria-hidden="true"></i> Source
+    ? `<a href="${safeSourceUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()">
+                        <i class="fab fa-github"></i> Source
                     </a>`
-    : `<a href="${safeDemoUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View demo of ${safeName} (opens in a new tab)">
-                        Demo <i class="fas fa-arrow-right" aria-hidden="true"></i>
+    : `<a href="${safeDemoUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()">
+                        Demo <i class="fas fa-arrow-right"></i>
                     </a>`;
 
   const codeLink = sourceOnly
     ? ""
-    : `<a href="${safeSourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source code of ${safeName} on GitHub (opens in a new tab)">
-                        <i class="fab fa-github" aria-hidden="true"></i> Code
+    : `<a href="${safeSourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()">
+                        <i class="fab fa-github"></i> Code
                     </a>`;
 
-return {
+
+  // PERFORMANCE OPTIMIZATION: Dynamic clean paths for project thumbnails inside lazy loader
+  const projectFolder = sourceUrl.substring(sourceUrl.lastIndexOf('/') + 1);
+  const thumbnailUrl = `public/${projectFolder}/thumbnail.png`;
+
+  return {
+
+
+
     html: `
+            <div class="card-thumbnail-wrapper" style="background: #15152e; min-height: 140px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 6px; margin-bottom: 12px;">
+                <img 
+                    src="${thumbnailUrl}" 
+                    alt="${name} snapshot" 
+                    loading="lazy" 
+                    style="width: 100%; height: 140px; object-fit: cover; display: block;"
+                    onerror="this.style.display='none';" 
+                />
+            </div>
             <div class="card-meta">
                 <span class="card-day">${safeDay}</span>
                 <span class="card-category-wrap">
@@ -411,8 +429,8 @@ return {
                     ${primaryLink}
                     ${codeLink}
                 </div>
-                <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${safeDay}" aria-label="${isBookmarked ? `Remove ${safeName} from bookmarks` : `Bookmark ${safeName}`}">
-                    <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark" aria-hidden="true"></i>
+                <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${safeDay}">
+                    <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark"></i>
                 </button>
             </div>
         `,
@@ -421,10 +439,11 @@ return {
   };
 }
 
+
+
 function attachProjectCardInteraction(card, demoUrl, projectData = null) {
   card.style.cursor = "pointer";
-  
-  const activateCard = (e) => {
+  card.onclick = (e) => {
     if (e.target.closest("a, button")) return;
     if (!demoUrl) return;
 
@@ -437,18 +456,6 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
     // window.open() so a javascript: payload stored in localStorage cannot
     // execute even after a page reload.
     window.open(sanitizeUrl(demoUrl), "_blank", "noopener");
-  };
-
-  card.onclick = activateCard;
-
-  card.onkeydown = (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      // Prevent page scrolling on spacebar when card is focused
-      if (e.key === " ") {
-        e.preventDefault();
-      }
-      activateCard(e);
-    }
   };
 }
 
@@ -576,7 +583,6 @@ function updateTechFilterDisplay() {
 
     const icon = document.createElement("i");
     icon.className = "fas fa-times";
-    icon.setAttribute("aria-hidden", "true");
     btn.appendChild(icon);
 
     // addEventListener keeps the handler in JS — the tech value never
@@ -867,7 +873,7 @@ function renderGrid() {
     const matchesFilter =
       activeFilter === "all" || category === targetCategory;
 
-    // Search filter (matches name, description, day, and technology tags)
+    // Search filter
     const q = searchQuery.toLowerCase().trim();
     const matchesSearch =
       !q ||
@@ -876,7 +882,6 @@ function renderGrid() {
         .every(
           (term) =>
             name.toLowerCase().includes(term) ||
-            (project.projectDesc || "").toLowerCase().includes(term) ||
             day.toLowerCase().includes(term) ||
             (Array.isArray(tags) ? tags.join(" ") : tags || "")
               .toLowerCase()
@@ -920,6 +925,15 @@ function renderGrid() {
     });
   }
 
+
+  // PERFORMANCE OPTIMIZATION: Only reset entire grid markup on page reset/filters trigger
+  if (currentPage === 1) {
+    grid.innerHTML = '';
+    // Purane layout container elements remove karne ke liye safe cleanup
+    const oldContainer = document.getElementById('paginationContainer');
+    if (oldContainer) oldContainer.remove();
+  }
+
   grid.innerHTML = "";
 
   if (filtered.length === 0) {
@@ -933,12 +947,9 @@ function renderGrid() {
   grid.style.display = "grid";
   if (noResults) noResults.style.display = "none";
 
-  const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
-  if (currentPage > totalPages) currentPage = totalPages;
-  if (currentPage < 1) currentPage = 1;
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
+  const itemsPerChunk = 20; // 20 projects package chunk per scroll trigger
+  const startIndex = (currentPage - 1) * itemsPerChunk;
+  const endIndex = startIndex + itemsPerChunk;
   const pageItems = filtered.slice(startIndex, endIndex);
   const fragment = document.createDocumentFragment();
 
@@ -972,159 +983,31 @@ function renderGrid() {
       : "project-card visible";
 
     card.innerHTML = html;
-    card.setAttribute("tabindex", "0");
-    card.setAttribute("role", "button");
     attachProjectCardInteraction(card, demoUrl, project);
 
     fragment.appendChild(card);
   });
+
+
+  
+  grid.appendChild(fragment);
+
+  // Initialize unified automated Intersection Observer setup
+  setupInfiniteScrollObserver(filtered.length, itemsPerChunk);
+  syncStateToURL();
+}
+
+// PERFORMANCE OPTIMIZATION: Setup Vanilla JavaScript IntersectionObserver API (#6034)
+function setupInfiniteScrollObserver(totalItems, itemsPerChunk) {
+  const sentinel = document.getElementById('scroll-sentinel');
+  if (!sentinel) return;
+
 
   grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
 
   syncStateToURL();
   syncProjectCounts();
-}
-
-function renderPagination(totalItems, totalPages) {
-  const grid = document.getElementById("projectGrid");
-  if (!grid) return;
-
-  let container = document.getElementById("paginationContainer");
-  if (!container) {
-    container = document.createElement("div");
-    container.id = "paginationContainer";
-    container.className = "pagination-container";
-  }
-
-  container.innerHTML = "";
-
-  // If there is only 1 page of results, hide and detach the pagination block
-  if (totalPages <= 1) {
-    if (container.parentElement === grid) {
-      grid.removeChild(container);
-    }
-    return;
-  }
-
-  // Render showing info range (e.g. "Showing 1 to 9 of 100")
-  const infoDiv = document.createElement("div");
-  infoDiv.className = "pagination-info";
-  const startItem = (currentPage - 1) * itemsPerPage + 1;
-  const endItem = Math.min(currentPage * itemsPerPage, totalItems);
-  infoDiv.innerHTML = `Showing <strong>${startItem}</strong> to <strong>${endItem}</strong> of <strong>${totalItems}</strong> projects`;
-  container.appendChild(infoDiv);
-
-  const controlsDiv = document.createElement("div");
-  controlsDiv.className = "pagination-controls";
-
-  const firstBtn = document.createElement("button");
-  firstBtn.className = "first-btn";
-  firstBtn.innerHTML = "⏮ First";
-  firstBtn.disabled = currentPage === 1;
-
-  firstBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    if (currentPage !== 1) {
-      currentPage = 1;
-      renderGrid();
-      setTimeout(() => scrollToProjectSection(), 50);
-    }
-  });
-
-  controlsDiv.appendChild(firstBtn);
-
-  const prevBtn = document.createElement("button");
-  prevBtn.className = "prev-btn";
-  prevBtn.innerHTML = '<i class="fas fa-chevron-left" aria-hidden="true"></i>';
-  prevBtn.disabled = currentPage === 1;
-  prevBtn.setAttribute("aria-label", "Previous Page");
-  prevBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    if (currentPage > 1) {
-      currentPage--;
-      renderGrid();
-      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
-      setTimeout(() => {
-        scrollToProjectSection();
-      }, 50);
-    }
-  });
-  controlsDiv.appendChild(prevBtn);
-
-  // Initialize bounds for numeric pagination window (displays maximum of 4 page buttons)
-  let startPage = 1;
-  let endPage = totalPages;
-  const maxVisible = 4;
-
-  // Sliding window pagination logic centering the active page
-  if (totalPages > maxVisible) {
-    if (currentPage <= 2) {
-      startPage = 1;
-      endPage = 4;
-    } else if (currentPage >= totalPages - 1) {
-      startPage = totalPages - 3;
-      endPage = totalPages;
-    } else {
-      startPage = currentPage - 1;
-      endPage = currentPage + 2;
-    }
-  }
-
-  for (let i = startPage; i <= endPage; i++) {
-    const pageBtn = document.createElement("button");
-    pageBtn.className = `page-num ${currentPage === i ? "active" : ""}`;
-    pageBtn.textContent = i;
-    pageBtn.setAttribute("aria-label", `Page ${i}`);
-    pageBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      currentPage = i;
-      renderGrid();
-      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
-      setTimeout(() => {
-        scrollToProjectSection();
-      }, 50);
-    });
-    controlsDiv.appendChild(pageBtn);
-  }
-
-  const nextBtn = document.createElement("button");
-  nextBtn.className = "next-btn";
-  nextBtn.innerHTML = '<i class="fas fa-chevron-right" aria-hidden="true"></i>';
-  nextBtn.disabled = currentPage === totalPages;
-  nextBtn.setAttribute("aria-label", "Next Page");
-  nextBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    if (currentPage < totalPages) {
-      currentPage++;
-      renderGrid();
-      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
-      setTimeout(() => {
-        scrollToProjectSection();
-      }, 50);
-    }
-  });
-  controlsDiv.appendChild(nextBtn);
-  const lastBtn = document.createElement("button");
-  lastBtn.className = "last-btn";
-  lastBtn.innerHTML = "Last ⏭";
-  lastBtn.disabled = currentPage === totalPages;
-
-  lastBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    if (currentPage !== totalPages) {
-      currentPage = totalPages;
-      renderGrid();
-      setTimeout(() => scrollToProjectSection(), 50);
-    }
-  });
-
-  controlsDiv.appendChild(lastBtn);
-
-  container.appendChild(controlsDiv);
-
-  // Append container dynamically inside the projectGrid element to keep it attached
-  grid.appendChild(container);
 }
 
 function scrollToProjectSection() {
@@ -1355,8 +1238,6 @@ function renderBookmarks() {
       ? "project-card source-only visible"
       : "project-card visible";
     card.innerHTML = html;
-    card.setAttribute("tabindex", "0");
-    card.setAttribute("role", "button");
 
     attachProjectCardInteraction(card, demoUrl, project);
 
@@ -1417,8 +1298,6 @@ function renderRecentProjects() {
       ? "project-card source-only visible"
       : "project-card visible";
     card.innerHTML = html;
-    card.setAttribute("tabindex", "0");
-    card.setAttribute("role", "button");
 
     attachProjectCardInteraction(card, demoUrl, projectObj);
 
@@ -1753,15 +1632,12 @@ function updateCategoryCounts(projects = PROJECTS) {
 function syncProjectCounts() {
   let filtered = [...PROJECTS];
 
-  // Apply search filter (matches name, description, day, and tags)
+  // Apply search filter
   if (searchQuery) {
-    const q = searchQuery.toLowerCase();
     filtered = filtered.filter(
       (project) =>
-        project.projectName.toLowerCase().includes(q) ||
-        (project.projectDesc || "").toLowerCase().includes(q) ||
-        project.day.toLowerCase().includes(q) ||
-        (Array.isArray(project.techStack) ? project.techStack.join(" ") : project.techStack || "").toLowerCase().includes(q),
+        project.projectName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        project.day.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   }
 
