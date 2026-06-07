@@ -1338,3 +1338,8 @@ button {
     left: 0.7rem;
   }
 }
+
+/* Fix: hide native file input, triggered by Import JSON label */
+#importInput {
+    display: none;
+}
