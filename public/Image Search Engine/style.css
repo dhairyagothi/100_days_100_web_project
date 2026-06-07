@@ -73,6 +73,15 @@ form button:hover {
     transform: scale(1.02);
 }
 
+#reset-button {
+    background: #ef4444;
+    margin-left: 10px;
+}
+
+#reset-button:hover {
+    background: #dc2626;
+}
+
 ::placeholder {
     color: rgba(255, 255, 255, 0.5);
     font-size: 16px;
