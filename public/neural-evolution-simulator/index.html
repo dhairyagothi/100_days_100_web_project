@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Network Evolution Simulator Engine</title>
+    <style>
+        :root {
+            --bg-dark: #060913;
+            --panel-color: #0f1322;
+            --neon-green: #39ff14;
+            --neon-red: #ff0055;
+            --neon-blue: #00f3ff;
+            --border-line: #1b223c;
+            --text-main: #e2e8f0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        header h2 {
+            margin: 0 0 20px 0;
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-green));
+            -webkit-text-fill-color: transparent;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 900px) {
+            .main-grid {
+                grid-template-columns: 7fr 5fr;
+            }
+        }
+
+        .panel-card {
+            background-color: var(--panel-color);
+            border: 1px solid var(--border-line);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-header::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--neon-green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--neon-green);
+        }
+
+        canvas {
+            background-color: #03050a;
+            border: 1px solid var(--border-line);
+            border-radius: 8px;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--neon-blue);
+        }
+
+        .btn-matrix {
+            background: linear-gradient(135deg, #00f3ff, #39ff14);
+            border: none;
+            color: #000;
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: transform 0.1s, box-shadow 0.2s;
+        }
+
+        .btn-matrix:hover {
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+        }
+
+        .telemetry-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-line);
+            font-size: 0.95rem;
+        }
+
+        .telemetry-row:last-child {
+            border-bottom: none;
+        }
+
+        .telemetry-val {
+            font-family: monospace;
+            font-weight: bold;
+            color: var(--neon-blue);
+        }
+
+        #terminal-stream {
+            background: #03050a;
+            border: 1px solid var(--border-line);
+            color: #94a3b8;
+            font-family: monospace;
+            font-size: 0.8rem;
+            padding: 12px;
+            border-radius: 6px;
+            height: 100px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard-container">
+        <header>
+            <h2>AI Neural Evolution Matrix Simulator</h2>
+        </header>
+
+        <div class="main-grid">
+            <div class="panel-card">
+                <div class="panel-header">Active Biome Rendering Arena</div>
+                <canvas id="sim-canvas" width="800" height="450"></canvas>
+
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button id="spawn-btn" class="btn-matrix" style="flex: 1;">Initiate Evolution Matrix</button>
+                    <button id="cataclysm-btn" class="btn-matrix"
+                        style="flex: 1; background: linear-gradient(135deg, #ff0055, #ff5500); color: white;">Trigger
+                        Cataclysm Vector</button>
+                </div>
+            </div>
+
+            <div class="panel-card">
+                <div class="panel-header">Simulation Parameters Matrix</div>
+
+                <div class="control-group">
+                    <label><span>Mutation Rate Variance:</span><span id="mutation-lbl">10%</span></label>
+                    <input type="range" id="mutation-slider" min="1" max="100" value="10">
+                </div>
+
+                <div class="panel-header" style="margin-top: 15px;">Live Biome Telemetry</div>
+                <div class="telemetry-row">
+                    <span>Active Generation Count:</span>
+                    <span id="tel-gen" class="telemetry-val">0</span>
+                </div>
+                <div class="telemetry-row">
+                    <span>Surviving Population Size:</span>
+                    <span id="tel-pop" class="telemetry-val">0 / 0</span>
+                </div>
+                <div class="telemetry-row">
+                    <span>Available Food Clusters:</span>
+                    <span id="tel-food" class="telemetry-val">0</span>
+                </div>
+                <div class="telemetry-row">
+                    <span>Average Matrix Fit Score:</span>
+                    <span id="tel-fitness" class="telemetry-val" style="color: var(--neon-green);">0.00</span>
+                </div>
+
+                <pre
+                    id="terminal-stream">System Monitors Standby... Deploy Generation parameters to lock execution channels.</pre>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+
+</html>

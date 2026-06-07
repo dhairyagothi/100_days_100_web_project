@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>HCI Hand-Gesture Controller Overlay</title>
+    <style>
+        body {
+            background: #0f172a;
+            color: #f8fafc;
+            font-family: monospace;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #video-container {
+            position: relative;
+            width: 400px;
+            height: 300px;
+            margin: 15px auto;
+            border: 2px solid #334155;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        video,
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: scaleX(-1);
+            /* Mirror view for natural interaction */
+        }
+
+        .status-panel {
+            background: #1e293b;
+            padding: 12px;
+            border-radius: 6px;
+            width: 380px;
+            margin: 10px auto;
+            font-size: 12px;
+            border: 1px solid #00ffaa;
+        }
+
+        .log-box {
+            width: 380px;
+            height: 100px;
+            background: #020617;
+            margin: 10px auto;
+            padding: 10px;
+            overflow-y: auto;
+            border-radius: 4px;
+            text-align: left;
+            font-size: 11px;
+            color: #8899a6;
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <h2 style="color: #00ffaa;">✋ HCI Hand-Gesture Controller Framework</h2>
+    <p style="font-size: 11px; color: #94a3b8;">Maps physical hand configurations to synthetic browser KeyboardEvents.
+    </p>
+
+    <div id="video-container">
+        <video id="webcam" width="400" height="300" autoplay playsinline></video>
+        <canvas id="output-canvas" width="400" height="300"></canvas>
+    </div>
+
+    <div class="status-panel">
+        <strong>Active Native Mapping Status:</strong> <span id="current-gesture"
+            style="color: #fff; font-weight: bold;">Detecting...</span>
+    </div>
+
+    <div class="log-box" id="event-log"></div>
+
+    <script src="gesture-engine.js"></script>
+</body>
+
+</html>
