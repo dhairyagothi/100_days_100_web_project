@@ -1,0 +1,122 @@
+.blog-page {
+    width: 100%;
+    max-width: 900px;
+    background: var(--bg-card);
+    padding: 40px;
+    border-radius: 24px;
+    border: 1px solid var(--border-card);
+    box-shadow: var(--shadow-card);
+    margin: 40px auto;
+}
+
+.blog-banner {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    border-radius: 16px;
+    margin-bottom: 24px;
+}
+
+.blog-page h1 {
+    font-family: var(--font-heading);
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+    line-height: 1.25;
+}
+
+.blog-author {
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+}
+
+.blog-author h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.blog-date {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.blog-content p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+.blog-content h1 {
+    font-family: var(--font-heading);
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-top: 32px;
+    margin-bottom: 12px;
+}
+
+.blog-content h3 {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 24px;
+    margin-bottom: 8px;
+}
+
+.blog-page-container {
+    padding: 0 24px;
+    min-height: calc(100vh - 140px);
+}
+
+@media (max-width: 768px) {
+    .blog-page {
+        padding: 24px;
+        margin: 20px auto;
+        border-radius: 16px;
+    }
+    .blog-banner {
+        height: 240px;
+        border-radius: 12px;
+    }
+    .blog-page h1 {
+        font-size: 28px;
+    }
+    .blog-content p {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    body {
+        padding: 10px;
+    }
+
+    .blog-page {
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+    .blog-banner {
+        height: 180px;
+        border-radius: 12px;
+    }
+
+    .blog-page h1 {
+        font-size: clamp(20px, 6vw, 28px);
+    }
+
+    .blog-content p {
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .blog-author h3 {
+        font-size: 18px;
+    }
+}

@@ -7,6 +7,8 @@ const documentsList = document.getElementById("documents-list");
 function addTask(){
 
   const text = taskInput.value.trim();
+  const category = taskTypeSelect.value;
+  const priority = taskPrioritySelect.value;
 
   if(!text) return;
 
@@ -39,6 +41,8 @@ function addTask(){
     saveTasks();
 
   });
+  saveTasks();
+}
 
   task.querySelector(".task-delete")
     .addEventListener("click", () => {

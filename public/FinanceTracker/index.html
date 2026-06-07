@@ -1,621 +1,496 @@
-<!-- Kept Everything in one file  for ease of access -->
-
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Finance Tracker</title>
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+  <!--  
+       FINTRACK - Finance Tracker Application
+       A modern, single-page finance dashboard application.
+         -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FinTrack - A modern personal finance tracker to manage transactions, budgets, and analytics.">
+  <title>FinTrack - Finance Tracker</title>
 
-        :root {
-            --primary-color: #6c5ce7;
-            --secondary-color: #a29bfe;
-            --accent-color: #fd79a8;
-            --background-color: #f0f3f6;
-            --text-color: #2d3436;
-            --card-background: #ffffff;
-        }
+  <!-- Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--background-color);
-            transition: background-color 0.3s ease;
-        }
+  <!-- JSZip CDN — used to bundle chart PNGs into a single ZIP download -->
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: auto;
-            overflow: hidden;
-            padding: 20px;
-        }
+  <!-- Apply saved theme immediately to prevent flash -->
+  <script>
+    (function() {
+      try {
+        var s = JSON.parse(localStorage.getItem('fintrack_settings'));
+        var theme = (s && s.theme) || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch(e) {}
+    })();
+  </script>
+  <style>
+    body { background-color: #1a1a1a; }
+    [data-theme="light"] body { background-color: #f0f0f0; }
+  </style>
 
-        header {
-            background: var(--primary-color);
-            color: white;
-            padding: 30px 0;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, var(--secondary-color) 0%, transparent 50%);
-            animation: rotate 20s linear infinite;
-            z-index: 1;
-        }
-
-        @keyframes rotate {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        header h1 {
-            margin: 0;
-            position: relative;
-            z-index: 2;
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .dashboard {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 40px;
-            flex-wrap: wrap;
-        }
-
-        .balance,
-        .income,
-        .expense {
-            flex: 1;
-            min-width: 250px;
-            background: var(--card-background);
-            padding: 20px;
-            margin: 10px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .balance:hover,
-        .income:hover,
-        .expense:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .balance {
-            border-bottom: 5px solid var(--primary-color);
-        }
-
-        .income {
-            border-bottom: 5px solid #2ecc71;
-        }
-
-        .expense {
-            border-bottom: 5px solid var(--accent-color);
-        }
-
-        h2 {
-            margin-top: 0;
-            font-size: 1.2em;
-            color: #7f8c8d;
-        }
-
-        #balance,
-        #income,
-        #expense {
-            font-size: 2em;
-            font-weight: bold;
-            margin-top: 10px;
-            transition: all 0.3s ease;
-        }
-
-        #balance:hover,
-        #income:hover,
-        #expense:hover {
-            transform: scale(1.05);
-        }
-
-        form {
-            background: var(--card-background);
-            padding: 30px;
-            margin-top: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        form:hover {
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        input[type="text"],
-        input[type="number"],
-        select {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1em;
-            transition: all 0.3s ease;
-        }
-
-        input[type="text"]:focus,
-        input[type="number"]:focus,
-        select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.2);
-        }
-
-        input[type="submit"],
-        button {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: all 0.3s ease;
-        }
-
-        input[type="submit"]:hover,
-        button:hover {
-            background: var(--secondary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        #transactions {
-            margin-top: 40px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 10px;
-            background: var(--card-background);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        th,
-        td {
-            text-align: left;
-            padding: 15px;
-        }
-
-        th {
-            background-color: var(--primary-color);
-            color: white;
-            text-transform: uppercase;
-            font-size: 0.9em;
-            letter-spacing: 1px;
-        }
-
-        tr {
-            background-color: var(--card-background);
-            transition: all 0.3s ease;
-        }
-
-        tr:hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .income-row {
-            background-color: rgba(46, 204, 113, 0.1);
-        }
-
-        .expense-row {
-            background-color: rgba(253, 121, 168, 0.1);
-        }
-
-        #chart-container {
-            width: 100%;
-            height: 400px;
-            margin-top: 40px;
-            background: var(--card-background);
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #chart-container:hover {
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        #expense-chart {
-            max-width: 100%;
-            max-height: 100%;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .dashboard>div,
-        form,
-        #transactions,
-        #chart-container {
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-
-        @media (max-width: 768px) {
-            .dashboard {
-                flex-direction: column;
-            }
-
-            .balance,
-            .income,
-            .expense {
-                width: 100%;
-                margin: 10px 0;
-            }
-        }
-
-        #theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--card-background);
-            border: none;
-            border-radius: 50%;
-            padding: 8px;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            transition: all 0.3s ease;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #theme-toggle svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        body.dark-mode {
-            --background-color: #1a1a2e;
-            --text-color: #e0e0e0;
-            --card-background: #16213e;
-            --primary-color: #0f3460;
-            --secondary-color: #533483;
-            --accent-color: #e94560;
-        }
-
-        body.dark-mode #theme-toggle svg {
-            transform: rotate(180deg);
-        }
-
-        #clear-storage {
-            margin-top: 20px;
-            background-color: #e74c3c;
-        }
-
-        #clear-storage:hover {
-            background-color: #c0392b;
-        }
-
-        #empty-message {
-            text-align: center;
-            margin-top: 20px;
-            color: #7f8c8d;
-            font-size: 1.1rem;
-        }
-    </style>
+  <!-- Application Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-    <button id="theme-toggle" aria-label="Toggle dark mode">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-        </svg>
-    </button>
-    <header>
-        <div class="container">
-            <h1>Personal Finance Tracker</h1>
+
+  <!-- LOADING OVERLAY -->
+  <div class="loading-overlay" id="loading-overlay">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!--
+       APP SHELL — Sidebar + Main Content Area
+       -->
+  <div class="app-container">
+
+    <!--  SIDEBAR  -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">Finance Tracker</div>
+        <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
+      </div>
+      <nav class="sidebar-nav">
+        <!-- Each nav link has a data-section attribute matching a section ID -->
+        <a class="nav-link active" data-section="dashboard">
+          <span class="nav-icon"></span>Dashboard
+        </a>
+        <a class="nav-link" data-section="transactions">
+          <span class="nav-icon"></span>Transactions
+        </a>
+        <a class="nav-link" data-section="analytics">
+          <span class="nav-icon"></span>Analytics
+        </a>
+        <a class="nav-link" data-section="budgets">
+          <span class="nav-icon"></span>Budgets
+        </a>
+        <a class="nav-link" data-section="import">
+          <span class="nav-icon"></span>Import CSV
+        </a>
+        <a class="nav-link" data-section="export">
+          <span class="nav-icon"></span>Export Charts
+        </a>
+        <a class="nav-link" data-section="settings">
+          <span class="nav-icon"></span>Settings
+        </a>
+      </nav>
+    </aside>
+
+    <!--  MAIN CONTENT  -->
+    <main class="main-content">
+
+      <!-- 
+           SECTION 1: DASHBOARD
+           Shows financial overview with stats, top category,
+           and recent transactions.
+            -->
+      <section class="section active" id="dashboard-section">
+        <div class="section-header">
+          <div>
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-subtitle">Financial Overview</p>
+          </div>
         </div>
-    </header>
 
-    <div class="container">
-        <div class="dashboard">
-            <div class="balance">
-                <h2>Current Balance</h2>
-                <div id="balance">$0.00</div>
+        <!-- Stat Cards Grid -->
+        <div class="stats-grid">
+          <!-- Total Income -->
+          <div class="card stat-card stat-income">
+            <div class="stat-info">
+              <span class="stat-label">Total Income</span>
+              <span class="stat-value" id="total-income">$0.00</span>
             </div>
-            <div class="income">
-                <h2>Total Income</h2>
-                <div id="income">$0.00</div>
+          </div>
+          <!-- Total Expense -->
+          <div class="card stat-card stat-expense">
+            <div class="stat-info">
+              <span class="stat-label">Total Expense</span>
+              <span class="stat-value" id="total-expense">$0.00</span>
             </div>
-            <div class="expense">
-                <h2>Total Expenses</h2>
-                <div id="expense">$0.00</div>
+          </div>
+          <!-- Total Savings -->
+          <div class="card stat-card stat-savings">
+            <div class="stat-icon"></div>
+            <div class="stat-info">
+              <span class="stat-label">Total Savings</span>
+              <span class="stat-value" id="total-savings">$0.00</span>
             </div>
+          </div>
+          <!-- Transaction Count -->
+          <div class="card stat-card stat-count">
+            <div class="stat-info">
+              <span class="stat-label">Transactions</span>
+              <span class="stat-value" id="transaction-count">0</span>
+            </div>
+          </div>
         </div>
 
-        <form id="transaction-form">
-            <input type="text" id="description" placeholder="Description" required>
-            <input type="number" id="amount" placeholder="Amount" step="0.01" required>
-            <select id="type" required>
-                <option value="">Select Type</option>
-                <option value="income">Income</option>
-                <option value="expense">Expense</option>
-            </select>
-            <select id="category" required>
-                <option value="">Select Category</option>
-                <option value="salary">Salary</option>
-                <option value="food">Food</option>
-                <option value="rent">Rent</option>
-                <option value="utilities">Utilities</option>
-                <option value="entertainment">Entertainment</option>
-                <option value="other">Other</option>
-            </select>
-            <input type="submit" value="Add Transaction">
-        </form>
+        <!-- AI Insights -->
+        <div class="card" id="insights-card">
+          <h3 class="card-title">AI Financial Insights</h3>
+          <div id="insights-box" class="insights-content">
+            Add transactions to receive AI insights.
+          </div>
+        </div>
 
-        <button id="clear-storage">Clear All Data</button>
+        <!-- Top Spending Category -->
+        <div class="card">
+          <h3 class="card-title">Top Spending Category</h3>
+          <div id="top-category">
+            <p class="empty-text">No spending data available</p>
+          </div>
+        </div>
 
-        <div id="transactions">
-            <h2>Recent Transactions</h2>
-            <table id="transactions-table">
-                <thead>
-                    <tr>
-                        <th>Description</th>
-                        <th>Amount</th>
-                        <th>Type</th>
-                        <th>Category</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
+        <!-- Recent Transactions -->
+        <div class="card">
+          <h3 class="card-title">Recent Transactions</h3>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th>Amount</th>
+                  <th>Type</th>
+                  <th>Category</th>
+                </tr>
+              </thead>
+              <tbody id="recent-transactions-body">
+                <tr>
+                  <td colspan="5" class="empty-cell">No recent transactions</td>
+                </tr>
+              </tbody>
             </table>
-            <p id="empty-message">No transactions added yet.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 
+           SECTION 2: TRANSACTIONS
+           Full transaction management with CRUD, search, filter, sort.
+            -->
+      <section class="section" id="transactions-section">
+        <div class="section-header">
+          <div>
+            <h1 class="page-title">Transactions</h1>
+            <p class="page-subtitle">Manage your income and expenses</p>
+          </div>
+          <button class="btn btn-primary" id="add-transaction-btn">+ Add Transaction</button>
         </div>
 
-        <div id="chart-container">
-            <canvas id="expense-chart"></canvas>
+        <!-- Filters -->
+        <div class="card filter-bar">
+          <input type="text" id="search-input" class="form-input" placeholder="Search transactions...">
+          <select id="filter-type" class="form-select">
+            <option value="">All Types</option>
+            <option value="Income">Income</option>
+            <option value="Expense">Expense</option>
+          </select>
+          <select id="filter-category" class="form-select">
+            <option value="">All Categories</option>
+          </select>
+          <select id="sort-select" class="form-select">
+            <option value="date-desc">Date (Newest)</option>
+            <option value="date-asc">Date (Oldest)</option>
+            <option value="amount-desc">Amount (High→Low)</option>
+            <option value="amount-asc">Amount (Low→High)</option>
+          </select>
         </div>
+
+        <!-- Transactions Table -->
+        <div class="card">
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th>Amount</th>
+                  <th>Type</th>
+                  <th>Category</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="transactions-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!--  
+           SECTION 3: ANALYTICS
+           Visualize financial data with Chart.js charts.
+             -->
+      <section class="section" id="analytics-section">
+        <div class="section-header">
+          <div>
+            <h1 class="page-title">Analytics</h1>
+            <p class="page-subtitle">Visualize your financial data</p>
+          </div>
+        </div>
+
+        <div class="charts-grid">
+          <div class="card chart-card">
+            <h3 class="card-title">Expense by Category</h3>
+            <div class="chart-container">
+              <canvas id="category-chart"></canvas>
+            </div>
+          </div>
+          <div class="card chart-card">
+            <h3 class="card-title">Income vs Expense</h3>
+            <div class="chart-container">
+              <canvas id="income-expense-chart"></canvas>
+            </div>
+          </div>
+          <div class="card chart-card">
+            <h3 class="card-title">Monthly Expenses</h3>
+            <div class="chart-container">
+              <canvas id="monthly-chart"></canvas>
+            </div>
+          </div>
+          <div class="card chart-card">
+            <h3 class="card-title">Savings Trend</h3>
+            <div class="chart-container">
+              <canvas id="savings-chart"></canvas>
+            </div>
+          </div>
+          <div class="card chart-card">
+            <h3 class="card-title">Daily Spending</h3>
+            <div class="chart-container">
+              <canvas id="daily-chart"></canvas>
+            </div>
+          </div>
+          <div class="card chart-card">
+            <h3 class="card-title">Income Sources</h3>
+            <div class="chart-container">
+              <canvas id="income-sources-chart"></canvas>
+            </div>
+          </div>
+          <div class="card chart-card">
+            <h3 class="card-title">Top 5 Expense Categories</h3>
+            <div class="chart-container">
+              <canvas id="top-categories-chart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!--  
+           SECTION 4: BUDGETS
+           Set and track spending limits per category.
+             -->
+      <section class="section" id="budgets-section">
+        <div class="section-header">
+          <div>
+            <h1 class="page-title">Budgets</h1>
+            <p class="page-subtitle">Set spending limits per category</p>
+          </div>
+          <button class="btn btn-primary" id="add-budget-btn">+ Add Budget</button>
+        </div>
+
+        <div id="budgets-list" class="budgets-grid"></div>
+
+        <!-- Add Budget Form (inline, hidden by default) -->
+        <div class="card" id="budget-form-card" style="display:none;">
+          <h3 class="card-title">Add Budget</h3>
+          <form id="budget-form" class="form-grid">
+            <select id="budget-category" class="form-select" required>
+              <option value="">Select Category</option>
+            </select>
+            <input type="number" id="budget-limit" class="form-input" placeholder="Monthly Limit" min="0" step="0.01" required>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">Save Budget</button>
+              <button type="button" class="btn btn-secondary" id="cancel-budget-btn">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!--  
+           SECTION 5: IMPORT CSV
+           Bulk-import transactions from a CSV file.
+             -->
+      <section class="section" id="import-section">
+        <div class="section-header">
+          <div>
+            <h1 class="page-title">Import CSV</h1>
+            <p class="page-subtitle">Bulk-import transactions from a CSV file</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="csv-info">CSV must have columns: <code>Date, Description, Amount, Type, Category</code></p>
+          <div class="csv-upload-area" id="csv-drop-zone">
+            <div class="upload-icon">📁</div>
+            <p>Drag & drop a CSV file here, or click to browse</p>
+            <input type="file" id="csv-file-input" accept=".csv" hidden>
+          </div>
+          <div id="csv-import-status" class="csv-import-status"></div>
+          <button class="btn btn-primary" id="csv-import-action-btn" style="display:none; margin-top:16px;">📥 Import</button>
+        </div>
+      </section>
+
+      <!--  
+           SECTION 6: EXPORT CHARTS
+           Download charts as PNG images.
+             -->
+      <section class="section" id="export-section">
+        <div class="section-header">
+          <div>
+            <h1 class="page-title">Export Charts</h1>
+            <p class="page-subtitle">Download charts as PNG images</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <p style="margin-bottom:16px;">Select charts to export:</p>
+          <div class="export-checkboxes" id="export-checkboxes">
+            <label class="checkbox-label"><input type="checkbox" value="category-chart" checked> Expense by Category</label>
+            <label class="checkbox-label"><input type="checkbox" value="income-expense-chart" checked> Income vs Expense</label>
+            <label class="checkbox-label"><input type="checkbox" value="monthly-chart" checked> Monthly Expenses</label>
+            <label class="checkbox-label"><input type="checkbox" value="savings-chart" checked> Savings Trend</label>
+            <label class="checkbox-label"><input type="checkbox" value="daily-chart"> Daily Spending</label>
+            <label class="checkbox-label"><input type="checkbox" value="income-sources-chart"> Income Sources</label>
+            <label class="checkbox-label"><input type="checkbox" value="top-categories-chart"> Top 5 Categories</label>
+          </div>
+          <button class="btn btn-primary" id="export-charts-btn" style="margin-top:16px;">⬇️ Download as ZIP</button>
+        </div>
+      </section>
+
+      <!--  
+           SECTION 7: SETTINGS
+           Theme, currency, and data management.
+             -->
+      <section class="section" id="settings-section">
+        <div class="section-header">
+          <div>
+            <h1 class="page-title">Settings</h1>
+            <p class="page-subtitle">Customize your experience</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Theme</h3>
+          <div class="setting-row">
+            <span>Dark / Light Mode</span>
+            <button class="btn btn-secondary" id="theme-toggle">🌙 Toggle Theme</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Currency</h3>
+          <div class="setting-row">
+            <span>Display Currency</span>
+            <select id="currency-select" class="form-select" style="width:auto;">
+              <option value="$">USD ($)</option>
+              <option value="€">EUR (€)</option>
+              <option value="£">GBP (£)</option>
+              <option value="₹">INR (₹)</option>
+              <option value="¥">JPY (¥)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Category Management</h3>
+          <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:14px;">Rename or delete categories. Renaming cascades to all linked transactions and budgets.</p>
+          <div id="category-list-container"></div>
+          <!-- Add Category inline form -->
+          <div class="add-category-form-inline" id="add-category-form" style="display:none;">
+            <input type="text" id="new-cat-name" class="form-input" placeholder="Category name">
+            <select id="new-cat-type" class="form-select">
+              <option value="Expense">Expense</option>
+              <option value="Income">Income</option>
+            </select>
+            <button class="btn btn-primary btn-sm" id="save-cat-btn">Add</button>
+            <button class="btn btn-secondary btn-sm" id="cancel-cat-btn">Cancel</button>
+          </div>
+          <button class="btn btn-secondary" id="add-category-btn" style="margin-top:14px;">+ Add Category</button>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Data Management</h3>
+          <div class="setting-row">
+            <span>Export all transactions as CSV</span>
+            <button class="btn btn-secondary" id="export-csv-btn">Export CSV</button>
+          </div>
+          <div class="setting-row" style="margin-top:12px;">
+            <span>Clear transactions &amp; budgets (keeps categories &amp; settings)</span>
+            <button class="btn btn-danger" id="clear-data-btn">Clear Data</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!--  TRANSACTION MODAL  -->
+  <div class="modal-overlay" id="transaction-modal" style="display:none;">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modal-title">Add Transaction</h2>
+        <button class="modal-close" id="modal-close">&times;</button>
+      </div>
+      <form id="transaction-form" class="modal-form">
+        <div class="form-group">
+          <label for="txn-date">Date</label>
+          <input type="date" id="txn-date" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label for="txn-description">Description</label>
+          <input type="text" id="txn-description" class="form-input" placeholder="e.g. Grocery shopping" required>
+        </div>
+        <div class="form-group">
+          <label for="txn-amount">Amount</label>
+          <input type="number" id="txn-amount" class="form-input" placeholder="0.00" min="0" step="0.01" required>
+        </div>
+        <div class="form-group">
+          <label for="txn-type">Type</label>
+          <select id="txn-type" class="form-select" required>
+            <option value="Expense">Expense</option>
+            <option value="Income">Income</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="txn-category">Category</label>
+          <select id="txn-category" class="form-select" required>
+            <option value="">Select Category</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="txn-submit-btn">Add Transaction</button>
+          <button type="button" class="btn btn-secondary" id="txn-cancel-btn">Cancel</button>
+        </div>
+      </form>
     </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
-        const balanceEl = document.getElementById('balance');
-        const incomeEl = document.getElementById('income');
-        const expenseEl = document.getElementById('expense');
-        const form = document.getElementById('transaction-form');
-        const transactionsTable = document.getElementById('transactions-table').getElementsByTagName('tbody')[0];
-        const emptyMessage = document.getElementById('empty-message');
-        const chartContainer = document.getElementById('chart-container');
-        const clearStorageBtn = document.getElementById('clear-storage');
+  <!--  CONFIRM MODAL  -->
+  <div class="modal-overlay" id="confirm-modal" style="display:none;">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <h2>Confirm</h2>
+      </div>
+      <p id="confirm-message" style="padding:20px;">Are you sure?</p>
+      <div class="form-actions" style="padding:0 20px 20px;">
+        <button class="btn btn-danger" id="confirm-ok">Confirm</button>
+        <button class="btn btn-secondary" id="confirm-cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
 
-        function updateBalance() {
-            const balance = transactions.reduce((acc, transaction) => {
-                if (transaction.type === 'income') {
-                    return acc + transaction.amount;
-                } else {
-                    return acc - transaction.amount;
-                }
-            }, 0);
+  <!-- App Script -->
+  <script type="module" src="js/app.js"></script>
 
-            const income = transactions
-                .filter(transaction => transaction.type === 'income')
-                .reduce((acc, transaction) => acc + transaction.amount, 0);
-
-            const expense = transactions
-                .filter(transaction => transaction.type === 'expense')
-                .reduce((acc, transaction) => acc + transaction.amount, 0);
-
-            balanceEl.textContent = `$${balance.toFixed(2)}`;
-            incomeEl.textContent = `$${income.toFixed(2)}`;
-            expenseEl.textContent = `$${expense.toFixed(2)}`;
-
-            // Add animation to updated values
-            [balanceEl, incomeEl, expenseEl].forEach(el => {
-                el.style.animation = 'none';
-                el.offsetHeight; // Trigger reflow
-                el.style.animation = 'fadeIn 0.5s ease-out';
-            });
-        }
-
-        function addTransaction(e) {
-            e.preventDefault();
-
-            const description = document.getElementById('description').value;
-            const amount = parseFloat(document.getElementById('amount').value);
-            const type = document.getElementById('type').value;
-            const category = document.getElementById('category').value;
-            const date = new Date().toISOString().split('T')[0];
-
-            const transaction = { description, amount, type, category, date };
-            transactions.push(transaction);
-
-            localStorage.setItem('transactions', JSON.stringify(transactions));
-
-            updateBalance();
-            displayTransactions();
-            updateChart();
-
-            form.reset();
-
-            // Add animation to form on submit
-            form.style.animation = 'none';
-            form.offsetHeight; // Trigger reflow
-            form.style.animation = 'fadeIn 0.5s ease-out';
-        }
-
-        function displayTransactions() {
-            transactionsTable.innerHTML = '';
-            if (transactions.length === 0) {
-                emptyMessage.style.display = 'block';
-            } else {
-                emptyMessage.style.display = 'none';
-            }
-
-            transactions.slice().reverse().forEach((transaction, index) => {
-                const row = transactionsTable.insertRow();
-                row.className = transaction.type === 'income' ? 'income-row' : 'expense-row';
-
-                const descCell = row.insertCell(0);
-                const amountCell = row.insertCell(1);
-                const typeCell = row.insertCell(2);
-                const categoryCell = row.insertCell(3);
-                const dateCell = row.insertCell(4);
-
-                descCell.textContent = transaction.description;
-                amountCell.textContent = `$${transaction.amount.toFixed(2)}`;
-                typeCell.textContent = transaction.type;
-                categoryCell.textContent = transaction.category;
-                dateCell.textContent = transaction.date;
-
-                // Add staggered animation to new rows
-                row.style.animation = `fadeIn 0.5s ease-out ${index * 0.1}s`;
-            });
-        }
-
-        function updateChart() {
-            const categories = {};
-            transactions.forEach(transaction => {
-                if (transaction.type === 'expense') {
-                    if (categories[transaction.category]) {
-                        categories[transaction.category] += transaction.amount;
-                    } else {
-                        categories[transaction.category] = transaction.amount;
-                    }
-                }
-            });
-
-            const labels = Object.keys(categories);
-            const data = Object.values(categories);
-
-            if (window.myChart) {
-                window.myChart.destroy();
-            }
-
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            const chartColors = isDarkMode
-                ? ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff', '#ff9f40']
-                : ['#ff9ff3', '#54a0ff', '#5f27cd', '#48dbfb', '#ff6b6b', '#10ac84'];
-
-            const ctx = document.getElementById('expense-chart').getContext('2d');
-            window.myChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: data,
-                        backgroundColor: chartColors,
-                        borderColor: isDarkMode ? '#2d3436' : 'white',
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Expense Breakdown by Category',
-                            font: {
-                                size: 18
-                            },
-                            color: isDarkMode ? '#e0e0e0' : '#2d3436'
-                        },
-                        legend: {
-                            position: 'right',
-                            labels: {
-                                color: isDarkMode ? '#e0e0e0' : '#2d3436'
-                            }
-                        }
-                    },
-                    animation: {
-                        animateScale: true,
-                        animateRotate: true
-                    }
-                }
-            });
-        }
-
-        function clearStorage() {
-            if (confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
-                localStorage.removeItem('transactions');
-                transactions = [];
-                updateBalance();
-                displayTransactions();
-                updateChart();
-                alert('All data has been cleared.');
-            }
-        }
-
-        form.addEventListener('submit', addTransaction);
-        clearStorageBtn.addEventListener('click', clearStorage);
-
-        const themeToggle = document.getElementById('theme-toggle');
-        const body = document.body;
-
-        themeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-            localStorage.setItem('dark-mode', body.classList.contains('dark-mode'));
-            updateChart();
-        });
-
-        // Check for saved theme preference
-        if (localStorage.getItem('dark-mode') === 'true') {
-            body.classList.add('dark-mode');
-        }
-
-        updateBalance();
-        displayTransactions();
-        updateChart();
-    </script>
 </body>
-
 </html>
