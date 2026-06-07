@@ -60,10 +60,57 @@
                 </div>
                 <div class="error"></div>
             </div>
-            <button type="button" onclick="getDetails()">Register</button>
-        </form>
-        <p class="register">Already a member? <a href="/">Login here!</a></p>
 
+            <button type="button" onclick="getDetails()">Register</button>
+            <p style="text-align:center; color:#888; font-size:13px;">or</p>
+            <button type="button" class="google-btn"><i class="fa-brands fa-google"></i>Continue with Google</button>
+            <p class="register">Already a member? <a href="/">Login here!</a></p>
+
+        
+        </form>
+      
+
+    </div>
+</body>
+
+<script>
+
+    async function postRequest(data) {
+        try {
+            const res = await fetch('/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const text = await res.text();
+
+            const form = document.querySelector("form");
+
+            let messageBox = document.getElementById("messageBox");
+
+            if (!messageBox) {
+                messageBox = document.createElement("div");
+                messageBox.id = "messageBox";
+                form.appendChild(messageBox);
+            }
+
+            messageBox.innerText = text;
+
+            if (!res.ok) {
+                messageBox.className = "message error-message";
+                return;
+            }
+
+            messageBox.className = "message success-message";
+
+            setTimeout(() => {
+                window.location.href = "/";
+            }, 1500);
+
+    <!-- Lottie Animation -->
+    <div class="image">
+      <iframe src="https://lottie.host/embed/e9326b10-fe9a-446e-bc8d-56640e47e816/TeItgXRxNd.json"></iframe>
     </div>
 </body>
 
@@ -201,8 +248,16 @@
 
         const errorDisplay = inputGroup.querySelector('.error');
 
-        errorDisplay.innerText = message;
-    }
+    errorDisplay.innerText = message;
+}
+function togglePassword(id, element) {
+
+    const input = document.getElementById(id);
+    const icon = element.querySelector("i");
+
+    if (input.type === "password") {
+
+        input.type = "text";
 
     function clearErrors() {
 

@@ -1,3 +1,218 @@
+/* Color Variable Configuration Profiles */
+:root {
+  --bg-color: #f4f7f6;
+  --card-bg: #ffffff;
+  --text-main: #2d3748;
+  --text-muted: #718096;
+  --primary: #00b4d8;
+  --primary-hover: #0077b6;
+  --pause-btn: #eab308;
+  --pause-hover: #ca8a04;
+  --reset-btn: #ef4444;
+  --reset-hover: #dc2626;
+  --shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] {
+  --bg-color: #0f172a;
+  --card-bg: #1e293b;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.4s ease, color 0.4s ease, transform 0.2s ease;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Theme Button Styling */
+.theme-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--text-muted);
+  color: var(--text-main);
+  padding: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+.theme-btn:hover {
+  transform: scale(1.1);
+}
+
+/* App Main Card Container */
+.countdown-container {
+  background-color: var(--card-bg);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  width: 90%;
+  max-width: 500px;
+}
+
+h1 {
+  margin-bottom: 25px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+/* Digit Display Sections */
+#countdown {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
+  background: rgba(0, 180, 216, 0.05);
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.time-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.time-block span {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.time-block label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 5px;
+  text-transform: uppercase;
+}
+
+/* Custom User Input Form Blocks */
+.input-section {
+  border-top: 1px solid rgba(113, 128, 150, 0.2);
+  padding-top: 20px;
+  margin-bottom: 30px;
+}
+
+.input-section h3 {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 15px;
+}
+
+.inputs-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  width: 70px;
+}
+
+.input-field input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 2px solid var(--text-muted);
+  background: var(--card-bg);
+  color: var(--text-main);
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.input-field input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.input-field label {
+  font-size: 0.75rem;
+  margin-top: 4px;
+  color: var(--text-muted);
+}
+
+#set-time-btn {
+  background-color: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+#set-time-btn:hover {
+  background-color: var(--primary);
+  color: #fff;
+}
+
+/* Control Buttons Configurations */
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: white;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.primary-btn {
+  background-color: var(--primary);
+}
+
+.primary-btn:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.secondary-btn {
+  background-color: var(--pause-btn);
+}
+
+.secondary-btn:hover:not(:disabled) {
+  background-color: var(--pause-hover);
+  transform: translateY(-2px);
+}
+
+.danger-btn {
+  background-color: var(--reset-btn);
+}
+
+.danger-btn:hover:not(:disabled) {
+  background-color: var(--reset-hover);
+  transform: translateY(-2px);
 *{
   margin:0;
   padding:0;
