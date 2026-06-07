@@ -81,9 +81,10 @@
           type="text"
           id="contributorSearch"
           placeholder="Search contributors..."
+          aria-label="Search contributors"
         />
 
-        <select id="sortContributors">
+        <select id="sortContributors" aria-label="Sort contributors">
           <option value="desc">Highest Commits</option>
           <option value="asc">Lowest Commits</option>
         </select>
@@ -174,14 +175,14 @@
 
     <div id="profileModal" class="modal-overlay">
       <div class="modal-content">
-        <button id="closeModal">&times;</button>
+        <button id="closeModal" aria-label="Close profile modal">&times;</button>
         <div id="modalBody">Loading...</div>
       </div>
     </div>
 
     <div id="certificateModal" class="modal-overlay">
       <div class="modal-content">
-        <button id="closeCertificate">&times;</button>
+        <button id="closeCertificate" aria-label="Close certificate modal">&times;</button>
         <div id="certificateBody">Loading Certificate...</div>
       </div>
     </div>

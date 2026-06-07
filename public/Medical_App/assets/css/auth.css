@@ -1,4 +1,15 @@
 :root {
+    /* Fallback clr- variables so auth.css works standalone */
+    --clr-surface: #ffffff;
+    --clr-bg: #f8fafc;
+    --clr-text-main: #0f172a;
+    --clr-text-muted: #64748b;
+    --clr-border: #e2e8f0;
+    --clr-primary: #0ea5e9;
+    --clr-primary-hover: #0284c7;
+    --clr-danger: #ef4444;
+    --clr-success: #10b981;
+
     --auth-surface: var(--clr-surface, #ffffff);
     --auth-bg: var(--clr-bg, #f8fafc);
     --auth-text: var(--clr-text-main, #0f172a);
@@ -9,6 +20,17 @@
     --auth-danger: var(--clr-danger, #ef4444);
     --auth-success: var(--clr-success, #10b981);
     --auth-shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
+}
+
+/* Dark mode clr- overrides */
+body[data-theme="dark"] {
+    --clr-surface: #1e293b;
+    --clr-bg: #0f172a;
+    --clr-text-main: #f8fafc;
+    --clr-text-muted: #94a3b8;
+    --clr-border: #334155;
+    --clr-primary: #38bdf8;
+    --clr-primary-hover: #0ea5e9;
 }
 
 body.auth-locked {
@@ -358,4 +380,4 @@ body[data-theme="dark"] .auth-note {
     width: 18px;
     height: 18px;
     pointer-events: none;
-}
+}   

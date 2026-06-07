@@ -291,6 +291,13 @@ const difficultySelect = document.getElementById('difficulty');
 const numQuestionsSelect = document.getElementById('num-questions');
 const homeBtn = document.getElementById('home-btn');
 const exitBtn = document.getElementById('exit-btn');
+const analyticsBestScoreEl = document.getElementById('analytics-best-score');
+const analyticsAverageScoreEl = document.getElementById('analytics-average-score');
+const analyticsTotalQuizzesEl = document.getElementById('analytics-total-quizzes');
+const analyticsAccuracyEl = document.getElementById('analytics-accuracy');
+const achievementBadgeEl = document.getElementById('achievement-badge');
+const achievementTitleEl = document.getElementById('achievement-title');
+const achievementDescEl = document.getElementById('achievement-desc');
 
 // Quiz state
 let currentQuestion = 0;
@@ -302,6 +309,32 @@ let questions = [];
 let startTime = 0;
 let correctAnswers = 0;
 let wrongAnswers = 0;
+
+// Statistics and Storage
+const STORAGE_KEY_STATS = 'quizMasterStats';
+const STORAGE_KEY_PERSONAL_BEST = 'quizMasterPersonalBest';
+
+function getInitialStats() {
+    return {
+        totalQuizzes: 0,
+        totalScore: 0,
+        totalCorrect: 0,
+        totalQuestions: 0,
+        bestScore: 0
+    };
+}
+
+function getInitialPersonalBest() {
+    return {
+        general: 0,
+        science: 0,
+        history: 0,
+        tech: 0
+    };
+}
+
+let quizStats = JSON.parse(localStorage.getItem(STORAGE_KEY_STATS)) || getInitialStats();
+let personalBest = JSON.parse(localStorage.getItem(STORAGE_KEY_PERSONAL_BEST)) || getInitialPersonalBest();
 
 // Initialize category cards
 const categoryCards = document.querySelectorAll('.category-card');
@@ -344,7 +377,9 @@ function startQuiz() {
       .sort(() => Math.random() - 0.5)
       .slice(0, numQuestions);
 
+  // Hide all screens first
   startScreen.classList.add('hidden');
+  endScreen.classList.add('hidden');
   quizScreen.classList.remove('hidden');
   
   // Reset quiz state
@@ -473,44 +508,129 @@ function startTimer() {
   }, 1000);
 }
 
+// Save stats to localStorage
+function saveStats() {
+    localStorage.setItem(STORAGE_KEY_STATS, JSON.stringify(quizStats));
+    localStorage.setItem(STORAGE_KEY_PERSONAL_BEST, JSON.stringify(personalBest));
+}
+
+// Render analytics and personal best
+function renderAnalytics() {
+    // Update analytics section
+    analyticsBestScoreEl.textContent = quizStats.bestScore;
+    analyticsTotalQuizzesEl.textContent = quizStats.totalQuizzes;
+    
+    // Calculate average score
+    const averageScore = quizStats.totalQuizzes > 0 
+        ? Math.round(quizStats.totalScore / quizStats.totalQuizzes) 
+        : 0;
+    analyticsAverageScoreEl.textContent = averageScore;
+    
+    // Calculate accuracy percentage
+    const accuracy = quizStats.totalQuestions > 0 
+        ? Math.round((quizStats.totalCorrect / quizStats.totalQuestions) * 100) 
+        : 0;
+    analyticsAccuracyEl.textContent = `${accuracy}%`;
+    
+    // Render personal best
+    document.querySelectorAll('.pb-score').forEach(el => {
+        const cat = el.dataset.category;
+        el.textContent = personalBest[cat];
+    });
+}
+
+// Determine and display achievement badge
+function displayAchievementBadge(percentage) {
+    // Remove any existing achievement classes
+    achievementBadgeEl.classList.remove('learner', 'scholar', 'expert', 'quiz-master');
+    
+    let title, desc;
+    if (percentage === 100) {
+        achievementBadgeEl.classList.add('quiz-master');
+        title = 'Quiz Master';
+        desc = 'Perfect score! Unbeatable!';
+    } else if (percentage >= 80) {
+        achievementBadgeEl.classList.add('expert');
+        title = 'Expert';
+        desc = 'Excellent performance!';
+    } else if (percentage >= 60) {
+        achievementBadgeEl.classList.add('scholar');
+        title = 'Scholar';
+        desc = 'Great job, keep it up!';
+    } else {
+        achievementBadgeEl.classList.add('learner');
+        title = 'Learner';
+        desc = 'Keep practicing!';
+    }
+    achievementTitleEl.textContent = title;
+    achievementDescEl.textContent = desc;
+}
+
 // End quiz
 function endQuiz() {
-  clearInterval(timer);
-  quizScreen.classList.add('hidden');
-  endScreen.classList.remove('hidden');
-  
-  const timeTaken = Math.round((Date.now() - startTime) / 1000);
-  const category = quizData[selectedCategory];
-  
-  // Update end screen
-  finalScoreEl.textContent = score;
-  categoryResultEl.textContent = `Category: ${category.name}`;
-  correctAnswersEl.textContent = correctAnswers;
-  wrongAnswersEl.textContent = wrongAnswers;
-  timeTakenEl.textContent = timeTaken;
-  
-  // Set result message based on score
-  let message = '';
-  const percentage = (score / (questions.length * 10)) * 100;
-  
-  if (percentage === 100) {
-      message = "Perfect score! You're a genius! 🎉";
-  } else if (percentage >= 80) {
-      message = "Excellent work! You're very knowledgeable! 🌟";
-  } else if (percentage >= 60) {
-      message = "Good job! Keep learning! 👍";
-  } else if (percentage >= 40) {
-      message = "Not bad! Room for improvement! 📚";
-  } else {
-      message = "Keep practicing! You'll do better next time! 💪";
-  }
-  
-  resultMessageEl.textContent = message;
+    clearInterval(timer);
+    // Hide all screens first
+    startScreen.classList.add('hidden');
+    quizScreen.classList.add('hidden');
+    endScreen.classList.remove('hidden');
+    
+    const timeTaken = Math.round((Date.now() - startTime) / 1000);
+    const category = quizData[selectedCategory];
+    
+    // Update end screen
+    finalScoreEl.textContent = score;
+    categoryResultEl.textContent = `Category: ${category.name}`;
+    correctAnswersEl.textContent = correctAnswers;
+    wrongAnswersEl.textContent = wrongAnswers;
+    timeTakenEl.textContent = timeTaken;
+    
+    // Update statistics
+    quizStats.totalQuizzes++;
+    quizStats.totalScore += score;
+    quizStats.totalCorrect += correctAnswers;
+    quizStats.totalQuestions += questions.length;
+    if (score > quizStats.bestScore) {
+        quizStats.bestScore = score;
+    }
+    
+    // Update personal best for category
+    if (score > personalBest[selectedCategory]) {
+        personalBest[selectedCategory] = score;
+    }
+    
+    // Save updated stats
+    saveStats();
+    
+    // Render analytics
+    renderAnalytics();
+    
+    // Set result message based on score
+    let message = '';
+    const percentage = (score / (questions.length * 10)) * 100;
+    
+    // Display achievement badge
+    displayAchievementBadge(percentage);
+    
+    if (percentage === 100) {
+        message = "Perfect score! You're a genius! 🎉";
+    } else if (percentage >= 80) {
+        message = "Excellent work! You're very knowledgeable! 🌟";
+    } else if (percentage >= 60) {
+        message = "Good job! Keep learning! 👍";
+    } else if (percentage >= 40) {
+        message = "Not bad! Room for improvement! 📚";
+    } else {
+        message = "Keep practicing! You'll do better next time! 💪";
+    }
+    
+    resultMessageEl.textContent = message;
 }
 
 // Return to home screen
 function goHome() {
+  // Hide all screens first
   endScreen.classList.add('hidden');
+  quizScreen.classList.add('hidden');
   startScreen.classList.remove('hidden');
   selectedCategory = null;
   categoryCards.forEach(card => card.classList.remove('selected'));
@@ -531,7 +651,9 @@ function exitQuiz() {
     correctAnswers = 0;
     wrongAnswers = 0;
     timeLeft = getTimeLimit();
+    // Hide all screens first
     quizScreen.classList.add('hidden');
+    endScreen.classList.add('hidden');
     startScreen.classList.remove('hidden');
     selectedCategory = null;
     categoryCards.forEach(card =>
