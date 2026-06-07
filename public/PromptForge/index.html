@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PromptForge</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <style>
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.glass {
+  backdrop-filter: blur(16px);
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s ease;
+}
+
+.glass:hover {
+  transform: translateY(-4px);
+}
+
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.orb1 {
+  width: 300px;
+  height: 300px;
+  background: #6366f1;
+  top: 10%;
+  left: 10%;
+}
+
+.orb2 {
+  width: 250px;
+  height: 250px;
+  background: #8b5cf6;
+  top: 60%;
+  right: 10%;
+}
+
+.orb3 {
+  width: 200px;
+  height: 200px;
+  background: #ec4899;
+  bottom: 10%;
+  left: 40%;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    to bottom,
+    #6366f1,
+    #8b5cf6
+  );
+  border-radius: 999px;
+}
+
+  </style>
+
+</head>
+
+<body class="bg-slate-950 text-white min-h-screen">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+  <div class="max-w-7xl mx-auto px-6 py-8">
+
+<!-- Hero Section -->
+<div
+  id="heroSection"
+  class="dashboard-card mb-8 rounded-3xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 p-8 shadow-2xl"
+>
+  <h1 class="text-4xl md:text-5xl font-bold">
+    PromptForge
+  </h1>
+
+  <p class="mt-3 text-lg text-slate-100">
+    AI Prompt Optimization & Token Intelligence Dashboard
+  </p>
+
+  <div class="mt-6 flex flex-wrap gap-3">
+    <span class="px-4 py-2 rounded-full bg-white/20">
+      Prompt Refiner
+    </span>
+
+    <span class="px-4 py-2 rounded-full bg-white/20">
+      Token Matrix
+    </span>
+
+    <span class="px-4 py-2 rounded-full bg-white/20">
+      Cost Calculator
+    </span>
+
+    <span class="px-4 py-2 rounded-full bg-white/20">
+      Template Library
+    </span>
+  </div>
+</div>
+
+<!-- Main Dashboard -->
+<div class="grid lg:grid-cols-2 gap-6">
+
+  <!-- Input -->
+  <div class="dashboard-card glass rounded-3xl p-6 shadow-xl">
+
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-2xl font-semibold">
+        Prompt Input
+      </h2>
+
+      <span
+        class="px-3 py-1 text-sm rounded-full bg-indigo-500/20 text-indigo-300"
+      >
+        AI Ready
+      </span>
+    </div>
+
+    <textarea
+      id="promptInput"
+      aria-label="Prompt Input"
+      rows="12"
+      placeholder="Describe your task..."
+      class="w-full rounded-2xl bg-slate-900 border border-slate-700 p-4 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 outline-none transition"
+    ></textarea>
+
+    <button
+      id="optimizeBtn"
+      class="mt-5 w-full rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 py-3 font-semibold hover:scale-[1.02] transition"
+    >
+      Optimize Prompt
+    </button>
+
+  </div>
+
+  <!-- Output -->
+  <div class="dashboard-card glass rounded-3xl p-6 shadow-xl">
+
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-2xl font-semibold">
+        Optimized Prompt
+      </h2>
+
+      <span
+        class="px-3 py-1 text-sm rounded-full bg-emerald-500/20 text-emerald-300"
+      >
+        Generated
+      </span>
+      <button id="copyBtn" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 transition-all duration-300">
+        📋 Copy Prompt
+      </button>
+    </div>
+
+    <textarea
+  id="optimizedOutput"
+  aria-label="Optimized Prompt Output"
+  rows="16"
+  readonly
+  placeholder="Your optimized prompt will appear here..."
+  class="w-full rounded-2xl bg-slate-900 border border-slate-700 p-4 outline-none resize-none overflow-y-auto scroll-smooth"
+></textarea>
+
+  </div>
+
+</div>
+
+<!-- Token Matrix -->
+<div class="mt-8">
+
+  <h2 class="text-3xl font-bold mb-5">
+    Token Intelligence Matrix
+  </h2>
+
+  <div class="grid md:grid-cols-4 gap-5">
+
+    <div
+      class="glass rounded-2xl p-5 hover:-translate-y-1 transition"
+    >
+      <p class="text-slate-400">
+        Characters
+      </p>
+
+      <p
+        id="charCount"
+        class="text-4xl font-bold text-blue-400 mt-2"
+      >
+        0
+      </p>
+    </div>
+
+    <div
+      class="glass rounded-2xl p-5 hover:-translate-y-1 transition"
+    >
+      <p class="text-slate-400">
+        Words
+      </p>
+
+      <p
+        id="wordCount"
+        class="text-4xl font-bold text-green-400 mt-2"
+      >
+        0
+      </p>
+    </div>
+
+    <div
+      class="glass rounded-2xl p-5 hover:-translate-y-1 transition"
+    >
+      <p class="text-slate-400">
+        Estimated Tokens
+      </p>
+
+      <p
+        id="tokenCount"
+        class="text-4xl font-bold text-purple-400 mt-2"
+      >
+        0
+      </p>
+    </div>
+
+    <div
+      class="glass rounded-2xl p-5 hover:-translate-y-1 transition"
+    >
+      <p class="text-slate-400">
+        Efficiency Score
+      </p>
+
+      <p
+        id="efficiencyScore"
+        class="text-4xl font-bold text-yellow-400 mt-2"
+      >
+        100%
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Cost Calculator -->
+<div class="mt-8 grid lg:grid-cols-2 gap-6">
+
+  <div class="dashboard-card glass rounded-3xl p-6">
+
+    <h2 class="text-2xl font-semibold mb-5">
+      API Cost Calculator
+    </h2>
+
+    <label class="block mb-2 text-slate-400">
+      Select Model
+    </label>
+
+    <select
+      id="modelSelect"
+      class="w-full rounded-xl bg-slate-900 border border-slate-700 p-3"
+    >
+      <option>GPT-4o</option>
+      <option>Claude 3.5 Sonnet</option>
+      <option>Gemini Pro</option>
+    </select>
+
+    <div
+      class="mt-6 rounded-2xl bg-slate-900 p-6 border border-slate-700"
+    >
+      <p class="text-slate-400">
+        Estimated Cost
+      </p>
+
+      <p
+        id="costOutput"
+        class="text-5xl font-bold text-emerald-400 mt-2"
+      >
+        $0.000000
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Template Library -->
+  <div class="dashboard-card glass rounded-3xl p-6">
+
+    <h2 class="text-2xl font-semibold mb-5">
+      Template Library
+    </h2>
+
+    <div class="flex flex-wrap gap-3">
+
+      <button
+        class="template-btn px-4 py-2 rounded-full bg-indigo-600 hover:bg-indigo-500"
+        data-template="Debug the following code and explain the issue:"
+      >
+        Debug
+      </button>
+
+      <button
+        class="template-btn px-4 py-2 rounded-full bg-purple-600 hover:bg-purple-500"
+        data-template="Summarize the following content in bullet points:"
+      >
+        Summary
+      </button>
+
+      <button
+        class="template-btn px-4 py-2 rounded-full bg-pink-600 hover:bg-pink-500"
+        data-template="Write a creative story based on:"
+      >
+        Creative
+      </button>
+
+      <button
+        class="template-btn px-4 py-2 rounded-full bg-green-600 hover:bg-green-500"
+        data-template="Generate interview questions for:"
+      >
+        Interview
+      </button>
+
+      <button
+        class="template-btn px-4 py-2 rounded-full bg-amber-600 hover:bg-amber-500"
+        data-template="Explain this concept in simple terms:"
+      >
+        Explain
+      </button>
+
+    </div>
+
+    <div
+      class="mt-6 rounded-2xl bg-slate-900 p-5 border border-slate-700"
+    >
+      <h3 class="font-semibold mb-3">
+        Prompt Structure Weight
+      </h3>
+
+      <div class="space-y-3">
+
+        <div>
+          <div class="flex justify-between">
+            <span>Context</span>
+            <span>30%</span>
+          </div>
+          <div class="h-2 bg-slate-700 rounded mt-1">
+            <div class="h-2 bg-blue-500 rounded w-[30%]"></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex justify-between">
+            <span>Objective</span>
+            <span>25%</span>
+          </div>
+          <div class="h-2 bg-slate-700 rounded mt-1">
+            <div class="h-2 bg-green-500 rounded w-[25%]"></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex justify-between">
+            <span>Style</span>
+            <span>15%</span>
+          </div>
+          <div class="h-2 bg-slate-700 rounded mt-1">
+            <div class="h-2 bg-purple-500 rounded w-[15%]"></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex justify-between">
+            <span>Tone</span>
+            <span>15%</span>
+          </div>
+          <div class="h-2 bg-slate-700 rounded mt-1">
+            <div class="h-2 bg-pink-500 rounded w-[15%]"></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex justify-between">
+            <span>Audience</span>
+            <span>15%</span>
+          </div>
+          <div class="h-2 bg-slate-700 rounded mt-1">
+            <div class="h-2 bg-yellow-500 rounded w-[15%]"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+  </div>
+
+  <!-- Toast Notification -->
+<div
+  id="toast"
+  class="fixed top-5 right-5 translate-x-[150%] opacity-0 transition-all duration-300 z-50"
+>
+  <div
+    class="flex items-center gap-3 rounded-xl border border-emerald-500/30 bg-emerald-500/20 px-5 py-3 backdrop-blur-md shadow-xl"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-6 w-6 text-emerald-400"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M5 13l4 4L19 7"
+      />
+    </svg>
+
+    <span class="font-medium text-emerald-300">
+      Copied Successfully
+    </span>
+  </div>
+</div>
+
+  <script src="./gsap.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
