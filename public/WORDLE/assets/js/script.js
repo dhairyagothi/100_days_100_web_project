@@ -10,7 +10,7 @@ function getRandomWord() {
     const date = new Date();
     const day = date.getDate();
     const month = date.getMonth() + 1;
-    return shuffledWords[31 * (month +1) + day].toUpperCase();
+    return shuffledWords[31 * (month + 1) + day].toUpperCase();
 }
 
 let secretWord = getRandomWord();
@@ -25,7 +25,7 @@ const info = document.querySelector(".info");
 const closeStats = document.querySelector("#closeStats");
 const stats = document.querySelector(".stats");
 const closeResult = document.querySelector("#closeResult");
-const resetbutton=document.querySelector("#reset");
+const resetbutton = document.querySelector("#reset");
 
 // Function to change control based on input
 const changeControl = function (type) {
@@ -49,20 +49,75 @@ const getBoxValue = function (elementId) {
     return document.querySelector(`#${elementId}`).value;
 };
 
-// Function to check the guessed word against the secret word
+/**
+ * Fix for issue #6151 — Duplicate letter keyboard color hints
+ * ─────────────────────────────────────────────────────────────
+ * The original implementation used a single-pass loop that called
+ * secretWord.includes(word[i]) without accounting for how many times
+ * a letter appears in the secret word. This caused duplicate letters
+ * in a guess to be over-coloured (e.g. both 'E's in "SPEED" marked
+ * yellow even when the secret word only contains one 'E').
+ *
+ * Fix uses the official Wordle two-pass algorithm:
+ *   Pass 1 — mark greens and decrement available letter counts.
+ *   Pass 2 — mark yellows only when remaining count > 0, else grey.
+ *
+ * Keyboard key colour priority: green > yellow > grey.
+ * A key already marked green is NEVER downgraded by a later guess.
+ */
 const checkWord = function (word) {
+    // Build a frequency map of available letters in the secret word
+    const letterCount = {};
+    for (const ch of secretWord) {
+        letterCount[ch] = (letterCount[ch] || 0) + 1;
+    }
+
+    // Result array: "green" | "yellow" | "grey"
+    const result = new Array(5).fill("grey");
+
+    // ── Pass 1: greens ────────────────────────────────────────────────
     for (let i = 0; i < 5; i++) {
         if (word[i] === secretWord[i]) {
-            document.querySelector(`#b${row}${i + 1}`).classList.add("green");
-            document.querySelector(`#${word[i]}`).classList.add("green");
-        } else if (secretWord.includes(word[i])) {
-            document.querySelector(`#b${row}${i + 1}`).classList.add("yellow");
-            document.querySelector(`#${word[i]}`).classList.add("yellow");
-        } else {
-            document.querySelector(`#b${row}${i + 1}`).classList.add("grey");
-            document.querySelector(`#${word[i]}`).classList.add("grey");
+            result[i] = "green";
+            letterCount[word[i]]--;          // consume one occurrence
         }
     }
+
+    // ── Pass 2: yellows ───────────────────────────────────────────────
+    for (let i = 0; i < 5; i++) {
+        if (result[i] === "green") continue; // already handled
+        if (letterCount[word[i]] > 0) {
+            result[i] = "yellow";
+            letterCount[word[i]]--;
+        }
+        // else remains "grey"
+    }
+
+    // ── Apply tile colours ────────────────────────────────────────────
+    for (let i = 0; i < 5; i++) {
+        document.querySelector(`#b${row}${i + 1}`).classList.add(result[i]);
+    }
+
+    // ── Apply keyboard key colours (green > yellow > grey, no downgrades) ──
+    for (let i = 0; i < 5; i++) {
+        const keyEl = document.querySelector(`#${word[i]}`);
+        if (!keyEl) continue;
+
+        // Never downgrade a key that is already green
+        if (keyEl.classList.contains("green")) continue;
+
+        if (result[i] === "green") {
+            keyEl.classList.remove("yellow", "grey");
+            keyEl.classList.add("green");
+        } else if (result[i] === "yellow" && !keyEl.classList.contains("yellow")) {
+            keyEl.classList.remove("grey");
+            keyEl.classList.add("yellow");
+        } else if (result[i] === "grey" && !keyEl.classList.contains("yellow")) {
+            keyEl.classList.add("grey");
+        }
+    }
+
+    // ── Win check ─────────────────────────────────────────────────────
     if (word === secretWord) {
         message.textContent = appreciation[row - 1];
         message.classList.remove("hidden");
@@ -70,7 +125,6 @@ const checkWord = function (word) {
             message.classList.add("hidden");
             document.querySelector("#result").classList.remove("hidden");
         }, 1000);
-
         playing = false;
     }
 };
@@ -142,7 +196,7 @@ document.addEventListener("keydown", function (event) {
 });
 
 // Event listener for closing the rules popup
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const closeInfo = document.querySelector("#closeInfo");
     const rulesPopup = document.querySelector("#rules");
 
@@ -172,10 +226,7 @@ closeResult.addEventListener("click", function () {
 });
 
 resetbutton.addEventListener("click", function () {
-    // Clear wins and losses statistics from localStorage
     localStorage.removeItem("wins");
     localStorage.removeItem("losses");
-
-    // Refresh the page
     location.reload();
 });
