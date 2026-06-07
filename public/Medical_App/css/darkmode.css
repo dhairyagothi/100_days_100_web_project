@@ -56,41 +56,70 @@ body[data-theme="dark"] .btn-outline:hover:not(:disabled) {
 .dark-mode select {
     background: #334155;
     color: white;
-    border-color: #475569;
+    border: 1px solid #475569;
 }
 
-.dark-mode .emergency-grid button {
-    background: #334155;
-    border-color: #475569;
-    color: #f8fafc;
+.theme-btn{
+    position:absolute;
+    right:20px;
+    top:20px;
+    border:none;
+    padding:10px 14px;
+    border-radius:10px;
+    cursor:pointer;
+}
+body.dark-mode .doctor-card {
+    background-color: #1e293b !important;
+    color: white !important;
+}
+body.dark-mode .doctor-card h3,
+body.dark-mode .doctor-card p,
+body.dark-mode .doctor-card span {
+    color: white !important;
 }
 
-.dark-mode .emergency-grid button:hover {
-    background: #450a0a;
-}
-
-.theme-btn {
-    /* REMOVE: position: absolute; */
-    /* REMOVE: right: 20px; */
-    /* REMOVE: top: 20px; */
-    
-    border: none;
-    padding: 10px 14px;
-    border-radius: 10px;
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.15);
+body.dark-mode .hero {
+    background: linear-gradient(
+        135deg,
+        #0f172a,
+        #1e293b
+    ) !important;
     color: white;
-    font-size: 1.1rem;
-    display: inline-flex; /* Ensures content centers nicely if needed */
-    align-items: center;
+}
+body.dark-mode .warning-panel {
+    background-color: #1e293b !important;
+    color: white !important;
+}
+body.dark-mode .warning-panel h2,
+body.dark-mode .warning-panel p {
+    color: white !important;
+}
+body.dark-mode .remedy-card {
+    background-color: #1e293b !important;
+    color: white !important;
 }
 
-.theme-btn:hover {
-    background: rgba(255,255,255,0.3);
+body.dark-mode .remedy-card h3,
+body.dark-mode .remedy-card p,
+body.dark-mode .remedy-card li {
+    color: white !important;
+}
+body.dark-mode .site-header {
+    background-color: #0f172a !important;
+    color: white !important;
 }
 
 
-.dark-mode .navbar {
-    background: #1e293b;
+body.dark-mode .site-header {
+    background: linear-gradient(
+        135deg,
+        #0f172a,
+        #1e293b
+    ) !important;
+    color: white !important;
 }
 
+body.dark-mode .site-header h1,
+body.dark-mode .site-header p {
+    color: white !important;
+}

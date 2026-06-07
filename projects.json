@@ -492,7 +492,7 @@
       "javascript"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/Amazon_Clone/index.html"
+    "projectPath": "./public/Amazon-App/index.html"
   },
   {
     "projectNo": 43,
@@ -1419,7 +1419,7 @@
       "js"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/code-visualizer-playground/index.html"
+    "projectPath": "./public/virtual-playground/index.html"
   },
   {
     "projectNo": 120,
@@ -1516,7 +1516,7 @@
       "javascript"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/Particle Wave Animation/index.html"
+    "projectPath": "./public/particle-wave-animation/index.html"
   },
   {
     "projectNo": 128,
@@ -2180,7 +2180,7 @@
       "css"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/InterviewSimulator/index.html"
+    "projectPath": "./public/interview-prep-hub/index.html"
   },
   {
     "projectNo": 178,
@@ -2396,7 +2396,7 @@
       "javascript"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/story/main.html"
+    "projectPath": "./public/story/story.html"
   },
   {
     "projectNo": 193,
@@ -2473,6 +2473,8 @@
     "techStack": [
       "html",
       "css",
+      "react",
+      "tailwindcss",
       "javascript"
     ],
     "difficulty": "advanced",
@@ -2579,7 +2581,12 @@
     "projectName": "Gravity Well",
     "projectType": "Animation",
     "projectDesc": "Interactive physics-based gravity simulation allowing users to create gravitational wells.",
-    "techStack": ["HTML", "canvas", "javascript", "css"],
+    "techStack": [
+      "HTML",
+      "canvas",
+      "javascript",
+      "css"
+    ],
     "difficulty": "intermediate",
     "projectPath": "./public/gravity-well/index.html"
   },
