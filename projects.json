@@ -2750,5 +2750,13 @@
     ],
     "difficulty": "advanced",
     "projectPath": "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/SkillBridge"
-  }
+  },  {
+  "projectNo": 218,
+  "projectName": "Image Steganography Tool",
+  "projectType": "Tool",
+  "projectDesc": "A web-based tool that hides and extracts secret messages inside images using steganography techniques.",
+  "techStack": ["tool", "html", "css", "js"],
+  "difficulty": "advanced",
+  "projectPath": "./public/ImageSteganographyTool/index.html"
+ }
 ]
