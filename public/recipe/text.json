@@ -1,105 +1,169 @@
 {
-    "recipes": [
-      {
-        "name": "Spaghetti Carbonara",
-        "ingredients": ["200g spaghetti", "2 eggs", "100g pancetta", "50g Parmesan cheese", "Black pepper", "Salt"],
-        "instructions": "Boil spaghetti. Fry pancetta. Mix eggs and cheese. Combine everything. Season and serve."
-      },
-      {
-        "name": "Chicken Biryani",
-        "ingredients": ["1 cup basmati rice", "200g chicken", "1 onion", "2 tomatoes", "Spices (turmeric, cumin, coriander)", "Yogurt"],
-        "instructions": "Cook rice separately. Sauté onions, tomatoes, and spices. Add chicken and yogurt. Layer rice and chicken. Steam and serve."
-      },
-      {
-        "name": "Vegetable Stir Fry",
-        "ingredients": ["1 bell pepper", "1 carrot", "1 zucchini", "2 tbsp soy sauce", "1 tsp garlic", "1 tbsp oil"],
-        "instructions": "Chop vegetables. Stir-fry with garlic in oil. Add soy sauce. Cook for 5 minutes and serve."
-      },
-      {
-        "name": "Pancakes",
-        "ingredients": ["1 cup flour", "1 egg", "1 cup milk", "1 tbsp sugar", "1 tsp baking powder", "Butter"],
-        "instructions": "Mix ingredients into a batter. Cook on a hot pan. Flip when bubbles form. Serve with syrup."
-      },
-      {
-        "name": "Grilled Cheese Sandwich",
-        "ingredients": ["2 slices of bread", "Butter", "2 slices of cheese"],
-        "instructions": "Butter bread slices. Place cheese between. Grill until golden brown."
-      },
-      {
-        "name": "Tomato Soup",
-        "ingredients": ["4 tomatoes", "1 onion", "2 cloves garlic", "2 cups vegetable broth", "Salt", "Pepper"],
-        "instructions": "Sauté onion and garlic. Add tomatoes and broth. Simmer, blend, and season."
-      },
-      {
-        "name": "Omelette",
-        "ingredients": ["2 eggs", "1 tbsp milk", "Salt", "Pepper", "Butter"],
-        "instructions": "Beat eggs with milk. Cook in butter. Fold and serve."
-      },
-      {
-        "name": "Banana Smoothie",
-        "ingredients": ["1 banana", "1 cup milk", "1 tbsp honey"],
-        "instructions": "Blend all ingredients until smooth."
-      },
-      {
-        "name": "Garlic Bread",
-        "ingredients": ["1 baguette", "Butter", "2 cloves garlic", "Parsley"],
-        "instructions": "Mix butter with minced garlic. Spread on bread. Bake until golden."
-      },
-      {
-        "name": "Caesar Salad",
-        "ingredients": ["1 head romaine lettuce", "50g Parmesan", "Croutons", "Caesar dressing"],
-        "instructions": "Chop lettuce. Toss with dressing, croutons, and cheese."
-      },
-      {
-        "name": "Chocolate Brownies",
-        "ingredients": ["1 cup flour", "½ cup cocoa powder", "1 cup sugar", "2 eggs", "½ cup butter"],
-        "instructions": "Mix ingredients. Bake at 180°C for 25 minutes."
-      },
-      {
-        "name": "Fried Rice",
-        "ingredients": ["1 cup rice", "1 egg", "1 carrot", "2 tbsp soy sauce", "1 onion"],
-        "instructions": "Cook rice. Fry vegetables and egg. Add rice and soy sauce."
-      },
-      {
-        "name": "Lemonade",
-        "ingredients": ["2 lemons", "1 cup water", "2 tbsp sugar"],
-        "instructions": "Squeeze lemons. Mix with sugar and water."
-      },
-      {
-        "name": "French Toast",
-        "ingredients": ["2 slices bread", "1 egg", "½ cup milk", "1 tbsp sugar"],
-        "instructions": "Dip bread in egg-milk mix. Fry until golden."
-      },
-      {
-        "name": "Mango Lassi",
-        "ingredients": ["1 mango", "1 cup yogurt", "1 tbsp honey"],
-        "instructions": "Blend mango, yogurt, and honey until smooth."
-      },
-      {
-        "name": "Palak Paneer",
-        "ingredients": ["200g paneer", "2 cups spinach", "1 onion", "1 tomato", "2 cloves garlic", "1 tsp cumin"],
-        "instructions": "Blanch spinach and blend. Sauté onions, garlic, and tomatoes. Add paneer and spinach puree. Cook for 5 minutes."
-      },
-      {
-        "name": "Aloo Paratha",
-        "ingredients": ["2 cups wheat flour", "2 potatoes", "1 onion", "1 tsp cumin", "Salt", "Butter"],
-        "instructions": "Mash potatoes with spices. Stuff in dough. Roll and cook on a tawa with butter."
-      },
-      {
-        "name": "Chana Masala",
-        "ingredients": ["1 cup chickpeas", "1 onion", "2 tomatoes", "2 cloves garlic", "1 tsp garam masala", "1 tsp cumin"],
-        "instructions": "Sauté onions, garlic, and tomatoes. Add boiled chickpeas and spices. Simmer for 10 minutes."
-      },
-      {
-        "name": "Dal Tadka",
-        "ingredients": ["1 cup lentils", "1 onion", "2 tomatoes", "2 cloves garlic", "1 tsp mustard seeds", "1 tsp turmeric"],
-        "instructions": "Cook lentils. Sauté spices, onions, and tomatoes. Mix with dal and simmer."
-      },
-      {
-        "name": "Masala Dosa",
-        "ingredients": ["2 cups rice", "1 cup urad dal", "2 potatoes", "1 onion", "1 tsp mustard seeds", "Curry leaves"],
-        "instructions": "Ferment rice and dal batter. Cook dosas on a tawa. Fill with spiced mashed potatoes and serve with chutney."
-      }
-    ]
-  }
-  
+  "recipes": [
+    {
+      "name": "Spaghetti Carbonara",
+      "ingredients": ["200g spaghetti", "2 large eggs", "100g pancetta or guanciale", "50g Pecorino Romano or Parmesan cheese", "Freshly crushed black pepper", "Salt for boiling water"],
+      "instructions": "Bring a large pot of salted water to a boil and cook the spaghetti until al dente. Meanwhile, heat a pan over medium heat and crisp the diced pancetta until golden brown, then remove from heat. In a small bowl, whisk the eggs together with the finely grated cheese and a generous amount of crushed black pepper. Drain the pasta, reserving a small cup of starchy pasta water. Quickly toss the hot spaghetti into the pan with the pancetta, pour in the egg and cheese mixture, and stir vigorously away from direct heat, adding splash of pasta water until a creamy, emulsified sauce forms. serve immediately."
+    },
+    {
+      "name": "Chicken Biryani",
+      "ingredients": ["1 cup premium basmati rice", "200g bone-in chicken pieces", "1 large onion, thinly sliced", "2 ripe tomatoes, chopped", "1 tbsp ginger-garlic paste", "3 tbsp whisked yogurt", "1 tsp turmeric powder", "1 tsp red chili powder", "1 tsp biryani masala", "Whole spices (cardamom, cloves, cinnamon)", "Fresh mint and coriander leaves", "2 tbsp ghee or oil"],
+      "instructions": "Wash and soak the basmati rice for 30 minutes, then parboil it with whole spices until 70% cooked and drain completely. In a heavy-bottomed pot, heat ghee or oil and fry the sliced onions until deeply caramelized and golden brown, setting half aside for garnishing. Add ginger-garlic paste, chopped tomatoes, turmeric, chili powder, and biryani masala to the pot, sautéing until the oil separates. Stir in the chicken pieces and yogurt, cooking on medium heat until the chicken is tender and the gravy is thick. Layer the parboiled rice evenly over the chicken masala, top with the reserved fried onions, fresh mint, and coriander leaves. Seal the pot tightly with a lid and cook on very low heat for 15 minutes to trap the steam before fluffing gently to serve."
+    },
+    {
+      "name": "Vegetable Stir Fry",
+      "ingredients": ["1 crisp bell pepper, sliced", "1 medium carrot, julienned", "1 small zucchini, sliced", "½ cup broccoli florets", "2 tbsp premium soy sauce", "1 tsp garlic, minced", "1 tsp ginger, grated", "1 tbsp sesame oil", "1 tsp toasted sesame seeds"],
+      "instructions": "Heat sesame oil in a large wok or deep frying pan over high heat until smoking. Add the minced garlic and grated ginger, tossing quickly for about 10 seconds until fragrant but not browned. Toss in the harder vegetables first, starting with carrots and broccoli florets, stirring constantly for 2 minutes. Add the bell peppers and zucchini slices, keeping the heat high to preserve their crisp texture. Drizzle the soy sauce along the edges of the wok and stir everything together for an additional 2 minutes until the vegetables are glazed. Garnish with toasted sesame seeds and serve hot."
+    },
+    {
+      "name": "Pancakes",
+      "ingredients": ["1 cup all-purpose flour", "1 large egg", "1 cup whole milk", "1 tbsp white sugar", "1 tsp baking powder", "¼ tsp salt", "2 tbsp melted butter", "Extra butter for the pan"],
+      "instructions": "In a large mixing bowl, sift together the all-purpose flour, white sugar, baking powder, and salt. In a separate container, whisk the egg together with the milk and melted butter until fully combined. Pour the wet ingredients into the dry mixture, stirring gently with a spatula just until combined, leaving minor lumps in the batter to ensure fluffy texture. Heat a non-stick skillet over medium-low heat and grease it lightly with a thin layer of butter. Ladle a portion of batter onto the pan and cook until bubbles form on the surface and the edges look set. Carefully flip the pancake over and cook the other side for another minute until it turns golden brown."
+    },
+    {
+      "name": "Grilled Cheese Sandwich",
+      "ingredients": ["2 thick slices of artisanal bread", "2 tbsp unsalted butter, softened", "2 thick slices of sharp cheddar cheese", "1 slice of Swiss or mozzarella cheese"],
+      "instructions": "Preheat a skillet or griddle plate over medium-low heat. Spread the softened butter evenly across one side of each bread slice to ensure a uniform golden crust. Place one slice of bread, buttered side down, directly onto the preheated skillet. Layer the cheddar and mozzarella cheese slices evenly on top of the bread to create a perfectly melted profile. Place the second slice of bread on top with its buttered side facing upwards. Cook patiently for about 3 to 4 minutes until the bottom layer turns crispy and golden brown. Carefully flip the sandwich over, pressing down gently with a spatula, and grill the second side for another 3 minutes until the cheese is completely melted and gooey."
+    },
+    {
+      "name": "Tomato Soup",
+      "ingredients": ["4 large ripe tomatoes, diced", "1 medium onion, chopped", "2 cloves garlic, minced", "2 cups organic vegetable broth", "1 tbsp olive oil", "¼ cup heavy cream", "Fresh basil leaves", "Salt and cracked black pepper"],
+      "instructions": "Heat olive oil in a deep saucepan over medium heat, then add the chopped onions and minced garlic, sautéing for 4 minutes until soft and translucent. Add the diced tomatoes along with their juices into the pan, cooking down for 5 minutes until they begin to collapse. Pour in the vegetable broth, season with salt and cracked black pepper, and bring the mixture to a gentle boil. Lower the heat, cover the pan, and let it simmer for 15 minutes to allow the flavors to blend smoothly. Remove from heat, stir in fresh basil leaves, and carefully blend the soup using an immersion blender until completely velvety. Stir in the heavy cream, warm through for 1 minute without boiling, and ladle into bowls."
+    },
+    {
+      "name": "Omelette",
+      "ingredients": ["2 large fresh eggs", "1 tbsp whole milk", "1 tbsp unsalted butter", "2 tbsp grated cheddar cheese", "1 tbsp chives, finely chopped", "Salt and white pepper"],
+      "instructions": "Crack the fresh eggs into a mixing bowl, add the milk, a pinch of salt, and a dash of white pepper. Beat the mixture vigorously with a fork until the yolks and whites are fully integrated and slightly foamy. Melt the unsalted butter in a small non-stick skillet over medium heat until it begins to foam. Pour in the beaten eggs and immediately tilt the pan to coat the surface evenly. Use a heat-resistant spatula to gently push the cooked edges toward the center, allowing the raw liquid egg to run underneath. When the surface is mostly set but still slightly moist, sprinkle the grated cheddar cheese and chopped chives over one half. Fold the omelette smoothly in half, slide it onto a plate, and serve warm."
+    },
+    {
+      "name": "Banana Smoothie",
+      "ingredients": ["1 large ripe banana, frozen", "1 cup chilled whole milk", "1 tbsp organic honey", "¼ cup Greek yogurt", "A pinch of ground cinnamon", "3 individual ice cubes"],
+      "instructions": "Peel the frozen banana and slice it into thick chunks to ensure an even blend. Place the banana slices, chilled whole milk, Greek yogurt, and organic honey into a high-speed blender carboy. Add a pinch of ground cinnamon for subtle warmth along with the ice cubes to enhance the chilled texture. Secure the blender lid tightly and process on high speed for approximately 45 to 60 seconds until the mixture is completely uniform, velvety, and thick. Taste to check sweetness, adjust with extra honey if desired, pour into a chilled highball glass, and serve immediately."
+    },
+    {
+      "name": "Garlic Bread",
+      "ingredients": ["1 fresh French baguette", "50g unsalted butter, completely softened", "3 cloves garlic, finely minced", "1 tbsp fresh Italian parsley, finely chopped", "2 tbsp grated Parmesan cheese"],
+      "instructions": "Preheat your oven to 180°C. In a small mixing bowl, combine the softened butter, finely minced garlic, chopped Italian parsley, and grated Parmesan cheese, mixing thoroughly into a smooth paste. Slice the French baguette horizontally in half or cut it into thick diagonal slices without cutting all the way through the bottom crust. Spread the prepared garlic butter mixture generously across the cut surfaces of the bread, ensuring full coverage to the edges. Reassemble the baguette halves or wrap the sliced loaf loosely in a sheet of aluminum foil. Bake in the preheated oven for 10 minutes, then open the foil and broil for an additional 2 minutes until the edges turn golden and exceptionally crunchy."
+    },
+    {
+      "name": "Caesar Salad",
+      "ingredients": ["1 large head romaine lettuce, washed and dried", "50g premium Parmesan cheese, shaved", "1 cup crunchy garlic croutons", "3 tbsp classic Caesar dressing", "1 tsp fresh lemon juice", "Cracked black pepper"],
+      "instructions": "Tear the clean, crisp romaine lettuce leaves into bite-sized pieces and place them inside a large, chilled salad bowl. Drizzle the classic Caesar dressing and fresh lemon juice over the lettuce fragments, then toss thoroughly using salad servers until every leaf is lightly and evenly coated. Add the crunchy garlic croutons and half of the shaved Parmesan cheese, tossing gently once more to distribute the textures evenly. Top the salad with the remaining shaved Parmesan cheese and finish with a generous sprinkle of coarsely cracked black pepper before serving immediately to maintain optimal crispness."
+    },
+    {
+      "name": "Chocolate Brownies",
+      "ingredients": ["1 cup all-purpose flour", "½ cup premium unsweetened cocoa powder", "1 cup granulated sugar", "2 large eggs, room temperature", "½ cup unsalted butter, melted", "1 tsp vanilla extract", "½ cup semi-sweet chocolate chips"],
+      "instructions": "Preheat your oven to 180°C and grease an 8-inch square baking pan or line it neatly with parchment paper. In a medium bowl, whisk together the melted unsalted butter and granulated sugar until well integrated. Add the room-temperature eggs one at a time, beating vigorously after each addition, then stir in the vanilla extract until the mixture looks smooth and glossy. Sift the all-purpose flour and unsweetened cocoa powder directly into the wet ingredients, folding gently with a spatula until just combined to avoid overmixing. Fold in the semi-sweet chocolate chips, then spread the thick batter evenly into the prepared pan. Bake for 22 to 25 minutes until the center is set but still slightly soft, allowing them to cool completely before slicing."
+    },
+    {
+      "name": "Fried Rice",
+      "ingredients": ["1 cup jasmine rice, cooked and chilled overnight", "1 large egg, lightly beaten", "1 medium carrot, finely diced", "1 small yellow onion, chopped", "2 stalks green onions, sliced", "2 tbsp premium light soy sauce", "1 tbsp sesame oil", "½ cup frozen peas, thawed"],
+      "instructions": "Heat half of the sesame oil in a large wok over high heat, pour in the lightly beaten egg, scramble quickly until soft, and transfer to a side plate. Add the remaining sesame oil to the wok and sauté the chopped yellow onions and diced carrots for 3 minutes until softened. Toss in the frozen peas and the white parts of the sliced green onions, stirring rapidly for 1 minute. Break up any clumps in the cold, day-old jasmine rice and add it directly into the sizzling wok, tossing continuously. Pour the soy sauce over the rice, folding everything together over high heat for 3 minutes to achieve a signature smoky finish. Fold in the scrambled eggs and sliced green onion tops, stir for 30 seconds, and serve hot."
+    },
+    {
+      "name": "Lemonade",
+      "ingredients": ["2 large juicy lemons", "1 cup filtered water", "2 tbsp granulated sugar", "Fresh mint leaves for garnish", "Crushed ice"],
+      "instructions": "Roll the lemons firmly against your countertop to loosen the juices, then slice them in half and squeeze to extract fresh lemon juice, removing any stray seeds. In a small pitcher or serving glass, combine the fresh lemon juice with the granulated sugar and half of the water, stirring vigorously until the sugar crystals are completely dissolved. Pour in the remaining filtered water and adjust the sweetness or tartness to your personal preference. Fill a tall glass with plenty of crushed ice, pour the fresh lemonade over it, and garnish with a sprig of slapped fresh mint leaves for a clean aromatic lift."
+    },
+    {
+      "name": "French Toast",
+      "ingredients": ["2 thick slices of brioche or white bread", "1 large egg", "½ cup whole milk", "1 tbsp white sugar", "½ tsp ground cinnamon", "1 tsp vanilla extract", "1 tbsp unsalted butter"],
+      "instructions": "In a wide, shallow bowl or pie dish, whisk together the egg, whole milk, white sugar, ground cinnamon, and vanilla extract until the batter is smooth and the cinnamon is well distributed. Melt the unsalted butter in a wide non-stick skillet over medium heat until it coats the pan evenly. Dip each slice of brioche bread into the egg mixture, allowing it to soak for roughly 10 to 15 seconds per side so the center absorbs the custard without becoming structurally soggy. Place the soaked bread slices onto the hot skillet and cook for 3 to 4 minutes per side, turning carefully until both surfaces turn beautifully golden brown and slightly puffed."
+    },
+    {
+      "name": "Mango Lassi",
+      "ingredients": ["1 large ripe mango, peeled and diced", "1 cup fresh plain yogurt", "½ cup chilled whole milk", "1 tbsp organic honey or sugar", "A pinch of green cardamom powder"],
+      "instructions": "Place the sweet diced mango slices directly into a blender jar and process for 30 seconds until a smooth pulp forms without any fibrous lumps. Add the fresh plain yogurt, chilled whole milk, and organic honey into the blender along with a tiny pinch of green cardamom powder to provide an authentic aroma. Secure the blender lid and process on high speed for 45 seconds until the mixture becomes light, frothy, and completely uniform. If the consistency feels too thick, add a small splash of cold milk and pulse briefly. Pour the chilled mango lassi into a decorative glass and serve immediately."
+    },
+    {
+      "name": "Palak Paneer",
+      "ingredients": ["200g paneer cubes", "2 large bunches fresh spinach leaves", "1 medium onion, finely chopped", "1 medium ripe tomato, pureed", "2 cloves garlic, minced", "1 tsp ginger paste", "1 tsp cumin seeds", "1 tsp garam masala", "½ tsp turmeric powder", "2 tbsp heavy cream", "1 tbsp cooking oil"],
+      "instructions": "Blanch the cleaned spinach leaves in a pot of boiling water for exactly 2 minutes, then immediately transfer them into an ice bath to lock in the vibrant green color before blending into a smooth paste. Heat cooking oil in a pan over medium heat, add the cumin seeds, and let them sizzle. Add the chopped onions, minced garlic, and ginger paste, sautéing for 5 minutes until light golden brown. Stir in the pureed tomato, turmeric, and a pinch of salt, cooking until the oil starts to separate from the spice base. Pour in the blended spinach puree, stir well, and simmer gently for 3 minutes over low heat. Add the fresh paneer cubes and garam masala, stirring carefully to avoid breaking the cheese. Simmer for 2 more minutes, stir in the heavy cream to cut through the bitterness, and remove from heat."
+    },
+    {
+      "name": "Aloo Paratha",
+      "ingredients": ["2 cups whole wheat flour", "2 medium potatoes, boiled and peeled", "1 small onion, very finely chopped", "1 tsp cumin seeds", "½ tsp red chili powder", "½ tsp amchur dry mango powder", "Salt to taste", "Warm water for kneading", "Premium ghee or butter for cooking"],
+      "instructions": "In a large mixing bowl, mix the whole wheat flour with a pinch of salt and add warm water gradually, kneading into a smooth, pliable dough, then cover and rest for 20 minutes. In a separate bowl, completely mash the boiled potatoes, ensuring there are no stubborn lumps left behind. Add the finely chopped onions, cumin seeds, red chili powder, amchur powder, and salt to the mashed potatoes, mixing thoroughly into a uniform stuffing. Pinch a golf-ball-sized portion of dough, roll it into a small circle, place a portion of the potato stuffing in the center, and pleat the edges tightly to seal it completely. Flatten the ball gently and roll it out carefully into a larger disc without tearing the outer dough layer. Cook the paratha on a hot tawa or griddle, flipping after 1 minute, then apply ghee on both sides and press down with a spatula until crispy golden spots appear."
+    },
+    {
+      "name": "Chana Masala",
+      "ingredients": ["1 cup chickpeas, soaked overnight and boiled", "1 large onion, finely chopped", "2 ripe tomatoes, pureed", "2 cloves garlic, minced", "1 tsp ginger paste", "1 tsp garam masala", "1 tsp cumin seeds", "1 tsp chana masala powder", "½ tsp turmeric powder", "2 tbsp oil", "Fresh coriander leaves"],
+      "instructions": "Heat oil in a deep saucepan over medium heat, add the cumin seeds, and let them crackle. Add the chopped onions, minced garlic, and ginger paste, sautéing patiently for 6 minutes until they acquire a rich golden color. Add the pureed tomatoes along with the turmeric and chana masala powder, cooking down until the raw tomato smell disappears and the paste thickens. Add the boiled chickpeas into the pan, tossing them in the spice paste, then pour in 1 cup of the water used for boiling the chickpeas to establish a gravy base. Lightly mash a few chickpeas with the back of your spoon to naturally thicken the consistency. Cover and simmer for 10 minutes over low heat, finish by stirring in the garam masala, garnish with fresh coriander, and serve."
+    },
+    {
+      "name": "Dal Tadka",
+      "ingredients": ["1 cup yellow pigeon pea lentils", "1 medium onion, finely chopped", "2 ripe tomatoes, diced", "3 cloves garlic, sliced or minced", "1 tsp mustard seeds", "1 tsp cumin seeds", "1 tsp turmeric powder", "1 tsp red chili powder", "A pinch of asafoetida", "2 tbsp ghee", "Fresh coriander"],
+      "instructions": "Wash the yellow lentils thoroughly, then pressure cook or boil them with 3 cups of water, turmeric powder, and a pinch of salt until they are completely soft and creamy. In a separate pan, heat half the ghee and sauté the chopped onions and half the minced garlic until translucent, then add the diced tomatoes and chili powder, cooking until soft. Pour the cooked lentils into the onion-tomato base, stir well to combine, and let it simmer on low heat for 5 minutes, adding water if the consistency looks too thick. Just before serving, prepare the fresh tempering by heating the remaining ghee in a small ladle. Add the mustard seeds, cumin seeds, remaining garlic slices, and asafoetida, letting them crackle until golden. Pour this hot aromatic ghee directly over the simmering dal, garnish with coriander, and cover immediately to trap the smoky flavor."
+    },
+    {
+      "name": "Masala Dosa",
+      "ingredients": ["2 cups parboiled rice", "1 cup urad dal, black gram", "2 large potatoes", "1 medium onion, sliced", "1 tsp mustard seeds", "A sprig of fresh curry leaves", "½ tsp turmeric powder", "Salt to taste", "Oil or ghee for roasting"],
+      "instructions": "Soak the rice and urad dal separately for 6 hours, grind them into a smooth batter, combine, add salt, and let it ferment in a warm spot overnight until it rises and turns froety. To prepare the potato filling, boil and coarsely smash the potatoes. Heat oil in a pan, crackle the mustard seeds, add curry leaves, sliced onions, and turmeric, sautéing until the onions soften before folding in the smashed potatoes and a splash of water to make it spreadable. Heat a non-stick tawa or flat griddle, wipe it with a damp cloth, and pour a ladleful of fermented batter into the center, spreading it outward in circular motions to form a thin crepê. Drizzle ghee around the edges and cook on medium heat until the bottom surface turns crispy and golden brown. Place a portion of the potato masala in the center, fold the dosa over, and serve hot with coconut chutney."
+    },
+    {
+      "name": "Margherita Pizza",
+      "ingredients": ["1 pre-baked artisanal pizza base", "½ cup premium San Marzano tomato sauce", "100g fresh mozzarella cheese, torn into chunks", "Fresh sweet basil leaves", "1 tbsp extra virgin olive oil", "Coarse sea salt"],
+      "instructions": "Preheat your baking oven to its maximum temperature setting, ideally 220°C, and lightly grease a pizza baking tray or preheat a pizza stone. Place the pizza base on a flat surface and spread the rich tomato sauce evenly across the top using the back of a ladle, leaving a 1-inch clear boundary around the rim for the crust. Arrange the torn pieces of fresh mozzarella cheese evenly over the sauced surface. Transfer the pizza onto the hot stone or oven tray and bake for 8 to 10 minutes until the crust turns golden and crunchy and the cheese is melted and bubbling with brown spots. Remove safely from the oven, arrange fresh sweet basil leaves across the surface, drizzle with extra virgin olive oil, and finish with a light sprinkle of sea salt before slicing."
+    },
+    {
+      "name": "Greek Salad",
+      "ingredients": ["2 crisp English cucumbers, unpeeled", "3 large ripe vine tomatoes", "1 small red onion, sliced into rings", "50g authentic Greek feta cheese, block form", "½ cup Kalamata olives", "2 tbsp premium extra virgin olive oil", "1 tsp dried wild oregano", "1 tbsp red wine vinegar"],
+      "instructions": "Cut the unpeeled cucumbers into thick half-moon slices and chop the vine tomatoes into large, rustic chunks, placing them together into a large salad bowl. Add the thinly sliced red onion rings and whole Kalamata olives to the vegetable mixture, tossing them together gently to avoid crushing the tomatoes. In a small cup, whisk the extra virgin olive oil and red wine vinegar together, then drizzle it evenly over the salad base. Place the solid block of authentic Greek feta cheese directly on top of the salad layout rather than crumbling it into pieces. Sprinkle the dried wild oregano across the cheese and vegetables, and finish with a crack of black pepper before serving."
+    },
+    {
+      "name": "Guacamole",
+      "ingredients": ["2 large ripe Hass avocados", "1 fresh juicy lime", "1 small firm tomato, seeded and diced", "¼ cup red onion, finely chopped", "2 tbsp fresh coriander leaves, minced", "½ tsp sea salt", "A pinch of ground cumin"],
+      "instructions": "Slice the ripe avocados in half, remove the stubborn central pits carefully, and scoop the rich green flesh out into a deep mixing bowl. Use a large fork or potato masher to crush the avocado flesh until it achieves a chunky texture, avoiding overworking it into a smooth puree. Immediately squeeze the juice of one fresh lime over the mashed avocado to provide target acidity and prevent surface oxidation. Fold in the finely chopped red onions, seeded and diced tomatoes, and minced coriander leaves until uniformly distributed. Season the mixture with sea salt and a tiny pinch of ground cumin, mix gently, and serve immediately with corn tortilla chips."
+    },
+    {
+      "name": "Club Sandwich",
+      "ingredients": ["3 thick slices of classic white sandwich bread", "2 slices cooked turkey or chicken ham", "2 strips of smoked bacon", "2 crisp leaves of iceberg lettuce", "3 thin slices of ripe tomato", "2 tbsp premium mayonnaise", "1 tbsp butter for toasting"],
+      "instructions": "Lightly butter the bread slices and toast them on a skillet until golden brown on both sides. Fry the smoked bacon strips in a pan until completely crispy, then drain them on a paper towel. Place the first slice of toasted bread down and spread a layer of mayonnaise over it, then top with a leaf of crisp iceberg lettuce and the chicken ham slices. Place the second slice of toasted bread directly on top, apply another layer of mayonnaise, and arrange the tomato slices and crispy bacon strips evenly over it. Spread mayonnaise on the third slice of bread and place it on top, face down. Press the sandwich gently, secure the layers by inserting toothpicks into the four quadrants, cut diagonally into clean triangles, and serve with fries."
+    },
+    {
+      "name": "Paneer Tikka",
+      "ingredients": ["200g firm paneer, cut into thick cubes", "1 large green bell pepper, cut into squares", "1 medium red onion, layers separated into squares", "½ cup thick hung curd or Greek yogurt", "1 tbsp tandoori masala powder", "1 tsp ginger-garlic paste", "1 tbsp fresh lemon juice", "1 tbsp mustard oil", "½ tsp chaat masala"],
+      "instructions": "In a large mixing bowl, combine the thick hung curd, tandoori masala, ginger-garlic paste, fresh lemon juice, and mustard oil, whisking thoroughly into a thick marinade paste. Add the firm paneer cubes, square bell pepper slices, and onion layers into the bowl, using your hands to gently fold them into the marinade until every piece is thickly coated, then cover and refrigerate for 30 minutes. Preheat your grill pan or oven to 200°C. Alternating between vegetable squares and paneer cubes, thread the marinated items carefully onto metal or soaked wooden skewers. Place the skewers on the hot grill pan, turning every 3 minutes and brushing with a drop of oil, until the paneer develops charred edges. Slide onto a platter, dust with chaat masala, and serve hot."
+    },
+    {
+      "name": "Galouti Kebab",
+      "ingredients": ["250g finely minced lamb/mutton", "1 tbsp raw papaya paste", "1 tbsp ginger-garlic paste", "1 tsp shahi jeera", "A pinch of saffron", "Ghee for frying", "Spice mix (mace, cardamom, cloves)"],
+      "instructions": "Marinate the meat with raw papaya paste for at least 4 hours to achieve the signature 'melt-in-mouth' texture. Mix in the ginger-garlic paste, saffron, and a ground spice blend of mace and cardamom. Shape the mixture into delicate patties and shallow fry in a heavy-bottomed skillet with ghee until the exterior is dark brown and the interior is velvety smooth. Serve hot with Ulte Tawe ka Paratha."
+    },
+    {
+      "name": "Lucknawi Mutton Biryani",
+      "ingredients": ["500g mutton", "2 cups sela basmati rice", "1/2 cup milk with saffron", "1 cup yogurt", "Whole spices (star anise, mace, cinnamon)", "2 tbsp kewra water", "Ghee"],
+      "instructions": "Prepare a fragrant yakhni (meat broth) by slow-cooking the mutton with whole spices and yogurt until the meat is tender. Parboil the rice until 70% done. Layer the meat and rice in a handi, drizzling saffron milk and kewra water between layers for the authentic Awadhi aroma. Seal the pot with dough (Dum cooking) and cook on low heat for 20 minutes to allow the flavors to infuse perfectly."
+    },
+    {
+      "name": "Shahi Tukda",
+      "ingredients": ["4 thick slices of white bread", "1 liter full-fat milk", "1/2 cup sugar", "Saffron strands", "Cardamom powder", "Crushed pistachios and almonds", "Ghee for deep frying"],
+      "instructions": "Reduce the milk in a wide pan by simmering until it reaches a thick, rabri-like consistency, then sweeten with sugar and flavor with cardamom and saffron. Deep fry the bread slices in ghee until they are crunchy and dark golden brown. Dip the fried bread into a light sugar syrup, then arrange on a platter and pour the thick rabri generously over them. Garnish with a lavish amount of crushed nuts and silver leaf (vark) if available."
+    },
+    {
+      "name": "Makhan Malai",
+      "ingredients": ["1 liter fresh milk cream", "1/4 cup powdered sugar", "Saffron", "Rose water", "Slivered almonds"],
+      "instructions": "This seasonal winter specialty is made by exposing milk cream to the morning dew overnight to aerate it. Whisk the chilled cream vigorously until it becomes incredibly light and frothy. Fold in powdered sugar, saffron, and a hint of rose water. Serve in earthen bowls, topped with silvered almonds, for a cloud-like dessert experience that disappears on the tongue."
+    },
+    {
+      "name": "Basket Chaat",
+      "ingredients": ["2 large potatoes (grated for basket)", "Boiled chickpeas", "Papdi", "Whisked yogurt", "Tamarind chutney", "Mint chutney", "Pomegranate seeds", "Sev"],
+      "instructions": "Deep fry the grated potatoes in a small metal strainer to create a crispy edible basket. Fill the basket with a mixture of chickpeas, crushed papdi, and cubed potatoes. Pour chilled, sweetened yogurt over the filling, followed by a generous drizzle of spicy mint and tangy tamarind chutneys. Top with a handful of sev and pomegranate seeds for the ultimate Lucknawi street food experience."
+    },
+    {
+      "name": "Paneer Tikka Pizza",
+      "ingredients": ["250g pizza dough", "150g paneer, cut into small cubes", "2 tbsp thick yogurt", "1 tsp ginger-garlic paste", "1 tsp tandoori masala", "1/2 cup mozzarella cheese", "1/4 cup sliced onions and bell peppers", "3 tbsp pizza sauce"],
+      "instructions": "Marinate the paneer cubes in yogurt, ginger-garlic paste, and tandoori masala for at least 30 minutes. Roll out the pizza dough into a 10-inch circle and spread a layer of pizza sauce evenly. Arrange the marinated paneer, onions, and bell peppers on the base. Cover with a generous layer of mozzarella cheese. Bake in a preheated oven at 220°C for 12-15 minutes until the crust is golden and the cheese is bubbling."
+    },
+    {
+      "name": "Chicken Tikka Pizza",
+      "ingredients": ["250g pizza dough", "200g boneless chicken breast, cubed", "2 tbsp yogurt", "1 tsp red chili powder", "1 tsp lemon juice", "1/2 cup mozzarella and cheddar mix", "1/4 cup chopped red onions and capsicum", "3 tbsp pizza sauce"],
+      "instructions": "Marinate chicken pieces with yogurt, spices, and lemon juice for 1 hour. Pan-fry the chicken cubes for 5-8 minutes until fully cooked. Roll out the pizza dough, apply pizza sauce, and add a layer of cheese. Place the cooked chicken tikka, onions, and capsicum on top. Bake at 200°C for 15 minutes or until the cheese starts browning and the crust is crisp."
+    },
+    {
+      "name": "Corn and Cheese Pizza",
+      "ingredients": ["200g pizza dough", "1/2 cup boiled sweet corn kernels", "1/2 cup mozzarella cheese, grated", "1/4 cup green capsicum and onion", "2 tbsp pizza sauce", "1/4 tsp chili flakes and oregano"],
+      "instructions": "Flatten the pizza dough and prick it with a fork to prevent puffing. Spread pizza sauce and add half of the mozzarella cheese. Add boiled sweet corn, capsicum, and onions as toppings. Cover with the remaining cheese and sprinkle with chili flakes and oregano. Bake at 210°C for 10-12 minutes until the cheese melts and the base turns golden brown."
+    }
+  ]
+}

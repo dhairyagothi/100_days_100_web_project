@@ -484,7 +484,7 @@
   },
   {
     "projectNo": 42,
-    "projectName": "Amazon App",
+    "projectName": "Amazon Clone",
     "projectType": "Clone",
     "projectDesc": "Frontend clone inspired by Amazon layouts and shopping interfaces.",
     "techStack": [
@@ -2000,7 +2000,7 @@
   },
   {
     "projectNo": 165,
-    "projectName": "Amazon Clone",
+    "projectName": "Amazon App",
     "projectType": "Clone",
     "projectDesc": "Frontend clone inspired by Amazon with shopping UI and responsive layouts.",
     "techStack": [
@@ -2012,7 +2012,7 @@
       "JavaScript"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/New-AmazonClone/index.html"
+    "projectPath": "./public/Amazon-App/index.html"
   },
   {
     "projectNo": 166,
@@ -2312,24 +2312,35 @@
     "projectPath": "./public/canvas_multitrack_sequencer/index.html"
   },
   {
-      "projectNo": 187,
-      "projectName": "Image Compressor Web App",
-      "projectType": "Tool",
-      "projectDesc": "Modern utility app to compress and optimize images directly in the browser with beautiful glassmorphism UI.",
-      "techStack": ["tool", "html", "css", "javascript", "ui"],
-      "difficulty": "intermediate",
-      "projectPath": "./public/ImageCompressor/index.html"
-    },
-    {
-      "projectNo": 188,
-      "projectName": "Leetcode Streak Visualizer",
-      "projectType": "Tool",
-      "projectDesc": "A web based tool to compare between 2 leetcode users. Uses Battery Like UI to compare and show stats.",
-      "techStack": ["tool", "html", "css", "javascript"],
-      "difficulty": "advanced",
-      "projectPath": "./public/Streak-Visualizer/index.html"
-    },
-     {
+    "projectNo": 187,
+    "projectName": "Image Compressor Web App",
+    "projectType": "Tool",
+    "projectDesc": "Modern utility app to compress and optimize images directly in the browser with beautiful glassmorphism UI.",
+    "techStack": [
+      "tool",
+      "html",
+      "css",
+      "javascript",
+      "ui"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/ImageCompressor/index.html"
+  },
+  {
+    "projectNo": 188,
+    "projectName": "Leetcode Streak Visualizer",
+    "projectType": "Tool",
+    "projectDesc": "A web based tool to compare between 2 leetcode users. Uses Battery Like UI to compare and show stats.",
+    "techStack": [
+      "tool",
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Streak-Visualizer/index.html"
+  },
+  {
     "projectNo": 189,
     "projectName": "PeerRTC Video Chat",
     "projectType": "Tool",
@@ -2373,7 +2384,6 @@
     "difficulty": "advanced",
     "projectPath": "./public/Planet_gesture_formation/index.html"
   },
-   
   {
     "projectNo": 192,
     "projectName": "Interactive Story Player",
@@ -2393,14 +2403,14 @@
     "projectName": "Escape Room",
     "projectType": "Game",
     "projectDesc": "A thrilling escape room experience in your browser.",
-     "techStack": [
+    "techStack": [
       "html",
       "css",
       "javascript"
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/Escape_Room/index.html"
-   },
+  },
   {
     "projectNo": 194,
     "projectName": "Lost & Found Portal",
@@ -2427,7 +2437,7 @@
     "difficulty": "advanced",
     "projectPath": "./public/Complaint_Management_System/index.html"
   },
- {
+  {
     "projectNo": 196,
     "projectName": "AirCast",
     "projectType": "Tool",
@@ -2453,20 +2463,20 @@
       "javascript"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/Flipkart-Clone/index.html"
+    "projectPath": "./public/Flipkart-clone/index.html"
   },
   {
     "projectNo": 198,
     "projectName": "Theme-Toggler",
     "projectType": "UI / Animation",
-    "projectDesc": "A responsive theme toggler that switches between light and dark modes and saves the user's preference using localStorage.",
+    "projectDesc": "A responsive theme toggler that switches between multiple premium themes (including Cyberpunk and Dracula) with smooth transitions.",
     "techStack": [
-      "react",
-      "tailwindcss",
+      "html",
+      "css",
       "javascript"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/Theme-toggler/src/App.jsx"
+    "projectPath": "./public/Theme-Toggler/index.html"
   },
   {
     "projectNo": 199,
@@ -2495,17 +2505,21 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/Movie-Matcher/index.html"
-  
-},
-{
+  },
+  {
     "projectNo": 201,
     "projectName": "Number Guesser Game",
     "projectType": "Game",
     "projectDesc": "A simple and interactive Number Guessing Game built using HTML, CSS, and JavaScript. The player must guess a randomly generated number between 1 and 100 within 10 attempts.",
-    "techStack": ["game", "html", "css", "javascript"],
+    "techStack": [
+      "game",
+      "html",
+      "css",
+      "javascript"
+    ],
     "difficulty": "advanced",
     "projectPath": "./public/NumberGuessGame/index.html"
-},
+  },
   {
     "projectNo": 202,
     "projectName": "Traffic signal game",
@@ -2519,16 +2533,21 @@
     "difficulty": "intermediate",
     "projectPath": "./public/traffic_signal/index.html"
   },
-   {
-  "projectNo": 203,
-  "projectName": "Pomodoro With Miu",
-  "projectType": "Tool",
-  "projectDesc": "A cute cat-themed Pomodoro timer built with Electron.js. Features 25/5 focus-break cycles, animated cat GIFs, meow sound notifications, and encouraging messages. Originally a desktop app — browser preview included.",
-  "projectPath": "./public/Pomodoro_With_Miu-Electronjs/index.html",
-  "techStack": ["javascript", "css", "html", "electron"],
-  "difficulty": "intermediate"
+  {
+    "projectNo": 203,
+    "projectName": "Pomodoro With Miu",
+    "projectType": "Tool",
+    "projectDesc": "A cute cat-themed Pomodoro timer built with Electron.js. Features 25/5 focus-break cycles, animated cat GIFs, meow sound notifications, and encouraging messages. Originally a desktop app — browser preview included.",
+    "projectPath": "./public/Pomodoro_With_Miu-Electronjs/index.html",
+    "techStack": [
+      "javascript",
+      "css",
+      "html",
+      "electron"
+    ],
+    "difficulty": "intermediate"
   },
-{
+  {
     "projectNo": 204,
     "projectName": "Movie Search App",
     "projectType": "Web Application",
@@ -2540,19 +2559,150 @@
       "api"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/movie-search-app/index.html"
-},
+    "projectPath": "./public/Movie-Search-App/index.html"
+  },
   {
-  "projectNo": 205,
-  "projectName": "Escape the Matrix Game",
-  "projectType": "Web Application",
-  "projectDesc": "An immersive, interactive web-based survival and puzzle game challenging players to hack their way out of a simulated reality.",
-  "techStack": [
-    "html",
-    "css",
-    "javascript"
-  ],
-  "difficulty": "advanced",
-  "projectPath": "./public/Escape The Matrix/index.html"
-}
+    "projectNo": 205,
+    "projectName": "Escape the Matrix Game",
+    "projectType": "Web Application",
+    "projectDesc": "An immersive, interactive web-based survival and puzzle game challenging players to hack their way out of a simulated reality.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Escape The Matrix/index.html"
+  },
+  {
+    "projectNo": 206,
+    "projectName": "Gravity Well",
+    "projectType": "Animation",
+    "projectDesc": "Interactive physics-based gravity simulation allowing users to create gravitational wells.",
+    "techStack": [
+      "HTML",
+      "canvas",
+      "javascript",
+      "css"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/gravity-well/index.html"
+  },
+  {
+    "projectNo": 207,
+    "projectName": "AI Semiconductor Circuit Builder",
+    "projectType": "Web Application",
+    "projectDesc": "An immersive, interactive web-based survival and puzzle game challenging players to hack their way out of a simulated reality.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/AI-Semiconductor-Circuit-Builder/index.html"
+  },
+  {
+    "projectNo": 208,
+    "projectName": "crossword puzzle game",
+    "projectType": "Game",
+    "projectDesc": "A classic crossword puzzle game built with HTML, CSS, and JavaScript.",
+    "techStack": [
+      "ui",
+      "game",
+      "html",
+      "css",
+      "js"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/CrosswordPuzzleGame/index.html"
+  },
+  {
+    "projectNo": 209,
+    "projectName": "Kanban Board",
+    "projectPath": "./public/Kanban_Board/index.html",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectDesc": "A responsive Kanban Board application featuring drag-and-drop task management, task creation, editing, deletion, local storage persistence, and dark/light theme support."
+  },
+  {
+    "projectNo": 210,
+    "projectName": "IP Address Tracker",
+    "projectPath": "./public/Ip_Address_tracker/index.html",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectDesc": "A responsive IP Address Tracker application that allows users to search IP addresses, view location details, ISP information, timezone data, and visualize the location on an interactive map using Leaflet.js and IPAPI."
+  },
+  {
+    "projectNo": 211,
+    "projectName": "Cricket Scorecard",
+    "projectPath": "./public/Cricket-Scorecard/index.html",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectDesc": "A tool to view the schedule of upcoming matches and watch live scorecard."
+  },
+  {
+    "projectNo": 212,
+    "projectName": "Tower Blocks Stacker",
+    "projectPath": "./public/tower_stacker/index.html",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "canvas"
+    ],
+    "difficulty": "advanced",
+    "projectDesc": "A responsive physics-inspired arcade game challenging users to stack moving horizontal blocks cleanly. Implements strict boundary checking, block-slicing logic, dynamic camera tracking, and interactive start/pause state controls."
+  },
+  {
+    "projectNo": 213,
+    "projectName": "Photo Studio",
+    "projectPath": "./public/Photo Studio/Project.html",
+    "techStack": [
+      "html",
+      "css"
+    ],
+    "difficulty": "intermediate",
+    "projectDesc": "A responsive photography portfolio and gallery website designed to showcase visual content through structured layouts, image presentation sections, and modern styling. Features an engaging user interface optimized for desktop and mobile viewing."
+  },
+  {
+    "projectNo": 214,
+    "projectName": "AI Data Analyst",
+    "projectType": "Tool",
+    "projectDesc": "Upload CSV datasets and receive AI-powered exploratory data analysis, visualizations, correlation heatmaps, machine learning recommendations, AI-generated insights, and interactive dataset Q&A.",
+    "techStack": [
+      "javascript",
+      "ai",
+      "machine-learning",
+      "data-analysis",
+      "charts",
+      "api"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/AI-Data-Analyst/"
+  },
+  {
+    "projectNo": 215,
+    "projectName": "Mood-Based Music Recommender",
+    "projectType": "Web App",
+    "projectDesc": "An interactive web application that recommends music based on the user's current mood. Features a premium Spotify-inspired UI, smooth animations, and dynamic themes.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Mood_Based_Music_Recommender/"
+  }
 ]

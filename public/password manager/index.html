@@ -1,111 +1,672 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PassX-Pass</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Vault Password Manager</title>
+
+  <!-- Fonts -->
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+  />
+
+  <!-- CSS -->
+  <link
+    rel="stylesheet"
+    href="style.css"
+  />
+
 </head>
+
 <body>
 
-  <!-- ── Master Password Gate ─────────────────────────────────────────── -->
-  <div id="gate-overlay" class="gate-overlay">
+  <!-- =========================================================
+       MASTER PASSWORD GATE
+  ========================================================== -->
+
+  <div
+    id="gate-overlay"
+    class="gate-overlay"
+  >
+
     <div class="gate-card">
-      <div class="gate-icon">🔐</div>
-      <h1 class="gate-title">Vault Lock</h1>
-      <p class="gate-sub" id="gate-sub">Enter your master password to unlock the vault.</p>
+
+      <div class="gate-icon">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+
+      <h1 class="gate-title">
+        Secure Vault
+      </h1>
+
+      <p
+        class="gate-sub"
+        id="gate-sub"
+      >
+        Enter your master password to unlock your vault.
+      </p>
+
       <input
         type="password"
         id="master-input"
         class="gate-input"
-        placeholder="Master password…"
+        placeholder="Enter master password"
         autocomplete="current-password"
       />
-      <p class="gate-error" id="gate-error"></p>
-      <button class="gate-btn" id="gate-btn" onclick="unlockVault()">Unlock →</button>
-      <p class="gate-hint" id="gate-hint"></p>
+
+      <p
+        class="gate-error"
+        id="gate-error"
+      ></p>
+
+      <button
+        class="gate-btn"
+        id="gate-btn"
+        onclick="unlockVault()"
+      >
+        <i class="fa-solid fa-lock-open"></i>
+        Unlock Vault
+      </button>
+
+      <p
+        class="gate-hint"
+        id="gate-hint"
+      ></p>
+
     </div>
+
   </div>
 
-  <!-- ── Main App ──────────────────────────────────────────────────────── -->
-  <div id="app" class="app hidden">
+  <!-- =========================================================
+       MAIN APP
+  ========================================================== -->
+
+  <div
+    id="app"
+    class="app hidden"
+  >
+
+    <!-- ================= HEADER ================= -->
 
     <header class="header">
+
       <div class="header-left">
-        <span class="header-logo">🔐</span>
-        <span class="header-title">Vault</span>
+
+        <div class="header-logo">
+          <i class="fa-solid fa-vault"></i>
+        </div>
+
+        <div>
+
+          <h1 class="header-title">
+            Vault Password Manager
+          </h1>
+
+          <p class="header-subtitle">
+            Securely manage your passwords
+          </p>
+
+        </div>
+
       </div>
-      <button class="lock-btn" onclick="lockVault()" title="Lock vault">
-        <span>Lock</span>
-        <span class="lock-icon">⎋</span>
-      </button>
+
+      <div class="header-actions">
+
+        <!-- Theme Toggle -->
+        <button
+          class="theme-btn"
+          onclick="toggleTheme()"
+          title="Toggle Theme"
+        >
+          <i class="fa-solid fa-moon"></i>
+          Theme
+        </button>
+
+        <!-- Export -->
+        <button
+          class="export-btn"
+          onclick="exportVault()"
+          title="Export Vault"
+        >
+          <i class="fa-solid fa-file-export"></i>
+          Export
+        </button>
+
+        <!-- Lock -->
+        <button
+          class="lock-btn"
+          onclick="lockVault()"
+          title="Lock Vault"
+        >
+          <i class="fa-solid fa-lock"></i>
+          Lock
+        </button>
+
+      </div>
+
     </header>
+
+    <!-- ================= MAIN ================= -->
 
     <main class="main">
 
-      <!-- Add entry form -->
+      <!-- =========================================================
+           STATS
+      ========================================================== -->
+
+      <section class="stats-grid">
+
+        <div class="stat-card">
+
+          <p>
+            Total Passwords
+          </p>
+
+          <h2 id="totalEntries">
+            0
+          </h2>
+
+        </div>
+
+        <div class="stat-card">
+
+          <p>
+            Strong Passwords
+          </p>
+
+          <h2 id="strongPasswords">
+            0
+          </h2>
+
+        </div>
+
+        <div class="stat-card">
+
+          <p>
+            Weak Passwords
+          </p>
+
+          <h2 id="weakPasswords">
+            0
+          </h2>
+
+        </div>
+
+        <div class="stat-card">
+
+          <p>
+            Vault Security
+          </p>
+
+          <h2 id="vaultHealth">
+            Safe
+          </h2>
+
+        </div>
+
+      </section>
+
+      <!-- =========================================================
+           ADD ENTRY SECTION
+      ========================================================== -->
+
       <section class="form-section">
-        <h2 class="section-title">Add New Entry</h2>
+
+        <h2 class="section-title">
+          <i class="fa-solid fa-plus"></i>
+          Add New Entry
+        </h2>
+
         <div class="form-grid">
+
+          <!-- Website -->
           <div class="field">
-            <label class="label">Website / App</label>
-            <input type="text" id="site" class="input" placeholder="github.com" />
+
+            <label class="label">
+              Website / App
+            </label>
+
+            <input
+              type="text"
+              id="site"
+              class="input"
+              placeholder="github.com"
+            />
+
           </div>
+
+          <!-- Username -->
           <div class="field">
-            <label class="label">Username / Email</label>
-            <input type="text" id="username" class="input" placeholder="you@example.com" autocomplete="off" />
+
+            <label class="label">
+              Username / Email
+            </label>
+
+            <input
+              type="text"
+              id="username"
+              class="input"
+              placeholder="you@example.com"
+              autocomplete="off"
+            />
+
           </div>
+
+          <!-- Category -->
+          <div class="field">
+
+            <label class="label">
+              Category
+            </label>
+
+            <select id="category">
+
+              <option value="Social">
+                Social
+              </option>
+
+              <option value="Work">
+                Work
+              </option>
+
+              <option value="Finance">
+                Finance
+              </option>
+
+              <option value="Shopping">
+                Shopping
+              </option>
+
+              <option value="Entertainment">
+                Entertainment
+              </option>
+
+              <option value="Other">
+                Other
+              </option>
+
+            </select>
+
+          </div>
+
+          <!-- Notes -->
+          <div class="field">
+
+            <label class="label">
+              Notes
+            </label>
+
+            <input
+              type="text"
+              id="notes"
+              class="input"
+              placeholder="Optional notes..."
+            />
+
+          </div>
+
+          <!-- Password -->
           <div class="field full-width">
-            <label class="label">Password</label>
+
+            <label class="label">
+              Password
+            </label>
+
             <div class="pw-input-wrap">
-              <input type="password" id="password" class="input" placeholder="Enter or generate…"
-                oninput="onPasswordInput(this.value)" autocomplete="new-password" />
-              <button class="icon-btn" onclick="togglePwVisibility()" title="Show/hide">👁</button>
-              <button class="icon-btn" onclick="generatePassword()" title="Generate">⚡</button>
+
+              <input
+                type="password"
+                id="password"
+                class="input"
+                placeholder="Enter or generate password..."
+                autocomplete="new-password"
+                oninput="onPasswordInput(this.value)"
+              />
+
+              <!-- Show Password -->
+              <button
+                class="icon-btn"
+                onclick="togglePwVisibility()"
+                title="Show / Hide Password"
+              >
+                <i class="fa-solid fa-eye"></i>
+              </button>
+
+              <!-- Generate Password -->
+              <button
+                class="icon-btn"
+                onclick="generatePassword()"
+                title="Generate Password"
+              >
+                <i class="fa-solid fa-bolt"></i>
+              </button>
+
             </div>
 
-            <!-- Strength meter -->
-            <div class="strength-wrap" id="strength-wrap">
+            <!-- Strength Meter -->
+            <div
+              class="strength-wrap"
+              id="strength-wrap"
+            >
+
               <div class="strength-bar">
-                <div class="strength-seg" id="s0"></div>
-                <div class="strength-seg" id="s1"></div>
-                <div class="strength-seg" id="s2"></div>
-                <div class="strength-seg" id="s3"></div>
-                <div class="strength-seg" id="s4"></div>
+
+                <div
+                  class="strength-seg"
+                  id="s0"
+                ></div>
+
+                <div
+                  class="strength-seg"
+                  id="s1"
+                ></div>
+
+                <div
+                  class="strength-seg"
+                  id="s2"
+                ></div>
+
+                <div
+                  class="strength-seg"
+                  id="s3"
+                ></div>
+
+                <div
+                  class="strength-seg"
+                  id="s4"
+                ></div>
+
               </div>
-              <span class="strength-label" id="strength-label">—</span>
+
+              <span
+                class="strength-label"
+                id="strength-label"
+              >
+                —
+              </span>
+
             </div>
 
-            <!-- Breach warning -->
-            <div class="breach-warn hidden" id="breach-warn">
-              ⚠️ <span id="breach-msg">This password has appeared in known data breaches. Use a different one.</span>
+            <!-- Breach Warning -->
+            <div
+              class="breach-warn hidden"
+              id="breach-warn"
+            >
+
+              <i class="fa-solid fa-triangle-exclamation"></i>
+
+              <span id="breach-msg">
+                This password has appeared in known data breaches.
+              </span>
+
             </div>
+
           </div>
+
         </div>
 
+        <!-- Save Button -->
         <div class="form-actions">
-          <button class="add-btn" onclick="addEntry()">+ Save to Vault</button>
+
+          <button
+            class="add-btn"
+            onclick="addEntry()"
+          >
+            <i class="fa-solid fa-floppy-disk"></i>
+            Save to Vault
+          </button>
+
         </div>
 
-        <p class="form-error hidden" id="form-error"></p>
+        <!-- Error -->
+        <p
+          class="form-error hidden"
+          id="form-error"
+        ></p>
+
       </section>
 
-      <!-- Entries list -->
+      <!-- =========================================================
+           SAVED ENTRIES
+      ========================================================== -->
+
       <section class="list-section">
+
         <div class="list-header">
-          <h2 class="section-title">Saved Entries <span class="count-badge" id="count-badge">0</span></h2>
-          <input type="text" class="search-input" id="search" placeholder="Search…" oninput="renderList()" />
+
+          <h2 class="section-title">
+
+            <i class="fa-solid fa-key"></i>
+
+            Saved Passwords
+
+            <span
+              class="count-badge"
+              id="count-badge"
+            >
+              0
+            </span>
+
+          </h2>
+
+          <!-- Search -->
+          <input
+            type="text"
+            class="search-input"
+            id="search"
+            placeholder="Search passwords..."
+            oninput="renderList()"
+          />
+
         </div>
-        <div id="entry-list" class="entry-list">
-          <p class="empty-state">No entries yet. Add one above.</p>
+
+        <!-- Entries -->
+        <div
+          id="entry-list"
+          class="entry-list"
+        >
+
+          <div class="empty-state">
+
+            <i
+              class="fa-solid fa-lock"
+              style="font-size: 42px; margin-bottom: 16px;"
+            ></i>
+
+            <p>
+              No passwords saved yet.
+            </p>
+
+          </div>
+
         </div>
+
+<<<<<<< HEAD
+        <section class="password-section" id="features">
+
+            <div class="section-title">
+                <h2>Saved Passwords</h2>
+            </div>
+
+            <div class="table-container">
+                
+                <input
+                    type="text"
+                    id="searchPassword"
+                    placeholder="🔍 Search by website or username"
+                />
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Website</th>
+                            <th>Username</th>
+                            <th>Password</th>
+                            <th>Actions</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="passwordTable">
+
+                        <!-- Dynamic Data -->
+
+                    </tbody>
+
+                </table>
+
+                <!-- Empty State -->
+
+                <div id="emptyState">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    <p>No passwords saved yet</p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Add Password -->
+
+        <section class="form-section">
+
+            <div class="section-title">
+                <h2>Add Password</h2>
+            </div>
+
+            <form id="passwordForm">
+
+                <!-- Website -->
+
+                <div class="input-group">
+
+                    <label for="website">Website</label>
+
+                    <input
+                        type="text"
+                        id="website"
+                        placeholder="Enter website"
+                        required
+                    />
+
+                </div>
+
+                <!-- Username -->
+
+                <div class="input-group">
+
+                    <label for="username">Username</label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        placeholder="Enter username"
+                        required
+                    />
+
+                </div>
+
+                <!-- Password -->
+
+                <div class="input-group">
+
+                    <label for="password">Password</label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Enter password"
+                            required
+                        />
+                        <div id="passwordStrength"></div>
+
+                        <div id="passwordRequirements">
+
+                        <p id="lengthReq">❌ At least 8 characters</p>
+
+                        <p id="upperReq">❌ One uppercase letter</p>
+
+                        <p id="numberReq">❌ One number</p>
+
+                        <p id="specialReq">❌ One special character</p>
+
+                    </div>
+                    
+                    <button
+                        type="button"
+                        id="generatePassword"
+                    >
+                        Generate Strong Password
+                    </button>
+                
+
+                        <span id="togglePassword">
+
+                            <i class="fa-solid fa-eye"></i>
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!-- Submit Button -->
+
+                <button type="submit" class="submit-btn">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Save Password
+
+                </button>
+
+            </form>
+
+        </section>
+=======
       </section>
+>>>>>>> upstream/Main
 
     </main>
+
   </div>
 
+  <!-- =========================================================
+       SCRIPT
+  ========================================================== -->
+
   <script src="script.js"></script>
+
 </body>
 </html>

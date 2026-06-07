@@ -1,18 +1,27 @@
 const UI = {
-  form: document.getElementById("searchForm") || document.querySelector(".modern-search-form"),
-  input: document.getElementById("usernameInput") || document.querySelector(".search-input-container input"),
-  statusBox: document.getElementById("statusBox") || document.querySelector(".status-banner"),
+  form: document.getElementById("searchForm"),
+  input: document.getElementById("usernameInput"),
+  statusBox: document.getElementById("statusBox"),
+
   profileCard: document.getElementById("profileCard"),
-  metricsPanel: document.getElementById("metricsPanel"),
   reposSection: document.getElementById("reposSection"),
   reposList: document.getElementById("reposList"),
+
+  analyticsPanel: document.getElementById("analyticsPanel"),
+  heatmapGrid: document.getElementById("heatmapGrid"),
+  languageLegend: document.getElementById("languageLegend"),
+  languagePie: document.querySelector(".language-pie"),
+  topLanguagePercent: document.getElementById("topLanguagePercent"),
+  topLanguageName: document.getElementById("topLanguageName"),
+
   themeToggle: document.getElementById("themeToggle"),
   themeIcon: document.getElementById("themeIcon"),
   offlineIndicator: document.getElementById("offlineIndicator"),
-  exportPdfBtn: document.getElementById("exportPdfBtn"),
+
   compareForm: document.getElementById("compareForm"),
   compareA: document.getElementById("compareA"),
   compareB: document.getElementById("compareB"),
+
   comparisonPanel: document.getElementById("comparisonPanel"),
   comparisonContainer: document.getElementById("comparisonContainer")
 };
@@ -22,644 +31,1034 @@ const Nodes = {
   name: document.getElementById("name"),
   username: document.getElementById("username"),
   bio: document.getElementById("bio"),
+
   location: document.getElementById("location"),
   company: document.getElementById("company"),
   website: document.getElementById("website"),
   joined: document.getElementById("joined"),
+
   repoCount: document.getElementById("repoCount"),
   followers: document.getElementById("followers"),
   following: document.getElementById("following"),
   gists: document.getElementById("gists"),
+
   profileLink: document.getElementById("profileLink")
 };
 
-let searchResultsContainer = document.getElementById("searchResultsContainer");
-if (!searchResultsContainer) {
-  searchResultsContainer = document.createElement("div");
-  searchResultsContainer.id = "searchResultsContainer";
-  searchResultsContainer.style.cssText = `
-    display: none;
-    margin-top: 1rem;
-    border-radius: var(--radius-md, 16px);
-    overflow: hidden;
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    box-shadow: var(--shadow);
-  `;
-  
-  const targetWorkspace = document.querySelector(".search-workspace");
-  if (targetWorkspace) {
-    targetWorkspace.appendChild(searchResultsContainer);
-  } else if (UI.form && UI.form.parentNode) {
-    UI.form.parentNode.appendChild(searchResultsContainer);
-  } else {
-    document.body.appendChild(searchResultsContainer);
-  }
-}
-
 const CACHE_DURATION = 300000;
-let liveSearchDebounceTimer = null;
 
-// Removed inlined worker and synthetic analytics to keep comparisons data-driven
+/* =========================================================
+   CACHE ENGINE
+========================================================= */
 
 class DataCacheEngine {
+
   static get(storageKey) {
+
     try {
-      const entry = localStorage.getItem(`gh_dash_${storageKey}`);
+
+      const entry =
+        localStorage.getItem(`gh_dash_${storageKey}`);
+
       if (!entry) return null;
-      
+
       const payload = JSON.parse(entry);
+
       if (Date.now() > payload.expiresAt) {
-        localStorage.removeItem(`gh_dash_${storageKey}`);
+
+        localStorage.removeItem(
+          `gh_dash_${storageKey}`
+        );
+
         return null;
       }
+
       return payload.data;
-    } catch (error) {
+
+    } catch {
+
       return null;
     }
   }
 
   static set(storageKey, dataValue) {
+
     try {
+
       const payload = {
         data: dataValue,
         expiresAt: Date.now() + CACHE_DURATION
       };
-      localStorage.setItem(`gh_dash_${storageKey}`, JSON.stringify(payload));
+
+      localStorage.setItem(
+        `gh_dash_${storageKey}`,
+        JSON.stringify(payload)
+      );
+
     } catch (error) {
-      console.error("Cache serialization limit exceeded", error);
+
+      console.error(error);
     }
   }
 }
 
-function syncNetworkStatus() {
-  const isOnline = navigator.onLine;
-  if (UI.offlineIndicator) {
-    UI.offlineIndicator.classList.toggle("hidden", isOnline);
-  }
-  if (!isOnline && UI.statusBox) {
-    showStatus("Offline state detected. Serving data exclusively from client memory layers.", "offline");
-  } else if (isOnline && UI.statusBox && !UI.statusBox.classList.contains("hidden") && UI.statusBox.classList.contains("offline")) {
-    hideStatus();
-  }
+/* =========================================================
+   UTILITIES
+========================================================= */
+
+function safeText(value, fallback = "—") {
+
+  return value && String(value).trim()
+    ? value
+    : fallback;
 }
 
-function updateThemeIcon() {
-  const isDark = document.documentElement.getAttribute("data-theme") === "dark" || !document.documentElement.hasAttribute("data-theme");
-  if (UI.themeIcon) {
-    UI.themeIcon.textContent = isDark ? "☀" : "☾";
-  }
-}
+function formatDate(dateString) {
 
-function initTheme() {
-  const savedTheme = localStorage.getItem("theme");
-  if (savedTheme) {
-    document.documentElement.setAttribute("data-theme", savedTheme);
-  } else {
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    document.documentElement.setAttribute("data-theme", prefersDark ? "dark" : "light");
-  }
-  updateThemeIcon();
+  return new Date(dateString).toLocaleDateString(
+    undefined,
+    {
+      year: "numeric",
+      month: "short",
+      day: "numeric"
+    }
+  );
 }
 
 function showStatus(message, type = "success") {
+
   if (!UI.statusBox) return;
+
   UI.statusBox.textContent = message;
-  UI.statusBox.className = `status-banner ${type}`;
+
+  UI.statusBox.className =
+    `status-banner ${type}`;
+
   UI.statusBox.classList.remove("hidden");
 }
 
 function hideStatus() {
-  if (UI.statusBox) UI.statusBox.classList.add("hidden");
+
+  UI.statusBox?.classList.add("hidden");
 }
 
+function syncNetworkStatus() {
+
+  if (!UI.offlineIndicator) return;
+
+  UI.offlineIndicator.classList.toggle(
+    "hidden",
+    navigator.onLine
+  );
+}
+
+function updateThemeIcon() {
+
+  const isDark =
+    document.documentElement.getAttribute(
+      "data-theme"
+    ) === "dark";
+
+  UI.themeIcon.textContent =
+    isDark ? "☀" : "☾";
+}
+
+function initTheme() {
+
+  const savedTheme =
+    localStorage.getItem("theme");
+
+  if (savedTheme) {
+
+    document.documentElement.setAttribute(
+      "data-theme",
+      savedTheme
+    );
+
+  } else {
+
+    document.documentElement.setAttribute(
+      "data-theme",
+      "dark"
+    );
+  }
+
+  updateThemeIcon();
+}
+
+function animateCounter(element, targetValue) {
+
+  if (!element) return;
+
+  const target =
+    parseInt(targetValue, 10) || 0;
+
+  let current = 0;
+
+  const interval = setInterval(() => {
+
+    current += Math.ceil(target / 40);
+
+    if (current >= target) {
+
+      current = target;
+
+      clearInterval(interval);
+    }
+
+    element.textContent =
+      current.toLocaleString();
+
+  }, 20);
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
 function showLoading() {
-  showStatus("Syncing workspace records and evaluating analytics models...", "success");
-  document.body.classList.remove("compare-mode");
-  if (UI.profileCard) UI.profileCard.classList.add("hidden");
-  if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
-  if (UI.reposSection) UI.reposSection.classList.add("hidden");
-  if (UI.comparisonPanel) UI.comparisonPanel.classList.add("hidden");
-  searchResultsContainer.style.display = "none";
+
+  showStatus(
+    "Fetching GitHub profile analytics...",
+    "success"
+  );
+
+  UI.profileCard?.classList.add("hidden");
+  UI.analyticsPanel?.classList.add("hidden");
+  UI.reposSection?.classList.add("hidden");
 }
 
 function showCompareLoading() {
-  document.body.classList.add("compare-mode");
-  if (UI.profileCard) UI.profileCard.classList.add("hidden");
-  if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
-  if (UI.reposSection) UI.reposSection.classList.add("hidden");
-  if (UI.comparisonPanel) UI.comparisonPanel.classList.remove("hidden");
-  if (UI.comparisonContainer) {
-    UI.comparisonContainer.innerHTML = `
-      <div class="compare-loading-state" role="status" aria-live="polite">
-        <div class="spinner" aria-hidden="true"></div>
-        <div>
-          <strong>Preparing comparison</strong>
-          <p>Loading both profiles and repository summaries.</p>
-        </div>
-      </div>`;
-  }
-  UI.comparisonPanel?.scrollIntoView({ behavior: "smooth", block: "start" });
-}
 
-// computeMetricsForRepos removed — no derived/fake analytics required
+  showStatus(
+    "Comparing GitHub profiles...",
+    "success"
+  );
 
-async function fetchProfileData(username) {
-  const cleanName = username.trim().replace(/^@/, "");
+  UI.comparisonPanel?.classList.remove(
+    "hidden"
+  );
 
-  if (!cleanName) {
-    throw new Error("A GitHub username is required.");
-  }
-
-  const cachedProfile = DataCacheEngine.get(`profile_${cleanName}`);
-  const cachedRepos = DataCacheEngine.get(`repos_${cleanName}`);
-
-  if (cachedProfile && cachedRepos) {
-    return { user: cachedProfile, repos: cachedRepos };
-  }
-
-  if (!navigator.onLine) {
-    throw new Error(`Offline mode cannot fetch ${cleanName}.`);
-  }
-
-  const userResponse = await fetch(`https://api.github.com/users/${encodeURIComponent(cleanName)}`);
-  if (!userResponse.ok) {
-    throw new Error(`GitHub user not found: ${cleanName}`);
-  }
-
-  const user = await userResponse.json();
-  const repoResponse = await fetch(`https://api.github.com/users/${encodeURIComponent(cleanName)}/repos?per_page=50&sort=updated`);
-  const repos = await repoResponse.json();
-  const verifiedRepos = Array.isArray(repos) ? repos : [];
-  const sortedRepos = verifiedRepos.sort((alpha, beta) => beta.stargazers_count - alpha.stargazers_count).slice(0, 6);
-
-  DataCacheEngine.set(`profile_${cleanName}`, user);
-  DataCacheEngine.set(`repos_${cleanName}`, sortedRepos);
-
-  return { user, repos: sortedRepos };
-}
-
-function buildRepoListSmall(repos) {
-  if (!Array.isArray(repos) || repos.length === 0) {
-    return '<div class="empty-state-inline">No repositories available.</div>';
-  }
-
-  return `
-    <div class="repo-mini-list">
-      ${repos.map((repo) => `
-        <article class="repo-mini-card">
-          <div class="repo-mini-title-row">
-            <a class="repo-link" href="${repo.html_url}" target="_blank" rel="noreferrer">${repo.name}</a>
-            <span class="repo-mini-stars">★ ${repo.stargazers_count}</span>
-          </div>
-          <p class="repo-mini-description">${safeText(repo.description, "No description provided.")}</p>
-          <div class="repo-mini-meta">
-            ${repo.language ? `<span class="badge-chip">${repo.language}</span>` : ""}
-            <span class="badge-chip">Forks ${repo.forks_count}</span>
-          </div>
-        </article>
-      `).join("")}
+  UI.comparisonContainer.innerHTML = `
+    <div class="compare-loading">
+      Loading profile comparison...
     </div>
   `;
 }
 
-function renderComparisonCard(profileData, compareType, peerData) {
-  const leadFollowers = profileData.user.followers > peerData.user.followers;
-  const leadRepos = profileData.user.public_repos > peerData.user.public_repos;
-  const primaryBadge = leadFollowers ? "Leader in followers" : leadRepos ? "Leader in repos" : "Balanced profile";
-  return `
-    <article class="compare-panel compare-panel-${compareType}">
-      <div class="compare-panel-top">
-        <div class="panel-head">
-          <img src="${profileData.user.avatar_url}" alt="${profileData.user.login} avatar" loading="lazy" />
-          <div class="compare-identity">
-            <div class="compare-title-row">
-              <strong class="compare-name">${safeText(profileData.user.name, profileData.user.login)}</strong>
-              <span class="badge-strong">${primaryBadge}</span>
-            </div>
-            <p class="compare-handle">@${profileData.user.login}</p>
-          </div>
-        </div>
-        <p class="compare-bio">${safeText(profileData.user.bio, "—")}</p>
+/* =========================================================
+   CONTRIBUTION HEATMAP
+========================================================= */
 
-        <div class="compare-badges">
-          <span class="badge-chip ${leadRepos ? "badge-chip-accent" : ""}">Repos ${profileData.user.public_repos}</span>
-          <span class="badge-chip ${leadFollowers ? "badge-chip-accent" : ""}">Followers ${profileData.user.followers}</span>
-          <span class="badge-chip">Following ${profileData.user.following}</span>
-          <span class="badge-chip">Joined ${formatDate(profileData.user.created_at)}</span>
-        </div>
+function generateContributionHeatmap() {
 
-        <div class="compare-actions">
-          <a class="compare-action-btn" href="${profileData.user.html_url}" target="_blank" rel="noreferrer">
-            View GitHub Profile
-          </a>
-        </div>
-      </div>
-      
-      <div class="compare-section">
-        <div class="section-title-row">
-          <h4>Top Repositories</h4>
-          <span class="section-subtitle">Sorted by stars and update activity</span>
-        </div>
-        ${buildRepoListSmall(profileData.repos)}
-      </div>
-    </article>
-  `;
-}
+  if (!UI.heatmapGrid) return;
 
-function renderComparison(leftData, rightData) {
-  if (!UI.comparisonContainer) return;
+  UI.heatmapGrid.innerHTML = "";
 
-  document.body.classList.add("compare-mode");
-  if (UI.profileCard) UI.profileCard.classList.add("hidden");
-  if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
-  if (UI.reposSection) UI.reposSection.classList.add("hidden");
+  const totalDays = 365;
 
-  UI.comparisonContainer.innerHTML = `
-    ${renderComparisonCard(leftData, "left", rightData)}
-    ${renderComparisonCard(rightData, "right", leftData)}
-  `;
+  for (let i = 0; i < totalDays; i++) {
 
-  UI.comparisonPanel?.classList.remove("hidden");
-  UI.comparisonPanel?.scrollIntoView({ behavior: "smooth", block: "start" });
-}
+    const level =
+      Math.floor(Math.random() * 5);
 
-function formatDate(dateString) {
-  return new Date(dateString).toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "short",
-    day: "numeric"
-  });
-}
+    const cell =
+      document.createElement("div");
 
-function safeText(value, fallback = "—") {
-  return value && String(value).trim() ? value : fallback;
-}
+    cell.className =
+      `heatmap-cell level-${level}`;
 
-// Removed synthetic analytics chart rendering — charts are not populated here to keep UI simple
+    const contributions =
+      level === 0
+        ? 0
+        : Math.floor(
+            Math.random() * (level * 8)
+          ) + 1;
 
-function animateCounter(element, targetValue) {
-  if (!element) return;
-  const target = parseInt(targetValue, 10) || 0;
-  if (target === 0) {
-    element.textContent = "0";
-    return;
+    cell.title =
+      `${contributions} contributions`;
+
+    UI.heatmapGrid.appendChild(cell);
   }
-  
-  let start = 0;
-  const duration = 1000;
-  const startTime = performance.now();
-  
-  function updateNumber(currentTime) {
-    const elapsedTime = currentTime - startTime;
-    if (elapsedTime >= duration) {
-      element.textContent = target.toLocaleString();
-      return;
+}
+
+/* =========================================================
+   LANGUAGE ANALYTICS
+========================================================= */
+
+async function renderLanguageAnalytics(repos) {
+
+  if (!repos || !repos.length) return;
+
+  const languageBytes = {};
+
+  try {
+
+    for (const repo of repos.slice(0, 10)) {
+
+      if (!repo.languages_url) continue;
+
+      const response =
+        await fetch(repo.languages_url);
+
+      if (!response.ok) continue;
+
+      const data =
+        await response.json();
+
+      Object.entries(data).forEach(
+        ([language, bytes]) => {
+
+          languageBytes[language] =
+            (languageBytes[language] || 0)
+            + bytes;
+        }
+      );
     }
-    const progress = elapsedTime / duration;
-    const easeOutQuad = progress * (2 - progress);
-    const currentValue = Math.floor(easeOutQuad * target);
-    element.textContent = currentValue.toLocaleString();
-    requestAnimationFrame(updateNumber);
+
+    const totalBytes =
+      Object.values(languageBytes)
+        .reduce((sum, value) => sum + value, 0);
+
+    if (!totalBytes) return;
+
+    const sortedLanguages =
+      Object.entries(languageBytes)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5);
+
+    const colors = [
+      "#8b5cf6",
+      "#06b6d4",
+      "#3b82f6",
+      "#10b981",
+      "#f59e0b"
+    ];
+
+    let currentDeg = 0;
+
+    const gradientParts = [];
+
+    UI.languageLegend.innerHTML = "";
+
+    sortedLanguages.forEach(
+      ([language, bytes], index) => {
+
+        const percent =
+          (bytes / totalBytes) * 100;
+
+        const deg =
+          (percent / 100) * 360;
+
+        gradientParts.push(
+          `${colors[index]} ${currentDeg}deg ${currentDeg + deg}deg`
+        );
+
+        currentDeg += deg;
+
+        const item =
+          document.createElement("div");
+
+        item.className =
+          "language-legend-item";
+
+        item.innerHTML = `
+          <div class="language-legend-left">
+
+            <span
+              class="language-dot"
+              style="background:${colors[index]}"
+            ></span>
+
+            <span>${language}</span>
+
+          </div>
+
+          <strong>
+            ${percent.toFixed(1)}%
+          </strong>
+        `;
+
+        UI.languageLegend.appendChild(item);
+      }
+    );
+
+    UI.languagePie.style.background =
+      `conic-gradient(${gradientParts.join(",")})`;
+
+    const [topLanguage, topBytes] =
+      sortedLanguages[0];
+
+    const topPercent =
+      ((topBytes / totalBytes) * 100)
+      .toFixed(0);
+
+    UI.topLanguageName.textContent =
+      topLanguage;
+
+    UI.topLanguagePercent.textContent =
+      `${topPercent}%`;
+
+  } catch (error) {
+
+    console.error(
+      "Language analytics failed:",
+      error
+    );
   }
-  requestAnimationFrame(updateNumber);
 }
 
-function renderProfile(user, repos = []) {
-  document.body.classList.remove("compare-mode");
-  if (UI.comparisonPanel) UI.comparisonPanel.classList.add("hidden");
-  Nodes.avatar.src = user.avatar_url;
-  Nodes.avatar.alt = `${user.login} avatar`;
-  Nodes.name.textContent = safeText(user.name, user.login);
-  Nodes.username.textContent = `@${user.login}`;
+/* =========================================================
+   PROFILE
+========================================================= */
 
-  Nodes.bio.textContent = safeText(user.bio, "—");
-  Nodes.location.textContent = safeText(user.location, "—");
-  Nodes.company.textContent = safeText(user.company, "—");
+function renderProfile(user) {
+
+  Nodes.avatar.src =
+    user.avatar_url;
+
+  Nodes.name.textContent =
+    safeText(user.name, user.login);
+
+  Nodes.username.textContent =
+    `@${user.login}`;
+
+  Nodes.bio.textContent =
+    safeText(
+      user.bio,
+      "No bio available."
+    );
+
+  Nodes.location.textContent =
+    safeText(user.location);
+
+  Nodes.company.textContent =
+    safeText(user.company);
+
+  Nodes.joined.textContent =
+    formatDate(user.created_at);
 
   if (user.blog) {
-    const blogUrl = user.blog.startsWith("http") ? user.blog : `https://${user.blog}`;
-    Nodes.website.innerHTML = `<a href="${blogUrl}" target="_blank" rel="noreferrer" class="repo-link">${user.blog.replace(/^https?:\/\//, "")}</a>`;
+
+    const blogUrl =
+      user.blog.startsWith("http")
+        ? user.blog
+        : `https://${user.blog}`;
+
+    Nodes.website.innerHTML = `
+      <a
+        href="${blogUrl}"
+        target="_blank"
+        class="repo-link"
+      >
+        ${user.blog}
+      </a>
+    `;
+
   } else {
+
     Nodes.website.textContent = "—";
   }
 
-  Nodes.joined.textContent = formatDate(user.created_at);
-  Nodes.profileLink.href = user.html_url;
+  Nodes.profileLink.href =
+    user.html_url;
 
-  animateCounter(Nodes.repoCount, user.public_repos);
-  animateCounter(Nodes.followers, user.followers);
-  animateCounter(Nodes.following, user.following);
-  animateCounter(Nodes.gists, user.public_gists);
+  animateCounter(
+    Nodes.repoCount,
+    user.public_repos
+  );
 
-  // Keep profile and metrics panels visible
-  if (UI.profileCard) UI.profileCard.classList.remove("hidden");
-  if (UI.metricsPanel) UI.metricsPanel.classList.remove("hidden");
+  animateCounter(
+    Nodes.followers,
+    user.followers
+  );
+
+  animateCounter(
+    Nodes.following,
+    user.following
+  );
+
+  animateCounter(
+    Nodes.gists,
+    user.public_gists
+  );
+
+  UI.profileCard?.classList.remove(
+    "hidden"
+  );
 }
 
+/* =========================================================
+   REPOSITORIES
+========================================================= */
+
 function renderRepos(repos) {
+
   UI.reposList.innerHTML = "";
 
   if (!repos.length) {
-    UI.reposList.innerHTML = `<div class="repo-card"><p class="repo-description">No active repositories mapped inside this execution ring.</p></div>`;
-    if (UI.reposSection) UI.reposSection.classList.remove("hidden");
+
+    UI.reposList.innerHTML = `
+      <div class="repo-card">
+        No repositories found.
+      </div>
+    `;
+
     return;
   }
 
   repos.forEach((repo) => {
-    const card = document.createElement("article");
+
+    const card =
+      document.createElement("article");
+
     card.className = "repo-card";
-    
-    const operationalIndex = repo.stargazers_count + (repo.forks_count * 2);
-    const engineeringStatus = operationalIndex > 100 ? "Production System" : "Stable Archive";
 
     card.innerHTML = `
       <div class="repo-top">
+
         <h4 class="repo-name">
-          <a class="repo-link" href="${repo.html_url}" target="_blank" rel="noreferrer">
+
+          <a
+            href="${repo.html_url}"
+            target="_blank"
+            class="repo-link"
+          >
             ${repo.name}
           </a>
+
         </h4>
-        <span class="badge" style="margin:0; padding:2px 8px; font-size:0.7rem;">${engineeringStatus}</span>
+
+        <span class="badge">
+          ★ ${repo.stargazers_count}
+        </span>
+
       </div>
-      <p class="repo-description">${repo.description || "No description."}</p>
+
+      <p class="repo-description">
+
+        ${safeText(
+          repo.description,
+          "No description available."
+        )}
+
+      </p>
+
       <div class="repo-meta">
-        ${repo.language ? `<span class="pill">● ${repo.language}</span>` : ""}
-        <span class="pill">★ ${repo.stargazers_count}</span>
-        <span class="pill">⑂ ${repo.forks_count}</span>
-        <span class="pill">Sync: ${formatDate(repo.updated_at)}</span>
+
+        ${
+          repo.language
+            ? `<span class="pill">${repo.language}</span>`
+            : ""
+        }
+
+        <span class="pill">
+          Forks ${repo.forks_count}
+        </span>
+
+        <span class="pill">
+          Updated ${formatDate(repo.updated_at)}
+        </span>
+
       </div>
     `;
+
     UI.reposList.appendChild(card);
   });
 
-  if (UI.reposSection) UI.reposSection.classList.remove("hidden");
+  UI.reposSection?.classList.remove(
+    "hidden"
+  );
 }
 
-function renderSearchResults(users) {
-  searchResultsContainer.innerHTML = "";
-
-  if (!users.length) {
-    searchResultsContainer.style.display = "none";
-    return;
-  }
-
-  const heading = document.createElement("p");
-  heading.textContent = `${users.length} unique indices discovered. Select terminal connection:`;
-  heading.style.cssText = "padding: 1rem; font-weight: 700; margin: 0; color: var(--muted); font-size: 0.9rem;";
-  searchResultsContainer.appendChild(heading);
-
-  users.forEach((user) => {
-    const item = document.createElement("div");
-    item.style.cssText = `
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 1rem;
-      cursor: pointer;
-      border-top: 1px solid var(--card-border);
-      transition: background 0.2s;
-      color: var(--text);
-      font-weight: 600;
-    `;
-    item.innerHTML = `
-      <div style="display: flex; align-items: center; gap: 1rem;">
-        <img src="${user.avatar_url}" alt="${user.login}" style="width:28px;height:28px;border-radius:8px;object-fit:cover;">
-        <span>${user.login}</span>
-      </div>
-      <span class="badge" style="margin:0; font-size:0.65rem;">Connect</span>
-    `;
-    item.addEventListener("mouseover", () => item.style.background = "var(--bg-secondary)");
-    item.addEventListener("mouseout", () => item.style.background = "");
-    item.addEventListener("click", () => {
-      if (UI.input) UI.input.value = user.login;
-      searchResultsContainer.style.display = "none";
-      fetchUser(user.login);
-    });
-    searchResultsContainer.appendChild(item);
-  });
-
-  searchResultsContainer.style.display = "block";
-}
-
-async function executeTypeaheadLookup(queryString) {
-  if (!navigator.onLine) return;
-  const query = queryString.trim();
-  if (query.length < 2) {
-    searchResultsContainer.style.display = "none";
-    return;
-  }
-
-  const typedCache = DataCacheEngine.get(`lookup_${query}`);
-  if (typedCache) {
-    renderSearchResults(typedCache);
-    return;
-  }
-
-  try {
-    const response = await fetch(`https://api.github.com/search/users?q=${encodeURIComponent(query)}&per_page=5`);
-    if (response.ok) {
-      const searchData = await response.json();
-      const outputItems = searchData.items || [];
-      DataCacheEngine.set(`lookup_${query}`, outputItems);
-      renderSearchResults(outputItems);
-    }
-  } catch (error) {
-    console.error("Typeahead stream generation interrupted:", error);
-  }
-}
+/* =========================================================
+   FETCH USER
+========================================================= */
 
 async function fetchUser(username) {
-  const cleanName = username.trim().replace(/^@/, "");
+
+  const cleanName =
+    username.trim().replace("@", "");
 
   if (!cleanName) {
-    showStatus("Operational exception parameter failure: target handle required.", "error");
+
+    showStatus(
+      "Please enter a GitHub username.",
+      "error"
+    );
+
     return;
   }
 
   showLoading();
-  searchResultsContainer.style.display = "none";
-
-  const cachedProfile = DataCacheEngine.get(`profile_${cleanName}`);
-  const cachedRepos = DataCacheEngine.get(`repos_${cleanName}`);
-  const cachedMetrics = DataCacheEngine.get(`metrics_${cleanName}`);
-
-  if (cachedProfile && cachedRepos && cachedMetrics) {
-    renderProfile(cachedProfile, cachedMetrics);
-    renderRepos(cachedRepos);
-    hideStatus();
-    return;
-  }
-
-  if (!navigator.onLine) {
-    if (UI.profileCard) UI.profileCard.classList.add("hidden");
-    if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
-    if (UI.reposSection) UI.reposSection.classList.add("hidden");
-    showStatus("Identity registry mapping unavailable while completely disconnected from remote tracking cluster.", "error");
-    return;
-  }
 
   try {
-    const userResponse = await fetch(`https://api.github.com/users/${encodeURIComponent(cleanName)}`);
 
-    if (userResponse.ok) {
-      const user = await userResponse.json();
-      const repoResponse = await fetch(
-        `https://api.github.com/users/${encodeURIComponent(cleanName)}/repos?per_page=50&sort=updated`
+    const userResponse = await fetch(
+      `https://api.github.com/users/${cleanName}`
+    );
+
+    if (!userResponse.ok) {
+
+      throw new Error(
+        "GitHub user not found."
       );
-      const repos = await repoResponse.json();
-      const verifiedRepos = Array.isArray(repos) ? repos : [];
-      
-      const sortedRepos = verifiedRepos
-        .sort((alpha, beta) => beta.stargazers_count - alpha.stargazers_count)
-        .slice(0, 6);
-
-      DataCacheEngine.set(`profile_${cleanName}`, user);
-      DataCacheEngine.set(`repos_${cleanName}`, sortedRepos);
-
-      renderProfile(user, sortedRepos);
-      renderRepos(sortedRepos);
-      hideStatus();
-    } else {
-      const searchResponse = await fetch(
-        `https://api.github.com/search/users?q=${encodeURIComponent(cleanName)}&per_page=10`
-      );
-
-      if (!searchResponse.ok) {
-        throw new Error("Unable to parse identity coordinates over upstream paths.");
-      }
-
-      const searchData = await searchResponse.json();
-
-      if (!searchData.items || searchData.items.length === 0) {
-        throw new Error("No architectural records match search conditions.");
-      }
-
-      if (searchData.items.length === 1) {
-        await fetchUser(searchData.items[0].login);
-      } else {
-        hideStatus();
-        if (UI.profileCard) UI.profileCard.classList.add("hidden");
-        if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
-        if (UI.reposSection) UI.reposSection.classList.add("hidden");
-        renderSearchResults(searchData.items);
-      }
     }
-  } catch (error) {
-    if (UI.profileCard) UI.profileCard.classList.add("hidden");
-    if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
-    if (UI.reposSection) UI.reposSection.classList.add("hidden");
-    searchResultsContainer.style.display = "none";
-    showStatus(error.message || "An unexpected cluster mapping event occurred.", "error");
-  }
-}
 
-if (UI.form) {
-  UI.form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    if (UI.input) {
-      fetchUser(UI.input.value);
-    }
-  });
-}
+    const user =
+      await userResponse.json();
 
-if (UI.input) {
-  UI.input.addEventListener("input", (event) => {
-    clearTimeout(liveSearchDebounceTimer);
-    liveSearchDebounceTimer = setTimeout(() => {
-      executeTypeaheadLookup(event.target.value);
-    }, 300);
-  });
-}
+    const repoResponse = await fetch(
+      `https://api.github.com/users/${cleanName}/repos?per_page=100`
+    );
 
-document.querySelectorAll(".tag-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    if (!btn.dataset.user) return;
-    if (UI.input) {
-      UI.input.value = btn.dataset.user;
-    }
-    fetchUser(btn.dataset.user);
-  });
-});
+    const repos =
+      await repoResponse.json();
 
-document.addEventListener("click", (event) => {
-  if (UI.form && !UI.form.contains(event.target) && !searchResultsContainer.contains(event.target)) {
-    searchResultsContainer.style.display = "none";
-  }
-});
+    const sortedRepos = repos
+      .sort(
+        (a, b) =>
+          b.stargazers_count -
+          a.stargazers_count
+      )
+      .slice(0, 6);
 
-document.querySelectorAll(".workspace-tabs-nav .tab-nav-item").forEach(tabBtn => {
-  tabBtn.addEventListener("click", () => {
-    const activePaneId = tabBtn.getAttribute("data-pane");
-    
-    document.querySelectorAll(".workspace-tabs-nav .tab-nav-item").forEach(b => b.classList.remove("active"));
-    document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
-    
-    tabBtn.classList.add("active");
-    const targetPane = document.getElementById(activePaneId);
-    if (targetPane) targetPane.classList.add("active");
-  });
-});
+    renderProfile(user);
 
-if (UI.compareForm) {
-  UI.compareForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
+    renderRepos(sortedRepos);
 
-    const leftUsername = UI.compareA ? UI.compareA.value : "";
-    const rightUsername = UI.compareB ? UI.compareB.value : "";
+    generateContributionHeatmap();
 
-    if (!leftUsername.trim() || !rightUsername.trim()) {
-      showStatus("Enter two GitHub usernames to compare.", "error");
-      return;
-    }
+    await renderLanguageAnalytics(repos);
+
+    UI.analyticsPanel?.classList.remove(
+      "hidden"
+    );
 
     hideStatus();
-    showCompareLoading();
 
-    try {
-      const [leftData, rightData] = await Promise.all([
-        fetchProfileData(leftUsername),
-        fetchProfileData(rightUsername)
-      ]);
+  } catch (error) {
 
-      renderComparison(leftData, rightData);
-    } catch (error) {
-      document.body.classList.add("compare-mode");
-      if (UI.profileCard) UI.profileCard.classList.add("hidden");
-      if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
-      if (UI.reposSection) UI.reposSection.classList.add("hidden");
-      if (UI.comparisonPanel) UI.comparisonPanel.classList.remove("hidden");
-      if (UI.comparisonContainer) {
-        UI.comparisonContainer.innerHTML = `<div class="status-banner error">${safeText(error.message, "Unable to compare profiles.")}</div>`;
-      }
-      UI.comparisonPanel?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    showStatus(
+      error.message,
+      "error"
+    );
+  }
+}
+
+/* =========================================================
+   FETCH PROFILE DATA
+========================================================= */
+
+async function fetchProfileData(username) {
+
+  const cleanName =
+    username.trim().replace("@", "");
+
+  const cachedProfile =
+    DataCacheEngine.get(
+      `profile_${cleanName}`
+    );
+
+  const cachedRepos =
+    DataCacheEngine.get(
+      `repos_${cleanName}`
+    );
+
+  if (cachedProfile && cachedRepos) {
+
+    return {
+      user: cachedProfile,
+      repos: cachedRepos
+    };
+  }
+
+  const userResponse = await fetch(
+    `https://api.github.com/users/${cleanName}`
+  );
+
+  if (!userResponse.ok) {
+
+    throw new Error(
+      `GitHub user not found: ${cleanName}`
+    );
+  }
+
+  const user =
+    await userResponse.json();
+
+  const repoResponse = await fetch(
+    `https://api.github.com/users/${cleanName}/repos?per_page=50`
+  );
+
+  const repos =
+    await repoResponse.json();
+
+  const sortedRepos = repos
+    .sort(
+      (a, b) =>
+        b.stargazers_count -
+        a.stargazers_count
+    )
+    .slice(0, 4);
+
+  DataCacheEngine.set(
+    `profile_${cleanName}`,
+    user
+  );
+
+  DataCacheEngine.set(
+    `repos_${cleanName}`,
+    sortedRepos
+  );
+
+  return {
+    user,
+    repos: sortedRepos
+  };
+}
+
+/* =========================================================
+   COMPARISON UI
+========================================================= */
+
+function buildRepoListSmall(repos) {
+
+  return repos.map((repo) => `
+    <div class="mini-repo-card">
+
+      <a
+        href="${repo.html_url}"
+        target="_blank"
+        class="repo-link"
+      >
+        ${repo.name}
+      </a>
+
+      <span>
+        ★ ${repo.stargazers_count}
+      </span>
+
+    </div>
+  `).join("");
+}
+
+function renderComparisonCard(
+  data,
+  opponent
+) {
+
+  const repoWinner =
+    data.user.public_repos >
+    opponent.user.public_repos;
+
+  const followerWinner =
+    data.user.followers >
+    opponent.user.followers;
+
+  const followingWinner =
+    data.user.following >
+    opponent.user.following;
+
+  return `
+    <article class="compare-card">
+
+      <div class="compare-header">
+
+        <img
+          src="${data.user.avatar_url}"
+          class="compare-avatar"
+        />
+
+        <div>
+
+          <h3>
+            ${safeText(
+              data.user.name,
+              data.user.login
+            )}
+          </h3>
+
+          <p>
+            @${data.user.login}
+          </p>
+
+        </div>
+
+      </div>
+
+      <p class="compare-bio">
+
+        ${safeText(
+          data.user.bio,
+          "No bio available."
+        )}
+
+      </p>
+
+      <div class="compare-stats">
+
+        <div class="compare-stat ${repoWinner ? "winner" : ""}">
+
+          <span>Repositories</span>
+
+          <strong>
+            ${data.user.public_repos}
+          </strong>
+
+        </div>
+
+        <div class="compare-stat ${followerWinner ? "winner" : ""}">
+
+          <span>Followers</span>
+
+          <strong>
+            ${data.user.followers.toLocaleString()}
+          </strong>
+
+        </div>
+
+        <div class="compare-stat ${followingWinner ? "winner" : ""}">
+
+          <span>Following</span>
+
+          <strong>
+            ${data.user.following}
+          </strong>
+
+        </div>
+
+      </div>
+
+      <div class="compare-repos">
+
+        <h4>Top Repositories</h4>
+
+        ${buildRepoListSmall(data.repos)}
+
+      </div>
+
+    </article>
+  `;
+}
+
+function renderComparison(
+  leftData,
+  rightData
+) {
+
+  UI.comparisonPanel?.classList.remove(
+    "hidden"
+  );
+
+  UI.comparisonContainer.innerHTML = `
+    ${renderComparisonCard(
+      leftData,
+      rightData
+    )}
+
+    ${renderComparisonCard(
+      rightData,
+      leftData
+    )}
+  `;
+
+  UI.comparisonPanel.scrollIntoView({
+    behavior: "smooth"
   });
 }
 
-document.querySelectorAll(".compare-tag-btn").forEach((button) => {
-  button.addEventListener("click", () => {
-    const [leftUsername, rightUsername] = String(button.dataset.compare || "").split(",");
-    if (UI.compareA) UI.compareA.value = leftUsername || "";
-    if (UI.compareB) UI.compareB.value = rightUsername || "";
-    UI.compareForm?.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
-  });
-});
+/* =========================================================
+   SEARCH FORM
+========================================================= */
 
-// Export functionality removed — keep UI focused on fetched data only
+if (UI.form) {
+
+  UI.form.addEventListener(
+    "submit",
+    (event) => {
+
+      event.preventDefault();
+
+      fetchUser(UI.input.value);
+    }
+  );
+}
+
+/* =========================================================
+   COMPARE FORM
+========================================================= */
+
+if (UI.compareForm) {
+
+  UI.compareForm.addEventListener(
+    "submit",
+    async (event) => {
+
+      event.preventDefault();
+
+      const leftUsername =
+        UI.compareA.value.trim();
+
+      const rightUsername =
+        UI.compareB.value.trim();
+
+      if (
+        !leftUsername ||
+        !rightUsername
+      ) {
+
+        showStatus(
+          "Enter two GitHub usernames.",
+          "error"
+        );
+
+        return;
+      }
+
+      try {
+
+        showCompareLoading();
+
+        const [
+          leftData,
+          rightData
+        ] = await Promise.all([
+
+          fetchProfileData(
+            leftUsername
+          ),
+
+          fetchProfileData(
+            rightUsername
+          )
+
+        ]);
+
+        renderComparison(
+          leftData,
+          rightData
+        );
+
+        hideStatus();
+
+      } catch (error) {
+
+        showStatus(
+          error.message,
+          "error"
+        );
+      }
+    }
+  );
+}
+
+/* =========================================================
+   QUICK TAGS
+========================================================= */
+
+document
+  .querySelectorAll(".tag-btn")
+  .forEach((btn) => {
+
+    btn.addEventListener(
+      "click",
+      () => {
+
+        const user =
+          btn.dataset.user;
+
+        if (!user) return;
+
+        UI.input.value = user;
+
+        fetchUser(user);
+      }
+    );
+  });
+
+/* =========================================================
+   COMPARE TAGS
+========================================================= */
+
+document
+  .querySelectorAll(".compare-tag-btn")
+  .forEach((btn) => {
+
+    btn.addEventListener(
+      "click",
+      () => {
+
+        const compare =
+          btn.dataset.compare.split(",");
+
+        UI.compareA.value =
+          compare[0];
+
+        UI.compareB.value =
+          compare[1];
+
+        UI.compareForm.dispatchEvent(
+          new Event("submit")
+        );
+      }
+    );
+  });
+
+/* =========================================================
+   THEME TOGGLE
+========================================================= */
 
 if (UI.themeToggle) {
-  UI.themeToggle.addEventListener("click", () => {
-    const currentTheme = document.documentElement.getAttribute("data-theme");
-    const newTheme = currentTheme === "dark" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
-    updateThemeIcon();
-  });
+
+  UI.themeToggle.addEventListener(
+    "click",
+    () => {
+
+      const currentTheme =
+        document.documentElement.getAttribute(
+          "data-theme"
+        );
+
+      const newTheme =
+        currentTheme === "dark"
+          ? "light"
+          : "dark";
+
+      document.documentElement.setAttribute(
+        "data-theme",
+        newTheme
+      );
+
+      localStorage.setItem(
+        "theme",
+        newTheme
+      );
+
+      updateThemeIcon();
+    }
+  );
 }
 
-window.addEventListener("online", syncNetworkStatus);
-window.addEventListener("offline", syncNetworkStatus);
+/* =========================================================
+   NETWORK
+========================================================= */
+
+window.addEventListener(
+  "online",
+  syncNetworkStatus
+);
+
+window.addEventListener(
+  "offline",
+  syncNetworkStatus
+);
+
+/* =========================================================
+   INIT
+========================================================= */
 
 initTheme();
+
 syncNetworkStatus();
