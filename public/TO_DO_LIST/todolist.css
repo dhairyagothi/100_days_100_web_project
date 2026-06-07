@@ -190,6 +190,9 @@ body {
   font-weight: 850;
   color: #ffffff;
 }
+.overdue-task{
+    border-left:4px solid #ef4444;
+}
 
 /* ---------- Hero Promotion Banner ---------- */
 .hero-banner {
