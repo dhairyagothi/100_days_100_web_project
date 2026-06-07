@@ -2708,5 +2708,14 @@
     "techStack": ["react", "javascript", "html", "css", "api", "vite"],
     "difficulty": "advanced",
     "projectPath": "./public/Gemini/index.html"
+  },
+   {
+    "projectNo": 217,
+    "projectName": "Study Sync",
+    "projectType": "Website",
+    "projectDesc": "An interactive web application that provide Seamless Learning for Brighter Futures .",
+    "techStack": ["html","css", "javascript"],
+    "difficulty": "Intermediate",
+    "projectPath": "./public/Stydy-Sync/index.html"
   }
 ]
