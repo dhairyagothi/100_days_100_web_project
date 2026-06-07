@@ -680,7 +680,6 @@ function evaluateLocalAnswerRelevance(question, answer, index) {
       missingConcepts: ["Core topic of the question"],
       improvementSuggestions: ["Ensure you provide at least a basic answer rather than leaving it blank."],
       sampleStrongAnswer: "A strong answer would directly address the question with technical depth and practical examples.",
-      relevanceScore: 0
       relevanceScore: 0,
       correctnessScore: 0,
       answeredQuestion: false,
@@ -697,7 +696,6 @@ function evaluateLocalAnswerRelevance(question, answer, index) {
       missingConcepts: ["Technical specifics", "Clear explanation"],
       improvementSuggestions: ["Avoid very short or low-effort answers. Elaborate on your points."],
       sampleStrongAnswer: "A strong answer would directly address the question with technical depth and practical examples.",
-      relevanceScore: 0
       relevanceScore: 0,
       correctnessScore: 0,
       answeredQuestion: false,
