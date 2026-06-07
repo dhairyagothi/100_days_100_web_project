@@ -340,7 +340,7 @@ function buildProjectCardHTML({
     .map((t) => `<span class="tag">${escapeHTML(t)}</span>`)
     .join("");
 
-  const project = PROJECTS.find((p) => p.projectName === name);
+  const project = PROJECTS.find((p) => p.projectName === name || p.day === day);
 
   // SECURITY: description, day, name and category are all escaped before
   // being written into innerHTML.
@@ -348,6 +348,14 @@ function buildProjectCardHTML({
   const safeDay      = escapeHTML(day);
   const safeName     = escapeHTML(name);
   const safeCategory = escapeHTML(category);
+
+  const difficulty = project ? project.difficulty || "" : "";
+  const difficultyKey = (difficulty || "").toLowerCase();
+  const difficultyLabel = CATEGORY_LABEL[difficultyKey] || difficulty;
+  const safeDifficultyLabel = escapeHTML(difficultyLabel);
+  const difficultyBadge = difficulty
+    ? `<span class="card-difficulty ${difficultyKey}">${safeDifficultyLabel}</span>`
+    : "";
 
   const sourceOnlyBadge = sourceOnly
     ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
@@ -375,6 +383,7 @@ return {
                 <span class="card-day">${safeDay}</span>
                 <span class="card-category-wrap">
                   <span class="card-category">${safeCategory}</span>
+                  ${difficultyBadge}
                   ${sourceOnlyBadge}
                 </span>
             </div>

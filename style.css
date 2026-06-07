@@ -1858,6 +1858,36 @@ input:focus {
   border: 1px solid rgba(239, 68, 68, 0.28);
 }
 
+.card-difficulty {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.18rem 0.45rem;
+  border-radius: 999px;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.card-difficulty.beginner {
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.28);
+}
+
+.card-difficulty.intermediate {
+  color: #facc15;
+  background: rgba(250, 204, 21, 0.12);
+  border: 1px solid rgba(250, 204, 21, 0.28);
+}
+
+.card-difficulty.advanced {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.28);
+}
+
 .card-category-wrap {
   display: inline-flex;
   align-items: center;
