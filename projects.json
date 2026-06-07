@@ -492,7 +492,7 @@
       "javascript"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/Amazon_Clone/index.html"
+    "projectPath": "./public/Amazon-App/index.html"
   },
   {
     "projectNo": 43,
@@ -2579,7 +2579,12 @@
     "projectName": "Gravity Well",
     "projectType": "Animation",
     "projectDesc": "Interactive physics-based gravity simulation allowing users to create gravitational wells.",
-    "techStack": ["HTML", "canvas", "javascript", "css"],
+    "techStack": [
+      "HTML",
+      "canvas",
+      "javascript",
+      "css"
+    ],
     "difficulty": "intermediate",
     "projectPath": "./public/gravity-well/index.html"
   },
@@ -2669,7 +2674,8 @@
       "css"
     ],
     "difficulty": "intermediate",
-    "projectDesc": "A responsive photography portfolio and gallery website designed to showcase visual content through structured layouts, image presentation sections, and modern styling. Features an engaging user interface optimized for desktop and mobile viewing."
+    "projectDesc": "A responsive photography portfolio and gallery website designed to showcase visual content through structured layouts, image presentation sections, and modern styling. Features an engaging user interface optimized for desktop and mobile viewing.",
+    "projectType": "Website"
   },
   {
     "projectNo": 214,
@@ -2700,22 +2706,50 @@
     "difficulty": "advanced",
     "projectPath": "./public/Mood_Based_Music_Recommender/"
   },
+
+{
+  "projectNo": 216,
+  "projectName": "Runway Calculator",
+  "projectType": "Tool",
+  "projectDesc": "A web-based aviation utility that helps users calculate and determine runway numbers from runway headings. Features an intuitive interface, instant calculations, and responsive design for aviation enthusiasts, students, and professionals.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript"
+  ],
+  "difficulty": "intermediate",
+  "projectPath": "./public/Runway-Calculator/index.html"
+},
+
   {
-    "projectNo": 216,
+    "projectNo": 217,
     "projectName": "Gemini Clone",
     "projectType": "AI",
     "projectDesc": "A modern clone of the Google Gemini AI chatbot interface, integrated with Google's GenAI API for generating dynamic responses.",
-    "techStack": ["react", "javascript", "html", "css", "api", "vite"],
+    "techStack": [
+      "react",
+      "javascript",
+      "html",
+      "css",
+      "api",
+      "vite"
+    ],
     "difficulty": "advanced",
     "projectPath": "./public/Gemini/index.html"
   },
-   {
-    "projectNo": 217,
-    "projectName": "Study Sync",
-    "projectType": "Website",
-    "projectDesc": "An interactive web application that provide Seamless Learning for Brighter Futures .",
-    "techStack": ["html","css", "javascript"],
-    "difficulty": "Intermediate",
-    "projectPath": "./public/Stydy-Sync/index.html"
+  {
+    "projectNo": 218,
+    "projectName": "SkillBridge Career Roadmap Explorer",
+    "projectType": "Tool",
+    "projectDesc": "A Next.js career guidance platform that helps students explore technology career paths, required skills, structured learning roadmaps, recommended projects, and curated learning resources.",
+    "techStack": [
+      "nextjs",
+      "react",
+      "typescript",
+      "tailwindcss"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/SkillBridge"
   }
+
 ]
