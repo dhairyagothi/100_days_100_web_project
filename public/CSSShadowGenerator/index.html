@@ -36,8 +36,8 @@
       <section class="preview-section" aria-label="Visual Studio Canvas">
         <div class="preview-card" id="studio-canvas">
           <!-- Floating neon color blobs for realistic glass backdrops -->
-          <div class="blob blob--cyan"></div>
-          <div class="blob blob--purple"></div>
+          <div class="blob blob--cyan" id="blob-primary"></div>
+          <div class="blob blob--purple" id="blob-secondary"></div>
 
           <!-- Live Glassmorphic Card Preview -->
           <div
@@ -180,6 +180,51 @@
                 value="20"
                 aria-label="Shadow opacity multiplier"
               />
+            </div>
+          </div>
+        </div>
+
+        <!-- Backdrop Customs -->
+        <div class="controls-card">
+          <h2 class="card-title">Backdrop Customs</h2>
+
+          <div class="control-group">
+            <label class="control-label">Neon Blob Themes</label>
+
+            <div class="theme-buttons">
+              <button class="btn btn--ghost backdrop-theme" data-theme="cyan-purple">
+                Cyan / Purple
+              </button>
+
+              <button class="btn btn--ghost backdrop-theme" data-theme="emerald-lime">
+                Emerald / Lime
+              </button>
+
+              <button class="btn btn--ghost backdrop-theme" data-theme="crimson-ruby">
+                Crimson / Ruby
+              </button>
+
+              <button class="btn btn--ghost backdrop-theme" data-theme="sunset-gold">
+                Sunset Gold / Teal
+              </button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">Background Patterns</label>
+
+            <div class="theme-buttons">
+              <button class="btn btn--ghost backdrop-pattern" data-pattern="blueprint">
+                Dark Blueprint
+              </button>
+
+              <button class="btn btn--ghost backdrop-pattern" data-pattern="dotgrid">
+                Light Dot Grid
+              </button>
+
+              <button class="btn btn--ghost backdrop-pattern" data-pattern="canvas">
+                Neutral Canvas
+              </button>
             </div>
           </div>
         </div>

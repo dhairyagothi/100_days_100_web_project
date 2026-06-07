@@ -14,6 +14,25 @@ const state = {
   shadowOpacity: 20, // Percent
 };
 
+const backdropThemes = {
+  'cyan-purple': { primary: '#22d3ee', secondary: '#a855f7' },
+  'emerald-lime': { primary: '#10b981', secondary: '#84cc16' },
+  'crimson-ruby': { primary: '#ef4444', secondary: '#be123c' },
+  'sunset-gold': { primary: '#f59e0b', secondary: '#14b8a6' },
+};
+
+const backdropPatterns = {
+  blueprint: `
+    radial-gradient(circle at center, rgba(255,255,255,0.04) 1px, transparent 1px),
+    #0f172a
+  `,
+  dotgrid: `
+    radial-gradient(circle, rgba(0,0,0,0.15) 1px, transparent 1px),
+    #ffffff
+  `,
+  canvas: '#e5e7eb',
+};
+
 // ===== DOM References =====
 const dom = {
   card: document.getElementById('glass-card-preview'),
@@ -21,7 +40,11 @@ const dom = {
   btnCopy: document.getElementById('btn-copy-css'),
   toast: document.getElementById('toast'),
   toastText: document.getElementById('toast-text'),
-
+  studioCanvas: document.getElementById('studio-canvas'),
+  primaryBlob: document.getElementById('blob-primary'),
+  secondaryBlob: document.getElementById('blob-secondary'),
+  themeButtons: document.querySelectorAll('.backdrop-theme'),
+  patternButtons: document.querySelectorAll('.backdrop-pattern'),
   // Sliders & value displays
   opacitySlider: document.getElementById('opacity-slider'),
   opacityValue: document.getElementById('opacity-value'),
@@ -37,6 +60,29 @@ const dom = {
   shadowBlurValue: document.getElementById('shadow-blur-value'),
   shadowOpacitySlider: document.getElementById('shadow-opacity-slider'),
   shadowOpacityValue: document.getElementById('shadow-opacity-value'),
+};
+
+const applyBackdropTheme = (theme) => {
+  const selected = backdropThemes[theme];
+  if (!selected || !dom.primaryBlob || !dom.secondaryBlob) return;
+
+  dom.primaryBlob.style.background = selected.primary;
+  dom.secondaryBlob.style.background = selected.secondary;
+};
+
+const applyBackdropPattern = (pattern) => {
+  const selected = backdropPatterns[pattern];
+  if (!selected || !dom.studioCanvas) return;
+
+  dom.studioCanvas.style.background = selected;
+
+  if (pattern === 'dotgrid') {
+    dom.studioCanvas.style.backgroundSize = '24px 24px';
+  } else if (pattern === 'blueprint') {
+    dom.studioCanvas.style.backgroundSize = '32px 32px';
+  } else {
+    dom.studioCanvas.style.backgroundSize = 'auto';
+  }
 };
 
 // ===== Toast Alert Helper =====
@@ -118,6 +164,32 @@ const initListeners = () => {
     updateStyles();
   });
 
+  dom.themeButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+
+      dom.themeButtons.forEach((btn) => {
+        btn.classList.remove('active');
+      });
+
+      button.classList.add('active');
+
+      applyBackdropTheme(button.dataset.theme);
+    });
+  });
+
+  dom.patternButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+
+      dom.patternButtons.forEach((btn) => {
+        btn.classList.remove('active');
+      });
+
+      button.classList.add('active');
+
+      applyBackdropPattern(button.dataset.pattern);
+    });
+  });
+
   // Blur Slider
   dom.blurSlider.addEventListener('input', (e) => {
     state.blur = parseInt(e.target.value, 10);
@@ -167,6 +239,18 @@ const initListeners = () => {
 // ===== Initialize App =====
 const init = () => {
   updateStyles();
+
+  applyBackdropTheme('cyan-purple');
+  applyBackdropPattern('blueprint');
+
+  document
+    .querySelector('[data-theme="cyan-purple"]')
+    ?.classList.add('active');
+
+  document
+    .querySelector('[data-pattern="blueprint"]')
+    ?.classList.add('active');
+
   initListeners();
 };
 

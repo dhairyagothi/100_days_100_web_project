@@ -411,3 +411,43 @@ body {
     padding: 1.5rem;
   }
 }
+
+.theme-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.backdrop-theme,
+.backdrop-pattern {
+  padding: 0.85rem 1.25rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  color: #f8fafc;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.backdrop-theme:hover,
+.backdrop-pattern:hover {
+  transform: translateY(-2px);
+  border-color: #22d3ee;
+  box-shadow:
+    0 0 12px rgba(34, 211, 238, 0.35),
+    0 0 24px rgba(168, 85, 247, 0.2);
+}
+
+.backdrop-theme.active,
+.backdrop-pattern.active {
+  background: linear-gradient(
+    135deg,
+    rgba(34, 211, 238, 0.18),
+    rgba(168, 85, 247, 0.18)
+  );
+  border-color: #22d3ee;
+  box-shadow:
+    0 0 18px rgba(34, 211, 238, 0.45);
+}
