@@ -315,16 +315,51 @@ function initBirthday() {
 
   shareBtn.addEventListener('click', async () => {
     const name = nameInput.value || 'Friend';
-    const message = messageInput.value || 'Wishing you a day filled with happiness!';
+    const message =
+      messageInput.value || 'Wishing you a day filled with happiness!';
+
     const shareText = `Happy Birthday ${name}! ${message}`;
-    if (navigator.share) {
-      navigator.share({ title: 'Birthday Card', text: shareText }).catch(() => {});
-    } else if (navigator.clipboard) {
-      navigator.clipboard.writeText(shareText).then(() => {
+
+    try {
+      // Preferred: Native share
+      if (navigator.share) {
+        await navigator.share({
+          title: 'Birthday Card',
+          text: shareText,
+        });
+
+        return;
+      }
+
+      // Fallback: Clipboard
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(shareText);
+
         alert('Card message copied to clipboard.');
-      });
-    } else {
+        return;
+      }
+
       alert('Share is not supported on this browser.');
+    } catch (error) {
+      console.error('Share operation failed:', error);
+
+      // Attempt clipboard fallback if share failed
+      if (navigator.clipboard) {
+        try {
+          await navigator.clipboard.writeText(shareText);
+
+          alert(
+            'Sharing was unavailable. The message has been copied to your clipboard instead.'
+          );
+          return;
+        } catch (clipboardError) {
+          console.error('Clipboard write failed:', clipboardError);
+        }
+      }
+
+      alert(
+        'Unable to share or copy the message. Please try again later.'
+      );
     }
   });
 }

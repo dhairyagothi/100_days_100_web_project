@@ -1,136 +1,122 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background: #f3f4f6;
-    font-family: Arial, sans-serif;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: 30px;
-}
-
-/* =========================
-   BLOG PAGE CONTAINER
-========================= */
-
 .blog-page {
     width: 100%;
     max-width: 900px;
-
-    background: white;
-
-    padding: 30px;
-
+    background: var(--bg-card);
+    padding: 40px;
     border-radius: 24px;
-
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    border: 1px solid var(--border-card);
+    box-shadow: var(--shadow-card);
+    margin: 40px auto;
 }
-
-/* =========================
-   BLOG IMAGE
-========================= */
 
 .blog-banner {
     width: 100%;
-    height: 320px;
-
+    height: 380px;
     object-fit: cover;
-
-    border-radius: 18px;
-
-    margin-bottom: 25px;
+    border-radius: 16px;
+    margin-bottom: 24px;
 }
-
-/* =========================
-   BLOG TITLE
-========================= */
 
 .blog-page h1 {
-    font-size: 48px;
-
-    color: #334155;
-
-    margin-bottom: 10px;
+    font-family: var(--font-heading);
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+    line-height: 1.25;
 }
-
-/* =========================
-   BLOG READING TIME
-========================= */
-
-.blog-reading-time {
-    color: #666;
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 16px;
-}
-
-/* =========================
-   AUTHOR + DATE
-========================= */
 
 .blog-author {
-    color: #475569;
-
-    margin-bottom: 30px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
 }
 
 .blog-author h3 {
-    font-size: 22px;
-
-    margin-bottom: 6px;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
 }
 
 .blog-date {
-    font-size: 15px;
-
-    color: #64748b;
+    font-size: 14px;
+    color: var(--text-secondary);
 }
 
-/* =========================
-   BLOG CONTENT
-========================= */
-
 .blog-content p {
-    font-size: 20px;
-
-    line-height: 1.9;
-
-    color: #1e293b;
-
-    margin-bottom: 22px;
-
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text-primary);
+    margin-bottom: 20px;
     text-align: justify;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
+.blog-content h1 {
+    font-family: var(--font-heading);
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-top: 32px;
+    margin-bottom: 12px;
+}
+
+.blog-content h3 {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 24px;
+    margin-bottom: 8px;
+}
+
+.blog-page-container {
+    padding: 0 24px;
+    min-height: calc(100vh - 140px);
+}
 
 @media (max-width: 768px) {
+    .blog-page {
+        padding: 24px;
+        margin: 20px auto;
+        border-radius: 16px;
+    }
+    .blog-banner {
+        height: 240px;
+        border-radius: 12px;
+    }
+    .blog-page h1 {
+        font-size: 28px;
+    }
+    .blog-content p {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
 
     body {
-        padding: 15px;
+        padding: 10px;
     }
 
     .blog-page {
-        padding: 20px;
+        padding: 16px;
+        border-radius: 16px;
     }
 
     .blog-banner {
-        height: 220px;
+        height: 180px;
+        border-radius: 12px;
     }
 
     .blog-page h1 {
-        font-size: 34px;
+        font-size: clamp(20px, 6vw, 28px);
     }
 
     .blog-content p {
-        font-size: 17px;
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .blog-author h3 {
+        font-size: 18px;
     }
 }

@@ -314,8 +314,8 @@ header {
 }
 
 @keyframes confettiFall {
-  0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  0%   { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(120vh) rotate(1080deg); opacity: 0; }
 }
 
 /* ── Buttons ──────────────────────────────────────────── */
@@ -502,7 +502,7 @@ header {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 90;
+  z-index: 999;
   overflow: hidden;
 }
 
@@ -512,7 +512,7 @@ header {
   height: 8px;
   border-radius: 2px;
   animation: confettiFall linear forwards;
-  opacity: 0;
+  opacity: 1;
 }
 
 /* ── Responsive ───────────────────────────────────────── */

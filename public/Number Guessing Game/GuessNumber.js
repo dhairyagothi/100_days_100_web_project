@@ -91,12 +91,13 @@ function newGame(){
 
 const toggleBtn = document.getElementById("theme-toggle");
 
-const savedTheme = localStorage.getItem("theme");
-
-if (savedTheme === "dark") {
-    document.body.classList.add("dark");
-    toggleBtn.textContent = "☀️";
+if (!localStorage.getItem("theme") && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    localStorage.setItem("theme", "dark");
 }
+if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark");
+}
+toggleBtn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
 
 toggleBtn.addEventListener("click", () => {
     document.body.classList.toggle("dark");
@@ -109,10 +110,3 @@ toggleBtn.addEventListener("click", () => {
         toggleBtn.textContent = "🌙";
     }
 });
-
-if (
-    !localStorage.getItem("theme") &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches
-) {
-    document.body.classList.add("dark");
-}

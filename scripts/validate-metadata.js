@@ -20,19 +20,19 @@ try {
   projects.forEach((project, index) => {
     const requiredKeys = ['projectNo', 'projectName', 'techStack', 'difficulty', 'projectPath'];
     
-    // 1. Validate required fields
+    // 1. Validate required fields presence
     requiredKeys.forEach(key => {
       if (project[key] === undefined || project[key] === null || project[key] === '') {
         errors.push(`Index ${index}: Missing or empty required field "${key}"`);
       }
     });
 
+    // 2. Validate field types and duplicate detection
     if (project.projectNo !== undefined && project.projectNo !== null) {
-      // Check projectNo type
       if (typeof project.projectNo !== 'number') {
         errors.push(`Index ${index}: "projectNo" must be a number, got "${typeof project.projectNo}"`);
       } else {
-        // 2. Detect duplicate projectNo values
+        // Detect duplicate projectNo values
         if (seenProjectNos.has(project.projectNo)) {
           errors.push(`Index ${index} (Day ${project.projectNo} - ${project.projectName || 'Unnamed'}): Duplicate projectNo "${project.projectNo}"`);
         } else {
@@ -41,30 +41,52 @@ try {
       }
     }
 
-    if (project.projectPath) {
-      // 3. Detect duplicate projectPath values
-      if (seenProjectPaths.has(project.projectPath)) {
-        errors.push(`Index ${index} (Day ${project.projectNo || 'Unknown'} - ${project.projectName || 'Unnamed'}): Duplicate projectPath "${project.projectPath}"`);
-      } else {
-        seenProjectPaths.add(project.projectPath);
+    if (project.projectName !== undefined && project.projectName !== null && project.projectName !== '') {
+      if (typeof project.projectName !== 'string') {
+        errors.push(`Index ${index}: "projectName" must be a string, got "${typeof project.projectName}"`);
       }
+    }
 
-      // 4. Validate local path existence (or allow external URLs)
-      const isExternalUrl = project.projectPath.startsWith('http://') || project.projectPath.startsWith('https://');
-      if (!isExternalUrl) {
-        let relPath = project.projectPath;
-        // Strip query parameters and hashes
-        relPath = relPath.split('?')[0].split('#')[0];
-        // Decode URI encoded components (e.g. %20 -> space)
-        try {
-          relPath = decodeURIComponent(relPath);
-        } catch (e) {
-          errors.push(`Index ${index}: Failed to decode URI component for projectPath "${relPath}"`);
+    if (project.techStack !== undefined && project.techStack !== null) {
+      if (!Array.isArray(project.techStack)) {
+        errors.push(`Index ${index}: "techStack" must be an array, got "${typeof project.techStack}"`);
+      }
+    }
+
+    if (project.difficulty !== undefined && project.difficulty !== null && project.difficulty !== '') {
+      if (typeof project.difficulty !== 'string') {
+        errors.push(`Index ${index}: "difficulty" must be a string, got "${typeof project.difficulty}"`);
+      }
+    }
+
+    if (project.projectPath !== undefined && project.projectPath !== null && project.projectPath !== '') {
+      if (typeof project.projectPath !== 'string') {
+        errors.push(`Index ${index}: "projectPath" must be a string, got "${typeof project.projectPath}"`);
+      } else {
+        // Detect duplicate projectPath values
+        if (seenProjectPaths.has(project.projectPath)) {
+          errors.push(`Index ${index} (Day ${project.projectNo || 'Unknown'} - ${project.projectName || 'Unnamed'}): Duplicate projectPath "${project.projectPath}"`);
+        } else {
+          seenProjectPaths.add(project.projectPath);
         }
 
-        const resolvedPath = path.resolve(rootDir, relPath);
-        if (!fs.existsSync(resolvedPath)) {
-          errors.push(`Index ${index} (Day ${project.projectNo || 'Unknown'} - ${project.projectName || 'Unnamed'}): Local path "${relPath}" does not exist in the repository`);
+        // Validate local path existence (or allow external URLs)
+        const isExternalUrl = project.projectPath.startsWith('http://') || project.projectPath.startsWith('https://');
+        if (!isExternalUrl) {
+          let relPath = project.projectPath;
+          // Strip query parameters and hashes
+          relPath = relPath.split('?')[0].split('#')[0];
+          // Decode URI encoded components (e.g. %20 -> space)
+          try {
+            relPath = decodeURIComponent(relPath);
+          } catch (e) {
+            errors.push(`Index ${index}: Failed to decode URI component for projectPath "${relPath}"`);
+          }
+
+          const resolvedPath = path.resolve(rootDir, relPath);
+          if (!fs.existsSync(resolvedPath)) {
+            errors.push(`Index ${index} (Day ${project.projectNo || 'Unknown'} - ${project.projectName || 'Unnamed'}): Local path "${relPath}" does not exist in the repository`);
+          }
         }
       }
     }
@@ -83,3 +105,4 @@ try {
   console.error('Validation failed with unexpected error:', error.message);
   process.exit(1);
 }
+

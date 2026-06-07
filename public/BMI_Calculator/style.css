@@ -1,187 +1,621 @@
+/* =========================================================
+   RESET
+========================================================= */
+
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Montserrat',sans-serif;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
 }
 
 body{
-    min-height:100vh;
-    transition:.5s;
-    color:white;
+  font-family:'Inter',sans-serif;
+  min-height:100vh;
+  color:#fff;
+  overflow-x:hidden;
+  transition:0.4s ease;
 }
 
-/* THEMES */
+/* =========================================================
+   THEMES
+========================================================= */
 
 .theme-purple{
-    background:linear-gradient(135deg,#141e30,#243b55);
+  --primary:#9b5cff;
+  --secondary:#6f3dff;
+  --bg1:#0f0c29;
+  --bg2:#302b63;
+  --bg3:#24243e;
+  background:linear-gradient(
+    135deg,
+    var(--bg1),
+    var(--bg2),
+    var(--bg3)
+  );
 }
 
 .theme-blue{
-    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  --primary:#4da3ff;
+  --secondary:#0066ff;
+  --bg1:#0f2027;
+  --bg2:#203a43;
+  --bg3:#2c5364;
+  background:linear-gradient(
+    135deg,
+    var(--bg1),
+    var(--bg2),
+    var(--bg3)
+  );
 }
 
 .theme-green{
-    background:linear-gradient(135deg,#134e5e,#71b280);
+  --primary:#35d07f;
+  --secondary:#159957;
+  --bg1:#134e5e;
+  --bg2:#1d976c;
+  --bg3:#71b280;
+  background:linear-gradient(
+    135deg,
+    var(--bg1),
+    var(--bg2),
+    var(--bg3)
+  );
 }
 
 .theme-orange{
-    background:linear-gradient(135deg,#ff512f,#dd2476);
+  --primary:#ff9800;
+  --secondary:#ff5722;
+  --bg1:#42275a;
+  --bg2:#734b6d;
+  --bg3:#ff512f;
+  background:linear-gradient(
+    135deg,
+    var(--bg1),
+    var(--bg2),
+    var(--bg3)
+  );
 }
 
-/* THEME BUTTONS */
+/* =========================================================
+   GLASS EFFECT
+========================================================= */
+
+.glass{
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.12);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.25);
+}
+
+/* =========================================================
+   THEME SWITCHER
+========================================================= */
 
 .theme-switcher{
-    position:fixed;
-    top:20px;
-    right:20px;
-    display:flex;
-    gap:10px;
+  position:fixed;
+  top:24px;
+  right:24px;
+  display:flex;
+  gap:12px;
+  z-index:1000;
 }
 
 .theme-btn{
-    width:25px;
-    height:25px;
-    border:none;
-    border-radius:50%;
-    cursor:pointer;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  border:2px solid rgba(255,255,255,0.7);
+  cursor:pointer;
+  transition:0.25s ease;
 }
 
-.purple{background:#9b59b6;}
-.blue{background:#3498db;}
-.green{background:#2ecc71;}
-.orange{background:#ff9800;}
+.theme-btn:hover{
+  transform:scale(1.15);
+}
 
-/* LAYOUT */
+.theme-btn.purple{
+  background:#9b5cff;
+}
+
+.theme-btn.blue{
+  background:#4da3ff;
+}
+
+.theme-btn.green{
+  background:#35d07f;
+}
+
+.theme-btn.orange{
+  background:#ff9800;
+}
+
+/* =========================================================
+   MAIN LAYOUT
+========================================================= */
 
 .container{
-    width:90%;
-    margin:auto;
-    padding:50px 0;
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:30px;
+  width:min(1200px,92%);
+  margin:auto;
+  padding:100px 0 40px;
+  display:grid;
+  grid-template-columns:1.1fr 0.9fr;
+  gap:30px;
+  align-items:start;
 }
 
-/* LEFT */
+/* =========================================================
+   CARDS
+========================================================= */
+
+.calculator-card,
+.recommendation-box,
+.chart-section,
+.range-section{
+  border-radius:28px;
+}
 
 .calculator-card{
-    background:rgba(255,255,255,.08);
-    padding:30px;
-    border-radius:20px;
-    backdrop-filter:blur(15px);
+  padding:35px;
 }
 
-.calculator-card h1{
-    text-align:center;
-    margin-bottom:30px;
+.card-header h1{
+  font-size:2.2rem;
+  font-weight:800;
+  margin-bottom:12px;
+  line-height:1.2;
+}
+
+.card-header p{
+  color:rgba(255,255,255,0.75);
+  font-size:0.98rem;
+  line-height:1.7;
+  margin-bottom:32px;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
 }
 
 .input-group{
-    margin-bottom:20px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 }
 
 .input-group label{
-    display:block;
-    margin-bottom:10px;
+  font-size:0.95rem;
+  font-weight:600;
+  color:rgba(255,255,255,0.9);
 }
 
-.input-group input{
-    width:100%;
-    padding:15px;
-    border:none;
-    border-radius:10px;
+.input-group input,
+.input-group select{
+  width:100%;
+  border:none;
+  outline:none;
+  border-radius:16px;
+  padding:15px 16px;
+  background:rgba(255,255,255,0.12);
+  color:#fff;
+  font-size:1rem;
+  transition:0.3s ease;
 }
 
-#calculateBtn{
-    width:100%;
-    padding:15px;
-    border:none;
-    border-radius:10px;
-    font-size:18px;
-    cursor:pointer;
+.input-group input::placeholder{
+  color:rgba(255,255,255,0.55);
 }
 
-/* GAUGE */
+.input-group input:focus,
+.input-group select:focus{
+  background:rgba(255,255,255,0.18);
+  box-shadow:0 0 0 3px rgba(255,255,255,0.12);
+}
+
+.input-wrapper{
+  display:flex;
+  gap:10px;
+}
+
+.input-wrapper select{
+  width:90px;
+  cursor:pointer;
+}
+
+/* =========================================================
+   ERROR BOX
+========================================================= */
+
+.error-box{
+  margin-top:20px;
+  background:rgba(255,80,80,0.15);
+  border:1px solid rgba(255,80,80,0.3);
+  padding:14px;
+  border-radius:16px;
+  color:#ffb3b3;
+  font-size:0.95rem;
+}
+
+.hidden{
+  display:none;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.button-group{
+  margin-top:28px;
+  display:flex;
+  gap:15px;
+}
+
+.primary-btn,
+.secondary-btn{
+  flex:1;
+  border:none;
+  border-radius:16px;
+  padding:16px;
+  font-size:1rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:0.25s ease;
+}
+
+.primary-btn{
+  background:linear-gradient(
+    135deg,
+    var(--primary),
+    var(--secondary)
+  );
+  color:#fff;
+}
+
+.primary-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 12px 25px rgba(0,0,0,0.3);
+}
+
+.secondary-btn{
+  background:rgba(255,255,255,0.12);
+  color:#fff;
+}
+
+.secondary-btn:hover{
+  background:rgba(255,255,255,0.18);
+}
+
+/* =========================================================
+   RESULT CARD
+========================================================= */
+
+.result-card{
+  margin-top:35px;
+  padding:30px;
+  border-radius:24px;
+  animation:fadeIn 0.4s ease;
+}
+
+.gauge-section{
+  display:flex;
+  justify-content:center;
+}
 
 .gauge-container{
-    display:flex;
-    justify-content:center;
-    margin:30px 0;
+  position:relative;
 }
 
 .gauge{
-    width:220px;
-    height:220px;
-    border-radius:50%;
-    background:conic-gradient(
-        #00ff88 0deg,
-        rgba(255,255,255,.2) 0deg
+  width:240px;
+  height:240px;
+  border-radius:50%;
+  background:
+    conic-gradient(
+      var(--primary) 0deg,
+      rgba(255,255,255,0.1) 0deg
     );
-    display:flex;
-    justify-content:center;
-    align-items:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:0.5s ease;
 }
 
 .gauge-cover{
-    width:160px;
-    height:160px;
-    background:#111827;
-    border-radius:50%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:40px;
-    font-weight:bold;
+  width:175px;
+  height:175px;
+  border-radius:50%;
+  background:rgba(18,18,30,0.95);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  box-shadow:
+    inset 0 0 25px rgba(255,255,255,0.05);
 }
 
-/* RIGHT */
+.gauge-cover span{
+  font-size:3rem;
+  font-weight:800;
+}
+
+.gauge-cover small{
+  font-size:0.95rem;
+  opacity:0.7;
+}
+
+/* =========================================================
+   RESULT DETAILS
+========================================================= */
+
+.result-details{
+  margin-top:30px;
+  text-align:center;
+}
+
+.category-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px 18px;
+  border-radius:999px;
+  font-size:0.9rem;
+  font-weight:700;
+  margin-bottom:16px;
+  background:rgba(255,255,255,0.12);
+}
+
+.result-details h2{
+  font-size:2rem;
+  margin-bottom:12px;
+}
+
+.result-details p{
+  color:rgba(255,255,255,0.75);
+  line-height:1.7;
+}
+
+/* =========================================================
+   RIGHT PANEL
+========================================================= */
 
 .recommendation-card{
-    display:grid;
-    gap:20px;
+  display:grid;
+  gap:20px;
 }
 
 .recommendation-box{
-    background:rgba(255,255,255,.08);
-    padding:20px;
-    border-radius:15px;
-    backdrop-filter:blur(15px);
+  padding:24px;
+  transition:0.3s ease;
+}
+
+.recommendation-box:hover{
+  transform:translateY(-4px);
+}
+
+.box-header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:16px;
+}
+
+.box-header span{
+  font-size:1.4rem;
+}
+
+.box-header h3{
+  font-size:1.05rem;
+  font-weight:700;
+}
+
+.recommendation-box p{
+  font-size:1.1rem;
+  font-weight:600;
+  color:rgba(255,255,255,0.9);
 }
 
 .recommendation-box ul{
-    padding-left:20px;
+  padding-left:18px;
+  margin-top:10px;
 }
 
 .recommendation-box li{
-    margin-bottom:8px;
+  margin-bottom:10px;
+  color:rgba(255,255,255,0.82);
+  line-height:1.6;
 }
 
-/* CHART */
+/* =========================================================
+   SECTION STYLES
+========================================================= */
 
+.range-section,
 .chart-section{
-    width:90%;
-    margin:20px auto 50px;
-    background:rgba(255,255,255,.08);
-    padding:30px;
-    border-radius:20px;
+  width:min(1200px,92%);
+  margin:0 auto 35px;
+  padding:32px;
 }
 
-.chart-section h2{
-    text-align:center;
-    margin-bottom:20px;
+.section-header{
+  margin-bottom:25px;
+}
+
+.section-header h2{
+  font-size:1.8rem;
+  font-weight:800;
+}
+
+/* =========================================================
+   BMI TABLE
+========================================================= */
+
+.bmi-table-wrapper{
+  overflow-x:auto;
+}
+
+.bmi-table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.bmi-table th{
+  text-align:left;
+  padding:16px;
+  background:rgba(255,255,255,0.12);
+  font-size:1rem;
+}
+
+.bmi-table td{
+  padding:16px;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  color:rgba(255,255,255,0.85);
+}
+
+.bmi-table tr:hover{
+  background:rgba(255,255,255,0.06);
+}
+
+.active-row{
+  background:rgba(255,255,255,0.15) !important;
+  border-left:4px solid var(--primary);
+}
+
+/* =========================================================
+   CHART
+========================================================= */
+
+.chart-wrapper{
+  width:100%;
+  height:420px;
 }
 
 canvas{
-    background:white;
-    border-radius:10px;
-    padding:10px;
+  width:100% !important;
+  height:100% !important;
+  background:#fff;
+  border-radius:18px;
+  padding:18px;
 }
 
-@media(max-width:900px){
+/* =========================================================
+   FOOTER
+========================================================= */
 
-.container{
+.footer{
+  text-align:center;
+  padding:25px;
+  color:rgba(255,255,255,0.7);
+  font-size:0.95rem;
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes fadeIn{
+
+  from{
+    opacity:0;
+    transform:translateY(10px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1000px){
+
+  .container{
     grid-template-columns:1fr;
+  }
+
 }
+
+@media(max-width:700px){
+
+  .container{
+    width:94%;
+    padding-top:90px;
+  }
+
+  .calculator-card{
+    padding:24px;
+  }
+
+  .card-header h1{
+    font-size:1.8rem;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .button-group{
+    flex-direction:column;
+  }
+
+  .gauge{
+    width:200px;
+    height:200px;
+  }
+
+  .gauge-cover{
+    width:145px;
+    height:145px;
+  }
+
+  .gauge-cover span{
+    font-size:2.3rem;
+  }
+
+  .section-header h2{
+    font-size:1.5rem;
+  }
+
+  .chart-wrapper{
+    height:320px;
+  }
+
+}
+
+@media(max-width:500px){
+
+  .theme-switcher{
+    top:14px;
+    right:14px;
+  }
+
+  .theme-btn{
+    width:18px;
+    height:18px;
+  }
+
+  .range-section,
+  .chart-section{
+    padding:22px;
+  }
+
+  .recommendation-box{
+    padding:20px;
+  }
 
 }

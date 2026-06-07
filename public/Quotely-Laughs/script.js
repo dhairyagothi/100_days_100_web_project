@@ -1,3 +1,38 @@
+const personalizedContent = {
+  coding: {
+    quote: [
+      "Code is like humor. When you have to explain it, it's bad.",
+      "First solve the problem, then write the code."
+    ],
+    joke: [
+      "Why do programmers prefer dark mode? Because light attracts bugs!",
+      "A programmer's wife tells him: Go to the store and buy a loaf of bread. If they have eggs, buy a dozen. He comes home with 12 loaves."
+    ]
+  },
+
+  college: {
+    quote: [
+      "College is the place where dreams begin to take shape.",
+      "Learning never exhausts the mind."
+    ],
+    joke: [
+      "I studied all night for the exam. The exam studied something else.",
+      "My attendance and my grades are playing hide and seek."
+    ]
+  },
+
+  exams: {
+    quote: [
+      "Success is the sum of small efforts repeated every day.",
+      "Preparation is the key to confidence."
+    ],
+    joke: [
+      "My exam paper and I had a lot in common. We were both blank.",
+      "Exams are temporary, screenshots are forever."
+    ]
+  }
+};
+
 document.getElementById("generate").addEventListener("click", generateContent);
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -6,14 +41,60 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function generateContent() {
   showLoading();
-  const quote = await getRandomQuote();
-  const joke = await getRandomJoke();
+    const keyword = document
+      .getElementById("keyword")
+      .value
+      .trim()
+      .toLowerCase();
+
+    let quote;
+    let joke;
+
+    if (personalizedContent[keyword]) {
+      const data = personalizedContent[keyword];
+
+      quote =
+        data.quote[Math.floor(Math.random() * data.quote.length)];
+
+      joke =
+        data.joke[Math.floor(Math.random() * data.joke.length)];
+
+    }
+    else if (keyword) {
+      quote = generatePersonalizedQuote(keyword);
+      joke = generatePersonalizedJoke(keyword);
+    } else {
+      quote = await getRandomQuote();
+      joke = await getRandomJoke();
+    }
   hideLoading();
 
   document.getElementById("quote").innerText = quote;
   document.getElementById("joke").innerText = joke;
 
   updateShareLinks(quote, joke);
+}
+
+function generatePersonalizedQuote(topic) {
+  const templates = [
+    `Success in ${topic} comes from dedication and consistency.`,
+    `Every expert in ${topic} was once a beginner.`,
+    `Great achievements in ${topic} start with small daily efforts.`,
+    `Passion and persistence are the keys to excelling in ${topic}.`
+  ];
+
+  return templates[Math.floor(Math.random() * templates.length)];
+}
+
+function generatePersonalizedJoke(topic) {
+  const templates = [
+    `Why did the ${topic} enthusiast bring a ladder? To reach the next level!`,
+    `What's the secret to mastering ${topic}? Pretend you know what you're doing until it works!`,
+    `Why is ${topic} so relaxing? Because all the problems belong to someone else!`,
+    `I tried becoming an expert in ${topic}, but ${topic} had other plans.`
+  ];
+
+  return templates[Math.floor(Math.random() * templates.length)];
 }
 
 const themeToggle = document.getElementById("theme-toggle");
