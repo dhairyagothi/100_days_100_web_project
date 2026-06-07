@@ -71,6 +71,8 @@ function getCategoryFromTags(tags, name) {
 }
 
 let PROJECTS = [];
+let PROJECTS_BY_NAME = new Map();
+let PROJECTS_BY_DAY = new Map();
 let projectsPromise = null;
 
 function hydrateProjects(data) {
@@ -82,6 +84,8 @@ function hydrateProjects(data) {
     difficulty: project.difficulty,
     projectDesc: project.projectDesc,
   }));
+  PROJECTS_BY_NAME = new Map(PROJECTS.map(p => [p.projectName, p]));
+  PROJECTS_BY_DAY = new Map(PROJECTS.map(p => [p.day, p]));
 }
 
 function getPreloadedProjectsData() {
@@ -340,7 +344,7 @@ function buildProjectCardHTML({
     .map((t) => `<span class="tag">${escapeHTML(t)}</span>`)
     .join("");
 
-  const project = PROJECTS.find((p) => p.projectName === name || p.day === day);
+  const project = PROJECTS_BY_NAME.get(name) || PROJECTS_BY_DAY.get(day);
 
   // SECURITY: description, day, name and category are all escaped before
   // being written into innerHTML.
@@ -389,7 +393,7 @@ return {
             </div>
 
             <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
-                <img src="./${url && url.startsWith('./') ? url.split('/')[2] : name.replace(/\s+/g, '_')}/preview.png" alt="${name} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
+                <img src="./${url && url.startsWith('./') ? url.split('/')[2] : name.replace(/\s+/g, '_')}/preview.png" alt="${safeName} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
 
             <h3 class="card-name">${safeName}</h3>
@@ -938,6 +942,10 @@ function renderGrid() {
   const pageItems = filtered.slice(startIndex, endIndex);
   const fragment = document.createDocumentFragment();
 
+  const bookmarkedDays = new Set(
+    bookmarkedProjects.map((item) => normalizeProjectEntry(item).day),
+  );
+
   pageItems.forEach((project) => {
     const day = project.day;
     const name = project.projectName;
@@ -947,9 +955,7 @@ function renderGrid() {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement("div");
 
-    const isBookmarked = bookmarkedProjects.some(
-      (item) => normalizeProjectEntry(item).day === day,
-    );
+    const isBookmarked = bookmarkedDays.has(day);
 
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,

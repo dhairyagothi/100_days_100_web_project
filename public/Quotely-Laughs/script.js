@@ -77,10 +77,11 @@ async function generateContent() {
 
 function generatePersonalizedQuote(topic) {
   const templates = [
-    `Success in ${topic} comes from dedication and consistency.`,
-    `Every expert in ${topic} was once a beginner.`,
-    `Great achievements in ${topic} start with small daily efforts.`,
-    `Passion and persistence are the keys to excelling in ${topic}.`
+    `The journey of mastering ${topic} begins with a single step.`,
+    `Dedication to ${topic} is what separates the good from the great.`,
+    `Those who pursue ${topic} with passion will always find a way.`,
+    `Growth in ${topic} comes from embracing both success and failure.`,
+    `The more you invest in ${topic}, the more it gives back to you.`
   ];
 
   return templates[Math.floor(Math.random() * templates.length)];
@@ -88,10 +89,10 @@ function generatePersonalizedQuote(topic) {
 
 function generatePersonalizedJoke(topic) {
   const templates = [
-    `Why did the ${topic} enthusiast bring a ladder? To reach the next level!`,
-    `What's the secret to mastering ${topic}? Pretend you know what you're doing until it works!`,
-    `Why is ${topic} so relaxing? Because all the problems belong to someone else!`,
-    `I tried becoming an expert in ${topic}, but ${topic} had other plans.`
+    `Why did the ${topic} fan stay up all night? To get to the next level!`,
+    `Me before learning about ${topic}: I know everything. Me after: I know nothing.`,
+    `My relationship with ${topic} — complicated, but we make it work.`,
+    `I told my friend I was getting serious about ${topic}. They said, "Good luck, it's a full-time job."`
   ];
 
   return templates[Math.floor(Math.random() * templates.length)];
@@ -161,9 +162,9 @@ async function getRandomJoke() {
   }
 
   const fallbackJokes = [
-    "Why don’t scientists trust atoms? Because they make up everything!",
+    "Why don't scientists trust atoms? Because they make up everything!",
     "I told my wife she was drawing her eyebrows too high. She looked surprised.",
-    "Why don’t skeletons fight each other? They don’t have the guts.",
+    "Why don't skeletons fight each other? They don't have the guts.",
     "What do you call fake spaghetti? An impasta.",
   ];
   return fallbackJokes[Math.floor(Math.random() * fallbackJokes.length)];
