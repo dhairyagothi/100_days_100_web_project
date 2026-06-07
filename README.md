@@ -25,9 +25,29 @@
 [![oosmetrics](https://api.oosmetrics.com/api/v1/badge/achievement/504bb60b-df6f-4e90-94f7-123a64ba852d.svg)](https://oosmetrics.com/repo/dhairyagothi/100_days_100_web_project)
 </div>
 
+
+## Table of Contents
+
+- [🚀 100 Days 100 Web Projects](#-100-days-100-web-projects)
+- [🌟 About This Project](#-about-this-project)
+- [🚀 Live Demo](#-live-demo)
+- [📚 All Projects (205 Total)](#-all-projects-205-total)
+- [Getting Started](#getting-started)
+- [🚀 Quick Start](#-quick-start)
+- [🧩 Project Structure](#-project-structure)
+- [🤝 Contributing](#-contributing)
+- [🌐 Browser Compatibility](#-browser-compatibility)
+- [🎯 Learning Path](#-learning-path)
+- [🛠️ Technologies Used](#%EF%B8%8F-technologies-used)
+- [📞 Support & Community](#-support--community)
+- [📊 Repository Stats](#-repository-stats)
+- [⭐ Show Your Support](#-show-your-support)
+- [🏆 Contributors](#-contributors)
+
+
 ## 🌟 About This Project
 
-Welcome to **100 Days 100 Web Projects**! This is a comprehensive collection of **205+ web development projects** built using HTML, CSS, JavaScript, React, Node.js, and more.
+Welcome to **100 Days 100 Web Projects**! This is a comprehensive collection of **218+ web development projects** built using HTML, CSS, JavaScript, React, Node.js, and more.
 
 
 ### 🎯 What You'll Find Here:
@@ -60,7 +80,7 @@ The website features:
 - Beautiful dark/light theme toggle
 - Responsive design for all devices
 
-## 📚 All Projects (205 Total)
+## 📚 All Projects (218 Total)
 
 <div align="center">
 
@@ -353,7 +373,7 @@ The easiest way to explore all projects is through our **live website**:
 │   ├── TO_DO_LIST/       # Day 1: Todo List
 │   ├── digital_clock/    # Day 2: Digital Clock
 │   ├── snake_game/       # Day 29: Snake Game
-│   └── ...               # 205+ projects
+│   └── ...               # 218+ projects
 ├── contributors/          # Contributors page
 ├── vercel.json           # Deployment configuration
 └── README.md             # You are here!
@@ -456,7 +476,7 @@ For developers with some experience:
 - Complex animations
 - Interactive games and applications
 
-### 🔥 Advanced Projects (Days 71-205)
+### 🔥 Advanced Projects (Days 71-218)
 Challenging projects for experienced developers:
 - Full-stack applications
 - Complex algorithms
