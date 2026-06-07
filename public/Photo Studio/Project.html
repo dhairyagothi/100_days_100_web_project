@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Studio - Photography Portfolio</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; }
+    .hero { background: linear-gradient(135deg, #1a1a2e, #16213e); color: #fff; text-align: center; padding: 100px 20px; }
+    .hero h1 { font-size: 3rem; margin-bottom: 10px; }
+    .hero p { font-size: 1.2rem; opacity: 0.9; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    .gallery { padding: 60px 0; }
+    .gallery h2 { text-align: center; font-size: 2rem; margin-bottom: 40px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .card { background: #f5f5f5; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .card-img { width: 100%; height: 250px; background: #ddd; display: flex; align-items: center; justify-content: center; font-size: 1rem; color: #999; }
+    .card-body { padding: 20px; }
+    .card-body h3 { margin-bottom: 8px; }
+    .card-body p { color: #666; font-size: 0.9rem; }
+    .about { padding: 60px 0; background: #f9f9f9; }
+    .about h2 { text-align: center; font-size: 2rem; margin-bottom: 20px; }
+    .about p { max-width: 800px; margin: 0 auto; text-align: center; color: #555; }
+    .stats { display: flex; justify-content: center; gap: 60px; margin-top: 40px; flex-wrap: wrap; }
+    .stat { text-align: center; }
+    .stat-num { font-size: 2.5rem; font-weight: bold; color: #1a1a2e; }
+    .stat-label { color: #666; font-size: 0.9rem; }
+    .contact { padding: 60px 0; }
+    .contact h2 { text-align: center; font-size: 2rem; margin-bottom: 30px; }
+    .contact form { max-width: 500px; margin: 0 auto; }
+    .contact input, .contact textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; }
+    .contact textarea { height: 120px; resize: vertical; }
+    .contact button { background: #1a1a2e; color: #fff; border: none; padding: 12px 30px; font-size: 1rem; border-radius: 4px; cursor: pointer; width: 100%; }
+    .contact button:hover { background: #16213e; }
+    footer { background: #1a1a2e; color: #fff; text-align: center; padding: 20px; font-size: 0.9rem; }
+    @media (max-width: 768px) { .hero h1 { font-size: 2rem; } .stats { gap: 30px; } }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <h1>Photo Studio</h1>
+    <p>Capturing moments that last forever</p>
+  </section>
+  <section class="gallery">
+    <div class="container">
+      <h2>Our Gallery</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="card-img">Nature Photography</div>
+          <div class="card-body"><h3>Golden Hour</h3><p>Beautiful sunset captured at the perfect moment</p></div>
+        </div>
+        <div class="card">
+          <div class="card-img">Portrait Session</div>
+          <div class="card-body"><h3>Elegance</h3><p>Studio portrait with natural lighting</p></div>
+        </div>
+        <div class="card">
+          <div class="card-img">Landscape</div>
+          <div class="card-body"><h3>Mountain View</h3><p>Breathtaking landscape photography</p></div>
+        </div>
+        <div class="card">
+          <div class="card-img">Street Photography</div>
+          <div class="card-body"><h3>Urban Life</h3><p>Candid moments from city streets</p></div>
+        </div>
+        <div class="card">
+          <div class="card-img">Macro</div>
+          <div class="card-body"><h3>Little Details</h3><p>Close-up photography revealing hidden beauty</p></div>
+        </div>
+        <div class="card">
+          <div class="card-img">Event</div>
+          <div class="card-body"><h3>Celebration</h3><p>Wedding and event photography</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="about">
+    <div class="container">
+      <h2>About Us</h2>
+      <p>We are a team of passionate photographers dedicated to capturing life's most precious moments. With years of experience in portrait, landscape, and event photography, we bring creativity and professionalism to every shoot.</p>
+      <div class="stats">
+        <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Projects</div></div>
+        <div class="stat"><div class="stat-num">12+</div><div class="stat-label">Years Experience</div></div>
+        <div class="stat"><div class="stat-num">98%</div><div class="stat-label">Happy Clients</div></div>
+      </div>
+    </div>
+  </section>
+  <section class="contact">
+    <div class="container">
+      <h2>Get in Touch</h2>
+      <form>
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="Tell us about your project" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+  </section>
+  <footer>&copy; 2024 Photo Studio. All rights reserved.</footer>
+</body>
+</html>
