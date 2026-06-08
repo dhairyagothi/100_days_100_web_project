@@ -8,15 +8,64 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-  :root{
-    --bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--border:rgba(255,255,255,.07);
-    --accent:#0ff2c8;--accent2:#7c3aed;--accent3:#f59e0b;--text:#e2e8f0;--muted:#64748b;
-    --font-head:'Orbitron',sans-serif;--font-body:'Exo 2',sans-serif;--radius:16px;
-    --glow:0 0 32px rgba(15,242,200,.18);
-  }
+  :root {
+    --bg-primary: #020617;
+    --bg-secondary: #0f172a;
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+    --card-bg: #111827;
+     --bg:#020617;
+  --surface:#111827;
+  --surface2:#1a1a26;
+  --border:rgba(255,255,255,.07);
+
+  --accent:#0ff2c8;
+  --accent2:#7c3aed;
+  --accent3:#f59e0b;
+
+  --text:#e2e8f0;
+  --muted:#64748b;
+
+  --font-head:'Orbitron',sans-serif;
+  --font-body:'Exo 2',sans-serif;
+
+  --radius:16px;
+  --glow:0 32px 60px rgba(15,242,200,.18);
+}
+
+body.light-theme {
+    --bg-primary: #f8fafc;
+    --bg-secondary: #ffffff;
+    --text-primary: #111827;
+    --text-secondary: #475569;
+    --card-bg: #ffffff;
+}
+
+body.light-theme {
+  --bg: #eef2f7;
+  --surface: #ffffff;
+  --surface2: #f8fafc;
+}
+
+.theme-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,.15);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.theme-btn:hover {
+    background: rgba(255,255,255,0.1);
+}
+
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap');
   *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;overflow-x:hidden}
+  .stat-card {
+    background: var(--card-bg);
+}
+  body{background: var(--bg-primary); color: var(--text-primary);;font-family:var(--font-body);min-height:100vh;overflow-x:hidden}
   .navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:64px;background:rgba(10,10,15,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
   .navbar-brand{display:flex;align-items:center;gap:12px;text-decoration:none}
   .navbar-brand span{font-family:var(--font-head);font-size:.75rem;letter-spacing:.12em;color:var(--accent);text-shadow:0 0 12px var(--accent)}
@@ -68,6 +117,7 @@
     <span>100 DAYS · 100 PROJECTS</span>
   </a>
   <div class="nav-actions">
+    <button id="themeToggle" class="theme-btn">☀️ Light</button>
     <a class="nav-btn" href="./index.html"><i class="fa-solid fa-house"></i> Home</a>
     <a class="nav-btn active" href="./stats.html"><i class="fa-solid fa-chart-line"></i> Stats</a>
   </div>
@@ -314,5 +364,37 @@ async function load(){
 load();
 setInterval(load, REFRESH_MS);
 </script>
+<script>
+const toggleBtn = document.getElementById("themeToggle");
+
+function applyTheme(theme) {
+    document.body.classList.toggle(
+        "light-theme",
+        theme === "light"
+    );
+
+    toggleBtn.textContent =
+        theme === "light"
+            ? "🌙 Dark"
+            : "☀️ Light";
+
+    localStorage.setItem("stats-theme", theme);
+}
+
+const savedTheme =
+    localStorage.getItem("stats-theme") || "dark";
+
+applyTheme(savedTheme);
+
+toggleBtn.addEventListener("click", () => {
+    const current =
+        document.body.classList.contains("light-theme")
+            ? "light"
+            : "dark";
+
+    applyTheme(current === "light" ? "dark" : "light");
+});
+</script>
+
 </body>
 </html>

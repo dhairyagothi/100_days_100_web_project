@@ -5,11 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Text & Voice Converter</title>
     <link rel="stylesheet" href="styles.css" />
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text & Voice Converter</title>
-
-    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -29,25 +24,6 @@
             <option value="hi-IN">Hindi</option>
             <option value="es-ES">Spanish</option>
         </select>
-<button id="theme-toggle" class="theme-btn">
-    🌙
-</button>
-
-<div class="wrapper">
-
-    <!-- TEXT TO SPEECH -->
-
-    <div class="container">
-
-        <h1>🔊 Text to Voice Converter</h1>
-
-        <label>Select Language</label>
-
-        <select id="tts-language"></select>
-
-        <label>Select Voice</label>
-
-        <select id="voice-select"></select>
 
         <textarea
             id="text-input"
@@ -59,30 +35,7 @@
             <button id="stop-btn-text" class="stop-btn" disabled>
                 Stop
             </button>
-        <p id="char-count">
-            Characters: 0
-        </p>
-
-        <div class="btn-group">
-            <button id="convert-btn">
-                Convert to Speech
-            </button>
-
-            <button
-                id="stop-btn-text"
-                class="stop-btn"
-                disabled
-            >
-                Stop
-            </button>
-
-            <button id="clear-text">
-                Clear
-            </button>
         </div>
-
-        <div id="speaking-status"></div>
-
     </div>
 
     <!-- Voice to Text -->
@@ -109,55 +62,6 @@
             id="output"
             placeholder="Your speech will appear here..."
         ></textarea>
-    <!-- VOICE TO TEXT -->
-
-    <div class="container">
-
-        <h1>🎤 Voice to Text Converter</h1>
-
-        <label>Select Language</label>
-
-        <select id="stt-language"></select>
-
-        <div class="btn-group">
-
-            <button id="start-btn">
-                Speak
-            </button>
-
-            <button
-                id="stop-btn-voice"
-                class="stop-btn"
-                disabled
-            >
-                Stop
-            </button>
-
-        </div>
-
-        <div id="listening-status"></div>
-
-        <textarea
-            id="output"
-            placeholder="Your speech will appear here..."
-        ></textarea>
-
-        <div class="btn-group">
-
-            <button id="copy-btn">
-                Copy
-            </button>
-
-            <button id="download-btn">
-                Download
-            </button>
-
-            <button id="clear-output">
-                Clear
-            </button>
-
-        </div>
-
     </div>
 
 </div>
