@@ -1,17 +1,20 @@
-from flask import Flask, render_template, redirect, url_for, request, flash, session
+ from flask import Flask, render_template, redirect, url_for, request, flash, session
+  flask import Flask, render_template, redirect, url_for, request, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
+import os
 import re
 import difflib
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "your_secret_key"
+app.config["SECRET_KEY"] = os.environ.get("FLASK_SECRET_KEY", os.urandom(24).hex())
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///contacts.db"
 db = SQLAlchemy(app)
 
 
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Colufrommn(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
 
@@ -22,6 +25,7 @@ class Contact(db.Model):
     email = db.Column(db.String(150), nullable=False)
     phone = db.Column(db.String(50), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 
 # Helper functions for duplicate detection
@@ -185,8 +189,37 @@ def register():
 def dashboard():
     if "user_id" not in session:
         return redirect(url_for("login"))
+
     user_id = session["user_id"]
+    sort_order = request.args.get("sort", "asc")
+
+    if sort_order == "desc":
+        contacts = Contact.query.filter_by(user_id=user_id).order_by(
+            Contact.name.desc()
+        ).all()
+    else:
+        contacts = Contact.query.filter_by(user_id=user_id).order_by(
+            Contact.name.asc()
+        ).all()
+if sort_order == "desc":
+    contacts = Contact.query.filter_by(user_id=user_id).order_by(Contact.name.desc()).all()
+else:
+    contacts = Contact.query.filter_by(user_id=user_id).order_by(Contact.name.asc()).all()
+
+    contact_count = len(contacts)
+
+    return render_template(
+        "dashboard.html",
+        contacts=contacts,
+        contact_count=contact_count
     contacts = Contact.query.filter_by(user_id=user_id).order_by(Contact.name).all()
+
+    contact_count = len(contacts)
+
+    return render_template(
+        "dashboard.html",
+        contacts=contacts,
+        contact_count=contact_count
     duplicates = scan_all_duplicates(user_id)
     duplicate_count = len(duplicates)
     return render_template(

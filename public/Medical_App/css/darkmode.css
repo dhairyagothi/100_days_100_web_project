@@ -1,4 +1,34 @@
-/* Dark Mode – overrides using .dark-mode class toggled by JS */
+
+body[data-theme="dark"] {
+    /* All color variables are already handled by the CSS variable system */
+}
+
+/* Ensure proper contrast in dark mode for specific elements */
+body[data-theme="dark"] .search-bar {
+    background-color: var(--surface);
+    border-color: var(--border);
+}
+
+body[data-theme="dark"] .search-bar input::placeholder {
+    color: var(--text-tertiary);
+}
+
+body[data-theme="dark"] .input-wrapper {
+    background-color: var(--background);
+}
+
+/* Ensure buttons work well in dark mode */
+body[data-theme="dark"] .btn-outline {
+    color: var(--text-primary);
+    border-color: var(--border);
+}
+
+body[data-theme="dark"] .btn-outline:hover:not(:disabled) {
+    background-color: var(--surface-hover);
+    color: var(--primary);
+}
+
+
 .dark-mode {
     --clr-bg: #0f172a;
     --clr-surface: #1e293b;
@@ -26,17 +56,7 @@
 .dark-mode select {
     background: #334155;
     color: white;
-    border-color: #475569;
-}
-
-.dark-mode .emergency-grid button {
-    background: #334155;
-    border-color: #475569;
-    color: #f8fafc;
-}
-
-.dark-mode .emergency-grid button:hover {
-    background: #450a0a;
+    border: 1px solid #475569;
 }
 
 .theme-btn{
@@ -47,10 +67,59 @@
     padding:10px 14px;
     border-radius:10px;
     cursor:pointer;
-    background: rgba(255,255,255,0.15);
-    color: white;
-    font-size: 1.1rem;
 }
-.theme-btn:hover {
-    background: rgba(255,255,255,0.3);
+body.dark-mode .doctor-card {
+    background-color: #1e293b !important;
+    color: white !important;
+}
+body.dark-mode .doctor-card h3,
+body.dark-mode .doctor-card p,
+body.dark-mode .doctor-card span {
+    color: white !important;
+}
+
+body.dark-mode .hero {
+    background: linear-gradient(
+        135deg,
+        #0f172a,
+        #1e293b
+    ) !important;
+    color: white;
+}
+body.dark-mode .warning-panel {
+    background-color: #1e293b !important;
+    color: white !important;
+}
+body.dark-mode .warning-panel h2,
+body.dark-mode .warning-panel p {
+    color: white !important;
+}
+body.dark-mode .remedy-card {
+    background-color: #1e293b !important;
+    color: white !important;
+}
+
+body.dark-mode .remedy-card h3,
+body.dark-mode .remedy-card p,
+body.dark-mode .remedy-card li {
+    color: white !important;
+}
+body.dark-mode .site-header {
+    background-color: #0f172a !important;
+    color: white !important;
+}
+
+
+body.dark-mode .site-header {
+    background: linear-gradient(
+        135deg,
+        #0f172a,
+        #1e293b
+    ) !important;
+    color: white !important;
+}
+
+body.dark-mode .site-header h1,
+body.dark-mode .site-header p {
+    color: white !important;
 }
