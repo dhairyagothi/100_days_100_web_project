@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Appointment Calendar</title>
+    <link rel="stylesheet" href="styles.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <div class="loading-spinner-overlay" id="loadingSpinner">
+        <div class="spinner"></div>
+    </div>
+
+
+    <div class="animated-background">
+        <div class="gradient-sphere sphere1"></div>
+        <div class="gradient-sphere sphere2"></div>
+        <div class="gradient-sphere sphere3"></div>
+        <div class="gradient-sphere sphere4"></div>
+    </div>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1><b>Medical Appointment Calendar</b></h1>
+                <button id="darkModeToggle" class="dark-mode-toggle">
+                    <span class="moon">🌙</span>
+                    <span class="sun">☀️</span>
+                </button>
+            </div>
+        </header>
+        
+        <div class="booking-container">
+           
+            <div class="service-selection">
+                <h2>Select Medical Service</h2>
+                <select id="serviceType">
+                    <option value="">Choose a service...</option>
+                    <option value="checkup">General Checkup (30 min)</option>
+                    <option value="consultation">Specialist Consultation (45 min)</option>
+                    <option value="procedure">Minor Procedure (60 min)</option>
+                    <option value="followup">Follow-up Visit (20 min)</option>
+                    <option value="vaccination">Vaccination (15 min)</option>
+                    <option value="labwork">Lab Work (30 min)</option>
+                </select>
+            </div>
+
+
+            <div class="calendar-nav">
+                <button id="prevMonth">&lt;</button>
+                <h2 id="currentMonth">Month Year</h2>
+                <button id="nextMonth">&gt;</button>
+            </div>
+
+            
+            <div class="calendar-grid">
+                <div class="weekdays">
+                    <div>Sun</div>
+                    <div>Mon</div>
+                    <div>Tue</div>
+                    <div>Wed</div>
+                    <div>Thu</div>
+                    <div>Fri</div>
+                    <div>Sat</div>
+                </div>
+                <div id="calendarDays" class="days"></div>
+            </div>
+
+                
+            <div class="time-slots">
+                <h2>Available Time Slots</h2>
+                <div id="timeSlots" class="slots-grid"></div>
+            </div>
+
+            
+            <div class="booking-summary">
+                <h2>Appointment Summary</h2>
+                <div id="selectedService"></div>
+                <div id="selectedDate"></div>
+                <div id="selectedTime"></div>
+                <button id="confirmBooking" disabled>Confirm Appointment</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 

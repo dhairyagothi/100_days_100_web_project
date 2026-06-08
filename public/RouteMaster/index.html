@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RouteMaster – Amity University Campus Navigation</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="./css/style.css"/>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="logo-icon"><i aria-hidden="true" class="fas fa-location-crosshairs"></i></div>
+    <span class="brand">Route<span class="dot">Master</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="#" class="active"><i aria-hidden="true" class="fas fa-house" style="margin-right:6px;font-size:0.75rem;"></i>Home</a>
+    <a href="map.html"><i aria-hidden="true" class="fas fa-map" style="margin-right:6px;font-size:0.75rem;"></i>Map</a>
+    <a href="#"><i aria-hidden="true" class="fas fa-compass" style="margin-right:6px;font-size:0.75rem;"></i>Explore</a>
+    <a href="#"><i aria-hidden="true" class="fas fa-circle-question" style="margin-right:6px;font-size:0.75rem;"></i>Help</a>
+  </div>
+  <div class="nav-right">
+    <span class="live-badge"><span class="live-dot"></span>Campus Live</span>
+    <button class="nav-btn"><i aria-hidden="true" class="fas fa-route" style="margin-right:6px;"></i>Navigate Now</button>
+    <div class="nav-avatar">SU</div>
+  </div>
+</nav>
+
+<div class="page">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge"><i aria-hidden="true" class="fas fa-graduation-cap"></i> Amity University · Greater Noida</div>
+    <h1>Navigate Campus<br/>Like Never Before</h1>
+    <p>Find any block, lab, office, or facility instantly. Smart indoor & outdoor navigation built for Amity University students.</p>
+
+    <div class="search-wrap">
+      <div class="search-bar">
+        <i aria-hidden="true" class="fas fa-location-dot"></i>
+        <input type="text" id="searchInput" placeholder="Where do you want to go? (e.g. Block A, Library...)" />
+        <div class="search-divider"></div>
+        <select>
+          <option>From: My Location</option>
+          <option>From: Boys Hostel</option>
+          <option>From: Girls Hostel</option>
+          <option>From: Main Gate</option>
+        </select>
+        <button class="search-btn" onclick="navigate()"><i aria-hidden="true" class="fas fa-arrow-right" style="margin-right:8px;"></i>Navigate</button>
+      </div>
+      <div class="search-suggestions">
+        <span class="suggestion-chip"><i aria-hidden="true" class="fas fa-book" style="margin-right:4px;"></i>Central Library</span>
+        <span class="suggestion-chip"><i aria-hidden="true" class="fas fa-building" style="margin-right:4px;"></i>Block A</span>
+        <span class="suggestion-chip"><i aria-hidden="true" class="fas fa-flask" style="margin-right:4px;"></i>CS Lab</span>
+        <span class="suggestion-chip"><i aria-hidden="true" class="fas fa-utensils" style="margin-right:4px;"></i>Cafeteria</span>
+        <span class="suggestion-chip"><i aria-hidden="true" class="fas fa-hospital" style="margin-right:4px;"></i>Medical Centre</span>
+        <span class="suggestion-chip"><i aria-hidden="true" class="fas fa-dumbbell" style="margin-right:4px;"></i>Gymnasium</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN LAYOUT -->
+  <div class="main-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <p class="sidebar-title">Campus Zones</p>
+
+      <div class="sidebar-item active">
+        <div class="sidebar-icon blue"><i aria-hidden="true" class="fas fa-chalkboard-user"></i></div>
+        <div class="sidebar-info"><h4>Classrooms</h4><span>Blocks A, B, C, D</span></div>
+        <i aria-hidden="true" class="fas fa-chevron-right sidebar-arrow"></i>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-icon purple"><i aria-hidden="true" class="fas fa-flask"></i></div>
+        <div class="sidebar-info"><h4>Laboratories</h4><span>CS, EC, ME Labs</span></div>
+        <i aria-hidden="true" class="fas fa-chevron-right sidebar-arrow"></i>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-icon cyan"><i aria-hidden="true" class="fas fa-building-columns"></i></div>
+        <div class="sidebar-info"><h4>Admin Office</h4><span>Ground Floor</span></div>
+        <i aria-hidden="true" class="fas fa-chevron-right sidebar-arrow"></i>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-icon green"><i aria-hidden="true" class="fas fa-book-open"></i></div>
+        <div class="sidebar-info"><h4>Central Library</h4><span>Open · 8AM–10PM</span></div>
+        <i aria-hidden="true" class="fas fa-chevron-right sidebar-arrow"></i>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-icon orange"><i aria-hidden="true" class="fas fa-utensils"></i></div>
+        <div class="sidebar-info"><h4>Cafeteria</h4><span>2 Locations</span></div>
+        <i aria-hidden="true" class="fas fa-chevron-right sidebar-arrow"></i>
+      </div>
+
+      <div class="sidebar-sep"></div>
+      <p class="sidebar-title">Hostels</p>
+      <div class="sidebar-item">
+        <div class="sidebar-icon blue"><i aria-hidden="true" class="fas fa-bed"></i></div>
+        <div class="sidebar-info"><h4>Boys Hostel</h4><span>H1 – H4 Blocks</span></div>
+        <i aria-hidden="true" class="fas fa-chevron-right sidebar-arrow"></i>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-icon purple"><i aria-hidden="true" class="fas fa-bed"></i></div>
+        <div class="sidebar-info"><h4>Girls Hostel</h4><span>GH1 – GH3 Blocks</span></div>
+        <i aria-hidden="true" class="fas fa-chevron-right sidebar-arrow"></i>
+      </div>
+
+      <div class="sidebar-sep"></div>
+      <div class="sidebar-stats">
+        <div class="stat-mini"><span class="val">42</span><span class="lbl">Buildings</span></div>
+        <div class="stat-mini"><span class="val" style="color:#A78BFA;">1.2k</span><span class="lbl">Rooms</span></div>
+      </div>
+    </aside>
+
+    <!-- MAP PANEL -->
+    <div class="map-panel">
+      <div class="map-topbar">
+        <div>
+          <h3><i aria-hidden="true" class="fas fa-map" style="margin-right:8px;color:var(--accent2);"></i>Amity University Campus</h3>
+          <span style="font-size:0.68rem;">Greater Noida, UP · 63 acre campus</span>
+        </div>
+        <div class="map-controls">
+          <button class="map-ctrl-btn" title="Satellite"><i aria-hidden="true" class="fas fa-satellite"></i></button>
+          <button class="map-ctrl-btn" title="3D View"><i aria-hidden="true" class="fas fa-cube"></i></button>
+          <button class="map-ctrl-btn" title="Layers"><i aria-hidden="true" class="fas fa-layer-group"></i></button>
+        </div>
+      </div>
+
+      <div class="map-svg-wrap">
+        <svg viewBox="0 0 700 380" fill="none" xmlns="http://www.w3.org/2000/svg" style="background:linear-gradient(160deg,#0A1628 0%,#0D1F3C 100%);">
+          <!-- Grid lines -->
+          <defs>
+            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+            </pattern>
+            <linearGradient id="pathGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#2563EB" stop-opacity="0"/>
+              <stop offset="30%" stop-color="#3B82F6"/>
+              <stop offset="70%" stop-color="#8B5CF6"/>
+              <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/>
+            </linearGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="3" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <rect width="700" height="380" fill="url(#grid)"/>
+
+          <!-- Roads -->
+          <path d="M 0 200 H 700" stroke="rgba(255,255,255,0.06)" stroke-width="24"/>
+          <path d="M 350 0 V 380" stroke="rgba(255,255,255,0.06)" stroke-width="20"/>
+          <path d="M 0 120 H 700" stroke="rgba(255,255,255,0.04)" stroke-width="14"/>
+
+          <!-- Grounds/grass areas -->
+          <rect x="260" y="155" width="180" height="90" rx="12" fill="rgba(16,185,129,0.06)" stroke="rgba(16,185,129,0.12)" stroke-width="1"/>
+          <text x="350" y="204" text-anchor="middle" fill="rgba(52,211,153,0.4)" font-size="9" font-family="Poppins">◆ Central Ground</text>
+
+          <!-- Buildings -->
+          <!-- Block A -->
+          <rect x="60" y="60" width="110" height="80" rx="8" fill="rgba(37,99,235,0.18)" stroke="rgba(59,130,246,0.45)" stroke-width="1.5"/>
+          <text x="115" y="95" text-anchor="middle" fill="#93C5FD" font-size="11" font-family="Poppins" font-weight="600">Block A</text>
+          <text x="115" y="112" text-anchor="middle" fill="rgba(147,197,253,0.55)" font-size="8" font-family="Poppins">Rooms 101–420</text>
+
+          <!-- Block B -->
+          <rect x="530" y="60" width="110" height="80" rx="8" fill="rgba(139,92,246,0.18)" stroke="rgba(167,139,250,0.45)" stroke-width="1.5"/>
+          <text x="585" y="95" text-anchor="middle" fill="#C4B5FD" font-size="11" font-family="Poppins" font-weight="600">Block B</text>
+          <text x="585" y="112" text-anchor="middle" fill="rgba(196,181,253,0.55)" font-size="8" font-family="Poppins">Rooms 101–320</text>
+
+          <!-- Block C -->
+          <rect x="60" y="280" width="110" height="80" rx="8" fill="rgba(6,182,212,0.15)" stroke="rgba(34,211,238,0.4)" stroke-width="1.5"/>
+          <text x="115" y="315" text-anchor="middle" fill="#67E8F9" font-size="11" font-family="Poppins" font-weight="600">Block C</text>
+          <text x="115" y="332" text-anchor="middle" fill="rgba(103,232,249,0.55)" font-size="8" font-family="Poppins">Science & Tech</text>
+
+          <!-- Library -->
+          <rect x="530" y="260" width="120" height="90" rx="8" fill="rgba(16,185,129,0.15)" stroke="rgba(52,211,153,0.4)" stroke-width="1.5"/>
+          <text x="590" y="298" text-anchor="middle" fill="#6EE7B7" font-size="10" font-family="Poppins" font-weight="600">Central</text>
+          <text x="590" y="312" text-anchor="middle" fill="#6EE7B7" font-size="10" font-family="Poppins" font-weight="600">Library</text>
+
+          <!-- Admin -->
+          <rect x="280" y="30" width="140" height="55" rx="8" fill="rgba(245,158,11,0.12)" stroke="rgba(252,211,77,0.35)" stroke-width="1.5"/>
+          <text x="350" y="60" text-anchor="middle" fill="#FCD34D" font-size="10" font-family="Poppins" font-weight="600">Admin Office</text>
+          <text x="350" y="76" text-anchor="middle" fill="rgba(252,211,77,0.55)" font-size="8" font-family="Poppins">Amity University HQ</text>
+
+          <!-- Cafeteria -->
+          <rect x="450" y="160" width="80" height="60" rx="8" fill="rgba(239,68,68,0.12)" stroke="rgba(248,113,113,0.35)" stroke-width="1.5"/>
+          <text x="490" y="192" text-anchor="middle" fill="#FCA5A5" font-size="9" font-family="Poppins" font-weight="600">Cafeteria</text>
+
+          <!-- Hostel -->
+          <rect x="170" y="260" width="75" height="90" rx="8" fill="rgba(168,85,247,0.12)" stroke="rgba(196,181,253,0.35)" stroke-width="1.5"/>
+          <text x="207" y="308" text-anchor="middle" fill="#DDD6FE" font-size="9" font-family="Poppins" font-weight="600">Boys</text>
+          <text x="207" y="322" text-anchor="middle" fill="#DDD6FE" font-size="9" font-family="Poppins" font-weight="600">Hostel</text>
+
+          <!-- Animated route line -->
+          <path d="M 207 260 Q 207 220 260 210 Q 310 200 350 200 Q 420 200 450 190" stroke="url(#pathGrad)" stroke-width="3" stroke-dasharray="6 4" class="route-line" filter="url(#glow)"/>
+
+          <!-- Map Pins -->
+          <!-- Pin Block A -->
+          <g class="pin-anim" style="transform-origin:115px 60px">
+            <circle cx="115" cy="55" r="10" fill="rgba(37,99,235,0.3)" stroke="none"/>
+            <circle cx="115" cy="55" r="6" fill="#3B82F6" stroke="white" stroke-width="1.5"/>
+            <circle cx="115" cy="55" r="18" fill="rgba(59,130,246,0.12)" stroke="rgba(59,130,246,0.25)" stroke-width="1"/>
+          </g>
+          <!-- Pin Library -->
+          <g class="pin-anim" style="transform-origin:590px 258px">
+            <circle cx="590" cy="258" r="10" fill="rgba(16,185,129,0.3)"/>
+            <circle cx="590" cy="258" r="6" fill="#10B981" stroke="white" stroke-width="1.5"/>
+            <circle cx="590" cy="258" r="18" fill="rgba(16,185,129,0.12)" stroke="rgba(16,185,129,0.25)" stroke-width="1"/>
+          </g>
+          <!-- Pin Hostel -->
+          <g class="pin-anim" style="transform-origin:207px 258px">
+            <circle cx="207" cy="258" r="10" fill="rgba(168,85,247,0.3)"/>
+            <circle cx="207" cy="258" r="6" fill="#A855F7" stroke="white" stroke-width="1.5"/>
+          </g>
+          <!-- You are here -->
+          <g>
+            <circle cx="350" cy="200" r="14" fill="rgba(37,99,235,0.2)" stroke="rgba(59,130,246,0.5)" stroke-width="1.5"/>
+            <circle cx="350" cy="200" r="6" fill="#60A5FA" stroke="white" stroke-width="2"/>
+            <circle cx="350" cy="200" r="22" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.2)" stroke-width="1" style="animation:pulse 2s infinite"/>
+          </g>
+          <text x="350" y="230" text-anchor="middle" fill="rgba(96,165,250,0.8)" font-size="8" font-family="Poppins">You are here</text>
+
+          <!-- Compass -->
+          <g transform="translate(654,30)">
+            <circle cx="0" cy="0" r="16" fill="rgba(0,0,0,0.5)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+            <text x="0" y="-4" text-anchor="middle" fill="#fff" font-size="8" font-family="Poppins" font-weight="700">N</text>
+            <line x1="0" y1="5" x2="0" y2="10" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+          </g>
+
+          <!-- Scale bar -->
+          <line x1="30" y1="360" x2="130" y2="360" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+          <line x1="30" y1="355" x2="30" y2="365" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+          <line x1="130" y1="355" x2="130" y2="365" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+          <text x="80" y="358" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8" font-family="Poppins">200m</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+      <div class="panel-card">
+        <h3><i aria-hidden="true" class="fas fa-route" style="margin-right:6px;color:var(--accent2);"></i>Quick Routes</h3>
+        <div class="route-item">
+          <div class="route-icon-wrap"><i aria-hidden="true" class="fas fa-book-open"></i></div>
+          <div class="route-details">
+            <h4>Library → Block A</h4>
+            <span>Via Main Road</span>
+          </div>
+          <div class="route-meta"><span class="dist">350m</span><span class="time">4 min</span></div>
+        </div>
+        <div class="route-item">
+          <div class="route-icon-wrap" style="background:linear-gradient(135deg,#8B5CF6,#06B6D4);"><i aria-hidden="true" class="fas fa-bed"></i></div>
+          <div class="route-details">
+            <h4>Hostel → Cafeteria</h4>
+            <span>Shortcut path</span>
+          </div>
+          <div class="route-meta"><span class="dist">180m</span><span class="time">2 min</span></div>
+        </div>
+        <div class="route-item">
+          <div class="route-icon-wrap" style="background:linear-gradient(135deg,#10B981,#06B6D4);"><i aria-hidden="true" class="fas fa-building-columns"></i></div>
+          <div class="route-details">
+            <h4>Block C → Admin</h4>
+            <span>Via Central Ground</span>
+          </div>
+          <div class="route-meta"><span class="dist">420m</span><span class="time">5 min</span></div>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <h3><i aria-hidden="true" class="fas fa-chart-simple" style="margin-right:6px;color:var(--accent2);"></i>Live Occupancy</h3>
+        <div class="occ-row">
+          <h4>Central Library</h4>
+          <div class="occ-bar"><div class="occ-fill high" style="width:82%"></div></div>
+          <div class="occ-label"><span>82% full</span><span style="color:#F87171;">Busy</span></div>
+        </div>
+        <div class="occ-row">
+          <h4>Cafeteria (Main)</h4>
+          <div class="occ-bar"><div class="occ-fill med" style="width:55%"></div></div>
+          <div class="occ-label"><span>55% full</span><span style="color:#FCD34D;">Moderate</span></div>
+        </div>
+        <div class="occ-row">
+          <h4>CS Lab – Block A</h4>
+          <div class="occ-bar"><div class="occ-fill low" style="width:30%"></div></div>
+          <div class="occ-label"><span>30% full</span><span style="color:#34D399;">Available</span></div>
+        </div>
+        <div class="occ-row" style="margin-bottom:0;">
+          <h4>Block B Classrooms</h4>
+          <div class="occ-bar"><div class="occ-fill low" style="width:18%"></div></div>
+          <div class="occ-label"><span>18% full</span><span style="color:#34D399;">Open</span></div>
+        </div>
+      </div>
+
+      <div class="panel-card" style="padding:16px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:40px;height:40px;border-radius:10px;background:rgba(245,158,11,0.15);display:flex;align-items:center;justify-content:center;color:#FCD34D;font-size:1rem;"><i aria-hidden="true" class="fas fa-triangle-exclamation"></i></div>
+          <div><p style="font-size:0.78rem;font-weight:600;">Campus Notice</p><p style="font-size:0.68rem;color:var(--text-muted);">Block D entrance under maintenance</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECENT SEARCHES -->
+  <div class="recent-section">
+    <div class="section-header">
+      <h2><i aria-hidden="true" class="fas fa-clock-rotate-left" style="margin-right:10px;color:var(--accent2);font-size:0.9rem;"></i>Recent Searches</h2>
+      <a href="#">Clear all</a>
+    </div>
+    <div class="recent-grid">
+      <div class="recent-card">
+        <div class="rc-top">
+          <div class="rc-icon" style="background:rgba(37,99,235,0.15);color:#60A5FA;"><i aria-hidden="true" class="fas fa-book-open"></i></div>
+          <span class="rc-time">10 min ago</span>
+        </div>
+        <div class="rc-route">Library → Block A Room 101</div>
+        <div class="rc-path"><span>Central Library</span><i aria-hidden="true" class="fas fa-arrow-right"></i><span>Block A, F1</span></div>
+        <div class="rc-footer">
+          <span class="rc-tag walk"><i aria-hidden="true" class="fas fa-person-walking" style="margin-right:3px;"></i>Walk</span>
+          <div class="rc-go"><i aria-hidden="true" class="fas fa-arrow-right"></i></div>
+        </div>
+      </div>
+
+      <div class="recent-card">
+        <div class="rc-top">
+          <div class="rc-icon" style="background:rgba(139,92,246,0.15);color:#A78BFA;"><i aria-hidden="true" class="fas fa-bed"></i></div>
+          <span class="rc-time">1 hr ago</span>
+        </div>
+        <div class="rc-route">Hostel → Cafeteria</div>
+        <div class="rc-path"><span>Boys Hostel H2</span><i aria-hidden="true" class="fas fa-arrow-right"></i><span>Main Cafeteria</span></div>
+        <div class="rc-footer">
+          <span class="rc-tag fast"><i aria-hidden="true" class="fas fa-bolt" style="margin-right:3px;"></i>Fastest</span>
+          <div class="rc-go"><i aria-hidden="true" class="fas fa-arrow-right"></i></div>
+        </div>
+      </div>
+
+      <div class="recent-card">
+        <div class="rc-top">
+          <div class="rc-icon" style="background:rgba(6,182,212,0.15);color:#22D3EE;"><i aria-hidden="true" class="fas fa-flask"></i></div>
+          <span class="rc-time">Yesterday</span>
+        </div>
+        <div class="rc-route">Block B → CS Lab</div>
+        <div class="rc-path"><span>Block B, Room 201</span><i aria-hidden="true" class="fas fa-arrow-right"></i><span>CS Lab 3</span></div>
+        <div class="rc-footer">
+          <span class="rc-tag indoor"><i aria-hidden="true" class="fas fa-building" style="margin-right:3px;"></i>Indoor</span>
+          <div class="rc-go"><i aria-hidden="true" class="fas fa-arrow-right"></i></div>
+        </div>
+      </div>
+
+      <div class="recent-card">
+        <div class="rc-top">
+          <div class="rc-icon" style="background:rgba(245,158,11,0.15);color:#FCD34D;"><i aria-hidden="true" class="fas fa-building-columns"></i></div>
+          <span class="rc-time">2 days ago</span>
+        </div>
+        <div class="rc-route">Main Gate → Admin Office</div>
+        <div class="rc-path"><span>Main Gate</span><i aria-hidden="true" class="fas fa-arrow-right"></i><span>Admin Block, GF</span></div>
+        <div class="rc-footer">
+          <span class="rc-tag walk"><i aria-hidden="true" class="fas fa-person-walking" style="margin-right:3px;"></i>Walk</span>
+          <div class="rc-go"><i aria-hidden="true" class="fas fa-arrow-right"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAB -->
+<button class="fab" title="Quick Navigate"><i aria-hidden="true" class="fas fa-location-crosshairs"></i></button>
+
+<script src="script.js"></script>
+</body>
+</html>
