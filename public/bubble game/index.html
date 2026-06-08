@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BUBBLE SHOOTER</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="scanline"></div>
+<a href="../../index.html" class="home-btn">
+← Back to Home
+</a>
+<div class="game-wrapper">
+  <!-- LEFT PANEL -->
+  <div class="side-panel">
+    <div class="panel-box">
+      <div class="panel-label">Score</div>
+      <div class="panel-value" id="scoreDisplay">0</div>
+    </div>
+    <div class="panel-box">
+      <div class="panel-label">Level</div>
+      <div class="panel-value pink" id="levelDisplay">1</div>
+      <div class="level-bar"><div class="level-bar-fill" id="levelBar" style="width:0%"></div></div>
+    </div>
+    <div class="panel-box">
+      <div class="panel-label">Combo</div>
+      <div class="panel-value yellow" id="comboDisplay">x1</div>
+    </div>
+    <div class="panel-box">
+      <div class="panel-label">Next</div>
+      <div class="next-bubble-container">
+        <canvas id="nextCanvas" width="50" height="50"></canvas>
+      </div>
+    </div>
+    <div class="panel-box">
+      <div class="panel-label">Shots</div>
+      <div class="panel-value" id="shotsDisplay">0</div>
+    </div>
+  </div>
+
+  <!-- GAME CANVAS -->
+  <div class="canvas-container">
+    <canvas id="gameCanvas" width="420" height="600"></canvas>
+    <div class="overlay" id="startOverlay">
+      <div class="overlay-title cyan">BUBBLE<br>SHOOTER</div>
+      <div class="overlay-sub">Classic Arcade Edition</div>
+      <div style="font-family:Rajdhani;color:rgba(255,255,255,0.4);font-size:12px;letter-spacing:2px;text-align:center;line-height:2">
+        AIM WITH MOUSE<br>CLICK TO SHOOT<br>MATCH 3+ SAME COLOR
+      </div>
+      <button class="overlay-btn" onclick="startGame()">LAUNCH GAME</button>
+    </div>
+    <div class="overlay hidden" id="pauseOverlay">
+      <div class="paused-text">PAUSED</div>
+      <button class="overlay-btn" onclick="togglePause()">RESUME</button>
+    </div>
+    <div class="overlay hidden" id="gameOverOverlay">
+      <div class="overlay-title pink">GAME<br>OVER</div>
+      <div class="overlay-sub">Final Score</div>
+      <div class="overlay-score" id="finalScore">0</div>
+      <button class="overlay-btn" onclick="startGame()">PLAY AGAIN</button>
+    </div>
+    <div class="overlay hidden" id="winOverlay">
+      <div class="overlay-title cyan">LEVEL<br>CLEAR!</div>
+      <div class="overlay-score" id="winScore">0</div>
+      <button class="overlay-btn" onclick="nextLevel()">NEXT LEVEL</button>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="side-panel">
+    <div class="panel-box">
+      <div class="panel-label">High Score</div>
+      <div class="panel-value yellow" id="highScoreDisplay">0</div>
+    </div>
+    <div class="panel-box">
+      <div class="panel-label">Popped</div>
+      <div class="panel-value" id="poppedDisplay">0</div>
+    </div>
+    <div class="panel-box">
+      <div class="panel-label">Best Combo</div>
+      <div class="panel-value pink" id="bestComboDisplay">x1</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <button class="btn" id="pauseBtn" onclick="togglePause()">⏸ PAUSE</button>
+      <button class="btn pink" onclick="startGame()">↺ RESTART</button>
+    </div>
+    <div class="panel-box">
+      <div class="panel-label" style="margin-bottom:6px">How to Play</div>
+      <div style="font-family:Rajdhani;font-size:11px;color:rgba(255,255,255,0.35);line-height:1.8;letter-spacing:1px">
+        • Aim with mouse<br>• Click to shoot<br>• Match 3+ colors<br>• Chain for combos<br>• Don't let bubbles reach bottom
+      </div>
+    </div>
+  </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
