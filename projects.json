@@ -2781,6 +2781,7 @@
 },
   {
     "projectNo": 221,
+    "projectNo": 220,
     "projectName": "NeoTetris - Premium Edition",
     "projectType": "Game",
     "projectDesc": "A premium Tetris experience featuring modern themes, particle effects, achievements, combo systems, daily challenges, responsive controls, synthesized retro audio, dynamic background music, and polished gameplay mechanics.",
@@ -2793,5 +2794,18 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/NeoTetris/index.html"
+  },
+  {
+    "projectNo": 221,
+    "projectName": "AI Tools Hub",
+    "projectType": "Web Application",
+    "projectDesc": "A modern platform for discovering and exploring AI tools across coding, design, writing, productivity, presentations, and media categories.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/AI-Tools-Hub/index.html"
   }
 ]
