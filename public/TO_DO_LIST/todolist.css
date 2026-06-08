@@ -812,8 +812,8 @@ body {
     position: relative;
     padding: 20px;
     overflow: hidden;
-    border: none !important;
-    background-clip: padding-box !important;
+    border: none;
+    background-clip: padding-box;
     flex-direction: column;
     gap: 16px;
   }
