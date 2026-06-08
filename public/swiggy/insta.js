@@ -5,13 +5,132 @@ document.body.style.margin = "0";
 const topMenu = document.createElement("div");
 topMenu.classList.add("top_menu");
 
+const headerContainer = document.createElement("div");  //header container 
+headerContainer.classList.add("header_container");
 
-const loginCircle = document.createElement("div");
-loginCircle.classList.add("login_circle");
+const logoSection = document.createElement("div");     //logo section
+logoSection.classList.add("logo_section");
 
-const userIcon = document.createElement("i");
-userIcon.classList.add("fa", "fa-pet");
-loginCircle.appendChild(userIcon);
+const logoText = document.createElement("h2");
+// logoText.textContent = "Instamart";                    //text 
+
+const logo = document.createElement("img");
+
+logo.src = "image/Instamart_Logo.png";
+
+logo.style.height = "60px";
+
+logoSection.appendChild(logo);
+
+
+logoSection.appendChild(logoText);
+ 
+const locationSection = document.createElement("div");
+locationSection.classList.add("location_section");             //location section
+
+const deliveryTime = document.createElement("h4");
+deliveryTime.textContent = "18 Mins Delivery";              
+
+const locationText = document.createElement("p");
+locationText.textContent = "Select Location";
+
+locationSection.appendChild(deliveryTime);
+locationSection.appendChild(locationText);
+
+locationSection.style.cursor = "pointer";
+
+locationSection.addEventListener("click", () => {
+
+    if (!navigator.geolocation) {
+        locationText.textContent = "Location not supported";
+        return;
+    }
+
+    locationText.textContent = "Fetching location...";
+
+    navigator.geolocation.getCurrentPosition(
+        async (position) => {
+
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+            try {
+
+                const response = await fetch(
+                    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
+                );
+
+                const data = await response.json();
+
+                const city =
+                    data.address.city ||
+                    data.address.town ||
+                    data.address.village ||
+                    "Unknown City";
+
+                const state =
+                    data.address.state ||
+                    "";
+
+                locationText.textContent =
+                    `${city}, ${state}`;
+
+            } catch (error) {
+
+                locationText.textContent =
+                    "Location unavailable";
+
+            }
+
+        },
+
+        () => {
+
+            locationText.textContent =
+                "Permission denied";
+
+        }
+
+    );
+
+});
+
+
+const searchSection = document.createElement("div");
+searchSection.classList.add("search_section");      //search sec
+
+const signInSection = document.createElement("div");              //signin sec
+signInSection.classList.add("signin_section");
+
+
+const signInBtn = document.createElement("button");
+signInBtn.textContent = "Sign In";
+
+signInBtn.addEventListener("click", () => {
+    signInModal.style.display = "flex";
+});
+
+
+
+
+// const signInBtn = document.createElement("button");
+// signInBtn.textContent = "Sign In";
+
+signInSection.appendChild(signInBtn);
+
+const cartSection = document.createElement("div");
+cartSection.classList.add("cart_section");                          //cart section
+
+// let cartCount = 0;
+
+// cartBtn.textContent = `My Cart (${cartCount})`;
+
+const cartBtn = document.createElement("button");
+cartBtn.textContent = "My Cart";
+
+cartSection.appendChild(cartBtn);
+
+
 
 const searchIcon = document.createElement("i");
 searchIcon.classList.add("fa", "fa-search");
@@ -20,12 +139,88 @@ const searchInput = document.createElement("input");
 searchInput.setAttribute("type", "search");
 searchInput.setAttribute("placeholder", "Search for 'diapers'");
 
+searchSection.appendChild(searchIcon);
+searchSection.appendChild(searchInput);
 
-topMenu.appendChild(loginCircle);
-topMenu.appendChild(searchIcon);
-topMenu.appendChild(searchInput);
+
+headerContainer.appendChild(logoSection);
+headerContainer.appendChild(locationSection);
+headerContainer.appendChild(searchSection);
+headerContainer.appendChild(signInSection);
+headerContainer.appendChild(cartSection);
+
+// topMenu.appendChild(loginCircle);
+
+
+
+
+topMenu.appendChild(headerContainer);
 
 document.body.appendChild(topMenu);
+
+
+const signInModal = document.createElement("div");
+signInModal.classList.add("signin_modal");
+
+signInModal.innerHTML = `
+    <div class="signin_box">
+        <span class="close_btn">&times;</span>
+
+        <h2>Welcome Back</h2>
+
+        <input type="email" placeholder="Enter Email">
+
+        <input type="password" placeholder="Enter Password">
+
+        <button class="login_btn">Login</button>
+
+        
+
+        <p>Don't have an account? Sign Up</p>
+    </div>
+`;
+
+const loginBtn =
+signInModal.querySelector(".login_btn");
+
+loginBtn.addEventListener("click", async () => {
+
+    alert("clicked");
+
+});
+
+const sliderContainer = document.createElement("div");
+sliderContainer.classList.add("slider_container");
+
+const sliderImage = document.createElement("img");
+sliderImage.classList.add("slider_image");
+
+const banners = [
+    "image/banner1.avif",
+    "image/banner2.avif",
+    "image/banner3.avif",
+    "image/banner4.avif"
+];
+
+let currentBanner = 0;
+
+sliderImage.src = banners[currentBanner];
+
+sliderContainer.appendChild(sliderImage);
+
+document.body.appendChild(sliderContainer);
+
+setInterval(() => {
+
+    currentBanner++;
+
+    if(currentBanner >= banners.length){
+        currentBanner = 0;
+    }
+
+    sliderImage.src = banners[currentBanner];
+
+}, 3000);
 
 
 const shopDiv = document.createElement("div");
@@ -76,6 +271,8 @@ categories.forEach((category) => {
   const box = document.createElement("div");
   box.classList.add("box");
 
+  box.dataset.category = category.text.toLowerCase();
+
   const img = document.createElement("img");
   img.src = category.src;
   box.appendChild(img);
@@ -86,10 +283,57 @@ categories.forEach((category) => {
   heading.style.fontSize = "15px";
 
   box.appendChild(heading);
+const addToCartBtn = document.createElement("button");
+
+addToCartBtn.textContent = "Add To Cart";
+
+addToCartBtn.classList.add("add_cart_btn");
+
+addToCartBtn.addEventListener("click", () => {
+
+    cartCount++;
+
+    cartBtn.textContent = `My Cart (${cartCount})`;      
+   
+
+
+    
+
+
+});
+
+box.appendChild(addToCartBtn);
+
+
+
+
   itemsDiv.appendChild(box);
 });
 
 document.body.appendChild(itemsDiv);
+
+searchInput.addEventListener("input", () => {
+
+    const searchValue = searchInput.value.toLowerCase().trim();
+
+    const allBoxes = document.querySelectorAll(".box");
+
+    allBoxes.forEach((box) => {
+
+        const categoryName = box.dataset.category;
+
+        if (
+            categoryName.includes(searchValue) ||
+            searchValue === ""
+        ) {
+            box.style.display = "inline-block";
+        } else {
+            box.style.display = "none";
+        }
+
+    });
+
+});
 
 // COMMENTS SECTION
 
@@ -221,7 +465,7 @@ const appBanner = document.createElement("img");
 appBanner.src = "image/App_download_banner.avif";
 
 const footerLogo = document.createElement("img");
-footerLogo.src = "image/swiggy_name.avif";
+footerLogo.src = "image/Instamart_Logo.png";
 footerLogo.style.width = "30vh";
 footerLogo.classList.add("footer_logo");
 
@@ -253,6 +497,14 @@ const footerColumns = [
     items: ["About", "Careers", "Team", "Swiggy Genie", "Swiggy One"],
   },
 ];
+
+
+
+
+document.body.appendChild(signInModal);
+
+
+
 
 footerColumns.forEach((column) => {
   const columnDiv = document.createElement("div");
@@ -290,5 +542,3 @@ icons.forEach((icon) => {
 
 footer.appendChild(iconsDiv);
 
-
-document.body.appendChild(footer);
