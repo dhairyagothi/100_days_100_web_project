@@ -71,6 +71,9 @@ body.dark-mode .app-section {
   font-size: 1.65rem;
   font-weight: 300;
   line-height: 1.7;
+
+}
+
 body.dark-mode .explore-options .heading {
   color: white;
 }
@@ -236,6 +239,7 @@ body.dark-mode .app-section .caption {
   .app-section .option-selector {
     font-size: 1.5rem;
   }
+}
   
   @media (max-width: 800px) {
     .content {

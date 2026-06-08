@@ -145,13 +145,29 @@ updateClock();
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const amount = Number(amountInput.value);
+const rawValue = amountInput.value.trim();
+  const amount   = Number(rawValue);
+  const errorEl  = document.getElementById("amt-error");
 
-  if (amount <= 0) {
-    showToast("Enter valid amount ⚠️");
-
+  if (rawValue === "" || isNaN(amount) || !isFinite(amount)) {
+    if (errorEl) errorEl.textContent = "Please enter a valid number ⚠️";
+    amountInput.focus();
     return;
   }
+
+  if (amount <= 0) {
+    if (errorEl) errorEl.textContent = "Amount must be greater than zero ⚠️";
+    amountInput.focus();
+    return;
+  }
+
+  if (amount > 1_000_000) {
+    if (errorEl) errorEl.textContent = "Amount cannot exceed ₹10,00,000 ⚠️";
+    amountInput.focus();
+    return;
+  }
+
+  if (errorEl) errorEl.textContent = "";
 
   showLoader();
 
@@ -278,6 +294,8 @@ function updateSummary() {
   animateNumber(balanceEl, balance);
   animateNumber(incomeEl, income);
   animateNumber(expenseEl, expense);
+
+  balanceEl.style.color = balance < 0 ? "#ff4d4d" : "#00c853";
 
   balanceEl.style.color = balance < 0 ? "#ff4d4d" : "#00c853";
 }

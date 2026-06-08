@@ -1799,8 +1799,7 @@ if (searchInput && clearSearchBtn) {
   });
 }
 
-// Initialize
-syncProjectCounts();
+
 
 /* ============================================================
    NAVBAR — dynamic based on login state
@@ -2403,13 +2402,8 @@ function applyFilters(search, category) {
   renderGrid();
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-  try {
-    await loadProjects();
-    restoreStateFromURL();
-  } catch (error) {
-    console.error("Failed to restore state or load projects:", error);
-  }
+document.addEventListener("DOMContentLoaded",  () => {
+ 
   const searchInput =
     document.getElementById("search") ||
     document.querySelector('input[type="text"]') ||
