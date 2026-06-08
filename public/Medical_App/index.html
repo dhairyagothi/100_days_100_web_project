@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        // Enforce trailing slash redirect if accessed without trailing slash or file name
+        if (window.location.pathname.endsWith('/Medical_App')) {
+            window.location.replace(window.location.pathname + '/');
+        }
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedConsult Dashboard</title>
