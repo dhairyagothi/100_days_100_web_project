@@ -246,7 +246,7 @@ The website features:
 | 152 | Physics Ball Simulation | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/PhysicsBallSimulation/index.html) |
 | 153 | Material3 Showcase | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Material3Showcase/index.html) |
 | 154 | FocusRoom | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/FocusRoom/index.html) |
-| 155 | Hangman Game | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/hangman-react-ts/HangmanGame/index.html) |
+| 155 | Hangman Game (React + TypeScript) | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/hangman-react-ts/Hangman-Game-(React + TypeScript)/index.html) |
 | 156 | Placement Predictor | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Placement-Predictor/index.html) |
 | 157 | Map Route Tracker | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Vector-Map-Route-Tracer/index.html) |
 | 158 | GitHub Promo Maker | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/GitHubPromoMaker/index.html) |
