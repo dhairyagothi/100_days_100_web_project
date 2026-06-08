@@ -1,23 +1,19 @@
 name: Label Merge Conflicts
 
 on:
-  schedule:
-    - cron: "*/30 * * * *"
   workflow_dispatch:
-  pull_request_target:
-    types: [opened, synchronize, reopened]
 
 permissions:
   contents: read
   issues: write
-  pull-requests: read
+  pull-requests: write
 
 jobs:
   label-merge-conflicts:
     runs-on: ubuntu-latest
     steps:
       - name: Label PRs with merge conflicts
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -52,27 +48,42 @@ jobs:
               per_page: 100,
             });
 
+            async function getMergeableStateWithRetry(pullNumber) {
+              const maxAttempts = 5;
+              for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+                let detailedPr;
+                try {
+                  detailedPr = await github.rest.pulls.get({
+                    owner,
+                    repo,
+                    pull_number: pullNumber,
+                  });
+                } catch (error) {
+                  if (error.status === 403) {
+                    core.warning(`Skipped PR #${pullNumber} due to API rate limiting.`);
+                    return null;
+                  }
+                  throw error;
+                }
+
+                const state = detailedPr.data.mergeable_state;
+                if (state && state !== 'unknown') {
+                  return state;
+                }
+
+                const delayMs = 1000 * 2 ** (attempt - 1);
+                await new Promise((resolve) => setTimeout(resolve, delayMs));
+              }
+
+              core.info(`Skipped PR #${pullNumber} because mergeability is still being calculated.`);
+              return null;
+            }
+
             for (const pr of openPulls) {
               const hasLabel = pr.labels.some((label) => label.name === labelName);
 
-              let mergeableState;
-              try {
-                const detailedPr = await github.rest.pulls.get({
-                  owner,
-                  repo,
-                  pull_number: pr.number,
-                });
-                mergeableState = detailedPr.data.mergeable_state;
-              } catch (error) {
-                if (error.status === 403) {
-                  core.warning(`Skipped PR #${pr.number} due to API rate limiting.`);
-                  continue;
-                }
-                throw error;
-              }
-
-              if (!mergeableState || mergeableState === 'unknown') {
-                core.info(`Skipped PR #${pr.number} because mergeability is still being calculated.`);
+              const mergeableState = await getMergeableStateWithRetry(pr.number);
+              if (!mergeableState) {
                 continue;
               }
 

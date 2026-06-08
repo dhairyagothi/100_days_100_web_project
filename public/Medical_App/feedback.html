@@ -2,35 +2,175 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FeedBack</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-</head>
-<body style="background: url(pngtree-medical-device-line-draft-border-png-image_2392872.jpg);">
-    <div  class="feedbackmain">
-        <h2>FeedBack</h2>
-        <p>Help us help you.</p>
 
-        
-            <form id="feedbackform">
-                <label for="feedbackMessage">Your Feedback:</label>
-                <br><br>
-                <textarea id="feedbackMessage" name="feedbackMessage" required></textarea>
-                <br><br>
-                <button type="submit">Submit Feedback</button>
-            </form>
-            <a href="index.html" class="back"><button>Back To the Main</button></a>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Feedback | MedConsult</title>
+
+    <link
+        rel="stylesheet"
+        href="css/feedback.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/toast.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="assets/css/auth.css"
+    >
+
+    <link
+        rel="icon"
+        href="assets/logo.png"
+    >
+</head>
+<body>
+<div id="appShell">
+
+    <div class="feedbackmain">
+
+        <div class="auth-page-actions">
+            <div id="userBadge" class="user-badge compact hidden" aria-live="polite">
+                <span id="userAvatar" class="user-avatar" aria-hidden="true">👤</span>
+                <div class="user-meta">
+                    <span id="userBadgeName">Guest</span>
+                    <span id="userBadgeRole">Role: --</span>
+                </div>
+            </div>
+            <button id="logoutBtn" class="auth-btn secondary is-role-hidden" type="button">Logout</button>
+        </div>
+
+        <h2>⭐ Feedback</h2>
+
+        <p>
+            Help us improve your healthcare experience.
+        </p>
+
+        <form id="feedbackform" data-role="patient">
+
+            <label for="feedbackMessage">
+                Your Feedback
+            </label>
+
+            <textarea
+                id="feedbackMessage"
+                name="feedbackMessage"
+                placeholder="Write your feedback here..."
+                required
+            ></textarea>
+
+            <button
+                type="submit"
+                class="submit-btn"
+            >
+                Submit Feedback
+            </button>
+
+        </form>
+
+        <button
+            class="back"
+            onclick="window.location.href='index.html'"
+        >
+            ← Back To Dashboard
+        </button>
+
+        <div class="role-note is-role-hidden" data-role-fallback="patient">
+            Feedback is available for patient accounts only.
+        </div>
+
     </div>
-    <script>
-        
-        document.getElementById("feedbackform").addEventListener("submit", function(event) {
-            event.preventDefault(); 
-            
-            const feedbackMessage = document.getElementById("feedbackMessage").value;
-            console.log("User Feedback:", feedbackMessage);
-            alert("Thank you for your feedback: " + feedbackMessage);
-        });
-    </script>
+
+</div>
+
+<div id="authOverlay" class="auth-overlay" aria-hidden="true">
+    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+        <div class="auth-brand">
+            <img src="assets/logo.png" alt="MedConsult logo">
+            <div>
+                <h2 id="authTitle">MedConsult Access</h2>
+                <p id="authSubtitle">Sign in to continue</p>
+            </div>
+        </div>
+
+        <section class="auth-panel" data-auth-panel="login">
+            <form id="loginForm">
+                <div class="auth-field">
+                    <label for="loginEmail">Email</label>
+                    <input id="loginEmail" class="auth-input" type="email" autocomplete="email" required>
+                </div>
+                <div class="auth-field">
+                    <label for="loginPassword">Password</label>
+                    <input id="loginPassword" class="auth-input" type="password" autocomplete="current-password" required>
+                </div>
+                <div class="auth-row">
+                    <label class="auth-remember">
+                        <input id="rememberMe" type="checkbox">
+                        Remember Me
+                    </label>
+                </div>
+                <p id="loginError" class="auth-error"></p>
+                <button type="submit" class="auth-submit">Login</button>
+                <div class="auth-footer">
+                    <span>Don't have an account?</span>
+                    <button type="button" data-auth-switch="signup">Sign Up</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="auth-panel is-hidden" data-auth-panel="signup">
+            <form id="signupForm">
+                <div class="auth-field">
+                    <label for="signupName">Full Name</label>
+                    <input id="signupName" class="auth-input" type="text" autocomplete="name" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupEmail">Email</label>
+                    <input id="signupEmail" class="auth-input" type="email" autocomplete="email" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupPassword">Password</label>
+                    <input id="signupPassword" class="auth-input" type="password" autocomplete="new-password" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupConfirm">Confirm Password</label>
+                    <input id="signupConfirm" class="auth-input" type="password" autocomplete="new-password" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupRole">Role</label>
+                    <select id="signupRole" class="auth-select" required>
+                        <option value="">Select role</option>
+                        <option value="patient">Patient</option>
+                        <option value="doctor">Doctor</option>
+                    </select>
+                </div>
+                <p id="signupError" class="auth-error"></p>
+                <button type="submit" class="auth-submit">Create Account</button>
+                <div class="auth-footer">
+                    <span>Already have an account?</span>
+                    <button type="button" data-auth-switch="login">Login</button>
+                </div>
+                <p class="auth-note">
+                    Demo only: passwords are encoded for storage. Real apps require server-side hashing (e.g., bcrypt).
+                </p>
+            </form>
+        </section>
+    </div>
+</div>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="assets/js/session.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/roleManager.js"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/feedback.js"></script>
+
 </body>
 </html>
