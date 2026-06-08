@@ -1,114 +1,732 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>To-Do List | 100 Days 100 Projects</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="todolist.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-</head>
-<body>
-  <!-- Floating decorative shapes -->
-  <div class="floating-shapes" aria-hidden="true">
-    <div class="shape shape-1"></div>
-    <div class="shape shape-2"></div>
-    <div class="shape shape-3"></div>
-    <div class="shape shape-4"></div>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do List | 100 Days 100 Projects</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="todolist.css" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
 
-  <!-- Header with Navigation -->
-  <header>
-    <nav aria-label="Main navigation">
-      <ul class="navbar">
-        <li class="nav-left">
-          <ul>
-            <li><a href="#" id="nav-home" aria-current="page">🏠 Home</a></li>
-            <li><a href="#" id="nav-documents">📄 Documents</a></li>
-          </ul>
-        </li>
-        <li class="nav-right">
-          <span class="theme-label">Theme</span>
-          <ul>
-            <li><button id="colour1" class="theme-btn" data-theme="theme1" aria-label="Theme 1"></button></li>
-            <li><button id="colour2" class="theme-btn" data-theme="theme2" aria-label="Theme 2"></button></li>
-            <li><button id="colour3" class="theme-btn" data-theme="theme3" aria-label="Theme 3"></button></li>
-            <li><button id="colour4" class="theme-btn" data-theme="theme4" aria-label="Theme 4"></button></li>
-            <li><button id="colour5" class="theme-btn" data-theme="theme5" aria-label="Theme 5"></button></li>
-          </ul>
-        </li>
-      </ul>
-    </nav>
-  </header>
+  <body>
+    <div class="app-container">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2 class="sidebar-title">
+            <span class="sidebar-logo">📋</span>
+            TO-DO LIST
+          </h2>
+        </div>
 
-  <!-- Main Content -->
-  <main>
-    <!-- Home Section -->
-    <section id="home-tab" aria-label="Home tab">
-      <div class="hero">
-        <div class="hero-badge">🚀 Stay Productive</div>
-        <h1 class="heading home-heading">JUST DO IT.</h1>
-        <p class="hero-subtitle">Organise your day, conquer your goals.</p>
-        <!-- Progress bar -->
-        <div class="progress-wrapper" id="progressWrapper">
-          <div class="progress-bar-track">
-            <div class="progress-bar-fill" id="progressFill"></div>
+        <nav class="sidebar-nav" aria-label="Main Navigation">
+          <a
+            href="#"
+            id="nav-home"
+            class="sidebar-nav-item active"
+            onclick="
+              showHome();
+              return false;
+            "
+            >🏠 Home</a
+          >
+          <a
+            href="#"
+            id="nav-documents"
+            class="sidebar-nav-item"
+            onclick="
+              showDocuments();
+              return false;
+            "
+            >📄 Documents</a
+          >
+        </nav>
+
+        <div class="sidebar-footer">
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <span
+              style="
+                font-size: 0.75rem;
+                font-weight: 700;
+                color: rgba(240, 240, 245, 0.4);
+                letter-spacing: 0.05em;
+                text-transform: uppercase;
+                margin-bottom: 4px;
+              "
+              >Workspace Skin</span
+            >
+            <div style="display: flex; gap: 6px; align-items: center">
+              <button
+                id="colour1"
+                class="theme-btn"
+                data-theme="theme1"
+                style="
+                  width: 20px;
+                  height: 20px;
+                  border-radius: 50%;
+                  background: #f59e0b;
+                  border: none;
+                  cursor: pointer;
+                "
+              ></button>
+              <button
+                id="colour2"
+                class="theme-btn"
+                data-theme="theme2"
+                style="
+                  width: 20px;
+                  height: 20px;
+                  border-radius: 50%;
+                  background: #3b82f6;
+                  border: none;
+                  cursor: pointer;
+                "
+              ></button>
+              <button
+                id="colour3"
+                class="theme-btn"
+                data-theme="theme3"
+                style="
+                  width: 20px;
+                  height: 20px;
+                  border-radius: 50%;
+                  background: #10b981;
+                  border: none;
+                  cursor: pointer;
+                "
+              ></button>
+              <button
+                id="colour4"
+                class="theme-btn"
+                data-theme="theme4"
+                style="
+                  width: 20px;
+                  height: 20px;
+                  border-radius: 50%;
+                  background: #6366f1;
+                  border: none;
+                  cursor: pointer;
+                "
+              ></button>
+            </div>
           </div>
-          <output class="progress-text" id="progressText">0 / 0 done</output>
+          <button
+            type="button"
+            id="savepdf"
+            class="sidebar-back-btn"
+            style="background: rgba(124, 99, 255, 0.1); color: #c4b5ff"
+          >
+            📥 Save as PDF
+          </button>
+          <button type="button" id="cleardone" class="sidebar-pdf-btn">
+            🧹 Clear Workspace
+          </button>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <section
+          id="home-tab"
+          aria-label="Home tab"
+          class="active-section"
+          style="width: 100%"
+        >
+          <div class="hero-banner">
+            <div class="hero-content">
+              <div class="hero-badge">🚀 STAY PRODUCTIVE</div>
+              <h1 class="hero-title">JUST DO IT.</h1>
+              <p class="hero-subtitle">
+                Organise your day, conquer your goals via drag-and-drop
+                workspace lanes.
+              </p>
+              <div class="hero-progress">
+                <div class="hero-progress-bar">
+                  <div class="hero-progress-fill" id="heroProgressFill"></div>
+                </div>
+                <div class="hero-progress-text" id="progressText">
+                  0 / 0 tasks completed
+                </div>
+              </div>
+            </div>
+            <div class="hero-illustration">
+              <div class="illustration-clipboard">
+                <div class="clipboard-paper">
+                  <div class="clipboard-check"></div>
+                  <div class="clipboard-check"></div>
+                  <div class="clipboard-check"></div>
+                </div>
+              </div>
+              <div class="illustration-plant"></div>
+            </div>
+          </div>
+
+          <form class="input-panel" id="task-form" novalidate>
+            <div class="input-row">
+              <div class="input-select-wrapper">
+                <label for="task-category" class="sr-only">Category</label>
+                <select
+                  id="task-category"
+                  class="input-select"
+                  aria-label="Category"
+                >
+                  <option value="" disabled selected>📂 Category</option>
+                  <option value="Work">💼 Work</option>
+                  <option value="Personal">🧑 Personal</option>
+                  <option value="Study">📚 Study</option>
+                  <option value="Health">🍎 Health</option>
+                </select>
+              </div>
+
+              <div class="input-select-wrapper">
+                <label for="task-priority" class="sr-only">Priority</label>
+                <select
+                  id="task-priority"
+                  class="input-select"
+                  aria-label="Priority"
+                >
+                  <option value="" disabled selected>⭐ Priority</option>
+                  <option value="High">🔥 High</option>
+                  <option value="Medium">⭐ Medium</option>
+                  <option value="Low">🟢 Low</option>
+                </select>
+              </div>
+              <div class="input-select-wrapper">
+                <span class="data-label">Due Date</span>
+                <input
+                  type="date"
+                 id="task-date"
+                 class="input-select"
+                 >
+              </div>
+
+              <label for="task" class="sr-only">Task Description</label>
+              <input
+                type="text"
+                id="task"
+                class="task-input"
+                placeholder="What do you need to do?"
+              />
+              <button type="submit" class="add-task-btn">➕ Add Task</button>
+            </div>
+          </form>
+
+          <div class="productivity-dashboard">
+            <div class="dashboard-card">
+              <div class="card-label">TOTAL ALL</div>
+              <div class="tasks-stats">
+                <span class="tasks-number" id="totalTasks">0</span>
+              </div>
+            </div>
+            <div class="dashboard-card">
+              <div class="card-label" style="color: #f59e0b">PENDING</div>
+              <div class="tasks-stats">
+                <span class="tasks-number" id="dashboardPending">0</span>
+              </div>
+            </div>
+            <div class="dashboard-card">
+              <div class="card-label" style="color: #38bdf8">IN PROGRESS</div>
+              <div class="tasks-stats">
+                <span class="tasks-number" id="dashboardInProgress">0</span>
+              </div>
+            </div>
+            <div class="dashboard-card">
+              <div class="card-label" style="color: #10b981">COMPLETED</div>
+              <div class="tasks-stats">
+                <span class="tasks-number" id="dashboardTotalCompleted">0</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="kanban-wrapper-board">
+            <div class="kanban-column-track">
+              <div class="kanban-column-header">
+                <h3 class="kanban-column-title" style="color: #f59e0b">
+                  <span
+                    style="
+                      display: inline-block;
+                      width: 8px;
+                      height: 8px;
+                      border-radius: 50%;
+                      background: #f59e0b;
+                    "
+                  ></span>
+                  Pending
+                </h3>
+                <span id="count-pending" class="kanban-column-badge">0</span>
+              </div>
+              <div id="pending" class="kanban-column-drop-zone"></div>
+            </div>
+
+            <div class="kanban-column-track">
+              <div class="kanban-column-header">
+                <h3 class="kanban-column-title" style="color: #38bdf8">
+                  <span
+                    style="
+                      display: inline-block;
+                      width: 8px;
+                      height: 8px;
+                      border-radius: 50%;
+                      background: #38bdf8;
+                    "
+                  ></span>
+                  In Progress
+                </h3>
+                <span id="count-inprogress" class="kanban-column-badge">0</span>
+              </div>
+              <div id="inprogress" class="kanban-column-drop-zone"></div>
+            </div>
+
+            <div class="kanban-column-track">
+              <div class="kanban-column-header">
+                <h3 class="kanban-column-title" style="color: #10b981">
+                  <span
+                    style="
+                      display: inline-block;
+                      width: 8px;
+                      height: 8px;
+                      border-radius: 50%;
+                      background: #10b981;
+                    "
+                  ></span>
+                  Completed
+                </h3>
+                <span id="count-completed" class="kanban-column-badge">0</span>
+              </div>
+              <div id="completed" class="kanban-column-drop-zone"></div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="documents-tab"
+          aria-label="Documents tab"
+          class="inactive-section"
+          style="width: 100%"
+        >
+          <div class="documents-header">
+            <h2 class="heading">📂 Saved Documents Archive</h2>
+          </div>
+          <div class="empty-state" id="emptyDocsState" role="status">
+            <div class="empty-icon" aria-hidden="true">📄</div>
+            <p class="empty-title">No saved files detected</p>
+            <p class="empty-desc">
+              Save your interactive board checklist arrays as a PDF to store
+              logs here.
+            </p>
+          </div>
+          <ul class="documents-list" aria-label="Saved documents"></ul>
+        </section>
+      </main>
+    </div>
+
+    <!-- Clear Workspace Confirmation Modal -->
+    <div id="clearModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" style="display:none;">
+      <div class="modal-box">
+        <div class="modal-icon">🧹</div>
+        <h2 class="modal-title" id="modalTitle">Clear Workspace?</h2>
+        <p class="modal-desc">This will permanently remove all tasks from your board. This action cannot be undone.</p>
+        <div class="modal-actions">
+          <button id="modalCancelBtn" class="modal-btn modal-btn-cancel">Cancel</button>
+          <button id="modalConfirmBtn" class="modal-btn modal-btn-confirm">Yes, Clear All</button>
         </div>
       </div>
+    </div>
 
-      <!-- Input Area -->
-      <form class="input-panel" id="task-form" novalidate>
-        <div class="input-group">
-          <label for="task-category" class="sr-only">Choose task category</label>
-          <select id="task-category" aria-label="Choose task category">
-            <option value="" disabled selected>📂 Category</option>
-            <option value="Work">💼 Work</option>
-            <option value="Personal">🧑 Personal</option>
-            <option value="Urgent">⚡ Urgent</option>
-            <option value="Fitness">💪 Fitness</option>
-            <option value="Miscellaneous">📌 Miscellaneous</option>
-          </select>
-          <label for="task" class="sr-only">Task description</label>
-          <input type="text" id="task" placeholder="What do you need to do?" autocomplete="off" />
-          <button type="submit" id="submittask">➕ Add Task</button>
-        </div>
-        <div class="input-actions">
-          <button type="button" id="savepdf">📥 Save as PDF</button>
-        </div>
-      </form>
+    <div id="toast" class="pdf-message" role="alert" aria-live="polite"></div>
+    <div class="toast-container" id="toastContainer"></div>
 
-      <!-- Empty State -->
-      <div class="empty-state" id="emptyState" role="status">
-        <div class="empty-icon" aria-hidden="true">📋</div>
-        <p class="empty-title">No tasks yet</p>
-        <p class="empty-desc">Add your first task above and get things done!</p>
-      </div>
+    <script>
+      // State Memory array structure sync with client browser local storage systems
+      let tasks = JSON.parse(localStorage.getItem("kanban-board-tasks")) || [
+        {
+          id: "k-task-1",
+          title: "Review Open-Source Pull Requests",
+          category: "Work",
+          priority: "High",
+          status: "pending",
+        },
+        {
+          id: "k-task-2",
+          title: "Refactor Theme Style Overlap Rules",
+          category: "Study",
+          priority: "Medium",
+          status: "inprogress",
+        },
+        {
+          id: "k-task-3",
+          title: "Verify Grid Layout Persistence",
+          category: "Personal",
+          priority: "Low",
+          status: "completed",
+        },
+      ];
 
-      <!-- Task List Container -->
-      <ul id="notes-container" aria-label="Task list"></ul>
-    </section>
+      // Saved documents in memory (Blob URLs reset on reload, tracked with metadata)
+      let savedDocs = JSON.parse(localStorage.getItem("kanban-saved-docs-meta")) || [];
 
-    <!-- Documents Section -->
-    <section id="documents-tab" aria-label="Documents tab" hidden>
-      <div class="documents-header">
-        <h2 class="heading">📂 Saved Documents</h2>
-      </div>
-      <div class="empty-state" id="emptyDocsState" role="status">
-        <div class="empty-icon" aria-hidden="true">📄</div>
-        <p class="empty-title">No saved documents</p>
-        <p class="empty-desc">Save your to-do list as a PDF to see it here.</p>
-      </div>
-      <ul class="documents-list" aria-label="Saved documents"></ul>
-    </section>
-  </main>
+      const taskForm = document.getElementById("task-form");
+      const taskInput = document.getElementById("task");
+      const categorySelect = document.getElementById("task-category");
+      const prioritySelect = document.getElementById("task-priority");
+      const dueDateInput = document.getElementById("task-date");
 
-  <!-- PDF Notification -->
-  <div id="pdfMessage" class="pdf-message" role="alert" aria-live="polite">✅ PDF Created Successfully!</div>
+      // ─── Render Kanban Board ───────────────────────────────────────────────
+      function renderKanban() {
+        document
+          .querySelectorAll(".kanban-column-drop-zone")
+          .forEach((zone) => (zone.innerHTML = ""));
 
-  <script src="todolist.js"></script>
-</body>
+        tasks.forEach((task) => {
+          const laneDropTarget = document.getElementById(task.status);
+          if (!laneDropTarget) return;
+
+          const card = document.createElement("div");
+          card.id = task.id;
+          card.className = "kanban-task-card" + (task.status === "completed" ? " card-completed" : task.status === "inprogress" ? " card-inprogress" : "");
+          card.setAttribute("draggable", "true");
+          card.setAttribute("data-taskid", task.id);
+
+          const isCompleted = task.status === "completed";
+          const isInProgress = task.status === "inprogress";
+
+          card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <span style="font-size:0.65rem; padding:2px 8px; border-radius:4px; background:rgba(255,255,255,0.06); color:rgba(240,240,245,0.7); font-weight:700;">${task.category || "General"}</span>
+              <span style="font-size:0.65rem; font-weight:800; color:${task.priority === "High" ? "#ef4444" : task.priority === "Medium" ? "#f59e0b" : "#3b82f6"}">${task.priority || "Medium"}</span>
+            </div>
+            <p class="card-title-text" style="font-size:0.875rem; color:${isCompleted ? "rgba(255,255,255,0.45)" : "#fff"}; font-weight:500; line-height:1.4; word-break:break-word; ${isCompleted ? "text-decoration: line-through;" : ""}">${task.title}</p>
+            ${task.dueDate ? `<p style="font-size:0.75rem; color:#94a3b8; margin-top:6px;">📅 ${task.dueDate}</p>` : ""}
+            <div class="card-actions">
+              <button
+                class="card-action-btn btn-complete ${isCompleted ? "btn-active-complete" : ""}"
+                onclick="markTaskCompleted('${task.id}')"
+                title="${isCompleted ? 'Unmark Completed' : 'Mark as Completed'}"
+                aria-label="${isCompleted ? 'Unmark Completed' : 'Mark as Completed'}"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+              <button
+                class="card-action-btn btn-inprogress ${isInProgress ? "btn-active-inprogress" : ""}"
+                onclick="markTaskInProgress('${task.id}')"
+                title="${isInProgress ? 'Back to Pending' : 'Mark as In Progress'}"
+                aria-label="${isInProgress ? 'Back to Pending' : 'Mark as In Progress'}"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </button>
+              <button
+                class="card-action-btn btn-delete"
+                onclick="deleteTaskNode('${task.id}')"
+                title="Delete Task"
+                aria-label="Delete Task"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+              </button>
+            </div>
+          `;
+
+          // Card drag events
+          card.addEventListener("dragstart", (e) => {
+            card.classList.add("dragging");
+            e.dataTransfer.setData("text/plain", card.id);
+          });
+          card.addEventListener("dragend", () => {
+            card.classList.remove("dragging");
+          });
+
+          laneDropTarget.appendChild(card);
+        });
+
+        calculateSystemCounters();
+      }
+
+      // Process metric calculation operations across active datasets
+      function calculateSystemCounters() {
+        const pendingCount = tasks.filter((t) => t.status === "pending").length;
+        const progressCount = tasks.filter(
+          (t) => t.status === "inprogress",
+        ).length;
+        const completedCount = tasks.filter(
+          (t) => t.status === "completed",
+        ).length;
+
+        document.getElementById("count-pending").textContent = pendingCount;
+        document.getElementById("count-inprogress").textContent = progressCount;
+        document.getElementById("count-completed").textContent = completedCount;
+
+        document.getElementById("totalTasks").textContent = tasks.length;
+        document.getElementById("dashboardPending").textContent = pendingCount;
+        document.getElementById("dashboardInProgress").textContent =
+          progressCount;
+        document.getElementById("dashboardTotalCompleted").textContent =
+          completedCount;
+
+        // Handle Hero progress bars ratios
+        const heroFill = document.getElementById("heroProgressFill");
+        const heroText = document.getElementById("progressText");
+        if (tasks.length > 0) {
+          const percentage = Math.round((completedCount / tasks.length) * 100);
+          heroFill.style.width = `${percentage}%`;
+          heroText.textContent = `${completedCount} / ${tasks.length} tasks finished (${percentage}%)`;
+        } else {
+          heroFill.style.width = "0%";
+          heroText.textContent = "0 / 0 tasks completed";
+        }
+      }
+
+      // Append custom tasks directly via validation nodes submission inputs
+      taskForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (taskInput.value.trim() === "") return;
+
+        const newTaskObj = {
+          id: "task_" + Date.now(),
+          title: taskInput.value.trim(),
+          category: categorySelect.value || "Others",
+          priority: prioritySelect.value || "Medium",
+          dueDate: dueDateInput.value,
+          status: "pending",
+        };
+
+        tasks.push(newTaskObj);
+        localStorage.setItem("kanban-board-tasks", JSON.stringify(tasks));
+        renderKanban();
+
+        taskInput.value = "";
+        categorySelect.selectedIndex = 0;
+        prioritySelect.selectedIndex = 0;
+        dueDateInput.value = "";
+      });
+
+      // Remove item node card cleanly from array references mappings
+      window.deleteTaskNode = function (id) {
+        tasks = tasks.filter((t) => t.id !== id);
+        localStorage.setItem("kanban-board-tasks", JSON.stringify(tasks));
+        renderKanban();
+        showKanbanToast("🗑️ Task removed!", "info");
+      };
+
+      // Mark task as Completed (toggle)
+      window.markTaskCompleted = function (id) {
+        tasks = tasks.map((t) =>
+          t.id === id
+            ? { ...t, status: t.status === "completed" ? "pending" : "completed" }
+            : t
+        );
+        localStorage.setItem("kanban-board-tasks", JSON.stringify(tasks));
+        renderKanban();
+        const t = tasks.find((t) => t.id === id);
+        showKanbanToast(t && t.status === "completed" ? "✅ Marked as Completed!" : "🔄 Moved back to Pending!", "success");
+      };
+
+      // Mark task as In Progress (toggle)
+      window.markTaskInProgress = function (id) {
+        tasks = tasks.map((t) =>
+          t.id === id
+            ? { ...t, status: t.status === "inprogress" ? "pending" : "inprogress" }
+            : t
+        );
+        localStorage.setItem("kanban-board-tasks", JSON.stringify(tasks));
+        renderKanban();
+        const t = tasks.find((t) => t.id === id);
+        showKanbanToast(t && t.status === "inprogress" ? "⚡ Marked as In Progress!" : "🔄 Moved back to Pending!", "info");
+      };
+
+      // Lightweight toast for kanban actions
+      function showKanbanToast(message, type) {
+        const toast = document.getElementById("toast");
+        if (!toast) return;
+        toast.textContent = message;
+        toast.style.background = type === "success" ? "rgba(16,185,129,0.95)" : type === "info" ? "rgba(79,141,255,0.95)" : "rgba(20,184,166,0.95)";
+        toast.className = "pdf-message show";
+        setTimeout(() => toast.classList.remove("show"), 3000);
+      }
+
+      // Connect Drop Pipeline Target Observers
+      document.querySelectorAll(".kanban-column-drop-zone").forEach((zone) => {
+        zone.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          zone.classList.add("drag-over");
+        });
+
+        zone.addEventListener("dragleave", () => {
+          zone.classList.remove("drag-over");
+        });
+
+        zone.addEventListener("drop", (e) => {
+          e.preventDefault();
+          zone.classList.remove("drag-over");
+
+          const droppingCardId = e.dataTransfer.getData("text/plain");
+          const nextTargetLaneId = zone.id;
+
+          tasks = tasks.map((t) =>
+            t.id === droppingCardId ? { ...t, status: nextTargetLaneId } : t,
+          );
+          localStorage.setItem("kanban-board-tasks", JSON.stringify(tasks));
+          renderKanban();
+        });
+      });
+
+      // ─── Tab Navigation ────────────────────────────────────────────────────
+      window.showHome = function () {
+        document.getElementById("home-tab").className = "active-section";
+        document.getElementById("documents-tab").className = "inactive-section";
+        document.getElementById("nav-home").classList.add("active");
+        document.getElementById("nav-documents").classList.remove("active");
+      };
+
+      window.showDocuments = function () {
+        document.getElementById("home-tab").className = "inactive-section";
+        document.getElementById("documents-tab").className = "active-section";
+        document.getElementById("nav-home").classList.remove("active");
+        document.getElementById("nav-documents").classList.add("active");
+        renderSavedDocuments();
+      };
+
+      // ─── Save as PDF ───────────────────────────────────────────────────────
+      function saveAsPDF() {
+        if (tasks.length === 0) {
+          showKanbanToast("❌ No tasks to export!", "info");
+          return;
+        }
+        if (!window.jspdf) {
+          showKanbanToast("⏳ PDF library loading, try again!", "info");
+          return;
+        }
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        doc.setFont("Helvetica", "bold");
+        doc.setFontSize(22);
+        doc.text("To-Do List Report", 20, 24);
+
+        doc.setFont("Helvetica", "normal");
+        doc.setFontSize(10);
+        doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, 32);
+
+        const completedCount = tasks.filter((t) => t.status === "completed").length;
+        const inProgressCount = tasks.filter((t) => t.status === "inprogress").length;
+        const pendingCount = tasks.filter((t) => t.status === "pending").length;
+        doc.text(
+          `Total: ${tasks.length}  |  Completed: ${completedCount}  |  In Progress: ${inProgressCount}  |  Pending: ${pendingCount}`,
+          20,
+          38
+        );
+        doc.line(20, 42, 190, 42);
+
+        let y = 52;
+        doc.setFontSize(12);
+        tasks.forEach((task, i) => {
+          if (y > 270) { doc.addPage(); y = 20; }
+          const rawStatus = task.status || "pending";
+          const status = rawStatus === "inprogress" ? "IN PROGRESS" : rawStatus.toUpperCase();
+          const line = `${i + 1}. [${status}] (${task.priority || "Medium"}) [${task.category || "General"}] - ${task.title}`;
+          doc.text(line, 20, y);
+          y += 10;
+        });
+
+        const fileName = `TodoList_${Date.now()}.pdf`;
+        const pdfBlob = doc.output("blob");
+        const fileURL = URL.createObjectURL(pdfBlob);
+
+        const docEntry = {
+          id: Date.now(),
+          name: fileName,
+          url: fileURL,
+          total: tasks.length,
+          completed: completedCount,
+          time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+          date: new Date().toLocaleDateString(),
+        };
+
+        savedDocs.unshift(docEntry);
+        // Persist metadata only (URLs reset on reload)
+        const meta = savedDocs.map(({ url, ...rest }) => rest);
+        localStorage.setItem("kanban-saved-docs-meta", JSON.stringify(meta));
+
+        showKanbanToast("📥 PDF saved! Go to Documents to download.", "success");
+        renderSavedDocuments();
+      }
+
+      // ─── Render Saved Documents ────────────────────────────────────────────
+      function renderSavedDocuments() {
+        const docEmptyState = document.getElementById("emptyDocsState");
+        const docsList = document.querySelector(".documents-list");
+        if (!docsList) return;
+
+        docsList.innerHTML = "";
+
+        if (savedDocs.length === 0) {
+          if (docEmptyState) docEmptyState.style.display = "flex";
+        } else {
+          if (docEmptyState) docEmptyState.style.display = "none";
+          savedDocs.forEach((docEntry) => {
+            const item = document.createElement("li");
+            item.className = "doc-item";
+            const hasUrl = !!docEntry.url;
+            item.innerHTML = `
+              <div class="doc-info">
+                <div class="doc-name">📄 ${docEntry.name}</div>
+                <div class="doc-meta">
+                  <span class="doc-date">${docEntry.date} ${docEntry.time}</span>
+                  <span class="doc-task-count">${docEntry.total} tasks · ${docEntry.completed} completed</span>
+                </div>
+                ${!hasUrl ? '<div class="doc-stale">⚠️ File unavailable after reload — re-export to download again.</div>' : ""}
+              </div>
+              <div class="doc-actions">
+                ${hasUrl ? `<button class="doc-btn" onclick="window.open('${docEntry.url}', '_blank')">View</button>` : ""}
+                ${hasUrl ? `<a class="doc-btn" href="${docEntry.url}" download="${docEntry.name}">Download</a>` : ""}
+                <button class="doc-btn doc-btn-del" onclick="deleteDocEntry('${docEntry.id}')">Delete</button>
+              </div>
+            `;
+            docsList.appendChild(item);
+          });
+        }
+      }
+
+      window.deleteDocEntry = function (id) {
+        savedDocs = savedDocs.filter((d) => String(d.id) !== String(id));
+        const meta = savedDocs.map(({ url, ...rest }) => rest);
+        localStorage.setItem("kanban-saved-docs-meta", JSON.stringify(meta));
+        renderSavedDocuments();
+        showKanbanToast("🗑️ Document removed!", "info");
+      };
+
+      // ─── Clear Workspace Modal ─────────────────────────────────────────────
+      document.getElementById("savepdf").addEventListener("click", saveAsPDF);
+
+      document.getElementById("cleardone").addEventListener("click", () => {
+        document.getElementById("clearModal").style.display = "flex";
+      });
+
+      document.getElementById("modalCancelBtn").addEventListener("click", () => {
+        document.getElementById("clearModal").style.display = "none";
+      });
+
+      document.getElementById("modalConfirmBtn").addEventListener("click", () => {
+        tasks = [];
+        localStorage.setItem("kanban-board-tasks", JSON.stringify(tasks));
+        renderKanban();
+        document.getElementById("clearModal").style.display = "none";
+        showKanbanToast("🧹 Workspace cleared!", "info");
+      });
+
+      // Close modal if clicking on backdrop
+      document.getElementById("clearModal").addEventListener("click", (e) => {
+        if (e.target === document.getElementById("clearModal")) {
+          document.getElementById("clearModal").style.display = "none";
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", renderKanban);
+    </script>
+  </body>
 </html>

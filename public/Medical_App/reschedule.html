@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reschedule Appointment</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/darkmode.css">
+    <link rel="icon" href="../favv.png" type="image/x-icon" />
+    <style>
+        .input {
+            outline: none;
+            width: 50%; 
+            padding: 4px;
+        }
+
+        #reason {
+            padding: 5px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .feedbackmain {
+            color: white;
+            background-color: black;
+            border-radius: 10px;
+            padding: 20px;
+            line-height: 10px;
+            height: 80%;
+            width: 35%;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body style="background: url(pngtree-medical-device-line-draft-border-png-image_2392872.jpg);">
+<div id="appShell">
+
+    <div class="feedbackmain">
+
+        <div class="auth-page-actions">
+            <div id="userBadge" class="user-badge compact hidden" aria-live="polite">
+                <span id="userAvatar" class="user-avatar" aria-hidden="true">👤</span>
+                <div class="user-meta">
+                    <span id="userBadgeName">Guest</span>
+                    <span id="userBadgeRole">Role: --</span>
+                </div>
+            </div>
+            <button id="logoutBtn" class="auth-btn secondary is-role-hidden" type="button">Logout</button>
+        </div>
+
+        <h2>Reschedule Appointment</h2>
+        <p>Update your appointment details.</p>
+
+        <form id="rescheduleForm" data-role="patient">
+
+            <label for="patientName">Patient Name:</label>
+            <br><br>
+            <input type="text" class="input" style="padding: 4px;" id="patientName" name="patientName" required>
+            <br><br>
+
+            <label for="doctorName">Doctor Name:</label>
+            <br><br>
+            <input type="text" class="input" style="padding: 4px;" id="doctorName" name="doctorName" required>
+            <br><br>
+
+            <label for="appointmentDate">New Appointment Date:</label>
+            <br><br>
+            <input type="date" class="input" id="appointmentDate" name="appointmentDate" required>
+            <br><br>
+            <label for="reason">Reason for Rescheduling:</label>
+            <br><br>
+            <input id="reason" class="input" name="reason" required>
+            <br><br>
+
+            <button type="submit" id="btn">Reschedule Appointment</button>
+
+        </form>
+
+        <a href="index.html" class="back">
+            <button>Back To the Main</button>
+        </a>
+
+        <div class="role-note is-role-hidden" data-role-fallback="patient">
+            Rescheduling is available for patient accounts only.
+        </div>
+
+    </div>
+    <button id="themeToggle" class="theme-btn">🌙</button>
+
+
+</div>
+
+<div id="authOverlay" class="auth-overlay" aria-hidden="true">
+    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+        <div class="auth-brand">
+            <img src="assets/logo.png" alt="MedConsult logo">
+            <div>
+                <h2 id="authTitle">MedConsult Access</h2>
+                <p id="authSubtitle">Sign in to continue</p>
+            </div>
+        </div>
+
+        <section class="auth-panel" data-auth-panel="login">
+            <form id="loginForm">
+                <div class="auth-field">
+                    <label for="loginEmail">Email</label>
+                    <input id="loginEmail" class="auth-input" type="email" autocomplete="email" required>
+                </div>
+                <div class="auth-field">
+                    <label for="loginPassword">Password</label>
+                    <input id="loginPassword" class="auth-input" type="password" autocomplete="current-password" required>
+                </div>
+                <div class="auth-row">
+                    <label class="auth-remember">
+                        <input id="rememberMe" type="checkbox">
+                        Remember Me
+                    </label>
+                </div>
+                <p id="loginError" class="auth-error"></p>
+                <button type="submit" class="auth-submit">Login</button>
+                <div class="auth-footer">
+                    <span>Don't have an account?</span>
+                    <button type="button" data-auth-switch="signup">Sign Up</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="auth-panel is-hidden" data-auth-panel="signup">
+            <form id="signupForm">
+                <div class="auth-field">
+                    <label for="signupName">Full Name</label>
+                    <input id="signupName" class="auth-input" type="text" autocomplete="name" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupEmail">Email</label>
+                    <input id="signupEmail" class="auth-input" type="email" autocomplete="email" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupPassword">Password</label>
+                    <input id="signupPassword" class="auth-input" type="password" autocomplete="new-password" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupConfirm">Confirm Password</label>
+                    <input id="signupConfirm" class="auth-input" type="password" autocomplete="new-password" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupRole">Role</label>
+                    <select id="signupRole" class="auth-select" required>
+                        <option value="">Select role</option>
+                        <option value="patient">Patient</option>
+                        <option value="doctor">Doctor</option>
+                    </select>
+                </div>
+                <p id="signupError" class="auth-error"></p>
+                <button type="submit" class="auth-submit">Create Account</button>
+                <div class="auth-footer">
+                    <span>Already have an account?</span>
+                    <button type="button" data-auth-switch="login">Login</button>
+                </div>
+                <p class="auth-note">
+                    Demo only: passwords are encoded for storage. Real apps require server-side hashing (e.g., bcrypt).
+                </p>
+            </form>
+        </section>
+    </div>
+</div>
+
+<div id="toast-container" class="toast-container"></div>
+
+    <script src="assets/js/session.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/roleManager.js"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/reschedule.js"></script>
+
+    <script src="reschedule.js"></script>
+    <script src="js/script.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/darkmode.js"></script>
+    
+</body>
+
+</html>

@@ -1,125 +1,209 @@
-<!DOCTYPE html>
+<!doctype html>
+
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Jay Hind</title>
 
-    <link href="../indianflag/flag.css" rel="stylesheet" />
+    <link rel="stylesheet" href="flag.css" />
+
     <link rel="icon" href="../favv.png" type="image/x-icon" />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   </head>
 
   <body>
+    <a href="/" class="project-back-button"> ← Back to Home </a>
+    <!-- Background Video Section -->
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
     <div class="background-video">
       <video autoplay muted loop id="bg-video">
         <source
           src="https://media.istockphoto.com/id/1503396346/video/happy-indian-republic-day-creative-flag-design-background.mp4?s=mp4-640x640-is&k=20&c=sScbw69iYMiOdC9_KZ2L12EL43ke3lsggE9aK7StIt4="
           type="video/mp4"
         />
-        Your browser does not support HTML5 video.
       </video>
     </div>
 
-    <div class="wrapper">
+    <!-- MAIN CONTENT -->
 
-      <div class="flag-assembly">
-        <div class="bar">
-          <div class="bar-1"></div>
-          <div class="bar-2"></div>
-          <div class="bar-3"></div>
-        </div>
+    <div class="main-page">
+      <!-- FLAG + QUOTE -->
 
-        <div class="flag">
-          <div class="top"></div>
+      <div class="wrapper">
+        <!-- FLAG -->
 
-          <div class="middle">
-            <img
-              src="../indianflag/img/ashokchakr.gif"
-              alt="Ashoka Chakra"
-            />
+        <div class="flag-assembly">
+          <div class="bar">
+            <div class="bar-1"></div>
+
+            <div class="bar-2"></div>
+
+            <div class="bar-3"></div>
           </div>
 
-          <div class="bottom"></div>
+          <div class="flag">
+            <div class="top"></div>
+
+            <div class="middle">
+              <img src="../indianflag/img/ashokchakr.gif" alt="Ashoka Chakra" />
+            </div>
+
+            <div class="bottom"></div>
+          </div>
+        </div>
+
+        <!-- QUOTE CARD -->
+
+        <div class="quote-container">
+          <div class="image-wrapper">
+            <img id="patriot-image" src="" alt="Patriot Image" />
+          </div>
+
+          <div class="quote">"Give me blood and I will give you freedom."</div>
+
+          <div class="author">- Subhas Chandra Bose</div>
+
+          <div class="quote-nav">
+            <button id="prev-quote">&#8592;</button>
+
+            <button id="next-quote">&#8594;</button>
+          </div>
         </div>
       </div>
+      <!-- MUSIC -->
 
+      <div class="music-controls">
+        <audio id="bgMusic" controls autoplay loop>
+          <source src="vande_mataram.mp3" type="audio/mpeg" />
+        </audio>
+
+      <!-- Quotes Section -->
       <div class="quote-container">
         <div class="image-wrapper">
-          <img id="patriot-image" src="" alt="Patriot Image" />
+          <img id="patriot-image" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Patriot Image" />
         </div>
-
         <div class="quote">
           "Give me blood and I will give you freedom."
         </div>
-
         <div class="author">- Subhas Chandra Bose</div>
-
+        
         <div class="quote-nav">
-          <button id="prev-quote">&#8592;</button>
-          <button id="next-quote">&#8594;</button>
+          <button id="prev-quote" title="Previous Quote">&#8592;</button>
+          
+          <!-- NEW: Text to Speech Listen Button -->
+          <button id="speak-quote" style="margin: 0 10px; padding: 5px 15px; border-radius: 20px; font-weight: bold; background: #FF9933; color: white; border: none; cursor: pointer; transition: 0.3s;" onmouseover="this.style.background='#138808'" onmouseout="this.style.background='#FF9933'">
+            🔊 Listen
+          </button>
+
+          <button id="next-quote" title="Next Quote">&#8594;</button>
         </div>
       </div>
+      <!-- KNOW MORE -->
+
+      <section class="know-more-section">
+        <h2>Know More About Indian Flag</h2>
+
+        <div class="info-container">
+          <div class="info-card saffron">
+            <h3>Saffron</h3>
+
+            <p>
+              The saffron color represents courage, sacrifice, and the spirit of
+              strength.
+            </p>
+          </div>
+
+          <div class="info-card white">
+            <h3>White</h3>
+
+            <p>The white stripe symbolizes peace, truth, and honesty.</p>
+          </div>
+
+          <div class="info-card green">
+            <h3>Green</h3>
+
+            <p>
+              The green color represents growth, prosperity, and harmony with
+              nature.
+            </p>
+          </div>
+
+          <div class="info-card chakra">
+            <h3>Ashoka Chakra</h3>
+
+            <p>
+              The Ashoka Chakra stands for progress, dharma, and continuous
+              movement in life.
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
 
+    <!-- SCRIPT -->
+    <!-- Background Music -->
     <div class="music-controls">
       <audio id="bgMusic" controls autoplay loop>
-        <source src="vande_mataram.mp3" type="audio/mpeg">
+        <source src="vande_mataram.mp3" type="audio/mpeg" />
       </audio>
     </div>
-
+    <section id="flag-history">
+      <h2>Evolution of the Indian Flag</h2>
+      <p class = "subtitle">From 1906 to Independence — the journey of our Tiranga</p>
+      <div class="timeline-track" id="timelineTrack"></div>
+      <div id="flagCards"></div>
+      <div class="timeline-nav">
+        <button id="btnPrev">&#8592; Previous</button>
+        <button id="btnNext">Next &#8594;</button>
+      </div>
+    </section>
+    <script src="flag-history.js"></script>
     <script>
-      // Quotes data
       const quotes = [
         {
           text: '"Give me blood and I will give you freedom."',
+
           author: "- Subhas Chandra Bose",
+
           image: "./img/subhas_bose.png",
         },
+
         {
           text: '"Swaraj is my birthright and I shall have it."',
+
           author: "- Bal Gangadhar Tilak",
+
           image: "./img/bal_tilak.png",
         },
+
         {
           text: '"Inquilab Zindabad."',
+
           author: "- Bhagat Singh",
+
           image: "./img/bhagat_singh.jpg",
         },
-        {
-          text: '"Jai Jawan Jai Kisan."',
-          author: "- Lal Bahadur Shastri",
-          image: "./img/lal_bahadur.png",
-        },
+
         {
           text: '"Jai Hind!"',
+
           author: "- Netaji Subhas Chandra Bose",
+
           image: "./img/subhas_bose.png",
         },
-        {
-          text: '"Sarfaroshi ki tamanna ab hamare dil mein hai."',
-          author: "- Ram Prasad Bismil",
-          image: "./img/ram_prasad.png",
-        },
-        {
-          text:
-            '"Dushman ki goliyon ka hum samna karenge, Azad hee rahein hain, azad hee rahenge."',
-          author: "- Chandrashekhar Azad",
-          image: "./img/azad.png",
-        },
-        {
-          text: '"Satyameva Jayate."',
-          author: "- Pandit Madan Mohan Malaviya",
-          image: "./img/pandit_madan_mohan.webp",
-        },
-        {
-          text: '"Sarvodaya, Samaj Sudharak, Samaj Sevak."',
-          author: "- Mahatma Gandhi",
-          image: "./img/gandhi.png",
-        },
+
         {
           text: '"Karo ya maro."',
+
           author: "- Mahatma Gandhi",
+
           image: "./img/gandhi.png",
         },
       ];
@@ -127,52 +211,139 @@
       let currentQuoteIndex = 0;
 
       const quoteText = document.querySelector(".quote");
+
       const quoteAuthor = document.querySelector(".author");
+
       const patriotImage = document.getElementById("patriot-image");
 
       function displayQuote() {
-  const currentQuote = quotes[currentQuoteIndex];
+        const currentQuote = quotes[currentQuoteIndex];
 
-  // Preload image first
-  const img = new Image();
+        const img = new Image();
 
-  img.onload = () => {
-    patriotImage.src = currentQuote.image;
-    patriotImage.alt = currentQuote.author;
+        img.onload = () => {
+          patriotImage.src = currentQuote.image;
 
-    quoteText.textContent = currentQuote.text;
-    quoteAuthor.textContent = currentQuote.author;
-  };
+          patriotImage.alt = currentQuote.author;
 
-  img.src = currentQuote.image;
-}
+          quoteText.textContent = currentQuote.text;
+
+          quoteAuthor.textContent = currentQuote.author;
+        };
+
+        img.src = currentQuote.image;
+      }
 
       displayQuote();
 
       setInterval(() => {
         currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+
         displayQuote();
       }, 5000);
 
-      document.getElementById("prev-quote").addEventListener("click", () => {
-        currentQuoteIndex =
-          (currentQuoteIndex - 1 + quotes.length) % quotes.length;
-        displayQuote();
-      });
+      document
 
-      document.getElementById("next-quote").addEventListener("click", () => {
-        currentQuoteIndex =
-          (currentQuoteIndex + 1) % quotes.length;
-        displayQuote();
-      });
+        .getElementById("prev-quote")
+
+        .addEventListener("click", () => {
+          currentQuoteIndex =
+            (currentQuoteIndex - 1 + quotes.length) % quotes.length;
+
+          displayQuote();
+        });
+
+      document
+
+        .getElementById("next-quote")
+
+        .addEventListener("click", () => {
+          currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+
+          displayQuote();
+        });
 
       const music = document.getElementById("bgMusic");
 
       window.addEventListener("load", () => {
         music.play().catch(() => {
-          console.log("Autoplay blocked by browser");
+          console.log("Autoplay blocked");
         });
       });
     </script>
+
+    <!-- Flag history element -->
+     <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Journey of the Indian Flag</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Background Ashoka Wheel Watermark -->
+  <svg class="bg-wheel" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="100" cy="100" r="95" fill="none" stroke="white" stroke-width="3"/>
+    <circle cx="100" cy="100" r="15" fill="none" stroke="white" stroke-width="2.5"/>
+    <circle cx="100" cy="100" r="8"  fill="white"/>
+    <g id="spokes">
+      <line x1="100" y1="15"  x2="100" y2="85"  stroke="white" stroke-width="1.8"/>
+      <line x1="100" y1="115" x2="100" y2="185" stroke="white" stroke-width="1.8"/>
+    </g>
+    <use href="#spokes" transform="rotate(15  100 100)"/>
+    <use href="#spokes" transform="rotate(30  100 100)"/>
+    <use href="#spokes" transform="rotate(45  100 100)"/>
+    <use href="#spokes" transform="rotate(60  100 100)"/>
+    <use href="#spokes" transform="rotate(75  100 100)"/>
+    <use href="#spokes" transform="rotate(90  100 100)"/>
+    <use href="#spokes" transform="rotate(105 100 100)"/>
+    <use href="#spokes" transform="rotate(120 100 100)"/>
+    <use href="#spokes" transform="rotate(135 100 100)"/>
+    <use href="#spokes" transform="rotate(150 100 100)"/>
+    <use href="#spokes" transform="rotate(165 100 100)"/>
+  </svg>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <h1>The Journey of the Indian Flag</h1>
+    <p>From colonial resistance to sovereign pride — six flags, forty-one years</p>
+    <div class="ornament">
+      <div class="ornament-line"></div>
+      <div class="ornament-dot"></div>
+      <div class="ornament-line right"></div>
+    </div>
+  </header>
+
+  <!-- Timeline Strip -->
+  <div class="timeline-strip" id="timeline"></div>
+
+  <!-- Main Card -->
+  <div class="card-container">
+    <div class="flag-card card-top-corners" id="flagCard">
+
+      <!-- Card content injected by JS -->
+      <div class="card-inner" id="cardInner"></div>
+
+      <!-- Navigation -->
+      <div class="nav-row">
+        <button class="nav-btn"      id="prevBtn" onclick="navigate(-1)">← Previous</button>
+        <button class="nav-btn next" id="nextBtn" onclick="navigate(1)">Next →</button>
+      </div>
+
+      <!-- Progress Dots -->
+      <div class="progress-dots" id="progressDots"></div>
+
+      <!-- Counter -->
+      <p class="counter" id="counter"></p>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  </body>
+  </html>
   </body>
 </html>

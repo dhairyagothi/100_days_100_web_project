@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
     <!-- Centered Wrapper -->
     <div class="main-container">
         <div class="glass-card p-4 p-md-5">
@@ -34,6 +36,28 @@
                 <div id="resultIcon" class="mb-2 fs-1">⌨️</div>
                 <div id="resultText">Waiting for you to click generate...</div>
             </div>
+            <!-- Visualization Section -->
+<div class="visualizer-container mt-4">
+    <h4 class="text-white mb-3">Palindrome Visualization</h4>
+
+    <div id="processedText" class="processed-text mb-3"></div>
+
+    <div id="characterContainer" class="character-container"></div>
+
+    <div class="stats mt-3">
+        <p id="comparisonCount" class="text-white">
+            Comparisons: 0
+        </p>
+
+        <p class="text-info">
+            Time Complexity: O(n)
+        </p>
+    </div>
+
+    <button id="educationalToggle" class="btn btn-outline-light btn-sm mt-2">
+        Educational Mode: ON
+    </button>
+</div>
         </div>
     </div>
 

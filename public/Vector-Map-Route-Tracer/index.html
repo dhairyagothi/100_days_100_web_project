@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Pathfinder OS</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="favicon_pathfinder.png">
+
+</head>
+
+<body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
+
+<header>
+
+<div class="logo">
+PATH<span>FINDER</span> OS
+</div>
+
+<div class="header-tag">
+<span class="status-dot"></span>
+SYSTEM ONLINE — GRAPH ENGINE v2.4
+</div>
+
+<div class="header-tag">
+VECTOR MAP VISUALIZER
+</div>
+
+</header>
+
+<div class="workspace">
+
+<!-- LEFT PANEL -->
+
+<aside class="side">
+
+<div class="panel-title">// NETWORK NODES</div>
+
+<div class="city-list" id="city-list"></div>
+
+<div class="panel-title">// ALGORITHM</div>
+
+<div class="algo-btns">
+
+<button class="algo-btn active" data-algo="dijkstra">
+DIJKSTRA'S
+</button>
+
+<button class="algo-btn" data-algo="astar">
+A* SEARCH
+</button>
+
+</div>
+
+<button class="reset-btn" onclick="resetAll()">
+RESET MAP
+</button>
+
+</aside>
+
+<!-- MAP AREA -->
+
+<main id="map-container">
+
+<svg id="map-svg"
+viewBox="0 0 900 1200"
+preserveAspectRatio="xMidYMid meet">
+
+<defs>
+
+<filter id="glow">
+
+<feGaussianBlur stdDeviation="3" result="blur"/>
+
+<feMerge>
+<feMergeNode in="blur"/>
+<feMergeNode in="SourceGraphic"/>
+</feMerge>
+
+</filter>
+
+</defs>
+
+<g id="edges-layer"></g>
+
+<g id="nodes-layer"></g>
+
+</svg>
+
+<!-- LOWER PORTAL -->
+
+<div id="status-portal">
+
+<div class="portal-title">
+PATHFINDER TERMINAL
+</div>
+
+<div id="algo-status">
+READY
+</div>
+
+</div>
+
+</main>
+
+<!-- RIGHT PANEL -->
+
+<aside class="side">
+
+<div class="panel-title">// METRICS</div>
+
+<div class="metrics">
+
+<div class="metric-row">
+<div class="metric-label">Total Distance</div>
+<div class="metric-value" id="m-dist">—</div>
+</div>
+
+<div class="metric-row">
+<div class="metric-label">Nodes Visited</div>
+<div class="metric-value" id="m-nodes">—</div>
+</div>
+
+<div class="metric-row">
+<div class="metric-label">Edges Relaxed</div>
+<div class="metric-value" id="m-edges">—</div>
+</div>
+
+<div class="metric-row">
+<div class="metric-label">Execution Time</div>
+<div class="metric-value" id="m-time">—</div>
+</div>
+
+</div>
+
+<div class="panel-title">// OPTIMAL PATH</div>
+
+<div class="path-seq" id="path-seq">
+Select source and destination...
+</div>
+
+</aside>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SHADOW VAULT ESCAPE</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="theme-dark">
+    <div class="container-fluid min-vh-100 d-flex flex-column">
+      <!-- Header -->
+      <header class="bg-dark border-bottom border-danger py-3">
+        <div class="container">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-3">
+              <i class="fas fa-skull-crossbones fa-2x text-danger"></i>
+              <h1 class="text-neon mb-0">SHADOW VAULT</h1>
+            </div>
+            <div class="d-flex gap-3 align-items-center">
+              <button
+                class="btn btn-outline-danger btn-sm"
+                onclick="toggleTheme()"
+              >
+                <i class="fas fa-palette"></i> Theme
+              </button>
+              <button
+                class="btn btn-outline-danger btn-sm"
+                onclick="showHelpModal()"
+              >
+                <i class="fas fa-question-circle"></i> Help
+              </button>
+              <button
+                class="btn btn-outline-danger btn-sm"
+                onclick="showRulesModal()"
+              >
+                <i class="fas fa-book"></i> Rules
+              </button>
+              <div id="status-bar" class="text-end small">
+                <div>
+                  Operative: <span id="player-name" class="text-warning"></span>
+                </div>
+                <div>
+                  Level: <span id="current-level" class="text-info">1</span> |
+                  Room: <span id="current-room" class="text-info">1</span>
+                </div>
+                <div>
+                  Time: <span id="timer" class="text-danger">30:00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Game Area -->
+      <div class="flex-grow-1 container py-4 d-flex flex-column">
+        <div class="row flex-grow-1">
+          <div class="col-lg-8">
+            <div
+              id="room-container"
+              class="card bg-dark border-danger h-100 shadow-lg"
+            >
+              <div
+                class="card-header border-danger d-flex justify-content-between"
+              >
+                <span id="room-title" class="h4 text-danger"
+                  >ENTERING VAULT SECTOR...</span
+                >
+                <span class="badge bg-danger" id="room-number">ROOM 1</span>
+              </div>
+              <div
+                class="card-body d-flex flex-column"
+                style="min-height: 500px"
+              >
+                <!-- Visual -->
+                <div
+                  id="room-visual"
+                  class="mb-4 text-center bg-black p-4 rounded border border-secondary"
+                  style="
+                    height: 280px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 5rem;
+                  "
+                >
+                  <i id="visual-icon" class="fas fa-door-closed text-muted"></i>
+                </div>
+
+                <!-- Puzzle -->
+                <div id="puzzle-description" class="mb-4 lead text-light"></div>
+
+                <!-- Hints -->
+                <div id="hints-area" class="mb-3"></div>
+              </div>
+              <div class="card-footer bg-dark border-top border-danger">
+                <div class="input-group">
+                  <span
+                    class="input-group-text bg-black text-danger border-danger"
+                    >$</span
+                  >
+                  <input
+                    type="text"
+                    id="terminal-input"
+                    class="form-control bg-black text-success border-danger font-monospace"
+                    placeholder="Enter command or answer..."
+                    onkeydown="if (event.key === 'Enter') submitAnswer();"
+                  />
+                  <button class="btn btn-danger" onclick="submitAnswer()">
+                    EXECUTE
+                  </button>
+                </div>
+                <small class="text-muted mt-2 d-block"
+                  >Type <span class="text-info">hint</span> |
+                  <span class="text-info">inventory</span> |
+                  <span class="text-info">status</span></small
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Sidebar -->
+          <div class="col-lg-4">
+            <div class="card bg-dark border-danger h-100">
+              <div class="card-header border-danger">
+                <i class="fas fa-user-secret"></i> OPERATIVE PROFILE
+              </div>
+              <div class="card-body">
+                <div id="profile-info" class="mb-4 small"></div>
+
+                <hr class="border-danger" />
+                <h6 class="text-warning mb-2">INVENTORY</h6>
+                <div
+                  id="inventory-list"
+                  class="list-group list-group-flush bg-transparent text-light"
+                ></div>
+
+                <hr class="border-danger" />
+                <div class="progress mb-2">
+                  <div
+                    id="level-progress"
+                    class="progress-bar bg-danger"
+                    style="width: 10%"
+                  ></div>
+                </div>
+                <small class="text-muted">VAULT STABILITY</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Terminal Log -->
+      <footer class="bg-black border-top border-danger py-2">
+        <div class="container">
+          <div
+            id="game-log"
+            class="terminal-log font-monospace text-success small overflow-auto"
+            style="height: 130px"
+          ></div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Modals -->
+    <div
+      class="modal fade"
+      id="startModal"
+      tabindex="-1"
+      data-bs-backdrop="static"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-dark border-danger">
+          <div class="modal-header border-danger">
+            <h5 class="modal-title text-danger">
+              INITIALIZE OPERATIVE PROFILE
+            </h5>
+          </div>
+          <div class="modal-body">
+            <form id="profile-form">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label text-light">Codename</label>
+                  <input
+                    type="text"
+                    class="form-control bg-black text-light border-danger"
+                    id="q-name"
+                    required
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label text-light">Role</label>
+                  <select
+                    class="form-select bg-black text-light border-danger"
+                    id="q-role"
+                  >
+                    <option value="Hacker">Hacker</option>
+                    <option value="Locksmith">Locksmith</option>
+                    <option value="Psychologist">Psychologist</option>
+                    <option value="Survivor">Survivor</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label text-light">Starting Level</label>
+                <select
+                  class="form-select bg-black text-light border-danger"
+                  id="q-level"
+                >
+                  <option value="1">Level 1 - Awakening</option>
+                  <option value="2">Level 2 - Descent</option>
+                  <option value="3">Level 3 - Fracture</option>
+                  <option value="4">Level 4 - Annihilation</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label text-light"
+                  >Why are you entering the Vault?</label
+                >
+                <input
+                  type="text"
+                  class="form-control bg-black text-light border-danger"
+                  id="q-reason"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label text-light">Special Ability</label>
+                <input
+                  type="text"
+                  class="form-control bg-black text-light border-danger"
+                  id="q-ability"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label text-light"
+                  >Favorite Puzzle Style</label
+                >
+                <select
+                  class="form-select bg-black text-light border-danger"
+                  id="q-puzzle"
+                >
+                  <option value="code">Cryptic Codes</option>
+                  <option value="riddle">Riddles</option>
+                  <option value="math">Math Traps</option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer border-danger">
+            <button class="btn btn-danger w-100" onclick="startGame()">
+              ENTER THE SHADOW VAULT
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Win Modal -->
+    <div class="modal fade" id="winModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content bg-dark border-danger">
+          <div class="modal-header border-danger">
+            <h5 class="modal-title text-success">ESCAPE SUCCESSFUL</h5>
+          </div>
+          <div class="modal-body text-center">
+            <i class="fas fa-trophy fa-6x text-warning mb-3"></i>
+            <p id="win-message" class="lead"></p>
+          </div>
+          <div class="modal-footer border-danger">
+            <button class="btn btn-outline-light" onclick="restartGame()">
+              PLAY AGAIN
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Help & Rules Modals (same as previous) -->
+    <div class="modal fade" id="helpModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content bg-dark border-danger">
+          <div class="modal-header border-danger">
+            <h5>TERMINAL COMMANDS</h5>
+          </div>
+          <div class="modal-body text-light">
+            <p>
+              <code>hint</code> — Get a hint (costs time)<br />
+              <code>inventory</code> — Check items<br />
+              <code>status</code> — Show progress
+            </p>
+          </div>
+          <div class="modal-footer border-danger">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
