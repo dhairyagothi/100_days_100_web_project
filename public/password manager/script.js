@@ -1,75 +1,777 @@
-const passwordForm = document.getElementById("passwordForm");
+/**
+ * =========================================================
+ * VAULT PASSWORD MANAGER — COMPLETE SCRIPT.JS
+ * Modern UI + Theme Toggle + Vault Features
+ * =========================================================
+ */
 
+"use strict";
 const websiteInput = document.getElementById("website");
 const usernameInput = document.getElementById("username");
 const passwordInput = document.getElementById("password");
+const searchPassword = document.getElementById("searchPassword");
+const generatePasswordBtn = document.getElementById("generatePassword");
+const passwordStrength = document.getElementById("passwordStrength");
+const lengthReq = document.getElementById("lengthReq");
+const upperReq = document.getElementById("upperReq");
+const numberReq = document.getElementById("numberReq");
+const specialReq = document.getElementById("specialReq");
 
-const passwordTable = document.getElementById("passwordTable");
 
-const emptyState = document.getElementById("emptyState");
+/* =========================================================
+   STATE
+========================================================= */
 
-const togglePassword = document.getElementById("togglePassword");
+let masterPassword = null;
+let entries = [];
+let pwVisible = false;
 
-const toast = document.getElementById("toast");
+const STORAGE_KEY = "vault_entries_v2";
+const THEME_KEY = "vault_theme";
 
-/* -------------------- */
-/* Toast Notification */
-/* -------------------- */
+/* =========================================================
+   DOM READY
+========================================================= */
 
-function showToast(message, type = "success") {
+document.addEventListener("DOMContentLoaded", () => {
+  initializeTheme();
+  initializeGate();
+  updateClock();
+  setInterval(updateClock, 1000);
 
-    toast.textContent = message;
+  const passwordInput = document.getElementById("password");
 
-    if (type === "success") {
-        toast.style.background = "#22c55e";
-    } else {
-        toast.style.background = "#ef4444";
-    }
+  if (passwordInput) {
+    passwordInput.addEventListener("input", (e) => {
+      onPasswordInput(e.target.value);
+    });
+  }
 
-    toast.classList.add("show");
+  renderList();
+  updateStats();
+});
+
+/* =========================================================
+   THEME TOGGLE
+========================================================= */
+
+function initializeTheme() {
+  const savedTheme = localStorage.getItem(THEME_KEY);
+
+  if (savedTheme === "light") {
+    document.body.classList.add("light-mode");
+    updateThemeIcon(true);
+  } else {
+    document.body.classList.remove("light-mode");
+    updateThemeIcon(false);
+  }
+}
+
+function toggleTheme() {
+  const isLight = document.body.classList.toggle("light-mode");
+
+  localStorage.setItem(
+    THEME_KEY,
+    isLight ? "light" : "dark"
+  );
+
+  updateThemeIcon(isLight);
+}
+
+function updateThemeIcon(isLight) {
+  const btn = document.getElementById("themeToggle");
+
+  if (!btn) return;
+
+  btn.innerHTML = isLight
+    ? "🌙 Dark"
+    : "☀️ Light";
+}
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+function updateClock() {
+  const clock = document.getElementById("liveClock");
+
+  if (!clock) return;
+
+  const now = new Date();
+
+  clock.textContent = now.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+}
+
+/* =========================================================
+   GATE
+========================================================= */
+
+function initializeGate() {
+  const stored = getStoredEntries();
+
+  const gateSub = document.getElementById("gate-sub");
+  const gateHint = document.getElementById("gate-hint");
+
+  if (stored.length === 0) {
+    gateSub.textContent =
+      "Create a master password to secure your vault.";
+
+    gateHint.textContent =
+      "Your master password is never stored.";
+  } else {
+    gateSub.textContent =
+      "Enter your master password to unlock.";
+
+    gateHint.textContent =
+      `${stored.length} encrypted entr${stored.length === 1 ? "y" : "ies"
+      } stored securely.`;
+  }
+
+  document
+    .getElementById("master-input")
+    .addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        unlockVault();
+      }
+    });
+}
+
+async function unlockVault() {
+  const input = document
+    .getElementById("master-input")
+    .value.trim();
+
+  const errEl = document.getElementById("gate-error");
+
+  errEl.textContent = "";
+
+  if (!input || input.length < 6) {
+    errEl.textContent =
+      "Master password must be at least 6 characters.";
+    return;
+  }
+
+  const stored = getStoredEntries();
+
+  if (stored.length === 0) {
+    masterPassword = input;
+    entries = [];
+    showApp();
+    return;
+  }
+
+  try {
+    await decryptEntry(stored[0], input);
+
+    masterPassword = input;
+
+    entries = await decryptAll(stored, input);
+
+    showApp();
+  } catch {
+    errEl.textContent =
+      "Incorrect master password.";
+  }
+}
+
+function showApp() {
+  document
+    .getElementById("gate-overlay")
+    .classList.add("hidden");
+
+  document
+    .getElementById("app")
+    .classList.remove("hidden");
+
+  renderList();
+  updateStats();
+}
+
+function lockVault() {
+  masterPassword = null;
+  entries = [];
+
+  document
+    .getElementById("app")
+    .classList.add("hidden");
+
+  document
+    .getElementById("gate-overlay")
+    .classList.remove("hidden");
+
+  document.getElementById("master-input").value = "";
+}
+
+/* =========================================================
+   CRYPTO
+========================================================= */
+
+async function deriveKey(password, salt) {
+  const enc = new TextEncoder();
+
+  const keyMaterial =
+    await crypto.subtle.importKey(
+      "raw",
+      enc.encode(password),
+      { name: "PBKDF2" },
+      false,
+      ["deriveKey"]
+    );
+
+  return crypto.subtle.deriveKey(
+    {
+      name: "PBKDF2",
+      salt,
+      iterations: 100000,
+      hash: "SHA-256",
+    },
+    keyMaterial,
+    {
+      name: "AES-GCM",
+      length: 256,
+    },
+    false,
+    ["encrypt", "decrypt"]
+  );
+}
+
+async function encryptText(text, password) {
+  const salt = crypto.getRandomValues(
+    new Uint8Array(16)
+  );
+
+  const iv = crypto.getRandomValues(
+    new Uint8Array(12)
+  );
+
+  const key = await deriveKey(password, salt);
+
+  const encoded = new TextEncoder().encode(text);
+
+  const cipher = await crypto.subtle.encrypt(
+    { name: "AES-GCM", iv },
+    key,
+    encoded
+  );
+
+  const combined = new Uint8Array(
+    16 + 12 + cipher.byteLength
+  );
+
+  combined.set(salt, 0);
+  combined.set(iv, 16);
+  combined.set(new Uint8Array(cipher), 28);
+
+  return btoa(
+    String.fromCharCode(...combined)
+  );
+}
+
+async function decryptText(blob, password) {
+  const bytes = Uint8Array.from(
+    atob(blob),
+    (c) => c.charCodeAt(0)
+  );
+
+  const salt = bytes.slice(0, 16);
+  const iv = bytes.slice(16, 28);
+  const cipher = bytes.slice(28);
+
+  const key = await deriveKey(password, salt);
+
+  const plain = await crypto.subtle.decrypt(
+    { name: "AES-GCM", iv },
+    key,
+    cipher
+  );
+
+  return new TextDecoder().decode(plain);
+}
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+function getStoredEntries() {
+  try {
+    return (
+      JSON.parse(
+        localStorage.getItem(STORAGE_KEY)
+      ) || []
+    );
+  } catch {
+    return [];
+  }
+}
+
+function persistEntries() {
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(entries)
+  );
+}
+
+/* =========================================================
+   ENTRY CRUD
+========================================================= */
+
+async function addEntry() {
+  const site = document
+    .getElementById("site")
+    .value.trim();
+
+  const username = document
+    .getElementById("username")
+    .value.trim();
+
+  const password =
+    document.getElementById("password").value;
+
+  const category =
+    document.getElementById("category")
+      ?.value || "Personal";
+
+  const favorite =
+    document.getElementById("favorite")
+      ?.checked || false;
+
+  const errEl =
+    document.getElementById("form-error");
+
+  errEl.classList.add("hidden");
+
+  if (!site || !username || !password) {
+    errEl.textContent =
+      "Please fill all required fields.";
+
+    errEl.classList.remove("hidden");
+
+    return;
+  }
+
+  try {
+    const encryptedPassword =
+      await encryptText(
+        password,
+        masterPassword
+      );
+
+    const entry = {
+      id: Date.now(),
+      site,
+      username,
+      encryptedPassword,
+      category,
+      favorite,
+      createdAt: new Date().toISOString(),
+    };
+
+    entries.unshift(entry);
+
+    persistEntries();
+
+    clearForm();
+
+    renderList();
+
+    updateStats();
+  } catch (e) {
+    errEl.textContent =
+      "Failed to encrypt entry.";
+
+    errEl.classList.remove("hidden");
+  }
+}
+
+function clearForm() {
+  document.getElementById("site").value = "";
+  document.getElementById("username").value = "";
+  document.getElementById("password").value = "";
+
+  const fav =
+    document.getElementById("favorite");
+
+  if (fav) fav.checked = false;
+
+  resetStrength();
+}
+
+function deleteEntry(id) {
+  const confirmDelete = confirm(
+    "Delete this entry?"
+  );
+
+  if (!confirmDelete) return;
+
+  entries = entries.filter(
+    (e) => e.id !== id
+  );
+
+  persistEntries();
+
+  renderList();
+
+  updateStats();
+}
+
+async function revealPassword(id) {
+  const entry = entries.find(
+    (e) => e.id === id
+  );
+
+  if (!entry) return;
+
+  const pwEl = document.querySelector(
+    `[data-pw="${id}"]`
+  );
+
+  const btn = document.querySelector(
+    `[data-reveal="${id}"]`
+  );
+
+  if (
+    pwEl.dataset.revealed === "true"
+  ) {
+    pwEl.textContent = "••••••••";
+    pwEl.dataset.revealed = "false";
+
+    btn.textContent = "Show";
+
+    return;
+  }
+
+  const pw = await decryptText(
+    entry.encryptedPassword,
+    masterPassword
+  );
+
+  pwEl.textContent = pw;
+
+  pwEl.dataset.revealed = "true";
+
+  btn.textContent = "Hide";
+}
+
+async function copyPassword(id) {
+  const entry = entries.find(
+    (e) => e.id === id
+  );
+
+  if (!entry) return;
+
+  const pw = await decryptText(
+    entry.encryptedPassword,
+    masterPassword
+  );
+
+  await navigator.clipboard.writeText(pw);
+
+  const btn = document.querySelector(
+    `[data-copy="${id}"]`
+  );
+
+  if (btn) {
+    btn.textContent = "Copied!";
 
     setTimeout(() => {
-        toast.classList.remove("show");
-    }, 2500);
+      btn.textContent = "Copy";
+    }, 1500);
+  }
 }
 
-/* -------------------- */
-/* Get Passwords */
-/* -------------------- */
+/* =========================================================
+   RENDER LIST
+========================================================= */
 
-function getPasswords() {
+function renderList() {
+  const list =
+    document.getElementById("entry-list");
 
-    return JSON.parse(localStorage.getItem("passwords")) || [];
+  if (!list) return;
+
+  const search =
+    document
+      .getElementById("search")
+      ?.value.toLowerCase() || "";
+
+  const filtered = entries.filter(
+    (entry) =>
+      entry.site
+        .toLowerCase()
+        .includes(search) ||
+      entry.username
+        .toLowerCase()
+        .includes(search)
+  );
+
+  const badge =
+    document.getElementById("count-badge");
+
+  if (badge) {
+    badge.textContent = entries.length;
+  }
+
+  if (filtered.length === 0) {
+    list.innerHTML = `
+      <div class="empty-state">
+        No matching entries found.
+      </div>
+    `;
+    return;
+  }
+
+  list.innerHTML = filtered
+    .map(
+      (entry) => `
+      <div class="entry-card">
+
+        <div class="entry-left">
+
+          <div class="entry-icon">
+            🔐
+          </div>
+
+          <div class="entry-info">
+            <h3>${escapeHtml(
+        entry.site
+      )}</h3>
+
+            <p>${escapeHtml(
+        entry.username
+      )}</p>
+
+            <span class="entry-category">
+              ${entry.category}
+            </span>
+          </div>
+
+        </div>
+
+        <div class="entry-center">
+          <span
+            class="entry-password"
+            data-pw="${entry.id}"
+            data-revealed="false"
+          >
+            ••••••••
+          </span>
+        </div>
+
+        <div class="entry-actions">
+
+          <button
+            class="action-btn"
+            data-reveal="${entry.id}"
+            onclick="revealPassword(${entry.id})"
+          >
+            Show
+          </button>
+
+          <button
+            class="action-btn"
+            data-copy="${entry.id}"
+            onclick="copyPassword(${entry.id})"
+          >
+            Copy
+          </button>
+
+          <button
+            class="action-btn danger"
+            onclick="deleteEntry(${entry.id})"
+          >
+            Delete
+          </button>
+
+        </div>
+
+      </div>
+    `
+    )
+    .join("");
 }
 
-/* -------------------- */
-/* Save Passwords */
-/* -------------------- */
+/* =========================================================
+   STATS
+========================================================= */
 
-function savePasswords(passwords) {
+function updateStats() {
+  const total =
+    document.getElementById("totalEntries");
 
-    localStorage.setItem(
-        "passwords",
-        JSON.stringify(passwords)
-    );
+  const weak =
+    document.getElementById("weakPasswords");
+
+  const reused =
+    document.getElementById("reusedPasswords");
+
+  const security =
+    document.getElementById("securityScore");
+
+  if (total) {
+    total.textContent = entries.length;
+  }
 }
+  let weakCount = 0;
 
-/* -------------------- */
-/* Mask Password */
-/* -------------------- */
+  passwordInput.addEventListener("input", () => {
 
-function maskPassword(password) {
+    const password =
+      passwordInput.value;
 
-    return "*".repeat(password.length);
-}
+    if (passwordInput.value.length > 0) {
 
-/* -------------------- */
-/* Render Passwords */
-/* -------------------- */
+      document.getElementById(
+        "passwordRequirements"
+      ).style.display = "block";
 
-function renderPasswords() {
+    } else {
 
-    const passwords = getPasswords();
+      document.getElementById(
+        "passwordRequirements"
+      ).style.display = "none";
+    }
+
+    checkPasswordStrength(password);
+
+  });
+
+  generatePasswordBtn.addEventListener(
+    "click",
+    generateStrongPassword
+  );
+
+  searchPassword.addEventListener(
+    "input",
+    renderPasswords
+  );
+
+  function checkPasswordStrength(password) {
+
+    if (password.length === 0) {
+
+      passwordStrength.textContent = "";
+
+      lengthReq.textContent =
+        "❌ At least 8 characters";
+
+      upperReq.textContent =
+        "❌ One uppercase letter";
+
+      numberReq.textContent =
+        "❌ One number";
+
+      specialReq.textContent =
+        "❌ One special character";
+
+      return;
+    }
+
+    let score = 0;
+
+    if (password.length >= 8)
+      score++;
+
+    if (/[A-Z]/.test(password))
+      score++;
+
+    if (/[0-9]/.test(password))
+      score++;
+
+    if (/[^A-Za-z0-9]/.test(password))
+      score++;
+
+    if (password.length >= 8) {
+
+      lengthReq.textContent =
+        "✅ At least 8 characters";
+    }
+
+    if (/[A-Z]/.test(password)) {
+
+      upperReq.textContent =
+        "✅ One uppercase letter";
+    }
+
+    if (/[0-9]/.test(password)) {
+
+      numberReq.textContent =
+        "✅ One number";
+    }
+
+    if (/[^A-Za-z0-9]/.test(password)) {
+
+      specialReq.textContent =
+        "✅ One special character";
+    }
+    if (score <= 1) {
+
+      passwordStrength.textContent =
+        "(Weak password)";
+
+    } else if (score <= 3) {
+
+      passwordStrength.textContent =
+        "(Medium passsword)";
+
+    } else {
+
+      passwordStrength.textContent =
+        "(Strong Password)";
+    }
+  }
+
+  function generateStrongPassword() {
+
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+
+    let password = "";
+
+    for (let i = 0; i < 12; i++) {
+
+      password += chars.charAt(
+        Math.floor(
+          Math.random() * chars.length
+        )
+      );
+
+    }
+
+    passwordInput.value = password;
+
+    checkPasswordStrength(password);
+
+  }
+
+  function renderPasswords() {
+
+    let passwords = getPasswords();
+    const searchTerm =
+      searchPassword.value
+        .toLowerCase()
+        .trim();
+
+    if (searchTerm) {
+
+      passwords =
+        passwords.filter(item =>
+
+          item.website
+            .toLowerCase()
+            .includes(searchTerm)
+
+          ||
+
+          item.username
+            .toLowerCase()
+            .includes(searchTerm)
+
+        );
+    }
 
     passwordTable.innerHTML = "";
 
@@ -77,217 +779,241 @@ function renderPasswords() {
 
     if (passwords.length === 0) {
 
-        emptyState.style.display = "block";
+      passwordTable.innerHTML = `
+        <tr>
+            <td colspan="4">
+                No matching passwords found.
+            </td>
+        </tr>
+    `;
 
-        return;
+      return;
     }
-
     emptyState.style.display = "none";
 
-    passwords.forEach((item, index) => {
-
-        const row = document.createElement("tr");
-
-        row.innerHTML = `
-
-            <td>
-                ${item.website}
-            </td>
-
-            <td>
-                ${item.username}
-            </td>
-
-            <td id="password-${index}">
-                ${maskPassword(item.password)}
-            </td>
-
-            <td>
-
-                <!-- View -->
-
-                <button
-                    class="action-btn view-btn"
-                    onclick="toggleViewPassword(${index})"
-                >
-
-                    <i class="fa-solid fa-eye"></i>
-
-                </button>
-
-                <!-- Copy -->
-
-                <button
-                    class="action-btn copy-btn"
-                    onclick="copyPassword(${index})"
-                >
-
-                    <i class="fa-solid fa-copy"></i>
-
-                </button>
-
-                <!-- Delete -->
-
-                <button
-                    class="action-btn delete-btn"
-                    onclick="deletePassword(${index})"
-                >
-
-                    <i class="fa-solid fa-trash"></i>
-
-                </button>
-
-            </td>
-        `;
-
-        passwordTable.appendChild(row);
-    });
-}
-
-/* -------------------- */
-/* Add Password */
-/* -------------------- */
-
-passwordForm.addEventListener("submit", (e) => {
-
-    e.preventDefault();
-
-    const website = websiteInput.value.trim();
-
-    const username = usernameInput.value.trim();
-
-    const password = passwordInput.value.trim();
-
-    /* Validation */
-
-    if (!website || !username || !password) {
-
-        showToast(
-            "Please fill all fields",
-            "error"
-        );
-
-        return;
+    if (reused) {
+      reused.textContent = "0";
     }
 
-    const passwords = getPasswords();
+    const score = Math.max(
+      60,
+      100 - weakCount * 10
+    );
 
-    passwords.push({
-        website,
-        username,
+    if (security) {
+      security.textContent = `${score}%`;
+    }
+  }
+
+  /* =========================================================
+     PASSWORD STRENGTH
+  ========================================================= */
+
+  const STRENGTH_LABELS = [
+    "Very Weak",
+    "Weak",
+    "Fair",
+    "Strong",
+    "Very Strong",
+  ];
+
+  const STRENGTH_COLORS = [
+    "#ef4444",
+    "#f97316",
+    "#eab308",
+    "#22c55e",
+    "#4ade80",
+  ];
+
+  function getStrength(password) {
+    if (!password) return -1;
+
+    let score = 0;
+
+    if (password.length >= 8) score++;
+    if (password.length >= 12) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password))
+      score++;
+
+    return Math.min(score, 4);
+  }
+
+  function onPasswordInput(value) {
+    updateStrengthUI(
+      getStrength(value)
+    );
+  }
+
+  function updateStrengthUI(level) {
+    const label =
+      document.getElementById(
+        "strength-label"
+      );
+
+    if (level < 0) {
+      resetStrength();
+      return;
+    }
+
+    for (let i = 0; i < 5; i++) {
+      const seg =
+        document.getElementById(`s${i}`);
+
+      if (seg) {
+        seg.style.background =
+          i <= level
+            ? STRENGTH_COLORS[level]
+            : "rgba(255,255,255,0.08)";
+      }
+    }
+
+    if (label) {
+      label.textContent =
+        STRENGTH_LABELS[level];
+
+      label.style.color =
+        STRENGTH_COLORS[level];
+    }
+  }
+
+  function resetStrength() {
+    for (let i = 0; i < 5; i++) {
+      const seg =
+        document.getElementById(`s${i}`);
+
+      if (seg) {
+        seg.style.background =
+          "rgba(255,255,255,0.08)";
+      }
+    }
+
+    const label =
+      document.getElementById(
+        "strength-label"
+      );
+
+    if (label) {
+      label.textContent = "—";
+      label.style.color =
+        "var(--text-muted)";
+    }
+  }
+
+  /* =========================================================
+     PASSWORD GENERATOR
+  ========================================================= */
+
+  function generatePassword() {
+    const chars =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
+
+    const arr =
+      crypto.getRandomValues(
+        new Uint8Array(20)
+      );
+
+    const password = Array.from(
+      arr,
+      (x) => chars[x % chars.length]
+    ).join("");
+
+    const input =
+      document.getElementById("password");
+
+    input.value = password;
+
+    onPasswordInput(password);
+  }
+
+  /* =========================================================
+     TOGGLE PASSWORD
+  ========================================================= */
+
+  function togglePwVisibility() {
+    const input =
+      document.getElementById("password");
+
+    pwVisible = !pwVisible;
+
+    input.type = pwVisible
+      ? "text"
+      : "password";
+  }
+
+  /* =========================================================
+     EXPORT DATA
+  ========================================================= */
+
+  function exportVault() {
+    const blob = new Blob(
+      [
+        JSON.stringify(
+          getStoredEntries(),
+          null,
+          2
+        ),
+      ],
+      {
+        type: "application/json",
+      }
+    );
+
+    const url =
+      URL.createObjectURL(blob);
+
+    const a =
+      document.createElement("a");
+
+    a.href = url;
+
+    a.download = "vault-backup.json";
+
+    a.click();
+
+    URL.revokeObjectURL(url);
+  }
+
+  /* =========================================================
+     HELPERS
+  ========================================================= */
+
+  async function decryptEntry(
+    entry,
+    password
+  ) {
+    await decryptText(
+      entry.encryptedPassword,
+      password
+    );
+
+    return entry;
+  }
+
+  async function decryptAll(
+    stored,
+    password
+  ) {
+    const result = [];
+
+    for (const entry of stored) {
+      await decryptText(
+        entry.encryptedPassword,
         password
-    });
+      );
 
-    savePasswords(passwords);
-
-    renderPasswords();
-
-    passwordForm.reset();
-
-    showToast(
-        "Password saved successfully"
-    );
-});
-
-/* -------------------- */
-/* Delete Password */
-/* -------------------- */
-
-function deletePassword(index) {
-
-    const confirmDelete = confirm(
-        "Delete this password?"
-    );
-
-    if (!confirmDelete) return;
-
-    const passwords = getPasswords();
-
-    passwords.splice(index, 1);
-
-    savePasswords(passwords);
-
-    renderPasswords();
-
-    showToast(
-        "Password deleted successfully"
-    );
-}
-
-/* -------------------- */
-/* Copy Password */
-/* -------------------- */
-
-function copyPassword(index) {
-
-    const passwords = getPasswords();
-
-    navigator.clipboard.writeText(
-        passwords[index].password
-    );
-
-    showToast(
-        "Password copied"
-    );
-}
-
-/* -------------------- */
-/* Toggle View Password */
-/* -------------------- */
-
-function toggleViewPassword(index) {
-
-    const passwords = getPasswords();
-
-    const passwordCell =
-        document.getElementById(`password-${index}`);
-
-    const currentText =
-        passwordCell.textContent;
-
-    if (currentText.includes("*")) {
-
-        passwordCell.textContent =
-            passwords[index].password;
-
-    } else {
-
-        passwordCell.textContent =
-            maskPassword(
-                passwords[index].password
-            );
+      result.push(entry);
     }
-}
 
-/* -------------------- */
-/* Toggle Input Password */
-/* -------------------- */
+    return result;
+  }
 
-togglePassword.addEventListener("click", () => {
-
-    const icon =
-        togglePassword.querySelector("i");
-
-    if (passwordInput.type === "password") {
-
-        passwordInput.type = "text";
-
-        icon.classList.remove("fa-eye");
-
-        icon.classList.add("fa-eye-slash");
-
-    } else {
-
-        passwordInput.type = "password";
-
-        icon.classList.remove("fa-eye-slash");
-
-        icon.classList.add("fa-eye");
-    }
-});
-
-/* -------------------- */
-/* Initial Render */
-/* -------------------- */
-
-renderPasswords();
+  function escapeHtml(str) {
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }

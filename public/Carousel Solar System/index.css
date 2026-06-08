@@ -617,3 +617,60 @@ span{
     width:110px;
   }
 }
+
+/* =========================
+   BACK TO HOME BUTTON
+========================= */
+
+.project-back-button{
+  position:fixed;
+  top:30px;
+  right:250px;
+  z-index:9999;
+
+  padding:8px 16px;
+
+  border-radius:8px;
+
+  background:#1e293b;
+
+  color:#3b82f6;
+  text-decoration:none;
+
+  font-family:'Orbitron',sans-serif;
+  font-size:0.9rem;
+  font-weight:600;
+  letter-spacing:1px;
+
+  border:1px solid #3b82f6;
+
+  box-shadow:
+    0 10px 30px rgba(111,167,255,0.35);
+
+  transition:all 0.2s ease;
+}
+
+.project-back-button:hover{
+  background:#3b82f6;
+  color:#fff;
+  transform:
+    translateY(-3px)
+    scale(1.04);
+
+  box-shadow:
+    0 15px 40px rgba(111,167,255,0.55);
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+  .project-back-button{
+    top:20px;
+    right:20px;
+
+    padding:10px 18px;
+
+    font-size:0.75rem;
+  }
+
+}

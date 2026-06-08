@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <title>AirCast - Your Daily Air & Weather Companion</title>
+    <link rel="icon" href="logo.png" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="top-bar">
+        <div>
+          <h1 id="greeting">Good Evening</h1>
+        </div>
+
+        <div class="search-bar">
+          <input type="text" id="cityInput" placeholder="Search city" />
+          <button onclick="getWeather()">
+            <span class="material-icons">search</span>
+          </button>
+        </div>
+      </header>
+
+      <h2 id="location">--</h2>
+      <p id="errorMessage" class="error-message"></p>
+
+      <div class="dashboard">
+        <!-- LEFT PANEL -->
+        <div class="left-panel">
+          <!-- WEATHER -->
+          <div class="card">
+            <h3>Weather</h3>
+            <p id="temperature">--</p>
+            <p id="condition">--</p>
+
+            <div class="weather-meta-horizontal">
+              <div class="meta-item">
+                <span class="meta-label">Humidity</span>
+                <span id="humidity">--%</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Wind</span>
+                <span id="wind">-- km/h</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- EXTRA WEATHER DETAILS -->
+          <div class="card extra-weather">
+            <h3>Additional Information</h3>
+            <p>Feels Like: <span id="feelsLike">--°C</span></p>
+            <p>Sunrise: <span id="sunrise">--:--</span></p>
+            <p>Sunset: <span id="sunset">--:--</span></p>
+
+            <h4>Next 5 Hours</h4>
+            <div id="hourlyForecast" class="hourly-forecast"></div>
+          </div>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="right-panel">
+          <!-- AQI -->
+          <div class="card aqi-card">
+            <h3>Air Quality Index (AQI)</h3>
+
+            <div class="aqi-main">
+              <span id="aqiValue" class="aqi-number">--</span>
+              <span id="aqiStatus" class="aqi-status">--</span>
+            </div>
+
+            <p id="aqiTrend" class="aqi-trend">--</p>
+            <p id="aqiRecommendation" class="aqi-recommendation">--</p>
+          </div>
+
+          <!-- POLLUTANTS -->
+          <div class="card">
+            <h3>Pollutant Breakdown</h3>
+            <div class="pollutant">
+              <span>PM2.5</span><span id="pm25">--</span>
+            </div>
+            <div class="pollutant">
+              <span>PM10</span><span id="pm10">--</span>
+            </div>
+            <div class="pollutant">
+              <span>NO₂</span><span id="no2">--</span>
+            </div>
+            <div class="pollutant">
+              <span>SO₂</span><span id="so2">--</span>
+            </div>
+            <div class="pollutant"><span>O₃</span><span id="o3">--</span></div>
+            <div class="pollutant"><span>CO</span><span id="co">--</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

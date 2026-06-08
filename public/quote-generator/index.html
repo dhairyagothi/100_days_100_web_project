@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Quote Generator</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f0f0; }
+        .card { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; max-width: 400px; }
+        button { margin-top: 20px; padding: 10px 20px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="card" aria-live="polite" aria-atomic="true">
+    <h2 id="quote">"Press the button for wisdom!"</h2>
+    <button onclick="newQuote()">New Quote</button>
+</div>
+
+<script>
+    const quotes = [
+        "The only way to do great work is to love what you do.",
+        "Life is what happens when you're busy making other plans.",
+        "Get busy living or get busy dying.",
+        "You have within you right now, everything you need to deal with whatever the world can throw at you.",
+        "Believe you can and you're halfway there."
+    ];
+
+    function newQuote() {
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        document.getElementById("quote").innerText = quotes[randomIndex];
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vector Flowchart Designer</title>
+  <meta name="description" content="A standalone vector flowchart designer with draggable shapes and a blueprint workspace.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon_vector.png">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar" aria-label="Workspace controls">
+      <div class="topbar__brand">
+        <span class="topbar__eyebrow">Standalone Canvas</span>
+        <h1 class="topbar__title">Vector Flowchart Designer</h1>
+      </div>
+
+      <nav class="topbar__actions" aria-label="Viewport actions">
+        <button class="toolbar-button theme-toggle-btn" type="button" aria-label="Toggle theme">☀️ Light Mode</button>
+        <button class="toolbar-button" type="button">Zoom In</button>
+        <button class="toolbar-button" type="button">Zoom Out</button>
+        <button class="toolbar-button" type="button">Reset Viewport</button>
+        <button class="toolbar-button toolbar-button--danger" type="button">Clear Workspace</button>
+      </nav>
+    </header>
+
+    <main class="designer-layout">
+      <aside class="sidebar" aria-label="Shape library">
+        <section class="sidebar__panel">
+          <div class="sidebar__heading">
+            <p class="sidebar__eyebrow">Template Tray</p>
+            <h2 class="sidebar__title">Drag Shapes</h2>
+          </div>
+
+          <div class="shape-tray" role="list" aria-label="Draggable flowchart templates">
+            <article class="shape-card shape-card--process" role="listitem" draggable="true" aria-label="Process Box Rectangle template">
+              <span class="shape-card__icon shape-card__icon--rectangle" aria-hidden="true"></span>
+              <div class="shape-card__body">
+                <h3 class="shape-card__title">Process Box</h3>
+                <p class="shape-card__subtitle">Rectangle</p>
+              </div>
+            </article>
+
+            <article class="shape-card shape-card--decision" role="listitem" draggable="true" aria-label="Decision Point Diamond template">
+              <span class="shape-card__icon shape-card__icon--diamond" aria-hidden="true"></span>
+              <div class="shape-card__body">
+                <h3 class="shape-card__title">Decision Point</h3>
+                <p class="shape-card__subtitle">Diamond</p>
+              </div>
+            </article>
+
+            <article class="shape-card shape-card--terminal" role="listitem" draggable="true" aria-label="Start End Node Rounded Rectangle template">
+              <span class="shape-card__icon shape-card__icon--pill" aria-hidden="true"></span>
+              <div class="shape-card__body">
+                <h3 class="shape-card__title">Start/End Node</h3>
+                <p class="shape-card__subtitle">Rounded Rectangle</p>
+              </div>
+            </article>
+          </div>
+        </section>
+      </aside>
+
+    <section class="workspace" aria-label="Flowchart workspace">
+        <div class="workspace__viewport" aria-label="Canvas viewport">
+          <div class="workspace__stage" aria-hidden="true">
+            <svg id="vectorSpace" class="workspace-svg" viewBox="0 0 1600 1000" preserveAspectRatio="none">
+              <defs>
+                <marker 
+                  id="arrowhead" 
+                  viewBox="0 0 10 10" 
+                  refX="7" 
+                  refY="5" 
+                  markerWidth="6" 
+                  markerHeight="6" 
+                  orient="auto-start-reverse"
+                >
+                  <path d="M 0 1 L 10 5 L 0 9 z" fill="currentColor" />
+                </marker>
+              </defs>
+            </svg>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
