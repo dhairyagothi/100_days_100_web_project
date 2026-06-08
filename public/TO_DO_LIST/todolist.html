@@ -698,6 +698,32 @@
     });
 
     document.addEventListener("DOMContentLoaded", renderKanban);
+
+    // Close modal if clicking on backdrop
+    document.getElementById("clearModal").addEventListener("click", (e) => {
+      if (e.target === document.getElementById("clearModal")) {
+        document.getElementById("clearModal").style.display = "none";
+      }
+    });
+
+    // ─── Workspace Skin (Theme Switcher) ──────────────────────────────────
+    (function initWorkspaceSkin() {
+      // Restore persisted theme on page load
+      const savedTheme = localStorage.getItem("todo-workspace-theme");
+      if (savedTheme) document.body.setAttribute("data-theme", savedTheme);
+
+      document.querySelectorAll(".theme-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const theme = btn.getAttribute("data-theme");
+          if (theme) {
+            document.body.setAttribute("data-theme", theme);
+            localStorage.setItem("todo-workspace-theme", theme);
+          }
+        });
+      });
+    })();
+
+    document.addEventListener("DOMContentLoaded", renderKanban);
   </script>
 </body>
 
