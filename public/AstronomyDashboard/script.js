@@ -2403,16 +2403,6 @@ function bindEvents() {
     .getElementById('calculateDistance')
     .addEventListener('click', calculateDistance);
 
-  const themeToggle = document.getElementById('themeToggle');
-  if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
-      const currentTheme = document.documentElement.getAttribute('data-theme');
-      const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-      document.documentElement.setAttribute('data-theme', nextTheme);
-      localStorage.setItem('theme', nextTheme);
-    });
-  }
 
   newsList.addEventListener('click', (event) => {
     const item = event.target.closest('.news-item');
@@ -2503,11 +2493,6 @@ function bindEvents() {
 }
 
 function initDashboard() {
-  const savedTheme = localStorage.getItem('theme');
-
-  if (savedTheme === 'dark') {
-    document.body.classList.add('dark-mode');
-  }
 
   bindEvents();
   setDefaultMoonDate();
