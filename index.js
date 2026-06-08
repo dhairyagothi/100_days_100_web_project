@@ -87,7 +87,8 @@ PROJECTS = data.map(project => [
    project.projectPath,
    project.techStack,
    project.difficulty,
-   project.projectDesc
+   project.projectDesc,
+   project.thumbnail || './public/thumbnails/placeholder.png'
 ]);
     })();
   }
@@ -181,6 +182,7 @@ function buildProjectCardHTML({
   name,
   url,
   tags,
+  thumbnail,
   category,
   isBookmarked = false,
   showDescription = true,
@@ -192,11 +194,24 @@ function buildProjectCardHTML({
         .split(/\s+/)
         .filter((t) => t && t !== SOURCE_ONLY_TAG);
   const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
-  const project =
-PROJECTS.find(p => p[1] === name);
 
-const description =
-getProjectDescription(project);
+  const project = PROJECTS.find(p => p[1] === name);
+
+const description = getProjectDescription(project);
+
+const thumbnailPath =
+  thumbnail || project?.[6] || './public/thumbnails/placeholder.png';
+
+const thumbnailHTML = `
+  <div class="card-thumbnail">
+    <img
+      src="${thumbnailPath}"
+      alt="${name}"
+      loading="lazy"
+      onerror="this.src='./public/thumbnails/placeholder.png'"
+    >
+  </div>
+`;
   const sourceOnlyBadge = sourceOnly
     ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
     : '';
@@ -215,6 +230,15 @@ getProjectDescription(project);
 
   return {
     html: `
+      ${thumbnailHTML}
+
+    <div class="card-meta">
+      <span class="card-day">${day}</span>
+      <span class="card-category-wrap">
+        <span class="card-category">${category}</span>
+        ${sourceOnlyBadge}
+      </span>
+    </div>
             <div class="card-meta">
                 <span class="card-day">${day}</span>
                 <span class="card-category-wrap">
@@ -612,19 +636,20 @@ function renderGrid() {
   const pageItems = filtered.slice(startIndex, endIndex);
   const fragment = document.createDocumentFragment();
 
-  pageItems.forEach(([day, name, url, tags]) => {
+ pageItems.forEach(([day, name, url, tags, difficulty, description, thumbnail]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
-      day,
-      name,
-      url,
-      tags,
-      category,
-      isBookmarked,
-      showDescription: true,
-    });
+  day,
+  name,
+  url,
+  tags,
+  thumbnail,
+  category,
+  isBookmarked,
+  showDescription: true,
+});
 
     card.className = sourceOnly ? 'project-card source-only' : 'project-card';
     card.innerHTML = html;
@@ -869,7 +894,7 @@ function renderBookmarks() {
 
   const visibleBookmarks = showAllBookmarks ? bookmarkedProjects : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleBookmarks.forEach(([day, name, url, tags]) => {
+visibleBookmarks.forEach(([day, name, url, tags, difficulty, description, thumbnail]) => {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
@@ -877,6 +902,7 @@ function renderBookmarks() {
       name,
       url,
       tags,
+      thumbnail,
       category,
       isBookmarked: true,
       showDescription: true,
@@ -918,6 +944,7 @@ function renderRecentProjects() {
     const name = projectObj.name || projectObj[1];
     const url = projectObj.url || projectObj[2];
     const tags = projectObj.tags || projectObj[3];
+    const thumbnail = projectObj.thumbnail || projectObj[6];
     
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
@@ -927,6 +954,7 @@ function renderRecentProjects() {
       name,
       url,
       tags,
+      thumbnail,
       category,
       isBookmarked,
       showDescription: false,

@@ -7,7 +7,8 @@
 "projectDesc":"Manage daily tasks efficiently with an interactive checklist system. Add, track and organize activities using a simple productivity-focused interface.",
 "techStack":["javascript","todo"],
 "difficulty":"beginner",
-"projectPath":"./public/TO_DO_LIST/todolist.html"
+"projectPath":"./public/TO_DO_LIST/todolist.html",
+ "thumbnail": "./public/thumbnails/Todo list screenshot 2.png"
 },
 
 {
@@ -329,7 +330,8 @@
 "projectDesc":"Fetches and displays real-time weather information dynamically.",
 "techStack":["weather","api"],
 "difficulty":"intermediate",
-"projectPath":"./public/Weather%20Forcasting/index.html"
+"projectPath":"./public/Weather%20Forcasting/index.html",
+ "thumbnail": "./public/thumbnails/weather.png"
 },
 
 {
@@ -639,7 +641,8 @@
 "projectDesc":"Restaurant platform inspired interface replicating browsing and discovery layouts.",
 "techStack":["clone","css"],
 "difficulty":"beginner",
-"projectPath":"./public/zomato-clone/zomato.html"
+"projectPath":"./public/zomato-clone/zomato.html",
+ "thumbnail": "./public/thumbnails/zomato.png"
 },
 
 {
@@ -1289,7 +1292,8 @@
 "projectDesc":"Frontend recreation of YouTube layouts including navigation and content sections.",
 "techStack":["Html","CSS"],
 "difficulty":"beginner",
-"projectPath":"./public/youtube clone/index.html"
+"projectPath":"./public/youtube clone/index.html",
+ "thumbnail": "./public/thumbnails/img1.png"
 },
 
 {
@@ -1609,7 +1613,8 @@
 "projectDesc":"Convert values between different measurement units instantly and accurately.",
 "techStack":["tool","javascript","html","css"],
 "difficulty":"intermediate",
-"projectPath":"./public/Unit-Converter/index.html"
+"projectPath":"./public/Unit-Converter/index.html",
+ "thumbnail": "./public/thumbnails/image.png"
 },
 
 {
