@@ -1,59 +1,309 @@
-p {
-  margin-top: 0;
-  margin-bottom: 0;
-}
+.header {
+  height: 55px;
 
-body {
-  /* This style below will be inherited */
-  body.full-width {
-  padding-left: 24px;
-}
-  height: 3000px;
-  font-family: Roboto, Arial;
-  margin: 0;
-  padding-top: 80px;
- padding-left: 96px;
-transition: padding-left 0.3s ease;
-  padding-right: 24px;
-  background-color: rgb(248, 248, 248);
-  transition: padding-left 0.3s ease;
-}
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 
-body.sidebar-expanded {
-  padding-left: 264px;
-}
-
-/* Sidebar overlay backdrop styling */
-.sidebar-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 150;
+  right: 0;
+  z-index: 300;
+
+  background-color: white;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: rgb(228, 228, 228);
+}
+
+
+.left-section {
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+}
+
+.hamburger-menu {
+  height: 24px;
+  margin-left: 24px;
+  margin-right: 24px;
+  cursor: pointer;
+}
+
+.youtube-logo {
+  height: 20px;
+}
+
+.middle-section {
+  flex: 1;
+  margin-left: 70px;
+  margin-right: 35px;
+  max-width: 500px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* ── Search wrapper: positions the dropdown relative to the input ── */
+.search-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.search-bar {
+  flex: 1;
+  width: 100%;
+  height: 40px;
+  padding-left: 16px;
+  font-size: 16px;
+  border: 1px solid rgb(204, 204, 204);
+  border-right: none;
+  border-top-left-radius: 40px;
+  border-bottom-left-radius: 40px;
+  background-color: transparent;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease;
+}
+
+.search-bar:focus {
+  border-color: #065fd4;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.search-bar::placeholder {
+  font-size: 16px;
+}
+
+.search-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 40px;
+  width: 64px;
+  background-color: #f8f8f8;
+  border: 1px solid rgb(204, 204, 204);
+  border-top-right-radius: 40px;
+  border-bottom-right-radius: 40px;
+  cursor: pointer;
+  margin-right: 16px;
+  box-sizing: border-box;
+  transition: background-color 0.15s ease;
+  position: relative;
+}
+
+.search-button:hover {
+  background-color: #f0f0f0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.search-button,
+.voice-search-button,
+.upload-icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.search-button .tooltip,
+.voice-search-button .tooltip,
+.upload-icon-container .tooltip {
+  position: absolute;
+  background-color: gray;
+  color: white;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+  font-size: 12px;
+  bottom: -30px;
   opacity: 0;
+  transition: opacity 0.15s;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  white-space: nowrap;
 }
 
-body.sidebar-expanded .sidebar-overlay {
+.search-button:hover .tooltip,
+.voice-search-button:hover .tooltip,
+.upload-icon-container:hover .tooltip {
   opacity: 1;
-  pointer-events: auto;
 }
 
-@media (min-width: 751px) {
-  .sidebar-overlay {
-    display: none;
+.search-icon {
+  height: 25px;
+}
+
+.voice-search-button {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  border: none;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  position: relative;
+}
+
+.voice-search-button:hover {
+  background-color: #e5e5e5;
+}
+
+.voice-search-icon {
+  height: 24px;
+}
+
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-right: 24px;
+  flex-shrink: 0;
+}
+
+/* Modern Create Pill Layout */
+.create-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+  color: #0f0f0f;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.create-button:hover {
+  background-color: #e5e5e5;
+}
+
+.create-plus-icon {
+  height: 16px;
+  width: 16px;
+}
+
+/* Notification Container */
+.notifications-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.notifications-container:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.bell-icon {
+  height: 24px;
+  width: 24px;
+}
+
+.badge {
+  position: absolute;
+  top: 2px;
+  left: 20px;
+  background-color: #cc0000;
+  color: white;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 1px 5px;
+  border-radius: 10px;
+  border: 2px solid white;
+  white-space: nowrap;
+}
+
+/* User Profile Frame */
+.avatar-container {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.user-avatar {
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* ════════════════════════════════════════
+   SEARCH SUGGESTIONS DROPDOWN
+   ════════════════════════════════════════ */
+
+.search-suggestions {
+  display: none;                       /* hidden by default; JS toggles this */
+  position: absolute;
+  top: calc(100% + 4px);              /* sits 4px below the input */
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15), 0 10px 25px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+
+  /* Subtle entrance animation */
+  animation: suggestFadeIn 0.12s ease-out;
+}
+
+@keyframes suggestFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media (max-width: 750px) {
-  body {
-    padding-left: 24px;
-  }
+/* Each suggestion row */
+.search-suggestions div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-family: Roboto, Arial, sans-serif;
+  color: #0f0f0f;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+}
 
-  body.sidebar-expanded {
-    padding-left: 24px; /* On mobile, sidebar is an overlay, no shifting */
-  }
+.search-suggestions div:hover {
+  background-color: #f2f2f2;
+}
+
+/* Small search icon inside each suggestion */
+.suggestion-icon {
+  height: 16px;
+  width: 16px;
+  opacity: 0.55;
+  flex-shrink: 0;
+}
+
+/* Highlight matched text portion */
+.suggestion-match {
+  font-weight: 500;
+  color: #0f0f0f;
 }

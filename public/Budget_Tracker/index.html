@@ -165,10 +165,18 @@
               placeholder="Enter Amount"
               required
               min="1"
+              max="1000000"
               inputmode="numeric"
             />
 
           </div>
+
+          <!-- Inline validation error — fix #6152 -->
+          <p
+            id="amt-error"
+            style="color:#ff4d4d;font-size:0.78rem;margin:-8px 0 4px 4px;min-height:1.1em;"
+            aria-live="polite"
+          ></p>
 
           <!-- DESCRIPTION -->
           <div class="input-group">
