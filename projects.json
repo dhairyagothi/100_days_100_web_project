@@ -2757,7 +2757,7 @@
     "projectPath": "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/SkillBridge"
   },
   {
-    "projectNo": 218,
+    "projectNo": 219,
     "projectName": "The Cube - 3D Rubik's Cube Simulator",
     "projectType": "Web Application",
     "projectDesc": "An interactive 3D Rubik's Cube simulator built with Three.js that allows users to solve, scramble, customize, and track performance across multiple cube sizes with smooth animations and touch support.",
@@ -2771,7 +2771,7 @@
     "projectPath": "./public/the_cube/index.html"
   },
   {
-    "projectNo": 219,
+    "projectNo": 220,
     "projectName": "NeoTetris - Premium Edition",
     "projectType": "Game",
     "projectDesc": "A premium Tetris experience featuring modern themes, particle effects, achievements, combo systems, daily challenges, responsive controls, synthesized retro audio, dynamic background music, and polished gameplay mechanics.",
@@ -2786,7 +2786,20 @@
     "projectPath": "./public/NeoTetris/index.html"
   },
   {
-    "projectNo": 204,
+    "projectNo": 221,
+    "projectName": "AI Tools Hub",
+    "projectType": "Web Application",
+    "projectDesc": "A modern platform for discovering and exploring AI tools across coding, design, writing, productivity, presentations, and media categories.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/AI-Tools-Hub/index.html"
+  },
+  {
+    "projectNo": 222,
     "projectName": "Neon Forge",
     "projectType": "Tool",
     "projectDesc": "An interactive CSS neon glow effects playground with live preview, presets, generated CSS, copy support, and PNG export.",
