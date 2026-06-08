@@ -64,6 +64,7 @@ let state = {
   stressValue: 0,
   recognition: null,
   isRecording: false,
+  lowEffortConfirmations: {},
 };
 
 const DIFFICULTY_SETTINGS = {
@@ -71,6 +72,58 @@ const DIFFICULTY_SETTINGS = {
   Intermediate: { time: 60, stressIncrement: 10 },
   Advanced: { time: 45, stressIncrement: 15 },
 };
+
+const PLACEHOLDER_API_KEYS = new Set([
+  '',
+  'YOUR_KEY',
+  'YOUR_API_KEY',
+  'PASTE_YOUR_GROQ_API_KEY_HERE',
+]);
+
+const DEFAULT_GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+const DEFAULT_GROQ_MODEL = 'llama-3.3-70b-versatile';
+
+const LOW_EFFORT_RESPONSES = new Set([
+  'aaa',
+  'asdf',
+  'idk',
+  'i dont know',
+  "i don't know",
+  'na',
+  'n/a',
+  'none',
+  'qwerty',
+  'random',
+  'skip',
+  'test',
+  'testing',
+  'xyz',
+]);
+
+const RELEVANCE_STOP_WORDS = new Set([
+  'a',
+  'an',
+  'and',
+  'are',
+  'as',
+  'can',
+  'do',
+  'for',
+  'how',
+  'in',
+  'is',
+  'of',
+  'on',
+  'or',
+  'the',
+  'to',
+  'what',
+  'when',
+  'where',
+  'with',
+  'you',
+  'your',
+]);
 
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
@@ -218,11 +271,14 @@ function startRecording() {
 }
 
 function stopRecording() {
+  if (!state.recognition) return;
+  const wasRecording = state.isRecording;
+
   state.isRecording = false;
   UI.micBtn.classList.remove('recording');
   UI.recordingIndicator.classList.add('hidden');
   UI.micStatus.textContent = 'Click mic to speak';
-  state.recognition.stop();
+  if (wasRecording) state.recognition.stop();
 }
 
 async function startInterview() {
@@ -241,6 +297,7 @@ async function startInterview() {
   state.currentQuestionIndex = 0;
   state.answers = {};
   state.stressValue = 0;
+  state.lowEffortConfirmations = {};
 
   UI.setupPanel.classList.add('hidden');
   UI.interviewBox.classList.remove('hidden');
@@ -252,19 +309,30 @@ async function fetchQuestionsFromGroq() {
   const role = UI.roleSelect.value;
   const type = UI.interviewType.value;
   const difficulty = UI.difficultySelect.value;
+  const groqConfig = getGroqConfig();
+
+  if (!groqConfig) {
+    // Placeholder or missing keys are expected in local demos, so skip the
+    // remote request and keep the simulator usable with internal questions.
+    alert(
+      'Groq question generation is running in fallback mode because no valid API key is configured. Using internal interview questions instead.'
+    );
+    state.questions = getFallbackQuestions(role, type, difficulty);
+    return true;
+  }
 
   const systemPrompt = `You are an expert technical interviewer system. Generate exactly 5 targeted interview questions matching requested parameters. Return output strictly as a JSON object containing a property "questions" which maps to an array of strings. Do not include markdown codeblocks or wrapper prose. Example structure: {"questions": ["Q1", "Q2"]}`;
   const userPrompt = `Generate a 5-question interview list for a ${role} position. Interview focus type: ${type}. Difficulty setting requirement: ${difficulty}.`;
 
   try {
-    const response = await fetch(CONFIG.GROQ_API_URL, {
+    const response = await fetch(groqConfig.apiUrl, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${CONFIG.GROQ_API_KEY}`,
+        Authorization: `Bearer ${groqConfig.apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: CONFIG.MODEL,
+        model: groqConfig.model,
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt },
@@ -289,17 +357,42 @@ async function fetchQuestionsFromGroq() {
   } catch (error) {
     console.error('Groq Engine Request Failure:', error);
     alert(
-      'Unable to fetch dynamic queries. Falling back to internal defaults.'
+      'Unable to reach Groq question generation right now. Using internal fallback questions so the interview can continue.'
     );
-    state.questions = [
-      `Can you explain your core technical stack and background as a ${role}?`,
-      `Describe a complex problem you solved recently under a ${difficulty} environment context.`,
-      `How do you approach performance optimization when handling a ${type} delivery loop?`,
-      'What is your approach to handling cross-functional team disagreements?',
-      'Where do you see your engineering skills evolving over the next year?',
-    ];
+    state.questions = getFallbackQuestions(role, type, difficulty);
     return true;
   }
+}
+
+function isGroqApiConfigured() {
+  return Boolean(getGroqConfig());
+}
+
+function getGroqConfig() {
+  const fileConfig = typeof CONFIG !== 'undefined' ? CONFIG : {};
+  const apiKey = String(fileConfig.GROQ_API_KEY || '').trim();
+
+  if (!isUsableGroqKey(apiKey)) return null;
+
+  return {
+    apiKey,
+    apiUrl: fileConfig.GROQ_API_URL || DEFAULT_GROQ_API_URL,
+    model: fileConfig.MODEL || DEFAULT_GROQ_MODEL,
+  };
+}
+
+function isUsableGroqKey(apiKey) {
+  return apiKey.length > 0 && !PLACEHOLDER_API_KEYS.has(apiKey);
+}
+
+function getFallbackQuestions(role, type, difficulty) {
+  return [
+    `Can you explain your core technical stack and background as a ${role}?`,
+    `Describe a complex problem you solved recently under a ${difficulty} environment context.`,
+    `How do you approach performance optimization when handling a ${type} delivery loop?`,
+    'What is your approach to handling cross-functional team disagreements?',
+    'Where do you see your engineering skills evolving over the next year?',
+  ];
 }
 
 function clearElement(element) {
@@ -360,7 +453,7 @@ function startTimer() {
 
     if (state.timeLeft <= 0) {
       clearInterval(state.timerInterval);
-      handleNextQuestion();
+      handleNextQuestion({ skipLowEffortWarning: true });
     }
   }, 1000);
 }
@@ -399,14 +492,22 @@ function updateProgress() {
 function updateCharacterCount() {
   if (!UI.charCounter) return;
   const count = UI.answerInput.value.length;
-  const words = UI.answerInput.value.trim()
-    ? UI.answerInput.value.trim().split(/\s+/).length
-    : 0;
+  const words = getWordCount(UI.answerInput.value);
   UI.charCounter.textContent = `${count} characters | ${words} words`;
 }
 
-function handleNextQuestion() {
+function handleNextQuestion(options = {}) {
   state.answers[state.currentQuestionIndex] = UI.answerInput.value;
+
+  if (shouldWarnForLowEffortAnswer(options)) {
+    const canContinue = confirm(
+      'Your response appears very short or low effort. Are you sure you want to continue?'
+    );
+
+    if (!canContinue) return;
+    state.lowEffortConfirmations[state.currentQuestionIndex] = true;
+  }
+
   calculateStress();
 
   if (state.currentQuestionIndex < state.questions.length - 1) {
@@ -415,6 +516,16 @@ function handleNextQuestion() {
   } else {
     completeInterview();
   }
+}
+
+function shouldWarnForLowEffortAnswer(options) {
+  if (options.skipLowEffortWarning || state.isRecording) return false;
+  if (state.lowEffortConfirmations[state.currentQuestionIndex]) return false;
+  if (!isLowEffortAnswer(state.answers[state.currentQuestionIndex] || '')) {
+    return false;
+  }
+
+  return true;
 }
 
 function handlePreviousQuestion() {
@@ -432,6 +543,10 @@ function calculateStress() {
 
   if (answer.trim().length === 0) {
     state.stressValue += increment;
+  } else if (isLowEffortAnswer(answer)) {
+    // Low-effort responses should increase pressure instead of being treated
+    // like valid answers simply because the field contains text.
+    state.stressValue += Math.ceil(increment * 0.75);
   } else if (state.timeLeft < 10) {
     state.stressValue += Math.floor(increment / 2);
   } else {
@@ -452,24 +567,243 @@ function calculateStress() {
   }
 }
 
+function getWordCount(answer) {
+  const trimmedAnswer = answer.trim();
+  return trimmedAnswer ? trimmedAnswer.split(/\s+/).length : 0;
+}
+
+function normalizeAnswer(answer) {
+  return answer
+    .toLowerCase()
+    .replace(/[^\w\s']/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function isLowEffortAnswer(answer) {
+  const normalizedAnswer = normalizeAnswer(answer);
+  const compactAnswer = normalizedAnswer.replace(/\s/g, '');
+  const words = normalizedAnswer ? normalizedAnswer.split(/\s+/) : [];
+  const uniqueWords = new Set(words);
+
+  if (!normalizedAnswer) return true;
+  if (getWordCount(answer) < 4) return true;
+  if (LOW_EFFORT_RESPONSES.has(normalizedAnswer)) return true;
+  if (/^([a-z0-9])\1{2,}$/.test(compactAnswer)) return true;
+  if (/(.)\1{4,}/.test(compactAnswer) && getWordCount(answer) <= 6) {
+    return true;
+  }
+  if (words.length >= 2 && uniqueWords.size === 1) return true;
+  if (words.length >= 4 && uniqueWords.size / words.length <= 0.35) {
+    return true;
+  }
+  if (/^(asdf|qwer|qwerty|zxcv|hjkl|jkl|xyz)+$/i.test(compactAnswer)) {
+    return true;
+  }
+
+  return false;
+}
+
+function evaluateLocalConfidence() {
+  const totalQuestions = state.questions.length || 1;
+  const answers = state.questions.map((_, index) => state.answers[index] || '');
+  const answerEvaluations = state.questions.map((question, index) =>
+    evaluateLocalAnswerRelevance(question, answers[index], index)
+  );
+  const wordCounts = answers.map(getWordCount);
+  const unansweredCount = answers.filter(
+    (answer) => answer.trim().length === 0
+  ).length;
+  const lowEffortCount = answers.filter(
+    (answer) => answer.trim() && isLowEffortAnswer(answer)
+  ).length;
+  const averageRelevanceScore =
+    answerEvaluations.reduce(
+      (sum, evaluation) => sum + evaluation.relevanceScore,
+      0
+    ) / totalQuestions;
+  const meaningfulCount = Math.max(
+    totalQuestions - unansweredCount - lowEffortCount,
+    0
+  );
+  const averageWordCount =
+    wordCounts.reduce((sum, count) => sum + count, 0) / totalQuestions;
+  const lowEffortPercent = lowEffortCount / totalQuestions;
+  const unansweredPercent = unansweredCount / totalQuestions;
+  const meaningfulPercent = meaningfulCount / totalQuestions;
+
+  // Local fallback scoring blends answer depth, answer quality, stress, and
+  // unanswered questions so confidence is never derived from stress alone.
+  const lengthScore = Math.min(averageWordCount * 2, 45);
+  const qualityScore = meaningfulPercent * 20;
+  const relevanceScore = averageRelevanceScore * 0.25;
+  const composureScore = (100 - state.stressValue) * 0.15;
+  const penaltyScore = lowEffortPercent * 30 + unansweredPercent * 35;
+  const confidenceScore = clampScore(Math.round(lengthScore + qualityScore + relevanceScore + composureScore - penaltyScore));
+
+  const strengths = [];
+  const areasForImprovement = [];
+  
+  if (averageWordCount > 20) strengths.push("Detailed explanations");
+  if (meaningfulPercent > 0.5) strengths.push("Good effort in answering");
+  if (state.stressValue < 40) strengths.push("Maintained composure");
+  
+  if (lowEffortPercent > 0.3) areasForImprovement.push("Incomplete answers");
+  if (unansweredPercent > 0) areasForImprovement.push("Missed questions");
+  if (averageWordCount <= 20) areasForImprovement.push("Lack of technical depth");
+  if (strengths.length === 0) strengths.push("Completed the interview");
+
+  return {
+    scores: {
+      technicalKnowledge: clampScore(Math.round(lengthScore + averageRelevanceScore * 0.5)),
+      communication: clampScore(Math.round(qualityScore * 2 + averageWordCount)),
+      problemSolving: clampScore(Math.round(relevanceScore * 2 + meaningfulPercent * 50)),
+      confidence: confidenceScore,
+      stress: state.stressValue
+    },
+    overallFeedback: buildLocalEvaluationSummary({
+      averageWordCount, averageRelevanceScore, lowEffortCount, meaningfulCount, totalQuestions, unansweredCount
+    }),
+    strengths: strengths,
+    areasForImprovement: areasForImprovement.length > 0 ? areasForImprovement : ["Provide more examples"],
+    recommendedLearning: ["System Design Fundamentals", "Mock Interview Practice", "Core Technical Concepts"],
+    answerEvaluations: answerEvaluations
+  };
+}
+
+function evaluateLocalAnswerRelevance(question, answer, index) {
+  if (!answer.trim()) {
+    return {
+      questionIndex: index,
+      rating: "Poor",
+      strengths: [],
+      missingConcepts: ["Core topic of the question"],
+      improvementSuggestions: ["Ensure you provide at least a basic answer rather than leaving it blank."],
+      sampleStrongAnswer: "A strong answer would directly address the question with technical depth and practical examples.",
+      relevanceScore: 0,
+      correctnessScore: 0,
+      answeredQuestion: false,
+      feedback:
+        'No answer was recorded, so this question could not be evaluated.',
+    };
+  }
+
+  if (isLowEffortAnswer(answer)) {
+    return {
+      questionIndex: index,
+      rating: "Poor",
+      strengths: [],
+      missingConcepts: ["Technical specifics", "Clear explanation"],
+      improvementSuggestions: ["Avoid very short or low-effort answers. Elaborate on your points."],
+      sampleStrongAnswer: "A strong answer would directly address the question with technical depth and practical examples.",
+      relevanceScore: 0,
+      correctnessScore: 0,
+      answeredQuestion: false,
+      feedback:
+        'The response looks too short or repetitive to answer the question.',
+    };
+  }
+
+  const questionKeywords = getSignificantTerms(question);
+  const answerTerms = new Set(getSignificantTerms(answer));
+  const matchedTerms = questionKeywords.filter((term) => answerTerms.has(term));
+  const overlapRatio = questionKeywords.length > 0 ? matchedTerms.length / questionKeywords.length : 0;
+  const relevanceScore = clampScore(overlapRatio * 70 + Math.min(getWordCount(answer), 15) * 2);
+  const answeredQuestion = relevanceScore >= 35;
+  
+  let rating = "Fair";
+  if (relevanceScore > 70) rating = "Excellent";
+  else if (relevanceScore > 50) rating = "Good";
+  else if (!answeredQuestion) rating = "Poor";
+
+  return {
+    questionIndex: index,
+    rating: rating,
+    strengths: answeredQuestion ? ["Attempted the topic", "Used relevant keywords"] : [],
+    missingConcepts: answeredQuestion ? [] : ["Specifics requested in the prompt"],
+    improvementSuggestions: ["Include concrete examples from past projects", "Structure your answer using the STAR method"],
+    sampleStrongAnswer: "A strong answer would detail a specific scenario, the actions taken, and the measurable results achieved, relating closely to the technical stack.",
+    relevanceScore: relevanceScore
+  };
+}
+
+function getSignificantTerms(text) {
+  return normalizeAnswer(text)
+    .split(/\s+/)
+    .filter(
+      (word) =>
+        word.length > 2 &&
+        !RELEVANCE_STOP_WORDS.has(word) &&
+        !/^\d+$/.test(word)
+    );
+}
+
+function buildLocalEvaluationSummary(metrics) {
+  const averageWords = Math.round(metrics.averageWordCount);
+
+  if (metrics.unansweredCount === metrics.totalQuestions) {
+    return 'Local evaluation found no recorded answers, so confidence is very low. Complete responses are needed before the simulator can infer readiness.';
+  }
+
+  if (metrics.meaningfulCount === 0) {
+    return 'Local evaluation found only empty or low-effort responses. Confidence is very low because the answers do not provide enough substance for interview readiness.';
+  }
+
+  return `Local evaluation reviewed ${metrics.totalQuestions} responses with an average length of ${averageWords} words and average question relevance of ${Math.round(metrics.averageRelevanceScore)}%. ${metrics.meaningfulCount} response(s) appeared meaningful, ${metrics.lowEffortCount} looked low effort, and ${metrics.unansweredCount} were unanswered.`;
+}
+
+function clampScore(score) {
+  const numericScore = Number.isFinite(Number(score)) ? Number(score) : 0;
+  return Math.max(0, Math.min(100, Math.round(numericScore)));
+}
+
+function mergeEvaluations(remote, local) {
+  if (!remote || !remote.scores) return local;
+  return {
+    scores: remote.scores || local.scores,
+    overallFeedback: remote.overallFeedback || local.overallFeedback,
+    strengths: remote.strengths || local.strengths,
+    areasForImprovement: remote.areasForImprovement || local.areasForImprovement,
+    recommendedLearning: remote.recommendedLearning || local.recommendedLearning,
+    answerEvaluations: (remote.answerEvaluations || local.answerEvaluations).map((remEval, idx) => {
+      const locEval = local.answerEvaluations.find(e => e.questionIndex === idx) || local.answerEvaluations[idx] || {};
+      if (!remEval) return locEval;
+      return {
+        questionIndex: idx,
+        rating: remEval.rating || locEval.rating || 'Fair',
+        strengths: remEval.strengths || locEval.strengths || [],
+        missingConcepts: remEval.missingConcepts || locEval.missingConcepts || [],
+        improvementSuggestions: remEval.improvementSuggestions || locEval.improvementSuggestions || [],
+        sampleStrongAnswer: remEval.sampleStrongAnswer || locEval.sampleStrongAnswer || ''
+      };
+    })
+  };
+}
+
+function formatAnswerEvaluation(evaluation) {
+  if (!evaluation) return 'No evaluation data was available for this answer.';
+
+  const answeredLabel = evaluation.answeredQuestion
+    ? 'Answered the question'
+    : 'Did not clearly answer the question';
+
+  return `${answeredLabel}. Relevance: ${evaluation.relevanceScore}%. Correctness: ${evaluation.correctnessScore}%. ${evaluation.feedback}`;
+}
+
 async function completeInterview() {
   clearInterval(state.timerInterval);
   stopRecording();
   state.isInterviewActive = false;
 
-  // Trigger modal immediately with a skeleton loading state
   if (UI.summaryContent) {
-   
     const loadingState = document.createElement('div');
     const loadingIcon = document.createElement('i');
     const loadingText = document.createElement('p');
 
     loadingState.style.cssText = 'text-align: center; padding: 40px 0;';
     loadingIcon.className = 'fa-solid fa-spinner fa-spin';
-    loadingIcon.style.cssText =
-      'font-size: 2.5rem; color: #7c63ff; margin-bottom: 16px;';
-    loadingText.textContent =
-      'Analyzing candidate performance metrics and structuring evaluation responses via Groq AI...';
+    loadingIcon.style.cssText = 'font-size: 2.5rem; color: #7c63ff; margin-bottom: 16px;';
+    loadingText.textContent = 'Analyzing candidate performance metrics and structuring detailed evaluation responses...';
 
     loadingState.append(loadingIcon, loadingText);
     clearElement(UI.summaryContent);
@@ -477,218 +811,252 @@ async function completeInterview() {
   }
   openModal();
 
-  // Prepare content diagnostics array for LLM processing
   const breakdownArray = state.questions.map((q, idx) => ({
     question: q,
     candidateAnswer: state.answers[idx] || '',
   }));
 
   const systemPrompt = `You are an elite, strict HR and technical evaluation engine. Analyze the given list of questions and candidate answers for a ${UI.roleSelect.value} position at a ${UI.difficultySelect.value} difficulty level.
-    You must compute an objective integer value for confidenceScore between 0 and 100 based on answer accuracy and completeness. CRITICAL: If all or most answers are empty string or represent minimal effort, your confidenceScore MUST be exceptionally low (e.g., 0 to 15%). Provide a constructive analysis text summary block detailing concrete assessment patterns. Return output strictly as a JSON object matching this schema:
-    {"confidenceScore": number, "evaluationAssessment": "string"}`;
+    Evaluate whether each answer literally addresses its paired question and whether the answer is technically or behaviorally correct for that question. Penalize generic, unrelated, empty, or low-effort responses. Return output strictly as a JSON object matching this schema:
+    {
+      "scores": {
+        "technicalKnowledge": number (0-100),
+        "communication": number (0-100),
+        "problemSolving": number (0-100),
+        "confidence": number (0-100),
+        "stress": number (0-100)
+      },
+      "overallFeedback": "string",
+      "strengths": ["string"],
+      "areasForImprovement": ["string"],
+      "recommendedLearning": ["string"],
+      "answerEvaluations": [
+        {
+          "questionIndex": number,
+          "rating": "Poor" | "Fair" | "Good" | "Excellent",
+          "strengths": ["string"],
+          "missingConcepts": ["string"],
+          "improvementSuggestions": ["string"],
+          "sampleStrongAnswer": "string"
+        }
+      ]
+    }`;
 
   const userPrompt = `System UI measured runtime stress value was: ${state.stressValue}%. Here is the exact performance breakdown: ${JSON.stringify(breakdownArray)}`;
 
-  let confidenceScore = 100 - Math.floor(state.stressValue * 0.6);
-  let descriptiveMetrics =
-    'Diagnostic complete. General performance criteria fulfilled.';
+  let finalEvaluation = evaluateLocalConfidence();
+  const groqConfig = getGroqConfig();
 
-  try {
-    const response = await fetch(CONFIG.GROQ_API_URL, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${CONFIG.GROQ_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: CONFIG.MODEL,
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt },
-        ],
-        temperature: 0.3,
-        response_format: { type: 'json_object' },
-      }),
-    });
+  if (groqConfig) {
+    try {
+      const response = await fetch(groqConfig.apiUrl, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${groqConfig.apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: groqConfig.model,
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt },
+          ],
+          temperature: 0.3,
+          response_format: { type: 'json_object' },
+        }),
+      });
 
-    if (response.ok) {
-      const data = await response.json();
-      const parsedGrok = JSON.parse(data.choices[0].message.content);
-      confidenceScore = parsedGrok.confidenceScore ?? confidenceScore;
-      descriptiveMetrics =
-        parsedGrok.evaluationAssessment ?? descriptiveMetrics;
+      if (response.ok) {
+        const data = await response.json();
+        const parsedGroq = JSON.parse(data.choices[0].message.content);
+        finalEvaluation = mergeEvaluations(parsedGroq, finalEvaluation);
+      }
+    } catch (e) {
+      console.error('Failed executing dynamic remote assessment analytics:', e);
     }
-  } catch (e) {
-    console.error('Failed executing dynamic remote assessment analytics:', e);
+  } else {
+    console.info('Groq evaluation skipped: using local detailed confidence analysis.');
   }
-saveInterviewHistory({
 
-  role: UI.roleSelect.value,
+  saveInterviewHistory({
+    role: UI.roleSelect.value,
+    difficulty: UI.difficultySelect.value,
+    interviewType: 'Mock Interview',
+    questions: state.questions,
+    answers: state.answers,
+    evaluation: finalEvaluation,
+    completedAt: new Date().toLocaleString()
+  });
 
-  difficulty:
-      UI.difficultySelect.value,
-
-  interviewType:
-      UI.interviewType.value,
-
-  questions:
-      state.questions,
-
-  answers:
-      state.answers,
-
-  confidenceScore:
-      confidenceScore,
-
-  stressScore:
-      state.stressValue,
-
-  evaluationAssessment:
-      descriptiveMetrics,
-
-  completedAt:
-      new Date().toLocaleString()
-
-});
   if (UI.summaryContent) {
-    const metricGrid = document.createElement('div');
-    const analysisBox = document.createElement('div');
-    const analysisTitle = document.createElement('h4');
-    const analysisText = document.createElement('p');
-    const reviewList = document.createElement('div');
-    const reviewTitle = document.createElement('h4');
-
-    metricGrid.className = 'metric-grid';
-    metricGrid.append(
-      createMetricCard('Composure Baseline', `${100 - state.stressValue}%`),
-      createMetricCard('Confidence Metric', `${confidenceScore}%`)
+    clearElement(UI.summaryContent);
+    
+    // Overall Performance Summary
+    const scoreGrid = document.createElement('div');
+    scoreGrid.className = 'score-grid';
+    scoreGrid.append(
+      createMetricCard('Technical Knowledge', `${finalEvaluation.scores.technicalKnowledge}%`),
+      createMetricCard('Communication', `${finalEvaluation.scores.communication}%`),
+      createMetricCard('Problem Solving', `${finalEvaluation.scores.problemSolving}%`),
+      createMetricCard('Confidence', `${finalEvaluation.scores.confidence}%`),
+      createMetricCard('Stress Level', `${finalEvaluation.scores.stress}%`)
     );
 
-    analysisBox.className = 'analysis-box';
-    analysisTitle.textContent = 'Evaluation Assessment';
-    analysisText.textContent = descriptiveMetrics;
-    analysisBox.append(analysisTitle, analysisText);
+    // Feedback Section
+    const feedbackBox = document.createElement('div');
+    feedbackBox.className = 'feedback-section glass-card';
+    feedbackBox.innerHTML = `
+      <h4>Overall Feedback</h4>
+      <p>${finalEvaluation.overallFeedback}</p>
+      
+      <div class="feedback-lists">
+        <div class="strengths-list">
+          <h5><i class="fa-solid fa-arrow-trend-up"></i> Key Strengths</h5>
+          <ul>${finalEvaluation.strengths.map(s => `<li>${s}</li>`).join('')}</ul>
+        </div>
+        <div class="improvements-list">
+          <h5><i class="fa-solid fa-bullseye"></i> Areas for Improvement</h5>
+          <ul>${finalEvaluation.areasForImprovement.map(s => `<li>${s}</li>`).join('')}</ul>
+        </div>
+      </div>
+      
+      <div class="learning-list">
+        <h5><i class="fa-solid fa-book-open-reader"></i> Recommended Learning Topics</h5>
+        <div class="tags-container">
+          ${finalEvaluation.recommendedLearning.map(s => `<span class="learning-tag">${s}</span>`).join('')}
+        </div>
+      </div>
+    `;
 
+    // Question-wise Breakdown
+    const reviewList = document.createElement('div');
     reviewList.className = 'review-list';
-    reviewTitle.textContent = 'Responses Diagnostic Breakdown';
-    reviewList.appendChild(reviewTitle);
+    reviewList.innerHTML = `<h4>Detailed Question Breakdown</h4>`;
 
     state.questions.forEach((question, index) => {
-      const answer =
-        state.answers[index] || 'No input recorded inside the temporal limits.';
+      const answer = state.answers[index] || 'No input recorded inside the temporal limits.';
+      const answerEval = finalEvaluation.answerEvaluations.find(e => e.questionIndex === index) || {};
+      
       const reviewItem = document.createElement('div');
-      const questionText = document.createElement('p');
-      const answerText = document.createElement('p');
+      reviewItem.className = 'detailed-review-card glass-card';
+      
+      const ratingClass = answerEval.rating ? answerEval.rating.toLowerCase() : 'fair';
 
-      reviewItem.className = 'review-item';
-      questionText.className = 'review-q';
-      answerText.className = 'review-a';
-      appendPrefixedText(questionText, `Q${index + 1}:`, question);
-      appendPrefixedText(answerText, 'Your Answer:', answer);
-      reviewItem.append(questionText, answerText);
+      reviewItem.innerHTML = `
+        <div class="review-header">
+          <span class="q-number">Q${index + 1}</span>
+          <span class="rating-badge rating-${ratingClass}">${answerEval.rating || 'Fair'}</span>
+        </div>
+        <div class="review-q-text"><strong>Question:</strong> ${question}</div>
+        <div class="review-a-text"><strong>Your Answer:</strong> ${answer}</div>
+        
+        <div class="review-eval-details">
+          ${answerEval.strengths && answerEval.strengths.length ? `
+            <div class="detail-group positive">
+              <strong><i class="fa-solid fa-check"></i> Strengths:</strong>
+              <ul>${answerEval.strengths.map(s => `<li>${s}</li>`).join('')}</ul>
+            </div>
+          ` : ''}
+          
+          ${answerEval.missingConcepts && answerEval.missingConcepts.length ? `
+            <div class="detail-group negative">
+              <strong><i class="fa-solid fa-xmark"></i> Missing Concepts:</strong>
+              <ul>${answerEval.missingConcepts.map(s => `<li>${s}</li>`).join('')}</ul>
+            </div>
+          ` : ''}
+          
+          ${answerEval.improvementSuggestions && answerEval.improvementSuggestions.length ? `
+            <div class="detail-group info">
+              <strong><i class="fa-solid fa-lightbulb"></i> How to Improve:</strong>
+              <ul>${answerEval.improvementSuggestions.map(s => `<li>${s}</li>`).join('')}</ul>
+            </div>
+          ` : ''}
+          
+          ${answerEval.sampleStrongAnswer ? `
+            <div class="sample-answer">
+              <strong><i class="fa-solid fa-star"></i> Sample Strong Answer:</strong>
+              <p>${answerEval.sampleStrongAnswer}</p>
+            </div>
+          ` : ''}
+        </div>
+      `;
+      
       reviewList.appendChild(reviewItem);
     });
 
-    clearElement(UI.summaryContent);
-    UI.summaryContent.append(metricGrid, analysisBox, reviewList);
+    UI.summaryContent.append(scoreGrid, feedbackBox, reviewList);
   }
 }
 
 function saveInterviewHistory(session) {
-
-    const history =
-        JSON.parse(
-            localStorage.getItem(
-                "interview-history"
-            )
-        ) || [];
+    const history = JSON.parse(
+        localStorage.getItem("interview-history")
+    ) || [];
 
     history.unshift(session);
 
     localStorage.setItem(
         "interview-history",
-        JSON.stringify(
-            history.slice(0, 20)
-        )
+        JSON.stringify(history.slice(0, 20))
     );
 
     renderInterviewHistory();
 }
 
 function renderInterviewHistory() {
-
-    const history =
-        JSON.parse(
-            localStorage.getItem(
-                "interview-history"
-            )
-        ) || [];
-
+    const history = JSON.parse(localStorage.getItem("interview-history")) || [];
     if (!UI.historyContainer) return;
-
     UI.historyContainer.innerHTML = "";
 
     history.forEach((session) => {
+        const conf = session.confidenceScore ?? session.evaluation?.scores?.confidence ?? 0;
+        const str = session.stressScore ?? session.evaluation?.scores?.stress ?? 0;
 
-        const card =
-            document.createElement("div");
-
-        card.className =
-            "history-card";
+        const card = document.createElement("div");
+        card.className = "history-card";
 
         const title = document.createElement("h4");
-title.textContent = session.role;
+        title.textContent = session.role;
 
-const difficulty = document.createElement("p");
-difficulty.textContent = session.difficulty;
+        const difficulty = document.createElement("p");
+        difficulty.textContent = session.difficulty;
 
-const confidence = document.createElement("p");
-confidence.textContent =
-  `Confidence: ${session.confidenceScore}%`;
+        const confidence = document.createElement("p");
+        confidence.textContent = `Confidence: ${conf}%`;
 
-const stress = document.createElement("p");
-stress.textContent =
-  `Stress: ${session.stressScore}%`;
+        const stress = document.createElement("p");
+        stress.textContent = `Stress: ${str}%`;
 
-const date = document.createElement("small");
-date.textContent = session.completedAt;
+        const date = document.createElement("small");
+        date.textContent = session.completedAt;
 
-card.appendChild(title);
-card.appendChild(difficulty);
-card.appendChild(confidence);
-card.appendChild(stress);
-card.appendChild(date);
+        card.appendChild(title);
+        card.appendChild(difficulty);
+        card.appendChild(confidence);
+        card.appendChild(stress);
+        card.appendChild(date);
 
         UI.historyContainer.appendChild(card);
-
     });
 
     renderHistoryStats(history);
 }
 
 function renderHistoryStats(history) {
+    if (!history.length || !UI.historyStats) return;
 
-    if (
-        !history.length ||
-        !UI.historyStats
-    ) return;
-
-    const avgConfidence =
-        Math.round(
-            history.reduce(
-                (sum, item) =>
-                    sum +
-                    item.confidenceScore,
-                0
-            ) / history.length
-        );
+    const avgConfidence = Math.round(
+        history.reduce((sum, item) => {
+            const conf = item.confidenceScore ?? item.evaluation?.scores?.confidence ?? 0;
+            return sum + conf;
+        }, 0) / history.length
+    );
 
     UI.historyStats.innerHTML = `
         <div class="metric-card">
             <h4>Total Interviews</h4>
             <p>${history.length}</p>
         </div>
-
         <div class="metric-card">
             <h4>Average Confidence</h4>
             <p>${avgConfidence}%</p>
@@ -735,6 +1103,7 @@ function resetInterview() {
   UI.timerProgress.style.width = '100%';
   UI.timerProgress.className = 'progress-fill success';
   UI.answerInput.value = '';
+  state.lowEffortConfirmations = {};
 
   UI.interviewBox.classList.add('hidden');
   UI.setupPanel.classList.remove('hidden');

@@ -24,7 +24,7 @@ const Search = ({
   const fetchMeals = (value) => {
     fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${value}`)
       .then((response) => response.json())
-      .then((data) => setMeals(data.meals));
+      .then((data) => setMeals(data.meals || []));  // ✅ FIX: null check added
   };
 
   const handleSearch = (value) => {
@@ -138,7 +138,7 @@ const Search = ({
       {showResults && input && (
         <div
           ref={resultsRef}
-         className="
+          className="
             w-full
             max-w-xl
             max-h-96
@@ -156,8 +156,9 @@ const Search = ({
             border
             "
         >
-          {input &&
-            meals &&
+          {meals.length === 0 ? (
+            <p className="text-center text-gray-400 py-4">No meals found</p>
+          ) : (
             meals.map((meal, index) => (
               <Link key={meal.idMeal} href={`/meal/${meal.idMeal}`}>
                 <div
@@ -178,7 +179,8 @@ const Search = ({
                   <span>{meal.strMeal}</span>
                 </div>
               </Link>
-            ))}
+            ))
+          )}
         </div>
       )}
     </div>
