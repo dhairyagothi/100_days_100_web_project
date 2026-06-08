@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanban Board</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Kanban Board</h1>
+
+        <div class="header-controls">
+            <button id="themeToggle">🌙 Dark Mode</button>
+        </div>
+    </header>
+
+    <main class="board">
+
+        <!-- TO DO -->
+        <div class="column">
+            <div class="column-header">
+                <h2>To Do</h2>
+                <button class="add-column-task" data-status="todo">+</button>
+            </div>
+            <div class="task-container" id="todo"></div>
+        </div>
+
+        <!-- IN PROGRESS -->
+        <div class="column">
+            <div class="column-header">
+                <h2>In Progress</h2>
+                <button class="add-column-task" data-status="progress">+</button>
+            </div>
+            <div class="task-container" id="progress"></div>
+        </div>
+
+        <!-- REVIEW -->
+        <div class="column">
+            <div class="column-header">
+                <h2>Review</h2>
+                <button class="add-column-task" data-status="review">+</button>
+            </div>
+            <div class="task-container" id="review"></div>
+        </div>
+
+        <!-- COMPLETED -->
+        <div class="column">
+            <div class="column-header">
+                <h2>Completed</h2>
+                <button class="add-column-task" data-status="completed">+</button>
+            </div>
+            <div class="task-container" id="completed"></div>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

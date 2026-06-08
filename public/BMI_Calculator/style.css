@@ -1,1282 +1,621 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Serif:ital@0;1&display=swap");
-
-/* =========================================
-   Reset
-   ========================================= */
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* =========================================
-   Design tokens — Warm Clinical
-   ========================================= */
-:root {
-  --paper: #f5f2ec;
-  --surface: #faf8f4;
-  --card: #fffffe;
-  --ink: #1c1a17;
-  --ink-2: #6b6560;
-  --ink-3: #b0aa9f;
-  --rule: #dedad2;
-  --rule-strong: #c5bfb4;
-
-  --blue: #2563b0;
-  --green: #2d7a3a;
-  --amber: #b45309;
-  --red1: #b91c1c;
-  --red2: #7f1d1d;
-  --red3: #450a0a;
-
-  --blue-tint: #eff4fc;
-  --green-tint: #edf6ef;
-  --amber-tint: #fef3e2;
-  --red-tint: #fef2f2;
-
-  --f-mono: "DM Mono", "Courier New", monospace;
-  --f-serif: "Instrument Serif", Georgia, serif;
-
-  --r-sm: 4px;
-  --r-md: 6px;
-  --r-lg: 10px;
-}
-
-body.dark {
-  --paper: #111008;
-  --surface: #181610;
-  --card: #1e1c14;
-  --ink: #f0ece2;
-  --ink-2: #928e82;
-  --ink-3: #4a4740;
-  --rule: #2c2a22;
-  --rule-strong: #3e3b30;
-
-  --blue-tint: #0f1e35;
-  --green-tint: #0d200f;
-  --amber-tint: #1f1200;
-  --red-tint: #1f0808;
-}
-
-/* =========================================
-   Base
-   ========================================= */
-body {
-  font-family: var(--f-mono);
-  background: var(--paper);
-  color: var(--ink);
-  min-height: 100vh;
-  padding: 56px 24px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  -webkit-font-smoothing: antialiased;
-  transition:
-    background 0.25s,
-    color 0.25s;
-}
-
-.page {
-  width: 100%;
-  max-width: 880px;
-}
-
-/* =========================================
-   Layout — hairline-divided grid
-   ========================================= */
-.bmi-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: var(--rule-strong);
-  border: 1px solid var(--rule-strong);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-}
-
-@media (max-width: 700px) {
-  .bmi-grid {
-    grid-template-columns: 1fr;
-  }
-  body {
-    padding: 28px 16px;
-  }
-}
-
-.card {
-  background: var(--card);
-  padding: 36px 32px;
-}
-
-.right-card {
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-  background: var(--surface);
-}
-
-/* =========================================
-   Card header
-   ========================================= */
-.top-bar {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 32px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--rule);
-}
-
-.card-title {
-  font-family: var(--f-serif);
-  font-size: 30px;
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  color: var(--ink);
-}
-
-.theme-toggle {
-  width: 32px;
-  height: 32px;
-  border-radius: var(--r-sm);
-  border: 1px solid var(--rule-strong);
-  background: transparent;
-  color: var(--ink-2);
-  cursor: pointer;
-  font-size: 13px;
-  display: grid;
-  place-items: center;
-  transition:
-    border-color 0.15s,
-    background 0.15s;
-  font-family: var(--f-mono);
-}
-
-.theme-toggle:hover {
-  border-color: var(--ink-3);
-  background: var(--surface);
-}
-
-/* SVG icon toggle — moon visible in light, sun visible in dark */
-.theme-toggle svg {
-  position: absolute;
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease;
-}
-
-.theme-toggle {
-  position: relative;
-  overflow: hidden;
-}
-
-.icon-sun {
-  opacity: 0;
-  transform: rotate(-90deg) scale(0.6);
-}
-.icon-moon {
-  opacity: 1;
-  transform: rotate(0deg) scale(1);
-}
-
-body.dark .icon-sun {
-  opacity: 1;
-  transform: rotate(0deg) scale(1);
-}
-body.dark .icon-moon {
-  opacity: 0;
-  transform: rotate(90deg) scale(0.6);
-}
-
-/* =========================================
-   Forms
-   ========================================= */
-.field-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-bottom: 16px;
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.field-label {
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-
-select,
-input[type="text"],
-input[type="number"] {
-  width: 100%;
-  background: var(--navy-3);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: var(--radius-sm);
-  padding: .75rem 3rem .75rem 2.8rem;
-  color: #fff;
-  font-family: 'DM Sans', sans-serif;
-  font-size: .95rem;
-  padding: 10px 12px;
-  background: var(--surface);
-  border: 1px solid var(--rule);
-  border-radius: var(--r-sm);
-  font-size: 13px;
-  font-family: var(--f-mono);
-  color: var(--ink);
-  outline: none;
-  transition:
-    border-color 0.15s,
-    background 0.15s;
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-select:hover,
-input:hover {
-  border-color: var(--rule-strong);
-}
-.field-icon {
-  position: absolute;
-  left: .9rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--muted);
-}
-.field-icon svg {
-  width: 16px;
-  height: 16px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 2;
-}
-.field-unit {
-  position: absolute;
-  right: 2rem;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: .75rem;
-  color: var(--muted);
-}
-
-select:focus,
-input:focus {
-  border-color: var(--ink);
-  background: var(--card);
-}
-
-button#btn {
-  width: 100%;
-  padding: 12px;
-  margin-top: 14px;
-  background: var(--ink);
-  color: var(--card);
-  border: 1px solid var(--ink);
-  border-radius: var(--r-sm);
-  font-size: 10px;
-  font-family: var(--f-mono);
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition:
-    opacity 0.15s,
-    transform 0.1s;
-}
-
-button#btn:hover {
-  opacity: 0.8;
-}
-button#btn:active {
-  transform: scale(0.997);
-}
-
-.error-msg {
-  font-size: 11px;
-  color: var(--red1);
-  margin-top: 10px;
-  letter-spacing: 0.02em;
-}
-
-.hidden {
-  display: none !important;
-}
-
-/* =========================================
-   Results
-   ========================================= */
-.post-calc {
-  margin-top: 18px;
-}
-
-.result-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin-top: 28px;
-  border-top: 1px solid var(--rule);
-}
-
-.metric-card {
-  padding-top: 20px;
-  display: flex;
-  flex-direction: column;
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
-}
-
-.metric-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-}
-
-body.dark .metric-card:hover {
-  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.05);
-}
-
-.metric-card + .metric-card {
-  padding-left: 20px;
-  border-left: 1px solid var(--rule);
-}
-
-.metric-label {
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-  margin-bottom: 8px;
-}
-
-.metric-value {
-  font-family: var(--f-serif);
-  font-size: 52px;
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-  line-height: 1;
-}
-
-.range-val {
-  font-family: var(--f-mono);
-  font-size: 22px;
-  font-style: normal;
-  padding-top: 8px;
-  letter-spacing: -0.01em;
-}
-
-.category-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 6px 12px;
-  border-radius: 999px;
-  margin-top: 14px;
-  transition: all 0.3s ease;
-}
-
-.tip-text {
-  font-size: 11px;
-  color: var(--ink-2);
-  margin-top: 10px;
-  line-height: 1.65;
-}
-
-/* =========================================
-   BMI Range Bar
-   ========================================= */
-.range-vis {
-  margin-top: 28px;
-}
-
-.range-bar {
-  height: 3px;
-  position: relative;
-  margin-bottom: 10px;
-}
-
-.range-segments {
-  display: flex;
-  height: 100%;
-}
-
-.seg {
-  display: block;
-}
-.seg-blue {
-  background: var(--blue);
-}
-.seg-green {
-  background: var(--green);
-}
-.seg-amber {
-  background: var(--amber);
-}
-.seg-red {
-  background: var(--red1);
-}
-
-.bmi-pointer {
-  position: absolute;
-  top: -6px;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background: var(--card);
-  border: 2px solid var(--ink);
-  transform: translateX(-50%);
-  transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  left: 0%;
-}
-
-.range-labels {
-  display: flex;
-  justify-content: space-between;
-  font-size: 10px;
-  color: var(--ink-3);
-  letter-spacing: 0.04em;
-}
-
-/* =========================================
-   Body Fat Estimate
-   ========================================= */
-.bf-section {
-  margin-top: 28px;
-  padding-top: 24px;
-  border-top: 1px solid var(--rule);
-}
-
-.bf-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 18px;
-}
-
-.bf-badge {
-  display: inline-block;
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  padding: 4px 9px;
-  border-radius: 2px;
-  font-family: var(--f-mono);
-}
-
-.bf-body {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-}
-
-.bf-gauge-wrap {
-  flex-shrink: 0;
-  width: 120px;
-  height: 120px;
-}
-
-.bf-gauge {
-  width: 100%;
-  height: 100%;
-}
-
-.bf-track {
-  stroke: var(--rule);
-}
-
-.bf-fill {
-  stroke: var(--green);
-  transform: rotate(-90deg);
-  transform-origin: 50% 50%;
-  transition:
-    stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-    stroke 0.3s ease;
-}
-
-.bf-pct-text {
-  font-family: var(--f-serif);
-  font-size: 28px;
-  font-style: italic;
-  font-weight: 400;
-  fill: var(--ink);
-}
-
-.bf-pct-unit {
-  font-family: var(--f-mono);
-  font-size: 8px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  fill: var(--ink-3);
-}
-
-.bf-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.bf-desc {
-  font-size: 11px;
-  color: var(--ink-2);
-  line-height: 1.65;
-  margin-bottom: 14px;
-}
-
-.bf-ranges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 14px;
-}
-
-.bf-range-item {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 10px;
-  letter-spacing: 0.04em;
-  color: var(--ink-3);
-}
-
-.bf-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.bf-dot-blue {
-  background: #2563b0;
-}
-.bf-dot-green {
-  background: #16a34a;
-}
-.bf-dot-teal {
-  background: #0d9488;
-}
-.bf-dot-amber {
-  background: #d97706;
-}
-.bf-dot-red {
-  background: #dc2626;
-}
-
-/* =========================================
-   Reference Table
-   ========================================= */
-.bmi-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 12px;
-}
-
-.bmi-table th {
-  text-align: left;
-  font-weight: 500;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--rule);
-}
-
-.bmi-table td {
-  padding: 10px 0;
-  border-bottom: 1px solid var(--rule);
-  color: var(--ink);
-}
-
-.bmi-table tbody tr:last-child td {
-  border-bottom: none;
-}
-
-.bmi-table td:last-child,
-.bmi-table th:last-child {
-  text-align: right;
-}
-
-.dot {
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-}
-
-.dot-blue {
-  background: var(--blue);
-}
-.dot-green {
-  background: var(--green);
-}
-.dot-amber {
-  background: var(--amber);
-}
-.dot-red1 {
-  background: var(--red1);
-}
-.dot-red2 {
-  background: var(--red2);
-}
-.dot-red3 {
-  background: var(--red3);
-}
-
-/* =========================================
-   Chart
-   ========================================= */
-.chart-wrap {
-  position: relative;
-  flex: 1;
-  min-height: 140px;
-  border-top: 1px solid var(--rule);
-  padding-top: 20px;
-}
-
-.chart-hint {
-  font-size: 10px;
-  letter-spacing: 0.04em;
-  color: var(--ink-3);
-  text-align: center;
-  margin-top: 14px;
-}
-
-* {
-  scrollbar-width: none; /* Firefox */
-}
-
-*::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-}
-
-@media (max-width: 768px) {
-  /* =========================
-     Page spacing fix
-  ========================= */
-  body {
-    padding: 16px 10px;
-  }
-
-  .page {
-    max-width: 100%;
-    padding: 0;
-  }
-
-  .bmi-grid {
-    grid-template-columns: 1fr;
-    gap: 0;
-    border-radius: 10px;
-  }
-
-  .card {
-    padding: 16px;
-  }
-
-  .right-card {
-    gap: 18px;
-  }
-
-  .top-bar {
-    margin-bottom: 18px;
-    padding-bottom: 10px;
-  }
-
-  .card-title {
-    font-size: 22px;
-  }
-
-  .field-row {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  select,
-  input {
-    font-size: 14px;
-    padding: 12px;
-  }
-
-  button#btn {
-    font-size: 11px;
-    padding: 14px;
-  }
-
-  .result-row {
-    grid-template-columns: 1fr;
-  }
-
-  .metric-card + .metric-card {
-    border-left: none;
-    border-top: 1px solid var(--rule);
-    padding-left: 0;
-    margin-top: 16px;
-  }
-
-  .metric-value {
-    font-size: 34px;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-  }
-
-  body.dark .metric-value {
-    text-shadow: 0 2px 14px rgba(255, 255, 255, 0.06);
-  }
-
-  .range-val {
-    font-size: 18px;
-  }
-
-  .range-vis {
-    margin-top: 18px;
-  }
-
-  .range-labels {
-    font-size: 10px;
-  }
-
-  /* =========================
-     TABLE scroll fix
-  ========================= */
-  .bmi-table {
-    font-size: 11px;
-  }
-
-  .bmi-table td {
-    padding: 8px 0;
-  }
-
-  .chart-wrap {
-    min-height: 180px;
-    padding-top: 12px;
-  }
-
-  .chart-wrap canvas {
-    width: 100% !important;
-    height: 160px !important;
-  }
-
-  .chart-hint {
-    font-size: 10px;
-  }
-
-  .bf-body {
-    flex-direction: column;
-    gap: 16px;
-    align-items: flex-start;
-  }
-
-  .bf-gauge-wrap {
-    width: 100px;
-    height: 100px;
-    align-self: center;
-  }
-
-  body {
-    overflow-x: hidden;
-  }
-}
-
-input::placeholder {
-  opacity: 1;
-  transition:
-    opacity 0.25s ease,
-    transform 0.25s ease;
-}
-
-input:focus::placeholder {
-  opacity: 0;
-  transform: translateX(6px);
-}
-
-.result-row,
-.range-vis,
-.bf-section {
-  animation: fadeSlide 0.5s ease;
-}
-
-.post-calc {
-  animation: fadeUp .35s ease both;
-}
-
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeSlide {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.active-row {
-  background: rgba(100, 100, 255, 0.08);
-  transition: background 0.3s ease;
-}
-
-/* =========================================
-   Goal Tracker Section
-   ========================================= */
-.goal-section {
-  margin-top: 28px;
-  padding-top: 24px;
-  border-top: 1px solid var(--rule);
-}
-
-.goal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 18px;
-}
-
-.goal-status {
-  display: inline-block;
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  padding: 4px 9px;
-  border-radius: 2px;
-  font-family: var(--f-mono);
-  background: var(--blue-tint);
-  color: var(--blue);
-  transition: all 0.3s ease;
-}
-
-.goal-status.achieved {
-  background: var(--green-tint);
-  color: var(--green);
-}
-
-.goal-body {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* Progress Bar */
-.goal-progress-wrap {
-  position: relative;
-}
-
-.goal-progress-bar {
-  width: 100%;
-  height: 24px;
-  background: var(--surface);
-  border: 1px solid var(--rule);
-  border-radius: var(--r-sm);
-  overflow: hidden;
-  position: relative;
-}
-
-.goal-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--blue) 0%, var(--green) 100%);
-  width: 0%;
-  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
-}
-
-.goal-progress-fill::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.3) 50%,
-    transparent 100%
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:'Inter',sans-serif;
+  min-height:100vh;
+  color:#fff;
+  overflow-x:hidden;
+  transition:0.4s ease;
+}
+
+/* =========================================================
+   THEMES
+========================================================= */
+
+.theme-purple{
+  --primary:#9b5cff;
+  --secondary:#6f3dff;
+  --bg1:#0f0c29;
+  --bg2:#302b63;
+  --bg3:#24243e;
+  background:linear-gradient(
+    135deg,
+    var(--bg1),
+    var(--bg2),
+    var(--bg3)
   );
-  animation: shimmer 2s infinite;
 }
 
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+.theme-blue{
+  --primary:#4da3ff;
+  --secondary:#0066ff;
+  --bg1:#0f2027;
+  --bg2:#203a43;
+  --bg3:#2c5364;
+  background:linear-gradient(
+    135deg,
+    var(--bg1),
+    var(--bg2),
+    var(--bg3)
+  );
 }
 
-.goal-progress-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--ink);
-  font-family: var(--f-mono);
-  letter-spacing: 0.05em;
-  z-index: 1;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+.theme-green{
+  --primary:#35d07f;
+  --secondary:#159957;
+  --bg1:#134e5e;
+  --bg2:#1d976c;
+  --bg3:#71b280;
+  background:linear-gradient(
+    135deg,
+    var(--bg1),
+    var(--bg2),
+    var(--bg3)
+  );
 }
 
-/* Goal Metrics Grid */
-.goal-metrics {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+.theme-orange{
+  --primary:#ff9800;
+  --secondary:#ff5722;
+  --bg1:#42275a;
+  --bg2:#734b6d;
+  --bg3:#ff512f;
+  background:linear-gradient(
+    135deg,
+    var(--bg1),
+    var(--bg2),
+    var(--bg3)
+  );
 }
 
-.goal-metric {
-  padding: 14px;
-  background: var(--surface);
-  border: 1px solid var(--rule);
-  border-radius: var(--r-sm);
-  transition: all 0.2s ease;
-}
+/* =========================================================
+   GLASS EFFECT
+========================================================= */
 
-.goal-metric:hover {
-  border-color: var(--rule-strong);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-body.dark .goal-metric:hover {
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.03);
-}
-
-.goal-metric-label {
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-  margin-bottom: 6px;
-}
-
-.goal-metric-value {
-  font-family: var(--f-serif);
-  font-size: 20px;
-  font-style: italic;
-  color: var(--ink);
-  line-height: 1.2;
-}
-
-/* Confetti Animation for Goal Achievement */
-@keyframes confetti {
-  0% { 
-    transform: translateY(0) rotate(0deg); 
-    opacity: 1; 
-  }
-  100% { 
-    transform: translateY(-100vh) rotate(720deg); 
-    opacity: 0; 
-  }
-}
-
-.confetti-piece {
-  position: fixed;
-  width: 10px;
-  height: 10px;
-  background: var(--green);
-  animation: confetti 3s ease-out forwards;
-  pointer-events: none;
-  z-index: 9999;
-}
-
-/* Mobile Responsive for Goal Section */
-@media (max-width: 768px) {
-  .goal-metrics {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  
-  .goal-progress-bar {
-    height: 20px;
-  }
-  
-  .goal-metric-value {
-    font-size: 18px;
-  }
-  
-  .goal-section {
-    margin-top: 18px;
-    padding-top: 18px;
-  }
-}
-
-.card, .full-card, .hero-text { animation: fadeUp .5s ease both; }
-.main-grid .card:nth-child(2) { animation-delay: .1s; }
-.main-grid .card:nth-child(3) { animation-delay: .15s; }
-.main-grid .card:nth-child(4) { animation-delay: .2s; }
-
-/* ===============================
-   GLASSMORPHISM ENHANCEMENT
-================================= */
-
-.card,
-.full-card,
-.body-card {
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+.glass{
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.12);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
   box-shadow:
-    0 10px 40px rgba(0,0,0,.35),
-    inset 0 1px 0 rgba(255,255,255,.03);
-  transition:
-    transform .3s ease,
-    border-color .3s ease,
-    box-shadow .3s ease;
+    0 10px 30px rgba(0,0,0,0.25);
 }
 
-.card:hover,
-.full-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(15,191,173,.35);
+/* =========================================================
+   THEME SWITCHER
+========================================================= */
+
+.theme-switcher{
+  position:fixed;
+  top:24px;
+  right:24px;
+  display:flex;
+  gap:12px;
+  z-index:1000;
+}
+
+.theme-btn{
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  border:2px solid rgba(255,255,255,0.7);
+  cursor:pointer;
+  transition:0.25s ease;
+}
+
+.theme-btn:hover{
+  transform:scale(1.15);
+}
+
+.theme-btn.purple{
+  background:#9b5cff;
+}
+
+.theme-btn.blue{
+  background:#4da3ff;
+}
+
+.theme-btn.green{
+  background:#35d07f;
+}
+
+.theme-btn.orange{
+  background:#ff9800;
+}
+
+/* =========================================================
+   MAIN LAYOUT
+========================================================= */
+
+.container{
+  width:min(1200px,92%);
+  margin:auto;
+  padding:100px 0 40px;
+  display:grid;
+  grid-template-columns:1.1fr 0.9fr;
+  gap:30px;
+  align-items:start;
+}
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.calculator-card,
+.recommendation-box,
+.chart-section,
+.range-section{
+  border-radius:28px;
+}
+
+.calculator-card{
+  padding:35px;
+}
+
+.card-header h1{
+  font-size:2.2rem;
+  font-weight:800;
+  margin-bottom:12px;
+  line-height:1.2;
+}
+
+.card-header p{
+  color:rgba(255,255,255,0.75);
+  font-size:0.98rem;
+  line-height:1.7;
+  margin-bottom:32px;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+.input-group{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.input-group label{
+  font-size:0.95rem;
+  font-weight:600;
+  color:rgba(255,255,255,0.9);
+}
+
+.input-group input,
+.input-group select{
+  width:100%;
+  border:none;
+  outline:none;
+  border-radius:16px;
+  padding:15px 16px;
+  background:rgba(255,255,255,0.12);
+  color:#fff;
+  font-size:1rem;
+  transition:0.3s ease;
+}
+
+.input-group input::placeholder{
+  color:rgba(255,255,255,0.55);
+}
+
+.input-group input:focus,
+.input-group select:focus{
+  background:rgba(255,255,255,0.18);
+  box-shadow:0 0 0 3px rgba(255,255,255,0.12);
+}
+
+.input-wrapper{
+  display:flex;
+  gap:10px;
+}
+
+.input-wrapper select{
+  width:90px;
+  cursor:pointer;
+}
+
+/* =========================================================
+   ERROR BOX
+========================================================= */
+
+.error-box{
+  margin-top:20px;
+  background:rgba(255,80,80,0.15);
+  border:1px solid rgba(255,80,80,0.3);
+  padding:14px;
+  border-radius:16px;
+  color:#ffb3b3;
+  font-size:0.95rem;
+}
+
+.hidden{
+  display:none;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.button-group{
+  margin-top:28px;
+  display:flex;
+  gap:15px;
+}
+
+.primary-btn,
+.secondary-btn{
+  flex:1;
+  border:none;
+  border-radius:16px;
+  padding:16px;
+  font-size:1rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:0.25s ease;
+}
+
+.primary-btn{
+  background:linear-gradient(
+    135deg,
+    var(--primary),
+    var(--secondary)
+  );
+  color:#fff;
+}
+
+.primary-btn:hover{
+  transform:translateY(-2px);
   box-shadow:
-    0 14px 45px rgba(0,0,0,.45),
-    0 0 0 1px rgba(15,191,173,.1);
+    0 12px 25px rgba(0,0,0,0.3);
 }
 
-/* ===============================
-   BUTTON GLOW EFFECT
-================================= */
-
-.calc-btn {
-  position: relative;
-  overflow: hidden;
+.secondary-btn{
+  background:rgba(255,255,255,0.12);
+  color:#fff;
 }
 
-.calc-btn::before {
-  content: "";
-  position: absolute;
-  inset: 0;
+.secondary-btn:hover{
+  background:rgba(255,255,255,0.18);
+}
+
+/* =========================================================
+   RESULT CARD
+========================================================= */
+
+.result-card{
+  margin-top:35px;
+  padding:30px;
+  border-radius:24px;
+  animation:fadeIn 0.4s ease;
+}
+
+.gauge-section{
+  display:flex;
+  justify-content:center;
+}
+
+.gauge-container{
+  position:relative;
+}
+
+.gauge{
+  width:240px;
+  height:240px;
+  border-radius:50%;
   background:
-    linear-gradient(
-      120deg,
-      transparent 20%,
-      rgba(255,255,255,.25) 50%,
-      transparent 80%
+    conic-gradient(
+      var(--primary) 0deg,
+      rgba(255,255,255,0.1) 0deg
     );
-  transform: translateX(-120%);
-  transition: transform .7s ease;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:0.5s ease;
 }
 
-.calc-btn:hover::before {
-  transform: translateX(120%);
-}
-
-.calc-btn:hover {
+.gauge-cover{
+  width:175px;
+  height:175px;
+  border-radius:50%;
+  background:rgba(18,18,30,0.95);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
   box-shadow:
-    0 10px 30px rgba(15,191,173,.35);
+    inset 0 0 25px rgba(255,255,255,0.05);
 }
 
-/* ===============================
-   INPUT HOVER EFFECT
-================================= */
-
-.field input:hover {
-  border-color: rgba(15,191,173,.25);
-  background: rgba(255,255,255,.02);
+.gauge-cover span{
+  font-size:3rem;
+  font-weight:800;
 }
 
-/* ===============================
-   FLOATING CARD ANIMATION
-================================= */
-
-@keyframes floatCard {
-  0%   { transform: translateY(0px); }
-  50%  { transform: translateY(-6px); }
-  100% { transform: translateY(0px); }
+.gauge-cover small{
+  font-size:0.95rem;
+  opacity:0.7;
 }
 
-.body-card {
-  animation:
-    fadeUp .6s ease,
-    floatCard 5s ease-in-out infinite;
+/* =========================================================
+   RESULT DETAILS
+========================================================= */
+
+.result-details{
+  margin-top:30px;
+  text-align:center;
 }
 
-/* ===============================
-   HERO TITLE EFFECT
-================================= */
-
-.hero-text h1 {
-  position: relative;
-  display: inline-block;
+.category-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px 18px;
+  border-radius:999px;
+  font-size:0.9rem;
+  font-weight:700;
+  margin-bottom:16px;
+  background:rgba(255,255,255,0.12);
 }
 
-.hero-text h1::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -8px;
-  width: 60%;
-  height: 3px;
-  border-radius: 999px;
-  background: linear-gradient(
-    90deg,
-    var(--teal),
-    transparent
-  );
+.result-details h2{
+  font-size:2rem;
+  margin-bottom:12px;
 }
 
-/* ===============================
-   TABLE ROW HOVER
-================================= */
-
-.bmi-table tbody tr {
-  transition:
-    background .2s ease,
-    transform .2s ease;
+.result-details p{
+  color:rgba(255,255,255,0.75);
+  line-height:1.7;
 }
 
-.bmi-table tbody tr:hover {
-  background: rgba(255,255,255,.02);
-  transform: scale(1.01);
+/* =========================================================
+   RIGHT PANEL
+========================================================= */
+
+.recommendation-card{
+  display:grid;
+  gap:20px;
 }
 
-/* ===============================
-   SCROLLBAR STYLING
-================================= */
-
-::-webkit-scrollbar {
-  width: 10px;
+.recommendation-box{
+  padding:24px;
+  transition:0.3s ease;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--navy);
+.recommendation-box:hover{
+  transform:translateY(-4px);
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(15,191,173,.35);
-  border-radius: 999px;
+.box-header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:16px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(15,191,173,.55);
+.box-header span{
+  font-size:1.4rem;
 }
 
-/* ===============================
-   SOFT PULSE EFFECT
-================================= */
-
-@keyframes pulseGlow {
-  0% {
-    box-shadow: 0 0 0 rgba(15,191,173,.0);
-  }
-  50% {
-    box-shadow: 0 0 18px rgba(15,191,173,.18);
-  }
-  100% {
-    box-shadow: 0 0 0 rgba(15,191,173,.0);
-  }
+.box-header h3{
+  font-size:1.05rem;
+  font-weight:700;
 }
 
-.gauge-center {
-  animation: pulseGlow 3s infinite ease-in-out;
+.recommendation-box p{
+  font-size:1.1rem;
+  font-weight:600;
+  color:rgba(255,255,255,0.9);
 }
 
-/* ===============================
-   RESPONSIVE IMPROVEMENTS
-================================= */
-
-@media (max-width: 900px) {
-
-  .main-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .hero {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
-
-  .hero-text p {
-    margin: 0 auto;
-  }
-
-  .body-stats {
-    flex-direction: column;
-  }
-
-  .human-figures {
-    flex-wrap: wrap;
-  }
+.recommendation-box ul{
+  padding-left:18px;
+  margin-top:10px;
 }
 
-@media (max-width: 500px) {
-
-  .page {
-    padding: 1.2rem;
-  }
-
-  .card,
-  .full-card {
-    padding: 1.2rem;
-  }
-
-  .hero-text h1 {
-    font-size: 1.8rem;
-  }
-
-  .gauge-bmi {
-    font-size: 2rem;
-  }
-
-  .calc-btn {
-    font-size: .9rem;
-    padding: .9rem;
-  }
-
-  .field input {
-    font-size: .88rem;
-  }
+.recommendation-box li{
+  margin-bottom:10px;
+  color:rgba(255,255,255,0.82);
+  line-height:1.6;
 }
 
-/* ===============================
-   DARK/LIGHT MODE SUPPORT
-================================= */
+/* =========================================================
+   SECTION STYLES
+========================================================= */
 
-@media (prefers-color-scheme: light) {
-
-  :root {
-    --navy: #f4f7fb;
-    --navy-2: #ffffff;
-    --navy-3: #edf2f7;
-    --card: #ffffff;
-    --card2: #f6f9fc;
-    --text: #081120;
-    --muted: #5b6b84;
-    --border: rgba(0,0,0,.08);
-  }
-
-  body {
-    background: var(--navy);
-    color: var(--text);
-  }
-
-  .field input {
-    color: #081120;
-  }
-
-  .hero-text h1 {
-    color: #081120;
-  }
+.range-section,
+.chart-section{
+  width:min(1200px,92%);
+  margin:0 auto 35px;
+  padding:32px;
 }
 
+.section-header{
+  margin-bottom:25px;
+}
+
+.section-header h2{
+  font-size:1.8rem;
+  font-weight:800;
+}
+
+/* =========================================================
+   BMI TABLE
+========================================================= */
+
+.bmi-table-wrapper{
+  overflow-x:auto;
+}
+
+.bmi-table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.bmi-table th{
+  text-align:left;
+  padding:16px;
+  background:rgba(255,255,255,0.12);
+  font-size:1rem;
+}
+
+.bmi-table td{
+  padding:16px;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  color:rgba(255,255,255,0.85);
+}
+
+.bmi-table tr:hover{
+  background:rgba(255,255,255,0.06);
+}
+
+.active-row{
+  background:rgba(255,255,255,0.15) !important;
+  border-left:4px solid var(--primary);
+}
+
+/* =========================================================
+   CHART
+========================================================= */
+
+.chart-wrapper{
+  width:100%;
+  height:420px;
+}
+
+canvas{
+  width:100% !important;
+  height:100% !important;
+  background:#fff;
+  border-radius:18px;
+  padding:18px;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+  text-align:center;
+  padding:25px;
+  color:rgba(255,255,255,0.7);
+  font-size:0.95rem;
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes fadeIn{
+
+  from{
+    opacity:0;
+    transform:translateY(10px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1000px){
+
+  .container{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:700px){
+
+  .container{
+    width:94%;
+    padding-top:90px;
+  }
+
+  .calculator-card{
+    padding:24px;
+  }
+
+  .card-header h1{
+    font-size:1.8rem;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .button-group{
+    flex-direction:column;
+  }
+
+  .gauge{
+    width:200px;
+    height:200px;
+  }
+
+  .gauge-cover{
+    width:145px;
+    height:145px;
+  }
+
+  .gauge-cover span{
+    font-size:2.3rem;
+  }
+
+  .section-header h2{
+    font-size:1.5rem;
+  }
+
+  .chart-wrapper{
+    height:320px;
+  }
+
+}
+
+@media(max-width:500px){
+
+  .theme-switcher{
+    top:14px;
+    right:14px;
+  }
+
+  .theme-btn{
+    width:18px;
+    height:18px;
+  }
+
+  .range-section,
+  .chart-section{
+    padding:22px;
+  }
+
+  .recommendation-box{
+    padding:20px;
+  }
+
+}

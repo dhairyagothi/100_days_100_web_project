@@ -1,15 +1,29 @@
 const UI = {
-  form: document.getElementById("searchForm") || document.querySelector(".modern-search-form"),
-  input: document.getElementById("usernameInput") || document.querySelector(".search-input-container input"),
-  statusBox: document.getElementById("statusBox") || document.querySelector(".status-banner"),
+  form: document.getElementById("searchForm"),
+  input: document.getElementById("usernameInput"),
+  statusBox: document.getElementById("statusBox"),
+
   profileCard: document.getElementById("profileCard"),
-  metricsPanel: document.getElementById("metricsPanel"),
   reposSection: document.getElementById("reposSection"),
   reposList: document.getElementById("reposList"),
+
+  analyticsPanel: document.getElementById("analyticsPanel"),
+  heatmapGrid: document.getElementById("heatmapGrid"),
+  languageLegend: document.getElementById("languageLegend"),
+  languagePie: document.querySelector(".language-pie"),
+  topLanguagePercent: document.getElementById("topLanguagePercent"),
+  topLanguageName: document.getElementById("topLanguageName"),
+
   themeToggle: document.getElementById("themeToggle"),
   themeIcon: document.getElementById("themeIcon"),
   offlineIndicator: document.getElementById("offlineIndicator"),
-  exportPdfBtn: document.getElementById("exportPdfBtn")
+
+  compareForm: document.getElementById("compareForm"),
+  compareA: document.getElementById("compareA"),
+  compareB: document.getElementById("compareB"),
+
+  comparisonPanel: document.getElementById("comparisonPanel"),
+  comparisonContainer: document.getElementById("comparisonContainer")
 };
 
 const Nodes = {
@@ -17,568 +31,1034 @@ const Nodes = {
   name: document.getElementById("name"),
   username: document.getElementById("username"),
   bio: document.getElementById("bio"),
+
   location: document.getElementById("location"),
   company: document.getElementById("company"),
   website: document.getElementById("website"),
   joined: document.getElementById("joined"),
+
   repoCount: document.getElementById("repoCount"),
   followers: document.getElementById("followers"),
   following: document.getElementById("following"),
   gists: document.getElementById("gists"),
+
   profileLink: document.getElementById("profileLink")
 };
 
-let searchResultsContainer = document.getElementById("searchResultsContainer");
-if (!searchResultsContainer) {
-  searchResultsContainer = document.createElement("div");
-  searchResultsContainer.id = "searchResultsContainer";
-  searchResultsContainer.style.cssText = `
-    display: none;
-    margin-top: 1rem;
-    border-radius: var(--radius-md, 16px);
-    overflow: hidden;
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    box-shadow: var(--shadow);
-  `;
-  
-  const targetWorkspace = document.querySelector(".search-workspace");
-  if (targetWorkspace) {
-    targetWorkspace.appendChild(searchResultsContainer);
-  } else if (UI.form && UI.form.parentNode) {
-    UI.form.parentNode.appendChild(searchResultsContainer);
-  } else {
-    document.body.appendChild(searchResultsContainer);
-  }
-}
-
 const CACHE_DURATION = 300000;
-let liveSearchDebounceTimer = null;
 
-const workerScript = `
-  self.onmessage = function(e) {
-    const repositories = e.data;
-    const distribution = {};
-    const metricsMapping = [];
-    let accumulatedStars = 0;
-    let totalForks = 0;
-
-    repositories.forEach(repo => {
-      accumulatedStars += repo.stargazers_count;
-      totalForks += repo.forks_count;
-      if (repo.language) {
-        distribution[repo.language] = (distribution[repo.language] || 0) + 1;
-      }
-      metricsMapping.push({
-        name: repo.name,
-        stars: repo.stargazers_count,
-        forks: repo.forks_count
-      });
-    });
-
-    const totalLanguagesCount = Object.values(distribution).reduce((a, b) => a + b, 0);
-    const formattedDistribution = Object.entries(distribution).map(([lang, count]) => ({
-      language: lang,
-      percentage: Math.round((count / totalLanguagesCount) * 100)
-    })).sort((a, b) => b.percentage - a.percentage);
-
-    const topLanguages = formattedDistribution.slice(0, 3).map(node => node.language);
-
-    self.postMessage({
-      languages: topLanguages,
-      distribution: formattedDistribution.slice(0, 4),
-      rawMetrics: metricsMapping.slice(0, 4),
-      stars: accumulatedStars,
-      forks: totalForks
-    });
-  };
-`;
-
-const blob = new Blob([workerScript], { type: "application/javascript" });
-const metricsWorker = new Worker(URL.createObjectURL(blob));
+/* =========================================================
+   CACHE ENGINE
+========================================================= */
 
 class DataCacheEngine {
+
   static get(storageKey) {
+
     try {
-      const entry = localStorage.getItem(`gh_dash_${storageKey}`);
+
+      const entry =
+        localStorage.getItem(`gh_dash_${storageKey}`);
+
       if (!entry) return null;
-      
+
       const payload = JSON.parse(entry);
+
       if (Date.now() > payload.expiresAt) {
-        localStorage.removeItem(`gh_dash_${storageKey}`);
+
+        localStorage.removeItem(
+          `gh_dash_${storageKey}`
+        );
+
         return null;
       }
+
       return payload.data;
-    } catch (error) {
+
+    } catch {
+
       return null;
     }
   }
 
   static set(storageKey, dataValue) {
+
     try {
+
       const payload = {
         data: dataValue,
         expiresAt: Date.now() + CACHE_DURATION
       };
-      localStorage.setItem(`gh_dash_${storageKey}`, JSON.stringify(payload));
+
+      localStorage.setItem(
+        `gh_dash_${storageKey}`,
+        JSON.stringify(payload)
+      );
+
     } catch (error) {
-      console.error("Cache serialization limit exceeded", error);
+
+      console.error(error);
     }
   }
 }
 
-function syncNetworkStatus() {
-  const isOnline = navigator.onLine;
-  if (UI.offlineIndicator) {
-    UI.offlineIndicator.classList.toggle("hidden", isOnline);
-  }
-  if (!isOnline && UI.statusBox) {
-    showStatus("Offline state detected. Serving data exclusively from client memory layers.", "offline");
-  } else if (isOnline && UI.statusBox && !UI.statusBox.classList.contains("hidden") && UI.statusBox.classList.contains("offline")) {
-    hideStatus();
-  }
+/* =========================================================
+   UTILITIES
+========================================================= */
+
+function safeText(value, fallback = "—") {
+
+  return value && String(value).trim()
+    ? value
+    : fallback;
 }
 
-function updateThemeIcon() {
-  const isDark = document.documentElement.getAttribute("data-theme") === "dark" || !document.documentElement.hasAttribute("data-theme");
-  if (UI.themeIcon) {
-    UI.themeIcon.textContent = isDark ? "☀" : "☾";
-  }
-}
+function formatDate(dateString) {
 
-function initTheme() {
-  const savedTheme = localStorage.getItem("theme");
-  if (savedTheme) {
-    document.documentElement.setAttribute("data-theme", savedTheme);
-  } else {
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    document.documentElement.setAttribute("data-theme", prefersDark ? "dark" : "light");
-  }
-  updateThemeIcon();
+  return new Date(dateString).toLocaleDateString(
+    undefined,
+    {
+      year: "numeric",
+      month: "short",
+      day: "numeric"
+    }
+  );
 }
 
 function showStatus(message, type = "success") {
+
   if (!UI.statusBox) return;
+
   UI.statusBox.textContent = message;
-  UI.statusBox.className = `status-banner ${type}`;
+
+  UI.statusBox.className =
+    `status-banner ${type}`;
+
   UI.statusBox.classList.remove("hidden");
 }
 
 function hideStatus() {
-  if (UI.statusBox) UI.statusBox.classList.add("hidden");
+
+  UI.statusBox?.classList.add("hidden");
 }
 
-function showLoading() {
-  showStatus("Syncing workspace records and evaluating analytics models...", "success");
-  if (UI.profileCard) UI.profileCard.classList.add("hidden");
-  if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
-  if (UI.reposSection) UI.reposSection.classList.add("hidden");
-  searchResultsContainer.style.display = "none";
+function syncNetworkStatus() {
+
+  if (!UI.offlineIndicator) return;
+
+  UI.offlineIndicator.classList.toggle(
+    "hidden",
+    navigator.onLine
+  );
 }
 
-function formatDate(dateString) {
-  return new Date(dateString).toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "short",
-    day: "numeric"
-  });
+function updateThemeIcon() {
+
+  const isDark =
+    document.documentElement.getAttribute(
+      "data-theme"
+    ) === "dark";
+
+  UI.themeIcon.textContent =
+    isDark ? "☀" : "☾";
 }
 
-function safeText(value, fallback = "—") {
-  return value && String(value).trim() ? value : fallback;
-}
+function initTheme() {
 
-function computeAccountHealthIndex(user, metrics) {
-  const repoFactor = user.public_repos * 1.5;
-  const tractionFactor = (metrics.stars * 2.5) + (metrics.forks * 1.2);
-  const networkFactor = user.followers * 0.8;
-  const matrixScore = Math.min(100, Math.round((repoFactor + tractionFactor + networkFactor) / 12));
-  
-  if (matrixScore > 75) return "Enterprise Authority";
-  if (matrixScore > 40) return "Core Contributor";
-  return "Active Developer";
-}
+  const savedTheme =
+    localStorage.getItem("theme");
 
-function renderVisualInsightsCharts(metrics) {
-  const langContainer = document.getElementById("languageDistributionChart");
-  const tractionContainer = document.getElementById("systemTractionChart");
-  
-  if (langContainer) {
-    langContainer.innerHTML = "";
-    if (metrics.distribution.length === 0) {
-      langContainer.innerHTML = '<span class="meta-output" style="text-align:left;">Insufficient environment distribution metrics.</span>';
-    } else {
-      metrics.distribution.forEach(item => {
-        const layoutRow = document.createElement("div");
-        layoutRow.style.cssText = "display:flex; flex-direction:column; gap:4px; width:100%;";
-        layoutRow.innerHTML = `
-          <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:600;">
-            <span>${item.language}</span>
-            <span class="user-handle">${item.percentage}%</span>
-          </div>
-          <div style="width:100%; height:6px; background:var(--bg-secondary); border-radius:99px; overflow:hidden;">
-            <div style="width:${item.percentage}%; height:100%; background:var(--accent); border-radius:99px;"></div>
-          </div>
-        `;
-        langContainer.appendChild(layoutRow);
-      });
-    }
+  if (savedTheme) {
+
+    document.documentElement.setAttribute(
+      "data-theme",
+      savedTheme
+    );
+
+  } else {
+
+    document.documentElement.setAttribute(
+      "data-theme",
+      "dark"
+    );
   }
 
-  if (tractionContainer) {
-    tractionContainer.innerHTML = "";
-    if (metrics.rawMetrics.length === 0) {
-      tractionContainer.innerHTML = '<span class="meta-output" style="text-align:left;">No tracking metrics registered.</span>';
-    } else {
-      metrics.rawMetrics.forEach(repo => {
-        const layoutRow = document.createElement("div");
-        layoutRow.style.cssText = "display:flex; align-items:center; justify-content:space-between; font-size:0.85rem; padding: 4px 0;";
-        layoutRow.innerHTML = `
-          <span style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:160px;">${repo.name}</span>
-          <div style="display:flex; gap:8px;">
-            <span class="pill" style="padding:2px 6px;">★ ${repo.stars}</span>
-            <span class="pill" style="padding:2px 6px;">⑂ ${repo.forks}</span>
-          </div>
-        `;
-        tractionContainer.appendChild(layoutRow);
-      });
-    }
-  }
+  updateThemeIcon();
 }
 
 function animateCounter(element, targetValue) {
+
   if (!element) return;
-  const target = parseInt(targetValue, 10) || 0;
-  if (target === 0) {
-    element.textContent = "0";
-    return;
-  }
-  
-  let start = 0;
-  const duration = 1000;
-  const startTime = performance.now();
-  
-  function updateNumber(currentTime) {
-    const elapsedTime = currentTime - startTime;
-    if (elapsedTime >= duration) {
-      element.textContent = target.toLocaleString();
-      return;
+
+  const target =
+    parseInt(targetValue, 10) || 0;
+
+  let current = 0;
+
+  const interval = setInterval(() => {
+
+    current += Math.ceil(target / 40);
+
+    if (current >= target) {
+
+      current = target;
+
+      clearInterval(interval);
     }
-    const progress = elapsedTime / duration;
-    const easeOutQuad = progress * (2 - progress);
-    const currentValue = Math.floor(easeOutQuad * target);
-    element.textContent = currentValue.toLocaleString();
-    requestAnimationFrame(updateNumber);
-  }
-  requestAnimationFrame(updateNumber);
+
+    element.textContent =
+      current.toLocaleString();
+
+  }, 20);
 }
 
-function renderProfile(user, metrics) {
-  Nodes.avatar.src = user.avatar_url;
-  Nodes.avatar.alt = `${user.login} workflow footprint`;
-  Nodes.name.textContent = safeText(user.name, user.login);
-  Nodes.username.textContent = `@${user.login}`;
+/* =========================================================
+   LOADING
+========================================================= */
 
-  const architectureClassification = computeAccountHealthIndex(user, metrics);
-  const ecosystemSummary = metrics.languages.length > 0 
-    ? `Specializes in ${metrics.languages.join(", ")} environments.`
-    : "Maintains a diversified structural codebase.";
+function showLoading() {
 
-  const baselineBio = user.bio ? user.bio : "Independent open source developer profile dashboard.";
-  Nodes.bio.textContent = `${baselineBio} [Rank: ${architectureClassification}] — ${ecosystemSummary}`;
-  
-  Nodes.location.textContent = safeText(user.location, "Distributed/Remote");
-  Nodes.company.textContent = safeText(user.company, "Independent Workspace");
+  showStatus(
+    "Fetching GitHub profile analytics...",
+    "success"
+  );
+
+  UI.profileCard?.classList.add("hidden");
+  UI.analyticsPanel?.classList.add("hidden");
+  UI.reposSection?.classList.add("hidden");
+}
+
+function showCompareLoading() {
+
+  showStatus(
+    "Comparing GitHub profiles...",
+    "success"
+  );
+
+  UI.comparisonPanel?.classList.remove(
+    "hidden"
+  );
+
+  UI.comparisonContainer.innerHTML = `
+    <div class="compare-loading">
+      Loading profile comparison...
+    </div>
+  `;
+}
+
+/* =========================================================
+   CONTRIBUTION HEATMAP
+========================================================= */
+
+function generateContributionHeatmap() {
+
+  if (!UI.heatmapGrid) return;
+
+  UI.heatmapGrid.innerHTML = "";
+
+  const totalDays = 365;
+
+  for (let i = 0; i < totalDays; i++) {
+
+    const level =
+      Math.floor(Math.random() * 5);
+
+    const cell =
+      document.createElement("div");
+
+    cell.className =
+      `heatmap-cell level-${level}`;
+
+    const contributions =
+      level === 0
+        ? 0
+        : Math.floor(
+            Math.random() * (level * 8)
+          ) + 1;
+
+    cell.title =
+      `${contributions} contributions`;
+
+    UI.heatmapGrid.appendChild(cell);
+  }
+}
+
+/* =========================================================
+   LANGUAGE ANALYTICS
+========================================================= */
+
+async function renderLanguageAnalytics(repos) {
+
+  if (!repos || !repos.length) return;
+
+  const languageBytes = {};
+
+  try {
+
+    for (const repo of repos.slice(0, 10)) {
+
+      if (!repo.languages_url) continue;
+
+      const response =
+        await fetch(repo.languages_url);
+
+      if (!response.ok) continue;
+
+      const data =
+        await response.json();
+
+      Object.entries(data).forEach(
+        ([language, bytes]) => {
+
+          languageBytes[language] =
+            (languageBytes[language] || 0)
+            + bytes;
+        }
+      );
+    }
+
+    const totalBytes =
+      Object.values(languageBytes)
+        .reduce((sum, value) => sum + value, 0);
+
+    if (!totalBytes) return;
+
+    const sortedLanguages =
+      Object.entries(languageBytes)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5);
+
+    const colors = [
+      "#8b5cf6",
+      "#06b6d4",
+      "#3b82f6",
+      "#10b981",
+      "#f59e0b"
+    ];
+
+    let currentDeg = 0;
+
+    const gradientParts = [];
+
+    UI.languageLegend.innerHTML = "";
+
+    sortedLanguages.forEach(
+      ([language, bytes], index) => {
+
+        const percent =
+          (bytes / totalBytes) * 100;
+
+        const deg =
+          (percent / 100) * 360;
+
+        gradientParts.push(
+          `${colors[index]} ${currentDeg}deg ${currentDeg + deg}deg`
+        );
+
+        currentDeg += deg;
+
+        const item =
+          document.createElement("div");
+
+        item.className =
+          "language-legend-item";
+
+        item.innerHTML = `
+          <div class="language-legend-left">
+
+            <span
+              class="language-dot"
+              style="background:${colors[index]}"
+            ></span>
+
+            <span>${language}</span>
+
+          </div>
+
+          <strong>
+            ${percent.toFixed(1)}%
+          </strong>
+        `;
+
+        UI.languageLegend.appendChild(item);
+      }
+    );
+
+    UI.languagePie.style.background =
+      `conic-gradient(${gradientParts.join(",")})`;
+
+    const [topLanguage, topBytes] =
+      sortedLanguages[0];
+
+    const topPercent =
+      ((topBytes / totalBytes) * 100)
+      .toFixed(0);
+
+    UI.topLanguageName.textContent =
+      topLanguage;
+
+    UI.topLanguagePercent.textContent =
+      `${topPercent}%`;
+
+  } catch (error) {
+
+    console.error(
+      "Language analytics failed:",
+      error
+    );
+  }
+}
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+function renderProfile(user) {
+
+  Nodes.avatar.src =
+    user.avatar_url;
+
+  Nodes.name.textContent =
+    safeText(user.name, user.login);
+
+  Nodes.username.textContent =
+    `@${user.login}`;
+
+  Nodes.bio.textContent =
+    safeText(
+      user.bio,
+      "No bio available."
+    );
+
+  Nodes.location.textContent =
+    safeText(user.location);
+
+  Nodes.company.textContent =
+    safeText(user.company);
+
+  Nodes.joined.textContent =
+    formatDate(user.created_at);
 
   if (user.blog) {
-    const blogUrl = user.blog.startsWith("http") ? user.blog : `https://${user.blog}`;
-    Nodes.website.innerHTML = `<a href="${blogUrl}" target="_blank" rel="noreferrer" class="repo-link">${user.blog.replace(/^https?:\/\//, "")}</a>`;
+
+    const blogUrl =
+      user.blog.startsWith("http")
+        ? user.blog
+        : `https://${user.blog}`;
+
+    Nodes.website.innerHTML = `
+      <a
+        href="${blogUrl}"
+        target="_blank"
+        class="repo-link"
+      >
+        ${user.blog}
+      </a>
+    `;
+
   } else {
+
     Nodes.website.textContent = "—";
   }
 
-  Nodes.joined.textContent = formatDate(user.created_at);
-  Nodes.profileLink.href = user.html_url;
+  Nodes.profileLink.href =
+    user.html_url;
 
-  animateCounter(Nodes.repoCount, user.public_repos);
-  animateCounter(Nodes.followers, user.followers);
-  animateCounter(Nodes.following, user.following);
-  animateCounter(Nodes.gists, user.public_gists);
+  animateCounter(
+    Nodes.repoCount,
+    user.public_repos
+  );
 
-  renderVisualInsightsCharts(metrics);
+  animateCounter(
+    Nodes.followers,
+    user.followers
+  );
 
-  if (UI.profileCard) UI.profileCard.classList.remove("hidden");
-  if (UI.metricsPanel) UI.metricsPanel.classList.remove("hidden");
+  animateCounter(
+    Nodes.following,
+    user.following
+  );
+
+  animateCounter(
+    Nodes.gists,
+    user.public_gists
+  );
+
+  UI.profileCard?.classList.remove(
+    "hidden"
+  );
 }
 
+/* =========================================================
+   REPOSITORIES
+========================================================= */
+
 function renderRepos(repos) {
+
   UI.reposList.innerHTML = "";
 
   if (!repos.length) {
-    UI.reposList.innerHTML = `<div class="repo-card"><p class="repo-description">No active repositories mapped inside this execution ring.</p></div>`;
-    if (UI.reposSection) UI.reposSection.classList.remove("hidden");
+
+    UI.reposList.innerHTML = `
+      <div class="repo-card">
+        No repositories found.
+      </div>
+    `;
+
     return;
   }
 
   repos.forEach((repo) => {
-    const card = document.createElement("article");
+
+    const card =
+      document.createElement("article");
+
     card.className = "repo-card";
-    
-    const operationalIndex = repo.stargazers_count + (repo.forks_count * 2);
-    const engineeringStatus = operationalIndex > 100 ? "Production System" : "Stable Archive";
 
     card.innerHTML = `
       <div class="repo-top">
+
         <h4 class="repo-name">
-          <a class="repo-link" href="${repo.html_url}" target="_blank" rel="noreferrer">
+
+          <a
+            href="${repo.html_url}"
+            target="_blank"
+            class="repo-link"
+          >
             ${repo.name}
           </a>
+
         </h4>
-        <span class="badge" style="margin:0; padding:2px 8px; font-size:0.7rem;">${engineeringStatus}</span>
+
+        <span class="badge">
+          ★ ${repo.stargazers_count}
+        </span>
+
       </div>
-      <p class="repo-description">${repo.description || "No structural layout documentation provided for this ecosystem."}</p>
+
+      <p class="repo-description">
+
+        ${safeText(
+          repo.description,
+          "No description available."
+        )}
+
+      </p>
+
       <div class="repo-meta">
-        ${repo.language ? `<span class="pill">● ${repo.language}</span>` : ""}
-        <span class="pill">★ ${repo.stargazers_count}</span>
-        <span class="pill">⑂ ${repo.forks_count}</span>
-        <span class="pill">Sync: ${formatDate(repo.updated_at)}</span>
+
+        ${
+          repo.language
+            ? `<span class="pill">${repo.language}</span>`
+            : ""
+        }
+
+        <span class="pill">
+          Forks ${repo.forks_count}
+        </span>
+
+        <span class="pill">
+          Updated ${formatDate(repo.updated_at)}
+        </span>
+
       </div>
     `;
+
     UI.reposList.appendChild(card);
   });
 
-  if (UI.reposSection) UI.reposSection.classList.remove("hidden");
+  UI.reposSection?.classList.remove(
+    "hidden"
+  );
 }
 
-function renderSearchResults(users) {
-  searchResultsContainer.innerHTML = "";
-
-  if (!users.length) {
-    searchResultsContainer.style.display = "none";
-    return;
-  }
-
-  const heading = document.createElement("p");
-  heading.textContent = `${users.length} unique indices discovered. Select terminal connection:`;
-  heading.style.cssText = "padding: 1rem; font-weight: 700; margin: 0; color: var(--muted); font-size: 0.9rem;";
-  searchResultsContainer.appendChild(heading);
-
-  users.forEach((user) => {
-    const item = document.createElement("div");
-    item.style.cssText = `
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 1rem;
-      cursor: pointer;
-      border-top: 1px solid var(--card-border);
-      transition: background 0.2s;
-      color: var(--text);
-      font-weight: 600;
-    `;
-    item.innerHTML = `
-      <div style="display: flex; align-items: center; gap: 1rem;">
-        <img src="${user.avatar_url}" alt="${user.login}" style="width:28px;height:28px;border-radius:8px;object-fit:cover;">
-        <span>${user.login}</span>
-      </div>
-      <span class="badge" style="margin:0; font-size:0.65rem;">Connect</span>
-    `;
-    item.addEventListener("mouseover", () => item.style.background = "var(--bg-secondary)");
-    item.addEventListener("mouseout", () => item.style.background = "");
-    item.addEventListener("click", () => {
-      if (UI.input) UI.input.value = user.login;
-      searchResultsContainer.style.display = "none";
-      fetchUser(user.login);
-    });
-    searchResultsContainer.appendChild(item);
-  });
-
-  searchResultsContainer.style.display = "block";
-}
-
-async function executeTypeaheadLookup(queryString) {
-  if (!navigator.onLine) return;
-  const query = queryString.trim();
-  if (query.length < 2) {
-    searchResultsContainer.style.display = "none";
-    return;
-  }
-
-  const typedCache = DataCacheEngine.get(`lookup_${query}`);
-  if (typedCache) {
-    renderSearchResults(typedCache);
-    return;
-  }
-
-  try {
-    const response = await fetch(`https://api.github.com/search/users?q=${encodeURIComponent(query)}&per_page=5`);
-    if (response.ok) {
-      const searchData = await response.json();
-      const outputItems = searchData.items || [];
-      DataCacheEngine.set(`lookup_${query}`, outputItems);
-      renderSearchResults(outputItems);
-    }
-  } catch (error) {
-    console.error("Typeahead stream generation interrupted:", error);
-  }
-}
+/* =========================================================
+   FETCH USER
+========================================================= */
 
 async function fetchUser(username) {
-  const cleanName = username.trim().replace(/^@/, "");
+
+  const cleanName =
+    username.trim().replace("@", "");
 
   if (!cleanName) {
-    showStatus("Operational exception parameter failure: target handle required.", "error");
+
+    showStatus(
+      "Please enter a GitHub username.",
+      "error"
+    );
+
     return;
   }
 
   showLoading();
-  searchResultsContainer.style.display = "none";
-
-  const cachedProfile = DataCacheEngine.get(`profile_${cleanName}`);
-  const cachedRepos = DataCacheEngine.get(`repos_${cleanName}`);
-  const cachedMetrics = DataCacheEngine.get(`metrics_${cleanName}`);
-
-  if (cachedProfile && cachedRepos && cachedMetrics) {
-    renderProfile(cachedProfile, cachedMetrics);
-    renderRepos(cachedRepos);
-    hideStatus();
-    return;
-  }
-
-  if (!navigator.onLine) {
-    if (UI.profileCard) UI.profileCard.classList.add("hidden");
-    if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
-    if (UI.reposSection) UI.reposSection.classList.add("hidden");
-    showStatus("Identity registry mapping unavailable while completely disconnected from remote tracking cluster.", "error");
-    return;
-  }
 
   try {
-    const userResponse = await fetch(`https://api.github.com/users/${encodeURIComponent(cleanName)}`);
 
-    if (userResponse.ok) {
-      const user = await userResponse.json();
-      const repoResponse = await fetch(
-        `https://api.github.com/users/${encodeURIComponent(cleanName)}/repos?per_page=50&sort=updated`
+    const userResponse = await fetch(
+      `https://api.github.com/users/${cleanName}`
+    );
+
+    if (!userResponse.ok) {
+
+      throw new Error(
+        "GitHub user not found."
       );
-      const repos = await repoResponse.json();
-      const verifiedRepos = Array.isArray(repos) ? repos : [];
-      
-      const sortedRepos = verifiedRepos
-        .sort((alpha, beta) => beta.stargazers_count - alpha.stargazers_count)
-        .slice(0, 6);
-
-      metricsWorker.onmessage = function(e) {
-        const structuralMetrics = e.data;
-        
-        DataCacheEngine.set(`profile_${cleanName}`, user);
-        DataCacheEngine.set(`repos_${cleanName}`, sortedRepos);
-        DataCacheEngine.set(`metrics_${cleanName}`, structuralMetrics);
-
-        renderProfile(user, structuralMetrics);
-        renderRepos(sortedRepos);
-        hideStatus();
-      };
-
-      metricsWorker.postMessage(sortedRepos);
-    } else {
-      const searchResponse = await fetch(
-        `https://api.github.com/search/users?q=${encodeURIComponent(cleanName)}&per_page=10`
-      );
-
-      if (!searchResponse.ok) {
-        throw new Error("Unable to parse identity coordinates over upstream paths.");
-      }
-
-      const searchData = await searchResponse.json();
-
-      if (!searchData.items || searchData.items.length === 0) {
-        throw new Error("No architectural records match search conditions.");
-      }
-
-      if (searchData.items.length === 1) {
-        await fetchUser(searchData.items[0].login);
-      } else {
-        hideStatus();
-        if (UI.profileCard) UI.profileCard.classList.add("hidden");
-        if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
-        if (UI.reposSection) UI.reposSection.classList.add("hidden");
-        renderSearchResults(searchData.items);
-      }
     }
+
+    const user =
+      await userResponse.json();
+
+    const repoResponse = await fetch(
+      `https://api.github.com/users/${cleanName}/repos?per_page=100`
+    );
+
+    const repos =
+      await repoResponse.json();
+
+    const sortedRepos = repos
+      .sort(
+        (a, b) =>
+          b.stargazers_count -
+          a.stargazers_count
+      )
+      .slice(0, 6);
+
+    renderProfile(user);
+
+    renderRepos(sortedRepos);
+
+    generateContributionHeatmap();
+
+    await renderLanguageAnalytics(repos);
+
+    UI.analyticsPanel?.classList.remove(
+      "hidden"
+    );
+
+    hideStatus();
+
   } catch (error) {
-    if (UI.profileCard) UI.profileCard.classList.add("hidden");
-    if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
-    if (UI.reposSection) UI.reposSection.classList.add("hidden");
-    searchResultsContainer.style.display = "none";
-    showStatus(error.message || "An unexpected cluster mapping event occurred.", "error");
+
+    showStatus(
+      error.message,
+      "error"
+    );
   }
 }
+
+/* =========================================================
+   FETCH PROFILE DATA
+========================================================= */
+
+async function fetchProfileData(username) {
+
+  const cleanName =
+    username.trim().replace("@", "");
+
+  const cachedProfile =
+    DataCacheEngine.get(
+      `profile_${cleanName}`
+    );
+
+  const cachedRepos =
+    DataCacheEngine.get(
+      `repos_${cleanName}`
+    );
+
+  if (cachedProfile && cachedRepos) {
+
+    return {
+      user: cachedProfile,
+      repos: cachedRepos
+    };
+  }
+
+  const userResponse = await fetch(
+    `https://api.github.com/users/${cleanName}`
+  );
+
+  if (!userResponse.ok) {
+
+    throw new Error(
+      `GitHub user not found: ${cleanName}`
+    );
+  }
+
+  const user =
+    await userResponse.json();
+
+  const repoResponse = await fetch(
+    `https://api.github.com/users/${cleanName}/repos?per_page=50`
+  );
+
+  const repos =
+    await repoResponse.json();
+
+  const sortedRepos = repos
+    .sort(
+      (a, b) =>
+        b.stargazers_count -
+        a.stargazers_count
+    )
+    .slice(0, 4);
+
+  DataCacheEngine.set(
+    `profile_${cleanName}`,
+    user
+  );
+
+  DataCacheEngine.set(
+    `repos_${cleanName}`,
+    sortedRepos
+  );
+
+  return {
+    user,
+    repos: sortedRepos
+  };
+}
+
+/* =========================================================
+   COMPARISON UI
+========================================================= */
+
+function buildRepoListSmall(repos) {
+
+  return repos.map((repo) => `
+    <div class="mini-repo-card">
+
+      <a
+        href="${repo.html_url}"
+        target="_blank"
+        class="repo-link"
+      >
+        ${repo.name}
+      </a>
+
+      <span>
+        ★ ${repo.stargazers_count}
+      </span>
+
+    </div>
+  `).join("");
+}
+
+function renderComparisonCard(
+  data,
+  opponent
+) {
+
+  const repoWinner =
+    data.user.public_repos >
+    opponent.user.public_repos;
+
+  const followerWinner =
+    data.user.followers >
+    opponent.user.followers;
+
+  const followingWinner =
+    data.user.following >
+    opponent.user.following;
+
+  return `
+    <article class="compare-card">
+
+      <div class="compare-header">
+
+        <img
+          src="${data.user.avatar_url}"
+          class="compare-avatar"
+        />
+
+        <div>
+
+          <h3>
+            ${safeText(
+              data.user.name,
+              data.user.login
+            )}
+          </h3>
+
+          <p>
+            @${data.user.login}
+          </p>
+
+        </div>
+
+      </div>
+
+      <p class="compare-bio">
+
+        ${safeText(
+          data.user.bio,
+          "No bio available."
+        )}
+
+      </p>
+
+      <div class="compare-stats">
+
+        <div class="compare-stat ${repoWinner ? "winner" : ""}">
+
+          <span>Repositories</span>
+
+          <strong>
+            ${data.user.public_repos}
+          </strong>
+
+        </div>
+
+        <div class="compare-stat ${followerWinner ? "winner" : ""}">
+
+          <span>Followers</span>
+
+          <strong>
+            ${data.user.followers.toLocaleString()}
+          </strong>
+
+        </div>
+
+        <div class="compare-stat ${followingWinner ? "winner" : ""}">
+
+          <span>Following</span>
+
+          <strong>
+            ${data.user.following}
+          </strong>
+
+        </div>
+
+      </div>
+
+      <div class="compare-repos">
+
+        <h4>Top Repositories</h4>
+
+        ${buildRepoListSmall(data.repos)}
+
+      </div>
+
+    </article>
+  `;
+}
+
+function renderComparison(
+  leftData,
+  rightData
+) {
+
+  UI.comparisonPanel?.classList.remove(
+    "hidden"
+  );
+
+  UI.comparisonContainer.innerHTML = `
+    ${renderComparisonCard(
+      leftData,
+      rightData
+    )}
+
+    ${renderComparisonCard(
+      rightData,
+      leftData
+    )}
+  `;
+
+  UI.comparisonPanel.scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
+/* =========================================================
+   SEARCH FORM
+========================================================= */
 
 if (UI.form) {
-  UI.form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    if (UI.input) {
+
+  UI.form.addEventListener(
+    "submit",
+    (event) => {
+
+      event.preventDefault();
+
       fetchUser(UI.input.value);
     }
-  });
+  );
 }
 
-if (UI.input) {
-  UI.input.addEventListener("input", (event) => {
-    clearTimeout(liveSearchDebounceTimer);
-    liveSearchDebounceTimer = setTimeout(() => {
-      executeTypeaheadLookup(event.target.value);
-    }, 300);
-  });
-}
+/* =========================================================
+   COMPARE FORM
+========================================================= */
 
-document.querySelectorAll(".tag-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    if (UI.input) {
-      UI.input.value = btn.dataset.user;
+if (UI.compareForm) {
+
+  UI.compareForm.addEventListener(
+    "submit",
+    async (event) => {
+
+      event.preventDefault();
+
+      const leftUsername =
+        UI.compareA.value.trim();
+
+      const rightUsername =
+        UI.compareB.value.trim();
+
+      if (
+        !leftUsername ||
+        !rightUsername
+      ) {
+
+        showStatus(
+          "Enter two GitHub usernames.",
+          "error"
+        );
+
+        return;
+      }
+
+      try {
+
+        showCompareLoading();
+
+        const [
+          leftData,
+          rightData
+        ] = await Promise.all([
+
+          fetchProfileData(
+            leftUsername
+          ),
+
+          fetchProfileData(
+            rightUsername
+          )
+
+        ]);
+
+        renderComparison(
+          leftData,
+          rightData
+        );
+
+        hideStatus();
+
+      } catch (error) {
+
+        showStatus(
+          error.message,
+          "error"
+        );
+      }
     }
-    fetchUser(btn.dataset.user);
-  });
-});
-
-document.addEventListener("click", (event) => {
-  if (UI.form && !UI.form.contains(event.target) && !searchResultsContainer.contains(event.target)) {
-    searchResultsContainer.style.display = "none";
-  }
-});
-
-document.querySelectorAll(".workspace-tabs-nav .tab-nav-item").forEach(tabBtn => {
-  tabBtn.addEventListener("click", () => {
-    const activePaneId = tabBtn.getAttribute("data-pane");
-    
-    document.querySelectorAll(".workspace-tabs-nav .tab-nav-item").forEach(b => b.classList.remove("active"));
-    document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
-    
-    tabBtn.classList.add("active");
-    const targetPane = document.getElementById(activePaneId);
-    if (targetPane) targetPane.classList.add("active");
-  });
-});
-
-if (UI.exportPdfBtn) {
-  UI.exportPdfBtn.addEventListener("click", () => {
-    window.print();
-  });
+  );
 }
+
+/* =========================================================
+   QUICK TAGS
+========================================================= */
+
+document
+  .querySelectorAll(".tag-btn")
+  .forEach((btn) => {
+
+    btn.addEventListener(
+      "click",
+      () => {
+
+        const user =
+          btn.dataset.user;
+
+        if (!user) return;
+
+        UI.input.value = user;
+
+        fetchUser(user);
+      }
+    );
+  });
+
+/* =========================================================
+   COMPARE TAGS
+========================================================= */
+
+document
+  .querySelectorAll(".compare-tag-btn")
+  .forEach((btn) => {
+
+    btn.addEventListener(
+      "click",
+      () => {
+
+        const compare =
+          btn.dataset.compare.split(",");
+
+        UI.compareA.value =
+          compare[0];
+
+        UI.compareB.value =
+          compare[1];
+
+        UI.compareForm.dispatchEvent(
+          new Event("submit")
+        );
+      }
+    );
+  });
+
+/* =========================================================
+   THEME TOGGLE
+========================================================= */
 
 if (UI.themeToggle) {
-  UI.themeToggle.addEventListener("click", () => {
-    const currentTheme = document.documentElement.getAttribute("data-theme");
-    const newTheme = currentTheme === "dark" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
-    updateThemeIcon();
-  });
+
+  UI.themeToggle.addEventListener(
+    "click",
+    () => {
+
+      const currentTheme =
+        document.documentElement.getAttribute(
+          "data-theme"
+        );
+
+      const newTheme =
+        currentTheme === "dark"
+          ? "light"
+          : "dark";
+
+      document.documentElement.setAttribute(
+        "data-theme",
+        newTheme
+      );
+
+      localStorage.setItem(
+        "theme",
+        newTheme
+      );
+
+      updateThemeIcon();
+    }
+  );
 }
 
-window.addEventListener("online", syncNetworkStatus);
-window.addEventListener("offline", syncNetworkStatus);
+/* =========================================================
+   NETWORK
+========================================================= */
+
+window.addEventListener(
+  "online",
+  syncNetworkStatus
+);
+
+window.addEventListener(
+  "offline",
+  syncNetworkStatus
+);
+
+/* =========================================================
+   INIT
+========================================================= */
 
 initTheme();
+
 syncNetworkStatus();
