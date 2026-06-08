@@ -2681,8 +2681,7 @@
       "css"
     ],
     "difficulty": "intermediate",
-    "projectDesc": "A responsive photography portfolio and gallery website designed to showcase visual content through structured layouts, image presentation sections, and modern styling. Features an engaging user interface optimized for desktop and mobile viewing.",
-    "projectType": "Website"
+    "projectDesc": "A responsive photography portfolio and gallery website designed to showcase visual content through structured layouts, image presentation sections, and modern styling. Features an engaging user interface optimized for desktop and mobile viewing."
   },
   {
     "projectNo": 214,
@@ -2797,5 +2796,1249 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/AI-Tools-Hub/index.html"
+  },
+  {
+    "projectNo": 222,
+    "projectName": "Chess Game",
+    "projectType": "Game",
+    "projectDesc": "A game project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Chess_Game/index.html"
+  },
+  {
+    "projectNo": 223,
+    "projectName": "Code Playground",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/code-playground/index.html"
+  },
+  {
+    "projectNo": 224,
+    "projectName": "Color Palette Generator",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/color-palette-generator/index.html"
+  },
+  {
+    "projectNo": 225,
+    "projectName": "Color Picker",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/color_picker/index.html"
+  },
+  {
+    "projectNo": 226,
+    "projectName": "Columnar Data Engine",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/columnar-data-engine/index.html"
+  },
+  {
+    "projectNo": 227,
+    "projectName": "Connect 4 Game",
+    "projectType": "Game",
+    "projectDesc": "A game project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/connect%204%20game/index.html"
+  },
+  {
+    "projectNo": 228,
+    "projectName": "Connect4",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Connect4/index.html"
+  },
+  {
+    "projectNo": 229,
+    "projectName": "Core Performance Utils",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/core-performance-utils/index.html"
+  },
+  {
+    "projectNo": 230,
+    "projectName": "CountDown Timer",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/CountDown%20Timer/index.html"
+  },
+  {
+    "projectNo": 231,
+    "projectName": "Counter App",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "beginner",
+    "projectPath": "./public/counter-app/index.html"
+  },
+  {
+    "projectNo": 232,
+    "projectName": "CrosswordPuzzleGame",
+    "projectType": "Game",
+    "projectDesc": "A game project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/CrosswordPuzzleGame/index.html"
+  },
+  {
+    "projectNo": 233,
+    "projectName": "Crossword Game",
+    "projectType": "Game",
+    "projectDesc": "A game project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/crossword_game/index.html"
+  },
+  {
+    "projectNo": 234,
+    "projectName": "Crypto Tracker & Market Analytics Dashboard",
+    "projectType": "API",
+    "projectDesc": "A api project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Crypto%20Tracker%20%26%20Market%20Analytics%20Dashboard/index.html"
+  },
+  {
+    "projectNo": 235,
+    "projectName": "Crypto Tracker",
+    "projectType": "API",
+    "projectDesc": "A api project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/crypto-tracker/index.html"
+  },
+  {
+    "projectNo": 236,
+    "projectName": "Cryptocurrency Calculator",
+    "projectType": "API",
+    "projectDesc": "A api project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "beginner",
+    "projectPath": "./public/Cryptocurrency-Calculator/index.html"
+  },
+  {
+    "projectNo": 237,
+    "projectName": "CSSShadowGenerator",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/CSSShadowGenerator/index.html"
+  },
+  {
+    "projectNo": 238,
+    "projectName": "CurrencyConverter Webapp",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/CurrencyConverter-webapp/index.html"
+  },
+  {
+    "projectNo": 239,
+    "projectName": "Currency Converter",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/currency_converter/index.html"
+  },
+  {
+    "projectNo": 240,
+    "projectName": "Cute Calculator",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "beginner",
+    "projectPath": "./public/cute-calculator/index.html"
+  },
+  {
+    "projectNo": 241,
+    "projectName": "CyberPulse AI",
+    "projectType": "AI",
+    "projectDesc": "A ai project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/CyberPulse-AI/index.html"
+  },
+  {
+    "projectNo": 242,
+    "projectName": "Daily Water Intake Tracker",
+    "projectType": "AI",
+    "projectDesc": "A ai project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Daily-Water-Intake-Tracker/index.html"
+  },
+  {
+    "projectNo": 243,
+    "projectName": "Day 10 Color Picker",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/day-10-color-picker/index.html"
+  },
+  {
+    "projectNo": 244,
+    "projectName": "Dictionary App",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/dictionary-app/index.html"
+  },
+  {
+    "projectNo": 245,
+    "projectName": "Discord Project",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Discord%20project/index.html"
+  },
+  {
+    "projectNo": 246,
+    "projectName": "Dom Virtualization Pipeline",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/dom-virtualization-pipeline/index.html"
+  },
+  {
+    "projectNo": 247,
+    "projectName": "Eisenhower Matrix Tool",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/eisenhower-matrix-tool/index.html"
+  },
+  {
+    "projectNo": 248,
+    "projectName": "ExpenseTracker",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/ExpenseTracker/index.html"
+  },
+  {
+    "projectNo": 249,
+    "projectName": "Fact Generator",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Fact-Generator/index.html"
+  },
+  {
+    "projectNo": 250,
+    "projectName": "Fake Hacker Terminal",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/fake-hacker-terminal/index.html"
+  },
+  {
+    "projectNo": 251,
+    "projectName": "Fake API Data Generator",
+    "projectType": "API",
+    "projectDesc": "A api project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Fake_API_Data_Generator/index.html"
+  },
+  {
+    "projectNo": 252,
+    "projectName": "FlashcardApp",
+    "projectType": "UI",
+    "projectDesc": "A ui project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/FlashcardApp/index.html"
+  },
+  {
+    "projectNo": 253,
+    "projectName": "FlashFocus An Observation Game",
+    "projectType": "Game",
+    "projectDesc": "A game project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/FlashFocus-An_Observation_Game/index.html"
+  },
+  {
+    "projectNo": 254,
+    "projectName": "Flip Clock",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "beginner",
+    "projectPath": "./public/Flip%20Clock/index.html"
+  },
+  {
+    "projectNo": 255,
+    "projectName": "Focustimer",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/focustimer/index.html"
+  },
+  {
+    "projectNo": 256,
+    "projectName": "Fruit Slice",
+    "projectType": "UI",
+    "projectDesc": "A ui project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/fruit%20slice/index.html"
+  },
+  {
+    "projectNo": 257,
+    "projectName": "Game",
+    "projectType": "Game",
+    "projectDesc": "A game project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/game/index.html"
+  },
+  {
+    "projectNo": 258,
+    "projectName": "Github Finder",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/github-finder/index.html"
+  },
+  {
+    "projectNo": 259,
+    "projectName": "Glassmorphism Generator",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Glassmorphism-Generator/index.html"
+  },
+  {
+    "projectNo": 260,
+    "projectName": "GradientPaletteGenerator",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/GradientPaletteGenerator/index.html"
+  },
+  {
+    "projectNo": 261,
+    "projectName": "Guessing Game",
+    "projectType": "Game",
+    "projectDesc": "A game project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Guessing%20Game/index.html"
+  },
+  {
+    "projectNo": 262,
+    "projectName": "Guided Breathing Visualizer",
+    "projectType": "UI",
+    "projectDesc": "A ui project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/guided-breathing-visualizer/index.html"
+  },
+  {
+    "projectNo": 263,
+    "projectName": "Habit Tracker",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Habit_Tracker/index.html"
+  },
+  {
+    "projectNo": 264,
+    "projectName": "Image Particle Engine",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/image-particle-engine/index.html"
+  },
+  {
+    "projectNo": 265,
+    "projectName": "IncidentCommunicationWarRoom",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/IncidentCommunicationWarRoom/index.html"
+  },
+  {
+    "projectNo": 266,
+    "projectName": "Invisible Maze Runner Game",
+    "projectType": "Game",
+    "projectDesc": "A game project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/invisible%20maze%20runner%20game/index.html"
+  },
+  {
+    "projectNo": 267,
+    "projectName": "Job Tracker System",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/job-tracker-system/index.html"
+  },
+  {
+    "projectNo": 268,
+    "projectName": "Jokes Site",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/jokes_site/index.html"
+  },
+  {
+    "projectNo": 269,
+    "projectName": "Live Code Playground",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/live-code-playground/index.html"
+  },
+  {
+    "projectNo": 270,
+    "projectName": "Lru Cache Engine",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/lru-cache-engine/index.html"
+  },
+  {
+    "projectNo": 271,
+    "projectName": "Markdown To HTML",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Markdown%20to%20HTML/index.html"
+  },
+  {
+    "projectNo": 272,
+    "projectName": "Markdown Editor",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/markdown-editor/index.html"
+  },
+  {
+    "projectNo": 273,
+    "projectName": "Mini Postman",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/mini-postman/index.html"
+  },
+  {
+    "projectNo": 274,
+    "projectName": "Minimalist Kanban Board",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/minimalist-kanban-board/index.html"
+  },
+  {
+    "projectNo": 275,
+    "projectName": "Mini Calendar",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Mini_Calendar/index.html"
+  },
+  {
+    "projectNo": 276,
+    "projectName": "MLImpactVisualizer",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/MLImpactVisualizer/index.html"
+  },
+  {
+    "projectNo": 277,
+    "projectName": "Mood Tracker Dashboard",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/mood-tracker-dashboard/index.html"
+  },
+  {
+    "projectNo": 278,
+    "projectName": "Movie Selector",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/movie-selector/index.html"
+  },
+  {
+    "projectNo": 279,
+    "projectName": "Multi Threaded Data Engine",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/multi-threaded-data-engine/index.html"
+  },
+  {
+    "projectNo": 280,
+    "projectName": "Music Website",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/music_website/index.html"
+  },
+  {
+    "projectNo": 281,
+    "projectName": "NEON ORBIT",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/NEON_ORBIT/index.html"
+  },
+  {
+    "projectNo": 282,
+    "projectName": "NeuralNetworkPlayground",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/NeuralNetworkPlayground/index.html"
+  },
+  {
+    "projectNo": 283,
+    "projectName": "New AmazonClone",
+    "projectType": "Clone",
+    "projectDesc": "A clone project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/New-AmazonClone/index.html"
+  },
+  {
+    "projectNo": 284,
+    "projectName": "Number Guessing Game",
+    "projectType": "Game",
+    "projectDesc": "A game project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Number%20Guessing%20Game/index.html"
+  },
+  {
+    "projectNo": 285,
+    "projectName": "PerfectSlice",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/PerfectSlice/index.html"
+  },
+  {
+    "projectNo": 286,
+    "projectName": "Personal Website",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Personal_website/index.html"
+  },
+  {
+    "projectNo": 287,
+    "projectName": "Pig Game",
+    "projectType": "Game",
+    "projectDesc": "A game project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/pig_game/index.html"
+  },
+  {
+    "projectNo": 288,
+    "projectName": "Pixel Art",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/pixel-art/index.html"
+  },
+  {
+    "projectNo": 289,
+    "projectName": "PixelArtCanvasEditor",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/PixelArtCanvasEditor/index.html"
+  },
+  {
+    "projectNo": 290,
+    "projectName": "Plant",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Plant/main.html"
+  },
+  {
+    "projectNo": 291,
+    "projectName": "Pomodoro Garden",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Pomodoro-Garden/index.html"
+  },
+  {
+    "projectNo": 292,
+    "projectName": "Pomodoro Timer Dashboard",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/pomodoro-timer-dashboard/index.html"
+  },
+  {
+    "projectNo": 293,
+    "projectName": "Pomodoro  Timer",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Pomodoro__Timer/index.html"
+  },
+  {
+    "projectNo": 294,
+    "projectName": "Productivity Dashboard",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Productivity-Dashboard/index.html"
+  },
+  {
+    "projectNo": 295,
+    "projectName": "Quantum CodeBreaker",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Quantum_CodeBreaker/index.html"
+  },
+  {
+    "projectNo": 296,
+    "projectName": "RandomJokeGenerator",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/RandomJokeGenerator/index.html"
+  },
+  {
+    "projectNo": 297,
+    "projectName": "Razorpay",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Razorpay/index.html"
+  },
+  {
+    "projectNo": 298,
+    "projectName": "Reactive State Engine",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "react",
+      "typescript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/reactive-state-engine/index.html"
+  },
+  {
+    "projectNo": 299,
+    "projectName": "Recipe Finder",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/recipe-finder/index.html"
+  },
+  {
+    "projectNo": 300,
+    "projectName": "Resume Previewer",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Resume%20Previewer/index.html"
+  },
+  {
+    "projectNo": 301,
+    "projectName": "Secure Hashing Engine",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/secure-hashing-engine/index.html"
+  },
+  {
+    "projectNo": 302,
+    "projectName": "Secure Password Generator",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Secure_Password_Generator/index.html"
+  },
+  {
+    "projectNo": 303,
+    "projectName": "Self Improvement",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Self-Improvement/index.html"
+  },
+  {
+    "projectNo": 304,
+    "projectName": "SimpleDigitalClock",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "beginner",
+    "projectPath": "./public/SimpleDigitalClock/index.html"
+  },
+  {
+    "projectNo": 305,
+    "projectName": "Spotify Clone",
+    "projectType": "Clone",
+    "projectDesc": "A clone project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/spotify%20clone/index.html"
+  },
+  {
+    "projectNo": 306,
+    "projectName": "StudentCommandCenter",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/StudentCommandCenter/index.html"
+  },
+  {
+    "projectNo": 307,
+    "projectName": "Stydy Sync",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Stydy%20Sync/index.html"
+  },
+  {
+    "projectNo": 308,
+    "projectName": "Stydy Sync",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Stydy-Sync/index.html"
+  },
+  {
+    "projectNo": 309,
+    "projectName": "Sudoku",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Sudoku/index.html"
+  },
+  {
+    "projectNo": 310,
+    "projectName": "SudoSolve",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/SudoSolve/index.html"
+  },
+  {
+    "projectNo": 311,
+    "projectName": "SVGPathBuilder",
+    "projectType": "UI",
+    "projectDesc": "A ui project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/SVGPathBuilder/index.html"
+  },
+  {
+    "projectNo": 312,
+    "projectName": "Swiggy",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/swiggy/instamart.html"
+  },
+  {
+    "projectNo": 313,
+    "projectName": "TENZI GAME",
+    "projectType": "Game",
+    "projectDesc": "A game project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/TENZI-GAME/index.html"
+  },
+  {
+    "projectNo": 314,
+    "projectName": "TerminalPortfolio",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/TerminalPortfolio/index.html"
+  },
+  {
+    "projectNo": 315,
+    "projectName": "TheLastTab",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/TheLastTab/index.html"
+  },
+  {
+    "projectNo": 316,
+    "projectName": "Time Rewind",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/time_rewind/index.html"
+  },
+  {
+    "projectNo": 317,
+    "projectName": "Tower Of Hanoi Visualizer",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Tower-of-Hanoi-Visualizer/index.html"
+  },
+  {
+    "projectNo": 318,
+    "projectName": "Travelling Breakthroughs",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Travelling_Breakthroughs/index.html"
+  },
+  {
+    "projectNo": 319,
+    "projectName": "Trie Search Engine",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/trie-search-engine/index.html"
+  },
+  {
+    "projectNo": 320,
+    "projectName": "Twitter Clone",
+    "projectType": "Clone",
+    "projectDesc": "A clone project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Twitter-clone/index.html"
+  },
+  {
+    "projectNo": 321,
+    "projectName": "Typemaster",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Typemaster/index.html"
+  },
+  {
+    "projectNo": 322,
+    "projectName": "Unit Kitchen",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Unit-Kitchen/index.html"
+  },
+  {
+    "projectNo": 323,
+    "projectName": "User Reviews",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/user_reviews/index.html"
+  },
+  {
+    "projectNo": 324,
+    "projectName": "VirtualAudioSynth",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/VirtualAudioSynth/index.html"
+  },
+  {
+    "projectNo": 325,
+    "projectName": "Voting Application Backend",
+    "projectType": "Authentication",
+    "projectDesc": "A authentication project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Voting_Application_Backend/index.html"
+  },
+  {
+    "projectNo": 326,
+    "projectName": "WanderLust",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/WanderLust/index.html"
+  },
+  {
+    "projectNo": 327,
+    "projectName": "WaterTracker",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/waterTracker/index.html"
+  },
+  {
+    "projectNo": 328,
+    "projectName": "Weather App",
+    "projectType": "API",
+    "projectDesc": "A api project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/weather-app/index.html"
+  },
+  {
+    "projectNo": 329,
+    "projectName": "Web Kernal Simulator",
+    "projectType": "Simulation",
+    "projectDesc": "A simulation project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Web-Kernal-simulator/index.html"
+  },
+  {
+    "projectNo": 330,
+    "projectName": "Whack A Mole",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Whack%20a%20mole/whack_a_mole.html"
+  },
+  {
+    "projectNo": 331,
+    "projectName": "Word Dictionary",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Word_dictionary/index.html"
+  },
+  {
+    "projectNo": 332,
+    "projectName": "Zen Breathing Visualizer",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/zen-breathing-visualizer/index.html"
+  },
+  {
+    "projectNo": 333,
+    "projectName": "ZEN TIMER",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/ZEN_TIMER/index.html"
+  },
+  {
+    "projectNo": 334,
+    "projectName": "Zodiac",
+    "projectType": "Tool",
+    "projectDesc": "A tool project built with web technologies.",
+    "techStack": [
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Zodiac/index.html"
   }
 ]
