@@ -17,9 +17,7 @@
       --accent-2: #34d399;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -86,16 +84,8 @@
       background: rgba(15, 23, 42, 0.55);
     }
 
-    .box h2 {
-      margin: 0 0 10px;
-      font-size: 1.05rem;
-      color: #f8fafc;
-    }
-
-    .box p {
-      margin: 0;
-      font-size: 0.98rem;
-    }
+    .box h2 { margin: 0 0 10px; font-size: 1.05rem; color: #f8fafc; }
+    .box p { margin: 0; font-size: 0.98rem; }
 
     .actions {
       display: flex;
@@ -116,9 +106,7 @@
       transition: transform 0.18s ease, background 0.18s ease;
     }
 
-    a.button:hover {
-      transform: translateY(-1px);
-    }
+    a.button:hover { transform: translateY(-1px); }
 
     .primary {
       background: linear-gradient(135deg, var(--accent), #2563eb);
@@ -146,11 +134,42 @@
       color: #bfdbfe;
     }
 
+    /* Copy button styles */
+    .command-wrapper {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(96, 165, 250, 0.08);
+      border: 1px solid rgba(96, 165, 250, 0.25);
+      border-radius: 8px;
+      padding: 6px 12px;
+    }
+
+    .copy-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: var(--accent);
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: background 0.15s ease, color 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .copy-btn:hover {
+      background: rgba(96, 165, 250, 0.15);
+    }
+
+    .copy-btn.copied {
+      color: var(--accent-2);
+    }
+
     @media (max-width: 640px) {
-      .card {
-        padding: 22px;
-        border-radius: 18px;
-      }
+      .card { padding: 22px; border-radius: 18px; }
     }
   </style>
 </head>
@@ -188,7 +207,14 @@
     </div>
 
     <p>
-      To actually use the app, the project must be started with <span class="mono">python app.py</span> inside the Flask folder after installing the Python packages.
+      To actually use the app, the project must be started with
+      <span class="command-wrapper">
+        <span class="mono" id="cmd">python app.py</span>
+        <button class="copy-btn" id="copyBtn" onclick="copyCommand()" title="Copy command">
+          📋 Copy
+        </button>
+      </span>
+      inside the Flask folder after installing the Python packages.
     </p>
 
     <div class="note">
@@ -201,5 +227,35 @@
       <a class="button secondary" href="https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/flask_auth_app" target="_blank" rel="noopener noreferrer">View code on GitHub</a>
     </div>
   </main>
+
+  <script>
+    function copyCommand() {
+      const cmd = document.getElementById('cmd').innerText;
+      const btn = document.getElementById('copyBtn');
+
+      navigator.clipboard.writeText(cmd).then(() => {
+        btn.textContent = '✅ Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = '📋 Copy';
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(() => {
+        // Fallback for older browsers
+        const el = document.createElement('textarea');
+        el.value = cmd;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        btn.textContent = '✅ Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = '📋 Copy';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+  </script>
 </body>
 </html>

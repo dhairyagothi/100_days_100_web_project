@@ -1338,3 +1338,22 @@ button {
     left: 0.7rem;
   }
 }
+
+/* Fix: hide native file input, triggered by Import JSON label */
+#importInput {
+    display: none;
+}
+
+/* ============================================================
+   ACCESSIBILITY: Keyboard Focus rings for WCAG compliance
+   ============================================================ */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+.nav-item:focus-visible,
+.tag-chip:focus-visible {
+  outline: 2px solid var(--primary) !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25) !important;
+}

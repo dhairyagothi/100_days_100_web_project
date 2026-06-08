@@ -4,55 +4,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Future of AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="blog.css">
 </head>
-<body>
+<body class="transition-all duration-300">
 
-<div class="blog-page">
-
-    <img 
-        src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1770&auto=format&fit=crop"
-        alt="Future of AI"
-        class="blog-banner"
-    >
-
-    <h1>Future of AI</h1>
-
-    <p class="blog-date">
-        Posted on 19/05/2026
-    </p>
-
-    <!-- Reading Time -->
-    <p id="reading-time" class="blog-reading-time"></p>
-
-    <!-- Article Content -->
-    <div id="article-content">
-
-        <p>
-            Artificial Intelligence is transforming industries and changing the way
-            people work, communicate, and live.
-        </p>
-
-        <p>
-            AI technologies are now used in healthcare, education, robotics,
-            transportation, and entertainment. Intelligent systems can analyze
-            large amounts of data and help solve complex problems.
-        </p>
-
-        <p>
-            Future AI systems will become faster, smarter, and more personalized.
-            Technologies like machine learning, automation, and generative AI are
-            shaping the future of innovation.
-        </p>
-
-        <p>
-            While AI creates exciting opportunities, it also raises important
-            questions about ethics, privacy, and responsible use of technology.
-        </p>
-
+<nav class="navbar">
+    <div class="nav-left-group">
+        <a href="index.html" class="project-back-button">
+            <i class="fa-solid fa-arrow-left"></i> Back to Blogs
+        </a>
+        <div class="logo">
+            GreenBlog
+        </div>
     </div>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html">Categories</a></li>
+        <li><a href="index.html">Blogs</a></li>
+        <li><a href="index.html">About</a></li>
+    </ul>
+    <div class="nav-right">
+        <button id="themeToggle">
+            <span id="themeIcon">☀️</span>
+        </button>
+    </div>
+</nav>
 
+<div class="blog-page-container">
+    <div class="blog-page">
+        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1770&auto=format&fit=crop" alt="Future of AI" class="blog-banner">
+        
+        <h1>Future of AI</h1>
+        
+        <div class="blog-author">
+            <h3>Tech Analyst</h3>
+            <p class="blog-date">Posted on 19/05/2026</p>
+        </div>
+
+        <div class="blog-content">
+            <p>
+                Artificial Intelligence is transforming industries and changing the way people work, communicate, and live.
+            </p>
+            <p>
+                AI technologies are now used in healthcare, education, robotics, transportation, and entertainment. Intelligent systems can analyze large amounts of data and help solve complex problems.
+            </p>
+            <p>
+                Future AI systems will become faster, smarter, and more personalized. Technologies like machine learning, automation, and generative AI are shaping the future of innovation.
+            </p>
+            <p>
+                While AI creates exciting opportunities, it also raises important questions about ethics, privacy, and responsible use of technology.
+            </p>
+        </div>
+    </div>
 </div>
-<script src="reading-time.js"></script>
+
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-section">
+            <h2 class="logo">GreenBlog</h2>
+            <p>Discover inspiring articles on technology, lifestyle, travel, agriculture, and web development.</p>
+        </div>
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html">Blogs</a></li>
+                <li><a href="index.html">Categories</a></li>
+                <li><a href="index.html">About</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Categories</h3>
+            <ul>
+                <li><a href="index.html">Technology</a></li>
+                <li><a href="index.html">Lifestyle</a></li>
+                <li><a href="index.html">Travel</a></li>
+                <li><a href="index.html">Agriculture</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Subscribe</h3>
+            <p>Get latest articles directly in your inbox.</p>
+            <form class="newsletter">
+                <input type="email" placeholder="Enter your email" />
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2026 GreenBlog. All rights reserved.</p>
+        <p>created by palak verma</p>
+    </div>
+</footer>
+
+<script src="script.js"></script>
 </body>
 </html>
