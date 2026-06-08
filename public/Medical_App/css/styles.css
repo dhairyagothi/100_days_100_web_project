@@ -427,6 +427,14 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
     font-weight: 500;
 }
 
+.navbar .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+
+.navbar .nav-links a {
+    text-decoration: none;
+    color: var(--clr-text-muted);
+    font-weight: 500;
+}
+
 .nav-item:hover {
     background-color: var(--surface-hover);
     color: var(--primary);
@@ -464,6 +472,29 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
 
 .theme-toggle-btn:hover {
     background-color: var(--primary);
+}
+
+.navbar .nav-links a:hover, .navbar .nav-links a.active { color: var(--clr-primary); }
+
+/* Hero navigation links (distinct from navbar) */
+.hero-nav-links { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
+
+.hero-nav-links a {
+    text-decoration: none;
+    color: rgba(255,255,255,0.8);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition);
+}
+
+.hero-nav-links a:hover, .hero-nav-links a.active { color: #ffffff; }
+
+
+.hero {
+    background: linear-gradient(135deg, var(--clr-primary), var(--clr-primary-hover));
+
     color: white;
     border-color: var(--primary);
 }
@@ -949,6 +980,108 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
 .hero p {
   font-size: 1.1rem;
   opacity: 0.9;
+.step.active .step-indicator {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.step-content h4 {
+    margin-bottom: var(--spacing-xs);
+    color: var(--text-primary);
+}
+
+.step-content p {
+    margin-bottom: 0;
+    font-size: 0.9rem;
+}
+
+.step-line {
+    width: 2px;
+    height: 30px;
+    background-color: var(--border);
+    margin-left: 23px;
+}
+
+
+
+.health-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg);
+}
+
+.health-item {
+    background-color: var(--background);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md);
+    text-align: center;
+}
+
+.health-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: var(--spacing-md);
+}
+
+/* Theme Toggle Button (hero-style, from Main) */
+.theme-toggle-btn {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: white;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.health-label i {
+    color: var(--primary);
+    font-size: 1.2rem;
+}
+
+.health-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.health-status {
+    font-size: 0.85rem;
+    color: var(--success);
+    font-weight: 600;
+}
+
+/* Health Tip */
+
+.health-tip-content {
+    background-color: var(--accent);
+    border-left: 4px solid var(--primary);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+}
+
+
+
+.emergency-card {
+    border: 2px solid var(--danger);
+}
+
+.emergency-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg);
+}
+
+.emergency-btn {
+    background-color: var(--background); border: 2px solid var(--border); border-radius: var(--radius-lg);
+    padding: var(--spacing-lg); cursor: pointer; transition: all var(--transition-normal);
+    display: flex; flex-direction: column; align-items: center; gap: var(--spacing-md); font-weight: 600;
 }
 
 #historyList {
@@ -2565,6 +2698,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
   }
 }
 /
+/*
 
 /* Tablet */
 @media (max-width: 1024px) {
