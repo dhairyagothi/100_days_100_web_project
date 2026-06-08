@@ -193,6 +193,20 @@ body {
 .overdue-task{
     border-left:4px solid #ef4444;
 }
+.overdue-badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: #ef4444;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.due-today-task {
+  border-left: 4px solid #f59e0b;
+}
 
 /* ---------- Hero Promotion Banner ---------- */
 .hero-banner {
