@@ -6,6 +6,17 @@
  */
 
 "use strict";
+const websiteInput = document.getElementById("website");
+const usernameInput = document.getElementById("username");
+const passwordInput = document.getElementById("password");
+const searchPassword = document.getElementById("searchPassword");
+const generatePasswordBtn = document.getElementById("generatePassword");
+const passwordStrength = document.getElementById("passwordStrength");
+const lengthReq = document.getElementById("lengthReq");
+const upperReq = document.getElementById("upperReq");
+const numberReq = document.getElementById("numberReq");
+const specialReq = document.getElementById("specialReq");
+
 
 /* =========================================================
    STATE
@@ -116,8 +127,7 @@ function initializeGate() {
       "Enter your master password to unlock.";
 
     gateHint.textContent =
-      `${stored.length} encrypted entr${
-        stored.length === 1 ? "y" : "ies"
+      `${stored.length} encrypted entr${stored.length === 1 ? "y" : "ies"
       } stored securely.`;
   }
 
@@ -527,12 +537,12 @@ function renderList() {
 
           <div class="entry-info">
             <h3>${escapeHtml(
-              entry.site
-            )}</h3>
+        entry.site
+      )}</h3>
 
             <p>${escapeHtml(
-              entry.username
-            )}</p>
+        entry.username
+      )}</p>
 
             <span class="entry-category">
               ${entry.category}
@@ -604,244 +614,406 @@ function updateStats() {
   if (total) {
     total.textContent = entries.length;
   }
-
+}
   let weakCount = 0;
 
-  entries.forEach((entry) => {
-    if (
-      entry.encryptedPassword.length < 50
-    ) {
-      weakCount++;
+  passwordInput.addEventListener("input", () => {
+
+    const password =
+      passwordInput.value;
+
+    if (passwordInput.value.length > 0) {
+
+      document.getElementById(
+        "passwordRequirements"
+      ).style.display = "block";
+
+    } else {
+
+      document.getElementById(
+        "passwordRequirements"
+      ).style.display = "none";
     }
+
+    checkPasswordStrength(password);
+
   });
 
-  if (weak) {
-    weak.textContent = weakCount;
-  }
-
-  if (reused) {
-    reused.textContent = "0";
-  }
-
-  const score = Math.max(
-    60,
-    100 - weakCount * 10
+  generatePasswordBtn.addEventListener(
+    "click",
+    generateStrongPassword
   );
 
-  if (security) {
-    security.textContent = `${score}%`;
-  }
-}
-
-/* =========================================================
-   PASSWORD STRENGTH
-========================================================= */
-
-const STRENGTH_LABELS = [
-  "Very Weak",
-  "Weak",
-  "Fair",
-  "Strong",
-  "Very Strong",
-];
-
-const STRENGTH_COLORS = [
-  "#ef4444",
-  "#f97316",
-  "#eab308",
-  "#22c55e",
-  "#4ade80",
-];
-
-function getStrength(password) {
-  if (!password) return -1;
-
-  let score = 0;
-
-  if (password.length >= 8) score++;
-  if (password.length >= 12) score++;
-  if (/[A-Z]/.test(password)) score++;
-  if (/[0-9]/.test(password)) score++;
-  if (/[^A-Za-z0-9]/.test(password))
-    score++;
-
-  return Math.min(score, 4);
-}
-
-function onPasswordInput(value) {
-  updateStrengthUI(
-    getStrength(value)
+  searchPassword.addEventListener(
+    "input",
+    renderPasswords
   );
-}
 
-function updateStrengthUI(level) {
-  const label =
-    document.getElementById(
-      "strength-label"
-    );
+  function checkPasswordStrength(password) {
 
-  if (level < 0) {
-    resetStrength();
-    return;
-  }
+    if (password.length === 0) {
 
-  for (let i = 0; i < 5; i++) {
-    const seg =
-      document.getElementById(`s${i}`);
+      passwordStrength.textContent = "";
 
-    if (seg) {
-      seg.style.background =
-        i <= level
-          ? STRENGTH_COLORS[level]
-          : "rgba(255,255,255,0.08)";
+      lengthReq.textContent =
+        "❌ At least 8 characters";
+
+      upperReq.textContent =
+        "❌ One uppercase letter";
+
+      numberReq.textContent =
+        "❌ One number";
+
+      specialReq.textContent =
+        "❌ One special character";
+
+      return;
+    }
+
+    let score = 0;
+
+    if (password.length >= 8)
+      score++;
+
+    if (/[A-Z]/.test(password))
+      score++;
+
+    if (/[0-9]/.test(password))
+      score++;
+
+    if (/[^A-Za-z0-9]/.test(password))
+      score++;
+
+    if (password.length >= 8) {
+
+      lengthReq.textContent =
+        "✅ At least 8 characters";
+    }
+
+    if (/[A-Z]/.test(password)) {
+
+      upperReq.textContent =
+        "✅ One uppercase letter";
+    }
+
+    if (/[0-9]/.test(password)) {
+
+      numberReq.textContent =
+        "✅ One number";
+    }
+
+    if (/[^A-Za-z0-9]/.test(password)) {
+
+      specialReq.textContent =
+        "✅ One special character";
+    }
+    if (score <= 1) {
+
+      passwordStrength.textContent =
+        "(Weak password)";
+
+    } else if (score <= 3) {
+
+      passwordStrength.textContent =
+        "(Medium passsword)";
+
+    } else {
+
+      passwordStrength.textContent =
+        "(Strong Password)";
     }
   }
 
-  if (label) {
-    label.textContent =
-      STRENGTH_LABELS[level];
+  function generateStrongPassword() {
 
-    label.style.color =
-      STRENGTH_COLORS[level];
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+
+    let password = "";
+
+    for (let i = 0; i < 12; i++) {
+
+      password += chars.charAt(
+        Math.floor(
+          Math.random() * chars.length
+        )
+      );
+
+    }
+
+    passwordInput.value = password;
+
+    checkPasswordStrength(password);
+
   }
-}
 
-function resetStrength() {
-  for (let i = 0; i < 5; i++) {
-    const seg =
-      document.getElementById(`s${i}`);
+  function renderPasswords() {
 
-    if (seg) {
-      seg.style.background =
-        "rgba(255,255,255,0.08)";
+    let passwords = getPasswords();
+    const searchTerm =
+      searchPassword.value
+        .toLowerCase()
+        .trim();
+
+    if (searchTerm) {
+
+      passwords =
+        passwords.filter(item =>
+
+          item.website
+            .toLowerCase()
+            .includes(searchTerm)
+
+          ||
+
+          item.username
+            .toLowerCase()
+            .includes(searchTerm)
+
+        );
+    }
+
+    passwordTable.innerHTML = "";
+
+    /* Empty State */
+
+    if (passwords.length === 0) {
+
+      passwordTable.innerHTML = `
+        <tr>
+            <td colspan="4">
+                No matching passwords found.
+            </td>
+        </tr>
+    `;
+
+      return;
+    }
+    emptyState.style.display = "none";
+
+    if (reused) {
+      reused.textContent = "0";
+    }
+
+    const score = Math.max(
+      60,
+      100 - weakCount * 10
+    );
+
+    if (security) {
+      security.textContent = `${score}%`;
     }
   }
 
-  const label =
-    document.getElementById(
-      "strength-label"
-    );
+  /* =========================================================
+     PASSWORD STRENGTH
+  ========================================================= */
 
-  if (label) {
-    label.textContent = "—";
-    label.style.color =
-      "var(--text-muted)";
+  const STRENGTH_LABELS = [
+    "Very Weak",
+    "Weak",
+    "Fair",
+    "Strong",
+    "Very Strong",
+  ];
+
+  const STRENGTH_COLORS = [
+    "#ef4444",
+    "#f97316",
+    "#eab308",
+    "#22c55e",
+    "#4ade80",
+  ];
+
+  function getStrength(password) {
+    if (!password) return -1;
+
+    let score = 0;
+
+    if (password.length >= 8) score++;
+    if (password.length >= 12) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password))
+      score++;
+
+    return Math.min(score, 4);
   }
-}
 
-/* =========================================================
-   PASSWORD GENERATOR
-========================================================= */
+  function onPasswordInput(value) {
+    updateStrengthUI(
+      getStrength(value)
+    );
+  }
 
-function generatePassword() {
-  const chars =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
+  function updateStrengthUI(level) {
+    const label =
+      document.getElementById(
+        "strength-label"
+      );
 
-  const arr =
-    crypto.getRandomValues(
-      new Uint8Array(20)
+    if (level < 0) {
+      resetStrength();
+      return;
+    }
+
+    for (let i = 0; i < 5; i++) {
+      const seg =
+        document.getElementById(`s${i}`);
+
+      if (seg) {
+        seg.style.background =
+          i <= level
+            ? STRENGTH_COLORS[level]
+            : "rgba(255,255,255,0.08)";
+      }
+    }
+
+    if (label) {
+      label.textContent =
+        STRENGTH_LABELS[level];
+
+      label.style.color =
+        STRENGTH_COLORS[level];
+    }
+  }
+
+  function resetStrength() {
+    for (let i = 0; i < 5; i++) {
+      const seg =
+        document.getElementById(`s${i}`);
+
+      if (seg) {
+        seg.style.background =
+          "rgba(255,255,255,0.08)";
+      }
+    }
+
+    const label =
+      document.getElementById(
+        "strength-label"
+      );
+
+    if (label) {
+      label.textContent = "—";
+      label.style.color =
+        "var(--text-muted)";
+    }
+  }
+
+  /* =========================================================
+     PASSWORD GENERATOR
+  ========================================================= */
+
+  function generatePassword() {
+    const chars =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
+
+    const arr =
+      crypto.getRandomValues(
+        new Uint8Array(20)
+      );
+
+    const password = Array.from(
+      arr,
+      (x) => chars[x % chars.length]
+    ).join("");
+
+    const input =
+      document.getElementById("password");
+
+    input.value = password;
+
+    onPasswordInput(password);
+  }
+
+  /* =========================================================
+     TOGGLE PASSWORD
+  ========================================================= */
+
+  function togglePwVisibility() {
+    const input =
+      document.getElementById("password");
+
+    pwVisible = !pwVisible;
+
+    input.type = pwVisible
+      ? "text"
+      : "password";
+  }
+
+  /* =========================================================
+     EXPORT DATA
+  ========================================================= */
+
+  function exportVault() {
+    const blob = new Blob(
+      [
+        JSON.stringify(
+          getStoredEntries(),
+          null,
+          2
+        ),
+      ],
+      {
+        type: "application/json",
+      }
     );
 
-  const password = Array.from(
-    arr,
-    (x) => chars[x % chars.length]
-  ).join("");
+    const url =
+      URL.createObjectURL(blob);
 
-  const input =
-    document.getElementById("password");
+    const a =
+      document.createElement("a");
 
-  input.value = password;
+    a.href = url;
 
-  onPasswordInput(password);
-}
+    a.download = "vault-backup.json";
 
-/* =========================================================
-   TOGGLE PASSWORD
-========================================================= */
+    a.click();
 
-function togglePwVisibility() {
-  const input =
-    document.getElementById("password");
+    URL.revokeObjectURL(url);
+  }
 
-  pwVisible = !pwVisible;
+  /* =========================================================
+     HELPERS
+  ========================================================= */
 
-  input.type = pwVisible
-    ? "text"
-    : "password";
-}
-
-/* =========================================================
-   EXPORT DATA
-========================================================= */
-
-function exportVault() {
-  const blob = new Blob(
-    [
-      JSON.stringify(
-        getStoredEntries(),
-        null,
-        2
-      ),
-    ],
-    {
-      type: "application/json",
-    }
-  );
-
-  const url =
-    URL.createObjectURL(blob);
-
-  const a =
-    document.createElement("a");
-
-  a.href = url;
-
-  a.download = "vault-backup.json";
-
-  a.click();
-
-  URL.revokeObjectURL(url);
-}
-
-/* =========================================================
-   HELPERS
-========================================================= */
-
-async function decryptEntry(
-  entry,
-  password
-) {
-  await decryptText(
-    entry.encryptedPassword,
+  async function decryptEntry(
+    entry,
     password
-  );
-
-  return entry;
-}
-
-async function decryptAll(
-  stored,
-  password
-) {
-  const result = [];
-
-  for (const entry of stored) {
+  ) {
     await decryptText(
       entry.encryptedPassword,
       password
     );
 
-    result.push(entry);
+    return entry;
   }
 
-  return result;
-}
+  async function decryptAll(
+    stored,
+    password
+  ) {
+    const result = [];
 
-function escapeHtml(str) {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
+    for (const entry of stored) {
+      await decryptText(
+        entry.encryptedPassword,
+        password
+      );
+
+      result.push(entry);
+    }
+
+    return result;
+  }
+
+  function escapeHtml(str) {
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }

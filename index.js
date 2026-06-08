@@ -71,6 +71,8 @@ function getCategoryFromTags(tags, name) {
 }
 
 let PROJECTS = [];
+let PROJECTS_BY_NAME = new Map();
+let PROJECTS_BY_DAY = new Map();
 let projectsPromise = null;
 
 function hydrateProjects(data) {
@@ -82,6 +84,8 @@ function hydrateProjects(data) {
     difficulty: project.difficulty,
     projectDesc: project.projectDesc,
   }));
+  PROJECTS_BY_NAME = new Map(PROJECTS.map(p => [p.projectName, p]));
+  PROJECTS_BY_DAY = new Map(PROJECTS.map(p => [p.day, p]));
 }
 
 function getPreloadedProjectsData() {
@@ -340,7 +344,7 @@ function buildProjectCardHTML({
     .map((t) => `<span class="tag">${escapeHTML(t)}</span>`)
     .join("");
 
-  const project = PROJECTS.find((p) => p.projectName === name);
+  const project = PROJECTS_BY_NAME.get(name) || PROJECTS_BY_DAY.get(day);
 
   // SECURITY: description, day, name and category are all escaped before
   // being written into innerHTML.
@@ -348,6 +352,14 @@ function buildProjectCardHTML({
   const safeDay      = escapeHTML(day);
   const safeName     = escapeHTML(name);
   const safeCategory = escapeHTML(category);
+
+  const difficulty = project ? project.difficulty || "" : "";
+  const difficultyKey = (difficulty || "").toLowerCase();
+  const difficultyLabel = CATEGORY_LABEL[difficultyKey] || difficulty;
+  const safeDifficultyLabel = escapeHTML(difficultyLabel);
+  const difficultyBadge = difficulty
+    ? `<span class="card-difficulty ${difficultyKey}">${safeDifficultyLabel}</span>`
+    : "";
 
   const sourceOnlyBadge = sourceOnly
     ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
@@ -375,12 +387,13 @@ return {
                 <span class="card-day">${safeDay}</span>
                 <span class="card-category-wrap">
                   <span class="card-category">${safeCategory}</span>
+                  ${difficultyBadge}
                   ${sourceOnlyBadge}
                 </span>
             </div>
 
             <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
-                <img src="./${url && url.startsWith('./') ? url.split('/')[2] : name.replace(/\s+/g, '_')}/preview.png" alt="${name} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
+                <img src="./${url && url.startsWith('./') ? url.split('/')[2] : name.replace(/\s+/g, '_')}/preview.png" alt="${safeName} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
 
             <h3 class="card-name">${safeName}</h3>
@@ -929,6 +942,10 @@ function renderGrid() {
   const pageItems = filtered.slice(startIndex, endIndex);
   const fragment = document.createDocumentFragment();
 
+  const bookmarkedDays = new Set(
+    bookmarkedProjects.map((item) => normalizeProjectEntry(item).day),
+  );
+
   pageItems.forEach((project) => {
     const day = project.day;
     const name = project.projectName;
@@ -938,9 +955,7 @@ function renderGrid() {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement("div");
 
-    const isBookmarked = bookmarkedProjects.some(
-      (item) => normalizeProjectEntry(item).day === day,
-    );
+    const isBookmarked = bookmarkedDays.has(day);
 
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
@@ -968,6 +983,7 @@ function renderGrid() {
   renderPagination(filtered.length, totalPages);
 
   syncStateToURL();
+  syncProjectCounts();
 }
 
 function renderPagination(totalItems, totalPages) {
@@ -1699,7 +1715,7 @@ function initTechStackSearch() {
 const searchInput = document.getElementById("searchInput");
 const clearSearchBtn = document.getElementById("clearSearch");
 
-function updateCategoryCounts() {
+function updateCategoryCounts(projects = PROJECTS) {
   const counts = {};
   for (const key of Object.keys(FILTER_CATEGORY_MAP)) {
     if (key !== "all") {
@@ -1707,7 +1723,7 @@ function updateCategoryCounts() {
     }
   }
 
-  PROJECTS.forEach((project) => {
+  projects.forEach((project) => {
     const name = project.projectName;
     const tags = project.techStack;
     const category = getCategoryFromTags(tags, name);
@@ -1763,7 +1779,7 @@ function syncProjectCounts() {
     searchInput.placeholder = `Search ${PROJECTS.length.toLocaleString()} projects…`;
   }
 
-  updateCategoryCounts();
+  updateCategoryCounts(filtered);
 }
 
 // Clear button functionality
@@ -1783,8 +1799,7 @@ if (searchInput && clearSearchBtn) {
   });
 }
 
-// Initialize
-syncProjectCounts();
+
 
 /* ============================================================
    NAVBAR — dynamic based on login state
@@ -2456,13 +2471,8 @@ function applyFilters(search, category) {
   renderGrid();
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-  try {
-    await loadProjects();
-    restoreStateFromURL();
-  } catch (error) {
-    console.error("Failed to restore state or load projects:", error);
-  }
+document.addEventListener("DOMContentLoaded",  () => {
+ 
   const searchInput =
     document.getElementById("search") ||
     document.querySelector('input[type="text"]') ||
