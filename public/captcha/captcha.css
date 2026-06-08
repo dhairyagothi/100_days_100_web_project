@@ -879,4 +879,14 @@ input[type="text"]:focus,
     .metrics-grid {
         grid-template-columns: 1fr;
     }
+
+    .refresh {
+        width: 100%;
+        aspect-ratio: auto;
+        height: 52px;
+    }
+    
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
 }
