@@ -127,8 +127,7 @@ function initializeGate() {
       "Enter your master password to unlock.";
 
     gateHint.textContent =
-      `${stored.length} encrypted entr${
-        stored.length === 1 ? "y" : "ies"
+      `${stored.length} encrypted entr${stored.length === 1 ? "y" : "ies"
       } stored securely.`;
   }
 
@@ -538,12 +537,12 @@ function renderList() {
 
           <div class="entry-info">
             <h3>${escapeHtml(
-              entry.site
-            )}</h3>
+        entry.site
+      )}</h3>
 
             <p>${escapeHtml(
-              entry.username
-            )}</p>
+        entry.username
+      )}</p>
 
             <span class="entry-category">
               ${entry.category}
@@ -615,130 +614,130 @@ function updateStats() {
   if (total) {
     total.textContent = entries.length;
   }
-
+}
   let weakCount = 0;
 
-passwordInput.addEventListener("input", () => {
+  passwordInput.addEventListener("input", () => {
 
     const password =
-        passwordInput.value;
+      passwordInput.value;
 
     if (passwordInput.value.length > 0) {
 
-        document.getElementById(
-            "passwordRequirements"
-        ).style.display = "block";
+      document.getElementById(
+        "passwordRequirements"
+      ).style.display = "block";
 
     } else {
 
-        document.getElementById(
-            "passwordRequirements"
-        ).style.display = "none";
+      document.getElementById(
+        "passwordRequirements"
+      ).style.display = "none";
     }
 
     checkPasswordStrength(password);
 
-});
+  });
 
-generatePasswordBtn.addEventListener(
+  generatePasswordBtn.addEventListener(
     "click",
-     generateStrongPassword
-);
+    generateStrongPassword
+  );
 
-searchPassword.addEventListener(
+  searchPassword.addEventListener(
     "input",
     renderPasswords
-);
+  );
 
-function checkPasswordStrength(password) {
+  function checkPasswordStrength(password) {
 
-     if (password.length === 0) {
+    if (password.length === 0) {
 
-    passwordStrength.textContent = "";
+      passwordStrength.textContent = "";
 
-    lengthReq.textContent =
+      lengthReq.textContent =
         "❌ At least 8 characters";
 
-    upperReq.textContent =
+      upperReq.textContent =
         "❌ One uppercase letter";
 
-    numberReq.textContent =
+      numberReq.textContent =
         "❌ One number";
 
-    specialReq.textContent =
+      specialReq.textContent =
         "❌ One special character";
 
-    return;
-}
-    
+      return;
+    }
+
     let score = 0;
 
     if (password.length >= 8)
-        score++;
+      score++;
 
     if (/[A-Z]/.test(password))
-        score++;
+      score++;
 
     if (/[0-9]/.test(password))
-        score++;
+      score++;
 
     if (/[^A-Za-z0-9]/.test(password))
-        score++;
+      score++;
 
     if (password.length >= 8) {
 
-    lengthReq.textContent =
+      lengthReq.textContent =
         "✅ At least 8 characters";
-}
+    }
 
-if (/[A-Z]/.test(password)) {
+    if (/[A-Z]/.test(password)) {
 
-    upperReq.textContent =
+      upperReq.textContent =
         "✅ One uppercase letter";
-}
+    }
 
-if (/[0-9]/.test(password)) {
+    if (/[0-9]/.test(password)) {
 
-    numberReq.textContent =
+      numberReq.textContent =
         "✅ One number";
-}
+    }
 
-if (/[^A-Za-z0-9]/.test(password)) {
+    if (/[^A-Za-z0-9]/.test(password)) {
 
-    specialReq.textContent =
+      specialReq.textContent =
         "✅ One special character";
-}
+    }
     if (score <= 1) {
 
-        passwordStrength.textContent =
-            "(Weak password)";
+      passwordStrength.textContent =
+        "(Weak password)";
 
     } else if (score <= 3) {
 
-        passwordStrength.textContent =
-            "(Medium passsword)";
+      passwordStrength.textContent =
+        "(Medium passsword)";
 
     } else {
 
-        passwordStrength.textContent =
-            "(Strong Password)";
+      passwordStrength.textContent =
+        "(Strong Password)";
     }
-}
+  }
 
-function generateStrongPassword() {
+  function generateStrongPassword() {
 
     const chars =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
 
     let password = "";
 
     for (let i = 0; i < 12; i++) {
 
-        password += chars.charAt(
-            Math.floor(
-                Math.random() * chars.length
-            )
-        );
+      password += chars.charAt(
+        Math.floor(
+          Math.random() * chars.length
+        )
+      );
 
     }
 
@@ -746,33 +745,33 @@ function generateStrongPassword() {
 
     checkPasswordStrength(password);
 
-}
+  }
 
-function renderPasswords() {
+  function renderPasswords() {
 
     let passwords = getPasswords();
     const searchTerm =
-    searchPassword.value
+      searchPassword.value
         .toLowerCase()
         .trim();
 
-if (searchTerm) {
+    if (searchTerm) {
 
-    passwords =
+      passwords =
         passwords.filter(item =>
 
-            item.website
-                .toLowerCase()
-                .includes(searchTerm)
+          item.website
+            .toLowerCase()
+            .includes(searchTerm)
 
-            ||
+          ||
 
-            item.username
-                .toLowerCase()
-                .includes(searchTerm)
+          item.username
+            .toLowerCase()
+            .includes(searchTerm)
 
         );
-}
+    }
 
     passwordTable.innerHTML = "";
 
@@ -780,7 +779,7 @@ if (searchTerm) {
 
     if (passwords.length === 0) {
 
-    passwordTable.innerHTML = `
+      passwordTable.innerHTML = `
         <tr>
             <td colspan="4">
                 No matching passwords found.
@@ -788,233 +787,233 @@ if (searchTerm) {
         </tr>
     `;
 
-    return;
-}
+      return;
+    }
     emptyState.style.display = "none";
 
-  if (reused) {
-    reused.textContent = "0";
-  }
+    if (reused) {
+      reused.textContent = "0";
+    }
 
-  const score = Math.max(
-    60,
-    100 - weakCount * 10
-  );
-
-  if (security) {
-    security.textContent = `${score}%`;
-  }
-}
-
-/* =========================================================
-   PASSWORD STRENGTH
-========================================================= */
-
-const STRENGTH_LABELS = [
-  "Very Weak",
-  "Weak",
-  "Fair",
-  "Strong",
-  "Very Strong",
-];
-
-const STRENGTH_COLORS = [
-  "#ef4444",
-  "#f97316",
-  "#eab308",
-  "#22c55e",
-  "#4ade80",
-];
-
-function getStrength(password) {
-  if (!password) return -1;
-
-  let score = 0;
-
-  if (password.length >= 8) score++;
-  if (password.length >= 12) score++;
-  if (/[A-Z]/.test(password)) score++;
-  if (/[0-9]/.test(password)) score++;
-  if (/[^A-Za-z0-9]/.test(password))
-    score++;
-
-  return Math.min(score, 4);
-}
-
-function onPasswordInput(value) {
-  updateStrengthUI(
-    getStrength(value)
-  );
-}
-
-function updateStrengthUI(level) {
-  const label =
-    document.getElementById(
-      "strength-label"
+    const score = Math.max(
+      60,
+      100 - weakCount * 10
     );
 
-  if (level < 0) {
-    resetStrength();
-    return;
-  }
-
-  for (let i = 0; i < 5; i++) {
-    const seg =
-      document.getElementById(`s${i}`);
-
-    if (seg) {
-      seg.style.background =
-        i <= level
-          ? STRENGTH_COLORS[level]
-          : "rgba(255,255,255,0.08)";
+    if (security) {
+      security.textContent = `${score}%`;
     }
   }
 
-  if (label) {
-    label.textContent =
-      STRENGTH_LABELS[level];
+  /* =========================================================
+     PASSWORD STRENGTH
+  ========================================================= */
 
-    label.style.color =
-      STRENGTH_COLORS[level];
+  const STRENGTH_LABELS = [
+    "Very Weak",
+    "Weak",
+    "Fair",
+    "Strong",
+    "Very Strong",
+  ];
+
+  const STRENGTH_COLORS = [
+    "#ef4444",
+    "#f97316",
+    "#eab308",
+    "#22c55e",
+    "#4ade80",
+  ];
+
+  function getStrength(password) {
+    if (!password) return -1;
+
+    let score = 0;
+
+    if (password.length >= 8) score++;
+    if (password.length >= 12) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password))
+      score++;
+
+    return Math.min(score, 4);
   }
-}
 
-function resetStrength() {
-  for (let i = 0; i < 5; i++) {
-    const seg =
-      document.getElementById(`s${i}`);
+  function onPasswordInput(value) {
+    updateStrengthUI(
+      getStrength(value)
+    );
+  }
 
-    if (seg) {
-      seg.style.background =
-        "rgba(255,255,255,0.08)";
+  function updateStrengthUI(level) {
+    const label =
+      document.getElementById(
+        "strength-label"
+      );
+
+    if (level < 0) {
+      resetStrength();
+      return;
+    }
+
+    for (let i = 0; i < 5; i++) {
+      const seg =
+        document.getElementById(`s${i}`);
+
+      if (seg) {
+        seg.style.background =
+          i <= level
+            ? STRENGTH_COLORS[level]
+            : "rgba(255,255,255,0.08)";
+      }
+    }
+
+    if (label) {
+      label.textContent =
+        STRENGTH_LABELS[level];
+
+      label.style.color =
+        STRENGTH_COLORS[level];
     }
   }
 
-  const label =
-    document.getElementById(
-      "strength-label"
-    );
+  function resetStrength() {
+    for (let i = 0; i < 5; i++) {
+      const seg =
+        document.getElementById(`s${i}`);
 
-  if (label) {
-    label.textContent = "—";
-    label.style.color =
-      "var(--text-muted)";
-  }
-}
-
-/* =========================================================
-   PASSWORD GENERATOR
-========================================================= */
-
-function generatePassword() {
-  const chars =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
-
-  const arr =
-    crypto.getRandomValues(
-      new Uint8Array(20)
-    );
-
-  const password = Array.from(
-    arr,
-    (x) => chars[x % chars.length]
-  ).join("");
-
-  const input =
-    document.getElementById("password");
-
-  input.value = password;
-
-  onPasswordInput(password);
-}
-
-/* =========================================================
-   TOGGLE PASSWORD
-========================================================= */
-
-function togglePwVisibility() {
-  const input =
-    document.getElementById("password");
-
-  pwVisible = !pwVisible;
-
-  input.type = pwVisible
-    ? "text"
-    : "password";
-}
-
-/* =========================================================
-   EXPORT DATA
-========================================================= */
-
-function exportVault() {
-  const blob = new Blob(
-    [
-      JSON.stringify(
-        getStoredEntries(),
-        null,
-        2
-      ),
-    ],
-    {
-      type: "application/json",
+      if (seg) {
+        seg.style.background =
+          "rgba(255,255,255,0.08)";
+      }
     }
-  );
 
-  const url =
-    URL.createObjectURL(blob);
+    const label =
+      document.getElementById(
+        "strength-label"
+      );
 
-  const a =
-    document.createElement("a");
+    if (label) {
+      label.textContent = "—";
+      label.style.color =
+        "var(--text-muted)";
+    }
+  }
 
-  a.href = url;
+  /* =========================================================
+     PASSWORD GENERATOR
+  ========================================================= */
 
-  a.download = "vault-backup.json";
+  function generatePassword() {
+    const chars =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
 
-  a.click();
+    const arr =
+      crypto.getRandomValues(
+        new Uint8Array(20)
+      );
 
-  URL.revokeObjectURL(url);
-}
+    const password = Array.from(
+      arr,
+      (x) => chars[x % chars.length]
+    ).join("");
 
-/* =========================================================
-   HELPERS
-========================================================= */
+    const input =
+      document.getElementById("password");
 
-async function decryptEntry(
-  entry,
-  password
-) {
-  await decryptText(
-    entry.encryptedPassword,
+    input.value = password;
+
+    onPasswordInput(password);
+  }
+
+  /* =========================================================
+     TOGGLE PASSWORD
+  ========================================================= */
+
+  function togglePwVisibility() {
+    const input =
+      document.getElementById("password");
+
+    pwVisible = !pwVisible;
+
+    input.type = pwVisible
+      ? "text"
+      : "password";
+  }
+
+  /* =========================================================
+     EXPORT DATA
+  ========================================================= */
+
+  function exportVault() {
+    const blob = new Blob(
+      [
+        JSON.stringify(
+          getStoredEntries(),
+          null,
+          2
+        ),
+      ],
+      {
+        type: "application/json",
+      }
+    );
+
+    const url =
+      URL.createObjectURL(blob);
+
+    const a =
+      document.createElement("a");
+
+    a.href = url;
+
+    a.download = "vault-backup.json";
+
+    a.click();
+
+    URL.revokeObjectURL(url);
+  }
+
+  /* =========================================================
+     HELPERS
+  ========================================================= */
+
+  async function decryptEntry(
+    entry,
     password
-  );
-
-  return entry;
-}
-
-async function decryptAll(
-  stored,
-  password
-) {
-  const result = [];
-
-  for (const entry of stored) {
+  ) {
     await decryptText(
       entry.encryptedPassword,
       password
     );
 
-    result.push(entry);
+    return entry;
   }
 
-  return result;
-}
+  async function decryptAll(
+    stored,
+    password
+  ) {
+    const result = [];
 
-function escapeHtml(str) {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
+    for (const entry of stored) {
+      await decryptText(
+        entry.encryptedPassword,
+        password
+      );
+
+      result.push(entry);
+    }
+
+    return result;
+  }
+
+  function escapeHtml(str) {
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }

@@ -101,6 +101,13 @@ function initCalculator() {
       return;
     }
 
+    const minBirthDate = new Date();
+    minBirthDate.setFullYear(minBirthDate.getFullYear() - 120);
+    if (birthDate < minBirthDate) {
+      alert('Date of birth cannot be more than 120 years in the past.');
+      return;
+    }
+
     const age = calculateAge(birthDate, new Date());
     const diffMs = new Date() - birthDate;
     const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
