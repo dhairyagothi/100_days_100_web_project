@@ -74,12 +74,14 @@ stopMusic.addEventListener("click", () => {
 // We select all song divs EXCEPT the stop button
 songList.querySelectorAll("div:not(#stopMusic)").forEach(song => {
     song.addEventListener("click", () => {
-        audioPlayer.src = song.getAttribute("data-src");
+        const src = song.getAttribute("data-src");
+        if (src) {
+            audioPlayer.src = encodeURI(src);
+        }
         audioPlayer.play();
         songList.classList.add("hidden");
     });
 });
-// --- END OF MUSIC BLOCK ---
 
     const toggle = document.getElementById("theme-toggle");
     if (toggle) {
