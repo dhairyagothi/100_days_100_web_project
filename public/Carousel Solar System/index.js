@@ -58,27 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  let isScrolling = false;
-
-  window.addEventListener(
-    "wheel",
-    (e) => {
-      if (isScrolling) return;
-
-      isScrolling = true;
-
-      if (e.deltaY > 0) {
-        showSlide(currentIndex + 1);
-      } else {
-        showSlide(currentIndex - 1);
-      }
-
-      setTimeout(() => {
-        isScrolling = false;
-      }, 800);
-    },
-    { passive: true }
-  );
 
   let touchStartX = 0;
   let touchEndX = 0;
