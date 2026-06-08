@@ -510,17 +510,428 @@ html {
   .music-controls {
     margin: 0 auto 10px;
   }
+}
 
-  .know-more-section {
-    padding-top: 0;
-  }
+/* FLAG HISTORY */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  .know-more-section h2 {
-    font-size: 1.6rem;
-  }
+:root {
+  --gold: #c8860a;
+  --gold-light: #e8a820;
+  --gold-dark: #7a5008;
+  --cream: #f5ede0;
+  --bg-dark: #7a7060;
+  --bg-card: #6a6254;
+  --bg-card2: #605a4c;
+  --border-gold: rgba(200,134,10,0.40);
+  --border-gold-strong: rgba(200,134,10,0.70);
+  --text-primary: #f0e6cc;
+  --text-secondary: #c8aa6a;
+  --text-muted: #a09070;
+  --chakra-blue: #000080;
+}
 
-  .info-card {
-    width: 90%;
-    max-width: 300px;
-  }
+body {
+  min-height: 100vh;
+  background: var(--bg-dark);
+  font-family: 'Crimson Pro', Georgia, serif;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse at 20% 20%, rgba(232,160,32,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(180,80,20,0.07) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.bg-wheel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(700px, 95vw);
+  height: min(700px, 95vw);
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Page Header ── */
+.page-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.page-header h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 40px rgba(232,160,32,0.3);
+  margin-bottom: 0.4rem;
+}
+
+.page-header p {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+
+/* ── Ornament Divider ── */
+.ornament {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0.6rem auto 0;
+  justify-content: center;
+}
+
+.ornament-line {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold-dark));
+}
+
+.ornament-line.right {
+  background: linear-gradient(to left, transparent, var(--gold-dark));
+}
+
+.ornament-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+/* ── Timeline Strip ── */
+.timeline-strip {
+  display: flex;
+  gap: 0;
+  margin-bottom: 1.8rem;
+  position: relative;
+  z-index: 1;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.timeline-strip::-webkit-scrollbar { display: none; }
+
+.tl-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: 6px 14px;
+  border-bottom: 2px solid var(--border-gold);
+  position: relative;
+  transition: all 0.25s;
+  min-width: 72px;
+}
+
+.tl-item:hover .tl-year { color: var(--gold-light); }
+
+.tl-item.active { border-bottom-color: var(--gold); }
+
+.tl-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tl-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-gold);
+  margin-bottom: 5px;
+  transition: background 0.25s;
+}
+
+.tl-item.active .tl-dot { background: var(--gold); }
+
+.tl-year {
+  font-family: 'Cinzel', serif;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  transition: color 0.25s;
+  white-space: nowrap;
+}
+
+.tl-item.active .tl-year { color: var(--gold); font-weight: 600; }
+
+/* ── Main Card ── */
+.card-container {
+  width: min(780px, 96vw);
+  position: relative;
+  z-index: 1;
+}
+
+.flag-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-gold);
+  border-radius: 18px;
+  padding: 2.5rem 2.5rem 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: opacity 0.35s, transform 0.35s;
+}
+
+/* Bottom-left and top-right corner ornaments via ::before / ::after */
+.flag-card::before,
+.flag-card::after {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-color: var(--border-gold-strong);
+  border-style: solid;
+  pointer-events: none;
+}
+
+.flag-card::before {
+  top: 12px;
+  left: 12px;
+  border-width: 1px 0 0 1px;
+  border-radius: 4px 0 0 0;
+}
+
+.flag-card::after {
+  bottom: 12px;
+  right: 12px;
+  border-width: 0 1px 1px 0;
+  border-radius: 0 0 4px 0;
+}
+
+/* Top-right and bottom-left corners via helper class */
+.card-top-corners::before,
+.card-top-corners::after {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-color: var(--border-gold-strong);
+  border-style: solid;
+  pointer-events: none;
+}
+
+.card-top-corners::before {
+  top: 12px;
+  right: 12px;
+  border-width: 1px 1px 0 0;
+  border-radius: 0 4px 0 0;
+}
+
+.card-top-corners::after {
+  bottom: 12px;
+  left: 12px;
+  border-width: 0 0 1px 1px;
+  border-radius: 0 0 0 4px;
+}
+
+.card-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Card Header ── */
+.card-header {
+  text-align: center;
+  margin-bottom: 1.8rem;
+}
+
+.flag-name {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  color: var(--gold);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.6rem;
+}
+
+.year-badge {
+  display: inline-block;
+  background: #1a5c20;
+  color: #a8e6a0;
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 3px 18px;
+  border-radius: 20px;
+  letter-spacing: 0.08em;
+}
+
+/* ── Flag Display ── */
+.flag-display {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.8rem;
+}
+
+.flag-frame {
+  border: 2px solid rgba(232,160,32,0.4);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,0,0,0.2);
+  width: min(380px, 85vw);
+}
+
+.flag-frame svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ── Description ── */
+.flag-description {
+  font-size: 1.08rem;
+  line-height: 1.75;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+/* ── Historical Significance Box ── */
+.significance-box {
+  background: rgba(232,160,32,0.07);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 8px 8px 0;
+  padding: 1rem 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.significance-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 0.3rem;
+}
+
+.significance-text {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* ── Metadata Tags ── */
+.meta-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 1.2rem;
+}
+
+.meta-tag {
+  font-size: 0.8rem;
+  padding: 3px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--border-gold);
+  color: var(--text-secondary);
+  font-family: 'Cinzel', serif;
+  letter-spacing: 0.04em;
+}
+
+/* ── Navigation Buttons ── */
+.nav-row {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2.2rem;
+}
+
+.nav-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 10px 28px;
+  border-radius: 30px;
+  border: 1.5px solid var(--border-gold-strong);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.22s;
+}
+
+.nav-btn:hover:not(:disabled) {
+  background: rgba(232,160,32,0.1);
+  color: var(--gold-light);
+  border-color: var(--gold);
+}
+
+.nav-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.nav-btn.next {
+  background: rgba(232,160,32,0.12);
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+.nav-btn.next:hover {
+  background: rgba(232,160,32,0.22);
+  color: var(--gold-light);
+}
+
+/* ── Progress Dots ── */
+.progress-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 1.4rem;
+}
+
+.pdot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--border-gold);
+  transition: all 0.25s;
+  cursor: pointer;
+}
+
+.pdot.active {
+  background: var(--gold);
+  transform: scale(1.3);
+}
+
+/* ── Counter ── */
+.counter {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-family: 'Cinzel', serif;
+  margin-top: 1rem;
+  letter-spacing: 0.1em;
+}
+
+/* ── Animations ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
