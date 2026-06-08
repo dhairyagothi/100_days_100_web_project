@@ -7,15 +7,23 @@ const API_KEY = import.meta.env.VITE_CRYPTOCOMPARE_KEY;
 const Newses = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     axios.get(`https://min-api.cryptocompare.com/data/v2/news/?lang=EN&api_key=${API_KEY}`)
       .then(res => {
-        setArticles(res.data.Data);
+        const data = res.data?.Data;
+        if (Array.isArray(data)) {
+          setArticles(data);
+        } else {
+          console.error('Unexpected news API response:', res.data);
+          setError(true);
+        }
         setLoading(false);
       })
       .catch(err => {
         console.error('Error fetching news:', err);
+        setError(true);
         setLoading(false);
       });
   }, []);
@@ -27,6 +35,15 @@ const Newses = () => {
           <div className="spin"></div>
           <p>LOADING NEWS</p>
         </div>
+      </div>
+    );
+  }
+
+  if (error || articles.length === 0) {
+    return (
+      <div className="news-page">
+        <h1 className="news-page-title">Crypto News</h1>
+        <p className="news-page-sub">Could not load news. Please check your API key or try again later.</p>
       </div>
     );
   }

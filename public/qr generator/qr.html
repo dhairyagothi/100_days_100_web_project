@@ -77,7 +77,7 @@
       <!-- BACK BUTTON -->
 
       <a href="/" class="project-back-button" aria-label="Back to home">
-        <i class="fas fa-arrow-left"></i>
+        <i aria-hidden="true" class="fas fa-arrow-left"></i>
         <span>Home</span>
       </a>
 
@@ -85,7 +85,7 @@
 
       <div class="brand">
         <div class="brand-icon">
-          <i class="fas fa-qrcode"></i>
+          <i aria-hidden="true" class="fas fa-qrcode"></i>
         </div>
 
         <div class="brand-text">
@@ -126,7 +126,7 @@
 
       <section class="hero">
         <div class="hero-badge">
-          <i class="fas fa-bolt"></i>
+          <i aria-hidden="true" class="fas fa-bolt"></i>
           <span>Fast • Stylish • Secure</span>
         </div>
 
@@ -161,7 +161,7 @@
               </div>
 
               <div class="card-icon">
-                <i class="fas fa-pen"></i>
+                <i aria-hidden="true" class="fas fa-pen"></i>
               </div>
             </div>
 
@@ -181,7 +181,7 @@
                   <option value="vcard">Contact Card</option>
                 </select>
 
-                <i class="fas fa-chevron-down"></i>
+                <i aria-hidden="true" class="fas fa-chevron-down"></i>
               </div>
             </div>
 
@@ -191,7 +191,7 @@
               <label for="inputtext"> Enter Data </label>
 
               <div class="input-wrapper">
-                <i class="fas fa-keyboard"></i>
+                <i aria-hidden="true" class="fas fa-keyboard"></i>
 
                 <input
                   type="text"
@@ -209,7 +209,7 @@
                 <label for="wifi-ssid"> WiFi Name </label>
 
                 <div class="input-wrapper">
-                  <i class="fas fa-wifi"></i>
+                  <i aria-hidden="true" class="fas fa-wifi"></i>
 
                   <input
                     type="text"
@@ -223,7 +223,7 @@
                 <label for="wifi-password"> Password </label>
 
                 <div class="input-wrapper">
-                  <i class="fas fa-lock"></i>
+                  <i aria-hidden="true" class="fas fa-lock"></i>
 
                   <input
                     type="password"
@@ -240,12 +240,14 @@
                   <select id="wifi-encryption">
                     <option value="WPA">WPA / WPA2</option>
 
+                    <option value="WPA3">WPA3</option>
+
                     <option value="WEP">WEP</option>
 
                     <option value="nopass">No Password</option>
                   </select>
 
-                  <i class="fas fa-chevron-down"></i>
+                  <i aria-hidden="true" class="fas fa-chevron-down"></i>
                 </div>
               </div>
             </div>
@@ -257,7 +259,7 @@
                 <label for="vcard-name"> Full Name </label>
 
                 <div class="input-wrapper">
-                  <i class="fas fa-user"></i>
+                  <i aria-hidden="true" class="fas fa-user"></i>
 
                   <input type="text" id="vcard-name" placeholder="John Doe" />
                 </div>
@@ -267,7 +269,7 @@
                 <label for="vcard-phone"> Phone </label>
 
                 <div class="input-wrapper">
-                  <i class="fas fa-phone"></i>
+                  <i aria-hidden="true" class="fas fa-phone"></i>
 
                   <input
                     type="tel"
@@ -281,7 +283,7 @@
                 <label for="vcard-email"> Email </label>
 
                 <div class="input-wrapper">
-                  <i class="fas fa-envelope"></i>
+                  <i aria-hidden="true" class="fas fa-envelope"></i>
 
                   <input
                     type="email"
@@ -295,7 +297,7 @@
                 <label for="vcard-website"> Website </label>
 
                 <div class="input-wrapper">
-                  <i class="fas fa-globe"></i>
+                  <i aria-hidden="true" class="fas fa-globe"></i>
 
                   <input
                     type="url"
@@ -320,7 +322,7 @@
               </div>
 
               <div class="card-icon">
-                <i class="fas fa-palette"></i>
+                <i aria-hidden="true" class="fas fa-palette"></i>
               </div>
             </div>
 
@@ -348,7 +350,7 @@
                   <option value="rounded">Rounded</option>
                 </select>
 
-                <i class="fas fa-chevron-down"></i>
+                <i aria-hidden="true" class="fas fa-chevron-down"></i>
               </div>
             </div>
 
@@ -366,7 +368,7 @@
                   <option value="H">High</option>
                 </select>
 
-                <i class="fas fa-chevron-down"></i>
+                <i aria-hidden="true" class="fas fa-chevron-down"></i>
               </div>
             </div>
 
@@ -376,7 +378,7 @@
               <label for="logo-upload"> Upload Logo </label>
 
               <label for="logo-upload" class="upload-box">
-                <i class="fas fa-cloud-upload-alt"></i>
+                <i aria-hidden="true" class="fas fa-cloud-upload-alt"></i>
 
                 <span> Drop image or click to upload </span>
 
@@ -391,7 +393,7 @@
             <button class="submit-btn" id="generate-btn" type="button">
               <span class="btn-glow"></span>
 
-              <i class="fas fa-bolt"></i>
+              <i aria-hidden="true" class="fas fa-bolt"></i>
 
               <span> Generate QR Code </span>
             </button>
@@ -428,7 +430,7 @@
 
               <div id="qrcode" class="qr-preview">
                 <div class="placeholder-state">
-                  <i class="fas fa-qrcode"></i>
+                  <i aria-hidden="true" class="fas fa-qrcode"></i>
 
                   <p>Your QR code will appear here</p>
                 </div>
@@ -445,7 +447,7 @@
 
             <div class="qr-actions">
               <button id="download-qr" class="action-btn" type="button">
-                <i class="fas fa-download"></i>
+                <i aria-hidden="true" class="fas fa-download"></i>
 
                 <span>Download</span>
               </button>
@@ -455,7 +457,7 @@
                 class="action-btn secondary-btn"
                 type="button"
               >
-                <i class="fas fa-camera"></i>
+                <i aria-hidden="true" class="fas fa-camera"></i>
 
                 <span>Scan</span>
               </button>
@@ -465,15 +467,15 @@
 
             <div class="mini-actions">
               <button id="copy-btn" type="button">
-                <i class="fas fa-copy"></i>
+                <i aria-hidden="true" class="fas fa-copy"></i>
               </button>
 
               <button id="share-btn" type="button">
-                <i class="fas fa-share-alt"></i>
+                <i aria-hidden="true" class="fas fa-share-alt"></i>
               </button>
 
               <button id="reset-btn" type="button">
-                <i class="fas fa-rotate-left"></i>
+                <i aria-hidden="true" class="fas fa-rotate-left"></i>
               </button>
             </div>
 
@@ -493,7 +495,7 @@
           <article class="glass-card features-card reveal">
             <div class="feature-item">
               <div class="feature-icon">
-                <i class="fas fa-bolt"></i>
+                <i aria-hidden="true" class="fas fa-bolt"></i>
               </div>
 
               <div>
@@ -504,7 +506,7 @@
 
             <div class="feature-item">
               <div class="feature-icon">
-                <i class="fas fa-shield-alt"></i>
+                <i aria-hidden="true" class="fas fa-shield-alt"></i>
               </div>
 
               <div>
@@ -515,7 +517,7 @@
 
             <div class="feature-item">
               <div class="feature-icon">
-                <i class="fas fa-mobile-alt"></i>
+                <i aria-hidden="true" class="fas fa-mobile-alt"></i>
               </div>
 
               <div>

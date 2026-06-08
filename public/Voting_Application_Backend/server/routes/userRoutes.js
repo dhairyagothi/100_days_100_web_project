@@ -1,11 +1,20 @@
 const express = require('express');
 const router = express.Router();
+const rateLimit = require('express-rate-limit');
 
 const User = require('./../models/user');
 const {jwtAuthMiddleware, generateToken} = require('./../jwt');
 
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { error: 'Too many attempts. Try again in 15 minutes.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 //POST route to add a person
-router.post('/signup', async(req, res)=>{
+router.post('/signup', authLimiter, async(req, res)=>{
     try{
         const data = req.body
         const adminUser = await User.findOne({ role: 'admin' });
@@ -50,7 +59,7 @@ router.post('/signup', async(req, res)=>{
 })
 
 //login Route
-router.post('/login', async(req, res)=> {
+router.post('/login', authLimiter, async(req, res)=> {
     try {
         //extract username and password from the request body
         const{aadharCardNumber, password} = req.body;
