@@ -115,7 +115,7 @@
     `;
     navButtonsHTML = `${themeBtn} ${cursorBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${userSection}`;
   } else {
-    const signinBtn = `<a class="btn btn-primary btn-sm" id="navSignInCta" href="${base}public/Login.html">Sign in</a>`;
+    const signinBtn = `<a class="btn btn-primary btn-sm" id="navSignInCta" href="${base}public/auth/Login.html">Sign in</a>`;
     navButtonsHTML = `${themeBtn} ${cursorBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${signinBtn}`;
   }
 

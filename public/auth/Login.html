@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login &mdash; 100 Days 100 Web Projects</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="../../index.html" class="button home-btn"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="SignUp.html" class="button home-btn-secondary"><i class="fa-solid fa-user-plus"></i> Sign Up</a>
+      <div class="nav-auth-status"></div>
+    </nav>
+
+    <section class="hero-section">
+      <h1 class="hero-title">100 Days 100 Web Projects</h1>
+      <p class="hero-desc">
+        Log in to continue building, exploring, and creating amazing web experiences every day.
+      </p>
+
+      <div class="auth-card">
+        <h2 class="auth-title-1">Login</h2>
+
+        <div id="statusMsg"></div>
+
+        <form id="loginForm" novalidate>
+          <div class="form-group" id="grp-username">
+            <i class="fa-solid fa-user"></i>
+            <input
+              type="text"
+              id="username"
+              placeholder="Username"
+              class="form-input"
+              autocomplete="username"
+              required
+            />
+          </div>
+          <span class="error-msg" id="err-username"></span>
+
+          <div class="form-group" id="grp-password">
+            <i class="fa-solid fa-lock"></i>
+            <input
+              type="password"
+              id="password"
+              placeholder="Password"
+              class="form-input"
+              autocomplete="current-password"
+              required
+            />
+            <span class="toggle-password" id="togglePassword" title="Show/hide password">
+              <i class="fa-regular fa-eye"></i>
+            </span>
+          </div>
+          <span class="error-msg" id="err-password"></span>
+
+          <button type="submit" class="submit-btn" id="loginBtn">
+            <i class="fa-solid fa-right-to-bracket"></i> Login
+          </button>
+        </form>
+
+        <div class="auth-divider">or</div>
+
+        <button id="googleLogin" class="button home-btn google-btn">
+          <i class="fa-brands fa-google"></i> Continue with Google
+        </button>
+
+        <p class="auth-footer-link">
+          <a href="ForgotPassword.html">Forgot Password?</a>
+        </p>
+        <p class="auth-footer-link">
+          Not signed up? <a href="SignUp.html">Sign Up</a>
+        </p>
+      </div>
+    </section>
+
+    <script>
+      function $(id) { return document.getElementById(id); }
+
+      function showStatus(message, type) {
+        const el = $("statusMsg");
+        if (!el) return;
+        el.textContent = message;
+        el.className = type || "info";
+        el.style.display = message ? "block" : "none";
+      }
+
+      function setField(grpId, errId, msg) {
+        const grp = $(grpId);
+        const err = $(errId);
+        if (grp) {
+          grp.classList.remove("error", "success");
+          if (msg) grp.classList.add("error");
+          else if (err && !err.textContent) grp.classList.add("success");
+        }
+        if (err) err.textContent = msg;
+      }
+
+      function showToast(message, type) {
+        let container = document.querySelector(".toast-container");
+        if (!container) {
+          container = document.createElement("div");
+          container.className = "toast-container";
+          document.body.appendChild(container);
+        }
+        const toast = document.createElement("div");
+        toast.className = "toast " + (type || "info");
+        const iconMap = {
+          success: '<i class="fa-solid fa-circle-check"></i>',
+          error: '<i class="fa-solid fa-circle-exclamation"></i>',
+          warning: '<i class="fa-solid fa-triangle-exclamation"></i>',
+          info: '<i class="fa-solid fa-circle-info"></i>'
+        };
+        toast.innerHTML =
+          '<div class="toast-icon">' + (iconMap[type] || iconMap.info) + '</div>' +
+          '<div class="toast-message">' + message.replace(/</g, "&lt;") + '</div>' +
+          '<button class="toast-close" aria-label="Close">&times;</button>';
+        container.appendChild(toast);
+        toast.querySelector(".toast-close").addEventListener("click", function() {
+          removeToast(toast);
+        });
+        var autoTimeout = setTimeout(function() { removeToast(toast); }, 4000);
+        function removeToast(el) {
+          el.style.opacity = "0";
+          el.style.transform = "translateY(-10px) scale(0.95)";
+          setTimeout(function() { el.remove(); }, 300);
+          clearTimeout(autoTimeout);
+        }
+      }
+
+      $("togglePassword").addEventListener("click", function() {
+        var input = $("password");
+        var icon = this.querySelector("i");
+        if (input.type === "password") {
+          input.type = "text";
+          icon.className = "fa-regular fa-eye-slash";
+        } else {
+          input.type = "password";
+          icon.className = "fa-regular fa-eye";
+        }
+      });
+
+      function hashPassword(password) {
+        var hash = 0;
+        if (password.length === 0) return hash.toString(16);
+        for (var i = 0; i < password.length; i++) {
+          var ch = password.charCodeAt(i);
+          hash = ((hash << 5) - hash) + ch;
+          hash = hash & hash;
+        }
+        return Math.abs(hash).toString(16);
+      }
+
+      function verifyPassword(plaintext, storedHash) {
+        return hashPassword(plaintext) === storedHash;
+      }
+
+      $("username").addEventListener("input", function() {
+        var v = this.value.trim();
+        setField("grp-username", "err-username",
+          v.length === 0 ? "" :
+          v.includes(" ") ? "Username cannot contain spaces" :
+          v.length < 4 ? "Username must be at least 4 characters" : "");
+      });
+
+      $("password").addEventListener("input", function() {
+        var v = this.value;
+        setField("grp-password", "err-password", v.length === 0 ? "" : "");
+      });
+
+      $("loginForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        var username = $("username").value.trim();
+        var password = $("password").value;
+
+        if (!username || !password) {
+          showToast("Please enter both username and password.", "error");
+          return;
+        }
+
+        if (username.includes(" ")) {
+          showToast("Username cannot contain spaces.", "error");
+          return;
+        }
+
+        var storedRaw;
+        try {
+          storedRaw = localStorage.getItem("user_" + username);
+        } catch (_) {
+          showToast("Unable to access local storage.", "error");
+          return;
+        }
+
+        if (!storedRaw) {
+          showToast("User does not exist. Please sign up first.", "error");
+          return;
+        }
+
+        var userData;
+        try {
+          userData = JSON.parse(storedRaw);
+        } catch (_) {
+          showToast("Account data is corrupted. Please sign up again.", "error");
+          return;
+        }
+
+        if (!verifyPassword(password, userData.passwordHash)) {
+          showToast("Incorrect password.", "error");
+          return;
+        }
+
+        showToast("Login successful! Redirecting&hellip;", "success");
+
+        try {
+          localStorage.setItem("loggedInUser", username);
+          localStorage.setItem(
+            "loggedInUserData",
+            JSON.stringify({
+              username: username,
+              name: userData.name || username,
+              email: userData.email || "",
+              loginTime: Date.now(),
+            })
+          );
+        } catch (_) {}
+
+        $("loginBtn").disabled = true;
+
+        setTimeout(function() {
+          window.location.href = "../../index.html";
+        }, 1000);
+      });
+    </script>
+
+    <script type="module">
+      import { signInWithGoogle } from "./firebase-config.js";
+
+      document.getElementById("googleLogin").addEventListener("click", async function() {
+        try {
+          this.disabled = true;
+          this.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connecting&hellip;';
+          await signInWithGoogle();
+        } catch (err) {
+          showToast(err.message || "Google sign-in failed.", "error");
+          this.disabled = false;
+          this.innerHTML = '<i class="fa-brands fa-google"></i> Continue with Google';
+        }
+      });
+    </script>
+  </body>
+</html>
