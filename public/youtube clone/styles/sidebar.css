@@ -1,0 +1,93 @@
+.sidebar {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  top: 55px; /* Sits flush under the fixed utility bar layer */
+  background-color: #ffffff;
+  width: 72px;
+  z-index: 250;
+  padding-top: 5px;
+  transition: width 0.3s ease, left 0.3s ease;
+  overflow-x: hidden;
+}
+
+.sidebar-link {
+  height: 74px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  padding-left: 0;
+}
+/* Real-time Interaction Engine: Applies background capsule highlights exclusively on hover states */
+.sidebar-link:hover {
+  background-color: rgb(240, 240, 240);
+}
+
+.sidebar-link img {
+  height: 24px;
+  width: 24px;
+  flex-shrink: 0;
+}
+
+.sidebar-link div {
+  font-size: 10px;
+  color: rgb(15, 15, 15);
+  font-weight: 400;
+  margin-top: 6px;
+  text-align: center;
+  opacity: 1;
+  max-width: none;
+  white-space: nowrap;
+}
+
+.sidebar {
+  width: 120px;
+}
+
+.sidebar-link div {
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.25s ease, max-width 0.25s ease, margin-left 0.25s ease;
+}
+
+/* Expanded state styles for desktop */
+body.sidebar-expanded .sidebar {
+  width: 240px;
+}
+
+body.sidebar-expanded .sidebar-link {
+  height: 48px;
+}
+
+/* body.sidebar-expanded .sidebar-link div {
+  opacity: 1;
+  max-width: 150px;
+  margin-left: 24px;
+} */
+
+/* Mobile responsive drawer styling */
+@media (max-width: 750px) {
+  .sidebar {
+    left: -240px;
+    width: 240px;
+    height: calc(100vh - 55px);
+  }
+
+  body.sidebar-expanded .sidebar {
+    left: 0;
+  }
+
+  /* Force expanded styling in mobile drawer */
+  .sidebar .sidebar-link {
+    height: 48px;
+  }
+
+  .sidebar .sidebar-link div {
+    opacity: 1;
+    max-width: 150px;
+    margin-left: 24px;
+  }
+}

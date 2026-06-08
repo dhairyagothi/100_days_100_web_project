@@ -5,20 +5,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="icon" href="../../favv.png" type="image/x-icon" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
-<body class="bg-gray-100">
-    <div class="container mx-auto py-8">
-        <h1 class="text-4xl font-bold text-center mb-8">Sign Up</h1>
-        <form action="/signup" method="post" class="max-w-md mx-auto">
-            <input type="text" name="name" placeholder="Name" class="border border-gray-300 rounded-md px-3 py-2 mb-4 block w-full">
-            <input type="email" name="email" placeholder="Email" class="border border-gray-300 rounded-md px-3 py-2 mb-4 block w-full">
-            <input type="password" name="password" placeholder="Password" class="border border-gray-300 rounded-md px-3 py-2 mb-4 block w-full">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Sign Up</button>
-        </form>
-    </div>
+<body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
+    <main class="page-wrap">
+        <section class="page-hero">
+            <div class="page-panel auth-hero">
+                <span class="eyebrow">Create account</span>
+                <h1>Start with a new user</h1>
+                <p>
+                    Sign up to create a local account in SQLite, then log in to see the protected page.
+                </p>
+
+                <div class="hero-metric">
+                    <div class="metric">
+                        <strong>Hashed password</strong>
+                        <span>Your password is stored as a secure hash.</span>
+                    </div>
+                    <div class="metric">
+                        <strong>Local database</strong>
+                        <span>The app creates its own SQLite file on startup.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-panel">
+                <div class="form-card">
+                    <span class="pill">Register</span>
+                    <h2>Create your account</h2>
+                    <p class="subtitle">Add your details below to get started.</p>
+
+                    {% if message %}
+                    <div class="message">{{ message }}</div>
+                    {% endif %}
+
+                    <form action="/signup" method="post" class="stack">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input id="name" type="text" name="name" placeholder="Your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input id="email" type="email" name="email" placeholder="name@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input id="password" type="password" name="password" placeholder="Choose a password" required>
+                        </div>
+                        <div class="btn-row">
+                            <button type="submit" class="btn btn-primary">Sign Up</button>
+                            <a href="/login" class="btn btn-secondary">Already have an account</a>
+                        </div>
+                    </form>
+
+                    <div class="footer-links">
+                        <a href="/">Home</a>
+                        <a href="https://github.com/dhairyagothi/100_days_100_web_project/blob/Main/public/flask_auth_app/README.md" target="_blank" rel="noopener noreferrer">How it works</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 </body>
 
 </html>

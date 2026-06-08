@@ -1,176 +1,141 @@
-Carousel Solar System 🪐
+# 🌌 Celestial – Solar System Carousel
 
-A visually engaging Solar System Carousel animation built using HTML, CSS, and JavaScript. This project showcases animated planetary orbits, rotating carousel transitions, and interactive UI effects to simulate a futuristic solar system experience.
+## 🚀 Overview
 
+Celestial is a responsive and interactive Solar System website built using HTML, CSS, and JavaScript.
 
-📌 Features
+The project displays the Sun and all eight planets in a beautiful carousel interface with animations and smooth transitions.
 
-Animated solar system carousel
-Smooth planet rotation effects
-Responsive layout
-Interactive carousel transitions
-Pure HTML, CSS, and JavaScript
-Modern UI animation
-Lightweight implementation
-Beginner-friendly project structure
+---
 
+## ✨ Features
 
-🛠️ Tech Stack
+* Responsive design for desktop, tablet, and mobile
+* Previous and Next navigation buttons
+* Mouse scroll navigation
+* Keyboard arrow navigation
+* Touch swipe support for mobile devices
+* Mini planet navigation menu
+* Animated star background
+* Floating planet animations
 
-| Technology | Usage |
-|------------|-------|
-| HTML5      | Structure |
-| CSS3       | Styling & Animations |
-| JavaScript | Carousel Functionality |
+---
 
+## 🛠️ Technologies Used
 
-📂 Project Structure
+* HTML5
+* CSS3
+* JavaScript (ES6)
+* Google Fonts
+
+---
+
+## 📂 Project Structure
 
 ```text
-carousel-solar-system/
-├── assets/
-│   ├── mercury.png
-│   ├── venus.png
-│   ├── earth.png
-│   ├── mars.png
-│   └── preview.png
+Carousel-Solar-System/
 │
-├── index.html
-├── style.css
-├── script.js
-└── README.md
+├── index.html        # Main HTML file
+├── index.css         # Stylesheet for design and layout
+├── index.js          # JavaScript for carousel logic
+├── favv.png          # Favicon image
+│
+└── images/           # Planet and celestial body assets
+    ├── sun-image.png
+    ├── mercury-image.png
+    ├── venus-image.png
+    ├── earth-image.png
+    ├── mars-image.png
+    ├── jupiter-image.png
+    ├── saturn-image.png
+    ├── uranus.png
+    └── neptune.png
+
 ```
 
-⚙️ Installation & Setup
+---
 
-1️⃣ Clone the Repository
-git clone https://github.com/your-username/carousel-solar-system.git
-cd carousel-solar-system
+## 🎮 Navigation Controls
 
-🚀 Run the Project
+* NEXT button → Show next planet
+* PREV button → Show previous planet
+* Mouse scroll → Navigate between planets
+* Arrow keys → Left/Right navigation
+* Mini planet icons → Jump to a specific planet
+* Swipe gestures → Mobile navigation
 
-Open the index.html file directly in your browser.
+---
 
-You can also use a local development server such as:
+## 🌍 Planets Included
 
-VS Code Live Server Extension
+1. Sun
+2. Mercury
+3. Venus
+4. Earth
+5. Mars
+6. Jupiter
+7. Saturn
+8. Uranus
+9. Neptune
 
-🧠 HTML Structure
-index.html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Carousel Solar System</title>
+---
 
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
+## 🌐 Demo & Repository
 
- 
+🔗 Live Demo: [https://100-days-100-web-project-5sit.vercel.app/](https://100-days-100-web-project-5sit.vercel.app/)
 
-  <script src="script.js"></script>
-</body>
-</html>
+🔗 GitHub Repository: [https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Carousel%20Solar%20System](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Carousel%20Solar%20System)
 
+```bash
+git https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Carousel%20Solar%20System.git
+```
 
-🎨 CSS Styling
+---
 
-style.css
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+## 📱 Responsive Design
 
-body {
-  background: radial-gradient(circle, #0f172a, #020617);
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: Arial, sans-serif;
-  overflow: hidden;
-  color: white;
-}
+The website works smoothly on:
 
+* Desktop
+* Laptop
+* Tablet
+* Mobile
 
+---
 
-⚡ JavaScript Functionality
+## ▶️ How to Run
 
-script.js
+1. Clone the repository:
 
+   - **My Fork (with updated README and Code):**
+     ```bash
+     git clone https://github.com/gayatridot/100_days_100_web_project.git
+     ```
+     Navigate to:
+     [Carousel Solar System (Fork)](https://github.com/gayatridot/100_days_100_web_project/tree/fix/carousel-solar-system/public/Carousel%20Solar%20System)
 
-let current = 0;
+   - **Upstream Maintainer’s Repo:**
+     ```bash
+     git clone https://github.com/dhairyagothi/100_days_100_web_project.git
+     ```
+     Navigate to:
+     [Carousel Solar System (Upstream)](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Carousel%20Solar%20System)
 
-function updateCarousel() {
- 
-}
+2. Open the project folder.  
+3. Open `index.html` in your browser.  
+4. Explore the Solar System 🚀  
+5. (Optional) Try the **Live Demo**: [Solar System Carousel](https://100-days-100-web-project-5sit.vercel.app/)
 
-updateCarousel();
+---
 
+## 📸 Screenshot
 
-🌟 Features Demonstrated
+<img src = "https://files.catbox.moe/z1zlyt.JPG">
 
-| Feature | Description |
-|----------|-------------|
-| Carousel Navigation | Move between planets |
-| Active Planet Highlight | Focus effect on selected planet |
-| Animated Sun | Pulsing glowing sun animation |
-| Responsive Layout | Works across screen sizes |
-| Smooth Transitions | Animated scaling and opacity |
-
-
-📸 Preview
-
-Add preview image inside:
-
-assets/preview.png
-
-Example UI Preview:
-
-🌐 Live Demo
-
-Add your deployed demo link here:
-
-https://your-demo-link.com
-
-You can deploy using:
-
-Netlify
-Vercel
-GitHub Pages
+---
 
 
-🚀 Future Improvements
+## 📄 License
 
-Add orbit animations
-Planet information cards
-Auto-rotation support
-3D carousel effects
-Background stars animation
-Audio effects
-Dark/Light mode support
+This project is created for educational and portfolio purposes.
 
-🤝 Contributing
-
-Contributions are welcome.
-
-Fork the repository
-Create a feature branch
-git checkout -b feature/new-feature
-Commit your changes
-git commit -m "Add new feature"
-Push to GitHub
-git push origin feature/new-feature
-Open a Pull Request
-
-
-⭐ Support
-
-If you found this project useful:
-
-Star the repository
-Fork the project
-Contribute to improve the project

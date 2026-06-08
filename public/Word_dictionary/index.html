@@ -1,46 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dictionary App</title>
-    <link rel="stylesheet" href="./style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dictionary Search Space</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="speaker-icon" href="favicon_word_dictionary.png">
 </head>
-
 <body>
-    <nav>
-        <div class="container">
-            <h1>Word Dictionary</h1>
+  <a href="/" class="project-back-button">
+    <span class="back-arrow">←</span> 
+    <span class="back-text">Back to Home</span>
+  </a>
+
+  <div class="glow-container">
+    <div class="mesh-glow glow-1"></div>
+    <div class="mesh-glow glow-2"></div>
+  </div>
+
+  <main class="app-container">
+    <header class="app-meta-header">
+      <div class="meta-left">
+        <div class="status-indicator">
+          <span class="status-dot"></span>
+          <span class="status-text">Engine Online</span>
         </div>
-    </nav>
-    <section class="input container">
-        <div id="box">
-            <h2>Find any word that exists in the world</h2>
-            <div class="form__wrap">
-                <div class="input__wrap">
-                    <input type="text" placeholder="Type a word" id="input">
-                    <button id="start-btn" aria-label="Start Speaking">Start Speaking</button>
-                    <button id="stop-btn" aria-label="Stop">Stop</button>
-                    <button id="search" aria-label="Search">Search</button>
-                </div>
-            </div>
-        </div>
+        <span class="meta-divider">/</span>
+        <span class="meta-version">v2.4.1</span>
+      </div>
+      <div class="meta-right">
+        <kbd class="shortcut-pill">/</kbd> <span class="shortcut-label">Focus Core</span>
+      </div>
+    </header>
+
+    <section class="hero-section">
+      <h1 class="premium-title">
+        Discover the <span class="gradient-text">Architecture</span> of Language
+      </h1>
+      <p class="premium-subtitle">An advanced dictionary engine built for precise textual analysis and linguistic search.</p>
     </section>
 
-    <section class="words_Meaning">
+    <section class="search-panel">
+      <div class="search-box-row">
+        <div class="search-field-container">
+          <svg class="search-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <input type="text" id="input" placeholder="Type a concept, term, or vocabulary word..." autocomplete="off" spellcheck="false" />
+          <button id="clear-btn" class="clear-action-btn" title="Clear Space">✕</button>
+        </div>
+      </div>
+      
+      <div class="dashboard-control-bar">
+        <button id="search" class="control-btn btn-submit">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          Execute Search
+        </button>
+        <button id="start-btn" class="control-btn btn-voice-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          Voice Input
+        </button>
+      </div>
+
+      <div class="hidden voice-activity-hud" id="mic-status">
+        <div class="audio-wave-anim">
+          <span></span><span></span><span></span>
+        </div>
+        <span class="hud-text">Listening... Click here to complete entry manually.</span>
+      </div>
+      <div class="history-section" id="history-section">
+  <div class="history-header">
+    <div class="history-title-wrap">
+  <h3>Recent Searches</h3>
+  <span id="history-count" class="history-count">0</span>
+</div>
+    <button id="clear-history-btn">Clear History</button>
+  </div>
+
+  <div id="search-history" class="history-list"></div>
+</div>
     </section>
 
-    <section class="data container">
-        <span class="loading">Loading...</span>
-        <p class="def"></p>
-        <div class="audio"></div>
-        <div class="not__found"></div>
-        <div class="words_and_meaning">
+    <div class="state-hud-wrapper">
+      <div class="hidden loading-hud-state" id="loading">
+        <div class="orbiting-loader">
+          <div class="orbit-dot"></div>
         </div>
-    </section>
-    <script src="./app.js"></script>
+        <p>Parsing dataset matrices...</p>
+      </div>
+
+      <div class="hidden error-hud-state" id="error-state">
+        <div class="error-shield">!</div>
+        <p id="error-msg">Term unresolvable within existing corpus definitions.</p>
+      </div>
+    </div>
+
+    <div class="hidden luxury-result-card" id="result">
+      <div class="result-header-frame">
+        <div class="header-left-meta">
+          <div class="lexical-badge-strip">
+            <span class="pos-luxury-badge" id="pos-badge">noun</span>
+            <span class="lexical-index-marker" id="word-index">Meaning 1</span>
+          </div>
+          <h2 class="lexical-display-word" id="result-word"></h2>
+          <p class="lexical-phonetic-string" id="result-phonetic"></p>
+        </div>
+        
+        <button class="luxury-audio-node" id="audio-btn" title="Stream Pronunciation Audio Track">
+          <svg class="speaker-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="luxury-content-section">
+        <h3 class="section-meta-label">Core Semantic Definition</h3>
+        <p class="lexical-definition-text" id="result-def"></p>
+        <p class="hidden lexical-context-example" id="result-example"></p>
+      </div>
+
+      <div class="luxury-content-section evaluation-row" id=\"syn-section\">
+        <h3 class="section-meta-label">Associated Synonyms</h3>
+        <div class="luxury-chip-cloud" id="synonyms"></div>
+      </div>
+
+      <div class="luxury-content-section evaluation-row" id="ant-section">
+        <h3 class="section-meta-label">Contradictory Antonyms</h3>
+        <div class="luxury-chip-cloud" id="antonyms"></div>
+      </div>
+
+      <div class="hidden luxury-pagination-dock" id="result-nav">
+        <button class="dock-nav-btn" id="prev-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+          Previous Entry
+        </button>
+        <div class="dock-counter-display">
+          <span class="counter-label">Index</span>
+          <span id="nav-counter" class="counter-digits">01 / 04</span>
+        </div>
+        <button class="dock-nav-btn" id="next-btn">
+          Next Entry
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
 </body>
-
 </html>

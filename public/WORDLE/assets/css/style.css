@@ -1,33 +1,58 @@
 .heading {
     font-family: "Roboto Slab", serif;
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: #ffffff;
+    text-transform: uppercase;
 }
 
 .nav__icon {
     width: 2rem;
+
+    filter: brightness(0) invert(1);
+
+    transition: all 0.3s ease;
+}
+.nav__icon:hover {
+
+    transform: scale(1.12);
+
+    filter: brightness(0) invert(1)
+            drop-shadow(0 0 8px rgba(255,255,255,0.7));
+
+    cursor: pointer;
 }
 .navbar {
     list-style: none;
     display: flex;
-    flex-direction: row;
-    text-align: center;
     justify-content: space-between;
-    padding: 0 3rem;
+    align-items: center;
+    padding: 14px 28px;
+    background: rgba(10, 15, 35, 0.92);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
 }
 .navele {
     margin: 0;
 }
 .infoCard {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: Poppins, sans-serif;
     font-size: 15px;
     text-align: left;
-    width: 50%;
-    margin: 0 auto;
-    padding: 20px;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    position: absolute;
-    left: 25%;
-    background-color: white;
-    z-index: 100;
+    width: 520px;
+    max-width: 90%;
+    padding: 24px;
+    background-color: #f8f8f8;
+    border-radius: 28px;
+    position: fixed;
+    top: 100px;
+    left: 100%;
+    transform: translateX(-50%);
+    z-index: 999;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: popupSlide 0.65s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .hidden {
     display: none;
@@ -52,40 +77,73 @@
 }
 
 .inputBox {
-    width: 50px;
-    height: 50px;
-    caret-color: transparent;
-    font-size: 25px;
-    font-weight: bold;
+    width: 62px;
+    height: 62px;
+    font-size: 2rem;
+    font-weight: 700;
     text-align: center;
-    border: solid 2px rgb(182, 182, 182);
+    border: 2px solid #d3d6da;
+    background-color: transparent;
+    color: #1a1a1b;
+    text-transform: uppercase;
+    caret-color: transparent; 
+    user-select: none;
+}
+.inputBox:hover {
+    transform: scale(1.05);
+}
+.inputBox:focus {
+    transform: scale(1.08);
 }
 .button {
-    width: 40px;
-    height: 60px;
-    padding: 10px;
-    margin: 2px;
-    border-style: none;
-    border-radius: 5px;
-    background-color: rgb(221, 220, 220);
+    font-family: inherit;
     font-weight: bold;
+    border: 0;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #d3d6da;
+    color: #1a1a1b;
+    height: 40px; /* SHRUNK */
+    flex: 1; /* Makes keys grow evenly */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    font-size: 0.9rem; /* SHRUNK */
+    transition: transform 0.1s ease; /* INSTANT THEME SWITCH */
 }
 .button:hover {
-    background-color: rgb(207, 205, 205);
+    transform: translateY(-3px) scale(1.05);
+    background: #dbeafe;
+    box-shadow: 0 6px 20px rgba(255,255,255,0.2);
 }
-.keyboard {
-    margin: auto;
+#keyboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px; 
+    margin: 0 auto;
+    padding: 10px;
+    gap: 8px;
+}
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 6px;
 }
 
 .buttonRow2 {
     margin: auto;
 }
-.enter {
-    width: 80px;
+.button.enter, .button.backspace {
+    flex: 1.5; 
+    font-size: 1rem;
 }
-.backspace {
-    width: 50px;
-    font-size: 18px;
+
+.spacer.half {
+    flex: 0.5;
 }
 .message {
     position: absolute;
@@ -110,21 +168,10 @@
 .nav__icon:hover {
     cursor: pointer;
 }
-.yellow {
-    background-color: rgb(205, 226, 16);
-    border-color: rgb(205, 226, 16);
-    color: white;
-}
-.green {
-    background-color: rgb(21, 172, 89);
-    border-color: rgb(21, 172, 89);
-    color: white;
-}
-.grey {
-    background-color: rgb(161, 161, 161);
-    border-color: rgb(161, 161, 161);
-    color: white;
-}
+.green { background-color: #538d4e !important; border-color: #538d4e !important; color: white !important; }
+.yellow { background-color: #b59f3b !important; border-color: #b59f3b !important; color: white !important; }
+.grey { background-color: #787c7e !important; border-color: #787c7e !important; color: white !important; }
+
 
 @media screen and (max-width: 568px) {
     .heading {
@@ -136,12 +183,10 @@
         left: 8%;
     }
     .infoCard {
-        font-size: 12px;
-        margin: 0 auto;
-        padding: 15px;
-        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-        position: absolute;
-        background-color: white;
+    width: 90%;
+    top: 90px;
+    padding: 18px;
+    border-radius: 18px;
     }
     .example__img {
         width: 80%;
@@ -172,7 +217,10 @@
         font-size: 20px;
     }
     .navbar {
-        padding: 0 1rem;
+        padding: 1rem 2rem;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 }
 @media screen and (min-width: 1024px) {
@@ -228,10 +276,17 @@
 body{
     height: 100vh;
     width: 100%;
-    background: linear-gradient(45deg,#d2001a,#7462ff,#f48e21,#23d5ab);
-    background-size: 300%,300%;
-    animation: color 12s ease-in-out infinite;
+    background-color: #ffffff;
 }
+@keyframes flipBox {
+    0% { transform: rotateX(0deg); }
+    50% { transform: rotateX(90deg); }
+    100% { transform: rotateX(0deg); }
+}
+.inputBox.flip {
+    animation: flipBox 0.5s ease-in-out;
+}
+
 @keyframes color{
     0%{
         background-position: 0 50%;
@@ -243,3 +298,57 @@ body{
         background-position: 0 50%;
     }
 }
+
+@keyframes popupSlide {
+
+    0% {
+        opacity: 0;
+        margin-top: -80px;
+    }
+
+    100% {
+        opacity: 1;
+        margin-top: 0px;
+    }
+
+}
+#reset {
+    border-radius: 14px;
+    font-size: 18px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    background: #f8fafc;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+#reset:hover {
+    transform: translateY(-3px) scale(1.02);
+    background: #dbeafe;
+}
+
+@keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+.inputBox.filled {
+    animation: pop 0.15s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+}
+.inputRow.shake {
+    animation: shake 0.4s ease-in-out;
+}
+
+
+/*
+colour change or theme change
+*/
+body.dark-mode { background-color: #121213; color: white; animation: none; }
+body.dark-mode .inputBox { border-color: #3a3a3c; color: white; background-color: #121213; }
+body.dark-mode .button { background-color: #818384; color: white; }
+body.dark-mode .grey { background-color: #3a3a3c !important; border-color: #3a3a3c !important; color: white !important; }
