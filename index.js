@@ -308,6 +308,42 @@ function sanitizeUrl(url) {
   return "#";
 }
 
+const SAFE_PREVIEW_SEGMENT_RE = /^[A-Za-z0-9._% &()+-]+$/;
+const UNSAFE_PREVIEW_SEGMENT_RE = /["'<>`\\/:]|[\u0000-\u001F\u007F]/;
+
+function isSafePreviewPathSegment(segment) {
+  const raw = String(segment || "").trim();
+
+  if (!raw || raw === "." || raw === "..") {
+    return false;
+  }
+
+  if (!SAFE_PREVIEW_SEGMENT_RE.test(raw)) {
+    return false;
+  }
+
+  try {
+    const decoded = decodeURIComponent(raw);
+    return decoded !== "." && decoded !== ".." && !UNSAFE_PREVIEW_SEGMENT_RE.test(decoded);
+  } catch (_error) {
+    return false;
+  }
+}
+
+function getPreviewImagePath({ name, url }) {
+  const rawUrl = String(url || "").trim();
+  const pathWithoutFragment = rawUrl.split("#")[0].split("?")[0];
+  const pathSegment = rawUrl.startsWith("./")
+    ? pathWithoutFragment.split("/")[2]
+    : String(name || "").trim().replace(/\s+/g, "_");
+
+  if (!isSafePreviewPathSegment(pathSegment)) {
+    return "";
+  }
+
+  return `./${pathSegment}/preview.png`;
+}
+
 function buildProjectCardHTML({
   day,
   name,
@@ -360,6 +396,12 @@ function buildProjectCardHTML({
   const difficultyBadge = difficulty
     ? `<span class="card-difficulty ${difficultyKey}">${safeDifficultyLabel}</span>`
     : "";
+  const previewImagePath = getPreviewImagePath({ name, url });
+  const previewImageHTML = previewImagePath
+    ? `<div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
+                <img class="card-preview-image" src="${escapeHTML(previewImagePath)}" alt="${safeName} preview" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>`
+    : "";
 
   const sourceOnlyBadge = sourceOnly
     ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
@@ -392,9 +434,7 @@ return {
                 </span>
             </div>
 
-            <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
-                <img src="./${url && url.startsWith('./') ? url.split('/')[2] : name.replace(/\s+/g, '_')}/preview.png" alt="${safeName} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
-            </div>
+            ${previewImageHTML}
 
             <h3 class="card-name">${safeName}</h3>
 
@@ -421,7 +461,24 @@ return {
   };
 }
 
+function attachPreviewImageErrorHandler(card) {
+  const previewImage = card.querySelector(".card-preview-image");
+
+  if (!previewImage) {
+    return;
+  }
+
+  previewImage.addEventListener("error", () => {
+    const previewContainer = previewImage.closest(".card-preview-image-container");
+
+    if (previewContainer) {
+      previewContainer.style.display = "none";
+    }
+  }, { once: true });
+}
+
 function attachProjectCardInteraction(card, demoUrl, projectData = null) {
+  attachPreviewImageErrorHandler(card);
   card.style.cursor = "pointer";
   
   const activateCard = (e) => {
