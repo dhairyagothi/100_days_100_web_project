@@ -2,6 +2,7 @@
   --bg: #06080f;
   --surface: rgba(255, 255, 255, 0.04);
   --surface-mid: rgba(255, 255, 255, 0.07);
+  --surface-overlay: rgba(255, 255, 255, 0.03);
   --border: rgba(255, 255, 255, 0.08);
   --border-accent: rgba(100, 255, 218, 0.22);
   --accent: #64ffda;
@@ -9,6 +10,7 @@
   --accent-glow: rgba(100, 255, 218, 0.25);
   --danger: #ff6464;
   --danger-dim: rgba(255, 100, 100, 0.12);
+  --danger-border: rgba(255, 100, 100, 0.3);
   --text: #c8d3e0;
   --text-dim: #525e6e;
   --text-bright: #eaf0f8;
@@ -20,6 +22,48 @@
   --neo-inset:
     inset 2px 2px 6px rgba(0, 0, 0, 0.4),
     inset -1px -1px 4px rgba(255, 255, 255, 0.02);
+
+  /* Theme variables for visual elements */
+  --swap-btn-hover: rgba(100, 255, 218, 0.2);
+  --play-btn-hover: rgba(100, 255, 218, 0.18);
+  --ref-item-bg: rgba(255, 255, 255, 0.025);
+  --ref-item-border: rgba(255, 255, 255, 0.04);
+  --ref-item-hover-border: rgba(100, 255, 218, 0.15);
+  --ref-item-active: rgba(100, 255, 218, 0.2);
+  --active-token-text: #06080f;
+  --toast-bg: rgba(100, 255, 218, 0.15);
+}
+
+.light-mode {
+  --bg: #f8fafc;
+  --surface: rgba(255, 255, 255, 0.65);
+  --surface-mid: rgba(255, 255, 255, 0.85);
+  --surface-overlay: rgba(15, 23, 42, 0.03);
+  --border: rgba(15, 23, 42, 0.08);
+  --border-accent: rgba(13, 148, 136, 0.25);
+  --accent: #0d9488;
+  --accent-dim: rgba(13, 148, 136, 0.1);
+  --accent-glow: rgba(13, 148, 136, 0.15);
+  --danger: #ef4444;
+  --danger-dim: rgba(239, 68, 68, 0.1);
+  --danger-border: rgba(239, 68, 68, 0.3);
+  --text: #334155;
+  --text-dim: #64748b;
+  --text-bright: #0f172a;
+  --neo-shadow:
+    3px 6px 16px rgba(15, 23, 42, 0.06), -1px -1px 6px rgba(255, 255, 255, 0.8);
+  --neo-inset:
+    inset 2px 2px 5px rgba(15, 23, 42, 0.05),
+    inset -1px -1px 3px rgba(255, 255, 255, 0.5);
+
+  --swap-btn-hover: rgba(13, 148, 136, 0.2);
+  --play-btn-hover: rgba(13, 148, 136, 0.15);
+  --ref-item-bg: rgba(15, 23, 42, 0.02);
+  --ref-item-border: rgba(15, 23, 42, 0.04);
+  --ref-item-hover-border: rgba(13, 148, 136, 0.15);
+  --ref-item-active: rgba(13, 148, 136, 0.2);
+  --active-token-text: #ffffff;
+  --toast-bg: rgba(13, 148, 136, 0.12);
 }
 
 *,
@@ -193,7 +237,7 @@ header p {
 /* ── Mode toggle ───────────────────────────────────────────────── */
 .mode-toggle {
   display: flex;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--surface-overlay);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 4px;
@@ -261,7 +305,7 @@ header p {
   width: 28px;
   height: 28px;
   border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--surface-overlay);
   color: var(--text-dim);
   border-radius: var(--radius-sm);
   cursor: pointer;
@@ -353,7 +397,7 @@ textarea#input::placeholder {
 }
 
 .swap-btn:hover {
-  background: rgba(100, 255, 218, 0.2);
+  background: var(--swap-btn-hover);
   box-shadow:
     0 0 14px var(--accent-glow),
     var(--neo-shadow);
@@ -390,7 +434,7 @@ textarea#input::placeholder {
 }
 
 .play-btn:hover {
-  background: rgba(100, 255, 218, 0.18);
+  background: var(--play-btn-hover);
   box-shadow:
     0 0 18px var(--accent-glow),
     var(--neo-shadow);
@@ -399,7 +443,7 @@ textarea#input::placeholder {
 .play-btn.playing {
   background: var(--danger-dim);
   color: var(--danger);
-  border-color: rgba(255, 100, 100, 0.3);
+  border-color: var(--danger-border);
 }
 
 .play-btn:disabled {
@@ -508,8 +552,8 @@ input[type="range"]::-moz-range-thumb {
   flex-direction: column;
   align-items: center;
   padding: 0.5rem 0.35rem;
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: var(--ref-item-bg);
+  border: 1px solid var(--ref-item-border);
   border-radius: var(--radius-sm);
   gap: 3px;
   transition:
@@ -519,13 +563,13 @@ input[type="range"]::-moz-range-thumb {
 
 .ref-item:hover {
   background: var(--accent-dim);
-  border-color: rgba(100, 255, 218, 0.15);
+  border-color: var(--ref-item-hover-border);
 }
 
 /* ── NEW: Clickable ref item active state ──────────────────────── */
 .ref-item:active {
   transform: scale(0.95);
-  background: rgba(100, 255, 218, 0.2);
+  background: var(--ref-item-active);
   border-color: var(--border-accent);
 }
 
@@ -553,7 +597,7 @@ input[type="range"]::-moz-range-thumb {
 
 .morse-token.active-token {
   background: var(--accent);
-  color: #06080f;
+  color: var(--active-token-text);
   border-radius: 3px;
   padding: 0 2px;
   box-shadow: 0 0 10px var(--accent-glow);
@@ -565,7 +609,7 @@ input[type="range"]::-moz-range-thumb {
   bottom: 2rem;
   left: 50%;
   transform: translateX(-50%) translateY(20px);
-  background: rgba(100, 255, 218, 0.15);
+  background: var(--toast-bg);
   border: 1px solid var(--border-accent);
   color: var(--accent);
   padding: 0.6rem 1.4rem;
@@ -657,5 +701,104 @@ kbd {
 @media (max-width: 640px) {
   .kbd-hints {
     display: none;
+  }
+}
+
+/* ── Project Back Button Styling ──────────────────────────────── */
+.project-back-button {
+  position: fixed;
+  left: 18px;
+  top: 18px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: var(--surface-mid);
+  color: var(--accent);
+  border: 1px solid var(--border-accent);
+  text-decoration: none;
+  z-index: 9999;
+  font-weight: 700;
+  font-family: Inter, system-ui, sans-serif;
+  transition: all 0.2s ease;
+  box-shadow: var(--neo-shadow);
+}
+
+.project-back-button:hover {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+
+/* ── Theme Toggle Button Styling ─────────────────────────────── */
+.theme-toggle-btn {
+  position: fixed;
+  right: 18px;
+  top: 18px;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--surface-mid);
+  color: var(--accent);
+  border: 1px solid var(--border-accent);
+  cursor: pointer;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: var(--neo-shadow);
+}
+
+.theme-toggle-btn:hover {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  transform: scale(1.05);
+}
+
+.theme-toggle-btn svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+/* Toggle Sun/Moon Icon Visibility */
+.light-mode .sun-icon {
+  display: none;
+}
+html:not(.light-mode) .moon-icon {
+  display: none;
+}
+
+/* Soft theme colors for background orbs in Light Mode */
+.light-mode .orb-1 {
+  background: radial-gradient(circle, rgba(13, 148, 136, 0.12), transparent 70%);
+}
+.light-mode .orb-2 {
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.08), transparent 70%);
+}
+.light-mode .orb-3 {
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.06), transparent 70%);
+}
+
+@media (max-width: 768px) {
+  .project-back-button {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+  .theme-toggle-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 34px;
+    height: 34px;
+  }
+  .theme-toggle-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+  .container {
+    padding-top: 4.5rem;
   }
 }
