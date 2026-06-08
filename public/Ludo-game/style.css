@@ -238,3 +238,53 @@ h1{
   box-shadow: 0 0 25px rgba(255,215,0,0.9);
   transform: scale(1.05);
 }
+/* Mobile Responsive - Project Cards */
+@media (max-width: 768px) {
+  #layout {
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+  }
+
+  .pp {
+    padding: 6px 8px;
+  }
+
+  .pp-name {
+    font-size: 0.72rem;
+  }
+
+  #board-wrap {
+    width: 100%;
+  }
+
+  #controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #right-panel {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+  }
+
+  .mode-btn {
+    width: 220px;
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
+  #dice {
+    width: 54px;
+    height: 54px;
+  }
+
+  #log {
+    max-height: 60px;
+  }
+}
