@@ -430,6 +430,13 @@ document.addEventListener("DOMContentLoaded", () => {
   el("decode-btn").addEventListener("click", () => setMode("decode"));
   el("swap-btn").addEventListener("click", swapPanels);
 
+  // ── Theme toggle ──────────────────────────────────────────────
+  el("theme-toggle").addEventListener("click", () => {
+    const isLight = document.documentElement.classList.toggle("light-mode");
+    localStorage.setItem("theme", isLight ? "light" : "dark");
+    showToast(`${isLight ? "Light" : "Dark"} Mode enabled`);
+  });
+
   // ── Keyboard shortcuts ──────────────────────────────────────────
   // When inside textarea: only Escape (clear) and Ctrl+Enter (play)
   // Outside textarea: Ctrl+Shift+C (copy)
