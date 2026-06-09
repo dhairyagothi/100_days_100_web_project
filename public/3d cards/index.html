@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -19,30 +19,48 @@
   </head>
 
   <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
     <div class="ambient-light"></div>
 
-    <div class="hero-content">
+    <header class="hero-content">
       <h1>3D Dog Gallery</h1>
       <p>Interactive cinematic 3D rotating cards experience</p>
-    </div>
+    </header>
 
-    <div class="scene">
-      <div class="box" id="slider"></div>
-    </div>
+    <main id="main-content">
+      <section class="scene" aria-label="3D rotating dog gallery">
+        <div
+          class="box"
+          id="slider"
+          role="region"
+          aria-live="polite"
+          aria-label="Dog gallery cards"
+        ></div>
+      </section>
+    </main>
 
-    <div class="controls glass-panel">
-      <button class="ctrl-btn" id="directionBtn">
+    <nav class="controls glass-panel" aria-label="Gallery Controls">
+      <button
+        class="ctrl-btn"
+        id="directionBtn"
+        aria-label="Reverse gallery rotation"
+      >
         <span class="btn-label">Reverse Rotation</span>
       </button>
 
-      <button class="ctrl-btn" id="pauseBtn">
+      <button
+        class="ctrl-btn"
+        id="pauseBtn"
+        aria-label="Pause gallery rotation"
+      >
         <span class="btn-label">Pause Rotation</span>
       </button>
 
-      <button class="ctrl-btn" id="themeBtn">
+      <button class="ctrl-btn" id="themeBtn" aria-label="Switch theme">
         <span class="btn-label">Light Mode</span>
       </button>
-    </div>
+    </nav>
 
     <script src="script.js"></script>
   </body>

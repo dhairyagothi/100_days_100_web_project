@@ -5,200 +5,71 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/style.css">
-    <script type='text/javascript' src='./assets/js/words.js'></script>
     <title>Wordle</title>
-    <style>
-
-    </style>
 </head>
 
 <body>
-    <ul class='navbar'>
-        <li><img class='info navele nav__icon' src="img/information.png" alt=""></li>
-        <li>
-            <h1 class="heading navele">Wordle</h1>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+    <!-- Clean, centered navbar -->
+    <ul class='navbar' style="justify-content: center; position: relative;">
+        <li style="position: absolute; right: 20px;">
+            <img class='info navele nav__icon' src="img/information.png" alt="Info">
         </li>
-        <li><img class='stats navele nav__icon' src="img/statistics.png" alt=""></li>
+        <li>
+            <h1 class="heading navele" style="margin: 0;">Wordle</h1>
+        </li>
+        <li style="position: absolute; right: 75px; display: flex; gap: 15px; align-items: center;">
+            <img class='stats navele nav__icon' src="img/statistics.png" alt="Stats">
+            <span id="themeToggle" style="cursor: pointer; font-size: 24px;">🌙</span>
+        </li>
     </ul>
+    <hr style="border-color: rgba(200,200,200,0.2); margin-bottom: 20px;" />
 
-    <hr />
-    <div class='message hidden' id='message'>
-        <p>This is message</p>
-    </div>
-    <div class='infoCard popup' id="rules">
+    <div class='message hidden' id='message'></div>
+    
+    <!-- Popups -->
+    <div class='infoCard hidden popup' id="rules">
         <p class='crossOuter'><button class='cross' id='closeInfo'>&#9587</button></p>
         <p>Guess the <strong>WORDLE</strong> in six tries.</p>
         <p>Each guess must be a valid five-letter word. Hit the enter button to submit.</p>
         <p>After each guess, the color of the tiles will change to show how close your guess was to the word.</p>
         <hr>
-        <p><strong>Examples</strong></p>
-        <img class='example__img' src="img/rules.png" alt="">
-        <p>The letter <strong>A</strong> is in the word and in the correct spot.</p>
-        <p>The letters <strong>L</strong> and <strong>E</strong> are in the word but are not in the correct spot.</p>
-        <p>The letter <strong>F</strong> and <strong>T</strong> are not in the word.</p>
-        <hr>
         <p><strong>A new WORDLE will be available each day!</strong></p>
     </div>
+
     <div class="infoCard hidden popup" id="stats">
         <p class='crossOuter'><button class='cross' id='closeStats'>&#9587</button></p>
         <p><strong>STATISTICS</strong></p>
         <p>0 &emsp;&emsp;0 &emsp;&emsp;0 &emsp;&emsp;0</p>
         <p class='mini'>Played - Win% - Current Streak - Max Streak</p>
+    </div>
 
+    <!-- Grid Area -->
+    <div id="board-container" style="display: flex; justify-content: center; margin-bottom: 20px;">
+        <!-- Javascript will dynamically put the inputs here -->
+        <table class="words" style="border-spacing: 5px;"></table> 
     </div>
-    <div class="infoCard hidden popup" id="stats">
-        <p class='crossOuter'><button class='cross' id='closeResult'>&#9587</button></p>
-        <p><strong>RESULT</strong></p>
-        <p>1 &emsp;&emsp;&emsp;100 &emsp;&emsp;&emsp;&emsp;1 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;1</p>
-        <p class='mini'>Played - Win% - Current Streak - Max Streak</p>
-        
-    </div>
-    <div class="container">
-        <div class="item">
-            <table class="words">
-                <tr class="inputRow">
-                    <td><input class="inputBox" id="b11" maxlength="1" /></td>
-                    <td>
-                        <input class="inputBox" id="b12" maxlength="1" />
-                    </td>
-                    <td>
-                        <input class="inputBox" id="b13" maxlength="1" />
-                    </td>
-                    <td>
-                        <input class="inputBox" id="b14" maxlength="1" />
-                    </td>
-                    <td>
-                        <input class="inputBox" id="b15" maxlength="1" />
-                    </td>
-                </tr>
-                <tr class="inputRow">
-                    <td><input class="inputBox" id="b21" maxlength="1" /></td>
-                    <td>
-                        <input class="inputBox" id="b22" maxlength="1" />
-                    </td>
-                    <td>
-                        <input class="inputBox" id="b23" maxlength="1" />
-                    </td>
-                    <td>
-                        <input class="inputBox" id="b24" maxlength="1" />
-                    </td>
-                    <td>
-                        <input class="inputBox" id="b25" maxlength="1" />
-                    </td>
-                </tr>
-                <tr class="inputRow">
-                    <td><input class="inputBox" id="b31" maxlength="1" /></td>
-                    <td>
-                        <input class="inputBox" id="b32" maxlength="1" />
-                    </td>
-                    <td>
-                        <input class="inputBox" id="b33" maxlength="1" />
-                    </td>
-                    <td>
-                        <input class="inputBox" id="b34" maxlength="1" />
-                    </td>
-                    <td>
-                        <input class="inputBox" id="b35" maxlength="1" />
-                    </td>
-                </tr>
-                <tr class="inputRow">
-                    <td><input class="inputBox" id="b41" maxlength="1" /></td>
-                    <td>
-                        <input class="inputBox" id="b42" maxlength="1" />
-                    </td>
-                    <td>
-                        <input class="inputBox" id="b43" maxlength="1" />
-                    </td>
-                    <td>
-                        <input class="inputBox" id="b44" maxlength="1" />
-                    </td>
-                    <td>
-                        <input class="inputBox" id="b45" maxlength="1" />
-                    </td>
-                </tr>
-                <tr class="inputRow">
-                    <td><input class="inputBox" id="b51" maxlength="1" /></td>
-                    <td>
-                        <input class="inputBox" id="b52" maxlength="1" />
-                    </td>
-                    <td>
-                        <input class="inputBox" id="b53" maxlength="1" />
-                    </td>
-                    <td>
-                        <input class="inputBox" id="b54" maxlength="1" />
-                    </td>
-                    <td>
-                        <input class="inputBox" id="b55" maxlength="1" />
-                    </td>
-                </tr>
-                <tr class="inputRow">
-                    <td><input class="inputBox" id="b61" maxlength="1" /></td>
-                    <td>
-                        <input class="inputBox" id="b62" maxlength="1" />
-                    </td>
-                    <td>
-                        <input class="inputBox" id="b63" maxlength="1" />
-                    </td>
-                    <td>
-                        <input class="inputBox" id="b64" maxlength="1" />
-                    </td>
-                    <td>
-                        <input class="inputBox" id="b65" maxlength="1" />
-                    </td>
-                </tr>
-            </table>
+
+    <!-- Flexbox Virtual Keyboard -->
+    <div id="keyboard-container">
+        <div class="keyboard-row">
+            <button class="button" id="Q">Q</button><button class="button" id="W">W</button><button class="button" id="E">E</button><button class="button" id="R">R</button><button class="button" id="T">T</button><button class="button" id="Y">Y</button><button class="button" id="U">U</button><button class="button" id="I">I</button><button class="button" id="O">O</button><button class="button" id="P">P</button>
         </div>
-        <div class="item">
-            <table class="keyboard">
-                <tr>
-                    <td><button class="button" id="Q">Q</button></td>
-                    <td><button class="button" id="W">W</button></td>
-                    <td><button class="button" id="E">E</button></td>
-                    <td><button class="button" id="R">R</button></td>
-                    <td><button class="button" id="T">T</button></td>
-                    <td><button class="button" id="Y">Y</button></td>
-                    <td><button class="button" id="U">U</button></td>
-                    <td><button class="button" id="I">I</button></td>
-                    <td><button class="button" id="O">O</button></td>
-                    <td><button class="button" id="P">P</button></td>
-                </tr>
-            </table>
-            <table class="keyboard">
-                <tr class="buttonRow2">
-                    <td><button class="button" id="A">A</button></td>
-                    <td><button class="button" id="S">S</button></td>
-                    <td><button class="button" id="D">D</button></td>
-                    <td><button class="button" id="F">F</button></td>
-                    <td><button class="button" id="G">G</button></td>
-                    <td><button class="button" id="H">H</button></td>
-                    <td><button class="button" id="J">J</button></td>
-                    <td><button class="button" id="K">K</button></td>
-                    <td><button class="button" id="L">L</button></td>
-                </tr>
-            </table>
-            <table class="keyboard">
-                <tr>
-                    <td><button class="button enter" id="enter">ENTER</button></td>
-                    <td><button class="button" id="Z">Z</button></td>
-                    <td><button class="button" id="X">X</button></td>
-                    <td><button class="button" id="C">C</button></td>
-                    <td><button class="button" id="V">V</button></td>
-                    <td><button class="button" id="B">B</button></td>
-                    <td><button class="button" id="N">N</button></td>
-                    <td><button class="button" id="M">M</button></td>
-                    <td>
-                        <button class="button backspace" id="back">&#9746</button>
-                    </td>
-                </tr>
-            </table>
-            <div style="justify-content: center;position: relative;top: 10px;z-index: 1; display: flex;"><button class="button" id="reset" style="width: 90%;">reset</button></div>
-            <div style="height: 12px;"></div>
+        <div class="keyboard-row">
+            <div class="spacer half"></div>
+            <button class="button" id="A">A</button><button class="button" id="S">S</button><button class="button" id="D">D</button><button class="button" id="F">F</button><button class="button" id="G">G</button><button class="button" id="H">H</button><button class="button" id="J">J</button><button class="button" id="K">K</button><button class="button" id="L">L</button>
+            <div class="spacer half"></div>
+        </div>
+        <div class="keyboard-row">
+            <button class="button enter" id="Enter">ENTER</button>
+            <button class="button" id="Z">Z</button><button class="button" id="X">X</button><button class="button" id="C">C</button><button class="button" id="V">V</button><button class="button" id="B">B</button><button class="button" id="N">N</button><button class="button" id="M">M</button>
+            <button class="button backspace" id="Backspace">⌫</button>
         </div>
     </div>
+
+    <script type='text/javascript' src='./assets/js/words.js'></script>
     <script type='text/javascript' src='./assets/js/script.js'></script>
 </body>
-
 </html>

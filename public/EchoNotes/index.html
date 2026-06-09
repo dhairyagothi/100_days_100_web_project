@@ -25,6 +25,8 @@
 
 <body data-mobile-view="list">
 
+
+
 <div class="app-container" id="appContainer">
 
   <!-- ==========================================
@@ -51,11 +53,18 @@
 
     <div class="workspace-controls" style="padding: 0 16px 12px; border-bottom: 1px solid var(--border);">
       <div class="search-wrap">
-        <span class="search-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </span>
-        <input type="text" id="searchInput" placeholder="Search..." oninput="filterNotes(this.value)" />
-      </div>
+  <span class="search-icon">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  </span>
+  <input type="text" id="searchInput" placeholder="Search notes, tags..." oninput="filterNotes(this.value)" />
+</div>
+<div style="padding:0 16px 8px;display:flex;gap:6px;flex-wrap:wrap;">
+  <button class="tag-pill" style="cursor:pointer;" onclick="toggleFilter('favorites')">⭐ Fav</button>
+  <button class="tag-pill" style="cursor:pointer;" onclick="toggleFilter('pinned')">📌 Pinned</button>
+  <select id="folderFilter" onchange="filterNotes(document.getElementById('searchInput').value)" style="font-size:11px;border:1px solid var(--border);border-radius:12px;background:var(--bg-card-hover);color:var(--text-secondary);padding:2px 8px;outline:none;">
+    <option value="">All Folders</option>
+  </select>
+</div>
       <button class="sidebar-theme-toggle" id="themeBtn" title="Toggle Theme" style="width: 100%; margin-top: 8px; justify-content: flex-start; padding: 8px 12px; border: 1px solid transparent;">
         <span class="sidebar-theme-icon" id="themeIcon">🌙</span>
         <span id="themeText">Dark Mode</span>
@@ -186,6 +195,7 @@
           <select id="noteFolderSelect" class="folder-select" onchange="changeNoteFolder()" title="Move note to folder"></select>
           <button id="pinBtn" class="editor-action-btn icon-btn" onclick="togglePin()" title="Pin Note (Alt+P)">📌</button>
           <button id="favBtn" class="editor-action-btn icon-btn" onclick="toggleFavorite()" title="Favorite Note">⭐</button>
+          <button class="editor-action-btn icon-btn" onclick="openVersionHistory()" title="Version History">🕐</button>
           
           <!-- Save status indicator -->
           <div class="save-status-wrap">
@@ -282,6 +292,20 @@
         </div>
 
         <div class="toolbar-group">
+          <span class="toolbar-label">Highlight</span>
+          <div style="display:flex; gap:4px; align-items:center;">
+            <button onclick="applyHighlight('#ffff99')" title="Yellow" style="width:18px;height:18px;border-radius:50%;background:rgba(255,255,100,0.5);border:1px solid #ccc;cursor:pointer;"></button>
+            <button onclick="applyHighlight('#99ffcc')" title="Green" style="width:18px;height:18px;border-radius:50%;background:rgba(100,255,180,0.5);border:1px solid #ccc;cursor:pointer;"></button>
+            <button onclick="applyHighlight('#99ccff')" title="Blue" style="width:18px;height:18px;border-radius:50%;background:rgba(100,180,255,0.5);border:1px solid #ccc;cursor:pointer;"></button>
+            <button onclick="applyHighlight('#ffb3de')" title="Pink" style="width:18px;height:18px;border-radius:50%;background:rgba(255,150,220,0.5);border:1px solid #ccc;cursor:pointer;"></button>
+            <button onclick="applyHighlight('#ffcc99')" title="Orange" style="width:18px;height:18px;border-radius:50%;background:rgba(255,180,100,0.5);border:1px solid #ccc;cursor:pointer;"></button>
+            <button onclick="applyHighlight('#cc99ff')" title="Purple" style="width:18px;height:18px;border-radius:50%;background:rgba(180,100,255,0.5);border:1px solid #ccc;cursor:pointer;"></button>
+            <button onclick="removeHighlight()" title="Remove highlight (Ctrl+Shift+H)" style="width:22px;height:18px;border-radius:4px;background:var(--bg-card);border:1px solid var(--border);cursor:pointer;font-size:10px;color:var(--text-secondary);">✕</button>
+            <button onclick="clearAllHighlights()" title="Clear all highlights (Ctrl+Shift+C)" style="width:22px;height:18px;border-radius:4px;background:var(--bg-card);border:1px solid var(--border);cursor:pointer;font-size:10px;color:var(--text-secondary);">🗑</button>
+          </div>
+        </div>
+
+        <div class="toolbar-group">
           <span class="toolbar-label">Size</span>
           <select class="size-select" id="fontSizeSelect" onchange="applyFontSize(this.value)" title="Global Font Size">
             <option value="13">Small</option>
@@ -327,9 +351,46 @@
     </div>
   </div>
 </div>
+<!-- VERSION HISTORY MODAL -->
+<div class="modal-overlay" id="versionModal">
+  <div class="modal" style="width:480px;max-height:80vh;overflow-y:auto;">
+    <h3>🕐 Version History</h3>
+    <p id="versionModalSub" style="margin-bottom:12px;"></p>
+    <div id="versionList"></div>
+    <div class="modal-actions" style="margin-top:16px;">
+      <button class="btn" onclick="closeVersionModal()">Close</button>
+    </div>
+  </div>
+</div>
 
+<!-- ANALYTICS MODAL -->
+<div class="modal-overlay" id="analyticsModal">
+  <div class="modal" style="width:520px;max-height:85vh;overflow-y:auto;">
+    <h3>📊 Workspace Analytics</h3>
+    <div id="analyticsContent" style="margin-top:16px;"></div>
+    <div class="modal-actions" style="margin-top:16px;">
+      <button class="btn" onclick="closeAnalytics()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- BACKUP MODAL -->
+<div class="modal-overlay" id="backupModal">
+  <div class="modal" style="width:420px;">
+    <h3>☁️ Backup & Restore</h3>
+    <p style="margin-bottom:16px;">Export your full workspace or restore from a backup file.</p>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <button class="btn" style="justify-content:center;" onclick="exportBackup()">⬇️ Export Workspace JSON</button>
+      <label class="btn" style="justify-content:center;cursor:pointer;">
+        ⬆️ Import Backup JSON
+        <input type="file" accept=".json" style="display:none;" onchange="importBackup(event)">
+      </label>
+    </div>
+    <div class="modal-actions" style="margin-top:16px;">
+      <button class="btn" onclick="closeBackupModal()">Close</button>
+    </div>
+  </div>
+</div>
 <script src="./script.js"></script>
-<script src="script.js?v=2"></script>
-
 </body>
 </html>

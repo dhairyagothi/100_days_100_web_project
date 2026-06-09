@@ -4,93 +4,148 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Development</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="blog.css">
 </head>
-<body>
+<body class="transition-all duration-300">
 
-<div class="blog-page">
+<nav class="navbar">
+    <div class="nav-left-group">
+        <a href="index.html" class="project-back-button">
+            <i class="fa-solid fa-arrow-left"></i> Back to Blogs
+        </a>
+        <div class="logo">
+            GreenBlog
+        </div>
+    </div>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html">Categories</a></li>
+        <li><a href="index.html">Blogs</a></li>
+        <li><a href="index.html">About</a></li>
+    </ul>
+    <div class="nav-right">
+        <button id="themeToggle">
+            <span id="themeIcon">☀️</span>
+        </button>
+    </div>
+</nav>
 
-    <img 
-        src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1770&auto=format&fit=crop"
-        alt="Web Development"
-        class="blog-banner"
-    >
+<div class="blog-page-container">
+    <div class="blog-page">
+        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1770&auto=format&fit=crop" alt="Web Development" class="blog-banner">
+        
+        <h1>Web Development</h1>
+        
+        <div class="blog-author">
+            <h3>Dev Advisor</h3>
+            <p class="blog-date">Posted on 19/05/2026</p>
+        </div>
 
-    <h1>Web Development</h1>
+        <div class="blog-content">
+            <p>
+                Web development is one of the most exciting and rapidly growing fields in technology. It involves creating websites and web applications that people use every day.
+            </p>
+            <p>
+                Frontend development focuses on designing user interfaces using HTML, CSS, JavaScript, and frameworks like React. Backend development handles servers, databases, and application logic. Responsive design, performance optimization, and accessibility are important parts of modern web development. Developers constantly learn new technologies to stay updated in this fast-changing industry.
+            </p>
 
-    <p class="blog-date">
-        Posted on 19/05/2026
-    </p>
+            <h1>Frontend Development</h1>
+            <p>
+                This module covers client-side technologies used to structure, style, and make web pages interactive in the user’s browser:
+            </p>
+            <p>
+                <b>HTML (HyperText Markup Language):</b> HTML is the language used to create the basic structure and content of web pages. It uses elements, tags, and attributes to organize text, images, and links.
+            </p>
+            <p>
+                <b>CSS (Cascading Style Sheets):</b> CSS is used to style the HTML content. It controls colors, fonts, layouts, and how the page looks on different devices. More importantly, CSS enables you to do this independent of the HTML that makes up each web page.
+            </p>
+            <p>
+                <b>JS (JavaScript):</b> JavaScript adds life to web pages by making them interactive. It handles things like buttons, dynamic comments, theme changes, animations, and form validation.
+            </p>
 
-    <p>
-        Web development is one of the most exciting and rapidly growing fields
-        in technology. It involves creating websites and web applications that
-        people use every day.
-        Frontend development focuses on designing user interfaces using HTML,
-        CSS, JavaScript, and frameworks like React. Backend development handles
-        servers, databases, and application logic. Responsive design, performance optimization, and accessibility are
-        important parts of modern web development. Developers constantly learn
-        new technologies to stay updated in this fast-changing industry.
-        Web development offers many career opportunities and allows creators to
-        build useful digital experiences for millions of users worldwide.
-    </p>
+            <h1>Backend Development</h1>
+            <p>
+                In this module, we explore the technologies that work behind the scenes on the server to handle data, run the website logic, and store information.
+            </p>
+            <h3>Server-Side Programming Languages</h3>
+            <p>
+                Server-side programming languages are used to write code that runs on the server, not in the user’s browser. This server-side scripting handles tasks like processing data, managing databases, and controlling how the website works behind the scenes.
+            </p>
+            <p>
+                Below are some popular languages used to build the back end of web applications:
+            </p>
+            <p>
+                <b>JavaScript/Node.js:</b> JavaScript adds interactivity to websites, while Node.js allows JavaScript to run on the server for building fast and scalable back-end applications.
+            </p>
+            <p>
+                <b>PHP:</b> PHP is a server-side scripting language mainly used for web development and dynamic websites.
+            </p>
+            <p>
+                <b>Python:</b> Python is a simple and powerful programming language used for web development, automation, AI, and more.
+            </p>
+            <p>
+                <b>Ruby, Java, Golang (Go), C#:</b> Various modern compiled or object-oriented languages commonly used for enterprise and scalable applications.
+            </p>
 
-    <p>Web development is the process of creating and maintaining websites and web applications that run on the internet.
-
-Users access websites through web browsers.
-The browser sends a request to the web server.
-The server processes the request and may access a database.
-The server sends a response back to the browser.
-The browser displays the webpage securely using HTTPS.
-
-    </p>
-
-    <p>
-<h1>Frontend Development</h1>
-This module covers client-side technologies used to structure, style, and make web pages interactive in the user’s browser.
-
-HTML (HyperText Markup Language): HTML is the language used to create the basic structure and content of web pages. It uses elements, tags, and attributes to organize text, images, and links.
-CSS (Cascading Style Sheets): CSS is used to style the HTML content. It controls colors, fonts, layouts, and how the page looks on different devicesMore importantly, CSS enables you to do this independent of the HTML that makes up each web page.
-JS (JavaScript): JavaScript adds life to web pages by making them interactive. It handles things like buttons, animations, and form checks.
-
-    </p><h1>Backend Development</h1>
-In this module, we will explore the technologies that work behind the scenes on the server to handle data, run the website, and store information.
-
-    <p><h3>Server-Side Programming Languages</h3>
-In Backend Development, Server-side programming languages are used to write code that runs on the server, not in the user’s browser. This server-side scripting handles tasks like processing data, managing databases, and controlling how the website works behind the scenes
-
-Below are some popular languages used to build the back end of web applications:
-
-JavaScript/Node.js: JavaScript adds interactivity to websites, while Node.js allows JavaScript to run on the server for building fast and scalable back-end applications.
-PHP: PHP is a server-side scripting language mainly used for web development and dynamic websites.
-Python: Python is a simple and powerful programming language used for web development, automation, AI, and more.
-Ruby: Ruby is an object-oriented language known for its clean and readable syntax.
-Java: A widely used, scalable programming language popular for enterprise and web applications.
-Golang (Go): Golang is a fast, statically typed programming language developed for efficient and scalable applications.
-C#: C# is a modern object-oriented language commonly used for web and desktop applications on Microsoft platforms.
-    </p>
-    <p><h1>Databases</h1>
-A database stores and manages website data such as user information, products, and transactions. It is a backend component used to organize, access, and secure data efficiently.
-
-Types of Databases
-
-1. SQL/Relational Database
-
-Relational databases store data in tables with rows and columns and use SQL for data management.
-
-MySQL: MySQL is an open-source relational database known for reliability and performance.
-PostgreSQL: PostgreSQL is an advanced relational database supporting complex queries and high reliability.
-2. NoSQL Databases
-
-NoSQL databases store data in flexible formats like documents or key-value pairs, making them suitable for large and unstructured data.
-
-MongoDB: MongoDB is a document-based NoSQL database that stores data in JSON-like format.
-Cassandra: Cassandra is a scalable NoSQL database designed for handling large amounts of data.
-Redis: Redis is an in-memory NoSQL database used for caching and real-time applications.
-Note: We use Database management systems help keep the data safe, organized, and easy to use.</p>
-
+            <h1>Databases</h1>
+            <p>
+                A database stores and manages website data such as user information, products, and transactions. It is a backend component used to organize, access, and secure data efficiently.
+            </p>
+            <h3>1. SQL/Relational Databases</h3>
+            <p>
+                Relational databases store data in tables with rows and columns and use SQL for data management. Popular options include <b>MySQL</b> (reliability and performance) and <b>PostgreSQL</b> (advanced query operations).
+            </p>
+            <h3>2. NoSQL Databases</h3>
+            <p>
+                NoSQL databases store data in flexible formats like documents or key-value pairs, making them suitable for large and unstructured data. Key examples include <b>MongoDB</b> (document-based BSON format), <b>Cassandra</b> (columnar data structure), and <b>Redis</b> (real-time in-memory caching).
+            </p>
+        </div>
+    </div>
 </div>
 
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-section">
+            <h2 class="logo">GreenBlog</h2>
+            <p>Discover inspiring articles on technology, lifestyle, travel, agriculture, and web development.</p>
+        </div>
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html">Blogs</a></li>
+                <li><a href="index.html">Categories</a></li>
+                <li><a href="index.html">About</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Categories</h3>
+            <ul>
+                <li><a href="index.html">Technology</a></li>
+                <li><a href="index.html">Lifestyle</a></li>
+                <li><a href="index.html">Travel</a></li>
+                <li><a href="index.html">Agriculture</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Subscribe</h3>
+            <p>Get latest articles directly in your inbox.</p>
+            <form class="newsletter">
+                <input type="email" placeholder="Enter your email" />
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2026 GreenBlog. All rights reserved.</p>
+        <p>created by palak verma</p>
+    </div>
+</footer>
+
+<script src="script.js"></script>
 </body>
 </html>
-
