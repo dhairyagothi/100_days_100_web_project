@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Palette Generator</title>
+    <style>
+        body { margin: 0; display: flex; flex-direction: column; height: 100vh; font-family: sans-serif; }
+        .palette { display: flex; flex: 1; }
+        .color-box { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
+        .color-box:hover { flex: 1.2; }
+        .hex-code { background: rgba(0,0,0,0.5); color: white; padding: 10px; border-radius: 5px; font-weight: bold; }
+        .controls { height: 80px; display: flex; align-items: center; justify-content: center; background: #333; color: white; }
+        button { padding: 15px 30px; font-size: 16px; cursor: pointer; border: none; border-radius: 5px; background: #007bff; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="palette" id="palette">
+    <div class="color-box" onclick="copyToClipboard(0)"> <div class="hex-code" id="hex0">#FFFFFF</div> </div>
+    <div class="color-box" onclick="copyToClipboard(1)"> <div class="hex-code" id="hex1">#FFFFFF</div> </div>
+    <div class="color-box" onclick="copyToClipboard(2)"> <div class="hex-code" id="hex2">#FFFFFF</div> </div>
+    <div class="color-box" onclick="copyToClipboard(3)"> <div class="hex-code" id="hex3">#FFFFFF</div> </div>
+    <div class="color-box" onclick="copyToClipboard(4)"> <div class="hex-code" id="hex4">#FFFFFF</div> </div>
+</div>
+
+<div class="controls">
+    <button onclick="generatePalette()">Generate New Palette (or press Space)</button>
+</div>
+
+<script>
+    const hexCodes = [];
+
+    function generatePalette() {
+        for (let i = 0; i < 5; i++) {
+            const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+            hexCodes[i] = randomColor;
+            document.getElementById(`hex${i}`).innerText = randomColor;
+            document.querySelectorAll('.color-box')[i].style.backgroundColor = randomColor;
+        }
+    }
+
+    function copyToClipboard(index) {
+        navigator.clipboard.writeText(hexCodes[index]);
+        alert("Copied: " + hexCodes[index]);
+    }
+
+    // Add Spacebar listener
+    document.body.onkeyup = function(e) {
+        if (e.keyCode == 32) generatePalette();
+    }
+
+    // Initial generate
+    generatePalette();
+</script>
+
+</body>
+</html>
