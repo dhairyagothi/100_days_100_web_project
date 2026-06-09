@@ -125,6 +125,11 @@ function selectTile(tile) {
         currMoleTile.innerHTML = "";
         document.getElementById("score").textContent = score.toString(); // Safe text rendering
 
+        // Play the hit sound
+        let hitSound = new Audio("./hit sound.mp3");
+        hitSound.currentTime = 0.1;
+        hitSound.play();
+
         // Clear immediately so user cannot double-click spam the same mole frame
         currMoleTile.replaceChildren();
         currMoleTile = null;
@@ -135,6 +140,9 @@ function selectTile(tile) {
         gameOver = true;
 
         // Clear active process background timers
+        let hitSound = new Audio("./die.mp3");
+        hitSound.volume  = 0.2;
+        hitSound.play();
         document.getElementById("score").textContent = "GAME OVER: " + score.toString();
         gameOver = true;
 

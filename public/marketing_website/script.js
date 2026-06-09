@@ -1,6 +1,3 @@
-
-
-```js id="tybgnj"
 // Navbar scroll effect
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -59,4 +56,3 @@ faqItems.forEach(item => {
     });
 
 });
-```

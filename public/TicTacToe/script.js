@@ -17,7 +17,7 @@ const hintBtn = document.getElementById("hintBtn");
 const undoBtn = document.getElementById("undoBtn");
 const historyList = document.getElementById("historyList");
 const themeToggleGroup = document.getElementById("themeToggleGroup");
-const victorySound = new Audio("victory.mp3");
+const victorySound = new Audio("/public/TicTacToe/victory.mp3");
 
 let gameBoard = Array(9).fill("");
 let currentPlayer = "X";

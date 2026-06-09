@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micro-Habit Pixel Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="tracker-container">
+        <header>
+            <h1>Micro-Habit Pixel Tracker</h1>
+            <p>Track your daily consistency. Watch the grid change color based on habits completed.</p><br>
+            <p>Click on a square to select a day, then check off habits to fill the square with color. The more habits you complete, the darker the square gets!</p>
+        </header>
+
+        <section class="habit-panel">
+            <h3 id="active-day-heading">Select a square to update habits</h3>
+            <div class="habits-list">
+                <label class="habit-item">
+                    <input type="checkbox" id="habit-1" disabled>
+                    <span class="custom-checkbox"></span>
+                    <span>Read 5 Pages</span>
+                </label>
+                <label class="habit-item">
+                    <input type="checkbox" id="habit-2" disabled>
+                    <span class="custom-checkbox"></span>
+                    <span>Drink 3L Water</span>
+                </label>
+                <label class="habit-item">
+                    <input type="checkbox" id="habit-3" disabled>
+                    <span class="custom-checkbox"></span>
+                    <span>Exercise / Stretch</span>
+                </label>
+            </div>
+            <p class="hint">Changes are saved automatically!</p>
+        </section>
+
+        <main class="grid-wrapper">
+            <div class="months-labels">
+                <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
+                <span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+            </div>
+            <div id="grid-container"></div>
+            
+            <div class="legend">
+                <span>Less</span>
+                <div class="legend-square level-0"></div>
+                <div class="legend-square level-1"></div>
+                <div class="legend-square level-2"></div>
+                <div class="legend-square level-3"></div>
+                <span>More</span>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

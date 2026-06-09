@@ -139,4 +139,4 @@ jobs:
       - name: Run Validation Script
         run: |
           echo "🏁 Starting PR Quality and Template Compliance checks..."
-          node scripts/validate-metadata.js
+          npm run validate:projects
