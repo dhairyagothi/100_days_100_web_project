@@ -96,5 +96,11 @@ document.addEventListener('DOMContentLoaded', () => {
       filterBar.scrollBy({ left: 200, behavior: 'smooth' });
     });
   }
-
+/* ── Sidebar navigation ─────────────────────────────────────── */
+  document.querySelectorAll('.sidebar-link').forEach(link => {
+    link.addEventListener('click', () => {
+      document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('is-active'));
+      link.classList.add('is-active');
+    });
+  });
 });

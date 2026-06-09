@@ -11,6 +11,10 @@
 <body>
     <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
+    <button id="dashboard-toggle-btn" class="dashboard-toggle-button" aria-label="Open Achievements and Stats">
+        🏆 Stats & Badges
+    </button>
+
     <div class="ambient-background"></div>
     <div id="custom-cursor" class="custom-cursor"></div>
 
@@ -20,6 +24,8 @@
             <p>Use headphones for the best ASMR experience</p>
         </div>
     </div>
+
+    <div id="achievement-toast-container" class="achievement-toast-container"></div>
 
     <main class="experience-container">
         <div class="theme-control-panel">
@@ -86,6 +92,45 @@
 
         <button id="reset-btn" class="reset-button">Restore Coin</button>
     </main>
+
+    <div id="dashboard-overlay" class="dashboard-overlay">
+        <div class="dashboard-panel">
+            <div class="dashboard-header">
+                <h2>🏆 Your Progress</h2>
+                <button id="dashboard-close-btn" class="dashboard-close-button">&times;</button>
+            </div>
+            
+            <hr class="dashboard-divider">
+
+            <section class="stats-section">
+                <h3>Statistics</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-value" id="stat-total-scratches">0</span>
+                        <span class="stat-label">Total Scratches</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="stat-coins-collected">0</span>
+                        <span class="stat-label">Coins Collected</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="stat-asmr-time">0m</span>
+                        <span class="stat-label">ASMR Listening Time</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="achievements-section">
+                <h3>Badges Unlocked (<span id="unlocked-count">0</span>/5)</h3>
+                <div class="badges-grid" id="badges-container">
+                    </div>
+            </section>
+            
+            <div class="dashboard-footer">
+                <button id="clear-stats-btn" class="clear-stats-button">Reset Data</button>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
