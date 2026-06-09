@@ -2209,6 +2209,43 @@ initTheme();
   let animationFrame = 0;
   let resizeFrame = 0;
   let lastFrameTime = 0;
+  function SpatialHash(cellSize) {
+    this.cellSize = cellSize;
+    this.grid = {};
+  }
+  SpatialHash.prototype.clear = function () {
+    this.grid = {};
+  };
+  SpatialHash.prototype._key = function (x, y) {
+    var cx = Math.floor(x / this.cellSize);
+    var cy = Math.floor(y / this.cellSize);
+    return cx + ',' + cy;
+  };
+  SpatialHash.prototype.insert = function (particle) {
+    var key = this._key(particle.x, particle.y);
+    if (!this.grid[key]) this.grid[key] = [];
+    this.grid[key].push(particle);
+  };
+  SpatialHash.prototype.queryNearby = function (particle, result) {
+    var cx = Math.floor(particle.x / this.cellSize);
+    var cy = Math.floor(particle.y / this.cellSize);
+    result.length = 0;
+    for (var dx = -1; dx <= 1; dx++) {
+      for (var dy = -1; dy <= 1; dy++) {
+        var key = (cx + dx) + ',' + (cy + dy);
+        var bucket = this.grid[key];
+        if (bucket) {
+          for (var k = 0; k < bucket.length; k++) {
+            if (bucket[k] !== particle) {
+              result.push(bucket[k]);
+            }
+          }
+        }
+      }
+    }
+  };
+
+  var spatialHash = new SpatialHash(linkDistance || 100);
 
   const getProfile = () => {
     const smallScreen = window.innerWidth <= 768 || coarsePointerQuery.matches;
@@ -2250,11 +2287,12 @@ initTheme();
     );
     linkDistance = profile.linkDistance;
     maxDistanceSq = linkDistance * linkDistance;
+    spatialHash.cellSize = linkDistance;
     frameInterval = 1000 / profile.fps;
   }
 
   function init() {
-    particles = Array.from({ length: particleCount }, () => ({
+    particles = Array.from({ length: particleCount }, function () { return {
       x: Math.random() * W,
       y: Math.random() * H,
       vx: (Math.random() - 0.5) * profile.velocity,
@@ -2262,7 +2300,8 @@ initTheme();
       r: Math.random() * profile.radius + 0.8,
       hue: palette[Math.floor(Math.random() * palette.length)],
       alpha: Math.random() * 0.45 + 0.18,
-    }));
+    }; });
+    spatialHash.cellSize = linkDistance;
   }
 
   function stepParticles() {
@@ -2283,19 +2322,26 @@ initTheme();
     stepParticles();
 
     if (profile.showLinks) {
-      for (let i = 0; i < particleCount; i += 1) {
-        for (let j = i + 1; j < particleCount; j += 1) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const distanceSq = dx * dx + dy * dy;
+      spatialHash.clear();
+      for (var si = 0; si < particleCount; si++) {
+        spatialHash.insert(particles[si]);
+      }
 
-          if (distanceSq >= maxDistanceSq) continue;
+      var nearby = [];
+      for (var i = 0; i < particleCount; i++) {
+        spatialHash.queryNearby(particles[i], nearby);
+        for (var j = 0; j < nearby.length; j++) {
+          var dx = particles[i].x - nearby[j].x;
+          var dy = particles[i].y - nearby[j].y;
+          var distanceSq = dx * dx + dy * dy;
 
-          const distance = Math.sqrt(distanceSq);
+          if (distanceSq >= maxDistanceSq || distanceSq === 0) continue;
+
+          var distance = Math.sqrt(distanceSq);
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(59,130,246,${(1 - distance / linkDistance) * 0.22})`;
+          ctx.lineTo(nearby[j].x, nearby[j].y);
+          ctx.strokeStyle = 'rgba(59,130,246,' + ((1 - distance / linkDistance) * 0.22) + ')';
           ctx.lineWidth = 1;
           ctx.stroke();
         }
