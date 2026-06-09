@@ -442,27 +442,25 @@ main.experience-container {
         font-size: 15px;
     }
 
-    .recommendation-card {
-        /* Position above the coin, relative to the experience-container */
-        position: absolute;
-        bottom: calc(var(--coin-size) + 80px); /* coin-size + gap + button height */
-        top: auto;
-        left: 50%;
-        transform: translateX(-50%);
-        
-        padding: 12px 20px;
-        width: calc(100% - 40px);
-        max-width: 350px;
-        
-        /* Add fade-out transition */
-        transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+
+.recommendation-card {
+    position: fixed;
+    bottom: 24px;   
+    right: 24px;    
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px 20px;
+    border-radius: 30px;
+    z-index: 999;
+    animation: slideIn 0.5s ease;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
 
     /* Fade-out state for mobile/tablet */
     .recommendation-card.fade-out {
         opacity: 0;
-        transform: translate(-50%, -15px); /* Slight upward movement */
-        pointer-events: none;
+        transform: translateY(-15px);
     }
 
     .headphone-icon {
@@ -488,25 +486,14 @@ main.experience-container {
   background-color: #e0e0e0;
 }
 
-.recommendation-card {
-  position: absolute;
-  top: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: rgba(255, 240, 245, 0.85);
-  border: 1px solid rgba(210, 180, 140, 0.5);
-  border-radius: 15px;
-  padding: 15px 25px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  z-index: 1001;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  width: auto;
-  max-width: 90%;
+.recommendation-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
 }
 
 .recommendation-card.hidden {
@@ -563,4 +550,537 @@ main.experience-container {
     0%, 100% { transform: rotate(0deg); }
     25% { transform: rotate(5deg); }
     75% { transform: rotate(-5deg); }
+}
+
+/* ==========================================================================
+   1. CORE VARIABLES & DEFAULT THEME (GOLD)
+   ========================================================================== */
+:root, [data-theme="gold"] {
+    --bg-primary: #0b0f19;
+    --bg-ambient: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #020617 100%);
+    --panel-bg: rgba(30, 41, 59, 0.5);
+    --panel-border: rgba(255, 215, 0, 0.2);
+    --accent: #ffd700;
+    --accent-glow: rgba(255, 215, 0, 0.4);
+    --text-main: #f8fafc;
+    
+    /* Scratch Card Canvas Variables */
+    --coating-start: #ffd700;
+    --coating-end: #b8860b;
+    
+    /* 3D Coin Graphics */
+    --coin-base: linear-gradient(135deg, #ffe066 0%, #f59e0b 50%, #b45309 100%);
+    --coin-rim-color: #d97706;
+}
+
+/* ==========================================================================
+   2. THEME OVERRIDES
+   ========================================================================== */
+
+/* Silver Theme */
+[data-theme="silver"] {
+    --bg-ambient: radial-gradient(circle at 50% 50%, #334155 0%, #0f172a 100%);
+    --panel-border: rgba(226, 232, 240, 0.2);
+    --accent: #cbd5e1;
+    --accent-glow: rgba(203, 213, 225, 0.4);
+    --coating-start: #e2e8f0;
+    --coating-end: #64748b;
+    --coin-base: linear-gradient(135deg, #ffffff 0%, #94a3b8 50%, #475569 100%);
+    --coin-rim-color: #64748b;
+}
+
+/* Bronze Theme */
+[data-theme="bronze"] {
+    --bg-ambient: radial-gradient(circle at 50% 50%, #2c1a14 0%, #0c0705 100%);
+    --panel-border: rgba(205, 127, 50, 0.2);
+    --accent: #cd7f32;
+    --accent-glow: rgba(205, 127, 50, 0.4);
+    --coating-start: #b45309;
+    --coating-end: #451a03;
+    --coin-base: linear-gradient(135deg, #d97706 0%, #a16207 50%, #78350f 100%);
+    --coin-rim-color: #78350f;
+}
+
+/* Diamond Theme */
+[data-theme="diamond"] {
+    --bg-ambient: radial-gradient(circle at 50% 50%, #1e3a8a 0%, #030712 100%);
+    --panel-border: rgba(56, 189, 248, 0.3);
+    --accent: #38bdf8;
+    --accent-glow: rgba(56, 189, 248, 0.6);
+    --coating-start: #e0f2fe;
+    --coating-end: #0284c7;
+    --coin-base: linear-gradient(135deg, #ffffff 0%, #bae6fd 40%, #38bdf8 70%, #0369a1 100%);
+    --coin-rim-color: #0284c7;
+}
+
+/* Christmas Theme */
+[data-theme="christmas"] {
+    --bg-ambient: radial-gradient(circle at 50% 50%, #064e3b 0%, #022c22 100%);
+    --panel-border: rgba(239, 68, 68, 0.3);
+    --accent: #ef4444;
+    --accent-glow: rgba(239, 68, 68, 0.5);
+    --coating-start: #ef4444;
+    --coating-end: #991b1b;
+    --coin-base: linear-gradient(135deg, #fca5a5 0%, #dc2626 50%, #7f1d1d 100%);
+    --coin-rim-color: #b91c1c;
+}
+
+/* Halloween Theme */
+[data-theme="halloween"] {
+    --bg-ambient: radial-gradient(circle at 50% 50%, #4c1d95 0%, #090514 100%);
+    --panel-border: rgba(249, 115, 22, 0.3);
+    --accent: #f97316;
+    --accent-glow: rgba(249, 115, 22, 0.5);
+    --coating-start: #f97316;
+    --coating-end: #431407;
+    --coin-base: linear-gradient(135deg, #fdba74 0%, #ea580c 50%, #270738 100%);
+    --coin-rim-color: #c2410c;
+}
+
+/* New Year Theme */
+[data-theme="newyear"] {
+    --bg-ambient: radial-gradient(circle at 50% 50%, #311042 0%, #07020d 100%);
+    --panel-border: rgba(236, 72, 153, 0.3);
+    --accent: #ec4899;
+    --accent-glow: rgba(244, 63, 94, 0.6);
+    --coating-start: #f43f5e;
+    --coating-end: #4c0519;
+    --coin-base: linear-gradient(135deg, #fbcfe8 0%, #db2777 50%, #4d072b 100%);
+    --coin-rim-color: #9d174d;
+}
+
+/* ==========================================================================
+   3. GLOBAL STYLES & INTERFACE RESET
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    position: relative;
+    padding: 20px 0;
+}
+
+.ambient-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-ambient);
+    z-index: -1;
+    transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom Interactive Cursor */
+.custom-cursor {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    display: none;
+    box-shadow: 0 0 10px var(--accent-glow);
+    transition: width 0.1s ease, height 0.1s ease, border-color 0.4s ease;
+}
+
+/* Headphone Alert Banner - Position Override Stack */
+.recommendation-card {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 24px !important;
+    right: 24px !important;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px 20px;
+    border-radius: 30px;
+    z-index: 9999 !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.recommendation-card.fade-out {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.recommendation-card.hidden {
+    display: none;
+}
+
+.recommendation-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #fff;
+}
+
+/* ==========================================================================
+   4. STRUCTURE AND LAYOUT CONTROLS
+   ========================================================================== */
+.experience-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 440px;
+    padding: 20px;
+    z-index: 10;
+}
+
+/* The Top Left Visual Theme Banner Layout Block */
+.theme-control-panel {
+    width: 100%;
+    background: var(--panel-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--panel-border);
+    border-radius: 16px;
+    padding: 14px 20px;
+    margin-top: 80px;
+    margin-bottom: 24px;
+    margin-left: 50px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    position: relative; 
+    z-index: 10;
+    transition: border-color 0.4s ease, background-color 0.4s ease;
+}
+
+.control-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    white-space: nowrap;
+    transition: color 0.4s ease;
+}
+
+.select-wrapper {
+    position: relative;
+    flex-grow: 1;
+    max-width: 60%;
+}
+
+.theme-dropdown {
+    width: 100%;
+    padding: 10px 14px; 
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 500;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.theme-dropdown:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+.theme-dropdown optgroup {
+    background: #0f172a;
+    color: #fff;
+}
+
+/* Bottom Controls Grid Configuration */
+.control-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.brush-controls, .volume-controls {
+    background: var(--panel-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--panel-border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 0.85rem;
+    transition: background 0.4s ease, border-color 0.4s ease;
+}
+
+.brush-controls label, .volume-controls label {
+    font-weight: 500;
+    min-width: 75px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.brush-controls input[type="range"], .volume-controls input[type="range"] {
+    flex-grow: 1;
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.1);
+    height: 6px;
+    border-radius: 3px;
+    outline: none;
+}
+
+.brush-controls input[type="range"]::-webkit-slider-thumb,
+.volume-controls input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow);
+    cursor: pointer;
+    transition: transform 0.1s ease, background 0.4s ease;
+}
+
+.brush-controls input[type="range"]::-webkit-slider-thumb:active,
+.volume-controls input[type="range"]::-webkit-slider-thumb:active {
+    transform: scale(1.2);
+}
+
+.brush-controls span, .volume-controls span {
+    min-width: 32px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   5. ASMR COIN MODEL & CANVAS SPECIFICS
+   ========================================================================== */
+.coin-wrapper {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    cursor: none; 
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    will-change: transform;
+}
+
+.coin-3d {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--coin-base);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.5s ease;
+}
+
+.coin-rim {
+    position: absolute;
+    width: 98%;
+    height: 98%;
+    border-radius: 50%;
+    border: 6px double var(--coin-rim-color);
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
+    transition: border-color 0.5s ease;
+}
+
+.coin-face {
+    position: relative;
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.coin-detail-ring {
+    position: absolute;
+    border: 1px dashed rgba(0, 0, 0, 0.15);
+    border-radius: 50%;
+}
+.ring-1 { width: 85%; height: 85%; }
+.ring-2 { width: 70%; height: 70%; }
+.ring-3 { width: 55%; height: 55%; }
+
+.dotted-border {
+    position: absolute;
+    width: 94%;
+    height: 94%;
+    border: 3px dotted rgba(255,255,255,0.2);
+    border-radius: 50%;
+}
+
+/* Inside Reveal Area Container */
+.coin-content {
+    text-align: center;
+    z-index: 2;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.coin-content.revealed {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.reward-animation-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.heart-container {
+    font-size: 2.2rem;
+    color: var(--accent);
+    filter: drop-shadow(0 0 8px var(--accent-glow));
+    transition: color 0.4s ease;
+}
+
+.reward-text {
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    color: #fff;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+/* Interactive Canvas Positioning Matrix */
+#scratch-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    z-index: 5;
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scratch-instruction {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    z-index: 6;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.scratch-instruction.fade-out {
+    opacity: 0;
+}
+
+/* ==========================================================================
+   6. METRICS, PROGRESS UPDATES & CTA INTERACTION ELEMENTS
+   ========================================================================== */
+.scratch-progress {
+    margin-top: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.05em;
+}
+
+#scratch-progress-value {
+    color: var(--accent);
+    font-weight: 700;
+    transition: color 0.4s ease;
+}
+
+.reset-button {
+    margin-top: 16px;
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #0f172a;
+    font-size: 0.95rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease;
+}
+
+.reset-button:hover {
+    transform: translateY(-2px);
+    background: #f8fafc;
+}
+
+.reset-button:active {
+    transform: translateY(1px);
+}
+
+/* Motion Dynamics Profiles */
+@keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive Scaling Overrides for Tablets/Mobile Screenports */
+@media (max-width: 480px) {
+    .theme-control-panel {
+        margin-left: 0;
+        margin-top: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .select-wrapper {
+        max-width: 100%;
+    }
+    .coin-wrapper {
+        width: 240px;
+        height: 240px;
+    }
+    .reward-text {
+        font-size: 1rem;
+    }
+    .recommendation-card {
+        right: 12px !important;
+        bottom: 12px !important;
+        left: 12px !important;
+        text-align: center;
+        justify-content: center;
+    }
 }

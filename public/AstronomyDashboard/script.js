@@ -2403,16 +2403,6 @@ function bindEvents() {
     .getElementById('calculateDistance')
     .addEventListener('click', calculateDistance);
 
-  const themeToggle = document.getElementById('themeToggle');
-  if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
-      const currentTheme = document.documentElement.getAttribute('data-theme');
-      const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-      document.documentElement.setAttribute('data-theme', nextTheme);
-      localStorage.setItem('theme', nextTheme);
-    });
-  }
 
   newsList.addEventListener('click', (event) => {
     const item = event.target.closest('.news-item');
@@ -2503,11 +2493,6 @@ function bindEvents() {
 }
 
 function initDashboard() {
-  const savedTheme = localStorage.getItem('theme');
-
-  if (savedTheme === 'dark') {
-    document.body.classList.add('dark-mode');
-  }
 
   bindEvents();
   setDefaultMoonDate();
@@ -2710,14 +2695,14 @@ function patchRenderNews() {
       .map((item, index) => {
         const isSaved = favsState.news.some((f) => f.title === item.title);
         return `
-            <button class="news-item" type="button" data-news-index="${index}">
+            <div class="news-item" type="button" data-news-index="${index}">
                 <span class="news-thumb" style="--image:url('${escapeHtml(item.image)}')"></span>
                 <span style="flex:1">
                     <span class="news-title">${escapeHtml(item.title)}</span>
                     <span class="news-meta">${escapeHtml(item.meta)}</span>
                 </span>
                 <button class="item-star-btn ${isSaved ? 'saved' : ''}" data-news-index="${index}" type="button" title="Save to favorites" aria-label="Bookmark article">${isSaved ? '★' : '☆'}</button>
-            </button>`;
+            </div>`;
       })
       .join('');
   };
@@ -2765,14 +2750,14 @@ function patchRenderScientists() {
       .map((item) => {
         const isSaved = favsState.scientists.some((f) => f.name === item.name);
         return `
-            <button class="scientist-item" type="button" data-scientist-name="${escapeHtml(item.name)}">
+            <div class="scientist-item" type="button" data-scientist-name="${escapeHtml(item.name)}">
                 <span class="scientist-avatar">${item.initials}</span>
                 <span style="flex:1">
                     <span class="scientist-name">${item.name}</span>
                     <span class="scientist-field">${item.field}</span>
                 </span>
                 <button class="item-star-btn ${isSaved ? 'saved' : ''}" data-sci-name="${escapeHtml(item.name)}" type="button" title="Save to favorites">${isSaved ? '★' : '☆'}</button>
-            </button>`;
+            </div>`;
       })
       .join('');
   };
