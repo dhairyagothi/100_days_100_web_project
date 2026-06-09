@@ -15,14 +15,32 @@
 </head>
 
 <body>
-    
+
+    <!-- Add this for theme selection -->
+<div class="theme-switcher">
+    <select id="themeSelector">
+        <option value="">🎨 Themes</option>
+        <option value="dark-theme">Dark Mode🌙</option>
+        <option value="purple-theme">Purple Love💜</option>
+        <option value="blue-theme">Midnight Blue 😶‍🌫️</option>
+        <option value="red-theme">Valentine Red🥰</option>
+    </select>
+</div>
+
+   <!-- Add this Intro Screen block -->
+<div id="introScreen" class="contentbox">
+    <h1>❤️Heyyyyy Cutiee❤️</h1>
+    <p>❤️ Ready for the Loveeee Calculation? 😍</p>
+    <button id="yesBtn" style="margin-bottom: 10px;">Yes😘</button>
+    <button id="noBtn">🙈No!I am shy</button>
+</div> 
     
 <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
     <img src="pink-realistic-heart-isolate-on-transparente-background-symbol-love-3d-heart-icon-png.webp" height="20px" width="20px" alt="heart" style="position: absolute; top: 0; right: 0; margin: 10px;">
     <!-- Floating hearts background -->
 
-
+ 
 
 
 
@@ -42,13 +60,15 @@
     <span>❤</span>
     <span>❤</span>
 </div>
+<div id="calcScreen" class="hidden">
     <div class="container glass-card">
-        
+
         <h1>❤️ Love Calculator ❤️</h1><p>Enter your name and your crush's name to see the chance that this relationship will work out:</p>
 
         <!-- Input for Your Name -->
         <div class="input-group">
             <input type="text" required="" id="fname">
+            <span class="emoji-display" id="fname-emoji"></span>
             <span class="highlight"></span>
             <span class="bar"></span>
             <label>Your Name</label>
@@ -57,6 +77,7 @@
         <!-- Input for Crush's Name -->
         <div class="input-group">
             <input type="text" required="" id="cname">
+            <span class="emoji-display" id="cname-emoji"></span>
             <span class="highlight"></span>
             <span class="bar"></span>
             <label>Crush Name</label>
@@ -76,11 +97,27 @@
 <p id="loading" class="hidden">
     Calculating compatibility...
 </p>
+
+    </div>
     </div>
     
     
     
+    
     <script src="script.js"></script>
+
+    <!-- Music Player -->
+<div class="music-player">
+    <button id="musicToggle" class="music-btn"><i class="fas fa-music"></i></button>
+    <div id="songList" class="song-list hidden">
+        <div id="stopMusic" style="color: red; border-bottom: 2px solid #eee;">⏹ Stop Music</div>
+        <div data-src="dandelions.mp3">Dandelions</div>
+        <div data-src="UntilFound.mp3">Until I Found You</div>
+        <div data-src="loveme.mp3">Love Me Like You Do </div>
+        <div data-src="closer.mp3">Closer</div>
+    </div>
+    <audio id="audioPlayer"></audio>
+</div>
 
 
 
