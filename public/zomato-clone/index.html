@@ -6,7 +6,7 @@
   <title>Zomato – Discover the best food & drinks</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet"  href="public/css/home.css">">
+  <link rel="stylesheet"  href="public/css/home.css">
   <!-- <style>
     
   </style> -->
@@ -17,7 +17,7 @@
 <div class="top-banner" id="topBanner">
   <span class="banner-tag">🎉 New</span>
   Free delivery on your first 3 orders &nbsp;·&nbsp; Use code <strong>WELCOME50</strong> for 50% off
-  <button class="banner-close" onclick="document.getElementById('topBanner').style.display='none'">×</button>
+  <button class="banner-close" aria-label="Close banner" onclick="document.getElementById('topBanner').style.display='none'">×</button>
 </div>
 
 <!-- NAV -->
@@ -29,10 +29,10 @@
     <a href="#" class="hide-mobile">Get the app</a>
     <a href="#" class="hide-mobile">Add restaurant</a>
     <a href="#" class="hide-mobile">Investor Relations</a>
-    <button class="btn-login">Log in</button>
-    <button class="btn-signup">Sign up</button>
+    <button class="btn-login" onclick="window.location.href='login.html'" aria-label="Log in">Log in</button>
+    <button class="btn-signup" onclick="window.location.href='signup.html'" aria-label="Sign up">Sign up</button>
     <!-- DARK MODE TOGGLE -->
-    <button class="dm-toggle" id="dmToggle" onclick="toggleDark()" title="Toggle dark mode">
+    <button class="dm-toggle" id="dmToggle" onclick="toggleDark()" title="Toggle dark mode" aria-label="Toggle dark mode">
       <span class="dm-icon sun">☀️</span>
       <span class="dm-icon moon">🌙</span>
     </button>
@@ -50,13 +50,13 @@
       <div class="search-bar">
         <div class="search-loc">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          <input id="locationInput" placeholder="Enter location" />
+          <input id="locationInput" placeholder="Enter location" aria-label="Location"/>
         </div>
         <div class="search-query">
           <svg width="16" height="16" fill="none" stroke="#aaa" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input id="searchInput" placeholder="Search for restaurant, cuisine or a dish" />
+          <input id="searchInput" aria-label="Search restaurants" placeholder="Search for restaurant, cuisine or a dish" />
         </div>
-        <button class="search-btn" onclick="doSearch()">Search</button>
+        <button class="search-btn" onclick="doSearch()" aria-label="Submit search">Search</button>
       </div>
       <div class="quick-tags">
         <span class="qtag">🍕 Pizza</span>
@@ -90,7 +90,7 @@
 <!-- NIGHTLIFE -->
 <section style="padding:32px 5%;">
   <div class="option-card">
-    <img src="https://b.zmtcdn.com/webFrontend/d9d80ef91cb552e3fdfadb3d4f4379761647365057.jpeg?output-format=webp&fit=around|402:360&crop=402:360;*,*" />
+    <img src="https://b.zmtcdn.com/webFrontend/d9d80ef91cb552e3fdfadb3d4f4379761647365057.jpeg?output-format=webp&fit=around|402:360&crop=402:360;*,*" alt="Nightlife and Clubs"/>
     <div class="info">
       <div class="title">Nightlife and Clubs</div>
       <div class="description">Explore the city's top nightlife outlets</div>
@@ -131,7 +131,7 @@
   </div>
   <div class="collections-grid">
     <div class="coll-card">
-      <img src="https://b.zmtcdn.com/data/collections/77c1b9704985885cbe2cb094e9983eab_1682080540.jpg?output-format=webp" />
+      <img src="https://b.zmtcdn.com/data/collections/77c1b9704985885cbe2cb094e9983eab_1682080540.jpg?output-format=webp" alt="Winners of Zomato Restaurant Awards" />
       <div class="coll-overlay"><div class="coll-title">Winners of Zomato Restaurant Awards</div><div class="coll-places">32 Places ›</div></div>
     </div>
     <div class="coll-card">
@@ -223,11 +223,11 @@
       <img src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png" alt="Zomato" />
       <p>Discover the best food & drinks in your city. Delivering joy, one meal at a time.</p>
       <div class="socials">
-        <a href="https://www.linkedin.com/company/zomato/" target="_blank">in</a>
-        <a href="https://www.instagram.com/zomato/" target="_blank">ig</a>
-        <a href="https://twitter.com/zomato" target="_blank">tw</a>
-        <a href="https://www.youtube.com/zomato" target="_blank">yt</a>
-        <a href="https://www.facebook.com/Zomato" target="_blank">fb</a>
+        <a href="https://www.linkedin.com/company/zomato/" target="_blank" rel="noopener noreferrer">in</a>
+        <a href="https://www.instagram.com/zomato/" target="_blank" rel="noopener noreferrer">ig</a>
+        <a href="https://twitter.com/zomato" target="_blank" rel="noopener noreferrer">tw</a>
+        <a href="https://www.youtube.com/zomato" target="_blank" rel="noopener noreferrer">yt</a>
+        <a href="https://www.facebook.com/Zomato" target="_blank" rel="noopener noreferrer">fb</a>
       </div>
     </div>
     <div class="footer-col">
