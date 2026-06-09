@@ -1,6 +1,6 @@
 // Theme Toggle Functionality
 const themeToggleBtn = document.getElementById("themeToggleBtn");
-const htmlElement = document.documentElement;
+const htmlElement = document.body;
 
 // Toggle theme
 const toggleTheme = () => {
@@ -43,3 +43,4 @@ if (!localStorage.getItem('theme')) {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     htmlElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
 }
+

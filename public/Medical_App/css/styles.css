@@ -739,7 +739,7 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
 
 /* Theme Toggle Button (hero-style, from Main) */
 .theme-toggle-btn {
-    background: rgba(255,255,255,0.15);
+    background: rgb(20,184,166);
     border: 1px solid rgba(255,255,255,0.25);
     color: white;
     padding: 10px;

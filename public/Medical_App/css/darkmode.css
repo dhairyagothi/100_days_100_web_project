@@ -5,12 +5,19 @@ body[data-theme="dark"] {
 
 /* Ensure proper contrast in dark mode for specific elements */
 body[data-theme="dark"] .search-bar {
-    background-color: var(--surface);
+    background-color: #2b4157;
     border-color: var(--border);
 }
 
 body[data-theme="dark"] .search-bar input::placeholder {
     color: var(--text-tertiary);
+}
+
+body[data-theme="dark"] .search-bar input {
+    background-color: transparent;  /* ← No background rectangle */
+    color: var(--text-primary);
+    border: none;  /* ← Remove border */
+    outline: none; /* ← Remove focus outline */
 }
 
 body[data-theme="dark"] .input-wrapper {
@@ -78,6 +85,11 @@ body.dark-mode .doctor-card span {
     color: white !important;
 }
 
+body.dark-mode .doctor-card .service-badge{
+    background-color:#0f172a ;
+    border: 1px solid transparent;
+}
+
 body.dark-mode .hero {
     background: linear-gradient(
         135deg,
@@ -94,6 +106,17 @@ body.dark-mode .warning-panel h2,
 body.dark-mode .warning-panel p {
     color: white !important;
 }
+
+body.dark-mode .input-wrapper input,
+.input-wrapper textarea,
+.input-wrapper select {
+    background-color: transparent !important;
+    border: none;
+    outline: none;
+    color: var(--text-primary);
+    width: 100%;
+}
+
 body.dark-mode .remedy-card {
     background-color: #1e293b !important;
     color: white !important;
@@ -104,9 +127,56 @@ body.dark-mode .remedy-card p,
 body.dark-mode .remedy-card li {
     color: white !important;
 }
+
+body.dark-mode .form-field span:hover{
+    color: rgb(30, 56, 92) ;
+}
+
+body.dark-mode .form-field small:hover{
+    color: rgb(30, 56, 92) ;
+}
+
+/* Daily Health Tip Card - Dark Mode Styling */
+body.dark-mode .health-tip-content {
+    background-color: #0f172a;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    position: relative;
+    background-clip: padding-box;
+}
+
+body.dark-mode .health-tip-content::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(135deg, var(--primary), #06b6d4);
+    border-radius: var(--radius-md);
+    z-index: -1;
+}
+
+body.dark-mode .health-tip-content p {
+    color: #e2e8f0;
+    position: relative;
+    z-index: 1;
+}
+
+/* Card header text in dark mode */
+body.dark-mode .card-header h2 {
+    color: #f1f5f9;
+}
 body.dark-mode .site-header {
     background-color: #0f172a !important;
     color: white !important;
+}
+
+body.dark-mode .emergency-btn span {
+    color: #f8fafc;  /* Light white color */
+    font-weight: 500;
+}
+
+body.dark-mode .emergency-btn:hover span {
+    color: var(--primary);
 }
 
 
@@ -122,4 +192,160 @@ body.dark-mode .site-header {
 body.dark-mode .site-header h1,
 body.dark-mode .site-header p {
     color: white !important;
+}
+
+
+/* ============================================
+   REMEDIES PAGE - COMPLETE DARK MODE FIX
+   ============================================ */
+
+/* Make the entire remedies page background darker */
+body[data-theme="dark"] {
+    background: #0f172a !important;
+}
+
+body[data-theme="dark"] .app-shell {
+    background: transparent;
+}
+
+/* Site header - dark background */
+body[data-theme="dark"] .site-header {
+    background: linear-gradient(135deg, #0f172a, #1e293b) !important;
+    border-bottom: 2px solid #14b8a6;
+}
+
+body[data-theme="dark"] .site-header h1,
+body[data-theme="dark"] .site-header p {
+    color: white !important;
+}
+
+/* Warning panel - dark background */
+body[data-theme="dark"] .warning-panel {
+    background: #1e293b !important;
+    border-left-color: #f59e0b;
+}
+
+body[data-theme="dark"] .warning-panel h2 {
+    color: #fbbf24 !important;
+}
+
+body[data-theme="dark"] .warning-panel p {
+    color: #cbd5e1 !important;
+}
+
+/* Remedy cards - dark background */
+body[data-theme="dark"] .remedy-card {
+    background: #1e293b !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+body[data-theme="dark"] .remedy-card h2 {
+    color: #14b8a6 !important;
+}
+
+body[data-theme="dark"] .remedy-card p {
+    color: #cbd5e1 !important;
+}
+
+/* User badge in dark mode */
+body[data-theme="dark"] .user-badge {
+    background: #1e293b;
+    border-color: #475569;
+}
+
+body[data-theme="dark"] .user-badge #userBadgeName,
+body[data-theme="dark"] .user-badge #userBadgeRole {
+    color: white !important;
+}
+
+/* Logout button in dark mode */
+body[data-theme="dark"] #logoutBtn {
+    background: #334155;
+    color: white;
+    border-color: #475569;
+}
+
+body[data-theme="dark"] #logoutBtn:hover {
+    background: #ef4444;
+    border-color: #ef4444;
+}
+
+/* Back button in dark mode */
+body[data-theme="dark"] .page-link {
+    background: #1e293b;
+    color: #14b8a6;
+    border: 1px solid #14b8a6;
+}
+
+body[data-theme="dark"] .page-link:hover {
+    background: #14b8a6;
+    color: white;
+}
+
+/* Theme button in dark mode */
+body[data-theme="dark"] .theme-btn {
+    background: #334155;
+    color: #fbbf24;
+}
+
+
+/* ============================================
+   AUTH MODAL - DARK MODE STYLES
+   ============================================ */
+
+/* Form labels */
+body[data-theme="dark"] .auth-field label {
+    color: #e2e8f0 !important;
+}
+
+body[data-theme="dark"] .auth-input {
+    color: #f1f5f9 !important;
+    background-color: #1e293b !important;
+    border-color: #475569 !important;
+}
+
+body[data-theme="dark"] .auth-input::placeholder {
+    color: #94a3b8 !important;
+}
+
+body[data-theme="dark"] .auth-remember {
+    color: #cbd5e1 !important;
+}
+
+body[data-theme="dark"] .auth-footer span {
+    color: #94a3b8 !important;
+}
+
+body[data-theme="dark"] .auth-footer button {
+    color: var(--primary) !important;
+    background: transparent !important;
+}
+
+body[data-theme="dark"] .auth-footer button:hover {
+    color: #2dd4bf !important;
+}
+
+body[data-theme="dark"] .auth-error {
+    color: #f87171 !important;
+}
+
+body[data-theme="dark"] .auth-note {
+    color: #64748b !important;
+}
+
+body[data-theme="dark"] #authTitle {
+    color: #f1f5f9 !important;
+}
+
+body[data-theme="dark"] #authSubtitle {
+    color: #94a3b8 !important;
+}
+
+body[data-theme="dark"] .auth-submit {
+    color: white !important;
+    background-color: var(--primary) !important;
+}
+
+body[data-theme="dark"] .auth-submit:hover {
+    background-color: var(--primary-dark) !important;
 }
