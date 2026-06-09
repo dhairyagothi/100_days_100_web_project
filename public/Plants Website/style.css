@@ -24,11 +24,9 @@ html {
   font-size: 62.5%;
   overflow-x: hidden;
 }
-
 html {
   scroll-behavior: smooth;
 }
-
 /* website all heading  */
 
 .heading {
@@ -106,19 +104,6 @@ html {
 
 /* hamburger button */
 .hamburger {
-.header .navbar ul li a:hover {
- box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.3);
-  letter-spacing: 0.1rem;
-  background-color: rgb(255, 255, 255,0.2);
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
-
-}
-
-.header .fa-bars {
-  color: var(--wight);
-  cursor: pointer;
-  font-size: 3rem;
   display: none;
   flex-direction: column;
   justify-content: space-between;
@@ -456,7 +441,6 @@ textarea {
 .contact .row .form-container input[type="submit"]:hover {
   opacity: 0.8;
 }
-
 /* form section end  */
 
 /* faq section start  */
@@ -524,7 +508,6 @@ textarea {
   font-size: 1.3rem;
   display: none;
 }
-
 /* faq section end  */
 
 /* footer section start  */
@@ -551,7 +534,6 @@ textarea {
   color: var(--wight);
   padding: 0 1rem;
 }
-
 /* footer section end  */
 
 /* media query start  */
@@ -678,7 +660,6 @@ textarea {
     width: 75vw;
     padding: 4rem;
   }
-
   /* contact form media query  */
 
   .contact .row {
@@ -690,7 +671,6 @@ textarea {
     width: 100vw;
     padding: 1rem;
   }
-
   .contact .row .form-container {
     width: 100%;
     padding: 0 1.5rem;
@@ -705,13 +685,11 @@ textarea {
     padding: 0 1rem;
     flex-flow: column;
   }
-
   .faq .row .images img {
     width: 100vw;
     border-radius: 1rem;
     padding: 1rem;
   }
-
   .faq .row .subject-container {
     width: 100vw;
   }
@@ -743,7 +721,6 @@ textarea {
   transform: translateY(-10px);
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.3);
 }
-
 .stats {
   display: flex;
   justify-content: center;
@@ -777,30 +754,31 @@ textarea {
   right: 24px;
   z-index: 9999;
 
-  padding: 8px 16px;
+  padding: 10px 20px;
 
-  border-radius: 8px;
+  border-radius: 50px;
 
-  background: #1e293b;
+  background: linear-gradient(135deg, #00c853, #64dd17);
 
-  color: #3b82f6;
+  color: white;
   text-decoration: none;
 
   font-size: 0.9rem;
   font-weight: bold;
   font-family: Arial, Helvetica, sans-serif;
 
-  border: 1px solid #3b82f6;
+  border: 2px solid white;
 
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
 
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .project-back-button:hover {
   transform: translateY(-3px) scale(1.05);
-  background: #3b82f6;
-  color: #fff;
+
+  background: linear-gradient(135deg, #64dd17, #00e676);
+
   box-shadow: 0 14px 30px rgba(100, 221, 23, 0.4);
 }
 
@@ -1237,5 +1215,4 @@ textarea {
     padding: 2.2rem;
   }
 }
-
 /* blog page styles end */

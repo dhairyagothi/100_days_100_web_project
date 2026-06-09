@@ -34,7 +34,7 @@ let passwordLength = 10;
 let checkCount = 0;
 let hideTimeout;
 let countdownInterval;
-let passwordsHistory = [];
+let passwordHistory = [];
 
 init();
 
@@ -140,12 +140,13 @@ function generateUpperCase() {
     return String.fromCharCode(getRndInteger(65, 91));
 }
 
-  passwordOutput.value = password;
-
-  // Update strength indicator
-  const strength = getStrength(length, selectedTypes);
-  updateStrengthUI(strength);
+function generateSymbol() {
+    return symbols.charAt(getRndInteger(0, symbols.length));
 }
+
+
+
+
 
 function generateFromCustomWord(word) {
     const leetMap = {
@@ -248,8 +249,26 @@ function updateSuggestions() {
 
 async function copyContent() {
     try {
-        await navigator.clipboard.writeText(passwordDisplay.value);
-        copyMsg.innerText = "Copied!";
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(passwordDisplay.value);
+            copyMsg.innerText = "Copied!";
+        } else {
+            // Fallback for non-secure contexts (HTTP) or older/restricted browsers
+            const textarea = document.createElement("textarea");
+            textarea.value = passwordDisplay.value;
+            textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
+            document.body.appendChild(textarea);
+            textarea.select();
+            textarea.setSelectionRange(0, 99999);
+            const success = document.execCommand("copy");
+            document.body.removeChild(textarea);
+            if (success) {
+                copyMsg.innerText = "Copied!";
+            } else {
+                throw new Error("Copy command failed");
+            }
+        }
     } catch (e) {
         copyMsg.innerText = "Failed";
     }
@@ -287,10 +306,10 @@ function handleCheckBoxChange() {
 }
 
 function updateHistory(newPassword) {
-    passwordsHistory.unshift(newPassword);
+    passwordHistory.unshift(newPassword);
 
-    if (passwordsHistory.length > 3) {
-        passwordsHistory.pop();
+    if (passwordHistory.length > 3) {
+        passwordHistory.pop();
     }
 
     renderHistory();
@@ -299,14 +318,14 @@ function updateHistory(newPassword) {
 function renderHistory() {
     historyList.innerHTML = "";
 
-    if (passwordsHistory.length === 0) {
+    if (passwordHistory.length === 0) {
         historyContainer.style.display = "none";
         return;
     }
 
     historyContainer.style.display = "flex";
 
-    passwordsHistory.forEach((pw) => {
+    passwordHistory.forEach((pw) => {
         const div = document.createElement("div");
         div.classList.add("history-item");
         div.innerText = pw;
@@ -315,7 +334,7 @@ function renderHistory() {
 }
 
 clearHistoryBtn.addEventListener("click", () => {
-    passwordsHistory = [];
+    passwordHistory = [];
     renderHistory();
 });
 

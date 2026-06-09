@@ -25,7 +25,7 @@
   --radius-xl: 20px;
   --transition-fast: 0.2s ease;
   --transition-normal: 0.3s ease;
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* ===== Reset & Base ===== */
@@ -50,8 +50,16 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   background-image:
-    radial-gradient(ellipse at 20% 0%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba(236, 72, 153, 0.06) 0%, transparent 50%);
+    radial-gradient(
+      ellipse at 20% 0%,
+      rgba(99, 102, 241, 0.08) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 80% 100%,
+      rgba(236, 72, 153, 0.06) 0%,
+      transparent 50%
+    );
 }
 
 /* ===== Header ===== */
@@ -150,7 +158,7 @@ body {
 }
 
 .preview-box::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
@@ -310,7 +318,11 @@ body {
 }
 
 .toggle-btn--active {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(99, 102, 241, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.2),
+    rgba(99, 102, 241, 0.1)
+  );
   border-color: var(--accent-purple);
   color: var(--accent-purple);
   box-shadow: 0 0 12px rgba(99, 102, 241, 0.15);
@@ -363,7 +375,7 @@ body {
   font-size: 0.8rem;
   font-weight: 500;
   color: var(--text-secondary);
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   min-width: 65px;
 }
 
@@ -437,10 +449,18 @@ body {
   border-radius: var(--radius-sm);
   padding: 0.85rem 1rem;
   overflow-x: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.copy-clipboard {
+  font-size: 1.2rem;
+  cursor: pointer;
 }
 
 .code-text {
-  font-family: 'Courier New', Consolas, monospace;
+  font-family: "Courier New", Consolas, monospace;
   font-size: 0.8rem;
   color: var(--accent-cyan);
   word-break: break-all;
