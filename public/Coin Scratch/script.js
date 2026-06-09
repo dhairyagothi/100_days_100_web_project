@@ -428,27 +428,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3500);
     }
 });
-
-// TEMPORARY TESTING CHEAT: Press 'S' to instantly reveal the reward
-document.addEventListener('keydown', (e) => {
-    if (e.key.toLowerCase() === 's') {
-        console.log("Cheat triggered: Instantly revealing coin...");
-        
-        // Force the engine states to Stage 2 completion
-        rewardState = 2;
-        rewardContent.classList.add('stage-2');
-        rewardBadge.style.display = 'block';
-        updateScratchProgress(100);
-
-        // Instantly clear the canvas surface
-        ctx.save();
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.restore();
-
-        // Hide canvas elements
-        canvas.style.opacity = '0';
-        canvas.style.pointerEvents = 'none';
-        stopScratchSound();
-    }
-});
