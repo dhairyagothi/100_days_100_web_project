@@ -375,13 +375,34 @@ document.addEventListener('DOMContentLoaded', function(){
         if(!card.querySelector('.actions')){
             const actions = document.createElement('div'); actions.className = 'actions';
             const btn = document.createElement('button'); btn.className = 'btn primary'; btn.textContent = 'Learn more';
-            btn.addEventListener('click', ()=>{
-                const paragraphs = Array.from(card.querySelectorAll('p')).map(p=>'<p>'+p.innerHTML+'</p>').join('');
-                modalBody.innerHTML = `<h4 style="margin:0 0 8px">${card.querySelector('h2')?.textContent || ''}</h4>` + paragraphs + `<p style="margin-top:12px;color:#444;font-size:.9rem">This information is for basic guidance only.</p>`;
-                modalBackdrop.style.display = 'flex'; modalBackdrop.setAttribute('aria-hidden','false');
-            });
-            actions.appendChild(btn);
-            card.appendChild(actions);
+            btn.addEventListener('click', () => {
+    modalBody.replaceChildren();
+
+    const heading = document.createElement('h4');
+    heading.style.margin = '0 0 8px';
+    heading.textContent =
+        card.querySelector('h2')?.textContent || '';
+
+    modalBody.appendChild(heading);
+
+    card.querySelectorAll('p').forEach((p) => {
+        const para = document.createElement('p');
+        para.textContent = p.textContent || '';
+        modalBody.appendChild(para);
+    });
+
+    const note = document.createElement('p');
+    note.style.marginTop = '12px';
+    note.style.color = '#444';
+    note.style.fontSize = '.9rem';
+    note.textContent =
+        'This information is for basic guidance only.';
+
+    modalBody.appendChild(note);
+
+    modalBackdrop.style.display = 'flex';
+    modalBackdrop.setAttribute('aria-hidden', 'false');
+});
         }
     });
 
