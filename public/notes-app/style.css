@@ -1038,21 +1038,20 @@ button {
 .note-modal textarea,
 .note-modal select {
   width: 100%;
-
   border: 1px solid var(--line);
-
   border-radius: 18px;
-
   outline: 0;
-
-  background:
-    rgba(255, 255, 255, 0.04);
-
+  background: var(--panel-solid);
   color: var(--text);
-
   transition:
     border-color var(--transition),
     background var(--transition);
+}
+
+/* Fix: dropdown options inherit theme colors */
+.note-modal select option {
+  background: var(--panel-solid);
+  color: var(--text);
 }
 
 .note-modal input,
