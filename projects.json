@@ -489,10 +489,11 @@
     "projectDesc": "Frontend clone inspired by Amazon layouts and shopping interfaces.",
     "techStack": [
       "clone",
-      "javascript"
+      "HTML",
+      "CSS"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/Amazon-App/index.html"
+    "projectPath": "./public/AmazonClone/index.html"
   },
   {
     "projectNo": 43,
@@ -2681,8 +2682,7 @@
       "css"
     ],
     "difficulty": "intermediate",
-    "projectDesc": "A responsive photography portfolio and gallery website designed to showcase visual content through structured layouts, image presentation sections, and modern styling. Features an engaging user interface optimized for desktop and mobile viewing.",
-    "projectType": "Website"
+    "projectDesc": "A responsive photography portfolio and gallery website designed to showcase visual content through structured layouts, image presentation sections, and modern styling. Features an engaging user interface optimized for desktop and mobile viewing."
   },
   {
     "projectNo": 214,
@@ -2797,5 +2797,42 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/AI-Tools-Hub/index.html"
+  },
+  {
+    "projectNo": 222,
+    "projectName": "Bus Game",
+    "projectType": "game",
+    "projectDesc": "A modern bus game with lane and vehicles",
+    "techStack": ["javascript", "html", "css"],
+    "difficulty": "advanced",
+    "projectPath": "./public/bus_game/index.html" 
+    },
+
+    
+  {
+    "projectNo": 223,
+    "projectName": "HTML & CSS Animation",
+    "projectType": "Web Application",
+    "projectDesc": "Collection of HTML/CSS animations demonstrating keyframe effects and transitions.",
+    "techStack": [
+      "html",
+      "css",
+      "animation"
+    ],
+    "difficulty": "beginner",
+    "projectPath": "./public/Html_css_animation/index.html"
+    },
+  {
+    "projectNo": 224,
+    "projectName": "Bubble Game",
+    "projectType": "Web Application",
+    "projectDesc": "An interactive bubble-clicking game where players must quickly hit bubbles matching the target number before the timer runs out. Score points by selecting the correct bubbles and test your speed and accuracy.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Bubble-Game/index.html"
   }
 ]
