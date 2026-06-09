@@ -674,3 +674,7 @@ span{
   }
 
 }
+
+.planet-item{
+  cursor:pointer;
+}

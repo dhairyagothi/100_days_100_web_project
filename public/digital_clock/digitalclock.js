@@ -132,7 +132,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateClock();
     tickWorldClocks();
+    
   });
+  // CSP Bypass for Add Alarm Button
+  const addAlarmBtn = document.getElementById("add-alarm-btn");
+  if (addAlarmBtn) {
+    addAlarmBtn.addEventListener("click", function(event) {
+      event.preventDefault();
+      addNewAlarm();
+    });
+  }
+  const clearAllBtn = document.getElementById("clear-all-btn");
+  if (clearAllBtn) {
+    clearAllBtn.addEventListener("click", function() {
+      clearAllAlarms();
+    });
+  }
+
+});
 
   updatePomodoroDisplay();
 
@@ -150,8 +167,6 @@ resetPomodoroBtn.addEventListener(
   "click",
   resetPomodoro
 );
-
-});
 
 // ================= POMODORO =================
 
@@ -318,7 +333,22 @@ function triggerAlarm(alarm) {
 
   alarmPopup.classList.remove('hidden');
 
-  addHistoryLog(`Alarm "${alarm.label}" rang at ${alarm.time}`);
+  // 1. Format the time based on the 12h/24h toggle
+let logTime = alarm.time;
+if (!is24HourFormat) {
+  let [hours, minutes] = alarm.time.split(':');
+  let parsedHours = parseInt(hours, 10);
+  let ampm = parsedHours >= 12 ? 'PM' : 'AM';
+  parsedHours = parsedHours % 12 || 12; // Converts '00' to '12'
+  let paddedHours = parsedHours.toString().padStart(2, '0');
+  logTime = `${paddedHours}:${minutes} ${ampm}`;
+}
+
+// 2. Clean up the label (Don't print "Alarm" twice)
+let labelDisplay = (alarm.label && alarm.label !== 'Alarm') ? ` "${alarm.label}"` : '';
+
+// 3. Save the perfect log
+addHistoryLog(`Alarm${labelDisplay} rang at ${logTime}`);
   renderHistoryLogs();
 
   startRinger();
@@ -658,6 +688,11 @@ function tickWorldClocks() {
 }
 
 // ================= HISTORY =================
+function addHistoryLog(message) {
+  historyLogs.unshift({text: message});
+  localStorage.setItem('historyLogs', JSON.stringify(historyLogs));
+}
+
 function renderHistoryLogs() {
   const container = document.getElementById('history-logs');
   if (!container) return;
