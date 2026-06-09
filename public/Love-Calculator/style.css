@@ -8,6 +8,14 @@
     font-family: 'Nunito', sans-serif;
 }
 
+:root {
+    --bg-start: #ff4e9b; --bg-end: #db2777;
+}
+.dark-theme { --bg-start: #1e293b; --bg-end: #334155; }
+.purple-theme { --bg-start: #7e22ce; --bg-end: #581c87; }
+.blue-theme { --bg-start: #0284c7; --bg-end: #0f172a; }
+.red-theme { --bg-start: #dc2626; --bg-end: #7f1d1d; }
+
 /* Updated body styling with animated gradient background */
 
 /* Animated gradient background */
@@ -22,13 +30,9 @@ body {
 
    /* Darker consistent pink gradient */
 
-background: linear-gradient(
-    -45deg,
-    #ff4e9b,
-    #f54291,
-    #ec4899,
-    #db2777
-);
+
+background: linear-gradient(-45deg, var(--bg-start), var(--bg-end));
+transition: background 0.5s ease;
 
     background-size: 400% 400%;
 
@@ -758,4 +762,33 @@ button:hover {
     .score {
         font-size: 2.5rem;
     }
+}
+.theme-switcher { 
+    position: fixed; 
+    top: 20px; 
+    right: 20px; 
+    z-index: 100; 
+}
+.theme-switcher select {
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    cursor: pointer;
+}
+.hidden { display: none !important; }
+
+.music-player { position: fixed; bottom: 20px; right: 20px; z-index: 100; }
+.music-btn { background: #ec4899; color: white; border: none; padding: 15px; border-radius: 50%; cursor: pointer; font-size: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+.song-list { position: absolute; bottom: 70px; right: 0; background: rgba(255,255,255,0.95); padding: 10px; border-radius: 15px; width: 200px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+.song-list div { padding: 10px; cursor: pointer; color: #333; border-bottom: 1px solid #eee; }
+.song-list div:hover { color: #ec4899; }
+
+.emoji-display {
+position: absolute;
+right: 15px;
+top: 15px;
+font-size: 1.2rem;
+pointer-events: none;
 }

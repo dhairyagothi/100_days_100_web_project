@@ -1500,3 +1500,20 @@ body.dark-theme .home-icon { color: #94a3b8; }
     color: #cc6600;
     margin-bottom: 20px;
 }
+.products-grid .view-product-btn,
+.products-grid button:not(.nav-search-icon):not(.add-cart-btn) {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 30px;
+    background: #ffd814;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    color: #111;
+    margin-top: 12px;
+    text-align: center;
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    letter-spacing: 0.01em;
+}

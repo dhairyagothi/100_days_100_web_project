@@ -193,7 +193,7 @@
   </header>
   <form
     class="alarm-form"
-    onsubmit="event.preventDefault(); addNewAlarm();"
+    id="new-alarm-form"
     novalidate
   >
     <div class="form-field">
@@ -245,13 +245,13 @@
     </div>
 
     <div class="form-actions">
-      <button type="submit" class="btn btn-primary">
+      <button type="button" id="add-alarm-btn" class="btn btn-primary">
         Add Alarm
       </button>
 
       <button
         type="button"
-        onclick="clearAllAlarms()"
+        id="clear-all-btn"
         class="btn btn-danger"
       >
         Clear All

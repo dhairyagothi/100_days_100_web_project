@@ -128,26 +128,6 @@
             <span id="charCount">Characters: 0</span>
           </div>
         </div>
-          <div class="controls">
-            <button id="soundToggle">🔊 Sound ON</button>
-            <button id="copyBtn">📋 Copy</button>
-            <button id="pasteBtn">📥 Paste Text</button>
-            <button id="importTxtBtn">📂 Import TXT</button>
-            <input
-              type="file"
-              id="txtFileInput"
-              accept=".txt"
-              style="display: none"
-            />
-            <button id="downloadPDF">📄 Download PDF</button>
-            <span id="pageCounter">Page 1</span>
-          </div>
-          <div class="counters">
-            <span id="wordCount">Words: 0</span>
-            <span class="counter-separator">|</span>
-            <span id="charCount">Characters: 0</span>
-          </div>
-        </div>
         <div class="keyboard">
           <!-- Numbers row: keys show base char; Shift gives the symbol above -->
           <div class="keyboard-row" id="row-numbers">
@@ -391,6 +371,21 @@
       </div>
     </div>
     <div class="toast-container" id="pdfToast"></div>
+
+    <!-- ── Clear Confirmation Modal ───────────────────────────────────── -->
+    <div id="clearModal" class="clear-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="clearModalTitle">
+      <div class="clear-modal-box">
+        <div class="clear-modal-icon">🗑️</div>
+        <h2 class="clear-modal-title" id="clearModalTitle">Clear All Pages?</h2>
+        <p class="clear-modal-desc">This will permanently erase every word typed across all pages. This cannot be undone.</p>
+        <div class="clear-modal-actions">
+          <button id="clearModalCancel" class="clear-modal-btn clear-modal-btn--cancel">Cancel</button>
+          <button id="clearModalConfirm" class="clear-modal-btn clear-modal-btn--confirm">
+            <i class="fas fa-trash-alt" aria-hidden="true"></i> Yes, Clear All
+          </button>
+        </div>
+      </div>
+    </div>
 
     <script src="typewriter.js"></script>
     <script

@@ -3,275 +3,442 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>
-        if (window.location.pathname.endsWith('/Blog%20Page') || window.location.pathname.endsWith('/Blog Page')) {
-            window.location.pathname += '/';
-        }
-    </script>
     <link rel="icon" href="../favv.png" type="image/x-icon" />
     <title>Blog Page</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="transition-all duration-300">
 
+<!-- ---navbar-- -->
+<!-- Navbar -->
 <nav class="navbar">
-    <div class="nav-left-group">
-        <a href="/" class="project-back-button">
-            <i class="fa-solid fa-arrow-left"></i> Back to Home
-        </a>
-        <div class="logo">
-            GreenBlog
-        </div>
+    <!-- Logo -->
+    <div class="logo">
+        GreenBlog
     </div>
+ <!-- Navigation Links -->
     <ul class="nav-links">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Categories</a></li>
-        <li><a href="#">Blogs</a></li>
-        <li><a href="#">About</a></li>
+   <li>
+            <a href="#">Home</a>
+        </li>
+        <li>
+            <a href="#categories">Categories</a>
+        </li>
+        <li>
+            <a href="#blogs">Blogs</a>
+        </li>
+        <li>
+            <a href="#about">About</a>
+        </li>
     </ul>
+    <!-- Right Side -->
     <div class="nav-right">
-        <input type="text" placeholder="Search blogs...." class="nav-search">
-        <button id="themeToggle">
-            <span id="themeIcon">☀️</span>
-        </button>
+        <!-- Search -->
+        <input
+            type="text"
+            placeholder="Search blogs...."
+            class="nav-search"
+        >
+        <!-- Dark Mode Button -->
+<button id="themeToggle">
+   <span id="themeIcon">☀️</span>
+</button>
     </div>
 </nav>
 
-<div class="flex flex-col md:flex-row justify-center gap-10 md:gap-20 p-6 bg-gray-50 min-h-screen">
-    <div class="blog-container" id="blogCards">
-        <div class="blog-card">
-            <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=1770&auto=format&fit=crop" alt="Organic Farming" class="blog-image">
-            <div class="blog-content">
-                <span class="blog-category">Agriculture</span>
-                <h2 class="blog-title">Organic Farming</h2>
-                <p class="blog-description">Learn how organic farming improves soil fertility and supports eco-friendly agriculture.</p>
-                <a href="of.html" target="_blank" rel="noopener noreferrer">
-                    <button class="read-more-btn">Read More</button>
-                </a>
-            </div>
+
+
+    <div class="flex flex-col md:flex-row justify-center gap-6 md:gap-10 p-3 md:p-6 bg-gray-50 min-h-screen overflow-x-hidden" style="max-width:100%;box-sizing:border-box;">
+      
+<div class="blog-container" id="blogCards">
+
+    <!-- Organic Farming -->
+    <div class="blog-card">
+
+        <img
+            src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=1770&auto=format&fit=crop"
+            alt="Organic Farming"
+            class="blog-image"
+        >
+
+        <div class="blog-content">
+
+            <span class="blog-category">
+                Agriculture
+            </span>
+
+            <h2 class="blog-title">
+                Organic Farming
+            </h2>
+
+            <p class="blog-description">
+                Learn how organic farming improves soil fertility
+                and supports eco-friendly agriculture.
+            </p>
+
+            <a href="of.html" target="_blank" rel="noopener noreferrer">
+                <button class="read-more-btn">
+                    Read More
+                </button>
+            </a>
+
         </div>
 
-        <div class="blog-card">
-            <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1770&auto=format&fit=crop" alt="Future of AI" class="blog-image">
-            <div class="blog-content">
-                <span class="blog-category">Technology</span>
-                <h2 class="blog-title">Future of AI</h2>
-                <p class="blog-description">Explore how Artificial Intelligence is transforming industries, education, and daily life.</p>
-                <a href="ai.html" target="_blank" rel="noopener noreferrer">
-                    <button class="read-more-btn">Read More</button>
-                </a>
-            </div>
-        </div>
-
-        <div class="blog-card">
-            <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=1770&auto=format&fit=crop" alt="Healthy Lifestyle" class="blog-image">
-            <div class="blog-content">
-                <span class="blog-category">Lifestyle</span>
-                <h2 class="blog-title">Healthy Lifestyle</h2>
-                <p class="blog-description">Simple habits and routines that can improve your physical and mental well-being.</p>
-                <a href="hl.html" target="_blank" rel="noopener noreferrer">
-                    <button class="read-more-btn">Read More</button>
-                </a>
-            </div>
-        </div>
-
-        <div class="blog-card">
-            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1770&auto=format&fit=crop" alt="Web Development" class="blog-image">
-            <div class="blog-content">
-                <span class="blog-category">Development</span>
-                <h2 class="blog-title">Web Development</h2>
-                <p class="blog-description">Discover modern frontend technologies, responsive design, and full-stack development trends.</p>
-                <a href="wd.html" target="_blank" rel="noopener noreferrer">
-                    <button class="read-more-btn">Read More</button>
-                </a>
-            </div>
-        </div>
-
-        <div class="blog-card">
-            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1770&auto=format&fit=crop" alt="Travel Destinations" class="blog-image">
-            <div class="blog-content">
-                <span class="blog-category">Travel</span>
-                <h2 class="blog-title">Top 10 Travel Destinations</h2>
-                <p class="blog-description">Explore breathtaking places around the world and plan your next unforgettable adventure.</p>
-                <a href="top-travel-destinations.html" target="_blank" rel="noopener noreferrer">
-                    <button class="read-more-btn">Read More</button>
-                </a>
-            </div>
-        </div>
     </div>
 
-    <div class="flex flex-col justify-start w-full md:w-[320px] bg-white p-5 rounded-2xl shadow-md h-fit">
-        <div class="flex flex-row gap-10 justify-center items-center h-20 text-gray-600">
-            <p class="cursor-pointer hidden" id="liked">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                    <path d="M7.493 18.5c-.425 0-.82-.236-.975-.632A7.48 7.48 0 0 1 6 15.125c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75A.75.75 0 0 1 15 2a2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23h-.777ZM2.331 10.727a11.969 11.969 0 0 0-.831 4.398 12 12 0 0 0 .52 3.507C2.28 19.482 3.105 20 3.994 20H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 0 1-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227Z" />
-                </svg>
+    <!-- Future of AI -->
+    <div class="blog-card">
+
+        <img
+            src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1770&auto=format&fit=crop"
+            alt="Future of AI"
+            class="blog-image"
+        >
+
+        <div class="blog-content">
+
+            <span class="blog-category">
+                Technology
+            </span>
+
+            <h2 class="blog-title">
+                Future of AI
+            </h2>
+
+            <p class="blog-description">
+                Explore how Artificial Intelligence is transforming
+                industries, education, and daily life.
             </p>
-            <p class="cursor-pointer" id="like">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" />
-                </svg>
-            </p>
-            <p class="cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
-                </svg>
-            </p>
-            <p class="cursor-pointer" id="bookmark">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
-                </svg>
-            </p>
-            <p class="cursor-pointer hidden" id="bookmarked">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m3 3 1.664 1.664M21 21l-1.5-1.5m-5.485-1.242L12 17.25 4.5 21V8.742m.164-4.078a2.15 2.15 0 0 1 1.743-1.342 48.507 48.507 0 0 1 11.186 0c1.1.128 1.907 1.077 1.907 2.185V19.5M4.664 4.664 19.5 19.5" />
-                </svg>
-            </p>
+
+            <a href="ai.html" target="_blank" rel="noopener noreferrer">
+                <button class="read-more-btn">
+                    Read More
+                </button>
+            </a>
+
         </div>
 
-        <div class="sidebar-card">
-            <h2 class="sidebar-title">Search Articles</h2>
-            <div class="search-wrapper">
-                <input type="text" placeholder="Search..." class="sidebar-search" id="sidebarSearch">
-                <button class="search-btn" onclick="searchBlogs()">🔍</button>
-            </div>
-        </div>
-
-        <div class="sidebar-card">
-            <h2 class="sidebar-title">Categories</h2>
-            <div class="category-list">
-                <div class="category-item">
-                    <span>🌿 Agriculture</span>
-                    <span class="category-count">12</span>
-                </div>
-                <div class="category-item">
-                    <span>💻 Technology</span>
-                    <span class="category-count">15</span>
-                </div>
-                <div class="category-item">
-                    <span>💚 Lifestyle</span>
-                    <span class="category-count">10</span>
-                </div>
-                <div class="category-item">
-                    <span>🧑‍💻 Development</span>
-                    <span class="category-count">14</span>
-                </div>
-                <div class="category-item">
-                    <span>✈ Travel</span>
-                    <span class="category-count">8</span>
-                </div>
-            </div>
-            <a href="#" class="view-all">View All Categories →</a>
-        </div>
-
-        <div class="sidebar-card">
-            <h2 class="sidebar-title">Subscribe to Newsletter</h2>
-            <p class="newsletter-text">Get the latest articles straight to your inbox.</p>
-            <input type="email" placeholder="Your email address" class="newsletter-input">
-            <button class="subscribe-btn">Subscribe</button>
-        </div>
-
-        <div class="mt-4 md:overflow-y-scroll">
-            <h1 class="text-gray-800 text-2xl font-bold mb-2"> Comments </h1>
-            <div class="mt-2">
-                <textarea name="comment" id="comment" placeholder="Add a comment ..." class="w-full p-3 border border-emerald-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400"> </textarea>
-                <button type="submit" class="mt-2 bg-emerald-500 hover:bg-emerald-600 transition text-white py-2 px-5 rounded-xl shadow-sm" onclick="addComment()"> Submit </button>
-            </div>
-            <div id="comments" class="mt-4 text-gray-600 flex flex-col gap-3">
-                <p id="emptyMessage">No comments yet</p>
-            </div>
-        </div>
     </div>
+
+    <!-- Healthy Lifestyle -->
+    <div class="blog-card">
+
+        <img
+            src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=1770&auto=format&fit=crop"
+            alt="Healthy Lifestyle"
+            class="blog-image"
+        >
+
+        <div class="blog-content">
+
+            <span class="blog-category">
+                Lifestyle
+            </span>
+
+            <h2 class="blog-title">
+                Healthy Lifestyle
+            </h2>
+
+            <p class="blog-description">
+                Simple habits and routines that can improve your
+                physical and mental well-being.
+            </p>
+
+            <a href="hl.html" target="_blank" rel="noopener noreferrer">
+                <button class="read-more-btn">
+                    Read More
+                </button>
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Web Development -->
+    <div class="blog-card">
+
+        <img
+            src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1770&auto=format&fit=crop"
+            alt="Web Development"
+            class="blog-image"
+        >
+
+        <div class="blog-content">
+
+            <span class="blog-category">
+                Development
+            </span>
+
+            <h2 class="blog-title">
+                Web Development
+            </h2>
+
+            <p class="blog-description">
+                Discover modern frontend technologies, responsive
+                design, and full-stack development trends.
+            </p>
+
+            <a href="wd.html" target="_blank" rel="noopener noreferrer">
+                <button class="read-more-btn">
+                    Read More
+                </button>
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Travel Destinations -->
+    <div class="blog-card">
+
+        <img
+            src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1770&auto=format&fit=crop"
+            alt="Travel Destinations"
+            class="blog-image"
+        >
+
+        <div class="blog-content">
+
+            <span class="blog-category">
+                Travel
+            </span>
+
+            <h2 class="blog-title">
+                Top 10 Travel Destinations
+            </h2>
+
+            <p class="blog-description">
+                Explore breathtaking places around the world and
+                plan your next unforgettable adventure.
+            </p>
+
+            <a href="top-travel-destinations.html" target="_blank" rel="noopener noreferrer">
+                <button class="read-more-btn">
+                    Read More
+                </button>
+            </a>
+
+        </div>
+
+    </div>
+
 </div>
 
-<script src="script.js"></script>
 
+
+
+
+        <!-- Sidebar Section -->
+        <div class="flex flex-col justify-start w-full md:w-[320px] bg-white p-4 md:p-5 rounded-2xl shadow-md h-fit" style="box-sizing:border-box;min-width:0;">
+            <div class="flex flex-row gap-10 justify-center items-center h-20 text-gray-600">
+                <p class="cursor-pointer hidden" id="liked">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                        <path d="M7.493 18.5c-.425 0-.82-.236-.975-.632A7.48 7.48 0 0 1 6 15.125c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75A.75.75 0 0 1 15 2a2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23h-.777ZM2.331 10.727a11.969 11.969 0 0 0-.831 4.398 12 12 0 0 0 .52 3.507C2.28 19.482 3.105 20 3.994 20H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 0 1-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227Z" />
+                    </svg>
+                </p>
+                <p class="cursor-pointer" id="like">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" />
+                    </svg>
+                </p>
+                <p class="cursor-pointer" id="share">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+                    </svg>
+                </p>
+                <p class="cursor-pointer" id="bookmark">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+                    </svg>
+                </p>
+                <p class="cursor-pointer hidden" id="bookmarked">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m3 3 1.664 1.664M21 21l-1.5-1.5m-5.485-1.242L12 17.25 4.5 21V8.742m.164-4.078a2.15 2.15 0 0 1 1.743-1.342 48.507 48.507 0 0 1 11.186 0c1.1.128 1.907 1.077 1.907 2.185V19.5M4.664 4.664 19.5 19.5" />
+                    </svg>
+                </p>
+            </div>
+
+<!-- Search Section -->
+<div class="sidebar-card">
+
+    <h2 class="sidebar-title">
+        Search Articles
+    </h2>
+    <div class="search-wrapper">
+      <input
+    type="text"
+    placeholder="Search..."
+    class="sidebar-search"
+    id="sidebarSearch"
+/><button class="search-btn" onclick="searchBlogs()">
+    🔍
+</button>
+
+    </div>
+
+</div>
+
+<!-- Categories Section -->
+<div class="sidebar-card">
+
+    <h2 class="sidebar-title">
+        Categories
+    </h2>
+
+    <div class="category-list">
+
+        <div class="category-item">
+            <span>🌿 Agriculture</span>
+            <span class="category-count">12</span>
+        </div>
+
+        <div class="category-item">
+            <span>💻 Technology</span>
+            <span class="category-count">15</span>
+        </div>
+
+        <div class="category-item">
+            <span>💚 Lifestyle</span>
+            <span class="category-count">10</span>
+        </div>
+
+        <div class="category-item">
+            <span>🧑‍💻 Development</span>
+            <span class="category-count">14</span>
+        </div>
+
+        <div class="category-item">
+            <span>✈ Travel</span>
+            <span class="category-count">8</span>
+        </div>
+    </div>
+    <a href="#" class="view-all">
+        View All Categories →
+    </a>
+</div>
+<!-- Newsletter Section -->
+<div class="sidebar-card">
+
+    <h2 class="sidebar-title">
+        Subscribe to Newsletter
+    </h2>
+    <p class="newsletter-text">
+        Get the latest articles straight to your inbox.
+    </p>
+    <input
+        type="email"
+        placeholder="Your email address"
+        class="newsletter-input"
+    >
+    <button class="subscribe-btn">
+        Subscribe
+    </button>
+</div>
+
+
+            <!-- /comment -->
+            <div class="mt-4 md:overflow-y-scroll">
+                <h1 class="text-gray-800 text-2xl font-bold mb-2"> Comments </h1>
+                <div class="mt-2">
+                    <input type="text" id="username" placeholder="Your Name" class="w-full p-3 mb-2 border border-emerald-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-white text-gray-900" />
+                    <textarea name="comment" id="comment" placeholder="Add a comment ..." class="w-full p-3 border border-emerald-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400"> </textarea>
+                    <button type="submit" class="mt-2 bg-emerald-500 hover:bg-emerald-600 transition text-white py-2 px-5 rounded-xl shadow-sm" onclick="addComment()"> Submit </button>
+                </div>
+                <div id="comments" class="mt-4 text-gray-600 flex flex-col gap-3">
+                    <p id="emptyMessage">No comments yet</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+<!--About Section -->
+<section id="about" class="about-section">
+    <h2>About GreenBlog</h2>
+
+    <p>
+        GreenBlog is a platform dedicated to sharing informative and engaging
+        content across technology, lifestyle, travel, agriculture, and web
+        development. Our goal is to provide readers with valuable insights,
+        practical knowledge, and inspiring stories in an easy-to-read format.
+    </p>
+
+    <div class="about-features">
+        <div class="feature-card">
+            <h3>Quality Content</h3>
+            <p>Well-researched articles across multiple categories.</p>
+        </div>
+
+        <div class="feature-card">
+            <h3>Knowledge Sharing</h3>
+            <p>Helping readers learn and grow every day.</p>
+        </div>
+
+        <div class="feature-card">
+            <h3>Modern Experience</h3>
+            <p>Clean design with smooth navigation and responsiveness.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Footer Section -->
 <footer class="footer">
-    <div class="footer-container">
-        <div class="footer-section">
-            <h2 class="logo">GreenBlog</h2>
-            <p>Discover inspiring articles on technology, lifestyle, travel, agriculture, and web development.</p>
-        </div>
-        <div class="footer-section">
-            <h3>Quick Links</h3>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Blogs</a></li>
-                <li><a href="#">Categories</a></li>
-                <li><a href="#">About</a></li>
-            </ul>
-        </div>
-        <div class="footer-section">
-            <h3>Categories</h3>
-            <ul>
-                <li><a href="#">Technology</a></li>
-                <li><a href="#">Lifestyle</a></li>
-                <li><a href="#">Travel</a></li>
-                <li><a href="#">Agriculture</a></li>
-            </ul>
-        </div>
-        <div class="footer-section">
-            <h3>Subscribe</h3>
-            <p>Get latest articles directly in your inbox.</p>
-            <form class="newsletter">
-                <input type="email" placeholder="Enter your email" />
-                <button type="submit">Subscribe</button>
-            </form>
-        </div>
+  <div class="footer-container">
+
+    <!-- Brand -->
+    <div class="footer-section" id="categories">
+      <h2 class="logo">GreenBlog</h2>
+      <p>
+        Discover inspiring articles on technology, lifestyle,
+        travel, agriculture, and web development.
+      </p>
     </div>
-    <div class="footer-bottom">
-        <p>© 2026 GreenBlog. All rights reserved.</p>
-        <p>created by palak verma</p>
+
+    <!-- Quick Links -->
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#blogs">Blogs</a></li>
+        <li><a href="#categories">Categories</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
     </div>
+
+    <!-- Categories -->
+    <div class="footer-section">
+      <h3>Categories</h3>
+      <ul>
+        <li><a href="#">Technology</a></li>
+        <li><a href="#">Lifestyle</a></li>
+        <li><a href="#">Travel</a></li>
+        <li><a href="#">Agriculture</a></li>
+      </ul>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="footer-section">
+      <h3>Subscribe</h3>
+      <p>Get latest articles directly in your inbox.</p>
+
+      <form class="newsletter">
+        <input type="email" placeholder="Enter your email" />
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+
+  </div>
+
+  <!-- Bottom -->
+  <div class="footer-bottom">
+    <p>© 2026 GreenBlog. All rights reserved.</p>
+    <p>created by palak verma</p>
+  </div>
 </footer>
-<script>
-document.addEventListener("DOMContentLoaded", async () => {
 
-    const cards = document.querySelectorAll(".blog-read-time");
-
-    for (const card of cards) {
-
-        const articleFile = card.dataset.article;
-
-        try {
-            const response = await fetch(articleFile);
-            const html = await response.text();
-
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, "text/html");
-
-            const article =
-                doc.querySelector("#article-content") ||
-                doc.querySelector(".blog-content") ||
-                doc.querySelector(".blog-page");
-
-            if (!article) continue;
-
-            const text = article.innerText || article.textContent;
-
-            const wordCount = text
-                .trim()
-                .split(/\s+/)
-                .filter(word => word.length > 0).length;
-
-            const readingTime = Math.max(
-                1,
-                Math.ceil(wordCount / 200)
-            );
-
-            card.textContent = `📖 ${readingTime} min read`;
-
-        } catch (error) {
-            console.error(
-                `Error reading ${articleFile}:`,
-                error
-            );
-        }
-    }
-});
-</script>
 </body>
 </html>

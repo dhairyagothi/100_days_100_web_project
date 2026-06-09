@@ -130,18 +130,112 @@ input[type="number"] {
 }
 
 @keyframes flash {
-
     0%,
     49% {
         opacity: 1;
-        box-shadow: 0 0 5px #fff, 0 0 10px #fff;
     }
 
     50%,
     100% {
         opacity: 0.1;
-        box-shadow: none;
     }
+}
+
+/* Color Selector & Swatches */
+.color-picker-wrapper {
+    position: relative;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    background: conic-gradient(red, yellow, green, cyan, blue, magenta, red);
+    border: 2px solid #333333;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.color-picker-wrapper:hover {
+    transform: scale(1.1);
+    border-color: #555555;
+}
+
+.color-picker-wrapper.active {
+    border-color: #ffffff;
+    transform: scale(1.15);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.color-picker-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    background: var(--custom-color, transparent);
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: background-color 0.2s;
+}
+
+.color-picker-wrapper input[type="color"] {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 40px;
+    height: 40px;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.swatches {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #1a1a1a;
+    padding: 4px 8px;
+    border-radius: 20px;
+    border: 1px solid #333333;
+}
+
+.swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    padding: 0;
+}
+
+.swatch:hover {
+    transform: scale(1.2);
+}
+
+.swatch.active {
+    transform: scale(1.25);
+    border-color: #ffffff;
+    box-shadow: 0 0 8px currentColor;
+}
+
+.swatch-eraser {
+    background: #222222;
+    color: #888888;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #444444;
+}
+
+.swatch-eraser.active {
+    color: #ff4757;
+    border-color: #ff4757;
+    box-shadow: 0 0 8px rgba(255, 71, 87, 0.6);
+}
+
+.swatch-eraser svg {
+    pointer-events: none;
 }
 
 @media (max-width: 768px) {

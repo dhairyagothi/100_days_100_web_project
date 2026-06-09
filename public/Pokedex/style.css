@@ -158,3 +158,35 @@ body {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
+.pokemon-description {
+    max-width: 600px;
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.pokemon-description h3,
+.pokemon-stats h3 {
+    margin-bottom: 1rem;
+    color: #facc15;
+}
+
+.pokemon-description p {
+    color: #cbd5e1;
+    line-height: 1.6;
+}
+
+.pokemon-stats {
+    width: 100%;
+    max-width: 500px;
+    margin-top: 2rem;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    background: #1e293b;
+    border-radius: 8px;
+    text-transform: capitalize;
+}
