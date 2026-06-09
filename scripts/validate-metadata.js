@@ -1,8 +1,69 @@
 const fs = require('fs');
 const path = require('path');
 
-const projectsPath = path.join(__dirname, '..', 'projects.json');
+const projectsPath = process.argv[2]
+  ? path.resolve(process.argv[2])
+  : path.join(__dirname, '..', 'projects.json');
 const rootDir = path.join(__dirname, '..');
+const UNSAFE_METADATA_CHARS_RE = /["<>`]|[\u0000-\u001F\u007F]/;
+const UNSAFE_PROTOCOL_RE = /^(?:javascript|data|vbscript):/i;
+const URL_SCHEME_RE = /^[a-z][a-z0-9+.-]*:/i;
+const SAFE_PREVIEW_SEGMENT_RE = /^[A-Za-z0-9._% &()+-]+$/;
+const UNSAFE_PREVIEW_SEGMENT_RE = /["'<>`\\/:]|[\u0000-\u001F\u007F]/;
+
+function formatProjectLabel(index, project) {
+  return `Index ${index} (Day ${project.projectNo || 'Unknown'} - ${project.projectName || 'Unnamed'})`;
+}
+
+function validateMetadataString(value, fieldName, index, project, errors) {
+  if (UNSAFE_METADATA_CHARS_RE.test(value)) {
+    errors.push(`${formatProjectLabel(index, project)}: "${fieldName}" contains double quotes, angle brackets, backticks, or control characters`);
+  }
+}
+
+function hasPathTraversal(value) {
+  return value
+    .replace(/\\/g, '/')
+    .split('/')
+    .some(segment => segment === '..');
+}
+
+function isSafePreviewPathSegment(segment) {
+  const raw = String(segment || '').trim();
+
+  if (!raw || raw === '.' || raw === '..') {
+    return false;
+  }
+
+  if (!SAFE_PREVIEW_SEGMENT_RE.test(raw)) {
+    return false;
+  }
+
+  try {
+    const decoded = decodeURIComponent(raw);
+    return decoded !== '.' && decoded !== '..' && !UNSAFE_PREVIEW_SEGMENT_RE.test(decoded);
+  } catch (_error) {
+    return false;
+  }
+}
+
+function getPreviewPathSegment(projectPath, projectName) {
+  const rawPath = String(projectPath || '').trim();
+
+  if (rawPath.startsWith('./')) {
+    return rawPath.split('#')[0].split('?')[0].split('/')[2];
+  }
+
+  return String(projectName || '').trim().replace(/\s+/g, '_');
+}
+
+function validatePreviewPathSegment(project, index, errors) {
+  const previewSegment = getPreviewPathSegment(project.projectPath, project.projectName);
+
+  if (!isSafePreviewPathSegment(previewSegment)) {
+    errors.push(`${formatProjectLabel(index, project)}: preview image path segment derived from metadata is unsafe`);
+  }
+}
 
 try {
   const data = fs.readFileSync(projectsPath, 'utf8');
@@ -44,6 +105,8 @@ try {
     if (project.projectName !== undefined && project.projectName !== null && project.projectName !== '') {
       if (typeof project.projectName !== 'string') {
         errors.push(`Index ${index}: "projectName" must be a string, got "${typeof project.projectName}"`);
+      } else {
+        validateMetadataString(project.projectName, 'projectName', index, project, errors);
       }
     }
 
@@ -63,6 +126,21 @@ try {
       if (typeof project.projectPath !== 'string') {
         errors.push(`Index ${index}: "projectPath" must be a string, got "${typeof project.projectPath}"`);
       } else {
+        validateMetadataString(project.projectPath, 'projectPath', index, project, errors);
+        validatePreviewPathSegment(project, index, errors);
+
+        if (UNSAFE_PROTOCOL_RE.test(project.projectPath.trim())) {
+          errors.push(`${formatProjectLabel(index, project)}: "projectPath" uses an unsafe URL protocol`);
+        }
+
+        if (
+          URL_SCHEME_RE.test(project.projectPath.trim()) &&
+          !project.projectPath.startsWith('http://') &&
+          !project.projectPath.startsWith('https://')
+        ) {
+          errors.push(`${formatProjectLabel(index, project)}: "projectPath" must use http(s) or a local relative path`);
+        }
+
         // Detect duplicate projectPath values
         if (seenProjectPaths.has(project.projectPath)) {
           errors.push(`Index ${index} (Day ${project.projectNo || 'Unknown'} - ${project.projectName || 'Unnamed'}): Duplicate projectPath "${project.projectPath}"`);
@@ -81,6 +159,10 @@ try {
             relPath = decodeURIComponent(relPath);
           } catch (e) {
             errors.push(`Index ${index}: Failed to decode URI component for projectPath "${relPath}"`);
+          }
+
+          if (hasPathTraversal(relPath)) {
+            errors.push(`${formatProjectLabel(index, project)}: "projectPath" must not contain path traversal`);
           }
 
           const resolvedPath = path.resolve(rootDir, relPath);

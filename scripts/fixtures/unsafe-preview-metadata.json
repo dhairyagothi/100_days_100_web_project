@@ -1,0 +1,30 @@
+[
+  {
+    "projectNo": 9001,
+    "projectName": "\"><img src=x onerror=alert(1)>",
+    "techStack": ["javascript"],
+    "difficulty": "beginner",
+    "projectPath": "./public/safe-preview/index.html"
+  },
+  {
+    "projectNo": 9002,
+    "projectName": "Unsafe Preview Path",
+    "techStack": ["javascript"],
+    "difficulty": "beginner",
+    "projectPath": "./public/bad%22segment/index.html"
+  },
+  {
+    "projectNo": 9003,
+    "projectName": "Traversal Preview Path",
+    "techStack": ["javascript"],
+    "difficulty": "beginner",
+    "projectPath": "./public/../escape/index.html"
+  },
+  {
+    "projectNo": 9004,
+    "projectName": "Unsafe Protocol",
+    "techStack": ["javascript"],
+    "difficulty": "beginner",
+    "projectPath": "javascript:alert(1)"
+  }
+]
