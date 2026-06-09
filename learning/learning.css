@@ -228,9 +228,10 @@ body.light-mode .learning-sidebar {
   scroll-margin-top: 1.25rem; /* keep active topic fully visible when scrolled into view */
 }
 
-:root[data-theme="sepia"] .topic-item a {
+:root[data-theme="sepia"] .topic-item:not(.active):not(.completed) a {
   color: var(--text-primary);
 }
+
 .topic-item a:hover {
   background: var(--accent-dim);
   color: var(--text-primary);
