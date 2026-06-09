@@ -913,18 +913,17 @@ function renderGrid() {
   if (sortOption === "az") {
     filtered.sort((a, b) => a.projectName.localeCompare(b.projectName));
   } else if (sortOption === "latest") {
-    filtered.sort((a, b) => {
-      const dayA = parseInt(a.day.replace("Day ", ""));
-      const dayB = parseInt(b.day.replace("Day ", ""));
-      return dayB - dayA;
-    });
+    // Schwartzian transform: extract numeric day once per item, then sort
+    filtered = filtered
+      .map(function (item) { return { item: item, dayNum: parseInt(item.day.replace("Day ", "")) }; })
+      .sort(function (a, b) { return b.dayNum - a.dayNum; })
+      .map(function (pair) { return pair.item; });
   } else if (sortOption === "difficulty") {
     const difficultyOrder = { beginner: 1, intermediate: 2, advanced: 3 };
-    filtered.sort((a, b) => {
-      const diffA = a.difficulty ? difficultyOrder[a.difficulty.toLowerCase()] || 0 : 0;
-      const diffB = b.difficulty ? difficultyOrder[b.difficulty.toLowerCase()] || 0 : 0;
-      return diffA - diffB;
-    });
+    filtered = filtered
+      .map(function (item) { return { item: item, diff: item.difficulty ? (difficultyOrder[item.difficulty.toLowerCase()] || 0) : 0 }; })
+      .sort(function (a, b) { return a.diff - b.diff; })
+      .map(function (pair) { return pair.item; });
   }
 
   grid.innerHTML = "";
@@ -2254,7 +2253,7 @@ initTheme();
   }
 
   function init() {
-    particles = Array.from({ length: particleCount }, () => ({
+    particles = Array.from({ length: particleCount }, function () { return {
       x: Math.random() * W,
       y: Math.random() * H,
       vx: (Math.random() - 0.5) * profile.velocity,
@@ -2262,7 +2261,8 @@ initTheme();
       r: Math.random() * profile.radius + 0.8,
       hue: palette[Math.floor(Math.random() * palette.length)],
       alpha: Math.random() * 0.45 + 0.18,
-    }));
+    }; });
+    spatialHash.cellSize = linkDistance;
   }
 
   function stepParticles() {
@@ -2283,19 +2283,26 @@ initTheme();
     stepParticles();
 
     if (profile.showLinks) {
-      for (let i = 0; i < particleCount; i += 1) {
-        for (let j = i + 1; j < particleCount; j += 1) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const distanceSq = dx * dx + dy * dy;
+      spatialHash.clear();
+      for (var si = 0; si < particleCount; si++) {
+        spatialHash.insert(particles[si]);
+      }
 
-          if (distanceSq >= maxDistanceSq) continue;
+      var nearby = [];
+      for (var i = 0; i < particleCount; i++) {
+        spatialHash.queryNearby(particles[i], nearby);
+        for (var j = 0; j < nearby.length; j++) {
+          var dx = particles[i].x - nearby[j].x;
+          var dy = particles[i].y - nearby[j].y;
+          var distanceSq = dx * dx + dy * dy;
 
-          const distance = Math.sqrt(distanceSq);
+          if (distanceSq >= maxDistanceSq || distanceSq === 0) continue;
+
+          var distance = Math.sqrt(distanceSq);
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(59,130,246,${(1 - distance / linkDistance) * 0.22})`;
+          ctx.lineTo(nearby[j].x, nearby[j].y);
+          ctx.strokeStyle = 'rgba(59,130,246,' + ((1 - distance / linkDistance) * 0.22) + ')';
           ctx.lineWidth = 1;
           ctx.stroke();
         }
