@@ -37,7 +37,7 @@ const PROJECT_DATA = [
   ['Day 18', 'Carousel Solar System', './public/carousal/index.html', 'css canvas', 'intermediate'],
   ['Day 19', 'Planto', './public/plantwebsite/plant.html', 'css', 'beginner'],
   ['Day 20', 'EveSparks', 'https://evesparks.onrender.com/', 'javascript', 'intermediate'],
-  ['Day 21', 'Video BG Slider Using React', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/travel_website', 'javascript', 'intermediate'],
+  ['Day 21', 'Video BG Slider Using React', './public/video-bg-slider/index.html', 'javascript', 'intermediate'],
   ['Day 22', 'Page Loader', './public/pageloader/pageloader.html', 'ui css', 'beginner'],
   ['Day 23', 'Jarvis Virtual Assistant', './public/Jarvis-AI-main/index.html', 'api javascript', 'intermediate'],
   ['Day 24', 'Chat Bot', './public/AI%20ChatBot/chatbot.html', 'api javascript', 'intermediate'],

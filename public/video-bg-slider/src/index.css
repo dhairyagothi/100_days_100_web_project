@@ -1,0 +1,90 @@
+/* ── Tailwind CSS Directives ─────────────────────────────────
+   These three @tailwind rules are REQUIRED. Vite + PostCSS will
+   expand them into Tailwind's full base reset, component layer,
+   and every utility class your JSX files reference.
+───────────────────────────────────────────────────────────── */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* ── Global Base Reset ───────────────────────────────────────
+   Tailwind's preflight already handles most resets. These few
+   lines add project-specific global defaults.
+───────────────────────────────────────────────────────────── */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html,
+  body,
+  #root {
+    /* Full viewport — no scroll bars on the slider page */
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    /* Apply Sora as the default font across the app */
+    font-family: "Sora", sans-serif;
+    background-color: #0a0a0a;
+    color: #fff;
+  }
+
+  /* Smooth scrolling everywhere (for any future pages) */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Remove default button appearance */
+  button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+    font-family: inherit;
+  }
+
+  /* Accessible focus ring — visible only on keyboard navigation */
+  :focus-visible {
+    outline: 2px solid #FBBF24; /* amber-400 */
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Remove focus ring from mouse clicks */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+
+/* ── Utility Layer: Custom Component Classes ─────────────────
+   These are @layer components so Tailwind can purge them
+   if they're never referenced in the JSX.
+───────────────────────────────────────────────────────────── */
+@layer components {
+  /* Reusable ghost button style used on slider nav arrows */
+  .btn-ghost-circle {
+    @apply rounded-full border border-white/20 bg-black/30 p-3
+           text-white backdrop-blur-sm transition
+           hover:bg-amber-400 hover:text-neutral-950
+           focus-visible:outline focus-visible:outline-2
+           focus-visible:outline-amber-400;
+  }
+
+  /* Active dot indicator pill */
+  .dot-active {
+    @apply h-2.5 w-8 rounded-full bg-amber-400 transition-all duration-300;
+  }
+
+  /* Inactive dot indicator */
+  .dot-inactive {
+    @apply h-2.5 w-2.5 rounded-full bg-white/40 transition-all duration-300
+           hover:bg-white/70;
+  }
+}

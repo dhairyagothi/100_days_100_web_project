@@ -24,5 +24,9 @@
     "open-source",
     "frontend"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "framer-motion": "^12.40.0",
+    "lucide-react": "^1.17.0"
+  }
 }
