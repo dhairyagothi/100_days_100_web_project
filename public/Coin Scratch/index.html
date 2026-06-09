@@ -9,7 +9,11 @@
 </head>
 
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+    <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
+    <button id="dashboard-toggle-btn" class="dashboard-toggle-button" aria-label="Open Achievements and Stats">
+        🏆 Stats & Badges
+    </button>
 
     <div class="ambient-background"></div>
     <div id="custom-cursor" class="custom-cursor"></div>
@@ -21,9 +25,29 @@
         </div>
     </div>
 
+    <div id="achievement-toast-container" class="achievement-toast-container"></div>
+
     <main class="experience-container">
+        <div class="theme-control-panel">
+            <label for="theme-select" class="control-label">Visual Theme</label>
+            <div class="select-wrapper">
+                <select id="theme-select" class="theme-dropdown">
+                    <optgroup label="Classic Metallic Editions">
+                        <option value="gold" selected>✨ Gold Edition</option>
+                        <option value="silver">🥈 Silver Edition</option>
+                        <option value="bronze">🥉 Bronze Edition</option>
+                        <option value="diamond">💎 Diamond Premium</option>
+                    </optgroup>
+                    <optgroup label="Seasonal Specials">
+                        <option value="christmas">🎄 Christmas Spirit</option>
+                        <option value="halloween">🎃 Spooky Halloween</option>
+                        <option value="newyear">🎆 New Year Celebration</option>
+                    </optgroup>
+                </select>
+            </div>
+        </div>
+
         <div class="coin-wrapper" id="coin-wrapper">
-            <!-- 3D Metallic Coin Base -->
             <div class="coin-3d">
                 <div class="coin-rim"></div>
                 <div class="coin-face">
@@ -43,25 +67,70 @@
                 </div>
             </div>
 
-            <!-- Scratchable Coating -->
             <canvas id="scratch-layer"></canvas>
 
-            <!-- Scratch Instruction Text -->
             <div class="scratch-instruction" id="scratch-instruction">Scratch Here</div>
         </div>
-        <div class="brush-controls">
-            <label for="brush-size">Brush Size</label>
 
-            <input type="range" id="brush-size" min="4" max="30" value="6">
-
-            <span id="brush-size-value">6</span>
+        <div class="control-grid">
+            <div class="brush-controls">
+                <label for="brush-size">Brush Size</label>
+                <input type="range" id="brush-size" min="4" max="30" value="6">
+                <span id="brush-size-value">6</span>
+            </div>
+            
+            <div class="volume-controls">
+                <label for="volume-slider">ASMR Volume</label>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.7">
+                <span id="volume-value">70%</span>
+            </div>
         </div>
+
         <div class="scratch-progress" aria-live="polite">
             Scratch Progress: <span id="scratch-progress-value">0%</span>
         </div>
 
         <button id="reset-btn" class="reset-button">Restore Coin</button>
     </main>
+
+    <div id="dashboard-overlay" class="dashboard-overlay">
+        <div class="dashboard-panel">
+            <div class="dashboard-header">
+                <h2>🏆 Your Progress</h2>
+                <button id="dashboard-close-btn" class="dashboard-close-button">&times;</button>
+            </div>
+            
+            <hr class="dashboard-divider">
+
+            <section class="stats-section">
+                <h3>Statistics</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-value" id="stat-total-scratches">0</span>
+                        <span class="stat-label">Total Scratches</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="stat-coins-collected">0</span>
+                        <span class="stat-label">Coins Collected</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="stat-asmr-time">0m</span>
+                        <span class="stat-label">ASMR Listening Time</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="achievements-section">
+                <h3>Badges Unlocked (<span id="unlocked-count">0</span>/5)</h3>
+                <div class="badges-grid" id="badges-container">
+                    </div>
+            </section>
+            
+            <div class="dashboard-footer">
+                <button id="clear-stats-btn" class="clear-stats-button">Reset Data</button>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
