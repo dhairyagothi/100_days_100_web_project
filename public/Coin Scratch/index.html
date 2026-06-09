@@ -9,7 +9,7 @@
 </head>
 
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+    <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
     <div class="ambient-background"></div>
     <div id="custom-cursor" class="custom-cursor"></div>
@@ -22,8 +22,26 @@
     </div>
 
     <main class="experience-container">
+        <div class="theme-control-panel">
+            <label for="theme-select" class="control-label">Visual Theme</label>
+            <div class="select-wrapper">
+                <select id="theme-select" class="theme-dropdown">
+                    <optgroup label="Classic Metallic Editions">
+                        <option value="gold" selected>✨ Gold Edition</option>
+                        <option value="silver">🥈 Silver Edition</option>
+                        <option value="bronze">🥉 Bronze Edition</option>
+                        <option value="diamond">💎 Diamond Premium</option>
+                    </optgroup>
+                    <optgroup label="Seasonal Specials">
+                        <option value="christmas">🎄 Christmas Spirit</option>
+                        <option value="halloween">🎃 Spooky Halloween</option>
+                        <option value="newyear">🎆 New Year Celebration</option>
+                    </optgroup>
+                </select>
+            </div>
+        </div>
+
         <div class="coin-wrapper" id="coin-wrapper">
-            <!-- 3D Metallic Coin Base -->
             <div class="coin-3d">
                 <div class="coin-rim"></div>
                 <div class="coin-face">
@@ -43,19 +61,25 @@
                 </div>
             </div>
 
-            <!-- Scratchable Coating -->
             <canvas id="scratch-layer"></canvas>
 
-            <!-- Scratch Instruction Text -->
             <div class="scratch-instruction" id="scratch-instruction">Scratch Here</div>
         </div>
-        <div class="brush-controls">
-            <label for="brush-size">Brush Size</label>
 
-            <input type="range" id="brush-size" min="4" max="30" value="6">
-
-            <span id="brush-size-value">6</span>
+        <div class="control-grid">
+            <div class="brush-controls">
+                <label for="brush-size">Brush Size</label>
+                <input type="range" id="brush-size" min="4" max="30" value="6">
+                <span id="brush-size-value">6</span>
+            </div>
+            
+            <div class="volume-controls">
+                <label for="volume-slider">ASMR Volume</label>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.7">
+                <span id="volume-value">70%</span>
+            </div>
         </div>
+
         <div class="scratch-progress" aria-live="polite">
             Scratch Progress: <span id="scratch-progress-value">0%</span>
         </div>

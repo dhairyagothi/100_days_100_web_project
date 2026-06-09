@@ -9,6 +9,7 @@ const resultMessage = document.querySelector('.result');
 const submitButton = document.querySelector('.submit');
 const voiceField = document.getElementById('voiceField');
 const voiceSelect = document.getElementById('voiceSelect');
+const textCaptchaField = document.querySelector('.textcaptcha');
 
 let currentCaptcha = null;
 let attempts = 0;
@@ -367,6 +368,9 @@ const drawDistortedCaptcha = (text) => {
 const generateCaptcha = () => {
     textInput.value = '';
     textInput.disabled = false;
+
+    textCaptchaField.classList.remove('hidden');
+
     resultMessage.textContent = '';
     resultMessage.className = 'result';
     selectedImageAnswer = '';
@@ -390,6 +394,7 @@ const generateCaptcha = () => {
             break;
         }
         case 'image': {
+            textCaptchaField.classList.add('hidden');
             const { images, correct } = generateImageCaptcha();
             currentCaptcha = correct.name;
             textInput.disabled = true;

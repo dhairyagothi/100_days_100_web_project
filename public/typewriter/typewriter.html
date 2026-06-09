@@ -372,6 +372,21 @@
     </div>
     <div class="toast-container" id="pdfToast"></div>
 
+    <!-- ── Clear Confirmation Modal ───────────────────────────────────── -->
+    <div id="clearModal" class="clear-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="clearModalTitle">
+      <div class="clear-modal-box">
+        <div class="clear-modal-icon">🗑️</div>
+        <h2 class="clear-modal-title" id="clearModalTitle">Clear All Pages?</h2>
+        <p class="clear-modal-desc">This will permanently erase every word typed across all pages. This cannot be undone.</p>
+        <div class="clear-modal-actions">
+          <button id="clearModalCancel" class="clear-modal-btn clear-modal-btn--cancel">Cancel</button>
+          <button id="clearModalConfirm" class="clear-modal-btn clear-modal-btn--confirm">
+            <i class="fas fa-trash-alt" aria-hidden="true"></i> Yes, Clear All
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script src="typewriter.js"></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
