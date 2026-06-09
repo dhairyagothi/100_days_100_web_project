@@ -12,28 +12,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
     <div class="main">
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="nav">
                 <div class="nav-option">
-                    <i class="fa-solid fa-house"></i>
+                    <i aria-hidden="true" class="fa-solid fa-house"></i>
                     <a href="#">Home</a>
                 </div>
                 <div class="nav-option">
-                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <i aria-hidden="true" class="fa-solid fa-magnifying-glass"></i>
                     <a href="#">Search</a>
                 </div>
             </div>
             <div class="library">
                 <div class="options">
                     <div class="lib-option nav-option">
-                        <img src="library_icon.png">
+                        <img alt="" src="library_icon.png" width="24" height="24" loading="lazy">
                         <a href="#"> Your Library</a>
                     </div>
                     <div class="icons">
-                        <i class="fa-solid fa-plus"></i>
-                        <i class="fa-solid fa-arrow-right"></i>
+                        <i aria-hidden="true" class="fa-solid fa-plus"></i>
+                        <i aria-hidden="true" class="fa-solid fa-arrow-right"></i>
                     </div>
                 </div>
                 <div class="lib-box">
@@ -55,12 +57,12 @@
         <div class="main-content">
             <div class="sticky-nav">
                 <div class="sticky-nav-icons">
-                    <img src="backward_icon.png">
-                    <img src="forward_icon.png" class="hide">
+                    <img alt="" src="backward_icon.png" width="32" height="32" loading="lazy">
+                    <img alt="" src="forward_icon.png" class="hide" width="32" height="32" loading="lazy">
                 </div>
                 <div class="sticky-nav-options" id="auth-container">
                     <button class="badge nav-items hide">Explore Premium</button>
-                    <button class="badge nav-items dark-badge"><i class="fa-regular fa-circle-down" style="margin-right: 3px;"></i>Install App</button>
+                    <button class="badge nav-items dark-badge"><i aria-hidden="true" class="fa-regular fa-circle-down" style="margin-right: 3px;"></i>Install App</button>
                     <!-- Dynamic Login Button -->
                     <button class="badge login-btn" id="loginAuthBtn">Log in</button>
                 </div>
@@ -69,7 +71,7 @@
             <h2>Recently Played</h2>
             <div class="cards-container">
                 <div class="card" data-song="card1">
-                    <img src="card1img.jpeg" class="card-img">
+                    <img alt="" src="card1img.jpeg" class="card-img" width="150" height="150" loading="lazy">
                     <p class="card-title">Top 50 - Global</p>
                     <p class="card-info">Your daily updates of the most played tracks...</p>
                 </div>
@@ -78,17 +80,17 @@
             <h2>Trending now near you</h2>
             <div class="cards-container">
                 <div class="card" data-song="card2">
-                    <img src="card2img.jpeg" class="card-img">
+                    <img alt="" src="card2img.jpeg" class="card-img" width="150" height="150" loading="lazy">
                     <p class="card-title">Maiye Jitna Sohna</p>
                     <p class="card-info">Darshan Raval Special Hits...</p>
                 </div>
                 <div class="card" data-song="card3">
-                    <img src="card3img.jpeg" class="card-img">
+                    <img alt="" src="card3img.jpeg" class="card-img" width="150" height="150" loading="lazy">
                     <p class="card-title">Trending India</p>
                     <p class="card-info">Top charts breaking the internet right now...</p>
                 </div>
                 <div class="card" data-song="card4">
-                    <img src="card4img.jpeg" class="card-img">
+                    <img alt="" src="card4img.jpeg" class="card-img" width="150" height="150" loading="lazy">
                     <p class="card-title">Global Beats</p>
                     <p class="card-info">Listen to the rhythm of the world...</p>
                 </div>
@@ -97,12 +99,12 @@
             <h2>Featured Chart</h2>
             <div class="cards-container">
                 <div class="card" data-song="card5">
-                    <img src="card5img.jpeg" class="card-img">
+                    <img alt="" src="card5img.jpeg" class="card-img" width="150" height="150" loading="lazy">
                     <p class="card-title">Top 50 - Global</p>
                     <p class="card-info">The biggest tracks right now...</p>
                 </div>
                 <div class="card" data-song="card6">
-                    <img src="card6img.jpeg" class="card-img">
+                    <img alt="" src="card6img.jpeg" class="card-img" width="150" height="150" loading="lazy">
                     <p class="card-title">Top Songs - India</p>
                     <p class="card-info">Catch up with Indian blockbusters...</p>
                 </div>
@@ -113,22 +115,22 @@
         <!-- Bottom Music Player -->
         <div class="music-player">
             <div class="song-icon">
-                <img src="card2img.jpeg" alt="Song Cover" class="cover-image">
+                <img src="card2img.jpeg" alt="Song Cover" class="cover-image" width="56" height="56" loading="lazy">
                 <div class="song-info">
                     <h3 class="song-title">Maiye Jitna Sohna</h3>
                     <p class="song-author">Darshan Rawal</p>
                 </div>
-                <i class="fa-regular fa-heart icon-for-song"></i>
+                <i aria-hidden="true" class="fa-regular fa-heart icon-for-song"></i>
             </div>
             
             <div class="player">
                 <div class="player-controls">
-                    <img src="player_icon1.png" class="player-control-icon">
-                    <img src="player_icon2.png" class="player-control-icon">
+                    <img alt="" src="player_icon1.png" class="player-control-icon" width="16" height="16" loading="lazy">
+                    <img alt="" src="player_icon2.png" class="player-control-icon" width="16" height="16" loading="lazy">
                     <!-- Play/Pause Handler -->
-                    <i class="fa-solid fa-circle-play main-play-btn" id="ctrl-play-btn"></i>
-                    <img src="player_icon4.png" class="player-control-icon">
-                    <img src="player_icon5.png" class="player-control-icon">
+                    <i aria-hidden="true" class="fa-solid fa-circle-play main-play-btn" id="ctrl-play-btn"></i>
+                    <img alt="" src="player_icon4.png" class="player-control-icon" width="16" height="16" loading="lazy">
+                    <img alt="" src="player_icon5.png" class="player-control-icon" width="16" height="16" loading="lazy">
                 </div>
                 <div class="playback-bar">
                     <span class="curr-time">0:00</span>
@@ -138,11 +140,11 @@
             </div>
             
             <div class="diff-icons">
-                <i class="fa-solid fa-music"></i>
-                <i class="fa-brands fa-bluetooth-b"></i>
-                <i class="fa-solid fa-volume-low"></i>
+                <i aria-hidden="true" class="fa-solid fa-music"></i>
+                <i aria-hidden="true" class="fa-brands fa-bluetooth-b"></i>
+                <i aria-hidden="true" class="fa-solid fa-volume-low"></i>
                 <input type="range" min="0" max="100" class="volume-slider">
-                <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+                <i aria-hidden="true" class="fa-solid fa-up-right-and-down-left-from-center"></i>
             </div>    
         </div>
     </div>
@@ -150,7 +152,7 @@
    <!-- Login/Signup Modal (Popup) -->
     <div class="modal-overlay" id="loginModal">
         <div class="modal-box">
-            <i class="fa-solid fa-xmark modal-close" id="closeModal"></i>
+            <i aria-hidden="true" class="fa-solid fa-xmark modal-close" id="closeModal"></i>
             <h2>Log in to Spotify</h2>
             <form id="loginForm">
                 <div class="form-group">

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codebreaker: Quantum Grid</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Full-screen Dynamic Stream Canvas -->
+    <canvas id="terminalStreamCanvas"></canvas>
+    <div class="scanlines"></div>
+
+    <div class="game-container">
+        <!-- Header Section -->
+        <header class="game-header">
+            <h1><i aria-hidden="true" class="fas fa-shield-halved"></i> QUANTUM CODEBREAKER</h1>
+            <p>Deduce the 4-node matrix key before structural lockdown sequence triggers.</p>
+        </header>
+
+        <!-- Main Workspace -->
+        <div class="workspace">
+            
+            <!-- LEFT COLUMN: History Board (8 Probes Blocks) -->
+            <section class="board-section">
+                <div id="historyBoard" class="history-board"></div>
+            </section>
+
+            <!-- RIGHT COLUMN: Control Panel & Integrated Instructions -->
+            <section class="control-section">
+                <!-- Status Matrix Row -->
+                <div class="status-card glass-panel">
+                    <div class="status-item">
+                        <span class="label"><i aria-hidden="true" class="fas fa-shield-alt"></i> Attempts</span>
+                        <span id="attemptsDisplay" class="value">8 / 8</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label"><i aria-hidden="true" class="fas fa-hourglass-half"></i> Time Remaining</span>
+                        <span id="timerDisplay" class="value">120s</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label"><i aria-hidden="true" class="fas fa-bolt"></i> System Integrity</span>
+                        <span id="integrityDisplay" class="value">100%</span>
+                    </div>
+                </div>
+
+                <!-- Input Selection Deck -->
+                <div class="input-card glass-panel">
+                    <button id="startBtn" class="btn btn-terminal-action">
+                        <span class="bracket">[</span> START OPERATION <span class="bracket">]</span>
+                    </button>
+
+                    <h3 class="panel-subtitle">Active Sequence Deck</h3>
+                    <div id="currentGuessDeck" class="guess-deck">
+                        <div class="slot empty" data-slot="0"></div>
+                        <div class="slot empty" data-slot="1"></div>
+                        <div class="slot empty" data-slot="2"></div>
+                        <div class="slot empty" data-slot="3"></div>
+                    </div>
+                    
+                    <h3 class="panel-subtitle">Select Quantum Node Colors</h3>
+                    <div id="colorPicker" class="color-picker"></div>
+
+                    <button id="submitGuessBtn" class="btn btn-primary" style="display: none;" disabled>
+                        <i aria-hidden="true" class="fas fa-satellite-dish"></i> Fire Quantum Probe
+                    </button>
+                </div>
+
+                <!-- INTEGRATED ROW SEGMENT: Clean & Simple Clue Explanations -->
+                <div class="diagnostics-card glass-panel">
+                    <div class="card-header-accent">
+                        <h3><i aria-hidden="true" class="fas fa-circle-info"></i> INSTRUCTIONS</h3>
+                    </div>
+
+                    <div class="legend-items-group">
+                        <p style="font-size: 14px;">-- Direct Mapping: Top-Left = Node 1, Top-Right = Node 2, Bottom-Left = Node 3, Bottom-Right = Node 4.</p>
+                        <div class="legend-item"><span class="peg green"></span> <p>Right Color, Right Spot</p></div>
+                        <div class="legend-item"><span class="peg yellow"></span> <p>Right Color, Wrong Spot</p></div>
+                        <div class="legend-item"><span class="peg red"></span> <p>Wrong Color Entirely</p></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Modal Popup for Game Over / Win states -->
+    <div id="gameModal" class="modal-overlay">
+        <div class="modal-content glass-panel">
+            <h2 id="modalTitle">System Status</h2>
+            <p id="modalMessage">Message payload goes here.</p>
+            <div id="secretReveal" class="secret-reveal"></div>
+            <button id="restartBtn" class="btn btn-secondary">Initialize Fresh Matrix</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

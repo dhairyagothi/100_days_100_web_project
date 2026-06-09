@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const port = 3000
 const path = require('path');
+const crypto = require('crypto');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const ejs = require('ejs');
@@ -19,17 +20,35 @@ if (!fs.existsSync(uploadsDir)) {
     console.log('uploads/ folder created!');
 }
 
-// Professor ka same storage code
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, uploadsDir); // ✅ absolute path use karo
+        cb(null, uploadsDir);
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname);
+        const ext = path.extname(file.originalname).toLowerCase();
+        const allowedExts = ['.jpg', '.jpeg', '.png', '.webp'];
+        const safeExt = allowedExts.includes(ext) ? ext : '.bin';
+        const safeName = crypto.randomBytes(16).toString('hex') + safeExt;
+        cb(null, safeName);
     },
 });
 
-const upload = multer({ storage: storage });
+
+// ✅ Updated Multer config with file size and type validation filters
+const upload = multer({ 
+    storage: storage,
+    limits: {
+        fileSize: 2 * 1024 * 1024 // 🔒 Hard stop at 2MB per file (Issue #1114)
+    },
+    fileFilter: function (req, file, cb) {
+        // 🔒 Only accept standard images (.jpg, .jpeg, .png, .webp)
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+        if (!allowedTypes.includes(file.mimetype)) {
+            return cb(new Error('Unsupported file format! Only .jpg, .jpeg, .png, and .webp are allowed.'), false);
+        }
+        cb(null, true);
+    }
+});
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'file_uploader.html'));
@@ -39,7 +58,9 @@ app.get('/file', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'file_uploader.html'));
 });
 
-app.post("/upload", upload.array("myFile"), (req, res) => {
+const MAX_FILES = 10;
+
+app.post("/upload", upload.array("myFile", MAX_FILES), (req, res) => {
     console.log("Body: ", req.body);
     console.log("Files: ", req.files);
 

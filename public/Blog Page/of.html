@@ -1,63 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Organic Farming</title>
-
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- External CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="blog.css">
 </head>
+<body class="transition-all duration-300">
 
-<body class="bg-gray-100 flex justify-center p-8">
+<nav class="navbar">
+    <div class="nav-left-group">
+        <a href="index.html" class="project-back-button">
+            <i class="fa-solid fa-arrow-left"></i> Back to Blogs
+        </a>
+        <div class="logo">
+            GreenBlog
+        </div>
+    </div>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html">Categories</a></li>
+        <li><a href="index.html">Blogs</a></li>
+        <li><a href="index.html">About</a></li>
+    </ul>
+    <div class="nav-right">
+        <button id="themeToggle">
+            <span id="themeIcon">☀️</span>
+        </button>
+    </div>
+</nav>
 
-    <!-- Main Content Section -->
-    <div class="w-full max-w-[900px] bg-white p-6 rounded-2xl shadow-md">
-
-        <!-- Image -->
-        <div class="w-full overflow-hidden rounded-xl">
-            <img
-                src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=1770&auto=format&fit=crop"
-                alt="Organic Farming"
-                class="w-full h-64 object-cover rounded-xl"
-            >
+<div class="blog-page-container">
+    <div class="blog-page">
+        <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=1770&auto=format&fit=crop" alt="Organic Farming" class="blog-banner">
+        
+        <h1>Organic Farming</h1>
+        
+        <div class="blog-author">
+            <h3>Eco Expert</h3>
+            <p class="blog-date">Posted on 10/10/2021</p>
         </div>
 
-        <!-- Heading -->
-        <h1 class="text-gray-700 text-5xl font-bold mt-6">
-            Organic Farming
-        </h1>
-
-        <!-- Author -->
-        <div class="text-gray-600 mt-3">
-            <p class="font-semibold text-lg">
-                Author
-            </p>
-
-            <p class="text-sm">
-                Posted on 10/10/2021
-            </p>
-        </div>
-
-        <!-- Blog Content -->
-        <div class="mt-6 text-gray-800 text-justify leading-10 text-xl">
-
+        <div class="blog-content">
             <p>
                 Organic farming is an ancient method of farming. It is a form of agriculture. Organic farming aims at cultivating land and raising crops by keeping the soil alive. Organic wastes are being used in organic farming. Organic farming increases sustainable agricultural production by following eco-friendly ways. It is a unique production management system. It promotes and enhances Argo system health. It is a key factor in maintaining natural and environmental balance. It helps protect the long-term fertility of soils. It is a safer and healthier option for us as well as for the environment. Organic farming is a need of time. It is a demand of time. Nowadays consumers are becoming highly conscious about their health and the foods they consume. Maximum people are opting for organic food. Organic farming is full of good things. It relies on the ecological processes, biodiversity and cycles adapted to local conditions. It ensures soil with fertility with the help of crop rotation. It enables healthy soil structure. It increases the ability of soil to hold water. It naturally prevents crops from iron pesticides and insecticides. Organic farming combines tradition, innovation and science to benefit the shared environment and promote fair relationships and good quality for all involved. Organic farming is a revolution against Green Revolution. There are many drawbacks found in Green Revolution. The Green Revolution leads soil erosion, loss of soil nutrients, loss of nutrition in food and the creation of human diseases. So organic farming is the best and safest option for all.
             </p>
-
-          
         </div>
-
     </div>
+</div>
 
-    <script src="script.js"></script>
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-section">
+            <h2 class="logo">GreenBlog</h2>
+            <p>Discover inspiring articles on technology, lifestyle, travel, agriculture, and web development.</p>
+        </div>
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html">Blogs</a></li>
+                <li><a href="index.html">Categories</a></li>
+                <li><a href="index.html">About</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Categories</h3>
+            <ul>
+                <li><a href="index.html">Technology</a></li>
+                <li><a href="index.html">Lifestyle</a></li>
+                <li><a href="index.html">Travel</a></li>
+                <li><a href="index.html">Agriculture</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Subscribe</h3>
+            <p>Get latest articles directly in your inbox.</p>
+            <form class="newsletter">
+                <input type="email" placeholder="Enter your email" />
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2026 GreenBlog. All rights reserved.</p>
+        <p>created by palak verma</p>
+    </div>
+</footer>
 
+<script src="script.js"></script>
 </body>
-
 </html>
