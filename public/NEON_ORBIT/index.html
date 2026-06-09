@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NEON ORBIT</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <section class="scene">
+        <div class="hud">
+          <h1 class="brand">NEON ORBIT</h1>
+          <div class="chip-wrap">
+            <div id="score" class="chip">Score: 0</div>
+            <div id="difficultyText" class="chip">Difficulty: Easy</div>
+          </div>
+        </div>
+
+        <div class="arena" id="arena">
+          <div class="grid"></div>
+          <div class="vignette"></div>
+          <div id="paddle"></div>
+          <div id="ball"></div>
+
+          <div class="overlay" id="menu">
+            <div class="card">
+              <h2 class="title">Choose Mode</h2>
+              <p class="subtitle">
+                Precision, speed, and chaos — master the orbit.
+              </p>
+              <div class="buttons">
+                <button class="easy" onclick="startGame('easy')">Easy</button>
+                <button class="medium" onclick="startGame('medium')">
+                  Medium
+                </button>
+                <button class="hard" onclick="startGame('hard')">Hard</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="overlay hidden" id="gameOver">
+            <div class="card">
+              <h2 class="title">Game Over</h2>
+              <p class="subtitle">
+                Final Score: <span id="finalScore">0</span>
+              </p>
+              <div class="buttons">
+                <button class="restart" onclick="restartGame()">
+                  Play Again
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="panel">
+        <h2>🎮 Controls</h2>
+        <ul>
+          <li>⬅️ Left Arrow → Move Left</li>
+          <li>➡️ Right Arrow → Move Right</li>
+        </ul>
+        <h2>⚡ Modes</h2>
+        <ul>
+          <li><b>Easy:</b> Smooth realistic rebounds.</li>
+          <li><b>Medium:</b> Faster speed and curved reflections.</li>
+          <li><b>Hard:</b> Aggressive random momentum shifts.</li>
+        </ul>
+        <h2>🔥 Goal</h2>
+        <ul>
+          <li>Keep the neon orb in play as long as possible.</li>
+          <li>Edge hits create sharper attack angles.</li>
+          <li>Each return increases pressure and score.</li>
+        </ul>
+      </aside>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

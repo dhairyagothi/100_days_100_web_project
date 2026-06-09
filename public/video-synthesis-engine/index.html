@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>High-Throughput AI Video Frame-Synthesizer</title>
+    <style>
+        body {
+            background: #020617;
+            color: #f8fafc;
+            font-family: monospace;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #dashboard-layout {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .panel {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: left;
+        }
+
+        canvas {
+            background: #000;
+            border: 2px solid #334155;
+            border-radius: 6px;
+            width: 480px;
+            height: 360px;
+        }
+
+        .control-group {
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            color: #94a3b8;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="range"],
+        select {
+            width: 100%;
+            background: #1e293b;
+            color: #fff;
+            border: 1px solid #475569;
+            padding: 6px;
+            border-radius: 4px;
+        }
+
+        .metrics-hud {
+            font-size: 12px;
+            background: rgba(0, 255, 170, 0.1);
+            border: 1px solid #00ffaa;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 15px;
+            color: #00ffaa;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2 style="color: #00ffaa; margin-bottom: 5px;">🎬 Procedural Chrono-Grid Video Director</h2>
+    <p style="font-size: 11px; color: #64748b; margin-top: 0; margin-bottom: 25px;">Mathematical video frame-synthesizer
+        generating dynamic pixel matrices from scratch.</p>
+
+    <div id="dashboard-layout">
+        <div class="panel">
+            <canvas id="synthesisCanvas" width="480" height="360"></canvas>
+            <div class="metrics-hud">
+                ⚡ Render Latency: <span id="metric-latency">0.00</span> ms<br>
+                🎞️ Active Frame Index: <span id="metric-frame">0</span>
+            </div>
+        </div>
+
+        <div class="panel" style="flex: 1; min-width: 320px;">
+            <h3 style="margin-top: 0; border-bottom: 1px solid #1e293b; padding-bottom: 6px; color: #38bdf8;">Control
+                Console</h3>
+
+            <div class="control-group">
+                <label>Timeline Interpolation Mode</label>
+                <select id="interpolationMode">
+                    <option value="lerp">Linear Interpolation (Lerp)</option>
+                    <option value="step">Procedural Step Function</option>
+                    <option value="sine">Sinusoidal Waveform Transform</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label>Motion Vector Frequency</label>
+                <input type="range" id="motionFrequency" min="1" max="50" value="15">
+            </div>
+
+            <div class="control-group">
+                <label>Render Noise Density</label>
+                <input type="range" id="noiseDensity" min="0" max="100" value="20">
+            </div>
+
+            <div class="control-group">
+                <label>Timeline Timeline Scrub</label>
+                <input type="range" id="timelineScrub" min="0" max="1000" value="0">
+            </div>
+        </div>
+    </div>
+
+    <script src="synthesis-core.js"></script>
+</body>
+
+</html>

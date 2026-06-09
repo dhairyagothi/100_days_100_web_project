@@ -119,6 +119,35 @@ h1 {
   transform: scale(1);
 }
 
+.shortcut-badge {
+  background: rgba(255, 255, 255, 0.08);
+  color: #aaa;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 3px 6px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  font-family: inherit;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  margin-right: 8px;
+  white-space: nowrap;
+  user-select: none;
+  opacity: 1;
+  transform: scale(1);
+}
+
+.shortcut-badge.hidden {
+  opacity: 0;
+  transform: scale(0.8);
+  margin-right: 0;
+  width: 0;
+  padding: 0;
+  border-color: transparent;
+  overflow: hidden;
+}
+
 .mic-icon.listening {
   color: #ff4444;
   animation: micPulse 1s infinite;
