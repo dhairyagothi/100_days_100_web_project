@@ -376,33 +376,29 @@ document.addEventListener('DOMContentLoaded', function(){
             const actions = document.createElement('div'); actions.className = 'actions';
             const btn = document.createElement('button'); btn.className = 'btn primary'; btn.textContent = 'Learn more';
             btn.addEventListener('click', () => {
-    modalBody.replaceChildren();
-
-    const heading = document.createElement('h4');
-    heading.style.margin = '0 0 8px';
-    heading.textContent =
-        card.querySelector('h2')?.textContent || '';
-
-    modalBody.appendChild(heading);
-
-    card.querySelectorAll('p').forEach((p) => {
-        const para = document.createElement('p');
-        para.textContent = p.textContent || '';
-        modalBody.appendChild(para);
-    });
-
-    const note = document.createElement('p');
-    note.style.marginTop = '12px';
-    note.style.color = '#444';
-    note.style.fontSize = '.9rem';
-    note.textContent =
-        'This information is for basic guidance only.';
-
-    modalBody.appendChild(note);
-
-    modalBackdrop.style.display = 'flex';
-    modalBackdrop.setAttribute('aria-hidden', 'false');
-});
+                modalBody.replaceChildren();
+                const heading = document.createElement('h4');
+                heading.style.margin = '0 0 8px';
+                heading.textContent =
+                card.querySelector('h2')?.textContent || '';
+                
+                modalBody.appendChild(heading);
+                
+                card.querySelectorAll('p').forEach((p) => {
+                    const para = document.createElement('p');
+                    para.textContent = p.textContent || '';
+                    modalBody.appendChild(para);
+                });
+                const note = document.createElement('p');
+                note.style.marginTop = '12px';
+                note.style.color = '#444';
+                note.style.fontSize = '.9rem';
+                note.textContent =
+                'This information is for basic guidance only.';
+                modalBody.appendChild(note);
+                modalBackdrop.style.display = 'flex';
+                modalBackdrop.setAttribute('aria-hidden', 'false');
+            });
         }
     });
 
