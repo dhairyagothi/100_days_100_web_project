@@ -284,23 +284,22 @@
     <button class="filter-bar-arrow" id="filterArrow">&#8250;</button>
 
     <nav class="sidebar">
-      <div class="sidebar-link">
-        <img src="icons/home-icon.svg" alt="">
-        <div>Home</div>
-      </div>
-      <div class="sidebar-link">
-        <img src="icons/shorts.svg" alt="">
-        <div>Shorts</div>
-      </div>
-      <div class="sidebar-link is-active">
-        <img src="icons/subscriptions.svg" alt="">
-        <div>Subscriptions</div>
-      </div>
-      <div class="sidebar-link">
-        <img src="icons/you-profile.svg" alt="">
-        <div>You</div>
-      </div>
-    </nav>
+      <div class="sidebar-link is-active" data-section="home">
+  <img src="icons/home-icon.svg" alt="">
+  <div>Home</div>
+</div>
+<div class="sidebar-link" data-section="shorts">
+  <img src="icons/shorts.svg" alt="">
+  <div>Shorts</div>
+</div>
+<div class="sidebar-link" data-section="subscriptions">
+  <img src="icons/subscriptions.svg" alt="">
+  <div>Subscriptions</div>
+</div>
+<div class="sidebar-link" data-section="you">
+  <img src="icons/you-profile.svg" alt="">
+  <div>You</div>
+</div>
 
     <main>
       <section class="video-grid">

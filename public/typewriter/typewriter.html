@@ -1,398 +1,266 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Typewriter</title>
-    <link rel="stylesheet" href="typewriter.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
-      integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-  </head>
 
-  <body>
-    <a
-      href="/"
-      class="project-back-button"
-      style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'"
-      >← Back to Home</a
-    >
-    <div class="theme-toggle" id="themeToggle">🌙</div>
-    <div class="typewriter-machine">
-      <div class="carriage-bar">
-        <div class="carriage-knob knob-left"></div>
-        <div class="carriage-controls">
-          <div class="control-group">
-            <label for="pdfTheme"><i aria-hidden="true" class="fas fa-palette"></i> Style</label>
-            <select id="pdfTheme">
-              <option value="vintage">📜 Vintage</option>
-              <option value="editorial">✍️ Editorial</option>
-              <option value="modern">⚡ Modern</option>
-            </select>
-          </div>
-          <div class="control-group">
-            <label for="pdfTitle"><i aria-hidden="true" class="fas fa-feather"></i> Title</label>
-            <input
-              type="text"
-              id="pdfTitle"
-              placeholder="Doc Title..."
-              maxlength="40"
-            />
-          </div>
-          <div class="control-group">
-            <label for="pdfAuthor"
-              ><i aria-hidden="true" class="fas fa-signature"></i> Author</label
-            >
-            <input
-              type="text"
-              id="pdfAuthor"
-              placeholder="Byline..."
-              maxlength="30"
-            />
-          </div>
-          <div class="button-group-carriage">
-            <button
-              id="exportPdfBtn"
-              class="carriage-btn btn-red"
-              title="Export to PDF"
-            >
-              <i aria-hidden="true" class="fas fa-file-pdf"></i> Export
-            </button>
-            <button
-              id="clearPaperBtn"
-              class="carriage-btn btn-silver"
-              title="Reset Paper"
-            >
-              <i aria-hidden="true" class="fas fa-trash-alt"></i> Clear
-            </button>
-          </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Typewriter</title>
+  <link rel="stylesheet" href="typewriter.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+    integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+<body>
+  <a href="/" class="project-back-button"
+    style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;"
+    onmouseover="this.style.background='#3b82f6';this.style.color='#fff'"
+    onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+  <div class="theme-toggle" id="themeToggle">🌙</div>
+  <div class="typewriter-machine">
+    <div class="carriage-bar">
+      <div class="carriage-knob knob-left"></div>
+      <div class="carriage-controls">
+        <div class="control-group">
+          <label for="pdfTheme"><i aria-hidden="true" class="fas fa-palette"></i> Style</label>
+          <select id="pdfTheme">
+            <option value="vintage">📜 Vintage</option>
+            <option value="editorial">✍️ Editorial</option>
+            <option value="modern">⚡ Modern</option>
+          </select>
         </div>
-        <div class="carriage-knob knob-right"></div>
-      </div>
-
-      <div id="pagesContainer">
-        <div class="paper-sheet page active-page">
-          <span class="typewriterText"></span>
+        <div class="control-group">
+          <label for="pdfTitle"><i aria-hidden="true" class="fas fa-feather"></i> Title</label>
+          <input type="text" id="pdfTitle" placeholder="Doc Title..." maxlength="40" />
         </div>
-      </div>
-
-      <div class="typewriter-body">
-        <div class="input-area">
-          <div style="display: flex; width: 100%; gap: 10px; margin-bottom: 12px;">
-            <input
-              type="text"
-              id="userInput"
-              placeholder="Type here or click the keys below…"
-              style="flex: 1;"
-            />
-            <button 
-              id="addTextBtn" 
-              style="background: #ef4444; color: white; border: none; border-radius: 6px; padding: 0 16px; font-weight: bold; cursor: pointer; transition: background 0.2s;"
-              onmouseover="this.style.background='#dc2626'"
-              onmouseout="this.style.background='#ef4444'"
-            >
-              Add Text
-            </button>
-          </div>
-          <div class="controls">
-            <button id="soundToggle">🔊 Sound ON</button>
-            <button id="copyBtn">📋 Copy</button>
-            <button id="pasteBtn">📥 Paste Text</button>
-            <button id="importTxtBtn">📂 Import TXT</button>
-            <input
-              type="file"
-              id="txtFileInput"
-              accept=".txt"
-              style="display: none"
-            />
-            <button id="downloadPDF">📄 Download PDF</button>
-            <span id="pageCounter">Page 1</span>
-          </div>
-          <div class="counters">
-            <span id="wordCount">Words: 0</span>
-            <span class="counter-separator">|</span>
-            <span id="charCount">Characters: 0</span>
-          </div>
+        <div class="control-group">
+          <label for="pdfAuthor"><i aria-hidden="true" class="fas fa-signature"></i> Author</label>
+          <input type="text" id="pdfAuthor" placeholder="Byline..." maxlength="30" />
         </div>
-        <div class="keyboard">
-          <!-- Numbers row: keys show base char; Shift gives the symbol above -->
-          <div class="keyboard-row" id="row-numbers">
-            <button
-              type="button"
-              class="key dual-key"
-              data-char="1"
-              data-shift="!"
-            >
-              <span class="key-top">!</span><span class="key-bot">1</span>
-            </button>
-            <button
-              type="button"
-              class="key dual-key"
-              data-char="2"
-              data-shift="@"
-            >
-              <span class="key-top">@</span><span class="key-bot">2</span>
-            </button>
-            <button
-              type="button"
-              class="key dual-key"
-              data-char="3"
-              data-shift="#"
-            >
-              <span class="key-top">#</span><span class="key-bot">3</span>
-            </button>
-            <button
-              type="button"
-              class="key dual-key"
-              data-char="4"
-              data-shift="$"
-            >
-              <span class="key-top">$</span><span class="key-bot">4</span>
-            </button>
-            <button
-              type="button"
-              class="key dual-key"
-              data-char="5"
-              data-shift="%"
-            >
-              <span class="key-top">%</span><span class="key-bot">5</span>
-            </button>
-            <button
-              type="button"
-              class="key dual-key"
-              data-char="6"
-              data-shift="^"
-            >
-              <span class="key-top">^</span><span class="key-bot">6</span>
-            </button>
-            <button
-              type="button"
-              class="key dual-key"
-              data-char="7"
-              data-shift="&amp;"
-            >
-              <span class="key-top">&amp;</span><span class="key-bot">7</span>
-            </button>
-            <button
-              type="button"
-              class="key dual-key"
-              data-char="8"
-              data-shift="*"
-            >
-              <span class="key-top">*</span><span class="key-bot">8</span>
-            </button>
-            <button
-              type="button"
-              class="key dual-key"
-              data-char="9"
-              data-shift="("
-            >
-              <span class="key-top">(</span><span class="key-bot">9</span>
-            </button>
-            <button
-              type="button"
-              class="key dual-key"
-              data-char="0"
-              data-shift=")"
-            >
-              <span class="key-top">)</span><span class="key-bot">0</span>
-            </button>
-          </div>
-
-          <!-- Symbol row 1 -->
-          <div class="keyboard-row" id="row-symbols1">
-            <button
-              type="button"
-              class="key sym-key dual-key"
-              data-char="-"
-              data-shift="_"
-            >
-              <span class="key-top">_</span><span class="key-bot">-</span>
-            </button>
-            <button
-              type="button"
-              class="key sym-key dual-key"
-              data-char="="
-              data-shift="+"
-            >
-              <span class="key-top">+</span><span class="key-bot">=</span>
-            </button>
-            <button
-              type="button"
-              class="key sym-key dual-key"
-              data-char="["
-              data-shift="{"
-            >
-              <span class="key-top">{</span><span class="key-bot">[</span>
-            </button>
-            <button
-              type="button"
-              class="key sym-key dual-key"
-              data-char="]"
-              data-shift="}"
-            >
-              <span class="key-top">}</span><span class="key-bot">]</span>
-            </button>
-            <button
-              type="button"
-              class="key sym-key dual-key"
-              data-char="\"
-              data-shift="|"
-            >
-              <span class="key-top">|</span><span class="key-bot">\</span>
-            </button>
-            <button
-              type="button"
-              class="key sym-key dual-key"
-              data-char=";"
-              data-shift=":"
-            >
-              <span class="key-top">:</span><span class="key-bot">;</span>
-            </button>
-            <!-- prettier-ignore -->
-            <button
-              type="button"
-              class="key sym-key dual-key"
-              data-char="'"
-              data-shift="&quot;"
-            >
-              <span class="key-top">"</span><span class="key-bot">'</span>
-            </button>
-            <button
-              type="button"
-              class="key sym-key dual-key"
-              data-char=","
-              data-shift="<"
-            >
-              <span class="key-top">&lt;</span><span class="key-bot">,</span>
-            </button>
-            <button
-              type="button"
-              class="key sym-key dual-key"
-              data-char="."
-              data-shift=">"
-            >
-              <span class="key-top">&gt;</span><span class="key-bot">.</span>
-            </button>
-            <button
-              type="button"
-              class="key sym-key dual-key"
-              data-char="/"
-              data-shift="?"
-            >
-              <span class="key-top">?</span><span class="key-bot">/</span>
-            </button>
-          </div>
-
-          <div class="keyboard-row" id="row1">
-            <button type="button" class="key" data-char="q">Q</button>
-            <button type="button" class="key" data-char="w">W</button>
-            <button type="button" class="key" data-char="e">E</button>
-            <button type="button" class="key" data-char="r">R</button>
-            <button type="button" class="key" data-char="t">T</button>
-            <button type="button" class="key" data-char="y">Y</button>
-            <button type="button" class="key" data-char="u">U</button>
-            <button type="button" class="key" data-char="i">I</button>
-            <button type="button" class="key" data-char="o">O</button>
-            <button type="button" class="key" data-char="p">P</button>
-          </div>
-
-          <div class="keyboard-row">
-            <button type="button" class="key" data-char="a">A</button>
-            <button type="button" class="key" data-char="s">S</button>
-            <button type="button" class="key" data-char="d">D</button>
-            <button type="button" class="key" data-char="f">F</button>
-            <button type="button" class="key" data-char="g">G</button>
-            <button type="button" class="key" data-char="h">H</button>
-            <button type="button" class="key" data-char="j">J</button>
-            <button type="button" class="key" data-char="k">K</button>
-            <button type="button" class="key" data-char="l">L</button>
-          </div>
-
-          <div class="keyboard-row">
-            <button type="button" class="key" data-char="z">Z</button>
-            <button type="button" class="key" data-char="x">X</button>
-            <button type="button" class="key" data-char="c">C</button>
-            <button type="button" class="key" data-char="v">V</button>
-            <button type="button" class="key" data-char="b">B</button>
-            <button type="button" class="key" data-char="n">N</button>
-            <button type="button" class="key" data-char="m">M</button>
-          </div>
-
-          <div class="keyboard-row keyboard-row--functions">
-            <button
-              type="button"
-              class="key caps-lock"
-              data-char="CAPSLOCK"
-              aria-pressed="false"
-            >
-              CAPS LOCK
-            </button>
-            <button
-              type="button"
-              class="key shift-key"
-              data-char="SHIFT"
-              aria-pressed="false"
-            >
-              ⇧ SHIFT
-            </button>
-            <button type="button" class="key tab-key" data-char="TAB">
-              ⇥ TAB
-            </button>
-            <button type="button" class="key enter-key" data-char="ENTER">
-              ↵ RET
-            </button>
-            <button type="button" class="key space" data-char="SPACE">
-              SPACE
-            </button>
-            <button type="button" class="key backspace" data-char="BACKSPACE">
-              ⌫ DEL
-            </button>
-          </div>
-        </div>
-        <div class="cursor-controls">
-          <button class="cursor-btn" id="leftCursor">←</button>
-          <button class="cursor-btn" id="rightCursor">→</button>
-        </div>
-      </div>
-    </div>
-    <div class="toast-container" id="pdfToast"></div>
-
-    <!-- ── Clear Confirmation Modal ───────────────────────────────────── -->
-    <div id="clearModal" class="clear-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="clearModalTitle">
-      <div class="clear-modal-box">
-        <div class="clear-modal-icon">🗑️</div>
-        <h2 class="clear-modal-title" id="clearModalTitle">Clear All Pages?</h2>
-        <p class="clear-modal-desc">This will permanently erase every word typed across all pages. This cannot be undone.</p>
-        <div class="clear-modal-actions">
-          <button id="clearModalCancel" class="clear-modal-btn clear-modal-btn--cancel">Cancel</button>
-          <button id="clearModalConfirm" class="clear-modal-btn clear-modal-btn--confirm">
-            <i class="fas fa-trash-alt" aria-hidden="true"></i> Yes, Clear All
+        <div class="button-group-carriage">
+          <button id="exportPdfBtn" class="carriage-btn btn-red" title="Export — choose format">
+            <i aria-hidden="true" class="fas fa-file-export"></i> Export
+          </button>
+          <button id="clearPaperBtn" class="carriage-btn btn-silver" title="Reset Paper">
+            <i aria-hidden="true" class="fas fa-trash-alt"></i> Clear
           </button>
         </div>
       </div>
+      <div class="carriage-knob knob-right"></div>
     </div>
 
-    <script src="typewriter.js"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
-      integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-  </body>
+    <div id="pagesContainer" data-style="vintage">
+      <div class="paper-sheet page active-page">
+        <span class="typewriterText"></span>
+      </div>
+    </div>
+
+    <div class="typewriter-body">
+      <div class="input-area">
+        <div style="display: flex; width: 100%; gap: 10px; margin-bottom: 12px;">
+          <input type="text" id="userInput" placeholder="Type here or click the keys below…" style="flex: 1;" />
+          <button id="addTextBtn"
+            style="background: #ef4444; color: white; border: none; border-radius: 6px; padding: 0 16px; font-weight: bold; cursor: pointer; transition: background 0.2s;"
+            onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'">
+            Add Text
+          </button>
+        </div>
+        <div class="controls">
+          <button id="soundToggle">🔊 Sound ON</button>
+          <button id="copyBtn">📋 Copy</button>
+          <button id="pasteBtn">📥 Paste Text</button>
+          <button id="importTxtBtn">📂 Import TXT</button>
+          <input type="file" id="txtFileInput" accept=".txt" style="display: none" />
+          <button id="downloadPDF">📄 Download PDF</button>
+          <span id="pageCounter">Page 1</span>
+        </div>
+        <div class="counters">
+          <span id="wordCount">Words: 0</span>
+          <span class="counter-separator">|</span>
+          <span id="charCount">Characters: 0</span>
+        </div>
+      </div>
+      <div class="keyboard">
+        <!-- Numbers row: keys show base char; Shift gives the symbol above -->
+        <div class="keyboard-row" id="row-numbers">
+          <button type="button" class="key dual-key" data-char="1" data-shift="!">
+            <span class="key-top">!</span><span class="key-bot">1</span>
+          </button>
+          <button type="button" class="key dual-key" data-char="2" data-shift="@">
+            <span class="key-top">@</span><span class="key-bot">2</span>
+          </button>
+          <button type="button" class="key dual-key" data-char="3" data-shift="#">
+            <span class="key-top">#</span><span class="key-bot">3</span>
+          </button>
+          <button type="button" class="key dual-key" data-char="4" data-shift="$">
+            <span class="key-top">$</span><span class="key-bot">4</span>
+          </button>
+          <button type="button" class="key dual-key" data-char="5" data-shift="%">
+            <span class="key-top">%</span><span class="key-bot">5</span>
+          </button>
+          <button type="button" class="key dual-key" data-char="6" data-shift="^">
+            <span class="key-top">^</span><span class="key-bot">6</span>
+          </button>
+          <button type="button" class="key dual-key" data-char="7" data-shift="&amp;">
+            <span class="key-top">&amp;</span><span class="key-bot">7</span>
+          </button>
+          <button type="button" class="key dual-key" data-char="8" data-shift="*">
+            <span class="key-top">*</span><span class="key-bot">8</span>
+          </button>
+          <button type="button" class="key dual-key" data-char="9" data-shift="(">
+            <span class="key-top">(</span><span class="key-bot">9</span>
+          </button>
+          <button type="button" class="key dual-key" data-char="0" data-shift=")">
+            <span class="key-top">)</span><span class="key-bot">0</span>
+          </button>
+        </div>
+
+        <!-- Symbol row 1 -->
+        <div class="keyboard-row" id="row-symbols1">
+          <button type="button" class="key sym-key dual-key" data-char="-" data-shift="_">
+            <span class="key-top">_</span><span class="key-bot">-</span>
+          </button>
+          <button type="button" class="key sym-key dual-key" data-char="=" data-shift="+">
+            <span class="key-top">+</span><span class="key-bot">=</span>
+          </button>
+          <button type="button" class="key sym-key dual-key" data-char="[" data-shift="{">
+            <span class="key-top">{</span><span class="key-bot">[</span>
+          </button>
+          <button type="button" class="key sym-key dual-key" data-char="]" data-shift="}">
+            <span class="key-top">}</span><span class="key-bot">]</span>
+          </button>
+          <button type="button" class="key sym-key dual-key" data-char="\" data-shift="|">
+            <span class="key-top">|</span><span class="key-bot">\</span>
+          </button>
+          <button type="button" class="key sym-key dual-key" data-char=";" data-shift=":">
+            <span class="key-top">:</span><span class="key-bot">;</span>
+          </button>
+          <!-- prettier-ignore -->
+          <button type="button" class="key sym-key dual-key" data-char="'" data-shift="&quot;">
+            <span class="key-top">"</span><span class="key-bot">'</span>
+          </button>
+          <button type="button" class="key sym-key dual-key" data-char="," data-shift="<">
+            <span class="key-top">&lt;</span><span class="key-bot">,</span>
+          </button>
+          <button type="button" class="key sym-key dual-key" data-char="." data-shift=">">
+            <span class="key-top">&gt;</span><span class="key-bot">.</span>
+          </button>
+          <button type="button" class="key sym-key dual-key" data-char="/" data-shift="?">
+            <span class="key-top">?</span><span class="key-bot">/</span>
+          </button>
+        </div>
+
+        <div class="keyboard-row" id="row1">
+          <button type="button" class="key" data-char="q">Q</button>
+          <button type="button" class="key" data-char="w">W</button>
+          <button type="button" class="key" data-char="e">E</button>
+          <button type="button" class="key" data-char="r">R</button>
+          <button type="button" class="key" data-char="t">T</button>
+          <button type="button" class="key" data-char="y">Y</button>
+          <button type="button" class="key" data-char="u">U</button>
+          <button type="button" class="key" data-char="i">I</button>
+          <button type="button" class="key" data-char="o">O</button>
+          <button type="button" class="key" data-char="p">P</button>
+        </div>
+
+        <div class="keyboard-row">
+          <button type="button" class="key" data-char="a">A</button>
+          <button type="button" class="key" data-char="s">S</button>
+          <button type="button" class="key" data-char="d">D</button>
+          <button type="button" class="key" data-char="f">F</button>
+          <button type="button" class="key" data-char="g">G</button>
+          <button type="button" class="key" data-char="h">H</button>
+          <button type="button" class="key" data-char="j">J</button>
+          <button type="button" class="key" data-char="k">K</button>
+          <button type="button" class="key" data-char="l">L</button>
+        </div>
+
+        <div class="keyboard-row">
+          <button type="button" class="key" data-char="z">Z</button>
+          <button type="button" class="key" data-char="x">X</button>
+          <button type="button" class="key" data-char="c">C</button>
+          <button type="button" class="key" data-char="v">V</button>
+          <button type="button" class="key" data-char="b">B</button>
+          <button type="button" class="key" data-char="n">N</button>
+          <button type="button" class="key" data-char="m">M</button>
+        </div>
+
+        <div class="keyboard-row keyboard-row--functions">
+          <button type="button" class="key caps-lock" data-char="CAPSLOCK" aria-pressed="false">
+            CAPS LOCK
+          </button>
+          <button type="button" class="key shift-key" data-char="SHIFT" aria-pressed="false">
+            ⇧ SHIFT
+          </button>
+          <button type="button" class="key tab-key" data-char="TAB">
+            ⇥ TAB
+          </button>
+          <button type="button" class="key enter-key" data-char="ENTER">
+            ↵ RET
+          </button>
+          <button type="button" class="key space" data-char="SPACE">
+            SPACE
+          </button>
+          <button type="button" class="key backspace" data-char="BACKSPACE">
+            ⌫ DEL
+          </button>
+        </div>
+      </div>
+      <div class="cursor-controls">
+        <button class="cursor-btn" id="leftCursor">←</button>
+        <button class="cursor-btn" id="rightCursor">→</button>
+      </div>
+    </div>
+  </div>
+  <div class="toast-container" id="pdfToast"></div>
+
+  <!-- ── Clear Confirmation Modal ───────────────────────────────────── -->
+  <div id="clearModal" class="clear-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="clearModalTitle">
+    <div class="clear-modal-box">
+      <div class="clear-modal-icon">🗑️</div>
+      <h2 class="clear-modal-title" id="clearModalTitle">Clear All Pages?</h2>
+      <p class="clear-modal-desc">This will permanently erase every word typed across all pages. This cannot be undone.
+      </p>
+      <div class="clear-modal-actions">
+        <button id="clearModalCancel" class="clear-modal-btn clear-modal-btn--cancel">Cancel</button>
+        <button id="clearModalConfirm" class="clear-modal-btn clear-modal-btn--confirm">
+          <i class="fas fa-trash-alt" aria-hidden="true"></i> Yes, Clear All
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Export Format Picker Modal ─────────────────────────────────── -->
+  <div id="exportModal" class="export-modal-overlay" role="dialog" aria-modal="true"
+    aria-labelledby="exportModalTitle">
+    <div class="export-modal-box">
+          <div class="export-modal-icon">📤</div>
+          <h2 class="export-modal-title" id="exportModalTitle">Export Document</h2>
+          <p class="export-modal-desc">Choose the format you want to export your typed document as.</p>
+          <div class="export-modal-options">
+            <button id="exportAsPdfBtn" class="export-option-btn">
+              <i class="fas fa-file-pdf" aria-hidden="true"></i>
+              <span class="export-option-label">PDF</span>
+              <span class="export-option-desc">Styled, themed document</span>
+            </button>
+            <button id="exportAsTxtBtn" class="export-option-btn">
+              <i class="fas fa-file-alt" aria-hidden="true"></i>
+              <span class="export-option-label">Plain Text</span>
+              <span class="export-option-desc">Raw .txt file download</span>
+            </button>
+          </div>
+          <button id="exportModalCancel" class="export-modal-cancel">Cancel</button>
+        </div>
+      </div>
+
+      <script src="typewriter.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+        integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+
 </html>

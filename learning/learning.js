@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const nextTopicTitle = document.getElementById('nextTopicTitle');
   const topicSearch = document.getElementById('topicSearch');
   const clearSearch = document.getElementById('clearSearch');
+  const searchResultsInfo = document.getElementById('searchResultsInfo');
   const menuToggle = document.getElementById('menuToggle');
   const navButtons = document.getElementById('navButtons');
   const sidebarToggle = document.getElementById('sidebarToggle');
@@ -158,6 +159,36 @@ document.addEventListener('DOMContentLoaded', async () => {
     const completed = learningProgress.completedTopics.length;
     const percentage = total ? Math.round((completed / total) * 100) : 0;
 
+    const completedTopicsCount =
+  document.getElementById(
+    'completedTopicsCount'
+  );
+
+const totalTopicsCount =
+  document.getElementById(
+    'totalTopicsCount'
+  );
+
+const progressPercentageCard =
+  document.getElementById(
+    'progressPercentageCard'
+  );
+
+if (completedTopicsCount) {
+  completedTopicsCount.textContent =
+    completed;
+}
+
+if (totalTopicsCount) {
+  totalTopicsCount.textContent =
+    total;
+}
+
+if (progressPercentageCard) {
+  progressPercentageCard.textContent =
+    percentage + '%';
+}
+
     const fill = document.getElementById('overallProgressFill');
     const text = document.getElementById('overallProgressText');
 
@@ -270,6 +301,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       const categories = document.querySelectorAll('.category-group');
+      let totalMatches = 0;
 
       categories.forEach((catGroup) => {
         const topics = catGroup.querySelectorAll('.topic-item');
@@ -280,6 +312,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           if (title.includes(query)) {
             item.style.display = '';
             visibleCount++;
+            totalMatches++;
           } else {
             item.style.display = 'none';
           }
@@ -298,6 +331,14 @@ document.addEventListener('DOMContentLoaded', async () => {
           catGroup.style.display = '';
         }
       });
+      if (!query) {
+          searchResultsInfo.textContent = 'Browse all topics';
+        } else if (totalMatches === 0) {
+           searchResultsInfo.textContent = 'No topics found';
+         } else {
+           searchResultsInfo.textContent =
+    `${totalMatches} topic${totalMatches > 1 ? 's' : ''} found`;
+          }
     });
   }
 
@@ -306,6 +347,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       topicSearch.value = '';
       topicSearch.dispatchEvent(new Event('input'));
       topicSearch.focus();
+      searchResultsInfo.textContent =
+      'Browse all topics';
     });
   }
 
@@ -332,6 +375,38 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   window.addEventListener('hashchange', handleRouting);
+
+  function getSkeletonMarkup() {
+  return `
+    <div class="skeleton-loader">
+
+      <div class="skeleton-title"></div>
+
+      <div class="skeleton-meta"></div>
+
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line medium"></div>
+
+      <br>
+
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line short"></div>
+
+      <br>
+
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line medium"></div>
+
+      <br>
+
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line short"></div>
+
+    </div>
+  `;
+}
 
   /* ============================================================
      MARKDOWN PARSING & POST-PROCESSING
@@ -361,15 +436,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       launchQuiz(topic.categoryId, topic.title);
       return;
     }
-
-    if (contentViewport) {
-      contentViewport.innerHTML = `
-        <div class="loading-article">
-          <i class="fas fa-circle-notch fa-spin"></i>
-          <p>Loading "${topic.title}"...</p>
-        </div>
-      `;
-    }
+   if (contentViewport) {
+  contentViewport.innerHTML =
+    getSkeletonMarkup();
+   }
 
     try {
       const response = await fetch(topic.file);
@@ -997,13 +1067,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   loadProgress();
 
-  document
-    .getElementById('continueLearningBtn')
-    ?.addEventListener('click', () => {
-      if (learningProgress.lastTopic) {
-        window.location.hash = '#' + learningProgress.lastTopic;
-      }
-    });
+document
+  .getElementById('continueLearningBtn')
+  ?.addEventListener('click', () => {
+
+    if (!learningProgress.lastTopic) {
+
+      showToast?.(
+        'Start a lesson to track progress'
+      );
+
+      return;
+    }
+
+    window.location.hash =
+      '#' + learningProgress.lastTopic;
+  });
 
   await loadQuizData();
   await loadRegistry();
