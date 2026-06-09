@@ -395,16 +395,20 @@ function updateWhatIfSummary(plan) {
   const entries = entered.map(([sem, sgpa]) => `Sem ${sem}: <strong>${formatNum(sgpa)}</strong>`).join(', ');
   const req = calc.impossible ? 'more than 10.0 (impossible)' : formatNum(calc.requiredSgpa);
 
-  $('#whatifSummary').innerHTML = `
-    <p>📌 <strong>What-If:</strong> With ${entries}, you now need an average SGPA of <strong>${req}</strong> across the remaining <strong>${calc.semestersLeftAfterWhatIf}</strong> semester(s).</p>
-  `;
+  $('#whatifSummary').innerHTML = `<p>📌 
+  <strong>What-If:</strong> With ${entries}, you now need an average SGPA of <strong>${req}</strong> 
+  across the remaining <strong>${calc.semestersLeftAfterWhatIf}</strong> semester(s).</p>`;
 }
 
 // ===== Main Calculate =====
 function calculatePlan() {
   const data = getFormData();
 
-  if ([data.currentCgpa, data.completedSemesters, data.targetCgpa, data.remainingSemesters].some((v) => v === null || isNaN(v))) {
+  if ([data.currentCgpa, 
+    data.completedSemesters, 
+    data.targetCgpa, 
+    data.remainingSemesters]
+    .some((v) => v === null || isNaN(v))) {
     alert('Please fill in all required fields.');
     return;
   }
@@ -449,8 +453,7 @@ function renderSavedPlans() {
 
   container.innerHTML = plans
     .map(
-      (plan, idx) => `
-    <div class="plan-item" data-idx="${idx}">
+      (plan, idx) => `<div class="plan-item" data-idx="${idx}">
       <div class="plan-info">
         <h4>${escapeHtml(plan.name)}</h4>
         <p>CGPA ${formatNum(plan.data.currentCgpa)} → ${formatNum(plan.data.targetCgpa)} · ${plan.data.remainingSemesters} sem remaining · Req: ${formatNum(plan.calc.requiredSgpa)}</p>
@@ -459,8 +462,7 @@ function renderSavedPlans() {
         <button type="button" class="load-btn" data-idx="${idx}">Load</button>
         <button type="button" class="delete-btn" data-idx="${idx}">Delete</button>
       </div>
-    </div>
-  `
+    </div>`
     )
     .join('');
 
@@ -499,6 +501,10 @@ function loadPlan(idx) {
 
   renderResults(currentPlan);
   renderPredictor(currentPlan);
+  $('#resultsCard').scrollIntoView({ 
+    block: 'start',
+    behavior: 'smooth'
+  });
 }
 
 function deletePlan(idx) {

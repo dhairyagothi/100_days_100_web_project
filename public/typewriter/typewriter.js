@@ -434,7 +434,31 @@ function showPdfToast(msg, isSuccess = true) {
   }, 3000);
 }
 
-// Carriage Bar Reset Button
+// Carriage Bar Reset Button — custom UI modal (replaces native confirm())
+const clearModal        = document.getElementById("clearModal");
+const clearModalCancel  = document.getElementById("clearModalCancel");
+const clearModalConfirm = document.getElementById("clearModalConfirm");
+
+function openClearModal()  { clearModal.classList.add("is-open");    }
+function closeClearModal() { clearModal.classList.remove("is-open"); }
+
+function executeClearAll() {
+  pagesContainer.innerHTML = `
+    <div class="paper-sheet page active-page">
+      <span class="typewriterText" contenteditable="false"></span>
+    </div>
+  `;
+  currentPage = 0;
+  paperContent = "";
+  cursorPos = 0;
+  userInput.value = "";
+  pageCounter.innerText = "Page 1";
+  updateCopyButtonState();
+  updateCounters();
+  showPdfToast("All pages cleared!");
+  playHeavyKey();
+}
+
 const clearPaperBtn = document.getElementById("clearPaperBtn");
 if (clearPaperBtn) {
   clearPaperBtn.addEventListener("click", () => {
@@ -443,22 +467,20 @@ if (clearPaperBtn) {
       showPdfToast("Paper is already clean!");
       return;
     }
-    if (confirm("Are you sure you want to clear all typed paper pages?")) {
-      pagesContainer.innerHTML = `
-                <div class="paper-sheet page active-page">
-                    <span class="typewriterText" contenteditable="false"></span>
-                </div>
-            `;
-      currentPage = 0;
-      paperContent = "";
-      cursorPos = 0;
-      userInput.value = "";
-      pageCounter.innerText = "Page 1";
-      updateCopyButtonState();
-      updateCounters();
-      showPdfToast("All pages cleared!");
-      playHeavyKey();
-    }
+    openClearModal();
+  });
+}
+
+if (clearModalCancel)  clearModalCancel.addEventListener("click", closeClearModal);
+if (clearModalConfirm) clearModalConfirm.addEventListener("click", () => {
+  closeClearModal();
+  executeClearAll();
+});
+
+// Close modal when clicking the backdrop
+if (clearModal) {
+  clearModal.addEventListener("click", (e) => {
+    if (e.target === clearModal) closeClearModal();
   });
 }
 
