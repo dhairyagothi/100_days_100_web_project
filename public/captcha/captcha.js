@@ -475,68 +475,41 @@ const updateLockoutUI = () => {
 const verifyCaptcha = () => {
     if (Date.now() < lockoutEndTime) return;
 
-    if (selectedType === 'image' && !selectedImageAnswer) {
-        resultMessage.textContent = 'Please select an image before submitting.';
-        resultMessage.classList.add('error');
-        resultMessage.classList.remove('success');
-        return;
-    }
+  if (selectedType === "image" && !selectedImageAnswer) {
+      resultMessage.textContent = "Please select an image before submitting.";
+      resultMessage.classList.add('error');
+      resultMessage.classList.remove('success');
+      return;
+  }
 
-    const userInput = selectedType === 'image'
-        ? selectedImageAnswer.toLowerCase()
-        : textInput.value.trim().toLowerCase();
-
-    const isCorrect = userInput === currentCaptcha.toString().toLowerCase();
-    
-    // Update analytics
-    analytics.totalAttempts++;
-    
-    if (isCorrect) {
-        analytics.successful++;
-        analytics.currentStreak++;
-        if (analytics.currentStreak > analytics.bestStreak) {
-            analytics.bestStreak = analytics.currentStreak;
-        }
-        
-        resultMessage.textContent = 'Very Good! You passed the Test.';
-        resultMessage.classList.add('success');
-        resultMessage.classList.remove('error');
-        attempts = 0;
-        
-        setTimeout(() => {
-            textInput.value = '';
-            resultMessage.textContent = '';
-            resultMessage.className = 'result';
-            generateCaptcha();
-        }, 1500);
-    } else {
-        analytics.failed++;
-        analytics.currentStreak = 0;
-        
-        attempts++;
-        if (attempts >= maxAttempts) {
-            lockoutUser();
-        } else {
-            resultMessage.textContent = `Incorrect. Try again. (Attempt ${attempts}/${maxAttempts})`;
-            resultMessage.classList.add('error');
-            resultMessage.classList.remove('success');
-        }
-    }
-    
-    // Add to recent activity
-    analytics.recentActivity.unshift({
-        timestamp: Date.now(),
-        difficulty: selectedDifficulty,
-        result: isCorrect ? 'success' : 'fail'
-    });
-    
-    // Keep only last 5
-    if (analytics.recentActivity.length > 5) {
-        analytics.recentActivity = analytics.recentActivity.slice(0,5);
-    }
-    
-    saveAnalytics();
-    updateAnalyticsUI();
+  const userInput = 
+  selectedType == "image"
+  ? selectedImageAnswer.toLowerCase()
+  : textInput.value.trim().toLowerCase();
+  
+  const isCorrect = userInput === currentCaptcha.toString().toLowerCase();
+  
+  if (isCorrect) {
+      resultMessage.textContent = "Very Good! You passed the Test.";
+      resultMessage.classList.add('success');
+      resultMessage.classList.remove('error');
+      attempts = 0;
+      setTimeout(() => {
+          textInput.value = "";
+          resultMessage.textContent = "";
+          resultMessage.className = 'result';
+          generateCaptcha();
+      }, 1500);
+  } else {
+      attempts++;
+      if (attempts >= maxAttempts) {
+          lockoutUser();
+      } else {
+          resultMessage.textContent = `Sorry, your input is incorrect. Please try again. (Attempt ${attempts}/${maxAttempts})`;
+          resultMessage.classList.add('error');
+          resultMessage.classList.remove('success');
+      }
+  }
 };
 
 // --- Reset Button ---
