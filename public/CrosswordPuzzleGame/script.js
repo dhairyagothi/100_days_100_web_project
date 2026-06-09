@@ -128,6 +128,7 @@ function loadPuzzle(index) {
 
             input.addEventListener("input", () => {
                 const val = input.value.toUpperCase();
+    
                 if (val === word.answer[i]) {
                     input.classList.add("correct");
                     input.classList.remove("incorrect");
@@ -135,7 +136,16 @@ function loadPuzzle(index) {
                     input.classList.add("incorrect");
                     input.classList.remove("correct");
                 }
+                if(input.value.length >= 1 && input.nextElementSibling){
+                    input.nextElementSibling.focus();
+                }
             });
+            
+            input.addEventListener("keydown", (e) => {
+                if(e.key === "Backspace" && input.value.length === 0 && input.previousElementSibling ){
+                    input.previousElementSibling.focus();
+                }
+            })
 
             row.appendChild(input);
         }
