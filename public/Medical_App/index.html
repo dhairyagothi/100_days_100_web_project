@@ -7,12 +7,7 @@
             window.location.replace(window.location.pathname + '/');
         }
     </script>
-    <script>
-        // Enforce trailing slash redirect if accessed without trailing slash or file name
-        if (window.location.pathname.endsWith('/Medical_App')) {
-            window.location.replace(window.location.pathname + '/');
-        }
-    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedConsult Dashboard</title>
@@ -32,19 +27,13 @@
     <link rel="stylesheet" href="css/animation.css">
     <link rel="stylesheet" href="css/hero.css">
     <link rel="stylesheet" href="assets/css/auth.css">
-    <link rel="stylesheet" href="css/animation.css">
-    <link rel="stylesheet" href="css/hero.css">
-    <link rel="stylesheet" href="assets/css/auth.css">
 </head>
 <body>
-
-<div id="appShell">
 
 
 <div id="appShell">
 
     <!-- Sidebar Navigation -->
-    <aside class="sidebar" id="sidebar">
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="logo-wrapper">
@@ -224,12 +213,10 @@
 </section>
 
             <!-- Quick Stats -->
-            <!-- Quick Stats -->
             <section class="stats-section">
                 <h2>Quick Overview</h2>
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-card-icon primary"><i class="ph ph-user-md"></i></div>
                         <div class="stat-card-icon primary"><i class="ph ph-user-md"></i></div>
                         <div class="stat-card-content">
                             <h3>Available Doctors</h3>
@@ -239,7 +226,6 @@
                     </div>
                     <div class="stat-card">
                         <div class="stat-card-icon success"><i class="ph ph-calendar-check"></i></div>
-                        <div class="stat-card-icon success"><i class="ph ph-calendar-check"></i></div>
                         <div class="stat-card-content">
                             <h3>Upcoming Appointments</h3>
                             <p class="stat-value">3</p>
@@ -247,7 +233,6 @@
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-card-icon info"><i class="ph ph-heart"></i></div>
                         <div class="stat-card-icon info"><i class="ph ph-heart"></i></div>
                         <div class="stat-card-content">
                             <h3>Health Score</h3>
@@ -270,7 +255,6 @@
                 </div>
             </section>
 
-            <!-- Available Doctors -->
             <!-- Available Doctors -->
             <section class="doctors-section">
                 <div class="section-header">
@@ -306,7 +290,6 @@
                         </div>
                         <div class="doctor-card-footer">
                             <button class="btn btn-secondary book-btn" data-doctor="Dr. Sarah Jenkins" data-specialty="Cardiologist">
-                                <i class="ph ph-calendar"></i> Book Now
                                 <i class="ph ph-calendar"></i> Book Now
                             </button>
                         </div>
@@ -384,7 +367,6 @@
                     <section class="card" data-role="patient">
                         <div class="card-header">
                             <div class="card-icon primary"><i class="ph ph-stethoscope"></i></div>
-                            <div class="card-icon primary"><i class="ph ph-stethoscope"></i></div>
                             <h2>Request Consultation</h2>
                         </div>
                         <form id="requestForm" class="modern-form" novalidate>
@@ -422,7 +404,6 @@
                                 </div>
                             </div>
                             <button type="button" class="btn-text advanced-toggle" id="toggleAdvancedBtn">
-                                <i class="ph ph-caret-down"></i> Show Advanced Details
                                 <i class="ph ph-caret-down"></i> Show Advanced Details
                             </button>
                             <div id="advancedFields" class="advanced-fields hidden">
@@ -492,11 +473,11 @@
                             <div class="form-actions">
                                 <button type="button" class="btn btn-outline" id="resetRequestBtn">
                                     <i class="ph ph-arrow-counter-clockwise"></i> Clear
-                                    <i class="ph ph-arrow-counter-clockwise"></i> Clear
+                                    
                                 </button>
                                 <button type="submit" class="btn btn-primary" id="submitRequestBtn">
                                     <i class="ph ph-paper-plane-right"></i> Submit Request
-                                    <i class="ph ph-paper-plane-right"></i> Submit Request
+                                    
                                 </button>
                             </div>
                         </form>
@@ -515,25 +496,11 @@
                     </section>
                 </div>
 
-                    <section class="card is-role-hidden" data-role="doctor">
-                        <div class="card-header">
-                            <div class="card-icon primary"><i class="ph ph-stethoscope"></i></div>
-                            <h2>Doctor Controls</h2>
-                        </div>
-                        <p class="role-note">Manage your availability for incoming consultations.</p>
-                        <div class="form-actions" style="margin-top:1rem;">
-                            <button type="button" id="availabilityToggle" class="btn btn-primary">Set Available</button>
-                        </div>
-                        <p id="availabilityStatus" class="disclaimer">Currently: Offline</p>
-                    </section>
-                </div>
-
                 <div class="dashboard-column right-column">
                     <section class="card" id="consultation-status">
-                    <section class="card" id="consultation-status">
                         <div class="card-header">
                             <div class="card-icon info"><i class="ph ph-activity"></i></div>
-                            <div class="card-icon info"><i class="ph ph-activity"></i></div>
+                            
                             <h2>Live Progress Status</h2>
                         </div>
                         <div class="status-content">
@@ -546,8 +513,6 @@
                                     <div class="step-indicator"><i class="ph ph-paper-plane-right"></i></div>
                                     <div class="step-content"><h4>Request Submitted</h4><p>System received your data</p></div>
                                 </div>
-                                    <div class="step-indicator"><i class="ph ph-paper-plane-right"></i></div>
-                                    <div class="step-content"><h4>Request Submitted</h4><p>System received your data</p></div>
                                 </div>
                                 <div class="step-line"></div>
                                 <div class="step" id="step2">
@@ -589,19 +554,15 @@
                     <section class="card">
                         <div class="card-header">
                             <div class="card-icon warning"><i class="ph ph-heart"></i></div>
-                            <div class="card-icon warning"><i class="ph ph-heart"></i></div>
                             <h2>Health Monitoring</h2>
                         </div>
                         <div class="health-stats">
                             <div class="health-item">
                                 <div class="health-label"><i class="ph ph-heart"></i> Heart Rate</div>
                                 <div class="health-value"><span id="heartRate">72</span> bpm</div>
-                                <div class="health-label"><i class="ph ph-heart"></i> Heart Rate</div>
-                                <div class="health-value"><span id="heartRate">72</span> bpm</div>
                                 <div class="health-status">Normal</div>
                             </div>
                             <div class="health-item">
-                                <div class="health-label"><i class="ph ph-wind"></i> Blood Pressure</div>
                                 <div class="health-label"><i class="ph ph-wind"></i> Blood Pressure</div>
                                 <div class="health-value">120/80</div>
                                 <div class="health-status">Normal</div>
@@ -609,8 +570,6 @@
                             <div class="health-item">
                                 <div class="health-label"><i class="ph ph-thermometer"></i> Temperature</div>
                                 <div class="health-value">98.6°F</div>
-                                <div class="health-label"><i class="ph ph-thermometer"></i> Temperature</div>
-                                <div class="health-value">98.6°F</div>
                                 <div class="health-status">Normal</div>
                             </div>
                         </div>
@@ -619,23 +578,19 @@
                     <section class="card">
                         <div class="card-header">
                             <div class="card-icon success"><i class="ph ph-lightbulb"></i></div>
-                            <div class="card-icon success"><i class="ph ph-lightbulb"></i></div>
+                            
                             <h2>Daily Health Tip</h2>
                         </div>
                         <div id="healthTip" class="health-tip-content"><p>Loading health tip...</p></div>
-                        <div id="healthTip" class="health-tip-content"><p>Loading health tip...</p></div>
+
                     </section>
 
                     <section class="card emergency-card">
                         <div class="card-header">
                             <div class="card-icon danger"><i class="ph ph-warning"></i></div>
-                            <div class="card-icon danger"><i class="ph ph-warning"></i></div>
                             <h2>Emergency Services</h2>
                         </div>
                         <div class="emergency-buttons">
-                            <button class="emergency-btn"><div class="emergency-icon">🚑</div><span>Ambulance</span></button>
-                            <button class="emergency-btn"><div class="emergency-icon">🏥</div><span>Nearby Hospital</span></button>
-                            <button class="emergency-btn"><div class="emergency-icon">🧑‍⚕️</div><span>Emergency Doctor</span></button>
                             <button class="emergency-btn"><div class="emergency-icon">🚑</div><span>Ambulance</span></button>
                             <button class="emergency-btn"><div class="emergency-icon">🏥</div><span>Nearby Hospital</span></button>
                             <button class="emergency-btn"><div class="emergency-icon">🧑‍⚕️</div><span>Emergency Doctor</span></button>
@@ -645,13 +600,9 @@
                     <section class="card">
                         <div class="card-header">
                             <div class="card-icon primary"><i class="ph ph-lightning-bolt"></i></div>
-                            <div class="card-icon primary"><i class="ph ph-lightning-bolt"></i></div>
                             <h2>Quick Actions</h2>
                         </div>
                         <div class="quick-actions">
-                            <a href="feedback.html" class="quick-action-btn"><i class="ph ph-chat-circle-text"></i><span>Give Feedback</span></a>
-                            <button class="quick-action-btn"><i class="ph ph-download"></i><span>Download Records</span></button>
-                            <button class="quick-action-btn"><i class="ph ph-calendar"></i><span>Reschedule</span></button>
                             <a href="feedback.html" class="quick-action-btn"><i class="ph ph-chat-circle-text"></i><span>Give Feedback</span></a>
                             <button class="quick-action-btn"><i class="ph ph-download"></i><span>Download Records</span></button>
                             <button class="quick-action-btn"><i class="ph ph-calendar"></i><span>Reschedule</span></button>
@@ -659,47 +610,6 @@
                     </section>
                 </div>
             </div>
-
-            <!-- FAQ -->
-            <section class="faq-section card">
-                <div class="faq-header">
-                    <h2>Frequently Asked Questions</h2>
-                    <p>Got questions about your care? Find quick answers below.</p>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question" aria-expanded="false">
-                        <span>How long does it take to get matched with a specialized physician?</span>
-                        <span class="faq-toggle">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p>Urgent requests are reviewed within 15 minutes. Non-emergency assignments complete within 2–4 hours based on physician availability.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question" aria-expanded="false">
-                        <span>Are the home remedies and wellness articles peer-reviewed?</span>
-                        <span class="faq-toggle">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p>Yes. All resources are curated and peer-reviewed by our Board of Medical Advisors. They are strictly informational and should not replace your provider's instructions.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question" aria-expanded="false">
-                        <span>How is my health data protected?</span>
-                        <span class="faq-toggle">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p>MedConsult is fully HIPAA and GDPR compliant. Data is encrypted with AES-256 and accessible only to your authorized healthcare team.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             <!-- FAQ -->
             <section class="faq-section card">
@@ -833,12 +743,10 @@
         </div>
 
         <!-- LOGIN PANEL -->
-        <!-- LOGIN PANEL -->
         <section class="auth-panel" data-auth-panel="login">
             <form id="loginForm">
                 <div class="auth-field">
                     <label for="loginEmail">Email</label>
-                    <input id="loginEmail" class="auth-input" type="email" autocomplete="email" placeholder="you@example.com" required>
                     <input id="loginEmail" class="auth-input" type="email" autocomplete="email" placeholder="you@example.com" required>
                 </div>
 
@@ -847,13 +755,7 @@
                     <label for="loginPassword">Password</label>
                     <div class="password-wrapper">
                         <input id="loginPassword" class="auth-input" type="password" autocomplete="current-password" placeholder="Enter your password" required>
-                        <input id="loginPassword" class="auth-input" type="password" autocomplete="current-password" placeholder="Enter your password" required>
                         <button type="button" class="password-toggle" aria-label="Toggle password visibility" onclick="togglePassword('loginPassword', this)">
-                            <!-- Eye Closed (shown by default — password hidden) -->
-                            <svg class="eye-icon eye-closed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
-                                <line x1="1" y1="1" x2="23" y2="23"/>
-                            </svg>
                             <!-- Eye Open (hidden by default) -->
                             <svg class="eye-icon eye-open" style="display:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
@@ -863,11 +765,6 @@
                             <svg class="eye-icon eye-closed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
                                 <line x1="1" y1="1" x2="23" y2="23"/>
-                            </svg>
-                            <!-- Eye Open (hidden by default) -->
-                            <svg class="eye-icon eye-open" style="display:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                <circle cx="12" cy="12" r="3"/>
                             </svg>
                         </button>
                     </div>
@@ -876,7 +773,6 @@
 
                 <div class="auth-row">
                     <label class="auth-remember">
-                        <input id="rememberMe" type="checkbox"> Remember Me
                         <input id="rememberMe" type="checkbox"> Remember Me
                     </label>
                 </div>
@@ -894,19 +790,16 @@
         </section>
 
         <!-- SIGNUP PANEL -->
-        <!-- SIGNUP PANEL -->
         <section class="auth-panel is-hidden" data-auth-panel="signup">
             <form id="signupForm">
                 <div class="auth-field">
                     <label for="signupName">Full Name</label>
-                    <input id="signupName" class="auth-input" type="text" autocomplete="name" placeholder="Your full name" required>
                     <input id="signupName" class="auth-input" type="text" autocomplete="name" placeholder="Your full name" required>
                 </div>
 
 
                 <div class="auth-field">
                     <label for="signupEmail">Email</label>
-                    <input id="signupEmail" class="auth-input" type="email" autocomplete="email" placeholder="you@example.com" required>
                     <input id="signupEmail" class="auth-input" type="email" autocomplete="email" placeholder="you@example.com" required>
                 </div>
 
@@ -915,12 +808,7 @@
                     <label for="signupPassword">Password</label>
                     <div class="password-wrapper">
                         <input id="signupPassword" class="auth-input" type="password" autocomplete="new-password" placeholder="Min 8 characters" required>
-                        <input id="signupPassword" class="auth-input" type="password" autocomplete="new-password" placeholder="Min 8 characters" required>
                         <button type="button" class="password-toggle" aria-label="Toggle password visibility" onclick="togglePassword('signupPassword', this)">
-                            <svg class="eye-icon eye-closed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
-                                <line x1="1" y1="1" x2="23" y2="23"/>
-                            </svg>
                             <svg class="eye-icon eye-open" style="display:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
                                 <circle cx="12" cy="12" r="3"/>
@@ -928,10 +816,6 @@
                             <svg class="eye-icon eye-closed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
                                 <line x1="1" y1="1" x2="23" y2="23"/>
-                            </svg>
-                            <svg class="eye-icon eye-open" style="display:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                <circle cx="12" cy="12" r="3"/>
                             </svg>
                         </button>
                     </div>
@@ -941,7 +825,6 @@
                 <div class="auth-field">
                     <label for="signupConfirm">Confirm Password</label>
                     <div class="password-wrapper">
-                        <input id="signupConfirm" class="auth-input" type="password" autocomplete="new-password" placeholder="Repeat your password" required>
                         <input id="signupConfirm" class="auth-input" type="password" autocomplete="new-password" placeholder="Repeat your password" required>
                         <button type="button" class="password-toggle" aria-label="Toggle confirm password visibility" onclick="togglePassword('signupConfirm', this)">
                             <svg class="eye-icon eye-closed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -955,10 +838,6 @@
                             <svg class="eye-icon eye-closed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
                                 <line x1="1" y1="1" x2="23" y2="23"/>
-                            </svg>
-                            <svg class="eye-icon eye-open" style="display:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                <circle cx="12" cy="12" r="3"/>
                             </svg>
                         </button>
                     </div>
@@ -984,7 +863,6 @@
                     <button type="button" data-auth-switch="login">Login</button>
                 </div>
                 <p class="auth-note">Demo only: passwords are encoded for client-side storage. Real apps require server-side hashing.</p>
-                <p class="auth-note">Demo only: passwords are encoded for client-side storage. Real apps require server-side hashing.</p>
             </form>
         </section>
     </div>
@@ -992,7 +870,6 @@
 
 <div id="toast-container" class="toast-container"></div>
 
-<!-- Scripts -->
 <!-- Scripts -->
 <script src="assets/js/session.js"></script>
 <script src="assets/js/auth.js"></script>
