@@ -2,6 +2,30 @@
   const container = document.getElementById("navbar-container");
   if (!container) return;
 
+  const safeStorage = {
+    getItem(key) {
+      try {
+        return localStorage.getItem(key);
+      } catch (_) {
+        return null;
+      }
+    },
+    setItem(key, value) {
+      try {
+        localStorage.setItem(key, value);
+      } catch (_) {
+        // Ignored
+      }
+    },
+    removeItem(key) {
+      try {
+        localStorage.removeItem(key);
+      } catch (_) {
+        // Ignored
+      }
+    },
+  };
+
   const path = window.location.pathname;
   const isSubfolder =
     path.includes("/learning/") ||
@@ -14,7 +38,8 @@
   const isLearn = path.includes("/learning/");
   const isContributors = path.includes("/contributors/");
 
-  const username = window.username || localStorage.getItem('loggedInUser') || null;
+  const username =
+    window.username || safeStorage.getItem("loggedInUser") || null;
 
   window.ThemeManager?.init?.();
   const isLight = window.ThemeManager?.currentTheme?.() === "light";
@@ -34,27 +59,26 @@
         <button class="dropdown-item" data-theme-value="light">☀ Light</button>
         <button class="dropdown-item" data-theme-value="dark">☾ Dark</button>
         <button class="dropdown-item" data-theme-value="sepia">☕ Sepia</button>
-        <button class="dropdown-item" data-theme-value="cyberpunk">⚡ Cyberpunk</button>
+        <button class="dropdown-item" data-theme-value="cyberpunk">⚡Cyberpunk</button>
         <button class="dropdown-item" data-theme-value="nord">❄ Nord</button>
       </div>
     </div>
   `;
-
   const homeBtn = `
   <a class="btn ${isHome ? "btn-primary active" : "btn-ghost"} btn-sm" href="${homeHref}">
-    <span class="mobile-nav-icon"><i class="fas fa-home"></i></span>
+    <span class="mobile-nav-icon"><i class="fas fa-home" aria-hidden="true"></i></span>
     Home
   </a>`;
 
   const learnBtn = `
   <a class="btn ${isLearn ? "btn-primary active" : "btn-ghost"} btn-sm" href="${learnHref}">
-    <span class="mobile-nav-icon"><i class="fas fa-graduation-cap"></i></span>
+    <span class="mobile-nav-icon"><i class="fas fa-graduation-cap" aria-hidden="true"></i></span>
     Learn
   </a>`;
 
   const contributorsBtn = `
   <a class="btn ${isContributors ? "btn-primary active" : "btn-ghost"} btn-sm" href="${contributorsHref}">
-    <span class="mobile-nav-icon"><i class="fas fa-users"></i></span>
+    <span class="mobile-nav-icon"><i class="fas fa-users" aria-hidden="true"></i></span>
     Contributors
   </a>`;
 
@@ -68,11 +92,20 @@
     Generate README
   </a>`;
 
+  const customCursorEnabled =
+    safeStorage.getItem("customCursorEnabled") !== "false";
+  const cursorBtn = `
+    <button class="btn btn-ghost btn-sm" id="cursorToggleNav" aria-label="Toggle custom cursor (currently ${customCursorEnabled ? "Custom" : "Default"})">
+      <span class="mobile-nav-icon"><i class="fas ${customCursorEnabled ? "fa-circle-notch" : "fa-mouse-pointer"}" aria-hidden="true"></i></span>
+      Cursor: ${customCursorEnabled ? "Custom" : "Default"}
+    </button>
+  `;
+
   let navButtonsHTML = "";
   if (username) {
     const userSection = `
       <div class="mobile-user-strip">
-        <div class="mobile-user-avatar">${username.slice(0,2).toUpperCase()}</div>
+        <div class="mobile-user-avatar">${username.slice(0, 2).toUpperCase()}</div>
         <div class="mobile-user-info">
           <p class="mobile-user-name">Hi, ${username}</p>
           <p class="mobile-user-role">Contributor</p>
@@ -80,10 +113,10 @@
       </div>
       <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
     `;
-    navButtonsHTML = `${themeBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${userSection}`;
+    navButtonsHTML = `${themeBtn} ${cursorBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${userSection}`;
   } else {
     const signinBtn = `<a class="btn btn-primary btn-sm" id="navSignInCta" href="${base}public/Login.html">Sign in</a>`;
-    navButtonsHTML = `${themeBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${signinBtn}`;
+    navButtonsHTML = `${themeBtn} ${cursorBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${signinBtn}`;
   }
 
   container.innerHTML = `
@@ -106,7 +139,7 @@
         <div class="mobile-menu-header">
           <span class="mobile-menu-title">MENU</span>
           <button class="mobile-menu-close" id="mobileMenuClose" type="button">
-            <i class="fas fa-times"></i>
+            <i class="fas fa-times" aria-hidden="true"></i>
           </button>
         </div>
         ${navButtonsHTML}
@@ -114,7 +147,9 @@
     </nav>
   `;
 
-  window.ThemeManager?.applyTheme?.(window.ThemeManager.currentTheme(), { persist: false });
+  window.ThemeManager?.applyTheme?.(window.ThemeManager.currentTheme(), {
+    persist: false,
+  });
 
   // Mobile drawer state triggers
   const menuToggle = document.getElementById("menuToggle");
@@ -198,15 +233,27 @@
     dropdownToggle.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
-      const isExpanded = dropdownToggle.getAttribute("aria-expanded") === "true";
+      const isExpanded =
+        dropdownToggle.getAttribute("aria-expanded") === "true";
       dropdownToggle.setAttribute("aria-expanded", !isExpanded);
       dropdownMenu.classList.toggle("show");
     });
 
     document.addEventListener("click", (e) => {
-      if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+      if (
+        !dropdownToggle.contains(e.target) &&
+        !dropdownMenu.contains(e.target)
+      ) {
         dropdownToggle.setAttribute("aria-expanded", "false");
         dropdownMenu.classList.remove("show");
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && dropdownMenu.classList.contains("show")) {
+        dropdownToggle.setAttribute("aria-expanded", "false");
+        dropdownMenu.classList.remove("show");
+        dropdownToggle.focus();
       }
     });
   }
@@ -215,8 +262,38 @@
   if (logoutBtn) {
     logoutBtn.addEventListener("click", () => {
       window.username = null;
-      localStorage.removeItem('loggedInUser');
+      safeStorage.removeItem("loggedInUser");
       location.reload();
     });
   }
+
+  // Cursor Toggle Logic
+  document.addEventListener("click", (event) => {
+    const toggle = event.target.closest("#cursorToggleNav");
+    if (!toggle) return;
+    event.preventDefault();
+    const currentlyEnabled =
+      safeStorage.getItem("customCursorEnabled") !== "false";
+    const nextState = !currentlyEnabled;
+    safeStorage.setItem("customCursorEnabled", String(nextState));
+
+    // Call the cursor system to enable/disable
+    if (nextState && window.CursorSystem?.enable) {
+      window.CursorSystem.enable();
+    } else if (!nextState && window.CursorSystem?.disable) {
+      window.CursorSystem.disable();
+    } else {
+      // Fallback if cursor system not loaded yet
+      document.querySelectorAll("#cursorToggleNav").forEach((btn) => {
+        btn.innerHTML = `
+          <span class="mobile-nav-icon"><i class="fas ${nextState ? "fa-circle-notch" : "fa-mouse-pointer"}" aria-hidden="true"></i></span>
+          Cursor: ${nextState ? "Custom" : "Default"}
+        `;
+        btn.setAttribute(
+          "aria-label",
+          `Toggle custom cursor (currently ${nextState ? "Custom" : "Default"})`,
+        );
+      });
+    }
+  });
 })();
