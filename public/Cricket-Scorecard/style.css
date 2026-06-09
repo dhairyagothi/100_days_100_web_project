@@ -1,0 +1,129 @@
+:root {
+  --primary-color: #1e3a8a;
+  --secondary-color: #dbeafe;
+  --bg-color: #f3f4f6;
+  --card-bg: #ffffff;
+  --text-main: #1f2937;
+  --text-muted: #6b7280;
+  --live-color: #ef4444;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  line-height: 1.6;
+}
+
+.header {
+  background-color: var(--primary-color);
+  color: white;
+  text-align: center;
+  padding: 2rem 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header p {
+  color: var(--secondary-color);
+  margin-top: 0.5rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.section {
+  margin-bottom: 3rem;
+}
+
+.section__title {
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  border-bottom: 2px solid var(--primary-color);
+  display: inline-block;
+  padding-bottom: 0.5rem;
+}
+
+.matches-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.match-card {
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease-in-out;
+  border-top: 4px solid var(--primary-color);
+}
+
+.match-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.match-card.live-card {
+  border-top: 4px solid var(--live-color);
+}
+
+.match-status {
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.status-live {
+  background-color: #fee2e2;
+  color: var(--live-color);
+}
+
+.status-upcoming {
+  background-color: #e0e7ff;
+  color: var(--primary-color);
+}
+
+.match-teams {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.match-score {
+  font-size: 1.1rem;
+  color: var(--primary-color);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.match-info {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.loading {
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+  grid-column: 1 / -1;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .matches-grid {
+    grid-template-columns: 1fr;
+  }
+}

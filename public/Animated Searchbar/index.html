@@ -11,7 +11,6 @@
 <body>
   <h1>Animated Search Bar</h1>
   <p class="subtitle">Search anything or use voice input</p>
-
   <div class="search-wrapper">
     <div class="container">
       <i class="fa-solid fa-magnifying-glass magnifier" aria-label="Search" role="button" tabindex="0"></i>
@@ -22,16 +21,14 @@
         aria-label="Search input"
         autocomplete="off"
       />
+      <kbd class="shortcut-badge">Ctrl K</kbd>
       <i class="fa-solid fa-xmark clear-icon" aria-label="Clear search" role="button" tabindex="0"></i>
       <i class="fa-solid fa-microphone mic-icon" aria-label="Voice search" role="button" tabindex="0"></i>
       <div class="loading-spinner"></div>
     </div>
-
     <div class="suggestions-box" id="suggestions"></div>
   </div>
-
   <div id="result" class="result-box"></div>
-
   <script src="app.js"></script>
 </body>
 </html>

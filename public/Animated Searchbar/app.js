@@ -1,118 +1,126 @@
 // DOM Elements
-const container = document.querySelector(".container");
-const magnifier = document.querySelector(".magnifier");
-const mic = document.querySelector(".mic-icon");
-const input = document.querySelector(".input");
-const resultBox = document.getElementById("result");
-const clearIcon = document.querySelector(".clear-icon");
-const loadingSpinner = document.querySelector(".loading-spinner");
-const suggestionsBox = document.getElementById("suggestions");
+const container = document.querySelector('.container');
+const magnifier = document.querySelector('.magnifier');
+const mic = document.querySelector('.mic-icon');
+const input = document.querySelector('.input');
+const resultBox = document.getElementById('result');
+const clearIcon = document.querySelector('.clear-icon');
+const loadingSpinner = document.querySelector('.loading-spinner');
+const suggestionsBox = document.getElementById('suggestions');
+const shortcutBadge = document.querySelector('.shortcut-badge');
 
 // Sample search suggestions (you can replace with API calls)
 const searchSuggestions = [
-  "JavaScript tutorials",
-  "JavaScript frameworks",
-  "JavaScript best practices",
-  "Python programming",
-  "Python data science",
-  "Web development",
-  "Web design trends",
-  "React hooks",
-  "React components",
-  "Node.js backend",
-  "CSS animations",
-  "CSS grid layout",
-  "HTML5 features",
-  "TypeScript basics",
-  "API development",
-  "Database design",
-  "Machine learning",
-  "Artificial intelligence",
-  "Cloud computing",
-  "DevOps practices"
+  'JavaScript tutorials',
+  'JavaScript frameworks',
+  'JavaScript best practices',
+  'Python programming',
+  'Python data science',
+  'Web development',
+  'Web design trends',
+  'React hooks',
+  'React components',
+  'Node.js backend',
+  'CSS animations',
+  'CSS grid layout',
+  'HTML5 features',
+  'TypeScript basics',
+  'API development',
+  'Database design',
+  'Machine learning',
+  'Artificial intelligence',
+  'Cloud computing',
+  'DevOps practices',
 ];
 
 let selectedSuggestionIndex = -1;
 let currentSuggestions = [];
-
 
 init();
 
 function init() {
   setupEventListeners();
   updateClearButton();
+  updateShortcutBadge();
 }
 
 function setupEventListeners() {
   // Magnifier click
-  magnifier.addEventListener("click", handleSearch);
-  magnifier.addEventListener("keypress", (e) => {
-    if (e.key === "Enter" || e.key === " ") handleSearch();
+  magnifier.addEventListener('click', handleSearch);
+  magnifier.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') handleSearch();
   });
 
   // Input events
-  input.addEventListener("input", handleInput);
-  input.addEventListener("keydown", handleKeyDown);
-  input.addEventListener("focus", () => {
-    container.classList.add("active");
+  input.addEventListener('input', handleInput);
+  input.addEventListener('keydown', handleKeyDown);
+  input.addEventListener('focus', () => {
+    container.classList.add('active');
+    updateShortcutBadge();
     if (input.value.trim()) showSuggestions(input.value);
   });
-  input.addEventListener("blur", () => {
+  input.addEventListener('blur', () => {
     // Delay to allow suggestion click
     setTimeout(() => {
-      container.classList.remove("active");
+      container.classList.remove('active');
+      updateShortcutBadge();
       hideSuggestions();
     }, 200);
   });
 
   // Clear button
-  clearIcon.addEventListener("click", clearSearch);
-  clearIcon.addEventListener("keypress", (e) => {
-    if (e.key === "Enter" || e.key === " ") clearSearch();
+  clearIcon.addEventListener('click', clearSearch);
+  clearIcon.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') clearSearch();
   });
 
   // Microphone
-  mic.addEventListener("click", handleVoiceSearch);
-  mic.addEventListener("keypress", (e) => {
-    if (e.key === "Enter" || e.key === " ") handleVoiceSearch();
+  mic.addEventListener('click', handleVoiceSearch);
+  mic.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') handleVoiceSearch();
   });
 
   // Click outside to close suggestions
-  document.addEventListener("click", (e) => {
+  document.addEventListener('click', (e) => {
     if (!container.contains(e.target) && !suggestionsBox.contains(e.target)) {
       hideSuggestions();
     }
   });
 }
 
+const debouncedShowSuggestions = debounce(showSuggestions, 150);
+
 function handleInput(e) {
   const value = e.target.value;
   updateClearButton();
-  
+  updateShortcutBadge();
+
   if (value.trim()) {
-    showSuggestions(value);
+    debouncedShowSuggestions(value);
   } else {
     hideSuggestions();
   }
 }
 
 function handleKeyDown(e) {
-  if (e.key === "Enter") {
+  if (e.key === 'Enter') {
     e.preventDefault();
-    if (selectedSuggestionIndex >= 0 && currentSuggestions[selectedSuggestionIndex]) {
+    if (
+      selectedSuggestionIndex >= 0 &&
+      currentSuggestions[selectedSuggestionIndex]
+    ) {
       selectSuggestion(currentSuggestions[selectedSuggestionIndex]);
     } else {
       handleSearch();
     }
-  } else if (e.key === "ArrowDown") {
+  } else if (e.key === 'ArrowDown') {
     e.preventDefault();
     navigateSuggestions(1);
-  } else if (e.key === "ArrowUp") {
+  } else if (e.key === 'ArrowUp') {
     e.preventDefault();
     navigateSuggestions(-1);
-  } else if (e.key === "Escape") {
+  } else if (e.key === 'Escape') {
     hideSuggestions();
-    input.blur();
   }
 }
 
@@ -131,24 +139,28 @@ function navigateSuggestions(direction) {
 }
 
 function updateSuggestionSelection() {
-  const items = suggestionsBox.querySelectorAll(".suggestion-item");
+  const items = suggestionsBox.querySelectorAll('.suggestion-item');
   items.forEach((item, index) => {
     if (index === selectedSuggestionIndex) {
-      item.classList.add("selected");
-      item.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      item.classList.add('selected');
+      item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
       input.value = currentSuggestions[index];
     } else {
-      item.classList.remove("selected");
+      item.classList.remove('selected');
     }
   });
 
   if (selectedSuggestionIndex === -1 && currentSuggestions.length > 0) {
-    input.value = input.getAttribute("data-original-value") || "";
+    input.value = input.getAttribute('data-original-value') || '';
   }
 }
 
 function showSuggestions(query) {
-  const filtered = searchSuggestions.filter(item =>
+  if (!input.value.trim()) {
+    hideSuggestions();
+    return;
+  }
+  const filtered = searchSuggestions.filter((item) =>
     item.toLowerCase().includes(query.toLowerCase())
   );
 
@@ -159,7 +171,7 @@ function showSuggestions(query) {
 
   currentSuggestions = filtered.slice(0, 8); // Limit to 8 suggestions
   selectedSuggestionIndex = -1;
-  input.setAttribute("data-original-value", query);
+  input.setAttribute('data-original-value', query);
 
   suggestionsBox.innerHTML = currentSuggestions
     .map(
@@ -170,29 +182,29 @@ function showSuggestions(query) {
       </div>
     `
     )
-    .join("");
+    .join('');
 
   // Add click listeners to suggestions
-  suggestionsBox.querySelectorAll(".suggestion-item").forEach((item) => {
-    item.addEventListener("click", () => {
-      selectSuggestion(item.getAttribute("data-value"));
+  suggestionsBox.querySelectorAll('.suggestion-item').forEach((item) => {
+    item.addEventListener('click', () => {
+      selectSuggestion(item.getAttribute('data-value'));
     });
   });
 
-  suggestionsBox.classList.add("visible");
+  suggestionsBox.classList.add('visible');
 }
 
 function highlightMatch(text, query) {
-  const regex = new RegExp(`(${escapeRegex(query)})`, "gi");
+  const regex = new RegExp(`(${escapeRegex(query)})`, 'gi');
   return text.replace(regex, '<strong style="color: #ffa31a;">$1</strong>');
 }
 
 function escapeRegex(string) {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 function hideSuggestions() {
-  suggestionsBox.classList.remove("visible");
+  suggestionsBox.classList.remove('visible');
   selectedSuggestionIndex = -1;
   currentSuggestions = [];
 }
@@ -209,8 +221,8 @@ window.performGoogleSearch = performGoogleSearch;
 function handleSearch() {
   const searchValue = input.value.trim();
 
-  if (searchValue === "") {
-    showResult("Please enter a search query", "error");
+  if (searchValue === '') {
+    showResult('Please enter a search query', 'error');
     return;
   }
 
@@ -229,7 +241,7 @@ function handleSearch() {
 function performGoogleSearch(query) {
   const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
   window.open(searchUrl, '_blank');
-  
+
   showResult(
     `<strong><i class="fa-brands fa-google"></i> Searching Google for:</strong><br>
     <span style="color:#ffa31a; font-size: 1.2em;">"${escapeHtml(query)}"</span><br><br>
@@ -237,38 +249,39 @@ function performGoogleSearch(query) {
     <button onclick="performGoogleSearch('${escapeHtml(query)}')" style="background: #ffa31a; color: #1a1a2e; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold;">
       <i class="fa-brands fa-google"></i> Search Again
     </button>`,
-    "success"
+    'success'
   );
 }
 
 function handleVoiceSearch() {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
 
   if (!SpeechRecognition) {
     showResult(
       '<i class="fa-solid fa-triangle-exclamation"></i><br>Sorry, your browser doesn\'t support voice search.<br><small>Try Chrome, Edge, or Safari.</small>',
-      "error"
+      'error'
     );
     return;
   }
 
   const recognition = new SpeechRecognition();
-  recognition.lang = "en-US";
+  recognition.lang = 'en-US';
   recognition.interimResults = false;
   recognition.maxAlternatives = 1;
   recognition.continuous = false;
 
   // Visual feedback
-  mic.classList.add("listening");
-  container.classList.add("listening");
-  input.placeholder = "Listening...";
+  mic.classList.add('listening');
+  container.classList.add('listening');
+  input.placeholder = 'Listening...';
 
   try {
     recognition.start();
   } catch (error) {
     showResult(
       `<i class="fa-solid fa-triangle-exclamation"></i><br>Voice recognition is already active or unavailable.`,
-      "error"
+      'error'
     );
     resetVoiceUI();
     return;
@@ -288,28 +301,30 @@ function handleVoiceSearch() {
       <button onclick="performGoogleSearch('${escapeHtml(transcript)}')" style="background: #ffa31a; color: #1a1a2e; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold; margin-top: 10px;">
         <i class="fa-brands fa-google"></i> Search on Google
       </button>`,
-      "success"
+      'success'
     );
 
     resetVoiceUI();
   };
 
   recognition.onerror = function (event) {
-    let errorMessage = "Could not recognize your voice. Please try again.";
-    
-    if (event.error === "no-speech") {
-      errorMessage = "No speech detected. Please speak clearly and try again.";
-    } else if (event.error === "not-allowed") {
-      errorMessage = "Microphone access denied. Please allow microphone access in your browser settings.";
-    } else if (event.error === "network") {
-      errorMessage = "Voice recognition works offline in most browsers. Please try speaking again.";
-    } else if (event.error === "aborted") {
-      errorMessage = "Voice recognition was cancelled.";
+    let errorMessage = 'Could not recognize your voice. Please try again.';
+
+    if (event.error === 'no-speech') {
+      errorMessage = 'No speech detected. Please speak clearly and try again.';
+    } else if (event.error === 'not-allowed') {
+      errorMessage =
+        'Microphone access denied. Please allow microphone access in your browser settings.';
+    } else if (event.error === 'network') {
+      errorMessage =
+        'Voice recognition works offline in most browsers. Please try speaking again.';
+    } else if (event.error === 'aborted') {
+      errorMessage = 'Voice recognition was cancelled.';
     }
 
     showResult(
       `<i class="fa-solid fa-triangle-exclamation"></i><br>${errorMessage}`,
-      "error"
+      'error'
     );
     resetVoiceUI();
   };
@@ -320,14 +335,15 @@ function handleVoiceSearch() {
 }
 
 function resetVoiceUI() {
-  mic.classList.remove("listening");
-  container.classList.remove("listening");
-  input.placeholder = "Type to search...";
+  mic.classList.remove('listening');
+  container.classList.remove('listening');
+  input.placeholder = 'Type to search...';
 }
 
 function clearSearch() {
-  input.value = "";
+  input.value = '';
   updateClearButton();
+  updateShortcutBadge();
   hideSuggestions();
   hideResult();
   input.focus();
@@ -335,50 +351,73 @@ function clearSearch() {
 
 function updateClearButton() {
   if (input.value.trim()) {
-    clearIcon.classList.add("visible");
+    clearIcon.classList.add('visible');
   } else {
-    clearIcon.classList.remove("visible");
+    clearIcon.classList.remove('visible');
+  }
+}
+
+function updateShortcutBadge() {
+  if (!shortcutBadge) return;
+  if (document.activeElement === input || input.value.trim() !== '') {
+    shortcutBadge.classList.add('hidden');
+  } else {
+    shortcutBadge.classList.remove('hidden');
   }
 }
 
 function showLoading() {
-  loadingSpinner.classList.add("active");
-  magnifier.style.opacity = "0";
+  loadingSpinner.classList.add('active');
+  magnifier.style.opacity = '0';
 }
 
 function hideLoading() {
-  loadingSpinner.classList.remove("active");
-  magnifier.style.opacity = "1";
+  loadingSpinner.classList.remove('active');
+  magnifier.style.opacity = '1';
 }
 
-function showResult(message, type = "success") {
-  resultBox.innerHTML = message;
-  resultBox.classList.add("visible");
-  resultBox.style.display = "block";
-  
-  if (type === "error") {
-    resultBox.style.borderLeft = "4px solid #ff4444";
+function showResult(message, type = 'success') {
+  resultBox.innerHTML = `
+  <button
+    id="closeResult"
+    style="
+      float:right;
+      background:none;
+      border:none;
+      color:#aaa;
+      font-size:18px;
+      cursor:pointer;
+    "
+    aria-label="Close result"
+  >
+    &times;
+  </button>
+  ${message}
+`;
+
+  document.getElementById('closeResult')?.addEventListener('click', hideResult);
+  resultBox.classList.add('visible');
+  resultBox.style.display = 'block';
+
+  if (type === 'error') {
+    resultBox.style.borderLeft = '4px solid #ff4444';
   } else {
-    resultBox.style.borderLeft = "4px solid #ffa31a";
+    resultBox.style.borderLeft = '4px solid #ffa31a';
   }
 
-  // Auto-hide after 5 seconds for success messages
-  if (type === "success") {
-    setTimeout(() => {
-      hideResult();
-    }, 5000);
-  }
+  // Keep result visible until user clears search,
+  // performs another search, or manually closes it.
 }
 
 function hideResult() {
-  resultBox.classList.remove("visible");
+  resultBox.classList.remove('visible');
   setTimeout(() => {
-    resultBox.style.display = "none";
+    resultBox.style.display = 'none';
   }, 300);
 }
 
 function escapeHtml(text) {
-  const div = document.createElement("div");
+  const div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
 }
@@ -397,8 +436,8 @@ function debounce(func, wait) {
 }
 
 // Optional: Add keyboard shortcut (Ctrl/Cmd + K) to focus search
-document.addEventListener("keydown", (e) => {
-  if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
     e.preventDefault();
     input.focus();
   }

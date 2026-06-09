@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8" />
     <title>🎮 Debug Quest | GDG RCCIIT</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <meta name="k1" content="GREAT_DEVELOPER" />
     <meta name="k2" content="SECRET_KEY" />
     <link
@@ -30,7 +32,7 @@
       href="https://fonts.googleapis.com/css2?family=Droid+Serif:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
+    <link rel="icon" href="Favicon_Debug.png" type="image/x-icon" />
 
     <style>
       .debug-key::after {
@@ -47,6 +49,8 @@
     </style>
   </head>
   <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
     <div
       class="key-fragment"
       data-part1="Y29uZ3JhdHVsYXRpb25z"
@@ -202,12 +206,12 @@
         <button id="glitch-message2" class="sevencard" onclick="createMemory()">
           ERROR MEMORY
         </button>
-        <!-- Floating cyberpunk emojis inside the card -->
-        <div class="floating-element">🦾</div>
-        <div class="floating-element">💀</div>
-        <div class="floating-element">🤖</div>
-        <div class="floating-element">👾</div>
-        <div class="floating-element">⚡</div>
+        <!-- Floating cyberpunk icons inside the card -->
+        <div class="floating-element" style="color: #6b7280;"><i class="fas fa-hand-holding-droplet"></i></div>
+        <div class="floating-element" style="color: #ef4444;"><i class="fas fa-skull"></i></div>
+        <div class="floating-element" style="color: #10b981;"><i class="fas fa-robot"></i></div>
+        <div class="floating-element" style="color: #a855f7;"><i class="fas fa-gamepad"></i></div>
+        <div class="floating-element" style="color: #fbbf24;"><i class="fas fa-bolt"></i></div>
       </div>
 
       <div class="card glitch" id="card8">
@@ -224,7 +228,7 @@
       </div>
 
       <div class="card glitch" id="finale">
-        <h2>The Final Call <span class="laughing-emoji">😂</span></h2>
+        <h2>The Final Call <span class="laughing-emoji" style="color: #fbbf24;"><i class="fas fa-face-laugh-squint"></i></span></h2>
         <p>
           The screen flickers, shadows creep.<br />
           A simple press, and you may weep,<br />

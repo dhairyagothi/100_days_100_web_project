@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WayFinder – Campus Map · Amity University</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="./css/map.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="homepage.html">
+    <div class="logo-icon"><i aria-hidden="true" class="fas fa-location-crosshairs"></i></div>
+    <span>Way<span class="dot">Finder</span></span>
+  </a>
+  <div class="nav-sep"></div>
+  <div class="nav-links">
+    <a href="index.html">
+      <i aria-hidden="true" class="fas fa-house"></i>
+      Home
+    </a>
+    <a href="map.html" class="active">
+      <i aria-hidden="true" class="fas fa-map"></i>
+      Map
+    </a>
+    <a href="#">
+      <i aria-hidden="true" class="fas fa-compass"></i>
+      Explore
+    </a>
+    <a href="#">
+      <i aria-hidden="true" class="fas fa-circle-question"></i>
+      Help
+    </a>
+  </div>
+  <div class="nav-right">
+    <div class="route-pill" onclick="window.location.href='navigation.html'">
+      <i aria-hidden="true" class="fas fa-route"></i>
+      <span>Library → Block A Room 101</span>
+      <i aria-hidden="true" class="fas fa-chevron-right" style="font-size:0.65rem;color:var(--muted);"></i>
+    </div>
+    <button class="nav-icon-btn active" title="Satellite View"><i aria-hidden="true" class="fas fa-satellite-dish"></i></button>
+    <button class="nav-icon-btn" id="themeBtn" title="Toggle Theme"><i aria-hidden="true" class="fas fa-sun"></i></button>
+    <button class="nav-icon-btn" title="Share"><i aria-hidden="true" class="fas fa-share-nodes"></i></button>
+  </div>
+</nav>
+
+<!-- MAP -->
+<div class="map-container" id="mapContainer">
+  <svg class="map-svg" id="mapSvg" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="bgGrad" cx="50%" cy="50%" r="70%">
+        <stop offset="0%" stop-color="#0D1B36"/>
+        <stop offset="100%" stop-color="#060D1F"/>
+      </radialGradient>
+      <pattern id="mapGrid" width="50" height="50" patternUnits="userSpaceOnUse">
+        <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+      </pattern>
+      <pattern id="mapGrid2" width="200" height="200" patternUnits="userSpaceOnUse">
+        <path d="M 200 0 L 0 0 0 200" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+      </pattern>
+      <filter id="pinGlow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="5" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <filter id="routeGlow" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="4" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <linearGradient id="routeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#2563EB"/>
+        <stop offset="50%" stop-color="#8B5CF6"/>
+        <stop offset="100%" stop-color="#06B6D4"/>
+      </linearGradient>
+      <marker id="arrowBlue" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+        <path d="M0,0 L6,3 L0,6 Z" fill="#3B82F6"/>
+      </marker>
+    </defs>
+
+    <!-- Background -->
+    <rect width="1200" height="800" fill="url(#bgGrad)"/>
+    <rect width="1200" height="800" fill="url(#mapGrid)"/>
+    <rect width="1200" height="800" fill="url(#mapGrid2)"/>
+
+    <!-- Campus boundary glow -->
+    <rect x="80" y="60" width="1040" height="680" rx="24" fill="none" stroke="rgba(37,99,235,0.12)" stroke-width="2" stroke-dasharray="12 8"/>
+    <text x="100" y="52" fill="rgba(37,99,235,0.45)" font-size="11" font-family="Poppins" font-weight="600">AMITY UNIVERSITY CAMPUS — GREATER NOIDA</text>
+
+    <!-- Roads (major) -->
+    <!-- Horizontal main road -->
+    <rect x="80" y="380" width="1040" height="36" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <line x1="80" y1="398" x2="1120" y2="398" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="24 12"/>
+    <!-- Vertical main road -->
+    <rect x="575" y="60" width="36" height="680" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <line x1="593" y1="60" x2="593" y2="740" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="24 12"/>
+    <!-- Secondary roads -->
+    <line x1="80" y1="200" x2="1120" y2="200" stroke="rgba(255,255,255,0.03)" stroke-width="20"/>
+    <line x1="80" y1="560" x2="1120" y2="560" stroke="rgba(255,255,255,0.03)" stroke-width="16"/>
+    <line x1="300" y1="60" x2="300" y2="740" stroke="rgba(255,255,255,0.03)" stroke-width="16"/>
+    <line x1="880" y1="60" x2="880" y2="740" stroke="rgba(255,255,255,0.03)" stroke-width="16"/>
+
+    <!-- Road labels -->
+    <text x="600" y="392" fill="rgba(255,255,255,0.2)" font-size="9" font-family="Poppins" text-anchor="middle">MAIN CAMPUS ROAD</text>
+    <text x="593" y="100" fill="rgba(255,255,255,0.2)" font-size="9" font-family="Poppins" text-anchor="middle" writing-mode="tb">CENTRAL AVENUE</text>
+
+    <!-- Green zones -->
+    <ellipse cx="593" cy="398" rx="100" ry="70" fill="rgba(16,185,129,0.07)" stroke="rgba(16,185,129,0.12)" stroke-width="1"/>
+    <text x="593" y="402" text-anchor="middle" fill="rgba(52,211,153,0.35)" font-size="10" font-family="Poppins">Central Ground</text>
+    <ellipse cx="300" cy="398" rx="60" ry="45" fill="rgba(16,185,129,0.05)" stroke="rgba(16,185,129,0.08)" stroke-width="1"/>
+
+    <!-- ========== BUILDINGS ========== -->
+
+    <!-- Block A (top left) -->
+    <rect x="100" y="80" width="175" height="100" rx="10" fill="rgba(37,99,235,0.14)" stroke="rgba(59,130,246,0.55)" stroke-width="1.5"/>
+    <rect x="100" y="80" width="175" height="18" rx="10" fill="rgba(37,99,235,0.25)"/>
+    <text x="187" y="93" text-anchor="middle" fill="#93C5FD" font-size="9" font-family="Poppins" font-weight="700">BLOCK A</text>
+    <text x="187" y="120" text-anchor="middle" fill="rgba(147,197,253,0.7)" font-size="9" font-family="Poppins">Engg. & Technology</text>
+    <text x="187" y="135" text-anchor="middle" fill="rgba(147,197,253,0.5)" font-size="8" font-family="Poppins">Rooms 101–420 · 4 Floors</text>
+    <text x="187" y="150" text-anchor="middle" fill="rgba(147,197,253,0.4)" font-size="8" font-family="Poppins">📚 CS, EC, ME Depts</text>
+
+    <!-- Block B (top right) -->
+    <rect x="920" y="80" width="175" height="100" rx="10" fill="rgba(139,92,246,0.14)" stroke="rgba(167,139,250,0.55)" stroke-width="1.5"/>
+    <rect x="920" y="80" width="175" height="18" rx="10" fill="rgba(139,92,246,0.25)"/>
+    <text x="1007" y="93" text-anchor="middle" fill="#C4B5FD" font-size="9" font-family="Poppins" font-weight="700">BLOCK B</text>
+    <text x="1007" y="120" text-anchor="middle" fill="rgba(196,181,253,0.7)" font-size="9" font-family="Poppins">Management & Law</text>
+    <text x="1007" y="135" text-anchor="middle" fill="rgba(196,181,253,0.5)" font-size="8" font-family="Poppins">Rooms 101–320 · 3 Floors</text>
+    <text x="1007" y="150" text-anchor="middle" fill="rgba(196,181,253,0.4)" font-size="8" font-family="Poppins">🏛 MBA, LLB Depts</text>
+
+    <!-- Block C (left mid) -->
+    <rect x="100" y="450" width="165" height="105" rx="10" fill="rgba(6,182,212,0.12)" stroke="rgba(34,211,238,0.45)" stroke-width="1.5"/>
+    <rect x="100" y="450" width="165" height="18" rx="10" fill="rgba(6,182,212,0.2)"/>
+    <text x="182" y="463" text-anchor="middle" fill="#67E8F9" font-size="9" font-family="Poppins" font-weight="700">BLOCK C</text>
+    <text x="182" y="490" text-anchor="middle" fill="rgba(103,232,249,0.7)" font-size="9" font-family="Poppins">Science & Allied</text>
+    <text x="182" y="505" text-anchor="middle" fill="rgba(103,232,249,0.5)" font-size="8" font-family="Poppins">Pharmacy, Biotech</text>
+    <text x="182" y="520" text-anchor="middle" fill="rgba(103,232,249,0.4)" font-size="8" font-family="Poppins">🧬 Labs on every floor</text>
+
+    <!-- Block D (right lower) -->
+    <rect x="920" y="450" width="165" height="100" rx="10" fill="rgba(245,158,11,0.10)" stroke="rgba(252,211,77,0.35)" stroke-width="1.5" stroke-dasharray="6 3"/>
+    <rect x="920" y="450" width="165" height="18" rx="10" fill="rgba(245,158,11,0.18)"/>
+    <text x="1002" y="463" text-anchor="middle" fill="#FCD34D" font-size="9" font-family="Poppins" font-weight="700">BLOCK D</text>
+    <text x="1002" y="488" text-anchor="middle" fill="rgba(252,211,77,0.6)" font-size="9" font-family="Poppins">Medical & Dental</text>
+    <text x="1002" y="503" text-anchor="middle" fill="rgba(252,211,77,0.4)" font-size="8" font-family="Poppins">⚠ Entrance: Maintenance</text>
+
+    <!-- Central Library (bottom right) -->
+    <rect x="680" y="590" width="200" height="130" rx="10" fill="rgba(16,185,129,0.13)" stroke="rgba(52,211,153,0.5)" stroke-width="1.5"/>
+    <rect x="680" y="590" width="200" height="18" rx="10" fill="rgba(16,185,129,0.25)"/>
+    <text x="780" y="603" text-anchor="middle" fill="#6EE7B7" font-size="9" font-family="Poppins" font-weight="700">CENTRAL LIBRARY</text>
+    <text x="780" y="630" text-anchor="middle" fill="rgba(110,231,183,0.7)" font-size="9" font-family="Poppins">4 Floors · Digital Resources</text>
+    <text x="780" y="645" text-anchor="middle" fill="rgba(110,231,183,0.5)" font-size="8" font-family="Poppins">Open: 8AM–10PM · Today</text>
+    <text x="780" y="660" text-anchor="middle" fill="rgba(110,231,183,0.4)" font-size="8" font-family="Poppins">📚 80,000+ Books · Wi-Fi</text>
+    <rect x="720" y="675" width="120" height="26" rx="6" fill="rgba(52,211,153,0.2)" stroke="rgba(52,211,153,0.35)" stroke-width="1"/>
+    <text x="780" y="692" text-anchor="middle" fill="#34D399" font-size="8" font-family="Poppins" font-weight="600">● OPEN NOW · Busy</text>
+
+    <!-- Admin Office (top center) -->
+    <rect x="440" y="80" width="230" height="85" rx="10" fill="rgba(245,158,11,0.12)" stroke="rgba(252,211,77,0.4)" stroke-width="1.5"/>
+    <rect x="440" y="80" width="230" height="18" rx="10" fill="rgba(245,158,11,0.22)"/>
+    <text x="555" y="93" text-anchor="middle" fill="#FCD34D" font-size="9" font-family="Poppins" font-weight="700">ADMINISTRATIVE OFFICE</text>
+    <text x="555" y="118" text-anchor="middle" fill="rgba(252,211,77,0.65)" font-size="8.5" font-family="Poppins">Registrar · Finance · Admissions</text>
+    <text x="555" y="133" text-anchor="middle" fill="rgba(252,211,77,0.4)" font-size="8" font-family="Poppins">Mon–Sat · 9AM–5PM</text>
+    <text x="555" y="148" text-anchor="middle" fill="rgba(252,211,77,0.35)" font-size="8" font-family="Poppins">🏛 Ground Floor · Near Main Gate</text>
+
+    <!-- Cafeteria (center) -->
+    <rect x="430" y="440" width="140" height="90" rx="10" fill="rgba(239,68,68,0.12)" stroke="rgba(248,113,113,0.4)" stroke-width="1.5"/>
+    <rect x="430" y="440" width="140" height="18" rx="10" fill="rgba(239,68,68,0.2)"/>
+    <text x="500" y="453" text-anchor="middle" fill="#FCA5A5" font-size="9" font-family="Poppins" font-weight="700">CAFETERIA</text>
+    <text x="500" y="476" text-anchor="middle" fill="rgba(252,165,165,0.65)" font-size="8.5" font-family="Poppins">Main Campus Canteen</text>
+    <text x="500" y="491" text-anchor="middle" fill="rgba(252,165,165,0.45)" font-size="8" font-family="Poppins">⏰ 7AM–10PM Daily</text>
+    <text x="500" y="506" text-anchor="middle" fill="rgba(252,165,165,0.35)" font-size="8" font-family="Poppins">🍽 250 seats</text>
+
+    <!-- Boys Hostel (bottom left) -->
+    <rect x="100" y="590" width="150" height="130" rx="10" fill="rgba(168,85,247,0.12)" stroke="rgba(196,181,253,0.4)" stroke-width="1.5"/>
+    <rect x="100" y="590" width="150" height="18" rx="10" fill="rgba(168,85,247,0.22)"/>
+    <text x="175" y="603" text-anchor="middle" fill="#DDD6FE" font-size="9" font-family="Poppins" font-weight="700">BOYS HOSTEL</text>
+    <text x="175" y="630" text-anchor="middle" fill="rgba(221,214,254,0.65)" font-size="8.5" font-family="Poppins">H1 – H4 Blocks</text>
+    <text x="175" y="645" text-anchor="middle" fill="rgba(221,214,254,0.45)" font-size="8" font-family="Poppins">Capacity: 1,200 students</text>
+    <text x="175" y="660" text-anchor="middle" fill="rgba(221,214,254,0.35)" font-size="8" font-family="Poppins">🏠 AC & Non-AC Rooms</text>
+    <text x="175" y="695" text-anchor="middle" fill="rgba(221,214,254,0.35)" font-size="8" font-family="Poppins">Wi-Fi · Mess · Recreation</text>
+
+    <!-- Girls Hostel (right of boys) -->
+    <rect x="270" y="600" width="140" height="110" rx="10" fill="rgba(244,114,182,0.10)" stroke="rgba(249,168,212,0.4)" stroke-width="1.5"/>
+    <rect x="270" y="600" width="140" height="18" rx="10" fill="rgba(244,114,182,0.2)"/>
+    <text x="340" y="613" text-anchor="middle" fill="#FBCFE8" font-size="9" font-family="Poppins" font-weight="700">GIRLS HOSTEL</text>
+    <text x="340" y="638" text-anchor="middle" fill="rgba(251,207,232,0.65)" font-size="8.5" font-family="Poppins">GH1 – GH3 Blocks</text>
+    <text x="340" y="653" text-anchor="middle" fill="rgba(251,207,232,0.45)" font-size="8" font-family="Poppins">Capacity: 800 students</text>
+    <text x="340" y="668" text-anchor="middle" fill="rgba(251,207,232,0.35)" font-size="8" font-family="Poppins">🔒 Secured Entry</text>
+
+    <!-- ========== ANIMATED ROUTE ========== -->
+    <!-- Route: Library → Block A -->
+    <!-- Shadow route -->
+    <path d="M 780 590 Q 780 500 700 450 Q 640 415 593 415 Q 430 415 350 370 Q 280 330 240 260 Q 210 200 187 180"
+          stroke="rgba(37,99,235,0.15)" stroke-width="8" fill="none" stroke-linecap="round" filter="url(#routeGlow)"/>
+    <!-- Main route glow -->
+    <path d="M 780 590 Q 780 500 700 450 Q 640 415 593 415 Q 430 415 350 370 Q 280 330 240 260 Q 210 200 187 180"
+          stroke="url(#routeGrad)" stroke-width="4" fill="none" stroke-linecap="round" class="route-glow"
+          stroke-dasharray="12 6" marker-mid="url(#arrowBlue)"/>
+    <!-- Animated dash overlay -->
+    <path d="M 780 590 Q 780 500 700 450 Q 640 415 593 415 Q 430 415 350 370 Q 280 330 240 260 Q 210 200 187 180"
+          stroke="rgba(255,255,255,0.6)" stroke-width="2" fill="none" stroke-linecap="round"
+          stroke-dasharray="8 32" class="route-animated" opacity="0.7"/>
+
+    <!-- ========== MAP PINS ========== -->
+
+    <!-- Block A pin -->
+    <g filter="url(#pinGlow)" style="cursor:pointer;" onclick="selectPOI('blockA')">
+      <circle cx="187" cy="180" r="28" fill="rgba(37,99,235,0.1)" class="pin-pulse"/>
+      <circle cx="187" cy="180" r="16" fill="rgba(37,99,235,0.2)" stroke="rgba(59,130,246,0.4)" stroke-width="1"/>
+      <circle cx="187" cy="180" r="10" fill="#2563EB" stroke="white" stroke-width="2"/>
+      <text x="187" y="183" text-anchor="middle" fill="white" font-size="8" font-family="Poppins" font-weight="700">A</text>
+    </g>
+    <rect x="145" y="195" width="84" height="20" rx="6" fill="rgba(10,20,50,0.85)" stroke="rgba(59,130,246,0.4)" stroke-width="1"/>
+    <text x="187" y="209" text-anchor="middle" fill="#93C5FD" font-size="8.5" font-family="Poppins" font-weight="600">Block A</text>
+
+    <!-- Block B pin -->
+    <g filter="url(#pinGlow)" style="cursor:pointer;">
+      <circle cx="1007" cy="130" r="24" fill="rgba(139,92,246,0.1)" class="pin-pulse"/>
+      <circle cx="1007" cy="130" r="14" fill="rgba(139,92,246,0.2)" stroke="rgba(167,139,250,0.4)" stroke-width="1"/>
+      <circle cx="1007" cy="130" r="9" fill="#8B5CF6" stroke="white" stroke-width="2"/>
+      <text x="1007" y="133" text-anchor="middle" fill="white" font-size="8" font-family="Poppins" font-weight="700">B</text>
+    </g>
+    <rect x="968" y="148" width="78" height="20" rx="6" fill="rgba(10,20,50,0.85)" stroke="rgba(139,92,246,0.4)" stroke-width="1"/>
+    <text x="1007" y="162" text-anchor="middle" fill="#C4B5FD" font-size="8.5" font-family="Poppins" font-weight="600">Block B</text>
+
+    <!-- Library pin (highlighted - selected) -->
+    <g filter="url(#pinGlow)" style="cursor:pointer;" onclick="selectPOI('library')">
+      <circle cx="780" cy="656" r="30" fill="rgba(16,185,129,0.2)" class="pin-pulse"/>
+      <circle cx="780" cy="656" r="18" fill="rgba(16,185,129,0.3)" stroke="rgba(52,211,153,0.6)" stroke-width="2"/>
+      <circle cx="780" cy="656" r="12" fill="#10B981" stroke="white" stroke-width="2.5"/>
+      <text x="780" y="660" text-anchor="middle" fill="white" font-size="9" font-family="Poppins">📚</text>
+    </g>
+    <rect x="730" y="676" width="100" height="20" rx="6" fill="rgba(16,185,129,0.9)" stroke="rgba(52,211,153,0.6)" stroke-width="1"/>
+    <text x="780" y="690" text-anchor="middle" fill="white" font-size="8.5" font-family="Poppins" font-weight="700">Central Library</text>
+
+    <!-- Boys Hostel pin -->
+    <g filter="url(#pinGlow)" style="cursor:pointer;">
+      <circle cx="175" cy="655" r="22" fill="rgba(168,85,247,0.15)" class="pin-pulse"/>
+      <circle cx="175" cy="655" r="13" fill="rgba(168,85,247,0.25)" stroke="rgba(196,181,253,0.4)" stroke-width="1"/>
+      <circle cx="175" cy="655" r="9" fill="#A855F7" stroke="white" stroke-width="2"/>
+      <text x="175" y="658" text-anchor="middle" fill="white" font-size="8">🏠</text>
+    </g>
+    <rect x="130" y="672" width="90" height="20" rx="6" fill="rgba(10,20,50,0.85)" stroke="rgba(168,85,247,0.4)" stroke-width="1"/>
+    <text x="175" y="686" text-anchor="middle" fill="#DDD6FE" font-size="8.5" font-family="Poppins" font-weight="600">Boys Hostel</text>
+
+    <!-- Admin pin -->
+    <g filter="url(#pinGlow)" style="cursor:pointer;">
+      <circle cx="555" cy="122" r="22" fill="rgba(245,158,11,0.15)" class="pin-pulse"/>
+      <circle cx="555" cy="122" r="13" fill="rgba(245,158,11,0.25)" stroke="rgba(252,211,77,0.4)" stroke-width="1"/>
+      <circle cx="555" cy="122" r="9" fill="#F59E0B" stroke="white" stroke-width="2"/>
+      <text x="555" y="125" text-anchor="middle" fill="white" font-size="8">🏛</text>
+    </g>
+    <rect x="510" y="139" width="90" height="20" rx="6" fill="rgba(10,20,50,0.85)" stroke="rgba(245,158,11,0.4)" stroke-width="1"/>
+    <text x="555" y="153" text-anchor="middle" fill="#FCD34D" font-size="8.5" font-family="Poppins" font-weight="600">Admin Office</text>
+
+    <!-- Cafeteria pin -->
+    <g filter="url(#pinGlow)" style="cursor:pointer;">
+      <circle cx="500" cy="485" r="20" fill="rgba(239,68,68,0.15)" class="pin-pulse"/>
+      <circle cx="500" cy="485" r="12" fill="rgba(239,68,68,0.25)" stroke="rgba(248,113,113,0.4)" stroke-width="1"/>
+      <circle cx="500" cy="485" r="8" fill="#EF4444" stroke="white" stroke-width="2"/>
+      <text x="500" y="488" text-anchor="middle" fill="white" font-size="8">🍽</text>
+    </g>
+    <rect x="460" y="500" width="80" height="18" rx="6" fill="rgba(10,20,50,0.85)" stroke="rgba(239,68,68,0.4)" stroke-width="1"/>
+    <text x="500" y="513" text-anchor="middle" fill="#FCA5A5" font-size="8.5" font-family="Poppins" font-weight="600">Cafeteria</text>
+
+    <!-- You are here dot -->
+    <g filter="url(#pinGlow)">
+      <circle cx="593" cy="398" r="24" fill="rgba(59,130,246,0.15)" class="pin-pulse"/>
+      <circle cx="593" cy="398" r="14" fill="rgba(59,130,246,0.25)" stroke="rgba(96,165,250,0.5)" stroke-width="1.5"/>
+      <circle cx="593" cy="398" r="8" fill="#60A5FA" stroke="white" stroke-width="2.5"/>
+    </g>
+    <rect x="547" y="415" width="92" height="20" rx="6" fill="rgba(37,99,235,0.85)" stroke="rgba(96,165,250,0.5)" stroke-width="1"/>
+    <text x="593" y="429" text-anchor="middle" fill="white" font-size="8.5" font-family="Poppins" font-weight="700">📍 You are here</text>
+
+    <!-- Route waypoints -->
+    <circle cx="593" cy="415" r="5" fill="white" stroke="#3B82F6" stroke-width="2" opacity="0.8"/>
+    <circle cx="350" cy="370" r="5" fill="white" stroke="#8B5CF6" stroke-width="2" opacity="0.7"/>
+
+    <!-- Compass rose -->
+    <g transform="translate(1100,90)">
+      <circle cx="0" cy="0" r="28" fill="rgba(5,10,25,0.75)" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+      <polygon points="0,-20 4,-6 0,-2 -4,-6" fill="white" opacity="0.9"/>
+      <polygon points="0,20 4,6 0,2 -4,6" fill="rgba(255,255,255,0.35)"/>
+      <polygon points="-20,0 -6,-4 -2,0 -6,4" fill="rgba(255,255,255,0.35)"/>
+      <polygon points="20,0 6,-4 2,0 6,4" fill="rgba(255,255,255,0.35)"/>
+      <text x="0" y="-22" text-anchor="middle" fill="white" font-size="10" font-family="Poppins" font-weight="700">N</text>
+      <circle cx="0" cy="0" r="4" fill="var(--accent2)"/>
+    </g>
+
+    <!-- Scale bar -->
+    <g transform="translate(100,760)">
+      <rect x="0" y="0" width="160" height="3" rx="1.5" fill="rgba(255,255,255,0.25)"/>
+      <line x1="0" y1="-5" x2="0" y2="8" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+      <line x1="80" y1="-5" x2="80" y2="8" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+      <line x1="160" y1="-5" x2="160" y2="8" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+      <text x="0" y="-8" fill="rgba(255,255,255,0.4)" font-size="8" font-family="Poppins">0m</text>
+      <text x="80" y="-8" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8" font-family="Poppins">100m</text>
+      <text x="160" y="-8" text-anchor="end" fill="rgba(255,255,255,0.4)" font-size="8" font-family="Poppins">200m</text>
+    </g>
+  </svg>
+</div>
+
+<!-- MAP CONTROLS -->
+<div class="map-controls">
+  <button class="ctrl-btn" id="zoomIn" title="Zoom In"><i aria-hidden="true" class="fas fa-plus"></i></button>
+  <button class="ctrl-btn" id="zoomOut" title="Zoom Out"><i aria-hidden="true" class="fas fa-minus"></i></button>
+  <div class="ctrl-sep"></div>
+  <button class="ctrl-btn" title="Center on Me"><i aria-hidden="true" class="fas fa-location-crosshairs"></i></button>
+  <button class="ctrl-btn" title="3D View"><i aria-hidden="true" class="fas fa-cube"></i></button>
+  <div class="ctrl-sep"></div>
+  <button class="ctrl-btn" title="Measure"><i aria-hidden="true" class="fas fa-ruler"></i></button>
+</div>
+
+<!-- SIDE PANEL -->
+<aside class="side-panel">
+  <div class="panel-header">
+    <h2><i aria-hidden="true" class="fas fa-map-pin" style="margin-right:6px;color:var(--accent2);"></i>Locations</h2>
+    <div class="search-mini">
+      <i aria-hidden="true" class="fas fa-magnifying-glass"></i>
+      <input type="text" placeholder="Search a building or lab..."/>
+    </div>
+  </div>
+
+  <!-- Selected Location Card -->
+  <div class="loc-card">
+    <div class="loc-card-top">
+      <div class="loc-icon"><i aria-hidden="true" class="fas fa-book-open"></i></div>
+      <div class="loc-info">
+        <h3>Central Library</h3>
+        <p>Ground Floor · Building 7<br>Amity University Campus</p>
+        <span class="loc-badge busy"><i aria-hidden="true" class="fas fa-circle" style="font-size:6px;"></i> Busy — 82% full</span>
+      </div>
+    </div>
+    <div class="loc-stats">
+      <div class="loc-stat"><span class="val">4</span><span class="lbl">Floors</span></div>
+      <div class="loc-stat"><span class="val">350m</span><span class="lbl">Distance</span></div>
+      <div class="loc-stat"><span class="val">4 min</span><span class="lbl">Walk</span></div>
+    </div>
+    <button class="btn-navigate" onclick="window.location.href='navigation.html'">
+      <i aria-hidden="true" class="fas fa-route"></i> Navigate Here
+    </button>
+  </div>
+
+  <!-- POI List -->
+  <div class="poi-list">
+    <p class="poi-section-title"><i aria-hidden="true" class="fas fa-building" style="margin-right:5px;"></i>Academic Blocks</p>
+
+    <div class="poi-item selected" onclick="selectPOI(this)">
+      <div class="poi-dot" style="background:#3B82F6;box-shadow:0 0 6px #3B82F6;"></div>
+      <div>
+        <h4>Block A — Engineering & Tech</h4>
+        <span>4 Floors · CS, EC, ME Departments</span>
+      </div>
+      <span class="poi-dist">280m</span>
+    </div>
+
+    <div class="poi-item" onclick="selectPOI(this)">
+      <div class="poi-dot" style="background:#A78BFA;box-shadow:0 0 6px #A78BFA;"></div>
+      <div>
+        <h4>Block B — Management & Law</h4>
+        <span>3 Floors · MBA, BBA, LLB</span>
+      </div>
+      <span class="poi-dist">520m</span>
+    </div>
+
+    <div class="poi-item" onclick="selectPOI(this)">
+      <div class="poi-dot" style="background:#22D3EE;box-shadow:0 0 6px #22D3EE;"></div>
+      <div>
+        <h4>Block C — Science & Allied</h4>
+        <span>3 Floors · Pharmacy, Biotech</span>
+      </div>
+      <span class="poi-dist">410m</span>
+    </div>
+
+    <div class="poi-item" onclick="selectPOI(this)">
+      <div class="poi-dot" style="background:#FCD34D;box-shadow:0 0 6px #FCD34D;"></div>
+      <div>
+        <h4>Block D — Medical & Dental</h4>
+        <span>⚠ Entrance under maintenance</span>
+      </div>
+      <span class="poi-dist" style="color:#F87171;">650m</span>
+    </div>
+
+    <p class="poi-section-title" style="margin-top:12px;"><i aria-hidden="true" class="fas fa-landmark" style="margin-right:5px;"></i>Facilities</p>
+
+    <div class="poi-item" onclick="selectPOI(this)">
+      <div class="poi-dot" style="background:#34D399;box-shadow:0 0 6px #34D399;"></div>
+      <div>
+        <h4>Central Library</h4>
+        <span>Open Now · 8AM–10PM · Busy</span>
+      </div>
+      <span class="poi-dist">350m</span>
+    </div>
+
+    <div class="poi-item" onclick="selectPOI(this)">
+      <div class="poi-dot" style="background:#FCD34D;box-shadow:0 0 6px #FCD34D;"></div>
+      <div>
+        <h4>Administrative Office</h4>
+        <span>Mon–Sat · 9AM–5PM</span>
+      </div>
+      <span class="poi-dist">150m</span>
+    </div>
+
+    <div class="poi-item" onclick="selectPOI(this)">
+      <div class="poi-dot" style="background:#F87171;box-shadow:0 0 6px #F87171;"></div>
+      <div>
+        <h4>Cafeteria (Main)</h4>
+        <span>Open · 250 seats · Moderate</span>
+      </div>
+      <span class="poi-dist">200m</span>
+    </div>
+
+    <p class="poi-section-title" style="margin-top:12px;"><i aria-hidden="true" class="fas fa-bed" style="margin-right:5px;"></i>Hostels</p>
+
+    <div class="poi-item" onclick="selectPOI(this)">
+      <div class="poi-dot" style="background:#A855F7;box-shadow:0 0 6px #A855F7;"></div>
+      <div><h4>Boys Hostel (H1–H4)</h4><span>Capacity 1,200 · AC & Non-AC</span></div>
+      <span class="poi-dist">480m</span>
+    </div>
+
+    <div class="poi-item" onclick="selectPOI(this)">
+      <div class="poi-dot" style="background:#F9A8D4;box-shadow:0 0 6px #F9A8D4;"></div>
+      <div><h4>Girls Hostel (GH1–GH3)</h4><span>Capacity 800 · Secured</span></div>
+      <span class="poi-dist">510m</span>
+    </div>
+  </div>
+</aside>
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar">
+  <div class="layer-chips">
+    <div class="layer-chip on" onclick="toggleChip(this)"><i aria-hidden="true" class="fas fa-building"></i> Buildings</div>
+    <div class="layer-chip on" onclick="toggleChip(this)"><i aria-hidden="true" class="fas fa-route"></i> Routes</div>
+    <div class="layer-chip on" onclick="toggleChip(this)"><i aria-hidden="true" class="fas fa-map-pin"></i> Pins</div>
+    <div class="layer-chip off" onclick="toggleChip(this)"><i aria-hidden="true" class="fas fa-tree"></i> Green Zones</div>
+    <div class="layer-chip off" onclick="toggleChip(this)"><i aria-hidden="true" class="fas fa-parking"></i> Parking</div>
+    <div class="layer-chip off" onclick="toggleChip(this)"><i aria-hidden="true" class="fas fa-wifi"></i> Wi-Fi Zones</div>
+  </div>
+  <div class="coord-display">
+    <span>Lat: <span class="coord-val">28.4744°N</span></span>
+    <span>Lon: <span class="coord-val">77.5040°E</span></span>
+    <span>Zoom: <span class="coord-val" id="zoomVal">14</span>x</span>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

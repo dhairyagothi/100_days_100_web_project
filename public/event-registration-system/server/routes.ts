@@ -6,7 +6,11 @@ import { z } from "zod";
 import jwt from "jsonwebtoken";
 import { scryptSync, randomBytes, timingSafeEqual } from "crypto";
 
-const JWT_SECRET = process.env.SESSION_SECRET || 'fallback_secret_for_dev_only';
+const SESSION_SECRET = process.env.SESSION_SECRET;
+if (!SESSION_SECRET) {
+  throw new Error("SESSION_SECRET environment variable is required to sign authentication tokens");
+}
+const JWT_SECRET: string = SESSION_SECRET;
 
 // Password hashing helpers
 function hashPassword(password: string) {
@@ -42,14 +46,20 @@ export async function registerRoutes(
 ): Promise<Server> {
   // Seed admin user if it doesn't exist
   async function seedAdmin() {
+    const email = process.env.ADMIN_EMAIL;
+    const password = process.env.ADMIN_PASSWORD;
+    if (!email || !password) {
+      console.log('Admin seed skipped: set ADMIN_EMAIL and ADMIN_PASSWORD to create the initial admin user');
+      return;
+    }
     try {
-      const adminExists = await storage.getUserByEmail('adminzen@event.com');
+      const adminExists = await storage.getUserByEmail(email);
       if (!adminExists) {
         await storage.createUser({
-          email: 'adminzen@event.com',
-          password: hashPassword('admin123zen')
+          email,
+          password: hashPassword(password)
         });
-        console.log('Seed admin user created: adminzen@event.com / admin123zen');
+        console.log(`Seed admin user created for ${email}`);
       }
     } catch (err) {
       console.error('Failed to seed admin:', err);
@@ -111,8 +121,11 @@ export async function registerRoutes(
         college: req.query.college as string,
         domain: req.query.domain as string
       };
+      const page = parseInt(req.query.page as string) || 1;
+      const pageSize = parseInt(req.query.pageSize as string) || 50;
+      const offset = (page - 1) * pageSize;
       
-      const registrations = await storage.getRegistrations(filters);
+      const registrations = await storage.getRegistrations(filters, { limit: pageSize, offset });
       res.status(200).json(registrations);
     } catch (err) {
       res.status(500).json({ message: 'Internal server error' });
@@ -122,7 +135,9 @@ export async function registerRoutes(
   // Get Analytics (Protected)
   app.get(api.analytics.get.path, authenticateToken, async (req, res) => {
     try {
-      const registrations = await storage.getRegistrations();
+      const startDate = req.query.startDate as string;
+      const endDate = req.query.endDate as string;
+      const registrations = await storage.getRegistrations({ startDate, endDate });
       
       const totalRegistrations = registrations.length;
       
