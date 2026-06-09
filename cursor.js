@@ -8,6 +8,7 @@
   "use strict";
 
   const STORAGE_KEY = "customCursorStyle";
+  const ENABLED_KEY = "customCursorEnabled";
   const DEFAULT_STYLE = "crystal";
 
   const CURSOR_STYLES = [
@@ -27,6 +28,7 @@
   let rainbowIdx = 0;
 
   let activeStyle = DEFAULT_STYLE;
+  let isEnabled = true;
   let outerEl = null;
   let innerEl = null;
   let mouseX = 0, mouseY = 0;
@@ -41,8 +43,17 @@
     catch (_) { return DEFAULT_STYLE; }
   }
 
+  function getEnabled() {
+    try { return localStorage.getItem(ENABLED_KEY) !== "false"; }
+    catch (_) { return true; }
+  }
+
   function saveStyle(id) {
     try { localStorage.setItem(STORAGE_KEY, id); } catch (_) {}
+  }
+
+  function saveEnabled(enabled) {
+    try { localStorage.setItem(ENABLED_KEY, String(enabled)); } catch (_) {}
   }
 
   /* ── Create cursor elements ── */
@@ -78,16 +89,23 @@
     outerEl.className = "cursor-ring cursor-ring--outer";
     innerEl.className = "cursor-ring cursor-ring--inner";
 
-    if (id === "default") {
+    // If disabled or default style, hide cursor elements and set standard cursor
+    if (!isEnabled || id === "default") {
       document.body.classList.remove("custom-cursor-active");
+      document.body.style.cursor = "auto";
       outerEl.classList.remove("is-visible");
+      outerEl.style.display = "none";
       innerEl.classList.remove("is-visible");
+      innerEl.style.display = "none";
       return;
     }
 
     document.body.classList.add("custom-cursor-active");
+    document.body.style.cursor = "none";
     outerEl.classList.add("is-visible");
+    outerEl.style.display = "block";
     innerEl.classList.add("is-visible");
+    innerEl.style.display = "block";
 
     // Style configs
     const styles = {
@@ -378,7 +396,7 @@
     mouseX = e.clientX;
     mouseY = e.clientY;
 
-    if (activeStyle !== "default" && outerEl) {
+    if (isEnabled && activeStyle !== "default" && outerEl) {
       outerEl.classList.add("is-visible");
       if (innerEl) innerEl.classList.add("is-visible");
     }
@@ -393,6 +411,9 @@
   /* ── Init ── */
   function init() {
     if (isMobile) return;
+
+    // Check enabled state
+    isEnabled = getEnabled();
 
     ensureCursorElements();
     startLoop();
@@ -413,7 +434,50 @@
     }
   }
 
+  // Public API for enabling/disabling cursor system
+  function enableCursorSystem() {
+    isEnabled = true;
+    saveEnabled(true);
+    applyStyle(activeStyle);
+    updateCursorToggleUI();
+  }
+
+  function disableCursorSystem() {
+    isEnabled = false;
+    saveEnabled(false);
+    document.body.style.cursor = "auto";
+    if (outerEl) {
+      outerEl.classList.remove("is-visible");
+      outerEl.style.display = "none";
+      document.body.classList.remove("custom-cursor-active");
+    }
+    if (innerEl) {
+      innerEl.classList.remove("is-visible");
+      innerEl.style.display = "none";
+    }
+    updateCursorToggleUI();
+  }
+
+  function updateCursorToggleUI() {
+    document.querySelectorAll("#cursorToggleNav").forEach((btn) => {
+      btn.innerHTML = `
+        <span class="mobile-nav-icon"><i class="fas ${isEnabled ? "fa-circle-notch" : "fa-mouse-pointer"}" aria-hidden="true"></i></span>
+        Cursor: ${isEnabled ? "Custom" : "Default"}
+      `;
+      btn.setAttribute(
+        "aria-label",
+        `Toggle custom cursor (currently ${isEnabled ? "Custom" : "Default"})`,
+      );
+    });
+  }
+
   init();
 
-  window.CursorSystem = { apply: applyStyle, styles: CURSOR_STYLES };
+  window.CursorSystem = { 
+    apply: applyStyle, 
+    styles: CURSOR_STYLES,
+    enable: enableCursorSystem,
+    disable: disableCursorSystem,
+    updateUI: updateCursorToggleUI
+  };
 })();
