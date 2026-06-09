@@ -138,8 +138,9 @@ async function filterJobs() {
     };
 
     const allJobs = await fetchJobsData();
+    console.log(allJobs);
     const filtered = allJobs.filter(job => 
-        job.title.toLowerCase().includes(filters.title) &&
+        (job.title.toLowerCase().includes(filters.title) || job.company.toLowerCase().includes(filters.title)) &&
         (filters.location === '' || job.location.toLowerCase().includes(filters.location)) &&
         matchDate(job.datePosted, filters.date) &&
         matchSalary(job.salary, filters.salary) &&
@@ -147,7 +148,8 @@ async function filterJobs() {
         (filters.edu === '' || job.education.toLowerCase() === filters.edu) &&
         (filters.shift === '' || job.shift.toLowerCase() === filters.shift)
     );
-
+    const totalJobs = document.getElementById("total-jobs");
+    totalJobs.value=filtered.length + " Jobs Found"
     sortJobs(filtered, filters.sort);
     renderJobs(filtered, '.job-container .box-container');
 }
@@ -190,7 +192,7 @@ async function loadSavedJobs() {
 
     const savedIds = JSON.parse(localStorage.getItem('savedJobs')) || [];
     const allJobs = await fetchJobsData();
-    const savedData = allJobs.filter(j => savedIds.includes(job.id));
+    const savedData = allJobs.filter(job => savedIds.includes(job.id));
 
     container.innerHTML = '';
     if (!savedData.length) {
