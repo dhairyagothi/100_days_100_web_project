@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Space Flight & ISS Tracker Hub</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="dashboard">
+      <header>
+        <h1>Space Exploration Hub</h1>
+        <p class="subtitle">
+          Live tracking metrics and upcoming spaceflight countdowns
+        </p>
+      </header>
+
+      <div class="grid-layout">
+        <section class="card iss-panel">
+          <h2>Live ISS Locator</h2>
+          <div class="iss-row">
+            <div class="metric-box">
+              <span class="label">Latitude</span>
+              <div class="value" id="iss-lat">Loading...</div>
+            </div>
+            <div class="metric-box">
+              <span class="label">Longitude</span>
+              <div class="value" id="iss-lng">Loading...</div>
+            </div>
+          </div>
+
+          <div class="astronaut-section">
+            <h3>Astronauts Currently Onboard</h3>
+            <ul id="astronaut-list" class="astronaut-list">
+              <li class="loading-placeholder">Fetching crew metadata...</li>
+            </ul>
+          </div>
+          <div class="update-stamp">
+            Automatically refreshing every 5 seconds
+          </div>
+        </section>
+
+        <section class="card launch-panel">
+          <h2>Upcoming Launch Feed</h2>
+          <div id="launch-container">
+            <div class="loading-placeholder">
+              Processing international schedule objects...
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

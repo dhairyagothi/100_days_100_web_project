@@ -548,6 +548,9 @@ function showSection(section) {
   });
 
   // Update progress bar
+  const done  = tasks.filter(t => t.status === 'completed').length;
+  const total = tasks.length;
+  const pct   = total === 0 ? 0 : Math.round((done / total) * 100);
   if (progressFill) progressFill.style.width = `${pct}%`;
   if (progressText) progressText.innerText = `${done} / ${total} done`;
 
@@ -767,15 +770,34 @@ if (savePdfBtn) {
 // Wire up Clear Done button click listener
 const clearDoneBtn = document.getElementById('cleardone');
 if (clearDoneBtn) {
-  clearDoneBtn.addEventListener('click', clearDone);
+  clearDoneBtn.addEventListener('click', function () {
+    if (typeof clearDone === 'function') clearDone();
+  });
 }
 
 // Wire up filter bar buttons
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    filterTasks(btn, btn.dataset.filter);
+    if (typeof filterTasks === 'function') filterTasks(btn, btn.dataset.filter);
   });
 });
+
+// --- Workspace Skin (Theme Switcher) ---
+(function initTheme() {
+  // Restore persisted theme on load
+  const saved = localStorage.getItem('todo-workspace-theme');
+  if (saved) document.body.setAttribute('data-theme', saved);
+
+  document.querySelectorAll('.theme-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      const theme = btn.getAttribute('data-theme');
+      if (theme) {
+        document.body.setAttribute('data-theme', theme);
+        localStorage.setItem('todo-workspace-theme', theme);
+      }
+    });
+  });
+})();
 
 // --- Page Initialisation ---
 // Set Home tab as active and apply default/saved theme on load
@@ -788,10 +810,14 @@ try {
   }
 
   // Save PDF Button
-  const savePdfBtn = document.getElementById('savepdf');
-  if (savePdfBtn) {
-    savePdfBtn.addEventListener('click', saveAsPDF);
+  const savePdfBtnInit = document.getElementById('savepdf');
+  if (savePdfBtnInit) {
+    savePdfBtnInit.addEventListener('click', saveAsPDF);
   }
+} catch (e) {
+  console.error('Initialisation error:', e);
 }
 
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', function () {
+  if (typeof renderTasks === 'function') renderTasks();
+});
