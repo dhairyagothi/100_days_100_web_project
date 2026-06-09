@@ -1,0 +1,192 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Gamja Flower", sans-serif;
+}
+
+body{
+    background:#f9eeee;
+    padding:30px;
+    transition:0.3s;
+}
+
+body.dark{
+    background:#1f1f1f;
+    color:white;
+}
+
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:20px;
+}
+
+.home-btn,
+.dark-btn{
+    padding:12px 20px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.home-btn{
+    background:#e97d92;
+    color:white;
+}
+
+.dark-btn{
+    background:#333;
+    color:white;
+}
+
+.dashboard{
+    max-width:1200px;
+    margin:auto;
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
+}
+
+.card{
+    padding:25px;
+    border-radius:25px;
+    min-height:320px;
+    border:2px dashed rgba(0,0,0,.4);
+}
+
+.today{
+    background:#f6cad4;
+}
+
+.tracker{
+    background:#d7f1d8;
+}
+
+.notes{
+    background:#eef1ab;
+}
+
+.tomorrow{
+    background:#d7d0ff;
+}
+
+body.dark .card{
+    background:#2b2b2b;
+    border-color:#777;
+}
+
+h2{
+    text-align:center;
+    margin-bottom:25px;
+    letter-spacing:2px;
+}
+
+.input-group{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.input-group input{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:20px;
+    outline:none;
+}
+
+.add-btn{
+    padding:12px 20px;
+    border:none;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+ul{
+    list-style:none;
+}
+
+li{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:8px 0;
+}
+
+.task-left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.completed{
+    text-decoration:line-through;
+    opacity:0.6;
+}
+
+.delete-btn{
+    background:none;
+    border:none;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.stats{
+    text-align:center;
+    margin-top:20px;
+    font-size:18px;
+}
+
+.progress{
+    height:25px;
+    background:#ddd;
+    border-radius:25px;
+    overflow:hidden;
+    margin-top:20px;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(
+        90deg,
+        #2d6a1f,
+        #98f7b0
+    );
+    transition:.5s;
+}
+
+.streak{
+    margin-top:25px;
+    text-align:center;
+    font-size:20px;
+    font-weight:bold;
+}
+
+textarea{
+    width:100%;
+    height:170px;
+    padding:15px;
+    border:none;
+    border-radius:15px;
+    resize:none;
+    margin-bottom:15px;
+}
+
+.save-note{
+    padding:10px 20px;
+    border:none;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+@media(max-width:768px){
+
+    .dashboard{
+        grid-template-columns:1fr;
+    }
+
+}

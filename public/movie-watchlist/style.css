@@ -1,0 +1,77 @@
+body {
+  background-color: #0f172a;
+  color: #f8fafc;
+  font-family: sans-serif;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+.container {
+  width: 100%;
+  max-width: 550px;
+}
+.search-box {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #334155;
+  background: #1e293b;
+  color: #fff;
+}
+button {
+  padding: 10px 15px;
+  border-radius: 6px;
+  border: none;
+  background: #38bdf8;
+  color: #0f172a;
+  font-weight: bold;
+  cursor: pointer;
+}
+.hidden {
+  display: none;
+}
+.movie-card,
+.watch-item {
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 15px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+.movie-info {
+  flex: 1;
+}
+.movie-info h3 {
+  margin: 0 0 5px 0;
+}
+.movie-info p {
+  margin: 3px 0;
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+.poster {
+  width: 60px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.btn-add {
+  background: #10b981;
+  color: #fff;
+}
+.btn-del {
+  background: #ef4444;
+  color: #fff;
+}
+hr {
+  border: 0;
+  border-top: 1px solid #334155;
+  margin: 30px 0;
+}

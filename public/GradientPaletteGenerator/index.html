@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Generate beautiful CSS gradients with live preview. Pick colors, adjust angles, copy CSS code, and save your favorite gradient palettes."
+    />
+    <title>Gradient Palette Generator | CSS Gradient Tool</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="header" id="header">
+      <div class="header__container">
+        <div class="header__brand">
+          <span class="header__icon" aria-hidden="true">🎨</span>
+          <h1 class="header__title">Gradient Palette</h1>
+        </div>
+        <p class="header__tagline">Create stunning CSS gradients in seconds</p>
+      </div>
+    </header>
+
+    <main class="main" id="main-content">
+      <section class="preview-section" id="preview-section" aria-label="Gradient Preview">
+        <div class="preview-card">
+          <div class="preview-box" id="preview-box" aria-label="Live gradient preview"></div>
+          <div class="preview-actions">
+            <button
+              class="btn btn--primary"
+              id="btn-random"
+              type="button"
+              aria-label="Generate random gradient"
+            >
+              <span class="btn__icon">🎲</span><span>Randomize</span>
+            </button>
+            <button
+              class="btn btn--secondary"
+              id="btn-copy"
+              type="button"
+              aria-label="Copy CSS code"
+            >
+              <span class="btn__icon">📋</span><span>Copy CSS</span>
+            </button>
+            <button class="btn btn--accent" id="btn-save" type="button" aria-label="Save gradient">
+              <span class="btn__icon">💾</span><span>Save</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="controls-section" id="controls-section" aria-label="Gradient Controls">
+        <div class="controls-card">
+          <h2 class="controls-card__title">Customize Gradient</h2>
+          <div class="control-group" id="control-type">
+            <label class="control-label">Gradient Type</label>
+            <div class="toggle-group" role="radiogroup" aria-label="Gradient type">
+              <button
+                class="toggle-btn toggle-btn--active"
+                id="btn-linear"
+                type="button"
+                role="radio"
+                aria-checked="true"
+                data-type="linear"
+              >
+                Linear
+              </button>
+              <button
+                class="toggle-btn"
+                id="btn-radial"
+                type="button"
+                role="radio"
+                aria-checked="false"
+                data-type="radial"
+              >
+                Radial
+              </button>
+              <button
+                class="toggle-btn"
+                id="btn-conic"
+                type="button"
+                role="radio"
+                aria-checked="false"
+                data-type="conic"
+              >
+                Conic
+              </button>
+            </div>
+          </div>
+          <div class="control-group" id="control-colors">
+            <label class="control-label">Colors</label>
+            <div class="color-stops" id="color-stops">
+              <div class="color-stop" data-index="0">
+                <input
+                  type="color"
+                  class="color-input"
+                  id="color-1"
+                  value="#6366f1"
+                  aria-label="First color"
+                />
+                <span class="color-hex" id="hex-1">#6366f1</span>
+              </div>
+              <div class="color-stop" data-index="1">
+                <input
+                  type="color"
+                  class="color-input"
+                  id="color-2"
+                  value="#ec4899"
+                  aria-label="Second color"
+                />
+                <span class="color-hex" id="hex-2">#ec4899</span>
+              </div>
+            </div>
+            <button class="btn btn--small btn--outline" id="btn-add-color" type="button">
+              + Add Color
+            </button>
+          </div>
+          <div class="control-group" id="control-angle">
+            <label class="control-label" for="angle-slider"
+              >Angle: <span class="control-value" id="angle-value">135°</span></label
+            >
+            <input
+              type="range"
+              class="range-slider"
+              id="angle-slider"
+              min="0"
+              max="360"
+              value="135"
+              aria-label="Gradient angle"
+            />
+          </div>
+          <div class="control-group" id="control-output">
+            <label class="control-label">CSS Code</label>
+            <div class="code-output">
+              <code class="code-text" id="css-output"></code>
+              <span class="copy-clipboard" id="copy-clipboard">&#x1F4CB;</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="saved-section" id="saved-section" aria-label="Saved Gradients">
+        <div class="saved-card">
+          <div class="saved-card__header">
+            <h2 class="saved-card__title">Saved Gradients</h2>
+            <button class="btn btn--small btn--danger" id="btn-clear-all" type="button">
+              Clear All
+            </button>
+          </div>
+          <div class="saved-grid" id="saved-grid">
+            <p class="saved-empty" id="saved-empty">
+              No saved gradients yet. Create one and hit Save!
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="alert" aria-live="polite">
+      <span class="toast__text" id="toast-text"></span>
+    </div>
+
+    <footer class="footer" id="footer">
+      <p class="footer__text">Made with &#10084; by <strong>Omer</strong> &bull; GSSoC 2026</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

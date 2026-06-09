@@ -1,29 +1,54 @@
 {
   "name": "100-days-100-web-projects",
   "version": "1.0.0",
-  "description": "A repository containing a growing collection of web projects from basic to intermediate using HTML, CSS, and JavaScript",
-  "main": "index.html",
+  "private": true,
+  "description": "A curated open-source collection of 100+ frontend web projects",
   "scripts": {
-    "dev": "serve .",
-    "build": "echo 'No build step required for static site'"
+    "generate-previews": "node scripts/generate-previews.js",
+    "dev": "npx -y serve . -p 3000",
+    "validate:projects": "node scripts/validate-projects.js",
+    "validate:projects-fixture": "node scripts/validate-projects-fixture.js",
+    "lint": "eslint --no-config-lookup -c eslint.config.js .",
+    "lint:all": "npx -y htmlhint '**/*.html' --ignore 'node_modules/**,**/node_modules/**'",
+    "format": "prettier --config .prettierrc --write .",
+    "docker:build": "docker build -t 100days-web .",
+    "docker:run": "docker run --rm -p 8080:80 100days-web",
+    "docker:up": "docker compose up --build -d",
+    "docker:down": "docker compose down",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dhairyagothi/100_days_100_web_project.git"
+    "url": "https://github.com/dhairyagothi/100_days_100_web_project.git"
   },
   "keywords": [
     "html",
     "css",
     "javascript",
-    "web-development",
-    "projects",
-    "learning"
+    "web-projects",
+    "open-source",
+    "frontend"
   ],
-  "author": "Dhairya Gothi and Contributors",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/dhairyagothi/100_days_100_web_project/issues"
+  "dependencies": {
+    "dotenv": "^17.4.2"
   },
-  "homepage": "https://github.com/dhairyagothi/100_days_100_web_project#readme",
-  "dependencies": {}
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.4.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-html": "^8.1.4",
+    "globals": "^17.6.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.8.3",
+    "puppeteer": "^25.1.0",
+    "serve": "^14.2.6",
+    "stylelint": "^17.12.0",
+    "stylelint-config-standard": "^40.0.0"
+  },
+  "lint-staged": {
+    "projects.json": "npm run validate:projects",
+    "*.html": "npx htmlhint"
+  }
 }

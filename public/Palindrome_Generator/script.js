@@ -1,44 +1,76 @@
-// Function to check if a string is a palindrome
-function isPalindrome(str) {
-    // Remove non-alphanumeric characters and convert to lowercase
-    const cleanStr = str.toLowerCase().replace(/[^a-z0-9]/g, '');
-    return cleanStr === cleanStr.split('').reverse().join('');
-}
+/**
+ * Palindrome Check Logic
+ * Triggered only on Button Click
+ */
 
-// Function to handle form submission
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('palindromeForm');
-    const input = document.getElementById('inputString');
-    const resultDiv = document.getElementById('result');
-    const loadingText = document.querySelector('.loading-text');
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("inputString");
+  const checkBtn = document.getElementById("checkBtn");
+  const resultBox = document.getElementById("resultBox");
+  const resultText = document.getElementById("resultText");
+  const resultIcon = document.getElementById("resultIcon");
+  const clearBtn = document.getElementById("clearBtn");
 
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const inputValue = input.value.trim();
+  // Helper: Check if a string is already a palindrome
+  const isPalindrome = (s) => {
+    const cleaned = s.toLowerCase().replace(/[^a-z0-9]/g, "");
+    return cleaned === cleaned.split("").reverse().join("");
+  };
 
-        if (inputValue !== '') {
-            // Show loading message
-            loadingText.style.display = 'block';
+  // Action on Button Click
+  checkBtn.addEventListener("click", () => {
+    const val = input.value.trim();
 
-            // Simulate asynchronous behavior to show loading text
-            setTimeout(function() {
-                const isPal = isPalindrome(inputValue);
-                let result = '';
+    if (!val) {
+      alert("Please enter some text first!");
+      return;
+    }
 
-                if (isPal) {
-                    result = inputValue; // Input is a palindrome
-                } else {
-                    result = `${inputValue}${inputValue.split('').reverse().join('')}`; // Input + reversed input
-                }
+    // ✅ FIX: If input is already a palindrome, show feedback and stop
+    if (isPalindrome(val)) {
+      resultBox.className = "result-container mt-4 text-center success-bg";
+      resultIcon.innerText = "✅";
+      resultText.innerText = `"${val}" is already a palindrome! No need to generate.`;
+      return;
+    }
 
-                // Display result
-                resultDiv.textContent = result;
+    // Function to find the shortest palindrome addition
+    const makeShortestPalindrome = (str) => {
+      const isPalin = (s) => s === s.split("").reverse().join("");
 
-                // Hide loading message after generating result
-                loadingText.style.display = 'none';
-            }, 1000); // Simulate a delay of 1 second for demonstration
-        } else {
-            resultDiv.textContent = 'Please enter a valid string.';
+      for (let i = 0; i < str.length; i++) {
+        const suffix = str.slice(i);
+
+        if (isPalin(suffix)) {
+          const prefix = str.slice(0, i);
+          const neededAddition = prefix.split("").reverse().join("");
+          return str + neededAddition;
         }
-    });
+      }
+
+      return str;
+    };
+
+    const palindromeResult = makeShortestPalindrome(val);
+
+    // Update UI
+    resultBox.className = "result-container mt-4 text-center success-bg";
+    resultText.innerText = `Result: ${palindromeResult}`;
+    resultIcon.innerText = "🎯";
+
+    if (typeof confetti === "function") {
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+    }
+  });
+
+  clearBtn.addEventListener("click", () => {
+    input.value = "";
+    resultBox.className = "result-container mt-4 text-center";
+    resultText.innerText = "Waiting for you to click generate...";
+    resultIcon.innerText = "⌨️";
+  });
 });

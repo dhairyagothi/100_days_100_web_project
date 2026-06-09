@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Basic Remedies | MedConsult</title>
+    <link rel="stylesheet" href="/public/Medical_App/styles.css" />
+    <link rel="stylesheet" href="css/darkmode.css">
+    <link rel="stylesheet" href="css/styles.css">
+
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0}
+        :root{
+            --accent-1:#0f766e;
+            --accent-2:#06b6d4;
+            --muted:#6b7280;
+            --card-bg:#ffffff;
+            --surface:#f8fafc;
+            --glass: rgba(255,255,255,0.6);
+        }
+        body{
+            font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+            background: linear-gradient(180deg,#f6fbff 0%, #eefbfd 100%);
+            color:#0f172a;
+            -webkit-font-smoothing:antialiased;
+            min-height:100vh;
+            padding-bottom:60px;
+        }
+        :root{ --site-header-text: rgba(255,255,255,0.98); --site-header-subtext: rgba(255,255,255,0.92) }
+        html[data-theme='dark']{ --site-header-text: rgba(255,255,255,0.98); --site-header-subtext: rgba(255,255,255,0.92) }
+        html[data-theme='light']{ --site-header-text: rgba(255,255,255,0.98); --site-header-subtext: rgba(255,255,255,0.92) }
+
+        .site-header{ display:flex; flex-direction:column; align-items:center; text-align:center; padding:32px; background:linear-gradient(90deg,var(--accent-1),var(--accent-2)); color:var(--site-header-text); border-radius:12px; box-shadow:0 8px 30px rgba(15,118,110,0.12); position:relative }
+        .site-header h1{ font-size:2rem; margin-bottom:8px }
+        .site-header p{ color:var(--site-header-subtext); max-width:900px }
+        .app-shell{ width:92%; max-width:1200px; margin:28px auto }
+
+        /* Search & filters */
+        .filter-bar{ display:flex; gap:12px; align-items:center; margin:20px 0 28px }
+        .search-input{ flex:1; display:flex; gap:8px; align-items:center; background:var(--card-bg); padding:10px 14px; border-radius:12px; box-shadow:0 6px 18px rgba(15,23,42,0.06); border:1px solid #e6eef2}
+        .search-input input{ border:0; outline:0; font-size:0.95rem; width:100%; }
+        .chip-group{ display:flex; gap:8px; align-items:center }
+        .chip{ background:#eef7f6; color:var(--accent-1); padding:8px 12px; border-radius:999px; font-size:0.85rem; cursor:pointer; border:1px solid rgba(15,118,110,0.06) }
+        .chip.active{ background:linear-gradient(90deg,var(--accent-1),var(--accent-2)); color:#fff }
+        .chip:hover{ transform:translateY(-2px); transition:transform .15s }
+
+        /* Back button */
+        .project-back-button{ position:fixed; left:18px; top:18px; padding:8px 12px; border-radius:8px; background:rgba(255,255,255,0.95); color:var(--accent-1); border:1px solid rgba(15,118,110,0.12); text-decoration:none; z-index:1000; font-weight:700; box-shadow:0 6px 18px rgba(2,6,23,0.08) }
+        .project-back-button:hover{ transform:translateY(-2px); }
+
+        .warning-panel{ background:#fff8e6; border-left:6px solid #ffb020; padding:18px; border-radius:12px; margin-bottom:22px; box-shadow:0 6px 18px rgba(2,6,23,0.04) }
+        .warning-panel h2{ color:#7c2d12; margin-bottom:6px }
+
+        .remedy-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px }
+
+        .remedy-card{ position:relative; overflow:hidden; background:linear-gradient(180deg,var(--card-bg),#fcfeff); padding:18px; border-radius:14px; box-shadow:0 8px 24px rgba(12,18,25,0.06); transition:transform .25s ease, box-shadow .25s ease }
+        .remedy-card:hover{ transform:translateY(-8px); box-shadow:0 18px 36px rgba(12,18,25,0.08) }
+        .remedy-card{ opacity:0; transform:translateY(8px) }
+        .remedy-card.reveal{ opacity:1; transform:none; transition:opacity .45s ease, transform .45s cubic-bezier(.2,.9,.3,1) }
+        .remedy-card .meta{ display:flex; gap:12px; align-items:center; margin-bottom:12px }
+        .remedy-card .icon{ width:54px; height:54px; border-radius:12px; background:linear-gradient(135deg,var(--accent-1),var(--accent-2)); display:grid; place-items:center; color:#fff; font-size:22px }
+        .remedy-card h2{ font-size:1.05rem; margin:0; color:#083039 }
+        .remedy-card p{ color:var(--muted); font-size:0.95rem; line-height:1.5 }
+        .remedy-card .actions{ display:flex; gap:10px; margin-top:14px }
+        .btn{ padding:8px 12px; border-radius:10px; cursor:pointer; border:0; font-weight:600 }
+        .btn.ghost{ background:transparent; color:var(--accent-1); border:1px solid rgba(15,118,110,0.08) }
+        .btn.primary{ background:linear-gradient(90deg,var(--accent-1),var(--accent-2)); color:#fff }
+
+        /* Modal */
+        .modal-backdrop{ position:fixed; inset:0; background:rgba(2,6,23,0.45); display:none; align-items:center; justify-content:center; z-index:9999 }
+        .modal{ width:min(820px,95%); background:#fff; border-radius:12px; padding:20px; box-shadow:0 20px 50px rgba(2,6,23,0.4) }
+        .modal .modal-header{ display:flex; justify-content:space-between; align-items:center; gap:12px }
+        .modal h3{ margin:0 }
+        .modal .modal-body{ margin-top:12px; color:var(--muted) }
+        .modal .btn.ghost{ border-radius:8px; padding:6px 10px }
+        mark.search-hit{ background:linear-gradient(90deg,#fff59d,#fffb8f); padding:0 2px; border-radius:3px }
+
+        @media(max-width:640px){ .site-header{ padding:18px } .meta .icon{ width:48px; height:48px } }
+    </style>
+</head>
+
+<body>
+<div id="appShell">
+<a href="/" class="project-back-button">← Back to Home</a>
+    <header class="site-header" data-role="patient">
+        <h1>🏥 Basic Remedies</h1>
+        <p>
+            Simple first-aid and self-care guidance while waiting for professional consultation
+        </p>
+    </header>
+
+    <div class="auth-page-actions" style="margin: 30px auto 0; width: 90%; max-width: 1200px;">
+        <div id="userBadge" class="user-badge compact hidden" aria-live="polite">
+            <span id="userAvatar" class="user-avatar" aria-hidden="true">👤</span>
+            <div class="user-meta">
+                <span id="userBadgeName">Guest</span>
+                <span id="userBadgeRole">Role: --</span>
+            </div>
+        </div>
+        <button id="logoutBtn" class="auth-btn secondary is-role-hidden" type="button">Logout</button>
+    </div>
+
+    <div class="role-note is-role-hidden" data-role-fallback="patient" style="margin: 30px auto; width: 90%; max-width: 1200px;">
+        Home remedies are available for patient accounts only.
+    </div>
+
+    <main class="app-shell" data-role="patient">
+
+        <!-- Search / Filter Bar -->
+        <div class="filter-bar" role="search" aria-label="Search remedies">
+            <div class="search-input">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="opacity:.6"><path d="M21 21l-4.35-4.35" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="11" r="6" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <input id="remedySearch" placeholder="Search remedies, symptoms, tips..." aria-label="Search remedies" />
+            </div>
+            <div class="chip-group" role="list">
+                <button class="chip active" data-filter="all">All</button>
+                <button class="chip" data-filter="fever">Fever</button>
+                <button class="chip" data-filter="pain">Pain</button>
+                <button class="chip" data-filter="skin">Skin</button>
+                <button class="chip" data-filter="respiratory">Respiratory</button>
+            </div>
+        </div>
+
+        <section class="warning-panel">
+            <h2>⚠ Emergency Warning</h2>
+
+            <p>
+                This page is not a substitute for professional medical advice.
+                Seek emergency help immediately for chest pain, breathing difficulty,
+                stroke symptoms, fainting, severe bleeding, severe burns,
+                or rapidly worsening symptoms.
+            </p>
+        </section>
+
+        <section class="remedy-grid" id="remedyGrid">
+
+            <article class="remedy-card" data-tags="fever">
+                <h2>🌡 Fever</h2>
+
+                <p>
+                    Rest properly, drink plenty of fluids, and use a cool cloth
+                    if feeling uncomfortable.
+                </p>
+
+                <p>
+                    Seek medical help if fever is very high, lasts long,
+                    or comes with confusion, breathing trouble,
+                    stiff neck, or dehydration.
+                </p>
+            </article>
+
+            <article class="remedy-card" data-tags="skin,cuts">
+                <h2>🩹 Minor Cuts</h2>
+
+                <p>
+                    Wash hands, rinse the cut with clean water,
+                    apply gentle pressure if bleeding,
+                    then cover with a clean bandage.
+                </p>
+
+                <p>
+                    Get medical care if the wound is deep,
+                    infected, dirty, or bleeding does not stop.
+                </p>
+            </article>
+
+            <article class="remedy-card" data-tags="skin,burns">
+                <h2>🔥 Minor Burns</h2>
+
+                <p>
+                    Cool the burn under cool running water,
+                    remove tight items nearby,
+                    and cover with a clean dressing.
+                </p>
+
+                <p>
+                    Do not apply ice directly.
+                    Seek urgent care for deep, large,
+                    chemical, electrical, or facial burns.
+                </p>
+            </article>
+
+            <article class="remedy-card" data-tags="pain,sprain,strain">
+                <h2>🦵 Sprain or Strain</h2>
+
+                <p>
+                    Rest the area, apply ice wrapped in cloth,
+                    compress lightly, and elevate the limb.
+                </p>
+
+                <p>
+                    Seek medical help if severe pain,
+                    numbness, deformity,
+                    or inability to walk occurs.
+                </p>
+            </article>
+
+            <article class="remedy-card" data-tags="respiratory,sore throat,cough">
+                <h2>😷 Sore Throat</h2>
+
+                <p>
+                    Drink warm fluids, rest your voice,
+                    and gargle with warm salt water if suitable.
+                </p>
+
+                <p>
+                    Seek medical care if symptoms include
+                    breathing difficulty, rash,
+                    severe pain, or last several days.
+                </p>
+            </article>
+
+            <article class="remedy-card" data-tags="dehydration,hydration">
+                <h2>💧 Dehydration</h2>
+
+                <p>
+                    Sip water or oral rehydration solution slowly
+                    and rest in a cool environment.
+                </p>
+
+                <p>
+                    Seek urgent help for confusion,
+                    fainting, severe weakness,
+                    or persistent vomiting.
+                </p>
+            </article>
+            
+              <button id="themeToggle" class="theme-btn">🌙</button>
+        </section>
+
+        <!-- Details modal -->
+        <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
+            <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+                <div class="modal-header">
+                    <h3 id="modalTitle">Remedy Details</h3>
+                    <button id="modalClose" class="btn ghost">Close</button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                </div>
+            </div>
+        </div>
+        
+        <script src="js/darkmode.js"></script>
+
+        <a href="/public/Medical_App/index.html" class="page-link">
+            ← Back to Consultation
+        </a>
+
+
+    </main>
+
+</div>
+
+<div id="authOverlay" class="auth-overlay" aria-hidden="true">
+    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+        <div class="auth-brand">
+            <img src="assets/logo.png" alt="MedConsult logo">
+            <div>
+                <h2 id="authTitle">MedConsult Access</h2>
+                <p id="authSubtitle">Sign in to continue</p>
+            </div>
+        </div>
+
+        <section class="auth-panel" data-auth-panel="login">
+            <form id="loginForm">
+                <div class="auth-field">
+                    <label for="loginEmail">Email</label>
+                    <input id="loginEmail" class="auth-input" type="email" autocomplete="email" required>
+                </div>
+                <div class="auth-field">
+                    <label for="loginPassword">Password</label>
+                    <input id="loginPassword" class="auth-input" type="password" autocomplete="current-password" required>
+                </div>
+                <div class="auth-row">
+                    <label class="auth-remember">
+                        <input id="rememberMe" type="checkbox">
+                        Remember Me
+                    </label>
+                </div>
+                <p id="loginError" class="auth-error"></p>
+                <button type="submit" class="auth-submit">Login</button>
+                <div class="auth-footer">
+                    <span>Don't have an account?</span>
+                    <button type="button" data-auth-switch="signup">Sign Up</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="auth-panel is-hidden" data-auth-panel="signup">
+            <form id="signupForm">
+                <div class="auth-field">
+                    <label for="signupName">Full Name</label>
+                    <input id="signupName" class="auth-input" type="text" autocomplete="name" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupEmail">Email</label>
+                    <input id="signupEmail" class="auth-input" type="email" autocomplete="email" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupPassword">Password</label>
+                    <input id="signupPassword" class="auth-input" type="password" autocomplete="new-password" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupConfirm">Confirm Password</label>
+                    <input id="signupConfirm" class="auth-input" type="password" autocomplete="new-password" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupRole">Role</label>
+                    <select id="signupRole" class="auth-select" required>
+                        <option value="">Select role</option>
+                        <option value="patient">Patient</option>
+                        <option value="doctor">Doctor</option>
+                    </select>
+                </div>
+                <p id="signupError" class="auth-error"></p>
+                <button type="submit" class="auth-submit">Create Account</button>
+                <div class="auth-footer">
+                    <span>Already have an account?</span>
+                    <button type="button" data-auth-switch="login">Login</button>
+                </div>
+                <p class="auth-note">
+                    Demo only: passwords are encoded for storage. Real apps require server-side hashing (e.g., bcrypt).
+                </p>
+            </form>
+        </section>
+    </div>
+</div>
+
+<div id="toast-container" class="toast-container"></div>
+
+<script src="assets/js/session.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/roleManager.js"></script>
+<script src="js/toast.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    const searchInput = document.getElementById('remedySearch');
+    const chips = Array.from(document.querySelectorAll('.chip'));
+    const grid = document.getElementById('remedyGrid');
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const modalBody = document.getElementById('modalBody');
+    const modalClose = document.getElementById('modalClose');
+
+    if(!grid) return;
+
+    const cards = Array.from(grid.querySelectorAll('.remedy-card'));
+
+    // Utility: escape regex
+    function escapeRegExp(string){ return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+    function removeMarks(el){ el.innerHTML = el.innerHTML.replace(/<mark class="search-hit">(.*?)<\/mark>/gi, '$1'); }
+    function highlightInElement(el, query){ if(!query) return; removeMarks(el); const rx = new RegExp(escapeRegExp(query),'gi'); el.innerHTML = el.innerHTML.replace(rx, m => `<mark class="search-hit">${m}</mark>`); }
+
+    // Enhance cards: add icon and Learn more button
+    cards.forEach(card => {
+        const titleEl = card.querySelector('h2');
+        const title = titleEl ? titleEl.textContent.trim() : 'Remedy';
+
+        if(!card.querySelector('.meta')){
+            const meta = document.createElement('div'); meta.className = 'meta';
+            const icon = document.createElement('div'); icon.className = 'icon';
+            const t = title.toLowerCase();
+            if(t.includes('fever')) icon.textContent = '🌡';
+            else if(t.includes('pain')||t.includes('sprain')||t.includes('strain')) icon.textContent = '🤕';
+            else if(t.includes('skin')||t.includes('burn')||t.includes('cuts')) icon.textContent = '🧴';
+            else if(t.includes('sore')||t.includes('throat')||t.includes('cough')||t.includes('cold')) icon.textContent = '🫁';
+            else icon.textContent = '🩺';
+
+            meta.appendChild(icon);
+            titleEl.parentNode.insertBefore(meta, titleEl);
+            meta.appendChild(titleEl);
+        }
+
+        if(!card.querySelector('.actions')){
+            const actions = document.createElement('div'); actions.className = 'actions';
+            const btn = document.createElement('button'); btn.className = 'btn primary'; btn.textContent = 'Learn more';
+            btn.addEventListener('click', () => {
+                modalBody.replaceChildren();
+                const heading = document.createElement('h4');
+                heading.style.margin = '0 0 8px';
+                heading.textContent =
+                card.querySelector('h2')?.textContent || '';
+                
+                modalBody.appendChild(heading);
+                
+                card.querySelectorAll('p').forEach((p) => {
+                    const para = document.createElement('p');
+                    para.textContent = p.textContent || '';
+                    modalBody.appendChild(para);
+                });
+                const note = document.createElement('p');
+                note.style.marginTop = '12px';
+                note.style.color = '#444';
+                note.style.fontSize = '.9rem';
+                note.textContent =
+                'This information is for basic guidance only.';
+                modalBody.appendChild(note);
+                modalBackdrop.style.display = 'flex';
+                modalBackdrop.setAttribute('aria-hidden', 'false');
+            });
+        }
+    });
+
+    // Stagger reveal
+    cards.forEach((c,i)=> setTimeout(()=> c.classList.add('reveal'), i * 90));
+
+    // Filter logic with highlighting
+    function applyFilter(){
+        const q = (searchInput?.value || '').toLowerCase().trim();
+        const activeChip = document.querySelector('.chip.active');
+        const filter = activeChip ? activeChip.dataset.filter : 'all';
+
+        cards.forEach(card=>{
+            // clear previous marks
+            removeMarks(card);
+            const title = card.querySelector('h2')?.textContent.toLowerCase() || '';
+            const bodyText = card.textContent.toLowerCase();
+            const matchesQuery = q === '' || bodyText.includes(q) || title.includes(q);
+            const tags = (card.dataset.tags || '').toLowerCase();
+            const matchesFilter = filter === 'all' || tags.includes(filter) || title.includes(filter);
+            const show = matchesQuery && matchesFilter;
+            card.style.display = show ? '' : 'none';
+
+            if(show && q){
+                // highlight in title and paragraphs
+                const titleEl = card.querySelector('h2');
+                highlightInElement(titleEl, q);
+                card.querySelectorAll('p').forEach(p => highlightInElement(p, q));
+            }
+        });
+    }
+
+    searchInput && searchInput.addEventListener('input', applyFilter);
+
+    chips.forEach(ch=> ch.addEventListener('click', function(){
+        chips.forEach(c=>c.classList.remove('active'));
+        this.classList.add('active');
+        applyFilter();
+    }));
+
+    // Modal close
+    function closeModal(){ modalBackdrop.style.display = 'none'; modalBackdrop.setAttribute('aria-hidden','true'); }
+    modalClose && modalClose.addEventListener('click', closeModal);
+    modalBackdrop && modalBackdrop.addEventListener('click', function(e){ if(e.target === modalBackdrop) closeModal(); });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+
+});
+</script>
+
+</body>
+</html>
