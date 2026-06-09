@@ -3,21 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Story</title>
+    <title>Story Player</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body style="text-align: center;background: linear-gradient(0deg, #000046, #1CB5E0);color: white;">    
-    
-    
-    <h1 style="text-align: center;">The clever Rabbit and the Lion</h1>
-    <img id="image"  src="images/lion.webp" height="500" style="border-radius: 20px;border: 2px solid black;box-shadow: 5px 5px 5px 5px  white;">
-    <br>
-    <p id="text"></p>
-    <button id="play">Play</button>
-    <button id="pause">Pause</button>
-    <button id="next">Next</button>
-    <button id="stop">Stop</button>
-<script src="script.js"></script>
-</body>
+<body>
+    <div style="width: 100%; max-width: 560px; margin: 0 auto 16px; display: flex; justify-content: flex-start;">
+        <a href="main.html" class="btn-secondary" style="text-decoration: none; padding: 10px 16px; border-color: rgba(239, 68, 68, 0.2); color: #fca5a5;" aria-label="Return to selection screen">← Exit Story</a>
+    </div>
 
+    <main class="wrapper">
+        <h1 id="story-main-title">Story Title</h1>
+        <span id="chapter-badge" class="chapter-badge" aria-live="polite">Scene 1 of 1</span>
+        <span id="scene-label">Scene 1</span>
+        
+        <div class="image-frame">
+            <img id="image" src="" alt="Story visual scene element">
+        </div>
+        
+        <div class="progress-wrap" aria-hidden="true">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div id="progress-text" class="progress-text">1 / 1</div>
+        </div>
+        
+        <p id="text" aria-live="polite"></p>
+        
+        <div class="controls">
+            <button id="back-btn" onclick="window.location.href='main.html'" aria-label="Go back to main menu">Home</button>
+            <button id="prev" aria-label="Go to previous scene">Prev</button>
+            <button id="play" aria-label="Play or resume narration">Play</button>
+            <button id="pause" aria-label="Pause narration">Pause</button>
+            <button id="next" aria-label="Go to next scene">Next</button>
+            <button id="stop" aria-label="Stop narration and reset">Stop</button>
+        </div>
+
+        <div class="toggle-container">
+            <input type="checkbox" id="auto-progress" checked>
+            <label for="auto-progress">Auto-Advance Narration</label>
+        </div>
+        
+        <div id="dots-container" class="dots" aria-hidden="true"></div>
+    </main>
+
+    <script type="module" src="script.js"></script>
+</body>
 </html>

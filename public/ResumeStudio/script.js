@@ -1,139 +1,471 @@
+﻿// ===============================
+// Resume Studio Pro Script
+// ===============================
+
 document.addEventListener("DOMContentLoaded", () => {
-    const themeSwitcher = document.getElementById("themeSwitcher");
-    const resumeForm = document.getElementById("resumeForm");
+
+    // ===============================
+    // ELEMENTS
+    // ===============================
+
+    const form = document.getElementById("resumeForm");
+
+    const nameInput = document.getElementById("name");
+    const titleInput = document.getElementById("title");
+    const emailInput = document.getElementById("email");
+    const phoneInput = document.getElementById("phone");
+    const locationInput = document.getElementById("location");
+    const educationInput = document.getElementById("education");
+    const linkedinInput = document.getElementById("linkedin");
+    const githubInput = document.getElementById("github");
+
+    const summaryInput = document.getElementById("summary");
+    const skillsInput = document.getElementById("skills");
+    const experienceInput = document.getElementById("experience");
+    const projectsInput = document.getElementById("projects");
+
     const resumePreview = document.getElementById("resumePreview");
-    const previewBtn = document.getElementById("previewBtn");
+
+    const atsScoreValue = document.getElementById("atsScoreValue");
+
+    const fillDemoBtn = document.getElementById("fillDemoBtn");
+    const clearFormBtn = document.getElementById("clearFormBtn");
+    const printBtn = document.getElementById("printBtn");
     const downloadBtn = document.getElementById("downloadBtn");
-    const atsScore = document.getElementById("atsScore");
-const atsStrengths = document.getElementById("atsStrengths");
-const atsSuggestions = document.getElementById("atsSuggestions");
+    const themeSwitcher = document.getElementById("themeSwitcher");
 
-    // Toggle theme
-    themeSwitcher.addEventListener("click", () => {
-        document.body.classList.toggle("dark");
-        themeSwitcher.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
-    });
+    const templateButtons = document.querySelectorAll(".template");
 
-    // Update live preview
-    const updatePreview = () => {
-        const name = document.getElementById("name").value;
-        const email = document.getElementById("email").value;
-        const phone = document.getElementById("phone").value;
-        const education = document.getElementById("education").value;
-        const summary = document.getElementById("summary").value;
-        const projects = document.getElementById("projects").value;
-        const skills = document.getElementById("skills").value;
-        const experience = document.getElementById("experience").value;
+    // ===============================
+    // GLOBAL STATE
+    // ===============================
+
+    let currentTemplate = "modern";
+
+    // ===============================
+    // SECURITY HELPER
+    // ===============================
+
+    function escapeHTML(text) {
+
+        const div = document.createElement("div");
+
+        div.textContent = text;
+
+        return div.innerHTML;
+    }
+
+    // ===============================
+    // HELPERS
+    // ===============================
+
+    function createBulletList(text) {
+
+        const lines = text
+            .split("\n")
+            .map(line => line.trim())
+            .filter(line => line !== "");
+
+        if (lines.length === 0) {
+            return "<p>Not provided</p>";
+        }
+
+        let html = "<ul>";
+
+        lines.forEach(line => {
+
+            const cleanLine = escapeHTML(
+                line.replace(/^-/, "").trim()
+            );
+
+            if (cleanLine !== "") {
+                html += `<li>${cleanLine}</li>`;
+            }
+        });
+
+        html += "</ul>";
+
+        return html;
+    }
+
+    function createSkills(text) {
+
+        const skills = text
+            .split(",")
+            .map(skill => skill.trim())
+            .filter(skill => skill !== "");
+
+        if (skills.length === 0) {
+            return "<p>No skills added</p>";
+        }
+
+        let html = `<div class="skills-grid">`;
+
+        skills.forEach(skill => {
+
+            html += `
+                <span class="skill-tag">
+                    ${escapeHTML(skill)}
+                </span>
+            `;
+        });
+
+        html += `</div>`;
+
+        return html;
+    }
+
+    // ===============================
+    // ATS SCORE
+    // ===============================
+
+    function updateATSScore() {
+
+        let score = 0;
+
+        if (nameInput.value.trim()) score += 10;
+        if (titleInput.value.trim()) score += 10;
+        if (emailInput.value.trim()) score += 10;
+        if (phoneInput.value.trim()) score += 10;
+        if (locationInput.value.trim()) score += 5;
+        if (educationInput.value.trim()) score += 10;
+
+        if (summaryInput.value.trim().length > 50) score += 15;
+
+        const skills = skillsInput.value
+            .split(",")
+            .filter(skill => skill.trim() !== "");
+
+        if (skills.length >= 5) score += 15;
+
+        if (experienceInput.value.trim().length > 30) score += 10;
+        if (projectsInput.value.trim().length > 30) score += 10;
+        if (linkedinInput.value.trim()) score += 3;
+        if (githubInput.value.trim()) score += 2;
+
+        score = Math.min(score, 100);
+
+        atsScoreValue.textContent = score;
+    }
+
+    // ===============================
+    // TEMPLATE CLASSES
+    // ===============================
+
+    function applyTemplateClass() {
+
+        resumePreview.classList.remove(
+            "modern-template",
+            "classic-template",
+            "minimal-template"
+        );
+
+        resumePreview.classList.add(`${currentTemplate}-template`);
+    }
+
+    // ===============================
+    // LIVE PREVIEW
+    // ===============================
+
+    function updatePreview() {
+
+        applyTemplateClass();
+
+        const name = escapeHTML(
+            nameInput.value || "John Doe"
+        );
+
+        const title = escapeHTML(
+            titleInput.value || "Frontend Developer"
+        );
+
+        const email = escapeHTML(
+            emailInput.value || "john@example.com"
+        );
+
+        const phone = escapeHTML(
+            phoneInput.value || "+91 9876543210"
+        );
+
+        const location = escapeHTML(
+            locationInput.value || "Mumbai, India"
+        );
+
+        const education = escapeHTML(
+            educationInput.value || "Your education details"
+        );
+
+        const linkedin = escapeHTML(
+            linkedinInput.value || ""
+        );
+
+        const github = escapeHTML(
+            githubInput.value || ""
+        );
+
+        const summary = escapeHTML(
+            summaryInput.value ||
+            "Professional summary will appear here."
+        );
+
+        // ===============================
+        // RESUME HTML
+        // ===============================
 
         resumePreview.innerHTML = `
-            <h3>${name || "Your Name"}</h3>
-            <p><strong>Email:</strong> ${email || "your.email@example.com"}</p>
-            <p><strong>Phone:</strong> ${phone || "123-456-7890"}</p>
-            <h4>Education</h4>
-            <p>${education || "State your educational details."}</p>
-            <h4>Summary</h4>
-            <p>${summary || "Write a brief summary about yourself."}</p>
-            <h4>Projects</h4>
-            <p>${projects || "write about projects developed by you."}</p>
-            <h4>Skills</h4>
-            ${skills ? `<ul>${skills.split(",").map(skill => `<li>${skill.trim()}</li>`).join("")}</ul>` : "<p>No Skills added.</p>"}
-            <h4>Experience</h4>
-            <p>${experience || "Add your work experience here."}</p>
-            calculateATSScore();
+        
+            <div class="resume-header">
+
+                <h1>${name}</h1>
+
+                <h2>${title}</h2>
+
+                <div class="resume-contact">
+
+                    <span>${email}</span>
+                    <span>${phone}</span>
+                    <span>${location}</span>
+
+                    ${
+                        linkedin
+                            ? `<span>${linkedin}</span>`
+                            : ""
+                    }
+
+                    ${
+                        github
+                            ? `<span>${github}</span>`
+                            : ""
+                    }
+
+                </div>
+
+            </div>
+
+            <div class="resume-section">
+
+                <h3>Professional Summary</h3>
+
+                <p>${summary}</p>
+
+            </div>
+
+            <div class="resume-section">
+
+                <h3>Skills</h3>
+
+                ${createSkills(skillsInput.value)}
+
+            </div>
+
+            <div class="resume-section">
+
+                <h3>Experience</h3>
+
+                ${createBulletList(experienceInput.value)}
+
+            </div>
+
+            <div class="resume-section">
+
+                <h3>Projects</h3>
+
+                ${createBulletList(projectsInput.value)}
+
+            </div>
+
+            <div class="resume-section">
+
+                <h3>Education</h3>
+
+                <p>${education}</p>
+
+            </div>
+
         `;
-    };
-    const calculateATSScore = () => {
-    let score = 0;
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const education = document.getElementById("education").value.trim();
-    const summary = document.getElementById("summary").value.trim();
-    const projects = document.getElementById("projects").value.trim();
-    const skills = document.getElementById("skills").value.trim();
-    const experience = document.getElementById("experience").value.trim();
-
-    let strengths = [];
-    let suggestions = [];
-
-    if (name) score += 10;
-    else suggestions.push("Add your full name");
-
-    if (email.includes("@")) {
-        score += 10;
-        strengths.push("Professional email added");
-    } else {
-        suggestions.push("Add a valid email");
+        updateATSScore();
     }
 
-    if (phone.length >= 10) {
-        score += 10;
-        strengths.push("Phone number looks complete");
-    } else {
-        suggestions.push("Add a proper phone number");
-    }
+    // ===============================
+    // TEMPLATE SWITCHER
+    // ===============================
 
-    if (education.length > 10) {
-        score += 10;
-        strengths.push("Education section added");
-    } else {
-        suggestions.push("Improve education details");
-    }
+    templateButtons.forEach(button => {
 
-    if (summary.length > 40) {
-        score += 15;
-        strengths.push("Good professional summary");
-    } else {
-        suggestions.push("Write a stronger summary");
-    }
+        button.addEventListener("click", () => {
 
-    if (projects.length > 30) {
-        score += 15;
-        strengths.push("Projects section is informative");
-    } else {
-        suggestions.push("Add better project descriptions");
-    }
+            templateButtons.forEach(btn =>
+                btn.classList.remove("active")
+            );
 
-    const skillCount = skills.split(",").filter(skill => skill.trim() !== "").length;
+            button.classList.add("active");
 
-    if (skillCount >= 5) {
-        score += 15;
-        strengths.push("Strong skills section");
-    } else {
-        suggestions.push("Add more technical skills");
-    }
+            currentTemplate = button.dataset.template;
 
-    if (experience.length > 30) {
-        score += 15;
-        strengths.push("Experience section looks detailed");
-    } else {
-        suggestions.push("Add more experience details");
-    }
-
-    atsScore.textContent = `${score}/100`;
-
-    atsStrengths.innerHTML = strengths.length
-        ? strengths.map(item => `<li>${item}</li>`).join("")
-        : "<li>No major strengths detected yet</li>";
-
-    atsSuggestions.innerHTML = suggestions.length
-        ? suggestions.map(item => `<li>${item}</li>`).join("")
-        : "<li>Your resume looks ATS friendly</li>";
-};
-
-    previewBtn.addEventListener("click", updatePreview);
-
-    // Download resume as PDF
-    downloadBtn.addEventListener("click", () => {
-        const element = document.createElement("a");
-        const content = resumePreview.innerHTML;
-        const blob = new Blob([content], { type: "text/html" });
-        const url = URL.createObjectURL(blob);
-        element.href = url;
-        element.download = "resume.html";
-        element.click();
-        URL.revokeObjectURL(url);
-        calculateATSScore();
+            updatePreview();
+        });
     });
+
+    // ===============================
+    // INPUT LIVE UPDATE
+    // ===============================
+
+    const allInputs = [
+        nameInput,
+        titleInput,
+        emailInput,
+        phoneInput,
+        locationInput,
+        educationInput,
+        linkedinInput,
+        githubInput,
+        summaryInput,
+        skillsInput,
+        experienceInput,
+        projectsInput
+    ];
+
+    allInputs.forEach(input => {
+
+        input.addEventListener("input", updatePreview);
+    });
+
+    // ===============================
+    // FILL DEMO DATA
+    // ===============================
+
+    fillDemoBtn.addEventListener("click", () => {
+
+        nameInput.value = "Prem Dhakad";
+
+        titleInput.value = "Frontend Developer";
+
+        emailInput.value = "prem@example.com";
+
+        phoneInput.value = "+91 9876543210";
+
+        locationInput.value = "India";
+
+        educationInput.value =
+            "B.Tech in Artificial Intelligence & Data Science";
+
+        linkedinInput.value =
+            "linkedin.com/in/premdhakad";
+
+        githubInput.value =
+            "github.com/PremDhakad07";
+
+        summaryInput.value =
+            "Passionate frontend developer with strong skills in modern web development, UI/UX design, JavaScript, and React. Experienced in building responsive and professional applications.";
+
+        skillsInput.value =
+            "HTML, CSS, JavaScript, React, Node.js, Git, GitHub, Tailwind CSS";
+
+        experienceInput.value =
+            `- Built responsive web applications
+- Contributed to open source projects
+- Improved UI/UX for multiple projects`;
+
+        projectsInput.value =
+            `- Resume Studio Pro
+- AI Story Generator
+- Weather Dashboard
+- Portfolio Website`;
+
+        updatePreview();
+    });
+
+    // ===============================
+    // CLEAR FORM
+    // ===============================
+
+    clearFormBtn.addEventListener("click", () => {
+
+        form.reset();
+
+        updatePreview();
+    });
+
+    // ===============================
+    // THEME SWITCHER
+    // ===============================
+
+    themeSwitcher.addEventListener("click", () => {
+
+        document.body.classList.toggle("light-mode");
+
+        const isLight =
+            document.body.classList.contains("light-mode");
+
+        themeSwitcher.innerHTML = isLight
+            ? "☀️ Light Mode"
+            : "🌙 Dark Mode";
+    });
+
+    // ===============================
+    // PRINT PDF
+    // ===============================
+
+    printBtn.addEventListener("click", () => {
+
+        window.print();
+    });
+
+    // ===============================
+    // DOWNLOAD PDF
+    // ===============================
+
+    downloadBtn.addEventListener("click", async () => {
+
+        try {
+
+            const canvas = await html2canvas(resumePreview, {
+                scale: 2,
+                useCORS: true
+            });
+
+            const imgData = canvas.toDataURL("image/png");
+
+            const { jsPDF } = window.jspdf;
+
+            const pdf = new jsPDF("p", "mm", "a4");
+
+            const pageWidth =
+                pdf.internal.pageSize.getWidth();
+
+            const imgWidth = pageWidth;
+
+            const imgHeight =
+                (canvas.height * imgWidth) / canvas.width;
+
+            pdf.addImage(
+                imgData,
+                "PNG",
+                0,
+                0,
+                imgWidth,
+                imgHeight
+            );
+
+            pdf.save(
+                `${(nameInput.value || "resume")
+                    .replace(/\s+/g, "_")
+                    .toLowerCase()}.pdf`
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert("Failed to generate PDF.");
+        }
+    });
+
+    // ===============================
+    // INITIAL PREVIEW
+    // ===============================
+
+    updatePreview();
+
 });

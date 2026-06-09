@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Image Compressor</title>
+    <!-- Path Fixer -->
+    <script>
+        if (!window.location.pathname.endsWith('/') && !window.location.pathname.endsWith('.html')) {
+            window.location.replace(window.location.pathname + '/' + window.location.search + window.location.hash);
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/public/ImageCompressor/style.css?v=4">
+</head>
+<body>
+    <div class="app-background"></div>
+    
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <div class="logo">
+                    <i class="ph-fill ph-image"></i>
+                    <h1>Shrink.io</h1>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <div class="global-stats hidden" id="globalStats">
+                    <span class="stat-badge">
+                        <i class="ph ph-hard-drives"></i>
+                        Saved: <strong id="totalSavedStat">0 MB</strong>
+                    </span>
+                </div>
+                <button class="btn-icon theme-toggle" id="themeToggleBtn" aria-label="Toggle Theme">
+                    <i class="ph ph-sun" id="themeIcon"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Upload Section -->
+            <section class="upload-section card" id="uploadSection">
+                <div class="drop-zone" id="dropZone" tabindex="0" role="button" aria-label="Upload Images">
+                    <div class="drop-content">
+                        <div class="upload-icon-wrapper">
+                            <i class="ph ph-upload-simple"></i>
+                        </div>
+                        <h3>Drag & Drop multiple images</h3>
+                        <p>or</p>
+                        <label for="fileInput" class="btn-primary">
+                            <i class="ph ph-folder-open"></i> Browse Files
+                        </label>
+                        <input type="file" id="fileInput" accept="image/jpeg, image/png, image/webp" multiple hidden>
+                        <p class="file-limits">Supports JPG, PNG, WEBP • Max 10MB per file</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Workspace Section -->
+            <section class="workspace-section hidden" id="workspaceSection">
+                
+                <!-- Global Controls -->
+                <div class="controls-panel card">
+                    <div class="control-header">
+                        <h3>Batch Settings</h3>
+                    </div>
+                    
+                    <div class="target-size-container" style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%; max-width: 300px;">
+                        <div class="slider-labels">
+                            <label for="targetSizeInput">Target File Size (KB)</label>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <input type="number" id="targetSizeInput" min="50" value="200" style="flex: 1; padding: 0.6rem; border-radius: 6px; border: 1px solid var(--clr-border); background: var(--clr-bg-input); color: var(--clr-text-main); font-family: inherit; outline: none;">
+                            <button id="applyTargetBtn" class="btn-primary" style="padding: 0.6rem 1rem;">Compress</button>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button id="downloadAllBtn" class="btn-success btn-full">
+                            <i class="ph ph-file-zip"></i> Download All
+                        </button>
+                        <button id="clearQueueBtn" class="btn-danger btn-icon" title="Clear Queue">
+                            <i class="ph ph-trash"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Queue List -->
+                <div class="queue-container card">
+                    <div class="queue-header">
+                        <h3>Image Queue</h3>
+                        <span class="queue-count" id="queueCount">0 files</span>
+                    </div>
+                    
+                    <div class="queue-list" id="queueList">
+                        <!-- Queue Items injected here via JS -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Image Comparison Modal -->
+    <div class="modal-overlay hidden" id="comparisonModal">
+        <div class="modal-content card">
+            <div class="modal-header">
+                <h3 id="modalFilename">Image Comparison</h3>
+                <button class="btn-icon" id="closeModalBtn"><i class="ph ph-x"></i></button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="comparison-stats">
+                    <div class="stat-pill neutral">
+                        <span class="label">Original</span>
+                        <strong id="modalOriginalSize">-</strong>
+                    </div>
+                    <div class="stat-pill success">
+                        <span class="label">Compressed</span>
+                        <strong id="modalCompressedSize">-</strong>
+                        <span class="savings" id="modalSavings">-</span>
+                    </div>
+                </div>
+
+                <!-- Comparison Slider Component -->
+                <div class="image-compare-container" id="compareContainer">
+                    <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Compressed" id="compareCompressed" class="compare-img">
+                    <div class="compare-overlay" id="compareOverlay">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Original" id="compareOriginal" class="compare-img">
+                    </div>
+                    <div class="compare-slider-handle" id="compareHandle">
+                        <div class="handle-line"></div>
+                        <div class="handle-button">
+                            <i class="ph ph-caret-left"></i>
+                            <i class="ph ph-caret-right"></i>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn-primary" id="modalDownloadBtn">
+                    <i class="ph ph-download-simple"></i> Download Single
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script type="module" src="/public/ImageCompressor/js/main.js?v=4"></script>
+</body>
+</html>

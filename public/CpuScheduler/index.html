@@ -1,1126 +1,294 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="website icon" href="assets/cpu.png" type="image/png"> -->
-    <title>CPU Scheduling Simulator</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CPU Scheduling Simulator | GSSoC '26</title>
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Enhanced Gantt Chart Styles */
-        .gantt-container {
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        .gantt-block {
-            min-height: 50px;
-            transition: all 0.3s ease;
-            position: relative;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .gantt-block:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-            z-index: 10;
-        }
-        .gantt-time {
-            font-size: 0.7rem;
-            font-weight: 500;
-            color: #64748b;
-            padding: 4px 0;
-            border-right: 1px solid #cbd5e1;
-        }
-        .process-color-0 { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
-        .process-color-1 { background: linear-gradient(135deg, #10b981, #059669); }
-        .process-color-2 { background: linear-gradient(135deg, #ef4444, #dc2626); }
-        .process-color-3 { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
-        .process-color-4 { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .process-color-5 { background: linear-gradient(135deg, #ec4899, #db2777); }
-        .process-color-6 { background: linear-gradient(135deg, #6b7280, #4b5563); }
-        .process-color-7 { background: linear-gradient(135deg, #14b8a6, #0d9488); }
-        .process-color-8 { background: linear-gradient(135deg, #f97316, #ea580c); }
-        .process-color-9 { background: linear-gradient(135deg, #84cc16, #65a30d); }
-        .idle-block {
-            background: repeating-linear-gradient(
-                45deg,
-                #f1f5f9,
-                #f1f5f9 8px,
-                #e2e8f0 8px,
-                #e2e8f0 16px
-            );
-            color: #64748b;
-            font-style: italic;
-        }
-        .gantt-tooltip {
-            position: absolute;
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            z-index: 1000;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-        .algorithm-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            transition: all 0.3s ease;
-        }
-        .algorithm-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-        .process-card {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            border: none;
-            transition: all 0.3s ease;
-        }
-        .process-card:hover {
-            transform: scale(1.02);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
-        .results-table {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            transition: all 0.3s ease;
-        }
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-        }
-        .loading-spinner {
-            border: 3px solid #f3f4f6;
-            border-top: 3px solid #3b82f6;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .metric-card {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            border-radius: 12px;
-            transition: all 0.3s ease;
-        }
-        .metric-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-    </style>
-</head>
-<body class="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 min-h-screen font-sans">
-    <!-- Header Section -->
-    <div class="bg-gradient-to-r from-purple-600 via-blue-600 to-teal-600 text-white py-8 shadow-xl">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <h1 class="text-5xl font-bold mb-4">🚀 CPU Scheduling Simulator</h1>
-            <p class="text-xl opacity-90 max-w-4xl mx-auto">
-                Experience the power of operating system scheduling algorithms with our cutting-edge interactive simulator. 
-                Visualize, analyze, and understand how different CPU scheduling strategies impact system performance through 
-                dynamic Gantt charts, comprehensive metrics, and real-time simulations.
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body class="min-h-screen text-slate-100">
+<a href="/" class="back-button">← Home</a>
+
+    <!-- Header -->
+    <header class="py-10 border-b border-white/10">
+      <div class="text-center">
+        <h1 class="text-4xl md:text-5xl font-bold mb-3 leading-tight text-white">
+          CPU Scheduler Simulator
+        </h1>
+
+        <p class="text-base md:text-lg text-slate-400 leading-relaxed">
+          Visualize and analyze eight different CPU scheduling algorithms with interactive simulations and real-time Gantt charts.
+        </p>
+      </div>
+    </header>
+
+    <main class="py-12">
+      <!-- Algorithm Selection Section -->
+      <section class="card mb-8 fade-in">
+        <div class="flex flex-col items-center mb-8">
+          <h2 class="text-2xl font-bold text-white mb-2">
+            Select Scheduling Algorithm
+          </h2>
+          <p class="text-slate-400 text-sm">
+            Choose from 8 different scheduling algorithms
+          </p>
+        </div>
+
+        <div class="max-w-sm mx-auto mb-6">
+          <label
+            for="algorithm"
+            class="block text-sm font-semibold text-slate-300 mb-3"
+          >
+            Algorithm
+          </label>
+
+          <select
+            id="algorithm"
+            class="w-full p-3 rounded-lg bg-white/5 border border-slate-600/30 text-white text-base focus:outline-none focus:ring-2 focus:ring-blue-400/50 transition"
+          >
+            <option value="fcfs" class="text-gray-800">
+              FCFS - First Come First Serve
+            </option>
+            <option value="sjf" class="text-gray-800">
+              SJF - Shortest Job First
+            </option>
+            <option value="srtf" class="text-gray-800">
+              SRTF - Shortest Remaining Time First
+            </option>
+            <option value="rr" class="text-gray-800">Round Robin</option>
+            <option value="priority" class="text-gray-800">
+              Priority Scheduling (Non-Preemptive)
+            </option>
+            <option value="priority_preemptive" class="text-gray-800">
+              Priority Scheduling (Preemptive)
+            </option>
+            <option value="hrrn" class="text-gray-800">
+              HRRN - Highest Response Ratio Next
+            </option>
+            <option value="multilevel" class="text-gray-800">
+              Multilevel Queue Scheduling
+            </option>
+          </select>
+        </div>
+
+        <!-- Algorithm Info -->
+        <div
+          id="algorithmInfo"
+          class="bg-white/3 border border-slate-600/20 rounded-lg p-4 max-w-sm mx-auto"
+        >
+          <p
+            id="algorithmDescription"
+            class="text-sm text-slate-300 leading-relaxed"
+          >
+            Select an algorithm to view its description.
+          </p>
+        </div>
+      </section>
+
+      <!-- Process Configuration Section -->
+      <section class="card mb-8 fade-in">
+        <div class="flex flex-col items-center mb-8">
+          <h2 class="text-2xl font-bold text-white mb-2">
+            Configure Processes
+          </h2>
+          <p class="text-slate-400 text-sm">
+            Set the number of processes and algorithm parameters
+          </p>
+        </div>
+
+        <div class="max-w-sm mx-auto">
+          <!-- Number of Processes -->
+          <div class="mb-6">
+            <label
+              for="numProcesses"
+              class="block text-sm font-semibold text-slate-300 mb-2"
+            >
+              Number of Processes
+            </label>
+            <input
+              type="number"
+              id="numProcesses"
+              min="1"
+              max="20"
+              value="3"
+              class="w-full p-3 rounded-lg bg-white/5 border border-slate-600/30 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-400/50 transition"
+              placeholder="Enter number of processes"
+            />
+            <p class="text-xs text-slate-400 mt-2">Between 1 and 20 processes</p>
+          </div>
+
+          <!-- Time Quantum (Round Robin Only) -->
+          <div id="timeQuantumDiv" class="hidden mb-6">
+            <label
+              for="timeQuantum"
+              class="block text-sm font-semibold text-slate-300 mb-2"
+            >
+              Time Quantum
+            </label>
+            <input
+              type="number"
+              id="timeQuantum"
+              min="1"
+              value="2"
+              class="w-full p-3 rounded-lg bg-white/5 border border-slate-600/30 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-400/50 transition"
+              placeholder="Enter time quantum"
+            />
+            <p class="text-xs text-slate-400 mt-2">CPU time slice per process</p>
+          </div>
+
+          <!-- Load Sample Data Button -->
+          <button
+            id="sampleBtn"
+            class="btn-secondary text-white font-semibold py-3 px-6 rounded-lg text-sm w-full"
+          >
+            📝 Load Sample Data
+          </button>
+        </div>
+      </section>
+
+      <!-- Error Message -->
+      <section id="errorMessage" class="hidden mb-8 p-4 rounded-lg border border-red-500/30 bg-red-500/10">
+        <div class="flex items-start gap-3">
+          <div class="text-lg font-bold text-red-400 flex-shrink-0">!</div>
+          <div>
+            <h3 class="font-semibold text-red-300 text-sm">Validation Error</h3>
+            <p id="errorText" class="text-sm text-red-300/80 mt-1"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Process Form Container -->
+      <div id="processFormContainer" class="mb-8">
+        <div class="flex flex-col items-center mb-6">
+          <h2 class="text-2xl font-bold text-white mb-2">
+            Process Details
+          </h2>
+          <p class="text-slate-400 text-sm">
+            Enter arrival time and burst time for each process
+          </p>
+        </div>
+        
+        <!-- Dynamic Process Form -->
+        <div id="processForm" class="space-y-4"></div>
+      </div>
+
+      <!-- Action Buttons -->
+      <section class="text-center mb-10">
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+          <button
+            id="runSimulation"
+            class="btn-primary text-white font-bold py-3 px-6 rounded-lg text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
+          >
+            <span id="buttonText">🚀 Run Simulation</span>
+            <span
+              id="loadingSpinner"
+              class="loading-spinner hidden inline-block ml-2"
+            ></span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Results Section -->
+      <section id="results" class="hidden fade-in">
+        <!-- Metrics Dashboard -->
+        <div class="flex flex-col items-center mb-8">
+          <h2 class="text-2xl font-bold text-white mb-2">
+            Performance Metrics
+          </h2>
+          <p class="text-slate-400 text-sm mb-6">
+            Key scheduling performance indicators
+          </p>
+        </div>
+        
+        <div
+          id="metricsPanel"
+          class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
+        ></div>
+
+        <!-- Results Table -->
+        <div class="card mb-8">
+          <div class="flex flex-col items-center mb-6">
+            <h2 class="text-2xl font-bold text-white mb-1">
+              Simulation Results
+            </h2>
+            <p class="text-slate-400 text-sm">
+              Detailed metrics for each process
             </p>
-        </div>
-    </div>
+          </div>
 
-    <div class="max-w-7xl mx-auto p-6">
-        <!-- Algorithm Selection Card -->
-        <div class="algorithm-card p-8 rounded-2xl shadow-2xl mb-8 fade-in">
-            <h2 class="text-3xl font-bold mb-4 text-center">🎯 Select Scheduling Algorithm</h2>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div>
-                    <label for="algorithm" class="block text-lg font-semibold mb-3">Choose Algorithm:</label>
-                    <select id="algorithm" class="w-full p-4 border-2 border-white/30 rounded-xl bg-white/20 text-white placeholder-white/70 focus:ring-4 focus:ring-white/50 focus:border-white/50 text-lg">
-                        <option value="fcfs" class="text-gray-800">FCFS - First Come First Serve (Non-preemptive)</option>
-                        <option value="sjf" class="text-gray-800">SJF - Shortest Job First (Non-preemptive)</option>
-                        <option value="srtf" class="text-gray-800">SRTF - Shortest Remaining Time First (Preemptive)</option>
-                        <option value="rr" class="text-gray-800">Round Robin - Time Quantum Based (Preemptive)</option>
-                        <option value="hrrn" class="text-gray-800">HRRN - Highest Response Ratio Next (Non-preemptive)</option>
-                        <option value="ljf" class="text-gray-800">LJF - Longest Job First (Non-preemptive)</option>
-                        <option value="lrtf" class="text-gray-800">LRTF - Longest Remaining Time First (Preemptive)</option>
-                        <option value="priority" class="text-gray-800">Priority Scheduling (Non-preemptive)</option>
-                        <option value="edf" class="text-gray-800">EDF - Earliest Deadline First (Preemptive)</option>
-                        <option value="rms" class="text-gray-800">RMS - Rate Monotonic Scheduling (Preemptive)</option>
-                        <option value="multilevel" class="text-gray-800">Multilevel Queue Scheduling</option>
-                    </select>
-                </div>
-                <div id="algorithmInfo" class="bg-white/20 p-4 rounded-xl">
-                    <h3 class="font-bold text-lg mb-2">Algorithm Information</h3>
-                    <p id="algorithmDescription" class="text-sm opacity-90">
-                        Select an algorithm to see its description and characteristics.
-                    </p>
-                </div>
-            </div>
+          <div id="outputTable" class="overflow-x-auto w-full"></div>
         </div>
 
-        <!-- Process Configuration -->
-        <div class="bg-white rounded-2xl shadow-2xl p-8 mb-8 fade-in">
-            <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">⚙️ Process Configuration</h2>
-            
-            <div class="grid md:grid-cols-2 gap-6 mb-6">
-                <div>
-                    <label for="numProcesses" class="block text-lg font-semibold text-gray-700 mb-2">Number of Processes:</label>
-                    <input type="number" id="numProcesses" min="1" max="20" value="3" 
-                           class="w-full p-4 border-2 border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500 focus:border-blue-500 text-lg" 
-                           placeholder="Enter number of processes (1-20)" />
-                </div>
-                <div id="timeQuantumDiv" class="hidden">
-                    <label for="timeQuantum" class="block text-lg font-semibold text-gray-700 mb-2">Time Quantum:</label>
-                    <input type="number" id="timeQuantum" min="1" value="2" 
-                           class="w-full p-4 border-2 border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500 focus:border-blue-500 text-lg" 
-                           placeholder="Enter time quantum" />
-                </div>
-            </div>
+        <!-- Gantt Chart -->
+        <div class="card mb-8">
+          <div class="flex flex-col items-center mb-6">
+            <h2 class="text-2xl font-bold text-white mb-1">
+              Gantt Chart
+            </h2>
+            <p class="text-slate-400 text-sm">
+              Visual timeline of process execution
+            </p>
+          </div>
 
-            <!-- Multilevel Queue Configuration -->
-            <div id="multilevelConfig" class="hidden mb-6">
-                <h3 class="text-xl font-bold text-gray-800 mb-4">Multilevel Queue Configuration</h3>
-                <div class="grid md:grid-cols-3 gap-4">
-                    <div class="bg-gradient-to-br from-blue-100 to-blue-200 p-4 rounded-xl">
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Queue 1 (Highest Priority)</label>
-                        <select id="queue1Scheduler" class="w-full p-2 border border-gray-300 rounded-lg">
-                            <option value="fcfs">FCFS</option>
-                            <option value="sjf">SJF</option>
-                            <option value="rr">Round Robin</option>
-                        </select>
-                    </div>
-                    <div class="bg-gradient-to-br from-green-100 to-green-200 p-4 rounded-xl">
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Queue 2 (Medium Priority)</label>
-                        <select id="queue2Scheduler" class="w-full p-2 border border-gray-300 rounded-lg">
-                            <option value="fcfs">FCFS</option>
-                            <option value="sjf">SJF</option>
-                            <option value="rr">Round Robin</option>
-                        </select>
-                    </div>
-                    <div class="bg-gradient-to-br from-red-100 to-red-200 p-4 rounded-xl">
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Queue 3 (Lowest Priority)</label>
-                        <select id="queue3Scheduler" class="w-full p-2 border border-gray-300 rounded-lg">
-                            <option value="fcfs">FCFS</option>
-                            <option value="sjf">SJF</option>
-                            <option value="rr">Round Robin</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
+          <div id="ganttChart" class="overflow-x-auto mb-6 bg-white/2 p-4 rounded-lg border border-slate-600/20"></div>
 
-            <!-- Dynamic Process Forms -->
-            <div id="processForm" class="space-y-6"></div>
+          <div
+            id="processLegend"
+            class="flex flex-wrap gap-4 justify-center border-t border-slate-600/20 pt-6"
+          ></div>
         </div>
 
-        <!-- Error Messages -->
-        <div id="errorMessage" class="hidden bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-r-lg">
-            <div class="flex items-center">
-                <span class="text-2xl mr-3">⚠️</span>
-                <div>
-                    <h3 class="font-bold">Input Error</h3>
-                    <p id="errorText"></p>
-                </div>
-            </div>
+        <!-- Analysis Panel -->
+        <div class="card">
+          <div class="flex flex-col items-center mb-6">
+            <h2 class="text-2xl font-bold text-white mb-1">
+              Performance Analysis
+            </h2>
+            <p class="text-slate-400 text-sm">
+              Algorithm insights and recommendations
+            </p>
+          </div>
+
+          <div id="analysisContent"></div>
         </div>
-
-        <!-- Run Simulation Button -->
-        <div class="text-center mb-8">
-            <button id="runSimulation" class="btn-primary text-white font-bold py-4 px-12 rounded-2xl text-xl shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed">
-                <span id="buttonText">🚀 Run Simulation</span>
-                <div id="loadingSpinner" class="loading-spinner hidden inline-block ml-3"></div>
-            </button>
+      </section>
+      
+      <section id="comparisonResults" class="hidden fade-in mt-8">
+        <div class="card">
+          <div class="flex flex-col items-center mb-8">
+            <h2 class="text-2xl font-bold text-white mb-1">
+              Algorithm Comparison
+            </h2>
+            <p class="text-slate-400 text-sm">
+              Side-by-side comparison of all algorithms
+            </p>
+          </div>
+          
+          <div id="comparisonTable" class="overflow-x-auto mb-8"></div>
+          <div id="comparisonCharts" class="grid md:grid-cols-2 gap-6 mb-8"></div>
+          <div id="recommendationBox" class="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-4"></div>
         </div>
+      </section>
+    </main>
 
-        <!-- Results Section -->
-        <div id="results" class="hidden fade-in">
-            <!-- Performance Metrics Dashboard -->
-            <div id="metricsPanel" class="grid md:grid-cols-4 gap-6 mb-8"></div>
-
-            <!-- Results Table -->
-            <div class="results-table rounded-2xl shadow-2xl p-8 mb-8">
-                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">📊 Simulation Results</h2>
-                <div id="outputTable" class="overflow-x-auto"></div>
-            </div>
-
-            <!-- Enhanced Gantt Chart -->
-            <div class="gantt-container p-8 mb-8">
-                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">📈 Interactive Gantt Chart</h2>
-                <div id="ganttChart" class="overflow-x-auto"></div>
-                <div class="mt-4 flex flex-wrap gap-4 justify-center" id="processLegend"></div>
-            </div>
-
-            <!-- Algorithm Analysis -->
-            <div id="analysisPanel" class="bg-white rounded-2xl shadow-2xl p-8">
-                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">🔍 Performance Analysis</h2>
-                <div id="analysisContent"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Tooltip for Gantt Chart -->
+    <!-- Tooltip -->
     <div id="ganttTooltip" class="gantt-tooltip"></div>
 
-    <script>
-        // Global Variables
-        let currentProcesses = [];
-        let currentTimeline = [];
-        let currentAlgorithm = '';
-        
-        // DOM Elements
-        const elements = {
-            algorithm: document.getElementById('algorithm'),
-            numProcesses: document.getElementById('numProcesses'),
-            timeQuantum: document.getElementById('timeQuantum'),
-            timeQuantumDiv: document.getElementById('timeQuantumDiv'),
-            multilevelConfig: document.getElementById('multilevelConfig'),
-            processForm: document.getElementById('processForm'),
-            runSimulation: document.getElementById('runSimulation'),
-            errorMessage: document.getElementById('errorMessage'),
-            errorText: document.getElementById('errorText'),
-            results: document.getElementById('results'),
-            outputTable: document.getElementById('outputTable'),
-            ganttChart: document.getElementById('ganttChart'),
-            processLegend: document.getElementById('processLegend'),
-            metricsPanel: document.getElementById('metricsPanel'),
-            analysisContent: document.getElementById('analysisContent'),
-            algorithmInfo: document.getElementById('algorithmInfo'),
-            algorithmDescription: document.getElementById('algorithmDescription'),
-            buttonText: document.getElementById('buttonText'),
-            loadingSpinner: document.getElementById('loadingSpinner'),
-            ganttTooltip: document.getElementById('ganttTooltip')
-        };
-
-        // Algorithm Information
-        const algorithmInfo = {
-            fcfs: {
-                name: "First Come First Serve",
-                description: "Non-preemptive algorithm where processes are executed in the order they arrive. Simple but can cause convoy effect.",
-                pros: ["Simple implementation", "No starvation", "Fair scheduling"],
-                cons: ["Poor average waiting time", "Convoy effect", "Not suitable for interactive systems"]
-            },
-            sjf: {
-                name: "Shortest Job First",
-                description: "Non-preemptive algorithm that selects the process with the shortest burst time. Optimal for minimizing average waiting time.",
-                pros: ["Optimal average waiting time", "Good throughput", "Minimizes total completion time"],
-                cons: ["Starvation possible", "Requires knowledge of burst times", "Not suitable for interactive systems"]
-            },
-            srtf: {
-                name: "Shortest Remaining Time First",
-                description: "Preemptive version of SJF. Process with shortest remaining time gets CPU. Optimal for preemptive scheduling.",
-                pros: ["Optimal average waiting time", "Good response time", "Better than SJF for interactive systems"],
-                cons: ["High context switching overhead", "Starvation possible", "Complex implementation"]
-            },
-            rr: {
-                name: "Round Robin",
-                description: "Preemptive algorithm using time quantum. Each process gets equal CPU time in circular fashion. Great for time-sharing systems.",
-                pros: ["Fair scheduling", "Good response time", "No starvation", "Suitable for interactive systems"],
-                cons: ["Higher average turnaround time", "Context switching overhead", "Performance depends on time quantum"]
-            },
-            hrrn: {
-                name: "Highest Response Ratio Next",
-                description: "Non-preemptive algorithm using response ratio (waiting time + burst time) / burst time. Prevents starvation.",
-                pros: ["No starvation", "Good balance of SJF and FCFS", "Considers both waiting time and service time"],
-                cons: ["Requires calculation overhead", "Not preemptive", "Still requires burst time knowledge"]
-            },
-            ljf: {
-                name: "Longest Job First",
-                description: "Non-preemptive algorithm that selects the process with the longest burst time first. Opposite of SJF.",
-                pros: ["Simple implementation", "Maximizes resource utilization for long jobs"],
-                cons: ["Poor average waiting time", "Starvation of short jobs", "Not practical for most systems"]
-            },
-            lrtf: {
-                name: "Longest Remaining Time First",
-                description: "Preemptive version of LJF. Process with longest remaining time gets CPU. Rarely used in practice.",
-                pros: ["Preemptive scheduling", "Prioritizes long jobs"],
-                cons: ["Very poor performance metrics", "Starvation of short jobs", "High context switching"]
-            },
-            priority: {
-                name: "Priority Scheduling",
-                description: "Non-preemptive algorithm where processes are scheduled based on priority. Lower priority number means higher priority.",
-                pros: ["Flexible scheduling", "Can handle different process importance", "Good for real-time systems"],
-                cons: ["Starvation possible", "Priority inversion", "Requires priority assignment"]
-            },
-            edf: {
-                name: "Earliest Deadline First",
-                description: "Preemptive real-time scheduling algorithm. Process with earliest deadline gets CPU. Optimal for real-time systems.",
-                pros: ["Optimal for real-time systems", "Dynamic priority", "High CPU utilization"],
-                cons: ["Requires deadline information", "Complex implementation", "Domino effect on missed deadlines"]
-            },
-            rms: {
-                name: "Rate Monotonic Scheduling",
-                description: "Preemptive real-time algorithm. Process with shortest period gets highest priority. Used for periodic tasks.",
-                pros: ["Optimal for fixed-priority systems", "Predictable behavior", "Good for periodic tasks"],
-                cons: ["Requires periodic tasks", "Not optimal for all real-time systems", "Complex schedulability analysis"]
-            },
-            multilevel: {
-                name: "Multilevel Queue Scheduling",
-                description: "Multiple queues with different priorities and scheduling algorithms. Processes assigned to queues based on characteristics.",
-                pros: ["Flexible scheduling", "Different algorithms for different process types", "Priority-based separation"],
-                cons: ["Complex implementation", "Possible starvation", "Queue assignment challenges"]
-            }
-        };
-
-        // Field configurations for each algorithm
-        const algorithmFields = {
-            fcfs: ['arrival', 'burst'],
-            sjf: ['arrival', 'burst'],
-            srtf: ['arrival', 'burst'],
-            rr: ['arrival', 'burst'],
-            hrrn: ['arrival', 'burst'],
-            ljf: ['arrival', 'burst'],
-            lrtf: ['arrival', 'burst'],
-            priority: ['arrival', 'burst', 'priority'],
-            edf: ['arrival', 'burst', 'deadline'],
-            rms: ['arrival', 'burst', 'period'],
-            multilevel: ['arrival', 'burst', 'queue']
-        };
-
-        const fieldLabels = {
-            arrival: 'Arrival Time',
-            burst: 'Burst Time',
-            priority: 'Priority (Lower = Higher Priority)',
-            deadline: 'Deadline',
-            period: 'Period',
-            queue: 'Queue (1-3)'
-        };
-
-        // Event Listeners
-        elements.algorithm.addEventListener('change', () => {
-            updateAlgorithmInfo();
-            updateUIForAlgorithm();
-            generateProcessForm();
-        });
-        
-        elements.numProcesses.addEventListener('input', generateProcessForm);
-        elements.runSimulation.addEventListener('click', runSimulation);
-
-        // Initialize
-        updateAlgorithmInfo();
-        updateUIForAlgorithm();
-        generateProcessForm();
-
-        function updateAlgorithmInfo() {
-            const algorithm = elements.algorithm.value;
-            const info = algorithmInfo[algorithm];
-            
-            elements.algorithmDescription.innerHTML = `
-                <strong>${info.name}</strong><br>
-                ${info.description}
-            `;
-        }
-
-        function updateUIForAlgorithm() {
-            const algorithm = elements.algorithm.value;
-            
-            // Show/hide time quantum for Round Robin
-            if (algorithm === 'rr') {
-                elements.timeQuantumDiv.classList.remove('hidden');
-            } else {
-                elements.timeQuantumDiv.classList.add('hidden');
-            }
-            
-            // Show/hide multilevel queue configuration
-            if (algorithm === 'multilevel') {
-                elements.multilevelConfig.classList.remove('hidden');
-            } else {
-                elements.multilevelConfig.classList.add('hidden');
-            }
-        }
-
-        function generateProcessForm() {
-            const algorithm = elements.algorithm.value;
-            const numProcesses = parseInt(elements.numProcesses.value) || 0;
-            const fields = algorithmFields[algorithm] || [];
-            
-            elements.processForm.innerHTML = '';
-            
-            for (let i = 1; i <= numProcesses; i++) {
-                const processCard = document.createElement('div');
-                processCard.className = 'process-card p-6 rounded-xl shadow-lg';
-                
-                let fieldsHTML = '';
-                fields.forEach(field => {
-                    const label = fieldLabels[field];
-                    const inputAttrs = field === 'queue' ? 'min="1" max="3"' : field === 'burst' ? 'min="1"' : 'min="0"';
-                    
-                    fieldsHTML += `
-                        <div>
-                            <label class="block text-sm font-bold text-white mb-2">${label}:</label>
-                            <input type="number" 
-                                   name="${field}" 
-                                   ${inputAttrs}
-                                   class="w-full p-3 border-2 border-white/30 rounded-lg bg-white/20 text-white placeholder-white/70 focus:ring-4 focus:ring-white/50 focus:border-white/50"
-                                   placeholder="Enter ${label.toLowerCase()}"
-                                   required />
-                        </div>
-                    `;
-                });
-                
-                processCard.innerHTML = `
-                    <h3 class="text-xl font-bold text-white mb-4 text-center">Process P${i}</h3>
-                    <div class="grid md:grid-cols-2 gap-4">
-                        ${fieldsHTML}
-                    </div>
-                `;
-                
-                elements.processForm.appendChild(processCard);
-            }
-        }
-
-        function showError(message) {
-            elements.errorText.textContent = message;
-            elements.errorMessage.classList.remove('hidden');
-            elements.errorMessage.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function hideError() {
-            elements.errorMessage.classList.add('hidden');
-        }
-
-        function setLoading(loading) {
-            elements.runSimulation.disabled = loading;
-            if (loading) {
-                elements.buttonText.textContent = 'Running Simulation...';
-                elements.loadingSpinner.classList.remove('hidden');
-            } else {
-                elements.buttonText.textContent = '🚀 Run Simulation';
-                elements.loadingSpinner.classList.add('hidden');
-            }
-        }
-
-        async function runSimulation() {
-            setLoading(true);
-            hideError();
-            
-            try {
-                // Validate and collect input data
-                const data = await validateAndCollectData();
-                if (!data) return;
-                
-                // Run simulation
-                const result = await simulateScheduling(data);
-                
-                // Display results
-                displayResults(result);
-                
-                elements.results.classList.remove('hidden');
-                elements.results.scrollIntoView({ behavior: 'smooth' });
-                
-            } catch (error) {
-                showError(`Simulation error: ${error.message}`);
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        async function validateAndCollectData() {
-            const algorithm = elements.algorithm.value;
-            const numProcesses = parseInt(elements.numProcesses.value);
-            
-            if (!numProcesses || numProcesses < 1 || numProcesses > 20) {
-                showError('Please enter a valid number of processes (1-20)');
-                return null;
-            }
-            
-            const processes = [];
-            const processCards = elements.processForm.querySelectorAll('.process-card');
-            
-            for (let i = 0; i < processCards.length; i++) {
-                const card = processCards[i];
-                const process = { pid: `P${i + 1}` };
-                
-                const fields = algorithmFields[algorithm];
-                for (const field of fields) {
-                    const input = card.querySelector(`[name="${field}"]`);
-                    const value = parseInt(input.value);
-                    
-                    if (isNaN(value) || value < 0) {
-                        showError(`Invalid ${fieldLabels[field]} for Process P${i + 1}`);
-                        return null;
-                    }
-                    
-                    if (field === 'burst' && value < 1) {
-                        showError(`Burst time must be at least 1 for Process P${i + 1}`);
-                        return null;
-                    }
-                    
-                    if (field === 'deadline' && value <= process.arrival) {
-                        showError(`Deadline must be greater than arrival time for Process P${i + 1}`);
-                        return null;
-                    }
-                    
-                    if (field === 'queue' && (value < 1 || value > 3)) {
-                        showError(`Queue number must be 1-3 for Process P${i + 1}`);
-                        return null;
-                    }
-                    
-                    process[field] = value;
-                }
-                
-                // Initialize additional fields
-                process.remainingTime = process.burst;
-                process.completionTime = 0;
-                process.waitingTime = 0;
-                process.turnaroundTime = 0;
-                process.responseTime = -1;
-                process.timeSlice = 0;
-                
-                processes.push(process);
-            }
-            
-            let timeQuantum = 0;
-            if (algorithm === 'rr') {
-                timeQuantum = parseInt(elements.timeQuantum.value);
-                if (isNaN(timeQuantum) || timeQuantum < 1) {
-                    showError('Please enter a valid time quantum (positive integer)');
-                    return null;
-                }
-            }
-            
-            let queueSchedulers = [];
-            if (algorithm === 'multilevel') {
-                queueSchedulers = [
-                    document.getElementById('queue1Scheduler').value,
-                    document.getElementById('queue2Scheduler').value,
-                    document.getElementById('queue3Scheduler').value
-                ];
-            }
-            
-            return {
-                algorithm,
-                processes,
-                timeQuantum,
-                queueSchedulers
-            };
-        }
-
-        async function simulateScheduling({ algorithm, processes, timeQuantum, queueSchedulers }) {
-            currentProcesses = JSON.parse(JSON.stringify(processes)); // Deep copy
-            currentAlgorithm = algorithm;
-            
-            const timeline = [];
-            let currentTime = 0;
-            let readyQueue = [];
-            let currentProcess = null;
-            let multilevelQueues = algorithm === 'multilevel' ? [[], [], []] : null;
-            let timeSliceRemaining = 0;
-            
-            const maxTime = 10000; // Prevent infinite loops
-            
-            while (currentProcesses.some(p => p.remainingTime > 0) && currentTime < maxTime) {
-                // Add arriving processes
-                currentProcesses.forEach(process => {
-                    if (process.arrival === currentTime) {
-                        if (algorithm === 'multilevel') {
-                            multilevelQueues[process.queue - 1].push(process);
-                        } else {
-                            readyQueue.push(process);
-                        }
-                    }
-                });
-                
-                // Select next process based on algorithm
-                const nextProcess = selectNextProcess(algorithm, readyQueue,multilevelQueues, currentProcess, timeSliceRemaining, currentTime);
-                
-                // Handle process execution
-                if (nextProcess && nextProcess !== currentProcess) {
-                    // Context switch
-                    if (currentProcess && currentProcess.remainingTime > 0) {
-                        timeline.push({
-                            time: currentTime,
-                            event: 'context_switch',
-                            from: currentProcess.pid,
-                            to: nextProcess.pid
-                        });
-                    }
-                    currentProcess = nextProcess;
-                    timeSliceRemaining = algorithm === 'rr' ? timeQuantum : Infinity;
-                    
-                    // Set response time if first execution
-                    if (currentProcess.responseTime === -1) {
-                        currentProcess.responseTime = currentTime - currentProcess.arrival;
-                    }
-                }
-                
-                // Execute current process
-                if (currentProcess && currentProcess.remainingTime > 0) {
-                    timeline.push({
-                        time: currentTime,
-                        process: currentProcess.pid,
-                        duration: 1
-                    });
-                    
-                    currentProcess.remainingTime--;
-                    timeSliceRemaining--;
-                    
-                    if (currentProcess.remainingTime === 0) {
-                        // Process completed
-                        currentProcess.completionTime = currentTime + 1;
-                        currentProcess.turnaroundTime = currentProcess.completionTime - currentProcess.arrival;
-                        currentProcess.waitingTime = currentProcess.turnaroundTime - currentProcess.burst;
-                        
-                        // Remove from queues
-                        readyQueue = readyQueue.filter(p => p !== currentProcess);
-                        if (multilevelQueues) {
-                            multilevelQueues.forEach(queue => {
-                                const index = queue.indexOf(currentProcess);
-                                if (index > -1) queue.splice(index, 1);
-                            });
-                        }
-                        currentProcess = null;
-                        timeSliceRemaining = 0;
-                    } else if (timeSliceRemaining === 0 && algorithm === 'rr') {
-                        // Time quantum expired for Round Robin
-                        readyQueue.push(currentProcess);
-                        currentProcess = null;
-                    }
-                } else {
-                    // CPU idle
-                    timeline.push({
-                        time: currentTime,
-                        process: 'IDLE',
-                        duration: 1
-                    });
-                }
-                
-                currentTime++;
-            }
-            
-            // Calculate system metrics
-            const totalTurnaroundTime = currentProcesses.reduce((sum, p) => sum + p.turnaroundTime, 0);
-            const totalWaitingTime = currentProcesses.reduce((sum, p) => sum + p.waitingTime, 0);
-            const totalResponseTime = currentProcesses.reduce((sum, p) => sum + Math.max(0, p.responseTime), 0);
-            const totalBurstTime = currentProcesses.reduce((sum, p) => sum + p.burst, 0);
-            
-            const metrics = {
-                averageTurnaroundTime: totalTurnaroundTime / currentProcesses.length,
-                averageWaitingTime: totalWaitingTime / currentProcesses.length,
-                averageResponseTime: totalResponseTime / currentProcesses.length,
-                cpuUtilization: (totalBurstTime / currentTime) * 100,
-                throughput: currentProcesses.length / currentTime,
-                totalTime: currentTime
-            };
-            
-            currentTimeline = timeline;
-            
-            return {
-                processes: currentProcesses,
-                timeline: timeline,
-                metrics: metrics,
-                algorithm: algorithm
-            };
-        }
-
-        function selectNextProcess(algorithm, readyQueue, multilevelQueues, currentProcess, timeSliceRemaining, currentTime) {
-            if (algorithm === 'multilevel') {
-                // Check queues in priority order
-                for (let i = 0; i < multilevelQueues.length; i++) {
-                    if (multilevelQueues[i].length > 0) {
-                        const queueScheduler = document.getElementById(`queue${i + 1}Scheduler`).value;
-                        return selectFromQueue(multilevelQueues[i], queueScheduler, currentTime);
-                    }
-                }
-                return null;
-            }
-            
-            if (readyQueue.length === 0) return currentProcess;
-            
-            // Continue current process if applicable
-            if (currentProcess && currentProcess.remainingTime > 0) {
-                if (['fcfs', 'sjf', 'hrrn', 'ljf', 'priority'].includes(algorithm)) {
-                    return currentProcess; // Non-preemptive
-                }
-                if (algorithm === 'rr' && timeSliceRemaining > 0) {
-                    return currentProcess; // Continue time slice
-                }
-            }
-            
-            return selectFromQueue(readyQueue, algorithm, currentTime);
-        }
-
-        function selectFromQueue(queue, algorithm, currentTime) {
-            if (queue.length === 0) return null;
-            
-            let selectedProcess = null;
-            
-            switch (algorithm) {
-                case 'fcfs':
-                    selectedProcess = queue.reduce((min, p) => 
-                        p.arrival < min.arrival ? p : min);
-                    break;
-                    
-                case 'sjf':
-                    selectedProcess = queue.reduce((min, p) => {
-                        if (p.burst < min.burst) return p;
-                        if (p.burst === min.burst && p.arrival < min.arrival) return p;
-                        return min;
-                    });
-                    break;
-                    
-                case 'srtf':
-                    selectedProcess = queue.reduce((min, p) => {
-                        if (p.remainingTime < min.remainingTime) return p;
-                        if (p.remainingTime === min.remainingTime && p.arrival < min.arrival) return p;
-                        return min;
-                    });
-                    break;
-                    
-                case 'rr':
-                    selectedProcess = queue[0]; // FIFO for Round Robin
-                    break;
-                    
-                case 'hrrn':
-                    selectedProcess = queue.reduce((max, p) => {
-                        const waitingTime = Math.max(0, currentTime - p.arrival);
-                        const responseRatio = (waitingTime + p.burst) / p.burst;
-                        const maxWaitingTime = Math.max(0, currentTime - max.arrival);
-                        const maxResponseRatio = (maxWaitingTime + max.burst) / max.burst;
-                        
-                        if (responseRatio > maxResponseRatio) return p;
-                        if (responseRatio === maxResponseRatio && p.arrival < max.arrival) return p;
-                        return max;
-                    });
-                    break;
-                    
-                case 'ljf':
-                    selectedProcess = queue.reduce((max, p) => {
-                        if (p.burst > max.burst) return p;
-                        if (p.burst === max.burst && p.arrival < max.arrival) return p;
-                        return max;
-                    });
-                    break;
-                    
-                case 'lrtf':
-                    selectedProcess = queue.reduce((max, p) => {
-                        if (p.remainingTime > max.remainingTime) return p;
-                        if (p.remainingTime === max.remainingTime && p.arrival < max.arrival) return p;
-                        return max;
-                    });
-                    break;
-                    
-                case 'priority':
-                    selectedProcess = queue.reduce((min, p) => {
-                        if (p.priority < min.priority) return p; // Lower number = higher priority
-                        if (p.priority === min.priority && p.arrival < min.arrival) return p;
-                        return min;
-                    });
-                    break;
-                    
-                case 'edf':
-                    selectedProcess = queue.reduce((min, p) => {
-                        if (p.deadline < min.deadline) return p;
-                        if (p.deadline === min.deadline && p.arrival < min.arrival) return p;
-                        return min;
-                    });
-                    break;
-                    
-                case 'rms':
-                    selectedProcess = queue.reduce((min, p) => {
-                        if (p.period < min.period) return p;
-                        if (p.period === min.period && p.arrival < min.arrival) return p;
-                        return min;
-                    });
-                    break;
-                    
-                default:
-                    selectedProcess = queue[0];
-            }
-            
-            return selectedProcess;
-        }
-
-        function displayResults(result) {
-            displayMetrics(result.metrics);
-            displayResultsTable(result.processes);
-            displayGanttChart(result.timeline, result.processes);
-            displayAnalysis(result);
-        }
-
-        function displayMetrics(metrics) {
-            const metricsHTML = `
-                <div class="metric-card p-6 text-center">
-                    <div class="text-3xl font-bold text-gray-800">${metrics.averageTurnaroundTime.toFixed(2)}</div>
-                    <div class="text-sm text-gray-600 font-semibold">Avg Turnaround Time</div>
-                </div>
-                <div class="metric-card p-6 text-center">
-                    <div class="text-3xl font-bold text-gray-800">${metrics.averageWaitingTime.toFixed(2)}</div>
-                    <div class="text-sm text-gray-600 font-semibold">Avg Waiting Time</div>
-                </div>
-                <div class="metric-card p-6 text-center">
-                    <div class="text-3xl font-bold text-gray-800">${metrics.averageResponseTime.toFixed(2)}</div>
-                    <div class="text-sm text-gray-600 font-semibold">Avg Response Time</div>
-                </div>
-                <div class="metric-card p-6 text-center">
-                    <div class="text-3xl font-bold text-gray-800">${metrics.cpuUtilization.toFixed(1)}%</div>
-                    <div class="text-sm text-gray-600 font-semibold">CPU Utilization</div>
-                </div>
-            `;
-            elements.metricsPanel.innerHTML = metricsHTML;
-        }
-
-        function displayResultsTable(processes) {
-            const headers = ['Process', 'Arrival', 'Burst', 'Completion', 'Turnaround', 'Waiting', 'Response'];
-            
-            // Add algorithm-specific headers
-            if (currentAlgorithm === 'priority') headers.push('Priority');
-            if (currentAlgorithm === 'edf') headers.push('Deadline');
-            if (currentAlgorithm === 'rms') headers.push('Period');
-            if (currentAlgorithm === 'multilevel') headers.push('Queue');
-            
-            let tableHTML = `
-                <table class="w-full border-collapse bg-white rounded-xl overflow-hidden shadow-lg">
-                    <thead>
-                        <tr class="bg-gradient-to-r from-purple-500 to-blue-500 text-white">
-                            ${headers.map(h => `<th class="p-4 text-left font-bold">${h}</th>`).join('')}
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-            
-            processes.forEach((process, index) => {
-                const rowClass = index % 2 === 0 ? 'bg-gray-50' : 'bg-white';
-                let row = `
-                    <tr class="${rowClass} hover:bg-blue-50 transition-colors">
-                        <td class="p-4 font-semibold text-gray-800">${process.pid}</td>
-                        <td class="p-4">${process.arrival}</td>
-                        <td class="p-4">${process.burst}</td>
-                        <td class="p-4">${process.completionTime}</td>
-                        <td class="p-4">${process.turnaroundTime}</td>
-                        <td class="p-4">${process.waitingTime}</td>
-                        <td class="p-4">${Math.max(0, process.responseTime)}</td>
-                `;
-                
-                if (currentAlgorithm === 'priority') row += `<td class="p-4">${process.priority}</td>`;
-                if (currentAlgorithm === 'edf') row += `<td class="p-4">${process.deadline}</td>`;
-                if (currentAlgorithm === 'rms') row += `<td class="p-4">${process.period}</td>`;
-                if (currentAlgorithm === 'multilevel') row += `<td class="p-4">Queue ${process.queue}</td>`;
-                
-                row += '</tr>';
-                tableHTML += row;
-            });
-            
-            tableHTML += '</tbody></table>';
-            elements.outputTable.innerHTML = tableHTML;
-        }
-
-        function displayGanttChart(timeline, processes) {
-            if (timeline.length === 0) return;
-            
-            // Consolidate consecutive blocks of same process
-            const consolidatedTimeline = [];
-            let currentBlock = null;
-            
-            timeline.forEach(entry => {
-                if (entry.process) {
-                    if (currentBlock && currentBlock.process === entry.process) {
-                        currentBlock.duration++;
-                    } else {
-                        if (currentBlock) consolidatedTimeline.push(currentBlock);
-                        currentBlock = {
-                            process: entry.process,
-                            startTime: entry.time,
-                            duration: 1
-                        };
-                    }
-                }
-            });
-            if (currentBlock) consolidatedTimeline.push(currentBlock);
-            
-            // Create Gantt chart
-            const maxTime = Math.max(...timeline.map(t => t.time)) + 1;
-            const blockWidth = Math.max(40, Math.min(100, 800 / maxTime));
-            
-            let ganttHTML = `
-                <div class="overflow-x-auto">
-                    <div class="flex items-center min-w-max">
-                        <div class="flex flex-col">
-                            <div class="gantt-time h-12 w-16 flex items-center justify-center font-bold">Time</div>
-                            <div class="gantt-time h-16 w-16 flex items-center justify-center font-bold">Process</div>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex">
-            `;
-            
-            // Time labels
-            for (let i = 0; i <= maxTime; i++) {
-                ganttHTML += `<div class="gantt-time flex items-center justify-center h-12" style="width: ${blockWidth}px;">${i}</div>`;
-            }
-            ganttHTML += '</div><div class="flex">';
-            
-            // Process blocks
-            consolidatedTimeline.forEach(block => {
-                const processIndex = processes.findIndex(p => p.pid === block.process);
-                const colorClass = block.process === 'IDLE' ? 'idle-block' : `process-color-${processIndex % 10}`;
-                const width = blockWidth * block.duration;
-                
-                ganttHTML += `
-                    <div class="gantt-block ${colorClass}" 
-                         style="width: ${width}px;"
-                         onmouseover="showTooltip(event, '${block.process}', ${block.startTime}, ${block.startTime + block.duration})"
-                         onmouseout="hideTooltip()">
-                        ${block.process}
-                    </div>
-                `;
-            });
-            
-            ganttHTML += '</div></div></div></div>';
-            elements.ganttChart.innerHTML = ganttHTML;
-            
-            // Create process legend
-            let legendHTML = '';
-            processes.forEach((process, index) => {
-                legendHTML += `
-                    <div class="flex items-center space-x-2">
-                        <div class="w-6 h-6 rounded process-color-${index % 10}"></div>
-                        <span class="font-semibold">${process.pid}</span>
-                    </div>
-                `;
-            });
-            legendHTML += `
-                <div class="flex items-center space-x-2">
-                    <div class="w-6 h-6 rounded idle-block"></div>
-                    <span class="font-semibold">CPU Idle</span>
-                </div>
-            `;
-            elements.processLegend.innerHTML = legendHTML;
-        }
-
-        function displayAnalysis(result) {
-            const { algorithm, processes, metrics } = result;
-            const info = algorithmInfo[algorithm];
-            
-            // Find best and worst performing processes
-            const bestTurnaround = processes.reduce((min, p) => p.turnaroundTime < min.turnaroundTime ? p : min);
-            const worstTurnaround = processes.reduce((max, p) => p.turnaroundTime > max.turnaroundTime ? p : max);
-            
-            const analysisHTML = `
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-xl">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">Algorithm Analysis</h3>
-                        <div class="space-y-3">
-                            <p><strong>Algorithm:</strong> ${info.name}</p>
-                            <p><strong>Type:</strong> ${algorithm.includes('preemptive') || ['srtf', 'rr', 'lrtf', 'edf', 'rms'].includes(algorithm) ? 'Preemptive' : 'Non-preemptive'}</p>
-                            <p><strong>Total Execution Time:</strong> ${metrics.totalTime} time units</p>
-                            <p><strong>CPU Utilization:</strong> ${metrics.cpuUtilization.toFixed(1)}%</p>
-                            <p><strong>Throughput:</strong> ${metrics.throughput.toFixed(3)} processes/time unit</p>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-gradient-to-br from-green-50 to-emerald-100 p-6 rounded-xl">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">Performance Insights</h3>
-                        <div class="space-y-3">
-                            <p><strong>Best Performer:</strong> ${bestTurnaround.pid} (Turnaround: ${bestTurnaround.turnaroundTime})</p>
-                            <p><strong>Worst Performer:</strong> ${worstTurnaround.pid} (Turnaround: ${worstTurnaround.turnaroundTime})</p>
-                            <p><strong>Efficiency Rating:</strong> ${getEfficiencyRating(metrics.cpuUtilization)}</p>
-                            <p><strong>Fairness Score:</strong> ${getFairnessScore(processes)}</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="mt-8 bg-gradient-to-br from-yellow-50 to-orange-100 p-6 rounded-xl">
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">Algorithm Characteristics</h3>
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <h4 class="font-bold text-green-700 mb-2">Advantages:</h4>
-                            <ul class="list-disc pl-5 space-y-1">
-                                ${info.pros.map(pro => `<li>${pro}</li>`).join('')}
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-red-700 mb-2">Disadvantages:</h4>
-                            <ul class="list-disc pl-5 space-y-1">
-                                ${info.cons.map(con => `<li>${con}</li>`).join('')}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            elements.analysisContent.innerHTML = analysisHTML;
-        }
-
-        function getEfficiencyRating(utilization) {
-            if (utilization >= 90) return "Excellent";
-            if (utilization >= 80) return "Very Good";
-            if (utilization >= 70) return "Good";
-            if (utilization >= 60) return "Fair";
-            return "Poor";
-        }
-
-        function getFairnessScore(processes) {
-            const turnaroundTimes = processes.map(p => p.turnaroundTime);
-            const mean = turnaroundTimes.reduce((sum, t) => sum + t, 0) / turnaroundTimes.length;
-            const variance = turnaroundTimes.reduce((sum, t) => sum + Math.pow(t - mean, 2), 0) / turnaroundTimes.length;
-            const stdDev = Math.sqrt(variance);
-            const coefficient = stdDev / mean;
-            
-            if (coefficient < 0.3) return "Very Fair";
-            if (coefficient < 0.5) return "Fair";
-            if (coefficient < 0.7) return "Moderately Fair";
-            return "Unfair";
-        }
-
-        // Tooltip functions for Gantt chart
-        window.showTooltip = function(event, processId, startTime, endTime) {
-            const tooltip = elements.ganttTooltip;
-            tooltip.innerHTML = `
-                <strong>${processId}</strong><br>
-                Time: ${startTime} - ${endTime}<br>
-                Duration: ${endTime - startTime} units
-            `;
-            tooltip.style.left = event.pageX + 10 + 'px';
-            tooltip.style.top = event.pageY - 30 + 'px';
-            tooltip.style.opacity = '1';
-        };
-
-        window.hideTooltip = function() {
-            elements.ganttTooltip.style.opacity = '0';
-        };
-
-        // Add some sample data for quick testing
-        function loadSampleData() {
-            elements.algorithm.value = 'rr';
-            elements.numProcesses.value = '4';
-            elements.timeQuantum.value = '2';
-            updateAlgorithmInfo();
-            updateUIForAlgorithm();
-            generateProcessForm();
-            
-            // Fill sample data
-            setTimeout(() => {
-                const inputs = elements.processForm.querySelectorAll('input');
-                const sampleData = [
-                    [0, 5], [1, 3], [2, 8], [3, 6] // [arrival, burst]
-                ];
-                
-                let inputIndex = 0;
-                for (let i = 0; i < 4; i++) {
-                    inputs[inputIndex++].value = sampleData[i][0]; // arrival
-                    inputs[inputIndex++].value = sampleData[i][1]; // burst
-                }
-            }, 100);
-        }
-
-        // Add sample data button
-        const sampleButton = document.createElement('button');
-        sampleButton.textContent = '📝 Load Sample Data';
-        sampleButton.className = 'bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg mr-4';
-        sampleButton.onclick = loadSampleData;
-        elements.runSimulation.parentNode.insertBefore(sampleButton, elements.runSimulation);
-    </script>
-</body>
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+  </body>
 </html>

@@ -3,33 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Story</title>
+    <title>Story Animations</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body style="height: 100%;
-    margin: 10px;
-    padding: 10px;
-    background: linear-gradient(0deg, #000046, #1CB5E0);
-    background-attachment: fixed;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    color: white;">
-    <h1>Story Animations</h1>
-    <h4 style="text-align: center;">Step into a world where stories come to life! Our Interactive Storyteller transforms classic tales into an engaging experience where you can click, explore, and make choices that shape the journey.</h4>
-    <div class="box1">
-        <h3>The clever Rabbit and the Lion</h3>
-        <img src="images/poster.jpeg" alt="Rabbit and the Lion" title="The clever Rabbit and the Lion" width="200" >
-        <br>
-        <button id="start">Start</button>
+<body class="landing-page">
+    <div style="width: 100%; max-width: 940px; margin: 0 auto 16px; display: flex; justify-content: flex-start;">
+        <a href="index.html" class="btn-secondary" style="text-decoration: none; padding: 8px 16px;" aria-label="Back to project homepage">← Back to Home</a>
     </div>
-    <script>
-        document.getElementById("start").addEventListener("click", Changes);
 
-function Changes(){
-    console.log("Redirecting...");
-    window.location.href="story.html";
-}
+    <main class="landing-container">
+        <h1>Story Animations</h1>
+        <p class="lead">
+            Step into a world where stories come to life. Listen, follow each scene, and enjoy these interactive adventures.
+        </p>
+        <p class="carousel-hint" id="carousel-instructions">💡 Click <strong>Next</strong> or <strong>Prev</strong> on the card below to explore other stories! You can also use your Left and Right arrow keys.</p>
+
+        <section class="story-card" aria-labelledby="story-title" aria-describedby="carousel-instructions">
+            <h2 id="story-title">The Clever Rabbit and the Lion</h2>
+            <img
+                id="story-cover"
+                class="cover-image"
+                src="images/poster.jpeg"
+                alt="Story Poster"
+                title="Story Poster"
+            >
+            
+            <div class="carousel-controls" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin: 15px 0;">
+                <button id="prev-btn" class="btn-secondary" style="padding: 8px 16px; cursor: pointer;" aria-label="Previous Story">&larr; Prev</button>
+                <span id="story-indicator" style="font-weight: bold;" aria-live="polite">1 / 4</span>
+                <button id="next-btn" class="btn-secondary" style="padding: 8px 16px; cursor: pointer;" aria-label="Next Story">Next &rarr;</button>
+            </div>
+
+            <button id="start" class="btn-primary" style="width: 100%;" aria-label="Start selected story">Start Story</button>
+        </section>
+    </main>
+
+    <script type="module">
+        import { stories } from './storiesData.js';
+
+        // 1. Array of Story Objects (Easily expandable!)
+
+        let currentIndex = 0;
+
+        // 2. DOM Elements
+        const titleEl = document.getElementById("story-title");
+        const coverEl = document.getElementById("story-cover");
+        const indicatorEl = document.getElementById("story-indicator");
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const startBtn = document.getElementById("start");
+
+        // 3. Update UI Render Function
+        function updateStoryDOM() {
+            const currentStory = stories[currentIndex];
+            titleEl.textContent = currentStory.title;
+            coverEl.src = currentStory.cover;
+            coverEl.alt = `Poster of ${currentStory.title}`;
+            coverEl.title = currentStory.title;
+            indicatorEl.textContent = `${currentIndex + 1} / ${stories.length}`;
+        }
+
+        // 4. Event Listeners for Navigation
+        prevBtn.addEventListener("click", () => {
+            // Loops back to the end if clicking prev on first item
+            currentIndex = (currentIndex === 0) ? stories.length - 1 : currentIndex - 1;
+            updateStoryDOM();
+        });
+
+        nextBtn.addEventListener("click", () => {
+            // Loops back to start if clicking next on last item
+            currentIndex = (currentIndex === stories.length - 1) ? 0 : currentIndex + 1;
+            updateStoryDOM();
+        });
+
+        // 5. Direct User to Selected Story
+        startBtn.addEventListener("click", () => {
+            const selectedStoryId = stories[currentIndex].id;
+            // Passes the unique story identifier via URL params to story.html
+            window.location.href = `story.html?story=${selectedStoryId}`;
+        });
+
+        window.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowLeft") {
+                prevBtn.click();
+            } else if (event.key === "ArrowRight") {
+                nextBtn.click();
+            } else if (event.key === "Enter" && document.activeElement !== startBtn) {
+                startBtn.click();
+            }
+        });
+
+        // Initialize display
+        updateStoryDOM();
     </script>
 </body>
 </html>

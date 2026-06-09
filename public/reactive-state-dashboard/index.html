@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Centralized Reactive State Store Matrix</title>
+    <style>
+        :root {
+            --bg-cyber: #080c14;
+            --panel-glass: rgba(18, 26, 43, 0.8);
+            --border-neon: #ff0055;
+            --cyan-glow: #00f3ff;
+            --text-primary: #f0f4f8;
+            --text-secondary: #6c7d93;
+        }
+
+        body {
+            background-color: var(--bg-cyber);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            margin: 0;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .dashboard-wrapper {
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        header h2 {
+            margin: 0 0 25px 0;
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, var(--cyan-glow), var(--border-neon));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        @media (min-width: 850px) {
+            .dashboard-layout {
+                grid-template-columns: 5fr 7fr;
+            }
+        }
+
+        .card-node {
+            background: var(--panel-glass);
+            border: 1px solid #1a263d;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .card-node::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--cyan-glow), transparent);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .node-header {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .node-header::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background-color: var(--cyan-glow);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--cyan-glow);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            background: #0d1522;
+            border: 1px solid #1f2d47;
+            border-radius: 6px;
+            padding: 10px 14px;
+            color: #fff;
+            font-size: 0.95rem;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--cyan-glow);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+        }
+
+        .btn-dispatch {
+            background: linear-gradient(135deg, #ff0055, #ff5500);
+            border: none;
+            color: #fff;
+            padding: 12px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-dispatch:hover {
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
+        }
+
+        .subscriber-widget {
+            background: #090e18;
+            border: 1px solid #162238;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .widget-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .widget-output {
+            font-size: 1.1rem;
+            font-family: monospace;
+            color: #fff;
+        }
+
+        .flash-active {
+            border-color: var(--cyan-glow) !important;
+            transform: scale(1.01);
+        }
+
+        #stream-terminal {
+            background: #04070c;
+            border: 1px solid #121b2a;
+            color: #8da2bd;
+            font-family: monospace;
+            font-size: 0.8rem;
+            padding: 15px;
+            border-radius: 8px;
+            height: 140px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard-wrapper">
+        <header>
+            <h2>Reactive State Core & Stream Matrix</h2>
+        </header>
+
+        <div class="dashboard-layout">
+            <div class="card-node">
+                <div class="node-header">State Command Center</div>
+
+                <div class="form-group">
+                    <label>System Metric Channel (Metric Key)</label>
+                    <input type="text" id="state-key" value="leadPipeline" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label>Transaction Value (Data Payload)</label>
+                    <input type="text" id="state-value" placeholder="e.g., $45,200" autocomplete="off">
+                </div>
+
+                <button id="dispatch-btn" class="btn-dispatch">Commit Immutable State Dispatch</button>
+            </div>
+
+            <div class="card-node">
+                <div class="node-header">Isolated Observer Subscriptions</div>
+
+                <div id="sub-widget-1" class="subscriber-widget">
+                    <div class="widget-meta">
+                        <span>Observer Node Alpha (Channel: leadPipeline)</span>
+                        <span id="ts-1">Awaiting stream...</span>
+                    </div>
+                    <div id="out-1" class="widget-output">--</div>
+                </div>
+
+                <div id="sub-widget-2" class="subscriber-widget">
+                    <div class="widget-meta">
+                        <span>Observer Node Beta (Channel: leadPipeline)</span>
+                        <span id="ts-2">Awaiting stream...</span>
+                    </div>
+                    <div id="out-2" class="widget-output">--</div>
+                </div>
+
+                <div id="stream-terminal">System Stream Stream Log Initialized... Ready for data packet dispatches.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+
+</html>

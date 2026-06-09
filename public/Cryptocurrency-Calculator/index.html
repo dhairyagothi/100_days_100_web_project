@@ -8,14 +8,23 @@
     <link rel="icon" href="../favv.png" type="image/x-icon" />
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
     <div class="calculator-container">
         <h1>Cryptocurrency Calculator</h1>
         <div class="input-group">
             <label for="crypto">Cryptocurrency:</label>
             <select id="crypto" >
-                <option value="bitcoin">Bitcoin</option>
-                <option value="ethereum">Ethereum</option>
-                <option value="ripple">Ripple</option>
+                <option value="bitcoin">Bitcoin (BTC)</option>
+                <option value="ethereum">Ethereum (ETH)</option>
+                <option value="tether">Tether (USDT)</option>
+                <option value="binancecoin">BNB</option>
+                <option value="solana">Solana (SOL)</option>
+                <option value="ripple">XRP</option>
+                <option value="dogecoin">Dogecoin (DOGE)</option>
+                <option value="cardano">Cardano (ADA)</option>
+                <option value="tron">Tron (TRX)</option>
+                <option value="avalanche-2">Avalanche (AVAX)</option>
             </select>
         </div>
         <div class="input-group">
@@ -25,10 +34,14 @@
         <div class="input-group">
             <label for="currency">Currency:</label>
             <select id="currency">
-                <option value="usd">USD</option>
-                <option value="eur">EUR</option>
-                <option value="gbp">GBP</option>
-                <option value="inr">INR</option>    
+                <option value="usd">US Dollar (USD)</option>
+                <option value="eur">Euro (EUR)</option>
+                <option value="gbp">British Pound (GBP)</option>
+                <option value="inr">Indian Rupee (INR)</option>
+                <option value="jpy">Japanese Yen (JPY)</option>
+                <option value="cad">Canadian Dollar (CAD)</option>
+                <option value="aud">Australian Dollar (AUD)</option>
+                <option value="chf">Swiss Franc (CHF)</option>
             </select>
         </div>
         <button id="calculate">Calculate</button>

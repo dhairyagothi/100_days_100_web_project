@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WeatherLens — Dynamic Weather Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="Favicon_Weather.png">
+  </head>
+  <body data-weather-theme="default" id="appBody">
+
+    <!-- Animated particle canvas for weather effects -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- Time & date strip -->
+    <div class="top-strip">
+      <span id="liveTime" class="live-time"></span>
+      <span id="liveDate" class="live-date"></span>
+    </div>
+
+    <div class="app-shell">
+
+      <!-- LEFT PANEL: Search + Current Weather -->
+      <div class="panel panel-main glass">
+
+        <!-- Branding -->
+        <div class="brand-row">
+          <div class="brand-mark">
+            <svg viewBox="0 0 24 24" fill="none" class="brand-icon">
+              <circle cx="12" cy="12" r="4" fill="currentColor"/>
+              <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="brand-name">WeatherLens</span>
+          <!-- Unit toggle -->
+          <div class="unit-toggle" id="unitToggle" title="Toggle °C / °F">
+            <span class="unit-opt active" data-unit="metric">°C</span>
+            <span class="unit-divider">/</span>
+            <span class="unit-opt" data-unit="imperial">°F</span>
+          </div>
+        </div>
+
+        <!-- Search bar -->
+        <div class="search-group">
+          <div class="search-bar">
+            <svg viewBox="0 0 24 24" class="search-icon"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" fill="none"/><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <input type="text" id="cityInput" placeholder="Search city… e.g. Tokyo, Mumbai" autocomplete="off" spellcheck="false" />
+            <button id="searchBtn" class="btn-search">Go</button>
+          </div>
+          <button id="geoBtn" class="btn-geo" title="Use my location">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="3" fill="currentColor"/>
+              <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="12" cy="12" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Recent searches -->
+        <div id="recentSearches" class="recent-searches hidden">
+          <span class="recent-label">Recent</span>
+          <div id="recentList" class="recent-chips"></div>
+        </div>
+
+        <!-- Status -->
+        <div id="statusMessage" class="status-msg hidden">
+          <div class="spinner"></div>
+          <span id="statusText">Fetching weather data…</span>
+        </div>
+
+        <!-- Current weather display -->
+        <main id="weatherDisplay" class="weather-main hidden">
+
+          <div class="city-row">
+            <div>
+              <h1 id="cityName" class="city-name">—</h1>
+              <p id="localTime" class="local-time"></p>
+            </div>
+            <button id="favBtn" class="btn-fav" title="Save to favourites">
+              <svg viewBox="0 0 24 24" fill="none" id="favIcon"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+
+          <div class="temp-hero">
+            <div class="temp-left">
+              <div class="temp-big" id="tempDisplay">—</div>
+              <div class="feels-like">Feels like <span id="feelsLike">—</span></div>
+              <p id="weatherCondition" class="condition-label">—</p>
+            </div>
+            <img id="weatherIcon" src="" alt="Weather icon" class="weather-icon-big" />
+          </div>
+
+          <!-- Extra metrics row -->
+          <div class="metrics-grid">
+            <div class="metric-tile">
+              <svg viewBox="0 0 24 24" class="metric-icon"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="12" cy="9" r="2.5" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+              <span class="metric-val" id="humidityValue">—</span>
+              <span class="metric-lbl">Humidity</span>
+            </div>
+            <div class="metric-tile">
+              <svg viewBox="0 0 24 24" class="metric-icon"><path d="M5 8h14M5 12h10M5 16h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <span class="metric-val" id="windValue">—</span>
+              <span class="metric-lbl">Wind</span>
+            </div>
+            <div class="metric-tile">
+              <svg viewBox="0 0 24 24" class="metric-icon"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              <span class="metric-val" id="pressureValue">—</span>
+              <span class="metric-lbl">Pressure</span>
+            </div>
+            <div class="metric-tile">
+              <svg viewBox="0 0 24 24" class="metric-icon"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+              <span class="metric-val" id="visibilityValue">—</span>
+              <span class="metric-lbl">Visibility</span>
+            </div>
+            <div class="metric-tile">
+              <svg viewBox="0 0 24 24" class="metric-icon"><path d="M12 3v1M18.36 5.64l-.71.71M21 12h-1M18.36 18.36l-.71-.71M12 21v-1M5.64 18.36l.71-.71M3 12h1M5.64 5.64l.71.71" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+              <span class="metric-val" id="uvIndex">—</span>
+              <span class="metric-lbl">UV Index</span>
+            </div>
+            <div class="metric-tile">
+              <svg viewBox="0 0 24 24" class="metric-icon"><path d="M7 16a4 4 0 0 1-.88-7.903A5 5 0 1 1 15.9 6L16 6a5 5 0 0 1 1 9.9M15 13l-3-3m0 0l-3 3m3-3v12" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="metric-val" id="cloudinessValue">—</span>
+              <span class="metric-lbl">Cloud Cover</span>
+            </div>
+          </div>
+
+          <!-- Sunrise / Sunset -->
+          <div class="sun-row">
+            <div class="sun-tile">
+              <svg viewBox="0 0 24 24" class="sun-icon"><path d="M12 3v2M6.22 5.64L7.64 7.05M3 12h2M5.64 18.36l1.41-1.41M12 19v2M18.36 18.36l-1.41-1.41M21 12h-2M17.78 5.64L16.36 7.05" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M12 7a5 5 0 1 0 0 10A5 5 0 0 0 12 7z" fill="currentColor" opacity=".3"/><path d="M12 7a5 5 0 0 1 0 10" stroke="currentColor" stroke-width="1.5"/></svg>
+              <span class="sun-lbl">Sunrise</span>
+              <span class="sun-val" id="sunriseVal">—</span>
+            </div>
+            <div class="sun-arc-wrap">
+              <svg viewBox="0 0 120 60" class="sun-arc-svg" id="sunArc">
+                <defs>
+                  <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#f97316"/>
+                    <stop offset="100%" stop-color="#facc15"/>
+                  </linearGradient>
+                </defs>
+                <path d="M10 55 Q60 5 110 55" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+                <path id="sunProgress" d="M10 55 Q60 5 110 55" fill="none" stroke="url(#arcGrad)" stroke-width="2" stroke-dasharray="120" stroke-dashoffset="120"/>
+                <circle id="sunDot" cx="10" cy="55" r="5" fill="#facc15"/>
+              </svg>
+            </div>
+            <div class="sun-tile">
+              <svg viewBox="0 0 24 24" class="sun-icon"><path d="M12 3v2M6.22 5.64L7.64 7.05M3 12h2M5.64 18.36l1.41-1.41M12 19v2M18.36 18.36l-1.41-1.41M21 12h-2M17.78 5.64L16.36 7.05" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M12 7a5 5 0 0 0 0 10" fill="currentColor" opacity=".3"/><path d="M12 7a5 5 0 0 0 0 10" stroke="currentColor" stroke-width="1.5"/></svg>
+              <span class="sun-lbl">Sunset</span>
+              <span class="sun-val" id="sunsetVal">—</span>
+            </div>
+          </div>
+
+        </main>
+
+        <!-- Error state -->
+        <div id="errorState" class="error-state hidden">
+          <svg viewBox="0 0 24 24" class="err-icon"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <p id="errorText">City not found. Check spelling and try again.</p>
+        </div>
+
+      </div>
+
+      <!-- RIGHT PANEL: Forecast + Favourites -->
+      <div class="panel panel-side">
+
+        <!-- 5-Day Forecast -->
+        <div class="glass side-card" id="forecastCard">
+          <h2 class="side-title">5-Day Forecast</h2>
+          <div id="forecastList" class="forecast-list">
+            <p class="side-placeholder">Search a city to see forecast</p>
+          </div>
+        </div>
+
+        <!-- Favourites -->
+        <div class="glass side-card" id="favCard">
+          <h2 class="side-title">Favourites</h2>
+          <div id="favList" class="fav-list">
+            <p class="side-placeholder">No saved cities yet</p>
+          </div>
+        </div>
+
+        <!-- Air Quality (bonus) -->
+        <div class="glass side-card" id="aqiCard">
+          <h2 class="side-title">Air Quality</h2>
+          <div id="aqiDisplay" class="aqi-display">
+            <p class="side-placeholder">Search a city to see AQI</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,4 +1,4 @@
-$planetCount: 9;
+$planetCount: 10;
 $planetSize: 1200px; // Size of each planet
 $planetSpacing: 2300px; // Space between each planet
 $planetTransitionSpeed: 2s;
@@ -10,6 +10,8 @@ $traverse: "";
 $traverseTriggers: "";
 
 // Colors
+$sun: #ffcc00;
+$sun: #ffcc00;
 $mercury:#E8927C;
 $venus: #b45d15;
 $earth: #26daaa;
@@ -202,6 +204,11 @@ body {
     label {
         cursor: pointer;
 
+        &.sun {
+            & > .preview {
+                background: url('https://www.solarsystemscope.com/images/textures/full/2k_sun.jpg') !important;
+            }
+        }
         &.mercury {
             & > .preview {
                 background: url('https://www.solarsystemscope.com/images/textures/full/2k_makemake_fictional.jpg') !important;
@@ -279,6 +286,11 @@ body {
             }
         }
 
+        &.sun {
+            h2 .pip {
+                background: $sun;
+            }
+        }
         &.mercury {
             h2 .pip {
                 background: $mercury;
@@ -600,6 +612,11 @@ body {
                     }
                 }
 
+                & + label.sun {
+                    & > .info h3 {
+                        color:$sun;
+                    }
+                }
                 & + label.mercury {
                     & > .info h3 {
                         color:$mercury;
@@ -731,6 +748,12 @@ body {
                     opacity: 0;
                 }
 
+                &.sun {
+                    @include makePlanet(rgba(255, 200, 0, 0.6), rgba(255, 150, 0, 0.8), 'https://www.solarsystemscope.com/images/textures/full/2k_sun.jpg');
+                    & .overlay {
+                        display: none;
+                    }
+                }
                 &.mercury {
                     @include makePlanet(rgba(188, 143, 127, 0.6), rgba(234, 205, 199, 0.6), 'https://www.solarsystemscope.com/images/textures/full/2k_makemake_fictional.jpg');
                 }

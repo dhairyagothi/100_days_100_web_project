@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PeerRTC | Advanced Video Chat</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PeerJS -->
+    <script src="https://unpkg.com/peerjs@1.5.1/dist/peerjs.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar / Controls -->
+        <div class="control-panel glass-panel">
+            <div class="brand">
+                <i aria-hidden="true" class="fa-solid fa-video"></i>
+                <h1>PeerRTC</h1>
+            </div>
+            
+            <div class="connection-box">
+                <h3>Your ID</h3>
+                <div class="id-container">
+                    <input type="text" id="my-id" readonly placeholder="Generating ID...">
+                    <button id="copy-btn" title="Copy ID"><i aria-hidden="true" class="fa-regular fa-copy"></i></button>
+                </div>
+            </div>
+
+            <div class="connection-box">
+                <h3>Connect to Peer</h3>
+                <div class="id-container">
+                    <input type="text" id="peer-id-input" placeholder="Enter Peer ID">
+                    <button id="connect-btn" class="primary-btn">Connect</button>
+                </div>
+                <div id="connection-status" class="status-text text-muted">Awaiting connection...</div>
+            </div>
+
+            <div class="actions">
+                <button id="toggle-audio" class="action-btn" title="Mute/Unmute Audio"><i aria-hidden="true" class="fa-solid fa-microphone"></i></button>
+                <button id="toggle-video" class="action-btn" title="Hide/Show Video"><i aria-hidden="true" class="fa-solid fa-video"></i></button>
+                <button id="screen-share" class="action-btn" title="Share Screen"><i aria-hidden="true" class="fa-solid fa-desktop"></i></button>
+                <button id="end-call" class="action-btn danger-btn" title="End Call"><i aria-hidden="true" class="fa-solid fa-phone-slash"></i></button>
+            </div>
+        </div>
+
+        <!-- Video Area -->
+        <div class="video-workspace">
+            <div class="video-container local-container glass-panel">
+                <div class="video-label">You</div>
+                <video id="local-video" autoplay muted playsinline></video>
+            </div>
+            
+            <div class="video-container remote-container glass-panel" id="remote-wrapper">
+                <div class="video-label">Remote Peer</div>
+                <div class="waiting-message" id="waiting-message">
+                    <div class="spinner"></div>
+                    <p>Waiting for someone to join...</p>
+                </div>
+                <video id="remote-video" autoplay playsinline></video>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

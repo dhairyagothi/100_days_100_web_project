@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Piano</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+    <link
+    href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
+    rel="stylesheet">
+</head>
+<body>
+    <div class="noise"></div>
+    <h1>Virtual Piano</h1>
+    <h2>Use your mouse to click on the keys or use your keyboard</h2>
+    <em>* Key starts from the C note</em>
+    <!-- Recording Controls -->
+<div class="controls">
+    <button id="btn-record">⏺ Record</button>
+    <button id="btn-stop" disabled>⏹ Stop</button>
+    <button id="btn-play" disabled>▶ Play</button>
+    <button id="btn-clear" disabled>🗑 Clear</button>
+    <button id="btn-export" disabled>⬇ Export</button>
+</div>
+
+<div class="controls-secondary">
+    <label for="speed-slider">Playback Speed</label>
+    <input type="range" id="speed-slider" min="0.25" max="2" step="0.25" value="1" disabled />
+    <span id="speed-label">1×</span>
+</div>
+    <div class="piano">
+        <div class="keys">
+
+  <div class="key-group">
+    <button class="key white" id="a">A</button>
+    <button class="key black" id="w">W</button>
+  </div>
+
+  <div class="key-group">
+    <button class="key white" id="s">S</button>
+    <button class="key black" id="e">E</button>
+  </div>
+
+  <div class="key-group no-black">
+    <button class="key white" id="d">D</button>
+  </div>
+
+  <div class="key-group">
+    <button class="key white" id="f">F</button>
+    <button class="key black" id="t">T</button>
+  </div>
+
+  <div class="key-group">
+    <button class="key white" id="g">G</button>
+    <button class="key black" id="y">Y</button>
+  </div>
+
+  <div class="key-group">
+    <button class="key white" id="h">H</button>
+    <button class="key black" id="u">U</button>
+  </div>
+
+  <div class="key-group no-black">
+    <button class="key white" id="j">J</button>
+  </div>
+
+  <div class="key-group">
+    <button class="key white" id="k">K</button>
+    <button class="key black" id="o">O</button>
+  </div>
+
+  <div class="key-group">
+    <button class="key white" id="l">L</button>
+    <button class="key black" id="p">P</button>
+  </div>
+
+  <div class="key-group no-black">
+    <button class="key white" id=";">;</button>
+  </div>
+
+</div>
+    </div>
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="./index.js"></script>
+
+</body>
+</html>

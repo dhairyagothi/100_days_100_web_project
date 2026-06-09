@@ -1,29 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text to Voice Converter</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text & Voice Converter</title>
+    <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
-    <div class="whole">
+
+<a href="/" class="back-btn">← Back to Home</a>
+
+<div class="wrapper">
+
+    <!-- Text to Voice -->
     <div class="container">
-        <h1 class="title">Text to Voice Converter</h1>
-        <div class="input-area">
-            <textarea class="textarea1" id ="text-input" placeholder="Enter text here..."></textarea>
+        <h1>Text to Voice Converter</h1>
+
+        <label>Select Language</label>
+
+        <select id="tts-language">
+            <option value="en-US">English</option>
+            <option value="hi-IN">Hindi</option>
+            <option value="es-ES">Spanish</option>
+        </select>
+
+        <textarea
+            id="text-input"
+            placeholder="Enter text here..."
+        ></textarea>
+
+        <div class="btn-group">
             <button id="convert-btn">Convert to Speech</button>
-            <button id="stop-btn" disabled>Stop</button>
+            <button id="stop-btn-text" class="stop-btn" disabled>
+                Stop
+            </button>
         </div>
     </div>
 
-    <div class="container2">
-        <h1 class="title">Voice to Text Converter</h1>
-        <button id="start-btn">Speak</button>
-        <button id="stop-btn">Stop</button>
-        <textarea class="textarea2" id="output" placeholder="Your speech will appear here..."></textarea>
+    <!-- Voice to Text -->
+    <div class="container">
+        <h1>Voice to Text Converter</h1>
+
+        <label>Select Language</label>
+
+        <select id="stt-language">
+            <option value="en-US">English</option>
+            <option value="hi-IN">Hindi</option>
+            <option value="es-ES">Spanish</option>
+        </select>
+
+        <div class="btn-group">
+            <button id="start-btn">Speak</button>
+
+            <button id="stop-btn-voice" class="stop-btn" disabled>
+                Stop
+            </button>
+        </div>
+
+        <textarea
+            id="output"
+            placeholder="Your speech will appear here..."
+        ></textarea>
     </div>
+
 </div>
-    <script src="script.js"></script>
+
+<script src="script.js"></script>
+
 </body>
 </html>

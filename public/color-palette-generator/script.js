@@ -1,45 +1,115 @@
 const palette = document.getElementById("palette");
 const generateBtn = document.getElementById("generateBtn");
+const downloadBtn = document.getElementById("downloadBtn");
 const message = document.getElementById("message");
 
-// Generate a random hex color
-function getRandomColor() {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
-    for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-}
+let currentPalette = [];
+let messageTimer;
 
-// Generate palette of colors
 function generatePalette() {
     palette.innerHTML = "";
+    currentPalette = [];
+
     for (let i = 0; i < 5; i++) {
         const color = getRandomColor();
+
+        currentPalette.push(color);
+
         const colorDiv = document.createElement("div");
         colorDiv.classList.add("color");
         colorDiv.style.background = color;
         colorDiv.textContent = color;
+
+        // Mouse click support
         colorDiv.addEventListener("click", () => copyColor(color));
+
+        // Keyboard accessibility
+        colorDiv.tabIndex = 0;
+        colorDiv.setAttribute(
+            "aria-label",
+            `Copy color ${color}`
+        );
+
+        colorDiv.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                copyColor(color);
+            }
+        });
+
         palette.appendChild(colorDiv);
     }
-    // Update background gradient dynamically
+
+    // Save latest palette
+    localStorage.setItem(
+        "lastPalette",
+        JSON.stringify(currentPalette)
+    );
+
+    // Dynamic background
     const bg1 = getRandomColor();
     const bg2 = getRandomColor();
-    document.body.style.background = `linear-gradient(135deg, ${bg1}, ${bg2})`;
+
+    document.body.style.background =
+        `linear-gradient(135deg, ${bg1}, ${bg2})`;
 }
 
-// Copy color to clipboard
-function copyColor(color) {
-    navigator.clipboard.writeText(color);
-    message.textContent = `Copied ${color}! 🎨`;
+function showMessage(text) {
+    clearTimeout(messageTimer);
+
+    message.textContent = text;
     message.classList.add("show");
-    setTimeout(() => {
+
+    messageTimer = setTimeout(() => {
         message.classList.remove("show");
     }, 1500);
 }
 
-// Initialize on page load
+function downloadPalette() {
+    try {
+        if (currentPalette.length === 0) {
+            showMessage("No palette available to download.");
+            return;
+        }
+
+        const paletteText = currentPalette.join("\n");
+
+        const blob = new Blob(
+            [paletteText],
+            { type: "text/plain" }
+        );
+
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+
+        link.href = url;
+        link.download = "color-palette.txt";
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        URL.revokeObjectURL(url);
+
+        showMessage("Palette downloaded successfully! 🎨");
+    }
+    catch (error) {
+        console.error("Download failed:", error);
+        showMessage("Download failed");
+    }
+}
+
+// Initialize page
 generatePalette();
-generateBtn.addEventListener("click", generatePalette);
+
+generateBtn.addEventListener(
+    "click",
+    generatePalette
+);
+
+if (downloadBtn) {
+    downloadBtn.addEventListener(
+        "click",
+        downloadPalette
+    );
+}
