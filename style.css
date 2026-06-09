@@ -490,6 +490,92 @@ body.light-mode .navbar,
   font-size: 0.75rem;
 }
 
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+#random-challenge {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.25rem;
+  margin: 2rem auto;
+}
+
+#random-challenge .projects-inner {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.challenge-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  background: var(--bg-primary);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 24px 54px rgba(0, 0, 0, 0.16);
+}
+
+.challenge-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.challenge-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.challenge-status {
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.challenge-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.challenge-title {
+  font-size: clamp(1.3rem, 2vw, 1.75rem);
+  margin: 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: rgba(59, 130, 246, 0.12);
+  text-transform: capitalize;
+}
+
+.badge.secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+}
+
 /* ── Stats Dashboard Button ──────────────────────────────── */
 .btn-stats {
   display: inline-flex;
@@ -3406,4 +3492,77 @@ body.custom-cursor-active .cursor-ring.is-visible {
 :root[data-theme="sepia"] footer text,
 :root[data-theme="sepia"] [class*="footer"] {
   color: var(--text-muted-sepia) !important;
+}
+
+.compare-modal {
+  position: fixed !important;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999 !important;
+}
+
+.compare-modal.hidden {
+  display: none !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.compare-modal-content {
+  width: min(800px, 90%);
+  margin: auto;
+  max-height: 85vh;
+  overflow-y: auto;
+  background: var(--card-bg, #111);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.compare-close {
+  float: right;
+  border: none;
+  background: transparent;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.compare-selectors {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.compare-selectors select {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #1f1f1f;
+  color: #ffffff;
+  border: 1px solid #444;
+}
+
+.compare-selectors option {
+  background-color: #1f1f1f;
+  color: #ffffff;
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.compare-table th,
+.compare-table td {
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 12px;
+  text-align: left;
+}
+
+.compare-table th {
+  font-weight: 600;
 }

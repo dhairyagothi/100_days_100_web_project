@@ -127,6 +127,9 @@
           <a href="stats.html" class="btn-stats" id="heroStatsBtn" title="View Project Stats Dashboard" aria-label="View Project Stats Dashboard">
             <i class="fas fa-chart-bar" aria-hidden="true"></i> Stats
           </a>
+          <button type="button" id="compareProjectsBtn" class="btn btn-ghost" title="Compare Projects">
+            <i class="fas fa-columns"></i> Compare Projects
+          </button>
         </div>
 
         <div class="stats-strip" id="statsStrip">
@@ -149,6 +152,44 @@
           <span class="stat-item"> <strong id="prCount">—</strong> PRs </span>
           <span class="stat-divider">·</span>
           <span class="stat-item"> <strong>Open</strong> Source </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="projects-section" id="random-challenge">
+      <div class="projects-inner">
+        <div class="projects-intro">
+          <p class="section-label">🎲 Random Project Challenge</p>
+          <div class="section-heading-row">
+            <h2 class="section-title">Today's Challenge</h2>
+          </div>
+        </div>
+
+        <div class="challenge-card">
+          <p class="challenge-status">
+            Need a fresh web experiment? Tap the button to discover a random project from the archive.
+          </p>
+
+          <div id="challenge-content" class="challenge-content hidden">
+            <div>
+              <p class="section-label">Project</p>
+              <h3 class="challenge-title" id="challenge-name">Project name</h3>
+            </div>
+
+            <div class="challenge-badge-row">
+              <span class="badge" id="challenge-difficulty">Difficulty</span>
+              <span class="badge secondary hidden" id="challenge-category">Category</span>
+            </div>
+
+            <div class="challenge-actions">
+              <a id="challenge-link" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View Project</a>
+              <button type="button" id="try-another-btn" class="btn btn-secondary">Try Another</button>
+            </div>
+          </div>
+
+          <button type="button" id="random-challenge-btn" class="btn btn-primary">
+            🎲 Surprise Me
+          </button>
         </div>
       </div>
     </section>
@@ -469,6 +510,31 @@
       <span class="scroll-tooltip">Back to top</span>
     </button>
     <div class="toast" id="toast"></div>
+    <div id="compareModal" class="compare-modal hidden">
+  <div class="compare-modal-content">
+    <button id="closeCompareModal" class="compare-close">
+      &times;
+    </button>
+
+    <h2>Compare Projects</h2>
+
+    <div class="compare-selectors">
+      <select id="compareProjectA">
+        <option value="">Select Project A</option>
+      </select>
+
+      <select id="compareProjectB">
+        <option value="">Select Project B</option>
+      </select>
+    </div>
+
+    <button id="runComparisonBtn" class="btn btn-primary">
+      Compare
+    </button>
+
+    <div id="comparisonResults"></div>
+  </div>
+</div>
     <script type="module" src="hero-terminal.js" defer></script>
     <script src="index.js?v=4" defer></script>
     <script src="navbar.js" defer></script>
