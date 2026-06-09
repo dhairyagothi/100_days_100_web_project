@@ -1,0 +1,99 @@
+body {
+  background-color: #0f172a;
+  color: #f8fafc;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  margin: 0;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.converter-box {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 16px;
+  padding: 30px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+  margin: 0 0 25px 0;
+  font-size: 1.6rem;
+  text-align: center;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+label {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+input,
+select {
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  color: #f8fafc;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+}
+
+input:focus,
+select:focus {
+  border-color: #38bdf8;
+}
+
+.selection-row {
+  display: flex;
+  gap: 15px;
+}
+
+.status-hidden {
+  display: none;
+}
+.status-visible {
+  color: #38bdf8;
+  text-align: center;
+  font-style: italic;
+  font-size: 0.9rem;
+  margin: 15px 0;
+}
+
+.result-display {
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+#rate-text {
+  margin: 0 0 5px 0;
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+#converted-amount {
+  margin: 0;
+  font-size: 2rem;
+  color: #38bdf8;
+}

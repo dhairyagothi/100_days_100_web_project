@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Currency Converter</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="converter-box">
+      <h1>Currency Converter</h1>
+
+      <div class="field">
+        <label for="amount">Amount</label>
+        <input
+          type="number"
+          id="amount"
+          value="1"
+          min="0"
+          placeholder="Enter amount..."
+        />
+      </div>
+
+      <div class="selection-row">
+        <div class="field">
+          <label for="base-currency">From</label>
+          <select id="base-currency">
+            <option value="USD" selected>USD - US Dollar</option>
+            <option value="EUR">EUR - Euro</option>
+            <option value="GBP">GBP - British Pound</option>
+            <option value="INR">INR - Indian Rupee</option>
+            <option value="AUD">AUD - Australian Dollar</option>
+            <option value="CAD">CAD - Canadian Dollar</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="target-currency">To</label>
+          <select id="target-currency">
+            <option value="USD">USD - US Dollar</option>
+            <option value="EUR" selected>EUR - Euro</option>
+            <option value="GBP">GBP - British Pound</option>
+            <option value="INR">INR - Indian Rupee</option>
+            <option value="AUD">AUD - Australian Dollar</option>
+            <option value="CAD">CAD - Canadian Dollar</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="loading-msg" class="status-hidden">
+        Updating conversion rates...
+      </div>
+
+      <div id="result-display" class="result-display">
+        <p id="rate-text">1 USD = 1.0000 EUR</p>
+        <h2 id="converted-amount">1.00 EUR</h2>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
