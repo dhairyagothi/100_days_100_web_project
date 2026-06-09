@@ -1,492 +1,444 @@
-const modal = document.getElementById('profileModal');
+const modal = document.getElementById("profileModal");
+const modalBody = document.getElementById("modalBody");
+const closeModal = document.getElementById("closeModal");
+const certificateModal = document.getElementById("certificateModal");
+const certificateBody = document.getElementById("certificateBody");
+const closeCertificate = document.getElementById("closeCertificate");
 
-const modalBody = document.getElementById('modalBody');
+const GITHUB_API_BASE = "https://api.github.com";
+const REQUEST_TIMEOUT = 10000;
+const MAX_RETRIES = 3;
 
-const closeModal = document.getElementById('closeModal');
-
-const certificateModal = document.getElementById('certificateModal');
-
-const certificateBody = document.getElementById('certificateBody');
-
-const closeCertificate = document.getElementById('closeCertificate');
-
-closeModal?.addEventListener(
-  'click',
-
-  () => {
-    modal.style.display = 'none';
+closeModal?.addEventListener("click", () => {
+  if (modal) {
+    modal.style.display = "none";
   }
-);
+});
 
-window.addEventListener(
-  'click',
+async function githubFetch(url, options = {}, retries = MAX_RETRIES) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => {
+    controller.abort();
+  }, REQUEST_TIMEOUT);
 
-  (e) => {
-    if (e.target === modal) {
-      modal.style.display = 'none';
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+      headers: {
+        Accept: "application/vnd.github+json",
+      },
+    });
+
+    clearTimeout(timeoutId);
+
+    if (response.status === 403) {
+      const resetTime = response.headers.get("X-RateLimit-Reset");
+      let message = "GitHub API rate limit exceeded.";
+      if (resetTime) {
+        const resetDate = new Date(resetTime * 1000);
+        message += ` Try again after ${resetDate.toLocaleTimeString()}`;
+      }
+      throw new Error(message);
     }
+
+    if (!response.ok) {
+      throw new Error(`GitHub API Error (${response.status})`);
+    }
+
+    const data = await response.json();
+    if (!data) {
+      throw new Error("Empty response received");
+    }
+    return data;
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (retries > 0) {
+      return githubFetch(url, options, retries - 1);
+    }
+    if (error.name === "AbortError") {
+      throw new Error("Request timeout. Please try again.");
+    }
+    if (error instanceof TypeError) {
+      throw new Error("Network error. Check your internet connection.");
+    }
+    throw error;
   }
-);
+}
 
-async function openProfile(username, commits) {
-  modal.style.display = 'flex';
+window.addEventListener("click", (e) => {
+  if (modal && e.target === modal) {
+    modal.style.display = "none";
+  }
+});
 
-  modalBody.innerHTML = `
-        <p>Loading profile...</p>
-    `;
+function saveCache(key, data) {
+  localStorage.setItem(
+    key,
+    JSON.stringify({
+      timestamp: Date.now(),
+      data,
+    }),
+  );
+}
+
+function loadCache(key, maxAge = 1000 * 60 * 10) {
+  const cached = localStorage.getItem(key);
+  if (!cached) return null;
+
+  try {
+    const parsed = JSON.parse(cached);
+    const isExpired = Date.now() - parsed.timestamp > maxAge;
+    if (isExpired) {
+      localStorage.removeItem(key);
+      return null;
+    }
+    return parsed.data;
+  } catch {
+    return null;
+  }
+}
+
+async function openProfile(username) {
+  if (!modal || !modalBody) {
+    console.error("Modal elements not found");
+    return;
+  }
+
+  modal.style.display = "flex";
+  modal.style.position = "fixed";
+  modal.style.top = "0";
+  modal.style.left = "0";
+  modal.style.zIndex = "999999999";
+  modal.style.justifyContent = "center";
+  modal.style.alignItems = "center";
+
+  modalBody.innerHTML = "<p>Loading...</p>";
 
   try {
     const response = await fetch(`https://api.github.com/users/${username}`);
 
+    if (!response.ok) {
+      modalBody.textContent = "";
+      const heading = document.createElement("h2");
+      heading.textContent = username;
+
+      const message = document.createElement("p");
+      message.textContent = "Profile unavailable";
+
+      modalBody.appendChild(heading);
+      modalBody.appendChild(message);
+      return;
+    }
+
     const user = await response.json();
-
-    modalBody.innerHTML = `
-
-            <img
-            src="${user.avatar_url}"
-            >
-
-            <h2>
-            ${user.name || user.login}
-            </h2>
-
-            <p>
-            ${user.bio || 'This contributor has not added a bio yet.'}
-            </p>
-
-            <p>
-            Followers:
-            ${user.followers}
-            </p>
-
-            <p>
-            Public Repos:
-            ${user.public_repos}
-            </p>
-
-            <p>
-            Location:
-            ${user.location || 'Not available'}
-            </p>
-
-            <p>
-            Joined:
-            ${new Date(user.created_at).toLocaleDateString()}
-            </p>
-
-           <div class="popup-btn-container">
-
-    <a
-    href="${user.html_url}"
-    target="_blank"
-    class="github-btn"
-    >
-
-    View GitHub
-
-    </a>
-
-
-    <button
-    id="downloadCertificate"
-    class="certificate-btn"
-    >
-
-    Download Certificate
-
-    </button>
-
-</div>
-
-        `;
-
-    const certificateBtn = document.getElementById('downloadCertificate');
-
-    closeCertificate?.addEventListener(
-      'click',
-
-      () => {
-        certificateModal.style.display = 'none';
-      }
-    );
-
-    certificateBtn?.addEventListener(
-      'click',
-
-      () => {
-        certificateModal.style.display = 'flex';
-
-        certificateBody.innerHTML = `
-
-<div style="
-position:relative;
-width:100%;
-">
-
-<img
-src="assets/template.png"
-style="
-width:100%;
-display:block;
-border-radius:12px;
-">
-
-
-<!-- NAME -->
-
-<div style="
-position:absolute;
-top:35%;
-left:50%;
-transform:translateX(-50%);
-font-family:'Cinzel',serif;
-
-font-size:24px;
-
-font-weight:700;
-
-background:
-linear-gradient(
-90deg,
-#b8860b,
-#f4d03f,
-#8b5a00
-);
-
--webkit-background-clip:text;
-
--webkit-text-fill-color:
-transparent;
-
-white-space:nowrap;
-
-text-shadow:
-0 2px 4px rgba(
-0,
-0,
-0,
-0.12
-);
-">
-
-${user.name || user.login}
-
-</div>
-
-
-
-<!-- COMMITS -->
-
-<div style="
-position:absolute;
-top:82%;
-left:30%;
-transform:translateX(-50%);
-font-size:5px;
-color:#5b21b6;
-">
-
-${commits}
-
-</div>
-
-
-
-<!-- USERNAME -->
-
-<div style="
-position:absolute;
-top:82%;
-left:50%;
-transform:translateX(-50%);
-font-size:5px;
-color:#5b21b6;
-">
-
-@${user.login}
-
-</div>
-
-
-
-<!-- DATE -->
-
-<div style="
-position:absolute;
-top:82%;
-left:69%;
-transform:translateX(-50%);
-font-size:5px;
-color:#5b21b6;
-">
-
-${new Date().toLocaleDateString('en-GB')}
-
-</div>
-
-</div>
-
-
-<div style="
-text-align:center;
-margin-top:20px;
-">
-
-<button
-id="downloadPdfBtn"
-style="
-background:#16a34a;
-padding:14px 30px;
-color:white;
-border:none;
-border-radius:10px;
-cursor:pointer;
-">
-
-Download PDF
-
-</button>
-
-</div>
-
-`;
-        const downloadBtn = document.getElementById('downloadPdfBtn');
-
-        downloadBtn?.addEventListener(
-          'click',
-
-          async () => {
-            const certificate = certificateBody.querySelector('div');
-
-            const canvas = await html2canvas(
-              certificate,
-
-              {
-                scale: 3,
-
-                useCORS: true,
-              }
-            );
-
-            const image = canvas.toDataURL('image/png');
-
-            const { jsPDF } = window.jspdf;
-
-            const pdf = new jsPDF(
-              'landscape',
-
-              'px',
-
-              [canvas.width, canvas.height]
-            );
-
-            pdf.addImage(
-              image,
-
-              'PNG',
-
-              0,
-
-              0,
-
-              canvas.width,
-
-              canvas.height
-            );
-
-            pdf.save(`${user.login}-certificate.pdf`);
-          }
-        );
-      }
-    );
-  } catch (error) {
-    modalBody.innerHTML = '<p>Failed to load profile</p>';
-
-    console.error(error);
+    modalBody.textContent = "";
+
+    // Avatar
+    const avatar = document.createElement("img");
+    avatar.src = user.avatar_url;
+    avatar.alt = user.name || username;
+    avatar.loading = 'lazy';
+    avatar.style.width = '120px';
+    avatar.style.height = '120px';
+    avatar.style.borderRadius = '50%';
+
+    // Name Enforces Native Context Escaping Natively
+    const name = document.createElement("h2");
+    name.textContent = user.name || username;
+
+    // Bio
+    const bio = document.createElement("p");
+    bio.textContent = user.bio || "No bio available";
+
+    // Followers
+    const followers = document.createElement("p");
+    followers.textContent = `Followers: ${user.followers}`;
+
+    // Repositories
+    const repos = document.createElement("p");
+    repos.textContent = `Repositories: ${user.public_repos}`;
+
+    // Location
+    const location = document.createElement("p");
+    location.textContent = `Location: ${user.location || "Unknown"}`;
+
+    // Append structural tree elements cleanly to canvas layout
+    modalBody.appendChild(avatar);
+    modalBody.appendChild(name);
+    modalBody.appendChild(bio);
+    modalBody.appendChild(followers);
+    modalBody.appendChild(repos);
+    modalBody.appendChild(location);
+
+    if (user.html_url) {
+      const profileLink = document.createElement("a");
+      profileLink.href = user.html_url;
+      profileLink.target = "_blank";
+      profileLink.rel = "noopener noreferrer";
+      profileLink.className = "github-btn";
+      profileLink.textContent = "GitHub Profile";
+      modalBody.appendChild(profileLink);
+    }
+  } catch (err) {
+    modalBody.innerHTML = "<p>Failed to load profile</p>";
+    console.log(err);
   }
 }
-
-// Use global REPO_OWNER and REPO_NAME defined in index.js
 
 let allContributors = [];
 let filteredContributors = [];
 
 async function fetchContributors() {
-  const contributorsContainer = document.getElementById('contributors');
-  const contributorCountSpan = document.getElementById('contributorCount');
+    const contributorsContainer = document.getElementById("contributors");
+    const contributorCountSpan = document.getElementById("contributorCount");
+    const errorBox = document.getElementById("contributorsError");
+    const errorMessage = document.getElementById("contributorsErrorMessage");
+    const loading = document.getElementById("contributorsLoading");
 
-  try {
-    const response = await fetch(
-      `https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}/contributors?per_page=100`
-    );
+    loading?.classList.remove("hidden");
+    errorBox?.classList.add("hidden");
+    contributorsContainer.innerHTML = "";
 
-    if (!response.ok) throw new Error('Failed to fetch contributors');
+    try {
+        const cached = loadCache("contributors-cache");
+        if (cached) {
+            allContributors = cached;
+            filteredContributors = [...cached];
+            if (contributorCountSpan) contributorCountSpan.textContent = cached.length;
+            renderContributors(filteredContributors);
+            loading?.classList.add("hidden");
+            return;
+        }
 
-    const contributors = await response.json();
-    contributorCountSpan.textContent = contributors.length;
+        let page = 1;
+        allContributors = [];
 
-    // Calculate total commits
-    const totalCommits = contributors.reduce(
-      (sum, c) => sum + c.contributions,
-      0
-    );
-    const totalCommitsEl = document.getElementById('totalCommits');
-    if (totalCommitsEl)
-      totalCommitsEl.textContent = totalCommits.toLocaleString();
+        while (true) {
+            const data = await githubFetch(
+                `${GITHUB_API_BASE}/repos/${window.REPO_OWNER}/${window.REPO_NAME}/contributors?per_page=100&page=${page}`
+            );
 
-    contributorsContainer.innerHTML = '';
+            if (!data.length) break;
 
-    allContributors = contributors;
+            // filter out anonymous contributors without login
+            const validData = data.filter(c => c.login);
+            allContributors.push(...validData);
+            page++;
+        }
 
-    filteredContributors = [...contributors];
+        saveCache("contributors-cache", allContributors);
 
-    renderContributors(filteredContributors);
-  } catch (error) {
-    console.error('Error fetching contributors:', error);
-    if (contributorsContainer)
-      contributorsContainer.innerHTML =
-        "<p style='color: #ff4444;'>Failed to load contributors.</p>";
-  }
+        filteredContributors = [...allContributors];
+
+        if (contributorCountSpan) contributorCountSpan.textContent = allContributors.length;
+
+        const totalCommits = allContributors.reduce((sum, c) => sum + c.contributions, 0);
+        const totalCommitsEl = document.getElementById('totalCommits');
+        if (totalCommitsEl) totalCommitsEl.textContent = totalCommits.toLocaleString();
+
+        renderContributors(filteredContributors);
+
+    } catch (error) {
+        console.error("Error fetching contributors:", error);
+        errorBox?.classList.remove("hidden");
+        if (errorMessage) errorMessage.textContent = error.message;
+    } finally {
+        loading?.classList.add("hidden");
+    }
 }
 
 function renderContributors(data) {
-  const contributorsContainer = document.getElementById('contributors');
+  const contributorsContainer = document.getElementById("contributors");
+  const emptyState = document.getElementById("emptyState");
 
-  const emptyState = document.getElementById('emptyState');
-
-  contributorsContainer.innerHTML = '';
+  contributorsContainer.innerHTML = "";
 
   if (data.length === 0) {
-    emptyState.style.display = 'block';
-
+    emptyState.style.display = "block";
     return;
   }
 
-  emptyState.style.display = 'none';
-
+  emptyState.style.display = "none";
   const fragment = document.createDocumentFragment();
 
   data.forEach((contributor) => {
-    const card = document.createElement('div');
+    const card = document.createElement("div");
+    card.className = "contributor-card";
 
-    card.className = 'contributor-card';
+    const globalRank =
+      allContributors.findIndex((c) => c.login === contributor.login) + 1;
+    let badge = "";
 
-    card.innerHTML = `
-            <img src="${contributor.avatar_url}" alt="${contributor.login}">
+    if (globalRank === 1) {
+      badge = "assets/badges/diamond.png";
+    } else if (globalRank >= 2 && globalRank <= 3) {
+      badge = "assets/badges/gold.png";
+    } else if (globalRank >= 4 && globalRank <= 6) {
+      badge = "assets/badges/silver.png";
+    } else if (globalRank >= 7 && globalRank <= 10) {
+      badge = "assets/badges/bronze.png";
+    }
 
-            <h3>${contributor.login}</h3>
+    if (badge) {
+      const badgeImg = document.createElement("img");
+      badgeImg.className = "rank-badge";
+      badgeImg.src = badge;
+      badgeImg.alt = "Rank badge";
+      card.appendChild(badgeImg);
+    }
 
-            <div class="contributor-stats">
+    const avatar = document.createElement("img");
+    avatar.src = contributor.avatar_url;
+    avatar.alt = contributor.login;
+    avatar.loading = 'lazy';
+    card.appendChild(avatar);
 
-                <div class="stat">
+    const name = document.createElement("h3");
+    name.textContent = contributor.login;
+    card.appendChild(name);
 
-                    <span class="value">
-                        ${contributor.contributions}
-                    </span>
+    const stats = document.createElement("div");
+    stats.className = "contributor-stats";
 
-                    <span class="label">
-                        Commits
-                    </span>
+    const stat = document.createElement("div");
+    stat.className = "stat";
 
-                </div>
+    const value = document.createElement("span");
+    value.className = "value";
+    value.textContent = contributor.contributions;
 
-            </div>
+    const label = document.createElement("span");
+    label.className = "label";
+    label.textContent = "Commits";
 
-           <div class="contributor-links">
+    stat.appendChild(value);
+    stat.appendChild(label);
+    stats.appendChild(stat);
+    card.appendChild(stats);
 
-    <button
-        class="details-btn"
-        data-user="${contributor.login}"
-    >
+    const links = document.createElement("div");
+    links.className = "contributor-links";
 
-        View Details
+    const detailsBtn = document.createElement("button");
+    detailsBtn.className = "details-btn";
+    detailsBtn.dataset.user = contributor.login;
+    detailsBtn.textContent = "View Details";
+    detailsBtn.addEventListener("click", () => {
+      openProfile(contributor.login);
+    });
 
-    </button>
+    const profileLink = document.createElement("a");
+    profileLink.href = contributor.html_url;
+    profileLink.target = "_blank";
+    profileLink.rel = "noopener noreferrer";
+    profileLink.className = "github-btn";
 
-    <a
-        href="${contributor.html_url}"
-        target="_blank"
-        class="github-btn"
-    >
+    const icon = document.createElement("i");
+    icon.className = "fab fa-github";
 
-        <i class="fab fa-github"></i>
-        Profile
+    profileLink.appendChild(icon);
+    profileLink.append(" Profile");
 
-    </a>
-
-</div>
-        `;
+    links.appendChild(detailsBtn);
+    links.appendChild(profileLink);
+    card.appendChild(links);
 
     fragment.appendChild(card);
-    const detailsButton = card.querySelector('.details-btn');
-
-    if (detailsButton) {
-      detailsButton.addEventListener(
-        'click',
-
-        () => {
-          openProfile(contributor.login);
-        }
-      );
-    }
   });
 
   contributorsContainer.appendChild(fragment);
 }
 
+function renderStargazers(stargazers) {
+  const stargazersContainer = document.getElementById("stargazers");
+  stargazersContainer.innerHTML = "";
+
+  stargazers.forEach((stargazer) => {
+    const starItem = document.createElement("a");
+    starItem.href = stargazer.html_url;
+    starItem.target = "_blank";
+    starItem.className = "stargazer-item";
+    starItem.title = stargazer.login;
+
+    const img = document.createElement("img");
+    img.src = stargazer.avatar_url;
+    img.alt = stargazer.login;
+    img.loading = 'lazy';
+
+    starItem.appendChild(img);
+    stargazersContainer.appendChild(starItem);
+  });
+}
+
 async function fetchStargazers() {
-  const stargazersContainer = document.getElementById('stargazers');
+  const stargazersContainer = document.getElementById("stargazers");
+  const errorBox = document.getElementById("stargazersError");
+  const errorMessage = document.getElementById("stargazersErrorMessage");
+  const loading = document.getElementById("stargazersLoading");
+
+  loading.classList.remove("hidden");
+  errorBox.classList.add("hidden");
+  stargazersContainer.innerHTML = "";
 
   try {
-    const response = await fetch(
-      `https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}/stargazers?per_page=100`
+    const cached = loadCache("stargazers-cache");
+    if (cached) {
+      renderStargazers(cached);
+      loading.classList.add("hidden");
+      return;
+    }
+
+    const stargazers = await githubFetch(
+      `${GITHUB_API_BASE}/repos/${window.REPO_OWNER}/${window.REPO_NAME}/stargazers?per_page=100`,
     );
 
-    if (!response.ok) throw new Error('Failed to fetch stargazers');
-
-    const stargazers = await response.json();
-    if (stargazersContainer) stargazersContainer.innerHTML = '';
-
-    stargazers.forEach((stargazer) => {
-      const starItem = document.createElement('a');
-      starItem.href = stargazer.html_url;
-      starItem.target = '_blank';
-      starItem.className = 'stargazer-item';
-      starItem.title = stargazer.login;
-      starItem.innerHTML = `<img src="${stargazer.avatar_url}" alt="${stargazer.login}">`;
-      if (stargazersContainer) stargazersContainer.appendChild(starItem);
-    });
+    saveCache("stargazers-cache", stargazers);
+    renderStargazers(stargazers);
   } catch (error) {
-    console.error('Error fetching stargazers:', error);
+    errorBox.classList.remove("hidden");
+    errorMessage.textContent = error.message;
+  } finally {
+    loading.classList.add("hidden");
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Repo stats are now handled by index.js
+document.addEventListener("DOMContentLoaded", () => {
   fetchContributors();
   fetchStargazers();
-  const searchInput = document.getElementById('contributorSearch');
 
-  const sortSelect = document.getElementById('sortContributors');
-  searchInput.addEventListener('input', (e) => {
+  document
+    .getElementById("retryContributors")
+    ?.addEventListener("click", fetchContributors);
+  document
+    .getElementById("retryStargazers")
+    ?.addEventListener("click", fetchStargazers);
+
+  const searchInput = document.getElementById("contributorSearch");
+  const sortSelect = document.getElementById("sortContributors");
+
+  searchInput.addEventListener("input", (e) => {
     const value = e.target.value.toLowerCase();
-
-    filteredContributors = allContributors.filter((c) =>
-      c.login.toLowerCase().includes(value)
-    );
-
+    if (!value) {
+      filteredContributors = [...allContributors];
+    } else {
+      filteredContributors = allContributors.filter((c) =>
+        c.login && c.login.toLowerCase().includes(value)
+      );
+    }
     renderContributors(filteredContributors);
   });
 
-  sortSelect.addEventListener('change', (e) => {
+  sortSelect.addEventListener("change", (e) => {
     const order = e.target.value;
-
     filteredContributors.sort((a, b) => {
-      return order === 'asc'
+      return order === "asc"
         ? a.contributions - b.contributions
         : b.contributions - a.contributions;
     });
-
     renderContributors(filteredContributors);
   });
 });
+
+window.removeTechFilter = () => {};
+window.clearAllTechFilters = () => {};

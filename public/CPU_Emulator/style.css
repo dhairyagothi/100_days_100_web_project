@@ -1,0 +1,237 @@
+:root {
+    --bg-darkest: #0a0b10;
+    --bg-panel: #14161f;
+    --border-neon: #00f2fe;
+    --text-bright: #4facfe;
+    --text-light: #f1f2f6;
+    --ram-idle: #1b1e2b;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: var(--bg-darkest);
+    color: var(--text-light);
+    height: 100vh;
+    overflow: hidden;
+}
+
+.emulator-container {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    height: 100vh;
+}
+
+/* IDE Panel Layout */
+.ide-panel {
+    background-color: #0d0f14;
+    display: flex;
+    flex-direction: column;
+    border-right: 2px solid rgba(0, 242, 254, 0.15);
+}
+
+.panel-header {
+    background: var(--bg-panel);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.panel-header h2 {
+    font-size: 1.1rem;
+    color: var(--text-bright);
+}
+
+.execution-controls {
+    display: flex;
+    gap: 8px;
+}
+
+/* Button UI Primitives */
+.btn {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.primary-btn {
+    background: #00f2fe;
+    color: #0a0b10;
+    box-shadow: 0 0 8px rgba(0, 242, 254, 0.3);
+}
+
+.secondary-btn {
+    background: #34495e;
+    color: white;
+}
+
+.secondary-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.success-btn {
+    background: #10b981;
+    color: white;
+}
+
+.success-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.danger-btn {
+    background: #ef4444;
+    color: white;
+}
+
+.btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    filter: brightness(1.1);
+}
+
+.editor-area {
+    flex-grow: 1;
+    position: relative;
+}
+
+#assembly-input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    color: #00ff66;
+    padding: 20px;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
+    outline: none;
+    resize: none;
+}
+
+/* Output Console Track */
+.console-log {
+    height: 150px;
+    background: #06070a;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.console-title {
+    font-size: 0.75rem;
+    color: #57606f;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+#console-output {
+    font-size: 0.85rem;
+    color: #a4b0be;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    flex-grow: 1;
+}
+
+/* Hardware Diagnostics Dashboard */
+.hardware-panel {
+    background-color: var(--bg-panel);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    overflow-y: auto;
+}
+
+.hardware-section h3 {
+    font-size: 0.9rem;
+    color: var(--text-bright);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 5px;
+}
+
+/* Registers Component Layout */
+.registers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.register-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.register-card.highlighted {
+    border-color: rgba(0, 242, 254, 0.4);
+    background: rgba(0, 242, 254, 0.02);
+}
+
+.reg-label {
+    font-size: 0.7rem;
+    color: #747d8c;
+    text-transform: uppercase;
+}
+
+.reg-val {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* RAM Array Grid layout */
+.ram-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.ram-cell {
+    background: var(--ram-idle);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: 4px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+}
+
+.ram-cell.active-pc {
+    background: rgba(0, 242, 254, 0.2);
+    border-color: var(--border-neon);
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.25);
+}
+
+.ram-addr {
+    font-size: 0.6rem;
+    color: #57606f;
+}
+
+.ram-data {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: #00ff66;
+}

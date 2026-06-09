@@ -1,6 +1,6 @@
 Typewriter Simulator ⌨️🖨️
 
-A realistic retro-inspired Typewriter Simulator built using HTML, CSS, and JavaScript featuring:
+A realistic retro-inspired Typewriter Simulator built using HTML, CSS, and Vanilla JavaScript featuring an interactive keyboard, mechanical sound effects, animated paper typing experience, Caps Lock support, responsive design, and theme switching.
 
 * 🎹 Interactive on-screen keyboard
 * 🔊 Realistic mechanical typewriter sound effects
@@ -17,15 +17,38 @@ A realistic retro-inspired Typewriter Simulator built using HTML, CSS, and JavaS
 
 🎹 Interactive Keyboard
 
-* Click keys on-screen to type
+* Fully clickable on-screen keyboard
 * Physical keyboard support
-* Animated key press feedback
+* Smooth key press animations
 * Functional:
-    * Space
-    * Enter
-    * Backspace
+   * Space
+   * Enter
+   * Backspace
+   * Caps Lock
+    
 
 ⸻
+
+
+🔠 Caps Lock Support
+    * Dedicated virtual Caps Lock key added
+    * Toggle between:
+    *  Uppercase letters
+    * Lowercase letters
+    * Physical keyboard Caps Lock support included
+    * Active Caps Lock visual indicator
+
+
+📄 Realistic Paper Typing Experience
+    - Live text rendering on paper
+    - Blinking typewriter cursor
+    - Proper multiline typing support
+    - Realistic paper guide lines
+    - Improved line alignment consistency
+    - Better spacing and formatting behavior
+
+```
+
 
 🔊 Realistic Sound Effects
 
@@ -51,14 +74,6 @@ Theme preference is automatically saved using localStorage.
 
 ⸻
 
-📄 Paper Typing Experience
-
-* Live character rendering
-* Blinking cursor
-* Realistic lined paper
-* Typewriter-style typography
-
-⸻
 
 📱 Responsive Design
 
@@ -67,6 +82,12 @@ Optimized for:
 * Desktop
 * Tablet
 * Mobile devices
+
+Responsive improvements include:
+
+* Better keyboard scaling
+* Improved multiline text display
+* Better mobile spacing and layout
 
 ⸻
 
@@ -86,3 +107,59 @@ typewriter/
 │── typewriter.css
 │── typewriter.js
 │── README.md
+
+
+```
+
+▶️ How to Run
+
+1. Clone the repository
+   git clone <repository-url>
+2. Open the project folder
+   cd typewriter
+3. Run the project
+   Simply open:
+   typewriter.html
+   in your browser.
+
+```
+
+⌨️ Controls
+Action                      	Key
+Type letters	                 Keyboard / Virtual Keys
+New line	                     Enter
+Delete character	             Backspace
+Add spaces	                     Space
+Toggle case	                     Caps Lock   
+
+```
+
+📸 Screenshots
+
+
+```
+
+📌 Future Improvements
+Typewriter carriage animation
+Typing speed controls
+Export typed text
+Paper scrolling effect
+Additional sound customization
+
+```
+
+📄 License
+
+This project is open source and available under the MIT License.
+
+
+```
+
+🙌 Contribution
+
+Contributions, improvements, and feature suggestions are welcome.
+Feel free to fork the project and create a pull request.
+
+
+
+

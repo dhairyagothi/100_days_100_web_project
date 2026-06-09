@@ -1,5 +1,5 @@
 import { registrations, users, type InsertRegistration, type InsertUser, type Registration, type User } from "@shared/schema";
-import { eq, desc, ilike, and, or } from "drizzle-orm";
+import { eq, desc, ilike, and, or, gte, lte } from "drizzle-orm";
 import { randomUUID } from "crypto";
 
 let dbInstance: any | null = null;
@@ -18,7 +18,7 @@ export interface IStorage {
   createUser(user: InsertUser): Promise<User>;
 
   createRegistration(registration: InsertRegistration): Promise<Registration>;
-  getRegistrations(filters?: { search?: string; college?: string; domain?: string }): Promise<Registration[]>;
+  getRegistrations(filters?: { search?: string; college?: string; domain?: string; startDate?: string; endDate?: string }, options?: { limit?: number; offset?: number }): Promise<Registration[]>;
   getRegistration(id: number): Promise<Registration | undefined>;
 }
 
@@ -61,14 +61,19 @@ export class InMemoryStorage implements IStorage {
     return registration;
   }
 
-  async getRegistrations(filters?: { search?: string; college?: string; domain?: string }): Promise<Registration[]> {
-    return this.registrations.filter((entry) => {
+  async getRegistrations(filters?: { search?: string; college?: string; domain?: string; startDate?: string; endDate?: string }, options?: { limit?: number; offset?: number }): Promise<Registration[]> {
+    const results = this.registrations.filter((entry) => {
       const matchesSearch = !filters?.search || [entry.name, entry.email, entry.registrationId]
         .some((field) => field.toLowerCase().includes(filters.search!.toLowerCase()));
       const matchesCollege = !filters?.college || entry.college.toLowerCase().includes(filters.college.toLowerCase());
       const matchesDomain = !filters?.domain || entry.domain === filters.domain;
-      return matchesSearch && matchesCollege && matchesDomain;
+      const matchesStartDate = !filters?.startDate || entry.createdAt >= new Date(filters.startDate);
+      const matchesEndDate = !filters?.endDate || entry.createdAt <= new Date(filters.endDate);
+      return matchesSearch && matchesCollege && matchesDomain && matchesStartDate && matchesEndDate;
     });
+    const offset = options?.offset ?? 0;
+    const limit = options?.limit ?? results.length;
+    return results.slice(offset, offset + limit);
   }
 
   async getRegistration(id: number): Promise<Registration | undefined> {
@@ -99,7 +104,7 @@ export class DatabaseStorage implements IStorage {
     return registration;
   }
 
-  async getRegistrations(filters?: { search?: string; college?: string; domain?: string }): Promise<Registration[]> {
+  async getRegistrations(filters?: { search?: string; college?: string; domain?: string; startDate?: string; endDate?: string }, options?: { limit?: number; offset?: number }): Promise<Registration[]> {
     const db = await getDb();
     let conditions = [];
 
@@ -108,7 +113,7 @@ export class DatabaseStorage implements IStorage {
         or(
           ilike(registrations.name, `%${filters.search}%`),
           ilike(registrations.email, `%${filters.search}%`),
-          ilike(registrations.registrationId, `%${filters.search}%`)
+          ilike(registrations.registrationId, `${filters.search}%`)
         )
       );
     }
@@ -121,13 +126,23 @@ export class DatabaseStorage implements IStorage {
       conditions.push(eq(registrations.domain, filters.domain));
     }
 
-    const query = db.select().from(registrations).orderBy(desc(registrations.createdAt));
-
-    if (conditions.length > 0) {
-      return await query.where(and(...conditions));
+    if (filters?.startDate) {
+      conditions.push(gte(registrations.createdAt, new Date(filters.startDate)));
     }
 
-    return await query;
+    if (filters?.endDate) {
+      conditions.push(lte(registrations.createdAt, new Date(filters.endDate)));
+    }
+
+    let query = db.select().from(registrations).orderBy(desc(registrations.createdAt));
+
+    if (conditions.length > 0) {
+      query = query.where(and(...conditions));
+    }
+
+    const offset = options?.offset ?? 0;
+    const limit = options?.limit ?? 50;
+    return await query.limit(limit).offset(offset);
   }
 
   async getRegistration(id: number): Promise<Registration | undefined> {

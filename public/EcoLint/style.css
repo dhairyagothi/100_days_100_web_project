@@ -1,0 +1,221 @@
+:root {
+    --bg-dark: #0f1115;
+    --panel-bg: #161a22;
+    --accent-green: #00e676;
+    --accent-yellow: #ffd600;
+    --accent-red: #ff1744;
+    --text-main: #e6edf3;
+    --text-muted: #8b949e;
+    --border-color: #30363d;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+header {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+header .logo {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent-green);
+    letter-spacing: -0.5px;
+}
+
+header p {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+}
+
+.editor-section, .metrics-section {
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.panel-header {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+}
+
+textarea {
+    width: 100%;
+    height: 350px;
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: #a5d6ff;
+    font-family: "SFMono-Regular", Consolas, Menlo, monospace;
+    padding: 14px;
+    resize: none;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--accent-green);
+}
+
+button {
+    background-color: var(--accent-green);
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    padding: 12px;
+    font-weight: 600;
+    font-size: 15px;
+    margin-top: 12px;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+.score-row {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 24px;
+    background: rgba(255,255,255,0.02);
+    padding: 15px;
+    border-radius: 6px;
+}
+
+.gauge-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.gauge-circle {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: conic-gradient(var(--accent-green) 100%, var(--border-color) 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: background 0.3s ease;
+}
+
+.gauge-circle::before {
+    content: '';
+    position: absolute;
+    width: 74px;
+    height: 74px;
+    background-color: var(--panel-bg);
+    border-radius: 50%;
+}
+
+#score-text {
+    position: relative;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.stats-box {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    flex-grow: 1;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-val {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.gauge-container label, .stat label {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.issues-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    max-height: 280px;
+}
+
+.empty-state {
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 14px;
+}
+
+.issue-card {
+    background: rgba(255,255,255,0.03);
+    border-left: 4px solid var(--border-color);
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 0 4px 4px 0;
+}
+
+.issue-card.high { border-left-color: var(--accent-red); }
+.issue-card.medium { border-left-color: var(--accent-yellow); }
+.issue-card.low { border-left-color: var(--accent-green); }
+
+.issue-title {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.issue-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.count-badge {
+    background: rgba(255,255,255,0.1);
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 11px;
+}
