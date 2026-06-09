@@ -81,23 +81,20 @@ class Calculator {
     try {
       const formatted = this.formatExpression(this.expression);
       
-      // Security: Validate the expression contains only math characters before execution
-      if (/[^0-9+\-*/().^\se]/.test(formatted)) {
+      // Security: Strict validation — only allow digits, basic operators, parens, spaces, dots
+      if (!/^[\d+\-*/().%\s^]+$/.test(formatted)) {
         throw new Error("Invalid characters in expression");
       }
       
-      // Safely evaluate without giving access to local scope
-      let result = new Function('return ' + formatted)();
-      if (!isFinite(result) || isNaN(result)) {
+      // Safe math evaluation using a simple recursive-descent parser
+      let result = this.safeEval(formatted);
+      if (result === null || !isFinite(result) || isNaN(result)) {
         this.setError();
         return;
       }
-      // Round to avoid floating point noise
       result = parseFloat(result.toPrecision(12));
       
-      // ========== HISTORY ==========
       addToHistory(this.expression, result);
-      // ================================================
       
       this.latestAnswer = result;
       this.expression = result.toString();
@@ -110,11 +107,80 @@ class Calculator {
     }
   }
 
+  // Safe recursive-descent parser — no eval/Function constructor
+  safeEval(expr) {
+    var tokens = expr.match(/\d+\.?\d*|[+\-*/()^]|%\s/g) || [];
+    if (tokens.length === 0) return null;
+    var pos = 0;
+
+    function peek() { return tokens[pos]; }
+    function consume() { return tokens[pos++]; }
+
+    function parsePrimary() {
+      var tok = peek();
+      if (tok === '(') {
+        consume();
+        var val = parseExpr();
+        if (peek() === ')') consume();
+        return val;
+      }
+      if (tok === '-') {
+        consume();
+        return -parsePrimary();
+      }
+      var num = parseFloat(tok);
+      if (!isNaN(num)) { consume(); return num; }
+      return null;
+    }
+
+    function parsePower() {
+      var left = parsePrimary();
+      if (left === null) return null;
+      while (peek() === '^') {
+        consume();
+        var right = parsePrimary();
+        if (right === null) return null;
+        left = Math.pow(left, right);
+      }
+      return left;
+    }
+
+    function parseMulDiv() {
+      var left = parsePower();
+      if (left === null) return null;
+      while (peek() === '*' || peek() === '/') {
+        var op = consume();
+        var right = parsePower();
+        if (right === null) return null;
+        if (op === '*') left *= right;
+        else left /= right;
+      }
+      return left;
+    }
+
+    function parseExpr() {
+      var left = parseMulDiv();
+      if (left === null) return null;
+      while (peek() === '+' || peek() === '-') {
+        var op = consume();
+        var right = parseMulDiv();
+        if (right === null) return null;
+        if (op === '+') left += right;
+        else left -= right;
+      }
+      return left;
+    }
+
+    var result = parseExpr();
+    if (result === null || pos !== tokens.length) return null;
+    return result;
+  }
+
   formatExpression(expression) {
     return expression
       .replace(/÷/g, '/')
       .replace(/×/g, '*')
-      .replace(/\^(\-?\d+\.?\d*)/g, (match, exp) => `**(${exp})`)
+      .replace(/\^/g, '^')
       .replace(/(\d)\(/g, '$1*(')
       .replace(/\)(\d)/g, ')*$1');
   }
