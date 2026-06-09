@@ -1,44 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset= "UTF-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Parallal-X Website</title>
+<title>GO-GREEN – Home</title>
 <link rel="stylesheet" href="parallal.css">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 </head>
 <body>
-    <header>
+    <header id="header">
         <div class="name">GO-GREEN</div>
         <nav>
-                <ul>
-                    <li class="active">Home</li>
-                    <li>About</li>
-                    <li>Service</li>
-                    <li>Contact</li>
-                </ul>
-        </nav>
+                        <nav>
+                        <ul>
+                <li><a href="parallal.html" class="active">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="service.html">Service</a></li>
+                                    <!-- Tracker Button -->
+                <li>
+                    <a href="tracker.html" class="tracker-btn">Tracker</a>
+                </li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            </nav>
     </header>
-    <section class="parallal">
-        <img src="hill1.png" id="hill1"   alt="">
-        <img src="hill2.png" id="hill2"  alt="">
-        <img src="hill3.png" id="hill3"  alt="">
-        <img src="tree.png"  id="tree" alt="">
-        <img src="hill4.png" id="hill4"  alt="">
-        <img src="hill5.png" id="hill5" alt="">
-        <div class="text" id="text1" >GO-GREEN</div>
-        <img src="plant.png" id="plant" alt="">
-        <img src="leaf.png" id="leaf" alt="">
-        
+
+    <section class="parallal" id="hero" aria-label="Hero parallax landscape">
+        <img src="hill1.png" id="hill1" alt="Layered mountain range silhouette in the background">
+        <img src="hill2.png" id="hill2" alt="Mid-distance rocky hillside silhouette">
+        <img src="hill3.png" id="hill3" alt="Foreground jungle hill with tropical trees">
+        <img src="tree.png"  id="tree"  alt="Single palm tree silhouette">
+        <img src="hill4.png" id="hill4" alt="Left-side forested hill silhouette">
+        <img src="hill5.png" id="hill5" alt="Right-side hill with palm trees silhouette">
+        <div class="text"    id="text1">GO-GREEN</div>
+        <img src="plant.png" id="plant" alt="Ground-level fern and plant silhouettes">
+        <img src="leaf.png"  id="leaf"  alt="Large decorative fern leaf in the foreground">
     </section>
-    <section class="content">
-        <div>GO-GREEN</div>
-        <br>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus odit aspernatur dolorum pariatur. Odio, quod mollitia blanditiis corrupti sed, corporis quisquam consectetur, repellat optio repudiandae ex reprehenderit. Aperiam, recusandae blanditiis.</p><br>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus odit aspernatur dolorum pariatur. Odio, quod mollitia blanditiis corrupti sed, corporis quisquam consectetur, repellat optio repudiandae ex reprehenderit. Aperiam, recusandae blanditiis.</p><br>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus odit aspernatur dolorum pariatur. Odio, quod mollitia blanditiis corrupti sed, corporis quisquam consectetur, repellat optio repudiandae ex reprehenderit. Aperiam, recusandae blanditiis.</p><br>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus odit aspernatur dolorum pariatur. Odio, quod mollitia blanditiis corrupti sed, corporis quisquam consectetur, repellat optio repudiandae ex reprehenderit. Aperiam, recusandae blanditiis.</p><br>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus odit aspernatur dolorum pariatur. Odio, quod mollitia blanditiis corrupti sed, corporis quisquam consectetur, repellat optio repudiandae ex reprehenderit. Aperiam, recusandae blanditiis.</p>
+
+    <section class="content" aria-labelledby="mission-heading">
+        <div id="mission-heading">Our Mission</div>
+
+        <p class="intro-lead">Going green is a fundamental reimagining of how we interact with our planet. Every small action contributes to a larger global movement aimed at preserving nature for generations to follow.</p>
+
+        <div class="card-grid">
+            <div class="card">
+                <span class="material-symbols-outlined" style="font-size:2.4rem; color:#ffffff; display:block; margin-bottom: 16px;">
+                    potted_plant
+                </span>
+                <h3>Reduce</h3>
+                <p>Cut down on single-use plastics, lower energy consumption, and make mindful purchasing decisions that shrink your daily footprint.</p>
+            </div>
+            <div class="card">
+                <span class="material-symbols-outlined" style="font-size:2.4rem; color:#ffffff; display:block; margin-bottom: 16px;">
+                    recycling
+                </span>
+                <h3>Reuse</h3>
+                <p>Give products a second life. Embrace repair culture, thrift, and circular systems that keep resources in use for as long as possible.</p>
+            </div>
+            <div class="card">
+                <span class="material-symbols-outlined" style="font-size:2.4rem; color:#ffffff; display:block; margin-bottom: 16px;">
+                    globe
+                </span>
+                <h3>Recycle</h3>
+                <p>Close the loop on materials. Proper recycling diverts waste from landfills and feeds raw resources back into manufacturing.</p>
+            </div>
+        </div>
+
+        <div class="cta-block">
+            <p>Ready to learn how we can help your community go green?</p>
+            <a href="service.html" class="cta-btn">Explore Our Services →</a>
+        </div>
     </section>
+
+    <footer class="footer" aria-label="Site footer">
+        <p>© 2026 GO-GREEN. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="parallal.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="service.html">Service</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </footer>
+
     <script src="parallal.js"></script>
 </body>
 </html>

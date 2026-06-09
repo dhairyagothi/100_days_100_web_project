@@ -1,18 +1,459 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <title>File Upload</title>
-  <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload — Result</title>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0a0a0a;
+            font-family: 'Syne', sans-serif;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+        }
+
+        .result-card {
+            position: relative;
+            z-index: 1;
+            background: rgba(16, 18, 22, 0.97);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 44px 48px;
+            width: 480px;
+            max-width: 95vw;
+            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.7);
+            animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .status-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin: 0 auto 20px;
+        }
+
+        .status-icon.success {
+            background: rgba(99, 255, 180, 0.12);
+        }
+
+        .status-icon.error {
+            background: rgba(255, 99, 99, 0.12);
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        #upload-status {
+            text-align: center;
+            font-size: 0.88rem;
+            color: rgba(255, 255, 255, 0.45);
+            margin-bottom: 28px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #63ffb4, #63b4ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #000;
+            flex-shrink: 0;
+        }
+
+        .user-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .user-label {
+            font-size: 0.72rem;
+            color: rgba(255, 255, 255, 0.35);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 2px;
+        }
+
+        .files-header {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(255, 255, 255, 0.35);
+            margin-bottom: 10px;
+        }
+
+        .files-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 24px;
+        }
+
+        .files-list::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .files-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+        }
+
+        .file-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: rgba(99, 255, 180, 0.05);
+            border: 1px solid rgba(99, 255, 180, 0.12);
+            border-radius: 8px;
+            animation: rowIn 0.3s ease both;
+        }
+
+        .file-row:nth-child(1) {
+            animation-delay: 0.05s;
+        }
+
+        .file-row:nth-child(2) {
+            animation-delay: 0.10s;
+        }
+
+        .file-row:nth-child(3) {
+            animation-delay: 0.15s;
+        }
+
+        .file-row:nth-child(4) {
+            animation-delay: 0.20s;
+        }
+
+        @keyframes rowIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .file-emoji {
+            font-size: 1.1rem;
+        }
+
+        .file-meta {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .file-meta .fname {
+            font-size: 0.85rem;
+            color: #fff;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .file-meta .fsize {
+            font-size: 0.72rem;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .file-tick {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(99, 255, 180, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            color: #63ffb4;
+            flex-shrink: 0;
+        }
+
+        .back-btn {
+            display: block;
+            width: 100%;
+            padding: 13px;
+            background: #63ffb4;
+            color: #000;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            font-family: inherit;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(99, 255, 180, 0.2);
+        }
+
+        .no-files {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255, 100, 100, 0.7);
+            font-size: 0.88rem;
+        }
+
+        /* ── ADDED: Recent uploads section ── */
+        .recent-section {
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+            padding-top: 18px;
+            margin-bottom: 24px;
+        }
+
+        .recent-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .recent-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 9px 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .recent-row:hover {
+            background: rgba(255, 255, 255, 0.07);
+
+        }
+
+        .recent-row .file-meta .fsize {
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        .recent-empty {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.25);
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        /* ── END ADDED ── */
+    </style>
 </head>
+
 <body>
-  <div id="upload-status" style="display: none;"></div>
-  <script>
-    $(document).ready(function() {
-      const message = $('#upload-status').text();
-      if (message) {
-        alert(message); // Display alert
-      }
-    });
-  </script>
+
+    <div class="result-card">
+
+        <div class="status-icon <%= files && files.length > 0 ? 'success' : 'error' %>">
+            <%= files && files.length> 0 ? '✓' : '✗' %>
+        </div>
+
+        <h2>
+            <%= files && files.length> 0 ? 'Upload Complete!' : 'Upload Failed' %>
+        </h2>
+
+        <div id="upload-status">
+            <%= uploadStatus %>
+        </div>
+
+        <div class="user-info">
+            <div class="avatar">
+                <%= firstName ? firstName.charAt(0).toUpperCase() : '?' %>
+            </div>
+            <div>
+                <div class="user-label">Uploaded by</div>
+                <div class="user-name">
+                    <%= firstName %>
+                        <%= lastName %>
+                </div>
+            </div>
+        </div>
+
+        <% if (files && files.length> 0) { %>
+            <div class="files-header">
+                <%= files.length %> file<%= files.length> 1 ? 's' : '' %> uploaded
+            </div>
+            <div class="files-list">
+                <% files.forEach(function(file) { %>
+                    <% var ext=file.originalname.split('.').pop().toLowerCase(); var icons={ pdf:'📄', png:'🖼️',
+                        jpg:'🖼️', jpeg:'🖼️', mp4:'🎬', zip:'🗜️', docx:'📝', xlsx:'📊', txt:'📃' }; var
+                        icon=icons[ext] || '📎' ; var size=file.size < 1024 ? file.size + ' B' : file.size < 1048576 ?
+                        (file.size/1024).toFixed(1) + ' KB' : (file.size/1048576).toFixed(1) + ' MB' ; %>
+                        <div class="file-row">
+                            <span class="file-emoji">
+                                <%= icon %>
+                            </span>
+                            <div class="file-meta">
+                                <div class="fname">
+                                    <%= file.originalname %>
+                                </div>
+                                <div class="fsize">
+                                    <%= size %>
+                                </div>
+                            </div>
+                            <div class="file-tick">✓</div>
+                        </div>
+                        <% }) %>
+            </div>
+            <% } else { %>
+                <div class="no-files">No files were uploaded.</div>
+                <% } %>
+
+                    <!-- ── ADDED: Recent uploads section ── -->
+                    <div class="recent-section">
+                        <div class="files-header">🕐 Recent uploads</div>
+                        <div class="recent-list" id="recent-list">
+                            <div class="recent-empty" id="recent-empty">No recent uploads yet.</div>
+                        </div>
+                    </div>
+                    <!-- ── END ADDED ── -->
+
+                    <a href="/" class="back-btn">← Upload More Files</a>
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Professor ka original code — bilkul same
+            const message = $('#upload-status').text();
+            if (message) {
+                alert(message); 
+            }
+
+            var iconsMap = { pdf: '📄', png: '🖼️', jpg: '🖼️', jpeg: '🖼️', mp4: '🎬', zip: '🗜️', docx: '📝', xlsx: '📊', txt: '📃' };
+
+            var currentFiles = <%- JSON.stringify(files || []).replace(/</g, '\\u003C').replace(/>/g, '\\u003E').replace(/&/g, '\\u0026').replace(/\//g, '\\u002F') %>;
+
+            if (currentFiles.length > 0) {
+                
+                var history = [];
+                try { history = JSON.parse(localStorage.getItem('recentUploads') || '[]'); } catch (e) { }
+
+                
+                currentFiles.forEach(function (file) {
+                    var ext = file.originalname.split('.').pop().toLowerCase();
+                    history.unshift({
+                        name: file.originalname,
+                        size: file.size,
+                        icon: iconsMap[ext] || '📎',
+                        time: Date.now()
+                    });
+                });
+
+                
+                history = history.slice(0, 3);
+                localStorage.setItem('recentUploads', JSON.stringify(history));
+            }
+
+            
+            var stored = [];
+            try { stored = JSON.parse(localStorage.getItem('recentUploads') || '[]'); } catch (e) { }
+
+            if (stored.length > 0) {
+                $('#recent-empty').hide();
+                stored.forEach(function (f) {
+                    var size = f.size < 1024
+                        ? f.size + ' B'
+                        : f.size < 1048576
+                            ? (f.size / 1024).toFixed(1) + ' KB'
+                            : (f.size / 1048576).toFixed(1) + ' MB';
+
+                    var mins = Math.floor((Date.now() - f.time) / 60000);
+                    var timeStr = mins < 1 ? 'Just now'
+                        : mins < 60 ? mins + ' min' + (mins > 1 ? 's' : '') + ' ago'
+                            : Math.floor(mins / 60) + ' hr' + (Math.floor(mins / 60) > 1 ? 's' : '') + ' ago';
+
+                    var row = $('<a class="recent-row">')
+                        .attr('href', '/uploads/' + encodeURIComponent(f.name))
+                        .attr('target', '_blank')   // new tab
+                        .append('<span class="file-emoji">' + f.icon + '</span>')
+                        .append(
+                            $('<div class="file-meta">')
+                                .append('<div class="fname">' + $('<span>').text(f.name).html() + '</div>')
+                                .append('<div class="fsize">' + size + ' &bull; ' + timeStr + '</div>')
+                        );
+                    $('#recent-list').append(row);
+                });
+            }
+            // ── END ADDED ──
+        });
+    </script>
+
 </body>
+
 </html>

@@ -1,0 +1,256 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --bg-primary: #f4f7ff;
+    --bg-secondary: rgba(255, 255, 255, 0.15);
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --accent: #7c3aed;
+    --accent-hover: #6d28d9;
+    --glass-border: rgba(255, 255, 255, 0.25);
+    --input-bg: rgba(255, 255, 255, 0.2);
+    --shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+}
+
+body.dark {
+    --bg-primary: #0f172a;
+    --bg-secondary: rgba(15, 23, 42, 0.45);
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --accent: #8b5cf6;
+    --accent-hover: #a78bfa;
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --input-bg: rgba(255, 255, 255, 0.06);
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(
+        135deg,
+        #667eea,
+        #764ba2,
+        #6dd5ed,
+        #2193b0
+    );
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    color: var(--text-primary);
+    transition: all 0.4s ease;
+}
+
+/* Animated Background */
+
+body::before,
+body::after {
+    content: "";
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.4;
+    z-index: 0;
+    animation: floating 10s infinite alternate ease-in-out;
+}
+
+body::before {
+    background: #ff6ec4;
+    top: -100px;
+    left: -100px;
+}
+
+body::after {
+    background: #7873f5;
+    bottom: -100px;
+    right: -100px;
+}
+
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes floating {
+    from {
+        transform: translateY(0px) translateX(0px);
+    }
+    to {
+        transform: translateY(40px) translateX(20px);
+    }
+}
+
+.container {
+    position: relative;
+    z-index: 2;
+    width: 90%;
+    max-width: 550px;
+    padding: 40px;
+    border-radius: 25px;
+    background: var(--bg-secondary);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow);
+    text-align: center;
+    transition: all 0.4s ease;
+}
+
+/* =========================
+   Heading
+   ========================= */
+
+h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    color: var(--text-primary);
+    letter-spacing: 1px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#guessField {
+    width: 100%;
+    max-width: 300px;
+    margin: auto;
+    height: 60px;
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+    outline: none;
+    background: var(--input-bg);
+    backdrop-filter: blur(12px);
+    color: var(--text-primary);
+    font-size: 1.8rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 0 10px rgba(255,255,255,0.05);
+}
+
+#guessField::placeholder {
+    color: var(--text-secondary);
+}
+
+#guessField:focus {
+    transform: scale(1.03);
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.4);
+}
+
+#subt {
+    width: 220px;
+    height: 55px;
+    margin: auto;
+    border: none;
+    border-radius: 16px;
+    background: linear-gradient(
+        135deg,
+        var(--accent),
+        #a855f7
+    );
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.35s ease;
+    box-shadow: 0 10px 25px rgba(124, 58, 237, 0.35);
+}
+
+#subt:hover {
+    transform: translateY(-4px) scale(1.03);
+    background: linear-gradient(
+        135deg,
+        var(--accent-hover),
+        #c084fc
+    );
+    box-shadow: 0 15px 35px rgba(124, 58, 237, 0.45);
+}
+
+#subt:active {
+    transform: scale(0.96);
+}
+
+
+p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-top: 10px;
+    line-height: 1.6;
+}
+
+.guesses {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 10px;
+}
+
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: 1px solid var(--glass-border);
+    background: var(--bg-secondary);
+    backdrop-filter: blur(10px);
+    color: var(--text-primary);
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 5;
+}
+
+.theme-toggle:hover {
+    transform: rotate(12deg) scale(1.1);
+    box-shadow: 0 0 20px rgba(255,255,255,0.2);
+}
+
+
+@media (max-width: 600px) {
+    .container {
+        padding: 25px;
+    }
+
+    h1 {
+        font-size: 2.2rem;
+    }
+
+    #guessField {
+        height: 55px;
+        font-size: 1.4rem;
+    }
+
+    #subt {
+        width: 100%;
+    }
+
+    .guesses {
+        font-size: 1.5rem;
+    }
+}

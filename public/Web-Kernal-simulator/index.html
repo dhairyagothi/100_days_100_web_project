@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebKernel OS</title>
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="windows.css">
+</head>
+
+<body>
+    <div id="desktop">
+        <div id="widget-container">
+            <div class="widget" id="widget-clock">
+                <div class="widget-title">Time</div>
+                <div class="widget-content">
+                    <div id="w-time">00:00</div>
+                    <div id="w-date">Mon, Jan 1</div>
+                </div>
+            </div>
+            <div class="widget" id="widget-sys">
+                <div class="widget-title">System</div>
+                <div class="widget-content">
+                    <div>CPU: <span id="w-cpu">12%</span></div>
+                    <div>RAM: <span id="w-ram">4/8 GB</span></div>
+                </div>
+            </div>
+            <div class="widget" id="widget-notes">
+                <div class="widget-title">Recent Note</div>
+                <div class="widget-content" id="w-note-preview">No notes</div>
+            </div>
+            <div class="widget" id="widget-weather">
+                <div class="widget-title">Weather</div>
+                <div class="widget-content">
+                    <div>24°C</div>
+                    <div style="font-size:0.8em; color:#888;">Sunny</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Start Menu -->
+    <div id="start-menu" class="hidden">
+        <div class="start-menu-item" data-action="launch" data-app="terminal">Terminal</div>
+        <div class="start-menu-item" data-action="launch" data-app="notes">Notes</div>
+        <div class="start-menu-item" data-action="launch" data-app="taskmgr">Task Manager</div>
+        <div class="start-menu-item" data-action="launch" data-app="calculator">Calculator</div>
+        <hr style="border:0; border-top:1px solid #ddd; margin: 5px 0;">
+        <div class="start-menu-item" data-action="toggle-widgets">Toggle Widgets</div>
+    </div>
+
+    <div id="taskbar">
+        <div id="start-button">WebKernel</div>
+        <div id="taskbar-apps"></div>
+        <div id="clock">00:00</div>
+    </div>
+
+    <!-- Core System -->
+    <script src="storage.js"></script>
+    <script src="core.js"></script>
+    <script src="windows.js"></script>
+
+    <!-- Apps -->
+    <script src="terminal.js"></script>
+    <script src="apps.js"></script>
+
+    <script>
+        // Boot the OS when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.OS) {
+                window.OS.boot();
+            } else {
+                console.error("OS Kernel failed to load.");
+            }
+        });
+    </script>
+</body>
+
+</html>

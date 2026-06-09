@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="../favv.png" type="image/x-icon" />
+    <script src="script.js" defer></script>
+    <title>Breakout Game</title>
+</head>
+<body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
+    <h1>Breakout Game</h1>
+    <canvas id="canvas"></canvas>
+    <div id="countdown" class="countdown hidden">3</div>
+
+    <div id="rules-container" class="rules-container">
+        <div class="rules-content">
+            <h2>Game Rules</h2>
+            <p>1. Use the arrow keys or mouse to move the paddle.</p>
+            <p>2. Bounce the ball to break the bricks.</p>
+            <p>3. Score points by breaking bricks.</p>
+            <p>4. You have 3 lives. Lose a life when the ball falls below the paddle.</p>
+            <p>5. Press <strong>P</strong> or click the Pause button to pause.</p>
+            <button id="start-btn" class="btn">Start Game</button>
+        </div>
+    </div>
+
+    <div id="game-over-container" class="game-over-container hidden">
+        <div class="game-over-content">
+            <h2>Game Over</h2>
+            <p>Your Score: <span id="final-score">0</span></p>
+            <p>Highest Score: <span id="high-score">0</span></p>
+            <button id="restart-btn" class="btn">Restart Game</button>
+        </div>
+    </div>
+
+    <div id="pause-container" class="pause-container hidden">
+        <div class="pause-content">
+            <h2>⏸ Paused</h2>
+            <button id="resume-btn" class="btn">▶ Resume</button>
+            <button id="pause-restart-btn" class="btn btn-secondary">🔄 Restart</button>
+        </div>
+    </div>
+
+    <button id="pause-btn" class="pause-btn hidden">⏸</button>
+</body>
+</html>
