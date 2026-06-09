@@ -268,6 +268,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('clear-btn').addEventListener('click', reset);
 
+  // Info Modal Event Handling
+  const infoBtn = document.getElementById('info-btn');
+  const modalOverlay = document.getElementById('physics-modal');
+  const modalCloseBtn = document.getElementById('modal-close-btn');
+
+  function openModal() {
+    paused = true;
+    document.getElementById('pause-btn').textContent = '▶';
+    document.getElementById('pause-btn').classList.add('paused');
+    modalOverlay.classList.add('open');
+    modalOverlay.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeModal() {
+    modalOverlay.classList.remove('open');
+    modalOverlay.setAttribute('aria-hidden', 'true');
+  }
+
+  infoBtn.addEventListener('click', openModal);
+  modalCloseBtn.addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', e => {
+    if (e.target === modalOverlay) closeModal();
+  });
+
   document.getElementById('gravity').addEventListener('input', e => {
     gravity = +e.target.value;
     document.getElementById('gravity-val').textContent = gravity.toFixed(2);
@@ -298,6 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target.tagName === 'INPUT') return;
     if (e.code === 'Space') { e.preventDefault(); document.getElementById('pause-btn').click(); }
     if (e.key === 'c' || e.key === 'C') reset();
+    if (e.key === 'Escape') closeModal();
   });
 
   requestAnimationFrame(() => { resize(); for (let i = 0; i < 12; i++) addBall(); loop(); });
