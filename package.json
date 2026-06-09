@@ -7,6 +7,7 @@
     "generate-previews": "node scripts/generate-previews.js",
     "dev": "npx -y serve . -p 3000",
     "validate:projects": "node scripts/validate-projects.js",
+    "validate:projects-fixture": "node scripts/validate-projects-fixture.js",
     "lint": "eslint --no-config-lookup -c eslint.config.js .",
     "lint:all": "npx -y htmlhint '**/*.html' --ignore 'node_modules/**,**/node_modules/**'",
     "format": "prettier --config .prettierrc --write .",
@@ -47,7 +48,7 @@
     "stylelint-config-standard": "^40.0.0"
   },
   "lint-staged": {
-    "projects.json": "node scripts/validate-metadata.js",
+    "projects.json": "npm run validate:projects",
     "*.html": "npx htmlhint"
   }
 }
