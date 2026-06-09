@@ -164,7 +164,6 @@
                             <span id="userBadgeRole">Role: --</span>
                         </div>
                     </div>
-                    </div>
                     <button id="loginTrigger" class="btn btn-primary" type="button">Login</button>
                     <button class="profile-btn" aria-label="Profile">
                         <div class="avatar">PA</div>
@@ -178,8 +177,7 @@
 
 
             <!-- Hero Section -->
-            <section class="hero-section" style="min-height:100vh; display:flex; justify-content:center; align-items:center; text-align:center;">
-    <div class="hero-content" style="display:flex; flex-direction:column; align-items:center;">
+            <section class="hero-section"style="padding:60px 20px;text-align:center;">
         <div class="hero-text">
             <h1>🏥 Welcome to MedConsult</h1>
             <p id="welcomeMessage">Connecting Local Doctors with Specialists</p>
@@ -243,9 +241,6 @@
                     </div>
                 </div>
             </section>
-                    </div>
-                </div>
-            </section>
 
             <!-- Available Doctors -->
             <section class="doctors-section">
@@ -269,7 +264,6 @@
                             <div class="doctor-info">
                                 <div class="info-item"><i class="ph ph-briefcase"></i><span>12 Years Experience</span></div>
                                 <div class="info-item"><i class="ph ph-star-fill"></i><span>4.9 Rating (324 reviews)</span></div>
-                            </div>
                             </div>
                             <div class="doctor-services">
                                 <span class="service-badge">Video Call</span>
@@ -297,9 +291,6 @@
                                 <div class="info-item"><i class="ph ph-briefcase"></i><span>15 Years Experience</span></div>
                                 <div class="info-item"><i class="ph ph-star-fill"></i><span>4.8 Rating (412 reviews)</span></div>
                             </div>
-                                <div class="info-item"><i class="ph ph-briefcase"></i><span>15 Years Experience</span></div>
-                                <div class="info-item"><i class="ph ph-star-fill"></i><span>4.8 Rating (412 reviews)</span></div>
-                            </div>
                             <div class="doctor-services">
                                 <span class="service-badge">Video Call</span>
                                 <span class="service-badge">In-Person</span>
@@ -317,7 +308,6 @@
                             <div class="doctor-avatar">
                                 <img src="assets/doctors/emily.png" alt="Dr Emily Watson">
                                 <span class="status-badge available"><i class="ph ph-dot-fill"></i> Available</span>
-                                <span class="status-badge available"><i class="ph ph-dot-fill"></i> Available</span>
                             </div>
                         </div>
                         <div class="doctor-card-body">
@@ -326,7 +316,6 @@
                             <div class="doctor-info">
                                 <div class="info-item"><i class="ph ph-briefcase"></i><span>8 Years Experience</span></div>
                                 <div class="info-item"><i class="ph ph-star-fill"></i><span>5.0 Rating (289 reviews)</span></div>
-                            </div>
                             </div>
                             <div class="doctor-services">
                                 <span class="service-badge">Video Call</span>
@@ -494,7 +483,6 @@
                                     <div class="step-indicator"><i class="ph ph-paper-plane-right"></i></div>
                                     <div class="step-content"><h4>Request Submitted</h4><p>System received your data</p></div>
                                 </div>
-                                </div>
                                 <div class="step-line"></div>
                                 <div class="step" id="step2">
                                     <div class="step-indicator"><i class="ph ph-user-md"></i></div>
@@ -510,27 +498,28 @@
                     </section>
 
                     <section id="specialist-response" class="card is-role-hidden" data-role="doctor">
-                        <div class="card-header">
-                            <div class="card-icon info"><i class="ph ph-lightbulb"></i></div>
-                            <h2>Provide Suggestion</h2>
-                                    <div class="step-indicator"><i class="ph ph-user-md"></i></div>
-                                    <div class="step-content"><h4>Specialist Assigned</h4><p id="assignedSpecialistName">Pending assignment</p></div>
-                                </div>
-                                <div class="step-line"></div>
-                                <div class="step" id="step3">
-                                    <div class="step-indicator"><i class="ph ph-calendar-check"></i></div>
-                                    <div class="step-content"><h4>Appointment Scheduled</h4><p>Awaiting confirmation</p></div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+    <div class="card-header">
+        <div class="card-icon info">
+            <i class="ph ph-lightbulb"></i>
+        </div>
+        <h2>Provide Suggestion</h2>
+    </div>
 
-                    <section id="specialist-response" class="card is-role-hidden" data-role="doctor">
-                        <div class="card-header">
-                            <div class="card-icon info"><i class="ph ph-lightbulb"></i></div>
-                            <h2>Provide Suggestion</h2>
-                        </div>
-                    </section>
+    <div class="form-field">
+        <label for="doctorSuggestion">Specialist Recommendation</label>
+        <textarea
+            id="doctorSuggestion"
+            rows="5"
+            placeholder="Enter your recommendation..."
+        ></textarea>
+    </div>
+
+    <div class="form-actions">
+        <button type="button" class="btn btn-primary">
+            Submit Suggestion
+        </button>
+    </div>
+</section>
 
                     <section class="card">
                         <div class="card-header">
@@ -673,46 +662,6 @@
 <!-- =============================================
      AUTH MODAL — full login + signup with eye toggle
      ============================================= -->
-        </div><!-- end .page-container -->
-
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="footer-container">
-                <div class="footer-section footer-brand">
-                    <div class="brand-row">
-                        <img src="assets/logo.png" alt="MedConsult Logo" class="footer-logo">
-                        <h3>MedConsult</h3>
-                    </div>
-                    <p>Connecting patients with qualified doctors and specialists for faster, smarter healthcare support.</p>
-                </div>
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="index.html">Dashboard</a></li>
-                        <li><a href="remedies.html">Home Remedies</a></li>
-                        <li><a href="feedback.html">Feedback</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Emergency Help</h3>
-                    <ul>
-                        <li><a href="tel:108">🚑 Ambulance (108)</a></li>
-                        <li><a href="#">🏥 Nearby Hospitals</a></li>
-                        <li><a href="#">🧑‍⚕️ Emergency Doctor</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>© 2026 MedConsult Dashboard • All Rights Reserved</p>
-            </div>
-        </footer>
-
-    </main>
-</div><!-- end #appShell -->
-
-<!-- =============================================
-     AUTH MODAL — full login + signup with eye toggle
-     ============================================= -->
 <div id="authOverlay" class="auth-overlay" aria-hidden="true">
     <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
         <div class="auth-brand">
@@ -808,10 +757,6 @@
                     <div class="password-wrapper">
                         <input id="signupConfirm" class="auth-input" type="password" autocomplete="new-password" placeholder="Repeat your password" required>
                         <button type="button" class="password-toggle" aria-label="Toggle confirm password visibility" onclick="togglePassword('signupConfirm', this)">
-                            <svg class="eye-icon eye-closed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
-                                <line x1="1" y1="1" x2="23" y2="23"/>
-                            </svg>
                             <svg class="eye-icon eye-open" style="display:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
                                 <circle cx="12" cy="12" r="3"/>
