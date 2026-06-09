@@ -9,7 +9,7 @@
   <link rel="icon" href="../favv.png" type="image/x-icon" />
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
   <div class="overlay-stars"></div>
 
@@ -64,15 +64,18 @@
 
   <div id="Message-Container" class="modal-overlay">
     <div id="message" class="modal-card">
+       <div class="modal-emoji" id="modalEmoji">🎊</div>
       <h1 id="modalTitle">Victory</h1>
       <p id="modalText">You completed the maze.</p>
+      <div id="modalDifficultyBadge" class="difficulty-badge"></div>
       <p id="moves"></p>
-      <button id="okBtn" type="button">Cool!</button>
+      <button id="okBtn" type="button">Play Again!</button>
     </div>
   </div>
 
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.touchswipe/1.6.18/jquery.touchSwipe.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <script src="./script.js"></script>
 </body>
 </html>

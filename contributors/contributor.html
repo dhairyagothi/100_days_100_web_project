@@ -32,6 +32,8 @@
   </head>
 
   <body>
+    <div class="cursor-ring cursor-ring--outer" aria-hidden="true"></div>
+    <div class="cursor-ring cursor-ring--inner" aria-hidden="true"></div>
     <div class="ambient ambient-left" aria-hidden="true"></div>
     <div class="ambient ambient-right" aria-hidden="true"></div>
     <div class="noise-layer" aria-hidden="true"></div>
@@ -79,9 +81,10 @@
           type="text"
           id="contributorSearch"
           placeholder="Search contributors..."
+          aria-label="Search contributors"
         />
 
-        <select id="sortContributors">
+        <select id="sortContributors" aria-label="Sort contributors">
           <option value="desc">Highest Commits</option>
           <option value="asc">Lowest Commits</option>
         </select>
@@ -125,7 +128,7 @@
             basic to intermediate using HTML, CSS, and JS.
           </p>
           <p>
-            <strong>&copy; <span data-current-year></span> 100 Days, 100 Projects</strong> by Dhairya and
+            <strong>&copy; <span id="Current-Year"></span> 100 Days, 100 Projects</strong> by Dhairya and
             Contributors.
           </p>
         </div>
@@ -172,14 +175,14 @@
 
     <div id="profileModal" class="modal-overlay">
       <div class="modal-content">
-        <button id="closeModal">&times;</button>
+        <button id="closeModal" aria-label="Close profile modal">&times;</button>
         <div id="modalBody">Loading...</div>
       </div>
     </div>
 
     <div id="certificateModal" class="modal-overlay">
       <div class="modal-content">
-        <button id="closeCertificate">&times;</button>
+        <button id="closeCertificate" aria-label="Close certificate modal">&times;</button>
         <div id="certificateBody">Loading Certificate...</div>
       </div>
     </div>
@@ -201,5 +204,6 @@
     <!-- ── LOAD NAVBAR INJECTION SCRIPT LAST ── -->
     <script src="../navbar.js" defer></script>
     <script src="contributor.js"></script>
+    <script src="../index.js" defer></script>
   </body>
 </html>

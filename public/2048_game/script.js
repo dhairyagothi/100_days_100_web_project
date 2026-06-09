@@ -88,7 +88,12 @@ let stats = { best: 0, games: 0, wins: 0, bestTile: 2, earned: [] };
 function loadStats() {
   try {
     const s = localStorage.getItem('2048stats');
-    if (s) stats = JSON.parse(s);
+    if (s) {
+      const parsed = JSON.parse(s);
+      stats = { ...stats, ...parsed };
+      if (!stats.earned) stats.earned = [];
+      if (!stats.scoreHistory) stats.scoreHistory = [];
+    }
   } catch (_) {}
 }
 
@@ -246,20 +251,25 @@ function tilePos(r, c) {
    ========================================================= */
 
 function applyGridDimensions() {
-  if (mode === 'zen') {
+
+  const mobile = window.innerWidth <= 480;
+
+  if (mode === "zen") {
     N = 5;
+    TS = mobile ? 58 : 74;
+    GAP = mobile ? 6 : 8;
+    PAD = mobile ? 8 : 10;
   } else {
     N = 4;
+    TS = mobile ? 72 : 94;
+    GAP = mobile ? 8 : 10;
+    PAD = mobile ? 10 : 12;
   }
 
-  const styles = getComputedStyle(document.documentElement);
-
-  TS = parseInt(styles.getPropertyValue('--tile-size'));
-  GAP = parseInt(styles.getPropertyValue('--tile-gap'));
-  PAD = parseInt(styles.getPropertyValue('--board-pad'));
-
-  const bd = document.getElementById('bd');
-
+  const bd = document.getElementById("bd");
+  bd.style.setProperty('--N', N);
+  bd.style.gap = `${GAP}px`;
+  bd.style.padding = `${PAD}px`;
   bd.style.gridTemplateColumns = `repeat(${N}, ${TS}px)`;
   bd.style.gridTemplateRows = `repeat(${N}, ${TS}px)`;
 }
@@ -270,16 +280,12 @@ function applyGridDimensions() {
 
 function slideRow(row) {
   const arr = row.filter((x) => x);
-  let pts = 0,
-    didMerge = false;
+  let pts = 0;
   for (let i = 0; i < arr.length - 1; i++) {
-    if (arr[i] === arr[i + 1] && !didMerge) {
+    if (arr[i] === arr[i + 1]) {
       arr[i] *= 2;
       pts += arr[i];
       arr.splice(i + 1, 1);
-      didMerge = true;
-    } else {
-      didMerge = false;
     }
   }
   while (arr.length < N) arr.push(0);
@@ -287,7 +293,7 @@ function slideRow(row) {
 }
 
 function rotateBoard(b, turns) {
-  let out = b;
+  let out = b.map(row => [...row]); // ensure deep copy to prevent mutation
   for (let t = 0; t < turns; t++) {
     const tmp = Array.from({ length: N }, () => Array(N).fill(0));
     for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) tmp[c][N - 1 - r] = out[r][c];
@@ -831,8 +837,22 @@ document.querySelectorAll('.mode-btn').forEach((btn) => {
     document.querySelectorAll('.mode-btn').forEach((b) => b.classList.remove('active'));
     btn.classList.add('active');
     mode = btn.dataset.mode;
+    // Toggle zen-mode class on container for wider layout
+    document.getElementById('g').classList.toggle('zen-mode', mode === 'zen');
     clearSavedGame();
     init();
+  });
+});
+
+document.querySelectorAll('.theme-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.theme-btn').forEach((b) => b.classList.remove('active'));
+    btn.classList.add('active');
+    const theme = btn.dataset.theme;
+    document.body.dataset.theme = theme;
+    try {
+      localStorage.setItem('2048theme', theme);
+    } catch (_) {}
   });
 });
 
@@ -885,11 +905,12 @@ document.getElementById('wr').addEventListener(
 document.addEventListener('visibilitychange', () => {
   if (mode !== 'timed' || over) return;
 
+  const tfill = document.getElementById('tfill');
   if (document.hidden) {
     paused = true;
     clearInterval(timerInterval);
 
-    document.getElementById('tfill').classList.add('paused');
+    if (tfill) tfill.classList.add('paused');
 
     showToast('Timer paused');
   } else {
@@ -897,7 +918,9 @@ document.addEventListener('visibilitychange', () => {
       paused = false;
       startTimer();
 
-      document.getElementById('tfill').classList.remove('pgit aused');
+
+      document.getElementById('tfill').classList.remove('paused');
+
 
       showToast('Timer resumed');
     }
@@ -911,3 +934,86 @@ document.addEventListener('visibilitychange', () => {
 loadStats();
 best = loadBest();
 init(true);
+
+// Restore saved theme
+try {
+  const savedTheme = localStorage.getItem('2048theme') || 'classic';
+  document.body.dataset.theme = savedTheme;
+  document.querySelectorAll('.theme-btn').forEach((b) => {
+    b.classList.toggle('active', b.dataset.theme === savedTheme);
+  });
+} catch (_) {}
+
+// Restore zen-mode class if saved mode was zen
+if (mode === 'zen') {
+  document.getElementById('g').classList.add('zen-mode');
+  document.querySelectorAll('.mode-btn').forEach((b) => {
+    b.classList.toggle('active', b.dataset.mode === 'zen');
+  });
+}
+
+// Re-apply dimensions on resize (important for zen 5×5 responsiveness)
+window.addEventListener("resize", () => {
+  if (mode === "zen") {
+    applyGridDimensions();
+    renderBoard();
+    renderTiles(null, 0, null);
+  }
+});
+
+/* =========================================================
+   How to Play Modal
+   ========================================================= */
+
+(function initHowToPlayModal() {
+  const modal      = document.getElementById('howto-modal');
+  const openBtn    = document.getElementById('howto-btn');
+  const closeBtn   = document.getElementById('howto-close');
+  const closeBtn2  = document.getElementById('howto-close2');
+  const inlineBtn  = document.getElementById('howto-inline-btn');
+
+  if (!modal || !openBtn) return; // safety guard
+
+  /** Open the modal and trap focus */
+  function openModal() {
+    modal.style.display = 'flex';
+    modal.removeAttribute('aria-hidden');
+    // Focus the close button for accessibility
+    setTimeout(() => closeBtn && closeBtn.focus(), 80);
+    // Prevent background scroll on mobile
+    document.body.style.overflow = 'hidden';
+  }
+
+  /** Close the modal */
+  function closeModal() {
+    modal.style.display = 'none';
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    openBtn.focus(); // return focus to trigger button
+  }
+
+  openBtn.addEventListener('click', openModal);
+  if (inlineBtn)  inlineBtn.addEventListener('click', openModal);
+  if (closeBtn)   closeBtn.addEventListener('click', closeModal);
+  if (closeBtn2)  closeBtn2.addEventListener('click', closeModal);
+
+  // Close on backdrop click
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.style.display !== 'none') {
+      closeModal();
+    }
+  });
+
+  // Show on first visit (no localStorage key present)
+  try {
+    if (!localStorage.getItem('2048_howto_seen')) {
+      setTimeout(openModal, 600);
+      localStorage.setItem('2048_howto_seen', '1');
+    }
+  } catch (_) {}
+})();

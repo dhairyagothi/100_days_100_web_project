@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Markdown Editor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="app-header">
+        <h1>Pro Markdown Workspace</h1>
+        <div class="actions">
+            <button id="export-md" class="btn">Export .MD</button>
+            <button id="export-html" class="btn secondary">Export .HTML</button>
+            <span id="save-status" class="status-tag">Saved</span>
+        </div>
+    </header>
+
+    <main class="workspace">
+        <section class="editor-pane">
+            <textarea id="markdown-input" placeholder="# Start writing your markdown here..."></textarea>
+        </section>
+        <section class="preview-pane" id="preview-output">
+        </section>
+    </main>
+
+    <footer class="analytics-bar">
+        <span>Words: <strong id="word-count">0</strong></span>
+        <span>Characters: <strong id="char-count">0</strong></span>
+        <span>Reading Time: <strong id="reading-time">0 min</strong></span>
+    </footer>
+
+    <script type="module" src="js/app.js"></script>
+</body>
+
+</html>
