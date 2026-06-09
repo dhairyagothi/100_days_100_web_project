@@ -1,6 +1,6 @@
 /* ===== CSS Variables & Themes ===== */
 :root {
-  --font: 'Inter', system-ui, -apple-system, sans-serif;
+  --font: "Inter", system-ui, -apple-system, sans-serif;
   --radius: 16px;
   --radius-sm: 10px;
   --transition: 0.25s ease;
@@ -51,7 +51,9 @@
 }
 
 /* ===== Reset & Base ===== */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -74,7 +76,12 @@ body {
 .bg-gradient {
   position: fixed;
   inset: 0;
-  background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 50%, var(--bg-start) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--bg-start) 0%,
+    var(--bg-end) 50%,
+    var(--bg-start) 100%
+  );
   z-index: -2;
 }
 
@@ -121,9 +128,16 @@ body {
 }
 
 @keyframes float {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(30px, -30px) scale(1.05); }
-  66% { transform: translate(-20px, 20px) scale(0.95); }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -30px) scale(1.05);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.95);
+  }
 }
 
 /* ===== Glass Effect ===== */
@@ -262,7 +276,8 @@ body {
   color: var(--text-muted);
 }
 
-input, select {
+input,
+select {
   font-family: var(--font);
   font-size: 0.95rem;
   padding: 0.65rem 0.85rem;
@@ -270,10 +285,13 @@ input, select {
   border: 1px solid var(--input-border);
   border-radius: var(--radius-sm);
   color: var(--text-primary);
-  transition: border-color var(--transition), box-shadow var(--transition);
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition);
 }
 
-input:focus, select:focus {
+input:focus,
+select:focus {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--input-focus);
@@ -385,8 +403,14 @@ input.error {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .result-hero {
@@ -812,6 +836,10 @@ input.error {
   color: var(--text-primary);
   max-width: 400px;
   width: 90%;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .modal::backdrop {
