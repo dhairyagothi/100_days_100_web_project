@@ -71,6 +71,8 @@ function getCategoryFromTags(tags, name) {
 }
 
 let PROJECTS = [];
+let PROJECTS_BY_NAME = new Map();
+let PROJECTS_BY_DAY = new Map();
 let projectsPromise = null;
 
 function hydrateProjects(data) {
@@ -82,6 +84,8 @@ function hydrateProjects(data) {
     difficulty: project.difficulty,
     projectDesc: project.projectDesc,
   }));
+  PROJECTS_BY_NAME = new Map(PROJECTS.map(p => [p.projectName, p]));
+  PROJECTS_BY_DAY = new Map(PROJECTS.map(p => [p.day, p]));
 }
 
 function getPreloadedProjectsData() {
@@ -137,15 +141,15 @@ function loadProjects() {
 
 // Start fetching immediately
 loadProjects().catch((err) => {
-    console.error('Critical initialization error:', err);
-    const grid = document.getElementById('projectGrid');
-    if (grid) {
-        grid.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-color, #333);">
+  console.error('Critical initialization error:', err);
+  const grid = document.getElementById('projectGrid');
+  if (grid) {
+    grid.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-color, #333);">
             <h2><i class="fas fa-exclamation-triangle"></i> Failed to Load Projects</h2>
             <p>Please check your connection or try again later.</p>
             <p style="font-family: monospace; color: red;">${escapeHTML(err.message)}</p>
         </div>`;
-    }
+  }
 });
 
 /* ============================================================
@@ -177,8 +181,8 @@ function isSourceOnlyProject(day, tags) {
   const tagList = Array.isArray(tags)
     ? tags
     : String(tags || "")
-        .split(/\s+/)
-        .filter(Boolean);
+      .split(/\s+/)
+      .filter(Boolean);
   return tagList.includes(SOURCE_ONLY_TAG);
 }
 
@@ -221,7 +225,14 @@ function resolveProjectUrls(day, name, url, tags) {
       if (demoUrl.startsWith("./")) {
         demoUrl = basePrefix + demoUrl.substring(2);
       }
-    } catch (error) {}
+    } catch (error) { }
+  }
+  if (day === "Day 222") {
+    return {
+      demoUrl: "https://html-css-animation-01.netlify.app/",
+      sourceUrl: "https://github.com/dhairyagothi/100_day_100_web_project/blob/Main/public/Html_css_animation/index.html",
+      sourceOnly: false
+    };
   }
 
   return { demoUrl, sourceUrl, sourceOnly };
@@ -260,10 +271,10 @@ function escapeHTML(value) {
  * omitted, which keeps the UI layout intact.
  *
  * Allowed schemes:
- *   - https://   (absolute external links, GitHub, live demos)
- *   - http://    (legacy / local dev)
- *   - ./  ../    (relative paths to local demo index.html files)
- *   - #          (in-page anchors)
+ * - https://    (absolute external links, GitHub, live demos)
+ * - http://     (legacy / local dev)
+ * - ./  ../     (relative paths to local demo index.html files)
+ * - #           (in-page anchors)
  *
  * Everything else — including javascript:, data:, vbscript:,
  * blob: and protocol-relative // URLs — is replaced with "#".
@@ -325,14 +336,15 @@ function buildProjectCardHTML({
   // derived from one.  sanitizeUrl() blocks javascript:, data:, vbscript:
   // and any other executable protocol while leaving valid http(s) / relative
   // paths untouched.
-  const safeDemoUrl   = sanitizeUrl(demoUrl);
+  const safeDemoUrl = sanitizeUrl(demoUrl);
   const safeSourceUrl = sanitizeUrl(sourceUrl);
+
 
   const tagsArray = Array.isArray(tags)
     ? tags.filter((t) => t !== SOURCE_ONLY_TAG)
     : String(tags || "")
-        .split(/\s+/)
-        .filter((t) => t && t !== SOURCE_ONLY_TAG);
+      .split(/\s+/)
+      .filter((t) => t && t !== SOURCE_ONLY_TAG);
 
   // SECURITY: escapeHTML on every tag token prevents <script> / event-handler
   // injection via the techStack field in projects.json.
@@ -340,14 +352,22 @@ function buildProjectCardHTML({
     .map((t) => `<span class="tag">${escapeHTML(t)}</span>`)
     .join("");
 
-  const project = PROJECTS.find((p) => p.projectName === name);
+  const project = PROJECTS_BY_NAME.get(name) || PROJECTS_BY_DAY.get(day);
 
   // SECURITY: description, day, name and category are all escaped before
   // being written into innerHTML.
-  const description  = escapeHTML(getProjectDescription(project));
-  const safeDay      = escapeHTML(day);
-  const safeName     = escapeHTML(name);
+  const description = escapeHTML(getProjectDescription(project));
+  const safeDay = escapeHTML(day);
+  const safeName = escapeHTML(name);
   const safeCategory = escapeHTML(category);
+
+  const difficulty = project ? project.difficulty || "" : "";
+  const difficultyKey = (difficulty || "").toLowerCase();
+  const difficultyLabel = CATEGORY_LABEL[difficultyKey] || difficulty;
+  const safeDifficultyLabel = escapeHTML(difficultyLabel);
+  const difficultyBadge = difficulty
+    ? `<span class="card-difficulty ${difficultyKey}">${safeDifficultyLabel}</span>`
+    : "";
 
   const sourceOnlyBadge = sourceOnly
     ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
@@ -356,50 +376,50 @@ function buildProjectCardHTML({
   // SECURITY: href values come from sanitizeUrl() — not raw contributor data.
   // data-id uses escapeHTML so it cannot break out of the attribute.
   const primaryLink = sourceOnly
-    ? `<a href="${safeSourceUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()">
-                        <i class="fab fa-github"></i> Source
+    ? `<a href="${safeSourceUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source of ${safeName} (opens in a new tab)">
+                        <i class="fab fa-github" aria-hidden="true"></i> Source
                     </a>`
-    : `<a href="${safeDemoUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()">
-                        Demo <i class="fas fa-arrow-right"></i>
+    : `<a href="${safeDemoUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View demo of ${safeName} (opens in a new tab)">
+                        Demo <i class="fas fa-arrow-right" aria-hidden="true"></i>
                     </a>`;
 
   const codeLink = sourceOnly
     ? ""
-    : `<a href="${safeSourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()">
-                        <i class="fab fa-github"></i> Code
+    : `<a href="${safeSourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source code of ${safeName} on GitHub (opens in a new tab)">
+                        <i class="fab fa-github" aria-hidden="true"></i> Code
                     </a>`;
 
-return {
+  return {
     html: `
             <div class="card-meta">
                 <span class="card-day">${safeDay}</span>
                 <span class="card-category-wrap">
                   <span class="card-category">${safeCategory}</span>
+                  ${difficultyBadge}
                   ${sourceOnlyBadge}
                 </span>
             </div>
 
             <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
-                <img src="./${url && url.startsWith('./') ? url.split('/')[2] : name.replace(/\s+/g, '_')}/preview.png" alt="${name} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
+                <img src="./${url && url.startsWith('./') ? url.split('/')[2] : name.replace(/\s+/g, '_')}/preview.png" alt="${safeName} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
 
             <h3 class="card-name">${safeName}</h3>
 
-            ${
-              showDescription
-                ? `<div class="card-description">
+            ${showDescription
+        ? `<div class="card-description">
     ${description}
 </div>`
-                : ""
-            }
+        : ""
+      }
             <div class="card-tags">${tagsHTML}</div>
             <div class="card-footer">
                 <div class="card-actions-left">
                     ${primaryLink}
                     ${codeLink}
                 </div>
-                <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${safeDay}">
-                    <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark"></i>
+                <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${safeDay}" aria-label="${isBookmarked ? `Remove ${safeName} from bookmarks` : `Bookmark ${safeName}`}">
+                    <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark" aria-hidden="true"></i>
                 </button>
             </div>
         `,
@@ -408,11 +428,12 @@ return {
   };
 }
 
-
 function attachProjectCardInteraction(card, demoUrl, projectData = null) {
   card.style.cursor = "pointer";
-  card.onclick = (e) => {
+
+  const activateCard = (e) => {
     if (e.target.closest("a, button")) return;
+    if (!demoUrl) return;
 
     // Track the project visit if projectData is provided
     if (projectData) {
@@ -423,6 +444,18 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
     // window.open() so a javascript: payload stored in localStorage cannot
     // execute even after a page reload.
     window.open(sanitizeUrl(demoUrl), "_blank", "noopener");
+  };
+
+  card.onclick = activateCard;
+
+  card.onkeydown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      // Prevent page scrolling on spacebar when card is focused
+      if (e.key === " ") {
+        e.preventDefault();
+      }
+      activateCard(e);
+    }
   };
 }
 
@@ -502,10 +535,10 @@ function clearAllTechFilters() {
  * SECURITY: Previously this function built filter-tag markup by splicing
  * the raw tech string directly into an onclick attribute:
  *
- *   `onclick="removeTechFilter('${tech}')"`
+ * `onclick="removeTechFilter('${tech}')"`
  *
  * That allowed a crafted tag value such as
- *   '); alert(1); ('
+ * '); alert(1); ('
  * to break out of the string literal and execute arbitrary JS.
  *
  * The fix uses DOM methods exclusively — no innerHTML, no inline handlers.
@@ -514,9 +547,9 @@ function clearAllTechFilters() {
  * executable context.
  */
 function updateTechFilterDisplay() {
-  const container    = document.getElementById("activeTechFilters");
+  const container = document.getElementById("activeTechFilters");
   const tagsContainer = document.getElementById("techFilterTags");
-  const clearBtn     = document.getElementById("clearTechFilter");
+  const clearBtn = document.getElementById("clearTechFilter");
 
   if (!container || !tagsContainer) return;
 
@@ -550,6 +583,7 @@ function updateTechFilterDisplay() {
 
     const icon = document.createElement("i");
     icon.className = "fas fa-times";
+    icon.setAttribute("aria-hidden", "true");
     btn.appendChild(icon);
 
     // addEventListener keeps the handler in JS — the tech value never
@@ -634,7 +668,11 @@ function migrateRecentProjects() {
     return project;
   });
 
-  localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+  try {
+    localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+  } catch (error) {
+    console.warn("Could not save recent projects to localStorage:", error.message);
+  }
 }
 
 // Migrate on load
@@ -649,7 +687,11 @@ function cleanupExpiredRecentProjects() {
   recentProjects = getRecentProjectsWithinWindow();
 
   if (recentProjects.length !== initialLength) {
-    localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+    try {
+      localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+    } catch (error) {
+      console.warn("Could not save recent projects to localStorage:", error.message);
+    }
     renderRecentProjects();
   }
 }
@@ -832,7 +874,7 @@ function renderGrid() {
     const matchesFilter =
       activeFilter === "all" || category === targetCategory;
 
-    // Search filter
+    // Search filter (matches name, description, day, and technology tags)
     const q = searchQuery.toLowerCase().trim();
     const matchesSearch =
       !q ||
@@ -841,6 +883,7 @@ function renderGrid() {
         .every(
           (term) =>
             name.toLowerCase().includes(term) ||
+            (project.projectDesc || "").toLowerCase().includes(term) ||
             day.toLowerCase().includes(term) ||
             (Array.isArray(tags) ? tags.join(" ") : tags || "")
               .toLowerCase()
@@ -906,46 +949,48 @@ function renderGrid() {
   const pageItems = filtered.slice(startIndex, endIndex);
   const fragment = document.createDocumentFragment();
 
-pageItems.forEach((project) => {
-  const day = project.day;
-  const name = project.projectName;
-  const url = project.projectPath;
-  const tags = project.techStack;
-
-  const category = getCategoryFromTags(tags, name);
-  const card = document.createElement("div");
-
-  const isBookmarked = bookmarkedProjects.some(
-    (item) => normalizeProjectEntry(item).day === day,
+  const bookmarkedDays = new Set(
+    bookmarkedProjects.map((item) => normalizeProjectEntry(item).day),
   );
 
-  const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
-    day,
-    name,
-    url,
-    tags,
-    category,
-    isBookmarked,
-    showDescription: true,
+  pageItems.forEach((project) => {
+    const day = project.day;
+    const name = project.projectName;
+    const url = project.projectPath;
+    const tags = project.techStack;
+
+    const category = getCategoryFromTags(tags, name);
+    const card = document.createElement("div");
+
+    const isBookmarked = bookmarkedDays.has(day);
+
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked,
+      showDescription: true,
+    });
+
+    card.className = sourceOnly
+      ? "project-card source-only visible"
+      : "project-card visible";
+
+    card.innerHTML = html;
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("role", "button");
+    attachProjectCardInteraction(card, demoUrl, project);
+
+    fragment.appendChild(card);
   });
-
-  card.className = sourceOnly
-    ? "project-card source-only visible"
-    : "project-card visible";
-
-  card.innerHTML = html;
-  attachProjectCardInteraction(card, demoUrl, project);
-
-  fragment.appendChild(card);
-});
-
-
-
 
   grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
 
   syncStateToURL();
+  syncProjectCounts();
 }
 
 function renderPagination(totalItems, totalPages) {
@@ -998,7 +1043,7 @@ function renderPagination(totalItems, totalPages) {
 
   const prevBtn = document.createElement("button");
   prevBtn.className = "prev-btn";
-  prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+  prevBtn.innerHTML = '<i class="fas fa-chevron-left" aria-hidden="true"></i>';
   prevBtn.disabled = currentPage === 1;
   prevBtn.setAttribute("aria-label", "Previous Page");
   prevBtn.addEventListener("click", (e) => {
@@ -1052,7 +1097,7 @@ function renderPagination(totalItems, totalPages) {
 
   const nextBtn = document.createElement("button");
   nextBtn.className = "next-btn";
-  nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+  nextBtn.innerHTML = '<i class="fas fa-chevron-right" aria-hidden="true"></i>';
   nextBtn.disabled = currentPage === totalPages;
   nextBtn.setAttribute("aria-label", "Next Page");
   nextBtn.addEventListener("click", (e) => {
@@ -1300,7 +1345,8 @@ function renderBookmarks() {
     if (!day || !name) return;
 
     const category = getCategoryFromTags(tags, name);
-    const card = document.createElement("div");
+
+    // Updated to use the secure HTML-string approach
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
       name,
@@ -1311,10 +1357,14 @@ function renderBookmarks() {
       showDescription: true,
     });
 
+    const card = document.createElement("div");
     card.className = sourceOnly
       ? "project-card source-only visible"
       : "project-card visible";
     card.innerHTML = html;
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("role", "button");
+
     attachProjectCardInteraction(card, demoUrl, project);
 
     bookmarkGrid.appendChild(card);
@@ -1354,10 +1404,11 @@ function renderRecentProjects() {
     const tags = projectObj.techStack || projectObj.tags || projectObj[3];
 
     const category = getCategoryFromTags(tags, name);
-    const card = document.createElement("div");
     const isBookmarked = bookmarkedProjects.some(
       (item) => normalizeProjectEntry(item).day === day,
     );
+
+    // Updated to use the secure HTML-string approach
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
       name,
@@ -1368,10 +1419,14 @@ function renderRecentProjects() {
       showDescription: true,
     });
 
+    const card = document.createElement("div");
     card.className = sourceOnly
       ? "project-card source-only visible"
       : "project-card visible";
     card.innerHTML = html;
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("role", "button");
+
     attachProjectCardInteraction(card, demoUrl, projectObj);
 
     recentGrid.appendChild(card);
@@ -1391,9 +1446,10 @@ const copyBookmarksBtn = document.getElementById("copyBookmarksBtn");
 
 if (bookmarkToggleBtn) {
   bookmarkToggleBtn.addEventListener("click", () => {
-    showAllBookmarks = !showAllBookmarks;
-    bookmarkToggleBtn.textContent = showAllBookmarks ? "Show Less" : "View All";
-    renderBookmarks();
+    const projectsSection = document.getElementById("projects");
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: "smooth" });
+    }
   });
 }
 
@@ -1425,9 +1481,10 @@ if (copyBookmarksBtn) {
 
 if (recentToggleBtn) {
   recentToggleBtn.addEventListener("click", () => {
-    showAllRecent = !showAllRecent;
-    recentToggleBtn.textContent = showAllRecent ? "Show Less" : "View All";
-    renderRecentProjects();
+    const projectsSection = document.getElementById("projects");
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: "smooth" });
+    }
   });
 }
 
@@ -1667,7 +1724,7 @@ function initTechStackSearch() {
 const searchInput = document.getElementById("searchInput");
 const clearSearchBtn = document.getElementById("clearSearch");
 
-function updateCategoryCounts() {
+function updateCategoryCounts(projects = PROJECTS) {
   const counts = {};
   for (const key of Object.keys(FILTER_CATEGORY_MAP)) {
     if (key !== "all") {
@@ -1675,7 +1732,7 @@ function updateCategoryCounts() {
     }
   }
 
-  PROJECTS.forEach((project) => {
+  projects.forEach((project) => {
     const name = project.projectName;
     const tags = project.techStack;
     const category = getCategoryFromTags(tags, name);
@@ -1705,12 +1762,15 @@ function updateCategoryCounts() {
 function syncProjectCounts() {
   let filtered = [...PROJECTS];
 
-  // Apply search filter
+  // Apply search filter (matches name, description, day, and tags)
   if (searchQuery) {
+    const q = searchQuery.toLowerCase();
     filtered = filtered.filter(
       (project) =>
-        project.projectName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        project.day.toLowerCase().includes(searchQuery.toLowerCase()),
+        project.projectName.toLowerCase().includes(q) ||
+        (project.projectDesc || "").toLowerCase().includes(q) ||
+        project.day.toLowerCase().includes(q) ||
+        (Array.isArray(project.techStack) ? project.techStack.join(" ") : project.techStack || "").toLowerCase().includes(q),
     );
   }
 
@@ -1728,7 +1788,7 @@ function syncProjectCounts() {
     searchInput.placeholder = `Search ${PROJECTS.length.toLocaleString()} projects…`;
   }
 
-  updateCategoryCounts();
+  updateCategoryCounts(filtered);
 }
 
 // Clear button functionality
@@ -1748,8 +1808,7 @@ if (searchInput && clearSearchBtn) {
   });
 }
 
-// Initialize
-syncProjectCounts();
+
 
 /* ============================================================
    NAVBAR — dynamic based on login state
@@ -1844,7 +1903,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   initClearAllFilters();
 
   try {
-    // Await the projects to be fetched
     await loadProjects();
 
     syncProjectCounts();
@@ -1856,6 +1914,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       renderBookmarks();
       renderRecentProjects();
     }
+
+    restoreStateFromURL();
 
     syncProjectCounts();
     fetchRepoStats();
@@ -1873,6 +1933,30 @@ document.addEventListener("DOMContentLoaded", async () => {
       `;
     }
   }
+
+  const searchInput =
+    document.getElementById("search") ||
+    document.querySelector('input[type="text"]') ||
+    document.querySelector(".search-input");
+  if (searchInput) {
+    searchInput.addEventListener(
+      "input",
+      debounce(() => {
+        const { category } = getQueryParams();
+        updateURL(searchInput.value, category);
+        applyFilters(searchInput.value, category);
+      }, 200),
+    );
+  }
+  const categoryFilter = document.getElementById("category");
+  if (categoryFilter) {
+    categoryFilter.addEventListener("change", () => {
+      const { search } = getQueryParams();
+      updateURL(search, categoryFilter.value);
+      applyFilters(search, categoryFilter.value);
+    });
+  }
+  window.addEventListener("popstate", () => restoreStateFromURL());
 });
 
 (() => {
@@ -2301,8 +2385,6 @@ initTheme();
 })();
 
 // =============================================
-// PERSISTENT FILTERS & SEARCH — Issue #3320
-// =============================================
 
 function getQueryParams() {
   const params = new URLSearchParams(window.location.search);
@@ -2352,13 +2434,8 @@ function applyFilters(search, category) {
   renderGrid();
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-  try {
-    await loadProjects();
-    restoreStateFromURL();
-  } catch (error) {
-    console.error("Failed to restore state or load projects:", error);
-  }
+document.addEventListener("DOMContentLoaded", () => {
+
   const searchInput =
     document.getElementById("search") ||
     document.querySelector('input[type="text"]') ||

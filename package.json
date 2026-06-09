@@ -7,8 +7,9 @@
     "generate-previews": "node scripts/generate-previews.js",
     "dev": "npx -y serve . -p 3000",
     "validate:projects": "node scripts/validate-projects.js",
-    "lint": "npx -y htmlhint index.html contributors/contributor.html",
+    "lint": "eslint --no-config-lookup -c eslint.config.js .",
     "lint:all": "npx -y htmlhint '**/*.html' --ignore 'node_modules/**,**/node_modules/**'",
+    "format": "prettier --config .prettierrc --write .",
     "docker:build": "docker build -t 100days-web .",
     "docker:run": "docker run --rm -p 8080:80 100days-web",
     "docker:up": "docker compose up --build -d",
@@ -32,18 +33,21 @@
     "dotenv": "^17.4.2"
   },
   "devDependencies": {
-
-    "puppeteer": "^25.1.0",
-    "serve": "^14.2.6",
-
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.4.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-html": "^8.1.4",
+    "globals": "^17.6.0",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
+    "prettier": "^3.8.3",
+    "puppeteer": "^25.1.0",
+    "serve": "^14.2.6",
     "stylelint": "^17.12.0",
     "stylelint-config-standard": "^40.0.0"
   },
   "lint-staged": {
-    "projects.json": "node scripts/validateProjects.js",
+    "projects.json": "node scripts/validate-metadata.js",
     "*.html": "npx htmlhint"
-
   }
 }

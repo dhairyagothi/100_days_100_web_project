@@ -434,7 +434,31 @@ function showPdfToast(msg, isSuccess = true) {
   }, 3000);
 }
 
-// Carriage Bar Reset Button
+// Carriage Bar Reset Button — custom UI modal (replaces native confirm())
+const clearModal        = document.getElementById("clearModal");
+const clearModalCancel  = document.getElementById("clearModalCancel");
+const clearModalConfirm = document.getElementById("clearModalConfirm");
+
+function openClearModal()  { clearModal.classList.add("is-open");    }
+function closeClearModal() { clearModal.classList.remove("is-open"); }
+
+function executeClearAll() {
+  pagesContainer.innerHTML = `
+    <div class="paper-sheet page active-page">
+      <span class="typewriterText" contenteditable="false"></span>
+    </div>
+  `;
+  currentPage = 0;
+  paperContent = "";
+  cursorPos = 0;
+  userInput.value = "";
+  pageCounter.innerText = "Page 1";
+  updateCopyButtonState();
+  updateCounters();
+  showPdfToast("All pages cleared!");
+  playHeavyKey();
+}
+
 const clearPaperBtn = document.getElementById("clearPaperBtn");
 if (clearPaperBtn) {
   clearPaperBtn.addEventListener("click", () => {
@@ -443,22 +467,20 @@ if (clearPaperBtn) {
       showPdfToast("Paper is already clean!");
       return;
     }
-    if (confirm("Are you sure you want to clear all typed paper pages?")) {
-      pagesContainer.innerHTML = `
-                <div class="paper-sheet page active-page">
-                    <span class="typewriterText" contenteditable="false"></span>
-                </div>
-            `;
-      currentPage = 0;
-      paperContent = "";
-      cursorPos = 0;
-      userInput.value = "";
-      pageCounter.innerText = "Page 1";
-      updateCopyButtonState();
-      updateCounters();
-      showPdfToast("All pages cleared!");
-      playHeavyKey();
-    }
+    openClearModal();
+  });
+}
+
+if (clearModalCancel)  clearModalCancel.addEventListener("click", closeClearModal);
+if (clearModalConfirm) clearModalConfirm.addEventListener("click", () => {
+  closeClearModal();
+  executeClearAll();
+});
+
+// Close modal when clicking the backdrop
+if (clearModal) {
+  clearModal.addEventListener("click", (e) => {
+    if (e.target === clearModal) closeClearModal();
   });
 }
 
@@ -930,3 +952,49 @@ if (importTxtBtn && txtFileInput) {
     reader.readAsText(file);
   });
 }
+/* ---------- Add Text Feature Implementation Fix ---------- */
+document.addEventListener("DOMContentLoaded", () => {
+  const addTextBtn = document.getElementById("addTextBtn");
+  const userInput = document.getElementById("userInput");
+
+  if (addTextBtn && userInput) {
+    addTextBtn.addEventListener("click", () => {
+      const textToAppend = userInput.value;
+
+      if (textToAppend.trim() !== "") {
+        // Append input value to the primary document paper layout string
+        paperContent += textToAppend;
+
+        // Reset cursor back to the end of the text stream
+        cursorPos = 0;
+
+        // Re-render paper document sheet with cursor placement alignment
+        renderPaperWithCursor();
+
+        // Update dashboard words metrics and copy options visibility state
+        updateCopyButtonState();
+        updateCounters();
+
+        // Play click feedback sound indicator
+        playReturn();
+
+        // Clear out the input target grid value and focus back
+        userInput.value = "";
+        userInput.focus();
+
+        showPdfToast("Text appended to paper successfully!");
+      } else {
+        showPdfToast("Please enter some text first!", false);
+      }
+    });
+
+    // Also support pressing the "Enter" key inside the input box to trigger the add text feature
+    userInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        e.stopPropagation();
+        addTextBtn.click();
+      }
+    });
+  }
+});

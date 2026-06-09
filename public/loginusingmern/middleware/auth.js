@@ -6,7 +6,7 @@ const authMiddleware = (req, res, next) => {
 
     if (!token) return res.redirect('/');
 
-    const verified = jwt.verify(token, process.env.JWT_SECRET || 'secretkey');
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
     req.user = verified;
 
     next();

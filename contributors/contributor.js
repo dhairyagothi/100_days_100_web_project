@@ -138,9 +138,10 @@ async function openProfile(username) {
     const avatar = document.createElement("img");
     avatar.src = user.avatar_url;
     avatar.alt = user.name || username;
-    avatar.style.width = "120px";
-    avatar.style.height = "120px";
-    avatar.style.borderRadius = "50%;";
+    avatar.loading = 'lazy';
+    avatar.style.width = '120px';
+    avatar.style.height = '120px';
+    avatar.style.borderRadius = '50%';
 
     // Name Enforces Native Context Escaping Natively
     const name = document.createElement("h2");
@@ -274,15 +275,26 @@ function animateValue(id, end) {
 }
 
 async function fetchContributors() {
-  const contributorsContainer = document.getElementById("contributors");
-  const contributorCountSpan = document.getElementById("contributorCount");
-  const errorBox = document.getElementById("contributorsError");
-  const errorMessage = document.getElementById("contributorsErrorMessage");
-  const loading = document.getElementById("contributorsLoading");
+    const contributorsContainer = document.getElementById("contributors");
+    const contributorCountSpan = document.getElementById("contributorCount");
+    const errorBox = document.getElementById("contributorsError");
+    const errorMessage = document.getElementById("contributorsErrorMessage");
+    const loading = document.getElementById("contributorsLoading");
 
-  loading.classList.remove("hidden");
-  errorBox.classList.add("hidden");
-  contributorsContainer.innerHTML = "";
+    loading?.classList.remove("hidden");
+    errorBox?.classList.add("hidden");
+    contributorsContainer.innerHTML = "";
+
+    try {
+        const cached = loadCache("contributors-cache");
+        if (cached) {
+            allContributors = cached;
+            filteredContributors = [...cached];
+            if (contributorCountSpan) contributorCountSpan.textContent = cached.length;
+            renderContributors(filteredContributors);
+            loading?.classList.add("hidden");
+            return;
+        }
 
   try {
     const cached = loadCache("contributors-cache");
@@ -316,9 +328,10 @@ animateValue(
     return;
   }
 
-    const contributors = await githubFetch(
-      `${GITHUB_API_BASE}/repos/${window.REPO_OWNER}/${window.REPO_NAME}/contributors?per_page=100`,
-    );
+        while (true) {
+            const data = await githubFetch(
+                `${GITHUB_API_BASE}/repos/${window.REPO_OWNER}/${window.REPO_NAME}/contributors?per_page=100&page=${page}`
+            );
 
     saveCache('contributors-cache', contributors);
 
@@ -401,6 +414,7 @@ function renderContributors(data) {
     const avatar = document.createElement("img");
     avatar.src = contributor.avatar_url;
     avatar.alt = contributor.login;
+    avatar.loading = 'lazy';
     card.appendChild(avatar);
 
     const name = document.createElement("h3");
@@ -473,6 +487,7 @@ function renderStargazers(stargazers) {
     const img = document.createElement("img");
     img.src = stargazer.avatar_url;
     img.alt = stargazer.login;
+    img.loading = 'lazy';
 
     starItem.appendChild(img);
     stargazersContainer.appendChild(starItem);
@@ -527,9 +542,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   searchInput.addEventListener("input", (e) => {
     const value = e.target.value.toLowerCase();
-    filteredContributors = allContributors.filter((c) =>
-      c.login.toLowerCase().includes(value),
-    );
+    if (!value) {
+      filteredContributors = [...allContributors];
+    } else {
+      filteredContributors = allContributors.filter((c) =>
+        c.login && c.login.toLowerCase().includes(value)
+      );
+    }
     renderContributors(filteredContributors);
   });
 
