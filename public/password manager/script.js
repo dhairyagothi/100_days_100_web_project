@@ -23,6 +23,21 @@ hamburger.addEventListener("click", () => {
 });
 
 /* -------------------- */
+/* Security Helpers */
+/* -------------------- */
+
+function escapeHTML(str) {
+    if (!str) return "";
+    return str.replace(/[&<>'"]/g, tag => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+    }[tag]));
+}
+
+/* -------------------- */
 /* Toast Notification */
 /* -------------------- */
 
@@ -101,11 +116,11 @@ function renderPasswords() {
         row.innerHTML = `
 
             <td>
-                ${item.website}
+                ${escapeHTML(item.website)}
             </td>
 
             <td>
-                ${item.username}
+                ${escapeHTML(item.username)}
             </td>
 
             <td id="password-${index}">
