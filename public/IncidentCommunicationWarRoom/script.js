@@ -59,7 +59,13 @@ function renderTimeline() {
   currentIncident.updates.forEach(update => {
     const div = document.createElement("div");
     div.className = "timeline-entry";
-    div.innerHTML = `<strong>${update.time}</strong><br>${update.text}`;
+
+    const strong = document.createElement("strong");
+    strong.textContent = update.time;
+    div.appendChild(strong);
+    div.appendChild(document.createElement("br"));
+    div.appendChild(document.createTextNode(update.text));
+
     container.appendChild(div);
   });
 }
