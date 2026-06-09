@@ -3407,3 +3407,18 @@ body.custom-cursor-active .cursor-ring.is-visible {
 :root[data-theme="sepia"] [class*="footer"] {
   color: var(--text-muted-sepia) !important;
 }
+
+/* Custom Cursor System */
+.cursor-trail-dot {
+  pointer-events: none !important;
+  z-index: 999998 !important;
+}
+
+@keyframes cursorNeonPulse {
+  0%, 100% { box-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88; }
+  50% { box-shadow: 0 0 18px #00ff88, 0 0 36px #00ff88; }
+}
+
+@media (pointer: coarse) {
+  .cursor-switcher-container { display: none !important; }
+}

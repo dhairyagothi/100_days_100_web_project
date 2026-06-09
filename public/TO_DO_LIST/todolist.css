@@ -12,7 +12,7 @@ body {
   font-family: "Inter", sans-serif;
   background: #0a0c1a;
   color: #f0f0f5;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .sr-only {
@@ -190,6 +190,23 @@ body {
   font-weight: 850;
   color: #ffffff;
 }
+.overdue-task{
+    border-left:4px solid #ef4444;
+}
+.overdue-badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: #ef4444;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.due-today-task {
+  border-left: 4px solid #f59e0b;
+}
 
 /* ---------- Hero Promotion Banner ---------- */
 .hero-banner {
@@ -315,6 +332,9 @@ body {
 
 .input-select-wrapper {
   flex: 0 0 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 .input-select {
   width: 100%;
@@ -324,10 +344,19 @@ body {
   border: 1px solid rgba(124, 99, 255, 0.2);
   background: #0f1123;
   color: #fff;
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.75rem;       
+  text-align: center;       
+  color-scheme: dark;       
   outline: none;
   cursor: pointer;
+}
+
+.data-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(240, 240, 245, 0.829);
+  text-transform: uppercase;
+  margin-left: 41px;
 }
 
 .task-input {
@@ -771,29 +800,104 @@ body {
   line-height: 1.5;
 }
 
-/* ---------- Responsive Design Adaptations ---------- */
-@media (max-width: 1200px) {
-  .productivity-dashboard {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
+/* Responsive Design Adaptations */
 @media (max-width: 900px) {
+
+  .app-container {
+    flex-direction: column;
+    height: auto; 
+    min-height: 100vh;
+    overflow-y: auto; 
+  }
+
   .sidebar {
-    width: 220px;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid rgba(124, 99, 255, 0.2);
+    flex-shrink: 0;
   }
+
   .main-content {
+    width: 100%;
     padding: 16px;
+    box-sizing: border-box;
   }
-  .hero-banner {
+
+  .hero-banner, 
+  .stay-productive-card {
+    position: relative;
+    padding: 20px;
+    overflow: hidden;
+    border: none;
+    background-clip: padding-box;
     flex-direction: column;
-    text-align: center;
-    gap: 1rem;
+    gap: 16px;
   }
+
+  .hero-content {
+    max-width: 100%; 
+    min-width: 0;
+  }
+
   .hero-illustration {
-    display: none;
+    align-self: center;
+    margin-left: -10px;
   }
-  .input-row {
+
+  .input-panel {
+    display: flex;
     flex-direction: column;
-    align-items: stretch;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .input-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .input-select-wrapper {
+    flex: 1 1 100%;
+  }
+
+  .task-input {
+    display: block;
+    width: 100%;
+    height: 45px;
+    box-sizing: border-box;
+    min-width: 0; 
+    flex: 1 1 100%;
+  }
+
+  .add-task-btn {
+    height: 45px;
+    width: 100%;
+    min-width: 90px;
+    flex-shrink: 0; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    font-size: 0.85rem;
+  }
+
+  .due-date-row {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .data-label {
+    margin-left: 105px;
+  }
+
+  .productivity-dashboard {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 }
+
