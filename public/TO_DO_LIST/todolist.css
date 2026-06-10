@@ -1,3 +1,96 @@
+/* ============================================================
+   WORKSPACE SKIN THEME TOKENS
+   theme1 = Amber/Gold  |  theme2 = Blue  |  theme3 = Green  |  theme4 = Indigo
+   ============================================================ */
+:root {
+  --theme-accent: #7c63ff;
+  --theme-accent-alt: #4f8dff;
+  --theme-bg: #0a0c1a;
+  --theme-bg-mid: #0f1123;
+  --theme-sidebar-bg: rgba(15, 17, 35, 0.95);
+  --theme-border: rgba(124, 99, 255, 0.15);
+  --theme-border-nav: rgba(124, 99, 255, 0.3);
+  --theme-border-hero: rgba(124, 99, 255, 0.2);
+  --theme-hero-from: rgba(124, 99, 255, 0.2);
+  --theme-hero-to: rgba(79, 141, 255, 0.1);
+  --theme-progress: linear-gradient(90deg, #7c63ff, #4f8dff);
+  --theme-badge-bg: rgba(124, 99, 255, 0.15);
+  --theme-badge-color: #c4b5ff;
+  --theme-add-btn: linear-gradient(135deg, #7c63ff, #4f8dff);
+}
+
+/* Amber / Gold */
+body[data-theme="theme1"] {
+  --theme-accent: #f59e0b;
+  --theme-accent-alt: #fbbf24;
+  --theme-bg: #0f0c00;
+  --theme-bg-mid: #1a1400;
+  --theme-sidebar-bg: rgba(20, 16, 0, 0.95);
+  --theme-border: rgba(245, 158, 11, 0.18);
+  --theme-border-nav: rgba(245, 158, 11, 0.35);
+  --theme-border-hero: rgba(245, 158, 11, 0.2);
+  --theme-hero-from: rgba(245, 158, 11, 0.18);
+  --theme-hero-to: rgba(251, 191, 36, 0.08);
+  --theme-progress: linear-gradient(90deg, #f59e0b, #fbbf24);
+  --theme-badge-bg: rgba(245, 158, 11, 0.15);
+  --theme-badge-color: #fde68a;
+  --theme-add-btn: linear-gradient(135deg, #f59e0b, #fbbf24);
+}
+
+/* Blue */
+body[data-theme="theme2"] {
+  --theme-accent: #3b82f6;
+  --theme-accent-alt: #60a5fa;
+  --theme-bg: #00050f;
+  --theme-bg-mid: #020b1a;
+  --theme-sidebar-bg: rgba(2, 8, 22, 0.95);
+  --theme-border: rgba(59, 130, 246, 0.18);
+  --theme-border-nav: rgba(59, 130, 246, 0.35);
+  --theme-border-hero: rgba(59, 130, 246, 0.2);
+  --theme-hero-from: rgba(59, 130, 246, 0.18);
+  --theme-hero-to: rgba(96, 165, 250, 0.08);
+  --theme-progress: linear-gradient(90deg, #3b82f6, #60a5fa);
+  --theme-badge-bg: rgba(59, 130, 246, 0.15);
+  --theme-badge-color: #bfdbfe;
+  --theme-add-btn: linear-gradient(135deg, #3b82f6, #60a5fa);
+}
+
+/* Green / Emerald */
+body[data-theme="theme3"] {
+  --theme-accent: #10b981;
+  --theme-accent-alt: #34d399;
+  --theme-bg: #00100a;
+  --theme-bg-mid: #001a10;
+  --theme-sidebar-bg: rgba(0, 18, 10, 0.95);
+  --theme-border: rgba(16, 185, 129, 0.18);
+  --theme-border-nav: rgba(16, 185, 129, 0.35);
+  --theme-border-hero: rgba(16, 185, 129, 0.2);
+  --theme-hero-from: rgba(16, 185, 129, 0.18);
+  --theme-hero-to: rgba(52, 211, 153, 0.08);
+  --theme-progress: linear-gradient(90deg, #10b981, #34d399);
+  --theme-badge-bg: rgba(16, 185, 129, 0.15);
+  --theme-badge-color: #a7f3d0;
+  --theme-add-btn: linear-gradient(135deg, #10b981, #34d399);
+}
+
+/* Indigo / Purple */
+body[data-theme="theme4"] {
+  --theme-accent: #6366f1;
+  --theme-accent-alt: #818cf8;
+  --theme-bg: #04030f;
+  --theme-bg-mid: #08061a;
+  --theme-sidebar-bg: rgba(6, 4, 20, 0.95);
+  --theme-border: rgba(99, 102, 241, 0.18);
+  --theme-border-nav: rgba(99, 102, 241, 0.35);
+  --theme-border-hero: rgba(99, 102, 241, 0.2);
+  --theme-hero-from: rgba(99, 102, 241, 0.18);
+  --theme-hero-to: rgba(129, 140, 248, 0.08);
+  --theme-progress: linear-gradient(90deg, #6366f1, #818cf8);
+  --theme-badge-bg: rgba(99, 102, 241, 0.15);
+  --theme-badge-color: #c7d2fe;
+  --theme-add-btn: linear-gradient(135deg, #6366f1, #818cf8);
+}
+
 *,
 *::before,
 *::after {
@@ -10,9 +103,10 @@ html,
 body {
   height: 100%;
   font-family: "Inter", sans-serif;
-  background: #0a0c1a;
+  background: var(--theme-bg, #0a0c1a);
   color: #f0f0f5;
   overflow: hidden;
+  transition: background 0.35s ease;
 }
 
 .sr-only {
@@ -31,19 +125,24 @@ body {
 .app-container {
   display: flex;
   height: 100vh;
-  background: linear-gradient(135deg, #0a0c1a 0%, #0f1123 50%, #0a0c1a 100%);
+  background: linear-gradient(135deg,
+      var(--theme-bg, #0a0c1a) 0%,
+      var(--theme-bg-mid, #0f1123) 50%,
+      var(--theme-bg, #0a0c1a) 100%);
+  transition: background 0.35s ease;
 }
 
 /* ---------- Sidebar Layout ---------- */
 .sidebar {
   width: 280px;
-  background: rgba(15, 17, 35, 0.95);
-  border-right: 1px solid rgba(124, 99, 255, 0.15);
+  background: var(--theme-sidebar-bg, rgba(15, 17, 35, 0.95));
+  border-right: 1px solid var(--theme-border, rgba(124, 99, 255, 0.15));
   display: flex;
   flex-direction: column;
   padding: 24px 20px;
   backdrop-filter: blur(20px);
   flex-shrink: 0;
+  transition: background 0.35s ease, border-color 0.35s ease;
 }
 
 .sidebar-header {
@@ -56,7 +155,7 @@ body {
   gap: 12px;
   font-size: 1.25rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #7c63ff, #4f8dff);
+  background: linear-gradient(135deg, var(--theme-accent, #7c63ff), var(--theme-accent-alt, #4f8dff));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -88,9 +187,9 @@ body {
 
 .sidebar-nav-item:hover,
 .sidebar-nav-item.active {
-  background: rgba(124, 99, 255, 0.15);
+  background: var(--theme-badge-bg, rgba(124, 99, 255, 0.15));
   color: #ffffff;
-  border: 1px solid rgba(124, 99, 255, 0.3);
+  border: 1px solid var(--theme-border-nav, rgba(124, 99, 255, 0.3));
 }
 
 .sidebar-footer {
@@ -140,6 +239,7 @@ body {
 .active-section {
   display: block;
 }
+
 .inactive-section {
   display: none;
 }
@@ -191,14 +291,31 @@ body {
   color: #ffffff;
 }
 
+.overdue-task {
+  border-left: 4px solid #ef4444;
+}
+
+.overdue-badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: #ef4444;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.due-today-task {
+  border-left: 4px solid #f59e0b;
+}
+
 /* ---------- Hero Promotion Banner ---------- */
 .hero-banner {
-  background: linear-gradient(
-    135deg,
-    rgba(124, 99, 255, 0.2),
-    rgba(79, 141, 255, 0.1)
-  );
-  border: 1px solid rgba(124, 99, 255, 0.2);
+  background: linear-gradient(135deg,
+      var(--theme-hero-from, rgba(124, 99, 255, 0.2)),
+      var(--theme-hero-to, rgba(79, 141, 255, 0.1)));
+  border: 1px solid var(--theme-border-hero, rgba(124, 99, 255, 0.2));
   border-radius: 20px;
   padding: 24px 32px;
   display: flex;
@@ -207,6 +324,7 @@ body {
   margin-bottom: 24px;
   position: relative;
   overflow: hidden;
+  transition: background 0.35s ease, border-color 0.35s ease;
 }
 
 .hero-content {
@@ -221,8 +339,8 @@ body {
   width: fit-content;
   padding: 4px 12px;
   border-radius: 100px;
-  background: rgba(124, 99, 255, 0.15);
-  color: #c4b5ff;
+  background: var(--theme-badge-bg, rgba(124, 99, 255, 0.15));
+  color: var(--theme-badge-color, #c4b5ff);
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -256,7 +374,7 @@ body {
 
 .hero-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #7c63ff, #4f8dff);
+  background: var(--theme-progress, linear-gradient(90deg, #7c63ff, #4f8dff));
   width: 0%;
   transition: width 0.4s ease;
 }
@@ -272,6 +390,7 @@ body {
   width: 140px;
   height: 120px;
 }
+
 .illustration-clipboard {
   position: absolute;
   right: 10px;
@@ -282,12 +401,14 @@ body {
   border-radius: 12px;
   padding: 8px;
 }
+
 .clipboard-paper {
   width: 100%;
   height: 100%;
   background: #f0f0f5;
   border-radius: 8px;
 }
+
 .illustration-plant {
   position: absolute;
   right: 0;
@@ -315,7 +436,17 @@ body {
 
 .input-select-wrapper {
   flex: 0 0 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
 }
+
+/* Hide the visible Due Date label so it doesn't offset the input */
+.input-select-wrapper .data-label {
+  display: none;
+}
+
 .input-select {
   width: 100%;
   height: 40px;
@@ -324,10 +455,22 @@ body {
   border: 1px solid rgba(124, 99, 255, 0.2);
   background: #0f1123;
   color: #fff;
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.75rem;
+  text-align: center;
+  color-scheme: dark;
   outline: none;
   cursor: pointer;
+  /* Force browser native UI (dropdown arrow, date-picker icon) to render
+     in light/white tones so they contrast against the dark background */
+  color-scheme: dark;
+}
+
+.data-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(240, 240, 245, 0.829);
+  text-transform: uppercase;
+  margin-left: 41px;
 }
 
 .task-input {
@@ -342,6 +485,7 @@ body {
   outline: none;
   transition: border 0.2s;
 }
+
 .task-input:focus {
   border-color: #7c63ff;
 }
@@ -351,13 +495,14 @@ body {
   padding: 0 20px;
   border-radius: 10px;
   border: none;
-  background: linear-gradient(135deg, #7c63ff, #4f8dff);
+  background: var(--theme-add-btn, linear-gradient(135deg, #7c63ff, #4f8dff));
   color: white;
   font-size: 0.85rem;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: transform 0.2s, background 0.35s ease;
 }
+
 .add-task-btn:hover {
   transform: translateY(-1px);
 }
@@ -433,9 +578,11 @@ body {
   cursor: grab;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 .kanban-task-card:active {
   cursor: grabbing;
 }
+
 .kanban-task-card:hover {
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(124, 99, 255, 0.25);
@@ -447,12 +594,14 @@ body {
   width: 100%;
   margin-bottom: 16px;
 }
+
 .documents-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
   list-style: none;
 }
+
 .doc-item {
   padding: 16px 20px;
   background: rgba(18, 20, 40, 0.5);
@@ -477,6 +626,7 @@ body {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   transition: right 0.3s ease;
 }
+
 .pdf-message.show {
   right: 24px;
 }
@@ -582,8 +732,13 @@ body {
 }
 
 @keyframes modalFadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .modal-box {
@@ -602,8 +757,15 @@ body {
 }
 
 @keyframes modalSlideUp {
-  from { opacity: 0; transform: translateY(24px) scale(0.96); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .modal-icon {
@@ -771,29 +933,103 @@ body {
   line-height: 1.5;
 }
 
-/* ---------- Responsive Design Adaptations ---------- */
-@media (max-width: 1200px) {
-  .productivity-dashboard {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
+/* Responsive Design Adaptations */
 @media (max-width: 900px) {
+
+  .app-container {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+  }
+
   .sidebar {
-    width: 220px;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid rgba(124, 99, 255, 0.2);
+    flex-shrink: 0;
   }
+
   .main-content {
+    width: 100%;
     padding: 16px;
+    box-sizing: border-box;
   }
-  .hero-banner {
+
+  .hero-banner,
+  .stay-productive-card {
+    position: relative;
+    padding: 20px;
+    overflow: hidden;
+    border: none;
+    background-clip: padding-box;
     flex-direction: column;
-    text-align: center;
-    gap: 1rem;
+    gap: 16px;
   }
+
+  .hero-content {
+    max-width: 100%;
+    min-width: 0;
+  }
+
   .hero-illustration {
-    display: none;
+    align-self: center;
+    margin-left: -10px;
   }
-  .input-row {
+
+  .input-panel {
+    display: flex;
     flex-direction: column;
-    align-items: stretch;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .input-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .input-select-wrapper {
+    flex: 1 1 100%;
+  }
+
+  .task-input {
+    display: block;
+    width: 100%;
+    height: 45px;
+    box-sizing: border-box;
+    min-width: 0;
+    flex: 1 1 100%;
+  }
+
+  .add-task-btn {
+    height: 45px;
+    width: 100%;
+    min-width: 90px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    font-size: 0.85rem;
+  }
+
+  .due-date-row {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .data-label {
+    margin-left: 105px;
+  }
+
+  .productivity-dashboard {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 }

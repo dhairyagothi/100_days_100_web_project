@@ -397,7 +397,7 @@
 
             var iconsMap = { pdf: '📄', png: '🖼️', jpg: '🖼️', jpeg: '🖼️', mp4: '🎬', zip: '🗜️', docx: '📝', xlsx: '📊', txt: '📃' };
 
-            var currentFiles = <%- JSON.stringify(files || []).replace(/</g, '\\u003C').replace(/>/g, '\\u003E').replace(/&/g, '\\u0026') %>;
+            var currentFiles = <%- JSON.stringify(files || []).replace(/</g, '\\u003C').replace(/>/g, '\\u003E').replace(/&/g, '\\u0026').replace(/\//g, '\\u002F') %>;
 
             if (currentFiles.length > 0) {
                 

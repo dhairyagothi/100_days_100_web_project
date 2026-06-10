@@ -129,17 +129,19 @@ body {
 /* Minimalist Search & Filters Control Deck */
 .job-filter {
     padding: 32px 5%;
-    max-width: 1240px;
-    margin: 0 auto;
+    max-width: 500px;
 }
 
 .job-filter .heading {
-    font-size: 2.8rem;
+    font-size: 2.0rem;
     font-weight: 700;
     color: #0f172a;
     letter-spacing: -0.5px;
     text-align: left;
     margin-bottom: 24px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .job-filter form {
@@ -163,7 +165,7 @@ body {
     width: 100%;
 }
 
-.job-filter form .flex .box p {
+p {
     font-size: 1.4rem;
     font-weight: 600;
     color: #334155;
@@ -190,8 +192,8 @@ body {
 }
 
 .job-filter form .dropdown-container {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 2rem;
 }
 
@@ -648,9 +650,9 @@ body {
 
 /* Responsive Structural Breakpoints Layer */
 @media (min-width: 576px) {
-    .job-filter form .dropdown-container {
+    /* .job-filter form .dropdown-container {
         grid-template-columns: repeat(2, 1fr);
-    }
+    } */
     
     .job-container .box-container {
         grid-template-columns: repeat(2, 1fr);
@@ -667,12 +669,12 @@ body {
     }
     
     .job-filter form .flex {
-        flex-direction: row;
+        flex-direction: column;
     }
     
-    .job-filter form .dropdown-container {
+    /* .job-filter form .dropdown-container {
         grid-template-columns: repeat(3, 1fr);
-    }
+    } */
     
     .grid-container {
         grid-template-columns: repeat(3, 1fr);
@@ -680,9 +682,9 @@ body {
 }
 
 @media (min-width: 992px) {
-    .job-filter form .dropdown-container {
+    /* .job-filter form .dropdown-container {
         grid-template-columns: repeat(5, 1fr);
-    }
+    } */
     
     .job-container .box-container {
         grid-template-columns: repeat(3, 1fr);
@@ -691,4 +693,29 @@ body {
     .job-details .details .basic-details {
         grid-template-columns: repeat(4, 1fr);
     }
+}
+
+.job-main{
+    display: flex;
+}
+
+.dropdown-boxes{
+    display: flex;
+    gap: 10px;
+}
+
+.nav{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid gray;
+    padding: 20px;
+}
+
+.job-container input{
+    border: none;
+    outline: none;
+    background-color: rgb(248, 250, 252);
+    font-size: large;
+    color: blue;
 }

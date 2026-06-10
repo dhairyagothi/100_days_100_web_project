@@ -1,4 +1,5 @@
 
+
 document.addEventListener("DOMContentLoaded", function () {
 
     /* ==========================
@@ -37,6 +38,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 toggleBtn.innerHTML = "🌙";
                 localStorage.setItem("theme", "dark");
             }
+
+// Navbar scroll effect
+document.addEventListener('DOMContentLoaded', function () {
+
 
         });
     }
@@ -100,3 +105,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+
+});
+
