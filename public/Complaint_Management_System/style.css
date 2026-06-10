@@ -841,6 +841,12 @@ body {
 [data-theme="dark"] .admin-list-col {
     background: rgba(255,255,255,0.01);
 }
+/* Dark mode dropdown fix */
+[data-theme="dark"] select,
+[data-theme="dark"] select option {
+    background-color: #1e1e2e !important;
+    color: #ffffff !important;
+}
 
 .admin-complaints-list {
     display: flex;
