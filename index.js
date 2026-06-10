@@ -71,6 +71,8 @@ function getCategoryFromTags(tags, name) {
 }
 
 let PROJECTS = [];
+let PROJECTS_BY_NAME = new Map();
+let PROJECTS_BY_DAY = new Map();
 let projectsPromise = null;
 
 function hydrateProjects(data) {
@@ -82,6 +84,8 @@ function hydrateProjects(data) {
     difficulty: project.difficulty,
     projectDesc: project.projectDesc,
   }));
+  PROJECTS_BY_NAME = new Map(PROJECTS.map(p => [p.projectName, p]));
+  PROJECTS_BY_DAY = new Map(PROJECTS.map(p => [p.day, p]));
 }
 
 function getPreloadedProjectsData() {
@@ -137,15 +141,15 @@ function loadProjects() {
 
 // Start fetching immediately
 loadProjects().catch((err) => {
-    console.error('Critical initialization error:', err);
-    const grid = document.getElementById('projectGrid');
-    if (grid) {
-        grid.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-color, #333);">
+  console.error('Critical initialization error:', err);
+  const grid = document.getElementById('projectGrid');
+  if (grid) {
+    grid.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-color, #333);">
             <h2><i class="fas fa-exclamation-triangle"></i> Failed to Load Projects</h2>
             <p>Please check your connection or try again later.</p>
             <p style="font-family: monospace; color: red;">${escapeHTML(err.message)}</p>
         </div>`;
-    }
+  }
 });
 
 /* ============================================================
@@ -177,8 +181,8 @@ function isSourceOnlyProject(day, tags) {
   const tagList = Array.isArray(tags)
     ? tags
     : String(tags || "")
-        .split(/\s+/)
-        .filter(Boolean);
+      .split(/\s+/)
+      .filter(Boolean);
   return tagList.includes(SOURCE_ONLY_TAG);
 }
 
@@ -221,7 +225,14 @@ function resolveProjectUrls(day, name, url, tags) {
       if (demoUrl.startsWith("./")) {
         demoUrl = basePrefix + demoUrl.substring(2);
       }
-    } catch (error) {}
+    } catch (error) { }
+  }
+  if (day === "Day 222") {
+    return {
+      demoUrl: "https://html-css-animation-01.netlify.app/",
+      sourceUrl: "https://github.com/dhairyagothi/100_day_100_web_project/blob/Main/public/Html_css_animation/index.html",
+      sourceOnly: false
+    };
   }
 
   return { demoUrl, sourceUrl, sourceOnly };
@@ -325,14 +336,15 @@ function buildProjectCardHTML({
   // derived from one.  sanitizeUrl() blocks javascript:, data:, vbscript:
   // and any other executable protocol while leaving valid http(s) / relative
   // paths untouched.
-  const safeDemoUrl   = sanitizeUrl(demoUrl);
+  const safeDemoUrl = sanitizeUrl(demoUrl);
   const safeSourceUrl = sanitizeUrl(sourceUrl);
+
 
   const tagsArray = Array.isArray(tags)
     ? tags.filter((t) => t !== SOURCE_ONLY_TAG)
     : String(tags || "")
-        .split(/\s+/)
-        .filter((t) => t && t !== SOURCE_ONLY_TAG);
+      .split(/\s+/)
+      .filter((t) => t && t !== SOURCE_ONLY_TAG);
 
   // SECURITY: escapeHTML on every tag token prevents <script> / event-handler
   // injection via the techStack field in projects.json.
@@ -340,13 +352,13 @@ function buildProjectCardHTML({
     .map((t) => `<span class="tag">${escapeHTML(t)}</span>`)
     .join("");
 
-  const project = PROJECTS.find((p) => p.projectName === name || p.day === day);
+  const project = PROJECTS_BY_NAME.get(name) || PROJECTS_BY_DAY.get(day);
 
   // SECURITY: description, day, name and category are all escaped before
   // being written into innerHTML.
-  const description  = escapeHTML(getProjectDescription(project));
-  const safeDay      = escapeHTML(day);
-  const safeName     = escapeHTML(name);
+  const description = escapeHTML(getProjectDescription(project));
+  const safeDay = escapeHTML(day);
+  const safeName = escapeHTML(name);
   const safeCategory = escapeHTML(category);
 
   const difficulty = project ? project.difficulty || "" : "";
@@ -377,7 +389,7 @@ function buildProjectCardHTML({
                         <i class="fab fa-github" aria-hidden="true"></i> Code
                     </a>`;
 
-return {
+  return {
     html: `
             <div class="card-meta">
                 <span class="card-day">${safeDay}</span>
@@ -389,18 +401,17 @@ return {
             </div>
 
             <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
-                <img src="./${url && url.startsWith('./') ? url.split('/')[2] : name.replace(/\s+/g, '_')}/preview.png" alt="${name} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
+                <img src="./${url && url.startsWith('./') ? url.split('/')[2] : name.replace(/\s+/g, '_')}/preview.png" alt="${safeName} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
 
             <h3 class="card-name">${safeName}</h3>
 
-            ${
-              showDescription
-                ? `<div class="card-description">
+            ${showDescription
+        ? `<div class="card-description">
     ${description}
 </div>`
-                : ""
-            }
+        : ""
+      }
             <div class="card-tags">${tagsHTML}</div>
             <div class="card-footer">
                 <div class="card-actions-left">
@@ -419,7 +430,7 @@ return {
 
 function attachProjectCardInteraction(card, demoUrl, projectData = null) {
   card.style.cursor = "pointer";
-  
+
   const activateCard = (e) => {
     if (e.target.closest("a, button")) return;
     if (!demoUrl) return;
@@ -536,9 +547,9 @@ function clearAllTechFilters() {
  * executable context.
  */
 function updateTechFilterDisplay() {
-  const container    = document.getElementById("activeTechFilters");
+  const container = document.getElementById("activeTechFilters");
   const tagsContainer = document.getElementById("techFilterTags");
-  const clearBtn     = document.getElementById("clearTechFilter");
+  const clearBtn = document.getElementById("clearTechFilter");
 
   if (!container || !tagsContainer) return;
 
@@ -938,6 +949,10 @@ function renderGrid() {
   const pageItems = filtered.slice(startIndex, endIndex);
   const fragment = document.createDocumentFragment();
 
+  const bookmarkedDays = new Set(
+    bookmarkedProjects.map((item) => normalizeProjectEntry(item).day),
+  );
+
   pageItems.forEach((project) => {
     const day = project.day;
     const name = project.projectName;
@@ -947,9 +962,7 @@ function renderGrid() {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement("div");
 
-    const isBookmarked = bookmarkedProjects.some(
-      (item) => normalizeProjectEntry(item).day === day,
-    );
+    const isBookmarked = bookmarkedDays.has(day);
 
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
@@ -977,6 +990,7 @@ function renderGrid() {
   renderPagination(filtered.length, totalPages);
 
   syncStateToURL();
+  syncProjectCounts();
 }
 
 function renderPagination(totalItems, totalPages) {
@@ -1331,7 +1345,7 @@ function renderBookmarks() {
     if (!day || !name) return;
 
     const category = getCategoryFromTags(tags, name);
-    
+
     // Updated to use the secure HTML-string approach
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
@@ -1393,7 +1407,7 @@ function renderRecentProjects() {
     const isBookmarked = bookmarkedProjects.some(
       (item) => normalizeProjectEntry(item).day === day,
     );
-    
+
     // Updated to use the secure HTML-string approach
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
@@ -1432,9 +1446,10 @@ const copyBookmarksBtn = document.getElementById("copyBookmarksBtn");
 
 if (bookmarkToggleBtn) {
   bookmarkToggleBtn.addEventListener("click", () => {
-    showAllBookmarks = !showAllBookmarks;
-    bookmarkToggleBtn.textContent = showAllBookmarks ? "Show Less" : "View All";
-    renderBookmarks();
+    const projectsSection = document.getElementById("projects");
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: "smooth" });
+    }
   });
 }
 
@@ -1466,9 +1481,10 @@ if (copyBookmarksBtn) {
 
 if (recentToggleBtn) {
   recentToggleBtn.addEventListener("click", () => {
-    showAllRecent = !showAllRecent;
-    recentToggleBtn.textContent = showAllRecent ? "Show Less" : "View All";
-    renderRecentProjects();
+    const projectsSection = document.getElementById("projects");
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: "smooth" });
+    }
   });
 }
 
@@ -1708,7 +1724,7 @@ function initTechStackSearch() {
 const searchInput = document.getElementById("searchInput");
 const clearSearchBtn = document.getElementById("clearSearch");
 
-function updateCategoryCounts() {
+function updateCategoryCounts(projects = PROJECTS) {
   const counts = {};
   for (const key of Object.keys(FILTER_CATEGORY_MAP)) {
     if (key !== "all") {
@@ -1716,7 +1732,7 @@ function updateCategoryCounts() {
     }
   }
 
-  PROJECTS.forEach((project) => {
+  projects.forEach((project) => {
     const name = project.projectName;
     const tags = project.techStack;
     const category = getCategoryFromTags(tags, name);
@@ -1772,7 +1788,7 @@ function syncProjectCounts() {
     searchInput.placeholder = `Search ${PROJECTS.length.toLocaleString()} projects…`;
   }
 
-  updateCategoryCounts();
+  updateCategoryCounts(filtered);
 }
 
 // Clear button functionality
@@ -1792,8 +1808,7 @@ if (searchInput && clearSearchBtn) {
   });
 }
 
-// Initialize
-syncProjectCounts();
+
 
 /* ============================================================
    NAVBAR — dynamic based on login state
@@ -1888,7 +1903,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   initClearAllFilters();
 
   try {
-    // Await the projects to be fetched
     await loadProjects();
 
     syncProjectCounts();
@@ -1900,6 +1914,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       renderBookmarks();
       renderRecentProjects();
     }
+
+    restoreStateFromURL();
 
     syncProjectCounts();
     fetchRepoStats();
@@ -1917,6 +1933,30 @@ document.addEventListener("DOMContentLoaded", async () => {
       `;
     }
   }
+
+  const searchInput =
+    document.getElementById("search") ||
+    document.querySelector('input[type="text"]') ||
+    document.querySelector(".search-input");
+  if (searchInput) {
+    searchInput.addEventListener(
+      "input",
+      debounce(() => {
+        const { category } = getQueryParams();
+        updateURL(searchInput.value, category);
+        applyFilters(searchInput.value, category);
+      }, 200),
+    );
+  }
+  const categoryFilter = document.getElementById("category");
+  if (categoryFilter) {
+    categoryFilter.addEventListener("change", () => {
+      const { search } = getQueryParams();
+      updateURL(search, categoryFilter.value);
+      applyFilters(search, categoryFilter.value);
+    });
+  }
+  window.addEventListener("popstate", () => restoreStateFromURL());
 });
 
 (() => {
@@ -2345,8 +2385,6 @@ initTheme();
 })();
 
 // =============================================
-// PERSISTENT FILTERS & SEARCH — Issue #3320
-// =============================================
 
 function getQueryParams() {
   const params = new URLSearchParams(window.location.search);
@@ -2396,13 +2434,8 @@ function applyFilters(search, category) {
   renderGrid();
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-  try {
-    await loadProjects();
-    restoreStateFromURL();
-  } catch (error) {
-    console.error("Failed to restore state or load projects:", error);
-  }
+document.addEventListener("DOMContentLoaded", () => {
+
   const searchInput =
     document.getElementById("search") ||
     document.querySelector('input[type="text"]') ||

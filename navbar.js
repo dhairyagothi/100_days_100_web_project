@@ -277,21 +277,23 @@
     const nextState = !currentlyEnabled;
     safeStorage.setItem("customCursorEnabled", String(nextState));
 
-    // Update all cursor toggle buttons on the page (both standard and mobile drawer might have it)
-    document.querySelectorAll("#cursorToggleNav").forEach((btn) => {
-      btn.innerHTML = `
-        <span class="mobile-nav-icon"><i class="fas ${nextState ? "fa-circle-notch" : "fa-mouse-pointer"}" aria-hidden="true"></i></span>
-        Cursor: ${nextState ? "Custom" : "Default"}
-      `;
-      btn.setAttribute(
-        "aria-label",
-        `Toggle custom cursor (currently ${nextState ? "Custom" : "Default"})`,
-      );
-    });
-
-    // Call the custom cursor update function if it exists (on the landing page)
-    if (typeof window.updateCustomCursorState === "function") {
-      window.updateCustomCursorState();
+    // Call the cursor system to enable/disable
+    if (nextState && window.CursorSystem?.enable) {
+      window.CursorSystem.enable();
+    } else if (!nextState && window.CursorSystem?.disable) {
+      window.CursorSystem.disable();
+    } else {
+      // Fallback if cursor system not loaded yet
+      document.querySelectorAll("#cursorToggleNav").forEach((btn) => {
+        btn.innerHTML = `
+          <span class="mobile-nav-icon"><i class="fas ${nextState ? "fa-circle-notch" : "fa-mouse-pointer"}" aria-hidden="true"></i></span>
+          Cursor: ${nextState ? "Custom" : "Default"}
+        `;
+        btn.setAttribute(
+          "aria-label",
+          `Toggle custom cursor (currently ${nextState ? "Custom" : "Default"})`,
+        );
+      });
     }
   });
 })();

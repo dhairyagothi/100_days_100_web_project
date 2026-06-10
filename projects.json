@@ -492,7 +492,7 @@
       "javascript"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/Amazon_Clone/index.html"
+    "projectPath": "./public/AmazonClone/index.html"
   },
   {
     "projectNo": 43,
@@ -1419,7 +1419,7 @@
       "js"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/code-visualizer-playground/index.html"
+    "projectPath": "./public/virtual-playground/index.html"
   },
   {
     "projectNo": 120,
@@ -1516,7 +1516,7 @@
       "javascript"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/Particle Wave Animation/index.html"
+    "projectPath": "./public/particle-wave-animation/index.html"
   },
   {
     "projectNo": 128,
@@ -2180,7 +2180,7 @@
       "css"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/InterviewSimulator/index.html"
+    "projectPath": "./public/interview-prep-hub/index.html"
   },
   {
     "projectNo": 178,
@@ -2396,7 +2396,7 @@
       "javascript"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/story/main.html"
+    "projectPath": "./public/story/story.html"
   },
   {
     "projectNo": 193,
@@ -2476,7 +2476,7 @@
       "javascript"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/Theme-Toggler/src/App.jsx"
+    "projectPath": "./public/Theme-Toggler/index.html"
   },
   {
     "projectNo": 199,
@@ -2643,6 +2643,7 @@
   {
     "projectNo": 211,
     "projectName": "Cricket Scorecard",
+    "projectType": "Tool",
     "projectPath": "./public/Cricket-Scorecard/index.html",
     "techStack": [
       "html",
@@ -2655,6 +2656,7 @@
   {
     "projectNo": 212,
     "projectName": "Tower Blocks Stacker",
+    "projectType": "Game",
     "projectPath": "./public/tower_stacker/index.html",
     "techStack": [
       "html",

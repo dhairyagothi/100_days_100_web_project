@@ -29,11 +29,9 @@ function generateUUID() {
 
 const defaultNotes = [
   {
-
     id: crypto.randomUUID(),
     title: "Welcome to Premium Notes",
-    content:
-
+    content: "This is your first note. Click to edit it!",
     tag: "Ideas",
     color: "teal",
     favorite: true,
@@ -114,13 +112,15 @@ const elements = {
   unlockError: document.getElementById("unlockError"),
 };
 
-elements.lockedInput.addEventListener("change", () => {
+if (elements.lockedInput) {
+  elements.lockedInput.addEventListener("change", () => {
   elements.passwordField.hidden = !elements.lockedInput.checked;
 
   if (!elements.lockedInput.checked) {
     elements.passwordInput.value = "";
   }
 });
+}
 
 function loadNotes() {
   try {
@@ -617,9 +617,7 @@ function handleSubmit(event) {
 
     locked: isLocked,
 
-    password: isLocked
-      ? password
-      : "",
+    password: isLocked ? btoa(password) : "",
   };
 
   if (
@@ -723,7 +721,7 @@ function handleUnlock() {
   if (!note) return;
 
   if (
-    elements.unlockInput.value ===
+    btoa(elements.unlockInput.value) ===
     note.password
   ) {
     closeUnlockModal();
@@ -810,10 +808,10 @@ function setTheme(theme) {
     theme === "light"
   );
 
-  elements.themeToggle.textContent =
+  elements.themeToggle.innerHTML =
     theme === "light"
-      ? "Dark"
-      : "Light";
+      ? '<i class="ri-moon-line"></i>'
+      : '<i class="ri-sun-line"></i>';
 
   localStorage.setItem(
     THEME_KEY,
@@ -869,8 +867,7 @@ function importNotes(event) {
             "Invalid backup"
           );
 
-        state.notes =
-          imported.map(normalizeNote);
+        state.notes = imported .filter( (note) => note && typeof note === "object" ) .map(normalizeNote);
 
         saveNotes();
 
@@ -955,7 +952,7 @@ elements.tagList.addEventListener(
 elements.searchInput.addEventListener(
   "input",
   (event) => {
-    state.query = event.target.value;
+    state.query = event.target instanceof HTMLInputElement ? event.target.value : "";
 
     render();
   }

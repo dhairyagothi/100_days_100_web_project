@@ -456,7 +456,15 @@ function showError(msg) {
 // ── Events ────────────────────────────────────────────
 searchBtn.addEventListener("click", () => {
   const q = cityInput.value.trim();
-  if (q) fetchByName(q);
+  if (!q) {
+    showError("Please enter a city name first.");
+    return;
+  }
+  if (/[0-9]/.test(q)) {
+    showError("City names should not contain numbers.");
+    return;
+  }
+  fetchByName(q);
 });
 cityInput.addEventListener("keypress", e => { if (e.key === "Enter") searchBtn.click(); });
 geoBtn.addEventListener("click", () => {
