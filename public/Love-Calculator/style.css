@@ -8,6 +8,14 @@
     font-family: 'Nunito', sans-serif;
 }
 
+:root {
+    --bg-start: #ff4e9b; --bg-end: #db2777;
+}
+.dark-theme { --bg-start: #1e293b; --bg-end: #334155; }
+.purple-theme { --bg-start: #7e22ce; --bg-end: #581c87; }
+.blue-theme { --bg-start: #0284c7; --bg-end: #0f172a; }
+.red-theme { --bg-start: #dc2626; --bg-end: #7f1d1d; }
+
 /* Updated body styling with animated gradient background */
 
 /* Animated gradient background */
@@ -22,13 +30,9 @@ body {
 
    /* Darker consistent pink gradient */
 
-background: linear-gradient(
-    -45deg,
-    #ff4e9b,
-    #f54291,
-    #ec4899,
-    #db2777
-);
+
+background: linear-gradient(-45deg, var(--bg-start), var(--bg-end));
+transition: background 0.5s ease;
 
     background-size: 400% 400%;
 
@@ -640,4 +644,151 @@ input:focus~.highlight {
     100% {
         opacity: 0.5;
     }
+}
+
+.glass-card {
+    width: 90%;
+    max-width: 500px;
+
+    padding: 2rem;
+
+    border-radius: 20px;
+
+    backdrop-filter: blur(10px);
+
+    background: rgba(255,255,255,0.15);
+
+    border: 1px solid rgba(255,255,255,0.2);
+
+    box-shadow:
+    0 8px 32px rgba(0,0,0,0.2);
+}
+
+input {
+    width: 100%;
+    padding: 14px 18px;
+
+    border: none;
+    border-radius: 12px;
+
+    margin-top: 10px;
+
+    font-size: 1rem;
+
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+    0 0 0 3px rgba(255,255,255,0.4);
+}
+
+button {
+    width: 100%;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #ff4f81;
+
+    color: white;
+
+    font-size: 1rem;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+    0 10px 20px rgba(0,0,0,0.2);
+}
+
+#result {
+    margin-top: 25px;
+
+    text-align: center;
+
+    padding: 20px;
+
+    border-radius: 15px;
+
+    background: rgba(255,255,255,0.15);
+
+    animation: fadeIn 0.5s ease;
+}
+.score {
+    font-size: 3rem;
+
+    font-weight: bold;
+
+    color: white;
+
+    animation: pop 0.6s ease;
+}
+@keyframes pop {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .glass-card {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .score {
+        font-size: 2.5rem;
+    }
+}
+.theme-switcher { 
+    position: fixed; 
+    top: 20px; 
+    right: 20px; 
+    z-index: 100; 
+}
+.theme-switcher select {
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    cursor: pointer;
+}
+.hidden { display: none !important; }
+
+.music-player { position: fixed; bottom: 20px; right: 20px; z-index: 100; }
+.music-btn { background: #ec4899; color: white; border: none; padding: 15px; border-radius: 50%; cursor: pointer; font-size: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+.song-list { position: absolute; bottom: 70px; right: 0; background: rgba(255,255,255,0.95); padding: 10px; border-radius: 15px; width: 200px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+.song-list div { padding: 10px; cursor: pointer; color: #333; border-bottom: 1px solid #eee; }
+.song-list div:hover { color: #ec4899; }
+
+.emoji-display {
+position: absolute;
+right: 15px;
+top: 15px;
+font-size: 1.2rem;
+pointer-events: none;
 }

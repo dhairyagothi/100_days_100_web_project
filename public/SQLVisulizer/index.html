@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SQL Query Visualizer</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="header">
+    <div class="header-brand">
+      <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <ellipse cx="12" cy="5" rx="9" ry="3"/>
+        <path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/>
+        <path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/>
+      </svg>
+      <h1>SQL Query Visualizer</h1>
+    </div>
+    <div class="header-actions">
+      <button id="theme-toggle" class="btn btn-icon" title="Toggle theme" aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+      <button id="save-query" class="btn btn-secondary" title="Save query to browser">Save</button>
+      <button id="load-query" class="btn btn-secondary" title="Load saved query">Load</button>
+    </div>
+  </header>
+
+  <main class="main-layout">
+    <!-- Sidebar: Tables & Examples -->
+    <aside class="sidebar">
+      <section class="panel">
+        <h2 class="panel-title">Sample Tables</h2>
+        <div id="table-list" class="table-list"></div>
+      </section>
+      <section class="panel">
+        <h2 class="panel-title">Example Queries</h2>
+        <div id="example-list" class="example-list"></div>
+      </section>
+    </aside>
+
+    <!-- Editor Panel -->
+    <section class="editor-panel">
+      <div class="editor-toolbar">
+        <span class="editor-tab active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+          query.sql
+        </span>
+        <div class="toolbar-actions">
+          <label class="learning-toggle">
+            <input type="checkbox" id="learning-mode" checked>
+            <span>Learning Mode</span>
+          </label>
+          <button id="run-query" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            Run
+          </button>
+        </div>
+      </div>
+      <div class="editor-wrapper">
+        <div class="line-numbers" id="line-numbers" aria-hidden="true">1</div>
+        <div class="editor-container">
+          <pre class="editor-highlight" id="editor-highlight" aria-hidden="true"></pre>
+          <textarea id="sql-editor" class="sql-editor" spellcheck="false" placeholder="Write your SQL query here...">SELECT e.name, d.name AS department
+FROM employees e
+INNER JOIN departments d ON e.department_id = d.id
+WHERE e.salary > 50000
+ORDER BY e.salary DESC
+LIMIT 5;</textarea>
+        </div>
+      </div>
+      <div id="parse-error" class="parse-error hidden" role="alert"></div>
+    </section>
+
+    <!-- Visualization Panel -->
+    <section class="viz-panel">
+      <div class="viz-header">
+        <h2>Execution Flow</h2>
+        <div class="step-controls">
+          <button id="step-prev" class="btn btn-icon" disabled title="Previous step" aria-label="Previous step">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <span id="step-indicator" class="step-indicator">Step 0 / 0</span>
+          <button id="step-next" class="btn btn-icon" disabled title="Next step" aria-label="Next step">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <button id="step-play" class="btn btn-icon" title="Auto-play steps" aria-label="Auto-play">
+            <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div id="timeline" class="timeline"></div>
+
+      <div id="step-explanation" class="step-explanation hidden">
+        <div class="explanation-icon">💡</div>
+        <div id="explanation-text" class="explanation-text"></div>
+      </div>
+
+      <div id="join-diagram" class="join-diagram hidden"></div>
+
+      <div id="viz-content" class="viz-content">
+        <div class="empty-state" id="empty-state">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48">
+            <ellipse cx="12" cy="5" rx="9" ry="3"/>
+            <path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/>
+            <path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/>
+          </svg>
+          <p>Click <strong>Run</strong> to visualize your SQL query step-by-step</p>
+        </div>
+      </div>
+
+      <div class="viz-footer">
+        <button id="download-csv" class="btn btn-secondary" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Download CSV
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Table Preview Modal -->
+  <div id="table-modal" class="modal hidden" role="dialog" aria-labelledby="modal-title">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-title">Table Preview</h3>
+        <button class="btn btn-icon modal-close" aria-label="Close">&times;</button>
+      </div>
+      <div id="modal-body" class="modal-body"></div>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

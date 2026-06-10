@@ -153,14 +153,7 @@ header {
   position: sticky;
   top: 0;
   z-index: 100;
-  padding: 16px 20px 16px 170px;
-  background: var(--page-bg-mid);
-}
-
-@media (max-width: 768px) {
-  header {
-    padding: 60px 16px 16px 16px;
-  }
+  padding: 16px 20px 0;
 }
 
 .navbar {
@@ -177,7 +170,7 @@ header {
   box-shadow: var(--glass-shadow);
   border-radius: 20px;
   padding: 12px 20px;
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -188,7 +181,6 @@ header {
   flex-wrap: wrap;
   gap: 8px;
 }
-
 
 /* Remove list styling from nested navigation lists */
 .nav-left ul,
@@ -305,7 +297,6 @@ section {
 .hero {
   text-align: center;
   width: 100%;
-  margin-bottom: 1rem;
   padding: 36px 24px 28px;
   background: var(--hero-tint);
   border: 1px solid var(--glass-border);
@@ -386,7 +377,7 @@ section {
   text-align: right;
 }
 
-/* ---------- Input Panel ---------- */
+/* ---------- Input Registration Panel ---------- */
 .input-panel {
   width: 100%;
   background: var(--hero-tint);
@@ -431,48 +422,10 @@ section {
   background-position: right 14px center;
   padding-right: 36px;
   cursor: pointer;
+  /* Force browser native UI (dropdown arrow, date-picker icon) to render
+     in light/white tones so they contrast against the dark background */
+  color-scheme: dark;
 }
-#eisenhower-select {
-  flex: 0 0 200px;
-  min-width: 160px;
-  height: 52px;
-  padding: 0 36px 0 18px;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background-color: rgba(255, 255, 255, 0.96);
-  color: #121212;
-  font-size: 15px;
-  font-family: var(--font-family);
-  outline: none;
-  appearance: none;
-  -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  cursor: pointer;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-#eisenhower-select:focus {
-  border-color: rgba(124, 99, 255, 0.55);
-  box-shadow: 0 0 0 4px rgba(124, 99, 255, 0.12);
-}
-
-.priority-tag {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 12px;
-  border-radius: 100px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  white-space: nowrap;
-}
-
-.priority-tag.urgent-important { background: #ffe5e5; color: #c0392b; }
-.priority-tag.important-only   { background: #fff8e1; color: #b7790a; }
-.priority-tag.urgent-only      { background: #fff3e0; color: #c0650a; }
-.priority-tag.neither          { background: #f0f0f0; color: #5a6475; }
 
 #task {
   flex: 1;
@@ -544,8 +497,65 @@ section {
   transform: translateY(0);
 }
 
-/* ---------- Empty State ---------- */
-.empty-state {
+/* ---------- Clear Done Button ---------- */
+#cleardone {
+  height: 46px;
+  padding: 0 28px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: var(--font-family);
+  background: linear-gradient(135deg, #14b8a6, #0f766e);
+  box-shadow: 0 8px 24px rgba(20, 184, 166, 0.24);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+#cleardone:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(20, 184, 166, 0.35);
+}
+
+#cleardone:active {
+  transform: translateY(0);
+}
+
+/* ---------- Filter Bar ---------- */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  width: 100%;
+  padding: 4px 0;
+}
+
+.filter-btn {
+  padding: 8px 18px;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-family);
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition),
+    border-color var(--transition), box-shadow var(--transition);
+  white-space: nowrap;
+}
+
+.filter-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   INTERACTIVE DRAG AND DROP KANBAN WORKSPACE TRACKS
+   ============================================================ */
+.kanban-wrapper-board {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -621,8 +631,17 @@ section {
   }
 }
 
-.notes:active {
-  cursor: grabbing;
+/* @keyframes fadeOut — used by deleteTask() exit animation */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
 }
 
 /* ---------- Category Badge ---------- */
@@ -659,14 +678,8 @@ section {
   border: 1px solid rgba(16, 24, 56, 0.06);
   outline: none;
   min-height: 44px;
-  /*Lock width to 100% of the card, but allow pulling it down vertically */
-  max-width: 100%;
-  min-width: 100%;
-  resize: vertical;
-
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition: border-color var(--transition), box-shadow var(--transition);
 }
-
 
 .note-text:focus {
   border-color: rgba(124, 99, 255, 0.45);
@@ -674,18 +687,33 @@ section {
 }
 
 /* ---------- Completed Animation ---------- */
-
-/* FIX 3: Previously .completed was on the card element, so text-decoration and
-   opacity affected the entire card, including button labels and the category badge.
-   Changed to .completed, .note-text so only the task text gets the strikethrough
-*/
-.completed .note-text {
+.completed {
   text-decoration: line-through;
-  text-decoration-color: var(--success);
-  text-decoration-thickness: 2px;
-  text-decoration-skip-ink: none;
-  opacity: 0.55;
-  transition: opacity var(--transition), text-decoration-color var(--transition);
+  opacity: 0.60;
+  position: relative;
+}
+
+.completed::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 2px;
+  background: var(--success);
+  border-radius: 2px;
+  animation: strikeThrough 0.35s ease forwards;
+  transform-origin: left;
+}
+
+@keyframes strikeThrough {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
 }
 
 /* ---------- Actions (Dropdown + Buttons) ---------- */
@@ -809,6 +837,7 @@ section {
 }
 
 .doc-name {
+  font-size: 0.9rem;
   font-weight: 700;
   font-size: 14px;
   color: var(--text-primary);
@@ -855,6 +884,10 @@ section {
 }
 
 .doc-btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
   cursor: pointer;
   padding: 8px 16px;
   border-radius: 12px;
@@ -965,7 +998,7 @@ section {
   color: white;
   padding: 14px 24px;
   border-radius: 16px;
-  /* display: none; */
+  display: none;
   z-index: 1000;
   font-weight: 600;
   font-size: 15px;
@@ -1000,7 +1033,8 @@ section {
 
   .input-group {
     flex-direction: column;
-    align-items: stretch;
+    gap: 12px;
+    width: 100%;
   }
 
   #task-category {
@@ -1034,9 +1068,8 @@ section {
 
 @media (max-width: 480px) {
   header {
-    padding: 65px 10px 16px 10px;
+    padding: 10px 10px 0;
   }
-
 
   .navbar {
     flex-direction: column;
