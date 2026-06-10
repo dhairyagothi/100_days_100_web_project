@@ -1,22 +1,35 @@
-const toggleBtn = document.getElementById("themeToggle");
+// // Theme Toggle Functionality
+ const themeToggleBtn = document.getElementById("themeToggleBtn");
+ const htmlElement = document.documentElement;
 
-toggleBtn.addEventListener("click", () => {
-    document.body.classList.toggle("dark-mode");
-
-    if(document.body.classList.contains("dark-mode")){
-        toggleBtn.textContent = "☀️";
-        localStorage.setItem("theme","dark");
-    } else {
-        toggleBtn.textContent = "🌙";
-        localStorage.setItem("theme","light");
+// // Toggle theme
+const toggleTheme = () => {
+    const currentTheme = htmlElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    htmlElement.setAttribute('data-theme', newTheme);
+    document.body.classList.toggle('dark-mode', newTheme === 'dark'); // ADD THIS
+    localStorage.setItem('theme', newTheme);
+    
+//     // Update button text/icon
+     if (themeToggleBtn) {
+        const icon = themeToggleBtn.querySelector('i');
+        const label = themeToggleBtn.querySelector('span');
+        if (icon) icon.className = theme === 'dark' ? 'ph ph-sun' : 'ph ph-moon';
+        if (label) label.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
     }
-});
+}
 
-window.addEventListener("load", () => {
-    const savedTheme = localStorage.getItem("theme");
+const toggleTheme = () => {
+    const current = htmlElement.getAttribute('data-theme');
+    applyTheme(current === 'dark' ? 'light' : 'dark');
+};
 
-    if(savedTheme === "dark"){
-        document.body.classList.add("dark-mode");
-        toggleBtn.textContent = "☀️";
-    }
-});
+if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', toggleTheme);
+}
+
+const savedTheme = localStorage.getItem('theme') ||
+    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+applyTheme(savedTheme);

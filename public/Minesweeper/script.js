@@ -7,6 +7,103 @@ const boardDiv = document.getElementById('board');
 const messageDiv = document.getElementById('message');
 const restartBtn = document.getElementById('restart-btn');
 
+//web audio setup
+let audioCtx=null;
+
+function getAudioContext(){
+    if(!audioCtx){
+        audioCtx = new(window.AudioContext ||window.webkitAudioContext)();
+    }
+    if(audioCtx.state==='suspended'){
+        audioCtx.resume();
+    }
+    return audioCtx;
+}
+//safe tile sound
+async function playSafeSound() {
+    const ctx = getAudioContext();
+    await ctx.resume(); // Wait until context is truly running before scheduling
+ 
+    // Create oscillator for the tick tone
+    const osc = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+ 
+    osc.connect(gainNode);
+    gainNode.connect(ctx.destination);
+ 
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, ctx.currentTime);           // High A note
+    osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.05); // Quick drop
+ 
+    gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12); // Fast fade-out
+ 
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.12); // Short tick duration
+}
+//bomb explosion sound
+async function playBombSound() {
+    const ctx = getAudioContext();
+    await ctx.resume(); // Wait until context is truly running before scheduling
+ 
+    // --- Noise source (raw explosion texture) ---
+    const bufferSize = ctx.sampleRate * 0.8; // 0.8 seconds of noise
+    const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1; // Fill with white noise (-1 to 1)
+    }
+ 
+    const noiseSource = ctx.createBufferSource();
+    noiseSource.buffer = noiseBuffer;
+ 
+    // --- Lowpass filter (~400Hz) — makes the noise sound deep and boomy ---
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(400, ctx.currentTime);
+ 
+    // --- Gain envelope — sharp attack, exponential decay (blast fade-out) ---
+    const gainNode = ctx.createGain();
+    gainNode.gain.setValueAtTime(1.5, ctx.currentTime);           // Peak volume
+    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8); // Fade to silence
+ 
+    // --- Wire up: noise → filter → gain → output ---
+    noiseSource.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(ctx.destination);
+ 
+    noiseSource.start(ctx.currentTime);
+    noiseSource.stop(ctx.currentTime + 0.8); // Match buffer length
+}
+//victory sound
+async function playVictorySound() {
+    const ctx = getAudioContext();
+    await ctx.resume(); // Wait until context is truly running before scheduling
+ 
+    // Three notes of an ascending major chord (C5, E5, G5)
+    const notes = [523.25, 659.25, 783.99];
+ 
+    notes.forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gainNode = ctx.createGain();
+ 
+        osc.connect(gainNode);
+        gainNode.connect(ctx.destination);
+ 
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+ 
+        // Stagger each note by 0.15s so they play as an arpeggio
+        const startTime = ctx.currentTime + i * 0.15;
+        gainNode.gain.setValueAtTime(0, startTime);
+        gainNode.gain.linearRampToValueAtTime(0.4, startTime + 0.05);  // Quick attack
+        gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + 0.6); // Slow decay
+ 
+        osc.start(startTime);
+        osc.stop(startTime + 0.6);
+    });
+}
+
 // Generate 4 unique random bomb coordinates
 function generateBombs() {
     bomblist = [];
@@ -67,6 +164,7 @@ function handleCellClick(coord) {
 
     if (bomblist.includes(coord)) {
         gameOver = true;
+        playBombSound();
         messageDiv.innerText = 'YOU LOST :(';
         messageDiv.style.color = '#ff4d4d';
         revealAllBombs();
@@ -78,10 +176,13 @@ function handleCellClick(coord) {
         
         if (attemptlist.length === 21) {
             gameOver = true;
+            playVictorySound();
             messageDiv.innerText = 'YOU WIN!!!!';
             messageDiv.style.color = '#28a745';
             revealAllBombs();
             restartBtn.style.display = 'inline-block';
+        }else {
+            playSafeSound(); 
         }
     }
 }

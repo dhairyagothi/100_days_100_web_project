@@ -5,6 +5,13 @@ const defaults = {
   role: 'UI/UX Designer',
   bio: 'Hardworking and reliable UI/UX designer focused on going above and beyond to support teams and serve customers.',
   image: 'logo/Adobe Express - file.png',
+};
+
+const initialFormState = {
+  name: '',
+  role: '',
+  bio: '',
+  image: '',
   imageUrl: '',
   github: '',
   linkedin: '',
@@ -42,18 +49,14 @@ const elements = {
   socialLinks: document.querySelector('#socialLinks'),
 };
 
-let state = loadState();
+let state = loadState() || { ...defaults };
 
 function loadState() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (saved?.theme === '#bb7ab1' && saved?.darkMode === false) {
-      saved.theme = defaults.theme;
-      saved.darkMode = defaults.darkMode;
-    }
-    return { ...defaults, ...saved };
+    return { ...initialFormState, ...saved };
   } catch (error) {
-    return { ...defaults };
+    return { ...initialFormState };
   }
 }
 
@@ -88,6 +91,37 @@ function setText(element, value, fallback) {
   element.textContent = getDisplayValue(value, fallback);
 }
 
+const SOCIAL_PLATFORMS = {
+  github: { base: 'https://github.com/', domain: 'github.com' },
+  linkedin: { base: 'https://linkedin.com/in/', domain: 'linkedin.com' },
+  twitter: { base: 'https://x.com/', domain: 'x.com' },
+  instagram: { base: 'https://instagram.com/', domain: 'instagram.com' },
+};
+
+function getAbsoluteSocialUrl(platform, value) {
+  const cleaned = value.trim();
+  if (!cleaned) return '';
+  
+  if (/^https?:\/\//i.test(cleaned)) {
+    return cleaned;
+  }
+  
+  const info = SOCIAL_PLATFORMS[platform];
+  if (!info) return cleaned;
+  
+  if (cleaned.toLowerCase().includes(info.domain)) {
+    return `https://${cleaned.replace(/^www\./i, '')}`;
+  }
+  
+  const username = cleaned.replace(/^@/, '');
+  
+  if (platform === 'linkedin' && username.startsWith('in/')) {
+    return `https://linkedin.com/${username}`;
+  }
+  
+  return `${info.base}${username}`;
+}
+
 function isValidUrl(value) {
   if (!value.trim()) {
     return true;
@@ -102,26 +136,37 @@ function isValidUrl(value) {
 }
 
 function updateSocialLinks() {
-  const socialValues = {
-    github: state.github,
-    linkedin: state.linkedin,
-    twitter: state.twitter,
-    instagram: state.instagram,
-  };
-
   elements.socialLinks.querySelectorAll('a').forEach((link) => {
     const platform = link.dataset.platform;
-    const url = socialValues[platform];
-    const isActive = isValidUrl(url) && url.trim().length > 0;
+    const inputValue = state[platform];
+    const absoluteUrl = getAbsoluteSocialUrl(platform, inputValue);
+    const isActive = absoluteUrl && isValidUrl(absoluteUrl);
 
     link.classList.toggle('is-hidden', !isActive);
-    link.href = isActive ? url : '#';
+    link.href = isActive ? absoluteUrl : '#';
     link.target = isActive ? '_blank' : '';
     link.rel = isActive ? 'noopener noreferrer' : '';
   });
 }
 
 function updateValidation() {
+  const invalidFields = [];
+  
+  if (elements.imageUrl.value.trim() && !isValidUrl(elements.imageUrl.value)) {
+    invalidFields.push(elements.imageUrl);
+  }
+  
+  const socialPlatforms = ['github', 'linkedin', 'twitter', 'instagram'];
+  socialPlatforms.forEach((platform) => {
+    const field = elements[platform];
+    if (field.value.trim()) {
+      const absoluteUrl = getAbsoluteSocialUrl(platform, field.value);
+      if (!isValidUrl(absoluteUrl)) {
+        invalidFields.push(field);
+      }
+    }
+  });
+
   const urlFields = [
     elements.imageUrl,
     elements.github,
@@ -129,14 +174,13 @@ function updateValidation() {
     elements.twitter,
     elements.instagram,
   ];
-
-  const invalidFields = urlFields.filter((field) => !isValidUrl(field.value));
+  
   urlFields.forEach((field) => {
     field.classList.toggle('invalid', invalidFields.includes(field));
   });
 
   elements.validation.textContent = invalidFields.length
-    ? 'Please use complete links that start with http:// or https://.'
+    ? 'Please use complete links or valid usernames/handles.'
     : '';
 }
 
@@ -148,7 +192,10 @@ function updateThemeColor() {
   const darkCard = mixColors(theme, '#111522', 0.2);
   const rgb = hexToRgb(theme);
 
+  const contrastTheme = getContrastColor(theme, state.darkMode);
+
   document.documentElement.style.setProperty('--theme', theme);
+  document.documentElement.style.setProperty('--theme-text', contrastTheme);
   document.documentElement.style.setProperty('--theme-soft', soft);
   document.documentElement.style.setProperty('--theme-muted', muted);
   document.documentElement.style.setProperty('--dark-theme-bg', darkTheme);
@@ -188,6 +235,26 @@ function mixColors(color, base, amount) {
     Math.round(foreground[key] * amount + background[key] * (1 - amount));
 
   return `rgb(${channel('r')}, ${channel('g')}, ${channel('b')})`;
+}
+
+function getColorBrightness(hex) {
+  const rgb = hexToRgb(hex);
+  return (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
+}
+
+function getContrastColor(themeHex, isDarkMode) {
+  const brightness = getColorBrightness(themeHex);
+  
+  if (isDarkMode) {
+    if (brightness < 120) {
+      return mixColors(themeHex, '#ffffff', 0.65);
+    }
+  } else {
+    if (brightness > 160) {
+      return mixColors(themeHex, '#10131e', 0.65);
+    }
+  }
+  return themeHex;
 }
 
 function render() {
@@ -235,6 +302,41 @@ function syncStateFromInputs() {
   render();
 }
 
+function compressAndLoadImage(file, callback) {
+  const reader = new FileReader();
+  reader.addEventListener('load', (e) => {
+    const img = new Image();
+    img.addEventListener('load', () => {
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+      
+      const maxDim = 400;
+      if (width > height) {
+        if (width > maxDim) {
+          height = Math.round((height * maxDim) / width);
+          width = maxDim;
+        }
+      } else {
+        if (height > maxDim) {
+          width = Math.round((width * maxDim) / height);
+          height = maxDim;
+        }
+      }
+      
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      
+      const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+      callback(compressedDataUrl);
+    });
+    img.src = e.target.result;
+  });
+  reader.readAsDataURL(file);
+}
+
 function handleImageUpload(event) {
   const file = event.target.files[0];
 
@@ -242,57 +344,161 @@ function handleImageUpload(event) {
     return;
   }
 
-  const reader = new FileReader();
-  reader.addEventListener('load', () => {
-    state.uploadedImage = reader.result;
-    state.image = reader.result;
+  compressAndLoadImage(file, (compressedDataUrl) => {
+    state.uploadedImage = compressedDataUrl;
+    state.image = compressedDataUrl;
     state.imageUrl = '';
     elements.imageUrl.value = '';
     render();
   });
-  reader.readAsDataURL(file);
 }
 
-async function downloadCard() {
-  if (typeof html2canvas !== 'function') {
-    elements.validation.textContent = 'Download is unavailable until the export library finishes loading.';
+// ===== DOWNLOAD FUNCTIONALITY - FIXED =====
+const downloadWrapper = document.querySelector('#downloadWrapper');
+const downloadDropdown = document.querySelector('#downloadDropdown');
+
+function toggleDropdown(open) {
+  const isOpen = open !== undefined ? open : !downloadDropdown.classList.contains('is-open');
+  downloadDropdown.classList.toggle('is-open', isOpen);
+  elements.download.setAttribute('aria-expanded', String(isOpen));
+}
+
+// Main download button - just opens the dropdown
+elements.download.addEventListener('click', (e) => {
+  e.stopPropagation();
+  e.preventDefault();
+  toggleDropdown(true);
+});
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+  if (!downloadWrapper.contains(e.target)) {
+    toggleDropdown(false);
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') toggleDropdown(false);
+});
+
+// Format selection buttons - THIS IS WHERE DOWNLOAD HAPPENS
+const formatButtons = downloadDropdown.querySelectorAll('[data-format]');
+formatButtons.forEach((btn) => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const fmt = btn.dataset.format;
+    
+    // Close dropdown first
+    toggleDropdown(false);
+    
+    // Add visual feedback
+    btn.style.opacity = '0.6';
+    
+    // Small delay for smooth UX, then download
+    setTimeout(() => {
+      downloadCard(fmt);
+      // Restore button opacity
+      setTimeout(() => { btn.style.opacity = '1'; }, 500);
+    }, 100);
+  });
+});
+
+async function downloadCard(format = 'png') {
+  if (!format) format = 'png';
+  elements.validation.textContent = '';
+
+  // Check if html2canvas is loaded
+  if (typeof html2canvas === 'undefined' || typeof html2canvas !== 'function') {
+    elements.validation.textContent = 'Export library not loaded yet — please wait and try again.';
+    console.error('html2canvas is not loaded');
     return;
   }
 
+  const originalHTML = elements.download.innerHTML;
   elements.download.disabled = true;
-  elements.download.textContent = 'Preparing...';
+  elements.download.innerHTML = 'Preparing…';
   document.body.classList.add('is-exporting');
   elements.card.classList.add('is-exporting');
 
+  let canvas;
   try {
     await waitForImages(elements.card);
     await nextFrame();
+    
+    const rawCanvas = await html2canvas(elements.card, {
+  backgroundColor: format === 'jpg' ? '#ffffff' : null,
+  scale: 2,
+  useCORS: true,
+  allowTaint: true,
+  scrollX: 0,
+  scrollY: 0,
+  logging: false,
+  onclone: (clonedDoc) => {
+    clonedDoc.body.classList.add('is-exporting');
+    const c = clonedDoc.querySelector('#profileCard');
+    if (c) c.classList.add('is-exporting');
+  },
+});
 
-    const canvas = await html2canvas(elements.card, {
-      backgroundColor: null,
-      scale: 2,
-      useCORS: true,
-      scrollX: 0,
-      scrollY: 0,
-      onclone: (clonedDocument) => {
-        clonedDocument.body.classList.add('is-exporting');
-        clonedDocument.querySelector('#profileCard')?.classList.add('is-exporting');
-      },
-    });
-    const link = document.createElement('a');
-    link.download = `${getDisplayValue(state.name, 'profile').toLowerCase().replace(/\s+/g, '-')}-card.png`;
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-  } catch (error) {
-    elements.validation.textContent = 'Unable to export this image. Try an uploaded image or a CORS-enabled image URL.';
+canvas = roundCanvasCorners(rawCanvas, 72);
+
+    const slug = getDisplayValue(state.name, 'profile').toLowerCase().replace(/\s+/g, '-');
+
+    if (format === 'pdf') {
+      // PDF download
+      const jsPDFClass = window.jspdf?.jsPDF || window.jsPDF;
+      
+      if (!jsPDFClass) {
+        throw new Error('PDF library not loaded. Try PNG or JPG instead.');
+      }
+      
+      const imgData = canvas.toDataURL('image/png');
+      const toMm = (px) => Math.round(px * 0.264583 * 10) / 10;
+      const w = toMm(canvas.width);
+      const h = toMm(canvas.height);
+      
+      const doc = new jsPDFClass({
+        orientation: w > h ? 'landscape' : 'portrait',
+        unit: 'mm',
+        format: [w, h],
+        compress: true,
+      });
+      
+      doc.addImage(imgData, 'PNG', 0, 0, w, h, undefined, 'FAST');
+      doc.save(slug + '-card.pdf');
+      
+    } else {
+      // PNG or JPG download
+      const mimeType = format === 'jpg' ? 'image/jpeg' : 'image/png';
+      const dataUrl = canvas.toDataURL(mimeType, 0.92);
+      
+      const link = document.createElement('a');
+      link.download = slug + '-card.' + format;
+      link.href = dataUrl;
+      document.body.appendChild(link);
+      link.click();
+      
+      // Clean up
+      setTimeout(() => {
+        if (link.parentNode) {
+          link.parentNode.removeChild(link);
+        }
+      }, 200);
+    }
+    
+  } catch (err) {
+    console.error('Download error:', err);
+    elements.validation.textContent = 'Download failed: ' + (err.message || String(err));
   } finally {
     document.body.classList.remove('is-exporting');
     elements.card.classList.remove('is-exporting');
     elements.download.disabled = false;
-    elements.download.textContent = 'Download card';
+    elements.download.innerHTML = originalHTML;
   }
 }
 
+// ===== UTILITY FUNCTIONS =====
 function nextFrame() {
   return new Promise((resolve) => requestAnimationFrame(() => resolve()));
 }
@@ -310,6 +516,36 @@ function waitForImages(container) {
     );
 
   return Promise.all(pendingImages);
+}
+
+function roundCanvasCorners(sourceCanvas, radius = 36) {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+
+  canvas.width = sourceCanvas.width;
+  canvas.height = sourceCanvas.height;
+
+  ctx.beginPath();
+  ctx.moveTo(radius, 0);
+  ctx.lineTo(canvas.width - radius, 0);
+  ctx.quadraticCurveTo(canvas.width, 0, canvas.width, radius);
+  ctx.lineTo(canvas.width, canvas.height - radius);
+  ctx.quadraticCurveTo(
+    canvas.width,
+    canvas.height,
+    canvas.width - radius,
+    canvas.height
+  );
+  ctx.lineTo(radius, canvas.height);
+  ctx.quadraticCurveTo(0, canvas.height, 0, canvas.height - radius);
+  ctx.lineTo(0, radius);
+  ctx.quadraticCurveTo(0, 0, radius, 0);
+  ctx.closePath();
+
+  ctx.clip();
+  ctx.drawImage(sourceCanvas, 0, 0);
+
+  return canvas;
 }
 
 function handleCardTilt(event) {
@@ -335,22 +571,24 @@ function resetCardTilt() {
 }
 
 function resetBuilder() {
-  state = { ...defaults };
+  state = { ...initialFormState };
   elements.imageFile.value = '';
   hydrateForm();
   render();
 }
 
+// Event listeners
 elements.form.addEventListener('input', syncStateFromInputs);
 elements.form.addEventListener('change', syncStateFromInputs);
 elements.imageFile.addEventListener('change', handleImageUpload);
-elements.download.addEventListener('click', downloadCard);
 elements.reset.addEventListener('click', resetBuilder);
 
+// Card tilt effect (only on devices with hover)
 if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
   elements.card.addEventListener('pointermove', handleCardTilt);
   elements.card.addEventListener('pointerleave', resetCardTilt);
 }
 
+// Initialize
 hydrateForm();
 render();

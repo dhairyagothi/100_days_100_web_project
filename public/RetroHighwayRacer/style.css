@@ -347,3 +347,60 @@ body {
     0% { background-position-y: 0px, 0px, 0px; }
     100% { background-position-y: 80px, 160px, 160px; } 
 }
+
+.difficulty-selector {
+    margin-bottom: 25px;
+    text-align: center;
+}
+ 
+.difficulty-label {
+    color: #bdc3c7;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+ 
+.difficulty-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+ 
+.difficulty-btn {
+    background: transparent;
+    color: #f1c40f;
+    border: 2px solid #455a64;
+    padding: 8px 18px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+}
+ 
+.difficulty-btn:hover {
+    border-color: #f1c40f;
+    background: rgba(241, 196, 15, 0.1);
+}
+ 
+.difficulty-btn.active {
+    background: #f1c40f;
+    color: #1a1a1a;
+    border-color: #f1c40f;
+}
+ 
+.best-score-banner {
+    background: #2c3e50;
+    border: 1px solid #f1c40f;
+    color: #f1c40f;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 8px 20px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    box-shadow: 0 0 10px rgba(241, 196, 15, 0.15);
+}
