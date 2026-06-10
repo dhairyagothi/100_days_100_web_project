@@ -16,25 +16,30 @@ const authLimiter = rateLimit({
 //POST route to add a person
 router.post('/signup', authLimiter, async(req, res)=>{
     try{
-        const data = req.body
-        const adminUser = await User.findOne({ role: 'admin' });
-        if (data.role === 'admin' && adminUser) {
-            return res.status(400).json({ error: 'Admin user already exists' });
-        }
+        const { name, age, email, mobile, address, aadharCardNumber, password, setupKey } = req.body;
 
         // Validate Aadhar Card Number must have exactly 12 digit
-        if (!/^\d{12}$/.test(data.aadharCardNumber)) {
+        if (!/^\d{12}$/.test(aadharCardNumber)) {
             return res.status(400).json({ error: 'Aadhar Card Number must be exactly 12 digits' });
         }
 
         // Check if a user with the same Aadhar Card Number already exists
-        const existingUser = await User.findOne({ aadharCardNumber: data.aadharCardNumber });
+        const existingUser = await User.findOne({ aadharCardNumber: aadharCardNumber });
         if (existingUser) {
             return res.status(400).json({ error: 'User with the same Aadhar Card Number already exists' });
         }
 
+        // Whitelist fields so role cannot be set from the request body
+        const userData = { name, age, email, mobile, address, aadharCardNumber, password };
+
+        // Allow the first admin only via the server-side ADMIN_SETUP_KEY; otherwise role defaults to voter
+        const adminExists = await User.findOne({ role: 'admin' });
+        if (!adminExists && process.env.ADMIN_SETUP_KEY && setupKey === process.env.ADMIN_SETUP_KEY) {
+            userData.role = 'admin';
+        }
+
         //Create a new User documnet using the Mongoose model
-        const newUser = new User(data);
+        const newUser = new User(userData);
 
         //Save the new user to the database
         const response = await newUser.save();
