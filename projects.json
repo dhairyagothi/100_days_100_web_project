@@ -1818,5 +1818,14 @@
 "techStack":["javascript","html","css"],
 "difficulty":"advanced",
 "projectPath":"./public/Web-Kernal-simulator/index.html"
-}
+},
+{
+"projectNo":183,
+"projectName":"Image Jigsaw Puzzle",
+"projectType":"Game",
+"projectDesc":"A simle jigsaw puzzle game using user provided image",
+"techStack":["javascript","html","css"],
+"difficulty":"intermediate",
+"projectPath":"./public/image-puzzle-jigsaw/index.html"
+  }
 ]
