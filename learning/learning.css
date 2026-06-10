@@ -1557,3 +1557,67 @@ body.light-mode .vector-flowchart {
   color: #fbbf24;
   transform: scale(1.1);
 }
+
+/* =====================================
+   LEARNING ROADMAP
+   ===================================== */
+
+.learning-roadmap-card {
+  margin-bottom: 1.5rem;
+
+  padding: 1.25rem;
+
+  border-radius: var(--radius-lg);
+
+  border: 1px solid var(--border);
+
+  background: var(--bg-elevated);
+}
+
+.roadmap-header {
+  display: flex;
+
+  align-items: center;
+
+  gap: .5rem;
+
+  color: var(--accent);
+
+  margin-bottom: 1rem;
+
+  font-weight: 700;
+}
+
+.roadmap-content h3 {
+  margin-bottom: .5rem;
+}
+
+.roadmap-content p {
+  color: var(--text-secondary);
+
+  margin-bottom: 1rem;
+}
+
+.recommended-topic-btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: .7rem 1rem;
+
+  border-radius: 10px;
+
+  text-decoration: none;
+
+  background: var(--accent);
+
+  color: white;
+
+  font-weight: 600;
+}
+
+.recommended-topic-btn:hover {
+  opacity: .9;
+}
