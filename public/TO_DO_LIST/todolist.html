@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>To-Do List | 100 Days 100 Projects</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="todolist.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.3/jspdf.umd.min.js"
+    integrity="sha512-+EeCylkt9WHJk5tGJxYdecHOcXFRME7qnbsfeMsdQL6NUPYm2+uGFmyleEqsmVoap/f3dN/sc3BX9t9kHXkHHg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
-<body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
 
+<body>
   <!-- Floating decorative shapes -->
   <div class="floating-shapes" aria-hidden="true">
     <div class="shape shape-1"></div>
@@ -23,11 +26,12 @@
 
   <!-- Header with Navigation -->
   <header>
+    <nav aria-label="Main navigation">
       <ul class="navbar">
         <li class="nav-left">
           <ul>
-            <li><a href="#" id="nav-home" onclick="showHome(); return false;" aria-current="page">🏠 Home</a></li>
-            <li><a href="#" id="nav-documents" onclick="showDocuments(); return false;">📄 Documents</a></li>
+            <li><a href="#" id="nav-home" aria-current="page">🏠 Home</a></li>
+            <li><a href="#" id="nav-documents">📄 Documents</a></li>
           </ul>
         </li>
         <li class="nav-right">
@@ -79,8 +83,21 @@
         </div>
         <div class="input-actions">
           <button type="button" id="savepdf">📥 Save as PDF</button>
+          <button type="button" id="cleardone" hidden>🧹 Clear Done</button>
         </div>
       </form>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar" id="filter-bar" role="group" aria-label="Filter tasks">
+        <button class="filter-btn active" data-filter="all" id="filter-all">All</button>
+        <button class="filter-btn" data-filter="pending" id="filter-pending">⏳ Pending</button>
+        <button class="filter-btn" data-filter="done" id="filter-done">✅ Done</button>
+        <button class="filter-btn" data-filter="Work" id="filter-work">💼 Work</button>
+        <button class="filter-btn" data-filter="Personal" id="filter-personal">🧑 Personal</button>
+        <button class="filter-btn" data-filter="Urgent" id="filter-urgent">⚡ Urgent</button>
+        <button class="filter-btn" data-filter="Fitness" id="filter-fitness">💪 Fitness</button>
+        <button class="filter-btn" data-filter="Miscellaneous" id="filter-misc">📌 Misc</button>
+      </div>
 
       <!-- Empty State -->
       <div class="empty-state" id="emptyState" role="status">
@@ -108,8 +125,9 @@
   </main>
 
   <!-- PDF Notification -->
-  <div id="toast" class="pdf-message" role="alert" aria-live="polite"></div>
+  <div id="pdfMessage" class="pdf-message" role="alert" aria-live="polite">✅ PDF Created Successfully!</div>
 
   <script src="todolist.js"></script>
 </body>
+
 </html>

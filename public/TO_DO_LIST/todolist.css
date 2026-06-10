@@ -153,8 +153,8 @@ header {
   position: sticky;
   top: 0;
   z-index: 100;
-  padding: 20px 20px 0;
-  }
+  padding: 16px 20px 0;
+}
 
 .navbar {
   display: flex;
@@ -170,7 +170,7 @@ header {
   box-shadow: var(--glass-shadow);
   border-radius: 20px;
   padding: 12px 20px;
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -297,7 +297,6 @@ section {
 .hero {
   text-align: center;
   width: 100%;
-  margin-bottom: 1rem;
   padding: 36px 24px 28px;
   background: var(--hero-tint);
   border: 1px solid var(--glass-border);
@@ -378,7 +377,7 @@ section {
   text-align: right;
 }
 
-/* ---------- Input Panel ---------- */
+/* ---------- Input Registration Panel ---------- */
 .input-panel {
   width: 100%;
   background: var(--hero-tint);
@@ -423,6 +422,9 @@ section {
   background-position: right 14px center;
   padding-right: 36px;
   cursor: pointer;
+  /* Force browser native UI (dropdown arrow, date-picker icon) to render
+     in light/white tones so they contrast against the dark background */
+  color-scheme: dark;
 }
 
 #task {
@@ -495,8 +497,65 @@ section {
   transform: translateY(0);
 }
 
-/* ---------- Empty State ---------- */
-.empty-state {
+/* ---------- Clear Done Button ---------- */
+#cleardone {
+  height: 46px;
+  padding: 0 28px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: var(--font-family);
+  background: linear-gradient(135deg, #14b8a6, #0f766e);
+  box-shadow: 0 8px 24px rgba(20, 184, 166, 0.24);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+#cleardone:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(20, 184, 166, 0.35);
+}
+
+#cleardone:active {
+  transform: translateY(0);
+}
+
+/* ---------- Filter Bar ---------- */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  width: 100%;
+  padding: 4px 0;
+}
+
+.filter-btn {
+  padding: 8px 18px;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-family);
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition),
+    border-color var(--transition), box-shadow var(--transition);
+  white-space: nowrap;
+}
+
+.filter-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   INTERACTIVE DRAG AND DROP KANBAN WORKSPACE TRACKS
+   ============================================================ */
+.kanban-wrapper-board {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -572,8 +631,17 @@ section {
   }
 }
 
-.notes:active {
-  cursor: grabbing;
+/* @keyframes fadeOut — used by deleteTask() exit animation */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
 }
 
 /* ---------- Category Badge ---------- */
@@ -610,8 +678,6 @@ section {
   border: 1px solid rgba(16, 24, 56, 0.06);
   outline: none;
   min-height: 44px;
-  /* FIX 2: textarea elements show a browser resized handle by default. resize: none removes it entirely. */
-  resize: none;
   transition: border-color var(--transition), box-shadow var(--transition);
 }
 
@@ -621,18 +687,33 @@ section {
 }
 
 /* ---------- Completed Animation ---------- */
-
-/* FIX 3: Previously .completed was on the card element, so text-decoration and
-   opacity affected the entire card, including button labels and the category badge.
-   Changed to .completed, .note-text so only the task text gets the strikethrough
-*/
-.completed .note-text {
+.completed {
   text-decoration: line-through;
-  text-decoration-color: var(--success);
-  text-decoration-thickness: 2px;
-  text-decoration-skip-ink: none;
-  opacity: 0.55;
-  transition: opacity var(--transition), text-decoration-color var(--transition);
+  opacity: 0.60;
+  position: relative;
+}
+
+.completed::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 2px;
+  background: var(--success);
+  border-radius: 2px;
+  animation: strikeThrough 0.35s ease forwards;
+  transform-origin: left;
+}
+
+@keyframes strikeThrough {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
 }
 
 /* ---------- Actions (Dropdown + Buttons) ---------- */
@@ -756,6 +837,7 @@ section {
 }
 
 .doc-name {
+  font-size: 0.9rem;
   font-weight: 700;
   font-size: 14px;
   color: var(--text-primary);
@@ -802,6 +884,10 @@ section {
 }
 
 .doc-btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
   cursor: pointer;
   padding: 8px 16px;
   border-radius: 12px;
@@ -912,7 +998,7 @@ section {
   color: white;
   padding: 14px 24px;
   border-radius: 16px;
-  /* display: none; */
+  display: none;
   z-index: 1000;
   font-weight: 600;
   font-size: 15px;
@@ -947,7 +1033,8 @@ section {
 
   .input-group {
     flex-direction: column;
-    align-items: stretch;
+    gap: 12px;
+    width: 100%;
   }
 
   #task-category {

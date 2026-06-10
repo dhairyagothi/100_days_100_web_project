@@ -10,9 +10,20 @@ const documentsList = document.querySelector('.documents-list');
 const progressFill = document.getElementById("progressFill");
 const progressText = document.getElementById("progressText");
 
-// Data State
+// Data State — loaded from localStorage on startup (Bug 1 fix: persistence)
 let tasks = [];
+try {
+  const stored = localStorage.getItem('todo-tasks');
+  if (stored) tasks = JSON.parse(stored);
+} catch (e) {
+  tasks = [];
+}
 let currentFilter = "all";
+
+// Persist tasks to localStorage on every mutation
+function saveTasks() {
+  try { localStorage.setItem('todo-tasks', JSON.stringify(tasks)); } catch (e) { }
+}
 
 // 2. Core Task CRUD & Operations
 function addTask() {
@@ -24,6 +35,13 @@ function addTask() {
     return;
   }
 
+  // Bug 4 fix: require a category selection; show a clear warning if omitted
+  if (!category) {
+    showToast("⚠️ Please select a category!");
+    taskTypeSelect.focus();
+    return;
+  }
+
   // Find category color from the dropdown configuration (fallback)
   const selectedOption = taskTypeSelect.options[taskTypeSelect.selectedIndex];
   const color = (selectedOption && selectedOption.getAttribute && selectedOption.getAttribute("data-color")) || "#ffb86b";
@@ -32,12 +50,13 @@ function addTask() {
   const newTask = {
     id: Date.now(),
     text: text,
-    category: category || "Misc",
+    category: category,
     color: color,
     completed: false
   };
 
   tasks.push(newTask);
+  saveTasks(); // Bug 1 fix: persist after add
   taskInput.value = "";
   taskTypeSelect.value = ""; // Reset dropdown
 
@@ -50,6 +69,7 @@ function toggleTask(id) {
     if (task.id === id) return { ...task, completed: !task.completed };
     return task;
   });
+  saveTasks(); // Bug 1 fix: persist after toggle
   renderTasks();
 }
 
@@ -60,6 +80,7 @@ function deleteTask(id) {
     card.style.animation = "fadeOut 0.25s ease forwards";
     setTimeout(() => {
       tasks = tasks.filter(task => task.id !== id);
+      saveTasks(); // Bug 1 fix: persist after delete
       renderTasks();
     }, 250);
   }
@@ -71,6 +92,7 @@ function clearDone() {
   if (tasks.length === previousLength) {
     showToast("ℹ️ No completed tasks to clear.");
   } else {
+    saveTasks(); // Bug 1 fix: persist after clear
     renderTasks();
     showToast("🧹 Cleared all finished tasks!");
   }
@@ -95,34 +117,62 @@ function renderTasks() {
     return task.category === currentFilter; // Matches Category Strings
   });
 
+  // Clear container safely — no innerHTML (Bug 2 fix: XSS prevention)
+  taskList.replaceChildren();
+
   // Toggle Visibility of Empty State Element
   if (filteredTasks.length === 0) {
-    taskList.innerHTML = "";
     if (emptyState) {
       taskList.appendChild(emptyState);
       emptyState.style.display = "flex";
     }
   } else {
     if (emptyState) emptyState.style.display = "none";
-    taskList.innerHTML = "";
 
     filteredTasks.forEach((task, idx) => {
-      const card = document.createElement("div");
-      card.className = `notes` + (task.completed ? " completed" : "");
+      // Bug 3 fix: use <li> instead of <div> so <ul> contains valid children
+      const card = document.createElement("li");
+      card.className = "notes" + (task.completed ? " completed" : "");
       card.setAttribute("data-id", task.id);
       card.style.setProperty("--i", idx);
 
-      // FIX 1: Buttons now sit directly in .note-actions as proper flex siblings (no wrapper, no line.)
-      card.innerHTML = `
-        <div class="note-row">
-          <textarea class="note-text" onchange="updateTaskText(${task.id}, this.value)">${task.text}</textarea>
-          <div class="note-actions">
-            <div class="category-badge">${task.category}</div>
-            <button class="note-check" onclick="toggleTask(${task.id})">${task.completed ? '✓' : '✔'}</button>
-            <button class="note-delete" onclick="deleteTask(${task.id})">Delete</button>
-          </div>
-        </div>
-      `;
+      // Bug 2 fix: build the card entirely with safe DOM APIs — no innerHTML
+      const noteRow = document.createElement("div");
+      noteRow.className = "note-row";
+
+      // Editable textarea — textContent sets value safely
+      const textarea = document.createElement("textarea");
+      textarea.className = "note-text";
+      textarea.value = task.text; // safe assignment; no HTML parsing
+      textarea.addEventListener("change", () => updateTaskText(task.id, textarea.value));
+
+      const noteActions = document.createElement("div");
+      noteActions.className = "note-actions";
+
+      const badge = document.createElement("div");
+      badge.className = "category-badge";
+      badge.textContent = task.category; // textContent: never executes scripts
+
+      const btnGroup = document.createElement("div");
+
+      const checkBtn = document.createElement("button");
+      checkBtn.className = "note-check";
+      checkBtn.textContent = task.completed ? "✓" : "✔";
+      checkBtn.addEventListener("click", () => toggleTask(task.id));
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.className = "note-delete";
+      deleteBtn.textContent = "Delete";
+      deleteBtn.addEventListener("click", () => deleteTask(task.id));
+
+      btnGroup.appendChild(checkBtn);
+      btnGroup.appendChild(deleteBtn);
+      noteActions.appendChild(badge);
+      noteActions.appendChild(btnGroup);
+      noteRow.appendChild(textarea);
+      noteRow.appendChild(noteActions);
+      card.appendChild(noteRow);
+
       taskList.appendChild(card);
     });
   }
@@ -135,6 +185,7 @@ function updateTaskText(id, newText) {
     if (task.id === id) return { ...task, text: newText.trim() || "Untitled Task" };
     return task;
   });
+  saveTasks(); // Bug 1 fix: persist inline edits
 }
 
 function updateMetrics() {
@@ -145,23 +196,13 @@ function updateMetrics() {
   // Update progress UI (matches HTML)
   if (progressFill) progressFill.style.width = `${pct}%`;
   if (progressText) progressText.innerText = `${done} / ${total} done`;
+
+  // Show ‘Clear Done’ button only when at least one task is completed
+  const clearDoneBtn = document.getElementById('cleardone');
+  if (clearDoneBtn) clearDoneBtn.hidden = done === 0;
 }
 
 // 4. Tab Navigation System
-// function showHome() {
-//   document.getElementById("btn-home").classList.add("active");
-//   document.getElementById("btn-docs").classList.remove("active");
-//   document.getElementById("home-tab").style.display = "block";
-//   document.getElementById("documents-tab").style.display = "none";
-// }
-
-// function showDocuments() {
-//   document.getElementById("btn-home").classList.remove("active");
-//   document.getElementById("btn-docs").classList.add("active");
-//   document.getElementById("home-tab").style.display = "none";
-//   document.getElementById("documents-tab").style.display = "block";
-// }
-
 function showHome() {
   document.getElementById("nav-home").classList.add("active");
   document.getElementById("nav-documents").classList.remove("active");
@@ -169,8 +210,6 @@ function showHome() {
   document.getElementById("home-tab").style.display = "block";
   document.getElementById("documents-tab").setAttribute("hidden", "");
   document.getElementById("documents-tab").style.display = "none";
-  document.getElementById("documents-tab").hidden = true;
-  document.getElementById("home-tab").hidden = false;
 }
 
 function showDocuments() {
@@ -180,8 +219,6 @@ function showDocuments() {
   document.getElementById("home-tab").style.display = "none";
   document.getElementById("documents-tab").removeAttribute("hidden");
   document.getElementById("documents-tab").style.display = "block";
-  document.getElementById("home-tab").hidden = true;
-  document.getElementById("documents-tab").hidden = false;
 }
 
 // Wire up nav link click listeners
@@ -279,23 +316,66 @@ function appendDocumentToList(fileName, fileURL, taskCount, doneCount, timeLabel
   const docEmptyState = document.getElementById("emptyDocsState");
   if (docEmptyState) docEmptyState.style.display = "none";
 
-  const docItem = document.createElement("div");
+  // Bug 3 fix: use <li> instead of <div> — <ul> must only contain <li> children
+  // Bug 2 fix: build entirely with safe DOM APIs — no innerHTML
+  const docItem = document.createElement("li");
   docItem.className = "doc-item";
-  docItem.innerHTML = `
-    <div class="doc-icon">📄</div>
-    <div class="doc-info">
-      <div class="doc-name">${fileName}</div>
-      <div class="doc-meta">
-        <span class="doc-date">${new Date().toLocaleDateString()} ${timeLabel || ''}</span>
-        <span class="doc-task-count">${taskCount} task${taskCount !== 1 ? 's' : ''} · ${doneCount} done</span>
-      </div>
-    </div>
-    <div class="doc-actions">
-      <button class="doc-btn" onclick="window.open('${fileURL}', '_blank')">View</button>
-      <a class="doc-btn" href="${fileURL}" download="${fileName}" style="text-decoration:none;display:inline-block;text-align:center;">Download</a>
-      <button class="doc-btn del" onclick="removeDocumentItem(this)">Delete</button>
-    </div>
-  `;
+
+  const iconDiv = document.createElement("div");
+  iconDiv.className = "doc-icon";
+  iconDiv.textContent = "📄";
+
+  const infoDiv = document.createElement("div");
+  infoDiv.className = "doc-info";
+
+  const nameDiv = document.createElement("div");
+  nameDiv.className = "doc-name";
+  nameDiv.textContent = fileName; // safe: textContent never parses HTML
+
+  const metaDiv = document.createElement("div");
+  metaDiv.className = "doc-meta";
+
+  const dateSpan = document.createElement("span");
+  dateSpan.className = "doc-date";
+  dateSpan.textContent = `${new Date().toLocaleDateString()} ${timeLabel || ''}`;
+
+  const countSpan = document.createElement("span");
+  countSpan.className = "doc-task-count";
+  countSpan.textContent = `${taskCount} task${taskCount !== 1 ? 's' : ''} · ${doneCount} done`;
+
+  metaDiv.appendChild(dateSpan);
+  metaDiv.appendChild(countSpan);
+  infoDiv.appendChild(nameDiv);
+  infoDiv.appendChild(metaDiv);
+
+  const actionsDiv = document.createElement("div");
+  actionsDiv.className = "doc-actions";
+
+  const viewBtn = document.createElement("button");
+  viewBtn.className = "doc-btn";
+  viewBtn.textContent = "View";
+  viewBtn.addEventListener("click", () => window.open(fileURL, "_blank"));
+
+  const dlLink = document.createElement("a");
+  dlLink.className = "doc-btn";
+  dlLink.href = fileURL;
+  dlLink.download = fileName; // safe attribute assignment
+  dlLink.textContent = "Download";
+  dlLink.style.cssText = "text-decoration:none;display:inline-block;text-align:center;";
+
+  const delBtn = document.createElement("button");
+  delBtn.className = "doc-btn del";
+  delBtn.textContent = "Delete";
+  delBtn.addEventListener("click", () => removeDocumentItem(delBtn));
+
+  actionsDiv.appendChild(viewBtn);
+  actionsDiv.appendChild(dlLink);
+  actionsDiv.appendChild(delBtn);
+
+  docItem.appendChild(iconDiv);
+  docItem.appendChild(infoDiv);
+  docItem.appendChild(actionsDiv);
+
   // PREPEND so newest document is always at the TOP — prevents users from
   // accidentally viewing an older document and thinking tasks are missing.
   documentsList.prepend(docItem);
@@ -346,6 +426,38 @@ if (savePdfBtn) {
   savePdfBtn.addEventListener('click', () => saveAsPDF());
 }
 
+// Wire up Clear Done button click listener
+const clearDoneBtn = document.getElementById('cleardone');
+if (clearDoneBtn) {
+  clearDoneBtn.addEventListener('click', function () {
+    if (typeof clearDone === 'function') clearDone();
+  });
+}
+
+// Wire up filter bar buttons
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (typeof filterTasks === 'function') filterTasks(btn, btn.dataset.filter);
+  });
+});
+
+// --- Workspace Skin (Theme Switcher) ---
+(function initTheme() {
+  // Restore persisted theme on load
+  const saved = localStorage.getItem('todo-workspace-theme');
+  if (saved) document.body.setAttribute('data-theme', saved);
+
+  document.querySelectorAll('.theme-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      const theme = btn.getAttribute('data-theme');
+      if (theme) {
+        document.body.setAttribute('data-theme', theme);
+        localStorage.setItem('todo-workspace-theme', theme);
+      }
+    });
+  });
+})();
+
 // --- Page Initialisation ---
 // Set Home tab as active and apply default/saved theme on load
 showHome();
@@ -356,3 +468,6 @@ try {
 } catch (e) {
   applyTheme('theme1');
 }
+
+// Render tasks loaded from localStorage so they appear immediately on refresh
+renderTasks();
