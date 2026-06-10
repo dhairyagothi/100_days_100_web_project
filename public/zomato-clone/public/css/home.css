@@ -58,7 +58,7 @@
       padding: 0 5%; height: 62px;
       transition: background 0.3s, border-color 0.3s;
     }
-    .nav-logo img { height: 28px; }
+    .nav-logo img { height: 28px;margin-left: 2px; }
     [data-theme="dark"] .nav-logo img { filter: brightness(0) invert(1); }
     .nav-links { display: flex; align-items: center; gap: 22px; }
     .nav-links a { text-decoration: none; color: var(--text); font-size: 14px; font-weight: 500; transition: color 0.2s; }

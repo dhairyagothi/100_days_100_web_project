@@ -59,7 +59,7 @@ Bubble-Game/
 
 ## 📸 Screenshots
 
---screenshot here ---
+<img width="1828" height="979" alt="image" src="https://github.com/user-attachments/assets/105b09d8-2689-41d9-90fe-533269485054" />
 
 
 ---
