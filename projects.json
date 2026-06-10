@@ -2834,5 +2834,15 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/Bubble-Game/index.html"
+  },
+  {
+    "projectNo": 225,
+    "projectName": "AttendancePro",
+    "projectType": "tool",
+    "projectDesc": "A modern web application that helps students track their attendance and monitor their progress towards their target attendance percentage.",
+    "techStack": ["javascript", "html", "css"],
+    "difficulty": "intermediate",
+    "projectPath": "./public/AttendancePro/index.html" 
+    
   }
 ]
