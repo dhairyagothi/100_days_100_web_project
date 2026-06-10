@@ -691,6 +691,7 @@ h3 {
   align-items: center;
   justify-content: center;
   padding: 20px;
+  overflow-y: auto;
   transition:
     opacity 0.3s ease,
     visibility 0.3s ease;
@@ -727,6 +728,9 @@ h3 {
   backdrop-filter: blur(20px);
   box-shadow: var(--shadow);
   position: relative;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  margin: auto;
 }
 
 .modal-close {

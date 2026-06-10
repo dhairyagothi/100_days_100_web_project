@@ -19,6 +19,20 @@ fs.writeFileSync(validRegistryPath, JSON.stringify([
     techStack: ['html', 'css'],
     difficulty: 'beginner',
     projectPath: './public/valid-project/index.html'
+  },
+  {
+    projectNo: 2,
+    projectName: 'Valid Same Repository Blob URL',
+    techStack: ['html'],
+    difficulty: 'intermediate',
+    projectPath: 'https://github.com/dhairyagothi/100_days_100_web_project/blob/Main/index.html'
+  },
+  {
+    projectNo: 3,
+    projectName: 'Valid Same Repository Tree URL',
+    techStack: ['html'],
+    difficulty: 'advanced',
+    projectPath: 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public'
   }
 ], null, 2));
 
@@ -50,6 +64,20 @@ fs.writeFileSync(invalidRegistryPath, JSON.stringify([
     techStack: ['css'],
     difficulty: 'intermediate',
     projectPath: './public/missing/index.html'
+  },
+  {
+    projectNo: 5,
+    projectName: 'External GitHub Blob URL',
+    techStack: ['html'],
+    difficulty: 'advanced',
+    projectPath: 'https://github.com/octocat/Hello-World/blob/master/README'
+  },
+  {
+    projectNo: 6,
+    projectName: 'External GitHub Tree URL',
+    techStack: ['html'],
+    difficulty: 'advanced',
+    projectPath: 'https://github.com/octocat/Hello-World/tree/master'
   }
 ], null, 2));
 
@@ -75,7 +103,9 @@ const expectedMessages = [
   'must be one of: beginner, intermediate, advanced',
   'uses an unsafe URL protocol',
   'must not contain path traversal',
-  'local path "./public/missing/index.html" does not exist in the repository'
+  'local path "./public/missing/index.html" does not exist in the repository',
+  'Index 4 (Day 5 - External GitHub Blob URL): "projectPath" GitHub URLs must point to this repository',
+  'Index 5 (Day 6 - External GitHub Tree URL): "projectPath" GitHub URLs must point to this repository'
 ];
 
 if (invalidResult.status === 0) {

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <link rel="icon" type="image/png" href="./assets/icons/favicon.png" />
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -35,10 +35,12 @@
             <div class="hero-top">
               <div class="hero-logo">AI</div>
               <div class="hero-text">
-                <h1>
-                  <span class="white-text">AI Data</span>
-                  <span class="gradient-text">Analyst</span>
-                </h1>
+                <div class="hero-title-row">
+                  <h1>
+                    <span class="white-text">AI Data</span>
+                    <span class="gradient-text">Analyst</span>
+                  </h1>
+                </div>
                 <p class="hero-description">
                   Upload a CSV dataset and receive automated exploratory data
                   analysis, AI-generated insights, visualizations, and machine
@@ -334,11 +336,22 @@
         <aside class="sidebar">
           <!-- API KEY -->
           <section class="card api-section">
-            <div class="section-header">
-              <span class="section-icon">
-                <i data-lucide="key"></i>
-              </span>
-              <h2>Groq API</h2>
+            <div class="section-header api-header">
+              <div class="api-header-left">
+                <span class="section-icon">
+                  <i data-lucide="key"></i>
+                </span>
+                <h2>Groq API</h2>
+              </div>
+
+              <button
+                class="theme-toggle"
+                id="themeToggleBtn"
+                aria-label="Toggle theme"
+                title="Toggle light/dark mode"
+              >
+                <i data-lucide="orbit" class="theme-icon"></i>
+              </button>
             </div>
             <div class="api-input-group">
               <input

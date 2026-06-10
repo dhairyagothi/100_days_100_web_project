@@ -290,5 +290,68 @@
       "answer": 1,
       "explanation": "The foundational building blocks of all React architectures are reusable, isolated 'Components' that manage their own rendering states and layouts."
     }
+  ],
+
+  "nodejs": [
+    {
+      "question": "What does Node.js primarily enable you to do?",
+      "options": ["Create interactive web animations with JavaScript", "Execute JavaScript code on servers outside the browser", "Style web pages with CSS", "Create databases directly"],
+      "answer": 1,
+      "explanation": "Node.js is a runtime that allows JavaScript to run on servers for backend development, enabling server-side application development with JavaScript."
+    },
+    {
+      "question": "Which of the following best describes the Event Loop?",
+      "options": ["A loop that continuously refreshes the page", "A mechanism that manages asynchronous operations and callbacks", "A JavaScript syntax feature", "A way to format HTML documents"],
+      "answer": 1,
+      "explanation": "The Event Loop handles asynchronous code execution and manages the queue of operations to execute, making Node.js non-blocking."
+    },
+    {
+      "question": "How do you export a function from a Node.js module?",
+      "options": ["export default function() { ... }", "module.exports = function() { ... }", "function export() { ... }", "export function() { ... }"],
+      "answer": 1,
+      "explanation": "CommonJS modules use `module.exports` to export functionality. ES6 modules use `export`, but CommonJS is Node.js default for compatibility."
+    },
+    {
+      "question": "What does npm stand for?",
+      "options": ["Node Package Manager", "Node Programming Module", "Network Packet Manager", "Node Processor Module"],
+      "answer": 0,
+      "explanation": "npm is the official package manager for Node.js, providing access to over 1 million packages for virtually any development task."
+    },
+    {
+      "question": "Which method reads a file without blocking the event loop?",
+      "options": ["fs.readFileSync()", "fs.readFile()", "fs.read()", "fs.getFile()"],
+      "answer": 1,
+      "explanation": "`fs.readFile()` is asynchronous and uses callbacks, not blocking other operations. Always use async methods in production servers."
+    },
+    {
+      "question": "In the Event Loop execution order, what runs before setTimeout callbacks?",
+      "options": ["Synchronous code only", "Promises (microtasks)", "Both synchronous code and promises", "HTTP requests"],
+      "answer": 2,
+      "explanation": "Synchronous code runs first, then microtasks (Promises), then macrotasks (setTimeout). This is the proper Event Loop execution priority order."
+    },
+    {
+      "question": "What is the primary purpose of environment variables?",
+      "options": ["To decorate your code", "To manage configuration and secrets across different environments", "To improve code performance", "To replace functions in your code"],
+      "answer": 1,
+      "explanation": "Environment variables store configuration values and sensitive data without hardcoding them, supporting multiple deployment environments safely."
+    },
+    {
+      "question": "Which HTTP method should you use to create a new resource?",
+      "options": ["GET", "POST", "PUT", "DELETE"],
+      "answer": 1,
+      "explanation": "POST is used to send data and create new resources on the server. GET retrieves, PUT updates, and DELETE removes resources."
+    },
+    {
+      "question": "What does a status code of 404 indicate?",
+      "options": ["Server error", "Success", "Resource not found", "Unauthorized access"],
+      "answer": 2,
+      "explanation": "404 means the requested resource could not be found on the server. 200 indicates success, 500 indicates server error, 401 indicates unauthorized."
+    },
+    {
+      "question": "Which of the following is NOT a typical layer in a layered project architecture?",
+      "options": ["Routes", "Controllers", "Models", "Widgets"],
+      "answer": 3,
+      "explanation": "Typical layers are Routes, Middleware, Controllers, Services, and Models. Widgets are UI components for frontend frameworks, not backend architecture layers."
+    }
   ]
 }

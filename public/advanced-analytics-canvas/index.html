@@ -158,6 +158,14 @@
         .neon-text-cyan {
             color: var(--accent-neon) !important;
         }
+        #algorithmSelect {
+    background:#05070b;
+    color:white;
+    border:1px solid var(--border-glow);
+    padding:8px 12px;
+    border-radius:4px;
+    margin-right:10px;
+}
 
         #terminal-log {
             background-color: #05070b;
@@ -188,6 +196,21 @@
 
             <fieldset class="control-fieldset">
                 <legend>Simulation Control Array</legend>
+                <select id="algorithmSelect">
+                    <option value="bubble">
+                    Bubble Sort
+                    </option>
+
+                    <option value="selection">
+                    Selection Sort
+                    </option>
+                    <option value="insertion">
+                        Insertion Sort
+                    </option>
+                    <option value="quick">
+                         Quick Sort
+                    </option>
+                </select>
                 <button id="trigger-sort-btn" class="btn-primary">Initialize Core Sorotation Sequence</button>
             </fieldset>
         </div>
@@ -199,9 +222,21 @@
                 <span class="telemetry-label">Active Array Volume Allocation:</span>
                 <span id="metric-size" class="telemetry-value">0 entries</span>
             </div>
+
             <div class="telemetry-row">
                 <span class="telemetry-label">Array Transposition Passes:</span>
                 <span id="metric-passes" class="telemetry-value">0 operations</span>
+            </div>
+            <div class="telemetry-row">
+                <span class="telemetry-label">
+                    Total Comparisons:
+                </span>
+
+                <span
+                id="metric-comparisons"
+                class="telemetry-value">
+                0
+                </span>
             </div>
             <div class="telemetry-row">
                 <span class="telemetry-label">Total Execution Engine Latency:</span>
