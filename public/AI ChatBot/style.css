@@ -173,6 +173,14 @@ pre code {
 #send-btn:hover {
     background-color: rgba(51, 110, 123);
 }
+#send-btn:focus-visible,
+#prompt-input:focus-visible,
+.input-group-text:focus-visible,
+.copy-btn:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 3px;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.4);
+}
 
 #output-container {
     flex-grow: 1;
