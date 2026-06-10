@@ -21,10 +21,50 @@ document.addEventListener("DOMContentLoaded", () => {
     const repoLanguage = document.getElementById("repoLanguage");
     const languageBadge = document.getElementById("languageBadge");
 
-    // NEW: insights
+    // Insights
     const issuesCount = document.getElementById("issuesCount");
     const licenseName = document.getElementById("licenseName");
     const defaultBranch = document.getElementById("defaultBranch");
+
+    // =========================
+    // SAFE REPO PARSER (FIXED CODEQL ISSUE)
+    // =========================
+    const extractRepoPath = (rawInput) => {
+        try {
+            const input = rawInput.trim();
+
+            // Case 1: Full GitHub URL
+            if (input.includes("github.com")) {
+                const url = new URL(input);
+
+                // STRICT check (prevents spoofing attacks)
+                if (
+                    url.hostname !== "github.com" &&
+                    url.hostname !== "www.github.com"
+                ) {
+                    return null;
+                }
+
+                const parts = url.pathname.split("/").filter(Boolean);
+
+                if (parts.length >= 2) {
+                    return `${parts[0]}/${parts[1]}`;
+                }
+
+                return null;
+            }
+
+            // Case 2: owner/repo format
+            const parts = input.split("/");
+            if (parts.length >= 2) {
+                return `${parts[0]}/${parts[1]}`;
+            }
+
+            return null;
+        } catch (err) {
+            return null;
+        }
+    };
 
     // =========================
     // FORMAT NUMBER
@@ -32,24 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const formatNumber = (num) => {
         if (num === null || num === undefined) return "0";
         return num > 999 ? (num / 1000).toFixed(1) + "k" : num;
-    };
-
-    // =========================
-    // EXTRACT REPO PATH
-    // =========================
-    const extractRepoPath = (rawInput) => {
-        let path = rawInput.trim();
-
-        if (path.includes("github.com/")) {
-            path = path.split("github.com/")[1];
-        }
-
-        const parts = path.split("/");
-        if (parts.length >= 2) {
-            return `${parts[0]}/${parts[1]}`;
-        }
-
-        return null;
     };
 
     // =========================
@@ -72,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // =========================
-    // FORM SUBMIT
+    // FETCH REPO DATA
     // =========================
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -81,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!repoPath) {
             errorMessage.textContent =
-                "Invalid format. Please enter 'owner/repo' or GitHub URL.";
+                "Invalid GitHub URL or format (use owner/repo).";
             errorMessage.classList.remove("hidden");
             return;
         }
@@ -93,34 +115,27 @@ document.addEventListener("DOMContentLoaded", () => {
             '<span class="material-symbols-outlined">sync</span> Loading...';
 
         try {
-            const response = await fetch(
+            const res = await fetch(
                 `https://api.github.com/repos/${repoPath}`
             );
 
-            if (!response.ok) throw new Error("Repo not found");
+            if (!res.ok) throw new Error("Repo not found");
 
-            const data = await response.json();
+            const data = await res.json();
 
-            // =========================
-            // BASIC INFO
-            // =========================
+            // Main info
             ownerAvatar.src = data.owner.avatar_url;
             ownerName.textContent = data.owner.login;
             repoName.textContent = data.name;
             repoDescription.textContent =
-                data.description ||
-                "No description provided for this repository.";
+                data.description || "No description available.";
 
-            // =========================
-            // STATS
-            // =========================
+            // Stats
             starCount.textContent = formatNumber(data.stargazers_count);
             forkCount.textContent = formatNumber(data.forks_count);
             watcherCount.textContent = formatNumber(data.subscribers_count);
 
-            // =========================
-            // LANGUAGE
-            // =========================
+            // Language
             if (data.language) {
                 repoLanguage.textContent = data.language;
                 languageBadge.style.display = "flex";
@@ -128,27 +143,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 languageBadge.style.display = "none";
             }
 
-            // =========================
-            // INSIGHTS SECTION (NEW)
-            // =========================
-
+            // Insights
             issuesCount.textContent = `${data.open_issues_count} Issues`;
-
             licenseName.textContent =
-                data.license && data.license.name
-                    ? data.license.name
-                    : "No License";
-
+                data.license?.name || "No License";
             defaultBranch.textContent = data.default_branch || "main";
 
-            // enable download
             downloadBtn.disabled = false;
 
         } catch (err) {
             console.error(err);
 
             errorMessage.textContent =
-                "Repository not found. Please check the URL.";
+                "Repository not found. Please check input.";
             errorMessage.classList.remove("hidden");
 
             downloadBtn.disabled = true;
@@ -162,22 +169,22 @@ document.addEventListener("DOMContentLoaded", () => {
     // DOWNLOAD IMAGE
     // =========================
     downloadBtn.addEventListener("click", () => {
-        const cardElement = document.getElementById("promoCard");
+        const card = document.getElementById("promoCard");
 
-        const originalText = downloadBtn.innerHTML;
+        const original = downloadBtn.innerHTML;
 
         downloadBtn.innerHTML =
             '<span class="material-symbols-outlined">sync</span> Generating...';
         downloadBtn.disabled = true;
 
-        html2canvas(cardElement, {
+        html2canvas(card, {
             scale: 2,
             useCORS: true,
             backgroundColor: null,
         })
             .then((canvas) => {
                 const link = document.createElement("a");
-                link.download = `${repoName.textContent}-promo-card.png`;
+                link.download = `${repoName.textContent}-promo.png`;
                 link.href = canvas.toDataURL("image/png");
                 link.click();
 
@@ -185,24 +192,21 @@ document.addEventListener("DOMContentLoaded", () => {
                     '<span class="material-symbols-outlined">check</span> Downloaded!';
 
                 setTimeout(() => {
-                    downloadBtn.innerHTML = originalText;
+                    downloadBtn.innerHTML = original;
                     downloadBtn.disabled = false;
                 }, 1500);
             })
             .catch((err) => {
-                console.error("Download error:", err);
+                console.error(err);
+                alert("Failed to generate image.");
 
-                alert(
-                    "Error generating image. Please try again."
-                );
-
-                downloadBtn.innerHTML = originalText;
+                downloadBtn.innerHTML = original;
                 downloadBtn.disabled = false;
             });
     });
 
     // =========================
-    // INIT DEFAULT THEME
+    // INIT THEME
     // =========================
     applyTheme(themeSelect.value);
 });
