@@ -29,6 +29,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const grassLeft = document.getElementById('grass-left');
     const grassRight = document.getElementById('grass-right');
 
+    // Audio Fallbacks (prevent crashes if audio module is missing)
+    const sounds = window.sounds || {
+        bgm: { pause: () => {}, play: () => Promise.resolve(), playbackRate: 1 },
+        engine: { pause: () => {}, play: () => Promise.resolve(), playbackRate: 1 },
+        whoosh: {}, uiClick: {}, crash: {}
+    };
+    const playSound = window.playSound || function() {};
+    const stopSound = window.stopSound || function() {};
+    let isMuted = typeof window.isMuted !== 'undefined' ? window.isMuted : false;
+
     // 4. Game State
     let isPaused = false;
     let gameActive = false;
@@ -89,7 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
         crashScreen.style.display = 'none';
         pauseScreen.style.display = 'none';
         pauseBtn.style.display = 'flex';
-        document.getElementById('mute-btn').style.display = 'flex';
+        const muteBtnElement = document.getElementById('mute-btn');
+        if (muteBtnElement) muteBtnElement.style.display = 'flex';
         
         // --- THIS IS THE FIX ---
         // We reset the position here to guarantee it's centered every single time
@@ -246,7 +257,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         crashScreen.style.display = 'flex';
         pauseBtn.style.display = 'none';
-        document.getElementById('mute-btn').style.display = 'none'; 
+        const muteBtnElement2 = document.getElementById('mute-btn');
+        if (muteBtnElement2) muteBtnElement2.style.display = 'none'; 
     };
 
     const togglePause = () => {

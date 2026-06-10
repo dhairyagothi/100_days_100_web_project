@@ -35,6 +35,8 @@
 }
 
 .copy-btn:focus {
+    outline: 3px solid #ffffff;
+    outline-offset: 2px;
     outline: none; /* Remove the focus outline to keep the design clean */
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5); /* Optional: add a focus style that matches your design */
 }
@@ -149,6 +151,10 @@ pre code {
 }
 
 #output-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+    scroll-behavior: smooth;
     flex-grow: 1; /* Allow the output container to grow and take up available space */
     overflow-y: auto;
     padding-right: 10px; /* Optional: Add some padding for better appearance */

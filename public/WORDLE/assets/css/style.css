@@ -352,3 +352,114 @@ body.dark-mode { background-color: #121213; color: white; animation: none; }
 body.dark-mode .inputBox { border-color: #3a3a3c; color: white; background-color: #121213; }
 body.dark-mode .button { background-color: #818384; color: white; }
 body.dark-mode .grey { background-color: #3a3a3c !important; border-color: #3a3a3c !important; color: white !important; }
+
+/* Game Over Modal & Overlay Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay:not(.hidden) {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    color: #0f172a;
+    padding: 32px 24px;
+    border-radius: 24px;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+    position: relative;
+    text-align: center;
+    transform: scale(0.95);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-overlay:not(.hidden) .modal-content {
+    transform: scale(1);
+}
+
+.modal-content .cross {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #64748b;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.modal-content .cross:hover {
+    color: #0f172a;
+    transform: scale(1.15);
+}
+
+#game-over-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #3b82f6, #10b981);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#game-over-details {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.next-word-btn {
+    margin: 0 auto;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    height: auto;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: #ffffff !important;
+    border: none;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.next-word-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+}
+
+/* Dark Mode Overrides */
+body.dark-mode .modal-content {
+    background-color: #1e293b;
+    color: #f8fafc;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .modal-content .cross {
+    color: #94a3b8;
+    background: transparent;
+}
+
+body.dark-mode .modal-content .cross:hover {
+    color: #ffffff;
+}
