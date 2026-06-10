@@ -855,7 +855,19 @@ function readStateFromURL() {
 function renderGrid() {
   const grid = document.getElementById("projectGrid");
   const noResults = document.getElementById("noResults");
+
   if (!grid) return;
+
+  // Defensive check
+  if (!Array.isArray(PROJECTS) || PROJECTS.length === 0) {
+    console.warn("Project data unavailable during render");
+    grid.innerHTML = `
+      <div class="loading-state">
+        Loading projects...
+      </div>
+    `;
+    return;
+  }
 
   if (typeof updateClearFiltersBtnVisibility === "function") {
     updateClearFiltersBtnVisibility();
@@ -1901,26 +1913,28 @@ document.addEventListener("DOMContentLoaded", async () => {
   initSorting();
   initTechStackSearch();
   initClearAllFilters();
+try {
+  await loadProjects();
 
-  try {
-    await loadProjects();
+  syncProjectCounts();
 
-    syncProjectCounts();
+  if (hasProjectGrid()) {
+    loadBookmarksFromURL();
+  }
 
-    if (hasProjectGrid()) {
-      loadBookmarksFromURL();
+  // 👇 IMPORTANT FIX (safe render)
+  requestAnimationFrame(() => {
+    renderGrid();
+    renderBookmarks();
+    renderRecentProjects();
+  });
 
-      renderGrid();
-      renderBookmarks();
-      renderRecentProjects();
-    }
+  restoreStateFromURL();
+  syncProjectCounts();
+  fetchRepoStats();
+  initScrollBtn();
 
-    restoreStateFromURL();
-
-    syncProjectCounts();
-    fetchRepoStats();
-    initScrollBtn();
-  } catch (error) {
+} catch (error) {
     console.error("Failed to load projects:", error);
 
     const grid = document.getElementById("projectGrid");
