@@ -620,9 +620,18 @@ function FaultyTerminal({
     };
     document.addEventListener("visibilitychange", handleVisibility);
 
+    let isVisibleInViewport = true;
+    const visibilityObserver = new IntersectionObserver(
+      (entries) => {
+        isVisibleInViewport = entries[0].isIntersecting;
+      },
+      { threshold: 0 },
+    );
+    visibilityObserver.observe(container);
+
     const update = (now) => {
       rafRef.current = requestAnimationFrame(update);
-      if (!isTabVisible) return; // Pause rendering if tab is hidden
+      if (!isTabVisible || !isVisibleInViewport) return; // Pause rendering if tab is hidden or terminal out of viewport
       // throttle rendering to target FPS
       if (now - lastRenderTime < minFrameInterval) return;
       lastRenderTime = now;

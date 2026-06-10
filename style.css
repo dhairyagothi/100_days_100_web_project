@@ -580,7 +580,6 @@ body.light-mode .btn-stats:hover {
 
 /* ============================================================
    MOBILE NAVBAR FINAL FIX
-============================================================ */
 
 .mobile-overlay {
   position: fixed;
@@ -611,10 +610,8 @@ body.light-mode .btn-stats:hover {
 
 /* ============================================================
    MOBILE ONLY
-============================================================ */
 /* ============================================================
    DESKTOP RESPONSIVE CONFIGURATIONS (Restored Base)
-============================================================ */
 @media (min-width: 769px) {
   .mobile-menu-header,
   .mobile-menu-close,
@@ -627,7 +624,6 @@ body.light-mode .btn-stats:hover {
 
 /* ============================================================
    MOBILE RESPONSIVE NAV DRAWER OVERRIDES (Strict Scope)
-============================================================ */
 @media (max-width: 768px) {
   /* Dynamic Background Blur Layer — Allows live scroll mechanics behind panels */
   .mobile-overlay {
@@ -908,7 +904,6 @@ body.light-mode .btn-stats:hover {
 
 /* ============================================================
    DESKTOP FIX
-============================================================ */
 
 @media (min-width: 769px) {
   .mobile-menu-header,

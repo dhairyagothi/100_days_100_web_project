@@ -1832,6 +1832,24 @@ function initScrollBtn() {
   if (!btn) return;
 
   const circumference = 2 * Math.PI * 22;
+  const footer = document.querySelector(".footer");
+  let isFooterVisible = false;
+  let footerTop = 0;
+
+  // Track footer visibility without layout thrashing
+  if (footer) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        isFooterVisible = entries[0].isIntersecting;
+        if (isFooterVisible) {
+          footerTop = footer.offsetTop;
+        }
+      },
+      { threshold: 0 },
+    );
+    observer.observe(footer);
+  }
+
   const updateScrollProgress = () => {
     const scrollTop = window.scrollY;
     const docHeight =
@@ -1845,22 +1863,20 @@ function initScrollBtn() {
       ring.style.strokeDashoffset = circumference * (1 - progress);
     }
 
-    // Footer collision avoidance
-    const footer = document.querySelector(".footer");
-    if (footer) {
-      const footerRect = footer.getBoundingClientRect();
+    // Footer collision avoidance using cached visibility and offset
+    if (isFooterVisible && footer) {
       const windowHeight = window.innerHeight;
+      const scrollBottom = scrollTop + windowHeight;
 
-      if (footerRect.top < windowHeight) {
-        const overlap = windowHeight - footerRect.top;
-        // Cap the upward movement to a maximum of 120px.
-        // This ensures it dodges the important bottom footer links but
-        // doesn't fly completely off the top of the screen when the footer is huge.
+      if (scrollBottom > footerTop) {
+        const overlap = scrollBottom - footerTop;
         const maxOverlap = Math.min(overlap, 120);
         btn.style.bottom = `calc(2rem + ${maxOverlap}px)`;
       } else {
         btn.style.bottom = "2rem";
       }
+    } else {
+      btn.style.bottom = "2rem";
     }
   };
 
@@ -2086,23 +2102,44 @@ initTheme();
 
   const target = { x: 0, y: 0 };
   const current = { x: 0, y: 0 };
-  const speed = 0.18;
+  const targetScale = { val: 1 };
+  const currentScale = { val: 1 };
+  const speed = 0.22; // Slightly increased for better responsiveness
+  const scaleSpeed = 0.15;
+  let rafId = null;
 
   const update = () => {
     if (getActivationState() && !isKeyboardNavigating) {
-      current.x += (target.x - current.x) * speed;
-      current.y += (target.y - current.y) * speed;
+      const dx = target.x - current.x;
+      const dy = target.y - current.y;
+      const ds = targetScale.val - currentScale.val;
 
-      outerCursor.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%)`;
+      // Halt loop if at rest to save CPU
+      if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1 && Math.abs(ds) < 0.001) {
+        current.x = target.x;
+        current.y = target.y;
+        currentScale.val = targetScale.val;
+        outerCursor.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%) scale(${currentScale.val})`;
+        innerCursor.style.transform = `translate3d(${target.x}px, ${target.y}px, 0) translate(-50%, -50%)`;
+        rafId = null;
+        return;
+      }
+
+      current.x += dx * speed;
+      current.y += dy * speed;
+      currentScale.val += ds * scaleSpeed;
+
+      outerCursor.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%) scale(${currentScale.val})`;
       innerCursor.style.transform = `translate3d(${target.x}px, ${target.y}px, 0) translate(-50%, -50%)`;
     }
-    requestAnimationFrame(update);
+    rafId = requestAnimationFrame(update);
   };
 
   const showCursor = () => {
     if (getActivationState() && !isKeyboardNavigating) {
       outerCursor.classList.add("is-visible");
       innerCursor.classList.add("is-visible");
+      if (!rafId) rafId = requestAnimationFrame(update);
     }
   };
 
@@ -2163,8 +2200,8 @@ initTheme();
     if (item) {
       outerCursor.style.borderColor = "rgba(59, 130, 246, 1)";
       outerCursor.style.boxShadow = "0 0 18px rgba(59, 130, 246, 0.6)";
-      outerCursor.style.width = "52px";
-      outerCursor.style.height = "52px";
+      targetScale.val = 1.444; // (52px / 36px) = 1.444
+      if (!rafId) rafId = requestAnimationFrame(update);
     }
   });
 
@@ -2174,14 +2211,14 @@ initTheme();
     if (item) {
       outerCursor.style.borderColor = "rgba(59, 130, 246, 0.7)";
       outerCursor.style.boxShadow = "0 0 12px rgba(59, 130, 246, 0.35)";
-      outerCursor.style.width = "36px";
-      outerCursor.style.height = "36px";
+      targetScale.val = 1;
+      if (!rafId) rafId = requestAnimationFrame(update);
     }
   });
 
   // Initialize activation state
   updateCursorActivationState();
-  requestAnimationFrame(update);
+  rafId = requestAnimationFrame(update);
 })();
 
 // Particle Network Background
@@ -2283,6 +2320,9 @@ initTheme();
     stepParticles();
 
     if (profile.showLinks) {
+      ctx.lineWidth = 1;
+      const buckets = Array.from({ length: 10 }, () => []);
+
       for (let i = 0; i < particleCount; i += 1) {
         for (let j = i + 1; j < particleCount; j += 1) {
           const dx = particles[i].x - particles[j].x;
@@ -2292,20 +2332,49 @@ initTheme();
           if (distanceSq >= maxDistanceSq) continue;
 
           const distance = Math.sqrt(distanceSq);
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(59,130,246,${(1 - distance / linkDistance) * 0.22})`;
-          ctx.lineWidth = 1;
-          ctx.stroke();
+          const alpha = (1 - distance / linkDistance) * 0.22;
+          const bucketIndex = Math.min(9, Math.floor((alpha / 0.22) * 10));
+          buckets[bucketIndex].push({
+            x1: particles[i].x,
+            y1: particles[i].y,
+            x2: particles[j].x,
+            y2: particles[j].y,
+          });
         }
       }
+
+      buckets.forEach((bucket, index) => {
+        if (bucket.length === 0) return;
+        ctx.beginPath();
+        const alpha = ((index + 0.5) / 10) * 0.22;
+        ctx.strokeStyle = `rgba(59,130,246,${alpha})`;
+        bucket.forEach((line) => {
+          ctx.moveTo(line.x1, line.y1);
+          ctx.lineTo(line.x2, line.y2);
+        });
+        ctx.stroke();
+      });
     }
 
+    // Batch particles by hue and alpha to minimize context state changes
+    const particleBuckets = {};
     particles.forEach((particle) => {
+      const alphaBucket = Math.floor(particle.alpha * 10);
+      const key = `${particle.hue}-${alphaBucket}`;
+      if (!particleBuckets[key]) particleBuckets[key] = [];
+      particleBuckets[key].push(particle);
+    });
+
+    Object.keys(particleBuckets).forEach((key) => {
+      const group = particleBuckets[key];
+      const [hue, alphaBucket] = key.split("-");
+      const alpha = parseInt(alphaBucket, 10) / 10;
       ctx.beginPath();
-      ctx.arc(particle.x, particle.y, particle.r, 0, Math.PI * 2);
-      ctx.fillStyle = `hsla(${particle.hue}, 80%, 72%, ${particle.alpha})`;
+      ctx.fillStyle = `hsla(${hue}, 80%, 72%, ${alpha})`;
+      group.forEach((particle) => {
+        ctx.moveTo(particle.x + particle.r, particle.y);
+        ctx.arc(particle.x, particle.y, particle.r, 0, Math.PI * 2);
+      });
       ctx.fill();
     });
   }
