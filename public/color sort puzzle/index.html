@@ -29,7 +29,7 @@ h1 span{color:var(--accent)}
   border-radius:20px;padding:5px 14px;font-size:13px;cursor:pointer;transition:.15s}
 .lbtn:hover{border-color:var(--accent);color:var(--text)}
 .lbtn.on{background:rgba(91,155,213,.18);border-color:var(--accent);color:var(--accent);font-weight:600}
-.ctrls{margin-left:auto;display:flex;gap:8px}
+.ctrls{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
 .cbtn{background:var(--surface);border:1px solid var(--border);color:var(--text);
   border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer;transition:.15s}
 .cbtn:hover{background:var(--surface2);border-color:rgba(255,255,255,.2)}
@@ -37,22 +37,39 @@ h1 span{color:var(--accent)}
 #arena{width:100%;max-width:760px;background:var(--surface);border:1px solid var(--border);
   border-radius:16px;padding:24px 16px;display:flex;flex-wrap:wrap;
   gap:14px;justify-content:center;align-items:flex-end;min-height:300px}
-
-/* ── Tube shell ──
-   The tube is a POSITION:RELATIVE container.
-   We draw segments using ABSOLUTE positioning from the BOTTOM.
-   segment at array[0] → bottom:0
-   segment at array[1] → bottom:52px
-   segment at array[2] → bottom:104px
-   segment at array[3] → bottom:156px   ← visually topmost
-   This way array[last] is always at the TOP of the tube. No flex tricks needed.
-*/
+#helpOverlay{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.65);
+z-index:250;
+align-items:center;
+justify-content:center;
+}
+#helpOverlay.show{display:flex}
+#helpCard{
+background:var(--surface2);
+border:1px solid rgba(255,255,255,.12);
+padding:2rem;
+border-radius:18px;
+max-width:420px;
+width:90%;
+}
+#helpCard h2{margin-bottom:18px}
+#helpCard ul{
+color:var(--muted);
+padding-left:18px;
+display:flex;
+flex-direction:column;
+gap:12px;
+margin-bottom:20px;
+}
 .tw{display:flex;flex-direction:column;align-items:center;cursor:pointer;user-select:none}
 .tube{
   width:var(--tw);height:var(--th);
   border:2px solid rgba(255,255,255,.15);border-top:none;
   border-radius:0 0 26px 26px;
-  position:relative;           /* segments absolutely positioned inside */
+  position:relative;
   overflow:hidden;
   background:rgba(255,255,255,.03);
   transition:transform .18s,box-shadow .18s;
@@ -63,23 +80,201 @@ h1 span{color:var(--accent)}
   height:var(--sh);
   left:0;
 }
-/* glossy sheen */
 .seg::after{
   content:'';position:absolute;
   top:3px;left:5px;width:10px;height:45%;
   border-radius:5px;background:rgba(255,255,255,.22);pointer-events:none;
 }
-/* separator line between adjacent segments */
 .seg-border-top{border-top:1px solid rgba(0,0,0,.28)}
-
 .tw.sel .tube{
-  transform:translateY(-10px);
+  transform:translateY(-12px) scale(1.03);
   box-shadow:0 0 0 2px var(--accent),0 8px 24px rgba(91,155,213,.3);
   border-color:var(--accent);
 }
 .tw.done .tube{
-  box-shadow:0 0 0 2px var(--success),0 4px 16px rgba(77,191,173,.25);
+  box-shadow:0 0 0 2px var(--success),
+             0 4px 16px rgba(77,191,173,.25);
+  animation:donePulse .8s ease;
+}
+
+@keyframes donePulse{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.08)}
+  100%{transform:scale(1)}
+}
+
+.tw:hover .tube{
+  transform:translateY(-4px);
+}
+
+.tw.hint-src .tube{
+  animation:hintGlowSrc 1s infinite;
+  box-shadow:0 0 15px rgba(91,155,213,.6),0 0 30px rgba(91,155,213,.3);
+  border-color:var(--accent);
+}
+.tw.hint-dst .tube{
+  animation:hintGlowDst 1s infinite;
+  box-shadow:0 0 15px rgba(77,191,173,.6),0 0 30px rgba(77,191,173,.3);
   border-color:var(--success);
+}
+/* Clean up static stream definitions for dynamic scaling height */
+.pour-stream {
+  position: fixed;
+  width: 8px; 
+  border-radius: 4px;
+  transform-origin: top center;
+  z-index: 900;
+  opacity: 0;
+
+  .pour-stream.flowing{
+  animation:streamFlow .5s cubic-bezier(.22,1,.36,1) forwards;
+}
+
+
+.seg {
+  position: absolute;
+  width: 100%;
+  height: var(--sh);
+  left: 0;
+  transition: transform 0.4s ease-in-out, opacity 0.3s ease;
+  /* Gives a subtle convex fluid meniscus to the surface of the liquid */
+  border-radius: 4px 4px 0 0; 
+}
+  
+  /* Wet reflection and soft glowing edges */
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2), 
+              inset -2px 0 3px rgba(255,255,255,0.4),
+              inset 2px 0 3px rgba(0,0,0,0.15);
+              
+  /* Smooth scale rendering to prevent the 'cube' flash look */
+  transition: height 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
+              opacity 0.2s ease,
+              clip-path 0.3s ease;
+              
+  /* Liquid teardrop shape using a clipping mask (tapers slightly at the bottom) */
+  clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+}
+
+@keyframes streamFlow{
+  0%{
+    height:0px;
+    opacity:0;
+    transform:scaleY(0);
+  }
+  20%{
+    opacity:0.9;
+  }
+  85%{
+    opacity:0.8;
+  }
+  100%{
+    opacity:0;
+    transform:scaleY(1);
+  }
+}
+
+@keyframes liquidFlow{
+  0%{
+    opacity:0;
+    transform:scaleY(0);
+  }
+
+  15%{
+    opacity:1;
+  }
+
+  100%{
+    opacity:1;
+    transform:scaleY(1);
+  }
+}
+
+/* --- Remodelled Tube Animation Overrides --- */
+.tube {
+  width: var(--tw);
+  height: var(--th);
+  border: 2px solid rgba(255,255,255,.15);
+  border-top: none;
+  border-radius: 0 0 26px 26px;
+  position: relative;
+  overflow: hidden;
+  background:rgba(255,255,255,.03);
+  /* Use a smooth transition for custom transform manipulations */
+  transition: transform 0.4s cubic-bezier(0.42, 0, 0.58, 1), box-shadow 0.18s;
+}
+
+/* Maintain custom z-indexing layout layers during motion */
+.tw.moving-pour {
+  z-index: 999 !important;
+}
+
+/* Ensure liquid segments smoothly slide down or up when altered */
+.seg {
+  position: absolute;
+  width: 100%;
+  height: var(--sh);
+  left: 0;
+  transition: transform 0.4s ease-in-out, opacity 0.3s ease;
+}
+
+/* Clean up static stream definitions for dynamic scaling height */
+.pour-stream {
+  position: fixed;
+  width: 8px; /* Slightly thinner for realism */
+  border-radius: 4px;
+  transform-origin: top center;
+  z-index: 900;
+  opacity: 0;
+  box-shadow: 0 0 8px rgba(255,255,255,.3), inset -1px 0 2px rgba(255,255,255,.4);
+  transition: height 0.25s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.15s ease;
+}
+
+@keyframes tubeLift{
+  0%{
+    transform:translateY(0) rotateZ(0deg);
+  }
+  100%{
+    transform:translateY(-28px) rotateZ(0deg);
+  }
+}
+
+@keyframes tubeTiltLeft{
+  0%{
+    transform:translateY(-28px) rotateZ(0deg);
+  }
+  100%{
+    transform:translateY(-18px) rotateZ(-38deg);
+  }
+}
+
+@keyframes tubeTiltRight{
+  0%{
+    transform:translateY(-28px) rotateZ(0deg);
+  }
+  100%{
+    transform:translateY(-18px) rotateZ(38deg);
+  }
+}
+
+@keyframes tubeSettle{
+  0%{
+    transform:translateY(-18px) rotateZ(-38deg);
+  }
+  50%{
+    transform:translateY(-8px) rotateZ(-2deg);
+  }
+  100%{
+    transform:translateY(0) rotateZ(0deg);
+  }
+}
+
+@keyframes hintGlowSrc{
+  0%,100%{transform:translateY(-5px)}
+  50%{transform:translateY(-12px)}
+}
+@keyframes hintGlowDst{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.03)}
 }
 .tw.shake .tube{animation:shake .4s ease}
 @keyframes shake{
@@ -88,49 +283,186 @@ h1 span{color:var(--accent)}
   60%{transform:translateX(-4px)}80%{transform:translateX(4px)}
 }
 @keyframes pourIn{
-  from{transform:scaleY(0);transform-origin:top;opacity:.4}
-  to{transform:scaleY(1);transform-origin:top;opacity:1}
+  0%{
+    transform:translateY(-30px) scaleY(.2);
+    opacity:0;
+  }
+
+  50%{
+    transform:translateY(6px) scaleY(1.05);
+    opacity:1;
+  }
+
+  100%{
+    transform:translateY(0) scaleY(1);
+    opacity:1;
+  }
 }
-.pour-in{animation:pourIn .35s cubic-bezier(.4,0,.2,1) forwards}
+.pour-in{
+  animation:pourIn .45s cubic-bezier(.22,1,.36,1) forwards;
+}
 @keyframes floatUp{
   0%{opacity:.7;transform:translateY(0) scale(1)}
   100%{opacity:0;transform:translateY(-50px) scale(.4)}
 }
 .bbl{position:absolute;border-radius:50%;pointer-events:none;
   animation:floatUp .9s ease-out forwards}
-
 .tlbl{margin-top:6px;font-size:11px;color:var(--muted);height:14px;text-align:center}
 .tw.done .tlbl{color:var(--success)}
-
 #msg{margin-top:12px;font-size:13px;color:var(--muted);min-height:20px;
   text-align:center;max-width:600px}
 #msg.err{color:var(--danger)}
-
 #overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);
   z-index:200;align-items:center;justify-content:center}
 #overlay.show{display:flex}
 #wcard{background:var(--surface2);border:1px solid rgba(255,255,255,.12);
   border-radius:18px;padding:2.2rem 2.5rem;text-align:center;
-  max-width:340px;position:relative;overflow:hidden}
+  max-width:380px;position:relative;overflow:hidden}
 #wcard h2{font-size:24px;margin-bottom:8px}
-#wcard p{color:var(--muted);font-size:14px;margin-bottom:1.6rem}
-#wcard .wb{display:flex;gap:10px;justify-content:center}
+#wcard .win-details{color:var(--muted);font-size:14px;margin-bottom:1.2rem;text-align:left}
+#wcard .win-details p{margin:6px 0}
+#wcard .rating{font-size:32px;margin:10px 0}
+#wcard .wb{display:flex;gap:10px;justify-content:center;margin-top:1rem}
 @keyframes cfall{
   from{transform:translateY(-20px) rotate(0deg);opacity:1}
   to{transform:translateY(380px) rotate(900deg);opacity:0}
 }
 .conf{position:absolute;width:9px;height:9px;border-radius:2px;
   animation:cfall 2s ease-in forwards;pointer-events:none}
+.home-btn{
+background:var(--surface);
+border:1px solid var(--border);
+padding:8px 14px;
+border-radius:10px;
+color:var(--text);
+text-decoration:none;
+font-size:14px;
+transition:.15s;
+}
+.home-btn:hover{
+border-color:var(--accent);
+color:var(--accent);
+}
+.toast-container{
+  position:fixed;
+  top:20px;
+  right:20px;
+  z-index:300;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.toast{
+  background:var(--surface2);
+  border:1px solid rgba(255,255,255,.15);
+  padding:12px 18px;
+  border-radius:10px;
+  box-shadow:0 4px 20px rgba(0,0,0,.4);
+  animation:slideIn .3s ease forwards;
+  max-width:320px;
+}
+.toast.success{border-left:4px solid var(--success)}
+.toast.info{border-left:4px solid var(--accent)}
+.toast.warning{border-left:4px solid var(--danger)}
+@keyframes slideIn{
+  from{transform:translateX(120%);opacity:0}
+  to{transform:translateX(0);opacity:1}
+}
+@keyframes fadeOut{
+  from{opacity:1}
+  to{opacity:0}
+}
+.toast.fadeOut{animation:fadeOut .3s ease forwards}
+#statsSection, #achievementsSection{
+  width:100%;
+  max-width:760px;
+  margin-top:20px;
+}
+.stats-grid, .achievements-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:12px;
+  margin-top:10px;
+}
+.achievements-grid{
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+}
+.stat-card, .achievement-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:14px;
+  text-align:center;
+}
+.stat-card b{
+  font-size:20px;
+  display:block;
+  color:var(--accent);
+}
+.stat-card span{
+  font-size:12px;
+  color:var(--muted);
+}
+.achievement-card{
+  padding:12px;
+  transition:.2s;
+}
+.achievement-card.locked{
+  opacity:.5;
+  filter:grayscale(1);
+}
+.achievement-card.unlocked{
+  border-color:var(--success);
+  animation:achievementUnlock .5s ease;
+}
+@keyframes achievementUnlock{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.08)}
+  100%{transform:scale(1)}
+}
+.achievement-icon{
+  font-size:28px;
+  margin-bottom:6px;
+}
+.achievement-name{
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:4px;
+}
+.achievement-desc{
+  font-size:11px;
+  color:var(--muted);
+}
+.section-title{
+  font-size:16px;
+  font-weight:600;
+  color:var(--text);
+  margin-bottom:6px;
+}
+
+@keyframes liquidBounce{
+  0%{transform:translateY(0)}
+  40%{transform:translateY(4px)}
+  100%{transform:translateY(0)}
+}
+
+.seg.pour-in{
+  animation:
+    pourIn .45s cubic-bezier(.22,1,.36,1),
+    liquidBounce .25s ease-out .35s;
+}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>🧪 Color<span>Sort</span></h1>
-  <div class="stats">
-    <div class="pill">Moves: <b id="mc">0</b></div>
-    <div class="pill">Level: <b id="ld">1 — Easy</b></div>
-  </div>
+<a href="../../index.html" class="home-btn">← Home</a>
+<h1>🧪 Color<span>Sort</span></h1>
+ <div class="stats">
+  <div class="pill">Moves: <b id="mc">0</b></div>
+  <div class="pill">Time: <b id="timer">00:00</b></div>
+  <div class="pill">Level: <b id="ld">1 — Easy</b></div>
+</div>
 </header>
 
 <div id="lvlrow">
@@ -139,9 +471,11 @@ h1 span{color:var(--accent)}
   <button class="lbtn"    onclick="setLevel(2)">Medium</button>
   <button class="lbtn"    onclick="setLevel(3)">Hard</button>
   <div class="ctrls">
+    <button class="cbtn" onclick="openHelp()">❔ How To Play</button>
     <button class="cbtn" onclick="undo()">↩ Undo</button>
     <button class="cbtn" id="mutebtn" onclick="toggleMute()">🔊 Sound</button>
     <button class="cbtn" onclick="reset()">↺ Reset</button>
+    <button class="cbtn" onclick="showHint()">💡 Hint</button>
     <button class="cbtn a" onclick="newGame()">New Game</button>
   </div>
 </div>
@@ -149,21 +483,49 @@ h1 span{color:var(--accent)}
 <div id="arena"></div>
 <div id="msg"></div>
 
+<section id="statsSection">
+  <div class="section-title">📊 Statistics</div>
+  <div class="stats-grid" id="statsGrid"></div>
+</section>
+
+<section id="achievementsSection">
+  <div class="section-title">🏆 Achievements</div>
+  <div class="achievements-grid" id="achievementsGrid"></div>
+</section>
+
 <div id="overlay">
   <div id="wcard">
     <h2>🎉 Solved!</h2>
-    <p id="wmsg"></p>
+    <div class="win-details" id="winDetails"></div>
+    <div class="rating" id="ratingStars"></div>
     <div class="wb">
-      <button class="cbtn a" onclick="newGame()">Next Puzzle</button>
-      <button class="cbtn"   onclick="closeWin()">Close</button>
+      <button class="cbtn" onclick="newGame()">Play Again</button>
+      <button class="cbtn a" onclick="nextDifficulty()">Next Difficulty</button>
     </div>
   </div>
 </div>
 
+<div id="helpOverlay">
+<div id="helpCard">
+<h2>🎮 How To Play</h2>
+<ul>
+<li>Move colors between tubes.</li>
+<li>You can only pour onto same-colored liquid or empty tubes.</li>
+<li>Fill each tube with one color.</li>
+<li>Use Undo to reverse moves.</li>
+<li>Reset restarts current puzzle.</li>
+<li>New Game creates a new puzzle.</li>
+</ul>
+<button class="cbtn a" onclick="closeHelp()">Close</button>
+</div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
 <script>
 /*
  * ════════════════════════════════════════════════
- *  COLOR SORT PUZZLE — corrected top-color logic
+ *  COLOR SORT PUZZLE — ENHANCED VERSION
  * ════════════════════════════════════════════════
  *
  * ARRAY MODEL:
@@ -181,30 +543,134 @@ h1 span{color:var(--accent)}
  * ════════════════════════════════════════════════
  */
 
-const SEG_H    = 52;   // px per segment — must match --sh CSS var
-const TUBE_CAP = 4;    // max segments per tube
+const SEG_H    = 52;
+const TUBE_CAP = 4;
 
+const COLOR_NAMES = ['Red', 'Blue', 'Teal', 'Amber', 'Purple', 'Green', 'Pink', 'Indigo'];
 const PALETTE = [
-  {bg:'#e8735a',bdr:'#c44d34'},  // coral
-  {bg:'#5b9bd5',bdr:'#2e6dab'},  // blue
-  {bg:'#4dbfad',bdr:'#2a9082'},  // teal
-  {bg:'#f0a830',bdr:'#c07a10'},  // amber
-  {bg:'#9b7fd4',bdr:'#6b52a8'},  // purple
-  {bg:'#6dbf5a',bdr:'#419630'},  // green
-  {bg:'#e870a0',bdr:'#b54578'},  // pink
-  {bg:'#6676d8',bdr:'#4050b0'},  // indigo
+  {bg:'#e8735a',bdr:'#c44d34'},
+  {bg:'#5b9bd5',bdr:'#2e6dab'},
+  {bg:'#4dbfad',bdr:'#2a9082'},
+  {bg:'#f0a830',bdr:'#c07a10'},
+  {bg:'#9b7fd4',bdr:'#6b52a8'},
+  {bg:'#6dbf5a',bdr:'#419630'},
+  {bg:'#e870a0',bdr:'#b54578'},
+  {bg:'#6676d8',bdr:'#4050b0'},
 ];
 
 let NUM_C = 4, NUM_E = 2;
-let state = [], sel = null, moves = 0, hist = [], initSnap = null;
+let state=[], sel=null, moves=0, hist=[], initSnap=null;
+let timer=0, timerInterval=null, gameRunning=false;
+let currentDifficulty = 1;
+let hintTimeout = null;
 
-/* ── accessors ── */
+/* ── Stats and Achievements Data ── */
+let gameStats = {
+  gamesPlayed: 0,
+  gamesWon: 0,
+  bestTime: Infinity,
+  bestMoves: Infinity,
+  currentStreak: 0,
+  bestStreak: 0
+};
+
+const ACHIEVEMENTS = [
+  { id: 'firstWin', name: 'First Victory', desc: 'Win one game', icon: '🏆', check: () => gameStats.gamesWon >= 1 },
+  { id: 'speedSolver', name: 'Speed Solver', desc: 'Win in under 60 seconds', icon: '⚡', check: (time) => time < 60 },
+  { id: 'efficient', name: 'Efficient Player', desc: 'Win in under 20 moves', icon: '🎯', check: (m) => m < 20 },
+  { id: 'streakMaster', name: 'Streak Master', desc: 'Win 3 games consecutively', icon: '🔥', check: () => gameStats.currentStreak >= 3 },
+  { id: 'puzzleExpert', name: 'Puzzle Expert', desc: 'Complete Hard mode', icon: '💎', check: () => currentDifficulty === 3 }
+];
+
+let unlockedAchievements = {};
+
+/* ── LocalStorage Helpers ── */
+function loadFromStorage() {
+  const savedStats = localStorage.getItem('colorSortStats');
+  const savedAchievements = localStorage.getItem('colorSortAchievements');
+  if (savedStats) gameStats = JSON.parse(savedStats);
+  if (savedAchievements) unlockedAchievements = JSON.parse(savedAchievements);
+}
+
+function saveToStorage() {
+  localStorage.setItem('colorSortStats', JSON.stringify(gameStats));
+  localStorage.setItem('colorSortAchievements', JSON.stringify(unlockedAchievements));
+}
+
+/* ── Toast System ── */
+function showToast(message, type='info', duration=3000) {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  container.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.classList.add('fadeOut');
+    setTimeout(() => toast.remove(), 300);
+  }, duration);
+}
+
+/* ── Stats System ── */
+function renderStats() {
+  const grid = document.getElementById('statsGrid');
+  const winRate = gameStats.gamesPlayed > 0 ? Math.round((gameStats.gamesWon / gameStats.gamesPlayed) * 100) : 0;
+  
+  const statsHTML = `
+    <div class="stat-card"><b>${gameStats.gamesPlayed}</b><span>Games Played</span></div>
+    <div class="stat-card"><b>${gameStats.gamesWon}</b><span>Games Won</span></div>
+    <div class="stat-card"><b>${winRate}%</b><span>Win Rate</span></div>
+    <div class="stat-card"><b>${gameStats.bestTime === Infinity ? '--' : formatTime(gameStats.bestTime)}</b><span>Best Time</span></div>
+    <div class="stat-card"><b>${gameStats.bestMoves === Infinity ? '--' : gameStats.bestMoves}</b><span>Best Moves</span></div>
+    <div class="stat-card"><b>${gameStats.currentStreak}</b><span>Current Streak</span></div>
+  `;
+  grid.innerHTML = statsHTML;
+}
+
+function formatTime(seconds) {
+  const mins = String(Math.floor(seconds / 60)).padStart(2, '0');
+  const secs = String(seconds % 60).padStart(2, '0');
+  return `${mins}:${secs}`;
+}
+
+/* ── Achievements System ── */
+function renderAchievements() {
+  const grid = document.getElementById('achievementsGrid');
+  grid.innerHTML = ACHIEVEMENTS.map(ach => {
+    const isUnlocked = unlockedAchievements[ach.id];
+    return `
+      <div class="achievement-card ${isUnlocked ? 'unlocked' : 'locked'}" data-ach="${ach.id}">
+        <div class="achievement-icon">${ach.icon}</div>
+        <div class="achievement-name">${ach.name}</div>
+        <div class="achievement-desc">${ach.desc}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function unlockAchievement(id) {
+  if (unlockedAchievements[id]) return;
+  unlockedAchievements[id] = true;
+  const ach = ACHIEVEMENTS.find(a => a.id === id);
+  showToast(`Achievement Unlocked: ${ach.name}!`, 'success', 4000);
+  renderAchievements();
+  saveToStorage();
+}
+
+function checkAchievements(timeTaken, moveCount, difficulty) {
+  if (!unlockedAchievements.firstWin) unlockAchievement('firstWin');
+  if (timeTaken < 60 && !unlockedAchievements.speedSolver) unlockAchievement('speedSolver');
+  if (moveCount < 20 && !unlockedAchievements.efficient) unlockAchievement('efficient');
+  if (gameStats.currentStreak >= 3 && !unlockedAchievements.streakMaster) unlockAchievement('streakMaster');
+  if (difficulty === 3 && !unlockedAchievements.puzzleExpert) unlockAchievement('puzzleExpert');
+}
+
+/* ── Accessors ── */
 const topColor = t => t.length ? t[t.length - 1] : null;
 const empty = t => t.length === 0;
 const full  = t => t.length === TUBE_CAP;
 
 function topRun(t) {
-  // count of consecutive same-color segs at the TOP (end of array)
   if (!t.length) return 0;
   const c = t[t.length - 1];
   let n = 0;
@@ -225,13 +691,13 @@ function doPour(fi, ti) {
   const color = topColor(f);
   const n = Math.min(topRun(f), TUBE_CAP - t.length);
   for (let i = 0; i < n; i++) { f.pop(); t.push(color); }
-  return n;   // number of segments moved (for animation)
+  return n;
 }
 
 const tubeDone  = t => t.length === TUBE_CAP && t.every(c => c === t[0]);
 const gameDone  = ()=> state.every(t => empty(t) || tubeDone(t));
 
-/* ── setup ── */
+/* ── Setup ── */
 function shuffle(a) {
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];
@@ -239,11 +705,18 @@ function shuffle(a) {
 }
 
 function setLevel(l) {
+  currentDifficulty = l;
   document.querySelectorAll('.lbtn').forEach((b,i)=>b.classList.toggle('on',i===l-1));
   const n=['1 — Easy','2 — Medium','3 — Hard'];
   document.getElementById('ld').textContent = n[l-1];
   if(l===1){NUM_C=4;NUM_E=2}else if(l===2){NUM_C=6;NUM_E=2}else{NUM_C=8;NUM_E=2}
   newGame();
+}
+
+function nextDifficulty() {
+  let next = currentDifficulty + 1;
+  if (next > 3) next = 1;
+  setLevel(next);
 }
 
 function newGame() {
@@ -256,23 +729,34 @@ function newGame() {
   for(let i=0;i<NUM_E;i++) state.push([]);
   sel=null; moves=0; hist=[];
   initSnap=JSON.stringify(state);
-  setMsg(''); updM(); render();
+  resetTimer();
+  startTimer();
+  setMsg('');
+  updM();
+  render();
+  clearHint();
 }
 
 function reset() {
   if(!initSnap) return;
   state=JSON.parse(initSnap); sel=null; moves=0; hist=[];
-  setMsg(''); updM(); render();
+  resetTimer();
+  startTimer();
+  setMsg('');
+  updM();
+  render();
+  clearHint();
 }
 
 function undo() {
   if(!hist.length){setMsg('Nothing to undo.');return}
   state=JSON.parse(hist.pop()); moves=Math.max(0,moves-1);
   sel=null; updM(); setMsg(''); render();
+  clearHint();
 }
 
-/* ── interaction ── */
-function clickTube(idx) {
+/* ── Interaction ── */
+async function clickTube(idx) {
   if (sel === null) {
     if (empty(state[idx])) { setMsg('Tube is empty!'); return; }
     sel = idx;
@@ -283,11 +767,24 @@ function clickTube(idx) {
   if (sel === idx) { sel=null; setMsg(''); render(); return; }
 
   if (canPour(sel, idx)) {
-    hist.push(JSON.stringify(state));
-    const n = doPour(sel, idx);
-    moves++; sel=null; updM(); setMsg('');
-    SFX.pour();
-    render(idx, n);
+
+  const sourceTube = sel;
+
+  await animatePourTube(sourceTube, idx);
+
+  hist.push(JSON.stringify(state));
+
+  const n = doPour(sourceTube, idx);
+
+  moves++;
+  sel = null;
+
+  updM();
+  setMsg('');
+
+  SFX.pour();
+
+  render(idx, n);
     if (tubeDone(state[idx])) SFX.tubeDone();
     if (gameDone()) setTimeout(showWin, 450);
   } else {
@@ -297,6 +794,7 @@ function clickTube(idx) {
     setTimeout(()=>setMsg(''), 2500);
     sel=null; render();
   }
+  clearHint();
 }
 
 function render(pourTo, pouredN) {
@@ -319,23 +817,14 @@ function render(pourTo, pouredN) {
     tube.forEach((colorIdx, arrayIdx) => {
       const seg = document.createElement('div');
       seg.className = 'seg';
-
-      // KEY: position each segment by its array index FROM THE BOTTOM
-      // arrayIdx 0 → bottom:0 (lowest)
-      // arrayIdx 3 → bottom:156px (highest = top of liquid)
       seg.style.bottom     = (arrayIdx * SEG_H) + 'px';
       seg.style.background = PALETTE[colorIdx].bg;
-
-      // draw a separator line on top of every segment except the bottom-most
       if (arrayIdx > 0) seg.classList.add('seg-border-top');
       seg.style.borderTopColor = PALETTE[colorIdx].bdr;
-
-      // pour animation: the newly-arrived segments are the top `pouredN` entries
       if (idx === pourTo && pouredN && arrayIdx >= tube.length - pouredN) {
         seg.classList.add('pour-in');
         bubbles(seg, PALETTE[colorIdx].bg);
       }
-
       tubeEl.appendChild(seg);
     });
 
@@ -347,6 +836,81 @@ function render(pourTo, pouredN) {
     wrap.appendChild(lbl);
     arena.appendChild(wrap);
   });
+}
+
+/* ── Hint System ── */
+function findBestHint() {
+  let bestMove = null;
+  let bestScore = -Infinity;
+  
+  for (let fi = 0; fi < state.length; fi++) {
+    for (let ti = 0; ti < state.length; ti++) {
+      if (fi === ti) continue;
+      if (!canPour(fi, ti)) continue;
+      
+      let score = 0;
+      const f = state[fi];
+      const t = state[ti];
+      const tc = topColor(f);
+      const run = topRun(f);
+      
+      if (tubeDone(t)) continue;
+      
+      if (t.length > 0 && topColor(t) === tc) score += 10;
+      if (empty(t)) score += 5;
+      if (t.length + run === TUBE_CAP && t.every(c => c === tc)) score += 50;
+      if (f.length - run === 0) score += 3;
+      
+      score += run * 2;
+      
+      if (score > bestScore) {
+        bestScore = score;
+        bestMove = { from: fi, to: ti, color: tc };
+      }
+    }
+  }
+  
+  return bestMove;
+}
+
+function showHint() {
+  if (gameDone()) {
+    showToast('Game is already complete!', 'info');
+    return;
+  }
+  
+  const move = findBestHint();
+  
+  if (!move) {
+    showToast('No hint available', 'warning');
+    return;
+  }
+  
+  highlightTubes(move.from, move.to);
+  const colorName = COLOR_NAMES[move.color];
+  showToast(`Try moving ${colorName} from Tube ${move.from + 1} to Tube ${move.to + 1}`, 'info');
+  
+  if (hintTimeout) clearTimeout(hintTimeout);
+  hintTimeout = setTimeout(clearHint, 4000);
+}
+
+function highlightTubes(fromIdx, toIdx) {
+  render();
+  const tubes = document.querySelectorAll('.tw');
+  if (tubes[fromIdx]) tubes[fromIdx].classList.add('hint-src');
+  if (tubes[toIdx]) tubes[toIdx].classList.add('hint-dst');
+}
+
+function clearHint() {
+  const tubes = document.querySelectorAll('.tw');
+  tubes.forEach(t => {
+    t.classList.remove('hint-src');
+    t.classList.remove('hint-dst');
+  });
+  if (hintTimeout) {
+    clearTimeout(hintTimeout);
+    hintTimeout = null;
+  }
 }
 
 function shake(idx) {
@@ -367,11 +931,38 @@ function bubbles(seg, color) {
   }
 }
 
-/* ── win ── */
+/* ── Win Screen ── */
 function showWin() {
+  stopTimer();
+  const timeTaken = timer;
+  
+  gameStats.gamesPlayed++;
+  gameStats.gamesWon++;
+  gameStats.currentStreak++;
+  if (gameStats.currentStreak > gameStats.bestStreak) gameStats.bestStreak = gameStats.currentStreak;
+  if (timeTaken < gameStats.bestTime) gameStats.bestTime = timeTaken;
+  if (moves < gameStats.bestMoves) gameStats.bestMoves = moves;
+  
+  saveToStorage();
+  checkAchievements(timeTaken, moves, currentDifficulty);
+  renderStats();
+  
   const ov=document.getElementById('overlay'), card=document.getElementById('wcard');
-  document.getElementById('wmsg').textContent =
-    `All tubes sorted in ${moves} move${moves!==1?'s':''}! 🏆`;
+  const details = document.getElementById('winDetails');
+  const stars = document.getElementById('ratingStars');
+  
+  let rating = 1;
+  if (moves <= 15) rating = 3;
+  else if (moves <= 25) rating = 2;
+  
+  details.innerHTML = `
+    <p><b>Completion Time:</b> ${formatTime(timeTaken)}</p>
+    <p><b>Total Moves:</b> ${moves}</p>
+    <p><b>Efficiency:</b> ${rating === 3 ? 'Perfect' : rating === 2 ? 'Great' : 'Good'}</p>
+  `;
+  
+  stars.textContent = '⭐'.repeat(rating) + '☆'.repeat(3 - rating);
+  
   ov.classList.add('show');
   SFX.win();
   card.querySelectorAll('.conf').forEach(c=>c.remove());
@@ -383,11 +974,36 @@ function showWin() {
     card.appendChild(el);
   });
 }
+
 function closeWin(){document.getElementById('overlay').classList.remove('show')}
+
+/* ── Timer ── */
+function startTimer(){
+  clearInterval(timerInterval);
+  gameRunning=true;
+  timerInterval=setInterval(()=>{
+    timer++;
+    const mins=String(Math.floor(timer/60)).padStart(2,"0");
+    const secs=String(timer%60).padStart(2,"0");
+    document.getElementById("timer").textContent=`${mins}:${secs}`;
+  },1000);
+}
+
+function stopTimer(){
+  clearInterval(timerInterval);
+  gameRunning=false;
+}
+
+function resetTimer(){
+  stopTimer();
+  timer=0;
+  document.getElementById("timer").textContent="00:00";
+}
+
 function updM(){document.getElementById('mc').textContent=moves}
 function setMsg(t){const e=document.getElementById('msg');e.textContent=t;e.className=t.startsWith('❌')?'err':''}
 
-/* ── Sound Engine (Web Audio API — no external files needed) ── */
+/* ── Sound Engine ── */
 const SFX = (() => {
   let ctx = null;
   let muted = false;
@@ -481,12 +1097,150 @@ const SFX = (() => {
   };
 })();
 
-
 function toggleMute(){
   const m=SFX.toggleMute();
   document.getElementById("mutebtn").textContent=m?"🔇 Muted":"🔊 Sound";
 }
+function openHelp(){
+document.getElementById("helpOverlay").classList.add("show");
+stopTimer();
+}
 
+function closeHelp(){
+document.getElementById("helpOverlay").classList.remove("show");
+if(!gameDone()) startTimer();
+}
+
+function wait(ms){
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function animatePourTube(fromIdx, toIdx) {
+  const sourceWrapper = document.querySelector(`[data-idx="${fromIdx}"]`);
+  const destWrapper = document.querySelector(`[data-idx="${toIdx}"]`);
+  
+  if (!sourceWrapper || !destWrapper) return;
+  
+  const sourceTube = sourceWrapper.querySelector('.tube');
+  const destTube = destWrapper.querySelector('.tube');
+  
+  if (!sourceTube || !destTube) return;
+
+  // Elevate active pouring structure layers
+  sourceWrapper.classList.add('moving-pour');
+
+  // Extract precise element global positioning
+  const srcRect = sourceTube.getBoundingClientRect();
+  const dstRect = destTube.getBoundingClientRect();
+
+  // Find target destination position relative to origin
+  const isMovingRight = toIdx > fromIdx;
+  
+  // Calculate exact delta positions to align lip of source to mouth of target
+  // Offset horizontally so the spout hovers right over the target lip
+  const targetX = dstRect.left - srcRect.left + (isMovingRight ? -24 : 24);
+  const targetY = dstRect.top - srcRect.top - 55; // Lift up and over
+
+  // --- PHASE 1: Lift & Slide To Position ---
+  sourceTube.style.transformOrigin = "center center";
+  sourceTube.style.transform = `translate3d(${targetX}px, ${targetY}px, 0)`;
+  await wait(400);
+
+  // --- PHASE 2: Pivot & Dynamic Pour ---
+  // Change transform origin dynamically to look like it pours from the side lip
+  sourceTube.style.transformOrigin = isMovingRight ? "right top" : "left top";
+  const tiltAngle = isMovingRight ? 70 : -70;
+  sourceTube.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) rotate(${tiltAngle}deg)`;
+  await wait(300);
+
+  // --- PHASE 3: Generate and Connect Stream Flow ---
+  const pouringColor = state[fromIdx][state[fromIdx].length - 1];
+  const streamColor = PALETTE[pouringColor].bg;
+
+  // Re-read runtime positions for the stream after transformations have applied
+  const advancedSrcRect = sourceTube.getBoundingClientRect();
+  
+  const startX = isMovingRight ? advancedSrcRect.right - 8 : advancedSrcRect.left + 8;
+  const startY = advancedSrcRect.top + 14;
+  const endX = dstRect.left + (dstRect.width / 2);
+  
+  // Aim slightly lower into the tube for a seamless landing
+  const endY = dstRect.top + (dstRect.height - (state[toIdx].length * SEG_H)) - 10; 
+
+  const distanceX = endX - startX;
+  const distanceY = endY - startY;
+  const streamLength = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+  const angle = Math.atan2(distanceY, distanceX) * (180 / Math.PI);
+
+  const stream = document.createElement('div');
+  stream.className = 'pour-stream';
+  stream.style.background = streamColor;
+  stream.style.left = `${startX}px`;
+  stream.style.top = `${startY}px`;
+  stream.style.transform = `rotate(${angle}deg)`;
+  stream.style.height = '0px'; // Force start height to 0 for the liquid stretch effect
+  document.body.appendChild(stream);
+
+  // Force system repaint layout, then smoothly extend stream downwards
+  stream.getBoundingClientRect(); 
+  stream.style.opacity = '1';
+  stream.style.height = `${streamLength}px`;
+  
+  await wait(250); // Wait for stream to gracefully hit fluid baseline
+
+  // --- PHASE 4: Simulated Simultaneous Fluid Levels ---
+  // Fade out top segments being emptied from source wrapper visually
+  const activePourVolume = Math.min(topRun(state[fromIdx]), TUBE_CAP - state[toIdx].length);
+  const sourceSegs = sourceTube.querySelectorAll('.seg');
+  
+  for (let i = 0; i < activePourVolume; i++) {
+    const targetedSeg = sourceSegs[sourceSegs.length - 1 - i];
+    if (targetedSeg) {
+      targetedSeg.style.opacity = '0';
+      targetedSeg.style.transform = 'translateY(15px)';
+    }
+  }
+
+  // Simultaneously build up the liquid in target element smoothly
+  for (let i = 0; i < activePourVolume; i++) {
+    const simulatedSeg = document.createElement('div');
+    simulatedSeg.className = 'seg pour-in';
+    simulatedSeg.style.bottom = ((state[toIdx].length + i) * SEG_H) + 'px';
+    simulatedSeg.style.background = streamColor;
+    simulatedSeg.style.borderTop = `1px solid ${PALETTE[pouringColor].bdr}`;
+    destTube.appendChild(simulatedSeg);
+    bubbles(simulatedSeg, streamColor);
+  }
+  
+  await wait(600); // Wait for full fluid mass to complete cycling
+
+// --- PHASE 5: Disconnect and Reset ---
+  // Instead of vanishing, make the stream collapse downward like real water ending
+  stream.style.clipPath = 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)';
+  stream.style.opacity = '0';
+  
+  await wait(200);
+  stream.remove();
+
+  // Reset rotational values smoothly
+  sourceTube.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) rotate(0deg)`;
+  await wait(250);
+  
+  // Return to internal base row grid positioning
+  sourceTube.style.transform = 'translate3d(0, 0, 0)';
+  await wait(400);
+
+  // Clear runtime adjustments
+  sourceTube.style.transform = '';
+  sourceTube.style.transformOrigin = '';
+  sourceWrapper.classList.remove('moving-pour');
+}
+
+
+/* ── Initialize ── */
+loadFromStorage();
+renderStats();
+renderAchievements();
 newGame();
 </script>
 </body>

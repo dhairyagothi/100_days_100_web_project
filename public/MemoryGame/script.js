@@ -14,6 +14,7 @@ let matched      = [];
 let moves        = 0;
 let seconds      = 0;
 let timerInterval = null;
+let previewInterval=null;
 let gameActive   = false;
 let lockBoard    = false;
 let hintUsed     = false;
@@ -29,6 +30,9 @@ const bestEl     = document.getElementById('bestVal');
 const progressEl = document.getElementById('progressBar');
 const winModal   = document.getElementById('winModal');
 const toastEl    = document.getElementById('toast');
+const startBtn   = document.getElementById('startBtn');
+const hintBtn    = document.getElementById('hintBtn');
+const victorySound = document.getElementById('victorySound');
 
 // ── Event Listeners ───────────────────────────────────────
 document.querySelectorAll('.diff-btn').forEach(btn => {
@@ -42,14 +46,16 @@ document.querySelectorAll('.diff-btn').forEach(btn => {
   });
 });
 
-document.getElementById('startBtn').addEventListener('click', startGame);
-document.getElementById('hintBtn').addEventListener('click', useHint);
+startBtn.addEventListener('click', startGame);
+hintBtn.addEventListener('click', useHint);
+
 document.getElementById('playAgainBtn').addEventListener('click', () => {
+  victorySound.pause();
+  victorySound.currentTime = 0;
   winModal.classList.remove('visible');
   setupPreview();
 });
 document.getElementById('restartBtn').addEventListener('click', setupPreview);
-
 
 // ── Utility Helpers ───────────────────────────────────────
 
@@ -129,9 +135,41 @@ function stopTimer() {
   clearInterval(timerInterval);
 }
 
+// ── Preview Countdown ─────────────────────────────────────
+ 
+/**
+ * Count down from 3 seconds while cards are face-up, then auto-start.
+ * The Start button label reflects the countdown and acts as a skip.
+ */
+function startPreviewCountdown() {
+  let countdown = 3;
+  startBtn.textContent = `Skip Preview (${countdown})`;
+ 
+  previewInterval = setInterval(() => {
+    countdown--;
+ 
+    if (countdown > 0) {
+      startBtn.textContent = `Skip Preview (${countdown})`;
+    } else {
+      // Countdown finished — auto-start the game
+      clearInterval(previewInterval);
+      previewInterval = null;
+      startGame();
+    }
+  }, 1000);
+}
+
 // ── Game Start ────────────────────────────────────────────
+
 function setupPreview() {
   const cfg = DIFFICULTIES[difficulty];
+  victorySound.pause();
+  victorySound.currentTime = 0;
+  // Cancel any running preview countdown or game timer
+  if (previewInterval) {
+     clearInterval(previewInterval);
+     previewInterval = null;
+  }
 
   stopTimer();
   winModal.classList.remove('visible');
@@ -142,6 +180,9 @@ function setupPreview() {
   moves = 0;
   seconds = 0;
   hintUsed = false;
+const hintBtn = document.getElementById('hintBtn');
+hintBtn.disabled = false;
+hintBtn.textContent = 'Hint';
 
   gameActive = false;
   lockBoard = true;
@@ -152,6 +193,9 @@ function setupPreview() {
 
   pairsEl.textContent = `0/${cfg.pairs}`;
   progressEl.style.width = '0%';
+
+  hintBtn.disabled    = true;
+  hintBtn.textContent = 'Hint';
 
   updateGridClass();
   updateBestDisplay();
@@ -181,11 +225,18 @@ function setupPreview() {
     grid.appendChild(card);
     cards.push(card);
   });
+  startPreviewCountdown();
 }
 /**
  * Initialise and start a fresh game
  */
 function startGame() {
+
+  if (previewInterval) {
+    clearInterval(previewInterval);
+    previewInterval = null;
+  }
+
   cards.forEach(card => {
     card.classList.remove('flipped');
   });
@@ -194,6 +245,10 @@ function startGame() {
 
   gameActive = true;
   lockBoard = false;
+
+  startBtn.textContent = 'New Game';
+  hintBtn.disabled     = false;
+  hintBtn.textContent  = 'Hint';
 
   startTimer();
 }
@@ -265,13 +320,16 @@ function checkMatch() {
  * Briefly reveal a matching pair (one use per game)
  */
 function useHint() {
-  if (!gameActive || hintUsed) {
-    showToast('Hint already used!');
+  if (hintUsed) {
+    showToast('💡 Hint already used!');
     return;
   }
   hintUsed = true;
+  const hintBtn = document.getElementById('hintBtn');
+  hintBtn.disabled = true;
+  hintBtn.textContent = 'Hint Used';
 
-  // Collect unmatched, unflipped cards
+  // Collect unmatched unflipped cards
   const unmatched = cards.filter(
     c => !c.classList.contains('matched') && !c.classList.contains('flipped')
   );
@@ -284,20 +342,26 @@ function useHint() {
     if (!emojiMap[e]) emojiMap[e] = [];
     emojiMap[e].push(c);
   }
-  const pair = Object.values(emojiMap).find(g => g.length >= 2);
-  if (!pair) return;
 
-  // Briefly show the pair
-  pair[0].classList.add('flipped');
-  pair[1].classList.add('flipped');
+  // Find a pair to reveal
+  const validPairs = Object.values(emojiMap).filter(group => group.length >= 2);
+  if (!validPairs.length) return;
+
+  // Pick one random pair
+  const pair = validPairs[Math.floor(Math.random() * validPairs.length)];
+  const cardA = pair[0];
+  const cardB = pair[1];
+
+  // Briefly flip the pair face-up
+  cardA.classList.add('flipped');
+  cardB.classList.add('flipped');
   showToast('💡 Hint used!');
 
+  // Flip back after 1.5 seconds
   setTimeout(() => {
-    if (!pair[0].classList.contains('matched')) {
-      pair[0].classList.remove('flipped');
-      pair[1].classList.remove('flipped');
-    }
-  }, 1200);
+    if (!cardA.classList.contains('matched')) cardA.classList.remove('flipped');
+    if (!cardB.classList.contains('matched')) cardB.classList.remove('flipped');
+  }, 1500);
 }
 
 // ── Win Condition ─────────────────────────────────────────
@@ -331,6 +395,9 @@ function onWin() {
   document.getElementById('modalTime').textContent       = fmt(seconds);
   document.getElementById('newBest').style.display       = isNewBest ? 'block' : 'none';
 
+  victorySound.currentTime = 0;
+  victorySound.play();
+
   setTimeout(() => {
     winModal.classList.add('visible');
     launchConfetti();
@@ -343,23 +410,25 @@ function onWin() {
  * Spawn animated confetti particles on win
  */
 function launchConfetti() {
+  console.log("CONFETTI FIRED");
   const container = document.getElementById('confettiContainer');
   container.innerHTML = '';
 
   const colors = ['#7c3aed','#a855f7','#f59e0b','#10b981','#ef4444','#60a5fa','#f472b6'];
 
-  for (let i = 0; i < 70; i++) {
+  for (let i = 0; i < 180; i++) {
     const p = document.createElement('div');
     p.className  = 'confetti-particle';
     p.style.cssText = `
       left: ${Math.random() * 100}%;
       background: ${colors[Math.floor(Math.random() * colors.length)]};
-      width: ${4 + Math.random() * 8}px;
-      height: ${4 + Math.random() * 8}px;
+      width: ${10 + Math.random() * 12}px;
+      height: ${10 + Math.random() * 12}px;
       border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
       animation-duration: ${1.5 + Math.random() * 2}s;
       animation-delay: ${Math.random() * 0.8}s;
     `;
+    p.style.boxShadow = `0 0 10px ${colors[Math.floor(Math.random() * colors.length)]}`;
     container.appendChild(p);
   }
 
