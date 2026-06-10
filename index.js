@@ -1141,14 +1141,10 @@ function trackRecentProject(project) {
     };
   }
 
-<<<<<<< HEAD
   // Remove duplicate if exists
   recentProjects = recentProjects.filter((item) => item && item.day !== projectObj.day);
 
   // Add to front
-=======
-  recentProjects = recentProjects.filter((item) => item.day !== projectObj.day);
->>>>>>> upstream/Main
   recentProjects.unshift(projectObj);
 
   if (recentProjects.length > 20) {
@@ -1163,16 +1159,7 @@ const bookmarkGrid = document.getElementById("bookmarkGrid");
 
 function normalizeProjectEntry(project) {
   if (!project) {
-<<<<<<< HEAD
     return { day: "", name: "", url: "", tags: [] };
-  }
-=======
-    return {
-      day: "",
-      name: "",
-      url: "",
-      tags: [],
-    };
   }
 
   if (typeof project === "string") {
@@ -1184,8 +1171,6 @@ function normalizeProjectEntry(project) {
       tags: [],
     };
   }
-
->>>>>>> upstream/Main
   if (Array.isArray(project)) {
     return {
       day: project[0] || "",
