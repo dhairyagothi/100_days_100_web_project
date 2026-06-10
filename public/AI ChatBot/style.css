@@ -195,7 +195,8 @@ pre code {
     .chat-container {
         width: 90%;
         margin: 20px;
-        .copy-btn {
+    }
+    .copy-btn {
     width: fit-content;
     font-size: 0.75rem;
     margin-left: auto;
@@ -208,19 +209,16 @@ pre code {
 
     #send-btn {
         border-radius: 20px;
-        margin-top: 10px;
-        width: 100%;
     }
 
     #prompt-input {
         border-radius: 20px;
-        margin-bottom: 10px;
     }
 
     .input-group-text {
         border-radius: 20px;
     }
-}
+
 
 .btn-primary {
     background-color: rgb(23, 45, 93);
@@ -228,6 +226,7 @@ pre code {
 }
 .user-message {
     margin-right: 0;
+}
 /* DESIGN TOKENS */
 :root {
   --font-display: "Syne", sans-serif;
@@ -2214,6 +2213,9 @@ select {
 
 /* INPUT AREA */
 .input-area {
+  display: flex;
+  flex-direction: column;
+  gap:5px;
   padding: 10px 24px 14px;
   flex-shrink: 0;
   max-width: 788px;
@@ -2255,7 +2257,7 @@ select {
 
 .input-box {
   display: flex;
-  align-items: flex-end;
+  align-items:center;
   gap: 6px;
   background: var(--surface);
   border: 1.5px solid var(--border);
@@ -2313,7 +2315,6 @@ select {
   color: var(--text-primary);
   font-family: var(--font-body);
   font-size: 0.92rem;
-  line-height: 1.55;
   outline: none;
   resize: none;
   max-height: 160px;
@@ -2326,8 +2327,6 @@ select {
 }
 
 .send-btn {
-  width: 36px;
-  height: 36px;
   min-width: 36px;
   background: var(--accent);
   color: var(--bg);
