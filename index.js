@@ -1123,11 +1123,8 @@ function getRecentProjectsWithinWindow() {
 }
 
 function trackRecentProject(project) {
-<<<<<<< HEAD
   if (!project) return;
   // Convert old format to new format if needed
-=======
->>>>>>> upstream/Main
   let projectObj;
   if (Array.isArray(project)) {
     projectObj = {
