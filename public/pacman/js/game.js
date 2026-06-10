@@ -355,15 +355,17 @@ function score(s, type) {
   ) {
     erasePacman();
     eraseGhost(type);
-    $("#board").append('<span class="combo">' + SCORE_GHOST_COMBO + "</span>");
-    $("#board span.combo").css(
-      "top",
-      eval("GHOST_" + type.toUpperCase() + "_POSITION_Y - 10") + "px",
-    );
-    $("#board span.combo").css(
-      "left",
-      eval("GHOST_" + type.toUpperCase() + "_POSITION_X - 10") + "px",
-    );
+    $('#board').append('<span class="combo">' + SCORE_GHOST_COMBO + '</span>');
+
+    var ghostPosY, ghostPosX;
+    switch (type) {
+      case 'blinky': ghostPosY = GHOST_BLINKY_POSITION_Y - 10; ghostPosX = GHOST_BLINKY_POSITION_X - 10; break;
+      case 'pinky':  ghostPosY = GHOST_PINKY_POSITION_Y - 10;  ghostPosX = GHOST_PINKY_POSITION_X - 10;  break;
+      case 'inky':   ghostPosY = GHOST_INKY_POSITION_Y - 10;   ghostPosX = GHOST_INKY_POSITION_X - 10;   break;
+      case 'clyde':  ghostPosY = GHOST_CLYDE_POSITION_Y - 10;  ghostPosX = GHOST_CLYDE_POSITION_X - 10;  break;
+    }
+    $('#board span.combo').css('top', ghostPosY + 'px');
+    $('#board span.combo').css('left', ghostPosX + 'px');
     SCORE_GHOST_COMBO = SCORE_GHOST_COMBO * 2;
   } else if (type && type === "fruit") {
     $("#board").append('<span class="fruits">' + s + "</span>");

@@ -1,44 +1,48 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login — 100 Days 100 Web Projects</title>
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — 100 Days 100 Web Projects</title>
 
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="ambient ambient-left" aria-hidden="true"></div>
-    <div class="ambient ambient-right" aria-hidden="true"></div>
-    <div class="noise-layer" aria-hidden="true"></div>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <div class="bg-blur"></div>
+  <link rel="stylesheet" href="style.css" />
+</head>
 
-    <nav class="navbar">
-      <a href="../index.html" class="button home-btn">Home</a>
-    </nav>
+<body>
+  <div class="ambient ambient-left" aria-hidden="true"></div>
+  <div class="ambient ambient-right" aria-hidden="true"></div>
+  <div class="noise-layer" aria-hidden="true"></div>
 
-    <section class="hero-section">
-      <h1 class="hero-title">100 Days 100 Web Projects</h1>
-      <p class="auth-title">
-        Dive in to explore a seamless access to 100+ exciting web experiments
-        crafted for learning and inspiration. Log in to continue building,
-        exploring, and creating amazing web experiences every day.
-      </p>
+  <div class="bg-blur"></div>
 
-      <div class="auth-container">
-        <div class="auth-card">
-          <h2 class="auth-title-1">Login</h2>
+  <header>
+  <nav class="navbar" aria-label="Main navigation">
+    <span class="navbar-brand">100 Days 100 Web Projects</span>
+    <a href="../index.html" class="nav-home-link">
+      <i class="fa-solid fa-house" aria-hidden="true"></i>
+      Home
+    </a>
+  </nav>
+</header>
 
-          <!-- Status message area -->
-          <div id="statusMsg" style="
+  <section class="hero-section">
+    <h1 class="hero-title">100 Days 100 Web Projects</h1>
+    <p class="auth-title">
+      Dive in to explore a seamless access to 100+ exciting web experiments
+      crafted for learning and inspiration. Log in to continue building,
+      exploring, and creating amazing web experiences every day.
+    </p>
+
+    <div class="auth-container">
+      <div class="auth-card">
+        <h2 class="auth-title-1">Login</h2>
+
+        <!-- Status message area -->
+        <div id="statusMsg" style="
             display:none;
             padding: 10px 14px;
             border-radius: 8px;
@@ -49,7 +53,7 @@
 
           <form id="loginForm" class="auth-form">
             <div class="form-group">
-              <i class="fa-solid fa-user"></i>
+              <i aria-hidden="true" class="fa-solid fa-user"></i>
               <input
                 type="text"
                 id="username"
@@ -61,7 +65,7 @@
             </div>
 
             <div class="form-group">
-              <i class="fa-solid fa-lock"></i>
+              <i aria-hidden="true" class="fa-solid fa-lock"></i>
               <input
                 type="password"
                 id="password"
@@ -74,13 +78,13 @@
             </div>
 
             <button type="submit" class="button home-btn" id="loginBtn">
-              <i class="fa-solid fa-right-to-bracket"></i>
+              <i aria-hidden="true" class="fa-solid fa-right-to-bracket"></i>
               Login
             </button>
           </form>
 
           <button id="googleLogin" class="button home-btn">
-    <i class="fa-brands fa-google"></i>
+    <i aria-hidden="true" class="fa-brands fa-google"></i>
     Continue with Google
 </button>
 
@@ -88,154 +92,141 @@
             <a href="./ForgotPassword.html" id="forgotPasswordLink">Forgot Password?</a>
           </p>
 
-          <p class="already-signed-up">
-            Not signed up? <a href="./SignUp.html">Sign Up</a>
-          </p>
-        </div>
+        <p class="already-signed-up">
+          Not signed up? <a href="./SignUp.html">Sign Up</a>
+        </p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <script>
-      // Toast System
-      function showToast(message, type = 'info') {
-        let container = document.querySelector('.toast-container');
-        if (!container) {
-          container = document.createElement('div');
-          container.className = 'toast-container';
-          container.style.cssText = 'position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 999999; display: flex; flex-direction: column; gap: 12px; max-width: 380px; width: calc(100% - 48px); pointer-events: none;';
-          document.body.appendChild(container);
-        }
+  <script>
+    // Toast System
+    function showToast(message, type = 'info') {
+      let container = document.querySelector('.toast-container');
+      if (!container) {
+        container = document.createElement('div');
+        container.className = 'toast-container';
+        container.style.cssText = 'position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 999999; display: flex; flex-direction: column; gap: 12px; max-width: 380px; width: calc(100% - 48px); pointer-events: none;';
+        document.body.appendChild(container);
+      }
 
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
 
         const iconMap = {
-          success: '<i class="fa-solid fa-circle-check"></i>',
-          error: '<i class="fa-solid fa-circle-exclamation"></i>',
-          warning: '<i class="fa-solid fa-triangle-exclamation"></i>',
-          info: '<i class="fa-solid fa-circle-info"></i>'
+          success: '<i aria-hidden="true" class="fa-solid fa-circle-check"></i>',
+          error: '<i aria-hidden="true" class="fa-solid fa-circle-exclamation"></i>',
+          warning: '<i aria-hidden="true" class="fa-solid fa-triangle-exclamation"></i>',
+          info: '<i aria-hidden="true" class="fa-solid fa-circle-info"></i>'
         };
 
-        toast.innerHTML = `
+      toast.innerHTML = `
           <div class="toast-icon">${iconMap[type] || iconMap.info}</div>
           <div class="toast-message">${message}</div>
           <button class="toast-close" aria-label="Close message">&times;</button>
         `;
 
-        container.appendChild(toast);
+      container.appendChild(toast);
 
-        // Close on button click
-        toast.querySelector('.toast-close').addEventListener('click', () => {
-          removeToast(toast);
-        });
+      // Close on button click
+      toast.querySelector('.toast-close').addEventListener('click', () => {
+        removeToast(toast);
+      });
 
-        // Auto remove
-        const autoRemoveTimeout = setTimeout(() => {
-          removeToast(toast);
-        }, 4000);
+      // Auto remove
+      const autoRemoveTimeout = setTimeout(() => {
+        removeToast(toast);
+      }, 4000);
 
-        function removeToast(el) {
-          el.style.opacity = '0';
-          el.style.transform = 'translateY(-10px) scale(0.95)';
-          setTimeout(() => {
-            el.remove();
-            if (container.childNodes.length === 0) {
-              container.remove();
-            }
-          }, 300);
-          clearTimeout(autoRemoveTimeout);
-        }
+      function removeToast(el) {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(-10px) scale(0.95)';
+        setTimeout(() => {
+          el.remove();
+          if (container.childNodes.length === 0) {
+            container.remove();
+          }
+        }, 300);
+        clearTimeout(autoRemoveTimeout);
       }
+    }
 
-      // Show password toggle
-      function togglePassword() {
-        const passwordInput = document.getElementById("password");
-        const toggleIcon = document.querySelector(".toggle-password");
+    // Show password toggle
+    function togglePassword() {
+      const passwordInput = document.getElementById("password");
+      const toggleIcon = document.querySelector(".toggle-password");
 
-        if (passwordInput.type === "password") {
-          passwordInput.type = "text";
-          toggleIcon.classList.add("active");
-        } else {
-          passwordInput.type = "password";
-          toggleIcon.classList.remove("active");
-        }
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleIcon.classList.add("active");
+      } else {
+        passwordInput.type = "password";
+        toggleIcon.classList.remove("active");
       }
+    }
 
-      // ── Login form submission ──
-      document
-        .getElementById("loginForm")
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
+    // ── Login form submission ──
+    document
+      .getElementById("loginForm")
+      .addEventListener("submit", function (event) {
+        event.preventDefault();
 
-          const username = document.getElementById("username").value.trim();
-          const password = document.getElementById("password").value.trim();
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value.trim();
 
-          // Basic empty-field guard
-          if (!username || !password) {
-            showStatus("Please enter both username and password.", "error");
-            return;
-          }
+        // Basic empty-field guard
+        if (!username || !password) {
+          showToast("Please enter both username and password.", "error");
+          return;
+        }
 
-          // Look up user stored by SignUp.html (keyed by username)
-          const storedRaw = localStorage.getItem(username);
-          // Check if user exists
-          if (!storedUser) {
-            showToast("User does not exist.", "error");
-            return;
-          }
+        // Look up user stored by SignUp.html (keyed by username)
+        const storedRaw = localStorage.getItem(username);
+        // Check if user exists
+        if (!storedRaw) {
+          showToast("User does not exist.", "error");
+          return;
+        }
 
-          let userData;
-          try {
-            userData = JSON.parse(storedRaw);
-          } catch (e) {
-            showStatus("Account data is corrupted. Please sign up again.", "error");
-            return;
-          }
+        let userData;
+        try {
+          userData = JSON.parse(storedRaw);
+        } catch (e) {
+          showToast("Account data is corrupted. Please sign up again.", "error");
+          return;
+        }
 
-          // Password check
-          if (password !== userData.password) {
-            showToast("Incorrect password.", "error");
-            return;
-          }
+        // Password check
+        if (password !== userData.password) {
+          showToast("Incorrect password.", "error");
+          return;
+        }
 
-          // Login successful
-          showToast("Login successful!", "success");
+        // Login successful
+        showToast("Login successful!", "success");
 
-          localStorage.setItem("loggedInUser", username);
-       
-          // Delay redirection to allow toast to be visible
-          setTimeout(() => {
-            window.location.href = "../index.html";
-          }, 1200);
-            showStatus("Incorrect password. Please try again.", "error");
-            return;
-          }
+        // Persist the session
+        localStorage.setItem("loggedInUser", username);
+        localStorage.setItem(
+          "loggedInUserData",
+          JSON.stringify({
+            username,
+            name: userData.name || username,
+            email: userData.email || "",
+            loginTime: Date.now(),
+          })
+        );
 
-          // ── Login successful ──
-          // Persist the session
-          localStorage.setItem("loggedInUser", username);
-          localStorage.setItem(
-            "loggedInUserData",
-            JSON.stringify({
-              username,
-              name: userData.name || username,
-              email: userData.email || "",
-              loginTime: Date.now(),
-            })
-          );
+        // Disable the button to prevent double-submit
+        document.getElementById("loginBtn").disabled = true;
 
-          showStatus("Login successful! Redirecting…", "success");
+               // Redirect after a short delay so the user sees the success message
+        setTimeout(function () {
+          window.location.href = "../index.html";
+        }, 1000);
+      });
+  </script>
 
-          // Disable the button to prevent double-submit
-          document.getElementById("loginBtn").disabled = true;
-
-          // Redirect after a short delay so the user sees the success message
-          setTimeout(function () {
-            window.location.href = "../index.html";
-          }, 1000);
-        });
-    </script>
-
-    <script type="module" src="./firebase-auth.js"></script>
-  </body>
-</html> 
+  <script type="module" src="./firebase-auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tools Hub - Discover the Best AI Tools</title>
+    <link rel="stylesheet" href="/public/AI-Tools-Hub/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Hero Section -->
+    <header class="hero">
+        <nav class="navbar container">
+            <h1 class="logo">
+                <span class="logo-icon">🤖</span>
+                AI Tools Hub
+            </h1>
+            <a href="#tools" class="nav-cta btn-primary" aria-label="Explore AI tools">Explore Tools</a>
+        </nav>
+        
+        <div class="hero-content container">
+            <p class="hero-badge">🚀 Discover 1000+ Cutting-Edge AI Tools</p>
+            <h2 class="hero-title">Unlock the Power of <span class="gradient-text">Artificial Intelligence</span></h2>
+            <p class="hero-subtitle">Find the perfect AI tools for coding, design, writing, productivity, and more. Curated for creators, developers, and professionals.</p>
+            <div class="hero-buttons">
+                <a href="#tools" class="btn-primary btn-large" aria-label="Browse all AI tools">Browse All Tools</a>
+                <a href="#categories" class="btn-secondary btn-large" aria-label="Explore categories">Explore Categories</a>
+            </div>
+        </div>
+        
+        <div class="hero-decoration">
+            <div class="floating-circle circle-1"></div>
+            <div class="floating-circle circle-2"></div>
+            <div class="floating-circle circle-3"></div>
+        </div>
+    </header>
+
+    <!-- Statistics Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card glass-card">
+                    <div class="stat-value">18+</div>
+                    <div class="stat-label">Curated Tools</div>
+                </div>
+                <div class="stat-card glass-card">
+                    <div class="stat-value">6</div>
+                    <div class="stat-label">Categories</div>
+                </div>
+                <div class="stat-card glass-card">
+                    <div class="stat-value">100k+</div>
+                    <div class="stat-label">Monthly Users</div>
+                </div>
+                <div class="stat-card glass-card">
+                    <div class="stat-value">4.9</div>
+                    <div class="stat-label">Average Rating</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section id="categories" class="categories">
+        <div class="container">
+            <h3 class="section-title">Explore by <span class="gradient-text">Category</span></h3>
+            <p class="section-subtitle">Browse tools tailored to your specific needs and workflows</p>
+            <div class="categories-grid">
+                <div class="category-card glass-card">
+                    <div class="category-icon">💻</div>
+                    <h4>Coding & Development</h4>
+                    <p>AI-powered coding assistants, debuggers, and dev tools</p>
+                </div>
+                <div class="category-card glass-card">
+                    <div class="category-icon">🎨</div>
+                    <h4>Design & Images</h4>
+                    <p>Generate stunning visuals, UI designs, and graphics with AI</p>
+                </div>
+                <div class="category-card glass-card">
+                    <div class="category-icon">✍️</div>
+                    <h4>Writing & Content</h4>
+                    <p>AI writers, copy generators, and content creation tools</p>
+                </div>
+                <div class="category-card glass-card">
+                    <div class="category-icon">📊</div>
+                    <h4>Presentation & Slides</h4>
+                    <p>Create professional presentations in seconds with AI</p>
+                </div>
+                <div class="category-card glass-card">
+                    <div class="category-icon">⚡</div>
+                    <h4>Productivity & Office</h4>
+                    <p>Boost your productivity with smart AI assistants</p>
+                </div>
+                <div class="category-card glass-card">
+                    <div class="category-icon">🎬</div>
+                    <h4>Video, Voice & Media</h4>
+                    <p>AI tools for video editing, voice generation, and media</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- My Favorites Section -->
+    <section id="favorites" class="tools favorites-section">
+        <div class="container">
+            <h3 class="section-title">My <span class="gradient-text">Favorites</span></h3>
+            <p class="section-subtitle">Your bookmarked AI tools for quick access</p>
+            <div id="favorites-grid" class="tools-grid">
+                <div id="empty-favorites" class="empty-state">
+                    <div class="empty-state-icon">💖</div>
+                    <h4>No favorites yet</h4>
+                    <p>Click the heart icon on any tool to add it to your favorites!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured AI Tools Section -->
+    <section id="tools" class="tools">
+        <div class="container">
+            <h3 class="section-title">Featured <span class="gradient-text">AI Tools</span></h3>
+            <p class="section-subtitle">Hand-picked selection of the best AI tools available today</p>
+            <div class="tools-grid">
+                <!-- Coding & Development -->
+                <div class="tool-card glass-card" data-tool-id="github-copilot" data-tool-name="GitHub Copilot" data-tool-category="Coding & Development" data-tool-description="Your AI pair programmer. Get code suggestions in real-time as you write." data-tool-url="https://github.com/copilot">
+                    <button class="favorite-btn" aria-label="Add GitHub Copilot to favorites">
+                        <span class="heart-icon">🤍</span>
+                    </button>
+                    <span class="tool-badge">Coding & Development</span>
+                    <h4 class="tool-name">GitHub Copilot</h4>
+                    <p class="tool-description">Your AI pair programmer. Get code suggestions in real-time as you write.</p>
+                    <a href="https://github.com/copilot" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit GitHub Copilot website">Visit Website</a>
+                </div>
+                <div class="tool-card glass-card" data-tool-id="cursor" data-tool-name="Cursor" data-tool-category="Coding & Development" data-tool-description="AI-first code editor designed for pair-programming with AI." data-tool-url="https://cursor.so">
+                    <button class="favorite-btn" aria-label="Add Cursor to favorites">
+                        <span class="heart-icon">🤍</span>
+                    </button>
+                    <span class="tool-badge">Coding & Development</span>
+                    <h4 class="tool-name">Cursor</h4>
+                    <p class="tool-description">AI-first code editor designed for pair-programming with AI.</p>
+                    <a href="https://cursor.so" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Cursor website">Visit Website</a>
+                </div>
+                <div class="tool-card glass-card" data-tool-id="codeium" data-tool-name="Codeium" data-tool-category="Coding & Development" data-tool-description="Free AI-powered code completion and chat for every IDE." data-tool-url="https://codeium.com">
+                    <button class="favorite-btn" aria-label="Add Codeium to favorites">
+                        <span class="heart-icon">🤍</span>
+                    </button>
+                    <span class="tool-badge">Coding & Development</span>
+                    <h4 class="tool-name">Codeium</h4>
+                    <p class="tool-description">Free AI-powered code completion and chat for every IDE.</p>
+                    <a href="https://codeium.com" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Codeium website">Visit Website</a>
+                </div>
+                
+                <!-- Design & Images -->
+                <div class="tool-card glass-card" data-tool-id="midjourney" data-tool-name="Midjourney" data-tool-category="Design & Images" data-tool-description="Create beautiful, unique images from text descriptions." data-tool-url="https://midjourney.com">
+                    <button class="favorite-btn" aria-label="Add Midjourney to favorites">
+                        <span class="heart-icon">🤍</span>
+                    </button>
+                    <span class="tool-badge">Design & Images</span>
+                    <h4 class="tool-name">Midjourney</h4>
+                    <p class="tool-description">Create beautiful, unique images from text descriptions.</p>
+                    <a href="https://midjourney.com" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Midjourney website">Visit Website</a>
+                </div>
+                <div class="tool-card glass-card" data-tool-id="dalle-3" data-tool-name="DALL·E 3" data-tool-category="Design & Images" data-tool-description="OpenAI's latest image generation model with stunning quality." data-tool-url="https://openai.com/dall-e-3">
+                    <button class="favorite-btn" aria-label="Add DALL·E 3 to favorites">
+                        <span class="heart-icon">🤍</span>
+                    </button>
+                    <span class="tool-badge">Design & Images</span>
+                    <h4 class="tool-name">DALL·E 3</h4>
+                    <p class="tool-description">OpenAI's latest image generation model with stunning quality.</p>
+                    <a href="https://openai.com/dall-e-3" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit DALL·E 3 website">Visit Website</a>
+                </div>
+                <div class="tool-card glass-card" data-tool-id="figma-ai" data-tool-name="Figma AI" data-tool-category="Design & Images" data-tool-description="AI-powered design assistant built directly into Figma." data-tool-url="https://figma.com">
+                    <button class="favorite-btn" aria-label="Add Figma AI to favorites">
+                        <span class="heart-icon">🤍</span>
+                    </button>
+                    <span class="tool-badge">Design & Images</span>
+                    <h4 class="tool-name">Figma AI</h4>
+                    <p class="tool-description">AI-powered design assistant built directly into Figma.</p>
+                    <a href="https://figma.com" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Figma website">Visit Website</a>
+                </div>
+                
+                <!-- Writing & Content -->
+                <div class="tool-card glass-card" data-tool-id="chatgpt" data-tool-name="ChatGPT" data-tool-category="Writing & Content" data-tool-description="Advanced language model for conversation and content creation." data-tool-url="https://chat.openai.com">
+                    <button class="favorite-btn" aria-label="Add ChatGPT to favorites">
+                        <span class="heart-icon">🤍</span>
+                    </button>
+                    <span class="tool-badge">Writing & Content</span>
+                    <h4 class="tool-name">ChatGPT</h4>
+                    <p class="tool-description">Advanced language model for conversation and content creation.</p>
+                    <a href="https://chat.openai.com" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit ChatGPT website">Visit Website</a>
+                </div>
+                <div class="tool-card glass-card" data-tool-id="claude" data-tool-name="Claude" data-tool-category="Writing & Content" data-tool-description="Anthropic's AI assistant for thoughtful, harmless, and helpful interactions." data-tool-url="https://anthropic.com">
+                    <button class="favorite-btn" aria-label="Add Claude to favorites">
+                        <span class="heart-icon">🤍</span>
+                    </button>
+                    <span class="tool-badge">Writing & Content</span>
+                    <h4 class="tool-name">Claude</h4>
+                    <p class="tool-description">Anthropic's AI assistant for thoughtful, harmless, and helpful interactions.</p>
+                    <a href="https://anthropic.com" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Claude website">Visit Website</a>
+                </div>
+                <div class="tool-card glass-card" data-tool-id="jasper" data-tool-name="Jasper" data-tool-category="Writing & Content" data-tool-description="AI copywriter for marketing, blogs, and social media." data-tool-url="https://jasper.ai">
+                    <button class="favorite-btn" aria-label="Add Jasper to favorites">
+                        <span class="heart-icon">🤍</span>
+                    </button>
+                    <span class="tool-badge">Writing & Content</span>
+                    <h4 class="tool-name">Jasper</h4>
+                    <p class="tool-description">AI copywriter for marketing, blogs, and social media.</p>
+                    <a href="https://jasper.ai" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Jasper website">Visit Website</a>
+                </div>
+                
+                <!-- Presentation & Slides -->
+                <div class="tool-card glass-card" data-tool-id="gamma" data-tool-name="Gamma" data-tool-category="Presentation & Slides" data-tool-description="Create beautiful presentations and documents with AI." data-tool-url="https://gamma.app">
+                    <button class="favorite-btn" aria-label="Add Gamma to favorites">
+                        <span class="heart-icon">🤍</span>
+                    </button>
+                    <span class="tool-badge">Presentation & Slides</span>
+                    <h4 class="tool-name">Gamma</h4>
+                    <p class="tool-description">Create beautiful presentations and documents with AI.</p>
+                    <a href="https://gamma.app" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Gamma website">Visit Website</a>
+                </div>
+                <div class="tool-card glass-card" data-tool-id="tome" data-tool-name="Tome" data-tool-category="Presentation & Slides" data-tool-description="AI-powered storytelling platform for presentations." data-tool-url="https://tome.app">
+                    <button class="favorite-btn" aria-label="Add Tome to favorites">
+                        <span class="heart-icon">🤍</span>
+                    </button>
+                    <span class="tool-badge">Presentation & Slides</span>
+                    <h4 class="tool-name">Tome</h4>
+                    <p class="tool-description">AI-powered storytelling platform for presentations.</p>
+                    <a href="https://tome.app" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Tome website">Visit Website</a>
+                </div>
+                <div class="tool-card glass-card" data-tool-id="beautiful-ai" data-tool-name="Beautiful.ai" data-tool-category="Presentation & Slides" data-tool-description="Smart presentation maker that designs your slides." data-tool-url="https://beautiful.ai">
+                    <button class="favorite-btn" aria-label="Add Beautiful.ai to favorites">
+                        <span class="heart-icon">🤍</span>
+                    </button>
+                    <span class="tool-badge">Presentation & Slides</span>
+                    <h4 class="tool-name">Beautiful.ai</h4>
+                    <p class="tool-description">Smart presentation maker that designs your slides.</p>
+                    <a href="https://beautiful.ai" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Beautiful.ai website">Visit Website</a>
+                </div>
+                
+                <!-- Productivity & Office -->
+                <div class="tool-card glass-card" data-tool-id="notion-ai" data-tool-name="Notion AI" data-tool-category="Productivity & Office" data-tool-description="AI assistant built into your Notion workspace." data-tool-url="https://notion.so">
+                    <button class="favorite-btn" aria-label="Add Notion AI to favorites">
+                        <span class="heart-icon">🤍</span>
+                    </button>
+                    <span class="tool-badge">Productivity & Office</span>
+                    <h4 class="tool-name">Notion AI</h4>
+                    <p class="tool-description">AI assistant built into your Notion workspace.</p>
+                    <a href="https://notion.so" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Notion AI website">Visit Website</a>
+                </div>
+                <div class="tool-card glass-card" data-tool-id="microsoft-copilot" data-tool-name="Microsoft Copilot" data-tool-category="Productivity & Office" data-tool-description="AI assistant for Microsoft 365 apps and Windows." data-tool-url="https://microsoft.com/copilot">
+                    <button class="favorite-btn" aria-label="Add Microsoft Copilot to favorites">
+                        <span class="heart-icon">🤍</span>
+                    </button>
+                    <span class="tool-badge">Productivity & Office</span>
+                    <h4 class="tool-name">Microsoft Copilot</h4>
+                    <p class="tool-description">AI assistant for Microsoft 365 apps and Windows.</p>
+                    <a href="https://microsoft.com/copilot" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Microsoft Copilot website">Visit Website</a>
+                </div>
+                <div class="tool-card glass-card" data-tool-id="google-gemini" data-tool-name="Google Gemini" data-tool-category="Productivity & Office" data-tool-description="Google's AI assistant for Workspace and beyond." data-tool-url="https://gemini.google.com">
+                    <button class="favorite-btn" aria-label="Add Google Gemini to favorites">
+                        <span class="heart-icon">🤍</span>
+                    </button>
+                    <span class="tool-badge">Productivity & Office</span>
+                    <h4 class="tool-name">Google Gemini</h4>
+                    <p class="tool-description">Google's AI assistant for Workspace and beyond.</p>
+                    <a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Google Gemini website">Visit Website</a>
+                </div>
+                
+                <!-- Video, Voice & Media -->
+                <div class="tool-card glass-card" data-tool-id="sora" data-tool-name="Sora" data-tool-category="Video, Voice & Media" data-tool-description="OpenAI's AI video generation model for creating videos." data-tool-url="https://openai.com/sora">
+                    <button class="favorite-btn" aria-label="Add Sora to favorites">
+                        <span class="heart-icon">🤍</span>
+                    </button>
+                    <span class="tool-badge">Video, Voice & Media</span>
+                    <h4 class="tool-name">Sora</h4>
+                    <p class="tool-description">OpenAI's AI video generation model for creating videos.</p>
+                    <a href="https://openai.com/sora" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Sora website">Visit Website</a>
+                </div>
+                <div class="tool-card glass-card" data-tool-id="elevenlabs" data-tool-name="ElevenLabs" data-tool-category="Video, Voice & Media" data-tool-description="AI voice generation and text-to-speech platform." data-tool-url="https://elevenlabs.io">
+                    <button class="favorite-btn" aria-label="Add ElevenLabs to favorites">
+                        <span class="heart-icon">🤍</span>
+                    </button>
+                    <span class="tool-badge">Video, Voice & Media</span>
+                    <h4 class="tool-name">ElevenLabs</h4>
+                    <p class="tool-description">AI voice generation and text-to-speech platform.</p>
+                    <a href="https://elevenlabs.io" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit ElevenLabs website">Visit Website</a>
+                </div>
+                <div class="tool-card glass-card" data-tool-id="runway" data-tool-name="Runway" data-tool-category="Video, Voice & Media" data-tool-description="Professional AI video editing and generation tools." data-tool-url="https://runwayml.com">
+                    <button class="favorite-btn" aria-label="Add Runway to favorites">
+                        <span class="heart-icon">🤍</span>
+                    </button>
+                    <span class="tool-badge">Video, Voice & Media</span>
+                    <h4 class="tool-name">Runway</h4>
+                    <p class="tool-description">Professional AI video editing and generation tools.</p>
+                    <a href="https://runwayml.com" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Runway website">Visit Website</a>
+                </div>
+                <div class="tool-card glass-card" data-tool-id="heygen" data-tool-name="HeyGen" data-tool-category="Video, Voice & Media" data-tool-description="Create professional AI videos with talking avatars." data-tool-url="https://heygen.com">
+                    <button class="favorite-btn" aria-label="Add HeyGen to favorites">
+                        <span class="heart-icon">🤍</span>
+                    </button>
+                    <span class="tool-badge">Video, Voice & Media</span>
+                    <h4 class="tool-name">HeyGen</h4>
+                    <p class="tool-description">Create professional AI videos with talking avatars.</p>
+                    <a href="https://heygen.com" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit HeyGen website">Visit Website</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Use AI Section -->
+    <section class="why-ai">
+        <div class="container">
+            <h3 class="section-title">Why Use <span class="gradient-text">AI Tools?</span></h3>
+            <p class="section-subtitle">Transform the way you work and create with artificial intelligence</p>
+            <div class="why-grid">
+                <div class="why-card glass-card">
+                    <div class="why-icon">⏱️</div>
+                    <h4>Save Time</h4>
+                    <p>Automate repetitive tasks and complete projects 10x faster.</p>
+                </div>
+                <div class="why-card glass-card">
+                    <div class="why-icon">💡</div>
+                    <h4>Boost Creativity</h4>
+                    <p>Get new ideas and inspiration from AI-powered suggestions.</p>
+                </div>
+                <div class="why-card glass-card">
+                    <div class="why-icon">📈</div>
+                    <h4>Increase Productivity</h4>
+                    <p>Accomplish more in less time with smart AI assistance.</p>
+                </div>
+                <div class="why-card glass-card">
+                    <div class="why-icon">🎯</div>
+                    <h4>Improve Quality</h4>
+                    <p>Deliver higher-quality work with AI's precision and consistency.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Future AI Trends Section -->
+    <section class="trends">
+        <div class="container">
+            <h3 class="section-title">Future <span class="gradient-text">AI Trends</span></h3>
+            <p class="section-subtitle">What's coming next in the world of artificial intelligence</p>
+            <div class="trends-grid">
+                <div class="trend-card glass-card">
+                    <h4>Multimodal AI</h4>
+                    <p>AI that can understand and generate text, images, audio, and video seamlessly together.</p>
+                </div>
+                <div class="trend-card glass-card">
+                    <h4>Agentic Systems</h4>
+                    <p>Autonomous AI agents that can complete complex tasks without constant supervision.</p>
+                </div>
+                <div class="trend-card glass-card">
+                    <h4>Edge AI</h4>
+                    <p>Running AI models locally on your devices for faster, private, offline access.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h4 class="logo">
+                        <span class="logo-icon">🤖</span>
+                        AI Tools Hub
+                    </h4>
+                    <p>Discover the best AI tools to enhance your workflow and creativity.</p>
+                </div>
+                <div class="footer-links">
+                    <h5>Quick Links</h5>
+                    <ul>
+                        <li><a href="#categories" aria-label="Go to categories section">Categories</a></li>
+                        <li><a href="#tools" aria-label="Go to tools section">Tools</a></li>
+                        <li><a href="#tools" aria-label="Go to tools section">Why AI?</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 AI Tools Hub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <span id="toast-message"></span>
+    </div>
+
+    <script src="/public/AI-Tools-Hub/script.js"></script>
+</body>
+</html>

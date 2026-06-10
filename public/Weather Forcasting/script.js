@@ -478,7 +478,10 @@ function renderChart(data) {
       plugins: {
         legend: {
           labels: {
-            color: "#fff"
+            color:
+  document.body.classList.contains("light-mode")
+    ? "#0f172a"
+    : "#ffffff"
           }
         }
       },
@@ -486,19 +489,31 @@ function renderChart(data) {
       scales: {
         x: {
           ticks: {
-            color: "#ddd"
+           color:
+  document.body.classList.contains("light-mode")
+    ? "#475569"
+    : "#dddddd"
           },
           grid: {
-            color: "rgba(255,255,255,0.06)"
+           color:
+  document.body.classList.contains("light-mode")
+    ? "rgba(15,23,42,0.08)"
+    : "rgba(255,255,255,0.06)"
           }
         },
 
         y: {
           ticks: {
-            color: "#ddd"
+            color:
+  document.body.classList.contains("light-mode")
+    ? "#475569"
+    : "#dddddd"
           },
           grid: {
-            color: "rgba(255,255,255,0.06)"
+           color:
+  document.body.classList.contains("light-mode")
+    ? "rgba(15,23,42,0.08)"
+    : "rgba(255,255,255,0.06)"
           }
         }
       }
@@ -588,15 +603,13 @@ async function loadCityWeather(city) {
       weatherData.current.weather_code
     );
 
+
     lastForecastData = weatherData;
-
     renderChart(weatherData);
-
     setStatus(
       `Showing weather for ${label}`,
       "success"
     );
-
   } catch (error) {
     if (requestId !== activeWeatherRequestId) {
       return;
@@ -684,32 +697,35 @@ unitToggle?.addEventListener("click", async () => {
 ========================= */
 
 function applyTheme(theme) {
-  if (theme === "light") {
-    document.body.classList.add("light-mode");
+  const isLight = theme === "light";
 
-    if (themeToggle) {
-      themeToggle.innerHTML = "☀️";
-    }
-  } else {
-    document.body.classList.remove("light-mode");
+  document.body.classList.toggle(
+    "light-mode",
+    isLight
+  );
 
-    if (themeToggle) {
-      themeToggle.innerHTML = "🌙";
-    }
+  if (themeToggle) {
+    themeToggle.innerHTML = isLight
+      ? '<i class="fa-solid fa-sun"></i>'
+      : '<i class="fa-solid fa-moon"></i>';
   }
 
-  localStorage.setItem("weather-theme", theme);
+  localStorage.setItem(
+    "weather-theme",
+    theme
+  );
+
+  if (lastForecastData) {
+    renderChart(lastForecastData);
+  }
 }
-
 themeToggle?.addEventListener("click", () => {
-  const isLight =
-    document.body.classList.contains(
-      "light-mode"
-    );
-
-  applyTheme(isLight ? "dark" : "light");
+  applyTheme(
+    document.body.classList.contains("light-mode")
+      ? "dark"
+      : "light"
+  );
 });
-
 /* =========================
    GUIDE MODAL
 ========================= */

@@ -1,99 +1,196 @@
 let deck = [];
 let currentIndex = 0;
+
 let score = 0;
-let audioUrl = "";
+let streak = 0;
+let xp = 0;
 
-const flashcard = document.getElementById('flashcard');
-const wordTitle = document.getElementById('word-title');
-const wordDefinition = document.getElementById('word-definition');
-const wordExample = document.getElementById('word-example');
-const scoreEl = document.getElementById('score');
-const progressEl = document.getElementById('card-progress');
+const words = [
+  "ubiquitous",
+  "resilient",
+  "pragmatic",
+  "scrutinize",
+  "transient",
+  "eloquent",
+  "meticulous",
+  "versatile",
+  "coherent",
+  "benevolent"
+];
 
-// Asynchronously fetch word data from Free Dictionary API
-async function fetchCardData(word) {
-  try {
-    const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
-    if (!response.ok) throw new Error("Word data unavailable");
+function shuffle(array){
+  for(let i=array.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [array[i],array[j]]=[array[j],array[i]];
+  }
+}
+
+shuffle(words);
+
+async function fetchCardData(word){
+
+  try{
+
+    const response = await fetch(
+      `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
+    );
+
     const data = await response.json();
-    return data[0];
-  } catch (error) {
-    console.error(`Error fetching word "${word}":`, error);
+
+    return {
+      word:data[0].word,
+      definition:
+      data[0].meanings?.[0]?.definitions?.[0]?.definition
+      || "No definition",
+
+      example:
+      data[0].meanings?.[0]?.definitions?.[0]?.example
+      || "No example available",
+
+      audio:
+      data[0].phonetics?.find(p=>p.audio)?.audio || ""
+    };
+
+  }catch{
     return null;
   }
 }
 
-// Initialize the card session
-async function initSession() {
-  const words = ['ubiquitous', 'resilient', 'pragmatic', 'scrutinize', 'transient'];
-  deck = [];
-  
-  for (let word of words) {
-    const data = await fetchCardData(word);
-    if (data) {
-      // Safely handle API paths to avoid unexpected data crashes
-      const definitionPath = data.meanings?.[0]?.definitions?.[0]?.definition || "Definition missing.";
-      const examplePath = data.meanings?.[0]?.definitions?.[0]?.example || "Context example omitted by API.";
-      const audioPath = data.phonetics?.find(p => p.audio)?.audio || "";
+async function init(){
 
-      deck.push({
-        word: data.word,
-        definition: definitionPath,
-        example: examplePath,
-        audio: audioPath
-      });
+  for(const word of words){
+
+    const data = await fetchCardData(word);
+
+    if(data){
+      deck.push(data);
     }
   }
+
   renderCard();
 }
 
-// Render values to UI
-function renderCard() {
-  if (currentIndex >= deck.length) {
-    alert(`Session Finished! Clean score: ${score}/${deck.length}`);
+const flashcard = document.getElementById("flashcard");
+
+flashcard.addEventListener("click",()=>{
+  flashcard.classList.toggle("is-flipped");
+});
+
+function renderCard(){
+
+  if(currentIndex>=deck.length){
+
+    alert(
+      `Session Complete!\nScore: ${score}/${deck.length}\nXP: ${xp}`
+    );
+
     return;
   }
-  
-  // Clean card orientation state back to front face
-  flashcard.classList.remove('is-flipped');
-  
-  const currentCard = deck[currentIndex];
-  wordTitle.textContent = currentCard.word;
-  wordDefinition.textContent = currentCard.definition;
-  wordExample.textContent = `"${currentCard.example}"`;
-  audioUrl = currentCard.audio;
-  
-  progressEl.textContent = `${currentIndex + 1}/${deck.length}`;
+
+  flashcard.classList.remove("is-flipped");
+
+  const card = deck[currentIndex];
+
+  document.getElementById("word-title").textContent=
+  card.word;
+
+  document.getElementById("word-definition").textContent=
+  card.definition;
+
+  document.getElementById("word-example").textContent=
+  card.example;
+
+  updateProgress();
 }
 
-// 3D Card Flipping Event
-flashcard.addEventListener('click', () => {
-  flashcard.classList.toggle('is-flipped');
+function updateProgress(){
+
+  document.getElementById("card-progress").textContent=
+  `${currentIndex+1}/${deck.length}`;
+
+  const percentage =
+  ((currentIndex)/deck.length)*100;
+
+  document.getElementById("progress-bar").style.width =
+  percentage + "%";
+}
+
+document.getElementById("correct-btn")
+.addEventListener("click",()=>{
+
+  score++;
+  streak++;
+  xp += 10;
+
+  updateStats();
+
+  currentIndex++;
+
+  renderCard();
 });
 
-// Audio Pronunciation Edge-case handling
-document.getElementById('audio-btn').addEventListener('click', (e) => {
-  e.stopPropagation(); // Prevents clicking the audio button from flipping the card back over
-  if (audioUrl) {
-    const audio = new Audio(audioUrl);
-    audio.play();
-  } else {
-    alert("Audio track missing for this selection.");
+document.getElementById("incorrect-btn")
+.addEventListener("click",()=>{
+
+  streak = 0;
+
+  updateStats();
+
+  currentIndex++;
+
+  renderCard();
+});
+
+document.getElementById("prev-btn")
+.addEventListener("click",()=>{
+
+  if(currentIndex>0){
+
+    currentIndex--;
+
+    renderCard();
   }
 });
 
-// Controller Logic
-document.getElementById('correct-btn').addEventListener('click', () => {
-  score++;
-  scoreEl.textContent = score;
-  currentIndex++;
-  renderCard();
+function updateStats(){
+
+  document.getElementById("score").textContent=
+  score;
+
+  document.getElementById("streak").textContent=
+  streak;
+
+  document.getElementById("xp").textContent=
+  xp;
+
+  localStorage.setItem("bestScore",score);
+}
+
+document.getElementById("theme-toggle")
+.addEventListener("click",()=>{
+
+  document.body.classList.toggle("dark");
 });
 
-document.getElementById('incorrect-btn').addEventListener('click', () => {
-  currentIndex++;
-  renderCard();
+document.getElementById("audio-btn")
+.addEventListener("click",(e)=>{
+
+  e.stopPropagation();
+
+  const card = deck[currentIndex];
+
+  if(card.audio){
+
+    new Audio(card.audio).play();
+
+  }else{
+
+    const speech = new SpeechSynthesisUtterance(
+      card.word
+    );
+
+    speechSynthesis.speak(speech);
+  }
 });
 
-// Kick off app
-initSession();
+init();

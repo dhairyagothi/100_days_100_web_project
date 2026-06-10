@@ -39,6 +39,8 @@
     <!-- Ambient & Noise backgrounds -->
     <div class="ambient ambient-left" aria-hidden="true"></div>
     <div class="ambient ambient-right" aria-hidden="true"></div>
+    <div class="cursor-ring cursor-ring--outer" aria-hidden="true"></div>
+    <div class="cursor-ring cursor-ring--inner" aria-hidden="true"></div>
     <div class="noise-layer" aria-hidden="true"></div>
     <canvas
       id="particleCanvas"
@@ -68,6 +70,9 @@
             />
             <button id="clearSearch" class="clear-btn">&times;</button>
           </div>
+          <div id="searchResultsInfo" class="search-results-info">
+            Browse all topics
+          </div>
         </div>
 
         <nav
@@ -80,32 +85,70 @@
       </aside>
 
       <!-- Content Display Panel -->
-      <section class="learning-content">
-        <button
-          class="sidebar-toggle-btn"
-          id="sidebarToggle"
-          aria-label="Toggle curriculum sidebar"
-        >
-          <i class="fas fa-chevron-right"></i> Curriculum Menu
-        </button>
+<section class="learning-content">
+  <button
+    class="sidebar-toggle-btn"
+    id="sidebarToggle"
+    aria-label="Toggle curriculum sidebar"
+  >
+    <i class="fas fa-chevron-right"></i> Curriculum Menu
+  </button>
 
-        <article class="content-viewport" id="contentViewport">
-          <div class="learning-progress-header">
-            <button id="continueLearningBtn" class="continue-learning-btn">
-              ▶ Continue Learning
-            </button>
+  <!-- Progress Dashboard -->
+  <div class="learning-dashboard-header">
 
-            <div class="overall-progress">
-              <div class="progress-label">
-                Overall Progress
-                <span id="overallProgressText">0%</span>
-              </div>
+    <div class="progress-stats-grid">
 
-              <div class="progress-bar">
-                <div id="overallProgressFill" class="progress-fill"></div>
-              </div>
-            </div>
-          </div>
+      <div class="progress-stat-card">
+        <span class="stat-label">Completed</span>
+        <strong id="completedTopicsCount">0</strong>
+      </div>
+
+      <div class="progress-stat-card">
+        <span class="stat-label">Topics</span>
+        <strong id="totalTopicsCount">0</strong>
+      </div>
+
+      <div class="progress-stat-card">
+        <span class="stat-label">Progress</span>
+        <strong id="progressPercentageCard">0%</strong>
+      </div>
+
+    </div>
+
+    <button
+      id="continueLearningBtn"
+      class="continue-learning-btn"
+    >
+      <i class="fas fa-play"></i>
+      Continue Learning
+    </button>
+
+    <div class="overall-progress">
+
+      <div class="progress-label">
+        Overall Progress
+        <span id="overallProgressText">0%</span>
+      </div>
+
+      <div class="progress-bar">
+        <div
+          id="overallProgressFill"
+          class="progress-fill"
+        ></div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <article
+    class="content-viewport"
+    id="contentViewport"
+  >
+
+
+  
           <div class="loading-article">
             <i class="fas fa-circle-notch fa-spin"></i>
             <p>Fetching tutorial content...</p>
@@ -220,9 +263,10 @@
     <!-- Interactive Scripts -->
     <script src="learning.js"></script>
     <script>
-      document.getElementById('Current-Year').textContent =
+      document.getElementById("Current-Year").textContent =
         new Date().getFullYear();
     </script>
     <script src="../navbar.js"></script>
+    <script src="../index.js" defer></script>
   </body>
 </html>

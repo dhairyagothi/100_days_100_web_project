@@ -1,20 +1,26 @@
 const screens = document.querySelectorAll('.screen');
 const choose_insect_btns = document.querySelectorAll('.choose-insect-btn');
-const start_btn = document.getElementById('start-btn')
-const game_container = document.getElementById('game-container')
-const timeEl = document.getElementById('time')
-const scoreEl = document.getElementById('score')
-const message = document.getElementById('message')
-const timerBtns = document.querySelectorAll('.timer-btn')
+const start_btn = document.getElementById('start-btn');
+const game_container = document.getElementById('game-container');
+const timeEl = document.getElementById('time');
+const scoreEl = document.getElementById('score');
+const message = document.getElementById('message');
+const timerBtns = document.querySelectorAll('.timer-btn');
 
 // End game popup and final result elements
-const endBtn = document.getElementById('end-btn')
-const gameOverPopup = document.getElementById('game-over')
-const yesBtn = document.getElementById('yes-btn')
-const noBtn = document.getElementById('no-btn')
-const finalResult = document.getElementById('final-result')
-const finalScore = document.getElementById('final-score')
-const finalTime = document.getElementById('final-time')
+const endBtn = document.getElementById('end-btn');
+const gameOverPopup = document.getElementById('game-over');
+const yesBtn = document.getElementById('yes-btn');
+const noBtn = document.getElementById('no-btn');
+const finalResult = document.getElementById('final-result');
+const finalScore = document.getElementById('final-score');
+const finalTime = document.getElementById('final-time');
+const playAgain = document.getElementById('play-again');
+
+const backgroundMusic= document.getElementById('background-music');
+const catchSound = document.getElementById('catch-sound');
+const buttonClickSound = document.getElementById('button-click-sound');
+const volumeSlider =document.getElementById('volume-slider');
 
 let score = 0
 let selected_insect = {}
@@ -24,7 +30,7 @@ let gameInterval // Stores the time interval
 let isGamePaused = false // Helps pausing timer when user clicks 'End Game' button
 let gameEnded = false
 
-start_btn.addEventListener('click', () => screens[0].classList.add('up'))
+start_btn.addEventListener('click', () => screens[0].classList.add('up'));
 
 choose_insect_btns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -33,56 +39,56 @@ choose_insect_btns.forEach(btn => {
         const alt = img.getAttribute('alt')
         selected_insect = { src, alt }
         screens[1].classList.add('up')
-    })
-})
+    });
+});
 
 timerBtns.forEach(btn => {
     btn.addEventListener('click', () => {
 
-        gameDuration = Number(btn.dataset.time)
-        timeRemaining = gameDuration
+        gameDuration = Number(btn.dataset.time);
+        timeRemaining = gameDuration;
 
-        screens[2].classList.add('up')
+        screens[2].classList.add('up');
 
-        setTimeout(createInsect, 1000)
-        startGame()
+        setTimeout(createInsect, 1000);
+        startGame();
 
         setTimeout(() => {
             backgroundMusic.play()
         }, 500)
-    })
-})
+    });
+});
 
 function startGame() {
-    updateTimer()
-    gameInterval = setInterval(updateTimer,1000)
+    updateTimer();
+    gameInterval = setInterval(updateTimer,1000);
 }
 
 function updateTimer() {
     if (timeRemaining <= 0) {
-        endGame()
-        return
+        endGame();
+        return;
     }
 
-    timeRemaining--
+    timeRemaining-- ;
 
-    let m = Math.floor(timeRemaining / 60)
-    let s = timeRemaining % 60
+    let m = Math.floor(timeRemaining / 60);
+    let s = timeRemaining % 60 ;
 
-    m = m < 10 ? `0${m}` : m
-    s = s < 10 ? `0${s}` : s
+    m = m < 10 ? `0${m}` : m ;
+    s = s < 10 ? `0${s}` : s ;
 
-    timeEl.innerHTML = `Time: ${m}:${s}`
+    timeEl.innerHTML = `Time: ${m}:${s}`;
 }
 
 function createInsect() {
     if (gameEnded) return;
-    const insect = document.createElement('div')
-    insect.classList.add('insect')
-    const { x, y } = getRandomLocation()
-    insect.style.top = `${y}px`
-    insect.style.left = `${x}px`
-    insect.innerHTML = `<img src="${selected_insect.src}" alt="${selected_insect.alt}" style="transform: rotate(${Math.random() * 360}deg)" />`
+    const insect = document.createElement('div');
+    insect.classList.add('insect');
+    const { x, y } = getRandomLocation();
+    insect.style.top = `${y}px`;
+    insect.style.left = `${x}px`;
+    insect.innerHTML = `<img src="${selected_insect.src}" alt="${selected_insect.alt}" style="transform: rotate(${Math.random() * 360}deg)" />`;
 
   insect.addEventListener("click", catchInsect);
 
@@ -141,29 +147,33 @@ noBtn.addEventListener('click', () => {
     gameOverPopup.style.display = 'none'
 
     if (isGamePaused) {
-        clearInterval(gameInterval)
-        gameInterval = setInterval(updateTimer, 1000)
-        isGamePaused = false
+        clearInterval(gameInterval);
+        gameInterval = setInterval(updateTimer, 1000);
+        isGamePaused = false;
     }
-})
+});
 
 // Ends the game
 yesBtn.addEventListener("click", endGame);
 
 // Stops timer, removes insects and display final results
 function endGame() {
-    gameEnded = true
-    clearInterval(gameInterval)
-    isGamePaused = false
+    gameEnded = true ;
+    clearInterval(gameInterval);
+    isGamePaused = false;
+    backgroundMusic.pause();
+    backgroundMusic.currentTime = 0;
     document.querySelectorAll('.insect').forEach(insect => {
-        insect.remove()
-    })
+        insect.remove();
+    });
 
   gameOverPopup.style.display = "none";
 
-    const timeTaken = gameDuration - timeRemaining
-    let m = Math.floor(timeTaken / 60)
-    let s = timeTaken % 60
+    const timeTaken = gameDuration - timeRemaining;
+    let m = Math.floor(timeTaken / 60);
+    let s = timeTaken % 60;
+  const paddedMins = m < 10 ? `0${m}` : m;
+  const paddedSeconds = s < 10 ? `0${s}` : s;
 
   finalScore.innerHTML = `Final Score: ${score}`;
   finalTime.innerHTML = `Time Taken: ${paddedMins}:${paddedSeconds}`;
