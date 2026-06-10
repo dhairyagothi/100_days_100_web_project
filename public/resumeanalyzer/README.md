@@ -56,7 +56,7 @@
 **CareerAI** is an executive-grade AI-powered platform that analyzes your professional DNA to find career matches others miss. Upload your resume (PDF or text), and our intelligent engine extracts your skills, experience, and career trajectory — then matches you with the most compatible roles from a dataset of **50,000+ positions**.
 
 > 💡 Move beyond job boards into **intelligent career steering**.
-<br/>
+> <br/>
 
 ---
 
@@ -64,16 +64,16 @@
 
 ## 🎯 Key Features
 
-| Feature | Description |
-|:---:|:---|
-| 📄 **Seamless Upload** | Drag & drop PDF, DOCX, or LinkedIn exports — our parser handles complex layouts with 100% data retention |
-| 🧠 **AI-Powered Parsing** | Dual-engine semantic parser utilizing **Gemini API** (`gemini-2.0-flash`) via the `google-genai` SDK for expert-grade profile extraction |
-| ⚡ **Local NLP Fallback** | Instant local NLP parsing using **spaCy** as an automatic fallback if API credentials are not configured or if requests fail |
-| 🔒 **Resume Validator** | Smart pre-validation checks contact information and resume format to immediately reject invalid uploads (e.g. medical reports, general articles) |
-| 🎯 **Domain Filter Penalty** | Advanced logic that caps match scores at 10% for candidates matching roles in completely unrelated domains to ensure accuracy |
-| 📊 **Score Breakdown** | Detailed compatibility scoring: Skills Match (40%) + Experience Match (30%) + Education Match (15%) + Industry/Domain Match (15%) |
-| 🗺️ **Career Insights** | Personalized career path recommendations, salary estimates, strength identification, and custom preparation steps |
-| 🌐 **Premium UI** | Modern glassmorphism design featuring dynamic glowing backdrops/orbs, responsive dashboards, and interactive sidebar navigation |
+|           Feature            | Description                                                                                                                                      |
+| :--------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------- |
+|    📄 **Seamless Upload**    | Drag & drop PDF, DOCX, or LinkedIn exports — our parser handles complex layouts with 100% data retention                                         |
+|  🧠 **AI-Powered Parsing**   | Dual-engine semantic parser utilizing **Gemini API** (`gemini-2.0-flash`) via the `google-genai` SDK for expert-grade profile extraction         |
+|  ⚡ **Local NLP Fallback**   | Instant local NLP parsing using **spaCy** as an automatic fallback if API credentials are not configured or if requests fail                     |
+|   🔒 **Resume Validator**    | Smart pre-validation checks contact information and resume format to immediately reject invalid uploads (e.g. medical reports, general articles) |
+| 🎯 **Domain Filter Penalty** | Advanced logic that caps match scores at 10% for candidates matching roles in completely unrelated domains to ensure accuracy                    |
+|    📊 **Score Breakdown**    | Detailed compatibility scoring: Skills Match (40%) + Experience Match (30%) + Education Match (15%) + Industry/Domain Match (15%)                |
+|    🗺️ **Career Insights**    | Personalized career path recommendations, salary estimates, strength identification, and custom preparation steps                                |
+|      🌐 **Premium UI**       | Modern glassmorphism design featuring dynamic glowing backdrops/orbs, responsive dashboards, and interactive sidebar navigation                  |
 
 <br/>
 
@@ -176,29 +176,31 @@ resumeanalyzer/
 ## ⚙️ Tech Stack
 
 ### 🎨 Frontend
-| Technology | Purpose |
-|:---|:---|
-| **React 19** | UI framework with latest concurrent features |
-| **React Router DOM** | Standard client-side routing for React SPAs |
-| **TypeScript 5.8** | Type safety across the entire frontend |
-| **Vite 6** | Next-gen build tool with HMR |
-| **Tailwind CSS 4** | Utility-first styling with JIT compilation |
-| **Radix UI** | Accessible, unstyled UI primitives |
-| **Recharts** | Data visualization for score breakdowns |
-| **Lucide React** | Beautiful icon library |
-| **Sonner** | Toast notifications |
-| **Zod** | Runtime schema validation |
+
+| Technology           | Purpose                                      |
+| :------------------- | :------------------------------------------- |
+| **React 19**         | UI framework with latest concurrent features |
+| **React Router DOM** | Standard client-side routing for React SPAs  |
+| **TypeScript 5.8**   | Type safety across the entire frontend       |
+| **Vite 6**           | Next-gen build tool with HMR                 |
+| **Tailwind CSS 4**   | Utility-first styling with JIT compilation   |
+| **Radix UI**         | Accessible, unstyled UI primitives           |
+| **Recharts**         | Data visualization for score breakdowns      |
+| **Lucide React**     | Beautiful icon library                       |
+| **Sonner**           | Toast notifications                          |
+| **Zod**              | Runtime schema validation                    |
 
 ### 🐍 Backend
-| Technology | Purpose |
-|:---|:---|
-| **FastAPI** | High-performance async REST API |
-| **Google GenAI** | Advanced LLM-powered extraction with `gemini-2.0-flash` |
-| **spaCy** | Industrial-strength NLP for fallback resume parsing |
-| **python-dotenv** | Managing local environment configuration |
-| **PyPDF2** | PDF text extraction |
-| **Pandas** | Job dataset processing & analysis |
-| **Uvicorn** | ASGI server |
+
+| Technology        | Purpose                                                 |
+| :---------------- | :------------------------------------------------------ |
+| **FastAPI**       | High-performance async REST API                         |
+| **Google GenAI**  | Advanced LLM-powered extraction with `gemini-2.0-flash` |
+| **spaCy**         | Industrial-strength NLP for fallback resume parsing     |
+| **python-dotenv** | Managing local environment configuration                |
+| **PyPDF2**        | PDF text extraction                                     |
+| **Pandas**        | Job dataset processing & analysis                       |
+| **Uvicorn**       | ASGI server                                             |
 
 <br/>
 
@@ -241,9 +243,11 @@ python -m spacy download en_core_web_sm
 ### 4️⃣ Configure API Keys (Optional but Recommended)
 
 Create a `.env` file in the `backend/` directory by copying `.env.example` and filling in your Gemini API key:
+
 ```env
 GEMINI_API_KEY=your_gemini_api_key_here
 ```
+
 Get a free API key at [Google AI Studio](https://aistudio.google.com/app/apikey). If not set, the app will automatically use the local spaCy NLP parser.
 
 ### 5️⃣ Start the Backend Server
@@ -252,6 +256,7 @@ Get a free API key at [Google AI Studio](https://aistudio.google.com/app/apikey)
 cd backend
 python api.py
 ```
+
 > 🟢 The API server starts at **http://localhost:8000**
 
 ### 6️⃣ Start the Frontend Dev Server
@@ -260,6 +265,7 @@ python api.py
 cd frontend
 npm run dev
 ```
+
 > 🟢 The app opens at **http://localhost:5173**
 
 <br/>
@@ -274,6 +280,7 @@ npm run dev
 
 The application leverages the Google GenAI SDK to perform semantic analysis on resumes.
 To activate Gemini parser:
+
 1. Obtain an API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
 2. Set it in `backend/.env` as `GEMINI_API_KEY=...` or as a system environment variable.
 
@@ -282,9 +289,10 @@ If the key is not set, the backend falls back to the **local spaCy parser** seam
 ### 📊 Dataset
 
 The project includes `resume_data.csv` (~17MB) containing **50,000+ job records** with:
+
 - Job position names
 - Educational requirements
-- Experience requirements  
+- Experience requirements
 - Required skills
 - Responsibilities
 
@@ -297,14 +305,17 @@ The project includes `resume_data.csv` (~17MB) containing **50,000+ job records*
 ## 📸 Screenshots
 
 ### 🏠 Landing Page
+
 > Premium glassmorphism design with floating orbs, gradient text, and smooth animations
-<img width="1915" height="974" alt="image" src="https://github.com/user-attachments/assets/12da755c-0677-4745-83f6-09bf66e3f66d" />
+> <img width="1915" height="974" alt="image" src="https://github.com/user-attachments/assets/12da755c-0677-4745-83f6-09bf66e3f66d" />
 
 ### 📄 Resume Analysis
+
 > Upload your resume and get instant AI-powered analysis with detailed skill extraction
-<img width="1914" height="977" alt="image" src="https://github.com/user-attachments/assets/3b1bc308-34e4-42ee-9344-f4b778f42899" />
+> <img width="1914" height="977" alt="image" src="https://github.com/user-attachments/assets/3b1bc308-34e4-42ee-9344-f4b778f42899" />
 
 ### 📊 Results Dashboard
+
 > Comprehensive compatibility scores, skill gap analysis, and career insights
 
 <br/>
@@ -348,7 +359,7 @@ For local use, simply run `python api.py` from the `backend/` folder.
 ```
    📄 Upload Resume                    🧠 NLP Parsing                    🎯 Job Matching
   ─────────────────      ─────────────────────────────      ─────────────────────────
-                                                           
+
   ┌───────────┐          ┌─────────────────────────┐       ┌─────────────────────┐
   │           │          │  Extract:                │       │  Score Formula:      │
   │  PDF/TXT  │────────▶ │  • Name, Email, Phone   │──────▶│                     │
