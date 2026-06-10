@@ -746,3 +746,12 @@ body {
     padding-left: 1rem !important;
   }
 }
+
+/* Custom clean-up styles to remove inline styles */
+.contributor-header-spaced {
+  margin-top: 5rem;
+}
+
+.footer-featured-btn {
+  margin-top: 1rem;
+}

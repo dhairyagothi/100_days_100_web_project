@@ -1645,12 +1645,20 @@ input:focus {
   }
 }
 
+/* Bookmark actions wrapper */
+.bookmark-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
 /* Filter chips */
 .filter-chips {
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
   align-items: center;
+  margin-bottom: 1.25rem;
 }
 
 .chip {
