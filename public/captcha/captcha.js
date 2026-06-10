@@ -2,7 +2,7 @@ let selectedImageAnswer = "";
 
 // Select DOM Elements
 const captchaTypeSelect = document.getElementById('captchaTypeSelect');
-let selectedType = "text"; 
+let selectedType = "text";
 
 const captchaContainer = document.getElementById('captchaContainer');
 const textInput = document.getElementById('captchaInput');
@@ -11,6 +11,7 @@ const resultMessage = document.querySelector('.result');
 const submitButton = document.querySelector('.submit');
 const voiceField = document.getElementById('voiceField');
 const voiceSelect = document.getElementById('voiceSelect');
+const textCaptchaField = document.querySelector('.textcaptcha');
 
 let currentCaptcha = null;
 let attempts = 0;
@@ -25,20 +26,13 @@ const addDifficultySelector = () => {
 
     const selector = document.createElement('div');
     selector.id = 'difficulty-selector';
-    selector.style.cssText = `
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin: 10px 0;
-    `;
     selector.innerHTML = `
-        <button class="diff-btn active" data-diff="easy" style="padding: 5px 15px; border-radius: 20px; border: 2px solid #ccc; cursor: pointer; background: #4CAF50; color: white;">Easy</button>
-        <button class="diff-btn active" data-diff="medium" style="padding: 5px 15px; border-radius: 20px; border: 2px solid #ccc; cursor: pointer; background: #2196F3; color: white;">Medium</button>
-        <button class="diff-btn" data-diff="hard" style="padding: 5px 15px; border-radius: 20px; border: 2px solid #ccc; cursor: pointer; background: #f44336; color: white;">Hard</button>
+        <button class="diff-btn" data-diff="easy">Easy</button>
+        <button class="diff-btn" data-diff="medium">Medium</button>
+        <button class="diff-btn" data-diff="hard">Hard</button>
     `;
 
-    const buttonSection = document.querySelector('.button') || captchaContainer.parentNode;
-    buttonSection.parentNode.insertBefore(selector, buttonSection);
+    captchaContainer.parentNode.insertBefore(selector, captchaContainer);
 
     selector.querySelectorAll('.diff-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -48,14 +42,19 @@ const addDifficultySelector = () => {
             generateCaptcha();
         });
     });
+    
+    // Set initial selected
+    const initialBtn = selector.querySelector('.diff-btn[data-diff="medium"]');
+    if (initialBtn) {
+        initialBtn.style.opacity = '1';
+    }
 };
 
+// --- CAPTCHA Generation ---
 const generateTextCaptcha = () => {
     switch (selectedDifficulty) {
         case 'easy':
             return Math.random().toString(36).substring(2, 6).toUpperCase();
-        case 'medium':
-            return Math.random().toString(36).substring(2, 8).toUpperCase();
         case 'hard':
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%';
             let result = '';
@@ -81,8 +80,8 @@ const generateImageCaptcha = () => {
         { emoji: '<i class="fas fa-car fa-2x" style="color: #6b7280;"></i>', name: 'train' }
     ];
     const correctIndex = Math.floor(Math.random() * images.length);
-    const shuffled = images.sort(() => 0.5 - Math.random()).slice(0, 6);
-    if (!shuffled.includes(images[correctIndex])) {
+    const shuffled = [...images].sort(() => 0.5 - Math.random()).slice(0, 6);
+    if (!shuffled.find(i => i.name === images[correctIndex].name)) {
         shuffled[Math.floor(Math.random() * 6)] = images[correctIndex];
     }
     return { images: shuffled, correct: images[correctIndex] };
@@ -97,13 +96,6 @@ const generateMathCaptcha = () => {
             question = `${n1} + ${n2}`;
             answer = n1 + n2;
             break;
-        case 'medium':
-            const num1 = Math.floor(Math.random() * 10) + 1;
-            const num2 = Math.floor(Math.random() * 10) + 1;
-            const operation = Math.random() < 0.5 ? '+' : '-';
-            question = `${num1} ${operation} ${num2}`;
-            answer = operation === '+' ? num1 + num2 : num1 - num2;
-            break;
         case 'hard':
             const a = Math.floor(Math.random() * 20) + 5;
             const b = Math.floor(Math.random() * 10) + 2;
@@ -112,51 +104,111 @@ const generateMathCaptcha = () => {
             answer = a + b * c;
             break;
         default:
-            const d1 = Math.floor(Math.random() * 10) + 1;
-            const d2 = Math.floor(Math.random() * 10) + 1;
-            question = `${d1} + ${d2}`;
-            answer = d1 + d2;
+            const num1 = Math.floor(Math.random() * 10) + 1;
+            const num2 = Math.floor(Math.random() * 10) + 1;
+            const operation = Math.random() < 0.5 ? '+' : '-';
+            question = `${num1} ${operation} ${num2}`;
+            answer = operation === '+' ? num1 + num2 : num1 - num2;
     }
     return { question, answer };
 };
 
 const speakCaptcha = (text, repeat = 2, speed = 0.5) => {
-  return new Promise((resolve) => {
-      const utterance = new SpeechSynthesisUtterance();
-      utterance.text = Array(repeat).fill(text.split('').join(' ')).join('. . . ');
-      const selectedVoice = voiceSelect.value;
-      if (selectedVoice) {
-          const voice = speechSynthesis.getVoices().find(v => v.name === selectedVoice);
-          if (voice) utterance.voice = voice;
-      }
-      utterance.rate = speed;
-      utterance.onend = resolve;
-      speechSynthesis.speak(utterance);
-  });
+    return new Promise((resolve) => {
+        const utterance = new SpeechSynthesisUtterance();
+        utterance.text = Array(repeat).fill(text.split('').join(' ')).join('. . . ');
+        const selectedVoice = voiceSelect.value;
+        if (selectedVoice) {
+            const voice = speechSynthesis.getVoices().find(v => v.name === selectedVoice);
+            if (voice) utterance.voice = voice;
+        }
+        utterance.rate = speed;
+        utterance.onend = resolve;
+        speechSynthesis.speak(utterance);
+    });
 };
 
 const populateVoiceList = () => {
-  const voices = speechSynthesis.getVoices();
-  if (!voices.length) {
-      voiceSelect.innerHTML = '<option value="">No voices available</option>';
-      return;
-  }
-  const previousValue = voiceSelect.value;
-  voiceSelect.innerHTML = voices
-      .map(voice => `<option value="${voice.name}">${voice.name} (${voice.lang})${voice.default ? ' — default' : ''}</option>`)
-      .join('');
-  if (previousValue) {
-      voiceSelect.value = previousValue;
-  }
+    const voices = speechSynthesis.getVoices();
+    if (!voices.length) {
+        voiceSelect.innerHTML = '<option value="">No voices available</option>';
+        return;
+    }
+    const previousValue = voiceSelect.value;
+    voiceSelect.innerHTML = voices
+        .map(voice => `<option value="${voice.name}">${voice.name} (${voice.lang})${voice.default ? ' — default' : ''}</option>`)
+        .join('');
+    if (previousValue) voiceSelect.value = previousValue;
 };
 
 speechSynthesis.addEventListener('voiceschanged', populateVoiceList);
 populateVoiceList();
 
+const drawDistortedCaptcha = (text) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 280;
+    canvas.height = 80;
+    canvas.style.borderRadius = '12px';
+    canvas.style.display = 'block';
+    canvas.style.margin = '0 auto';
+    const ctx = canvas.getContext('2d');
+
+    // Background
+    ctx.fillStyle = '#f0f7ff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Noise dots
+    for (let i = 0; i < 80; i++) {
+        ctx.beginPath();
+        ctx.arc(
+            Math.random() * canvas.width,
+            Math.random() * canvas.height,
+            Math.random() * 2.5, 0, Math.PI * 2
+        );
+        ctx.fillStyle = `rgba(${Math.floor(Math.random()*180)},${Math.floor(Math.random()*180)},${Math.floor(Math.random()*220)},0.45)`;
+        ctx.fill();
+    }
+
+    // Noise lines
+    for (let i = 0; i < 7; i++) {
+        ctx.beginPath();
+        ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+        ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+        ctx.strokeStyle = `rgba(${Math.floor(Math.random()*150)},${Math.floor(Math.random()*150)},${Math.floor(Math.random()*220)},0.35)`;
+        ctx.lineWidth = Math.random() * 2 + 0.5;
+        ctx.stroke();
+    }
+
+    // Draw each character with distortion
+    const chars = text.split('');
+    const colors = ['#2563eb','#7c3aed','#db2777','#059669','#d97706','#dc2626'];
+    const charWidth = canvas.width / (chars.length + 1);
+
+    chars.forEach((char, i) => {
+        ctx.save();
+        const x = charWidth * (i + 0.8) + charWidth * 0.2;
+        const y = canvas.height / 2 + (Math.random() * 14 - 7);
+        const angle = (Math.random() * 30 - 15) * (Math.PI / 180);
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+        ctx.font = `bold ${Math.floor(Math.random() * 10 + 26)}px Inter, Arial`;
+        ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+        ctx.fillText(char, 0, 0);
+        ctx.restore();
+    });
+
+    return canvas;
+};
+
 const generateCaptcha = () => {
     textInput.value = '';
+    textInput.disabled = false;
+
+    textCaptchaField.classList.remove('hidden');
+
     resultMessage.textContent = '';
     resultMessage.className = 'result';
+    selectedImageAnswer = '';
 
     // Normalize type string case to prevent logic matching bugs
     const type = selectedType.toLowerCase();
@@ -179,10 +231,14 @@ const generateCaptcha = () => {
         case 'text': {
             currentCaptcha = generateTextCaptcha();
             textInput.placeholder = 'Type the text above';
-            captchaContainer.innerHTML = `<span style="font-size: 24px; letter-spacing: 5px;">${currentCaptcha}</span>`;
+            const canvas = drawDistortedCaptcha(currentCaptcha);
+            captchaContainer.innerHTML = '';
+            captchaContainer.style.padding = '16px';
+            captchaContainer.appendChild(canvas);
             break;
         }
         case 'image': {
+            textCaptchaField.classList.add('hidden');
             const { images, correct } = generateImageCaptcha();
             currentCaptcha = correct.name;
             captchaContainer.innerHTML = `
@@ -247,22 +303,21 @@ textInput.addEventListener("input", () => {
 });
 
 const lockoutUser = () => {
-    const lockoutDuration = 60;
-    lockoutEndTime = Date.now() + lockoutDuration * 1000;
+    lockoutEndTime = Date.now() + 60 * 1000;
     updateLockoutUI();
 };
 
 const updateLockoutUI = () => {
     const now = Date.now();
     if (now < lockoutEndTime) {
-        const remainingTime = Math.ceil((lockoutEndTime - now) / 1000);
+        const remaining = Math.ceil((lockoutEndTime - now) / 1000);
         submitButton.disabled = true;
-        resultMessage.textContent = `Too many unsuccessful attempts. Please wait ${remainingTime} seconds.`;
-        resultMessage.style.color = "red";
+        resultMessage.textContent = `Too many attempts. Wait ${remaining} seconds.`;
+        resultMessage.style.color = 'red';
         setTimeout(updateLockoutUI, 1000);
     } else {
         submitButton.disabled = false;
-        resultMessage.textContent = "";
+        resultMessage.textContent = '';
         attempts = 0;
         generateCaptcha();
     }
@@ -313,13 +368,11 @@ if (captchaTypeSelect) {
     });
 }
 
-refreshButton.addEventListener("click", () => {
-    if (Date.now() >= lockoutEndTime) {
-        generateCaptcha();
-    }
+refreshButton.addEventListener('click', () => {
+    if (Date.now() >= lockoutEndTime) generateCaptcha();
 });
 
-submitButton.addEventListener("click", verifyCaptcha);
+submitButton.addEventListener('click', verifyCaptcha);
 
 // Initialize application processes on initial window load
 addDifficultySelector();

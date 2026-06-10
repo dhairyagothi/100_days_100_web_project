@@ -1,9 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 
+// Going up two levels from '.github/scripts/' to reach the repository root
 const projectsPath = path.join(__dirname, '../../projects.json');
 
-console.log('🔍 Starting validation of projects.json...');
+console.log('🔍 Starting comprehensive structural integrity check on projects.json...');
 
 if (!fs.existsSync(projectsPath)) {
   console.error('❌ Error: projects.json file does not exist at path: ' + projectsPath);
@@ -25,7 +26,7 @@ if (!Array.isArray(data)) {
   process.exit(1);
 }
 
-console.log(`✅ JSON is valid. Found ${data.length} registered projects.`);
+console.log(`✅ JSON structure is valid. Validating ${data.length} project schemas...`);
 
 const requiredFields = ['projectNo', 'projectName', 'projectType', 'projectDesc', 'techStack', 'difficulty', 'projectPath'];
 const validDifficulties = ['beginner', 'intermediate', 'advanced'];
@@ -33,45 +34,76 @@ const validDifficulties = ['beginner', 'intermediate', 'advanced'];
 let errors = [];
 
 data.forEach((project, idx) => {
-  const label = `Project #${project.projectNo || idx + 1} (${project.projectName || 'Unnamed'})`;
+  const lineNo = idx + 1;
+  const label = `Project at Index ${lineNo} (Day: ${project.projectNo || 'Missing'}, Name: "${project.projectName || 'Unnamed'}")`;
 
-  // 1. Check required fields
+  // 1. Strict null / undefined / empty field checking
   requiredFields.forEach(field => {
-    if (project[field] === undefined || project[field] === null || project[field] === '') {
+    if (project[field] === undefined || project[field] === null || String(project[field]).trim() === '') {
       errors.push(`${label}: Missing required field "${field}"`);
     }
   });
 
-  // 2. Validate types
-  if (project.projectNo && typeof project.projectNo !== 'number') {
-    errors.push(`${label}: "projectNo" must be a number.`);
+  // 2. Exact Type and Length Constraints (Replacing Schema)
+  if (project.projectNo !== undefined && project.projectNo !== null) {
+    if (typeof project.projectNo !== 'number' || !Number.isInteger(project.projectNo) || project.projectNo < 1) {
+      errors.push(`${label}: "projectNo" must be a positive integer.`);
+    }
   }
 
-  if (project.techStack && !Array.isArray(project.techStack)) {
-    errors.push(`${label}: "techStack" must be an array of strings.`);
+  if (typeof project.projectName === 'string') {
+    if (project.projectName.trim().length > 120) {
+      errors.push(`${label}: "projectName" exceeds the limit of 120 characters.`);
+    }
   }
 
-  if (project.difficulty && !validDifficulties.includes(project.difficulty.toLowerCase())) {
-    errors.push(`${label}: "difficulty" ("${project.difficulty}") must be one of: ${validDifficulties.join(', ')}`);
+  if (typeof project.projectDesc === 'string') {
+    if (project.projectDesc.trim().length > 500) {
+      errors.push(`${label}: "projectDesc" exceeds the limit of 500 characters.`);
+    }
   }
 
-  // 3. Verify local directory / file path exists
-  if (project.projectPath) {
+  // Strict Array Content Check
+  if (project.techStack) {
+    if (!Array.isArray(project.techStack)) {
+      errors.push(`${label}: "techStack" must be an array.`);
+    } else if (project.techStack.length === 0) {
+      errors.push(`${label}: "techStack" cannot be an empty array. Provide at least one technology tag.`);
+    } else {
+      project.techStack.forEach((tech, sIdx) => {
+        if (typeof tech !== 'string' || tech.trim() === '') {
+          errors.push(`${label}: "techStack" index [${sIdx}] contains an invalid or empty string.`);
+        }
+      });
+    }
+  }
+
+  if (project.difficulty && typeof project.difficulty === 'string') {
+    if (!validDifficulties.includes(project.difficulty.toLowerCase())) {
+      errors.push(`${label}: "difficulty" ("${project.difficulty}") must be one of: ${validDifficulties.join(', ')}`);
+    }
+  }
+
+  // 3. Strict Regex + Physical File Path Verification
+  if (typeof project.projectPath === 'string' && project.projectPath.trim() !== '') {
     const pathStr = project.projectPath.trim();
-    if (pathStr.startsWith('./public/')) {
-      // Decode URL encoding like %20 to space
-      const decodedPath = decodeURIComponent(pathStr.substring(2));
-      const targetFilePath = path.join(__dirname, '../../', decodedPath);
-      
-      if (!fs.existsSync(targetFilePath)) {
-        errors.push(`${label}: Local file path specified in "projectPath" does not exist: "${pathStr}" (Resolved path: "${targetFilePath}")`);
+
+    // Enforce schema regex pattern rule
+    const validPathRegex = /^(\.\/)?public\/.+\.html$/;
+    if (!validPathRegex.test(pathStr)) {
+      errors.push(`${label}: "projectPath" ("${pathStr}") must be a local file path starting with 'public/' or './public/' and ending with '.html'`);
+    } else {
+      // Resolve path properly to check local disk availability
+      let cleanRelativePath = pathStr;
+      if (cleanRelativePath.startsWith('./')) {
+        cleanRelativePath = cleanRelativePath.substring(2);
       }
-    } else if (pathStr.startsWith('public/')) {
-      const decodedPath = decodeURIComponent(pathStr);
+
+      const decodedPath = decodeURIComponent(cleanRelativePath);
       const targetFilePath = path.join(__dirname, '../../', decodedPath);
-      
+
       if (!fs.existsSync(targetFilePath)) {
-        errors.push(`${label}: Local file path specified in "projectPath" does not exist: "${pathStr}" (Resolved path: "${targetFilePath}")`);
+        errors.push(`${label}: Physical file does not exist at path: "${pathStr}"`);
       }
     }
   }
@@ -83,6 +115,6 @@ if (errors.length > 0) {
   console.error(`\nTotal Errors Found: ${errors.length}`);
   process.exit(1);
 } else {
-  console.log('\n🎉 Success: projects.json integrity is 100% valid! No broken paths or malformed schemas found.');
+  console.log('\n🎉 Success: projects.json structural constraints match 100%! All files accounted for.');
   process.exit(0);
 }
