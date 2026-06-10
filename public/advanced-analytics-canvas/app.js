@@ -11,6 +11,33 @@ const passesMetric = document.getElementById('metric-passes');
 const timeMetric = document.getElementById('metric-time');
 const fpsRenderMetric = document.getElementById('metric-fps-time');
 
+const algoSelect =
+document.getElementById(
+'algorithmSelect'
+);
+
+
+const comparisonMetric =
+document.getElementById(
+'metric-comparisons'
+);
+
+const telemetryHandler =
+(data)=>{
+
+passesMetric.textContent =
+`${data.passes}`;
+
+comparisonMetric.textContent =
+`${data.comparisons}`;
+
+fpsRenderMetric.textContent =
+`${data.renderTimeMs.toFixed(2)} ms`;
+
+};
+
+
+
 // Core constants parameters setup
 const VECTOR_ARRAY_CAPACITY = 100;
 
@@ -24,6 +51,7 @@ triggerBtn.addEventListener('click', async () => {
 
     engine.generateArray(VECTOR_ARRAY_CAPACITY);
     passesMetric.textContent = "0 operations";
+    comparisonMetric.textContent = "0";
     timeMetric.textContent = "Running calculation algorithms...";
 
     logTerminal.textContent += `\n[Processing Hook Engaged] Starting algorithmic optimization sweep...`;
@@ -31,12 +59,39 @@ triggerBtn.addEventListener('click', async () => {
     // High-Precision Computation Timer Capture Bounds
     const startTime = performance.now();
 
-    await engine.executeBubbleSort((telemetryData) => {
-        // Continuous updates sent from engine threads loop
-        passesMetric.textContent = `${telemetryData.passes.toLocaleString()} structural changes`;
-        fpsRenderMetric.textContent = `${telemetryData.renderTimeMs.toFixed(2)} ms`;
-    });
+    const selected =
+algoSelect.value;
 
+if (selected === 'bubble') {
+
+    await engine.executeBubbleSort(
+        telemetryHandler
+    );
+
+} else if (
+    selected === 'selection'
+) {
+
+    await engine.executeSelectionSort(
+        telemetryHandler
+    );
+
+} else if (
+    selected === 'insertion'
+)
+ {
+
+    await engine.executeInsertionSort(
+        telemetryHandler
+    );
+} else if (
+    selected === 'quick'
+) {
+
+    await engine.executeQuickSort(
+        telemetryHandler
+    );
+}
     const finalDuration = performance.now() - startTime;
 
     // Display final completed calculation profile analytics
