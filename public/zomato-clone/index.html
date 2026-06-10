@@ -218,6 +218,18 @@
     .footer-col ul li { font-size: 13px; margin-bottom: 10px; cursor: pointer; opacity: 0.7; transition: opacity 0.2s; }
     .footer-col ul li:hover { opacity: 1; }
     .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; display: flex; justify-content: space-between; font-size: 12px; opacity: 0.5; flex-wrap: wrap; gap: 8px; }
+    .footer-logo img {
+  height: 40px; /* Control the size of your logo here */
+  width: auto;  /* Maintains aspect ratio */
+  display: block;
+}
+
+.footer-links a {
+  color: #ccc;
+  margin-left: 20px;
+  text-decoration: none;
+}
+
 
     /* DARK MODE NOTICE TOAST */
     .dm-toast {
@@ -449,6 +461,10 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-grid">
+    <div class="footer-logo">
+      <a href="/">
+        <img src="images/zomato.png" alt="Company Name Logo">
+    
     <div class="footer-brand footer-col">
       <img src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png" alt="Zomato" />
       <p>Discover the best food & drinks in your city. Delivering joy, one meal at a time.</p>
@@ -458,6 +474,8 @@
         <a href="https://twitter.com/zomato" target="_blank">tw</a>
         <a href="https://www.youtube.com/zomato" target="_blank">yt</a>
         <a href="https://www.facebook.com/Zomato" target="_blank">fb</a>
+        </a>
+    </div>
       </div>
     </div>
     <div class="footer-col">
