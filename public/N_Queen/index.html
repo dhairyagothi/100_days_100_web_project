@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>N-Queens Interactive Game</title>
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="/public/N_Queen/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
@@ -13,23 +13,54 @@
   <a href="/" class="project-back-button">← Back to Home</a>
 
   <div class="container">
-    <h1>N-Queens Game</h1>
-    <p class="subtitle">Place N queens safely without them attacking each other!</p>
-
-    <div class="board-details">
-        <div class="board-size">
-            <label for="boardSize">Choose Board Size (N)</label>
-            <input type="number" id="boardSize" min="4" max="12" value="4">
+    <div class="header">
+      <div>
+        <h1>N-Queens Interactive</h1>
+        <p class="subtitle">Place N queens safely while exploring attacks, hints, and auto-solving.</p>
+      </div>
+      <div class="status-panel">
+        <div class="status-item">
+          <span class="status-label">Time</span>
+          <strong id="timer">00:00</strong>
         </div>
-        <div class="start-reset-button">
-            <button id="startGame">Start Game</button>
-            <button id="resetGame" class="reset-button" style="display: none;">Reset Game</button>
+        <div class="status-item">
+          <span class="status-label">Moves</span>
+          <strong id="moveCount">0</strong>
         </div>
+        <div class="status-item">
+          <span class="status-label">Queens</span>
+          <strong><span id="queenCount">0</span>/<span id="queenTarget">4</span></strong>
+        </div>
+      </div>
     </div>
-   
-    <p id="message"></p>
-    <div id="gameBoard"></div>
-  </div>   
-  <script src="./script.js"></script>
+
+    <div class="controls">
+      <div class="control-group">
+        <label for="boardSize">Board Size</label>
+        <input type="number" id="boardSize" min="4" max="12" value="4">
+      </div>
+      <div class="control-group button-group">
+        <button id="startGame">New Game</button>
+        <button id="resetGame" class="secondary" disabled>Reset</button>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="toggleMark" class="secondary" disabled>Mark Unsafe Cells</button>
+      <button id="hintBtn" class="secondary" disabled>Hint</button>
+      <button id="solveBtn" class="secondary" disabled>Auto Solve</button>
+      <label class="control-checkbox">
+        <input type="checkbox" id="showInvalid" disabled>
+        <span>Show invalid cells</span>
+      </label>
+    </div>
+
+    <p id="message" class="message" role="status"></p>
+
+    <div id="gameBoard" class="board"></div>
+
+    
+  </div>
+  <script src="/public/N_Queen/script.js" defer></script>
 </body>
 </html>
