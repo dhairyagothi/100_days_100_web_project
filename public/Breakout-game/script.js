@@ -5,6 +5,12 @@ const secondaryColor = getComputedStyle(document.documentElement).getPropertyVal
 let score = 0;
 let highScore = localStorage.getItem("highScore") || 0;
 let gameRunning = false;
+let gamePaused = false;
+
+// --- LIVES SYSTEM ---
+let lives = 3;
+const maxLives = 3;
+
 const brickRowCount = 9;
 const brickColumnCount = 5;
 const heightRatio = 0.75;
@@ -12,16 +18,15 @@ canvas.height = canvas.width * heightRatio;
 ctx.canvas.width = 800;
 ctx.canvas.height = ctx.canvas.width * heightRatio;
 
-const initialBallSpeed = 4; 
+const initialBallSpeed = 4;
 let currentBrickColor = getRandomColor();
-
 
 const ball = {
     x: canvas.width / 2,
     y: canvas.height / 2,
     size: 10,
-    speed: initialBallSpeed, 
-    dx: 0, 
+    speed: initialBallSpeed,
+    dx: 0,
     dy: 0,
 };
 
@@ -54,6 +59,8 @@ for (let i = 0; i < brickRowCount; i++) {
     }
 }
 
+// --- DRAW FUNCTIONS ---
+
 function drawBall() {
     ctx.beginPath();
     ctx.arc(ball.x, ball.y, ball.size, 0, Math.PI * 2);
@@ -72,31 +79,41 @@ function drawPaddle() {
 
 function drawScore() {
     ctx.font = 'bold 20px "Balsamiq Sans"';
-    ctx.fillStyle = color; 
+    ctx.fillStyle = color;
     ctx.fillText(`Score: ${score}`, 45, 30);
 }
 
+// --- LIVES DISPLAY ---
+function drawLives() {
+    ctx.font = 'bold 18px "Balsamiq Sans"';
+    ctx.fillStyle = color;
+    let heartsText = "";
+    for (let i = 0; i < lives; i++) heartsText += "❤️ ";
+    ctx.fillText(heartsText, canvas.width - 120, 30);
+}
 
 function drawBricks() {
     bricks.forEach((column) => {
         column.forEach((brick) => {
             ctx.beginPath();
             ctx.rect(brick.x, brick.y, brick.w, brick.h);
-            ctx.fillStyle = brick.visible ? brick.color : "transparent"; 
+            ctx.fillStyle = brick.visible ? brick.color : "transparent";
             ctx.fill();
             ctx.closePath();
         });
     });
 }
 
-
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBall();
     drawPaddle();
     drawScore();
+    drawLives();
     drawBricks();
 }
+
+// --- MOVEMENT ---
 
 function movePaddle() {
     paddle.x += paddle.dx;
@@ -135,12 +152,9 @@ function moveBall() {
                 ) {
                     ball.dy *= -1;
                     brick.visible = false;
-
                     increaseScore();
                     checkWin();
-
                     currentBrickColor = getRandomColor();
-
                     bricks.forEach((col) => {
                         col.forEach((b) => {
                             b.color = currentBrickColor;
@@ -151,12 +165,29 @@ function moveBall() {
         });
     });
 
+    // --- LIVES: lose a life instead of instant game over ---
     if (ball.y + ball.size > canvas.height) {
-        showGameOver();
+        lives--;
+        if (lives <= 0) {
+            showGameOver();
+        } else {
+            resetBallAndPaddle();
+        }
     }
 }
 
+// Reset only ball and paddle (keep score and bricks)
+function resetBallAndPaddle() {
+    ball.x = canvas.width / 2;
+    ball.y = canvas.height / 2;
+    ball.speed = initialBallSpeed;
+    ball.dx = ball.speed;
+    ball.dy = -ball.speed;
+    paddle.x = canvas.width / 2 - 40;
+    paddle.dx = 0;
+}
 
+// --- SCORE ---
 
 function increaseScore() {
     score++;
@@ -175,34 +206,26 @@ function checkWin() {
     const allBricksBroken = bricks.every((column) =>
         column.every((brick) => !brick.visible)
     );
-
     if (allBricksBroken) {
         gameRunning = false;
-
-        document
-            .getElementById("game-over-container")
-            .classList.remove("hidden");
-
-        document.querySelector(
-            ".game-over-content h2"
-        ).innerText = "You Win! 🎉";
-
+        document.getElementById("game-over-container").classList.remove("hidden");
+        document.querySelector(".game-over-content h2").innerText = "You Win! 🎉";
         document.getElementById("final-score").innerText = score;
-
         if (score > highScore) {
             highScore = score;
-
             localStorage.setItem("highScore", highScore);
         }
-
-        document.getElementById("high-score").innerText =
-            highScore;
+        document.getElementById("high-score").innerText = highScore;
+        document.getElementById("pause-btn").classList.add("hidden");
     }
 }
+
+// --- KEYBOARD CONTROLS ---
 
 function keyDown(e) {
     if (e.key === "Right" || e.key === "ArrowRight") paddle.dx = paddle.speed;
     else if (e.key === "Left" || e.key === "ArrowLeft") paddle.dx = -paddle.speed;
+    else if (e.key === "p" || e.key === "P") togglePause();
 }
 
 function keyUp(e) {
@@ -216,31 +239,68 @@ function keyUp(e) {
     }
 }
 
+// --- MOUSE CONTROL ---
+
+canvas.addEventListener("mousemove", function (e) {
+    if (!gameRunning || gamePaused) return;
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const mouseX = (e.clientX - rect.left) * scaleX;
+    paddle.x = mouseX - paddle.w / 2;
+    if (paddle.x < 0) paddle.x = 0;
+    if (paddle.x + paddle.w > canvas.width) paddle.x = canvas.width - paddle.w;
+    paddle.dx = 0;
+});
+
+// --- PAUSE SYSTEM ---
+
+function togglePause() {
+    if (!gameRunning) return;
+    gamePaused = !gamePaused;
+    if (gamePaused) {
+        document.getElementById("pause-container").classList.remove("hidden");
+    } else {
+        document.getElementById("pause-container").classList.add("hidden");
+        update();
+    }
+}
+
+document.getElementById("resume-btn").addEventListener("click", function () {
+    gamePaused = false;
+    document.getElementById("pause-container").classList.add("hidden");
+    update();
+});
+
+document.getElementById("pause-restart-btn").addEventListener("click", function () {
+    gamePaused = false;
+    gameRunning = false;
+    document.getElementById("pause-container").classList.add("hidden");
+    startGame();
+});
+
+document.getElementById("pause-btn").addEventListener("click", togglePause);
+
+// --- GAME LOOP ---
+
 function update() {
+    if (!gameRunning || gamePaused) return;
     movePaddle();
     moveBall();
     draw();
-    if (gameRunning) {
     requestAnimationFrame(update);
-}
 }
 
 document.addEventListener("keydown", keyDown);
 document.addEventListener("keyup", keyUp);
 
+// --- GAME LIFECYCLE ---
+
 function startGame() {
     document.getElementById("rules-container").style.display = "none";
-
-    document
-        .getElementById("game-over-container")
-        .classList.add("hidden");
-
+    document.getElementById("game-over-container").classList.add("hidden");
     document.querySelector(".game-over-content h2").innerText = "Game Over";
-
     resetGame();
-
     document.getElementById("high-score").innerText = highScore;
-
     if (!gameRunning) {
         startCountdown();
     }
@@ -248,21 +308,16 @@ function startGame() {
 
 function resetGame() {
     score = 0;
-
+    lives = maxLives;
     ball.x = canvas.width / 2;
     ball.y = canvas.height / 2;
-
     ball.speed = initialBallSpeed;
-
     ball.dx = ball.speed;
     ball.dy = -ball.speed;
-
     paddle.x = canvas.width / 2 - 40;
-
+    paddle.dx = 0;
     resetBricks();
-
     document.getElementById("final-score").innerText = 0;
-
     draw();
 }
 
@@ -274,18 +329,13 @@ function resetBricks() {
 
 function showGameOver() {
     gameRunning = false;
-
-    document
-        .getElementById("game-over-container")
-        .classList.remove("hidden");
-
+    document.getElementById("game-over-container").classList.remove("hidden");
     document.getElementById("final-score").innerText = score;
-
+    document.getElementById("pause-btn").classList.add("hidden");
     if (score > highScore) {
         highScore = score;
         localStorage.setItem("highScore", highScore);
     }
-
     document.getElementById("high-score").innerText = highScore;
 }
 
@@ -303,27 +353,21 @@ document.getElementById("restart-btn").addEventListener("click", startGame);
 
 function startCountdown() {
     const countdownEl = document.getElementById("countdown");
-
     countdownEl.classList.remove("hidden");
-
     let count = 3;
-
     countdownEl.innerText = count;
-
     const timer = setInterval(() => {
         count--;
-
         if (count > 0) {
             countdownEl.innerText = count;
         } else if (count === 0) {
             countdownEl.innerText = "GO!";
         } else {
             clearInterval(timer);
-
             countdownEl.classList.add("hidden");
-
             gameRunning = true;
-
+            gamePaused = false;
+            document.getElementById("pause-btn").classList.remove("hidden");
             update();
         }
     }, 1000);
