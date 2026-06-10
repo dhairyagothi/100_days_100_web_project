@@ -25,15 +25,23 @@ function generatePalette() {
         colorDiv.classList.add("color");
         colorDiv.style.background = color;
         colorDiv.textContent = color;
-        colorDiv.addEventListener("click", () => copyColor(color));
+
+        colorDiv.addEventListener("click", () => {
+    copyColor(color);
+
+    colorDiv.style.transform = "scale(0.95)";
+    setTimeout(() => {
+        colorDiv.style.transform = "scale(1)";
+    }, 150);
+});
         palette.appendChild(colorDiv);
     }
 
     // Update background gradient dynamically
-    const bg1 = getRandomColor();
-    const bg2 = getRandomColor();
+        const bg1 = getRandomColor();
+       const bg2 = getRandomColor();
 
-    document.body.style.background =
+       document.body.style.background =
         `linear-gradient(135deg, ${bg1}, ${bg2})`;
 }
 
