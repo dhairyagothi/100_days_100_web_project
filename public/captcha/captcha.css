@@ -821,6 +821,29 @@ input[type="text"]:focus,
     100% { transform: scale(1); opacity: 1; }
 }
 
+/* Back to Home Button */
+.back-home-button {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 20px; 
+    padding: 8px 16px;
+    width: fit-content;
+    background: #f1f5f9;
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+    border-radius: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    transition: all 0.3s ease;
+}
+
+.back-home-button:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+    transform: translateX(-4px);
+}
+
 @keyframes modal-in {
     0% { transform: scale(0.9); opacity: 0; }
     100% { transform: scale(1); opacity: 1; }
@@ -828,6 +851,11 @@ input[type="text"]:focus,
 
 /* Responsive Design */
 @media only screen and (max-width: 1100px) {
+    body {
+        display: block;
+        padding: 16px;
+    }
+    
     .app-container {
         grid-template-columns: 1fr;
     }
@@ -856,4 +884,15 @@ input[type="text"]:focus,
     .metrics-grid {
         grid-template-columns: 1fr;
     }
+
+    .refresh {
+        width: 100%;
+        aspect-ratio: auto;
+        height: 52px;
+    }
+    
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
 }
+

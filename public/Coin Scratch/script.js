@@ -422,6 +422,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function drawCoating(width, height) {
         ctx.globalCompositeOperation = 'source-over';
 
+        // Grabs custom root vars loaded by active HTML theme attribute tags
         const coatingStart = getStylePropertyValue('--coating-start') || '#70291D';
         const coatingEnd = getStylePropertyValue('--coating-end') || '#3B1A14';
 
