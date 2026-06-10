@@ -47,17 +47,36 @@ const FILTER_CATEGORY_MAP = {
  * Derive a display category from a project's tags and name.
  * Uses the existing tag structure so no new data field is needed.
  */
-function getCategoryFromTags(tags, name) {
+function normalizeProjectType(projectType) {
+  const rawType = String(projectType || "").trim();
+  if (!rawType) return "";
+  const normalized = rawType
+    .replace(/\s*\/\s*/g, " / ")
+    .replace(/\s+/g, " ");
+  if (normalized === normalized.toLowerCase()) {
+    return normalized.replace(/\b\w/g, (char) => char.toUpperCase());
+  }
+  return normalized;
+}
+
+function getCategoryFromTags(tags, name, projectType) {
   const tagStr = (
     Array.isArray(tags) ? tags.join(" ") : tags || ""
   ).toLowerCase();
   const nameStr = (name || "").toLowerCase();
+  const typeStr = String(projectType || "").toLowerCase();
 
   if (tagStr.includes("game")) return "Games";
   if (tagStr.includes("clone")) return "Clones";
   if (tagStr.includes("tool")) return "Tools";
   if (tagStr.includes("ui")) return "UI / Animation";
   if (tagStr.includes("api") || tagStr.includes("weather")) return "APIs";
+
+  if (typeStr.includes("clone")) return "Clones";
+  if (typeStr.includes("game")) return "Games";
+  if (typeStr.includes("tool")) return "Tools";
+  if (typeStr.includes("ui") || typeStr.includes("animation")) return "UI / Animation";
+  if (typeStr.includes("api")) return "APIs";
 
   if (nameStr.includes("clone")) return "Clones";
   if (
@@ -82,6 +101,7 @@ function hydrateProjects(data) {
     projectPath: project.projectPath,
     techStack: project.techStack,
     difficulty: project.difficulty,
+    projectType: normalizeProjectType(project.projectType),
     projectDesc: project.projectDesc,
   }));
   PROJECTS_BY_NAME = new Map(PROJECTS.map(p => [p.projectName, p]));
@@ -289,6 +309,7 @@ function buildProjectCardHTML({
   url,
   tags,
   category,
+  projectType,
   isBookmarked = false,
   showDescription = true,
 }) {
@@ -313,11 +334,18 @@ function buildProjectCardHTML({
     .join("");
 
   const project = PROJECTS_BY_NAME.get(name) || PROJECTS_BY_DAY.get(day);
+  const effectiveProjectType =
+    projectType || project?.projectType || "";
 
   const description = escapeHTML(getProjectDescription(project));
   const safeDay = escapeHTML(day);
   const safeName = escapeHTML(name);
   const safeCategory = escapeHTML(category);
+  const safeProjectType = escapeHTML(effectiveProjectType);
+
+  const typeBadge = effectiveProjectType
+    ? `<span class="card-type">${safeProjectType}</span>`
+    : "";
 
   const difficulty = project ? project.difficulty || "" : "";
   const difficultyKey = (difficulty || "").toLowerCase();
@@ -351,6 +379,7 @@ function buildProjectCardHTML({
                 <span class="card-day">${safeDay}</span>
                 <span class="card-category-wrap">
                   <span class="card-category">${safeCategory}</span>
+                  ${typeBadge}
                   ${difficultyBadge}
                   ${sourceOnlyBadge}
                 </span>
@@ -657,12 +686,7 @@ function generateReadme() {
       const url = project.projectPath;
       const tags = project.techStack;
       const { demoUrl } = resolveProjectUrls(day, name, url, tags);
-      const category = getCategoryFromTags(tags, name);
-      lines.push(`- **${day} — ${name}** — ${demoUrl} — _${category}_`);
-    });
-
-    const blob = new Blob([lines.join("\n")], { type: "text/markdown" });
-    const a = document.createElement("a");
+    const category = getCategoryFromTags(tags, name, project.projectType);
     a.href = URL.createObjectURL(blob);
     a.download = "README.md";
     document.body.appendChild(a);
@@ -748,7 +772,7 @@ function renderGrid() {
     const difficulty = project.difficulty || "";
 
     // Category filter
-    const category = getCategoryFromTags(tags, name);
+    const category = getCategoryFromTags(tags, name, project.projectType);
     const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || "all";
     const matchesFilter =
       activeFilter === "all" || category === targetCategory;
@@ -838,7 +862,7 @@ function renderGrid() {
     const url = project.projectPath;
     const tags = project.techStack;
 
-    const category = getCategoryFromTags(tags, name);
+    const category = getCategoryFromTags(tags, name, project.projectType);
     const card = document.createElement("div");
 
     const isBookmarked = bookmarkedDays.has(day);
@@ -848,6 +872,7 @@ function renderGrid() {
       name,
       url,
       tags,
+      projectType: project.projectType,
       category,
       isBookmarked,
       showDescription: true,
@@ -1220,13 +1245,15 @@ function renderBookmarks() {
     const { day, name, url, tags } = normalizeProjectEntry(project);
     if (!day || !name) return;
 
-    const category = getCategoryFromTags(tags, name);
+    const projectInfo = PROJECTS_BY_NAME.get(name) || PROJECTS_BY_DAY.get(day);
+    const category = getCategoryFromTags(tags, name, projectInfo?.projectType);
 
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
       name,
       url,
       tags,
+      projectType: projectInfo?.projectType,
       category,
       isBookmarked: true,
       showDescription: true,
@@ -1276,7 +1303,8 @@ function renderRecentProjects() {
     const url = projectObj.projectPath || projectObj.url || projectObj[2];
     const tags = projectObj.techStack || projectObj.tags || projectObj[3];
 
-    const category = getCategoryFromTags(tags, name);
+    const projectInfo = PROJECTS_BY_NAME.get(name) || PROJECTS_BY_DAY.get(day);
+    const category = getCategoryFromTags(tags, name, projectInfo?.projectType);
     const isBookmarked = bookmarkedProjects.some(
       (item) => normalizeProjectEntry(item).day === day,
     );
@@ -1286,6 +1314,7 @@ function renderRecentProjects() {
       name,
       url,
       tags,
+      projectType: projectInfo?.projectType,
       category,
       isBookmarked,
       showDescription: true,
@@ -1597,7 +1626,7 @@ function updateCategoryCounts(projects = PROJECTS) {
   projects.forEach((project) => {
     const name = project.projectName;
     const tags = project.techStack;
-    const category = getCategoryFromTags(tags, name);
+    const category = getCategoryFromTags(tags, name, project.projectType);
     const filterKey = Object.keys(FILTER_CATEGORY_MAP).find(
       (key) => FILTER_CATEGORY_MAP[key] === category,
     );

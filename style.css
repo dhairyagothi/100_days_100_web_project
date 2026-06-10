@@ -1888,6 +1888,21 @@ input:focus {
   border: 1px solid rgba(239, 68, 68, 0.28);
 }
 
+.card-type {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: rgba(107, 114, 128, 0.12);
+  padding: 0.18rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid rgba(107, 114, 128, 0.24);
+  display: inline-block;
+  white-space: nowrap;
+}
+
 .card-category-wrap {
   display: inline-flex;
   align-items: center;
