@@ -87,14 +87,26 @@ margin-bottom:20px;
 }
 .seg-border-top{border-top:1px solid rgba(0,0,0,.28)}
 .tw.sel .tube{
-  transform:translateY(-10px);
+  transform:translateY(-12px) scale(1.03);
   box-shadow:0 0 0 2px var(--accent),0 8px 24px rgba(91,155,213,.3);
   border-color:var(--accent);
 }
 .tw.done .tube{
-  box-shadow:0 0 0 2px var(--success),0 4px 16px rgba(77,191,173,.25);
-  border-color:var(--success);
+  box-shadow:0 0 0 2px var(--success),
+             0 4px 16px rgba(77,191,173,.25);
+  animation:donePulse .8s ease;
 }
+
+@keyframes donePulse{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.08)}
+  100%{transform:scale(1)}
+}
+
+.tw:hover .tube{
+  transform:translateY(-4px);
+}
+
 .tw.hint-src .tube{
   animation:hintGlowSrc 1s infinite;
   box-shadow:0 0 15px rgba(91,155,213,.6),0 0 30px rgba(91,155,213,.3);
@@ -105,6 +117,157 @@ margin-bottom:20px;
   box-shadow:0 0 15px rgba(77,191,173,.6),0 0 30px rgba(77,191,173,.3);
   border-color:var(--success);
 }
+/* Clean up static stream definitions for dynamic scaling height */
+.pour-stream {
+  position: fixed;
+  width: 8px; 
+  border-radius: 4px;
+  transform-origin: top center;
+  z-index: 900;
+  opacity: 0;
+
+  .pour-stream.flowing{
+  animation:streamFlow .5s cubic-bezier(.22,1,.36,1) forwards;
+}
+
+
+.seg {
+  position: absolute;
+  width: 100%;
+  height: var(--sh);
+  left: 0;
+  transition: transform 0.4s ease-in-out, opacity 0.3s ease;
+  /* Gives a subtle convex fluid meniscus to the surface of the liquid */
+  border-radius: 4px 4px 0 0; 
+}
+  
+  /* Wet reflection and soft glowing edges */
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2), 
+              inset -2px 0 3px rgba(255,255,255,0.4),
+              inset 2px 0 3px rgba(0,0,0,0.15);
+              
+  /* Smooth scale rendering to prevent the 'cube' flash look */
+  transition: height 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
+              opacity 0.2s ease,
+              clip-path 0.3s ease;
+              
+  /* Liquid teardrop shape using a clipping mask (tapers slightly at the bottom) */
+  clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+}
+
+@keyframes streamFlow{
+  0%{
+    height:0px;
+    opacity:0;
+    transform:scaleY(0);
+  }
+  20%{
+    opacity:0.9;
+  }
+  85%{
+    opacity:0.8;
+  }
+  100%{
+    opacity:0;
+    transform:scaleY(1);
+  }
+}
+
+@keyframes liquidFlow{
+  0%{
+    opacity:0;
+    transform:scaleY(0);
+  }
+
+  15%{
+    opacity:1;
+  }
+
+  100%{
+    opacity:1;
+    transform:scaleY(1);
+  }
+}
+
+/* --- Remodelled Tube Animation Overrides --- */
+.tube {
+  width: var(--tw);
+  height: var(--th);
+  border: 2px solid rgba(255,255,255,.15);
+  border-top: none;
+  border-radius: 0 0 26px 26px;
+  position: relative;
+  overflow: hidden;
+  background:rgba(255,255,255,.03);
+  /* Use a smooth transition for custom transform manipulations */
+  transition: transform 0.4s cubic-bezier(0.42, 0, 0.58, 1), box-shadow 0.18s;
+}
+
+/* Maintain custom z-indexing layout layers during motion */
+.tw.moving-pour {
+  z-index: 999 !important;
+}
+
+/* Ensure liquid segments smoothly slide down or up when altered */
+.seg {
+  position: absolute;
+  width: 100%;
+  height: var(--sh);
+  left: 0;
+  transition: transform 0.4s ease-in-out, opacity 0.3s ease;
+}
+
+/* Clean up static stream definitions for dynamic scaling height */
+.pour-stream {
+  position: fixed;
+  width: 8px; /* Slightly thinner for realism */
+  border-radius: 4px;
+  transform-origin: top center;
+  z-index: 900;
+  opacity: 0;
+  box-shadow: 0 0 8px rgba(255,255,255,.3), inset -1px 0 2px rgba(255,255,255,.4);
+  transition: height 0.25s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.15s ease;
+}
+
+@keyframes tubeLift{
+  0%{
+    transform:translateY(0) rotateZ(0deg);
+  }
+  100%{
+    transform:translateY(-28px) rotateZ(0deg);
+  }
+}
+
+@keyframes tubeTiltLeft{
+  0%{
+    transform:translateY(-28px) rotateZ(0deg);
+  }
+  100%{
+    transform:translateY(-18px) rotateZ(-38deg);
+  }
+}
+
+@keyframes tubeTiltRight{
+  0%{
+    transform:translateY(-28px) rotateZ(0deg);
+  }
+  100%{
+    transform:translateY(-18px) rotateZ(38deg);
+  }
+}
+
+@keyframes tubeSettle{
+  0%{
+    transform:translateY(-18px) rotateZ(-38deg);
+  }
+  50%{
+    transform:translateY(-8px) rotateZ(-2deg);
+  }
+  100%{
+    transform:translateY(0) rotateZ(0deg);
+  }
+}
+
 @keyframes hintGlowSrc{
   0%,100%{transform:translateY(-5px)}
   50%{transform:translateY(-12px)}
@@ -120,10 +283,24 @@ margin-bottom:20px;
   60%{transform:translateX(-4px)}80%{transform:translateX(4px)}
 }
 @keyframes pourIn{
-  from{transform:scaleY(0);transform-origin:top;opacity:.4}
-  to{transform:scaleY(1);transform-origin:top;opacity:1}
+  0%{
+    transform:translateY(-30px) scaleY(.2);
+    opacity:0;
+  }
+
+  50%{
+    transform:translateY(6px) scaleY(1.05);
+    opacity:1;
+  }
+
+  100%{
+    transform:translateY(0) scaleY(1);
+    opacity:1;
+  }
 }
-.pour-in{animation:pourIn .35s cubic-bezier(.4,0,.2,1) forwards}
+.pour-in{
+  animation:pourIn .45s cubic-bezier(.22,1,.36,1) forwards;
+}
 @keyframes floatUp{
   0%{opacity:.7;transform:translateY(0) scale(1)}
   100%{opacity:0;transform:translateY(-50px) scale(.4)}
@@ -261,6 +438,18 @@ color:var(--accent);
   font-weight:600;
   color:var(--text);
   margin-bottom:6px;
+}
+
+@keyframes liquidBounce{
+  0%{transform:translateY(0)}
+  40%{transform:translateY(4px)}
+  100%{transform:translateY(0)}
+}
+
+.seg.pour-in{
+  animation:
+    pourIn .45s cubic-bezier(.22,1,.36,1),
+    liquidBounce .25s ease-out .35s;
 }
 </style>
 </head>
@@ -567,7 +756,7 @@ function undo() {
 }
 
 /* ── Interaction ── */
-function clickTube(idx) {
+async function clickTube(idx) {
   if (sel === null) {
     if (empty(state[idx])) { setMsg('Tube is empty!'); return; }
     sel = idx;
@@ -578,11 +767,24 @@ function clickTube(idx) {
   if (sel === idx) { sel=null; setMsg(''); render(); return; }
 
   if (canPour(sel, idx)) {
-    hist.push(JSON.stringify(state));
-    const n = doPour(sel, idx);
-    moves++; sel=null; updM(); setMsg('');
-    SFX.pour();
-    render(idx, n);
+
+  const sourceTube = sel;
+
+  await animatePourTube(sourceTube, idx);
+
+  hist.push(JSON.stringify(state));
+
+  const n = doPour(sourceTube, idx);
+
+  moves++;
+  sel = null;
+
+  updM();
+  setMsg('');
+
+  SFX.pour();
+
+  render(idx, n);
     if (tubeDone(state[idx])) SFX.tubeDone();
     if (gameDone()) setTimeout(showWin, 450);
   } else {
@@ -908,6 +1110,132 @@ function closeHelp(){
 document.getElementById("helpOverlay").classList.remove("show");
 if(!gameDone()) startTimer();
 }
+
+function wait(ms){
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function animatePourTube(fromIdx, toIdx) {
+  const sourceWrapper = document.querySelector(`[data-idx="${fromIdx}"]`);
+  const destWrapper = document.querySelector(`[data-idx="${toIdx}"]`);
+  
+  if (!sourceWrapper || !destWrapper) return;
+  
+  const sourceTube = sourceWrapper.querySelector('.tube');
+  const destTube = destWrapper.querySelector('.tube');
+  
+  if (!sourceTube || !destTube) return;
+
+  // Elevate active pouring structure layers
+  sourceWrapper.classList.add('moving-pour');
+
+  // Extract precise element global positioning
+  const srcRect = sourceTube.getBoundingClientRect();
+  const dstRect = destTube.getBoundingClientRect();
+
+  // Find target destination position relative to origin
+  const isMovingRight = toIdx > fromIdx;
+  
+  // Calculate exact delta positions to align lip of source to mouth of target
+  // Offset horizontally so the spout hovers right over the target lip
+  const targetX = dstRect.left - srcRect.left + (isMovingRight ? -24 : 24);
+  const targetY = dstRect.top - srcRect.top - 55; // Lift up and over
+
+  // --- PHASE 1: Lift & Slide To Position ---
+  sourceTube.style.transformOrigin = "center center";
+  sourceTube.style.transform = `translate3d(${targetX}px, ${targetY}px, 0)`;
+  await wait(400);
+
+  // --- PHASE 2: Pivot & Dynamic Pour ---
+  // Change transform origin dynamically to look like it pours from the side lip
+  sourceTube.style.transformOrigin = isMovingRight ? "right top" : "left top";
+  const tiltAngle = isMovingRight ? 70 : -70;
+  sourceTube.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) rotate(${tiltAngle}deg)`;
+  await wait(300);
+
+  // --- PHASE 3: Generate and Connect Stream Flow ---
+  const pouringColor = state[fromIdx][state[fromIdx].length - 1];
+  const streamColor = PALETTE[pouringColor].bg;
+
+  // Re-read runtime positions for the stream after transformations have applied
+  const advancedSrcRect = sourceTube.getBoundingClientRect();
+  
+  const startX = isMovingRight ? advancedSrcRect.right - 8 : advancedSrcRect.left + 8;
+  const startY = advancedSrcRect.top + 14;
+  const endX = dstRect.left + (dstRect.width / 2);
+  
+  // Aim slightly lower into the tube for a seamless landing
+  const endY = dstRect.top + (dstRect.height - (state[toIdx].length * SEG_H)) - 10; 
+
+  const distanceX = endX - startX;
+  const distanceY = endY - startY;
+  const streamLength = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+  const angle = Math.atan2(distanceY, distanceX) * (180 / Math.PI);
+
+  const stream = document.createElement('div');
+  stream.className = 'pour-stream';
+  stream.style.background = streamColor;
+  stream.style.left = `${startX}px`;
+  stream.style.top = `${startY}px`;
+  stream.style.transform = `rotate(${angle}deg)`;
+  stream.style.height = '0px'; // Force start height to 0 for the liquid stretch effect
+  document.body.appendChild(stream);
+
+  // Force system repaint layout, then smoothly extend stream downwards
+  stream.getBoundingClientRect(); 
+  stream.style.opacity = '1';
+  stream.style.height = `${streamLength}px`;
+  
+  await wait(250); // Wait for stream to gracefully hit fluid baseline
+
+  // --- PHASE 4: Simulated Simultaneous Fluid Levels ---
+  // Fade out top segments being emptied from source wrapper visually
+  const activePourVolume = Math.min(topRun(state[fromIdx]), TUBE_CAP - state[toIdx].length);
+  const sourceSegs = sourceTube.querySelectorAll('.seg');
+  
+  for (let i = 0; i < activePourVolume; i++) {
+    const targetedSeg = sourceSegs[sourceSegs.length - 1 - i];
+    if (targetedSeg) {
+      targetedSeg.style.opacity = '0';
+      targetedSeg.style.transform = 'translateY(15px)';
+    }
+  }
+
+  // Simultaneously build up the liquid in target element smoothly
+  for (let i = 0; i < activePourVolume; i++) {
+    const simulatedSeg = document.createElement('div');
+    simulatedSeg.className = 'seg pour-in';
+    simulatedSeg.style.bottom = ((state[toIdx].length + i) * SEG_H) + 'px';
+    simulatedSeg.style.background = streamColor;
+    simulatedSeg.style.borderTop = `1px solid ${PALETTE[pouringColor].bdr}`;
+    destTube.appendChild(simulatedSeg);
+    bubbles(simulatedSeg, streamColor);
+  }
+  
+  await wait(600); // Wait for full fluid mass to complete cycling
+
+// --- PHASE 5: Disconnect and Reset ---
+  // Instead of vanishing, make the stream collapse downward like real water ending
+  stream.style.clipPath = 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)';
+  stream.style.opacity = '0';
+  
+  await wait(200);
+  stream.remove();
+
+  // Reset rotational values smoothly
+  sourceTube.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) rotate(0deg)`;
+  await wait(250);
+  
+  // Return to internal base row grid positioning
+  sourceTube.style.transform = 'translate3d(0, 0, 0)';
+  await wait(400);
+
+  // Clear runtime adjustments
+  sourceTube.style.transform = '';
+  sourceTube.style.transformOrigin = '';
+  sourceWrapper.classList.remove('moving-pour');
+}
+
 
 /* ── Initialize ── */
 loadFromStorage();

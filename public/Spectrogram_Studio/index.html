@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spectrogram Studio | DSP Workspace</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="studio-container">
+        <header class="studio-header">
+            <div class="brand">
+                <h1>Spectrogram Studio <span class="telemetry-light"></span></h1>
+                <p>Zero-Dependency Fourier Transform Image-Denoising Matrix</p>
+            </div>
+            <div class="global-actions">
+                <label for="imageLoader" class="custom-file-upload">📁 Load Target Image</label>
+                <input type="file" id="imageLoader" accept="image/*">
+                <button id="btnInverse" class="btn-primary">⚡ Apply Inverse Filter (IDFT)</button>
+                <button id="btnClearMask" class="btn-secondary">Clear Spectrum Mask</button>
+            </div>
+        </header>
+
+        <main class="workspace-grid">
+            <section class="panel">
+                <div class="panel-header">
+                    <h3>1. Input Spatial Domain</h3>
+                    <span class="dimensions-badge" id="inputDim">-</span>
+                </div>
+                <div class="canvas-viewport">
+                    <canvas id="canvasInput"></canvas>
+                </div>
+            </section>
+
+            <section class="panel active-panel">
+                <div class="panel-header">
+                    <h3>2. Frequency Domain (Interactive Mask)</h3>
+                    <span class="dimensions-badge" id="spectrumDim">-</span>
+                </div>
+                <div class="canvas-viewport">
+                    <canvas id="canvasSpectrum"></canvas>
+                </div>
+                <div class="panel-toolbar">
+                    <div class="tool-group">
+                        <label for="brushSize">Brush Size:</label>
+                        <input type="range" id="brushSize" min="2" max="24" value="8">
+                        <span id="brushVal">8px</span>
+                    </div>
+                    <p class="tool-instruction">💡 Paint black masks directly onto frequency spikes to block periodic
+                        noise.</p>
+                </div>
+            </section>
+
+            <section class="panel">
+                <div class="panel-header">
+                    <h3>3. Output Spatial Domain</h3>
+                    <span class="dimensions-badge" id="outputDim">-</span>
+                </div>
+                <div class="canvas-viewport">
+                    <canvas id="canvasOutput"></canvas>
+                </div>
+            </section>
+        </main>
+
+        <footer class="monitoring-console">
+            <div class="telemetry-grid">
+                <div class="metric-card">
+                    <span class="metric-label">Forward Latency:</span>
+                    <span class="metric-value" id="fwdLatency">0.00 ms</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-label">Inverse Latency:</span>
+                    <span class="metric-value" id="invLatency">0.00 ms</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-label">Estimated SNR Improvement:</span>
+                    <span class="metric-value" id="snrEst">0.00 dB</span>
+                </div>
+            </div>
+            <div class="console-terminal">
+                <span class="terminal-prompt">SYSTEM@DSP_MONITOR:~$</span>
+                <span class="terminal-text" id="consoleLog">Ready. Awaiting raw matrix image payload inputs...</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
