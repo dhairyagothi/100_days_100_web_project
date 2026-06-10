@@ -980,3 +980,30 @@ body.light-theme .ctrl-btn:hover {
     font-size: 1.1rem;
   }
 }
+.voice-status {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999;
+
+  padding: 10px 16px;
+
+  border-radius: 10px;
+
+  background: rgba(0,0,0,0.7);
+  color: white;
+
+  font-size: 0.9rem;
+
+  backdrop-filter: blur(8px);
+
+  transition: all 0.3s ease;
+}
+
+.voice-status.active {
+  background: #22c55e;
+}
+
+.voice-status.error {
+  background: #ef4444;
+}

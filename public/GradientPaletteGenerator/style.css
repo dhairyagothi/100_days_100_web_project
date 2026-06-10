@@ -480,6 +480,91 @@ body {
   font-weight: 700;
 }
 
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
+}
+
+.modal__content {
+  position: relative;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  padding: 1.5rem;
+  border-radius: 12px;
+  width: min(420px, 90%);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  animation: pop 0.2s ease-out;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.modal__message {
+  margin: 0 0 1rem;
+  opacity: 0.8;
+}
+
+.modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.modal__btn {
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.modal__btn--cancel {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.modal__btn--cancel:hover {
+  background: var(--text-secondary);
+  color: var(--bg-primary);
+}
+
+.modal__btn--danger {
+  background: var(--accent-red);
+  color: var(--text-primary);
+}
+
+.modal__btn--danger:hover {
+  background: rgba(239, 68, 68, 0.8);
+}
+
 .saved-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -664,4 +749,26 @@ body {
   .saved-card {
     padding: 1rem;
   }
+}
+
+.project-back-button {
+  position: fixed;
+  left: 18px;
+  top: 18px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #1e293b;
+  color: #3b82f6;
+  border: 1px solid #3b82f6;
+  text-decoration: none;
+  z-index: 9999;
+  font-weight: 700;
+  font-family: Inter, system-ui, sans-serif;
+  transition: all 0.2s ease;
+}
+
+.project-back-button:hover {
+  background: #3b82f6;
+  color: #1e293b;
+  border-color: #1e293b;
 }
