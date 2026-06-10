@@ -429,15 +429,34 @@ if (savePdfBtn) {
 // Wire up Clear Done button click listener
 const clearDoneBtn = document.getElementById('cleardone');
 if (clearDoneBtn) {
-  clearDoneBtn.addEventListener('click', clearDone);
+  clearDoneBtn.addEventListener('click', function () {
+    if (typeof clearDone === 'function') clearDone();
+  });
 }
 
 // Wire up filter bar buttons
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    filterTasks(btn, btn.dataset.filter);
+    if (typeof filterTasks === 'function') filterTasks(btn, btn.dataset.filter);
   });
 });
+
+// --- Workspace Skin (Theme Switcher) ---
+(function initTheme() {
+  // Restore persisted theme on load
+  const saved = localStorage.getItem('todo-workspace-theme');
+  if (saved) document.body.setAttribute('data-theme', saved);
+
+  document.querySelectorAll('.theme-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      const theme = btn.getAttribute('data-theme');
+      if (theme) {
+        document.body.setAttribute('data-theme', theme);
+        localStorage.setItem('todo-workspace-theme', theme);
+      }
+    });
+  });
+})();
 
 // --- Page Initialisation ---
 // Set Home tab as active and apply default/saved theme on load

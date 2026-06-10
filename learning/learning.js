@@ -376,6 +376,38 @@ if (progressPercentageCard) {
 
   window.addEventListener('hashchange', handleRouting);
 
+  function getSkeletonMarkup() {
+  return `
+    <div class="skeleton-loader">
+
+      <div class="skeleton-title"></div>
+
+      <div class="skeleton-meta"></div>
+
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line medium"></div>
+
+      <br>
+
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line short"></div>
+
+      <br>
+
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line medium"></div>
+
+      <br>
+
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line short"></div>
+
+    </div>
+  `;
+}
+
   /* ============================================================
      MARKDOWN PARSING & POST-PROCESSING
      ============================================================ */
@@ -404,15 +436,10 @@ if (progressPercentageCard) {
       launchQuiz(topic.categoryId, topic.title);
       return;
     }
-
-    if (contentViewport) {
-      contentViewport.innerHTML = `
-        <div class="loading-article">
-          <i class="fas fa-circle-notch fa-spin"></i>
-          <p>Loading "${topic.title}"...</p>
-        </div>
-      `;
-    }
+   if (contentViewport) {
+  contentViewport.innerHTML =
+    getSkeletonMarkup();
+   }
 
     try {
       const response = await fetch(topic.file);
