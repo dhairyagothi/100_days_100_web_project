@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio-Reactive Particle Physics Sandbox</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="cyber-container">
+        <div class="viewport-box">
+            <div class="status-indicator">
+                <span class="pulse-dot"></span> LIVE TELEMETRY ARENA
+            </div>
+            <canvas id="nebulaCanvas"></canvas>
+        </div>
+
+        <div class="control-panel">
+            <h2>NEBULA CONTROL MATRIX</h2>
+            <div class="divider"></div>
+
+            <div class="control-group">
+                <label for="gravitySlider">GRAVITATIONAL COEFFICIENT (G)</label>
+                <div class="slider-wrapper">
+                    <input type="range" id="gravitySlider" min="0" max="2" step="0.05" value="0.5">
+                    <span id="gravityVal" class="telemetry-readout">0.50</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label for="dragSlider">ATMOSPHERIC FRICTION (DRAG)</label>
+                <div class="slider-wrapper">
+                    <input type="range" id="dragSlider" min="0.95" max="1" step="0.005" value="0.99">
+                    <span id="dragVal" class="telemetry-readout">0.99</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label for="synthType">SYNTH OSCILLATOR WAVEFORM</label>
+                <select id="synthType" class="cyber-select">
+                    <option value="sawtooth">SAWTOOTH (SYNTHWAVE)</option>
+                    <option value="square">SQUARE (8-BIT RETRO)</option>
+                    <option value="sine">SINE (PURE TONE)</option>
+                    <option value="triangle">TRIANGLE (SOFT CHIP)</option>
+                </select>
+            </div>
+
+            <div class="system-logs">
+                <div class="log-line">>> GRID STATUS: SECURE</div>
+                <div class="log-line">>> AUDIO CONTEXT: WAITING USER INTERACTION</div>
+                <div class="log-line" id="particleCountLog">>> ACTIVE_ENTITIES: 0 / 300</div>
+            </div>
+
+            <p class="instruction-text">* CLICK INSIDE THE CANVAS TO INJECT KINETIC VECTOR ENTITIES</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

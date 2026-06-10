@@ -7,6 +7,7 @@ let alarms = JSON.parse(localStorage.getItem('clock_alarms')) || [];
 let worldClocks = JSON.parse(localStorage.getItem('clock_worldClocks')) || [];
 let historyLogs = JSON.parse(localStorage.getItem('clock_historyLogs')) || [];
 
+let editingAlarmId = null;
 let ringingAlarm = null;
 let lastCheckedMinute = '';
 let ringInterval = null;
@@ -132,7 +133,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateClock();
     tickWorldClocks();
+    
   });
+  // CSP Bypass for Add Alarm Button
+  const addAlarmBtn = document.getElementById("add-alarm-btn");
+  if (addAlarmBtn) {
+    addAlarmBtn.addEventListener("click", function(event) {
+      event.preventDefault();
+      addNewAlarm();
+    });
+  }
+  const clearAllBtn = document.getElementById("clear-all-btn");
+  if (clearAllBtn) {
+    clearAllBtn.addEventListener("click", function() {
+      clearAllAlarms();
+    });
+  }
+
+});
 
   updatePomodoroDisplay();
 
@@ -150,8 +168,6 @@ resetPomodoroBtn.addEventListener(
   "click",
   resetPomodoro
 );
-
-});
 
 // ================= POMODORO =================
 
@@ -273,7 +289,29 @@ function addNewAlarm() {
     showToast('Please select a time');
     return;
   }
+if(editingAlarmId!=null)
+{
+  const alarm = alarms.find((a) => a.id === editingAlarmId);
+  if(alarm){
+    alarm.time = timeInput.value;
+    alarm.label = labelInput.value || 'Alarm';
+    alarm.snooze = parseInt(document.getElementById('alarm-snooze').value) ;
 
+  }
+  editingAlarmId=null;
+
+    document.getElementById('add-alarm-btn').textContent = 'Add Alarm';
+
+    timeInput.value = '';
+    labelInput.value = '';
+
+    saveAlarms();
+    renderAlarmsList();
+    updateAlarmSummary();
+
+    showToast('Alarm updated');
+    return;
+}
   const alarm = {
     id: Date.now(),
     time: timeInput.value,
@@ -318,7 +356,22 @@ function triggerAlarm(alarm) {
 
   alarmPopup.classList.remove('hidden');
 
-  addHistoryLog(`Alarm "${alarm.label}" rang at ${alarm.time}`);
+  // 1. Format the time based on the 12h/24h toggle
+let logTime = alarm.time;
+if (!is24HourFormat) {
+  let [hours, minutes] = alarm.time.split(':');
+  let parsedHours = parseInt(hours, 10);
+  let ampm = parsedHours >= 12 ? 'PM' : 'AM';
+  parsedHours = parsedHours % 12 || 12; // Converts '00' to '12'
+  let paddedHours = parsedHours.toString().padStart(2, '0');
+  logTime = `${paddedHours}:${minutes} ${ampm}`;
+}
+
+// 2. Clean up the label (Don't print "Alarm" twice)
+let labelDisplay = (alarm.label && alarm.label !== 'Alarm') ? ` "${alarm.label}"` : '';
+
+// 3. Save the perfect log
+addHistoryLog(`Alarm${labelDisplay} rang at ${logTime}`);
   renderHistoryLogs();
 
   startRinger();
@@ -658,6 +711,11 @@ function tickWorldClocks() {
 }
 
 // ================= HISTORY =================
+function addHistoryLog(message) {
+  historyLogs.unshift({text: message});
+  localStorage.setItem('historyLogs', JSON.stringify(historyLogs));
+}
+
 function renderHistoryLogs() {
   const container = document.getElementById('history-logs');
   if (!container) return;
@@ -771,6 +829,8 @@ function renderAlarmsList() {
             <input type="checkbox" ${alarm.enabled ? 'checked' : ''} onchange="toggleAlarmEnabled(${alarm.id}, this.checked)" />
             <span class="toggle-slider"></span>
           </label>
+
+          <button class='edit-btn' onclick="editingAlarm(${alarm.id})" title="Edit">✏️</button>
           <button class="remove-btn" onclick="deleteAlarm(${alarm.id})" title="Delete">&times;</button>
         </div>
       </div>
@@ -779,6 +839,16 @@ function renderAlarmsList() {
     .join('');
 }
 
+function editingAlarm(id){
+  const alarm=alarms.find((a)=>a.id===id);
+  if(!alarm) return;
+
+    document.getElementById("alarm-time").value = alarm.time;
+    document.getElementById("alarm-label").value = alarm.label;
+    document.getElementById("alarm-snooze").value = alarm.snooze;
+    editingAlarmId=id;
+    document.getElementById("add-alarm-btn").textContent="Save Changes";
+}
 function toggleAlarmEnabled(id, enabled) {
   const alarm = alarms.find((a) => a.id === id);
   if (alarm) {

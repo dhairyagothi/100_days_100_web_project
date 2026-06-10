@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="flag.css" />
 
     <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <link rel="stylesheet" href="flag-history.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   </head>
 
   <body>
@@ -271,5 +271,79 @@
         });
       });
     </script>
+
+    <!-- Flag history element -->
+     <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Journey of the Indian Flag</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Background Ashoka Wheel Watermark -->
+  <svg class="bg-wheel" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="100" cy="100" r="95" fill="none" stroke="white" stroke-width="3"/>
+    <circle cx="100" cy="100" r="15" fill="none" stroke="white" stroke-width="2.5"/>
+    <circle cx="100" cy="100" r="8"  fill="white"/>
+    <g id="spokes">
+      <line x1="100" y1="15"  x2="100" y2="85"  stroke="white" stroke-width="1.8"/>
+      <line x1="100" y1="115" x2="100" y2="185" stroke="white" stroke-width="1.8"/>
+    </g>
+    <use href="#spokes" transform="rotate(15  100 100)"/>
+    <use href="#spokes" transform="rotate(30  100 100)"/>
+    <use href="#spokes" transform="rotate(45  100 100)"/>
+    <use href="#spokes" transform="rotate(60  100 100)"/>
+    <use href="#spokes" transform="rotate(75  100 100)"/>
+    <use href="#spokes" transform="rotate(90  100 100)"/>
+    <use href="#spokes" transform="rotate(105 100 100)"/>
+    <use href="#spokes" transform="rotate(120 100 100)"/>
+    <use href="#spokes" transform="rotate(135 100 100)"/>
+    <use href="#spokes" transform="rotate(150 100 100)"/>
+    <use href="#spokes" transform="rotate(165 100 100)"/>
+  </svg>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <h1>The Journey of the Indian Flag</h1>
+    <p>From colonial resistance to sovereign pride — six flags, forty-one years</p>
+    <div class="ornament">
+      <div class="ornament-line"></div>
+      <div class="ornament-dot"></div>
+      <div class="ornament-line right"></div>
+    </div>
+  </header>
+
+  <!-- Timeline Strip -->
+  <div class="timeline-strip" id="timeline"></div>
+
+  <!-- Main Card -->
+  <div class="card-container">
+    <div class="flag-card card-top-corners" id="flagCard">
+
+      <!-- Card content injected by JS -->
+      <div class="card-inner" id="cardInner"></div>
+
+      <!-- Navigation -->
+      <div class="nav-row">
+        <button class="nav-btn"      id="prevBtn" onclick="navigate(-1)">← Previous</button>
+        <button class="nav-btn next" id="nextBtn" onclick="navigate(1)">Next →</button>
+      </div>
+
+      <!-- Progress Dots -->
+      <div class="progress-dots" id="progressDots"></div>
+
+      <!-- Counter -->
+      <p class="counter" id="counter"></p>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  </body>
+  </html>
   </body>
 </html>

@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "projectNo",
+      "projectName",
+      "projectType",
+      "projectDesc",
+      "techStack",
+      "difficulty",
+      "projectPath"
+    ],
+    "properties": {
+      "projectNo": { "type": "number" },
+      "projectName": { "type": "string" },
+      "projectType": { "type": "string" },
+      "projectDesc": { "type": "string" },
+      "techStack": { "type": "array", "items": { "type": "string" } },
+      "difficulty": { "type": "string", "enum": ["beginner", "intermediate", "advanced"] },
+      "projectPath": { "type": "string" }
+    }
+  }
+}

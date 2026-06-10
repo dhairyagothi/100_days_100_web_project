@@ -5,6 +5,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const board = document.getElementById("gameBoard");
     const message = document.getElementById("message");
 
+     // ── Theme Toggle ─────────────────────────────────────────
+    const themeToggle = document.getElementById("themeToggle");
+ 
+    // Restore saved preference on load
+    if (localStorage.getItem("nqueens-theme") === "light") {
+        document.body.classList.add("light");
+        themeToggle.textContent = "☀️";
+    } else {
+        themeToggle.textContent = "🌙";
+    }
+ 
+    themeToggle.addEventListener("click", () => {
+        const isLight = document.body.classList.toggle("light");
+        themeToggle.textContent = isLight ? "☀️" : "🌙";
+        localStorage.setItem("nqueens-theme", isLight ? "light" : "dark");
+    });
+    
     let queens = [];
     let boardSize = 4;
 
