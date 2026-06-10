@@ -1,6 +1,17 @@
-.chat-container {
+:root {
+    --chat-bg: rgb(87, 143, 190);
+    --message-bg: white;
+    --text-color: #000000;
+}
 
-    background-color: rgb(87, 143, 190);
+.dark-mode {
+    --chat-bg: #1e1e1e;
+    --message-bg: #2a2a2a;
+    --text-color: #ffffff;
+}
+chat-container {
+
+    background-color: var(--chat-bg);
     border-radius: 12px;
     box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
@@ -8,7 +19,7 @@
     margin: auto;
     position: relative;
     min-height: 90vh;
-    height: auto;
+    height: auto;.
     display: flex;
     flex-direction: column; /* Stack children vertically */
 }
@@ -47,7 +58,7 @@ pre code {
     background: #333;
     border-radius: 8px;
     overflow-x: auto;
-    font-family: 'Source Code Pro', monospace;
+    font-family:'Source Code Pro',monospace;
     white-space: pre-wrap;
     word-break: break-word;
 }
@@ -99,7 +110,7 @@ pre code {
     justify-content: center;
     align-items: center;
     height: 150px;
-    color: #000000;
+    color: var(--text-color);
 }
 
 .input-group {
@@ -165,16 +176,16 @@ pre code {
 }
 
 .user-message {
-    background-color: white; /* var(--user-message-bg-color); */
-    color: var(--user-message-text-color);
+    background-color: var(--message-bg);
+    color: var(--text-color);
     align-self: flex-end;
     text-align: right;
     border-bottom-right-radius: 5px;
 }
 
 .ai-message {
-    background-color: white; /* var(--ai-message-bg-color); */
-    color: var(--ai-message-text-color);
+    background-color: var(--message-bg);
+    color: var(--text-color);
     align-self: flex-start;
     border-bottom-left-radius: 5px;
 }
