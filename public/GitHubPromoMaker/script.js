@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const themeSelect = document.getElementById("themeSelect");
     const promoCard = document.getElementById("promoCard");
 
-    // Card elements
     const ownerAvatar = document.getElementById("ownerAvatar");
     const ownerName = document.getElementById("ownerName");
     const repoName = document.getElementById("repoName");
@@ -21,58 +20,50 @@ document.addEventListener("DOMContentLoaded", () => {
     const repoLanguage = document.getElementById("repoLanguage");
     const languageBadge = document.getElementById("languageBadge");
 
-    // Insights
     const issuesCount = document.getElementById("issuesCount");
     const licenseName = document.getElementById("licenseName");
     const defaultBranch = document.getElementById("defaultBranch");
 
     // =========================
-    // SAFE REPO PARSER (FIXED CODEQL ISSUE)
+    // STRICT SAFE PARSER (CODEQL SAFE)
     // =========================
-    const extractRepoPath = (rawInput) => {
-        try {
-            const input = rawInput.trim();
+    const extractRepoPath = (inputRaw) => {
+        const input = inputRaw.trim();
 
-            // Case 1: Full GitHub URL
-            if (input.includes("github.com")) {
-                const url = new URL(input);
+        // CASE 1: owner/repo only (strict validation)
+        const simplePattern = /^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/;
 
-                // STRICT check (prevents spoofing attacks)
-                if (
-                    url.hostname !== "github.com" &&
-                    url.hostname !== "www.github.com"
-                ) {
-                    return null;
-                }
-
-                const parts = url.pathname.split("/").filter(Boolean);
-
-                if (parts.length >= 2) {
-                    return `${parts[0]}/${parts[1]}`;
-                }
-
-                return null;
-            }
-
-            // Case 2: owner/repo format
-            const parts = input.split("/");
-            if (parts.length >= 2) {
-                return `${parts[0]}/${parts[1]}`;
-            }
-
-            return null;
-        } catch (err) {
-            return null;
+        if (simplePattern.test(input)) {
+            return input;
         }
+
+        // CASE 2: strict GitHub URL ONLY (no substring checks)
+        // Must start EXACTLY with github.com domain pattern
+        const parts = input.split("/");
+
+        // Expected formats:
+        // https://github.com/owner/repo
+        // http(s)://www.github.com/owner/repo
+        if (
+            (parts[0] === "https:" || parts[0] === "http:") &&
+            (parts[2] === "github.com" || parts[2] === "www.github.com")
+        ) {
+            const owner = parts[3];
+            const repo = parts[4];
+
+            if (owner && repo) {
+                return `${owner}/${repo}`;
+            }
+        }
+
+        return null;
     };
 
     // =========================
     // FORMAT NUMBER
     // =========================
-    const formatNumber = (num) => {
-        if (num === null || num === undefined) return "0";
-        return num > 999 ? (num / 1000).toFixed(1) + "k" : num;
-    };
+    const formatNumber = (num) =>
+        num > 999 ? (num / 1000).toFixed(1) + "k" : String(num || 0);
 
     // =========================
     // APPLY THEME
@@ -85,16 +76,17 @@ document.addEventListener("DOMContentLoaded", () => {
             "theme-glass",
             "theme-sunset"
         );
-
         promoCard.classList.add(`theme-${theme}`);
     };
 
-    themeSelect.addEventListener("change", (e) => {
-        applyTheme(e.target.value);
-    });
+    if (themeSelect) {
+        themeSelect.addEventListener("change", (e) => {
+            applyTheme(e.target.value);
+        });
+    }
 
     // =========================
-    // FETCH REPO DATA
+    // FETCH GITHUB DATA
     // =========================
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -103,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!repoPath) {
             errorMessage.textContent =
-                "Invalid GitHub URL or format (use owner/repo).";
+                "Invalid format. Use owner/repo or GitHub URL.";
             errorMessage.classList.remove("hidden");
             return;
         }
@@ -111,102 +103,82 @@ document.addEventListener("DOMContentLoaded", () => {
         errorMessage.classList.add("hidden");
 
         generateBtn.disabled = true;
-        generateBtn.innerHTML =
-            '<span class="material-symbols-outlined">sync</span> Loading...';
+        generateBtn.textContent = "Loading...";
 
         try {
             const res = await fetch(
-                `https://api.github.com/repos/${repoPath}`
+                "https://api.github.com/repos/" + repoPath
             );
 
-            if (!res.ok) throw new Error("Repo not found");
+            if (!res.ok) throw new Error("Not found");
 
             const data = await res.json();
 
-            // Main info
             ownerAvatar.src = data.owner.avatar_url;
             ownerName.textContent = data.owner.login;
             repoName.textContent = data.name;
             repoDescription.textContent =
-                data.description || "No description available.";
+                data.description || "No description available";
 
-            // Stats
             starCount.textContent = formatNumber(data.stargazers_count);
             forkCount.textContent = formatNumber(data.forks_count);
             watcherCount.textContent = formatNumber(data.subscribers_count);
 
-            // Language
-            if (data.language) {
-                repoLanguage.textContent = data.language;
-                languageBadge.style.display = "flex";
-            } else {
-                languageBadge.style.display = "none";
-            }
+            repoLanguage.textContent = data.language || "Unknown";
 
-            // Insights
-            issuesCount.textContent = `${data.open_issues_count} Issues`;
-            licenseName.textContent =
-                data.license?.name || "No License";
-            defaultBranch.textContent = data.default_branch || "main";
+            issuesCount.textContent = String(data.open_issues_count);
+            licenseName.textContent = data.license
+                ? data.license.name
+                : "No License";
+            defaultBranch.textContent = data.default_branch;
 
             downloadBtn.disabled = false;
-
         } catch (err) {
-            console.error(err);
-
             errorMessage.textContent =
-                "Repository not found. Please check input.";
+                "Repository not found or invalid input.";
             errorMessage.classList.remove("hidden");
-
             downloadBtn.disabled = true;
         } finally {
             generateBtn.disabled = false;
-            generateBtn.innerHTML = "Generate Card";
+            generateBtn.textContent = "Generate Card";
         }
     });
 
     // =========================
-    // DOWNLOAD IMAGE
+    // DOWNLOAD CARD
     // =========================
     downloadBtn.addEventListener("click", () => {
         const card = document.getElementById("promoCard");
 
-        const original = downloadBtn.innerHTML;
-
-        downloadBtn.innerHTML =
-            '<span class="material-symbols-outlined">sync</span> Generating...';
+        const original = downloadBtn.textContent;
+        downloadBtn.textContent = "Generating...";
         downloadBtn.disabled = true;
 
         html2canvas(card, {
             scale: 2,
-            useCORS: true,
-            backgroundColor: null,
+            useCORS: true
         })
             .then((canvas) => {
                 const link = document.createElement("a");
-                link.download = `${repoName.textContent}-promo.png`;
+                link.download = "github-promo-card.png";
                 link.href = canvas.toDataURL("image/png");
                 link.click();
 
-                downloadBtn.innerHTML =
-                    '<span class="material-symbols-outlined">check</span> Downloaded!';
-
+                downloadBtn.textContent = "Downloaded!";
                 setTimeout(() => {
-                    downloadBtn.innerHTML = original;
+                    downloadBtn.textContent = original;
                     downloadBtn.disabled = false;
                 }, 1500);
             })
-            .catch((err) => {
-                console.error(err);
-                alert("Failed to generate image.");
-
-                downloadBtn.innerHTML = original;
+            .catch(() => {
+                alert("Failed to generate image");
+                downloadBtn.textContent = original;
                 downloadBtn.disabled = false;
             });
     });
 
-    // =========================
     // INIT THEME
-    // =========================
-    applyTheme(themeSelect.value);
+    if (themeSelect) {
+        applyTheme(themeSelect.value);
+    }
 });
