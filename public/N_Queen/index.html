@@ -12,9 +12,31 @@
 <body>
   <a href="/" class="project-back-button">← Back to Home</a>
 
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme">🌙</button>
+  
   <div class="container">
     <h1>N-Queens Game</h1>
     <p class="subtitle">Place N queens safely without them attacking each other!</p>
+
+    <details class="rules-section">
+  <summary>📖 How to Play &amp; Game Rules</summary>
+  <div class="rules-content">
+    <p><strong>What is the N-Queens problem?</strong><br>
+      Place <em>N</em> chess queens on an N×N board so that no two queens threaten each other.
+    </p>
+    <p><strong>How queens move:</strong></p>
+    <ul>
+      <li>A queen attacks every square in its <strong>row</strong>, <strong>column</strong>, and both <strong>diagonals</strong>.</li>
+    </ul>
+    <p><strong>Your goal:</strong> Place exactly N queens so none of them can attack another.</p>
+    <p><strong>Beginner tips:</strong></p>
+    <ul>
+      <li>Start with <strong>N = 4 or 5</strong> — smaller boards are easier to solve.</li>
+      <li>Hover over a square to preview which cells it threatens (highlighted in orange).</li>
+      <li>Click a placed queen again to remove it.</li>
+    </ul>
+  </div>
+</details>
 
     <div class="board-details">
         <div class="board-size">
