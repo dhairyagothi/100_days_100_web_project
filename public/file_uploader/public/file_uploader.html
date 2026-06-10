@@ -301,12 +301,11 @@
 <body>
 <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
-
   <div class="container">
     <form
-      action="/upload"
-      enctype="multipart/form-data"
-      method="post"
+      action="http://localhost:3000/upload"
+      method="POST"
+      enctype="multipart/form-data">
       class="myform"
     >
       <div class="form-header">
@@ -373,15 +372,41 @@
     const fileInput = document.getElementById('myFile');
     const form = document.querySelector('.myform');
 
-    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    // 1. Prevent default behavior for all drag events so the browser doesn't open the image
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, e => {
+        e.preventDefault();
+        e.stopPropagation();
+      }, false);
+    });
+
+    // 2. Handle visual styling on hover
+    dropZone.addEventListener('dragover', () => dropZone.classList.add('dragover'));
     dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-    dropZone.addEventListener('drop', () => dropZone.classList.remove('dragover'));
+    
+    // 3. Handle the actual drop event
+    dropZone.addEventListener('drop', e => {
+      dropZone.classList.remove('dragover');
+      
+      // Grab the files from the data transfer
+      const files = e.dataTransfer.files;
+      
+      if (files.length > 0) {
+        // Manually assign the dropped files to the hidden input
+        fileInput.files = files;
+        // Trigger the preview and validation function manually
+        showPreview(fileInput);
+      }
+    });
 
     function showPreview(input) {
       const preview = document.getElementById('file-preview');
       preview.innerHTML = '';
 
-      if (!input.files.length) { preview.style.display = 'none'; return; }
+      if (!input.files || input.files.length === 0) { 
+        preview.style.display = 'none'; 
+        return; 
+      }
 
       // ✅ Restrict validation variables locally
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];

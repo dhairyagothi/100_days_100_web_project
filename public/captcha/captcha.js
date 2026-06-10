@@ -1,5 +1,6 @@
 let selectedImageAnswer = "";
-// FIX 1: Defined the dropdown element
+
+// Select DOM Elements
 const captchaTypeSelect = document.getElementById('captchaTypeSelect');
 let selectedType = "text"; 
 
@@ -17,7 +18,7 @@ const maxAttempts = 3;
 let lockoutEndTime = 0;
 let selectedDifficulty = "medium";
 
-// Add difficulty selector UI
+// Add difficulty selector UI dynamic attachment
 const addDifficultySelector = () => {
     const existing = document.getElementById('difficulty-selector');
     if (existing) return;
@@ -77,7 +78,7 @@ const generateImageCaptcha = () => {
         { emoji: '<i class="fas fa-horse fa-2x" style="color: #b45309;"></i>', name: 'horse' },
         { emoji: '<i class="fas fa-fish fa-2x" style="color: #06b6d4;"></i>', name: 'fish' },
         { emoji: '<i class="fas fa-dragon fa-2x" style="color: #ef4444;"></i>', name: 'dragon' },
-        { emoji: '<i class="fas fa-locomotive fa-2x" style="color: #6b7280;"></i>', name: 'train' }
+        { emoji: '<i class="fas fa-car fa-2x" style="color: #6b7280;"></i>', name: 'train' }
     ];
     const correctIndex = Math.floor(Math.random() * images.length);
     const shuffled = images.sort(() => 0.5 - Math.random()).slice(0, 6);
@@ -157,13 +158,21 @@ const generateCaptcha = () => {
     resultMessage.textContent = '';
     resultMessage.className = 'result';
 
-    // FIX 2: Updated to use the globally tracked selectedType
-    const type = selectedType;
+    // Normalize type string case to prevent logic matching bugs
+    const type = selectedType.toLowerCase();
 
     if (type === 'audio') {
         voiceField.classList.remove('hidden');
     } else {
         voiceField.classList.add('hidden');
+    }
+
+    // Toggle interaction layout configurations explicitly based on state modes
+    if (type === 'image') {
+        textInput.disabled = true;
+        textInput.placeholder = 'Click an image option above';
+    } else {
+        textInput.disabled = false;
     }
 
     switch (type) {
@@ -176,18 +185,24 @@ const generateCaptcha = () => {
         case 'image': {
             const { images, correct } = generateImageCaptcha();
             currentCaptcha = correct.name;
-            textInput.placeholder = `Select the ${correct.name}`;
             captchaContainer.innerHTML = `
-                <p>Select the ${correct.name}</p>
-                <div class="image-grid">
-                    ${images.map(img => `<button type="button" class="image-option">${img.emoji}</button>`).join('')}
+                <p style="margin-bottom: 10px; font-weight: 600;">Select the <strong>${correct.name}</strong></p>
+                <div class="image-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;">
+                    ${images.map(img => `<button type="button" class="image-option" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; cursor: pointer; background: white;">${img.emoji}</button>`).join('')}
                 </div>
             `;
+            
             captchaContainer.querySelectorAll('.image-option').forEach(option => {
                 option.addEventListener('click', () => {
                     captchaContainer.querySelectorAll(".image-option")
-                        .forEach(img => img.classList.remove("selected"));
-                    option.classList.add("selected");
+                        .forEach(img => {
+                            img.style.borderColor = "#ccc";
+                            img.style.background = "white";
+                        });
+                    
+                    option.style.borderColor = "#2196F3";
+                    option.style.background = "#e3f2fd";
+                    
                     selectedImageAnswer = images.find(img => option.innerHTML.includes(img.emoji)).name;
                 });
             });
@@ -197,8 +212,8 @@ const generateCaptcha = () => {
             currentCaptcha = generateTextCaptcha();
             textInput.placeholder = 'Enter the spoken characters';
             captchaContainer.innerHTML = `
-                <p>Click play and enter the audio.</p>
-                <button id="playAudio">Play Audio</button>
+                <p style="margin-bottom: 10px;">Click play and enter the audio.</p>
+                <button id="playAudio" type="button" style="padding: 6px 12px; margin-bottom: 10px;">Play Audio</button>
             `;
             const playButton = document.getElementById('playAudio');
             playButton.addEventListener('click', async () => {
@@ -207,7 +222,7 @@ const generateCaptcha = () => {
                     await speakCaptcha(currentCaptcha);
                 } catch (error) {
                     console.error('Speech synthesis failed:', error);
-                    alert('Audio playback failed. Please try again or use a different CAPTCHA type.');
+                    alert('Audio playback failed.');
                 } finally {
                     playButton.disabled = false;
                 }
@@ -218,15 +233,15 @@ const generateCaptcha = () => {
             const { question, answer } = generateMathCaptcha();
             currentCaptcha = answer.toString();
             textInput.placeholder = 'Enter the numeric answer';
-            captchaContainer.innerHTML = `<span style="font-size: 24px;">${question} = ?</span>`;
+            captchaContainer.innerHTML = `<span style="font-size: 24px; font-weight: bold;">${question} = ?</span>`;
             break;
         }
     }
 };
 
-// Math captcha numeric input validation
+// Math captcha numeric regex input validation
 textInput.addEventListener("input", () => {
-    if (selectedType === "math") {
+    if (selectedType.toLowerCase() === "math") {
         textInput.value = textInput.value.replace(/[^0-9-]/g, "");
     }
 });
@@ -259,7 +274,7 @@ const verifyCaptcha = () => {
   }
 
   const userInput = 
-  selectedType == "image"
+  selectedType.toLowerCase() === "image"
   ? selectedImageAnswer.toLowerCase()
   : textInput.value.trim().toLowerCase();
   
@@ -288,10 +303,10 @@ const verifyCaptcha = () => {
   }
 };
 
-// FIX 3: Event Listener for the dropdown menu (replaced the old button listener)
+// Event Listener for the dropdown menu selection state updates
 if (captchaTypeSelect) {
     captchaTypeSelect.addEventListener("change", (event) => {
-        selectedType = event.target.value; 
+        selectedType = event.target.value.toLowerCase(); 
         textInput.value = "";
         selectedImageAnswer = "";
         generateCaptcha(); 
@@ -306,9 +321,9 @@ refreshButton.addEventListener("click", () => {
 
 submitButton.addEventListener("click", verifyCaptcha);
 
-// Initialize everything on load
+// Initialize application processes on initial window load
 addDifficultySelector();
 if (captchaTypeSelect) {
-    selectedType = captchaTypeSelect.value; // Ensure initial state matches the dropdown
+    selectedType = captchaTypeSelect.value.toLowerCase(); 
 }
 generateCaptcha();
