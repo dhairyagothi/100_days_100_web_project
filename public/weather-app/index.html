@@ -3,6 +3,42 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Weather Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body id="weather-bg" class="clear-day">
+    <div class="app-card">
+      <h1>Weather Dashboard</h1>
+
+      <div class="search-row">
+        <input type="text" id="city-input" placeholder="Enter city name..." />
+        <button id="search-btn">Search</button>
+      </div>
+
+      <button id="geo-btn" class="geo-btn">📍 Use Current Location</button>
+
+      <div id="status-msg" class="hidden"></div>
+
+      <main id="weather-info" class="hidden">
+        <h2 id="location-name">City, Country</h2>
+        <div class="temp-display"><span id="temp-val">--</span>°C</div>
+        <p id="weather-desc">Clear Sky</p>
+
+        <div class="metrics-grid">
+          <div class="metric">
+            <span class="label">Humidity</span>
+            <span id="humidity-val" class="value">--%</span>
+          </div>
+          <div class="metric">
+            <span class="label">Wind Speed</span>
+            <span id="wind-val" class="value">-- m/s</span>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
     <title>WeatherLens — Dynamic Weather Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -11,6 +47,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="Favicon_Weather.png">
   </head>
   <body data-weather-theme="default" id="appBody">
 

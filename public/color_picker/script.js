@@ -27,11 +27,11 @@ const copyHslBtn = document.getElementById("copyHsl");
 
 // Palette boxes
 const paletteBoxes = [
- document.getElementById("color1"),
- document.getElementById("color2"),
- document.getElementById("color3"),
- document.getElementById("color4"),
- document.getElementById("color5")
+    document.getElementById("color1"),
+    document.getElementById("color2"),
+    document.getElementById("color3"),
+    document.getElementById("color4"),
+    document.getElementById("color5")
 ];
 
 function rgbToHex(r, g, b) {
@@ -42,8 +42,8 @@ function rgbToHex(r, g, b) {
 
 function hexToRgb(hex) {
     hex = hex.replace('#', '');
-   if (!/^([A-Fa-f0-9]{6})$/.test(hex))
-    return null;
+    if (!/^([A-Fa-f0-9]{6})$/.test(hex))
+        return null;
 
     return {
         r: parseInt(hex.substring(0, 2), 16),
@@ -77,10 +77,10 @@ function rgbToHsl(r, g, b) {
     }
 
     return {
-      h: Math.round(h * 360),
-      s: Math.round(s * 100),
-      l: Math.round(l * 100)
-   };
+        h: Math.round(h * 360),
+        s: Math.round(s * 100),
+        l: Math.round(l * 100)
+    };
 }
 
 // Convert HSL → RGB
@@ -93,18 +93,18 @@ function hslToRgb(h, s, l) {
         const hue2rgb = (p, q, t) => {
             if (t < 0) t += 1;
             if (t > 1) t -= 1;
-            if (t < 1/6) return p + (q - p) * 6 * t;
-            if (t < 1/2) return q;
-            if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+            if (t < 1 / 6) return p + (q - p) * 6 * t;
+            if (t < 1 / 2) return q;
+            if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
             return p;
         };
 
         let q = l < 0.5 ? l * (1 + s) : l + s - l * s;
         let p = 2 * l - q;
 
-        r = hue2rgb(p, q, h + 1/3);
+        r = hue2rgb(p, q, h + 1 / 3);
         g = hue2rgb(p, q, h);
-        b = hue2rgb(p, q, h - 1/3);
+        b = hue2rgb(p, q, h - 1 / 3);
     }
 
     return {
@@ -166,15 +166,15 @@ function updateFromSliders() {
         box.style.backgroundColor = `rgb(${col.r}, ${col.g}, ${col.b})`;
     });
 
-    [c1, c2, c3, c4, c5].forEach((box, i) => {
-    const col = palette[i];
-    const hex = rgbToHex(col.r, col.g, col.b);
+    paletteBoxes.forEach((box, i) => {
+        const col = palette[i];
+        const hex = rgbToHex(col.r, col.g, col.b);
 
-    box.style.backgroundColor = `rgb(${col.r}, ${col.g}, ${col.b})`;
+        box.style.backgroundColor = `rgb(${col.r}, ${col.g}, ${col.b})`;
 
-    // IMPORTANT: avoid stacking multiple listeners
-    box.onclick = () => copyToClipboard(hex);
-});
+        // IMPORTANT: avoid stacking multiple listeners
+        box.onclick = () => copyToClipboard(hex);
+    });
 }
 
 // HEX input sync
@@ -195,24 +195,59 @@ greenSlider.addEventListener('input', updateFromSliders);
 blueSlider.addEventListener('input', updateFromSliders);
 let hexTimer;
 hexInput.addEventListener("input", () => {
-  clearTimeout(hexTimer);
+    clearTimeout(hexTimer);
 
-  hexTimer = setTimeout(() => {
-      updateFromHex();
-  }, 300);
+    hexTimer = setTimeout(() => {
+        updateFromHex();
+    }, 300);
 });
 updateFromSliders();
 
 async function copyToClipboard(text) {
-  try {
-    await navigator.clipboard.writeText(text);
-    showToast(`Copied: ${text}`);
-  } catch {
-    showToast("Copy failed");
-  }
+    try {
+        await navigator.clipboard.writeText(text);
+        showToast(`Copied: ${text}`);
+    } catch {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        document.execCommand("copy");
+
+        document.body.removeChild(textarea);
+
+        showToast(`Copied: ${text}`);
+    }
 }
 
-let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+const memoryStore = new Map();
+
+const StorageManager = {
+    get(key) {
+        try {
+            return localStorage.getItem(key);
+        } catch {
+            return memoryStore.get(key) || null;
+        }
+    },
+
+    set(key, value) {
+        try {
+            localStorage.setItem(key, value);
+        } catch {
+            memoryStore.set(key, value);
+        }
+    },
+
+    remove(key) {
+        try {
+            localStorage.removeItem(key);
+        } catch {
+            memoryStore.delete(key);
+        }
+    }
+};
 
 function renderFavorites() {
     favoritesContainer.innerHTML = "";
@@ -255,7 +290,10 @@ saveBtn.addEventListener("click", () => {
 
     if (!favorites.includes(currentHex)) {
         favorites.push(currentHex);
-        localStorage.setItem("favorites", JSON.stringify(favorites));
+        StorageManager.set(
+            "favorites",
+            JSON.stringify(favorites)
+        );
         renderFavorites();
         showToast("Color saved ⭐");
     } else {
@@ -286,11 +324,7 @@ function rgbToHsl(r, g, b) {
         h /= 6;
     }
 
-    return {
-        h: Math.round(h * 360),
-        s: Math.round(s * 100),
-        l: Math.round(l * 100)
-    };
+    return { h, s, l };
 }
 
 copyHexBtn.onclick = () => {
@@ -313,3 +347,15 @@ copyHslBtn.onclick = () => {
 
     copyToClipboard(`hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`);
 };
+let toastTimer;
+
+function showToast(msg) {
+    clearTimeout(toastTimer);
+
+    toast.textContent = msg;
+    toast.style.opacity = "1";
+
+    toastTimer = setTimeout(() => {
+        toast.style.opacity = "0";
+    }, 1200);
+}

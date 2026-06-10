@@ -37,10 +37,12 @@
 
 .video-grid {
   display: grid;
-  width: 100%;
   grid-template-columns: 1fr 1fr 1fr;
   column-gap: 16px;
   row-gap: 40px;
+  margin-left: 82px;
+  width: calc(100% - 80px);
+  box-sizing: border-box;
 }
 
 @media (max-width: 750px) {

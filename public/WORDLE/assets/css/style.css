@@ -77,20 +77,17 @@
 }
 
 .inputBox {
-    width: 50px;
-    height: 50px;
-    caret-color: transparent;
-    font-size: 25px;
-    font-weight: bold;
+    width: 62px;
+    height: 62px;
+    font-size: 2rem;
+    font-weight: 700;
     text-align: center;
-    border: solid 2px rgb(182, 182, 182);
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-    transition: all 0.2s ease;
-    background: rgba(255,255,255,0.95);
-
-    transition: all 0.25s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    border: 2px solid #d3d6da;
+    background-color: transparent;
+    color: #1a1a1b;
+    text-transform: uppercase;
+    caret-color: transparent; 
+    user-select: none;
 }
 .inputBox:hover {
     transform: scale(1.05);
@@ -99,37 +96,54 @@
     transform: scale(1.08);
 }
 .button {
-    border-radius: 12px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-    background: #f8fafc;
-    width: 40px;
-    height: 60px;
-    padding: 10px;
-    margin: 2px;
-    border-style: none;
-    border-radius: 5px;
-    background-color: rgb(221, 220, 220);
+    font-family: inherit;
     font-weight: bold;
+    border: 0;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #d3d6da;
+    color: #1a1a1b;
+    height: 40px; /* SHRUNK */
+    flex: 1; /* Makes keys grow evenly */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    font-size: 0.9rem; /* SHRUNK */
+    transition: transform 0.1s ease; /* INSTANT THEME SWITCH */
 }
 .button:hover {
     transform: translateY(-3px) scale(1.05);
     background: #dbeafe;
     box-shadow: 0 6px 20px rgba(255,255,255,0.2);
 }
-.keyboard {
-    margin: auto;
+#keyboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px; 
+    margin: 0 auto;
+    padding: 10px;
+    gap: 8px;
+}
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 6px;
 }
 
 .buttonRow2 {
     margin: auto;
 }
-.enter {
-    width: 80px;
+.button.enter, .button.backspace {
+    flex: 1.5; 
+    font-size: 1rem;
 }
-.backspace {
-    width: 50px;
-    font-size: 18px;
+
+.spacer.half {
+    flex: 0.5;
 }
 .message {
     position: absolute;
@@ -154,22 +168,10 @@
 .nav__icon:hover {
     cursor: pointer;
 }
-.yellow {
-    background-color: #eab308;
-    border-color: #eab308;
-    color: white;
-}
+.green { background-color: #538d4e !important; border-color: #538d4e !important; color: white !important; }
+.yellow { background-color: #b59f3b !important; border-color: #b59f3b !important; color: white !important; }
+.grey { background-color: #787c7e !important; border-color: #787c7e !important; color: white !important; }
 
-.green {
-    background-color: #22c55e;
-    border-color: #22c55e;
-    color: white;
-}
-.grey {
-    background-color: #6b7280;
-    border-color: #6b7280;
-    color: white;
-}
 
 @media screen and (max-width: 568px) {
     .heading {
@@ -274,10 +276,17 @@
 body{
     height: 100vh;
     width: 100%;
-    background: linear-gradient(135deg, #0f172a, #16213e, #2b2f77);    
-    background-size: 300%,300%;
-    animation: color 12s ease-in-out infinite;
+    background-color: #ffffff;
 }
+@keyframes flipBox {
+    0% { transform: rotateX(0deg); }
+    50% { transform: rotateX(90deg); }
+    100% { transform: rotateX(0deg); }
+}
+.inputBox.flip {
+    animation: flipBox 0.5s ease-in-out;
+}
+
 @keyframes color{
     0%{
         background-position: 0 50%;
@@ -315,4 +324,142 @@ body{
 #reset:hover {
     transform: translateY(-3px) scale(1.02);
     background: #dbeafe;
+}
+
+@keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+.inputBox.filled {
+    animation: pop 0.15s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+}
+.inputRow.shake {
+    animation: shake 0.4s ease-in-out;
+}
+
+
+/*
+colour change or theme change
+*/
+body.dark-mode { background-color: #121213; color: white; animation: none; }
+body.dark-mode .inputBox { border-color: #3a3a3c; color: white; background-color: #121213; }
+body.dark-mode .button { background-color: #818384; color: white; }
+body.dark-mode .grey { background-color: #3a3a3c !important; border-color: #3a3a3c !important; color: white !important; }
+
+/* Game Over Modal & Overlay Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay:not(.hidden) {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    color: #0f172a;
+    padding: 32px 24px;
+    border-radius: 24px;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+    position: relative;
+    text-align: center;
+    transform: scale(0.95);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-overlay:not(.hidden) .modal-content {
+    transform: scale(1);
+}
+
+.modal-content .cross {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #64748b;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.modal-content .cross:hover {
+    color: #0f172a;
+    transform: scale(1.15);
+}
+
+#game-over-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #3b82f6, #10b981);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#game-over-details {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.next-word-btn {
+    margin: 0 auto;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    height: auto;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: #ffffff !important;
+    border: none;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.next-word-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+}
+
+/* Dark Mode Overrides */
+body.dark-mode .modal-content {
+    background-color: #1e293b;
+    color: #f8fafc;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .modal-content .cross {
+    color: #94a3b8;
+    background: transparent;
+}
+
+body.dark-mode .modal-content .cross:hover {
+    color: #ffffff;
 }
