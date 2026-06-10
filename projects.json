@@ -2834,5 +2834,19 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/Bubble-Game/index.html"
+  },
+  {
+    "projectNo": 225,
+    "projectName": "MuseMeter",
+    "projectType": "Web Application",
+    "projectDesc": "MuseMeter is a personal React Single Page Application (SPA) that helps you maintain records of books, movies, poems, and music you’ve experienced.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "react"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/MuseMeter/public/index.html"
   }
 ]
