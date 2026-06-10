@@ -13,10 +13,10 @@ resetGameButton.addEventListener("click", resetGame);
 
 function startGame() {
     const n = parseInt(boardInput.value);
-    if (isNaN(n) || n < 4) {
-        alert("Please enter a valid board size (minimum 4).");
-        return;
-    }
+    if (isNaN(n) || n < 4 || n > 12) {
+    alert("Please enter a valid board size between 4 and 12.");
+    return;
+}
 
     resetGame();
 
