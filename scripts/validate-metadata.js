@@ -9,7 +9,15 @@ const rootDir = process.argv[3]
   : path.join(__dirname, '..');
 
 const VALID_DIFFICULTIES = new Set(['beginner', 'intermediate', 'advanced']);
-const REQUIRED_KEYS = ['projectNo', 'projectName', 'techStack', 'difficulty', 'projectPath'];
+const REQUIRED_KEYS = [
+  'projectNo',
+  'projectName',
+  'projectType',
+  'projectDesc',
+  'techStack',
+  'difficulty',
+  'projectPath'
+];
 const UNSAFE_PROTOCOL_RE = /^(?:javascript|data|vbscript):/i;
 const URL_SCHEME_RE = /^[a-z][a-z0-9+.-]*:/i;
 const EXPECTED_GITHUB_TREE_PREFIX = '/dhairyagothi/100_days_100_web_project/tree/';
@@ -22,6 +30,18 @@ function formatProjectLabel(index, project = {}) {
 
 function addFieldError(errors, index, project, fieldName, message) {
   errors.push(`${formatProjectLabel(index, project)}: "${fieldName}" ${message}`);
+}
+
+function validateNonBlankStringField(project, index, errors, fieldName) {
+  const value = project[fieldName];
+
+  if (value !== undefined && value !== null && value !== '') {
+    if (typeof value !== 'string') {
+      addFieldError(errors, index, project, fieldName, `must be a string, got "${typeof value}"`);
+    } else if (value.trim() === '') {
+      addFieldError(errors, index, project, fieldName, 'must not be blank');
+    }
+  }
 }
 
 function isExternalHttpUrl(value) {
@@ -157,13 +177,9 @@ try {
       }
     }
 
-    if (project.projectName !== undefined && project.projectName !== null && project.projectName !== '') {
-      if (typeof project.projectName !== 'string') {
-        addFieldError(errors, index, project, 'projectName', `must be a string, got "${typeof project.projectName}"`);
-      } else if (project.projectName.trim() === '') {
-        addFieldError(errors, index, project, 'projectName', 'must not be blank');
-      }
-    }
+    validateNonBlankStringField(project, index, errors, 'projectName');
+    validateNonBlankStringField(project, index, errors, 'projectType');
+    validateNonBlankStringField(project, index, errors, 'projectDesc');
 
     if (project.techStack !== undefined && project.techStack !== null) {
       if (!Array.isArray(project.techStack)) {

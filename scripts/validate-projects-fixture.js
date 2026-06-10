@@ -6,16 +6,24 @@ const path = require('path');
 const validatorPath = path.join(__dirname, 'validate-projects.js');
 const fixtureRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'project-registry-'));
 const validEntryPath = path.join(fixtureRoot, 'public', 'valid-project', 'index.html');
+const blankMetadataEntryPath = path.join(fixtureRoot, 'public', 'blank-metadata', 'index.html');
+const typedMetadataEntryPath = path.join(fixtureRoot, 'public', 'typed-metadata', 'index.html');
 const validRegistryPath = path.join(fixtureRoot, 'valid-projects.json');
 const invalidRegistryPath = path.join(fixtureRoot, 'invalid-projects.json');
 
 fs.mkdirSync(path.dirname(validEntryPath), { recursive: true });
+fs.mkdirSync(path.dirname(blankMetadataEntryPath), { recursive: true });
+fs.mkdirSync(path.dirname(typedMetadataEntryPath), { recursive: true });
 fs.writeFileSync(validEntryPath, '<!doctype html><title>Valid Project</title>');
+fs.writeFileSync(blankMetadataEntryPath, '<!doctype html><title>Blank Metadata</title>');
+fs.writeFileSync(typedMetadataEntryPath, '<!doctype html><title>Typed Metadata</title>');
 
 fs.writeFileSync(validRegistryPath, JSON.stringify([
   {
     projectNo: 1,
     projectName: 'Valid Project',
+    projectType: 'Tool',
+    projectDesc: 'A valid local project entry with all required metadata.',
     techStack: ['html', 'css'],
     difficulty: 'beginner',
     projectPath: './public/valid-project/index.html'
@@ -26,6 +34,8 @@ fs.writeFileSync(invalidRegistryPath, JSON.stringify([
   {
     projectNo: 1,
     projectName: 'Original Project',
+    projectType: 'Tool',
+    projectDesc: 'A baseline entry used by duplicate day validation.',
     techStack: ['html'],
     difficulty: 'beginner',
     projectPath: './public/valid-project/index.html'
@@ -33,6 +43,8 @@ fs.writeFileSync(invalidRegistryPath, JSON.stringify([
   {
     projectNo: 1,
     projectName: 'Duplicate Day',
+    projectType: 'Tool',
+    projectDesc: 'An entry that duplicates a project number and has invalid difficulty.',
     techStack: ['javascript'],
     difficulty: 'expert',
     projectPath: 'javascript:alert(1)'
@@ -40,6 +52,8 @@ fs.writeFileSync(invalidRegistryPath, JSON.stringify([
   {
     projectNo: 3,
     projectName: 'Escaped Path',
+    projectType: 'Tool',
+    projectDesc: 'An entry with a path traversal attempt.',
     techStack: ['html'],
     difficulty: 'advanced',
     projectPath: '../outside.html'
@@ -47,9 +61,36 @@ fs.writeFileSync(invalidRegistryPath, JSON.stringify([
   {
     projectNo: 4,
     projectName: 'Missing File',
+    projectType: 'Tool',
+    projectDesc: 'An entry whose local project path does not exist.',
     techStack: ['css'],
     difficulty: 'intermediate',
     projectPath: './public/missing/index.html'
+  },
+  {
+    projectNo: 5,
+    projectName: 'Missing Metadata',
+    techStack: ['html'],
+    difficulty: 'beginner',
+    projectPath: 'https://example.com/missing-metadata.html'
+  },
+  {
+    projectNo: 6,
+    projectName: 'Blank Metadata',
+    projectType: '   ',
+    projectDesc: '   ',
+    techStack: ['html'],
+    difficulty: 'beginner',
+    projectPath: './public/blank-metadata/index.html'
+  },
+  {
+    projectNo: 7,
+    projectName: 'Wrong Metadata Types',
+    projectType: ['Tool'],
+    projectDesc: 42,
+    techStack: ['html'],
+    difficulty: 'beginner',
+    projectPath: './public/typed-metadata/index.html'
   }
 ], null, 2));
 
@@ -75,7 +116,13 @@ const expectedMessages = [
   'must be one of: beginner, intermediate, advanced',
   'uses an unsafe URL protocol',
   'must not contain path traversal',
-  'local path "./public/missing/index.html" does not exist in the repository'
+  'local path "./public/missing/index.html" does not exist in the repository',
+  'Index 4 (Day 5 - Missing Metadata): "projectType" is missing or empty',
+  'Index 4 (Day 5 - Missing Metadata): "projectDesc" is missing or empty',
+  'Index 5 (Day 6 - Blank Metadata): "projectType" must not be blank',
+  'Index 5 (Day 6 - Blank Metadata): "projectDesc" must not be blank',
+  'Index 6 (Day 7 - Wrong Metadata Types): "projectType" must be a string, got "object"',
+  'Index 6 (Day 7 - Wrong Metadata Types): "projectDesc" must be a string, got "number"'
 ];
 
 if (invalidResult.status === 0) {
