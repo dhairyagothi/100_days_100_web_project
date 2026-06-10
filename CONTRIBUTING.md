@@ -24,24 +24,28 @@ Thank you for your interest in contributing to **100 Days 100 Web Projects**! We
 ## 🌟 Ways to Contribute
 
 ### 🆕 Adding New Projects
+
 - Create new web development projects
 - Implement popular website clones
 - Build useful web tools and utilities
 - Develop interactive games
 
 ### 🔧 Improving Existing Projects
+
 - Fix bugs in current projects
 - Enhance functionality
 - Improve code quality
 - Add responsive design
 
 ### 📚 Documentation
+
 - Improve README files
 - Add project descriptions
 - Create setup guides
 - Fix typos and formatting
 
 ### 🎨 UI/UX Improvements
+
 - Enhance visual design
 - Improve user experience
 - Add animations and transitions
@@ -71,7 +75,7 @@ git remote add upstream https://github.com/dhairyagothi/100_days_100_web_project
 git checkout -b feature/your-feature-name
 # or
 git checkout -b fix/bug-description
-# or  
+# or
 git checkout -b add/project-name
 ```
 
@@ -80,6 +84,7 @@ git checkout -b add/project-name
 Choose the method that works best for you:
 
 **Option A — Simple (no setup needed):**
+
 ```bash
 # Just open in your browser
 open index.html    # macOS
@@ -87,12 +92,14 @@ xdg-open index.html  # Linux
 ```
 
 **Option B — Dev Server (requires Node.js):**
+
 ```bash
 npm run dev
 # → http://localhost:3000
 ```
 
 **Option C — Docker (requires Docker):**
+
 ```bash
 # One-command setup — no Node.js needed
 docker compose up --build
@@ -103,6 +110,7 @@ make docker-up
 ```
 
 **Option D — Make & Run Scripts (shortcut commands):**
+
 ```bash
 make help               # Show all available commands
 make dev                # Start local dev server
@@ -136,6 +144,7 @@ npm run validate:projects # Runs projects registry JSON validation checks
 ## ➕ Adding New Projects
 
 ### Step 1: Create Project Folder
+
 ```bash
 # Create a new folder in the public directory
 mkdir public/YourProjectName
@@ -143,127 +152,162 @@ cd public/YourProjectName
 ```
 
 ### Step 2: Project Files
+
 Create these essential files:
 
 **index.html** (Required)
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Your Project Name</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <!-- Your project content -->
-    
+
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
 ```
 
 **style.css** (Recommended)
+
 ```css
 /* Your project styles */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: 'Arial', sans-serif;
-    /* Add your styles */
+  font-family: "Arial", sans-serif;
+  /* Add your styles */
 }
 ```
 
 **script.js** (If needed)
+
 ```javascript
 // Your project functionality
-document.addEventListener('DOMContentLoaded', function() {
-    // Your code here
+document.addEventListener("DOMContentLoaded", function () {
+  // Your code here
 });
 ```
 
 **README.md** (Required)
+
 ```markdown
 # Your Project Name
 
 Brief description of your project.
 
 ## Features
+
 - Feature 1
 - Feature 2
 
 ## Technologies Used
+
 - HTML
 - CSS
 - JavaScript
 
 ## How to Run
+
 1. Open index.html in a web browser
 2. Enjoy the project!
 
 ## Screenshots
+
 Add screenshots of your project
 
 ## Author
+
 Your Name
 ```
 
 ### Step 3: Update Main Project List
-Add your project to the main website by editing `index.js`:
 
-```javascript
-// Find the data array and add your project
-```javascript
-["Day X", "Your Project Name", "./public/YourProjectName/index.html", ["javascript", "css"], "Beginner"]
+Add your project to the main website by editing `projects.json`:
+
+```json
+{
+  "projectNo": 114,
+  "projectName": "Your Project Name",
+  "projectType": "Tool",
+  "projectDesc": "A brief description of what your project does.",
+  "techStack": ["javascript", "css"],
+  "difficulty": "beginner",
+  "projectPath": "./public/YourProjectName/index.html"
+}
 ```
 
 ## ➕ Adding Your Project to the Project List
 
-Welcome! This section will walk you through how to correctly add your project to the main project list in `index.js`. Following this format carefully ensures your project shows up on the website, works with filters, and links correctly. Don't worry — it's simpler than it looks!
+Welcome! This section will walk you through how to correctly add your project to the main project list in `projects.json`. Following this format carefully ensures your project shows up on the website, works with filters, and links correctly. Don't worry — it's simpler than it looks!
 
 ---
 
 ### 📋 The Project Entry Format
 
-Each project is stored as a single line inside the `PROJECTS` array in `index.js`. Every entry follows this structure:
+Each project is stored as a JSON object inside the `projects.json` array. Every entry follows this structure:
 
-```javascript
-["Day Number", "Project Name", "./public/FolderName/index.html", ["tag1", "tag2"], "Difficulty"]
+```json
+{
+  "projectNo": 113,
+  "projectName": "Project Name",
+  "projectType": "Type",
+  "projectDesc": "A brief description of the project.",
+  "techStack": ["tag1", "tag2"],
+  "difficulty": "beginner",
+  "projectPath": "./public/FolderName/index.html"
+}
 ```
 
 Here's a real example of a valid entry:
 
-```javascript
-["Day 113", "Drawing Canvas", "./public/DrawingCanvas/index.html", ["javascript", "canvas"], "Beginner"]
+```json
+{
+  "projectNo": 113,
+  "projectName": "Drawing Canvas",
+  "projectType": "Tool",
+  "projectDesc": "A freehand drawing canvas built with the HTML5 Canvas API.",
+  "techStack": ["javascript", "canvas"],
+  "difficulty": "beginner",
+  "projectPath": "./public/DrawingCanvas/index.html"
+}
 ```
 
 ---
 
 ### 🗂️ What Each Field Means
 
-| Position | Field | Example | Description |
-|----------|-------|---------|-------------|
-| 1st | Day Number | `"Day 113"` | The day this project is assigned. Follow the existing numbering in the file. |
-| 2nd | Project Name | `"Drawing Canvas"` | The display name of your project. Use title case. Must match the key used in `PROJECT_DESCRIPTIONS` if you add a description. |
-| 3rd | File Path | `"./public/DrawingCanvas/index.html"` | The relative path to your project's `index.html`. Must start with `./public/`. |
-| 4th | Tags | `["javascript", "canvas"]` | An array of lowercase technology or category tags describing your project. |
-| 5th | Difficulty | `"Beginner"` | How challenging the project is. Must be one of the three allowed values (see below). |
+| Field         | Example                               | Description                                                                        |
+| ------------- | ------------------------------------- | ---------------------------------------------------------------------------------- |
+| `projectNo`   | `113`                                 | The project number. Follow the existing numbering (use the next available number). |
+| `projectName` | `"Drawing Canvas"`                    | The display name of your project. Use title case.                                  |
+| `projectType` | `"Tool"`                              | The category of the project (e.g., Tool, Game, UI, Website, Clone, API, etc.).     |
+| `projectDesc` | `"A freehand drawing canvas..."`      | A brief one-line description of what the project does.                             |
+| `techStack`   | `["javascript", "canvas"]`            | An array of lowercase technology or category tags describing your project.          |
+| `difficulty`  | `"beginner"`                          | How challenging the project is. Must be one of the three allowed values (see below).|
+| `projectPath` | `"./public/DrawingCanvas/index.html"` | The relative path to your project's `index.html`. Must start with `./public/`.     |
 
 ---
 
 ### ✅ Allowed Difficulty Values
 
-The difficulty field accepts **only** these three values, spelled and capitalized exactly as shown:
+The difficulty field accepts **only** these three values (all lowercase):
 
-- `"Beginner"`
-- `"Intermediate"`
-- `"Advanced"`
+- `"beginner"`
+- `"intermediate"`
+- `"advanced"`
 
-Using any other value (like `"Easy"`, `"Hard"`, or `"beginner"` in lowercase) will cause the difficulty filter to silently ignore your project.
+Using any other value (like `"Easy"`, `"Hard"`, or `"Beginner"` with a capital B) will cause the difficulty filter to silently ignore your project.
 
 ---
 
@@ -272,8 +316,9 @@ Using any other value (like `"Easy"`, `"Hard"`, or `"beginner"` in lowercase) wi
 The path in the third field **must be a relative path** starting with `./public/`. This is because the website is hosted as a collection of static files, and the browser needs to resolve the link from the project root. An absolute path like `/home/user/myproject/` or a URL like `https://mysite.com` will not work and will break the project card link.
 
 **Always use:**
+
 ```javascript
-"./public/YourProjectFolder/index.html"
+"./public/YourProjectFolder/index.html";
 ```
 
 ---
@@ -283,8 +328,9 @@ The path in the third field **must be a relative path** starting with `./public/
 The folder name in your path must **exactly match** the folder you created inside `public/`. This includes matching the capitalization.
 
 For example, if your folder is named `DrawingCanvas`, your path must be:
+
 ```javascript
-"./public/DrawingCanvas/index.html"
+"./public/DrawingCanvas/index.html";
 ```
 
 Writing `"./public/drawingcanvas/index.html"` or `"./public/Drawing_Canvas/index.html"` will result in a broken link — the project card will appear on the site but clicking it will show a 404 error.
@@ -310,10 +356,20 @@ Always write tags in lowercase:
 ### ✅ Correct vs. ❌ Incorrect Entry Examples
 
 **✅ Correct entry:**
-```javascript
-["Day 113", "Drawing Canvas", "./public/DrawingCanvas/index.html", ["javascript", "canvas"], "Beginner"]
+
+```json
+{
+  "projectNo": 113,
+  "projectName": "Drawing Canvas",
+  "projectType": "Tool",
+  "projectDesc": "A freehand drawing canvas built with the HTML5 Canvas API.",
+  "techStack": ["javascript", "canvas"],
+  "difficulty": "beginner",
+  "projectPath": "./public/DrawingCanvas/index.html"
+}
 ```
-- Day number is formatted correctly
+
+- Project number follows the existing sequence
 - Path uses `./public/` and matches the actual folder name
 - Tags are lowercase
 - Difficulty is one of the three allowed values
@@ -321,33 +377,55 @@ Always write tags in lowercase:
 ---
 
 **❌ Incorrect — wrong difficulty value:**
-```javascript
-["Day 113", "Drawing Canvas", "./public/DrawingCanvas/index.html", ["javascript", "canvas"], "Easy"]
+
+```json
+{
+  "projectNo": 113,
+  "projectName": "Drawing Canvas",
+  "projectType": "Tool",
+  "projectDesc": "A freehand drawing canvas.",
+  "techStack": ["javascript", "canvas"],
+  "difficulty": "Easy",
+  "projectPath": "./public/DrawingCanvas/index.html"
+}
 ```
-`"Easy"` is not an accepted value. Use `"Beginner"` instead.
+
+`"Easy"` is not an accepted value. Use `"beginner"` instead.
 
 ---
 
 **❌ Incorrect — uppercase tags:**
-```javascript
-["Day 113", "Drawing Canvas", "./public/DrawingCanvas/index.html", ["JavaScript", "Canvas"], "Beginner"]
+
+```json
+{
+  "techStack": ["JavaScript", "Canvas"]
+}
 ```
+
 Tags must be all lowercase: `["javascript", "canvas"]`.
 
 ---
 
 **❌ Incorrect — path doesn't match the folder name:**
-```javascript
-["Day 113", "Drawing Canvas", "./public/drawing-canvas/index.html", ["javascript", "canvas"], "Beginner"]
+
+```json
+{
+  "projectPath": "./public/drawing-canvas/index.html"
+}
 ```
-If the actual folder is named `DrawingCanvas`, the path must be `./public/DrawingCanvas/index.html`.
+
+If the actual folder is named `DrawingCanvas`, the path must be `"./public/DrawingCanvas/index.html"`.
 
 ---
 
 **❌ Incorrect — missing tags array:**
-```javascript
-["Day 113", "Drawing Canvas", "./public/DrawingCanvas/index.html", "javascript", "Beginner"]
+
+```json
+{
+  "techStack": "javascript"
+}
 ```
+
 Tags must be wrapped in square brackets as an array: `["javascript"]`, not just a plain string.
 
 ---
@@ -356,15 +434,14 @@ Tags must be wrapped in square brackets as an array: `["javascript"]`, not just 
 
 Here's a quick summary of the most frequent errors contributors make, and how to fix them:
 
-| Mistake | What Goes Wrong | Fix |
-|--------|----------------|-----|
-| Using `"Easy"` or `"Hard"` as difficulty | Project won't appear in difficulty filter | Use `"Beginner"`, `"Intermediate"`, or `"Advanced"` |
-| Tags with capital letters like `"JavaScript"` | Project won't show up in tag-based searches | Use all-lowercase tags: `"javascript"` |
-| Path doesn't match the actual folder name | Clicking the project card shows a 404 page | Double-check the folder name in `public/` and copy it exactly |
-| Forgetting square brackets around tags | JavaScript syntax error, site may break | Always write tags as an array: `["tag1", "tag2"]` |
-| Using an absolute path or a URL for the file path | Link doesn't work in the deployed site | Always start the path with `./public/` |
-| Missing `"./"` before `public/` | Source URL generation and project links may fail | Always start paths with `./public/` |
-
+| Mistake                                           | What Goes Wrong                                  | Fix                                                           |
+| ------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------- |
+| Using `"Easy"` or `"Hard"` as difficulty          | Project won't appear in difficulty filter        | Use `"beginner"`, `"intermediate"`, or `"advanced"`           |
+| Tags with capital letters like `"JavaScript"`     | Project won't show up in tag-based searches      | Use all-lowercase tags: `"javascript"`                        |
+| Path doesn't match the actual folder name         | Clicking the project card shows a 404 page       | Double-check the folder name in `public/` and copy it exactly |
+| Forgetting square brackets around `techStack`     | JSON parsing error, site may break               | Always write tags as an array: `["tag1", "tag2"]`             |
+| Using an absolute path or a URL for `projectPath` | Link doesn't work in the deployed site           | Always start the path with `./public/`                        |
+| Missing `"./"` before `public/`                   | Source URL generation and project links may fail | Always start paths with `./public/`                           |
 
 ---
 
@@ -390,9 +467,10 @@ Before submitting your pull request, preview your changes locally and verify tha
 
 ---
 
-> **Still unsure?** Look at any existing entry in `index.js` as a reference, or open an issue and the maintainers will be happy to help.
+> **Still unsure?** Look at any existing entry in `projects.json` as a reference, or open an issue and the maintainers will be happy to help.
 
 ### Step 4: Add .gitignore (If needed)
+
 For projects with dependencies:
 
 ```gitignore
@@ -412,28 +490,32 @@ build/
 ## 🐛 Bug Reports & Issues
 
 ### Before Submitting
+
 - Search existing issues to avoid duplicates
 - Test on different browsers if applicable
 - Check if it's already fixed in the latest version
 
 ### Issue Template
+
 ```markdown
 **Bug Description**
 Clear description of the bug
 
 **Steps to Reproduce**
+
 1. Go to...
 2. Click on...
 3. Scroll down to...
 4. See error
 
-**Expected Behavior** 
+**Expected Behavior**
 What you expected to happen
 
 **Screenshots**
 Add screenshots if applicable
 
 **Environment**
+
 - Browser: [e.g. Chrome, Firefox]
 - Version: [e.g. 22]
 - OS: [e.g. Windows, macOS, Linux]
@@ -442,6 +524,7 @@ Add screenshots if applicable
 ## 📝 Pull Request Process
 
 ### 1. Keep Your Fork Updated
+
 ```bash
 git fetch upstream
 git checkout main
@@ -449,12 +532,14 @@ git merge upstream/main
 ```
 
 ### 2. Make Changes
+
 - Follow our coding standards
 - Format and lint your code using `npm run format` and `npm run lint`
 - Test your changes thoroughly
 - Add documentation if needed
 
 ### 3. Commit Changes
+
 ```bash
 git add .
 git commit -m "feat: add new project - Project Name"
@@ -465,37 +550,45 @@ git commit -m "docs: update README with setup instructions"
 ```
 
 ### 4. Push and Create PR
+
 ```bash
 git push origin your-branch-name
 ```
 
 Then create a Pull Request on GitHub with:
+
 - Clear title and description
 - Reference any related issues
 - Screenshots/GIFs if applicable
 - List of changes made
 
 ### PR Template
+
 ```markdown
 ## Description
+
 Brief description of changes
 
 ## Type of Change
+
 - [ ] New project
 - [ ] Bug fix
 - [ ] Feature enhancement
 - [ ] Documentation update
 
 ## Testing
+
 - [ ] Tested in Chrome
 - [ ] Tested in Firefox
 - [ ] Tested on mobile
 - [ ] No console errors
 
 ## Screenshots
+
 Add screenshots if applicable
 
 ## Checklist
+
 - [ ] Code is formatted and linted (`npm run format` and `npm run lint`)
 - [ ] Code follows style guidelines
 - [ ] Self-review completed
@@ -506,37 +599,47 @@ Add screenshots if applicable
 ## 📖 Documentation Guidelines
 
 ### Project README Structure
+
 ```markdown
 # Project Name
 
 ## Description
+
 Brief overview of what the project does
 
 ## Features
+
 - List key features
 - Use bullet points
 
 ## Technologies Used
+
 - HTML5
 - CSS3
 - JavaScript ES6
 
 ## Installation/Setup
+
 Step-by-step instructions
 
 ## Usage
+
 How to use the project
 
 ## Screenshots
+
 Visual representation
 
 ## Contributing
+
 How others can contribute
 
 ## License
+
 MIT License
 
 ## Author
+
 Your information
 ```
 
@@ -545,11 +648,14 @@ Your information
 To maintain code quality and styling consistency across all projects, we use ESLint and Prettier.
 
 ### Formatting & Linting
+
 Before raising a Pull Request, please run the following commands:
+
 - **Format code**: `npm run format` (runs Prettier to format all JS, HTML, and CSS files)
 - **Lint code**: `npm run lint` (runs ESLint to check for syntax and logical issues in JS and HTML files)
 
 ### HTML
+
 - Use semantic HTML elements
 - Proper indentation (2 spaces)
 - Include alt text for images
@@ -558,18 +664,19 @@ Before raising a Pull Request, please run the following commands:
 ```html
 <!-- Good -->
 <section class="hero-section">
-    <h1 class="hero-title">Welcome</h1>
-    <p class="hero-description">Description here</p>
+  <h1 class="hero-title">Welcome</h1>
+  <p class="hero-description">Description here</p>
 </section>
 
 <!-- Avoid -->
 <div class="div1">
-    <h1>Welcome</h1>
-    <p>Description here</p>
+  <h1>Welcome</h1>
+  <p>Description here</p>
 </div>
 ```
 
 ### CSS
+
 - Use meaningful class names
 - Follow BEM methodology when appropriate
 - Group related properties
@@ -578,25 +685,26 @@ Before raising a Pull Request, please run the following commands:
 ```css
 /* Good */
 .hero-section {
-    background-color: var(--primary-color);
-    padding: 2rem;
-    text-align: center;
+  background-color: var(--primary-color);
+  padding: 2rem;
+  text-align: center;
 }
 
 .hero-section__title {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
 }
 
 /* Avoid */
 .div1 {
-    background-color: #3498db;
-    padding: 32px;
-    text-align: center;
+  background-color: #3498db;
+  padding: 32px;
+  text-align: center;
 }
 ```
 
 ### JavaScript
+
 - Use const/let instead of var
 - Use arrow functions when appropriate
 - Add comments for complex logic
@@ -605,25 +713,26 @@ Before raising a Pull Request, please run the following commands:
 ```javascript
 // Good
 const initializeProject = () => {
-    try {
-        // Project initialization logic
-        setupEventListeners();
-        loadInitialData();
-    } catch (error) {
-        console.error('Failed to initialize project:', error);
-    }
+  try {
+    // Project initialization logic
+    setupEventListeners();
+    loadInitialData();
+  } catch (error) {
+    console.error("Failed to initialize project:", error);
+  }
 };
 
 // Avoid
 function init() {
-    var x = document.getElementById('test');
-    // ... code without error handling
+  var x = document.getElementById("test");
+  // ... code without error handling
 }
 ```
 
 ## ✅ Testing
 
 ### Manual Testing Checklist
+
 - [ ] Project loads without errors
 - [ ] All features work as expected
 - [ ] Responsive design works on different screen sizes
@@ -633,7 +742,9 @@ function init() {
 - [ ] All links and buttons work
 
 ### Browser Testing
+
 Test your project on:
+
 - **Desktop**: Chrome, Firefox, Safari, Edge
 - **Mobile**: Chrome Mobile, Safari Mobile
 - **Screen sizes**: Mobile (375px), Tablet (768px), Desktop (1200px+)
@@ -641,11 +752,13 @@ Test your project on:
 ## 📞 Getting Help
 
 ### Community Support
+
 - 💬 **GitHub Discussions**: Ask questions and get help from the community
 - 🐛 **Issues**: Report bugs or request features
 - 📧 **Direct Contact**: Create an issue for specific questions
 
 ### Resources
+
 - [MDN Web Docs](https://developer.mozilla.org/) - Web development reference
 - [W3Schools](https://www.w3schools.com/) - Web development tutorials
 - [CSS Tricks](https://css-tricks.com/) - CSS tips and tricks
@@ -654,6 +767,7 @@ Test your project on:
 ## 🏆 Recognition
 
 Contributors will be:
+
 - Added to our contributors wall
 - Mentioned in release notes
 - Featured on the project website
@@ -691,7 +805,6 @@ Please ensure your pull request adheres to the following guidelines:
 - Include tests for new features or bug fixes.
 - Update documentation as needed.
 
-
 ## Contribution Guidelines
 
 Thank you for considering contributing to our project! To ensure smooth collaboration and effective contribution management, please adhere to the following guidelines:
@@ -725,7 +838,7 @@ Thank you for considering contributing to our project! To ensure smooth collabor
 
 We look forward to your contributions and appreciate your effort in helping us improve the project!
 
-## License 
+## License
 
 By contributing, you agree that your contributions will be licensed under the same license as the project.
 
