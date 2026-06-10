@@ -489,10 +489,11 @@
     "projectDesc": "Frontend clone inspired by Amazon layouts and shopping interfaces.",
     "techStack": [
       "clone",
-      "javascript"
+      "HTML",
+      "CSS"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/Amazon_Clone/index.html"
+    "projectPath": "./public/AmazonClone/index.html"
   },
   {
     "projectNo": 43,
@@ -1419,7 +1420,7 @@
       "js"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/code-visualizer-playground/index.html"
+    "projectPath": "./public/virtual-playground/index.html"
   },
   {
     "projectNo": 120,
@@ -1516,7 +1517,7 @@
       "javascript"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/Particle Wave Animation/index.html"
+    "projectPath": "./public/particle-wave-animation/index.html"
   },
   {
     "projectNo": 128,
@@ -2180,7 +2181,7 @@
       "css"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/InterviewSimulator/index.html"
+    "projectPath": "./public/interview-prep-hub/index.html"
   },
   {
     "projectNo": 178,
@@ -2396,7 +2397,7 @@
       "javascript"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/story/main.html"
+    "projectPath": "./public/story/story.html"
   },
   {
     "projectNo": 193,
@@ -2473,6 +2474,8 @@
     "techStack": [
       "html",
       "css",
+      "react",
+      "tailwindcss",
       "javascript"
     ],
     "difficulty": "advanced",
@@ -2579,7 +2582,12 @@
     "projectName": "Gravity Well",
     "projectType": "Animation",
     "projectDesc": "Interactive physics-based gravity simulation allowing users to create gravitational wells.",
-    "techStack": ["HTML", "canvas", "javascript", "css"],
+    "techStack": [
+      "HTML",
+      "canvas",
+      "javascript",
+      "css"
+    ],
     "difficulty": "intermediate",
     "projectPath": "./public/gravity-well/index.html"
   },
@@ -2614,6 +2622,7 @@
   {
     "projectNo": 209,
     "projectName": "Kanban Board",
+    "projectType": "Tool",
     "projectPath": "./public/Kanban_Board/index.html",
     "techStack": [
       "html",
@@ -2626,6 +2635,7 @@
   {
     "projectNo": 210,
     "projectName": "IP Address Tracker",
+    "projectType": "Tool",
     "projectPath": "./public/Ip_Address_tracker/index.html",
     "techStack": [
       "html",
@@ -2638,6 +2648,7 @@
   {
     "projectNo": 211,
     "projectName": "Cricket Scorecard",
+    "projectType": "Tool",
     "projectPath": "./public/Cricket-Scorecard/index.html",
     "techStack": [
       "html",
@@ -2650,6 +2661,7 @@
   {
     "projectNo": 212,
     "projectName": "Tower Blocks Stacker",
+    "projectType": "Game",
     "projectPath": "./public/tower_stacker/index.html",
     "techStack": [
       "html",
@@ -2663,6 +2675,7 @@
   {
     "projectNo": 213,
     "projectName": "Photo Studio",
+    "projectType": "Website",
     "projectPath": "./public/Photo Studio/Project.html",
     "techStack": [
       "html",
@@ -2702,11 +2715,124 @@
   },
   {
     "projectNo": 216,
+    "projectName": "Runway Calculator",
+    "projectType": "Tool",
+    "projectDesc": "A web-based aviation utility that helps users calculate and determine runway numbers from runway headings. Features an intuitive interface, instant calculations, and responsive design for aviation enthusiasts, students, and professionals.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Runway-Calculator/index.html"
+  },
+  {
+    "projectNo": 217,
     "projectName": "Gemini Clone",
     "projectType": "AI",
     "projectDesc": "A modern clone of the Google Gemini AI chatbot interface, integrated with Google's GenAI API for generating dynamic responses.",
-    "techStack": ["react", "javascript", "html", "css", "api", "vite"],
+    "techStack": [
+      "react",
+      "javascript",
+      "html",
+      "css",
+      "api",
+      "vite"
+    ],
     "difficulty": "advanced",
     "projectPath": "./public/Gemini/index.html"
+  },
+  {
+    "projectNo": 218,
+    "projectName": "SkillBridge Career Roadmap Explorer",
+    "projectType": "Tool",
+    "projectDesc": "A Next.js career guidance platform that helps students explore technology career paths, required skills, structured learning roadmaps, recommended projects, and curated learning resources.",
+    "techStack": [
+      "nextjs",
+      "react",
+      "typescript",
+      "tailwindcss"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/SkillBridge"
+  },
+  {
+    "projectNo": 219,
+    "projectName": "The Cube - 3D Rubik's Cube Simulator",
+    "projectType": "Web Application",
+    "projectDesc": "An interactive 3D Rubik's Cube simulator built with Three.js that allows users to solve, scramble, customize, and track performance across multiple cube sizes with smooth animations and touch support.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "threejs"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/the_cube/index.html"
+  },
+  {
+    "projectNo": 220,
+    "projectName": "NeoTetris - Premium Edition",
+    "projectType": "Game",
+    "projectDesc": "A premium Tetris experience featuring modern themes, particle effects, achievements, combo systems, daily challenges, responsive controls, synthesized retro audio, dynamic background music, and polished gameplay mechanics.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "canvas",
+      "game"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/NeoTetris/index.html"
+  },
+  {
+    "projectNo": 221,
+    "projectName": "AI Tools Hub",
+    "projectType": "Web Application",
+    "projectDesc": "A modern platform for discovering and exploring AI tools across coding, design, writing, productivity, presentations, and media categories.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/AI-Tools-Hub/index.html"
+  },
+  {
+    "projectNo": 222,
+    "projectName": "Bus Game",
+    "projectType": "game",
+    "projectDesc": "A modern bus game with lane and vehicles",
+    "techStack": ["javascript", "html", "css"],
+    "difficulty": "advanced",
+    "projectPath": "./public/bus_game/index.html" 
+    },
+
+    
+  {
+    "projectNo": 223,
+    "projectName": "HTML & CSS Animation",
+    "projectType": "Web Application",
+    "projectDesc": "Collection of HTML/CSS animations demonstrating keyframe effects and transitions.",
+    "techStack": [
+      "html",
+      "css",
+      "animation"
+    ],
+    "difficulty": "beginner",
+    "projectPath": "./public/Html_css_animation/index.html"
+    },
+  {
+    "projectNo": 224,
+    "projectName": "Bubble Game",
+    "projectType": "Web Application",
+    "projectDesc": "An interactive bubble-clicking game where players must quickly hit bubbles matching the target number before the timer runs out. Score points by selecting the correct bubbles and test your speed and accuracy.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Bubble-Game/index.html"
   }
 ]

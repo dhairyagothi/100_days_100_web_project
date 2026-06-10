@@ -1,35 +1,157 @@
 
-body[data-theme="dark"] {
-    /* All color variables are already handled by the CSS variable system */
+/* ===== CORE LAYOUT ===== */
+body.dark-mode {
+    background-color: #0f172a !important;
+    color: #e2e8f0 !important;
 }
 
-/* Ensure proper contrast in dark mode for specific elements */
-body[data-theme="dark"] .search-bar {
-    background-color: var(--surface);
-    border-color: var(--border);
+body.dark-mode #appShell {
+    background-color: #0f172a !important;
 }
 
-body[data-theme="dark"] .search-bar input::placeholder {
-    color: var(--text-tertiary);
+body.dark-mode .sidebar {
+    background-color: #1e293b !important;
+    border-right: 1px solid #334155 !important;
 }
 
-body[data-theme="dark"] .input-wrapper {
-    background-color: var(--background);
+body.dark-mode .sidebar .logo-text h1,
+body.dark-mode .sidebar .logo-text p {
+    color: #e2e8f0 !important;
 }
 
-/* Ensure buttons work well in dark mode */
-body[data-theme="dark"] .btn-outline {
-    color: var(--text-primary);
-    border-color: var(--border);
+body.dark-mode .nav-item {
+    color: #cbd5e1 !important;
 }
 
-body[data-theme="dark"] .btn-outline:hover:not(:disabled) {
-    background-color: var(--surface-hover);
-    color: var(--primary);
+body.dark-mode .nav-item.active {
+    background-color: #334155 !important;
+    color: #38bdf8 !important;
 }
 
+body.dark-mode .nav-item:hover {
+    background-color: #334155 !important;
+}
 
-.dark-mode {
+body.dark-mode .main-content {
+    background-color: #0f172a !important;
+}
+
+body.dark-mode .top-navbar {
+    background-color: #1e293b !important;
+    border-bottom: 1px solid #334155 !important;
+}
+
+body.dark-mode .page-container {
+    background-color: #0f172a !important;
+}
+
+/* ===== CARDS ===== */
+body.dark-mode .card,
+body.dark-mode .stat-card,
+body.dark-mode .doctor-card {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .doctor-card-body {
+    background-color: #1e293b !important;
+}
+
+/* ===== TYPOGRAPHY ===== */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode p,
+body.dark-mode span,
+body.dark-mode label {
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .stat-label,
+body.dark-mode .breadcrumb-item {
+    color: #94a3b8 !important;
+}
+
+/* ===== HERO ===== */
+body.dark-mode .hero-section {
+    background: linear-gradient(135deg, #0f172a, #1e293b) !important;
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .stat-item {
+    background-color: rgba(255,255,255,0.05) !important;
+    color: #e2e8f0 !important;
+}
+
+/* ===== FORMS & INPUTS ===== */
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+    background-color: #334155 !important;
+    color: #e2e8f0 !important;
+    border-color: #475569 !important;
+}
+
+body.dark-mode .input-wrapper {
+    background-color: #334155 !important;
+    border-color: #475569 !important;
+}
+
+body.dark-mode .search-bar,
+body.dark-mode .search-input {
+    background-color: #334155 !important;
+    color: #e2e8f0 !important;
+    border-color: #475569 !important;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* ===== NAVBAR ACTIONS ===== */
+body.dark-mode .notification-btn,
+body.dark-mode .profile-btn {
+    background-color: #334155 !important;
+    color: #e2e8f0 !important;
+}
+
+/* ===== FAQ ===== */
+body.dark-mode .faq-section {
+    background-color: #1e293b !important;
+}
+
+body.dark-mode .faq-question {
+    background-color: #1e293b !important;
+    color: #e2e8f0 !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .faq-answer-content {
+    background-color: #0f172a !important;
+    color: #e2e8f0 !important;
+}
+
+/* ===== FOOTER ===== */
+body.dark-mode .footer {
+    background-color: #1e293b !important;
+    color: #cbd5e1 !important;
+    border-top: 1px solid #334155 !important;
+}
+
+body.dark-mode .footer a {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .footer-bottom {
+    background-color: #0f172a !important;
+    color: #64748b !important;
+}
+
+/* ===== CSS VARIABLES (for components that use var()) ===== */
+body.dark-mode {
     --clr-bg: #0f172a;
     --clr-surface: #1e293b;
     --clr-text-main: #f8fafc;
@@ -39,58 +161,20 @@ body[data-theme="dark"] .btn-outline:hover:not(:disabled) {
     --text-brand: #38bdf8;
     --button-primary-bg: #0284c7;
     --button-primary-hover: #0369a1;
-    --button-cancel-bg: #334155;
-    --button-cancel-text: #f8fafc;
     --bg-available: #064e3b;
     --text-available: #34d399;
     --bg-limited: #78350f;
     --text-limited: #fbbf24;
 }
 
-.dark-mode .navbar {
-    background: #1e293b;
+
+body.dark-mode .remedy-card,
+body.dark-mode .warning-panel,
+body.dark-mode .site-header {
+    background-color: #1e293b !important;
+    color: white !important;
 }
 
-.dark-mode input,
-.dark-mode textarea,
-.dark-mode select {
-    background: #334155;
-    color: white;
-    border-color: #475569;
+body.dark-mode .site-header {
+    background: linear-gradient(135deg, #0f172a, #1e293b) !important;
 }
-
-.dark-mode .emergency-grid button {
-    background: #334155;
-    border-color: #475569;
-    color: #f8fafc;
-}
-
-.dark-mode .emergency-grid button:hover {
-    background: #450a0a;
-}
-
-.theme-btn {
-    /* REMOVE: position: absolute; */
-    /* REMOVE: right: 20px; */
-    /* REMOVE: top: 20px; */
-    
-    border: none;
-    padding: 10px 14px;
-    border-radius: 10px;
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.15);
-    color: white;
-    font-size: 1.1rem;
-    display: inline-flex; /* Ensures content centers nicely if needed */
-    align-items: center;
-}
-
-.theme-btn:hover {
-    background: rgba(255,255,255,0.3);
-}
-
-
-.dark-mode .navbar {
-    background: #1e293b;
-}
-

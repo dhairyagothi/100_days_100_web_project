@@ -782,6 +782,34 @@ input[type="color"] {
   color: var(--primary);
 }
 
+/* Make important dropdowns more visible and easier to use */
+#qr-type, #qr-shape, #error-correction {
+    border: 1px solid rgba(255,255,255,0.24);
+    padding: 10px 38px 10px 12px;
+    font-weight: 600;
+    color: var(--text);
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative;
+    background: var(--input-bg);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24'><path fill='%23ffffff' d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+}
+
+#qr-type:focus, #qr-shape:focus, #error-correction:focus {
+    border: 2px solid var(--input-focus);
+    box-shadow: 0 0 8px var(--input-focus);
+}
+
+#qr-type option, #qr-shape option, #error-correction option {
+    color: #111111 !important;
+    background-color: #ffffff !important;
+    font-weight: 700;
+}
+
+/* ===== BUTTON ===== */
 .upload-box span {
   display: block;
 
@@ -796,7 +824,6 @@ input[type="color"] {
 
 /* =========================================================
    BUTTONS
-========================================================= */
 
 button {
   border: none;
@@ -919,6 +946,34 @@ button {
   backdrop-filter: blur(12px);
 }
 
+#scanability-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
+    padding: 12px 14px;
+    border-radius: 14px;
+}
+
+#scanability-card h3 {
+    margin-bottom: 8px;
+    color: var(--text);
+}
+
+#scan-score {
+    color: #f8fafc;
+    margin-bottom: 8px;
+}
+
+#scan-recommendations {
+    color: #f8fafc;
+    line-height: 1.5;
+}
+
+#scan-recommendations li {
+    list-style-type: disc;
+    margin-left: 14px;
+}
+
+/* ===== OPTIONS ===== */
 .placeholder-state {
   text-align: center;
 

@@ -1,8 +1,9 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Astronomy Dashboard</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="style.css" />
@@ -52,142 +53,32 @@
             <div id="searchDropdown" class="search-dropdown" hidden></div>
           </div>
 
-          <!-- Theme Toggle -->
-          <button
-            id="themeToggle"
-            class="icon-action"
-            type="button"
-            title="Toggle light / dark theme"
-            aria-label="Toggle theme"
-          >
-            <svg
-              id="themeIconDark"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-            </svg>
-            <svg
-              id="themeIconLight"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              hidden
-            >
-              <circle cx="12" cy="12" r="5" />
-              <line x1="12" y1="1" x2="12" y2="3" />
-              <line x1="12" y1="21" x2="12" y2="23" />
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-              <line x1="1" y1="12" x2="3" y2="12" />
-              <line x1="21" y1="12" x2="23" y2="12" />
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-            </svg>
-          </button>
+                <!-- Theme Toggle -->
+            <button id="themeToggle" class="icon-action" type="button"
+        title="Toggle light / dark theme"
+        aria-label="Toggle theme">
 
-          <!-- Stats Button -->
-          <button
-            id="statsBtn"
-            class="icon-action"
-            type="button"
-            title="View your stats"
-            aria-label="Open statistics"
-          >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <line x1="18" y1="20" x2="18" y2="10" />
-              <line x1="12" y1="20" x2="12" y2="4" />
-              <line x1="6" y1="20" x2="6" y2="14" />
-            </svg>
-          </button>
-        </div>
-      </header>
+    <!-- Moon icon (shown in light mode) -->
+    <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round"
+         stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
 
-      <section class="apod-card feature-card">
-        <div
-          class="apod-image"
-          id="apodImage"
-          role="img"
-          aria-label="NASA astronomy picture of the day"
-        >
-          <img
-            id="apodImg"
-            src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
-            alt="NASA astronomy picture of the day"
-            referrerpolicy="no-referrer"
-            decoding="async"
-          />
-        </div>
-        <div class="apod-copy">
-          <div class="section-head">
-            <p class="eyebrow">Picture of the Day</p>
-            <span class="mini-pill" id="apodDate">May 15, 2026</span>
-          </div>
-          <h2 id="apodTitle">Loading NASA Picture of the Day</h2>
-          <p id="apodDescription">
-            Fetching today's astronomy image from NASA.
-          </p>
-          <a
-            class="primary-action"
-            id="apodLink"
-            href="https://apod.nasa.gov/"
-            target="_blank"
-            rel="noreferrer"
-            >View HD Image</a
-          >
-          <button
-            id="apodFavBtn"
-            class="fav-btn"
-            type="button"
-            aria-label="Save APOD to favorites"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <polygon
-                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
-              />
-            </svg>
-            Save to Favorites
-          </button>
-
-          <a
-            class="apod-source"
-            id="apodSource"
-            href="https://apod.nasa.gov/"
-            target="_blank"
-            rel="noreferrer"
-            >Source: NASA APOD</a
-          >
-        </div>
-      </section>
+</button>
+                <!-- Stats Button -->
+                <button id="statsBtn" class="icon-action" type="button" title="View your stats"
+                    aria-label="Open statistics">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10" />
+                        <line x1="12" y1="20" x2="12" y2="4" />
+                        <line x1="6" y1="20" x2="6" y2="14" />
+                    </svg>
+                </button>
+            </div>
+        </header>
 
       <section class="fact-card feature-card">
         <div>

@@ -729,6 +729,16 @@ button {
 }
 
 /* =========================
+   PINNED SECTION
+   ========================= */
+
+/* FIX 3: Give the pinned section visible spacing below it so it is
+   clearly separated from the regular "Your Notes" grid beneath it */
+.pinned-section {
+  margin-bottom: 2.5rem;
+}
+
+/* =========================
    SECTION HEADERS
    ========================= */
 .section-header {
@@ -1034,25 +1044,27 @@ button {
   color: var(--muted);
 }
 
-.note-modal input,
+/* FIX 1: Exclude input[type="checkbox"] from the broad input rule.
+   Previously every checkbox inside the modal got width:100%, min-height:54px,
+   border:1px solid, and border-radius:18px — turning them into giant styled boxes. */
+.note-modal input:not([type="checkbox"]),
 .note-modal textarea,
 .note-modal select {
   width: 100%;
-
   border: 1px solid var(--line);
-
   border-radius: 18px;
-
   outline: 0;
-
-  background:
-    rgba(255, 255, 255, 0.04);
-
+  background: var(--panel-solid);
   color: var(--text);
-
   transition:
     border-color var(--transition),
     background var(--transition);
+}
+
+/* Fix: dropdown options inherit theme colors */
+.note-modal select option {
+  background: var(--panel-solid);
+  color: var(--text);
 }
 
 .note-modal input,
@@ -1071,10 +1083,18 @@ button {
   resize: vertical;
 }
 
-.note-modal input:focus,
+.note-modal input:not([type="checkbox"]):focus,
 .note-modal textarea:focus,
 .note-modal select:focus {
   border-color: rgba(79, 156, 249, 0.45);
+}
+
+/* FIX 2: <option> elements don't inherit background/color from their <select>.
+   The browser falls back to the OS default (white bg, black text), making the
+   open dropdown look completely unstyled. Set them explicitly here. */
+.note-modal select option {
+  background: var(--panel-solid);
+  color: var(--text);
 }
 
 /* =========================
@@ -1226,7 +1246,8 @@ button {
     opacity var(--transition);
 }
 
-.mobile-overlay.show {
+/* FIX 1: renamed .show → .active to match classList.toggle("active") in JS */
+.mobile-overlay.active {
   opacity: 1;
   visibility: visible;
 }
@@ -1273,7 +1294,8 @@ button {
       left var(--transition);
   }
 
-  .sidebar.show {
+  /* FIX 2: renamed .show → .open to match classList.toggle("open") in JS */
+  .sidebar.open {
     left: 0;
   }
 
@@ -1342,4 +1364,18 @@ button {
 /* Fix: hide native file input, triggered by Import JSON label */
 #importInput {
     display: none;
+}
+
+/* ============================================================
+   ACCESSIBILITY: Keyboard Focus rings for WCAG compliance
+   ============================================================ */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+.nav-item:focus-visible,
+.tag-chip:focus-visible {
+  outline: 2px solid var(--primary) !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25) !important;
 }

@@ -7,10 +7,10 @@ let inputWord = "";
 
 // Function to get a random word from the shuffledWords array
 function getRandomWord() {
-    const date = new Date();
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    return shuffledWords[31 * (month + 1) + day].toUpperCase();
+    const array = new Uint32Array(1);
+    window.crypto.getRandomValues(array);
+    const randomIndex = array[0] % allowedWords.length;
+    return allowedWords[randomIndex].toUpperCase();
 }
 
 let secretWord = getRandomWord();
@@ -18,28 +18,60 @@ let currentBox = "b11";
 
 // Selecting elements
 const enterButton = document.querySelector(".enter");
-const backButton = document.querySelector("#back");
+const backButton = document.querySelector("#Backspace");
 const message = document.querySelector("#message");
 const closeInfo = document.querySelector("#closeInfo");
 const info = document.querySelector(".info");
 const closeStats = document.querySelector("#closeStats");
 const stats = document.querySelector(".stats");
 const closeResult = document.querySelector("#closeResult");
-const resetbutton = document.querySelector("#reset");
+const resetbutton=document.querySelector("#reset");
+const wordsTable = document.querySelector(".words");
+const gameOverModal = document.querySelector("#game-over-modal");
+const gameOverTitle = document.querySelector("#game-over-title");
+const gameOverDetails = document.querySelector("#game-over-details");
+const gameOverActions = document.querySelector("#game-over-actions");
+const closeGameOver = document.querySelector("#closeGameOver");
+const nextWordBtn = document.querySelector("#nextWordBtn");
+const persistentNextWordBtn = document.querySelector("#persistentNextWordBtn");
+
+// Generate grid dynamically
+const generateGrid = function () {
+    wordsTable.innerHTML = "";
+    for (let r = 1; r <= 6; r++) {
+        const tr = document.createElement("tr");
+        tr.className = "inputRow";
+        for (let c = 1; c <= secretWord.length; c++) {
+            const td = document.createElement("td");
+            const input = document.createElement("input");
+            input.className = "inputBox";
+            input.id = `b${r}${c}`;
+            input.maxLength = 1;
+            input.autocomplete = "off"; // STOPS THE BROWSER AUTOCOMPLETE POPUP
+            td.appendChild(input);
+            tr.appendChild(td);
+        }
+        wordsTable.appendChild(tr);
+    }
+};
+generateGrid();
 
 // Function to change control based on input
 const changeControl = function (type) {
     if (row === 7) {
         playing = false;
-        message.textContent = secretWord;
-        message.classList.remove("hidden");
+        gameOverTitle.textContent = "Game Over";
+        gameOverDetails.innerHTML = `The secret word was: <strong>${secretWord}</strong>`;
+        gameOverModal.classList.remove("hidden");
+        gameOverActions.classList.remove("hidden");
     } else {
+        const c = Number(currentBox.slice(2));
         if (type < 0) {
-            if (Number(currentBox[2]) > 1)
-                currentBox = `b${row}${Number(currentBox[2]) - 1}`;
+            if (c > 1)
+                currentBox = `b${row}${c - 1}`;
         } else {
-            if (Number(currentBox[2]) < 5)
-                currentBox = `b${row}${Number(currentBox[2]) + 1}`;
+            if (c < secretWord.length)
+                currentBox = `b${row}${c + 1}`;
         }
     }
 };
@@ -48,137 +80,111 @@ const changeControl = function (type) {
 const getBoxValue = function (elementId) {
     return document.querySelector(`#${elementId}`).value;
 };
-
-/**
- * Fix for issue #6151 — Duplicate letter keyboard color hints
- * ─────────────────────────────────────────────────────────────
- * The original implementation used a single-pass loop that called
- * secretWord.includes(word[i]) without accounting for how many times
- * a letter appears in the secret word. This caused duplicate letters
- * in a guess to be over-coloured (e.g. both 'E's in "SPEED" marked
- * yellow even when the secret word only contains one 'E').
- *
- * Fix uses the official Wordle two-pass algorithm:
- *   Pass 1 — mark greens and decrement available letter counts.
- *   Pass 2 — mark yellows only when remaining count > 0, else grey.
- *
- * Keyboard key colour priority: green > yellow > grey.
- * A key already marked green is NEVER downgraded by a later guess.
- */
 const checkWord = function (word) {
-    // Build a frequency map of available letters in the secret word
-    const letterCount = {};
-    for (const ch of secretWord) {
-        letterCount[ch] = (letterCount[ch] || 0) + 1;
+    for (let i = 0; i < secretWord.length; i++) {
+        const box = document.querySelector(`#b${row}${i + 1}`);
+        const keyBtn = document.querySelector(`#${word[i]}`);
+
+        setTimeout(() => {
+            box.classList.add("flip");
+
+            setTimeout(() => {
+                if (word[i] === secretWord[i]) {
+                    box.classList.add("green");
+                    keyBtn.classList.remove("yellow", "grey");
+                    keyBtn.classList.add("green");
+                } else if (secretWord.includes(word[i])) {
+                    box.classList.add("yellow");
+                    if (!keyBtn.classList.contains("green")) {
+                        keyBtn.classList.remove("grey");
+                        keyBtn.classList.add("yellow");
+                    }
+                } else {
+                    box.classList.add("grey");
+                    if (!keyBtn.classList.contains("green") && !keyBtn.classList.contains("yellow")) {
+                        keyBtn.classList.add("grey");
+                    }
+                }
+            }, 250); 
+        }, i * 300);
     }
 
-    // Result array: "green" | "yellow" | "grey"
-    const result = new Array(5).fill("grey");
-
-    // ── Pass 1: greens ────────────────────────────────────────────────
-    for (let i = 0; i < 5; i++) {
-        if (word[i] === secretWord[i]) {
-            result[i] = "green";
-            letterCount[word[i]]--;          // consume one occurrence
+    // Wait until the very last box has finished animating before deciding if they won or lost
+    const totalAnimationTime = (secretWord.length * 300) + 250;
+    
+    setTimeout(() => {
+        if (word === secretWord) {
+            gameOverTitle.textContent = `${appreciation[row - 1]}!`;
+            gameOverDetails.innerHTML = `You guessed the secret word <strong>${secretWord}</strong> in ${row} ${row === 1 ? 'try' : 'tries'}!`;
+            gameOverModal.classList.remove("hidden");
+            gameOverActions.classList.remove("hidden");
+            updateStats(true);
+        } else if (row === 6) {
+            gameOverTitle.textContent = "Game Over";
+            gameOverDetails.innerHTML = `The secret word was: <strong>${secretWord}</strong>`;
+            gameOverModal.classList.remove("hidden");
+            gameOverActions.classList.remove("hidden");
+            updateStats(false);
+        } else {
+            row++;
+            currentBox = `b${row}1`;
+            playing = true; // Unlock the board for the next guess
         }
-    }
-
-    // ── Pass 2: yellows ───────────────────────────────────────────────
-    for (let i = 0; i < 5; i++) {
-        if (result[i] === "green") continue; // already handled
-        if (letterCount[word[i]] > 0) {
-            result[i] = "yellow";
-            letterCount[word[i]]--;
-        }
-        // else remains "grey"
-    }
-
-    // ── Apply tile colours ────────────────────────────────────────────
-    for (let i = 0; i < 5; i++) {
-        document.querySelector(`#b${row}${i + 1}`).classList.add(result[i]);
-    }
-
-    // ── Apply keyboard key colours (green > yellow > grey, no downgrades) ──
-    for (let i = 0; i < 5; i++) {
-        const keyEl = document.querySelector(`#${word[i]}`);
-        if (!keyEl) continue;
-
-        // Never downgrade a key that is already green
-        if (keyEl.classList.contains("green")) continue;
-
-        if (result[i] === "green") {
-            keyEl.classList.remove("yellow", "grey");
-            keyEl.classList.add("green");
-        } else if (result[i] === "yellow" && !keyEl.classList.contains("yellow")) {
-            keyEl.classList.remove("grey");
-            keyEl.classList.add("yellow");
-        } else if (result[i] === "grey" && !keyEl.classList.contains("yellow")) {
-            keyEl.classList.add("grey");
-        }
-    }
-
-    // ── Win check ─────────────────────────────────────────────────────
-    if (word === secretWord) {
-        message.textContent = appreciation[row - 1];
-        message.classList.remove("hidden");
-        setTimeout(function () {
-            message.classList.add("hidden");
-            document.querySelector("#result").classList.remove("hidden");
-        }, 1000);
-        playing = false;
-    }
+    }, totalAnimationTime);
 };
 
 // Event listener for the enter button
 enterButton.addEventListener("click", function () {
     if (playing) {
-        for (let i = 1; i <= 5; i++) {
+        let inputWord = "";
+        for (let i = 1; i <= secretWord.length; i++) {
             let boxId = `#b${row}${i}`;
             if (document.querySelector(boxId).value !== "") {
-                inputWord = inputWord + document.querySelector(boxId).value;
+                inputWord += document.querySelector(boxId).value;
             }
         }
 
-        if (inputWord.length === 5) {
+        if (inputWord.length === secretWord.length) {
             if (allowedWords.includes(inputWord.toLowerCase())) {
+                playing = false;
                 checkWord(inputWord);
-                inputWord = "";
-                if (row < 7) {
-                    row++;
-                    currentBox = `b${row}0`;
-                    changeControl(1);
-                }
             } else {
-                inputWord = "";
                 message.textContent = "Word not in list";
+                const currentRowElem = document.querySelectorAll('.inputRow')[row - 1];
+                currentRowElem.classList.add('shake');
+                setTimeout(() => currentRowElem.classList.remove('shake'), 400);
                 message.classList.remove("hidden");
-                setTimeout(function () {
-                    message.classList.add("hidden");
-                }, 1000);
+                setTimeout(() => message.classList.add("hidden"), 1000);
             }
         } else {
-            inputWord = "";
             message.textContent = "Not enough letters";
+            const currentRowElem = document.querySelectorAll('.inputRow')[row - 1];
+            currentRowElem.classList.add('shake');
+            setTimeout(() => currentRowElem.classList.remove('shake'), 400);
             message.classList.remove("hidden");
-            setTimeout(function () {
-                message.classList.add("hidden");
-            }, 1000);
+            setTimeout(() => message.classList.add("hidden"), 1000);
         }
     }
 });
 
 // Event listener for the back button
 backButton.addEventListener("click", function () {
+    if (!playing) return;
     const boxValue = getBoxValue(currentBox);
-    if (boxValue === "") changeControl(-1);
+    if (boxValue === "") {
+        changeControl(-1);
+    }
     document.querySelector(`#${currentBox}`).value = "";
 });
 
 // Event listeners for virtual keyboard buttons
 for (const alphabet of alphabets) {
     document.querySelector(`#${alphabet}`).addEventListener("click", function () {
-        if (Number(currentBox[2]) <= 5 && getBoxValue(currentBox) === "" && playing === true) {
-            document.querySelector(`#${currentBox}`).value = alphabet;
+        if (Number(currentBox.slice(2)) <= secretWord.length && getBoxValue(currentBox) === "" && playing === true) {
+            const box = document.querySelector(`#${currentBox}`);
+            box.value = alphabet;
+            box.classList.add('filled');
+            setTimeout(() => box.classList.remove('filled'), 150);
             changeControl(1);
         }
     });
@@ -186,23 +192,53 @@ for (const alphabet of alphabets) {
 
 // Event listener for physical keyboard input
 document.addEventListener("keydown", function (event) {
+    if (event.key === "Backspace") {
+        event.preventDefault();
+        backButton.click();
+        return;
+    }
+    if (event.key === "Enter") {
+        event.preventDefault();
+        enterButton.click();
+        return;
+    }
     const key = event.key.toUpperCase();
     if (playing && key.length === 1 && key >= 'A' && key <= 'Z') {
-        if (Number(currentBox[2]) <= 5 && getBoxValue(currentBox) === "") {
-            document.querySelector(`#${currentBox}`).value = key;
+        event.preventDefault(); // Prevent lowercase letters if a user focuses on the input manually
+        if (Number(currentBox.slice(2)) <= secretWord.length && getBoxValue(currentBox) === "") {
+            const box = document.querySelector(`#${currentBox}`);
+            box.value = key;
+            box.classList.add('filled');
+            setTimeout(() => box.classList.remove('filled'), 150);
             changeControl(1);
         }
     }
 });
 
-// Event listener for closing the rules popup
-document.addEventListener("DOMContentLoaded", function () {
-    const closeInfo = document.querySelector("#closeInfo");
-    const rulesPopup = document.querySelector("#rules");
+// Show rules only on first ever visit
+if (!localStorage.getItem('visited')) {
+    document.querySelector("#rules").classList.remove("hidden");
+    localStorage.setItem('visited', 'true');
+}
 
-    closeInfo.addEventListener("click", function () {
-        rulesPopup.classList.add("hidden");
-    });
+// Event listener for closing the rules popup with X
+document.querySelector("#closeInfo").addEventListener("click", function () {
+    document.querySelector("#rules").classList.add("hidden");
+});
+
+// Click anywhere outside a popup to close it
+document.addEventListener("click", function(event) {
+    const rules = document.querySelector("#rules");
+    const statsPopup = document.querySelector("#stats");
+    const infoBtn = document.querySelector(".info");
+    const statsBtn = document.querySelector(".stats.nav__icon");
+
+    if (!rules.classList.contains("hidden") && !rules.contains(event.target) && event.target !== infoBtn) {
+        rules.classList.add("hidden");
+    }
+    if (!statsPopup.classList.contains("hidden") && !statsPopup.contains(event.target) && event.target !== statsBtn) {
+        statsPopup.classList.add("hidden");
+    }
 });
 
 // Event listener for showing the rules popup
@@ -221,12 +257,90 @@ stats.addEventListener("click", function () {
 });
 
 // Event listener for closing the result popup
-closeResult.addEventListener("click", function () {
-    document.querySelector("#result").classList.add("hidden");
+if (closeResult) {
+    closeResult.addEventListener("click", function () {
+        document.querySelector("#result").classList.add("hidden");
+    });
+}
+
+if (resetbutton) {
+    resetbutton.addEventListener("click", function () {
+        // Clear wins and losses statistics from localStorage
+        localStorage.removeItem("wins");
+        localStorage.removeItem("losses");
+
+        // Refresh the page
+        location.reload();
+    });
+}
+
+// adds a stats 
+function updateStats(won) {
+    // Get existing stats or create new ones
+    let stats = JSON.parse(localStorage.getItem('wordleStats')) || { played: 0, wins: 0, currentStreak: 0, maxStreak: 0 };
+    
+    stats.played++;
+    if (won) {
+        stats.wins++;
+        stats.currentStreak++;
+        if (stats.currentStreak > stats.maxStreak) stats.maxStreak = stats.currentStreak;
+    } else {
+        stats.currentStreak = 0; // Reset streak on loss
+    }
+    localStorage.setItem('wordleStats', JSON.stringify(stats));
+    
+    // Update the Stats popup HTML
+    let winPct = Math.round((stats.wins / stats.played) * 100);
+    const statsHTML = `
+        <p class='crossOuter'><button class='cross' id='closeStats'>&#9587</button></p>
+        <p><strong>STATISTICS</strong></p>
+        <p>${stats.played} &emsp;&emsp;&emsp;${winPct}% &emsp;&emsp;&emsp;${stats.currentStreak} &emsp;&emsp;&emsp;${stats.maxStreak}</p>
+        <p class='mini'>Played - Win% - Current Streak - Max Streak</p>
+    `;
+    document.querySelector("#stats").innerHTML = statsHTML;
+    
+    // Reattach the close button listener since we replaced the HTML
+    document.querySelector('#closeStats').addEventListener('click', () => document.querySelector("#stats").classList.add("hidden"));
+}
+
+document.querySelector(".stats.nav__icon").addEventListener("click", function() {
+    updateStats(false);
 });
 
-resetbutton.addEventListener("click", function () {
-    localStorage.removeItem("wins");
-    localStorage.removeItem("losses");
-    location.reload();
+// theme toggle
+
+const themeToggle = document.querySelector("#themeToggle");
+
+// Check if they had dark mode on previously
+if (localStorage.getItem("darkMode") === "true") {
+    document.body.classList.add("dark-mode");
+    themeToggle.textContent = "☀️";
+}
+
+// Toggle on click
+themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+    if (document.body.classList.contains("dark-mode")) {
+        localStorage.setItem("darkMode", "true");
+        themeToggle.textContent = "☀️";
+    } else {
+        localStorage.setItem("darkMode", "false");
+        themeToggle.textContent = "🌙";
+    }
 });
+
+// Close game over modal with close button
+closeGameOver.addEventListener("click", function () {
+    gameOverModal.classList.add("hidden");
+});
+
+// Click backdrop to close game over modal
+gameOverModal.addEventListener("click", function (event) {
+    if (event.target === gameOverModal) {
+        gameOverModal.classList.add("hidden");
+    }
+});
+
+// Next Word actions
+nextWordBtn.addEventListener("click", () => location.reload());
+persistentNextWordBtn.addEventListener("click", () => location.reload());
