@@ -214,7 +214,8 @@ body.light-mode .learning-sidebar {
 }
 
 .topic-item a {
-  display: block;
+  display: flex;
+align-items: center;
   padding: 0.45rem 1rem;
   color: var(--text-secondary);
    /* color: var(--text-primary); */
@@ -1386,4 +1387,173 @@ body.light-mode .vector-flowchart {
   content: "✓";
   float: right;
   font-weight: bold;
+}
+
+
+/* ==========================================
+   BOOKMARKS
+   ========================================== */
+
+.bookmarks-container {
+  margin: 1rem;
+  padding: 1rem;
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-md);
+
+  background: var(--bg-elevated);
+}
+
+.bookmarks-header {
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.5rem;
+
+  margin-bottom: 0.75rem;
+
+  font-weight: 600;
+
+  color: #fbbf24;
+}
+
+.bookmarks-list {
+  list-style: none;
+
+  padding: 0;
+
+  margin: 0;
+}
+
+.bookmarks-list li {
+  margin-bottom: 0.5rem;
+}
+
+.bookmarks-list a {
+  display: block;
+
+  padding: 0.5rem;
+
+  border-radius: var(--radius-sm);
+
+  text-decoration: none;
+
+  color: var(--text-secondary);
+
+  transition: var(--t);
+}
+
+.bookmarks-list a:hover {
+  background: var(--bg-surface);
+
+  color: var(--text-primary);
+}
+
+.empty-bookmark {
+  color: var(--text-muted);
+
+  font-size: 0.85rem;
+}
+
+.bookmark-btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 0.5rem;
+
+  margin-top: 1rem;
+
+  padding: 0.65rem 1rem;
+
+  border-radius: 999px;
+
+  border: 1px solid var(--border);
+
+  background: var(--bg-elevated);
+
+  color: var(--text-primary);
+
+  cursor: pointer;
+
+  transition: var(--t);
+}
+
+.topic-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 0.5rem;
+}
+
+.topic-title-row h1 {
+  margin: 0;
+}
+.bookmark-icon-btn {
+  border: none;
+  background: transparent;
+  color: #9ca3af;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  width: auto;
+  height: auto;
+}
+
+.bookmark-icon-btn:hover {
+  color: #fbbf24;
+
+  transform: scale(1.08);
+}
+
+.bookmark-icon-btn.active {
+  color: #fbbf24;
+
+  border-color: #fbbf24;
+}
+
+.bookmark-btn:hover {
+  border-color: #fbbf24;
+
+  transform: translateY(-1px);
+}
+
+.bookmark-btn.active {
+  color: #fbbf24;
+
+  border-color: #fbbf24;
+}
+
+/* Sidebar Topic Row */
+.topic-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Topic link takes remaining space */
+.topic-row a {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Sidebar bookmark star */
+.sidebar-bookmark-btn {
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.sidebar-bookmark-btn:hover {
+  color: #fbbf24;
+  transform: scale(1.1);
 }
