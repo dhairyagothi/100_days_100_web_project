@@ -1,0 +1,106 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f9;
+}
+
+.counter-container {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 350px;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.display-box {
+    background: #eef2f5;
+    padding: 30px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+#count {
+    font-size: 4rem;
+    color: #2c3e50;
+}
+
+/* The Alarm Alert Classes */
+.alarm-active {
+    border-color: #e74c3c !important;
+    background: #fadbd8 !important;
+}
+
+.alarm-active #count {
+    color: #c0392b;
+}
+
+#alarm-msg {
+    color: #c0392b;
+    font-weight: bold;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.hidden {
+    display: none;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.btn {
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.enter {
+    background-color: #27ae60;
+}
+
+.enter:hover {
+    background-color: #219653;
+}
+
+.exit {
+    background-color: #e67e22;
+}
+
+.exit:hover {
+    background-color: #d35400;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
