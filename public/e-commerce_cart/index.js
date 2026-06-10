@@ -5,7 +5,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   // ===== STATE =====
   let cartItems = [];
-  let wishlist = [];
+  let wishlistItems = [];
   let currentSlide = 0;
   let sliderInterval;
   let qvQty = 1;
@@ -23,6 +23,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const cartItemLabel = document.getElementById('cart-item-label');
   const cartSubtotal = document.getElementById('cart-subtotal');
   const cartTotalPrice = document.getElementById('cart-total-price');
+
+  const wishlistEl = document.getElementById('wishlist');
+  const wishlistOverlay = document.getElementById('wishlist-overlay');
+  const wishlistContent = document.getElementById('wishlist-content');
+  const wishlistEmpty = document.getElementById('wishlist-empty');
+  const wishlistFooter = document.getElementById('wishlist-footer');
+  const wishlistCountEl = document.getElementById('wishlist-count');
+  const wishlistItemLabel = document.getElementById('wishlist-item-label');
+  const wishlistSubtotal = document.getElementById('wishlist-subtotal');
+  const wishlistTotalPrice = document.getElementById('wishlist-total-price');
 
   const checkoutOverlay = document.getElementById('checkout-overlay');
   const checkoutModal = document.getElementById('checkout-modal');
@@ -241,28 +251,176 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // ==== WISHLIST ====
+  function openWishlist() {
+    wishlistEl.classList.add('open');
+    wishlistOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeWishlist() {
+    wishlistEl.classList.remove('open');
+    wishlistOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('wishlist-btn').addEventListener('click', openWishlist);
+  document.getElementById('wishlist-close').addEventListener('click', closeWishlist);
+  wishlistOverlay.addEventListener('click', closeWishlist);
+
+  function renderWishlist() {
+    wishlistContent.querySelectorAll('.wishlist-item').forEach((el) => el.remove());
+
+    if (wishlistItems.length === 0) {
+      wishlistEmpty.style.display = 'flex';
+      wishlistFooter.style.display = 'none';
+      wishlistCountEl.textContent = '0';
+      wishlistItemLabel.textContent = '0 items';
+      return;
+    }
+
+    wishlistEmpty.style.display = 'none';
+    wishlistFooter.style.display = 'flex';
+
+    wishlistItems.forEach((item) => {
+      const el = document.createElement('div');
+      el.className = 'wishlist-item';
+      el.dataset.id = item.id;
+      el.innerHTML = `
+        <img src="${item.imgSrc}" class="wishlist-item-img" alt="${item.title}" />
+        <div class="wishlist-item-info">
+          <div class="wishlist-item-name">${item.title}</div>
+          <div class="wishlist-item-unit">${fmt(item.price)} each</div>
+          <div class="qty-stepper" style="display:inline-flex;margin-top:6px;">
+            <button class="qty-btn item-minus" data-id="${item.id}">−</button>
+            <span class="qty-display">${item.qty}</span>
+            <button class="qty-btn item-plus" data-id="${item.id}">+</button>
+            <button class="wishlist-add-cart" data-id="${item.id}">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+                </button>
+            </div>
+        </div>
+        <div class="wishlist-item-controls">
+          <span class="wishlist-item-total">${fmt(item.price * item.qty)}</span>
+          <button class="wishlist-item-remove" data-id="${item.id}" aria-label="Remove ${item.title}">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      `;
+      el.querySelector('.item-minus').addEventListener('click', () => changeQty(item.id, -1));
+      el.querySelector('.item-plus').addEventListener('click', () => changeQty(item.id, +1));
+      el.querySelector('.wishlist-item-remove').addEventListener('click', () => removeWishlistItem(item.id));
+      el.querySelector('.wishlist-add-cart').addEventListener('click', () => {
+        addToCart(item.title, item.price, item.imgSrc, item.qty);
+      });
+      wishlistContent.appendChild(el);
+    });
+
+    updateWishlistTotals();
+  }
+
+  function updateWishlistTotals() {
+    const total = wishlistItems.reduce((s, i) => s + i.price * i.qty, 0);
+    const count = wishlistItems.reduce((s, i) => s + i.qty, 0);
+    wishlistSubtotal.textContent = fmt(total);
+    wishlistTotalPrice.textContent = fmt(total);
+    wishlistCountEl.textContent = count;
+    wishlistItemLabel.textContent = `${wishlistItems.length} item${wishlistItems.length !== 1 ? 's' : ''}`;
+
+    wishlistCountEl.classList.remove('bounce');
+    void wishlistCountEl.offsetWidth;
+    wishlistCountEl.classList.add('bounce');
+  }
+
+  function addToWishlist(title, price, imgSrc, qty = 1) {
+    const id = title.toLowerCase().replace(/\s+/g, '-');
+    const existing = wishlistItems.find((i) => i.id === id);
+    if (existing) {
+      existing.qty += qty;
+      showToast(`${title} quantity updated`);
+    } else {
+      wishlistItems.push({ id, title, price: Number(price), imgSrc, qty });
+      showToast(`${title} added to wishlist`);
+    }
+    renderWishlist();
+    openWishlist();
+  }
+
+  function changeQty(id, delta) {
+    const item = wishlistItems.find((i) => i.id === id);
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty <= 0) {
+      removeWishlistItem(id);
+      return;
+    }
+    renderWishlist();
+  }
+
+  function removeWishlistItem(id) {
+    wishlistItems = wishlistItems.filter((i) => i.id !== id);
+    renderWishlist();
+    showToast('Item removed from wishlist');
+  }
+
+    function addWishlistToCart() {
+    if (!wishlistItems.length) {
+      showToast("Wishlist is empty");
+      return;
+    }
+
+    wishlistItems.forEach((item) => {
+      addToCart(
+        item.title,
+        item.price,
+        item.imgSrc,
+        item.qty
+      );
+    });
+    showToast("All wishlist items added to cart");
+  }
+
+  document.getElementById('clear-wishlist-btn').addEventListener('click', () => {
+    if (!wishlistItems.length) return;
+    if (confirm('Clear all items from wishlist?')) {
+      wishlistItems = [];
+      renderWishlist();
+      showToast('Wishlist cleared');
+    }
+  });
+
+  document.getElementById('addtocart-btn')
+  .addEventListener('click', addWishlistToCart);
+
   // Wishlist buttons
   document.querySelectorAll('.card-wishlist').forEach((btn) => {
     btn.addEventListener('click', function () {
-      const title = this.dataset.title;
-      if (wishlist.includes(title)) {
-        wishlist = wishlist.filter((t) => t !== title);
-        this.classList.remove('active');
-        showToast('Removed from wishlist');
-      } else {
-        wishlist.push(title);
-        this.classList.add('active');
-        showToast('Added to wishlist');
-      }
-      updateWishlistCount();
+      const card = this.closest('.card');
+
+      const title = card.dataset.name;
+      const price = card.dataset.price;
+      const img = card.querySelector('.card-img').src;
+      this.classList.add('added');
+      const origHTML = this.innerHTML;
+      this.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`;
+      setTimeout(() => {
+        this.classList.remove('added');
+        this.innerHTML = origHTML;
+      }, 1200);
+      addToWishlist(title, price, img);
     });
   });
 
   function updateWishlistCount() {
     const badge = document.getElementById('wishlist-count');
     if (badge) {
-      badge.textContent = wishlist.length;
-      badge.style.display = wishlist.length ? 'flex' : 'none';
+      badge.textContent = wishlistItems.length;
+      badge.style.display = wishlistItems.length ? 'flex' : 'none';
     }
   }
 
@@ -573,6 +731,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===== INIT =====
   renderCart();
   animateCards();
+  renderWishlist();
 
   // Smooth scroll
   document.querySelectorAll('a[href^="#"]').forEach((a) => {

@@ -78,6 +78,9 @@ body.light-mode .learning-sidebar {
   outline: none;
   transition: var(--t);
 }
+:root[data-theme="sepia"] .sidebar-search input {
+  background: var(--bg-surface);
+}
 
 .sidebar-search input:focus {
   border-color: var(--border-accent);
@@ -87,7 +90,7 @@ body.light-mode .learning-sidebar {
 /* FIX: Icon on LEFT side so it doesn't overlap placeholder text */
 .sidebar-search .search-icon {
   position: absolute;
-  left: 1rem;           /* moved from right to left */
+  left: 1rem; /* moved from right to left */
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-muted);
@@ -110,6 +113,13 @@ body.light-mode .learning-sidebar {
 
 .sidebar-search .clear-btn:hover {
   color: var(--text-primary);
+}
+
+.search-results-info {
+  margin-top: 0.75rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  min-height: 18px;
 }
 
 /* Sidebar Tree Structure */
@@ -190,8 +200,10 @@ body.light-mode .learning-sidebar {
   padding-bottom: 6px; /* FIX: breathing room so last item highlight isn't clipped */
   max-height: 2000px;
   overflow-x: visible; /* FIX: left border highlight must not be clipped */
-  overflow-y: hidden;  /* FIX: keep this for collapse animation to work */
-  transition: max-height 0.4s ease-in-out, opacity 0.2s ease;
+  overflow-y: hidden; /* FIX: keep this for collapse animation to work */
+  transition:
+    max-height 0.4s ease-in-out,
+    opacity 0.2s ease;
   opacity: 1;
 }
 
@@ -205,6 +217,7 @@ body.light-mode .learning-sidebar {
   display: block;
   padding: 0.45rem 1rem;
   color: var(--text-secondary);
+   /* color: var(--text-primary); */
   font-size: 0.825rem;
   text-decoration: none;
   border-radius: var(--radius-sm);
@@ -215,8 +228,12 @@ body.light-mode .learning-sidebar {
   scroll-margin-top: 1.25rem; /* keep active topic fully visible when scrolled into view */
 }
 
+:root[data-theme="sepia"] .topic-item:not(.active):not(.completed) a {
+  color: var(--text-primary);
+}
+
 .topic-item a:hover {
-  background: var(--bg-surface);
+  background: var(--accent-dim);
   color: var(--text-primary);
   padding-left: 1.25rem;
 }
@@ -242,6 +259,50 @@ body.light-mode .topic-item.active a {
 /* FIX: last item in list gets extra bottom margin so highlight isn't clipped */
 .topic-list li:last-child a {
   margin-bottom: 4px;
+}
+
+.progress-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+
+  margin-bottom: 1.5rem;
+}
+
+.progress-stat-card {
+  background: var(--bg-elevated);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-lg);
+
+  padding: 1rem;
+
+  text-align: center;
+
+  transition: var(--t);
+}
+
+.progress-stat-card:hover {
+  transform: translateY(-2px);
+
+  border-color: var(--border-accent);
+}
+
+.stat-label {
+  display: block;
+
+  color: var(--text-muted);
+
+  font-size: 0.8rem;
+
+  margin-bottom: 0.5rem;
+}
+
+.progress-stat-card strong {
+  font-size: 1.4rem;
+
+  color: var(--accent);
 }
 
 /* ============================================================
@@ -297,6 +358,77 @@ body.light-mode .topic-item.active a {
 .loading-article i {
   font-size: 2rem;
   color: var(--accent);
+}
+
+/* ==========================================
+   SKELETON LOADER
+   ========================================== */
+
+.skeleton-loader {
+  animation: fadeIn 0.2s ease;
+}
+
+.skeleton-line,
+.skeleton-title,
+.skeleton-meta {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+}
+
+body.light-mode .skeleton-line,
+body.light-mode .skeleton-title,
+body.light-mode .skeleton-meta {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.skeleton-title {
+  height: 42px;
+  width: 60%;
+  margin-bottom: 1rem;
+}
+
+.skeleton-meta {
+  height: 18px;
+  width: 220px;
+  margin-bottom: 2rem;
+}
+
+.skeleton-line {
+  height: 14px;
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+.skeleton-line.short {
+  width: 70%;
+}
+
+.skeleton-line.medium {
+  width: 85%;
+}
+
+.skeleton-title::after,
+.skeleton-meta::after,
+.skeleton-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.12),
+    transparent
+  );
+  animation: skeletonShimmer 1.4s infinite;
+}
+
+@keyframes skeletonShimmer {
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .rendered-markdown {
@@ -477,7 +609,7 @@ body.light-mode .rendered-markdown tr:nth-child(even) {
    ============================================================ */
 
 .rendered-markdown code {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.85em;
   background: rgba(255, 255, 255, 0.06);
   padding: 0.15rem 0.35rem;
@@ -510,7 +642,7 @@ body.light-mode .rendered-markdown code {
 }
 
 .code-lang-label {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   text-transform: uppercase;
   font-weight: 600;
   color: var(--text-secondary);
@@ -948,6 +1080,9 @@ body.light-mode .footer {
     flex-direction: column;
     gap: 1rem;
   }
+  .progress-stats-grid {
+    grid-template-columns: 1fr;
+  }
 
   .nav-prev,
   .nav-next {
@@ -1094,7 +1229,7 @@ body.light-mode .vector-flowchart {
   font-weight: 500;
 }
 
-.quiz-option input[type='radio'] {
+.quiz-option input[type="radio"] {
   accent-color: var(--accent);
   flex-shrink: 0;
 }
@@ -1153,6 +1288,55 @@ body.light-mode .vector-flowchart {
 .learning-progress-header {
   margin-bottom: 1.5rem;
 }
+.learning-dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.progress-stats-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 1rem;
+
+  margin-bottom: 1rem;
+}
+
+.progress-stat-card {
+  background: var(--bg-elevated);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-lg);
+
+  padding: 1rem;
+
+  text-align: center;
+
+  transition: var(--t);
+}
+
+.progress-stat-card:hover {
+  transform: translateY(-2px);
+
+  border-color: var(--accent);
+}
+
+.stat-label {
+  display: block;
+
+  font-size: 0.8rem;
+
+  color: var(--text-muted);
+
+  margin-bottom: 0.4rem;
+}
+
+.progress-stat-card strong {
+  font-size: 1.4rem;
+
+  color: var(--accent);
+}
 
 .continue-learning-btn {
   padding: 10px 18px;
@@ -1199,7 +1383,7 @@ body.light-mode .vector-flowchart {
 }
 
 .topic-item.completed a::after {
-  content: '✓';
+  content: "✓";
   float: right;
   font-weight: bold;
 }

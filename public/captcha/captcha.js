@@ -9,6 +9,7 @@ const resultMessage = document.querySelector('.result');
 const submitButton = document.querySelector('.submit');
 const voiceField = document.getElementById('voiceField');
 const voiceSelect = document.getElementById('voiceSelect');
+const textCaptchaField = document.querySelector('.textcaptcha');
 
 let currentCaptcha = null;
 let attempts = 0;
@@ -16,17 +17,184 @@ const maxAttempts = 3;
 let lockoutEndTime = 0;
 let selectedDifficulty = "medium";
 
+// Analytics Data
+const STORAGE_KEY = "captcha-analytics-v1";
+let analytics = {
+    totalAttempts: 0,
+    successful: 0,
+    failed: 0,
+    currentStreak: 0,
+    bestStreak: 0,
+    recentActivity: [], // Array of {timestamp, difficulty, result}
+    achievements: {
+        beginner: false, // 5
+        intermediate: false, // 20
+        expert: false //50
+    }
+};
+
+// DOM elements for analytics
+const statAttempts = document.getElementById('stat-attempts');
+const statSuccesses = document.getElementById('stat-successes');
+const statFailures = document.getElementById('stat-failures');
+const statStreak = document.getElementById('stat-streak');
+const statBestStreak = document.getElementById('stat-best-streak');
+const statRate = document.getElementById('stat-rate');
+const progressBar = document.getElementById('progress-bar');
+const insightsText = document.getElementById('insights-text');
+const activityList = document.getElementById('activity-list');
+const resetBtn = document.getElementById('reset-btn');
+const resetModal = document.getElementById('reset-modal');
+const cancelReset = document.getElementById('cancel-reset');
+const confirmReset = document.getElementById('confirm-reset');
+
+// --- Analytics Functions ---
+function loadAnalytics() {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+        try {
+            analytics = JSON.parse(stored);
+        } catch (e) {
+            console.error("Error parsing analytics", e);
+        }
+    }
+    updateAnalyticsUI();
+}
+
+function saveAnalytics() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(analytics));
+}
+
+function animateCounter(element, target, duration = 1000) {
+    const start = parseInt(element.textContent) || 0;
+    const startTime = performance.now();
+    
+    function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const current = Math.floor(progress * (target - start) + start);
+        element.textContent = current;
+        
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        }
+    }
+    requestAnimationFrame(update);
+}
+
+function updateAnalyticsUI() {
+    animateCounter(statAttempts, analytics.totalAttempts);
+    animateCounter(statSuccesses, analytics.successful);
+    animateCounter(statFailures, analytics.failed);
+    animateCounter(statStreak, analytics.currentStreak);
+    animateCounter(statBestStreak, analytics.bestStreak);
+    
+    // Success rate
+    let rate = 0;
+    if (analytics.totalAttempts > 0) {
+        rate = Math.round((analytics.successful / analytics.totalAttempts) * 100);
+    }
+    statRate.textContent = rate + "%";
+    progressBar.style.width = rate + "%";
+    
+    // Achievements
+    checkAchievements();
+    
+    // Insights
+    updateInsights();
+    
+    // Recent Activity
+    renderRecentActivity();
+}
+
+function updateInsights() {
+    let text = "Start solving CAPTCHAs to get insights!";
+    if (analytics.totalAttempts > 0) {
+        const rate = analytics.successful / analytics.totalAttempts;
+        if (rate >= 0.9) {
+            text = "Excellent! Your success rate is above 90%";
+        } else if (rate >= 0.7) {
+            text = "Great job! Keep improving your accuracy";
+        } else {
+            text = "Keep practicing to improve your accuracy";
+        }
+        
+        if (analytics.currentStreak >= 5) {
+            text += ` You're on a ${analytics.currentStreak} CAPTCHA streak!`;
+        }
+    }
+    insightsText.textContent = text;
+}
+
+function renderRecentActivity() {
+    if (analytics.recentActivity.length === 0) {
+        activityList.innerHTML = '<div class="empty-state">No activity yet</div>';
+        return;
+    }
+    
+    activityList.innerHTML = analytics.recentActivity.map(activity => {
+        const date = new Date(activity.timestamp);
+        const timeStr = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        const icon = activity.result === 'success' 
+            ? '<i class="fas fa-check"></i>' 
+            : '<i class="fas fa-times"></i>';
+        
+        return `
+            <div class="activity-item ${activity.result}">
+                <div class="activity-icon">${icon}</div>
+                <div class="activity-content">
+                    <div class="activity-type">
+                        ${activity.result === 'success' ? 'Successful' : 'Failed'} (${activity.difficulty})
+                    </div>
+                    <div class="activity-time">${timeStr}</div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function checkAchievements() {
+    const badgeBeginner = document.getElementById('badge-beginner');
+    const badgeIntermediate = document.getElementById('badge-intermediate');
+    const badgeExpert = document.getElementById('badge-expert');
+    
+    if (analytics.successful >= 5 && !analytics.achievements.beginner) {
+        analytics.achievements.beginner = true;
+    }
+    
+    if (analytics.successful >= 20 && !analytics.achievements.intermediate) {
+        analytics.achievements.intermediate = true;
+    }
+    
+    if (analytics.successful >= 50 && !analytics.achievements.expert) {
+        analytics.achievements.expert = true;
+    }
+    
+    [
+        {el: badgeBeginner, unlocked: analytics.achievements.beginner},
+        {el: badgeIntermediate, unlocked: analytics.achievements.intermediate},
+        {el: badgeExpert, unlocked: analytics.achievements.expert}
+    ].forEach(({el, unlocked}) => {
+        if (unlocked) {
+            el.classList.add('unlocked');
+            el.querySelector('.achievement-status').innerHTML = '<i class="fas fa-check"></i>';
+            el.querySelector('.achievement-status').classList.remove('locked');
+            el.querySelector('.achievement-status').classList.add('unlocked');
+        }
+    });
+}
+
+// --- Difficulty Selector ---
 const addDifficultySelector = () => {
     const existing = document.getElementById('difficulty-selector');
     if (existing) return;
 
     const selector = document.createElement('div');
     selector.id = 'difficulty-selector';
-    selector.style.cssText = 'display:flex;justify-content:center;gap:10px;margin:10px 0;';
     selector.innerHTML = `
-        <button class="diff-btn" data-diff="easy" style="padding:5px 15px;border-radius:20px;border:2px solid #ccc;cursor:pointer;background:#4CAF50;color:white;">Easy</button>
-        <button class="diff-btn" data-diff="medium" style="padding:5px 15px;border-radius:20px;border:2px solid #ccc;cursor:pointer;background:#2196F3;color:white;">Medium</button>
-        <button class="diff-btn" data-diff="hard" style="padding:5px 15px;border-radius:20px;border:2px solid #ccc;cursor:pointer;background:#f44336;color:white;">Hard</button>
+        <button class="diff-btn" data-diff="easy">Easy</button>
+        <button class="diff-btn" data-diff="medium">Medium</button>
+        <button class="diff-btn" data-diff="hard">Hard</button>
     `;
 
     captchaContainer.parentNode.insertBefore(selector, captchaContainer);
@@ -39,8 +207,15 @@ const addDifficultySelector = () => {
             generateCaptcha();
         });
     });
+    
+    // Set initial selected
+    const initialBtn = selector.querySelector('.diff-btn[data-diff="medium"]');
+    if (initialBtn) {
+        initialBtn.style.opacity = '1';
+    }
 };
 
+// --- CAPTCHA Generation ---
 const generateTextCaptcha = () => {
     switch (selectedDifficulty) {
         case 'easy':
@@ -138,7 +313,9 @@ const drawDistortedCaptcha = (text) => {
     const canvas = document.createElement('canvas');
     canvas.width = 280;
     canvas.height = 80;
-    canvas.style.cssText = 'border-radius:12px; display:block; margin:0 auto;';
+    canvas.style.borderRadius = '12px';
+    canvas.style.display = 'block';
+    canvas.style.margin = '0 auto';
     const ctx = canvas.getContext('2d');
 
     // Background
@@ -191,6 +368,9 @@ const drawDistortedCaptcha = (text) => {
 const generateCaptcha = () => {
     textInput.value = '';
     textInput.disabled = false;
+
+    textCaptchaField.classList.remove('hidden');
+
     resultMessage.textContent = '';
     resultMessage.className = 'result';
     selectedImageAnswer = '';
@@ -214,6 +394,7 @@ const generateCaptcha = () => {
             break;
         }
         case 'image': {
+            textCaptchaField.classList.add('hidden');
             const { images, correct } = generateImageCaptcha();
             currentCaptcha = correct.name;
             textInput.disabled = true;
@@ -306,12 +487,22 @@ const verifyCaptcha = () => {
         : textInput.value.trim().toLowerCase();
 
     const isCorrect = userInput === currentCaptcha.toString().toLowerCase();
-
+    
+    // Update analytics
+    analytics.totalAttempts++;
+    
     if (isCorrect) {
+        analytics.successful++;
+        analytics.currentStreak++;
+        if (analytics.currentStreak > analytics.bestStreak) {
+            analytics.bestStreak = analytics.currentStreak;
+        }
+        
         resultMessage.textContent = 'Very Good! You passed the Test.';
         resultMessage.classList.add('success');
         resultMessage.classList.remove('error');
         attempts = 0;
+        
         setTimeout(() => {
             textInput.value = '';
             resultMessage.textContent = '';
@@ -319,6 +510,9 @@ const verifyCaptcha = () => {
             generateCaptcha();
         }, 1500);
     } else {
+        analytics.failed++;
+        analytics.currentStreak = 0;
+        
         attempts++;
         if (attempts >= maxAttempts) {
             lockoutUser();
@@ -328,8 +522,59 @@ const verifyCaptcha = () => {
             resultMessage.classList.remove('success');
         }
     }
+    
+    // Add to recent activity
+    analytics.recentActivity.unshift({
+        timestamp: Date.now(),
+        difficulty: selectedDifficulty,
+        result: isCorrect ? 'success' : 'fail'
+    });
+    
+    // Keep only last 5
+    if (analytics.recentActivity.length > 5) {
+        analytics.recentActivity = analytics.recentActivity.slice(0,5);
+    }
+    
+    saveAnalytics();
+    updateAnalyticsUI();
 };
 
+// --- Reset Button ---
+resetBtn.addEventListener('click', () => {
+    resetModal.classList.add('active');
+});
+
+cancelReset.addEventListener('click', () => {
+    resetModal.classList.remove('active');
+});
+
+confirmReset.addEventListener('click', () => {
+    analytics = {
+        totalAttempts: 0,
+        successful: 0,
+        failed: 0,
+        currentStreak: 0,
+        bestStreak: 0,
+        recentActivity: [],
+        achievements: {
+            beginner: false,
+            intermediate: false,
+            expert: false
+        }
+    };
+    saveAnalytics();
+    updateAnalyticsUI();
+    resetModal.classList.remove('active');
+});
+
+// Close modal on outside click
+resetModal.addEventListener('click', (e) => {
+    if (e.target === resetModal) {
+        resetModal.classList.remove('active');
+    }
+});
+
+// --- Event Listeners ---
 if (captchaTypeSelect) {
     captchaTypeSelect.addEventListener('change', (event) => {
         selectedType = event.target.value;
@@ -345,6 +590,8 @@ refreshButton.addEventListener('click', () => {
 
 submitButton.addEventListener('click', verifyCaptcha);
 
+// --- Initialize ---
 addDifficultySelector();
 if (captchaTypeSelect) selectedType = captchaTypeSelect.value;
 generateCaptcha();
+loadAnalytics();
