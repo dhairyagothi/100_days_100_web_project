@@ -52,6 +52,11 @@
         <table class="words" style="border-spacing: 5px;"></table> 
     </div>
 
+    <!-- Persistent Next Word action button (visible after game ends and modal is closed) -->
+    <div id="game-over-actions" class="hidden" style="display: flex; justify-content: center; margin-bottom: 20px;">
+        <button id="persistentNextWordBtn" class="button next-word-btn" style="width: auto; padding: 12px 30px;">Next Word ➔</button>
+    </div>
+
     <!-- Flexbox Virtual Keyboard -->
     <div id="keyboard-container">
         <div class="keyboard-row">
@@ -66,6 +71,18 @@
             <button class="button enter" id="Enter">ENTER</button>
             <button class="button" id="Z">Z</button><button class="button" id="X">X</button><button class="button" id="C">C</button><button class="button" id="V">V</button><button class="button" id="B">B</button><button class="button" id="N">N</button><button class="button" id="M">M</button>
             <button class="button backspace" id="Backspace">⌫</button>
+        </div>
+    </div>
+
+    <!-- Game Over Modal Overlay -->
+    <div id="game-over-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="cross" id="closeGameOver">&#9587;</button>
+            <div class="modal-body">
+                <h2 id="game-over-title">Not Bad!</h2>
+                <div id="game-over-details"></div>
+                <button id="nextWordBtn" class="button next-word-btn">Next Word ➔</button>
+            </div>
         </div>
     </div>
 

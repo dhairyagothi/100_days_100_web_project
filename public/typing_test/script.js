@@ -172,11 +172,18 @@ function updateStats() {
 }
 
 function finishTest() {
+    if (testFinished) return;
+
     testFinished = true;
     testStarted = false;
-    if (timerInterval) clearInterval(timerInterval);
+
+    clearInterval(timerInterval);
+    timerInterval = null;
+
+    userInput.disabled = true;
 
     const timeElapsed = (Date.now() - startTime) / 1000;
+
     const inputLength = userInput.value.length;
     const wpm = Math.round((inputLength / 5) / (timeElapsed / 60 || 1 / 60));
 
@@ -184,7 +191,11 @@ function finishTest() {
     userInput.value.split('').forEach((char, index) => {
         if (char === testText[index]) correctChars++;
     });
-    const accuracy = inputLength > 0 ? Math.round((correctChars / inputLength) * 100) : 0;
+
+    const accuracy = inputLength > 0
+        ? Math.round((correctChars / inputLength) * 100)
+        : 0;
+
     const errors = inputLength - correctChars;
 
     document.getElementById('finalWpm').textContent = wpm;
@@ -198,7 +209,6 @@ function finishTest() {
 
     gameContent.classList.add('hidden');
     resultsDiv.style.display = 'block';
-    userInput.disabled = true;
 }
 
 startBtn.addEventListener('click', initTest);
@@ -221,8 +231,22 @@ retryBtn.addEventListener('click', initTest);
 userInput.addEventListener('input', () => {
     if (!testStarted || testFinished) return;
     updateDisplay();
-    if (userInput.value === testText) {
+});
+
+userInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && testStarted && !testFinished) {
+        e.preventDefault();
         finishTest();
+    }
+});
+
+userInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && testStarted && !testFinished) {
+        e.preventDefault();
+
+        if (userInput.value.trim() === testText.trim()) {
+            finishTest();
+        }
     }
 });
 

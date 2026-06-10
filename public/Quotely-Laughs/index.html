@@ -4,202 +4,305 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Quotely Laughs</title>
+
   <link rel="icon"
-    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>😉</text></svg>">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>😂</text></svg>">
+
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
   <link
-    href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;1,300&family=Inter:wght@400;500;600&display=swap"
-    rel="stylesheet" />
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@400;700&display=swap"
+    rel="stylesheet">
+
+  <script defer src="script.js"></script>
+
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0f172a;
+      --bg-secondary: #1e293b;
+      --card: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #ffffff;
+      --muted: #94a3b8;
+      --primary: #3b82f6;
+      --secondary: #8b5cf6;
+    }
+
+    body.light-theme {
+      --bg: #f8fafc;
+      --bg-secondary: #e2e8f0;
+      --card: rgba(255, 255, 255, 0.9);
+      --border: rgba(0, 0, 0, 0.08);
+      --text: #0f172a;
+      --muted: #64748b;
+    }
+
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #1e1e1e;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      background:
+        linear-gradient(135deg,
+          var(--bg),
+          var(--bg-secondary));
+      color: var(--text);
+      transition: .3s;
+      overflow-x: hidden;
+    }
+
+    .project-back-button {
+      position: fixed;
+      left: 20px;
+      top: 20px;
+      z-index: 1000;
+      padding: 10px 18px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      backdrop-filter: blur(12px);
+      background: rgba(59, 130, 246, .12);
+      border: 1px solid rgba(59, 130, 246, .3);
+      color: #60a5fa;
+      transition: .3s;
+    }
+
+    .project-back-button:hover {
+      transform: translateY(-2px);
     }
 
     header {
-      background-color: #161616;
-      border-bottom: 1px solid #2a2a2a;
-      padding: 18px 24px;
+      padding: 30px 20px;
       text-align: center;
       position: relative;
     }
 
-    header h1 {
-      font-family: 'Merriweather', serif;
-      font-size: 1.6rem;
-      color: #f5f5f5;
-      letter-spacing: -0.3px;
-    }
-
-    header p {
-      color: #666;
-      font-size: 0.78rem;
-      margin-top: 4px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-
-    #theme-toggle {
+    .header-actions {
       position: absolute;
-      top: 18px;
-      right: 24px;
-      padding: 8px 14px;
+      right: 20px;
+      top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .header-btn {
       border: none;
-      border-radius: 6px;
       cursor: pointer;
-      background: #333;
+      padding: 10px 14px;
+      border-radius: 12px;
       color: white;
-      font-size: 0.8rem;
-      transition: 0.3s ease;
+      background: rgba(255,255,255,.08);
+      backdrop-filter: blur(12px);
+      transition: .3s;
     }
 
-    #theme-toggle:hover {
-      background: #444;
-    }
-    body.light-theme #keyword {
-      background: white;
-      color: #1a1a1a;
-      border: 1px solid #ccc;
+    .header-btn:hover {
+      transform: translateY(-2px);
     }
 
-    body.light-theme #keyword::placeholder {
-      color: #666;
+    h1 {
+      font-family: 'Merriweather', serif;
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-size: .8rem;
+    }
+
+    .hero {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .hero h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    .hero p {
+      color: var(--muted);
+      margin-top: 10px;
     }
 
     main {
-      flex: 1;
+      width: 100%;
+      max-width: 900px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    .search-section {
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
       justify-content: center;
-      padding: 48px 20px;
-      gap: 28px;
-    }
-
-    #generate {
-      background-color: #f5f5f5;
-      color: #1a1a1a;
-      font-family: 'Inter', sans-serif;
-      font-weight: 600;
-      font-size: 0.88rem;
-      padding: 12px 28px;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-      letter-spacing: 0.2px;
-    }
-
-    #generate:hover {
-      background-color: #ddd;
-    }
-
-    #generate:active {
-      transform: scale(0.98);
+      margin-bottom: 30px;
     }
 
     #keyword {
-      width: 100%;
-      max-width: 560px;
-      padding: 12px;
-      border-radius: 6px;
-      border: 1px solid #333;
-      background: #272727;
-      color: white;
+      flex: 1;
+      min-width: 250px;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      backdrop-filter: blur(12px);
+      color: var(--text);
       outline: none;
     }
 
-    #keyword::placeholder {
-      color: #888;
+    .action-btn {
+      border: none;
+      cursor: pointer;
+      padding: 14px 22px;
+      border-radius: 14px;
+      font-weight: 600;
+      transition: .3s;
     }
 
-    #content {
-      width: 100%;
-      max-width: 560px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+    #generate {
+      background: linear-gradient(135deg,
+          #3b82f6,
+          #8b5cf6);
+      color: white;
+    }
+
+    #history-btn {
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .stats {
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--muted);
+    }
+
+    .content-grid {
+      display: grid;
+      gap: 20px;
     }
 
     .card {
-      background: #272727;
-      border: 1px solid #333;
-      border-radius: 10px;
-      padding: 24px 28px;
+      background: var(--card);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.15);
+      transition: .3s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
     }
 
     .card-type {
-      font-size: 0.68rem;
-      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: #666;
-      margin-bottom: 12px;
+      letter-spacing: 2px;
+      font-size: .75rem;
+      color: var(--muted);
+      margin-bottom: 15px;
     }
 
     #quote {
       font-family: 'Merriweather', serif;
       font-style: italic;
-      font-size: 1rem;
       line-height: 1.8;
-      color: #e0e0e0;
-      margin-bottom: 16px;
-      min-height: 52px;
+      min-height: 60px;
+      font-size: 1.1rem;
     }
 
     #joke {
-      font-size: 0.95rem;
-      line-height: 1.7;
-      color: #ccc;
-      margin-bottom: 16px;
-      min-height: 48px;
+      line-height: 1.8;
+      min-height: 60px;
+      font-size: 1rem;
     }
 
-    .share-row {
+    .card-actions {
       display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border);
+    }
+
+    .small-btn {
+      border: none;
+      cursor: pointer;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      font-size: .85rem;
+    }
+
+    #history-panel {
+      position: fixed;
+      top: 0;
+      right: -420px;
+      width: 400px;
+      max-width: 95%;
+      height: 100%;
+      background: #111827;
+      transition: .35s ease;
+      z-index: 2000;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: -10px 0 40px rgba(0,0,0,.4);
+    }
+
+    #history-panel.active {
+      right: 0;
+    }
+
+    .history-header {
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 8px;
-      border-top: 1px solid #333;
-      padding-top: 14px;
+      margin-bottom: 25px;
     }
 
-    .share-row p {
-      font-size: 0.75rem;
-      color: #555;
+    .history-item {
+      background: #1f2937;
+      padding: 15px;
+      border-radius: 14px;
+      margin-bottom: 15px;
     }
 
-    .share-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: #333;
-      border: 1px solid #3d3d3d;
-      border-radius: 4px;
-      padding: 5px 12px;
-      color: #aaa;
-      font-size: 0.75rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: background 0.15s, color 0.15s;
+    .history-item small {
+      color: #94a3b8;
     }
 
-    .share-btn:hover {
-      background: #3a3a3a;
-      color: #f5f5f5;
+    .history-item p {
+      margin-top: 10px;
+      font-size: .9rem;
     }
 
     #loading {
       position: fixed;
       inset: 0;
-      background: rgba(30, 30, 30, 0.85);
+      background: rgba(0,0,0,.7);
       display: flex;
-      align-items: center;
       justify-content: center;
-      z-index: 50;
+      align-items: center;
+      z-index: 3000;
     }
 
     #loading.hidden {
@@ -207,62 +310,12 @@
     }
 
     .loader {
-      width: 36px;
-      height: 36px;
-      border: 3px solid #333;
-      border-top-color: #f5f5f5;
+      width: 55px;
+      height: 55px;
+      border: 4px solid rgba(255,255,255,.15);
+      border-top: 4px solid white;
       border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-
-    body.light-theme {
-      background-color: #f5f5f5;
-    }
-
-    body.light-theme header {
-      background-color: white;
-      border-bottom: 1px solid #ddd;
-    }
-
-    body.light-theme header h1 {
-      color: #1a1a1a;
-    }
-
-    body.light-theme header p {
-      color: #555;
-    }
-
-    body.light-theme .card {
-      background: white;
-      border: 1px solid #ddd;
-    }
-
-    body.light-theme #quote,
-    body.light-theme #joke {
-      color: #222;
-    }
-
-    body.light-theme .card-type {
-      color: #555;
-    }
-
-    body.light-theme .share-row {
-      border-top: 1px solid #ddd;
-    }
-
-    body.light-theme .share-btn {
-      background: #f0f0f0;
-      color: #333;
-      border: 1px solid #ccc;
-    }
-
-    body.light-theme .share-btn:hover {
-      background: #e5e5e5;
-    }
-
-    body.light-theme #generate {
-      background-color: #1a1a1a;
-      color: white;
+      animation: spin .8s linear infinite;
     }
 
     @keyframes spin {
@@ -270,72 +323,177 @@
         transform: rotate(360deg);
       }
     }
-    
-    @media (max-width: 640px) {
-      #theme-toggle {
-        position: static;
-        margin-top: 12px;
+
+    .fade-in {
+      animation: fadeIn .5s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
     }
 
+    @media(max-width:768px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .hero h2 {
+        font-size: 1.4rem;
+      }
+
+      .header-actions {
+        position: static;
+        justify-content: center;
+        margin-top: 15px;
+      }
+    }
   </style>
-  <script defer src="script.js"></script>
 </head>
 
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
+  <a href="/" class="project-back-button">
+    ← Back
+  </a>
 
   <header>
-    <h1>Quotely Laughs</h1>
-    <p>quotes & jokes, daily</p>
-    <button id="theme-toggle">🌙 Dark Mode</button>
+
+    <h1>😂 Quotely Laughs</h1>
+
+    <p class="subtitle">
+      Quotes • Jokes • Inspiration
+    </p>
+
+    <div class="header-actions">
+      <button id="theme-toggle" class="header-btn">
+        🌙
+      </button>
+    </div>
+
+    <div class="hero">
+      <h2>Daily Inspiration & Laughter</h2>
+      <p>Generate motivational quotes and funny jokes instantly.</p>
+    </div>
+
   </header>
 
   <main>
+
+    <div class="search-section">
+
       <input
         type="text"
         id="keyword"
-        placeholder="Enter a topic (coding, college, exams...)"
-      />
-    <button id="generate">Generate Quote and Joke</button>
+        placeholder="Try coding, exams, college, life..."
+      >
 
-    <div id="content">
-      <div class="card">
-        <p class="card-type">Quote</p>
-        <p id="quote">Click generate to load a quote.</p>
-        <div class="share-row">
-          <p>Share on</p>
-          <a id="share-quote-x" href="#" target="_blank" class="share-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 512 512">
-              <path fill="currentColor"
-                d="M389.2 48h70.6L305.6 224.2L487 464H345L233.7 318.6L106.5 464H35.8l164.9-188.5L26.8 48h145.6l100.5 132.9zm-24.8 373.8h39.1L151.1 88h-42z" />
-            </svg>
-            X / Twitter
-          </a>
-        </div>
-      </div>
+      <button id="generate" class="action-btn">
+        ✨ Generate
+      </button>
 
-      <div class="card">
-        <p class="card-type">Joke</p>
-        <p id="joke">Click generate to load a joke.</p>
-        <div class="share-row">
-          <p>Share on</p>
-          <a id="share-joke-x" href="#" target="_blank" class="share-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 512 512">
-              <path fill="currentColor"
-                d="M389.2 48h70.6L305.6 224.2L487 464H345L233.7 318.6L106.5 464H35.8l164.9-188.5L26.8 48h145.6l100.5 132.9zm-24.8 373.8h39.1L151.1 88h-42z" />
-            </svg>
-            X / Twitter
-          </a>
-        </div>
+      <button id="history-btn" class="action-btn">
+        📜 History
+      </button>
 
-      </div>
     </div>
+
+    <div class="stats">
+      Quotes Generated:
+      <span id="counter">0</span>
+    </div>
+
+    <div class="content-grid">
+
+      <div class="card">
+
+        <p class="card-type">Quote</p>
+
+        <p id="quote">
+          Click Generate to load a quote.
+        </p>
+
+        <div class="card-actions">
+
+          <button id="copy-quote" class="small-btn">
+            📋 Copy
+          </button>
+
+          <button id="favorite-quote" class="small-btn">
+            ❤️ Favorite
+          </button>
+
+          <a id="share-quote-x"
+            href="#"
+            target="_blank"
+            class="small-btn">
+            🐦 Share
+          </a>
+
+        </div>
+
+      </div>
+
+      <div class="card">
+
+        <p class="card-type">Joke</p>
+
+        <p id="joke">
+          Click Generate to load a joke.
+        </p>
+
+        <div class="card-actions">
+
+          <button id="copy-joke" class="small-btn">
+            📋 Copy
+          </button>
+
+          <button id="favorite-joke" class="small-btn">
+            ❤️ Favorite
+          </button>
+
+          <a id="share-joke-x"
+            href="#"
+            target="_blank"
+            class="small-btn">
+            🐦 Share
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
   </main>
+
+  <div id="history-panel">
+
+    <div class="history-header">
+
+      <h2>📜 History</h2>
+
+      <button id="close-history" class="small-btn">
+        ✕
+      </button>
+
+    </div>
+
+    <div id="history-list"></div>
+
+  </div>
 
   <div id="loading" class="hidden">
     <div class="loader"></div>
   </div>
+
 </body>
 
 </html>
