@@ -429,10 +429,15 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
       trackRecentProject(projectData);
     }
 
-    // SECURITY: sanitizeUrl() is called on the stored demoUrl before
-    // window.open() so a javascript: payload stored in localStorage cannot
-    // execute even after a page reload.
-    window.open(sanitizeUrl(demoUrl), "_blank", "noopener");
+    // Use built-in sandbox previewer if available, otherwise open in new tab
+    if (window.openSandbox && projectData) {
+      window.openSandbox(projectData);
+    } else {
+      // SECURITY: sanitizeUrl() is called on the stored demoUrl before
+      // window.open() so a javascript: payload stored in localStorage cannot
+      // execute even after a page reload.
+      window.open(sanitizeUrl(demoUrl), "_blank", "noopener");
+    }
   };
 
   card.onclick = activateCard;
@@ -1505,7 +1510,12 @@ document.addEventListener("click", (e) => {
   const project = PROJECTS.find((item) => item.day === projectDay);
   if (!project) return;
 
-  trackRecentProject(project);
+  if (window.openSandbox) {
+    e.preventDefault();
+    window.openSandbox(project);
+  } else {
+    trackRecentProject(project);
+  }
 });
 
 /* ============================================================
