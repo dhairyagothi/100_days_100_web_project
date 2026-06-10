@@ -78,6 +78,9 @@ body.light-mode .learning-sidebar {
   outline: none;
   transition: var(--t);
 }
+:root[data-theme="sepia"] .sidebar-search input {
+  background: var(--bg-surface);
+}
 
 .sidebar-search input:focus {
   border-color: var(--border-accent);
@@ -214,6 +217,7 @@ body.light-mode .learning-sidebar {
   display: block;
   padding: 0.45rem 1rem;
   color: var(--text-secondary);
+   /* color: var(--text-primary); */
   font-size: 0.825rem;
   text-decoration: none;
   border-radius: var(--radius-sm);
@@ -224,8 +228,12 @@ body.light-mode .learning-sidebar {
   scroll-margin-top: 1.25rem; /* keep active topic fully visible when scrolled into view */
 }
 
+:root[data-theme="sepia"] .topic-item:not(.active):not(.completed) a {
+  color: var(--text-primary);
+}
+
 .topic-item a:hover {
-  background: var(--bg-surface);
+  background: var(--accent-dim);
   color: var(--text-primary);
   padding-left: 1.25rem;
 }

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FocusList App</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; background: #f4f4f9; }
+        .container { background: white; padding: 2rem; width: 350px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        input { width: 70%; padding: 8px; }
+        button { padding: 8px; cursor: pointer; }
+        ul { list-style: none; padding: 0; margin-top: 20px; }
+        li { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #eee; }
+        .completed { text-decoration: line-through; color: gray; }
+        #progress { height: 10px; background: #4caf50; width: 0%; transition: width 0.3s; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>FocusList</h2>
+    <div id="progress"></div>
+    <input type="text" id="taskInput" placeholder="Add a task...">
+    <button onclick="addTask()">Add</button>
+    <ul id="taskList"></ul>
+</div>
+
+<script>
+    let tasks = [];
+
+    function addTask() {
+        const input = document.getElementById('taskInput');
+        if (!input.value) return;
+        tasks.push({ text: input.value, done: false });
+        input.value = '';
+        render();
+    }
+
+    function toggleTask(index) {
+        tasks[index].done = !tasks[index].done;
+        render();
+    }
+
+    function render() {
+        const list = document.getElementById('taskList');
+        list.innerHTML = '';
+        let completedCount = 0;
+        
+        tasks.forEach((task, index) => {
+            if (task.done) completedCount++;
+            const li = document.createElement('li');
+            li.innerHTML = `<span class="${task.done ? 'completed' : ''}" onclick="toggleTask(${index})">${task.text}</span>
+                            <button onclick="tasks.splice(${index}, 1); render()">X</button>`;
+            list.appendChild(li);
+        });
+
+        const progress = (completedCount / tasks.length) * 100 || 0;
+        document.getElementById('progress').style.width = progress + '%';
+    }
+</script>
+</body>

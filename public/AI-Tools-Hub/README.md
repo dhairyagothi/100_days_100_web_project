@@ -6,13 +6,12 @@ A modern, polished AI tools directory website featuring a curated collection of 
 
 AI Tools Hub is a beautiful, responsive SaaS-style website that showcases AI tools across multiple categories. Built with modern web technologies and glassmorphism design, it provides an elegant user experience for discovering AI tools.
 
-**Note:** This is **PR 1** - Only the basic directory UI is implemented. Features like search, filtering, favorites, dark mode, and analytics are left for future pull requests.
-
 ## Features
 
 ✅ Hero section with animated background elements  
 ✅ Statistics section highlighting key metrics  
 ✅ Categories section with 6 tool categories  
+✅ **My Favorites Section** to bookmark your favorite tools  
 ✅ Featured tools section with **18 AI tool cards**  
 ✅ "Why Use AI" benefits section  
 ✅ Future AI trends section  
@@ -23,7 +22,14 @@ AI Tools Hub is a beautiful, responsive SaaS-style website that showcases AI too
 ✅ Fully responsive design (mobile, tablet, desktop)  
 ✅ Accessibility features (semantic HTML, ARIA labels, keyboard-friendly)  
 ✅ Smooth scroll behavior  
-✅ Intersection Observer animations
+✅ Intersection Observer animations  
+✅ **Favorites/Bookmark System** with localStorage persistence  
+✅ **Toast notifications** for user feedback
+
+## Creator
+
+Created by **Maria S Patani**  
+GitHub: [@mariaspatani](https://github.com/mariaspatani)
 
 ## Technologies Used
 
@@ -51,20 +57,6 @@ public/AI-Tools-Hub/
 4. Presentation & Slides
 5. Productivity & Office
 6. Video, Voice & Media
-
-## Future Enhancements (For Upcoming PRs)
-
-These features are intentionally left for future pull requests:
-
-- 🔍 Search functionality
-- 🏷️ Filtering by category
-- ❤️ Favorites system
-- 💾 LocalStorage for saving preferences
-- 🌙 Dark / Light mode toggle
-- 📊 Analytics dashboard
-- ⭐ Rating and review system
-- 📱 PWA (Progressive Web App) support
-- 🔄 User accounts and personalization
 
 ## Getting Started
 
