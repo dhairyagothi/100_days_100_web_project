@@ -2834,5 +2834,20 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/Bubble-Game/index.html"
+  },
+  {
+    "projectNo": 225,
+    "projectName": "Bharatyatra",
+    "projectType": "Web Application",
+    "projectDesc": "travel booking website",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "Node.js",
+      "MongoDB"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/bharatyatra/frontend/public/index.html"
   }
 ]
