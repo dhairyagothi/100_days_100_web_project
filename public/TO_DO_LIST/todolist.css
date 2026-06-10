@@ -1,20 +1,45 @@
-*,
-*::before,
-*::after {
+/* ============================================================
+   DESIGN SYSTEM TOKENS & SYSTEM VARIABLES
+   ============================================================ */
+:root {
+  --bg-main: #0a0c1a;
+  --bg-surface: #0f1123;
+  --bg-card: rgba(18, 20, 40, 0.5);
+  
+  --accent-purple: #7c63ff;
+  --accent-blue: #4f8dff;
+  --accent-gradient: linear-gradient(135deg, #7c63ff, #4f8dff);
+  
+  --text-pure: #ffffff;
+  --text-primary: #f0f0f5;
+  --text-muted: rgba(240, 240, 245, 0.6);
+  --text-dim: rgba(240, 240, 245, 0.4);
+  
+  --color-success: #10b981;
+  --color-info: #38bdf8;
+  --color-danger: #ef4444;
+  --color-warning: #f59e0b;
+
+  --border-glow: rgba(124, 99, 255, 0.15);
+  --transition-default: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---------- Global Resets & Setup ---------- */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html,
-body {
+html, body {
   height: 100%;
   font-family: "Inter", sans-serif;
-  background: #0a0c1a;
-  color: #f0f0f5;
+  background: var(--bg-main);
+  color: var(--text-primary);
   overflow: hidden;
 }
 
+/* Accessibility Utility */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -27,21 +52,22 @@ body {
   border: 0;
 }
 
-/* ---------- App Container ---------- */
+/* ---------- Core Architecture App Container ---------- */
 .app-container {
   display: flex;
   height: 100vh;
   background: linear-gradient(135deg, #0a0c1a 0%, #0f1123 50%, #0a0c1a 100%);
 }
 
-/* ---------- Sidebar Layout ---------- */
+/* ---------- Glassmorphic Sidebar ---------- */
 .sidebar {
   width: 280px;
   background: rgba(15, 17, 35, 0.95);
-  border-right: 1px solid rgba(124, 99, 255, 0.15);
+  border-right: 1px solid var(--border-glow);
   display: flex;
   flex-direction: column;
   padding: 24px 20px;
+  -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
   flex-shrink: 0;
 }
@@ -56,10 +82,10 @@ body {
   gap: 12px;
   font-size: 1.25rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #7c63ff, #4f8dff);
+  background: var(--accent-gradient);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .sidebar-logo {
@@ -79,18 +105,19 @@ body {
   gap: 12px;
   padding: 12px 16px;
   border-radius: 12px;
-  color: rgba(240, 240, 245, 0.7);
+  color: var(--text-muted);
   text-decoration: none;
   font-weight: 600;
   font-size: 0.9rem;
-  transition: all 0.25s ease;
+  border: 1px solid transparent;
+  transition: var(--transition-default);
 }
 
 .sidebar-nav-item:hover,
 .sidebar-nav-item.active {
   background: rgba(124, 99, 255, 0.15);
-  color: #ffffff;
-  border: 1px solid rgba(124, 99, 255, 0.3);
+  color: var(--text-pure);
+  border-color: rgba(124, 99, 255, 0.3);
 }
 
 .sidebar-footer {
@@ -116,7 +143,7 @@ body {
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: var(--transition-default);
 }
 
 .sidebar-pdf-btn {
@@ -128,7 +155,7 @@ body {
   background: rgba(239, 68, 68, 0.25);
 }
 
-/* ---------- Main Content Panel ---------- */
+/* ---------- Main Workspace Viewport ---------- */
 .main-content {
   flex: 1;
   overflow-y: auto;
@@ -137,24 +164,20 @@ body {
   flex-direction: column;
 }
 
-.active-section {
-  display: block;
-}
-.inactive-section {
-  display: none;
-}
+.active-section { display: block; }
+.inactive-section { display: none; }
 
 .heading {
   font-size: 1.75rem;
   font-weight: 800;
   margin-bottom: 24px;
-  background: linear-gradient(135deg, #7c63ff, #4f8dff);
+  background: var(--accent-gradient);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-/* ---------- Productivity Dashboard Badges ---------- */
+/* ---------- Grid Dashboard Metrics ---------- */
 .productivity-dashboard {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -163,8 +186,8 @@ body {
 }
 
 .dashboard-card {
-  background: rgba(18, 20, 40, 0.6);
-  border: 1px solid rgba(124, 99, 255, 0.15);
+  background: var(--bg-card);
+  border: 1px solid var(--border-glow);
   border-radius: 16px;
   padding: 16px 20px;
   display: flex;
@@ -188,16 +211,12 @@ body {
 .tasks-number {
   font-size: 1.6rem;
   font-weight: 850;
-  color: #ffffff;
+  color: var(--text-pure);
 }
 
-/* ---------- Hero Promotion Banner ---------- */
+/* ---------- Hero Promotional Banner ---------- */
 .hero-banner {
-  background: linear-gradient(
-    135deg,
-    rgba(124, 99, 255, 0.2),
-    rgba(79, 141, 255, 0.1)
-  );
+  background: linear-gradient(135deg, rgba(124, 99, 255, 0.2), rgba(79, 141, 255, 0.1));
   border: 1px solid rgba(124, 99, 255, 0.2);
   border-radius: 20px;
   padding: 24px 32px;
@@ -236,7 +255,7 @@ body {
 
 .hero-subtitle {
   font-size: 0.9rem;
-  color: rgba(240, 240, 245, 0.6);
+  color: var(--text-muted);
 }
 
 .hero-progress {
@@ -256,7 +275,7 @@ body {
 
 .hero-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #7c63ff, #4f8dff);
+  background: linear-gradient(90deg, var(--accent-purple), var(--accent-blue));
   width: 0%;
   transition: width 0.4s ease;
 }
@@ -267,6 +286,7 @@ body {
   font-weight: 500;
 }
 
+/* Decorative Illustrations */
 .hero-illustration {
   position: relative;
   width: 140px;
@@ -278,7 +298,7 @@ body {
   bottom: 5px;
   width: 90px;
   height: 110px;
-  background: linear-gradient(135deg, #6c5ce7, #4f8dff);
+  background: linear-gradient(135deg, #6c5ce7, var(--accent-blue));
   border-radius: 12px;
   padding: 8px;
 }
@@ -298,7 +318,7 @@ body {
   border-radius: 0 0 10px 10px;
 }
 
-/* ---------- Input Registration Panel ---------- */
+/* ---------- Input Registration Controls ---------- */
 .input-panel {
   background: rgba(18, 20, 40, 0.4);
   border: 1px solid rgba(124, 99, 255, 0.1);
@@ -323,7 +343,7 @@ body {
   border-radius: 10px;
   border: 1px solid rgba(124, 99, 255, 0.2);
   background: #0f1123;
-  color: #fff;
+  color: var(--text-pure);
   font-size: 0.85rem;
   font-weight: 600;
   outline: none;
@@ -337,13 +357,13 @@ body {
   border-radius: 10px;
   border: 1px solid rgba(124, 99, 255, 0.15);
   background: rgba(255, 255, 255, 0.02);
-  color: #f0f0f5;
+  color: var(--text-primary);
   font-size: 0.9rem;
   outline: none;
   transition: border 0.2s;
 }
 .task-input:focus {
-  border-color: #7c63ff;
+  border-color: var(--accent-purple);
 }
 
 .add-task-btn {
@@ -351,7 +371,7 @@ body {
   padding: 0 20px;
   border-radius: 10px;
   border: none;
-  background: linear-gradient(135deg, #7c63ff, #4f8dff);
+  background: var(--accent-gradient);
   color: white;
   font-size: 0.85rem;
   font-weight: 700;
@@ -363,7 +383,7 @@ body {
 }
 
 /* ============================================================
-   INTERACTIVE DRAG AND DROP KANBAN WORKSPACE TRACKS
+   KANBAN GRAPHICAL WORKSPACE & TRACKS
    ============================================================ */
 .kanban-wrapper-board {
   display: flex;
@@ -380,12 +400,13 @@ body {
 
 .kanban-column-track {
   flex: 1;
-  background: rgba(18, 20, 40, 0.5);
+  background: var(--bg-card);
   border: 1px solid rgba(124, 99, 255, 0.1);
   border-radius: 16px;
   padding: 1.25rem;
   display: flex;
   flex-direction: column;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
 
@@ -414,7 +435,7 @@ body {
   padding: 2px 8px;
   border-radius: 100px;
   background: rgba(255, 255, 255, 0.05);
-  color: rgba(240, 240, 245, 0.6);
+  color: var(--text-muted);
 }
 
 .kanban-column-drop-zone {
@@ -425,63 +446,23 @@ body {
   min-height: 380px;
 }
 
+/* Item Task Cards */
 .kanban-task-card {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 12px;
   padding: 1rem;
   cursor: grab;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: var(--transition-default);
 }
-.kanban-task-card:active {
-  cursor: grabbing;
-}
+.kanban-task-card:active { cursor: grabbing; }
 .kanban-task-card:hover {
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(124, 99, 255, 0.25);
   transform: translateY(-2px);
 }
 
-/* ---------- Documents Section Archive ---------- */
-.documents-header {
-  width: 100%;
-  margin-bottom: 16px;
-}
-.documents-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  list-style: none;
-}
-.doc-item {
-  padding: 16px 20px;
-  background: rgba(18, 20, 40, 0.5);
-  border-radius: 12px;
-  border: 1px solid rgba(124, 99, 255, 0.1);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* ---------- Realtime Toast Messages ---------- */
-.pdf-message {
-  position: fixed;
-  top: 24px;
-  right: -400px;
-  background: rgba(20, 184, 166, 0.95);
-  color: white;
-  padding: 12px 24px;
-  border-radius: 12px;
-  z-index: 10000;
-  font-weight: 700;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  transition: right 0.3s ease;
-}
-.pdf-message.show {
-  right: 24px;
-}
-
-/* ---------- Card Action Buttons ---------- */
+/* Card Action Controllers */
 .card-actions {
   display: flex;
   justify-content: flex-end;
@@ -502,88 +483,193 @@ body {
   background: rgba(255, 255, 255, 0.04);
   color: rgba(240, 240, 245, 0.5);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-default);
   flex-shrink: 0;
 }
+.card-action-btn:hover { transform: translateY(-1px); }
 
-.card-action-btn:hover {
-  transform: translateY(-1px);
-}
-
-/* Completed button */
+/* Card Modifiers and Interactive State Rules */
 .btn-complete:hover {
   background: rgba(16, 185, 129, 0.15);
   border-color: rgba(16, 185, 129, 0.4);
-  color: #10b981;
+  color: var(--color-success);
 }
-
 .btn-active-complete {
   background: rgba(16, 185, 129, 0.2) !important;
   border-color: rgba(16, 185, 129, 0.5) !important;
-  color: #10b981 !important;
+  color: var(--color-success) !important;
   box-shadow: 0 0 8px rgba(16, 185, 129, 0.2);
 }
-
-/* In Progress button */
 .btn-inprogress:hover {
   background: rgba(56, 189, 248, 0.15);
   border-color: rgba(56, 189, 248, 0.4);
-  color: #38bdf8;
+  color: var(--color-info);
 }
-
 .btn-active-inprogress {
   background: rgba(56, 189, 248, 0.2) !important;
   border-color: rgba(56, 189, 248, 0.5) !important;
-  color: #38bdf8 !important;
+  color: var(--color-info) !important;
   box-shadow: 0 0 8px rgba(56, 189, 248, 0.2);
 }
-
-/* Delete button */
 .btn-delete:hover {
   background: rgba(239, 68, 68, 0.15);
   border-color: rgba(239, 68, 68, 0.4);
-  color: #ef4444;
+  color: var(--color-danger);
 }
 
-/* Card status variants */
 .kanban-task-card.card-completed {
   border-color: rgba(16, 185, 129, 0.2);
   background: rgba(16, 185, 129, 0.04);
 }
-
 .kanban-task-card.card-inprogress {
   border-color: rgba(56, 189, 248, 0.2);
   background: rgba(56, 189, 248, 0.04);
 }
-
-/* ---------- Drag state ---------- */
 .kanban-task-card.dragging {
   opacity: 0.4;
   transform: scale(0.97);
 }
-
 .kanban-column-drop-zone.drag-over {
   background: rgba(124, 99, 255, 0.06);
   border-radius: 10px;
   outline: 2px dashed rgba(124, 99, 255, 0.3);
 }
 
-/* ---------- Clear Workspace Confirmation Modal ---------- */
+/* ---------- Documents Management Archive ---------- */
+.documents-header {
+  width: 100%;
+  margin-bottom: 16px;
+}
+.documents-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style: none;
+}
+.doc-item {
+  padding: 16px 20px;
+  background: var(--bg-card);
+  border-radius: 12px;
+  border: 1px solid rgba(124, 99, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.doc-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.doc-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.doc-meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.doc-date, .doc-task-count {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+.doc-stale {
+  font-size: 0.72rem;
+  color: var(--color-warning);
+  margin-top: 4px;
+}
+.doc-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+.doc-btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid rgba(124, 99, 255, 0.3);
+  background: rgba(124, 99, 255, 0.1);
+  color: #c4b5ff;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-default);
+  line-height: 1;
+}
+.doc-btn:hover {
+  background: rgba(124, 99, 255, 0.2);
+  border-color: rgba(124, 99, 255, 0.5);
+}
+.doc-btn-del {
+  border-color: rgba(239, 68, 68, 0.25);
+  background: rgba(239, 68, 68, 0.08);
+  color: #fca5a5;
+}
+.doc-btn-del:hover {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.45);
+}
+
+/* Empty State Configurations */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 8px;
+}
+.empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 4px;
+  opacity: 0.5;
+}
+.empty-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.empty-desc {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  text-align: center;
+  max-width: 300px;
+  line-height: 1.5;
+}
+
+/* ---------- Global Application Notification Toasts ---------- */
+.pdf-message {
+  position: fixed;
+  top: 24px;
+  right: -400px;
+  background: rgba(20, 184, 166, 0.95);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  z-index: 10000;
+  font-weight: 700;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.pdf-message.show { right: 24px; }
+
+/* ---------- Synchronous Functional Modals ---------- */
 .modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(5, 6, 18, 0.75);
+  -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 50000;
-  animation: modalFadeIn 0.2s ease;
-}
-
-@keyframes modalFadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  animation: modalFadeIn 0.2s ease forwards;
 }
 
 .modal-box {
@@ -598,40 +684,13 @@ body {
   align-items: center;
   gap: 12px;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
-  animation: modalSlideUp 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: modalSlideUp 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-@keyframes modalSlideUp {
-  from { opacity: 0; transform: translateY(24px) scale(0.96); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.modal-icon {
-  font-size: 2.5rem;
-  margin-bottom: 4px;
-}
-
-.modal-title {
-  font-size: 1.35rem;
-  font-weight: 800;
-  color: #f0f0f5;
-  text-align: center;
-}
-
-.modal-desc {
-  font-size: 0.875rem;
-  color: rgba(240, 240, 245, 0.55);
-  text-align: center;
-  line-height: 1.6;
-  max-width: 320px;
-}
-
-.modal-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 12px;
-  width: 100%;
-}
+.modal-icon { font-size: 2.5rem; margin-bottom: 4px; }
+.modal-title { font-size: 1.35rem; font-weight: 800; color: var(--text-primary); text-align: center; }
+.modal-desc { font-size: 0.875rem; color: rgba(240, 240, 245, 0.55); text-align: center; line-height: 1.6; max-width: 320px; }
+.modal-actions { display: flex; gap: 12px; margin-top: 12px; width: 100%; }
 
 .modal-btn {
   flex: 1;
@@ -640,149 +699,57 @@ body {
   font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-default);
   border: none;
 }
-
 .modal-btn-cancel {
   background: rgba(255, 255, 255, 0.06);
   color: rgba(240, 240, 245, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
-
 .modal-btn-cancel:hover {
   background: rgba(255, 255, 255, 0.1);
-  color: #f0f0f5;
+  color: var(--text-primary);
 }
-
 .modal-btn-confirm {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
+  background: linear-gradient(135deg, var(--color-danger), #dc2626);
   color: #fff;
   box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
 }
-
 .modal-btn-confirm:hover {
   transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
 }
 
-/* ---------- Documents Section Styles ---------- */
-.doc-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
+@keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modalSlideUp { from { opacity: 0; transform: translateY(24px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-.doc-name {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #f0f0f5;
-}
-
-.doc-meta {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.doc-date {
-  font-size: 0.75rem;
-  color: rgba(240, 240, 245, 0.4);
-}
-
-.doc-task-count {
-  font-size: 0.75rem;
-  color: rgba(240, 240, 245, 0.4);
-}
-
-.doc-stale {
-  font-size: 0.72rem;
-  color: #f59e0b;
-  margin-top: 4px;
-}
-
-.doc-actions {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.doc-btn {
-  padding: 6px 14px;
-  border-radius: 8px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid rgba(124, 99, 255, 0.3);
-  background: rgba(124, 99, 255, 0.1);
-  color: #c4b5ff;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  line-height: 1;
-}
-
-.doc-btn:hover {
-  background: rgba(124, 99, 255, 0.2);
-  border-color: rgba(124, 99, 255, 0.5);
-}
-
-.doc-btn-del {
-  border-color: rgba(239, 68, 68, 0.25);
-  background: rgba(239, 68, 68, 0.08);
-  color: #fca5a5;
-}
-
-.doc-btn-del:hover {
-  background: rgba(239, 68, 68, 0.18);
-  border-color: rgba(239, 68, 68, 0.45);
-}
-
-/* Empty state */
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 20px;
-  gap: 8px;
-}
-
-.empty-icon {
-  font-size: 2.5rem;
-  margin-bottom: 4px;
-  opacity: 0.5;
-}
-
-.empty-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: rgba(240, 240, 245, 0.6);
-}
-
-.empty-desc {
-  font-size: 0.85rem;
-  color: rgba(240, 240, 245, 0.35);
-  text-align: center;
-  max-width: 300px;
-  line-height: 1.5;
-}
-
-/* ---------- Responsive Design Adaptations ---------- */
+/* ============================================================
+   RESPONSIVE DESIGN ADAPTATIONS
+   ============================================================ */
 @media (max-width: 1200px) {
   .productivity-dashboard {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
 @media (max-width: 900px) {
+  body {
+    overflow-y: auto; /* Fallback allowance for vertical mobile stacking layouts */
+  }
+  .app-container {
+    height: auto;
+    min-height: 100vh;
+    flex-direction: column;
+  }
   .sidebar {
-    width: 220px;
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border-glow);
   }
   .main-content {
     padding: 16px;
+    overflow-y: visible;
   }
   .hero-banner {
     flex-direction: column;
@@ -795,5 +762,8 @@ body {
   .input-row {
     flex-direction: column;
     align-items: stretch;
+  }
+  .input-select-wrapper {
+    flex: none;
   }
 }

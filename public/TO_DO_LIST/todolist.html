@@ -25,7 +25,7 @@
             <span class="sidebar-logo">📋</span>
             TO-DO LIST
           </h2>
-        </div>
+        </h2>
 
         <nav class="sidebar-nav" aria-label="Main Navigation">
           <a
@@ -126,9 +126,15 @@
           >
             📥 Save as PDF
           </button>
+
           <button type="button" id="cleardone" class="sidebar-pdf-btn">
-            🧹 Clear Workspace
+            🗑️ Clear Workspace
           </button>
+
+          <button type="button" id="clearCompletedBtn" class="sidebar-pdf-btn" style="margin-top: 8px; background: rgba(16, 185, 129, 0.1); color: #10b981;">
+  ✅ Clear Completed
+</button>
+
         </div>
       </aside>
 
@@ -327,7 +333,6 @@
       </main>
     </div>
 
-    <!-- Clear Workspace Confirmation Modal -->
     <div id="clearModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" style="display:none;">
       <div class="modal-box">
         <div class="modal-icon">🧹</div>
@@ -339,6 +344,19 @@
         </div>
       </div>
     </div>
+
+    <!-- Clear Completed Confirmation Modal -->
+<div id="clearCompletedModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="completedModalTitle" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-icon">✅</div>
+    <h2 class="modal-title" id="completedModalTitle">Clear Completed Tasks?</h2>
+    <p class="modal-desc">This will permanently remove all tasks from the <strong style="color: #10b981;">Completed column</strong> only. Your Pending and In Progress tasks will remain untouched. This action cannot be undone.</p>
+    <div class="modal-actions">
+      <button id="completedModalCancelBtn" class="modal-btn modal-btn-cancel">Cancel</button>
+      <button id="completedModalConfirmBtn" class="modal-btn modal-btn-confirm">Yes, Clear Completed</button>
+    </div>
+  </div>
+</div>
 
     <div id="toast" class="pdf-message" role="alert" aria-live="polite"></div>
     <div class="toast-container" id="toastContainer"></div>
@@ -723,6 +741,81 @@
       document.getElementById("clearModal").addEventListener("click", (e) => {
         if (e.target === document.getElementById("clearModal")) {
           document.getElementById("clearModal").style.display = "none";
+        }
+      });
+
+      // Clear Completed Button Logic
+const clearCompletedBtn = document.getElementById('clearCompletedBtn');
+const clearCompletedModal = document.getElementById('clearCompletedModal');
+const completedModalCancelBtn = document.getElementById('completedModalCancelBtn');
+const completedModalConfirmBtn = document.getElementById('completedModalConfirmBtn');
+
+if (clearCompletedBtn) {
+  clearCompletedBtn.addEventListener('click', () => {
+    const completedCount = tasks.filter(t => t.status === 'completed').length;
+    if (completedCount === 0) {
+      showKanbanToast('✨ No completed tasks to clear!', 'info');
+      return;
+    }
+    clearCompletedModal.style.display = 'flex';
+  });
+}
+
+if (completedModalCancelBtn) {
+  completedModalCancelBtn.addEventListener('click', () => {
+    clearCompletedModal.style.display = 'none';
+  });
+}
+
+if (completedModalConfirmBtn) {
+  completedModalConfirmBtn.addEventListener('click', () => {
+    // Remove ONLY completed tasks
+    tasks = tasks.filter(t => t.status !== 'completed');
+    localStorage.setItem('kanban-board-tasks', JSON.stringify(tasks));
+    renderKanban();
+    clearCompletedModal.style.display = 'none';
+    showKanbanToast('✅ Completed tasks cleared!', 'success');
+  });
+}
+
+// Close modal if clicking on backdrop
+if (clearCompletedModal) {
+  clearCompletedModal.addEventListener('click', (e) => {
+    if (e.target === clearCompletedModal) {
+      clearCompletedModal.style.display = 'none';
+    }
+  });
+}
+// ========== END OF CLEAR COMPLETED CODE ==========
+
+document.addEventListener("DOMContentLoaded", renderKanban);
+
+      // ─── ENHANCEMENT: Clear Completed Workspace Modal & Logic ──────────────────
+      document.getElementById("clearcompleted").addEventListener("click", () => {
+        const completedCount = tasks.filter((t) => t.status === "completed").length;
+        if (completedCount === 0) {
+          showKanbanToast("✨ No completed tasks to clear!", "info");
+          return;
+        }
+        document.getElementById("clearCompletedModal").style.display = "flex";
+      });
+
+      document.getElementById("completedModalCancelBtn").addEventListener("click", () => {
+        document.getElementById("clearCompletedModal").style.display = "none";
+      });
+
+      document.getElementById("completedModalConfirmBtn").addEventListener("click", () => {
+        // Filter out completed tasks, keeping only pending and inprogress tasks
+        tasks = tasks.filter((t) => t.status !== "completed");
+        localStorage.setItem("kanban-board-tasks", JSON.stringify(tasks));
+        renderKanban();
+        document.getElementById("clearCompletedModal").style.display = "none";
+        showKanbanToast("🧹 Completed tasks cleared!", "success");
+      });
+
+      document.getElementById("clearCompletedModal").addEventListener("click", (e) => {
+        if (e.target === document.getElementById("clearCompletedModal")) {
+          document.getElementById("clearCompletedModal").style.display = "none";
         }
       });
 
