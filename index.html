@@ -164,11 +164,161 @@
         <h2 class="section-title">Every experiment, catalogued.</h2>
       </div>
 
+<<<<<<< Updated upstream
       <div class="projects-header">
         <!-- Filter Chips -->
         <div class="filter-chips" id="filterChips" style="margin-bottom: 20px;">
           <button class="chip active" data-filter="all" id="filterAll">
             All <span class="chip-count" id="allCount">Projects</span>
+=======
+    <section class="projects-section" id="learningJourneySection">
+      <div class="projects-inner">
+        <div class="projects-intro">
+          <p class="section-label">Your Learning Journey</p>
+          <h2 class="section-title">Progression Dashboard</h2>
+        </div>
+        
+        <div class="learning-dashboard">
+          <div class="learning-stat-card">
+            <span class="stat-label">Overall Progress</span>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" id="learningProgressBar" style="width: 0%"></div>
+            </div>
+            <span class="stat-value" id="learningProgressText">0 / 0 completed (0%)</span>
+          </div>
+          
+          <div class="learning-stat-card">
+            <span class="stat-label">Daily Learning Streak</span>
+            <div class="streak-value">
+              <i class="fas fa-fire streak-fire-icon" aria-hidden="true"></i>
+              <span id="learningStreakCount">0</span> days
+            </div>
+            <span class="stat-subtext" id="learningStreakSub">Finish a project today to build your streak!</span>
+          </div>
+
+          <div class="learning-stat-card">
+            <span class="stat-label">Recommended Next Project</span>
+            <div id="learningRecommendationContent" class="recommendation-content">
+              <span class="stat-subtext">Loading recommendation...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="projects-section" id="projects">
+      <div class="projects-inner">
+        <div class="projects-intro">
+          <p class="section-label">Archive index</p>
+          <h2 class="section-title">Every experiment, catalogued.</h2>
+        </div>
+
+        <div class="projects-header">
+          <div
+            class="filter-chips"
+            id="filterChips"
+            style="margin-bottom: 20px"
+          >
+            <button
+              class="chip active"
+              data-filter="all"
+              id="filterAll"
+              aria-label="Show all projects"
+            >
+              All <span class="chip-count" id="allCount">Projects</span>
+            </button>
+            <button
+              class="chip"
+              data-filter="game"
+              id="filterGame"
+              aria-label="Show game projects"
+            >
+              Games <span class="category-count" id="gameCount"></span>
+            </button>
+            <button
+              class="chip"
+              data-filter="clone"
+              id="filterClone"
+              aria-label="Show clone projects"
+            >
+              Clones <span class="category-count" id="cloneCount"></span>
+            </button>
+            <button
+              class="chip"
+              data-filter="tool"
+              id="filterTool"
+              aria-label="Show tool projects"
+            >
+              Tools <span class="category-count" id="toolCount"></span>
+            </button>
+            <button
+              class="chip"
+              data-filter="ui"
+              id="filterUI"
+              aria-label="Show UI animation projects"
+            >
+              UI / Animation <span class="category-count" id="uiCount"></span>
+            </button>
+            <button
+              class="chip"
+              data-filter="api"
+              id="filterAPI"
+              aria-label="Show API projects"
+            >
+              APIs <span class="category-count" id="apiCount"></span>
+            </button>
+          </div>
+
+          <div class="search-bar">
+            <i class="fas fa-search search-icon" aria-hidden="true"></i>
+            <input
+              type="text"
+              id="searchInput"
+              class="search-input"
+              placeholder="Search projects…"
+              autocomplete="off"
+              aria-label="Search projects"
+            />
+            <button
+              id="clearSearch"
+              class="clear-btn"
+              aria-label="Clear search"
+              type="button"
+            >
+              &times;
+            </button>
+            <select id="sortProjects" aria-label="Sort projects">
+              <option value="default">Sort By</option>
+              <option value="az">A-Z</option>
+              <option value="latest">Latest Day</option>
+              <option value="difficulty">Difficulty</option>
+            </select>
+            <select
+              id="difficultyFilter"
+              aria-label="Filter projects by difficulty"
+            >
+              <option value="all">Difficulty (All)</option>
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="filter-toolbar">
+          <select id="techStackFilter" aria-label="Filter by tech stack">
+            <option value="all">Filter by Tech Stack (All)</option>
+            <option value="javascript">JavaScript</option>
+            <option value="css">CSS</option>
+            <option value="html">HTML</option>
+            <option value="react">React</option>
+            <option value="python">Python</option>
+            <option value="typescript">TypeScript</option>
+            <option value="tailwindcss">Tailwind CSS</option>
+          </select>
+          <button id="clearAllFiltersBtn" class="clear-filters-btn" aria-label="Clear all filters">
+            <i class="fas fa-filter-circle-xmark" aria-hidden="true"></i> Clear Filters
+>>>>>>> Stashed changes
           </button>
           <button class="chip" data-filter="game" id="filterGame">
             Games

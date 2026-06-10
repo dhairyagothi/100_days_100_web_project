@@ -258,6 +258,264 @@ function getSourceUrl(url) {
   return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main`;
 }
 
+<<<<<<< Updated upstream
+=======
+function resolveProjectUrls(day, name, url, tags) {
+  const trimmed = (url || "").trim();
+  const sourceOnly = isSourceOnlyProject(day, tags);
+  let demoUrl = trimmed;
+  let sourceUrl = getSourceUrl(trimmed, day);
+
+  if (isGithubTreeUrl(trimmed)) {
+    sourceUrl = trimmed;
+    demoUrl = sourceOnly ? trimmed : githubTreeToLocalDemo(trimmed) || trimmed;
+  }
+
+  if (!sourceOnly && demoUrl && !demoUrl.startsWith("http")) {
+    try {
+      const isRoot = !window.location.pathname.includes("/contributors/");
+      const basePrefix = isRoot ? "" : "../";
+      if (demoUrl.startsWith("./")) {
+        demoUrl = basePrefix + demoUrl.substring(2);
+      }
+    } catch (error) {}
+  }
+
+  return { demoUrl, sourceUrl, sourceOnly };
+}
+
+function getProjectDescription(project) {
+  return (
+    (project && project.projectDesc) ||
+    "Explore this project to discover interactive functionality."
+  );
+}
+
+/**
+ * Escape a plain string so it is safe to inject into HTML text content
+ * or attribute values (when quoted with double quotes).
+ *
+ * SECURITY: This is the primary XSS defence for every piece of
+ * contributor-supplied data that ends up inside innerHTML / template
+ * literals.  Call it on EVERY untrusted value before inserting into HTML.
+ */
+function escapeHTML(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/**
+ * Sanitize a URL so it can be used safely in an href attribute.
+ *
+ * SECURITY: Blocks javascript:, data:, vbscript: and any other
+ * non-http(s)/relative protocol that could execute code when a user
+ * clicks a link.  Falls back to "#" so the link is inert rather than
+ * omitted, which keeps the UI layout intact.
+ *
+ * Allowed schemes:
+ * - https://    (absolute external links, GitHub, live demos)
+ * - http://     (legacy / local dev)
+ * - ./  ../     (relative paths to local demo index.html files)
+ * - #           (in-page anchors)
+ *
+ * Everything else — including javascript:, data:, vbscript:,
+ * blob: and protocol-relative // URLs — is replaced with "#".
+ *
+ * @param {string} url - Raw URL from project data or localStorage.
+ * @returns {string} A URL that is safe to place in an href attribute.
+ */
+function sanitizeUrl(url) {
+  const raw = String(url || "").trim();
+
+  // Allow empty / anchor-only values
+  if (!raw || raw === "#") return raw || "#";
+
+  // Allow relative paths used by project demos
+  if (
+    raw.startsWith("./") ||
+    raw.startsWith("../") ||
+    raw.startsWith("/")
+  ) {
+    return raw;
+  }
+  if (
+    !raw.includes(":") &&
+    (raw.includes(".html") ||
+      raw.startsWith("public/") ||
+      raw.startsWith("projects/"))
+  ) {
+    return raw;
+  }
+
+  // Allow http/https links
+  if (/^https?:\/\//i.test(raw)) {
+    return raw;
+  }
+
+  // Block unsafe schemes
+  console.warn("[XSS] Blocked unsafe URL scheme:", raw);
+  return "#";
+}
+
+function buildProjectCardHTML({
+  day,
+  name,
+  url,
+  tags,
+  category,
+  isBookmarked = false,
+  isCompleted = false,
+  showDescription = true,
+}) {
+  const { demoUrl, sourceUrl, sourceOnly } = resolveProjectUrls(
+    day,
+    name,
+    url,
+    tags,
+  );
+
+  // ── SECURITY: sanitize URLs before placing them in href attributes ──
+  // resolveProjectUrls may return a contributor-supplied string or a path
+  // derived from one.  sanitizeUrl() blocks javascript:, data:, vbscript:
+  // and any other executable protocol while leaving valid http(s) / relative
+  // paths untouched.
+  const safeDemoUrl   = sanitizeUrl(demoUrl);
+  const safeSourceUrl = sanitizeUrl(sourceUrl);
+
+  const tagsArray = Array.isArray(tags)
+    ? tags.filter((t) => t !== SOURCE_ONLY_TAG)
+    : String(tags || "")
+        .split(/\s+/)
+        .filter((t) => t && t !== SOURCE_ONLY_TAG);
+
+  // SECURITY: escapeHTML on every tag token prevents <script> / event-handler
+  // injection via the techStack field in projects.json.
+  const tagsHTML = tagsArray
+    .map((t) => `<span class="tag">${escapeHTML(t)}</span>`)
+    .join("");
+
+  const project = PROJECTS.find((p) => p.projectName === name || p.day === day);
+
+  // SECURITY: description, day, name and category are all escaped before
+  // being written into innerHTML.
+  const description  = escapeHTML(getProjectDescription(project));
+  const safeDay      = escapeHTML(day);
+  const safeName     = escapeHTML(name);
+  const safeCategory = escapeHTML(category);
+
+  const difficulty = project ? project.difficulty || "" : "";
+  const difficultyKey = (difficulty || "").toLowerCase();
+  const difficultyLabel = CATEGORY_LABEL[difficultyKey] || difficulty;
+  const safeDifficultyLabel = escapeHTML(difficultyLabel);
+  const difficultyBadge = difficulty
+    ? `<span class="card-difficulty ${difficultyKey}">${safeDifficultyLabel}</span>`
+    : "";
+
+  const sourceOnlyBadge = sourceOnly
+    ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
+    : "";
+
+  // SECURITY: href values come from sanitizeUrl() — not raw contributor data.
+  // data-id uses escapeHTML so it cannot break out of the attribute.
+  const primaryLink = sourceOnly
+    ? `<a href="${safeSourceUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source of ${safeName} (opens in a new tab)">
+                        <i class="fab fa-github" aria-hidden="true"></i> Source
+                    </a>`
+    : `<a href="${safeDemoUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View demo of ${safeName} (opens in a new tab)">
+                        Demo <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                    </a>`;
+
+  const codeLink = sourceOnly
+    ? ""
+    : `<a href="${safeSourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source code of ${safeName} on GitHub (opens in a new tab)">
+                        <i class="fab fa-github" aria-hidden="true"></i> Code
+                    </a>`;
+
+return {
+    html: `
+            <div class="card-meta">
+                <span class="card-day">${safeDay}</span>
+                <span class="card-category-wrap">
+                  <span class="card-category">${safeCategory}</span>
+                  ${difficultyBadge}
+                  ${sourceOnlyBadge}
+                </span>
+            </div>
+
+            <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
+                <img src="./${url && url.startsWith('./') ? url.split('/')[2] : name.replace(/\s+/g, '_')}/preview.png" alt="${name} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+
+            <h3 class="card-name">${safeName}</h3>
+
+            ${
+              showDescription
+                ? `<div class="card-description">
+    ${description}
+</div>`
+                : ""
+            }
+            <div class="card-tags">${tagsHTML}</div>
+            <div class="card-footer">
+                <div class="card-actions-left">
+                    ${primaryLink}
+                    ${codeLink}
+                </div>
+                <div style="display: flex; gap: 0.35rem;">
+                    <button class="complete-btn ${isCompleted ? "active" : ""}" data-id="${safeDay}" aria-label="${isCompleted ? `Mark ${safeName} as incomplete` : `Mark ${safeName} as completed`}">
+                        <i class="${isCompleted ? "fa-solid" : "fa-regular"} fa-circle-check" aria-hidden="true"></i>
+                    </button>
+                    <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${safeDay}" aria-label="${isBookmarked ? `Remove ${safeName} from bookmarks` : `Bookmark ${safeName}`}">
+                        <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        `,
+    demoUrl: safeDemoUrl,
+    sourceOnly,
+  };
+}
+
+function attachProjectCardInteraction(card, demoUrl, projectData = null) {
+  card.style.cursor = "pointer";
+  
+  const activateCard = (e) => {
+    if (e.target.closest("a, button")) return;
+    if (!demoUrl) return;
+
+    // Track the project visit if projectData is provided
+    if (projectData) {
+      trackRecentProject(projectData);
+    }
+
+    // Use built-in sandbox previewer if available, otherwise open in new tab
+    if (window.openSandbox && projectData) {
+      window.openSandbox(projectData);
+    } else {
+      // SECURITY: sanitizeUrl() is called on the stored demoUrl before
+      // window.open() so a javascript: payload stored in localStorage cannot
+      // execute even after a page reload.
+      window.open(sanitizeUrl(demoUrl), "_blank", "noopener");
+    }
+  };
+
+  card.onclick = activateCard;
+
+  card.onkeydown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      // Prevent page scrolling on spacebar when card is focused
+      if (e.key === " ") {
+        e.preventDefault();
+      }
+      activateCard(e);
+    }
+  };
+}
+>>>>>>> Stashed changes
 
 /* ============================================================
    TECHNOLOGY STACK FILTERING FUNCTIONS
@@ -382,8 +640,26 @@ function getAllTechnologies() {
    BOOKMARK + RECENT SYSTEM
 ============================================================ */
 
+<<<<<<< Updated upstream
 let bookmarkedProjects = JSON.parse(localStorage.getItem('bookmarkedProjects')) || [];
 let recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
+=======
+let bookmarkedProjects = [];
+let recentProjects = [];
+let completedProjects = [];
+
+try {
+  bookmarkedProjects =
+    JSON.parse(localStorage.getItem("bookmarkedProjects")) || [];
+  recentProjects = JSON.parse(localStorage.getItem("recentProjects")) || [];
+  completedProjects = JSON.parse(localStorage.getItem("completedProjects")) || [];
+} catch (error) {
+  console.warn(
+    "localStorage is not available or access is denied:",
+    error.message,
+  );
+}
+>>>>>>> Stashed changes
 
 let showAllBookmarks = false;
 let showAllRecent = false;
@@ -561,12 +837,30 @@ function renderGrid() {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
 
+<<<<<<< Updated upstream
     // FIX PART 1: Add a pointer cursor so users know it's clickable
     card.className = 'project-card';
     card.style.cursor = 'pointer';
 
     // FIX PART 2: Make the whole card clickable to open the demo in a new tab
     card.onclick = () => window.open(url.trim(), '_blank');
+=======
+    const isBookmarked = bookmarkedProjects.some(
+      (item) => normalizeProjectEntry(item).day === day,
+    );
+    const isCompleted = completedProjects.includes(day);
+
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked,
+      isCompleted,
+      showDescription: true,
+    });
+>>>>>>> Stashed changes
 
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
@@ -800,11 +1094,27 @@ function renderBookmarks() {
 
   visibleBookmarks.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
+<<<<<<< Updated upstream
     const card = document.createElement('div');
     card.className = 'project-card';
     const tagsArray = Array.isArray(tags) ? tags : (typeof tags === 'string' ? tags.split(/\s+/).filter(t => t) : []);
     const tagsHTML = tagsArray.map((tag) => `<span class="tag">${tag}</span>`).join('');
     const sourceUrl = getSourceUrl(url);
+=======
+    const isCompleted = completedProjects.includes(day);
+    
+    // Updated to use the secure HTML-string approach
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked: true,
+      isCompleted,
+      showDescription: true,
+    });
+>>>>>>> Stashed changes
 
     card.innerHTML = `
             <div class="card-meta">
@@ -853,12 +1163,31 @@ function renderRecentProjects() {
 
   visibleRecent.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
+<<<<<<< Updated upstream
     const card = document.createElement('div');
     card.className = 'project-card';
     const tagsArray = Array.isArray(tags) ? tags : (typeof tags === 'string' ? tags.split(/\s+/).filter(t => t) : []);
     const tagsHTML = tagsArray.map((tag) => `<span class="tag">${tag}</span>`).join('');
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const sourceUrl = getSourceUrl(url);
+=======
+    const isBookmarked = bookmarkedProjects.some(
+      (item) => normalizeProjectEntry(item).day === day,
+    );
+    const isCompleted = completedProjects.includes(day);
+    
+    // Updated to use the secure HTML-string approach
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked,
+      isCompleted,
+      showDescription: true,
+    });
+>>>>>>> Stashed changes
 
     card.innerHTML = `
             <div class="card-meta">
@@ -1274,10 +1603,40 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchRepoStats();
   initScrollBtn();
 
+<<<<<<< Updated upstream
   if (hasProjectGrid()) {
     renderGrid();
     renderBookmarks();
     renderRecentProjects();
+=======
+    syncProjectCounts();
+
+    if (hasProjectGrid()) {
+      loadBookmarksFromURL();
+      checkAndResetStreakOnLoad();
+
+      renderGrid();
+      renderBookmarks();
+      renderRecentProjects();
+      renderLearningDashboard();
+    }
+
+    syncProjectCounts();
+    fetchRepoStats();
+    initScrollBtn();
+  } catch (error) {
+    console.error("Failed to load projects:", error);
+
+    const grid = document.getElementById("projectGrid");
+
+    if (grid) {
+      grid.innerHTML = `
+        <div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">
+          Failed to load projects. Please try refreshing the page.
+        </div>
+      `;
+    }
+>>>>>>> Stashed changes
   }
 });
 
@@ -1572,9 +1931,213 @@ function applyFilters(search, category) {
 
 }
 
+<<<<<<< Updated upstream
 document.addEventListener('DOMContentLoaded', () => {
   restoreStateFromURL();
   const searchInput = document.getElementById('search') ||
+=======
+/* ============================================================
+   GAMIFIED LEARNING PROGRESSION DASHBOARD ENGINE
+   ============================================================ */
+
+function toggleComplete(project) {
+  const day = project.day;
+  const exists = completedProjects.includes(day);
+
+  if (exists) {
+    completedProjects = completedProjects.filter((item) => item !== day);
+    showToast("Project marked as incomplete");
+  } else {
+    completedProjects.push(day);
+    showToast("Project completed!");
+    updateStreakOnCompletion();
+  }
+
+  try {
+    localStorage.setItem("completedProjects", JSON.stringify(completedProjects));
+  } catch (error) {
+    console.warn("Could not save completed projects state:", error.message);
+  }
+
+  renderGrid();
+  renderBookmarks();
+  renderRecentProjects();
+  renderLearningDashboard();
+}
+
+function updateStreakOnCompletion() {
+  const todayStr = new Date().toDateString();
+  let streak = parseInt(localStorage.getItem("learningStreak") || "0", 10);
+  const lastDateStr = localStorage.getItem("lastCompletionDate");
+
+  if (lastDateStr === todayStr) {
+    return; // Already completed a project today
+  }
+
+  if (lastDateStr) {
+    const lastDate = new Date(lastDateStr);
+    const today = new Date(todayStr);
+    const diffTime = Math.abs(today - lastDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 1) {
+      streak++;
+    } else if (diffDays > 1) {
+      streak = 1;
+    }
+  } else {
+    streak = 1;
+  }
+
+  localStorage.setItem("learningStreak", streak.toString());
+  localStorage.setItem("lastCompletionDate", todayStr);
+}
+
+function checkAndResetStreakOnLoad() {
+  const lastDateStr = localStorage.getItem("lastCompletionDate");
+  if (!lastDateStr) return;
+
+  const todayStr = new Date().toDateString();
+  const lastDate = new Date(lastDateStr);
+  const today = new Date(todayStr);
+  const diffTime = Math.abs(today - lastDate);
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffDays > 1) {
+    localStorage.setItem("learningStreak", "0");
+  }
+}
+
+function getRecommendation() {
+  const uncompleted = PROJECTS.filter((p) => !completedProjects.includes(p.day));
+  if (uncompleted.length === 0) {
+    return null;
+  }
+
+  if (completedProjects.length === 0) {
+    return uncompleted.find((p) => p.difficulty === "beginner") || uncompleted[0];
+  }
+
+  const completedProjectData = PROJECTS.filter((p) => completedProjects.includes(p.day));
+  const tagWeights = {};
+  completedProjectData.forEach((p) => {
+    if (p.techStack) {
+      p.techStack.forEach((tag) => {
+        tagWeights[tag] = (tagWeights[tag] || 0) + 1;
+      });
+    }
+  });
+
+  const difficultyMap = { beginner: 1, intermediate: 2, advanced: 3 };
+  let totalDiff = 0;
+  completedProjectData.forEach((p) => {
+    const diff = (p.difficulty || "beginner").toLowerCase();
+    totalDiff += difficultyMap[diff] || 1;
+  });
+  const avgDiffVal = totalDiff / completedProjectData.length;
+  let targetDifficulty = "beginner";
+  if (avgDiffVal > 2.2) targetDifficulty = "advanced";
+  else if (avgDiffVal > 1.2) targetDifficulty = "intermediate";
+
+  let bestProject = null;
+  let highestScore = -1;
+
+  uncompleted.forEach((p) => {
+    let score = 0;
+    if (p.techStack) {
+      p.techStack.forEach((tag) => {
+        score += (tagWeights[tag] || 0) * 2;
+      });
+    }
+    if ((p.difficulty || "beginner").toLowerCase() === targetDifficulty) {
+      score += 3;
+    }
+    const dayNum = parseInt(p.day.replace("Day ", ""), 10) || 100;
+    score += (100 - dayNum) * 0.01;
+
+    if (score > highestScore) {
+      highestScore = score;
+      bestProject = p;
+    }
+  });
+
+  return bestProject || uncompleted[0];
+}
+
+function renderLearningDashboard() {
+  const progressBar = document.getElementById("learningProgressBar");
+  const progressText = document.getElementById("learningProgressText");
+  const streakCount = document.getElementById("learningStreakCount");
+  const streakSub = document.getElementById("learningStreakSub");
+  const recContent = document.getElementById("learningRecommendationContent");
+
+  if (!PROJECTS || PROJECTS.length === 0) return;
+
+  const total = PROJECTS.length;
+  const completed = completedProjects.length;
+  const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+  if (progressBar) progressBar.style.width = `${percent}%`;
+  if (progressText) {
+    progressText.innerHTML = `<strong>${completed}</strong> / <strong>${total}</strong> completed (<strong>${percent}%</strong>)`;
+  }
+
+  const streak = parseInt(localStorage.getItem("learningStreak") || "0", 10);
+  if (streakCount) streakCount.textContent = streak.toString();
+  if (streakSub) {
+    const lastDateStr = localStorage.getItem("lastCompletionDate");
+    const todayStr = new Date().toDateString();
+    if (lastDateStr === todayStr) {
+      streakSub.textContent = "Great job! You completed a project today.";
+    } else {
+      streakSub.textContent = streak > 0 ? "Keep it up! Complete a project today to extend your streak." : "Finish a project today to start your learning streak!";
+    }
+  }
+
+  if (recContent) {
+    const recommended = getRecommendation();
+    if (recommended) {
+      const isRoot = !window.location.pathname.includes("/contributors/");
+      const basePrefix = isRoot ? "" : "../";
+      const path = recommended.projectPath;
+      const cleanDemoPath = path.startsWith("./") ? basePrefix + path.substring(2) : path;
+      const difficulty = (recommended.difficulty || "beginner").toLowerCase();
+      const diffLabel = CATEGORY_LABEL[difficulty] || recommended.difficulty;
+
+      recContent.innerHTML = `
+        <a href="${cleanDemoPath}" class="recommend-link open-project" data-id="${recommended.day}" aria-label="Start recommended project ${recommended.projectName}">
+          <span class="recommend-name">${recommended.projectName}</span>
+          <span class="recommend-diff ${difficulty}">${diffLabel}</span>
+        </a>
+      `;
+    } else {
+      recContent.innerHTML = `<span class="stat-subtext"><i class="fas fa-trophy text-yellow-500" aria-hidden="true"></i> You've completed all projects! Legend!</span>`;
+    }
+  }
+}
+
+document.addEventListener("click", (e) => {
+  const completeBtn = e.target.closest(".complete-btn");
+  if (!completeBtn) return;
+
+  e.preventDefault();
+  const projectDay = completeBtn.dataset.id;
+  const project = PROJECTS.find((item) => item.day === projectDay);
+  if (!project) return;
+
+  toggleComplete(project);
+});
+
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    await loadProjects();
+    restoreStateFromURL();
+  } catch (error) {
+    console.error("Failed to restore state or load projects:", error);
+  }
+  const searchInput =
+    document.getElementById("search") ||
+>>>>>>> Stashed changes
     document.querySelector('input[type="text"]') ||
     document.querySelector('.search-input');
   if (searchInput) {
