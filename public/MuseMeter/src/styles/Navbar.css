@@ -1,0 +1,27 @@
+.navbar-logo {
+  height: 50px; /* adjust size */
+  width: auto;
+}
+
+.navbar {
+  padding: 0.8rem 1rem;
+}
+
+.navbar-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  color: white !important;
+}
+
+.navbar-brand:hover {
+  color: #d4af37 !important; /* gold accent */
+}
+
+.nav-link {
+  color: white !important;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #d4af37 !important; /* gold hover */
+}

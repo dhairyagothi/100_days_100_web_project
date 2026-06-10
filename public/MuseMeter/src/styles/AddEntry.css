@@ -1,0 +1,91 @@
+/* Whole page container */
+.add-entry-container {
+  min-height: 100vh;
+  padding: 2rem 4rem;
+  background: #f9fafb; /* soft light gray */
+  color: #1e293b; /* slate-800 */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Page Title */
+.add-entry-container h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: #0f172a; /* slate-900 */
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+  text-align: left; /* left aligned, not centered */
+}
+
+/* Form itself */
+.add-entry-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 700px; /* form won't stretch too much */
+}
+
+/* Each input group */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Labels */
+.form-group label {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #334155; /* slate-700 */
+}
+
+/* Inputs, selects, textarea */
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 0.75rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  background: #ffffff;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Hover/focus effect */
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  outline: none;
+}
+
+/* Textarea slightly bigger */
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Submit Button */
+.submit-btn {
+  width: fit-content;
+  background: #d4af37;
+  color: #ffffff;
+  padding: 0.9rem 2rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.1s ease-in-out;
+}
+
+.submit-btn:hover {
+  background: #f3bd0a;
+  transform: translateY(-2px);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}

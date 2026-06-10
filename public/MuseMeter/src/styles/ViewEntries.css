@@ -1,0 +1,25 @@
+.view-entries-container {
+  padding: 2rem;
+}
+
+.entry-card {
+  background-color: #f5f5f5;
+  border: none;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.entry-card:hover {
+  background-color: #eaeaea;
+}
+
+.entry-title {
+  font-weight: bold;
+  color: #1a1a1a;
+}
+
+.entry-category {
+  color: #d4af37;
+  font-weight: bold;
+}
