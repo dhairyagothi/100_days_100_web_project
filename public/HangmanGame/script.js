@@ -4,7 +4,6 @@ const keyboardDiv = document.querySelector('.keyboard');
 const hangmanImage = document.querySelector('.hangman-box img');
 const gameModal = document.querySelector('.game-modal');
 const playAgainBtn = gameModal.querySelector('button');
-let shownHints = new Set();
 
 // variable bnaye hai game shuru krne ke
 let currentWord,
@@ -43,10 +42,8 @@ Word: ${word}
 
 Rules:
 - Hint 1 vague
-- Hint 2 more specific than Hint 1
-- Hint 3 significantly more specific than Hint 2
-- Every hint must be unique
-- Do not repeat information from previous hints
+- Hint 2 medium
+- Hint 3 strong
 - Never reveal the word
 - Never reveal letters
 
@@ -93,23 +90,18 @@ Return ONLY JSON:
         .trim()
     );
 
-    const uniqueHints = [...new Set(parsed.hints)]
-  .filter(hint => hint && hint.trim().length > 0);
-
-while (uniqueHints.length < 3) {
-  uniqueHints.push("Think about words related to the first hint.");
-}
-
-currentHints = uniqueHints.slice(0, 3);
+    currentHints = parsed.hints;
   } catch (err) {
-  console.warn('Gemini unavailable', err);
+    console.warn('Gemini unavailable', err);
 
-  currentHints = [
-    fallbackHint,
-    `The word starts with "${word[0].toUpperCase()}".`,
-    `The word starts with "${word[0].toUpperCase()}" and ends with "${word[word.length - 1].toUpperCase()}".`,
-  ];
-}
+    currentHints = [
+      fallbackHint,
+
+      `Category: ${fallbackHint.split('.')[0]}`,
+
+      `Strong clue: ${fallbackHint}`,
+    ];
+  }
 
   hintLevel = 0;
 
@@ -119,7 +111,6 @@ currentHints = uniqueHints.slice(0, 3);
 const resetGame = () => {
   correctLetters = [];
   wrongGuessCount = 0;
-  shownHints.clear();
   hangmanImage.src = 'images/hangman-0.svg';
   guessesText.innerText = `${wrongGuessCount} / ${maxGuesses}`;
   wordDisplay.innerHTML = currentWord
