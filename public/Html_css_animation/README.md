@@ -81,7 +81,8 @@ https://100-days-100-web-project.vercel.app/public/Html_css_animation/index.html
 
 ## 📸 Screenshots
 
---screenshot--
+<img width="1817" height="764" alt="image" src="https://github.com/user-attachments/assets/92976fa5-405f-4977-881a-b261ff6dd3e1" />
+
 
 ---
 
