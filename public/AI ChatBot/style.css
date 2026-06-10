@@ -98,6 +98,20 @@ pre code {
         transform: translateY(-15px);
     }
 }
+@media (prefers-reduced-motion: reduce) {
+    .loading-dot {
+        animation: none;
+    }
+
+    #output-container {
+        scroll-behavior: auto;
+    }
+
+    .copy-btn,
+    #send-btn {
+        transition: none;
+    }
+}
 
 #output-field {
     background-color: var(--ai-message-bg-color);
