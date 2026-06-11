@@ -2408,3 +2408,8 @@ function updateGamifiedUI() {
   if (elements.xpText) elements.xpText.textContent = `${totalXP} Total XP`;
   if (elements.bar) elements.bar.style.width = "0%";
 }
+
+function initStreak() {
+  // Streak widgets live on tracker.html. Keep this as a safe no-op on the homepage
+  // so the startup flow does not throw when the shared init sequence runs.
+}
