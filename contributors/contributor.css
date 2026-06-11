@@ -200,6 +200,132 @@ body {
     margin-bottom: 6rem;
 }
 
+.leaderboard-section {
+    margin-bottom: 6rem;
+}
+
+.leaderboard-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.section-kicker {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+}
+
+.leaderboard-header h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    margin-bottom: 0.85rem;
+}
+
+.leaderboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
+}
+
+.leaderboard-item {
+    background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: var(--transition);
+}
+
+.leaderboard-item:hover {
+    transform: translateY(-6px);
+    border-color: var(--accent-color);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+}
+
+.leaderboard-rank {
+    width: 52px;
+    height: 52px;
+    border-radius: 18px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    font-weight: 900;
+    color: #050505;
+    background: linear-gradient(135deg, #00ff88, #00bdff);
+}
+
+.leaderboard-item.rank-1 .leaderboard-rank {
+    background: linear-gradient(135deg, #ffd166, #fca311);
+}
+
+.leaderboard-item.rank-2 .leaderboard-rank {
+    background: linear-gradient(135deg, #c7d2fe, #93c5fd);
+}
+
+.leaderboard-item.rank-3 .leaderboard-rank {
+    background: linear-gradient(135deg, #fda4af, #f472b6);
+}
+
+.leaderboard-avatar {
+    width: 54px;
+    height: 54px;
+    border-radius: 18px;
+    object-fit: cover;
+    border: 1px solid var(--glass-border);
+    flex: 0 0 auto;
+}
+
+.leaderboard-body {
+    min-width: 0;
+    flex: 1;
+}
+
+.leaderboard-name {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.35rem;
+}
+
+.leaderboard-name h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    line-height: 1.2;
+}
+
+.leaderboard-count {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--accent-color);
+    font-size: 1.1rem;
+    font-weight: 900;
+}
+
+.leaderboard-meta {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.leaderboard-chip {
+    align-self: flex-start;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid var(--glass-border);
+    border-radius: 999px;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+
 .stat-item {
     background: var(--glass-bg);
     backdrop-filter: blur(20px);

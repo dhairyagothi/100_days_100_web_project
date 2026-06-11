@@ -412,6 +412,7 @@ pdf.save(
 
 async function fetchContributors() {
     const contributorsContainer = document.getElementById("contributors");
+    const leaderboardContainer = document.getElementById("leaderboard");
     const contributorCountSpan = document.getElementById("contributorCount");
 
     try {
@@ -422,16 +423,47 @@ async function fetchContributors() {
         if (!response.ok) throw new Error("Failed to fetch contributors");
 
         const contributors = await response.json();
+        const rankedContributors = [...contributors].sort(
+            (a, b) => b.contributions - a.contributions
+        );
+
         contributorCountSpan.textContent = contributors.length;
 
         // Calculate total commits
-        const totalCommits = contributors.reduce((sum, c) => sum + c.contributions, 0);
+        const totalCommits = rankedContributors.reduce((sum, c) => sum + c.contributions, 0);
         const totalCommitsEl = document.getElementById('totalCommits');
         if (totalCommitsEl) totalCommitsEl.textContent = totalCommits.toLocaleString();
 
         contributorsContainer.innerHTML = ""; 
+        if (leaderboardContainer) leaderboardContainer.innerHTML = "";
 
-        contributors.forEach((contributor) => {
+        rankedContributors.slice(0, 6).forEach((contributor, index) => {
+            if (!leaderboardContainer) return;
+
+            const rank = index + 1;
+            const item = document.createElement("article");
+            item.className = `leaderboard-item rank-${rank}`;
+
+            const medal =
+                rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : `#${rank}`;
+
+            item.innerHTML = `
+                <div class="leaderboard-rank" aria-hidden="true">${medal}</div>
+                <img class="leaderboard-avatar" src="${contributor.avatar_url}" alt="${contributor.login}">
+                <div class="leaderboard-body">
+                    <div class="leaderboard-name">
+                        <h3>${contributor.login}</h3>
+                    </div>
+                    <div class="leaderboard-count">${contributor.contributions.toLocaleString()}</div>
+                    <div class="leaderboard-meta">GitHub contributions</div>
+                </div>
+                <div class="leaderboard-chip">Rank ${rank}</div>
+            `;
+
+            leaderboardContainer.appendChild(item);
+        });
+
+        rankedContributors.forEach((contributor) => {
             const card = document.createElement("div");
             card.className = "contributor-card";
 
