@@ -15,13 +15,11 @@ body {
 }
 
 .container {
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: transparent;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    width: 90%;
-    max-width: 700px;
-    padding: 2.5rem;
-    backdrop-filter: blur(10px);
+    width: 95%;
+    max-width: 1200px;
+    padding: 0;
 }
 
 .screen {
@@ -382,60 +380,249 @@ select:focus {
     background: #4a5568;
 }
 
-@media (max-width: 480px) {
-    .container {
-        width: 95%;
-        padding: 1.5rem;
-    }
-    
-    h1 {
-        font-size: 2rem;
-    }
-    
-    .quiz-icon, .result-icon {
-        font-size: 3rem;
-    }
-    
-    .header {
+/* New Professional Dashboard Styles */
+.end-content-wrapper {
+    display: flex;
+    gap: 2rem;
+    align-items: stretch;
+    width: 100%;
+}
+
+.main-result-section {
+    flex: 1.1;
+    display: flex;
+    flex-direction: column;
+}
+
+.result-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.side-dashboard {
+    flex: 0.9;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.side-dashboard > * {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 1.75rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Achievement Badge */
+.achievement-badge {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 165, 0, 0.1));
+    border: 2px solid rgba(255, 215, 0, 0.6);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: left;
+}
+
+.achievement-badge i {
+    font-size: 2.75rem;
+    color: #ffd700;
+    animation: spin 3s infinite linear;
+}
+
+.achievement-badge.learner {
+    background: linear-gradient(135deg, rgba(156, 163, 175, 0.15), rgba(107, 114, 128, 0.1));
+    border-color: rgba(156, 163, 175, 0.6);
+}
+
+.achievement-badge.learner i {
+    color: #9ca3af;
+}
+
+.achievement-badge.scholar {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.1));
+    border-color: rgba(59, 130, 246, 0.6);
+}
+
+.achievement-badge.scholar i {
+    color: #3b82f6;
+}
+
+.achievement-badge.expert {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(124, 58, 237, 0.1));
+    border-color: rgba(139, 92, 246, 0.6);
+}
+
+.achievement-badge.expert i {
+    color: #8b5cf6;
+}
+
+.achievement-badge.quiz-master {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.15));
+    border-color: rgba(255, 215, 0, 0.7);
+}
+
+.achievement-badge.quiz-master i {
+    color: #ffd700;
+}
+
+.achievement-badge .badge-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.achievement-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #2d3748;
+}
+
+.achievement-desc {
+    font-size: 0.95rem;
+    color: #4a5568;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Section Titles */
+.section-title {
+    color: #2d3748;
+    margin: 0 0 1.25rem 0;
+    font-size: 1.15rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.section-title i {
+    color: #764ba2;
+    font-size: 1.2rem;
+}
+
+/* Analytics Cards */
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.analytics-card {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(118, 75, 162, 0.08));
+    padding: 1.25rem;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    border: 1px solid rgba(102, 126, 234, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.analytics-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+}
+
+.analytics-card i {
+    font-size: 1.7rem;
+    color: #764ba2;
+}
+
+.analytics-label {
+    color: #718096;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.analytics-value {
+    color: #2d3748;
+    font-size: 1.65rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Personal Best Cards */
+.personal-best-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.personal-best-card {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+    padding: 1.25rem;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    border: 1px solid rgba(118, 75, 162, 0.2);
+    transition: transform 0.2s ease;
+}
+
+.personal-best-card:hover {
+    transform: translateY(-2px);
+}
+
+.personal-best-card i {
+    font-size: 1.7rem;
+    color: #764ba2;
+}
+
+.pb-category {
+    color: #4a5568;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.pb-score {
+    color: #2d3748;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+/* Responsive Layout */
+@media (max-width: 1024px) {
+    .end-content-wrapper {
         flex-direction: column;
-        gap: 1rem;
     }
     
-    .progress-container {
-        margin: 1rem 0;
+    .side-dashboard {
+        width: 100%;
+        flex: none;
+    }
+    
+    .main-result-section, .side-dashboard {
         width: 100%;
     }
-    
-    #question {
-        font-size: 1.2rem;
+}
+
+@media (max-width: 640px) {
+    .analytics-grid, .personal-best-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
     
-    .choice-btn {
-        padding: 0.8rem 1.2rem;
-        font-size: 1rem;
-    }
-    
-    .final-score {
-        font-size: 3rem;
-    }
-    
-    .categories-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .quiz-options {
-        grid-template-columns: 1fr;
-    }
-    
-    .result-stats {
-        grid-template-columns: 1fr;
-    }
-    
-    .end-buttons {
+    .achievement-badge {
         flex-direction: column;
-    }
-    
-    .category-card i {
-        font-size: 2rem;
+        text-align: center;
+        padding: 1.25rem;
     }
 }

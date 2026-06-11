@@ -4,32 +4,85 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>N-Queens Interactive Game</title>
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="/public/N_Queen/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
+
   <a href="/" class="project-back-button">← Back to Home</a>
 
-  <div class="container">
-    <h1>N-Queens Game</h1>
-    <p class="subtitle">Place N queens safely without them attacking each other!</p>
+    <main class="container">
+      <header class="game-header">
+        <div class="game-header__title-group">
+          <h1 class="game-header__title">N-Queens</h1>
+          <p class="game-header__subtitle">Place N queens so none attack each other.</p>
+        </div>
 
-    <div class="board-details">
-        <div class="board-size">
-            <label for="boardSize">Choose Board Size (N)</label>
-            <input type="number" id="boardSize" min="4" max="12" value="4">
+        <section class="status-panel" aria-label="Game status">
+          <div class="status-panel__item">
+            <span class="status-panel__label">Time</span>
+            <strong id="timer" class="status-panel__value">00:00</strong>
+          </div>
+          <div class="status-panel__item">
+            <span class="status-panel__label">Moves</span>
+            <strong id="moveCount" class="status-panel__value">0</strong>
+          </div>
+          <div class="status-panel__item">
+            <span class="status-panel__label">Queens</span>
+            <strong class="status-panel__value">
+              <span id="queenCount">0</span>/<span id="queenTarget">4</span>
+            </strong>
+          </div>
+        </section>
+      </header>
+
+      <div class="controls" role="toolbar" aria-label="Game setup">
+        <div class="controls__group">
+          <label class="controls__label" for="boardSize">Size</label>
+          <input
+            type="number"
+            id="boardSize"
+            class="controls__input"
+            min="4"
+            max="12"
+            value="4"
+            aria-label="Board size (4 to 12)"
+          />
         </div>
-        <div class="start-reset-button">
-            <button id="startGame">Start Game</button>
-            <button id="resetGame" class="reset-button" style="display: none;">Reset Game</button>
+        <div class="controls__button-group">
+          <button id="startGame" class="btn btn--primary">New Game</button>
+          <button id="resetGame" class="btn btn--secondary" disabled>Reset</button>
         </div>
-    </div>
-   
-    <p id="message"></p>
-    <div id="gameBoard"></div>
-  </div>   
-  <script src="./script.js"></script>
+      </div>
+
+      <div class="controls" role="toolbar" aria-label="Game actions">
+        <div class="controls__button-group">
+          <button id="toggleMark" class="btn btn--secondary" disabled>Mark Cells</button>
+          <button id="hintBtn" class="btn btn--secondary" disabled>Hint</button>
+          <button id="solveBtn" class="btn btn--secondary" disabled>Auto-Solve</button>
+        </div>
+        <label class="controls__checkbox">
+          <input type="checkbox" id="showInvalid" disabled />
+          Show attacked cells
+        </label>
+      </div>
+
+      <p id="message" class="message" role="status" aria-live="polite">
+        Choose a size and press New Game.
+      </p>
+
+      <section
+        id="gameBoard"
+        class="board"
+        aria-label="Game board"
+        aria-describedby="message"
+      ></section>
+    </main>
+
+ 
+    
+  <script src="/public/N_Queen/script.js" defer></script>
 </body>
 </html>

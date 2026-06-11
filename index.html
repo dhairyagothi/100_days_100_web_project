@@ -17,7 +17,6 @@
     <script src="theme.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-    <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="100 Days · 100 Web Projects" />
     <meta
@@ -32,7 +31,6 @@
       name="google-site-verification"
       content="FZFMJENRD-9I74GAks_nhLVOOiqqnlsPU-JDtRCYXpc"
     />
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="100 Days · 100 Web Projects" />
     <meta
@@ -54,19 +52,119 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     />
     <link rel="stylesheet" href="style.css" />
+
+    <style>
+      .btn-stats {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0.65rem 1.25rem;
+        border-radius: 8px;
+        border: 1px solid rgba(15, 242, 200, 0.4);
+        background: rgba(15, 242, 200, 0.07);
+        color: #0ff2c8;
+        font-family: inherit;
+        font-size: 0.875rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background 0.2s, box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+        white-space: nowrap;
+      }
+      .btn-stats:hover {
+        background: rgba(15, 242, 200, 0.15);
+        border-color: rgba(15, 242, 200, 0.75);
+        box-shadow: 0 0 18px rgba(15, 242, 200, 0.22), 0 2px 8px rgba(0,0,0,0.3);
+        transform: translateY(-1px);
+        color: #0ff2c8;
+      }
+      .btn-stats:active {
+        transform: translateY(0);
+      }
+      .btn-stats i {
+        font-size: 0.85rem;
+      }
+
+      /* ── CTA Banner ── */
+      .cta-banner {
+        position: relative;
+        overflow: hidden;
+        padding: 5rem 1.5rem;
+        text-align: center;
+        background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(15, 242, 200, 0.08) 0%, transparent 70%),
+                    linear-gradient(180deg, #0a0a1a 0%, #0d1117 100%);
+        border-top: 1px solid rgba(15, 242, 200, 0.08);
+      }
+      .cta-banner::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle 600px at 50% 50%, rgba(15, 242, 200, 0.05), transparent 70%);
+        pointer-events: none;
+      }
+      .cta-banner-inner {
+        position: relative;
+        max-width: 640px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.25rem;
+      }
+      .cta-banner h2 {
+        font-family: 'Inter Tight', sans-serif;
+        font-size: clamp(1.75rem, 4vw, 2.5rem);
+        font-weight: 800;
+        color: #ffffff;
+        line-height: 1.2;
+        margin: 0;
+      }
+      .cta-banner p {
+        font-family: 'Inter Tight', sans-serif;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.55);
+        line-height: 1.6;
+        margin: 0;
+        max-width: 480px;
+      }
+      .cta-banner-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.85rem 2rem;
+        border-radius: 50px;
+        background: #0ff2c8;
+        color: #0a0a1a;
+        font-family: 'Inter Tight', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
+        letter-spacing: 0.01em;
+        transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+        box-shadow: 0 0 24px rgba(15, 242, 200, 0.35);
+        margin-top: 0.5rem;
+      }
+      .cta-banner-btn:hover {
+        background: #00e0b8;
+        transform: translateY(-2px);
+        box-shadow: 0 0 36px rgba(15, 242, 200, 0.5);
+      }
+      .cta-banner-btn:active {
+        transform: translateY(0);
+      }
+    </style>
   </head>
 
   <body>
     <div class="ambient ambient-left" aria-hidden="true"></div>
     <div class="ambient ambient-right" aria-hidden="true"></div>
     <div class="noise-layer" aria-hidden="true"></div>
-    <div class="cursor-ring cursor-ring--outer" aria-hidden="true"></div>
-    <div class="cursor-ring cursor-ring--inner" aria-hidden="true"></div>
+    
 
-
-    <!-- ── NAVBAR ──────────────────────────────────────────── -->
     <div id="navbar-container"></div>
-    <!-- ── HERO ───────────────────────────────────────────── -->
     <section class="hero" id="hero">
       <div class="hero-terminal" id="heroTerminal" aria-hidden="true"></div>
       <div class="hero-inner">
@@ -78,7 +176,7 @@
         </h1>
 
         <p class="hero-sub">
-          A comprehensive collection of 112+ web development projects ranging
+          A comprehensive collection of 200+ web development projects ranging
           from beginner to intermediate level, designed to help developers learn
           and practice through hands-on experience.
         </p>
@@ -89,16 +187,14 @@
 
         <div class="hero-actions">
           <a href="#projects" class="btn btn-primary" id="heroBrowseBtn">
-            Browse Projects <i class="fas fa-arrow-down"></i>
+            Browse Projects <i class="fas fa-arrow-down" aria-hidden="true"></i>
           </a>
-          <a
-            href="https://github.com/dhairyagothi/100_days_100_web_project"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn btn-ghost"
-            id="heroGithubBtn"
-          >
-            <i class="fab fa-github"></i> GitHub
+          <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer"
+            class="btn btn-ghost" id="heroGithubBtn" aria-label="GitHub Repository (opens in a new tab)">
+            <i class="fab fa-github" aria-hidden="true"></i> GitHub
+          </a>
+          <a href="stats.html" class="btn-stats" id="heroStatsBtn" title="View Project Stats Dashboard" aria-label="View Project Stats Dashboard">
+            <i class="fas fa-chart-bar" aria-hidden="true"></i> Stats
           </a>
         </div>
 
@@ -163,7 +259,7 @@
                 title="Copy Bookmarks"
                 aria-label="Copy bookmarks"
               >
-                <i class="fas fa-copy"></i>
+                <i class="fas fa-copy" aria-hidden="true"></i>
               </button>
               <button
                 class="view-all-btn"
@@ -180,7 +276,6 @@
       </div>
     </section>
 
-    <!-- ── PROJECTS ───────────────────────────────────────── -->
     <section class="projects-section" id="projects">
       <div class="projects-inner">
         <div class="projects-intro">
@@ -189,7 +284,6 @@
         </div>
 
         <div class="projects-header">
-          <!-- Filter Chips -->
           <div
             class="filter-chips"
             id="filterChips"
@@ -246,7 +340,7 @@
           </div>
 
           <div class="search-bar">
-            <i class="fas fa-search search-icon"></i>
+            <i class="fas fa-search search-icon" aria-hidden="true"></i>
             <input
               type="text"
               id="searchInput"
@@ -281,7 +375,6 @@
           </div>
         </div>
 
-        <!-- Tech Stack Dropdown & Clear Filters -->
         <div class="filter-toolbar">
           <select id="techStackFilter" aria-label="Filter by tech stack">
             <option value="all">Filter by Tech Stack (All)</option>
@@ -293,27 +386,35 @@
             <option value="typescript">TypeScript</option>
             <option value="tailwindcss">Tailwind CSS</option>
           </select>
-          <button id="clearAllFiltersBtn" class="clear-filters-btn">
-            <i class="fas fa-filter-circle-xmark"></i> Clear Filters
+          <button id="clearAllFiltersBtn" class="clear-filters-btn" aria-label="Clear all filters">
+            <i class="fas fa-filter-circle-xmark" aria-hidden="true"></i> Clear Filters
           </button>
         </div>
 
-        <!-- Project Grid -->
         <div class="project-grid" id="projectGrid"></div>
 
-        <!-- No Results -->
         <div class="no-results" id="noResults">
-          <i class="fas fa-search"></i>
+          <i class="fas fa-search" aria-hidden="true"></i>
           <p>No projects match your search.</p>
         </div>
       </div>
     </section>
 
-    <!-- ── FOOTER ─────────────────────────────────────────── -->
+    <!-- ── CTA Banner (before footer) ── -->
+    <section class="cta-banner" aria-labelledby="ctaBannerTitle">
+      <div class="cta-banner-inner">
+        <h2 id="ctaBannerTitle">Ready to start your 100-day journey?</h2>
+        <p>Track your daily progress, earn XP, and level up your developer profile. Start tracking today.</p>
+        <a href="tracker.html" class="cta-banner-btn" aria-label="Open Daily Tracker">
+          Open Daily Tracker <span aria-hidden="true">🚀</span>
+        </a>
+      </div>
+    </section>
+
     <footer class="footer homepage-footer">
       <div class="homepage-footer-shell">
         <div class="homepage-footer-brand">
-          <p class="homepage-footer-kicker">100 Days · 100 Web Projects</p>
+    <p class="homepage-footer-kicker">100 Days · 100 Web Projects</p>
           <h2>
             Open-source builds for daily practice and creative frontend
             exploration.
@@ -346,6 +447,7 @@
                   href="https://github.com/dhairyagothi/100_days_100_web_project"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="View repository on GitHub (opens in a new tab)"
                   >View repository</a
                 >
               </li>
@@ -367,7 +469,7 @@
                 target="_blank"
                 rel="noopener noreferrer"
                 class="social-btn"
-                aria-label="Follow on Instagram"
+                aria-label="Follow on Instagram (opens in a new tab)"
               >
                 <i class="fab fa-instagram" aria-hidden="true"></i>
               </a>
@@ -376,7 +478,7 @@
                 target="_blank"
                 rel="noopener noreferrer"
                 class="social-btn"
-                aria-label="Open GitHub repository"
+                aria-label="Open GitHub repository (opens in a new tab)"
               >
                 <i class="fab fa-github" aria-hidden="true"></i>
               </a>
@@ -385,7 +487,7 @@
                 target="_blank"
                 rel="noopener noreferrer"
                 class="social-btn"
-                aria-label="Connect on LinkedIn"
+                aria-label="Connect on LinkedIn (opens in a new tab)"
               >
                 <i class="fab fa-linkedin" aria-hidden="true"></i>
               </a>
@@ -406,6 +508,7 @@
               target="_blank"
               rel="noopener noreferrer"
               class="featured-btn"
+              aria-label="Try README Generator (opens in a new tab)"
             >
               <i class="fas fa-magic" aria-hidden="true"></i> Try README
               Generator
@@ -429,6 +532,7 @@
               href="https://www.github-readme.tech"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="README Generator (opens in a new tab)"
               >README Generator</a
             >
           </div>
@@ -436,18 +540,18 @@
       </div>
     </footer>
 
-    <!-- ── SCROLL TO TOP ──────────────────────────────────── -->
     <button id="scrollBtn" aria-label="Back to top">
       <svg class="progress-ring" viewBox="0 0 48 48">
         <circle class="ring-track" cx="24" cy="24" r="22" />
         <circle class="ring-fill" id="ringFill" cx="24" cy="24" r="22" />
       </svg>
-      <i class="fas fa-arrow-up scroll-arrow"></i>
+      <i class="fas fa-arrow-up scroll-arrow" aria-hidden="true"></i>
       <span class="scroll-tooltip">Back to top</span>
     </button>
     <div class="toast" id="toast"></div>
     <script type="module" src="hero-terminal.js" defer></script>
     <script src="index.js?v=4" defer></script>
     <script src="navbar.js" defer></script>
+    <script src="cursor.js" defer></script>
   </body>
 </html>
