@@ -69,13 +69,19 @@
         letter-spacing: 0.02em;
         text-decoration: none;
         cursor: pointer;
-        transition: background 0.2s, box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+        transition:
+          background 0.2s,
+          box-shadow 0.2s,
+          border-color 0.2s,
+          transform 0.15s;
         white-space: nowrap;
       }
       .btn-stats:hover {
         background: rgba(15, 242, 200, 0.15);
         border-color: rgba(15, 242, 200, 0.75);
-        box-shadow: 0 0 18px rgba(15, 242, 200, 0.22), 0 2px 8px rgba(0,0,0,0.3);
+        box-shadow:
+          0 0 18px rgba(15, 242, 200, 0.22),
+          0 2px 8px rgba(0, 0, 0, 0.3);
         transform: translateY(-1px);
         color: #0ff2c8;
       }
@@ -92,15 +98,24 @@
         overflow: hidden;
         padding: 5rem 1.5rem;
         text-align: center;
-        background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(15, 242, 200, 0.08) 0%, transparent 70%),
-                    linear-gradient(180deg, #0a0a1a 0%, #0d1117 100%);
+        background:
+          radial-gradient(
+            ellipse 80% 60% at 50% 50%,
+            rgba(15, 242, 200, 0.08) 0%,
+            transparent 70%
+          ),
+          linear-gradient(180deg, #0a0a1a 0%, #0d1117 100%);
         border-top: 1px solid rgba(15, 242, 200, 0.08);
       }
       .cta-banner::before {
-        content: '';
+        content: "";
         position: absolute;
         inset: 0;
-        background: radial-gradient(circle 600px at 50% 50%, rgba(15, 242, 200, 0.05), transparent 70%);
+        background: radial-gradient(
+          circle 600px at 50% 50%,
+          rgba(15, 242, 200, 0.05),
+          transparent 70%
+        );
         pointer-events: none;
       }
       .cta-banner-inner {
@@ -113,7 +128,7 @@
         gap: 1.25rem;
       }
       .cta-banner h2 {
-        font-family: 'Inter Tight', sans-serif;
+        font-family: "Inter Tight", sans-serif;
         font-size: clamp(1.75rem, 4vw, 2.5rem);
         font-weight: 800;
         color: #ffffff;
@@ -121,7 +136,7 @@
         margin: 0;
       }
       .cta-banner p {
-        font-family: 'Inter Tight', sans-serif;
+        font-family: "Inter Tight", sans-serif;
         font-size: 1rem;
         color: rgba(255, 255, 255, 0.55);
         line-height: 1.6;
@@ -136,14 +151,17 @@
         border-radius: 50px;
         background: #0ff2c8;
         color: #0a0a1a;
-        font-family: 'Inter Tight', sans-serif;
+        font-family: "Inter Tight", sans-serif;
         font-size: 1rem;
         font-weight: 700;
         text-decoration: none;
         cursor: pointer;
         border: none;
         letter-spacing: 0.01em;
-        transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+        transition:
+          background 0.2s,
+          transform 0.15s,
+          box-shadow 0.2s;
         box-shadow: 0 0 24px rgba(15, 242, 200, 0.35);
         margin-top: 0.5rem;
       }
@@ -162,7 +180,6 @@
     <div class="ambient ambient-left" aria-hidden="true"></div>
     <div class="ambient ambient-right" aria-hidden="true"></div>
     <div class="noise-layer" aria-hidden="true"></div>
-    
 
     <div id="navbar-container"></div>
     <section class="hero" id="hero">
@@ -189,11 +206,23 @@
           <a href="#projects" class="btn btn-primary" id="heroBrowseBtn">
             Browse Projects <i class="fas fa-arrow-down" aria-hidden="true"></i>
           </a>
-          <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer"
-            class="btn btn-ghost" id="heroGithubBtn" aria-label="GitHub Repository (opens in a new tab)">
+          <a
+            href="https://github.com/dhairyagothi/100_days_100_web_project"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-ghost"
+            id="heroGithubBtn"
+            aria-label="GitHub Repository (opens in a new tab)"
+          >
             <i class="fab fa-github" aria-hidden="true"></i> GitHub
           </a>
-          <a href="stats.html" class="btn-stats" id="heroStatsBtn" title="View Project Stats Dashboard" aria-label="View Project Stats Dashboard">
+          <a
+            href="stats.html"
+            class="btn-stats"
+            id="heroStatsBtn"
+            title="View Project Stats Dashboard"
+            aria-label="View Project Stats Dashboard"
+          >
             <i class="fas fa-chart-bar" aria-hidden="true"></i> Stats
           </a>
         </div>
@@ -386,8 +415,13 @@
             <option value="typescript">TypeScript</option>
             <option value="tailwindcss">Tailwind CSS</option>
           </select>
-          <button id="clearAllFiltersBtn" class="clear-filters-btn" aria-label="Clear all filters">
-            <i class="fas fa-filter-circle-xmark" aria-hidden="true"></i> Clear Filters
+          <button
+            id="clearAllFiltersBtn"
+            class="clear-filters-btn"
+            aria-label="Clear all filters"
+          >
+            <i class="fas fa-filter-circle-xmark" aria-hidden="true"></i> Clear
+            Filters
           </button>
         </div>
 
@@ -404,8 +438,15 @@
     <section class="cta-banner" aria-labelledby="ctaBannerTitle">
       <div class="cta-banner-inner">
         <h2 id="ctaBannerTitle">Ready to start your 100-day journey?</h2>
-        <p>Track your daily progress, earn XP, and level up your developer profile. Start tracking today.</p>
-        <a href="tracker.html" class="cta-banner-btn" aria-label="Open Daily Tracker">
+        <p>
+          Track your daily progress, earn XP, and level up your developer
+          profile. Start tracking today.
+        </p>
+        <a
+          href="tracker.html"
+          class="cta-banner-btn"
+          aria-label="Open Daily Tracker"
+        >
           Open Daily Tracker <span aria-hidden="true">🚀</span>
         </a>
       </div>
@@ -414,7 +455,7 @@
     <footer class="footer homepage-footer">
       <div class="homepage-footer-shell">
         <div class="homepage-footer-brand">
-    <p class="homepage-footer-kicker">100 Days · 100 Web Projects</p>
+          <p class="homepage-footer-kicker">100 Days · 100 Web Projects</p>
           <h2>
             Open-source builds for daily practice and creative frontend
             exploration.
@@ -450,6 +491,9 @@
                   aria-label="View repository on GitHub (opens in a new tab)"
                   >View repository</a
                 >
+              </li>
+              <li>
+                <a href="guidelines.html">Guidelines</a>
               </li>
             </ul>
           </section>
@@ -539,7 +583,7 @@
         </div>
       </div>
     </footer>
-
+    
     <button id="scrollBtn" aria-label="Back to top">
       <svg class="progress-ring" viewBox="0 0 48 48">
         <circle class="ring-track" cx="24" cy="24" r="22" />
