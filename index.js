@@ -2341,6 +2341,134 @@ function calculateLevel(xp) {
   return current;
 }
 
+function getStreakData() {
+  try {
+    return JSON.parse(localStorage.getItem("streakData") || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function saveStreakData(data) {
+  try {
+    localStorage.setItem("streakData", JSON.stringify(data));
+  } catch {}
+}
+
+function getCurrentStreak() {
+  return getStreakData().currentStreak || 0;
+}
+
+function getLongestStreak() {
+  return getStreakData().longestStreak || 0;
+}
+
+function getTotalActiveDays() {
+  return (getStreakData().activeDays || []).length;
+}
+
+function getLast14Days() {
+  const activeDays = new Set(getStreakData().activeDays || []);
+  const result = [];
+  const today = new Date();
+
+  for (let i = 13; i >= 0; i--) {
+    const day = new Date(today);
+    day.setDate(today.getDate() - i);
+    const key = day.toISOString().split("T")[0];
+    result.push({ date: key, active: activeDays.has(key) });
+  }
+
+  return result;
+}
+
+function touchStreak() {
+  const data = getStreakData();
+  const today = new Date().toISOString().split("T")[0];
+  const activeDays = new Set(data.activeDays || []);
+
+  if (activeDays.has(today)) return;
+
+  activeDays.add(today);
+
+  let streak = 0;
+  let checkDate = new Date();
+
+  while (true) {
+    const key = checkDate.toISOString().split("T")[0];
+    if (activeDays.has(key)) {
+      streak++;
+      checkDate.setDate(checkDate.getDate() - 1);
+    } else {
+      break;
+    }
+  }
+
+  saveStreakData({
+    activeDays: Array.from(activeDays),
+    currentStreak: streak,
+    longestStreak: Math.max(streak, data.longestStreak || 0),
+    lastActive: today,
+  });
+}
+
+function updateStreakWidgets() {
+  const flame = document.getElementById("streakFlame");
+  const days = document.getElementById("streakDays");
+  const longest = document.getElementById("longestStreak");
+  const total = document.getElementById("totalActiveDays");
+  const hint = document.getElementById("streakHint");
+  const grid = document.getElementById("streakGrid");
+
+  if (!flame && !days && !longest && !total && !hint && !grid) return;
+
+  const streak = getCurrentStreak();
+
+  if (flame) flame.textContent = streak >= 7 ? "🔥🔥" : streak >= 3 ? "🔥" : "💤";
+  if (days) days.textContent = `${streak} day${streak !== 1 ? "s" : ""}`;
+  if (longest) longest.textContent = getLongestStreak();
+  if (total) total.textContent = getTotalActiveDays();
+  if (hint) {
+    hint.textContent =
+      streak > 0
+        ? `Keep it going! You've been active ${streak} day${streak !== 1 ? "s" : ""} in a row.`
+        : "Complete a project today to start your streak!";
+  }
+
+  if (grid) {
+    grid.innerHTML = "";
+    getLast14Days().forEach(({ date, active }) => {
+      const dot = document.createElement("div");
+      dot.className = `streak-dot${active ? " active" : ""}`;
+      dot.title = date;
+      dot.setAttribute("aria-label", `${date}: ${active ? "active" : "inactive"}`);
+      grid.appendChild(dot);
+    });
+  }
+}
+
+function initStreak() {
+  const current = getStreakData();
+  const normalized = {
+    activeDays: Array.isArray(current.activeDays) ? current.activeDays : [],
+    currentStreak: Number.isFinite(current.currentStreak) ? current.currentStreak : 0,
+    longestStreak: Number.isFinite(current.longestStreak) ? current.longestStreak : 0,
+    lastActive: typeof current.lastActive === "string" ? current.lastActive : "",
+  };
+
+  const needsSave =
+    !Array.isArray(current.activeDays) ||
+    !Number.isFinite(current.currentStreak) ||
+    !Number.isFinite(current.longestStreak) ||
+    typeof current.lastActive !== "string";
+
+  if (needsSave) {
+    saveStreakData(normalized);
+  }
+
+  updateStreakWidgets();
+}
+
 function updateGamifiedUI() {
   // Gamified UI elements live on tracker.html, not index.html — no-op here.
   const elements = {
