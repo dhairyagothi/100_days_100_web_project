@@ -7,6 +7,7 @@
 let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
 let income = parseFloat(localStorage.getItem("income")) || 0;
 let monthlyBudget = parseFloat(localStorage.getItem("monthlyBudget")) || 0;
+let categoryLimits = JSON.parse(localStorage.getItem("categoryLimits")) || {};
 
 let currentFilter = "All";
 let searchQuery = "";
@@ -24,6 +25,10 @@ const expenseForm = document.getElementById("expense-form");
 const expenseNameInput = document.getElementById("expense-name");
 const expenseAmountInput = document.getElementById("expense-amount");
 const expenseCategorySelect = document.getElementById("expense-category");
+const expenseRecurringInput = document.getElementById("expense-recurring");
+
+const categoryLimitsForm = document.getElementById("category-limits-form");
+const categoryLimitInputs = document.querySelectorAll("[data-category]");
 
 const totalIncomeEl = document.getElementById("total-income");
 const totalExpensesEl = document.getElementById("total-expenses");
@@ -31,6 +36,9 @@ const netBalanceEl = document.getElementById("net-balance");
 
 const monthlyBudgetEl = document.getElementById("monthly-budget");
 const budgetLeftEl = document.getElementById("budget-left");
+const budgetLeftCard = document.getElementById("budget-left-card");
+const budgetLeftIcon = document.getElementById("budget-left-icon");
+const budgetWarningMessage = document.getElementById("budget-warning-message");
 
 const categoryFilterSelect = document.getElementById("category-filter");
 const expenseListEl = document.getElementById("expense-list");
@@ -91,6 +99,10 @@ document.addEventListener("DOMContentLoaded", () => {
         budgetInput.value = monthlyBudget;
     }
 
+    populateCategoryLimitInputs();
+
+    processRecurringExpenses();
+
     displayCurrentDate();
 
     setupEventListeners();
@@ -139,6 +151,30 @@ function setupEventListeners() {
 
                 updateUI();
             }
+        });
+    }
+
+    /* Category Limits */
+
+    if (categoryLimitsForm) {
+        categoryLimitsForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            categoryLimitInputs.forEach(input => {
+                const category = input.dataset.category;
+                const value = parseFloat(input.value);
+
+                if (!isNaN(value) && value > 0) {
+                    categoryLimits[category] = value;
+                } else {
+                    delete categoryLimits[category];
+                    input.value = "";
+                }
+            });
+
+            saveCategoryLimits();
+
+            updateUI();
         });
     }
 
@@ -226,6 +262,10 @@ function addExpense() {
 
     const category = expenseCategorySelect.value;
 
+    const recurring = expenseRecurringInput
+        ? expenseRecurringInput.checked
+        : false;
+
     if (!name || isNaN(amount) || amount <= 0 || !category) {
 
         alert("Please fill all fields correctly.");
@@ -241,11 +281,18 @@ function addExpense() {
 
             if (exp.id === editingExpenseId) {
 
+                const recurringParentId =
+                    exp.recurringParentId || exp.id;
+
                 return {
                     ...exp,
                     name,
                     amount,
-                    category
+                    category,
+                    recurring,
+                    recurringParentId: recurring
+                        ? recurringParentId
+                        : undefined
                 };
             }
 
@@ -256,12 +303,17 @@ function addExpense() {
 
     } else {
 
+        const id = Date.now().toString();
+
         const newExpense = {
-            id: Date.now().toString(),
+            id,
             name,
             amount,
             category,
-            date: Date.now()
+            date: Date.now(),
+            recurring,
+            recurringParentId: recurring ? id : undefined,
+            recurringMonth: recurring ? getMonthKey(new Date()) : undefined
         };
 
         expenses.push(newExpense);
@@ -289,6 +341,10 @@ function editExpense(id) {
     expenseAmountInput.value = expense.amount;
 
     expenseCategorySelect.value = expense.category;
+
+    if (expenseRecurringInput) {
+        expenseRecurringInput.checked = Boolean(expense.recurring);
+    }
 
     editingExpenseId = id;
 
@@ -332,6 +388,83 @@ function deleteExpense(id) {
 function saveExpenses() {
 
     localStorage.setItem("expenses", JSON.stringify(expenses));
+}
+
+function saveCategoryLimits() {
+
+    localStorage.setItem("categoryLimits", JSON.stringify(categoryLimits));
+}
+
+function populateCategoryLimitInputs() {
+
+    categoryLimitInputs.forEach(input => {
+
+        const category = input.dataset.category;
+
+        if (categoryLimits[category]) {
+            input.value = categoryLimits[category];
+        }
+    });
+}
+
+function getMonthKey(date) {
+
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+}
+
+function getExpenseMonthKey(expense) {
+
+    if (expense.recurringMonth) {
+        return expense.recurringMonth;
+    }
+
+    return getMonthKey(new Date(expense.date));
+}
+
+function processRecurringExpenses() {
+
+    const currentMonth = getMonthKey(new Date());
+    const lastRecurringMonth = localStorage.getItem("lastRecurringMonth");
+
+    if (lastRecurringMonth === currentMonth) {
+        return;
+    }
+
+    const recurringTemplates = new Map();
+
+    expenses
+        .filter(exp => exp.recurring && getExpenseMonthKey(exp) !== currentMonth)
+        .sort((a, b) => a.date - b.date)
+        .forEach(exp => {
+            const seriesId = exp.recurringParentId || exp.id;
+            recurringTemplates.set(seriesId, exp);
+        });
+
+    recurringTemplates.forEach((template, seriesId) => {
+
+        const alreadyAdded = expenses.some(exp =>
+            exp.recurring &&
+            (exp.recurringParentId || exp.id) === seriesId &&
+            getExpenseMonthKey(exp) === currentMonth
+        );
+
+        if (alreadyAdded) {
+            return;
+        }
+
+        expenses.push({
+            ...template,
+            id: `${Date.now()}-${seriesId}`,
+            date: Date.now(),
+            recurring: true,
+            recurringParentId: seriesId,
+            recurringMonth: currentMonth
+        });
+    });
+
+    localStorage.setItem("lastRecurringMonth", currentMonth);
+
+    saveExpenses();
 }
 
 /* ---------------- FORMATTERS ---------------- */
@@ -402,6 +535,9 @@ function renderExpenses() {
     filteredExpenses.forEach(exp => {
 
         const catConfig = categories[exp.category] || categories.Other;
+        const recurringTag = exp.recurring
+            ? `<span class="recurring-tag">Monthly</span>`
+            : "";
 
         const li = document.createElement("li");
 
@@ -425,6 +561,8 @@ function renderExpenses() {
                     <span>•</span>
 
                     <span>${formatDate(exp.date)}</span>
+
+                    ${recurringTag}
                 </div>
             </div>
 
@@ -479,6 +617,8 @@ function updateSummary() {
 
         budgetLeftEl.textContent =
             formatCurrency(left);
+
+        updateBudgetWarning(totalExpenses);
     }
 
     /* Donut Chart */
@@ -513,6 +653,33 @@ function updateSummary() {
     updateLegend(totalExpenses);
 }
 
+function updateBudgetWarning(totalExpenses) {
+
+    if (!budgetLeftCard || !budgetWarningMessage || !budgetLeftIcon) {
+        return;
+    }
+
+    budgetLeftCard.classList.remove("budget-warning", "budget-danger");
+    budgetWarningMessage.textContent = "";
+    budgetLeftIcon.textContent = "📊";
+
+    if (monthlyBudget <= 0) {
+        return;
+    }
+
+    const spentPercent = (totalExpenses / monthlyBudget) * 100;
+
+    if (spentPercent >= 100) {
+        budgetLeftCard.classList.add("budget-danger");
+        budgetLeftIcon.textContent = "⚠️";
+        budgetWarningMessage.textContent = "Budget exceeded";
+    } else if (spentPercent >= 80) {
+        budgetLeftCard.classList.add("budget-warning");
+        budgetLeftIcon.textContent = "⚠️";
+        budgetWarningMessage.textContent = `${Math.round(spentPercent)}% of budget used`;
+    }
+}
+
 /* ---------------- LEGEND ---------------- */
 
 function updateLegend(totalExpenses) {
@@ -540,7 +707,7 @@ function updateLegend(totalExpenses) {
     });
 
     const activeCategories = Object.keys(catTotals)
-        .filter(cat => catTotals[cat] > 0);
+        .filter(cat => catTotals[cat] > 0 || categoryLimits[cat] > 0);
 
     if (activeCategories.length === 0) {
 
@@ -562,6 +729,19 @@ function updateLegend(totalExpenses) {
                 : 0;
 
         const config = categories[cat];
+        const limit = categoryLimits[cat] || 0;
+        const limitPercent = limit > 0
+            ? Math.round((total / limit) * 100)
+            : 0;
+        const clampedLimitPercent = Math.min(limitPercent, 100);
+        const progressState = limit > 0 && limitPercent >= 100
+            ? "danger"
+            : limit > 0 && limitPercent >= 80
+                ? "warning"
+                : "";
+        const limitText = limit > 0
+            ? `${limitPercent}% of ${formatCurrency(limit)}`
+            : "No limit set";
 
         const legendItem = document.createElement("div");
 
@@ -586,6 +766,18 @@ function updateLegend(totalExpenses) {
                 <span class="legend-percent">
                     ${percent}%
                 </span>
+            </div>
+
+            <div class="category-limit-progress">
+                <div class="category-limit-meta">
+                    <span>${limitText}</span>
+                </div>
+
+                <div class="progress-track">
+                    <div class="progress-fill ${progressState}"
+                        style="width:${limit > 0 ? clampedLimitPercent : 0}%">
+                    </div>
+                </div>
             </div>
         `;
 
@@ -625,13 +817,14 @@ function exportExpensesToCSV() {
         return;
     }
 
-    const headers = ["Name", "Amount", "Category", "Date"];
+    const headers = ["Name", "Amount", "Category", "Date", "Recurring"];
 
     const rows = expenses.map(exp => [
         exp.name,
         exp.amount.toFixed(2),
         exp.category,
-        new Date(exp.date).toLocaleString("en-US")
+        new Date(exp.date).toLocaleString("en-US"),
+        exp.recurring ? "Yes" : "No"
     ]);
 
     const csvContent = "\uFEFF" + [
