@@ -15,6 +15,7 @@ body {
   margin: 0;
   padding: 20px;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .dashboard {
@@ -47,7 +48,7 @@ h1 {
 /* Grid Layout Architecture */
 .grid-layout {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 450px), 1fr));
   gap: 25px;
 }
 
@@ -193,8 +194,72 @@ h2 {
   padding: 20px 0;
 }
 
-@media (max-width: 600px) {
+/* Responsive adjustments across breakpoints */
+
+/* Tablet Layout (768px - 1024px) */
+@media (max-width: 1024px) {
+  h1 {
+    font-size: 2.2rem;
+  }
+
+  .grid-layout {
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 20px;
+  }
+
+  body {
+    padding: 15px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+}
+
+/* Mobile Layout (<768px) */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
   .grid-layout {
     grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* Small Mobile Layout (<480px) */
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  .card {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  .iss-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .metric-box .value {
+    font-size: 1.3rem;
+  }
+
+  .launch-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .countdown-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
   }
 }

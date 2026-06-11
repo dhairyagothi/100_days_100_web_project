@@ -1,229 +1,370 @@
+﻿/* ── Design tokens ─────────────────────────────────────── */
 :root {
-  --bg-dark: #0f0f1a;
-  --panel-bg: rgba(30, 30, 47, 0.7);
-  --primary: #ff6347;
-  --primary-glow: rgba(255, 99, 71, 0.4);
-  --accent: #ffa07a;
-  --success: #00e676;
-  --error: #ff1744;
-  --light-square: #e2e8f0;
-  --dark-square: #4a5568;
+  --color-bg: #f4f5f9;
+  --color-surface: #ffffff;
+  --color-border: #e2e4ea;
+  --color-text: #1a1d27;
+  --color-text-muted: #6b7280;
+  --color-primary: #3b60e4;
+  --color-primary-hover: #2f4fcb;
+  --color-secondary-bg: #eef1fb;
+  --color-secondary-border: #c9d4f7;
+  --color-secondary-hover: #dde4f9;
+  --color-danger: #dc2626;
+  --color-success: #16a34a;
+  --color-hint: #2563eb;
+  --color-square-light: #dde2f0;
+  --color-square-dark: #8897c8;
+  --cell-size: 68px;
+  --border-radius: 8px;
 }
 
-body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  background: radial-gradient(circle at center, #1e1e38 0%, var(--bg-dark) 100%);
-  color: #ffffff;
-  text-align: center;
-  margin: 0;
-  padding: 80px 20px 40px 20px;
-  min-height: 100vh;
+/* ── Reset ──────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-.project-back-button {
-  position: fixed;
-  left: 24px;
-  top: 24px;
-  padding: 8px 16px;
-  border-radius: 8px;
-  background: #1e293b;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid #3b82f6;
+/* ── Base ───────────────────────────────────────────────── */
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
+  padding: 24px 16px 48px;
+}
+
+/* ── Navigation ─────────────────────────────────────────── */
+.nav-bar {
+  margin-bottom: 20px;
+}
+
+.nav-bar__back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-primary);
   text-decoration: none;
-  z-index: 9999;
-  font-weight: 700;
-  color: #3b82f6;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  transition: all 0.2s ease;
+  font-size: 0.88rem;
+  font-weight: 600;
 }
 
-.project-back-button:hover {
-  background: #3b82f6;
-  color: #fff;
-  transform: translateY(-2px);
-}
-
+/* ── Container ──────────────────────────────────────────── */
 .container {
-  max-width: fit-content;
+  max-width: 680px;
   margin: 0 auto;
-  padding: 35px;
-  background: var(--panel-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.6);
-  border-radius: 24px;
-  animation: fadeIn 0.6s ease-out;
-}
-
-h1 {
-  font-size: 2.8em;
-  font-weight: 800;
-  background: linear-gradient(135deg, #ff8a75 0%, var(--primary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 0 0 5px 0;
-}
-
-.subtitle {
-  color: #a0aec0;
-  font-size: 1rem;
-  margin-bottom: 30px;
-}
-
-.board-details {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 25px;
-  background: rgba(0, 0, 0, 0.2);
-  padding: 15px 25px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 16px;
-  margin-bottom: 25px;
+  padding: 28px 24px 32px;
 }
 
-.board-size {
+/* ── Game header ────────────────────────────────────────── */
+.game-header {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 24px;
 }
 
-label {
-  font-weight: 600;
-  font-size: 1.05em;
-  color: var(--accent);
+.game-header__title {
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--color-text);
 }
 
-input[type="number"] {
-  padding: 10px;
-  font-size: 1.1em;
-  font-weight: 600;
-  border: 2px solid rgba(255, 160, 122, 0.4);
-  border-radius: 10px;
-  width: 70px;
+.game-header__subtitle {
+  margin-top: 3px;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+/* ── Status panel ───────────────────────────────────────── */
+.status-panel {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.status-panel__item {
   text-align: center;
-  background-color: #12121f;
-  color: #ffffff;
-  outline: none;
-  transition: border-color 0.3s;
+  min-width: 58px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  padding: 8px 10px;
 }
 
-input[type="number"]:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 10px rgba(255, 160, 122, 0.2);
-}
-
-button {
-  font-family: inherit;
+.status-panel__label {
+  display: block;
+  font-size: 0.68rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-  color: #fff;
-  border: none;
-  padding: 12px 26px;
-  font-size: 1.1em;
-  border-radius: 10px;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(56, 161, 105, 0.3);
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-text-muted);
+  margin-bottom: 3px;
 }
 
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+.status-panel__value {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
 }
 
-.reset-button {
-  background: linear-gradient(135deg, #ff6347 0%, #e53e3e 100%);
-  box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
-}
-
-.reset-button:hover {
-  box-shadow: 0 6px 20px rgba(255, 99, 71, 0.4);
-}
-
-#gameBoard {
-  display: grid;
-  margin: 25px auto;
-  border: 6px solid #1a1a2e;
-  background: #1a1a2e;
-  border-radius: 14px;
-  width: fit-content;      
-  max-width: 95vw;        
-  max-height: 65vh;       
-  overflow: auto;         
-  padding: 4px;
-  box-shadow: inset 0 4px 20px rgba(0,0,0,0.5);
-}
-
-.square {
-  width: 55px;
-  height: 55px;
+/* ── Controls ───────────────────────────────────────────── */
+.controls {
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
   align-items: center;
+  margin-bottom: 10px;
+}
+
+.controls__group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.controls__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.controls__input {
+  width: 62px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  padding: 7px 10px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.92rem;
+  font-family: inherit;
+  outline: none;
+}
+
+.controls__input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(59, 96, 228, 0.1);
+}
+
+.controls__button-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.controls__checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
   cursor: pointer;
-  position: relative;
-  transition: background-color 0.2s, transform 0.1s;
 }
 
-/* Perfect Chessboard colors applied dynamically via JS classes */
-.square.light-tile { background-color: var(--light-square); }
-.square.dark-tile { background-color: var(--dark-square); }
-
-/* Track View Hover Guidance Lines */
-.square.guideline::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-color: rgba(255, 160, 122, 0.15);
-  pointer-events: none;
+.controls__checkbox input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
 }
 
-.square:hover {
-  filter: brightness(1.15);
-}
-
-.queen {
-  font-size: 34px;
-  color: #1a1a2e;
-  pointer-events: none;
-  z-index: 2;
-  animation: dropIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-#message {
-  font-size: 1.25em;
+/* ── Buttons ────────────────────────────────────────────── */
+.btn {
+  font-family: inherit;
+  font-size: 0.85rem;
   font-weight: 700;
-  margin: 15px 0;
-  min-height: 30px;
-  color: var(--success);
-  text-shadow: 0 2px 8px rgba(0, 230, 118, 0.2);
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 8px 16px;
+  cursor: pointer;
+  min-width: 100px;
 }
 
-#message.error {
-  color: var(--error);
-  text-shadow: 0 2px 8px rgba(255, 23, 68, 0.2);
+.btn--primary {
+  background: var(--color-primary);
+  color: #fff;
 }
 
-.highlight {
-  background-color: var(--error) !important;
-  animation: shake 0.4s ease-in-out;
+.btn--primary:hover:not(:disabled) {
+  background: var(--color-primary-hover);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+.btn--secondary {
+  background: var(--color-secondary-bg);
+  color: var(--color-primary);
+  border: 1px solid var(--color-secondary-border);
 }
 
-@keyframes dropIn {
-  from { opacity: 0; transform: scale(0.3) rotate(-15deg); }
-  to { opacity: 1; transform: scale(1) rotate(0deg); }
+.btn--secondary:hover:not(:disabled) {
+  background: var(--color-secondary-hover);
 }
 
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  75% { transform: translateX(4px); }
+/* Active state — Mark Cells toggle */
+.btn--secondary.is-active {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+}
+
+.btn--secondary.is-active:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Message ────────────────────────────────────────────── */
+.message {
+  min-height: 1.3rem;
+  margin: 8px 0 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.message--error {
+  color: var(--color-danger);
+}
+
+.message--success {
+  color: var(--color-success);
+}
+
+/* ── Board ──────────────────────────────────────────────── */
+.board {
+  display: grid;
+  grid-auto-rows: var(--cell-size);
+  justify-content: center;
+  margin: 0 auto;
+  border: 3px solid var(--color-text);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* ── Square ─────────────────────────────────────────────── */
+.square {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  display: grid;
+  place-items: center;
+  border: none;
+  background: var(--color-square-light);
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  border-radius: 0;
+  min-width: unset;
+}
+
+.square--dark {
+  background: var(--color-square-dark);
+}
+
+/* Attacked cells (visible when checkbox is on) */
+.square--attacked {
+  background: rgba(220, 38, 38, 0.13);
+}
+
+.square--dark.square--attacked {
+  background: rgba(220, 38, 38, 0.22);
+}
+
+/* Hint suggestion */
+.square--hint {
+  box-shadow: inset 0 0 0 3px var(--color-hint);
+  z-index: 1;
+}
+
+/* Conflict indicator */
+.square--conflict {
+  box-shadow: inset 0 0 0 3px var(--color-danger);
+  z-index: 1;
+}
+
+/* Manually marked unsafe */
+.square--marked {
+  background: rgba(220, 38, 38, 0.08);
+}
+
+.square--dark.square--marked {
+  background: rgba(220, 38, 38, 0.18);
+}
+
+/* ── Chess pieces ───────────────────────────────────────── */
+.queen {
+  font-size: calc(var(--cell-size) * 0.65);
+  pointer-events: none;
+  line-height: 1;
+}
+
+.queen--on-light {
+  color: var(--color-text);
+}
+
+.queen--on-dark {
+  color: var(--color-bg);
+}
+
+.mark {
+  font-size: calc(var(--cell-size) * 0.42);
+  color: var(--color-danger);
+  pointer-events: none;
+  line-height: 1;
+  font-weight: 700;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 600px) {
+  :root {
+    --cell-size: 46px;
+  }
+
+  .container {
+    padding: 18px 14px 24px;
+  }
+
+  .game-header {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .status-panel {
+    width: 100%;
+  }
+
+  .status-panel__item {
+    flex: 1;
+  }
+
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .controls__button-group {
+    width: 100%;
+  }
+
+  .controls__button-group .btn {
+    flex: 1;
+    min-width: unset;
+  }
+}
+
+@media (max-width: 360px) {
+  :root {
+    --cell-size: 38px;
+  }
 }

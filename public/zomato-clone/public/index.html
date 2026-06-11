@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zomato – Discover the best food & drinks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet"  href="css/home.css">
+ 
+</head>
+<body>
+
+<!-- TOP BANNER -->
+<div class="top-banner" id="topBanner">
+  <span class="banner-tag">🎉 New</span>
+  Free delivery on your first 3 orders &nbsp;·&nbsp; Use code <strong>WELCOME50</strong> for 50% off
+  <button class="banner-close" onclick="document.getElementById('topBanner').style.display='none'">×</button>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <img src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png" alt="Zomato" />
+  </div>
+  <div class="nav-links">
+    <a href="#" class="hide-mobile">Get the app</a>
+    <a href="#" class="hide-mobile">Add restaurant</a>
+    <a href="#" class="hide-mobile">Investor Relations</a>
+    <button class="btn-login">Log in</button>
+    <button class="btn-signup">Sign up</button>
+    <!-- DARK MODE TOGGLE -->
+    <button class="dm-toggle" id="dmToggle" onclick="toggleDark()" title="Toggle dark mode">
+      <span class="dm-icon sun">☀️</span>
+      <span class="dm-icon moon">🌙</span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-tag">🍽️ Food delivery & dining</div>
+      <h1>Discover the best<br>food & drinks in<br><em>Delhi NCR</em></h1>
+      <p class="hero-sub">Order online, explore restaurants, and enjoy<br>the city's best culinary experiences.</p>
+      <div class="search-bar">
+        <div class="search-loc">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <input id="locationInput" placeholder="Enter location" />
+        </div>
+        <div class="search-query">
+          <svg width="16" height="16" fill="none" stroke="#aaa" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input id="searchInput" placeholder="Search for restaurant, cuisine or a dish" />
+        </div>
+        <button class="search-btn" onclick="doSearch()">Search</button>
+      </div>
+      <div class="quick-tags">
+        <span class="qtag">🍕 Pizza</span>
+        <span class="qtag">🍔 Burgers</span>
+        <span class="qtag">🍜 Chinese</span>
+        <span class="qtag">🍛 Biryani</span>
+        <span class="qtag">🥟 Momos</span>
+        <span class="qtag">🧁 Desserts</span>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="float-card a">
+        <div class="dot g"></div>
+        <div><div class="fc-label">Orders today</div><div>12,450+</div></div>
+      </div>
+      <div class="float-card b">
+        <div class="dot o"></div>
+        <div><div class="fc-label">Avg delivery</div><div>~30 mins</div></div>
+      </div>
+      <div class="hero-circle">
+        <img src="https://b.zmtcdn.com/data/o2_assets/f773629053b24263e69f601925790f301680693809.png" alt="Food" />
+      </div>
+      <div class="float-card c">
+        <div class="dot r"></div>
+        <div><div class="fc-label">Restaurants</div><div>5,000+ nearby</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NIGHTLIFE -->
+<section style="padding:32px 5%;">
+  <div class="option-card">
+    <img src="https://b.zmtcdn.com/webFrontend/d9d80ef91cb552e3fdfadb3d4f4379761647365057.jpeg?output-format=webp&fit=around|402:360&crop=402:360;*,*" />
+    <div class="info">
+      <div class="title">Nightlife and Clubs</div>
+      <div class="description">Explore the city's top nightlife outlets</div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="cat-section">
+  <div class="section-head">
+    <h2>What's on your mind?</h2>
+    <p>Browse by cuisine or category</p>
+  </div>
+  <div class="categories">
+    <div class="cat-card"><div class="cat-icon">🍕</div><div class="cat-name">Pizza</div></div>
+    <div class="cat-card"><div class="cat-icon">🍔</div><div class="cat-name">Burgers</div></div>
+    <div class="cat-card"><div class="cat-icon">🍜</div><div class="cat-name">Chinese</div></div>
+    <div class="cat-card"><div class="cat-icon">🍛</div><div class="cat-name">Biryani</div></div>
+    <div class="cat-card"><div class="cat-icon">🥗</div><div class="cat-name">Healthy</div></div>
+    <div class="cat-card"><div class="cat-icon">🍣</div><div class="cat-name">Sushi</div></div>
+    <div class="cat-card"><div class="cat-icon">🧁</div><div class="cat-name">Desserts</div></div>
+    <div class="cat-card"><div class="cat-icon">☕</div><div class="cat-name">Cafes</div></div>
+    <div class="cat-card"><div class="cat-icon">🍱</div><div class="cat-name">South Indian</div></div>
+    <div class="cat-card"><div class="cat-icon">🥩</div><div class="cat-name">Kebabs</div></div>
+    <div class="cat-card"><div class="cat-icon">🌮</div><div class="cat-name">Rolls</div></div>
+    <div class="cat-card"><div class="cat-icon">🥟</div><div class="cat-name">Momos</div></div>
+  </div>
+</section>
+
+<!-- COLLECTIONS -->
+<section>
+  <div class="section-head" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px">
+    <div>
+      <h2>Collections</h2>
+      <p>Explore curated lists of top restaurants, cafes, pubs, and bars in Delhi NCR, based on trends</p>
+    </div>
+    <a href="#" style="color:var(--red);font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap">All collections in Delhi NCR →</a>
+  </div>
+  <div class="collections-grid">
+    <div class="coll-card">
+      <img src="https://b.zmtcdn.com/data/collections/77c1b9704985885cbe2cb094e9983eab_1682080540.jpg?output-format=webp" />
+      <div class="coll-overlay"><div class="coll-title">Winners of Zomato Restaurant Awards</div><div class="coll-places">32 Places ›</div></div>
+    </div>
+    <div class="coll-card">
+      <img src="https://b.zmtcdn.com/data/collections/16e3a8b363d4592a72b2c4f486c63fb8_1678096853.jpg?output-format=webp" />
+      <div class="coll-overlay"><div class="coll-title">22 Best Insta-worthy Places</div><div class="coll-places">22 Places ›</div></div>
+    </div>
+    <div class="coll-card">
+      <img src="https://b.zmtcdn.com/data/collections/8dd5adbf91d78c8d11796c6b230539ef_1674568824.jpg?output-format=webp" />
+      <div class="coll-overlay"><div class="coll-title">21 Romantic Dining Places</div><div class="coll-places">21 Places ›</div></div>
+    </div>
+    <div class="coll-card">
+      <img src="https://b.zmtcdn.com/data/collections/a1bafc59f9aa67998b9f8de61b9abbd4_1680160970.png?output-format=webp" />
+      <div class="coll-overlay"><div class="coll-title">18 Thrilling Live Cricket Screenings</div><div class="coll-places">18 Places ›</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCALITIES -->
+<section class="loc-section">
+  <div class="section-head">
+    <h2>Popular localities in and around <span style="color:var(--red)">Delhi NCR</span></h2>
+    <p>Find the best restaurants in your neighbourhood</p>
+  </div>
+  <div class="localities-grid">
+    <div class="loc-card"><div><div class="loc-name">Connaught Place</div><div class="loc-count">252 Places</div></div><span class="loc-arrow">›</span></div>
+    <div class="loc-card"><div><div class="loc-name">Sector 29</div><div class="loc-count">144 Places</div></div><span class="loc-arrow">›</span></div>
+    <div class="loc-card"><div><div class="loc-name">Sector 18, Noida</div><div class="loc-count">205 Places</div></div><span class="loc-arrow">›</span></div>
+    <div class="loc-card"><div><div class="loc-name">Rajouri Garden</div><div class="loc-count">296 Places</div></div><span class="loc-arrow">›</span></div>
+    <div class="loc-card"><div><div class="loc-name">Saket</div><div class="loc-count">307 Places</div></div><span class="loc-arrow">›</span></div>
+    <div class="loc-card"><div><div class="loc-name">DLF Cyber City</div><div class="loc-count">153 Places</div></div><span class="loc-arrow">›</span></div>
+    <div class="loc-card"><div><div class="loc-name">Golf Course Road</div><div class="loc-count">154 Places</div></div><span class="loc-arrow">›</span></div>
+    <div class="loc-card"><div><div class="loc-name">DLF Phase 4</div><div class="loc-count">221 Places</div></div><span class="loc-arrow">›</span></div>
+  </div>
+</section>
+
+<!-- BRANDS -->
+<section class="brands-section">
+  <div class="brands-header">
+    <h2>eternal</h2>
+    <p>Powering India's Changing Lifestyles</p>
+  </div>
+  <div class="brand-cards">
+    <div class="brand-card zomato-card">
+      <img src="images/zomato.png" onerror="this.style.display='none'" alt="Zomato" />
+      <h3>zomato</h3>
+      <p>Get the app now to start ordering your favorite dishes!</p>
+      <a href="#">Check it out →</a>
+    </div>
+    <div class="brand-card blinkit-card">
+      <img src="images/blinkit.png" onerror="this.style.display='none'" alt="Blinkit" />
+      <h3>blinkit</h3>
+      <p>Choose from 30,000+ products delivered to your doorstep.</p>
+      <a href="#">Check it out →</a>
+    </div>
+    <div class="brand-card district-card">
+      <img src="images/district.png" onerror="this.style.display='none'" alt="District" />
+      <h3>district</h3>
+      <p>The best of events, movies, dining, and everything you love!</p>
+      <a href="#">Check it out →</a>
+    </div>
+    <div class="brand-card hyperpure-card">
+      <img src="images/hyperpure.png" onerror="this.style.display='none'" alt="Hyperpure" />
+      <h3>hyperpure</h3>
+      <p>Offering complete supply chain solution for your restaurant.</p>
+      <a href="#">Check it out →</a>
+    </div>
+  </div>
+</section>
+
+<!-- APP SECTION -->
+<div class="app-section">
+  <div class="app-text">
+    <h2>Get the Zomato app</h2>
+    <p>We will send you a link, open it on your phone to download the app</p>
+    <div class="store-btns">
+      <img src="https://b.zmtcdn.com/data/webuikit/23e930757c3df49840c482a8638bf5c31556001144.png" alt="App Store" />
+      <img src="https://b.zmtcdn.com/data/webuikit/9f0c85a5e33adb783fa0aef667075f9e1556003622.png" alt="Google Play" />
+    </div>
+  </div>
+  <div class="app-phone">
+    <img src="https://b.zmtcdn.com/data/o2_assets/f773629053b24263e69f601925790f301680693809.png" alt="App" />
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand footer-col">
+      <img src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png" alt="Zomato" />
+      <p>Discover the best food & drinks in your city. Delivering joy, one meal at a time.</p>
+      <div class="socials">
+        <a href="https://www.linkedin.com/company/zomato/" target="_blank">in</a>
+        <a href="https://www.instagram.com/zomato/" target="_blank">ig</a>
+        <a href="https://twitter.com/zomato" target="_blank">tw</a>
+        <a href="https://www.youtube.com/zomato" target="_blank">yt</a>
+        <a href="https://www.facebook.com/Zomato" target="_blank">fb</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>About Zomato</h4>
+      <ul><li>Who we are</li><li>Blog</li><li>Work with us</li><li>Investor Relations</li><li>Report Fraud</li><li>Contact us</li></ul>
+    </div>
+    <div class="footer-col">
+      <h4>Zomaverse</h4>
+      <ul><li>Zomato</li><li>Blinkit</li><li>Feeding India</li><li>Hyperpure</li><li>Zomaland</li></ul>
+    </div>
+    <div class="footer-col">
+      <h4>For Restaurants</h4>
+      <ul><li>Partner With Us</li><li>Apps for you</li></ul>
+      <h4 style="margin-top:20px">For Enterprises</h4>
+      <ul><li>Zomato For Enterprises</li></ul>
+      <h4 style="margin-top:20px">Learn More</h4>
+      <ul><li>Privacy</li><li>Security</li><li>Terms</li><li>Sitemap</li></ul>
+    </div>
+    <div class="footer-col">
+      <h4>Download App</h4>
+      <img src="https://b.zmtcdn.com/data/webuikit/23e930757c3df49840c482a8638bf5c31556001144.png" style="height:36px;border-radius:6px;margin-bottom:10px;display:block" />
+      <img src="https://b.zmtcdn.com/data/webuikit/9f0c85a5e33adb783fa0aef667075f9e1556003622.png" style="height:36px;border-radius:6px;display:block" />
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>By continuing past this page, you agree to our Terms of Service, Cookie Policy, Privacy Policy and Content Policies. All trademarks are properties of their respective owners. 2008-2023 © Zomato™ Ltd. All rights reserved.</span>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="dm-toast" id="dmToast"></div>
+
+<script>
+  /* ── DARK MODE ── */
+  const html = document.documentElement;
+  const toast = document.getElementById('dmToast');
+  let toastTimer;
+
+  // Restore saved preference
+  const saved = localStorage.getItem('zomato-theme');
+  if (saved) html.setAttribute('data-theme', saved);
+
+  function toggleDark() {
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    const next = isDark ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('zomato-theme', next);
+    showToast(next === 'dark' ? '🌙 Dark mode on' : '☀️ Light mode on');
+  }
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+  }
+
+  /* ── SEARCH ── */
+  function doSearch() {
+    const q = document.getElementById('searchInput').value.trim();
+    const loc = document.getElementById('locationInput').value.trim();
+    if (!q) { alert('Please enter something!'); return; }
+    alert('You searched for: ' + q + (loc ? ' in ' + loc : ''));
+  }
+  document.getElementById('searchInput').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+  document.getElementById('locationInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      const loc = document.getElementById('locationInput').value.trim();
+      if (!loc) { alert('Please enter a location!'); return; }
+      alert('Location selected: ' + loc);
+    }
+  });
+
+  /* ── QUICK TAGS ── */
+  document.querySelectorAll('.qtag').forEach(tag => {
+    tag.addEventListener('click', () => {
+      document.getElementById('searchInput').value = tag.textContent.slice(2).trim();
+      document.getElementById('searchInput').focus();
+    });
+  });
+</script>
+</body>
+</html>

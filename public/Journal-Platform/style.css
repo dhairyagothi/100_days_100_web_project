@@ -6,6 +6,23 @@
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+button {
+  max-width: 100%;
+}
+
+.toolbar,
+.mood-filters,
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
 
 /* --- Theme Definitions --- */
 :root {
@@ -672,6 +689,7 @@ body.theme-vintage-library .btn-primary {
 
 .mood-selector {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
@@ -1263,9 +1281,12 @@ body.theme-vintage-library .btn-primary {
   .sidebar {
     width: 100%;
     height: auto;
-    max-height: 40vh;
+    max-height: 45vh;
+    min-width: 0;
     border-right: none;
     border-bottom: 1px solid var(--border-color);
+    overflow-y: auto;
+    flex-shrink: 0;
   }
   
   .entries-list-container {
@@ -1287,8 +1308,140 @@ body.theme-vintage-library .btn-primary {
   .editor-toolbar {
     padding: 8px 20px;
   }
+
+  .toolbar-separator {
+    display: none;
+  }
+
+  .workspace-tabs {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+    margin-top: 4px;
+  }
+
+  .mood-filter-badges {
+    overflow-x: visible;
+  }
   
   .sticker-canvas {
     padding: 20px;
+  }
+
+  .workspace {
+    flex-direction: column;
+    height: auto;
+    flex-grow: 1;
+    min-height: 0;
+  }
+}
+
+/* @media (max-width: 480px) {
+
+  .header-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .mood-selector-wrapper,
+  .entry-actions {
+    width: 100%;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .btn-success {
+    flex: 1;
+    min-width: 120px;
+  }
+  .editor-toolbar {
+    justify-content: center;
+  }
+
+  .workspace-tabs {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+    margin-top: 8px;
+  }
+  .entry-title-input {
+    font-size: 22px;
+  }
+  .sidebar {
+    max-height: 30vh;
+  }
+  .btn-primary,
+  .btn-success {
+    width: 100%;
+  }
+} */
+ @media (max-width: 480px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  .sidebar {
+    max-height: 35vh;
+  }
+
+  .sheet-header {
+    padding: 12px 16px;
+  }
+
+  .entry-title-input {
+    font-size: 22px;
+  }
+
+  .header-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .mood-selector-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .mood-selector {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .entry-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .btn-success {
+    flex: 1;
+  }
+
+  .editor-toolbar {
+    justify-content: center;
+    padding: 8px 12px;
+  }
+
+  .workspace-tabs {
+    width: 100%;
+    margin-left: 0;
+    justify-content: center;
+  }
+
+  .welcome-screen {
+    padding: 16px;
+  }
+
+  .welcome-card {
+    padding: 24px;
+  }
+
+  .modal-content {
+    width: 100%;
+    max-width: 400px;
   }
 }

@@ -45,6 +45,7 @@ const dateTextEl = document.getElementById("date-text");
 const searchInput = document.getElementById("search-transaction");
 
 const themeToggle = document.getElementById("theme-toggle");
+const exportCsvBtn = document.getElementById("export-csv");
 
 /* ---------------- CATEGORY CONFIG ---------------- */
 
@@ -100,6 +101,10 @@ document.addEventListener("DOMContentLoaded", () => {
 /* ---------------- EVENT LISTENERS ---------------- */
 
 function setupEventListeners() {
+
+    if (exportCsvBtn) {
+        exportCsvBtn.addEventListener("click", exportExpensesToCSV);
+    }
 
     /* Income */
 
@@ -611,6 +616,64 @@ function escapeHTML(str) {
             '"': "&quot;"
         }[tag] || tag)
     );
+}
+
+function exportExpensesToCSV() {
+
+    if (expenses.length === 0) {
+        alert("No expenses to export.");
+        return;
+    }
+
+    const headers = ["Name", "Amount", "Category", "Date"];
+
+    const rows = expenses.map(exp => [
+        exp.name,
+        exp.amount.toFixed(2),
+        exp.category,
+        new Date(exp.date).toLocaleString("en-US")
+    ]);
+
+    const csvContent = "\uFEFF" + [
+        headers,
+        ...rows
+    ]
+        .map(row => row.map(escapeCSVValue).join(","))
+        .join("\r\n");
+
+    const blob = new Blob([csvContent], {
+        type: "text/csv;charset=utf-8;"
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const downloadLink = document.createElement("a");
+
+    downloadLink.href = url;
+    downloadLink.download = "spendwise-expenses.csv";
+
+    document.body.appendChild(downloadLink);
+
+    downloadLink.click();
+
+    document.body.removeChild(downloadLink);
+
+    URL.revokeObjectURL(url);
+}
+
+function escapeCSVValue(value) {
+
+    const stringValue = String(value);
+
+    if (
+        stringValue.includes(",") ||
+        stringValue.includes("\"") ||
+        stringValue.includes("\n")
+    ) {
+        return `"${stringValue.replace(/"/g, '""')}"`;
+    }
+
+    return stringValue;
 }
 
 /* ---------------- GLOBAL ---------------- */

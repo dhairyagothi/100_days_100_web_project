@@ -106,6 +106,14 @@ body.dark-mode .search-input {
     border-color: #475569 !important;
 }
 
+
+.theme-btn:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+
+body.dark-mode .warning-panel {
+
 body.dark-mode input::placeholder,
 body.dark-mode textarea::placeholder {
     color: #94a3b8 !important;
@@ -120,6 +128,7 @@ body.dark-mode .profile-btn {
 
 /* ===== FAQ ===== */
 body.dark-mode .faq-section {
+
     background-color: #1e293b !important;
 }
 
@@ -175,6 +184,14 @@ body.dark-mode .site-header {
     color: white !important;
 }
 
+
+body.dark-mode .site-header h1,
+body.dark-mode .site-header p {
+    color: white !important;
+}
+
+
 body.dark-mode .site-header {
     background: linear-gradient(135deg, #0f172a, #1e293b) !important;
 }
+
