@@ -16,6 +16,10 @@
 - 🔔 Toast notifications for user actions
 - 📄 Export tasks as styled PDF using jsPDF
 - 📁 Document history for exported files
+- 🧩 Drag and Drop Kanban Workflow
+  - Pending
+  - In Progress
+  - Completed
 
 ---
 
@@ -31,39 +35,39 @@
 
 ## ▶️ How to Run
 
-1. Clone the repository  
-  - git clone https://github.com/dhairyagothi/100_days_100_web_project.git
-2. Open project folder  
-  - cd 100_days_100_web_project
-3. Simply Run `todolist.html` in any browser  
+1. Clone the repository
+  - `git clone https://github.com/dhairyagothi/100_days_100_web_project.git`
+2. Open project folder
+  - `cd 100_days_100_web_project`
+3. Simply run `todolist.html` in any browser
 4. Start managing your tasks
 
 ---
 
 ## 📂 Project Structure
 
-- `todolist.html` → UI structure  
-- `todolist.css` → Styling + themes  
-- `todolist.js` → Application logic  
+- `todolist.html` -> UI structure
+- `todolist.css` -> Styling + themes
+- `todolist.js` -> Application logic
 
 ---
 
 ## 🚀 Future Improvements
 
-- Drag & drop task reordering  
-- Due dates & reminders  
-- Priority levels (Low / Medium / High)  
-- Cloud sync support  
-- Dark mode auto detection  
+- Drag & drop task reordering
+- Due dates & reminders
+- Priority levels (Low / Medium / High)
+- Cloud sync support
+- Dark mode auto detection
 
 ---
 
 ## 🤝 Contributing
 
-1. Fork the repository  
-2. Create a new branch (`git checkout -b feature-name`)  
-3. Make changes and test  
-4. Push and create a Pull Request  
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature-name`)
+3. Make changes and test
+4. Push and create a Pull Request
 
 ---
 
