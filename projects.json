@@ -1,4 +1,4 @@
-[
+﻿[
   {
     "projectNo": 1,
     "projectName": "To-Do List",
@@ -929,7 +929,7 @@
     "projectNo": 79,
     "projectName": "Linkedin Homepage Clone",
     "projectType": "Clone",
-    "projectDesc": "Frontend recreation of LinkedIn’s homepage structure and styling.",
+    "projectDesc": "Frontend recreation of LinkedInâ€™s homepage structure and styling.",
     "techStack": [
       "clone",
       "css"
@@ -1168,7 +1168,7 @@
     "projectNo": 99,
     "projectName": "NASA-APOD Extension",
     "projectType": "API",
-    "projectDesc": "Displays NASA’s Astronomy Picture of the Day automatically.",
+    "projectDesc": "Displays NASAâ€™s Astronomy Picture of the Day automatically.",
     "techStack": [
       "api",
       "javascript"
@@ -1575,7 +1575,7 @@
     "projectNo": 132,
     "projectName": "Pokedex",
     "projectType": "Tool",
-    "projectDesc": "Browse Pokémon information through an interactive Pokédex interface.",
+    "projectDesc": "Browse PokÃ©mon information through an interactive PokÃ©dex interface.",
     "techStack": [
       "utility"
     ],
@@ -2861,5 +2861,18 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/mind-reader/mind-reader/dist/index.html"
+  },
+  {
+    "projectNo": 227,
+    "projectName": "RegexGenie",
+    "projectType": "Tool",
+    "projectDesc": "Interactive AI-powered regex builder that generates, tests, and visually explains regular expressions from plain English descriptions.",
+    "techStack": [
+      "javascript",
+      "tool",
+      "css"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/RegexGenie/index.html"
   }
 ]

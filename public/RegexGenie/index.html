@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RegexGenie — AI Regex Builder & Real-Time Visualizer</title>
+    <meta name="description" content="RegexGenie is an interactive browser-based tool that generates, tests, and visually explains regular expressions. Type plain English, get optimized regex instantly.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50:  '#edfcf5',
+                            100: '#d3f8e6',
+                            200: '#aaf0d1',
+                            300: '#73e2b6',
+                            400: '#3bcd96',
+                            500: '#17b37c',
+                            600: '#0b9164',
+                            700: '#097452',
+                            800: '#0b5c43',
+                            900: '#0a4b38',
+                        },
+                        accent: {
+                            50:  '#eff4ff',
+                            100: '#dbe6fe',
+                            200: '#bfd3fe',
+                            300: '#93b4fd',
+                            400: '#6090fa',
+                            500: '#3b6cf5',
+                            600: '#254bea',
+                            700: '#1d39d7',
+                            800: '#1e30ae',
+                            900: '#1e2e89',
+                        },
+                        surface: {
+                            50:  '#f8fafc',
+                            100: '#f1f5f9',
+                            700: '#1a1f36',
+                            800: '#131829',
+                            850: '#0f1322',
+                            900: '#0b0e1a',
+                            950: '#070912',
+                        }
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 6s ease infinite',
+                        'pulse-soft': 'pulse-soft 3s ease-in-out infinite',
+                        'slide-up': 'slide-up 0.5s ease-out',
+                        'fade-in': 'fade-in 0.4s ease-out',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': { 'background-position': '0% 50%' },
+                            '50%': { 'background-position': '100% 50%' },
+                        },
+                        'pulse-soft': {
+                            '0%, 100%': { opacity: 1 },
+                            '50%': { opacity: 0.7 },
+                        },
+                        'slide-up': {
+                            '0%': { transform: 'translateY(20px)', opacity: 0 },
+                            '100%': { transform: 'translateY(0)', opacity: 1 },
+                        },
+                        'fade-in': {
+                            '0%': { opacity: 0 },
+                            '100%': { opacity: 1 },
+                        },
+                        'glow': {
+                            '0%': { 'box-shadow': '0 0 20px rgba(59,205,150,0.15)' },
+                            '100%': { 'box-shadow': '0 0 40px rgba(59,205,150,0.3)' },
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-surface-950 text-slate-100 min-h-screen font-sans antialiased selection:bg-brand-500/30">
+    
+    <!-- Ambient Background -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        <div class="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full bg-brand-500/[0.04] blur-[120px] animate-float"></div>
+        <div class="absolute -bottom-40 -right-40 w-[500px] h-[500px] rounded-full bg-accent-500/[0.05] blur-[100px] animate-float" style="animation-delay: -3s;"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full bg-purple-600/[0.03] blur-[140px]"></div>
+    </div>
+
+    <div class="relative z-10">
+        <!-- Header -->
+        <header class="pt-10 pb-6 text-center animate-fade-in">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 text-xs font-semibold tracking-wider uppercase mb-5">
+                <span class="w-1.5 h-1.5 rounded-full bg-brand-400 animate-pulse-soft"></span>
+                Open Source · Community
+            </div>
+            <h1 id="app-title" class="text-5xl sm:text-6xl font-black tracking-tight mb-3">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-emerald-300 to-accent-400 bg-[length:200%_auto] animate-gradient-x">Regex</span><span class="text-white">Genie</span>
+                <span class="inline-block ml-2 text-4xl animate-float">🧞</span>
+            </h1>
+            <p class="text-slate-400 text-lg max-w-xl mx-auto leading-relaxed">
+                Describe what you need in <strong class="text-slate-300">plain English</strong>, get an optimized regex pattern instantly. Test, visualize, and understand — all in your browser.
+            </p>
+        </header>
+
+        <main class="container mx-auto px-4 pb-16 max-w-5xl">
+            <div class="grid grid-cols-1 gap-5">
+
+                <!-- Section 1: Plain-English Generator -->
+                <section id="generator-section" class="glass-card animate-slide-up" style="animation-delay: 0.1s;">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="step-badge">1</span>
+                        <h2 class="text-lg font-bold text-brand-300">Describe What You Want to Match</h2>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <div class="relative flex-1">
+                            <span class="material-icons-outlined absolute left-4 top-1/2 -translate-y-1/2 text-xl text-slate-500" aria-hidden="true">chat_bubble_outline</span>
+                            <input 
+                                type="text" 
+                                id="aiPrompt" 
+                                placeholder='Try: "Extract all email addresses" or "Match hex colors"...'
+                                class="input-field pl-12 pr-4"
+                                autocomplete="off"
+                                spellcheck="false"
+                            >
+                        </div>
+                        <button id="generateBtn" class="btn-primary group">
+                            <span class="material-icons-round text-xl transition-transform group-hover:rotate-12 group-active:scale-90" aria-hidden="true">bolt</span>
+                            <span>Generate</span>
+                        </button>
+                    </div>
+
+                    <!-- Quick Prompts -->
+                    <div class="mt-4">
+                        <p class="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-2">Popular prompts</p>
+                        <div id="quickPrompts" class="flex flex-wrap gap-2">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 2: Regex Pattern & Flags -->
+                <section id="pattern-section" class="glass-card animate-slide-up" style="animation-delay: 0.2s;">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="step-badge step-badge--accent">2</span>
+                        <h2 class="text-lg font-bold text-accent-300">Regex Pattern & Flags</h2>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
+                        <div class="flex-1 min-w-0 relative group">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-mono text-xl select-none">/</span>
+                            <input 
+                                type="text" 
+                                id="regexInput" 
+                                value="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                                class="input-field pl-9 pr-9 font-mono !text-emerald-400 tracking-wide"
+                                spellcheck="false"
+                                autocomplete="off"
+                            >
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 font-mono text-xl select-none">/</span>
+                            <div class="absolute inset-0 rounded-xl border border-brand-500/0 group-focus-within:border-brand-500/40 transition-colors pointer-events-none"></div>
+                        </div>
+                        <div class="flex gap-1 bg-surface-900/80 p-1.5 rounded-xl border border-white/[0.06]">
+                            <label class="flag-toggle" title="Global — match all occurrences">
+                                <input type="checkbox" id="flagG" checked class="sr-only peer">
+                                <span class="flag-label peer-checked:bg-brand-600/30 peer-checked:text-brand-300 peer-checked:border-brand-500/40">g</span>
+                            </label>
+                            <label class="flag-toggle" title="Case-insensitive matching">
+                                <input type="checkbox" id="flagI" class="sr-only peer">
+                                <span class="flag-label peer-checked:bg-accent-600/30 peer-checked:text-accent-300 peer-checked:border-accent-500/40">i</span>
+                            </label>
+                            <label class="flag-toggle" title="Multiline mode (^ and $ match line boundaries)">
+                                <input type="checkbox" id="flagM" class="sr-only peer">
+                                <span class="flag-label peer-checked:bg-purple-600/30 peer-checked:text-purple-300 peer-checked:border-purple-500/40">m</span>
+                            </label>
+                            <label class="flag-toggle" title="Dot matches newlines">
+                                <input type="checkbox" id="flagS" class="sr-only peer">
+                                <span class="flag-label peer-checked:bg-amber-600/30 peer-checked:text-amber-300 peer-checked:border-amber-500/40">s</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div id="regexError" class="hidden mt-3 px-4 py-2.5 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm font-mono"></div>
+
+                    <!-- Copy button -->
+                    <div class="flex items-center gap-3 mt-4">
+                        <button id="copyBtn" class="btn-ghost text-xs" title="Copy regex to clipboard">
+                            <span class="material-icons-outlined text-base">content_copy</span>
+                            <span id="copyText">Copy Pattern</span>
+                        </button>
+                        <button id="clearBtn" class="btn-ghost text-xs" title="Clear all fields">
+                            <span class="material-icons-outlined text-base">delete_outline</span>
+                            <span>Clear</span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Section 3: Live Match Highlighter -->
+                <section id="visualizer-section" class="glass-card animate-slide-up" style="animation-delay: 0.3s;">
+                    <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+                        <div class="flex items-center gap-3">
+                            <span class="step-badge step-badge--purple">3</span>
+                            <h2 class="text-lg font-bold text-purple-300">Test & Visualize Matches</h2>
+                        </div>
+                        <div class="flex items-center gap-4 text-sm">
+                            <span class="text-slate-500">Matches: <strong id="matchCount" class="text-brand-400 font-mono text-base tabular-nums">0</strong></span>
+                            <span class="text-slate-500">Groups: <strong id="groupCount" class="text-accent-400 font-mono text-base tabular-nums">0</strong></span>
+                        </div>
+                    </div>
+
+                    <div class="highlight-editor" id="highlightEditor">
+                        <div id="highlightOverlay" class="highlight-overlay" aria-hidden="true"></div>
+                        <textarea 
+                            id="testText" 
+                            class="highlight-textarea"
+                            spellcheck="false"
+                            placeholder="Paste your sample text here to see live match highlighting..."
+                        >Contact support at team@regexgenie.io or reach the admin at m.kiran2026@university.edu for access keys.
+
+Visit https://regexgenie.dev or http://docs.regexgenie.io/api for the latest docs.
+
+Phone: +1 (555) 234-5678 or call us at 800-555-1234.
+Order #ORD-2026-0529 was placed on 29/05/2026 at 15:30.
+
+Hex colors used: #3BCD96, #3B6CF5, #FF5733 and rgb(59, 205, 150).
+IPv4: 192.168.1.1 | MAC: 00:1B:44:11:3A:B7</textarea>
+                    </div>
+
+                    <!-- Match details panel -->
+                    <div id="matchDetails" class="hidden mt-4 max-h-44 overflow-y-auto rounded-lg bg-surface-900/60 border border-white/[0.04]">
+                        <div class="px-4 py-2 border-b border-white/[0.06] flex items-center justify-between sticky top-0 bg-surface-900/90 backdrop-blur-sm">
+                            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Match Results</span>
+                            <span class="text-xs text-slate-500 font-mono" id="matchSummary"></span>
+                        </div>
+                        <div id="matchList" class="p-3 space-y-1.5 font-mono text-sm"></div>
+                    </div>
+                </section>
+
+                <!-- Section 4: Interactive Syntax Breakdown -->
+                <section id="breakdown-section" class="glass-card animate-slide-up" style="animation-delay: 0.4s;">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="step-badge step-badge--amber">4</span>
+                        <h2 class="text-lg font-bold text-amber-300">Syntax Breakdown</h2>
+                    </div>
+                    <p class="text-xs text-slate-500 mb-4">Hover over each token to see a detailed explanation.</p>
+                    <div id="syntaxBreakdown" class="flex flex-wrap gap-1.5 font-mono text-sm leading-relaxed min-h-[48px] items-start">
+                        <!-- Populated by JS -->
+                    </div>
+                </section>
+
+                <!-- Cheatsheet Toggle -->
+                <section id="cheatsheet-section" class="glass-card animate-slide-up" style="animation-delay: 0.5s;">
+                    <button id="cheatsheetToggle" class="w-full flex items-center justify-between text-left group">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-slate-700/50 flex items-center justify-center"><span class="material-icons-outlined text-xl text-amber-400">menu_book</span></span>
+                            <h2 class="text-lg font-bold text-slate-300 group-hover:text-white transition-colors">Quick Reference Cheatsheet</h2>
+                        </div>
+                        <span id="cheatsheetArrow" class="material-icons-round text-xl text-slate-500 transition-transform duration-300">expand_more</span>
+                    </button>
+                    <div id="cheatsheetContent" class="hidden mt-5">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="cheatsheetGrid">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="border-t border-white/[0.04] py-6 text-center text-xs text-slate-600">
+            <p>Built with 🧞 by <strong class="text-slate-500">Mahesh Kiran</strong> · 100 Days 100 Web Projects</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
