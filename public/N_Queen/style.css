@@ -8,17 +8,114 @@
   --error: #ff1744;
   --light-square: #e2e8f0;
   --dark-square: #4a5568;
+  /* Semantic tokens — dark mode defaults */
+  --body-bg-from: #1e1e38;
+  --body-bg-to: #0f0f1a;
+  --body-color: #ffffff;
+  --panel-surface: rgba(30, 30, 47, 0.7);
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --input-bg: #12121f;
+  --input-border: rgba(255, 160, 122, 0.4);
+  --input-color: #ffffff;
+  --board-border: #1a1a2e;
+  --board-bg: #1a1a2e;
+  --subtitle-color: #a0aec0;
+  --board-details-bg: rgba(0, 0, 0, 0.2);
+  --rules-bg: rgba(0, 0, 0, 0.25);
+  --rules-border: rgba(255, 160, 122, 0.2);
+  --rules-border-open: rgba(255, 160, 122, 0.5);
+  --rules-divider: rgba(255, 160, 122, 0.12);
+  --rules-text: #cbd5e0;
+  --rules-summary-hover: rgba(255, 160, 122, 0.07);
+  --queen-color: #1a1a2e;
+  --guideline-bg: rgba(255, 160, 122, 0.15);
+  --back-btn-bg: #1e293b;
+  --back-btn-color: #3b82f6;
+  --back-btn-border: #3b82f6;
+  --back-btn-hover-bg: #3b82f6;
+  --back-btn-hover-color: #fff;
+  --message-success: #00e676;
+  --message-error: #ff1744;
+  --toggle-bg: rgba(30, 30, 47, 0.85);
+  --toggle-border: rgba(255, 160, 122, 0.35);
+  --toggle-color: var(--accent);
 }
-
+/* ── Light Mode Overrides ───────────────────────────────── */
+body.light {
+  --body-bg-from: #ffdcb5;
+  --body-bg-to:#fff2e5;
+  --body-color:#111111;
+  --panel-bg: rgba(255, 255, 255, 0.85);
+  --accent: #c04519;
+  --primary: #e65c00;
+  --panel-surface: rgba(255, 255, 255, 0.85);
+  --panel-border: rgba(255, 160, 122, 0.4);
+  --input-bg: #ffffff;
+  --input-border: rgba(255, 140, 100, 0.5);
+  --input-color: #111111;
+  --body-color: #111111;
+  --board-border:#ffb89e;;
+  --board-bg:#ffb89e;
+  --subtitle-color: #333333;
+  --board-details-bg: rgba(255, 160, 122, 0.2);
+  --rules-bg: rgba(255, 245, 238, 0.9);
+  --rules-border: rgba(255, 160, 122, 0.4);
+  --rules-border-open: rgba(255, 99, 71, 0.6);
+  --rules-divider: rgba(255, 160, 122, 0.2);
+  --rules-text:#222222;
+  --rules-summary-hover: rgba(255, 160, 122, 0.15);
+  --queen-color:#000000;;
+  --guideline-bg: rgba(255, 99, 71, 0.15);
+  --back-btn-bg: #fff5eb;
+  --back-btn-color: #e65c00;
+  --back-btn-border:#ffb89e;
+  --back-btn-hover-bg: #e65c00;
+  --back-btn-hover-color:#ffffff;
+  --message-success: #1a7f4b;
+  --message-error: #c0152f;
+  --toggle-bg: rgba(255, 255, 255, 0.9);
+  --toggle-border: #ffb89e;
+  --toggle-color:#e65c00;;
+  --light-square:#f6eeee;
+  --dark-square: #383535;
+}
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  background: radial-gradient(circle at center, #1e1e38 0%, var(--bg-dark) 100%);
-  color: #ffffff;
+  background: radial-gradient(circle at center, var(--body-bg-from) 0%, var(--body-bg-to) 100%);
+  color:var(--body-color);
   text-align: center;
   margin: 0;
   padding: 80px 20px 40px 20px;
   min-height: 100vh;
   box-sizing: border-box;
+  transition: background 0.35s ease, color 0.35s ease;
+}
+/* ── Theme Toggle Button ─────────────────────────────────── */
+.theme-toggle {
+  position: fixed;
+  right: 24px;
+  top: 24px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--toggle-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--toggle-border);
+  color: var(--toggle-color);
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: all 0.25s ease;
+  padding: 0;
+}
+.theme-toggle:hover {
+  transform: translateY(-2px) rotate(15deg);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
 .project-back-button {
@@ -27,21 +124,21 @@ body {
   top: 24px;
   padding: 8px 16px;
   border-radius: 8px;
-  background: #1e293b;
+  background:  var(--back-btn-bg);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid #3b82f6;
+  border: 1px solid var(--back-btn-border);
   text-decoration: none;
   z-index: 9999;
   font-weight: 700;
-  color: #3b82f6;
+  color:var(--back-btn-color);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   transition: all 0.2s ease;
 }
 
 .project-back-button:hover {
-  background: #3b82f6;
-  color: #fff;
+  background:var(--back-btn-hover-bg);
+  color: var(--back-btn-hover-color);
   transform: translateY(-2px);
 }
 
@@ -52,10 +149,11 @@ body {
   background: var(--panel-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--panel-border);
   box-shadow: 0 16px 45px rgba(0, 0, 0, 0.6);
   border-radius: 24px;
   animation: fadeIn 0.6s ease-out;
+  transition: background 0.35s ease, border-color 0.35s ease;
 }
 
 h1 {
@@ -68,9 +166,10 @@ h1 {
 }
 
 .subtitle {
-  color: #a0aec0;
+  color:var(--subtitle-color);
   font-size: 1rem;
   margin-bottom: 30px;
+  transition: color 0.35s ease;
 }
 
 .board-details {
@@ -78,10 +177,11 @@ h1 {
   align-items: center;
   justify-content: center;
   gap: 25px;
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--board-details-bg);
   padding: 15px 25px;
   border-radius: 16px;
   margin-bottom: 25px;
+   transition: background 0.35s ease;
 }
 
 .board-size {
@@ -100,14 +200,14 @@ input[type="number"] {
   padding: 10px;
   font-size: 1.1em;
   font-weight: 600;
-  border: 2px solid rgba(255, 160, 122, 0.4);
+  border: 2px solid var(--input-border);
   border-radius: 10px;
   width: 70px;
   text-align: center;
-  background-color: #12121f;
-  color: #ffffff;
+  background-color:var(--input-bg);
+  color:var(--input-color);
   outline: none;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, background 0.35s ease, color 0.35s ease;
 }
 
 input[type="number"]:focus {
@@ -146,8 +246,8 @@ button:hover {
 #gameBoard {
   display: grid;
   margin: 25px auto;
-  border: 6px solid #1a1a2e;
-  background: #1a1a2e;
+  border: 6px solid var(--board-border);
+  background: var(--board-bg);
   border-radius: 14px;
   width: fit-content;      
   max-width: 95vw;        
@@ -155,6 +255,7 @@ button:hover {
   overflow: auto;         
   padding: 4px;
   box-shadow: inset 0 4px 20px rgba(0,0,0,0.5);
+   transition: border-color 0.35s ease, background 0.35s ease;
 }
 
 .square {
@@ -177,7 +278,7 @@ button:hover {
   content: '';
   position: absolute;
   inset: 0;
-  background-color: rgba(255, 160, 122, 0.15);
+  background-color: var(--guideline-bg);
   pointer-events: none;
 }
 
@@ -187,7 +288,7 @@ button:hover {
 
 .queen {
   font-size: 34px;
-  color: #1a1a2e;
+  color:  var(--queen-color);
   pointer-events: none;
   z-index: 2;
   animation: dropIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
@@ -198,12 +299,13 @@ button:hover {
   font-weight: 700;
   margin: 15px 0;
   min-height: 30px;
-  color: var(--success);
+  color:  var(--message-success);
   text-shadow: 0 2px 8px rgba(0, 230, 118, 0.2);
+  transition: color 0.35s ease;
 }
 
 #message.error {
-  color: var(--error);
+  color: var(--message-error);
   text-shadow: 0 2px 8px rgba(255, 23, 68, 0.2);
 }
 
@@ -226,4 +328,72 @@ button:hover {
   0%, 100% { transform: translateX(0); }
   25% { transform: translateX(-4px); }
   75% { transform: translateX(4px); }
+}
+/* ── Collapsible Rules Section ───────────────────────────── */
+.rules-section {
+  background:var(--rules-bg);
+  border: 1px solid var(--rules-border);
+  border-radius: 14px;
+  margin-bottom: 22px;
+  padding: 0;
+  text-align: left;
+  overflow: hidden;
+  transition: border-color 0.25s, background 0.35s ease;
+}
+
+.rules-section[open] {
+  border-color: var(--rules-border-open);
+}
+
+.rules-section summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 13px 20px;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--accent);
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s;
+}
+
+.rules-section summary::after {
+  content: '▸';
+  margin-left: auto;
+  font-size: 0.85rem;
+  transition: transform 0.25s;
+  color: rgba(255,160,122,0.6);
+}
+
+.rules-section[open] summary::after {
+  transform: rotate(90deg);
+}
+
+.rules-section summary::-webkit-details-marker { display: none; }
+
+.rules-section summary:hover {
+  background: var(--rules-summary-hover);
+}
+
+.rules-content {
+  padding: 4px 20px 16px;
+  font-size: 0.93rem;
+  color:var(--rules-text);
+  line-height: 1.65;
+  border-top: 1px solid var(--rules-divider);
+  transition: color 0.35s ease;
+}
+
+.rules-content strong { color: var(--accent); }
+.rules-content em     { color:  var(--body-color); font-style: normal; font-weight: 600; }
+
+.rules-content ul {
+  margin: 6px 0 10px 18px;
+  padding: 0;
+}
+
+.rules-content ul li {
+  margin-bottom: 4px;
 }

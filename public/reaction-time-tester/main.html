@@ -1,307 +1,220 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reaction Time Arena</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-  <title>Reaction Time Arena</title>
+  <body>
+    <div class="bg-animation">
+      <span></span><span></span><span></span><span></span> <span></span
+      ><span></span><span></span>
+    </div>
 
-  <link rel="stylesheet" href="style.css" />
-</head>
-
-<body>
-
-  <!-- BACK BUTTON -->
-  <a href="/" class="project-back-button">
-    ← Back to Home
-  </a>
-
-  <!-- BACKGROUND -->
-  <div class="bg-animation">
-    <span></span><span></span><span></span><span></span>
-    <span></span><span></span><span></span>
-  </div>
-
-  <!-- THEME -->
-  <div class="theme-toggle">
-    <button class="toggle-btn" id="themeToggle">
-      🌙 Dark Mode
-    </button>
-  </div>
-
-  <!-- MAIN CONTAINER -->
-  <div class="container">
-
-    <!-- LEFT PANEL -->
-    <section class="left-panel">
-
-      <!-- HERO -->
-      <div class="hero-card glass">
-        <h1 class="main-title">⚡ Reaction Time Arena</h1>
-        <p class="main-subtitle">
-          Train your reflexes with PRO cognitive + physical reaction games.
-        </p>
-      </div>
-
-      <!-- GAME SELECTOR -->
-      <div class="game-selector glass">
-
-        <h2 class="section-heading">🎮 Choose Game Mode</h2>
-
-        <div class="game-modes">
-
-          <button class="mode-btn active" data-mode="classic">⚡ Classic</button>
-          <button class="mode-btn" data-mode="color">🎨 Color Match</button>
-          <button class="mode-btn" data-mode="target">🎯 Target Click</button>
-          <button class="mode-btn" data-mode="memory">🧠 Memory Reflex</button>
-
-          <!-- NEW PRO MODES -->
-          <button class="mode-btn" data-mode="stroop">🧠 Stroop Test</button>
-          <button class="mode-btn" data-mode="number">🔢 Number Rush</button>
-          <button class="mode-btn" data-mode="audio">🎧 Audio Reflex</button>
-
+    <div class="app-wrapper">
+      <header class="top-header glass">
+        <div class="header-left">
+          <a href="/" class="project-back-button"> ← Back to Home </a>
         </div>
 
-      </div>
-
-      <!-- GAME CARD -->
-      <div class="game-card glass">
-
-        <div class="game-header">
-          <div>
-            <h2 id="gameTitle">Classic Reaction Test</h2>
-            <p id="gameDescription">
-              Wait for green and click as fast as possible.
-            </p>
-          </div>
-
-          <div class="difficulty-badge">PRO MODE</div>
-        </div>
-
-        <!-- ================= CLASSIC GAME ================= -->
-        <div class="game-area" id="classicGame">
-
-          <div class="traffic-light-container">
-
-            <div class="traffic-light">
-              <div class="light" id="redLight"></div>
-              <div class="light" id="orangeLight"></div>
-              <div class="light" id="greenLight"></div>
-            </div>
-
-            <div class="controls-area">
-              <div class="countdown-text" id="countdownText">Ready?</div>
-              <button class="action-btn" id="actionBtn">Click to Start</button>
-            </div>
-
-          </div>
-
-        </div>
-
-        <!-- ================= COLOR GAME ================= -->
-        <div class="game-area hidden" id="colorGame">
-          <div class="color-match-wrapper">
-            <div class="color-box" id="colorBox">WAIT</div>
-            <div class="color-instruction" id="colorInstruction">
-              Press Start to begin
-            </div>
-            <button class="action-btn" id="colorStartBtn">
-              Start Color Match
-            </button>
-          </div>
-        </div>
-
-        <!-- ================= TARGET GAME ================= -->
-        <div class="game-area hidden" id="targetGame">
-
-          <div class="target-board" id="targetBoard">
-            <div class="target-circle" id="targetCircle"></div>
-          </div>
-
-          <div class="target-controls">
-            <div class="target-score" id="targetScore">Hits: 0</div>
-            <button class="action-btn" id="targetStartBtn">
-              Start Target Game
-            </button>
-          </div>
-
-        </div>
-
-        <!-- ================= MEMORY GAME ================= -->
-        <div class="game-area hidden" id="memoryGame">
-
-          <div class="memory-grid">
-            <div class="memory-card"></div>
-            <div class="memory-card"></div>
-            <div class="memory-card"></div>
-            <div class="memory-card"></div>
-          </div>
-
-          <div class="memory-status" id="memoryStatus">
-            Memorize the flashing box
-          </div>
-
-          <button class="action-btn" id="memoryStartBtn">
-            Start Memory Reflex
-          </button>
-
-        </div>
-
-        <!-- ================= NEW: STROOP TEST ================= -->
-        <div class="game-area hidden" id="stroopGame">
-
-          <div class="stroop-box">
-            <div class="stroop-word" id="stroopWord">RED</div>
-            <div class="stroop-instruction">
-              Click the COLOR of the word, NOT the text
-            </div>
-          </div>
-
-          <div class="stroop-options">
-            <button class="color-btn red"></button>
-            <button class="color-btn blue"></button>
-            <button class="color-btn green"></button>
-            <button class="color-btn yellow"></button>
-          </div>
-
-          <button class="action-btn" id="stroopStartBtn">
-            Start Stroop Test
-          </button>
-
-        </div>
-
-        <!-- ================= NEW: NUMBER RUSH ================= -->
-        <div class="game-area hidden" id="numberGame">
-
-          <div class="number-display" id="numberDisplay">
-            3 1 4 2
-          </div>
-
-          <div class="number-instruction">
-            Click numbers in ascending order as fast as possible
-          </div>
-
-          <div class="number-grid" id="numberGrid"></div>
-
-          <button class="action-btn" id="numberStartBtn">
-            Start Number Rush
-          </button>
-
-        </div>
-
-        <!-- ================= NEW: AUDIO REFLEX ================= -->
-        <div class="game-area hidden" id="audioGame">
-
-          <div class="audio-icon">🔊</div>
-
-          <div class="audio-text">
-            Wait for the sound, then click FAST
-          </div>
-
-          <button class="action-btn" id="audioStartBtn">
-            Start Audio Test
-          </button>
-
-          <audio id="beepSound" src="beep.mp3"></audio>
-
-        </div>
-
-      </div>
-    </section>
-
-    <!-- RIGHT PANEL -->
-    <aside class="right-panel">
-
-      <!-- STATS -->
-      <div class="stats-section glass">
-        <div class="section-heading">📊 Statistics</div>
-
-        <div class="stats-grid">
-
-          <div class="stat-card">
-            <div class="stat-value" id="totalTests">0</div>
-            <div class="stat-label">Total Tests</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-value" id="bestTime">-</div>
-            <div class="stat-label">Best Time</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-value" id="avgTime">-</div>
-            <div class="stat-label">Average</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-value" id="excellentCount">0</div>
-            <div class="stat-label">Elite Scores</div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- ACHIEVEMENTS -->
-      <div class="achievements-section glass">
-
-        <div class="section-heading">🏅 Achievements</div>
-
-        <div class="achievement-progress-wrap">
-          <div class="progress-bar-container">
-            <div class="progress-bar" id="achievementProgress"></div>
-          </div>
-
-          <p>
-            <span id="unlockedAchievements">0</span>/5 unlocked
+        <div class="header-center">
+          <h1 class="main-title">⚡ Reaction Time Arena</h1>
+          <p class="main-subtitle">
+            Train your reflexes with PRO cognitive + physical reaction games.
           </p>
         </div>
 
-        <div class="achievements-grid" id="achievementsGrid"></div>
+        <div class="header-right">
+          <div class="theme-toggle">
+            <button class="toggle-btn" id="themeToggle">🌙 Dark Mode</button>
+          </div>
+        </div>
+      </header>
 
-      </div>
+      <main class="game-workspace">
+        <aside class="game-sidebar glass">
+          <h2 class="section-heading">🎮 Choose Game Mode</h2>
+          <div class="game-modes">
+            <button class="mode-btn active" data-mode="classic">
+              ⚡ Classic
+            </button>
+            <button class="mode-btn" data-mode="color">🎨 Color Match</button>
+            <button class="mode-btn" data-mode="target">🎯 Target Click</button>
+            <button class="mode-btn" data-mode="memory">
+              🧠 Memory Reflex
+            </button>
+            <button class="mode-btn" data-mode="stroop">🧠 Stroop Test</button>
+            <button class="mode-btn" data-mode="number">🔢 Number Rush</button>
+            <button class="mode-btn" data-mode="audio">🎧 Audio Reflex</button>
+          </div>
+        </aside>
 
-      <!-- HISTORY -->
-      <div class="history-section glass">
-        <div class="section-heading">📜 Last 10 Results</div>
-        <div class="history-list" id="historyList"></div>
-      </div>
+        <section class="game-main-content glass">
+          <div class="game-header">
+            <div>
+              <h2 id="gameTitle">Classic Reaction Test</h2>
+              <p id="gameDescription">
+                Wait for green and click as fast as possible.
+              </p>
+            </div>
+            <div class="difficulty-badge">PRO MODE</div>
+          </div>
 
-      <!-- LEADERBOARD -->
-      <div class="leaderboard-section glass">
-        <div class="section-heading">🏆 Leaderboard</div>
-        <div class="leaderboard-list" id="leaderboard"></div>
-      </div>
+          <div class="game-area" id="classicGame">
+            <div class="traffic-light-container">
+              <div class="traffic-light">
+                <div class="light" id="redLight"></div>
+                <div class="light" id="orangeLight"></div>
+                <div class="light" id="greenLight"></div>
+              </div>
+              <div class="controls-area">
+                <div class="countdown-text" id="countdownText">Ready?</div>
+                <button class="action-btn" id="actionBtn">
+                  Click to Start
+                </button>
+              </div>
+            </div>
+          </div>
 
-    </aside>
+          <div class="game-area hidden" id="colorGame">
+            <div class="color-match-wrapper">
+              <div class="color-box" id="colorBox">WAIT</div>
+              <div class="color-instruction" id="colorInstruction">
+                Press Start to begin
+              </div>
+              <button class="action-btn" id="colorStartBtn">
+                Start Color Match
+              </button>
+            </div>
+          </div>
 
-  </div>
+          <div class="game-area hidden" id="targetGame">
+            <div class="target-board" id="targetBoard">
+              <div class="target-circle" id="targetCircle"></div>
+            </div>
+            <div class="target-controls">
+              <div class="target-score" id="targetScore">Hits: 0</div>
+              <button class="action-btn" id="targetStartBtn">
+                Start Target Game
+              </button>
+            </div>
+          </div>
 
-  <!-- RESULT MODAL -->
-  <div class="benchmark-modal" id="benchmarkModal">
+          <div class="game-area hidden" id="memoryGame">
+            <div class="memory-grid">
+              <div class="memory-card"></div>
+              <div class="memory-card"></div>
+              <div class="memory-card"></div>
+              <div class="memory-card"></div>
+            </div>
+            <div class="memory-status" id="memoryStatus">
+              Memorize the flashing box
+            </div>
+            <button class="action-btn" id="memoryStartBtn">
+              Start Memory Reflex
+            </button>
+          </div>
 
-    <div class="benchmark-content">
+          <div class="game-area hidden" id="stroopGame">
+            <div class="stroop-box">
+              <div class="stroop-word" id="stroopWord">RED</div>
+              <div class="stroop-instruction">
+                Click the COLOR of the word, NOT the text
+              </div>
+            </div>
+            <div class="stroop-options">
+              <button class="color-btn red"></button>
+              <button class="color-btn blue"></button>
+              <button class="color-btn green"></button>
+              <button class="color-btn yellow"></button>
+            </div>
+            <button class="action-btn" id="stroopStartBtn">
+              Start Stroop Test
+            </button>
+          </div>
 
-      <div class="benchmark-title">Your Reaction Time</div>
+          <div class="game-area hidden" id="numberGame">
+            <div class="number-display" id="numberDisplay">3 1 4 2</div>
+            <div class="number-instruction">
+              Click numbers in ascending order as fast as possible
+            </div>
+            <div class="number-grid" id="numberGrid"></div>
+            <button class="action-btn" id="numberStartBtn">
+              Start Number Rush
+            </button>
+          </div>
 
-      <div class="benchmark-time" id="benchmarkTime">-</div>
+          <div class="game-area hidden" id="audioGame">
+            <div class="audio-icon">🔊</div>
+            <div class="audio-text">Wait for the sound, then click FAST</div>
+            <button class="action-btn" id="audioStartBtn">
+              Start Audio Test
+            </button>
+            <audio id="beepSound" src="beep.mp3"></audio>
+          </div>
+        </section>
+      </main>
 
-      <div class="benchmark-rating" id="benchmarkRating">-</div>
+      <footer class="dashboard-bottom">
+        <div class="stats-section glass">
+          <div class="section-heading">📊 Statistics</div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-value" id="totalTests">0</div>
+              <div class="stat-label">Total Tests</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="bestTime">-</div>
+              <div class="stat-label">Best Time</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="avgTime">-</div>
+              <div class="stat-label">Average</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="excellentCount">0</div>
+              <div class="stat-label">Elite Scores</div>
+            </div>
+          </div>
+        </div>
 
-      <div class="benchmark-compare" id="benchmarkCompare"></div>
+        <div class="leaderboard-section glass">
+          <div class="section-heading">🏆 Leaderboard</div>
+          <div class="leaderboard-list" id="leaderboard"></div>
+        </div>
 
-      <button class="benchmark-close" id="benchmarkClose">
-        Continue
-      </button>
+        <div class="achievements-section glass">
+          <div class="section-heading">🏅 Achievements</div>
+          <div class="achievement-progress-wrap">
+            <div class="progress-bar-container">
+              <div class="progress-bar" id="achievementProgress"></div>
+            </div>
+            <p><span id="unlockedAchievements">0</span>/5 unlocked</p>
+          </div>
+          <div class="achievements-grid" id="achievementsGrid"></div>
+        </div>
 
+        <div class="history-section glass">
+          <div class="section-heading">📜 Last 10 Results</div>
+          <div class="history-list" id="historyList"></div>
+        </div>
+      </footer>
     </div>
 
-  </div>
+    <div class="benchmark-modal" id="benchmarkModal">
+      <div class="benchmark-content">
+        <div class="benchmark-title">Your Reaction Time</div>
+        <div class="benchmark-time" id="benchmarkTime">-</div>
+        <div class="benchmark-rating" id="benchmarkRating">-</div>
+        <div class="benchmark-compare" id="benchmarkCompare"></div>
+        <button class="benchmark-close" id="benchmarkClose">Continue</button>
+      </div>
+    </div>
 
-  <!-- TOASTS -->
-  <div class="toast-container" id="toastContainer"></div>
+    <div class="toast-container" id="toastContainer"></div>
 
-  <!-- SCRIPT -->
-  <script src="script.js"></script>
-
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
