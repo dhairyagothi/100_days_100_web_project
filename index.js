@@ -731,6 +731,13 @@ function syncProjectCounts() {
   }
 }
 
+function syncCurrentYear() {
+  const yearNode = document.getElementById('currentYear');
+  if (yearNode) {
+    yearNode.textContent = new Date().getFullYear();
+  }
+}
+
 /* ============================================================
    NAVBAR — dynamic based on login state
    ============================================================ */
@@ -863,6 +870,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFilterChips();
   initSearch();
   syncProjectCounts();
+  syncCurrentYear();
   renderGrid();
   renderBookmarks();
   renderRecentProjects();
