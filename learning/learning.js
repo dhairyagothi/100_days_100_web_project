@@ -276,6 +276,8 @@ if (progressPercentageCard) {
     if (fill) fill.style.width = percentage + '%';
     if (text) text.textContent = percentage + '%';
 
+    updateRecommendedTopic();
+
     document.querySelectorAll('.topic-item').forEach((item) => {
       const id = item.id.replace('item-', '');
       if (learningProgress.completedTopics.includes(id)) {
@@ -283,6 +285,64 @@ if (progressPercentageCard) {
       }
     });
   }
+
+  function updateRecommendedTopic() {
+
+  const title =
+    document.getElementById(
+      'recommendedTopicTitle'
+    );
+
+  const desc =
+    document.getElementById(
+      'recommendedTopicDescription'
+    );
+
+  const btn =
+    document.getElementById(
+      'recommendedTopicBtn'
+    );
+
+  if (
+    !title ||
+    !desc ||
+    !btn
+  ) {
+    return;
+  }
+
+  const nextTopic =
+    allTopics.find(
+      topic =>
+        !learningProgress.completedTopics.includes(
+          `${topic.categoryId}-${topic.id}`
+        ) &&
+        topic.id !== 'quiz'
+    );
+
+  if (!nextTopic) {
+
+    title.textContent =
+      'Course Completed 🎉';
+
+    desc.textContent =
+      'You have completed all available topics.';
+
+    btn.style.display =
+      'none';
+
+    return;
+  }
+
+  title.textContent =
+    nextTopic.title;
+
+  desc.textContent =
+    `Next lesson in ${nextTopic.categoryTitle}`;
+
+  btn.href =
+    `#${nextTopic.categoryId}/${nextTopic.id}`;
+}
 
   async function loadRegistry() {
     try {
@@ -302,7 +362,8 @@ if (progressPercentageCard) {
       });
 
       renderSidebar();
-      handleRouting();
+updateRecommendedTopic();
+handleRouting();
     } catch (err) {
       console.error(err);
     }
