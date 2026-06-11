@@ -2215,6 +2215,7 @@ input:focus {
   background: var(--accent);
   border-color: var(--accent);
   color: #fff;
+  box-shadow: 0 10px 24px rgba(59, 130, 246, 0.22);
   transform: translateY(-2px);
 }
 
@@ -2284,6 +2285,14 @@ body.light-mode .homepage-footer-pill,
 body.light-mode .homepage-footer-card,
 body.light-mode .footer.homepage-footer .social-btn {
   background: rgba(255, 255, 255, 0.84);
+}
+
+:root[data-theme="light"] .footer.homepage-footer .social-btn:hover,
+body.light-mode .footer.homepage-footer .social-btn:hover {
+  background: #0f172a;
+  border-color: #0f172a;
+  color: #ffffff;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.2);
 }
 
 @media (max-width: 1024px) {
