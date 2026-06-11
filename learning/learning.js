@@ -5,6 +5,87 @@ document.addEventListener('DOMContentLoaded', async () => {
   let allTopics = [];
   let quizData = {};
   const STORAGE_KEY = 'learningProgress';
+  const BOOKMARKS_KEY = 'learningBookmarks';
+
+  let bookmarks = [];
+
+  function loadBookmarks() {
+  const saved =
+    localStorage.getItem(
+      BOOKMARKS_KEY
+    );
+
+  bookmarks = saved
+    ? JSON.parse(saved)
+    : [];
+}
+
+function saveBookmarks() {
+  localStorage.setItem(
+    BOOKMARKS_KEY,
+    JSON.stringify(bookmarks)
+  );
+}
+
+function renderBookmarks() {
+
+  const list =
+    document.getElementById(
+      'bookmarksList'
+    );
+
+  if (!list) return;
+
+  if (!bookmarks.length) {
+
+    list.innerHTML = `
+      <li class="empty-bookmark">
+        No bookmarks yet
+      </li>
+    `;
+
+    return;
+  }
+
+  list.innerHTML = bookmarks
+    .map(
+      topic => `
+        <li>
+          <a href="#${topic.categoryId}/${topic.id}">
+            ⭐ ${topic.title}
+          </a>
+        </li>
+      `
+    )
+    .join('');
+}
+
+function toggleBookmark(topic) {
+
+  const key =
+    `${topic.categoryId}-${topic.id}`;
+
+  const index =
+    bookmarks.findIndex(
+      item =>
+        `${item.categoryId}-${item.id}`
+        === key
+    );
+
+  if (index > -1) {
+    bookmarks.splice(index, 1);
+  } else {
+    bookmarks.push({
+      id: topic.id,
+      categoryId: topic.categoryId,
+      title: topic.title
+    });
+  }
+
+  saveBookmarks();
+
+  renderBookmarks();
+}
 
   let learningProgress = {
     lastTopic: null,
@@ -195,6 +276,8 @@ if (progressPercentageCard) {
     if (fill) fill.style.width = percentage + '%';
     if (text) text.textContent = percentage + '%';
 
+    updateRecommendedTopic();
+
     document.querySelectorAll('.topic-item').forEach((item) => {
       const id = item.id.replace('item-', '');
       if (learningProgress.completedTopics.includes(id)) {
@@ -202,6 +285,64 @@ if (progressPercentageCard) {
       }
     });
   }
+
+  function updateRecommendedTopic() {
+
+  const title =
+    document.getElementById(
+      'recommendedTopicTitle'
+    );
+
+  const desc =
+    document.getElementById(
+      'recommendedTopicDescription'
+    );
+
+  const btn =
+    document.getElementById(
+      'recommendedTopicBtn'
+    );
+
+  if (
+    !title ||
+    !desc ||
+    !btn
+  ) {
+    return;
+  }
+
+  const nextTopic =
+    allTopics.find(
+      topic =>
+        !learningProgress.completedTopics.includes(
+          `${topic.categoryId}-${topic.id}`
+        ) &&
+        topic.id !== 'quiz'
+    );
+
+  if (!nextTopic) {
+
+    title.textContent =
+      'Course Completed 🎉';
+
+    desc.textContent =
+      'You have completed all available topics.';
+
+    btn.style.display =
+      'none';
+
+    return;
+  }
+
+  title.textContent =
+    nextTopic.title;
+
+  desc.textContent =
+    `Next lesson in ${nextTopic.categoryTitle}`;
+
+  btn.href =
+    `#${nextTopic.categoryId}/${nextTopic.id}`;
+}
 
   async function loadRegistry() {
     try {
@@ -221,7 +362,8 @@ if (progressPercentageCard) {
       });
 
       renderSidebar();
-      handleRouting();
+updateRecommendedTopic();
+handleRouting();
     } catch (err) {
       console.error(err);
     }
@@ -260,20 +402,70 @@ if (progressPercentageCard) {
         item.className = 'topic-item';
         item.id = `item-${cat.id}-${topic.id}`;
 
-        const link = document.createElement('a');
-        link.href = `#${cat.id}/${topic.id}`;
-        link.textContent = topic.title;
+const row =
+  document.createElement('div');
 
-        link.addEventListener('click', () => {
-          if (window.innerWidth <= 992 && learningSidebar) {
-            learningSidebar.classList.remove('active');
-            const icon = sidebarToggle.querySelector('i');
-            if (icon) icon.className = 'fas fa-chevron-right';
-          }
-        });
+row.className =
+  'topic-row';
 
-        item.appendChild(link);
-        list.appendChild(item);
+const link =
+  document.createElement('a');
+
+link.href =
+  `#${cat.id}/${topic.id}`;
+
+link.textContent =
+  topic.title;
+
+const star =
+  document.createElement('button');
+
+star.className =
+  'sidebar-bookmark-btn';
+
+const bookmarked =
+  bookmarks.some(
+    b =>
+      b.id === topic.id &&
+      b.categoryId === cat.id
+  );
+
+star.innerHTML = bookmarked
+  ? '⭐'
+  : '☆';
+
+star.addEventListener(
+  'click',
+  (e) => {
+
+    e.preventDefault();
+
+    e.stopPropagation();
+
+    toggleBookmark({
+      id: topic.id,
+      title: topic.title,
+      categoryId: cat.id
+    });
+
+    star.innerHTML =
+      bookmarks.some(
+        b =>
+          b.id === topic.id &&
+          b.categoryId === cat.id
+      )
+        ? '⭐'
+        : '☆';
+
+    renderBookmarks();
+  }
+);
+
+row.appendChild(link);
+row.appendChild(star);
+
+item.appendChild(row);
+list.appendChild(item);
       });
 
       header.addEventListener('click', () => {
@@ -459,6 +651,8 @@ if (progressPercentageCard) {
 
       // Fix Bug 1: Track dynamic read-time calculations based on word content limits
       const firstH1 = parsedContainer.querySelector('h1');
+
+      
       if (firstH1) {
         const wordCount = markdownText.trim().split(/\s+/).length;
         const readTime = Math.ceil(wordCount / 200);
@@ -471,6 +665,7 @@ if (progressPercentageCard) {
         `;
         firstH1.insertAdjacentElement('afterend', metaDiv);
       }
+      
 
       const preElements = parsedContainer.querySelectorAll('pre');
       preElements.forEach((pre) => {
@@ -512,6 +707,70 @@ if (progressPercentageCard) {
           }
         });
       });
+
+      if (firstH1) {
+
+  const titleRow =
+    document.createElement('div');
+
+  titleRow.className =
+    'topic-title-row';
+
+  firstH1.parentNode.insertBefore(
+    titleRow,
+    firstH1
+  );
+
+  titleRow.appendChild(firstH1);
+
+  const bookmarkBtn =
+    document.createElement('button');
+
+  bookmarkBtn.className =
+    'bookmark-icon-btn';
+
+  const exists =
+    bookmarks.some(
+      b =>
+        b.id === topic.id &&
+        b.categoryId === topic.categoryId
+    );
+
+  bookmarkBtn.innerHTML = exists
+    ? '<i class="fas fa-star"></i>'
+    : '<i class="far fa-star"></i>';
+
+  if (exists) {
+    bookmarkBtn.classList.add('active');
+  }
+
+  bookmarkBtn.addEventListener(
+    'click',
+    () => {
+
+      toggleBookmark(topic);
+
+      const bookmarked =
+        bookmarks.some(
+          b =>
+            b.id === topic.id &&
+            b.categoryId === topic.categoryId
+        );
+
+      bookmarkBtn.innerHTML =
+        bookmarked
+          ? '<i class="fas fa-star"></i>'
+          : '<i class="far fa-star"></i>';
+
+      bookmarkBtn.classList.toggle(
+        'active',
+        bookmarked
+      );
+    }
+  );
+
+  titleRow.appendChild(bookmarkBtn);
+}
 
       const blockquotes = parsedContainer.querySelectorAll('blockquote');
       blockquotes.forEach((bq) => {
@@ -1065,7 +1324,11 @@ if (progressPercentageCard) {
     }
   }
 
-  loadProgress();
+loadProgress();
+
+loadBookmarks();
+
+renderBookmarks();  
 
 document
   .getElementById('continueLearningBtn')

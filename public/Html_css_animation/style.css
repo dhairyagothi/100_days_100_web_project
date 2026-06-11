@@ -2,15 +2,18 @@
 Basic style
 ==================*/
 
-html, body {
-    position: relative;
+html,
+body {
     width: 100%;
-    height: 100%;
-    overflow: hidden;
+    min-height: 100%;
+    margin: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 body {
     margin: 0;
+    background: #f8fafc;
 }
 
 img {
@@ -19,7 +22,9 @@ img {
     vertical-align: bottom;
 }
 
-h1, h2, p {
+h1,
+h2,
+p {
     margin: 0;
 }
 
@@ -73,6 +78,7 @@ animation01
         transform: scale3d(1, 0, 1);
         opacity: 1;
     }
+
     100% {
         transform: scale3d(1, 1, 1);
         opacity: 1;
@@ -118,6 +124,7 @@ animation02
         transform: scale3d(0, 0, 1);
         opacity: 1;
     }
+
     100% {
         transform: scale3d(1, 1, 1);
         opacity: 1;
@@ -174,11 +181,22 @@ animation03
     opacity: 0;
 }
 
+.animation-card:hover{
+    transform:translateY(-10px) scale(1.03);
+
+    box-shadow:
+        0 0 15px rgba(117,207,185,.5),
+        0 0 30px rgba(69,126,212,.3);
+
+    transition:.3s ease;
+}
+
 @keyframes animation03_circle {
     0% {
         transform: scale3d(0, 0, 1);
         opacity: 1;
     }
+
     100% {
         transform: scale3d(1, 1, 1);
         opacity: 1;
@@ -189,6 +207,7 @@ animation03
     0% {
         border: 0.25vw solid #54988b;
     }
+
     100% {
         border: 0 solid #54988b;
     }
@@ -198,6 +217,7 @@ animation03
     0% {
         border: 0.5vw solid #4b5e58;
     }
+
     100% {
         border: 0 solid #4b5e58;
     }
@@ -207,6 +227,7 @@ animation03
     0% {
         border: 1vw solid #404a52;
     }
+
     100% {
         border: 0 solid #404a52;
     }
@@ -239,7 +260,33 @@ animation04
     background-color: #fff;
     opacity: 0;
 }
+.card-preview{
+    height:180px;
 
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:16px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #fdfbfb,
+        #ebedee
+    );
+
+    overflow:hidden;
+}
+
+.gallery{
+    background:
+    linear-gradient(
+        135deg,
+        #f5f7fa,
+        #c3cfe2
+    );
+}
 /*===========
 line01
 ===========*/
@@ -262,6 +309,7 @@ line01
         transform: scale3d(1, 1, 1);
         opacity: 1;
     }
+
     100% {
         transform-origin: top;
         transform: scale3d(1, 0, 1);
@@ -275,6 +323,7 @@ line01
         transform: scale3d(1, 0, 1);
         opacity: 1;
     }
+
     100% {
         transform-origin: bottom;
         transform: scale3d(1, 1, 1);
@@ -312,6 +361,7 @@ line02
         transform: scale3d(1, 1, 1);
         opacity: 1;
     }
+
     100% {
         transform-origin: top;
         transform: scale3d(1, 0, 1);
@@ -325,6 +375,7 @@ line02
         transform: scale3d(1, 0, 1);
         opacity: 1;
     }
+
     100% {
         transform-origin: bottom;
         transform: scale3d(1, 1, 1);
@@ -354,6 +405,7 @@ line03
         transform: scale3d(1, 1, 1);
         opacity: 1;
     }
+
     100% {
         transform-origin: right;
         transform: scale3d(0, 1, 1);
@@ -367,6 +419,7 @@ line03
         transform: scale3d(0, 1, 1);
         opacity: 1;
     }
+
     100% {
         transform-origin: left;
         transform: scale3d(1, 1, 1);
@@ -404,6 +457,7 @@ line04
         transform: scale3d(1, 1, 1);
         opacity: 1;
     }
+
     100% {
         transform-origin: top;
         transform: scale3d(1, 0, 1);
@@ -417,6 +471,7 @@ line04
         transform: scale3d(1, 0, 1);
         opacity: 1;
     }
+
     100% {
         transform-origin: bottom;
         transform: scale3d(1, 1, 1);
@@ -446,6 +501,7 @@ line05
         transform: scale3d(1, 1, 1);
         opacity: 1;
     }
+
     100% {
         transform-origin: bottom;
         transform: scale3d(1, 0, 1);
@@ -459,6 +515,7 @@ line05
         transform: scale3d(1, 0, 1);
         opacity: 1;
     }
+
     100% {
         transform-origin: top;
         transform: scale3d(1, 1, 1);
@@ -496,6 +553,7 @@ line06
         transform: scale3d(1, 1, 1);
         opacity: 1;
     }
+
     100% {
         transform-origin: top;
         transform: scale3d(1, 0, 1);
@@ -509,6 +567,7 @@ line06
         transform: scale3d(1, 0, 1);
         opacity: 1;
     }
+
     100% {
         transform-origin: bottom;
         transform: scale3d(1, 1, 1);
@@ -538,6 +597,7 @@ line07
         transform: scale3d(1, 1, 1);
         opacity: 1;
     }
+
     100% {
         transform-origin: left;
         transform: scale3d(0, 1, 1);
@@ -551,6 +611,7 @@ line07
         transform: scale3d(0, 1, 1);
         opacity: 1;
     }
+
     100% {
         transform-origin: right;
         transform: scale3d(1, 1, 1);
@@ -588,6 +649,7 @@ line08
         transform: scale3d(1, 1, 1);
         opacity: 1;
     }
+
     100% {
         transform-origin: top;
         transform: scale3d(1, 0, 1);
@@ -601,6 +663,7 @@ line08
         transform: scale3d(1, 0, 1);
         opacity: 1;
     }
+
     100% {
         transform-origin: bottom;
         transform: scale3d(1, 1, 1);
@@ -892,6 +955,7 @@ red circle
     0% {
         opacity: 0;
     }
+
     100% {
         opacity: 1;
     }
@@ -902,14 +966,17 @@ red circle
         background: #f2f3df;
         transform: rotate(0deg);
     }
+
     50% {
         background: #f2f3df;
         transform: rotate(-180deg);
     }
+
     50.01% {
         background: #f2f3df;
         transform: rotate(-180deg);
     }
+
     100% {
         background: #f2f3df;
         transform: rotate(-360deg);
@@ -920,9 +987,11 @@ red circle
     0% {
         transform: rotate(0deg);
     }
+
     50% {
         transform: rotate(-180deg);
     }
+
     100% {
         transform: rotate(-360deg);
     }
@@ -996,6 +1065,7 @@ animation06
         transform: scale3d(0, 0, 1);
         opacity: 1;
     }
+
     100% {
         transform: scale3d(10, 10, 1);
         opacity: 1;
@@ -1044,6 +1114,7 @@ animation07
         transform: scale3d(1, 1, 1);
         opacity: 1;
     }
+
     100% {
         transform: scale3d(1.4, 1.4, 1);
         opacity: 0;
@@ -1055,6 +1126,7 @@ animation07
         transform: scale3d(0, 0, 1);
         opacity: 1;
     }
+
     100% {
         transform: scale3d(1, 1, 1);
         opacity: 1;
@@ -1216,6 +1288,7 @@ line06
         transform: scale3d(1, 1, 1);
         opacity: 1;
     }
+
     100% {
         transform-origin: top;
         transform: scale3d(1, 0, 1);
@@ -1229,6 +1302,7 @@ line06
         transform: scale3d(1, 0, 1);
         opacity: 1;
     }
+
     100% {
         transform-origin: bottom;
         transform: scale3d(1, 1, 1);
@@ -1242,6 +1316,7 @@ line06
         transform: scale3d(1, 1, 1);
         opacity: 1;
     }
+
     100% {
         transform-origin: bottom;
         transform: scale3d(1, 0, 1);
@@ -1255,6 +1330,7 @@ line06
         transform: scale3d(1, 0, 1);
         opacity: 1;
     }
+
     100% {
         transform-origin: top;
         transform: scale3d(1, 1, 1);
@@ -1311,6 +1387,7 @@ animation08
         transform: translateY(-200vh);
         opacity: 1;
     }
+
     100% {
         transform: translateY(0);
         opacity: 1;
@@ -1318,117 +1395,1008 @@ animation08
 }
 
 @media screen and (max-width: 750px) {
-/*===================
+
+    /*===================
 animation02
 ====================*/
-@keyframes animation02 {
-    0% {
-        transform: scale3d(0, 0, 1);
-        opacity: 1;
+    @keyframes animation02 {
+        0% {
+            transform: scale3d(0, 0, 1);
+            opacity: 1;
+        }
+
+        100% {
+            transform: scale3d(1.2, 1.2, 1);
+            opacity: 1;
+        }
     }
-    100% {
-        transform: scale3d(1.2, 1.2, 1);
-        opacity: 1;
-    }
-}
-/*==============
+
+    /*==============
 green circle
 ==============*/
-.green01 {
-    width: 70vw;
-    height: 70vw;
-}
-.green01::before {
-    left: 35vw;
-    width: 70vw;
-    height: 70vw;
-    transform-origin: left 35vw;
-}
-.green01::after {
-    left: -35vw;
-    width: 70vw;
-    height: 70vw;
-    transform-origin: right 35vw;
-}
-/*==============
+    .green01 {
+        width: 70vw;
+        height: 70vw;
+    }
+
+    .green01::before {
+        left: 35vw;
+        width: 70vw;
+        height: 70vw;
+        transform-origin: left 35vw;
+    }
+
+    .green01::after {
+        left: -35vw;
+        width: 70vw;
+        height: 70vw;
+        transform-origin: right 35vw;
+    }
+
+    /*==============
 navy circle
 ==============*/
-.navy01 {
-    width: 50vw;
-    height: 50vw;
-}
-.navy01::before {
-    left: 25vw;
-    width: 50vw;
-    height: 50vw;
-    transform-origin: left 25vw;
-}
-.navy01::after {
-    left: -25vw;
-    width: 50vw;
-    height: 50vw;
-    transform-origin: right 25vw;
-}
-/*==============
+    .navy01 {
+        width: 50vw;
+        height: 50vw;
+    }
+
+    .navy01::before {
+        left: 25vw;
+        width: 50vw;
+        height: 50vw;
+        transform-origin: left 25vw;
+    }
+
+    .navy01::after {
+        left: -25vw;
+        width: 50vw;
+        height: 50vw;
+        transform-origin: right 25vw;
+    }
+
+    /*==============
 yellow circle
 ==============*/
-.yellow01 {
-    width: 35vw;
-    height: 35vw;
-}
-.yellow01::before {
-    left: 17.5vw;
-    width: 35vw;
-    height: 35vw;
-    transform-origin: left 17.5vw;
-}
-.yellow01::after {
-    left: -17.5vw;
-    width: 35vw;
-    height: 35vw;
-    transform-origin: right 17.5vw;
-}
-/*==============
+    .yellow01 {
+        width: 35vw;
+        height: 35vw;
+    }
+
+    .yellow01::before {
+        left: 17.5vw;
+        width: 35vw;
+        height: 35vw;
+        transform-origin: left 17.5vw;
+    }
+
+    .yellow01::after {
+        left: -17.5vw;
+        width: 35vw;
+        height: 35vw;
+        transform-origin: right 17.5vw;
+    }
+
+    /*==============
 blue circle
 ==============*/
-.blue01 {
-    width: 20vw;
-    height: 20vw;
-}
-.blue01::before {
-    left: 10vw;
-    width: 20vw;
-    height: 20vw;
-    transform-origin: left 10vw;
-}
-.blue01::after {
-    left: -10vw;
-    width: 20vw;
-    height: 20vw;
-    transform-origin: right 10vw;
-}
-.blue00 {
-    width: 7vw;
-    height: 7vw;
-}
-/*==============
+    .blue01 {
+        width: 20vw;
+        height: 20vw;
+    }
+
+    .blue01::before {
+        left: 10vw;
+        width: 20vw;
+        height: 20vw;
+        transform-origin: left 10vw;
+    }
+
+    .blue01::after {
+        left: -10vw;
+        width: 20vw;
+        height: 20vw;
+        transform-origin: right 10vw;
+    }
+
+    .blue00 {
+        width: 7vw;
+        height: 7vw;
+    }
+
+    /*==============
 red circle
 ==============*/
-.red00 {
-    width: 6vw;
-    height: 6vw;
-}
-/*===================
+    .red00 {
+        width: 6vw;
+        height: 6vw;
+    }
+
+    /*===================
 animation06
 ====================*/
-@keyframes rhombus {
-    0% {
-        transform: scale3d(0, 0, 1);
-        opacity: 1;
-    }
-    100% {
-        transform: scale3d(20, 20, 1);
-        opacity: 1;
+    @keyframes rhombus {
+        0% {
+            transform: scale3d(0, 0, 1);
+            opacity: 1;
+        }
+
+        100% {
+            transform: scale3d(20, 20, 1);
+            opacity: 1;
+        }
     }
 }
+
+
+/* ==================================
+   INTRO SCREEN
+================================== */
+
+/* Intro Screen */
+.intro-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: #f2f3df;
+    z-index: 99999;
+
+    animation: hideIntro 1s ease 4s forwards;
+}
+
+@keyframes hideIntro {
+    0% {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    99% {
+        opacity: 0;
+        visibility: visible;
+    }
+
+    100% {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+}
+
+.intro-title {
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 10000;
+}
+
+.intro-title h1 {
+    font-size: 3rem;
+    color: #242324;
+}
+
+.intro-title p {
+    color: #666;
+    margin-top: 10px;
+}
+
+/* ==================================
+   GALLERY
+================================== */
+
+.gallery {
+    min-height: 100vh;
+    padding: 40px;
+    background: #f8fafc;
+}
+
+.gallery-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.gallery-header h1 {
+    font-size: 3rem;
+    color: #222;
+}
+
+.gallery-header p {
+    color: #666;
+    margin-top: 10px;
+}
+
+/* ==================================
+   GRID
+================================== */
+
+.animation-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+/* ==================================
+   CARDS
+================================== */
+
+.animation-card {
+    position: relative;
+    background: #fff;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, .08);
+
+    transition: .3s ease;
+}
+
+.animation-card:hover {
+    transform: translateY(-10px);
+}
+
+.animation-card h3 {
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* ==================================
+   CODE BUTTON
+================================== */
+
+.code-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+
+    width: 40px;
+    height: 40px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #457ed4;
+    color: #fff;
+    cursor: pointer;
+
+    font-size: 16px;
+
+    transition: .3s;
+}
+
+.code-btn:hover {
+    transform: scale(1.1);
+}
+
+/* ==================================
+   PREVIEW AREA
+================================== */
+
+.card-preview {
+    height: 180px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #f7f7f7;
+    border-radius: 15px;
+}
+
+/* ==================================
+   PREVIEW BUTTON
+================================== */
+
+.preview-btn {
+    width: 100%;
+    padding: 12px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #75cfb9;
+    color: white;
+
+    cursor: pointer;
+    transition: .3s;
+}
+
+.preview-btn:hover {
+    background: #57b39b;
+}
+
+/* ==================================
+   FLOATING TEXT
+================================== */
+
+.floating-preview {
+    font-size: 24px;
+    font-weight: bold;
+
+    animation: floatingText 2s ease infinite;
+}
+
+@keyframes floatingText {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+/* ==================================
+   LOADER
+================================== */
+
+.loader-preview {
+    width: 50px;
+    height: 50px;
+
+    border: 5px solid #ddd;
+    border-top-color: #457ed4;
+
+    border-radius: 50%;
+
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ==================================
+   TYPEWRITER
+================================== */
+
+.typewriter-preview {
+    overflow: hidden;
+    white-space: nowrap;
+
+    width: 0;
+
+    animation:
+        typing 3s steps(12, end) infinite;
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+/* ==================================
+   DOLL
+================================== */
+
+.doll-preview {
+    font-size: 60px;
+
+    animation: dollRotate 3s linear infinite;
+}
+
+@keyframes dollRotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ==================================
+   GLITCH
+================================== */
+
+.glitch-preview {
+    font-size: 26px;
+    font-weight: bold;
+
+    animation: glitch .5s infinite;
+}
+
+@keyframes glitch {
+    0% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-2px);
+    }
+
+    40% {
+        transform: translateX(2px);
+    }
+
+    60% {
+        transform: translateX(-2px);
+    }
+
+    80% {
+        transform: translateX(2px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* ==================================
+   NEON BUTTON
+================================== */
+
+.neon-preview {
+    padding: 12px 24px;
+
+    border: none;
+
+    background: #111;
+    color: #fff;
+
+    border-radius: 8px;
+
+    box-shadow:
+        0 0 10px #75cfb9,
+        0 0 20px #75cfb9;
+
+    animation: neonPulse 2s infinite;
+}
+
+@keyframes neonPulse {
+    50% {
+        box-shadow:
+            0 0 20px #75cfb9,
+            0 0 40px #75cfb9;
+    }
+}
+
+/* ==================================
+   MODALS
+================================== */
+
+.preview-modal,
+.code-modal {
+    position: fixed;
+    inset: 0;
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(0, 0, 0, .7);
+
+    z-index: 10000;
+}
+
+.modal-content {
+    position: relative;
+
+    width: min(90%, 700px);
+
+    background: #fff;
+
+    border-radius: 20px;
+
+    padding: 30px;
+}
+
+/* ==================================
+   CLOSE BUTTON
+================================== */
+
+.close-btn {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+
+    border: none;
+    background: none;
+
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* ==================================
+   CODE AREA
+================================== */
+
+pre {
+    background: #111;
+    color: #fff;
+
+    padding: 20px;
+
+    border-radius: 10px;
+
+    overflow: auto;
+}
+
+/* ==================================
+   COPY BUTTON
+================================== */
+
+.copy-btn {
+    margin-top: 20px;
+
+    padding: 10px 20px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #457ed4;
+    color: #fff;
+
+    cursor: pointer;
+}
+
+/* ==================================
+   RESPONSIVE
+================================== */
+
+@media(max-width:768px) {
+
+    .gallery {
+        padding: 20px;
+    }
+
+    .gallery-header h1 {
+        font-size: 2rem;
+    }
+
+    .animation-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .card-preview {
+        height: 150px;
+    }
+}
+.hide-intro{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transition:all 1s ease;
+}
+
+/* ==========================
+   DANCING ROBOT
+========================== */
+
+.robot{
+    font-size:70px;
+    animation:danceRobot 1s ease-in-out infinite alternate;
+}
+
+@keyframes danceRobot{
+    from{
+        transform:rotate(-15deg);
+    }
+    to{
+        transform:rotate(15deg);
+    }
+}
+
+/* ==========================
+   JUMPING EMOJI
+========================== */
+
+.emoji{
+    font-size:70px;
+    animation:jumpEmoji 1s infinite;
+}
+
+@keyframes jumpEmoji{
+    0%,100%{
+        transform:translateY(0);
+    }
+    50%{
+        transform:translateY(-30px);
+    }
+}
+
+/* ==========================
+   FLOATING BALLOON
+========================== */
+
+.balloon{
+    font-size:70px;
+    animation:floatBalloon 3s ease-in-out infinite;
+}
+
+@keyframes floatBalloon{
+    0%,100%{
+        transform:translateY(0);
+    }
+    50%{
+        transform:translateY(-25px);
+    }
+}
+
+/* ==========================
+   WALKING CHARACTER
+========================== */
+
+.walker{
+    font-size:70px;
+    position:relative;
+    animation:walkCharacter 4s linear infinite;
+}
+
+@keyframes walkCharacter{
+    0%{
+        transform:translateX(-60px);
+    }
+    100%{
+        transform:translateX(60px);
+    }
+}
+
+/* ==========================
+   ROCKET LAUNCH
+========================== */
+
+.rocket{
+    font-size:70px;
+    animation:rocketLaunch 2s ease-in-out infinite;
+}
+
+@keyframes rocketLaunch{
+    0%{
+        transform:
+        translateY(60px)
+        scale(.7);
+        opacity:.4;
+    }
+
+    100%{
+        transform:
+        translateY(-60px)
+        scale(1.2);
+        opacity:1;
+    }
+}
+
+/* ==========================
+   SPINNING PLANET
+========================== */
+
+.planet{
+    font-size:70px;
+    animation:planetSpin 5s linear infinite;
+}
+
+@keyframes planetSpin{
+    from{
+        transform:rotate(0deg);
+    }
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+/* ==========================
+   BOUNCING BALL
+========================== */
+
+.ball{
+    width:60px;
+    height:60px;
+
+    border-radius:50%;
+
+    background:
+    linear-gradient(
+        135deg,
+        #ff5722,
+        #ff9800
+    );
+
+    animation:bounceBall 1s ease-in-out infinite;
+}
+
+@keyframes bounceBall{
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-50px);
+    }
+}
+
+/* ==========================
+   SKELETON LOADING
+========================== */
+
+.skeleton{
+    width:220px;
+    height:18px;
+
+    border-radius:12px;
+
+    background:
+    linear-gradient(
+        90deg,
+        #e0e0e0,
+        #f5f5f5,
+        #e0e0e0
+    );
+
+    background-size:300% 100%;
+
+    animation:skeletonLoading 1.5s linear infinite;
+}
+
+@keyframes skeletonLoading{
+    from{
+        background-position:300% 0;
+    }
+
+    to{
+        background-position:-300% 0;
+    }
+}
+
+/* ==========================
+   TOAST NOTIFICATION
+========================== */
+
+.toast{
+    padding:12px 24px;
+    border-radius:10px;
+    background:linear-gradient(
+        135deg,
+        #22c55e,
+        #16a34a
+    );
+    color:white;
+    font-weight:600;
+
+    animation:toastSlide 3s infinite;
+}
+
+@keyframes toastSlide{
+
+    0%{
+        transform:translateX(-150px);
+        opacity:0;
+    }
+
+    20%{
+        transform:translateX(0);
+        opacity:1;
+    }
+
+    80%{
+        transform:translateX(0);
+        opacity:1;
+    }
+
+    100%{
+        transform:translateX(150px);
+        opacity:0;
+    }
+}
+
+/* ==========================
+   PROGRESS BAR
+========================== */
+
+.progress{
+    width:220px;
+    height:20px;
+
+    background:#e5e7eb;
+
+    border-radius:20px;
+
+    overflow:hidden;
+}
+
+.fill{
+    height:100%;
+
+    border-radius:20px;
+
+    background:linear-gradient(
+        90deg,
+        #06b6d4,
+        #3b82f6,
+        #8b5cf6
+    );
+
+    animation:progressFill 3s infinite;
+}
+
+@keyframes progressFill{
+
+    0%{
+        width:0;
+    }
+
+    100%{
+        width:100%;
+    }
+}
+
+/* ==========================
+   ANIMATED TABS
+========================== */
+
+.tabs{
+    position:relative;
+}
+
+.tabs span{
+    font-size:20px;
+    font-weight:600;
+    position:relative;
+}
+
+.tabs span::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    bottom:-6px;
+
+    width:0;
+    height:4px;
+
+    border-radius:20px;
+
+    background:#3b82f6;
+
+    animation:tabUnderline 2s infinite;
+}
+
+@keyframes tabUnderline{
+
+    0%{
+        width:0;
+    }
+
+    50%{
+        width:100%;
+    }
+
+    100%{
+        width:0;
+    }
+}
+
+/* ==========================
+   ACCORDION
+========================== */
+
+.accordion{
+
+    width:220px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #75cfb9,
+        #4fbba3
+    );
+
+    border-radius:12px;
+
+    animation:accordionOpen 2s ease-in-out infinite alternate;
+}
+
+@keyframes accordionOpen{
+
+    from{
+        height:30px;
+    }
+
+    to{
+        height:120px;
+    }
+}
+
+/* ==========================
+   SEARCH BAR EXPAND
+========================== */
+
+.search-expand{
+
+    width:90px;
+
+    padding:12px 15px;
+
+    border:none;
+
+    border-radius:30px;
+
+    outline:none;
+
+    background:white;
+
+    box-shadow:
+    0 5px 15px rgba(0,0,0,.1);
+
+    animation:searchExpand 3s infinite;
+}
+
+@keyframes searchExpand{
+
+    0%{
+        width:90px;
+    }
+
+    50%{
+        width:220px;
+    }
+
+    100%{
+        width:90px;
+    }
+}
+
+/* ==========================
+   HAMBURGER MENU
+========================== */
+
+.hamburger{
+    width:60px;
+}
+
+.hamburger span{
+
+    display:block;
+
+    height:6px;
+
+    margin:8px 0;
+
+    border-radius:20px;
+
+    background:linear-gradient(
+        90deg,
+        #3b82f6,
+        #8b5cf6
+    );
+
+    animation:hamburgerMove 2s infinite;
+}
+
+.hamburger span:nth-child(2){
+    animation-delay:.2s;
+}
+
+.hamburger span:nth-child(3){
+    animation-delay:.4s;
+}
+
+@keyframes hamburgerMove{
+
+    0%{
+        transform:translateX(0);
+    }
+
+    50%{
+        transform:translateX(12px);
+    }
+
+    100%{
+        transform:translateX(0);
+    }
 }

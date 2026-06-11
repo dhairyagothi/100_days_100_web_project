@@ -27,6 +27,24 @@ fs.writeFileSync(validRegistryPath, JSON.stringify([
     techStack: ['html', 'css'],
     difficulty: 'beginner',
     projectPath: './public/valid-project/index.html'
+  },
+  {
+    projectNo: 2,
+    projectName: 'Valid Same Repository Blob URL',
+    projectType: 'Tool',
+    projectDesc: 'A valid GitHub blob URL pointing to this repository.',
+    techStack: ['html'],
+    difficulty: 'intermediate',
+    projectPath: 'https://github.com/dhairyagothi/100_days_100_web_project/blob/Main/index.html'
+  },
+  {
+    projectNo: 3,
+    projectName: 'Valid Same Repository Tree URL',
+    projectType: 'Tool',
+    projectDesc: 'A valid GitHub tree URL pointing to this repository.',
+    techStack: ['html'],
+    difficulty: 'advanced',
+    projectPath: 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public'
   }
 ], null, 2));
 
@@ -69,13 +87,31 @@ fs.writeFileSync(invalidRegistryPath, JSON.stringify([
   },
   {
     projectNo: 5,
+    projectName: 'External GitHub Blob URL',
+    projectType: 'Tool',
+    projectDesc: 'An external GitHub blob URL that should be rejected.',
+    techStack: ['html'],
+    difficulty: 'advanced',
+    projectPath: 'https://github.com/octocat/Hello-World/blob/master/README'
+  },
+  {
+    projectNo: 6,
+    projectName: 'External GitHub Tree URL',
+    projectType: 'Tool',
+    projectDesc: 'An external GitHub tree URL that should be rejected.',
+    techStack: ['html'],
+    difficulty: 'advanced',
+    projectPath: 'https://github.com/octocat/Hello-World/tree/master'
+  },
+  {
+    projectNo: 7,
     projectName: 'Missing Metadata',
     techStack: ['html'],
     difficulty: 'beginner',
     projectPath: 'https://example.com/missing-metadata.html'
   },
   {
-    projectNo: 6,
+    projectNo: 8,
     projectName: 'Blank Metadata',
     projectType: '   ',
     projectDesc: '   ',
@@ -84,7 +120,7 @@ fs.writeFileSync(invalidRegistryPath, JSON.stringify([
     projectPath: './public/blank-metadata/index.html'
   },
   {
-    projectNo: 7,
+    projectNo: 9,
     projectName: 'Wrong Metadata Types',
     projectType: ['Tool'],
     projectDesc: 42,
@@ -117,12 +153,14 @@ const expectedMessages = [
   'uses an unsafe URL protocol',
   'must not contain path traversal',
   'local path "./public/missing/index.html" does not exist in the repository',
-  'Index 4 (Day 5 - Missing Metadata): "projectType" is missing or empty',
-  'Index 4 (Day 5 - Missing Metadata): "projectDesc" is missing or empty',
-  'Index 5 (Day 6 - Blank Metadata): "projectType" must not be blank',
-  'Index 5 (Day 6 - Blank Metadata): "projectDesc" must not be blank',
-  'Index 6 (Day 7 - Wrong Metadata Types): "projectType" must be a string, got "object"',
-  'Index 6 (Day 7 - Wrong Metadata Types): "projectDesc" must be a string, got "number"'
+  'Index 4 (Day 5 - External GitHub Blob URL): "projectPath" GitHub URLs must point to this repository',
+  'Index 5 (Day 6 - External GitHub Tree URL): "projectPath" GitHub URLs must point to this repository',
+  'Index 6 (Day 7 - Missing Metadata): "projectType" is missing or empty',
+  'Index 6 (Day 7 - Missing Metadata): "projectDesc" is missing or empty',
+  'Index 7 (Day 8 - Blank Metadata): "projectType" must not be blank',
+  'Index 7 (Day 8 - Blank Metadata): "projectDesc" must not be blank',
+  'Index 8 (Day 9 - Wrong Metadata Types): "projectType" must be a string, got "object"',
+  'Index 8 (Day 9 - Wrong Metadata Types): "projectDesc" must be a string, got "number"'
 ];
 
 if (invalidResult.status === 0) {

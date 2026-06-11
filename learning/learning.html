@@ -75,6 +75,17 @@
           </div>
         </div>
 
+        <div id="bookmarksContainer" class="bookmarks-container">
+          <div class="bookmarks-header">
+            <i class="fas fa-star"></i>
+            <span>Bookmarked Topics</span>
+          </div>
+
+          <ul id="bookmarksList" class="bookmarks-list">
+            <li class="empty-bookmark">No bookmarks yet</li>
+          </ul>
+        </div>
+
         <nav
           class="sidebar-tree"
           id="sidebarTree"
@@ -85,70 +96,75 @@
       </aside>
 
       <!-- Content Display Panel -->
-<section class="learning-content">
-  <button
-    class="sidebar-toggle-btn"
-    id="sidebarToggle"
-    aria-label="Toggle curriculum sidebar"
-  >
-    <i class="fas fa-chevron-right"></i> Curriculum Menu
-  </button>
+      <section class="learning-content">
+        <button
+          class="sidebar-toggle-btn"
+          id="sidebarToggle"
+          aria-label="Toggle curriculum sidebar"
+        >
+          <i class="fas fa-chevron-right"></i> Curriculum Menu
+        </button>
 
-  <!-- Progress Dashboard -->
-  <div class="learning-dashboard-header">
+        <!-- Progress Dashboard -->
+        <div class="learning-dashboard-header">
+          <div class="learning-roadmap-card">
+            <div class="roadmap-header">
+              <i class="fas fa-route"></i>
+              <span>Recommended Next Topic</span>
+            </div>
 
-    <div class="progress-stats-grid">
+            <div class="roadmap-content">
+              <h3 id="recommendedTopicTitle">Loading...</h3>
 
-      <div class="progress-stat-card">
-        <span class="stat-label">Completed</span>
-        <strong id="completedTopicsCount">0</strong>
-      </div>
+              <p id="recommendedTopicDescription">
+                Continue your learning journey.
+              </p>
 
-      <div class="progress-stat-card">
-        <span class="stat-label">Topics</span>
-        <strong id="totalTopicsCount">0</strong>
-      </div>
+              <a
+                id="recommendedTopicBtn"
+                class="recommended-topic-btn"
+                href="#"
+              >
+                Continue Learning
+              </a>
+            </div>
+          </div>
 
-      <div class="progress-stat-card">
-        <span class="stat-label">Progress</span>
-        <strong id="progressPercentageCard">0%</strong>
-      </div>
+          <div class="progress-stats-grid">
+            <div class="progress-stat-card">
+              <span class="stat-label">Completed</span>
+              <strong id="completedTopicsCount">0</strong>
+            </div>
 
-    </div>
+            <div class="progress-stat-card">
+              <span class="stat-label">Topics</span>
+              <strong id="totalTopicsCount">0</strong>
+            </div>
 
-    <button
-      id="continueLearningBtn"
-      class="continue-learning-btn"
-    >
-      <i class="fas fa-play"></i>
-      Continue Learning
-    </button>
+            <div class="progress-stat-card">
+              <span class="stat-label">Progress</span>
+              <strong id="progressPercentageCard">0%</strong>
+            </div>
+          </div>
 
-    <div class="overall-progress">
+          <button id="continueLearningBtn" class="continue-learning-btn">
+            <i class="fas fa-play"></i>
+            Continue Learning
+          </button>
 
-      <div class="progress-label">
-        Overall Progress
-        <span id="overallProgressText">0%</span>
-      </div>
+          <div class="overall-progress">
+            <div class="progress-label">
+              Overall Progress
+              <span id="overallProgressText">0%</span>
+            </div>
 
-      <div class="progress-bar">
-        <div
-          id="overallProgressFill"
-          class="progress-fill"
-        ></div>
-      </div>
+            <div class="progress-bar">
+              <div id="overallProgressFill" class="progress-fill"></div>
+            </div>
+          </div>
+        </div>
 
-    </div>
-
-  </div>
-
-  <article
-    class="content-viewport"
-    id="contentViewport"
-  >
-
-
-  
+        <article class="content-viewport" id="contentViewport">
           <div class="loading-article">
             <i class="fas fa-circle-notch fa-spin"></i>
             <p>Fetching tutorial content...</p>
