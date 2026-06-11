@@ -283,6 +283,51 @@ function sanitizeUrl(url) {
   return "#";
 }
 
+function getPreviewImageSrc(projectPath, projectName) {
+  const raw = String(projectPath || "").trim();
+
+  if (!raw || /^https?:\/\//i.test(raw)) {
+    return "";
+  }
+
+  let normalized = raw;
+  if (normalized.startsWith("./")) {
+    normalized = normalized.slice(2);
+  } else if (normalized.startsWith("../")) {
+    normalized = normalized.replace(/^(\.\.\/)+/, "");
+  } else if (normalized.startsWith("/")) {
+    normalized = normalized.replace(/^\/+/, "");
+  }
+
+  const segments = normalized.split("/").filter(Boolean);
+  const fallbackFolder = String(projectName || "")
+    .trim()
+    .replace(/\s+/g, "_");
+
+  if (!segments.length && !fallbackFolder) {
+    return "";
+  }
+
+  const folderSegments = /\/$/.test(normalized)
+    ? segments
+    : segments.length > 1
+      ? segments.slice(0, -1)
+      : [fallbackFolder];
+
+  if (!folderSegments.length || !folderSegments[0]) {
+    return "";
+  }
+
+  const previewPath = `./${folderSegments.join("/")}/preview.png`;
+
+  try {
+    const isRoot = !window.location.pathname.includes("/contributors/");
+    return isRoot ? previewPath : `../${previewPath.slice(2)}`;
+  } catch (error) {
+    return previewPath;
+  }
+}
+
 function buildProjectCardHTML({
   day,
   name,
@@ -330,6 +375,13 @@ function buildProjectCardHTML({
   const sourceOnlyBadge = sourceOnly
     ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
     : "";
+  const previewImageSrc = sanitizeUrl(getPreviewImageSrc(url, name));
+  const previewImageHTML = previewImageSrc
+    ? `
+            <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
+                <img src="${previewImageSrc}" alt="${safeName} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>`
+    : "";
 
   const primaryLink = sourceOnly
     ? `<a href="${safeSourceUrl}" target="_blank" class="card-link open-project source-link-btn" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source of ${safeName} on GitHub (opens in a new tab)" title="View source on GitHub">
@@ -356,9 +408,7 @@ function buildProjectCardHTML({
                 </span>
             </div>
 
-            <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
-                <img src="./${url && url.startsWith('./') ? url.split('/')[2] : name.replace(/\s+/g, '_')}/preview.png" alt="${safeName} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
-            </div>
+            ${previewImageHTML}
 
             <h3 class="card-name">${safeName}</h3>
 
