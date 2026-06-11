@@ -3,17 +3,24 @@
 :root {
   --primary: #6366f1;
   --primary-dark: #4f46e5;
+  --primary-glow: rgba(99, 102, 241, 0.2);
   --bg-dark: #0f172a;
   --bg-card: #1e2937;
+  --bg-hover: #263348;
   --text-light: #e2e8f0;
   --text-muted: #94a3b8;
   --border: #334155;
+  --border-focus: #6366f1;
+  --radius: 10px;
+  --transition: 0.2s ease;
 }
 
 body {
   background-color: var(--bg-dark);
   color: var(--text-light);
   font-family: "Segoe UI", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
 }
 
 .bg-dark {
@@ -39,22 +46,26 @@ body {
 .field-item {
   background-color: var(--bg-card);
   color: var(--text-light);
-  padding: 12px 16px;
-  border-radius: 8px;
+  padding: 11px 16px;
+  border-radius: var(--radius);
   border: 1px solid var(--border);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition);
   display: flex;
   align-items: center;
   gap: 10px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
 }
 
 .field-item:hover {
-  background-color: #334155;
+  background-color: var(--bg-hover);
   border-color: var(--primary);
-  transform: translateX(4px);
+  border-left: 3px solid var(--primary);
+  padding-left: 14px;
+  color: #fff;
 }
-
 .field-item i {
   width: 20px;
   color: var(--primary);
@@ -62,10 +73,11 @@ body {
 
 /* Canvas */
 #form-canvas {
-  min-height: 100%;
-  background-color: #1e2937;
-  border: 2px dashed #475569;
-  transition: all 0.3s ease;
+  min-height: calc(100vh - 120px);
+  background-color: #162032;
+  border: 2px dashed #3b4f6b;
+  border-radius: var(--radius);
+  transition: border-color var(--transition), background-color var(--transition);
 }
 
 #form-canvas.dragover {
@@ -76,21 +88,26 @@ body {
 .form-field {
   background-color: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-left: 3px solid transparent;
+  border-radius: var(--radius);
   padding: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   position: relative;
-  transition: all 0.2s ease;
+  transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
 }
 
 .form-field:hover {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  border-left-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+  transform: translateX(2px);
 }
 
 .form-field.selected {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+  border-left-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-glow);
+  background-color: var(--bg-hover);
 }
 
 .field-label {
@@ -115,7 +132,13 @@ body {
   border-radius: 50%;
   cursor: pointer;
   opacity: 0;
-  transition: opacity 0.2s;
+  transform: scale(0.8);
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.form-field:hover .remove-btn {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .form-field:hover .remove-btn {
@@ -127,12 +150,27 @@ body {
   background-color: var(--bg-dark);
   border-left: 1px solid var(--border);
 }
-
 .form-control,
 .form-select {
-  background-color: #1e2937;
+  background-color: #162032;
   border: 1px solid var(--border);
   color: var(--text-light);
+  border-radius: 8px;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: #162032;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+  color: var(--text-light);
+  outline: none;
+}
+
+.form-control::placeholder {
+  color: var(--text-muted);
+  opacity: 0.7;
 }
 
 .form-control:focus,
@@ -189,4 +227,97 @@ body {
 
 .cursor-grab {
   cursor: grab;
+}
+
+.modal-content {
+  background-color: #162032;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+  border-color: var(--border);
+  border-top: 3px solid var(--primary);
+  padding: 1.25rem 1.5rem;
+}
+
+.modal-footer {
+  border-color: var(--border);
+  padding: 1rem 1.5rem;
+}
+/* Step nav */
+#step-nav .progress {
+  background-color: var(--border);
+  border-radius: 99px;
+}
+
+#step-nav .progress-bar {
+  background-color: var(--primary);
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+
+#step-nav .btn-outline-secondary {
+  border-color: var(--border);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+#step-nav .btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  font-size: 0.8rem;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Dropdown */
+.dropdown-menu-dark {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 6px;
+}
+
+.dropdown-menu-dark .dropdown-item {
+  border-radius: 6px;
+  color: var(--text-light);
+  font-size: 0.875rem;
+  padding: 8px 12px;
+  transition: background-color var(--transition);
+}
+
+.dropdown-menu-dark .dropdown-item:hover {
+  background-color: var(--bg-hover);
+  color: #fff;
+}
+
+/* Field label */
+.field-label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-light);
+  display: block;
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
+}
+
+/* Canvas empty state icon */
+#empty-state i {
+  color: var(--border);
 }

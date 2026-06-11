@@ -14,24 +14,30 @@
 
 <body>
 
+     <!-- sidebar.html -->
     <!-- Sidebar Overlay -->
     <div id="sidebar-overlay" class="sidebar-overlay"></div>
 
-    <!-- Sidebar -->
+    <!-- Sidebar Container -->
     <aside id="sidebar" class="sidebar">
+        <!-- Sidebar Navigation -->
         <nav class="sidebar-nav">
             <img src="./assets/amazon_logo.png" width="120" alt="Amazon Logo" class="sidebar-logo" style="background-color: black; height: 60px;">
-            <div class="sidebar-search">
-                <input type="search" class="nav-search-input" placeholder="Search Amazon" aria-label="Search">
-                <button type="button" class="nav-search-icon" aria-label="Search Button">
-                    <img src="./assets/search_icon.png" alt="">
-                </div>
+           
+         <div class="sidebar-search">
+            <input type="search" class="nav-search-input" placeholder="Search Amazon" aria-label="Search">
+            <button type="button" class="nav-search-icon" aria-label="Search Button">
+                <img src="./assets/search_icon.png" alt="">
+        </div>
+
             <button class="nav-cart" type="button" aria-label="Shopping Cart" style="background-color: black;">
                 <span class="cart-count">0</span>
                 <img src="./assets/cart_icon.png" width="35" alt="">
                 <h4>Cart</h4>
             </button>
 
+
+            <!-- Shop by Category (Accordion) -->
             <div class="sidebar-accordion accordion-open">
                 <button type="button" class="accordion-header" onclick="toggleSidebarAccordion(this)">
                     <span class="header-title">
@@ -42,22 +48,45 @@
                 </button>
                 <div class="accordion-content">
                     <ul class="category-list">
-                        <li><span class="cat-icon bg-blue"><i class="fa-solid fa-laptop"></i></span><span class="cat-text">Electronics</span></li>
-                        <li><span class="cat-icon bg-pink"><i class="fa-solid fa-shirt"></i></span><span class="cat-text">Fashion</span></li>
-                        <li><span class="cat-icon bg-orange"><i class="fa-solid fa-utensils"></i></span><span class="cat-text">Home & Kitchen</span></li>
-                        <li><span class="cat-icon bg-green"><i class="fa-solid fa-puzzle-piece"></i></span><span class="cat-text">Toys & Games</span></li>
-                        <li><span class="cat-icon bg-yellow"><i class="fa-solid fa-book"></i></span><span class="cat-text">Books</span></li>
-                        <li><span class="cat-icon bg-red"><i class="fa-solid fa-spa"></i></span><span class="cat-text">Beauty & Health</span></li>
-                        <li><span class="cat-icon bg-slate"><i class="fa-solid fa-car"></i></span><span class="cat-text">Automotive</span></li>
+                        <li>
+                            <span class="cat-icon bg-blue"><i class="fa-solid fa-laptop"></i></span>
+                            <span class="cat-text">Electronics</span>
+                        </li>
+                        <li>
+                            <span class="cat-icon bg-pink"><i class="fa-solid fa-shirt"></i></span>
+                            <span class="cat-text">Fashion</span>
+                        </li>
+                        <li>
+                            <span class="cat-icon bg-orange"><i class="fa-solid fa-utensils"></i></span>
+                            <span class="cat-text">Home & Kitchen</span>
+                        </li>
+                        <li>
+                            <span class="cat-icon bg-green"><i class="fa-solid fa-puzzle-piece"></i></span>
+                            <span class="cat-text">Toys & Games</span>
+                        </li>
+                        <li>
+                            <span class="cat-icon bg-yellow"><i class="fa-solid fa-book"></i></span>
+                            <span class="cat-text">Books</span>
+                        </li>
+                        <li>
+                            <span class="cat-icon bg-red"><i class="fa-solid fa-spa"></i></span>
+                            <span class="cat-text">Beauty & Health</span>
+                        </li>
+                        <li>
+                            <span class="cat-icon bg-slate"><i class="fa-solid fa-car"></i></span>
+                            <span class="cat-text">Automotive</span>
+                        </li>
                     </ul>
                 </div>
             </div>
 
+            <!-- Deals & Offers (Simple Link) -->
             <a href="deals.html" class="sidebar-link" id="sidebar-deals-link">
                 <span class="header-icon tag-icon"><i class="fa-solid fa-tag"></i></span>
-                Deals & Offers
+                Deals &amp; Offers
             </a>
 
+            <!-- My Account (Accordion) -->
             <div class="sidebar-accordion">
                 <button type="button" class="accordion-header" onclick="toggleSidebarAccordion(this)">
                     <span class="header-title">
@@ -76,8 +105,27 @@
                     </ul>
                 </div>
             </div>
+
+            <!-- Support (Accordion) -->
+            <div class="sidebar-accordion">
+                <button type="button" class="accordion-header" onclick="toggleSidebarAccordion(this)">
+                    <span class="header-title">
+                        <span class="header-icon support-icon"><i class="fa-solid fa-headset"></i></span>
+                        Support
+                    </span>
+                    <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+                </button>
+                <div class="accordion-content">
+                    <ul class="submenu-list">
+                        <li><a href="Customer-Service/index.html">Help Center</a></li>
+                        <li><a href="Customer-Service/index.html">FAQs</a></li>
+                    </ul>
+                </div>
+            </div>
+
         </nav>
 
+        <!-- Theme Toggle Section -->
         <div class="sidebar-footer">
             <div class="theme-switch-container">
                 <div class="theme-option light-option" id="sb-theme-light-btn">
@@ -95,8 +143,7 @@
         </div>
     </aside>
 
-    <!-- Top Nav -->
-    <nav>
+   <nav>
         <a href="/" class="nav-logo">
             <img src="./assets/amazon_logo.png" alt="Amazon Logo">
         </a>
@@ -146,33 +193,34 @@
 
             <div class="nav-text" id="user-area">
                 <p id="open-signin">Hello, Sign in</p>
-                <h1>Account &amp; Lists</h1>
+                <h1>Account & Lists</h1>
             </div>
 
             <div class="nav-text">
-                <p>Return</p>
-                <h1>&amp; Orders</h1>
+                <a href="Customer-Service/index.html" style="color: inherit; text-decoration: none;">
+                    <p>Return</p>
+                    <h1>& Orders</h1>
+                </a>
             </div>
 
-            <button class="nav-cart" type="button" aria-label="Shopping Cart">
+           <button class="nav-cart" type="button" aria-label="Shopping Cart">
                 <span class="cart-count">0</span>
                 <img src="./assets/cart_icon.png" width="35" alt="">
                 <h4>Cart</h4>
             </button>
         </div>
     </nav>
-
-    <!-- Secondary Nav -->
     <div class="nav-bottom">
-        <div class="MenuSidebar">
+            <div class="MenuSidebar">
             <img src="./assets/menu_icon.png" width="25px" alt="Menu">
             <p>All</p>
         </div>
-        <a href="deals.html" role="button" class="nav-deals-active">Today's Deals</a>
-        <a href="/" role="button">Customer Service</a>
+        <a href="deals.html" role="button" id="nav-todays-deals">Today's Deals</a>
+        <a href="Customer-Service/index.html" role="button">Customer Service</a>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSfsZc3yChN-f_8LOi2RnXWVHkaBe40aSok60pHm5HIIvMagGQ/viewform" role="button">Registry</a>
         <a href="/" role="button">Gift Cards</a>
         <a href="/" role="button">Sell</a>
+
         <button id="dark-mode-btn" type="button" aria-label="Dark Mode Toggle">
             <div class="toggle-switch">
                 <div class="toggle-circle">
@@ -181,6 +229,7 @@
             </div>
         </button>
     </div>
+
 
     <!-- ============================================================
          DEALS PAGE CONTENT

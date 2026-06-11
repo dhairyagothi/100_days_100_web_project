@@ -264,46 +264,27 @@ body.light-mode .topic-item.active a {
 
 .progress-stats-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-
-  margin-bottom: 1.5rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 1rem;
 }
-
 .progress-stat-card {
-  background: var(--bg-elevated);
-
+  padding: 0.9rem 0.75rem;
+  border-radius: var(--radius-md);
   border: 1px solid var(--border);
-
-  border-radius: var(--radius-lg);
-
-  padding: 1rem;
-
+  background: var(--bg-elevated);
   text-align: center;
+  min-height: 85px;
 
-  transition: var(--t);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .progress-stat-card:hover {
   transform: translateY(-2px);
 
   border-color: var(--border-accent);
-}
-
-.stat-label {
-  display: block;
-
-  color: var(--text-muted);
-
-  font-size: 0.8rem;
-
-  margin-bottom: 0.5rem;
-}
-
-.progress-stat-card strong {
-  font-size: 1.4rem;
-
-  color: var(--accent);
 }
 
 /* ============================================================
@@ -1293,50 +1274,20 @@ body.light-mode .vector-flowchart {
   margin-bottom: 2rem;
 }
 
-.progress-stats-grid {
-  display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-
-  gap: 1rem;
-
-  margin-bottom: 1rem;
-}
-
-.progress-stat-card {
-  background: var(--bg-elevated);
-
-  border: 1px solid var(--border);
-
-  border-radius: var(--radius-lg);
-
-  padding: 1rem;
-
-  text-align: center;
-
-  transition: var(--t);
-}
 
 .progress-stat-card:hover {
   transform: translateY(-2px);
 
   border-color: var(--accent);
 }
-
 .stat-label {
-  display: block;
-
-  font-size: 0.8rem;
-
-  color: var(--text-muted);
-
-  margin-bottom: 0.4rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
 }
-
 .progress-stat-card strong {
   font-size: 1.4rem;
-
-  color: var(--accent);
+  font-weight: 700;
 }
 
 .continue-learning-btn {
@@ -1620,4 +1571,24 @@ body.light-mode .vector-flowchart {
 
 .recommended-topic-btn:hover {
   opacity: .9;
+}
+
+.streak-card {
+  border: 1px solid rgba(255,140,0,.25);
+}
+
+.streak-card strong {
+  color: #f97316;
+}
+
+@media (max-width: 768px) {
+  .progress-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .progress-stats-grid {
+    grid-template-columns: 1fr;
+  }
 }
