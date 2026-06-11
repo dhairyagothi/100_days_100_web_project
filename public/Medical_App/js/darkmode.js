@@ -43,4 +43,3 @@ if (!localStorage.getItem('theme')) {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     htmlElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
 }
-

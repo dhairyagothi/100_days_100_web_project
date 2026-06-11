@@ -53,7 +53,7 @@
     --sidebar-width: 280px;
 }
 
-body[data-theme="dark"] {
+body.dark-mode {
     --background: #0F172A;
     --background-alt: #1E293B;
     --surface: #1E293B;
@@ -1112,7 +1112,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
     margin: 3rem auto;
     max-width: 1200px; /* Matches the grid alignment of the doctor sections */
     padding: 24px;
-    background-color: var(--faq-bg-outer);
+    background-color: );
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     transition: background-color 0.3s ease, box-shadow 0.3s ease;

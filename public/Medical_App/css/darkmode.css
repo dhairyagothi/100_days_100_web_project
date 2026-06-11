@@ -1,115 +1,35 @@
+/* DARK MODE - UNIFIED SELECTOR */
 
-body[data-theme="dark"] {
-    /* All color variables are already handled by the CSS variable system */
+/* Base dark mode */
+body.dark-mode {
+    background: #0f172a !important;
 }
 
-/* Ensure proper contrast in dark mode for specific elements */
-body[data-theme="dark"] .search-bar {
+/* Search bar */
+body.dark-mode .search-bar {
     background-color: #2b4157;
     border-color: var(--border);
 }
 
-body[data-theme="dark"] .search-bar input::placeholder {
+body.dark-mode .search-bar input::placeholder {
     color: var(--text-tertiary);
 }
 
-body[data-theme="dark"] .search-bar input {
-    background-color: transparent;  /* ← No background rectangle */
+body.dark-mode .search-bar input {
+    background-color: transparent;
     color: var(--text-primary);
-    border: none;  /* ← Remove border */
-    outline: none; /* ← Remove focus outline */
+    border: none;
+    outline: none;
 }
 
-body[data-theme="dark"] .input-wrapper {
+/* Input wrapper */
+body.dark-mode .input-wrapper {
     background-color: var(--background);
 }
 
-/* Ensure buttons work well in dark mode */
-body[data-theme="dark"] .btn-outline {
-    color: var(--text-primary);
-    border-color: var(--border);
-}
-
-body[data-theme="dark"] .btn-outline:hover:not(:disabled) {
-    background-color: var(--surface-hover);
-    color: var(--primary);
-}
-
-
-.dark-mode {
-    --clr-bg: #0f172a;
-    --clr-surface: #1e293b;
-    --clr-text-main: #f8fafc;
-    --clr-text-muted: #94a3b8;
-    --clr-border: #334155;
-    --bg-stat-box: #334155;
-    --text-brand: #38bdf8;
-    --button-primary-bg: #0284c7;
-    --button-primary-hover: #0369a1;
-    --button-cancel-bg: #334155;
-    --button-cancel-text: #f8fafc;
-    --bg-available: #064e3b;
-    --text-available: #34d399;
-    --bg-limited: #78350f;
-    --text-limited: #fbbf24;
-}
-
-.dark-mode .navbar {
-    background: #1e293b;
-}
-
-.dark-mode input,
-.dark-mode textarea,
-.dark-mode select {
-    background: #334155;
-    color: white;
-    border: 1px solid #475569;
-}
-
-.theme-btn{
-    position:absolute;
-    right:20px;
-    top:20px;
-    border:none;
-    padding:10px 14px;
-    border-radius:10px;
-    cursor:pointer;
-}
-body.dark-mode .doctor-card {
-    background-color: #1e293b !important;
-    color: white !important;
-}
-body.dark-mode .doctor-card h3,
-body.dark-mode .doctor-card p,
-body.dark-mode .doctor-card span {
-    color: white !important;
-}
-
-body.dark-mode .doctor-card .service-badge{
-    background-color:#0f172a ;
-    border: 1px solid transparent;
-}
-
-body.dark-mode .hero {
-    background: linear-gradient(
-        135deg,
-        #0f172a,
-        #1e293b
-    ) !important;
-    color: white;
-}
-body.dark-mode .warning-panel {
-    background-color: #1e293b !important;
-    color: white !important;
-}
-body.dark-mode .warning-panel h2,
-body.dark-mode .warning-panel p {
-    color: white !important;
-}
-
 body.dark-mode .input-wrapper input,
-.input-wrapper textarea,
-.input-wrapper select {
+body.dark-mode .input-wrapper textarea,
+body.dark-mode .input-wrapper select {
     background-color: transparent !important;
     border: none;
     outline: none;
@@ -117,6 +37,66 @@ body.dark-mode .input-wrapper input,
     width: 100%;
 }
 
+/* Buttons */
+body.dark-mode .btn-outline {
+    color: var(--text-primary);
+    border-color: var(--border);
+}
+
+body.dark-mode .btn-outline:hover:not(:disabled) {
+    background-color: var(--surface-hover);
+    color: var(--primary);
+}
+
+/* Navbar */
+body.dark-mode .navbar {
+    background: #1e293b;
+}
+
+/* Form inputs */
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+    background: #334155;
+    color: white;
+    border: 1px solid #475569;
+}
+
+/* Doctor cards */
+body.dark-mode .doctor-card {
+    background-color: #1e293b !important;
+    color: white !important;
+}
+
+body.dark-mode .doctor-card h3,
+body.dark-mode .doctor-card p,
+body.dark-mode .doctor-card span {
+    color: white !important;
+}
+
+body.dark-mode .doctor-card .service-badge {
+    background-color: #0f172a;
+    border: 1px solid transparent;
+}
+
+/* Hero section */
+body.dark-mode .hero {
+    background: linear-gradient(135deg, #0f172a, #1e293b) !important;
+    color: white;
+}
+
+/* Warning panel */
+body.dark-mode .warning-panel {
+    background-color: #1e293b !important;
+    color: white !important;
+}
+
+body.dark-mode .warning-panel h2,
+body.dark-mode .warning-panel p {
+    color: white !important;
+}
+
+/* Remedy cards */
 body.dark-mode .remedy-card {
     background-color: #1e293b !important;
     color: white !important;
@@ -125,20 +105,16 @@ body.dark-mode .remedy-card {
 body.dark-mode .remedy-card h3,
 body.dark-mode .remedy-card p,
 body.dark-mode .remedy-card li {
-    color: white !important;
+    color: #1e293b !important;
 }
 
-body.dark-mode .form-field span:hover{
-    color: rgb(30, 56, 92) ;
+body.dark-mode .app-shell {
+    background: #1e293b;
 }
 
-body.dark-mode .form-field small:hover{
-    color: rgb(30, 56, 92) ;
-}
-
-/* Daily Health Tip Card - Dark Mode Styling */
+/* Health tip */
 body.dark-mode .health-tip-content {
-    background-color: #0f172a;
+    background-color: #1e293b;
     border: 1px solid transparent;
     border-radius: var(--radius-md);
     padding: var(--spacing-lg);
@@ -161,31 +137,14 @@ body.dark-mode .health-tip-content p {
     z-index: 1;
 }
 
-/* Card header text in dark mode */
+/* Card header */
 body.dark-mode .card-header h2 {
     color: #f1f5f9;
 }
+
+/* Site header */
 body.dark-mode .site-header {
-    background-color: #0f172a !important;
-    color: white !important;
-}
-
-body.dark-mode .emergency-btn span {
-    color: #f8fafc;  /* Light white color */
-    font-weight: 500;
-}
-
-body.dark-mode .emergency-btn:hover span {
-    color: var(--primary);
-}
-
-
-body.dark-mode .site-header {
-    background: linear-gradient(
-        135deg,
-        #0f172a,
-        #1e293b
-    ) !important;
+    background: linear-gradient(135deg, #0f172a, #1e293b) !important;
     color: white !important;
 }
 
@@ -194,158 +153,140 @@ body.dark-mode .site-header p {
     color: white !important;
 }
 
-
-/* ============================================
-   REMEDIES PAGE - COMPLETE DARK MODE FIX
-   ============================================ */
-
-/* Make the entire remedies page background darker */
-body[data-theme="dark"] {
-    background: #0f172a !important;
+/* Emergency buttons */
+body.dark-mode .emergency-btn span {
+    color: #f8fafc !important;
+    font-weight: 500;
 }
 
-body[data-theme="dark"] .app-shell {
-    background: transparent;
+body.dark-mode .emergency-btn:hover span {
+    color: var(--primary);
 }
 
-/* Site header - dark background */
-body[data-theme="dark"] .site-header {
-    background: linear-gradient(135deg, #0f172a, #1e293b) !important;
-    border-bottom: 2px solid #14b8a6;
-}
-
-body[data-theme="dark"] .site-header h1,
-body[data-theme="dark"] .site-header p {
-    color: white !important;
-}
-
-/* Warning panel - dark background */
-body[data-theme="dark"] .warning-panel {
-    background: #1e293b !important;
-    border-left-color: #f59e0b;
-}
-
-body[data-theme="dark"] .warning-panel h2 {
-    color: #fbbf24 !important;
-}
-
-body[data-theme="dark"] .warning-panel p {
-    color: #cbd5e1 !important;
-}
-
-/* Remedy cards - dark background */
-body[data-theme="dark"] .remedy-card {
-    background: #1e293b !important;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
-body[data-theme="dark"] .remedy-card h2 {
-    color: #14b8a6 !important;
-}
-
-body[data-theme="dark"] .remedy-card p {
-    color: #cbd5e1 !important;
-}
-
-/* User badge in dark mode */
-body[data-theme="dark"] .user-badge {
+/* User badge */
+body.dark-mode .user-badge {
     background: #1e293b;
     border-color: #475569;
 }
 
-body[data-theme="dark"] .user-badge #userBadgeName,
-body[data-theme="dark"] .user-badge #userBadgeRole {
+body.dark-mode .user-badge #userBadgeName,
+body.dark-mode .user-badge #userBadgeRole {
     color: white !important;
 }
 
-/* Logout button in dark mode */
-body[data-theme="dark"] #logoutBtn {
+/* Logout button */
+body.dark-mode #logoutBtn {
     background: #334155;
     color: white;
     border-color: #475569;
 }
 
-body[data-theme="dark"] #logoutBtn:hover {
+body.dark-mode #logoutBtn:hover {
     background: #ef4444;
     border-color: #ef4444;
 }
 
-/* Back button in dark mode */
-body[data-theme="dark"] .page-link {
+/* Back button */
+body.dark-mode .page-link {
     background: #1e293b;
     color: #14b8a6;
     border: 1px solid #14b8a6;
 }
 
-body[data-theme="dark"] .page-link:hover {
+body.dark-mode .page-link:hover {
     background: #14b8a6;
     color: white;
 }
 
-/* Theme button in dark mode */
-body[data-theme="dark"] .theme-btn {
+/* Theme button */
+body.dark-mode .theme-btn {
     background: #334155;
     color: #fbbf24;
 }
 
-
-/* ============================================
-   AUTH MODAL - DARK MODE STYLES
-   ============================================ */
-
-/* Form labels */
-body[data-theme="dark"] .auth-field label {
+/* Auth modal */
+body.dark-mode .auth-field label {
     color: #e2e8f0 !important;
 }
 
-body[data-theme="dark"] .auth-input {
+body.dark-mode .auth-input {
     color: #f1f5f9 !important;
     background-color: #1e293b !important;
     border-color: #475569 !important;
 }
 
-body[data-theme="dark"] .auth-input::placeholder {
+body.dark-mode .auth-input::placeholder {
     color: #94a3b8 !important;
 }
 
-body[data-theme="dark"] .auth-remember {
+body.dark-mode .auth-remember {
     color: #cbd5e1 !important;
 }
 
-body[data-theme="dark"] .auth-footer span {
+body.dark-mode .auth-footer span {
     color: #94a3b8 !important;
 }
 
-body[data-theme="dark"] .auth-footer button {
+body.dark-mode .auth-footer button {
     color: var(--primary) !important;
     background: transparent !important;
 }
 
-body[data-theme="dark"] .auth-footer button:hover {
+body.dark-mode .auth-footer button:hover {
     color: #2dd4bf !important;
 }
 
-body[data-theme="dark"] .auth-error {
+body.dark-mode .auth-error {
     color: #f87171 !important;
 }
 
-body[data-theme="dark"] .auth-note {
+body.dark-mode .auth-note {
     color: #64748b !important;
 }
 
-body[data-theme="dark"] #authTitle {
+body.dark-mode #authTitle {
     color: #f1f5f9 !important;
 }
 
-body[data-theme="dark"] #authSubtitle {
+body.dark-mode #authSubtitle {
     color: #94a3b8 !important;
 }
 
-body[data-theme="dark"] .auth-submit {
+body.dark-mode .auth-submit {
     color: white !important;
     background-color: var(--primary) !important;
 }
 
-body[data-theme="dark"] .auth-submit:hover {
+body.dark-mode .auth-submit:hover {
     background-color: var(--primary-dark) !important;
+}
+
+/* App shell */
+body.dark-mode .app-shell {
+    background: transparent;
+}
+
+/* FAQ section */
+body.dark-mode .faq-section {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .faq-item {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .faq-question {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .faq-answer-content {
+    color: #cbd5e1 !important;
+}
+
+/* Stats cards */
+body.dark-mode .stat-card {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
 }
