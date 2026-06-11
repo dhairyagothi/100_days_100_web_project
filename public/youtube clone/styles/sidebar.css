@@ -8,11 +8,12 @@
   z-index: 250;
   padding-top: 5px;
   transition: width 0.3s ease, left 0.3s ease;
-  overflow-x: hidden;
+  overflow: visible;
   margin-right: 100px;
 }
 
 .sidebar-link {
+  position: relative;
   height: 74px;
   display: flex;
   flex-direction: column;
@@ -34,24 +35,35 @@
 }
 
 .sidebar-link div {
-  font-size: 10px;
-  color: rgb(15, 15, 15);
-  font-weight: 400;
-  margin-top: 6px;
-  text-align: center;
+  position: absolute;
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%) translateX(-4px);
+  min-width: max-content;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(32, 32, 32, 0.98);
+  color: #f1f1f1;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  margin-top: 0;
   opacity: 0;
-  max-width: none;
   white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+  z-index: 400;
+  transition: opacity 0.18s ease, transform 0.18s ease;
 }
 
 .sidebar {
   width: 80px;
 }
 
-.sidebar-link div {
-  white-space: nowrap;
-  overflow: hidden;
-  transition: opacity 0.25s ease, max-width 0.25s ease, margin-left 0.25s ease;
+.sidebar-link:hover div,
+.sidebar-link:focus-within div {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
 }
 
 /* Expanded state styles for desktop */
@@ -63,11 +75,25 @@ body.sidebar-expanded .sidebar-link {
   height: 48px;
 }
 
-/* body.sidebar-expanded .sidebar-link div {
-  opacity: 1;
-  max-width: 150px;
+body.sidebar-expanded .sidebar-link div {
+  position: static;
+  left: auto;
+  top: auto;
+  transform: none;
+  min-width: 0;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 6px;
   margin-left: 24px;
-} */
+  opacity: 1;
+  pointer-events: auto;
+  box-shadow: none;
+}
 
 /* Mobile responsive drawer styling */
 @media (max-width: 750px) {
@@ -75,6 +101,7 @@ body.sidebar-expanded .sidebar-link {
     left: -240px;
     width: 240px;
     height: calc(100vh - 50px);
+    overflow: hidden;
   }
 
   body.sidebar-expanded .sidebar {
@@ -87,8 +114,22 @@ body.sidebar-expanded .sidebar-link {
   }
 
   .sidebar .sidebar-link div {
+    position: static;
+    left: auto;
+    top: auto;
+    transform: none;
+    min-width: 0;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 0;
     opacity: 1;
-    max-width: 150px;
     margin-left: 24px;
+    pointer-events: auto;
+    box-shadow: none;
   }
 }

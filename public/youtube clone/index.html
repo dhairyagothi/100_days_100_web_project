@@ -185,10 +185,7 @@
 
       /* Sidebar icon label visibility */
       html[data-theme="dark"] .sidebar-link div {
-        font-size: 10px;
-        font-family: Roboto, Arial, sans-serif;
         color: #f1f1f1;
-        margin-top: 4px;
       }
     </style>
   </head>
@@ -283,21 +280,21 @@
     <button class="filter-bar-arrow" id="filterArrow">&#8250;</button>
 
     <nav class="sidebar">
-      <div class="sidebar-link is-active">
+      <div class="sidebar-link is-active" title="Home" aria-label="Home">
         <img src="icons/home-icon.svg" alt="">
         <div>Home</div>
       </div>
-      <div class="sidebar-link">
+      <div class="sidebar-link" title="Shorts" aria-label="Shorts">
         <img src="icons/shorts.svg" alt="">
         <div>Shorts</div>
       </div>
-      <div class="sidebar-link ">
+      <div class="sidebar-link " title="Subscriptions" aria-label="Subscriptions">
         <img src="icons/subscriptions.svg" alt="">
         <div>Subscriptions</div>
       </div>
-      <div class="sidebar-link">
+      <div class="sidebar-link" title="Profile" aria-label="Profile">
         <img src="icons/you-profile.svg" alt="">
-        <div>You</div>
+        <div>Profile</div>
       </div>
     </nav>
     <main>
