@@ -2861,5 +2861,19 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/mind-reader/mind-reader/dist/index.html"
+  },
+  {
+    "projectNo": 227,
+    "projectName": "Word Jumble",
+    "projectType": "Game",
+    "projectDesc": "A fun word puzzle game where players unscramble letters to form valid words within a time limit.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "game"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Word_Jumble/index.html"
   }
 ]
