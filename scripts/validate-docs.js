@@ -5,11 +5,65 @@ const path = require('path');
 const PUBLIC_DIR = path.resolve(__dirname, '../public');
 const MAX_SIZE_MB = 2;
 const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
+const PROJECTS_JSON_PATH = path.resolve(__dirname, '../projects.json');
 
 // Parsing the command line flags
 const args = process.argv.slice(2);
 const projectIdx = args.indexOf('--project');
 const targetProject = projectIdx !== -1 ? args[projectIdx + 1] : null;
+
+function normalizeLocalProjectPath(projectPath) {
+    const raw = String(projectPath || '').trim();
+
+    if (!raw || /^https?:\/\//i.test(raw)) return '';
+
+    let normalized = raw.split(/[?#]/)[0];
+    try {
+        normalized = decodeURIComponent(normalized);
+    } catch (error) { }
+
+    normalized = normalized.replace(/^(\.\/)+/, '');
+    normalized = normalized.replace(/^(\.\.\/)+/, '');
+    normalized = normalized.replace(/^\/+/, '');
+
+    if (normalized.startsWith('public/')) {
+        normalized = normalized.slice('public/'.length);
+    }
+
+    return normalized;
+}
+
+function getProjectFolderKey(projectPath) {
+    const normalized = normalizeLocalProjectPath(projectPath);
+    if (!normalized) return '';
+    const segments = normalized.split('/').filter(Boolean);
+    return segments[0] || '';
+}
+
+function loadRegistryEntryPoints() {
+    if (!fs.existsSync(PROJECTS_JSON_PATH)) return new Map();
+
+    try {
+        const payload = fs.readFileSync(PROJECTS_JSON_PATH, 'utf8');
+        const projects = JSON.parse(payload);
+
+        if (!Array.isArray(projects)) return new Map();
+
+        const entryPoints = new Map();
+        for (const project of projects) {
+            const folderKey = getProjectFolderKey(project && project.projectPath);
+            const normalizedPath = normalizeLocalProjectPath(project && project.projectPath);
+
+            if (!folderKey || !normalizedPath) continue;
+            entryPoints.set(folderKey, normalizedPath);
+        }
+
+        return entryPoints;
+    } catch (error) {
+        console.warn('⚠️  Registry lookup failed; falling back to index.html checks only.');
+        return new Map();
+    }
+}
 
 /**
  * Recursively steps through folders to catch any asset exceeding size threshold
@@ -36,7 +90,7 @@ function checkAssetSizes(currentPath, issueLog) {
 /**
  * Validates a targeted project folder against the 3 core criteria
  */
-function validateProjectFolder(projectName) {
+function validateProjectFolder(projectName, registryEntryPoints) {
     const projectPath = path.join(PUBLIC_DIR, projectName);
 
     // Ensure it's a directory
@@ -46,6 +100,7 @@ function validateProjectFolder(projectName) {
     }
 
     const projectIssues = [];
+    const registryEntryPoint = registryEntryPoints.get(projectName) || '';
 
     // Rule 1: Critical Documentation Check
     if (!fs.existsSync(path.join(projectPath, 'README.md'))) {
@@ -53,7 +108,12 @@ function validateProjectFolder(projectName) {
     }
 
     // Rule 3: Valid Entry Point Check
-    if (!fs.existsSync(path.join(projectPath, 'index.html'))) {
+    if (registryEntryPoint) {
+        const configuredEntryPoint = path.join(PUBLIC_DIR, registryEntryPoint);
+        if (!fs.existsSync(configuredEntryPoint)) {
+            projectIssues.push(`❌ Valid Entry Point: Missing "${path.basename(registryEntryPoint)}" (registry path: "${registryEntryPoint}")`);
+        }
+    } else if (!fs.existsSync(path.join(projectPath, 'index.html'))) {
         projectIssues.push(`❌ Valid Entry Point: Missing "index.html"`);
     }
 
@@ -76,12 +136,13 @@ function main() {
         process.exit(1);
     }
 
+    const registryEntryPoints = loadRegistryEntryPoints();
     let dynamicSuccess = true;
 
     if (targetProject) {
         // Mode 1: node scripts/validate-docs.js --project name
         console.log(`🚀 Running audit for single workspace project: "${targetProject}"`);
-        dynamicSuccess = validateProjectFolder(targetProject);
+        dynamicSuccess = validateProjectFolder(targetProject, registryEntryPoints);
     } else {
         // Mode 2: node scripts/validate-docs.js
         console.log(`🚀 Running global audit across all subdirectories under /public...`);
@@ -94,7 +155,7 @@ function main() {
             const fullPath = path.join(PUBLIC_DIR, item);
             if (fs.statSync(fullPath).isDirectory()) {
                 totalProjectsCount++;
-                const isPassed = validateProjectFolder(item);
+                const isPassed = validateProjectFolder(item, registryEntryPoints);
                 if (!isPassed) failedProjectsCount++;
             }
         }
@@ -117,5 +178,4 @@ function main() {
     }
 }
 
-main();
 main();
