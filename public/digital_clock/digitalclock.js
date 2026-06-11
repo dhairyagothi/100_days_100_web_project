@@ -289,6 +289,16 @@ function addNewAlarm() {
     return;
   }
 
+    timeInput.value = '';
+    labelInput.value = '';
+
+    saveAlarms();
+    renderAlarmsList();
+    updateAlarmSummary();
+
+    showToast('Alarm updated');
+    return;
+}
   const alarm = {
     id: Date.now(),
     time: timeInput.value,

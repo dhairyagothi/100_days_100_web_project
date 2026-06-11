@@ -1,0 +1,42 @@
+name: "🚀 Feature Request"
+description: "Suggest a new project, feature, or enhancement"
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea for a new feature or project? Please fill out this form!
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: "Feature/Project Proposal"
+      description: "Describe the feature or new project you are proposing."
+      placeholder: "I would like to propose adding..."
+    validations:
+      required: true
+  - type: textarea
+    id: problem-solved
+    attributes:
+      label: "What problem does this solve?"
+      description: "Explain why this feature or project would be useful to developers or learners."
+      placeholder: "This helps users by..."
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "Implementation Details / Alternatives Considered"
+      description: "Describe any implementation details, libraries needed, or alternative solutions you've considered."
+      placeholder: "I plan to build this using HTML/CSS/JS and..."
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Checklist"
+      options:
+        - label: "I am willing to work on this feature myself if approved."
+          required: false
+        - label: "I have searched existing issues and discussions for similar proposals."
+          required: true

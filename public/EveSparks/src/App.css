@@ -1,0 +1,46 @@
+/* App.css — Global resets & mobile base fixes for EveSparks */
+
+/* ✅ FIX: Prevent horizontal overflow on all screen sizes */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/* ✅ FIX: Root font size scaling for small screens */
+html {
+  font-size: 16px;
+}
+
+@media (max-width: 360px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* ✅ FIX: Images never overflow their containers */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ✅ FIX: Smooth scroll for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ✅ FIX: Remove default button outline on mobile tap */
+button:focus {
+  outline: none;
+}
+
+/* ✅ FIX: Ensure anchor tags are block where needed */
+a {
+  text-decoration: none;
+}

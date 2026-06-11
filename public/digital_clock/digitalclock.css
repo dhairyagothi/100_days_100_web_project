@@ -1404,6 +1404,12 @@ input:checked + .toggle-slider:before {
   .clock-time {
     font-size: 6rem;
   }
+}
+.world-time-weather {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
   #day-name {
     font-size: 1rem;

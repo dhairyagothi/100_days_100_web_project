@@ -1,0 +1,196 @@
+:root {
+    --bg-color: #e0e0e0;
+    --window-bg: rgba(255, 255, 255, 0.95);
+    --text-color: #333333;
+    --accent-color: #0078d4;
+    /* More modern blue */
+    --border-color: rgba(0, 0, 0, 0.1);
+    --taskbar-bg: rgba(20, 20, 20, 0.6);
+    /* Glassy dark */
+    --taskbar-text: #ffffff;
+    --font-ui: 'Segoe UI Variable', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --font-mono: 'Consolas', 'Courier New', monospace;
+    --glass-blur: blur(20px);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+body,
+html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: var(--font-ui);
+    color: var(--text-color);
+}
+
+#desktop {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #2c3e50;
+    /* Professional Midnight Blue */
+    background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+#taskbar {
+    position: absolute;
+    bottom: 15px;
+    /* Floating taskbar */
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    min-width: 400px;
+    height: 50px;
+    background-color: var(--taskbar-bg);
+    color: var(--taskbar-text);
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    z-index: 10000;
+    backdrop-filter: var(--glass-blur);
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#start-button {
+    font-weight: 600;
+    padding: 8px 16px;
+    background-color: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    margin-right: 15px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+#start-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+#taskbar-apps {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+#clock {
+    padding: 0 15px;
+    font-size: 0.9em;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Desktop Widgets */
+#widget-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 220px;
+    z-index: 1;
+    /* Below windows (baseZIndex is 100) */
+}
+
+.widget {
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-family: var(--font-ui);
+    color: #333;
+    transition: transform 0.2s;
+}
+
+.widget:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.widget-title {
+    font-size: 0.75em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #666;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.widget-content {
+    font-size: 0.95em;
+    font-weight: 500;
+}
+
+#w-time {
+    font-size: 1.8em;
+    font-weight: 300;
+    line-height: 1;
+    margin-bottom: 2px;
+}
+
+#w-date {
+    color: #666;
+    font-size: 0.85em;
+}
+
+#w-note-preview {
+    font-style: italic;
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Utilities */
+.hidden {
+    display: none !important;
+}
+
+/* Start Menu */
+#start-menu {
+    position: absolute;
+    bottom: 50px;
+    /* Above taskbar */
+    left: 10px;
+    width: 200px;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 8px 0;
+    z-index: 10001;
+    /* Above taskbar if needed, definitely above windows */
+    display: flex;
+    /* Override hidden if active, but class hidden wins via !important */
+    flex-direction: column;
+}
+
+#start-menu.hidden {
+    display: none;
+}
+
+.start-menu-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 0.9em;
+    color: #333;
+    transition: background-color 0.1s;
+}
+
+.start-menu-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #000;
+}

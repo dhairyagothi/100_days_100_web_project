@@ -1,0 +1,317 @@
+:root {
+  --bg-base: #0d1117;
+  --bg-surface: #161b22;
+  --bg-card: #21262d;
+  --accent-blue: #58a6ff;
+  --accent-green: #2ea44f;
+  --text-primary: #c9d1d9;
+  --text-secondary: #8b949e;
+  --border-color: #30363d;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 740px;
+}
+
+/* Search Header Bars Control Panel Layout */
+.search-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.search-header h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.search-box {
+  display: flex;
+  gap: 0.75rem;
+  background-color: var(--bg-surface);
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+}
+
+.search-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 1rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.search-box input::placeholder {
+  color: var(--text-secondary);
+}
+
+.search-box button {
+  background-color: var(--accent-green);
+  color: #ffffff;
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.35rem;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.search-box button:hover {
+  opacity: 0.9;
+}
+
+/* Informative Context States (Welcome, Loading, Error) */
+.info-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.icon-avatar {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.info-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.info-card p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  max-width: 440px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.error-card h3 {
+  color: #ff7b72;
+}
+
+/* CSS Component Load Spinner */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(88, 166, 255, 0.1);
+  border-top-color: var(--accent-blue);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 1.25rem auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Main Profile Panel Outputs Grid */
+.profile-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.user-profile-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 2rem;
+}
+
+.profile-header {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+#userAvatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+  background-color: var(--bg-base);
+}
+
+.user-meta {
+  flex: 1;
+}
+
+.user-meta h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.user-meta a {
+  color: var(--accent-blue);
+  text-decoration: none;
+  font-size: 0.95rem;
+  display: inline-block;
+  margin: 0.2rem 0 0.6rem 0;
+}
+
+.user-meta a:hover {
+  text-decoration: underline;
+}
+
+.bio-text {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+/* Developer Metrics Arrays layout columns */
+.stats-row {
+  display: flex;
+  gap: 1rem;
+  background-color: var(--bg-base);
+  border: 1px solid var(--border-color);
+  border-radius: 0.35rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.stat-box {
+  flex: 1;
+  text-align: center;
+}
+
+.stat-val {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.stat-lbl {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.location-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* Top 5 public repository grids cards */
+.repos-section h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.repos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1rem;
+}
+
+.repo-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.repo-card-header a {
+  color: var(--accent-blue);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  word-break: break-all;
+}
+
+.repo-card-header a:hover {
+  text-decoration: underline;
+}
+
+.repo-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0.5rem 0 1rem 0;
+  line-height: 1.4;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.repo-footer {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.repo-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Viewport Fluid Structural Scale Adaptations */
+@media (max-width: 580px) {
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  .repos-grid {
+    grid-template-columns: 1fr;
+  }
+  .stats-row {
+    flex-wrap: wrap;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

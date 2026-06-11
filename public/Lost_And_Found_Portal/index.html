@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found Portal</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <a href="../../" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
+    <div class="background-elements">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <nav class="navbar glass">
+        <div class="nav-brand">
+            <i class="ph-fill ph-magnifying-glass"></i>
+            <span>Lost & Found</span>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn active" data-view="home">Home</button>
+            <button class="nav-btn" data-view="browse">Browse Listings</button>
+            <button class="nav-btn btn-primary" data-view="report-lost">Report Lost</button>
+            <button class="nav-btn btn-secondary" data-view="report-found">Report Found</button>
+            <button id="theme-toggle" class="icon-btn" aria-label="Toggle Dark Mode">
+                <i class="ph ph-moon"></i>
+            </button>
+        </div>
+        <div class="mobile-menu-btn">
+            <i class="ph ph-list"></i>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-menu glass hidden">
+        <button class="nav-btn active" data-view="home">Home</button>
+        <button class="nav-btn" data-view="browse">Browse Listings</button>
+        <button class="nav-btn btn-primary" data-view="report-lost">Report Lost</button>
+        <button class="nav-btn btn-secondary" data-view="report-found">Report Found</button>
+    </div>
+
+    <main class="main-content">
+        <!-- Home View -->
+        <section id="view-home" class="view-section active fade-in">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>Find what you've <span class="text-gradient">Lost</span>. <br>Return what you've <span class="text-gradient">Found</span>.</h1>
+                    <p>A community-driven platform to reunite people with their belongings. Report lost items or help someone by reporting what you've found.</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-lg" onclick="window.app.switchView('report-lost')">I Lost Something</button>
+                        <button class="btn btn-secondary btn-lg" onclick="window.app.switchView('report-found')">I Found Something</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-container">
+                <div class="stat-card glass hover-effect">
+                    <div class="stat-icon lost-icon"><i class="ph ph-warning-circle"></i></div>
+                    <div class="stat-info">
+                        <h3>Reported Lost</h3>
+                        <p id="stat-lost" class="stat-number">124</p>
+                    </div>
+                </div>
+                <div class="stat-card glass hover-effect">
+                    <div class="stat-icon found-icon"><i class="ph ph-check-circle"></i></div>
+                    <div class="stat-info">
+                        <h3>Reported Found</h3>
+                        <p id="stat-found" class="stat-number">89</p>
+                    </div>
+                </div>
+                <div class="stat-card glass hover-effect">
+                    <div class="stat-icon reunited-icon"><i class="ph ph-handshake"></i></div>
+                    <div class="stat-info">
+                        <h3>Items Reunited</h3>
+                        <p id="stat-reunited" class="stat-number">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recent-listings">
+                <div class="section-header">
+                    <h2>Recent Listings</h2>
+                    <button class="btn btn-text" onclick="window.app.switchView('browse')">View All <i class="ph ph-arrow-right"></i></button>
+                </div>
+                <div class="listings-grid" id="home-recent-listings">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Browse View -->
+        <section id="view-browse" class="view-section hidden fade-in">
+            <div class="page-header">
+                <h2>Browse Listings</h2>
+                <p>Search through reported lost and found items in your area.</p>
+            </div>
+
+            <div class="filters-container glass">
+                <div class="search-bar">
+                    <i class="ph ph-magnifying-glass"></i>
+                    <input type="text" id="search-input" placeholder="Search items by name or description...">
+                </div>
+                <div class="filter-controls">
+                    <select id="type-filter" class="custom-select">
+                        <option value="all">All Items</option>
+                        <option value="lost">Lost Items</option>
+                        <option value="found">Found Items</option>
+                    </select>
+                    <select id="category-filter" class="custom-select">
+                        <option value="all">All Categories</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="wallet">Wallet/Purse</option>
+                        <option value="keys">Keys</option>
+                        <option value="pets">Pets</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="listings-grid" id="browse-listings">
+                <!-- Populated by JS -->
+            </div>
+            
+            <div id="empty-state" class="empty-state hidden">
+                <i class="ph ph-magnifying-glass"></i>
+                <h3>No items found</h3>
+                <p>Try adjusting your search or filters to find what you're looking for.</p>
+                <button class="btn btn-secondary" onclick="window.app.resetFilters()">Clear Filters</button>
+            </div>
+        </section>
+
+        <!-- Report Lost View -->
+        <section id="view-report-lost" class="view-section hidden fade-in">
+            <div class="form-container glass">
+                <div class="form-header text-center">
+                    <div class="form-icon lost-bg"><i class="ph ph-warning-circle"></i></div>
+                    <h2>Report a Lost Item</h2>
+                    <p>Provide details about the item you lost so the community can help you find it.</p>
+                </div>
+                
+                <form id="report-lost-form" class="report-form">
+                    <div class="form-group">
+                        <label for="lost-item-name">Item Name</label>
+                        <input type="text" id="lost-item-name" required placeholder="e.g. Black Leather Wallet">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="lost-category">Category</label>
+                            <select id="lost-category" required>
+                                <option value="" disabled selected>Select Category</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="wallet">Wallet/Purse</option>
+                                <option value="keys">Keys</option>
+                                <option value="pets">Pets</option>
+                                <option value="clothing">Clothing</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="lost-date">Date Lost</label>
+                            <input type="date" id="lost-date" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lost-location">Location Lost</label>
+                        <input type="text" id="lost-location" required placeholder="e.g. Central Park, near the fountain">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lost-description">Description</label>
+                        <textarea id="lost-description" rows="4" required placeholder="Provide distinguishing features, colors, brands, etc."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lost-contact">Contact Information (Phone or Email)</label>
+                        <input type="text" id="lost-contact" required placeholder="How can someone reach you?">
+                    </div>
+
+                    <div class="form-group file-upload">
+                        <label for="lost-image">Reference Image (Optional)</label>
+                        <div class="file-drop-area" id="lost-drop-area">
+                            <i class="ph ph-upload-simple"></i>
+                            <span class="file-msg">Click or drag and drop an image here</span>
+                            <input type="file" id="lost-image" accept="image/*" class="file-input">
+                        </div>
+                        <div id="lost-image-preview" class="image-preview-container hidden">
+                            <img id="lost-preview-img" src="" alt="Preview">
+                            <button type="button" class="remove-image-btn"><i class="ph ph-x"></i></button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full btn-lg">Submit Report</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Report Found View -->
+        <section id="view-report-found" class="view-section hidden fade-in">
+            <div class="form-container glass">
+                <div class="form-header text-center">
+                    <div class="form-icon found-bg"><i class="ph ph-check-circle"></i></div>
+                    <h2>Report a Found Item</h2>
+                    <p>Found something? List it here to help reunite it with its owner.</p>
+                </div>
+                
+                <form id="report-found-form" class="report-form">
+                    <div class="form-group">
+                        <label for="found-item-name">Item Name</label>
+                        <input type="text" id="found-item-name" required placeholder="e.g. Set of Keys with Honda logo">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="found-category">Category</label>
+                            <select id="found-category" required>
+                                <option value="" disabled selected>Select Category</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="wallet">Wallet/Purse</option>
+                                <option value="keys">Keys</option>
+                                <option value="pets">Pets</option>
+                                <option value="clothing">Clothing</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="found-date">Date Found</label>
+                            <input type="date" id="found-date" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="found-location">Location Found</label>
+                        <input type="text" id="found-location" required placeholder="e.g. Downtown Coffee Shop">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="found-description">Description</label>
+                        <textarea id="found-description" rows="4" required placeholder="Provide details, but keep some hidden to verify the true owner."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="found-contact">Contact Information (Phone or Email)</label>
+                        <input type="text" id="found-contact" required placeholder="How can the owner reach you?">
+                    </div>
+
+                    <div class="form-group file-upload">
+                        <label for="found-image">Item Image</label>
+                        <div class="file-drop-area" id="found-drop-area">
+                            <i class="ph ph-upload-simple"></i>
+                            <span class="file-msg">Click or drag and drop an image here</span>
+                            <input type="file" id="found-image" accept="image/*" class="file-input">
+                        </div>
+                        <div id="found-image-preview" class="image-preview-container hidden">
+                            <img id="found-preview-img" src="" alt="Preview">
+                            <button type="button" class="remove-image-btn"><i class="ph ph-x"></i></button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-secondary btn-full btn-lg">Submit Report</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Item Details View -->
+        <section id="view-details" class="view-section hidden fade-in">
+            <button class="btn btn-text back-btn" onclick="window.app.switchView('browse')"><i class="ph ph-arrow-left"></i> Back to Browse</button>
+            <div class="details-container glass" id="item-details-content">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Lost & Found Portal. Built for 100 Days 100 Web Projects.</p>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden glass">
+        <div class="toast-icon"><i class="ph ph-check-circle"></i></div>
+        <div class="toast-content">
+            <h4 id="toast-title">Success</h4>
+            <p id="toast-message">Item reported successfully.</p>
+        </div>
+        <button class="toast-close"><i class="ph ph-x"></i></button>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
