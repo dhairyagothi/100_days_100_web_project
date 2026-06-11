@@ -44,6 +44,8 @@ const loadingSection =
 const resultsSection =
   document.getElementById(
     "resultsSection"
+  );
+
 const copySuggestionsBtn =
   document.getElementById(
     "copySuggestionsBtn"
@@ -136,10 +138,7 @@ function calculateATSScore(text) {
 
   let score = 0;
 
-      startAnalysis();
-    }
-  }
-);
+
   const sections = {
     skills: 20,
     experience: 20,
@@ -191,6 +190,15 @@ function calculateATSScore(text) {
   const wordCount = text.split(/\s+/).length;
 
   if (wordCount > 250) score += sections.structure;
+  return {
+    totalScore: score,
+    technical: Math.min(100, 50 + keywordCount * 5),
+    projects: hasProjects ? 90 : 40,
+    communication: wordCount > 250 ? 80 : 50,
+    experience: hasExperience ? 85 : 40,
+    keywordCount,
+  };
+}
 
 function startAnalysis() {
 
@@ -216,23 +224,7 @@ function startAnalysis() {
 
 }
 
-function animateMeter(score) {
-  score = Math.min(100, score);
 
-  return {
-    totalScore: score,
-
-    technical: Math.min(100, 50 + keywordCount * 5),
-
-    projects: hasProjects ? 90 : 40,
-
-    communication: wordCount > 250 ? 80 : 50,
-
-    experience: hasExperience ? 85 : 40,
-
-    keywordCount,
-  };
-}
 
 function animateMeter(score) {
   const offset = circumference - (score / 100) * circumference;
