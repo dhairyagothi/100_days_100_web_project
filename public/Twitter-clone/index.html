@@ -6,6 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home / X</title>
     <link rel="stylesheet" href="src/output.css">
+    <style>
+        .tweet-composer-ring {
+            width: 3rem;
+            height: 3rem;
+        }
+
+        .tweet-composer-ring circle {
+            fill: none;
+            stroke-width: 2.5;
+        }
+
+        .tweet-composer-track {
+            stroke: rgba(148, 163, 184, 0.22);
+        }
+
+        .tweet-composer-progress {
+            stroke: #60a5fa;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            transition: stroke 160ms ease, stroke-dashoffset 160ms ease;
+        }
+    </style>
 </head>
 
 <body class=" bg-black ">
@@ -61,11 +84,54 @@
                 <div class="cursor-pointer">Following</div>
             </div>
             <div>
-                <div class="mt-14 flex items-center p-3 border border-gray-500">
-                    <img class="h-10 pr-2"
-                        src="https://www.bing.com/th/id/OIP.6cECdI45_I2-tWe4AggXMQAAAA?w=180&h=180&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
-                        alt=""><input class="w-xl p-3 outline-none focus:outline-none focus:ring-0 " type="text"
-                        placeholder="What's Happening?">
+                <div class="mt-14 border border-gray-500 p-3">
+                    <div class="flex items-start gap-3">
+                        <img class="h-10 w-10 shrink-0 rounded-4xl object-cover"
+                            src="https://www.bing.com/th/id/OIP.6cECdI45_I2-tWe4AggXMQAAAA?w=180&h=180&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
+                            alt="">
+                        <div class="min-w-0 flex-1">
+                            <label for="tweet-composer" class="sr-only">Compose a post</label>
+                            <textarea id="tweet-composer" rows="3" spellcheck="false"
+                                class="w-full resize-none border-0 bg-transparent p-0 text-xl outline-none placeholder:text-gray-500 focus:outline-none"
+                                placeholder="What's Happening?"></textarea>
+                            <div class="mt-5 flex flex-wrap items-center justify-between gap-4">
+                                <div class="flex items-center gap-2 text-blue-400">
+                                    <button type="button"
+                                        class="rounded-full p-2 transition hover:bg-white/10"
+                                        aria-label="Add media">
+                                        <img class="h-5 w-5" src="assets/view.svg" alt="">
+                                    </button>
+                                    <button type="button"
+                                        class="rounded-full p-2 transition hover:bg-white/10"
+                                        aria-label="Add emoji">
+                                        <img class="h-5 w-5" src="assets/creator.svg" alt="">
+                                    </button>
+                                    <button type="button"
+                                        class="rounded-full p-2 transition hover:bg-white/10"
+                                        aria-label="Add more options">
+                                        <img class="h-5 w-5" src="assets/more.svg" alt="">
+                                    </button>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="flex items-center gap-2">
+                                        <div class="relative h-12 w-12">
+                                            <svg class="tweet-composer-ring" viewBox="0 0 36 36" aria-hidden="true">
+                                                <circle class="tweet-composer-track" cx="18" cy="18" r="14"></circle>
+                                                <circle id="tweet-composer-progress" class="tweet-composer-progress"
+                                                    cx="18" cy="18" r="14"></circle>
+                                            </svg>
+                                            <span id="tweet-composer-remaining"
+                                                class="absolute inset-0 flex items-center justify-center text-[11px] font-bold text-gray-300">280</span>
+                                        </div>
+                                        <span class="text-sm text-gray-400">chars left</span>
+                                    </div>
+                                    <button id="tweet-post-button" type="button"
+                                        class="rounded-4xl bg-blue-400 px-6 py-2 font-bold text-black transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:bg-blue-400/40 disabled:text-black/50"
+                                        disabled>Post</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="w-xl border border-gray-500">
                     <div class="border border-gray-500 border-t-0 text-center text-blue-400 p-3 cursor-pointer">Show 1,897 posts</div>
@@ -375,6 +441,63 @@
 
         </div>
     </div>
+    <script>
+        (() => {
+            const composer = document.getElementById('tweet-composer');
+            const progress = document.getElementById('tweet-composer-progress');
+            const remaining = document.getElementById('tweet-composer-remaining');
+            const postButton = document.getElementById('tweet-post-button');
+
+            if (!composer || !progress || !remaining || !postButton) {
+                return;
+            }
+
+            const MAX_CHARS = 280;
+            const WARN_THRESHOLD = 20;
+            const CIRCUMFERENCE = 2 * Math.PI * 14;
+
+            progress.style.strokeDasharray = `${CIRCUMFERENCE}`;
+            progress.style.strokeDashoffset = `${CIRCUMFERENCE}`;
+
+            const setState = (mode) => {
+                if (mode === 'danger') {
+                    progress.setAttribute('stroke', '#f87171');
+                    progress.style.stroke = '#f87171';
+                    remaining.className = 'absolute inset-0 flex items-center justify-center text-[11px] font-bold text-red-300';
+                } else if (mode === 'warn') {
+                    progress.setAttribute('stroke', '#facc15');
+                    progress.style.stroke = '#facc15';
+                    remaining.className = 'absolute inset-0 flex items-center justify-center text-[11px] font-bold text-yellow-300';
+                } else {
+                    progress.setAttribute('stroke', '#60a5fa');
+                    progress.style.stroke = '#60a5fa';
+                    remaining.className = 'absolute inset-0 flex items-center justify-center text-[11px] font-bold text-gray-300';
+                }
+            };
+
+            const updateComposer = () => {
+                const count = composer.value.length;
+                const charsLeft = MAX_CHARS - count;
+                const clampedProgress = Math.min(count, MAX_CHARS) / MAX_CHARS;
+
+                progress.style.strokeDashoffset = `${CIRCUMFERENCE * (1 - clampedProgress)}`;
+                remaining.textContent = `${charsLeft}`;
+
+                if (charsLeft < 0) {
+                    setState('danger');
+                } else if (charsLeft <= WARN_THRESHOLD) {
+                    setState('warn');
+                } else {
+                    setState('normal');
+                }
+
+                postButton.disabled = count === 0 || charsLeft < 0;
+            };
+
+            composer.addEventListener('input', updateComposer);
+            updateComposer();
+        })();
+    </script>
 </body>
 
 </html>
