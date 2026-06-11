@@ -973,3 +973,24 @@ select:focus {
         height: 180px;
     }
 }
+.section-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 14px;
+
+    margin-bottom: 18px;
+}
+
+.export-btn {
+
+    width: auto;
+
+    padding: 10px 16px;
+}

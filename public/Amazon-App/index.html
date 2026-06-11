@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#131921">
-    <title>Amazon Clone </title>
+    <title>Amazon Clone</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -80,9 +80,9 @@
             </div>
 
             <!-- Deals & Offers (Simple Link) -->
-            <a href="#" class="sidebar-link">
+            <a href="deals.html" class="sidebar-link" id="sidebar-deals-link">
                 <span class="header-icon tag-icon"><i class="fa-solid fa-tag"></i></span>
-                Deals & Offers
+                Deals &amp; Offers
             </a>
 
             <!-- My Account (Accordion) -->
@@ -97,10 +97,10 @@
                 <div class="accordion-content">
                     <ul class="submenu-list">
                         <li>Profile</li>
-                        <li>Orders</li>
+                        <li><a href="cart.html">Orders</a></li>
                         <li>Wishlist</li>
                         <li>Settings</li>
-                         <li onclick="signOut()">Sign Out</li>
+                        <li><button onclick="signOut()">Sign Out</button></li>
                     </ul>
                 </div>
             </div>
@@ -200,7 +200,7 @@
                 <h1>& Orders</h1>
             </div>
 
-            <button class="nav-cart" type="button" aria-label="Shopping Cart">
+           <button class="nav-cart" type="button" aria-label="Shopping Cart">
                 <span class="cart-count">0</span>
                 <img src="./assets/cart_icon.png" width="35" alt="">
                 <h4>Cart</h4>
@@ -212,9 +212,9 @@
             <img src="./assets/menu_icon.png" width="25px" alt="Menu">
             <p>All</p>
         </div>
-        <a href="/" role="button">Today's Deals</a>
+        <a href="deals.html" role="button" id="nav-todays-deals">Today's Deals</a>
         <a href="/" role="button">Customer Service</a>
-        <a href="/" role="button">Registry</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfsZc3yChN-f_8LOi2RnXWVHkaBe40aSok60pHm5HIIvMagGQ/viewform" role="button">Registry</a>
         <a href="/" role="button">Gift Cards</a>
         <a href="/" role="button">Sell</a>
 
@@ -244,44 +244,44 @@
         <div class="box-col">
             <h3>Free International returns</h3>
             <img src="./assets/box1-1.jpg" alt="Free International returns">
-            <a href="/">Shop More</a>
+            <a href="search.html?q=free+international+returns">Shop More</a>
         </div>
         <div class="box-col">
             <h3>Lunar New Year</h3>
             <img src="./assets/box1-2.jpg" alt="Lunar New Year">
-            <a href="/">Shop More</a>
+            <a href="search.html?q=lunar+new+year">Shop More</a>
         </div>
         <div class="box-col">
             <h3>Toy under $25</h3>
             <img src="./assets/box1-3.jpg" alt="Toy under $25">
-            <a href="/">Shop More</a>
+            <a href="search.html?q=toy+under+$25">Shop More</a>
         </div>
         <div class="box-col">
             <h3>Deals in PC</h3>
             <img src="./assets/box1-4.jpg" alt="Deals in PC">
-            <a href="/">Shop More</a>
+            <a href="search.html?q=deals+in+pc">Shop More</a>
         </div>
     </div>
     <div class="box-row header-box">
         <div class="box-col">
             <h3>Grooming & Personal Care</h3>
             <img src="./assets/box2-1.jpg" alt="Grooming & Personal Care">
-            <a href="/">Shop More</a>
+            <a href="search.html?q=grooming+&+personal+care">Shop More</a>
         </div>
         <div class="box-col">
             <h3>Mobile Phones</h3>
             <img src="./assets/box2-2.jpg" alt="Mobile Phones">
-            <a href="/">Shop More</a>
+            <a href="search.html?q=mobile+phones">Shop More</a>
         </div>
         <div class="box-col">
             <h3>Pets Care</h3>
             <img src="./assets/box2-3.jpg" alt="Pets Care">
-            <a href="/">Shop More</a>
+            <a href="search.html?q=pets+care">Shop More</a>
         </div>
         <div class="box-col">
             <h3>Fashion</h3>
             <img src="./assets/box2-4.jpg" alt="Fashion">
-            <a href="/">Shop More</a>
+            <a href="search.html?q=fashion">Shop More</a>
         </div>
     </div>
 
@@ -306,22 +306,22 @@
         <div class="box-col">
             <h3>Grooming & Personal Care</h3>
             <img src="./assets/box3-1.jpg" alt="">
-            <a href="/">Shop More</a>
+            <a href="search.html?q=grooming+&+personal+care">Shop More</a>
         </div>
         <div class="box-col">
             <h3>Mobile Phones</h3>
             <img src="./assets/box3-2.jpg" alt="">
-            <a href="/">Shop More</a>
+            <a href="search.html?q=mobile+phones">Shop More</a>
         </div>
         <div class="box-col">
             <h3>Pets Care</h3>
             <img src="./assets/box3-3.jpg" alt="">
-            <a href="/">Shop More</a>
+            <a href="search.html?q=pets+care">Shop More</a>
         </div>
         <div class="box-col">
             <h3>Fashion</h3>
             <img src="./assets/box3-4.jpg" alt="">
-            <a href="/">Shop More</a>
+            <a href="search.html?q=fashion">Shop More</a>
         </div>
     </div>
 

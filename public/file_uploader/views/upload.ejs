@@ -386,25 +386,31 @@
                     <a href="/" class="back-btn">← Upload More Files</a>
 
     </div>
-
+    <script id="files-data" type="application/json">
+        <%- JSON.stringify(files || []) %>
+    </script>
+    <script>
+    const currentFiles = JSON.parse(
+        document.getElementById('files-data').textContent
+    );
+    </script>
     <script>
         $(document).ready(function () {
             // Professor ka original code — bilkul same
             const message = $('#upload-status').text();
             if (message) {
-                alert(message); 
+                alert(message);
             }
 
             var iconsMap = { pdf: '📄', png: '🖼️', jpg: '🖼️', jpeg: '🖼️', mp4: '🎬', zip: '🗜️', docx: '📝', xlsx: '📊', txt: '📃' };
 
-            var currentFiles = <%- JSON.stringify(files || []).replace(/</g, '\\u003C').replace(/>/g, '\\u003E').replace(/&/g, '\\u0026') %>;
 
             if (currentFiles.length > 0) {
-                
+
                 var history = [];
                 try { history = JSON.parse(localStorage.getItem('recentUploads') || '[]'); } catch (e) { }
 
-                
+
                 currentFiles.forEach(function (file) {
                     var ext = file.originalname.split('.').pop().toLowerCase();
                     history.unshift({
@@ -415,12 +421,12 @@
                     });
                 });
 
-                
+
                 history = history.slice(0, 3);
                 localStorage.setItem('recentUploads', JSON.stringify(history));
             }
 
-            
+
             var stored = [];
             try { stored = JSON.parse(localStorage.getItem('recentUploads') || '[]'); } catch (e) { }
 

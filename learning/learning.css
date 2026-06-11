@@ -4,7 +4,7 @@
 
 .reading-progress-container {
   position: fixed;
-  top: 60px; /* Right below the fixed navbar */
+  top: 60px;
   left: 0;
   width: 100%;
   height: 3px;
@@ -22,7 +22,7 @@
 }
 
 .learning-container {
-  margin-top: 60px; /* Offset for fixed header */
+  margin-top: 60px;
   min-height: calc(100vh - 60px);
   display: grid;
   grid-template-columns: 320px 1fr;
@@ -46,6 +46,7 @@
   flex-direction: column;
   z-index: 100;
   transition: transform 0.3s var(--ease);
+  /* FIX: No overflow:hidden here — it was clipping active highlight borders */
 }
 
 body.light-mode .learning-sidebar {
@@ -55,6 +56,8 @@ body.light-mode .learning-sidebar {
 .sidebar-header {
   padding: 1.25rem 1.5rem;
   border-bottom: 1px solid var(--border);
+  position: relative;
+  z-index: 2;
 }
 
 .sidebar-search {
@@ -62,9 +65,10 @@ body.light-mode .learning-sidebar {
   width: 100%;
 }
 
+/* FIX Bug 2: Search bar overlap — icon moved to LEFT, input has left padding */
 .sidebar-search input {
   width: 100%;
-  padding: 0.65rem 2.5rem 0.65rem 1.25rem;
+  padding: 0.65rem 2.5rem 0.65rem 2.5rem; /* left padding makes room for icon */
   border-radius: 20px;
   border: 1px solid var(--border);
   background: rgba(11, 13, 15, 0.6);
@@ -74,15 +78,19 @@ body.light-mode .learning-sidebar {
   outline: none;
   transition: var(--t);
 }
+:root[data-theme="sepia"] .sidebar-search input {
+  background: var(--bg-surface);
+}
 
 .sidebar-search input:focus {
   border-color: var(--border-accent);
   box-shadow: 0 0 0 2px var(--accent-dim);
 }
 
+/* FIX: Icon on LEFT side so it doesn't overlap placeholder text */
 .sidebar-search .search-icon {
   position: absolute;
-  right: 1rem;
+  left: 1rem; /* moved from right to left */
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-muted);
@@ -92,7 +100,7 @@ body.light-mode .learning-sidebar {
 
 .sidebar-search .clear-btn {
   position: absolute;
-  right: 2.2rem;
+  right: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
   background: transparent;
@@ -107,11 +115,19 @@ body.light-mode .learning-sidebar {
   color: var(--text-primary);
 }
 
+.search-results-info {
+  margin-top: 0.75rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  min-height: 18px;
+}
+
 /* Sidebar Tree Structure */
 .sidebar-tree {
   flex: 1;
   overflow-y: auto;
-  padding: 1.25rem 1rem;
+  overflow-x: visible;
+  padding: 0.75rem 1rem 1.5rem 1rem;
 }
 
 .sidebar-loading {
@@ -123,6 +139,13 @@ body.light-mode .learning-sidebar {
 
 .category-group {
   margin-bottom: 1.25rem;
+  margin-top: 0;
+  padding-top: 4px;
+}
+
+.category-group:first-child {
+  padding-top: 6px;
+  margin-top: 2px;
 }
 
 .category-header {
@@ -172,10 +195,15 @@ body.light-mode .learning-sidebar {
 .topic-list {
   list-style: none;
   margin-top: 0.25rem;
-  padding-left: 1.75rem;
-  max-height: 2000px; /* ✅ Increased threshold to allow full lists to show */
-  overflow: hidden;
-  transition: max-height 0.4s ease-in-out, opacity 0.2s ease;
+  padding-top: 0.45rem; /* extra top spacing to keep first active highlight fully visible */
+  padding-left: 1rem;
+  padding-bottom: 6px; /* FIX: breathing room so last item highlight isn't clipped */
+  max-height: 2000px;
+  overflow-x: visible; /* FIX: left border highlight must not be clipped */
+  overflow-y: hidden; /* FIX: keep this for collapse animation to work */
+  transition:
+    max-height 0.4s ease-in-out,
+    opacity 0.2s ease;
   opacity: 1;
 }
 
@@ -186,19 +214,27 @@ body.light-mode .learning-sidebar {
 }
 
 .topic-item a {
-  display: block;
+  display: flex;
+align-items: center;
   padding: 0.45rem 1rem;
   color: var(--text-secondary);
+   /* color: var(--text-primary); */
   font-size: 0.825rem;
   text-decoration: none;
   border-radius: var(--radius-sm);
   border-left: 2px solid transparent;
   margin-bottom: 2px;
+  margin-left: 2px; /* FIX: slight offset so border renders inside visible area */
   transition: var(--t);
+  scroll-margin-top: 1.25rem; /* keep active topic fully visible when scrolled into view */
+}
+
+:root[data-theme="sepia"] .topic-item:not(.active):not(.completed) a {
+  color: var(--text-primary);
 }
 
 .topic-item a:hover {
-  background: var(--bg-surface);
+  background: var(--accent-dim);
   color: var(--text-primary);
   padding-left: 1.25rem;
 }
@@ -207,12 +243,66 @@ body.light-mode .learning-sidebar {
   background: var(--accent-dim);
   color: var(--accent);
   font-weight: 600;
-  border-left-color: var(--accent);
+  border-left: 2px solid var(--accent);
   padding-left: 1.25rem;
+  margin-left: 3px; /* FIX: reset margin so border is fully visible */
+  margin-top: 2px;
+  margin-bottom: 2px;
+  position: relative;
+  z-index: 1;
 }
 
 body.light-mode .topic-item.active a {
   background: rgba(37, 99, 235, 0.08);
+  color: var(--accent);
+}
+
+/* FIX: last item in list gets extra bottom margin so highlight isn't clipped */
+.topic-list li:last-child a {
+  margin-bottom: 4px;
+}
+
+.progress-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+
+  margin-bottom: 1.5rem;
+}
+
+.progress-stat-card {
+  background: var(--bg-elevated);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-lg);
+
+  padding: 1rem;
+
+  text-align: center;
+
+  transition: var(--t);
+}
+
+.progress-stat-card:hover {
+  transform: translateY(-2px);
+
+  border-color: var(--border-accent);
+}
+
+.stat-label {
+  display: block;
+
+  color: var(--text-muted);
+
+  font-size: 0.8rem;
+
+  margin-bottom: 0.5rem;
+}
+
+.progress-stat-card strong {
+  font-size: 1.4rem;
+
   color: var(--accent);
 }
 
@@ -271,7 +361,77 @@ body.light-mode .topic-item.active a {
   color: var(--accent);
 }
 
-/* Markdown Rendering Engine Typography Styling */
+/* ==========================================
+   SKELETON LOADER
+   ========================================== */
+
+.skeleton-loader {
+  animation: fadeIn 0.2s ease;
+}
+
+.skeleton-line,
+.skeleton-title,
+.skeleton-meta {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+}
+
+body.light-mode .skeleton-line,
+body.light-mode .skeleton-title,
+body.light-mode .skeleton-meta {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.skeleton-title {
+  height: 42px;
+  width: 60%;
+  margin-bottom: 1rem;
+}
+
+.skeleton-meta {
+  height: 18px;
+  width: 220px;
+  margin-bottom: 2rem;
+}
+
+.skeleton-line {
+  height: 14px;
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+.skeleton-line.short {
+  width: 70%;
+}
+
+.skeleton-line.medium {
+  width: 85%;
+}
+
+.skeleton-title::after,
+.skeleton-meta::after,
+.skeleton-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.12),
+    transparent
+  );
+  animation: skeletonShimmer 1.4s infinite;
+}
+
+@keyframes skeletonShimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 .rendered-markdown {
   animation: fadeIn 0.4s var(--ease) forwards;
 }
@@ -413,7 +573,6 @@ body.light-mode .rendered-markdown tr:nth-child(even) {
   margin-bottom: 0;
 }
 
-/* Note style */
 .callout.callout-note {
   border-left-color: var(--accent);
   background: rgba(59, 130, 246, 0.05);
@@ -422,7 +581,6 @@ body.light-mode .rendered-markdown tr:nth-child(even) {
   color: var(--accent);
 }
 
-/* Tip style */
 .callout.callout-tip {
   border-left-color: #10b981;
   background: rgba(16, 185, 129, 0.05);
@@ -431,7 +589,6 @@ body.light-mode .rendered-markdown tr:nth-child(even) {
   color: #10b981;
 }
 
-/* Warning style */
 .callout.callout-warning {
   border-left-color: #f59e0b;
   background: rgba(245, 158, 11, 0.05);
@@ -440,7 +597,6 @@ body.light-mode .rendered-markdown tr:nth-child(even) {
   color: #f59e0b;
 }
 
-/* Common Mistakes Section */
 .callout.callout-mistake {
   border-left-color: #ef4444;
   background: rgba(239, 68, 68, 0.05);
@@ -454,7 +610,7 @@ body.light-mode .rendered-markdown tr:nth-child(even) {
    ============================================================ */
 
 .rendered-markdown code {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.85em;
   background: rgba(255, 255, 255, 0.06);
   padding: 0.15rem 0.35rem;
@@ -487,7 +643,7 @@ body.light-mode .rendered-markdown code {
 }
 
 .code-lang-label {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   text-transform: uppercase;
   font-weight: 600;
   color: var(--text-secondary);
@@ -560,7 +716,6 @@ body.light-mode .rendered-markdown code {
   background: var(--bg-primary);
 }
 
-/* Interactive Preview Box */
 .preview-box {
   padding: 1rem;
   border-radius: var(--radius-md);
@@ -568,7 +723,6 @@ body.light-mode .rendered-markdown code {
   background: var(--bg-elevated);
 }
 
-/* Collapsible solutions */
 .collapsible-solution {
   margin: 1rem 0;
   border: 1px solid var(--border);
@@ -617,7 +771,6 @@ body.light-mode .rendered-markdown code {
   display: block;
 }
 
-/* Best Practices vs Common Mistakes stacked panels */
 .practices-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -667,7 +820,6 @@ body.light-mode .rendered-markdown code {
   margin-bottom: 0.35rem;
 }
 
-/* Flowchart Styling */
 .vector-flowchart {
   margin: 2rem 0;
   padding: 1.5rem;
@@ -785,7 +937,7 @@ body.light-mode .rendered-markdown code {
 }
 
 /* ============================================================
-   FOOTER STYLES - FIXED FOR PROPER RENDERING
+   FOOTER STYLES
    ============================================================ */
 
 .footer {
@@ -873,16 +1025,14 @@ body.light-mode .rendered-markdown code {
   color: white;
 }
 
-/* Light mode footer adjustments */
 body.light-mode .footer {
   background: rgba(255, 255, 255, 0.92);
 }
 
 /* ============================================================
-   THEME ADJUSTMENTS & EXTRA RESPONSIVENESS
+   RESPONSIVE
    ============================================================ */
 
-/* Mobile view styling details */
 @media (max-width: 992px) {
   .learning-container {
     grid-template-columns: 1fr;
@@ -897,6 +1047,8 @@ body.light-mode .footer {
     transform: translateX(-100%);
     box-shadow: 20px 0 40px rgba(0, 0, 0, 0.4);
     z-index: 1002;
+    overflow-x: visible;
+    overflow-y: hidden;
   }
 
   .learning-sidebar.active {
@@ -928,6 +1080,9 @@ body.light-mode .footer {
   .topic-navigation {
     flex-direction: column;
     gap: 1rem;
+  }
+  .progress-stats-grid {
+    grid-template-columns: 1fr;
   }
 
   .nav-prev,
@@ -1004,6 +1159,10 @@ body.light-mode .vector-flowchart {
   }
 }
 
+/* ============================================================
+   QUIZ STYLES
+   ============================================================ */
+
 .quiz-container {
   margin-top: 2rem;
 }
@@ -1014,6 +1173,8 @@ body.light-mode .vector-flowchart {
   border-radius: var(--radius-lg);
   padding: 1.5rem;
   text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .quiz-card h3 {
@@ -1059,20 +1220,17 @@ body.light-mode .vector-flowchart {
   display: flex;
   align-items: center;
   gap: 12px;
-
   padding: 14px;
   border: 1px solid var(--border);
   border-radius: 10px;
-
   cursor: pointer;
-
   color: var(--text-primary);
   background: var(--bg-elevated);
-
   font-size: 15px;
   font-weight: 500;
 }
-.quiz-option input[type='radio'] {
+
+.quiz-option input[type="radio"] {
   accent-color: var(--accent);
   flex-shrink: 0;
 }
@@ -1085,10 +1243,6 @@ body.light-mode .vector-flowchart {
 .quiz-option.selected {
   border-color: var(--accent);
   background: rgba(59, 130, 246, 0.12);
-}
-
-.quiz-option:hover {
-  background: var(--bg-surface);
 }
 
 .submit-answer-btn,
@@ -1128,13 +1282,61 @@ body.light-mode .vector-flowchart {
   margin-top: 16px;
 }
 
-.quiz-card {
-  max-width: 900px;
-  margin: 0 auto;
-}
+/* ============================================================
+   PROGRESS STYLES
+   ============================================================ */
 
 .learning-progress-header {
   margin-bottom: 1.5rem;
+}
+.learning-dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.progress-stats-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 1rem;
+
+  margin-bottom: 1rem;
+}
+
+.progress-stat-card {
+  background: var(--bg-elevated);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-lg);
+
+  padding: 1rem;
+
+  text-align: center;
+
+  transition: var(--t);
+}
+
+.progress-stat-card:hover {
+  transform: translateY(-2px);
+
+  border-color: var(--accent);
+}
+
+.stat-label {
+  display: block;
+
+  font-size: 0.8rem;
+
+  color: var(--text-muted);
+
+  margin-bottom: 0.4rem;
+}
+
+.progress-stat-card strong {
+  font-size: 1.4rem;
+
+  color: var(--accent);
 }
 
 .continue-learning-btn {
@@ -1177,14 +1379,245 @@ body.light-mode .vector-flowchart {
   transition: width 0.3s ease;
 }
 
-/* completed lesson */
-
 .topic-item.completed a {
   color: #22c55e;
 }
 
 .topic-item.completed a::after {
-  content: '✓';
+  content: "✓";
   float: right;
   font-weight: bold;
+}
+
+
+/* ==========================================
+   BOOKMARKS
+   ========================================== */
+
+.bookmarks-container {
+  margin: 1rem;
+  padding: 1rem;
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-md);
+
+  background: var(--bg-elevated);
+}
+
+.bookmarks-header {
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.5rem;
+
+  margin-bottom: 0.75rem;
+
+  font-weight: 600;
+
+  color: #fbbf24;
+}
+
+.bookmarks-list {
+  list-style: none;
+
+  padding: 0;
+
+  margin: 0;
+}
+
+.bookmarks-list li {
+  margin-bottom: 0.5rem;
+}
+
+.bookmarks-list a {
+  display: block;
+
+  padding: 0.5rem;
+
+  border-radius: var(--radius-sm);
+
+  text-decoration: none;
+
+  color: var(--text-secondary);
+
+  transition: var(--t);
+}
+
+.bookmarks-list a:hover {
+  background: var(--bg-surface);
+
+  color: var(--text-primary);
+}
+
+.empty-bookmark {
+  color: var(--text-muted);
+
+  font-size: 0.85rem;
+}
+
+.bookmark-btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 0.5rem;
+
+  margin-top: 1rem;
+
+  padding: 0.65rem 1rem;
+
+  border-radius: 999px;
+
+  border: 1px solid var(--border);
+
+  background: var(--bg-elevated);
+
+  color: var(--text-primary);
+
+  cursor: pointer;
+
+  transition: var(--t);
+}
+
+.topic-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 0.5rem;
+}
+
+.topic-title-row h1 {
+  margin: 0;
+}
+.bookmark-icon-btn {
+  border: none;
+  background: transparent;
+  color: #9ca3af;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  width: auto;
+  height: auto;
+}
+
+.bookmark-icon-btn:hover {
+  color: #fbbf24;
+
+  transform: scale(1.08);
+}
+
+.bookmark-icon-btn.active {
+  color: #fbbf24;
+
+  border-color: #fbbf24;
+}
+
+.bookmark-btn:hover {
+  border-color: #fbbf24;
+
+  transform: translateY(-1px);
+}
+
+.bookmark-btn.active {
+  color: #fbbf24;
+
+  border-color: #fbbf24;
+}
+
+/* Sidebar Topic Row */
+.topic-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Topic link takes remaining space */
+.topic-row a {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Sidebar bookmark star */
+.sidebar-bookmark-btn {
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.sidebar-bookmark-btn:hover {
+  color: #fbbf24;
+  transform: scale(1.1);
+}
+
+/* =====================================
+   LEARNING ROADMAP
+   ===================================== */
+
+.learning-roadmap-card {
+  margin-bottom: 1.5rem;
+
+  padding: 1.25rem;
+
+  border-radius: var(--radius-lg);
+
+  border: 1px solid var(--border);
+
+  background: var(--bg-elevated);
+}
+
+.roadmap-header {
+  display: flex;
+
+  align-items: center;
+
+  gap: .5rem;
+
+  color: var(--accent);
+
+  margin-bottom: 1rem;
+
+  font-weight: 700;
+}
+
+.roadmap-content h3 {
+  margin-bottom: .5rem;
+}
+
+.roadmap-content p {
+  color: var(--text-secondary);
+
+  margin-bottom: 1rem;
+}
+
+.recommended-topic-btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: .7rem 1rem;
+
+  border-radius: 10px;
+
+  text-decoration: none;
+
+  background: var(--accent);
+
+  color: white;
+
+  font-weight: 600;
+}
+
+.recommended-topic-btn:hover {
+  opacity: .9;
 }

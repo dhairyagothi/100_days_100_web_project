@@ -93,6 +93,63 @@ Stored information includes:
 - Theme preference
 - Login status
 
+### 🏅 Achievement Badge System
+
+Earn badges automatically based on preparation milestones and performance.
+
+Available badges include:
+
+* 🏅 DSA Master
+* 🏅 Aptitude Expert
+* 🏅 Placement Ready
+* 🏅 Consistency Champion
+
+Badges update dynamically whenever preparation data is refreshed.
+
+
+
+### 📄 Resume Improvement Suggestions
+
+Receive personalized resume recommendations based on your Resume Score.
+
+Example suggestions:
+
+* ✓ Add Projects
+* ✓ Improve Keywords
+* ✓ Add Quantified Achievements
+* ✓ Improve Project Descriptions
+* ✓ Keep Updating Projects
+
+Suggestions are generated dynamically to help improve placement readiness.
+
+
+
+### 🤖 Personalized AI Insights
+
+Get intelligent recommendations based on your preparation metrics.
+
+The dashboard analyzes user scores and identifies:
+
+* Weak skill areas
+* Improvement opportunities
+* Recommended next actions
+
+Example:
+
+Weak Areas:
+
+* Communication
+* Development
+
+Recommended Actions:
+
+* Practice HR Questions
+* Build a Full-Stack Project
+
+Insights update automatically whenever dashboard data changes.
+
+
+
 ### 📄 PDF Report Export
 Generate a professional downloadable report containing:
 

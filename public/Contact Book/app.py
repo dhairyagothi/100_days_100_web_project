@@ -1,13 +1,17 @@
  from flask import Flask, render_template, redirect, url_for, request, flash, session
- flask import Flask, render_template, redirect, url_for, request, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+  flask import Flask, render_template, redirect, url_for, request, flash, session
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
+import os
 import re
 import difflib
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "your_secret_key"
+app.config["SECRET_KEY"] = os.environ.get("FLASK_SECRET_KEY", os.urandom(24).hex())
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///contacts.db"
 db = SQLAlchemy(app)
 
