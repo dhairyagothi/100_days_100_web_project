@@ -21,6 +21,12 @@ const closeCertificate =
 document.getElementById(
 "closeCertificate"
 );
+const contributorSearch =
+document.getElementById("contributorSearch");
+const contributorsSearchHint =
+document.getElementById("contributorsSearchHint");
+
+let contributorCards = [];
 
 
 closeModal?.addEventListener(
@@ -429,11 +435,13 @@ async function fetchContributors() {
         const totalCommitsEl = document.getElementById('totalCommits');
         if (totalCommitsEl) totalCommitsEl.textContent = totalCommits.toLocaleString();
 
-        contributorsContainer.innerHTML = ""; 
+        contributorsContainer.innerHTML = "";
+        contributorCards = [];
 
         contributors.forEach((contributor) => {
             const card = document.createElement("div");
             card.className = "contributor-card";
+            card.dataset.username = contributor.login.toLowerCase();
 
             card.innerHTML = `
                 <img src="${contributor.avatar_url}" alt="${contributor.login}">
@@ -470,6 +478,7 @@ async function fetchContributors() {
 </div>
             `;
             contributorsContainer.appendChild(card);
+            contributorCards.push(card);
             const detailsButton =
 card.querySelector(
 ".details-btn"
@@ -493,8 +502,10 @@ contributor.contributions
 
 });
 
-}
+	}
         });
+
+        applyContributorSearch();
     } catch (error) {
         console.error("Error fetching contributors:", error);
         if (contributorsContainer) contributorsContainer.innerHTML = "<p style='color: #ff4444;'>Failed to load contributors.</p>";
@@ -533,3 +544,25 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchContributors();
     fetchStargazers();
 });
+
+function applyContributorSearch() {
+    const query = contributorSearch?.value.trim().toLowerCase() || "";
+    let visibleCount = 0;
+
+    contributorCards.forEach((card) => {
+        const username = card.dataset.username || "";
+        const matches = !query || username.includes(query);
+        card.style.display = matches ? "" : "none";
+        if (matches) visibleCount += 1;
+    });
+
+    if (contributorsSearchHint) {
+        contributorsSearchHint.textContent = query
+            ? visibleCount > 0
+                ? `Showing ${visibleCount} contributor${visibleCount === 1 ? "" : "s"} matching "${query}".`
+                : `No contributors match "${query}".`
+            : "Start typing to filter the contributor list.";
+    }
+}
+
+contributorSearch?.addEventListener("input", applyContributorSearch);

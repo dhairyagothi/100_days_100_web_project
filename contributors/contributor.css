@@ -200,6 +200,47 @@ body {
     margin-bottom: 6rem;
 }
 
+.contributors-toolbar {
+    max-width: 720px;
+    margin: 0 auto 4rem;
+}
+
+.contributors-search {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 22px;
+    padding: 0.95rem 1.1rem;
+    backdrop-filter: blur(20px);
+}
+
+.contributors-search i {
+    color: var(--accent-color);
+    font-size: 1rem;
+}
+
+.contributors-search input {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    color: var(--text-primary);
+    font: inherit;
+    outline: none;
+}
+
+.contributors-search input::placeholder {
+    color: var(--text-secondary);
+}
+
+.contributors-search-hint {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
 .stat-item {
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
