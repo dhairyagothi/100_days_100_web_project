@@ -690,6 +690,120 @@ let sortOption = "default";
 let techStackFilter = "all";
 let difficultyFilter = "all";
 
+function getFilteredProjects() {
+  const filtered = PROJECTS.filter((project) => {
+    const day = project.day;
+    const name = project.projectName;
+    const tags = project.techStack;
+    const difficulty = project.difficulty || "";
+
+    const category = getCategoryFromTags(tags, name);
+    const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || "all";
+    const matchesFilter =
+      activeFilter === "all" || category === targetCategory;
+
+    const q = searchQuery.toLowerCase().trim();
+    const matchesSearch =
+      !q ||
+      q
+        .split(/\s+/)
+        .every(
+          (term) =>
+            name.toLowerCase().includes(term) ||
+            (project.projectDesc || "").toLowerCase().includes(term) ||
+            day.toLowerCase().includes(term) ||
+            (Array.isArray(tags) ? tags.join(" ") : tags || "")
+              .toLowerCase()
+              .includes(term),
+        );
+
+    let matchesTech = true;
+    if (techStackFilter && techStackFilter !== "all") {
+      const tagStr = (
+        Array.isArray(tags) ? tags.join(" ") : tags || ""
+      ).toLowerCase();
+      matchesTech = tagStr.includes(techStackFilter.toLowerCase());
+    }
+
+    let matchesDifficulty = true;
+    if (difficultyFilter && difficultyFilter !== "all") {
+      matchesDifficulty =
+        (difficulty || "").toLowerCase() === difficultyFilter.toLowerCase();
+    }
+
+    return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
+  });
+
+  if (sortOption === "az") {
+    filtered.sort((a, b) => a.projectName.localeCompare(b.projectName));
+  } else if (sortOption === "latest") {
+    filtered.sort((a, b) => {
+      const dayA = parseInt(a.day.replace("Day ", ""));
+      const dayB = parseInt(b.day.replace("Day ", ""));
+      return dayB - dayA;
+    });
+  } else if (sortOption === "difficulty") {
+    const difficultyOrder = { beginner: 1, intermediate: 2, advanced: 3 };
+    filtered.sort((a, b) => {
+      const diffA = a.difficulty ? difficultyOrder[a.difficulty.toLowerCase()] || 0 : 0;
+      const diffB = b.difficulty ? difficultyOrder[b.difficulty.toLowerCase()] || 0 : 0;
+      return diffA - diffB;
+    });
+  }
+
+  return filtered;
+}
+
+function findProjectIndexByDay(projects, day) {
+  return projects.findIndex((project) => project.day === day);
+}
+
+function getPageForProjectIndex(index) {
+  return Math.max(1, Math.floor(index / itemsPerPage) + 1);
+}
+
+function highlightProjectCard(day) {
+  const card = document.querySelector(`.project-card[data-day="${day}"]`);
+  if (!card) return;
+
+  card.classList.add("random-highlight");
+  window.setTimeout(() => {
+    card.classList.remove("random-highlight");
+  }, 2600);
+}
+
+function surpriseMe() {
+  if (!PROJECTS.length) return;
+
+  const filtered = getFilteredProjects();
+  const pool = filtered.length > 0 ? filtered : PROJECTS;
+  const pick = pool[Math.floor(Math.random() * pool.length)];
+  if (!pick) return;
+
+  const currentView = getFilteredProjects();
+  const index = findProjectIndexByDay(currentView, pick.day);
+  if (index >= 0) {
+    const targetPage = getPageForProjectIndex(index);
+    if (targetPage !== currentPage) {
+      currentPage = targetPage;
+      renderGrid();
+    }
+  } else {
+    currentPage = 1;
+    renderGrid();
+  }
+
+  setTimeout(() => {
+    const activeProjects = getFilteredProjects();
+    const activePick = activeProjects.find((project) => project.day === pick.day) || pick;
+    const targetCard = document.querySelector(`.project-card[data-day="${activePick.day}"]`);
+    if (targetCard) {
+      targetCard.scrollIntoView({ behavior: "auto", block: "center" });
+      highlightProjectCard(activePick.day);
+    }
+  }, 220);
+}
+
 function syncStateToURL() {
   const url = new URL(window.location);
 
@@ -745,72 +859,7 @@ function renderGrid() {
   if (typeof updateClearFiltersBtnVisibility === "function") {
     updateClearFiltersBtnVisibility();
   }
-
-  const filtered = PROJECTS.filter((project) => {
-    const day = project.day;
-    const name = project.projectName;
-    const url = project.projectPath;
-    const tags = project.techStack;
-    const difficulty = project.difficulty || "";
-
-    // Category filter
-    const category = getCategoryFromTags(tags, name);
-    const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || "all";
-    const matchesFilter =
-      activeFilter === "all" || category === targetCategory;
-
-    // Search filter
-    const q = searchQuery.toLowerCase().trim();
-    const matchesSearch =
-      !q ||
-      q
-        .split(/\s+/)
-        .every(
-          (term) =>
-            name.toLowerCase().includes(term) ||
-            (project.projectDesc || "").toLowerCase().includes(term) ||
-            day.toLowerCase().includes(term) ||
-            (Array.isArray(tags) ? tags.join(" ") : tags || "")
-              .toLowerCase()
-              .includes(term),
-        );
-
-    // Tech stack dropdown filter
-    let matchesTech = true;
-    if (techStackFilter && techStackFilter !== "all") {
-      const tagStr = (
-        Array.isArray(tags) ? tags.join(" ") : tags || ""
-      ).toLowerCase();
-      matchesTech = tagStr.includes(techStackFilter.toLowerCase());
-    }
-
-    // Difficulty filter
-    let matchesDifficulty = true;
-    if (difficultyFilter && difficultyFilter !== "all") {
-      matchesDifficulty =
-        (difficulty || "").toLowerCase() === difficultyFilter.toLowerCase();
-    }
-
-    return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
-  });
-
-  // Apply sorting
-  if (sortOption === "az") {
-    filtered.sort((a, b) => a.projectName.localeCompare(b.projectName));
-  } else if (sortOption === "latest") {
-    filtered.sort((a, b) => {
-      const dayA = parseInt(a.day.replace("Day ", ""));
-      const dayB = parseInt(b.day.replace("Day ", ""));
-      return dayB - dayA;
-    });
-  } else if (sortOption === "difficulty") {
-    const difficultyOrder = { beginner: 1, intermediate: 2, advanced: 3 };
-    filtered.sort((a, b) => {
-      const diffA = a.difficulty ? difficultyOrder[a.difficulty.toLowerCase()] || 0 : 0;
-      const diffB = b.difficulty ? difficultyOrder[b.difficulty.toLowerCase()] || 0 : 0;
-      return diffA - diffB;
-    });
-  }
+  const filtered = getFilteredProjects();
 
   grid.innerHTML = "";
 
@@ -866,6 +915,7 @@ function renderGrid() {
     card.innerHTML = html;
     card.setAttribute("tabindex", "0");
     card.setAttribute("role", "button");
+    card.dataset.day = day;
     attachProjectCardInteraction(card, demoUrl, project);
 
     fragment.appendChild(card);
@@ -1286,6 +1336,7 @@ function renderBookmarks() {
     card.innerHTML = html;
     card.setAttribute("tabindex", "0");
     card.setAttribute("role", "button");
+    card.dataset.day = day;
 
     attachProjectCardInteraction(card, demoUrl, project);
 
@@ -1343,6 +1394,7 @@ function renderRecentlyAddedProjects() {
     card.innerHTML = html;
     card.setAttribute("tabindex", "0");
     card.setAttribute("role", "button");
+    card.dataset.day = day;
 
     attachProjectCardInteraction(card, demoUrl, projectObj);
 
@@ -1400,6 +1452,7 @@ function renderRecentProjects() {
     card.innerHTML = html;
     card.setAttribute("tabindex", "0");
     card.setAttribute("role", "button");
+    card.dataset.day = day;
 
     attachProjectCardInteraction(card, demoUrl, projectObj);
 
@@ -1857,6 +1910,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   initSorting();
   initTechStackSearch();
   initClearAllFilters();
+  const randomProjectBtn = document.getElementById("randomProjectBtn");
+  if (randomProjectBtn) {
+    randomProjectBtn.addEventListener("click", surpriseMe);
+  }
 
   if (typeof initStreak === "function") initStreak();
   updateGamifiedUI();
