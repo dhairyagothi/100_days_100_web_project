@@ -1,80 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;200;300;400;600&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure Password Generator</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    
+    <a href="/" class="project-back-button">← Back to Home</a>
+
     <div class="container">
-
         <h1>Password Generator</h1>
-
         <div class="display-container">
-
             <input readonly placeholder="Password" class="display" data-passwordDisplay>
-
             <button class="copyBtn" data-copy>
                 <span class="tooltip" data-copyMsg></span>
                 <img src="./assets/copy.svg" alt="copy" width="23" height="23">
             </button>
-
         </div>
 
-
         <div class="input-container">
-
-            <!--password length section-->
             <div class="length-container">
                 <p>Password Length</p>
-                <p data-lengthNumber>0</p>
+                <p data-lengthNumber>10</p>
             </div>
-            
-            <!--slider-->
+
             <input type="range" min="1" max="20" class="slider" step="1" data-lengthSlider>
 
-            <!-- checkboxes-->
             <div class="check">
                 <input type="checkbox" id="uppercase">
                 <label for="uppercase">Includes Uppercase letters</label>
             </div>
-
             <div class="check">
                 <input type="checkbox" id="lowercase">
                 <label for="lowercase">Includes Lowercase letters</label>
             </div>
-
             <div class="check">
                 <input type="checkbox" id="numbers">
-                <label for="numbers">Includes Numbers </label>
+                <label for="numbers">Includes Numbers</label>
             </div>
-
             <div class="check">
                 <input type="checkbox" id="symbols">
-                <label for="symbols">Includes Symbols </label>
+                <label for="symbols">Includes Symbols</label>
             </div>
 
-            <!-- strength section-->
             <div class="strength-container">
                 <p>Strength</p>
-                <div class="indicator" data-indicator></div>
+                <div class="strength-info">
+                  <div class="indicator" data-indicator></div>
+                  <span class="strength-text" data-strengthText>Weak</span>
+                </div>
             </div>
+            
+            <p id="suggestionsText" class="suggestions">Suggestions: Include lowercase or uppercase letters, Include numbers or symbols</p>
 
-            <!-- generate password-->
-            <button class="generateButton">Generate Password</button>
+            <div class="check">
+                <input type="checkbox" id="useCustomWord">
+                <label for="useCustomWord">Use Custom Word</label>
+            </div>
+            
+            <input type="text" id="customWordInput" placeholder="Enter custom word..." class="custom-word-input">
 
+            <p id="hideTimer"></p>
+            <p id="warningMsg"></p>
+            
+            <button class="generateButton">GENERATE PASSWORD</button>
         </div>
 
+        <div class="history-container" id="historyContainer">
+            <h3>Recent Passwords</h3>
+            <div id="historyList" class="history-list"></div>
+            <button id="clearHistoryBtn" class="clear-btn">Clear History</button>
+        </div>
     </div>
+    
     <script src="script.js"></script>
 </body>
 </html>

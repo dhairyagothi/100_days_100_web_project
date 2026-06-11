@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Repo Analyzer | Premium Portfolio Project</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js" integrity="sha512-RX/OFugIG/bQ50008Eof2tBwXofmI2uA1B/5A2A38tX2tA99/qH4O4xQ7fB3y1YtCgC29F8aZ5/Xn6M//Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div class="container">
+        <header>
+            <h1 class="glow-text"><i aria-hidden="true" class="fab fa-github"></i> GitHub Repo Analyzer</h1>
+            <p>Analyze any repository or user instantly with deep insights.</p>
+        </header>
+
+        <main>
+            <section class="search-section glass-panel">
+                <form id="search-form">
+                    <div class="input-group">
+                        <i aria-hidden="true" class="fas fa-search input-icon"></i>
+                        <input type="text" id="search-input" placeholder="Enter GitHub username OR repo URL..." required>
+                        <button type="submit" id="analyze-btn" class="glow-button">
+                            <span class="btn-text">Analyze</span>
+                            <i aria-hidden="true" class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+                <div class="recent-searches">
+                    <h3>Recent Searches:</h3>
+                    <div id="history-container" class="history-tags">
+                    </div>
+                </div>
+            </section>
+
+            <section id="loading-state" class="hidden">
+                <div class="loader">
+                    <div class="spinner"></div>
+                    <p>Analyzing Repository...</p>
+                </div>
+            </section>
+
+            <section id="error-state" class="hidden">
+                <div class="error-card glass-panel tilt-card">
+                    <i aria-hidden="true" class="fas fa-exclamation-triangle"></i>
+                    <h2 id="error-title">Error</h2>
+                    <p id="error-message">Something went wrong.</p>
+                </div>
+            </section>
+
+            <section id="results-state" class="hidden">
+                <div id="user-analytics-container" class="hidden">
+                    <!-- Profile Header -->
+                    <div id="profile-header-card" class="glass-panel profile-header-card">
+                        <img id="profile-avatar" src="" alt="Profile Avatar" class="profile-avatar">
+                        <div class="profile-info">
+                            <h2 id="profile-name" class="glow-text"></h2>
+                            <p id="profile-login" class="owner-name"></p>
+                            <p id="profile-bio" class="profile-bio"></p>
+                            <div class="profile-meta-row">
+                                <span id="profile-location" class="profile-meta-item hidden"><i aria-hidden="true" class="fas fa-map-marker-alt"></i> <span></span></span>
+                                <span id="profile-blog" class="profile-meta-item hidden"><i aria-hidden="true" class="fas fa-link"></i> <a href="#" target="_blank"></a></span>
+                                <span id="profile-joined" class="profile-meta-item"><i aria-hidden="true" class="fas fa-calendar-alt"></i> <span></span></span>
+                            </div>
+                        </div>
+                        <a id="profile-github-btn" href="#" target="_blank" class="icon-btn" title="Open GitHub Profile"><i aria-hidden="true" class="fab fa-github"></i></a>
+                    </div>
+
+                    <div class="analytics-title"><i aria-hidden="true" class="fas fa-chart-line"></i> Advanced User Insights</div>
+
+                    <!-- Quick Stats Cards -->
+                    <div class="quick-stats-row">
+                        <div class="quick-stat-card">
+                            <div class="quick-stat-icon" style="--icon-color: #e3b341;"><i aria-hidden="true" class="fas fa-star"></i></div>
+                            <div class="quick-stat-info">
+                                <span class="quick-stat-value" id="qs-stars">0</span>
+                                <span class="quick-stat-label">Total Stars</span>
+                            </div>
+                        </div>
+                        <div class="quick-stat-card">
+                            <div class="quick-stat-icon" style="--icon-color: #2f81f7;"><i aria-hidden="true" class="fas fa-code-branch"></i></div>
+                            <div class="quick-stat-info">
+                                <span class="quick-stat-value" id="qs-forks">0</span>
+                                <span class="quick-stat-label">Total Forks</span>
+                            </div>
+                        </div>
+                        <div class="quick-stat-card">
+                            <div class="quick-stat-icon" style="--icon-color: #39d353;"><i aria-hidden="true" class="fas fa-users"></i></div>
+                            <div class="quick-stat-info">
+                                <span class="quick-stat-value" id="qs-followers">0</span>
+                                <span class="quick-stat-label">Followers</span>
+                            </div>
+                        </div>
+                        <div class="quick-stat-card">
+                            <div class="quick-stat-icon" style="--icon-color: #f778ba;"><i aria-hidden="true" class="fas fa-user-plus"></i></div>
+                            <div class="quick-stat-info">
+                                <span class="quick-stat-value" id="qs-following">0</span>
+                                <span class="quick-stat-label">Following</span>
+                            </div>
+                        </div>
+                        <div class="quick-stat-card">
+                            <div class="quick-stat-icon" style="--icon-color: #a371f7;"><i aria-hidden="true" class="fas fa-scroll"></i></div>
+                            <div class="quick-stat-info">
+                                <span class="quick-stat-value" id="qs-gists">0</span>
+                                <span class="quick-stat-label">Public Gists</span>
+                            </div>
+                        </div>
+                        <div class="quick-stat-card">
+                            <div class="quick-stat-icon" style="--icon-color: #58a6ff;"><i aria-hidden="true" class="fas fa-book"></i></div>
+                            <div class="quick-stat-info">
+                                <span class="quick-stat-value" id="qs-repos">0</span>
+                                <span class="quick-stat-label">Public Repos</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Row -->
+                    <div class="charts-row">
+                        <!-- Language Donut Chart -->
+                        <div class="glass-panel chart-panel">
+                            <h3 class="chart-title"><i aria-hidden="true" class="fas fa-code"></i> Language Breakdown</h3>
+                            <div class="donut-wrapper">
+                                <canvas id="lang-chart"></canvas>
+                                <div class="donut-center-label">
+                                    <span id="lang-count">0</span>
+                                    <small>languages</small>
+                                </div>
+                            </div>
+                            <div id="lang-legend" class="lang-legend"></div>
+                        </div>
+
+                        <!-- Commit Heatmap -->
+                        <div class="glass-panel chart-panel heatmap-panel">
+                            <h3 class="chart-title"><i aria-hidden="true" class="fas fa-fire"></i> Activity Heatmap <span class="heatmap-note">(last 52 weeks · from public events)</span></h3>
+                            <div class="heatmap-months" id="heatmap-months"></div>
+                            <div class="heatmap-grid" id="heatmap-grid"></div>
+                            <div class="heatmap-legend">
+                                <span>Less</span>
+                                <div class="heatmap-swatch" data-level="0"></div>
+                                <div class="heatmap-swatch" data-level="1"></div>
+                                <div class="heatmap-swatch" data-level="2"></div>
+                                <div class="heatmap-swatch" data-level="3"></div>
+                                <div class="heatmap-swatch" data-level="4"></div>
+                                <span>More</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="user-repos-container" class="hidden">
+                    <h2 class="section-title">Repositories</h2>
+                    <div class="repo-grid" id="repos-list">
+                    </div>
+                </div>
+
+                <div id="repo-details" class="glass-panel tilt-card hidden">
+                    <div class="repo-header">
+                        <div class="repo-title-wrapper">
+                            <img src="" alt="Owner Avatar" id="repo-owner-avatar" class="avatar">
+                            <div>
+                                <h2 id="repo-name" class="glow-text">Repo Name</h2>
+                                <p id="repo-owner" class="owner-name">Owner Name</p>
+                            </div>
+                        </div>
+                        <div class="repo-actions">
+                            <button id="copy-btn" class="icon-btn" title="Copy Link"><i aria-hidden="true" class="fas fa-link"></i></button>
+                            <a href="#" id="open-btn" class="icon-btn" target="_blank" title="Open in GitHub"><i aria-hidden="true" class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                    
+                    <p id="repo-description" class="repo-desc">Description goes here...</p>
+
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <i aria-hidden="true" class="fas fa-star text-yellow"></i>
+                            <div class="stat-info">
+                                <span class="stat-value counter" id="stat-stars">0</span>
+                                <span class="stat-label">Stars</span>
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <i aria-hidden="true" class="fas fa-code-branch text-blue"></i>
+                            <div class="stat-info">
+                                <span class="stat-value counter" id="stat-forks">0</span>
+                                <span class="stat-label">Forks</span>
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <i aria-hidden="true" class="fas fa-exclamation-circle text-red"></i>
+                            <div class="stat-info">
+                                <span class="stat-value counter" id="stat-issues">0</span>
+                                <span class="stat-label">Open Issues</span>
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <i aria-hidden="true" class="fas fa-users text-green"></i>
+                            <div class="stat-info">
+                                <span class="stat-value counter" id="stat-contributors">0</span>
+                                <span class="stat-label">Contributors</span>
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <i aria-hidden="true" class="fas fa-balance-scale text-purple"></i>
+                            <div class="stat-info">
+                                <span class="stat-value" id="stat-license">MIT</span>
+                                <span class="stat-label">License</span>
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <i aria-hidden="true" class="fas fa-eye text-cyan"></i>
+                            <div class="stat-info">
+                                <span class="stat-value" id="stat-visibility">Public</span>
+                                <span class="stat-label">Visibility</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="meta-footer">
+                        <div class="meta-item">
+                            <i aria-hidden="true" class="fas fa-code"></i>
+                            <span id="meta-language">JavaScript</span>
+                        </div>
+                        <div class="meta-item">
+                            <i aria-hidden="true" class="fas fa-database"></i>
+                            <span id="meta-size">1.2 MB</span>
+                        </div>
+                        <div class="meta-item">
+                            <i aria-hidden="true" class="fas fa-clock"></i>
+                            <span id="meta-updated">Updated 2 days ago</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>Made with <i aria-hidden="true" class="fas fa-heart text-red"></i> for GSSoC & Beyond</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

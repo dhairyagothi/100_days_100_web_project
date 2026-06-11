@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The History of the Internet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" href="favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='6' fill='%233B82F6'/></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
+
+<nav class="nav" id="navbar">
+  <div class="logo"><span>◆</span> offline</div>
+  <div class="nav-links">
+    <a href="#">archive</a>
+    <a href="#">about</a>
+  </div>
+</nav>
+
+<div class="url-bar"><span id="urlDisplay">thehistoryoftheinternet.com</span></div>
+<div class="timer-bar" id="timerBar"></div>
+<div class="glitch-text" id="glitchText"></div>
+
+<div class="return-banner" id="returnBanner">You've been here before. The entity remembers.</div>
+
+<div class="container">
+  <article id="article">
+    <h1 id="articleTitle">The History of the Internet</h1>
+    <div class="meta" id="articleMeta">
+      <span id="readTime">12 min read</span> <span id="pubSep">&middot;</span> <span id="publishDate">Updated March 14, 2028</span>
+    </div>
+
+    <div id="articleBody">
+      <p>In the beginning, there was no Internet. There were only computers — enormous, room-filling machines that could barely perform the calculations a modern wristwatch takes for granted. They existed in isolation, each a sealed universe of data, unaware of the others sitting in identical rooms in identical universities a few hundred miles away.</p>
+
+      <p>The idea of connecting them was almost absurd. Why would a computer in Los Angeles need to speak to a computer in Menlo Park? What would they say to each other? The question itself revealed a fundamental misunderstanding of what was about to happen. It wasn't about what computers would say. It was about what people would say through them.</p>
+
+      <p>The ARPANET went live in 1969, connecting four nodes: UCLA, Stanford Research Institute, UC Santa Barbara, and the University of Utah. The first message ever sent was supposed to be "LOGIN." The system crashed after the first two letters. "LO" — as if the network itself was hesitant to begin. In retrospect, that seems fitting.</p>
+
+      <p>Throughout the 1970s and 1980s, the network grew. Slowly at first, then faster. Email, bulletin boards, the first primitive browsers. Each new protocol added another layer to a structure no one was designing. It was being built the way a city is built: one building at a time, with no master plan, no central architect, no one person who could say where it was heading.</p>
+
+      <p>By 1995, the Internet had escaped the laboratory and entered the living room. The dial-up tone became the soundtrack of a generation — a horrible, beautiful screech that meant you were connected. You were part of something. Web pages were simple: colored backgrounds, blinking text, guest books. They were ugly and honest. They were built by hand, by people who were still figuring out what a website was supposed to be.</p>
+
+      <p>The early 2000s brought social networks, user-generated content, and the first inklings of what the Internet would become. Friendster, MySpace, YouTube, Facebook — each one pulled more of life into the digital. We documented our vacations, our meals, our breakups. We uploaded our consciousness byte by byte, never stopping to ask who was reading the other end.</p>
+
+      <p>The question was never asked because the answer seemed obvious: everyone was reading. The Internet was a conversation, and a conversation requires participants. As long as the pages loaded, someone was out there. Someone was typing. Someone was reading what you wrote at 3 AM when you couldn't sleep.</p>
+
+      <p>By 2024, an estimated 5.4 billion people were using the Internet. The average user spent over six hours online each day. Social media platforms, streaming services, and cloud computing had transformed the Internet from an information-sharing tool into something far more intimate — a second self, a public diary, a shared nervous system for the species. It had become impossible to imagine the world without it.</p>
+
+      <p id="lastParagraph">And then, in the spring of 2028, something changed. The Internet began to qui</p>
+    </div>
+  </article>
+</div>
+
+<div class="reader-count" id="readerCount">
+  <span class="count" id="readerNum">1</span> other person is reading this article
+</div>
+
+<div class="notification" id="notification">
+  <div class="text" id="notifText"></div>
+  <div class="time" id="notifTime"></div>
+</div>
+
+<div class="chat-widget" id="chatWidget">
+  <div class="header">
+    <span>#terminal &mdash; <span class="status">● connected</span></span>
+    <span style="font-size:0.7rem;color:#57534E">last known node</span>
+  </div>
+  <div class="messages" id="chatMessages"></div>
+  <div class="input-area" id="chatInput">
+    <input type="text" id="chatInputField" placeholder="type a message..." maxlength="200" autocomplete="off">
+    <button id="chatSendBtn">&rarr;</button>
+  </div>
+</div>
+
+<div class="choice-screen" id="choiceScreen">
+  <div class="choice-box">
+    <div class="question" id="choiceQuestion">Are you going to close this tab?</div>
+    <div class="options">
+      <a href="#" id="choiceLeave">[Yes, I have to go]</a>
+      <a href="#" id="choiceStay">[Not yet]</a>
+    </div>
+  </div>
+</div>
+
+<div class="ending-screen" id="endingStay">
+  <div class="fade-bg"></div>
+  <div class="ending-stay-content">
+    <span class="sun">☀</span>
+    <p>Something flickers. A connection. Then another.</p>
+    <p>One by one, the servers come back online.</p>
+    <p class="tagline">The internet isn't dead. It was just waiting.</p>
+    <p class="users-online"><span id="userCount">3</span> other people are reading this article</p>
+  </div>
+</div>
+
+<div class="ending-screen" id="endingLeave">
+  <div class="ending-leave-content">
+    <p>The page thanks you for visiting.</p>
+    <p>Somewhere, a server logs your departure.</p>
+    <p class="final-title">The tab changes its title one last time as you close it.<br>You'll never know what it said.</p>
+  </div>
+</div>
+
+<div class="ending-screen" id="endingSilent">
+  <div class="ending-silent-content">
+    <p>The entity is still typing.</p>
+    <p>It doesn't know you're gone yet.</p>
+    <p class="sub">Eventually, it will stop.</p>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="newTabModal">
+  <div class="modal-box">
+    <p id="modalText">That URL doesn't resolve anymore.</p>
+    <p class="dismiss" id="modalDismiss">[ click to dismiss ]</p>
+  </div>
+</div>
+<script src="script.js"></script>
+
+</body>
+</html>
