@@ -5,6 +5,7 @@
   "description": "A curated open-source collection of 100+ frontend web projects",
   "scripts": {
     "generate-previews": "node scripts/generate-previews.js",
+    "generate:og-image": "node scripts/generate-og-image.js",
     "dev": "npx -y serve . -p 3000",
     "validate:projects": "node scripts/validate-projects.js",
     "validate:projects-fixture": "node scripts/validate-projects-fixture.js",
