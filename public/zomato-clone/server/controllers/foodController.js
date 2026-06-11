@@ -1,4 +1,4 @@
-const Food = require("../models/foodModel");
+const Food = require("../models/foodmodel");
 
 exports.createFood = async (req, res) => {
   const data = await Food.create(req.body);
