@@ -3,195 +3,442 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign Up</title>
-  
-</head>
-<style>
-    body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: black;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-
-.signup-box {
-  background-color: black;
-  margin-top: 50px;
-    padding: 20px;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 400px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
-}
-
-.logo {
-  width: 50px;
-  margin-bottom: 10px;
-  margin-left: 150px;
-}
-
-h1 {
-  font-size: 40px;
-  margin-left: 80px;
-  margin-bottom: 20px;
-}
-#second{
-    font-size: 40px;
-    margin-top:-10px;
-    margin-left: 50px;
-}
-form {
-  margin-bottom: 20px;
-}
-
-label {
-  display: block;
-  font-size: 14px;
-  margin-bottom: 5px;
-}
-
-input {
-  width: 100%;
-  padding: 10px;
-  font-size: 14px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  margin-bottom: 10px;
-}
-
-input:focus {
-  outline: none;
-  border-color: #1db954;
-}
-
-.error-message {
-  display: none;
-  color: #e50000;
-  font-size: 12px;
-  margin: -5px 0 10px;
-}
-
-.alt-link {
-  color: #1db954;
-  font-size: 12px;
-  text-decoration: none;
-  display: block;
-  margin-bottom: 20px;
-}
-.alt-link:hover {
-  color: #1db954;
-  font-size: 12px;
-  text-decoration: underline;
-  display: block;
-  margin-bottom: 20px;
-}
-
-button {
-  width: 100%;
-  padding: 10px;
-  font-size: 14px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-#next-btn {
-  background-color: #1db954;
-  color: black;
-  width: 368px;
-  border-radius: 25px;
-  font-weight: bold;
-}
-
-.social-btn {
-  background-color: #333;
-  margin-top: 10px;
-}
-
-.google { color: white; 
-border-radius: 25px;
-}
-.facebook { color: white; 
-    border-radius: 25px;}
-.apple { color: white;
-    border-radius: 25px; }
-
-.divider {
-  color: #ccc;
-  margin: 20px 0;
-  font-size: 14px;
-}
-#email{
-    width: 350px;
-    background-color: #333;
-    color:white;
-}
-.loginn{
-    margin-left: 50px;
-    display: flex;
-    gap:10px;
-}
-.bottom{
-    margin-left: 30px;margin-bottom: 10px;
-}
-.bottom2{
-    margin-left: 70px;
+  <title>Spotify Clone - Sign Up</title>
+  <style>
+    :root {
+      --bg: #121212;
+      --panel: #181818;
+      --panel-2: #202020;
+      --text: #ffffff;
+      --muted: #b3b3b3;
+      --line: rgba(255, 255, 255, 0.12);
+      --accent: #1db954;
+      --accent-hover: #1ed760;
+      --danger: #e50000;
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
     }
-</style>
-<body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
-  <div class="container">
-    <div class="signup-box">
-      <img src="./images/logo.png" alt="Spotify Logo" class="logo">
-      <h1>Sign up to</h1><h1 id="second">Start listening</h1>
-      <form id="signup-form">
-        <label for="email">Email address</label>
-        <input type="email" id="email" placeholder="name@domain.com" required>
-        <p class="error-message" id="error-message">This email is invalid. Make sure it's written like example@email.com</p>
-        <a href="#" class="alt-link">Use phone number instead.</a>
-        <button type="submit" id="next-btn">Next</button>
-      </form>
-      
-      <div class="divider" style="margin-left:180px ;">or</div>
-      <button class="social-btn google">Sign up with Google</button>
-      <button class="social-btn facebook">Sign up with Facebook</button>
-      <button class="social-btn apple">Sign up with Apple</button>
-    </div>
-    <hr>
-    <div class="loginn">
-    <a><h3>Already have an account? </h3></a>
-    <a href="#" style="margin-top:19px;color:white;text-decoration: underline;"> Log in here.</a>
-    </div>
-    <div class="bottom">
-        This site is protected by reCAPTCHA and the Google
-    </div>
-    <div class="bottom2">Privacy Policy and Terms of Service apply.</div>
-  </div>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      min-height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(29, 185, 84, 0.16), transparent 30%),
+        linear-gradient(180deg, #0f0f0f 0%, var(--bg) 100%);
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page-shell {
+      min-height: 100vh;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .project-back-button {
+      position: fixed;
+      left: 18px;
+      top: 18px;
+      z-index: 9999;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(30, 41, 59, 0.95);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.8);
+      text-decoration: none;
+      font: 700 14px/1 Inter, system-ui, sans-serif;
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+
+    .project-back-button:hover {
+      background: #3b82f6;
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .signup-shell {
+      width: min(980px, 100%);
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 0;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      overflow: hidden;
+      background: rgba(24, 24, 24, 0.92);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .brand-panel {
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 32px;
+      background:
+        linear-gradient(180deg, rgba(29, 185, 84, 0.14), transparent 40%),
+        linear-gradient(135deg, #151515, #101010);
+      border-right: 1px solid var(--line);
+    }
+
+    .brand-top {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .logo {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .eyebrow {
+      margin: 0;
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .headline {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 4rem);
+      line-height: 0.95;
+      font-weight: 800;
+      max-width: 10ch;
+    }
+
+    .headline span {
+      color: var(--accent);
+    }
+
+    .support-copy {
+      margin: 0;
+      max-width: 50ch;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .brand-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat {
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.2rem;
+      margin-bottom: 4px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .form-panel {
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    .form-card {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-title {
+      margin: 0;
+      font-size: clamp(1.8rem, 2.8vw, 2.4rem);
+      line-height: 1.05;
+    }
+
+    .form-subtitle {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #f1f1f1;
+    }
+
+    .field {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: var(--panel-2);
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .field::placeholder {
+      color: #8f8f8f;
+    }
+
+    .field:focus {
+      border-color: rgba(29, 185, 84, 0.95);
+      box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.18);
+    }
+
+    .error-message {
+      display: none;
+      margin: -4px 0 0;
+      color: var(--danger);
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+
+    .alt-link {
+      display: inline-flex;
+      width: fit-content;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    .alt-link:hover {
+      text-decoration: underline;
+    }
+
+    .primary-btn,
+    .social-btn {
+      width: 100%;
+      min-height: 48px;
+      border: none;
+      border-radius: 999px;
+      font-size: 0.98rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .primary-btn {
+      margin-top: 4px;
+      background: var(--accent);
+      color: #000;
+    }
+
+    .primary-btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .divider-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .divider-row::before,
+    .divider-row::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .social-stack {
+      display: grid;
+      gap: 10px;
+    }
+
+    .social-btn {
+      background: #2a2a2a;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .social-btn:hover {
+      background: #333;
+      transform: translateY(-1px);
+    }
+
+    .footer-card {
+      display: grid;
+      gap: 10px;
+      padding-top: 6px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    .footer-card a {
+      color: #fff;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    @media (max-width: 860px) {
+      .signup-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .brand-panel {
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page-shell {
+        padding: 16px;
+        align-items: flex-start;
+      }
+
+      .project-back-button {
+        left: 12px;
+        top: 12px;
+      }
+
+      .brand-panel,
+      .form-panel {
+        padding: 24px;
+      }
+
+      .brand-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .headline {
+        max-width: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="/" class="project-back-button">← Back to Home</a>
+
+  <main class="page-shell">
+    <section class="signup-shell" aria-labelledby="signup-title">
+      <div class="brand-panel">
+        <div class="brand-top">
+          <img src="./image/logo.png" alt="Spotify Logo" class="logo">
+          <div>
+            <p class="eyebrow">Spotify clone</p>
+            <h1 class="headline">Start listening with <span>zero friction</span></h1>
+          </div>
+          <p class="support-copy">
+            A cleaner sign-up flow for new users. The layout now scales naturally from desktop to mobile without the fixed offsets that were breaking the page.
+          </p>
+        </div>
+
+        <div class="brand-stats" aria-label="Highlights">
+          <div class="stat">
+            <strong>Fast</strong>
+            <span>Quick sign-up and clear next step.</span>
+          </div>
+          <div class="stat">
+            <strong>Responsive</strong>
+            <span>Centered layout that stays readable on mobile.</span>
+          </div>
+          <div class="stat">
+            <strong>Focused</strong>
+            <span>Less clutter, better spacing, stronger contrast.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-panel">
+        <div class="form-card">
+          <div>
+            <h2 id="signup-title" class="form-title">Sign up to start listening</h2>
+            <p class="form-subtitle">Use your email address or switch to phone sign-up if that’s easier.</p>
+          </div>
+
+          <form id="signup-form" novalidate>
+            <label for="email">Email address</label>
+            <input type="email" id="email" class="field" placeholder="name@domain.com" autocomplete="email" required>
+            <p class="error-message" id="error-message" aria-live="polite">
+              This email is invalid. Make sure it's written like example@email.com.
+            </p>
+            <a href="#" class="alt-link">Use phone number instead.</a>
+            <button type="submit" class="primary-btn">Next</button>
+          </form>
+
+          <div class="divider-row">or</div>
+
+          <div class="social-stack">
+            <button type="button" class="social-btn">Sign up with Google</button>
+            <button type="button" class="social-btn">Sign up with Facebook</button>
+            <button type="button" class="social-btn">Sign up with Apple</button>
+          </div>
+        </div>
+
+        <div class="footer-card">
+          <div>
+            Already have an account? <a href="#">Log in here.</a>
+          </div>
+          <div>
+            This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
   <script>
     document.getElementById("signup-form").addEventListener("submit", function (event) {
-  event.preventDefault();
+      event.preventDefault();
 
-  const emailField = document.getElementById("email");
-  const errorMessage = document.getElementById("error-message");
+      const emailField = document.getElementById("email");
+      const errorMessage = document.getElementById("error-message");
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  // Email validation
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(emailField.value)) {
-    errorMessage.style.display = "block";
-    emailField.style.borderColor = "#e50000";
-  } else {
-    errorMessage.style.display = "none";
-    emailField.style.borderColor = "#1db954";
-    alert("Email is valid! Proceeding...");
-  }
-});
+      if (!emailRegex.test(emailField.value.trim())) {
+        errorMessage.style.display = "block";
+        emailField.style.borderColor = "#e50000";
+        emailField.focus();
+        return;
+      }
 
+      errorMessage.style.display = "none";
+      emailField.style.borderColor = "#1db954";
+      alert("Email is valid! Proceeding...");
+    });
   </script>
 </body>
 </html>
