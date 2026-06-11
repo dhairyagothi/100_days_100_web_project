@@ -74,6 +74,7 @@ let PROJECTS = [];
 let PROJECTS_BY_NAME = new Map();
 let PROJECTS_BY_DAY = new Map();
 let projectsPromise = null;
+const RECENTLY_ADDED_LIMIT = 6;
 
 function hydrateProjects(data) {
   PROJECTS = data.map((project) => ({
@@ -291,6 +292,7 @@ function buildProjectCardHTML({
   category,
   isBookmarked = false,
   showDescription = true,
+  highlightNew = false,
 }) {
   const { demoUrl, sourceUrl, sourceOnly } = resolveProjectUrls(
     day,
@@ -330,6 +332,9 @@ function buildProjectCardHTML({
   const sourceOnlyBadge = sourceOnly
     ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
     : "";
+  const newBadge = highlightNew
+    ? '<span class="new-badge" title="Recently added">NEW</span>'
+    : "";
 
   const primaryLink = sourceOnly
     ? `<a href="${safeSourceUrl}" target="_blank" class="card-link github-link-button source-link-button" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source of ${safeName} on GitHub (opens in a new tab)" title="View source on GitHub">
@@ -352,9 +357,10 @@ function buildProjectCardHTML({
                 <span class="card-category-wrap">
                   <span class="card-category">${safeCategory}</span>
                   ${difficultyBadge}
+                  ${newBadge}
                   ${sourceOnlyBadge}
                 </span>
-            </div>
+              </div>
 
             <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
                 <img src="./${url && url.startsWith('./') ? url.split('/')[2] : name.replace(/\s+/g, '_')}/preview.png" alt="${safeName} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
@@ -1288,6 +1294,61 @@ function renderBookmarks() {
 }
 
 const recentGrid = document.getElementById("recentGrid");
+const recentlyAddedGrid = document.getElementById("recentlyAddedGrid");
+
+function renderRecentlyAddedProjects() {
+  if (!recentlyAddedGrid) return;
+
+  recentlyAddedGrid.innerHTML = "";
+
+  const latestProjects = [...PROJECTS]
+    .sort((a, b) => {
+      const dayA = parseInt((a.day || "").replace("Day ", ""), 10) || 0;
+      const dayB = parseInt((b.day || "").replace("Day ", ""), 10) || 0;
+      return dayB - dayA;
+    })
+    .slice(0, RECENTLY_ADDED_LIMIT);
+
+  if (latestProjects.length === 0) {
+    recentlyAddedGrid.innerHTML = `<p class="empty-state">No recently added projects available yet.</p>`;
+    return;
+  }
+
+  latestProjects.forEach((projectObj) => {
+    const day = projectObj.day || projectObj[0];
+    const name = projectObj.projectName || projectObj.name || projectObj[1];
+    const url = projectObj.projectPath || projectObj.url || projectObj[2];
+    const tags = projectObj.techStack || projectObj.tags || projectObj[3];
+
+    const category = getCategoryFromTags(tags, name);
+    const isBookmarked = bookmarkedProjects.some(
+      (item) => normalizeProjectEntry(item).day === day,
+    );
+
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked,
+      showDescription: false,
+      highlightNew: true,
+    });
+
+    const card = document.createElement("div");
+    card.className = sourceOnly
+      ? "project-card source-only visible"
+      : "project-card visible";
+    card.innerHTML = html;
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("role", "button");
+
+    attachProjectCardInteraction(card, demoUrl, projectObj);
+
+    recentlyAddedGrid.appendChild(card);
+  });
+}
 
 function renderRecentProjects() {
   if (!recentGrid) return;
@@ -1813,6 +1874,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (hasProjectGrid()) {
       loadBookmarksFromURL();
 
+      renderRecentlyAddedProjects();
       renderGrid();
       renderBookmarks();
       renderRecentProjects();
