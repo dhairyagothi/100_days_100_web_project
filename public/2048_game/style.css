@@ -1133,6 +1133,7 @@ body.dark .stats-modal {
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
   animation: howto-slide-in 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-align: left;
 }
 
 .howto-card::-webkit-scrollbar { width: 5px; }
@@ -1259,12 +1260,13 @@ body.dark .stats-modal {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.09);
+  text-align: left;
 }
 
 .howto-section-title {
   font-size: 12px;
   font-weight: 800;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.82);
   text-transform: uppercase;
   letter-spacing: 1.2px;
   margin-bottom: 10px;
@@ -1273,7 +1275,7 @@ body.dark .stats-modal {
 .howto-text {
   font-size: 13px;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.92);
   line-height: 1.6;
 }
 
@@ -1292,6 +1294,7 @@ body.dark .stats-modal {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
+  align-items: start;
 }
 
 .howto-control-block {
@@ -1304,7 +1307,7 @@ body.dark .stats-modal {
 .howto-control-label {
   font-size: 11px;
   font-weight: 800;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.82);
   letter-spacing: 0.5px;
   text-transform: uppercase;
   text-align: center;
@@ -1339,6 +1342,72 @@ body.dark .stats-modal {
   font-family: var(--font);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   transition: transform 0.1s;
+}
+
+.key-note {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.78);
+  text-align: center;
+}
+
+.howto-tips {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.howto-tips li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.92);
+  line-height: 1.45;
+}
+
+.howto-tips li::before {
+  content: '•';
+  position: absolute;
+  left: 3px;
+  color: #ffd54f;
+}
+
+.howto-modes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.howto-mode-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: center;
+}
+
+.howto-mode-card strong {
+  font-size: 13px;
+  color: #fff;
+}
+
+.howto-mode-card span {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.35;
+}
+
+.howto-start-btn {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  padding: 12px 18px;
+  border-radius: 12px;
 }
 
 
@@ -1409,4 +1478,3 @@ body[data-theme='retro'] .tile[data-val='512'] { background: #aaaaff; }
 body[data-theme='retro'] .tile[data-val='1024'] { background: #ccaaff; }
 body[data-theme='retro'] .tile[data-val='2048'] { background: #ffaaff; }
 body[data-theme='retro'] .tile[data-val='big'] { background: #ff88ff; }
-
