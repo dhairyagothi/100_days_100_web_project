@@ -97,8 +97,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Session length pills
-  document.querySelectorAll('button.pill').forEach(pill => {
-    pill.addEventListener('click', () => {
+  document.querySelectorAll("button.pill").forEach((pill) => {
+    pill.addEventListener("click", () => {
       document
         .querySelectorAll(".pill")
         .forEach((p) => p.classList.remove("active"));
@@ -117,7 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
       render();
     });
   });
-
   const customInput = document.getElementById("custom-time");
 
   // Listen for when the user types a number and presses Enter or clicks away
