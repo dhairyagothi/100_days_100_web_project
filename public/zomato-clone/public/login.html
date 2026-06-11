@@ -85,22 +85,34 @@
       .z-main {
         flex: 1;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: center;
-        padding: 4rem 2rem;
+        padding: 3rem clamp(1rem, 4vw, 3rem) 4rem;
       }
 
       /* ── CARD ── */
       .z-card {
         background: var(--bg-white);
         border-radius: var(--radius-lg);
-        padding: 4rem 3.8rem 3.4rem;
+        padding: 3.5rem 3.2rem 3rem;
         width: 100%;
-        max-width: 44rem;
+        max-width: 68rem;
         box-shadow: var(--shadow-lg);
-        border: 1px solid var(--border);
+        border: 1px solid var(--border-dark);
         transition: background var(--transition);
         animation: cardIn 0.45s cubic-bezier(0.4, 0, 0.2, 1) both;
+        position: relative;
+        overflow: hidden;
+      }
+      .z-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+          linear-gradient(135deg, rgba(226, 55, 68, 0.08), transparent 34%),
+          radial-gradient(circle at top right, rgba(226, 55, 68, 0.06), transparent 28%);
+        opacity: 0.85;
       }
       @keyframes cardIn {
         from {
@@ -114,13 +126,17 @@
       }
 
       .z-card h2 {
-        font-size: 2.6rem;
+        position: relative;
+        z-index: 1;
+        font-size: clamp(2.2rem, 4vw, 3rem);
         font-weight: 700;
         color: var(--text-primary);
         margin-bottom: 0.5rem;
         letter-spacing: -0.02em;
       }
       .z-card .sub {
+        position: relative;
+        z-index: 1;
         font-size: 1.4rem;
         color: var(--text-muted);
         margin-bottom: 2.8rem;
@@ -132,21 +148,24 @@
 
       /* Social buttons */
       .z-social {
+        position: relative;
+        z-index: 1;
         display: flex;
         gap: 10px;
         margin-bottom: 2rem;
       }
       .z-social-btn {
         flex: 1;
+        min-height: 4.8rem;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
-        padding: 1rem 1.4rem;
-        border: 1.5px solid var(--border);
+        padding: 1rem 1.2rem;
+        border: 1.5px solid var(--border-dark);
         border-radius: var(--radius-sm);
         background: var(--bg-white);
-        font-size: 1.4rem;
+        font-size: 1.35rem;
         font-weight: 600;
         color: var(--text-primary);
         cursor: pointer;
@@ -154,12 +173,14 @@
         transition:
           border-color var(--transition),
           background var(--transition),
-          transform var(--transition);
+          transform var(--transition),
+          box-shadow var(--transition);
       }
       .z-social-btn:hover {
         border-color: var(--red);
         background: var(--red-light);
         transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(226, 55, 68, 0.12);
       }
       .z-social-btn i {
         font-size: 1.6rem;
@@ -173,6 +194,8 @@
 
       /* Divider */
       .z-divider {
+        position: relative;
+        z-index: 1;
         display: flex;
         align-items: center;
         gap: 12px;
@@ -191,6 +214,8 @@
       /* Fields */
       .z-field {
         margin-bottom: 1.6rem;
+        position: relative;
+        z-index: 1;
       }
       .z-field label {
         display: block;
@@ -219,11 +244,23 @@
         border-color: var(--red);
         box-shadow: 0 0 0 3px rgba(226, 55, 68, 0.1);
       }
+      .z-field input:focus-visible,
+      .z-social-btn:focus-visible,
+      .pw-toggle:focus-visible,
+      .z-navbar-right a:focus-visible,
+      .z-dm-btn:focus-visible,
+      .z-submit:focus-visible,
+      .z-switch a:focus-visible,
+      .z-card .sub a:focus-visible,
+      .z-options a:focus-visible {
+        outline: 3px solid rgba(226, 55, 68, 0.18);
+        outline-offset: 2px;
+      }
       .z-field input.err {
         border-color: var(--red);
       }
       .z-field input::placeholder {
-        color: var(--text-muted);
+        color: rgba(120, 120, 120, 0.95);
       }
       .z-err {
         font-size: 1.15rem;
@@ -262,6 +299,8 @@
 
       /* Options row */
       .z-options {
+        position: relative;
+        z-index: 1;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -306,6 +345,8 @@
           box-shadow var(--transition);
         box-shadow: 0 4px 16px rgba(226, 55, 68, 0.3);
         letter-spacing: 0.01em;
+        position: relative;
+        z-index: 1;
       }
       .z-submit:hover {
         background: var(--red-dark);
@@ -339,6 +380,8 @@
 
       /* Switch */
       .z-switch {
+        position: relative;
+        z-index: 1;
         text-align: center;
         font-size: 1.35rem;
         color: var(--text-muted);
@@ -392,28 +435,16 @@
     </nav>
 
     <main class="z-main">
-        <div class="z-card">
-            <h2>Log in</h2>
-            <p class="sub">or <a href="signup.html" style="color:#e23744;text-decoration:none;font-weight:600;">create an account</a></p>
-
-            <div class="z-social">
-                <button class="z-social-btn" onclick="alert('Google login coming soon!')">
-                    <i aria-hidden="true" class="fa fa-google"></i> Google
-                </button>
-                <button class="z-social-btn" onclick="alert('Facebook login coming soon!')">
-                    <i aria-hidden="true" class="fa fa-facebook"></i> Facebook
-                </button>
-            </div>
       <div class="z-card">
-        <h2>Welcome back 👋</h2>
+        <h2>Welcome back</h2>
         <p class="sub">or <a href="signup.html">create a new account</a></p>
 
         <div class="z-social">
-          <button class="z-social-btn" onclick="socialLogin('Google')">
-            <i class="fa fa-google"></i> Google
+          <button class="z-social-btn" type="button" onclick="socialLogin('Google')" aria-label="Continue login with Google">
+            <i aria-hidden="true" class="fa fa-google"></i> Google
           </button>
-          <button class="z-social-btn" onclick="socialLogin('Facebook')">
-            <i class="fa fa-facebook"></i> Facebook
+          <button class="z-social-btn" type="button" onclick="socialLogin('Facebook')" aria-label="Continue login with Facebook">
+            <i aria-hidden="true" class="fa fa-facebook"></i> Facebook
           </button>
         </div>
 
@@ -439,12 +470,14 @@
                 id="loginPw"
                 placeholder="Enter your password"
                 autocomplete="current-password"
+                aria-describedby="pwErr"
               />
               <button
                 type="button"
                 class="pw-toggle"
                 id="pwToggle"
                 onclick="togglePw('loginPw', 'pwToggle')"
+                aria-label="Show password"
               >
                 SHOW
               </button>
@@ -558,9 +591,11 @@
             const btn = this.querySelector(".z-submit");
             btn.textContent = "Logging in…";
             btn.disabled = true;
+            btn.setAttribute("aria-busy", "true");
             setTimeout(() => {
               const success = document.getElementById("loginSuccess");
               success.style.display = "block";
+              success.setAttribute("role", "status");
               success.textContent = "✅ Logged in successfully! Redirecting…";
               setTimeout(() => (window.location.href = "zomato.html"), 1800);
             }, 1000);
