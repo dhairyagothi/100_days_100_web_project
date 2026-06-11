@@ -3,6 +3,7 @@ const path = require('path');
 
 // Target directory paths relative to this script location
 const PUBLIC_DIR = path.resolve(__dirname, '../public');
+const PROJECTS_PATH = path.resolve(__dirname, '../projects.json');
 const MAX_SIZE_MB = 2;
 const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
 
@@ -10,6 +11,87 @@ const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
 const args = process.argv.slice(2);
 const projectIdx = args.indexOf('--project');
 const targetProject = projectIdx !== -1 ? args[projectIdx + 1] : null;
+
+let PROJECTS_BY_FOLDER = new Map();
+
+function decodeLocalPath(value) {
+  let relPath = String(value || '').trim().split('?')[0].split('#')[0];
+
+  try {
+    relPath = decodeURIComponent(relPath);
+  } catch (_error) {
+    // Keep the original value if it was already plain text.
+  }
+
+  return relPath.replace(/\\/g, '/');
+}
+
+function isExternalUrl(value) {
+  return /^https?:\/\//i.test(String(value || '').trim());
+}
+
+function parseGithubTreePath(value) {
+  const match = String(value || '')
+    .trim()
+    .match(/\/tree\/[^/]+\/(.+?)(?:\?|#|$)/i);
+
+  return match ? decodeLocalPath(match[1]) : null;
+}
+
+function getFolderKeyFromProjectPath(projectPath) {
+  if (typeof projectPath !== 'string') return null;
+
+  const trimmed = projectPath.trim();
+
+  const githubTreePath = parseGithubTreePath(trimmed);
+  if (githubTreePath) {
+    if (!githubTreePath.startsWith('public/')) return null;
+    const relativeToPublic = githubTreePath.slice('public/'.length);
+    const [folderName] = relativeToPublic.split('/');
+    return folderName || null;
+  }
+
+  if (!trimmed.startsWith('./') || isExternalUrl(trimmed)) return null;
+
+  let localPath = decodeLocalPath(trimmed);
+  if (localPath.startsWith('./')) {
+    localPath = localPath.slice(2);
+  }
+  if (!localPath.startsWith('public/')) return null;
+
+  const relativeToPublic = localPath.slice('public/'.length);
+  const [folderName] = relativeToPublic.split('/');
+  return folderName || null;
+}
+
+function loadProjectsRegistry() {
+  if (!fs.existsSync(PROJECTS_PATH)) {
+    throw new Error(`Cannot find projects registry at ${PROJECTS_PATH}`);
+  }
+
+  const payload = fs.readFileSync(PROJECTS_PATH, 'utf8');
+  const projects = JSON.parse(payload);
+
+  if (!Array.isArray(projects)) {
+    throw new Error('projects.json must be a JSON array');
+  }
+
+  const folderMap = new Map();
+  for (const project of projects) {
+    if (!project || typeof project !== 'object') continue;
+
+    const folderKey =
+      getFolderKeyFromProjectPath(project.projectPath) ||
+      (isExternalUrl(project.projectPath) && typeof project.projectName === 'string'
+        ? project.projectName.trim()
+        : null);
+    if (!folderKey || folderMap.has(folderKey)) continue;
+
+    folderMap.set(folderKey, project);
+  }
+
+  PROJECTS_BY_FOLDER = folderMap;
+}
 
 /**
  * Recursively steps through folders to catch any asset exceeding size threshold
@@ -33,6 +115,32 @@ function checkAssetSizes(currentPath, issueLog) {
     }
 }
 
+function getConfiguredEntryPoint(projectName) {
+    const registryEntry = PROJECTS_BY_FOLDER.get(projectName);
+
+    if (!registryEntry || typeof registryEntry.projectPath !== 'string') {
+        return null;
+    }
+
+    const rawPath = registryEntry.projectPath.trim();
+    const githubTreePath = parseGithubTreePath(rawPath);
+    if (githubTreePath || isExternalUrl(rawPath)) {
+        return {
+            type: 'external',
+            projectPath: rawPath,
+        };
+    }
+
+    const localPath = decodeLocalPath(rawPath);
+    const resolvedPath = path.resolve(path.join(__dirname, '..'), localPath);
+
+    return {
+        type: 'local',
+        projectPath: rawPath,
+        resolvedPath,
+    };
+}
+
 /**
  * Validates a targeted project folder against the 3 core criteria
  */
@@ -53,8 +161,15 @@ function validateProjectFolder(projectName) {
     }
 
     // Rule 3: Valid Entry Point Check
-    if (!fs.existsSync(path.join(projectPath, 'index.html'))) {
-        projectIssues.push(`❌ Valid Entry Point: Missing "index.html"`);
+    const configuredEntryPoint = getConfiguredEntryPoint(projectName);
+    if (configuredEntryPoint && configuredEntryPoint.type === 'local') {
+        if (!fs.existsSync(configuredEntryPoint.resolvedPath)) {
+            projectIssues.push(
+                `❌ Valid Entry Point: Missing configured "${configuredEntryPoint.projectPath}"`,
+            );
+        }
+    } else if (!configuredEntryPoint && !fs.existsSync(path.join(projectPath, 'index.html'))) {
+        projectIssues.push(`❌ Valid Entry Point: Missing fallback "index.html"`);
     }
 
     // Rule 2: Asset Size Audit
@@ -71,6 +186,8 @@ function validateProjectFolder(projectName) {
 }
 
 function main() {
+    loadProjectsRegistry();
+
     if (!fs.existsSync(PUBLIC_DIR)) {
         console.error(`❌ Root Directory Error: Cannot find "/public" folder at ${PUBLIC_DIR}`);
         process.exit(1);
@@ -117,5 +234,4 @@ function main() {
     }
 }
 
-main();
 main();
