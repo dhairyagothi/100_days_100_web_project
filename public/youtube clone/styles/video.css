@@ -60,6 +60,68 @@
   }
 }
 
+.video-preview-placeholder {
+  display: none;
+}
+
+.video-preview-placeholder .thumbnail-row {
+  height: 0;
+  margin-bottom: 8px;
+  padding-bottom: 56.25%;
+  position: relative;
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.16)),
+    linear-gradient(180deg, rgb(238, 238, 238), rgb(225, 225, 225));
+  overflow: hidden;
+}
+
+.video-preview-placeholder .placeholder-badge {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background-color: rgba(0, 0, 0, 0.68);
+  color: white;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.video-preview-placeholder .placeholder-info {
+  align-items: start;
+}
+
+.video-preview-placeholder .placeholder-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgb(235, 235, 235), rgb(220, 220, 220));
+}
+
+.video-preview-placeholder .placeholder-line {
+  height: 10px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+  background: linear-gradient(90deg, rgb(230, 230, 230), rgb(215, 215, 215));
+}
+
+.video-preview-placeholder .placeholder-line--title {
+  width: 92%;
+  height: 14px;
+}
+
+.video-preview-placeholder .placeholder-line--short {
+  width: 60%;
+}
+
+@media (min-width: 1000px) {
+  .video-preview-placeholder {
+    display: block;
+  }
+}
+
 .video-time {
   font-size: 12px;
   font-weight: 500;
