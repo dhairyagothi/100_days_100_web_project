@@ -1,6 +1,7 @@
 const SavingData = require('../models/FormData')
 const bcrypt = require('bcrypt')
 const { validationResult } = require("express-validator");
+const { AppError } = require('../middlewares/errorHandler');
 
 exports.SignUP_post = async (req, res) => {
 
@@ -8,9 +9,7 @@ exports.SignUP_post = async (req, res) => {
  const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(400).json({
-      msg: errors.array()[0].msg
-    });
+    throw new AppError(errors.array()[0].msg, 400);
   }
 
 
@@ -18,13 +17,13 @@ exports.SignUP_post = async (req, res) => {
   let { fullName, email, password } = req.body;
   const IP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
 
-  if (!fullName || !email || !password) { return res.status(400).json({ msg: "All fields required" }) }
+  if (!fullName || !email || !password) { throw new AppError("All fields required", 400) }
 
      email = email.trim().toLowerCase();
      fullName =  fullName.trim();
 
   const existingEmail = await SavingData.findOne({ email: email })
-  if (existingEmail) { return res.status(400).json({ msg: "user with this email already exist" }) }
+  if (existingEmail) { throw new AppError("user with this email already exist", 409) }
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const user = new SavingData({

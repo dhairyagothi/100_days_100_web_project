@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,13 +20,26 @@
     }
 
     .screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100vw;
+      transition: margin 0.5s ease-out;
+
       background-color: rgba(0, 0, 0, 0.8);
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.6);
     }
 
-    h1, p {
+    .screen.up {
+      margin-top: -100vh;
+    }
+
+    h1,
+    p {
       margin: 10px 0;
       text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
     }
@@ -72,6 +86,11 @@
       transition: transform 0.3s ease, background-color 0.3s ease;
     }
 
+    .choose-insect-btn p {
+      color: #000000 !important;
+      margin: 5px 0 !important;
+    }
+
     .choose-insect-btn:hover {
       background-color: rgba(255, 255, 255, 0.3);
       transform: scale(1.1);
@@ -87,7 +106,8 @@
       position: relative;
     }
 
-    .time, .score {
+    .time,
+    .score {
       font-size: 1.2em;
       position: absolute;
       top: 20px;
@@ -132,17 +152,45 @@
       animation: float 2s infinite ease-in-out;
     }
 
+    .project-back-button {
+      position: fixed;
+      left: 18px;
+      top: 18px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: #1e293b;
+      color: #3b82f6;
+      border: 1px solid #3b82f6;
+      text-decoration: none;
+      z-index: 9999;
+      font-weight: 700;
+      font-family: Inter, system-ui, sans-serif;
+      transition: all 0.2s ease;
+    }
+
+    .project-back-button:hover {
+      background: #3b82f6;
+      color: #1e293b;
+      border-color: #1e293b;
+    }
+
     @keyframes float {
-      0%, 100% {
+
+      0%,
+      100% {
         transform: translate(-50%, -50%) translateY(0);
       }
+
       50% {
         transform: translate(-50%, -50%) translateY(-10px);
       }
     }
   </style>
 </head>
+
 <body>
+  <a href="/" class="project-back-button">← Back to Home</a>
+
   <div class="screen">
     <h1>🐞 Catch The Insect 🐜</h1>
     <p>Think you can catch them all? Let's find out!</p>
@@ -156,25 +204,25 @@
       <li>
         <button class="choose-insect-btn" aria-label="Choose Fly">
           <p>Fly</p>
-          <img src="http://pngimg.com/uploads/fly/fly_PNG3946.png" alt="fly">
+          <img src="https://pngimg.com/uploads/fly/fly_PNG3946.png" alt="fly">
         </button>
       </li>
       <li>
         <button class="choose-insect-btn" aria-label="Choose Mosquito">
           <p>Mosquito</p>
-          <img src="http://pngimg.com/uploads/mosquito/mosquito_PNG18175.png" alt="mosquito">
+          <img src="https://pngimg.com/uploads/mosquito/mosquito_PNG18175.png" alt="mosquito">
         </button>
       </li>
       <li>
         <button class="choose-insect-btn" aria-label="Choose Spider">
           <p>Spider</p>
-          <img src="http://pngimg.com/uploads/spider/spider_PNG12.png" alt="spider">
+          <img src="https://pngimg.com/uploads/spider/spider_PNG12.png" alt="spider">
         </button>
       </li>
       <li>
         <button class="choose-insect-btn" aria-label="Choose Roach">
           <p>Roach</p>
-          <img src="http://pngimg.com/uploads/roach/roach_PNG12163.png" alt="roach">
+          <img src="https://pngimg.com/uploads/roach/roach_PNG12163.png" alt="roach">
         </button>
       </li>
     </ul>
@@ -191,4 +239,5 @@
 
   <script src="script.js"></script>
 </body>
+
 </html>

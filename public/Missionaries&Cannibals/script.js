@@ -1,9 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("instructions-modal");
+    const closeModal = document.getElementById("close-modal");
+    const instructionsBtn = document.getElementById("instructions-btn");
+    
+    // Results Modal Elements
+    const resultsModal = document.getElementById("results-modal");
+    const resultTitle = document.getElementById("result-title");
+    const resultMessage = document.getElementById("result-message");
+    const finalMoveCount = document.getElementById("final-move-count");
+    const restartBtn = document.getElementById("restart-btn");
+
     let leftBank = document.getElementById("left-people");
     let rightBank = document.getElementById("right-people");
-    let boat = document.getElementById("boat-people");
+    let boatPeople = document.getElementById("boat-people");
+    let boatElement = document.getElementById("boat");
     let message = document.getElementById("message");
+    let guidance = document.getElementById("guidance");
+    let moveCountDisplay = document.getElementById("move-count");
     let startButton = document.getElementById("start-reset");
+
+    // Hint Elements
+    const hintBtn = document.getElementById("hint-btn");
+    const hintText = document.getElementById("hint-text");
 
     let state = {
         leftMissionaries: 3,
@@ -14,10 +32,78 @@ document.addEventListener("DOMContentLoaded", () => {
         boatCannibals: 0,
         boatPosition: 'left',
         isGameOver: false,
-        selectedPerson: null // Track selected person
+        selectedPerson: null,
+        moveCount: 0,
+        hintsUsed: 0
     };
 
+    const hints = [
+        "Try moving two cannibals first.",
+        "Do not leave missionaries outnumbered.",
+        "Sometimes bringing one cannibal back helps balance both banks."
+    ];
+
     const MAX_BOAT_CAPACITY = 2;
+
+    // Helper: Update status message with specific style
+    const updateStatus = (msg, type = "") => {
+        message.textContent = msg;
+        message.className = type; // success, warning, error, victory
+    };
+
+    const showResults = (isWin) => {
+        resultsModal.classList.add("show");
+        resultsModal.classList.remove("win", "loss");
+        resultsModal.classList.add(isWin ? "win" : "loss");
+        
+        finalMoveCount.textContent = state.moveCount;
+        
+        if (isWin) {
+            resultTitle.textContent = "Victory!";
+            resultMessage.textContent = "Masterfully done! You've guided everyone to safety without a single casualty.";
+            restartBtn.textContent = "Play Again";
+        } else {
+            resultTitle.textContent = "Game Over";
+            resultMessage.textContent = "Oh no! The Sheep were outnumbered. Don't give up—try a different strategy!";
+            restartBtn.textContent = "Try Again";
+        }
+    };
+
+    const hideResults = () => {
+        resultsModal.classList.remove("show");
+    };
+
+    // Helper: Update guidance text based on state
+    const updateGuidance = () => {
+        if (state.isGameOver) {
+            guidance.textContent = "Game ended. Click 'Start Game' to try again!";
+            return;
+        }
+
+        const passengers = state.boatMissionaries + state.boatCannibals;
+
+        if (passengers === 0) {
+            guidance.textContent =
+                "Select passengers and move everyone safely to the right bank.";
+        } else if (passengers < MAX_BOAT_CAPACITY) {
+            guidance.textContent =
+                `Boat has ${passengers} passenger. Add one more or move the boat.`;
+        } else {
+            guidance.textContent =
+                "Boat is full! Click 'Move Boat' to cross the river.";
+        }
+    };
+    const handleHint = () => {
+        if (state.hintsUsed < 3) {
+            hintText.textContent = hints[state.hintsUsed];
+            state.hintsUsed++;
+            hintBtn.textContent = `Get Hint (${3 - state.hintsUsed} left)`;
+            
+            if (state.hintsUsed === 3) {
+                hintBtn.disabled = true;
+            }
+        }
+    };
 
     const startGame = () => {
         state = {
@@ -29,118 +115,164 @@ document.addEventListener("DOMContentLoaded", () => {
             boatCannibals: 0,
             boatPosition: 'left',
             isGameOver: false,
-            selectedPerson: null
+            selectedPerson: null,
+            moveCount: 0,
+            hintsUsed: 0
         };
-        message.textContent = "Move the missionaries and cannibals to the right bank safely!";
+        updateStatus("Move the Sheep and Tigers to the right bank safely!", "success");
+        moveCountDisplay.textContent = "0";
+        hintText.textContent = "";
+        hintBtn.textContent = "Get Hint (3 left)";
+        hintBtn.disabled = false;
+        hideResults();
         updateUI();
     };
 
     const isValidState = () => {
-        if (state.leftMissionaries > 0 && 
+        if (state.leftMissionaries > 0 &&
             state.leftMissionaries < state.leftCannibals) {
             return false;
         }
-        
-        if (state.rightMissionaries > 0 && 
+
+        if (state.rightMissionaries > 0 &&
             state.rightMissionaries < state.rightCannibals) {
-            return false;
-        }
-        
-        if (state.boatMissionaries > 0 && 
-            state.boatMissionaries < state.boatCannibals) {
             return false;
         }
 
         return true;
     };
 
+    const checkGameState = () => {
+        // Lose condition
+        if (!isValidState()) {
+            state.isGameOver = true;
+            updateStatus("Game Over! Tigers outnumbered Sheep on a bank.", "error");
+            showResults(false);
+            return;
+        }
+
+        // Win condition
+        if (
+            state.rightMissionaries === 3 &&
+            state.rightCannibals === 3
+        ) {
+            state.isGameOver = true;
+            updateStatus(`Congratulations! You won in ${state.moveCount} moves!`, "victory");
+            showResults(true);
+        }
+    };
+
     const updateUI = () => {
         leftBank.innerHTML = "";
-        rightBank.innerHTML = "";
-        boat.innerHTML = "";
+rightBank.innerHTML = "";
+boatPeople.innerHTML = "";
 
-        const updatePeople = (container, numMissionaries, numCannibals, isDraggable, bankPosition) => {
-            for (let i = 0; i < numMissionaries; i++) {
-                let person = document.createElement("div");
-                person.classList.add("person", "missionary");
-                if (isDraggable) {
-                    person.setAttribute("draggable", "true");
-                    person.dataset.type = "missionary";
-                    person.dataset.bank = bankPosition;
-                }
-                // Add click handler
-                person.addEventListener("click", () => handlePersonClick(person));
-                container.appendChild(person);
-            }
-            for (let i = 0; i < numCannibals; i++) {
-                let person = document.createElement("div");
-                person.classList.add("person", "cannibal");
-                if (isDraggable) {
-                    person.setAttribute("draggable", "true");
-                    person.dataset.type = "cannibal";
-                    person.dataset.bank = bankPosition;
-                }
-                // Add click handler
-                person.addEventListener("click", () => handlePersonClick(person));
-                container.appendChild(person);
-            }
-        };
+        
+
+    const updatePeople = (container, numMissionaries, numCannibals, isDraggable, bankPosition) => {
+        for (let i = 0; i < numMissionaries; i++) {
+            let person = document.createElement("div");
+        person.classList.add("person", "missionary");
+        person.textContent = "🐑";
+
+        if (isDraggable) {
+            person.setAttribute("draggable", "true");
+        }
+
+        person.dataset.type = "missionary";
+        person.dataset.bank = bankPosition;
+
+        person.addEventListener("click", () => handlePersonClick(person));
+        container.appendChild(person);
+    }
+
+    for (let i = 0; i < numCannibals; i++) {
+        let person = document.createElement("div");
+        person.classList.add("person", "cannibal");
+        person.textContent = "🐯";
+
+        if (isDraggable) {
+            person.setAttribute("draggable", "true");
+        }
+
+        person.dataset.type = "cannibal";
+        person.dataset.bank = bankPosition;
+
+        person.addEventListener("click", () => handlePersonClick(person));
+        container.appendChild(person);
+    }
+};
+
+        updatePeople(
+    boatPeople, 
+    state.boatMissionaries, 
+    state.boatCannibals, 
+    true,  // draggable
+    "boat"
+);
 
         const canDragFromLeft = state.boatPosition === 'left';
         const canDragFromRight = state.boatPosition === 'right';
 
-        updatePeople(leftBank, state.leftMissionaries, state.leftCannibals, canDragFromLeft, 'left');
-        updatePeople(boat, state.boatMissionaries, state.boatCannibals, true, 'boat');
+        updatePeople(leftBank, state.leftMissionaries, state.leftCannibals, canDragFromLeft, 'left'); 
         updatePeople(rightBank, state.rightMissionaries, state.rightCannibals, canDragFromRight, 'right');
 
-        // Clear any previous selections
         clearSelectedStyles();
-        
-        boat.classList.remove('boat-left', 'boat-right');
-        boat.classList.add(`boat-${state.boatPosition}`);
 
+        boatElement.classList.remove('boat-left', 'boat-right');
+        boatElement.classList.add(`boat-${state.boatPosition}`);
+        console.log("boat html", boatPeople.innerHTML);
+
+
+        updateGuidance();
         checkGameState();
     };
 
     const handlePersonClick = (person) => {
-        if (state.isGameOver) return;
+    if (state.isGameOver) return;
 
-        // If no person is selected, select this one if it's on the current boat bank
-        if (!state.selectedPerson) {
-            const personBank = person.dataset.bank;
-            if (personBank === state.boatPosition || personBank === 'boat') {
-                selectPerson(person);
-            }
-            return;
-        }
+    const personBank = person.dataset.bank;
+    const personType = person.dataset.type;
 
-        // If clicking the same person, deselect it
-        if (state.selectedPerson === person) {
-            clearSelectedStyles();
-            state.selectedPerson = null;
-            return;
-        }
+    // Can only load from the bank where the boat currently is
+    if (personBank !== state.boatPosition) {
+        updateStatus("The boat is on the other side!", "warning");
+        return;
+    }
 
-        // Handle movement based on selection
-        const fromBank = state.selectedPerson.dataset.bank;
-        const toBank = person.dataset.bank;
-        
-        // Moving to/from boat
-        movePerson(fromBank, toBank, state.selectedPerson.dataset.type);
-        
-        // Clear selection after move
-        clearSelectedStyles();
-        state.selectedPerson = null;
-    };
+    movePerson(personBank, "boat", personType);
+};
 
-    const selectPerson = (person) => {
-        clearSelectedStyles();
-        person.classList.add('selected');
-        state.selectedPerson = person;
-    };
 
     const clearSelectedStyles = () => {
         document.querySelectorAll('.person').forEach(p => p.classList.remove('selected'));
+    };
+
+    const canMove = (fromBank, personType) => {
+        if (state.isGameOver) return false;
+
+        if (fromBank !== "boat" && fromBank !== state.boatPosition) {
+            updateStatus("The boat is on the other side!", "warning");
+            return false;
+        }
+
+        if (personType === "missionary") {
+            if (
+                (fromBank === "left" && state.leftMissionaries <= 0) ||
+                (fromBank === "right" && state.rightMissionaries <= 0) ||
+                (fromBank === "boat" && state.boatMissionaries <= 0)
+            ) return false;
+        }
+
+        if (personType === "cannibal") {
+            if (
+                (fromBank === "left" && state.leftCannibals <= 0) ||
+                (fromBank === "right" && state.rightCannibals <= 0) ||
+                (fromBank === "boat" && state.boatCannibals <= 0)
+            ) return false;
+        }
+
+        return true;
     };
 
     const movePerson = (fromBank, toBank, personType) => {
@@ -148,48 +280,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (toBank === "boat" && fromBank !== "boat") {
             if ((state.boatMissionaries + state.boatCannibals) >= MAX_BOAT_CAPACITY) {
-                message.textContent = "The boat is full!";
+                updateStatus("The boat is full! Max 2 people.", "warning");
                 return;
             }
 
             if (personType === "missionary") {
-                if (fromBank === "left" && state.leftMissionaries > 0) {
-                    state.leftMissionaries--;
-                    state.boatMissionaries++;
-                } else if (fromBank === "right" && state.rightMissionaries > 0) {
-                    state.rightMissionaries--;
-                    state.boatMissionaries++;
-                }
-            } else if (personType === "cannibal") {
-                if (fromBank === "left" && state.leftCannibals > 0) {
-                    state.leftCannibals--;
-                    state.boatCannibals++;
-                } else if (fromBank === "right" && state.rightCannibals > 0) {
-                    state.rightCannibals--;
-                    state.boatCannibals++;
-                }
+                if (fromBank === "left") state.leftMissionaries--;
+                else state.rightMissionaries--;
+                state.boatMissionaries++;
+            } else {
+                if (fromBank === "left") state.leftCannibals--;
+                else state.rightCannibals--;
+                state.boatCannibals++;
             }
-        } else if (fromBank === "boat" && (toBank === "left" || toBank === "right")) {
-            if (toBank !== state.boatPosition) {
-                message.textContent = "Can't move to that bank! Move the boat first.";
-                return;
-            }
-
+        } else if (fromBank === "boat") {
             if (personType === "missionary") {
                 state.boatMissionaries--;
                 if (toBank === "left") state.leftMissionaries++;
                 else state.rightMissionaries++;
-            } else if (personType === "cannibal") {
+            } else {
                 state.boatCannibals--;
                 if (toBank === "left") state.leftCannibals++;
                 else state.rightCannibals++;
             }
         }
-
+        console.log({
+  leftM: state.leftMissionaries,
+  leftC: state.leftCannibals,
+  boatM: state.boatMissionaries,
+  boatC: state.boatCannibals,
+  rightM: state.rightMissionaries,
+  rightC: state.rightCannibals
+});
         updateUI();
     };
 
-    // Keep existing drag and drop handlers...
     const onDragStart = (event) => {
         if (state.isGameOver) {
             event.preventDefault();
@@ -198,58 +323,112 @@ document.addEventListener("DOMContentLoaded", () => {
         event.dataTransfer.setData("person", event.target.className);
     };
 
-    const onDragOver = (event) => {
-        event.preventDefault();
-    };
+    const onDragOver = (event) => event.preventDefault();
 
     const onDrop = (event, bank) => {
         event.preventDefault();
-        
         if (state.isGameOver) return;
 
         let personClass = event.dataTransfer.getData("person");
         let isMissionary = personClass.includes("missionary");
-        let isCannibal = personClass.includes("cannibal");
+        let type = isMissionary ? "missionary" : "cannibal";
 
-        movePerson(
-            state.boatPosition,
-            bank,
-            isMissionary ? "missionary" : "cannibal"
-        );
+        if (bank === "boat") {
+            movePerson(state.boatPosition, "boat", type);
+        } else {
+            movePerson("boat", bank, type);
+        }
     };
 
     const moveBoat = () => {
-        if (state.isGameOver) return;
-        
-        if (state.boatMissionaries === 0 && state.boatCannibals === 0) {
-            message.textContent = "The boat needs at least one person!";
-            return;
-        }
+    if (state.isGameOver) return;
 
-        state.boatPosition = state.boatPosition === 'left' ? 'right' : 'left';
-        clearSelectedStyles();
-        state.selectedPerson = null;
-        message.textContent = `Boat moved to the ${state.boatPosition} bank`;
-        updateUI();
-    };
+    // Only require passengers when leaving the left bank
+    if (
+        state.boatPosition === "left" &&
+        state.boatMissionaries + state.boatCannibals === 0
+    ) {
+        updateStatus("The boat needs at least one person to sail!", "warning");
+        return;
+    }
 
-    // Add event listeners
+    if (state.boatPosition === "left") {
+        state.rightMissionaries += state.boatMissionaries;
+        state.rightCannibals += state.boatCannibals;
+    } else {
+        state.leftMissionaries += state.boatMissionaries;
+        state.leftCannibals += state.boatCannibals;
+    }
+
+    state.boatMissionaries = 0;
+    state.boatCannibals = 0;
+
+    state.boatPosition =
+        state.boatPosition === "left" ? "right" : "left";
+
+    state.moveCount++;
+    moveCountDisplay.textContent = state.moveCount;
+
+    updateStatus(
+        `Boat moved to the ${state.boatPosition} bank.`,
+        "success"
+    );
+
+    updateUI();
+};
+
     startButton.addEventListener("click", startGame);
     document.getElementById("move-boat").addEventListener("click", moveBoat);
+    hintBtn.addEventListener("click", handleHint);
+    restartBtn.addEventListener("click", startGame);
 
-    // Keep existing drag and drop listeners...
     leftBank.addEventListener("dragstart", onDragStart);
     rightBank.addEventListener("dragstart", onDragStart);
-    boat.addEventListener("dragstart", onDragStart);
+    boatPeople.addEventListener("dragstart", onDragStart);
 
     leftBank.addEventListener("dragover", onDragOver);
     rightBank.addEventListener("dragover", onDragOver);
-    boat.addEventListener("dragover", onDragOver);
+    boatPeople.addEventListener("dragover", onDragOver);
+
 
     leftBank.addEventListener("drop", (e) => onDrop(e, "left"));
     rightBank.addEventListener("drop", (e) => onDrop(e, "right"));
-    boat.addEventListener("drop", (e) => onDrop(e, "boat"));
+    boatPeople.addEventListener("drop", (e) => onDrop(e, "boat"));
+    const showModal = () => modal.classList.add("show");
+    const hideModal = () => {
+        modal.classList.remove("show");
+        document.body.style.overflow = "auto";
+    };
 
-    // Start the game
-    startGame();
+    const modalStartBtn = document.getElementById("modal-start-btn");
+
+    closeModal.addEventListener("click", () => {
+        hideModal();
+        startGame();
+    });
+    instructionsBtn.addEventListener("click", showModal);
+    modalStartBtn.addEventListener("click", () => {
+        modal.classList.remove("show");
+
+        setTimeout(() => {
+            document.body.style.overflow = "auto";
+            startGame();
+        }, 300);
+    });
+
+   window.addEventListener("click", (e) => {
+
+        // If modal background clicked
+        if (e.target === modal) {
+            hideModal();
+            startGame();
+        }
+
+        // Results modal
+        if (e.target === resultsModal) {
+            resultsModal.classList.remove("show");
+        }
+    });
+    showModal();
+    updateUI();
 });
