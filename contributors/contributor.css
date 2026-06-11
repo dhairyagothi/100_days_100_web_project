@@ -238,8 +238,10 @@ body {
 /* Contributors Grid */
 .contributors-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    align-items: stretch;
+    grid-auto-flow: row;
     margin-bottom: 8rem;
 }
 
@@ -254,6 +256,9 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+    min-height: 380px;
 }
 
 .contributor-card:hover {
@@ -281,6 +286,7 @@ body {
     justify-content: center;
     gap: 2rem;
     margin-bottom: 2rem;
+    width: 100%;
 }
 
 .contributor-stats .value {
@@ -305,6 +311,32 @@ body {
     font-weight: 800;
     font-size: 0.9rem;
     transition: var(--transition);
+}
+
+.contributor-links {
+    margin-top: auto;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.details-btn {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+    border: 1px solid var(--glass-border);
+    padding: 0.8rem 1.1rem;
+    border-radius: 14px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: var(--transition);
+}
+
+.details-btn:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
 }
 
 .github-btn:hover {
