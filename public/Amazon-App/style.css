@@ -227,6 +227,13 @@ nav{
     color:#ff9900;
 }
 
+/* Active Today's Deals link */
+#nav-todays-deals{
+    color:#ff9900;
+    font-weight:700;
+    border-bottom:2px solid #ff9900;
+}
+
 /* =========================
    MOBILE SLIDER
 ========================= */
@@ -2171,14 +2178,4 @@ body.dark-theme .home-icon { color: #94a3b8; }
 
 .cart-empty-msg p {
     font-size: 16px;
-}
-.continue-shopping-btn {
-    display: inline-block;
-    margin-top: 15px;
-    color: #007185;
-    font-size: 14px;
-    padding: 8px 16px;
-    border: 1px solid #007185;
-    border-radius: 20px;
-    transition: background 0.2s ease, color 0.2s ease;
 }

@@ -683,6 +683,7 @@ let searchQuery = "";
 let sortOption = "default";
 let techStackFilter = "all";
 let difficultyFilter = "all";
+let currentFilteredProjects = [];
 
 function syncStateToURL() {
   const url = new URL(window.location);
@@ -769,6 +770,8 @@ function renderGrid() {
               .includes(term),
         );
 
+       
+
     // Tech stack dropdown filter
     let matchesTech = true;
     if (techStackFilter && techStackFilter !== "all") {
@@ -787,6 +790,7 @@ function renderGrid() {
 
     return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
   });
+  currentFilteredProjects = [...filtered];
 
   // Apply sorting
   if (sortOption === "az") {
@@ -871,7 +875,68 @@ function renderGrid() {
   syncStateToURL();
   syncProjectCounts();
 }
+function renderRandomProject() {
+  const result =
+    document.getElementById(
+      "randomProjectResult"
+    );
 
+  if (!result) return;
+
+  const source =
+    currentFilteredProjects.length
+      ? currentFilteredProjects
+      : PROJECTS;
+
+  const randomProject =
+    source[
+      Math.floor(
+        Math.random() * source.length
+      )
+    ];
+
+  if (!randomProject) return;
+
+  const category =
+    getCategoryFromTags(
+      randomProject.techStack,
+      randomProject.projectName
+    );
+
+  const bookmarkedDays = new Set(
+    bookmarkedProjects.map(
+      (item) =>
+        normalizeProjectEntry(item).day
+    )
+  );
+
+  const { html, sourceOnly } =
+    buildProjectCardHTML({
+      day: randomProject.day,
+      name: randomProject.projectName,
+      url: randomProject.projectPath,
+      tags: randomProject.techStack,
+      category,
+      isBookmarked:
+        bookmarkedDays.has(
+          randomProject.day
+        ),
+      showDescription: true
+    });
+
+  result.innerHTML = "";
+
+  const card =
+    document.createElement("div");
+
+  card.className = sourceOnly
+    ? "project-card source-only visible"
+    : "project-card visible";
+
+  card.innerHTML = html;
+
+  result.appendChild(card);
+}
 function renderPagination(totalItems, totalPages) {
   const grid = document.getElementById("projectGrid");
   if (!grid) return;
@@ -2310,51 +2375,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   window.addEventListener("popstate", () => restoreStateFromURL());
 });
-
-/* ============================================================
-   GAMIFIED DEVELOPER TRACKER ENGINE
-============================================================ */
-
-const LEVEL_THRESHOLDS = [
-  { level: 1, name: "Script Kiddie", xp: 0 },
-  { level: 2, name: "CSS Whisperer", xp: 100 },
-  { level: 3, name: "Frontend Artisan", xp: 250 },
-  { level: 4, name: "DOM Dominator", xp: 500 },
-  { level: 5, name: "Production Ready", xp: 1000 },
-  { level: 6, name: "Full-Stack Magician", xp: 2000 },
-  { level: 7, name: "Software Architect", xp: 4000 }
-];
-
-function getProjectXP(difficulty) {
-  const d = (difficulty || "").toLowerCase().trim();
-  if (d === 'beginner' || d === 'easy') return 10;
-  if (d === 'advanced' || d === 'hard' || d === 'expert') return 50;
-  return 25;
-}
-
-function calculateLevel(xp) {
-  let current = LEVEL_THRESHOLDS[0];
-  for (let t of LEVEL_THRESHOLDS) {
-    if (xp >= t.xp) current = t;
-    else break;
-  }
-  return current;
-}
-
-function updateGamifiedUI() {
-  // Gamified UI elements live on tracker.html, not index.html — no-op here.
-  const elements = {
-    badge: document.getElementById("userLevelBadge"),
-    xpText: document.getElementById("userCurrentXP"),
-    bar: document.getElementById("userXPBarFill")
-  };
-
-  if (!elements.badge && !elements.xpText && !elements.bar) return;
-
-  const totalXP = 0;
-  const currentLevel = calculateLevel(totalXP);
-
-  if (elements.badge) elements.badge.textContent = `Level ${currentLevel.level}: ${currentLevel.name}`;
-  if (elements.xpText) elements.xpText.textContent = `${totalXP} Total XP`;
-  if (elements.bar) elements.bar.style.width = "0%";
-}
+document
+  .getElementById(
+    "randomProjectBtn"
+  )
+  ?.addEventListener(
+    "click",
+    renderRandomProject
+  );
