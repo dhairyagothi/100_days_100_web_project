@@ -851,6 +851,11 @@ input[type="text"]:focus,
 
 /* Responsive Design */
 @media only screen and (max-width: 1100px) {
+    body {
+        display: block;
+        padding: 16px;
+    }
+    
     .app-container {
         grid-template-columns: 1fr;
     }
@@ -890,3 +895,4 @@ input[type="text"]:focus,
         grid-template-columns: 1fr;
     }
 }
+
