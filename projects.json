@@ -2046,11 +2046,29 @@
   },
   {
     "projectNo": 225,
-    "projectName": "Resume Analyzer",
-    "projectType": "Tool",
-    "projectDesc": "Resume Analyzer project built with React and hosted on Vercel.",
-    "techStack": ["react", "javascript"],
-    "difficulty": "intermediate",
+    "projectName": "Harryy Potter Spellbook",
+    "projectType": "Web Application",
+    "projectDesc": "A magical, interactive web application built with vanilla web technologies. This project fetches live data from the Harry Potter API and features an interactive Spell Caster that dynamically alters the UI using CSS animations and state changes based on the spells you cast.",
+    "techStack": ["html", "css", "javascript"],
+    "difficulty": "advanced",
+    "projectPath": "./public/Harry-Potter/index.html"
+  },
+  {
+    "projectNo": 226,
+    "projectName": "Mind Reader",
+    "projectType": "Game",
+    "projectDesc": "An interactive game where the Genie tries to read your mind and guess your character in 20 questions.",
+    "techStack": ["react", "html", "css", "javascript"],
+    "difficulty": "advanced",
+    "projectPath": "./public/mind-reader/mind-reader/dist/index.html"
+  },
+  {
+    "projectNo": 227,
+    "projectName": "CareerAI - Resume Analyzer",
+    "projectType": "AI",
+    "projectDesc": "AI-powered resume analyzer that parses your resume using Gemini AI and matches you with the top compatible jobs from 50,000+ positions. Features skill gap analysis, compatibility scoring, and career insights.",
+    "techStack": ["react", "typescript", "python", "fastapi", "api", "javascript"],
+    "difficulty": "advanced",
     "projectPath": "https://resume-analyzer-mauve-pi.vercel.app/"
   }
 ]
