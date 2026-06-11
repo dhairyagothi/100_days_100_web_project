@@ -551,26 +551,25 @@ function renderWorldClocks() {
     const row = document.createElement('div');
     row.className = 'world-clock-row';
     
-    // Inside renderWorldClocks function:
-row.innerHTML = `
-  <div class="world-clock-left">
-    <img src="${clock.flag}" class="flag-img" />
-    <div class="city-info">
-      <div class="world-city-name">${clock.name}</div>
-      <div class="world-offset-label">${clock.offset}</div>
-    </div>
-  </div>
+    row.innerHTML = `
+      <div class="world-clock-left">
+        <img src="${clock.flag}" class="flag-img" />
+        <div class="city-info">
+          <div class="world-city-name">${clock.name}</div>
+          <div class="world-offset-label">${clock.offset}</div>
+        </div>
+      </div>
 
-  <div class="world-clock-right">
-    <span class="world-time-display ticking-world-time" data-offset="${clock.offset}">00:00</span>
-    <span class="weather-emoji">${getWeatherEmoji(weather.condition || 'clear', new Date().getHours() >= 6 && new Date().getHours() < 18)}</span>
-    <span class="weather-temp">${weather.temperature}°C</span>
-  </div>
+      <div class="world-clock-right">
+        <span class="world-time-display ticking-world-time" data-offset="${clock.offset}">00:00</span>
+        <span class="weather-emoji">${getWeatherEmoji(weather.condition || 'clear', new Date().getHours() >= 6 && new Date().getHours() < 18)}</span>
+        <span class="weather-temp">${weather.temperature}°C</span>
+      </div>
 
-  <button class="remove-btn" onclick="removeWorldClock(${index})">&times;</button>
+      <button class="remove-btn" onclick="removeWorldClock(${index})">&times;</button>
 
-  <span class="time-of-day-badge" data-offset="${clock.offset}"></span>
-`;
+      <span class="time-of-day-badge" data-offset="${clock.offset}"></span>
+    `;
   container.appendChild(row);
   });
 }
