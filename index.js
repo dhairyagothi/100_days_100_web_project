@@ -332,8 +332,8 @@ function buildProjectCardHTML({
     : "";
 
   const primaryLink = sourceOnly
-    ? `<a href="${safeSourceUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source of ${safeName} (opens in a new tab)">
-                        <i class="fab fa-github" aria-hidden="true"></i> Source
+    ? `<a href="${safeSourceUrl}" target="_blank" class="card-link github-link-button source-link-button" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source of ${safeName} on GitHub (opens in a new tab)" title="View source on GitHub">
+                        <i class="fab fa-github" aria-hidden="true"></i>
                     </a>`
     : `<a href="${safeDemoUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View demo of ${safeName} (opens in a new tab)">
                         Demo <i class="fas fa-arrow-right" aria-hidden="true"></i>
@@ -341,8 +341,8 @@ function buildProjectCardHTML({
 
   const codeLink = sourceOnly
     ? ""
-    : `<a href="${safeSourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source code of ${safeName} on GitHub (opens in a new tab)">
-                        <i class="fab fa-github" aria-hidden="true"></i> Code
+    : `<a href="${safeSourceUrl}" target="_blank" class="card-link view-code-link github-link-button" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source code of ${safeName} on GitHub (opens in a new tab)" title="View source on GitHub">
+                        <i class="fab fa-github" aria-hidden="true"></i>
                     </a>`;
 
   return {

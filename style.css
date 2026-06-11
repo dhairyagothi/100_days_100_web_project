@@ -1922,6 +1922,18 @@ input:focus {
   color: #fdba74;
 }
 
+.project-card.source-only .source-link-button {
+  color: #fdba74;
+  border-color: rgba(251, 146, 60, 0.22);
+  background: rgba(251, 146, 60, 0.08);
+}
+
+.project-card.source-only .source-link-button:hover {
+  color: #fed7aa;
+  border-color: rgba(251, 146, 60, 0.32);
+  background: rgba(251, 146, 60, 0.14);
+}
+
 .card-name {
   margin: 0;
   font-family: "Inter Tight", sans-serif;
@@ -1955,6 +1967,7 @@ input:focus {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.75rem;
 }
 
 .card-link {
@@ -1973,7 +1986,8 @@ input:focus {
 .card-actions-left {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .view-code-link {
@@ -1982,6 +1996,33 @@ input:focus {
 
 .view-code-link:hover {
   color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.github-link-button {
+  min-width: 2.1rem;
+  min-height: 2.1rem;
+  padding: 0 0.55rem;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-secondary);
+  line-height: 1;
+}
+
+.github-link-button i {
+  font-size: 0.92rem;
+}
+
+.github-link-button:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.14);
+  transform: translateY(-1px);
+}
+
+.project-card:hover .github-link-button {
   transform: translateY(-1px);
 }
 
@@ -2131,7 +2172,7 @@ input:focus {
   font-weight: 900;
 }
 
-.project-card:hover .card-link {
+.project-card:hover .card-link:not(.github-link-button) {
   color: var(--accent);
   transform: translateX(2px);
 }
