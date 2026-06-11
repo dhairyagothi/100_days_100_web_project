@@ -16,6 +16,7 @@
   align-items: center;
   flex-direction: column;
   cursor: pointer;
+  position: relative;
 }
 
 .sidebar-link:hover {
@@ -29,4 +30,24 @@
 
 .sidebar-link div {
   font-size: 10px;
+}
+
+.sidebar-link .tooltip {
+  position: absolute;
+  left: 74px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: gray;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 2px;
+  font-size: 12px;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+
+.sidebar-link:hover .tooltip {
+  opacity: 1;
 }
