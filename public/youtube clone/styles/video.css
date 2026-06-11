@@ -45,6 +45,13 @@
   box-sizing: border-box;
 }
 
+.video-grid-filler {
+  opacity: 0.42;
+  filter: grayscale(1);
+  pointer-events: none;
+  user-select: none;
+}
+
 @media (max-width: 750px) {
   .video-grid {
     grid-template-columns: 1fr 1fr;

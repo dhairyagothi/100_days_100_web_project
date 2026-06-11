@@ -96,6 +96,58 @@ document.addEventListener('DOMContentLoaded', () => {
       filterBar.scrollBy({ left: 200, behavior: 'smooth' });
     });
   }
+
+  /* ── Video grid padding ────────────────────────────────────── */
+  const videoGrid = document.querySelector('.video-grid');
+
+  function syncVideoGridFillers() {
+    if (!videoGrid) return;
+
+    videoGrid.querySelectorAll('.video-grid-filler').forEach(filler => filler.remove());
+
+    const visibleCards = Array.from(videoGrid.querySelectorAll('.video-preview:not(.video-grid-filler)'));
+    if (visibleCards.length === 0) return;
+
+    const columnCount = getComputedStyle(videoGrid)
+      .gridTemplateColumns
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean).length;
+
+    if (columnCount <= 1) return;
+
+    const remainder = visibleCards.length % columnCount;
+    const fillerCount = remainder === 0 ? 0 : columnCount - remainder;
+
+    for (let i = 0; i < fillerCount; i += 1) {
+      const filler = visibleCards[0].cloneNode(true);
+      filler.classList.add('video-grid-filler');
+      filler.setAttribute('aria-hidden', 'true');
+      filler.setAttribute('tabindex', '-1');
+
+      const title = filler.querySelector('.video-title');
+      const author = filler.querySelector('.video-author');
+      const stats = filler.querySelector('.video-stats');
+      if (title) title.textContent = 'More videos coming soon';
+      if (author) author.textContent = ' ';
+      if (stats) stats.textContent = ' ';
+
+      videoGrid.appendChild(filler);
+    }
+  }
+
+  let fillerFrame = null;
+  function scheduleGridFillers() {
+    if (fillerFrame) cancelAnimationFrame(fillerFrame);
+    fillerFrame = requestAnimationFrame(() => {
+      fillerFrame = null;
+      syncVideoGridFillers();
+    });
+  }
+
+  scheduleGridFillers();
+  window.addEventListener('resize', scheduleGridFillers);
+  window.addEventListener('load', scheduleGridFillers);
 /* ── Sidebar navigation ─────────────────────────────────────── */
   document.querySelectorAll('.sidebar-link').forEach(link => {
     link.addEventListener('click', () => {
