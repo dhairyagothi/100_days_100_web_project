@@ -1106,3 +1106,23 @@ color:#1d4ed8;
 #exportPdfBtn:hover{
     transform:translateY(-2px);
 }
+.element.unmatched {
+    opacity: 0.15;
+    transform: scale(0.97);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.element.matched {
+    transform: translateY(-10px) scale(1.1);
+    box-shadow: 0 0 18px 4px rgba(52, 211, 153, 0.7),
+                0 15px 25px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    transition: all 0.3s ease;
+}
+
+.element.matched .tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) scale(1);
+}

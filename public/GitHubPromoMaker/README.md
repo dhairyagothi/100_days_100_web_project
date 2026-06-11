@@ -1,24 +1,54 @@
-# GitHub Repo Promo-Card Maker
+# 🚀 GitHub Repo Promo-Card Maker
 
-A lightweight, client-side web application that helps developers generate beautiful, highly-shareable social media preview cards for their open-source GitHub repositories.
+A modern, client-side web application that generates beautiful, customizable social media promo cards for any GitHub repository.
+
+It helps developers showcase their projects in a visually appealing way for platforms like **LinkedIn, Twitter/X, and portfolios**.
+
+---
 
 ## ✨ Features
-* 🚀 **Instant Fetching:** Automatically pulls live data (Stars, Forks, Language, Description) using the free GitHub REST API.
-* 🎨 **Material 3 Expressive Design:** Features modern glassmorphic accents, deep dark-mode gradients, and crisp typography.
-* 📸 **One-Click Download:** Utilizes `html2canvas` to render the DOM element into a high-resolution `.png` file instantly.
-* 📱 **Responsive UI:** The control panel adapts to mobile devices while preserving the exact 1200x630 pixel ratio of the exportable card.
+
+- 🚀 **Live GitHub Data Fetching**
+  - Stars, forks, watchers, language, issues, license, and default branch
+  - Powered by GitHub REST API
+
+- 🎨 **Multiple Card Themes**
+  - GitHub Dark
+  - GitHub Light
+  - Neon Glow
+  - Glassmorphism
+  - Sunset Gradient
+
+- 📊 **Repository Insights Panel**
+  - Open issues count
+  - License information
+  - Default branch display
+
+- 📸 **One-Click PNG Export**
+  - High-resolution card export using `html2canvas`
+  - Perfect for social media sharing
+
+- 📱 **Fully Responsive UI**
+  - Works across mobile, tablet, and desktop devices
+
+- ⚡ **Zero Setup Required**
+  - Pure HTML, CSS, and JavaScript
+  - No build tools or backend needed
+
+---
 
 ## 🛠 Tech Stack
-* HTML5
-* CSS3 (Native CSS Variables for M3 Theming)
-* Vanilla JavaScript
-* [html2canvas](https://html2canvas.hertzen.com/) (For client-side image generation)
-* GitHub REST API v3
+
+- HTML5
+- CSS3 (Glassmorphism + CSS Variables)
+- Vanilla JavaScript (ES6+)
+- [html2canvas](https://html2canvas.hertzen.com/) – for image generation
+- GitHub REST API v3
+
+---
 
 ## 🚦 How to Run Locally
-1. Clone this repository to your local machine.
-2. Open `index.html` in your favorite web browser.
-3. No build tools, Node.js, or local servers are required!
 
-## 🤝 Contribution (GSSoC'26)
-This project was designed and built to help open-source contributors market their projects effectively.
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/your-username/repo-name.git
