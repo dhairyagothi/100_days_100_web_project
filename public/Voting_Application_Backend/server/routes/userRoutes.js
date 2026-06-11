@@ -44,13 +44,16 @@ router.post('/signup', authLimiter, async(req, res)=>{
             id: response.id
         }
 
-        console.log(JSON.stringify(payload));
         const token = generateToken(payload);
-        console.log("Token is : ",token);
         return res.status(201).json({
             message: "User registered successfully",
             token,
-            user: response
+            user: {
+                id: response._id,
+                name: response.name,
+                role: response.role,
+                aadharCardNumber: response.aadharCardNumber
+            }
         });
     }catch(err) {
         console.log(err);
