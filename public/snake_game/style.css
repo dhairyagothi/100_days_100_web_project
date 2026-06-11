@@ -494,3 +494,71 @@ body {
   50% { box-shadow: 0 0 35px #39ff14; }
   100% { box-shadow: 0 0 15px #39ff14; }
 }
+
+body.light .key {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 143, 76, 0.3);
+  color: #111;
+}
+
+body.light .key-symbol {
+  background: rgba(0, 143, 76, 0.15);
+  color: #007a40;
+}
+
+body.light .stat-value {
+  color: var(--accent);
+  text-shadow: none;
+}
+
+body.light .key {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 143, 76, 0.4);
+  color: #007a40;
+}
+
+body.light .key-symbol {
+  background: rgba(0, 143, 76, 0.15);
+  color: #007a40;
+  font-weight: bold;
+}
+
+body.light #startOverlay {
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
+}
+
+body.light .overlay-title {
+  color: var(--accent);
+}
+
+body.light .overlay-sub {
+  color: #444;
+}
+
+body.light .btn {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+body.light .btn.primary {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+body.light .btn:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+body.light .theme-btn {
+  background: rgba(0, 143, 76, 0.15);
+  border-color: #007a40;
+  color: #007a40;
+}
+
+body.light .theme-btn:hover {
+  background: #007a40;
+  color: #fff;
+}

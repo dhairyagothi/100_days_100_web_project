@@ -3,6 +3,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebas
 import {
   getAuth,
   GoogleAuthProvider,
+  FacebookAuthProvider,
   signInWithPopup
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
@@ -19,17 +20,21 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+const googleProvider = new GoogleAuthProvider();
+const facebookProvider = new FacebookAuthProvider();
+
+
+// ================= GOOGLE LOGIN =================
+
 document
   .getElementById("googleLogin")
-  .addEventListener("click", async () => {
+  ?.addEventListener("click", async () => {
 
     try {
 
-      const provider = new GoogleAuthProvider();
-
       const result = await signInWithPopup(
         auth,
-        provider
+        googleProvider
       );
 
       const user = result.user;
@@ -37,6 +42,7 @@ document
       localStorage.setItem(
         "loggedInUserData",
         JSON.stringify({
+          uid: user.uid,
           name: user.displayName,
           email: user.email,
           photo: user.photoURL,
@@ -47,6 +53,42 @@ document
       window.location.href = "../index.html";
 
     } catch (err) {
-      console.error(err);
+      console.error("Google Login Error:", err);
+      alert(err.message);
     }
-});
+  });
+
+
+// ================= FACEBOOK LOGIN =================
+
+document
+  .getElementById("facebookLogin")
+  ?.addEventListener("click", async () => {
+
+    try {
+
+      const result = await signInWithPopup(
+        auth,
+        facebookProvider
+      );
+
+      const user = result.user;
+
+      localStorage.setItem(
+        "loggedInUserData",
+        JSON.stringify({
+          uid: user.uid,
+          name: user.displayName,
+          email: user.email,
+          photo: user.photoURL,
+          provider: "facebook"
+        })
+      );
+
+      window.location.href = "../index.html";
+
+    } catch (err) {
+      console.error("Facebook Login Error:", err);
+      alert(err.message);
+    }
+  });
