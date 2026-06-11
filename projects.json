@@ -2834,5 +2834,18 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/Bubble-Game/index.html"
-  }
+  },
+  {
+    "projectNo": 225,
+    "projectName": "Harryy Potter Spellbook",
+    "projectType": "Web Application",
+    "projectDesc": "A magical, interactive web application built with vanilla web technologies. This project fetches live data from the Harry Potter API and features an interactive Spell Caster that dynamically alters the UI using CSS animations and state changes based on the spells you cast.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Harry-Potter/index.html"
+  }  
 ]
