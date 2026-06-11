@@ -452,7 +452,7 @@ We welcome contributions from developers of all skill levels! Here's how you can
 4. **Add** your project metadata entry inside `projects.json`
 5. Do not **modify** rendering logic inside `index.js`
 6. **Test** your project thoroughly
-7. Run `node scripts/validateProjects.js` before submitting
+7. Run `node scripts/validate-projects.js` before submitting
 8. **Submit** a pull request
 
 ### 🐛 Bug Fixes & Improvements

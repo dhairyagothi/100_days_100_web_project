@@ -25,7 +25,7 @@ Provide a short, reviewer-friendly summary of what changed and why.
 ## 🧪 Testing and Verification
 
 ### Local Validation
-- [ ] I have run `node scripts/validateProjects.js` locally and it passed with zero errors.
+- [ ] I have run `node scripts/validate-projects.js` locally and it passed with zero errors.
 
 ### Browser Compatibility Check
 - [ ] Tested and verified in **Google Chrome**
