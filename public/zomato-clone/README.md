@@ -66,6 +66,7 @@ cd zomato-clone
 ### 2️⃣ Install dependencies
 
 ```
+npm install express-rate-limit
 npm install
 ```
 

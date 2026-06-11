@@ -2,10 +2,18 @@ const express = require("express");
 const app = express();
 const connectDB = require("./config/db");
 const path = require("path");
+const rateLimit = require("express-rate-limit");
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.json());
 
+// rate limiter
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100
+});
+
+app.use(limiter);
 // DB connect
 connectDB();
 

@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CSS Animation Gallery</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
@@ -62,10 +63,29 @@
 
   <main class="gallery">
 
+  
     <header class="gallery-header">
+      <button id="themeToggle" class="theme-toggle">
+        🌙
+      </button>
       <h1>Animation Collection</h1>
       <p>Click any animation to preview and copy code</p>
     </header>
+
+    <div class="controls">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search animations..." />
+        <i class="fas fa-search"></i>
+        <i class="fas fa-times" id="clearSearch"></i>
+      </div>
+
+      <select id="filterSelect">
+        <option value="all">All Categories</option>
+        <option value="hover">Hover</option>
+        <option value="loader">Loader</option>
+        <option value="button">Button</option>
+      </select>
+    </div>
 
     <section class="animation-grid">
 
@@ -89,7 +109,7 @@
 
       <!-- Loader -->
 
-      <article class="animation-card" data-animation="loader">
+      <article class="animation-card" data-animation="loader" data-category="loader">
         <button class="code-btn">&lt;/&gt;</button>
 
         <div class="card-preview">
@@ -105,7 +125,7 @@
 
       <!-- Typewriter -->
 
-      <article class="animation-card" data-animation="typewriter">
+      <article class="animation-card" data-animation="typewriter" data-category="hover">
         <button class="code-btn">&lt;/&gt;</button>
 
         <div class="card-preview">
@@ -123,7 +143,7 @@
 
       <!-- Rotating Doll -->
 
-      <article class="animation-card" data-animation="RotatingDoll">
+      <article class="animation-card" data-animation="RotatingDoll" data-category="hover">
         <button class="code-btn">&lt;/&gt;</button>
 
         <div class="card-preview">
@@ -141,7 +161,7 @@
 
       <!-- Glitch Text -->
 
-      <article class="animation-card" data-animation="glitchtext">
+      <article class="animation-card" data-animation="glitchtext" data-category="hover">
         <button class="code-btn">&lt;/&gt;</button>
 
         <div class="card-preview">
@@ -159,7 +179,7 @@
 
       <!-- Neon Button -->
 
-      <article class="animation-card" data-animation="neonButton">
+      <article class="animation-card" data-animation="neonButton" data-category="button">
         <button class="code-btn">&lt;/&gt;</button>
 
         <div class="card-preview">
@@ -178,7 +198,7 @@
 
       <!-- dancingRobot -->
 
-      <article class="animation-card" data-animation="dancingRobot">
+      <article class="animation-card" data-animation="dancingRobot" data-category="hover">
 
         <button class="code-btn">&lt;/&gt;</button>
 
@@ -195,7 +215,7 @@
       </article>
 
       <!-- Jumping Emoji -->
-      <article class="animation-card" data-animation="jumpingEmoji">
+      <article class="animation-card" data-animation="jumpingEmoji" data-category="hover">
 
         <button class="code-btn">&lt;/&gt;</button>
 
@@ -214,7 +234,7 @@
 
       <!-- Floating Balloon -->
 
-      <article class="animation-card" data-animation="floatingBalloon">
+      <article class="animation-card" data-animation="floatingBalloon" data-category="hover">
 
         <button class="code-btn">&lt;/&gt;</button>
 
@@ -232,7 +252,7 @@
 
 
       <!-- Walking Character -->
-      <article class="animation-card" data-animation="walkingCharacter">
+      <article class="animation-card" data-animation="walkingCharacter" data-category="hover">
 
         <button class="code-btn">&lt;/&gt;</button>
 
@@ -249,7 +269,7 @@
       </article>
 
       <!-- Rocket launch -->
-      <article class="animation-card" data-animation="rocketLaunch">
+      <article class="animation-card" data-animation="rocketLaunch" data-category="hover">
 
         <button class="code-btn">&lt;/&gt;</button>
 
@@ -266,7 +286,7 @@
       </article>
 
       <!-- Spinning Planet -->
-      <article class="animation-card" data-animation="spinningPlanet">
+      <article class="animation-card" data-animation="spinningPlanet" data-category="hover">
 
         <button class="code-btn">&lt;/&gt;</button>
 
@@ -284,7 +304,7 @@
 
       <!-- Bouncing Ball -->
 
-      <article class="animation-card" data-animation="bouncingBall">
+      <article class="animation-card" data-animation="bouncingBall" data-category="hover">
 
         <button class="code-btn">&lt;/&gt;</button>
 
@@ -302,7 +322,7 @@
 
       <!-- Skeleton loading -->
 
-      <article class="animation-card" data-animation="skeletonLoading">
+      <article class="animation-card" data-animation="skeletonLoading" data-category="loader">
 
         <button class="code-btn">&lt;/&gt;</button>
 
@@ -319,7 +339,7 @@
       </article>
 
       <!-- Toast Notification -->
-      <article class="animation-card" data-animation="toastNotification">
+      <article class="animation-card" data-animation="toastNotification" data-category="hover">
 
         <button class="code-btn">&lt;/&gt;</button>
 
@@ -338,7 +358,7 @@
       </article>
 
       <!-- Progress Bar -->
-      <article class="animation-card" data-animation="progressBar">
+      <article class="animation-card" data-animation="progressBar" data-category="hover">
 
         <button class="code-btn">&lt;/&gt;</button>
 
@@ -358,7 +378,7 @@
 
 
       <!-- Animated tabs -->
-      <article class="animation-card" data-animation="animatedTabs">
+      <article class="animation-card" data-animation="animatedTabs" data-category="hover">
 
         <button class="code-btn">&lt;/&gt;</button>
 
@@ -377,7 +397,7 @@
       </article>
 
       <!-- Accordion -->
-      <article class="animation-card" data-animation="accordion">
+      <article class="animation-card" data-animation="accordion" data-category="hover">
 
         <button class="code-btn">&lt;/&gt;</button>
 
@@ -396,7 +416,7 @@
 
       <!-- Search Bar Expand -->
 
-      <article class="animation-card" data-animation="searchBarExpand">
+      <article class="animation-card" data-animation="searchBarExpand" data-category="hover">
 
         <button class="code-btn">&lt;/&gt;</button>
 
@@ -414,7 +434,7 @@
 
 
       <!-- Hamburger Menu -->
-      <article class="animation-card" data-animation="hamburgerMenu">
+      <article class="animation-card" data-animation="hamburgerMenu" data-category="button">
 
         <button class="code-btn">&lt;/&gt;</button>
 

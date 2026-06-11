@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelCrypt - Image Steganography Tool</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>PixelCrypt</h1>
+            <p>Hide secret text messages inside image pixels seamlessly using LSB steganography.</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('encode')">Encode Message</button>
+            <button class="tab-btn" onclick="switchTab('decode')">Decode Message</button>
+        </div>
+
+        <div id="encode-section" class="tab-content active">
+            <div class="grid">
+                <div class="panel">
+                    <h3>1. Upload Source Image</h3>
+                    <div class="dropzone" id="encode-dropzone">
+                        <input type="file" id="encode-file" accept="image/*">
+                        <p>Click or Drag image here</p>
+                    </div>
+                    <canvas id="encode-canvas" style="display:none; max-width:100%; margin-top:15px; border-radius:8px;"></canvas>
+                </div>
+                
+                <div class="panel">
+                    <h3>2. Secret Text & Process</h3>
+                    <textarea id="secret-message" placeholder="Type your hidden message here..."></textarea>
+                    <button id="encode-btn" class="action-btn">Hide Message inside Image</button>
+                    <a id="download-link" class="action-btn download-btn" style="display:none;">📥 Download Encoded Image</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="decode-section" class="tab-content">
+            <div class="grid">
+                <div class="panel">
+                    <h3>1. Upload Stego Image</h3>
+                    <div class="dropzone" id="decode-dropzone">
+                        <input type="file" id="decode-file" accept="image/*">
+                        <p>Click or Drag your encoded image here</p>
+                    </div>
+                    <canvas id="decode-canvas" style="display:none; max-width:100%; margin-top:15px; border-radius:8px;"></canvas>
+                </div>
+
+                <div class="panel">
+                    <h3>2. Extracted Secret Message</h3>
+                    <button id="decode-btn" class="action-btn">Extract Hidden Message</button>
+                    <div id="extracted-message-box" class="output-box" style="display:none;">
+                        <h4>Revealed Message:</h4>
+                        <p id="extracted-text"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
