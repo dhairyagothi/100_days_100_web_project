@@ -1,110 +1,142 @@
-(() => {
-  const DIFFICULTIES = {
-    easy: { rows: 9, cols: 9, mines: 10 },
-    medium: { rows: 12, cols: 14, mines: 28 },
-    hard: { rows: 16, cols: 18, mines: 52 },
-  };
+const columns = ['A', 'B', 'C', 'D', 'E'];
+let bomblist = [];
+let attemptlist = [];
+let gameOver = false;
 
-  const boardEl = document.querySelector("#board");
-  const mineCountEl = document.querySelector("#mine-count");
-  const timerEl = document.querySelector("#timer");
-  const messageEl = document.querySelector("#game-message");
-  const restartButton = document.querySelector("#restart-button");
-  const gameCard = document.querySelector(".game-card");
-  const difficultyButtons = document.querySelectorAll("[data-difficulty]");
-  const bestScoreEl = document.querySelector("#best-score");
-  const themeToggle = document.querySelector("[data-theme-toggle]");
-  const themeIconEl = document.querySelector("[data-theme-icon]");
-  const soundToggle = document.querySelector("[data-sound-toggle]");
-  const soundIconEl = document.querySelector("[data-sound-icon]");
-  const modalEl = document.querySelector("[data-modal]");
-  const modalTitleEl = document.querySelector("[data-modal-title]");
-  const modalMessageEl = document.querySelector("[data-modal-message]");
-  const modalIconEl = document.querySelector("[data-modal-icon]");
-  const modalRestartButton = document.querySelector("[data-modal-restart]");
+const boardDiv = document.getElementById('board');
+const messageDiv = document.getElementById('message');
+const restartBtn = document.getElementById('restart-btn');
 
-  const state = {
-    difficulty: "easy",
-    grid: [],
-    rows: 0,
-    cols: 0,
-    mines: 0,
-    flags: 0,
-    revealed: 0,
-    started: false,
-    gameOver: false,
-    timerId: null,
-    lossModalTimer: null,
-    seconds: 0,
-    longPressTimer: null,
-    skipNextClick: false,
-    soundEnabled: localStorage.getItem("minesweeper-sound") !== "off",
-  };
+//web audio setup
+let audioCtx=null;
 
-  const pad = (value) => String(value).padStart(3, "0");
-  const formatTimer = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${pad(minutes).slice(-2)}:${String(remainingSeconds).padStart(2, "0")}`;
-  };
-  const formatMineCount = (count) => `${count < 0 ? "-" : ""}${pad(Math.abs(count))}`;
-  const indexOf = (row, col) => row * state.cols + col;
-  const isInside = (row, col) => row >= 0 && row < state.rows && col >= 0 && col < state.cols;
-  const icon = {
-    flag: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V4"/><path d="M6 5h11l-2 4 2 4H6"/></svg>',
-    mine: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M19.1 4.9l-2.8 2.8M7.7 16.3l-2.8 2.8"/></svg>',
-    restart: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v6h-6"/></svg>',
-    win: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>',
-    moon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.4 15.4A8.5 8.5 0 0 1 8.6 3.6 8.7 8.7 0 1 0 20.4 15.4Z"/></svg>',
-    sun: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>',
-    soundOn: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z"/><path d="M17 9a4 4 0 0 1 0 6"/></svg>',
-    soundOff: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z"/><path d="M19 9l-4 6M15 9l4 6"/></svg>',
-  };
+function getAudioContext(){
+    if(!audioCtx){
+        audioCtx = new(window.AudioContext ||window.webkitAudioContext)();
+    }
+    if(audioCtx.state==='suspended'){
+        audioCtx.resume();
+    }
+    return audioCtx;
+}
+//safe tile sound
+async function playSafeSound() {
+    const ctx = getAudioContext();
+    await ctx.resume(); // Wait until context is truly running before scheduling
+ 
+    // Create oscillator for the tick tone
+    const osc = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+ 
+    osc.connect(gainNode);
+    gainNode.connect(ctx.destination);
+ 
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, ctx.currentTime);           // High A note
+    osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.05); // Quick drop
+ 
+    gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12); // Fast fade-out
+ 
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.12); // Short tick duration
+}
+//bomb explosion sound
+async function playBombSound() {
+    const ctx = getAudioContext();
+    await ctx.resume(); // Wait until context is truly running before scheduling
+ 
+    // --- Noise source (raw explosion texture) ---
+    const bufferSize = ctx.sampleRate * 0.8; // 0.8 seconds of noise
+    const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1; // Fill with white noise (-1 to 1)
+    }
+ 
+    const noiseSource = ctx.createBufferSource();
+    noiseSource.buffer = noiseBuffer;
+ 
+    // --- Lowpass filter (~400Hz) — makes the noise sound deep and boomy ---
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(400, ctx.currentTime);
+ 
+    // --- Gain envelope — sharp attack, exponential decay (blast fade-out) ---
+    const gainNode = ctx.createGain();
+    gainNode.gain.setValueAtTime(1.5, ctx.currentTime);           // Peak volume
+    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8); // Fade to silence
+ 
+    // --- Wire up: noise → filter → gain → output ---
+    noiseSource.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(ctx.destination);
+ 
+    noiseSource.start(ctx.currentTime);
+    noiseSource.stop(ctx.currentTime + 0.8); // Match buffer length
+}
+//victory sound
+async function playVictorySound() {
+    const ctx = getAudioContext();
+    await ctx.resume(); // Wait until context is truly running before scheduling
+ 
+    // Three notes of an ascending major chord (C5, E5, G5)
+    const notes = [523.25, 659.25, 783.99];
+ 
+    notes.forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gainNode = ctx.createGain();
+ 
+        osc.connect(gainNode);
+        gainNode.connect(ctx.destination);
+ 
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+ 
+        // Stagger each note by 0.15s so they play as an arpeggio
+        const startTime = ctx.currentTime + i * 0.15;
+        gainNode.gain.setValueAtTime(0, startTime);
+        gainNode.gain.linearRampToValueAtTime(0.4, startTime + 0.05);  // Quick attack
+        gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + 0.6); // Slow decay
+ 
+        osc.start(startTime);
+        osc.stop(startTime + 0.6);
+    });
+}
 
-  function newGame(difficulty = state.difficulty) {
-    const config = DIFFICULTIES[difficulty];
-    state.difficulty = difficulty;
-    state.rows = config.rows;
-    state.cols = config.cols;
-    state.mines = config.mines;
-    state.flags = 0;
-    state.revealed = 0;
-    state.started = false;
-    state.gameOver = false;
-    state.seconds = 0;
-    clearInterval(state.timerId);
-    clearTimeout(state.lossModalTimer);
-    state.timerId = null;
-    state.lossModalTimer = null;
-    closeModal();
-    setControlsDisabled(false);
-    gameCard.classList.remove("won", "game-lost");
-    boardEl.classList.remove("board-locked");
+// Generate 4 unique random bomb coordinates
+function generateBombs() {
+    bomblist = [];
+    while (bomblist.length < 4) {
+        let randomCol = columns[Math.floor(Math.random() * 5)];
+        let randomRow = Math.floor(Math.random() * 5) + 1;
+        let bombCoord = `${randomCol} ${randomRow}`;
+        
+        if (!bomblist.includes(bombCoord)) {
+            bomblist.push(bombCoord);
+        }
+    }
+}
 
-    state.grid = Array.from({ length: state.rows * state.cols }, (_, index) => ({
-      index,
-      row: Math.floor(index / state.cols),
-      col: index % state.cols,
-      mine: false,
-      revealed: false,
-      flagged: false,
-      exploded: false,
-      justRevealed: false,
-      adjacent: 0,
-    }));
+// Find neighbors matching Python algorithm logic
+function getNeighbours(coord) {
+    let parts = coord.split(' ');
+    let colIndex = columns.indexOf(parts[0]);
+    let rowIndex = parseInt(parts[1]);
 
-    placeMines();
-    calculateNumbers();
-    renderBoard();
-    updateStatus();
-    updateBestScore();
-    messageEl.textContent = "Find every safe tile. Right click or long press to flag.";
-  }
+    let validCols = [colIndex - 1, colIndex + 1, colIndex].filter(c => c >= 0 && c < 5);
+    let validRows = [rowIndex - 1, rowIndex + 1, rowIndex].filter(r => r >= 1 && r <= 5);
 
-  function placeMines() {
-    const picked = new Set();
-    while (picked.size < state.mines) {
-      picked.add(Math.floor(Math.random() * state.grid.length));
+    let neighbours = [];
+    for (let c of validCols) {
+        for (let r of validRows) {
+            neighbours.push(`${columns[c]} ${r}`);
+        }
+    }
+    
+    let selfIndex = neighbours.indexOf(coord);
+    if (selfIndex !== -1) {
+        neighbours.splice(selfIndex, 1);
     }
     picked.forEach((index) => {
       state.grid[index].mine = true;
@@ -128,70 +160,38 @@
         if (isInside(row, col)) nearby.push(state.grid[indexOf(row, col)]);
       }
     }
-    return nearby;
-  }
+    return count;
+}
 
-  function renderBoard() {
-    boardEl.style.gridTemplateColumns = `repeat(${state.cols}, var(--cell-size))`;
-    boardEl.innerHTML = state.grid.map((cell) => {
-      const content = getCellContent(cell);
-      const classes = getCellClasses(cell).join(" ");
-      return `<button class="${classes}" type="button" role="gridcell" data-index="${cell.index}" aria-label="${getCellLabel(cell)}">${content}</button>`;
-    }).join("");
-    clearRevealMarks();
-  }
+// Handle square click interaction
+function handleCellClick(coord) {
+    if (gameOver || attemptlist.includes(coord)) return;
 
-  function getCellClasses(cell) {
-    const classes = ["cell"];
-    if (cell.exploded) classes.push("exploded-mine");
-    else if (cell.revealed && cell.mine) classes.push("mine-cell");
-    else if (cell.revealed) classes.push("revealed-cell");
-    else if (cell.flagged) classes.push("hidden-cell", "flagged-cell");
-    else classes.push("hidden-cell");
-    if (cell.revealed && cell.adjacent > 0) classes.push(`number-${cell.adjacent}`);
-    if (cell.justRevealed) classes.push("newly-revealed");
-    return classes;
-  }
+    let cellElement = document.getElementById(coord);
+    cellElement.classList.add('revealed');
 
-  function clearRevealMarks() {
-    state.grid.forEach((cell) => {
-      cell.justRevealed = false;
-    });
-  }
-
-  function getCellContent(cell) {
-    if (cell.flagged && !cell.revealed) return icon.flag;
-    if (!cell.revealed) return "";
-    if (cell.mine) return icon.mine;
-    return cell.adjacent || "";
-  }
-
-  function getCellLabel(cell) {
-    if (cell.flagged && !cell.revealed) return "Flagged cell";
-    if (!cell.revealed) return "Hidden cell";
-    if (cell.mine) return "Mine";
-    if (cell.adjacent) return `${cell.adjacent} adjacent mines`;
-    return "Empty revealed cell";
-  }
-
-  function startTimer() {
-    if (state.started) return;
-    state.started = true;
-    state.timerId = setInterval(() => {
-      state.seconds += 1;
-      timerEl.textContent = formatTimer(state.seconds);
-    }, 1000);
-  }
-
-  function revealCell(index) {
-    const cell = state.grid[index];
-    if (!cell || state.gameOver || cell.revealed || cell.flagged) return;
-    startTimer();
-
-    if (cell.mine) {
-      cell.exploded = true;
-      loseGame();
-      return;
+    if (bomblist.includes(coord)) {
+        gameOver = true;
+        playBombSound();
+        messageDiv.innerText = 'YOU LOST :(';
+        messageDiv.style.color = '#ff4d4d';
+        revealAllBombs();
+        restartBtn.style.display = 'inline-block';
+    } else {
+        attemptlist.push(coord);
+        let count = getBombCount(coord);
+        cellElement.innerText = count === 0 ? '' : count;
+        
+        if (attemptlist.length === 21) {
+            gameOver = true;
+            playVictorySound();
+            messageDiv.innerText = 'YOU WIN!!!!';
+            messageDiv.style.color = '#28a745';
+            revealAllBombs();
+            restartBtn.style.display = 'inline-block';
+        }else {
+            playSafeSound(); 
+        }
     }
 
     floodReveal(cell);
