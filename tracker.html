@@ -262,40 +262,6 @@
       return String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
     }
 
-    function getRepoMainTreeUrl() {
-      const owner = window.REPO_OWNER || "dhairyagothi";
-      const repo = window.REPO_NAME || "100_days_100_web_project";
-      return `https://github.com/${owner}/${repo}/tree/Main`;
-    }
-
-    function normalizeProjectHref(rawHref) {
-      const raw = String(rawHref || "").trim();
-      if (!raw || raw === "#") return getRepoMainTreeUrl();
-
-      const cleaned = raw.replace(/\\/g, "/").replace(/\/{2,}/g, "/");
-      if (/^(javascript|data|vbscript):/i.test(cleaned)) return getRepoMainTreeUrl();
-      if (/^https?:\/\//i.test(cleaned)) return cleaned;
-
-      if (cleaned.startsWith("./") || cleaned.startsWith("../") || cleaned.startsWith("/")) {
-        if (cleaned.includes("..")) return getRepoMainTreeUrl();
-        return cleaned.endsWith("/") ? `${cleaned}index.html` : cleaned;
-      }
-
-      if (!cleaned.includes(":")) {
-        if (cleaned.startsWith("public/") || cleaned.startsWith("projects/")) {
-          const normalized = cleaned.endsWith("/") ? `${cleaned}index.html` : cleaned;
-          return `./${normalized}`;
-        }
-
-        if (cleaned.includes("/") || cleaned.includes(".html") || cleaned.includes(".htm")) {
-          const normalized = cleaned.endsWith("/") ? `${cleaned}index.html` : cleaned;
-          return normalized.startsWith("./") ? normalized : `./${normalized}`;
-        }
-      }
-
-      return getRepoMainTreeUrl();
-    }
-
     function getProjectXPLocal(difficulty) {
       const d = (difficulty || "").toLowerCase().trim();
       if (d === "beginner" || d === "easy") return 10;
@@ -506,14 +472,13 @@
         const category = getCategoryFromTags(project.techStack, name);
         const completed = isProjectCompleted(day);
         const tagsArray = Array.isArray(project.techStack) ? project.techStack : String(project.techStack||"").split(/\s+/).filter(Boolean);
-        const projectHref = escapeHTML(normalizeProjectHref(project.projectPath || "#"));
         const tr = document.createElement("tr");
         tr.className = completed ? "is-completed" : "";
         tr.dataset.day = day;
         tr.innerHTML = `
           <td class="td-check"><input type="checkbox" class="proj-checkbox" data-day="${escapeHTML(day)}" ${completed?"checked":""} aria-label="Mark ${escapeHTML(name)} as ${completed?"incomplete":"complete"}" /></td>
           <td class="td-day">${escapeHTML(day)}</td>
-          <td class="td-name"><a href="${projectHref}" target="_blank" rel="noopener noreferrer">${escapeHTML(name)}</a></td>
+          <td class="td-name"><a href="${escapeHTML(project.projectPath||"#")}" target="_blank" rel="noopener noreferrer">${escapeHTML(name)}</a></td>
           <td class="td-cat"><span class="cat-tag">${escapeHTML(category)}</span></td>
           <td class="td-diff"><span class="card-difficulty ${diff}">${diff.charAt(0).toUpperCase()+diff.slice(1)}</span></td>
           <td class="td-xp">+${xp} XP</td>
