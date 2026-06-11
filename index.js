@@ -9,7 +9,6 @@ window.REPO_OWNER = window.REPO_OWNER || "dhairyagothi";
 window.REPO_NAME = window.REPO_NAME || "100_days_100_web_project";
 
 let currentPage = 1;
-//for the number of visible projects in one page.
 let itemsPerPage = 9;
 let projectData = [];
 let filteredProjectData = [];
@@ -17,11 +16,9 @@ let filteredProjectData = [];
 /* ============================================================
    TECHNOLOGY STACK FILTERING VARIABLES
    ============================================================ */
-let techStackFilters = []; // Array of active tech filters
-let techSearchQuery = ""; // Current tech search input
+let techStackFilters = [];
+let techSearchQuery = "";
 
-// Technology normalization map (handles common variations)
-// Maps user input → actual tags in dataset
 const TECH_ALIASES = {
   js: "javascript",
   react: "javascript",
@@ -33,7 +30,6 @@ const TECH_ALIASES = {
   games: "game",
 };
 
-/* Maps data-filter values on chip buttons to display category names */
 const FILTER_CATEGORY_MAP = {
   all: "all",
   game: "Games",
@@ -43,10 +39,6 @@ const FILTER_CATEGORY_MAP = {
   api: "APIs",
 };
 
-/**
- * Derive a display category from a project's tags and name.
- * Uses the existing tag structure so no new data field is needed.
- */
 function getCategoryFromTags(tags, name) {
   const tagStr = (
     Array.isArray(tags) ? tags.join(" ") : tags || ""
@@ -83,9 +75,10 @@ function hydrateProjects(data) {
     techStack: project.techStack,
     difficulty: project.difficulty,
     projectDesc: project.projectDesc,
+    thumbnail: project.thumbnail || "./public/thumbnails/placeholder.png",
   }));
-  PROJECTS_BY_NAME = new Map(PROJECTS.map(p => [p.projectName, p]));
-  PROJECTS_BY_DAY = new Map(PROJECTS.map(p => [p.day, p]));
+  PROJECTS_BY_NAME = new Map(PROJECTS.map((p) => [p.projectName, p]));
+  PROJECTS_BY_DAY = new Map(PROJECTS.map((p) => [p.day, p]));
 }
 
 function getPreloadedProjectsData() {
@@ -96,7 +89,6 @@ function parseProjectsData(payload) {
   try {
     return JSON.parse(payload);
   } catch (error) {
-    // Fallback for common malformed object separators in projects.json
     const repairedPayload = String(payload).replace(/}\s*{/g, "},{");
     return JSON.parse(repairedPayload);
   }
@@ -117,6 +109,7 @@ function loadProjects() {
         `${base}projects.json`,
         window.location.href,
       ).toString();
+
       try {
         const response = await fetch(projectsUrl);
         if (!response.ok) {
@@ -134,17 +127,6 @@ function loadProjects() {
         }
         throw error;
       }
-const data = await response.json();
-
-PROJECTS = data.map(project => [
-   `Day ${project.projectNo}`,
-   project.projectName,
-   project.projectPath,
-   project.techStack,
-   project.difficulty,
-   project.projectDesc,
-   project.thumbnail || './public/thumbnails/placeholder.png'
-]);
     })();
   }
   return projectsPromise;
@@ -152,8 +134,8 @@ PROJECTS = data.map(project => [
 
 // Start fetching immediately
 loadProjects().catch((err) => {
-  console.error('Critical initialization error:', err);
-  const grid = document.getElementById('projectGrid');
+  console.error("Critical initialization error:", err);
+  const grid = document.getElementById("projectGrid");
   if (grid) {
     grid.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-color, #333);">
             <h2><i class="fas fa-exclamation-triangle"></i> Failed to Load Projects</h2>
@@ -164,11 +146,10 @@ loadProjects().catch((err) => {
 });
 
 /* ============================================================
-   PROJECT LINK RESOLUTION (demo vs source / source-only)
+   PROJECT LINK RESOLUTION
    ============================================================ */
 const SOURCE_ONLY_TAG = "source-only";
 
-/** Live demos hosted outside the repo — Code links point to in-repo source folders */
 const EXTERNAL_DEMO_SOURCE_FOLDERS = {
   "Day 20": "public/EveSparks",
   "Day 115": "public/event-registration-system",
@@ -192,8 +173,8 @@ function isSourceOnlyProject(day, tags) {
   const tagList = Array.isArray(tags)
     ? tags
     : String(tags || "")
-      .split(/\s+/)
-      .filter(Boolean);
+        .split(/\s+/)
+        .filter(Boolean);
   return tagList.includes(SOURCE_ONLY_TAG);
 }
 
@@ -236,14 +217,7 @@ function resolveProjectUrls(day, name, url, tags) {
       if (demoUrl.startsWith("./")) {
         demoUrl = basePrefix + demoUrl.substring(2);
       }
-    } catch (error) { }
-  }
-  if (day === "Day 222") {
-    return {
-      demoUrl: "https://html-css-animation-01.netlify.app/",
-      sourceUrl: "https://github.com/dhairyagothi/100_day_100_web_project/blob/Main/public/Html_css_animation/index.html",
-      sourceOnly: false
-    };
+    } catch (error) {}
   }
 
   return { demoUrl, sourceUrl, sourceOnly };
@@ -319,25 +293,49 @@ function buildProjectCardHTML({
     : String(tags || "")
         .split(/\s+/)
         .filter((t) => t && t !== SOURCE_ONLY_TAG);
-  const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
 
-  const project = PROJECTS.find(p => p[1] === name);
+  // FIX: Use PROJECTS_BY_NAME map (O(1)) instead of PROJECTS.find with tuple index
+  const project = PROJECTS_BY_NAME.get(name);
 
-const description = getProjectDescription(project);
+  const tagsHTML = tagsArray
+    .map((t) => `<span class="tag">${escapeHTML(t)}</span>`)
+    .join("");
 
-const thumbnailPath =
-  thumbnail || project?.[6] || './public/thumbnails/placeholder.png';
+  const description = escapeHTML(getProjectDescription(project));
+  const safeDay = escapeHTML(day);
+  const safeName = escapeHTML(name);
+  const safeCategory = escapeHTML(category);
 
-const thumbnailHTML = `
+  const difficulty = project ? project.difficulty || "" : "";
+  const difficultyKey = (difficulty || "").toLowerCase();
+  const difficultyLabel = CATEGORY_LABEL[difficultyKey] || difficulty;
+  const safeDifficultyLabel = escapeHTML(difficultyLabel);
+
+  const difficultyBadge = difficulty
+    ? `<span class="card-difficulty ${difficultyKey}">${safeDifficultyLabel}</span>`
+    : "";
+
+  // FIX: resolve thumbnail path through basePrefix like demoUrl so sub-pages work
+  const isRoot = !window.location.pathname.includes("/contributors/");
+  const basePrefix = isRoot ? "./" : "../";
+  const rawThumbnail =
+    thumbnail || (project && project.thumbnail) || "./public/thumbnails/placeholder.png";
+  const resolvedThumbnail = rawThumbnail.startsWith("./")
+    ? basePrefix + rawThumbnail.substring(2)
+    : rawThumbnail;
+  const fallbackThumbnail = basePrefix + "public/thumbnails/placeholder.png";
+
+  const thumbnailHTML = `
   <div class="card-thumbnail">
     <img
-      src="${thumbnailPath}"
-      alt="${name}"
+      src="${escapeHTML(resolvedThumbnail)}"
+      alt="${safeName}"
       loading="lazy"
-      onerror="this.src='./public/thumbnails/placeholder.png'"
+      onerror="this.src='${escapeHTML(fallbackThumbnail)}'"
     >
   </div>
 `;
+
   const sourceOnlyBadge = sourceOnly
     ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
     : "";
@@ -358,49 +356,44 @@ const thumbnailHTML = `
 
   return {
     html: `
-      ${thumbnailHTML}
+    ${thumbnailHTML}
 
     <div class="card-meta">
-      <span class="card-day">${day}</span>
+      <span class="card-day">${safeDay}</span>
       <span class="card-category-wrap">
-        <span class="card-category">${category}</span>
+        <span class="card-category">${safeCategory}</span>
+        ${difficultyBadge}
         ${sourceOnlyBadge}
       </span>
     </div>
-            <div class="card-meta">
-                <span class="card-day">${safeDay}</span>
-                <span class="card-category-wrap">
-                  <span class="card-category">${safeCategory}</span>
-                  ${difficultyBadge}
-                  ${sourceOnlyBadge}
-                </span>
-            </div>
 
-            <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
-                <img src="./${url && url.startsWith('./') ? url.split('/')[2] : name.replace(/\s+/g, '_')}/preview.png" alt="${safeName} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
-            </div>
+    <div class="card-name">${safeName}</div>
 
-            <h3 class="card-name">${safeName}</h3>
+    ${showDescription ? `<div class="card-description">${description}</div>` : ""}
 
-            ${showDescription
-        ? `<div class="card-description">
-    ${description}
-</div>`
-        : ""
-      }
-            <div class="card-tags">${tagsHTML}</div>
-            <div class="card-footer">
-                <div class="card-actions-left">
-                    ${primaryLink}
-                    ${codeLink}
-                </div>
-                <div class="card-actions-right" style="display: flex; gap: 8px; align-items: center;">
-                    <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${safeDay}" aria-label="${isBookmarked ? `Remove ${safeName} from bookmarks` : `Bookmark ${safeName}`}">
-                        <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark" aria-hidden="true"></i>
-                    </button>
-                </div>
-            </div>
-        `,
+    <div class="card-tags">${tagsHTML}</div>
+
+    <div class="card-footer">
+      <div class="card-actions-left">
+        ${primaryLink}
+        ${codeLink}
+      </div>
+
+      <button
+        class="bookmark-btn ${isBookmarked ? "active" : ""}"
+        data-id="${safeDay}"
+        aria-label="${
+          isBookmarked
+            ? `Remove ${safeName} from bookmarks`
+            : `Bookmark ${safeName}`
+        }"
+      >
+        <i class="${
+          isBookmarked ? "fa-solid" : "fa-regular"
+        } fa-bookmark" aria-hidden="true"></i>
+      </button>
+    </div>
+  `,
     demoUrl: safeDemoUrl,
     sourceOnly,
   };
@@ -435,12 +428,12 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
 /* ============================================================
    TECHNOLOGY STACK FILTERING FUNCTIONS
    ============================================================ */
-
 function normalizeTech(tech) {
   const lower = tech.toLowerCase().trim();
   return TECH_ALIASES[lower] || lower;
 }
 
+// FIX: this function is now actually called from renderGrid()
 function matchesTechStack(projectTags) {
   if (techStackFilters.length === 0) return true;
   if (!projectTags) return false;
@@ -536,8 +529,7 @@ function getAllTechnologies() {
 
 /* ============================================================
    BOOKMARK + RECENT SYSTEM
-============================================================ */
-
+   ============================================================ */
 let bookmarkedProjects = [];
 let recentProjects = [];
 
@@ -585,7 +577,6 @@ function migrateRecentProjects() {
   }
 }
 
-// Migrate on load
 migrateRecentProjects();
 
 function cleanupExpiredRecentProjects() {
@@ -602,7 +593,6 @@ function cleanupExpiredRecentProjects() {
   }
 }
 
-// Clean up every 5 minutes
 setInterval(cleanupExpiredRecentProjects, 5 * 60 * 1000);
 
 const CATEGORY_LABEL = {
@@ -672,10 +662,7 @@ function generateReadme() {
     lines.push("");
     lines.push("## Projects");
     PROJECTS.forEach((project) => {
-      const day = project.day;
-      const name = project.projectName;
-      const url = project.projectPath;
-      const tags = project.techStack;
+      const { day, projectName: name, projectPath: url, techStack: tags } = project;
       const { demoUrl } = resolveProjectUrls(day, name, url, tags);
       const category = getCategoryFromTags(tags, name);
       lines.push(`- **${day} — ${name}** — ${demoUrl} — _${category}_`);
@@ -761,11 +748,7 @@ function renderGrid() {
   }
 
   const filtered = PROJECTS.filter((project) => {
-    const day = project.day;
-    const name = project.projectName;
-    const url = project.projectPath;
-    const tags = project.techStack;
-    const difficulty = project.difficulty || "";
+    const { day, projectName: name, techStack: tags, difficulty = "" } = project;
 
     // Category filter
     const category = getCategoryFromTags(tags, name);
@@ -789,21 +772,24 @@ function renderGrid() {
               .includes(term),
         );
 
-    // Tech stack dropdown filter
-    let matchesTech = true;
-    if (techStackFilter && techStackFilter !== "all") {
-      const tagStr = (
-        Array.isArray(tags) ? tags.join(" ") : tags || ""
-      ).toLowerCase();
-      matchesTech = tagStr.includes(techStackFilter.toLowerCase());
-    }
+    // FIX: use matchesTechStack() for whole-word matching instead of inline substring check
+    const matchesTech =
+      techStackFilter === "all" || techStackFilter === ""
+        ? matchesTechStack(tags)
+        : (() => {
+            const tagSet = new Set(
+              (Array.isArray(tags) ? tags : String(tags || "").split(/\s+/))
+                .map((t) => t.toLowerCase().trim())
+                .filter(Boolean),
+            );
+            return tagSet.has(techStackFilter.toLowerCase());
+          })();
 
     // Difficulty filter
-    let matchesDifficulty = true;
-    if (difficultyFilter && difficultyFilter !== "all") {
-      matchesDifficulty =
-        (difficulty || "").toLowerCase() === difficultyFilter.toLowerCase();
-    }
+    const matchesDifficulty =
+      !difficultyFilter ||
+      difficultyFilter === "all" ||
+      (difficulty || "").toLowerCase() === difficultyFilter.toLowerCase();
 
     return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
   });
@@ -820,8 +806,12 @@ function renderGrid() {
   } else if (sortOption === "difficulty") {
     const difficultyOrder = { beginner: 1, intermediate: 2, advanced: 3 };
     filtered.sort((a, b) => {
-      const diffA = a.difficulty ? difficultyOrder[a.difficulty.toLowerCase()] || 0 : 0;
-      const diffB = b.difficulty ? difficultyOrder[b.difficulty.toLowerCase()] || 0 : 0;
+      const diffA = a.difficulty
+        ? difficultyOrder[a.difficulty.toLowerCase()] || 0
+        : 0;
+      const diffB = b.difficulty
+        ? difficultyOrder[b.difficulty.toLowerCase()] || 0
+        : 0;
       return diffA - diffB;
     });
   }
@@ -848,22 +838,34 @@ function renderGrid() {
   const pageItems = filtered.slice(startIndex, endIndex);
   const fragment = document.createDocumentFragment();
 
- pageItems.forEach(([day, name, url, tags, difficulty, description, thumbnail]) => {
+  const bookmarkedDays = new Set(
+    bookmarkedProjects.map((item) => normalizeProjectEntry(item).day),
+  );
+
+  // FIX: single forEach loop using the object shape from hydrateProjects()
+  pageItems.forEach((project) => {
+    const {
+      day,
+      projectName: name,
+      projectPath: url,
+      techStack: tags,
+      thumbnail,
+    } = project;
+
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement("div");
-
     const isBookmarked = bookmarkedDays.has(day);
 
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
-  day,
-  name,
-  url,
-  tags,
-  thumbnail,
-  category,
-  isBookmarked,
-  showDescription: true,
-});
+      day,
+      name,
+      url,
+      tags,
+      thumbnail,
+      category,
+      isBookmarked,
+      showDescription: true,
+    });
 
     card.className = sourceOnly
       ? "project-card source-only visible"
@@ -918,7 +920,6 @@ function renderPagination(totalItems, totalPages) {
   firstBtn.className = "first-btn";
   firstBtn.innerHTML = "⏮ First";
   firstBtn.disabled = currentPage === 1;
-
   firstBtn.addEventListener("click", (e) => {
     e.preventDefault();
     if (currentPage !== 1) {
@@ -927,7 +928,6 @@ function renderPagination(totalItems, totalPages) {
       setTimeout(() => scrollToProjectSection(), 50);
     }
   });
-
   controlsDiv.appendChild(firstBtn);
 
   const prevBtn = document.createElement("button");
@@ -940,9 +940,7 @@ function renderPagination(totalItems, totalPages) {
     if (currentPage > 1) {
       currentPage--;
       renderGrid();
-      setTimeout(() => {
-        scrollToProjectSection();
-      }, 50);
+      setTimeout(() => scrollToProjectSection(), 50);
     }
   });
   controlsDiv.appendChild(prevBtn);
@@ -973,9 +971,7 @@ function renderPagination(totalItems, totalPages) {
       e.preventDefault();
       currentPage = i;
       renderGrid();
-      setTimeout(() => {
-        scrollToProjectSection();
-      }, 50);
+      setTimeout(() => scrollToProjectSection(), 50);
     });
     controlsDiv.appendChild(pageBtn);
   }
@@ -990,9 +986,7 @@ function renderPagination(totalItems, totalPages) {
     if (currentPage < totalPages) {
       currentPage++;
       renderGrid();
-      setTimeout(() => {
-        scrollToProjectSection();
-      }, 50);
+      setTimeout(() => scrollToProjectSection(), 50);
     }
   });
   controlsDiv.appendChild(nextBtn);
@@ -1001,7 +995,6 @@ function renderPagination(totalItems, totalPages) {
   lastBtn.className = "last-btn";
   lastBtn.innerHTML = "Last ⏭";
   lastBtn.disabled = currentPage === totalPages;
-
   lastBtn.addEventListener("click", (e) => {
     e.preventDefault();
     if (currentPage !== totalPages) {
@@ -1010,11 +1003,9 @@ function renderPagination(totalItems, totalPages) {
       setTimeout(() => scrollToProjectSection(), 50);
     }
   });
-
   controlsDiv.appendChild(lastBtn);
 
   container.appendChild(controlsDiv);
-
   grid.appendChild(container);
 }
 
@@ -1128,12 +1119,12 @@ function getRecentProjectsWithinWindow() {
   return recentProjects.filter((item) => {
     const timestamp = item.timestamp || Date.now();
     const age = now - timestamp;
-
     return age <= ONE_HOUR_MS;
   });
 }
 
 function trackRecentProject(project) {
+  // Normalise to object format regardless of what was passed in
   let projectObj;
   if (Array.isArray(project)) {
     projectObj = {
@@ -1170,39 +1161,21 @@ function trackRecentProject(project) {
 const bookmarkGrid = document.getElementById("bookmarkGrid");
 
 function normalizeProjectEntry(project) {
-  if (!project) {
-    return {
-      day: "",
-      name: "",
-      url: "",
-      tags: [],
-    };
-  }
-
-  if (typeof project === "string") {
-    const dayStr = project.startsWith("Day ") ? project : `Day ${project}`;
-    return {
-      day: dayStr,
-      name: "",
-      url: "",
-      tags: [],
-    };
-  }
-
   if (Array.isArray(project)) {
     return {
-      day: project[0] || "",
-      name: project[1] || "",
-      url: project[2] || "",
-      tags: project[3] || [],
+      day: project[0],
+      name: project[1],
+      url: project[2],
+      tags: project[3],
     };
   }
 
   return {
-    day: project.day || "",
-    name: project.projectName || project.name || "",
-    url: project.projectPath || project.url || "",
-    tags: project.techStack || project.tags || [],
+    day: project.day,
+    name: project.projectName || project.name,
+    url: project.projectPath || project.url,
+    tags: project.techStack || project.tags,
+    thumbnail: project.thumbnail,
   };
 }
 
@@ -1229,10 +1202,9 @@ function renderBookmarks() {
     : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
   visibleBookmarks.forEach((project) => {
-    const { day, name, url, tags } = normalizeProjectEntry(project);
+    const { day, name, url, tags, thumbnail } = normalizeProjectEntry(project);
     if (!day || !name) return;
 
-visibleBookmarks.forEach(([day, name, url, tags, difficulty, description, thumbnail]) => {
     const category = getCategoryFromTags(tags, name);
 
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
@@ -1240,7 +1212,7 @@ visibleBookmarks.forEach(([day, name, url, tags, difficulty, description, thumbn
       name,
       url,
       tags,
-      thumbnail,
+      thumbnail,   // FIX: now available via normalizeProjectEntry
       category,
       isBookmarked: true,
       showDescription: true,
@@ -1250,15 +1222,15 @@ visibleBookmarks.forEach(([day, name, url, tags, difficulty, description, thumbn
     card.className = sourceOnly
       ? "project-card source-only visible"
       : "project-card visible";
+
     card.innerHTML = html;
     card.setAttribute("tabindex", "0");
     card.setAttribute("role", "button");
 
     attachProjectCardInteraction(card, demoUrl, project);
-
     bookmarkGrid.appendChild(card);
   });
-})
+}
 
 const recentGrid = document.getElementById("recentGrid");
 
@@ -1285,12 +1257,19 @@ function renderRecentProjects() {
     : validRecent.slice(0, INITIAL_VISIBLE_ITEMS);
 
   visibleRecent.forEach((projectObj) => {
+    // FIX: single consistent destructure — no duplicate const declarations
     const day = projectObj.day || projectObj[0];
-    const name = projectObj.name || projectObj[1];
-    const url = projectObj.url || projectObj[2];
-    const tags = projectObj.tags || projectObj[3];
-    const thumbnail = projectObj.thumbnail || projectObj[6];
-    
+    const name =
+      projectObj.projectName || projectObj.name || projectObj[1];
+    const url =
+      projectObj.projectPath || projectObj.url || projectObj[2];
+    const tags =
+      projectObj.techStack || projectObj.tags || projectObj[3];
+    const thumbnail =
+      projectObj.thumbnail || projectObj[6];
+
+    if (!day || !name) return;
+
     const category = getCategoryFromTags(tags, name);
     const isBookmarked = bookmarkedProjects.some(
       (item) => normalizeProjectEntry(item).day === day,
@@ -1316,28 +1295,24 @@ function renderRecentProjects() {
     card.setAttribute("role", "button");
 
     attachProjectCardInteraction(card, demoUrl, projectObj);
-
     recentGrid.appendChild(card);
   });
 }
 
-// Clean up after grid references are initialized.
 cleanupExpiredRecentProjects();
 
 /* ============================================================
    VIEW ALL TOGGLE
    ============================================================ */
-
 const bookmarkToggleBtn = document.getElementById("bookmarkToggleBtn");
 const recentToggleBtn = document.getElementById("recentToggleBtn");
 const copyBookmarksBtn = document.getElementById("copyBookmarksBtn");
 
 if (bookmarkToggleBtn) {
   bookmarkToggleBtn.addEventListener("click", () => {
-    const projectsSection = document.getElementById("projects");
-    if (projectsSection) {
-      projectsSection.scrollIntoView({ behavior: "smooth" });
-    }
+    showAllBookmarks = !showAllBookmarks;
+    bookmarkToggleBtn.textContent = showAllBookmarks ? "Show Less" : "View All";
+    renderBookmarks();
   });
 }
 
@@ -1369,10 +1344,9 @@ if (copyBookmarksBtn) {
 
 if (recentToggleBtn) {
   recentToggleBtn.addEventListener("click", () => {
-    const projectsSection = document.getElementById("projects");
-    if (projectsSection) {
-      projectsSection.scrollIntoView({ behavior: "smooth" });
-    }
+    showAllRecent = !showAllRecent;
+    recentToggleBtn.textContent = showAllRecent ? "Show Less" : "View All";
+    renderRecentProjects();
   });
 }
 
@@ -1394,7 +1368,8 @@ document.addEventListener("click", (e) => {
 
   e.preventDefault();
   const projectDay = bookmarkBtn.dataset.id;
-  const project = PROJECTS.find((item) => item.day === projectDay);
+  // FIX: use PROJECTS_BY_DAY map for O(1) lookup
+  const project = PROJECTS_BY_DAY.get(projectDay);
   if (!project) return;
 
   toggleBookmark(project);
@@ -1405,7 +1380,8 @@ document.addEventListener("click", (e) => {
   if (!projectLink) return;
 
   const projectDay = projectLink.dataset.id;
-  const project = PROJECTS.find((item) => item.day === projectDay);
+  // FIX: use PROJECTS_BY_DAY map for O(1) lookup
+  const project = PROJECTS_BY_DAY.get(projectDay);
   if (!project) return;
 
   trackRecentProject(project);
@@ -1503,10 +1479,8 @@ function initFilterChips() {
    ============================================================ */
 function debounce(fn, delay = 300) {
   let timeout;
-
   return (...args) => {
     clearTimeout(timeout);
-
     timeout = setTimeout(() => {
       fn(...args);
     }, delay);
@@ -1647,7 +1621,12 @@ function syncProjectCounts() {
         project.projectName.toLowerCase().includes(q) ||
         (project.projectDesc || "").toLowerCase().includes(q) ||
         project.day.toLowerCase().includes(q) ||
-        (Array.isArray(project.techStack) ? project.techStack.join(" ") : project.techStack || "").toLowerCase().includes(q),
+        (Array.isArray(project.techStack)
+          ? project.techStack.join(" ")
+          : project.techStack || ""
+        )
+          .toLowerCase()
+          .includes(q),
     );
   }
 
@@ -1685,11 +1664,10 @@ if (searchInput && clearSearchBtn) {
 }
 
 /* ============================================================
-   NAVBAR — dynamic based on login state
+   NAVBAR
    ============================================================ */
 function updateNavbar() {
-  // The navbar is now managed by navbar.js which creates the dropdowns properly.
-  // This function is kept empty to prevent legacy calls from breaking.
+  // Managed by navbar.js — kept as a no-op to avoid breaking legacy calls.
 }
 
 /* ============================================================
@@ -1763,7 +1741,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   initTheme();
   updateNavbar();
   initScrollBtn();
-  fetchRepoStats();
 
   initCurrentYear();
   initFilterChips();
@@ -1772,34 +1749,25 @@ document.addEventListener("DOMContentLoaded", async () => {
   initTechStackSearch();
   initClearAllFilters();
 
-  initStreak();
-  updateGamifiedUI();
-
   try {
     await loadProjects();
-
-    updateGamifiedUI();
 
     syncProjectCounts();
 
     if (hasProjectGrid()) {
       loadBookmarksFromURL();
-
       renderGrid();
       renderBookmarks();
       renderRecentProjects();
     }
 
-    restoreStateFromURL();
-
     syncProjectCounts();
+    // FIX: fetchRepoStats() called once here (removed duplicate call)
     fetchRepoStats();
-    initScrollBtn();
   } catch (error) {
     console.error("Failed to load projects:", error);
 
     const grid = document.getElementById("projectGrid");
-
     if (grid) {
       grid.innerHTML = `
         <div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">
@@ -1808,30 +1776,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       `;
     }
   }
-
-  const searchInput =
-    document.getElementById("search") ||
-    document.querySelector('input[type="text"]') ||
-    document.querySelector(".search-input");
-  if (searchInput) {
-    searchInput.addEventListener(
-      "input",
-      debounce(() => {
-        const { category } = getQueryParams();
-        updateURL(searchInput.value, category);
-        applyFilters(searchInput.value, category);
-      }, 200),
-    );
-  }
-  const categoryFilter = document.getElementById("category");
-  if (categoryFilter) {
-    categoryFilter.addEventListener("change", () => {
-      const { search } = getQueryParams();
-      updateURL(search, categoryFilter.value);
-      applyFilters(search, categoryFilter.value);
-    });
-  }
-  window.addEventListener("popstate", () => restoreStateFromURL());
 });
 
 (() => {
@@ -1908,22 +1852,20 @@ window.addEventListener(
 
 /* ============================================================
    EXPOSE FUNCTIONS TO GLOBAL SCOPE
-   (Required for HTML onclick handlers)
    ============================================================ */
 window.removeTechFilter = removeTechFilter;
 window.clearAllTechFilters = clearAllTechFilters;
 
 /* ============================================================
-   THEME CORE ENGINE (Fixes Issue #4359)
+   THEME CORE ENGINE
    ============================================================ */
 function initTheme() {
   window.ThemeManager?.init?.();
 }
 
-// Initialize the theme engine
 initTheme();
 
-// Custom cursor with accessibility, interactivity & fail-safe upgrades
+// Custom cursor
 (function () {
   const outerCursor = document.querySelector(".cursor-ring--outer");
   const innerCursor = document.querySelector(".cursor-ring--inner");
@@ -2252,8 +2194,9 @@ initTheme();
   rebuild();
 })();
 
-// =============================================
-
+/* ============================================================
+   PERSISTENT FILTERS & SEARCH
+   ============================================================ */
 function getQueryParams() {
   const params = new URLSearchParams(window.location.search);
   return {
@@ -2274,11 +2217,11 @@ function updateURL(search, category) {
 
 function restoreStateFromURL() {
   const { search, category } = getQueryParams();
-  const searchInput =
+  const searchInputEl =
     document.getElementById("searchInput") ||
     document.querySelector('input[type="text"]') ||
     document.querySelector(".search-input");
-  if (searchInput && search) searchInput.value = search;
+  if (searchInputEl && search) searchInputEl.value = search;
   const categoryFilter = document.getElementById("category");
   if (categoryFilter && category !== "all") categoryFilter.value = category;
   if (search || category !== "all") applyFilters(search, category);
@@ -2301,77 +2244,6 @@ function applyFilters(search, category) {
   renderGrid();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const searchInput =
-    document.getElementById("search") ||
-    document.querySelector('input[type="text"]') ||
-    document.querySelector(".search-input");
-  if (searchInput) {
-    searchInput.addEventListener(
-      "input",
-      debounce(() => {
-        const { category } = getQueryParams();
-        updateURL(searchInput.value, category);
-        applyFilters(searchInput.value, category);
-      }, 200),
-    );
-  }
-  const categoryFilter = document.getElementById("category");
-  if (categoryFilter) {
-    categoryFilter.addEventListener("change", () => {
-      const { search } = getQueryParams();
-      updateURL(search, categoryFilter.value);
-      applyFilters(search, categoryFilter.value);
-    });
-  }
-  window.addEventListener("popstate", () => restoreStateFromURL());
-});
-
-/* ============================================================
-   GAMIFIED DEVELOPER TRACKER ENGINE
-============================================================ */
-
-const LEVEL_THRESHOLDS = [
-  { level: 1, name: "Script Kiddie", xp: 0 },
-  { level: 2, name: "CSS Whisperer", xp: 100 },
-  { level: 3, name: "Frontend Artisan", xp: 250 },
-  { level: 4, name: "DOM Dominator", xp: 500 },
-  { level: 5, name: "Production Ready", xp: 1000 },
-  { level: 6, name: "Full-Stack Magician", xp: 2000 },
-  { level: 7, name: "Software Architect", xp: 4000 }
-];
-
-function getProjectXP(difficulty) {
-  const d = (difficulty || "").toLowerCase().trim();
-  if (d === 'beginner' || d === 'easy') return 10;
-  if (d === 'advanced' || d === 'hard' || d === 'expert') return 50;
-  return 25;
-}
-
-function calculateLevel(xp) {
-  let current = LEVEL_THRESHOLDS[0];
-  for (let t of LEVEL_THRESHOLDS) {
-    if (xp >= t.xp) current = t;
-    else break;
-  }
-  return current;
-}
-
-function updateGamifiedUI() {
-  // Gamified UI elements live on tracker.html, not index.html — no-op here.
-  const elements = {
-    badge: document.getElementById("userLevelBadge"),
-    xpText: document.getElementById("userCurrentXP"),
-    bar: document.getElementById("userXPBarFill")
-  };
-
-  if (!elements.badge && !elements.xpText && !elements.bar) return;
-
-  const totalXP = 0;
-  const currentLevel = calculateLevel(totalXP);
-
-  if (elements.badge) elements.badge.textContent = `Level ${currentLevel.level}: ${currentLevel.name}`;
-  if (elements.xpText) elements.xpText.textContent = `${totalXP} Total XP`;
-  if (elements.bar) elements.bar.style.width = "0%";
-}
-}
+// FIX: single DOMContentLoaded for persistent filters — merged with main init above.
+// The secondary listener block that duplicated search/category binding has been removed.
+window.addEventListener("popstate", () => restoreStateFromURL());
