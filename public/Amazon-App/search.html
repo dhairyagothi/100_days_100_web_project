@@ -9,7 +9,7 @@
 </head>
 </head>
 <body>
-       <!-- sidebar.html -->
+    <!-- sidebar.html -->
     <!-- Sidebar Overlay -->
     <div id="sidebar-overlay" class="sidebar-overlay"></div>
 
@@ -36,39 +36,39 @@
             <div class="sidebar-accordion accordion-open">
                 <button type="button" class="accordion-header" onclick="toggleSidebarAccordion(this)">
                     <span class="header-title">
-                        <span class="header-icon bag-icon"><i aria-hidden="true" class="fa-solid fa-box-open"></i></span>
+                        <span class="header-icon bag-icon"><i class="fa-solid fa-box-open"></i></span>
                         Shop by Category
                     </span>
-                    <i aria-hidden="true" class="fa-solid fa-chevron-up accordion-chevron"></i>
+                    <i class="fa-solid fa-chevron-up accordion-chevron"></i>
                 </button>
                 <div class="accordion-content">
                     <ul class="category-list">
                         <li>
-                            <span class="cat-icon bg-blue"><i aria-hidden="true" class="fa-solid fa-laptop"></i></span>
+                            <span class="cat-icon bg-blue"><i class="fa-solid fa-laptop"></i></span>
                             <span class="cat-text">Electronics</span>
                         </li>
                         <li>
-                            <span class="cat-icon bg-pink"><i aria-hidden="true" class="fa-solid fa-shirt"></i></span>
+                            <span class="cat-icon bg-pink"><i class="fa-solid fa-shirt"></i></span>
                             <span class="cat-text">Fashion</span>
                         </li>
                         <li>
-                            <span class="cat-icon bg-orange"><i aria-hidden="true" class="fa-solid fa-utensils"></i></span>
+                            <span class="cat-icon bg-orange"><i class="fa-solid fa-utensils"></i></span>
                             <span class="cat-text">Home & Kitchen</span>
                         </li>
                         <li>
-                            <span class="cat-icon bg-green"><i aria-hidden="true" class="fa-solid fa-puzzle-piece"></i></span>
+                            <span class="cat-icon bg-green"><i class="fa-solid fa-puzzle-piece"></i></span>
                             <span class="cat-text">Toys & Games</span>
                         </li>
                         <li>
-                            <span class="cat-icon bg-yellow"><i aria-hidden="true" class="fa-solid fa-book"></i></span>
+                            <span class="cat-icon bg-yellow"><i class="fa-solid fa-book"></i></span>
                             <span class="cat-text">Books</span>
                         </li>
                         <li>
-                            <span class="cat-icon bg-red"><i aria-hidden="true" class="fa-solid fa-spa"></i></span>
+                            <span class="cat-icon bg-red"><i class="fa-solid fa-spa"></i></span>
                             <span class="cat-text">Beauty & Health</span>
                         </li>
                         <li>
-                            <span class="cat-icon bg-slate"><i aria-hidden="true" class="fa-solid fa-car"></i></span>
+                            <span class="cat-icon bg-slate"><i class="fa-solid fa-car"></i></span>
                             <span class="cat-text">Automotive</span>
                         </li>
                     </ul>
@@ -76,24 +76,24 @@
             </div>
 
             <!-- Deals & Offers (Simple Link) -->
-            <a href="#" class="sidebar-link">
-                <span class="header-icon tag-icon"><i aria-hidden="true" class="fa-solid fa-tag"></i></span>
-                Deals & Offers
+            <a href="deals.html" class="sidebar-link" id="sidebar-deals-link">
+                <span class="header-icon tag-icon"><i class="fa-solid fa-tag"></i></span>
+                Deals &amp; Offers
             </a>
 
             <!-- My Account (Accordion) -->
             <div class="sidebar-accordion">
                 <button type="button" class="accordion-header" onclick="toggleSidebarAccordion(this)">
                     <span class="header-title">
-                        <span class="header-icon user-icon"><i aria-hidden="true" class="fa-solid fa-user"></i></span>
+                        <span class="header-icon user-icon"><i class="fa-solid fa-user"></i></span>
                         My Account
                     </span>
-                    <i aria-hidden="true" class="fa-solid fa-chevron-down accordion-chevron"></i>
+                    <i class="fa-solid fa-chevron-down accordion-chevron"></i>
                 </button>
                 <div class="accordion-content">
                     <ul class="submenu-list">
                         <li>Profile</li>
-                        <li><a href = "cart.html">Orders</a></li>
+                        <li><a href="cart.html">Orders</a></li>
                         <li>Wishlist</li>
                         <li>Settings</li>
                         <li><button onclick="signOut()">Sign Out</button></li>
@@ -105,15 +105,15 @@
             <div class="sidebar-accordion">
                 <button type="button" class="accordion-header" onclick="toggleSidebarAccordion(this)">
                     <span class="header-title">
-                        <span class="header-icon support-icon"><i aria-hidden="true" class="fa-solid fa-headset"></i></span>
+                        <span class="header-icon support-icon"><i class="fa-solid fa-headset"></i></span>
                         Support
                     </span>
-                    <i aria-hidden="true" class="fa-solid fa-chevron-down accordion-chevron"></i>
+                    <i class="fa-solid fa-chevron-down accordion-chevron"></i>
                 </button>
                 <div class="accordion-content">
                     <ul class="submenu-list">
-                        <li>Help Center</li>
-                        <li>FAQs</li>
+                        <li><a href="Customer-Service/index.html">Help Center</a></li>
+                        <li><a href="Customer-Service/index.html">FAQs</a></li>
                     </ul>
                 </div>
             </div>
@@ -124,7 +124,7 @@
         <div class="sidebar-footer">
             <div class="theme-switch-container">
                 <div class="theme-option light-option" id="sb-theme-light-btn">
-                    <i aria-hidden="true" class="fa-solid fa-sun icon-sun"></i>
+                    <i class="fa-solid fa-sun icon-sun"></i>
                     <span>Light</span>
                 </div>
                 <div class="theme-option dark-option" id="sb-theme-dark-btn">
@@ -192,8 +192,10 @@
             </div>
 
             <div class="nav-text">
-                <p>Return</p>
-                <h1>& Orders</h1>
+                <a href="Customer-Service/index.html" style="color: inherit; text-decoration: none;">
+                    <p>Return</p>
+                    <h1>& Orders</h1>
+                </a>
             </div>
 
            <button class="nav-cart" type="button" aria-label="Shopping Cart">
@@ -203,13 +205,13 @@
             </button>
         </div>
     </nav>
-  <div class="nav-bottom">
+    <div class="nav-bottom">
             <div class="MenuSidebar">
             <img src="./assets/menu_icon.png" width="25px" alt="Menu">
             <p>All</p>
         </div>
-        <a href="deals.html" role="button">Today's Deals</a>
-        <a href="/" role="button">Customer Service</a>
+        <a href="deals.html" role="button" id="nav-todays-deals">Today's Deals</a>
+        <a href="Customer-Service/index.html" role="button">Customer Service</a>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSfsZc3yChN-f_8LOi2RnXWVHkaBe40aSok60pHm5HIIvMagGQ/viewform" role="button">Registry</a>
         <a href="/" role="button">Gift Cards</a>
         <a href="/" role="button">Sell</a>
@@ -222,7 +224,7 @@
             </div>
         </button>
     </div>
-  
+
     <main class="search-page-layout">
         <aside class="search-sidebar">
             <h3>Filters</h3>
