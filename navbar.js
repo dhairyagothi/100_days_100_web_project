@@ -164,65 +164,69 @@
   }
 
   if (menuToggle && navButtonsDiv) {
-    if (menuToggle.dataset.mobileNavBound === "true") return;
-    menuToggle.dataset.mobileNavBound = "true";
+    const alreadyBound = menuToggle.dataset.mobileNavBound === "true";
+    if (!alreadyBound) {
+      menuToggle.dataset.mobileNavBound = "true";
 
-    const closeMenu = () => {
-      menuToggle.classList.remove("active");
-      navButtonsDiv.classList.remove("active");
-      overlay.classList.remove("active");
-      menuToggle.setAttribute("aria-expanded", "false");
-    };
+      const closeMenu = () => {
+        menuToggle.classList.remove("active");
+        navButtonsDiv.classList.remove("active");
+        overlay.classList.remove("active");
+        menuToggle.setAttribute("aria-expanded", "false");
+        dropdownMenu?.classList.remove("show");
+        dropdownToggle?.setAttribute("aria-expanded", "false");
+      };
 
-    const openMenu = () => {
-      menuToggle.classList.add("active");
-      navButtonsDiv.classList.add("active");
-      overlay.classList.add("active");
-      menuToggle.setAttribute("aria-expanded", "true");
-      const firstLink = navButtonsDiv.querySelector("a, button");
-      firstLink?.focus({ preventScroll: true });
-    };
+      const openMenu = () => {
+        menuToggle.classList.add("active");
+        navButtonsDiv.classList.add("active");
+        overlay.classList.add("active");
+        menuToggle.setAttribute("aria-expanded", "true");
+        const firstLink = navButtonsDiv.querySelector("a, button");
+        firstLink?.focus({ preventScroll: true });
+      };
 
-    overlay.addEventListener("click", closeMenu);
-    closeBtn?.addEventListener("click", closeMenu);
+      overlay.addEventListener("click", closeMenu);
+      closeBtn?.addEventListener("click", closeMenu);
 
-    menuToggle.addEventListener("click", (e) => {
-      e.stopPropagation();
-      if (navButtonsDiv.classList.contains("active")) {
-        closeMenu();
-      } else {
-        openMenu();
-      }
-    });
+      menuToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (navButtonsDiv.classList.contains("active")) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+      });
 
-    document.addEventListener("click", (e) => {
-      if (!navButtonsDiv.contains(e.target) && !menuToggle.contains(e.target)) {
-        closeMenu();
-      }
-    });
+      document.addEventListener("click", (e) => {
+        if (!navButtonsDiv.contains(e.target) && !menuToggle.contains(e.target)) {
+          closeMenu();
+        }
+      });
 
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && navButtonsDiv.classList.contains("active")) {
-        closeMenu();
-        menuToggle.focus({ preventScroll: true });
-      }
-    });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && navButtonsDiv.classList.contains("active")) {
+          closeMenu();
+          menuToggle.focus({ preventScroll: true });
+        }
+      });
 
-    window.addEventListener("resize", () => {
-      if (window.innerWidth > 768) {
-        closeMenu();
-      }
-    });
+      window.addEventListener("resize", () => {
+        if (window.innerWidth > 768) {
+          closeMenu();
+        }
+      });
 
-    navButtonsDiv.addEventListener("click", (e) => {
-      if (
-        e.target.closest(".btn:not(.dropdown-toggle)") ||
-        e.target.closest("a") ||
-        e.target.closest(".dropdown-item")
-      ) {
-        closeMenu();
-      }
-    });
+      navButtonsDiv.addEventListener("click", (e) => {
+        if (
+          e.target.closest(".btn:not(.dropdown-toggle)") ||
+          e.target.closest("a") ||
+          e.target.closest(".dropdown-item")
+        ) {
+          closeMenu();
+        }
+      });
+    }
   }
 
   // Desktop drop menu engines
@@ -268,32 +272,34 @@
   }
 
   // Cursor Toggle Logic
-  document.addEventListener("click", (event) => {
-    const toggle = event.target.closest("#cursorToggleNav");
-    if (!toggle) return;
-    event.preventDefault();
-    const currentlyEnabled =
-      safeStorage.getItem("customCursorEnabled") !== "false";
-    const nextState = !currentlyEnabled;
-    safeStorage.setItem("customCursorEnabled", String(nextState));
+  const cursorToggle = document.getElementById("cursorToggleNav");
+  if (cursorToggle && cursorToggle.dataset.cursorBound !== "true") {
+    cursorToggle.dataset.cursorBound = "true";
+    cursorToggle.addEventListener("click", (event) => {
+      event.preventDefault();
+      const currentlyEnabled =
+        safeStorage.getItem("customCursorEnabled") !== "false";
+      const nextState = !currentlyEnabled;
+      safeStorage.setItem("customCursorEnabled", String(nextState));
 
-    // Call the cursor system to enable/disable
-    if (nextState && window.CursorSystem?.enable) {
-      window.CursorSystem.enable();
-    } else if (!nextState && window.CursorSystem?.disable) {
-      window.CursorSystem.disable();
-    } else {
-      // Fallback if cursor system not loaded yet
-      document.querySelectorAll("#cursorToggleNav").forEach((btn) => {
-        btn.innerHTML = `
-          <span class="mobile-nav-icon"><i class="fas ${nextState ? "fa-circle-notch" : "fa-mouse-pointer"}" aria-hidden="true"></i></span>
-          Cursor: ${nextState ? "Custom" : "Default"}
-        `;
-        btn.setAttribute(
-          "aria-label",
-          `Toggle custom cursor (currently ${nextState ? "Custom" : "Default"})`,
-        );
-      });
-    }
-  });
+      // Call the cursor system to enable/disable
+      if (nextState && window.CursorSystem?.enable) {
+        window.CursorSystem.enable();
+      } else if (!nextState && window.CursorSystem?.disable) {
+        window.CursorSystem.disable();
+      } else {
+        // Fallback if cursor system not loaded yet
+        document.querySelectorAll("#cursorToggleNav").forEach((btn) => {
+          btn.innerHTML = `
+            <span class="mobile-nav-icon"><i class="fas ${nextState ? "fa-circle-notch" : "fa-mouse-pointer"}" aria-hidden="true"></i></span>
+            Cursor: ${nextState ? "Custom" : "Default"}
+          `;
+          btn.setAttribute(
+            "aria-label",
+            `Toggle custom cursor (currently ${nextState ? "Custom" : "Default"})`,
+          );
+        });
+      }
+    });
+  }
 })();
