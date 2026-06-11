@@ -76,6 +76,74 @@
   font-size: 16px;
 }
 
+@media (max-width: 750px) {
+  .header {
+    padding-right: 8px;
+  }
+
+  .left-section {
+    padding-left: 8px;
+  }
+
+  .hamburger-menu {
+    margin-left: 8px;
+    margin-right: 12px;
+  }
+
+  .middle-section {
+    margin-left: 0;
+    margin-right: 8px;
+    max-width: none;
+    min-width: 0;
+  }
+
+  .search-bar {
+    min-width: 0;
+    font-size: 14px;
+    padding-left: 12px;
+  }
+
+  .search-bar::placeholder {
+    font-size: 14px;
+  }
+
+  .search-button {
+    width: 52px;
+    margin-right: 8px;
+  }
+
+  .voice-search-button {
+    display: none;
+  }
+
+  .right-section {
+    gap: 8px;
+    margin-right: 8px;
+  }
+
+  .create-button {
+    width: 40px;
+    padding: 0;
+    border-radius: 50%;
+    justify-content: center;
+  }
+
+  .create-button span {
+    display: none;
+  }
+
+  .notifications-container,
+  .avatar-container {
+    width: 36px;
+    height: 36px;
+  }
+
+  .badge {
+    top: 0;
+    left: 18px;
+  }
+}
+
 
 .search-button {
   display: flex;

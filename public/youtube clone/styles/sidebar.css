@@ -74,7 +74,7 @@ body.sidebar-expanded .sidebar-link {
   .sidebar {
     left: -240px;
     width: 240px;
-    height: calc(100vh - 50px);
+    height: calc(100vh - 55px);
   }
 
   body.sidebar-expanded .sidebar {
