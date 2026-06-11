@@ -363,19 +363,15 @@
               <option value="latest">Latest Day</option>
               <option value="difficulty">Difficulty</option>
             </select>
-            <select
-              id="difficultyFilter"
-              aria-label="Filter projects by difficulty"
-            >
-              <option value="all">Difficulty (All)</option>
-              <option value="beginner">Beginner</option>
-              <option value="intermediate">Intermediate</option>
-              <option value="advanced">Advanced</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="filter-toolbar">
+          <select
+            id="difficultyFilter"
+            aria-label="Filter projects by difficulty"
+          >
+            <option value="all">Difficulty (All)</option>
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
           <select id="techStackFilter" aria-label="Filter by tech stack">
             <option value="all">Filter by Tech Stack (All)</option>
             <option value="javascript">JavaScript</option>
@@ -389,6 +385,7 @@
           <button id="clearAllFiltersBtn" class="clear-filters-btn" aria-label="Clear all filters">
             <i class="fas fa-filter-circle-xmark" aria-hidden="true"></i> Clear Filters
           </button>
+          </div>
         </div>
 
         <div class="project-grid" id="projectGrid"></div>

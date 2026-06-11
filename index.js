@@ -1464,6 +1464,7 @@ function initClearAllFilters() {
 /* ============================================================
    FILTER CHIPS
    ============================================================ */
+  //  FIX ->
 function initFilterChips() {
   const chips = document.querySelectorAll(".chip[data-filter]");
   chips.forEach((chip) => {
@@ -1471,7 +1472,6 @@ function initFilterChips() {
       chips.forEach((c) => c.classList.remove("active"));
       chip.classList.add("active");
     }
-
     chip.addEventListener("click", () => {
       chips.forEach((c) => c.classList.remove("active"));
       chip.classList.add("active");
@@ -1480,8 +1480,11 @@ function initFilterChips() {
       renderGrid();
     });
   });
+  // Ensure default active chip is set if none matched
+  if (!document.querySelector(".chip[data-filter].active") && chips.length > 0) {
+    chips[0].classList.add("active");
+  }
 }
-
 /* ============================================================
    LIVE SEARCH & TECH STACK FILTER
    ============================================================ */
@@ -1749,26 +1752,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   initScrollBtn();
   fetchRepoStats();
 
-  initCurrentYear();
-  initFilterChips();
-  initSearch();
+  initCurrentYear();initSearch();
   initSorting();
   initTechStackSearch();
   initClearAllFilters();
-
-  initStreak();
+  // initStreak();
+  if (typeof initStreak === "function") initStreak();
   updateGamifiedUI();
-
   try {
     await loadProjects();
-
+    initFilterChips();
     updateGamifiedUI();
-
     syncProjectCounts();
-
     if (hasProjectGrid()) {
       loadBookmarksFromURL();
-
       renderGrid();
       renderBookmarks();
       renderRecentProjects();
