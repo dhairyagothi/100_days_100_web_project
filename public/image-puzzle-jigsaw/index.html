@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jigsaw Puzzle Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <h1 class="title">
+          <span class="material-icons title-icon">extension</span> Jigsaw Puzzle
+          Game
+        </h1>
+        <p class="subtitle">Upload an image and solve the puzzle!</p>
+      </header>
+
+      <!-- Setup Screen -->
+      <div id="setupScreen" class="setup-screen">
+        <div class="upload-card">
+          <div class="upload-icon">
+            <span class="material-icons">add_photo_alternate</span>
+          </div>
+          <h2>Upload Your Image</h2>
+          <input
+            type="file"
+            id="imageUpload"
+            accept="image/*"
+            class="file-input"
+          />
+          <label for="imageUpload" class="upload-btn">Choose Image</label>
+          <div id="imagePreview" class="image-preview"></div>
+
+          <div class="difficulty-section">
+            <h3>Select Difficulty</h3>
+            <div class="difficulty-options">
+              <button class="difficulty-btn active" data-level="3">
+                Easy (3x3)
+              </button>
+              <button class="difficulty-btn" data-level="4">
+                Medium (4x4)
+              </button>
+              <button class="difficulty-btn" data-level="5">Hard (5x5)</button>
+              <button class="difficulty-btn" data-level="6">
+                Expert (6x6)
+              </button>
+            </div>
+          </div>
+
+          <button id="startGame" class="start-btn" disabled>
+            Start Puzzle
+          </button>
+        </div>
+      </div>
+
+      <!-- Game Screen -->
+      <div id="gameScreen" class="game-screen hidden">
+        <div class="game-header">
+          <div class="game-info">
+            <div class="info-card">
+              <span class="info-label">Moves:</span>
+              <span id="moves" class="info-value">0</span>
+            </div>
+            <div class="info-card">
+              <span class="info-label">Time:</span>
+              <span id="timer" class="info-value">00:00</span>
+            </div>
+            <div class="info-card">
+              <span class="info-label">Progress:</span>
+              <span id="progress" class="info-value">0%</span>
+            </div>
+          </div>
+          <div class="game-controls">
+            <button id="resetGame" class="control-btn">
+              <span class="material-icons">refresh</span> Reset
+            </button>
+            <button id="newGame" class="control-btn">
+              <span class="material-icons">home</span> New Game
+            </button>
+          </div>
+        </div>
+
+        <div class="game-container">
+          <!-- Reference Image Preview -->
+          <div class="reference-preview-container">
+            <h3 class="reference-title">Reference Image</h3>
+            <div class="reference-image-wrapper">
+              <img id="referenceImage" src="" alt="Reference" />
+            </div>
+          </div>
+
+          <!-- Puzzle Board -->
+          <div class="puzzle-area">
+            <div id="puzzleBoard" class="puzzle-board"></div>
+          </div>
+
+          <!-- Pieces Pool -->
+          <div class="pieces-area">
+            <h3 class="pieces-title">Puzzle Pieces</h3>
+            <div id="piecesPool" class="pieces-pool"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Victory Modal -->
+      <div id="victoryModal" class="modal hidden">
+        <div class="modal-content">
+          <div class="victory-icon">
+            <span class="material-icons">celebration</span>
+          </div>
+          <h2>Congratulations!</h2>
+          <p>You completed the puzzle!</p>
+          <div class="victory-stats">
+            <div class="stat">
+              <span class="stat-label">Moves:</span>
+              <span id="finalMoves" class="stat-value">0</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Time:</span>
+              <span id="finalTime" class="stat-value">00:00</span>
+            </div>
+          </div>
+          <button id="playAgain" class="play-again-btn">Play Again</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,870 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+  min-height: 100vh;
+  padding: 20px;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+  animation: fadeInDown 0.6s ease;
+}
+
+.title {
+  font-size: 3rem;
+  color: white;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.title-icon {
+  font-size: 3rem;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Setup Screen */
+.setup-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.upload-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+  animation: fadeInUp 0.6s ease;
+}
+
+.upload-icon {
+  margin-bottom: 20px;
+}
+
+.upload-icon .material-icons {
+  font-size: 5rem;
+  color: white;
+}
+
+.upload-card h2 {
+  color: white;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-btn {
+  display: inline-block;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px 40px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.upload-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.image-preview {
+  margin: 20px 0;
+  min-height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-preview img {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.difficulty-section {
+  margin: 30px 0;
+}
+
+.difficulty-section h3 {
+  color: white;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+.difficulty-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.difficulty-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.difficulty-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+.difficulty-btn.active {
+  background: linear-gradient(135deg, #00b4db 0%, #0083b0 100%);
+  border-color: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.start-btn {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+  padding: 15px 50px;
+  border: none;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.start-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.start-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Game Screen */
+.game-screen {
+  animation: fadeIn 0.6s ease;
+}
+
+.game-header {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.game-info {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.info-card {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 10px 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info-label {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.85rem;
+  margin-bottom: 5px;
+}
+
+.info-value {
+  color: white;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.game-controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.control-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.control-btn .material-icons {
+  font-size: 1.2rem;
+}
+
+.control-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.game-container {
+  display: grid;
+  grid-template-columns: 250px 1fr 350px;
+  gap: 20px;
+  position: relative;
+}
+
+/* Reference Preview */
+.reference-preview-container {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.reference-title {
+  color: white;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.reference-image-wrapper {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.reference-image-wrapper img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Puzzle Board */
+.puzzle-area {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+  min-height: 300px;
+}
+
+.puzzle-board {
+  display: grid;
+  gap: 2px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 2px;
+  border-radius: 10px;
+  max-width: 100%;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.puzzle-slot {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.puzzle-slot.drag-over {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: #38ef7d;
+  border-style: solid;
+  transform: scale(1.05);
+}
+
+.puzzle-slot.correct {
+  border-color: #38ef7d;
+  border-style: solid;
+  animation: correctPiece 0.5s ease;
+}
+
+/* Pieces Pool */
+.pieces-area {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.pieces-title {
+  color: white;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.pieces-pool {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 10px;
+}
+
+.puzzle-piece {
+  border-radius: 8px;
+  cursor: grab;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.puzzle-piece:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+}
+
+.puzzle-piece:active {
+  cursor: grabbing;
+}
+
+.puzzle-piece.placed {
+  /* Pieces remain draggable even when placed */
+  cursor: grab;
+}
+
+/* Victory Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: scaleIn 0.5s ease;
+}
+
+.victory-icon {
+  margin-bottom: 20px;
+  animation: bounce 1s ease infinite;
+}
+
+.victory-icon .material-icons {
+  font-size: 6rem;
+  color: #ffd700;
+}
+
+.modal-content h2 {
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.modal-content p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+.victory-stats {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 15px 30px;
+  border-radius: 10px;
+}
+
+.stat-label {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
+.stat-value {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.play-again-btn {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+  padding: 15px 50px;
+  border: none;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.play-again-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Utility Classes */
+.hidden {
+  display: none !important;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes correctPiece {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .game-container {
+    grid-template-columns: 200px 1fr 300px;
+  }
+
+  .reference-preview-container {
+    position: relative;
+    top: 0;
+  }
+
+  .pieces-area {
+    max-height: 400px;
+  }
+
+  .pieces-pool {
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  }
+}
+
+@media (max-width: 992px) {
+  .game-container {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .reference-preview-container {
+    order: -1;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .puzzle-area {
+    order: 0;
+  }
+
+  .pieces-area {
+    order: 1;
+    max-height: 250px;
+  }
+
+  .pieces-pool {
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+  }
+
+  .puzzle-board {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  .title {
+    font-size: 1.8rem;
+    gap: 10px;
+  }
+
+  .title-icon {
+    font-size: 1.8rem;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+  }
+
+  .upload-card {
+    padding: 25px 15px;
+  }
+
+  .upload-icon .material-icons {
+    font-size: 3.5rem;
+  }
+
+  .upload-card h2 {
+    font-size: 1.4rem;
+  }
+
+  .difficulty-options {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .difficulty-btn {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+
+  .start-btn {
+    padding: 12px 40px;
+    font-size: 1rem;
+  }
+
+  .game-header {
+    flex-direction: column;
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .game-info {
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .info-card {
+    padding: 8px 15px;
+  }
+
+  .info-label {
+    font-size: 0.75rem;
+  }
+
+  .info-value {
+    font-size: 1.1rem;
+  }
+
+  .game-controls {
+    width: 100%;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .control-btn {
+    padding: 8px 15px;
+    font-size: 0.85rem;
+  }
+
+  .control-btn .material-icons {
+    font-size: 1rem;
+  }
+
+  .reference-preview-container {
+    padding: 12px;
+    max-width: 200px;
+  }
+
+  .reference-title {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  .puzzle-area {
+    padding: 10px;
+    overflow-x: auto;
+  }
+
+  .pieces-area {
+    padding: 15px;
+    max-height: 200px;
+  }
+
+  .pieces-title {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  .pieces-pool {
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+    gap: 6px;
+  }
+
+  .modal-content {
+    margin: 10px;
+    padding: 25px 15px;
+  }
+
+  .modal-content h2 {
+    font-size: 1.8rem;
+  }
+
+  .modal-content p {
+    font-size: 1rem;
+  }
+
+  .victory-icon .material-icons {
+    font-size: 4rem;
+  }
+
+  .victory-stats {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .stat {
+    padding: 12px 25px;
+  }
+
+  .stat-value {
+    font-size: 1.3rem;
+  }
+
+  .play-again-btn {
+    padding: 12px 40px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .title-icon {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+  }
+
+  .upload-card {
+    padding: 20px 10px;
+  }
+
+  .upload-card h2 {
+    font-size: 1.2rem;
+  }
+
+  .game-header {
+    padding: 12px;
+  }
+
+  .info-card {
+    padding: 6px 12px;
+  }
+
+  .info-label {
+    font-size: 0.7rem;
+  }
+
+  .info-value {
+    font-size: 1rem;
+  }
+
+  .control-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .reference-preview-container {
+    max-width: 200px;
+    padding: 12px;
+  }
+
+  .reference-title {
+    font-size: 0.9rem;
+  }
+
+  .puzzle-area,
+  .pieces-area {
+    padding: 12px;
+  }
+
+  .pieces-title {
+    font-size: 0.9rem;
+  }
+
+  .pieces-pool {
+    grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+    gap: 5px;
+  }
+
+  .modal-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .victory-icon .material-icons {
+    font-size: 3rem;
+  }
+
+  .stat {
+    padding: 10px 20px;
+  }
+}
+
+/* Custom Scrollbar */
+.pieces-area::-webkit-scrollbar {
+  width: 8px;
+}
+
+.pieces-area::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.pieces-area::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
+.pieces-area::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}

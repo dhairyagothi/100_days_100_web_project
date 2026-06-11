@@ -2834,5 +2834,14 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/Bubble-Game/index.html"
+  },
+  {
+"projectNo":225,
+"projectName":"Image Jigsaw Puzzle",
+"projectType":"Game",
+"projectDesc":"A simle jigsaw puzzle game using user provided image",
+"techStack":["javascript","html","css"],
+"difficulty":"intermediate",
+"projectPath":"./public/image-puzzle-jigsaw/index.html"
   }
 ]
