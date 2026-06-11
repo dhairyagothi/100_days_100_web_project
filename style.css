@@ -4191,3 +4191,24 @@ th.sort-active .sort-icon {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
 }
+
+/* --- Skip to Main Content Link Styles --- */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: #0ff2c8;
+  color: #0a0a1a;
+  font-weight: 700;
+  border-radius: 0 0 8px 8px;
+  z-index: 10000;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid #0ff2c8;
+}
+
