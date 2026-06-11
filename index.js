@@ -1258,7 +1258,7 @@ visibleBookmarks.forEach(([day, name, url, tags, difficulty, description, thumbn
 
     bookmarkGrid.appendChild(card);
   });
-}
+})
 
 const recentGrid = document.getElementById("recentGrid");
 
@@ -2373,4 +2373,5 @@ function updateGamifiedUI() {
   if (elements.badge) elements.badge.textContent = `Level ${currentLevel.level}: ${currentLevel.name}`;
   if (elements.xpText) elements.xpText.textContent = `${totalXP} Total XP`;
   if (elements.bar) elements.bar.style.width = "0%";
+}
 }
