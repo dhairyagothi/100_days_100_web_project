@@ -1,11 +1,23 @@
 css
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+/* --- Sophisticated Glass Panels --- */
+.panel, .score-card, .settings-box, .history, .winner-card {
+    background: rgba(255, 255, 255, 0.05); /* Light glass tint */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
 :root{
+    /* Gaming Interface Typography */
+    --font-heading: 'Orbitron', sans-serif;
+    --font-ui: 'Rajdhani', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    
+    /* Global scaling */
+    --fs-h1: 3.5rem;
+    --fs-btn: 1.1rem;
+
     --bg:#0f172a;
     --panel:#12192f;
     --panel2:#19233d;
@@ -69,7 +81,8 @@ body[data-theme="mono"]{
 }
 
 body{
-    font-family:'Space Grotesk',sans-serif;
+    font-size: 16px;
+    font-family: var(--font-body);
     background:var(--bg);
     color:var(--txt);
 
@@ -89,18 +102,24 @@ body{
     top:20px;
     left:20px;
 
-    background:var(--panel);
-    color:var(--txt);
+    background:#1e293b;
+    color:#3b82f6;
 
-    padding:10px 14px;
+    padding:8px 16px;
 
-    border-radius:10px;
+    border-radius:8px;
+    border:1px solid #3b82f6;
 
     text-decoration:none;
 
     font-weight:700;
 
     z-index:999;
+    transition:all 0.2s ease;
+}
+.project-back-button:hover{
+    background:#3b82f6;
+    color:#fff;
 }
 
 .hero{
@@ -108,12 +127,11 @@ body{
     margin-bottom:25px;
 }
 
-.heading{
-    font-family:'Unbounded',sans-serif;
-
-    font-size:3rem;
-
-    letter-spacing:2px;
+.heading {
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(0,0,0,0.5);
+    letter-spacing: 0.2em;
 }
 
 .heading span{
@@ -152,10 +170,16 @@ body{
 .status{
     color:var(--acc);
     font-weight:700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.9rem;
 }
 
 .turn-chip{
     background:var(--panel2);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.9rem;
 
     padding:8px 14px;
 
@@ -190,7 +214,7 @@ body{
 
     color:var(--txt);
 
-    font-size:3rem;
+    font-size:3.5rem;
     font-weight:700;
 
     cursor:pointer;
@@ -211,10 +235,9 @@ body{
 }
 
 .win-cell{
-    background:rgba(64,245,210,.2);
-
-    box-shadow:
-        0 0 25px rgba(64,245,210,.5);
+    background: var(--acc); /* Uses active theme accent */
+    opacity: 0.4;
+    box-shadow: 0 0 25px var(--acc);
 }
 
 .hint-cell{
@@ -229,34 +252,60 @@ body{
 }
 
 .btn-primary{
-    background:var(--acc);
-    color:#000;
+    background: linear-gradient(135deg, var(--acc) 0%, #00d2ff 100%);
+    color: #000;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden; /* For the shine effect */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 15px rgba(64, 245, 210, 0.3);}
 
-    border:none;
-
-    padding:12px 20px;
-
-    border-radius:12px;
-
-    cursor:pointer;
-
-    font-weight:700;
+/* Shine Effect for Buttons */
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: 0.5s;
 }
+
+.btn-primary:hover::before { left: 100%; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(64, 245, 210, 0.5); }
 
 .btn-ghost{
-    background:transparent;
-
-    color:var(--txt);
-
-    border:1px solid rgba(255,255,255,.2);
-
-    padding:12px 20px;
-
-    border-radius:12px;
-
-    cursor:pointer;
+    background: rgba(255, 255, 255, 0.03); /* Slight tint for glass feel */
+    border: 2px solid transparent; /* Prepare for gradient border */
+    background-image: linear-gradient(var(--panel), var(--panel)), 
+                      linear-gradient(to bottom right, var(--acc), transparent);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    
+    color: var(--txt);
+    padding: 16px 32px; /* Increased padding for impact */
+    border-radius: 12px;
+    font-family: var(--font-ui);
+    font-size: 1.1rem; /* Larger, more readable font */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em; /* Wider spacing for a "luxury" feel */
+    backdrop-filter: blur(8px);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-
+.btn-ghost:hover {
+    background-image: linear-gradient(var(--acc), var(--acc)), 
+                      linear-gradient(to bottom right, var(--acc), transparent);
+    color: #000;
+    box-shadow: 0 0 20px rgba(64, 245, 210, 0.3); /* Subtle glow on hover */
+    transform: translateY(-3px) scale(1.02);
+}
 .scoreboard{
     display:grid;
     grid-template-columns:repeat(3,1fr);
@@ -392,6 +441,155 @@ body{
     pointer-events:none;
 }
 
+/* --- Statistics Dashboard Styles --- */
+.stats-box {
+    background: var(--panel2);
+    border-radius: 16px;
+    padding: 14px;
+}
+
+.stats-container {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+@media (min-width: 600px) {
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(64, 245, 210, 0.2);
+}
+
+.stat-icon {
+    font-size: 2rem;
+}
+
+.stat-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--txt);
+}
+
+.progress-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.progress-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.progress-label {
+    width: 120px;
+    font-weight: 600;
+    color: var(--muted);
+}
+
+.progress-bar-container {
+    flex: 1;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.6s ease;
+}
+
+.x-progress {
+    background: linear-gradient(90deg, var(--acc2), #ff4b4b);
+}
+
+.o-progress {
+    background: linear-gradient(90deg, var(--acc), #00d2ff);
+}
+
+.d-progress {
+    background: linear-gradient(90deg, #a5b4fc, #6366f1);
+}
+
+.progress-value {
+    width: 50px;
+    text-align: right;
+    font-weight: 700;
+    color: var(--txt);
+}
+
+.stats-actions {
+    display: flex;
+    justify-content: center;
+}
+
+/* --- Confirmation Modal --- */
+.confirm-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.confirm-modal.show {
+    display: flex;
+}
+
+.confirm-card {
+    background: var(--panel);
+    padding: 30px;
+    border-radius: 22px;
+    min-width: 320px;
+    text-align: center;
+}
+
+.confirm-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
 @media(max-width:600px){
 
     .board{
@@ -413,5 +611,9 @@ body{
 
     .scoreboard{
         grid-template-columns:1fr;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
     }
 }

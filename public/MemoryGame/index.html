@@ -6,10 +6,10 @@
   <title>Memory Match</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/public/MemoryGame/style.css">
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
 
   <!-- Confetti Container -->
@@ -70,7 +70,7 @@
   <!-- Win Modal -->
   <div class="modal-overlay" id="winModal">
     <div class="modal">
-      <span class="modal-emoji"><i class="fas fa-trophy fa-bounce" style="color: #fbbf24; font-size: 4rem; display: block; margin-bottom: 1rem;"></i></span>
+      <span class="modal-emoji"><i aria-hidden="true" class="fas fa-trophy fa-bounce" style="color: #fbbf24; font-size: 4rem; display: block; margin-bottom: 1rem;"></i></span>
       <h2 class="modal-title">You Won!</h2>
       <p class="modal-sub" id="modalSub">Amazing memory!</p>
       <div id="newBest" class="new-best" style="display:none">🏆 New Best Score!</div>
@@ -91,6 +91,10 @@
   <!-- Toast Notification -->
   <div class="toast" id="toast"></div>
 
-  <script src="script.js"></script>
+  <audio id="victorySound" preload="auto">
+    <source src="/public/MemoryGame/victory.mp3" type="audio/mpeg">
+  </audio>
+
+  <script src="/public/MemoryGame/script.js"></script>
 </body>
 </html>
