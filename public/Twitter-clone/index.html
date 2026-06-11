@@ -6,6 +6,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home / X</title>
     <link rel="stylesheet" href="src/output.css">
+    <style>
+        .tweet-feed-shell {
+            position: relative;
+        }
+
+        .tweet-skeleton-card {
+            position: relative;
+            overflow: hidden;
+            background: #080808;
+        }
+
+        .tweet-skeleton-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            transform: translateX(-100%);
+            background: linear-gradient(90deg,
+                    rgba(31, 41, 55, 0) 0%,
+                    rgba(55, 65, 81, 0.55) 50%,
+                    rgba(31, 41, 55, 0) 100%);
+            animation: tweet-skeleton-shimmer 1.25s ease-in-out infinite;
+        }
+
+        @keyframes tweet-skeleton-shimmer {
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .tweet-skeleton-bar,
+        .tweet-skeleton-circle,
+        .tweet-skeleton-rect {
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(90deg, #1f2937 25%, #374151 37%, #1f2937 63%);
+            background-size: 400% 100%;
+            animation: tweet-skeleton-pulse 1.2s ease-in-out infinite;
+        }
+
+        @keyframes tweet-skeleton-pulse {
+            0%,
+            100% {
+                background-position: 200% 0;
+            }
+
+            50% {
+                background-position: -200% 0;
+            }
+        }
+    </style>
 </head>
 
 <body class=" bg-black ">
@@ -84,149 +134,8 @@
                         </div>
                     </div>
                 </div>
-
-
-                <div class="border border-gray-400 p-3">
-                    <div class="flex items-center gap-2">
-                        <div> <img class="h-8 pr-2"
-                        src="https://www.bing.com/th/id/OIP.6cECdI45_I2-tWe4AggXMQAAAA?w=180&h=180&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
-                        alt=""></div>
-                        <span class="font-bold">THE KIINE</span>
-                        <div class="font-thin text-gray-400 text-sm flex gap-70">
-                            <span>@asherkiine • 16h</span>
-                            <span class="cursor-pointer hover:text-blue-400">•••</span>
-                        </div>
-                    </div>
-                    <div class="ml-12 flex flex-col gap-3">
-
-                        <div>What number do you see? <br>
-                            
-                            RT LEVEL- VERY HARD Nobody is yet to find the number <br>
-                            
-                            Correct answer wins $6,000 <br>
-                            
-                            Ends 87hrs</div>
-                            <div><img class="rounded-2xl" src="https://pbs.twimg.com/media/HJK8ldSXAAAXcsz?format=jpg&name=small" alt=""></div>
-                            <div class="flex justify-around">
-                                <span class="flex gap-1 items-center cursor-pointer">
-                                    <img src="assets/comment.svg" alt="">
-                                    <span class="font-thin text-gray-400 text-sm">
-                                        7.9K
-                                    </span>
-                                </span>
-                                <span class="flex gap-1 items-center cursor-pointer">
-                                    <img src="assets/repost.svg" alt="">
-                                    <span class="font-thin text-gray-400 text-sm">
-                                        7.9K
-                                    </span>
-                                </span>
-                                <span class="flex gap-1 items-center cursor-pointer">
-                                    <img src="assets/like.svg" alt="">
-                                    <span class="font-thin text-gray-400 text-sm">
-                                        7.9K
-                                    </span>
-                                </span>
-                                <span class="flex gap-1 items-center cursor-pointer">
-                                    <img src="assets/view.svg" alt="">
-                                    <span class="font-thin text-gray-400 text-sm">
-                                        7.9K
-                                    </span>
-                                </span>
-                            </div>
-                        </div>
-                </div>
-
-
-
-                <div class="border border-gray-400 p-3">
-                    <div class="flex items-center gap-2">
-                        <div> <img class="h-8 pr-2"
-                        src="https://www.bing.com/th/id/OIP.6cECdI45_I2-tWe4AggXMQAAAA?w=180&h=180&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
-                        alt=""></div>
-                        <span class="font-bold">Echo</span>
-                        <div class="font-thin text-gray-400 text-sm flex gap-63">
-                            <span>@BrokenDreamszz • 25 May</span>
-                            <span class="cursor-pointer hover:text-blue-400">•••</span>
-                        </div>
-                    </div>
-                    <div class="ml-12 flex flex-col gap-3">
-                            <div><img class="rounded-2xl" src="https://pbs.twimg.com/media/HJJQZ4faIAEHG6_?format=jpg&name=small" alt=""></div>
-                            <div class="flex justify-around">
-                                <span class="flex gap-1 items-center cursor-pointer">
-                                    <img src="assets/comment.svg" alt="">
-                                    <span class="font-thin text-gray-400 text-sm">
-                                        7.9K
-                                    </span>
-                                </span>
-                                <span class="flex gap-1 items-center cursor-pointer">
-                                    <img src="assets/repost.svg" alt="">
-                                    <span class="font-thin text-gray-400 text-sm">
-                                        7.9K
-                                    </span>
-                                </span>
-                                <span class="flex gap-1 items-center cursor-pointer">
-                                    <img src="assets/like.svg" alt="">
-                                    <span class="font-thin text-gray-400 text-sm">
-                                        7.9K
-                                    </span>
-                                </span>
-                                <span class="flex gap-1 items-center cursor-pointer">
-                                    <img src="assets/view.svg" alt="">
-                                    <span class="font-thin text-gray-400 text-sm">
-                                        7.9K
-                                    </span>
-                                </span>
-                            </div>
-                        </div>
-                </div>
-
-
-
-                <div class="border border-gray-400 p-3">
-                    <div class="flex items-center gap-2">
-                        <div> <img class="h-8 pr-2"
-                        src="https://www.bing.com/th/id/OIP.6cECdI45_I2-tWe4AggXMQAAAA?w=180&h=180&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
-                        alt=""></div>
-                        <span class="font-bold">LeoDaVinciWave</span>
-                        <div class="font-thin text-gray-400 text-sm flex gap-48">
-                            <span>@LeoDaVinciWave • 23h</span>
-                            <span class="cursor-pointer hover:text-blue-400">•••</span>
-                        </div>
-                        
-                    </div>
-                    <div class="ml-12 flex flex-col gap-3">
-
-                        <div>19 years of storage evolution</div>
-                            <div><img class="rounded-2xl" src="https://pbs.twimg.com/media/HJKrIEBasAAbqw9?format=jpg&name=small" alt=""></div>
-                            <div class="flex justify-around">
-                                <span class="flex gap-1 items-center cursor-pointer">
-                                    <img src="assets/comment.svg" alt="">
-                                    <span class="font-thin text-gray-400 text-sm">
-                                        7.9K
-                                    </span>
-                                </span>
-                                <span class="flex gap-1 items-center cursor-pointer">
-                                    <img src="assets/repost.svg" alt="">
-                                    <span class="font-thin text-gray-400 text-sm">
-                                        7.9K
-                                    </span>
-                                </span>
-                                <span class="flex gap-1 items-center cursor-pointer">
-                                    <img src="assets/like.svg" alt="">
-                                    <span class="font-thin text-gray-400 text-sm">
-                                        7.9K
-                                    </span>
-                                </span>
-                                <span class="flex gap-1 items-center cursor-pointer">
-                                    <img src="assets/view.svg" alt="">
-                                    <span class="font-thin text-gray-400 text-sm">
-                                        7.9K
-                                    </span>
-                                </span>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
+                <div id="tweet-feed" class="flex flex-col">
+                    <div id="tweet-feed-sentinel" class="h-px w-full"></div>
                 </div>
                 
 
@@ -375,6 +284,238 @@
 
         </div>
     </div>
+    <script>
+        (() => {
+            const feed = document.getElementById('tweet-feed');
+            const sentinel = document.getElementById('tweet-feed-sentinel');
+            if (!feed || !sentinel) {
+                return;
+            }
+
+            const posts = [
+                {
+                    author: 'THE KIINE',
+                    handle: '@asherkiine',
+                    time: '16h',
+                    text: 'What number do you see? RT LEVEL- VERY HARD Nobody is yet to find the number. Correct answer wins $6,000. Ends 87hrs.',
+                    image: 'https://pbs.twimg.com/media/HJK8ldSXAAAXcsz?format=jpg&name=small',
+                    stats: ['7.9K', '7.9K', '7.9K', '7.9K']
+                },
+                {
+                    author: 'Echo',
+                    handle: '@BrokenDreamszz',
+                    time: '25 May',
+                    text: 'Some ideas need a slower rollout. Small batches, strong signals, and clean visuals make a feed feel alive.',
+                    image: 'https://pbs.twimg.com/media/HJJQZ4faIAEHG6_?format=jpg&name=small',
+                    stats: ['1.2K', '3.1K', '8.9K', '14K']
+                },
+                {
+                    author: 'LeoDaVinciWave',
+                    handle: '@LeoDaVinciWave',
+                    time: '23h',
+                    text: '19 years of storage evolution. Sometimes the best UX is just giving the user the next thing right when they ask for it.',
+                    image: 'https://pbs.twimg.com/media/HJKrIEBasAAbqw9?format=jpg&name=small',
+                    stats: ['943', '4.8K', '11K', '9.4K']
+                },
+                {
+                    author: 'PixelPulse',
+                    handle: '@pixelpulsehq',
+                    time: '11h',
+                    text: 'Infinite scroll only feels smooth when the next items arrive before the user thinks about waiting.'
+                },
+                {
+                    author: 'MayaBuilds',
+                    handle: '@mayabuilds',
+                    time: '8h',
+                    text: 'Skeleton loading keeps the interface honest. You can see the shape of the feed before the content lands.',
+                    image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80'
+                },
+                {
+                    author: 'CloudDrift',
+                    handle: '@clouddrift',
+                    time: '6h',
+                    text: 'Batched rendering beats dumping the entire timeline onto the page at once. The browser gets to breathe.'
+                },
+                {
+                    author: 'AishaCodes',
+                    handle: '@aishacodes',
+                    time: '4h',
+                    text: 'A polished feed needs motion, but it also needs restraint. Loading states are part of the design system.',
+                    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80'
+                },
+                {
+                    author: 'MarinaByte',
+                    handle: '@marinabyte',
+                    time: '3h',
+                    text: 'When the content is longer than the viewport, the observer should quietly keep the next chunk ready.'
+                },
+                {
+                    author: 'RohanBuilds',
+                    handle: '@rohanbuilds',
+                    time: '2h',
+                    text: 'This is the kind of feature users notice only when it is missing. That is usually a good sign.'
+                },
+                {
+                    author: 'SiennaNotes',
+                    handle: '@siennanotes',
+                    time: '1h',
+                    text: 'A skeleton card should feel like the feed is already there, just still arriving.',
+                    image: 'https://images.unsplash.com/photo-1522199794611-8a4c9b20d2a8?auto=format&fit=crop&w=1200&q=80'
+                },
+                {
+                    author: 'TuringLoop',
+                    handle: '@turingloop',
+                    time: '41m',
+                    text: 'IntersectionObserver is the nicest way to say “load the next thing when the user gets close.”'
+                },
+                {
+                    author: 'VibeMatrix',
+                    handle: '@vibematrix',
+                    time: '12m',
+                    text: 'The best infinite feeds do less work upfront and more work exactly when it becomes useful.'
+                }
+            ];
+
+            const batchSize = 4;
+            const prefetchMargin = 1200;
+            let nextIndex = 0;
+            let loading = false;
+            let observer;
+
+            const createActions = (stats) => `
+                <div class="flex justify-around">
+                    <span class="flex gap-1 items-center cursor-pointer">
+                        <img src="assets/comment.svg" alt="">
+                        <span class="font-thin text-gray-400 text-sm">${stats?.[0] ?? '1.2K'}</span>
+                    </span>
+                    <span class="flex gap-1 items-center cursor-pointer">
+                        <img src="assets/repost.svg" alt="">
+                        <span class="font-thin text-gray-400 text-sm">${stats?.[1] ?? '4.1K'}</span>
+                    </span>
+                    <span class="flex gap-1 items-center cursor-pointer">
+                        <img src="assets/like.svg" alt="">
+                        <span class="font-thin text-gray-400 text-sm">${stats?.[2] ?? '9.7K'}</span>
+                    </span>
+                    <span class="flex gap-1 items-center cursor-pointer">
+                        <img src="assets/view.svg" alt="">
+                        <span class="font-thin text-gray-400 text-sm">${stats?.[3] ?? '18K'}</span>
+                    </span>
+                </div>`;
+
+            const renderPost = (post) => `
+                <article class="border border-gray-400 p-3">
+                    <div class="flex items-center gap-2">
+                        <div>
+                            <img class="h-8 pr-2 rounded-full object-cover"
+                                src="https://www.bing.com/th/id/OIP.6cECdI45_I2-tWe4AggXMQAAAA?w=180&h=180&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
+                                alt="">
+                        </div>
+                        <span class="font-bold">${post.author}</span>
+                        <div class="font-thin text-gray-400 text-sm flex flex-1 justify-between gap-4">
+                            <span>${post.handle} • ${post.time}</span>
+                            <span class="cursor-pointer hover:text-blue-400">•••</span>
+                        </div>
+                    </div>
+                    <div class="ml-12 flex flex-col gap-3">
+                        <div>${post.text}</div>
+                        ${post.image ? `<div><img class="rounded-2xl w-full max-h-[28rem] object-cover" loading="lazy" src="${post.image}" alt=""></div>` : ''}
+                        ${createActions(post.stats)}
+                    </div>
+                </article>
+            `;
+
+            const renderSkeleton = () => `
+                <article class="tweet-skeleton-card border border-gray-400 p-3">
+                    <div class="flex items-center gap-2">
+                        <div class="tweet-skeleton-circle h-8 w-8 rounded-full"></div>
+                        <div class="flex flex-1 flex-col gap-2">
+                            <div class="tweet-skeleton-bar h-4 w-1/3 rounded-full"></div>
+                            <div class="tweet-skeleton-bar h-3 w-2/5 rounded-full"></div>
+                        </div>
+                    </div>
+                    <div class="ml-12 mt-4 flex flex-col gap-3">
+                        <div class="tweet-skeleton-bar h-4 w-full rounded-full"></div>
+                        <div class="tweet-skeleton-bar h-4 w-11/12 rounded-full"></div>
+                        <div class="tweet-skeleton-bar h-4 w-4/5 rounded-full"></div>
+                        <div class="tweet-skeleton-rect h-56 rounded-2xl"></div>
+                        <div class="flex justify-around">
+                            <div class="tweet-skeleton-bar h-4 w-14 rounded-full"></div>
+                            <div class="tweet-skeleton-bar h-4 w-14 rounded-full"></div>
+                            <div class="tweet-skeleton-bar h-4 w-14 rounded-full"></div>
+                            <div class="tweet-skeleton-bar h-4 w-14 rounded-full"></div>
+                        </div>
+                    </div>
+                </article>
+            `;
+
+            const setLoading = (state) => {
+                loading = state;
+                sentinel.setAttribute('aria-busy', state ? 'true' : 'false');
+            };
+
+            const shouldPrefetchMore = () => {
+                const sentinelTop = sentinel.getBoundingClientRect().top;
+                return sentinelTop <= window.innerHeight + prefetchMargin;
+            };
+
+            const appendSkeletons = () => {
+                const frag = document.createDocumentFragment();
+                const wrapper = document.createElement('div');
+                wrapper.innerHTML = Array.from({ length: batchSize }, renderSkeleton).join('');
+                while (wrapper.firstChild) {
+                    frag.appendChild(wrapper.firstChild);
+                }
+                feed.insertBefore(frag, sentinel);
+            };
+
+            const removeSkeletons = () => {
+                feed.querySelectorAll('.tweet-skeleton-card').forEach((node) => node.remove());
+            };
+
+            const appendNextBatch = () => {
+                if (loading || nextIndex >= posts.length) {
+                    return;
+                }
+
+                setLoading(true);
+                appendSkeletons();
+
+                window.setTimeout(() => {
+                    removeSkeletons();
+                    const slice = posts.slice(nextIndex, nextIndex + batchSize);
+                    const batch = document.createDocumentFragment();
+                    const wrapper = document.createElement('div');
+                    wrapper.innerHTML = slice.map(renderPost).join('');
+                    while (wrapper.firstChild) {
+                        batch.appendChild(wrapper.firstChild);
+                    }
+                    feed.insertBefore(batch, sentinel);
+                    nextIndex += slice.length;
+                    setLoading(false);
+                    if (nextIndex < posts.length && shouldPrefetchMore()) {
+                        window.setTimeout(appendNextBatch, 50);
+                        return;
+                    }
+                    if (observer && nextIndex >= posts.length) {
+                        observer.disconnect();
+                    }
+                }, 700);
+            };
+
+            observer = new IntersectionObserver((entries) => {
+                if (entries.some((entry) => entry.isIntersecting)) {
+                    appendNextBatch();
+                }
+            }, {
+                root: null,
+                rootMargin: '1200px 0px',
+                threshold: 0.1,
+            });
+
+            observer.observe(sentinel);
+            appendNextBatch();
+        })();
+    </script>
 </body>
 
 </html>
