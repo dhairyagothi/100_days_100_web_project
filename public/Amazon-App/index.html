@@ -80,15 +80,15 @@
             </div>
 
             <!-- Deals & Offers (Simple Link) -->
-            <a href="#" class="sidebar-link">
+            <a href="deals.html" class="sidebar-link" id="sidebar-deals-link">
                 <span class="header-icon tag-icon"><i class="fa-solid fa-tag"></i></span>
-                Deals & Offers
+                Deals &amp; Offers
             </a>
 
             <!-- My Account (Accordion) -->
             <div class="sidebar-accordion">
                 <button type="button" class="accordion-header" onclick="toggleSidebarAccordion(this)">
-                    <span class="header-title">   
+                    <span class="header-title">
                         <span class="header-icon user-icon"><i class="fa-solid fa-user"></i></span>
                         My Account
                     </span>
@@ -97,7 +97,7 @@
                 <div class="accordion-content">
                     <ul class="submenu-list">
                         <li>Profile</li>
-                        <li>Orders</li>
+                        <li><a href="cart.html">Orders</a></li>
                         <li>Wishlist</li>
                         <li>Settings</li>
                         <li><button onclick="signOut()">Sign Out</button></li>
@@ -116,8 +116,8 @@
                 </button>
                 <div class="accordion-content">
                     <ul class="submenu-list">
-                        <li>Help Center</li>
-                        <li>FAQs</li>
+                        <li><a href="Customer-Service/index.html">Help Center</a></li>
+                        <li><a href="Customer-Service/index.html">FAQs</a></li>
                     </ul>
                 </div>
             </div>
@@ -196,8 +196,10 @@
             </div>
 
             <div class="nav-text">
-                <p>Return</p>
-                <h1>& Orders</h1>
+                <a href="Customer-Service/index.html" style="color: inherit; text-decoration: none;">
+                    <p>Return</p>
+                    <h1>& Orders</h1>
+                </a>
             </div>
 
            <button class="nav-cart" type="button" aria-label="Shopping Cart">
@@ -212,8 +214,8 @@
             <img src="./assets/menu_icon.png" width="25px" alt="Menu">
             <p>All</p>
         </div>
-        <a href="/" role="button">Today's Deals</a>
-        <a href="/" role="button">Customer Service</a>
+        <a href="deals.html" role="button" id="nav-todays-deals">Today's Deals</a>
+        <a href="Customer-Service/index.html" role="button">Customer Service</a>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSfsZc3yChN-f_8LOi2RnXWVHkaBe40aSok60pHm5HIIvMagGQ/viewform" role="button">Registry</a>
         <a href="/" role="button">Gift Cards</a>
         <a href="/" role="button">Sell</a>

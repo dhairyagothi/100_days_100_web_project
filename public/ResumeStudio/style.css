@@ -532,6 +532,66 @@ textarea{
 
 }
 
+@media (min-width: 769px) and (max-width: 1400px){
+
+    body{
+        overflow:auto;
+    }
+
+    .app{
+        display:grid;
+        grid-template-columns:240px 1fr;
+        grid-template-areas:
+            "sidebar editor"
+            "sidebar preview";
+
+        gap:20px;
+        height:auto;
+        align-items:start;
+    }
+
+    .sidebar{
+        grid-area:sidebar;
+        height:calc(100vh - 36px);
+        position:sticky;
+        top:18px;
+    }
+
+    .editor{
+        grid-area:editor;
+        overflow:visible;
+        padding-right:0;
+    }
+
+    .preview{
+        grid-area:preview;
+        display:block;
+        overflow:visible;
+        padding-right:0;
+    }
+
+    .form-card{
+        width:100%;
+        margin-bottom:0;
+    }
+
+    .resume-sheet{
+        max-width:100%;
+        min-height:auto;
+    }
+
+    .top-bar h1{
+        font-size:32px;
+    }
+    .score-circle{
+        width:130px;
+        height:130px;
+        font-size:42px;
+    }
+    
+    
+}
+
 @media(max-width:900px){
 
     body{

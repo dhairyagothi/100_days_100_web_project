@@ -1,4 +1,3 @@
-
 // ==========================
 // INTRO LOADER
 // ==========================
@@ -7,11 +6,11 @@ window.addEventListener("load", () => {
 
     const intro = document.querySelector(".intro-screen");
 
-    setTimeout(() => {
-
-        intro.classList.add("hide-intro");
-
-    }, 4000);
+    if (intro) {
+        setTimeout(() => {
+            intro.classList.add("hide-intro");
+        }, 4000);
+    }
 
 });
 
@@ -32,7 +31,9 @@ previewButtons.forEach(button => {
 
     button.addEventListener("click", () => {
 
-        previewModal.style.display = "flex";
+        if (previewModal) {
+            previewModal.style.display = "flex";
+        }
 
     });
 
@@ -42,7 +43,9 @@ previewCloseButtons.forEach(button => {
 
     button.addEventListener("click", () => {
 
-        previewModal.style.display = "none";
+        if (previewModal) {
+            previewModal.style.display = "none";
+        }
 
     });
 
@@ -77,24 +80,37 @@ codeButtons.forEach(button => {
         const card =
             button.closest(".animation-card");
 
+        if (!card) return;
+
         const animationKey =
             card.dataset.animation;
 
         const animation =
             animationLibrary[animationKey];
 
-        if (!animation) return;
+        if (!animation) {
+            console.warn(`Animation "${animationKey}" not found`);
+            return;
+        }
 
-        codeTitle.textContent =
-            animation.title + " Code";
+        if (codeTitle) {
+            codeTitle.textContent =
+                animation.title + " Code";
+        }
 
-        htmlCode.textContent =
-            animation.html;
+        if (htmlCode) {
+            htmlCode.textContent =
+                animation.html;
+        }
 
-        cssCode.textContent =
-            animation.css;
+        if (cssCode) {
+            cssCode.textContent =
+                animation.css;
+        }
 
-        codeModal.style.display = "flex";
+        if (codeModal) {
+            codeModal.style.display = "flex";
+        }
 
     });
 
@@ -104,7 +120,9 @@ codeCloseButtons.forEach(button => {
 
     button.addEventListener("click", () => {
 
-        codeModal.style.display = "none";
+        if (codeModal) {
+            codeModal.style.display = "none";
+        }
 
     });
 
@@ -116,13 +134,13 @@ codeCloseButtons.forEach(button => {
 
 window.addEventListener("click", (e) => {
 
-    if (e.target === previewModal) {
+    if (e.target === previewModal && previewModal) {
 
         previewModal.style.display = "none";
 
     }
 
-    if (e.target === codeModal) {
+    if (e.target === codeModal && codeModal) {
 
         codeModal.style.display = "none";
 
@@ -133,6 +151,7 @@ window.addEventListener("click", (e) => {
 // ==========================
 // COPY CODE BUTTON
 // ==========================
+
 const copyButton = document.querySelector(".copy-btn");
 
 if (copyButton) {
@@ -142,21 +161,35 @@ if (copyButton) {
         const allCode =
 `HTML
 
-${htmlCode.textContent}
+${htmlCode?.textContent || ""}
 
 CSS
 
-${cssCode.textContent}`;
+${cssCode?.textContent || ""}`;
 
-        navigator.clipboard.writeText(allCode);
+        navigator.clipboard.writeText(allCode)
+            .then(() => {
 
-        copyButton.innerText = "Copied ✓";
+                copyButton.innerText = "Copied ✓";
 
-        setTimeout(() => {
+                setTimeout(() => {
 
-            copyButton.innerText = "Copy Code";
+                    copyButton.innerText = "Copy Code";
 
-        }, 2000);
+                }, 2000);
+
+            })
+            .catch(() => {
+
+                copyButton.innerText = "Copy Failed";
+
+                setTimeout(() => {
+
+                    copyButton.innerText = "Copy Code";
+
+                }, 2000);
+
+            });
 
     });
 
@@ -178,12 +211,16 @@ cards.forEach(card => {
         card.querySelector(".preview-btn");
 
     const title =
-        card.querySelector("h3").innerText;
+        card.querySelector("h3")?.innerText;
+
+    if (!btn || !title) return;
 
     btn.addEventListener("click", () => {
 
-        modalTitle.textContent =
-            title + " Preview";
+        if (modalTitle) {
+            modalTitle.textContent =
+                title + " Preview";
+        }
 
     });
 
@@ -197,9 +234,101 @@ document.addEventListener("keydown", (e) => {
 
     if (e.key === "Escape") {
 
-        previewModal.style.display = "none";
-        codeModal.style.display = "none";
+        if (previewModal) {
+            previewModal.style.display = "none";
+        }
+
+        if (codeModal) {
+            codeModal.style.display = "none";
+        }
 
     }
 
+});
+
+// ==========================
+// Search Animations
+// ==========================
+
+const searchInput = document.getElementById("searchInput");
+const clearSearch = document.getElementById("clearSearch");
+const filterSelect = document.getElementById("filterSelect");
+const animationCards = document.querySelectorAll(".animation-card");
+
+function filterCards() {
+  const searchTerm = searchInput.value.trim().toLowerCase();
+  const selectedCategory = filterSelect.value.toLowerCase();
+
+  animationCards.forEach((card) => {
+    // Search by animation title
+    const animationName = card
+      .querySelector("h3")
+      .textContent
+      .trim()
+      .toLowerCase();
+
+    // Filter by data-category
+    const cardCategory = (
+      card.dataset.category || ""
+    ).trim().toLowerCase();
+
+    const matchesSearch =
+      searchTerm === "" ||
+      animationName.includes(searchTerm);
+
+    const matchesCategory =
+      selectedCategory === "all" ||
+      cardCategory === selectedCategory;
+
+    if (matchesSearch && matchesCategory) {
+      card.style.display = "";
+    } else {
+      card.style.display = "none";
+    }
+  });
+
+  // Show/hide clear icon
+  clearSearch.style.display =
+    searchTerm.length > 0 ? "block" : "none";
+}
+
+// Search while typing
+searchInput.addEventListener("input", filterCards);
+
+// Filter dropdown change
+filterSelect.addEventListener("change", filterCards);
+
+// Clear search
+clearSearch.addEventListener("click", () => {
+  searchInput.value = "";
+  filterSelect.value = "all";
+  filterCards();
+});
+
+// Initial load
+filterCards();
+
+// ==========================
+// Theme Toggle
+// ==========================
+
+const themeToggle = document.getElementById("themeToggle");
+
+// Load saved theme
+if (localStorage.getItem("theme") === "dark") {
+  document.body.classList.add("dark-theme");
+  themeToggle.textContent = "☀️";
+}
+
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark-theme");
+
+  const isDark = document.body.classList.contains("dark-theme");
+
+  themeToggle.textContent = isDark ? "☀️" : "🌙";
+
+  localStorage.setItem(
+    "theme",
+    isDark ? "dark" : "light"
+  );
 });
