@@ -192,10 +192,18 @@ function updateMetrics() {
   const total = tasks.length;
   const done = tasks.filter(t => t.completed).length;
   const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+  const fillColor = pct >= 67
+    ? "linear-gradient(90deg, #14b8a6, #22c55e)"
+    : pct >= 34
+      ? "linear-gradient(90deg, #f59e0b, #fbbf24)"
+      : "linear-gradient(90deg, #ef4444, #fb7185)";
 
   // Update progress UI (matches HTML)
-  if (progressFill) progressFill.style.width = `${pct}%`;
-  if (progressText) progressText.innerText = `${done} / ${total} done`;
+  if (progressFill) {
+    progressFill.style.width = `${pct}%`;
+    progressFill.style.background = fillColor;
+  }
+  if (progressText) progressText.innerText = `${done} / ${total} completed`;
 
   // Show ‘Clear Done’ button only when at least one task is completed
   const clearDoneBtn = document.getElementById('cleardone');
@@ -206,6 +214,10 @@ function updateMetrics() {
 function showHome() {
   document.getElementById("nav-home").classList.add("active");
   document.getElementById("nav-documents").classList.remove("active");
+  const navHome = document.getElementById("nav-home");
+  const navDocuments = document.getElementById("nav-documents");
+  if (navHome) navHome.setAttribute("aria-current", "page");
+  if (navDocuments) navDocuments.removeAttribute("aria-current");
   document.getElementById("home-tab").removeAttribute("hidden");
   document.getElementById("home-tab").style.display = "block";
   document.getElementById("documents-tab").setAttribute("hidden", "");
@@ -215,6 +227,10 @@ function showHome() {
 function showDocuments() {
   document.getElementById("nav-home").classList.remove("active");
   document.getElementById("nav-documents").classList.add("active");
+  const navHome = document.getElementById("nav-home");
+  const navDocuments = document.getElementById("nav-documents");
+  if (navHome) navHome.removeAttribute("aria-current");
+  if (navDocuments) navDocuments.setAttribute("aria-current", "page");
   document.getElementById("home-tab").setAttribute("hidden", "");
   document.getElementById("home-tab").style.display = "none";
   document.getElementById("documents-tab").removeAttribute("hidden");
