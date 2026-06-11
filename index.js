@@ -1797,7 +1797,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   initTechStackSearch();
   initClearAllFilters();
 
-  initStreak();
+  if (typeof initStreak === "function") initStreak();
   updateGamifiedUI();
 
   try {
