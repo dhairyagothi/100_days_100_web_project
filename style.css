@@ -270,17 +270,31 @@ body.light-mode .navbar {
 .btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.4rem;
   padding: 0.5rem 1rem;
   font-family: 'Inter Tight', sans-serif;
   font-size: 0.8125rem;
   font-weight: 500;
+  min-height: 2.5rem;
   border-radius: var(--radius-md);
   text-decoration: none;
   cursor: pointer;
   transition: var(--t);
   border: 1px solid transparent;
   white-space: nowrap;
+}
+
+.btn:focus-visible,
+.view-all-btn:focus-visible,
+.chip:focus-visible,
+.bookmark-btn:focus-visible,
+#themeToggle:focus-visible,
+#scrollBtn:focus-visible,
+.pagination-controls button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--accent-dim);
 }
 
 .btn-primary {
@@ -534,7 +548,7 @@ body.light-mode .navbar {
 
 .hero-actions {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.9rem;
   justify-content: center;
   flex-wrap: wrap;
   margin-bottom: 3rem;
@@ -545,6 +559,7 @@ body.light-mode .navbar {
 .hero-actions .btn {
   padding: 0.65rem 1.5rem;
   font-size: 0.875rem;
+  min-width: 11.5rem;
 }
 
 /* Stats strip — inline, elegant, one row */
@@ -626,33 +641,31 @@ body.light-mode .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  gap: 1rem;
+  gap: 0.75rem 1rem;
+  flex-wrap: wrap;
 }
 
 .view-all-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  min-height: 2.375rem;
+  padding: 0.45rem 1rem;
   border: 1px solid var(--border);
-
-  background: transparent;
-
+  background: rgba(255, 255, 255, 0.02);
   color: var(--text-secondary);
-
-  padding: 0.45rem 0.9rem;
-
-  border-radius: 10px;
-
+  border-radius: 999px;
   font-size: 0.8rem;
-
+  font-weight: 600;
   cursor: pointer;
-
   transition: var(--t);
+  white-space: nowrap;
 }
 
 .view-all-btn:hover {
   background: var(--accent-dim);
-
   color: var(--accent);
-
   border-color: var(--border-accent);
 }
 
@@ -712,6 +725,7 @@ body.light-mode .navbar {
 .chip {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.25rem;
   padding: 0.22rem 0.6rem;
   font-family:
@@ -727,6 +741,7 @@ body.light-mode .navbar {
   color: var(--text-muted);
   cursor: pointer;
   transition: var(--t);
+  min-height: 2rem;
 }
 
 .chip:hover {
@@ -927,19 +942,12 @@ body.light-mode .navbar {
 .bookmark-btn {
   width: 38px;
   height: 38px;
-
   border-radius: 10px;
-
   border: 1px solid var(--border);
-
   background: transparent;
-
   color: var(--text-secondary);
-
   cursor: pointer;
-
   transition: var(--t);
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -947,21 +955,15 @@ body.light-mode .navbar {
 
 .bookmark-btn:hover {
   background: var(--accent-dim);
-
   border-color: var(--border-accent);
-
   color: var(--accent);
-
   transform: translateY(-2px);
 }
 
 .bookmark-btn.active {
   background: var(--accent-dim);
-
   border-color: var(--border-accent);
-
   color: var(--accent);
-
   box-shadow: 0 0 12px rgba(59, 130, 246, 0.25);
 }
 
@@ -1329,6 +1331,7 @@ html {
   }
   .hero-actions .btn {
     width: 100%;
+    min-width: 0;
     justify-content: center;
   }
   .stats-strip {
@@ -1587,4 +1590,3 @@ body.light-mode .brand-mark {
     background: linear-gradient(180deg, rgba(59, 130, 246, 0.15), rgba(255, 255, 255, 0.9));
     border: 1px solid rgba(0, 0, 0, 0.08);
 }
-
