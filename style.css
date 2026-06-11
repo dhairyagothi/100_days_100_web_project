@@ -1985,6 +1985,27 @@ input:focus {
   transform: translateY(-1px);
 }
 
+.view-source-link,
+.source-link-btn {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.view-source-link:hover,
+.source-link-btn:hover {
+  color: var(--accent);
+  border-color: var(--border-accent);
+  background: var(--accent-dim);
+  transform: translateY(-2px);
+}
+
 .bookmark-btn {
   width: 38px;
   height: 38px;
