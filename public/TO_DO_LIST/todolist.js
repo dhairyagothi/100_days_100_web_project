@@ -346,6 +346,10 @@ function Add() {
   taskInput.focus();
 }
 
+function addTask() {
+  Add();
+}
+
 // Allow pressing Enter in the input to add a task
 taskInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') Add();
@@ -473,6 +477,7 @@ function deletePDF(button) {
 }
 
 function showPDFMessage() {
+  if (!pdfMessage) return;
   pdfMessage.style.display = 'flex';
   setTimeout(() => {
     pdfMessage.style.display = 'none';
@@ -527,10 +532,9 @@ function updateNotesTheme() {
     }
   });
 }
-/* =========================
-   KANBAN DRAG DROP FEATURE
-   (Append below existing code)
-
+// =========================
+// KANBAN DRAG DROP FEATURE
+// =========================
 // Make all newly created notes draggable
 function enableDragForNotes() {
   const notes = document.querySelectorAll(".notes");
