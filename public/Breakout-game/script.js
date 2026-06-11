@@ -684,7 +684,8 @@ function startGame() {
     gameState.level = 1;
     gameState.bricksDestroyed = 0;
     
-    paddle.speed = settings.paddleSpeed;
+    const savedSensitivity = localStorage.getItem("breakoutSensitivity");
+    paddle.speed = savedSensitivity ? parseInt(savedSensitivity) : settings.paddleSpeed;
     ball.speed = settings.ballSpeed;
     
     initializeBricks();
@@ -819,6 +820,17 @@ document.querySelectorAll(".difficulty-btn").forEach(btn => {
         document.querySelectorAll(".difficulty-btn").forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
         gameState.difficulty = btn.dataset.difficulty;
+        
+        // Update sensitivity slider based on new difficulty default speed
+        const settings = difficultySettings[gameState.difficulty];
+        const sensitivitySlider = document.getElementById("sensitivity");
+        const sensitivityValue = document.getElementById("sensitivity-value");
+        if (sensitivitySlider) {
+            paddle.speed = settings.paddleSpeed;
+            sensitivitySlider.value = paddle.speed;
+            if (sensitivityValue) sensitivityValue.textContent = paddle.speed;
+            localStorage.setItem("breakoutSensitivity", paddle.speed);
+        }
     });
 });
 
@@ -834,6 +846,30 @@ window.addEventListener("load", () => {
     document.getElementById("high-score-display").textContent = gameState.highScore;
     document.getElementById("sound-btn").textContent = soundEnabled ? "🔊 Sound" : "🔇 Muted";
     document.getElementById("rules-container").classList.remove("hidden");
+    
+    // Initialize Paddle Speed Slider
+    const sensitivitySlider = document.getElementById("sensitivity");
+    const sensitivityValue = document.getElementById("sensitivity-value");
+    if (sensitivitySlider) {
+        const savedSensitivity = localStorage.getItem("breakoutSensitivity");
+        if (savedSensitivity) {
+            paddle.speed = parseInt(savedSensitivity);
+            sensitivitySlider.value = paddle.speed;
+        } else {
+            const settings = difficultySettings[gameState.difficulty];
+            paddle.speed = settings.paddleSpeed;
+            sensitivitySlider.value = paddle.speed;
+        }
+        if (sensitivityValue) sensitivityValue.textContent = paddle.speed;
+
+        sensitivitySlider.addEventListener("input", (e) => {
+            paddle.speed = parseInt(e.target.value);
+            if (sensitivityValue) sensitivityValue.textContent = paddle.speed;
+            try {
+                localStorage.setItem("breakoutSensitivity", paddle.speed);
+            } catch (_) {}
+        });
+    }
 });
 
 canvas.addEventListener("contextmenu", e => e.preventDefault());

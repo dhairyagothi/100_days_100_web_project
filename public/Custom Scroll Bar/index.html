@@ -11,13 +11,19 @@
       box-sizing: border-box;
     }
 
+    /* 🦊 Global Firefox Standard Scrollbar Fallback */
+    html {
+      scrollbar-width: thin;
+      scrollbar-color: #6c63ff #1a1a1a;
+    }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: #0f0f0f;
       color: #f0f0f0;
     }
 
-    /* ===== CUSTOM SCROLLBAR ===== */
+    /* ===== CUSTOM SCROLLBAR (WebKit) ===== */
     ::-webkit-scrollbar {
       width: 8px;
     }
@@ -67,7 +73,7 @@
       letter-spacing: 0.05em;
     }
 
-    /* ===== HERO ===== */
+/* ===== HERO ===== */
     .hero {
       padding: 80px 40px 60px;
       max-width: 800px;
@@ -79,6 +85,7 @@
       font-weight: 700;
       background: linear-gradient(90deg, #6c63ff, #a78bfa, #ec4899);
       -webkit-background-clip: text;
+      background-clip: text; /* 🌟 Paste this line right here */
       -webkit-text-fill-color: transparent;
       margin-bottom: 16px;
       line-height: 1.2;
@@ -121,27 +128,32 @@
       font-size: 0.95rem;
       color: #aaa;
       line-height: 1.9;
+      margin-bottom: 14px;
     }
 
     /* Variant 1 — Purple gradient (default page scrollbar) */
+    .box1 { scrollbar-width: thin; scrollbar-color: #6c63ff #111; }
     .box1::-webkit-scrollbar { width: 6px; }
     .box1::-webkit-scrollbar-track { background: #111; border-radius: 10px; }
     .box1::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #6c63ff, #a78bfa); border-radius: 10px; }
     .box1::-webkit-scrollbar-thumb:hover { background: #a78bfa; }
 
     /* Variant 2 — Cyan neon */
+    .box2 { scrollbar-width: thin; scrollbar-color: #06b6d4 #111; }
     .box2::-webkit-scrollbar { width: 6px; }
     .box2::-webkit-scrollbar-track { background: #111; border-radius: 10px; }
     .box2::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #06b6d4, #22d3ee); border-radius: 10px; }
     .box2::-webkit-scrollbar-thumb:hover { background: #22d3ee; }
 
     /* Variant 3 — Pink rose */
+    .box3 { scrollbar-width: thin; scrollbar-color: #ec4899 #111; }
     .box3::-webkit-scrollbar { width: 6px; }
     .box3::-webkit-scrollbar-track { background: #111; border-radius: 10px; }
     .box3::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #ec4899, #f9a8d4); border-radius: 10px; }
     .box3::-webkit-scrollbar-thumb:hover { background: #f9a8d4; }
 
     /* Variant 4 — Amber gold */
+    .box4 { scrollbar-width: thin; scrollbar-color: #f59e0b #111; }
     .box4::-webkit-scrollbar { width: 6px; }
     .box4::-webkit-scrollbar-track { background: #111; border-radius: 10px; }
     .box4::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #f59e0b, #fcd34d); border-radius: 10px; }
@@ -201,55 +213,70 @@
       border-top: 1px solid #1a1a1a;
     }
 
-.project-back-button{
-  position:fixed;
-  top:10px;
-  right:24px;
-  z-index:9999;
+    .project-back-button {
+      position: fixed;
+      top: 10px;
+      right: 24px;
+      z-index: 9999;
+      padding: 10px 18px;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #6c63ff, #a78bfa);
+      color: white;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      box-shadow: 0 10px 25px rgba(108, 99, 255, .35);
+      transition: .3s ease;
+      border: 1px solid rgba(255, 255, 255, .08);
+    }
 
-  padding:8px 16px;
+    .project-back-button:hover {
+      transform: translateY(-2px) scale(1.03);
+      background: linear-gradient(135deg, #a78bfa, #ec4899);
+      box-shadow: 0 14px 30px rgba(167, 139, 250, .45);
+    }
 
-  border-radius:8px;
+    /* ===== RESPONSIVE BREAKPOINT ===== */
+    @media(max-width:768px) {
+      header {
+        padding: 15px 20px;
+      }
+      
+      .hero {
+        padding: 40px 20px 30px;
+      }
 
-  background:#1e293b;
+      .hero h2 {
+        font-size: 2rem;
+      }
 
-  color:#3b82f6;
-  text-decoration:none;
+      .section {
+        padding: 20px 20px;
+      }
 
-  font-size:0.85rem;
-  font-weight:600;
-  letter-spacing:.04em;
+      .grid {
+        grid-template-columns: 1fr; /* Stacks column boxes cleanly into a vertical rail layout */
+        gap: 24px;
+      }
 
-  border:1px solid #3b82f6;
+      .code-section {
+        padding: 20px 20px 60px;
+      }
 
-  transition:all 0.2s ease;
-}
-
-.project-back-button:hover{
-  background:#3b82f6;
-  color:#fff;
-}
-
-/* MOBILE */
-@media(max-width:768px){
-
-  .project-back-button{
-    top:18px;
-    right:18px;
-
-    padding:8px 15px;
-
-    font-size:.75rem;
-  }
-
-}
+      .project-back-button {
+        top: 18px;
+        right: 18px;
+        padding: 8px 15px;
+        font-size: .75rem;
+      }
+    }
   </style>
 </head>
 <body>
-<a href="/" class="project-back-button">
-  ← Back To Home
-</a>
-
+  <a href="/" class="project-back-button">
+    ← Back To Home
+  </a>
 
   <header>
     <span class="dot1"></span>
@@ -270,28 +297,36 @@
       <div>
         <p class="label">Purple Gradient</p>
         <div class="scroll-box box1">
-          <p>Scrollbars can be fully customised using the webkit scrollbar CSS properties. This variant uses a purple to violet gradient giving it a modern and sleek look. Keep scrolling to see the thumb in full motion. The track stays dark while the thumb glides smoothly along the rail. This is one of the most popular scrollbar styles used in dark themed developer tools and portfolio websites.</p>
+          <p>Scrollbars can be fully customised using the webkit scrollbar CSS properties. This variant uses a purple to violet gradient giving it a modern and sleek look. Keep scrolling to see the thumb in full motion.</p>
+          <p>The track stays dark while the thumb glides smoothly along the rail. This is one of the most popular scrollbar styles used in dark themed developer tools and portfolio websites.</p>
+          <p>By adding multiple text fields here, we can force the browser to trigger a full content overflow layout element. This guarantees that you can interact with the track design instantly on any machine setup.</p>
         </div>
       </div>
 
       <div>
         <p class="label">Cyan Neon</p>
         <div class="scroll-box box2">
-          <p>This variant uses a cyan neon color scheme that works well with dark backgrounds. It gives a futuristic and tech focused appearance commonly seen in hacker themed UI designs. The scrollbar thumb has a soft glow feel when combined with a dark track. Scroll through this box to experience how the thumb transitions from a deep cyan to a bright aqua tone on hover.</p>
+          <p>This variant uses a cyan neon color scheme that works well with dark backgrounds. It gives a futuristic and tech focused appearance commonly seen in hacker themed UI designs.</p>
+          <p>The scrollbar thumb has a soft glow feel when combined with a dark track. Scroll through this box to experience how the thumb transitions from a deep cyan to a bright aqua tone on hover.</p>
+          <p>As you glide downward, the full dynamic range of the neon track properties becomes apparent. This pattern is ideal for matrix logs, live hardware tracking charts, and network console indicators.</p>
         </div>
       </div>
 
       <div>
         <p class="label">Pink Rose</p>
         <div class="scroll-box box3">
-          <p>The pink rose variant brings a soft and elegant aesthetic to the scrollbar. This style is commonly used in creative portfolios, beauty or fashion themed websites, and any UI that targets a softer visual language. The gradient runs from a deep pink to a light blush making it feel warm and inviting. Scroll down inside this box to see the thumb travel along the dark track.</p>
+          <p>The pink rose variant brings a soft and elegant aesthetic to the scrollbar. This style is commonly used in creative portfolios, beauty or fashion themed websites, and any UI that targets a softer visual language.</p>
+          <p>The gradient runs from a deep pink to a light blush making it feel warm and inviting. Scroll down inside this box to see the thumb travel along the dark track.</p>
+          <p>Adding extended paragraphs guarantees that the layout container breaks past the maximum 200px boundary box rule. Now, creators running Firefox, Mozilla, Safari, or Chrome can view the structural consistency evenly.</p>
         </div>
       </div>
 
       <div>
         <p class="label">Amber Gold</p>
         <div class="scroll-box box4">
-          <p>Amber gold scrollbars add a premium and luxurious feel to any dark themed interface. This variant is well suited for finance dashboards, luxury brand websites, and editorial content platforms. The gradient moves from a warm amber to a bright golden yellow creating a rich and confident look. Scroll through this box to see the thumb animate from top to bottom.</p>
+          <p>Amber gold scrollbars add a premium and luxurious feel to any dark themed interface. This variant is well suited for finance dashboards, luxury brand websites, and editorial content platforms.</p>
+          <p>The gradient moves from a warm amber to a bright golden yellow creating a rich and confident look. Scroll through this box to see the thumb animate from top to bottom.</p>
+          <p>With an explicit text buffer height, the overflow engine enforces immediate rendering of the viewport tracking thumb handle. You can now easily verify the hover change state animation variables manually.</p>
         </div>
       </div>
 

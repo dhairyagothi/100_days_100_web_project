@@ -905,3 +905,66 @@ canvas {
         width: 100%;
     }
 }
+
+@media (max-width: 768px) {
+    .controls-center {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ============================================
+   PADDLE SENSITIVITY SLIDER
+   ============================================ */
+.controls-center {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg-secondary);
+    border: 2px solid var(--accent-1);
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.controls-center label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.badge {
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid var(--accent-1);
+    color: var(--accent-1);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 120px;
+    height: 6px;
+    background: var(--bg-tertiary);
+    border-radius: 3px;
+    outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent-1);
+    cursor: pointer;
+    box-shadow: 0 0 8px var(--accent-1);
+    transition: transform 0.1s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.3);
+}
