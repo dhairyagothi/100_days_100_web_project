@@ -1,4 +1,93 @@
 // =========================
+// THEME MANAGEMENT SYSTEM
+// =========================
+
+const THEME_KEY = "ai-data-analyst-theme";
+
+function getSystemTheme() {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+}
+
+function getStoredTheme() {
+  return localStorage.getItem(THEME_KEY);
+}
+
+function setTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  localStorage.setItem(THEME_KEY, theme);
+  updateChartTheme(theme);
+}
+
+function initTheme() {
+  const stored = getStoredTheme();
+  const theme = stored ? stored : getSystemTheme();
+  document.documentElement.setAttribute("data-theme", theme);
+  // Don't call updateChartTheme here; charts don't exist yet.
+}
+
+// Apply theme immediately (before DOM is fully ready to avoid flash)
+initTheme();
+
+// Listen for OS-level theme changes (only if no stored preference)
+window
+  .matchMedia("(prefers-color-scheme: dark)")
+  .addEventListener("change", (e) => {
+    if (!getStoredTheme()) {
+      setTheme(e.matches ? "dark" : "light");
+    }
+  });
+
+// =========================
+// CHART THEME HELPERS
+// =========================
+
+function getChartThemeColors() {
+  const isDark =
+    document.documentElement.getAttribute("data-theme") === "dark";
+  return {
+    grid: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.06)",
+    tick: isDark ? "#64748b" : "#94a3b8",
+    tickY: isDark ? "#94a3b8" : "#64748b",
+    heatmapBorder: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)",
+  };
+}
+
+function updateChartTheme(theme) {
+  const colors = getChartThemeColors();
+
+  // Update Chart.js global defaults
+  Chart.defaults.color = theme === "dark" ? "#94a3b8" : "#64748b";
+  Chart.defaults.borderColor =
+    theme === "dark" ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.06)";
+
+  // Update each existing chart if it exists
+  if (distributionChart) {
+    distributionChart.options.scales.x.grid.color = colors.grid;
+    distributionChart.options.scales.x.ticks.color = colors.tick;
+    distributionChart.options.scales.x.title.color = colors.tick;
+    distributionChart.options.scales.y.grid.color = colors.grid;
+    distributionChart.options.scales.y.ticks.color = colors.tick;
+    distributionChart.update();
+  }
+
+  if (categoryChart) {
+    categoryChart.options.scales.x.grid.color = colors.grid;
+    categoryChart.options.scales.x.ticks.color = colors.tick;
+    categoryChart.options.scales.y.ticks.color = colors.tickY;
+    categoryChart.update();
+  }
+
+  if (heatmapChart) {
+    heatmapChart.options.scales.x.ticks.color = colors.tickY;
+    heatmapChart.options.scales.y.ticks.color = colors.tickY;
+    heatmapChart.data.datasets[0].borderColor = colors.heatmapBorder;
+    heatmapChart.update();
+  }
+}
+
+// =========================
 // DOM ELEMENTS
 // =========================
 
@@ -34,9 +123,28 @@ let heatmapChart = null;
 // CHART.JS GLOBAL DEFAULTS
 // =========================
 
-Chart.defaults.color = "#94a3b8";
-Chart.defaults.borderColor = "rgba(255,255,255,0.07)";
+const initialTheme = document.documentElement.getAttribute("data-theme");
+Chart.defaults.color = initialTheme === "dark" ? "#94a3b8" : "#64748b";
+Chart.defaults.borderColor =
+  initialTheme === "dark"
+    ? "rgba(255,255,255,0.07)"
+    : "rgba(0,0,0,0.06)";
 Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
+
+// =========================
+// THEME TOGGLE BUTTON
+// =========================
+
+const themeToggleBtn = document.getElementById("themeToggleBtn");
+
+if (themeToggleBtn) {
+  themeToggleBtn.addEventListener("click", () => {
+    const current =
+      document.documentElement.getAttribute("data-theme") || "dark";
+    const next = current === "dark" ? "light" : "dark";
+    setTheme(next);
+  });
+}
 
 // =========================
 // DRAG & DROP
@@ -435,6 +543,7 @@ function createDistributionChart(columnName) {
   });
 
   const labels = counts.map((_, i) => `${(min + i * binSize).toFixed(0)}`);
+  const colors = getChartThemeColors();
 
   distributionChart = new Chart(document.getElementById("distributionChart"), {
     type: "bar",
@@ -459,13 +568,17 @@ function createDistributionChart(columnName) {
       },
       scales: {
         x: {
-          title: { display: true, text: `${columnName}`, color: "#64748b" },
-          grid: { color: "rgba(255,255,255,0.05)" },
-          ticks: { color: "#64748b", font: { size: 10 } },
+          title: {
+            display: true,
+            text: `${columnName}`,
+            color: colors.tick,
+          },
+          grid: { color: colors.grid },
+          ticks: { color: colors.tick, font: { size: 10 } },
         },
         y: {
-          grid: { color: "rgba(255,255,255,0.05)" },
-          ticks: { color: "#64748b", font: { size: 10 } },
+          grid: { color: colors.grid },
+          ticks: { color: colors.tick, font: { size: 10 } },
         },
       },
     },
@@ -489,6 +602,8 @@ function createCategoryChart() {
   const values = Object.values(counts).slice(0, 8);
 
   if (categoryChart) categoryChart.destroy();
+
+  const colors = getChartThemeColors();
 
   categoryChart = new Chart(document.getElementById("categoryChart"), {
     type: "bar",
@@ -515,12 +630,12 @@ function createCategoryChart() {
       },
       scales: {
         x: {
-          grid: { color: "rgba(255,255,255,0.05)" },
-          ticks: { color: "#64748b", font: { size: 10 } },
+          grid: { color: colors.grid },
+          ticks: { color: colors.tick, font: { size: 10 } },
         },
         y: {
           grid: { display: false },
-          ticks: { color: "#94a3b8", font: { size: 10 } },
+          ticks: { color: colors.tickY, font: { size: 10 } },
         },
       },
     },
@@ -579,6 +694,7 @@ function createHeatmapChart() {
   }
 
   const ctx = document.getElementById("heatmapChart");
+  const colors = getChartThemeColors();
 
   heatmapChart = new Chart(ctx, {
     type: "matrix",
@@ -590,7 +706,7 @@ function createHeatmapChart() {
 
           borderWidth: 1,
 
-          borderColor: "rgba(255,255,255,0.08)",
+          borderColor: colors.heatmapBorder,
 
           width: () => 45,
           height: () => 45,
@@ -601,24 +717,10 @@ function createHeatmapChart() {
             const alpha = Math.abs(value);
 
             if (value >= 0) {
-              return `
-                                    rgba(
-                                        139,
-                                        92,
-                                        246,
-                                        ${alpha}
-                                    )
-                                `;
+              return `rgba(139, 92, 246, ${alpha})`;
             }
 
-            return `
-                                rgba(
-                                    59,
-                                    130,
-                                    246,
-                                    ${alpha}
-                                )
-                            `;
+            return `rgba(59, 130, 246, ${alpha})`;
           },
         },
       ],
@@ -637,16 +739,11 @@ function createHeatmapChart() {
             title(items) {
               const item = items[0];
 
-              return `${numericColumns[item.raw.y]}
-↔
-${numericColumns[item.raw.x]}`;
+              return `${numericColumns[item.raw.y]}\n↔\n${numericColumns[item.raw.x]}`;
             },
 
             label(context) {
-              return `
-Correlation:
-${context.raw.v.toFixed(2)}
-`;
+              return `\nCorrelation:\n${context.raw.v.toFixed(2)}\n`;
             },
           },
         },
@@ -661,7 +758,7 @@ ${context.raw.v.toFixed(2)}
           },
 
           ticks: {
-            color: "#94a3b8",
+            color: colors.tickY,
 
             maxRotation: 30,
 
@@ -685,7 +782,7 @@ ${context.raw.v.toFixed(2)}
           },
 
           ticks: {
-            color: "#94a3b8",
+            color: colors.tickY,
 
             callback(value) {
               const label = numericColumns[Math.round(value)];

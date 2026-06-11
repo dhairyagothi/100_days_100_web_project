@@ -328,6 +328,32 @@ select:focus {
     padding-left: 34px;
 }
 
+.checkbox-group {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 18px;
+
+    cursor: pointer;
+}
+
+.checkbox-group input {
+
+    width: 18px;
+    height: 18px;
+
+    accent-color: var(--primary);
+}
+
+.category-limits-form .form-group {
+
+    margin-bottom: 12px;
+}
+
 /* ---------------- BUTTONS ---------------- */
 
 .btn {
@@ -531,6 +557,55 @@ select:focus {
     font-family: 'Outfit', sans-serif;
 }
 
+.budget-warning-message {
+
+    min-height: 18px;
+
+    margin-top: 6px;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+.stat-card.budget-warning {
+
+    border-color: rgba(245,158,11,0.65);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(245,158,11,0.22),
+            var(--panel-bg)
+        );
+}
+
+.stat-card.budget-danger {
+
+    border-color: rgba(239,68,68,0.7);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(239,68,68,0.24),
+            var(--panel-bg)
+        );
+}
+
+.stat-card.budget-warning .stat-icon,
+.stat-card.budget-warning .budget-warning-message {
+
+    color: var(--warning);
+}
+
+.stat-card.budget-danger .stat-icon,
+.stat-card.budget-danger .budget-warning-message {
+
+    color: var(--danger);
+}
+
 /* ---------------- TRACKER LAYOUT ---------------- */
 
 .tracker-layout {
@@ -668,6 +743,19 @@ select:focus {
 
     background:
         rgba(255,255,255,0.08);
+}
+
+.recurring-tag {
+
+    padding: 3px 10px;
+
+    border-radius: 999px;
+
+    background: rgba(6,182,212,0.16);
+
+    color: var(--secondary);
+
+    font-weight: 700;
 }
 
 .item-amount {
@@ -818,11 +906,13 @@ select:focus {
 
 .legend-item {
 
-    display: flex;
+    display: grid;
 
-    justify-content: space-between;
+    grid-template-columns: 1fr auto;
 
     align-items: center;
+
+    gap: 10px 16px;
 
     padding: 12px 16px;
 
@@ -861,6 +951,61 @@ select:focus {
 .legend-percent {
 
     color: var(--text-secondary);
+}
+
+.category-limit-progress {
+
+    grid-column: 1 / -1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+.category-limit-meta {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+}
+
+.progress-track {
+
+    width: 100%;
+    height: 8px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background: rgba(255,255,255,0.1);
+}
+
+.progress-fill {
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: var(--success);
+
+    transition: width 0.35s ease, background 0.35s ease;
+}
+
+.progress-fill.warning {
+
+    background: var(--warning);
+}
+
+.progress-fill.danger {
+
+    background: var(--danger);
 }
 
 /* ---------------- ANIMATION ---------------- */
@@ -972,4 +1117,25 @@ select:focus {
         width: 180px;
         height: 180px;
     }
+}
+.section-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 14px;
+
+    margin-bottom: 18px;
+}
+
+.export-btn {
+
+    width: auto;
+
+    padding: 10px 16px;
 }

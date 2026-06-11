@@ -1,556 +1,199 @@
-// DOM Element References
-const taskInput = document.getElementById('task');
-const taskTypeSelect = document.getElementById('task-category');
-const taskPrioritySelect = document.getElementById('task-priority');
-const taskList = document.getElementById('notes-container');
-const emptyState = document.getElementById('emptyState');
-const statusTabsContainer = document.getElementById('statusTabs');
+
+// 1. DOM Element References (match HTML ids/classes)
+const taskInput = document.getElementById("task");
+const taskTypeSelect = document.getElementById("task-category");
+const taskList = document.getElementById("notes-container");
+const emptyState = document.getElementById("emptyState");
 const documentsList = document.querySelector('.documents-list');
 
-// New Dashboard Elements
-const progressPercent = document.getElementById('progressPercent');
-const progressDetails = document.getElementById('progressTextSmall');
-const progressRingFill = document.querySelector('.card-progress-fill');
-const heroProgressFill = document.getElementById('heroProgressFill');
-const heroProgressText = document.getElementById('progressText');
-const currentStreakEl = document.getElementById('currentStreak');
-const longestStreakEl = document.getElementById('longestStreak');
-const unlockedBadgesEl = document.getElementById('unlockedBadges');
-const totalTasksEl = document.getElementById('totalTasks');
-const toastContainerNew = document.getElementById('toastContainer');
+// Progress / stats elements present in HTML
+const progressFill = document.getElementById("progressFill");
+const progressText = document.getElementById("progressText");
 
-// Data State
+// Data State — loaded from localStorage on startup (Bug 1 fix: persistence)
 let tasks = [];
-let savedDocs = [];
-let currentStatusFilter = 'all';
-let currentMonth = new Date().getMonth();
-let currentYear = new Date().getFullYear();
+try {
+  const stored = localStorage.getItem('todo-tasks');
+  if (stored) tasks = JSON.parse(stored);
+} catch (e) {
+  tasks = [];
+}
+let currentFilter = "all";
 
-// Productivity Stats
-let productivityStats = {
-  totalTasksCreated: 0,
-  totalTasksCompleted: 0,
-  completionPercentage: 0,
-};
-
-// Streak Data
-let streakData = {
-  currentStreak: 0,
-  longestStreak: 0,
-  lastActiveDate: null,
-  lastStreakCheck: null,
-};
-
-// Badges
-let badges = {
-  firstTask: { unlocked: false, name: 'First Task', icon: '🎯', description: 'Create your first task' },
-  firstComplete: { unlocked: false, name: 'First Complete', icon: '✅', description: 'Complete your first task' },
-  sevenDayStreak: { unlocked: false, name: '7-Day Streak', icon: '🔥', description: '7-day streak' },
-  twentyFiveTasks: { unlocked: false, name: '25 Tasks', icon: '🏆', description: 'Create 25 tasks' },
-  fiftyTasks: { unlocked: false, name: '50 Tasks', icon: '👑', description: 'Create 50 tasks' },
-};
-
-// Local Storage Persistence
+// Persist tasks to localStorage on every mutation
 function saveTasks() {
-  try {
-    localStorage.setItem('todo-tasks', JSON.stringify(tasks));
-  } catch (e) {
-    console.error('Error saving tasks:', e);
-  }
+  try { localStorage.setItem('todo-tasks', JSON.stringify(tasks)); } catch (e) { }
 }
 
-function saveDocuments() {
-  try {
-    const metaOnly = savedDocs.map(({ url, ...rest }) => rest);
-    localStorage.setItem('todo-documents', JSON.stringify(metaOnly));
-  } catch (e) {
-    console.error('Error saving documents:', e);
-  }
-}
-
-function saveStats() {
-  try {
-    localStorage.setItem('todo-stats', JSON.stringify(productivityStats));
-  } catch (e) {
-    console.error('Error saving stats:', e);
-  }
-}
-
-function saveStreak() {
-  try {
-    localStorage.setItem('todo-streak', JSON.stringify(streakData));
-  } catch (e) {
-    console.error('Error saving streak:', e);
-  }
-}
-
-function saveBadges() {
-  try {
-    localStorage.setItem('todo-badges', JSON.stringify(badges));
-  } catch (e) {
-    console.error('Error saving badges:', e);
-  }
-}
-
-function loadFromStorage() {
-  try {
-    const savedTasks = localStorage.getItem('todo-tasks');
-    if (savedTasks) {
-      tasks = JSON.parse(savedTasks);
-      if (!localStorage.getItem('todo-stats')) {
-        productivityStats.totalTasksCreated = tasks.length;
-      }
-    }
-
-    const savedDocsData = localStorage.getItem('todo-documents');
-    if (savedDocsData) savedDocs = JSON.parse(savedDocsData);
-
-    const savedStats = localStorage.getItem('todo-stats');
-    if (savedStats) productivityStats = JSON.parse(savedStats);
-    productivityStats.totalTasksCreated = Math.max(productivityStats.totalTasksCreated, tasks.length);
-
-    const savedStreak = localStorage.getItem('todo-streak');
-    if (savedStreak) streakData = JSON.parse(savedStreak);
-
-    const savedBadgesData = localStorage.getItem('todo-badges');
-    if (savedBadgesData) badges = JSON.parse(savedBadgesData);
-  } catch (e) {
-    console.error('Error loading from storage:', e);
-  }
-}
-
-// New Toast Notifications
-function showNewToast(message, type = 'info', icon = 'ℹ️') {
-  const toast = document.createElement('div');
-  toast.className = `toast-item ${type}`;
-
-  toast.innerHTML = `
-    <span class="toast-icon">${icon}</span>
-    <span class="toast-message">${message}</span>
-    <button class="toast-close" aria-label="Close notification">&times;</button>
-  `;
-
-  toastContainerNew.appendChild(toast);
-
-  toast.querySelector('.toast-close').addEventListener('click', () => {
-    removeNewToast(toast);
-  });
-
-  setTimeout(() => {
-    removeNewToast(toast);
-  }, 4000);
-}
-
-function removeNewToast(toast) {
-  toast.style.animation = 'toastSlideIn 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28) reverse forwards';
-  setTimeout(() => {
-    toast.remove();
-  }, 400);
-}
-
-// Streak Management
-function getTodayString() {
-  return new Date().toISOString().split('T')[0];
-}
-
-function updateStreak() {
-  const today = getTodayString();
-  if (streakData.lastActiveDate === today) {
-    renderStreak();
-    return;
-  }
-
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  const yesterdayString = yesterday.toISOString().split('T')[0];
-
-  if (streakData.lastActiveDate === yesterdayString) {
-    streakData.lastActiveDate = today;
-  } else {
-    if (streakData.lastActiveDate !== null && streakData.lastActiveDate !== today) {
-      streakData.currentStreak = 0;
-      streakData.lastActiveDate = today;
-    }
-  }
-
-  saveStreak();
-  renderStreak();
-}
-
-function incrementStreak() {
-  const today = getTodayString();
-  if (streakData.lastStreakCheck !== today) {
-    streakData.currentStreak += 1;
-    streakData.lastActiveDate = today;
-    streakData.lastStreakCheck = today;
-
-    if (streakData.currentStreak > streakData.longestStreak) {
-      streakData.longestStreak = streakData.currentStreak;
-    }
-
-    saveStreak();
-    renderStreak();
-
-    if (streakData.currentStreak >= 7 && !badges.sevenDayStreak.unlocked) {
-      unlockBadge('sevenDayStreak');
-    }
-  }
-}
-
-function renderStreak() {
-  if (currentStreakEl) currentStreakEl.textContent = streakData.currentStreak;
-  if (longestStreakEl) longestStreakEl.textContent = streakData.longestStreak;
-  const dashCurrentStreak = document.getElementById('dashboardCurrentStreak');
-  const dashLongestStreak = document.getElementById('dashboardLongestStreak');
-  if (dashCurrentStreak) dashCurrentStreak.textContent = streakData.currentStreak;
-  if (dashLongestStreak) dashLongestStreak.textContent = streakData.longestStreak;
-}
-
-// Badge Management
-function unlockBadge(badgeKey) {
-  if (!badges[badgeKey].unlocked) {
-    badges[badgeKey].unlocked = true;
-    saveBadges();
-    renderBadges();
-    showNewToast(`🏆 Achievement Unlocked: ${badges[badgeKey].name}`, 'success', '🏆');
-  }
-}
-
-function renderBadges() {
-  let unlocked = 0;
-  for (let key in badges) {
-    if (badges[key].unlocked) unlocked++;
-  }
-  if (unlockedBadgesEl) unlockedBadgesEl.textContent = unlocked;
-  renderAchievementsPage();
-}
-
-function renderAchievementsPage() {
-  const container = document.getElementById('achievementsGrid');
-  if (!container) return;
-  container.innerHTML = '';
-
-  Object.entries(badges).forEach(([key, badge]) => {
-    const card = document.createElement('div');
-    card.className = `achievement-card ${badge.unlocked ? 'unlocked' : ''}`;
-    card.innerHTML = `
-      <div class="achievement-icon">${badge.icon}</div>
-      <div class="achievement-info">
-        <h3>${badge.name}</h3>
-        <p>${badge.description}</p>
-        <span class="achievement-status">${badge.unlocked ? 'Unlocked' : 'Locked'}</span>
-      </div>
-    `;
-    container.appendChild(card);
-  });
-}
-
-// Progress Management
-function updateProgress() {
-  const total = tasks.length;
-  const done = tasks.filter((t) => t.status === 'completed').length;
-  const pct = total === 0 ? 0 : Math.round((done / total) * 100);
-
-  productivityStats.totalTasksCompleted = done;
-  productivityStats.completionPercentage = pct;
-  saveStats();
-
-  if (progressPercent) progressPercent.textContent = `${pct}%`;
-  if (progressDetails) progressDetails.textContent = `${done}/${total} tasks`;
-  if (totalTasksEl) totalTasksEl.textContent = total;
-
-  if (heroProgressFill) heroProgressFill.style.width = `${pct}%`;
-  if (heroProgressText) heroProgressText.textContent = `${done}/${total} done`;
-
-  if (progressRingFill) {
-    const circumference = 251.2;
-    const offset = circumference - (pct / 100) * circumference;
-    progressRingFill.style.strokeDashoffset = offset;
-  }
-
-  const dashProgress = document.querySelector('.dashboard-progress-fill');
-  if (dashProgress) {
-    const dashCircumference = 314;
-    const dashOffset = dashCircumference - (pct / 100) * dashCircumference;
-    dashProgress.style.strokeDashoffset = dashOffset;
-  }
-  const dashPct = document.getElementById('dashboardProgressPercent');
-  if (dashPct) dashPct.textContent = `${pct}%`;
-  const dashDetails = document.getElementById('dashboardProgressText');
-  if (dashDetails) dashDetails.textContent = `${done}/${total} tasks completed`;
-
-  // Update dashboard stats grid
-  const dashCreated = document.getElementById('dashboardTotalCreated');
-  if (dashCreated) dashCreated.textContent = productivityStats.totalTasksCreated;
-  const dashCompleted = document.getElementById('dashboardTotalCompleted');
-  if (dashCompleted) dashCompleted.textContent = done;
-  const dashPending = document.getElementById('dashboardPending');
-  if (dashPending) dashPending.textContent = tasks.filter(t => t.status === 'pending').length;
-  const dashInProgress = document.getElementById('dashboardInProgress');
-  if (dashInProgress) dashInProgress.textContent = tasks.filter(t => t.status === 'inprogress').length;
-
-  // Update statistics page
-  const statsCompletion = document.getElementById('statisticsCompletion');
-  if (statsCompletion) statsCompletion.textContent = `${pct}%`;
-  const statsCategory = document.getElementById('statisticsCategory');
-  if (statsCategory) {
-    const categoryCount = {};
-    tasks.forEach(t => {
-      categoryCount[t.category] = (categoryCount[t.category] || 0) + 1;
-    });
-    const mostUsed = Object.entries(categoryCount).sort((a, b) => b[1] - a[1])[0];
-    statsCategory.textContent = mostUsed ? `${mostUsed[0]} (${mostUsed[1]})` : '-';
-  }
-  const statsPriority = document.getElementById('statisticsPriority');
-  if (statsPriority) {
-    const priorityCount = {};
-    tasks.forEach(t => {
-      priorityCount[t.priority] = (priorityCount[t.priority] || 0) + 1;
-    });
-    const mostUsed = Object.entries(priorityCount).sort((a, b) => b[1] - a[1])[0];
-    statsPriority.textContent = mostUsed ? `${mostUsed[0]} (${mostUsed[1]})` : '-';
-  }
-}
-
-// Core Task Operations
+// 2. Core Task CRUD & Operations
 function addTask() {
   const text = taskInput.value.trim();
   const category = taskTypeSelect.value;
-  const priority = taskPrioritySelect.value;
 
   if (!text) {
-    showNewToast('⚠️ Please enter a task description!', 'warning', '⚠️');
+    showToast("⚠️ Please enter a task description!");
     return;
   }
 
-  const selectedCatOption = taskTypeSelect.options[taskTypeSelect.selectedIndex];
-  const catColor = (selectedCatOption && selectedCatOption.getAttribute('data-color')) || '#7c63ff';
+  // Bug 4 fix: require a category selection; show a clear warning if omitted
+  if (!category) {
+    showToast("⚠️ Please select a category!");
+    taskTypeSelect.focus();
+    return;
+  }
 
-  const selectedPriOption = taskPrioritySelect.options[taskPrioritySelect.selectedIndex];
-  const priColor = (selectedPriOption && selectedPriOption.getAttribute('data-color')) || '#3b82f6';
+  // Find category color from the dropdown configuration (fallback)
+  const selectedOption = taskTypeSelect.options[taskTypeSelect.selectedIndex];
+  const color = (selectedOption && selectedOption.getAttribute && selectedOption.getAttribute("data-color")) || "#ffb86b";
 
+  // Create local task object
   const newTask = {
     id: Date.now(),
     text: text,
-    category: category || 'General',
-    categoryColor: catColor,
-    priority: priority || 'Normal',
-    priorityColor: priColor,
-    status: 'pending',
-    completed: false,
+    category: category,
+    color: color,
+    completed: false
   };
 
   tasks.push(newTask);
-  productivityStats.totalTasksCreated += 1;
-  saveTasks();
-  saveStats();
-
-  taskInput.value = '';
-  taskTypeSelect.value = '';
-  taskPrioritySelect.value = '';
+  saveTasks(); // Bug 1 fix: persist after add
+  taskInput.value = "";
+  taskTypeSelect.value = ""; // Reset dropdown
 
   renderTasks();
-  showNewToast('🚀 Task created successfully!', 'success', '🚀');
-
-  if (!badges.firstTask.unlocked) {
-    unlockBadge('firstTask');
-  }
-
-  if (productivityStats.totalTasksCreated >= 25 && !badges.twentyFiveTasks.unlocked) {
-    unlockBadge('twentyFiveTasks');
-  }
-
-  if (productivityStats.totalTasksCreated >= 50 && !badges.fiftyTasks.unlocked) {
-    unlockBadge('fiftyTasks');
-  }
+  showToast("✅ Task added successfully!");
 }
 
-function toggleComplete(id) {
-  tasks = tasks.map((task) => {
-    if (task.id === id) {
-      const isCompleted = task.status !== 'completed';
-      if (isCompleted) {
-        incrementStreak();
-
-        if (!badges.firstComplete.unlocked) {
-          unlockBadge('firstComplete');
-        }
-      }
-
-      return {
-        ...task,
-        completed: isCompleted,
-        status: isCompleted ? 'completed' : 'pending',
-      };
-    }
+function toggleTask(id) {
+  tasks = tasks.map(task => {
+    if (task.id === id) return { ...task, completed: !task.completed };
     return task;
   });
-
-  saveTasks();
+  saveTasks(); // Bug 1 fix: persist after toggle
   renderTasks();
-  const task = tasks.find((t) => t.id === id);
-  showNewToast(
-    task.status === 'completed' ? '✅ Task marked as completed!' : '📋 Task marked as pending!',
-    'success',
-    task.status === 'completed' ? '✅' : '📋'
-  );
-}
-
-function toggleInProgress(id) {
-  tasks = tasks.map((task) => {
-    if (task.id === id) {
-      const isInProgress = task.status !== 'inprogress';
-      return {
-        ...task,
-        completed: false,
-        status: isInProgress ? 'inprogress' : 'pending',
-      };
-    }
-    return task;
-  });
-  saveTasks();
-  renderTasks();
-  const task = tasks.find((t) => t.id === id);
-  showNewToast(
-    task.status === 'inprogress' ? '⚡ Task marked as in-progress!' : '📋 Task marked as pending!',
-    'info',
-    '⚡'
-  );
 }
 
 function deleteTask(id) {
+  // Triggers exit animation before layout re-render
   const card = document.querySelector(`[data-id="${id}"]`);
   if (card) {
-    card.style.animation = 'fadeOut 0.2s ease forwards';
+    card.style.animation = "fadeOut 0.25s ease forwards";
     setTimeout(() => {
-      tasks = tasks.filter((task) => task.id !== id);
-      saveTasks();
+      tasks = tasks.filter(task => task.id !== id);
+      saveTasks(); // Bug 1 fix: persist after delete
       renderTasks();
-      showNewToast('🧹 Task deleted successfully!', 'info', '🧹');
-    }, 200);
+    }, 250);
   }
 }
 
-function updateTaskText(id, newText) {
-  tasks = tasks.map((task) => {
-    if (task.id === id) {
-      return { ...task, text: newText.trim() || 'Untitled Task' };
-    }
-    return task;
-  });
-  saveTasks();
+function clearDone() {
+  const previousLength = tasks.length;
+  tasks = tasks.filter(task => !task.completed);
+  if (tasks.length === previousLength) {
+    showToast("ℹ️ No completed tasks to clear.");
+  } else {
+    saveTasks(); // Bug 1 fix: persist after clear
+    renderTasks();
+    showToast("🧹 Cleared all finished tasks!");
+  }
 }
 
-// Status Filtering
-function filterByStatus(status) {
-  currentStatusFilter = status;
+// 3. Filtering & Rendering UI
+function filterTasks(buttonElement, filterValue) {
+  // Update active states on filter row
+  document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+  buttonElement.classList.add("active");
 
-  document.querySelectorAll('.status-tab').forEach((tab) => {
-    if (tab.getAttribute('data-status') === status) {
-      tab.classList.add('active');
-    } else {
-      tab.classList.remove('active');
-    }
-  });
-
+  currentFilter = filterValue;
   renderTasks();
 }
 
-// Render Tasks Grid
 function renderTasks() {
-  taskList.innerHTML = '';
+  // Filter core task pool
+  const filteredTasks = tasks.filter(task => {
+    if (currentFilter === "all") return true;
+    if (currentFilter === "pending") return !task.completed;
+    if (currentFilter === "done") return task.completed;
+    return task.category === currentFilter; // Matches Category Strings
+  });
 
-  if (tasks.length === 0) {
-    currentStatusFilter = 'all';
-    emptyState.style.display = 'flex';
-    statusTabsContainer.style.display = 'none';
-    taskList.style.display = 'none';
-  } else {
-    emptyState.style.display = 'none';
-    statusTabsContainer.style.display = 'inline-flex';
-    taskList.style.display = 'grid';
+  // Clear container safely — no innerHTML (Bug 2 fix: XSS prevention)
+  taskList.replaceChildren();
 
-    const filteredTasks = tasks.filter((task) => {
-      if (currentStatusFilter === 'all') return true;
-      return task.status === currentStatusFilter;
-    });
-
-    if (filteredTasks.length === 0) {
-      taskList.innerHTML = `
-        <div class="empty-state" style="grid-column: 1 / -1; padding: 60px 20px;">
-          <div class="empty-icon">📂</div>
-          <p class="empty-title">No tasks in this view</p>
-          <p class="empty-desc">Switch tabs or add a task to get started!</p>
-        </div>
-      `;
-    } else {
-      filteredTasks.forEach((task) => {
-        const card = document.createElement('li');
-        card.className = 'notes' + (task.status === 'completed' ? ' completed' : '');
-        card.setAttribute('data-id', task.id);
-
-        const isCompleted = task.status === 'completed';
-        const isInProgress = task.status === 'inprogress';
-
-        card.innerHTML = `
-          <div class="note-row">
-            <textarea class="note-text" oninput="updateTaskText(${task.id}, this.value)" onblur="updateTaskText(${task.id}, this.value)" placeholder="Edit task...">${task.text}</textarea>
-            <div class="note-badges">
-              <span class="category-badge" style="border-color: ${task.categoryColor}; color: ${task.categoryColor}; background: ${task.categoryColor}22;">
-                📂 ${task.category}
-              </span>
-              <span class="priority-badge" style="border-color: ${task.priorityColor}; color: ${task.priorityColor}; background: ${task.priorityColor}22;">
-                ⭐ ${task.priority}
-              </span>
-            </div>
-            <div class="note-actions">
-              <button type="button" class="note-check" onclick="toggleInProgress(${task.id})" title="Toggle In Progress" style="background: ${isInProgress ? 'rgba(79,141,255,0.2)' : ''}; color: ${isInProgress ? '#4f8dff' : ''};">
-                ⚡
-              </button>
-              <button type="button" class="note-check" onclick="toggleComplete(${task.id})" title="Toggle Complete" style="background: ${isCompleted ? 'rgba(20,184,166,0.2)' : ''}; color: ${isCompleted ? '#14b8a6' : ''};">
-                ${isCompleted ? '↩️' : '✅'}
-              </button>
-              <button type="button" class="note-delete" onclick="deleteTask(${task.id})" title="Delete Task">
-                🗑️
-              </button>
-            </div>
-          </div>
-        `;
-
-        taskList.appendChild(card);
-      });
+  // Toggle Visibility of Empty State Element
+  if (filteredTasks.length === 0) {
+    if (emptyState) {
+      taskList.appendChild(emptyState);
+      emptyState.style.display = "flex";
     }
+  } else {
+    if (emptyState) emptyState.style.display = "none";
+
+    filteredTasks.forEach((task, idx) => {
+      // Bug 3 fix: use <li> instead of <div> so <ul> contains valid children
+      const card = document.createElement("li");
+      card.className = "notes" + (task.completed ? " completed" : "");
+      card.setAttribute("data-id", task.id);
+      card.style.setProperty("--i", idx);
+
+      // Bug 2 fix: build the card entirely with safe DOM APIs — no innerHTML
+      const noteRow = document.createElement("div");
+      noteRow.className = "note-row";
+
+      // Editable textarea — textContent sets value safely
+      const textarea = document.createElement("textarea");
+      textarea.className = "note-text";
+      textarea.value = task.text; // safe assignment; no HTML parsing
+      textarea.addEventListener("change", () => updateTaskText(task.id, textarea.value));
+
+      const noteActions = document.createElement("div");
+      noteActions.className = "note-actions";
+
+      const badge = document.createElement("div");
+      badge.className = "category-badge";
+      badge.textContent = task.category; // textContent: never executes scripts
+
+      const btnGroup = document.createElement("div");
+
+      const checkBtn = document.createElement("button");
+      checkBtn.className = "note-check";
+      checkBtn.textContent = task.completed ? "✓" : "✔";
+      checkBtn.addEventListener("click", () => toggleTask(task.id));
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.className = "note-delete";
+      deleteBtn.textContent = "Delete";
+      deleteBtn.addEventListener("click", () => deleteTask(task.id));
+
+      btnGroup.appendChild(checkBtn);
+      btnGroup.appendChild(deleteBtn);
+      noteActions.appendChild(badge);
+      noteActions.appendChild(btnGroup);
+      noteRow.appendChild(textarea);
+      noteRow.appendChild(noteActions);
+      card.appendChild(noteRow);
+
+      taskList.appendChild(card);
+    });
   }
 
   updateMetrics();
-  updateProgress();
-  renderBadges();
+}
+
+function updateTaskText(id, newText) {
+  tasks = tasks.map(task => {
+    if (task.id === id) return { ...task, text: newText.trim() || "Untitled Task" };
+    return task;
+  });
+  saveTasks(); // Bug 1 fix: persist inline edits
 }
 
 function updateMetrics() {
   const total = tasks.length;
-  const pendingCount = tasks.filter((t) => t.status === 'pending' || !t.status).length;
-  const inProgressCount = tasks.filter((t) => t.status === 'inprogress').length;
-  const completedCount = tasks.filter((t) => t.status === 'completed').length;
+  const done = tasks.filter(t => t.completed).length;
+  const pct = total === 0 ? 0 : Math.round((done / total) * 100);
 
-  document.getElementById('count-all').textContent = total;
-  document.getElementById('count-pending').textContent = pendingCount;
-  document.getElementById('count-inprogress').textContent = inProgressCount;
-  document.getElementById('count-completed').textContent = completedCount;
-}
-
-// Tab Switching
-function showSection(section) {
-  // Hide all sections
-  document.querySelectorAll('section').forEach(el => {
-    el.classList.remove('active-section');
-    el.classList.add('inactive-section');
-  });
-
-  // Update progress bar
-  const done  = tasks.filter(t => t.status === 'completed').length;
-  const total = tasks.length;
-  const pct   = total === 0 ? 0 : Math.round((done / total) * 100);
+  // Update progress UI (matches HTML)
   if (progressFill) progressFill.style.width = `${pct}%`;
   if (progressText) progressText.innerText = `${done} / ${total} done`;
 
@@ -559,212 +202,228 @@ function showSection(section) {
   if (clearDoneBtn) clearDoneBtn.hidden = done === 0;
 }
 
+// 4. Tab Navigation System
 function showHome() {
-  showSection('home');
+  document.getElementById("nav-home").classList.add("active");
+  document.getElementById("nav-documents").classList.remove("active");
+  document.getElementById("home-tab").removeAttribute("hidden");
+  document.getElementById("home-tab").style.display = "block";
+  document.getElementById("documents-tab").setAttribute("hidden", "");
+  document.getElementById("documents-tab").style.display = "none";
 }
 
 function showDocuments() {
-  showSection('documents');
-  renderSavedDocuments();
+  document.getElementById("nav-home").classList.remove("active");
+  document.getElementById("nav-documents").classList.add("active");
+  document.getElementById("home-tab").setAttribute("hidden", "");
+  document.getElementById("home-tab").style.display = "none";
+  document.getElementById("documents-tab").removeAttribute("hidden");
+  document.getElementById("documents-tab").style.display = "block";
 }
 
-
-
-// Calendar
-function renderCalendar() {
-  const container = document.getElementById('calendarContainer');
-  if (!container) return;
-
-  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  const firstDay = new Date(currentYear, currentMonth, 1);
-  const lastDay = new Date(currentYear, currentMonth + 1, 0);
-  const startIndex = firstDay.getDay();
-  const daysInMonth = lastDay.getDate();
-  const today = new Date();
-
-  let html = `
-    <div class="calendar-header">
-      <h3>${monthNames[currentMonth]} ${currentYear}</h3>
-      <div class="calendar-nav">
-        <button onclick="changeMonth(-1)">&lt;</button>
-        <button onclick="changeMonth(1)">&gt;</button>
-      </div>
-    </div>
-    <div class="calendar-weekdays">
-      <div>Sun</div>
-      <div>Mon</div>
-      <div>Tue</div>
-      <div>Wed</div>
-      <div>Thu</div>
-      <div>Fri</div>
-      <div>Sat</div>
-    </div>
-    <div class="calendar-days">
-  `;
-
-  for (let i = 0; i < startIndex; i++) {
-    const prevMonthDate = new Date(currentYear, currentMonth, -(startIndex - i));
-    html += `<div class="calendar-day other-month">${prevMonthDate.getDate()}</div>`;
-  }
-
-  for (let i = 1; i <= daysInMonth; i++) {
-    const isToday = today.getDate() === i && today.getMonth() === currentMonth && today.getFullYear() === currentYear;
-    const taskDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
-    html += `
-      <div class="calendar-day ${isToday ? 'today' : ''}">
-        ${i}
-        <div class="calendar-day-dots"></div>
-      </div>
-    `;
-  }
-
-  const remaining = 42 - (startIndex + daysInMonth);
-  for (let i = 1; i <= remaining; i++) {
-    html += `<div class="calendar-day other-month">${i}</div>`;
-  }
-
-  html += '</div>';
-  container.innerHTML = html;
+// Wire up nav link click listeners
+const navHome = document.getElementById("nav-home");
+const navDocuments = document.getElementById("nav-documents");
+if (navHome) {
+  navHome.addEventListener("click", (e) => { e.preventDefault(); showHome(); });
+}
+if (navDocuments) {
+  navDocuments.addEventListener("click", (e) => { e.preventDefault(); showDocuments(); });
 }
 
-function changeMonth(diff) {
-  currentMonth += diff;
-  if (currentMonth > 11) {
-    currentMonth = 0;
-    currentYear++;
-  } else if (currentMonth < 0) {
-    currentMonth = 11;
-    currentYear--;
-  }
-  renderCalendar();
-}
+// 5. Theme Customization System
+function applyTheme(themeName) {
+  document.body.classList.remove(
+    "theme1",
+    "theme2",
+    "theme3",
+    "theme4",
+    "theme5"
+  );
 
-// PDF Exporter & Snapshots History
+  document.body.classList.add(themeName);
+
+  document.querySelectorAll(".theme-btn")
+    .forEach(btn => btn.classList.remove("active"));
+
+  const activeBtn = document.querySelector(
+    `[data-theme="${themeName}"]`
+  );
+
+  if (activeBtn) {
+    activeBtn.classList.add("active");
+  }
+  try { localStorage.setItem('todo-theme', themeName); } catch (e) { }
+}
+document.querySelectorAll(".theme-btn").forEach(button => {
+  button.addEventListener("click", () => {
+    const theme = button.dataset.theme;
+    if (!theme) return;
+    applyTheme(theme);
+  });
+});
+
+// 6. PDF System using jsPDF Global Library
 function saveAsPDF() {
   if (tasks.length === 0) {
-    showNewToast('❌ Cannot export empty list!', 'error', '❌');
+    showToast("❌ Cannot export empty list!");
     return;
   }
+
+  // Snapshot the current task list at this exact moment
+  const snapshot = [...tasks];
+  const doneCount = snapshot.filter(t => t.completed).length;
+  const pendingCount = snapshot.length - doneCount;
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
 
-  doc.setFont('Helvetica', 'bold');
+  // jsPDF v2.x API: doc.text(text, x, y)
+  doc.setFont("Helvetica", "bold");
   doc.setFontSize(22);
-  doc.text('TaskFlow Agenda Report', 20, 24);
+  doc.text("TaskFlow Agenda Report", 20, 24);
 
-  doc.setFont('Helvetica', 'normal');
+  doc.setFont("Helvetica", "normal");
   doc.setFontSize(10);
   doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, 32);
-
-  const completedCount = tasks.filter((t) => t.status === 'completed').length;
-  doc.text(
-    `Tasks: ${tasks.length} total  |  ${completedCount} completed  |  ${tasks.length - completedCount} pending/in progress`,
-    20,
-    38
-  );
+  doc.text(`Tasks: ${snapshot.length} total  |  ${doneCount} done  |  ${pendingCount} pending`, 20, 38);
   doc.line(20, 42, 190, 42);
 
   let verticalCursor = 52;
   doc.setFontSize(12);
 
-  tasks.forEach((task, index) => {
-    if (verticalCursor > 270) {
-      doc.addPage();
-      verticalCursor = 20;
-    }
-    const rawStatus = task.status || 'pending';
-    const status = rawStatus === 'inprogress' ? 'IN PROGRESS' : rawStatus.toUpperCase();
-    const printLine = `${index + 1}. [${status}] (${task.priority} Priority) [${task.category}] - ${task.text}`;
+  snapshot.forEach((task, index) => {
+    if (verticalCursor > 270) { doc.addPage(); verticalCursor = 20; }
+    const status = task.completed ? "[DONE]" : "[PENDING]";
+    const printLine = `${index + 1}. ${status} (${task.category}) — ${task.text}`;
     doc.text(printLine, 20, verticalCursor);
     verticalCursor += 10;
   });
 
+  const timeLabel = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   const fileName = `TaskFlow_${Date.now()}.pdf`;
-  const pdfOutput = doc.output('blob');
-  const fileURL = URL.createObjectURL(pdfOutput);
+  const fileURL = URL.createObjectURL(doc.output("blob"));
 
-  const docItem = {
-    id: Date.now(),
-    name: fileName,
-    url: fileURL,
-    total: tasks.length,
-    completed: completedCount,
-    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    date: new Date().toLocaleDateString(),
-  };
+  appendDocumentToList(fileName, fileURL, snapshot.length, doneCount, timeLabel);
+  showToast(`📥 Saved ${snapshot.length} task${snapshot.length !== 1 ? 's' : ''} to Documents!`);
 
-  savedDocs.unshift(docItem);
-  saveDocuments();
-  showNewToast('📥 PDF exported! Check documents tab to download!', 'success', '📥');
+  // Auto-navigate to Documents tab so the user sees the new entry
+  showDocuments();
 }
 
-function renderSavedDocuments() {
-  const docEmptyState = document.getElementById('emptyDocsState');
-  if (!documentsList) return;
+function appendDocumentToList(fileName, fileURL, taskCount, doneCount, timeLabel) {
+  // Hide the empty-state placeholder (it is a sibling of the ul, not inside it)
+  const docEmptyState = document.getElementById("emptyDocsState");
+  if (docEmptyState) docEmptyState.style.display = "none";
 
-  documentsList.innerHTML = '';
+  // Bug 3 fix: use <li> instead of <div> — <ul> must only contain <li> children
+  // Bug 2 fix: build entirely with safe DOM APIs — no innerHTML
+  const docItem = document.createElement("li");
+  docItem.className = "doc-item";
 
-  if (savedDocs.length === 0) {
-    if (docEmptyState) docEmptyState.style.display = 'flex';
-  } else {
-    if (docEmptyState) docEmptyState.style.display = 'none';
-    savedDocs.forEach((doc) => {
-      const docItem = document.createElement('li');
-      docItem.className = 'doc-item';
-      const hasUrl = !!doc.url;
-      docItem.innerHTML = `
-        <div class="doc-info">
-          <div class="doc-name">${doc.name}</div>
-          <div class="doc-meta">
-            <span class="doc-date">${doc.date} ${doc.time}</span>
-            <span class="doc-task-count">${doc.total} tasks · ${doc.completed} completed</span>
-          </div>
-          ${!hasUrl ? '<div class="doc-stale">⚠️ File unavailable after page reload — re-export to download again!</div>' : ''}
-        </div>
-        <div class="doc-actions">
-          ${hasUrl ? `<button class="doc-btn" onclick="window.open('${doc.url}', '_blank')">View</button>` : ''}
-          ${hasUrl ? `<a class="doc-btn" href="${doc.url}" download="${doc.name}" style="text-decoration: none; display: inline-block; text-align: center; line-height: 40px; padding: 0 16px;">Download</a>` : ''}
-          <button class="doc-btn del" onclick="deleteDocument('${doc.id}')">Delete</button>
-        </div>
-      `;
-      documentsList.appendChild(docItem);
-    });
+  const iconDiv = document.createElement("div");
+  iconDiv.className = "doc-icon";
+  iconDiv.textContent = "📄";
+
+  const infoDiv = document.createElement("div");
+  infoDiv.className = "doc-info";
+
+  const nameDiv = document.createElement("div");
+  nameDiv.className = "doc-name";
+  nameDiv.textContent = fileName; // safe: textContent never parses HTML
+
+  const metaDiv = document.createElement("div");
+  metaDiv.className = "doc-meta";
+
+  const dateSpan = document.createElement("span");
+  dateSpan.className = "doc-date";
+  dateSpan.textContent = `${new Date().toLocaleDateString()} ${timeLabel || ''}`;
+
+  const countSpan = document.createElement("span");
+  countSpan.className = "doc-task-count";
+  countSpan.textContent = `${taskCount} task${taskCount !== 1 ? 's' : ''} · ${doneCount} done`;
+
+  metaDiv.appendChild(dateSpan);
+  metaDiv.appendChild(countSpan);
+  infoDiv.appendChild(nameDiv);
+  infoDiv.appendChild(metaDiv);
+
+  const actionsDiv = document.createElement("div");
+  actionsDiv.className = "doc-actions";
+
+  const viewBtn = document.createElement("button");
+  viewBtn.className = "doc-btn";
+  viewBtn.textContent = "View";
+  viewBtn.addEventListener("click", () => window.open(fileURL, "_blank"));
+
+  const dlLink = document.createElement("a");
+  dlLink.className = "doc-btn";
+  dlLink.href = fileURL;
+  dlLink.download = fileName; // safe attribute assignment
+  dlLink.textContent = "Download";
+  dlLink.style.cssText = "text-decoration:none;display:inline-block;text-align:center;";
+
+  const delBtn = document.createElement("button");
+  delBtn.className = "doc-btn del";
+  delBtn.textContent = "Delete";
+  delBtn.addEventListener("click", () => removeDocumentItem(delBtn));
+
+  actionsDiv.appendChild(viewBtn);
+  actionsDiv.appendChild(dlLink);
+  actionsDiv.appendChild(delBtn);
+
+  docItem.appendChild(iconDiv);
+  docItem.appendChild(infoDiv);
+  docItem.appendChild(actionsDiv);
+
+  // PREPEND so newest document is always at the TOP — prevents users from
+  // accidentally viewing an older document and thinking tasks are missing.
+  documentsList.prepend(docItem);
+}
+
+function removeDocumentItem(button) {
+  button.closest(".doc-item").remove();
+  if (documentsList.children.length === 0) {
+    // Restore the empty-state placeholder when all docs are deleted
+    const docEmptyState = document.getElementById("emptyDocsState");
+    if (docEmptyState) docEmptyState.style.display = "flex";
   }
 }
 
-function deleteDocument(id) {
-  savedDocs = savedDocs.filter((doc) => String(doc.id) !== String(id));
-  saveDocuments();
-  renderSavedDocuments();
-  showNewToast('🧹 Snapshot record cleared!', 'info', '🧹');
-}
-
-// Original Toast Notifications (Keep for compatibility)
+// 7. Toast Alerts Notification System
 function showToast(message) {
-  const toast = document.getElementById('toast');
-  if (!toast) return;
-
-  toast.textContent = message;
-  toast.className = `pdf-message show`;
-
+  const toast = document.getElementById("pdfMessage");
+  if (!toast) {
+    console.log('Toast:', message);
+    return;
+  }
+  toast.innerText = message;
+  toast.classList.add("show");
   setTimeout(() => {
-    toast.classList.remove('show');
+    toast.classList.remove("show");
   }, 3000);
 }
 
-// 10. Forms & Actions Initialisation
-const taskForm = document.getElementById("task-form");
+// Listen for enter key in the input element
+// Form submit handler + Enter key
+const taskForm = document.getElementById('task-form');
 if (taskForm) {
-  taskForm.addEventListener("submit", (e) => {
+  taskForm.addEventListener('submit', (e) => {
     e.preventDefault();
     addTask();
   });
 }
 
-const savePdfBtn = document.getElementById("savepdf");
+taskInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    addTask();
+  }
+});
+// Wire up Save as PDF button click listener
+const savePdfBtn = document.getElementById('savepdf');
 if (savePdfBtn) {
-  savePdfBtn.addEventListener("click", () => saveAsPDF());
+  savePdfBtn.addEventListener('click', () => saveAsPDF());
 }
 
 // Wire up Clear Done button click listener
@@ -804,20 +463,11 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
 showHome();
 
 try {
-  const savedTasks = localStorage.getItem("todo-tasks");
-  if (savedTasks) {
-    tasks = JSON.parse(savedTasks);
-  }
-
-  // Save PDF Button
-  const savePdfBtnInit = document.getElementById('savepdf');
-  if (savePdfBtnInit) {
-    savePdfBtnInit.addEventListener('click', saveAsPDF);
-  }
+  const saved = localStorage.getItem('todo-theme');
+  applyTheme(saved || 'theme1'); // fallback to theme1 if nothing saved
 } catch (e) {
-  console.error('Initialisation error:', e);
+  applyTheme('theme1');
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-  if (typeof renderTasks === 'function') renderTasks();
-});
+// Render tasks loaded from localStorage so they appear immediately on refresh
+renderTasks();
