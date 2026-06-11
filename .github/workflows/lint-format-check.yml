@@ -1,4 +1,4 @@
-name: CI
+name: Lint and Format Check
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
   pull_request:
 
 jobs:
-  verify:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
@@ -31,5 +31,5 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
-      - name: Run full HTML lint
-        run: npm run lint:all
+      - name: Run lint
+        run: npm run lint
