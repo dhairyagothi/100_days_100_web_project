@@ -154,7 +154,7 @@ body {
     opacity 0.45s ease,
     filter 0.45s ease;
   -webkit-box-reflect: below 2px
-    linear-gradient(transparent, transparent, rgba(0, 0, 0, 0.3));
+    linear-gradient(transparent, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.12) 80%, transparent 100%);
   opacity: var(--depth-opacity, 0.55);
   filter: brightness(var(--depth-brightness, 0.75)) blur(var(--depth-blur, 0px));
 }
@@ -498,7 +498,7 @@ body.light-theme .ctrl-btn:hover {
 /* cleaner reflections */
 .box span {
   -webkit-box-reflect: below 2px
-    linear-gradient(transparent, rgba(0, 0, 0, 0.18));
+    linear-gradient(transparent, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.12) 80%, transparent 100%);
 }
 
 
@@ -728,7 +728,7 @@ body {
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55);
   -webkit-box-reflect: below 2px
-    linear-gradient(transparent, rgba(0, 0, 0, 0.18));
+    linear-gradient(transparent, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.12) 80%, transparent 100%);
   opacity: 0.55;
   filter: grayscale(35%) brightness(0.75);
 }
@@ -806,14 +806,15 @@ body {
 }
 
 .controls {
-  position: relative;
+  position: fixed;
+  bottom: clamp(16px, 4vh, 40px);
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   gap: 12px;
   z-index: 100;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 20px;
-  margin-bottom: 40px;
   max-width: 90%;
 }
 
