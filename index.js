@@ -872,6 +872,47 @@ function renderGrid() {
   syncProjectCounts();
 }
 
+function renderProjectGridSkeleton() {
+  const grid = document.getElementById("projectGrid");
+  const noResults = document.getElementById("noResults");
+  if (!grid) return;
+
+  grid.style.display = "grid";
+  grid.innerHTML = "";
+  if (noResults) noResults.style.display = "none";
+
+  const skeletonCount = Math.max(6, Math.min(itemsPerPage, 9));
+  const fragment = document.createDocumentFragment();
+
+  for (let i = 0; i < skeletonCount; i++) {
+    const card = document.createElement("div");
+    card.className = "project-card loading-skeleton visible";
+    card.setAttribute("aria-hidden", "true");
+    card.innerHTML = `
+      <div class="skeleton-line skeleton-meta"></div>
+      <div class="skeleton-media"></div>
+      <div class="skeleton-line skeleton-title"></div>
+      <div class="skeleton-lines">
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line short"></div>
+      </div>
+      <div class="skeleton-tags">
+        <span class="skeleton-pill"></span>
+        <span class="skeleton-pill"></span>
+        <span class="skeleton-pill"></span>
+      </div>
+      <div class="skeleton-footer">
+        <span class="skeleton-button"></span>
+        <span class="skeleton-badge"></span>
+      </div>
+    `;
+    fragment.appendChild(card);
+  }
+
+  grid.appendChild(fragment);
+}
+
 function renderPagination(totalItems, totalPages) {
   const grid = document.getElementById("projectGrid");
   if (!grid) return;
@@ -1760,6 +1801,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   updateGamifiedUI();
 
   try {
+    if (hasProjectGrid()) {
+      renderProjectGridSkeleton();
+    }
     await loadProjects();
 
     updateGamifiedUI();

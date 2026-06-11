@@ -1985,6 +1985,120 @@ input:focus {
   transform: translateY(-1px);
 }
 
+.loading-skeleton {
+  pointer-events: none;
+  user-select: none;
+  opacity: 1;
+}
+
+.loading-skeleton::before {
+  display: none;
+}
+
+.loading-skeleton .skeleton-line,
+.loading-skeleton .skeleton-media,
+.loading-skeleton .skeleton-pill,
+.loading-skeleton .skeleton-button,
+.loading-skeleton .skeleton-badge {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.loading-skeleton .skeleton-line::after,
+.loading-skeleton .skeleton-media::after,
+.loading-skeleton .skeleton-pill::after,
+.loading-skeleton .skeleton-button::after,
+.loading-skeleton .skeleton-badge::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.16),
+    transparent
+  );
+  animation: skeletonShimmer 1.2s ease-in-out infinite;
+}
+
+.loading-skeleton .skeleton-meta {
+  width: 54%;
+  height: 14px;
+  border-radius: 999px;
+  margin-bottom: 0.95rem;
+}
+
+.loading-skeleton .skeleton-media {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.loading-skeleton .skeleton-title {
+  width: 72%;
+  height: 18px;
+  border-radius: 999px;
+  margin-bottom: 0.75rem;
+}
+
+.loading-skeleton .skeleton-lines {
+  display: grid;
+  gap: 0.45rem;
+  margin-bottom: 0.95rem;
+}
+
+.loading-skeleton .skeleton-lines .skeleton-line {
+  width: 100%;
+  height: 12px;
+  border-radius: 999px;
+}
+
+.loading-skeleton .skeleton-lines .skeleton-line.short {
+  width: 68%;
+}
+
+.loading-skeleton .skeleton-tags {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.loading-skeleton .skeleton-pill {
+  width: 52px;
+  height: 20px;
+  border-radius: 999px;
+}
+
+.loading-skeleton .skeleton-footer {
+  margin-top: auto;
+  padding-top: 0.55rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.loading-skeleton .skeleton-button {
+  width: 92px;
+  height: 18px;
+  border-radius: 999px;
+}
+
+.loading-skeleton .skeleton-badge {
+  width: 38px;
+  height: 18px;
+  border-radius: 999px;
+}
+
+@keyframes skeletonShimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 .bookmark-btn {
   width: 38px;
   height: 38px;
