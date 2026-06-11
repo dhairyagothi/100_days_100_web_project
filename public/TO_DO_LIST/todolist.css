@@ -377,7 +377,7 @@ section {
   text-align: right;
 }
 
-/* ---------- Input Registration Panel ---------- */
+/* ---------- Input Registration Controls ---------- */
 .input-panel {
   width: 100%;
   background: var(--hero-tint);
@@ -594,6 +594,7 @@ section {
   padding: 0 0 20px;
   list-style: none;
 }
+.card-action-btn:hover { transform: translateY(-1px); }
 
 /* ---------- Individual Task Card ---------- */
 .notes {
@@ -835,7 +836,6 @@ section {
   line-height: 1;
   flex-shrink: 0;
 }
-
 .doc-name {
   font-size: 0.9rem;
   font-weight: 700;
@@ -852,7 +852,6 @@ section {
   flex-direction: column;
   gap: 4px;
 }
-
 .doc-meta {
   display: flex;
   align-items: center;
@@ -876,13 +875,11 @@ section {
   white-space: nowrap;
   letter-spacing: 0.02em;
 }
-
 .doc-actions {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
 }
-
 .doc-btn {
   padding: 6px 14px;
   border-radius: 8px;
@@ -900,7 +897,6 @@ section {
   transition: background var(--transition), transform var(--transition);
   text-align: center;
 }
-
 .doc-btn:hover {
   background: rgba(255, 255, 255, 0.18);
   transform: translateY(-1px);

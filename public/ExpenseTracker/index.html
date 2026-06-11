@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,7 +11,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -47,7 +50,7 @@
                 🌙 Toggle Theme
             </button>
 
-           
+
 
             <!-- Income Form -->
             <div class="glass-panel">
@@ -60,14 +63,8 @@
 
                         <span class="currency-symbol">$</span>
 
-                        <input
-                            type="number"
-                            id="income-input"
-                            placeholder="Enter monthly income"
-                            min="0"
-                            step="any"
-                            required
-                        />
+                        <input type="number" id="income-input" placeholder="Enter monthly income" min="0" step="any"
+                            required />
 
                     </div>
 
@@ -90,14 +87,8 @@
 
                         <span class="currency-symbol">$</span>
 
-                        <input
-                            type="number"
-                            id="budget-input"
-                            placeholder="Set your budget"
-                            min="0"
-                            step="any"
-                            required
-                        />
+                        <input type="number" id="budget-input" placeholder="Set your budget" min="0" step="any"
+                            required />
 
                     </div>
 
@@ -123,12 +114,7 @@
                             Expense Name
                         </label>
 
-                        <input
-                            type="text"
-                            id="expense-name"
-                            placeholder="What did you buy?"
-                            required
-                        />
+                        <input type="text" id="expense-name" placeholder="What did you buy?" required />
 
                     </div>
 
@@ -143,14 +129,8 @@
 
                             <span class="currency-symbol">$</span>
 
-                            <input
-                                type="number"
-                                id="expense-amount"
-                                placeholder="0.00"
-                                min="0.01"
-                                step="any"
-                                required
-                            />
+                            <input type="number" id="expense-amount" placeholder="0.00" min="0.01" step="any"
+                                required />
 
                         </div>
 
@@ -359,16 +339,16 @@
                             Transaction History
                         </h3>
 
+                        <button id="export-csv" class="btn btn-secondary export-btn" type="button">
+                            Export CSV
+                        </button>
+
                     </div>
 
                     <!-- Search -->
                     <div class="search-wrapper">
 
-                        <input
-                            type="text"
-                            id="search-transaction"
-                            placeholder="Search transaction..."
-                        />
+                        <input type="text" id="search-transaction" placeholder="Search transaction..." />
 
                     </div>
 
@@ -442,35 +422,16 @@
                         <!-- Donut Chart -->
                         <div class="chart-box">
 
-                            <svg
-                                class="donut-chart"
-                                viewBox="0 0 100 100"
-                            >
+                            <svg class="donut-chart" viewBox="0 0 100 100">
 
                                 <!-- Background -->
-                                <circle
-                                    class="donut-bg"
-                                    cx="50"
-                                    cy="50"
-                                    r="40"
-                                    fill="transparent"
-                                    stroke-width="12"
-                                >
+                                <circle class="donut-bg" cx="50" cy="50" r="40" fill="transparent" stroke-width="12">
                                 </circle>
 
                                 <!-- Progress -->
-                                <circle
-                                    class="donut-fill"
-                                    id="chart-progress"
-                                    cx="50"
-                                    cy="50"
-                                    r="40"
-                                    fill="transparent"
-                                    stroke-width="12"
-                                    stroke-dasharray="251.2"
-                                    stroke-dashoffset="251.2"
-                                    transform="rotate(-90 50 50)"
-                                >
+                                <circle class="donut-fill" id="chart-progress" cx="50" cy="50" r="40" fill="transparent"
+                                    stroke-width="12" stroke-dasharray="251.2" stroke-dashoffset="251.2"
+                                    transform="rotate(-90 50 50)">
                                 </circle>
 
                             </svg>
@@ -478,10 +439,7 @@
                             <!-- Center Text -->
                             <div class="chart-text">
 
-                                <span
-                                    class="chart-percentage"
-                                    id="expense-ratio"
-                                >
+                                <span class="chart-percentage" id="expense-ratio">
                                     0%
                                 </span>
 
@@ -494,10 +452,7 @@
                         </div>
 
                         <!-- Legend -->
-                        <div
-                            class="legend"
-                            id="category-breakdown-legend"
-                        >
+                        <div class="legend" id="category-breakdown-legend">
 
                             <div class="legend-placeholder">
 
@@ -520,4 +475,5 @@
     <script src="script.js"></script>
 
 </body>
+
 </html>
