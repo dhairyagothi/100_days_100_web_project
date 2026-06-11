@@ -347,7 +347,17 @@ function renderLoaders() {
       loader.type === currentFilter;
     return matchesSearch && matchesFilter;
   });
-
+  if(filteredLoaders.length==0){
+    if(currentFilter==="favorites" && favorites.length===0)
+    {
+      grid.innerHTML='<p> ❤️ No favorite loaders yet </p>'
+    }
+    else 
+    {
+      grid.innerHTML='<p> 🔍 No loaders found matching your search or filter </p>'
+    }
+    return;
+  }
   grid.innerHTML = filteredLoaders
     .map(
       (loader) => `

@@ -1,1 +1,114 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Virtual Playground</title><style>body{font-family:Arial,sans-serif;margin:0;padding:20px;background:#f0f0f0;text-align:center}h1{color:#333}.play-area{width:400px;height:400px;margin:20px auto;background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.1);position:relative;overflow:hidden}.ball{width:40px;height:40px;border-radius:50%;background:linear-gradient(45deg,#ff6b6b,#ffa500);position:absolute;cursor:pointer;transition:transform 0.1s}.controls{margin-top:20px}button{padding:10px 20px;font-size:16px;margin:0 5px;border:none;border-radius:6px;background:#007bff;color:#fff;cursor:pointer}button:hover{background:#0056b3}</style></head><body><h1>Virtual Playground</h1><p>Click the ball to make it jump! Try different gravity modes.</p><div class="play-area" id="playArea"><div class="ball" id="ball"></div></div><div class="controls"><button onclick="toggleGravity()">Toggle Gravity</button><button onclick="resetBall()">Reset</button></div><script>const ball=document.getElementById('ball');const area=document.getElementById('playArea');let x=180,y=180,vx=0,vy=0;let gravity=0.5;let bouncing=true;function update(){vy+=gravity;x+=vx;y+=vy;if(y+40>400){y=400-40;vy*=-0.7}if(y<0){y=0;vy*=-0.7}if(x+40>400){x=400-40;vx*=-0.7}if(x<0){x=0;vx*=-0.7}ball.style.left=x+'px';ball.style.top=y+'px';if(bouncing)requestAnimationFrame(update)}ball.addEventListener('click',()=>{vy=-10;vx=(Math.random()-0.5)*10});function toggleGravity(){gravity=gravity===0.5?-0.3:0.5}function resetBall(){x=180;y=180;vx=0;vy=0}update()</script></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Virtual Playground</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: #f0f0f0;
+        text-align: center;
+      }
+      h1 {
+        color: #333;
+      }
+      .play-area {
+        width: 400px;
+        height: 400px;
+        margin: 20px auto;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+      .ball {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(45deg, #ff6b6b, #ffa500);
+        position: absolute;
+        cursor: pointer;
+        transition: transform 0.1s;
+      }
+      .controls {
+        margin-top: 20px;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        margin: 0 5px;
+        border: none;
+        border-radius: 6px;
+        background: #007bff;
+        color: #fff;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Virtual Playground</h1>
+    <p>Click the ball to make it jump! Try different gravity modes.</p>
+    <div class="play-area" id="playArea">
+      <div class="ball" id="ball"></div>
+    </div>
+    <div class="controls">
+      <button onclick="toggleGravity()">Toggle Gravity</button
+      ><button onclick="resetBall()">Reset</button>
+    </div>
+    <script>
+      const ball = document.getElementById('ball');
+      const area = document.getElementById('playArea');
+      let x = 180,
+        y = 180,
+        vx = 0,
+        vy = 0;
+      let gravity = 0.5;
+      let bouncing = true;
+      function update() {
+        vy += gravity;
+        x += vx;
+        y += vy;
+        if (y + 40 > 400) {
+          y = 400 - 40;
+          vy *= -0.7;
+        }
+        if (y < 0) {
+          y = 0;
+          vy *= -0.7;
+        }
+        if (x + 40 > 400) {
+          x = 400 - 40;
+          vx *= -0.7;
+        }
+        if (x < 0) {
+          x = 0;
+          vx *= -0.7;
+        }
+        ball.style.left = x + 'px';
+        ball.style.top = y + 'px';
+        if (bouncing) requestAnimationFrame(update);
+      }
+      ball.addEventListener('click', () => {
+        vy = -10;
+        vx = (Math.random() - 0.5) * 10;
+      });
+      function toggleGravity() {
+        gravity = gravity === 0.5 ? -0.3 : 0.5;
+      }
+      function resetBall() {
+        x = 180;
+        y = 180;
+        vx = 0;
+        vy = 0;
+      }
+      update();
+    </script>
+  </body>
+</html>

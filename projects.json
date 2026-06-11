@@ -2740,7 +2740,7 @@
       "vite"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/Gemini/index.html"
+    "projectPath": "./public/Gemini/dist/index.html"
   },
   {
     "projectNo": 218,
@@ -2834,5 +2834,46 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/Bubble-Game/index.html"
+  },
+  {
+    "projectNo": 225,
+    "projectName": "Harryy Potter Spellbook",
+    "projectType": "Web Application",
+    "projectDesc": "A magical, interactive web application built with vanilla web technologies. This project fetches live data from the Harry Potter API and features an interactive Spell Caster that dynamically alters the UI using CSS animations and state changes based on the spells you cast.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Harry-Potter/index.html"
+  },
+  {
+    "projectNo": 226,
+    "projectName": "Mind Reader",
+    "projectType": "Game",
+    "projectDesc": "An interactive game where the Genie tries to read your mind and guess your character in 20 questions.",
+    "techStack": [
+      "react",
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/mind-reader/mind-reader/dist/index.html"
+  },
+  {
+    "projectNo": 227,
+    "projectName": "Word Jumble",
+    "projectType": "Game",
+    "projectDesc": "A fun word puzzle game where players unscramble letters to form valid words within a time limit.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "game"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Word_Jumble/index.html"
   }
 ]
