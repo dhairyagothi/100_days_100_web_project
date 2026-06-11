@@ -1003,3 +1003,8 @@
     handleHash();
 
 })();
+
+document.getElementById('search-btn').addEventListener('click', () => {
+  const query = document.getElementById('main-search').value;
+  window.location = `../search.html?q=${encodeURIComponent(query)}`;
+});

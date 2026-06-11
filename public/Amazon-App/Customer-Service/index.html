@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Amazon Customer Service - Get help with your orders, returns, refunds, Prime membership, devices, payments and more. Chat, call, or email us.">
+    <meta name="description"
+        content="Amazon Customer Service - Get help with your orders, returns, refunds, Prime membership, devices, payments and more. Chat, call, or email us.">
     <title>Amazon Customer Service</title>
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="customer-service.css">
@@ -37,10 +38,12 @@
                 </select>
                 <img src="../assets/dropdown_icon.png" height="12" alt="">
             </div>
-            <input type="search" class="nav-search-input" id="main-search" placeholder="Search Amazon" aria-label="Search">
-            <button type="button" class="nav-search-icon" aria-label="Search Button" onclick="window.location='../search.html?q='+document.getElementById('main-search').value">
-                <img src="../assets/search_icon.png" alt="">
+            <input type="search" class="nav-search-input" id="main-search" placeholder="Search Amazon"
+                aria-label="Search">
+            <button type="button" class="nav-search-icon" aria-label="Search Button" id="search-btn">
+                <img src="../assets/search_icon.png" alt="Search">
             </button>
+
         </div>
 
         <div class="nav-right">
@@ -76,7 +79,8 @@
         </a>
         <a href="../deals.html" role="button">Today's Deals</a>
         <a href="Customer-Service/index.html" role="button" class="cs-nav-active">Customer Service</a>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfsZc3yChN-f_8LOi2RnXWVHkaBe40aSok60pHm5HIIvMagGQ/viewform" role="button">Registry</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfsZc3yChN-f_8LOi2RnXWVHkaBe40aSok60pHm5HIIvMagGQ/viewform"
+            role="button">Registry</a>
         <a href="../" role="button">Gift Cards</a>
         <a href="../" role="button">Sell</a>
     </div>
@@ -95,19 +99,14 @@
 
                 <!-- SEARCH BAR -->
                 <div class="cs-search-wrap">
-                    <input
-                        type="search"
-                        id="cs-search-input"
-                        class="cs-search-input"
-                        placeholder="Search Help Topics"
-                        aria-label="Search Help Topics"
-                        autocomplete="off"
-                    >
+                    <input type="search" id="cs-search-input" class="cs-search-input" placeholder="Search Help Topics"
+                        aria-label="Search Help Topics" autocomplete="off">
                     <button type="button" id="cs-search-btn" class="cs-search-btn" aria-label="Search">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
                     <!-- Search Suggestions Dropdown -->
-                    <div class="cs-suggestions" id="cs-suggestions" role="listbox" aria-label="Search suggestions"></div>
+                    <div class="cs-suggestions" id="cs-suggestions" role="listbox" aria-label="Search suggestions">
+                    </div>
                 </div>
             </div>
 
@@ -149,7 +148,8 @@
                     </article>
 
                     <!-- Returns & Refunds -->
-                    <article class="cs-tile" role="listitem" id="tile-returns" tabindex="0" aria-label="Returns and Refunds">
+                    <article class="cs-tile" role="listitem" id="tile-returns" tabindex="0"
+                        aria-label="Returns and Refunds">
                         <div class="cs-tile-icon cs-icon-returns">
                             <i class="fa-solid fa-rotate-left"></i>
                         </div>
@@ -173,7 +173,8 @@
                     </article>
 
                     <!-- Payments & Gift Cards -->
-                    <article class="cs-tile" role="listitem" id="tile-payments" tabindex="0" aria-label="Payments and Gift Cards">
+                    <article class="cs-tile" role="listitem" id="tile-payments" tabindex="0"
+                        aria-label="Payments and Gift Cards">
                         <div class="cs-tile-icon cs-icon-payments">
                             <i class="fa-solid fa-credit-card"></i>
                         </div>
@@ -185,7 +186,8 @@
                     </article>
 
                     <!-- Devices & Content -->
-                    <article class="cs-tile" role="listitem" id="tile-devices" tabindex="0" aria-label="Devices and Content">
+                    <article class="cs-tile" role="listitem" id="tile-devices" tabindex="0"
+                        aria-label="Devices and Content">
                         <div class="cs-tile-icon cs-icon-devices">
                             <i class="fa-solid fa-tablet-screen-button"></i>
                         </div>
@@ -197,7 +199,8 @@
                     </article>
 
                     <!-- Account Settings -->
-                    <article class="cs-tile" role="listitem" id="tile-account" tabindex="0" aria-label="Account Settings">
+                    <article class="cs-tile" role="listitem" id="tile-account" tabindex="0"
+                        aria-label="Account Settings">
                         <div class="cs-tile-icon cs-icon-account">
                             <i class="fa-solid fa-shield-halved"></i>
                         </div>
@@ -260,15 +263,18 @@
                     <div class="cs-contact-panel" id="cs-contact">
                         <h2 class="cs-section-title cs-title-orange">Need More Help?</h2>
                         <div class="cs-contact-btns">
-                            <button type="button" class="cs-contact-btn cs-chat-btn" id="btn-chat" aria-label="Chat with us">
+                            <button type="button" class="cs-contact-btn cs-chat-btn" id="btn-chat"
+                                aria-label="Chat with us">
                                 <i class="fa-solid fa-headset"></i>
                                 <span>Chat with Us</span>
                             </button>
-                            <button type="button" class="cs-contact-btn cs-call-btn" id="btn-call" aria-label="Request a Call">
+                            <button type="button" class="cs-contact-btn cs-call-btn" id="btn-call"
+                                aria-label="Request a Call">
                                 <i class="fa-solid fa-phone"></i>
                                 <span>Request a Call</span>
                             </button>
-                            <button type="button" class="cs-contact-btn cs-email-btn" id="btn-email" aria-label="Email Us">
+                            <button type="button" class="cs-contact-btn cs-email-btn" id="btn-email"
+                                aria-label="Email Us">
                                 <i class="fa-solid fa-envelope"></i>
                                 <span>Email Us</span>
                             </button>
@@ -283,7 +289,8 @@
     </main>
 
     <!-- ===== SELF-SERVICE WORKFLOW MODAL ===== -->
-    <div class="cs-modal-overlay" id="cs-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="cs-modal-title" hidden>
+    <div class="cs-modal-overlay" id="cs-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="cs-modal-title"
+        hidden>
         <div class="cs-modal">
             <button type="button" class="cs-modal-close" id="cs-modal-close" aria-label="Close">
                 <i class="fa-solid fa-xmark"></i>
@@ -311,7 +318,8 @@
     </div>
 
     <!-- ===== CONTACT MODAL (Chat / Call / Email) ===== -->
-    <div class="cs-modal-overlay" id="cs-contact-modal" role="dialog" aria-modal="true" aria-labelledby="cs-contact-title" hidden>
+    <div class="cs-modal-overlay" id="cs-contact-modal" role="dialog" aria-modal="true"
+        aria-labelledby="cs-contact-title" hidden>
         <div class="cs-modal cs-contact-modal-inner">
             <button type="button" class="cs-modal-close" id="cs-contact-modal-close" aria-label="Close">
                 <i class="fa-solid fa-xmark"></i>
@@ -341,4 +349,5 @@
 
     <script src="customer-service.js"></script>
 </body>
+
 </html>
