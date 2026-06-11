@@ -2,6 +2,8 @@ const slider = document.getElementById('slider');
 const directionBtn = document.getElementById('directionBtn');
 const pauseBtn = document.getElementById('pauseBtn');
 const themeBtn = document.getElementById('themeBtn');
+const voiceBtn = document.getElementById('voiceBtn');
+const voiceStatus = document.getElementById('voiceStatus');
 const prevBtn = document.getElementById('prevBtn');   // optional – not in HTML
 const nextBtn = document.getElementById('nextBtn');   // optional – not in HTML
 
@@ -305,6 +307,137 @@ themeBtn.addEventListener('click', () => {
   themeBtn.querySelector('.btn-label').textContent = isLight ? 'Dark Mode' : 'Light Mode';
   localStorage.setItem('gallery-theme', isLight ? 'light' : 'dark');
 });
+
+
+/* =========================
+   VOICE CONTROL
+========================= */
+
+const SpeechRecognition =
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition;
+
+let recognition;
+let voiceEnabled = false;
+
+if (SpeechRecognition) {
+  recognition = new SpeechRecognition();
+
+  recognition.continuous = true;
+  recognition.interimResults = false;
+  recognition.lang = 'en-US';
+
+  recognition.onresult = (event) => {
+    const transcript =
+      event.results[event.results.length - 1][0].transcript
+        .toLowerCase()
+        .trim();
+
+    voiceStatus.textContent = `Heard: "${transcript}"`;
+
+    if (
+      transcript.includes('next')
+    ) {
+      stepCarousel(-1);
+    }
+
+    else if (
+      transcript.includes('previous') ||
+      transcript.includes('back')
+    ) {
+      stepCarousel(1);
+    }
+
+    else if (
+      transcript.includes('pause')
+    ) {
+      if (!isPaused) {
+        pauseBtn.click();
+      }
+    }
+
+    else if (
+      transcript.includes('resume') ||
+      transcript.includes('play')
+    ) {
+      if (isPaused) {
+        pauseBtn.click();
+      }
+    }
+
+    else if (
+      transcript.includes('dark mode')
+    ) {
+      document.body.classList.remove('light-theme');
+      themeBtn.querySelector('.btn-label').textContent =
+        'Light Mode';
+
+      localStorage.setItem(
+        'gallery-theme',
+        'dark'
+      );
+    }
+
+    else if (
+      transcript.includes('light mode')
+    ) {
+      document.body.classList.add('light-theme');
+      themeBtn.querySelector('.btn-label').textContent =
+        'Dark Mode';
+
+      localStorage.setItem(
+        'gallery-theme',
+        'light'
+      );
+    }
+  };
+
+  recognition.onerror = (event) => {
+  voiceStatus.textContent =
+    'Voice Error: ' + event.error;
+
+  voiceStatus.classList.add('error');
+};
+
+  recognition.onend = () => {
+    if (voiceEnabled) {
+      recognition.start();
+    }
+  };
+
+  voiceBtn.addEventListener('click', () => {
+    voiceEnabled = !voiceEnabled;
+
+    if (voiceEnabled) {
+      recognition.start();
+
+      voiceStatus.textContent =
+        'Listening...';
+
+      voiceStatus.classList.remove('error');
+      voiceStatus.classList.add('active');
+
+      voiceBtn.querySelector('.btn-label').textContent =
+        '🎤 Stop Voice';
+    } else {
+      recognition.stop();
+
+      voiceStatus.textContent =
+        'Voice Control Inactive';
+
+      voiceStatus.classList.remove('active');
+
+      voiceBtn.querySelector('.btn-label').textContent =
+        '🎤 Voice Control';
+    }
+  });
+} else {
+  voiceBtn.disabled = true;
+
+  voiceStatus.textContent =
+    'Speech Recognition Not Supported';
+}
+
 
 /* =========================
    BUTTON HOVER MAGNETIC EFFECT

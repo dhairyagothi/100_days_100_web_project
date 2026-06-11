@@ -51,9 +51,24 @@ document.addEventListener("DOMContentLoaded", () => {
   updateStats();
 });
 
-/* =========================================================
-   THEME TOGGLE
-========================================================= */
+/* -------------------- */
+/* Security Helpers */
+/* -------------------- */
+
+function escapeHTML(str) {
+    if (!str) return "";
+    return str.replace(/[&<>'"]/g, tag => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+    }[tag]));
+}
+
+/* -------------------- */
+/* Toast Notification */
+/* -------------------- */
 
 function initializeTheme() {
   const savedTheme = localStorage.getItem(THEME_KEY);
@@ -331,13 +346,13 @@ async function addEntry() {
   const password =
     document.getElementById("password").value;
 
-  const category =
-    document.getElementById("category")
-      ?.value || "Personal";
+            <td>
+                ${escapeHTML(item.website)}
+            </td>
 
-  const favorite =
-    document.getElementById("favorite")
-      ?.checked || false;
+            <td>
+                ${escapeHTML(item.username)}
+            </td>
 
   const errEl =
     document.getElementById("form-error");
