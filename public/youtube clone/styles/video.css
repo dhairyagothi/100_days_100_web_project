@@ -47,7 +47,37 @@
 
 @media (max-width: 750px) {
   .video-grid {
+    grid-template-columns: 1fr;
+    margin-left: 0;
+    width: 100%;
+    padding: 0 12px;
+    column-gap: 0;
+    row-gap: 24px;
+  }
+
+  .video-title {
+    font-size: 14px;
+    line-height: 20px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .video-author,
+  .video-stats {
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 750px) {
+  .video-grid {
     grid-template-columns: 1fr 1fr;
+    padding: 0 12px;
+    column-gap: 12px;
   }
 }
 

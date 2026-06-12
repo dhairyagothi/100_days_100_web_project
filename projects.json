@@ -635,7 +635,7 @@
       "javascript"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/Budget%20Tracker/index.html"
+    "projectPath": "./public/Budget_Tracker/index.html"
   },
   {
     "projectNo": 55,
@@ -751,7 +751,7 @@
       "css"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/zomato-clone/zomato.html"
+    "projectPath": "./public/zomato-clone/index.html"
   },
   {
     "projectNo": 65,
@@ -1862,7 +1862,7 @@
   },
   {
     "projectNo": 155,
-    "projectName": "Hangman Game",
+    "projectName": "Hangman Game (React TS)",
     "projectType": "Game",
     "projectDesc": "Advanced Hangman implementation using React and TypeScript architecture.",
     "techStack": [
@@ -2287,7 +2287,7 @@
   {
     "projectNo": 185,
     "projectName": "GitHub Repository Analyser",
-    "projectType": "tool",
+    "projectType": "Tool",
     "projectDesc": "A modern tool to quickly analyse a github repo , provides detail stats about repo.",
     "techStack": [
       "tool",
@@ -2359,7 +2359,7 @@
   {
     "projectNo": 190,
     "projectName": "Endless train game",
-    "projectType": "game",
+    "projectType": "Game",
     "projectDesc": "A game with train moving on rails and switching tails and earning coins.",
     "techStack": [
       "html",
@@ -2388,7 +2388,7 @@
   {
     "projectNo": 192,
     "projectName": "Interactive Story Player",
-    "projectType": "UI / Animation",
+    "projectType": "UI",
     "projectDesc": "A dynamic, choice-driven storytelling application where users shape their own narrative paths.",
     "techStack": [
       "ui",
@@ -2428,7 +2428,7 @@
   {
     "projectNo": 195,
     "projectName": "Complaint Management System",
-    "projectType": "Web Application",
+    "projectType": "Tool",
     "projectDesc": "A professional portal for submitting, tracking, and managing complaints efficiently with a premium modern UI.",
     "techStack": [
       "html",
@@ -2469,7 +2469,7 @@
   {
     "projectNo": 198,
     "projectName": "Theme-Toggler",
-    "projectType": "UI / Animation",
+    "projectType": "UI",
     "projectDesc": "A responsive theme toggler that switches between multiple premium themes (including Cyberpunk and Dracula) with smooth transitions.",
     "techStack": [
       "html",
@@ -2499,7 +2499,7 @@
   {
     "projectNo": 200,
     "projectName": "Dual-Genre Movie Matcher",
-    "projectType": "Web Application",
+    "projectType": "Tool",
     "projectDesc": "A web app to search the perfect movie. Comes with dark and light theme toggle.",
     "techStack": [
       "html",
@@ -2553,7 +2553,7 @@
   {
     "projectNo": 204,
     "projectName": "Movie Search App",
-    "projectType": "Web Application",
+    "projectType": "API",
     "projectDesc": "A responsive movie search application powered by the OMDb API that allows users to search movies and view detailed information including posters, ratings, genres, cast, runtime, and plot.",
     "techStack": [
       "html",
@@ -2567,7 +2567,7 @@
   {
     "projectNo": 205,
     "projectName": "Escape the Matrix Game",
-    "projectType": "Web Application",
+    "projectType": "Game",
     "projectDesc": "An immersive, interactive web-based survival and puzzle game challenging players to hack their way out of a simulated reality.",
     "techStack": [
       "html",
@@ -2594,7 +2594,7 @@
   {
     "projectNo": 207,
     "projectName": "AI Semiconductor Circuit Builder",
-    "projectType": "Web Application",
+    "projectType": "AI",
     "projectDesc": "An immersive, interactive web-based survival and puzzle game challenging players to hack their way out of a simulated reality.",
     "techStack": [
       "html",
@@ -2703,7 +2703,7 @@
   {
     "projectNo": 215,
     "projectName": "Mood-Based Music Recommender",
-    "projectType": "Web App",
+    "projectType": "Tool",
     "projectDesc": "An interactive web application that recommends music based on the user's current mood. Features a premium Spotify-inspired UI, smooth animations, and dynamic themes.",
     "techStack": [
       "html",
@@ -2740,7 +2740,7 @@
       "vite"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/Gemini/index.html"
+    "projectPath": "./public/Gemini/dist/index.html"
   },
   {
     "projectNo": 218,
@@ -2759,7 +2759,7 @@
   {
     "projectNo": 219,
     "projectName": "The Cube - 3D Rubik's Cube Simulator",
-    "projectType": "Web Application",
+    "projectType": "Simulation",
     "projectDesc": "An interactive 3D Rubik's Cube simulator built with Three.js that allows users to solve, scramble, customize, and track performance across multiple cube sizes with smooth animations and touch support.",
     "techStack": [
       "html",
@@ -2788,7 +2788,7 @@
   {
     "projectNo": 221,
     "projectName": "AI Tools Hub",
-    "projectType": "Web Application",
+    "projectType": "AI",
     "projectDesc": "A modern platform for discovering and exploring AI tools across coding, design, writing, productivity, presentations, and media categories.",
     "techStack": [
       "html",
@@ -2801,18 +2801,20 @@
   {
     "projectNo": 222,
     "projectName": "Bus Game",
-    "projectType": "game",
+    "projectType": "Game",
     "projectDesc": "A modern bus game with lane and vehicles",
-    "techStack": ["javascript", "html", "css"],
+    "techStack": [
+      "javascript",
+      "html",
+      "css"
+    ],
     "difficulty": "advanced",
-    "projectPath": "./public/bus_game/index.html" 
-    },
-
-    
+    "projectPath": "./public/bus_game/index.html"
+  },
   {
     "projectNo": 223,
     "projectName": "HTML & CSS Animation",
-    "projectType": "Web Application",
+    "projectType": "Animation",
     "projectDesc": "Collection of HTML/CSS animations demonstrating keyframe effects and transitions.",
     "techStack": [
       "html",
@@ -2821,11 +2823,11 @@
     ],
     "difficulty": "beginner",
     "projectPath": "./public/Html_css_animation/index.html"
-    },
+  },
   {
     "projectNo": 224,
     "projectName": "Bubble Game",
-    "projectType": "Web Application",
+    "projectType": "Game",
     "projectDesc": "An interactive bubble-clicking game where players must quickly hit bubbles matching the target number before the timer runs out. Score points by selecting the correct bubbles and test your speed and accuracy.",
     "techStack": [
       "html",
@@ -2838,7 +2840,7 @@
   {
     "projectNo": 225,
     "projectName": "Harryy Potter Spellbook",
-    "projectType": "Web Application",
+    "projectType": "API",
     "projectDesc": "A magical, interactive web application built with vanilla web technologies. This project fetches live data from the Harry Potter API and features an interactive Spell Caster that dynamically alters the UI using CSS animations and state changes based on the spells you cast.",
     "techStack": [
       "html",
@@ -2847,5 +2849,33 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/Harry-Potter/index.html"
-  }  
+  },
+  {
+    "projectNo": 226,
+    "projectName": "Mind Reader",
+    "projectType": "Game",
+    "projectDesc": "An interactive game where the Genie tries to read your mind and guess your character in 20 questions.",
+    "techStack": [
+      "react",
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/mind-reader/mind-reader/dist/index.html"
+  },
+  {
+    "projectNo": 227,
+    "projectName": "Word Jumble",
+    "projectType": "Game",
+    "projectDesc": "A fun word puzzle game where players unscramble letters to form valid words within a time limit.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "game"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Word_Jumble/index.html"
+  }
 ]

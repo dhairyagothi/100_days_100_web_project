@@ -355,3 +355,21 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.3); }
     opacity: 1;
     transform: translateX(-50%) translateY(0);
 }
+
+/* Custom Time Input Styling */
+.custom-input {
+    width: 75px;
+    text-align: center;
+    outline: none;
+}
+
+.custom-input::placeholder {
+    color: var(--text-muted);
+}
+
+/* Hide the up/down arrows inside the number input for a cleaner look */
+.custom-input::-webkit-outer-spin-button,
+.custom-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
