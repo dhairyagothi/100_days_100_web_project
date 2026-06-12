@@ -51,6 +51,7 @@
         <div class="key"><span class="key-symbol">S</span>DOWN</div>
         <div class="key"><span class="key-symbol">D</span>RIGHT</div>
         <div class="key"><span class="key-symbol">↑↓←→</span>ARROWS</div>
+        <div class="key"><span class="key-symbol">P</span>PAUSE</div>
       </div>
     </div>
 
@@ -58,6 +59,11 @@
       <div class="overlay-title">GAME OVER</div>
       <div class="game-over-score" id="finalScore"></div>
       <button class="btn primary" id="restartBtn"><span>PLAY AGAIN</span></button>
+    </div>
+
+    <div class="overlay hidden" id="pauseOverlay">
+      <div class="overlay-title">PAUSED</div>
+      <div class="overlay-sub">PRESS <kbd>P</kbd> TO RESUME</div>
     </div>
   </main>
 

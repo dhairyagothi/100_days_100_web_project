@@ -7,137 +7,45 @@
  * Aces use [1, 11] — the higher value is applied unless it causes a bust.
  */
 const CARD_VALUES = {
-  '2C': 2,
-  '3C': 3,
-  '4C': 4,
-  '5C': 5,
-  '6C': 6,
-  '7C': 7,
-  '8C': 8,
-  '9C': 9,
-  '10C': 10,
-  KC: 10,
-  QC: 10,
-  JC: 10,
-  AC: [1, 11],
-  '2D': 2,
-  '3D': 3,
-  '4D': 4,
-  '5D': 5,
-  '6D': 6,
-  '7D': 7,
-  '8D': 8,
-  '9D': 9,
-  '10D': 10,
-  KD: 10,
-  QD: 10,
-  JD: 10,
-  AD: [1, 11],
-  '2H': 2,
-  '3H': 3,
-  '4H': 4,
-  '5H': 5,
-  '6H': 6,
-  '7H': 7,
-  '8H': 8,
-  '9H': 9,
-  '10H': 10,
-  KH: 10,
-  QH: 10,
-  JH: 10,
-  AH: [1, 11],
-  '2S': 2,
-  '3S': 3,
-  '4S': 4,
-  '5S': 5,
-  '6S': 6,
-  '7S': 7,
-  '8S': 8,
-  '9S': 9,
-  '10S': 10,
-  KS: 10,
-  QS: 10,
-  JS: 10,
-  AS: [1, 11],
+  '2C':2,  '3C':3,  '4C':4,  '5C':5,  '6C':6,  '7C':7,  '8C':8,  '9C':9,
+  '10C':10,'KC':10, 'QC':10, 'JC':10, 'AC':[1,11],
+  '2D':2,  '3D':3,  '4D':4,  '5D':5,  '6D':6,  '7D':7,  '8D':8,  '9D':9,
+  '10D':10,'KD':10, 'QD':10, 'JD':10, 'AD':[1,11],
+  '2H':2,  '3H':3,  '4H':4,  '5H':5,  '6H':6,  '7H':7,  '8H':8,  '9H':9,
+  '10H':10,'KH':10, 'QH':10, 'JH':10, 'AH':[1,11],
+  '2S':2,  '3S':3,  '4S':4,  '5S':5,  '6S':6,  '7S':7,  '8S':8,  '9S':9,
+  '10S':10,'KS':10, 'QS':10, 'JS':10, 'AS':[1,11]
 };
 
 /** Returns a fresh 52-card deck for the start of each round. */
 function freshDeck() {
   return [
-    '2C',
-    '3C',
-    '4C',
-    '5C',
-    '6C',
-    '7C',
-    '8C',
-    '9C',
-    '10C',
-    'KC',
-    'QC',
-    'JC',
-    'AC',
-    '2D',
-    '3D',
-    '4D',
-    '5D',
-    '6D',
-    '7D',
-    '8D',
-    '9D',
-    '10D',
-    'KD',
-    'QD',
-    'JD',
-    'AD',
-    '2H',
-    '3H',
-    '4H',
-    '5H',
-    '6H',
-    '7H',
-    '8H',
-    '9H',
-    '10H',
-    'KH',
-    'QH',
-    'JH',
-    'AH',
-    '2S',
-    '3S',
-    '4S',
-    '5S',
-    '6S',
-    '7S',
-    '8S',
-    '9S',
-    '10S',
-    'KS',
-    'QS',
-    'JS',
-    'AS',
+    '2C','3C','4C','5C','6C','7C','8C','9C','10C','KC','QC','JC','AC',
+    '2D','3D','4D','5D','6D','7D','8D','9D','10D','KD','QD','JD','AD',
+    '2H','3H','4H','5H','6H','7H','8H','9H','10H','KH','QH','JH','AH',
+    '2S','3S','4S','5S','6S','7S','8S','9S','10S','KS','QS','JS','AS'
   ];
 }
 
 /** Central game state. */
 const BJgame = {
   you: {
-    scoreSpan: '#yourscore',
+    scoreSpan:     '#yourscore',
     cardContainer: '#your-cards',
-    score: 0,
+    score: 0
   },
   dealer: {
-    scoreSpan: '#dealerscore',
+    scoreSpan:     '#dealerscore',
     cardContainer: '#dealer-cards',
-    score: 0,
+    score: 0
   },
-  cards: freshDeck(),
-  wins: 0,
+  cards:  freshDeck(),
+  wins:   0,
   losses: 0,
-  draws: 0,
+  draws:  0
 };
 
-const You = BJgame.you;
+const You    = BJgame.you;
 const Dealer = BJgame.dealer;
 
 /**
@@ -155,29 +63,29 @@ const loseSound = new Audio('./static/sounds/aww.mp3');
 const drawSound = new Audio('./static/sounds/ohh.mp3');
 
 /** @param {string} selector @returns {Element|null} */
-const $ = (selector) => document.querySelector(selector);
+const $ = selector => document.querySelector(selector);
 
 // ── Button helpers ──────────────────────────────────────────────────────────
 
 /** Disables Hit and Stand at round end so stale clicks are rejected. */
 function disableGameButtons() {
-  ['#hit', '#stand'].forEach((sel) => {
+  ['#hit', '#stand'].forEach(sel => {
     const btn = $(sel);
     btn.disabled = true;
     btn.setAttribute('aria-disabled', 'true');
     btn.style.opacity = '0.4';
-    btn.style.cursor = 'not-allowed';
+    btn.style.cursor  = 'not-allowed';
   });
 }
 
 /** Re-enables Hit and Stand at the start of each new round. */
 function enableGameButtons() {
-  ['#hit', '#stand'].forEach((sel) => {
+  ['#hit', '#stand'].forEach(sel => {
     const btn = $(sel);
     btn.disabled = false;
     btn.setAttribute('aria-disabled', 'false');
     btn.style.opacity = '';
-    btn.style.cursor = '';
+    btn.style.cursor  = '';
   });
 }
 
@@ -189,12 +97,12 @@ function enableGameButtons() {
  * @param {Object} activePlayer - You or Dealer state object.
  */
 function drawCard(activePlayer) {
-  const randomIndex = Math.floor(Math.random() * BJgame.cards.length);
+  const randomIndex   = Math.floor(Math.random() * BJgame.cards.length);
   const [currentCard] = BJgame.cards.splice(randomIndex, 1);
 
   const cardImg = document.createElement('img');
-  cardImg.src = `./static/${currentCard}.png`;
-  cardImg.alt = currentCard;
+  cardImg.src   = `./static/${currentCard}.png`;
+  cardImg.alt   = currentCard;
   cardImg.setAttribute('role', 'listitem');
   $(activePlayer.cardContainer).appendChild(cardImg);
 
@@ -213,7 +121,7 @@ function updateScore(card, activePlayer) {
   const value = CARD_VALUES[card];
   if (Array.isArray(value)) {
     activePlayer.score +=
-      activePlayer.score + value[1] <= 21 ? value[1] : value[0];
+      (activePlayer.score + value[1] <= 21) ? value[1] : value[0];
   } else {
     activePlayer.score += value;
   }
@@ -234,7 +142,7 @@ function showScore(activePlayer) {
  * @returns {Object|undefined} Winning player object, or undefined on a draw.
  */
 function findWinner() {
-  const youBust = You.score > 21;
+  const youBust    = You.score > 21;
   const dealerBust = Dealer.score > 21;
 
   if (!youBust && (dealerBust || Dealer.score < You.score)) {
@@ -280,16 +188,14 @@ function showResults(winner) {
 /** Animates the wins/losses/draws counters after each round. */
 function updateScoreboard() {
   [
-    ['#wins', BJgame.wins],
+    ['#wins',   BJgame.wins],
     ['#losses', BJgame.losses],
-    ['#draws', BJgame.draws],
+    ['#draws',  BJgame.draws]
   ].forEach(([sel, val]) => {
     const el = $(sel);
-    el.textContent = val;
+    el.textContent     = val;
     el.style.transform = 'scale(1.3)';
-    setTimeout(() => {
-      el.style.transform = '';
-    }, 250);
+    setTimeout(() => { el.style.transform = ''; }, 250);
   });
 }
 
@@ -335,20 +241,14 @@ function BJstand() {
 }
 
 /**
- * Starts a new round if none is active.
- * Blocks mid-round deal attempts with an alert.
+ * Starts a new round.
+ * Blocks mid-round deal attempts — player must Hit or Stand first.
  */
 function BJdeal() {
   if (gameActive) {
     alert('Finish your current turn first — Hit or Stand before dealing.');
     return;
   }
-  if (You.score === 0 && Dealer.score === 0 &&
-      BJgame.wins === 0 && BJgame.losses === 0 && BJgame.draws === 0) {
-    alert('Hit Deal to start your first round!');
-    return;
-  }
-
   startNewRound();
 }
 
@@ -356,15 +256,13 @@ function BJdeal() {
  * Resets board state for a fresh round without clearing the scoreboard.
  */
 function startNewRound() {
-  ['#your-cards', '#dealer-cards'].forEach((sel) => {
-    $(sel)
-      .querySelectorAll('img')
-      .forEach((img) => img.remove());
+  ['#your-cards', '#dealer-cards'].forEach(sel => {
+    $(sel).querySelectorAll('img').forEach(img => img.remove());
   });
 
   BJgame.cards = freshDeck();
 
-  [You, Dealer].forEach((player) => {
+  [You, Dealer].forEach(player => {
     player.score = 0;
     const el = $(player.scoreSpan);
     el.textContent = 0;
@@ -372,7 +270,7 @@ function startNewRound() {
   });
 
   const commandEl = $('#command');
-  commandEl.textContent = 'Round started! Click Hit to draw a card.';
+  commandEl.textContent = "Let's Play!";
   commandEl.style.color = '';
 
   enableGameButtons();
@@ -386,8 +284,8 @@ function startNewRound() {
  * Uses the `hidden` attribute which matches the CSS `.rules-box[hidden]` rule.
  */
 function toggleRules() {
-  const box = $('#rules-box');
-  const btn = $('#rules-btn');
+  const box      = $('#rules-box');
+  const btn      = $('#rules-btn');
   const isHidden = box.hasAttribute('hidden');
 
   if (isHidden) {
@@ -422,12 +320,12 @@ $('#reset-score').addEventListener('click', () => {
 });
 
 // Hover sound delegated to the button group to avoid per-button listeners
-document.querySelector('.action-buttons').addEventListener('mouseover', (e) => {
+document.querySelector('.action-buttons').addEventListener('mouseover', e => {
   if (e.target.classList.contains('btn') && !e.target.disabled) {
     tink.currentTime = 0;
     tink.play().catch(() => {});
   }
 });
 
-// Initialise with buttons disabled — Deal opens the first round
+// Initialise: Hit/Stand disabled until Deal starts a round; Deal is always enabled
 disableGameButtons();
