@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#131921">
+    <meta name="description" content="Buy and redeem Amazon Gift Cards. The perfect gift for every occasion — easy, instant, and secure.">
+    <title>Amazon Clone - Gift Cards</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Sidebar Overlay -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <!-- Sidebar Container -->
+    <aside id="sidebar" class="sidebar">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar-nav">
+            <img src="./assets/amazon_logo.png" width="120" alt="Amazon Logo" class="sidebar-logo" style="background-color: black; height: 60px;">
+           
+         <div class="sidebar-search">
+            <input type="search" class="nav-search-input" placeholder="Search Amazon" aria-label="Search">
+            <button type="button" class="nav-search-icon" aria-label="Search Button">
+                <img src="./assets/search_icon.png" alt="">
+        </div>
+
+            <button class="nav-cart" type="button" aria-label="Shopping Cart" style="background-color: black;">
+                <span class="cart-count">0</span>
+                <img src="./assets/cart_icon.png" width="35" alt="">
+                <h4>Cart</h4>
+            </button>
+
+
+            <!-- Shop by Category (Accordion) -->
+            <div class="sidebar-accordion accordion-open">
+                <button type="button" class="accordion-header" onclick="toggleSidebarAccordion(this)">
+                    <span class="header-title">
+                        <span class="header-icon bag-icon"><i class="fa-solid fa-box-open"></i></span>
+                        Shop by Category
+                    </span>
+                    <i class="fa-solid fa-chevron-up accordion-chevron"></i>
+                </button>
+                <div class="accordion-content">
+                    <ul class="category-list">
+                        <li>
+                            <span class="cat-icon bg-blue"><i class="fa-solid fa-laptop"></i></span>
+                            <span class="cat-text">Electronics</span>
+                        </li>
+                        <li>
+                            <span class="cat-icon bg-pink"><i class="fa-solid fa-shirt"></i></span>
+                            <span class="cat-text">Fashion</span>
+                        </li>
+                        <li>
+                            <span class="cat-icon bg-orange"><i class="fa-solid fa-utensils"></i></span>
+                            <span class="cat-text">Home & Kitchen</span>
+                        </li>
+                        <li>
+                            <span class="cat-icon bg-green"><i class="fa-solid fa-puzzle-piece"></i></span>
+                            <span class="cat-text">Toys & Games</span>
+                        </li>
+                        <li>
+                            <span class="cat-icon bg-yellow"><i class="fa-solid fa-book"></i></span>
+                            <span class="cat-text">Books</span>
+                        </li>
+                        <li>
+                            <span class="cat-icon bg-red"><i class="fa-solid fa-spa"></i></span>
+                            <span class="cat-text">Beauty & Health</span>
+                        </li>
+                        <li>
+                            <span class="cat-icon bg-slate"><i class="fa-solid fa-car"></i></span>
+                            <span class="cat-text">Automotive</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Deals & Offers (Simple Link) -->
+            <a href="deals.html" class="sidebar-link">
+                <span class="header-icon tag-icon"><i class="fa-solid fa-tag"></i></span>
+                Deals &amp; Offers
+            </a>
+
+            <!-- My Account (Accordion) -->
+            <div class="sidebar-accordion">
+                <button type="button" class="accordion-header" onclick="toggleSidebarAccordion(this)">
+                    <span class="header-title">
+                        <span class="header-icon user-icon"><i class="fa-solid fa-user"></i></span>
+                        My Account
+                    </span>
+                    <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+                </button>
+                <div class="accordion-content">
+                    <ul class="submenu-list">
+                        <li>Profile</li>
+                        <li>Orders</li>
+                        <li>Wishlist</li>
+                        <li>Settings</li>
+                        <li><button onclick="signOut()">Sign Out</button></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Support (Accordion) -->
+            <div class="sidebar-accordion">
+                <button type="button" class="accordion-header" onclick="toggleSidebarAccordion(this)">
+                    <span class="header-title">
+                        <span class="header-icon support-icon"><i class="fa-solid fa-headset"></i></span>
+                        Support
+                    </span>
+                    <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+                </button>
+                <div class="accordion-content">
+                    <ul class="submenu-list">
+                        <li>Help Center</li>
+                        <li>FAQs</li>
+                    </ul>
+                </div>
+            </div>
+
+        </nav>
+
+        <!-- Theme Toggle Section -->
+        <div class="sidebar-footer">
+            <div class="theme-switch-container">
+                <div class="theme-option light-option" id="sb-theme-light-btn">
+                    <i class="fa-solid fa-sun icon-sun"></i>
+                    <span>Light</span>
+                </div>
+                <div class="theme-option dark-option" id="sb-theme-dark-btn">
+                    <span class="circle-radio"></span>
+                    <span>Dark</span>
+                </div>
+                <div class="sb-toggle-switch" id="sb-theme-toggle">
+                    <div class="sb-toggle-knob"></div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+   <nav>
+        <a href="index.html" class="nav-logo">
+            <img src="./assets/amazon_logo.png" alt="Amazon Logo">
+        </a>
+        <div class="nav-country">
+            <img src="./assets/location_icon.png" height="20" alt="Location">
+            <div>
+                <p>Deliver to</p>
+                <h1>India</h1>
+            </div>
+        </div>
+
+        <div class="nav-search">
+            <div class="nav-search-category">
+                <select name="category" id="category" aria-label="Product Category">
+                    <option value="all">All</option>
+                    <option value="books">Books</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="fashion">Fashion</option>
+                    <option value="home">Home</option>
+                    <option value="toys">Toys</option>
+                    <option value="sports">Sports</option>
+                    <option value="beauty">Beauty</option>
+                    <option value="grocery">Grocery</option>
+                </select>
+                <img src="./assets/dropdown_icon.png" height="12" alt="">
+            </div>
+            <input type="search" class="nav-search-input" placeholder="Search Amazon" aria-label="Search">
+            <button type="button" class="nav-search-icon" aria-label="Search Button">
+                <img src="./assets/search_icon.png" alt="">
+            </button>
+        </div>
+
+        <div class="nav-right">
+            <div class="nav-lang">
+                <img src="./assets/us_flag.png" width="25" alt="Language">
+                <select name="language" id="language" aria-label="Language Selection">
+                    <option value="en">EN</option>
+                    <option value="es">ES</option>
+                    <option value="fr">FR</option>
+                    <option value="de">DE</option>
+                    <option value="zh">ZH</option>
+                    <option value="jp">JP</option>
+                    <option value="hi">HI</option>
+                </select>
+                <img src="./assets/dropdown_icon.png" width="8" alt="">
+            </div>
+
+            <div class="nav-text" id="user-area">
+                <p id="open-signin">Hello, Sign in</p>
+                <h1>Account & Lists</h1>
+            </div>
+
+            <div class="nav-text">
+                <p>Return</p>
+                <h1>& Orders</h1>
+            </div>
+
+           <button class="nav-cart" type="button" aria-label="Shopping Cart">
+                <span class="cart-count">0</span>
+                <img src="./assets/cart_icon.png" width="35" alt="">
+                <h4>Cart</h4>
+            </button>
+        </div>
+    </nav>
+    <div class="nav-bottom">
+            <div class="MenuSidebar">
+            <img src="./assets/menu_icon.png" width="25px" alt="Menu">
+            <p>All</p>
+        </div>
+        <a href="deals.html" role="button">Today's Deals</a>
+        <a href="Customer-Service/" role="button">Customer Service</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfsZc3yChN-f_8LOi2RnXWVHkaBe40aSok60pHm5HIIvMagGQ/viewform" role="button">Registry</a>
+        <a href="gift.html" role="button" id="nav-gift-cards-active">Gift Cards</a>
+        <a href="/" role="button">Sell</a>
+
+        <button id="dark-mode-btn" type="button" aria-label="Dark Mode Toggle">
+            <div class="toggle-switch">
+                <div class="toggle-circle">
+                    <span id="toggle-text">On</span>
+                </div>
+            </div>
+        </button>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- GIFT CARDS HERO BANNER                       -->
+    <!-- ============================================ -->
+    <section class="gc-hero">
+        <div class="gc-hero-content">
+            <span class="gc-hero-icon">🎁</span>
+            <h1 class="gc-hero-title">Amazon Gift Cards</h1>
+            <p class="gc-hero-subtitle">The perfect gift for every occasion — easy, instant, and secure.</p>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- GIFT CARD BALANCE BAR                        -->
+    <!-- ============================================ -->
+    <div class="gc-balance-bar">
+        <div class="gc-balance-inner">
+            <i class="fa-solid fa-wallet"></i>
+            <span>Your Gift Card Balance: <strong id="gc-balance-display">₹0.00</strong></span>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- GIFT CARD SHOWCASE                           -->
+    <!-- ============================================ -->
+    <section class="gc-section">
+        <h2 class="gc-section-title">Choose a Gift Card</h2>
+        <div class="gc-card-grid">
+            <!-- Birthday Card -->
+            <div class="gc-card" data-type="Birthday" id="gc-card-birthday">
+                <div class="gc-card-image-wrap">
+                    <img src="./assets/gift-birthday.png" alt="Happy Birthday Gift Card">
+                    <span class="gc-card-badge">🎈 Popular</span>
+                </div>
+                <div class="gc-card-body">
+                    <h3>Happy Birthday</h3>
+                    <p>Send joy instantly with a fun birthday design.</p>
+                    <div class="gc-amount-row">
+                        <div class="gc-amount-input-wrap">
+                            <span class="gc-currency">₹</span>
+                            <input type="number" min="1" max="50000" placeholder="2000" class="gc-amount-input" id="gc-amount-birthday" aria-label="Gift card amount">
+                        </div>
+                        <div class="gc-quick-amounts">
+                            <button class="gc-quick-btn" data-amount="1000">₹1000</button>
+                            <button class="gc-quick-btn" data-amount="2000">₹2000</button>
+                            <button class="gc-quick-btn" data-amount="5000">₹5000</button>
+                        </div>
+                    </div>
+                    <button class="gc-buy-btn" data-type="Birthday" id="gc-buy-birthday">
+                        <i class="fa-solid fa-gift"></i> Buy Now
+                    </button>
+                </div>
+            </div>
+
+            <!-- Classic Card -->
+            <div class="gc-card" data-type="Classic" id="gc-card-classic">
+                <div class="gc-card-image-wrap">
+                    <img src="./assets/gift-classic.png" alt="Classic Amazon Gift Card">
+                    <span class="gc-card-badge gc-badge-gold">⭐ Best Seller</span>
+                </div>
+                <div class="gc-card-body">
+                    <h3>Classic Amazon Card</h3>
+                    <p>Perfect for any occasion.</p>
+                    <div class="gc-amount-row">
+                        <div class="gc-amount-input-wrap">
+                            <span class="gc-currency">₹</span>
+                            <input type="number" min="1" max="50000" placeholder="5000" class="gc-amount-input" id="gc-amount-classic" aria-label="Gift card amount">
+                        </div>
+                        <div class="gc-quick-amounts">
+                            <button class="gc-quick-btn" data-amount="1000">₹1000</button>
+                            <button class="gc-quick-btn" data-amount="2000">₹2000</button>
+                            <button class="gc-quick-btn" data-amount="5000">₹5000</button>
+                        </div>
+                    </div>
+                    <button class="gc-buy-btn" data-type="Classic" id="gc-buy-classic">
+                        <i class="fa-solid fa-gift"></i> Buy Now
+                    </button>
+                </div>
+            </div>
+
+            <!-- Thank You Card -->
+            <div class="gc-card" data-type="ThankYou" id="gc-card-thankyou">
+                <div class="gc-card-image-wrap">
+                    <img src="./assets/gift-thankyou.png" alt="Thank You Gift Card">
+                    <span class="gc-card-badge gc-badge-green">💚 Trending</span>
+                </div>
+                <div class="gc-card-body">
+                    <h3>Thank You</h3>
+                    <p>Show your appreciation in style.</p>
+                    <div class="gc-amount-row">
+                        <div class="gc-amount-input-wrap">
+                            <span class="gc-currency">₹</span>
+                            <input type="number" min="1" max="50000" placeholder="5000" class="gc-amount-input" id="gc-amount-thankyou" aria-label="Gift card amount">
+                        </div>
+                        <div class="gc-quick-amounts">
+                            <button class="gc-quick-btn" data-amount="1000">₹1000</button>
+                            <button class="gc-quick-btn" data-amount="2000">₹2000</button>
+                            <button class="gc-quick-btn" data-amount="5000">₹5000</button>
+                        </div>
+                    </div>
+                    <button class="gc-buy-btn" data-type="ThankYou" id="gc-buy-thankyou">
+                        <i class="fa-solid fa-gift"></i> Buy Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- REDEEM GIFT CARD SECTION                     -->
+    <!-- ============================================ -->
+    <section class="gc-section gc-redeem-section">
+        <div class="gc-redeem-box">
+            <div class="gc-redeem-left">
+                <h2><i class="fa-solid fa-ticket"></i> Redeem a Gift Card</h2>
+                <p>Enter the claim code found on your Gift Card to add it to your balance.</p>
+            </div>
+            <div class="gc-redeem-right">
+                <div class="gc-redeem-input-group">
+                    <input type="text" id="gc-redeem-code" placeholder="Enter gift card code" maxlength="19" autocomplete="off" aria-label="Gift card code">
+                    <button id="gc-redeem-btn" class="gc-redeem-btn">
+                        <i class="fa-solid fa-arrow-right"></i> Apply to Balance
+                    </button>
+                </div>
+                <p class="gc-redeem-msg" id="gc-redeem-msg"></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- PURCHASED GIFT CARDS HISTORY                 -->
+    <!-- ============================================ -->
+    <section class="gc-section" id="gc-history-section" style="display:none;">
+        <h2 class="gc-section-title">Your Gift Cards</h2>
+        <div class="gc-history-list" id="gc-history-list">
+            <!-- Dynamically rendered -->
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- FEATURES FOOTER                              -->
+    <!-- ============================================ -->
+    <section class="gc-features">
+        <div class="gc-feature-item">
+            <i class="fa-solid fa-bolt"></i>
+            <div>
+                <strong>Instant Delivery</strong>
+                <span>Email eGift Cards in seconds</span>
+            </div>
+        </div>
+        <div class="gc-feature-item">
+            <i class="fa-solid fa-palette"></i>
+            <div>
+                <strong>1000+ Designs</strong>
+                <span>Choose the perfect look</span>
+            </div>
+        </div>
+        <div class="gc-feature-item">
+            <i class="fa-solid fa-circle-check"></i>
+            <div>
+                <strong>No Fees, No Expiration</strong>
+                <span>Use anytime, anywhere</span>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <img src="./assets/amazon_logo.png" width="100px" alt="">
+        <p>© 1996-2026, Amazon.com, Inc. or its affiliates</p>
+    </footer>
+
+    <!-- ============================================ -->
+    <!-- GIFT CARD PURCHASE SUCCESS MODAL             -->
+    <!-- ============================================ -->
+    <div class="gc-modal-overlay" id="gc-modal-overlay">
+        <div class="gc-modal" id="gc-modal">
+            <button class="gc-modal-close" id="gc-modal-close" aria-label="Close">&times;</button>
+            <div class="gc-modal-icon">🎉</div>
+            <h2>Gift Card Purchased!</h2>
+            <p class="gc-modal-amount" id="gc-modal-amount">₹5000.00</p>
+            <div class="gc-modal-code-box">
+                <label>Your Gift Card Code</label>
+                <div class="gc-modal-code" id="gc-modal-code">XXXX-XXXX-XXXX</div>
+                <button class="gc-copy-btn" id="gc-copy-btn"><i class="fa-regular fa-copy"></i> Copy Code</button>
+            </div>
+            <p class="gc-modal-hint">Share this code or redeem it to add balance to your account.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

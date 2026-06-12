@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body { margin: 0; background: #000; overflow: hidden; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+    let mouse = { x: null, y: null };
+
+    class Particle {
+        constructor(x, y) {
+            this.x = x; this.y = y;
+            this.vx = (Math.random() - 0.5) * 5;
+            this.vy = (Math.random() - 0.5) * 5;
+            this.size = 2;
+        }
+        update() {
+            if (mouse.x) {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let dist = Math.sqrt(dx*dx + dy*dy);
+                this.vx += dx / dist * 0.5;
+                this.vy += dy / dist * 0.5;
+            }
+            this.x += this.vx; this.y += this.vy;
+        }
+        draw() {
+            ctx.fillStyle = 'white';
+            ctx.fillRect(this.x, this.y, this.size, this.size);
+        }
+    }
+
+    function init() {
+        for(let i=0; i<500; i++) particles.push(new Particle(Math.random()*canvas.width, Math.random()*canvas.height));
+    }
+
+    function animate() {
+        ctx.fillStyle = 'rgba(0,0,0,0.1)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animate);
+    }
+
+    window.onmousemove = (e) => { mouse.x = e.clientX; mouse.y = e.clientY; };
+    window.onmouseleave = () => { mouse.x = null; mouse.y = null; };
+
+    init();
+    animate();
+</script>
+</body>

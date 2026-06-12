@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let quizData = {};
   const STORAGE_KEY = 'learningProgress';
   const BOOKMARKS_KEY = 'learningBookmarks';
+  const STREAK_KEY = 'learningStreak';
 
   let bookmarks = [];
 
@@ -226,6 +227,74 @@ function toggleBookmark(topic) {
   function saveProgress() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(learningProgress));
   }
+  function updateLearningStreak() {
+
+  const today =
+    new Date()
+      .toISOString()
+      .split('T')[0];
+
+  let streak =
+    JSON.parse(
+      localStorage.getItem(
+        STREAK_KEY
+      )
+    ) || {
+      current: 0,
+      best: 0,
+      lastVisit: null
+    };
+
+  if (streak.lastVisit === today) {
+    return streak;
+  }
+
+  const yesterday =
+    new Date(
+      Date.now() -
+      86400000
+    )
+      .toISOString()
+      .split('T')[0];
+
+  if (
+    streak.lastVisit === yesterday
+  ) {
+    streak.current++;
+  } else {
+    streak.current = 1;
+  }
+
+  streak.best = Math.max(
+    streak.best,
+    streak.current
+  );
+
+  streak.lastVisit = today;
+
+  localStorage.setItem(
+    STREAK_KEY,
+    JSON.stringify(streak)
+  );
+
+  return streak;
+}
+
+function renderStreak() {
+
+  const streak =
+    updateLearningStreak();
+
+  const current =
+    document.getElementById(
+      'currentStreakCount'
+    );
+
+  if (current) {
+    current.textContent =
+      streak.current;
+  }
+}
 
   function markTopicCompleted(topicId) {
     if (!learningProgress.completedTopics.includes(topicId)) {
@@ -1325,6 +1394,7 @@ list.appendChild(item);
   }
 
 loadProgress();
+renderStreak();
 
 loadBookmarks();
 
