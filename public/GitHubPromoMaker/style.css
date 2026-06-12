@@ -1,0 +1,523 @@
+/* =========================================================
+   GITHUB PROMO MAKER - FULL MODERN UI (PART 1)
+   Glassmorphism + Themes + Insights UI
+========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+/* =========================
+   ROOT VARIABLES
+========================= */
+
+:root {
+  --bg-1: #0b1020;
+  --bg-2: #0f172a;
+
+  --text: #e5e7eb;
+  --muted: #94a3b8;
+
+  --card: rgba(255, 255, 255, 0.06);
+  --card-border: rgba(255, 255, 255, 0.12);
+
+  --accent: #7c3aed;
+
+  --shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  --radius: 20px;
+
+  --transition: 0.25s ease;
+}
+
+/* =========================
+   BASE RESET
+========================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background: radial-gradient(circle at 20% 20%, #1e293b, transparent 40%),
+              radial-gradient(circle at 80% 30%, #111827, transparent 40%),
+              linear-gradient(135deg, var(--bg-1), var(--bg-2));
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.app-header {
+  text-align: center;
+  padding: 3rem 1rem 1rem;
+}
+
+.app-header h1 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.app-header p {
+  color: var(--muted);
+  margin-top: 0.5rem;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+
+.container {
+  width: min(1100px, 92%);
+  margin: auto;
+  display: grid;
+  gap: 1.5rem;
+  padding-bottom: 3rem;
+}
+
+/* =========================
+   GLASS CARD
+========================= */
+
+.m3-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(18px);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+/* =========================
+   FORM CONTROLS
+========================= */
+
+.input-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.m3-input-container {
+  flex: 1;
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+}
+
+.m3-input {
+  width: 100%;
+  padding: 0.9rem 1rem 0.9rem 2.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  outline: none;
+  transition: var(--transition);
+}
+
+.m3-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+}
+
+.m3-btn {
+  padding: 0.9rem 1.2rem;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  transition: var(--transition);
+}
+
+.m3-btn-filled {
+  background: var(--accent);
+  color: white;
+}
+
+.m3-btn-filled:hover {
+  transform: translateY(-2px);
+}
+
+.m3-btn-tonal {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+}
+
+/* =========================
+   THEME SELECTOR
+========================= */
+
+.theme-selector {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.theme-selector label {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.theme-selector select {
+  flex: 1;
+  padding: 0.7rem;
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+}
+
+/* =========================
+   ERROR TEXT
+========================= */
+
+.error-text {
+  margin-top: 1rem;
+  color: #f87171;
+  font-weight: 600;
+}
+
+/* =========================
+   PREVIEW HEADER
+========================= */
+
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* =========================
+   CARD WRAPPER
+========================= */
+
+.card-wrapper {
+  overflow-x: auto;
+  padding: 1rem 0;
+}
+
+/* =========================
+   PROMO CARD BASE
+========================= */
+
+.promo-card {
+  width: 800px;
+  height: 420px;
+  border-radius: 24px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--shadow);
+}
+
+/* =========================
+   BACKGROUND LAYER
+========================= */
+
+.card-background-mesh {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* =========================
+   CARD CONTENT
+========================= */
+
+.card-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+/* =========================
+   TOP SECTION
+========================= */
+
+.card-top {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.owner-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+.owner-name {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.repo-name {
+  font-size: 2.5rem;
+  font-weight: 900;
+}
+
+/* =========================
+   DESCRIPTION
+========================= */
+
+.repo-description {
+  color: var(--muted);
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* =========================
+   INSIGHTS SECTION
+========================= */
+
+.repo-insights {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.insight-item {
+  background: rgba(255, 255, 255, 0.07);
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+/* =========================
+   BOTTOM METRICS
+========================= */
+
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1rem;
+}
+
+.metrics {
+  display: flex;
+  gap: 1rem;
+}
+
+.metric-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 700;
+}
+
+.language-badge {
+  background: rgba(255, 255, 255, 0.07);
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+}
+
+/* =========================================================
+   THEMES
+========================================================= */
+
+/* -------------------------
+   GitHub Dark (default)
+------------------------- */
+
+.theme-github-dark {
+  background: linear-gradient(135deg, #0b1020, #111827);
+  color: #e5e7eb;
+}
+
+/* -------------------------
+   GitHub Light
+------------------------- */
+
+.theme-github-light {
+  background: linear-gradient(135deg, #ffffff, #f3f4f6);
+  color: #111827;
+}
+
+.theme-github-light .repo-description,
+.theme-github-light .owner-name {
+  color: #374151;
+}
+
+.theme-github-light .insight-item,
+.theme-github-light .language-badge {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* -------------------------
+   Neon Theme
+------------------------- */
+
+.theme-neon {
+  background: radial-gradient(circle at top left, #00f5ff33, transparent),
+              radial-gradient(circle at bottom right, #ff00ff33, transparent),
+              #050816;
+  color: #ffffff;
+}
+
+.theme-neon .repo-name {
+  text-shadow: 0 0 15px #00f5ff;
+}
+
+.theme-neon .insight-item {
+  border: 1px solid #00f5ff55;
+}
+
+/* -------------------------
+   Glass Theme
+------------------------- */
+
+.theme-glass {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* -------------------------
+   Sunset Theme
+------------------------- */
+
+.theme-sunset {
+  background: linear-gradient(135deg, #ff512f, #f09819);
+  color: #fff;
+}
+
+.theme-sunset .insight-item,
+.theme-sunset .language-badge {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* =========================================================
+   LANGUAGE DOT
+========================================================= */
+
+.lang-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #7c3aed;
+  display: inline-block;
+}
+
+/* =========================================================
+   HOVER EFFECTS
+========================================================= */
+
+.promo-card:hover {
+  transform: translateY(-4px);
+  transition: 0.3s ease;
+}
+
+/* =========================================================
+   SCROLLBAR (card wrapper)
+========================================================= */
+
+.card-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.card-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN
+========================================================= */
+
+@media (max-width: 900px) {
+  .promo-card {
+    width: 720px;
+    height: 380px;
+  }
+
+  .repo-name {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .input-group {
+    flex-direction: column;
+  }
+
+  .theme-selector {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .preview-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .promo-card {
+    width: 100%;
+    min-width: 520px;
+    height: 340px;
+  }
+}
+
+@media (max-width: 600px) {
+  .promo-card {
+    min-width: 460px;
+    height: 320px;
+    padding: 1.2rem;
+  }
+
+  .repo-name {
+    font-size: 1.6rem;
+  }
+
+  .repo-description {
+    font-size: 0.9rem;
+  }
+
+  .metrics {
+    flex-wrap: wrap;
+  }
+}
+
+/* =========================================================
+   SMALL UTILITIES
+========================================================= */
+
+.hidden {
+  display: none !important;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 500,
+    "GRAD" 0,
+    "opsz" 24;
+}

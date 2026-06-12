@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guided Zen Breathing Visualizer · 100 Days 100 Web Projects</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <header class="app-header">
+        <h1><i aria-hidden="true" class="fas fa-spa"></i> Zen Breathing Visualizer</h1>
+        <p>
+          Calm your mind, lower stress, and sync your breathing patterns using
+          rhythmic feedback panels.
+        </p>
+      </header>
+
+      <main class="visualizer-workspace">
+        <div class="breathing-stage">
+          <div class="outer-glow-ring"></div>
+          <div class="breathing-sphere" id="breathSphere">
+            <span id="breathText">Ready</span>
+          </div>
+
+          <div class="timer-overlay" id="timerTicker">0s</div>
+        </div>
+
+        <section class="controls-card">
+          <h2>Select Breathing Rhythm</h2>
+          <div class="preset-grid">
+            <button class="btn-preset active" data-pattern="box">
+              <strong>Box Breathing (4-4-4-4)</strong>
+              <span>Clear mind & relieve high stress levels</span>
+            </button>
+            <button class="btn-preset" data-pattern="relax">
+              <strong>Relaxing Pattern (4-7-8)</strong>
+              <span>Deep physical calming & sleep prep</span>
+            </button>
+            <button class="btn-preset" data-pattern="equal">
+              <strong>Equal Breathing (4-4)</strong>
+              <span>Balance nervous system & focus energy</span>
+            </button>
+          </div>
+
+          <div class="action-footer">
+            <button id="btnToggleAction" class="btn-primary">
+              <i aria-hidden="true" class="fas fa-play"></i> Start Guided Session
+            </button>
+            <button id="btnAudioToggle" class="btn-secondary">
+              <i aria-hidden="true" class="fas fa-volume-up"></i> Chime On
+            </button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

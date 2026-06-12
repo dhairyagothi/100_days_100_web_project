@@ -1,324 +1,609 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const moodButtons = Array.from(document.querySelectorAll('.mood-button'));
-    const intensitySlider = document.getElementById('intensity');
-    const intensityValue = document.getElementById('intensity-value');
-    const notesInput = document.getElementById('notes');
-    const saveEntryButton = document.getElementById('save-entry');
-    const entriesList = document.getElementById('entries-list');
-    const entryDaysList = document.getElementById('entry-days-list');
-    const moodSummary = document.getElementById('mood-summary');
-    const moodChartCtx = document.getElementById('moodChart').getContext('2d');
-    const toggleThemeButton = document.getElementById('toggle-theme');
-    const themeIcon = document.getElementById('theme-icon');
-    const moodMessage = document.createElement('p');
-    moodMessage.style.marginTop = '10px';
-    document.querySelector('.container').insertBefore(moodMessage, document.querySelector('.intensity-slider'));
+let entries = JSON.parse(localStorage.getItem("moodEntries")) || [];
 
-    let selectedMood = null;
-    const moodData = [];
-    let moodChart;
-    let moodStreak = 0;
-    const achievements = {
-        streaks: false,
-        moodMaster: false
-    };
-    const moodGoals = {
-        reduceStress: 0,
-        increaseHappiness: 0
-    };
+let state = {
+  filter: "day",
+  section: "mood",
+};
 
-    if ('Notification' in window) {
-        Notification.requestPermission().then(permission => {
-            if (permission === 'granted') {
-                setDailyReminder();
-            }
-        });
+let chart;
+
+// ================= INIT =================
+window.onload = () => {
+  loadTheme();
+  updateTime();
+
+  setInterval(updateTime, 1000);
+
+  switchSection("mood");
+  updateAll();
+
+  setupMoodButtons();
+  setupLivePreview();
+  setupMobileOverlay();
+};
+
+// ================= TIME =================
+function updateTime() {
+  const now = new Date();
+
+  document.getElementById("currentDate").innerText =
+    now.toDateString();
+
+  document.getElementById("currentTime").innerText =
+    now.toLocaleTimeString();
+}
+
+// ================= THEME =================
+function toggleTheme() {
+  const body = document.body;
+
+  if (body.classList.contains("dark")) {
+    body.classList.remove("dark");
+    body.classList.add("light");
+
+    localStorage.setItem("theme", "light");
+  } else {
+    body.classList.remove("light");
+    body.classList.add("dark");
+
+    localStorage.setItem("theme", "dark");
+  }
+}
+
+function loadTheme() {
+  const savedTheme = localStorage.getItem("theme") || "dark";
+
+  document.body.classList.remove("dark", "light");
+  document.body.classList.add(savedTheme);
+}
+
+// ================= MOBILE SIDEBAR =================
+function toggleSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("mobileOverlay");
+
+  sidebar.classList.toggle("show");
+  overlay.classList.toggle("show");
+}
+
+function setupMobileOverlay() {
+  const overlay = document.getElementById("mobileOverlay");
+
+  overlay.addEventListener("click", () => {
+    document.getElementById("sidebar").classList.remove("show");
+    overlay.classList.remove("show");
+  });
+}
+
+// ================= SECTION SWITCH =================
+function switchSection(id) {
+  state.section = id;
+
+  document.querySelectorAll(".section").forEach((section) => {
+    section.classList.remove("active");
+  });
+
+  document.getElementById(id).classList.add("active");
+
+  // active nav button
+  document.querySelectorAll(".nav-links button").forEach((btn) => {
+    btn.classList.remove("active-btn");
+  });
+
+  event?.target?.closest("button")?.classList.add("active-btn");
+
+  // close mobile sidebar
+  document.getElementById("sidebar").classList.remove("show");
+  document.getElementById("mobileOverlay").classList.remove("show");
+}
+
+// ================= ADD ENTRY =================
+function addEntry() {
+  const mood = document.getElementById("moodInput").value.trim();
+
+  const journal =
+    document.getElementById("journalText").value.trim();
+
+  const highlight =
+    document.getElementById("highlight").value.trim();
+
+  if (!mood && !journal) {
+    alert("Please enter your mood or journal.");
+    return;
+  }
+
+  const entry = {
+    mood: mood || "Neutral",
+    energy: Number(
+      document.getElementById("energyLevel").value
+    ),
+    stress: Number(
+      document.getElementById("stressLevel").value
+    ),
+    journal,
+    highlight,
+    ts: Date.now(),
+  };
+
+  entries.push(entry);
+
+  localStorage.setItem(
+    "moodEntries",
+    JSON.stringify(entries)
+  );
+
+  clearInputs();
+  updateAll();
+
+  document.getElementById(
+    "liveMoodPreview"
+  ).innerText = "✅ Mood entry saved successfully!";
+}
+
+// ================= CLEAR INPUTS =================
+function clearInputs() {
+  document.getElementById("moodInput").value = "";
+
+  document.getElementById("journalText").value = "";
+
+  document.getElementById("highlight").value = "";
+
+  document.getElementById(
+    "liveMoodPreview"
+  ).innerText = "Mood preview appears here...";
+}
+
+// ================= FILTER =================
+function applyFilter() {
+  state.filter =
+    document.getElementById("filterRange").value;
+
+  updateAll();
+}
+
+function getFilteredEntries() {
+  const now = Date.now();
+
+  return entries.filter((entry) => {
+    const diff = now - entry.ts;
+
+    if (state.filter === "day")
+      return diff < 86400000;
+
+    if (state.filter === "week")
+      return diff < 604800000;
+
+    if (state.filter === "month")
+      return diff < 2592000000;
+
+    return true;
+  });
+}
+
+// ================= UPDATE EVERYTHING =================
+function updateAll() {
+  const filtered = getFilteredEntries();
+
+  updateStats(filtered);
+  updateJournal(filtered);
+  updateInsights(filtered);
+  updateChart(filtered);
+  updateHeatmap(filtered);
+}
+
+// ================= STATS =================
+function updateStats(data) {
+  if (data.length === 0) {
+    document.getElementById("avgEnergy").innerText =
+      "-";
+
+    document.getElementById("avgStress").innerText =
+      "-";
+
+    document.getElementById("avgMood").innerText =
+      "-";
+
+    document.getElementById("streakText").innerText =
+      "0";
+
+    return;
+  }
+
+  const avgEnergy = avg(
+    data.map((d) => d.energy)
+  ).toFixed(1);
+
+  const avgStress = avg(
+    data.map((d) => d.stress)
+  ).toFixed(1);
+
+  const moodScore = (
+    avgEnergy * 2 -
+    avgStress
+  ).toFixed(1);
+
+  document.getElementById("avgEnergy").innerText =
+    avgEnergy;
+
+  document.getElementById("avgStress").innerText =
+    avgStress;
+
+  document.getElementById("avgMood").innerText =
+    moodScore;
+
+  document.getElementById("streakText").innerText =
+    calculateStreak();
+}
+
+function avg(arr) {
+  return (
+    arr.reduce((a, b) => a + b, 0) / arr.length
+  );
+}
+
+// ================= STREAK =================
+function calculateStreak() {
+  if (entries.length === 0) return 0;
+
+  let streak = 1;
+
+  const sorted = [...entries].sort(
+    (a, b) => a.ts - b.ts
+  );
+
+  for (
+    let i = sorted.length - 1;
+    i > 0;
+    i--
+  ) {
+    const diff =
+      sorted[i].ts - sorted[i - 1].ts;
+
+    if (diff <= 172800000) {
+      streak++;
+    } else {
+      break;
     }
+  }
 
-    moodButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            selectedMood = button.getAttribute('data-mood');
-            console.log(`Selected Mood: ${selectedMood}`);
-            moodButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            moodMessage.textContent = `You have selected: ${selectedMood}`;
-            showRecommendations(selectedMood);
-        });
+  return streak;
+}
+
+// ================= JOURNAL =================
+function updateJournal(data) {
+  const list =
+    document.getElementById("entriesList");
+
+  list.innerHTML = "";
+
+  if (data.length === 0) {
+    list.innerHTML =
+      "<li>No entries found.</li>";
+
+    return;
+  }
+
+  data
+    .slice()
+    .reverse()
+    .forEach((entry) => {
+      const li = document.createElement("li");
+
+      li.innerHTML = `
+        <strong>${new Date(
+          entry.ts
+        ).toLocaleString()}</strong>
+        <br><br>
+
+        <b>Mood:</b> ${entry.mood}
+        <br>
+
+        <b>Energy:</b> ${entry.energy}
+        <br>
+
+        <b>Stress:</b> ${entry.stress}
+        <br><br>
+
+        <b>Journal:</b>
+        <br>
+        ${entry.journal || "No journal"}
+
+        <br><br>
+
+        ✨ ${entry.highlight || "No highlight"}
+      `;
+
+      list.appendChild(li);
     });
+}
 
-    intensitySlider.addEventListener('input', () => {
-        intensityValue.textContent = intensitySlider.value;
-        console.log(`Intensity: ${intensitySlider.value}`);
+// ================= SEARCH JOURNAL =================
+function filterJournal() {
+  const query = document
+    .getElementById("searchJournal")
+    .value.toLowerCase();
+
+  const filtered = getFilteredEntries().filter(
+    (entry) =>
+      entry.mood
+        .toLowerCase()
+        .includes(query) ||
+      entry.journal
+        .toLowerCase()
+        .includes(query) ||
+      entry.highlight
+        .toLowerCase()
+        .includes(query)
+  );
+
+  updateJournal(filtered);
+}
+
+// ================= INSIGHTS =================
+function updateInsights(data) {
+  const box =
+    document.getElementById("insightBox");
+
+  if (data.length < 2) {
+    box.innerText =
+      "Not enough data yet for insights.";
+
+    return;
+  }
+
+  const avgEnergy = avg(
+    data.map((d) => d.energy)
+  );
+
+  const avgStress = avg(
+    data.map((d) => d.stress)
+  );
+
+  let message = "";
+
+  if (avgStress >= 4) {
+    message +=
+      "⚠️ Your stress levels are high lately. Try relaxing.\n\n";
+  }
+
+  if (avgEnergy <= 2) {
+    message +=
+      "⚡ Your energy seems low. Sleep and hydration may help.\n\n";
+  }
+
+  if (avgEnergy >= 4 && avgStress <= 2) {
+    message +=
+      "🌟 Excellent emotional balance detected.\n\n";
+  }
+
+  if (message === "") {
+    message =
+      "😊 Your mood trends look stable and balanced.";
+  }
+
+  box.innerText = message;
+}
+
+// ================= CHART =================
+function updateChart(data) {
+  const canvas =
+    document.getElementById("chart");
+
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+
+  const labels = data.map((entry) =>
+    new Date(entry.ts).toLocaleDateString()
+  );
+
+  const energyData = data.map(
+    (entry) => entry.energy
+  );
+
+  const stressData = data.map(
+    (entry) => entry.stress
+  );
+
+  if (chart) {
+    chart.destroy();
+  }
+
+  chart = new Chart(ctx, {
+    type: "line",
+
+    data: {
+      labels,
+
+      datasets: [
+        {
+          label: "Energy",
+          data: energyData,
+          borderColor: "#06b6d4",
+          backgroundColor: "transparent",
+          tension: 0.4,
+        },
+
+        {
+          label: "Stress",
+          data: stressData,
+          borderColor: "#8b5cf6",
+          backgroundColor: "transparent",
+          tension: 0.4,
+        },
+      ],
+    },
+
+    options: {
+      responsive: true,
+
+      plugins: {
+        legend: {
+          labels: {
+            color:
+              getComputedStyle(
+                document.body
+              ).getPropertyValue("--text"),
+          },
+        },
+      },
+
+      scales: {
+        x: {
+          ticks: {
+            color:
+              getComputedStyle(
+                document.body
+              ).getPropertyValue("--text"),
+          },
+        },
+
+        y: {
+          ticks: {
+            color:
+              getComputedStyle(
+                document.body
+              ).getPropertyValue("--text"),
+          },
+
+          beginAtZero: true,
+          max: 5,
+        },
+      },
+    },
+  });
+}
+
+// ================= HEATMAP =================
+function updateHeatmap(data) {
+  const heatmap =
+    document.getElementById("heatmap");
+
+  heatmap.innerHTML = "";
+
+  if (data.length === 0) return;
+
+  data.forEach((entry) => {
+    const cell =
+      document.createElement("div");
+
+    cell.classList.add("heatmap-cell");
+
+    const level =
+      Math.min(
+        5,
+        Math.max(
+          1,
+          Math.round(
+            (entry.energy +
+              (6 - entry.stress)) /
+              2
+          )
+        )
+      );
+
+    cell.classList.add(`level-${level}`);
+
+    cell.title = `
+Mood: ${entry.mood}
+Energy: ${entry.energy}
+Stress: ${entry.stress}
+`;
+
+    heatmap.appendChild(cell);
+  });
+}
+
+// ================= LIVE PREVIEW =================
+function setupLivePreview() {
+  const moodInput =
+    document.getElementById("moodInput");
+
+  const preview =
+    document.getElementById(
+      "liveMoodPreview"
+    );
+
+  moodInput.addEventListener(
+    "input",
+    (e) => {
+      const text =
+        e.target.value.toLowerCase();
+
+      if (
+        text.includes("happy") ||
+        text.includes("great") ||
+        text.includes("excited")
+      ) {
+        preview.innerText =
+          "😊 Positive mood detected!";
+      } else if (
+        text.includes("sad") ||
+        text.includes("angry") ||
+        text.includes("upset")
+      ) {
+        preview.innerText =
+          "⚠️ Negative emotional state detected.";
+      } else if (
+        text.includes("tired") ||
+        text.includes("exhausted")
+      ) {
+        preview.innerText =
+          "😴 You may need some rest.";
+      } else {
+        preview.innerText =
+          "🧠 Analyzing your emotional state...";
+      }
+    }
+  );
+}
+
+// ================= MOOD BUTTONS =================
+function setupMoodButtons() {
+  const moodButtons =
+    document.querySelectorAll(".mood-btn");
+
+  const moodInput =
+    document.getElementById("moodInput");
+
+  moodButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      moodButtons.forEach((b) =>
+        b.classList.remove("selected")
+      );
+
+      btn.classList.add("selected");
+
+      moodInput.value = btn.innerText;
     });
+  });
+}
 
-    saveEntryButton.addEventListener('click', () => {
-        if (!selectedMood) {
-            alert("Please select a mood before saving.");
-            return;
-        }
-        const notes = notesInput.value;
-        const intensity = intensitySlider.value;
-        const date = new Date().toLocaleDateString();
-        const entry = { mood: selectedMood, intensity, notes, date };
-        console.log('Entry Saved:', entry);
-        moodData.push(entry);
+// ================= EXPORT DATA =================
+function exportData() {
+  if (entries.length === 0) {
+    alert("No data available to export.");
+    return;
+  }
 
-        // Remove default messages if present
-        removeDefaultMessages();
-
-        addEntryToList(entry);
-        addEntryDay(entry);
-        updateMoodChart();
-        updateMoodSummary();
-        sendPositiveReinforcement();
-        updateMoodStreak();
-        checkAchievements();
-        trackMoodGoals();
-    });
-
-    toggleThemeButton.addEventListener('click', () => {
-        document.body.classList.toggle('dark-theme');
-        if (document.body.classList.contains('dark-theme')) {
-            themeIcon.classList.remove('fa-sun');
-            themeIcon.classList.add('fa-moon');
-        } else {
-            themeIcon.classList.remove('fa-moon');
-            themeIcon.classList.add('fa-sun');
-        }
-    });
-
-    function removeDefaultMessages() {
-        const defaultEntryMessage = entriesList.querySelector('.collection-item');
-        const defaultDayMessage = entryDaysList.querySelector('.collection-item');
-        if (defaultEntryMessage && defaultEntryMessage.textContent.includes('No entries yet')) {
-            defaultEntryMessage.remove();
-        }
-        if (defaultDayMessage && defaultDayMessage.textContent.includes('No entries yet')) {
-            defaultDayMessage.remove();
-        }
+  const blob = new Blob(
+    [JSON.stringify(entries, null, 2)],
+    {
+      type: "application/json",
     }
+  );
 
-    function addEntryToList(entry) {
-        const listItem = document.createElement('li');
-        const moodEmoji = moodButtons.find(button => button.getAttribute('data-mood') === entry.mood).textContent;
-        listItem.className = 'collection-item';
-        listItem.innerHTML = `
-            Date: ${entry.date}, Mood: ${entry.mood} ${moodEmoji}, Intensity: ${entry.intensity}, Notes: ${entry.notes}
-            <button class="delete-entry btn-small red right">Delete</button>
-        `;
-        entriesList.appendChild(listItem);
+  const link =
+    document.createElement("a");
 
-        // Add event listener for the delete button
-        listItem.querySelector('.delete-entry').addEventListener('click', () => {
-            removeEntry(entry, listItem);
-        });
-    }
+  link.href =
+    URL.createObjectURL(blob);
 
-    function removeEntry(entry, listItem) {
-        // Remove the entry from the moodData array
-        const index = moodData.findIndex(e => e.date === entry.date && e.mood === entry.mood && e.intensity === entry.intensity && e.notes === entry.notes);
-        if (index !== -1) {
-            moodData.splice(index, 1);
-        }
+  link.download = "mood-data.json";
 
-        // Remove the list item from the DOM
-        listItem.remove();
+  document.body.appendChild(link);
 
-        // Update the chart and summary
-        updateMoodChart();
-        updateMoodSummary();
-    }
+  link.click();
 
-    function addEntryDay(entry) {
-        const existingDay = Array.from(entryDaysList.children).find(day => day.textContent === entry.date);
-        if (!existingDay) {
-            const dayItem = document.createElement('li');
-            dayItem.className = 'collection-item';
-            dayItem.textContent = entry.date;
-            entryDaysList.appendChild(dayItem);
-        }
-    }
-
-    function updateMoodChart() {
-        if (moodChart) {
-            moodChart.destroy();
-        }
-
-        const labels = moodData.map(entry => entry.date);
-        const data = moodData.map(entry => entry.intensity);
-        const backgroundColors = moodData.map(entry => {
-            switch (entry.mood) {
-                case 'Happy': return 'rgba(255, 255, 0, 0.5)';
-                case 'Sad': return 'rgba(0, 0, 255, 0.5)';
-                case 'Angry': return 'rgba(255, 0, 0, 0.5)';
-                case 'Calm': return 'rgba(0, 255, 0, 0.5)';
-                case 'Excited': return 'rgba(255, 165, 0, 0.5)';
-                default: return 'rgba(200, 200, 200, 0.5)';
-            }
-        });
-
-        moodChart = new Chart(moodChartCtx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Mood Intensity',
-                    data: data,
-                    backgroundColor: backgroundColors,
-                    borderColor: backgroundColors.map(color => color.replace('0.5', '1')),
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 10
-                    }
-                },
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const entry = moodData[context.dataIndex];
-                                return `Mood: ${entry.mood}, Intensity: ${entry.intensity}`;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateMoodSummary() {
-        const moodCounts = moodData.reduce((acc, entry) => {
-            acc[entry.mood] = (acc[entry.mood] || 0) + 1;
-            return acc;
-        }, {});
-
-        const mostFrequentMood = Object.keys(moodCounts).reduce((a, b) => moodCounts[a] > moodCounts[b] ? a : b, '');
-        moodSummary.textContent = `Most frequent mood: ${mostFrequentMood}`;
-    }
-
-    function setDailyReminder() {
-        const now = new Date();
-        const nextReminder = new Date();
-        nextReminder.setHours(9, 0, 0, 0);
-
-        if (now > nextReminder) {
-            nextReminder.setDate(nextReminder.getDate() + 1);
-        }
-
-        const timeUntilReminder = nextReminder - now;
-        setTimeout(() => {
-            new Notification("Mood Tracker", {
-                body: "How are you feeling today?",
-                icon: "path/to/icon.png"
-            });
-            setInterval(() => {
-                new Notification("Mood Tracker", {
-                    body: "How are you feeling today?",
-                    icon: "path/to/icon.png"
-                });
-            }, 24 * 60 * 60 * 1000);
-        }, timeUntilReminder);
-    }
-
-    function sendPositiveReinforcement() {
-        const quotes = [
-            "Keep smiling, you're doing great!",
-            "Every day is a new beginning.",
-            "Believe in yourself and all that you are.",
-            "Stay positive, work hard, make it happen."
-        ];
-        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-
-        if ('Notification' in window && Notification.permission === 'granted') {
-            new Notification("Positive Vibes", {
-                body: randomQuote,
-                icon: "path/to/icon.png"
-            });
-        }
-    }
-
-    function showRecommendations(mood) {
-        const recommendations = {
-            Happy: {
-                music: "https://open.spotify.com/playlist/37i9dQZF1DXdPec7aLTmlC", // Example Spotify playlist
-                quote: "Happiness is not something ready-made. It comes from your own actions.",
-                activity: "Go for a walk or dance to your favorite music!"
-            },
-            Sad: {
-                music: "https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0",
-                quote: "This too shall pass.",
-                activity: "Try journaling or talking to a friend."
-            },
-            Angry: {
-                music: "https://open.spotify.com/playlist/37i9dQZF1DX3YSRoSdA634",
-                quote: "For every minute you remain angry, you give up sixty seconds of peace of mind.",
-                activity: "Consider meditation or deep breathing exercises."
-            },
-            Calm: {
-                music: "https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY",
-                quote: "Peace comes from within. Do not seek it without.",
-                activity: "Enjoy a quiet moment with a book or a cup of tea."
-            },
-            Excited: {
-                music: "https://open.spotify.com/playlist/37i9dQZF1DX1s9knjP51Oa",
-                quote: "The only way to do great work is to love what you do.",
-                activity: "Channel your energy into a creative project or workout."
-            }
-        };
-
-        const recommendation = recommendations[mood];
-        const recommendationsContent = document.getElementById('recommendations-content');
-        if (recommendation) {
-            recommendationsContent.innerHTML = `
-                <p><strong>Music:</strong> <a href="${recommendation.music}" target="_blank">Listen on Spotify</a></p>
-                <p><strong>Quote:</strong> "${recommendation.quote}"</p>
-                <p><strong>Activity:</strong> ${recommendation.activity}</p>
-            `;
-        }
-    }
-
-    function updateMoodStreak() {
-        const today = new Date().toLocaleDateString();
-        const lastEntryDate = moodData[moodData.length - 2]?.date;
-        if (lastEntryDate && new Date(lastEntryDate).getTime() === new Date(today).getTime() - 86400000) {
-            moodStreak++;
-        } else {
-            moodStreak = 1;
-        }
-        if (moodStreak >= 7 && !achievements.streaks) {
-            achievements.streaks = true;
-            alert("Congratulations! You've earned a badge for a 7-day mood tracking streak!");
-        }
-    }
-
-    function checkAchievements() {
-        const moodCounts = moodData.reduce((acc, entry) => {
-            acc[entry.mood] = (acc[entry.mood] || 0) + 1;
-            return acc;
-        }, {});
-
-        if (moodCounts.Happy >= 10 && !achievements.moodMaster) {
-            achievements.moodMaster = true;
-            alert("Achievement unlocked: Mood Master! You've logged 'Happy' 10 times!");
-        }
-    }
-
-    function trackMoodGoals() {
-        const stressDays = moodData.filter(entry => entry.mood === 'Sad' || entry.mood === 'Angry').length;
-        const happyDays = moodData.filter(entry => entry.mood === 'Happy').length;
-
-        if (stressDays < moodGoals.reduceStress) {
-            moodGoals.reduceStress = stressDays;
-            alert("Great job! You've reduced your stress days!");
-        }
-
-        if (happyDays > moodGoals.increaseHappiness) {
-            moodGoals.increaseHappiness = happyDays;
-            alert("Awesome! You've increased your happy days!");
-        }
-    }
-});
+  document.body.removeChild(link);
+}
