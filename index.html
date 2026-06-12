@@ -295,7 +295,7 @@
               id="filterAll"
               aria-label="Show all projects"
             >
-              All <span class="chip-count" id="allCount">Projects</span>
+              All <span class="chip-count" id="allCount" aria-live="polite">Projects</span>
             </button>
             <button
               class="chip"
@@ -393,7 +393,7 @@
 
         <div class="project-grid" id="projectGrid"></div>
 
-        <div class="no-results" id="noResults">
+        <div class="no-results" id="noResults" role="status" aria-live="assertive">
           <i class="fas fa-search" aria-hidden="true"></i>
           <p>No projects match your search.</p>
         </div>
