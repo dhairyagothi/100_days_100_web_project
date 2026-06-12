@@ -225,7 +225,7 @@ function resolveProjectUrls(day, name, url, tags) {
       if (demoUrl.startsWith("./")) {
         demoUrl = basePrefix + demoUrl.substring(2);
       }
-    } catch (error) { }
+    } catch (error) {}
   }
   if (day === "Day 222") {
     return {
@@ -290,6 +290,7 @@ function buildProjectCardHTML({
   tags,
   category,
   isBookmarked = false,
+  isCompleted = false,
   showDescription = true,
 }) {
   const { demoUrl, sourceUrl, sourceOnly } = resolveProjectUrls(
@@ -305,8 +306,8 @@ function buildProjectCardHTML({
   const tagsArray = Array.isArray(tags)
     ? tags.filter((t) => t !== SOURCE_ONLY_TAG)
     : String(tags || "")
-      .split(/\s+/)
-      .filter((t) => t && t !== SOURCE_ONLY_TAG);
+        .split(/\s+/)
+        .filter((t) => t && t !== SOURCE_ONLY_TAG);
 
   const tagsHTML = tagsArray
     .map((t) => `<span class="tag">${escapeHTML(t)}</span>`)
@@ -374,7 +375,10 @@ function buildProjectCardHTML({
                     ${primaryLink}
                     ${codeLink}
                 </div>
-                <div class="card-actions-right" style="display: flex; gap: 8px; align-items: center;">
+                <div class="card-actions-right" style="display: flex; gap: 0.35rem; align-items: center;">
+                    <button class="complete-btn ${isCompleted ? "active" : ""}" data-id="${safeDay}" aria-label="${isCompleted ? `Mark ${safeName} as incomplete` : `Mark ${safeName} as completed`}">
+                        <i class="${isCompleted ? "fa-solid" : "fa-regular"} fa-circle-check" aria-hidden="true"></i>
+                    </button>
                     <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${safeDay}" aria-label="${isBookmarked ? `Remove ${safeName} from bookmarks` : `Bookmark ${safeName}`}">
                         <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark" aria-hidden="true"></i>
                     </button>
@@ -397,7 +401,15 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
       trackRecentProject(projectData);
     }
 
-    window.open(sanitizeUrl(demoUrl), "_blank", "noopener");
+    // Use built-in sandbox previewer if available, otherwise open in new tab
+    if (window.openSandbox && projectData) {
+      window.openSandbox(projectData);
+    } else {
+      // SECURITY: sanitizeUrl() is called on the stored demoUrl before
+      // window.open() so a javascript: payload stored in localStorage cannot
+      // execute even after a page reload.
+      window.open(sanitizeUrl(demoUrl), "_blank", "noopener");
+    }
   };
 
   card.onclick = activateCard;
@@ -520,11 +532,13 @@ function getAllTechnologies() {
 
 let bookmarkedProjects = [];
 let recentProjects = [];
+let completedProjects = [];
 
 try {
   bookmarkedProjects =
     JSON.parse(localStorage.getItem("bookmarkedProjects")) || [];
   recentProjects = JSON.parse(localStorage.getItem("recentProjects")) || [];
+  completedProjects = JSON.parse(localStorage.getItem("completedProjects")) || [];
 } catch (error) {
   console.warn(
     "localStorage is not available or access is denied:",
@@ -853,6 +867,7 @@ function renderGrid() {
     const card = document.createElement("div");
 
     const isBookmarked = bookmarkedDays.has(day);
+    const isCompleted = completedProjects.includes(day);
 
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
@@ -861,6 +876,7 @@ function renderGrid() {
       tags,
       category,
       isBookmarked,
+      isCompleted,
       showDescription: true,
     });
 
@@ -1293,7 +1309,9 @@ function renderBookmarks() {
     if (!day || !name) return;
 
     const category = getCategoryFromTags(tags, name);
-
+    const isCompleted = completedProjects.includes(day);
+    
+    // Updated to use the secure HTML-string approach
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
       name,
@@ -1301,6 +1319,7 @@ function renderBookmarks() {
       tags,
       category,
       isBookmarked: true,
+      isCompleted,
       showDescription: true,
     });
 
@@ -1352,6 +1371,7 @@ function renderRecentProjects() {
     const isBookmarked = bookmarkedProjects.some(
       (item) => normalizeProjectEntry(item).day === day,
     );
+    const isCompleted = completedProjects.includes(day);
 
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
@@ -1360,6 +1380,7 @@ function renderRecentProjects() {
       tags,
       category,
       isBookmarked,
+      isCompleted,
       showDescription: true,
     });
 
@@ -1839,17 +1860,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (hasProjectGrid()) {
       loadBookmarksFromURL();
+      checkAndResetStreakOnLoad();
 
       renderGrid();
       renderBookmarks();
       renderRecentProjects();
+      renderLearningDashboard();
     }
 
     restoreStateFromURL();
-
-    syncProjectCounts();
-    fetchRepoStats();
-    initScrollBtn();
   } catch (error) {
     console.error("Failed to load projects:", error);
 
@@ -2356,30 +2375,206 @@ function applyFilters(search, category) {
   renderGrid();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const searchInput =
-    document.getElementById("search") ||
-    document.querySelector('input[type="text"]') ||
-    document.querySelector(".search-input");
-  if (searchInput) {
-    searchInput.addEventListener(
-      "input",
-      debounce(() => {
-        const { category } = getQueryParams();
-        updateURL(searchInput.value, category);
-        applyFilters(searchInput.value, category);
-      }, 200),
-    );
+/* ============================================================
+   GAMIFIED LEARNING PROGRESSION DASHBOARD ENGINE
+   ============================================================ */
+
+function toggleComplete(project) {
+  const day = project.day;
+  const exists = completedProjects.includes(day);
+
+  if (exists) {
+    completedProjects = completedProjects.filter((item) => item !== day);
+    showToast("Project marked as incomplete");
+  } else {
+    completedProjects.push(day);
+    showToast("Project completed!");
+    updateStreakOnCompletion();
   }
-  const categoryFilter = document.getElementById("category");
-  if (categoryFilter) {
-    categoryFilter.addEventListener("change", () => {
-      const { search } = getQueryParams();
-      updateURL(search, categoryFilter.value);
-      applyFilters(search, categoryFilter.value);
-    });
+
+  try {
+    localStorage.setItem("completedProjects", JSON.stringify(completedProjects));
+  } catch (error) {
+    console.warn("Could not save completed projects state:", error.message);
   }
-  window.addEventListener("popstate", () => restoreStateFromURL());
+
+  renderGrid();
+  renderBookmarks();
+  renderRecentProjects();
+  renderLearningDashboard();
+}
+
+function updateStreakOnCompletion() {
+  const todayStr = new Date().toDateString();
+  let streak = parseInt(localStorage.getItem("learningStreak") || "0", 10);
+  const lastDateStr = localStorage.getItem("lastCompletionDate");
+
+  if (lastDateStr === todayStr) {
+    return; // Already completed a project today
+  }
+
+  if (lastDateStr) {
+    const lastDate = new Date(lastDateStr);
+    const today = new Date(todayStr);
+    const diffTime = Math.abs(today - lastDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 1) {
+      streak++;
+    } else if (diffDays > 1) {
+      streak = 1;
+    }
+  } else {
+    streak = 1;
+  }
+
+  localStorage.setItem("learningStreak", streak.toString());
+  localStorage.setItem("lastCompletionDate", todayStr);
+}
+
+function checkAndResetStreakOnLoad() {
+  const lastDateStr = localStorage.getItem("lastCompletionDate");
+  if (!lastDateStr) return;
+
+  const todayStr = new Date().toDateString();
+  const lastDate = new Date(lastDateStr);
+  const today = new Date(todayStr);
+  const diffTime = Math.abs(today - lastDate);
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffDays > 1) {
+    localStorage.setItem("learningStreak", "0");
+  }
+}
+
+function getRecommendations() {
+  const uncompleted = PROJECTS.filter((p) => !completedProjects.includes(p.day));
+  if (uncompleted.length === 0) {
+    return [];
+  }
+
+  if (completedProjects.length === 0) {
+    const beginners = uncompleted.filter((p) => (p.difficulty || "").toLowerCase() === "beginner").slice(0, 3);
+    if (beginners.length > 0) return beginners;
+    return uncompleted.slice(0, 3);
+  }
+
+  const completedProjectData = PROJECTS.filter((p) => completedProjects.includes(p.day));
+  const tagWeights = {};
+  completedProjectData.forEach((p) => {
+    if (p.techStack) {
+      p.techStack.forEach((tag) => {
+        tagWeights[tag] = (tagWeights[tag] || 0) + 1;
+      });
+    }
+  });
+
+  const difficultyMap = { beginner: 1, intermediate: 2, advanced: 3 };
+  let totalDiff = 0;
+  completedProjectData.forEach((p) => {
+    const diff = (p.difficulty || "beginner").toLowerCase();
+    totalDiff += difficultyMap[diff] || 1;
+  });
+  const avgDiffVal = totalDiff / completedProjectData.length;
+  let targetDifficulty = "beginner";
+  if (avgDiffVal > 2.2) targetDifficulty = "advanced";
+  else if (avgDiffVal > 1.2) targetDifficulty = "intermediate";
+
+  const scoredProjects = uncompleted.map((p) => {
+    let score = 0;
+    if (p.techStack) {
+      p.techStack.forEach((tag) => {
+        score += (tagWeights[tag] || 0) * 2;
+      });
+    }
+    if ((p.difficulty || "beginner").toLowerCase() === targetDifficulty) {
+      score += 3;
+    }
+    const dayNum = parseInt(p.day.replace("Day ", ""), 10) || 100;
+    score += (100 - dayNum) * 0.01;
+
+    return { project: p, score };
+  });
+
+  scoredProjects.sort((a, b) => b.score - a.score);
+
+  return scoredProjects.slice(0, 3).map((item) => item.project);
+}
+
+function renderLearningDashboard() {
+  const progressBar = document.getElementById("learningProgressBar");
+  const progressText = document.getElementById("learningProgressText");
+  const streakCount = document.getElementById("learningStreakCount");
+  const streakSub = document.getElementById("learningStreakSub");
+  const recContent = document.getElementById("learningRecommendationContent");
+
+  if (!PROJECTS || PROJECTS.length === 0) return;
+
+  const total = PROJECTS.length;
+  const completed = completedProjects.length;
+  const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+  if (progressBar) progressBar.style.width = `${percent}%`;
+  if (progressText) {
+    progressText.innerHTML = `<strong>${completed}</strong> / <strong>${total}</strong> completed (<strong>${percent}%</strong>)`;
+  }
+
+  const streak = parseInt(localStorage.getItem("learningStreak") || "0", 10);
+  if (streakCount) streakCount.textContent = streak.toString();
+  if (streakSub) {
+    const lastDateStr = localStorage.getItem("lastCompletionDate");
+    const todayStr = new Date().toDateString();
+    if (lastDateStr === todayStr) {
+      streakSub.textContent = "Great job! You completed a project today.";
+    } else {
+      streakSub.textContent = streak > 0 ? "Keep it up! Complete a project today to extend your streak." : "Finish a project today to start your learning streak!";
+    }
+  }
+
+  if (recContent) {
+    const recommendations = getRecommendations();
+    if (recommendations.length > 0) {
+      const isRoot = !window.location.pathname.includes("/contributors/");
+      const basePrefix = isRoot ? "" : "../";
+      
+      const htmlContent = recommendations.map((recommended) => {
+        const path = recommended.projectPath;
+        const cleanDemoPath = path.startsWith("./") ? basePrefix + path.substring(2) : path;
+        const difficulty = (recommended.difficulty || "beginner").toLowerCase();
+        const diffLabel = CATEGORY_LABEL[difficulty] || recommended.difficulty;
+        
+        // Escape and sanitize all values to prevent XSS
+        const safeDemoUrl = sanitizeUrl(cleanDemoPath);
+        const safeDay = escapeHTML(recommended.day);
+        const safeName = escapeHTML(recommended.projectName);
+        const safeDiffLabel = escapeHTML(diffLabel);
+        const safeDifficultyClass = escapeHTML(difficulty);
+        
+        return `
+          <a href="${safeDemoUrl}" class="recommend-link open-project" data-id="${safeDay}" aria-label="Start recommended project ${safeName}">
+            <span class="recommend-name">${safeName}</span>
+            <span class="recommend-diff ${safeDifficultyClass}">${safeDiffLabel}</span>
+          </a>
+        `;
+      }).join("");
+
+      recContent.innerHTML = htmlContent;
+    } else {
+      recContent.innerHTML = `<span class="stat-subtext"><i class="fas fa-trophy text-yellow-500" aria-hidden="true"></i> You've completed all projects! Legend!</span>`;
+    }
+  }
+}
+
+document.addEventListener("click", (e) => {
+  const completeBtn = e.target.closest(".complete-btn");
+  if (!completeBtn) return;
+
+  e.preventDefault();
+  const projectDay = completeBtn.dataset.id;
+  const project = PROJECTS.find((item) => item.day === projectDay);
+  if (!project) return;
+
+  toggleComplete(project);
 });
 document
   .getElementById(

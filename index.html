@@ -251,7 +251,6 @@
 
           <div class="section-heading-row">
             <h2 class="section-title">Bookmarked Projects</h2>
-
             <div style="display: flex; gap: 0.5rem; align-items: center">
               <button
                 class="view-all-btn"
@@ -276,6 +275,43 @@
       </div>
     </section>
 
+    <!-- Learning Progression Tracker -->
+    <section class="projects-section" id="learningJourneySection">
+      <div class="projects-inner">
+        <div class="projects-intro">
+          <p class="section-label">Your Learning Journey</p>
+          <h2 class="section-title">Progression Dashboard</h2>
+        </div>
+        
+        <div class="learning-dashboard">
+          <div class="learning-stat-card">
+            <span class="stat-label">Overall Progress</span>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" id="learningProgressBar" style="width: 0%"></div>
+            </div>
+            <span class="stat-value" id="learningProgressText">0 / 0 completed (0%)</span>
+          </div>
+          
+          <div class="learning-stat-card">
+            <span class="stat-label">Daily Learning Streak</span>
+            <div class="streak-value">
+              <i class="fas fa-fire streak-fire-icon" aria-hidden="true"></i>
+              <span id="learningStreakCount">0</span> days
+            </div>
+            <span class="stat-subtext" id="learningStreakSub">Finish a project today to build your streak!</span>
+          </div>
+
+          <div class="learning-stat-card">
+            <span class="stat-label">Recommended Next Project</span>
+            <div id="learningRecommendationContent" class="recommendation-content">
+              <span class="stat-subtext">Loading recommendation...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Projects Section -->
     <section class="projects-section" id="projects">
       <div class="projects-inner">
         <div class="projects-intro">
@@ -391,8 +427,10 @@
           </button>
         </div>
 
+        <!-- Project Grid -->
         <div class="project-grid" id="projectGrid"></div>
 
+        <!-- No Results -->
         <div class="no-results" id="noResults" role="status" aria-live="assertive">
           <i class="fas fa-search" aria-hidden="true"></i>
           <p>No projects match your search.</p>
@@ -400,177 +438,176 @@
       </div>
     </section>
 
-    <section class="projects-section" id="randomProjectSection">
-  <div class="projects-inner">
+  <section class="projects-section" id="randomProjectSection">
+    <div class="projects-inner">
 
-    <div class="projects-intro">
-      <p class="section-label">Need Inspiration?</p>
-      <h2 class="section-title">
-        Can't decide what to build next?
-      </h2>
-      <p class="hero-extra">
-        Generate a random project from the current archive.
-      </p>
+      <div class="projects-intro">
+        <p class="section-label">Need Inspiration?</p>
+        <h2 class="section-title">
+          Can't decide what to build next?
+        </h2>
+        <p class="hero-extra">
+          Generate a random project from the current archive.
+        </p>
+      </div>
+
+      <div class="random-project-wrapper">
+        <button
+          id="randomProjectBtn"
+          class="btn btn-primary"
+        >
+          🎲 Generate Random Project
+        </button>
+
+        <div
+          id="randomProjectResult"
+          class="project-grid"
+        ></div>
+      </div>
+
     </div>
+  </section>
 
-    <div class="random-project-wrapper">
-      <button
-        id="randomProjectBtn"
-        class="btn btn-primary"
-      >
-        🎲 Generate Random Project
-      </button>
-
-      <div
-        id="randomProjectResult"
-        class="project-grid"
-      ></div>
-    </div>
-
-  </div>
-</section>
-
-    <footer class="footer homepage-footer">
-      <div class="homepage-footer-shell">
-        <div class="homepage-footer-brand">
-    <p class="homepage-footer-kicker">100 Days · 100 Web Projects</p>
-          <h2>
-            Open-source builds for daily practice and creative frontend
-            exploration.
-          </h2>
-          <p class="homepage-footer-copy">
-            Explore a growing archive of UI studies, games, tools, API demos,
-            and full-stack ideas — all designed to help contributors learn by
-            building.
-          </p>
-          <div class="homepage-footer-pills">
-            <span class="homepage-footer-pill">Open Source</span>
-            <span class="homepage-footer-pill">HTML · CSS · JavaScript</span>
-            <span class="homepage-footer-pill">Mobile-friendly archive</span>
-          </div>
+  <!-- ── FOOTER ─────────────────────────────────────────── -->
+  <footer class="footer homepage-footer">
+    <div class="homepage-footer-shell">
+      <div class="homepage-footer-brand">
+        <p class="homepage-footer-kicker">100 Days · 100 Web Projects</p>
+        <h2>
+          Open-source builds for daily practice and creative frontend
+          exploration.
+        </h2>
+        <p class="homepage-footer-copy">
+          Explore a growing archive of UI studies, games, tools, API demos,
+          and full-stack ideas — all designed to help contributors learn by
+          building.
+        </p>
+        <div class="homepage-footer-pills">
+          <span class="homepage-footer-pill">Open Source</span>
+          <span class="homepage-footer-pill">HTML · CSS · JavaScript</span>
+          <span class="homepage-footer-pill">Mobile-friendly archive</span>
         </div>
+      </div>
 
-        <div class="homepage-footer-grid">
-          <section
-            class="homepage-footer-card"
-            aria-labelledby="footerExploreTitle"
-          >
-            <h3 id="footerExploreTitle">Explore</h3>
-            <ul class="footer-link-list">
-              <li><a href="#projects">Browse all projects</a></li>
-              <li>
-                <a href="contributors/contributor.html">Meet contributors</a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/dhairyagothi/100_days_100_web_project"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="View repository on GitHub (opens in a new tab)"
-                  >View repository</a
-                >
-              </li>
-            </ul>
-          </section>
-
-          <section
-            class="homepage-footer-card"
-            aria-labelledby="footerConnectTitle"
-          >
-            <h3 id="footerConnectTitle">Connect</h3>
-            <p>
-              Follow updates, share ideas, and stay connected with the
-              community.
-            </p>
-            <div class="social-links">
-              <a
-                href="https://www.instagram.com/dhairyaa__31/"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="social-btn"
-                aria-label="Follow on Instagram (opens in a new tab)"
-              >
-                <i class="fab fa-instagram" aria-hidden="true"></i>
-              </a>
+      <div class="homepage-footer-grid">
+        <section
+          class="homepage-footer-card"
+          aria-labelledby="footerExploreTitle"
+        >
+          <h3 id="footerExploreTitle">Explore</h3>
+          <ul class="footer-link-list">
+            <li><a href="#projects">Browse all projects</a></li>
+            <li>
+              <a href="contributors/contributor.html">Meet contributors</a>
+            </li>
+            <li>
               <a
                 href="https://github.com/dhairyagothi/100_days_100_web_project"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="social-btn"
-                aria-label="Open GitHub repository (opens in a new tab)"
+                aria-label="View repository on GitHub (opens in a new tab)"
+                >View repository</a
               >
-                <i class="fab fa-github" aria-hidden="true"></i>
-              </a>
-              <a
-                href="https://www.linkedin.com/in/dhairya-gothi-65945b288/"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="social-btn"
-                aria-label="Connect on LinkedIn (opens in a new tab)"
-              >
-                <i class="fab fa-linkedin" aria-hidden="true"></i>
-              </a>
-            </div>
-          </section>
+            </li>
+          </ul>
+        </section>
 
-          <section
-            class="homepage-footer-card"
-            aria-labelledby="footerFeaturedTitle"
-          >
-            <h3 id="footerFeaturedTitle">Featured Tool</h3>
-            <p>
-              Create polished GitHub README profiles in minutes with the
-              featured generator.
-            </p>
-            <a
-              href="https://www.github-readme.tech"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="featured-btn"
-              aria-label="Try README Generator (opens in a new tab)"
-            >
-              <i class="fas fa-magic" aria-hidden="true"></i> Try README
-              Generator
-            </a>
-          </section>
-        </div>
-
-        <div class="homepage-footer-bottom">
+        <section
+          class="homepage-footer-card"
+          aria-labelledby="footerConnectTitle"
+        >
+          <h3 id="footerConnectTitle">Connect</h3>
           <p>
-            <strong
-              >&copy; <span data-current-year></span> 100 Days · 100 Web
-              Projects</strong
-            >
-            by Dhairya and Contributors.
+            Follow updates, share ideas, and stay connected with the
+            community.
           </p>
-          <div class="homepage-footer-bottom-links">
-            <a href="#hero">Back to top</a>
-            <a href="contact-us.html">Contact Us</a>
-            <a href="contributors/contributor.html">Contributors</a>
+          <div class="social-links">
             <a
-              href="https://www.github-readme.tech"
+              href="https://www.instagram.com/dhairyaa__31/"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="README Generator (opens in a new tab)"
-              >README Generator</a
+              class="social-btn"
+              aria-label="Follow on Instagram (opens in a new tab)"
             >
+              <i class="fab fa-instagram" aria-hidden="true"></i>
+            </a>
+            <a
+              href="https://github.com/dhairyagothi/100_days_100_web_project"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="social-btn"
+              aria-label="Open GitHub repository (opens in a new tab)"
+            >
+              <i class="fab fa-github" aria-hidden="true"></i>
+            </a>
+            <a
+              href="https://www.linkedin.com/in/dhairya-gothi-65945b288/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="social-btn"
+              aria-label="Connect on LinkedIn (opens in a new tab)"
+            >
+              <i class="fab fa-linkedin" aria-hidden="true"></i>
+            </a>
           </div>
+        </section>
+
+        <section
+          class="homepage-footer-card"
+          aria-labelledby="footerFeaturedTitle"
+        >
+          <h3 id="footerFeaturedTitle">Featured Tool</h3>
+          <p>
+            Create polished GitHub README profiles in minutes with the
+            featured generator.
+          </p>
+          <a
+            href="https://www.github-readme.tech"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="featured-btn"
+            aria-label="Try README Generator (opens in a new tab)"
+          >
+            <i class="fas fa-magic" aria-hidden="true"></i> Try README
+            Generator
+          </a>
+        </section>
+      </div>
+
+      <div class="homepage-footer-bottom">
+        <p>
+          <strong>&copy; <span data-current-year></span> 100 Days · 100 Web
+            Projects</strong>
+          by Dhairya and Contributors.
+        </p>
+        <div class="homepage-footer-bottom-links">
+          <a href="#hero">Back to top</a>
+          <a href="contact-us.html">Contact Us</a>
+          <a href="contributors/contributor.html">Contributors</a>
+          <a
+            href="https://www.github-readme.tech"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="README Generator (opens in a new tab)"
+            >README Generator</a
+          >
         </div>
       </div>
-    </footer>
+    </div>
+  </footer>
 
-    <button id="scrollBtn" aria-label="Back to top">
-      <svg class="progress-ring" viewBox="0 0 48 48">
-        <circle class="ring-track" cx="24" cy="24" r="22" />
-        <circle class="ring-fill" id="ringFill" cx="24" cy="24" r="22" />
-      </svg>
-      <i class="fas fa-arrow-up scroll-arrow" aria-hidden="true"></i>
-      <span class="scroll-tooltip">Back to top</span>
-    </button>
-    <div class="toast" id="toast"></div>
-    <script type="module" src="hero-terminal.js" defer></script>
-    <script src="index.js?v=4" defer></script>
-    <script src="navbar.js" defer></script>
-    <script src="cursor.js" defer></script>
-  </body>
+  <button id="scrollBtn" aria-label="Back to top">
+    <svg class="progress-ring" viewBox="0 0 48 48">
+      <circle class="ring-track" cx="24" cy="24" r="22" />
+      <circle class="ring-fill" id="ringFill" cx="24" cy="24" r="22" />
+    </svg>
+    <i class="fas fa-arrow-up scroll-arrow" aria-hidden="true"></i>
+    <span class="scroll-tooltip">Back to top</span>
+  </button>
+  <div class="toast" id="toast"></div>
+  <script type="module" src="hero-terminal.js" defer></script>
+  <script src="index.js?v=4" defer></script>
+  <script src="navbar.js" defer></script>
+  <script src="cursor.js" defer></script>
+</body>
 </html>
