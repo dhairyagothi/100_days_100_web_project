@@ -696,8 +696,55 @@
         document.getElementById("clearModal").style.display = "none";
       }
     });
+    // Theme Switching
+    const themeButtons = document.querySelectorAll(".theme-btn");
 
-    document.addEventListener("DOMContentLoaded", renderKanban);
+    function updateThemeButtons(activeTheme) {
+      themeButtons.forEach((btn) => {
+        btn.style.outline =
+          btn.dataset.theme === activeTheme
+            ? "3px solid white"
+            : "none";
+      });
+    }
+
+    themeButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const selectedTheme = button.dataset.theme;
+
+        document.body.classList.remove(
+          "theme1",
+          "theme2",
+          "theme3",
+          "theme4"
+        );
+
+        document.body.classList.add(selectedTheme);
+
+        localStorage.setItem(
+          "selectedTheme",
+          selectedTheme
+        );
+
+        updateThemeButtons(selectedTheme);
+
+        showKanbanToast(
+          "🎨 Theme Changed!",
+          "success"
+        );
+      });
+    });
+  document.addEventListener("DOMContentLoaded", () => {
+  const savedTheme =
+    localStorage.getItem("selectedTheme") ||
+    "theme1";
+
+  document.body.classList.add(savedTheme);
+
+  updateThemeButtons(savedTheme);
+
+  renderKanban();
+});  
   </script>
 </body>
 
