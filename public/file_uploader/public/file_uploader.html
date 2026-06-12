@@ -490,19 +490,17 @@
 <body>
 <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
-
   <div class="container">
-    <div class="main-content">
-      <form
-        class="myform"
-        onsubmit="return false;"
-      >
-        <div class="form-header">
-          <div class="logo">
-            <div class="logo-icon">⬆</div>
-            <h1>File<span>Drop</span></h1>
-          </div>
-          <p>Upload your files securely &amp; instantly</p>
+    <form
+      action="http://localhost:3000/upload"
+      method="POST"
+      enctype="multipart/form-data">
+      class="myform"
+    >
+      <div class="form-header">
+        <div class="logo">
+          <div class="logo-icon">⬆</div>
+          <h1>File<span>Drop</span></h1>
         </div>
 
         <div class="form-field">
@@ -596,84 +594,41 @@
     const fileInput = document.getElementById('myFile');
     const form = document.querySelector('.myform');
 
-    // --- Data handling ---
-    let uploadData = {
-      stats: JSON.parse(localStorage.getItem('fileUploadStats')) || {
-        totalFiles: 0,
-        totalSizeBytes: 0,
-        largestFileBytes: 0,
-        imageCount: 0
-      },
-      history: JSON.parse(localStorage.getItem('fileUploadHistory')) || []
-    };
+    // 1. Prevent default behavior for all drag events so the browser doesn't open the image
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, e => {
+        e.preventDefault();
+        e.stopPropagation();
+      }, false);
+    });
 
-    function saveData() {
-      localStorage.setItem('fileUploadStats', JSON.stringify(uploadData.stats));
-      localStorage.setItem('fileUploadHistory', JSON.stringify(uploadData.history));
-    }
-
-    function formatSize(bytes) {
-      const kb = bytes / 1024;
-      if (bytes < 1024) return bytes + ' B';
-      if (kb < 1024) return kb.toFixed(1) + ' KB';
-      return (kb / 1024).toFixed(1) + ' MB';
-    }
-
-    function renderStats() {
-      document.getElementById('statTotalFiles').textContent = uploadData.stats.totalFiles;
-      document.getElementById('statTotalSize').textContent = formatSize(uploadData.stats.totalSizeBytes);
-      document.getElementById('statLargestFile').textContent = formatSize(uploadData.stats.largestFileBytes);
-      document.getElementById('statImageCount').textContent = uploadData.stats.imageCount;
-    }
-
-    function renderHistory() {
-      const historyList = document.getElementById('historyList');
-      if (!uploadData.history.length) {
-        historyList.innerHTML = '<div class="empty-history">No uploads yet</div>';
-        return;
-      }
-      historyList.innerHTML = uploadData.history.slice(0, 5).map(entry => `
-        <div class="history-item">
-          <div class="history-name">${entry.name}</div>
-          <div class="history-size">${formatSize(entry.size)}</div>
-        </div>
-      `).join('');
-    }
-
-    // --- Toast Notifications ---
-    function showToast(message) {
-      const toastContainer = document.getElementById('toastContainer');
-      const toast = document.createElement('div');
-      toast.className = 'toast';
-      
-      const icon = document.createElement('span');
-      icon.className = 'toast-icon';
-      icon.textContent = '✅';
-      
-      const msg = document.createElement('span');
-      msg.className = 'toast-message';
-      msg.textContent = message;
-      
-      toast.appendChild(icon);
-      toast.appendChild(msg);
-      toastContainer.appendChild(toast);
-
-      // Remove after 4 seconds
-      setTimeout(() => {
-        toast.classList.add('fade-out');
-        setTimeout(() => toast.remove(), 300);
-      }, 4000);
-    }
-
-    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    // 2. Handle visual styling on hover
+    dropZone.addEventListener('dragover', () => dropZone.classList.add('dragover'));
     dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-    dropZone.addEventListener('drop', () => dropZone.classList.remove('dragover'));
+    
+    // 3. Handle the actual drop event
+    dropZone.addEventListener('drop', e => {
+      dropZone.classList.remove('dragover');
+      
+      // Grab the files from the data transfer
+      const files = e.dataTransfer.files;
+      
+      if (files.length > 0) {
+        // Manually assign the dropped files to the hidden input
+        fileInput.files = files;
+        // Trigger the preview and validation function manually
+        showPreview(fileInput);
+      }
+    });
 
     function showPreview(input) {
       const preview = document.getElementById('file-preview');
       preview.innerHTML = '';
 
-      if (!input.files.length) { preview.style.display = 'none'; return; }
+      if (!input.files || input.files.length === 0) { 
+        preview.style.display = 'none'; 
+        return; 
+      }
 
       // Restrict validation variables locally
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
