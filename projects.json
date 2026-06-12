@@ -635,7 +635,7 @@
       "javascript"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/Budget_Tracker/index.html"
+    "projectPath": "./public/Budget%20Tracker/index.html"
   },
   {
     "projectNo": 55,
@@ -751,7 +751,7 @@
       "css"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/zomato-clone/index.html"
+    "projectPath": "./public/zomato-clone/zomato.html"
   },
   {
     "projectNo": 65,
@@ -2877,5 +2877,18 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/Word_Jumble/index.html"
+  },
+  {
+    "projectNo": 228,
+    "projectName": "Sorting Algorithm Visualizer",
+    "projectType": "Tool",
+    "projectDesc": "Interactive visualizer for various sorting algorithms like Bubble, Selection, Insertion, Quick, and Merge Sort.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Sorting_Algorithm_Visualizer/index.html"
   }
 ]

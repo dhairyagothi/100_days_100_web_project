@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting Algorithm Visualizer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <h1>Sorting Visualizer</h1>
+            <div class="controls">
+                <div class="control-group">
+                    <button id="generate-array" class="btn primary-btn">Generate New Array</button>
+                </div>
+                
+                <div class="control-group slider-group">
+                    <label for="array-size">Array Size: <span id="size-value">50</span></label>
+                    <input type="range" id="array-size" min="10" max="100" value="50">
+                </div>
+                
+                <div class="control-group slider-group">
+                    <label for="speed">Speed: <span id="speed-value">Fast</span></label>
+                    <input type="range" id="speed" min="1" max="100" value="80">
+                </div>
+                
+                <div class="control-group">
+                    <select id="algorithm" class="select-dropdown">
+                        <option value="bubble">Bubble Sort</option>
+                        <option value="selection">Selection Sort</option>
+                        <option value="insertion">Insertion Sort</option>
+                        <option value="quick">Quick Sort</option>
+                        <option value="merge">Merge Sort</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <button id="sort-btn" class="btn action-btn">Sort!</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="visualizer-container">
+            <div id="bars-container" class="bars-container"></div>
+        </main>
+        
+        <div class="info-panel">
+            <div class="legend">
+                <div class="legend-item"><span class="color-box default"></span> Default</div>
+                <div class="legend-item"><span class="color-box comparing"></span> Comparing</div>
+                <div class="legend-item"><span class="color-box swapping"></span> Swapping</div>
+                <div class="legend-item"><span class="color-box sorted"></span> Sorted</div>
+            </div>
+            <div class="stats">
+                <p>Comparisons: <span id="comparisons-count">0</span></p>
+                <p>Swaps: <span id="swaps-count">0</span></p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
