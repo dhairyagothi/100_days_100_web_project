@@ -685,8 +685,15 @@ function generateReadme() {
       const name = project.projectName;
       const url = project.projectPath;
       const tags = project.techStack;
+      const category = getCategoryFromTags(tags, name, project.projectType);
       const { demoUrl } = resolveProjectUrls(day, name, url, tags);
-    const category = getCategoryFromTags(tags, name, project.projectType);
+      lines.push(`- **${day}: ${name}** — ${category} — [Demo](${demoUrl})`);
+    });
+
+    const blob = new Blob([lines.join("\n")], {
+      type: "text/markdown",
+    });
+    const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download = "README.md";
     document.body.appendChild(a);
