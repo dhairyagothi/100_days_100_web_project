@@ -4,8 +4,8 @@ const pauseBtn = document.getElementById('pauseBtn');
 const themeBtn = document.getElementById('themeBtn');
 const voiceBtn = document.getElementById('voiceBtn');
 const voiceStatus = document.getElementById('voiceStatus');
-const prevBtn = document.getElementById('prevBtn');   // optional – not in HTML
-const nextBtn = document.getElementById('nextBtn');   // optional – not in HTML
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
 
 let isPaused = false;
 let isReversed = false;
@@ -76,6 +76,27 @@ function generateGallery() {
     // Set custom property index for CSS transform math
     card.style.setProperty('--i', index);
 
+    // Mouse movement parallax 3D card tilt
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const xc = rect.width / 2;
+      const yc = rect.height / 2;
+      
+      // Calculate tilt angles (max 10 degrees)
+      const angleX = -((y - yc) / yc) * 10;
+      const angleY = ((x - xc) / xc) * 10;
+      
+      card.style.setProperty('--tilt-x', `${angleX}deg`);
+      card.style.setProperty('--tilt-y', `${angleY}deg`);
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.setProperty('--tilt-x', '0deg');
+      card.style.setProperty('--tilt-y', '0deg');
+    });
+
     card.innerHTML = `
   <div class="image-wrapper">
     <img 
@@ -87,6 +108,7 @@ function generateGallery() {
         this.nextElementSibling.style.display='flex';
       "
     />
+    <div class="glare-overlay"></div>
 
     <div 
       class="fallback-card"
@@ -142,7 +164,7 @@ function updateGalleryStates() {
   const normalizedAngle = ((-currentAngle % 360) + 360) % 360;
   const activeIndex = Math.round(normalizedAngle / angleStep) % totalCards;
 
-  // 1. Mark the active facing card for the Cinema Focusing effect
+  // 1. Mark the active facing card and update gradual depth visual styles
   const cards = slider.querySelectorAll('span');
   cards.forEach((card, index) => {
     if (index === activeIndex) {
@@ -150,6 +172,31 @@ function updateGalleryStates() {
     } else {
       card.classList.remove('active-card');
     }
+
+    // Calculate relative difference from facing forward (0 degrees) normalized to [-180, 180]
+    const cardAngle = (index * angleStep + currentAngle) % 360;
+    let diffAngle = ((cardAngle + 180) % 360) - 180;
+    if (diffAngle < -180) diffAngle += 360;
+
+    // Cosine factor: 1 at front (0 deg), -1 at back (180 deg)
+    const cosFactor = Math.cos(diffAngle * Math.PI / 180);
+    const intensity = (cosFactor + 1) / 2; // Ranges from 1 (front) to 0 (back)
+
+    // Calculate gradual properties
+    const opacity = 0.15 + 0.85 * intensity;    // 0.15 (back) to 1.0 (front)
+    const scale = 0.82 + 0.18 * intensity;      // 0.82 (back) to 1.0 (front)
+    const brightness = 0.35 + 0.65 * intensity; // 0.35 (back) to 1.0 (front)
+    const blur = (1 - intensity) * 3.5;         // blur up to 3.5px at the back
+
+    // Glare position: shifts linearly based on angle
+    const glareX = (diffAngle / 90) * 50 + 50;  // Map [-90, 90] to [0%, 100%]
+
+    // Set custom CSS variables
+    card.style.setProperty('--depth-opacity', opacity);
+    card.style.setProperty('--depth-scale', scale);
+    card.style.setProperty('--depth-brightness', brightness);
+    card.style.setProperty('--depth-blur', `${blur}px`);
+    card.style.setProperty('--glare-x', `${glareX}%`);
   });
 
   // 2. Dynamically transition ambient light background glow to matching card color
@@ -261,27 +308,41 @@ function stepCarousel(direction) {
   velocity = 0;
 }
 
-if (prevBtn) prevBtn.addEventListener('click', () => stepCarousel(1));
-if (nextBtn) nextBtn.addEventListener('click', () => stepCarousel(-1));
+if (prevBtn) {
+  prevBtn.addEventListener('click', () => stepCarousel(1));
+}
+if (nextBtn) {
+  nextBtn.addEventListener('click', () => stepCarousel(-1));
+}
 
 /* =========================
    PLAY / PAUSE BUTTON
 ========================= */
 
-pauseBtn.addEventListener('click', () => {
-  isPaused = !isPaused;
-  pauseBtn.querySelector('.btn-label').textContent = isPaused ? 'Resume Rotation' : 'Pause Rotation';
-  isTransitioning = false;
-});
+if (pauseBtn) {
+  pauseBtn.addEventListener('click', () => {
+    isPaused = !isPaused;
+    const label = pauseBtn.querySelector('.btn-label');
+    if (label) {
+      label.textContent = isPaused ? 'Resume Rotation' : 'Pause Rotation';
+    }
+    isTransitioning = false;
+  });
+}
 
 /* =========================
    DIRECTION BUTTON
 ========================= */
 
-directionBtn.addEventListener('click', () => {
-  isReversed = !isReversed;
-  directionBtn.querySelector('.btn-label').textContent = isReversed ? 'Normal Rotation' : 'Reverse Rotation';
-});
+if (directionBtn) {
+  directionBtn.addEventListener('click', () => {
+    isReversed = !isReversed;
+    const label = directionBtn.querySelector('.btn-label');
+    if (label) {
+      label.textContent = isReversed ? 'Normal Rotation' : 'Reverse Rotation';
+    }
+  });
+}
 
 /* =========================
    THEME PERSISTENCE
@@ -292,7 +353,12 @@ function applyTheme(theme) {
 
   document.body.classList.toggle('light-theme', isLight);
 
-  themeBtn.querySelector('.btn-label').textContent = isLight ? 'Dark Mode' : 'Light Mode';
+  if (themeBtn) {
+    const label = themeBtn.querySelector('.btn-label');
+    if (label) {
+      label.textContent = isLight ? 'Dark Mode' : 'Light Mode';
+    }
+  }
 }
 
 /* Load saved theme on page load */
@@ -301,12 +367,19 @@ const savedTheme = localStorage.getItem('gallery-theme') || 'dark';
 applyTheme(savedTheme);
 
 /* Theme toggle button */
-themeBtn.addEventListener('click', () => {
-  document.body.classList.toggle('light-theme');
-  const isLight = document.body.classList.contains('light-theme');
-  themeBtn.querySelector('.btn-label').textContent = isLight ? 'Dark Mode' : 'Light Mode';
-  localStorage.setItem('gallery-theme', isLight ? 'light' : 'dark');
-});
+if (themeBtn) {
+  themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('light-theme');
+    const isLight = document.body.classList.contains('light-theme');
+    const label = themeBtn.querySelector('.btn-label');
+    if (label) {
+      label.textContent = isLight ? 'Dark Mode' : 'Light Mode';
+    }
+    try {
+      localStorage.setItem('gallery-theme', isLight ? 'light' : 'dark');
+    } catch (_) {}
+  });
+}
 
 
 /* =========================
