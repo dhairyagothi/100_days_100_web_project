@@ -68,6 +68,10 @@ cd zomato-clone
 ```
 npm install express-rate-limit
 npm install
+npm install mongoose
+npm install express
+npm install cors
+npm install dotenv
 ```
 
 ### 3️⃣ Run the server
@@ -112,3 +116,8 @@ Feel free to fork this repository and contribute by creating pull requests.
 ## ⭐ Acknowledgement
 
 Inspired by the Zomato UI design.
+see in local 
+mongosh
+show dbs
+use zomato
+show collections

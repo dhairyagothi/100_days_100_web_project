@@ -26,6 +26,10 @@ const expenseNameInput = document.getElementById("expense-name");
 const expenseAmountInput = document.getElementById("expense-amount");
 const expenseCategorySelect = document.getElementById("expense-category");
 const expenseRecurringInput = document.getElementById("expense-recurring");
+const receiptUploadInput = document.getElementById("receipt-upload");
+const receiptStatusEl = document.getElementById("receipt-status");
+const addExpenseBtn = expenseForm ? expenseForm.querySelector('button[type="submit"]') : null;
+
 
 const categoryLimitsForm = document.getElementById("category-limits-form");
 const categoryLimitInputs = document.querySelectorAll("[data-category]");
@@ -185,7 +189,11 @@ function setupEventListeners() {
 
         addExpense();
     });
+    /* Receipt OCR */
 
+    if (receiptUploadInput) {
+        receiptUploadInput.addEventListener("change", handleReceiptUpload);
+    }
     /* Filter */
 
     categoryFilterSelect.addEventListener("change", (e) => {
@@ -320,7 +328,7 @@ function addExpense() {
     }
 
     saveExpenses();
-
+    // Receipt OCR: top-level handlers defined below
     updateUI();
 
     expenseForm.reset();
@@ -329,6 +337,325 @@ function addExpense() {
 }
 
 /* ---------------- EDIT EXPENSE ---------------- */
+
+/* ---------------- RECEIPT OCR (Top-level) ---------------- */
+
+const OCR_CONFIDENCE_THRESHOLD = 0.68;
+
+// Preprocess the receipt before OCR. Grayscale + contrast + light thresholding
+// makes small receipt totals much easier for Tesseract to read.
+async function preprocessImage(file, maxWidth = 2000) {
+    const imgBitmap = await createImageBitmap(file);
+
+    const scale = Math.min(1, maxWidth / imgBitmap.width);
+    const width = Math.round(imgBitmap.width * scale);
+    const height = Math.round(imgBitmap.height * scale);
+
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(imgBitmap, 0, 0, width, height);
+
+    const imageData = ctx.getImageData(0, 0, width, height);
+    const data = imageData.data;
+
+    const contrast = 55;
+    const factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
+
+    for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+
+        let lum = 0.299 * r + 0.587 * g + 0.114 * b;
+        lum = factor * (lum - 128) + 128;
+        lum = Math.max(0, Math.min(255, lum));
+
+        // Keep a soft threshold so decimals and currency symbols survive.
+        if (lum > 205) {
+            lum = 255;
+        } else if (lum < 55) {
+            lum = 0;
+        }
+
+        data[i] = data[i + 1] = data[i + 2] = lum;
+    }
+
+    ctx.putImageData(imageData, 0, 0);
+
+    return canvas;
+}
+
+async function handleReceiptUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!window.Tesseract) {
+        receiptStatusEl.textContent = "Receipt scanning is unavailable. Please enter it manually.";
+        receiptStatusEl.className = 'receipt-status error';
+        return;
+    }
+
+    receiptStatusEl.textContent = 'Scanning receipt...';
+    receiptStatusEl.className = 'receipt-status loading';
+    if (addExpenseBtn) addExpenseBtn.disabled = true;
+
+    try {
+        const canvas = await preprocessImage(file);
+
+        const { data } = await Tesseract.recognize(canvas, 'eng', {
+            logger: m => {
+                if (m.status === 'recognizing text' && m.progress) {
+                    const pct = Math.round(m.progress * 100);
+                    receiptStatusEl.textContent = `Scanning receipt... ${pct}%`;
+                }
+            }
+        });
+
+        const text = data.text || '';
+
+        const result = extractAmountFromText(text);
+
+        if (result.amount !== null && result.confidence >= OCR_CONFIDENCE_THRESHOLD) {
+            expenseAmountInput.value = result.amount.toFixed(2);
+            receiptStatusEl.textContent = `Detected amount: ${formatCurrency(result.amount)}`;
+            receiptStatusEl.className = 'receipt-status success';
+        } else if (result.amount !== null && result.confidence >= 0.52) {
+            expenseAmountInput.value = result.amount.toFixed(2);
+            receiptStatusEl.textContent = "Detected amount (low confidence). Please verify.";
+            receiptStatusEl.className = 'receipt-status error';
+        } else {
+            receiptStatusEl.textContent = "Couldn't detect the amount. Please enter it manually.";
+            receiptStatusEl.className = 'receipt-status error';
+        }
+
+    } catch (err) {
+        console.error(err);
+        receiptStatusEl.textContent = 'Failed to scan image. Please try again.';
+        receiptStatusEl.className = 'receipt-status error';
+    } finally {
+        if (addExpenseBtn) addExpenseBtn.disabled = false;
+    }
+}
+
+function extractAmountFromText(text) {
+    if (!text || !text.trim()) return { amount: null, confidence: 0 };
+
+    const normalized = normalizeOcrText(text);
+    const lines = normalized.split('\n').map(line => line.trim()).filter(Boolean);
+    const candidates = [];
+
+    lines.forEach((line, index) => {
+        const context = [
+            lines[index - 1] || "",
+            line,
+            lines[index + 1] || ""
+        ].join(" ");
+
+        getMoneyMatches(line).forEach(match => {
+            const candidate = buildAmountCandidate(match, line, context, index, lines.length);
+
+            if (candidate) {
+                candidates.push(candidate);
+            }
+        });
+    });
+
+    if (candidates.length === 0) {
+        return { amount: null, confidence: 0 };
+    }
+
+    const keywordCandidates = candidates
+        .filter(candidate => candidate.keywordScore > 0)
+        .sort((a, b) => b.score - a.score || b.value - a.value);
+
+    if (keywordCandidates.length > 0) {
+        const best = keywordCandidates[0];
+
+        return {
+            amount: roundTwo(best.value),
+            confidence: Math.min(0.97, Math.max(0.72, best.score / 100))
+        };
+    }
+
+    const fallbackCandidates = candidates
+        .filter(candidate => candidate.value > 0)
+        .sort((a, b) => b.score - a.score || b.value - a.value);
+
+    const best = fallbackCandidates[0];
+    const second = fallbackCandidates[1];
+
+    if (!best || best.score < 35) {
+        return { amount: null, confidence: 0 };
+    }
+
+    let confidence = Math.min(0.78, best.score / 100);
+
+    if (second && Math.abs(best.value - second.value) / best.value < 0.03) {
+        confidence -= 0.1;
+    }
+
+    return {
+        amount: roundTwo(best.value),
+        confidence: Math.max(0.45, confidence)
+    };
+}
+
+function normalizeOcrText(text) {
+    return text
+        .replace(/\r/g, "\n")
+        .replace(/[|]/g, "1")
+        .replace(/[¢€£₹]/g, "$")
+        .replace(/[，]/g, ",")
+        .replace(/[．]/g, ".")
+        .replace(/\bO(?=\d)/gi, "0")
+        .replace(/(?<=\d)O\b/gi, "0")
+        .replace(/[ \t]+/g, " ");
+}
+
+function getMoneyMatches(line) {
+    const moneyPatterns = [
+        /(?:[$]|rs\.?|inr|usd|eur|gbp|cad|aud)\s*[-+]?\s*\d{1,3}(?:(?:,\d{3})+|\d*)(?:[.,]\d{1,2})?/gi,
+        /[-+]?\d{1,3}(?:(?:,\d{3})+|\d*)(?:[.,]\d{2})\b/g,
+        /\b\d{1,5}\b/g
+    ];
+
+    const matches = [];
+
+    moneyPatterns.forEach(pattern => {
+        let match;
+
+        while ((match = pattern.exec(line)) !== null) {
+            matches.push({
+                raw: match[0],
+                index: match.index
+            });
+        }
+    });
+
+    return matches;
+}
+
+function buildAmountCandidate(match, line, context, lineIndex, lineCount) {
+    const value = parseCurrencyNumber(match.raw);
+
+    if (!isFinite(value) || value <= 0 || value > 1000000) {
+        return null;
+    }
+
+    const raw = match.raw.trim();
+    const lowerLine = line.toLowerCase();
+    const lowerContext = context.toLowerCase();
+
+    if (looksLikeNonAmount(raw, lowerLine, value)) {
+        return null;
+    }
+
+    const keywordScore = getKeywordScore(lowerContext);
+    let score = keywordScore;
+
+    if (/[$]|rs\.?|inr|usd|eur|gbp|cad|aud/i.test(raw)) score += 18;
+    if (/[.,]\d{2}\b/.test(raw)) score += 14;
+    if (lineIndex >= Math.floor(lineCount * 0.55)) score += 10;
+    if (lineIndex >= Math.floor(lineCount * 0.75)) score += 10;
+    if (value >= 1) score += 8;
+    if (value >= 10) score += 8;
+    if (value >= 100) score += 5;
+
+    if (/\b(subtotal|sub total|tax|gst|vat|cgst|sgst|discount|change|cash|tender|round(?:ed)?|tip)\b/i.test(lowerContext)) {
+        score -= 22;
+    }
+
+    if (/\b(balance due|amount due|total due|amount payable|net amount|grand total)\b/i.test(lowerContext)) {
+        score += 16;
+    }
+
+    return {
+        value,
+        raw,
+        line,
+        keywordScore,
+        score
+    };
+}
+
+function getKeywordScore(text) {
+    const keywordPatterns = [
+        { regex: /\bgrand\s*total\b/i, score: 68 },
+        { regex: /\bamount\s*payable\b/i, score: 66 },
+        { regex: /\bnet\s*amount\b/i, score: 64 },
+        { regex: /\btotal\s*due\b/i, score: 64 },
+        { regex: /\bpayable\b/i, score: 58 },
+        { regex: /\bbalance\s*due\b/i, score: 58 },
+        { regex: /\btotal\s*(amount|amt)\b/i, score: 56 },
+        { regex: /\bamount\s*due\b/i, score: 54 },
+        { regex: /\btotal\b/i, score: 46 }
+    ];
+
+    const match = keywordPatterns.find(item => item.regex.test(text));
+    return match ? match.score : 0;
+}
+
+function parseCurrencyNumber(str) {
+    let cleaned = str
+        .replace(/(?:rs\.?|inr|usd|eur|gbp|cad|aud)/gi, "")
+        .replace(/[$\s]/g, "")
+        .replace(/[^0-9.,-]/g, "");
+
+    if (!cleaned || cleaned === "-" || cleaned === ".") {
+        return NaN;
+    }
+
+    const hasComma = cleaned.includes(",");
+    const hasDot = cleaned.includes(".");
+
+    if (hasComma && hasDot) {
+        cleaned = cleaned.replace(/,/g, "");
+    } else if (hasComma) {
+        const parts = cleaned.split(",");
+        const lastPart = parts[parts.length - 1];
+
+        cleaned = lastPart.length === 2
+            ? `${parts.slice(0, -1).join("")}.${lastPart}`
+            : cleaned.replace(/,/g, "");
+    }
+
+    return parseFloat(cleaned);
+}
+
+function looksLikeNonAmount(raw, line, value) {
+    const digits = raw.replace(/[^0-9]/g, "");
+
+    if (!digits) return true;
+    if (value <= 0) return true;
+    if (digits.length >= 7 && !/[.,]\d{1,2}\b/.test(raw)) return true;
+    if (looksLikeDateOrYear(raw, line)) return true;
+
+    const nonAmountWords = /\b(invoice|inv|bill\s*no|receipt\s*no|order|token|phone|mobile|tel|gstin|tin|tax\s*id|qty|quantity|table|cashier|card|auth|approval|ref|terminal|time|date)\b/i;
+
+    if (nonAmountWords.test(line) && !getKeywordScore(line)) {
+        return true;
+    }
+
+    return false;
+}
+
+function looksLikeDateOrYear(raw, line = "") {
+    const digits = raw.replace(/[^0-9]/g, '');
+    const n = parseInt(digits, 10);
+
+    if (!isNaN(n) && n >= 1900 && n <= 2100) return true;
+    if (/\b\d{1,2}[/-]\d{1,2}(?:[/-]\d{2,4})?\b/.test(line)) return true;
+    if (/\b\d{1,2}:\d{2}(?::\d{2})?\b/.test(line)) return true;
+    if (digits.length >= 7 && !/[.,]\d{1,2}\b/.test(raw)) return true;
+
+    return false;
+}
+
+function roundTwo(n) {
+    return Math.round((n + Number.EPSILON) * 100) / 100;
+}
 
 function editExpense(id) {
 
