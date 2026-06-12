@@ -16,6 +16,7 @@ fs.writeFileSync(validRegistryPath, JSON.stringify([
   {
     projectNo: 1,
     projectName: 'Valid Project',
+    projectType: 'Tool',
     techStack: ['html', 'css'],
     difficulty: 'beginner',
     projectPath: './public/valid-project/index.html'
@@ -23,6 +24,7 @@ fs.writeFileSync(validRegistryPath, JSON.stringify([
   {
     projectNo: 2,
     projectName: 'Valid Same Repository Blob URL',
+    projectType: 'Tool',
     techStack: ['html'],
     difficulty: 'intermediate',
     projectPath: 'https://github.com/dhairyagothi/100_days_100_web_project/blob/Main/index.html'
@@ -30,6 +32,7 @@ fs.writeFileSync(validRegistryPath, JSON.stringify([
   {
     projectNo: 3,
     projectName: 'Valid Same Repository Tree URL',
+    projectType: 'Tool',
     techStack: ['html'],
     difficulty: 'advanced',
     projectPath: 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public'
@@ -40,6 +43,7 @@ fs.writeFileSync(invalidRegistryPath, JSON.stringify([
   {
     projectNo: 1,
     projectName: 'Original Project',
+    projectType: 'Tool',
     techStack: ['html'],
     difficulty: 'beginner',
     projectPath: './public/valid-project/index.html'
@@ -47,6 +51,7 @@ fs.writeFileSync(invalidRegistryPath, JSON.stringify([
   {
     projectNo: 1,
     projectName: 'Duplicate Day',
+    projectType: 'Game',
     techStack: ['javascript'],
     difficulty: 'expert',
     projectPath: 'javascript:alert(1)'
@@ -54,6 +59,7 @@ fs.writeFileSync(invalidRegistryPath, JSON.stringify([
   {
     projectNo: 3,
     projectName: 'Escaped Path',
+    projectType: 'UI',
     techStack: ['html'],
     difficulty: 'advanced',
     projectPath: '../outside.html'
@@ -61,6 +67,7 @@ fs.writeFileSync(invalidRegistryPath, JSON.stringify([
   {
     projectNo: 4,
     projectName: 'Missing File',
+    projectType: 'Animation',
     techStack: ['css'],
     difficulty: 'intermediate',
     projectPath: './public/missing/index.html'
@@ -68,6 +75,7 @@ fs.writeFileSync(invalidRegistryPath, JSON.stringify([
   {
     projectNo: 5,
     projectName: 'External GitHub Blob URL',
+    projectType: 'API',
     techStack: ['html'],
     difficulty: 'advanced',
     projectPath: 'https://github.com/octocat/Hello-World/blob/master/README'
@@ -75,9 +83,18 @@ fs.writeFileSync(invalidRegistryPath, JSON.stringify([
   {
     projectNo: 6,
     projectName: 'External GitHub Tree URL',
+    projectType: 'Website',
     techStack: ['html'],
     difficulty: 'advanced',
     projectPath: 'https://github.com/octocat/Hello-World/tree/master'
+  },
+  {
+    projectNo: 7,
+    projectName: 'Invalid Project Type',
+    projectType: 'Web Application',
+    techStack: ['html'],
+    difficulty: 'beginner',
+    projectPath: './public/valid-project/index.html'
   }
 ], null, 2));
 
@@ -105,7 +122,8 @@ const expectedMessages = [
   'must not contain path traversal',
   'local path "./public/missing/index.html" does not exist in the repository',
   'Index 4 (Day 5 - External GitHub Blob URL): "projectPath" GitHub URLs must point to this repository',
-  'Index 5 (Day 6 - External GitHub Tree URL): "projectPath" GitHub URLs must point to this repository'
+  'Index 5 (Day 6 - External GitHub Tree URL): "projectPath" GitHub URLs must point to this repository',
+  'must be one of: Game, Tool, Clone, UI, Animation, API, Website, Backend, AI, E-Commerce, Productivity, Simulation, Authentication, Form'
 ];
 
 if (invalidResult.status === 0) {

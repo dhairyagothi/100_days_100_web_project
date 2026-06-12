@@ -61,12 +61,8 @@
           <div class="progress-bar-track">
             <div class="progress-bar-fill" id="progressFill"></div>
           </div>
-          <button
-            type="button"
-            id="savepdf"
-            class="sidebar-back-btn"
-            style="background: rgba(124, 99, 255, 0.1); color: #c4b5ff"
-          >
+          <button type="button" id="savepdf" class="sidebar-back-btn"
+            style="background: rgba(124, 99, 255, 0.1); color: #c4b5ff">
             📥 Save as PDF
           </button>
 
@@ -74,30 +70,29 @@
             🗑️ Clear Workspace
           </button>
 
-          <button type="button" id="clearCompletedBtn" class="sidebar-pdf-btn" style="margin-top: 8px; background: rgba(16, 185, 129, 0.1); color: #10b981;">
-  ✅ Clear Completed
-</button>
+          <button type="button" id="clearCompletedBtn" class="sidebar-pdf-btn"
+            style="background: rgba(16, 185, 129, 0.1); color: #10b981;" hidden>
+            ✅ Clear Completed
+          </button>
 
           <output class="progress-text" id="progressText">0 / 0 done</output>
         </div>
       </div>
 
-    <div id="clearModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" style="display:none;">
-      <div class="modal-box">
-        <div class="modal-icon">🧹</div>
-        <h2 class="modal-title" id="modalTitle">Clear Workspace?</h2>
-        <p class="modal-desc">This will permanently remove all tasks from your board. This action cannot be undone.</p>
-        <div class="modal-actions">
-          <button id="modalCancelBtn" class="modal-btn modal-btn-cancel">Cancel</button>
-          <button id="modalConfirmBtn" class="modal-btn modal-btn-confirm">Yes, Clear All</button>
-      <section id="documents-tab" aria-label="Documents tab" class="inactive-section" style="width: 100%">
-        <div class="documents-header">
-          <h2 class="heading">📂 Saved Documents Archive</h2>
-        </div>
-        <div class="input-actions">
-          <button type="button" id="savepdf">📥 Save as PDF</button>
-          <button type="button" id="cleardone" hidden>🧹 Clear Done</button>
-        </div>
+      <!-- Task Input Form -->
+      <form id="task-form" class="input-actions" aria-label="Add a new task">
+        <input type="text" id="task" class="task-input" placeholder="What needs to be done?" autocomplete="off"
+          aria-label="Task description" />
+        <select id="task-category" class="task-select" aria-label="Task category">
+          <option value="">Category</option>
+          <option value="Work" data-color="#60a5fa">💼 Work</option>
+          <option value="Personal" data-color="#a78bfa">🧑 Personal</option>
+          <option value="Urgent" data-color="#f87171">⚡ Urgent</option>
+          <option value="Fitness" data-color="#34d399">💪 Fitness</option>
+          <option value="Study" data-color="#fbbf24">📚 Study</option>
+          <option value="Miscellaneous" data-color="#94a3b8">📌 Miscellaneous</option>
+        </select>
+        <button type="submit" class="add-btn" aria-label="Add task">+ Add Task</button>
       </form>
 
       <!-- Filter Bar -->
@@ -111,221 +106,47 @@
         <button class="filter-btn" data-filter="Fitness" id="filter-fitness">💪 Fitness</button>
         <button class="filter-btn" data-filter="Miscellaneous" id="filter-misc">📌 Misc</button>
       </div>
-    </div>
-  </div>
-
-  <div id="toast" class="pdf-message" role="alert" aria-live="polite"></div>
-  <div class="toast-container" id="toastContainer"></div>
-
-  <script>
-    // State Memory array structure sync with client browser local storage systems
-    let tasks = JSON.parse(localStorage.getItem("kanban-board-tasks")) || [
-      {
-        id: "k-task-1",
-        title: "Review Open-Source Pull Requests",
-        category: "Work",
-        priority: "High",
-        status: "pending",
-      },
-      {
-        id: "k-task-2",
-        title: "Refactor Theme Style Overlap Rules",
-        category: "Study",
-        priority: "Medium",
-        status: "inprogress",
-      },
-      {
-        id: "k-task-3",
-        title: "Verify Grid Layout Persistence",
-        category: "Personal",
-        priority: "Low",
-        status: "completed",
-      },
-    ];
-
-    // Saved documents in memory (Blob URLs reset on reload, tracked with metadata)
-    let savedDocs = JSON.parse(localStorage.getItem("kanban-saved-docs-meta")) || [];
-
-    const taskForm = document.getElementById("task-form");
-    const taskInput = document.getElementById("task");
-    const categorySelect = document.getElementById("task-category");
-    const prioritySelect = document.getElementById("task-priority");
-    const dueDateInput = document.getElementById("task-date");
-    dueDateInput.min = new Date().toISOString().split("T")[0];
-
-    // ─── Render Kanban Board ───────────────────────────────────────────────
-    function renderKanban() {
-      document
-        .querySelectorAll(".kanban-column-drop-zone")
-        .forEach((zone) => (zone.innerHTML = ""));
-
-      tasks.forEach((task) => {
-        const laneDropTarget = document.getElementById(task.status);
-        if (!laneDropTarget) return;
-        const today = new Date().toISOString().split("T")[0];
-
-        const isOverdue =
-          task.dueDate &&
-          task.dueDate < today &&
-          task.status !== "completed";
-        const isDueToday =
-          task.dueDate === today &&
-          task.status !== "completed";
-
-        const card = document.createElement("div");
-        card.id = task.id;
-        // card.className = isOverdue
-        //   ? "kanban-task-card overdue-task"
-        //   : "kanban-task-card";
-        if (isOverdue) {
-          card.className = "kanban-task-card overdue-task";
-        } else if (isDueToday) {
-          card.className = "kanban-task-card due-today-task";
-        } else {
-          card.className = "kanban-task-card";
-        }
-        card.setAttribute("draggable", "true");
-        card.setAttribute("data-taskid", task.id);
-
-    <!-- Clear Completed Confirmation Modal -->
-<div id="clearCompletedModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="completedModalTitle" style="display:none;">
-  <div class="modal-box">
-    <div class="modal-icon">✅</div>
-    <h2 class="modal-title" id="completedModalTitle">Clear Completed Tasks?</h2>
-    <p class="modal-desc">This will permanently remove all tasks from the <strong style="color: #10b981;">Completed column</strong> only. Your Pending and In Progress tasks will remain untouched. This action cannot be undone.</p>
-    <div class="modal-actions">
-      <button id="completedModalCancelBtn" class="modal-btn modal-btn-cancel">Cancel</button>
-      <button id="completedModalConfirmBtn" class="modal-btn modal-btn-confirm">Yes, Clear Completed</button>
-    </div>
-  </div>
-</div>
-
-    <div id="toast" class="pdf-message" role="alert" aria-live="polite"></div>
-    <div class="toast-container" id="toastContainer"></div>
-
-    <script>
-      // State Memory array structure sync with client browser local storage systems
-      let tasks = JSON.parse(localStorage.getItem("kanban-board-tasks")) || [
-        {
-          id: "k-task-1",
-          title: "Review Open-Source Pull Requests",
-          category: "Work",
-          priority: "High",
-          status: "pending",
-        },
-        {
-          id: "k-task-2",
-          title: "Refactor Theme Style Overlap Rules",
-          category: "Study",
-          priority: "Medium",
-          status: "inprogress",
-        },
-        {
-          id: "k-task-3",
-          title: "Verify Grid Layout Persistence",
-          category: "Personal",
-          priority: "Low",
-          status: "completed",
-        },
-      ];
-
-      // Saved documents in memory (Blob URLs reset on reload, tracked with metadata)
-      let savedDocs = JSON.parse(localStorage.getItem("kanban-saved-docs-meta")) || [];
-
-      const taskForm = document.getElementById("task-form");
-      const taskInput = document.getElementById("task");
-      const categorySelect = document.getElementById("task-category");
-      const prioritySelect = document.getElementById("task-priority");
-      const dueDateInput = document.getElementById("task-date");
-
-      // ─── Render Kanban Board ───────────────────────────────────────────────
-      function renderKanban() {
-        document
-          .querySelectorAll(".kanban-column-drop-zone")
-          .forEach((zone) => (zone.innerHTML = ""));
-
-        tasks.forEach((task) => {
-          const laneDropTarget = document.getElementById(task.status);
-          if (!laneDropTarget) return;
-
-          const card = document.createElement("div");
-          card.id = task.id;
-          card.className = "kanban-task-card" + (task.status === "completed" ? " card-completed" : task.status === "inprogress" ? " card-inprogress" : "");
-          card.setAttribute("draggable", "true");
-          card.setAttribute("data-taskid", task.id);
-
-          const isCompleted = task.status === "completed";
-          const isInProgress = task.status === "inprogress";
-
-          card.innerHTML = `
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-              <span style="font-size:0.65rem; padding:2px 8px; border-radius:4px; background:rgba(255,255,255,0.06); color:rgba(240,240,245,0.7); font-weight:700;">${task.category || "General"}</span>
-              <span style="font-size:0.65rem; font-weight:800; color:${task.priority === "High" ? "#ef4444" : task.priority === "Medium" ? "#f59e0b" : "#3b82f6"}">${task.priority || "Medium"}</span>
-            </div>
-            <p class="card-title-text" style="font-size:0.875rem; color:${isCompleted ? "rgba(255,255,255,0.45)" : "#fff"}; font-weight:500; line-height:1.4; word-break:break-word; ${isCompleted ? "text-decoration: line-through;" : ""}">${task.title}</p>
-            ${task.dueDate ? `
-              <p style="font-size:0.75rem; color:#94a3b8; margin-top:6px;">
-             📅 ${task.dueDate}
-              </p>
-              ` : ""}
-
-          ${isOverdue ? `
-            <span class="overdue-badge">
-           ⚠️ Overdue
-           </span>
-            ` : ""}
-            <div class="card-actions">
-              <button
-                class="card-action-btn btn-complete ${isCompleted ? "btn-active-complete" : ""}"
-                onclick="markTaskCompleted('${task.id}')"
-                title="${isCompleted ? 'Unmark Completed' : 'Mark as Completed'}"
-                aria-label="${isCompleted ? 'Unmark Completed' : 'Mark as Completed'}"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              </button>
-              <button
-                class="card-action-btn btn-inprogress ${isInProgress ? "btn-active-inprogress" : ""}"
-                onclick="markTaskInProgress('${task.id}')"
-                title="${isInProgress ? 'Back to Pending' : 'Mark as In Progress'}"
-                aria-label="${isInProgress ? 'Back to Pending' : 'Mark as In Progress'}"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              </button>
-              <button
-                class="card-action-btn btn-delete"
-                onclick="deleteTaskNode('${task.id}')"
-                title="Delete Task"
-                aria-label="Delete Task"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-              </button>
-            </div>
-          `;
-
-        // Card drag events
-        card.addEventListener("dragstart", (e) => {
-          card.classList.add("dragging");
-          e.dataTransfer.setData("text/plain", card.id);
-        });
-        card.addEventListener("dragend", () => {
-          card.classList.remove("dragging");
-        });
-
-        laneDropTarget.appendChild(card);
-      });
-
-      calculateSystemCounters();
-    }
 
       <!-- Empty State -->
-      <div class="empty-state" id="emptyState" role="status">
+      <div class="empty-state" id="emptyState" role="status" style="margin-top: 50px;">
         <div class="empty-icon" aria-hidden="true">📋</div>
         <p class="empty-title">No tasks yet</p>
-        <p class="empty-desc">Add your first task above and get things done!</p>
       </div>
 
       <!-- Task List Container -->
       <ul id="notes-container" aria-label="Task list"></ul>
+
+      <!-- Clear Workspace Confirmation Modal -->
+      <div id="clearModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle"
+        style="display:none;">
+        <div class="modal-box">
+          <div class="modal-icon">🧹</div>
+          <h2 class="modal-title" id="modalTitle">Clear Workspace?</h2>
+          <p class="modal-desc">This will permanently remove all tasks from your board. This action cannot be undone.
+          </p>
+          <div class="modal-actions">
+            <button id="modalCancelBtn" class="modal-btn modal-btn-cancel">Cancel</button>
+            <button id="modalConfirmBtn" class="modal-btn modal-btn-confirm">Yes, Clear All</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clear Completed Confirmation Modal -->
+      <div id="clearCompletedModal" class="modal-overlay" role="dialog" aria-modal="true"
+        aria-labelledby="completedModalTitle" style="display:none;">
+        <div class="modal-box">
+          <div class="modal-icon">✅</div>
+          <h2 class="modal-title" id="completedModalTitle">Clear Completed Tasks?</h2>
+          <p class="modal-desc">This will permanently remove all tasks from the
+            <strong style="color: #10b981;">Completed column</strong> only. Your Pending and In Progress tasks will
+            remain untouched. This action cannot be undone.
+          </p>
+          <div class="modal-actions">
+            <button id="completedModalCancelBtn" class="modal-btn modal-btn-cancel">Cancel</button>
+            <button id="completedModalConfirmBtn" class="modal-btn modal-btn-confirm">Yes, Clear Completed</button>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Documents Section -->
@@ -342,88 +163,122 @@
     </section>
   </main>
 
-  <!-- PDF Notification -->
-  <div id="pdfMessage" class="pdf-message" role="alert" aria-live="polite">✅ PDF Created Successfully!</div>
+  <!-- Toast Notification (new top-center popup) -->
+  <div id="appToast" class="toast-popup" role="alert" aria-live="polite"></div>
 
   <script src="todolist.js"></script>
-</body>
 
-      // Clear Completed Button Logic
-const clearCompletedBtn = document.getElementById('clearCompletedBtn');
-const clearCompletedModal = document.getElementById('clearCompletedModal');
-const completedModalCancelBtn = document.getElementById('completedModalCancelBtn');
-const completedModalConfirmBtn = document.getElementById('completedModalConfirmBtn');
-
-if (clearCompletedBtn) {
-  clearCompletedBtn.addEventListener('click', () => {
-    const completedCount = tasks.filter(t => t.status === 'completed').length;
-    if (completedCount === 0) {
-      showKanbanToast('✨ No completed tasks to clear!', 'info');
-      return;
+  <script>
+    // ─── Modern Top-Center Toast ─────────────────────────────────
+    // Overrides the basic showToast() from todolist.js with a proper popup
+    let _toastTimer = null;
+    function showToast(message, type) {
+      const el = document.getElementById('appToast');
+      if (!el) return;
+      el.textContent = message;
+      el.className = 'toast-popup toast-show';
+      if (type === 'success') el.classList.add('toast-success');
+      else if (type === 'error') el.classList.add('toast-error');
+      else el.classList.add('toast-info');
+      clearTimeout(_toastTimer);
+      _toastTimer = setTimeout(() => {
+        el.classList.remove('toast-show', 'toast-success', 'toast-error', 'toast-info');
+      }, 3000);
     }
-    clearCompletedModal.style.display = 'flex';
-  });
-}
 
-if (completedModalCancelBtn) {
-  completedModalCancelBtn.addEventListener('click', () => {
-    clearCompletedModal.style.display = 'none';
-  });
-}
+    // ─── Fix Button Visibility ─────────────────────────────────────────────
+    // todolist.js updateMetrics() hides #cleardone when done===0 (wrong behaviour).
+    // FIX: capture the original FIRST (before any override), then assign via window
+    // to avoid JS function-declaration hoisting which caused _origUpdateMetrics to
+    // point to our own new function instead of todolist.js's version.
+    const _origUpdateMetrics = window.updateMetrics; // captured BEFORE override
+    window.updateMetrics = function () {
+      if (_origUpdateMetrics) _origUpdateMetrics.call(this); // runs todolist.js version
+      const completedCount = tasks.filter(t => t.completed).length;
+      // Clear Workspace — always visible (todolist.js hides it incorrectly)
+      const cwBtn = document.getElementById('cleardone');
+      if (cwBtn) cwBtn.hidden = false;
+      // Clear Completed — only when there are completed tasks
+      const ccBtn = document.getElementById('clearCompletedBtn');
+      if (ccBtn) ccBtn.hidden = completedCount === 0;
+    };
+    // Run immediately to set correct initial state
+    window.updateMetrics();
 
-if (completedModalConfirmBtn) {
-  completedModalConfirmBtn.addEventListener('click', () => {
-    // Remove ONLY completed tasks
-    tasks = tasks.filter(t => t.status !== 'completed');
-    localStorage.setItem('kanban-board-tasks', JSON.stringify(tasks));
-    renderKanban();
-    clearCompletedModal.style.display = 'none';
-    showKanbanToast('✅ Completed tasks cleared!', 'success');
-  });
-}
+    // ─── Clear Completed Button Logic ──────────────────────────
+    const clearCompletedBtn = document.getElementById('clearCompletedBtn');
+    const clearCompletedModal = document.getElementById('clearCompletedModal');
+    const completedModalCancelBtn = document.getElementById('completedModalCancelBtn');
+    const completedModalConfirmBtn = document.getElementById('completedModalConfirmBtn');
 
-// Close modal if clicking on backdrop
-if (clearCompletedModal) {
-  clearCompletedModal.addEventListener('click', (e) => {
-    if (e.target === clearCompletedModal) {
-      clearCompletedModal.style.display = 'none';
-    }
-  });
-}
-// ========== END OF CLEAR COMPLETED CODE ==========
-
-document.addEventListener("DOMContentLoaded", renderKanban);
-
-      // ─── ENHANCEMENT: Clear Completed Workspace Modal & Logic ──────────────────
-      document.getElementById("clearcompleted").addEventListener("click", () => {
-        const completedCount = tasks.filter((t) => t.status === "completed").length;
+    if (clearCompletedBtn) {
+      clearCompletedBtn.addEventListener('click', () => {
+        const completedCount = tasks.filter(t => t.completed).length;
         if (completedCount === 0) {
-          showKanbanToast("✨ No completed tasks to clear!", "info");
+          showToast('✨ No completed tasks to clear!', 'info');
           return;
         }
-        document.getElementById("clearCompletedModal").style.display = "flex";
+        clearCompletedModal.style.display = 'flex';
       });
+    }
 
-      document.getElementById("completedModalCancelBtn").addEventListener("click", () => {
-        document.getElementById("clearCompletedModal").style.display = "none";
+    if (completedModalCancelBtn) {
+      completedModalCancelBtn.addEventListener('click', () => {
+        clearCompletedModal.style.display = 'none';
       });
+    }
 
-      document.getElementById("completedModalConfirmBtn").addEventListener("click", () => {
-        // Filter out completed tasks, keeping only pending and inprogress tasks
-        tasks = tasks.filter((t) => t.status !== "completed");
-        localStorage.setItem("kanban-board-tasks", JSON.stringify(tasks));
-        renderKanban();
-        document.getElementById("clearCompletedModal").style.display = "none";
-        showKanbanToast("🧹 Completed tasks cleared!", "success");
+    if (completedModalConfirmBtn) {
+      completedModalConfirmBtn.addEventListener('click', () => {
+        tasks = tasks.filter(t => !t.completed);
+        saveTasks();
+        renderTasks();
+        clearCompletedModal.style.display = 'none';
+        showToast('✅ Completed tasks cleared!', 'success');
       });
+    }
 
-      document.getElementById("clearCompletedModal").addEventListener("click", (e) => {
-        if (e.target === document.getElementById("clearCompletedModal")) {
-          document.getElementById("clearCompletedModal").style.display = "none";
-        }
+    // Close completed modal on backdrop click
+    if (clearCompletedModal) {
+      clearCompletedModal.addEventListener('click', (e) => {
+        if (e.target === clearCompletedModal) clearCompletedModal.style.display = 'none';
       });
+    }
 
-      document.addEventListener("DOMContentLoaded", renderKanban);
-    </script>
-  </body>
+    // ─── Clear Workspace (All Tasks) Modal Logic ─────────────────
+    const modalCancelBtn = document.getElementById('modalCancelBtn');
+    const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+    const clearModal = document.getElementById('clearModal');
+
+    // Intercept cleardone click (capture phase beats todolist.js bubble handler)
+    document.getElementById('cleardone').addEventListener('click', (e) => {
+      e.stopImmediatePropagation();
+      if (clearModal) clearModal.style.display = 'flex';
+    }, true);
+
+    if (modalCancelBtn) {
+      modalCancelBtn.addEventListener('click', () => {
+        clearModal.style.display = 'none';
+      });
+    }
+
+    if (modalConfirmBtn) {
+      modalConfirmBtn.addEventListener('click', () => {
+        tasks = [];
+        saveTasks();
+        renderTasks();
+        clearModal.style.display = 'none';
+        showToast('🧹 All tasks cleared!', 'success');
+      });
+    }
+
+    // Close workspace modal on backdrop click
+    if (clearModal) {
+      clearModal.addEventListener('click', (e) => {
+        if (e.target === clearModal) clearModal.style.display = 'none';
+      });
+    }
+  </script>
+</body>
+
 </html>
