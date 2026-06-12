@@ -1611,26 +1611,55 @@ document.addEventListener("DOMContentLoaded", initCartPage);
         section.style.display = 'block';
         list.innerHTML = '';
 
-        cards.forEach(card => {
-            const iconEmoji = card.type === 'Birthday' ? '🎂' : card.type === 'Classic' ? '💳' : '🎁';
-            const iconClass = card.type === 'Birthday' ? 'birthday' : card.type === 'Classic' ? 'classic' : 'thankyou';
-            const statusClass = card.redeemed ? 'redeemed' : 'active';
-            const statusText = card.redeemed ? 'Redeemed' : 'Active';
+      
+    cards.forEach(card => {
+        const iconEmoji = card.type === 'Birthday' ? '🎂' : card.type === 'Classic' ? '💳' : '🎁';
+        const iconClass = card.type === 'Birthday' ? 'birthday' : card.type === 'Classic' ? 'classic' : 'thankyou';
+        const statusClass = card.redeemed ? 'redeemed' : 'active';
+        const statusText = card.redeemed ? 'Redeemed' : 'Active';
 
-            const el = document.createElement('div');
-            el.className = 'gc-history-card';
-            el.innerHTML = `
-                <div class="gc-history-icon ${iconClass}">${iconEmoji}</div>
-                <div class="gc-history-details">
-                    <h4>${card.type} Gift Card</h4>
-                    <div class="gc-history-code">${card.code}</div>
-                    <span class="gc-history-status ${statusClass}">${statusText}</span>
-                </div>
-                <div class="gc-history-amount">₹${card.amount.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}</div>
-            `;
-            list.appendChild(el);
-        });
-    }
+        const el = document.createElement('div');
+        el.className = 'gc-history-card';
+
+        // icon
+        const iconDiv = document.createElement('div');
+        iconDiv.className = `gc-history-icon ${iconClass}`;
+        iconDiv.textContent = iconEmoji;
+        el.appendChild(iconDiv);
+
+        // details
+        const detailsDiv = document.createElement('div');
+        detailsDiv.className = 'gc-history-details';
+
+        const title = document.createElement('h4');
+        title.textContent = `${card.type} Gift Card`;
+        detailsDiv.appendChild(title);
+
+        const codeDiv = document.createElement('div');
+        codeDiv.className = 'gc-history-code';
+        codeDiv.textContent = card.code;
+        detailsDiv.appendChild(codeDiv);
+
+        const statusSpan = document.createElement('span');
+        statusSpan.className = `gc-history-status ${statusClass}`;
+        statusSpan.textContent = statusText;
+        detailsDiv.appendChild(statusSpan);
+
+        el.appendChild(detailsDiv);
+
+        // amount
+        const amountDiv = document.createElement('div');
+        amountDiv.className = 'gc-history-amount';
+        amountDiv.textContent = `₹${card.amount.toLocaleString('en-IN', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        })}`;
+        el.appendChild(amountDiv);
+
+        list.appendChild(el);
+    });
+}
+
 
     // ---- Quick Amount Buttons ----
     document.querySelectorAll('.gc-quick-btn').forEach(btn => {
