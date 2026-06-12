@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Future of AI</title>
+    <title>Future of AI - GreenBlog</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
@@ -12,69 +12,416 @@
 </head>
 <body class="transition-all duration-300">
 
+<!-- Reading Progress Bar -->
+<div class="reading-progress" id="readingProgress"></div>
+
+<!-- Navigation Navbar -->
 <nav class="navbar">
     <div class="nav-left-group">
-        <a href="index.html" class="project-back-button">
-            <i class="fa-solid fa-arrow-left"></i> Back to Blogs
+        <a href="index.html" class="project-back-button" title="Back to all blogs">
+            <i class="fas fa-arrow-left"></i> Back to Blogs
         </a>
         <div class="logo">
-            GreenBlog
+            <i class="fas fa-leaf"></i> GreenBlog
         </div>
     </div>
     <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
-        <li><a href="index.html">Categories</a></li>
-        <li><a href="index.html">Blogs</a></li>
-        <li><a href="index.html">About</a></li>
+        <li><a href="index.html#categories">Categories</a></li>
+        <li><a href="index.html#blogs">Blogs</a></li>
+        <li><a href="index.html#about">About</a></li>
     </ul>
     <div class="nav-right">
-        <button id="themeToggle">
+        <button id="themeToggle" title="Toggle dark mode">
             <span id="themeIcon">☀️</span>
         </button>
     </div>
 </nav>
 
+<!-- Breadcrumb Navigation -->
+<div class="breadcrumb">
+    <a href="index.html">
+        <i class="fas fa-home"></i> Home
+    </a>
+    <span class="breadcrumb-separator">/</span>
+    <a href="index.html#blogs">Blogs</a>
+    <span class="breadcrumb-separator">/</span>
+    <span>Future of AI</span>
+</div>
+
+<!-- Main Blog Container -->
 <div class="blog-page-container">
     <div class="blog-page">
-        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1770&auto=format&fit=crop" alt="Future of AI" class="blog-banner">
         
-        <h1>Future of AI</h1>
-        
-        <div class="blog-author">
-            <h3>Tech Analyst</h3>
-            <p class="blog-date">Posted on 19/05/2026</p>
+        <!-- Featured Image -->
+        <div class="blog-header-image">
+            <img 
+                src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1770&auto=format&fit=crop" 
+                alt="Future of AI" 
+                class="blog-banner"
+                loading="lazy"
+            >
         </div>
 
-        <div class="blog-content">
-            <p>
-                Artificial Intelligence is transforming industries and changing the way people work, communicate, and live.
-            </p>
-            <p>
-                AI technologies are now used in healthcare, education, robotics, transportation, and entertainment. Intelligent systems can analyze large amounts of data and help solve complex problems.
-            </p>
-            <p>
-                Future AI systems will become faster, smarter, and more personalized. Technologies like machine learning, automation, and generative AI are shaping the future of innovation.
-            </p>
-            <p>
-                While AI creates exciting opportunities, it also raises important questions about ethics, privacy, and responsible use of technology.
-            </p>
+        <!-- Blog Category & Title -->
+        <div class="blog-header">
+            <span class="blog-category">
+                <i class="fas fa-robot"></i> Technology
+            </span>
+            
+            <h1>The Future of AI: Transforming Industries and Society</h1>
+
+            <!-- Blog Metadata -->
+            <div class="blog-meta">
+                <div class="meta-item">
+                    <i class="fas fa-user-circle"></i>
+                    <span class="author-name">Alex Chen</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>June 8, 2026</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-clock"></i>
+                    <span class="read-time">12 min read</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-eye"></i>
+                    <span>2,450 views</span>
+                </div>
+            </div>
+
+            <!-- Author Card -->
+            <div class="blog-author">
+                <div class="author-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="author-info">
+                    <h3>Alex Chen</h3>
+                    <p>Tech Analyst & AI Researcher | Passionate about emerging technologies and their impact on society.</p>
+                    <div class="author-social">
+                        <a href="#" title="Follow on Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" title="Follow on LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <!-- Main Content -->
+        <div class="blog-content">
+            
+            <p>
+                Artificial Intelligence is no longer a distant futuristic concept—it's reshaping our world today. From healthcare diagnostics to autonomous vehicles, AI technologies are revolutionizing how we work, communicate, and solve complex global challenges. As we stand at the threshold of unprecedented technological advancement, understanding where AI is heading becomes increasingly crucial.
+            </p>
+
+            <h2>The Current State of AI</h2>
+
+            <p>
+                Over the past decade, we've witnessed exponential growth in AI capabilities. Modern AI systems can now:
+            </p>
+
+            <ul>
+                <li><strong>Analyze vast datasets</strong> – Processing millions of data points in seconds to identify patterns and insights that would take humans months</li>
+                <li><strong>Understand natural language</strong> – Communicating in human language with remarkable accuracy and nuance</li>
+                <li><strong>Generate creative content</strong> – Creating art, writing, code, and solutions autonomously</li>
+                <li><strong>Make intelligent predictions</strong> – Forecasting trends in finance, healthcare, climate, and more</li>
+                <li><strong>Adapt and learn</strong> – Improving performance based on new data and experiences</li>
+            </ul>
+
+            <blockquote>
+                <p>"The development of full artificial intelligence could spell the end of the human race. We need to be careful with what we wish for." – Stephen Hawking</p>
+            </blockquote>
+
+            <h2>AI Applications Transforming Industries</h2>
+
+            <h3>Healthcare & Medical Science</h3>
+
+            <p>
+                AI is revolutionizing healthcare by enabling early disease detection, personalized treatment plans, and accelerated drug discovery. Machine learning models can now detect certain cancers in medical imaging with accuracy rates exceeding human radiologists. Virtual health assistants are making healthcare accessible to remote populations, while AI-powered drug discovery is reducing the time to develop new medications.
+            </p>
+
+            <h3>Finance & Business</h3>
+
+            <p>
+                Financial institutions leverage AI for fraud detection, risk assessment, and algorithmic trading. Intelligent systems analyze market trends in real-time, predict customer behavior, and automate complex business processes. This leads to faster decision-making and improved profitability while reducing human error.
+            </p>
+
+            <h3>Transportation & Autonomous Vehicles</h3>
+
+            <p>
+                Self-driving cars powered by advanced AI are becoming a reality. These systems process data from multiple sensors simultaneously, making split-second decisions to ensure passenger safety. Beyond personal vehicles, AI is optimizing logistics, reducing delivery times, and lowering transportation costs globally.
+            </p>
+
+            <h3>Education & Personalized Learning</h3>
+
+            <p>
+                AI tutors adapt to individual learning styles, providing personalized education at scale. These systems identify knowledge gaps, suggest optimal learning paths, and provide real-time feedback—democratizing access to quality education worldwide.
+            </p>
+
+            <h2>Emerging Technologies Shaping the Future</h2>
+
+            <h3>Generative AI</h3>
+
+            <p>
+                Large Language Models (LLMs) and diffusion models represent a paradigm shift in AI capabilities. These systems can generate human-quality text, images, and code, opening new possibilities for creativity and productivity. However, they also raise important questions about authenticity, intellectual property, and responsible use.
+            </p>
+
+            <h3>Quantum Computing & AI</h3>
+
+            <p>
+                The convergence of quantum computing and AI could unlock exponential improvements in processing power. Quantum algorithms may solve optimization problems that are currently intractable, potentially revolutionizing drug discovery, materials science, and climate modeling.
+            </p>
+
+            <h3>Edge AI & IoT</h3>
+
+            <p>
+                Edge AI brings intelligence directly to devices—smartphones, sensors, and IoT devices—reducing latency and enabling real-time decision-making. This democratizes AI by making it accessible at the device level rather than requiring constant cloud connectivity.
+            </p>
+
+            <h2>The Challenges Ahead</h2>
+
+            <div class="highlight-box">
+                <strong>Key Considerations:</strong> While AI offers immense potential, we must address critical challenges around data privacy, algorithmic bias, job displacement, and ethical considerations.
+            </div>
+
+            <h3>Ethical & Responsible AI</h3>
+
+            <p>
+                As AI systems become more powerful, ensuring they're developed responsibly is paramount. Issues like bias in training data, transparency in decision-making, and accountability for AI actions must be addressed. Organizations are increasingly adopting ethical AI frameworks and governance structures.
+            </p>
+
+            <h3>Data Privacy & Security</h3>
+
+            <p>
+                AI systems often require vast amounts of data, raising concerns about privacy and security. Regulations like GDPR and emerging AI governance frameworks aim to protect individual rights while allowing innovation to flourish.
+            </p>
+
+            <h3>The Future of Work</h3>
+
+            <p>
+                AI automation will undoubtedly change the job market, but history shows technology creates new opportunities. Rather than replacing workers entirely, AI will likely augment human capabilities, creating demand for new skills in data analysis, AI management, and creative thinking—domains where human judgment remains irreplaceable.
+            </p>
+
+            <h2>Looking Forward: The AI-Powered Future</h2>
+
+            <p>
+                The next decade will be pivotal for AI development. We can expect:
+            </p>
+
+            <ol>
+                <li><strong>Multimodal AI systems</strong> – Models that seamlessly process text, images, audio, and video simultaneously</li>
+                <li><strong>More efficient AI</strong> – Smaller, faster models requiring less computational power and energy</li>
+                <li><strong>Autonomous systems</strong> – Beyond self-driving cars, fully autonomous systems for manufacturing, agriculture, and exploration</li>
+                <li><strong>AI-human collaboration</strong> – Symbiotic relationships where AI augments human decision-making rather than replacing it</li>
+                <li><strong>Universal AI applications</strong> – AI tools becoming as common as internet access, embedded in everyday applications</li>
+                <li><strong>Advanced reasoning AI</strong> – Systems capable of complex reasoning, planning, and problem-solving across domains</li>
+            </ol>
+
+            <h2>Conclusion</h2>
+
+            <p>
+                The future of AI is not predetermined—it's being shaped by the choices we make today. By fostering innovation while maintaining ethical standards, investing in education and reskilling, and creating inclusive policies, we can ensure that AI benefits humanity as a whole.
+            </p>
+
+            <p>
+                The AI revolution is happening now, and it promises to be one of the most transformative forces in human history. The question isn't whether AI will change our world, but how we'll guide that change to create a better future for everyone.
+            </p>
+
+        </div>
+
+        <!-- Tags Section -->
+        <div class="blog-tags">
+            <span style="font-weight: 600; color: var(--text-primary); margin-right: 1rem;">Tags:</span>
+            <a href="#" class="tag">
+                <i class="fas fa-tag"></i> Artificial Intelligence
+            </a>
+            <a href="#" class="tag">
+                <i class="fas fa-tag"></i> Machine Learning
+            </a>
+            <a href="#" class="tag">
+                <i class="fas fa-tag"></i> Future Technology
+            </a>
+            <a href="#" class="tag">
+                <i class="fas fa-tag"></i> Innovation
+            </a>
+            <a href="#" class="tag">
+                <i class="fas fa-tag"></i> Data Science
+            </a>
+        </div>
+
+        <!-- Social Sharing -->
+        <div class="social-share">
+            <span>Share this article:</span>
+            <a href="#" class="social-btn" title="Share on Twitter" style="background: #1DA1F2;">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="social-btn" title="Share on Facebook" style="background: #1877F2;">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="#" class="social-btn" title="Share on LinkedIn" style="background: #0A66C2;">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="#" class="social-btn" title="Copy link" style="background: #10b981;" onclick="copyLink(event)">
+                <i class="fas fa-link"></i>
+            </a>
+        </div>
+
+        <!-- Related Posts Section -->
+        <div class="related-posts">
+            <h3>
+                <i class="fas fa-arrow-right"></i> Related Articles
+            </h3>
+            
+            <a href="wd.html" class="related-post-card">
+                <img 
+                    src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=400&auto=format&fit=crop" 
+                    alt="Web Development"
+                    class="related-post-img"
+                    loading="lazy"
+                >
+                <div class="related-post-content">
+                    <h4>Web Development Trends 2026</h4>
+                    <p>Discover the latest technologies and frameworks revolutionizing how we build the web.</p>
+                </div>
+            </a>
+
+            <a href="of.html" class="related-post-card">
+                <img 
+                    src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=400&auto=format&fit=crop" 
+                    alt="Organic Farming"
+                    class="related-post-img"
+                    loading="lazy"
+                >
+                <div class="related-post-content">
+                    <h4>Sustainable Agriculture & AI</h4>
+                    <p>How artificial intelligence is optimizing farming practices for a sustainable future.</p>
+                </div>
+            </a>
+
+            <a href="hl.html" class="related-post-card">
+                <img 
+                    src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=400&auto=format&fit=crop" 
+                    alt="Healthy Lifestyle"
+                    class="related-post-img"
+                    loading="lazy"
+                >
+                <div class="related-post-content">
+                    <h4>Health Tech: AI-Powered Wellness</h4>
+                    <p>Explore how AI is personalizing healthcare and improving wellness outcomes.</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="comments-section">
+            <h3>
+                <i class="fas fa-comments"></i> Comments (3)
+            </h3>
+
+            <!-- Comment Form -->
+            <div class="comment-form">
+                <h4>Leave a Comment</h4>
+                <input 
+                    type="text" 
+                    placeholder="Your Name" 
+                    id="commentName"
+                    required
+                >
+                <input 
+                    type="email" 
+                    placeholder="Your Email (won't be published)" 
+                    id="commentEmail"
+                    required
+                >
+                <textarea 
+                    placeholder="Share your thoughts on AI and its future..." 
+                    id="commentText"
+                    rows="5"
+                    required
+                ></textarea>
+                <button class="comment-btn" onclick="submitComment()">
+                    <i class="fas fa-paper-plane"></i> Post Comment
+                </button>
+            </div>
+
+            <!-- Comments List -->
+            <div class="comment-list" id="commentsList">
+                
+                <div class="comment-item">
+                    <div class="comment-author">
+                        <i class="fas fa-user-circle"></i> Sarah Mitchell
+                    </div>
+                    <div class="comment-date">June 9, 2026 at 2:30 PM</div>
+                    <div class="comment-text">
+                        Excellent article! The way you've covered both the opportunities and challenges of AI is balanced and insightful. Looking forward to seeing how these predictions unfold.
+                    </div>
+                </div>
+
+                <div class="comment-item">
+                    <div class="comment-author">
+                        <i class="fas fa-user-circle"></i> James Rodriguez
+                    </div>
+                    <div class="comment-date">June 9, 2026 at 4:15 PM</div>
+                    <div class="comment-text">
+                        The ethical AI section resonated with me. I work in the tech industry and we're actively working to address bias in our models. Great reminder of the responsibility we all share.
+                    </div>
+                </div>
+
+                <div class="comment-item">
+                    <div class="comment-author">
+                        <i class="fas fa-user-circle"></i> Emma Thompson
+                    </div>
+                    <div class="comment-date">June 10, 2026 at 10:45 AM</div>
+                    <div class="comment-text">
+                        Very comprehensive overview of AI applications. I especially appreciated the healthcare section—my mother benefited from AI diagnostics recently. This technology is truly life-changing!
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Newsletter CTA -->
+        <div class="newsletter-cta">
+            <div class="newsletter-content">
+                <h3>
+                    <i class="fas fa-envelope"></i> Stay Updated on AI & Tech
+                </h3>
+                <p>Subscribe to our newsletter for the latest insights on emerging technologies and industry trends.</p>
+            </div>
+            <form class="newsletter-form" onsubmit="handleNewsletterSignup(event)">
+                <input type="email" placeholder="Enter your email" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+
     </div>
 </div>
 
+<!-- Back to Top Button -->
+<button class="back-to-top" id="backToTop" onclick="scrollToTop()" title="Back to top">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<!-- Footer -->
 <footer class="footer">
     <div class="footer-container">
         <div class="footer-section">
-            <h2 class="logo">GreenBlog</h2>
+            <h2 class="logo">
+                <i class="fas fa-leaf"></i> GreenBlog
+            </h2>
             <p>Discover inspiring articles on technology, lifestyle, travel, agriculture, and web development.</p>
         </div>
         <div class="footer-section">
             <h3>Quick Links</h3>
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="index.html">Blogs</a></li>
-                <li><a href="index.html">Categories</a></li>
-                <li><a href="index.html">About</a></li>
+                <li><a href="index.html#blogs">Blogs</a></li>
+                <li><a href="index.html#categories">Categories</a></li>
+                <li><a href="index.html#about">About</a></li>
             </ul>
         </div>
         <div class="footer-section">
@@ -87,20 +434,132 @@
             </ul>
         </div>
         <div class="footer-section">
-            <h3>Subscribe</h3>
+            <h3>
+                <i class="fas fa-envelope"></i> Subscribe
+            </h3>
             <p>Get latest articles directly in your inbox.</p>
-            <form class="newsletter">
-                <input type="email" placeholder="Enter your email" />
+            <form class="newsletter" onsubmit="handleNewsletterFooter(event)">
+                <input type="email" placeholder="Enter your email" required />
                 <button type="submit">Subscribe</button>
             </form>
         </div>
     </div>
     <div class="footer-bottom">
         <p>© 2026 GreenBlog. All rights reserved.</p>
-        <p>created by palak verma</p>
+        <p>Created with <i class="fas fa-heart" style="color: #ef4444;"></i> by Palak Verma</p>
     </div>
 </footer>
 
 <script src="script.js"></script>
+
+<script>
+    // Reading Progress Bar
+    window.addEventListener('scroll', function() {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        document.getElementById('readingProgress').style.width = scrollPercent + '%';
+    });
+
+    // Back to Top Button
+    window.addEventListener('scroll', function() {
+        const backToTopBtn = document.getElementById('backToTop');
+        if (window.pageYOffset > 300) {
+            backToTopBtn.classList.add('show');
+        } else {
+            backToTopBtn.classList.remove('show');
+        }
+    });
+
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    // Copy Link to Clipboard
+    function copyLink(event) {
+        event.preventDefault();
+        const link = window.location.href;
+        navigator.clipboard.writeText(link).then(() => {
+            alert('Article link copied to clipboard!');
+        });
+    }
+
+    // Submit Comment
+    function submitComment() {
+        const name = document.getElementById('commentName').value.trim();
+        const email = document.getElementById('commentEmail').value.trim();
+        const text = document.getElementById('commentText').value.trim();
+
+        if (name && email && text) {
+            const commentsList = document.getElementById('commentsList');
+            const newComment = document.createElement('div');
+            newComment.className = 'comment-item';
+            newComment.innerHTML = `
+                <div class="comment-author">
+                    <i class="fas fa-user-circle"></i> ${name}
+                </div>
+                <div class="comment-date">Just now</div>
+                <div class="comment-text">
+                    ${text}
+                </div>
+            `;
+            commentsList.appendChild(newComment);
+
+            // Reset form
+            document.getElementById('commentName').value = '';
+            document.getElementById('commentEmail').value = '';
+            document.getElementById('commentText').value = '';
+
+            alert('Thank you for your comment! It has been posted.');
+        } else {
+            alert('Please fill in all fields.');
+        }
+    }
+
+    // Newsletter Signup
+    function handleNewsletterSignup(event) {
+        event.preventDefault();
+        const email = event.target.querySelector('input[type="email"]').value;
+        alert('Thank you for subscribing! Check your email for confirmation.');
+        event.target.reset();
+    }
+
+    function handleNewsletterFooter(event) {
+        event.preventDefault();
+        const email = event.target.querySelector('input[type="email"]').value;
+        alert('Thank you for subscribing! Check your email for confirmation.');
+        event.target.reset();
+    }
+
+    // Dark Mode Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const htmlElement = document.documentElement;
+
+    themeToggle.addEventListener('click', function() {
+        const isDarkMode = htmlElement.classList.toggle('dark-mode');
+        const themeIcon = document.getElementById('themeIcon');
+        
+        if (isDarkMode) {
+            themeIcon.textContent = '🌙';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            themeIcon.textContent = '☀️';
+            localStorage.setItem('theme', 'light');
+        }
+    });
+
+    // Load saved theme preference
+    window.addEventListener('DOMContentLoaded', function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            htmlElement.classList.add('dark-mode');
+            document.getElementById('themeIcon').textContent = '🌙';
+        }
+    });
+</script>
+
 </body>
 </html>

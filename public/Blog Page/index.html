@@ -4,441 +4,1212 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <title>Blog Page</title>
+    <title>GreenBlog - Quality Content on Tech, Lifestyle & Travel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --primary-color: #10b981;
+            --secondary-color: #059669;
+            --dark-bg: #0f172a;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+        }
+
+        * {
+            scroll-behavior: smooth;
+        }
+
+        body.dark-mode {
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --light-bg: #1e293b;
+            --border-color: #334155;
+        }
+
+        /* Enhanced Navbar Styling */
+        .navbar {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .navbar:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .back-to-top:hover {
+            background: var(--secondary-color);
+            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.6);
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
+
+        /* Breadcrumb Navigation */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            padding: 1rem 1.5rem;
+            background: var(--light-bg);
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+
+        .breadcrumb-separator {
+            color: var(--text-secondary);
+        }
+
+        /* Enhanced Blog Card */
+        .blog-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: white;
+        }
+
+        body.dark-mode .blog-card {
+            background: #334155;
+            border-color: #475569;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .blog-image-wrapper {
+            position: relative;
+            overflow: hidden;
+            height: 220px;
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .blog-card:hover .blog-image {
+            transform: scale(1.05);
+        }
+
+        .blog-category {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--primary-color);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Blog Metadata */
+        .blog-metadata {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .metadata-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .metadata-item i {
+            color: var(--primary-color);
+            font-size: 0.75rem;
+        }
+
+        .blog-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: var(--text-primary);
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .blog-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Filter & Sort Section */
+        .filter-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        body.dark-mode .filter-section {
+            background: #334155;
+            border-color: #475569;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .filter-select, .filter-search {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            background: white;
+            transition: all 0.2s ease;
+        }
+
+        body.dark-mode .filter-select,
+        body.dark-mode .filter-search {
+            background: #475569;
+            border-color: #64748b;
+            color: #f1f5f9;
+        }
+
+        .filter-select:focus, .filter-search:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .pagination-btn {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            background: white;
+            color: var(--text-primary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        body.dark-mode .pagination-btn {
+            background: #334155;
+            border-color: #475569;
+            color: #f1f5f9;
+        }
+
+        .pagination-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .pagination-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Loading Skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        body.dark-mode .skeleton {
+            background: linear-gradient(90deg, #475569 25%, #64748b 50%, #475569 75%);
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .blog-card {
+            animation: slideIn 0.4s ease forwards;
+        }
+
+        .blog-card:nth-child(1) { animation-delay: 0.05s; }
+        .blog-card:nth-child(2) { animation-delay: 0.1s; }
+        .blog-card:nth-child(3) { animation-delay: 0.15s; }
+        .blog-card:nth-child(4) { animation-delay: 0.2s; }
+        .blog-card:nth-child(5) { animation-delay: 0.25s; }
+
+        /* Read More Button Enhancement */
+        .read-more-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .read-more-btn:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .read-more-btn::after {
+            content: '→';
+            margin-left: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .read-more-btn:hover::after {
+            transform: translateX(4px);
+        }
+
+        /* Results Counter */
+        .results-info {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Tag-based Filtering */
+        .tag-filter {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .tag-btn {
+            padding: 0.5rem 1rem;
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            color: var(--text-primary);
+        }
+
+        body.dark-mode .tag-btn {
+            background: #475569;
+            border-color: #64748b;
+        }
+
+        .tag-btn:hover,
+        .tag-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+    </style>
 </head>
 <body class="transition-all duration-300">
 
-<!-- ---navbar-- -->
-<!-- Navbar -->
+<!-- Breadcrumb Navigation -->
+<nav class="breadcrumb" id="breadcrumb">
+    <a href="#home">
+        <i class="fas fa-home"></i> Home
+    </a>
+    <span class="breadcrumb-separator">/</span>
+    <span>Blogs</span>
+</nav>
+
+<!-- Main Navbar -->
 <nav class="navbar">
-    <!-- Logo -->
     <div class="logo">
-        GreenBlog
+        <i class="fas fa-leaf"></i> GreenBlog
     </div>
- <!-- Navigation Links -->
+    
     <ul class="nav-links">
-   <li>
-            <a href="#">Home</a>
-        </li>
-        <li>
-            <a href="#categories">Categories</a>
-        </li>
-        <li>
-            <a href="#blogs">Blogs</a>
-        </li>
-        <li>
-            <a href="#about">About</a>
-        </li>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#categories">Categories</a></li>
+        <li><a href="#blogs">Blogs</a></li>
+        <li><a href="#about">About</a></li>
     </ul>
-    <!-- Right Side -->
+    
     <div class="nav-right">
-        <!-- Search -->
         <input
             type="text"
             placeholder="Search blogs...."
             class="nav-search"
+            id="navSearch"
         >
-        <!-- Dark Mode Button -->
-<button id="themeToggle">
-   <span id="themeIcon">☀️</span>
-</button>
+        <button id="themeToggle" title="Toggle dark mode">
+            <span id="themeIcon">☀️</span>
+        </button>
     </div>
 </nav>
 
-
-
-    <div class="flex flex-col md:flex-row justify-center gap-6 md:gap-10 p-3 md:p-6 bg-gray-50 min-h-screen overflow-x-hidden" style="max-width:100%;box-sizing:border-box;">
-      
-<div class="blog-container" id="blogCards">
-
-    <!-- Organic Farming -->
-    <div class="blog-card">
-
-        <img
-            src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=1770&auto=format&fit=crop"
-            alt="Organic Farming"
-            class="blog-image"
-        >
-
-        <div class="blog-content">
-
-            <span class="blog-category">
-                Agriculture
-            </span>
-
-            <h2 class="blog-title">
-                Organic Farming
-            </h2>
-
-            <p class="blog-description">
-                Learn how organic farming improves soil fertility
-                and supports eco-friendly agriculture.
-            </p>
-
-            <a href="of.html" target="_blank" rel="noopener noreferrer">
-                <button class="read-more-btn">
-                    Read More
-                </button>
-            </a>
-
-        </div>
-
-    </div>
-
-    <!-- Future of AI -->
-    <div class="blog-card">
-
-        <img
-            src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1770&auto=format&fit=crop"
-            alt="Future of AI"
-            class="blog-image"
-        >
-
-        <div class="blog-content">
-
-            <span class="blog-category">
-                Technology
-            </span>
-
-            <h2 class="blog-title">
-                Future of AI
-            </h2>
-
-            <p class="blog-description">
-                Explore how Artificial Intelligence is transforming
-                industries, education, and daily life.
-            </p>
-
-            <a href="ai.html" target="_blank" rel="noopener noreferrer">
-                <button class="read-more-btn">
-                    Read More
-                </button>
-            </a>
-
-        </div>
-
-    </div>
-
-    <!-- Healthy Lifestyle -->
-    <div class="blog-card">
-
-        <img
-            src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=1770&auto=format&fit=crop"
-            alt="Healthy Lifestyle"
-            class="blog-image"
-        >
-
-        <div class="blog-content">
-
-            <span class="blog-category">
-                Lifestyle
-            </span>
-
-            <h2 class="blog-title">
-                Healthy Lifestyle
-            </h2>
-
-            <p class="blog-description">
-                Simple habits and routines that can improve your
-                physical and mental well-being.
-            </p>
-
-            <a href="hl.html" target="_blank" rel="noopener noreferrer">
-                <button class="read-more-btn">
-                    Read More
-                </button>
-            </a>
-
-        </div>
-
-    </div>
-
-    <!-- Web Development -->
-    <div class="blog-card">
-
-        <img
-            src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1770&auto=format&fit=crop"
-            alt="Web Development"
-            class="blog-image"
-        >
-
-        <div class="blog-content">
-
-            <span class="blog-category">
-                Development
-            </span>
-
-            <h2 class="blog-title">
-                Web Development
-            </h2>
-
-            <p class="blog-description">
-                Discover modern frontend technologies, responsive
-                design, and full-stack development trends.
-            </p>
-
-            <a href="wd.html" target="_blank" rel="noopener noreferrer">
-                <button class="read-more-btn">
-                    Read More
-                </button>
-            </a>
-
-        </div>
-
-    </div>
-
-    <!-- Travel Destinations -->
-    <div class="blog-card">
-
-        <img
-            src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1770&auto=format&fit=crop"
-            alt="Travel Destinations"
-            class="blog-image"
-        >
-
-        <div class="blog-content">
-
-            <span class="blog-category">
-                Travel
-            </span>
-
-            <h2 class="blog-title">
-                Top 10 Travel Destinations
-            </h2>
-
-            <p class="blog-description">
-                Explore breathtaking places around the world and
-                plan your next unforgettable adventure.
-            </p>
-
-            <a href="top-travel-destinations.html" target="_blank" rel="noopener noreferrer">
-                <button class="read-more-btn">
-                    Read More
-                </button>
-            </a>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-
-
-
-        <!-- Sidebar Section -->
-        <div class="flex flex-col justify-start w-full md:w-[320px] bg-white p-4 md:p-5 rounded-2xl shadow-md h-fit" style="box-sizing:border-box;min-width:0;">
-            <div class="flex flex-row gap-10 justify-center items-center h-20 text-gray-600">
-                <p class="cursor-pointer hidden" id="liked">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                        <path d="M7.493 18.5c-.425 0-.82-.236-.975-.632A7.48 7.48 0 0 1 6 15.125c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75A.75.75 0 0 1 15 2a2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23h-.777ZM2.331 10.727a11.969 11.969 0 0 0-.831 4.398 12 12 0 0 0 .52 3.507C2.28 19.482 3.105 20 3.994 20H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 0 1-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227Z" />
-                    </svg>
-                </p>
-                <p class="cursor-pointer" id="like">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" />
-                    </svg>
-                </p>
-                <p class="cursor-pointer" id="share">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
-                    </svg>
-                </p>
-                <p class="cursor-pointer" id="bookmark">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
-                    </svg>
-                </p>
-                <p class="cursor-pointer hidden" id="bookmarked">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m3 3 1.664 1.664M21 21l-1.5-1.5m-5.485-1.242L12 17.25 4.5 21V8.742m.164-4.078a2.15 2.15 0 0 1 1.743-1.342 48.507 48.507 0 0 1 11.186 0c1.1.128 1.907 1.077 1.907 2.185V19.5M4.664 4.664 19.5 19.5" />
-                    </svg>
-                </p>
-            </div>
-
-<!-- Search Section -->
-<div class="sidebar-card">
-
-    <h2 class="sidebar-title">
-        Search Articles
-    </h2>
-    <div class="search-wrapper">
-      <input
-    type="text"
-    placeholder="Search..."
-    class="sidebar-search"
-    id="sidebarSearch"
-/><button class="search-btn" onclick="searchBlogs()">
-    🔍
-</button>
-
-    </div>
-
-</div>
-
-<!-- Categories Section -->
-<div class="sidebar-card">
-
-    <h2 class="sidebar-title">
-        Categories
-    </h2>
-
-    <div class="category-list">
-
-        <div class="category-item">
-            <span>🌿 Agriculture</span>
-            <span class="category-count">12</span>
-        </div>
-
-        <div class="category-item">
-            <span>💻 Technology</span>
-            <span class="category-count">15</span>
-        </div>
-
-        <div class="category-item">
-            <span>💚 Lifestyle</span>
-            <span class="category-count">10</span>
-        </div>
-
-        <div class="category-item">
-            <span>🧑‍💻 Development</span>
-            <span class="category-count">14</span>
-        </div>
-
-        <div class="category-item">
-            <span>✈ Travel</span>
-            <span class="category-count">8</span>
-        </div>
-    </div>
-    <a href="#" class="view-all">
-        View All Categories →
-    </a>
-</div>
-<!-- Newsletter Section -->
-<div class="sidebar-card">
-
-    <h2 class="sidebar-title">
-        Subscribe to Newsletter
-    </h2>
-    <p class="newsletter-text">
-        Get the latest articles straight to your inbox.
-    </p>
-    <input
-        type="email"
-        placeholder="Your email address"
-        class="newsletter-input"
-    >
-    <button class="subscribe-btn">
-        Subscribe
-    </button>
-</div>
-
-
-            <!-- /comment -->
-            <div class="mt-4 md:overflow-y-scroll">
-                <h1 class="text-gray-800 text-2xl font-bold mb-2"> Comments </h1>
-                <div class="mt-2">
-                    <input type="text" id="username" placeholder="Your Name" class="w-full p-3 mb-2 border border-emerald-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-white text-gray-900" />
-                    <textarea name="comment" id="comment" placeholder="Add a comment ..." class="w-full p-3 border border-emerald-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400"> </textarea>
-                    <button type="submit" class="mt-2 bg-emerald-500 hover:bg-emerald-600 transition text-white py-2 px-5 rounded-xl shadow-sm" onclick="addComment()"> Submit </button>
+<div class="flex flex-col md:flex-row justify-center gap-6 md:gap-10 p-3 md:p-6 bg-gray-50 min-h-screen overflow-x-hidden" style="max-width:100%;box-sizing:border-box;" id="mainContent">
+    
+    <div class="w-full">
+        <!-- Filter & Sort Section -->
+        <div class="filter-section" id="filterSection">
+            <div class="filter-row">
+                <div class="filter-group flex-1 min-w-[150px]">
+                    <label class="filter-label">
+                        <i class="fas fa-filter"></i> Category
+                    </label>
+                    <select class="filter-select" id="categoryFilter" onchange="applyFilters()">
+                        <option value="">All Categories</option>
+                        <option value="Agriculture">🌿 Agriculture</option>
+                        <option value="Technology">💻 Technology</option>
+                        <option value="Lifestyle">💚 Lifestyle</option>
+                        <option value="Development">🧑‍💻 Development</option>
+                        <option value="Travel">✈️ Travel</option>
+                    </select>
                 </div>
-                <div id="comments" class="mt-4 text-gray-600 flex flex-col gap-3">
-                    <p id="emptyMessage">No comments yet</p>
+
+                <div class="filter-group flex-1 min-w-[150px]">
+                    <label class="filter-label">
+                        <i class="fas fa-sort"></i> Sort By
+                    </label>
+                    <select class="filter-select" id="sortFilter" onchange="applyFilters()">
+                        <option value="latest">Latest</option>
+                        <option value="oldest">Oldest</option>
+                        <option value="popular">Most Popular</option>
+                        <option value="a-z">A - Z</option>
+                    </select>
+                </div>
+
+                <div class="filter-group flex-1 min-w-[150px]">
+                    <label class="filter-label">
+                        <i class="fas fa-search"></i> Search
+                    </label>
+                    <input
+                        type="text"
+                        placeholder="Search blogs..."
+                        class="filter-search"
+                        id="filterSearch"
+                        onkeyup="applyFilters()"
+                    >
                 </div>
             </div>
+
+            <!-- Tag-based Quick Filters -->
+            <div class="tag-filter" id="tagFilter">
+                <button class="tag-btn active" onclick="filterByTag('all')">
+                    <i class="fas fa-star"></i> All Articles
+                </button>
+                <button class="tag-btn" onclick="filterByTag('featured')">
+                    <i class="fas fa-fire"></i> Featured
+                </button>
+                <button class="tag-btn" onclick="filterByTag('trending')">
+                    <i class="fas fa-trending-up"></i> Trending
+                </button>
+            </div>
+
+            <div class="results-info" id="resultsInfo">
+                Showing all articles
+            </div>
+        </div>
+
+        <!-- Blog Cards Container -->
+        <div class="blog-container" id="blogCards">
+
+            <!-- Organic Farming -->
+            <div class="blog-card" data-category="Agriculture" data-title="Organic Farming" data-date="2026-06-10" data-popular="120">
+                <div class="blog-image-wrapper">
+                    <img
+                        src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=1770&auto=format&fit=crop"
+                        alt="Organic Farming"
+                        class="blog-image"
+                        loading="lazy"
+                    >
+                </div>
+
+                <div class="blog-content" style="padding: 1.5rem;">
+                    <span class="blog-category">
+                        <i class="fas fa-leaf"></i> Agriculture
+                    </span>
+
+                    <h2 class="blog-title">
+                        Organic Farming
+                    </h2>
+
+                    <div class="blog-metadata">
+                        <div class="metadata-item">
+                            <i class="fas fa-user"></i>
+                            <span>Sarah Johnson</span>
+                        </div>
+                        <div class="metadata-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>June 10, 2026</span>
+                        </div>
+                        <div class="metadata-item">
+                            <i class="fas fa-clock"></i>
+                            <span>8 min read</span>
+                        </div>
+                    </div>
+
+                    <p class="blog-description">
+                        Learn how organic farming improves soil fertility and supports sustainable, eco-friendly agriculture practices for a healthier planet.
+                    </p>
+
+                    <a href="of.html" target="_blank" rel="noopener noreferrer">
+                        <button class="read-more-btn">
+                            Read More
+                        </button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Future of AI -->
+            <div class="blog-card" data-category="Technology" data-title="Future of AI" data-date="2026-06-08" data-popular="245">
+                <div class="blog-image-wrapper">
+                    <img
+                        src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1770&auto=format&fit=crop"
+                        alt="Future of AI"
+                        class="blog-image"
+                        loading="lazy"
+                    >
+                </div>
+
+                <div class="blog-content" style="padding: 1.5rem;">
+                    <span class="blog-category">
+                        <i class="fas fa-robot"></i> Technology
+                    </span>
+
+                    <h2 class="blog-title">
+                        Future of AI
+                    </h2>
+
+                    <div class="blog-metadata">
+                        <div class="metadata-item">
+                            <i class="fas fa-user"></i>
+                            <span>Alex Chen</span>
+                        </div>
+                        <div class="metadata-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>June 8, 2026</span>
+                        </div>
+                        <div class="metadata-item">
+                            <i class="fas fa-clock"></i>
+                            <span>12 min read</span>
+                        </div>
+                    </div>
+
+                    <p class="blog-description">
+                        Explore how Artificial Intelligence is transforming industries, education, healthcare, and daily life in revolutionary ways.
+                    </p>
+
+                    <a href="ai.html" target="_blank" rel="noopener noreferrer">
+                        <button class="read-more-btn">
+                            Read More
+                        </button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Healthy Lifestyle -->
+            <div class="blog-card" data-category="Lifestyle" data-title="Healthy Lifestyle" data-date="2026-06-05" data-popular="189">
+                <div class="blog-image-wrapper">
+                    <img
+                        src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=1770&auto=format&fit=crop"
+                        alt="Healthy Lifestyle"
+                        class="blog-image"
+                        loading="lazy"
+                    >
+                </div>
+
+                <div class="blog-content" style="padding: 1.5rem;">
+                    <span class="blog-category">
+                        <i class="fas fa-heart"></i> Lifestyle
+                    </span>
+
+                    <h2 class="blog-title">
+                        Healthy Lifestyle
+                    </h2>
+
+                    <div class="blog-metadata">
+                        <div class="metadata-item">
+                            <i class="fas fa-user"></i>
+                            <span>Emma Wilson</span>
+                        </div>
+                        <div class="metadata-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>June 5, 2026</span>
+                        </div>
+                        <div class="metadata-item">
+                            <i class="fas fa-clock"></i>
+                            <span>6 min read</span>
+                        </div>
+                    </div>
+
+                    <p class="blog-description">
+                        Simple habits and daily routines that can significantly improve your physical health and mental well-being.
+                    </p>
+
+                    <a href="hl.html" target="_blank" rel="noopener noreferrer">
+                        <button class="read-more-btn">
+                            Read More
+                        </button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Web Development -->
+            <div class="blog-card" data-category="Development" data-title="Web Development" data-date="2026-06-02" data-popular="267">
+                <div class="blog-image-wrapper">
+                    <img
+                        src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1770&auto=format&fit=crop"
+                        alt="Web Development"
+                        class="blog-image"
+                        loading="lazy"
+                    >
+                </div>
+
+                <div class="blog-content" style="padding: 1.5rem;">
+                    <span class="blog-category">
+                        <i class="fas fa-code"></i> Development
+                    </span>
+
+                    <h2 class="blog-title">
+                        Web Development
+                    </h2>
+
+                    <div class="blog-metadata">
+                        <div class="metadata-item">
+                            <i class="fas fa-user"></i>
+                            <span>Marcus Davis</span>
+                        </div>
+                        <div class="metadata-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>June 2, 2026</span>
+                        </div>
+                        <div class="metadata-item">
+                            <i class="fas fa-clock"></i>
+                            <span>10 min read</span>
+                        </div>
+                    </div>
+
+                    <p class="blog-description">
+                        Discover modern frontend technologies, responsive design patterns, and full-stack development trends shaping the web today.
+                    </p>
+
+                    <a href="wd.html" target="_blank" rel="noopener noreferrer">
+                        <button class="read-more-btn">
+                            Read More
+                        </button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Travel Destinations -->
+            <div class="blog-card" data-category="Travel" data-title="Top 10 Travel Destinations" data-date="2026-05-29" data-popular="198">
+                <div class="blog-image-wrapper">
+                    <img
+                        src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1770&auto=format&fit=crop"
+                        alt="Travel Destinations"
+                        class="blog-image"
+                        loading="lazy"
+                    >
+                </div>
+
+                <div class="blog-content" style="padding: 1.5rem;">
+                    <span class="blog-category">
+                        <i class="fas fa-plane"></i> Travel
+                    </span>
+
+                    <h2 class="blog-title">
+                        Top 10 Travel Destinations
+                    </h2>
+
+                    <div class="blog-metadata">
+                        <div class="metadata-item">
+                            <i class="fas fa-user"></i>
+                            <span>Jessica Lee</span>
+                        </div>
+                        <div class="metadata-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>May 29, 2026</span>
+                        </div>
+                        <div class="metadata-item">
+                            <i class="fas fa-clock"></i>
+                            <span>15 min read</span>
+                        </div>
+                    </div>
+
+                    <p class="blog-description">
+                        Explore breathtaking destinations around the globe and discover practical tips for planning your next unforgettable adventure.
+                    </p>
+
+                    <a href="top-travel-destinations.html" target="_blank" rel="noopener noreferrer">
+                        <button class="read-more-btn">
+                            Read More
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-state-icon">📭</div>
+            <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--text-primary);">No articles found</h3>
+            <p>Try adjusting your search or filter criteria to find what you're looking for.</p>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination" id="pagination">
+            <button class="pagination-btn active" onclick="goToPage(1)">1</button>
+            <button class="pagination-btn" onclick="goToPage(2)">2</button>
+            <button class="pagination-btn" onclick="goToPage(3)">3</button>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Sidebar Section -->
+    <div class="flex flex-col justify-start w-full md:w-[320px] bg-white p-4 md:p-5 rounded-2xl shadow-md h-fit" style="box-sizing:border-box;min-width:0;">
+        
+        <!-- Action Buttons -->
+        <div class="flex flex-row gap-10 justify-center items-center h-20 text-gray-600">
+            <p class="cursor-pointer hidden" id="liked" title="Unlike">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                    <path d="M7.493 18.5c-.425 0-.82-.236-.975-.632A7.48 7.48 0 0 1 6 15.125c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75A.75.75 0 0 1 15 2a2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23h-.777ZM2.331 10.727a11.969 11.969 0 0 0-.831 4.398 12 12 0 0 0 .52 3.507C2.28 19.482 3.105 20 3.994 20H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 0 1-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227Z" />
+                </svg>
+            </p>
+            <p class="cursor-pointer" id="like" title="Like" onclick="toggleLike()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" />
+                </svg>
+            </p>
+            <p class="cursor-pointer" id="share" title="Share" onclick="shareArticle()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+                </svg>
+            </p>
+            <p class="cursor-pointer" id="bookmark" title="Bookmark" onclick="toggleBookmark()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+                </svg>
+            </p>
+            <p class="cursor-pointer hidden" id="bookmarked" title="Remove bookmark">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+                </svg>
+            </p>
+        </div>
 
-<!--About Section -->
+        <!-- Search Section -->
+        <div class="sidebar-card">
+            <h2 class="sidebar-title">
+                <i class="fas fa-search"></i> Search Articles
+            </h2>
+            <div class="search-wrapper">
+                <input
+                    type="text"
+                    placeholder="Search..."
+                    class="sidebar-search"
+                    id="sidebarSearch"
+                    onkeyup="applyFilters()"
+                />
+                <button class="search-btn" onclick="applyFilters()" title="Search">
+                    🔍
+                </button>
+            </div>
+        </div>
+
+        <!-- Categories Section -->
+        <div class="sidebar-card">
+            <h2 class="sidebar-title">
+                <i class="fas fa-th-large"></i> Categories
+            </h2>
+
+            <div class="category-list">
+                <div class="category-item cursor-pointer" onclick="filterByCategory('Agriculture')">
+                    <span>🌿 Agriculture</span>
+                    <span class="category-count">12</span>
+                </div>
+
+                <div class="category-item cursor-pointer" onclick="filterByCategory('Technology')">
+                    <span>💻 Technology</span>
+                    <span class="category-count">15</span>
+                </div>
+
+                <div class="category-item cursor-pointer" onclick="filterByCategory('Lifestyle')">
+                    <span>💚 Lifestyle</span>
+                    <span class="category-count">10</span>
+                </div>
+
+                <div class="category-item cursor-pointer" onclick="filterByCategory('Development')">
+                    <span>🧑‍💻 Development</span>
+                    <span class="category-count">14</span>
+                </div>
+
+                <div class="category-item cursor-pointer" onclick="filterByCategory('Travel')">
+                    <span>✈️ Travel</span>
+                    <span class="category-count">8</span>
+                </div>
+            </div>
+            <a href="#" class="view-all">
+                View All Categories <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <!-- Newsletter Section -->
+        <div class="sidebar-card">
+            <h2 class="sidebar-title">
+                <i class="fas fa-envelope"></i> Subscribe to Newsletter
+            </h2>
+            <p class="newsletter-text">
+                Get the latest articles straight to your inbox.
+            </p>
+            <input
+                type="email"
+                placeholder="Your email address"
+                class="newsletter-input"
+                id="newsletterEmail"
+            >
+            <button class="subscribe-btn" onclick="subscribeNewsletter()">
+                Subscribe
+            </button>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="mt-4 md:overflow-y-scroll">
+            <h1 class="text-gray-800 text-2xl font-bold mb-2">
+                <i class="fas fa-comments"></i> Comments
+            </h1>
+            <div class="mt-2">
+                <input 
+                    type="text" 
+                    id="username" 
+                    placeholder="Your Name" 
+                    class="w-full p-3 mb-2 border border-emerald-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-white text-gray-900" 
+                />
+                <textarea 
+                    name="comment" 
+                    id="comment" 
+                    placeholder="Add a comment ..." 
+                    class="w-full p-3 border border-emerald-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400">
+                </textarea>
+                <button 
+                    type="submit" 
+                    class="mt-2 bg-emerald-500 hover:bg-emerald-600 transition text-white py-2 px-5 rounded-xl shadow-sm" 
+                    onclick="addComment()">
+                    <i class="fas fa-paper-plane"></i> Submit
+                </button>
+            </div>
+            <div id="comments" class="mt-4 text-gray-600 flex flex-col gap-3">
+                <p id="emptyMessage">
+                    <i class="fas fa-info-circle"></i> No comments yet
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- About Section -->
 <section id="about" class="about-section">
-    <h2>About GreenBlog</h2>
+    <div class="container">
+        <h2 style="text-align: center; margin-bottom: 2rem;">
+            <i class="fas fa-book"></i> About GreenBlog
+        </h2>
 
-    <p>
-        GreenBlog is a platform dedicated to sharing informative and engaging
-        content across technology, lifestyle, travel, agriculture, and web
-        development. Our goal is to provide readers with valuable insights,
-        practical knowledge, and inspiring stories in an easy-to-read format.
-    </p>
+        <p style="text-align: center; margin-bottom: 2rem; font-size: 1.1rem; line-height: 1.8;">
+            GreenBlog is a premier platform dedicated to sharing high-quality, informative, and engaging content across technology, lifestyle, travel, agriculture, and web development. Our mission is to provide readers with valuable insights, practical knowledge, and inspiring stories in an easy-to-read, accessible format.
+        </p>
 
-    <div class="about-features">
-        <div class="feature-card">
-            <h3>Quality Content</h3>
-            <p>Well-researched articles across multiple categories.</p>
-        </div>
+        <div class="about-features">
+            <div class="feature-card">
+                <h3>
+                    <i class="fas fa-check-circle"></i> Quality Content
+                </h3>
+                <p>Well-researched, thoroughly fact-checked articles across multiple categories written by industry experts.</p>
+            </div>
 
-        <div class="feature-card">
-            <h3>Knowledge Sharing</h3>
-            <p>Helping readers learn and grow every day.</p>
-        </div>
+            <div class="feature-card">
+                <h3>
+                    <i class="fas fa-lightbulb"></i> Knowledge Sharing
+                </h3>
+                <p>Helping readers learn, grow, and stay informed about the latest trends and timeless wisdom.</p>
+            </div>
 
-        <div class="feature-card">
-            <h3>Modern Experience</h3>
-            <p>Clean design with smooth navigation and responsiveness.</p>
+            <div class="feature-card">
+                <h3>
+                    <i class="fas fa-mobile-alt"></i> Modern Experience
+                </h3>
+                <p>Clean, intuitive design with smooth navigation and full responsiveness across all devices.</p>
+            </div>
         </div>
     </div>
 </section>
 
 <!-- Footer Section -->
 <footer class="footer">
-  <div class="footer-container">
+    <div class="footer-container">
+        <div class="footer-section" id="categories">
+            <h2 class="logo">
+                <i class="fas fa-leaf"></i> GreenBlog
+            </h2>
+            <p>
+                Discover inspiring, high-quality articles on technology, lifestyle, travel, agriculture, and web development.
+            </p>
+        </div>
 
-    <!-- Brand -->
-    <div class="footer-section" id="categories">
-      <h2 class="logo">GreenBlog</h2>
-      <p>
-        Discover inspiring articles on technology, lifestyle,
-        travel, agriculture, and web development.
-      </p>
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#blogs">Blogs</a></li>
+                <li><a href="#categories">Categories</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h3>Categories</h3>
+            <ul>
+                <li><a href="#" onclick="filterByCategory('Technology')">Technology</a></li>
+                <li><a href="#" onclick="filterByCategory('Lifestyle')">Lifestyle</a></li>
+                <li><a href="#" onclick="filterByCategory('Travel')">Travel</a></li>
+                <li><a href="#" onclick="filterByCategory('Agriculture')">Agriculture</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h3>
+                <i class="fas fa-envelope"></i> Subscribe
+            </h3>
+            <p>Get latest articles directly in your inbox.</p>
+            <form class="newsletter" onsubmit="subscribeNewsletter(event)">
+                <input type="email" placeholder="Enter your email" required />
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
     </div>
 
-    <!-- Quick Links -->
-    <div class="footer-section">
-      <h3>Quick Links</h3>
-      <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#blogs">Blogs</a></li>
-        <li><a href="#categories">Categories</a></li>
-        <li><a href="#about">About</a></li>
-      </ul>
+    <div class="footer-bottom">
+        <p>© 2026 GreenBlog. All rights reserved.</p>
     </div>
-
-    <!-- Categories -->
-    <div class="footer-section">
-      <h3>Categories</h3>
-      <ul>
-        <li><a href="#">Technology</a></li>
-        <li><a href="#">Lifestyle</a></li>
-        <li><a href="#">Travel</a></li>
-        <li><a href="#">Agriculture</a></li>
-      </ul>
-    </div>
-
-    <!-- Newsletter -->
-    <div class="footer-section">
-      <h3>Subscribe</h3>
-      <p>Get latest articles directly in your inbox.</p>
-
-      <form class="newsletter">
-        <input type="email" placeholder="Enter your email" />
-        <button type="submit">Subscribe</button>
-      </form>
-    </div>
-
-  </div>
-
-  <!-- Bottom -->
-  <div class="footer-bottom">
-    <p>© 2026 GreenBlog. All rights reserved.</p>
-    <p>created by palak verma</p>
-  </div>
 </footer>
+
+<!-- Back to Top Button -->
+<button class="back-to-top" id="backToTop" onclick="scrollToTop()" title="Back to top">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script src="script.js"></script>
+
+<script>
+    // Enhanced Blog Functionality
+
+    // Back to Top Button Logic
+    window.addEventListener('scroll', function() {
+        const backToTopBtn = document.getElementById('backToTop');
+        if (window.pageYOffset > 300) {
+            backToTopBtn.classList.add('show');
+        } else {
+            backToTopBtn.classList.remove('show');
+        }
+    });
+
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    // Filter and Search Functionality
+    function applyFilters() {
+        const searchText = document.getElementById('filterSearch').value.toLowerCase();
+        const category = document.getElementById('categoryFilter').value;
+        const blogCards = document.querySelectorAll('.blog-card');
+        let visibleCount = 0;
+
+        blogCards.forEach(card => {
+            const cardTitle = card.getAttribute('data-title').toLowerCase();
+            const cardCategory = card.getAttribute('data-category');
+            
+            const matchesSearch = cardTitle.includes(searchText);
+            const matchesCategory = category === '' || cardCategory === category;
+
+            if (matchesSearch && matchesCategory) {
+                card.style.display = '';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        updateResultsInfo(visibleCount);
+        showEmptyState(visibleCount === 0);
+    }
+
+    function filterByCategory(category) {
+        document.getElementById('categoryFilter').value = category;
+        applyFilters();
+        document.querySelector('[href="#blogs"]').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function filterByTag(tag) {
+        const buttons = document.querySelectorAll('.tag-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+    }
+
+    function updateResultsInfo(count) {
+        const resultsInfo = document.getElementById('resultsInfo');
+        const total = document.querySelectorAll('.blog-card').length;
+        
+        if (count === 0) {
+            resultsInfo.textContent = 'No articles match your criteria';
+        } else if (count === total) {
+            resultsInfo.textContent = `Showing all ${total} articles`;
+        } else {
+            resultsInfo.textContent = `Showing ${count} of ${total} articles`;
+        }
+    }
+
+    function showEmptyState(show) {
+        const emptyState = document.getElementById('emptyState');
+        const blogContainer = document.getElementById('blogCards');
+        
+        if (show) {
+            emptyState.style.display = 'block';
+            blogContainer.style.display = 'none';
+        } else {
+            emptyState.style.display = 'none';
+            blogContainer.style.display = 'grid';
+        }
+    }
+
+    // Pagination
+    function goToPage(page) {
+        const buttons = document.querySelectorAll('.pagination-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        buttons[page - 1].classList.add('active');
+        
+        // Scroll to blog section
+        document.getElementById('blogCards').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Like Functionality
+    function toggleLike() {
+        const likeBtn = document.getElementById('like');
+        const likedBtn = document.getElementById('liked');
+        
+        if (likeBtn.classList.contains('hidden')) {
+            likeBtn.classList.remove('hidden');
+            likedBtn.classList.add('hidden');
+        } else {
+            likeBtn.classList.add('hidden');
+            likedBtn.classList.remove('hidden');
+        }
+    }
+
+    // Bookmark Functionality
+    function toggleBookmark() {
+        const bookmarkBtn = document.getElementById('bookmark');
+        const bookmarkedBtn = document.getElementById('bookmarked');
+        
+        if (bookmarkBtn.classList.contains('hidden')) {
+            bookmarkBtn.classList.remove('hidden');
+            bookmarkedBtn.classList.add('hidden');
+        } else {
+            bookmarkBtn.classList.add('hidden');
+            bookmarkedBtn.classList.remove('hidden');
+        }
+    }
+
+    // Share Functionality
+    function shareArticle() {
+        const url = window.location.href;
+        const title = 'Check out GreenBlog!';
+        
+        if (navigator.share) {
+            navigator.share({
+                title: title,
+                url: url
+            }).catch(err => console.log('Share cancelled'));
+        } else {
+            // Fallback
+            const text = `${title}\n${url}`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Link copied to clipboard!');
+            });
+        }
+    }
+
+    // Comment Functionality
+    function addComment() {
+        const username = document.getElementById('username').value.trim();
+        const comment = document.getElementById('comment').value.trim();
+        const commentsDiv = document.getElementById('comments');
+        const emptyMessage = document.getElementById('emptyMessage');
+
+        if (username && comment) {
+            const commentElement = document.createElement('div');
+            commentElement.style.cssText = 'padding: 1rem; background: #f1f5f9; border-radius: 8px; border-left: 4px solid #10b981;';
+            
+            const timeNow = new Date().toLocaleTimeString();
+            commentElement.innerHTML = `
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <strong style="color: #10b981;">${username}</strong>
+                    <small style="color: #94a3b8;">${timeNow}</small>
+                </div>
+                <p style="margin: 0; color: #475569;">${comment}</p>
+            `;
+
+            if (emptyMessage) {
+                emptyMessage.remove();
+            }
+
+            commentsDiv.appendChild(commentElement);
+            document.getElementById('username').value = '';
+            document.getElementById('comment').value = '';
+        } else {
+            alert('Please fill in both name and comment fields');
+        }
+    }
+
+    // Newsletter Subscription
+    function subscribeNewsletter(event) {
+        if (event) event.preventDefault();
+        
+        const email = document.getElementById('newsletterEmail').value.trim();
+        
+        if (email && email.includes('@')) {
+            alert('Thank you for subscribing! Check your email for confirmation.');
+            document.getElementById('newsletterEmail').value = '';
+        } else {
+            alert('Please enter a valid email address');
+        }
+    }
+
+    // Dark Mode Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const htmlElement = document.documentElement;
+
+    themeToggle.addEventListener('click', function() {
+        const isDarkMode = htmlElement.classList.toggle('dark-mode');
+        const themeIcon = document.getElementById('themeIcon');
+        
+        if (isDarkMode) {
+            themeIcon.textContent = '🌙';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            themeIcon.textContent = '☀️';
+            localStorage.setItem('theme', 'light');
+        }
+    });
+
+    // Load saved theme preference
+    window.addEventListener('DOMContentLoaded', function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            htmlElement.classList.add('dark-mode');
+            document.getElementById('themeIcon').textContent = '🌙';
+        }
+    });
+
+    // Initialize
+    updateResultsInfo(document.querySelectorAll('.blog-card').length);
+</script>
 
 </body>
 </html>

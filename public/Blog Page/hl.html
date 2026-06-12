@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Healthy Lifestyle</title>
+    <title>Healthy Lifestyle - GreenBlog</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
@@ -12,85 +12,503 @@
 </head>
 <body class="transition-all duration-300">
 
+<!-- Reading Progress Bar -->
+<div class="reading-progress" id="readingProgress"></div>
+
+<!-- Navigation Navbar -->
 <nav class="navbar">
     <div class="nav-left-group">
-        <a href="index.html" class="project-back-button">
-            <i class="fa-solid fa-arrow-left"></i> Back to Blogs
+        <a href="index.html" class="project-back-button" title="Back to all blogs">
+            <i class="fas fa-arrow-left"></i> Back to Blogs
         </a>
         <div class="logo">
-            GreenBlog
+            <i class="fas fa-leaf"></i> GreenBlog
         </div>
     </div>
     <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
-        <li><a href="index.html">Categories</a></li>
-        <li><a href="index.html">Blogs</a></li>
-        <li><a href="index.html">About</a></li>
+        <li><a href="index.html#categories">Categories</a></li>
+        <li><a href="index.html#blogs">Blogs</a></li>
+        <li><a href="index.html#about">About</a></li>
     </ul>
     <div class="nav-right">
-        <button id="themeToggle">
+        <button id="themeToggle" title="Toggle dark mode">
             <span id="themeIcon">☀️</span>
         </button>
     </div>
 </nav>
 
+<!-- Breadcrumb Navigation -->
+<div class="breadcrumb">
+    <a href="index.html">
+        <i class="fas fa-home"></i> Home
+    </a>
+    <span class="breadcrumb-separator">/</span>
+    <a href="index.html#blogs">Blogs</a>
+    <span class="breadcrumb-separator">/</span>
+    <span>Healthy Lifestyle</span>
+</div>
+
+<!-- Main Blog Container -->
 <div class="blog-page-container">
     <div class="blog-page">
-        <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=1770&auto=format&fit=crop" alt="Healthy Lifestyle" class="blog-banner">
         
-        <h1>Healthy Lifestyle</h1>
-        
-        <div class="blog-author">
-            <h3>Health Coach</h3>
-            <p class="blog-date">Posted on 19/05/2026</p>
+        <!-- Featured Image -->
+        <div class="blog-header-image">
+            <img 
+                src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=1770&auto=format&fit=crop" 
+                alt="Healthy Lifestyle" 
+                class="blog-banner"
+                loading="lazy"
+            >
         </div>
 
-        <div class="blog-content">
-            <p>
-                A healthy lifestyle is the foundation of a happy and productive life. It includes maintaining good eating habits, regular exercise, proper sleep, and mental well-being. Eating nutritious food helps the body gain energy and improves immunity. Fresh fruits, vegetables, and balanced meals are essential for staying healthy and active.
-            </p>
-            <p>
-                Physical activities like walking, yoga, and exercise improve fitness and reduce stress. Mental health is equally important, and practices such as meditation and mindfulness help maintain inner peace. Developing healthy habits today can lead to a stronger and happier future. Small daily improvements make a big difference in long-term health.
-            </p>
-            <p>
-                As we spend more time indoors, keeping active and stuck with foods that have been in our pantry can sometimes lead to a sedentary lifestyle. This physically inactive routine can lead to excessive eating, sitting, and higher stress or anxiety levels. Making healthy conscious choices becomes vital to prevent cardiovascular risks and maintain immune strength.
-            </p>
+        <!-- Blog Category & Title -->
+        <div class="blog-header">
+            <span class="blog-category">
+                <i class="fas fa-heart"></i> Lifestyle
+            </span>
+            
+            <h1>Building a Healthy Lifestyle: Your Complete Guide to Wellness</h1>
 
-            <h1>Tips for Staying Healthy</h1>
+            <!-- Blog Metadata -->
+            <div class="blog-meta">
+                <div class="meta-item">
+                    <i class="fas fa-user-circle"></i>
+                    <span class="author-name">Emma Wilson</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>June 5, 2026</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-clock"></i>
+                    <span class="read-time">8 min read</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-eye"></i>
+                    <span>1,820 views</span>
+                </div>
+            </div>
+
+            <!-- Author Card -->
+            <div class="blog-author">
+                <div class="author-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="author-info">
+                    <h3>Emma Wilson</h3>
+                    <p>Health Coach & Wellness Expert | Dedicated to helping people achieve their health goals through sustainable lifestyle changes.</p>
+                    <div class="author-social">
+                        <a href="#" title="Follow on Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" title="Follow on Facebook">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="blog-content">
             
             <p>
-                <b>1. Measure and Watch Your Weight</b><br>
-                Keeping track of your body weight on a daily or weekly basis will help you see what you’re losing and/or what you’re gaining.
+                A healthy lifestyle is far more than just a trend—it's the foundation upon which a happy, productive, and fulfilling life is built. In today's fast-paced world, where stress, sedentary work, and processed foods dominate our daily lives, making conscious choices toward wellness has never been more important. This comprehensive guide will help you understand what a healthy lifestyle truly means and how to implement sustainable changes that will transform your life.
             </p>
+
+            <h2>Understanding the Pillars of Health</h2>
+
             <p>
-                <b>2. Limit Unhealthy Foods and Eat Healthy Meals</b><br>
-                Do not forget to eat breakfast and choose a nutritious meal with more protein and fiber and less fat, sugar, and calories.
+                A truly healthy lifestyle rests on several interconnected pillars that work together to create optimal well-being. Let's explore each one:
             </p>
+
+            <h3>1. Nutrition: Fuel Your Body Right</h3>
+
             <p>
-                <b>3. Take Multivitamin Supplements</b><br>
-                To make sure you have sufficient levels of nutrients, taking a daily multivitamin supplement is a good idea, especially when you do not have a variety of vegetables and fruits at home.
+                The food we consume directly impacts our energy levels, mental clarity, and physical health. A balanced diet should include:
             </p>
+
+            <ul>
+                <li><strong>Fresh fruits and vegetables</strong> – Rich in vitamins, minerals, and antioxidants that protect against chronic diseases</li>
+                <li><strong>Lean proteins</strong> – Essential for muscle repair, immune function, and hormone production</li>
+                <li><strong>Whole grains</strong> – Provide sustained energy and support digestive health</li>
+                <li><strong>Healthy fats</strong> – Support brain function and cardiovascular health (avocados, nuts, olive oil)</li>
+                <li><strong>Adequate hydration</strong> – Water supports every biological function, from temperature regulation to nutrient transport</li>
+            </ul>
+
+            <blockquote>
+                <p>"Take care of your body. It's the only place you have to live." – Jim Rohn</p>
+            </blockquote>
+
+            <h3>2. Physical Activity: Movement is Medicine</h3>
+
             <p>
-                <b>4. Drink Water and Stay Hydrated, and Limit Sugared Beverages</b><br>
-                Drink water regularly to stay healthy. Staying hydrated supports your body's recovery and metabolic processes, while limiting sugary drinks prevents unnecessary calorie intake.
+                Regular physical activity is one of the most powerful tools for maintaining health. Exercise:
             </p>
+
+            <ul>
+                <li><strong>Strengthens your cardiovascular system</strong> – Reducing risk of heart disease and stroke</li>
+                <li><strong>Builds and maintains muscle mass</strong> – Essential as we age to prevent weakness and falls</li>
+                <li><strong>Improves mental health</strong> – Releases endorphins that naturally elevate mood and reduce anxiety</li>
+                <li><strong>Enhances sleep quality</strong> – Regular activity helps regulate sleep cycles</li>
+                <li><strong>Boosts energy levels</strong> – Counterintuitively, moving more gives us more energy throughout the day</li>
+            </ul>
+
+            <p>
+                Aim for at least 150 minutes of moderate-intensity aerobic activity or 75 minutes of vigorous activity per week, combined with muscle-strengthening activities at least twice a week.
+            </p>
+
+            <h3>3. Sleep: The Body's Repair System</h3>
+
+            <p>
+                Quality sleep is when your body performs essential maintenance—repairing tissue, consolidating memories, and regulating hormones. Most adults need 7-9 hours of quality sleep per night. During this time, your body:
+            </p>
+
+            <ul>
+                <li>Strengthens the immune system to fight infections</li>
+                <li>Regulates blood sugar and appetite hormones</li>
+                <li>Clears brain waste through the glymphatic system</li>
+                <li>Consolidates learning and memories</li>
+            </ul>
+
+            <p>
+                To improve sleep quality, maintain a consistent sleep schedule, keep your bedroom cool and dark, limit screen time before bed, and avoid caffeine and large meals close to bedtime.
+            </p>
+
+            <h3>4. Mental Health & Stress Management</h3>
+
+            <p>
+                Mental wellness is equally vital as physical health. Chronic stress can lead to numerous health problems including high blood pressure, weakened immunity, and digestive issues. Implement these stress-reduction techniques:
+            </p>
+
+            <ul>
+                <li><strong>Meditation</strong> – Even 10 minutes daily can reduce anxiety and improve focus</li>
+                <li><strong>Mindfulness practices</strong> – Being present in the moment reduces worry about future uncertainties</li>
+                <li><strong>Yoga</strong> – Combines physical movement with breathing and meditation</li>
+                <li><strong>Journaling</strong> – Processing emotions through writing</li>
+                <li><strong>Social connections</strong> – Quality time with loved ones is vital for mental health</li>
+            </ul>
+
+            <h2>Practical Tips for Staying Healthy</h2>
+
+            <div class="highlight-box">
+                <strong>Start Small:</strong> You don't need to overhaul your entire life overnight. Small, consistent improvements are more sustainable than dramatic changes. Pick one area to focus on first.
+            </div>
+
+            <h3>Tip 1: Measure and Monitor Your Progress</h3>
+
+            <p>
+                Keeping track of your metrics—whether weight, energy levels, sleep quality, or fitness improvements—provides motivation and helps identify what's working. Use apps, journals, or simple tracking methods to stay accountable. However, remember that the scale doesn't tell the whole story; how you feel is equally important.
+            </p>
+
+            <h3>Tip 2: Create a Balanced Eating Strategy</h3>
+
+            <p>
+                Never skip breakfast—it jumpstarts your metabolism and provides fuel for the day. Build your meals around:
+            </p>
+
+            <ol>
+                <li><strong>A protein source</strong> – Chicken, fish, tofu, legumes, or eggs</li>
+                <li><strong>Vegetables</strong> – Aim to fill half your plate with colorful produce</li>
+                <li><strong>Whole grains</strong> – Brown rice, quinoa, whole wheat bread</li>
+                <li><strong>Healthy fats</strong> – Olive oil, nuts, seeds, avocado</li>
+            </ol>
+
+            <p>
+                Plan your meals ahead to avoid impulsive unhealthy choices when you're tired or stressed.
+            </p>
+
+            <h3>Tip 3: Supplement Wisely</h3>
+
+            <p>
+                While whole foods should be your primary source of nutrients, supplements can fill gaps in your diet. A daily multivitamin is beneficial, especially if you have limited access to diverse produce. Consider:
+            </p>
+
+            <ul>
+                <li><strong>Vitamin D</strong> – Particularly important if you don't get enough sunlight</li>
+                <li><strong>Omega-3 fatty acids</strong> – Support heart and brain health</li>
+                <li><strong>Probiotics</strong> – Support digestive health and immune function</li>
+                <li><strong>Magnesium</strong> – Supports sleep, stress management, and muscle function</li>
+            </ul>
+
+            <p>
+                Always consult with a healthcare provider before starting new supplements.
+            </p>
+
+            <h3>Tip 4: Stay Hydrated and Limit Sugary Beverages</h3>
+
+            <p>
+                Water is essential for every biological function. Aim to drink at least 8-10 glasses daily, adjusting for activity level and climate. Replace sugary drinks like soda and energy drinks with:
+            </p>
+
+            <ul>
+                <li>Water with fresh lemon or cucumber</li>
+                <li>Herbal teas</li>
+                <li>Sparkling water</li>
+                <li>Vegetable juices (in moderation)</li>
+            </ul>
+
+            <p>
+                Limiting sugary beverages prevents unnecessary calorie intake, protects your teeth, and helps maintain healthy blood sugar levels.
+            </p>
+
+            <h2>Overcoming Common Obstacles</h2>
+
+            <h3>"I Don't Have Time"</h3>
+
+            <p>
+                Start with just 15-20 minutes of activity daily. Take the stairs, do a quick home workout during your lunch break, or go for a brisk walk. Short bursts of activity throughout the day add up and are nearly as beneficial as longer sessions.
+            </p>
+
+            <h3>"Healthy Food Is Expensive"</h3>
+
+            <p>
+                Buy seasonal produce, shop at discount stores, choose frozen vegetables (they're just as nutritious), and buy dried beans and lentils in bulk. Meal planning and cooking at home is far cheaper than convenience foods.
+            </p>
+
+            <h3>"I Keep Failing at My Goals"</h3>
+
+            <p>
+                This is normal. Rather than viewing setbacks as failure, treat them as learning opportunities. Identify what triggered the slip-up and plan how to handle it differently next time. Self-compassion is key—one bad day doesn't erase your progress.
+            </p>
+
+            <h2>Creating Your Personal Wellness Plan</h2>
+
+            <p>
+                The most sustainable approach to healthy living is one tailored to your individual needs, preferences, and lifestyle. Consider creating a plan that includes:
+            </p>
+
+            <ol>
+                <li><strong>Specific, measurable goals</strong> – Instead of "get healthy," aim for "walk 30 minutes, 5 days per week"</li>
+                <li><strong>Regular health check-ups</strong> – Monitor blood pressure, cholesterol, and other important markers</li>
+                <li><strong>A support system</strong> – Find an accountability partner or join a fitness group</li>
+                <li><strong>Flexible approaches</strong> – Allow yourself indulgences occasionally; perfection isn't sustainable</li>
+                <li><strong>Continuous learning</strong> – Stay informed about health and wellness trends</li>
+            </ol>
+
+            <h2>Conclusion: Your Health Journey Starts Today</h2>
+
+            <p>
+                Embracing a healthy lifestyle isn't about achieving perfection—it's about making consistent, conscious choices that honor your body and mind. The benefits extend far beyond physical appearance: increased energy, better mood, improved focus, greater resilience to illness, and a deeper sense of well-being.
+            </p>
+
+            <p>
+                Remember that your health is an investment, not a luxury. Start today, be patient with yourself, celebrate small wins, and watch as these choices compound into a life of vibrant health and happiness. Your future self will thank you for the choices you make today.
+            </p>
+
         </div>
+
+        <!-- Tags Section -->
+        <div class="blog-tags">
+            <span style="font-weight: 600; color: var(--text-primary); margin-right: 1rem;">Tags:</span>
+            <a href="#" class="tag">
+                <i class="fas fa-tag"></i> Health & Wellness
+            </a>
+            <a href="#" class="tag">
+                <i class="fas fa-tag"></i> Nutrition
+            </a>
+            <a href="#" class="tag">
+                <i class="fas fa-tag"></i> Fitness
+            </a>
+            <a href="#" class="tag">
+                <i class="fas fa-tag"></i> Lifestyle
+            </a>
+            <a href="#" class="tag">
+                <i class="fas fa-tag"></i> Mental Health
+            </a>
+        </div>
+
+        <!-- Social Sharing -->
+        <div class="social-share">
+            <span>Share this article:</span>
+            <a href="#" class="social-btn" title="Share on Twitter" style="background: #1DA1F2;">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="social-btn" title="Share on Facebook" style="background: #1877F2;">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="#" class="social-btn" title="Share on Pinterest" style="background: #E60023;">
+                <i class="fab fa-pinterest"></i>
+            </a>
+            <a href="#" class="social-btn" title="Copy link" style="background: #10b981;" onclick="copyLink(event)">
+                <i class="fas fa-link"></i>
+            </a>
+        </div>
+
+        <!-- Related Posts Section -->
+        <div class="related-posts">
+            <h3>
+                <i class="fas fa-arrow-right"></i> Related Articles
+            </h3>
+            
+            <a href="ai.html" class="related-post-card">
+                <img 
+                    src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=400&auto=format&fit=crop" 
+                    alt="AI in Healthcare"
+                    class="related-post-img"
+                    loading="lazy"
+                >
+                <div class="related-post-content">
+                    <h4>AI-Powered Health Technology</h4>
+                    <p>Discover how artificial intelligence is revolutionizing healthcare and personalized wellness solutions.</p>
+                </div>
+            </a>
+
+            <a href="wd.html" class="related-post-card">
+                <img 
+                    src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=400&auto=format&fit=crop" 
+                    alt="Fitness Apps"
+                    class="related-post-img"
+                    loading="lazy"
+                >
+                <div class="related-post-content">
+                    <h4>Best Fitness & Wellness Apps</h4>
+                    <p>Explore technology tools that help you track fitness, nutrition, and mental wellness goals.</p>
+                </div>
+            </a>
+
+            <a href="of.html" class="related-post-card">
+                <img 
+                    src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=400&auto=format&fit=crop" 
+                    alt="Organic Food"
+                    class="related-post-img"
+                    loading="lazy"
+                >
+                <div class="related-post-content">
+                    <h4>Organic Foods & Sustainable Nutrition</h4>
+                    <p>Learn why organic, locally-sourced foods are better for your health and the environment.</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="comments-section">
+            <h3>
+                <i class="fas fa-comments"></i> Comments (5)
+            </h3>
+
+            <!-- Comment Form -->
+            <div class="comment-form">
+                <h4>Leave a Comment</h4>
+                <input 
+                    type="text" 
+                    placeholder="Your Name" 
+                    id="commentName"
+                    required
+                >
+                <input 
+                    type="email" 
+                    placeholder="Your Email (won't be published)" 
+                    id="commentEmail"
+                    required
+                >
+                <textarea 
+                    placeholder="Share your thoughts on healthy living..." 
+                    id="commentText"
+                    rows="5"
+                    required
+                ></textarea>
+                <button class="comment-btn" onclick="submitComment()">
+                    <i class="fas fa-paper-plane"></i> Post Comment
+                </button>
+            </div>
+
+            <!-- Comments List -->
+            <div class="comment-list" id="commentsList">
+                
+                <div class="comment-item">
+                    <div class="comment-author">
+                        <i class="fas fa-user-circle"></i> Michael Johnson
+                    </div>
+                    <div class="comment-date">June 6, 2026 at 9:15 AM</div>
+                    <div class="comment-text">
+                        This article really motivated me to start my fitness journey! I've been wanting to get back in shape and your practical tips make it seem achievable. Thanks for the clear breakdown of nutrition and exercise!
+                    </div>
+                </div>
+
+                <div class="comment-item">
+                    <div class="comment-author">
+                        <i class="fas fa-user-circle"></i> Lisa Anderson
+                    </div>
+                    <div class="comment-date">June 6, 2026 at 2:45 PM</div>
+                    <div class="comment-text">
+                        I loved the section on mental health! People often overlook the connection between stress and physical health. Your recommendation about mindfulness has already helped me sleep better.
+                    </div>
+                </div>
+
+                <div class="comment-item">
+                    <div class="comment-author">
+                        <i class="fas fa-user-circle"></i> David Martinez
+                    </div>
+                    <div class="comment-date">June 7, 2026 at 11:30 AM</div>
+                    <div class="comment-text">
+                        Great practical advice! The budget-friendly tips for healthy eating are especially helpful. I was worried that healthy food would break the bank, but you've shown it's possible to eat well affordably.
+                    </div>
+                </div>
+
+                <div class="comment-item">
+                    <div class="comment-author">
+                        <i class="fas fa-user-circle"></i> Rachel Green
+                    </div>
+                    <div class="comment-date">June 7, 2026 at 4:20 PM</div>
+                    <div class="comment-text">
+                        As someone who struggled with perfectionism in health goals, I really appreciated the compassionate approach. It's true—one bad day doesn't erase your progress. Very encouraging!
+                    </div>
+                </div>
+
+                <div class="comment-item">
+                    <div class="comment-author">
+                        <i class="fas fa-user-circle"></i> Thomas Brown
+                    </div>
+                    <div class="comment-date">June 8, 2026 at 10:00 AM</div>
+                    <div class="comment-text">
+                        Comprehensive guide! I especially liked how you broke down the "pillars of health." It helped me understand that wellness isn't just about exercise—it's a holistic approach. Already implementing these changes!
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Newsletter CTA -->
+        <div class="newsletter-cta">
+            <div class="newsletter-content">
+                <h3>
+                    <i class="fas fa-envelope"></i> Get Daily Health Tips
+                </h3>
+                <p>Subscribe to our wellness newsletter for daily tips, recipes, and motivation to support your health journey.</p>
+            </div>
+            <form class="newsletter-form" onsubmit="handleNewsletterSignup(event)">
+                <input type="email" placeholder="Enter your email" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+
     </div>
 </div>
 
+<!-- Back to Top Button -->
+<button class="back-to-top" id="backToTop" onclick="scrollToTop()" title="Back to top">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<!-- Footer -->
 <footer class="footer">
     <div class="footer-container">
         <div class="footer-section">
-            <h2 class="logo">GreenBlog</h2>
+            <h2 class="logo">
+                <i class="fas fa-leaf"></i> GreenBlog
+            </h2>
             <p>Discover inspiring articles on technology, lifestyle, travel, agriculture, and web development.</p>
         </div>
         <div class="footer-section">
             <h3>Quick Links</h3>
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="index.html">Blogs</a></li>
-                <li><a href="index.html">Categories</a></li>
-                <li><a href="index.html">About</a></li>
+                <li><a href="index.html#blogs">Blogs</a></li>
+                <li><a href="index.html#categories">Categories</a></li>
+                <li><a href="index.html#about">About</a></li>
             </ul>
         </div>
         <div class="footer-section">
@@ -103,20 +521,132 @@
             </ul>
         </div>
         <div class="footer-section">
-            <h3>Subscribe</h3>
+            <h3>
+                <i class="fas fa-envelope"></i> Subscribe
+            </h3>
             <p>Get latest articles directly in your inbox.</p>
-            <form class="newsletter">
-                <input type="email" placeholder="Enter your email" />
+            <form class="newsletter" onsubmit="handleNewsletterFooter(event)">
+                <input type="email" placeholder="Enter your email" required />
                 <button type="submit">Subscribe</button>
             </form>
         </div>
     </div>
     <div class="footer-bottom">
         <p>© 2026 GreenBlog. All rights reserved.</p>
-        <p>created by palak verma</p>
+        <p>Created with <i class="fas fa-heart" style="color: #ef4444;"></i> by Palak Verma</p>
     </div>
 </footer>
 
 <script src="script.js"></script>
+
+<script>
+    // Reading Progress Bar
+    window.addEventListener('scroll', function() {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        document.getElementById('readingProgress').style.width = scrollPercent + '%';
+    });
+
+    // Back to Top Button
+    window.addEventListener('scroll', function() {
+        const backToTopBtn = document.getElementById('backToTop');
+        if (window.pageYOffset > 300) {
+            backToTopBtn.classList.add('show');
+        } else {
+            backToTopBtn.classList.remove('show');
+        }
+    });
+
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    // Copy Link to Clipboard
+    function copyLink(event) {
+        event.preventDefault();
+        const link = window.location.href;
+        navigator.clipboard.writeText(link).then(() => {
+            alert('Article link copied to clipboard!');
+        });
+    }
+
+    // Submit Comment
+    function submitComment() {
+        const name = document.getElementById('commentName').value.trim();
+        const email = document.getElementById('commentEmail').value.trim();
+        const text = document.getElementById('commentText').value.trim();
+
+        if (name && email && text) {
+            const commentsList = document.getElementById('commentsList');
+            const newComment = document.createElement('div');
+            newComment.className = 'comment-item';
+            newComment.innerHTML = `
+                <div class="comment-author">
+                    <i class="fas fa-user-circle"></i> ${name}
+                </div>
+                <div class="comment-date">Just now</div>
+                <div class="comment-text">
+                    ${text}
+                </div>
+            `;
+            commentsList.appendChild(newComment);
+
+            // Reset form
+            document.getElementById('commentName').value = '';
+            document.getElementById('commentEmail').value = '';
+            document.getElementById('commentText').value = '';
+
+            alert('Thank you for your comment! It has been posted.');
+        } else {
+            alert('Please fill in all fields.');
+        }
+    }
+
+    // Newsletter Signup
+    function handleNewsletterSignup(event) {
+        event.preventDefault();
+        const email = event.target.querySelector('input[type="email"]').value;
+        alert('Thank you for subscribing! Check your email for confirmation.');
+        event.target.reset();
+    }
+
+    function handleNewsletterFooter(event) {
+        event.preventDefault();
+        const email = event.target.querySelector('input[type="email"]').value;
+        alert('Thank you for subscribing! Check your email for confirmation.');
+        event.target.reset();
+    }
+
+    // Dark Mode Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const htmlElement = document.documentElement;
+
+    themeToggle.addEventListener('click', function() {
+        const isDarkMode = htmlElement.classList.toggle('dark-mode');
+        const themeIcon = document.getElementById('themeIcon');
+        
+        if (isDarkMode) {
+            themeIcon.textContent = '🌙';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            themeIcon.textContent = '☀️';
+            localStorage.setItem('theme', 'light');
+        }
+    });
+
+    // Load saved theme preference
+    window.addEventListener('DOMContentLoaded', function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            htmlElement.classList.add('dark-mode');
+            document.getElementById('themeIcon').textContent = '🌙';
+        }
+    });
+</script>
+
 </body>
 </html>
