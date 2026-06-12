@@ -1187,7 +1187,7 @@ if (window.location.pathname.includes("products.html")) {
                         <button class="btn-add-to-cart" onclick="addToCart('${p.id}', '${(p.title || '').replace(/'/g, '&apos;')}', ${priceNum}, '${p.thumbnail || ''}')">
                             Add to Cart
                         </button>
-                        <button class="btn-buy-now">
+                        <button class="btn-buy-now" onclick="buyNow('${p.id}', '${(p.title || '').replace(/'/g, '&apos;')}', ${priceNum}, '${p.thumbnail || ''}')">
                             Buy Now
                         </button>
                     </div>
@@ -1221,6 +1221,23 @@ window.addToCart = function (id, title, price, image) {
     localStorage.setItem("cart", JSON.stringify(cart));
     if(window.updateCartCount) window.updateCartCount();
     alert("Added to cart");
+};
+
+window.buyNow = function (id, title, price, image) {
+    const orderId = '112-' + Math.floor(1000000 + Math.random() * 9000000) + '-' + Math.floor(1000000 + Math.random() * 9000000);
+    const orderDate = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    let orders = JSON.parse(localStorage.getItem("amazonOrders")) || [];
+    orders.unshift({
+        id: orderId,
+        item: title,
+        price: price,
+        image: safeImage(image),
+        status: 'Processing',
+        date: orderDate
+    });
+    localStorage.setItem("amazonOrders", JSON.stringify(orders));
+    alert("Order placed successfully! Redirecting you to Your Orders in Customer Service...");
+    window.location.href = "Customer-Service/index.html#tile-orders";
 };
 
 // ==========================================
@@ -1405,6 +1422,38 @@ function initCartPage() {
     }
 
     renderAll();
+
+    const proceedBuyBtn = document.querySelector(".proceed-buy-btn");
+    if (proceedBuyBtn) {
+        proceedBuyBtn.addEventListener("click", () => {
+            let cart = getCart();
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+            
+            let orders = JSON.parse(localStorage.getItem("amazonOrders")) || [];
+            
+            cart.forEach(item => {
+                const orderId = '112-' + Math.floor(1000000 + Math.random() * 9000000) + '-' + Math.floor(1000000 + Math.random() * 9000000);
+                const orderDate = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                orders.unshift({
+                    id: orderId,
+                    item: item.title,
+                    price: item.price,
+                    image: item.image || '',
+                    status: 'Processing',
+                    date: orderDate
+                });
+            });
+            
+            localStorage.setItem("amazonOrders", JSON.stringify(orders));
+            localStorage.removeItem("cart"); // Clear cart
+            
+            alert("Order placed successfully! Redirecting you to Your Orders in Customer Service...");
+            window.location.href = "Customer-Service/index.html#tile-orders";
+        });
+    }
 }
 
 document.addEventListener("DOMContentLoaded", initCartPage);
