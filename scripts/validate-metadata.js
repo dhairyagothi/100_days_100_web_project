@@ -9,10 +9,26 @@ const rootDir = process.argv[3]
   : path.join(__dirname, '..');
 
 const VALID_DIFFICULTIES = new Set(['beginner', 'intermediate', 'advanced']);
-const REQUIRED_KEYS = ['projectNo', 'projectName', 'techStack', 'difficulty', 'projectPath'];
+const VALID_PROJECT_TYPES = new Set([
+  'Game',
+  'Tool',
+  'Clone',
+  'UI',
+  'Animation',
+  'API',
+  'Website',
+  'Backend',
+  'AI',
+  'E-Commerce',
+  'Productivity',
+  'Simulation',
+  'Authentication',
+  'Form'
+]);
+const REQUIRED_KEYS = ['projectNo', 'projectName', 'projectType', 'techStack', 'difficulty', 'projectPath'];
 const UNSAFE_PROTOCOL_RE = /^(?:javascript|data|vbscript):/i;
 const URL_SCHEME_RE = /^[a-z][a-z0-9+.-]*:/i;
-const EXPECTED_GITHUB_TREE_PREFIX = '/dhairyagothi/100_days_100_web_project/tree/';
+const EXPECTED_GITHUB_REPOSITORY = 'dhairyagothi/100_days_100_web_project';
 
 function formatProjectLabel(index, project = {}) {
   const day = project.projectNo || 'Unknown';
@@ -26,6 +42,20 @@ function addFieldError(errors, index, project, fieldName, message) {
 
 function isExternalHttpUrl(value) {
   return /^https?:\/\//i.test(value);
+}
+
+function isGitHubUrl(parsedUrl) {
+  const hostname = parsedUrl.hostname.toLowerCase();
+  return hostname === 'github.com' || hostname === 'www.github.com';
+}
+
+function getGitHubRepository(pathname) {
+  const [owner, repo] = pathname
+    .split('/')
+    .filter(Boolean)
+    .map(segment => segment.toLowerCase());
+
+  return owner && repo ? `${owner}/${repo}` : null;
 }
 
 function hasPathTraversal(value) {
@@ -55,12 +85,8 @@ function validateExternalUrl(projectPath, index, project, errors) {
     return;
   }
 
-  if (
-    parsedUrl.hostname.toLowerCase() === 'github.com' &&
-    parsedUrl.pathname.includes('/tree/') &&
-    !parsedUrl.pathname.startsWith(EXPECTED_GITHUB_TREE_PREFIX)
-  ) {
-    addFieldError(errors, index, project, 'projectPath', 'GitHub tree URLs must point to this repository');
+  if (isGitHubUrl(parsedUrl) && getGitHubRepository(parsedUrl.pathname) !== EXPECTED_GITHUB_REPOSITORY) {
+    addFieldError(errors, index, project, 'projectPath', 'GitHub URLs must point to this repository');
   }
 }
 
@@ -176,6 +202,14 @@ try {
             addFieldError(errors, index, project, `techStack[${tokenIndex}]`, 'must be a non-empty string');
           }
         });
+      }
+    }
+
+    if (project.projectType !== undefined && project.projectType !== null && project.projectType !== '') {
+      if (typeof project.projectType !== 'string') {
+        addFieldError(errors, index, project, 'projectType', `must be a string, got "${typeof project.projectType}"`);
+      } else if (!VALID_PROJECT_TYPES.has(project.projectType)) {
+        addFieldError(errors, index, project, 'projectType', `must be one of: ${Array.from(VALID_PROJECT_TYPES).join(', ')}`);
       }
     }
 

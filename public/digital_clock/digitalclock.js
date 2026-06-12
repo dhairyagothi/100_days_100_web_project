@@ -289,6 +289,16 @@ function addNewAlarm() {
     return;
   }
 
+    timeInput.value = '';
+    labelInput.value = '';
+
+    saveAlarms();
+    renderAlarmsList();
+    updateAlarmSummary();
+
+    showToast('Alarm updated');
+    return;
+}
   const alarm = {
     id: Date.now(),
     time: timeInput.value,
@@ -550,43 +560,27 @@ function renderWorldClocks() {
     const weather = weatherCache[clock.name];
     const row = document.createElement('div');
     row.className = 'world-clock-row';
+    
     row.innerHTML = `
       <div class="world-clock-left">
-        <img src="${clock.flag}" alt="${clock.name}" class="flag-img" loading="lazy" />
-        <div>
-          <div class="world-city-name">
-            ${clock.name}
-            <span class="time-of-day-badge" data-offset="${clock.offset}"></span>
-          </div>
+        <img src="${clock.flag}" class="flag-img" />
+        <div class="city-info">
+          <div class="world-city-name">${clock.name}</div>
           <div class="world-offset-label">${clock.offset}</div>
         </div>
       </div>
+
       <div class="world-clock-right">
-  <div class="world-time-weather">
-    <span class="world-time-display ticking-world-time" data-offset="${clock.offset}">
-      00:00:00
-    </span>
+        <span class="world-time-display ticking-world-time" data-offset="${clock.offset}">00:00</span>
+        <span class="weather-emoji">${getWeatherEmoji(weather.condition || 'clear', new Date().getHours() >= 6 && new Date().getHours() < 18)}</span>
+        <span class="weather-temp">${weather.temperature}°C</span>
+      </div>
 
-    <div class="world-weather-inline">
-  <span class="weather-emoji">
-    ${getWeatherEmoji(
-      weather.condition || 'clear',
-      new Date().getHours() >= 6 && new Date().getHours() < 18
-    )}
-  </span>
+      <button class="remove-btn" onclick="removeWorldClock(${index})">&times;</button>
 
-  <span class="weather-temp">
-    ${weather.temperature}°C
-  </span>
-  </div>
-  </div>
-
-  <button class="remove-btn" onclick="removeWorldClock(${index})" title="Remove">
-    &times;
-  </button>
-</div>
+      <span class="time-of-day-badge" data-offset="${clock.offset}"></span>
     `;
-    container.appendChild(row);
+  container.appendChild(row);
   });
 }
 

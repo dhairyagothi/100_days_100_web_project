@@ -72,6 +72,61 @@
       </nav>
     </header>
 
+
+    <!-- ===== WISHLIST ===== -->
+    <div class="wishlist-overlay" id="wishlist-overlay"></div>
+    <aside class="wishlist" id="wishlist">
+      <div class="wishlist-header">
+        <div class="wishlist-title-wrap">
+          <h2 class="wishlist-title">Your Wishlist</h2>
+          <span class="wishlist-item-count" id="wishlist-item-label">0 items</span>
+        </div>
+        <button class="wishlist-close-btn" id="wishlist-close" aria-label="Close wishlist">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+      <div class="wishlist-body" id="wishlist-content">
+        <div class="wishlist-empty" id="wishlist-empty">
+          <div class="wishlist-empty-icon">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+              <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 01-8 0" />
+            </svg>
+          </div>
+          <p class="wishist-empty-text">Your Wishlist is empty</p>
+          <p class="wishlist-empty-sub">Add some fresh kicks to get started</p>
+        </div>
+      </div>
+      <div class="wishlist-footer" id="wishlist-footer" style="display: none">
+        <div class="wishlist-summary">
+          <div class="wishlist-summary-row">
+            <span>Subtotal</span>
+            <span id="wishlist-subtotal">Rs.0</span>
+          </div>
+          <div class="wishlist-summary-row">
+            <span>Shipping</span>
+            <span class="free-tag">FREE</span>
+          </div>
+          <div class="wishlist-summary-divider"></div>
+          <div class="wishlist-summary-row total-row">
+            <span>Total</span>
+            <span id="wishlist-total-price">Rs.0</span>
+          </div>
+        </div>
+        <button class="btn-addtocart" id="addtocart-btn">
+          <span>Add to cart</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </button>
+        <button class="btn-clear-wishlist" id="clear-wishlist-btn">Clear Wishlist</button>
+      </div>
+    </aside>
+
     <!-- ===== CART SIDEBAR ===== -->
     <div class="cart-overlay" id="cart-overlay"></div>
     <aside class="cart" id="cart">
