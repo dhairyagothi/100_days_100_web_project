@@ -421,7 +421,11 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
   card.style.cursor = "pointer";
   
   const activateCard = (e) => {
-    if (e.target.closest("a, button")) return;
+    if (e.target.closest(".bookmark-btn, .complete-btn")) return;
+    if (e.target.closest("a:not(.open-project):not(.view-code-link)")) return;
+    if (e.target.closest("a")) {
+      e.preventDefault();
+    }
     if (!demoUrl) return;
 
     // Track the project visit if projectData is provided
@@ -1628,17 +1632,21 @@ function debounce(fn, delay = 300) {
 }
 
 function initSearch() {
-  const input = document.getElementById("searchInput");
-  if (!input) return;
-
-  input.addEventListener(
-    "input",
-    debounce(() => {
-      searchQuery = input.value.trim();
-      currentPage = 1;
-      renderGrid();
-    }, 180),
-  );
+  const input =
+    document.getElementById("searchInput") ||
+    document.getElementById("search") ||
+    document.querySelector('input[type="text"]') ||
+    document.querySelector(".search-input");
+  if (input) {
+    input.addEventListener(
+      "input",
+      debounce(() => {
+        const { category } = getQueryParams();
+        updateURL(input.value, category);
+        applyFilters(input.value, category);
+      }, 200),
+    );
+  }
 
   // Tech stack dropdown filter listener
   const techStack = document.getElementById("techStackFilter");
@@ -1906,8 +1914,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (hasProjectGrid()) {
       loadBookmarksFromURL();
+      restoreStateFromURL();
 
-      renderGrid();
+      if (!searchQuery && activeFilter === "all") {
+        renderGrid();
+      }
       renderBookmarks();
       renderRecentProjects();
     }
@@ -1928,6 +1939,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       `;
     }
   }
+
+  const categoryFilter = document.getElementById("category");
+  if (categoryFilter) {
+    categoryFilter.addEventListener("change", () => {
+      const { search } = getQueryParams();
+      updateURL(search, categoryFilter.value);
+      applyFilters(search, categoryFilter.value);
+    });
+  }
+
+  window.addEventListener("popstate", () => restoreStateFromURL());
 });
 
 (() => {
@@ -2405,37 +2427,4 @@ function applyFilters(search, category) {
   });
 
   renderGrid();
-}
-
-document.addEventListener("DOMContentLoaded", async () => {
-  try {
-    await loadProjects();
-    restoreStateFromURL();
-  } catch (error) {
-    console.error("Failed to restore state or load projects:", error);
-  }
-  const searchInput =
-    document.getElementById("search") ||
-    document.querySelector('input[type="text"]') ||
-    document.querySelector(".search-input");
-  if (searchInput) {
-    // Debounced so rapid typing doesn't trigger a renderGrid() on every keystroke
-    searchInput.addEventListener(
-      "input",
-      debounce(() => {
-        const { category } = getQueryParams();
-        updateURL(searchInput.value, category);
-        applyFilters(searchInput.value, category);
-      }, 200),
-    );
-  }
-  const categoryFilter = document.getElementById("category");
-  if (categoryFilter) {
-    categoryFilter.addEventListener("change", () => {
-      const { search } = getQueryParams();
-      updateURL(search, categoryFilter.value);
-      applyFilters(search, categoryFilter.value);
-    });
-  }
-  window.addEventListener("popstate", () => restoreStateFromURL());
-});
+}

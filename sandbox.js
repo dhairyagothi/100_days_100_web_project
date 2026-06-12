@@ -190,6 +190,9 @@
             <button class="viewport-btn" data-viewport="tablet">Tablet</button>
             <button class="viewport-btn" data-viewport="mobile">Mobile</button>
             <span class="divider">|</span>
+            <button id="downloadCodeBtn" class="viewport-btn" style="display: inline-flex; align-items: center; gap: 0.35rem; font-family: inherit;">
+              <i class="fas fa-download" aria-hidden="true"></i> Download Zip
+            </button>
             <a href="${cleanDemoPath}" target="_blank" class="sandbox-btn-link" rel="noopener noreferrer">
               Open Demo <i class="fas fa-external-link-alt" aria-hidden="true"></i>
             </a>
@@ -267,9 +270,60 @@
     }
   }
 
+  // Dynamically load JSZip library
+  function loadJSZip() {
+    if (window.JSZip) return Promise.resolve();
+
+    return new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js";
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error("Failed to load JSZip"));
+      document.head.appendChild(script);
+    });
+  }
+
+  // Package dynamic project files into a zip archive and download it
+  async function downloadProjectCode() {
+    const downloadBtn = document.getElementById("downloadCodeBtn");
+    if (!downloadBtn) return;
+
+    const originalText = downloadBtn.innerHTML;
+    downloadBtn.disabled = true;
+    downloadBtn.innerHTML = `<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Zipping...`;
+
+    try {
+      await loadJSZip();
+      
+      const zip = new window.JSZip();
+      projectFilesMap.forEach((content, filename) => {
+        zip.file(filename, content);
+      });
+
+      const blob = await zip.generateAsync({ type: "blob" });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${activeProject.projectName.replace(/\s+/g, "_")}_code.zip`;
+      document.body.appendChild(a);
+      a.click();
+      
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Failed to generate zip download:", err);
+      alert("Failed to download project code. Please try again.");
+    } finally {
+      downloadBtn.disabled = false;
+      downloadBtn.innerHTML = originalText;
+    }
+  }
+
   // Bind close buttons and viewport toggles
   function setupEventListeners() {
     document.getElementById("closeSandboxBtn")?.addEventListener("click", closeSandbox);
+    document.getElementById("downloadCodeBtn")?.addEventListener("click", downloadProjectCode);
 
     // Viewport selectors
     const wrapper = document.getElementById("iframeWrapper");
