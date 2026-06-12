@@ -467,10 +467,111 @@ section {
   transform: translateY(0);
 }
 
+/* ---------- Task Input Form ---------- */
 .input-actions {
-  margin-top: 12px;
   display: flex;
-  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 20px;
+  padding: 16px 20px;
+  background: var(--hero-tint);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-radius: 20px;
+  box-shadow: var(--glass-shadow);
+  flex-wrap: wrap;
+}
+
+/* Category select — fixed width, left */
+.task-select {
+  flex: 0 0 150px;
+  min-width: 130px;
+  height: 50px;
+  padding: 0 32px 0 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.96);
+  color: #121212;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-family);
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-color: rgba(255, 255, 255, 0.96);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.task-select:focus {
+  border-color: rgba(124, 99, 255, 0.55);
+  box-shadow: 0 0 0 3px rgba(124, 99, 255, 0.12);
+}
+
+/* Text input — fills remaining center space */
+.task-input {
+  flex: 1;
+  min-width: 160px;
+  height: 50px;
+  padding: 0 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.96);
+  color: #121212;
+  font-size: 15px;
+  font-family: var(--font-family);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.task-input::placeholder {
+  color: #8e8e9c;
+}
+
+.task-input:focus {
+  border-color: rgba(124, 99, 255, 0.55);
+  box-shadow: 0 0 0 3px rgba(124, 99, 255, 0.12);
+}
+
+/* Add Task button — fixed width, right */
+.add-btn {
+  flex: 0 0 auto;
+  height: 50px;
+  padding: 0 24px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: var(--font-family);
+  background: var(--accent-gradient);
+  box-shadow: 0 8px 24px rgba(78, 98, 254, 0.30);
+  transition: transform var(--transition), box-shadow var(--transition);
+  white-space: nowrap;
+}
+
+.add-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(78, 98, 254, 0.42);
+}
+
+.add-btn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 520px) {
+  .task-select {
+    flex: 0 0 100%;
+  }
+  .task-input {
+    flex: 1 1 calc(100% - 110px);
+  }
 }
 
 #savepdf {
@@ -1187,3 +1288,145 @@ section {
   --glass-border: rgba(239, 68, 68, 0.22);
   --hero-tint: rgba(110, 10, 10, 0.76);
 }
+
+/* ============================================================
+   MODAL OVERLAY — fullscreen dark backdrop
+   ============================================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.60);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: modalFadeIn 0.2s ease;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal-box {
+  background: rgba(18, 24, 48, 0.97);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  padding: 36px 32px 28px;
+  max-width: 420px;
+  width: calc(100% - 40px);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.55);
+  animation: modalSlideUp 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-align: center;
+}
+
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(28px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0)   scale(1);    }
+}
+
+.modal-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+.modal-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #f7f8ff;
+  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+}
+
+.modal-desc {
+  font-size: 14px;
+  color: rgba(247, 248, 255, 0.65);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.modal-btn {
+  height: 44px;
+  padding: 0 24px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: var(--font-family);
+  transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
+}
+
+.modal-btn:hover { transform: translateY(-2px); opacity: 0.92; }
+.modal-btn:active { transform: translateY(0); }
+
+.modal-btn-cancel {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(247, 248, 255, 0.80);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.modal-btn-cancel:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.modal-btn-confirm {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.30);
+}
+
+/* ============================================================
+   TOAST NOTIFICATION — slides down from top-center
+   ============================================================ */
+.toast-popup {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-120%);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  border-radius: 14px;
+  background: rgba(18, 24, 48, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-family);
+  color: #f7f8ff;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease;
+  opacity: 0;
+  min-width: 220px;
+  justify-content: center;
+}
+
+.toast-popup.toast-show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.toast-popup.toast-success { border-color: rgba(20, 184, 166, 0.40); }
+.toast-popup.toast-error   { border-color: rgba(239, 68, 68, 0.40); }
+.toast-popup.toast-info    { border-color: rgba(124, 99, 255, 0.40); }
+
+/* Hide old pdf-message element (replaced by .toast-popup) */
+#pdfMessage,
+#toast {
+  display: none !important;
+}

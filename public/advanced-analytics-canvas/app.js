@@ -59,6 +59,12 @@ triggerBtn.addEventListener('click', async () => {
     // High-Precision Computation Timer Capture Bounds
     const startTime = performance.now();
 
+    await engine.executeBubbleSort((telemetryData) => {
+        // Continuous updates sent from engine threads loop
+        passesMetric.textContent = `${telemetryData.passes.toLocaleString()} structural changes`;
+        fpsRenderMetric.textContent = `${telemetryData.renderTimeMs.toFixed(2)} ms`;
+    });
+
     const selected =
 algoSelect.value;
 

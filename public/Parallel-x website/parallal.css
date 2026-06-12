@@ -22,14 +22,15 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    align-items: center;
-    padding: 18px 40px;
-    gap: 80px;
-    background: #f5f5f5;
-    position: absolute;
-    top: 0;
-    z-index: 100;
-    
+    align-items: flex-end;
+    color: #359381;
+    font-weight: 700;
+    font-size: 32px;
+    padding: 20px;
+    padding-right: 20px;
+    gap: 124px;
+    z-index: 30;
+    cursor: pointer;
 }
 
 header {
@@ -94,11 +95,16 @@ nav ul li a.active {
     position: relative;
 }
 
-.parallal img {
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 0;
+.parallal img{
+position: absolute;
+width: 100%;
+height: 100%;
+top: 0;
+left: 0;
+object-fit: cover;
+object-position: center;
+z-index: -1;
+
 }
 
 .text {
@@ -133,22 +139,7 @@ nav ul li a.active {
     max-width: 560px;
 }
 
-/* ── Shared Content Section ────────────────────────────────── */
-.content {
-    position: relative;
-    background: #01372d;
-    color: white;
-    padding: 80px 8%;
-    line-height: 1.8;
-}
-
-.content div:first-child,
-.content [id$="-heading"] {
-    font-size: 2.8rem;
-    font-weight: 700;
-    margin-bottom: 24px;
-    color: #7effd8;
-}
+/* ================= CONTENT ================= */
 
 .intro-lead {
     font-size: 1.15rem;
@@ -230,14 +221,28 @@ nav ul li a.active {
     transform: translateY(-2px);
 }
 
-/* ── Section sub-heading ───────────────────────────────────── */
-.section-sub-heading {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #7effd8;
-    margin-bottom: 32px;
-    margin-top: 8px;
+/* Back to Home Button */
+
+.back-home{
+    background:#359381;
+    color:white;
+    text-decoration:none;
+    padding:10px 20px;
+    border-radius:30px;
+    font-weight:700;
+    transition:.3s;
+    position:relative;
+    z-index:2000;
+    white-space:nowrap;
+    margin-left: 130px;
 }
+
+.back-home:hover{
+    background:#01372d;
+    transform:translateY(-2px);
+}
+
+/* ================= TABLET ================= */
 
 /* ── Divider leaf ──────────────────────────────────────────── */
 .divider-leaf {
@@ -315,7 +320,9 @@ nav ul li a.active {
     transition: transform 0.25s;
 }
 
-.team-card:hover { transform: translateY(-4px); }
+.back-home {
+    margin-top: 5px;
+}
 
 .team-avatar {
     font-size: 2.8rem;
@@ -343,30 +350,9 @@ nav ul li a.active {
 .service-list {
     display: flex;
     flex-direction: column;
-    gap: 56px;
-    margin-bottom: 64px;
-}
-
-.service-item {
-    display: grid;
-    grid-template-columns: 100px 1fr;
-    gap: 36px;
-    align-items: start;
-    background: rgba(255,255,255,0.05);
-    border-radius: 20px;
-    padding: 40px 36px;
-    border: 1px solid rgba(255,255,255,0.1);
-}
-
-.service-item.reverse {
-    grid-template-columns: 1fr 100px;
-}
-
-.service-item.reverse .service-icon { order: 2; }
-.service-item.reverse .service-body { order: 1; }
-
-.service-icon {
-    font-size: 3.2rem;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 5%;
     text-align: center;
     padding-top: 6px;
 }
@@ -378,11 +364,10 @@ nav ul li a.active {
     margin-bottom: 12px;
 }
 
-.service-body p {
-    font-size: 1rem;
-    opacity: 0.88;
-    line-height: 1.85;
-    margin-bottom: 20px;
+nav ul{
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
 }
 
 .service-features {
@@ -407,17 +392,10 @@ nav ul li a.active {
     font-weight: 700;
 }
 
-.pricing-note {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-    background: rgba(53,147,129,0.2);
-    border: 1px solid rgba(53,147,129,0.4);
-    border-radius: 14px;
-    padding: 24px 28px;
-    margin-bottom: 48px;
-    font-size: 1rem;
-    line-height: 1.75;
+.text{
+    font-size: clamp(2.2rem, 10vw, 4rem);
+    padding: 0 10px;
+    margin-top: -150px;
 }
 
 .pricing-note span { font-size: 1.8rem; flex-shrink: 0; }
@@ -484,11 +462,15 @@ nav ul li a.active {
     min-height: 1.4em;
 }
 
-.info-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-    margin-bottom: 28px;
+.back-home {
+    position: static;
+    margin-left: 0;
+    margin-top: 10px;
+    right: 15px;
+    padding: 10px 18px;
+    font-size: 1rem;
+}
+
 }
 
 .info-icon { font-size: 1.6rem; flex-shrink: 0; padding-top: 2px; }
@@ -605,10 +587,8 @@ nav ul li a.active {
     .service-features { grid-template-columns: 1fr; }
 }
 
-/* ── Small mobile ───────────────────────────────────────────── */
-@media (max-width: 480px) {
-    .name { font-size: 1.4rem; }
-    nav ul li a { font-size: 0.8rem; padding: 5px 10px; }
-    .text { font-size: 2rem; }
-    .team-grid { grid-template-columns: 1fr; }
+.back-home {
+    margin-top: 5px;
+}
+
 }

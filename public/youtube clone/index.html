@@ -183,6 +183,24 @@
         padding-top: calc(55px + 56px + 16px) !important;
       }
 
+      /* On mobile: sidebar slides away, filter bar must start at left:0 */
+      @media (max-width: 750px) {
+        .filter-bar {
+          left: 0;
+          padding: 0 12px;
+          gap: 8px;
+        }
+
+        main {
+          padding-left: 0 !important;
+          overflow-x: hidden;
+        }
+
+        body {
+          overflow-x: hidden;
+        }
+      }
+
       /* Sidebar icon label visibility */
       html[data-theme="dark"] .sidebar-link div {
         font-size: 10px;
