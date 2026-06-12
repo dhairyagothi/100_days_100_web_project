@@ -235,7 +235,7 @@ The website features:
 | 147 | Chronosphere | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Chronosphere/index.html) |
 | 151 | Mini Carrom Game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/mini carrom/index.html) |
 | 152 | Physics Ball Simulation | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/PhysicsBallSimulation/index.html) |
-| 155 | Hangman Game | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/hangman-react-ts/HangmanGame/index.html) |
+| 155 | Hangman Game (React TS) | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/hangman-react-ts/HangmanGame/index.html) |
 | 159 | Dining Philosophers Simulation | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Dining Philosophers Simulation/index.html) |
 | 168 | Color Sort Puzzle game | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/color%20sort%20puzzle/index.html) |
 | 179 | Cyber Type Battle | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/CYBER TYPE BATTLE/index.html) |
