@@ -7,7 +7,7 @@ if (typeof REPO_OWNER === "undefined") {
 }
 window.REPO_OWNER = window.REPO_OWNER || "dhairyagothi";
 window.REPO_NAME = window.REPO_NAME || "100_days_100_web_project";
-
+  
 let currentPage = 1;
 //for the number of visible projects in one page.
 let itemsPerPage = 9;
@@ -359,7 +359,7 @@ function buildProjectCardHTML({
             </div>
 
             <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
-                <img src="./${url && url.startsWith('./') ? url.split('/')[2] : name.replace(/\s+/g, '_')}/preview.png" alt="${safeName} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
+               <img src="${url && url.startsWith('./') ? url.substring(0, url.lastIndexOf('/')) : ''}/preview.png"alt="${safeName} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
 
             <h3 class="card-name">${safeName}</h3>

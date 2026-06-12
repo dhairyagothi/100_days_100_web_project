@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="css/home.css">
   <link rel="stylesheet" href="css/navbar.css">
 <link rel="stylesheet" href="css/footer.css">
+<link rel="stylesheet" href="resturant.css">
 </head>
 <body>
   
@@ -49,3 +50,19 @@ loadComponent("footer", "components/footer.html");
 </script>
 </body>
 </html>
+
+<script>
+const html = document.documentElement;
+
+// restore theme
+const saved = localStorage.getItem('zomato-theme');
+if (saved) html.setAttribute('data-theme', saved);
+
+function toggleDark() {
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  const next = isDark ? 'light' : 'dark';
+
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('zomato-theme', next);
+}
+</script>
