@@ -24,7 +24,7 @@
     <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="index.html">Categories</a></li>
-        <li><a href="index.html">Blogs</a></li>
+        <li><a href="ai.html">Blogs</a></li>
         <li><a href="index.html">About</a></li>
     </ul>
     <div class="nav-right">
@@ -36,21 +36,21 @@
 
 <div class="blog-page-container">
     <div class="blog-page">
-        <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=1770&auto=format&fit=crop" alt="Organic Farming" class="blog-banner">
-        
-        <h1>Organic Farming</h1>
-        
-        <div class="blog-author">
-            <h3>Eco Expert</h3>
-            <p class="blog-date">Posted on 10/10/2021</p>
-        </div>
 
-        <div class="blog-content">
-            <p>
-                Organic farming is an ancient method of farming. It is a form of agriculture. Organic farming aims at cultivating land and raising crops by keeping the soil alive. Organic wastes are being used in organic farming. Organic farming increases sustainable agricultural production by following eco-friendly ways. It is a unique production management system. It promotes and enhances Argo system health. It is a key factor in maintaining natural and environmental balance. It helps protect the long-term fertility of soils. It is a safer and healthier option for us as well as for the environment. Organic farming is a need of time. It is a demand of time. Nowadays consumers are becoming highly conscious about their health and the foods they consume. Maximum people are opting for organic food. Organic farming is full of good things. It relies on the ecological processes, biodiversity and cycles adapted to local conditions. It ensures soil with fertility with the help of crop rotation. It enables healthy soil structure. It increases the ability of soil to hold water. It naturally prevents crops from iron pesticides and insecticides. Organic farming combines tradition, innovation and science to benefit the shared environment and promote fair relationships and good quality for all involved. Organic farming is a revolution against Green Revolution. There are many drawbacks found in Green Revolution. The Green Revolution leads soil erosion, loss of soil nutrients, loss of nutrition in food and the creation of human diseases. So organic farming is the best and safest option for all.
-            </p>
-        </div>
+    <img id="blogImage" class="blog-banner">
+
+    <h1 id="blogTitle"></h1>
+
+    <div class="blog-author">
+        <h3 id="blogAuthor"></h3>
+        <p id="blogDate" class="blog-date"></p>
     </div>
+
+    <div class="blog-content">
+        <p id="blogContent"></p>
+    </div>
+
+</div>
 </div>
 
 <footer class="footer">
@@ -63,7 +63,7 @@
             <h3>Quick Links</h3>
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="index.html">Blogs</a></li>
+                <li><a href="ai.html">Blogs</a></li>
                 <li><a href="index.html">Categories</a></li>
                 <li><a href="index.html">About</a></li>
             </ul>
@@ -92,6 +92,44 @@
     </div>
 </footer>
 
+<script src="blogs.js"></script>
 <script src="script.js"></script>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const blogId = Number(params.get("id"));
+
+const blog = blogs.find(item => item.id === blogId);
+
+if(blog){
+
+    document.title = blog.title;
+
+    document.getElementById("blogTitle").textContent =
+        blog.title;
+
+    document.getElementById("blogAuthor").textContent =
+        blog.author;
+
+    document.getElementById("blogDate").textContent =
+        `Posted on ${blog.date}`;
+
+    document.getElementById("blogImage").src =
+        blog.image;
+
+    document.getElementById("blogImage").alt =
+        blog.title;
+
+    document.getElementById("blogContent").textContent =
+        blog.content;
+
+}else{
+
+    document.querySelector(".blog-page").innerHTML = `
+        <h1>Blog Not Found</h1>
+        <p>The requested blog does not exist.</p>
+    `;
+}
+</script>
 </body>
 </html>
