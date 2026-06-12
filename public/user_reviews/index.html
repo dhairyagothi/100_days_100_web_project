@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Reviews & Experience</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="favicon_user.png">
+  </head>
+  <body>
+    <div class="page-wrapper">
+
+      <!-- Header -->
+      <header class="page-header">
+        <h1>User Reviews <span>&amp;</span> Experience</h1>
+        <p>Honest thoughts from the community</p>
+      </header>
+
+      <!-- Summary Bar -->
+      <section class="summary-bar" aria-label="Rating summary">
+        <div class="avg-block">
+          <span class="avg-score" id="avgScore">4.6</span>
+          <div class="avg-stars" id="avgStars"></div>
+          <span class="avg-label">out of 5</span>
+        </div>
+        <div class="breakdown" id="breakdown"></div>
+        <div class="total-count">
+          Based on <strong id="totalCount">0</strong> reviews
+        </div>
+      </section>
+
+      <!-- Add Review Form -->
+      <section class="form-section" aria-label="Submit a review">
+        <h2>Share your experience</h2>
+        <div class="form-card">
+          <div class="form-row">
+            <input type="text" id="inputName" placeholder="Your name" maxlength="40" />
+            <div class="star-picker" id="starPicker" aria-label="Select star rating">
+              <span data-val="1">★</span>
+              <span data-val="2">★</span>
+              <span data-val="3">★</span>
+              <span data-val="4">★</span>
+              <span data-val="5">★</span>
+            </div>
+          </div>
+          <textarea id="inputReview" placeholder="Write your review..." maxlength="300" rows="3"></textarea>
+          <div class="form-footer">
+            <span class="char-count" id="charCount">0 / 300</span>
+            <button id="submitBtn" onclick="submitReview()">Post Review</button>
+          </div>
+          <p class="form-error" id="formError"></p>
+        </div>
+      </section>
+
+      <!-- Filter + Sort -->
+      <div class="controls">
+        <div class="filter-btns" id="filterBtns">
+          <button class="active" onclick="filterReviews('all', this)">All</button>
+          <button onclick="filterReviews(5, this)">5 ★</button>
+          <button onclick="filterReviews(4, this)">4 ★</button>
+          <button onclick="filterReviews(3, this)">3 ★</button>
+          <button onclick="filterReviews(2, this)">2 ★</button>
+          <button onclick="filterReviews(1, this)">1 ★</button>
+        </div>
+        <select id="sortSelect" onchange="sortReviews(this.value)">
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="highest">Highest rated</option>
+          <option value="lowest">Lowest rated</option>
+        </select>
+      </div>
+
+      <!-- Reviews Grid -->
+      <section class="reviews-grid" id="reviewsGrid" aria-live="polite"></section>
+
+      <!-- Empty state -->
+      <div class="empty-state" id="emptyState" style="display:none">
+        <p>No reviews found for this filter.</p>
+      </div>
+
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
