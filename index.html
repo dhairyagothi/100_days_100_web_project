@@ -85,6 +85,76 @@
       .btn-stats i {
         font-size: 0.85rem;
       }
+
+      /* ── CTA Banner ── */
+      .cta-banner {
+        position: relative;
+        overflow: hidden;
+        padding: 5rem 1.5rem;
+        text-align: center;
+        background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(15, 242, 200, 0.08) 0%, transparent 70%),
+                    linear-gradient(180deg, #0a0a1a 0%, #0d1117 100%);
+        border-top: 1px solid rgba(15, 242, 200, 0.08);
+      }
+      .cta-banner::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle 600px at 50% 50%, rgba(15, 242, 200, 0.05), transparent 70%);
+        pointer-events: none;
+      }
+      .cta-banner-inner {
+        position: relative;
+        max-width: 640px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.25rem;
+      }
+      .cta-banner h2 {
+        font-family: 'Inter Tight', sans-serif;
+        font-size: clamp(1.75rem, 4vw, 2.5rem);
+        font-weight: 800;
+        color: #ffffff;
+        line-height: 1.2;
+        margin: 0;
+      }
+      .cta-banner p {
+        font-family: 'Inter Tight', sans-serif;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.55);
+        line-height: 1.6;
+        margin: 0;
+        max-width: 480px;
+      }
+      .cta-banner-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.85rem 2rem;
+        border-radius: 50px;
+        background: #0ff2c8;
+        color: #0a0a1a;
+        font-family: 'Inter Tight', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
+        letter-spacing: 0.01em;
+        transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+        box-shadow: 0 0 24px rgba(15, 242, 200, 0.35);
+        margin-top: 0.5rem;
+      }
+      .cta-banner-btn:hover {
+        background: #00e0b8;
+        transform: translateY(-2px);
+        box-shadow: 0 0 36px rgba(15, 242, 200, 0.5);
+      }
+      .cta-banner-btn:active {
+        transform: translateY(0);
+      }
     </style>
   </head>
 
@@ -261,7 +331,7 @@
               id="filterAll"
               aria-label="Show all projects"
             >
-              All <span class="chip-count" id="allCount">Projects</span>
+              All <span class="chip-count" id="allCount" aria-live="polite">Projects</span>
             </button>
             <button
               class="chip"
@@ -361,22 +431,56 @@
         <div class="project-grid" id="projectGrid"></div>
 
         <!-- No Results -->
-        <div class="no-results" id="noResults">
-          <i class="fas fa-search"></i>
+        <div class="no-results" id="noResults" role="status" aria-live="assertive">
+          <i class="fas fa-search" aria-hidden="true"></i>
           <p>No projects match your search.</p>
         </div>
       </div>
     </section>
+
+  <section class="projects-section" id="randomProjectSection">
+    <div class="projects-inner">
+
+      <div class="projects-intro">
+        <p class="section-label">Need Inspiration?</p>
+        <h2 class="section-title">
+          Can't decide what to build next?
+        </h2>
+        <p class="hero-extra">
+          Generate a random project from the current archive.
+        </p>
+      </div>
+
+      <div class="random-project-wrapper">
+        <button
+          id="randomProjectBtn"
+          class="btn btn-primary"
+        >
+          🎲 Generate Random Project
+        </button>
+
+        <div
+          id="randomProjectResult"
+          class="project-grid"
+        ></div>
+      </div>
+
+    </div>
+  </section>
 
   <!-- ── FOOTER ─────────────────────────────────────────── -->
   <footer class="footer homepage-footer">
     <div class="homepage-footer-shell">
       <div class="homepage-footer-brand">
         <p class="homepage-footer-kicker">100 Days · 100 Web Projects</p>
-        <h2>Open-source builds for daily practice and creative frontend exploration.</h2>
+        <h2>
+          Open-source builds for daily practice and creative frontend
+          exploration.
+        </h2>
         <p class="homepage-footer-copy">
-          Explore a growing archive of UI studies, games, tools, API demos, and full-stack ideas —
-          all designed to help contributors learn by building.
+          Explore a growing archive of UI studies, games, tools, API demos,
+          and full-stack ideas — all designed to help contributors learn by
+          building.
         </p>
         <div class="homepage-footer-pills">
           <span class="homepage-footer-pill">Open Source</span>
@@ -386,25 +490,44 @@
       </div>
 
       <div class="homepage-footer-grid">
-        <section class="homepage-footer-card" aria-labelledby="footerExploreTitle">
+        <section
+          class="homepage-footer-card"
+          aria-labelledby="footerExploreTitle"
+        >
           <h3 id="footerExploreTitle">Explore</h3>
           <ul class="footer-link-list">
             <li><a href="#projects">Browse all projects</a></li>
-            <li><a href="contributors/contributor.html">Meet contributors</a></li>
-            <li><a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer">View repository</a></li>
+            <li>
+              <a href="contributors/contributor.html">Meet contributors</a>
+            </li>
+            <li>
+              <a
+                href="https://github.com/dhairyagothi/100_days_100_web_project"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View repository on GitHub (opens in a new tab)"
+                >View repository</a
+              >
+            </li>
           </ul>
         </section>
 
-        <section class="homepage-footer-card" aria-labelledby="footerConnectTitle">
+        <section
+          class="homepage-footer-card"
+          aria-labelledby="footerConnectTitle"
+        >
           <h3 id="footerConnectTitle">Connect</h3>
-          <p>Follow updates, share ideas, and stay connected with the community.</p>
+          <p>
+            Follow updates, share ideas, and stay connected with the
+            community.
+          </p>
           <div class="social-links">
             <a
               href="https://www.instagram.com/dhairyaa__31/"
               target="_blank"
               rel="noopener noreferrer"
               class="social-btn"
-              aria-label="Follow on Instagram"
+              aria-label="Follow on Instagram (opens in a new tab)"
             >
               <i class="fab fa-instagram" aria-hidden="true"></i>
             </a>
@@ -413,7 +536,7 @@
               target="_blank"
               rel="noopener noreferrer"
               class="social-btn"
-              aria-label="Open GitHub repository"
+              aria-label="Open GitHub repository (opens in a new tab)"
             >
               <i class="fab fa-github" aria-hidden="true"></i>
             </a>
@@ -422,31 +545,39 @@
               target="_blank"
               rel="noopener noreferrer"
               class="social-btn"
-              aria-label="Connect on LinkedIn"
+              aria-label="Connect on LinkedIn (opens in a new tab)"
             >
               <i class="fab fa-linkedin" aria-hidden="true"></i>
             </a>
           </div>
         </section>
 
-        <section class="homepage-footer-card" aria-labelledby="footerFeaturedTitle">
+        <section
+          class="homepage-footer-card"
+          aria-labelledby="footerFeaturedTitle"
+        >
           <h3 id="footerFeaturedTitle">Featured Tool</h3>
-          <p>Create polished GitHub README profiles in minutes with the featured generator.</p>
+          <p>
+            Create polished GitHub README profiles in minutes with the
+            featured generator.
+          </p>
           <a
             href="https://www.github-readme.tech"
             target="_blank"
             rel="noopener noreferrer"
             class="featured-btn"
-            aria-label="Try README Generator"
+            aria-label="Try README Generator (opens in a new tab)"
           >
-            <i class="fas fa-magic" aria-hidden="true"></i> Try README Generator
+            <i class="fas fa-magic" aria-hidden="true"></i> Try README
+            Generator
           </a>
         </section>
       </div>
 
       <div class="homepage-footer-bottom">
         <p>
-          <strong>&copy; <span data-current-year></span> 100 Days · 100 Web Projects</strong>
+          <strong>&copy; <span data-current-year></span> 100 Days · 100 Web
+            Projects</strong>
           by Dhairya and Contributors.
         </p>
         <div class="homepage-footer-bottom-links">
@@ -457,8 +588,9 @@
             href="https://www.github-readme.tech"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="README Generator"
-          >README Generator</a>
+            aria-label="README Generator (opens in a new tab)"
+            >README Generator</a
+          >
         </div>
       </div>
     </div>

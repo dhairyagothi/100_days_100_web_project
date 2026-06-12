@@ -33,7 +33,6 @@ var storage = multer.diskStorage({
     },
 });
 
-
 // ✅ Updated Multer config with file size and type validation filters
 const upload = multer({ 
     storage: storage,
@@ -48,7 +47,7 @@ const upload = multer({
         }
         cb(null, true);
     }
-});
+}).array("myFile"); // Attach .array() here so we can call it in the route
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'file_uploader.html'));
@@ -58,27 +57,50 @@ app.get('/file', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'file_uploader.html'));
 });
 
-const MAX_FILES = 10;
+// ✅ Refactored route to handle Multer errors gracefully
+app.post("/upload", (req, res) => {
+    upload(req, res, function (err) {
+        // 1. Catch specific Multer size/limit errors
+        if (err instanceof multer.MulterError) {
+            return res.render('upload', {
+                uploadStatus: `Error: File too large. Max size is 2MB.`,
+                firstName: req.body.firstName || '',
+                lastName: req.body.lastName || '',
+                files: []
+            });
+        } 
+        // 2. Catch custom fileFilter errors
+        else if (err) {
+            return res.render('upload', {
+                uploadStatus: `Error: ${err.message}`,
+                firstName: req.body.firstName || '',
+                lastName: req.body.lastName || '',
+                files: []
+            });
+        }
 
-app.post("/upload", upload.array("myFile", MAX_FILES), (req, res) => {
-    console.log("Body: ", req.body);
-    console.log("Files: ", req.files);
+        // 3. If no errors, proceed with success logic
+        console.log("Body: ", req.body);
+        console.log("Files: ", req.files);
 
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;
-    const files = req.files;
+        const firstName = req.body.firstName;
+        const lastName = req.body.lastName;
+        const files = req.files;
 
-    if (!files || files.length === 0) {
-        return res.render('upload', {
-            uploadStatus: 'No file was uploaded.',
-            firstName,
-            lastName,
-            files: []
-        });
-    }
+        // Fallback check if submission happened without files
+        if (!files || files.length === 0) {
+            return res.render('upload', {
+                uploadStatus: 'No file was uploaded.',
+                firstName,
+                lastName,
+                files: []
+            });
+        }
 
-    const uploadStatus = 'Files successfully uploaded!';
-    res.render('upload', { uploadStatus, firstName, lastName, files });
+        // Success state
+        const uploadStatus = 'Files successfully uploaded!';
+        res.render('upload', { uploadStatus, firstName, lastName, files });
+    });
 });
 
 app.listen(port, () => {
