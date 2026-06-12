@@ -51,6 +51,42 @@ export class AnalyticsCanvasEngine {
     }
 
     // Asynchronous Sorting Array Loop: Yields rendering loops on thread execution sleep ticks
+    async executeBubbleSort(onOperationTick) {
+        let n = this.#arrayData.length;
+        let swapped;
+
+        do {
+            swapped = false;
+            for (let i = 0; i < n - 1; i++) {
+                if (this.#arrayData[i] > this.#arrayData[i + 1]) {
+                    // Swapping values
+                    let temp = this.#arrayData[i];
+                    this.#arrayData[i] = this.#arrayData[i + 1];
+                    this.#arrayData[i + 1] = temp;
+
+                    swapped = true;
+                    this.#operationPasses++;
+
+                    // Capture precision graphics timestamps
+                    const tStart = performance.now();
+                    this.draw([i, i + 1]);
+                    const tRender = performance.now() - tStart;
+
+                    // Stream state parameters up to controller callbacks
+                    onOperationTick({
+                        passes: this.#operationPasses,
+                        renderTimeMs: tRender
+                    });
+
+                    // Induce small microsecond delays to allow human vision mapping frames
+                    await new Promise(resolve => setTimeout(resolve, 4));
+                }
+            }
+            n--;
+        } while (swapped);
+
+        this.draw(); // Final redrawing clear
+    }
 
     async executeSelectionSort(onOperationTick) {
 
