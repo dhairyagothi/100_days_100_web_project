@@ -758,12 +758,12 @@ function addMessage(role, text) {
   const div       = document.createElement('div');
   div.className   = `ai-msg ${role === 'user' ? 'user' : ''}`;
 
-  div.innerHTML = `
-    <div class="ai-avatar ${role === 'bot' ? 'bot' : 'user'}">
-      ${role === 'bot' ? 'AI' : 'You'}
-    </div>
-    <div class="ai-bubble">${text.replace(/\n/g, '<br>')}</div>
-  `;
+  // div.innerHTML = `
+  //   <div class="ai-avatar ${role === 'bot' ? 'bot' : 'user'}">
+  //     ${role === 'bot' ? 'AI' : 'You'}
+  //   </div>
+  //   <div class="ai-bubble">${text.replace(/\n/g, '<br>')}</div>
+  // `;
   container.appendChild(div);
   container.scrollTop = container.scrollHeight;
   return div.querySelector('.ai-bubble');
