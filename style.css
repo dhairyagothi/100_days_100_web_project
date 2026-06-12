@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
 /* ============================================================
    CORE THEME CUSTOM PROPERTIES (Fixes Issue #4359)
    ============================================================ */
@@ -16,8 +13,6 @@
   --gradient-1: linear-gradient(135deg, #00ff88, #00cfff);
   --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
->>>>>>> origin/Main
 :root {
   --bg-primary: #0b0d0f;
   --bg-elevated: #111315;
@@ -6462,7 +6457,6 @@ body.custom-cursor-active .cursor-ring.is-visible {
   color: var(--text-muted-sepia) !important;
 }
 
-<<<<<<< HEAD
 /* ============================================================
    GAMIFIED LEARNING PROGRESSION DASHBOARD STYLES
    ============================================================ */

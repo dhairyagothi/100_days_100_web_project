@@ -233,7 +233,6 @@ function resolveProjectUrls(day, name, url, tags) {
       sourceUrl: "https://github.com/dhairyagothi/100_day_100_web_project/blob/Main/public/Html_css_animation/index.html",
       sourceOnly: false
     };
->>>>>>> origin/Main
   }
 
   return { demoUrl, sourceUrl, sourceOnly };
@@ -390,11 +389,7 @@ function buildProjectCardHTML({
                         <i class="fab fa-github" aria-hidden="true"></i> Code
                     </a>`;
 
-<<<<<<< HEAD
-return {
-=======
   return {
->>>>>>> origin/Main
     html: `
             <div class="card-meta">
                 <span class="card-day">${safeDay}</span>
@@ -2455,12 +2450,6 @@ function applyFilters(search, category) {
   renderGrid();
 }
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-document.addEventListener('DOMContentLoaded', () => {
-  restoreStateFromURL();
-  const searchInput = document.getElementById('search') ||
-=======
 /* ============================================================
    GAMIFIED LEARNING PROGRESSION DASHBOARD ENGINE
    ============================================================ */
@@ -2533,14 +2522,16 @@ function checkAndResetStreakOnLoad() {
   }
 }
 
-function getRecommendation() {
+function getRecommendations() {
   const uncompleted = PROJECTS.filter((p) => !completedProjects.includes(p.day));
   if (uncompleted.length === 0) {
-    return null;
+    return [];
   }
 
   if (completedProjects.length === 0) {
-    return uncompleted.find((p) => p.difficulty === "beginner") || uncompleted[0];
+    const beginners = uncompleted.filter((p) => (p.difficulty || "").toLowerCase() === "beginner").slice(0, 3);
+    if (beginners.length > 0) return beginners;
+    return uncompleted.slice(0, 3);
   }
 
   const completedProjectData = PROJECTS.filter((p) => completedProjects.includes(p.day));
@@ -2564,10 +2555,7 @@ function getRecommendation() {
   if (avgDiffVal > 2.2) targetDifficulty = "advanced";
   else if (avgDiffVal > 1.2) targetDifficulty = "intermediate";
 
-  let bestProject = null;
-  let highestScore = -1;
-
-  uncompleted.forEach((p) => {
+  const scoredProjects = uncompleted.map((p) => {
     let score = 0;
     if (p.techStack) {
       p.techStack.forEach((tag) => {
@@ -2580,13 +2568,12 @@ function getRecommendation() {
     const dayNum = parseInt(p.day.replace("Day ", ""), 10) || 100;
     score += (100 - dayNum) * 0.01;
 
-    if (score > highestScore) {
-      highestScore = score;
-      bestProject = p;
-    }
+    return { project: p, score };
   });
 
-  return bestProject || uncompleted[0];
+  scoredProjects.sort((a, b) => b.score - a.score);
+
+  return scoredProjects.slice(0, 3).map((item) => item.project);
 }
 
 function renderLearningDashboard() {
@@ -2620,21 +2607,33 @@ function renderLearningDashboard() {
   }
 
   if (recContent) {
-    const recommended = getRecommendation();
-    if (recommended) {
+    const recommendations = getRecommendations();
+    if (recommendations.length > 0) {
       const isRoot = !window.location.pathname.includes("/contributors/");
       const basePrefix = isRoot ? "" : "../";
-      const path = recommended.projectPath;
-      const cleanDemoPath = path.startsWith("./") ? basePrefix + path.substring(2) : path;
-      const difficulty = (recommended.difficulty || "beginner").toLowerCase();
-      const diffLabel = CATEGORY_LABEL[difficulty] || recommended.difficulty;
+      
+      const htmlContent = recommendations.map((recommended) => {
+        const path = recommended.projectPath;
+        const cleanDemoPath = path.startsWith("./") ? basePrefix + path.substring(2) : path;
+        const difficulty = (recommended.difficulty || "beginner").toLowerCase();
+        const diffLabel = CATEGORY_LABEL[difficulty] || recommended.difficulty;
+        
+        // Escape and sanitize all values to prevent XSS
+        const safeDemoUrl = sanitizeUrl(cleanDemoPath);
+        const safeDay = escapeHTML(recommended.day);
+        const safeName = escapeHTML(recommended.projectName);
+        const safeDiffLabel = escapeHTML(diffLabel);
+        const safeDifficultyClass = escapeHTML(difficulty);
+        
+        return `
+          <a href="${safeDemoUrl}" class="recommend-link open-project" data-id="${safeDay}" aria-label="Start recommended project ${safeName}">
+            <span class="recommend-name">${safeName}</span>
+            <span class="recommend-diff ${safeDifficultyClass}">${safeDiffLabel}</span>
+          </a>
+        `;
+      }).join("");
 
-      recContent.innerHTML = `
-        <a href="${cleanDemoPath}" class="recommend-link open-project" data-id="${recommended.day}" aria-label="Start recommended project ${recommended.projectName}">
-          <span class="recommend-name">${recommended.projectName}</span>
-          <span class="recommend-diff ${difficulty}">${diffLabel}</span>
-        </a>
-      `;
+      recContent.innerHTML = htmlContent;
     } else {
       recContent.innerHTML = `<span class="stat-subtext"><i class="fas fa-trophy text-yellow-500" aria-hidden="true"></i> You've completed all projects! Legend!</span>`;
     }
@@ -2651,44 +2650,4 @@ document.addEventListener("click", (e) => {
   if (!project) return;
 
   toggleComplete(project);
-});
-
-document.addEventListener("DOMContentLoaded", async () => {
-  try {
-    await loadProjects();
-    restoreStateFromURL();
-  } catch (error) {
-    console.error("Failed to restore state or load projects:", error);
-  }
-  const searchInput =
-    document.getElementById("search") ||
->>>>>>> Stashed changes
-=======
-document.addEventListener("DOMContentLoaded", () => {
-
-  const searchInput =
-    document.getElementById("search") ||
->>>>>>> origin/Main
-    document.querySelector('input[type="text"]') ||
-    document.querySelector(".search-input");
-  if (searchInput) {
-    // Debounced so rapid typing doesn't trigger a renderGrid() on every keystroke
-    searchInput.addEventListener(
-      "input",
-      debounce(() => {
-        const { category } = getQueryParams();
-        updateURL(searchInput.value, category);
-        applyFilters(searchInput.value, category);
-      }, 200),
-    );
-  }
-  const categoryFilter = document.getElementById("category");
-  if (categoryFilter) {
-    categoryFilter.addEventListener("change", () => {
-      const { search } = getQueryParams();
-      updateURL(search, categoryFilter.value);
-      applyFilters(search, categoryFilter.value);
-    });
-  }
-  window.addEventListener("popstate", () => restoreStateFromURL());
 });
